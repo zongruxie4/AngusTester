@@ -10,7 +10,7 @@ import { TaskStatus } from '@/enums/enums';
 import TaskStatusV from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import { getCurrentPage } from '@/utils/utils';
-import { TaskInfo } from '../types';
+import { TaskDetail } from '../types';
 
 const { t } = useI18n();
 
@@ -51,7 +51,7 @@ const emit = defineEmits<{
 const updateRefreshNotify = inject<(value: string) => void>('updateRefreshNotify');
 
 // Table data and state management
-const tableData = ref<TaskInfo[]>();
+const tableData = ref<TaskDetail[]>();
 const isLoading = ref(false);
 const isDataLoaded = ref(false);
 const currentOrderBy = ref<string>();
@@ -174,7 +174,7 @@ const loadTaskData = async () => {
     return;
   }
 
-  const responseData = (response?.data || { total: 0, list: [] }) as { total: string; list: TaskInfo[] };
+  const responseData = (response?.data || { total: 0, list: [] }) as { total: string; list: TaskDetail[] };
   const totalCount = +responseData.total;
   paginationConfig.value.total = totalCount;
   emit('update:total', totalCount);
@@ -202,7 +202,7 @@ const loadTaskData = async () => {
 /**
  * Handles task deletion with confirmation dialog.
  */
-const handleTaskDeletion = (taskData: TaskInfo) => {
+const handleTaskDeletion = (taskData: TaskDetail) => {
   modal.confirm({
     content: t('taskHome.addedTable.messages.confirmDelete', { name: taskData.name }),
     async onOk () {
@@ -224,7 +224,7 @@ const handleTaskDeletion = (taskData: TaskInfo) => {
 /**
  * Handles removing task from favorites.
  */
-const handleUnfavoriteTask = async (taskData: TaskInfo) => {
+const handleUnfavoriteTask = async (taskData: TaskDetail) => {
   isLoading.value = true;
   const [error] = await task.cancelFavouriteTask(taskData.id);
   isLoading.value = false;
@@ -244,7 +244,7 @@ const handleUnfavoriteTask = async (taskData: TaskInfo) => {
 /**
  * Handles removing task from followed tasks.
  */
-const handleUnfollowTask = async (taskData: TaskInfo) => {
+const handleUnfollowTask = async (taskData: TaskDetail) => {
   isLoading.value = true;
   const [error] = await task.cancelFollowTask(taskData.id);
   isLoading.value = false;

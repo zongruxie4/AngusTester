@@ -3,13 +3,13 @@ import { computed } from 'vue';
 import { Toggle, Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 
 type Props = {
   projectId: string;
   userInfo: { id: string; fullName: string; };
   appInfo: { id: string; };
-  dataSource: TaskInfo;
+  dataSource: TaskDetail;
   taskId: string;
 }
 

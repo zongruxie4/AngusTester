@@ -13,7 +13,7 @@ import { BugLevel, TaskType } from '@/enums/enums';
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
 /**
@@ -44,7 +44,7 @@ const { t } = useI18n();
 const emit = defineEmits<{
   (e: 'refreshChange'): void;
   (e: 'update:loading', value: boolean): void;
-  (event: 'dataChange', value: Partial<TaskInfo>): void;
+  (event: 'dataChange', value: Partial<TaskDetail>): void;
 }>();
 
 /**
@@ -94,14 +94,14 @@ const isTaskSelectionModalVisible = ref(false);
  * <p>
  * Stores the selected task type from the form dropdown
  */
-const newSubTaskType = ref<TaskInfo['taskType']['value']>();
+const newSubTaskType = ref<TaskDetail['taskType']['value']>();
 
 /**
  * Priority level for the new sub-task being created
  * <p>
  * Stores the selected priority from the form dropdown
  */
-const newSubTaskPriority = ref<TaskInfo['priority']['value']>();
+const newSubTaskPriority = ref<TaskDetail['priority']['value']>();
 
 /**
  * Name for the new sub-task being created
@@ -227,7 +227,7 @@ const saveNewSubTask = async () => {
  *
  * @param subTaskData - The sub-task data to remove
  */
-const deleteSubTask = (subTaskData: TaskInfo['subTaskInfos'][number]) => {
+const deleteSubTask = (subTaskData: TaskDetail['subTaskInfos'][number]) => {
   modal.confirm({
     content: t('task.subTask.messages.confirmCancelSubTask', { name: subTaskData.name }),
     async onOk () {
@@ -255,7 +255,7 @@ const deleteSubTask = (subTaskData: TaskInfo['subTaskInfos'][number]) => {
  *
  * @param subTaskData - The sub-task data to edit
  */
-const editSubTask = (subTaskData: TaskInfo['subTaskInfos'][number]) => {
+const editSubTask = (subTaskData: TaskDetail['subTaskInfos'][number]) => {
   selectedTaskForEdit.value = subTaskData.id;
   isTaskEditModalVisible.value = true;
 };
@@ -269,7 +269,7 @@ const editSubTask = (subTaskData: TaskInfo['subTaskInfos'][number]) => {
  * @param menuItem - The clicked menu item object
  * @param taskData - The task data associated with the menu
  */
-const handleDropdownMenuClick = (menuItem: any, taskData: TaskInfo) => {
+const handleDropdownMenuClick = (menuItem: any, taskData: TaskDetail) => {
   const actionKey = menuItem.key;
 
   switch (actionKey) {
@@ -295,7 +295,7 @@ const handleDropdownMenuClick = (menuItem: any, taskData: TaskInfo) => {
  *
  * @param taskData - The task to add to favourites
  */
-const addToFavourites = async (taskData: TaskInfo) => {
+const addToFavourites = async (taskData: TaskDetail) => {
   const [error] = await task.favouriteTask(taskData.id);
   if (error) {
     return;
@@ -312,7 +312,7 @@ const addToFavourites = async (taskData: TaskInfo) => {
  *
  * @param taskData - The task to remove from favourites
  */
-const removeFromFavourites = async (taskData: TaskInfo) => {
+const removeFromFavourites = async (taskData: TaskDetail) => {
   const [error] = await task.cancelFavouriteTask(taskData.id);
   if (error) {
     return;
@@ -329,7 +329,7 @@ const removeFromFavourites = async (taskData: TaskInfo) => {
  *
  * @param taskData - The task to follow
  */
-const followTask = async (taskData: TaskInfo) => {
+const followTask = async (taskData: TaskDetail) => {
   const [error] = await task.followTask(taskData.id);
   if (error) {
     return;
@@ -346,7 +346,7 @@ const followTask = async (taskData: TaskInfo) => {
  *
  * @param taskData - The task to unfollow
  */
-const unfollowTask = async (taskData: TaskInfo) => {
+const unfollowTask = async (taskData: TaskDetail) => {
   const [error] = await task.cancelFollowTask(taskData.id);
   if (error) {
     return;

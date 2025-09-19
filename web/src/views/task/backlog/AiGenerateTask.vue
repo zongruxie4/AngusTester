@@ -17,7 +17,7 @@ import { ai } from '@/api/gm';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
-import { TaskInfo } from '../types';
+import { TaskDetail } from '../types';
 
 const { t } = useI18n();
 
@@ -49,8 +49,8 @@ const isGenerating = ref(false);
 const taskIdList = ref<string[]>([]);
 const taskDataMap = ref<{
   [key: string]: {
-    taskType: TaskInfo['taskType']['value'];
-    priority: TaskInfo['priority']['value'];
+    taskType: TaskDetail['taskType']['value'];
+    priority: TaskDetail['priority']['value'];
     name: string;
     evalWorkload: string;
     projectId: string;

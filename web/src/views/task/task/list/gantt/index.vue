@@ -10,7 +10,7 @@ import { task } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { TaskType } from '@/enums/enums';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 
 /**
  * <p>Component props interface for Gantt chart task management</p>
@@ -56,7 +56,7 @@ const props = withDefaults(defineProps<GanttChartProps>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
   (event: 'refreshChange'): void;
 }>();
 
@@ -74,12 +74,12 @@ const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list
 const Remarks = defineAsyncComponent(() => import('@/views/task/task/list/kanban/detail/Remark.vue'));
 
 // Task data and Gantt chart references
-const taskList = ref<TaskInfo[]>([]);
+const taskList = ref<TaskDetail[]>([]);
 const ganttChartRef = ref<HTMLElement>();
 const ganttChartInstance = ref<Gantt>();
 
 // Selected task and drawer state
-const selectedTaskInfo = ref<TaskInfo>();
+const selectedTaskInfo = ref<TaskDetail>();
 const selectedSprintInfo = ref<{ id: string; name: string; }>();
 const activeDrawerTab = ref<DrawerTabType>('basic');
 
@@ -124,7 +124,7 @@ const buildTaskListRequestParams = (): TaskListRequestParams => {
  * <p>Loads detailed task information by ID</p>
  * <p>Fetches complete task details from the API for a specific task</p>
  */
-const fetchTaskDetailsById = async (taskId: string): Promise<Partial<TaskInfo>> => {
+const fetchTaskDetailsById = async (taskId: string): Promise<Partial<TaskDetail>> => {
   emit('update:loading', true);
   const [error, res] = await task.getTaskDetail(taskId);
   emit('update:loading', false);
@@ -148,7 +148,7 @@ const resetComponentData = () => {
  * <p>Loads all task pages with pagination</p>
  * <p>Fetches all available tasks across multiple pages to ensure complete data set</p>
  */
-const loadAllTaskPages = async (baseParams: TaskListRequestParams): Promise<TaskInfo[]> => {
+const loadAllTaskPages = async (baseParams: TaskListRequestParams): Promise<TaskDetail[]> => {
   const [error, res] = await task.getTaskList(baseParams);
 
   if (error) {
@@ -157,7 +157,7 @@ const loadAllTaskPages = async (baseParams: TaskListRequestParams): Promise<Task
 
   const { list, total } = (res?.data || { total: 0, list: [] });
   const firstPageCount = list.length;
-  const allTasks: TaskInfo[] = [];
+  const allTasks: TaskDetail[] = [];
   allTasks.push(...list);
 
   // Load remaining pages if needed
@@ -184,7 +184,7 @@ const loadAllTaskPages = async (baseParams: TaskListRequestParams): Promise<Task
  * <p>Transforms task data for Gantt chart format</p>
  * <p>Converts task data to the format required by the Gantt chart library</p>
  */
-const transformTasksForGanttChart = (tasks: TaskInfo[]): TaskInfo[] => {
+const transformTasksForGanttChart = (tasks: TaskDetail[]): TaskDetail[] => {
   return tasks.map(task => {
     return {
       ...task,
@@ -231,7 +231,7 @@ const loadTaskData = async () => {
  * <p>Initializes the Gantt chart with task data</p>
  * <p>Creates a new Gantt chart instance with the provided task data</p>
  */
-const initializeGanttChart = (transformedTasks: TaskInfo[], originalTasks: TaskInfo[]) => {
+const initializeGanttChart = (transformedTasks: TaskDetail[], originalTasks: TaskDetail[]) => {
   ganttChartInstance.value = new Gantt(ganttChartRef.value, transformedTasks as any, {
     language: 'zh', // TODO: Add internationalization support
     view_mode: 'Day',
@@ -246,7 +246,7 @@ const initializeGanttChart = (transformedTasks: TaskInfo[], originalTasks: TaskI
  * <p>Refreshes the existing Gantt chart with new data</p>
  * <p>Updates the Gantt chart instance with new task data</p>
  */
-const refreshGanttChart = (transformedTasks: TaskInfo[]) => {
+const refreshGanttChart = (transformedTasks: TaskDetail[]) => {
   ganttChartInstance.value?.refresh(transformedTasks as any);
 };
 
@@ -271,7 +271,7 @@ const closeDetailDrawer = () => {
  * <p>Handles task information changes and updates local state</p>
  * <p>Refreshes task details and updates both selected task and task list</p>
  */
-const handleTaskInfoChange = async (data: Partial<TaskInfo>) => {
+const handleTaskInfoChange = async (data: Partial<TaskDetail>) => {
   const taskId = data.id;
   if (!taskId) {
     return;
@@ -288,7 +288,7 @@ const handleTaskInfoChange = async (data: Partial<TaskInfo>) => {
   const currentTaskList = taskList.value;
   for (let i = 0, len = currentTaskList.length; i < len; i++) {
     if (currentTaskList[i].id === taskId) {
-      currentTaskList[i] = { ...currentTaskList[i], ...updatedTaskInfo } as TaskInfo;
+      currentTaskList[i] = { ...currentTaskList[i], ...updatedTaskInfo } as TaskDetail;
       break;
     }
   }

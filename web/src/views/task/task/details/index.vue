@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { AsyncComponent } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 
 /**
  * Component props interface for task details page
@@ -50,7 +50,7 @@ const refreshNotification = ref<string>();
 const selectedTaskName = ref<string>();
 const selectedTaskSprintId = ref<string>();
 const selectedTaskId = ref<string>();
-const currentEditTaskData = ref<TaskInfo>();
+const currentEditTaskData = ref<TaskDetail>();
 const isTaskModalVisible = ref(false);
 const isMoveModalVisible = ref(false);
 
@@ -93,7 +93,7 @@ const handleTaskDeletion = (taskId: string) => {
  * Handles task move operation by opening move modal
  * @param taskData - Task data to move
  */
-const handleTaskMove = (taskData: TaskInfo) => {
+const handleTaskMove = (taskData: TaskDetail) => {
   selectedTaskSprintId.value = taskData.sprintId;
   selectedTaskName.value = taskData.name;
   selectedTaskId.value = taskData.id;
@@ -111,8 +111,8 @@ const handleTaskEdit = () => {
  * Handles task edit completion by updating task data
  * @param updatedTaskData - Updated task data from edit modal
  */
-const handleTaskEditComplete = (updatedTaskData: Partial<TaskInfo>) => {
-  currentEditTaskData.value = updatedTaskData as TaskInfo;
+const handleTaskEditComplete = (updatedTaskData: Partial<TaskDetail>) => {
+  currentEditTaskData.value = updatedTaskData as TaskDetail;
 };
 
 /**

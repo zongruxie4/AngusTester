@@ -5,13 +5,13 @@ import { AsyncComponent, Icon, Input, Toggle } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 
 type Props = {
   projectId: string;
   userInfo: { id: string; fullName: string; };
   appInfo: { id: string; };
-  dataSource: TaskInfo;
+  dataSource: TaskDetail;
   taskId: string;
 }
 
@@ -28,7 +28,7 @@ const { t } = useI18n();
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
 }>();
 
 // Editing state

@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER, PageQuery, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
-import { TaskInfo } from '../../types';
+import { TaskDetail } from '../../types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 import { Remark } from '@/views/task/task/types';
 
@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<TaskInfoProps>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
   (event: 'refresh'): void;
 }>();
 

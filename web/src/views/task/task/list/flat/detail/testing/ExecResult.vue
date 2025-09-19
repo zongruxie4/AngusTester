@@ -3,11 +3,11 @@ import { computed } from 'vue';
 import { Colon, NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 
 // Component Props
 type Props = {
-  dataSource: TaskInfo;
+  dataSource: TaskDetail;
   largePageLayout: boolean;
 }
 

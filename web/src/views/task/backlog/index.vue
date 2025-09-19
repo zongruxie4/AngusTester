@@ -11,7 +11,7 @@ import Draggable from 'vuedraggable';
 import { TaskType, TaskSprintPermission } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
 
-import { TaskInfo } from '../types';
+import { TaskDetail } from '../types';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { SprintInfo } from '@/views/task/sprint/types';
@@ -383,7 +383,7 @@ onMounted(() => {
                     </template>
                   </template>
 
-                  <template #item="{ element, index }: { element: TaskInfo; index: number; }">
+                  <template #item="{ element, index }: { element: TaskDetail; index: number; }">
                     <div
                       v-show="sprintExpansion.expandedSprintIds.has(item.id)"
                       :id="element.id"
@@ -635,7 +635,7 @@ onMounted(() => {
                   </div>
                 </template>
 
-                <template #item="{ element, index }: { element: TaskInfo; index: number; }">
+                <template #item="{ element, index }: { element: TaskDetail; index: number; }">
                   <div
                     v-show="sprintExpansion.expandedSprintIds.has('productBacklog')"
                     :id="element.id"

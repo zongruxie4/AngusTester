@@ -1,6 +1,6 @@
 import { PageQuery, Priority, SearchCriteria } from '@xcan-angus/infra';
 import { TaskSprintPermission, TaskType } from '@/enums/enums';
-import { TaskInfo } from '../../types';
+import { TaskDetail } from '../../types';
 import { SprintInfo } from '@/views/task/sprint/types';
 import { MemberCount } from '../types';
 
@@ -119,7 +119,7 @@ export interface ModalState {
 export interface SelectedState {
   selectedSprintId?: string;
   selectedTaskId?: string;
-  selectedTaskInfo?: TaskInfo;
+  selectedTaskInfo?: TaskDetail;
 }
 
 /**
@@ -148,7 +148,7 @@ export interface SprintDataState {
   sprintList: SprintInfo[];
   sprintMembersMap: { [key: string]: SprintInfo['members'] };
   sprintMemberProgressMap: { [key: string]: { [key: string]: MemberCount } };
-  sprintTasksMap: { [key: string]: TaskInfo[] };
+  sprintTasksMap: { [key: string]: TaskDetail[] };
   sprintSortParamsMap: { [key: string]: SortParams };
   sprintPermissionsMap: Map<string, TaskSprintPermission[]>;
   sprintTaskCountMap: { [key: string]: number };
@@ -158,7 +158,7 @@ export interface SprintDataState {
  * <p>State interface for backlog data management</p>
  */
 export interface BacklogDataState {
-  backlogList: TaskInfo[];
+  backlogList: TaskDetail[];
   isBacklogDataLoaded: boolean;
   backlogSortParams?: SortParams;
   backlogTotalCount: number;
@@ -169,7 +169,7 @@ export interface BacklogDataState {
  */
 export interface CurrentInfoState {
   currentSprintInfo?: SprintInfo;
-  currentTaskInfo?: TaskInfo;
+  currentTaskInfo?: TaskDetail;
 }
 
 /**

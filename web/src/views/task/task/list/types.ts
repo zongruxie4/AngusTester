@@ -1,6 +1,6 @@
 import { Priority } from '@xcan-angus/infra';
 import { TaskType, TestType, BugLevel } from '@/enums/enums';
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 
 export type EditFormState = {
   assigneeId: string | undefined;
@@ -42,7 +42,7 @@ export type TaskInfoProps = {
   projectId: string;
   userInfo: { id: string; fullName: string};
   appInfo: { id: string; };
-  dataSource: TaskInfo;
+  dataSource: TaskDetail;
   taskId?: string;
   loading?: boolean;
   notify?: string;

@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { Checkbox, Pagination } from 'ant-design-vue';
 import { IconTask } from '@xcan-angus/vue-ui';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import TaskStatus from '@/components/TaskStatus/index.vue';
 
 /**
@@ -13,7 +13,7 @@ type Props = {
   projectId: string;
   checkedId: string;
   selectedIds: string[];
-  dataSource: TaskInfo[];
+  dataSource: TaskDetail[];
   pagination: { current: number; pageSize: number; total: number; };
 }
 
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'paginationChange', value: { current: number; pageSize: number; }): void;
-  (e: 'checked', value: TaskInfo): void;
+  (e: 'checked', value: TaskDetail): void;
   (e: 'select', value: string[]): void;
 }>();
 
@@ -49,7 +49,7 @@ const handlePaginationChange = (current: number, pageSize: number) => {
  * Handles task item click events and emits the selected task
  * @param taskData - The task data that was clicked
  */
-const handleTaskClick = (taskData: TaskInfo) => {
+const handleTaskClick = (taskData: TaskDetail) => {
   emit('checked', taskData);
 };
 

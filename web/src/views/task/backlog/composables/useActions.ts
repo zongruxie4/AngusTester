@@ -3,7 +3,7 @@ import { notification } from '@xcan-angus/vue-ui';
 import { cloneDeep } from 'lodash-es';
 import { task } from '@/api/tester';
 import { TaskType } from '@/enums/enums';
-import { TaskInfo } from '../../types';
+import { TaskDetail } from '../../types';
 import {
   BacklogProps,
   CreateTaskParams,
@@ -89,7 +89,7 @@ export function useTaskActions (
    * <p>Load task information by ID</p>
    * <p>Fetches detailed task information from the API</p>
    */
-  const loadTaskInfoById = async (id: string): Promise<TaskInfo | undefined> => {
+  const loadTaskInfoById = async (id: string): Promise<TaskDetail | undefined> => {
     loading.loadingTaskIds.add(id);
     const [error, res] = await task.getTaskDetail(id);
     loading.loadingTaskIds.delete(id);
@@ -104,7 +104,7 @@ export function useTaskActions (
    * <p>Assign a task to a specific sprint</p>
    * <p>Moves task from backlog to sprint and updates the data structures</p>
    */
-  const assignTaskToSprint = async (toId: string, taskData: TaskInfo, index: number) => {
+  const assignTaskToSprint = async (toId: string, taskData: TaskDetail, index: number) => {
     if (loading.isLoading) {
       return;
     }
@@ -135,7 +135,7 @@ export function useTaskActions (
    * <p>Move a task between different sprints</p>
    * <p>Handles task movement from one sprint to another</p>
    */
-  const moveTaskBetweenSprints = async (fromId: string, toId: string, taskData: TaskInfo, index: number) => {
+  const moveTaskBetweenSprints = async (fromId: string, toId: string, taskData: TaskDetail, index: number) => {
     if (loading.isLoading) {
       return;
     }
@@ -166,7 +166,7 @@ export function useTaskActions (
    * <p>Move a task back to the backlog</p>
    * <p>Removes task from sprint and adds it to the backlog</p>
    */
-  const moveTaskToBacklog = async (fromId: string, taskData: TaskInfo, index: number) => {
+  const moveTaskToBacklog = async (fromId: string, taskData: TaskDetail, index: number) => {
     if (loading.isLoading) {
       return;
     }
@@ -242,7 +242,7 @@ export function useTaskActions (
    * <p>Confirm and delete a task</p>
    * <p>Shows confirmation modal and handles task deletion</p>
    */
-  const confirmDeleteTask = (data: TaskInfo, index: number, sprintId?: string) => {
+  const confirmDeleteTask = (data: TaskDetail, index: number, sprintId?: string) => {
     (modal as any).confirm({
       content: t('backlog.messages.confirmDelete', { name: data.name }),
       async onOk () {
@@ -272,7 +272,7 @@ export function useTaskActions (
    * <p>Handle task name double click for editing</p>
    * <p>Enables inline editing of task names</p>
    */
-  const handleTaskNameDoubleClick = (data: TaskInfo) => {
+  const handleTaskNameDoubleClick = (data: TaskDetail) => {
     clearTimeout(ui.nameClickTimeout);
     ui.nameClickTimeout = undefined;
 
@@ -287,7 +287,7 @@ export function useTaskActions (
    * <p>Handle task name edit completion</p>
    * <p>Saves the edited task name and updates the UI</p>
    */
-  const handleTaskNameEditEnter = async (data: TaskInfo, index: number) => {
+  const handleTaskNameEditEnter = async (data: TaskDetail, index: number) => {
     const id = data.id;
     const newName = taskNameEditing.editingTaskNameMap[id];
     loading.isLoading = true;
@@ -389,7 +389,7 @@ export function useTaskActions (
    * <p>Show the split task modal</p>
    * <p>Opens the modal for splitting a task into multiple subtasks</p>
    */
-  const showSplitTaskModal = (data: TaskInfo) => {
+  const showSplitTaskModal = (data: TaskDetail) => {
     modal.isSplitTaskModalVisible = true;
     selected.selectedTaskInfo = data;
   };
@@ -406,7 +406,7 @@ export function useTaskActions (
    * <p>Handle task edit success</p>
    * <p>Updates the task data after successful editing</p>
    */
-  const handleTaskEditSuccess = async (data: Partial<TaskInfo>) => {
+  const handleTaskEditSuccess = async (data: Partial<TaskDetail>) => {
     const taskId = data.id;
     if (!taskId) {
       return;

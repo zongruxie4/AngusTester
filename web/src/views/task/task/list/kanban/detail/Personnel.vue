@@ -6,7 +6,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
 // Component props and emits
@@ -22,7 +22,7 @@ const { t } = useI18n();
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
 }>();
 
 // Assignee editing state

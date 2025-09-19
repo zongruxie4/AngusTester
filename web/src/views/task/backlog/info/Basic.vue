@@ -7,7 +7,7 @@ import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskType, SoftwareVersionStatus } from '@/enums/enums';
-import { TaskInfo } from '../../types';
+import { TaskDetail } from '../../types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<TaskInfoProps>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
   (event: 'refresh'): void;
 }>();
 
@@ -52,7 +52,7 @@ const actualWorkloadInputValue = ref<string>();
 const taskTypeSelectRef = ref();
 const isTaskTypeEditing = ref(false);
 const taskTypeDisplayMessage = ref<string>();
-const taskTypeInputValue = ref<TaskInfo['taskType']['value']>();
+const taskTypeInputValue = ref<TaskDetail['taskType']['value']>();
 
 // Sprint editing state
 const sprintSelectRef = ref();
@@ -74,7 +74,7 @@ const versionInputValue = ref<string>();
 const prioritySelectRef = ref();
 const isPriorityEditing = ref(false);
 const priorityDisplayMessage = ref<string>();
-const priorityInputValue = ref<TaskInfo['priority']['value']>();
+const priorityInputValue = ref<TaskDetail['priority']['value']>();
 
 // Tag editing state
 const tagSelectRef = ref();
@@ -398,7 +398,7 @@ const loadModuleTreeData = async () => {
  * <p>Fetch detailed task information by ID</p>
  * <p>Returns partial task info for updating component state</p>
  */
-const fetchTaskDetailsById = async (id: string): Promise<Partial<TaskInfo>> => {
+const fetchTaskDetailsById = async (id: string): Promise<Partial<TaskDetail>> => {
   emit('loadingChange', true);
   const [error, res] = await task.getTaskDetail(id);
   emit('loadingChange', false);
@@ -651,7 +651,7 @@ const emitLoadingStateChange = (value: boolean) => {
  * <p>Emit task info change event</p>
  * <p>Used for passing task data changes to parent component</p>
  */
-const emitTaskInfoChange = (data: Partial<TaskInfo>) => {
+const emitTaskInfoChange = (data: Partial<TaskDetail>) => {
   emit('change', data);
 };
 

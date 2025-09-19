@@ -2,14 +2,14 @@
 import { computed, defineAsyncComponent } from 'vue';
 import { TaskType } from '@/enums/enums';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 
 // Component props type definition
 type Props = {
   projectId: string;
   userInfo: { id: string; fullName: string; };
   appInfo: { id: string; };
-  dataSource: TaskInfo;
+  dataSource: TaskDetail;
   largePageLayout: boolean;
   loading: boolean;
 }
@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
 }>();
 
 // Async component imports
@@ -47,7 +47,7 @@ const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list
  * <p>Forwards the change event to parent components.</p>
  * @param data - Partial task information that has been changed
  */
-const handleTaskDataChange = (data: Partial<TaskInfo>) => {
+const handleTaskDataChange = (data: Partial<TaskDetail>) => {
   emit('change', data);
 };
 

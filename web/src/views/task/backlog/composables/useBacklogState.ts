@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue';
-import { TaskInfo } from '../../types';
+import { TaskDetail } from '../../types';
 import { SprintInfo } from '@/views/task/sprint/types';
 import {
   BacklogDataState,
@@ -111,7 +111,7 @@ export function useBacklogState () {
    * <p>Update current task info</p>
    * <p>Updates the current task information with partial data</p>
    */
-  const updateCurrentTaskInfo = async (data: Partial<TaskInfo>) => {
+  const updateCurrentTaskInfo = async (data: Partial<TaskDetail>) => {
     if (currentInfo.currentTaskInfo) {
       currentInfo.currentTaskInfo = { ...currentInfo.currentTaskInfo, ...data };
     }
@@ -129,7 +129,7 @@ export function useBacklogState () {
    * <p>Select a task</p>
    * <p>Sets the current task and sprint information</p>
    */
-  const selectTask = async (id: string, data?: SprintInfo, loadTaskInfoById?: (id: string) => Promise<TaskInfo | undefined>) => {
+  const selectTask = async (id: string, data?: SprintInfo, loadTaskInfoById?: (id: string) => Promise<TaskDetail | undefined>) => {
     currentInfo.currentSprintInfo = data;
     if (currentInfo.currentTaskInfo?.id === id) {
       return;

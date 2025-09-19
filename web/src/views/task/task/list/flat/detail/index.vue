@@ -9,14 +9,14 @@ import { debounce } from 'throttle-debounce';
 import { cloneDeep } from 'lodash-es';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { ActionMenuItem } from '@/views/task/task/types';
 
 // Types
 type TabPaneKey = 'basicInfo' | 'remark' | 'testInfo' | 'comments' | 'activity';
 
 type Props = {
-  editTaskData: TaskInfo;
+  editTaskData: TaskDetail;
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
@@ -43,9 +43,9 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'edit', value: string): void;
-  (event: 'move', value: TaskInfo): void;
+  (event: 'move', value: TaskDetail): void;
   (event: 'delete', value: string): void;
-  (event: 'dataChange', value: Partial<TaskInfo>): void;
+  (event: 'dataChange', value: Partial<TaskDetail>): void;
   (event: 'refreshChange'): void;
   (event: 'splitOk'): void;
 }>();
@@ -86,7 +86,7 @@ const commentNotificationId = ref<string>();
 
 // Data State
 const isLoading = ref(false);
-const currentTaskInfo = ref<TaskInfo>();
+const currentTaskInfo = ref<TaskDetail>();
 const sprintPermissions = ref<TaskSprintPermission[]>([]);
 
 // UI State
@@ -95,7 +95,7 @@ const isFullScreen = ref(false);
 
 // Split Task State
 const isSplitTaskVisible = ref(false);
-const selectedTaskForSplit = ref<TaskInfo>();
+const selectedTaskForSplit = ref<TaskDetail>();
 
 // UI Actions
 /**
@@ -411,7 +411,7 @@ const copyTaskLinkToClipboard = () => {
  * <p>
  * Merges the new data with existing task info and emits change events
  */
-const handleBasicInfoChange = (data: Partial<TaskInfo>) => {
+const handleBasicInfoChange = (data: Partial<TaskDetail>) => {
   if (currentTaskInfo.value) {
     currentTaskInfo.value = { ...currentTaskInfo.value, ...data };
   }
@@ -425,7 +425,7 @@ const handleBasicInfoChange = (data: Partial<TaskInfo>) => {
  * <p>
  * Merges new data with current task info and notifies parent components
  */
-const updateTaskData = (data: Partial<TaskInfo>) => {
+const updateTaskData = (data: Partial<TaskDetail>) => {
   if (currentTaskInfo.value) {
     currentTaskInfo.value = { ...currentTaskInfo.value, ...data };
   }
@@ -437,7 +437,7 @@ const updateTaskData = (data: Partial<TaskInfo>) => {
  * <p>
  * Updates the tab pane title and ID when task data changes
  */
-const updateTabPaneData = (data: Partial<TaskInfo>) => {
+const updateTabPaneData = (data: Partial<TaskDetail>) => {
   const { id, name } = data;
   if (id && name && typeof updateTabPane === 'function') {
     updateTabPane({ name, _id: id });
@@ -557,7 +557,7 @@ const refreshCommentTab = () => {
  * <p>
  * Returns partial task info for error cases
  */
-const loadTaskData = async (): Promise<Partial<TaskInfo>> => {
+const loadTaskData = async (): Promise<Partial<TaskDetail>> => {
   const id = props.id;
   isLoading.value = true;
   const [error, res] = await task.getTaskDetail(id);
@@ -575,7 +575,7 @@ const loadTaskData = async (): Promise<Partial<TaskInfo>> => {
   if (!res?.data) {
     return { id };
   }
-  const data = (res?.data || { id }) as TaskInfo;
+  const data = (res?.data || { id }) as TaskDetail;
   currentTaskInfo.value = {
     ...data
   };

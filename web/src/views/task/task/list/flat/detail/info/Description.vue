@@ -5,7 +5,7 @@ import { Icon, NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
 // Component props and emits
@@ -23,7 +23,7 @@ const { t } = useI18n();
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
 }>();
 
 // Async component

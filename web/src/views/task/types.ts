@@ -1,7 +1,7 @@
-import { EnumMessage, EvalWorkloadMethod, Result, Priority } from '@xcan-angus/infra';
-import { TaskType, TestType, TaskStatus, BugLevel } from '@/enums/enums';
+import { EnumMessage, EvalWorkloadMethod, Priority, Result } from '@xcan-angus/infra';
+import { BugLevel, ExecResult, TaskStatus, TaskType, TestType } from '@/enums/enums';
 
-export type TaskInfo = {
+export type TaskDetail = {
   id: string;
   code: string;
   name: string;
@@ -121,4 +121,41 @@ export type TaskInfo = {
     lastModifiedDate: string;
   }[];
   linkUrl?: string;
+}
+
+/**
+ * Task information interface containing all task-related data
+ */
+export type TaskInfo = {
+  id: string;
+  name: string;
+  code: string;
+  projectId: string;
+  sprintId: string;
+  sprintName: string;
+  targetId: string;
+  targetParentId: string;
+  taskType: EnumMessage<TaskType>;
+  testType: EnumMessage<TestType>;
+  deadlineDate: string;
+  assigneeId: string;
+  assigneeName: string;
+  priority: EnumMessage<Priority>;
+  evalWorkloadMethod: EnumMessage<EvalWorkloadMethod>;
+  status: EnumMessage<TaskStatus>;
+  execResult: EnumMessage<ExecResult>;
+  execFailureMessage: string;
+  execTestNum: string;
+  execTestFailureNum: string;
+  execId: string;
+  execName: string;
+  execBy: string;
+  execByName: string;
+  execDate: string;
+  failNum: string;
+  totalNum: string;
+  overdue: false;
+  createdBy: string;
+  createdByName: string;
+  createdDate: string;
 }

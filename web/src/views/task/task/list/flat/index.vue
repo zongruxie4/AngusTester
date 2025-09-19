@@ -6,7 +6,7 @@ import { AsyncComponent, modal, notification } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 import { TaskStatus } from '@/enums/enums';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { ActionMenuItem } from '@/views/task/task/types';
 
 // Component props interface for task list management
@@ -15,8 +15,8 @@ type Props = {
   userInfo: { id: string; };
   appInfo: { id: string; };
   selectedIds: string[];
-  dataSource: TaskInfo[];
-  editTaskData: TaskInfo;
+  dataSource: TaskDetail[];
+  editTaskData: TaskDetail;
   pagination: { current: number; pageSize: number; total: number; };
   menuItemsMap: Map<string, ActionMenuItem[]>;
   loading: boolean;
@@ -46,9 +46,9 @@ const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
   (event: 'update:selectedIds', value: string[]): void;
   (event: 'edit', value: string): void;
-  (event: 'move', value: TaskInfo): void;
+  (event: 'move', value: TaskDetail): void;
   (event: 'delete', value:string): void;
-  (event: 'dataChange', value: Partial<TaskInfo>): void;
+  (event: 'dataChange', value: Partial<TaskDetail>): void;
   (event: 'refreshChange'): void;
   (event: 'splitOk'): void;
   (event: 'paginationChange', value: { current: number; pageSize: number; }): void;
@@ -74,7 +74,7 @@ const isBatchFollowDisabled = ref(false);
 const isBatchCancelFollowDisabled = ref(false);
 
 // Currently selected task for detail view
-const currentSelectedTask = ref<TaskInfo>();
+const currentSelectedTask = ref<TaskDetail>();
 
 // Modal visibility states
 const isMoveModalVisible = ref(false);
@@ -83,7 +83,7 @@ const isMoveModalVisible = ref(false);
 const selectedTaskDataMap = ref<{
   [key: string]: {
     id: string;
-    status: TaskInfo['status']['value'];
+    status: TaskDetail['status']['value'];
     favourite: boolean;
     follow: boolean;
     sprintId?: string;
@@ -102,7 +102,7 @@ const handlePaginationChange = (data: { current: number; pageSize: number; }) =>
  * <p>Handles single task selection for detail view display</p>
  * <p>Updates the currently selected task to show its details in the side panel</p>
  */
-const handleSingleTaskSelection = (data: TaskInfo) => {
+const handleSingleTaskSelection = (data: TaskDetail) => {
   currentSelectedTask.value = data;
 };
 
@@ -126,7 +126,7 @@ const handleDeleteTask = (id: string) => {
  * <p>Handles move task action</p>
  * <p>Emits move event with task data to parent component for opening move modal</p>
  */
-const handleMoveTask = (data: TaskInfo) => {
+const handleMoveTask = (data: TaskDetail) => {
   emit('move', data);
 };
 
@@ -134,7 +134,7 @@ const handleMoveTask = (data: TaskInfo) => {
  * <p>Handles task data changes</p>
  * <p>Forwards data changes to parent component for state synchronization</p>
  */
-const handleTaskDataChange = (data: Partial<TaskInfo>) => {
+const handleTaskDataChange = (data: Partial<TaskDetail>) => {
   emit('dataChange', data);
 };
 

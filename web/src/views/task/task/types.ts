@@ -1,6 +1,3 @@
-import { EnumMessage, EvalWorkloadMethod, Priority } from '@xcan-angus/infra';
-import { ExecResult, TaskStatus, TaskType, TestType } from '@/enums/enums';
-
 /**
  * Task view mode
  */
@@ -9,43 +6,6 @@ export enum TaskViewMode {
   flat = 'flat',
   kanban = 'kanban',
   gantt = 'gantt'
-}
-
-/**
- * Task information interface containing all task-related data
- */
-export type TaskInfo = {
-  id: string;
-  name: string;
-  code: string;
-  projectId: string;
-  sprintId: string;
-  sprintName: string;
-  targetId: string;
-  targetParentId: string;
-  taskType: EnumMessage<TaskType>;
-  testType: EnumMessage<TestType>;
-  deadlineDate: string;
-  assigneeId: string;
-  assigneeName: string;
-  priority: EnumMessage<Priority>;
-  evalWorkloadMethod: EnumMessage<EvalWorkloadMethod>;
-  status: EnumMessage<TaskStatus>;
-  execResult: EnumMessage<ExecResult>;
-  execFailureMessage: string;
-  execTestNum: string;
-  execTestFailureNum: string;
-  execId: string;
-  execName: string;
-  execBy: string;
-  execByName: string;
-  execDate: string;
-  failNum: string;
-  totalNum: string;
-  overdue: false;
-  createdBy: string;
-  createdByName: string;
-  createdDate: string;
 }
 
 /**

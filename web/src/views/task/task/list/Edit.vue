@@ -15,7 +15,7 @@ import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
 
 import { EditFormState } from './types';
-import { TaskInfo } from '../../types';
+import { TaskDetail } from '../../types';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<EditFormState>(), {
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'update:taskId', value: string | undefined): void;
-  (e: 'ok', value: Partial<TaskInfo>, addFlag?: boolean): void;
+  (e: 'ok', value: Partial<TaskDetail>, addFlag?: boolean): void;
 }>();
 
 // Composables
@@ -603,7 +603,7 @@ const loadModuleTreeData = async () => {
  * Load task data for editing
  * @returns Promise resolving to task data
  */
-const loadTaskData = async (): Promise<Partial<TaskInfo>> => {
+const loadTaskData = async (): Promise<Partial<TaskDetail>> => {
   loading.value = true;
   const [error, res] = await task.getTaskDetail(props.taskId as string);
   loading.value = false;
@@ -672,7 +672,7 @@ const resetFormToDefaults = () => {
  * Populate form state with loaded task data
  * @param data - Task data from API
  */
-const populateFormWithTaskData = (data: Partial<TaskInfo>) => {
+const populateFormWithTaskData = (data: Partial<TaskDetail>) => {
   // Set assignee data
   const assigneeId = data.assigneeId;
   if (assigneeId) {

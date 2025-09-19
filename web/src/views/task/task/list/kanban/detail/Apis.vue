@@ -6,7 +6,7 @@ import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { SoftwareVersionStatus } from '@/enums/enums';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
@@ -30,7 +30,7 @@ const { t } = useI18n();
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
   (event: 'refresh'): void;
 }>();
 
@@ -59,7 +59,7 @@ const actualWorkloadInputValue = ref<string>();
 const prioritySelectRef = ref();
 const isPriorityEditing = ref(false);
 const priorityDisplayMessage = ref<string>();
-const priorityInputValue = ref<TaskInfo['priority']['value']>();
+const priorityInputValue = ref<TaskDetail['priority']['value']>();
 
 // Tag editing state
 const tagSelectRef = ref();
@@ -139,7 +139,7 @@ const loadModuleTreeData = async () => {
  * <p>Fetch detailed task information by ID</p>
  * <p>Returns partial task info for updating component state</p>
  */
-const fetchTaskDetailsById = async (id: string): Promise<Partial<TaskInfo>> => {
+const fetchTaskDetailsById = async (id: string): Promise<Partial<TaskDetail>> => {
   emit('loadingChange', true);
   const [error, res] = await task.getTaskDetail(id);
   emit('loadingChange', false);
@@ -572,7 +572,7 @@ const emitLoadingStateChange = (value: boolean) => {
  * <p>Emit task info change event</p>
  * <p>Used for passing task data changes to parent component</p>
  */
-const emitTaskInfoChange = (data: Partial<TaskInfo>) => {
+const emitTaskInfoChange = (data: Partial<TaskDetail>) => {
   emit('change', data);
 };
 

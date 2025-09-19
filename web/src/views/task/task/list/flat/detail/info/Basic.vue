@@ -7,7 +7,7 @@ import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BugLevel, SoftwareVersionStatus, TaskType } from '@/enums/enums';
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -28,7 +28,7 @@ const { t } = useI18n();
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
 }>();
 
 // Task name editing state
@@ -42,13 +42,13 @@ const taskNameInputValue = ref<string>();
 const taskTypeSelectRef = ref();
 const isTaskTypeEditing = ref(false);
 const taskTypeSelectMessage = ref<string>();
-const taskTypeSelectValue = ref<TaskInfo['taskType']['value']>();
+const taskTypeSelectValue = ref<TaskDetail['taskType']['value']>();
 
 // Priority editing state
 const prioritySelectRef = ref();
 const isPriorityEditing = ref(false);
 const prioritySelectMessage = ref<string>();
-const prioritySelectValue = ref<TaskInfo['priority']['value']>();
+const prioritySelectValue = ref<TaskDetail['priority']['value']>();
 
 // Tag editing state
 const tagSelectRef = ref();
@@ -187,7 +187,7 @@ const handleTaskTypeBlur = async () => {
 };
 
 const taskTypeExcludes = (value: { message: string; value: string }) => {
-  const taskTypeValue = value.value as TaskInfo['taskType']['value'];
+  const taskTypeValue = value.value as TaskDetail['taskType']['value'];
   const type = currentTaskType.value;
   if (currentTaskId.value) {
     if (type === TaskType.API_TEST) {

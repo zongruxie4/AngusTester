@@ -9,14 +9,11 @@ import { analysis } from '@/api/tester';
 import { TaskStatus } from '@/enums/enums';
 
 import { DATE_TIME_FORMAT } from '@/utils/constant';
-import { TaskInfo } from '@/views/task/task/types';
 import TaskStatusV from '@/components/TaskStatus/index.vue';
+import {TaskInfo} from "@/views/task/types";
 
 /**
  * Props interface for WorkCalendar component.
- * <p>
- * Defines the required properties for displaying work calendar with task information.
- * </p>
  */
 type Props = {
   projectId: string;
@@ -24,7 +21,6 @@ type Props = {
   notify: string;
   sprintId?: string;
 }
-
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,

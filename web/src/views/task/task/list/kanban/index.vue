@@ -13,7 +13,7 @@ import { TaskSprintPermission, TaskStatus, TaskType } from '@/enums/enums';
 import { task } from '@/api/tester';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { ActionMenuItem } from '@/views/task/task/types';
 
 // Type definitions for component props
@@ -50,7 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
   (event: 'refreshChange'): void;
 }>();
 
@@ -75,7 +75,7 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', r
 
 // Drawer and modal state
 const drawerActiveKey = ref<'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks'>('basic');
-const checkedTaskInfo = ref<TaskInfo>();
+const checkedTaskInfo = ref<TaskDetail>();
 const checkedSprintInfo = ref<{ id: string; name: string; }>();
 const moveModalVisible = ref(false);
 const taskModalVisible = ref(false);
@@ -85,7 +85,7 @@ const selectedTaskSprintId = ref<string>();
 const selectedTaskId = ref<string>();
 const selectedTaskName = ref<string>();
 const selectedIndex = ref<number>();
-const selectedStatus = ref<TaskInfo['status']['value']>();
+const selectedStatus = ref<TaskDetail['status']['value']>();
 const selectedByGroupKey = ref<string>();
 const searchSprintId = ref<string>();
 
@@ -93,17 +93,17 @@ const searchSprintId = ref<string>();
 const sprintPermissionsMap = ref<Map<string, TaskSprintPermission[]>>(new Map());
 
 // Task data collections
-const statusList = ref<{ message: string; value: TaskInfo['status']['value'] }[]>([]);
-const taskList = ref<TaskInfo[]>([]);
-const groupDataMap = ref<{ [key: string]: { [key in TaskInfo['status']['value']]: TaskInfo[] } }>({});
-const taskDataMap = ref<{ [key in TaskInfo['status']['value']]: TaskInfo[] }>({
+const statusList = ref<{ message: string; value: TaskDetail['status']['value'] }[]>([]);
+const taskList = ref<TaskDetail[]>([]);
+const groupDataMap = ref<{ [key: string]: { [key in TaskDetail['status']['value']]: TaskDetail[] } }>({});
+const taskDataMap = ref<{ [key in TaskDetail['status']['value']]: TaskDetail[] }>({
   CANCELED: [],
   COMPLETED: [],
   CONFIRMING: [],
   IN_PROGRESS: [],
   PENDING: []
 });
-const taskCountMap = ref<{ [key in TaskInfo['status']['value']]: number }>({
+const taskCountMap = ref<{ [key in TaskDetail['status']['value']]: number }>({
   CANCELED: 0,
   COMPLETED: 0,
   CONFIRMING: 0,
@@ -120,13 +120,13 @@ const taskTypeList = ref<{ name: string; value: string }[]>([]);
 const isGroupExpanded = ref(false);
 const expandedGroupSet = ref(new Set<string>());
 const isDraggingToColumn = ref<number | null>(null);
-const isDraggingToColumnStatus = ref<TaskInfo['status']['value'][]>([]);
+const isDraggingToColumnStatus = ref<TaskDetail['status']['value'][]>([]);
 
 // Data loading methods
 const loadEnum = () => {
   // Load task status enum values for display
   const res = enumUtils.enumToMessages(TaskStatus);
-  statusList.value = (res || []) as { message: string; value: TaskInfo['status']['value'] }[];
+  statusList.value = (res || []) as { message: string; value: TaskDetail['status']['value'] }[];
 };
 
 const loadData = async () => {
@@ -144,7 +144,7 @@ const loadData = async () => {
 
   const { list, total } = (res?.data || { total: 0, list: [] });
   const len = list.length;
-  const allTasks: TaskInfo[] = [];
+  const allTasks: TaskDetail[] = [];
   allTasks.push(...list);
 
   // Load remaining pages if needed
@@ -167,7 +167,7 @@ const loadData = async () => {
   taskList.value = allTasks;
 
   // Process tasks and organize data
-  const newList: TaskInfo[] = [];
+  const newList: TaskDetail[] = [];
   const sprintIdSet = new Set<string>();
   const assigneeNameSet = new Set<string>();
   const lastModifiedByNameSet = new Set<string>();
@@ -263,7 +263,7 @@ const loadPermissions = async (id: string) => {
   return await task.getUserSprintAuth(id, props.userInfo?.id, params);
 };
 
-const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
+const loadTaskInfoById = async (id: string): Promise<Partial<TaskDetail>> => {
   // Load detailed task information by ID
   emit('update:loading', true);
   const [error, res] = await task.getTaskDetail(id);
@@ -401,7 +401,7 @@ const toGroup = (value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskTy
   setDefaultGroupData();
 };
 
-const setGroupData = (data: TaskInfo) => {
+const setGroupData = (data: TaskDetail) => {
   // Add task to appropriate group based on groupKey
   const { status: { value: statusValue }, assigneeId = '-1', lastModifiedBy, taskType: { value: taskTypeValue } } = data;
   let key = '';
@@ -440,7 +440,7 @@ const setDefaultGroupData = () => {
 };
 
 // Task selection methods
-const toChecked = async (data: TaskInfo, index: number, groupByKey: string) => {
+const toChecked = async (data: TaskDetail, index: number, groupByKey: string) => {
   // Handle task selection for detail view
   if (data.id === checkedTaskInfo.value?.id) {
     // Deselect if same task is clicked
@@ -470,7 +470,7 @@ const loadingChange = (value: boolean) => {
   emit('update:loading', value);
 };
 
-const taskInfoChange = async (data: Partial<TaskInfo>) => {
+const taskInfoChange = async (data: Partial<TaskDetail>) => {
   // Update task information after changes
   const id = data.id;
   if (!id) {
@@ -502,7 +502,7 @@ const taskInfoChange = async (data: Partial<TaskInfo>) => {
 };
 
 // Task action methods
-const dropdownClick = (menuItem: ActionMenuItem, data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
+const dropdownClick = (menuItem: ActionMenuItem, data: TaskDetail, index: number, status: TaskDetail['status']['value']) => {
   // Handle dropdown menu actions
   const key = menuItem.key;
   if (key === 'edit') {
@@ -575,7 +575,7 @@ const dropdownClick = (menuItem: ActionMenuItem, data: TaskInfo, index: number, 
   }
 };
 
-const toEdit = (id: string, index: number, status: TaskInfo['status']['value']) => {
+const toEdit = (id: string, index: number, status: TaskDetail['status']['value']) => {
   // Open task edit modal
   selectedTaskId.value = id;
   selectedIndex.value = index;
@@ -586,10 +586,10 @@ const toEdit = (id: string, index: number, status: TaskInfo['status']['value']) 
   taskModalVisible.value = true;
 };
 
-const editOk = async (data: TaskInfo) => {
+const editOk = async (data: TaskDetail) => {
   // Handle task edit completion
   const index = selectedIndex.value as number;
-  const status = selectedStatus.value as TaskInfo['status']['value'];
+  const status = selectedStatus.value as TaskDetail['status']['value'];
   taskDataMap.value[status][index] = data;
 
   // Clear selection state
@@ -599,7 +599,7 @@ const editOk = async (data: TaskInfo) => {
   searchSprintId.value = undefined;
 };
 
-const toDelete = (data: TaskInfo) => {
+const toDelete = (data: TaskDetail) => {
   // Delete task with confirmation
   modal.confirm({
     content: t('task.table.messages.confirmDelete', { name: data.name }),
@@ -621,7 +621,7 @@ const toDelete = (data: TaskInfo) => {
 };
 
 // Task status change methods
-const toFavourite = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
+const toFavourite = async (data: TaskDetail, index: number, status: TaskDetail['status']['value']) => {
   // Add task to favourites
   emit('update:loading', true);
   const [error] = await task.favouriteTask(data.id);
@@ -634,7 +634,7 @@ const toFavourite = async (data: TaskInfo, index: number, status: TaskInfo['stat
   taskDataMap.value[status][index].favourite = true;
 };
 
-const toDeleteFavourite = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
+const toDeleteFavourite = async (data: TaskDetail, index: number, status: TaskDetail['status']['value']) => {
   // Remove task from favourites
   emit('update:loading', true);
   const [error] = await task.cancelFavouriteTask(data.id);
@@ -647,7 +647,7 @@ const toDeleteFavourite = async (data: TaskInfo, index: number, status: TaskInfo
   taskDataMap.value[status][index].favourite = false;
 };
 
-const toFollow = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
+const toFollow = async (data: TaskDetail, index: number, status: TaskDetail['status']['value']) => {
   // Follow task for notifications
   emit('update:loading', true);
   const [error] = await task.followTask(data.id);
@@ -660,7 +660,7 @@ const toFollow = async (data: TaskInfo, index: number, status: TaskInfo['status'
   taskDataMap.value[status][index].follow = true;
 };
 
-const toDeleteFollow = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
+const toDeleteFollow = async (data: TaskDetail, index: number, status: TaskDetail['status']['value']) => {
   // Stop following task
   emit('update:loading', true);
   const [error] = await task.cancelFollowTask(data.id);
@@ -673,7 +673,7 @@ const toDeleteFollow = async (data: TaskInfo, index: number, status: TaskInfo['s
   taskDataMap.value[status][index].follow = false;
 };
 
-const toStart = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+const toStart = async (data: TaskDetail, notificationFlag = true, errorCallback?: () => void) => {
   // Start task (change status to IN_PROGRESS)
   const id = data.id;
   emit('update:loading', true);
@@ -693,7 +693,7 @@ const toStart = async (data: TaskInfo, notificationFlag = true, errorCallback?: 
   loadData();
 };
 
-const toProcessed = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+const toProcessed = async (data: TaskDetail, notificationFlag = true, errorCallback?: () => void) => {
   // Mark task as processed (change status to CONFIRMING)
   const id = data.id;
   emit('update:loading', true);
@@ -713,7 +713,7 @@ const toProcessed = async (data: TaskInfo, notificationFlag = true, errorCallbac
   loadData();
 };
 
-const toUncomplete = async (data: TaskInfo, errorCallback?: () => void) => {
+const toUncomplete = async (data: TaskDetail, errorCallback?: () => void) => {
   // Mark task as uncompleted (confirm with FAIL status)
   const id = data.id;
   emit('update:loading', true);
@@ -730,7 +730,7 @@ const toUncomplete = async (data: TaskInfo, errorCallback?: () => void) => {
   loadData();
 };
 
-const toCompleted = async (data: TaskInfo, errorCallback?: () => void) => {
+const toCompleted = async (data: TaskDetail, errorCallback?: () => void) => {
   // Mark task as completed (confirm with SUCCESS status)
   const id = data.id;
   emit('update:loading', true);
@@ -747,7 +747,7 @@ const toCompleted = async (data: TaskInfo, errorCallback?: () => void) => {
   loadData();
 };
 
-const toReopen = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+const toReopen = async (data: TaskDetail, notificationFlag = true, errorCallback?: () => void) => {
   // Reopen task (change status from COMPLETED/CANCELED to PENDING)
   const id = data.id;
   emit('update:loading', true);
@@ -767,7 +767,7 @@ const toReopen = async (data: TaskInfo, notificationFlag = true, errorCallback?:
   loadData();
 };
 
-const toRestart = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+const toRestart = async (data: TaskDetail, notificationFlag = true, errorCallback?: () => void) => {
   // Restart task (reset task to initial state)
   const id = data.id;
   emit('update:loading', true);
@@ -787,7 +787,7 @@ const toRestart = async (data: TaskInfo, notificationFlag = true, errorCallback?
   loadData();
 };
 
-const toMove = (data: TaskInfo) => {
+const toMove = (data: TaskDetail) => {
   // Open move task modal
   selectedTaskSprintId.value = data.sprintId;
   selectedTaskName.value = data.name;
@@ -804,7 +804,7 @@ const moveTaskOk = () => {
   loadData();
 };
 
-const toCancel = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+const toCancel = async (data: TaskDetail, notificationFlag = true, errorCallback?: () => void) => {
   // Cancel task (change status to CANCELED)
   const id = data.id;
   const [error] = await task.cancelTask(id);
@@ -826,8 +826,8 @@ const toCancel = async (data: TaskInfo, notificationFlag = true, errorCallback?:
 const resetDrag = (
   id: string,
   index: number,
-  status: TaskInfo['status']['value'],
-  toStatus: TaskInfo['status']['value']
+  status: TaskDetail['status']['value'],
+  toStatus: TaskDetail['status']['value']
 ) => {
   // Reset task position after failed drag operation
   const _index = taskDataMap.value[toStatus].findIndex(item => item.id === id);
@@ -841,8 +841,8 @@ const resetDrag = (
 const resetGroupDrag = (
   id: string,
   index: number,
-  status: TaskInfo['status']['value'],
-  toStatus: TaskInfo['status']['value'],
+  status: TaskDetail['status']['value'],
+  toStatus: TaskDetail['status']['value'],
   groupKey: string
 ) => {
   // Reset task position in group after failed drag operation
@@ -855,9 +855,9 @@ const resetGroupDrag = (
 };
 
 const dragHandler = async (
-  data: TaskInfo,
-  status: TaskInfo['status']['value'],
-  toStatus: TaskInfo['status']['value'],
+  data: TaskDetail,
+  status: TaskDetail['status']['value'],
+  toStatus: TaskDetail['status']['value'],
   index: number,
   groupKey?: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'
 ) => {
@@ -1120,10 +1120,10 @@ const dragHandler = async (
 
 const dragAdd = async (
   event: { item: { id: string; }; },
-  toStatus: TaskInfo['status']['value']
+  toStatus: TaskDetail['status']['value']
 ) => {
   // Handle drag and drop add event for non-grouped view
-  const [status, index, id] = (event.item.id.split('-')) as [TaskInfo['status']['value'], number, string];
+  const [status, index, id] = (event.item.id.split('-')) as [TaskDetail['status']['value'], number, string];
   const targetData = taskDataMap.value[toStatus].find(item => item.id === id);
   if (!targetData) {
     return;
@@ -1134,10 +1134,10 @@ const dragAdd = async (
 
 const groupDragAdd = async (
   event: { item: { id: string; } },
-  toStatus: TaskInfo['status']['value']
+  toStatus: TaskDetail['status']['value']
 ) => {
   // Handle drag and drop add event for grouped view
-  const [status, index, id, groupKey] = (event.item.id.split('-')) as [TaskInfo['status']['value'], number, string, string];
+  const [status, index, id, groupKey] = (event.item.id.split('-')) as [TaskDetail['status']['value'], number, string, string];
   const targetData = groupDataMap.value[groupKey][toStatus].find(item => item.id === id);
   if (!targetData) {
     return;
@@ -1148,9 +1148,9 @@ const groupDragAdd = async (
 
 const dragMove = (event) => {
   // Handle drag move event to determine valid drop targets
-  const [, toIndex] = event.to.id.split('-') as [TaskInfo['status']['value'], number];
-  const [fromStatus] = event.from.id.split('-') as [TaskInfo['status']['value'], number];
-  const [, , draggedId, confirmerId] = event.dragged.id.split('-') as [TaskInfo['status']['value'], number, string, string];
+  const [, toIndex] = event.to.id.split('-') as [TaskDetail['status']['value'], number];
+  const [fromStatus] = event.from.id.split('-') as [TaskDetail['status']['value'], number];
+  const [, , draggedId, confirmerId] = event.dragged.id.split('-') as [TaskDetail['status']['value'], number, string, string];
   const cancelDisabled = !!menuItemsMap.value.get(draggedId)?.find(item => item.key === 'cancel')?.disabled;
 
   if (fromStatus === TaskStatus.PENDING) {
@@ -1521,7 +1521,7 @@ onMounted(() => {
             @start="dragStart"
             @end="dragEnd"
             @add="dragAdd($event, item.value)">
-            <template #item="{ element, index }: { element: TaskInfo; index: number; }">
+            <template #item="{ element, index }: { element: TaskDetail; index: number; }">
               <div
                 :id="`${item.value}-${index}-${element.id}-${(element.confirmerId || '0')}`"
                 :class="{ 'active-item': checkedTaskId === element.id }"
@@ -1667,7 +1667,7 @@ onMounted(() => {
                   @start="dragStart"
                   @end="dragEnd"
                   @add="groupDragAdd($event, _status.value)">
-                  <template #item="{ element, index }: { element: TaskInfo; index: number; }">
+                  <template #item="{ element, index }: { element: TaskDetail; index: number; }">
                     <div
                       :id="`${_status.value}-${index}-${element.id}-${(element.confirmerId || '0')}-${_createdByName.value}`"
                       :class="{ 'active-item': checkedTaskId === element.id }"

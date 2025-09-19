@@ -17,7 +17,7 @@ import { EditFormState } from '@/views/task/task/list/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskInfo } from '../types';
+import { TaskDetail } from '../types';
 
 // Async Components
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<EditFormState>(), {
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'update:taskId', value: string | undefined): void;
-  (e: 'ok', value?: Partial<TaskInfo>): void;
+  (e: 'ok', value?: Partial<TaskDetail>): void;
 }>();
 
 const { t } = useI18n();
@@ -133,7 +133,7 @@ const toggleModalZoom = () => {
  * <p>Handle sprint selection change</p>
  * <p>Updates deadline date and evaluation workload method when sprint changes</p>
  */
-const handleSprintSelectionChange = (_sprintId: string, sprintInfo: TaskInfo) => {
+const handleSprintSelectionChange = (_sprintId: string, sprintInfo: TaskDetail) => {
   formState.deadlineDate = sprintInfo?.deadlineDate || '';
   sprintDeadlineDate.value = formState.deadlineDate;
   currentEvalWorkloadMethod.value = sprintInfo?.evalWorkloadMethod?.value;
@@ -465,7 +465,7 @@ const cancelModal = () => {
  * <p>Load task details</p>
  * <p>Fetches complete task information for editing</p>
  */
-const fetchTaskDetails = async (): Promise<Partial<TaskInfo>> => {
+const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   isLoading.value = true;
   console.log('🔍 Fetching task details for taskId:', props.taskId);
   const [error, res] = await task.getTaskDetail(props.taskId);
@@ -678,7 +678,7 @@ onMounted(() => {
  * <p>Exclude task types from selection</p>
  * <p>Filters out certain task types based on current task state</p>
  */
-const getExcludedTaskTypes = (data: { value: TaskInfo['taskType']['value']; message: string }) => {
+const getExcludedTaskTypes = (data: { value: TaskDetail['taskType']['value']; message: string }) => {
   const value = data.value;
   const currentTaskType = formState.taskType;
   if (props.taskId) {

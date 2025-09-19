@@ -13,7 +13,7 @@ import { SoftwareVersionStatus } from '@/enums/enums';
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
 // Component props and emits
@@ -30,7 +30,7 @@ const { t } = useI18n();
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
 }>();
 
 // Task name editing state
@@ -52,7 +52,7 @@ const actualWorkloadInputValue = ref<string>();
 const prioritySelectRef = ref();
 const isPriorityEditing = ref(false);
 const prioritySelectMessage = ref<string>();
-const prioritySelectValue = ref<TaskInfo['priority']['value']>();
+const prioritySelectValue = ref<TaskDetail['priority']['value']>();
 
 // Tag editing state
 const tagSelectRef = ref();

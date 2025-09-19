@@ -4,7 +4,7 @@ import { NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { TaskType } from '@/enums/enums';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { TestInfo } from '@/views/execution/types';
 
 /**
@@ -19,7 +19,7 @@ const ScenarioResult = defineAsyncComponent(() => import('@/views/execution/deta
 
 // Component Props
 type Props = {
-  dataSource: TaskInfo;
+  dataSource: TaskDetail;
   testInfo: TestInfo;
   largePageLayout: boolean;
 }

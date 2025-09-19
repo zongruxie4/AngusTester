@@ -21,9 +21,9 @@ const projectTypeVisibilityMap = inject<Ref<{[key: string]: boolean}>>('proTypeS
 }));
 
 // Lazy load components for better performance
-const TaskManagement = defineAsyncComponent(() => import('@/views/task/home/Added.vue'));
-const TaskCreationSummary = defineAsyncComponent(() => import('@/views/task/home/summary/CreationSummary.vue'));
-const TaskStatusSummary = defineAsyncComponent(() => import('@/views/task/home/summary/StatusSummary.vue'));
+const Added = defineAsyncComponent(() => import('@/views/task/home/Added.vue'));
+const CreationSummary = defineAsyncComponent(() => import('@/views/task/home/summary/CreationSummary.vue'));
+const StatusSummary = defineAsyncComponent(() => import('@/views/task/home/summary/StatusSummary.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/task/home/WorkCalendar.vue'));
 const BurndownChart = defineAsyncComponent(() => import('@/views/task/home/BurndownChart.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/task/home/Introduce.vue'));
@@ -62,7 +62,7 @@ provide('updateRefreshNotify', updateRefreshNotification);
     <!-- Main content area -->
     <div class="flex-1 min-h-full">
       <!-- Task management section -->
-      <TaskManagement
+      <Added
         :notify="internalNotification"
         :userInfo="props.userInfo"
         :projectId="props.projectId"
@@ -82,13 +82,13 @@ provide('updateRefreshNotify', updateRefreshNotification);
       </div>
 
       <!-- Task statistics sections (conditionally rendered) -->
-      <TaskCreationSummary
+      <CreationSummary
         v-if="projectTypeVisibilityMap.showTaskStatistics"
         :notify="internalNotification"
         :userInfo="props.userInfo"
         :projectId="props.projectId"
         class="mb-7.5" />
-      <TaskStatusSummary
+      <StatusSummary
         v-if="projectTypeVisibilityMap.showTaskStatistics"
         :notify="internalNotification"
         :userInfo="props.userInfo"

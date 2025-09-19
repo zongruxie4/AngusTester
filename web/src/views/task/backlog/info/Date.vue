@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../types';
+import { TaskDetail } from '../../types';
 import { TIME_FORMAT } from '@/utils/constant';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<TaskInfoProps>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'change', value: Partial<TaskDetail>): void;
 }>();
 
 // Reactive State Variables

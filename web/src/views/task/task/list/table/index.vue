@@ -11,7 +11,7 @@ import { TaskStatus as TaskStatusType } from '@/enums/enums';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { ActionMenuItem } from '@/views/task/task/types';
 
 const { t } = useI18n();
@@ -20,7 +20,7 @@ const { t } = useI18n();
 type Props = {
   projectId: string;
   selectedIds: string[];
-  dataSource: TaskInfo[];
+  dataSource: TaskDetail[];
   pagination: { current: number; pageSize: number; total: number; };
   menuItemsMap: Map<string, ActionMenuItem[]>;
   loading: boolean;
@@ -45,9 +45,9 @@ const emit = defineEmits<{
     orderSort: PageQuery.OrderSort
   }): void;
   (event: 'edit', value: string): void;
-  (event: 'move', value: TaskInfo): void;
+  (event: 'move', value: TaskDetail): void;
   (event: 'delete', value: string): void;
-  (event: 'dataChange', value: Partial<TaskInfo>): void;
+  (event: 'dataChange', value: Partial<TaskDetail>): void;
   (event: 'refreshChange'): void;
   (event: 'batchAction', type: 'cancel' | 'delete' | 'follow' | 'cancelFollow' | 'favourite' | 'cancelFavourite' | 'move', value: string[]): void;
 }>();
@@ -61,7 +61,7 @@ const moveModalVisible = ref(false);
 const selectedTaskDataMap = ref<{
   [key: string]: {
     id: string;
-    status: TaskInfo['status']['value'];
+    status: TaskDetail['status']['value'];
     favourite: boolean;
     follow: boolean;
     sprintId: string;
@@ -124,7 +124,7 @@ const handleTableSelection = (selectedKeys: string[]) => {
 // Table Configuration
 const rowSelection = ref<{
   onChange:(key: string[]) => void;
-  getCheckboxProps: (data: TaskInfo) => ({ disabled: boolean; });
+  getCheckboxProps: (data: TaskDetail) => ({ disabled: boolean; });
   selectedRowKeys: string[];
     }>({
       onChange: handleTableSelection,
@@ -516,7 +516,7 @@ const navigateToEdit = (taskId: string) => {
  * Deletes a single task with confirmation
  * @param taskData - Task information to delete
  */
-const deleteSingleTask = (taskData: TaskInfo) => {
+const deleteSingleTask = (taskData: TaskDetail) => {
   modal.confirm({
     content: t('task.table.messages.deleteTaskConfirm', { name: taskData.name }),
     async onOk () {
@@ -537,7 +537,7 @@ const deleteSingleTask = (taskData: TaskInfo) => {
  * @param menuItem - The clicked menu item
  * @param taskData - The task data associated with the action
  */
-const handleDropdownAction = (menuItem: ActionMenuItem, taskData: TaskInfo) => {
+const handleDropdownAction = (menuItem: ActionMenuItem, taskData: TaskDetail) => {
   const actionKey = menuItem.key;
 
   switch (actionKey) {
@@ -587,7 +587,7 @@ const handleDropdownAction = (menuItem: ActionMenuItem, taskData: TaskInfo) => {
  * Adds a task to favourites
  * @param taskData - Task to add to favourites
  */
-const addToFavourites = async (taskData: TaskInfo) => {
+const addToFavourites = async (taskData: TaskDetail) => {
   const [error] = await task.favouriteTask(taskData.id);
   if (error) {
     return;
@@ -601,7 +601,7 @@ const addToFavourites = async (taskData: TaskInfo) => {
  * Removes a task from favourites
  * @param taskData - Task to remove from favourites
  */
-const removeFromFavourites = async (taskData: TaskInfo) => {
+const removeFromFavourites = async (taskData: TaskDetail) => {
   const [error] = await task.cancelFavouriteTask(taskData.id);
   if (error) {
     return;
@@ -615,7 +615,7 @@ const removeFromFavourites = async (taskData: TaskInfo) => {
  * Follows a task
  * @param taskData - Task to follow
  */
-const followTask = async (taskData: TaskInfo) => {
+const followTask = async (taskData: TaskDetail) => {
   const [error] = await task.followTask(taskData.id);
   if (error) {
     return;
@@ -629,7 +629,7 @@ const followTask = async (taskData: TaskInfo) => {
  * Unfollows a task
  * @param taskData - Task to unfollow
  */
-const unfollowTask = async (taskData: TaskInfo) => {
+const unfollowTask = async (taskData: TaskDetail) => {
   const [error] = await task.cancelFollowTask(taskData.id);
   if (error) {
     return;
@@ -643,7 +643,7 @@ const unfollowTask = async (taskData: TaskInfo) => {
  * Starts a task
  * @param taskData - Task to start
  */
-const startTask = async (taskData: TaskInfo) => {
+const startTask = async (taskData: TaskDetail) => {
   const taskId = taskData.id;
   const [error] = await task.startTask(taskId);
   if (error) {
@@ -660,7 +660,7 @@ const startTask = async (taskData: TaskInfo) => {
  * Marks a task as processed
  * @param taskData - Task to mark as processed
  */
-const markAsProcessed = async (taskData: TaskInfo) => {
+const markAsProcessed = async (taskData: TaskDetail) => {
   const taskId = taskData.id;
   const [error] = await task.processedTask(taskId);
   if (error) {
@@ -677,7 +677,7 @@ const markAsProcessed = async (taskData: TaskInfo) => {
  * Marks a task as uncompleted
  * @param taskData - Task to mark as uncompleted
  */
-const markAsUncompleted = async (taskData: TaskInfo) => {
+const markAsUncompleted = async (taskData: TaskDetail) => {
   const taskId = taskData.id;
   const [error] = await task.confirmTask(taskId, 'FAIL');
   if (error) {
@@ -693,7 +693,7 @@ const markAsUncompleted = async (taskData: TaskInfo) => {
  * Completes a task
  * @param taskData - Task to complete
  */
-const completeTask = async (taskData: TaskInfo) => {
+const completeTask = async (taskData: TaskDetail) => {
   const taskId = taskData.id;
   const [error] = await task.confirmTask(taskId, 'SUCCESS');
   if (error) {
@@ -709,7 +709,7 @@ const completeTask = async (taskData: TaskInfo) => {
  * Reopens a task
  * @param taskData - Task to reopen
  */
-const reopenTask = async (taskData: TaskInfo) => {
+const reopenTask = async (taskData: TaskDetail) => {
   const taskId = taskData.id;
   const [error] = await task.reopenTask(taskId);
   if (error) {
@@ -726,7 +726,7 @@ const reopenTask = async (taskData: TaskInfo) => {
  * Restarts a task
  * @param taskData - Task to restart
  */
-const restartTask = async (taskData: TaskInfo) => {
+const restartTask = async (taskData: TaskDetail) => {
   const taskId = taskData.id;
   const [error] = await task.restartTask(taskId);
   if (error) {
@@ -743,7 +743,7 @@ const restartTask = async (taskData: TaskInfo) => {
  * Moves a task to another sprint
  * @param taskData - Task to move
  */
-const moveTask = (taskData: TaskInfo) => {
+const moveTask = (taskData: TaskDetail) => {
   emit('move', taskData);
 };
 
@@ -751,7 +751,7 @@ const moveTask = (taskData: TaskInfo) => {
  * Cancels a task
  * @param taskData - Task to cancel
  */
-const cancelTask = async (taskData: TaskInfo) => {
+const cancelTask = async (taskData: TaskDetail) => {
   const taskId = taskData.id;
   const [error] = await task.cancelTask(taskId);
   if (error) {
@@ -768,7 +768,7 @@ const cancelTask = async (taskData: TaskInfo) => {
  * Copies task link to clipboard
  * @param taskData - Task to copy link for
  */
-const copyTaskLink = (taskData: TaskInfo) => {
+const copyTaskLink = (taskData: TaskDetail) => {
   const taskUrl = window.location.origin + (taskData.linkUrl || '');
   toClipboard(taskUrl).then(() => {
     notification.success(t('task.table.messages.copySuccess'));
@@ -782,7 +782,7 @@ const copyTaskLink = (taskData: TaskInfo) => {
  * @param taskId - ID of the task to load
  * @returns Promise resolving to partial task data
  */
-const loadTaskDetail = async (taskId: string): Promise<Partial<TaskInfo>> => {
+const loadTaskDetail = async (taskId: string): Promise<Partial<TaskDetail>> => {
   emit('update:loading', true);
   const [error, response] = await task.getTaskDetail(taskId);
   emit('update:loading', false);

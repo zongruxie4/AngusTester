@@ -8,7 +8,7 @@ import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskSprintPermission, TaskStatus } from '@/enums/enums';
 import { getCurrentPage } from '@/utils/utils';
-import { TaskInfo } from '../../types';
+import { TaskDetail } from '../../types';
 import { ActionMenuItem, TaskViewMode, travelTreeData } from '../types';
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Task_Template.xlsx?url';
@@ -78,7 +78,7 @@ const currentOrderBy = ref<string>();
 const currentOrderSort = ref<PageQuery.OrderSort>();
 const searchFilters = ref<SearchCriteria[]>([]);
 const paginationInfo = ref<{ current: number; pageSize: number; total: number; }>({ current: 1, pageSize: 10, total: 0 });
-const taskListData = ref<TaskInfo[]>([]);
+const taskListData = ref<TaskDetail[]>([]);
 const sprintPermissionsCache = ref<Map<string, TaskSprintPermission[]>>(new Map());
 
 const selectedTaskName = ref<string>();
@@ -89,7 +89,7 @@ const isMoveModalVisible = ref(false);
 const isUploadModalVisible = ref(false);
 
 const searchSprintId = ref<string>();
-const currentEditTaskData = ref<TaskInfo>(); // Task data for edit modal
+const currentEditTaskData = ref<TaskDetail>(); // Task data for edit modal
 
 const selectedTaskIds = ref<string[]>([]); // Batch selected task IDs
 
@@ -143,14 +143,14 @@ const loadTaskListData = async () => {
     return false;
   }
 
-  const data = (response?.data || { total: '0', list: [] }) as { total: string; list: TaskInfo[] };
+  const data = (response?.data || { total: '0', list: [] }) as { total: string; list: TaskDetail[] };
   const totalCount = +data.total;
   paginationInfo.value.total = totalCount;
 
   const pageNumber = +params.pageNo;
   const pageSize = +params.pageSize;
   const taskListItems = (data.list || []);
-  const processedTaskList: TaskInfo[] = [];
+  const processedTaskList: TaskDetail[] = [];
   const sprintIdSet = new Set<string>();
 
   for (let i = 0, len = taskListItems.length; i < len; i++) {
@@ -383,7 +383,7 @@ const handleTaskEdit = (taskId: string) => {
  * @param taskData - Updated task data
  * @param isNewTask - Whether this is a new task being added
  */
-const handleTaskEditComplete = (taskData: TaskInfo, isNewTask = false) => {
+const handleTaskEditComplete = (taskData: TaskDetail, isNewTask = false) => {
   if (isNewTask) {
     loadTaskListData();
     return;
@@ -410,7 +410,7 @@ const handleTaskDeletion = (taskId: string) => {
  * Handles task move by opening move modal
  * @param taskData - Task data to move
  */
-const handleTaskMove = (taskData: TaskInfo) => {
+const handleTaskMove = (taskData: TaskDetail) => {
   selectedTaskSprintId.value = taskData.sprintId;
   selectedTaskName.value = taskData.name;
   selectedTaskId.value = taskData.id;
@@ -548,7 +548,7 @@ const handleBatchActionComplete = (taskIds: string[]) => {
  * Updates task data in the list
  * @param taskData - Updated task data
  */
-const updateTaskListData = (taskData: Partial<TaskInfo>) => {
+const updateTaskListData = (taskData: Partial<TaskDetail>) => {
   if (taskData) {
     const taskIndex = taskListData.value.findIndex(item => item.id === taskData.id);
     if (taskListData.value[taskIndex]) {

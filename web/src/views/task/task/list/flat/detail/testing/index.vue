@@ -3,7 +3,7 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Spin } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskDetail } from '@/views/task/types';
 import { TestInfo } from '@/views/execution/types';
 
 // Component Props
@@ -11,7 +11,7 @@ type Props = {
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
-  dataSource: TaskInfo;
+  dataSource: TaskDetail;
   largePageLayout: boolean;
   loading: boolean;
 }
