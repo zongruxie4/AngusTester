@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { AuthObjectType } from '@xcan-angus/infra';
 
 import { SummaryInfo } from '../types';
 import { BasicProps } from '@/types/types';
@@ -44,7 +45,7 @@ const loadData = async (): Promise<void> => {
   loading.value = true;
   const params = {
     projectId: props.projectId,
-    creatorObjectType: 'USER',
+    creatorObjectType: AuthObjectType.USER,
     creatorObjectId: props.userInfo?.id
   };
   const [error, res] = await analysis.getFuncResourceCount(params);
@@ -120,192 +121,96 @@ const reset = () => {
   <div>
     <div class="text-3.5 font-semibold mb-3">{{ t('functionHome.myCreationSummary.title') }}</div>
     <div class="flex flex-1 space-x-3.75 justify-start">
-      <div class="rounded flex-1 relative">
-        <div class="vertical-layout-top yellow-top">
-          <div>{{ t('functionHome.myCreationSummary.plan') }}</div>
-          <div>{{ allPlan }}</div>
+      <div class="p-3.5 rounded w-1/3 relative bg-img bg-yellow">
+        <div class="space-x-2">
+          <span class="text-3.5">{{ t('functionHome.myCreationSummary.plan') }}</span>
+          <span class="text-4.5 font-semibold">{{ allPlan }}</span>
         </div>
-        <div class="vertical-layout-bottom yellow-bottom">
-          <div>
-            <div>{{ t('functionHome.myCreationSummary.last7Days') }}</div>
-            <div>{{ planByLastWeek }}</div>
+        <div class="mt-6 flex items-center w-full">
+          <div class="w-1/2 flex flex-wrap mr-2 flex-none">
+            <span class="mr-2">{{ t('functionHome.myCreationSummary.last7Days') }}</span>
+            <span class="text-3.5 font-semibold">{{ planByLastWeek }}</span>
           </div>
-          <div>
-            <div>{{ t('functionHome.myCreationSummary.last30Days') }}</div>
-            <div>{{ planByLastMonth }}</div>
+          <div class="w-1/2 flex-none flex flex-wrap">
+            <span class="mr-2">{{ t('functionHome.myCreationSummary.last30Days') }}</span>
+            <span class="text-3.5 font-semibold">{{ planByLastMonth }}</span>
           </div>
         </div>
-        <img src="./images/icon-2.png" class="w-15 absolute right-0 top-0" />
+        <img src="./images/icon-2.png" class="w-15 absolute right-0 top-0 -z-1" />
       </div>
 
-      <div class="rounded flex-1 relative">
-        <div class="vertical-layout-top red-top">
-          <div>{{ t('functionHome.myCreationSummary.case') }}</div>
-          <div>{{ allCase }}</div>
+      <div class="p-3.5 rounded w-1/3 relative bg-img bg-red">
+        <div class="space-x-2">
+          <span class="text-3.5">{{ t('functionHome.myCreationSummary.case') }}</span>
+          <span class="text-4.5 font-semibold">{{ allCase }}</span>
         </div>
-        <div class="vertical-layout-bottom red-bottom">
-          <div>
-            <div>{{ t('functionHome.myCreationSummary.last7Days') }}</div>
-            <div>{{ caseByLastWeek }}</div>
+        <div class="mt-6 flex items-center w-full">
+          <div class="w-1/2 flex flex-wrap mr-2 flex-none">
+            <span class="mr-2">{{ t('functionHome.myCreationSummary.last7Days') }}</span>
+            <span class="text-3.5 font-semibold">{{ caseByLastWeek }}</span>
           </div>
-          <div>
-            <div>{{ t('functionHome.myCreationSummary.last30Days') }}</div>
-            <div>{{ caseByLastMonth }}</div>
+          <div class="w-1/2 flex-none flex flex-wrap">
+            <span class="mr-2">{{ t('functionHome.myCreationSummary.last30Days') }}</span>
+            <span class="text-3.5 font-semibold">{{ caseByLastMonth }}</span>
           </div>
         </div>
-        <img src="./images/icon-3.png" class="w-15 absolute right-0 top-0" />
+        <img src="./images/icon-3.png" class="w-15 absolute right-0 top-0 -z-1" />
       </div>
 
-      <div class="rounded flex-1 relative">
-        <div class="vertical-layout-top blue-top">
-          <div>{{ t('functionHome.myCreationSummary.review') }}</div>
-          <div>{{ allReview }}</div>
+      <div class="p-3.5 rounded w-1/3 relative bg-img bg-blue">
+        <div class="space-x-2">
+          <span class="text-3.5">{{ t('functionHome.myCreationSummary.review') }}</span>
+          <span class="text-4.5 font-semibold">{{ allReview }}</span>
         </div>
-        <div class="vertical-layout-bottom blue-bottom">
-          <div>
-            <div>{{ t('functionHome.myCreationSummary.last7Days') }}</div>
-            <div>{{ reviewByLastWeek }}</div>
+        <div class="mt-6 flex items-center w-full">
+          <div class="w-1/2 flex flex-wrap mr-2 flex-none">
+            <span class="mr-2">{{ t('functionHome.myCreationSummary.last7Days') }}</span>
+            <span class="text-3.5 font-semibold">{{ reviewByLastWeek }}</span>
           </div>
-          <div>
-            <div>{{ t('functionHome.myCreationSummary.last30Days') }}</div>
-            <div>{{ reviewByLastMonth }}</div>
+          <div class="w-1/2 flex-none flex flex-wrap">
+            <span class="mr-2">{{ t('functionHome.myCreationSummary.last30Days') }}</span>
+            <span class="text-3.5 font-semibold">{{ reviewByLastMonth }}</span>
           </div>
         </div>
-        <img src="./images/icon-1.png" class="w-15 absolute right-0 top-0" />
+        <img src="./images/icon-1.png" class="w-15 absolute right-0 top-0 -z-1" />
       </div>
 
-      <div class="rounded flex-1 relative">
-        <div class="vertical-layout-top green-top">
-          <div>{{ t('functionHome.myCreationSummary.baseline') }}</div>
-          <div>{{ allBaseline }}</div>
+      <div class="p-3.5 rounded w-1/3 relative bg-img bg-green">
+        <div class="space-x-2">
+          <span class="text-3.5">{{ t('functionHome.myCreationSummary.baseline') }}</span>
+          <span class="text-4.5 font-semibold">{{ allBaseline }}</span>
         </div>
-        <div class="vertical-layout-bottom green-bottom">
-          <div>
-            <div>{{ t('functionHome.myCreationSummary.last7Days') }}</div>
-            <div>{{ baselineByLastWeek }}</div>
+        <div class="mt-6 flex items-center w-full">
+          <div class="w-1/2 flex flex-wrap mr-2 flex-none">
+            <span class="mr-2">{{ t('functionHome.myCreationSummary.last7Days') }}</span>
+            <span class="text-3.5 font-semibold">{{ baselineByLastWeek }}</span>
           </div>
-          <div>
-            <div>{{ t('functionHome.myCreationSummary.last30Days') }}</div>
-            <div>{{ baselineByLastMonth }}</div>
+          <div class="w-1/2 flex-none flex flex-wrap">
+            <span class="mr-2">{{ t('functionHome.myCreationSummary.last30Days') }}</span>
+            <span class="text-3.5 font-semibold">{{ baselineByLastMonth }}</span>
           </div>
         </div>
-        <img src="./images/icon-4.png" class="w-15 absolute right-0 top-0" />
+        <img src="./images/icon-4.png" class="w-15 absolute right-0 top-0 -z-1" />
       </div>
     </div>
   </div>
 </template>
 <style scoped>
-.vertical-layout-top {
-  padding: 14px;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+.bg-img {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
-
-.vertical-layout-bottom {
-  padding: 14px;
-  border-bottom-right-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-
-.vertical-layout-top>div:first-child {
-  margin-bottom: 4px
-}
-
-.vertical-layout-bottom>div:first-child {
-  margin-bottom: 4px
-}
-
-.vertical-layout-bottom>div>div:first-child {
-  margin-bottom: 4px
-}
-
-@media (min-width: 1400px) {
-  .vertical-layout-top {
-    display: flex;
-    align-items: center;
-  }
-
-  .vertical-layout-bottom>div {
-    display: flex;
-    align-items: center;
-  }
-
-  .vertical-layout-top>div:first-child {
-    margin-right: 10px;
-    margin-bottom: 0;
-  }
-
-  .vertical-layout-bottom>div:first-child {
-    margin-bottom: 4px
-  }
-
-  .vertical-layout-bottom>div>div:first-child {
-    margin-right: 10px;
-    margin-bottom: 0;
-  }
-}
-
-@media (min-width: 1600px) {
-  .vertical-layout-top {
-    display: flex;
-    align-items: center;
-  }
-
-  .vertical-layout-bottom {
-    display: flex;
-    align-items: center;
-  }
-
-  .vertical-layout-bottom>div {
-    display: flex;
-    align-items: center;
-    width: 50%
-  }
-
-  .vertical-layout-top>div:first-child {
-    margin-right: 10px;
-    margin-bottom: 0;
-  }
-
-  .vertical-layout-bottom>div:first-child {
-    margin-bottom: 0
-  }
-
-  .vertical-layout-bottom>div>div:first-child {
-    margin-right: 10px;
-    margin-bottom: 0;
-  }
-}
-
-.yellow-top {
+/* Restore gradient background styles similar to previous version */
+.bg-yellow {
   background: linear-gradient(to right, #f7cb71, #fef7df);
 }
-
-.yellow-bottom {
-  background-color: #fef7df;
-}
-
-.red-top {
+.bg-red {
   background: linear-gradient(to right, #ffb99f, #fff0e8);
 }
-
-.red-bottom {
-  background-color: #fff0e8;
-}
-
-.blue-top {
+.bg-blue {
   background: linear-gradient(to right, #d1e7ff, #eff6ff);
 }
-
-.blue-bottom {
-  background-color: #eff6ff;
-}
-
-.green-top {
+.bg-green {
   background: linear-gradient(to right, #87d7ee, #e2f7fd);
-}
-
-.green-bottom {
-  background-color: #e2f7fd;
 }
 </style>

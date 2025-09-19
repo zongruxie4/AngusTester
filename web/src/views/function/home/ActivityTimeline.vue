@@ -21,32 +21,35 @@ const types = [
 ];
 </script>
 <template>
-  <Tabs size="small">
-    <TabPane key="all" :tab="t('functionHome.activityTimeline.allActivity')">
-      <ActivityTimeline
-        key="all"
-        :types="types"
-        :projectId="props.projectId" />
-    </TabPane>
+  <div class="bg-white rounded px-5" style="height: 520px">
+    <Tabs size="small">
+      <TabPane key="all" :tab="t('functionHome.activityTimeline.allActivity')">
+        <ActivityTimeline
+          key="all"
+          :types="types"
+          :projectId="props.projectId" />
+      </TabPane>
 
-    <TabPane key="my" :tab="t('functionHome.activityTimeline.myActivity')">
-      <ActivityTimeline
-        key="my"
-        :types="types"
-        :projectId="props.projectId"
-        :userId="props.userInfo?.id"
-        :showUserName="false" />
-    </TabPane>
-  </Tabs>
+      <TabPane key="my" :tab="t('functionHome.activityTimeline.myActivity')">
+        <ActivityTimeline
+          key="my"
+          :types="types"
+          :projectId="props.projectId"
+          :userId="props.userInfo?.id"
+          :showUserName="false" />
+      </TabPane>
+    </Tabs>
+  </div>
 </template>
 
 <style scoped>
-.ant-tabs-small>:deep(.ant-tabs-nav) .ant-tabs-tab {
+/* Tab styling for small size tabs */
+.ant-tabs-small > :deep(.ant-tabs-nav) .ant-tabs-tab {
   font-size: 14px;
 }
 
+/* Main tabs container with responsive height */
 .ant-tabs {
-  height: calc(100% - 280px);
-  min-height: 375px;
+  height: 100%;
 }
 </style>

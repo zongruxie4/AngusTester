@@ -2,84 +2,95 @@
 import { defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { BasicProps } from '@/types/types';
 
+// Props interface for TaskHome component
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   refreshNotify: undefined
 });
 
-const notify = ref<string>();
-
-const updateRefreshNotify = (value: string) => {
-  notify.value = value;
-};
-
+// Lazy load components for better performance
 const Added = defineAsyncComponent(() => import('@/views/function/home/Added.vue'));
 const CreationSummary = defineAsyncComponent(() => import('@/views/function/home/summary/CreationSummary.vue'));
-const Summary = defineAsyncComponent(() => import('@/views/function/home/summary/StatusSummary.vue'));
-const Introduction = defineAsyncComponent(() => import('@/views/function/home/Introduce.vue'));
+const StatusSummary = defineAsyncComponent(() => import('@/views/function/home/summary/StatusSummary.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/function/home/WorkCalendar.vue'));
 const BurnDownCharts = defineAsyncComponent(() => import('@/views/function/home/BurndownChart.vue'));
+const Introduction = defineAsyncComponent(() => import('@/views/function/home/Introduce.vue'));
 const ActivityTimeline = defineAsyncComponent(() => import('@/views/function/home/ActivityTimeline.vue'));
 
-const homepageRef = ref();
+// Internal notification state for component communication
+const internalNotification = ref<string>();
+
+/**
+ * Updates the internal notification state.
+ */
+const updateRefreshNotification = (value: string) => {
+  internalNotification.value = value;
+};
+
+// Provide refresh notification function to child components
+provide('updateRefreshNotify', updateRefreshNotification);
 
 onMounted(() => {
   watch(() => props.refreshNotify, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }
-    notify.value = newValue;
+    internalNotification.value = newValue;
   }, { immediate: true });
 });
-
-provide('updateRefreshNotify', updateRefreshNotify);
 </script>
 
 <template>
-  <div ref="homepageRef" class="w-full h-full flex px-5 py-5 leading-5 text-3 overflow-auto">
+  <div class="w-full h-full flex items-start px-5 py-5 leading-5 text-3 overflow-auto">
+    <!-- Main content area -->
     <div class="flex-1 min-h-full">
+      <!-- Case management section -->
       <Added
         v-if="projectId"
-        :notify="notify"
+        :notify="internalNotification"
         :userInfo="props.userInfo"
         :projectId="props.projectId"
         class="mb-7.5" />
 
+      <!-- Case statistics sections (conditionally rendered) -->
+      <CreationSummary
+        v-if="projectId"
+        :notify="internalNotification"
+        :userInfo="props.userInfo"
+        :projectId="props.projectId"
+        class="mb-7.5" />
+
+      <!-- <StatusSummary
+        v-if="projectId"
+        :notify="internalNotification"
+        :userInfo="props.userInfo"
+        :projectId="props.projectId"
+        class="mb-7.5" />-->
+
+      <!-- Charts and calendar section -->
       <div class="flex mb-7.5 space-x-5">
         <BurnDownCharts
           v-if="projectId"
           :userInfo="props.userInfo"
           :projectId="props.projectId"
           class="flex-1/3" />
-
         <WorkCalendar
           v-if="projectId"
           class="flex-2/3"
-          :notify="notify"
+          :notify="internalNotification"
           :userInfo="props.userInfo"
           :projectId="props.projectId" />
       </div>
-
-      <CreationSummary
-        v-if="projectId"
-        :notify="notify"
-        :userInfo="props.userInfo"
-        :projectId="props.projectId"
-        class="mb-7.5" />
-
-      <Summary
-        v-if="projectId"
-        :notify="notify"
-        :userInfo="props.userInfo"
-        :projectId="props.projectId"
-        class="mb-7.5" />
     </div>
 
+    <!-- Sidebar area -->
     <div class="flex-shrink-0 pt-8 h-full w-right">
+      <!-- Introduction Section -->
       <Introduction class="mb-5" />
+
+      <!-- Activity Timeline Section -->
       <ActivityTimeline
-        v-if="projectId"
         :userInfo="props.userInfo"
         :projectId="props.projectId" />
     </div>

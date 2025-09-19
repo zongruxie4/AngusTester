@@ -339,8 +339,9 @@ const sortMenuItems: {
                   <template v-if="item.description">
                     <!-- {{ item.description }} -->
                     <RichText
-                    v-model:textValue="item.descriptionText"
-                    :value="item.description" :emptyText="t('functionBaseline.list.noDescription')" />
+                      v-model:textValue="item.descriptionText"
+                      :value="item.description"
+                      :emptyText="t('functionBaseline.list.noDescription')" />
                   </template>
                   <span v-else class="text-text-sub-content">
                     {{ t('functionBaseline.list.noDescription') }}

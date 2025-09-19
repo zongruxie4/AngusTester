@@ -119,7 +119,7 @@ onMounted(() => {
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
           <span class="text-3.5">{{ t('taskHome.backlog') }}</span>
-          <span class="text-5 font-semibold">{{ allBacklog }}</span>
+          <span class="text-4.5 font-semibold">{{ allBacklog }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
@@ -138,7 +138,7 @@ onMounted(() => {
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
           <span class="text-3.5">{{ t('taskHome.sprint') }}</span>
-          <span class="text-5 font-semibold">{{ allSprint }}</span>
+          <span class="text-4.5 font-semibold">{{ allSprint }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
@@ -157,7 +157,7 @@ onMounted(() => {
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
           <span class="text-3.5">{{ t('taskHome.task') }}</span>
-          <span class="text-5 font-semibold">{{ allTask }}</span>
+          <span class="text-4.5 font-semibold">{{ allTask }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
@@ -176,7 +176,7 @@ onMounted(() => {
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
           <span class="text-3.5">{{ t('taskHome.meeting') }}</span>
-          <span class="text-5 font-semibold">{{ allMeeting }}</span>
+          <span class="text-4.5 font-semibold">{{ allMeeting }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
