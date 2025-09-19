@@ -531,7 +531,7 @@ export function useChartManagement () {
         { name: 'P95', value: p95ProcessingTime, itemStyle: { color: '#3b82f6' } }
       ];
       leadTimeConfig.value.series[0].data = leadTimeChartData;
-      
+
       // Set bar width to half the default width
       const option = {
         ...leadTimeConfig.value,
@@ -541,7 +541,7 @@ export function useChartManagement () {
           barCategoryGap: '20%'
         }]
       };
-      
+
       leadTimeChart.setOption(option);
     }
 
