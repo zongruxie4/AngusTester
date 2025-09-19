@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// imports
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Avatar, Button, Pagination, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
@@ -14,6 +15,7 @@ import { PlanDetail } from '../types';
 import ProcessPng from './images/process.png';
 import SearchPanel from '@/views/function/plan/list/SearchPanel.vue';
 
+// async components
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/function/plan/list/Introduce.vue'));
 const ProgressModal = defineAsyncComponent(() => import('@/views/function/plan/list/MemberProgress.vue'));
@@ -21,8 +23,10 @@ const BurnDownModal = defineAsyncComponent(() => import('@/views/function/plan/l
 const WorkCalendarModal = defineAsyncComponent(() => import('@/views/function/plan/list/WorkCalendar.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
+// composables
 const { t } = useI18n();
 
+// types
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -30,6 +34,7 @@ type Props = {
   notify: string;
 }
 
+// props and injects
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -39,13 +44,17 @@ const props = withDefaults(defineProps<Props>(), {
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const setCaseListPlanParam = inject<(value: any) => void>('setCaseListPlanParam');
+
+// computed properties
 const isAdmin = computed(() => appContext.isAdmin());
 
+// reactive data
 const loaded = ref(false);
 const loading = ref(false);
 const exportLoadingSet = ref<Set<string>>(new Set());
 const searchedFlag = ref(false);
 
+// search and pagination state
 const searchPanelParams = ref({
   orderBy: undefined,
   orderSort: undefined,
@@ -54,44 +63,71 @@ const searchPanelParams = ref({
 const pageNo = ref(1);
 const pageSize = ref(5);
 
+// data state
 const total = ref(0);
 const dataList = ref<PlanDetail[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
 
+// modal state
 const selectedData = ref<PlanDetail>();
 const authorizeModalVisible = ref(false);
 const progressVisible = ref(false);
 const burndownVisible = ref(false);
 const workCalendarVisible = ref(false);
 
+// methods
+/**
+ * Refreshes the data list and resets pagination
+ */
 const refresh = () => {
   pageNo.value = 1;
   permissionsMap.value.clear();
   loadData();
 };
 
-const searchChange = (data) => {
+/**
+ * Handles search panel parameter changes and reloads data
+ * @param data - Search parameters from search panel
+ */
+const handleSearchChange = (data) => {
   searchPanelParams.value = data;
   pageNo.value = 1;
   loadData();
 };
 
-const viewProgress = (data: PlanDetail) => {
+/**
+ * Opens the member progress modal for the selected plan
+ * @param data - Plan detail data
+ */
+const handleViewProgress = (data: PlanDetail) => {
   progressVisible.value = true;
   selectedData.value = data;
 };
 
-const viewBurnDown = (data: PlanDetail) => {
+/**
+ * Opens the burndown chart modal for the selected plan
+ * @param data - Plan detail data
+ */
+const handleViewBurnDown = (data: PlanDetail) => {
   burndownVisible.value = true;
   selectedData.value = data;
 };
 
-const viewWorkCalendar = (data: PlanDetail) => {
+/**
+ * Opens the work calendar modal for the selected plan
+ * @param data - Plan detail data
+ */
+const handleViewWorkCalendar = (data: PlanDetail) => {
   workCalendarVisible.value = true;
   selectedData.value = data;
 };
 
-const setTableData = async (id: string, index: number) => {
+/**
+ * Updates table data for a specific plan by index
+ * @param id - Plan ID
+ * @param index - Index in the data list
+ */
+const updateTableData = async (id: string, index: number) => {
   const [error, res] = await funcPlan.getPlanDetail(id);
   loading.value = false;
   if (error) {
@@ -103,7 +139,12 @@ const setTableData = async (id: string, index: number) => {
   }
 };
 
-const toStart = async (data: PlanDetail, index: number) => {
+/**
+ * Starts a plan and updates the table data
+ * @param data - Plan detail data
+ * @param index - Index in the data list
+ */
+const handleStartPlan = async (data: PlanDetail, index: number) => {
   loading.value = true;
   const id = data.id;
   const [error] = await funcPlan.startPlan(id);
@@ -113,10 +154,15 @@ const toStart = async (data: PlanDetail, index: number) => {
   }
 
   notification.success(t('functionPlan.list.planStartSuccess'));
-  await setTableData(id, index);
+  await updateTableData(id, index);
 };
 
-const toCompleted = async (data: PlanDetail, index: number) => {
+/**
+ * Completes a plan and updates the table data
+ * @param data - Plan detail data
+ * @param index - Index in the data list
+ */
+const handleCompletePlan = async (data: PlanDetail, index: number) => {
   loading.value = true;
   const id = data.id;
   const [error] = await funcPlan.endPlan(id);
@@ -126,10 +172,15 @@ const toCompleted = async (data: PlanDetail, index: number) => {
   }
 
   notification.success(t('functionPlan.list.planCompletedSuccess'));
-  await setTableData(id, index);
+  await updateTableData(id, index);
 };
 
-const toBlock = async (data: PlanDetail, index: number) => {
+/**
+ * Blocks a plan and updates the table data
+ * @param data - Plan detail data
+ * @param index - Index in the data list
+ */
+const handleBlockPlan = async (data: PlanDetail, index: number) => {
   loading.value = true;
   const id = data.id;
   const [error] = await funcPlan.blockPlan(id);
@@ -139,10 +190,14 @@ const toBlock = async (data: PlanDetail, index: number) => {
   }
 
   notification.success(t('functionPlan.list.planBlockedSuccess'));
-  await setTableData(id, index);
+  await updateTableData(id, index);
 };
 
-const toDelete = async (data: PlanDetail) => {
+/**
+ * Deletes a plan with confirmation dialog
+ * @param data - Plan detail data
+ */
+const handleDeletePlan = async (data: PlanDetail) => {
   modal.confirm({
     content: t('functionPlan.list.confirmDeletePlan', { name: data.name }),
     async onOk () {
@@ -160,12 +215,20 @@ const toDelete = async (data: PlanDetail) => {
   });
 };
 
-const toGrant = (data: PlanDetail) => {
+/**
+ * Opens the authorization modal for the selected plan
+ * @param data - Plan detail data
+ */
+const handleGrantPermission = (data: PlanDetail) => {
   selectedData.value = data;
   authorizeModalVisible.value = true;
 };
 
-const authFlagChange = async ({ auth }: { auth: boolean }) => {
+/**
+ * Handles authorization flag change and updates the data list
+ * @param auth - Authorization status
+ */
+const handleAuthFlagChange = async ({ auth }: { auth: boolean }) => {
   const _list = dataList.value;
   const targetId = selectedData.value?.id;
   for (let i = 0, len = _list.length; i < len; i++) {
@@ -176,7 +239,11 @@ const authFlagChange = async ({ auth }: { auth: boolean }) => {
   }
 };
 
-const toClone = async (data: PlanDetail) => {
+/**
+ * Clones a plan and reloads the data
+ * @param data - Plan detail data
+ */
+const handleClonePlan = async (data: PlanDetail) => {
   const [error] = await funcPlan.clonePlan(data.id);
   if (error) {
     return;
@@ -186,7 +253,11 @@ const toClone = async (data: PlanDetail) => {
   await loadData();
 };
 
-const toResetTestResult = async (data: PlanDetail) => {
+/**
+ * Resets test results for a plan
+ * @param data - Plan detail data
+ */
+const handleResetTestResult = async (data: PlanDetail) => {
   loading.value = true;
   const id = data.id;
   const params = { ids: [id] };
@@ -199,7 +270,11 @@ const toResetTestResult = async (data: PlanDetail) => {
   notification.success(t('functionPlan.list.planResetTestSuccess'));
 };
 
-const toResetReviewResult = async (data: PlanDetail) => {
+/**
+ * Resets review results for a plan
+ * @param data - Plan detail data
+ */
+const handleResetReviewResult = async (data: PlanDetail) => {
   loading.value = true;
   const id = data.id;
   const params = { ids: [id] };
@@ -212,7 +287,11 @@ const toResetReviewResult = async (data: PlanDetail) => {
   notification.success(t('functionPlan.list.planResetReviewSuccess'));
 };
 
-const toExport = async (data: PlanDetail) => {
+/**
+ * Exports cases for a plan
+ * @param data - Plan detail data
+ */
+const handleExportCases = async (data: PlanDetail) => {
   const { id, projectId } = data;
   if (exportLoadingSet.value.has(id)) {
     return;
@@ -223,51 +302,65 @@ const toExport = async (data: PlanDetail) => {
   exportLoadingSet.value.delete(id);
 };
 
-const dropdownClick = (
+/**
+ * Handles dropdown menu item clicks and routes to appropriate handlers
+ * @param data - Plan detail data
+ * @param index - Index in the data list
+ * @param key - Action key from dropdown menu
+ */
+const handleDropdownClick = (
   data: PlanDetail,
   index: number,
   key: 'clone' | 'block' | 'delete' | 'export' | 'grant' | 'resetTestResult' | 'resetReviewResult' | 'viewBurnDown' | 'viewProgress' | 'viewWorkCalendar'
 ) => {
   switch (key) {
     case 'block':
-      toBlock(data, index);
+      handleBlockPlan(data, index);
       break;
     case 'delete':
-      toDelete(data);
+      handleDeletePlan(data);
       break;
     case 'grant':
-      toGrant(data);
+      handleGrantPermission(data);
       break;
     case 'clone':
-      toClone(data);
+      handleClonePlan(data);
       break;
     case 'resetTestResult':
-      toResetTestResult(data);
+      handleResetTestResult(data);
       break;
     case 'resetReviewResult':
-      toResetReviewResult(data);
+      handleResetReviewResult(data);
       break;
     case 'export':
-      toExport(data);
+      handleExportCases(data);
       break;
     case 'viewBurnDown':
-      viewBurnDown(data);
+      handleViewBurnDown(data);
       break;
     case 'viewProgress':
-      viewProgress(data);
+      handleViewProgress(data);
       break;
     case 'viewWorkCalendar':
-      viewWorkCalendar(data);
+      handleViewWorkCalendar(data);
       break;
   }
 };
 
-const paginationChange = (_pageNo: number, _pageSize: number) => {
+/**
+ * Handles pagination changes and reloads data
+ * @param _pageNo - New page number
+ * @param _pageSize - New page size
+ */
+const handlePaginationChange = (_pageNo: number, _pageSize: number) => {
   pageNo.value = _pageNo;
   pageSize.value = _pageSize;
   loadData();
 };
 
+/**
+ * Loads plan list data from API with search and pagination parameters
+ */
 const loadData = async () => {
   loading.value = true;
   const params: ProjectPageQuery = {
@@ -314,7 +407,7 @@ const loadData = async () => {
       return item;
     });
 
-    // 管理员拥有所有权限，无需加载权限
+    // Load permissions for non-admin users
     if (!isAdmin.value) {
       for (let i = 0, len = _list.length; i < len; i++) {
         const id = _list[i].id;
@@ -330,6 +423,11 @@ const loadData = async () => {
   }
 };
 
+/**
+ * Loads permissions for a specific plan
+ * @param id - Plan ID
+ * @returns Promise with permission data
+ */
 const loadPermissions = async (id: string) => {
   const params = {
     admin: true
@@ -337,15 +435,23 @@ const loadPermissions = async (id: string) => {
   return await funcPlan.getCurrentAuthByPlanId(id, params);
 };
 
-const goCase = (plan: PlanDetail) => {
+/**
+ * Navigates to case list with plan parameters
+ * @param plan - Plan detail data
+ */
+const handleGoToCases = (plan: PlanDetail) => {
   setCaseListPlanParam({ ...plan, planId: plan.id, planName: plan.name });
 };
 
-const reset = () => {
+/**
+ * Resets pagination and clears data list
+ */
+const resetData = () => {
   pageNo.value = 1;
   dataList.value = [];
 };
 
+// computed properties
 const dropdownPermissionsMap = computed(() => {
   const map = new Map<string, string[]>();
   if (dataList.value.length) {
@@ -387,6 +493,7 @@ const dropdownPermissionsMap = computed(() => {
   return map;
 });
 
+// configuration data
 const dropdownMenuItems = [
   {
     key: 'block',
@@ -453,9 +560,10 @@ const dropdownMenuItems = [
 
 const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
+// lifecycle hooks
 onMounted(() => {
   watch(() => props.projectId, () => {
-    reset();
+    resetData();
     loadData();
   }, { immediate: true });
 
@@ -500,7 +608,7 @@ onMounted(() => {
         <template v-else>
           <SearchPanel
             :loading="loading"
-            @change="searchChange"
+            @change="handleSearchChange"
             @refresh="refresh" />
           <NoData v-if="dataList.length === 0" class="flex-1" />
 
@@ -711,7 +819,7 @@ onMounted(() => {
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"
-                    @click="goCase(item)">
+                    @click="handleGoToCases(item)">
                     <Icon icon="icon-ceshiyongli1" class="text-3.5" />
                     <span>{{ t('functionPlan.list.viewCases') }}</span>
                   </Button>
@@ -721,7 +829,7 @@ onMounted(() => {
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"
-                    @click="toStart(item, index)">
+                    @click="handleStartPlan(item, index)">
                     <Icon icon="icon-kaishi" class="text-3.5" />
                     <span>{{ item.status.value === FuncPlanStatus.COMPLETED ? t('functionPlan.list.restart') : t('functionPlan.list.start') }}</span>
                   </Button>
@@ -731,7 +839,7 @@ onMounted(() => {
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"
-                    @click="toCompleted(item, index)">
+                    @click="handleCompletePlan(item, index)">
                     <Icon icon="icon-yiwancheng" class="text-3.5" />
                     <span>{{ t('functionPlan.list.complete') }}</span>
                   </Button>
@@ -740,7 +848,7 @@ onMounted(() => {
                     :admin="false"
                     :menuItems="dropdownMenuItems"
                     :permissions="dropdownPermissionsMap.get(item.id)"
-                    @click="dropdownClick(item, index, $event.key)">
+                    @click="handleDropdownClick(item, index, $event.key)">
                     <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
                   </Dropdown>
                 </div>
@@ -757,7 +865,7 @@ onMounted(() => {
               showSizeChanger
               size="default"
               class="text-right"
-              @change="paginationChange" />
+              @change="handlePaginationChange" />
           </template>
         </template>
       </template>
@@ -789,7 +897,7 @@ onMounted(() => {
         :onTips="t('functionPlan.list.permissionControlOnTips')"
         :offTips="t('functionPlan.list.permissionControlOffTips')"
         :title="t('functionPlan.list.planPermission')"
-        @change="authFlagChange" />
+        @change="handleAuthFlagChange" />
     </AsyncComponent>
 
     <AsyncComponent :visible="workCalendarVisible">

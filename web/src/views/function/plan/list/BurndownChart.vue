@@ -6,13 +6,16 @@ import { RadioGroup } from 'ant-design-vue';
 import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
+// composables
 const { t } = useI18n();
 
+// interfaces
 interface Props {
   visible: boolean;
   planId: string;
 }
 
+// props and emits
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   planId: ''
@@ -20,11 +23,14 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
 
-const cancel = () => {
-  emits('update:visible', false);
-};
+// reactive data
+const burndownData = ref();
+const burndownTarget = ref('NUM');
+const chartRef = ref();
+let burndownChartInstance;
 
-const burnDownOpt = computed(() => [
+// computed properties
+const burndownOptions = computed(() => [
   {
     value: 'NUM',
     label: t('functionPlan.comp.burndownChart.caseCount')
@@ -34,11 +40,9 @@ const burnDownOpt = computed(() => [
     label: t('functionPlan.comp.burndownChart.workload')
   }
 ]);
-const burnDownData = ref();
-const burnDownTarget = ref('NUM');
-const chartRef = ref();
-let burnDownEcharts;
-const burnDownEchartsConfig = {
+
+// chart configuration
+const burndownChartConfig = {
   grid: {
     left: '30',
     right: '20',
@@ -76,41 +80,53 @@ const burnDownEchartsConfig = {
   ]
 };
 
-const loadChartData = async () => {
+/**
+ * Handles modal cancel event and emits visibility update
+ */
+const handleCancel = () => {
+  emits('update:visible', false);
+};
+
+/**
+ * Loads burndown chart data from API based on plan ID
+ */
+const loadBurndownData = async () => {
   const [error, { data }] = await analysis.getFuncPlanBurndown(props.planId);
   if (error) {
     return;
   }
-  burnDownData.value = data;
+  burndownData.value = data;
 };
+
+// lifecycle hooks
 onMounted(() => {
-  burnDownEcharts = echarts.init(chartRef.value);
-  burnDownEcharts.setOption(burnDownEchartsConfig);
+  burndownChartInstance = echarts.init(chartRef.value);
+  burndownChartInstance.setOption(burndownChartConfig);
 
   watch(() => props.visible, (newValue) => {
     if (newValue) {
-      loadChartData();
+      loadBurndownData();
     }
   }, {
     immediate: true
   });
-  watch([() => burnDownTarget.value, () => burnDownData.value], () => {
-    if (burnDownData.value) {
-      const xData = (burnDownData.value[burnDownTarget.value]?.expected || []).map(i => i.timeSeries);
-      const expectedYData = (burnDownData.value[burnDownTarget.value]?.expected || []).map(i => i.value);
-      const remainingYData = (burnDownData.value[burnDownTarget.value]?.remaining || []).map(i => i.value);
-      burnDownEchartsConfig.xAxis.data = xData;
-      burnDownEchartsConfig.series[0].data = remainingYData;
-      burnDownEchartsConfig.series[1].data = expectedYData;
+
+  watch([() => burndownTarget.value, () => burndownData.value], () => {
+    if (burndownData.value) {
+      const xData = (burndownData.value[burndownTarget.value]?.expected || []).map(i => i.timeSeries);
+      const expectedYData = (burndownData.value[burndownTarget.value]?.expected || []).map(i => i.value);
+      const remainingYData = (burndownData.value[burndownTarget.value]?.remaining || []).map(i => i.value);
+      burndownChartConfig.xAxis.data = xData;
+      burndownChartConfig.series[0].data = remainingYData;
+      burndownChartConfig.series[1].data = expectedYData;
     } else {
-      burnDownEchartsConfig.xAxis.data = [];
-      burnDownEchartsConfig.series[0].data = [];
-      burnDownEchartsConfig.series[1].data = [];
+      burndownChartConfig.xAxis.data = [];
+      burndownChartConfig.series[0].data = [];
+      burndownChartConfig.series[1].data = [];
     }
-    burnDownEcharts.setOption(burnDownEchartsConfig);
+    burndownChartInstance.setOption(burndownChartConfig);
   });
 });
-
 </script>
 <template>
   <Modal
@@ -118,10 +134,10 @@ onMounted(() => {
     :footer="null"
     :width="800"
     :title="t('functionPlan.comp.burndownChart.title')"
-    @cancel="cancel">
+    @cancel="handleCancel">
     <div class="pt-1.5">
       <div class="text-3.5 font-semibold flex justify-between">
-        <RadioGroup v-model:value="burnDownTarget" :options="burnDownOpt">
+        <RadioGroup v-model:value="burndownTarget" :options="burndownOptions">
         </RadioGroup>
       </div>
       <div ref="chartRef" class="border rounded p-2 my-3 h-60">

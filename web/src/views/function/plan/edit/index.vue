@@ -37,6 +37,7 @@ import { FuncPlanPermission, FuncPlanStatus } from '@/enums/enums';
 
 const { t } = useI18n();
 
+// Props
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -44,35 +45,50 @@ const props = withDefaults(defineProps<BasicProps>(), {
   data: undefined
 });
 
+// Async components
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 const TesterSelect = defineAsyncComponent(() => import('./TesterSelect.vue'));
 
+// Injected dependencies
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
+
+// Computed properties
 const isAdmin = computed(() => appContext.isAdmin());
+const currentPlanStatus = computed(() => {
+  return planDetailData.value?.status?.value;
+});
+const isEditMode = computed(() => {
+  return !!props.data?.id;
+});
+const isEditDisabled = computed(() => {
+  return !!(planDetailData.value && currentPlanStatus.value &&
+    [FuncPlanStatus.IN_PROGRESS, FuncPlanStatus.COMPLETED].includes(currentPlanStatus.value));
+});
 
+// Reactive data
 const formRef = ref();
-
 const loading = ref(false);
-const dataSource = ref<PlanDetail>();
-
+const planDetailData = ref<PlanDetail>();
 const testerSelectRef = ref();
 const activeTabKey = ref('testingObjectives');
-
 const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const reviewFlagVisible = ref(false);
+const userPermissions = ref<string[]>([]);
+const originalFormState = ref<PlanEditFormState>();
+const authorizeModalVisible = ref(false);
+const projectMembers = ref([]);
 
-const permissions = ref<string[]>([]);
-const oldFormState = ref<PlanEditFormState>();
-const _startDate = dayjs().format(DATE_TIME_FORMAT);
-const _deadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
+// Form state initialization
+const defaultStartDate = dayjs().format(DATE_TIME_FORMAT);
+const defaultDeadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
 const formState = ref<PlanEditFormState>({
   projectId: props.projectId,
   name: '',
-  startDate: _startDate,
-  deadlineDate: _deadlineDate,
+  startDate: defaultStartDate,
+  deadlineDate: defaultDeadlineDate,
   ownerId: String(props.userInfo?.id || ''),
   testerResponsibilities: new Map(),
   testingObjectives: '',
@@ -83,12 +99,20 @@ const formState = ref<PlanEditFormState>({
   review: true,
   casePrefix: '',
   evalWorkloadMethod: EvalWorkloadMethod.STORY_POINT,
-  date: [_startDate, _deadlineDate]
+  date: [defaultStartDate, defaultDeadlineDate]
 });
 
-const authorizeModalVisible = ref(false);
+// Rich editor references
+const objectiveRichRef = ref();
+const scopeRichRef = ref();
+const criteriaRichRef = ref();
+const infoRichRef = ref();
 
-const validateDate = async (_rule: Rule, value: string) => {
+/**
+ * Validates the date range selection for the plan.
+ * Ensures both start and deadline dates are selected.
+ */
+const validateDateRange = async (_rule: Rule, value: string) => {
   if (!value) {
     return Promise.reject(new Error(t('functionPlan.editForm.validation.selectPlanTime')));
   } else if (!value[0]) {
@@ -100,7 +124,11 @@ const validateDate = async (_rule: Rule, value: string) => {
   }
 };
 
-const validateTester = async () => {
+/**
+ * Validates tester selection and responsibilities.
+ * Ensures at least one tester is selected and no duplicate personnel.
+ */
+const validateTesterSelection = async () => {
   if (Object.keys(formState.value.testerResponsibilities).length === 0) {
     return Promise.reject(new Error(t('functionPlan.editForm.validation.selectTester')));
   }
@@ -111,7 +139,11 @@ const validateTester = async () => {
   }
 };
 
-const validateRequired = async (value) => {
+/**
+ * Validates required rich text fields.
+ * Ensures the field contains meaningful content.
+ */
+const validateRequiredRichText = async (value) => {
   if (formState.value[value.field]) {
     try {
       const valueField = JSON.parse(formState.value[value.field]);
@@ -131,11 +163,11 @@ const validateRequired = async (value) => {
   return Promise.reject(new Error(value.message));
 };
 
-const objectiveRichRef = ref();
-const scopeRichRef = ref();
-const criteriaRichRef = ref();
-const infoRichRef = ref();
-const validateMaxLength = async (value) => {
+/**
+ * Validates maximum character length for rich text fields.
+ * Ensures content does not exceed 2000 characters.
+ */
+const validateRichTextMaxLength = async (value) => {
   if (value.field === 'testingObjectives') {
     if (objectiveRichRef.value && objectiveRichRef.value.getLength() > 2000) {
       Promise.reject(new Error(t('functionPlan.editForm.validation.charLimit2000')));
@@ -159,11 +191,19 @@ const validateMaxLength = async (value) => {
   return Promise.resolve();
 };
 
-const changeTester = (data) => {
+/**
+ * Handles tester selection change event.
+ * Updates the form state with new tester responsibilities.
+ */
+const handleTesterChange = (data) => {
   formState.value.testerResponsibilities = data;
 };
 
-const upLoadFile = async (file) => {
+/**
+ * Handles file upload for plan attachments.
+ * Validates file count limit and uploads to server.
+ */
+const handleFileUpload = async (file) => {
   if (loading.value) {
     return;
   }
@@ -181,20 +221,27 @@ const upLoadFile = async (file) => {
   }
 
   if (data && data.length > 0) {
-    const newData = data?.map(item => ({ name: item.name, url: item.url }));
+    const newAttachments = data?.map(item => ({ name: item.name, url: item.url }));
     if (formState.value.attachments) {
-      formState.value.attachments.push(...newData);
+      formState.value.attachments.push(...newAttachments);
     } else {
-      formState.value.attachments = newData;
+      formState.value.attachments = newAttachments || [];
     }
   }
 };
 
-const delFile = (index: number) => {
+/**
+ * Removes an attachment from the form state.
+ */
+const removeAttachment = (index: number) => {
   formState.value?.attachments?.splice(index, 1);
 };
 
-const reviewFlagChange = (checked) => {
+/**
+ * Handles review flag change with confirmation dialog.
+ * Shows confirmation when disabling review.
+ */
+const handleReviewFlagChange = (checked) => {
   if (checked) {
     formState.value.review = true;
     return;
@@ -203,29 +250,39 @@ const reviewFlagChange = (checked) => {
   reviewFlagVisible.value = true;
 };
 
-const handleReviewFlagOk = () => {
+/**
+ * Confirms disabling the review flag.
+ */
+const confirmDisableReview = () => {
   formState.value.review = false;
   reviewFlagVisible.value = false;
 };
 
-const handleReviewFlagCancel = () => {
+/**
+ * Cancels disabling the review flag.
+ */
+const cancelDisableReview = () => {
   reviewFlagVisible.value = false;
 };
 
-const getParams = () => {
+/**
+ * Prepares form parameters for API submission.
+ * Processes form data and removes unnecessary fields.
+ */
+const prepareFormParams = () => {
   const params: PlanEditFormState = { ...formState.value };
-  if (dataSource.value?.id) {
-    params.id = dataSource.value.id;
+  if (planDetailData.value?.id) {
+    params.id = planDetailData.value.id;
   }
 
-  const _date = formState.value.date;
-  if (_date) {
-    params.startDate = _date[0];
-    params.deadlineDate = _date[1];
+  const dateRange = formState.value.date;
+  if (dateRange && dateRange[0] && dateRange[1]) {
+    params.startDate = dateRange[0];
+    params.deadlineDate = dateRange[1];
   }
 
   if (!params.attachments?.length) {
-    params.attachments = undefined;
+    params.attachments = [];
   }
 
   if (!params.casePrefix) {
@@ -237,19 +294,26 @@ const getParams = () => {
   return params;
 };
 
-const refreshList = () => {
+/**
+ * Refreshes the plan list after successful operations.
+ */
+const refreshPlanList = () => {
   nextTick(() => {
     updateTabPane({ _id: 'planList', notify: utils.uuid() });
   });
 };
 
-const editOk = async () => {
-  const equalFlag = isEqual(oldFormState.value, formState.value);
-  if (equalFlag) {
+/**
+ * Handles plan update operation.
+ * Compares form state changes and updates the plan.
+ */
+const handlePlanUpdate = async () => {
+  const hasChanges = isEqual(originalFormState.value, formState.value);
+  if (hasChanges) {
     return;
   }
 
-  const params = getParams();
+  const params = prepareFormParams();
   loading.value = true;
   const [error] = await funcPlan.putPlan(params);
   loading.value = false;
@@ -262,13 +326,17 @@ const editOk = async () => {
   const id = params.id;
   const name = params.name;
   updateTabPane({ _id: id, name });
-  if (dataSource.value) {
-    dataSource.value.name = name;
+  if (planDetailData.value) {
+    planDetailData.value.name = name;
   }
 };
 
-const addOk = async () => {
-  const params = getParams();
+/**
+ * Handles plan creation operation.
+ * Creates a new plan and updates the tab pane.
+ */
+const handlePlanCreation = async () => {
+  const params = prepareFormParams();
   loading.value = true;
   const [error, res] = await funcPlan.addPlan(params);
   loading.value = false;
@@ -278,23 +346,27 @@ const addOk = async () => {
 
   notification.success(t('functionPlan.editForm.notifications.addSuccess'));
 
-  const _id = props.data?._id;
-  const newId = res?.data?.id;
+  const currentTabId = props.data?._id;
+  const newPlanId = res?.data?.id;
   const name = params.name;
-  if (newId) {
-    replaceTabPane(_id, { _id: newId, uiKey: newId, name, data: { _id: newId, id: newId } });
+  if (newPlanId && currentTabId) {
+    replaceTabPane(currentTabId, { _id: newPlanId, uiKey: newPlanId, name, data: { _id: newPlanId, id: newPlanId } });
   }
 };
 
-const ok = async () => {
+/**
+ * Handles form submission with validation.
+ * Routes to appropriate create or update operation.
+ */
+const handleFormSubmit = async () => {
   formRef.value.validate().then(async () => {
-    if (!editFlag.value) {
-      await addOk();
+    if (!isEditMode.value) {
+      await handlePlanCreation();
     } else {
-      await editOk();
+      await handlePlanUpdate();
     }
 
-    refreshList();
+    refreshPlanList();
   }).catch((error) => {
     if (error.errorFields.length === 1 && error.errorFields[0].name[0] === 'testingScope') {
       activeTabKey.value = 'testingScope';
@@ -302,104 +374,131 @@ const ok = async () => {
   });
 };
 
-const toStart = async () => {
-  const id = dataSource.value?.id;
-  if (!id) {
+/**
+ * Starts the plan execution.
+ * Changes plan status to IN_PROGRESS.
+ */
+const startPlan = async () => {
+  const planId = planDetailData.value?.id;
+  if (!planId) {
     return;
   }
 
   loading.value = true;
-  const [error] = await funcPlan.startPlan(id);
+  const [error] = await funcPlan.startPlan(planId!);
   loading.value = false;
   if (error) {
     return;
   }
 
   notification.success(t('functionPlan.editForm.notifications.planStartSuccess'));
-  await loadData(id);
-  refreshList();
+  await loadPlanData(planId);
+  refreshPlanList();
 };
 
-const toCompleted = async () => {
-  const id = dataSource.value?.id;
-  if (!id) {
+/**
+ * Completes the plan execution.
+ * Changes plan status to COMPLETED.
+ */
+const completePlan = async () => {
+  const planId = planDetailData.value?.id;
+  if (!planId) {
     return;
   }
 
   loading.value = true;
-  const [error] = await funcPlan.endPlan(id);
+  const [error] = await funcPlan.endPlan(planId!);
   loading.value = false;
   if (error) {
     return;
   }
 
   notification.success(t('functionPlan.editForm.notifications.planCompletedSuccess'));
-  await loadData(id);
-  refreshList();
+  await loadPlanData(planId);
+  refreshPlanList();
 };
 
-const toDelete = async () => {
-  const data = dataSource.value;
-  if (!data) {
+/**
+ * Deletes the plan with confirmation dialog.
+ * Removes the plan and updates the tab pane.
+ */
+const deletePlan = async () => {
+  const planData = planDetailData.value;
+  if (!planData) {
     return;
   }
 
   modal.confirm({
-    content: t('functionPlan.editForm.notifications.confirmDeletePlan', { name: data.name }),
+    content: t('functionPlan.editForm.notifications.confirmDeletePlan', { name: planData.name }),
     async onOk () {
-      const id = data.id;
+      const planId = planData.id;
       loading.value = true;
-      const [error] = await funcPlan.deletePlan(id);
+      const [error] = await funcPlan.deletePlan(planId!);
       loading.value = false;
       if (error) {
         return;
       }
 
       notification.success(t('functionPlan.editForm.notifications.planDeleteSuccess'));
-      deleteTabPane([id]);
-      refreshList();
+      deleteTabPane([planId]);
+      refreshPlanList();
     }
   });
 };
 
-const toGrant = () => {
+/**
+ * Opens the authorization modal for plan permissions.
+ */
+const openAuthorizationModal = () => {
   authorizeModalVisible.value = true;
 };
 
-const authFlagChange = async () => {
-  const id = dataSource.value?.id;
-  if (!id) {
+/**
+ * Handles authorization changes.
+ * Reloads plan data and refreshes the list.
+ */
+const handleAuthorizationChange = async () => {
+  const planId = planDetailData.value?.id;
+  if (!planId) {
     return;
   }
 
-  await loadData(id);
-  refreshList();
+  await loadPlanData(planId);
+  refreshPlanList();
 };
 
-const toClone = async () => {
-  const id = dataSource.value?.id;
-  if (!id) {
+/**
+ * Clones the current plan.
+ * Creates a copy of the plan with a new ID.
+ */
+const clonePlan = async () => {
+  const planId = planDetailData.value?.id;
+  if (!planId) {
     return;
   }
 
   loading.value = true;
-  const [error] = await funcPlan.clonePlan(id);
+  const [error] = await funcPlan.clonePlan(planId!);
   loading.value = false;
   if (error) {
     return;
   }
 
   notification.success(t('functionPlan.editForm.notifications.planCloneSuccess'));
-  refreshList();
+  refreshPlanList();
 };
 
-const toResetTestResult = async () => {
-  const id = dataSource.value?.id;
-  if (!id) {
+/**
+ * Resets test results for the plan.
+ * Clears all test execution results.
+ */
+const resetTestResults = async () => {
+  const planId = planDetailData.value?.id;
+  if (!planId) {
     return;
   }
 
-  const params = { ids: [id] };
+  const params = { ids: [planId] };
   loading.value = true;
   const [error] = await funcPlan.resetCaseResult(params);
   loading.value = false;
@@ -408,80 +507,99 @@ const toResetTestResult = async () => {
   }
 
   notification.success(t('functionPlan.editForm.notifications.planResetTestSuccess'));
-  await loadData(id);
-  refreshList();
+  await loadPlanData(planId);
+  refreshPlanList();
 };
 
-const toResetReviewResult = async () => {
-  const id = dataSource.value?.id;
-  if (!id) {
+/**
+ * Resets review results for the plan.
+ * Clears all review results.
+ */
+const resetReviewResults = async () => {
+  const planId = planDetailData.value?.id;
+  if (!planId) {
     return;
   }
 
-  const params = { ids: [id] };
+  const params = { ids: [planId] };
   loading.value = true;
-  const [error] = await funcPlan.resetCaseReview(params, { paramsType: true });
+  const [error] = await funcPlan.resetCaseReview(params);
   loading.value = false;
   if (error) {
     return;
   }
 
   notification.success(t('functionPlan.editForm.notifications.planResetReviewSuccess'));
-  await loadData(id);
-  refreshList();
+  await loadPlanData(planId);
+  refreshPlanList();
 };
 
-const toCopyLink = () => {
-  const id = dataSource.value?.id;
-  if (!id) {
+/**
+ * Copies the plan link to clipboard.
+ * Shows success or error notification.
+ */
+const copyPlanLink = () => {
+  const planId = planDetailData.value?.id;
+  if (!planId) {
     return;
   }
 
-  toClipboard(window.location.origin + `/function#plans?id=${id}`).then(() => {
+  toClipboard(window.location.origin + `/function#plans?id=${planId}`).then(() => {
     notification.success(t('functionPlan.editForm.notifications.copyLinkSuccess'));
   }).catch(() => {
     notification.error(t('functionPlan.editForm.notifications.copyLinkFailed'));
   });
 };
 
-const toRefresh = () => {
-  const id = dataSource.value?.id;
-  if (!id) {
+/**
+ * Refreshes the current plan data.
+ */
+const refreshPlanData = () => {
+  const planId = planDetailData.value?.id;
+  if (!planId) {
     return;
   }
 
-  loadData(id);
+  loadPlanData(planId);
 };
 
-const loadData = async (id: string) => {
+/**
+ * Loads plan detail data from the API.
+ * Updates form state and tab pane title.
+ */
+const loadPlanData = async (planId: string) => {
   if (loading.value) {
     return;
   }
 
   loading.value = true;
-  const [error, res] = await funcPlan.getPlanDetail(id);
+  const [error, res] = await funcPlan.getPlanDetail(planId);
   loading.value = false;
   if (error) {
     return;
   }
 
-  const data = res?.data as PlanDetail;
-  if (!data) {
+  const planData = res?.data as PlanDetail;
+  if (!planData) {
     return;
   }
 
-  dataSource.value = data;
-  setFormData(data);
+  planDetailData.value = planData;
+  initializeFormData(planData);
 
-  const name = data.name;
+  const name = planData.name;
   if (name && typeof updateTabPane === 'function') {
-    updateTabPane({ name, _id: id });
+    updateTabPane({ name, _id: planId });
   }
 };
 
-const setFormData = (data: PlanDetail) => {
+/**
+ * Initializes form data from plan detail or creates default values.
+ * Handles both edit and create modes.
+ */
+const initializeFormData = (planData: PlanDetail) => {
   reviewFlagVisible.value = false;
-  if (!data) {
+  if (!planData) {
     const startDate = dayjs().format(DATE_TIME_FORMAT);
     const deadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
     formState.value = {
@@ -518,8 +636,8 @@ const setFormData = (data: PlanDetail) => {
     testingScope = '',
     otherInformation = '',
     acceptanceCriteria = '',
-    testerResponsibilities = {}
-  } = data;
+    testerResponsibilities = new Map()
+  } = planData;
 
   formState.value.casePrefix = casePrefix;
   formState.value.projectId = projectId;
@@ -532,15 +650,19 @@ const setFormData = (data: PlanDetail) => {
   formState.value.attachments = attachments || [];
   formState.value.date = [startDate, deadlineDate];
 
-  formState.value.testingObjectives = getJson(testingObjectives);
-  formState.value.testingScope = getJson(testingScope);
-  formState.value.otherInformation = getJson(otherInformation);
-  formState.value.acceptanceCriteria = getJson(acceptanceCriteria);
-  formState.value.testerResponsibilities = testerResponsibilities || {};
-  oldFormState.value = JSON.parse(JSON.stringify(formState.value));
+  formState.value.testingObjectives = parseJsonValue(testingObjectives);
+  formState.value.testingScope = parseJsonValue(testingScope);
+  formState.value.otherInformation = parseJsonValue(otherInformation);
+  formState.value.acceptanceCriteria = parseJsonValue(acceptanceCriteria);
+  formState.value.testerResponsibilities = testerResponsibilities || new Map();
+  originalFormState.value = JSON.parse(JSON.stringify(formState.value));
 };
 
-const getJson = (value) => {
+/**
+ * Parses JSON value for rich text fields.
+ * Handles both JSON strings and plain text.
+ */
+const parseJsonValue = (value) => {
   if (!value) {
     return undefined;
   }
@@ -555,13 +677,20 @@ const getJson = (value) => {
   }
 };
 
-const loadEnums = () => {
+/**
+ * Loads evaluation workload method options.
+ */
+const loadWorkloadMethodOptions = () => {
   evalWorkloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
-const loadPermissions = async (id: string) => {
+/**
+ * Loads user permissions for the specified plan.
+ * For admin users, loads all available permissions.
+ */
+const loadUserPermissions = async (planId: string) => {
   if (isAdmin.value) {
-    permissions.value = enumUtils.getEnumValues(FuncPlanPermission);
+    userPermissions.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
   }
 
@@ -569,67 +698,63 @@ const loadPermissions = async (id: string) => {
     admin: true
   };
   loading.value = true;
-  const [error, res] = await funcPlan.getCurrentAuthByPlanId(id, params);
+  const [error, res] = await funcPlan.getCurrentAuthByPlanId(planId, params);
   loading.value = false;
   if (error) {
     return;
   }
 
-  permissions.value = (res?.data?.permissions || []).map(item => item.value);
+  userPermissions.value = (res?.data?.permissions || []).map(item => item.value);
 };
 
-const members = ref([]);
-
-const loadMembers = async () => {
+/**
+ * Loads project members for selection.
+ * Transforms member data for dropdown options.
+ */
+const loadProjectMembers = async () => {
   const [error, res] = await project.getProjectMember(props.projectId);
   if (error) {
     return;
   }
 
-  const data = res?.data || [];
-  members.value = (data || []).map(i => {
+  const memberData = res?.data || [];
+  projectMembers.value = (memberData || []).map(member => {
     return {
-      ...i,
-      label: i.fullName,
-      value: i.id
+      ...member,
+      label: member.fullName,
+      value: member.id
     };
   });
 };
 
+// Lifecycle hooks
 onMounted(() => {
-  loadEnums();
-  loadMembers();
+  loadWorkloadMethodOptions();
+  loadProjectMembers();
 
   watch(() => props.data, async (newValue, oldValue) => {
-    const id = newValue?.id;
-    if (!id) {
+    const planId = newValue?.id;
+    if (!planId) {
       return;
     }
 
-    const oldId = oldValue?.id;
-    if (id === oldId) {
+    const previousPlanId = oldValue?.id;
+    if (planId === previousPlanId) {
       return;
     }
 
-    await loadPermissions(id);
-    await loadData(id);
+    await loadUserPermissions(planId);
+    await loadPlanData(planId);
   }, { immediate: true });
 });
 
-const status = computed(() => {
-  return dataSource.value?.status?.value;
-});
-
-const editFlag = computed(() => {
-  return !!props.data?.id;
-});
-
-const editDisabled = computed(() => {
-  return !!(dataSource.value && [FuncPlanStatus.IN_PROGRESS, FuncPlanStatus.COMPLETED].includes(status.value));
-});
-
+/**
+ * Cancels the edit operation and closes the tab.
+ */
 const cancelEdit = async () => {
-  deleteTabPane([props.data._id]);
+  if (props.data?._id) {
+    deleteTabPane([props.data._id]);
+  }
 };
 </script>
 
@@ -637,76 +762,76 @@ const cancelEdit = async () => {
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="flex items-center space-x-2.5 mb-5">
       <Button
-        :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.MODIFY_PLAN)"
+        :disabled="!isAdmin && !userPermissions.includes(FuncPlanPermission.MODIFY_PLAN)"
         type="primary"
         size="small"
         class="flex items-center space-x-1"
-        @click="ok">
+        @click="handleFormSubmit">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
         <span>{{ t('functionPlan.editForm.buttons.save') }}</span>
       </Button>
 
-      <template v-if="editFlag">
+      <template v-if="isEditMode">
         <Button
-          v-if="status === FuncPlanStatus.COMPLETED"
-          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.MODIFY_PLAN)"
+          v-if="currentPlanStatus === FuncPlanStatus.COMPLETED"
+          :disabled="!isAdmin && !userPermissions.includes(FuncPlanPermission.MODIFY_PLAN)"
           size="small"
           type="default"
           class="flex items-center space-x-1"
-          @click="toStart">
+          @click="startPlan">
           <Icon icon="icon-kaishi" class="text-3.5" />
           <span>{{ t('functionPlan.editForm.buttons.restart') }}</span>
         </Button>
 
         <Button
-          v-else-if="[FuncPlanStatus.PENDING, FuncPlanStatus.BLOCKED].includes(status)"
-          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.MODIFY_PLAN)"
+          v-else-if="currentPlanStatus && [FuncPlanStatus.PENDING, FuncPlanStatus.BLOCKED].includes(currentPlanStatus)"
+          :disabled="!isAdmin && !userPermissions.includes(FuncPlanPermission.MODIFY_PLAN)"
           size="small"
           type="default"
           class="flex items-center space-x-1"
-          @click="toStart">
+          @click="startPlan">
           <Icon icon="icon-kaishi" class="text-3.5" />
           <span>{{ t('functionPlan.editForm.buttons.start') }}</span>
         </Button>
 
-        <template v-if="status === FuncPlanStatus.IN_PROGRESS">
+        <template v-if="currentPlanStatus === FuncPlanStatus.IN_PROGRESS">
           <Button
-            :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.MODIFY_PLAN)"
+            :disabled="!isAdmin && !userPermissions.includes(FuncPlanPermission.MODIFY_PLAN)"
             size="small"
             type="default"
             class="flex items-center space-x-1"
-            @click="toCompleted">
+            @click="completePlan">
             <Icon icon="icon-yiwancheng" class="text-3.5" />
             <span>{{ t('functionPlan.editForm.buttons.complete') }}</span>
           </Button>
 
           <Button
-            :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.MODIFY_PLAN)"
+            :disabled="!isAdmin && !userPermissions.includes(FuncPlanPermission.MODIFY_PLAN)"
             size="small"
             type="default"
             class="flex items-center space-x-1"
-            @click="toCompleted">
+            @click="completePlan">
             <Icon icon="icon-zusai" class="text-3.5" />
             <span>{{ t('functionPlan.editForm.buttons.block') }}</span>
           </Button>
         </template>
 
         <Button
-          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.DELETE_PLAN)"
+          :disabled="!isAdmin && !userPermissions.includes(FuncPlanPermission.DELETE_PLAN)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
-          @click="toDelete">
+          @click="deletePlan">
           <Icon icon="icon-qingchu" class="text-3.5" />
           <span>{{ t('functionPlan.editForm.buttons.delete') }}</span>
         </Button>
 
         <Button
-          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.GRANT)"
+          :disabled="!isAdmin && !userPermissions.includes(FuncPlanPermission.GRANT)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
-          @click="toGrant">
+          @click="openAuthorizationModal">
           <Icon icon="icon-quanxian1" class="text-3.5" />
           <span>{{ t('functionPlan.editForm.buttons.permission') }}</span>
         </Button>
@@ -715,27 +840,27 @@ const cancelEdit = async () => {
           type="default"
           size="small"
           class="flex items-center space-x-1"
-          @click="toClone">
+          @click="clonePlan">
           <Icon icon="icon-fuzhizujian2" class="text-3.5" />
           <span>{{ t('functionPlan.editForm.buttons.clone') }}</span>
         </Button>
 
         <Button
-          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.RESET_TEST_RESULT)"
+          :disabled="!isAdmin && !userPermissions.includes(FuncPlanPermission.RESET_TEST_RESULT)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
-          @click="toResetTestResult">
+          @click="resetTestResults">
           <Icon icon="icon-zhongzhiceshijieguo" class="text-3.5" />
           <span>{{ t('functionPlan.editForm.buttons.resetTest') }}</span>
         </Button>
 
         <Button
-          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.RESET_REVIEW_RESULT)"
+          :disabled="!isAdmin && !userPermissions.includes(FuncPlanPermission.RESET_REVIEW_RESULT)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
-          @click="toResetReviewResult">
+          @click="resetReviewResults">
           <Icon icon="icon-zhongzhipingshenjieguo" class="text-3.5" />
           <span>{{ t('functionPlan.editForm.buttons.resetReview') }}</span>
         </Button>
@@ -744,7 +869,7 @@ const cancelEdit = async () => {
           type="default"
           size="small"
           class="flex items-center space-x-1"
-          @click="toCopyLink">
+          @click="copyPlanLink">
           <Icon icon="icon-fuzhi" class="text-3.5" />
           <span>{{ t('functionPlan.editForm.buttons.copyLink') }}</span>
         </Button>
@@ -753,7 +878,7 @@ const cancelEdit = async () => {
           type="default"
           size="small"
           class="flex items-center space-x-1"
-          @click="toRefresh">
+          @click="refreshPlanData">
           <Icon icon="icon-shuaxin" class="text-3.5" />
           <span>{{ t('functionPlan.editForm.buttons.refresh') }}</span>
         </Button>
@@ -794,7 +919,7 @@ const cancelEdit = async () => {
         :rules="{ required: true, message: t('functionPlan.editForm.form.selectOwner') }">
         <Select
           v-model:value="formState.ownerId"
-          :options="members"
+          :options="projectMembers"
           size="small"
           :placeholder="t('functionPlan.editForm.form.selectOwnerPlaceholder')" />
         <Tooltip
@@ -813,7 +938,7 @@ const cancelEdit = async () => {
       <FormItem
         :label="t('functionPlan.editForm.form.timePlan')"
         name="date"
-        :rules="{ required: true, validator: validateDate, trigger: 'change' }">
+        :rules="{ required: true, validator: validateDateRange, trigger: 'change' }">
         <DatePicker
           v-model:value="formState.date"
           format="YYYY-MM-DD HH:mm:ss"
@@ -838,14 +963,14 @@ const cancelEdit = async () => {
         :label="t('functionPlan.editForm.form.testers')"
         name="testerResponsibilities"
         class="relative"
-        :rules="[{ required: true }, { validator: validateTester }]">
+        :rules="[{ required: true }, { validator: validateTesterSelection }]">
         <TesterSelect
           ref="testerSelectRef"
           class="inline-block w-full"
           :value="formState.testerResponsibilities"
-          :members="dataSource?.members"
-          :membersOptions="members"
-          @change="changeTester" />
+          :members="planDetailData?.members"
+          :membersOptions="projectMembers"
+          @change="handleTesterChange" />
         <Tooltip
           placement="right"
           arrowPointAtCenter
@@ -872,16 +997,16 @@ const cancelEdit = async () => {
           <template #title>
             <div>
               <span class="mr-2">{{ t('functionPlan.editForm.form.reviewCloseConfirm') }}</span>
-              <a class="text-theme-special" @click="handleReviewFlagOk">{{ t('functionPlan.editForm.form.confirm') }}</a>
+              <a class="text-theme-special" @click="confirmDisableReview">{{ t('functionPlan.editForm.form.confirm') }}</a>
               <Divider type="vertical" />
-              <a class="text-theme-special" @click="handleReviewFlagCancel">{{ t('functionPlan.editForm.form.cancel') }}</a>
+              <a class="text-theme-special" @click="cancelDisableReview">{{ t('functionPlan.editForm.form.cancel') }}</a>
             </div>
           </template>
           <Switch
             :checked="formState.review"
-            :disabled="editDisabled"
+            :disabled="isEditDisabled"
             size="small"
-            @change="reviewFlagChange" />
+            @change="handleReviewFlagChange" />
         </Tooltip>
         <Tooltip
           placement="right"
@@ -902,7 +1027,7 @@ const cancelEdit = async () => {
         class="flex-1">
         <RadioGroup
           v-model:value="formState.evalWorkloadMethod"
-          :disabled="editDisabled"
+          :disabled="isEditDisabled"
           class="mt-0.5">
           <Radio
             v-for="item in evalWorkloadMethodOptions"
@@ -931,8 +1056,8 @@ const cancelEdit = async () => {
         <Input
           v-model:value="formState.casePrefix"
           size="small"
-          :readonly="!!dataSource?.id"
-          :disabled="!!dataSource?.id"
+          :readonly="!!planDetailData?.id"
+          :disabled="!!planDetailData?.id"
           :maxlength="40"
           :placeholder="t('functionPlan.editForm.form.casePrefixPlaceholder')" />
         <Tooltip
@@ -952,7 +1077,7 @@ const cancelEdit = async () => {
             :fileList="[]"
             name="file"
             accept=".jpg,.bmp,.png,.gif,.txt,.docx,.jpeg,.rar,.zip,.doc,.xlsx,.xls,.pdf"
-            :customRequest="upLoadFile">
+            :customRequest="handleFileUpload">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
               <Icon icon="icon-lianjie1" class="mr-1" />
               <span class="whitespace-nowrap">{{ t('functionPlan.editForm.form.uploadAttachments') }}</span>
@@ -986,7 +1111,7 @@ const cancelEdit = async () => {
           <Icon
             icon="icon-qingchu"
             class="text-theme-special text-theme-text-hover cursor-pointer flex-shrink-0 leading-4 text-3.5"
-            @click="delFile(index)" />
+            @click="removeAttachment(index)" />
         </div>
       </FormItem>
 
@@ -1005,7 +1130,7 @@ const cancelEdit = async () => {
             label=""
             class="!mb-5"
             name="testingObjectives"
-            :rules="[{ validator: validateRequired, message: t('functionPlan.editForm.form.enterTestingObjectives') }, {validator: validateMaxLength}]">
+            :rules="[{ validator: validateRequiredRichText, message: t('functionPlan.editForm.form.enterTestingObjectives') }, {validator: validateRichTextMaxLength}]">
             <RichEditor
               ref="objectiveRichRef"
               v-model:value="formState.testingObjectives"
@@ -1021,7 +1146,7 @@ const cancelEdit = async () => {
             label=""
             name="testingScope"
             class="!mb-5"
-            :rules="[{ validator: validateRequired, message: t('functionPlan.editForm.form.enterTestingScope') }, {validator: validateMaxLength}]">
+            :rules="[{ validator: validateRequiredRichText, message: t('functionPlan.editForm.form.enterTestingScope') }, {validator: validateRichTextMaxLength}]">
             <RichEditor
               ref="scopeRichRef"
               v-model:value="formState.testingScope"
@@ -1035,7 +1160,7 @@ const cancelEdit = async () => {
           <FormItem
             label=""
             name="acceptanceCriteria"
-            :rules="[{validator: validateMaxLength}]">
+            :rules="[{validator: validateRichTextMaxLength}]">
             <RichEditor
               ref="criteriaRichRef"
               v-model:value="formState.acceptanceCriteria"
@@ -1049,7 +1174,7 @@ const cancelEdit = async () => {
           <FormItem
             label=""
             name="otherInformation"
-            :rules="[{validator: validateMaxLength}]">
+            :rules="[{validator: validateRichTextMaxLength}]">
             <RichEditor
               ref="infoRichRef"
               v-model:value="formState.otherInformation"
@@ -1063,17 +1188,17 @@ const cancelEdit = async () => {
       <AuthorizeModal
         v-model:visible="authorizeModalVisible"
         enumKey="FuncPlanPermission"
-        :appId="props.appInfo?.id"
-        :listUrl="`${TESTER}/func/plan/auth?planId=${dataSource?.id}`"
+        :appId="String(props.appInfo?.id || '')"
+        :listUrl="`${TESTER}/func/plan/auth?planId=${planDetailData?.id}`"
         :delUrl="`${TESTER}/func/plan/auth`"
-        :addUrl="`${TESTER}/func/plan/${dataSource?.id}/auth`"
+        :addUrl="`${TESTER}/func/plan/${planDetailData?.id}/auth`"
         :updateUrl="`${TESTER}/func/plan/auth`"
-        :enabledUrl="`${TESTER}/func/plan/${dataSource?.id}/auth/enabled`"
-        :initStatusUrl="`${TESTER}/func/plan/${dataSource?.id}/auth/status`"
+        :enabledUrl="`${TESTER}/func/plan/${planDetailData?.id}/auth/enabled`"
+        :initStatusUrl="`${TESTER}/func/plan/${planDetailData?.id}/auth/status`"
         :onTips="t('functionPlan.editForm.permissionModal.onTips')"
         :offTips="t('functionPlan.editForm.permissionModal.offTips')"
         :title="t('functionPlan.editForm.permissionModal.title')"
-        @change="authFlagChange" />
+        @change="handleAuthorizationChange" />
     </AsyncComponent>
   </Spin>
 </template>

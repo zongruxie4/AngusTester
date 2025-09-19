@@ -5,114 +5,133 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
+// Interfaces
 interface Props {
     value: {[userId: string]: string};
     members: {fullName: string; id: string}[];
     membersOptions: {fullName: string; id: string, value: string; label: string;}[];
 }
 
+// Props
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({}),
   members: () => ([]),
   membersOptions: () => ([])
 });
 
+// Emits
 const emits = defineEmits<{(e: 'change', value: {[userId: string]: string})}>();
 
-const data = ref<{id?: string; fullName?: string; description: string}[]>([]);
-
-const change = () => {
-  emits('change', getData());
-};
-
-const onUserChange = () => {
-  if (data.value.every(i => i.id)) {
-    data.value.push({ id: undefined, fullName: '', description: '' });
-  }
-  change();
-};
-
+// Reactive data
+const testerList = ref<{id?: string; fullName?: string; description: string}[]>([]);
 const defaultUserOptions = ref({});
 
-const repeatIds = computed(() => {
+// Computed properties
+const duplicateUserIds = computed(() => {
   const result: string[] = [];
-  data.value.reduce((pre, current) => {
-    if (current.id && pre.includes(current.id)) {
-      result.push(current.id);
-    } else {
-      current.id && pre.push(current.id);
+  const seenIds: string[] = [];
+  testerList.value.forEach(currentTester => {
+    if (currentTester.id) {
+      if (seenIds.includes(currentTester.id)) {
+        result.push(currentTester.id);
+      } else {
+        seenIds.push(currentTester.id);
+      }
     }
-    return pre;
-  }, []);
+  });
   return result;
 });
 
-const getData = () => {
+/**
+ * Emits the current tester data to parent component.
+ */
+const emitTesterData = () => {
+  emits('change', getTesterData());
+};
+
+/**
+ * Handles user selection change event.
+ * Adds a new empty row if all current rows have users selected.
+ */
+const handleUserSelectionChange = () => {
+  if (testerList.value.every(tester => tester.id)) {
+    testerList.value.push({ id: undefined, fullName: '', description: '' });
+  }
+  emitTesterData();
+};
+
+/**
+ * Extracts tester data from the current list.
+ * Returns an object mapping user IDs to their descriptions.
+ */
+const getTesterData = () => {
   const result = {};
-  data.value.forEach(i => {
-    if (i.id) {
-      result[i.id] = i.description;
+  testerList.value.forEach(tester => {
+    if (tester.id) {
+      result[tester.id] = tester.description;
     }
   });
   return result;
 };
 
+// Lifecycle hooks
 onMounted(() => {
   watch(() => props.value, () => {
     if (props.value) {
-      const propsValue = Object.keys(props.value).map(id => {
-        const fullName = (props.members || []).find(user => user.id === id)?.fullName;
-        defaultUserOptions.value[id] = { label: fullName, value: id, fullName, id };
-        if (data.value.find(user => user.id === id)) {
+      const existingTesterData = Object.keys(props.value).map(userId => {
+        const fullName = (props.members || []).find(member => member.id === userId)?.fullName;
+        defaultUserOptions.value[userId] = { label: fullName, value: userId, fullName, id: userId };
+        if (testerList.value.find(tester => tester.id === userId)) {
           return null;
         }
         return {
-          id: id,
-          description: props.value[id],
+          id: userId,
+          description: props.value[userId],
           fullName
         };
-      }).filter(Boolean);
-      data.value.unshift(...propsValue);
+      }).filter((item): item is {id: string; description: string; fullName: string | undefined} => item !== null);
+      testerList.value.unshift(...existingTesterData);
     }
 
-    if (data.value.find(user => !user.id)) {
+    if (testerList.value.find(tester => !tester.id)) {
       return;
     }
-    data.value.push({ id: undefined, fullName: '', description: '' });
+    testerList.value.push({ id: undefined, fullName: '', description: '' });
   }, {
     immediate: true
   });
 });
+
+// Exposed methods
 defineExpose({
-  getData,
+  getData: getTesterData,
   validate: () => {
-    return !repeatIds.value.length;
+    return !duplicateUserIds.value.length;
   }
 });
-
 </script>
 <template>
   <div class="text-3 rounded space-y-2">
     <div
-      v-for="(item, idx) in data"
-      :key="idx"
+      v-for="(tester, index) in testerList"
+      :key="index"
       class="flex space-x-2">
       <Select
-        v-model:value="data[idx].id"
+        v-model:value="testerList[index].id"
         :defaultOptions="defaultUserOptions"
         :options="props.membersOptions"
-        :error="!!item.id && repeatIds.includes(item.id)"
+        :error="!!tester.id && duplicateUserIds.includes(tester.id)"
         size="small"
         allowClear
         :placeholder="t('functionPlan.editForm.testerSelect.selectPersonnel')"
         class="!w-50"
-        @change="onUserChange" />
+        @change="handleUserSelectionChange" />
       <div class="flex-1">
         <Input
-          v-model:value="item.description"
+          v-model:value="tester.description"
           :maxlength="1000"
           :placeholder="t('functionPlan.editForm.testerSelect.workResponsibilities')"
-          @blur="change" />
+          @blur="emitTesterData" />
       </div>
     </div>
   </div>

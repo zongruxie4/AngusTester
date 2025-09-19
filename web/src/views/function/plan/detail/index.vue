@@ -12,6 +12,7 @@ import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
+// Props
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -19,30 +20,57 @@ const props = withDefaults(defineProps<BasicProps>(), {
   data: undefined
 });
 
+// Async components
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 const BurnDownChart = defineAsyncComponent(() => import('@/views/function/plan/detail/BurndownChart.vue'));
 const MemberProgress = defineAsyncComponent(() => import('@/views/function/plan/detail/MemberProgress.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/function/home/WorkCalendar.vue'));
 
+// Injected dependencies
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const setCaseListPlanParam = inject<(value: any) => void>('setCaseListPlanParam');
-const isAdmin = computed(() => appContext.isAdmin());
 
+// Computed properties
+const isAdmin = computed(() => appContext.isAdmin());
+const currentPlanId = computed(() => {
+  return planDetailData.value?.id;
+});
+const attachmentList = computed(() => {
+  return planDetailData.value?.attachments || [];
+});
+
+// Reactive data
 const loading = ref(false);
 const exportLoading = ref(false);
-
-const permissions = ref<string[]>([]);
-const dataSource = ref<PlanDetail>();
+const userPermissions = ref<string[]>([]);
+const planDetailData = ref<PlanDetail>();
 const testerResponsibilities = ref<{id:string;name:string;content:string;}[]>([]);
 const completedRate = ref(0);
 
-const goCase = () => {
-  setCaseListPlanParam({ ...dataSource.value, planId: dataSource.value?.id, planName: dataSource.value?.name });
+/**
+ * Navigates to the case list view with the current plan parameters.
+ * <p>
+ * Passes plan details including ID and name to the case list component.
+ * </p>
+ */
+const navigateToCaseList = () => {
+  setCaseListPlanParam?.({
+    ...planDetailData.value,
+    planId: planDetailData.value?.id,
+    planName: planDetailData.value?.name
+  });
 };
 
-const loadPermissions = async (id: string) => {
+/**
+ * Loads user permissions for the specified plan ID.
+ * <p>
+ * For admin users, loads all available permissions. For regular users,
+ * fetches specific permissions from the API.
+ * </p>
+ */
+const loadUserPermissions = async (planId: string) => {
   if (isAdmin.value) {
-    permissions.value = enumUtils.getEnumValues(FuncPlanPermission);
+    userPermissions.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
   }
 
@@ -50,59 +78,92 @@ const loadPermissions = async (id: string) => {
     admin: true
   };
   loading.value = true;
-  const [error, res] = await funcPlan.getCurrentAuthByPlanId(id, params);
+  const [error, res] = await funcPlan.getCurrentAuthByPlanId(planId, params);
   loading.value = false;
   if (error) {
     return;
   }
-  permissions.value = (res?.data?.permissions || []).map(item => item.value);
+  userPermissions.value = (res?.data?.permissions || []).map(item => item.value);
 };
 
-const loadData = async (id: string) => {
+/**
+ * <p>
+ * Loads detailed plan information from the API.
+ * </p>
+ * <p>
+ * Processes the plan data, calculates completion rate, builds tester responsibilities
+ * list, and updates the tab pane title.
+ * </p>
+ */
+const loadPlanDetailData = async (planId: string) => {
   if (loading.value) {
     return;
   }
 
   loading.value = true;
-  const [error, res] = await funcPlan.getPlanDetail(id);
+  const [error, res] = await funcPlan.getPlanDetail(planId);
   loading.value = false;
   if (error) {
     return;
   }
 
-  const data = res?.data as PlanDetail;
-  if (!data) {
+  const planData = res?.data as PlanDetail;
+  if (!planData) {
     return;
   }
 
-  dataSource.value = data;
-  if (dataSource.value.progress?.completedRate) {
-    completedRate.value = +dataSource.value.progress.completedRate.replace(/(\d+\.\d{2})\d+/, '$1');
+  planDetailData.value = planData;
+  if (planDetailData.value.progress?.completedRate) {
+    completedRate.value = +String(planDetailData.value.progress.completedRate).replace(/(\d+\.\d{2})\d+/, '$1');
   }
 
+  buildTesterResponsibilitiesList(planData);
+  updateTabPaneTitle(planData.name, planId);
+};
+
+/**
+ * Builds the tester responsibilities list from plan members data.
+ * <p>
+ * Maps member information with their assigned responsibilities.
+ * </p>
+ */
+const buildTesterResponsibilitiesList = (planData: PlanDetail) => {
   testerResponsibilities.value = [];
-  const members = data.members || [];
+  const members = planData.members || [];
   for (let i = 0, len = members.length; i < len; i++) {
     const { id, fullName } = members[i];
     testerResponsibilities.value.push({
       name: fullName,
       ...members[i],
-      content: dataSource.value.testerResponsibilities[id]
+      content: planDetailData.value?.testerResponsibilities?.[id]
     });
-  }
-
-  const name = data.name;
-  if (name && typeof updateTabPane === 'function') {
-    updateTabPane({ name, _id: id + '-case' });
   }
 };
 
-const toExport = async () => {
-  if (!dataSource.value) {
+/**
+ * Updates the tab pane title with the plan name.
+ * <p>
+ * Generates a unique tab ID for case-related navigation.
+ * </p>
+ */
+const updateTabPaneTitle = (planName: string, planId: string) => {
+  if (planName && typeof updateTabPane === 'function') {
+    updateTabPane({ name: planName, _id: planId + '-case' });
+  }
+};
+
+/**
+ * Exports test cases for the current plan.
+ * <p>
+ * Downloads a file containing all test cases associated with the plan.
+ * </p>
+ */
+const exportTestCases = async () => {
+  if (!planDetailData.value) {
     return;
   }
 
-  const { id, projectId } = dataSource.value;
+  const { id, projectId } = planDetailData.value;
   if (exportLoading.value) {
     return;
   }
@@ -112,51 +173,39 @@ const toExport = async () => {
   exportLoading.value = false;
 };
 
-const toCopyHref = () => {
-  const message = window.location.origin + '/function#plans?id=' + planId.value;
-  toClipboard(message).then(() => {
+/**
+ * Copies the current plan URL to the clipboard.
+ * <p>
+ * Shows success or error notifications based on the operation result.
+ * </p>
+ */
+const copyPlanUrl = () => {
+  const planUrl = window.location.origin + '/function#plans?id=' + currentPlanId.value;
+  toClipboard(planUrl).then(() => {
     notification.success(t('tips.copySuccess'));
   }).catch(() => {
     notification.error(t('functionPlan.planDetail.notifications.copyFailed'));
   });
 };
 
-const toRefresh = async () => {
-  const id = planId.value;
-  if (!id) {
+/**
+ * Refreshes the plan detail data and permissions.
+ * <p>
+ * Reloads both user permissions and plan detail information.
+ * </p>
+ */
+const refreshPlanData = async () => {
+  const planId = currentPlanId.value;
+  if (!planId) {
     return;
   }
 
-  await loadPermissions(id);
-  await loadData(id);
+  await loadUserPermissions(planId);
+  await loadPlanDetailData(planId);
 };
 
-onMounted(() => {
-  watch(() => props.data, async (newValue, oldValue) => {
-    const id = newValue?.id;
-    if (!id) {
-      return;
-    }
-
-    const oldId = oldValue?.id;
-    if (id === oldId) {
-      return;
-    }
-
-    await loadPermissions(id);
-    await loadData(id);
-  }, { immediate: true });
-});
-
-const planId = computed(() => {
-  return dataSource.value?.id;
-});
-
-const attachments = computed(() => {
-  return dataSource.value?.attachments || [];
-});
-
-const columns = [
+// Table configurations
+const testerTableColumns = [
   {
     key: 'name',
     dataIndex: 'name',
@@ -172,7 +221,7 @@ const columns = [
   }
 ];
 
-const gridColumns = [
+const basicInfoGridColumns = [
   [
     {
       dataIndex: 'name',
@@ -214,6 +263,24 @@ const gridColumns = [
     }
   ]
 ];
+
+// Lifecycle hooks
+onMounted(() => {
+  watch(() => props.data, async (newValue, oldValue) => {
+    const planId = newValue?.id;
+    if (!planId) {
+      return;
+    }
+
+    const previousPlanId = oldValue?.id;
+    if (planId === previousPlanId) {
+      return;
+    }
+
+    await loadUserPermissions(planId);
+    await loadPlanDetailData(planId);
+  }, { immediate: true });
+});
 </script>
 
 <template>
@@ -225,28 +292,28 @@ const gridColumns = [
         class="p-0">
         <RouterLink
           class="flex items-center space-x-1 leading-6.5 px-1.75"
-          :to="`/function#plans?id=${planId}&type=edit`">
+          :to="`/function#plans?id=${currentPlanId}&type=edit`">
           <Icon icon="icon-shuxie" class="text-3.5" />
           <span>{{ t('functionPlan.planDetail.buttons.edit') }}</span>
         </RouterLink>
       </Button>
 
       <Button
-        :disabled="!isAdmin && permissions.length === 0"
+        :disabled="!isAdmin && userPermissions.length === 0"
         type="default"
         size="small"
         class="flex items-center space-x-1"
-        @click="goCase">
+        @click="navigateToCaseList">
         <Icon icon="icon-ceshiyongli1" class="text-3.5" />
         <span>{{ t('functionPlan.planDetail.buttons.viewCases') }}</span>
       </Button>
 
       <Button
-        :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.EXPORT_CASE)"
+        :disabled="!isAdmin && !userPermissions.includes(FuncPlanPermission.EXPORT_CASE)"
         type="default"
         size="small"
         class="flex items-center space-x-1"
-        @click="toExport">
+        @click="exportTestCases">
         <Icon icon="icon-daochu" class="text-3.5" />
         <span>{{ t('functionPlan.planDetail.buttons.exportCases') }}</span>
       </Button>
@@ -254,7 +321,7 @@ const gridColumns = [
       <Button
         size="small"
         class="flex items-center"
-        @click="toCopyHref">
+        @click="copyPlanUrl">
         <Icon class="mr-1 flex-shrink-0" icon="icon-fuzhi" />
         <span>{{ t('functionPlan.planDetail.buttons.copyLink') }}</span>
       </Button>
@@ -263,7 +330,7 @@ const gridColumns = [
         type="default"
         size="small"
         class="flex items-center"
-        @click="toRefresh">
+        @click="refreshPlanData">
         <Icon class="mr-1 flex-shrink-0" icon="icon-shuaxin" />
         <span>{{ t('functionPlan.planDetail.buttons.refresh') }}</span>
       </Button>
@@ -272,26 +339,26 @@ const gridColumns = [
     <div class="max-w-250 mb-2">
       <div class="text-theme-title mb-2">{{ t('functionPlan.planDetail.basicInfo.title') }}</div>
       <Grid
-        :columns="gridColumns"
-        :dataSource="dataSource">
+        :columns="basicInfoGridColumns"
+        :dataSource="planDetailData">
         <template #time>
           <div class="text-3 whitespace-nowrap">
-            <span>{{ dataSource?.startDate }}</span>
+            <span>{{ planDetailData?.startDate }}</span>
             <span class="mx-2">{{ t('functionPlan.planDetail.basicInfo.to') }}</span>
-            <span>{{ dataSource?.deadlineDate }}</span>
+            <span>{{ planDetailData?.deadlineDate }}</span>
           </div>
         </template>
         <template #review>
-          {{ dataSource?.review?t('status.yes'):t('status.no') }}
+          {{ planDetailData?.review?t('status.yes'):t('status.no') }}
         </template>
         <template #workloadAssessment>
-          {{ dataSource?.evalWorkloadMethod?.message }}
+          {{ planDetailData?.evalWorkloadMethod?.message }}
         </template>
         <template #status>
           <div
             class="text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
-            <div class="h-1.5 w-1.5 rounded-full mr-1" :class="dataSource?.status?.value"></div>
-            <div>{{ dataSource?.status?.message }}</div>
+            <div class="h-1.5 w-1.5 rounded-full mr-1" :class="planDetailData?.status?.value"></div>
+            <div>{{ planDetailData?.status?.message }}</div>
           </div>
         </template>
         <template #progress>
@@ -300,8 +367,8 @@ const gridColumns = [
         <template #attachments>
           <div class="space-y-1 truncate">
             <a
-              v-for="item in attachments"
-              :key="item.id"
+              v-for="(item, index) in attachmentList"
+              :key="index"
               class="block w-auto truncate"
               :download="item.name"
               :href="item.url">
@@ -315,9 +382,11 @@ const gridColumns = [
     <Tabs size="small" class="max-w-250">
       <TabPane key="testerResponsibilities" :tab="t('functionPlan.planDetail.tabs.testers')">
         <Table
-          :columns="columns"
+          :columns="testerTableColumns"
           :dataSource="testerResponsibilities"
-          :pagination="false">
+          :pagination="false"
+          :noDataSize="'small'"
+          :noDataText="t('common.noData')">
           <template #bodyCell="{record, column}">
             <template v-if="column.dataIndex === 'name'">
               <div class="flex items-center">
@@ -334,46 +403,46 @@ const gridColumns = [
       <TabPane key="testingObjectives" :tab="t('functionPlan.planDetail.tabs.testingObjectives')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
-            v-if="dataSource?.otherInformation"
-            :value="dataSource.testingObjectives"
+            v-if="planDetailData?.otherInformation"
+            :value="planDetailData.testingObjectives"
             mode="view" />
         </div>
       </TabPane>
       <TabPane key="testingScope" :tab="t('functionPlan.planDetail.tabs.testingScope')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
-            v-if="dataSource?.otherInformation"
-            :value="dataSource.testingScope"
+            v-if="planDetailData?.otherInformation"
+            :value="planDetailData.testingScope"
             mode="view" />
         </div>
       </TabPane>
       <TabPane key="acceptanceCriteria" :tab="t('functionPlan.planDetail.tabs.acceptanceCriteria')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
-            v-if="dataSource?.acceptanceCriteria"
-            :value="dataSource.acceptanceCriteria"
+            v-if="planDetailData?.acceptanceCriteria"
+            :value="planDetailData.acceptanceCriteria"
             mode="view" />
         </div>
       </TabPane>
       <TabPane key="otherInformation" :tab="t('functionPlan.planDetail.tabs.otherInformation')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
-            v-if="dataSource?.otherInformation"
-            :value="dataSource.otherInformation"
+            v-if="planDetailData?.otherInformation"
+            :value="planDetailData.otherInformation"
             mode="view" />
         </div>
       </TabPane>
       <TabPane key="chart" :tab="t('functionPlan.planDetail.tabs.burnDownChart')">
-        <BurnDownChart :planId="planId" />
+        <BurnDownChart :planId="currentPlanId" />
       </TabPane>
       <TabPane key="progress" :tab="t('functionPlan.planDetail.tabs.memberProgress')">
-        <MemberProgress :planId="planId" :projectId="props.projectId" />
+        <MemberProgress :planId="currentPlanId" :projectId="props.projectId" />
       </TabPane>
       <TabPane key="workCalendar" :tab="t('functionPlan.planDetail.tabs.workCalendar')">
         <WorkCalendar
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :planId="planId" />
+          :userInfo="props.userInfo as any"
+          :planId="currentPlanId" />
       </TabPane>
     </Tabs>
   </Spin>

@@ -9,8 +9,10 @@ import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { LoadingProps } from '@/types/types';
 
+// composables
 const { t } = useI18n();
 
+// props and emits
 const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false
 });
@@ -23,17 +25,22 @@ const emits = defineEmits<{(e: 'change', value: {
   filters: SearchCriteria[];
 }):void,
  (e: 'refresh'):void}>();
-const userInfo = ref(appContext.getUser());
 
+// reactive data
+const userInfo = ref(appContext.getUser());
 const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
+const planStatusOptions = ref<{name: string; key: string}[]>([]);
 
-const planStatusTypeOpt = ref<{name: string; key: string}[]>([]);
+/**
+ * Loads plan status enum options and maps them to display format
+ */
 const loadStatusEnum = () => {
   const data = enumUtils.enumToMessages(FuncPlanStatus);
-  planStatusTypeOpt.value = data.map(i => ({ name: i.message, key: i.value }));
+  planStatusOptions.value = data.map(i => ({ name: i.message, key: i.value }));
 };
 
+// Configuration data
 const searchPanelOptions = [
   {
     valueKey: 'name',
@@ -103,6 +110,7 @@ const sortMenuItems: {
   }
 ];
 
+// computed properties
 const menuItems = computed(() => [
   {
     key: '',
@@ -120,7 +128,7 @@ const menuItems = computed(() => [
     key: 'lastModifiedBy',
     name: t('quickSearchTags.modifiedByMe')
   },
-  ...planStatusTypeOpt.value,
+  ...planStatusOptions.value,
   {
     key: 'lastDay',
     name: t('quickSearchTags.lastDay')
@@ -135,6 +143,7 @@ const menuItems = computed(() => [
   }
 ]);
 
+// search state
 const orderBy = ref();
 const orderSort = ref();
 const searchFilters = ref<SearchCriteria[]>([]);
@@ -143,6 +152,11 @@ const assocFilters = ref<SearchCriteria[]>([]);
 const assocKeys = ['ownerId'];
 const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
 
+/**
+ * Formats date range based on time key for quick search filters
+ * @param key - Time key for date range calculation
+ * @returns Array of date filter criteria
+ */
 const formatDateString = (key: string) => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
@@ -166,20 +180,24 @@ const formatDateString = (key: string) => {
     startDate
       ? {
           value: startDate.format(DATE_TIME_FORMAT),
-          op: 'GREATER_THAN_EQUAL',
+          op: SearchCriteria.OpEnum.GreaterThanEqual,
           key: 'createdDate'
         }
       : '',
     endDate
       ? {
           value: endDate.format(DATE_TIME_FORMAT),
-          op: 'LESS_THAN_EQUAL',
+          op: SearchCriteria.OpEnum.LessThanEqual,
           key: 'createdDate'
         }
       : ''].filter(Boolean);
 };
 
-const getParams = () => {
+/**
+ * Combines all search filters and sorting parameters
+ * @returns Combined search parameters object
+ */
+const getSearchParams = () => {
   return {
     filters: [
       ...quickSearchFilters.value,
@@ -191,7 +209,11 @@ const getParams = () => {
   };
 };
 
-const searchChange = (data: SearchCriteria[]) => {
+/**
+ * Handles search panel filter changes and updates associated filters
+ * @param data - Array of search criteria from search panel
+ */
+const handleSearchChange = (data: SearchCriteria[]) => {
   searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
   assocFilters.value = data.filter(item => assocKeys.includes(item.key));
 
@@ -208,18 +230,28 @@ const searchChange = (data: SearchCriteria[]) => {
     });
   }
 
-  emits('change', getParams());
-};
-const toSort = (sortData) => {
-  orderBy.value = sortData.orderBy;
-  orderSort.value = sortData.orderSort;
-  emits('change', getParams());
+  emits('change', getSearchParams());
 };
 
-const menuItemClick = (data) => {
+/**
+ * Handles sort option changes and emits updated parameters
+ * @param sortData - Sort configuration data
+ */
+const handleSortChange = (sortData) => {
+  orderBy.value = sortData.orderBy;
+  orderSort.value = sortData.orderSort;
+  emits('change', getSearchParams());
+};
+
+/**
+ * Handles quick search menu item click events and updates filters accordingly
+ * @param data - Menu item data containing key and name
+ */
+const handleMenuItemClick = (data) => {
   const key = data.key;
-  const statusTypeKeys = planStatusTypeOpt.value.map(i => i.key);
+  const statusTypeKeys = planStatusOptions.value.map(i => i.key);
   let searchChangeFlag = false;
+
   if (selectedMenuMap.value[key]) {
     delete selectedMenuMap.value[key];
     if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
@@ -237,7 +269,6 @@ const menuItemClick = (data) => {
     if (key === '') {
       selectedMenuMap.value = { '': true };
       quickSearchFilters.value = [];
-      // 清空搜索面板
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
         searchChangeFlag = true;
@@ -255,16 +286,18 @@ const menuItemClick = (data) => {
       selectedMenuMap.value[key] = true;
     }
   }
+
   const userId = userInfo.value?.id;
   let timeFilters: {key: string; op: string; value: string}[] = [];
   const assocFiltersInQuick = [];
+
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
     if (key === '') {
       return undefined;
     } else if (statusTypeKeys.includes(key)) {
       return {
         key: 'status',
-        op: 'EQUAL',
+        op: SearchCriteria.OpEnum.Equal,
         value: key
       };
     } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
@@ -272,17 +305,18 @@ const menuItemClick = (data) => {
       return undefined;
     } else if (assocKeys.includes(key)) {
       if (key === 'ownerId') {
-        assocFiltersInQuick.push({ valueKey: i, value: userId });
+        assocFiltersInQuick.push({ valueKey: key, value: userId });
       }
       return undefined;
     } else {
       return {
         key,
-        op: 'EQUAL',
+        op: SearchCriteria.OpEnum.Equal,
         value: userId
       };
     }
   }).filter(Boolean);
+
   quickSearchFilters.value.push(...timeFilters);
   if (assocFiltersInQuick.length) {
     searchPanelRef.value.setConfigs([
@@ -291,14 +325,18 @@ const menuItemClick = (data) => {
     searchChangeFlag = true;
   }
   if (!searchChangeFlag) {
-    emits('change', getParams());
+    emits('change', getSearchParams());
   }
 };
 
-const refresh = () => {
+/**
+ * Handles refresh button click and emits refresh event
+ */
+const handleRefresh = () => {
   emits('refresh');
 };
 
+// lifecycle hooks
 onMounted(() => {
   loadStatusEnum();
 });
@@ -316,7 +354,7 @@ onMounted(() => {
           :key="item.key"
           :class="{ 'active-key': selectedMenuMap[item.key] }"
           class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="menuItemClick(item)">
+          @click="handleMenuItemClick(item)">
           {{ item.name }}
         </div>
       </div>
@@ -326,7 +364,7 @@ onMounted(() => {
         ref="searchPanelRef"
         :options="searchPanelOptions"
         class="flex-1 mr-3.5"
-        @change="searchChange" />
+        @change="handleSearchChange" />
 
       <div class="flex items-center space-x-3">
         <Button
@@ -343,7 +381,7 @@ onMounted(() => {
           v-model:orderBy="orderBy"
           v-model:orderSort="orderSort"
           :menuItems="sortMenuItems"
-          @click="toSort">
+          @click="handleSortChange">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
             <span>{{ t('sort') }}</span>
@@ -353,7 +391,7 @@ onMounted(() => {
         <IconRefresh
           :loading="props.loading"
           :disabled="props.loading"
-          @click="refresh">
+          @click="handleRefresh">
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />

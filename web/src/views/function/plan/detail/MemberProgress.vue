@@ -9,33 +9,46 @@ import { MemberProgressData } from '@/views/function/plan/types';
 
 const { t } = useI18n();
 
+// Interfaces
 interface Props {
   planId: string;
   projectId: string;
 }
 
+// Props
 const props = withDefaults(defineProps<Props>(), {
   planId: undefined,
   projectId: undefined
 });
 
+// Reactive data
 const loading = ref(false);
-const tableData = ref<MemberProgressData[]>([]);
+const memberProgressData = ref<MemberProgressData[]>([]);
 
-const loadData = async () => {
-  const params = {
+/**
+ * <p>
+ * Loads member progress data from the API for the specified plan and project.
+ * </p>
+ * <p>
+ * Fetches tester progress information including completion rates and workload statistics.
+ * </p>
+ */
+const loadMemberProgressData = async () => {
+  const requestParams = {
     planId: props.planId,
     projectId: props.projectId
   };
-  const [error, { data = [] }] = await analysis.getFuncTesterProgress(params);
+  const [error, { data = [] }] = await analysis.getFuncTesterProgress(requestParams);
   if (error) {
     return;
   }
-  tableData.value = data;
+  memberProgressData.value = data;
 };
 
-const tableColumns = [
+// Table configuration
+const progressTableColumns = [
   {
+    key: 'testerName',
     title: t('functionPlan.planDetail.memberProgress.member'),
     dataIndex: 'testerName',
     customCell: () => {
@@ -43,6 +56,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'passedTestRate',
     title: t('functionPlan.planDetail.memberProgress.progress'),
     dataIndex: 'passedTestRate',
     width: '13%',
@@ -52,6 +66,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'totalCaseNum',
     title: t('functionPlan.planDetail.memberProgress.totalCaseNum'),
     dataIndex: 'totalCaseNum',
     sorter: (a, b) => +a.totalCaseNum - (+b.totalCaseNum),
@@ -60,6 +75,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'validCaseNum',
     title: t('functionPlan.planDetail.memberProgress.validCaseNum'),
     dataIndex: 'validCaseNum',
     sorter: (a, b) => +a.validCaseNum - (+b.validCaseNum),
@@ -68,6 +84,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'passedTestNum',
     title: t('functionPlan.planDetail.memberProgress.passedTestNum'),
     dataIndex: 'passedTestNum',
     sorter: (a, b) => +a.passedTestNum - (+b.passedTestNum),
@@ -76,19 +93,23 @@ const tableColumns = [
     }
   },
   {
+    key: 'evalWorkload',
     title: t('functionPlan.planDetail.memberProgress.evalWorkload'),
     dataIndex: 'evalWorkload'
   },
   {
+    key: 'completedWorkload',
     title: t('functionPlan.planDetail.memberProgress.completedWorkload'),
     dataIndex: 'completedWorkload'
   },
   {
+    key: 'completedWorkloadRate',
     title: t('functionPlan.planDetail.memberProgress.completedWorkloadRate'),
     dataIndex: 'completedWorkloadRate',
     customRender: ({ text }) => text + '%'
   },
   {
+    key: 'overdueNum',
     title: t('functionPlan.planDetail.memberProgress.overdueNum'),
     dataIndex: 'overdueNum',
     sorter: (a, b) => +a.overdueNum - (+b.overdueNum),
@@ -97,22 +118,26 @@ const tableColumns = [
     }
   },
   {
+    key: 'overdueRate',
     title: t('functionPlan.planDetail.memberProgress.overdueRate'),
     dataIndex: 'overdueRate',
     customRender: ({ text }) => text + '%'
   }
 ];
 
+// Lifecycle hooks
 onMounted(() => {
-  loadData();
+  loadMemberProgressData();
 });
 </script>
 <template>
   <Table
-    :columns="tableColumns"
-    :dataSource="tableData"
+    :columns="progressTableColumns"
+    :dataSource="memberProgressData"
     :loading="loading"
     :pagination="false"
+    :noDataSize="'small'"
+    :noDataText="t('common.noData')"
     rowKey="testerId"
     size="small">
     <template #bodyCell="{ column, text, record }">

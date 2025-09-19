@@ -7,14 +7,17 @@ import { useI18n } from 'vue-i18n';
 
 import { MemberProgressData } from '@/views/function/plan/types';
 
+// composables
 const { t } = useI18n();
 
+// interfaces
 interface Props {
   visible: boolean;
   planId: string;
   projectId: string;
 }
 
+// props and emits
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   planId: undefined,
@@ -23,10 +26,14 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void; }>();
 
+// reactive data
 const loading = ref(false);
 const tableData = ref<MemberProgressData[]>([]);
 
-const loadData = async () => {
+/**
+ * Loads member progress data from API based on plan and project IDs
+ */
+const loadMemberProgressData = async () => {
   const params = {
     planId: props.planId,
     projectId: props.projectId
@@ -39,20 +46,25 @@ const loadData = async () => {
   tableData.value = data;
 };
 
-const cancel = () => {
+/**
+ * Handles modal cancel event and emits visibility update
+ */
+const handleCancel = () => {
   emit('update:visible', false);
 };
 
+// lifecycle hooks
 onMounted(() => {
   watch(() => props.visible, () => {
     if (!props.visible || props.planId === undefined || props.planId === null || props.planId === '') {
       return;
     }
 
-    loadData();
+    loadMemberProgressData();
   }, { immediate: true });
 });
 
+// table configuration
 const tableColumns = [
   {
     title: t('functionPlan.comp.progress.member'),
@@ -133,7 +145,7 @@ const tableColumns = [
     :visible="props.visible"
     :width="1200"
     :footer="null"
-    @cancel="cancel">
+    @cancel="handleCancel">
     <Table
       :columns="tableColumns"
       :dataSource="tableData"
