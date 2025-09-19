@@ -9,9 +9,6 @@ import { analysis } from '@/api/tester';
 
 /**
  * Props interface for BurndownChart component.
- * <p>
- * Defines the required properties for displaying burndown chart data.
- * </p>
  */
 interface Props {
   userInfo?: {[key: string]: string}

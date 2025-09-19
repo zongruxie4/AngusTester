@@ -7,10 +7,11 @@ import { http, PageQuery, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { TaskStatus } from '@/enums/enums';
 
-import TaskStatusV from '@/components/TaskStatus/index.vue';
-import TaskPriority from '@/components/TaskPriority/index.vue';
 import { getCurrentPage } from '@/utils/utils';
 import { TaskDetail } from '../types';
+
+import TaskStatusV from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 const { t } = useI18n();
 
