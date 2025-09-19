@@ -1,6 +1,8 @@
 import { ref, computed } from 'vue';
 import { func } from '@/api/tester';
+import { PageQuery, ProjectPageQuery } from '@xcan-angus/infra';
 import { getCurrentPage } from '@/utils/utils';
+import { FuncTargetType } from '@/enums/enums';
 import type { TrashItem, TrashParams } from '../types';
 
 /**
@@ -15,7 +17,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
   const loading = ref(false);
   const loaded = ref(false);
   const orderBy = ref<string>();
-  const orderSort = ref<'ASC' | 'DESC'>();
+  const orderSort = ref<PageQuery.OrderSort>();
 
   // Pagination state
   const pagination = ref<{
@@ -38,14 +40,8 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
     loading.value = true;
 
     const requestParams: {
-      projectId: string;
-      pageNo: number;
-      pageSize: number;
-      targetType?: 'CASE' | 'PLAN';
-      filters?: {value: string, op: string, key: string}[];
-      orderBy?: string;
-      orderSort?: string;
-    } = {
+      targetType?: FuncTargetType;
+    } & ProjectPageQuery = {
       projectId,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize
@@ -93,7 +89,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
   const handleTableChange = (
     paginationInfo: { current?: number; pageSize?: number },
     _filters: any,
-    sorter: { orderBy: string; orderSort: 'ASC' | 'DESC' }
+    sorter: { orderBy: string; orderSort: PageQuery.OrderSort }
   ) => {
     orderBy.value = sorter.orderBy;
     orderSort.value = sorter.orderSort;

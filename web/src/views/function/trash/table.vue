@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { inject, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { Button, Tooltip } from 'ant-design-vue';
 import { Icon, Image, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+
+import { FuncTargetType } from '@/enums/enums';
 import { useTrashData } from './composables/useTrashData';
 import { useTableColumns } from './composables/useTableColumns';
 import { useTrashActions } from './composables/useTrashActions';
 import type { TrashTableProps, TrashItem } from './types';
+import { appContext } from '@xcan-angus/infra';
 
 /**
  * Enhanced trash table component with composables and improved UX
@@ -15,7 +18,7 @@ import type { TrashTableProps, TrashItem } from './types';
 const props = withDefaults(defineProps<TrashTableProps & { isAdmin?: boolean }>(), {
   projectId: '',
   userInfo: () => ({ id: '' }),
-  params: () => ({ targetType: 'CASE' as const }),
+  params: () => ({ targetType: FuncTargetType.CASE }),
   notify: '',
   spinning: false,
   isAdmin: false
@@ -33,8 +36,7 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 // Inject admin status if not provided as prop
-const injectedIsAdmin = inject('isAdmin', ref(false));
-const isAdmin = props.isAdmin || injectedIsAdmin.value;
+const isAdmin = computed(() => appContext.isAdmin());
 
 // Use composables for separation of concerns
 const {
@@ -115,7 +117,7 @@ const loadDataAndEmit = async () => {
  * @returns Whether user has permission
  */
 const canPerformActions = (item: TrashItem): boolean => {
-  if (isAdmin) return true;
+  if (isAdmin.value) return true;
   return props.userInfo?.id === item.createdBy || props.userInfo?.id === item.deletedBy;
 };
 
