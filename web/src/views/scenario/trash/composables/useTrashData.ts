@@ -1,6 +1,7 @@
 import type { Ref } from 'vue';
 import { computed, ref, unref } from 'vue';
 import { scenario } from '@/api/tester';
+import { PageQuery } from '@xcan-angus/infra';
 import { getCurrentPage } from '@/utils/utils';
 import type { TrashItem, TrashParams } from '../types';
 
@@ -16,7 +17,7 @@ export function useTrashData (projectId: string | Ref<string>, userInfo: { id: s
   const loading = ref(false);
   const loaded = ref(false);
   const orderBy = ref<string>();
-  const orderSort = ref<'ASC' | 'DESC'>();
+  const orderSort = ref<PageQuery.OrderSort>();
 
   // Pagination state
   const pagination = ref<{
@@ -87,13 +88,13 @@ export function useTrashData (projectId: string | Ref<string>, userInfo: { id: s
   /**
    * Handle table change events (pagination, sorting)
    * @param paginationInfo - Pagination information
-   * @param filters - Table filters
+   * @param _filters - Table filters
    * @param sorter - Sort configuration
    */
   const handleTableChange = (
     paginationInfo: { current?: number; pageSize?: number },
     _filters: any,
-    sorter: { orderBy: string; orderSort: 'ASC' | 'DESC' }
+    sorter: { orderBy: string; orderSort: PageQuery.OrderSort }
   ) => {
     orderBy.value = sorter.orderBy;
     orderSort.value = sorter.orderSort;

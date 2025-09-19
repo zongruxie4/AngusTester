@@ -1,22 +1,24 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, toRef, watch } from 'vue';
+import { computed, onMounted, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { appContext } from '@xcan-angus/infra';
+import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { Badge, Button, Tooltip } from 'ant-design-vue';
 import { Icon, Image, Input, Spin, Table } from '@xcan-angus/vue-ui';
+import { BasicProps } from '@/types/types';
+
 import { useTrashData } from './composables/useTrashData';
 import { useTableColumns } from './composables/useTableColumns';
 import { useTrashActions } from './composables/useTrashActions';
 import { useSearch } from './composables/useSearch';
-import type { TrashItem, TrashProps } from './types';
+import type { TrashItem } from './types';
 
 /**
  * Scenario trash component for managing deleted scenario items
  * Provides functionality to view, restore, and permanently delete items
  */
-const props = withDefaults(defineProps<TrashProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: '',
-  userInfo: () => ({ id: '' })
+  userInfo: undefined
 });
 
 // Internationalization
@@ -58,7 +60,7 @@ const handleRestoreAll = async () => {
   const success = await restoreAll();
   if (success) {
     resetPagination();
-    loadDataAndRefresh();
+    await loadDataAndRefresh();
   }
 };
 
@@ -69,7 +71,7 @@ const handleDeleteAll = async () => {
   const success = await deleteAll();
   if (success) {
     resetPagination();
-    loadDataAndRefresh();
+    await loadDataAndRefresh();
   }
 };
 
@@ -89,7 +91,7 @@ const handleRestore = async (data: TrashItem) => {
   const success = await restoreItem(data.id);
   if (success) {
     updateCurrentPage();
-    loadDataAndRefresh();
+    await loadDataAndRefresh();
   }
 };
 
@@ -101,7 +103,7 @@ const handleDelete = async (data: TrashItem) => {
   const success = await deleteItem(data.id);
   if (success) {
     updateCurrentPage();
-    loadDataAndRefresh();
+    await loadDataAndRefresh();
   }
 };
 
@@ -114,7 +116,7 @@ const handleDelete = async (data: TrashItem) => {
 const tableChange = (
   paginationInfo: { current?: number; pageSize?: number },
   filters: any,
-  sorter: { orderBy: string; orderSort: 'ASC' | 'DESC' }
+  sorter: { orderBy: string; orderSort: PageQuery.OrderSort }
 ) => {
   handleTableDataChange(paginationInfo, filters, sorter);
   loadDataAndRefresh();
@@ -124,7 +126,7 @@ const tableChange = (
  * Load data and handle search parameters
  */
 const loadDataAndRefresh = async () => {
-  const params = inputValue.value ? {filters: [{ value: inputValue.value, key: 'targetName', op: 'MATCH' }]} : undefined;
+  const params = inputValue.value ? { filters: [{ value: inputValue.value, key: 'targetName', op: SearchCriteria.OpEnum.Match }] } : undefined;
   await loadData(params);
 };
 

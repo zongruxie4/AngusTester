@@ -55,37 +55,3 @@ export interface TrashParams {
   /** Optional name filter for search */
   filters?: {value: string, op: string, key: string}[]
 }
-
-/**
- * Props for the main trash component
- */
-export interface TrashProps {
-  /** Project identifier */
-  projectId: string;
-  /** Current user information */
-  userInfo: {
-    id: string;
-  };
-}
-
-/**
- * Pagination configuration interface
- */
-export interface PaginationConfig {
-  /** Total number of items */
-  total: number;
-  /** Current page number */
-  current: number;
-  /** Items per page */
-  pageSize: number;
-}
-
-/**
- * Sort configuration interface
- */
-export interface SortConfig {
-  /** Field to sort by */
-  orderBy?: string;
-  /** Sort direction */
-  orderSort?: 'ASC' | 'DESC';
-}
