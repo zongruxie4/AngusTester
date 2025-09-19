@@ -4,16 +4,19 @@ import { useI18n } from 'vue-i18n';
 import { Badge, Button, Popconfirm, TabPane, Tabs, Tooltip } from 'ant-design-vue';
 import { Icon, Input, Spin } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration, utils } from '@xcan-angus/infra';
+import { duration, utils, SearchCriteria } from '@xcan-angus/infra';
+
 import { useTrashActions } from './composables/useTrashActions';
-import type { TaskTrashComponentProps, TaskTrashItem, TaskTrashTargetType } from './types';
+import { CombinedTargetType } from '@/enums/enums';
+import type { TaskTrashItem, TaskTrashTargetType } from './types';
+import { BasicProps } from '@/types/types';
 
 /**
  * Component props with default values
  */
-const props = withDefaults(defineProps<TaskTrashComponentProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: '',
-  userInfo: () => ({ id: '' }),
+  userInfo: undefined,
   refreshNotify: ''
 });
 
@@ -30,7 +33,7 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>(
 const Table = defineAsyncComponent(() => import('./table.vue'));
 
 // Reactive state
-const activeKey = ref<TaskTrashTargetType>('TASK_SPRINT');
+const activeKey = ref<TaskTrashTargetType>(CombinedTargetType.TASK_SPRINT);
 const inputValue = ref<string>();
 const notify = ref<string>();
 const tableDataMap = ref<Record<TaskTrashTargetType, TaskTrashItem[]>>({} as Record<TaskTrashTargetType, TaskTrashItem[]>);
@@ -60,15 +63,15 @@ const inputChange = debounce(duration.search, () => {
 /**
  * Computed parameters for TASK_SPRINT tab
  */
-const serviceParams = computed(() => {
+const sprintParams = computed(() => {
   const params: {
-    targetType: 'TASK_SPRINT';
-    filters?: {value: string, op: string, key: string}[];
+    targetType: CombinedTargetType.TASK_SPRINT;
+    filters?: SearchCriteria[];
   } = {
-    targetType: 'TASK_SPRINT'
+    targetType: CombinedTargetType.TASK_SPRINT
   };
   if (inputValue.value) {
-    params.filters = [{ value: inputValue.value, op: 'MATCH', key: 'targetName' }];
+    params.filters = [{ value: inputValue.value, op: SearchCriteria.OpEnum.Match, key: 'targetName' }];
   }
   return params;
 });
@@ -76,15 +79,15 @@ const serviceParams = computed(() => {
 /**
  * Computed parameters for TASK tab
  */
-const apiParams = computed(() => {
+const taskParams = computed(() => {
   const params: {
-    targetType: 'TASK';
-    filters?: {value: string, op: string, key: string}[];
+    targetType: CombinedTargetType.TASK;
+    filters?: SearchCriteria[];
   } = {
-    targetType: 'TASK'
+    targetType: CombinedTargetType.TASK
   };
   if (inputValue.value) {
-    params.filters = [{ value: inputValue.value, op: 'MATCH', key: 'targetName' }];
+    params.filters = [{ value: inputValue.value, op: SearchCriteria.OpEnum.Match, key: 'targetName' }];
   }
   return params;
 });
@@ -157,7 +160,7 @@ const handleRefresh = () => {
 onMounted(() => {
   watch(() => proTypeShowMap.value.showSprint, (newValue) => {
     if (!newValue) {
-      activeKey.value = 'TASK';
+      activeKey.value = CombinedTargetType.TASK;
     }
   }, { immediate: true });
 });
@@ -293,28 +296,28 @@ onMounted(() => {
             <!-- TASK_SPRINT tab -->
             <TabPane
               v-if="proTypeShowMap.showSprint"
-              key="TASK_SPRINT"
+              :key="CombinedTargetType.TASK_SPRINT"
               :tab="t('taskTrash.tabs.sprint')">
               <Table
                 v-model:spinning="loading"
                 :notify="notify"
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
-                :params="serviceParams"
-                @listChange="handleChange($event, 'TASK_SPRINT')"
-                @paginationChange="handlePaginationChange($event, 'TASK_SPRINT')" />
+                :params="sprintParams"
+                @listChange="handleChange($event, CombinedTargetType.TASK_SPRINT)"
+                @paginationChange="handlePaginationChange($event, CombinedTargetType.TASK_SPRINT)" />
             </TabPane>
 
             <!-- TASK tab -->
-            <TabPane key="TASK" :tab="t('taskTrash.tabs.task')">
+            <TabPane :key="CombinedTargetType.TASK" :tab="t('taskTrash.tabs.task')">
               <Table
                 v-model:spinning="loading"
                 :notify="notify"
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
-                :params="apiParams"
-                @listChange="handleChange($event, 'TASK')"
-                @paginationChange="handlePaginationChange($event, 'TASK')" />
+                :params="taskParams"
+                @listChange="handleChange($event, CombinedTargetType.TASK)"
+                @paginationChange="handlePaginationChange($event, CombinedTargetType.TASK)" />
             </TabPane>
           </Tabs>
         </div>

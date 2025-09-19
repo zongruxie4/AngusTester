@@ -1,19 +1,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, provide, ref, Ref, watch } from 'vue';
+import { BasicProps } from '@/types/types';
 
 /**
  * Props interface for TaskHome component.
- * <p>
- * Defines the required properties for the main task home page.
- * </p>
  */
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  refreshNotify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   refreshNotify: undefined

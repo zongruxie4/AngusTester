@@ -1,4 +1,4 @@
-import {CreatedAt, PeriodicCreationUnit, EnumMessage} from '@xcan-angus/infra';
+import {CreatedAt, PeriodicCreationUnit, EnumMessage, User, AppInfo} from '@xcan-angus/infra';
 import {CombinedTargetType} from '@/enums/enums';
 
 export type LoadingProps = {
@@ -13,11 +13,11 @@ export type BaseProps = {
 export type BasicProps = {
   projectId: string;
   projectName?: string;
-  userInfo?: { id: string; fullName?: string };
-  appInfo?: { id: string; };
+  userInfo?: { id: string; fullName?: string } | User;
+  appInfo?: { id: string; } | AppInfo;
   notify?: string;
   onShow?: boolean;
-  refreshNotify?: number;
+  refreshNotify?: string;
   data?: Record<string, string>;
 }
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, provide, ref, Ref, watch } from 'vue';
-import { XCanDexie, sessionStore, utils, appContext } from '@xcan-angus/infra';
+import { XCanDexie, sessionStore, utils, appContext, EditionType, SearchCriteria } from '@xcan-angus/infra';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -77,9 +77,17 @@ const setCaseListPlanParam = async (record) => {
     }>('parameter');
   }
   if (!caseRef.value) {
-    await db.add(JSON.parse(JSON.stringify({ id: cacheParamsKey.value, data: { filters: [{ value: record.planId, op: 'EQUAL', key: 'planId' }] } })));
+    await db.add(JSON.parse(JSON.stringify(
+      {
+        id: cacheParamsKey.value,
+        data: { filters: [{ value: record.planId, op: SearchCriteria.OpEnum.Equal, key: 'planId' }] }
+      })));
   } else {
-    await db.add(JSON.parse(JSON.stringify({ id: cacheParamsKey.value, data: { filters: [{ value: record.planId, op: 'EQUAL', key: 'planId' }] } })));
+    await db.add(JSON.parse(JSON.stringify(
+      {
+        id: cacheParamsKey.value,
+        data: { filters: [{ value: record.planId, op: SearchCriteria.OpEnum.Equal, key: 'planId' }] }
+      })));
     nextTick(() => {
       caseRef.value.setCaseListPlanParam();
     });
@@ -166,21 +174,50 @@ onMounted(async () => {
   }, { immediate: true });
 });
 
+const menuItems = computed(() => {
+  return [
+    {
+      name: t('functionHome.name'),
+      key: 'homepage',
+      icon: 'icon-zhuye'
+    },
+    {
+      name: t('functionPlan.name'),
+      key: 'plans',
+      icon: 'icon-jihua1'
+    },
+    {
+      name: t('functionCase.name'),
+      key: 'cases',
+      icon: 'icon-ceshiyongli1'
+    },
+    {
+      name: t('caseReview.name'),
+      key: 'reviews',
+      icon: 'icon-pingshen'
+    },
+    {
+      name: t('functionBaseline.name'),
+      key: 'baseline',
+      icon: 'icon-jixian'
+    },
+    editionType.value !== EditionType.COMMUNITY &&
+    {
+      name: t('functionAnalysis.name'),
+      key: 'analysis',
+      icon: 'icon-fenxi'
+    },
+    {
+      name: t('functionTrash.name'),
+      key: 'trash',
+      icon: 'icon-qingchu'
+    }
+  ].filter(Boolean);
+});
+
 provide('addTabPane', addTabPane);
 provide('updateTabPane', updateTabPane);
 provide('setCaseListPlanParam', setCaseListPlanParam);
-
-const menuItems = computed(() => {
-  return [
-    { name: t('functionHome.name'), key: 'homepage', icon: 'icon-zhuye' },
-    { name: t('functionPlan.name'), key: 'plans', icon: 'icon-jihua1' },
-    { name: t('functionCase.name'), key: 'cases', icon: 'icon-ceshiyongli1' },
-    { name: t('caseReview.name'), key: 'reviews', icon: 'icon-pingshen' },
-    { name: t('functionBaseline.name'), key: 'baseline', icon: 'icon-jixian' },
-    editionType.value !== 'COMMUNITY' && { name: t('functionAnalysis.name'), icon: 'icon-fenxi', key: 'analysis' },
-    { name: t('functionTrash.name'), key: 'trash', icon: 'icon-qingchu' }
-  ].filter(Boolean);
-});
 </script>
 <template>
   <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
