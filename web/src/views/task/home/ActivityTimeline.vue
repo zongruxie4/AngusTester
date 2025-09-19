@@ -32,7 +32,7 @@ const activityResourceTypes = [
 </script>
 
 <template>
-  <div class="bg-white rounded px-5" style="height: 780px">
+  <div class="bg-white rounded px-5" style="height: 520px">
     <Tabs size="small" class="h-full">
       <!-- All Activities Tab: Shows activities for all users in the project -->
       <TabPane key="total" :tab="t('taskHome.allActivities')">
