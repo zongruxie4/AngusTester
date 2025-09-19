@@ -172,7 +172,7 @@ onMounted(() => {
 
         <template v-if="isEditFlag">
           <div class="flex items-center space-x-2.5">
-            <Button size="small" @click="() => handleCancel(oldScriptValue, scriptValue, viewMode, pageNo, pageSize, router)">
+            <Button size="small" @click="handleCancel(oldScriptValue, scriptValue, viewMode, pageNo, pageSize, router)">
               {{ t('scriptDetail.actions.cancel') }}
             </Button>
 

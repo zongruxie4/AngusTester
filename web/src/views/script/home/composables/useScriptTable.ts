@@ -323,8 +323,8 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
   /**
    * Handle skip to editor
    */
-  const handleToEditor = async (data: ScriptInfo) => {
-    router.push(`/script/edit/${data.id}?type=edit&pageNo=${data.pageNo}&pageSize=${data.pageSize}`);
+  const handleToEditor = async (data: ScriptInfo, pagination) => {
+    router.push(`/script/edit/${data.id}?type=edit&pageNo=${pagination?.current || 1}&pageSize=${pagination?.pageSize || 10}`);
   };
 
   /**

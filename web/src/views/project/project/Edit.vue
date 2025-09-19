@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import { defineAsyncComponent, computed, onMounted } from 'vue';
+import { defineAsyncComponent, computed, onMounted, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Ant Design components
@@ -18,6 +18,10 @@ import { getProjectTypeTipConfig, toolbarOptions, uploadParams } from './utils';
 // Composables
 import { useForm, useMembers, useAvatar } from './composables';
 import { ProjectEditEmits, ProjectEditProps } from '@/views/project/project/types';
+
+const delTabPane = inject('delTabPane',
+    (tabKey: string) => { console.log('delTabPane not provided:', tabKey); }
+  );
 
 /** Component props definition */
 const props = withDefaults(defineProps<ProjectEditProps>(), {
@@ -88,8 +92,14 @@ const handleFormSubmit = async (): Promise<void> => {
   try {
     // Submit form using form composable
     await submitForm();
+
     // Emit success event
     emit('ok');
+
+     // Clean up tabs
+    if (!props.projectId) {
+      delTabPane('addProject');
+    }
   } catch (error) {
     console.error('Form submission failed:', error);
   }
