@@ -63,11 +63,11 @@ export function useDrawer (pageType: any, viewMode: any) {
   const handleCancel = (oldScriptValue: any, scriptValue: any, viewMode: any, pageNo: any, pageSize: any, router: any) => {
     isEditFlag.value = false;
     if (viewMode.value === 'view') {
-      scriptValue.value = oldScriptValue.value;
+      scriptValue = oldScriptValue;
       return;
     }
 
-    router.push(`/script?pageNo=${pageNo.value}&pageSize=${pageSize.value}`);
+    router.push(`/script?pageNo=${pageNo}&pageSize=${pageSize}`);
   };
 
   return {

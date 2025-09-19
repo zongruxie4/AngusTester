@@ -185,10 +185,6 @@ export function useForm (
         : 'project.projectEdit.messages.createSuccess';
       notification.success(t(messageKey));
 
-      // Clean up tabs
-      if (!projectId) {
-        delTabPane('addProject');
-      }
 
       getNewCurrentProject();
     } catch (error) {

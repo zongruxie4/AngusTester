@@ -134,7 +134,7 @@ const handleSingleExecClick = (record: ScriptInfo) => {
  * Handle edit click
  */
 const handleEditClick = (record: ScriptInfo) => {
-  handleToEditor(record);
+  handleToEditor(record, props.pagination);
 };
 
 /**
@@ -273,7 +273,7 @@ rowSelection.value.onChange = (keys: string[]) => {
         <template #bodyCell="{ column, text, record }">
           <RouterLink
             v-if="column.dataIndex === 'name'"
-            :to="record.editLinkUrl"
+            :to="record.nameLinkUrl"
             :title="record.name"
             class="block truncate text-text-link">
             {{ record.name }}

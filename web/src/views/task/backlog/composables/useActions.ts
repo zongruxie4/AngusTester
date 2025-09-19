@@ -290,9 +290,9 @@ export function useTaskActions (
   const handleTaskNameEditEnter = async (data: TaskDetail, index: number) => {
     const id = data.id;
     const newName = taskNameEditing.editingTaskNameMap[id];
-    loading.isLoading = true;
+    // loading.isLoading = true;
     const [error] = await task.editTaskName(id, newName);
-    loading.isLoading = false;
+    // loading.isLoading = false;
 
     if (error) {
       return;
