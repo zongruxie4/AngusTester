@@ -7,20 +7,14 @@ import { Dayjs } from 'dayjs';
 import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
-import TestResult from '@/components/TestResult/index.vue';
 
-import { DataItem } from '@/views/function/home/types';
+import { CaseInfo, PlanProps } from '@/views/function/types';
+
+import TestResult from '@/components/TestResult/index.vue';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-  planId?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<PlanProps>(), {
   projectId: undefined,
   userInfo: undefined,
   notify: undefined,
@@ -28,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const loaded = ref(false);
-const dataMap = ref<{ [key: string]: DataItem[] }>({});
+const dataMap = ref<{ [key: string]: CaseInfo[] }>({});
 const userId = ref();
 
 const loadData = async () => {
@@ -107,7 +101,6 @@ onMounted(() => {
 <template>
   <div class="relative">
     <div class="absolute top-1.5 left-0 text-3.5 font-semibold">
-      <!-- 我的工作日历 -->
       <Select
         v-model:value="userId"
         class="w-30"

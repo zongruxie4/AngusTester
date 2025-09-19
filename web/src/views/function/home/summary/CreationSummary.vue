@@ -3,17 +3,12 @@ import { onMounted, ref, watch } from 'vue';
 import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { ResourceInfo } from '../types';
+import { SummaryInfo } from '../types';
+import {BasicProps} from "@/types/types";
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   notify: undefined
@@ -59,7 +54,7 @@ const loadData = async (): Promise<void> => {
   }
 
   if (res?.data) {
-    const data = res.data as ResourceInfo;
+    const data = res.data as SummaryInfo;
 
     allPlan.value = data.allPlan;
     planByLastWeek.value = data.planByLastWeek;

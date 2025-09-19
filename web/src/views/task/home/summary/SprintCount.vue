@@ -4,15 +4,12 @@ import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 
 import { SummaryInfo } from '@/views/task/home/types';
+import { DataSourceProps } from '@/types/types';
 
 const { t } = useI18n();
 
 // Props definition
-type Props = {
-  dataSource: SummaryInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DataSourceProps<SummaryInfo>>(), {
   dataSource: undefined
 });
 

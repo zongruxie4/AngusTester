@@ -2,20 +2,28 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { PageQuery, utils } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
+import { getCurrentPage } from '@/utils/utils';
+import { CaseInfo } from '@/views/function/types';
+
 import TestResult from '@/components/TestResult/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
-import { getCurrentPage } from '@/utils/utils';
-import { CaseItem } from './types';
 
 const { t } = useI18n();
 
 type Props = {
   projectId: string;
-  params: { createdBy?: string; favouriteBy?: boolean; followBy?: boolean; testerId?: string; testResult?: string; commentBy?: string;};
+  params: {
+    createdBy?: string;
+    favouriteBy?: boolean;
+    followBy?: boolean;
+    testerId?: string;
+    testResult?: string;
+    commentBy?: string;
+  };
   total: number;
   notify: string;
   deletedNotify: string;
@@ -43,11 +51,11 @@ const deleteTabPane = inject<(data: any) => void>('deleteTabPane', () => { });
 
 const updateRefreshNotify = inject<(value: string) => void>('updateRefreshNotify');
 
-const tableData = ref<CaseItem[]>();
+const tableData = ref<CaseInfo[]>();
 const loading = ref(false);
 const loaded = ref(false);
 const orderBy = ref<string>();
-const orderSort = ref<'ASC' | 'DESC'>();
+const orderSort = ref<PageQuery.OrderSort>();
 const pagination = ref<{
   total: number;
   current: number;
@@ -69,7 +77,7 @@ const pagination = ref<{
       }
     });
 
-const openCase = (data: CaseItem) => {
+const openCase = (data: CaseInfo) => {
   addTabPane({
     _id: 'case' + data.id,
     name: data.name,
@@ -80,7 +88,11 @@ const openCase = (data: CaseItem) => {
   });
 };
 
-const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: 'ASC' | 'DESC'; }) => {
+const tableChange = (
+  { current = 1, pageSize = 10 },
+  _filters,
+  sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }
+) => {
   orderBy.value = sorter.orderBy;
   orderSort.value = sorter.orderSort;
   pagination.value.current = current;
@@ -153,7 +165,7 @@ const loadData = async () => {
   emit('update:total', total);
 };
 
-const deleteHandler = (data: CaseItem) => {
+const deleteHandler = (data: CaseInfo) => {
   modal.confirm({
     content: t('functionHome.myCases.confirmDeleteCase', { name: data.name }),
     async onOk () {
@@ -177,7 +189,7 @@ const deleteHandler = (data: CaseItem) => {
   });
 };
 
-const cancelFavourite = async (data: CaseItem) => {
+const cancelFavourite = async (data: CaseInfo) => {
   loading.value = true;
   const [error] = await funcCase.cancelFavouriteCase(data.id);
   loading.value = false;
@@ -193,7 +205,7 @@ const cancelFavourite = async (data: CaseItem) => {
   }
 };
 
-const cancelFollow = async (data: CaseItem) => {
+const cancelFollow = async (data: CaseInfo) => {
   loading.value = true;
   const [error] = await funcCase.cancelFollowCase(data.id);
   loading.value = false;
@@ -208,29 +220,6 @@ const cancelFollow = async (data: CaseItem) => {
     updateRefreshNotify(utils.uuid());
   }
 };
-
-onMounted(() => {
-  watch(() => props.projectId, () => {
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
-      return;
-    }
-
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.deletedNotify, (newValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
-      return;
-    }
-
-    pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
-    loadData();
-  }, { immediate: true });
-});
 
 const columns = computed(() => {
   const _columns: {
@@ -349,6 +338,29 @@ const emptyTextStyle = {
   margin: '14px auto',
   height: 'auto'
 };
+
+onMounted(() => {
+  watch(() => props.projectId, () => {
+    loadData();
+  }, { immediate: true });
+
+  watch(() => props.notify, (newValue) => {
+    if (newValue === undefined || newValue === null || newValue === '') {
+      return;
+    }
+
+    loadData();
+  }, { immediate: true });
+
+  watch(() => props.deletedNotify, (newValue) => {
+    if (newValue === undefined || newValue === null || newValue === '') {
+      return;
+    }
+
+    pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
+    loadData();
+  }, { immediate: true });
+});
 </script>
 
 <template>

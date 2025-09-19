@@ -2,16 +2,12 @@
 import { defineAsyncComponent, ref } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
+import { BasicProps } from '@/types/types';
+import { CaseTestResult } from '@/enums/enums';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   notify: undefined
@@ -29,7 +25,7 @@ const commentTotal = ref(0);
 
 const pendingParams = {
   testerId: props.userInfo?.id,
-  testResult: 'PENDING'
+  testResult: CaseTestResult.PENDING
 };
 
 const createByParams = {
@@ -51,7 +47,10 @@ const commentByParams = {
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-1">{{ t('functionHome.myCases.title') }}</div>
+    <div class="text-3.5 font-semibold mb-1">
+      {{ t('functionHome.myCases.title') }}
+    </div>
+
     <Tabs size="small">
       <TabPane key="create" forceRender>
         <template #tab>
@@ -62,6 +61,7 @@ const commentByParams = {
             <span>)</span>
           </div>
         </template>
+
         <Table
           v-model:total="createByMeTotal"
           v-model:deletedNotify="deletedNotify"
@@ -79,6 +79,7 @@ const commentByParams = {
             <span>)</span>
           </div>
         </template>
+
         <Table
           v-model:total="pendingTotal"
           v-model:deletedNotify="deletedNotify"
@@ -96,6 +97,7 @@ const commentByParams = {
             <span>)</span>
           </div>
         </template>
+
         <Table
           v-model:total="followTotal"
           v-model:deletedNotify="deletedNotify"
@@ -113,6 +115,7 @@ const commentByParams = {
             <span>)</span>
           </div>
         </template>
+
         <Table
           v-model:total="favoriteTotal"
           v-model:deletedNotify="deletedNotify"
@@ -130,6 +133,7 @@ const commentByParams = {
             <span>)</span>
           </div>
         </template>
+
         <Table
           v-model:total="commentTotal"
           v-model:deletedNotify="deletedNotify"

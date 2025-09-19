@@ -16,6 +16,7 @@ const erd = elementResizeDetector({ strategy: 'scroll' });
 const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined
 });
+
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const burnDownOpt = computed(() => [

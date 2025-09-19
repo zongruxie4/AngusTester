@@ -3,29 +3,23 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { ResourceInfo } from '../types';
+import { SummaryInfo } from '../types';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   notify: undefined
 });
 
-const Plan = defineAsyncComponent(() => import('@/views/function/home/summary/plan/index.vue'));
-const Case = defineAsyncComponent(() => import('@/views/function/home/summary/case/index.vue'));
-const Priority = defineAsyncComponent(() => import('@/views/function/home/summary/priority/index.vue'));
-const Review = defineAsyncComponent(() => import('@/views/function/home/summary/review/index.vue'));
+const Plan = defineAsyncComponent(() => import('@/views/function/home/summary/PlanCount.vue'));
+const Case = defineAsyncComponent(() => import('@/views/function/home/summary/CaseCount.vue'));
+const Review = defineAsyncComponent(() => import('@/views/function/home/summary/ReviewCount.vue'));
 
 const loading = ref(false);
-const dataSource = ref<ResourceInfo>();
+const dataSource = ref<SummaryInfo>();
 
 const loadData = async (): Promise<void> => {
   loading.value = true;
@@ -37,7 +31,6 @@ const loadData = async (): Promise<void> => {
   if (error) {
     return;
   }
-
   if (res?.data) {
     dataSource.value = res.data;
   }
@@ -114,8 +107,6 @@ onMounted(() => {
     <div class="flex">
       <Plan :dataSource="dataSource" class="w-1.5/5-media mr-media" />
       <Case :dataSource="dataSource" class="w-2/5-media mr-media" />
-      <!-- <priority :dataSource="dataSource" class="w-1.5/5-media" />
-       -->
       <Review :dataSource="dataSource" class="w-1.5/5-media mr-media" />
     </div>
   </div>
@@ -133,18 +124,4 @@ onMounted(() => {
 .mr-media {
   margin-right: 15px;
 }
-
-/* @media screen and (max-width: 1480px) {
-  .w-1\/4-media {
-    width: calc(25% - 10px);
-  }
-
-  .w-1\/2-media {
-    width: calc(50% - 10px);
-  }
-
-  .mr-media {
-    margin-right: 15px;
-  }
-} */
 </style>

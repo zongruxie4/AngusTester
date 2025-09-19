@@ -16,11 +16,11 @@ const updateRefreshNotify = (value: string) => {
 
 const Added = defineAsyncComponent(() => import('@/views/function/home/Added.vue'));
 const CreationSummary = defineAsyncComponent(() => import('@/views/function/home/summary/CreationSummary.vue'));
-const Summary = defineAsyncComponent(() => import('@/views/function/home/summary/index.vue'));
+const Summary = defineAsyncComponent(() => import('@/views/function/home/summary/StatusSummary.vue'));
 const Introduction = defineAsyncComponent(() => import('@/views/function/home/Introduce.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/function/home/WorkCalendar.vue'));
 const BurnDownCharts = defineAsyncComponent(() => import('@/views/function/home/BurndownChart.vue'));
-const ActivityTimeline = defineAsyncComponent(() => import('./ActivityTimeline.vue'));
+const ActivityTimeline = defineAsyncComponent(() => import('@/views/function/home/ActivityTimeline.vue'));
 
 const homepageRef = ref();
 

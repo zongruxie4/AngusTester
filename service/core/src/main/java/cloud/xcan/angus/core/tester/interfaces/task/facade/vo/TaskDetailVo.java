@@ -178,6 +178,8 @@ public class TaskDetailVo {
 
   private int activityNum;
 
+  private Long tenantId;
+
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")

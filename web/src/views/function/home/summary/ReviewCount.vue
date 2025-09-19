@@ -3,15 +3,12 @@ import { onMounted, ref, watch } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { ResourceInfo } from '../../types';
+import { SummaryInfo } from '../types';
+import { DataSourceProps } from '@/types/types';
 
 const { t } = useI18n();
 
-type Props = {
-  dataSource: ResourceInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DataSourceProps<SummaryInfo>>(), {
   dataSource: undefined
 });
 
@@ -19,7 +16,6 @@ const total = ref<string>('0');
 const pendingTotal = ref<string>('0');
 const progressingTotal = ref<string>('0');
 const completedTotal = ref<string>('0');
-const blockedTotal = ref<string>('0');
 
 onMounted(() => {
   watch(() => props.dataSource, (newValue) => {
@@ -31,7 +27,6 @@ onMounted(() => {
     pendingTotal.value = newValue.reviewByStatus?.PENDING;
     progressingTotal.value = newValue.reviewByStatus?.IN_PROGRESS;
     completedTotal.value = newValue.reviewByStatus?.COMPLETED;
-    // blockedTotal.value = newValue.reviewByStatus?.BLOCKED;
   }, { immediate: true });
 });
 </script>
@@ -66,14 +61,6 @@ onMounted(() => {
           <div class="text-theme-sub-content">{{ t('functionHome.summary.review.completed') }}</div>
           <div class="text-4">{{ completedTotal }}</div>
         </div>
-      </div>
-
-      <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
-        <!-- <Icon icon="icon-zusaizhong" class="text-10 flex-shrink-0" />
-        <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">阻塞中</div>
-          <div class="text-4">{{ blockedTotal }}</div>
-        </div> -->
       </div>
     </div>
   </div>

@@ -9,15 +9,12 @@ import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
 import { SummaryInfo } from '@/views/task/home/types';
+import { DataSourceProps } from '@/types/types';
 
 const { t } = useI18n();
 
 // Props definition
-type Props = {
-  dataSource: SummaryInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DataSourceProps<SummaryInfo>>(), {
   dataSource: undefined
 });
 

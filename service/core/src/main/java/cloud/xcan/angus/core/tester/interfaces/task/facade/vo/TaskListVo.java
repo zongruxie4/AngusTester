@@ -175,6 +175,8 @@ public class TaskListVo {
 
   private Boolean follow;
 
+  private Long tenantId;
+
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")

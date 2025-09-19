@@ -10,6 +10,10 @@ export type BaseProps = {
   notify?: string;
 }
 
+export type DataSourceProps<T> = {
+  dataSource: T;
+}
+
 export type BasicProps = {
   projectId: string;
   projectName?: string;
@@ -46,4 +50,20 @@ export type ActivityItem = {
   description: string;
   detail: string;
   details?: string[];
+}
+
+export type AttachmentInfo = {
+  name: string;
+  url: string;
+}
+
+export type TagInfo = {
+  id: string;
+  name: string;
+}
+
+export type ProgressInfo = {
+  total: number;
+  completed: number;
+  completedRate: number;
 }

@@ -3,15 +3,12 @@ import { onMounted, ref, watch } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { ResourceInfo } from '../../types';
+import { SummaryInfo } from '../types';
+import { DataSourceProps } from '@/types/types';
 
 const { t } = useI18n();
 
-type Props = {
-  dataSource: ResourceInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DataSourceProps<SummaryInfo>>(), {
   dataSource: undefined
 });
 

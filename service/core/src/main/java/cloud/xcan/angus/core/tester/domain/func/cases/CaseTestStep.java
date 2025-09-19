@@ -26,10 +26,9 @@ public class CaseTestStep {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof CaseTestStep)) {
+    if (!(o instanceof CaseTestStep that)) {
       return false;
     }
-    CaseTestStep that = (CaseTestStep) o;
     return Objects.equals(step, that.step) &&
         Objects.equals(expectedResult, that.expectedResult);
   }

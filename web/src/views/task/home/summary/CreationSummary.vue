@@ -4,15 +4,10 @@ import { useI18n } from 'vue-i18n';
 import { analysis } from '@/api/tester';
 
 import { SummaryInfo } from '@/views/task/home/types';
+import { BasicProps } from '@/types/types';
 
 // Props definition
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   notify: undefined
