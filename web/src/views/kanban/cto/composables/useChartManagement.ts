@@ -401,8 +401,9 @@ export function useChartManagement () {
 
       // Update critical failure chart
       if (criticalFailureChart) {
-        const criticalData = [failureLevelCount.CRITICAL, failureNum - failureLevelCount.CRITICAL];
-        criticalFailureConfig.value.title.text = ((failureLevelCount.CRITICAL / failureNum) * 100).toFixed(2) + '%';
+        const criticalData = failureNum > 0 ? [failureLevelCount.CRITICAL, failureNum - failureLevelCount.CRITICAL] : [0, 0];
+        const criticalRate = failureNum > 0 ? ((failureLevelCount.CRITICAL / failureNum) * 100).toFixed(2) : '0';
+        criticalFailureConfig.value.title.text = criticalRate + '%';
         criticalFailureConfig.value.series[0].data.forEach((item, idx) => {
           item.value = criticalData[idx];
         });
@@ -411,8 +412,9 @@ export function useChartManagement () {
 
       // Update major failure chart
       if (majorFailureChart) {
-        const majorData = [failureLevelCount.MAJOR, failureNum - failureLevelCount.MAJOR];
-        majorFailureConfig.value.title.text = ((failureLevelCount.MAJOR / failureNum) * 100).toFixed(2) + '%';
+        const majorData = failureNum > 0 ? [failureLevelCount.MAJOR, failureNum - failureLevelCount.MAJOR] : [0, 0];
+        const majorRate = failureNum > 0 ? ((failureLevelCount.MAJOR / failureNum) * 100).toFixed(2) : '0';
+        majorFailureConfig.value.title.text = majorRate + '%';
         majorFailureConfig.value.series[0].data.forEach((item, idx) => {
           item.value = majorData[idx];
         });
@@ -421,8 +423,9 @@ export function useChartManagement () {
 
       // Update minor failure chart
       if (minorFailureChart) {
-        const minorData = [failureLevelCount.MINOR, failureNum - failureLevelCount.MINOR];
-        minorFailureConfig.value.title.text = ((failureLevelCount.MINOR / failureNum) * 100).toFixed(2) + '%';
+        const minorData = failureNum > 0 ? [failureLevelCount.MINOR, failureNum - failureLevelCount.MINOR] : [0, 0];
+        const minorRate = failureNum > 0 ? ((failureLevelCount.MINOR / failureNum) * 100).toFixed(2) : '0';
+        minorFailureConfig.value.title.text = minorRate + '%';
         minorFailureConfig.value.series[0].data.forEach((item, idx) => {
           item.value = minorData[idx];
         });
@@ -431,8 +434,9 @@ export function useChartManagement () {
 
       // Update trivial failure chart
       if (trivialFailureChart) {
-        const trivialData = [failureLevelCount.TRIVIAL, failureNum - failureLevelCount.TRIVIAL];
-        trivialFailureConfig.value.title.text = ((failureLevelCount.TRIVIAL / failureNum) * 100).toFixed(2) + '%';
+        const trivialData = failureNum > 0 ? [failureLevelCount.TRIVIAL, failureNum - failureLevelCount.TRIVIAL] : [0, 0];
+        const trivialRate = failureNum > 0 ? ((failureLevelCount.TRIVIAL / failureNum) * 100).toFixed(2) : '0';
+        trivialFailureConfig.value.title.text = trivialRate + '%';
         trivialFailureConfig.value.series[0].data.forEach((item, idx) => {
           item.value = trivialData[idx];
         });
@@ -447,7 +451,8 @@ export function useChartManagement () {
       // Update API open test chart
       if (apiOpenTestChart) {
         const apisTestData = [enabledTestApiNum, totalApiNum - enabledTestApiNum];
-        apiOpenTestConfig.value.title.text = enabledTestApiRate + '%';
+        const enabledRate = isNaN(enabledTestApiRate) ? '0' : enabledTestApiRate.toFixed(2);
+        apiOpenTestConfig.value.title.text = enabledRate + '%';
         apiOpenTestConfig.value.series[0].data.forEach((item, idx) => {
           item.value = apisTestData[idx];
         });
@@ -457,7 +462,8 @@ export function useChartManagement () {
       // Update API success test chart
       if (apiSuccessTestChart) {
         const apiSuccessData = [passedTestApiNum, totalApiNum - passedTestApiNum];
-        apiSuccessTestConfig.value.title.text = ((passedTestNum / totalApiNum) * 100).toFixed(2) + '%';
+        const passedRate = totalApiNum > 0 ? ((passedTestNum / totalApiNum) * 100).toFixed(2) : '0';
+        apiSuccessTestConfig.value.title.text = passedRate + '%';
         apiSuccessTestConfig.value.series[0].data.forEach((item, idx) => {
           item.value = apiSuccessData[idx];
         });
@@ -472,7 +478,8 @@ export function useChartManagement () {
       // Update scenario open test chart
       if (scenarioOpenTestChart) {
         const scenarioTestData = [enabledTestScenarioNum, totalScenarioNum - enabledTestScenarioNum];
-        scenarioOpenTestConfig.value.title.text = enabledTestScenarioRate + '%';
+        const enabledScenarioRate = isNaN(enabledTestScenarioRate) ? '0' : enabledTestScenarioRate.toFixed(2);
+        scenarioOpenTestConfig.value.title.text = enabledScenarioRate + '%';
         scenarioOpenTestConfig.value.series[0].data.forEach((item, idx) => {
           item.value = scenarioTestData[idx];
         });
@@ -482,7 +489,8 @@ export function useChartManagement () {
       // Update scenario success test chart
       if (scenarioSuccessTestChart) {
         const scenarioSuccessData = [passedTestScenarioNum, totalScenarioNum - passedTestScenarioNum];
-        scenarioSuccessTestConfig.value.title.text = ((passedTestScenarioNum / totalScenarioNum) * 100).toFixed(2) + '%';
+        const passedScenarioRate = totalScenarioNum > 0 ? ((passedTestScenarioNum / totalScenarioNum) * 100).toFixed(2) : '0';
+        scenarioSuccessTestConfig.value.title.text = passedScenarioRate + '%';
         scenarioSuccessTestConfig.value.series[0].data.forEach((item, idx) => {
           item.value = scenarioSuccessData[idx];
         });
@@ -523,7 +531,7 @@ export function useChartManagement () {
         { name: 'P95', value: p95ProcessingTime, itemStyle: { color: '#3b82f6' } }
       ];
       leadTimeConfig.value.series[0].data = leadTimeChartData;
-      
+
       // Set bar width to half the default width
       const option = {
         ...leadTimeConfig.value,
@@ -533,7 +541,7 @@ export function useChartManagement () {
           barCategoryGap: '20%'
         }]
       };
-      
+
       leadTimeChart.setOption(option);
     }
 
@@ -571,7 +579,8 @@ export function useChartManagement () {
     // Update recent completion rate chart
     if (recentCompletionRateChart) {
       const recentCompleteRateData = [completedNum, totalNum - completedNum];
-      recentCompletionRateConfig.value.title.text = completedRate + '%';
+      const completionRate = isNaN(completedRate) ? '0' : completedRate.toFixed(1);
+      recentCompletionRateConfig.value.title.text = completionRate + '%';
       recentCompletionRateConfig.value.series[0].data.forEach((item, idx) => {
         item.value = recentCompleteRateData[idx];
       });
@@ -581,7 +590,8 @@ export function useChartManagement () {
     // Update recent overdue rate chart
     if (recentOverdueRateChart) {
       const recentOverdueRateData = [overdueNum, totalNum - overdueNum];
-      recentOverdueRateConfig.value.title.text = overdueRate + '%';
+      const overdueRateValue = isNaN(overdueRate) ? '0' : overdueRate.toFixed(1);
+      recentOverdueRateConfig.value.title.text = overdueRateValue + '%';
       recentOverdueRateConfig.value.series[0].data.forEach((item, idx) => {
         item.value = recentOverdueRateData[idx];
       });
@@ -591,7 +601,8 @@ export function useChartManagement () {
     // Update recent completed workload chart
     if (recentCompletedWorkloadChart) {
       const completedWorkloadData = [completedWorkload, totalNum - completedWorkload];
-      recentCompletedWorkloadConfig.value.title.text = completedWorkloadRate + '%';
+      const completedWorkloadRateValue = isNaN(completedWorkloadRate) ? '0' : completedWorkloadRate.toFixed(1);
+      recentCompletedWorkloadConfig.value.title.text = completedWorkloadRateValue + '%';
       recentCompletedWorkloadConfig.value.series[0].data.forEach((item, idx) => {
         item.value = completedWorkloadData[idx];
       });
@@ -601,7 +612,8 @@ export function useChartManagement () {
     // Update recent saving rate chart
     if (recentSavingRateChart) {
       const recentSavingWorkloadData = [savingWorkload, totalWorkload - savingWorkload];
-      recentSavingRateConfig.value.title.text = savingWorkloadRate + '%';
+      const savingWorkloadRateValue = isNaN(savingWorkloadRate) ? '0' : savingWorkloadRate.toFixed(1);
+      recentSavingRateConfig.value.title.text = savingWorkloadRateValue + '%';
       recentSavingRateConfig.value.series[0].data.forEach((item, idx) => {
         item.value = recentSavingWorkloadData[idx];
       });

@@ -1,3 +1,6 @@
+import { SearchCriteria } from '@xcan-angus/infra';
+import { FuncTargetType } from '@/enums/enums';
+
 /**
  * Trash item interface representing deleted items in function module
  */
@@ -53,21 +56,9 @@ export interface TableColumn {
  */
 export interface TrashParams {
   /** Type of target item (CASE or PLAN) */
-  targetType: 'CASE' | 'PLAN';
+  targetType: FuncTargetType.CASE | FuncTargetType.PLAN;
   /** Optional name filter for search */
-  filters: {value: string, op: string, key: string}[]
-}
-
-/**
- * Props for the main trash component
- */
-export interface TrashProps {
-  /** Project identifier */
-  projectId: string;
-  /** Current user information */
-  userInfo: {
-    id: string;
-  };
+  filters: SearchCriteria[]
 }
 
 /**
@@ -92,14 +83,4 @@ export interface PaginationConfig {
   current: number;
   /** Items per page */
   pageSize: number;
-}
-
-/**
- * Sort configuration interface
- */
-export interface SortConfig {
-  /** Field to sort by */
-  orderBy?: string;
-  /** Sort direction */
-  orderSort?: 'ASC' | 'DESC';
 }

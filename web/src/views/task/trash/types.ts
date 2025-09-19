@@ -1,12 +1,9 @@
+import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
+
 /**
  * Target type for task trash items
  */
-export type TaskTrashTargetType = 'TASK' | 'TASK_SPRINT';
-
-/**
- * Sorting direction
- */
-export type SortOrder = 'ASC' | 'DESC';
+export type TaskTrashTargetType = CombinedTargetType.TASK | CombinedTargetType.TASK_SPRINT;
 
 /**
  * User information interface
@@ -60,11 +57,11 @@ export interface TaskTrashParams {
   /** Target type filter */
   targetType?: TaskTrashTargetType;
   /** Target name filter */
-  filters: {value: string, op: string, key: string}[];
+  filters: SearchCriteria[];
   /** Sorting field */
   orderBy?: string;
   /** Sorting direction */
-  orderSort?: SortOrder;
+  orderSort?: PageQuery.OrderSort;
 }
 
 /**
@@ -97,18 +94,6 @@ export interface TaskTableColumn {
   sorter?: boolean;
   /** Column fixed position */
   fixed?: 'left' | 'right';
-}
-
-/**
- * Props for the main task trash component
- */
-export interface TaskTrashComponentProps {
-  /** Current project ID */
-  projectId: string;
-  /** Current user information */
-  userInfo: UserInfo;
-  /** Refresh notification token */
-  refreshNotify: string;
 }
 
 /**

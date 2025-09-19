@@ -1,20 +1,23 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { Button, TabPane, Tabs, Tooltip, Popconfirm, Badge } from 'ant-design-vue';
 import { Icon, Input, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { appContext, utils } from '@xcan-angus/infra';
+import { appContext, utils, SearchCriteria } from '@xcan-angus/infra';
+
+import { FuncTargetType } from '@/enums/enums';
 import { useTrashActions } from './composables/useTrashActions';
 import { useSearch } from './composables/useSearch';
-import type { TrashProps, TrashItem } from './types';
+import type { TrashItem } from './types';
+import { BasicProps } from '@/types/types';
 
 /**
  * Function trash component for managing deleted function items
  * Provides functionality to view, recover, and permanently delete items
  */
-const props = withDefaults(defineProps<TrashProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: '',
-  userInfo: () => ({ id: '' })
+  userInfo: undefined
 });
 
 // Async component for better performance
@@ -27,7 +30,7 @@ const { t } = useI18n();
 const isAdmin = computed(() => appContext.isAdmin());
 
 // State management
-const activeKey = ref<'PLAN' | 'CASE'>('PLAN');
+const activeKey = ref<FuncTargetType>(FuncTargetType.PLAN);
 const refreshNotify = ref<string>();
 const tableDataMap = ref<Record<string, TrashItem[]>>({});
 const totalItemsMap = ref<Record<string, number>>({});
@@ -109,37 +112,34 @@ const canPerformActions = computed(() => {
 const hasSearchValue = computed(() => {
   return inputValue.value && inputValue.value.trim() !== '';
 });
-const serviceParams = computed(() => {
+
+const planParams = computed(() => {
   const params: {
-    targetType: 'PLAN';
-    filters?: {value: string, key: string, op: string}[];
+    targetType: FuncTargetType.PLAN;
+    filters?: SearchCriteria[];
   } = {
-    targetType: 'PLAN'
+    targetType: FuncTargetType.PLAN
   };
 
   if (inputValue.value) {
-    params.filters = [{ value: inputValue.value, key: 'targetName', op: 'MATCH' }];
+    params.filters = [{ value: inputValue.value, key: 'targetName', op: SearchCriteria.OpEnum.Match }];
   }
-
   return params;
 });
 
 const caseParams = computed(() => {
   const params: {
-    targetType: 'CASE';
-    filters?: {value: string, key: string, op: string}[];
+    targetType: FuncTargetType.CASE;
+    filters?: SearchCriteria[];
   } = {
-    targetType: 'CASE'
+    targetType: FuncTargetType.CASE
   };
 
   if (inputValue.value) {
-    params.filters = [{ value: inputValue.value, key: 'targetName', op: 'MATCH' }];
+    params.filters = [{ value: inputValue.value, key: 'targetName', op: SearchCriteria.OpEnum.Match }];
   }
-
   return params;
 });
-
-// ... existing code ...
 
 // Watch for project changes
 watch(
@@ -282,20 +282,20 @@ watch(
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <Tabs v-model:activeKey="activeKey" class="enhanced-tabs">
             <!-- Plans tab -->
-            <TabPane key="PLAN" :tab="t('functionTrash.tabs.plan')">
+            <TabPane :key="FuncTargetType.PLAN" :tab="t('functionTrash.tabs.plan')">
               <Table
                 key="plan"
                 v-model:spinning="loading"
                 :notify="refreshNotify"
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
-                :params="serviceParams"
+                :params="planParams"
                 :isAdmin="isAdmin"
-                @tableChange="handleTableChange($event, 'PLAN')" />
+                @tableChange="handleTableChange($event, FuncTargetType.PLAN)" />
             </TabPane>
 
             <!-- Cases tab -->
-            <TabPane key="CASE" :tab="t('functionTrash.tabs.case')">
+            <TabPane :key="FuncTargetType.CASE" :tab="t('functionTrash.tabs.case')">
               <Table
                 key="case"
                 v-model:spinning="loading"
@@ -304,7 +304,7 @@ watch(
                 :userInfo="props.userInfo"
                 :params="caseParams"
                 :isAdmin="isAdmin"
-                @tableChange="handleTableChange($event, 'CASE')" />
+                @tableChange="handleTableChange($event, FuncTargetType.CASE)" />
             </TabPane>
           </Tabs>
         </div>

@@ -209,9 +209,9 @@ defineExpose({
     <div class="flex space-x-2 h-65">
       <!-- Progress Section (3/8 width) -->
       <div class="border rounded h-full flex-3/8 p-2">
-          <div class="section-title">{{ t('kanban.cto.progress.totalProgress') }}</div>
-          <div class="flex justify-around mt-3">
-            <div class="text-center">
+        <div class="section-title">{{ t('kanban.cto.progress.totalProgress') }}</div>
+        <div class="flex justify-around mt-3">
+          <div class="text-center">
             <div class="font-bold text-7 text-slate-700">{{ progressData.totalNum || 0 }}</div>
             <div class="text-sm text-slate-500 mt-1">{{ props.countType === 'task' ? t('kanban.cto.progress.totalCount' ) : t('kanban.cto.progress.totalUseCaseCount') }}</div>
           </div>
@@ -270,17 +270,17 @@ defineExpose({
     <div class="flex space-x-2 h-65">
       <!-- Overdue Assessment Section (3/8 width) -->
       <div class="border rounded h-full flex-3/8 p-2">
-          <div class="section-title">{{ t('kanban.cto.overdue.overdueAssessment') }}</div>
-          <div class="flex justify-around mt-3">
-            <div class="text-center">
+        <div class="section-title">{{ t('kanban.cto.overdue.overdueAssessment') }}</div>
+        <div class="flex justify-around mt-3">
+          <div class="text-center">
             <div class="font-bold text-6 text-red-600">{{ overdueAssessmentData.overdueNum || 0 }}</div>
             <div class="text-sm text-slate-500 mt-1">{{ t('kanban.cto.overdue.overdueCount') }}</div>
-            </div>
-            <div class="text-center">
+          </div>
+          <div class="text-center">
             <div class="font-bold text-6 text-red-600">{{ overdueAssessmentData.overdueWorkload || 0 }}</div>
             <div class="text-sm text-slate-500 mt-1">{{ t('kanban.cto.overdue.overdueWorkload') }}</div>
-            </div>
-            <div class="text-center">
+          </div>
+          <div class="text-center">
             <div class="font-bold text-6 text-red-600">{{ overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}</div>
             <div class="text-sm text-slate-500 mt-1">{{ t('kanban.cto.overdue.overdueWorkloadProcessingTime') }}</div>
           </div>

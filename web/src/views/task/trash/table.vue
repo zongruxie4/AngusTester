@@ -3,6 +3,9 @@ import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Tooltip } from 'ant-design-vue';
 import { Icon, Image, Table } from '@xcan-angus/vue-ui';
+import { PageQuery } from '@xcan-angus/infra';
+
+import { CombinedTargetType } from '@/enums/enums';
 import { useTrashData } from './composables/useTrashData';
 import { useTableColumns } from './composables/useTableColumns';
 import { useTrashActions } from './composables/useTrashActions';
@@ -14,7 +17,7 @@ import type { TaskTrashItem, TaskTrashTableProps } from './types';
 const props = withDefaults(defineProps<TaskTrashTableProps>(), {
   projectId: '',
   userInfo: () => ({ id: '' }),
-  params: () => ({ targetType: 'TASK' as const }),
+  params: () => ({ targetType: CombinedTargetType.TASK }),
   notify: '',
   spinning: false
 });
@@ -84,7 +87,7 @@ const deleteHandler = async (data: TaskTrashItem) => {
 const tableChange = (
   paginationInfo: { current?: number; pageSize?: number },
   filters: any,
-  sorter: { orderBy?: string; orderSort?: 'ASC' | 'DESC' }
+  sorter: { orderBy?: string; orderSort?: PageQuery.OrderSort }
 ) => {
   handleTableDataChange(paginationInfo, filters, sorter);
   loadData(props.params);
