@@ -95,7 +95,7 @@
       "notPassedTest": "Not Passed Test",
       "blockedTest": "Blocked Test",
       "testCaseHitRate": "Test Case Hit Rate",
-      "oneTimePassReviewRate": "One Time Pass Review Rate",
+      "oneTimePassReviewRate": "One-time Pass Review Rate",
       "rate": "Rate",
       "passedCount": "Passed Count"
     },
