@@ -1,35 +1,30 @@
-export type FormState = {
-  planId: string;
-  deadlineDate: string;
-  caseIds?: string[],
-  participantIds?: string[]
+import { CaseInfo } from '@/views/function/types';
+
+export type BaselineDetail = {
+  id: number;
   name: string;
-  ownerId: string;
-  casePrefix?: string;
-  description?: string;
-  attachments?: {
-    name: string;
-    url: string;
-  }[];
-  id?: string;
-  date?: [string, string];// 前端回显startDate、deadlineDate自动添加的字段，保存时需要删除
+  planId: number;
+  planName: string;
+  established: boolean;
+  description: string;
+  caseIds?: number[];
+  tenantId: number;
+  createdBy: number;
+  createdByName: string;
+  createdDate: string;
+  lastModifiedBy: number;
+  lastModifiedByName: string;
+  lastModifiedDate: string;
 }
 
 export type BaselineCaseInfo = {
-  id: string;
-  caseId: string;
-  name: string;
-  createdByName: string;
-  createDate: string;
-  status: {
-    value: string;
-    message: string;
-  }
-}
+  baselineId: number;
+} & CaseInfo;
 
-export type BaselineInfo = {
-  established: boolean;
-  name: string;
+export type BaselineEditState = {
   id?: string;
+  name: string;
+  planId: string;
   description?: string;
+  caseIds?: number[],
 }

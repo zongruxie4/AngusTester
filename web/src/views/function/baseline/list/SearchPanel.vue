@@ -1,42 +1,44 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
-import { appContext } from '@xcan-angus/infra';
+import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { LoadingProps } from '@/types/types';
 
 const { t } = useI18n();
 
-interface Props {
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false
 });
 
 type OrderByKey = string;
-type OrderSortKey = 'ASC' | 'DESC';
 
-const emits = defineEmits<{(e: 'change', value: {
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+  (e: 'change', value: {
   orderBy?: string;
-  orderSort?: 'ASC'|'DESC';
-  filters: {key: string; op: string; value: string|string[]}[];
+  orderSort?: PageQuery.OrderSort;
+  filters: SearchCriteria[];
 }):void,
- (e: 'refresh'):void}>();
+  (e: 'refresh'):void
+}>();
+
 const userInfo = ref(appContext.getUser());
 
 const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
-// const planStatusTypeOpt = ref<{name: string; key: string}[]>([]);
-// const loadStatusEnum = async () => {
-//   const [, data] = await enumUtils.enumToMessages('FuncPlanStatus');
-
-//   planStatusTypeOpt.value = (data || []).map(i => ({name: i.message, key: i.value}));
-// }
+const orderBy = ref();
+const orderSort = ref();
+const searchFilters = ref<SearchCriteria[]>([]);
+const quickSearchFilters = ref<SearchCriteria[]>([]);
+const assocFilters = ref<SearchCriteria[]>([]);
+const assocKeys = ['ownerId'];
+const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
+const establishedKeys = ['established=1', 'established=0'];
 
 const searchPanelOptions = [
   {
@@ -46,13 +48,6 @@ const searchPanelOptions = [
     allowClear: true,
     maxlength: 100
   },
-  // {
-  //   valueKey: 'status',
-  //   type: 'select-enum',
-  //   enumKey: 'FuncReviewStatus',
-  //   placeholder: '选择状态',
-  //   allowClear: true
-  // },
   {
     valueKey: 'ownerId',
     type: 'select-user',
@@ -64,7 +59,7 @@ const searchPanelOptions = [
     valueKey: 'startDate',
     type: 'date',
     valueType: 'start',
-    op: 'GREATER_THAN_EQUAL',
+    op: SearchCriteria.OpEnum.GreaterThanEqual,
     placeholder: t('functionBaseline.list.baselineStartTimeGreaterEqual'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
@@ -73,7 +68,7 @@ const searchPanelOptions = [
     valueKey: 'deadlineDate',
     type: 'date',
     valueType: 'start',
-    op: 'LESS_THAN_EQUAL',
+    op: SearchCriteria.OpEnum.LessThanEqual,
     placeholder: t('functionBaseline.list.baselineDeadlineTimeLessEqual'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
@@ -83,22 +78,22 @@ const searchPanelOptions = [
 const sortMenuItems: {
   name: string;
   key: OrderByKey;
-  orderSort: OrderSortKey;
+  orderSort: PageQuery.OrderSort;
 }[] = [
   {
     name: t('functionBaseline.list.sortByName'),
     key: 'name',
-    orderSort: 'DESC'
+    orderSort: PageQuery.OrderSort.Desc
   },
   {
     name: t('functionBaseline.list.sortByAddPerson'),
     key: 'createdBy',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     name: t('functionBaseline.list.sortByAddTime'),
     key: 'createdDate',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   }
 ];
 
@@ -137,15 +132,6 @@ const menuItems = computed(() => [
   }
 ]);
 
-const orderBy = ref();
-const orderSort = ref();
-const searchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const quickSearchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocKeys = ['ownerId'];
-const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
-const establishedKeys = ['established=1', 'established=0'];
-
 const formatDateString = (key: string) => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
@@ -169,14 +155,14 @@ const formatDateString = (key: string) => {
     startDate
       ? {
           value: startDate.format(DATE_TIME_FORMAT),
-          op: 'GREATER_THAN_EQUAL',
+          op: SearchCriteria.OpEnum.GreaterThanEqual,
           key: 'createdDate'
         }
       : '',
     endDate
       ? {
           value: endDate.format(DATE_TIME_FORMAT),
-          op: 'LESS_THAN_EQUAL',
+          op: SearchCriteria.OpEnum.LessThanEqual,
           key: 'createdDate'
         }
       : ''].filter(Boolean);
@@ -194,7 +180,7 @@ const getParams = () => {
   };
 };
 
-const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
+const searchChange = (data: SearchCriteria[]) => {
   searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
   assocFilters.value = data.filter(item => assocKeys.includes(item.key));
 
@@ -240,7 +226,6 @@ const menuItemClick = (data) => {
     if (key === '') {
       selectedMenuMap.value = { '': true };
       quickSearchFilters.value = [];
-      // 清空搜索面板
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
         searchChangeFlag = true;
@@ -268,7 +253,7 @@ const menuItemClick = (data) => {
       const value = !!(+key.split('=')[1]);
       return {
         key: 'established',
-        op: 'EQUAL',
+        op: SearchCriteria.OpEnum.Equal,
         value
       };
     } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
@@ -282,7 +267,7 @@ const menuItemClick = (data) => {
     } else {
       return {
         key,
-        op: 'EQUAL',
+        op: SearchCriteria.OpEnum.Equal,
         value: userId
       };
     }
@@ -302,10 +287,6 @@ const menuItemClick = (data) => {
 const refresh = () => {
   emits('refresh');
 };
-
-onMounted(() => {
-  // loadStatusEnum();
-});
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">

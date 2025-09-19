@@ -3,28 +3,21 @@ import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { func } from '@/api/tester';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
+const BaseLineCaseList = defineAsyncComponent(() => import('@/views/function/baseline/case/list/List.vue'));
+const BaselineCompare = defineAsyncComponent(() => import('@/views/function/baseline/case/compare/index.vue'));
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   data: undefined
 });
+
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
-const BaseLineCaseList = defineAsyncComponent(() => import('@/views/function/baseline/case/list/List.vue'));
-const BaselineCompare = defineAsyncComponent(() => import('@/views/function/baseline/case/compare/index.vue'));
 
 const planId = ref();
 
@@ -52,7 +45,6 @@ onMounted(() => {
     loadBaseLineInfo();
   }
 });
-
 </script>
 <template>
   <div class="px-5 pt-3 h-full">

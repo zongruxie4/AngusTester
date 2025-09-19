@@ -2,14 +2,17 @@
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
-import { ReviewCaseInfo } from './PropsType';
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { funcPlan } from '@/api/tester';
 
+import { BaselineCaseInfo } from '@/views/function/baseline/types';
+
 import TestResult from '@/components/TestResult/index.vue';
 
 const { t } = useI18n();
+
+const ModuleTree = defineAsyncComponent(() => import('@/views/function/baseline/case/list/ModuleTree.vue'));
 
 interface Props {
   planId: string;
@@ -17,15 +20,16 @@ interface Props {
   baselineId?: string;
   projectId: string;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   baselineId: undefined
 });
-const emit = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]):void}>();
-const ModuleTree = defineAsyncComponent(() => import('@/views/function/baseline/case/list/ModuleTree.vue'));
+
+const emit = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok', value: string[], rowValue: BaselineCaseInfo[]):void}>();
 
 const selectedIds = ref<string[]>([]);
-const selectRows = ref<ReviewCaseInfo[]>([]);
+const selectRows = ref<BaselineCaseInfo[]>([]);
 const data = ref([]);
 const showData = ref([]);
 const loading = ref(false);
@@ -58,22 +62,9 @@ const loadCases = async () => {
     return;
   }
   data.value = resp?.data || [];
-  showData.value = data.value.filter(item => (item.name || '').includes(keywords.value || '') || (item.code || '').includes(keywords.value || ''));
+  showData.value = data.value.filter(item => (item.name || '').includes(keywords.value || '') || (item.code || '')
+    .includes(keywords.value || ''));
 };
-
-watch(() => props.visible, (newValue) => {
-  if (newValue) {
-    selectedIds.value = [];
-    loadCases();
-  }
-}, {
-  immediate: true
-});
-
-watch(() => moduleId.value, () => {
-  selectedIds.value = [];
-  loadCases();
-});
 
 const handleFilter = debounce(duration.search, () => {
   selectedIds.value = [];
@@ -111,6 +102,19 @@ const rowSelection = ref({
   }
 });
 
+watch(() => props.visible, (newValue) => {
+  if (newValue) {
+    selectedIds.value = [];
+    loadCases();
+  }
+}, {
+  immediate: true
+});
+
+watch(() => moduleId.value, () => {
+  selectedIds.value = [];
+  loadCases();
+});
 </script>
 <template>
   <Modal

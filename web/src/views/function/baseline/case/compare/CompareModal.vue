@@ -10,25 +10,26 @@ import _ from 'lodash-es';
 
 const { t } = useI18n();
 
+const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/components/AssocTask.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/function/review/components/AssocCase.vue'));
+const Attachment = defineAsyncComponent(() => import('@/views/function/review/components/Attachment.vue'));
+
 interface Props {
   visible: boolean;
   caseId: string;
   baselineId: string;
-  comparelineId: string;
+  compareBaselineId: string;
   projectId: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   baselineId: undefined,
-  comparelineId: undefined,
+  compareBaselineId: undefined,
   caseId: undefined,
   projectId: undefined
 });
 
-const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/components/AssocTask.vue'));
-const AssocCases = defineAsyncComponent(() => import('@/views/function/review/components/AssocCase.vue'));
-const Attachment = defineAsyncComponent(() => import('@/views/function/review/components/Attachment.vue'));
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
 const toolbarOptions = ['color', 'weight'];
 
@@ -70,7 +71,7 @@ const loadBaseCase = async () => {
 };
 
 const loadCompareCase = async () => {
-  const [error, { data }] = await func.getBaselineCaseDetail(props.comparelineId, props.caseId);
+  const [error, { data }] = await func.getBaselineCaseDetail(props.compareBaselineId, props.caseId);
   if (error) {
     return;
   }
@@ -206,7 +207,7 @@ onMounted(() => {
       resetData();
       return;
     }
-    if (props.baselineId === props.comparelineId) {
+    if (props.baselineId === props.compareBaselineId) {
       await loadBaseCase();
       compareCase.value = baseCase.value;
       baseVersion.value = baseCase.value.version;
@@ -221,7 +222,6 @@ onMounted(() => {
     immediate: true
   });
 });
-
 </script>
 <template>
   <Modal
@@ -265,12 +265,6 @@ onMounted(() => {
             class="w-20 self-center"
             :options="versionOpt"
             @change="handleBaseVersionChange" />
-          <!-- <div v-if="baseCase?.version">
-            v{{ baseCase?.version }}
-          </div>
-          <div>
-            {{ compareCase?.lastModifiedDate }}
-          </div> -->
         </div>
         <div class="flex-1 border-r px-2  flex justify-between">
           <Select
@@ -278,12 +272,6 @@ onMounted(() => {
             class="w-20 self-center"
             :options="versionOpt"
             @change="handleCompareVersionChange" />
-          <!-- <div v-if="compareCase?.version">
-            v{{ compareCase?.version }}
-          </div>
-          <div>
-            {{ compareCase?.lastModifiedDate }}
-          </div> -->
         </div>
       </div>
 

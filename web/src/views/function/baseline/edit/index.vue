@@ -3,26 +3,17 @@ import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch
 import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, TabPane, Tabs } from 'ant-design-vue';
 import { AsyncComponent, Icon, Input, modal, notification, Select, Spin, Table } from '@xcan-angus/vue-ui';
-import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils, duration } from '@xcan-angus/infra';
+import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils, duration, SearchCriteria } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import { func, project } from '@/api/tester';
+import { BasicProps } from '@/types/types';
 
-import { BaselineCaseInfo, BaselineInfo, FormState } from '@/views/function/baseline/types';
+import { BaselineCaseInfo, BaselineDetail, BaselineEditState } from '@/views/function/baseline/types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -40,15 +31,15 @@ const formRef = ref();
 const selectModalVisible = ref(false);
 const keywords = ref();
 const loading = ref(false);
-const dataSource = ref<BaselineInfo>();
+const dataSource = ref<BaselineDetail>();
 
 const activeTabKey = ref('funcCase');
 
 const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const baselineFlagVisible = ref(false);
 
-const oldFormState = ref<FormState>();
-const formState = ref<FormState>({
+const oldFormState = ref<BaselineEditState>();
+const formState = ref<BaselineEditState>({
   planId: '',
   description: '',
   name: '',
@@ -56,7 +47,7 @@ const formState = ref<FormState>({
 });
 
 const getParams = () => {
-  const params: FormState = { ...formState.value, caseIds: caseList.value.map(i => i.id) };
+  const params: BaselineEditState = { ...formState.value, caseIds: caseList.value.map(i => i.id) };
   if (dataSource.value?.id) {
     params.id = dataSource.value.id;
   }
@@ -99,7 +90,6 @@ const editOk = async () => {
   const id = params.id;
   const name = params.name;
   updateTabPane({ _id: id, name });
-  // 更新数据名称
   if (dataSource.value) {
     dataSource.value.name = name;
   }
@@ -173,11 +163,10 @@ const loadData = async (id: string) => {
     return;
   }
 
-  const data = res?.data as BaselineInfo;
+  const data = res?.data as BaselineDetail;
   if (!data) {
     return;
   }
-  // await loadPermissions(data.planId);
 
   dataSource.value = data;
   setFormData(data);
@@ -203,7 +192,7 @@ const getJson = (value) => {
   }
 };
 
-const setFormData = (data: BaselineInfo) => {
+const setFormData = (data: BaselineDetail) => {
   baselineFlagVisible.value = false;
   if (!data) {
     formState.value = {
@@ -216,16 +205,16 @@ const setFormData = (data: BaselineInfo) => {
   }
 
   const {
-    description = '',
     name = '',
     planId,
+    description = '',
     caseIds
   } = data;
 
-  formState.value.description = getJson(description);
   formState.value.name = name;
-  formState.value.caseIds = caseIds;
   formState.value.planId = planId;
+  formState.value.description = getJson(description);
+  formState.value.caseIds = caseIds;
   oldFormState.value = JSON.parse(JSON.stringify(formState.value));
 };
 
@@ -257,7 +246,7 @@ const handleChangePlanId = () => {
 
 const loadCaseList = async () => {
   const [error, { data }] = await func.getBaselineCaseList(baselineId.value, {
-    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH' }] : [],
+    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: SearchCriteria.OpEnum.Match }] : [],
     pageNo: pagination.value.current,
     pageSize: pagination.value.pageSize,
     projectId: props.projectId
@@ -289,7 +278,7 @@ const handleAddCase = async (caseIds: string[], cases: BaselineCaseInfo[]) => {
       return;
     }
     selectModalVisible.value = false;
-    loadCaseList();
+    await loadCaseList();
   } else {
     selectModalVisible.value = false;
     caseList.value.push(...cases);
@@ -345,9 +334,6 @@ const validateDesc = () => {
   if (richEditorRef.value && richEditorRef.value.getLength() > 2000) {
     return Promise.reject(t('functionBaseline.editForm.charactersCannotExceed2000'));
   }
-  // if (formState.value.description.length > 2000) {
-  //   return Promise.reject('字符不能超过2000');
-  // }
   return Promise.resolve();
 };
 
@@ -374,7 +360,6 @@ onMounted(() => {
 
     baselineId.value = id;
 
-    // await loadPermissions(id);
     await loadData(id);
     await loadCaseList();
   }, { immediate: true });
@@ -457,11 +442,6 @@ const editFlag = computed(() => {
           v-model:value="formState.description"
           :placeholder="t('functionBaseline.editForm.baselineBriefOverview2000')"
           :height="100" />
-        <!-- <Textarea
-          v-model:value="formState.description"
-          size="small"
-          :maxlength="2000"
-          :placeholder="'基线简要概述，最多支持2000个字符'" /> -->
       </FormItem>
 
       <Tabs

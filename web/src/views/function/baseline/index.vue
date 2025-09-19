@@ -52,7 +52,7 @@ const initialize = () => {
           _id: 'baselineList',
           value: 'baselineList',
           name: t('functionBaseline.name'),
-          closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
+          closable: false
         };
       }
     });
@@ -115,16 +115,6 @@ const storageKeyChange = () => {
   initialize();
 };
 
-onMounted(() => {
-  watch(() => route.hash, () => {
-    if (!route.hash.startsWith('#baseline')) {
-      return;
-    }
-
-    hashChange(route.hash);
-  });
-});
-
 const storageKey = computed(() => {
   if (!props.projectId) {
     return undefined;
@@ -133,19 +123,19 @@ const storageKey = computed(() => {
   return `baseline-${props.projectId}`;
 });
 
-// 添加指定的tabPane
+onMounted(() => {
+  watch(() => route.hash, () => {
+    if (!route.hash.startsWith('#baseline')) {
+      return;
+    }
+    hashChange(route.hash);
+  });
+});
+
 provide('addTabPane', addTabPane);
-
-// 获取tabPane
 provide('getTabPane', getTabPane);
-
-// 删除指定的tabPane
 provide('deleteTabPane', deleteTabPane);
-
-// 更新指定的tabPane
 provide('updateTabPane', updateTabPane);
-
-// 替换指定tabPane
 provide('replaceTabPane', replaceTabPane);
 </script>
 <template>

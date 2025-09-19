@@ -3,10 +3,12 @@ import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Select } from '@xcan-angus/vue-ui';
-import _ from 'lodash-es';
+import lodash from 'lodash-es';
 import { func } from '@/api/tester';
 
 const { t } = useI18n();
+
+const CompareModal = defineAsyncComponent(() => import('./CompareModal.vue'));
 
 type Props = {
   projectId: string;
@@ -24,9 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   planId: undefined
 });
 
-const CompareModal = defineAsyncComponent(() => import('./CompareModal.vue'));
-
-const caselineList = ref([]);
+const baselineList = ref([]);
 const allCaseIds = ref<string[]>([]);
 const compareVisible = ref(false);
 const compareLineId = ref();
@@ -34,8 +34,7 @@ const baseCase = ref({});
 const compareCase = ref({});
 
 const baseLine = computed(() => {
-  const target = caselineList.value.find(line => line.id === props.baselineId);
-  return target;
+  return baselineList.value.find(line => line.id === props.baselineId);
 });
 
 const loadBaseLineList = async () => {
@@ -47,9 +46,8 @@ const loadBaseLineList = async () => {
   if (error) {
     return;
   }
-  caselineList.value = data?.list || [];
-  // allCaseIds.value.push(caselineList.value.map(cases => cases.id));
-  compareLineId.value = caselineList.value[0].id;
+  baselineList.value = data?.list || [];
+  compareLineId.value = baselineList.value[0].id;
 };
 
 const loadBaseCase = async () => {
@@ -90,11 +88,17 @@ const handleChangeCompareLineId = () => {
   loadCompareCase();
 };
 
+const selectCaseId = ref();
+const openCompareModal = (caseId) => {
+  compareVisible.value = true;
+  selectCaseId.value = caseId;
+};
+
 onMounted(async () => {
   await loadBaseLineList();
   Promise.all([loadBaseCase(), loadCompareCase()])
     .then(() => {
-      allCaseIds.value = _.uniq(allCaseIds.value);
+      allCaseIds.value = lodash.uniq(allCaseIds.value);
     });
 });
 
@@ -133,13 +137,6 @@ const rightRawConfig = [
     class: 'w-20 text-center'
   }
 ];
-
-const selectCaseId = ref();
-const openCompareModal = (caseId) => {
-  compareVisible.value = true;
-  selectCaseId.value = caseId;
-};
-
 </script>
 <template>
   <div class="overflow-y-auto -mt-4">
@@ -154,7 +151,7 @@ const openCompareModal = (caseId) => {
           <Select
             v-model:value="compareLineId"
             class="w-full"
-            :options="caselineList"
+            :options="baselineList"
             :fieldNames="{
               value: 'id',
               label: 'name'
@@ -239,7 +236,7 @@ const openCompareModal = (caseId) => {
       <CompareModal
         v-model:visible="compareVisible"
         :baselineId="props.baselineId"
-        :comparelineId="compareLineId"
+        :compareBaselineId="compareLineId"
         :caseId="selectCaseId"
         :projectId="props.projectId" />
     </AsyncComponent>

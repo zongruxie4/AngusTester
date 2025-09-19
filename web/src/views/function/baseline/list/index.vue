@@ -1,36 +1,27 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, ref, watch, computed } from 'vue';
+import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Pagination } from 'ant-design-vue';
 import { Colon, Icon, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import dayjs from 'dayjs';
+import { ProjectPageQuery } from '@xcan-angus/infra';
 import { func } from '@/api/tester';
+
+import { BaselineDetail } from '@/views/function/baseline/types';
+import { BasicProps } from '@/types/types';
 
 import SearchPanel from '@/views/function/baseline/list/SearchPanel.vue';
 import RichText from '@/components/richEditor/textContent/index.vue';
-import { BaselineInfo } from '@/views/function/baseline/types';
-import { TIME_FORMAT } from '@/utils/constant';
+
+const Introduce = defineAsyncComponent(() => import('@/views/function/baseline/list/Introduce.vue'));
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined
 });
-
-type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
-
-const Introduce = defineAsyncComponent(() => import('@/views/function/baseline/list/Introduce.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
@@ -45,10 +36,12 @@ const searchPanelParams = ref({
   orderSort: undefined,
   filters: []
 });
-// const filters = ref<{ key: string; op: string; value: string; }[]>([]);
+
 const total = ref(0);
-const dataList = ref<BaselineInfo[]>([]);
+const dataList = ref<BaselineDetail[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
+
+const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
 const refresh = () => {
   pageNo.value = 1;
@@ -58,12 +51,11 @@ const refresh = () => {
 
 const searchChange = (data) => {
   pageNo.value = 1;
-  // filters.value = data;
   searchPanelParams.value = data;
   loadData();
 };
 
-const toCompleted = async (data: BaselineInfo) => {
+const toCompleted = async (data: BaselineDetail) => {
   loading.value = true;
   const id = data.id;
   const [error] = await func.establishBaseline(id);
@@ -72,10 +64,10 @@ const toCompleted = async (data: BaselineInfo) => {
     return;
   }
   notification.success(t('functionBaseline.list.baselineEstablished'));
-  loadData();
+  await loadData();
 };
 
-const toDelete = async (data: BaselineInfo) => {
+const toDelete = async (data: BaselineDetail) => {
   modal.confirm({
     content: t('functionBaseline.list.confirmDeleteBaseline', { name: data.name }),
     async onOk () {
@@ -86,7 +78,7 @@ const toDelete = async (data: BaselineInfo) => {
       }
 
       notification.success(t('functionBaseline.list.baselineDeletedSuccess'));
-      loadData();
+      await loadData();
 
       deleteTabPane([id]);
     }
@@ -101,14 +93,7 @@ const paginationChange = (_pageNo: number, _pageSize: number) => {
 
 const loadData = async () => {
   loading.value = true;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    orderBy?: OrderByKey;
-    orderSort?: OrderSortKey;
-    filters?: { key: string; op: string; value: string; }[];
-  } = {
+  const params: ProjectPageQuery = {
     projectId: props.projectId,
     pageNo: pageNo.value,
     pageSize: pageSize.value,
@@ -119,11 +104,7 @@ const loadData = async () => {
   loaded.value = true;
   loading.value = false;
 
-  if (params.filters?.length || params.orderBy) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
+  searchedFlag.value = !!(params.filters?.length || params.orderBy);
 
   if (error) {
     dataList.value = [];
@@ -133,9 +114,7 @@ const loadData = async () => {
   const data = res?.data;
   if (data) {
     total.value = +data.total;
-
-    const _list = (data.list || [] as BaselineInfo[]);
-    dataList.value = _list;
+    dataList.value = (data.list || [] as BaselineDetail[]);
   }
 };
 
@@ -158,85 +137,7 @@ onMounted(() => {
     loadData();
   }, { immediate: false });
 });
-
-const searchPanelOptions = [
-  {
-    valueKey: 'name',
-    type: 'input',
-    placeholder: t('functionBaseline.list.searchBaselineNameDescription'),
-    allowClear: true,
-    maxlength: 100
-  },
-  // {
-  //   valueKey: 'status',
-  //   type: 'select-enum',
-  //   enumKey: 'FuncReviewStatus',
-  //   placeholder: '选择状态',
-  //   allowClear: true
-  // },
-  {
-    valueKey: 'ownerId',
-    type: 'select-user',
-    allowClear: true,
-    placeholder: t('functionBaseline.list.selectOwner'),
-    maxlength: 100
-  },
-  {
-    valueKey: 'startDate',
-    type: 'date',
-    valueType: 'start',
-    op: 'GREATER_THAN_EQUAL',
-    placeholder: t('functionBaseline.list.baselineStartTimeGreaterEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
-    allowClear: true
-  },
-  {
-    valueKey: 'deadlineDate',
-    type: 'date',
-    valueType: 'start',
-    op: 'LESS_THAN_EQUAL',
-    placeholder: t('functionBaseline.list.baselineDeadlineTimeLessEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
-    allowClear: true
-  }
-];
-
-const dropdownMenuItems = [
-  {
-    key: 'delete',
-    icon: 'icon-qingchu',
-    name: t('functionBaseline.list.delete'),
-    permission: 'delete'
-  },
-  {
-    key: 'clone',
-    icon: 'icon-fuzhi',
-    name: t('functionBaseline.list.clone'),
-    noAuth: true,
-    permission: 'clone'
-  }
-];
-
-const pageSizeOptions = ['5', '10', '15', '20', '30'];
-
-const sortMenuItems: {
-  name: string;
-  key: OrderByKey;
-  orderSort: OrderSortKey;
-}[] = [
-  {
-    name: t('functionBaseline.list.sortByAddTime'),
-    key: 'createdDate',
-    orderSort: 'DESC'
-  },
-  {
-    name: t('functionBaseline.list.sortByAddPerson'),
-    key: 'createdByName',
-    orderSort: 'ASC'
-  }
-];
 </script>
-
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <Introduce class="mb-7" />
@@ -276,12 +177,6 @@ const sortMenuItems: {
                   </RouterLink>
                 </div>
 
-                <!-- <div class="text-3 whitespace-nowrap">
-                  <span class="text-theme-title ml-2">{{ item.startDate }}</span>
-                  <span class="text-theme-sub-content mx-2">至</span>
-                  <span class="text-theme-title">{{ item.deadlineDate }}</span>
-                </div> -->
-
                 <div class="flex">
                   <div
                     class="text-theme-sub-content text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
@@ -289,17 +184,10 @@ const sortMenuItems: {
                       v-if="item.established"
                       icon="icon-duihao-copy"
                       class="mr-1" />
-                    <div>
-                      {{
-                        item.established ? t('functionBaseline.list.established') : t('functionBaseline.list.notEstablished')
-                      }}
-                    </div>
+                    <div>{{ item.established ? t('functionBaseline.list.established') : t('functionBaseline.list.notEstablished') }}</div>
                   </div>
                 </div>
               </div>
-              <!-- <div class="px-3.5 flex mt-3 justify-end text-3 text-theme-sub-content">
-                <div class="ml-8 text-theme-content">共{{ item.caseNum || 0 }}条用例</div>
-              </div> -->
 
               <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
                 <div class="flex flex-wrap space-x-8">
@@ -337,7 +225,6 @@ const sortMenuItems: {
               <div class="px-3.5 flex justify-between items-end text-3 my-2.5 relative">
                 <div class="truncate mr-8" :title="item.descriptionText || ''">
                   <template v-if="item.description">
-                    <!-- {{ item.description }} -->
                     <RichText
                       v-model:textValue="item.descriptionText"
                       :value="item.description"
