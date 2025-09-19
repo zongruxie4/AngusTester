@@ -97,12 +97,12 @@ export function useEffectivenessData (props: EffectivenessProps) {
       testerRanking.value = null;
       testers.value = {};
 
-      const assigneeRankingData = data.assigneeRanking;
+      const assigneeRankingData = data.assigneeRanking || {};
       if (assigneeRankingData) {
         assigneeRanking.value = assigneeRankingData;
       }
 
-      const assigneesData = data.assignees;
+      const assigneesData = data.assignees || [];
       if (assigneesData) {
         assignees.value = assigneesData;
       }
