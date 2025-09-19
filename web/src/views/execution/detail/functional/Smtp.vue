@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '@/plugins/smtp/index';
+import Plugin from '@/plugins/test/smtp/index';
 
 import { FunctionalTestProps } from '@/views/execution/detail/types';
 

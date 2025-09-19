@@ -2,7 +2,7 @@
 import { inject } from 'vue';
 
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '@/plugins/ldap';
+import Plugin from 'src/plugins/test/ldap';
 
 // eslint-disable-next-line import/no-absolute-path
 

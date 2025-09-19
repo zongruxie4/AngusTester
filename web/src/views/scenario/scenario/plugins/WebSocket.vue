@@ -2,7 +2,7 @@
 import { inject } from 'vue';
 
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '@/plugins/websocket';
+import Plugin from 'src/plugins/test/websocket';
 
 // eslint-disable-next-line import/no-absolute-path
 

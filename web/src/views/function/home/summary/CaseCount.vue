@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<DataSourceProps<SummaryInfo>>(), {
 });
 
 const total = ref<string>('0');
-const overduetTtal = ref<string>('0');
+const overdueTotal = ref<string>('0');
 const pendingTotal = ref<string>('0');
 const passedTotal = ref<string>('0');
 const noPassedTotal = ref<string>('0');
@@ -27,7 +27,7 @@ onMounted(() => {
     }
 
     total.value = newValue.allCase;
-    overduetTtal.value = newValue.caseByOverdue;
+    overdueTotal.value = newValue.caseByOverdue;
     pendingTotal.value = newValue.caseByTestResult?.PENDING;
     passedTotal.value = newValue.caseByTestResult?.PASSED;
     noPassedTotal.value = newValue.caseByTestResult?.NOT_PASSED;
@@ -65,7 +65,7 @@ onMounted(() => {
         <Icon icon="icon-yiyuqi1" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
           <div class="text-theme-sub-content">{{ t('functionHome.summary.case.overdue') }}<span class="placeholder nth-3"></span></div>
-          <div class="text-4">{{ overduetTtal }}</div>
+          <div class="text-4">{{ overdueTotal }}</div>
         </div>
       </div>
 

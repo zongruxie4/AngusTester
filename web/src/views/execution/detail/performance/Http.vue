@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 // eslint-disable-next-line import/no-absolute-path
-import ExecHttpPerfExecDetail from '@/plugins/http/index';
+import ExecHttpPerfExecDetail from '@/plugins/test/http/index';
 
 // eslint-disable-next-line import/no-absolute-path
 

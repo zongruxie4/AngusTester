@@ -2,7 +2,7 @@
 import { inject } from 'vue';
 
 // eslint-disable-next-line import/no-absolute-path
-import Plugin from '@/plugins/http';
+import Plugin from 'src/plugins/test/http';
 
 // eslint-disable-next-line import/no-absolute-path
 

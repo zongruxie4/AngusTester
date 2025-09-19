@@ -1,15 +1,15 @@
 <script lang="ts" setup>
 import { NoData } from '@xcan-angus/vue-ui';
 // eslint-disable-next-line import/no-absolute-path
-import { DebugLog as JDBCDebugLog } from '@/plugins/jdbc/index';
+import { DebugLog as JDBCDebugLog } from '@/plugins/test/jdbc/index';
 // eslint-disable-next-line import/no-absolute-path
-import { DebugLog as HttpDebugLog } from '@/plugins/http/index';
+import { DebugLog as HttpDebugLog } from '@/plugins/test/http/index';
 
 // eslint-disable-next-line import/no-absolute-path
-import { DebugLog as SmtpDebugLog } from '@/plugins/smtp/index';
+import { DebugLog as SmtpDebugLog } from '@/plugins/test/smtp/index';
 
 // eslint-disable-next-line import/no-absolute-path
-import { DebugLog as MailDebugLog } from '@/plugins/mail/index';
+import { DebugLog as MailDebugLog } from '@/plugins/test/mail/index';
 import { useDebugLog } from './composables/useDebugLog';
 
 interface Props {

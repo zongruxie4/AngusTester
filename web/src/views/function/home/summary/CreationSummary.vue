@@ -4,7 +4,7 @@ import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { SummaryInfo } from '../types';
-import {BasicProps} from "@/types/types";
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 

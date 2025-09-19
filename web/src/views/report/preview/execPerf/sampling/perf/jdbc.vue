@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import ExecJdbcPerfExecDetail from '@/plugins/jdbc/index';
+import ExecJdbcPerfExecDetail from '@/plugins/test/jdbc/index';
 
 // eslint-disable-next-line import/no-absolute-path
 
