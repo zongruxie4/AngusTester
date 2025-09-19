@@ -118,17 +118,17 @@ onMounted(() => {
     <div class="flex flex-1 space-x-3.75 justify-start">
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
-          <span>{{ t('taskHome.backlog') }}</span>
-          <span>{{ allBacklog }}</span>
+          <span class="text-3.5">{{ t('taskHome.backlog') }}</span>
+          <span class="text-4.5 font-semibold">{{ allBacklog }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('taskHome.last7Days') }}</span>
-            <span>{{ backlogByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ backlogByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('taskHome.last30Days') }}</span>
-            <span>{{ backlogByLastMonth }}</span>
+            <span class="text-3.5 font-semibold">{{ backlogByLastMonth }}</span>
           </div>
         </div>
         <img src="./images/tag.png" class="w-15 absolute right-0 top-0 -z-1" />
@@ -137,17 +137,17 @@ onMounted(() => {
 
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
-          <span>{{ t('taskHome.sprint') }}</span>
-          <span>{{ allSprint }}</span>
+          <span class="text-3.5">{{ t('taskHome.sprint') }}</span>
+          <span class="text-4.5 font-semibold">{{ allSprint }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('taskHome.last7Days') }}</span>
-            <span>{{ sprintByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ sprintByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('taskHome.last30Days') }}</span>
-            <span>{{ sprintByLastMonth }}</span>
+            <span class="text-3.5 font-semibold">{{ sprintByLastMonth }}</span>
           </div>
         </div>
         <img src="./images/sprint.png" class="w-15 absolute right-0 top-0 -z-1" />
@@ -156,17 +156,17 @@ onMounted(() => {
 
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
-          <span>{{ t('taskHome.task') }}</span>
-          <span>{{ allTask }}</span>
+          <span class="text-3.5">{{ t('taskHome.task') }}</span>
+          <span class="text-4.5 font-semibold">{{ allTask }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('taskHome.last7Days') }}</span>
-            <span>{{ taskByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ taskByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('taskHome.last30Days') }}</span>
-            <span>{{ taskByLastMonth }}</span>
+            <span class="text-3.5 font-semibold">{{ taskByLastMonth }}</span>
           </div>
         </div>
         <img src="./images/task.png" class="w-15 absolute right-0 top-0 -z-1" />
@@ -175,17 +175,17 @@ onMounted(() => {
 
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
-          <span>{{ t('taskHome.meeting') }}</span>
-          <span>{{ allMeeting }}</span>
+          <span class="text-3.5">{{ t('taskHome.meeting') }}</span>
+          <span class="text-4.5 font-semibold">{{ allMeeting }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('taskHome.last7Days') }}</span>
-            <span>{{ meetingByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ meetingByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('taskHome.last30Days') }}</span>
-            <span>{{ meetingByLastMonth }}</span>
+            <span class="text-3.5 font-semibold">{{ meetingByLastMonth }}</span>
           </div>
         </div>
         <img src="./images/project.png" class="w-15 absolute right-0 top-0 -z-1" />

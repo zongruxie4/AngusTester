@@ -3,20 +3,10 @@ import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { TaskStatus } from '@/enums/enums';
+import { BasicProps } from '@/types/types';
 
-/**
- * Props interface for Added component.
- * <p>
- * Defines the required properties for displaying user's task-related data.
- * </p>
- */
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Props interface for Added component
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   notify: undefined

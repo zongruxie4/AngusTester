@@ -1340,25 +1340,40 @@
       "overdue": "已逾期",
       "pageInfo": "第{current}/{total}页"
     },
+    "burndown": {
+      "title": "燃尽图",
+      "caseCount": "用例数",
+      "workload": "工作量",
+      "remaining": "剩余",
+      "expected": "期望"
+    },
     "workCalendar": {
       "workload": "工作量",
       "completed": "已完成",
       "remaining": "剩余"
     },
+    "myCreationSummary": {
+      "title": "我添加的",
+      "plan": "计划",
+      "case": "用例",
+      "review": "评审",
+      "baseline": "基线",
+      "last7Days": "近7天",
+      "last30Days": "近30天"
+    },
     "introduce": {
-      "welcome": "欢迎来到AngusTester功能！",
-      "description": "是一个功能测试管理模块，即用例库，用于验证软件系统是否符合规格说明和用户需求的过程。",
-      "teamWorkTitle": "在这里您和您的团队可以完成以下工作：",
-      "planTesting": "通过\"计划\"组织测试人员开展功能测试活动；",
-      "reviewCases": "组织用例评审及早发现潜在的缺陷和错误等；",
-      "reportAnalysis": "报告和分析项目的健康状况、进展情况和问题趋势。"
+      "welcome": "关于AngusTester测试",
+      "description": "一个专业的测试管理平台，用于系统化地验证软件系统是否符合规格说明和用户需求。",
+      "planTesting": "通过\"测试计划\"统筹测试人员开展测试活动；",
+      "reviewCases": "组织测试用例评审，及早发现潜在的缺陷和错误；",
+      "reportAnalysis": "提供健康状况、进展情况和问题趋势全面分析。"
     },
     "activityTimeline": {
       "myActivity": "我的活动",
-      "allActivity": "所有活动"
+      "allActivity": "全部活动"
     },
     "summary": {
-      "title": "资源统计",
+      "title": "项目资源统计",
       "priority": {
         "title": "优先级",
         "highest": "最高",
@@ -1388,22 +1403,6 @@
         "pending": "待开始",
         "inProgress": "进行中",
         "completed": "已完成"
-      },
-      "burndownChart": {
-        "title": "我的燃尽图",
-        "caseCount": "用例数",
-        "workload": "工作量",
-        "remaining": "剩余",
-        "expected": "期望"
-      },
-      "myCreationSummary": {
-        "title": "我添加的",
-        "plan": "计划",
-        "case": "用例",
-        "review": "评审",
-        "baseline": "基线",
-        "last7Days": "近7天",
-        "last30Days": "近30天"
       }
     }
   },

@@ -201,21 +201,21 @@ const columns = [
   }
 ];
 
-const gridColumns= [
+const gridColumns = [
   [
-    {dataIndex: 'name', label: t('functionPlan.planDetail.basicInfo.planName')},
-    {dataIndex: 'ownerName', label: t('functionPlan.planDetail.basicInfo.owner') },
-    {dataIndex: 'review', label: t('functionPlan.planDetail.basicInfo.isReview') },
-    {dataIndex: 'status', label: t('functionPlan.planDetail.basicInfo.status') },
-    {dataIndex: 'attachments', label: t('functionPlan.planDetail.basicInfo.attachments')}
+    { dataIndex: 'name', label: t('functionPlan.planDetail.basicInfo.planName') },
+    { dataIndex: 'ownerName', label: t('functionPlan.planDetail.basicInfo.owner') },
+    { dataIndex: 'review', label: t('functionPlan.planDetail.basicInfo.isReview') },
+    { dataIndex: 'status', label: t('functionPlan.planDetail.basicInfo.status') },
+    { dataIndex: 'attachments', label: t('functionPlan.planDetail.basicInfo.attachments') }
   ],
   [
-    {dataIndex: 'time', label: t('functionPlan.planDetail.basicInfo.timePlan')},
-    {dataIndex: 'casePrefix', label: t('functionPlan.planDetail.basicInfo.casePrefix')},
-    {dataIndex: 'workloadAssessment', label: t('functionPlan.planDetail.basicInfo.workloadAssessment')},
-    {dataIndex: 'progress', label: t('functionPlan.planDetail.basicInfo.progress')}
+    { dataIndex: 'time', label: t('functionPlan.planDetail.basicInfo.timePlan') },
+    { dataIndex: 'casePrefix', label: t('functionPlan.planDetail.basicInfo.casePrefix') },
+    { dataIndex: 'workloadAssessment', label: t('functionPlan.planDetail.basicInfo.workloadAssessment') },
+    { dataIndex: 'progress', label: t('functionPlan.planDetail.basicInfo.progress') }
   ]
-]
+];
 </script>
 
 <template>

@@ -1305,18 +1305,33 @@
       "overdue": "Overdue",
       "pageInfo": "Page {current}/{total}"
     },
+    "burndown": {
+      "title": "My Burndown Chart",
+      "caseCount": "Count",
+      "workload": "Workload",
+      "remaining": "Remaining",
+      "expected": "Expected"
+    },
     "workCalendar": {
       "workload": "Workload",
       "completed": "Completed",
       "remaining": "Remaining"
     },
+    "myCreationSummary": {
+      "title": "My Creations",
+      "plan": "Plan",
+      "case": "Case",
+      "review": "Review",
+      "baseline": "Baseline",
+      "last7Days": "Last 7 Days",
+      "last30Days": "Last 30 Days"
+    },
     "introduce": {
-      "welcome": "Welcome to AngusTester Function!",
-      "description": "is a functional testing management module, also known as a test case library, used to verify whether software systems meet specifications and user requirements.",
-      "teamWorkTitle": "Here you and your team can complete the following work:",
-      "planTesting": "Organize testers to conduct functional testing activities through \"Plans\";",
-      "reviewCases": "Organize case reviews to identify potential defects and errors early;",
-      "reportAnalysis": "Report and analyze project health, progress, and issue trends."
+      "welcome": "About AngusTester Testing",
+      "description": "A professional test management platform designed to systematically verify whether software systems meet specifications and user requirements.",
+      "planTesting": "Coordinate and organize testers to conduct testing activities through comprehensive \"Test Plans\";",
+      "reviewCases": "Facilitate test case reviews to identify potential defects and errors early in the development cycle;",
+      "reportAnalysis": "Provide comprehensive reporting and analysis of health, progress, and issue trends."
     },
     "activityTimeline": {
       "myActivity": "My Activities",
@@ -1353,22 +1368,6 @@
         "pending": "Pending",
         "inProgress": "In Progress",
         "completed": "Completed"
-      },
-      "burndownChart": {
-        "title": "My Burndown Chart",
-        "caseCount": "Case Count",
-        "workload": "Workload",
-        "remaining": "Remaining",
-        "expected": "Expected"
-      },
-      "myCreationSummary": {
-        "title": "My Creations",
-        "plan": "Plan",
-        "case": "Case",
-        "review": "Review",
-        "baseline": "Baseline",
-        "last7Days": "Last 7 Days",
-        "last30Days": "Last 30 Days"
       }
     }
   },

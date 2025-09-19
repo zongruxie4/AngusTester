@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
-import {BasicProps} from "@/types/types";
+import { BasicProps } from '@/types/types';
 
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,

@@ -2,7 +2,7 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
-import { PageQuery, utils } from '@xcan-angus/infra';
+import { PageQuery, ProjectPageQuery, utils } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
@@ -103,17 +103,12 @@ const tableChange = (
 const loadData = async () => {
   loading.value = true;
   const { current, pageSize } = pagination.value;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
+  const params: ProjectPageQuery & {
     createdBy?: string;
     favouriteBy?: boolean;
     followBy?: boolean;
     testerId?: string;
     testResult?: string;
-    orderBy?: string;
-    orderSort?: string;
     commentBy?: string;
   } = {
     projectId: props.projectId,
@@ -179,7 +174,6 @@ const deleteHandler = (data: CaseInfo) => {
       notification.success(t('functionHome.myCases.deleteSuccess'));
       emit('update:deletedNotify', utils.uuid());
 
-      // 删除已经打开的tabpane
       deleteTabPane(['case' + id]);
 
       if (typeof updateRefreshNotify === 'function') {
@@ -198,7 +192,7 @@ const cancelFavourite = async (data: CaseInfo) => {
   }
 
   notification.success(t('functionHome.myCases.cancelFavoriteSuccess'));
-  loadData();
+  await loadData();
 
   if (typeof updateRefreshNotify === 'function') {
     updateRefreshNotify(utils.uuid());
@@ -214,7 +208,7 @@ const cancelFollow = async (data: CaseInfo) => {
   }
 
   notification.success(t('functionHome.myCases.cancelFollowSuccess'));
-  loadData();
+  await loadData();
 
   if (typeof updateRefreshNotify === 'function') {
     updateRefreshNotify(utils.uuid());

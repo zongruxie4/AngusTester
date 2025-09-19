@@ -488,7 +488,6 @@ const loadData = async (id: string) => {
     return;
   }
 
-
   loading.value = true;
   const [error, res] = await funcPlan.getPlanDetail(id);
   loading.value = false;

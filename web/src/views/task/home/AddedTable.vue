@@ -3,7 +3,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, IconTask, modal, notification, Table } from '@xcan-angus/vue-ui';
-import { http, PageQuery, utils } from '@xcan-angus/infra';
+import { http, PageQuery, ProjectPageQuery, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { TaskStatus } from '@/enums/enums';
 
@@ -88,7 +88,11 @@ const paginationConfig = ref<{
 /**
  * Handles table changes including pagination, sorting, and filtering.
  */
-const handleTableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }) => {
+const handleTableChange = (
+  { current = 1, pageSize = 10 },
+  _filters,
+  sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }
+) => {
   currentOrderBy.value = sorter.orderBy;
   currentOrderSort.value = sorter.orderSort;
   paginationConfig.value.current = current;
@@ -101,19 +105,14 @@ const handleTableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { o
  */
 const buildQueryParams = () => {
   const { current, pageSize } = paginationConfig.value;
-  const queryParams: {
+  const queryParams: ProjectPageQuery & {
     backlog: false;
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
     createdBy?: string;
     favouriteBy?: boolean;
     followBy?: boolean;
     confirmerId?: string;
     assigneeId?: string;
     status?: TaskStatus;
-    orderBy?: string;
-    orderSort?: string;
     commentBy?: string;
   } = {
     backlog: false,

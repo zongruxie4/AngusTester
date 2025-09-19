@@ -2,9 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, provide, ref, Ref, watch } from 'vue';
 import { BasicProps } from '@/types/types';
 
-/**
- * Props interface for TaskHome component.
- */
+// Props interface for TaskHome component
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -23,7 +21,6 @@ const projectTypeVisibilityMap = inject<Ref<{[key: string]: boolean}>>('proTypeS
 // Lazy load components for better performance
 const Added = defineAsyncComponent(() => import('@/views/task/home/Added.vue'));
 const CreationSummary = defineAsyncComponent(() => import('@/views/task/home/summary/CreationSummary.vue'));
-const StatusSummary = defineAsyncComponent(() => import('@/views/task/home/summary/StatusSummary.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/task/home/WorkCalendar.vue'));
 const BurndownChart = defineAsyncComponent(() => import('@/views/task/home/BurndownChart.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/task/home/Introduce.vue'));
@@ -34,13 +31,13 @@ const internalNotification = ref<string>();
 
 /**
  * Updates the internal notification state.
- * <p>
- * This function is provided to child components for triggering data refresh.
- * </p>
  */
 const updateRefreshNotification = (value: string) => {
   internalNotification.value = value;
 };
+
+// Provide refresh notification function to child components
+provide('updateRefreshNotify', updateRefreshNotification);
 
 onMounted(() => {
   // Watch for external refresh notifications and propagate to internal state
@@ -52,9 +49,6 @@ onMounted(() => {
     internalNotification.value = newValue;
   }, { immediate: true });
 });
-
-// Provide refresh notification function to child components
-provide('updateRefreshNotify', updateRefreshNotification);
 </script>
 
 <template>
@@ -68,6 +62,20 @@ provide('updateRefreshNotify', updateRefreshNotification);
         :projectId="props.projectId"
         class="mb-4" />
 
+      <!-- Task statistics sections (conditionally rendered) -->
+      <CreationSummary
+        v-if="projectTypeVisibilityMap.showTaskStatistics"
+        :notify="internalNotification"
+        :userInfo="props.userInfo"
+        :projectId="props.projectId"
+        class="mb-7.5" />
+      <!-- <StatusSummary
+        v-if="projectTypeVisibilityMap.showTaskStatistics"
+        :notify="internalNotification"
+        :userInfo="props.userInfo"
+        :projectId="props.projectId"
+        class="mb-7.5" />-->
+
       <!-- Charts and calendar section -->
       <div class="flex space-x-5 mb-7.5">
         <BurndownChart
@@ -80,20 +88,6 @@ provide('updateRefreshNotify', updateRefreshNotification);
           :userInfo="props.userInfo"
           :projectId="props.projectId" />
       </div>
-
-      <!-- Task statistics sections (conditionally rendered) -->
-      <CreationSummary
-        v-if="projectTypeVisibilityMap.showTaskStatistics"
-        :notify="internalNotification"
-        :userInfo="props.userInfo"
-        :projectId="props.projectId"
-        class="mb-7.5" />
-      <StatusSummary
-        v-if="projectTypeVisibilityMap.showTaskStatistics"
-        :notify="internalNotification"
-        :userInfo="props.userInfo"
-        :projectId="props.projectId"
-        class="mb-7.5" />
     </div>
 
     <!-- Sidebar area -->

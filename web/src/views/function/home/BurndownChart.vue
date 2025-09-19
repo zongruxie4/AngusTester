@@ -22,11 +22,11 @@ const projectId = inject<Ref<string>>('projectId', ref(''));
 const burnDownOpt = computed(() => [
   {
     value: 'NUM',
-    label: t('functionHome.burndownChart.caseCount')
+    label: t('functionHome.burndown.caseCount')
   },
   {
     value: 'WORKLOAD',
-    label: t('functionHome.burndownChart.workload')
+    label: t('functionHome.burndown.workload')
   }
 ]);
 const burnDownData = ref();
@@ -65,12 +65,12 @@ const burnDownEchartsConfig = {
   },
   series: [
     {
-      name: t('functionHome.burndownChart.remaining'),
+      name: t('functionHome.burndown.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: t('functionHome.burndownChart.expected'),
+      name: t('functionHome.burndown.expected'),
       data: [],
       type: 'line',
       smooth: true
@@ -133,7 +133,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="pt-1.5 flex flex-col">
     <div class="text-3.5 font-semibold flex justify-between">
-      {{ t('functionHome.burndownChart.title') }}
+      {{ t('functionHome.burndown.title') }}
       <RadioGroup v-model:value="burnDownTarget" :options="burnDownOpt">
       </RadioGroup>
     </div>
