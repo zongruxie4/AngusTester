@@ -212,6 +212,10 @@ const createBaseBarConfig = (): ChartConfig => ({
 export const createTargetCountConfig = (): ChartConfig => {
   const { t } = useI18n();
   const config = createBaseBarConfig();
+  config.legend = {
+    show: true,
+    bottom: 0
+  }
   config.series = [
     {
       name: t('kanban.effectiveness.total'),
@@ -245,8 +249,12 @@ export const createTargetCountConfig = (): ChartConfig => {
 export const createTargetRateConfig = (): ChartConfig => {
   const { t } = useI18n();
   const config = createBaseBarConfig();
-  config.grid.bottom = 0;
+  // config.grid.bottom = 0;
   config.tooltip.valueFormatter = (value: number) => value + '%';
+  config.legend = {
+    show: true,
+    bottom: 0
+  };
   config.series = [
     {
       name: t('kanban.effectiveness.rate'),
@@ -304,7 +312,11 @@ export const createWorkloadConfig = (): ChartConfig => {
 export const createWorkloadRateConfig = (): ChartConfig => {
   const { t } = useI18n();
   const config = createBaseBarConfig();
-  config.grid.bottom = 0;
+  config.legend = {
+    show: true,
+    bottom: 0
+  };
+  // config.grid.bottom = 0;
   config.series = [
     {
       name: t('kanban.effectiveness.rate'),
@@ -362,8 +374,12 @@ export const createOverdueConfig = (): ChartConfig => {
 export const createOverdueRateConfig = (): ChartConfig => {
   const { t } = useI18n();
   const config = createBaseBarConfig();
-  config.grid.bottom = 0;
+  // config.grid.bottom = 0;
   config.tooltip.valueFormatter = (value: number) => value + '%';
+  config.legend = {
+    show: true,
+    bottom: 0
+  };
   config.series = [
     {
       name: t('kanban.effectiveness.rate'),
@@ -421,8 +437,12 @@ export const createOneTimePassedTestConfig = (): ChartConfig => {
 export const createOneTimePassedTestRateConfig = (): ChartConfig => {
   const { t } = useI18n();
   const config = createBaseBarConfig();
-  config.grid.bottom = 0;
+  // config.grid.bottom = 0;
   config.tooltip.valueFormatter = (value: number) => value + '%';
+  config.legend = {
+    show: true,
+    bottom: 0
+  };
   config.series = [
     {
       name: t('kanban.effectiveness.rate'),
@@ -480,7 +500,11 @@ export const createOneTimeUnpassedTestConfig = (): ChartConfig => {
 export const createOneTimeUnpassedTestRateConfig = (): ChartConfig => {
   const { t } = useI18n();
   const config = createBaseBarConfig();
-  config.grid.bottom = 0;
+  // config.grid.bottom = 0;
+  config.legend = {
+    show: true,
+    bottom: 0
+  };
   config.series = [
     {
       name: t('kanban.effectiveness.rate'),

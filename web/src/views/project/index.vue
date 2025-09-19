@@ -87,8 +87,7 @@ const menuItems = computed(() => {
       <Version
         :projectId="projectId"
         :userInfo="userInfo"
-        :appInfo="appInfo"
-        class="p-5" />
+        :appInfo="appInfo" />
     </template>
 
     <template #tags>

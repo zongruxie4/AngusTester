@@ -336,6 +336,18 @@ const updateGrowthChartUI = () => {
   );
 };
 
+const refreshData = async () => {
+  await loadGrowthTrendData(targetType.value);
+  loadRankData();
+  loadCase();
+  loadApis();
+  loadTask();
+  loadScenario();
+  loadScript();
+  loadMock();
+  loadData();
+}
+
 /**
  * Component mounted lifecycle hook
  * Initializes all data loading, chart configurations, and event listeners
@@ -400,7 +412,7 @@ onMounted(async () => {
   // Watch for component visibility changes and handle refresh/resize
   watch(() => props.onShow, newValue => {
     if (newValue && shouldNotify.value && props.projectId) {
-      refresh();
+      refreshData();
       shouldNotify.value = false;
     }
     if (newValue && resizeNotify.value && props.projectId) {
@@ -444,9 +456,11 @@ onBeforeUnmount(() => {
   erd.removeListener(rightWrapRef.value, resizeRightEchart);
 });
 
+
+
 // Expose methods for parent component access
 defineExpose({
-  refresh,
+  refresh: refreshData,
   handleWindowResize
 });
 </script>

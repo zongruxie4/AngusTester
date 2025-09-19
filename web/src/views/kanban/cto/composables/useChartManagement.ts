@@ -574,7 +574,7 @@ export function useChartManagement () {
    */
   const updateRecentDateCharts = (recentDate: string, recentDeliveryData: any) => {
     const periodData = recentDeliveryData[recentDate] || {};
-    const { totalNum, completedNum, completedRate, OverdueNum, overdueRate, completedWorkload, completedWorkloadRate, savingWorkload, savingWorkloadRate, totalWorkload } = periodData;
+    const { totalNum, completedNum, completedRate, overdueNum, overdueRate, completedWorkload, completedWorkloadRate, savingWorkload, savingWorkloadRate, totalWorkload } = periodData;
 
     // Update recent completion rate chart
     if (recentCompletionRateChart) {
@@ -589,7 +589,7 @@ export function useChartManagement () {
 
     // Update recent overdue rate chart
     if (recentOverdueRateChart) {
-      const recentOverdueRateData = [OverdueNum, totalNum - OverdueNum];
+      const recentOverdueRateData = [overdueNum, totalNum - overdueNum];
       const overdueRateValue = isNaN(overdueRate) ? '0' : overdueRate.toFixed(1);
       recentOverdueRateConfig.value.title.text = overdueRateValue + '%';
       recentOverdueRateConfig.value.series[0].data.forEach((item, idx) => {

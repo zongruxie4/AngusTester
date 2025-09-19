@@ -58,8 +58,16 @@ const {
   cleanup
 } = useEffectivenessLifecycle(props, loadEffectivenessData, () => resizeAllCharts());
 
+
+
 // Initialize configuration
-const { currentOverviewConfig } = useEffectivenessConfig(props.countType);
+const {   taskOverViewConfig,
+  caseOverViewConfig, } = useEffectivenessConfig(props.countType);
+
+
+const currentOverviewConfig = computed(() => {
+  return props.countType === 'task' ? taskOverViewConfig : caseOverViewConfig;
+});
 // Flatten to a single array so that layout is controlled purely by grid columns
 const flatOverviewItems = computed(() => {
   const rows = (currentOverviewConfig as any)?.value ?? currentOverviewConfig;
@@ -152,6 +160,7 @@ defineExpose({
 
 <template>
   <div class="effectiveness-dashboard">
+
     <!-- Overview Section -->
     <div class="overview-section">
       <div class="overview-grid">
