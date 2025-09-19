@@ -209,9 +209,13 @@ export function useChartManagement () {
     const targetData = burnDownData[targetType];
     if (!targetData) return;
 
-    const xData = targetData.expected.map(i => i.timeSeries);
-    const expectedYData = targetData.expected.map(i => i.value);
-    const remainingYData = targetData.remaining.map(i => i.value);
+    // Add null checks for expected and remaining arrays
+    const expectedData = targetData.expected || [];
+    const remainingData = targetData.remaining || [];
+
+    const xData = expectedData.map(i => i.timeSeries);
+    const expectedYData = expectedData.map(i => i.value);
+    const remainingYData = remainingData.map(i => i.value);
 
     burnDownConfig.value.xAxis.data = xData;
     burnDownConfig.value.series[0].data = remainingYData;

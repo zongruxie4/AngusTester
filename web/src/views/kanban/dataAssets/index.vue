@@ -498,7 +498,7 @@ defineExpose({
         <NoData
           v-if="!rankingData.length"
           size="small"
-          text="t('common.noData')" />
+          :text="t('common.noData')" />
       </div>
     </div>
   </div>
