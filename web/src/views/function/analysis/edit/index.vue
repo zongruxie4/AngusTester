@@ -13,12 +13,11 @@ import {
   AnalysisTimeRange
 } from '@/enums/enums';
 import { analysis } from '@/api/tester';
-
 import { BasicProps } from '@/types/types';
-
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { EditAnalysisState } from '@/views/function/analysis/types';
 
+// Component setup
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -29,8 +28,10 @@ const props = withDefaults(defineProps<BasicProps>(), {
 
 const emits = defineEmits<{(e: 'ok')}>();
 
+// Injected dependencies
 const deleteTabPane = inject('deleteTabPane', (value) => value);
 const formRef = ref();
+
 /**
  * Data source options for analysis configuration.
  */
@@ -41,21 +42,12 @@ const dataSourceOptions = computed(() => enumOptionUtils.loadEnumAsOptions(Analy
  */
 const organizationTypeOptions = computed(() => enumOptionUtils.loadEnumAsOptions(AuthObjectType));
 
-const templateDescOpt = ref<EnumMessage<AnalysisCaseTemplateDesc>[]>([]);
-const loadDescOpt = () => {
-  templateDescOpt.value = enumUtils.enumToMessages(AnalysisCaseTemplateDesc);
-};
-
-const analysisCaseObjectOpt = ref<EnumMessage<AnalysisCaseObject>[]>([]);
-const loadAnalysisCaseObject = () => {
-  analysisCaseObjectOpt.value = enumUtils.enumToMessages(AnalysisCaseObject);
-};
-
-const analysisTimeRangeOpt = ref<{value: string, message: string, label: string}[]>([]);
-const loadAnalysisTimeRange = () => {
-  const data = enumUtils.enumToMessages(AnalysisTimeRange);
-  analysisTimeRangeOpt.value = (data || []).map(item => ({ ...item, label: item.message }));
-};
+// Reactive state
+const templateDescriptionOptions = ref<EnumMessage<AnalysisCaseTemplateDesc>[]>([]);
+const analysisCaseObjectOptions = ref<EnumMessage<AnalysisCaseObject>[]>([]);
+const analysisTimeRangeOptions = ref<{value: string, message: string, label: string}[]>([]);
+const isDescriptionManuallyChanged = ref(false);
+const isSaving = ref(false);
 
 const formData = ref<EditAnalysisState>({
   id: undefined,
@@ -74,14 +66,42 @@ const formData = ref<EditAnalysisState>({
   customRange: ['', '']
 });
 
-const saving = ref(false);
+/**
+ * Load template description options from enum.
+ */
+const loadTemplateDescriptionOptions = () => {
+  templateDescriptionOptions.value = enumUtils.enumToMessages(AnalysisCaseTemplateDesc);
+};
 
+/**
+ * Load analysis case object options from enum.
+ */
+const loadAnalysisCaseObjectOptions = () => {
+  analysisCaseObjectOptions.value = enumUtils.enumToMessages(AnalysisCaseObject);
+};
+
+/**
+ * Load analysis time range options from enum.
+ */
+const loadAnalysisTimeRangeOptions = () => {
+  const data = enumUtils.enumToMessages(AnalysisTimeRange);
+  analysisTimeRangeOptions.value = (data || []).map(item => ({ ...item, label: item.message }));
+};
+
+/**
+ * Load analysis detail data for editing existing analysis.
+ * @param id - Analysis ID to load
+ */
 const loadAnalysisDetail = async (id) => {
   const [error, { data }] = await analysis.getAnalysisDetail(id);
   if (error) {
     return;
   }
-  const { object, timeRange, name, resource, template, description, containsUserAnalysis, containsDataDetail, planId, datasource, orgType, orgId, startTime, endTime } = data;
+  const {
+    object, timeRange, name, resource, template, description,
+    containsUserAnalysis, containsDataDetail, planId, datasource,
+    orgType, orgId, startTime, endTime
+  } = data;
 
   formData.value = {
     ...formData.value,
@@ -102,72 +122,108 @@ const loadAnalysisDetail = async (id) => {
   };
 };
 
-const descriptionChanged = ref(false);
-const descChanged = () => {
-  descriptionChanged.value = true;
+/**
+ * Mark description as manually changed by user.
+ */
+const handleDescriptionChange = () => {
+  isDescriptionManuallyChanged.value = true;
 };
 
-const handleChangeOrgType = () => {
+/**
+ * Reset organization ID when organization type changes.
+ */
+const handleOrganizationTypeChange = () => {
   formData.value.orgId = undefined;
 };
 
-const cancel = () => {
+/**
+ * Close the current tab pane.
+ */
+const handleCancel = () => {
   const tabId = props.data?.id ? `analysisEdit_${props.data?.id}` : 'analysisEdit';
   deleteTabPane([tabId]);
 };
 
-const getParams = () => {
-  const { object, timeRange, name, resource, template, description, containsUserAnalysis, containsDataDetail, planId, datasource, orgType, orgId, customRange, id } = formData.value;
-  const res = {
-    name, object, timeRange, resource, template, description, datasource, containsDataDetail, projectId: props.projectId, id
+/**
+ * Build parameters object for API calls based on form data.
+ * @returns Formatted parameters object
+ */
+const buildFormParameters = () => {
+  const {
+    object, timeRange, name, resource, template, description,
+    containsUserAnalysis, containsDataDetail, planId, datasource,
+    orgType, orgId, customRange, id
+  } = formData.value;
+
+  const parameters = {
+    name,
+    object,
+    timeRange,
+    resource,
+    template,
+    description,
+    datasource,
+    containsDataDetail,
+    projectId: props.projectId,
+    id
   };
+
+  // Add conditional parameters based on analysis object type
   if (object === AnalysisCaseObject.CURRENT_PROJECT) {
-    res.containsUserAnalysis = containsUserAnalysis;
+    parameters.containsUserAnalysis = containsUserAnalysis;
   }
   if (object === AnalysisCaseObject.PLAN) {
-    res.containsUserAnalysis = containsUserAnalysis;
-    res.planId = planId;
+    parameters.containsUserAnalysis = containsUserAnalysis;
+    parameters.planId = planId;
   }
   if (object === AnalysisCaseObject.TESTER_ORG) {
-    res.orgType = orgType;
-    res.orgId = orgId;
+    parameters.orgType = orgType;
+    parameters.orgId = orgId;
   }
   if (timeRange === AnalysisTimeRange.CUSTOM_TIME) {
-    res.startTime = customRange[0];
-    res.endTime = customRange[1];
+    parameters.startTime = customRange[0];
+    parameters.endTime = customRange[1];
   }
-  return res;
+  return parameters;
 };
 
-const save = async () => {
+/**
+ * Save analysis data by creating new or updating existing analysis.
+ */
+const handleSave = async () => {
   formRef.value.validate().then(async () => {
-    const params = getParams();
-    saving.value = true;
-    const [error] = await (!params.id
-      ? analysis.addAnalysis({ ...params })
-      : analysis.updateAnalysis({
-        ...params
-      }));
-    saving.value = false;
+    const parameters = buildFormParameters();
+    isSaving.value = true;
+
+    const [error] = await (!parameters.id
+      ? analysis.addAnalysis({ ...parameters })
+      : analysis.updateAnalysis({ ...parameters }));
+
+    isSaving.value = false;
     if (error) {
       return;
     }
-    if (!params.id) {
+
+    // Show success notification
+    if (!parameters.id) {
       notification.success(t('functionAnalysis.editForm.addAnalysisSuccess'));
     } else {
       notification.success(t('functionAnalysis.editForm.updateAnalysisSuccess'));
     }
 
     emits('ok');
-    cancel();
+    handleCancel();
   });
 };
 
+// LIFECYCLE HOOKS
 onMounted(async () => {
-  await loadDescOpt();
-  loadAnalysisCaseObject();
-  loadAnalysisTimeRange();
+  // Load all enum options
+  await loadTemplateDescriptionOptions();
+  loadAnalysisCaseObjectOptions();
+  loadAnalysisTimeRangeOptions();
 
+  // Initialize form data if editing existing analysis
   if (props.data) {
     if (props.data.template) {
       formData.value.template = props.data.template;
@@ -176,9 +232,12 @@ onMounted(async () => {
       await loadAnalysisDetail(props.data.id);
     }
   }
+
+  // Watch template changes to auto-update description
   watch(() => formData.value.template, () => {
-    if (!descriptionChanged.value) {
-      formData.value.description = templateDescOpt.value.find(item => item.value === formData.value.template)?.message;
+    if (!isDescriptionManuallyChanged.value) {
+      formData.value.description = templateDescriptionOptions.value
+        .find(item => item.value === formData.value.template)?.message;
     }
   }, {
     immediate: true
@@ -191,12 +250,13 @@ onMounted(async () => {
       <Button
         type="primary"
         size="small"
-        :loading="saving"
-        @click="save">
+        :loading="isSaving"
+        @click="handleSave">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5 mr-1" />
         {{ t('functionAnalysis.editForm.save') }}
       </Button>
-      <Button size="small" @click="cancel">
+
+      <Button size="small" @click="handleCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5 mr-1" />
         {{ t('functionAnalysis.editForm.cancel') }}
       </Button>
@@ -238,7 +298,7 @@ onMounted(async () => {
           v-model:value="formData.description"
           :maxlength="200"
           :placeholder="t('functionAnalysis.editForm.inputAnalysisDescription')"
-          @change="descChanged" />
+          @change="handleDescriptionChange" />
       </FormItem>
 
       <FormItem
@@ -250,7 +310,7 @@ onMounted(async () => {
           buttonStyle="solid"
           size="small">
           <RadioButton
-            v-for="item in analysisCaseObjectOpt"
+            v-for="item in analysisCaseObjectOptions"
             :value="item.value">
             {{ item.message }}
           </RadioButton>
@@ -293,7 +353,7 @@ onMounted(async () => {
             v-model:value="formData.orgType"
             :options="organizationTypeOptions"
             class="!w-30 mr-2"
-            @change="handleChangeOrgType" />
+            @change="handleOrganizationTypeChange" />
 
           <Select
             v-show="formData.orgType === AuthObjectType.USER"
@@ -343,7 +403,7 @@ onMounted(async () => {
         name="timeRange"
         :label="t('functionAnalysis.editForm.analysisPeriod')"
         required>
-        <RadioGroup v-model:value="formData.timeRange" :options="analysisTimeRangeOpt"></RadioGroup>
+        <RadioGroup v-model:value="formData.timeRange" :options="analysisTimeRangeOptions"></RadioGroup>
         <DatePicker
           v-if="formData.timeRange === AnalysisTimeRange.CUSTOM_TIME"
           v-model:value="formData.customRange"

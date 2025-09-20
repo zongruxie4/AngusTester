@@ -3,34 +3,42 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import elementResizeDetector from 'element-resize-detector';
 
+// Component setup
 const { t } = useI18n();
 
-const erd = elementResizeDetector({ strategy: 'scroll' });
-const wrapperRef = ref();
+// Reactive state
+const isTwoColumnLayout = ref(false);
+const containerRef = ref();
 
-const handleCol = () => {
-  const clientWidth = wrapperRef.value.clientWidth;
-  if (clientWidth > 800) {
-    isCol2.value = false;
-  } else {
-    isCol2.value = true;
-  }
+// Resize detection
+const resizeDetector = elementResizeDetector({ strategy: 'scroll' });
+
+/**
+ * Handle container resize to determine layout columns.
+ */
+const handleContainerResize = () => {
+  const containerWidth = containerRef.value.clientWidth;
+  const singleColumnThreshold = 800;
+
+  isTwoColumnLayout.value = containerWidth <= singleColumnThreshold;
 };
 
-const isCol2 = ref(false);
-
+// Lifecycle hooks
 onMounted(() => {
-  erd.listenTo(wrapperRef.value, handleCol);
-  isCol2.value = wrapperRef.value.clientWidth < 600;
+  resizeDetector.listenTo(containerRef.value, handleContainerResize);
+
+  // Set initial layout based on container width
+  const initialWidthThreshold = 600;
+  isTwoColumnLayout.value = containerRef.value.clientWidth < initialWidthThreshold;
 });
 
 onBeforeUnmount(() => {
-  erd.removeListener(wrapperRef.value, handleCol);
+  resizeDetector.removeListener(containerRef.value, handleContainerResize);
 });
 
 </script>
 <template>
-  <div ref="wrapperRef">
+  <div ref="containerRef">
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('functionAnalysis.introduce.title') }}
     </div>

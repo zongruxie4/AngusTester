@@ -3,10 +3,10 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
-
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
 
+// Component setup
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -15,43 +15,81 @@ const props = withDefaults(defineProps<BasicProps>(), {
   appInfo: undefined
 });
 
+// Async components
 const AnalysisList = defineAsyncComponent(() => import('@/views/function/analysis/list/index.vue'));
 const AnalysisEdit = defineAsyncComponent(() => import('@/views/function/analysis/edit/index.vue'));
 const AnalysisDetail = defineAsyncComponent(() => import('@/views/function/analysis/detail/index.vue'));
 
+// Router and refs
 const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
-const activeKey = ref('analysisList');
+const activeTabKey = ref('analysisList');
 
-const refreshListNotify = ref(0);
+// Reactive state
+const listRefreshTrigger = ref(0);
 
+/**
+ * Generate storage key for browser tab persistence.
+ */
+const storageKey = computed(() => {
+  if (!props.projectId) {
+    return undefined;
+  }
+  return `analysis_case_${props.projectId}`;
+});
+
+/**
+ * Add a new tab pane to the browser tab component.
+ * @param data - Tab pane data to add
+ */
 const addTabPane = (data: IPane) => {
   browserTabRef.value.add(() => {
     return data;
   });
 };
 
+/**
+ * Get tab pane data by key.
+ * @param key - Tab pane key
+ * @returns Tab pane data array or undefined
+ */
 const getTabPane = (key: string): IPane[] | undefined => {
   return browserTabRef.value.getData(key);
 };
 
+/**
+ * Delete tab panes by keys.
+ * @param keys - Array of tab pane keys to delete
+ */
 const deleteTabPane = (keys: string[]) => {
   browserTabRef.value.remove(keys);
 };
 
+/**
+ * Update existing tab pane data.
+ * @param data - Updated tab pane data
+ */
 const updateTabPane = (data: IPane) => {
   browserTabRef.value.update(data);
 };
 
+/**
+ * Replace tab pane with new data.
+ * @param key - Tab pane key to replace
+ * @param data - New tab pane data
+ */
 const replaceTabPane = (key: string, data: { key: string }) => {
   browserTabRef.value.replace(key, data);
 };
 
-const initialize = () => {
+/**
+ * Initialize the browser tab component with default analysis list tab.
+ */
+const initializeBrowserTabs = () => {
   if (typeof browserTabRef.value?.add === 'function') {
-    browserTabRef.value.add((ids: string[]) => {
-      if (!ids.includes('analysisList')) {
+    browserTabRef.value.add((existingIds: string[]) => {
+      if (!existingIds.includes('analysisList')) {
         return {
           _id: 'analysisList',
           value: 'analysisList',
@@ -62,23 +100,30 @@ const initialize = () => {
     });
   }
 
-  hashChange(route.hash);
+  handleHashChange(route.hash);
 };
 
-const hashChange = (hash: string) => {
+/**
+ * Handle hash change events to manage tab navigation.
+ * @param hash - URL hash string
+ */
+const handleHashChange = (hash: string) => {
   const queryString = hash.split('?')[1];
   if (!queryString) {
     return;
   }
 
-  const queryParameters = queryString.split('&').reduce((prev, cur) => {
-    const [key, value] = cur.split('=');
-    prev[key] = value;
-    return prev;
+  // Parse query parameters from hash
+  const queryParameters = queryString.split('&').reduce((accumulator, current) => {
+    const [key, value] = current.split('=');
+    accumulator[key] = value;
+    return accumulator;
   }, {} as { [key: string]: string });
 
   const { id, type } = queryParameters;
+
   if (id) {
+    // Handle existing analysis (edit or detail view)
     if (type === 'edit') {
       browserTabRef.value.add(() => {
         return {
@@ -98,15 +143,16 @@ const hashChange = (hash: string) => {
       });
     }
   } else {
+    // Handle new analysis creation
     if (type) {
       browserTabRef.value.add(() => {
-        const id = utils.uuid();
+        const newId = utils.uuid();
         return {
-          _id: id,
+          _id: newId,
           name: t('functionAnalysis.list.addAnalysis'),
           value: 'analysisEdit',
           noCache: true,
-          data: { _id: id }
+          data: { _id: newId }
         };
       });
     }
@@ -115,30 +161,32 @@ const hashChange = (hash: string) => {
   router.replace('/function#analysis');
 };
 
-const storageKeyChange = () => {
-  initialize();
+/**
+ * Handle storage key change event.
+ */
+const handleStorageKeyChange = () => {
+  initializeBrowserTabs();
 };
 
+/**
+ * Handle successful analysis edit completion.
+ */
 const handleEditSuccess = () => {
-  refreshListNotify.value += 1;
+  listRefreshTrigger.value += 1;
 };
 
+// Lifecycle hooks
 onMounted(() => {
+  // Watch for hash changes to handle tab navigation
   watch(() => route.hash, () => {
     if (!route.hash.startsWith('#list')) {
       return;
     }
-    hashChange(route.hash);
+    handleHashChange(route.hash);
   });
 });
 
-const storageKey = computed(() => {
-  if (!props.projectId) {
-    return undefined;
-  }
-  return `analysis_case_${props.projectId}`;
-});
-
+// Provide injection
 provide('addTabPane', addTabPane);
 provide('getTabPane', getTabPane);
 provide('deleteTabPane', deleteTabPane);
@@ -148,19 +196,19 @@ provide('replaceTabPane', replaceTabPane);
 <template>
   <BrowserTab
     ref="browserTabRef"
-    v-model:activeKey="activeKey"
+    v-model:activeKey="activeTabKey"
     hideAdd
     class="h-full"
     :userId="props.userInfo.id"
     :storageKey="storageKey"
-    @storageKeyChange="storageKeyChange">
+    @storageKeyChange="handleStorageKeyChange">
     <template #default="record">
       <template v-if="record.value === 'analysisList'">
         <AnalysisList
           :userInfo="props.userInfo"
           :projectId="props.projectId"
-          :refreshNotify="refreshListNotify"
-          :onShow="activeKey === 'analysisList'" />
+          :refreshNotify="listRefreshTrigger"
+          :onShow="activeTabKey === 'analysisList'" />
       </template>
       <template v-if="record.value==='analysisEdit'">
         <AnalysisEdit
@@ -174,7 +222,7 @@ provide('replaceTabPane', replaceTabPane);
           :data="record.data"
           :userInfo="props.userInfo"
           :projectId="props.projectId"
-          :onShow="activeKey === record._id" />
+          :onShow="activeTabKey === record._id" />
       </template>
     </template>
   </BrowserTab>

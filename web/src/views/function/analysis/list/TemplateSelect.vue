@@ -20,29 +20,49 @@ const props = withDefaults(defineProps<Props>(), {
   templateData: () => []
 });
 
-const emits = defineEmits<{(e: 'update:template', value: string):void; (e: 'update:templateData', value: {value: string; message: string}[]):void; (e:'update:templateDesc', value: {value: string; message: string}[]):void}>();
-const moduleTreeData = ref<{name: string; value: string}[]>([{ name: t('functionAnalysis.templateSelectList.allAnalysis'), value: '' }]);
+const emits = defineEmits<{
+  (e: 'update:template', value: string): void;
+  (e: 'update:templateData', value: {value: string; message: string}[]): void;
+  (e: 'update:templateDesc', value: {value: string; message: string}[]): void;
+}>();
 
-const loadOpt = () => {
-  const data = enumUtils.enumToMessages(AnalysisCaseTemplate);
-  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
-  emits('update:templateData', data);
-  const desc = enumUtils.enumToMessages(AnalysisCaseTemplateDesc);
-  emits('update:templateDesc', desc);
+const templateTreeData = ref<{name: string; value: string}[]>([
+  { name: t('functionAnalysis.templateSelectList.allAnalysis'), value: '' }
+]);
+
+/**
+ * Load template options and descriptions from enums.
+ */
+const loadTemplateOptions = () => {
+  // Load template data
+  const templateOptions = enumUtils.enumToMessages(AnalysisCaseTemplate);
+  templateTreeData.value.push(...(templateOptions || []).map(item => ({
+    ...item,
+    name: item.message
+  })));
+  emits('update:templateData', templateOptions);
+
+  // Load template descriptions
+  const templateDescriptions = enumUtils.enumToMessages(AnalysisCaseTemplateDesc);
+  emits('update:templateDesc', templateDescriptions);
 };
 
-const handleSelectKeysChange = (value) => {
-  emits('update:template', value[0]);
+/**
+ * Handle template selection change.
+ * @param selectedValues - Selected template values
+ */
+const handleTemplateSelectionChange = (selectedValues: string[]) => {
+  emits('update:template', selectedValues[0]);
 };
 
 onMounted(() => {
-  loadOpt();
+  loadTemplateOptions();
 });
 </script>
 <template>
   <div>
     <Tree
-      :treeData="moduleTreeData"
+      :treeData="templateTreeData"
       :selectedKeys="[props.template]"
       class="flex-1"
       blockNode
@@ -52,7 +72,7 @@ onMounted(() => {
         title: 'name',
         key: 'value'
       }"
-      @select="handleSelectKeysChange">
+      @select="handleTemplateSelectionChange">
       <template #title="{key, title, name, value, index, level, isLast, pid, ids, sequence, childLevels, hasEditPermission}">
         <Icon :icon="TemplateIconConfig[value]" class="text-3.5 mr-1" />
         <span class="flex-1">{{ name }}</span>
