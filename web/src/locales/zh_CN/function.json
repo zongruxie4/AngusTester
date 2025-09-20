@@ -1774,6 +1774,7 @@
       "participants": "参与人员",
       "selectParticipants": "请选择参与人员",
       "selectParticipantsPlaceholder": "选择参与人员",
+      "attachments": "附件",
       "uploadAttachments": "上传附件",
       "attachmentsDescription": "其他文档，如：需求说明书、参考资料、系统架构图、测试规范、技术文档等。支持的格式：\"jpg\",\"bmp\",\"png\",\"gif\",\"txt\",\"docx\",\"jpeg\",\"rar\",\"zip\",\"doc\",\"xlsx\",\"xls\",\"pdf\"；最多上传10个附件。",
       "reviewCases": "评审用例",

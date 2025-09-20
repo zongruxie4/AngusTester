@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
-import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, Input, notification } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
 import { modules } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-
-type TagItem = {
-  id: string;
-  name: string;
-  showName?: string;
-  showTitle?: string;
-}
 
 type Props = {
   projectId: string;
@@ -51,21 +44,10 @@ const keywords = ref();
 const editId = ref<string>();
 const pid = ref<string>();
 const modalVisible = ref(false);
-const moveVsible = ref(false);
-
-const toCreate = () => {
-  modalVisible.value = true;
-};
+const moveVisible = ref(false);
 
 const createOk = () => {
   emits('loadData', keywords.value);
-};
-
-const toEdit = (data: TagItem) => {
-  if (props.disabled) {
-    return;
-  }
-  editId.value = data.id;
 };
 
 const cancelEdit = () => {
@@ -97,124 +79,7 @@ const hadleblur = (id: string, event: { target: { value: string } }) => {
   }, 300);
 };
 
-// 删除弹框
-const toDelete = (data: TagItem) => {
-  modal.confirm({
-    content: t('caseReview.editForm.confirmDeleteModule', { name: data.name }),
-    async onOk () {
-      const id = data.id;
-      const params = { ids: [id] };
-      loading.value = true;
-      const [error] = await modules.deleteModule(params);
-      loading.value = false;
-      if (error) {
-        return;
-      }
-
-      notification.success(t('caseReview.editForm.deleteModuleSuccess'));
-      emits('loadData', keywords.value);
-    }
-  });
-};
-
-const moveUp = async (record) => {
-  const { index, ids, pid, id } = record;
-  let params = {};
-  if (index === 0) {
-    let targetParent;
-    for (const linkId of ids) {
-      if (linkId !== record.id) {
-        if (targetParent) {
-          targetParent = (targetParent.children || []).find(item => item.id === linkId);
-        } else {
-          targetParent = moduleTreeData.value.find(item => item.id === linkId);
-        }
-      }
-    }
-    params = {
-      id,
-      pid: targetParent.pid || '-1',
-      sequence: (+targetParent.sequence) - 1
-    };
-  } else {
-    let parentChildren;
-    if (ids.length === 1) {
-      parentChildren = moduleTreeData.value;
-    } else {
-      for (const linkId of ids) {
-        if (linkId !== record.id) {
-          if (parentChildren) {
-            parentChildren = parentChildren.find(item => item.id === linkId)?.children || [];
-          } else {
-            parentChildren = moduleTreeData.value.find(item => item.id === linkId)?.children || [];
-          }
-        }
-      }
-    }
-    params = {
-      id,
-      sequence: parentChildren[index - 1].sequence - 1
-    };
-  }
-
-  const [error] = await modules.updateModule([params]);
-  if (error) {
-    return;
-  }
-  notification.success(t('caseReview.editForm.moveSuccess'));
-  emits('loadData', keywords.value);
-};
-
-const moveDown = async (record) => {
-  const { index, ids, id } = record;
-  let parentChildren;
-  if (ids.length === 1) {
-    parentChildren = moduleTreeData.value;
-  } else {
-    for (const linkId of ids) {
-      if (linkId !== record.id) {
-        if (parentChildren) {
-          parentChildren = parentChildren.find(item => item.id === linkId)?.children || [];
-        } else {
-          parentChildren = moduleTreeData.value.find(item => item.id === linkId)?.children || [];
-        }
-      }
-    }
-  }
-  const params = {
-    id,
-    sequence: +parentChildren[index + 1].sequence + 1
-  };
-  const [error] = await modules.updateModule([params]);
-  if (error) {
-    return;
-  }
-  notification.success(t('caseReview.editForm.moveSuccess'));
-  emits('loadData', keywords.value);
-};
-
 const activeModule = ref();
-const moveLevel = (record) => {
-  activeModule.value = record;
-  moveVsible.value = true;
-};
-
-const onMenuClick = (menu, record) => {
-  if (menu.key === 'edit') {
-    toEdit(record);
-  } else if (menu.key === 'add') {
-    pid.value = record.id;
-    toCreate();
-  } else if (menu.key === 'del') {
-    toDelete(record);
-  } else if (menu.key === 'up') {
-    moveUp(record);
-  } else if (menu.key === 'down') {
-    moveDown(record);
-  } else if (menu.key === 'move') {
-    moveLevel(record);
-  }
-};
 
 const travelTreeData = (treeData, callback = (item) => item) => {
   function travel (treeData, level = 0, ids: string[] = []) {
@@ -313,9 +178,9 @@ defineExpose({
       :pid="pid"
       @ok="createOk" />
   </AsyncComponent>
-  <AsyncComponent :visible="moveVsible">
+  <AsyncComponent :visible="moveVisible">
     <MoveModuleModal
-      v-model:visible="moveVsible"
+      v-model:visible="moveVisible"
       :projectId="props.projectId"
       :projectName="props.projectName"
       :module="activeModule"

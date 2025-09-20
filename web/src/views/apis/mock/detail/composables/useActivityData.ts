@@ -2,7 +2,7 @@ import { onMounted, ref } from 'vue';
 import { debounce } from 'throttle-debounce';
 import { duration, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { activity } from '@/api/tester';
-import { ActivityItem } from '@/types/types';
+import { ActivityInfo } from '@/types/types';
 import { CombinedTargetType } from '@/enums/enums';
 
 /**
@@ -25,7 +25,7 @@ export function useActivityData (initialTargetId?: string) {
   const total = ref(0);
 
   // Data source for ActivityInfo
-  const activities = ref<ActivityItem[]>([]);
+  const activities = ref<ActivityInfo[]>([]);
 
   // Local search input binding
   const detailKeyword = ref('');

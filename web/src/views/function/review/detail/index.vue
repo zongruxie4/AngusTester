@@ -1,36 +1,21 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Checkbox, Popover, TabPane, Tabs, Tag } from 'ant-design-vue';
-import {
-  AsyncComponent,
-  Icon,
-  Image,
-  Input,
-  modal,
-  notification,
-  ReviewStatus,
-  Spin,
-  Table
-} from '@xcan-angus/vue-ui';
-import { appContext, download, duration } from '@xcan-angus/infra';
+import { AsyncComponent, Icon, Image, Input, modal, notification, ReviewStatus, Spin, Table } from '@xcan-angus/vue-ui';
+import { appContext, download, duration, enumUtils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
+import { func, funcPlan } from '@/api/tester';
+import { FuncPlanPermission, FuncPlanStatus } from '@/enums/enums';
+
+import { BasicProps } from '@/types/types';
+import { ReviewDetail } from '@/views/function/review/types';
+
 import RichEditor from '@/components/richEditor/index.vue';
-import { funcPlan, func } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -64,7 +49,7 @@ const drawerRef = ref();
 const keywords = ref();
 const reviewStatus = ref();
 const permissions = ref<string[]>([]);
-const dataSource = ref();
+const reviewDetail = ref(ReviewDetail);
 const caseList = ref([]);
 
 const reviewId = ref(); // reviewId
@@ -83,7 +68,7 @@ const startReview = async () => {
     return;
   }
   notification.success(t('caseReview.detail.reviewStartedSuccess'));
-  loadData(reviewId.value);
+  await loadReviewDetail(reviewId.value);
 };
 
 const columns = [
@@ -154,21 +139,7 @@ const columns = [
 
 const loadPermissions = async (id: string) => {
   if (isAdmin.value) {
-    permissions.value = [
-      'MODIFY_PLAN',
-      'DELETE_PLAN',
-      'ADD_CASE',
-      'MODIFY_CASE',
-      'DELETE_CASE',
-      'EXPORT_CASE',
-      'REVIEW',
-      'RESET_REVIEW_RESULT',
-      'TEST',
-      'RESET_TEST_RESULT',
-      'GRANT',
-      'VIEW'
-    ];
-
+    permissions.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
   }
 
@@ -185,7 +156,7 @@ const loadPermissions = async (id: string) => {
   permissions.value = (res?.data?.permissions || []).map(item => item.value);
 };
 
-const loadData = async (id: string) => {
+const loadReviewDetail = async (id: string) => {
   if (loading.value) {
     return;
   }
@@ -203,14 +174,14 @@ const loadData = async (id: string) => {
   }
   await loadPermissions(data.planId);
 
-  dataSource.value = data;
+  reviewDetail.value = data;
   const name = data.name;
   if (name && typeof updateTabPane === 'function') {
     updateTabPane({ name, _id: id + '-case' });
   }
 };
 
-const loadCaseList = async (id: string) => {
+const loadReviewCaseList = async (id: string) => {
   const { current, pageSize } = pagination.value;
   const [error, { data }] = await func.getReviewCaseList({
     reviewId: id,
@@ -232,29 +203,12 @@ const changePage = ({ current, pageSize }) => {
   pagination.value.current = current;
   pagination.value.pageSize = pageSize;
   selectedRowKey.value = undefined;
-  loadCaseList(reviewId.value);
+  loadReviewCaseList(reviewId.value);
 };
 
 const addReviewCase = () => {
   selectModalVisible.value = true;
 };
-
-onMounted(() => {
-  watch(() => props.data, async (newValue, oldValue) => {
-    const id = newValue?.id;
-    if (!id) {
-      return;
-    }
-
-    const oldId = oldValue?.id;
-    if (id === oldId) {
-      return;
-    }
-    reviewId.value = id;
-    loadData(id);
-    loadCaseList(id);
-  }, { immediate: true });
-});
 
 const customRow = (record) => {
   return {
@@ -279,15 +233,9 @@ const loadCaseContentInfo = async () => {
   }
   selectCaseInfo.value = {
     ...data,
-    caseInfo: data.reviewStatus?.value === 'PENDING' ? data.latestCase : data.reviewedCase
+    caseInfo: data.reviewStatus?.value === ReviewStatus.PENDING ? data.latestCase : data.reviewedCase
   };
 };
-
-watch(() => selectedRowKey.value, newValue => {
-  if (newValue) {
-    loadCaseContentInfo();
-  }
-});
 
 const onCloseDrawer = () => {
   selectedRowKey.value = '';
@@ -304,12 +252,12 @@ const onCheckedChange = (e, id: string) => {
 
 const handleKeywordChange = debounce(duration.search, () => {
   pagination.value.current = 1;
-  loadCaseList(reviewId.value);
+  loadReviewCaseList(reviewId.value);
 });
 
 const handleChangeStatus = () => {
   pagination.value.current = 1;
-  loadCaseList(reviewId.value);
+  loadReviewCaseList(reviewId.value);
 };
 
 const handleReviewOk = () => {
@@ -317,8 +265,8 @@ const handleReviewOk = () => {
     loadCaseContentInfo();
   }
   selectCaseIds.value = [];
-  loadCaseList(reviewId.value);
-  loadData(reviewId.value);
+  loadReviewCaseList(reviewId.value);
+  loadReviewDetail(reviewId.value);
 };
 
 const delCase = async (record) => {
@@ -332,7 +280,7 @@ const delCase = async (record) => {
       if (pagination.value.current !== 1 && caseList.value.length === 1) {
         pagination.value.current -= 1;
       }
-      loadCaseList(reviewId.value);
+      await loadReviewCaseList(reviewId.value);
     }
   });
 };
@@ -346,7 +294,7 @@ const restart = async (record) => {
       if (error) {
         return;
       }
-      loadCaseList(reviewId.value);
+      await loadReviewCaseList(reviewId.value);
     }
   });
 };
@@ -360,7 +308,7 @@ const reset = async (record) => {
       if (error) {
         return;
       }
-      loadCaseList(reviewId.value);
+      await loadReviewCaseList(reviewId.value);
     }
   });
 };
@@ -374,59 +322,34 @@ const handleAddCase = async (caseIds: string[]) => {
   if (error) {
     return;
   }
-  loadCaseList(reviewId.value);
-  loadData(reviewId.value);
+  await loadReviewCaseList(reviewId.value);
+  await loadReviewDetail(reviewId.value);
 };
 
 const activeMenuKey = ref();
-const menuItems = [
-  {
-    name: t('caseReview.detail.basicInfo'),
-    key: 'basic',
-    icon: 'icon-jibenxinxi'
-  },
-  {
-    name: t('caseReview.detail.precondition'),
-    key: 'precondition',
-    icon: 'icon-fuwuqi'
-  },
-  {
-    name: t('caseReview.detail.steps'),
-    key: 'steps',
-    icon: 'icon-zuxiao'
-  },
-  {
-    name: t('caseReview.detail.reviewInfo'),
-    key: 'reviewResult',
-    icon: 'icon-pingshen'
-  },
-  {
-    name: t('caseReview.detail.members'),
-    key: 'members',
-    icon: 'icon-quanburenyuan'
-  },
-  {
-    name: t('caseReview.detail.testInfo'),
-    key: 'testInfo',
-    icon: 'icon-ceshijieguomingxi'
-  },
-  {
-    name: t('caseReview.detail.assocTasks'),
-    key: 'refTasks',
-    icon: 'icon-renwu2'
-  },
-  {
-    name: t('caseReview.detail.assocCases'),
-    key: 'refUseCases',
-    icon: 'icon-yongli1'
-  },
-  {
-    name: t('caseReview.detail.attachments'),
-    key: 'attachment',
-    icon: 'icon-wenjian1'
-  }
-];
 
+watch(() => selectedRowKey.value, newValue => {
+  if (newValue) {
+    loadCaseContentInfo();
+  }
+});
+
+onMounted(() => {
+  watch(() => props.data, async (newValue, oldValue) => {
+    const id = newValue?.id;
+    if (!id) {
+      return;
+    }
+
+    const oldId = oldValue?.id;
+    if (id === oldId) {
+      return;
+    }
+    reviewId.value = id;
+    await loadReviewDetail(id);
+    await loadReviewCaseList(id);
+  }, { immediate: true });
+});
 </script>
 
 <template>
@@ -434,10 +357,10 @@ const menuItems = [
     <div class="flex h-full">
       <div class="flex-1 px-5 py-5 overflow-auto">
         <div class="font-semibold text-4 mb-3">
-          {{ dataSource?.name }}
-          <Tag class="ml-2 text-white" :class="dataSource?.status?.value">{{ dataSource?.status?.message }}</Tag>
+          {{ reviewDetail?.name }}
+          <Tag class="ml-2 text-white" :class="reviewDetail?.status?.value">{{ reviewDetail?.status?.message }}</Tag>
           <Button
-            v-if="dataSource?.status?.value === 'PENDING'"
+            v-if="reviewDetail?.status?.value === ReviewStatus.PENDING"
             size="small"
             type="primary"
             ghost
@@ -451,45 +374,52 @@ const menuItems = [
           <div class="space-y-1">
             <div class="text-center h-6 leading-6 space-x-3">
               <span>{{ t('caseReview.detail.progress') }}</span>
-              <span class="font-semibold text-3.5">{{ dataSource?.progress?.completed || 0 }} / {{ dataSource?.progress?.total || 0 }}</span>
+              <span class="font-semibold text-3.5">{{
+                reviewDetail?.progress?.completed || 0
+              }} / {{ reviewDetail?.progress?.total || 0 }}</span>
             </div>
+
             <div class="w-30 flex h-2 rounded bg-gray-3">
-              <div class="text-center bg-status-success rounded" :style="{width: `${dataSource?.progress?.completedRate || 0}%`}">
+              <div class="text-center bg-status-success rounded" :style="{width: `${reviewDetail?.progress?.completedRate || 0}%`}">
               </div>
             </div>
+
             <div class="text-center text-4 font-medium">
-              {{ dataSource?.progress?.completedRate || 0 }} %
+              {{ reviewDetail?.progress?.completedRate || 0 }} %
             </div>
           </div>
+
           <div class="flex-1">
             <div class="flex leading-8 h-8">
               <div class="inline-flex flex-1 pr-2">
                 <label class="w-16">{{ t('caseReview.detail.testPlan') }}：</label>
-                <div>{{ dataSource?.planName }}</div>
+                <div>{{ reviewDetail?.planName }}</div>
               </div>
               <div class="inline-flex flex-1 pr-2">
                 <label class="w-16">{{ t('caseReview.detail.owner') }}：</label>
-                <div>{{ dataSource?.ownerName }}</div>
+                <div>{{ reviewDetail?.ownerName }}</div>
               </div>
             </div>
+
             <div class="flex leading-8 h-8">
               <div class="inline-flex flex-1 pr-2">
                 <label class="w-16">{{ t('caseReview.detail.attachments') }}：</label>
                 <div class="flex space-x-2 flex-1">
                   <a
-                    v-for="file in (dataSource?.attachments || [])"
+                    v-for="file in (reviewDetail?.attachments || [])"
                     class="text-blue-hover"
                     @click="download(file.url)">
                     {{ file.name }}
                   </a>
-                  <div v-if="!dataSource?.attachments?.length">{{ t('caseReview.detail.noAttachments') }}</div>
+                  <div v-if="!reviewDetail?.attachments?.length">{{ t('caseReview.detail.noAttachments') }}</div>
                 </div>
               </div>
+
               <div class="inline-flex flex-1 pr-2">
                 <label class="w-16">{{ t('caseReview.detail.participants') }}：</label>
                 <div class="flex space-x-2 flex-wrap flex-1 items-center">
                   <div
-                    v-for="person in (dataSource?.participants || []).slice(0, 5)"
+                    v-for="person in (reviewDetail?.participants || []).slice(0, 5)"
                     :key="person.id"
                     class="inline-flex space-x-1 items-center">
                     <Image
@@ -503,7 +433,7 @@ const menuItems = [
                     <template #content>
                       <div class="max-w-100">
                         <div
-                          v-for="person in (dataSource?.participants || []).slice(5)"
+                          v-for="person in (reviewDetail?.participants || []).slice(5)"
                           :key="person.id"
                           class="inline-flex space-x-1 items-center">
                           <Image
@@ -515,7 +445,7 @@ const menuItems = [
                       </div>
                     </template>
                     <Icon
-                      v-if="(dataSource?.participants || []).length > 5"
+                      v-if="(reviewDetail?.participants || []).length > 5"
                       icon="icon-gengduo"
                       class="text-blue-1" />
                   </Popover>
@@ -533,6 +463,7 @@ const menuItems = [
                 :placeholder="t('caseReview.detail.enterQueryName')"
                 class="w-50"
                 @change="handleKeywordChange" />
+
               <SelectEnum
                 v-model:value="reviewStatus"
                 class="w-50 ml-2"
@@ -544,9 +475,11 @@ const menuItems = [
                   <ReviewStatus :value="item" />
                 </template>
               </SelectEnum>
+
               <div class="flex-1"></div>
+
               <Button
-                :disabled="!dataSource?.planId || !permissions.includes('REVIEW') || dataSource?.status?.value === 'COMPLETED'"
+                :disabled="!reviewDetail?.planId || !permissions.includes(FuncPlanPermission.REVIEW) || reviewDetail?.status?.value === FuncPlanStatus.COMPLETED"
                 size="small"
                 type="primary"
                 @click="addReviewCase">
@@ -554,6 +487,7 @@ const menuItems = [
                 {{ t('caseReview.detail.addReviewCase') }}
               </Button>
             </div>
+
             <Table
               size="small"
               :columns="columns"
@@ -566,42 +500,54 @@ const menuItems = [
               <template #bodyCell="{record, column}">
                 <template v-if="column.dataIndex === 'checkbox'">
                   <Checkbox
-                    :disabled="record.reviewStatus?.value !== 'PENDING' || !permissions.includes('REVIEW') || dataSource?.status?.value === 'PENDING'"
+                    :disabled="record.reviewStatus?.value !== ReviewStatus.PENDING
+                      || !permissions.includes(FuncPlanPermission.REVIEW)
+                      || reviewDetail?.status?.value === ReviewStatus.PENDING"
                     :checked="selectCaseIds.includes(record.id)"
                     @click="onCheckedChange($event, record.id)">
                   </Checkbox>
                 </template>
+
                 <template v-if="column.dataIndex === 'reviewStatus'">
                   <ReviewStatus :value="record.reviewStatus" />
                 </template>
+
                 <template v-if="column.dataIndex === 'priority'">
                   <TaskPriority :value="record?.caseInfo?.priority" />
                 </template>
+
                 <template v-if="column.dataIndex === 'action'">
                   <Button
                     type="text"
                     size="small"
-                    :disabled="!permissions.includes('REVIEW')"
+                    :disabled="!permissions.includes(FuncPlanPermission.REVIEW)"
                     @click.stop="delCase(record)">
                     <Icon icon="icon-qingchu" class="mr-1" />
                     {{ t('caseReview.detail.cancel') }}
                   </Button>
+
                   <Button
-                    :disabled="!permissions.includes('REVIEW') || record.reviewStatus?.value === 'PENDING' || dataSource?.status?.value === 'PENDING'"
+                    :disabled="!permissions.includes(FuncPlanPermission.REVIEW)
+                      || record.reviewStatus?.value === ReviewStatus.PENDING
+                      || reviewDetail?.status?.value === ReviewStatus.PENDING"
                     type="text"
                     size="small"
                     @click.stop="restart(record)">
                     <Icon icon="icon-zhongxinkaishi" class="mr-1" />
                     {{ t('caseReview.detail.restartNewReview') }}
                   </Button>
+
                   <Button
-                    :disabled="!permissions.includes('REVIEW') || record.reviewStatus?.value === 'PENDING' || dataSource?.status?.value === 'PENDING'"
+                    :disabled="!permissions.includes(FuncPlanPermission.REVIEW)
+                      || record.reviewStatus?.value === ReviewStatus.PENDING
+                      || reviewDetail?.status?.value === ReviewStatus.PENDING"
                     type="text"
                     size="small"
                     @click.stop="reset(record)">
                     <Icon icon="icon-zhongzhipingshenjieguo" class="mr-1" />
                     {{ t('caseReview.detail.resetReview') }}
                   </Button>
+
                   <RouterLink :to="`/function#cases?id=${record.caseId}`">
                     <Button
                       type="text"
@@ -627,9 +573,9 @@ const menuItems = [
             </template>
           </TabPane>
           <TabPane key="description" :tab="t('caseReview.detail.reviewDescription')">
-            <div v-if="dataSource?.description" class="">
+            <div v-if="reviewDetail?.description" class="">
               <RichEditor
-                :value="dataSource?.description"
+                :value="reviewDetail?.description"
                 mode="view" />
             </div>
             <div v-else class="text-sub-content">
@@ -702,7 +648,7 @@ const menuItems = [
     <AsyncComponent :visible="selectModalVisible">
       <SelectCaseModal
         v-model:visible="selectModalVisible"
-        :planId="dataSource?.planId"
+        :planId="reviewDetail?.planId"
         :reviewId="reviewId"
         :projectId="props.projectId"
         @ok="handleAddCase" />

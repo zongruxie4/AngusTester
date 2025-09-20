@@ -51,7 +51,7 @@ const initialize = () => {
           _id: 'reviewList',
           value: 'reviewList',
           name: t('caseReview.review'),
-          closable: false // Whether to allow closing, true - allow closing, false - prohibit closing
+          closable: false
         };
       }
     });
@@ -119,7 +119,6 @@ onMounted(() => {
     if (!route.hash.startsWith('#reviews')) {
       return;
     }
-
     hashChange(route.hash);
   });
 });
@@ -128,23 +127,13 @@ const storageKey = computed(() => {
   if (!props.projectId) {
     return undefined;
   }
-
   return `review${props.projectId}`;
 });
 
-// Add specified tabPane
 provide('addTabPane', addTabPane);
-
-// Get tabPane
 provide('getTabPane', getTabPane);
-
-// Delete specified tabPane
 provide('deleteTabPane', deleteTabPane);
-
-// Update specified tabPane
 provide('updateTabPane', updateTabPane);
-
-// Replace specified tabPane
 provide('replaceTabPane', replaceTabPane);
 </script>
 <template>
@@ -177,22 +166,6 @@ provide('replaceTabPane', replaceTabPane);
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
       </template>
-
-      <!-- <template v-else-if="record.value === 'reviewDetails'">
-        <case
-          v-bind="record"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :projectId="props.projectId" />
-      </template>
-
-      <template v-else-if="record.value === 'reviewEdit'">
-        <edit
-          v-bind="record"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :projectId="props.projectId" />
-      </template> -->
     </template>
   </BrowserTab>
 </template>

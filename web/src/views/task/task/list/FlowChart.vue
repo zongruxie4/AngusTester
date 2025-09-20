@@ -27,6 +27,6 @@ const cancel = () => {
     :bodyStyle="{ padding: '30px 30px' }"
     style="width: auto; max-width: 1050px;"
     @cancel="cancel">
-    <img src="images/flow.png" class="w-full" />
+    <img src="./images/flow.png" class="w-full" />
   </Modal>
 </template>

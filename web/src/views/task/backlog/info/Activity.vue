@@ -5,7 +5,7 @@ import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { CombinedTargetType } from '@/enums/enums';
 
-import { ActivityItem } from '@/types/types';
+import { ActivityInfo } from '@/types/types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
 // Component Props
@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<TaskInfoProps>(), {
 const { t } = useI18n();
 
 // Reactive State Variables
-const activityList = ref<ActivityItem[]>([]);
+const activityList = ref<ActivityInfo[]>([]);
 const activityQueryParams = ref<{
   mainTargetId: string;
   filters: [{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum }]
@@ -34,7 +34,7 @@ const currentTaskId = computed(() => {
  * <p>Handle activity data change</p>
  * <p>Updates the activity list when new data is received from the Scroll component</p>
  */
-const handleActivityDataChange = (data: ActivityItem[]) => {
+const handleActivityDataChange = (data: ActivityInfo[]) => {
   activityList.value = data;
 };
 

@@ -1740,6 +1740,7 @@
       "participants": "Participants",
       "selectParticipants": "Please select participants",
       "selectParticipantsPlaceholder": "Select participants",
+      "Attachments": "Attachments",
       "uploadAttachments": "Upload Attachments",
       "attachmentsDescription": "Other documents, such as: requirements specification, reference materials, system architecture diagram, test specifications, technical documents, etc. Supported formats: \"jpg\",\"bmp\",\"png\",\"gif\",\"txt\",\"docx\",\"jpeg\",\"rar\",\"zip\",\"doc\",\"xlsx\",\"xls\",\"pdf\"; up to 10 attachments can be uploaded.",
       "reviewCases": "Review Cases",

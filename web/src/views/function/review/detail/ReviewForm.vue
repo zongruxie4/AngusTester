@@ -18,7 +18,6 @@ type Params = {
 interface Props {
   visible: boolean;
   selectedRowKeys?: string[];
-
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,7 +30,8 @@ const emits = defineEmits<{(e: 'update'):void}>();
 const formState = ref<{ reviewRemark: string; reviewStatus: string }>({ reviewRemark: '', reviewStatus: 'PASSED' });
 
 const loading = ref(false);
-const onFinish = async () => {
+
+const reviewCase = async () => {
   const params:Params[] = props.selectedRowKeys.map(item => ({
     id: item,
     reviewRemark: formState.value.reviewRemark || undefined,
@@ -86,7 +86,7 @@ onMounted(() => {
     size="small"
     layout="horizontal"
     :labelCol="{style: { width: '80px', textAlign: 'left' }}"
-    @finish="onFinish">
+    @finish="reviewCase">
     <FormItem
       name="reviewStatus"
       :label="t('caseReview.detail.reviewResult')"

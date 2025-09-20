@@ -3,24 +3,17 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { Avatar, Button, Pagination, Popover, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { Colon, Dropdown, Icon, Image, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { utils, download, appContext } from '@xcan-angus/infra';
-import dayjs from 'dayjs';
-import { func } from '@/api/tester';
+import { utils, download, appContext, ProjectPageQuery } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { func } from '@/api/tester';
+import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 
-import { ReviewInfo } from '../types';
+import { BasicProps } from '@/types/types';
+import { ReviewDetail } from '../types';
 
 import SearchPanel from '@/views/function/review/list/SearchPanel.vue';
-import { TIME_FORMAT } from '@/utils/constant';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -29,11 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
-
 const Introduce = defineAsyncComponent(() => import('@/views/function/review/list/Introduce.vue'));
-const RichContent = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const isAdmin = computed(() => appContext.isAdmin());
@@ -49,9 +38,9 @@ const searchPanelParams = ref({
   orderSort: undefined,
   filters: []
 });
-// const filters = ref<{ key: string; op: string; value: string; }[]>([]);
+
 const total = ref(0);
-const dataList = ref<ReviewInfo[]>([]);
+const dataList = ref<ReviewDetail[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
 
 const refresh = () => {
@@ -79,7 +68,7 @@ const setTableData = async (id: string, index: number) => {
   }
 };
 
-const toStart = async (data: ReviewInfo, index: number) => {
+const toStart = async (data: ReviewDetail, index: number) => {
   loading.value = true;
   const id = data.id;
   const [error] = await func.startReview(id);
@@ -89,10 +78,10 @@ const toStart = async (data: ReviewInfo, index: number) => {
   }
 
   notification.success(t('caseReview.list.reviewStartedSuccess'));
-  setTableData(id, index);
+  await setTableData(id, index);
 };
 
-const toCompleted = async (data: ReviewInfo, index: number) => {
+const toCompleted = async (data: ReviewDetail, index: number) => {
   loading.value = true;
   const id = data.id;
   const [error] = await func.endReview(id);
@@ -102,10 +91,10 @@ const toCompleted = async (data: ReviewInfo, index: number) => {
   }
 
   notification.success(t('caseReview.list.reviewCompletedSuccess'));
-  setTableData(id, index);
+  await setTableData(id, index);
 };
 
-const toDelete = async (data: ReviewInfo) => {
+const toDelete = async (data: ReviewDetail) => {
   modal.confirm({
     content: t('caseReview.list.confirmDeleteReview', { name: data.name }),
     async onOk () {
@@ -116,24 +105,28 @@ const toDelete = async (data: ReviewInfo) => {
       }
 
       notification.success(t('caseReview.list.reviewDeletedSuccess'));
-      loadData();
+      await loadData();
 
       deleteTabPane([id]);
     }
   });
 };
 
-const toClone = async (data: ReviewInfo) => {
+const toClone = async (data: ReviewDetail) => {
   const [error] = await func.cloneReview(data.id);
   if (error) {
     return;
   }
 
   notification.success(t('caseReview.list.reviewClonedSuccess'));
-  loadData();
+  await loadData();
 };
 
-const dropdownClick = (data: ReviewInfo, index: number, key: 'clone' | 'block' | 'delete' | 'export' | 'grant' | 'resetTestResult' | 'resetReviewResult'|'viewBurnDown'|'viewProgress') => {
+const dropdownClick = (
+  data: ReviewDetail,
+  index: number,
+  key: 'clone' | 'block' | 'delete' | 'export' | 'grant' | 'resetTestResult' | 'resetReviewResult' | 'viewBurnDown' | 'viewProgress'
+) => {
   switch (key) {
     case 'delete':
       toDelete(data);
@@ -152,14 +145,7 @@ const paginationChange = (_pageNo: number, _pageSize: number) => {
 
 const loadData = async () => {
   loading.value = true;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    orderBy?: OrderByKey;
-    orderSort?: OrderSortKey;
-    filters?: { key: string; op: string; value: string; }[];
-  } = {
+  const params: ProjectPageQuery = {
     projectId: props.projectId,
     pageNo: pageNo.value,
     pageSize: pageSize.value,
@@ -170,11 +156,7 @@ const loadData = async () => {
   loaded.value = true;
   loading.value = false;
 
-  if (params.filters?.length || params.orderBy) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
+  searchedFlag.value = !!(params.filters?.length || params.orderBy);
 
   if (error) {
     dataList.value = [];
@@ -185,7 +167,7 @@ const loadData = async () => {
   if (data) {
     total.value = +data.total;
 
-    const _list = (data.list || [] as ReviewInfo[]);
+    const _list = (data.list || [] as ReviewDetail[]);
     dataList.value = _list.map(item => {
       if (item.progress?.completedRate) {
         item.progress.completedRate = item.progress.completedRate.replace(/(\d+\.\d{2})\d+/, '$1');
@@ -207,7 +189,6 @@ const loadData = async () => {
       return item;
     });
 
-    // 管理员拥有所有权限，无需加载权限
     if (!isAdmin.value) {
       for (let i = 0, len = _list.length; i < len; i++) {
         const id = _list[i].id;
@@ -227,7 +208,6 @@ const loadPermissions = async (id: string) => {
   const params = {
     admin: true
   };
-
   return await func.getReviewAuthByPlanId(id, params);
 };
 
@@ -246,7 +226,6 @@ onMounted(() => {
     if (!newValue) {
       return;
     }
-
     loadData();
   }, { immediate: false });
 });
@@ -262,78 +241,30 @@ const dropdownPermissionsMap = computed(() => {
       const _permissions: string[] = _permissionsMap.get(id) || [];
       const tempPermissions: string[] = [];
       const _status = status.value;
-      if ((_isAdmin || _permissions.includes('MODIFY_PLAN')) && ['PENDING', 'IN_PROGRESS'].includes(_status)) {
+      if ((_isAdmin || _permissions.includes(FuncPlanPermission.MODIFY_PLAN)) &&
+        [FuncPlanStatus.PENDING, FuncPlanStatus.IN_PROGRESS].includes(_status)) {
         tempPermissions.push('block');
       }
-
-      if (_isAdmin || _permissions.includes('DELETE_PLAN')) {
+      if (_isAdmin || _permissions.includes(FuncPlanPermission.DELETE_PLAN)) {
         tempPermissions.push('delete');
       }
-
-      if (_isAdmin || _permissions.includes('GRANT')) {
+      if (_isAdmin || _permissions.includes(FuncPlanPermission.GRANT)) {
         tempPermissions.push('grant');
       }
-
-      if (_isAdmin || _permissions.includes('RESET_TEST_RESULT')) {
+      if (_isAdmin || _permissions.includes(FuncPlanPermission.RESET_TEST_RESULT)) {
         tempPermissions.push('resetTestResult');
       }
-
-      if (_isAdmin || _permissions.includes('RESET_REVIEW_RESULT')) {
+      if (_isAdmin || _permissions.includes(FuncPlanPermission.RESET_REVIEW_RESULT)) {
         tempPermissions.push('resetReviewResult');
       }
-
-      if (_isAdmin || _permissions.includes('EXPORT_CASE')) {
+      if (_isAdmin || _permissions.includes(FuncPlanPermission.EXPORT_CASE)) {
         tempPermissions.push('export');
       }
-
       map.set(id, tempPermissions);
     }
   }
-
   return map;
 });
-
-const searchPanelOptions = [
-  {
-    valueKey: 'name',
-    type: 'input',
-    placeholder: t('caseReview.list.searchReviewNameDescription'),
-    allowClear: true,
-    maxlength: 100
-  },
-  // {
-  //   valueKey: 'status',
-  //   type: 'select-enum',
-  //   enumKey: 'FuncReviewStatus',
-  //   placeholder: '选择状态',
-  //   allowClear: true
-  // },
-  {
-    valueKey: 'ownerId',
-    type: 'select-user',
-    allowClear: true,
-    placeholder: t('caseReview.list.selectOwner'),
-    maxlength: 100
-  },
-  {
-    valueKey: 'startDate',
-    type: 'date',
-    valueType: 'start',
-    op: 'GREATER_THAN_EQUAL',
-    placeholder: t('caseReview.list.reviewStartTimeGreaterEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
-    allowClear: true
-  },
-  {
-    valueKey: 'deadlineDate',
-    type: 'date',
-    valueType: 'start',
-    op: 'LESS_THAN_EQUAL',
-    placeholder: t('caseReview.list.reviewDeadlineTimeLessEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
-    allowClear: true
-  }
-];
 
 const dropdownMenuItems = [
   {
@@ -352,23 +283,6 @@ const dropdownMenuItems = [
 ];
 
 const pageSizeOptions = ['5', '10', '15', '20', '30'];
-
-const sortMenuItems: {
-  name: string;
-  key: OrderByKey;
-  orderSort: OrderSortKey;
-}[] = [
-  {
-    name: t('caseReview.list.sortByAddTime'),
-    key: 'createdDate',
-    orderSort: 'DESC'
-  },
-  {
-    name: t('caseReview.list.sortByAddPerson'),
-    key: 'createdByName',
-    orderSort: 'ASC'
-  }
-];
 </script>
 
 <template>
@@ -498,7 +412,7 @@ const sortMenuItems: {
                   </div>
                 </div>
 
-                <div class="ml-8 text-theme-content">{{ t('caseReview.list.totalCases', { count: item.caseNum }) }}</div>
+                <div class="ml-8 text-theme-content">{{ t('caseReview.list.totalCases', {count: item.caseNum}) }}</div>
               </div>
 
               <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
@@ -572,7 +486,8 @@ const sortMenuItems: {
                   </RouterLink>
 
                   <Button
-                    :disabled="(!isAdmin && !permissionsMap.get(item.id)?.includes('MODIFY_PLAN')) || !['PENDING', 'BLOCKED', 'COMPLETED'].includes(item.status?.value)"
+                    :disabled="(!isAdmin && !permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN))
+                      || ![FuncPlanStatus.PENDING, FuncPlanStatus.BLOCKED, FuncPlanStatus.COMPLETED].includes(item.status?.value)"
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"
@@ -582,7 +497,8 @@ const sortMenuItems: {
                   </Button>
 
                   <Button
-                    :disabled="(!isAdmin && !permissionsMap.get(item.id)?.includes('MODIFY_PLAN')) || !['IN_PROGRESS'].includes(item.status?.value)"
+                    :disabled="(!isAdmin && !permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN))
+                      || ![FuncPlanStatus.IN_PROGRESS].includes(item.status?.value)"
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"

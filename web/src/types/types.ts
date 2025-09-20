@@ -45,7 +45,7 @@ export interface CreateTimeSetting {
   hourOfDay?: string;
 }
 
-export type ActivityItem = {
+export type ActivityInfo = {
   id: string;
   projectId: string;
   userId: string;

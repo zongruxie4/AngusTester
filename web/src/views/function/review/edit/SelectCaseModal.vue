@@ -7,12 +7,15 @@ import { funcPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { ReviewCaseInfo } from '@/views/function/review/types';
 
+const ModuleTree = defineAsyncComponent(() => import('@/views/function/review/edit/ModuleTree.vue'));
+
 interface Props {
   planId: string;
   visible: boolean;
   reviewId?: string;
   projectId: string;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   reviewId: undefined,
@@ -20,12 +23,15 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-const emit = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]):void}>();
+// eslint-disable-next-line func-call-spacing
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean):void;
+  (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]):void
+}>();
 
-const ModuleTree = defineAsyncComponent(() => import('@/views/function/review/edit/ModuleTree.vue'));
 const selectedIds = ref<string[]>([]);
 const selectRows = ref<ReviewCaseInfo[]>([]);
-const data = ref([]);
+const notReviewedCases = ref([]);
 const showData = ref([]);
 const loading = ref(false);
 const keywords = ref();
@@ -49,7 +55,7 @@ const loadCases = async () => {
     return;
   }
   loading.value = true;
-  const [error, resp] = await funcPlan.getNotReviewedPlan(props.planId, {
+  const [error, resp] = await funcPlan.getNotReviewedCase(props.planId, {
     reviewId: props.reviewId,
     moduleId: moduleId.value
   });
@@ -57,27 +63,17 @@ const loadCases = async () => {
   if (error) {
     return;
   }
-  data.value = resp.data || [];
-  showData.value = data.value.filter(item => (item.name).includes(keywords.value || '') || (item.code || '').includes(keywords.value || ''));
+  notReviewedCases.value = resp.data || [];
+  showData.value = notReviewedCases.value
+    .filter(item => (item.name).includes(keywords.value || '') || (item.code || '')
+      .includes(keywords.value || ''));
 };
-
-watch(() => moduleId.value, () => {
-  selectedIds.value = [];
-  loadCases();
-});
-
-watch(() => props.visible, (newValue) => {
-  if (newValue) {
-    selectedIds.value = [];
-    loadCases();
-  }
-}, {
-  immediate: true
-});
 
 const handleFilter = debounce(duration.search, () => {
   selectedIds.value = [];
-  showData.value = data.value.filter(item => (item.name).includes(keywords.value || '') || (item.code || '').includes(keywords.value || ''));
+  showData.value = notReviewedCases.value
+    .filter(item => (item.name).includes(keywords.value || '') || (item.code || '')
+      .includes(keywords.value || ''));
 });
 
 const columns = [
@@ -109,6 +105,20 @@ const rowSelection = ref({
     selectedIds.value = selectedRowKeys;
     selectRows.value = selectedRows;
   }
+});
+
+watch(() => moduleId.value, () => {
+  selectedIds.value = [];
+  loadCases();
+});
+
+watch(() => props.visible, (newValue) => {
+  if (newValue) {
+    selectedIds.value = [];
+    loadCases();
+  }
+}, {
+  immediate: true
 });
 
 </script>

@@ -213,4 +213,3 @@ provide('replaceTabPane', replaceTabPane);
     </template>
   </BrowserTab>
 </template>
-

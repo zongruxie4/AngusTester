@@ -58,7 +58,7 @@ export default class API {
     return http.get(`${baseUrl}/${planId}/user/auth/current`, params);
   }
 
-  getNotReviewedPlan (planId: string, params) : Promise<[Error | null, any]> {
+  getNotReviewedCase (planId: string, params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${planId}/case/notReviewed`, params);
   }
 

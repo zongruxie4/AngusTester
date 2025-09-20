@@ -1,32 +1,28 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
-import { EnumMessage, enumUtils, appContext } from '@xcan-angus/infra';
+import { EnumMessage, PageQuery, SearchCriteria, enumUtils, appContext } from '@xcan-angus/infra';
 import { FuncPlanStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { LoadingProps } from '@/types/types';
 
-interface Props {
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false
 });
 
 const { t } = useI18n();
 
 type OrderByKey = string;
-type OrderSortKey = 'ASC' | 'DESC';
+type OrderSortKey = PageQuery.OrderSort.Asc | 'DESC';
 
-const emits = defineEmits<{(e: 'change', value: {
-  orderBy?: string;
-  orderSort?: 'ASC'|'DESC';
-  filters: {key: string; op: string; value: string|string[]}[];
-}):void,
- (e: 'refresh'):void}>();
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+  (e: 'change', value: { orderBy?: string; orderSort?: PageQuery.OrderSort; filters: SearchCriteria[]; }):void,
+  (e: 'refresh'):void}>();
+
 const userInfo = ref(appContext.getUser());
 
 const searchPanelRef = ref();
@@ -46,13 +42,6 @@ const searchPanelOptions = [
     allowClear: true,
     maxlength: 100
   },
-  // {
-  //   valueKey: 'status',
-  //   type: 'select-enum',
-  //   enumKey: 'FuncReviewStatus',
-  //   placeholder: '选择状态',
-  //   allowClear: true
-  // },
   {
     valueKey: 'ownerId',
     type: 'select-user',
@@ -64,7 +53,7 @@ const searchPanelOptions = [
     valueKey: 'startDate',
     type: 'date',
     valueType: 'start',
-    op: 'GREATER_THAN_EQUAL',
+    op: SearchCriteria.OpEnum.GreaterThanEqual,
     placeholder: t('caseReview.list.reviewStartTimeGreaterEqual'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
@@ -73,7 +62,7 @@ const searchPanelOptions = [
     valueKey: 'deadlineDate',
     type: 'date',
     valueType: 'start',
-    op: 'LESS_THAN_EQUAL',
+    op: SearchCriteria.OpEnum.LessThanEqual,
     placeholder: t('caseReview.list.reviewDeadlineTimeLessEqual'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
@@ -88,22 +77,22 @@ const sortMenuItems: {
   {
     name: t('caseReview.list.sortByName'),
     key: 'name',
-    orderSort: 'DESC'
+    orderSort: PageQuery.OrderSort.Desc
   },
   {
     name: t('caseReview.list.sortByOwner'),
     key: 'ownerId',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     name: t('caseReview.list.sortByAddPerson'),
     key: 'createdBy',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     name: t('caseReview.list.sortByAddTime'),
     key: 'createdDate',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   }
 ];
 
@@ -141,9 +130,9 @@ const menuItems = computed(() => [
 
 const orderBy = ref();
 const orderSort = ref();
-const searchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const quickSearchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
+const searchFilters = ref<SearchCriteria[]>([]);
+const quickSearchFilters = ref<SearchCriteria[]>([]);
+const assocFilters = ref<SearchCriteria[]>([]);
 const assocKeys = ['ownerId'];
 const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
 
@@ -168,18 +157,10 @@ const formatDateString = (key: string) => {
 
   return [
     startDate
-      ? {
-          value: startDate.format(DATE_TIME_FORMAT),
-          op: 'GREATER_THAN_EQUAL',
-          key: 'createdDate'
-        }
+      ? { value: startDate.format(DATE_TIME_FORMAT), op: SearchCriteria.OpEnum.GreaterThanEqual, key: 'createdDate' }
       : '',
     endDate
-      ? {
-          value: endDate.format(DATE_TIME_FORMAT),
-          op: 'LESS_THAN_EQUAL',
-          key: 'createdDate'
-        }
+      ? { value: endDate.format(DATE_TIME_FORMAT), op: SearchCriteria.OpEnum.LessThanEqual, key: 'createdDate' }
       : ''].filter(Boolean);
 };
 
@@ -195,7 +176,7 @@ const getParams = () => {
   };
 };
 
-const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
+const searchChange = (data: SearchCriteria[]) => {
   searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
   assocFilters.value = data.filter(item => assocKeys.includes(item.key));
 
@@ -241,7 +222,6 @@ const menuItemClick = (data) => {
     if (key === '') {
       selectedMenuMap.value = { '': true };
       quickSearchFilters.value = [];
-      // 清空搜索面板
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
         searchChangeFlag = true;
@@ -266,11 +246,7 @@ const menuItemClick = (data) => {
     if (key === '') {
       return undefined;
     } else if (statusTypeKeys.includes(key)) {
-      return {
-        key: 'status',
-        op: 'EQUAL',
-        value: key
-      };
+      return { key: 'status', op: SearchCriteria.OpEnum.Equal, value: key };
     } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
       timeFilters = formatDateString(key);
       return undefined;
@@ -280,11 +256,7 @@ const menuItemClick = (data) => {
       }
       return undefined;
     } else {
-      return {
-        key,
-        op: 'EQUAL',
-        value: userId
-      };
+      return { key, op: SearchCriteria.OpEnum.Equal, value: userId };
     }
   }).filter(Boolean);
   quickSearchFilters.value.push(...timeFilters);

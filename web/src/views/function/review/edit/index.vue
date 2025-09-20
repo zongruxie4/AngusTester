@@ -2,48 +2,24 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { Button, Form, FormItem, TabPane, Tabs, Upload } from 'ant-design-vue';
 import {
-  AsyncComponent,
-  Icon,
-  Input,
-  modal,
-  notification,
-  Popover,
-  ReviewStatus,
-  Select,
-  Spin,
-  Table
+  AsyncComponent, Icon, Input, modal, notification, Popover, ReviewStatus, Select, Spin, Table
 } from '@xcan-angus/vue-ui';
 import {
-  EnumMessage,
-  EvalWorkloadMethod,
-  utils,
-  TESTER,
-  enumUtils,
-  upload,
-  duration,
-  appContext
+  EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils, upload, duration, appContext
 } from '@xcan-angus/infra';
-import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
-import RichEditor from '@/components/richEditor/index.vue';
 import { func, funcPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 
-import { EditFormState, ReviewCaseInfo, ReviewInfo } from '../types';
+import { BasicProps } from '@/types/types';
+import { ReviewEditState, ReviewCaseInfo, ReviewDetail } from '../types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
+import RichEditor from '@/components/richEditor/index.vue';
+const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -51,8 +27,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-
-const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));
 
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
@@ -63,7 +37,7 @@ const formRef = ref();
 const selectModalVisible = ref(false);
 const keywords = ref();
 const loading = ref(false);
-const dataSource = ref<ReviewInfo>();
+const dataSource = ref<ReviewDetail>();
 
 const activeTabKey = ref('funcCase');
 
@@ -71,14 +45,12 @@ const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
-const oldFormState = ref<EditFormState>();
-const _deadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
-const formState = ref<EditFormState>({
+const oldFormState = ref<ReviewEditState>();
+const formState = ref<ReviewEditState>({
+  name: '',
   planId: undefined,
   description: '',
-  name: '',
   ownerId: props.userInfo?.id,
-  deadlineDate: _deadlineDate,
   attachments: [],
   caseIds: [],
   participantIds: []
@@ -116,7 +88,7 @@ const delFile = (index: number) => {
 };
 
 const getParams = () => {
-  const params: EditFormState = { ...formState.value, caseIds: caseList.value.map(i => i.id) };
+  const params: ReviewEditState = { ...formState.value, caseIds: caseList.value.map(i => i.id) };
   if (dataSource.value?.id) {
     params.id = dataSource.value.id;
   }
@@ -160,7 +132,6 @@ const editOk = async () => {
   const id = params.id;
   const name = params.name;
   updateTabPane({ _id: id, name });
-  // 更新数据名称
   if (dataSource.value) {
     dataSource.value.name = name;
   }
@@ -198,7 +169,6 @@ const ok = async () => {
     } else {
       await editOk();
     }
-
     refreshList();
   });
 };
@@ -231,7 +201,7 @@ const cancel = () => {
   deleteTabPane([props.data._id]);
 };
 
-const loadData = async (id: string) => {
+const loadReviewDetail = async (id: string) => {
   if (loading.value) {
     return;
   }
@@ -243,7 +213,7 @@ const loadData = async (id: string) => {
     return;
   }
 
-  const data = res?.data as ReviewInfo;
+  const data = res?.data as ReviewDetail;
   if (!data) {
     return;
   }
@@ -258,37 +228,32 @@ const loadData = async (id: string) => {
   }
 };
 
-const setFormData = (data: ReviewInfo) => {
+const setFormData = (data: ReviewDetail) => {
   reviewFlagVisible.value = false;
   if (!data) {
     formState.value = {
+      name: '',
       planId: '',
       description: '',
-      name: '',
       ownerId: props.userInfo?.id,
-      deadlineDate: _deadlineDate,
       attachments: [],
       caseIds: [],
       participantIds: []
     };
-
     return;
   }
 
   const {
-    description = '',
     name = '',
+    description = '',
     ownerId = '',
     attachments = '',
-    deadlineDate = '',
     planId,
     caseIds,
-
     participants = []
   } = data;
 
   formState.value.description = description;
-  formState.value.deadlineDate = deadlineDate;
   formState.value.name = name;
   formState.value.ownerId = ownerId;
   formState.value.caseIds = caseIds;
@@ -315,21 +280,7 @@ const loadEnums = () => {
 
 const loadPermissions = async (id: string) => {
   if (isAdmin.value) {
-    permissions.value = [
-      // 'MODIFY_PLAN',
-      // 'DELETE_PLAN',
-      'ADD_CASE',
-      'MODIFY_CASE',
-      'DELETE_CASE',
-      'EXPORT_CASE',
-      'REVIEW',
-      'RESET_REVIEW_RESULT',
-      'TEST',
-      'RESET_TEST_RESULT',
-      'GRANT',
-      'VIEW'
-    ];
-
+    permissions.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
   }
 
@@ -348,7 +299,7 @@ const loadPermissions = async (id: string) => {
 
 const members = ref<{id: string; fullName: string; value: string; label: string}[]>([]);
 
-const loadMembers = async () => {
+const loadProjectMembers = async () => {
   const [error, res] = await project.getProjectMember(props.projectId);
   if (error) {
     return;
@@ -368,7 +319,7 @@ const handleChangePlanId = () => {
   caseList.value = [];
 };
 
-const loadCaseList = async () => {
+const loadReviewCaseList = async () => {
   const [error, { data }] = await func.getReviewCaseList({
     reviewId: reviewId.value,
     filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH' }] : [],
@@ -388,7 +339,7 @@ const onKeywordChange = debounce(duration.search, () => {
     return;
   }
   pagination.value.current = 1;
-  loadCaseList();
+  loadReviewCaseList();
 });
 
 const addReviewCase = () => {
@@ -405,7 +356,7 @@ const handleAddCase = async (caseIds: string[], cases: ReviewCaseInfo[]) => {
       return;
     }
     selectModalVisible.value = false;
-    loadCaseList();
+    await loadReviewCaseList();
   } else {
     selectModalVisible.value = false;
     caseList.value.push(...cases);
@@ -417,6 +368,11 @@ const pagination = ref({
   pageSize: 10,
   total: 0
 });
+
+const editFlag = computed(() => {
+  return !!props.data?.id;
+});
+
 const caseList = ref<ReviewCaseInfo[]>([]);
 const columns = [
   {
@@ -461,7 +417,7 @@ const delCase = async (record: ReviewCaseInfo) => {
         if (pagination.value.current !== 1 && caseList.value.length === 1) {
           pagination.value.current -= 1;
         }
-        loadCaseList();
+        await loadReviewCaseList();
       }
     });
   } else {
@@ -472,12 +428,12 @@ const delCase = async (record: ReviewCaseInfo) => {
 const pageChange = ({ current, pageSize }) => {
   pagination.value.current = current;
   pagination.value.pageSize = pageSize;
-  loadCaseList();
+  loadReviewCaseList();
 };
 
 onMounted(async () => {
   loadEnums();
-  await loadMembers();
+  await loadProjectMembers();
 
   watch(() => props.data, async (newValue, oldValue) => {
     const id = newValue?.id;
@@ -492,13 +448,9 @@ onMounted(async () => {
 
     reviewId.value = id;
 
-    // await loadPermissions(id);
-    await loadData(id);
-    await loadCaseList();
+    await loadReviewDetail(id);
+    await loadReviewCaseList();
   }, { immediate: true });
-});
-const editFlag = computed(() => {
-  return !!props.data?.id;
 });
 </script>
 
@@ -506,7 +458,7 @@ const editFlag = computed(() => {
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="flex items-center space-x-2.5 mb-5">
       <Button
-        :disabled="!isAdmin && !permissions.includes('REVIEW')"
+        :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.REVIEW)"
         type="primary"
         size="small"
         class="flex items-center space-x-1"
@@ -517,7 +469,7 @@ const editFlag = computed(() => {
 
       <template v-if="editFlag">
         <Button
-          :disabled="!isAdmin && !permissions.includes('REVIEW')"
+          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.REVIEW)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
@@ -525,8 +477,9 @@ const editFlag = computed(() => {
           <Icon icon="icon-qingchu" class="text-3.5" />
           <span>{{ t('caseReview.editForm.delete') }}</span>
         </Button>
+
         <Button
-          :disabled="!isAdmin && !permissions.includes('REVIEW')"
+          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.REVIEW)"
           type="default"
           size="small"
           :href="`/function#reviews?id=${reviewId}`"
@@ -562,6 +515,7 @@ const editFlag = computed(() => {
           :maxlength="200"
           :placeholder="t('caseReview.editForm.reviewBriefOverview')" />
       </FormItem>
+
       <FormItem
         :label="t('caseReview.editForm.testPlan')"
         name="planId"
@@ -601,7 +555,7 @@ const editFlag = computed(() => {
           :placeholder="t('caseReview.editForm.selectParticipantsPlaceholder')" />
       </FormItem>
 
-      <FormItem label="附件">
+      <FormItem label="t('caseReview.editForm.attachments')">
         <div class="flex items-center mt-0.5">
           <Upload
             v-if="!formState?.attachments || formState?.attachments?.length < 10"
@@ -645,6 +599,7 @@ const editFlag = computed(() => {
             @click="delFile(index)" />
         </div>
       </FormItem>
+
       <Tabs
         v-model:activeKey="activeTabKey"
         size="small"
@@ -661,7 +616,8 @@ const editFlag = computed(() => {
               class="w-50"
               @change="onKeywordChange" />
             <Button
-              :disabled="!formState.planId || (reviewId && !permissions.includes('REVIEW')) || dataSource?.status?.value === 'COMPLETED'"
+              :disabled="!formState.planId || (reviewId && !permissions.includes(FuncPlanPermission.REVIEW))
+                || dataSource?.status?.value === FuncPlanStatus.COMPLETED"
               size="small"
               type="primary"
               @click="addReviewCase">
@@ -669,6 +625,7 @@ const editFlag = computed(() => {
               {{ t('caseReview.editForm.addReviewCase') }}
             </Button>
           </div>
+
           <Table
             :columns="columns"
             :dataSource="caseList"
@@ -693,13 +650,8 @@ const editFlag = computed(() => {
             </template>
           </Table>
         </TabPane>
+
         <TabPane key="description" :tab="t('caseReview.editForm.reviewDescription')">
-          <!-- <Textarea
-            v-model:value="formState.description"
-            :rows="8"
-            showCount
-            placeholder="评审说明。"
-            :maxlength="2000" /> -->
           <FormItem name="description" :rules="[{validator: validateDesc}]">
             <RichEditor
               ref="descRichRef"
@@ -709,6 +661,7 @@ const editFlag = computed(() => {
         </TabPane>
       </Tabs>
     </Form>
+
     <AsyncComponent :visible="selectModalVisible">
       <SelectCaseModal
         v-model:visible="selectModalVisible"

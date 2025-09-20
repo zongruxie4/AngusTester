@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, SearchCriteria, TESTER } from '@xcan-angus/infra';
-import { ActivityItem, BaseProps } from '@/types/types';
+import { ActivityInfo, BaseProps } from '@/types/types';
 
 // Props interface for Activity component
 const props = withDefaults(defineProps<BaseProps>(), {
@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<BaseProps>(), {
 /**
  * List of activity items to be displayed
  */
-const activityDataList = ref<ActivityItem[]>([]);
+const activityDataList = ref<ActivityInfo[]>([]);
 
 /**
  * API parameters for fetching activity data
@@ -39,7 +39,7 @@ const apiParams = computed(() => {
  *
  * @param data - Array of activity items from the server
  */
-const handleDataChange = (data: ActivityItem[]) => {
+const handleDataChange = (data: ActivityInfo[]) => {
   activityDataList.value = data;
 };
 </script>

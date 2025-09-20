@@ -5,7 +5,7 @@ import { SearchCriteria, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import { CaseInfo } from './types';
-import { ActivityItem } from '@/types/types';
+import { ActivityInfo } from '@/types/types';
 import { CombinedTargetType } from '@/enums/enums';
 
 type Props = {
@@ -24,13 +24,13 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const dataList = ref<ActivityItem[]>([]);
+const dataList = ref<ActivityInfo[]>([]);
 const params = ref<{
   mainTargetId:string;
   filters:[{ key: 'targetType', value: CombinedTargetType.FUNC_CASE, op: SearchCriteria.OpEnum.Equal }]
 }>();
 
-const change = (data: ActivityItem[]) => {
+const change = (data: ActivityInfo[]) => {
   dataList.value = data;
 };
 
