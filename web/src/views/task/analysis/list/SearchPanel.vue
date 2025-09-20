@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
@@ -8,32 +7,25 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { PageQuery, SearchCriteria, XCanDexie } from '@xcan-angus/infra';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
-import { TaskStatus } from '@/enums/enums';
 
-import { MenuItem, SelectOption } from '@/views/task/analysis/list/types';
-import { TaskViewMode } from '@/views/task/task/types';
+import { MenuItem } from '@/views/task/analysis/list/types';
 
 // Type Definitions
 type Props = {
   collapse: boolean;
-  viewMode: TaskViewMode;
-  sprintId: string;
-  sprintName: string;
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
   notify: string;
-  orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
+  orderBy: 'createdByName' | 'lastModifiedByName';
   orderSort: PageQuery.OrderSort;
-  groupKey: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType';
+  groupKey: 'none' | 'createdByName' | 'lastModifiedByName';
 }
 
 // Props and Emits
 const props = withDefaults(defineProps<Props>(), {
   collapse: false,
   viewMode: undefined,
-  sprintId: undefined,
-  sprintName: undefined,
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -46,20 +38,14 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'add'): void;
-  (e: 'export'): void;
   (e: 'change', value: SearchCriteria[]): void;
-  (e: 'update:orderBy', value: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'): void;
+  (e: 'update:orderBy', value: 'createdByName' | 'lastModifiedByName'): void;
   (e: 'update:orderSort', value: PageQuery.OrderSort): void;
-  (e: 'update:groupKey', value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'): void;
+  (e: 'update:groupKey', value: 'none' | 'createdByName' | 'lastModifiedByName'): void;
   (e: 'update:visible', value: boolean): void;
-  (e: 'update:collapse', value: boolean): void;
-  (e: 'viewModeChange', value: TaskViewMode): void;
-  (e: 'uploadTask'): void;
-  (e: 'exportTemplate'): void;
 }>();
 
 // Composables and External Dependencies
-const route = useRoute();
 const { t } = useI18n();
 
 /**
@@ -84,95 +70,15 @@ const quickDateSearchMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', str
 const selectedQuickSearchItems = ref(new Map<string, Omit<MenuItem, 'name'>>());
 
 /**
- * Flag indicating if overdue filter is active
- */
-const isOverdueFilterActive = ref(false);
-
-/**
- * Sprint selection visibility state
- */
-const isSprintSelectionVisible = ref(false);
-
-/**
- * Currently selected sprint option
- */
-const selectedSprintOption = ref<SelectOption>();
-
-/**
- * ID of the checked sprint
- */
-const checkedSprintId = ref<string>();
-
-/**
- * Tag selection visibility state
- */
-const isTagSelectionVisible = ref(false);
-
-/**
- * Currently selected tag options
- */
-const selectedTagOptions = ref<SelectOption[]>([]);
-
-/**
- * IDs of checked tags
- */
-const checkedTagIds = ref<string[]>([]);
-
-/**
  * Current search filter criteria
  */
 const currentSearchFilters = ref<SearchCriteria[]>([]);
 
 /**
- * Filter for target parent ID
- */
-const targetParentIdSearchFilter = ref<SearchCriteria>({
-  key: 'targetParentId',
-  op: SearchCriteria.OpEnum.Equal,
-  value: undefined
-});
-
-/**
- * Filter for target ID
- */
-const targetIdSearchFilter = ref<SearchCriteria>({
-  key: 'targetId',
-  op: SearchCriteria.OpEnum.Equal,
-  value: undefined
-});
-
-/**
- * Filter for evaluation workload
- */
-const evaluationWorkloadFilter = ref<SearchCriteria>({
-  key: 'evalWorkload',
-  op: SearchCriteria.OpEnum.Equal,
-  value: undefined
-});
-
-/**
- * Filter for failure count
- */
-const failureCountFilter = ref<SearchCriteria>({
-  key: 'failNum',
-  op: SearchCriteria.OpEnum.Equal,
-  value: undefined
-});
-
-/**
- * Filter for total count
- */
-const totalCountFilter = ref<SearchCriteria>({
-  key: 'totalNum',
-  op: SearchCriteria.OpEnum.Equal,
-  value: undefined
-});
-
-/**
  * Handle sorting configuration changes
  * @param {object} data - Sorting data containing orderBy and orderSort
  */
-const handleSortingChange = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName' ; orderSort: PageQuery.OrderSort; }) => {
+const handleSortingChange = (data: { orderBy: 'createdByName' | 'lastModifiedByName' ; orderSort: PageQuery.OrderSort; }) => {
   emit('update:orderBy', data.orderBy);
   emit('update:orderSort', data.orderSort);
 };
@@ -200,18 +106,8 @@ const handleQuickSearchMenuItemClick = (menuItem: MenuItem) => {
       return;
     }
 
-    if (itemKey === 'assigneeId' || itemKey === 'progress') {
-      clearSearchPanelConfig(['assigneeId', 'status']);
-      return;
-    }
-
     if (itemKey === 'lastModifiedBy') {
       clearSearchPanelConfig(['lastModifiedBy']);
-      return;
-    }
-
-    if (itemKey === 'confirmerId') {
-      clearSearchPanelConfig(['confirmerId', 'status']);
       return;
     }
 
@@ -231,9 +127,6 @@ const handleQuickSearchMenuItemClick = (menuItem: MenuItem) => {
     if (typeof searchPanelComponentRef.value?.clear === 'function') {
       searchPanelComponentRef.value.clear();
     }
-
-    // Reset all filter states
-    resetAllFilterStates();
     return;
   }
 
@@ -243,25 +136,8 @@ const handleQuickSearchMenuItemClick = (menuItem: MenuItem) => {
     return;
   }
 
-  if (itemKey === 'assigneeId' || itemKey === 'progress') {
-    const statusValue = itemKey === 'assigneeId' ? TaskStatus.PENDING : TaskStatus.IN_PROGRESS;
-    setSearchPanelConfig([
-      { valueKey: 'assigneeId', value: currentUserId.value },
-      { valueKey: 'status', value: statusValue }
-    ]);
-    return;
-  }
-
   if (itemKey === 'lastModifiedBy') {
     setSearchPanelConfig([{ valueKey: 'lastModifiedBy', value: currentUserId.value }]);
-    return;
-  }
-
-  if (itemKey === 'confirmerId') {
-    setSearchPanelConfig([
-      { valueKey: 'confirmerId', value: currentUserId.value },
-      { valueKey: 'status', value: TaskStatus.CONFIRMING }
-    ]);
     return;
   }
 
@@ -297,23 +173,6 @@ const formatDateRange = (key: MenuItem['key']) => {
   }
 
   return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
-};
-
-/**
- * Format data for display with truncation
- * @param {object} data - Data containing id and name
- * @returns {object} Formatted data with display properties
- */
-const formatDisplayData = ({ id, name }: { id: string; name: string; }) => {
-  let showTitle = '';
-  let showName = name;
-  const MAX_LENGTH = 10;
-  if (name.length > MAX_LENGTH) {
-    showTitle = name;
-    showName = showName.slice(0, MAX_LENGTH) + '...';
-  }
-
-  return { id, name, showTitle, showName };
 };
 
 /**
@@ -357,51 +216,6 @@ const handleSearchPanelChange = (
  */
 const buildSearchCriteria = () => {
   const searchCriteria: SearchCriteria[] = cloneDeep(currentSearchFilters.value);
-
-  // Add overdue filter if active
-  if (isOverdueFilterActive.value) {
-    searchCriteria.push({ key: 'overdue', op: SearchCriteria.OpEnum.Equal, value: true });
-  }
-
-  // Add sprint filter if selected
-  if (checkedSprintId.value) {
-    searchCriteria.push({ key: 'sprintId', op: SearchCriteria.OpEnum.Equal, value: checkedSprintId.value });
-  }
-
-  // Add tag filters if any tags are selected
-  if (checkedTagIds.value.length) {
-    const tagValues: string[] = [];
-    checkedTagIds.value.forEach(item => {
-      tagValues.push(item);
-    });
-    searchCriteria.push({ key: 'tagId', op: SearchCriteria.OpEnum.In, value: tagValues });
-  }
-
-  // Add target parent ID filter if set
-  if (targetParentIdSearchFilter.value.value) {
-    searchCriteria.push({ ...(targetParentIdSearchFilter.value) });
-  }
-
-  // Add target ID filter if set
-  if (targetIdSearchFilter.value.value) {
-    searchCriteria.push({ ...(targetIdSearchFilter.value) });
-  }
-
-  // Add evaluation workload filter if set
-  if (evaluationWorkloadFilter.value.value) {
-    searchCriteria.push({ ...(evaluationWorkloadFilter.value) });
-  }
-
-  // Add failure count filter if set
-  if (failureCountFilter.value.value) {
-    searchCriteria.push({ ...(failureCountFilter.value) });
-  }
-
-  // Add total count filter if set
-  if (totalCountFilter.value.value) {
-    searchCriteria.push({ ...(totalCountFilter.value) });
-  }
-
   return searchCriteria;
 };
 
@@ -464,50 +278,6 @@ const initializeSearchPanel = async () => {
       currentSearchFilters.value = [];
     }
 
-    // Load overdue filter state
-    if (Object.prototype.hasOwnProperty.call(databaseData, 'overdue')) {
-      isOverdueFilterActive.value = databaseData.overdue || false;
-    } else {
-      isOverdueFilterActive.value = false;
-    }
-
-    // Load sprint data (prioritize props over saved data)
-    if (props.sprintId) {
-      checkedSprintId.value = props.sprintId;
-    } else {
-      if (Object.prototype.hasOwnProperty.call(databaseData, 'checkedSprintId')) {
-        checkedSprintId.value = databaseData.checkedSprintId;
-      } else {
-        checkedSprintId.value = undefined;
-      }
-    }
-
-    if (props.sprintName) {
-      selectedSprintOption.value = formatDisplayData({ id: props.sprintId, name: props.sprintName });
-    } else {
-      if (Object.prototype.hasOwnProperty.call(databaseData, 'selectedSprint')) {
-        selectedSprintOption.value = databaseData.selectedSprint;
-      } else {
-        selectedSprintOption.value = undefined;
-      }
-    }
-
-    // Load tag data
-    if (Object.prototype.hasOwnProperty.call(databaseData, 'checkedTagIds')) {
-      checkedTagIds.value = databaseData.checkedTagIds || [];
-    } else {
-      checkedTagIds.value = [];
-    }
-
-    if (Object.prototype.hasOwnProperty.call(databaseData, 'selectedTags')) {
-      selectedTagOptions.value = databaseData.selectedTags || [];
-    } else {
-      selectedTagOptions.value = [];
-    }
-
-    // Load custom filters
-    loadCustomFiltersFromDatabase(databaseData);
-
     // Set up non-search panel quick filters
     const nonSearchPanelKeys = Object.keys(nonSearchPanelValueMap);
     if (nonSearchPanelKeys.length) {
@@ -527,52 +297,6 @@ const initializeSearchPanel = async () => {
   // No saved data, reset to defaults
   resetAllSearchStates();
   resetSearchPanelConfiguration();
-};
-
-/**
- * Load custom filters from database data
- * @param {any} databaseData - Database data object
- */
-const loadCustomFiltersFromDatabase = (databaseData: any) => {
-  // Load evaluation workload filter
-  if (Object.prototype.hasOwnProperty.call(databaseData, 'evalWorkloadFilter')) {
-    evaluationWorkloadFilter.value = databaseData.evalWorkloadFilter ||
-        { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  } else {
-    evaluationWorkloadFilter.value = { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  }
-
-  // Load failure count filter
-  if (Object.prototype.hasOwnProperty.call(databaseData, 'failNumFilter')) {
-    failureCountFilter.value = databaseData.failNumFilter ||
-        { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  } else {
-    failureCountFilter.value = { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  }
-
-  // Load total count filter
-  if (Object.prototype.hasOwnProperty.call(databaseData, 'totalNumFilter')) {
-    totalCountFilter.value = databaseData.totalNumFilter ||
-        { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  } else {
-    totalCountFilter.value = { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  }
-
-  // Load target parent ID filter
-  if (Object.prototype.hasOwnProperty.call(databaseData, 'targetParentIdFilter')) {
-    targetParentIdSearchFilter.value = databaseData.targetParentIdFilter ||
-        { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  } else {
-    targetParentIdSearchFilter.value = { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  }
-
-  // Load target ID filter
-  if (Object.prototype.hasOwnProperty.call(databaseData, 'targetIdFilter')) {
-    targetIdSearchFilter.value = databaseData.targetIdFilter ||
-        { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  } else {
-    targetIdSearchFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  }
 };
 
 /**
@@ -614,18 +338,6 @@ const setSearchPanelConfig = (configs: { valueKey: string; value: any }[]) => {
 };
 
 /**
- * Reset all filter states to default values
- */
-const resetAllFilterStates = () => {
-  isOverdueFilterActive.value = false;
-  targetParentIdSearchFilter.value.value = undefined;
-  targetIdSearchFilter.value.value = undefined;
-  evaluationWorkloadFilter.value.value = undefined;
-  failureCountFilter.value.value = undefined;
-  totalCountFilter.value.value = undefined;
-};
-
-/**
  * Reset search panel configuration to default state
  */
 const resetSearchPanelConfiguration = () => {
@@ -644,24 +356,7 @@ const resetSearchPanelConfiguration = () => {
 const resetAllSearchStates = () => {
   quickDateSearchMap.value.clear();
   selectedQuickSearchItems.value.clear();
-  isOverdueFilterActive.value = false;
-
-  isSprintSelectionVisible.value = false;
-  selectedSprintOption.value = undefined;
-  checkedSprintId.value = undefined;
-
-  isTagSelectionVisible.value = false;
-  selectedTagOptions.value = [];
-  checkedTagIds.value = [];
-
   currentSearchFilters.value = [];
-
-  targetParentIdSearchFilter.value = { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  targetIdSearchFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
-
-  evaluationWorkloadFilter.value = { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  failureCountFilter.value = { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
-  totalCountFilter.value = { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
 };
 
 // Lifecycle Hooks
@@ -669,8 +364,7 @@ onMounted(async () => {
   // Watch for database key changes and initialize
   watch([
     () => databaseParamsKey.value,
-    () => databaseCountKey.value,
-    () => databaseViewModeKey.value
+    () => databaseCountKey.value
   ], ([key1, key2, key3]) => {
     if (!key1 || !key2 || !key3) {
       return;
@@ -678,57 +372,16 @@ onMounted(async () => {
     initializeSearchPanel();
   }, { immediate: true });
 
-  // Watch for route hash changes to handle URL parameters
-  watch(() => route.hash, () => {
-    if (!route.hash.startsWith('#list')) {
-      return;
-    }
-
-    const queryString = route.hash.split('?')[1];
-    if (!queryString) {
-      return;
-    }
-
-    const queryParameters = queryString.split('&').reduce((prev, cur) => {
-      const [key, value] = cur.split('=');
-      prev[key] = value;
-      return prev;
-    }, {} as { [key: string]: string });
-
-    const { sprintId, sprintName } = queryParameters;
-    if (sprintId) {
-      checkedSprintId.value = sprintId;
-    }
-
-    if (sprintName) {
-      selectedSprintOption.value = formatDisplayData({ id: sprintId, name: sprintName });
-    }
-  }, { immediate: false });
-
   // Watch for search criteria changes and update UI accordingly
   watch(
     [
       () => currentSearchFilters.value,
-      () => isOverdueFilterActive.value,
-      () => checkedSprintId.value,
-      () => checkedTagIds.value.length,
-      () => targetParentIdSearchFilter.value,
-      () => targetIdSearchFilter.value,
-      () => evaluationWorkloadFilter.value,
-      () => failureCountFilter.value,
-      () => totalCountFilter.value,
       () => selectedQuickSearchItems.value
     ], () => {
       const currentFilters = currentSearchFilters.value;
 
       // Check if any filters are active
-      const hasActiveFilters = currentFilters.length ||
-        isOverdueFilterActive.value ||
-        !!targetParentIdSearchFilter.value.value ||
-        !!targetIdSearchFilter.value.value ||
-        !!evaluationWorkloadFilter.value.value ||
-        !!failureCountFilter.value.value ||
-        !!totalCountFilter.value.value;
+      const hasActiveFilters = currentFilters.length;
 
       if (!hasActiveFilters) {
         // No active filters, show "All" option
@@ -783,13 +436,6 @@ const databaseCountKey = computed(() => {
 });
 
 /**
- * Generate database key for view mode
- */
-const databaseViewModeKey = computed(() => {
-  return btoa(databaseBaseKey.value + 'viewMode');
-});
-
-/**
  * Update quick search selections based on current filters
  * @param {SearchCriteria[]} filters - Current search filters
  */
@@ -811,36 +457,6 @@ const updateQuickSearchSelections = (filters: SearchCriteria[]) => {
     selectedQuickSearchItems.value.set('lastModifiedBy', { key: 'lastModifiedBy' });
   } else {
     selectedQuickSearchItems.value.delete('lastModifiedBy');
-  }
-
-  // Update assignee and status selections
-  const status = filters.find(item => item.key === 'status')?.value;
-  const assigneeId = filters.find(item => item.key === 'assigneeId')?.value;
-
-  if (status && status === TaskStatus.PENDING && assigneeId === currentUserId.value) {
-    selectedQuickSearchItems.value.set('assigneeId', { key: 'assigneeId' });
-    selectedQuickSearchItems.value.delete('confirmerId');
-    selectedQuickSearchItems.value.delete('progress');
-  } else {
-    selectedQuickSearchItems.value.delete('assigneeId');
-  }
-
-  if (status && status === TaskStatus.IN_PROGRESS && assigneeId === currentUserId.value) {
-    selectedQuickSearchItems.value.set('progress', { key: 'progress' });
-    selectedQuickSearchItems.value.delete('confirmerId');
-    selectedQuickSearchItems.value.delete('assigneeId');
-  } else {
-    selectedQuickSearchItems.value.delete('progress');
-  }
-
-  // Update confirmer selection
-  const confirmerId = filters.find(item => item.key === 'confirmerId')?.value;
-  if (status && status === TaskStatus.CONFIRMING && confirmerId === currentUserId.value) {
-    selectedQuickSearchItems.value.set('confirmerId', { key: 'confirmerId' });
-    selectedQuickSearchItems.value.delete('assigneeId');
-    selectedQuickSearchItems.value.delete('progress');
-  } else {
-    selectedQuickSearchItems.value.delete('confirmerId');
   }
 
   // Update date range selections
@@ -872,70 +488,10 @@ const saveSearchStateToDatabase = () => {
   if (searchParametersDatabase) {
     const databaseData: {
       filters?: SearchCriteria[];
-      overdue?: true;
-      checkedSprintId?: string;
-      selectedSprint?: {
-        id: string;
-        name: string;
-        showTitle: string;
-        showName: string;
-      };
-      checkedTagIds?: string[];
-      selectedTags?: {
-        id: string;
-        name: string;
-        showTitle: string;
-        showName: string;
-      }[];
-      evalWorkloadFilter?: SearchCriteria;
-      failNumFilter?: SearchCriteria;
-      totalNumFilter?: SearchCriteria;
-      targetParentIdFilter?: SearchCriteria;
-      targetIdFilter?: SearchCriteria;
     } = {};
 
     if (currentSearchFilters.value.length) {
       databaseData.filters = cloneDeep(currentSearchFilters.value);
-    }
-
-    if (isOverdueFilterActive.value) {
-      databaseData.overdue = isOverdueFilterActive.value;
-    }
-
-    if (checkedSprintId.value) {
-      databaseData.checkedSprintId = checkedSprintId.value;
-    }
-
-    if (selectedSprintOption.value) {
-      databaseData.selectedSprint = cloneDeep(selectedSprintOption.value);
-    }
-
-    if (checkedTagIds.value.length) {
-      databaseData.checkedTagIds = cloneDeep(checkedTagIds.value);
-    }
-
-    if (selectedTagOptions.value.length) {
-      databaseData.selectedTags = cloneDeep(selectedTagOptions.value);
-    }
-
-    if (evaluationWorkloadFilter.value.value) {
-      databaseData.evalWorkloadFilter = cloneDeep(evaluationWorkloadFilter.value);
-    }
-
-    if (failureCountFilter.value.value) {
-      databaseData.failNumFilter = cloneDeep(failureCountFilter.value);
-    }
-
-    if (totalCountFilter.value.value) {
-      databaseData.totalNumFilter = cloneDeep(totalCountFilter.value);
-    }
-
-    if (targetParentIdSearchFilter.value.value) {
-      databaseData.targetParentIdFilter = cloneDeep(targetParentIdSearchFilter.value);
-    }
-
-    if (targetIdSearchFilter.value.value) {
-      databaseData.targetIdFilter = cloneDeep(targetIdSearchFilter.value);
     }
 
     if (Object.keys(databaseData).length) {

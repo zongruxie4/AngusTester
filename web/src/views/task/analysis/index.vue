@@ -30,9 +30,6 @@ const activeTabKey = ref('analysisList');
 
 /**
  * Generates a unique storage key for browser tab persistence based on project ID.
- * <p>
- * This key is used to maintain tab state across browser sessions for the current project.
- * </p>
  */
 const storageKey = computed(() => {
   if (!props.projectId) {
@@ -43,10 +40,6 @@ const storageKey = computed(() => {
 
 /**
  * Adds a new tab pane to the browser tab component.
- * <p>
- * This function is provided to child components for dynamic tab creation.
- * </p>
- *
  * @param tabData - The tab pane data to add
  */
 const addTabPane = (tabData: IPane) => {
@@ -57,9 +50,6 @@ const addTabPane = (tabData: IPane) => {
 
 /**
  * Retrieves tab pane data by key.
- * <p>
- * Used by child components to access existing tab information.
- * </p>
  *
  * @param tabKey - The key of the tab to retrieve
  * @returns Array of tab panes or undefined if not found
@@ -70,9 +60,6 @@ const getTabPane = (tabKey: string): IPane[] | undefined => {
 
 /**
  * Removes one or more tab panes from the browser tab component.
- * <p>
- * This function is provided to child components for tab cleanup.
- * </p>
  *
  * @param tabKeys - Array of tab keys to remove
  */
@@ -82,9 +69,6 @@ const deleteTabPane = (tabKeys: string[]) => {
 
 /**
  * Updates an existing tab pane with new data.
- * <p>
- * Used to modify tab properties without recreating the tab.
- * </p>
  *
  * @param tabData - The updated tab pane data
  */
@@ -93,12 +77,7 @@ const updateTabPane = (tabData: IPane) => {
 };
 
 /**
- * <p>
  * Replaces a tab pane with new data while maintaining the same key.
- * </p>
- * <p>
- * This is useful when changing tab content without changing its identifier.
- * </p>
  *
  * @param tabKey - The key of the tab to replace
  * @param newTabData - The new tab data with updated key
@@ -109,9 +88,6 @@ const replaceTabPane = (tabKey: string, newTabData: { key: string }) => {
 
 /**
  * Initializes the component by setting up the default analysis list tab and processing URL hash.
- * <p>
- * This function ensures the analysis list tab is always present and handles initial navigation.
- * </p>
  */
 const initializeComponent = () => {
   if (typeof browserTabRef.value?.add === 'function') {
@@ -132,9 +108,6 @@ const initializeComponent = () => {
 
 /**
  * Processes URL hash parameters to determine which tab should be opened.
- * <p>
- * Supports opening edit, detail, or new analysis tabs based on URL parameters.
- * </p>
  *
  * @param urlHash - The URL hash string containing navigation parameters
  */
@@ -196,9 +169,6 @@ const processUrlHash = (urlHash: string) => {
 
 /**
  * Handles storage key change events from the browser tab component.
- * <p>
- * Reinitializes the component when the storage context changes.
- * </p>
  */
 const handleStorageKeyChange = () => {
   initializeComponent();
@@ -206,9 +176,6 @@ const handleStorageKeyChange = () => {
 
 /**
  * Handles successful analysis edit operations.
- * <p>
- * Triggers a refresh of the analysis list to show updated data.
- * </p>
  */
 const handleAnalysisEditSuccess = () => {
   refreshListNotify.value += 1;

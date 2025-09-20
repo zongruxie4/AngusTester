@@ -8,10 +8,13 @@ import { debounce, throttle } from 'throttle-debounce';
 import { analysis } from '@/api/tester';
 import { EnumMessage } from '@xcan-angus/infra';
 import { AnalysisDataSource, AnalysisTaskTemplate, AnalysisTaskTemplateDesc } from '@/enums/enums';
-
-import Introduce from '@/views/task/analysis/list/Introduce.vue';
-import SearchPanel from '@/views/task/analysis/list/SearchPanel.vue';
 import { BasicProps } from '@/types/types';
+import {AnalysisInfo} from "@/views/task/analysis/types";
+
+// Lazy load template selection component
+const Introduce = defineAsyncComponent(() => import('@/views/task/analysis/list/Introduce.vue'));
+const SearchPanel = defineAsyncComponent(() => import('@/views/task/analysis/list/SearchPanel.vue'));
+const TemplateSelectList = defineAsyncComponent(() => import('@/views/task/analysis/list/TemplateSelect.vue'));
 
 // Props and Basic Setup
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -24,8 +27,6 @@ const props = withDefaults(defineProps<BasicProps>(), {
 const { t } = useI18n();
 const dataListContainerRef = ref();
 
-// Lazy load template selection component
-const TemplateSelectList = defineAsyncComponent(() => import('@/views/task/analysis/list/TemplateSelect.vue'));
 const addTabPane = inject('addTabPane', (value) => value);
 
 /**
@@ -64,15 +65,7 @@ const selectedTemplate = ref('');
 /**
  * List of analysis items to display
  */
-const analysisList = ref<Array<{
-  id: string;
-  name: string;
-  description: string;
-  template: AnalysisTaskTemplate;
-  datasource?: { value: AnalysisDataSource } | null;
-  createdByName?: string;
-  createdDate?: string;
-}>>([]);
+const analysisList = ref<Array<AnalysisInfo>>([]);
 
 /**
  * Loading state for API calls

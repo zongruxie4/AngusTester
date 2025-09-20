@@ -20,7 +20,7 @@ export interface AnalysisInfo {
   data?: any;
 }
 
-export interface EditAnalysisState {
+export interface AnalysisEditState {
   id?: string;
   name: string;
   containsUserAnalysis: boolean;

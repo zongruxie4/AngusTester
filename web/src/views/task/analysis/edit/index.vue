@@ -5,17 +5,14 @@ import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } f
 import { DatePicker, Input, notification, Select, Icon } from '@xcan-angus/vue-ui';
 import { AuthObjectType, EnumMessage, enumOptionUtils, enumUtils, GM, TESTER } from '@xcan-angus/infra';
 import {
-  AnalysisDataSource,
-  AnalysisTaskObject,
-  AnalysisTaskTemplate,
-  AnalysisTaskTemplateDesc,
-  AnalysisTimeRange
+  AnalysisDataSource, AnalysisTaskObject, AnalysisTaskTemplate, AnalysisTaskTemplateDesc, AnalysisTimeRange
 } from '@/enums/enums';
-import { EditAnalysisState } from '../types';
+import { AnalysisEditState } from '../types';
 import { analysis } from '@/api/tester';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { BasicProps } from '@/types/types';
+
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 // Component Props & Configuration
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -75,7 +72,7 @@ const loadTimeRangeOptions = () => {
 /**
  * Main form data state for analysis configuration.
  */
-const formData = ref<EditAnalysisState>({
+const formData = ref<AnalysisEditState>({
   id: undefined,
   name: '',
   object: AnalysisTaskObject.CURRENT_PROJECT,

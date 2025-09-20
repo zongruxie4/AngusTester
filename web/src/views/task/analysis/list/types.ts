@@ -16,14 +16,8 @@ export const TemplateIconConfig = {
   RESOURCE_CREATION: 'icon-ziyuanchuangjianfenxi',
   CUSTOM_DEFINITION: 'icon-zidingyifenxi'
 };
-export type SelectOption = {
-    id: string;
-    name: string;
-    showTitle: string;
-    showName: string;
-}
+
 export type MenuItem = {
-    key: 'none' | 'createdBy' | 'assigneeId' | 'progress' | 'lastModifiedBy' | 'confirmerId' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
+    key: 'none' | 'createdBy' | 'lastModifiedBy' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
     name: string;
-    groupKey?: 'assigneeId' | 'time';
 }
