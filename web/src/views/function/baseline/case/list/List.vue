@@ -13,16 +13,16 @@ const ModuleTree = defineAsyncComponent(() => import('./ModuleTree.vue'));
 const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/baseline/edit/SelectCaseModal.vue'));
 
 // Async components for case details
-const CaseReviewResult = defineAsyncComponent(() => import('@/views/function/review/components/CaseReviewResult.vue'));
+const CaseReviewResult = defineAsyncComponent(() => import('@/views/function/review/case/CaseReviewResult.vue'));
 const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
-const CaseBasicInfo = defineAsyncComponent(() => import('@/views/function/review/components/CaseBasicInfo.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/function/review/components/Precondition.vue'));
-const Members = defineAsyncComponent(() => import('@/views/function/review/components/Member.vue'));
-const TestInfo = defineAsyncComponent(() => import('@/views/function/review/components/TestInfo.vue'));
-const Attachment = defineAsyncComponent(() => import('@/views/function/review/components/Attachment.vue'));
-const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/components/AssocTask.vue'));
-const AssocCases = defineAsyncComponent(() => import('@/views/function/review/components/AssocCase.vue'));
-const Description = defineAsyncComponent(() => import('@/views/function/review/components/Description.vue'));
+const CaseBasicInfo = defineAsyncComponent(() => import('@/views/function/review/case/CaseBasicInfo.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/function/review/case/Precondition.vue'));
+const Members = defineAsyncComponent(() => import('@/views/function/review/case/Member.vue'));
+const TestInfo = defineAsyncComponent(() => import('@/views/function/review/case/TestInfo.vue'));
+const Attachment = defineAsyncComponent(() => import('@/views/function/review/case/Attachment.vue'));
+const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/case/AssocTask.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/function/review/case/AssocCase.vue'));
+const Description = defineAsyncComponent(() => import('@/views/function/review/case/Description.vue'));
 const Search = defineAsyncComponent(() => import('./Search.vue'));
 
 // Props Definition

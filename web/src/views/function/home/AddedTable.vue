@@ -16,10 +16,10 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 type TableProps = {
   projectId: string;
   params: {
-    createdBy?: string;
-    favouriteBy?: boolean;
-    followBy?: boolean;
-    testerId?: string;
+    createdBy?: number;
+    favouriteBy?: number;
+    followBy?: string;
+    testerId?: number;
     testResult?: string;
     commentBy?: string;
   };
@@ -37,6 +37,7 @@ const props = withDefaults(defineProps<TableProps>(), {
   deletedNotify: undefined
 });
 
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:total', value: number): void;
   (e: 'update:deletedNotify', value: string): void;
@@ -46,7 +47,9 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 // Injected Dependencies
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const deleteTabPane = inject<(data: string | string[]) => void>('deleteTabPane', () => { });
 const updateRefreshNotify = inject<(value: string) => void>('updateRefreshNotify');
 
@@ -120,8 +123,8 @@ const loadTableData = async () => {
   const { current, pageSize } = paginationConfig.value;
   const queryParams: ProjectPageQuery & {
     createdBy?: string;
-    favouriteBy?: boolean;
-    followBy?: boolean;
+    favouriteBy?: string;
+    followBy?: string;
     testerId?: string;
     testResult?: string;
     commentBy?: string;
@@ -322,7 +325,7 @@ const tableColumns = computed(() => {
           title: t('functionHome.myCases.testResult'),
           dataIndex: 'testResult',
           ellipsis: true,
-          width: '9%'
+          width: '12%'
         },
         {
           key: 'priority',
@@ -330,7 +333,7 @@ const tableColumns = computed(() => {
           dataIndex: 'priority',
           ellipsis: true,
           sorter: true,
-          width: '9%'
+          width: '12%'
         },
         {
           key: 'deadline',
@@ -338,7 +341,7 @@ const tableColumns = computed(() => {
           dataIndex: 'deadlineDate',
           ellipsis: true,
           sorter: true,
-          width: '17%'
+          width: '18%'
         }
       ];
 
@@ -354,7 +357,7 @@ const tableColumns = computed(() => {
     key: 'action',
     title: t('functionHome.myCases.actions'),
     dataIndex: 'action',
-    width: 50
+    width: 80
   };
 
   const currentParams = props.params;

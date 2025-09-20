@@ -62,6 +62,16 @@ export interface TrashParams {
 }
 
 /**
+ * Base props for trash components
+ */
+export interface TrashProps {
+  /** Project identifier */
+  projectId: string;
+  /** User information */
+  userInfo: { id: string };
+}
+
+/**
  * Props for the trash table component
  */
 export interface TrashTableProps extends TrashProps {

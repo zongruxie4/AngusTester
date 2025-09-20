@@ -8,46 +8,75 @@ import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
+// Props Definition
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
 });
 
+// Async Components
 const PlanList = defineAsyncComponent(() => import('@/views/function/plan/list/index.vue'));
 const PlanDetail = defineAsyncComponent(() => import('@/views/function/plan/detail/index.vue'));
 const PlanEdit = defineAsyncComponent(() => import('@/views/function/plan/edit/index.vue'));
 
+// Router and UI References
 const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
 
+// Tab Management Methods
+/**
+ * Add a new tab pane to the browser tab component
+ * @param data - Tab pane data to add
+ */
 const addTabPane = (data: IPane) => {
   browserTabRef.value.add(() => {
     return data;
   });
 };
 
+/**
+ * Retrieve tab pane data by key
+ * @param key - Tab pane key to search for
+ * @returns Tab pane data array or undefined if not found
+ */
 const getTabPane = (key: string): IPane[] | undefined => {
   return browserTabRef.value.getData(key);
 };
 
+/**
+ * Remove tab panes by their keys
+ * @param keys - Array of tab pane keys to delete
+ */
 const deleteTabPane = (keys: string[]) => {
   browserTabRef.value.remove(keys);
 };
 
+/**
+ * Update existing tab pane data
+ * @param data - Updated tab pane data
+ */
 const updateTabPane = (data: IPane) => {
   browserTabRef.value.update(data);
 };
 
+/**
+ * Replace tab pane with new data
+ * @param key - Tab pane key to replace
+ * @param data - New tab pane data
+ */
 const replaceTabPane = (key: string, data: { key: string }) => {
   browserTabRef.value.replace(key, data);
 };
 
+/**
+ * Initialize the plan module and create default tab
+ */
 const initialize = () => {
   if (typeof browserTabRef.value?.add === 'function') {
-    browserTabRef.value.add((ids: string[]) => {
-      if (!ids.includes('planList')) {
+    browserTabRef.value.add((existingIds: string[]) => {
+      if (!existingIds.includes('planList')) {
         return {
           _id: 'planList',
           value: 'planList',
@@ -57,19 +86,23 @@ const initialize = () => {
       }
     });
   }
-  hashChange(route.hash);
+  handleHashChange(route.hash);
 };
 
-const hashChange = (hash: string) => {
+/**
+ * Handle URL hash changes and route to appropriate tab
+ * @param hash - URL hash string containing query parameters
+ */
+const handleHashChange = (hash: string) => {
   const queryString = hash.split('?')[1];
   if (!queryString) {
     return;
   }
 
-  const queryParameters = queryString.split('&').reduce((prev, cur) => {
-    const [key, value] = cur.split('=');
-    prev[key] = value;
-    return prev;
+  const queryParameters = queryString.split('&').reduce((previous, current) => {
+    const [key, value] = current.split('=');
+    previous[key] = value;
+    return previous;
   }, {} as { [key: string]: string });
 
   const { id, type } = queryParameters;
@@ -95,13 +128,13 @@ const hashChange = (hash: string) => {
   } else {
     if (type) {
       browserTabRef.value.add(() => {
-        const id = utils.uuid();
+        const newId = utils.uuid();
         return {
-          _id: id,
+          _id: newId,
           name: t('functionPlan.main.addPlan'),
           value: 'planEdit',
           noCache: true,
-          data: { _id: id }
+          data: { _id: newId }
         };
       });
     }
@@ -109,19 +142,16 @@ const hashChange = (hash: string) => {
   router.replace('/function#plans');
 };
 
-const storageKeyChange = () => {
+/**
+ * Handle storage key change event from browser tab component
+ */
+const handleStorageKeyChange = () => {
   initialize();
 };
 
-onMounted(() => {
-  watch(() => route.hash, () => {
-    if (!route.hash.startsWith('#plans')) {
-      return;
-    }
-    hashChange(route.hash);
-  });
-});
-
+/**
+ * Generate storage key for browser tab persistence
+ */
 const storageKey = computed(() => {
   if (!props.projectId) {
     return undefined;
@@ -129,6 +159,19 @@ const storageKey = computed(() => {
   return `plan${props.projectId}`;
 });
 
+/**
+ * Initialize component on mount and set up hash change watcher
+ */
+onMounted(() => {
+  watch(() => route.hash, () => {
+    if (!route.hash.startsWith('#plans')) {
+      return;
+    }
+    handleHashChange(route.hash);
+  });
+});
+
+// Dependency Injection
 provide('addTabPane', addTabPane);
 provide('getTabPane', getTabPane);
 provide('deleteTabPane', deleteTabPane);
@@ -170,3 +213,4 @@ provide('replaceTabPane', replaceTabPane);
     </template>
   </BrowserTab>
 </template>
+

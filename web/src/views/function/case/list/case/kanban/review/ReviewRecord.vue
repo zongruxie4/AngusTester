@@ -15,8 +15,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/review/ReviewRecordCase.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/function/review/components/Precondition.vue'));
-const Description = defineAsyncComponent(() => import('@/views/function/review/components/Description.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/function/review/case/Precondition.vue'));
+const Description = defineAsyncComponent(() => import('@/views/function/review/case/Description.vue'));
 const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
 const reviewNum = computed(() => {
   const total = +(props.dataSource?.reviewNum || 0);

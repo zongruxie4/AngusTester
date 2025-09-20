@@ -15,9 +15,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const CaseInfo = defineAsyncComponent(() => import('@/views/function/case/detail/CaseInfo.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/function/review/components/Precondition.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/function/review/case/Precondition.vue'));
 const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
-const Description = defineAsyncComponent(() => import('@/views/function/review/components/Description.vue'));
+const Description = defineAsyncComponent(() => import('@/views/function/review/case/Description.vue'));
 const reviewNum = computed(() => {
   const total = +(props.caseDetail?.reviewNum || 0);
   const failNum = +(props.caseDetail?.reviewFailNum || 0);

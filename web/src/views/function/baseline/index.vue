@@ -95,6 +95,8 @@ const initializeBaselineModule = () => {
  */
 const handleHashChange = (hash: string) => {
   const queryString = hash.split('?')[1];
+
+  // If no query parameters, just ensure baselineList tab exists
   if (!queryString) {
     return;
   }
@@ -157,8 +159,7 @@ const browserTabStorageKey = computed(() => {
   if (!props.projectId) {
     return undefined;
   }
-
-  return `baseline-${props.projectId}`;
+  return `baseline${props.projectId}`;
 });
 
 /**

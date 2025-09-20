@@ -175,7 +175,7 @@ onMounted(() => {
     <Introduce class="mb-7" />
     <div class="text-3.5 font-semibold mb-1">{{ t('functionBaseline.list.createdBaselines') }}</div>
     <Spin :spinning="isLoading" class="flex-1 flex flex-col">
-      <template v-if="loaded">
+      <template v-if="isDataLoaded">
         <div v-if="!hasSearchFilters && baselineList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">

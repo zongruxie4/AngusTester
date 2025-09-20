@@ -24,29 +24,29 @@ const deletedNotification = ref<string>();
 const pendingCasesCount = ref(0);
 const createdByMeCount = ref(0);
 const followedCasesCount = ref(0);
-const favoritedCasesCount = ref(0);
+const favoriteCasesCount = ref(0);
 const commentedCasesCount = ref(0);
 
 // Filter Parameters
 const pendingCasesParams = {
-  testerId: props.userInfo?.id as string,
+  testerId: props.userInfo?.id,
   testResult: CaseTestResult.PENDING
 };
 
 const createdByMeParams = {
-  createdBy: props.userInfo?.id as string
+  createdBy: props.userInfo?.id
 };
 
 const followedCasesParams = {
-  followBy: true
+  followBy: props.userInfo?.id
 };
 
-const favoritedCasesParams = {
-  favouriteBy: true
+const favouriteCasesParams = {
+  favouriteBy: props.userInfo?.id
 };
 
 const commentedCasesParams = {
-  commentBy: props.userInfo?.id as string
+  commentBy: props.userInfo?.id
 };
 </script>
 
@@ -116,17 +116,17 @@ const commentedCasesParams = {
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('functionHome.myCases.favorited') }}</span>
             <span>(</span>
-            <span>{{ favoritedCasesCount }}</span>
+            <span>{{ favoriteCasesCount }}</span>
             <span>)</span>
           </div>
         </template>
 
         <CaseTable
-          v-model:total="favoritedCasesCount"
+          v-model:total="favoriteCasesCount"
           v-model:deletedNotify="deletedNotification"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="favoritedCasesParams" />
+          :params="favouriteCasesParams" />
       </TabPane>
 
       <TabPane key="commentBy" forceRender>

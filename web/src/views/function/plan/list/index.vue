@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// imports
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Avatar, Button, Pagination, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
@@ -15,7 +14,7 @@ import { PlanDetail } from '../types';
 import ProcessPng from './images/process.png';
 import SearchPanel from '@/views/function/plan/list/SearchPanel.vue';
 
-// async components
+// Async components
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/function/plan/list/Introduce.vue'));
 const ProgressModal = defineAsyncComponent(() => import('@/views/function/plan/list/MemberProgress.vue'));
@@ -23,7 +22,7 @@ const BurnDownModal = defineAsyncComponent(() => import('@/views/function/plan/l
 const WorkCalendarModal = defineAsyncComponent(() => import('@/views/function/plan/list/WorkCalendar.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
-// composables
+// Composables
 const { t } = useI18n();
 
 // types
@@ -34,7 +33,7 @@ type Props = {
   notify: string;
 }
 
-// props and injects
+// Props and injects
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -45,16 +44,16 @@ const props = withDefaults(defineProps<Props>(), {
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const setCaseListPlanParam = inject<(value: any) => void>('setCaseListPlanParam');
 
-// computed properties
+// Computed properties
 const isAdmin = computed(() => appContext.isAdmin());
 
-// reactive data
-const loaded = ref(false);
-const loading = ref(false);
+// Reactive data
+const isDataLoaded = ref(false);
+const isLoading = ref(false);
 const exportLoadingSet = ref<Set<string>>(new Set());
 const searchedFlag = ref(false);
 
-// search and pagination state
+// Search and pagination state
 const searchPanelParams = ref({
   orderBy: undefined,
   orderSort: undefined,
@@ -63,19 +62,18 @@ const searchPanelParams = ref({
 const pageNo = ref(1);
 const pageSize = ref(5);
 
-// data state
+// Data state
 const total = ref(0);
 const dataList = ref<PlanDetail[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
 
-// modal state
+// Modal state
 const selectedData = ref<PlanDetail>();
 const authorizeModalVisible = ref(false);
 const progressVisible = ref(false);
 const burndownVisible = ref(false);
 const workCalendarVisible = ref(false);
 
-// methods
 /**
  * Refreshes the data list and resets pagination
  */
@@ -129,7 +127,7 @@ const handleViewWorkCalendar = (data: PlanDetail) => {
  */
 const updateTableData = async (id: string, index: number) => {
   const [error, res] = await funcPlan.getPlanDetail(id);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
@@ -145,11 +143,11 @@ const updateTableData = async (id: string, index: number) => {
  * @param index - Index in the data list
  */
 const handleStartPlan = async (data: PlanDetail, index: number) => {
-  loading.value = true;
+  isLoading.value = true;
   const id = data.id;
   const [error] = await funcPlan.startPlan(id);
   if (error) {
-    loading.value = false;
+    isLoading.value = false;
     return;
   }
 
@@ -163,11 +161,11 @@ const handleStartPlan = async (data: PlanDetail, index: number) => {
  * @param index - Index in the data list
  */
 const handleCompletePlan = async (data: PlanDetail, index: number) => {
-  loading.value = true;
+  isLoading.value = true;
   const id = data.id;
   const [error] = await funcPlan.endPlan(id);
   if (error) {
-    loading.value = false;
+    isLoading.value = false;
     return;
   }
 
@@ -181,11 +179,11 @@ const handleCompletePlan = async (data: PlanDetail, index: number) => {
  * @param index - Index in the data list
  */
 const handleBlockPlan = async (data: PlanDetail, index: number) => {
-  loading.value = true;
+  isLoading.value = true;
   const id = data.id;
   const [error] = await funcPlan.blockPlan(id);
   if (error) {
-    loading.value = false;
+    isLoading.value = false;
     return;
   }
 
@@ -258,11 +256,11 @@ const handleClonePlan = async (data: PlanDetail) => {
  * @param data - Plan detail data
  */
 const handleResetTestResult = async (data: PlanDetail) => {
-  loading.value = true;
+  isLoading.value = true;
   const id = data.id;
   const params = { ids: [id] };
   const [error] = await funcPlan.resetCaseResult(params);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
@@ -275,11 +273,11 @@ const handleResetTestResult = async (data: PlanDetail) => {
  * @param data - Plan detail data
  */
 const handleResetReviewResult = async (data: PlanDetail) => {
-  loading.value = true;
+  isLoading.value = true;
   const id = data.id;
   const params = { ids: [id] };
   const [error] = await funcPlan.resetCaseReview(params);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
@@ -362,7 +360,7 @@ const handlePaginationChange = (_pageNo: number, _pageSize: number) => {
  * Loads plan list data from API with search and pagination parameters
  */
 const loadData = async () => {
-  loading.value = true;
+  isLoading.value = true;
   const params: ProjectPageQuery = {
     projectId: props.projectId,
     pageNo: pageNo.value,
@@ -371,8 +369,8 @@ const loadData = async () => {
   };
 
   const [error, res] = await funcPlan.getPlanList(params);
-  loaded.value = true;
-  loading.value = false;
+  isDataLoaded.value = true;
+  isLoading.value = false;
 
   searchedFlag.value = !!(params.filters?.length || params.orderBy);
 
@@ -593,8 +591,8 @@ onMounted(() => {
     </div>
 
     <div class="text-3.5 font-semibold mb-1">{{ t('functionPlan.list.addedPlans') }}</div>
-    <Spin :spinning="loading" class="flex-1 flex flex-col">
-      <template v-if="loaded">
+    <Spin :spinning="isLoading" class="flex-1 flex flex-col">
+      <template v-if="isDataLoaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
@@ -607,7 +605,7 @@ onMounted(() => {
 
         <template v-else>
           <SearchPanel
-            :loading="loading"
+            :loading="isLoading"
             @change="handleSearchChange"
             @refresh="refresh" />
           <NoData v-if="dataList.length === 0" class="flex-1" />
