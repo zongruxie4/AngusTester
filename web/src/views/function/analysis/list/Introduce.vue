@@ -31,7 +31,9 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div ref="wrapperRef">
-    <div class="text-3.5 font-semibold mb-2.5">{{ t('functionAnalysis.introduce.title') }}</div>
+    <div class="text-3.5 font-semibold mb-2.5">
+      {{ t('functionAnalysis.introduce.title') }}
+    </div>
     <div class="mb-6">
       <div>{{ t('functionAnalysis.introduce.description') }}</div>
     </div>

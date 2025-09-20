@@ -38,7 +38,6 @@ const handleSelectKeysChange = (value) => {
 onMounted(() => {
   loadOpt();
 });
-
 </script>
 <template>
   <div>

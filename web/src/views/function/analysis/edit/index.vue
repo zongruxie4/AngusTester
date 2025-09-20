@@ -1,23 +1,29 @@
 <script lang="ts" setup>
-import { inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
-import { DatePicker, Input, notification, Select, Icon } from '@xcan-angus/vue-ui';
-import { TESTER, GM, enumUtils, EnumMessage } from '@xcan-angus/infra';
-import { AnalysisCaseTemplateDesc, AnalysisCaseObject, AnalysisTimeRange } from '@/enums/enums';
+import { DatePicker, Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
+import { AuthObjectType, EnumMessage, enumOptionUtils, enumUtils, GM, TESTER } from '@xcan-angus/infra';
+import {
+  AnalysisCaseObject,
+  AnalysisCaseTemplateDesc,
+  AnalysisDataSource,
+  AnalysisTaskObject,
+  AnalysisTaskTemplate,
+  AnalysisTimeRange
+} from '@/enums/enums';
 import { analysis } from '@/api/tester';
+
+import { BasicProps } from '@/types/types';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
+import { EditAnalysisState } from '@/views/function/analysis/types';
 
 const { t } = useI18n();
-interface Props {
-  projectId: string;
-  userInfo: {id: string};
-  data?: Record<string, string>;
-}
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
-  userInfo: () => ({ id: '' }),
+  userInfo: undefined,
   data: undefined
 });
 
@@ -25,31 +31,15 @@ const emits = defineEmits<{(e: 'ok')}>();
 
 const deleteTabPane = inject('deleteTabPane', (value) => value);
 const formRef = ref();
-const showContentOpt = [
-  {
-    value: 'REAL_TIME_DATA',
-    label: t('functionAnalysis.editForm.realTimeData')
-  },
-  {
-    value: 'SNAPSHOT_DATA',
-    label: t('functionAnalysis.editForm.snapshotData')
-  }
-];
+/**
+ * Data source options for analysis configuration.
+ */
+const dataSourceOptions = computed(() => enumOptionUtils.loadEnumAsOptions(AnalysisDataSource));
 
-const orgOpt = [
-  {
-    value: 'DEPT',
-    label: t('functionAnalysis.editForm.department')
-  },
-  {
-    value: 'GROUP',
-    label: t('functionAnalysis.editForm.group')
-  },
-  {
-    value: 'USER',
-    label: t('functionAnalysis.editForm.user')
-  }
-];
+/**
+ * Organization type options for assignee-based analysis.
+ */
+const organizationTypeOptions = computed(() => enumOptionUtils.loadEnumAsOptions(AuthObjectType));
 
 const templateDescOpt = ref<EnumMessage<AnalysisCaseTemplateDesc>[]>([]);
 const loadDescOpt = () => {
@@ -67,26 +57,26 @@ const loadAnalysisTimeRange = () => {
   analysisTimeRangeOpt.value = (data || []).map(item => ({ ...item, label: item.message }));
 };
 
-const formData = ref({
-  object: 'CURRENT_PROJECT',
-  timeRange: 'ALL_TIME',
+const formData = ref<EditAnalysisState>({
+  id: undefined,
+  name: '',
+  object: AnalysisTaskObject.CURRENT_PROJECT,
+  timeRange: AnalysisTimeRange.ALL_TIME,
   resource: 'CASE',
-  template: '',
+  template: AnalysisTaskTemplate.PROGRESS,
   description: '',
   containsUserAnalysis: true,
   containsDataDetail: true,
   planId: '',
-  datasource: 'REAL_TIME_DATA',
-  orgType: 'DEPT',
+  datasource: AnalysisDataSource.REAL_TIME_DATA,
+  orgType: AuthObjectType.DEPT,
   orgId: '',
-  customRange: [],
-  id: undefined,
-  name: undefined
+  customRange: ['', '']
 });
 
 const saving = ref(false);
 
-const loadAnalysisInfo = async (id) => {
+const loadAnalysisDetail = async (id) => {
   const [error, { data }] = await analysis.getAnalysisDetail(id);
   if (error) {
     return;
@@ -131,18 +121,18 @@ const getParams = () => {
   const res = {
     name, object, timeRange, resource, template, description, datasource, containsDataDetail, projectId: props.projectId, id
   };
-  if (object === 'CURRENT_PROJECT') {
+  if (object === AnalysisCaseObject.CURRENT_PROJECT) {
     res.containsUserAnalysis = containsUserAnalysis;
   }
-  if (object === 'PLAN') {
+  if (object === AnalysisCaseObject.PLAN) {
     res.containsUserAnalysis = containsUserAnalysis;
     res.planId = planId;
   }
-  if (object === 'TESTER_ORG') {
+  if (object === AnalysisCaseObject.TESTER_ORG) {
     res.orgType = orgType;
     res.orgId = orgId;
   }
-  if (timeRange === 'CUSTOM_TIME') {
+  if (timeRange === AnalysisTimeRange.CUSTOM_TIME) {
     res.startTime = customRange[0];
     res.endTime = customRange[1];
   }
@@ -183,7 +173,7 @@ onMounted(async () => {
       formData.value.template = props.data.template;
     }
     if (props.data.id) {
-      loadAnalysisInfo(props.data.id);
+      await loadAnalysisDetail(props.data.id);
     }
   }
   watch(() => formData.value.template, () => {
@@ -194,7 +184,6 @@ onMounted(async () => {
     immediate: true
   });
 });
-
 </script>
 <template>
   <div class="p-5">
@@ -242,7 +231,9 @@ onMounted(async () => {
           :placeholder="t('functionAnalysis.editForm.inputAnalysisName')" />
       </FormItem>
 
-      <FormItem name="description" :label="t('functionAnalysis.editForm.analysisDescription')">
+      <FormItem
+        name="description"
+        :label="t('functionAnalysis.editForm.analysisDescription')">
         <Textarea
           v-model:value="formData.description"
           :maxlength="200"
@@ -258,11 +249,15 @@ onMounted(async () => {
           v-model:value="formData.object"
           buttonStyle="solid"
           size="small">
-          <RadioButton v-for="item in analysisCaseObjectOpt" :value="item.value">{{ item.message }}</RadioButton>
+          <RadioButton
+            v-for="item in analysisCaseObjectOpt"
+            :value="item.value">
+            {{ item.message }}
+          </RadioButton>
         </RadioGroup>
       </FormItem>
 
-      <template v-if="formData.object === 'PLAN'">
+      <template v-if="formData.object === AnalysisCaseObject.PLAN">
         <FormItem
           name="planId"
           :label="t('functionAnalysis.editForm.selectPlan')"
@@ -288,7 +283,7 @@ onMounted(async () => {
         </FormItem>
       </template>
 
-      <template v-if="formData.object === 'TESTER_ORG'">
+      <template v-if="formData.object === AnalysisCaseObject.TESTER_ORG">
         <FormItem
           name="orgId"
           :label="t('functionAnalysis.editForm.selectOrganization')"
@@ -296,12 +291,12 @@ onMounted(async () => {
           class="ml-16">
           <Select
             v-model:value="formData.orgType"
-            :options="orgOpt"
+            :options="organizationTypeOptions"
             class="!w-30 mr-2"
             @change="handleChangeOrgType" />
-          <!-- <span>{{ formData.orgType === 'USER' ? '选择用户' : formData.orgType === 'GROUP' ? '选择组' :  formData.orgType === 'DEPT' ? '选择部门' : ''}}</span> -->
+
           <Select
-            v-show="formData.orgType === 'USER'"
+            v-show="formData.orgType === AuthObjectType.USER"
             v-model:value="formData.orgId"
             class="!w-50"
             :showSearch="true"
@@ -309,8 +304,9 @@ onMounted(async () => {
             :action="`${GM}/user?fullTextSearch=true`"
             :fieldNames="{ label: 'fullName', value: 'id' }">
           </Select>
+
           <Select
-            v-show="formData.orgType === 'DEPT'"
+            v-show="formData.orgType === AuthObjectType.DEPT"
             v-model:value="formData.orgId"
             class="!w-50"
             :placeholder="t('functionAnalysis.editForm.selectDepartment')"
@@ -318,8 +314,9 @@ onMounted(async () => {
             :action="`${GM}/dept?fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }">
           </Select>
+
           <Select
-            v-show="formData.orgType === 'GROUP'"
+            v-show="formData.orgType === AuthObjectType.GROUP"
             v-model:value="formData.orgId"
             class="!w-50"
             :placeholder="t('functionAnalysis.editForm.selectGroup')"
@@ -329,9 +326,17 @@ onMounted(async () => {
           </Select>
         </FormItem>
       </template>
+
       <FormItem label=" ">
-        <Checkbox v-show="formData.object !== 'TESTER_ORG' || formData.orgType !== 'USER'" v-model:checked="formData.containsUserAnalysis">{{ t('functionAnalysis.editForm.includeAssigneeAnalysis') }}</Checkbox>
-        <Checkbox v-model:checked="formData.containsDataDetail">{{ t('functionAnalysis.editForm.includeDataDetail') }}</Checkbox>
+        <Checkbox
+          v-show="formData.object !== AnalysisCaseObject.TESTER_ORG || formData.orgType !== AuthObjectType.USER"
+          v-model:checked="formData.containsUserAnalysis">
+          {{ t('functionAnalysis.editForm.includeAssigneeAnalysis') }}
+        </Checkbox>
+
+        <Checkbox v-model:checked="formData.containsDataDetail">
+          {{ t('functionAnalysis.editForm.includeDataDetail') }}
+        </Checkbox>
       </FormItem>
 
       <FormItem
@@ -340,7 +345,7 @@ onMounted(async () => {
         required>
         <RadioGroup v-model:value="formData.timeRange" :options="analysisTimeRangeOpt"></RadioGroup>
         <DatePicker
-          v-if="formData.timeRange === 'CUSTOM_TIME'"
+          v-if="formData.timeRange === AnalysisTimeRange.CUSTOM_TIME"
           v-model:value="formData.customRange"
           type="date-range"
           class="mt-2" />
@@ -350,7 +355,7 @@ onMounted(async () => {
         :label="t('functionAnalysis.editForm.dataDisplay')"
         name="datasource"
         required>
-        <RadioGroup v-model:value="formData.datasource" :options="showContentOpt" />
+        <RadioGroup v-model:value="formData.datasource" :options="dataSourceOptions" />
       </FormItem>
     </Form>
   </div>

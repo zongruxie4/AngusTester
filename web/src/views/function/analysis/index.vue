@@ -55,8 +55,8 @@ const initialize = () => {
         return {
           _id: 'analysisList',
           value: 'analysisList',
-          name: '分析',
-          closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
+          name: t('functionAnalysis.name'),
+          closable: false
         };
       }
     });
@@ -128,7 +128,6 @@ onMounted(() => {
     if (!route.hash.startsWith('#list')) {
       return;
     }
-
     hashChange(route.hash);
   });
 });
@@ -137,23 +136,13 @@ const storageKey = computed(() => {
   if (!props.projectId) {
     return undefined;
   }
-
   return `analysis_case_${props.projectId}`;
 });
 
-// 添加指定的tabPane
 provide('addTabPane', addTabPane);
-
-// 获取tabPane
 provide('getTabPane', getTabPane);
-
-// 删除指定的tabPane
 provide('deleteTabPane', deleteTabPane);
-
-// 更新指定的tabPane
 provide('updateTabPane', updateTabPane);
-
-// 替换指定tabPane
 provide('replaceTabPane', replaceTabPane);
 </script>
 <template>

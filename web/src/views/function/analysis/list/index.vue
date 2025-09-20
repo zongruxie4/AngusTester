@@ -7,19 +7,17 @@ import { Button, Tag } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
 import { analysis } from '@/api/tester';
 
+import { BasicProps } from '@/types/types';
+import { AnalysisDataSource } from '@/enums/enums';
+import { AnalysisInfo } from '@/views/function/analysis/types';
+
 import Introduce from '@/views/function/analysis/list/Introduce.vue';
 import SearchPanel from '@/views/function/analysis/list/SearchPanel.vue';
 
+const TemplateSelectList = defineAsyncComponent(() => import('@/views/function/analysis/list/TemplateSelect.vue'));
+
 const { t } = useI18n();
-
-interface Props {
-  projectId: string;
-  userInfo: { id: string };
-  refreshNotify?: number;
-  onShow?: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: () => ({ id: '' }),
   refreshNotify: 0,
@@ -28,7 +26,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const dataListWrapRef = ref();
 
-const TemplateSelectList = defineAsyncComponent(() => import('@/views/function/analysis/list/TemplateSelect.vue'));
 const addTabPane = inject('addTabPane', (value) => value);
 
 const pagination = {
@@ -40,17 +37,15 @@ const pagination = {
 const templateDesc = ref<{ value: string; message: string }[]>([]);
 const templateData = ref<{ value: string; message: string }[]>([]);
 const filters = ref<{ op: string; key: string; value: any }[]>([]);
-const orderData = ref({
-  orderBy: undefined,
-  orderSort: undefined
-});
+const orderData = ref({ orderBy: undefined, orderSort: undefined });
 const template = ref('');
-const dataList = ref([]);
+const dataList = ref<AnalysisInfo[]>([]);
 const loading = ref(false);
 
 const getTemplateName = () => {
   return templateData.value.find(item => item.value === template.value)?.message;
 };
+
 const TemplateDescConfig = computed(() => {
   const res = {} as any;
   templateDesc.value.forEach(item => {
@@ -80,13 +75,21 @@ const handleSearch = (data) => {
 
 const addAnalysis = (template = '') => {
   if (template) {
-    addTabPane({ _id: 'analysisEdit', value: 'analysisEdit', name: t('functionAnalysis.list.addAnalysis'), data: { template } });
+    addTabPane({
+      _id: 'analysisEdit',
+      value: 'analysisEdit',
+      name: t('functionAnalysis.list.addAnalysis'),
+      data: { template }
+    });
   } else {
-    addTabPane({ _id: 'analysisEdit', value: 'analysisEdit', name: t('functionAnalysis.list.addAnalysis') });
+    addTabPane({
+      _id: 'analysisEdit',
+      value: 'analysisEdit',
+      name: t('functionAnalysis.list.addAnalysis')
+    });
   }
 };
 
-// 分析Data
 const loadAnalysisList = async () => {
   const params = getParams();
 
@@ -115,7 +118,6 @@ const handleDetail = (data) => {
   addTabPane({ _id: `analysisDetail_${data.id}`, value: 'analysisDetail', name: data.name, data });
 };
 
-// 删除分析
 const delAnalysis = (data) => {
   modal.confirm({
     content: t('functionAnalysis.list.deleteConfirm', { name: data.name }),
@@ -130,7 +132,6 @@ const delAnalysis = (data) => {
   });
 };
 
-// 更新快照
 const updateSnapShot = (data) => {
   modal.confirm({
     content: t('functionAnalysis.list.updateSnapshotConfirm', { name: data.name }),
@@ -145,6 +146,7 @@ const updateSnapShot = (data) => {
     }
   });
 };
+
 const handleScrollList = throttle(300, (event) => {
   if (dataList.value.length === pagination.total || loading.value) {
     return;
@@ -211,7 +213,10 @@ onBeforeUnmount(() => {
 <template>
   <div class="p-5 h-full flex flex-col overflow-x-hidden">
     <Introduce />
-    <div class="text-3.5 font-semibold mb-2.5">{{ t('functionAnalysis.list.title') }}</div>
+    <div class="text-3.5 font-semibold mb-2.5">
+      {{ t('functionAnalysis.list.title') }}
+    </div>
+
     <SearchPanel
       v-model:orderBy="orderData.orderBy"
       v-model:orderSort="orderData.orderSort"
@@ -219,6 +224,7 @@ onBeforeUnmount(() => {
       :projectId="props.projectId"
       @change="handleSearch"
       @add="addAnalysis" />
+
     <div class="flex-1 min-h-50 flex mt-2.5">
       <TemplateSelectList
         v-model:template="template"
@@ -248,20 +254,26 @@ onBeforeUnmount(() => {
                       @click="handleDetail(item)">
                       {{ item.name }}
                     </div>
+
                     <Tag class="relative -top-1 mr-0 px-0.5 h-5" color="geekblue">
-                      {{ item.datasource?.value === 'REAL_TIME_DATA' ? t('functionAnalysis.list.realTime') : t('functionAnalysis.list.snapshot') }}
+                      {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('functionAnalysis.list.realTime') : t('functionAnalysis.list.snapshot') }}
                     </Tag>
                   </div>
+
                   <p class="">{{ TemplateDescConfig[item.template] }}</p>
                 </div>
               </div>
+
               <div class="mt-1  text-right">
-                <div><span class="font-semibold mr-1">{{ item.createdByName }}</span>{{ t('functionAnalysis.list.createdBy') }}{{ item.createdDate }}</div>
+                <div>
+                  <span class="font-semibold mr-1">{{ item.createdByName }}</span>
+                  {{ t('functionAnalysis.list.createdBy') }}{{ item.createdDate }}
+                </div>
               </div>
             </div>
             <div class="flex justify-end">
               <Button
-                v-show="item.datasource?.value === 'SNAPSHOT_DATA'"
+                v-show="item.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA"
                 size="small"
                 type="text"
                 @click="updateSnapShot(item)">

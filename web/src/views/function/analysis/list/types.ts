@@ -22,15 +22,7 @@ export const TemplateIconConfig = {
   '': 'icon-liebiaoshitu'
 };
 
-export type SelectOption = {
-  id: string;
-  name: string;
-  showTitle: string;
-  showName: string;
-}
-
 export type MenuItem = {
-  key: 'none' | 'createdBy' | 'assigneeId' | 'lastModifiedBy' | 'confirmerId' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
+  key: 'none' | 'createdBy' | 'lastModifiedBy' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
   name: string;
-  groupKey?: 'assigneeId' | 'time';
 }
