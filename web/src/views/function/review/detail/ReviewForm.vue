@@ -1,15 +1,16 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { EnumMessage, ReviewStatus, enumUtils } from '@xcan-angus/infra';
 import { func } from '@/api/tester';
 
-import { useI18n } from 'vue-i18n';
-
+// Composables
 const { t } = useI18n();
 
-type Params = {
+// Type definitions
+type ReviewParams = {
   id: string;
   reviewRemark?: string;
   reviewStatus: string;
@@ -20,6 +21,7 @@ interface Props {
   selectedRowKeys?: string[];
 }
 
+// Props and emits
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   selectedRowKeys: () => []
@@ -27,18 +29,28 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'update'):void}>();
 
-const formState = ref<{ reviewRemark: string; reviewStatus: string }>({ reviewRemark: '', reviewStatus: 'PASSED' });
+// Reactive state
+const formState = ref<{ reviewRemark: string; reviewStatus: string }>({
+  reviewRemark: '',
+  reviewStatus: ReviewStatus.PASSED
+});
 
 const loading = ref(false);
+const reviewStatusEnum = ref<EnumMessage<ReviewStatus>[]>([]);
+const failMessageValue = ref();
 
+/**
+ * <p>Submits review for selected cases.</p>
+ * <p>Maps selected case IDs to review parameters and calls API.</p>
+ */
 const reviewCase = async () => {
-  const params:Params[] = props.selectedRowKeys.map(item => ({
-    id: item,
+  const reviewParams: ReviewParams[] = props.selectedRowKeys.map(caseId => ({
+    id: caseId,
     reviewRemark: formState.value.reviewRemark || undefined,
     reviewStatus: formState.value.reviewStatus
   }));
   loading.value = true;
-  const [error] = await func.reviewCase(params);
+  const [error] = await func.reviewCase(reviewParams);
   loading.value = false;
   if (error) {
     return;
@@ -47,22 +59,29 @@ const reviewCase = async () => {
   emits('update');
 };
 
-const reviewStatusEnum = ref<EnumMessage<ReviewStatus>[]>([]);
+/**
+ * <p>Loads review status enum options.</p>
+ * <p>Filters out PENDING status as it's not selectable for review completion.</p>
+ */
 const loadEnums = () => {
   const data = enumUtils.enumToMessages(ReviewStatus);
   reviewStatusEnum.value = data.filter(item => item.value !== ReviewStatus.PENDING) || [];
 };
 
-const failMessageValue = ref();
-const changeFailMessage = (value) => {
-  if (value === 'other') {
+/**
+ * <p>Handles fail message selection changes.</p>
+ * <p>Sets predefined message or clears for custom input.</p>
+ */
+const changeFailMessage = (selectedValue) => {
+  if (selectedValue === 'other') {
     formState.value.reviewRemark = '';
   } else {
-    formState.value.reviewRemark = failMessage[value];
+    formState.value.reviewRemark = failMessageOptions[selectedValue];
   }
 };
 
-const failMessage = [
+// Fail message configuration
+const failMessageOptions = [
   t('caseReview.detail.failReasons.caseNameNotClear'),
   t('caseReview.detail.failReasons.caseDesignInconsistent'),
   t('caseReview.detail.failReasons.missingPrerequisites'),
@@ -74,8 +93,16 @@ const failMessage = [
   t('caseReview.detail.failReasons.logicInconsistent'),
   t('caseReview.detail.failReasons.other')
 ];
-const failOpt = failMessage.map((i, idx) => ({ label: i, value: idx + 1 === failMessage.length ? 'other' : idx }));
 
+const failMessageSelectOptions = failMessageOptions.map((message, index) => ({
+  label: message,
+  value: index + 1 === failMessageOptions.length ? 'other' : index
+}));
+
+/**
+ * <p>Component mounted lifecycle hook.</p>
+ * <p>Loads enum values for review status options.</p>
+ */
 onMounted(() => {
   loadEnums();
 });
@@ -102,18 +129,20 @@ onMounted(() => {
         </Radio>
       </RadioGroup>
     </FormItem>
+
     <FormItem
       name="reviewRemark"
       :label="t('caseReview.detail.reviewOpinion')">
       <Select
-        v-show="formState.reviewStatus === 'FAILED'"
+        v-show="formState.reviewStatus === ReviewStatus.FAILED"
         v-model:value="failMessageValue"
-        :options="failOpt"
+        :options="failMessageSelectOptions"
         class="w-100"
         :placeholder="t('caseReview.detail.selectFailReason')"
         @change="changeFailMessage" />
+
       <Input
-        v-show="formState.reviewStatus !== 'FAILED' || failMessageValue === 'other'"
+        v-show="formState.reviewStatus !== ReviewStatus.FAILED || failMessageValue === 'other'"
         v-model:value="formState.reviewRemark"
         size="small"
         type="textarea"
@@ -122,6 +151,7 @@ onMounted(() => {
         :maxlength="200"
         :placeholder="t('caseReview.detail.enterReviewOpinion')" />
     </FormItem>
+
     <FormItem class="mt-5">
       <div class="flex justify-end">
         <Button

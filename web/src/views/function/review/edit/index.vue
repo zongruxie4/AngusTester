@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, TabPane, Tabs, Upload } from 'ant-design-vue';
 import {
   AsyncComponent, Icon, Input, modal, notification, Popover, ReviewStatus, Select, Spin, Table
@@ -9,16 +10,18 @@ import {
 } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
-import { func, funcPlan, project } from '@/api/tester';
-import { useI18n } from 'vue-i18n';
-import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 
+// API and type imports
+import { func, funcPlan, project } from '@/api/tester';
+import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
 import { ReviewEditState, ReviewCaseInfo, ReviewDetail } from '../types';
 
+// Component imports
 import RichEditor from '@/components/richEditor/index.vue';
 const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));
 
+// Props and Context
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -28,24 +31,26 @@ const props = withDefaults(defineProps<BasicProps>(), {
 
 const { t } = useI18n();
 
+// Dependency Injection
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
+
+// Reactive State
 const isAdmin = computed(() => appContext.isAdmin());
-const reviewId = ref();
+const reviewId = ref<string>();
 const formRef = ref();
 const selectModalVisible = ref(false);
-const keywords = ref();
+const searchKeywords = ref<string>();
 const loading = ref(false);
 const dataSource = ref<ReviewDetail>();
-
 const activeTabKey = ref('funcCase');
-
 const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const reviewFlagVisible = ref(false);
-
 const permissions = ref<string[]>([]);
 const oldFormState = ref<ReviewEditState>();
+
+// Form State
 const formState = ref<ReviewEditState>({
   name: '',
   planId: undefined,
@@ -56,13 +61,20 @@ const formState = ref<ReviewEditState>({
   participantIds: []
 });
 
-const upLoadFile = async (file) => {
+/**
+ * Handles file upload for review attachments
+ * <p>
+ * Validates file count limit and uploads file to server
+ * <p>
+ * Updates form state with uploaded file information
+ */
+const handleFileUpload = async (file) => {
   if (loading.value) {
     return;
   }
 
-  const attachments = formState.value.attachments || [];
-  if (attachments.length >= 10) {
+  const currentAttachments = formState.value.attachments || [];
+  if (currentAttachments.length >= 10) {
     return;
   }
 
@@ -74,21 +86,37 @@ const upLoadFile = async (file) => {
   }
 
   if (data && data.length > 0) {
-    const newData = data?.map(item => ({ name: item.name, url: item.url }));
+    const uploadedFiles = data?.map(item => ({ name: item.name, url: item.url }));
     if (formState.value.attachments) {
-      formState.value.attachments.push(...newData);
+      formState.value.attachments.push(...uploadedFiles);
     } else {
-      formState.value.attachments = newData;
+      formState.value.attachments = uploadedFiles;
     }
   }
 };
 
-const delFile = (index: number) => {
+/**
+ * Removes attachment file from form state
+ * <p>
+ * Deletes file at specified index from attachments array
+ */
+const removeAttachmentFile = (index: number) => {
   formState.value?.attachments?.splice(index, 1);
 };
 
-const getParams = () => {
-  const params: ReviewEditState = { ...formState.value, caseIds: caseList.value.map(i => i.id) };
+/**
+ * Prepares form parameters for API submission
+ * <p>
+ * Maps case list to case IDs and cleans up empty optional fields
+ * <p>
+ * Returns sanitized parameters ready for API calls
+ */
+const prepareFormParameters = () => {
+  const params: ReviewEditState = {
+    ...formState.value,
+    caseIds: caseList.value.map(item => item.id)
+  };
+
   if (dataSource.value?.id) {
     params.id = dataSource.value.id;
   }
@@ -106,19 +134,31 @@ const getParams = () => {
   return params;
 };
 
-const refreshList = () => {
+/**
+ * Refreshes the review list in parent component
+ * <p>
+ * Triggers tab pane update with unique notification ID
+ */
+const refreshReviewList = () => {
   nextTick(() => {
     updateTabPane({ _id: 'reviewList', notify: utils.uuid() });
   });
 };
 
-const editOk = async () => {
-  const equalFlag = isEqual(oldFormState.value, formState.value);
-  if (equalFlag) {
+/**
+ * Handles review update operation
+ * <p>
+ * Validates form changes and submits update request
+ * <p>
+ * Updates UI state and shows success notification
+ */
+const handleReviewUpdate = async () => {
+  const hasChanges = isEqual(oldFormState.value, formState.value);
+  if (hasChanges) {
     return;
   }
 
-  const params = getParams();
+  const params = prepareFormParameters();
   delete params.planId;
   loading.value = true;
   const [error] = await func.putReview(params);
@@ -129,18 +169,25 @@ const editOk = async () => {
 
   notification.success(t('caseReview.editForm.modifySuccess'));
 
-  const id = params.id;
-  const name = params.name;
-  updateTabPane({ _id: id, name });
+  const reviewId = params.id;
+  const reviewName = params.name;
+  updateTabPane({ _id: reviewId, name: reviewName });
   if (dataSource.value) {
-    dataSource.value.name = name;
+    dataSource.value.name = reviewName;
   }
 };
 
-const addOk = async () => {
-  const params = getParams();
+/**
+ * Handles review creation operation
+ * <p>
+ * Submits new review data and updates tab navigation
+ * <p>
+ * Shows success notification and replaces current tab
+ */
+const handleReviewCreation = async () => {
+  const params = prepareFormParameters();
   loading.value = true;
-  const [error, res] = await func.addReview(params);
+  const [error, response] = await func.addReview(params);
   loading.value = false;
   if (error) {
     return;
@@ -148,89 +195,136 @@ const addOk = async () => {
 
   notification.success(t('caseReview.editForm.addSuccess'));
 
-  const _id = props.data?._id;
-  const newId = res?.data?.id;
-  const name = params.name;
-  replaceTabPane(_id, { _id: newId, uiKey: newId, name, data: { _id: newId, id: newId } });
+  const currentTabId = props.data?._id;
+  const newReviewId = response?.data?.id;
+  const reviewName = params.name;
+  replaceTabPane(currentTabId, {
+    _id: newReviewId,
+    uiKey: newReviewId,
+    name: reviewName,
+    data: { _id: newReviewId, id: newReviewId }
+  });
 };
 
+// Form Validation
 const descRichRef = ref();
-const validateDesc = async () => {
+
+/**
+ * Validates description field character limit
+ * <p>
+ * Checks if description exceeds maximum allowed characters
+ * <p>
+ * Returns promise rejection if limit exceeded
+ */
+const validateDescription = async () => {
   if (descRichRef.value && descRichRef.value.getLength() > 2000) {
     return Promise.reject(new Error(t('caseReview.editForm.charLimitExceeded')));
   }
   return Promise.resolve();
 };
 
-const ok = async () => {
+/**
+ * Handles form submission for both create and update operations
+ * <p>
+ * Validates form data and calls appropriate handler based on edit mode
+ * <p>
+ * Refreshes review list after successful operation
+ */
+const handleFormSubmit = async () => {
   formRef.value.validate().then(async () => {
-    if (!editFlag.value) {
-      await addOk();
+    if (!isEditMode.value) {
+      await handleReviewCreation();
     } else {
-      await editOk();
+      await handleReviewUpdate();
     }
-    refreshList();
+    refreshReviewList();
   });
 };
 
-const toDelete = async () => {
-  const data = dataSource.value;
-  if (!data) {
+/**
+ * Handles review deletion with confirmation
+ * <p>
+ * Shows confirmation modal and deletes review if confirmed
+ * <p>
+ * Updates UI state and shows success notification
+ */
+const handleReviewDeletion = async () => {
+  const reviewData = dataSource.value;
+  if (!reviewData) {
     return;
   }
 
   modal.confirm({
-    content: t('caseReview.editForm.confirmDeleteReview', { name: data.name }),
+    content: t('caseReview.editForm.confirmDeleteReview', { name: reviewData.name }),
     async onOk () {
-      const id = data.id;
+      const reviewId = reviewData.id;
       loading.value = true;
-      const [error] = await func.deleteReview(id);
+      const [error] = await func.deleteReview(reviewId);
       loading.value = false;
       if (error) {
         return;
       }
 
       notification.success(t('caseReview.editForm.reviewDeletedSuccess'));
-      deleteTabPane([id]);
-      refreshList();
+      deleteTabPane([reviewId]);
+      refreshReviewList();
     }
   });
 };
 
-const cancel = () => {
+/**
+ * Handles form cancellation
+ * <p>
+ * Closes current tab and returns to previous view
+ */
+const handleFormCancel = () => {
   deleteTabPane([props.data._id]);
 };
 
-const loadReviewDetail = async (id: string) => {
+/**
+ * Loads review detail data from server
+ * <p>
+ * Fetches review information and populates form state
+ * <p>
+ * Updates tab pane with review name
+ */
+const loadReviewDetail = async (reviewId: string) => {
   if (loading.value) {
     return;
   }
 
   loading.value = true;
-  const [error, res] = await func.getReviewDetail(id);
+  const [error, response] = await func.getReviewDetail(reviewId);
   loading.value = false;
   if (error) {
     return;
   }
 
-  const data = res?.data as ReviewDetail;
-  if (!data) {
+  const reviewData = response?.data as ReviewDetail;
+  if (!reviewData) {
     return;
   }
-  await loadPermissions(data.planId);
+  await loadPermissions(reviewData.planId);
 
-  dataSource.value = data;
-  setFormData(data);
+  dataSource.value = reviewData;
+  populateFormWithData(reviewData);
 
-  const name = data.name;
-  if (name && typeof updateTabPane === 'function') {
-    updateTabPane({ name, _id: id });
+  const reviewName = reviewData.name;
+  if (reviewName && typeof updateTabPane === 'function') {
+    updateTabPane({ name: reviewName, _id: reviewId });
   }
 };
 
-const setFormData = (data: ReviewDetail) => {
+/**
+ * Populates form state with review data
+ * <p>
+ * Maps review data to form fields and initializes state
+ * <p>
+ * Handles participants and attachments data mapping
+ */
+const populateFormWithData = (reviewData: ReviewDetail) => {
   reviewFlagVisible.value = false;
-  if (!data) {
+  if (!reviewData) {
     formState.value = {
       name: '',
       planId: '',
@@ -251,21 +345,21 @@ const setFormData = (data: ReviewDetail) => {
     planId,
     caseIds,
     participants = []
-  } = data;
+  } = reviewData;
 
   formState.value.description = description;
   formState.value.name = name;
   formState.value.ownerId = ownerId;
   formState.value.caseIds = caseIds;
   formState.value.planId = planId;
-  formState.value.participantIds = participants.map(i => i.id);
+  formState.value.participantIds = participants.map(participant => participant.id);
 
-  participants.forEach(i => {
-    if (!members.value.find(m => m.id === i.id)) {
+  participants.forEach(participant => {
+    if (!members.value.find(member => member.id === participant.id)) {
       members.value.push({
-        ...m,
-        value: m.id,
-        label: m.fullName
+        ...participant,
+        value: participant.id,
+        label: participant.fullName
       });
     }
   });
@@ -274,11 +368,23 @@ const setFormData = (data: ReviewDetail) => {
   oldFormState.value = JSON.parse(JSON.stringify(formState.value));
 };
 
-const loadEnums = () => {
+/**
+ * Loads enumeration options for form dropdowns
+ * <p>
+ * Initializes workload method options from enum definitions
+ */
+const loadEnumerationOptions = () => {
   evalWorkloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
-const loadPermissions = async (id: string) => {
+/**
+ * Loads user permissions for current plan
+ * <p>
+ * Fetches permissions based on admin status or plan-specific auth
+ * <p>
+ * Updates permissions array for UI control
+ */
+const loadPermissions = async (planId: string) => {
   if (isAdmin.value) {
     permissions.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
@@ -288,41 +394,61 @@ const loadPermissions = async (id: string) => {
     admin: true
   };
   loading.value = true;
-  const [error, res] = await funcPlan.getCurrentAuthByPlanId(id, params);
+  const [error, response] = await funcPlan.getCurrentAuthByPlanId(planId, params);
   loading.value = false;
   if (error) {
     return;
   }
 
-  permissions.value = (res?.data?.permissions || []).map(item => item.value);
+  permissions.value = (response?.data?.permissions || []).map(permission => permission.value);
 };
 
+// Member Management
 const members = ref<{id: string; fullName: string; value: string; label: string}[]>([]);
 
+/**
+ * Loads project members for form selection
+ * <p>
+ * Fetches project members and formats for dropdown options
+ * <p>
+ * Maps member data to required format for select components
+ */
 const loadProjectMembers = async () => {
-  const [error, res] = await project.getProjectMember(props.projectId);
+  const [error, response] = await project.getProjectMember(props.projectId);
   if (error) {
     return;
   }
 
-  const data = res?.data || [];
-  members.value = (data || []).map(i => {
+  const memberData = response?.data || [];
+  members.value = (memberData || []).map(member => {
     return {
-      ...i,
-      label: i.fullName,
-      value: i.id
+      ...member,
+      label: member.fullName,
+      value: member.id
     };
   });
 };
 
-const handleChangePlanId = () => {
+/**
+ * Handles plan ID change event
+ * <p>
+ * Clears case list when plan selection changes
+ */
+const handlePlanIdChange = () => {
   caseList.value = [];
 };
 
+/**
+ * Loads review case list from server
+ * <p>
+ * Fetches cases with optional search filters and pagination
+ * <p>
+ * Updates case list and pagination state
+ */
 const loadReviewCaseList = async () => {
   const [error, { data }] = await func.getReviewCaseList({
     reviewId: reviewId.value,
-    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH' }] : [],
+    filters: searchKeywords.value ? [{ value: searchKeywords.value, key: 'caseName', op: 'MATCH' }] : [],
     pageNo: pagination.value.current,
     pageSize: pagination.value.pageSize
   });
@@ -334,7 +460,12 @@ const loadReviewCaseList = async () => {
   pagination.value.total = +data.total || 0;
 };
 
-const onKeywordChange = debounce(duration.search, () => {
+/**
+ * Handles search keyword change with debounce
+ * <p>
+ * Resets pagination and reloads case list when keywords change
+ */
+const handleSearchKeywordChange = debounce(duration.search, () => {
   if (!reviewId.value) {
     return;
   }
@@ -342,11 +473,23 @@ const onKeywordChange = debounce(duration.search, () => {
   loadReviewCaseList();
 });
 
-const addReviewCase = () => {
+/**
+ * Opens case selection modal
+ * <p>
+ * Shows modal for adding cases to review
+ */
+const openCaseSelectionModal = () => {
   selectModalVisible.value = true;
 };
 
-const handleAddCase = async (caseIds: string[], cases: ReviewCaseInfo[]) => {
+/**
+ * Handles adding cases to review
+ * <p>
+ * Adds cases to existing review or local case list
+ * <p>
+ * Closes modal and refreshes case list
+ */
+const handleAddCasesToReview = async (caseIds: string[], cases: ReviewCaseInfo[]) => {
   if (reviewId.value) {
     const [error] = await func.addReviewCase({
       caseIds: caseIds,
@@ -363,18 +506,25 @@ const handleAddCase = async (caseIds: string[], cases: ReviewCaseInfo[]) => {
   }
 };
 
+// Pagination and Table Configuration
 const pagination = ref({
   current: 1,
   pageSize: 10,
   total: 0
 });
 
-const editFlag = computed(() => {
+const isEditMode = computed(() => {
   return !!props.data?.id;
 });
 
 const caseList = ref<ReviewCaseInfo[]>([]);
-const columns = [
+
+/**
+ * Table column configuration for case list
+ * <p>
+ * Defines display columns and custom renderers for case data
+ */
+const tableColumns = [
   {
     title: t('caseReview.editForm.caseId'),
     dataIndex: 'caseId',
@@ -405,12 +555,19 @@ const columns = [
   }
 ];
 
-const delCase = async (record: ReviewCaseInfo) => {
+/**
+ * Handles case deletion with confirmation
+ * <p>
+ * Shows confirmation modal and removes case from review
+ * <p>
+ * Handles pagination adjustment for server-side deletion
+ */
+const handleCaseDeletion = async (caseRecord: ReviewCaseInfo) => {
   if (reviewId.value) {
     modal.confirm({
-      title: t('caseReview.editForm.confirmDeleteCase', { name: record.name }),
+      title: t('caseReview.editForm.confirmDeleteCase', { name: caseRecord.name }),
       async onOk () {
-        const [error] = await func.deleteReviewCase([record.id]);
+        const [error] = await func.deleteReviewCase([caseRecord.id]);
         if (error) {
           return;
         }
@@ -421,34 +578,46 @@ const delCase = async (record: ReviewCaseInfo) => {
       }
     });
   } else {
-    caseList.value = caseList.value.filter(i => i.id !== record.id);
+    caseList.value = caseList.value.filter(caseItem => caseItem.id !== caseRecord.id);
   }
 };
 
-const pageChange = ({ current, pageSize }) => {
+/**
+ * Handles pagination change event
+ * <p>
+ * Updates pagination state and reloads case list
+ */
+const handlePaginationChange = ({ current, pageSize }) => {
   pagination.value.current = current;
   pagination.value.pageSize = pageSize;
   loadReviewCaseList();
 };
 
+/**
+ * Component initialization and data loading
+ * <p>
+ * Loads enumeration options and project members
+ * <p>
+ * Sets up watchers for data changes
+ */
 onMounted(async () => {
-  loadEnums();
+  loadEnumerationOptions();
   await loadProjectMembers();
 
-  watch(() => props.data, async (newValue, oldValue) => {
-    const id = newValue?.id;
-    if (!id) {
+  watch(() => props.data, async (newData, oldData) => {
+    const reviewId = newData?.id;
+    if (!reviewId) {
       return;
     }
 
-    const oldId = oldValue?.id;
-    if (id === oldId) {
+    const previousReviewId = oldData?.id;
+    if (reviewId === previousReviewId) {
       return;
     }
 
-    reviewId.value = id;
+    reviewId.value = reviewId;
 
-    await loadReviewDetail(id);
+    await loadReviewDetail(reviewId);
     await loadReviewCaseList();
   }, { immediate: true });
 });
@@ -462,18 +631,18 @@ onMounted(async () => {
         type="primary"
         size="small"
         class="flex items-center space-x-1"
-        @click="ok">
+        @click="handleFormSubmit">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
         <span>{{ t('caseReview.editForm.save') }}</span>
       </Button>
 
-      <template v-if="editFlag">
+      <template v-if="isEditMode">
         <Button
           :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.REVIEW)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
-          @click="toDelete">
+          @click="handleReviewDeletion">
           <Icon icon="icon-qingchu" class="text-3.5" />
           <span>{{ t('caseReview.editForm.delete') }}</span>
         </Button>
@@ -492,7 +661,7 @@ onMounted(async () => {
       <Button
         size="small"
         class="flex items-center space-x-1"
-        @click="cancel">
+        @click="handleFormCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5" />
         <span>{{ t('caseReview.editForm.cancel') }}</span>
       </Button>
@@ -527,7 +696,7 @@ onMounted(async () => {
           :action="`${TESTER}/func/plan?projectId=${props.projectId}&review=true&fullTextSearch=true`"
           :fieldNames="{value: 'id', label: 'name'}"
           :placeholder="t('caseReview.editForm.selectTestPlanPlaceholder')"
-          @change="handleChangePlanId" />
+          @change="handlePlanIdChange" />
       </FormItem>
 
       <FormItem
@@ -562,12 +731,13 @@ onMounted(async () => {
             :fileList="[]"
             name="file"
             accept=".jpg,.bmp,.png,.gif,.txt,.docx,.jpeg,.rar,.zip,.doc,.xlsx,.xls,.pdf"
-            :customRequest="upLoadFile">
+            :customRequest="handleFileUpload">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
               <Icon icon="icon-lianjie1" class="mr-1" />
               <span class="whitespace-nowrap">{{ t('caseReview.editForm.uploadAttachments') }}</span>
             </a>
           </Upload>
+
           <Popover
             placement="right"
             arrowPointAtCenter
@@ -593,10 +763,11 @@ onMounted(async () => {
           :class="{ 'rounded-t pt-2': index === 0, 'rounded-b': index === formState.attachments.length - 1 }"
           class="flex items-center justify-between text-3 leading-3 pb-2 px-3 bg-gray-100">
           <div class="w-150 truncate text-theme-sub-content leading-4">{{ item.name }}</div>
+
           <Icon
             icon="icon-qingchu"
             class="text-theme-special text-theme-text-hover cursor-pointer flex-shrink-0 leading-4 text-3.5"
-            @click="delFile(index)" />
+            @click="removeAttachmentFile(index)" />
         </div>
       </FormItem>
 
@@ -610,40 +781,42 @@ onMounted(async () => {
           :tab="t('caseReview.editForm.reviewCases')">
           <div class="flex justify-between mb-3">
             <Input
-              v-model:value="keywords"
+              v-model:value="searchKeywords"
               :disabled="!reviewId"
               :placeholder="t('caseReview.editForm.enterQueryName')"
               class="w-50"
-              @change="onKeywordChange" />
+              @change="handleSearchKeywordChange" />
+
             <Button
               :disabled="!formState.planId || (reviewId && !permissions.includes(FuncPlanPermission.REVIEW))
                 || dataSource?.status?.value === FuncPlanStatus.COMPLETED"
               size="small"
               type="primary"
-              @click="addReviewCase">
+              @click="openCaseSelectionModal">
               <Icon icon="icon-jia" class="mr-1" />
               {{ t('caseReview.editForm.addReviewCase') }}
             </Button>
           </div>
 
           <Table
-            :columns="columns"
+            :columns="tableColumns"
             :dataSource="caseList"
             :pagination="reviewId ? pagination : false"
             rowKey="id"
             size="small"
             noDataSize="small"
-            @change="pageChange">
+            @change="handlePaginationChange">
             <template #bodyCell="{record, column}">
               <template v-if="column.dataIndex === 'action'">
                 <Button
                   type="text"
                   size="small"
-                  @click="delCase(record)">
+                  @click="handleCaseDeletion(record)">
                   <Icon icon="icon-qingchu" />
                   {{ t('caseReview.editForm.delete') }}
                 </Button>
               </template>
+
               <template v-if="column.dataIndex === 'reviewStatus'">
                 <ReviewStatus :value="record.reviewStatus" />
               </template>
@@ -652,7 +825,7 @@ onMounted(async () => {
         </TabPane>
 
         <TabPane key="description" :tab="t('caseReview.editForm.reviewDescription')">
-          <FormItem name="description" :rules="[{validator: validateDesc}]">
+          <FormItem name="description" :rules="[{validator: validateDescription}]">
             <RichEditor
               ref="descRichRef"
               v-model:value="formState.description"
@@ -668,7 +841,7 @@ onMounted(async () => {
         :projectId="props.projectId"
         :planId="formState.planId"
         :reviewId="reviewId"
-        @ok="handleAddCase" />
+        @ok="handleAddCasesToReview" />
     </AsyncComponent>
   </Spin>
 </template>

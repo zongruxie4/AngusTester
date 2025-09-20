@@ -1,14 +1,16 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { funcPlan } from '@/api/tester';
-import { useI18n } from 'vue-i18n';
 import { ReviewCaseInfo } from '@/views/function/review/types';
 
+// Component imports
 const ModuleTree = defineAsyncComponent(() => import('@/views/function/review/edit/ModuleTree.vue'));
 
+// Type Definitions
 interface Props {
   planId: string;
   visible: boolean;
@@ -16,6 +18,7 @@ interface Props {
   projectId: string;
 }
 
+// Props and Context
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   reviewId: undefined,
@@ -23,60 +26,101 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-// eslint-disable-next-line func-call-spacing
+
+// Event Emitters
 const emit = defineEmits<{
-  (e: 'update:visible', value: boolean):void;
-  (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]):void
+  (e: 'update:visible', value: boolean): void;
+  (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]): void
 }>();
 
-const selectedIds = ref<string[]>([]);
-const selectRows = ref<ReviewCaseInfo[]>([]);
-const notReviewedCases = ref([]);
-const showData = ref([]);
+// Reactive State
+const selectedCaseIds = ref<string[]>([]);
+const selectedCaseRows = ref<ReviewCaseInfo[]>([]);
+const availableCases = ref<ReviewCaseInfo[]>([]);
+const filteredCases = ref<ReviewCaseInfo[]>([]);
 const loading = ref(false);
-const keywords = ref();
+const searchKeywords = ref<string>();
 
-const cancel = () => {
+/**
+ * Handles modal cancellation
+ * <p>
+ * Closes modal and emits visibility update
+ */
+const handleModalCancel = () => {
   emit('update:visible', false);
 };
 
-const ok = () => {
-  if (selectedIds.value.length) {
-    emit('ok', selectedIds.value, selectRows.value);
+/**
+ * Handles modal confirmation
+ * <p>
+ * Emits selected cases if any are selected, otherwise closes modal
+ */
+const handleModalConfirm = () => {
+  if (selectedCaseIds.value.length) {
+    emit('ok', selectedCaseIds.value, selectedCaseRows.value);
   } else {
-    cancel();
+    handleModalCancel();
   }
 };
 
-const moduleId = ref('');
+// Case Loading and Filtering
+const selectedModuleId = ref('');
 
-const loadCases = async () => {
+/**
+ * Loads available cases for selection
+ * <p>
+ * Fetches cases that are not yet reviewed for the selected plan and module
+ * <p>
+ * Applies initial filtering based on search keywords
+ */
+const loadAvailableCases = async () => {
   if (!props.planId) {
     return;
   }
   loading.value = true;
-  const [error, resp] = await funcPlan.getNotReviewedCase(props.planId, {
+  const [error, response] = await funcPlan.getNotReviewedCase(props.planId, {
     reviewId: props.reviewId,
-    moduleId: moduleId.value
+    moduleId: selectedModuleId.value
   });
   loading.value = false;
   if (error) {
     return;
   }
-  notReviewedCases.value = resp.data || [];
-  showData.value = notReviewedCases.value
-    .filter(item => (item.name).includes(keywords.value || '') || (item.code || '')
-      .includes(keywords.value || ''));
+  availableCases.value = response.data || [];
+  applyCaseFiltering();
 };
 
-const handleFilter = debounce(duration.search, () => {
-  selectedIds.value = [];
-  showData.value = notReviewedCases.value
-    .filter(item => (item.name).includes(keywords.value || '') || (item.code || '')
-      .includes(keywords.value || ''));
+/**
+ * Applies search filter to available cases
+ * <p>
+ * Filters cases by name or code containing search keywords
+ * <p>
+ * Updates filtered cases display
+ */
+const applyCaseFiltering = () => {
+  filteredCases.value = availableCases.value
+    .filter(caseItem =>
+      (caseItem.name).includes(searchKeywords.value || '') ||
+      (caseItem.code || '').includes(searchKeywords.value || '')
+    );
+};
+
+/**
+ * Handles search keyword change with debounce
+ * <p>
+ * Clears selection and applies filtering when keywords change
+ */
+const handleSearchFilter = debounce(duration.search, () => {
+  selectedCaseIds.value = [];
+  applyCaseFiltering();
 });
 
-const columns = [
+/**
+ * Table column configuration for case selection
+ * <p>
+ * Defines display columns for case information
+ */
+const tableColumns = [
   {
     title: t('caseReview.editForm.code'),
     dataIndex: 'code'
@@ -100,27 +144,43 @@ const columns = [
   }
 ];
 
+/**
+ * Handles row selection change
+ * <p>
+ * Updates selected case IDs and row data
+ */
+const handleRowSelectionChange = (selectedRowKeys: string[], selectedRows: ReviewCaseInfo[]) => {
+  selectedCaseIds.value = selectedRowKeys;
+  selectedCaseRows.value = selectedRows;
+};
+
 const rowSelection = ref({
-  onChange: (selectedRowKeys, selectedRows) => {
-    selectedIds.value = selectedRowKeys;
-    selectRows.value = selectedRows;
-  }
+  onChange: handleRowSelectionChange
 });
 
-watch(() => moduleId.value, () => {
-  selectedIds.value = [];
-  loadCases();
+/**
+ * Watches module ID changes
+ * <p>
+ * Clears selection and reloads cases when module changes
+ */
+watch(() => selectedModuleId.value, () => {
+  selectedCaseIds.value = [];
+  loadAvailableCases();
 });
 
-watch(() => props.visible, (newValue) => {
-  if (newValue) {
-    selectedIds.value = [];
-    loadCases();
+/**
+ * Watches modal visibility changes
+ * <p>
+ * Clears selection and loads cases when modal opens
+ */
+watch(() => props.visible, (isVisible) => {
+  if (isVisible) {
+    selectedCaseIds.value = [];
+    loadAvailableCases();
   }
 }, {
   immediate: true
 });
-
 </script>
 <template>
   <Modal
@@ -128,23 +188,23 @@ watch(() => props.visible, (newValue) => {
     :visible="props.visible"
     :width="1000"
     :loading="loading"
-    @cancel="cancel"
-    @ok="ok">
+    @cancel="handleModalCancel"
+    @ok="handleModalConfirm">
     <div class="flex">
       <div class="w-50 h-144.5 overflow-y-auto">
         <ModuleTree
-          v-model:moduleId="moduleId"
+          v-model:moduleId="selectedModuleId"
           :projectId="props.projectId" />
       </div>
       <div class="flex-1 ml-2">
         <Input
-          v-model:value="keywords"
+          v-model:value="searchKeywords"
           :placeholder="t('caseReview.editForm.queryNameCode')"
           class="w-100"
-          @change="handleFilter" />
+          @change="handleSearchFilter" />
         <Table
-          :columns="columns"
-          :dataSource="showData"
+          :columns="tableColumns"
+          :dataSource="filteredCases"
           :rowSelection="rowSelection"
           :pagination="false"
           :scroll="{y: 500}"

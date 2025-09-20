@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, Input, notification } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
 import { modules } from '@/api/tester';
-import { useI18n } from 'vue-i18n';
 
+// Component imports
+const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
+const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/module/Move.vue'));
+
+// Type Definitions
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -14,6 +19,7 @@ type Props = {
   projectName: string;
 }
 
+// Props and Context
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -25,97 +31,149 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+// Event Emitters
 const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string): void }>();
 
-const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
-const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/module/Move.vue'));
-
+// Reactive State
 const nameInputRef = ref();
-
 const loading = ref(false);
-const handleSelectKeysChange = (selectKeys) => {
-  if (!selectKeys.length) {
+const searchKeywords = ref<string>();
+const editingModuleId = ref<string>();
+const parentModuleId = ref<string>();
+const createModalVisible = ref(false);
+const moveModalVisible = ref(false);
+
+/**
+ * Handles module selection change
+ * <p>
+ * Updates selected module ID and emits change event
+ */
+const handleModuleSelectionChange = (selectedKeys: string[]) => {
+  if (!selectedKeys.length) {
     return;
   }
-  emits('update:moduleId', selectKeys[0]);
+  emits('update:moduleId', selectedKeys[0]);
 };
 
-const keywords = ref();
-const editId = ref<string>();
-const pid = ref<string>();
-const modalVisible = ref(false);
-const moveVisible = ref(false);
-
-const createOk = () => {
-  emits('loadData', keywords.value);
+/**
+ * Handles successful module creation
+ * <p>
+ * Emits data reload event with current search keywords
+ */
+const handleModuleCreationSuccess = () => {
+  emits('loadData', searchKeywords.value);
 };
 
-const cancelEdit = () => {
-  editId.value = undefined;
+/**
+ * Cancels module editing mode
+ * <p>
+ * Clears editing state and exits edit mode
+ */
+const cancelModuleEditing = () => {
+  editingModuleId.value = undefined;
 };
 
-const pressEnter = async (id: string, event: { target: { value: string } }) => {
-  const value = event.target.value;
-  if (!value) {
+/**
+ * Handles module name update on enter key press
+ * <p>
+ * Validates input and submits module name update
+ * <p>
+ * Shows success notification and refreshes data
+ */
+const handleModuleNameUpdate = async (moduleId: string, event: { target: { value: string } }) => {
+  const newName = event.target.value;
+  if (!newName) {
     return;
   }
 
   loading.value = true;
-  const [error] = await modules.updateModule([{ id, name: value }]);
+  const [error] = await modules.updateModule([{ id: moduleId, name: newName }]);
   loading.value = false;
   if (error) {
     return;
   }
   notification.success(t('caseReview.editForm.modifySuccess'));
-  editId.value = undefined;
-  emits('loadData', keywords.value);
+  editingModuleId.value = undefined;
+  emits('loadData', searchKeywords.value);
 };
 
-const hadleblur = (id: string, event: { target: { value: string } }) => {
+/**
+ * Handles module name update on input blur
+ * <p>
+ * Delays execution to allow for potential cancel operation
+ * <p>
+ * Calls name update if still in editing mode
+ */
+const handleModuleNameBlur = (moduleId: string, event: { target: { value: string } }) => {
   setTimeout(() => {
-    if (editId.value === id) {
-      pressEnter(id, event);
+    if (editingModuleId.value === moduleId) {
+      handleModuleNameUpdate(moduleId, event);
     }
   }, 300);
 };
 
+// Tree Data Processing
 const activeModule = ref();
 
-const travelTreeData = (treeData, callback = (item) => item) => {
-  function travel (treeData, level = 0, ids: string[] = []) {
-    treeData.forEach((item, idx) => {
+/**
+ * Processes tree data with additional metadata
+ * <p>
+ * Adds level, index, path, and child level information to tree nodes
+ * <p>
+ * Applies callback function to each processed node
+ */
+const processTreeData = (treeData: any[], callback = (item: any) => item) => {
+  function traverseTree (treeData: any[], level = 0, pathIds: string[] = []) {
+    treeData.forEach((item, index) => {
       item.level = level;
-      item.index = idx;
-      item.ids = [...ids, item.id];
-      item.isLast = idx === (treeData.length - 1);
-      travel(item.children || [], level + 1, item.ids),
-      item.childLevels = (item.children?.length ? Math.max(...item.children.map(i => i.childLevels)) : 0) + 1;
+      item.index = index;
+      item.ids = [...pathIds, item.id];
+      item.isLast = index === (treeData.length - 1);
+      traverseTree(item.children || [], level + 1, item.ids);
+      item.childLevels = (item.children?.length ? Math.max(...item.children.map(child => child.childLevels)) : 0) + 1;
       item = callback(item);
     });
   }
 
-  travel(treeData);
+  traverseTree(treeData);
   return treeData;
 };
 
+// Data Loading
 const moduleTreeData = ref([{ name: t('caseReview.editForm.noModuleCases'), id: '-1' }]);
 
-const loadDataList = async () => {
+/**
+ * Loads module tree data from server
+ * <p>
+ * Fetches module hierarchy and processes tree structure
+ * <p>
+ * Updates tree data with processed module information
+ */
+const loadModuleTreeData = async () => {
   const [error, { data }] = await modules.getModuleTree({
     projectId: props.projectId
   });
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: t('caseReview.editForm.noModuleCases'), id: '-1' }, ...travelTreeData(data || [])];
+  moduleTreeData.value = [
+    { name: t('caseReview.editForm.noModuleCases'), id: '-1' },
+    ...processTreeData(data || [])
+  ];
 };
 
+/**
+ * Component initialization
+ * <p>
+ * Loads module tree data on component mount
+ */
 onMounted(() => {
-  loadDataList();
+  loadModuleTreeData();
 });
 
+// Exposed Methods
 defineExpose({
-  loadDataList
+  loadDataList: loadModuleTreeData
 });
 </script>
 <template>
@@ -123,10 +181,11 @@ defineExpose({
     <div
       :class="{'active': props.moduleId === ''}"
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
-      @click="handleSelectKeysChange([''])">
+      @click="handleModuleSelectionChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
       <span class="flex-1">{{ t('caseReview.editForm.allCases') }}</span>
     </div>
+
     <Tree
       :treeData="moduleTreeData"
       :selectedKeys="[props.moduleId]"
@@ -138,10 +197,10 @@ defineExpose({
         title: 'name',
         key: 'id'
       }"
-      @select="handleSelectKeysChange">
+      @select="handleModuleSelectionChange">
       <template
         #title="{key, title, name, id, index, level, isLast, pid, ids, sequence, childLevels, hasEditPermission}">
-        <div v-if="editId === id" class="flex items-center">
+        <div v-if="editingModuleId === id" class="flex items-center">
           <Input
             ref="nameInputRef"
             :placeholder="t('caseReview.editForm.enterModuleName')"
@@ -150,16 +209,18 @@ defineExpose({
             :value="name"
             :allowClear="false"
             :maxlength="50"
-            @blur="hadleblur(id, $event)"
-            @pressEnter="pressEnter(id, $event)" />
+            @blur="handleModuleNameBlur(id, $event)"
+            @pressEnter="handleModuleNameUpdate(id, $event)" />
+
           <Button
             type="link"
             size="small"
             class="px-0 py-0 mr-1"
-            @click="cancelEdit">
+            @click="cancelModuleEditing">
             {{ t('caseReview.editForm.cancel') }}
           </Button>
         </div>
+
         <div v-else class="flex items-center space-x-2 tree-title">
           <Icon v-if="id !== '-1'" icon="icon-mokuai" />
           <Icon
@@ -171,20 +232,22 @@ defineExpose({
       </template>
     </Tree>
   </div>
-  <AsyncComponent :visible="modalVisible">
+
+  <AsyncComponent :visible="createModalVisible">
     <CreateModal
-      v-model:visible="modalVisible"
+      v-model:visible="createModalVisible"
       :projectId="props.projectId"
-      :pid="pid"
-      @ok="createOk" />
+      :pid="parentModuleId"
+      @ok="handleModuleCreationSuccess" />
   </AsyncComponent>
-  <AsyncComponent :visible="moveVisible">
+
+  <AsyncComponent :visible="moveModalVisible">
     <MoveModuleModal
-      v-model:visible="moveVisible"
+      v-model:visible="moveModalVisible"
       :projectId="props.projectId"
       :projectName="props.projectName"
       :module="activeModule"
-      @ok="createOk" />
+      @ok="handleModuleCreationSuccess" />
   </AsyncComponent>
 </template>
 <style scoped>

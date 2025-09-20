@@ -13,6 +13,7 @@ import { ReviewDetail } from '../types';
 
 import SearchPanel from '@/views/function/review/list/SearchPanel.vue';
 
+// Props and Component Definitions
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -24,248 +25,310 @@ const { t } = useI18n();
 
 const Introduce = defineAsyncComponent(() => import('@/views/function/review/list/Introduce.vue'));
 
+// Dependency Injection and Computed Properties
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const isAdmin = computed(() => appContext.isAdmin());
 
+// State Management
 const loaded = ref(false);
 const loading = ref(false);
 const searchedFlag = ref(false);
 
-const pageNo = ref(1);
+const currentPage = ref(1);
 const pageSize = ref(5);
-const searchPanelParams = ref({
+const searchParams = ref({
   orderBy: undefined,
   orderSort: undefined,
   filters: []
 });
 
-const total = ref(0);
-const dataList = ref<ReviewDetail[]>([]);
+const totalCount = ref(0);
+const reviewList = ref<ReviewDetail[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
 
+/**
+ * Refreshes the review list by resetting pagination and reloading data
+ */
 const refresh = () => {
-  pageNo.value = 1;
+  currentPage.value = 1;
   permissionsMap.value.clear();
-  loadData();
+  loadReviewData();
 };
 
-const searchChange = (data) => {
-  searchPanelParams.value = data;
-  pageNo.value = 1;
-  loadData();
+/**
+ * Handles search parameter changes and reloads data
+ * @param searchData - The new search parameters
+ */
+const handleSearchChange = (searchData) => {
+  searchParams.value = searchData;
+  currentPage.value = 1;
+  loadReviewData();
 };
 
-const setTableData = async (id: string, index: number) => {
+/**
+ * Updates a specific review item in the list with fresh data
+ * @param reviewId - The ID of the review to update
+ * @param itemIndex - The index of the item in the list
+ */
+const updateReviewItem = async (reviewId: string, itemIndex: number) => {
   loading.value = true;
-  const [error, res] = await func.getReviewDetail(id);
+  const [error, response] = await func.getReviewDetail(reviewId);
   loading.value = false;
   if (error) {
     return;
   }
 
-  if (res?.data) {
-    dataList.value[index] = res?.data;
+  if (response?.data) {
+    reviewList.value[itemIndex] = response?.data;
   }
 };
 
-const toStart = async (data: ReviewDetail, index: number) => {
+/**
+ * Starts a review and updates the list
+ * @param reviewData - The review data to start
+ * @param itemIndex - The index of the item in the list
+ */
+const startReview = async (reviewData: ReviewDetail, itemIndex: number) => {
   loading.value = true;
-  const id = data.id;
-  const [error] = await func.startReview(id);
+  const reviewId = reviewData.id;
+  const [error] = await func.startReview(reviewId);
   loading.value = false;
   if (error) {
     return;
   }
 
   notification.success(t('caseReview.list.reviewStartedSuccess'));
-  await setTableData(id, index);
+  await updateReviewItem(reviewId, itemIndex);
 };
 
-const toCompleted = async (data: ReviewDetail, index: number) => {
+/**
+ * Completes a review and updates the list
+ * @param reviewData - The review data to complete
+ * @param itemIndex - The index of the item in the list
+ */
+const completeReview = async (reviewData: ReviewDetail, itemIndex: number) => {
   loading.value = true;
-  const id = data.id;
-  const [error] = await func.endReview(id);
+  const reviewId = reviewData.id;
+  const [error] = await func.endReview(reviewId);
   loading.value = false;
   if (error) {
     return;
   }
 
   notification.success(t('caseReview.list.reviewCompletedSuccess'));
-  await setTableData(id, index);
+  await updateReviewItem(reviewId, itemIndex);
 };
 
-const toDelete = async (data: ReviewDetail) => {
+/**
+ * Deletes a review with confirmation
+ * @param reviewData - The review data to delete
+ */
+const deleteReview = async (reviewData: ReviewDetail) => {
   modal.confirm({
-    content: t('caseReview.list.confirmDeleteReview', { name: data.name }),
+    content: t('caseReview.list.confirmDeleteReview', { name: reviewData.name }),
     async onOk () {
-      const id = data.id;
-      const [error] = await func.deleteReview(id);
+      const reviewId = reviewData.id;
+      const [error] = await func.deleteReview(reviewId);
       if (error) {
         return;
       }
 
       notification.success(t('caseReview.list.reviewDeletedSuccess'));
-      await loadData();
+      await loadReviewData();
 
-      deleteTabPane([id]);
+      deleteTabPane([reviewId]);
     }
   });
 };
 
-const toClone = async (data: ReviewDetail) => {
-  const [error] = await func.cloneReview(data.id);
+/**
+ * Clones a review and refreshes the list
+ * @param reviewData - The review data to clone
+ */
+const cloneReview = async (reviewData: ReviewDetail) => {
+  const [error] = await func.cloneReview(reviewData.id);
   if (error) {
     return;
   }
 
   notification.success(t('caseReview.list.reviewClonedSuccess'));
-  await loadData();
+  await loadReviewData();
 };
 
-const dropdownClick = (
-  data: ReviewDetail,
-  index: number,
-  key: 'clone' | 'block' | 'delete' | 'export' | 'grant' | 'resetTestResult' | 'resetReviewResult' | 'viewBurnDown' | 'viewProgress'
+/**
+ * Handles dropdown menu item clicks
+ * @param reviewData - The review data
+ * @param itemIndex - The index of the item in the list
+ * @param actionKey - The action key from the dropdown
+ */
+const handleDropdownAction = (
+  reviewData: ReviewDetail,
+  itemIndex: number,
+  actionKey: 'clone' | 'block' | 'delete' | 'export' | 'grant' | 'resetTestResult' | 'resetReviewResult' | 'viewBurnDown' | 'viewProgress'
 ) => {
-  switch (key) {
+  switch (actionKey) {
     case 'delete':
-      toDelete(data);
+      deleteReview(reviewData);
       break;
     case 'clone':
-      toClone(data);
+      cloneReview(reviewData);
       break;
   }
 };
 
-const paginationChange = (_pageNo: number, _pageSize: number) => {
-  pageNo.value = _pageNo;
-  pageSize.value = _pageSize;
-  loadData();
+/**
+ * Handles pagination changes and reloads data
+ * @param newPageNo - The new page number
+ * @param newPageSize - The new page size
+ */
+const handlePaginationChange = (newPageNo: number, newPageSize: number) => {
+  currentPage.value = newPageNo;
+  pageSize.value = newPageSize;
+  loadReviewData();
 };
 
-const loadData = async () => {
+// Data Loading Functions
+/**
+ * Loads review list data from the API
+ */
+const loadReviewData = async () => {
   loading.value = true;
-  const params: ProjectPageQuery = {
+  const queryParams: ProjectPageQuery = {
     projectId: props.projectId,
-    pageNo: pageNo.value,
+    pageNo: currentPage.value,
     pageSize: pageSize.value,
-    ...searchPanelParams.value
+    ...searchParams.value
   };
 
-  const [error, res] = await func.getReviewList(params);
+  const [error, response] = await func.getReviewList(queryParams);
   loaded.value = true;
   loading.value = false;
 
-  searchedFlag.value = !!(params.filters?.length || params.orderBy);
+  searchedFlag.value = !!(queryParams.filters?.length || queryParams.orderBy);
 
   if (error) {
-    dataList.value = [];
+    reviewList.value = [];
     return;
   }
 
-  const data = res?.data;
-  if (data) {
-    total.value = +data.total;
+  const responseData = response?.data;
+  if (responseData) {
+    totalCount.value = +responseData.total;
 
-    const _list = (data.list || [] as ReviewDetail[]);
-    dataList.value = _list.map(item => {
-      if (item.progress?.completedRate) {
-        item.progress.completedRate = item.progress.completedRate.replace(/(\d+\.\d{2})\d+/, '$1');
-      }
-
-      if (item.attachments?.length) {
-        item.attachments = item.attachments.map(item => {
-          return {
-            ...item,
-            id: utils.uuid()
-          };
-        });
-      }
-
-      if (item.members) {
-        item.showMembers = item.members.slice(0, 5);
-      }
-
-      return item;
-    });
+    const reviewItems = (responseData.list || [] as ReviewDetail[]);
+    reviewList.value = reviewItems.map(processReviewItem);
 
     if (!isAdmin.value) {
-      for (let i = 0, len = _list.length; i < len; i++) {
-        const id = _list[i].id;
-        if (!permissionsMap.value.get(id)) {
-          const [_error, _res] = await loadPermissions(id);
-          if (!_error) {
-            const _permissions = (_res?.data?.permissions || []).map(item => item.value);
-            permissionsMap.value.set(id, _permissions);
-          }
-        }
+      await loadPermissionsForReviews(reviewItems);
+    }
+  }
+};
+
+/**
+ * Processes a review item to format data and add computed properties
+ * @param item - The review item to process
+ * @returns The processed review item
+ */
+const processReviewItem = (item: ReviewDetail): ReviewDetail => {
+  if (item.progress?.completedRate) {
+    item.progress.completedRate = item.progress.completedRate.replace(/(\d+\.\d{2})\d+/, '$1');
+  }
+
+  if (item.attachments?.length) {
+    item.attachments = item.attachments.map(attachment => {
+      return {
+        ...attachment,
+        id: utils.uuid()
+      };
+    });
+  }
+
+  if (item.members) {
+    item.showMembers = item.members.slice(0, 5);
+  }
+
+  return item;
+};
+
+/**
+ * Loads permissions for multiple reviews
+ * @param reviewItems - Array of review items to load permissions for
+ */
+const loadPermissionsForReviews = async (reviewItems: ReviewDetail[]) => {
+  for (let i = 0, len = reviewItems.length; i < len; i++) {
+    const reviewId = reviewItems[i].id;
+    if (!permissionsMap.value.get(reviewId)) {
+      const [error, response] = await loadReviewPermissions(reviewId);
+      if (!error) {
+        const permissions = (response?.data?.permissions || []).map(permission => permission.value);
+        permissionsMap.value.set(reviewId, permissions);
       }
     }
   }
 };
 
-const loadPermissions = async (id: string) => {
+/**
+ * Loads permissions for a specific review
+ * @param reviewId - The ID of the review to load permissions for
+ * @returns Promise with error and response data
+ */
+const loadReviewPermissions = async (reviewId: string) => {
   const params = {
     admin: true
   };
-  return await func.getReviewAuthByPlanId(id, params);
+  return await func.getReviewAuthByPlanId(reviewId, params);
 };
 
-const reset = () => {
-  pageNo.value = 1;
-  dataList.value = [];
+/**
+ * Resets the component state
+ */
+const resetComponent = () => {
+  currentPage.value = 1;
+  reviewList.value = [];
 };
 
-onMounted(() => {
-  watch(() => props.projectId, () => {
-    reset();
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-    loadData();
-  }, { immediate: false });
-});
-
+/**
+ * Computed property that maps review IDs to their available dropdown permissions
+ */
 const dropdownPermissionsMap = computed(() => {
-  const map = new Map<string, string[]>();
-  if (dataList.value.length) {
-    const _isAdmin = isAdmin.value;
-    const _permissionsMap = permissionsMap.value;
-    const list = dataList.value;
-    for (let i = 0, len = list.length; i < len; i++) {
-      const { id, status } = list[i];
-      const _permissions: string[] = _permissionsMap.get(id) || [];
-      const tempPermissions: string[] = [];
-      const _status = status.value;
-      if ((_isAdmin || _permissions.includes(FuncPlanPermission.MODIFY_PLAN)) &&
-        [FuncPlanStatus.PENDING, FuncPlanStatus.IN_PROGRESS].includes(_status)) {
-        tempPermissions.push('block');
+  const permissionsMap = new Map<string, string[]>();
+  if (reviewList.value.length) {
+    const isAdminUser = isAdmin.value;
+    const userPermissionsMap = permissionsMap.value;
+    const reviews = reviewList.value;
+
+    for (let i = 0, len = reviews.length; i < len; i++) {
+      const { id, status } = reviews[i];
+      const userPermissions: string[] = userPermissionsMap.get(id) || [];
+      const availablePermissions: string[] = [];
+      const reviewStatus = status.value;
+
+      if ((isAdminUser || userPermissions.includes(FuncPlanPermission.MODIFY_PLAN)) &&
+        [FuncPlanStatus.PENDING, FuncPlanStatus.IN_PROGRESS].includes(reviewStatus)) {
+        availablePermissions.push('block');
       }
-      if (_isAdmin || _permissions.includes(FuncPlanPermission.DELETE_PLAN)) {
-        tempPermissions.push('delete');
+      if (isAdminUser || userPermissions.includes(FuncPlanPermission.DELETE_PLAN)) {
+        availablePermissions.push('delete');
       }
-      if (_isAdmin || _permissions.includes(FuncPlanPermission.GRANT)) {
-        tempPermissions.push('grant');
+      if (isAdminUser || userPermissions.includes(FuncPlanPermission.GRANT)) {
+        availablePermissions.push('grant');
       }
-      if (_isAdmin || _permissions.includes(FuncPlanPermission.RESET_TEST_RESULT)) {
-        tempPermissions.push('resetTestResult');
+      if (isAdminUser || userPermissions.includes(FuncPlanPermission.RESET_TEST_RESULT)) {
+        availablePermissions.push('resetTestResult');
       }
-      if (_isAdmin || _permissions.includes(FuncPlanPermission.RESET_REVIEW_RESULT)) {
-        tempPermissions.push('resetReviewResult');
+      if (isAdminUser || userPermissions.includes(FuncPlanPermission.RESET_REVIEW_RESULT)) {
+        availablePermissions.push('resetReviewResult');
       }
-      if (_isAdmin || _permissions.includes(FuncPlanPermission.EXPORT_CASE)) {
-        tempPermissions.push('export');
+      if (isAdminUser || userPermissions.includes(FuncPlanPermission.EXPORT_CASE)) {
+        availablePermissions.push('export');
       }
-      map.set(id, tempPermissions);
+      permissionsMap.set(id, availablePermissions);
     }
   }
-  return map;
+  return permissionsMap;
 });
 
+// Configuration Constants
 const dropdownMenuItems = [
   {
     key: 'delete',
@@ -283,6 +346,21 @@ const dropdownMenuItems = [
 ];
 
 const pageSizeOptions = ['5', '10', '15', '20', '30'];
+
+// Lifecycle and Watchers
+onMounted(() => {
+  watch(() => props.projectId, () => {
+    resetComponent();
+    loadReviewData();
+  }, { immediate: true });
+
+  watch(() => props.notify, (newNotifyValue) => {
+    if (!newNotifyValue) {
+      return;
+    }
+    loadReviewData();
+  }, { immediate: false });
+});
 </script>
 
 <template>
@@ -291,7 +369,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
     <div class="text-3.5 font-semibold mb-1">{{ t('caseReview.list.addedReviews') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
-        <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
+        <div v-if="!searchedFlag && reviewList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('caseReview.list.noReviewsAdded') }}</span>
@@ -305,13 +383,13 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
           <SearchPanel
             :loading="loading"
             @refresh="refresh"
-            @change="searchChange" />
+            @change="handleSearchChange" />
 
-          <NoData v-if="dataList.length === 0" class="flex-1" />
+          <NoData v-if="reviewList.length === 0" class="flex-1" />
 
           <template v-else>
             <div
-              v-for="(item, index) in dataList"
+              v-for="(item, index) in reviewList"
               :key="item.id"
               class="mb-3.5 border border-theme-text-box rounded">
               <div class="px-3.5 py-2 flex items-center justify-between bg-theme-form-head w-full relative">
@@ -341,12 +419,14 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                       <span>{{ t('caseReview.list.owner') }}</span>
                       <Colon />
                     </div>
+
                     <div class="w-5 h-5 rounded-full mr-1 overflow-hidden">
                       <Image
                         class="w-full"
                         :src="item.ownerAvatar"
                         type="avatar" />
                     </div>
+
                     <div
                       class="text-theme-content truncate"
                       :title="item.ownerName"
@@ -380,6 +460,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                         <template #title>
                           <span class="text-3">{{ t('caseReview.list.allParticipants') }}</span>
                         </template>
+
                         <template #content>
                           <div class="flex flex-wrap" style="max-width: 700px;">
                             <div
@@ -461,7 +542,9 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                     :title="item.lastModifiedByName">
                     {{ item.lastModifiedByName }}
                   </div>
+
                   <div class="mx-2 whitespace-nowrap">{{ t('caseReview.list.modifiedBy') }}</div>
+
                   <div class="whitespace-nowrap text-theme-content">
                     {{ item.lastModifiedDate }}
                   </div>
@@ -474,6 +557,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                   style="max-width: 70%;">
                   <otherInformation :value="item.otherInformation" />
                 </div>
+
                 <div class="flex space-x-3 items-center justify-between h-4 leading-5">
                   <RouterLink class="flex items-center space-x-1" :to="`/function#reviews?id=${item.id}&type=edit`">
                     <Icon icon="icon-shuxie" class="text-3.5" />
@@ -491,7 +575,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"
-                    @click="toStart(item, index)">
+                    @click="startReview(item, index)">
                     <Icon icon="icon-kaishi" class="text-3.5" />
                     <span>{{ t('caseReview.list.start') }}</span>
                   </Button>
@@ -502,7 +586,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"
-                    @click="toCompleted(item, index)">
+                    @click="completeReview(item, index)">
                     <Icon icon="icon-yiwancheng" class="text-3.5" />
                     <span>{{ t('caseReview.list.complete') }}</span>
                   </Button>
@@ -511,7 +595,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                     :admin="false"
                     :menuItems="dropdownMenuItems"
                     :permissions="dropdownPermissionsMap.get(item.id)"
-                    @click="dropdownClick(item, index, $event.key)">
+                    @click="handleDropdownAction(item, index, $event.key)">
                     <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
                   </Dropdown>
                 </div>
@@ -519,16 +603,16 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
             </div>
 
             <Pagination
-              v-if="total > 5"
-              :current="pageNo"
+              v-if="totalCount > 5"
+              :current="currentPage"
               :pageSize="pageSize"
               :pageSizeOptions="pageSizeOptions"
-              :total="total"
+              :total="totalCount"
               :hideOnSinglePage="false"
               showSizeChanger
               size="default"
               class="text-right"
-              @change="paginationChange" />
+              @change="handlePaginationChange" />
           </template>
         </template>
       </template>

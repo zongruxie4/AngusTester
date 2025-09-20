@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { LoadingProps } from '@/types/types';
 
+// Props and Component Setup
 const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false
 });
@@ -16,24 +17,28 @@ const props = withDefaults(defineProps<LoadingProps>(), {
 const { t } = useI18n();
 
 type OrderByKey = string;
-type OrderSortKey = PageQuery.OrderSort.Asc | 'DESC';
 
-// eslint-disable-next-line func-call-spacing
+// Event Emitters
 const emits = defineEmits<{
   (e: 'change', value: { orderBy?: string; orderSort?: PageQuery.OrderSort; filters: SearchCriteria[]; }):void,
   (e: 'refresh'):void}>();
 
-const userInfo = ref(appContext.getUser());
-
+// State Management
+const currentUser = ref(appContext.getUser());
 const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
-const planStatusTypeOpt = ref<EnumMessage<FuncPlanStatus>[]>([]);
-const loadStatusEnum = () => {
-  const data = enumUtils.enumToMessages(FuncPlanStatus);
-  planStatusTypeOpt.value = data.map(i => ({ name: i.message, key: i.value }));
+const planStatusOptions = ref<EnumMessage<FuncPlanStatus>[]>([]);
+
+/**
+ * Loads the plan status enum options for filtering
+ */
+const loadStatusEnumOptions = () => {
+  const enumData = enumUtils.enumToMessages(FuncPlanStatus);
+  planStatusOptions.value = enumData.map(option => ({ name: option.message, key: option.value }));
 };
 
+// Configuration Constants
 const searchPanelOptions = [
   {
     valueKey: 'name',
@@ -72,7 +77,7 @@ const searchPanelOptions = [
 const sortMenuItems: {
   name: string;
   key: OrderByKey;
-  orderSort: OrderSortKey;
+  orderSort: PageQuery.OrderSort;
 }[] = [
   {
     name: t('caseReview.list.sortByName'),
@@ -96,7 +101,8 @@ const sortMenuItems: {
   }
 ];
 
-const menuItems = computed(() => [
+// Computed Properties
+const quickMenuItems = computed(() => [
   {
     key: '',
     name: t('caseReview.list.all')
@@ -113,7 +119,7 @@ const menuItems = computed(() => [
     key: 'lastModifiedBy',
     name: t('caseReview.list.myModified')
   },
-  ...planStatusTypeOpt.value,
+  ...planStatusOptions.value,
   {
     key: 'lastDay',
     name: t('caseReview.list.lastDay')
@@ -128,29 +134,35 @@ const menuItems = computed(() => [
   }
 ]);
 
-const orderBy = ref();
-const orderSort = ref();
+// Search State
+const currentOrderBy = ref();
+const currentOrderSort = ref();
 const searchFilters = ref<SearchCriteria[]>([]);
 const quickSearchFilters = ref<SearchCriteria[]>([]);
-const assocFilters = ref<SearchCriteria[]>([]);
-const assocKeys = ['ownerId'];
-const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
+const associatedFilters = ref<SearchCriteria[]>([]);
+const associatedKeys = ['ownerId'];
+const timeRangeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
 
-const formatDateString = (key: string) => {
+/**
+ * Formats date range strings for time-based filtering
+ * @param timeRangeKey - The time range key to format
+ * @returns Array of search criteria for date filtering
+ */
+const formatDateRange = (timeRangeKey: string) => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
 
-  if (key === 'lastDay') {
+  if (timeRangeKey === 'lastDay') {
     startDate = dayjs().startOf('date');
     endDate = dayjs();
   }
 
-  if (key === 'lastThreeDays') {
+  if (timeRangeKey === 'lastThreeDays') {
     startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
     endDate = dayjs();
   }
 
-  if (key === 'lastWeek') {
+  if (timeRangeKey === 'lastWeek') {
     startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
     endDate = dayjs();
   }
@@ -164,119 +176,147 @@ const formatDateString = (key: string) => {
       : ''].filter(Boolean);
 };
 
-const getParams = () => {
+/**
+ * Gets the current search parameters
+ * @returns Object containing all search parameters
+ */
+const getSearchParameters = () => {
   return {
     filters: [
       ...quickSearchFilters.value,
       ...searchFilters.value,
-      ...assocFilters.value
+      ...associatedFilters.value
     ],
-    orderBy: orderBy.value,
-    orderSort: orderSort.value
+    orderBy: currentOrderBy.value,
+    orderSort: currentOrderSort.value
   };
 };
 
-const searchChange = (data: SearchCriteria[]) => {
-  searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
-  assocFilters.value = data.filter(item => assocKeys.includes(item.key));
+/**
+ * Handles search criteria changes from the search panel
+ * @param searchCriteria - The new search criteria
+ */
+const handleSearchChange = (searchCriteria: SearchCriteria[]) => {
+  searchFilters.value = searchCriteria.filter(item => !associatedKeys.includes(item.key));
+  associatedFilters.value = searchCriteria.filter(item => associatedKeys.includes(item.key));
 
-  if (!assocFilters.value.length) {
-    assocKeys.forEach(i => delete selectedMenuMap.value[i]);
+  if (!associatedFilters.value.length) {
+    associatedKeys.forEach(key => delete selectedMenuMap.value[key]);
   } else {
-    assocKeys.forEach(key => {
+    associatedKeys.forEach(key => {
       if (key === 'ownerId') {
-        const filterItem = assocFilters.value.find(i => i.key === key);
-        if (!filterItem || filterItem.value !== userInfo.value?.id) {
+        const filterItem = associatedFilters.value.find(item => item.key === key);
+        if (!filterItem || filterItem.value !== currentUser.value?.id) {
           delete selectedMenuMap.value[key];
         }
       }
     });
   }
 
-  emits('change', getParams());
-};
-const toSort = (sortData) => {
-  orderBy.value = sortData.orderBy;
-  orderSort.value = sortData.orderSort;
-  emits('change', getParams());
+  emits('change', getSearchParameters());
 };
 
-const menuItemClick = (data) => {
-  const key = data.key;
-  const statusTypeKeys = planStatusTypeOpt.value.map(i => i.key);
-  let searchChangeFlag = false;
-  if (selectedMenuMap.value[key]) {
-    delete selectedMenuMap.value[key];
-    if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
+/**
+ * Handles sort order changes
+ * @param sortData - The sort configuration data
+ */
+const handleSortChange = (sortData) => {
+  currentOrderBy.value = sortData.orderBy;
+  currentOrderSort.value = sortData.orderSort;
+  emits('change', getSearchParameters());
+};
+
+/**
+ * Handles quick menu item clicks for filtering
+ * @param menuItem - The clicked menu item data
+ */
+const handleQuickMenuItemClick = (menuItem) => {
+  const itemKey = menuItem.key;
+  const statusTypeKeys = planStatusOptions.value.map(option => option.key);
+  let shouldTriggerSearchChange = false;
+
+  if (selectedMenuMap.value[itemKey]) {
+    delete selectedMenuMap.value[itemKey];
+    if (timeRangeKeys.includes(itemKey) && associatedKeys.includes('createdDate')) {
       searchPanelRef.value.setConfigs([
         { valueKey: 'createdDate', value: undefined }
       ]);
-      searchChangeFlag = true;
-    } else if (assocKeys.includes(key)) {
+      shouldTriggerSearchChange = true;
+    } else if (associatedKeys.includes(itemKey)) {
       searchPanelRef.value.setConfigs([
-        { valueKey: key, value: undefined }
+        { valueKey: itemKey, value: undefined }
       ]);
-      searchChangeFlag = true;
+      shouldTriggerSearchChange = true;
     }
   } else {
-    if (key === '') {
+    if (itemKey === '') {
       selectedMenuMap.value = { '': true };
       quickSearchFilters.value = [];
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
-        searchChangeFlag = true;
+        shouldTriggerSearchChange = true;
       }
     } else {
       delete selectedMenuMap.value[''];
     }
-    if (timeKeys.includes(key)) {
-      timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
-      selectedMenuMap.value[key] = true;
-    } else if (statusTypeKeys.includes(key)) {
+
+    if (timeRangeKeys.includes(itemKey)) {
+      timeRangeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
+      selectedMenuMap.value[itemKey] = true;
+    } else if (statusTypeKeys.includes(itemKey)) {
       statusTypeKeys.forEach(statusKey => delete selectedMenuMap.value[statusKey]);
-      selectedMenuMap.value[key] = true;
+      selectedMenuMap.value[itemKey] = true;
     } else {
-      selectedMenuMap.value[key] = true;
+      selectedMenuMap.value[itemKey] = true;
     }
   }
-  const userId = userInfo.value?.id;
-  let timeFilters: {key: string; op: string; value: string}[] = [];
-  const assocFiltersInQuick = [];
+
+  const currentUserId = currentUser.value?.id;
+  let timeRangeFilters: {key: string; op: string; value: string}[] = [];
+  const associatedFiltersInQuick = [];
+
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
     if (key === '') {
       return undefined;
     } else if (statusTypeKeys.includes(key)) {
       return { key: 'status', op: SearchCriteria.OpEnum.Equal, value: key };
     } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-      timeFilters = formatDateString(key);
+      timeRangeFilters = formatDateRange(key);
       return undefined;
-    } else if (assocKeys.includes(key)) {
+    } else if (associatedKeys.includes(key)) {
       if (key === 'ownerId') {
-        assocFiltersInQuick.push({ valueKey: key, value: userId });
+        associatedFiltersInQuick.push({ valueKey: key, value: currentUserId });
       }
       return undefined;
     } else {
-      return { key, op: SearchCriteria.OpEnum.Equal, value: userId };
+      return { key, op: SearchCriteria.OpEnum.Equal, value: currentUserId };
     }
   }).filter(Boolean);
-  quickSearchFilters.value.push(...timeFilters);
-  if (assocFiltersInQuick.length) {
+
+  quickSearchFilters.value.push(...timeRangeFilters);
+
+  if (associatedFiltersInQuick.length) {
     searchPanelRef.value.setConfigs([
-      ...assocFiltersInQuick
+      ...associatedFiltersInQuick
     ]);
-    searchChangeFlag = true;
+    shouldTriggerSearchChange = true;
   }
-  if (!searchChangeFlag) {
-    emits('change', getParams());
+
+  if (!shouldTriggerSearchChange) {
+    emits('change', getSearchParameters());
   }
 };
 
-const refresh = () => {
+/**
+ * Handles refresh button click
+ */
+const handleRefresh = () => {
   emits('refresh');
 };
 
+// Lifecycle
 onMounted(() => {
-  loadStatusEnum();
+  loadStatusEnumOptions();
 });
 </script>
 <template>
@@ -286,23 +326,25 @@ onMounted(() => {
         <span>{{ t('caseReview.list.quickQuery') }}</span>
         <Colon />
       </div>
+
       <div class="flex  flex-wrap ml-2">
         <div
-          v-for="item in menuItems"
+          v-for="item in quickMenuItems"
           :key="item.key"
           :class="{ 'active-key': selectedMenuMap[item.key] }"
           class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="menuItemClick(item)">
+          @click="handleQuickMenuItemClick(item)">
           {{ item.name }}
         </div>
       </div>
     </div>
+
     <div class="flex items-start justify-between ">
       <SearchPanel
         ref="searchPanelRef"
         :options="searchPanelOptions"
         class="flex-1 mr-3.5"
-        @change="searchChange" />
+        @change="handleSearchChange" />
 
       <div class="flex items-center space-x-3">
         <Button
@@ -316,10 +358,10 @@ onMounted(() => {
         </Button>
 
         <DropdownSort
-          v-model:orderBy="orderBy"
-          v-model:orderSort="orderSort"
+          v-model:orderBy="currentOrderBy"
+          v-model:orderSort="currentOrderSort"
           :menuItems="sortMenuItems"
-          @click="toSort">
+          @click="handleSortChange">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
             <span>{{ t('caseReview.list.sort') }}</span>
@@ -329,7 +371,7 @@ onMounted(() => {
         <IconRefresh
           :loading="props.loading"
           :disabled="props.loading"
-          @click="refresh">
+          @click="handleRefresh">
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />

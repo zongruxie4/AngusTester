@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Popover, TabPane, Tabs, Tag } from 'ant-design-vue';
 import { AsyncComponent, Icon, Image, Input, modal, notification, ReviewStatus, Spin, Table } from '@xcan-angus/vue-ui';
 import { appContext, download, duration, enumUtils } from '@xcan-angus/infra';
-import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import { func, funcPlan } from '@/api/tester';
 import { FuncPlanPermission, FuncPlanStatus } from '@/enums/enums';
 
+// Type imports
 import { BasicProps } from '@/types/types';
 import { ReviewDetail } from '@/views/function/review/types';
 
+// Component imports
 import RichEditor from '@/components/richEditor/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
+// PROPS AND COMPONENT DEFINITIONS
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -22,6 +25,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
   data: undefined
 });
 
+// Async component definitions
 const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/review/edit/SelectCaseModal.vue'));
 const ReviewForm = defineAsyncComponent(() => import('@/views/function/review/detail/ReviewForm.vue'));
 const CaseReviewResult = defineAsyncComponent(() => import('@/views/function/review/case/CaseReviewResult.vue'));
@@ -35,31 +39,44 @@ const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/ca
 const AssocCases = defineAsyncComponent(() => import('@/views/function/review/case/AssocCase.vue'));
 const Description = defineAsyncComponent(() => import('@/views/function/review/case/Description.vue'));
 
+// COMPOSABLES AND INJECTIONS
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const isAdmin = computed(() => appContext.isAdmin());
+
+// UI STATE
 const selectModalVisible = ref(false);
 const loading = ref(false);
+const startLoading = ref(false);
+const drawerRef = ref();
+
+// Pagination state
 const pagination = ref({
   current: 1,
   pageSize: 10,
   total: 1
 });
-const drawerRef = ref();
+
+// Search and filter state
 const keywords = ref();
 const reviewStatus = ref();
+
+// Data state
 const permissions = ref<string[]>([]);
 const reviewDetail = ref(ReviewDetail);
 const caseList = ref([]);
+const reviewId = ref();
 
-const reviewId = ref(); // reviewId
-
+// Selection state
 const selectedRowKey = ref<string|undefined>();
 const selectCaseInfo = ref();
 const selectCaseIds = ref<string[]>([]);
+const activeMenuKey = ref();
 
-const startLoading = ref(false);
-
+/**
+ * <p>Starts the review process for the current review.</p>
+ * <p>Shows loading state and displays success notification upon completion.</p>
+ */
 const startReview = async () => {
   startLoading.value = true;
   const [error] = await func.startReview(reviewId.value);
@@ -71,6 +88,7 @@ const startReview = async () => {
   await loadReviewDetail(reviewId.value);
 };
 
+// Table columns
 const columns = [
   {
     title: ' ',
@@ -137,7 +155,11 @@ const columns = [
   }
 ];
 
-const loadPermissions = async (id: string) => {
+/**
+ * <p>Loads user permissions for the specified plan.</p>
+ * <p>If user is admin, loads all permissions. Otherwise, fetches permissions from API.</p>
+ */
+const loadPermissions = async (planId: string) => {
   if (isAdmin.value) {
     permissions.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
@@ -147,7 +169,7 @@ const loadPermissions = async (id: string) => {
     admin: true
   };
   loading.value = true;
-  const [error, res] = await funcPlan.getCurrentAuthByPlanId(id, params);
+  const [error, res] = await funcPlan.getCurrentAuthByPlanId(planId, params);
   loading.value = false;
   if (error) {
     return;
@@ -156,13 +178,17 @@ const loadPermissions = async (id: string) => {
   permissions.value = (res?.data?.permissions || []).map(item => item.value);
 };
 
-const loadReviewDetail = async (id: string) => {
+/**
+ * <p>Loads detailed information for the specified review.</p>
+ * <p>Updates tab pane title and loads associated permissions.</p>
+ */
+const loadReviewDetail = async (reviewId: string) => {
   if (loading.value) {
     return;
   }
 
   loading.value = true;
-  const [error, res] = await func.getReviewDetail(id);
+  const [error, res] = await func.getReviewDetail(reviewId);
   loading.value = false;
   if (error) {
     return;
@@ -177,14 +203,18 @@ const loadReviewDetail = async (id: string) => {
   reviewDetail.value = data;
   const name = data.name;
   if (name && typeof updateTabPane === 'function') {
-    updateTabPane({ name, _id: id + '-case' });
+    updateTabPane({ name, _id: reviewId + '-case' });
   }
 };
 
-const loadReviewCaseList = async (id: string) => {
+/**
+ * <p>Loads the list of cases for the current review.</p>
+ * <p>Applies search filters and pagination parameters.</p>
+ */
+const loadReviewCaseList = async (reviewId: string) => {
   const { current, pageSize } = pagination.value;
   const [error, { data }] = await func.getReviewCaseList({
-    reviewId: id,
+    reviewId: reviewId,
     filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH' }] : [],
     reviewStatus: reviewStatus.value,
     pageNo: current,
@@ -199,6 +229,10 @@ const loadReviewCaseList = async (id: string) => {
   selectCaseIds.value = [];
 };
 
+/**
+ * <p>Handles pagination changes and reloads case list.</p>
+ * <p>Clears current selection when page changes.</p>
+ */
 const changePage = ({ current, pageSize }) => {
   pagination.value.current = current;
   pagination.value.pageSize = pageSize;
@@ -206,10 +240,17 @@ const changePage = ({ current, pageSize }) => {
   loadReviewCaseList(reviewId.value);
 };
 
+/**
+ * <p>Opens the modal for adding new cases to the review.</p>
+ */
 const addReviewCase = () => {
   selectModalVisible.value = true;
 };
 
+/**
+ * <p>Handles row click events for case selection.</p>
+ * <p>Toggles selection state and manages drawer visibility.</p>
+ */
 const customRow = (record) => {
   return {
     onClick: () => {
@@ -226,6 +267,10 @@ const customRow = (record) => {
   };
 };
 
+/**
+ * <p>Loads detailed information for the selected case.</p>
+ * <p>Determines which case version to display based on review status.</p>
+ */
 const loadCaseContentInfo = async () => {
   const [error, { data }] = await func.getReviewCaseDetail(selectedRowKey.value);
   if (error) {
@@ -237,29 +282,48 @@ const loadCaseContentInfo = async () => {
   };
 };
 
+/**
+ * <p>Closes the case detail drawer and clears selection.</p>
+ */
 const onCloseDrawer = () => {
   selectedRowKey.value = '';
 };
 
-const onCheckedChange = (e, id: string) => {
-  e.stopPropagation();
-  if (e.target.checked) {
-    selectCaseIds.value.push(id);
+/**
+ * <p>Handles checkbox changes for case selection.</p>
+ * <p>Updates the list of selected case IDs for batch operations.</p>
+ */
+const onCheckedChange = (event, caseId: string) => {
+  event.stopPropagation();
+  if (event.target.checked) {
+    selectCaseIds.value.push(caseId);
   } else {
-    selectCaseIds.value = selectCaseIds.value.filter(i => i !== id);
+    selectCaseIds.value = selectCaseIds.value.filter(id => id !== caseId);
   }
 };
 
+/**
+ * <p>Handles search keyword changes with debouncing.</p>
+ * <p>Resets pagination and reloads case list with new search criteria.</p>
+ */
 const handleKeywordChange = debounce(duration.search, () => {
   pagination.value.current = 1;
   loadReviewCaseList(reviewId.value);
 });
 
+/**
+ * <p>Handles review status filter changes.</p>
+ * <p>Resets pagination and reloads case list with new status filter.</p>
+ */
 const handleChangeStatus = () => {
   pagination.value.current = 1;
   loadReviewCaseList(reviewId.value);
 };
 
+/**
+ * <p>Handles successful review completion.</p>
+ * <p>Refreshes case content if currently selected case was reviewed.</p>
+ */
 const handleReviewOk = () => {
   if (selectedRowKey.value && selectCaseIds.value.includes(selectedRowKey.value)) {
     loadCaseContentInfo();
@@ -269,6 +333,10 @@ const handleReviewOk = () => {
   loadReviewDetail(reviewId.value);
 };
 
+/**
+ * <p>Removes a case from the review with confirmation.</p>
+ * <p>Handles pagination adjustment when removing the last item on a page.</p>
+ */
 const delCase = async (record) => {
   modal.confirm({
     title: t('caseReview.detail.confirmCancelReviewCase', { name: record?.caseInfo?.name || '' }),
@@ -285,6 +353,10 @@ const delCase = async (record) => {
   });
 };
 
+/**
+ * <p>Restarts review for a specific case with confirmation.</p>
+ * <p>Resets the case to pending status for re-review.</p>
+ */
 const restart = async (record) => {
   modal.confirm({
     title: t('caseReview.detail.restartReview'),
@@ -299,6 +371,10 @@ const restart = async (record) => {
   });
 };
 
+/**
+ * <p>Resets review results for a specific case with confirmation.</p>
+ * <p>Clears previous review decisions and allows re-review.</p>
+ */
 const reset = async (record) => {
   modal.confirm({
     title: t('caseReview.detail.resetReview'),
@@ -313,6 +389,10 @@ const reset = async (record) => {
   });
 };
 
+/**
+ * <p>Adds selected cases to the current review.</p>
+ * <p>Closes modal and refreshes both case list and review details.</p>
+ */
 const handleAddCase = async (caseIds: string[]) => {
   selectModalVisible.value = false;
   const [error] = await func.addReviewCase({
@@ -326,14 +406,20 @@ const handleAddCase = async (caseIds: string[]) => {
   await loadReviewDetail(reviewId.value);
 };
 
-const activeMenuKey = ref();
-
+/**
+ * <p>Watches for changes in selected row key.</p>
+ * <p>Loads case content when a new case is selected.</p>
+ */
 watch(() => selectedRowKey.value, newValue => {
   if (newValue) {
     loadCaseContentInfo();
   }
 });
 
+/**
+ * <p>Component mounted lifecycle hook.</p>
+ * <p>Watches for changes in props data and loads review information accordingly.</p>
+ */
 onMounted(() => {
   watch(() => props.data, async (newValue, oldValue) => {
     const id = newValue?.id;
@@ -358,7 +444,10 @@ onMounted(() => {
       <div class="flex-1 px-5 py-5 overflow-auto">
         <div class="font-semibold text-4 mb-3">
           {{ reviewDetail?.name }}
-          <Tag class="ml-2 text-white" :class="reviewDetail?.status?.value">{{ reviewDetail?.status?.message }}</Tag>
+          <Tag class="ml-2 text-white" :class="reviewDetail?.status?.value">
+            {{ reviewDetail?.status?.message }}
+          </Tag>
+
           <Button
             v-if="reviewDetail?.status?.value === ReviewStatus.PENDING"
             size="small"
