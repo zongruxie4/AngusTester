@@ -2,7 +2,7 @@
 import { defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Spin as ASpin, Tooltip } from 'ant-design-vue';
-import { AsyncComponent,, Dropdown, Colon, Icon, IconCopy, modal, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Dropdown, Colon, Icon, IconCopy, modal, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 import { TESTER, appContext } from '@xcan-angus/infra';
