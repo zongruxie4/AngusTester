@@ -10,7 +10,7 @@ import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskDetail } from '../../types';
-import { TaskInfoProps } from '@/views/task/task/list/types';
+import { AssocCaseProps } from '@/views/task/task/list/types';
 import { SoftwareVersionStatus } from '@/enums/enums';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -20,7 +20,7 @@ import TaskStatus from '@/components/TaskStatus/index.vue';
 const { t } = useI18n();
 
 // Component Props & Emits
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

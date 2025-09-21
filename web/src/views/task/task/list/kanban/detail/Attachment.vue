@@ -6,7 +6,7 @@ import { upload, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskDetail } from '@/views/task/types';
-import { TaskInfoProps } from '@/views/task/task/list/types';
+import { AssocCaseProps } from '@/views/task/task/list/types';
 
 /**
  * <p>Attachment item interface</p>
@@ -19,7 +19,7 @@ type AttachmentItem = {
 }
 
 // Component props and emits
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

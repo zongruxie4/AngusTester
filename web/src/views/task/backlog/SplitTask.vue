@@ -15,14 +15,14 @@ import { TaskType } from '@/enums/enums';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import { TIME_FORMAT } from '@/utils/constant';
-import { EditFormState, TaskInfoProps } from '@/views/task/task/list/types';
+import { TaskEditState, AssocCaseProps } from '@/views/task/task/list/types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 
 // Component Props & Emits
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   visible: false,
   projectId: undefined,
   dataSource: undefined
@@ -45,7 +45,7 @@ const isConfirmLoading = ref(false);
 const isGenerating = ref(false);
 
 const taskIdList = ref<string[]>([]);
-const taskDataMap = ref<EditFormState>({} as EditFormState);
+const taskDataMap = ref<TaskEditState>({} as TaskEditState);
 
 // Validation Error Sets
 const taskTypeErrorSet = ref(new Set<string>());
@@ -100,7 +100,7 @@ const generateSubTasksWithAI = async () => {
   const parentTaskInfo = props.dataSource || {};
   const subTaskContentList = aiResponse.content;
   const newTaskIdList: string[] = [];
-  const newTaskDataMap = {} as EditFormState;
+  const newTaskDataMap = {} as TaskEditState;
   for (let i = 0, len = subTaskContentList.length; i < len; i++) {
     const taskId = utils.uuid();
     newTaskIdList.push(taskId);
@@ -402,7 +402,7 @@ const resetForm = () => {
   aiKeywordsInput.value = '';
   isAISplitMode.value = false;
   taskIdList.value = [];
-  taskDataMap.value = {} as EditFormState;
+  taskDataMap.value = {} as TaskEditState;
   taskTypeErrorSet.value.clear();
   priorityErrorSet.value.clear();
   nameErrorSet.value.clear();

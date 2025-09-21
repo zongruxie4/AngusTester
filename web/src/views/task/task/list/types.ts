@@ -1,35 +1,50 @@
 import { Priority } from '@xcan-angus/infra';
-import { TaskType, TestType, BugLevel } from '@/enums/enums';
-import { TaskDetail } from '@/views/task/types';
+import { TaskType, BugLevel } from '@/enums/enums';
+import { CaseInfo } from '@/views/function/types';
+import { TaskInfo } from '@/views/task/types';
+import { AttachmentInfo } from '@/types/types';
 
-export type EditFormState = {
-  assigneeId: string | undefined;
-  deadlineDate: string | undefined;
-  name: string | undefined;
-  priority: Priority;
-  projectId: string | undefined;
+export type TaskEditState = {
+  /** Sprint Id */
   sprintId: string | undefined;
-  taskType: TaskType;
+  /** Function case module identifier for task categorization */
   moduleId?: string | undefined;
+  /** Task display name for identification and organization */
+  name: string | undefined;
+  /** Software version identifier associated with the task */
+  softwareVersion?: string | undefined;
+  /** Task classification type for workflow management. Note: Test task type cannot be modified after creation */
+  taskType: TaskType;
+  /** Bug severity level for defect classification */
+  bugLevel?: BugLevel | undefined;
+  /** Primary assignee identifier for task responsibility assignment */
+  assigneeId: string | undefined;
+  /** Reviewer identifier for task validation and approval */
   confirmerId?: string | undefined;
-  attachments?: {
-    name: string;
-    url: string;
-  }[] | undefined;
-  targetParentId?: string | undefined;
-  targetId?: string | undefined;
-  parentTaskId?: string | undefined;
+  /** Test execution identifier for task testing responsibility */
+  testerId?: string | undefined;
+  /** Flag indicating if this is a missing bug report */
+  missingBug?: boolean | undefined;
+  /** Tag identifiers for task categorization and filtering */
   tagIds?: string[] | undefined;
-  refTaskIds?: string[] | undefined;
-  refCaseIds?: string[] | undefined;
+  /** Task priority level for scheduling and resource allocation */
+  priority: Priority;
+  /** Task completion deadline for timeline management */
+  deadlineDate: string | undefined;
+  /** Task-related file attachments for documentation and reference */
+  attachments?: AttachmentInfo[] | undefined;
+  /** Detailed task description for requirements and context */
   description?: string | undefined;
+  /** Estimated workload for task planning and resource allocation */
   evalWorkload?: string | undefined;
+  /** Actual workload for performance tracking and analysis */
   actualWorkload?: string | undefined;
-  testType?: TestType;
-  bugLevel?: BugLevel;
-  testerId?: string;
-  missingBug?: boolean;
-  softwareVersion?: string;
+  /** Parent task identifier for hierarchical task relationships */
+  parentTaskId?: string | undefined;
+  /** Referenced task identifiers for dependency management */
+  refTaskIds?: string[] | undefined;
+  /** Referenced test case identifiers for test coverage linkage */
+  refCaseIds?: string[] | undefined;
 
   // Temp for edit
   userInfo?: { id: string; };
@@ -38,11 +53,33 @@ export type EditFormState = {
   taskId?: string;
 }
 
-export type TaskInfoProps = {
+/**
+ * Props interface for AssocTask component
+ */
+export interface AssocTaskProps {
+  /** Project identifier for context */
+  projectId: string;
+  /** User information object */
+  userInfo: { id: string; };
+  /** Application information object */
+  appInfo: { id: string; };
+  /** Current task identifier */
+  taskId: string;
+  /** List of associated task data */
+  dataSource: TaskInfo[];
+  /** Display title for the component */
+  title: string;
+  /** Type of tasks to filter and display */
+  taskType: TaskType;
+  /** Optional tips or description text */
+  tips?: string;
+}
+
+export type AssocCaseProps = {
   projectId: string;
   userInfo: { id: string; fullName: string};
   appInfo: { id: string; };
-  dataSource: TaskDetail;
+  dataSource: CaseInfo;
   taskId?: string;
   loading?: boolean;
   notify?: string;

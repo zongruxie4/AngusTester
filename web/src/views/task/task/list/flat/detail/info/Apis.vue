@@ -14,10 +14,10 @@ import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskDetail } from '@/views/task/types';
-import { TaskInfoProps } from '@/views/task/task/list/types';
+import { AssocCaseProps } from '@/views/task/task/list/types';
 
 // Component props and emits
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

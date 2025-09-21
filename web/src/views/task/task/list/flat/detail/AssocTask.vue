@@ -1,53 +1,24 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { AsyncComponent, Hints, Icon, modal, Table } from '@xcan-angus/vue-ui';
-import { EnumMessage, TESTER } from '@xcan-angus/infra';
+import { TESTER } from '@xcan-angus/infra';
 import { Button, Progress } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { TaskType } from '@/enums/enums';
 import { task } from '@/api/tester';
+import { AssocTaskProps } from '@/views/task/task/list/types';
+
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
+const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));
 
-/**
- * Props interface for AssocTask component
- * <p>
- * Defines the required properties for displaying and managing
- * task associations with a specific parent task.
- */
-interface Props {
-  /** Project identifier for context */
-  projectId: string;
-  /** User information object */
-  userInfo: { id: string; };
-  /** Application information object */
-  appInfo: { id: string; };
-  /** Current task identifier */
-  taskId: string;
-  /** List of associated task data */
-  dataSource: {
-    id: string;
-    name: string;
-    taskType: EnumMessage<TaskType>
-  }[];
-  /** List of associated case identifiers */
-  caseList: { id: string; }[];
-  /** Display title for the component */
-  title: string;
-  /** Type of tasks to filter and display */
-  taskType: TaskType;
-  /** Optional tips or description text */
-  tips?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<AssocTaskProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   taskId: undefined,
   dataSource: undefined,
-  caseList: undefined,
   title: 'Task',
   taskType: TaskType.TASK,
   tips: ''
@@ -56,14 +27,6 @@ const props = withDefaults(defineProps<Props>(), {
 // Composables
 const router = useRouter();
 const { t } = useI18n();
-
-/**
- * Lazy-loaded modal component for selecting tasks by module
- * <p>
- * Provides a modal interface for users to browse and select
- * tasks that can be associated with the current parent task
- */
-const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));
 
 /**
  * Event emitter for component communication

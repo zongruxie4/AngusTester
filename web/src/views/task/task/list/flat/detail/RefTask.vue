@@ -5,9 +5,9 @@ import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfoProps } from '@/views/task/task/list/types';
+import { AssocCaseProps } from '@/views/task/task/list/types';
 
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

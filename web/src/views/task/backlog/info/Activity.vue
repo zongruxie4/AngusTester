@@ -6,10 +6,10 @@ import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { CombinedTargetType } from '@/enums/enums';
 
 import { ActivityInfo } from '@/types/types';
-import { TaskInfoProps } from '@/views/task/task/list/types';
+import { AssocCaseProps } from '@/views/task/task/list/types';
 
 // Component Props
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

@@ -7,17 +7,16 @@ import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { TaskInfoProps } from '@/views/task/task/list/types';
+import { AssocCaseProps } from '@/views/task/task/list/types';
+
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
+const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/selectByModuleModal/index.vue'));
 
 /**
  * Props interface for AssocCase component
- * <p>
- * Defines the required properties for displaying and managing
- * test case associations with a specific task.
  */
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -28,14 +27,6 @@ const props = withDefaults(defineProps<TaskInfoProps>(), {
 // Composables
 const router = useRouter();
 const { t } = useI18n();
-
-/**
- * Lazy-loaded modal component for selecting test cases by module
- * <p>
- * Provides a modal interface for users to browse and select
- * test cases that can be associated with the current task
- */
-const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/selectByModuleModal/index.vue'));
 
 /**
  * Event emitter for component communication

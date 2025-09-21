@@ -12,13 +12,13 @@ import { SoftwareVersionStatus } from '@/enums/enums';
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskInfoProps } from '@/views/task/task/list/types';
+import { AssocCaseProps } from '@/views/task/task/list/types';
 
 // Async Components
 const Description = defineAsyncComponent(() => import('@/views/task/task/list/kanban/detail/Description.vue'));
 
 // Component Props & Emits
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

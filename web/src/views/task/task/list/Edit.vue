@@ -12,9 +12,9 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
-import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
+import { BugLevel, SoftwareVersionStatus, TaskType } from '@/enums/enums';
 
-import { EditFormState } from './types';
+import { TaskEditState } from './types';
 import { TaskDetail } from '../../types';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -25,7 +25,7 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap',
 );
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
-const props = withDefaults(defineProps<EditFormState>(), {
+const props = withDefaults(defineProps<TaskEditState>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -66,10 +66,10 @@ const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>(
 const confirmerDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
 
 // Store original form state for comparison during edit
-let originalFormState: EditFormState | undefined;
+let originalFormState: TaskEditState | undefined;
 
 // Main form state containing all task data
-const formState = reactive<EditFormState>({
+const formState = reactive<TaskEditState>({
   projectId: props.projectId,
   assigneeId: undefined,
   attachments: [],
@@ -89,7 +89,6 @@ const formState = reactive<EditFormState>({
   targetId: undefined,
   targetParentId: undefined,
   taskType: TaskType.TASK,
-  testType: TestType.FUNCTIONAL,
   bugLevel: BugLevel.MINOR,
   testerId: undefined,
   missingBug: false,
@@ -430,7 +429,7 @@ const isFormValid = async () => {
  * @returns Task parameters object for API calls
  */
 const buildTaskParameters = () => {
-  const params: EditFormState = {
+  const params: TaskEditState = {
     projectId: props.projectId,
     sprintId: formState.sprintId,
     name: formState.name,
@@ -650,10 +649,7 @@ const resetFormToDefaults = () => {
   formState.tagIds = [];
   formState.refTaskIds = [];
   formState.refCaseIds = props.refCaseIds || [];
-  formState.targetId = undefined;
-  formState.targetParentId = undefined;
   formState.taskType = props.taskType || TaskType.TASK;
-  formState.testType = TestType.FUNCTIONAL;
   formState.missingBug = false;
   formState.assigneeId = props.assigneeId || props.userInfo?.id || undefined;
   formState.testerId = props.taskType === TaskType.BUG ? props.userInfo?.id : undefined;
@@ -711,10 +707,7 @@ const populateFormWithTaskData = (data: Partial<TaskDetail>) => {
   formState.tagIds = data.tags?.map(item => item.id);
   formState.refTaskIds = data.refTaskInfos?.map(item => item.id);
   formState.refCaseIds = data.refCaseInfos?.map(item => item.id);
-  formState.targetId = data.targetId;
   formState.taskType = data.taskType?.value || TaskType.TASK;
-  formState.testType = data.testType?.value || TestType.FUNCTIONAL;
-  formState.targetParentId = data.targetParentId;
   formState.testerId = data.testerId;
   formState.missingBug = data.missingBug || false;
   formState.bugLevel = data.bugLevel?.value || BugLevel.MINOR;
@@ -935,7 +928,7 @@ onMounted(() => {
                 :label="t('task.editModal.form.missingBug')"
                 class="flex-1/2">
                 <Select
-                  v-model:value="(formState.missingBug as any)"
+                  :value="(formState.missingBug as any)"
                   :options="[
                     { value: (true as any), label: t('task.editModal.form.missingBugOptions.yes') },
                     { value: (false as any), label: t('task.editModal.form.missingBugOptions.no') }

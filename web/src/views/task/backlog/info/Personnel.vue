@@ -7,12 +7,12 @@ import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 import { TaskDetail } from '../../types';
-import { TaskInfoProps } from '@/views/task/task/list/types';
+import { AssocCaseProps } from '@/views/task/task/list/types';
 
 const { t } = useI18n();
 
 // Component Props & Emits
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

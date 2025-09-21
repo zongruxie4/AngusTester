@@ -13,7 +13,7 @@ import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
-import { EditFormState } from '@/views/task/task/list/types';
+import { TaskEditState } from '@/views/task/task/list/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
@@ -23,7 +23,7 @@ import { TaskDetail } from '../types';
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
 // Component Props & Emits
-const props = withDefaults(defineProps<EditFormState>(), {
+const props = withDefaults(defineProps<TaskEditState>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -82,8 +82,8 @@ const loadModuleTreeData = async () => {
 };
 
 // Form State Management
-let previousFormState: EditFormState | undefined;
-const formState = reactive<EditFormState>({
+let previousFormState: TaskEditState | undefined;
+const formState = reactive<TaskEditState>({
   projectId: undefined,
   assigneeId: undefined,
   attachments: undefined,
@@ -313,7 +313,7 @@ const validateFormFields = async () => {
  * <p>Constructs the parameter object based on form state and task type</p>
  */
 const buildFormParameters = () => {
-  const params: EditFormState = {
+  const params: TaskEditState = {
     projectId: props.projectId,
     sprintId: formState.sprintId,
     name: formState.name,

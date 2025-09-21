@@ -6,11 +6,11 @@ import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER, PageQuery, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { TaskDetail } from '../../types';
-import { TaskInfoProps } from '@/views/task/task/list/types';
+import { AssocCaseProps } from '@/views/task/task/list/types';
 import { Remark } from '@/views/task/task/types';
 
 // Component Props
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   id: '-1'
 });
 

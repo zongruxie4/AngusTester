@@ -14,7 +14,7 @@ import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskDetail } from '@/views/task/types';
-import { TaskInfoProps } from '@/views/task/task/list/types';
+import { AssocCaseProps } from '@/views/task/task/list/types';
 
 /**
  * Props interface for SubTask component
@@ -22,7 +22,7 @@ import { TaskInfoProps } from '@/views/task/task/list/types';
  * Defines the required properties for displaying and managing
  * sub-tasks associated with a parent task.
  */
-const props = withDefaults(defineProps<TaskInfoProps>(), {
+const props = withDefaults(defineProps<AssocCaseProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
