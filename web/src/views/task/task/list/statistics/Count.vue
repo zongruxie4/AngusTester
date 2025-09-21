@@ -2,13 +2,13 @@
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 
-import { StatisticsInfo } from '../../types';
+import { TaskCount } from '../../types';
 
 /**
  * Component props interface for Count component
  */
 type Props = {
-  dataSource: StatisticsInfo;
+  dataSource: TaskCount;
 }
 
 // Composables

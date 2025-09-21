@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue';
 
-import { StatisticsInfo } from '../../types';
+import { TaskCount } from '../../types';
 
 /**
  * Component props interface for Chart component
  */
 type Props = {
-  dataSource: StatisticsInfo;
+  dataSource: TaskCount;
 }
 
 // Props Definition

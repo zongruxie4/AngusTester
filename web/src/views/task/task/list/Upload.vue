@@ -100,7 +100,7 @@ const validateFileSelection = async () => {
 /**
  * Load strategy options for duplicate handling
  */
-function loadStrategyOptions() {
+function loadStrategyOptions () {
   const data = enumUtils.enumToMessages(StrategyWhenDuplicated);
   strategyOptions.value = data.map(i => ({ value: i.value, label: i.message }));
 }

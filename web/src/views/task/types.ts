@@ -2,7 +2,7 @@ import { EnumMessage, EvalWorkloadMethod, Priority } from '@xcan-angus/infra';
 import { BugLevel, ExecResult, TaskStatus, TaskType, TestType, AssociateUserType } from '@/enums/enums';
 import { ProgressInfo, TagInfo } from '@/types/types';
 
-import {CaseInfo} from "@/views/function/types";
+import { CaseInfo } from '@/views/function/types';
 
 /**
  * Task information interface containing all task-related data

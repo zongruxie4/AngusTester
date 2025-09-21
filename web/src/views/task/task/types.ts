@@ -32,37 +32,73 @@ export type Remark = {
 /**
  * Statistics information interface for task metrics and counts
  */
-export type StatisticsInfo = {
-  actualWorkload: string;
-  apiTestNum: string;
-  bugNum: string;
-  canceledNum: string;
-  completedNum: string;
-  completedWorkload: string;
-  confirmingNum: string;
-  evalWorkload: string;
-  functionalNum: string;
-  inProgressNum: string;
-  oneTimePassedNum: string;
-  oneTimePassedRate: string;
-  overdueNum: string;
-  pendingNum: string;
-  perfNum: string;
-  processFailTimes: string;
-  processTimes: string;
-  requirementNum: string;
-  scenarioTestNum: string;
-  stabilityNum: string;
-  storyNum: string;
-  taskNum: string;
-  testFailNum: string;
-  testSuccessNum: string;
-  totalStatusNum: string;
-  totalTaskNum: string;
-  totalTaskTypeNum: string;
-  totalTestTypeNum: string;
-  validTaskNum: string;
+export type TaskCount = {
+  /** Total number of tasks */
+  totalTaskNum: number;
+  /** Total number of tasks, Ignoring cancel status tasks */
+  validTaskNum: number;
+  /** The number of tasks in pending */
+  pendingNum: number;
+  /** The number of tasks in progress */
+  inProgressNum: number;
+  /** The number of tasks is confirming */
+  confirmingNum: number;
+  /** The number of completed tasks */
+  completedNum: number;
+  /** The number of canceled tasks */
+  canceledNum: number;
+  /** Total number of tasks */
+  totalStatusNum: number;
+  /** The number of Performance Tasks */
+  perfNum: number;
+  /** The number of function tasks */
+  functionalNum: number;
+  /** The number of stabilization tasks */
+  stabilityNum: number;
+  /** Total number of test type tasks */
+  totalTestTypeNum: number;
+  /** The number of requirement type tasks */
+  requirementNum: number;
+  /** The number of story type tasks */
+  storyNum: number;
+  /** The number of task type tasks */
+  taskNum: number;
+  /** The number of bug type tasks */
+  bugNum: number;
+  /** The number of api test type tasks */
+  apiTestNum: number;
+  /** The number of scenario test type tasks */
+  scenarioTestNum: number;
+  /** Total number of task type tasks */
+  totalTaskTypeNum: number;
+  /** The number of successful test tasks */
+  testSuccessNum: number;
+  /** The number of test failed tasks */
+  testFailNum: number;
+  /** The number of overdue tasks */
+  overdueNum: number;
+  /** The number of tasks that the test passed at one time */
+  oneTimePassedNum: number;
+  /** One-time pass rate */
+  oneTimePassedRate: number;
+  /** The number of task process times */
+  processTimes: number;
+  /** The number of task process failure times */
+  processFailTimes: number;
+  /** Eval workload */
+  evalWorkload: number;
+  /** Actual workload */
+  actualWorkload: number;
+  /** Completed workload */
+  completedWorkload: number;
+  /** Actual saving workload */
+  savingWorkload: number;
+  /** Rate of actual saving workload */
+  savingWorkloadRate: number;
+  /** Calculates progress percentage (0-100) */
   progress: string;
+  /** Calculates overdue rate percentage (0-100) */
+  overdueRate: string;
 }
 
 /**

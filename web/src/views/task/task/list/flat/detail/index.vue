@@ -1314,10 +1314,10 @@ const getReferencedTaskCount = (type = 'TASK') => {
       </TabPane>
 
       <!-- Associated Bug Tab -->
-      <TabPane key="asscoBug">
+      <TabPane key="assocBug">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.asscoBug.title') }}</span>
+            <span>{{ t('task.detail.assocBug.title') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.BUG) }})</span>
           </div>
         </template>
@@ -1328,17 +1328,17 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.asscoBug.title')"
-          :tips="t('task.detail.asscoBug.tips')"
+          :title="t('task.detail.assocBug.title')"
+          :tips="t('task.detail.assocBug.tips')"
           :taskType="TaskType.BUG"
           @editSuccess="loadTaskData" />
       </TabPane>
 
       <!-- Associated Case Tab -->
-      <TabPane key="asscoCase">
+      <TabPane key="assocCase">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.asscoCase.title') }}</span>
+            <span>{{ t('task.detail.assocCase.title') }}</span>
             <span>({{ currentTaskInfo?.refCaseInfos?.length || 0 }})</span>
           </div>
         </template>

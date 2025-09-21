@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 
 // ASYNC COMPONENTS
 const TaskList = defineAsyncComponent(() => import('@/views/task/task/list/index.vue'));
-const TaskDetails = defineAsyncComponent(() => import('@/views/task/task/details/index.vue'));
+const TaskDetails = defineAsyncComponent(() => import('@/views/task/task/detail/index.vue'));
 
 // COMPOSABLES
 const route = useRoute();

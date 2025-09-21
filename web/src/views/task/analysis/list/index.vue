@@ -9,7 +9,7 @@ import { analysis } from '@/api/tester';
 import { EnumMessage } from '@xcan-angus/infra';
 import { AnalysisDataSource, AnalysisTaskTemplate, AnalysisTaskTemplateDesc } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
-import {AnalysisInfo} from "@/views/task/analysis/types";
+import { AnalysisInfo } from '@/views/task/analysis/types';
 
 // Lazy load template selection component
 const Introduce = defineAsyncComponent(() => import('@/views/task/analysis/list/Introduce.vue'));

@@ -10,7 +10,7 @@ import { TaskStatus } from '@/enums/enums';
 
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import TaskStatusV from '@/components/TaskStatus/index.vue';
-import {TaskInfo} from "@/views/task/types";
+import { TaskInfo } from '@/views/task/types';
 
 /**
  * Props interface for WorkCalendar component.

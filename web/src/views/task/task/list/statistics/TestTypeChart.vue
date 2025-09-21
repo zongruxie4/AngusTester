@@ -8,13 +8,13 @@ import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useI18n } from 'vue-i18n';
 
-import { StatisticsInfo } from '../../types';
+import { TaskCount } from '../../types';
 
 /**
  * Component props interface for TestTypeChart component
  */
 type Props = {
-  dataSource: StatisticsInfo;
+  dataSource: TaskCount;
 }
 
 /**
@@ -64,17 +64,7 @@ const chartOptions: EChartsOption = {
     orient: 'vertical',
     itemHeight: 14,
     itemWidth: 14,
-    itemGap: 5,
-    // formatter: function (name) {
-    //   const data = chartOptions?.series?.[0].data;
-    //   for (let i = 0; i < data.length; i++) {
-    //     if (data[i].name === name) {
-    //       name += ' ' + data[i].value;
-    //       break;
-    //     }
-    //   }
-    //   return name;
-    // }
+    itemGap: 5
   },
   color: CHART_COLORS,
   series: [

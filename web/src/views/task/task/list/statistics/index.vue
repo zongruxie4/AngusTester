@@ -4,7 +4,7 @@ import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils, SearchCriteria } from '@xcan-angus/infra';
 import { analysis } from '@/api/tester';
 
-import { StatisticsInfo } from '../../types';
+import { TaskCount } from '../../types';
 
 /**
  * API request parameters interface
@@ -59,7 +59,7 @@ const componentId = utils.uuid();
 /**
  * Default statistics data structure with all values initialized to '0'
  */
-const defaultStatisticsData: StatisticsInfo = {
+const defaultStatisticsData: TaskCount = {
   actualWorkload: '0',
   apiTestNum: '0',
   bugNum: '0',
@@ -92,7 +92,7 @@ const defaultStatisticsData: StatisticsInfo = {
   progress: '0'
 };
 
-const statisticsData = ref<StatisticsInfo>({ ...defaultStatisticsData });
+const statisticsData = ref<TaskCount>({ ...defaultStatisticsData });
 
 /**
  * Determines the active key for the collapse component based on collapse state

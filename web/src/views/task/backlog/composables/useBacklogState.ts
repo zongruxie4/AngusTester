@@ -116,14 +116,14 @@ export function useBacklogState () {
       currentInfo.currentTaskInfo = { ...currentInfo.currentTaskInfo, ...data };
     }
 
-    const currentIndex = backlogData.backlogList.findIndex(i => i.id === data.id)
+    const currentIndex = backlogData.backlogList.findIndex(i => i.id === data.id);
     if (currentIndex > -1) {
       backlogData.backlogList[currentIndex] = currentInfo.currentTaskInfo;
     }
 
     if (currentInfo.currentTaskInfo?.sprintId) {
       const list = sprintData.sprintTasksMap[currentInfo.currentTaskInfo?.sprintId];
-      const currentIndex = list.findIndex(i => i.id === data.id)
+      const currentIndex = list.findIndex(i => i.id === data.id);
       if (currentIndex > -1) {
         sprintData.sprintTasksMap[currentInfo.currentTaskInfo?.sprintId][currentIndex] = currentInfo.currentTaskInfo;
       }
