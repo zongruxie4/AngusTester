@@ -16,10 +16,10 @@ import { CaseActionAuth, getActionAuth } from '@/views/function/case/types';
 
 export type TabKey = 'info' | 'activity' | 'comments' | 'assocTask' | 'assocCase'
 
-const CaseDetailTab = defineAsyncComponent(() => import('@/views/function/case/detail/Case.vue'));
-const ReviewTab = defineAsyncComponent(() => import('@/views/function/case/detail/Review.vue'));
-const AssocTaskTab = defineAsyncComponent(() => import('@/views/function/case/detail/AssocTask.vue'));
-const AssocCaseTab = defineAsyncComponent(() => import('@/views/function/case/detail/AssocCase.vue'));
+const CaseDetailTab = defineAsyncComponent(() => import('@/views/function/case/list/flat/detail/index.vue'));
+const ReviewTab = defineAsyncComponent(() => import('@/views/function/case/list/flat/detail/Review.vue'));
+const AssocTaskTab = defineAsyncComponent(() => import('@/views/function/case/list/flat/detail/AssocTask.vue'));
+const AssocCaseTab = defineAsyncComponent(() => import('@/views/function/case/list/flat/detail/AssocCase.vue'));
 const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
 
 interface IData {

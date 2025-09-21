@@ -5,7 +5,7 @@ import { Dropdown, Icon, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { PageQuery } from '@xcan-angus/infra';
 
-import { CaseActionAuth, CaseDetailChecked, EnabledGroup, GroupCaseList } from '../../types';
+import { CaseActionAuth, CaseDetailChecked, EnabledGroup, GroupCaseList } from '../types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';

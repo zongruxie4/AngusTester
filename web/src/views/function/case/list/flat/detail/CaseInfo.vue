@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { Grid, ReviewStatus } from '@xcan-angus/vue-ui';
+import { EvalWorkloadMethod } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { Tag } from 'ant-design-vue';
+
 import TaskPriority from '@/components/TaskPriority/index.vue';
+
+const { t } = useI18n();
 
 interface Props {
   caseInfo?: {[key: string]: any}
 }
-
-const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   caseInfo: undefined
@@ -29,17 +31,29 @@ const infoColumns = computed(() => [
       label: t('functionCase.detail.review.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.review.evalWorkload') : t('functionCase.detail.review.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.review.actualWorkload') : t('functionCase.detail.review.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
+    {
+      label: props.caseInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+        ? t('functionCase.detail.review.evalWorkload')
+        : t('functionCase.detail.review.evalWorkload'),
+      dataIndex: 'evalWorkload',
+      customRender: ({ text }) => text || '--'
+    },
+    {
+      label: props.caseInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+        ? t('functionCase.detail.review.actualWorkload')
+        : t('functionCase.detail.review.actualWorkload'),
+      dataIndex: 'actualWorkload',
+      customRender: ({ text }) => text || '--'
+    }
   ]
 ]);
-
 </script>
 <template>
   <div class="space-y-3">
     <div class="font-semibold text-3.5">
       {{ t('functionCase.detail.review.basicInfo') }}
     </div>
+
     <Grid
       :columns="infoColumns"
       :dataSource="caseInfo"
@@ -51,6 +65,7 @@ const infoColumns = computed(() => [
       <template #priority="{text}">
         <TaskPriority :value="text" />
       </template>
+
       <template #tags="{text}">
         <Tag
           v-for="(tag,index) in (text || [])"
@@ -62,17 +77,21 @@ const infoColumns = computed(() => [
         </Tag>
         <template v-if="!text?.length">--</template>
       </template>
+
       <template #evalWorkload="{text}">
         {{ text || '--' }}
       </template>
+
       <template #actualWorkload="{text}">
         {{ text || '--' }}
       </template>
+
       <template #planName="{text}">
         <span>
           <Icon icon="icon-jihua" class="mr-1.25 flex-none -mt-0.25" />{{ text }}
         </span>
       </template>
+
       <template #moduleName="{text}">
         <template v-if="!text">
           --
@@ -85,6 +104,7 @@ const infoColumns = computed(() => [
           </Tag>
         </div>
       </template>
+
       <template #reviewStatus="{text}">
         <template v-if="text">
           <ReviewStatus :value="text" />
@@ -93,6 +113,7 @@ const infoColumns = computed(() => [
           --
         </template>
       </template>
+
       <template #testResult="{text}">
         <div class="flex items-center">
           <TestResult :value="text" />

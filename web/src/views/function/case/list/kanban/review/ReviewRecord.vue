@@ -5,10 +5,10 @@ import { ReviewStatus } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
-const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/review/ReviewRecordCase.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/kanban/review/ReviewRecordCase.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/function/review/case/Precondition.vue'));
 const Description = defineAsyncComponent(() => import('@/views/function/review/case/Description.vue'));
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
+const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/CaseSteps.vue'));
 
 interface Props {
   dataSource: {id: string; reviewNum: number; reviewFailNum: number;};

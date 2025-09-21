@@ -5,9 +5,9 @@ import { useI18n } from 'vue-i18n';
 import { ReviewStatus } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 
-const CaseInfo = defineAsyncComponent(() => import('@/views/function/case/detail/CaseInfo.vue'));
+const CaseInfo = defineAsyncComponent(() => import('@/views/function/case/list/flat/detail/CaseInfo.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/function/review/case/Precondition.vue'));
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
+const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/CaseSteps.vue'));
 const Description = defineAsyncComponent(() => import('@/views/function/review/case/Description.vue'));
 
 interface Props {

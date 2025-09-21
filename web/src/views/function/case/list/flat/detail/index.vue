@@ -42,7 +42,7 @@ import TestResult from '@/components/TestResult/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
+const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/CaseSteps.vue'));
 
 interface Props {
   caseDetail: CaseDetail;
@@ -773,7 +773,8 @@ onBeforeUnmount(() => {
                   arrowPointAtCenter>
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT ? t('functionCase.kanbanView.infoBasic.evalWorkloadTip') :t ('functionCase.kanbanView.infoBasic.evalWorkloadTipTime') }}
+                      {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                        ? t('functionCase.kanbanView.infoBasic.evalWorkloadTip') :t ('functionCase.kanbanView.infoBasic.evalWorkloadTipTime') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
@@ -811,7 +812,8 @@ onBeforeUnmount(() => {
                   arrowPointAtCenter>
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT ? t('functionCase.kanbanView.infoBasic.actualWorkloadTip') : t('functionCase.kanbanView.infoBasic.actualWorkloadTipTime') }}
+                      {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                        ? t('functionCase.kanbanView.infoBasic.actualWorkloadTip') : t('functionCase.kanbanView.infoBasic.actualWorkloadTipTime') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />

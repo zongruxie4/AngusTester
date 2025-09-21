@@ -31,9 +31,9 @@ import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/function/types';
-import { CaseDetailChecked, CaseEditState } from '../types';
+import { CaseDetailChecked, CaseEditState } from './types';
 
-import CaseSteps from '@/views/function/case/list/case/CaseSteps.vue';
+import CaseSteps from '@/views/function/case/list/CaseSteps.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import RichEditor from '@/components/richEditor/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';

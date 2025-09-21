@@ -18,7 +18,7 @@ import { funcCase, project, modules } from '@/api/tester';
 import { ai } from '@/api/gm';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
-import CaseSteps from '@/views/function/case/list/case/CaseSteps.vue';
+import CaseSteps from '@/views/function/case/list/CaseSteps.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import RichEditor from '@/components/richEditor/index.vue';

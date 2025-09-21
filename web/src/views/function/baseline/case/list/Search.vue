@@ -11,7 +11,7 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
-const TagList = defineAsyncComponent(() => import('@/views/function/case/list/case/TagSelector.vue'));
+const TagList = defineAsyncComponent(() => import('@/views/function/case/list/TagSelector.vue'));
 
 const { t } = useI18n();
 

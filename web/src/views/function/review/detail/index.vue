@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/review/edit/SelectCaseModal.vue'));
 const ReviewForm = defineAsyncComponent(() => import('@/views/function/review/detail/ReviewForm.vue'));
 const CaseReviewResult = defineAsyncComponent(() => import('@/views/function/review/case/CaseReviewResult.vue'));
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
+const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/CaseSteps.vue'));
 const CaseBasicInfo = defineAsyncComponent(() => import('@/views/function/review/case/CaseBasicInfo.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/function/review/case/Precondition.vue'));
 const Members = defineAsyncComponent(() => import('@/views/function/review/case/Member.vue'));

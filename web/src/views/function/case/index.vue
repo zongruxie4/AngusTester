@@ -16,10 +16,10 @@ export type CaseActionAuth = 'edit'| 'debug' | 'review' | 'clone' | 'move' | 'de
 
 const CaseList = defineAsyncComponent(() => import('@/views/function/case/list/index.vue'));
 const CaseInfo = defineAsyncComponent(() => import('@/views/function/case/detail/index.vue'));
-const AddCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Edit.vue'));
-const ReviewModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Review.vue'));
-const MoveCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Move.vue'));
-const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/UpdateResult.vue'));
+const AddCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/Edit.vue'));
+const ReviewModal = defineAsyncComponent(() => import('@/views/function/case/list/Review.vue'));
+const MoveCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/Move.vue'));
+const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/function/case/list/UpdateResult.vue'));
 
 const userInfo = ref(appContext.getUser());
 // Inject project information

@@ -44,7 +44,7 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
 
-import { CaseActionAuth, CaseDetailChecked, EnabledGroup, travelTreeData } from '../types';
+import { CaseActionAuth, CaseDetailChecked, EnabledGroup, travelTreeData } from './types';
 import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
 import { CaseCount, CaseViewMode, getActionAuth } from '@/views/function/case/types';
 import { CaseDetail } from '@/views/function/types';
@@ -52,20 +52,20 @@ import { CaseDetail } from '@/views/function/types';
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Case_Template.xlsx?url';
 
-const FlatView = defineAsyncComponent(() => import('@/views/function/case/list/case/flat/index.vue'));
-const TableView = defineAsyncComponent(() => import('@/views/function/case/list/case/table/index.vue'));
-const KanbanView = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/index.vue'));
+const FlatView = defineAsyncComponent(() => import('@/views/function/case/list/flat/index.vue'));
+const TableView = defineAsyncComponent(() => import('@/views/function/case/list/table/index.vue'));
+const KanbanView = defineAsyncComponent(() => import('@/views/function/case/list/kanban/index.vue'));
 
 const ModuleTree = defineAsyncComponent(() => import('@/views/function/case/list/ModuleTree.vue'));
 const CaseDetailPage = defineAsyncComponent(() => import('@/views/function/case/detail/index.vue'));
-const AddModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Edit.vue'));
-const AiAddModal = defineAsyncComponent(() => import('@/views/function/case/list/case/AiAdd.vue'));
-const ReviewModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Review.vue'));
-const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Move.vue'));
-const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/UpdateResult.vue'));
-const TagList = defineAsyncComponent(() => import('@/views/function/case/list/case/TagSelector.vue'));
-const PlanList = defineAsyncComponent(() => import('@/views/function/case/list/case/PlanSelector.vue'));
-const UploadCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Upload.vue'));
+const AddModal = defineAsyncComponent(() => import('@/views/function/case/list/Edit.vue'));
+const AiAddModal = defineAsyncComponent(() => import('@/views/function/case/list/AiAdd.vue'));
+const ReviewModal = defineAsyncComponent(() => import('@/views/function/case/list/Review.vue'));
+const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/Move.vue'));
+const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/function/case/list/UpdateResult.vue'));
+const TagList = defineAsyncComponent(() => import('@/views/function/case/list/TagSelector.vue'));
+const PlanList = defineAsyncComponent(() => import('@/views/function/case/list/PlanSelector.vue'));
+const UploadCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/Upload.vue'));
 const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
 
 const { t } = useI18n();

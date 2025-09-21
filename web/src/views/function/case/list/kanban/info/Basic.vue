@@ -13,9 +13,9 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
-const Description = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Description.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Precondition.vue'));
-const TestStep = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestSteps.vue'));
+const Description = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/Description.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/Precondition.vue'));
+const TestStep = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/TestSteps.vue'));
 
 const { t } = useI18n();
 

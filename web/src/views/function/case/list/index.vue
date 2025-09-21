@@ -8,7 +8,7 @@ import { CaseCount, CaseViewMode } from '@/views/function/case/types';
 
 const Statistics = defineAsyncComponent(() => import('@/views/function/case/list/statistics/index.vue'));
 const PieChart = defineAsyncComponent(() => import('@/views/function/case/list/statistics/Chart.vue'));
-const CaseList = defineAsyncComponent(() => import('@/views/function/case/list/case/index.vue'));
+const CaseList = defineAsyncComponent(() => import('@/views/function/case/list/List.vue'));
 
 interface Props {
   notify?: number;

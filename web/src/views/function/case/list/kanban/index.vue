@@ -25,22 +25,22 @@ import { ActionMenuItem } from '@/views/function/case/list/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
-const EditTaskModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Edit.vue'));
-const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Move.vue'));
-const UpdateResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/UpdateResult.vue'));
+const EditTaskModal = defineAsyncComponent(() => import('@/views/function/case/list/Edit.vue'));
+const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/Move.vue'));
+const UpdateResultModal = defineAsyncComponent(() => import('@/views/function/case/list/UpdateResult.vue'));
 const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
-const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Basic.vue'));
-const TestSteps = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestSteps.vue'));
-const PersonnelInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Personnel.vue'));
-const DateInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Date.vue'));
-const ReviewInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/review/ReviewInfo.vue'));
-const TestInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestInfo.vue'));
-const AssocTask = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/AssocTask.vue'));
-const AssocCase = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/AssocCase.vue'));
-const AttachmentInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Attachment.vue'));
-const ReviewRecord = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/review/ReviewRecord.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/Comment.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/Activity.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/Basic.vue'));
+const TestSteps = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/TestSteps.vue'));
+const PersonnelInfo = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/Personnel.vue'));
+const DateInfo = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/Date.vue'));
+const ReviewInfo = defineAsyncComponent(() => import('@/views/function/case/list/kanban/review/ReviewInfo.vue'));
+const TestInfo = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/TestInfo.vue'));
+const AssocTask = defineAsyncComponent(() => import('@/views/function/case/list/kanban/AssocTask.vue'));
+const AssocCase = defineAsyncComponent(() => import('@/views/function/case/list/kanban/AssocCase.vue'));
+const AttachmentInfo = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/Attachment.vue'));
+const ReviewRecord = defineAsyncComponent(() => import('@/views/function/case/list/kanban/review/ReviewRecord.vue'));
+const Comment = defineAsyncComponent(() => import('@/views/function/case/list/kanban/Comment.vue'));
+const Activity = defineAsyncComponent(() => import('@/views/function/case/list/kanban/Activity.vue'));
 
 type Props = {
   projectId: string;
@@ -1897,14 +1897,6 @@ const checkedCaseId = computed(() => {
 }
 
 .draggable-container.right-border::after {
-  /* content: '';
-  display:block;
-  position: absolute;
-  top:0 ;
-  right: 0;
-  width:1px;
-  height: 100%;
-  background-color: var(--border-text-box); */
 }
 
 .highlight {

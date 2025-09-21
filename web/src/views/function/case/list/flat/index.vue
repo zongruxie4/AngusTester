@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Pagination } from 'ant-design-vue';
 import { Colon, Icon, ReviewStatus } from '@xcan-angus/vue-ui';
 import { ReviewStatus as ReviewStatusEnum, PageQuery } from '@xcan-angus/infra';
-import { CaseDetailChecked, EnabledGroup, GroupCaseList } from '../../types';
+import { CaseDetailChecked, EnabledGroup, GroupCaseList } from '../types';
 
 import TestResult from '@/components/TestResult/index.vue';
 

@@ -14,7 +14,7 @@ const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/base
 
 // Async components for case details
 const CaseReviewResult = defineAsyncComponent(() => import('@/views/function/review/case/CaseReviewResult.vue'));
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
+const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/CaseSteps.vue'));
 const CaseBasicInfo = defineAsyncComponent(() => import('@/views/function/review/case/CaseBasicInfo.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/function/review/case/Precondition.vue'));
 const Members = defineAsyncComponent(() => import('@/views/function/review/case/Member.vue'));

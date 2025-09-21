@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/function/types';
 import { CaseInfoEditProps } from '@/views/function/case/list/types';
 
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
+const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/CaseSteps.vue'));
 
 const { t } = useI18n();
 

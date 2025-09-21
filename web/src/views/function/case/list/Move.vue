@@ -6,7 +6,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
-import { CaseDetailChecked } from '../types';
+import { CaseDetailChecked } from './types';
 
 const { t } = useI18n();
 
