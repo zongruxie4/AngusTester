@@ -20,7 +20,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok'):void;}>();
-// Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const loading = ref(false);
@@ -68,6 +67,7 @@ const handleDownloadTemplate = () => {
 const cancel = () => {
   emits('update:visible', false);
 };
+
 const ok = () => {
   formRef.value.validate()
     .then(async () => {
@@ -122,6 +122,7 @@ watch(() => props.visible, newValue => {
           :placeholder="t('functionCase.uploadCase.selectPlan')"
           :fieldNames="{value: 'id', label: 'name'}" />
       </FormItem>
+
       <FormItem :rules="{message: t('functionCase.uploadCase.pleaseUploadFile'), validator: validateFile}" name="file">
         <Spin :spinning="loading">
           <UploadDragger
@@ -138,6 +139,7 @@ watch(() => props.visible, newValue => {
             </div>
           </UploadDragger>
         </Spin>
+
         <div
           v-show="!!formData.file"
           class="px-3.5 border rounded">
@@ -152,6 +154,7 @@ watch(() => props.visible, newValue => {
             </div>
           </div>
         </div>
+
         <div class="text-right">
           <Button
             type="link"
@@ -162,6 +165,7 @@ watch(() => props.visible, newValue => {
           </Button>
         </div>
       </FormItem>
+
       <FormItem
         :label="t('functionCase.uploadCase.duplicateStrategy')"
         name="strategyWhenDuplicated"

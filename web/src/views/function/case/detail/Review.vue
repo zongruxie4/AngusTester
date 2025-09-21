@@ -2,7 +2,13 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Image, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { ReviewStatus } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
+
+const CaseInfo = defineAsyncComponent(() => import('@/views/function/case/detail/CaseInfo.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/function/review/case/Precondition.vue'));
+const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
+const Description = defineAsyncComponent(() => import('@/views/function/review/case/Description.vue'));
 
 interface Props {
   caseDetail: {id: string; reviewNum: number; reviewFailNum: number;};
@@ -14,28 +20,16 @@ const props = withDefaults(defineProps<Props>(), {
   caseDetail: () => ({ id: '' })
 });
 
-const CaseInfo = defineAsyncComponent(() => import('@/views/function/case/detail/CaseInfo.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/function/review/case/Precondition.vue'));
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
-const Description = defineAsyncComponent(() => import('@/views/function/review/case/Description.vue'));
 const reviewNum = computed(() => {
   const total = +(props.caseDetail?.reviewNum || 0);
   const failNum = +(props.caseDetail?.reviewFailNum || 0);
   const successNum = total - failNum;
-  return {
-    total,
-    failNum,
-    successNum
-  };
+  return { total, failNum, successNum };
 });
 
 const preconditionClass = ref('');
 const descriptionClass = ref('');
 const stepsClass = ref();
-
-// add: 'rgba(82, 196, 26, 0.4)',
-// del: 'rgba(255, 82, 82, 0.4)',
-// modify: 'rgba(255, 102, 0, 0.4)'
 
 const selectRecordId = ref();
 const selectRecordInfo = ref();
@@ -44,10 +38,6 @@ const changeCurrentRecord = async (record) => {
     return;
   }
   selectRecordId.value = record.id;
-  // const [error, {data}] = await http.get(`${TESTER}/func/review/case/${record.reviewCaseId}`);
-  // if (error) {
-  //   return;
-  // }
   selectRecordInfo.value = record.reviewedCase;
 
   if (!selectRecordInfo.value.precondition && props.caseDetail.precondition) {
@@ -111,11 +101,11 @@ onMounted(() => {
 defineExpose({
   refresh: loadReviewRecord
 });
-
 </script>
 <template>
   <div class="text-3 overflow-auto h-full">
     <div class="text-title text-3 font-medium mt-2">{{ t('functionCase.detail.review.reviewCount') }}</div>
+
     <div class="flex w-150 space-x-15 mt-2">
       <div class="flex-1 inline-flex bg-gray-light rounded">
         <label class="w-20 px-2 py-1 bg-blue-1 text-white rounded">{{ t('functionCase.detail.review.total') }}</label>
@@ -123,12 +113,14 @@ defineExpose({
           {{ reviewNum.total }}
         </div>
       </div>
+
       <div class="flex-1 inline-flex bg-gray-light rounded">
         <label class="w-20 px-2 py-1 bg-status-success text-white rounded">{{ t('functionCase.detail.review.reviewPassed') }}</label>
         <div class=" px-2 py-1  w-15 font-medium">
           {{ reviewNum.successNum }}
         </div>
       </div>
+
       <div class="flex-1 inline-flex bg-gray-light rounded">
         <label class="w-20 px-2 py-1 bg-status-error text-white rounded">{{ t('functionCase.detail.review.reviewFailed') }}</label>
         <div class=" px-2 py-1  w-15 font-medium">
@@ -150,8 +142,10 @@ defineExpose({
             type="avatar"
             :src="record.avatar"
             class="w-5 mr-2" />
-          <span class="font-semibold flex-1/3">{{ record.reviewerName }} {{ record.reviewStatus?.value === 'PASSED' ? t('functionCase.detail.review.reviewPassedCase') : t('functionCase.detail.review.reviewFailedCase') }}</span>
-
+          <span class="font-semibold flex-1/3">
+            {{ record.reviewerName }} {{ record.reviewStatus?.value === ReviewStatus.PASSED
+              ? t('functionCase.detail.review.reviewPassedCase') : t('functionCase.detail.review.reviewFailedCase') }}
+          </span>
           <div class=" flex-1/2">{{ record.reviewDate }}</div>
         </div>
 
@@ -172,26 +166,33 @@ defineExpose({
     <div v-if="!!selectRecordInfo" class="flex max-w-200 ">
       <div class="flex-1 p-2 border-r  space-y-3">
         <div class="mb-3">{{ t('functionCase.detail.review.reviewVersion') }}</div>
+
         <CaseInfo :caseInfo="selectRecordInfo" />
+
         <Precondition :caseInfo="selectRecordInfo" />
-        <div class="font-semibold text-3.5">
-          {{ t('functionCase.detail.review.testSteps') }}
-        </div>
+
+        <div class="font-semibold text-3.5">{{ t('functionCase.detail.review.testSteps') }}</div>
+
         <CaseStep :defaultValue="selectRecordInfo?.steps || {}" readonly />
 
         <Description :caseInfo="selectRecordInfo" />
       </div>
+
       <div class="flex-1 p-2 space-y-3">
         <div class="mb-3">{{ t('functionCase.detail.review.latestVersion') }}</div>
+
         <CaseInfo :caseInfo="props.caseDetail" />
+
         <Precondition :caseInfo="props.caseDetail" :contentClass="preconditionClass" />
-        <div class="font-semibold text-3.5">
-          {{ t('functionCase.detail.review.testSteps') }}
-        </div>
+
+        <div class="font-semibold text-3.5">{{ t('functionCase.detail.review.testSteps') }}</div>
+
         <div :class="stepsClass">
           <CaseStep :defaultValue="props?.caseDetail?.steps || []" readonly />
         </div>
+
         {{ descriptionClass }}
+
         <Description :caseInfo="props?.caseDetail" :contentBg="descriptionClass" />
       </div>
     </div>

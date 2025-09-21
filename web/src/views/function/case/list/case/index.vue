@@ -22,52 +22,53 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import {
-  EnumMessage,
-  NumberCompareCondition,
-  toClipboard,
-  http,
-  duration,
+  appContext,
   download,
-  TESTER,
+  duration,
+  EnumMessage,
   enumUtils,
-  XCanDexie,
+  http,
+  NumberCompareCondition,
   Priority,
   ReviewStatus as ReviewStatusEnum,
-  appContext
+  PageQuery,
+  SearchCriteria,
+  TESTER,
+  toClipboard,
+  XCanDexie
 } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
-import { funcCase, modules, funcPlan, analysis } from '@/api/tester';
+import { analysis, funcCase, funcPlan, modules } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
 
-import { CaseActionAuth, CaseInfoObj, CaseListObj, CountObj, EnabledGroup, travelTreeData } from './types';
-import { PlanObj } from '../../types';
-import { CaseTestResult } from '@/enums/enums';
-import { CASE_PROJECT_PERMISSIONS, useCaseActionAuth } from '../useCaseActionAuth';
+import { CaseActionAuth, CaseDetailChecked, EnabledGroup, travelTreeData } from '../types';
+import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
+import { CaseCount, CaseViewMode, getActionAuth } from '@/views/function/case/types';
+import { CaseDetail } from '@/views/function/types';
+
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Case_Template.xlsx?url';
 
-const { t } = useI18n();
+const FlatView = defineAsyncComponent(() => import('@/views/function/case/list/case/flat/index.vue'));
+const TableView = defineAsyncComponent(() => import('@/views/function/case/list/case/table/index.vue'));
+const KanbanView = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/index.vue'));
 
-const InfoView = defineAsyncComponent(() => import('./flat/index.vue'));
-const TableView = defineAsyncComponent(() => import('./table/index.vue'));
+const ModuleTree = defineAsyncComponent(() => import('@/views/function/case/list/ModuleTree.vue'));
+const CaseDetailPage = defineAsyncComponent(() => import('@/views/function/case/detail/index.vue'));
 const AddModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Edit.vue'));
 const AiAddModal = defineAsyncComponent(() => import('@/views/function/case/list/case/AiAdd.vue'));
-const CaseDetail = defineAsyncComponent(() => import('@/views/function/case/detail/index.vue'));
 const ReviewModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Review.vue'));
 const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Move.vue'));
 const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/UpdateResult.vue'));
 const TagList = defineAsyncComponent(() => import('@/views/function/case/list/case/TagSelector.vue'));
 const PlanList = defineAsyncComponent(() => import('@/views/function/case/list/case/PlanSelector.vue'));
 const UploadCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Upload.vue'));
-const ModuleTree = defineAsyncComponent(() => import('../ModuleTree.vue'));
-const KanbanView = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban//index.vue'));
-const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
+const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
 
-type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH' | 'MATCH' | 'IN' | 'NOT_IN';
-type Filters = { key: string, value: string | boolean | string[], op: FilterOp }
+const { t } = useI18n();
 
 interface IData {
   id: string;
@@ -76,10 +77,9 @@ interface IData {
 
 interface Props {
   loading: boolean;
-  planInfo: PlanObj;
-  viewMode: 'table' | 'tile' | 'kanban';
+  viewMode: CaseViewMode;
   isOpenCount: boolean;
-  count?: CountObj;
+  count?: CaseCount;
   notify?: number;
   planId?: string;
   planName?: string;
@@ -97,11 +97,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
-  (e: 'update:count', value: CountObj): void;
+  (e: 'update:count', value: CaseCount): void;
   (e: 'openInfo', infoTabParams): void;
   (e: 'updateFollowFavourite', type: 'follow' | 'favourite'): void;
   (e: 'cacheParams', value: any): void;
-  (e: 'viewModeChange', value:'table' | 'tile' | 'kanban'): void;
+  (e: 'viewModeChange', value: CaseViewMode): void;
   (e: 'countChange'): void;
 }>();
 
@@ -112,14 +112,13 @@ const aiEnabled = inject('aiEnabled', ref(false));
 const updateLoading = inject<((value: boolean) => void)>('updateLoading', () => undefined);
 const isAdmin = computed(() => appContext.isAdmin());
 const defaultUser = { [userInfo?.id]: { fullName: userInfo?.fullName, id: userInfo?.id } };
-const { getActionAuth } = useCaseActionAuth();
 
 const boardsGroupKey = ref<'none' | 'testerName' | 'lastModifiedByName'>('none');
 const boardsOrderBy = ref<'priority' | 'deadlineDate' | 'createdByName' | 'testerName'>();
-const boardsOrderSort = ref<'DESC' | 'ASC'>();
+const boardsOrderSort = ref<PageQuery.OrderSort>();
 
-const firstloadInfo = ref(true); // 是否是第一次加载
-const firstloading = ref(true); // 是否是第一次加载
+const firstLoadInfo = ref(true);
+const firstLoading = ref(true);
 const actionType = ref(undefined);
 
 const searchPanelRef = ref();
@@ -136,7 +135,6 @@ const loadingChange = (value:boolean) => {
 };
 
 const refreshChange = () => {
-  // 刷新统计图表
   if (props.isOpenCount) {
     loadCaseCount();
   }
@@ -161,7 +159,7 @@ const enabledGroupChange = (value) => {
   }
 };
 
-const searchData = ref<Filters[]>([]);
+const searchData = ref<SearchCriteria[]>([]);
 
 const selectedTypes = ref<string[]>([]);
 
@@ -187,11 +185,11 @@ const planChange = (_planId: string) => {
 };
 
 const testNum = ref(''); // 测试次数
-const testNumScope = ref<FilterOp>('EQUAL'); // 测试次数p
+const testNumScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal); // 测试次数p
 const testFailNum = ref(''); // 失败次数
-const testFailScope = ref<FilterOp>('EQUAL'); // 失败次数op
+const testFailScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal); // 失败次数op
 const reviewNum = ref(''); // 评审次数
-const reviewNumScope = ref<FilterOp>('EQUAL'); // 评审次数op
+const reviewNumScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal); // 评审次数op
 
 const handleTimesChange = debounce(duration.resize, (value: string, type: 'testNum' | 'testFailNum' | 'reviewNum') => {
   if (type === 'testNum') {
@@ -207,7 +205,7 @@ const handleTimesChange = debounce(duration.resize, (value: string, type: 'testN
   setParamsAndLoadData();
 });
 
-const handleScopeChange = (value: FilterOp, type: 'testNum' | 'testFailNum' | 'reviewNum') => {
+const handleScopeChange = (value: SearchCriteria.OpEnum, type: 'testNum' | 'testFailNum' | 'reviewNum') => {
   if (type === 'testNum') {
     testNumScope.value = value;
     if (!testNum.value) {
@@ -226,12 +224,11 @@ const handleScopeChange = (value: FilterOp, type: 'testNum' | 'testFailNum' | 'r
       return;
     }
   }
-
   setParamsAndLoadData();
 };
 
 const setParamsFilters = () => {
-  const othersData: Filters[] = [];
+  const othersData: SearchCriteria[] = [];
   if (testNum.value) {
     othersData.push({ key: 'testNum', op: testNumScope.value, value: testNum.value });
   }
@@ -246,7 +243,7 @@ const setParamsFilters = () => {
     othersData.push(
       {
         key: 'planId',
-        op: 'EQUAL',
+        op: SearchCriteria.OpEnum.Equal,
         value: planId.value
       }
     );
@@ -254,7 +251,7 @@ const setParamsFilters = () => {
   if (overdue.value) {
     othersData.push({
       key: 'overdue',
-      op: 'EQUAL',
+      op: SearchCriteria.OpEnum.Equal,
       value: true
     });
   }
@@ -263,11 +260,10 @@ const setParamsFilters = () => {
     const set = new Set(tagIds.value);
     othersData.push({
       key: 'tagId',
-      op: 'IN',
+      op: SearchCriteria.OpEnum.In,
       value: Array.from(set)
     });
   }
-
   params.value.filters = [...searchData.value, ...othersData];
 };
 
@@ -300,11 +296,11 @@ const getCreatedDateIsQuickDate = (createdDateItems, quickSelectDate) => {
   if (createdDateItems.length) {
     for (let i = 0; i < createdDateItems.length; i++) {
       const item = createdDateItems[i];
-      if (item.key === 'createdDate' && item.op === 'GREATER_THAN_EQUAL') {
+      if (item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
         hasUpDateTime = item.value === quickSelectDate[0];
       }
 
-      if (item.key === 'createdDate' && item.op === 'LESS_THAN_EQUAL') {
+      if (item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.LessThanEqual) {
         hasUpDateTime = item.value === quickSelectDate[1];
       }
     }
@@ -328,11 +324,9 @@ const quickSearchChange = (types: string[], allType: boolean) => {
       testFailNum.value = '';
       reviewNum.value = '';
       overdue.value = false;
-      // planId.value = '';
-      // tagIds.value = [];
       if (_filters?.length) {
-        const ohtersParams = _filters;
-        if (ohtersParams.length) {
+        const othersParams = _filters;
+        if (othersParams.length) {
           searchPanelRef.value.clear();
         } else {
           refreshChange();
@@ -353,7 +347,7 @@ const quickSearchChange = (types: string[], allType: boolean) => {
         configItems.push({ valueKey: 'createdBy', value: undefined });
       }
 
-      if (testerIdItem?.value === userInfo.id && testResultItem?.value === 'PENDING') {
+      if (testerIdItem?.value === userInfo.id && testResultItem?.value === CaseTestResult.PENDING) {
         configItems.push({ valueKey: 'testerId', value: undefined });
         configItems.push({ valueKey: 'testResult', value: undefined });
       }
@@ -364,7 +358,6 @@ const quickSearchChange = (types: string[], allType: boolean) => {
         selectedTypes.value = [];
       }
     }
-
     return;
   }
 
@@ -397,9 +390,9 @@ const quickSearchChange = (types: string[], allType: boolean) => {
 
   if (types.includes('testerId')) {
     configItems.push({ valueKey: 'testerId', value: userInfo.id, defaultOptions: defaultUser });
-    configItems.push({ valueKey: 'testResult', value: 'PENDING' });
+    configItems.push({ valueKey: 'testResult', value: CaseTestResult.PENDING });
   } else {
-    if (testerIdItem?.value === userInfo.id && testResultItem?.value === 'PENDING') {
+    if (testerIdItem?.value === userInfo.id && testResultItem?.value === CaseTestResult.PENDING) {
       configItems.push({ valueKey: 'testerId', value: undefined });
       configItems.push({ valueKey: 'testResult', value: undefined });
     }
@@ -448,9 +441,9 @@ const init = async () => {
   if (_cacheFilters.length) {
     params.value.filters = _cacheFilters;
     setQuickType();
-    const _otherFilters: Filters[] = [];
+    const _otherFilters: SearchCriteria[] = [];
     for (let i = 0; i < _cacheFilters.length; i++) {
-      const item = _cacheFilters[i] as Filters;
+      const item = _cacheFilters[i] as SearchCriteria;
       if (['planId', 'tagId', 'overdue', 'testNum', 'testFailNum', 'reviewNum'].includes(item.key)) {
         if (item.key === 'planId') {
           planId.value = item.value as string;
@@ -467,17 +460,17 @@ const init = async () => {
 
         if (item.key === 'testNum') {
           testNum.value = item.value as string;
-          testNumScope.value = item.op as FilterOp;
+          testNumScope.value = item.op;
         }
 
         if (item.key === 'testFailNum') {
           testFailNum.value = item.value as string;
-          reviewNumScope.value = item.op as FilterOp;
+          reviewNumScope.value = item.op;
         }
 
         if (item.key === 'reviewNum') {
           reviewNum.value = item.value as string;
-          reviewNumScope.value = item.op as FilterOp;
+          reviewNumScope.value = item.op;
         }
       } else {
         _otherFilters.push(item);
@@ -492,46 +485,46 @@ const init = async () => {
       const lastModifiedDateValue: string[] = [];
       const testResultHandleDateValue: string[] = [];
       for (let i = 0; i < _otherFilters.length; i++) {
-        const item = _otherFilters[i] as Filters;
+        const item = _otherFilters[i] as SearchCriteria;
 
         if (item.key === 'createdDate') {
-          if (item.op === 'GREATER_THAN_EQUAL') {
+          if (item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
             createdDataValue[0] = item.value as string;
           }
 
-          if (item.op === 'LESS_THAN_EQUAL') {
+          if (item.op === SearchCriteria.OpEnum.LessThanEqual) {
             createdDataValue[1] = item.value as string;
           }
         } else if (item.key === 'deadlineDate') {
-          if (item.op === 'GREATER_THAN_EQUAL') {
+          if (item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
             deadlineDateValue[0] = item.value as string;
           }
 
-          if (item.op === 'LESS_THAN_EQUAL') {
+          if (item.op === SearchCriteria.OpEnum.LessThanEqual) {
             deadlineDateValue[1] = item.value as string;
           }
         } else if (item.key === 'reviewDate') {
-          if (item.op === 'GREATER_THAN_EQUAL') {
+          if (item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
             reviewDateValue[0] = item.value as string;
           }
 
-          if (item.op === 'LESS_THAN_EQUAL') {
+          if (item.op === SearchCriteria.OpEnum.LessThanEqual) {
             reviewDateValue[1] = item.value as string;
           }
         } else if (item.key === 'lastModifiedDate') {
-          if (item.op === 'GREATER_THAN_EQUAL') {
+          if (item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
             lastModifiedDateValue[0] = item.value as string;
           }
 
-          if (item.op === 'LESS_THAN_EQUAL') {
+          if (item.op === SearchCriteria.OpEnum.LessThanEqual) {
             lastModifiedDateValue[1] = item.value as string;
           }
         } else if (item.key === 'testResultHandleDate') {
-          if (item.op === 'GREATER_THAN_EQUAL') {
+          if (item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
             testResultHandleDateValue[0] = item.value as string;
           }
 
-          if (item.op === 'LESS_THAN_EQUAL') {
+          if (item.op === SearchCriteria.OpEnum.LessThanEqual) {
             testResultHandleDateValue[1] = item.value as string;
           }
         } else {
@@ -563,7 +556,6 @@ const init = async () => {
         searchPanelRef.value.setConfigs(defaultParams);
       }
     }
-
     refreshChange();
   } else {
     selectedTypes.value = ['all'];
@@ -572,13 +564,15 @@ const init = async () => {
 };
 
 const loadData = () => {
-  if (props.viewMode !== 'kanban') {
+  if (props.viewMode !== CaseViewMode.kanban) {
     loadCaseList();
   }
 };
 
 const loadCaseCount = async (): Promise<void> => {
-  const [error, { data }] = await analysis.getFuncCaseCount({ ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
+  const [error, { data }] = await analysis.getFuncCaseCount(
+    { ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value }
+  );
   if (error) {
     return;
   }
@@ -586,9 +580,9 @@ const loadCaseCount = async (): Promise<void> => {
 };
 
 // 表格操作选中的当前rowData
-const checkedCase = ref<CaseListObj>();
+const checkedCase = ref<CaseDetailChecked>();
 
-const caseList = ref<CaseListObj[]>([]);
+const caseList = ref<CaseDetailChecked[]>([]);
 
 const loadCaseList = async (): Promise<void> => {
   if (props.loading) {
@@ -596,8 +590,10 @@ const loadCaseList = async (): Promise<void> => {
   }
 
   updateLoading(true);
-  const [error, { data = { list: [], total: 0 } }] = await funcCase.getCaseList({ infoScope: 'DETAIL', ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value });
-  firstloading.value = false;
+  const [error, { data = { list: [], total: 0 } }] = await funcCase.getCaseList(
+    { infoScope: PageQuery.InfoScope.DETAIL, ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value }
+  );
+  firstLoading.value = false;
   if (error) {
     updateLoading(false);
     return;
@@ -605,16 +601,19 @@ const loadCaseList = async (): Promise<void> => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { pageNo, pageSize, ...otherParam } = params.value;
 
-  db.add(JSON.parse(JSON.stringify({ id: cacheParamsKey.value, data: JSON.parse(JSON.stringify({ ...otherParam, enabledGroup: enabledGroup.value })) })));
+  db.add(JSON.parse(JSON.stringify({
+    id: cacheParamsKey.value,
+    data: JSON.parse(JSON.stringify({ ...otherParam, enabledGroup: enabledGroup.value }))
+  })));
 
-  if (props.viewMode === 'table' && tabViewRef.value) {
+  if (props.viewMode === CaseViewMode.table && tabViewRef.value) {
     tabViewRef.value.selectedRowKeys = [];
   }
 
   selectedRowKeys.value = [];
 
   caseList.value = data.list.map(item => ({ ...item, checked: false }));
-  getPlanAuth();
+  await getPlanAuth();
 
   total.value = data.total;
   if (!data.list.length) {
@@ -623,9 +622,9 @@ const loadCaseList = async (): Promise<void> => {
     return;
   }
 
-  if (firstloadInfo.value || actionType.value === 'del') {
+  if (firstLoadInfo.value || actionType.value === 'del') {
     checkedCase.value = data.list[0];
-    firstloadInfo.value = false;
+    firstLoadInfo.value = false;
     actionType.value = undefined;
   }
 
@@ -640,7 +639,7 @@ const loadCaseList = async (): Promise<void> => {
     await getPlanAuth();
   }
   isInit = false;
-  if (props.viewMode === 'tile') {
+  if (props.viewMode === CaseViewMode.flat) {
     if (!checkedCase.value) {
       checkedCase.value = data.list[0];
     }
@@ -653,10 +652,13 @@ const tableAction = computed(() => {
   const action = { auth: {}, actionMenus: {} };
   for (let i = 0; i < caseList.value.length; i++) {
     const _case = caseList.value[i];
-    if (userInfo?.id === _case.testerId && (planAuthMap.value[_case.planId]?.permissions || []).includes('TEST')) {
-      planAuthMap.value[_case.planId]?.permissions && planAuthMap.value[_case.planId].permissions.push('TEST');
+    if (userInfo?.id === _case.testerId &&
+      (planAuthMap.value[_case.planId]?.permissions || []).includes(FuncPlanPermission.TEST)) {
+      planAuthMap.value[_case.planId]?.permissions &&
+      planAuthMap.value[_case.planId].permissions.push(FuncPlanPermission.TEST);
     }
-    action.auth[_case.id] = getActionAuth((planAuthMap.value[_case.planId]?.permissions || [])); // getActionAuth(planAuthList.value);
+
+    action.auth[_case.id] = getActionAuth((planAuthMap.value[_case.planId]?.permissions || []));
     if (action.auth[_case.id].includes('resetTestResult')) {
       if (!planAuthMap.value[_case.planId].funcPlanAuth) {
         action.auth[_case.id] = action.auth[_case.id].filter(i => i !== 'resetTestResult');
@@ -679,7 +681,7 @@ const tableAction = computed(() => {
       });
     }
 
-    if (!_case?.review || (_case?.review && _case?.reviewStatus.value === 'PASSED')) {
+    if (!_case?.review || (_case?.review && _case?.reviewStatus.value === ReviewStatus.PASSED)) {
       action.actionMenus[_case.id].push({
         key: 'updateTestResult_canceled',
         icon: 'icon-xiugaiceshijieguo',
@@ -687,14 +689,14 @@ const tableAction = computed(() => {
         permission: 'edit'
       });
 
-      if (!['PASSED', 'NOT_PASSED', 'CANCELED'].includes(_case?.testResult?.value)) {
+      if (![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(_case?.testResult?.value)) {
         action.actionMenus[_case.id].push({
           key: 'updateTestResult_passed',
           icon: 'icon-xiugaiceshijieguo',
           name: t('functionCase.mainView.testPassed'),
           permission: 'updateTestResult'
         }, {
-          key: 'updateTestResult_notpassed',
+          key: 'updateTestResult_notPassed',
           icon: 'icon-xiugaiceshijieguo',
           name: t('functionCase.mainView.testNotPassed'),
           permission: 'updateTestResult'
@@ -755,7 +757,7 @@ const tableAction = computed(() => {
   return action;
 });
 
-const searchChange = (data: Filters[], _header, valueKey) => {
+const searchChange = (data: SearchCriteria[], _header, valueKey) => {
   params.value.pageNo = 1;
   searchData.value = data;
   actionType.value = 'search';
@@ -771,7 +773,6 @@ const searchChange = (data: Filters[], _header, valueKey) => {
       }
     }
   }
-
   refreshChange();
 };
 
@@ -802,7 +803,7 @@ const setQuickType = () => {
       selectedTypes.value = selectedTypes.value.filter(item => item !== 'createdBy');
     }
   }
-  if (testerIdItem?.value === userInfo.id && testResultItem?.value === 'PENDING') {
+  if (testerIdItem?.value === userInfo.id && testResultItem?.value === CaseTestResult.PENDING) {
     if (!selectedTypes.value.includes('testerId')) {
       selectedTypes.value.push('testerId');
     }
@@ -812,15 +813,17 @@ const setQuickType = () => {
     }
   }
 
-  if (createdDateItems.length && (selectedTypes.value.includes('lastDay') || selectedTypes.value.includes('lastThreeDays') || selectedTypes.value.includes('lastWeek'))) {
+  if (createdDateItems.length && (selectedTypes.value.includes('lastDay') ||
+    selectedTypes.value.includes('lastThreeDays') ||
+    selectedTypes.value.includes('lastWeek'))) {
     let hasUpDateTime = false;
     for (let i = 0; i < createdDateItems.length; i++) {
       const item = createdDateItems[i];
-      if (item.key === 'createdDate' && item.op === 'GREATER_THAN_EQUAL') {
+      if (item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
         hasUpDateTime = item.value === quickSelectDate.value[0];
       }
 
-      if (item.key === 'createdDate' && item.op === 'LESS_THAN_EQUAL') {
+      if (item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.LessThanEqual) {
         hasUpDateTime = item.value === quickSelectDate.value[1];
       }
     }
@@ -834,8 +837,8 @@ const setQuickType = () => {
 };
 
 // 用例详情
-const caseInfo = ref<CaseInfoObj>();
-const firstCase = ref<CaseInfoObj>();
+const caseInfo = ref<CaseDetail>();
+const firstCase = ref<CaseDetail>();
 const getCaseInfo = async (id: string) => {
   updateLoading(true);
   const [error, { data }] = await funcCase.getCaseDetail(id);
@@ -863,12 +866,13 @@ const planAuthMap = ref<{[id: string]: {
   funcPlanAuth: boolean;
   permissions: string[];
 }}>({});
+
 const getPlanAuth = async () => {
   if (isAdmin.value) {
     caseList.value.forEach(i => {
       planAuthMap.value[i.planId] = {
         funcPlanAuth: true,
-        permissions: CASE_PROJECT_PERMISSIONS
+        permissions: enumUtils.getEnumValues(FuncPlanPermission)
       };
     });
     return;
@@ -907,7 +911,7 @@ const loadModuleTree = async (keywords?: string) => {
     filters: keywords
       ? [{
           value: keywords,
-          op: 'MATCH',
+          op: SearchCriteria.OpEnum.Match,
           key: 'name'
         }]
       : []
@@ -943,7 +947,7 @@ const selectedRowKeys = ref<string[]>([]);
 // 操作类型:batch:批量 one:操作一条数据
 const btnType = ref<'batch' | 'one'>('one');
 const reviewVisible = ref(false);
-const selectedCase = ref<CaseListObj>();
+const selectedCase = ref<CaseDetailChecked>();
 const moveVisible = ref(false);
 const updateTestResultVisible = ref(false);
 const resultPassed = ref(false);
@@ -953,46 +957,6 @@ const batchDisabled = ref({
   move: false,
   del: false,
   updateTestResult: false
-});
-
-watch(() => selectedRowKeys.value, (newValue) => {
-  btnType.value = 'batch';
-  batchDisabled.value = {
-    move: false,
-    del: false,
-    updateTestResult: false
-  };
-  const list = caseList.value;
-
-  const selectList = list.filter(item => newValue.includes(item.id));
-  if (selectList.some(_case => {
-    if (planAuthMap.value[_case.planId].funcPlanAuth) {
-      return !(planAuthMap.value[_case.planId]?.permissions || []).includes('MODIFY_CASE');
-    }
-    return false;
-  })) {
-    batchDisabled.value.move = true;
-  }
-  if (selectList.some(_case => {
-    if (planAuthMap.value[_case.planId].funcPlanAuth) {
-      return !planAuthMap.value[_case.planId]?.permissions?.includes('DELETE_CASE');
-    }
-    return false;
-  })) {
-    batchDisabled.value.del = true;
-  } // TEST
-
-  if (selectList.some(_case => {
-    if ((_case?.review && _case?.reviewStatus.value !== 'PASSED') || ['PASSED', 'NOT_PASSED', 'CANCELED'].includes(_case.testResult.value)) {
-      return true;
-    }
-    if (planAuthMap.value[_case.planId].funcPlanAuth) {
-      return !planAuthMap.value[_case.planId]?.permissions?.includes('TEST');
-    }
-    return false;
-  })) {
-    batchDisabled.value.updateTestResult = true;
-  } // TEST
 });
 
 // 移动成功
@@ -1009,14 +973,7 @@ const editSuccess = () => {
   refreshChange();
 };
 
-// 回收站数据取消 更新列表
-watch(() => props.notify, () => {
-  checkedCase.value = undefined;
-  caseInfo.value = undefined;
-  refreshChange();
-});
-
-const handleClone = async (rowData: CaseListObj) => {
+const handleClone = async (rowData: CaseDetailChecked) => {
   updateLoading(true);
   const [error] = await funcCase.cloneCase([rowData.id]);
   if (error) {
@@ -1031,18 +988,20 @@ const handleClone = async (rowData: CaseListObj) => {
 const refreshRecycleBin = inject('refreshRecycleBin', (_key: 'useCase') => { });
 
 // 删除
-const handleDelete = async (rowData?: CaseListObj) => {
+const handleDelete = async (rowData?: CaseDetailChecked) => {
   modal.confirm({
     centered: true,
     title: t('functionCase.mainView.deleteCase'),
-    content: rowData ? t('functionCase.mainView.confirmDeleteCase', { name: rowData.name }) : t('functionCase.mainView.confirmDeleteSelectedCases'),
+    content: rowData
+      ? t('functionCase.mainView.confirmDeleteCase', { name: rowData.name })
+      : t('functionCase.mainView.confirmDeleteSelectedCases'),
     async onOk () {
       await delCase(rowData);
     }
   });
 };
 
-const delCase = async (rowData?: CaseListObj) => {
+const delCase = async (rowData?: CaseDetailChecked) => {
   updateLoading(true);
   const [error] = await funcCase.deleteCase(rowData ? [rowData.id] : selectedRowKeys.value);
   if (error) {
@@ -1076,7 +1035,7 @@ const getCurrentPage = (pageNo: number, pageSize: number, total: number): number
 };
 
 // 重置测试
-const hanldeResetTestResults = async (rowData: CaseListObj) => {
+const hanldeResetTestResults = async (rowData: CaseDetailChecked) => {
   updateLoading(true);
   const [error] = await funcCase.resetCaseResult([rowData.id]);
   if (error) {
@@ -1088,7 +1047,7 @@ const hanldeResetTestResults = async (rowData: CaseListObj) => {
 };
 
 // 重置评审
-const handleResetReviewResult = async (rowData: CaseListObj) => {
+const handleResetReviewResult = async (rowData: CaseDetailChecked) => {
   updateLoading(true);
   const [error] = await funcCase.resetReviewCase([rowData.id]);
   if (error) {
@@ -1100,7 +1059,7 @@ const handleResetReviewResult = async (rowData: CaseListObj) => {
 };
 
 // 重新测试 将用例改为待测试
-const handleReTest = async (rowData: CaseListObj) => {
+const handleReTest = async (rowData: CaseDetailChecked) => {
   updateLoading(true);
   const [error] = await funcCase.retestResult([rowData.id]);
   if (error) {
@@ -1112,7 +1071,7 @@ const handleReTest = async (rowData: CaseListObj) => {
 };
 
 // 平铺视图点击数据获取详情
-const hanldeSelectCase = async (_case: CaseListObj) => {
+const hanldeSelectCase = async (_case: CaseDetailChecked) => {
   checkedCase.value = _case;
   if (_case.id === caseInfo.value?.id) {
     return;
@@ -1131,7 +1090,7 @@ const hanldeSelectCase = async (_case: CaseListObj) => {
 };
 
 // 详情操作按钮
-const handleDetailAction = (type: CaseActionAuth, value: CaseListObj) => {
+const handleDetailAction = (type: CaseActionAuth, value: CaseDetailChecked) => {
   switch (type) {
     case 'edit':
       handleEdit(value);
@@ -1151,8 +1110,8 @@ const handleDetailAction = (type: CaseActionAuth, value: CaseListObj) => {
     case 'updateTestResult_passed':
       handleAction('updateTestResult_passed', value);
       break;
-    case 'updateTestResult_notpassed':
-      handleAction('updateTestResult_notpassed', value);
+    case 'updateTestResult_notPassed':
+      handleAction('updateTestResult_notPassed', value);
       break;
     case 'updateTestResult_blocked':
       handleSetREsultBlocked(value);
@@ -1182,7 +1141,10 @@ const handleDetailAction = (type: CaseActionAuth, value: CaseListObj) => {
 };
 
 // 评审 移动 修改测试结果封装逻辑
-const handleAction = (action: 'review' | 'move' | 'updateTestResult_passed' | 'updateTestResult_notpassed', rowData?: CaseListObj) => {
+const handleAction = (
+  action: 'review' | 'move' | 'updateTestResult_passed' | 'updateTestResult_notPassed',
+  rowData?: CaseDetailChecked
+) => {
   btnType.value = rowData ? 'one' : 'batch';
   selectedCase.value = rowData;
   switch (action) {
@@ -1196,7 +1158,7 @@ const handleAction = (action: 'review' | 'move' | 'updateTestResult_passed' | 'u
       updateTestResultVisible.value = true;
       resultPassed.value = true;
       break;
-    case 'updateTestResult_notpassed':
+    case 'updateTestResult_notPassed':
       updateTestResultVisible.value = true;
       resultPassed.value = false;
       break;
@@ -1208,7 +1170,7 @@ const handleSetREsultBlocked = async (value) => {
   const params = [
     {
       id: value.id,
-      testResult: 'BLOCKED'
+      testResult: CaseTestResult.BLOCKED
     }
   ];
   const [error] = await funcCase.updateCaseResult(params);
@@ -1222,10 +1184,7 @@ const handleSetREsultBlocked = async (value) => {
 // 取消case
 const handleSetREsultCanceled = async (value) => {
   const params = [
-    {
-      id: value.id,
-      testResult: 'CANCELED'
-    }
+    { id: value.id, testResult: CaseTestResult.CANCELED }
   ];
   const [error] = await funcCase.updateCaseResult(params);
   if (error) {
@@ -1245,7 +1204,7 @@ const handleCopy = async (value) => {
 
   const _params = http.getURLSearchParams(_qery, true);
 
-  const message = `${window.location.origin}/function#cases?&id=${value.id}&name=${value.name}&projectId=${projectInfo.value.id}&${_params}&total=${total.value}`;
+  const message = `${window.location.origin}/function#cases?id=${value.id}&name=${value.name}&projectId=${projectInfo.value.id}&${_params}&total=${total.value}`;
   toClipboard(message).then(() => {
     notification.success(t('functionCase.mainView.copySuccess'));
   }).catch(() => {
@@ -1254,8 +1213,8 @@ const handleCopy = async (value) => {
 };
 
 // 编辑用例
-const editCase = ref<CaseListObj>();
-const handleEdit = (rowData: CaseListObj) => {
+const editCase = ref<CaseDetailChecked>();
+const handleEdit = (rowData: CaseDetailChecked) => {
   editCase.value = rowData;
   addVisible.value = true;
 };
@@ -1266,12 +1225,12 @@ const addOrEidtSuccess = () => {
 };
 
 // 表格模式点击名称打开详情tab页 详情包含上一条下一条功能,上一条下一条请求数据使用本tab页数据的search条件
-const handleViewInfo = async (rowData: CaseListObj) => {
+const handleViewInfo = async (rowData: CaseDetailChecked) => {
   const currIndex = caseList.value.findIndex(item => item.id === rowData.id);
   const tabParams = {
     caseId: rowData.id,
     caseName: rowData.name,
-    caseAcitonAuth: tableAction.value.auth,
+    caseActionAuth: tableAction.value.auth,
     queryParams: {
       ...params.value,
       projectId: projectInfo.value?.id,
@@ -1300,7 +1259,9 @@ const handleExport = async () => {
   }
 
   exportLoading.value = true;
-  const _filters = selectedRowKeys.value.length ? [...params.value.filters, { key: 'id', value: selectedRowKeys.value, op: 'IN' }] : params.value.filters;
+  const _filters = selectedRowKeys.value.length
+    ? [...params.value.filters, { key: 'id', value: selectedRowKeys.value, op: SearchCriteria.OpEnum.In }]
+    : params.value.filters;
   const _params = http.getURLSearchParams({ filters: _filters }, true);
   await download(`${TESTER}/func/case/export?projectId=${projectInfo.value.id}&${_params}`);
   exportLoading.value = false;
@@ -1332,26 +1293,30 @@ const handleUploadOk = () => {
 };
 
 // 收藏
-const handleFavourite = async (rowData: CaseListObj) => {
+const handleFavourite = async (rowData: CaseDetailChecked) => {
   updateLoading(true);
   const [error] = rowData.favourite ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.AddFavouriteCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;
   }
-  notification.success(rowData.favourite ? t('functionCase.mainView.cancelFavouriteSuccess') : t('functionCase.mainView.favouriteSuccess'));
+  notification.success(rowData.favourite
+    ? t('functionCase.mainView.cancelFavouriteSuccess')
+    : t('functionCase.mainView.favouriteSuccess'));
   rowData.favourite = !rowData.favourite;
   emits('updateFollowFavourite', 'favourite');
 };
 
-const handleFollow = async (rowData: CaseListObj) => {
+const handleFollow = async (rowData: CaseDetailChecked) => {
   updateLoading(true);
   const [error] = rowData.follow ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.addFollowCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;
   }
-  notification.success(rowData.follow ? t('functionCase.mainView.cancelFollowSuccess') : t('functionCase.mainView.followSuccess'));
+  notification.success(rowData.follow
+    ? t('functionCase.mainView.cancelFollowSuccess')
+    : t('functionCase.mainView.followSuccess'));
   rowData.follow = !rowData.follow;
   emits('updateFollowFavourite', 'follow');
 };
@@ -1366,7 +1331,7 @@ const addBug = (remark = undefined) => {
 };
 
 const handleAddTask = async () => {
-  loadCaseList();
+  await loadCaseList();
 };
 
 const tableChange = ({ pagination, sorter }) => {
@@ -1408,7 +1373,7 @@ const checkScroll = (event) => {
 const tabViewRef = ref();
 const infoViewRef = ref();
 const cancelSelectedRowKeys = () => {
-  if (props.viewMode === 'table') {
+  if (props.viewMode === CaseViewMode.table) {
     tabViewRef.value.onSelectChange([]);
   } else {
     infoViewRef.value.cancelCheckAll([]);
@@ -1426,25 +1391,6 @@ const buttonDropdownClick = ({ key }: { key: 'import' | 'export' }) => {
   }
 };
 
-// 'table' | 'detail' | 'kanban'
-const modeOptions = [
-  {
-    key: 'tile',
-    name: t('functionCase.mainView.tileView'),
-    label: ''
-  },
-  {
-    key: 'table',
-    name: t('functionCase.mainView.listView'),
-    label: ''
-  },
-  {
-    key: 'kanban',
-    name: t('functionCase.mainView.kanbanView'),
-    label: ''
-  }
-];
-
 const viewModeChange = (key) => {
   const mode = key;
   emits('viewModeChange', mode);
@@ -1456,20 +1402,6 @@ const toRefresh = () => {
   refreshChange();
 };
 
-watch(() => props.viewMode, (newValue) => {
-  selectedRowKeys.value = [];
-
-  if (newValue !== 'kanban') {
-    loadCaseList();
-  }
-
-  if (newValue === 'tile' && caseList.value?.length) {
-    if (!caseInfo.value && checkedCase.value) {
-      getCaseInfo(checkedCase.value.id);
-    }
-  }
-});
-
 const detailQueryParams = computed(() => {
   return {
     ...params.value,
@@ -1478,13 +1410,92 @@ const detailQueryParams = computed(() => {
   };
 });
 
-const detaiIndex = computed(() => {
+const detailIndex = computed(() => {
   const currIndex = caseList.value.findIndex(item => item.id === caseInfo.value?.id) || 0;
-  const currIndexInAllData = calculateDataPosition(+total.value, params.value.pageNo, params.value.pageSize, currIndex + 1);
-  return currIndexInAllData;
+  return calculateDataPosition(+total.value, params.value.pageNo, params.value.pageSize, currIndex + 1);
 });
 
-const qulickList = [
+watch(() => props.notify, () => {
+  checkedCase.value = undefined;
+  caseInfo.value = undefined;
+  refreshChange();
+});
+
+watch(() => props.viewMode, (newValue) => {
+  selectedRowKeys.value = [];
+
+  if (newValue !== CaseViewMode.kanban) {
+    loadCaseList();
+  }
+
+  if (newValue === CaseViewMode.flat && caseList.value?.length) {
+    if (!caseInfo.value && checkedCase.value) {
+      getCaseInfo(checkedCase.value.id);
+    }
+  }
+});
+
+watch(() => selectedRowKeys.value, (newValue) => {
+  btnType.value = 'batch';
+  batchDisabled.value = {
+    move: false,
+    del: false,
+    updateTestResult: false
+  };
+  const list = caseList.value;
+
+  const selectList = list.filter(item => newValue.includes(item.id));
+  if (selectList.some(_case => {
+    if (planAuthMap.value[_case.planId].funcPlanAuth) {
+      return !(planAuthMap.value[_case.planId]?.permissions || []).includes(FuncPlanPermission.MODIFY_CASE);
+    }
+    return false;
+  })) {
+    batchDisabled.value.move = true;
+  }
+
+  if (selectList.some(_case => {
+    if (planAuthMap.value[_case.planId].funcPlanAuth) {
+      return !planAuthMap.value[_case.planId]?.permissions?.includes(FuncPlanPermission.DELETE_CASE);
+    }
+    return false;
+  })) {
+    batchDisabled.value.del = true;
+  }
+
+  if (selectList.some(_case => {
+    if ((_case?.review && _case?.reviewStatus.value !== ReviewStatus.PASSED) ||
+      [CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(_case.testResult.value)) {
+      return true;
+    }
+    if (planAuthMap.value[_case.planId].funcPlanAuth) {
+      return !planAuthMap.value[_case.planId]?.permissions?.includes(FuncPlanPermission.TEST);
+    }
+    return false;
+  })) {
+    batchDisabled.value.updateTestResult = true;
+  }
+});
+
+const modeOptions = [
+  {
+    key: CaseViewMode.flat,
+    name: t('functionCase.mainView.tileView'),
+    label: ''
+  },
+  {
+    key: CaseViewMode.table,
+    name: t('functionCase.mainView.listView'),
+    label: ''
+  },
+  {
+    key: CaseViewMode.kanban,
+    name: t('functionCase.mainView.kanbanView'),
+    label: ''
+  }
+];
+
+const quickList = [
   {
     type: 'all',
     name: t('functionCase.mainView.all'),
@@ -1576,35 +1587,50 @@ const searchOptions = computed(() => [
     allowClear: true
   },
   {
-    placeholder: [t('functionCase.case.searchPanel.reviewDateFrom'), t('functionCase.case.searchPanel.reviewDateTo')],
+    placeholder: [
+      t('functionCase.case.searchPanel.reviewDateFrom'),
+      t('functionCase.case.searchPanel.reviewDateTo')
+    ],
     valueKey: 'reviewDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: [t('functionCase.case.searchPanel.updateDateFrom'), t('functionCase.case.searchPanel.updateDateTo')],
+    placeholder: [
+      t('functionCase.case.searchPanel.updateDateFrom'),
+      t('functionCase.case.searchPanel.updateDateTo')
+    ],
     valueKey: 'lastModifiedDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: [t('functionCase.case.searchPanel.deadlineDateFrom'), t('functionCase.case.searchPanel.deadlineDateTo')],
+    placeholder: [
+      t('functionCase.case.searchPanel.deadlineDateFrom'),
+      t('functionCase.case.searchPanel.deadlineDateTo')
+    ],
     valueKey: 'deadlineDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: [t('functionCase.case.searchPanel.createdDateFrom'), t('functionCase.case.searchPanel.createdDateTo')],
+    placeholder: [
+      t('functionCase.case.searchPanel.createdDateFrom'),
+      t('functionCase.case.searchPanel.createdDateTo')
+    ],
     valueKey: 'createdDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: [t('functionCase.case.searchPanel.testResultHandleDateFrom'), t('functionCase.case.searchPanel.testResultHandleDateTo')],
+    placeholder: [
+      t('functionCase.case.searchPanel.testResultHandleDateFrom'),
+      t('functionCase.case.searchPanel.testResultHandleDateTo')
+    ],
     valueKey: 'testResultHandleDate',
     type: 'date-range',
     allowClear: true,
@@ -1636,11 +1662,11 @@ const buttonDropdownMenuItems = computed(() => [
 ]);
 
 const modeTitle = computed(() => {
-  if (props.viewMode === 'kanban') {
+  if (props.viewMode === CaseViewMode.kanban) {
     return t('functionCase.mainView.listView');
   }
 
-  if (props.viewMode === 'tile') {
+  if (props.viewMode === CaseViewMode.flat) {
     return t('functionCase.mainView.kanbanView');
   }
 
@@ -1648,11 +1674,11 @@ const modeTitle = computed(() => {
 });
 
 const modeIcon = computed(() => {
-  if (props.viewMode === 'kanban') {
+  if (props.viewMode === CaseViewMode.kanban) {
     return 'icon-liebiaoshitu';
   }
 
-  if (props.viewMode === 'tile') {
+  if (props.viewMode === CaseViewMode.flat) {
     return 'icon-kanbanshitu';
   }
 
@@ -1678,22 +1704,22 @@ const sortMenuItems = [
   {
     key: 'createdByName',
     name: t('functionCase.mainView.sortByCreator'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'testerName',
     name: t('functionCase.mainView.sortByTester'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'priority',
     name: t('functionCase.mainView.sortByPriority'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'deadlineDate',
     name: t('functionCase.mainView.sortByDeadline'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   }];
 
 const resetParam = () => {
@@ -1721,14 +1747,16 @@ defineExpose({
           :dataList="moduleTreeData"
           @loadData="loadModuleTree" />
       </div>
+
       <div class="flex-1 flex flex-col overflow-hidden">
         <div class="flex-shrink-0 flex justify-between items-start">
           <div class="flex items-center flex-wrap">
             <QuickSelect
               class="mb-3"
-              :list="qulickList"
+              :list="quickList"
               :selectedTypes="selectedTypes"
               @change="quickSearchChange" />
+
             <div class="px-4 h-7 leading-7 mb-3">
               <span>{{ t('functionCase.mainView.overdue') }}</span>
               <Colon class="mr-2" />
@@ -1738,28 +1766,33 @@ defineExpose({
                 class="w-8"
                 @change="overdueChange" />
             </div>
+
             <div class="h-7 leading-7 mb-3 mr-5">
               <span class="text-3 text-theme-content">
                 <span>{{ t('functionCase.mainView.groupByModule') }}</span>
                 <Colon class="mr-2" />
               </span>
+
               <Switch
                 v-model:checked="enabledGroup"
                 size="small"
                 class="w-8"
                 @change="enabledGroupChange" />
             </div>
+
             <PlanList
               class="mb-3 mr-5"
               :planId="planId"
               :planName="planName"
               @change="planChange" />
+
             <TagList
               ref="tagListRef"
               class="mb-3 mr-5"
               :tagIds="tagIds"
               @change="tagChange" />
-            <template v-if="props.viewMode === 'kanban'">
+
+            <template v-if="props.viewMode === CaseViewMode.kanban">
               <DropdownSort
                 v-model:orderBy="boardsOrderBy"
                 v-model:orderSort="boardsOrderSort"
@@ -1785,6 +1818,7 @@ defineExpose({
             </template>
           </div>
         </div>
+
         <div class="flex justify-between items-start space-x-5">
           <SearchPanel
             ref="searchPanelRef"
@@ -1798,21 +1832,26 @@ defineExpose({
                 <div class="truncate">{{ item.name }}</div>
               </div>
             </template>
+
             <template #moduleId_option="item">
               <div class="flex items-center" :title="item.name">
                 <Icon icon="icon-mokuai" class="mr-1 text-3.5 flex-none" />
                 <div class="truncate">{{ item.name }}</div>
               </div>
             </template>
+
             <template #priority_option="item">
               <TaskPriority :value="item" />
             </template>
+
             <template #testResult_option="item">
               <TestResult :value="item" />
             </template>
+
             <template #reviewStatus_option="item">
               <ReviewStatus :value="item" />
             </template>
+
             <template #testNum>
               <Input
                 :value="testNum"
@@ -1837,6 +1876,7 @@ defineExpose({
                 </template>
               </Input>
             </template>
+
             <template #testFailNum>
               <Input
                 :value="testFailNum"
@@ -1861,6 +1901,7 @@ defineExpose({
                 </template>
               </Input>
             </template>
+
             <template #reviewNum>
               <Input
                 :value="reviewNum"
@@ -1886,6 +1927,7 @@ defineExpose({
               </Input>
             </template>
           </SearchPanel>
+
           <div class="flex items-center space-x-2">
             <Button
               v-if="aiEnabled"
@@ -1897,6 +1939,7 @@ defineExpose({
               <Icon icon="icon-jia" class="text-3.5" />
               <span class="ml-1">{{ t('functionCase.mainView.smartAddCase') }}</span>
             </Button>
+
             <Button
               class="flex-shrink-0 flex items-center pr-0"
               type="primary"
@@ -1906,12 +1949,14 @@ defineExpose({
                 <Icon icon="icon-jia" class="text-3.5" />
                 <span class="ml-1">{{ t('functionCase.mainView.addCase') }}</span>
               </div>
+
               <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
                 <div class="w-5 h-5 flex items-center justify-center">
                   <Icon icon="icon-more" />
                 </div>
               </Dropdown>
             </Button>
+
             <Tooltip
               arrowPointAtCenter
               placement="topLeft"
@@ -1927,11 +1972,8 @@ defineExpose({
                   <Icon icon="icon-xiajiantou" class="ml-1" />
                 </div>
               </Dropdown>
-              <!-- <Icon
-                :icon="modeIcon"
-                class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
-                @click="viewModeChange" /> -->
             </Tooltip>
+
             <Tooltip
               arrowPointAtCenter
               placement="topLeft"
@@ -1941,6 +1983,7 @@ defineExpose({
                 class="mr-2 text-4.5"
                 @click="emits('countChange')" />
             </Tooltip>
+
             <Tooltip
               arrowPointAtCenter
               placement="topLeft"
@@ -1949,17 +1992,10 @@ defineExpose({
             </Tooltip>
           </div>
         </div>
+
         <div
           :visible="!!selectedRowKeys?.length"
           class="btn-group-container flex-shrink-0 flex items-center transition-all duration-300 space-x-2.5">
-          <!-- <Button
-              :disabled="batchDisabled.review"
-              class="flex items-center px-0 h-5 leading-5"
-              type="link"
-              size="small"
-              @click="handleAction('review')">
-              评审
-            </Button> -->
           <Button
             :disabled="batchDisabled.move"
             class="flex items-center px-0 h-5 leading-5"
@@ -1968,6 +2004,7 @@ defineExpose({
             @click="handleAction('move')">
             {{ t('actions.move ') }}
           </Button>
+
           <Button
             :disabled="batchDisabled.del"
             class="flex items-center px-0 h-5 leading-5"
@@ -1976,6 +2013,7 @@ defineExpose({
             @click="handleDelete()">
             {{ t('actions.delete') }}
           </Button>
+
           <Button
             :disabled="batchDisabled.updateTestResult"
             class="flex items-center px-0 h-5 leading-5"
@@ -1984,14 +2022,16 @@ defineExpose({
             @click="handleAction('updateTestResult_passed')">
             {{ t('functionCase.mainView.testPassed') }}
           </Button>
+
           <Button
             :disabled="batchDisabled.updateTestResult"
             class="flex items-center px-0 h-5 leading-5"
             type="link"
             size="small"
-            @click="handleAction('updateTestResult_notpassed')">
+            @click="handleAction('updateTestResult_notPassed')">
             {{ t('functionCase.mainView.testNotPassed') }}
           </Button>
+
           <Button
             danger
             type="link"
@@ -2002,9 +2042,10 @@ defineExpose({
             <span class="ml-1">({{ selectedRowKeys?.length }})</span>
           </Button>
         </div>
-        <template v-if="props.viewMode === 'kanban'">
+
+        <template v-if="props.viewMode === CaseViewMode.kanban">
           <KanbanView
-            v-show="viewMode === 'kanban'"
+            v-show="viewMode === CaseViewMode.kanban"
             v-model:moduleId="moduleId"
             :groupKey="boardsGroupKey"
             :orderBy="boardsOrderBy"
@@ -2017,14 +2058,15 @@ defineExpose({
             @refreshChange="refreshChange"
             @loadingChange="loadingChange" />
         </template>
+
         <template v-else-if="caseList.length">
-          <template v-if="props.viewMode === 'table'">
+          <template v-if="props.viewMode === CaseViewMode.table">
             <TableView
               ref="tabViewRef"
               v-model:selectedRowKeys="selectedRowKeys"
               :params="params"
               :total="total"
-              :caseAcitonAuth="tableAction.auth"
+              :caseActionAuth="tableAction.auth"
               :menus="tableAction.actionMenus"
               :caseList="caseList"
               class="flex-1 pb-3.5"
@@ -2032,8 +2074,9 @@ defineExpose({
               @openInfo="handleViewInfo"
               @change="tableChange" />
           </template>
-          <template v-else-if="props.viewMode === 'tile'">
-            <InfoView
+
+          <template v-else-if="props.viewMode === CaseViewMode.flat">
+            <FlatView
               ref="infoViewRef"
               v-model:selectedRowKeys="selectedRowKeys"
               :params="params"
@@ -2044,33 +2087,35 @@ defineExpose({
               @select="hanldeSelectCase"
               @change="listChange">
               <template #info>
-                <CaseDetail
+                <CaseDetailPage
                   v-if="checkedCase"
                   id="CaseInfoRef"
                   class="h-full flex-1"
                   :caseId="caseInfo?.id"
-                  :caseAcitonAuth="tableAction.auth"
+                  :caseActionAuth="tableAction.auth"
                   :caseInfo="caseInfo"
                   :userInfo="userInfo"
                   :appInfo="appInfo"
                   :scrollNotify="scrollNotify"
                   :queryParams="detailQueryParams"
-                  :currIndex="detaiIndex"
+                  :currIndex="detailIndex"
                   type="info"
                   @onClick="handleDetailAction"
                   @getInfo="getCaseInfo"
                   @editSuccess="editSuccess"
                   @scroll="checkScroll" />
               </template>
-            </InfoView>
+            </FlatView>
           </template>
         </template>
-        <template v-if="!props.loading && !caseList?.length && !firstloading">
+
+        <template v-if="!props.loading && !caseList?.length && !firstLoading">
           <NoData class="mx-auto flex-1 flex-shrink-0" size="small" />
         </template>
       </div>
     </div>
   </div>
+
   <AsyncComponent :visible="addVisible">
     <AddModal
       v-model:visible="addVisible"
@@ -2078,11 +2123,13 @@ defineExpose({
       :moduleId="(moduleId && moduleId !== '-1') ? moduleId : undefined"
       @update="addOrEidtSuccess" />
   </AsyncComponent>
+
   <AsyncComponent :visible="aiAddVisible">
     <AiAddModal
       v-model:visible="aiAddVisible"
       @update="addOrEidtSuccess" />
   </AsyncComponent>
+
   <AsyncComponent :visible="reviewVisible">
     <ReviewModal
       v-if="reviewVisible"
@@ -2092,6 +2139,7 @@ defineExpose({
       :type="btnType"
       @update="updteSuccess" />
   </AsyncComponent>
+
   <AsyncComponent :visible="moveVisible">
     <MoveModal
       v-if="moveVisible"
@@ -2101,6 +2149,7 @@ defineExpose({
       :type="btnType"
       @update="moveSuccess" />
   </AsyncComponent>
+
   <AsyncComponent :visible="updateTestResultVisible">
     <UpdateTestResultModal
       v-if="updateTestResultVisible"
@@ -2112,6 +2161,7 @@ defineExpose({
       @update="updteSuccess"
       @addBug="addBug" />
   </AsyncComponent>
+
   <AsyncComponent :visible="uploadCaseVisible">
     <UploadCaseModal
       v-model:visible="uploadCaseVisible"
@@ -2119,8 +2169,9 @@ defineExpose({
       @cancel="cancelUpload"
       @ok="handleUploadOk" />
   </AsyncComponent>
+
   <AsyncComponent :visible="taskModalVisible">
-    <AddTaskModal
+    <EditTaskModal
       v-model:visible="taskModalVisible"
       :projectId="projectInfo?.id"
       :appInfo="appInfo"
@@ -2129,7 +2180,7 @@ defineExpose({
       :refCaseIds="[selectedCase?.id]"
       :description="selectedCase?.testRemark"
       :name="t('functionCase.mainView.testNotPassedName', { name: selectedCase?.name || '' })"
-      taskType="BUG"
+      :taskType="TaskType.BUG"
       :confirmerId="selectedCase?.testerId"
       @ok="handleAddTask" />
   </AsyncComponent>

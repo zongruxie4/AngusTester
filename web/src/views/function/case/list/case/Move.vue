@@ -6,14 +6,14 @@ import { TESTER } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
-import { CaseListObj } from './types';
+import { CaseDetailChecked } from '../types';
 
 const { t } = useI18n();
 
 interface Props {
   visible: boolean;
   type: 'batch' | 'one',
-  selectedCase: CaseListObj;
+  selectedCase: CaseDetailChecked;
   selectedRowKeys: string[];
 }
 
@@ -27,7 +27,6 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'update'):void}>();
 
 const formState = ref<{ targetPlanId?: string }>({ targetPlanId: undefined });
-// Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const close = () => {
@@ -92,6 +91,7 @@ const format = (data) => {
           </template>
         </Select>
       </FormItem>
+
       <FormItem class="mt-5">
         <div class="flex justify-end">
           <Button

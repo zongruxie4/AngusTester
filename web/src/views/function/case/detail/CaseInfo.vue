@@ -8,6 +8,7 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 interface Props {
   caseInfo?: {[key: string]: any}
 }
+
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -17,7 +18,6 @@ const props = withDefaults(defineProps<Props>(), {
 const infoColumns = computed(() => [
   [
     { label: t('functionCase.detail.review.name'), dataIndex: 'name' },
-    // { label: 'ID', dataIndex: 'id' },
     { label: t('functionCase.detail.review.code'), dataIndex: 'code' },
     {
       label: t('functionCase.detail.review.reviewStatus'),
@@ -25,9 +25,6 @@ const infoColumns = computed(() => [
     },
     { label: t('functionCase.detail.review.priority'), dataIndex: 'priority' },
     { label: t('functionCase.detail.review.tags'), dataIndex: 'tags' },
-
-    // { label: '所属计划', dataIndex: 'planName' },
-    // { label: '所属模块', dataIndex: 'moduleName' },
     {
       label: t('functionCase.detail.review.testResult'),
       dataIndex: 'testResult'

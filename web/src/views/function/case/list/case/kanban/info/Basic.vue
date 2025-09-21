@@ -2,27 +2,24 @@
 import { defineAsyncComponent, inject, nextTick, ref, Ref } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { Grid, Icon, Input, Popover, ReviewStatus, Select } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import { CaseDetail } from '@/views/function/types';
+import { CaseInfoEditProps } from '@/views/function/case/list/types';
 
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { CaseInfo } from '../types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: CaseInfo;
-  canEdit: boolean;
-}
+const Description = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Description.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Precondition.vue'));
+const TestStep = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestSteps.vue'));
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -33,13 +30,9 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: CaseInfo): void;
-  (event: 'update:dataSource', value: CaseInfo): void;
+  (event: 'change', value: CaseDetail): void;
+  (event: 'update:dataSource', value: CaseDetail): void;
 }>();
-
-const Description = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Description.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Precondition.vue'));
-const TestStep = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestSteps.vue'));
 
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
@@ -219,9 +212,18 @@ const change = async () => {
 
 const infoColumns = [
   [
-    { label: t('functionCase.kanbanView.infoBasic.name'), dataIndex: 'name' },
-    { label: t('functionCase.kanbanView.infoBasic.id'), dataIndex: 'id' },
-    { label: t('functionCase.kanbanView.infoBasic.code'), dataIndex: 'code' },
+    {
+      label: t('functionCase.kanbanView.infoBasic.name'),
+      dataIndex: 'name'
+    },
+    {
+      label: t('functionCase.kanbanView.infoBasic.id'),
+      dataIndex: 'id'
+    },
+    {
+      label: t('functionCase.kanbanView.infoBasic.code'),
+      dataIndex: 'code'
+    },
     {
       label: t('functionCase.kanbanView.infoBasic.reviewStatus'),
       dataIndex: 'reviewStatus'
@@ -234,26 +236,55 @@ const infoColumns = [
       label: t('functionCase.kanbanView.infoBasic.softwareVersion'),
       dataIndex: 'softwareVersion'
     },
-    { label: t('functionCase.kanbanView.infoBasic.priority'), dataIndex: 'priority' },
-    { label: t('functionCase.kanbanView.infoBasic.tags'), dataIndex: 'tags' },
-    { label: t('functionCase.kanbanView.infoBasic.planName'), dataIndex: 'planName' },
-    { label: t('functionCase.kanbanView.infoBasic.moduleName'), dataIndex: 'moduleName' },
+    {
+      label: t('functionCase.kanbanView.infoBasic.priority'),
+      dataIndex: 'priority'
+    },
+    {
+      label: t('functionCase.kanbanView.infoBasic.tags'),
+      dataIndex: 'tags'
+    },
+    {
+      label: t('functionCase.kanbanView.infoBasic.planName'),
+      dataIndex: 'planName'
+    },
+    {
+      label: t('functionCase.kanbanView.infoBasic.moduleName'),
+      dataIndex: 'moduleName'
+    },
     {
       label: t('functionCase.kanbanView.infoBasic.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.evalWorkload') : t('functionCase.kanbanView.infoBasic.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.actualWorkload') : t('functionCase.kanbanView.infoBasic.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' },
-    { label: t('functionCase.kanbanView.infoBasic.unplannedCase'), dataIndex: 'unplanned', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
+    {
+      label: props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+        ? t('functionCase.kanbanView.infoBasic.evalWorkload')
+        : t('functionCase.kanbanView.infoBasic.evalWorkload'),
+      dataIndex: 'evalWorkload',
+      customRender: ({ text }) => text || '--'
+    },
+    {
+      label: props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+        ? t('functionCase.kanbanView.infoBasic.actualWorkload')
+        : t('functionCase.kanbanView.infoBasic.actualWorkload'),
+      dataIndex: 'actualWorkload',
+      customRender: ({ text }) => text || '--'
+    },
+    {
+      label: t('functionCase.kanbanView.infoBasic.unplannedCase'),
+      dataIndex: 'unplanned',
+      customRender: ({ text }) => text ? t('status.yes') : t('status.no')
+    }
   ]
 ];
-
 </script>
-
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div>
-      <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.infoBasic.title') }}</div>
+      <div class="text-theme-title mb-2.5 font-semibold">
+        {{ t('functionCase.kanbanView.infoBasic.title') }}
+      </div>
+
       <Grid
         :columns="infoColumns"
         :dataSource="props.dataSource"
@@ -273,6 +304,7 @@ const infoColumns = [
                 :placeholder="t('functionCase.kanbanView.infoBasic.caseName')"
                 @blur="editName" />
             </template>
+
             <template v-else>
               <span>
                 <span>{{ text }}</span>
@@ -285,6 +317,7 @@ const infoColumns = [
             </template>
           </div>
         </template>
+
         <template #priority="{text}">
           <div class="flex items-center relative">
             <template v-if="isEditPriority">
@@ -303,6 +336,7 @@ const infoColumns = [
                 </template>
               </SelectEnum>
             </template>
+
             <template v-else>
               <TaskPriority :value="text" />
               <Icon
@@ -313,6 +347,7 @@ const infoColumns = [
             </template>
           </div>
         </template>
+
         <template #tags="{text}">
           <div class="flex items-center flex-wrap">
             <template v-if="isEditTag">
@@ -331,6 +366,7 @@ const infoColumns = [
                 class="w-full"
                 @blur="editTag" />
             </template>
+
             <template v-else>
               <div class="inline-flex items-center leading-6">
                 <Tag
@@ -341,7 +377,9 @@ const infoColumns = [
                   class="text-3 px-2 font-normal text-theme-sub-content mr-2 h-6 py-1 border-border-divider">
                   <span>{{ tag.name }}</span>
                 </Tag>
+
                 <template v-if="!text?.length">--</template>
+
                 <Icon
                   v-if="props.canEdit"
                   :class="{'transform-gpu':text?.length}"
@@ -352,6 +390,7 @@ const infoColumns = [
             </template>
           </div>
         </template>
+
         <template #evalWorkload="{text}">
           <div class="flex items-center relative">
             <template v-if="isEditEvalWorkload">
@@ -368,6 +407,7 @@ const infoColumns = [
                 class="w-65 absolute -top-1.25"
                 @blur="editEvalWorkload" />
             </template>
+
             <template v-else>
               {{ text || '--' }}
               <Icon
@@ -379,13 +419,18 @@ const infoColumns = [
                 placement="rightTop"
                 arrowPointAtCenter>
                 <template #content>
-                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.evalWorkloadTip') : t('functionCase.kanbanView.infoBasic.evalWorkloadTipTime') }}</div>
+                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">
+                    {{ props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                      ? t('functionCase.kanbanView.infoBasic.evalWorkloadTip')
+                      : t('functionCase.kanbanView.infoBasic.evalWorkloadTipTime') }}
+                  </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
               </Popover>
             </template>
           </div>
         </template>
+
         <template #actualWorkload="{text}">
           <div class="flex items-center relative">
             <template v-if="isEditActualWorkload">
@@ -402,6 +447,7 @@ const infoColumns = [
                 class="w-65 absolute -top-1.25"
                 @blur="editActualWorkload" />
             </template>
+
             <template v-else>
               {{ text || '--' }}
               <Icon
@@ -409,22 +455,28 @@ const infoColumns = [
                 class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
                 icon="icon-shuxie"
                 @click="openEditActualWorkload" />
+
               <Popover
                 placement="rightTop"
                 arrowPointAtCenter>
                 <template #content>
-                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.actualWorkloadTip') : t('functionCase.kanbanView.infoBasic.actualWorkloadTipTime') }}</div>
+                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">
+                    {{ props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                      ? t('functionCase.kanbanView.infoBasic.actualWorkloadTip') : t('functionCase.kanbanView.infoBasic.actualWorkloadTipTime') }}
+                  </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
               </Popover>
             </template>
           </div>
         </template>
+
         <template #planName="{text}">
           <span>
             <Icon icon="icon-jihua" class="mr-1.25 flex-none -mt-0.25" />{{ text }}
           </span>
         </template>
+
         <template #moduleName="{text}">
           <template v-if="!text">
             --
@@ -437,6 +489,7 @@ const infoColumns = [
             </Tag>
           </div>
         </template>
+
         <template #reviewStatus="{text}">
           <template v-if="text">
             <ReviewStatus :value="text" />
@@ -445,6 +498,7 @@ const infoColumns = [
             --
           </template>
         </template>
+
         <template #testResult="{text}">
           <div class="flex items-center">
             <TestResult :value="text" />
@@ -456,16 +510,19 @@ const infoColumns = [
             </div>
           </div>
         </template>
+
         <template #version="{text}">
           <span v-if="text">v{{ text }}</span>
           <template v-else>--</template>
         </template>
+
         <template #softwareVersion="{text}">
           <span v-if="text">{{ text }}</span>
           <template v-else>--</template>
         </template>
       </Grid>
     </div>
+
     <Precondition
       :projectId="props.projectId"
       :appInfo="props.appInfo"
@@ -473,6 +530,7 @@ const infoColumns = [
       :canEdit="props.canEdit"
       @change="change"
       @loadingChange="loadingChange" />
+
     <TestStep
       :projectId="props.projectId"
       :appInfo="props.appInfo"
@@ -480,6 +538,7 @@ const infoColumns = [
       :canEdit="props.canEdit"
       @change="change"
       @loadingChange="loadingChange" />
+
     <Description
       :projectId="props.projectId"
       :appInfo="props.appInfo"

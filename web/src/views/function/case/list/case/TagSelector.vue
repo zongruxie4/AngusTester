@@ -98,6 +98,7 @@ defineExpose({
         </Tag>
       </Tooltip>
     </div>
+
     <template v-if="tagList.length<3">
       <template v-if="!showSelect">
         <Button
@@ -108,6 +109,7 @@ defineExpose({
           {{ t('functionCase.selectTag.tag') }}
         </Button>
       </template>
+
       <template v-else>
         <Select
           v-model:value="selectValue"

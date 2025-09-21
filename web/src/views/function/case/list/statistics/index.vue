@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
-import { CountObj } from './PropsType';
+import { CaseCount } from '@/views/function/case/types';
 
 const { t } = useI18n();
 
 interface Props {
-  dataSource: CountObj
+  dataSource: CaseCount
 }
 const props = withDefaults(defineProps<Props>(), {
-  dataSource: () => ({}) as CountObj
+  dataSource: () => ({}) as CaseCount
 });
 
 const topCarObj = {

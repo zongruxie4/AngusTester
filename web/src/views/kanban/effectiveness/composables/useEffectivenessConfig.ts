@@ -200,12 +200,11 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
    * Returns task or use case configuration based on the current countType
    * </p>
    */
- 
 
   return {
     // Configuration data
     taskOverViewConfig,
-    caseOverViewConfig,
+    caseOverViewConfig
 
   };
 }

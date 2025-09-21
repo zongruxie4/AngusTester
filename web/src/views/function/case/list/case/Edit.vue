@@ -14,24 +14,35 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
-import { EvalWorkloadMethod, enumUtils, TESTER, upload, localStore, utils } from '@xcan-angus/infra';
-import { CaseStepView } from '@/enums/enums';
+import {
+  EvalWorkloadMethod,
+  Priority,
+  SearchCriteria,
+  enumUtils,
+  TESTER,
+  upload,
+  localStore,
+  utils
+} from '@xcan-angus/infra';
+import { CaseStepView, SoftwareVersionStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
-import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, modules, project } from '@/api/tester';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
-import TaskPriority from '@/components/TaskPriority/index.vue';
 
 import { useI18n } from 'vue-i18n';
-import CaseSteps from './CaseSteps.vue';
-import { CaseInfoObj, CaseListObj, EditFormState } from './types';
+import { CaseDetail } from '@/views/function/types';
+import { CaseDetailChecked, CaseEditState } from '../types';
+
+import CaseSteps from '@/views/function/case/list/case/CaseSteps.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
+import RichEditor from '@/components/richEditor/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 
 interface Props {
   visible: boolean;
-  editCase?:CaseListObj;
+  editCase?: CaseDetailChecked;
   moduleId?: string;
 }
 
@@ -47,8 +58,9 @@ const userInfo: any = inject('userInfo');
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const addCaseSizeKey = `${userInfo.id}${projectId.value}addFuncCaseSize`;
 
+// TODO 字段顺序保持一致
 const formRef = ref();
-const formState = ref<EditFormState>({
+const formState = ref<CaseEditState>({
   attachments: [],
   deadlineDate: '',
   description: '',
@@ -58,7 +70,7 @@ const formState = ref<EditFormState>({
   name: '',
   planId: undefined,
   precondition: '',
-  priority: 'MEDIUM',
+  priority: Priority.MEDIUM,
   steps: [],
   tagIds: [],
   testerId: userInfo?.id,
@@ -66,12 +78,12 @@ const formState = ref<EditFormState>({
   refTaskIds: [],
   developerId: undefined,
   softwareVersion: undefined,
-  stepView: 'TABLE'
+  stepView: CaseStepView.TABLE
 });
 
-const oldFormState = ref<EditFormState>();
+const oldFormState = ref<CaseEditState>();
 
-const detail = ref<CaseInfoObj>();
+const caseDetail = ref<CaseDetail>();
 const getCaseInfo = async () => {
   const [error, { data }] = await funcCase.getCaseDetail(props.editCase.id);
   if (error) {
@@ -110,7 +122,7 @@ const getCaseInfo = async () => {
     }
   });
 
-  detail.value = data;
+  caseDetail.value = data;
   stepDefaultValue.value = data.steps;
   oldFormState.value = JSON.parse(JSON.stringify(formState.value));
 };
@@ -319,31 +331,6 @@ const loadMembers = async () => {
   });
 };
 
-onMounted(() => {
-  watch(() => props.visible, async (newValue) => {
-    if (newValue) {
-      await getModuleTreeData();
-      if (props.editCase) {
-        getCaseInfo();
-      } else {
-        resetForm();
-      }
-    }
-  }, {
-    immediate: true
-  });
-  watch(() => projectId.value, (newValue) => {
-    if (newValue) {
-      loadMembers();
-      getModuleTreeData();
-    }
-  }, {
-    immediate: true
-  });
-
-  loadEnums();
-});
-
 const planParams = computed(() => {
   return { projectId: projectId.value };
 });
@@ -408,9 +395,6 @@ const validateDesc = () => {
   if (descRichRef.value && descRichRef.value.getLength() > 2000) {
     return Promise.reject(t('functionCase.addCaseModal.richTextTooLong'));
   }
-  // if (formState.value.description.length > 2000) {
-  //   return Promise.reject('富文本字符不能超过2000');
-  // }
   return Promise.resolve();
 };
 
@@ -446,6 +430,31 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
     return Promise.resolve();
   }
 };
+
+onMounted(() => {
+  watch(() => props.visible, async (newValue) => {
+    if (newValue) {
+      await getModuleTreeData();
+      if (props.editCase) {
+        getCaseInfo();
+      } else {
+        resetForm();
+      }
+    }
+  }, {
+    immediate: true
+  });
+  watch(() => projectId.value, (newValue) => {
+    if (newValue) {
+      loadMembers();
+      getModuleTreeData();
+    }
+  }, {
+    immediate: true
+  });
+
+  loadEnums();
+});
 </script>
 <template>
   <Modal
@@ -461,6 +470,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"
         @click="handleZoom" />
     </Tooltip>
+
     <Spin :spinning="loading" class="h-full">
       <Form
         :key="formState.id"
@@ -481,60 +491,64 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 :maxlength="400"
                 :placeholder="t('functionCase.addCaseModal.enterCaseName')" />
             </FormItem>
+
             <FormItem
               name="precondition"
               :rules="[{validator: validateCondition}]">
               <template #label>
                 <div class="text-3 flex space-x-2 items-center">
-                  <span>{{ t('functionCase.addCaseModal.precondition') }}</span> <Hints :text="t('functionCase.addCaseModal.preconditionHint')" />
+                  <span>{{ t('functionCase.addCaseModal.precondition') }}</span>
+                  <Hints :text="t('functionCase.addCaseModal.preconditionHint')" />
                 </div>
               </template>
+
               <RichEditor
                 ref="conditionRichRef"
                 v-model:value="formState.precondition"
                 :height="100"
                 :placeholder="t('functionCase.addCaseModal.enterPrecondition')" />
-              <!-- <Input
-                v-model:value="formState.precondition"
-                size="small"
-                type="textarea"
-                :autoSize="{ minRows: 6, maxRows: 6}"
-                :maxlength="2000"
-                :placeholder="t('输入前置条件，最多支持2000字符。')" /> -->
             </FormItem>
+
             <FormItem>
               <template #label>
                 <div class="text-3 flex space-x-2 items-center">
                   <span>{{ t('functionCase.addCaseModal.testSteps') }}</span>
+
                   <Dropdown
                     :value="[formState.stepView]"
                     :menuItems="stepViewOpt"
                     @click="changeStepView">
-                    <span class="text-theme-special">{{ t('functionCase.addCaseModal.switchType') }} <Icon icon="icon-xiajiantou" /></span>
+                    <span class="text-theme-special">{{ t('functionCase.addCaseModal.switchType') }}
+                      <Icon icon="icon-xiajiantou" /></span>
                   </Dropdown>
                   <Hints :text="t('functionCase.addCaseModal.testStepsHint')" class="flex-1" />
                 </div>
               </template>
+
               <CaseSteps
                 ref="stepsRef"
                 v-model:value="formState.steps"
                 :stepView="formState.stepView"
                 :defaultValue="stepDefaultValue" />
             </FormItem>
+
             <FormItem
               name="description"
               :rules="[{validator: validateDesc}]">
               <template #label>
                 <div class="text-3 flex space-x-2 items-center">
-                  <span>{{ t('functionCase.addCaseModal.description') }}</span> <Hints :text="t('functionCase.addCaseModal.descriptionHint')" />
+                  <span>{{ t('functionCase.addCaseModal.description') }}</span>
+                  <Hints :text="t('functionCase.addCaseModal.descriptionHint')" />
                 </div>
               </template>
+
               <RichEditor
                 ref="descRichRef"
                 v-model:value="formState.description"
                 class="add-case" />
             </FormItem>
           </div>
+
           <div style="width: 320px;" class="ml-5 h-full">
             <FormItem
               :label="t('functionCase.addCaseModal.plan')"
@@ -560,6 +574,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 </template>
               </Select>
             </FormItem>
+
             <FormItem
               :label="t('functionCase.addCaseModal.module')"
               name="moduleId">
@@ -581,6 +596,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 </template>
               </TreeSelect>
             </FormItem>
+
             <FormItem
               :label="t('functionCase.addCaseModal.tester')"
               name="testerId"
@@ -600,6 +616,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 </Button>
               </div>
             </FormItem>
+
             <FormItem
               :label="t('functionCase.addCaseModal.developer')"
               name="developerId"
@@ -610,6 +627,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 class="flex-1"
                 size="small" />
             </FormItem>
+
             <FormItem
               name="priority"
               required>
@@ -625,6 +643,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                   </Tooltip>
                 </span>
               </template>
+
               <SelectEnum
                 v-model:value="formState.priority"
                 enumKey="Priority"
@@ -634,21 +653,25 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 </template>
               </SelectEnum>
             </FormItem>
+
             <FormItem
               name="evalWorkload"
               :rules="{required: formState.actualWorkload, validator: evalWorkloadValidateDate,trigger: 'change' }">
               <template #label>
                 <span class="flex items-center">
-                  {{ evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.estimatedStoryPoints') : t('functionCase.addCaseModal.estimatedWorkHours') }}
+                  {{ evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                    ? t('functionCase.addCaseModal.estimatedStoryPoints') : t('functionCase.addCaseModal.estimatedWorkHours') }}
                   <Tooltip
                     placement="right"
                     arrowPointAtCenter
                     :overlayStyle="{'max-width':'400px'}"
-                    :title="evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.storyPointsHint') : t('functionCase.addCaseModal.workHoursHint')">
+                    :title="evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                      ? t('functionCase.addCaseModal.storyPointsHint') : t('functionCase.addCaseModal.workHoursHint')">
                     <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                   </Tooltip>
                 </span>
               </template>
+
               <Input
                 v-model:value="formState.evalWorkload"
                 size="small"
@@ -659,21 +682,25 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 dataType="float"
                 @blur="evalWorkloadChange($event.target.value)" />
             </FormItem>
+
             <template v-if="props.editCase">
               <FormItem
                 name="actualWorkload">
                 <template #label>
                   <span class="flex items-center">
-                    {{ evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.actualWorkloads') : t('functionCase.addCaseModal.actualWorkload') }}
+                    {{ evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                      ? t('functionCase.addCaseModal.actualWorkloads') : t('functionCase.addCaseModal.actualWorkload') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
-                      :title="evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.actualWorkloadsHint') : t('functionCase.addCaseModal.actualWorkloadHint')">
+                      :title="evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                        ? t('functionCase.addCaseModal.actualWorkloadsHint') : t('functionCase.addCaseModal.actualWorkloadHint')">
                       <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
                 </template>
+
                 <Input
                   v-model:value="formState.actualWorkload"
                   size="small"
@@ -685,6 +712,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                   @change="actualWorkloadChange($event.target.value)" />
               </FormItem>
             </template>
+
             <FormItem
               name="softwareVersion"
               :label="t('functionCase.addCaseModal.softwareVersion')">
@@ -693,10 +721,11 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 allowClear
                 :placeholder="t('functionCase.addCaseModal.pleaseSelectVersion')"
                 :action="`${TESTER}/software/version?projectId=${projectId}`"
-                :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+                :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: SearchCriteria.OpEnum.In}]}"
                 :fieldNames="{value:'name', label: 'name'}">
               </Select>
             </FormItem>
+
             <FormItem
               name="deadlineDate"
               :rules="{required: true, validator: validateDate,trigger: 'change' }">
@@ -712,6 +741,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                   </Tooltip>
                 </span>
               </template>
+
               <DatePicker
                 v-model:value="formState.deadlineDate"
                 :disabledDate="disabledDate"
@@ -723,6 +753,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 type="date"
                 class="w-full" />
             </FormItem>
+
             <FormItem
               name="tagIds">
               <template #label>
@@ -736,6 +767,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                   </Tooltip>
                 </span>
               </template>
+
               <Select
                 v-model:value="formState.tagIds"
                 showSearch
@@ -842,6 +874,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                         @click="delFile(index)" />
                     </div>
                   </div>
+
                   <div v-if="formState.attachments.length < 5" class="flex justify-end">
                     <Upload
                       :fileList="[]"
@@ -854,6 +887,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                     </Upload>
                   </div>
                 </template>
+
                 <template v-else>
                   <div class="flex justify-center">
                     <Upload
@@ -870,6 +904,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
             </FormItem>
           </div>
         </div>
+
         <FormItem>
           <div class="flex justify-end mt-5">
             <Button
@@ -880,6 +915,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
               @click="save('save')">
               {{ t('functionCase.addCaseModal.save') }}
             </Button>
+
             <Button
               v-if="!editCase"
               type="primary"
@@ -889,6 +925,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
               @click="save('add')">
               {{ t('functionCase.addCaseModal.saveAndContinue') }}
             </Button>
+
             <Button
               size="small"
               class="ml-5 px-3"

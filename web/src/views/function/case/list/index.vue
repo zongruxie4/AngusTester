@@ -2,32 +2,21 @@
 import { computed, defineAsyncComponent, inject, onMounted, provide, ref, Ref } from 'vue';
 import { Spin } from '@xcan-angus/vue-ui';
 import elementResizeDetectorMaker from 'element-resize-detector';
-import { localStore } from '@xcan-angus/infra';
+import { localStore, PageQuery } from '@xcan-angus/infra';
 
-import { CountObj } from '../detail/types';
+import { CaseCount, CaseViewMode } from '@/views/function/case/types';
 
 const Statistics = defineAsyncComponent(() => import('@/views/function/case/list/statistics/index.vue'));
 const PieChart = defineAsyncComponent(() => import('@/views/function/case/list/statistics/Chart.vue'));
 const CaseList = defineAsyncComponent(() => import('@/views/function/case/list/case/index.vue'));
 
-type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH' | 'MATCH' | 'IN' | 'NOT_IN';
-type Filters = { key: string, value: string | boolean | string[], op: FilterOp }
-
-type SearchParam = {
-    pageNo: number;
-    pageSize: number;
-    filters?: Filters[];
-    orderBy?: string;
-    orderSort?: 'ASC' | 'DESC';
-    [key: string]: any;
-  }
-
 interface Props {
   notify?: number;
-  queryParams?: SearchParam;
-  tabMode?: 'tile' | 'table';
+  queryParams?: PageQuery;
+  tabMode?: CaseViewMode;
   tabInfo?: Record<string, any>;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   notify: 0,
   queryParams: undefined,
@@ -37,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   tabInfo: undefined
 });
 
-const emits = defineEmits<{(e: 'cacheParams', value: SearchParam): void;
+const emits = defineEmits<{(e: 'cacheParams', value: PageQuery): void;
   (e: 'openInfo', value): void;
 }>();
 
@@ -55,33 +44,35 @@ const cacheCountKey = computed(() => {
   return `${userInfo.id}${projectId.value}caseCount`;
 });
 
-const queryParams = ref<SearchParam>();
+const queryParams = ref<PageQuery>();
 const isOpenCount = ref(typeof localStore.get(cacheCountKey.value) === 'boolean' ? localStore.get(cacheCountKey.value) : true);
-const viewMode = ref<'table' | 'tile' | 'kanban'>(localStore.get(cacheModeKey.value) ?? 'tile');
+const viewMode = ref<CaseViewMode>(localStore.get(cacheModeKey.value) ?? CaseViewMode.flat);
 
-const funcCountData = ref<CountObj>();
+const caseCountData = ref<CaseCount>();
 
 const countChange = () => {
   isOpenCount.value = !isOpenCount.value;
   localStore.set(cacheCountKey.value, isOpenCount.value);
   if (isOpenCount.value) {
-    funcCaseRef.value?.loadCaseCount();
+    funcCaseListRef.value?.loadCaseCount();
   }
 };
 
-const viewModeChange = (value: 'table' | 'tile' | 'boards') => {
+const viewModeChange = (value: CaseViewMode) => {
   viewMode.value = value;
   localStore.set(cacheModeKey.value, value);
 };
 
-const funcCaseRef = ref<any>();
+const funcCaseListRef = ref<any>();
 
 const loading = ref(false);
 const updateLoading = (_loading: boolean): void => {
   loading.value = _loading;
 };
 
-provide('updateLoading', updateLoading as () => void);
+const handleOpenInfo = async (tabParams) => {
+  emits('openInfo', tabParams);
+};
 
 const caseCountRef = ref(null);
 const resizeDetector = elementResizeDetectorMaker();
@@ -97,12 +88,11 @@ onMounted(() => {
   resizeDetector.listenTo(caseCountRef.value, resize);
 });
 
-const handleOpenInfo = async (tabParams) => {
-  emits('openInfo', tabParams);
-};
+provide('updateLoading', updateLoading as () => void);
+
 defineExpose({
   resetParam: () => {
-    funcCaseRef.value && funcCaseRef.value.resetParam();
+    funcCaseListRef.value && funcCaseListRef.value.resetParam();
   }
 });
 </script>
@@ -115,14 +105,15 @@ defineExpose({
       class="flex items-center top-count-element mx-3.5 justify-between"
       :class="{ 'top-count-element-expanded': isOpenCount }">
       <template v-if="isOpenCount">
-        <Statistics :dataSource="funcCountData" class="" />
-        <PieChart :dataSource="funcCountData" />
+        <Statistics :dataSource="caseCountData" class="" />
+        <PieChart :dataSource="caseCountData" />
       </template>
     </div>
+
     <div class="p-3.5 flex-1 min-h-0">
       <CaseList
-        ref="funcCaseRef"
-        v-model:count="funcCountData"
+        ref="funcCaseListRef"
+        :count="caseCountData"
         :viewMode="viewMode"
         :isOpenCount="isOpenCount"
         :queryParams="queryParams"

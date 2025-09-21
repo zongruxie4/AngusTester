@@ -20,8 +20,8 @@ import { useForm, useMembers, useAvatar } from './composables';
 import { ProjectEditEmits, ProjectEditProps } from '@/views/project/project/types';
 
 const delTabPane = inject('delTabPane',
-    (tabKey: string) => { console.log('delTabPane not provided:', tabKey); }
-  );
+  (tabKey: string) => { console.log('delTabPane not provided:', tabKey); }
+);
 
 /** Component props definition */
 const props = withDefaults(defineProps<ProjectEditProps>(), {
@@ -96,7 +96,7 @@ const handleFormSubmit = async (): Promise<void> => {
     // Emit success event
     emit('ok');
 
-     // Clean up tabs
+    // Clean up tabs
     if (!props.projectId) {
       delTabPane('addProject');
     }

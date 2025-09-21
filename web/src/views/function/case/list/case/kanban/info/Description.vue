@@ -5,19 +5,13 @@ import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
-import { CaseInfo } from '../types';
+import { CaseInfoEditProps } from '@/views/function/case/list/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: CaseInfo;
-  canEdit: boolean;
-}
+const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -30,8 +24,6 @@ const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'change'): void;
 }>();
-
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
 const richRef = ref();
 
@@ -52,15 +44,13 @@ const editorChange = (value: string) => {
 const cancel = () => {
   editFlag.value = false;
 };
+
 const descrError = ref(false);
 const validateDesc = () => {
   if (!content.value) {
     return true;
   }
-  if (richRef.value.getLength() > 2000) {
-    return false;
-  }
-  return true;
+  return richRef.value.getLength() <= 2000;
 };
 
 const ok = async () => {
@@ -82,30 +72,24 @@ const ok = async () => {
   emit('change');
 };
 
+const caseId = computed(() => {
+  return props.dataSource?.id;
+});
+
 onMounted(() => {
   watch(() => props.dataSource, (newValue) => {
     content.value = newValue?.description || '';
   }, { immediate: true });
 });
-
-const caseId = computed(() => {
-  return props.dataSource?.id;
-});
-
-// const error = computed(() => {
-//   if (!content.value) {
-//     return false;
-//   }
-
-//   return content.value.length > 2000;
-// });
-
 </script>
 
 <template>
   <div class="mt-4">
     <div class="flex items-center text-theme-title mb-1.75">
-      <span class="font-semibold">{{ t('functionCase.kanbanView.infoDescription.title') }}</span>
+      <span class="font-semibold">
+        {{ t('functionCase.kanbanView.infoDescription.title') }}
+      </span>
+
       <Button
         v-if="props.canEdit"
         v-show="!editFlag"
@@ -123,8 +107,11 @@ const caseId = computed(() => {
             ref="richRef"
             :value="content"
             @change="editorChange" />
-          <div v-show="descrError" class="text-status-error">{{ t('functionCase.kanbanView.infoDescription.maxCharError') }}</div>
+          <div v-show="descrError" class="text-status-error">
+            {{ t('functionCase.kanbanView.infoDescription.maxCharError') }}
+          </div>
         </div>
+
         <div class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
           <Button size="small" @click="cancel">{{ t('functionCase.kanbanView.infoDescription.cancel') }}</Button>
           <Button

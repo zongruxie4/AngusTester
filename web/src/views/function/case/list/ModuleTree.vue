@@ -7,6 +7,9 @@ import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { modules } from '@/api/tester';
 
+const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
+const MoveModal = defineAsyncComponent(() => import('@/views/project/module/Move.vue'));
+
 type TagItem = {
   id: string;
   name: string;
@@ -35,9 +38,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string):void}>();
 
-const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
-const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/module/Move.vue'));
-
 const { t } = useI18n();
 
 const projectInfo = inject('projectInfo', ref({}));
@@ -62,7 +62,7 @@ const keywords = ref();
 const editId = ref<string>();
 const pid = ref<string>();
 const modalVisible = ref(false);
-const moveVsible = ref(false);
+const moveVisible = ref(false);
 
 const toCreate = () => {
   modalVisible.value = true;
@@ -142,11 +142,7 @@ const moveUp = async (record) => {
         }
       }
     }
-    params = {
-      id,
-      pid: targetParent.pid || '-1',
-      sequence: (+targetParent.sequence) - 1
-    };
+    params = { id, pid: targetParent.pid || '-1', sequence: (+targetParent.sequence) - 1 };
   } else {
     let parentChildren;
     if (ids.length === 1) {
@@ -162,10 +158,7 @@ const moveUp = async (record) => {
         }
       }
     }
-    params = {
-      id,
-      sequence: parentChildren[index - 1].sequence - 1
-    };
+    params = { id, sequence: parentChildren[index - 1].sequence - 1 };
   }
 
   const [error] = await modules.updateModule([params]);
@@ -192,10 +185,7 @@ const moveDown = async (record) => {
       }
     }
   }
-  const params = {
-    id,
-    sequence: +parentChildren[index + 1].sequence + 1
-  };
+  const params = { id, sequence: +parentChildren[index + 1].sequence + 1 };
   const [error] = await modules.updateModule([params]);
   if (error) {
     return;
@@ -207,7 +197,7 @@ const moveDown = async (record) => {
 const activeModule = ref();
 const moveLevel = (record) => {
   activeModule.value = record;
-  moveVsible.value = true;
+  moveVisible.value = true;
 };
 
 const onMenuClick = (menu, record) => {
@@ -243,6 +233,7 @@ const onMenuClick = (menu, record) => {
         {{ t('functionCase.moduleTree.addModule') }}
       </Button>
     </div>
+
     <div
       :class="{'active': props.moduleId === ''}"
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
@@ -250,6 +241,7 @@ const onMenuClick = (menu, record) => {
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
       <span class="flex-1">{{ t('functionCase.moduleTree.allCases') }}</span>
     </div>
+
     <Tree
       :treeData="props.dataList"
       :selectedKeys="[props.moduleId]"
@@ -282,6 +274,7 @@ const onMenuClick = (menu, record) => {
             {{ t('functionCase.moduleTree.cancel') }}
           </Button>
         </div>
+
         <div v-else class="flex items-center space-x-2 tree-title">
           <Icon v-if="id !== '-1'" icon="icon-mokuai" />
           <Icon
@@ -331,6 +324,7 @@ const onMenuClick = (menu, record) => {
       </template>
     </Tree>
   </div>
+
   <AsyncComponent :visible="modalVisible">
     <CreateModal
       v-model:visible="modalVisible"
@@ -338,9 +332,10 @@ const onMenuClick = (menu, record) => {
       :pid="pid"
       @ok="createOk" />
   </AsyncComponent>
-  <AsyncComponent :visible="moveVsible">
-    <MoveModuleModal
-      v-model:visible="moveVsible"
+
+  <AsyncComponent :visible="moveVisible">
+    <MoveModal
+      v-model:visible="moveVisible"
       :projectId="props.projectId"
       :projectName="props.projectName"
       :module="activeModule"

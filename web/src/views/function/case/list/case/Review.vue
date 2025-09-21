@@ -6,7 +6,7 @@ import { EnumMessage, ReviewStatus, enumUtils } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
-import { CaseListObj } from './types';
+import { CaseDetailChecked } from '../types';
 
 const { t } = useI18n();
 
@@ -19,7 +19,7 @@ type Params = {
 interface Props {
   visible: boolean;
   type: 'batch' | 'one',
-  selectedCase?: CaseListObj;
+  selectedCase?: CaseDetailChecked;
   selectedRowKeys?: string[];
 
 }
@@ -126,18 +126,20 @@ onMounted(() => {
           </Radio>
         </RadioGroup>
       </FormItem>
+
       <FormItem
         name="reviewRemark"
         :label="t('functionCase.reviewCase.reviewRemark')">
         <Select
-          v-show="formState.reviewStatus === 'FAILED'"
+          v-show="formState.reviewStatus === ReviewStatus.FAILED"
           v-model:value="failMessageValue"
           :options="failOpt"
           class="w-100"
           :placeholder="t('functionCase.reviewCase.selectFailReason')"
           @change="changeFailMessage" />
+
         <Input
-          v-show="formState.reviewStatus !== 'FAILED' || failMessageValue === 'other'"
+          v-show="formState.reviewStatus !== ReviewStatus.FAILED || failMessageValue === 'other'"
           v-model:value="formState.reviewRemark"
           size="small"
           type="textarea"
@@ -146,6 +148,7 @@ onMounted(() => {
           :maxlength="200"
           :placeholder="t('functionCase.reviewCase.enterReviewRemark')" />
       </FormItem>
+
       <FormItem class="mt-5">
         <div class="flex justify-end">
           <Button

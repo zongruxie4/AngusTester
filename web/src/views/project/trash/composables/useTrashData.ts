@@ -136,7 +136,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
 
     // Add search filter if input value exists
     if (inputValue.value) {
-      params.filters = [{value: inputValue.value, key: 'targetName', op: 'MATCH'}];
+      params.filters = [{ value: inputValue.value, key: 'targetName', op: 'MATCH' }];
     }
 
     // Add sorting parameters if they exist

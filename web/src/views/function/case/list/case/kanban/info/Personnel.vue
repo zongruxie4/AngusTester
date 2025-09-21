@@ -6,19 +6,12 @@ import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
-import { CaseInfo } from '../types';
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: CaseInfo;
-  canEdit: boolean;
-}
+import { CaseDetail } from '@/views/function/types';
+import { CaseInfoEditProps } from '@/views/function/case/list/types';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -29,14 +22,43 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: CaseInfo): void;
-  (event: 'update:dataSource', value: CaseInfo): void;
+  (event: 'change', value: CaseDetail): void;
+  (event: 'update:dataSource', value: CaseDetail): void;
 }>();
 
 const testerRef = ref();
 const testerEditFlag = ref(false);
 const testerMessage = ref<string>();
 const testerIdValue = ref<string>();
+
+const developerName = computed(() => props.dataSource?.developerName);
+const reviewerName = computed(() => props.dataSource?.reviewerName);
+const createdByName = computed(() => props.dataSource?.createdByName);
+const lastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
+
+const testerId = computed(() => props.dataSource?.testerId);
+const testerName = computed(() => props.dataSource?.testerName);
+
+const testerDefaultOptions = computed(() => {
+  const id = testerId.value;
+  if (!id) {
+    return undefined;
+  }
+  return {
+    [id]: {
+      id: id,
+      fullName: testerName.value
+    }
+  };
+});
+
+const userId = computed(() => {
+  return props.userInfo?.id;
+});
+
+const userName = computed(() => {
+  return props.userInfo?.fullName;
+});
 
 const toEditAssignee = () => {
   testerIdValue.value = testerId.value;
@@ -57,7 +79,10 @@ const assignToMe = () => {
   testerBlur();
 };
 
-const testerChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+const testerChange = async (
+  _event: { target: { value: string; } },
+  option: { id: string; fullName: string; }
+) => {
   testerMessage.value = option.fullName;
 };
 
@@ -78,7 +103,6 @@ const testerBlur = async () => {
     if (typeof testerRef.value?.focus === 'function') {
       testerRef.value?.focus();
     }
-
     return;
   }
 
@@ -107,40 +131,13 @@ const change = async () => {
   emit('change', data);
   emit('update:dataSource', data);
 };
-
-const developerName = computed(() => props.dataSource?.developerName);
-const reviewerName = computed(() => props.dataSource?.reviewerName);
-const createdByName = computed(() => props.dataSource?.createdByName);
-const lastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
-
-const testerId = computed(() => props.dataSource?.testerId);
-const testerName = computed(() => props.dataSource?.testerName);
-const testerDefaultOptions = computed(() => {
-  const id = testerId.value;
-  if (!id) {
-    return undefined;
-  }
-
-  return {
-    [id]: {
-      id: id,
-      fullName: testerName.value
-    }
-  };
-});
-
-const userId = computed(() => {
-  return props.userInfo?.id;
-});
-
-const userName = computed(() => {
-  return props.userInfo?.fullName;
-});
 </script>
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.infoPersonnel.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('functionCase.kanbanView.infoPersonnel.title') }}
+    </div>
 
     <div class="space-y-2.5">
       <div class="flex items-start">

@@ -1,23 +1,16 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
-import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
+import { ActivityInfo as ActivityInfoPage, Scroll } from '@xcan-angus/vue-ui';
 import { SearchCriteria, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-import { CaseInfo } from './types';
+import { CaseInfoEditProps } from '@/views/function/case/list/types';
 import { ActivityInfo } from '@/types/types';
 import { CombinedTargetType } from '@/enums/enums';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: CaseInfo;
-}
-
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -34,6 +27,10 @@ const change = (data: ActivityInfo[]) => {
   dataList.value = data;
 };
 
+const targetId = computed(() => {
+  return props.dataSource?.id;
+});
+
 onMounted(() => {
   watch(() => targetId.value, (newValue, oldValue) => {
     if (newValue === oldValue) {
@@ -45,10 +42,6 @@ onMounted(() => {
       filters: [{ key: 'targetType', value: CombinedTargetType.FUNC_CASE, op: SearchCriteria.OpEnum.Equal }]
     };
   }, { immediate: true });
-});
-
-const targetId = computed(() => {
-  return props.dataSource?.id;
 });
 </script>
 <template>
@@ -64,7 +57,7 @@ const targetId = computed(() => {
       transition
       style="height:calc(100% - 30px);"
       @change="change">
-      <ActivityInfo :dataSource="dataList" infoKey="description" />
+      <ActivityInfoPage :dataSource="dataList" infoKey="description" />
     </Scroll>
   </div>
 </template>

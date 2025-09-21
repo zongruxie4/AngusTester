@@ -1,4 +1,5 @@
 import { i18n } from '@xcan-angus/infra';
+
 const t = i18n.getI18n()?.global?.t || ((value: string) => value);
 export const bigPeopleInfoColumns = [
   [
@@ -95,10 +96,6 @@ export const minReviewInfoColumns = [
 
 export const bigTestInfoColumns = [
   [
-    // {
-    //   label: '测试结果',
-    //   dataIndex: 'testResult'
-    // },
     {
       label: t('functionCase.detail.caseColumConfig.testCount'),
       dataIndex: 'testNum'

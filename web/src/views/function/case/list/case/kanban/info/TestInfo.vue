@@ -2,21 +2,13 @@
 import { computed } from 'vue';
 import { Grid } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { CaseInfo } from '../types';
+import { CaseInfoEditProps } from '@/views/function/case/list/types';
 
 import TestResult from '@/components/TestResult/index.vue';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: CaseInfo;
-  canEdit: boolean;
-}
-
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -55,7 +47,10 @@ const testInfoColumns = [
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.testInfo') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('functionCase.kanbanView.testInfo') }}
+    </div>
+
     <Grid
       :columns="testInfoColumns"
       :dataSource="props.dataSource"

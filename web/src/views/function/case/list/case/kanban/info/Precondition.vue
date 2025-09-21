@@ -5,27 +5,19 @@ import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
-import { CaseInfo } from '../types';
+import { CaseInfoEditProps } from '@/views/function/case/list/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: CaseInfo;
-  canEdit: boolean;
-}
+const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   dataSource: undefined,
   canEdit: false
 });
-
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -50,10 +42,7 @@ const cancel = () => {
 const descErr = ref(false);
 
 const validateDesc = () => {
-  if (descRichRef.value.getLength() > 2000) {
-    return false;
-  }
-  return true;
+  return descRichRef.value.getLength() <= 2000;
 };
 
 const ok = async () => {
@@ -103,7 +92,10 @@ const caseId = computed(() => {
 <template>
   <div class="mt-4">
     <div class="flex items-center text-theme-title mb-1.75">
-      <span class="font-semibold">{{ t('functionCase.kanbanView.infoPrecondition.title') }}</span>
+      <span class="font-semibold">
+        {{ t('functionCase.kanbanView.infoPrecondition.title') }}
+      </span>
+
       <Button
         v-if="props.canEdit"
         v-show="!editFlag"
@@ -120,15 +112,9 @@ const caseId = computed(() => {
           ref="descRichRef"
           v-model:value="content"
           :height="80" />
-        <div v-show="descErr" class="text-status-error">{{ t('functionCase.kanbanView.infoPrecondition.maxCharError') }}</div>
-        <!-- <Input
-          v-model:value="content"
-          size="small"
-          type="textarea"
-          trim
-          :autoSize="{ minRows: 6, maxRows: 6}"
-          :maxlength="6000"
-          placeholder="前置条件，" /> -->
+        <div v-show="descErr" class="text-status-error">
+          {{ t('functionCase.kanbanView.infoPrecondition.maxCharError') }}
+        </div>
 
         <div class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
           <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>

@@ -2,23 +2,25 @@
 import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue';
 import { ActivityInfo, AsyncComponent, Icon, notification, Scroll, SmartComment } from '@xcan-angus/vue-ui';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
-import { XCanDexie, TESTER, duration, toClipboard, appContext } from '@xcan-angus/infra';
+import {
+  appContext, duration, PageQuery, ReviewStatus, SearchCriteria, TESTER, toClipboard, XCanDexie, enumUtils
+} from '@xcan-angus/infra';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 
-import { CASE_PROJECT_PERMISSIONS, CaseActionAuth, useCaseActionAuth } from './types';
-import type { CaseInfoObj, CaseListObj } from '../types';
+import { CaseTestResult, CombinedTargetType, FuncPlanPermission, TaskType } from '@/enums/enums';
 import { funcCase, funcPlan } from '@/api/tester';
+import { CaseDetail } from '@/views/function/types';
+import { CaseActionAuth, getActionAuth } from '@/views/function/case/types';
 
-export type TabKey = 'info' | 'activty' | 'comments' | 'assocTask' | 'asscoCase'
-export interface Attachments { id?: string, name: string, url: string }
+export type TabKey = 'info' | 'activity' | 'comments' | 'assocTask' | 'assocCase'
 
 const CaseDetailTab = defineAsyncComponent(() => import('@/views/function/case/detail/Case.vue'));
-const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
 const ReviewTab = defineAsyncComponent(() => import('@/views/function/case/detail/Review.vue'));
 const AssocTaskTab = defineAsyncComponent(() => import('@/views/function/case/detail/AssocTask.vue'));
 const AssocCaseTab = defineAsyncComponent(() => import('@/views/function/case/detail/AssocCase.vue'));
+const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
 
 interface IData {
   id: string;
@@ -31,8 +33,8 @@ export interface Props {
   tabKey?:string;
   currIndex?:number;
   userInfo?:{id:string};
-  caseInfo?: CaseInfoObj,
-  caseAcitonAuth?: {[key:string]:CaseActionAuth[]},
+  caseInfo?: CaseDetail,
+  caseActionAuth?: {[key:string]:CaseActionAuth[]},
   queryParams?: any
   scrollNotify?: number;
   notify?: number;
@@ -47,13 +49,15 @@ const props = withDefaults(defineProps<Props>(), {
   currIndex: 0,
   userInfo: undefined,
   caseInfo: undefined,
-  caseAcitonAuth: undefined,
+  caseActionAuth: undefined,
   queryParams: undefined,
   scrollNotify: 0,
   notify: 0
 });
 
-const emits = defineEmits<{(e: 'onClick', type: CaseActionAuth, value: CaseListObj): void;
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+  (e: 'onClick', type: CaseActionAuth, value: CaseDetail): void;
   (e: 'editSuccess', id:string): void;
   (e: 'getInfo', id:string): void;
   (e: 'updateCaseTab', value): void;
@@ -61,18 +65,15 @@ const emits = defineEmits<{(e: 'onClick', type: CaseActionAuth, value: CaseListO
 }>();
 
 const isAdmin = computed(() => appContext.isAdmin());
-// Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const userInfo = ref(appContext.getUser());
 const appInfo = ref(appContext.getAccessApp());
-
-const { getActionAuth } = useCaseActionAuth();
 
 const activeKey = ref<TabKey>('info');
 const detailRef = ref<HTMLElement | null>(null);
 
 const caseAuth = ref<{ [key: string]: CaseActionAuth[] }>({});
-const caseDetail = ref();
+const caseDetail = ref<CaseDetail>();
 
 const pageNo = ref(1);
 const total = ref(1);
@@ -132,7 +133,7 @@ const getData = async (value: 'before' | 'after') => {
   value === 'before' ? pageNo.value-- : pageNo.value++;
 
   const params = { pageNo: pageNo.value, pageSize: 1, enabledGroup: false, filters: filters.value, projectId: projectId.value };
-  const [listError, listRes] = await funcCase.getCaseList({ infoScope: 'DETAIL', ...params });
+  const [listError, listRes] = await funcCase.getCaseList({ infoScope: PageQuery.InfoScope.DETAIL, ...params });
   if (listError) {
     return;
   }
@@ -145,13 +146,8 @@ const getData = async (value: 'before' | 'after') => {
 };
 
 const calculateDataPosition = (_total, _pageNo, _pageSize, n) => {
-  // 计算当前页的起始位置
   const startIndex = (_pageNo - 1) * _pageSize;
-
-  // 计算n在当前页的位置
-  const positionInPage = startIndex + n;
-  // 返回当前数据在所有数据集里的位置
-  return positionInPage;
+  return startIndex + n;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -187,7 +183,7 @@ const funcPlanAuth = ref(true);
 const getPlanAuth = async (planId) => {
   if (isAdmin.value) {
     funcPlanAuth.value = true;
-    planAuthList.value = CASE_PROJECT_PERMISSIONS;
+    planAuthList.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
   }
   const [error, { data }] = await funcPlan.getCurrentAuthByPlanId(planId);
@@ -201,46 +197,30 @@ const getPlanAuth = async (planId) => {
     });
   } else {
     funcPlanAuth.value = false;
-    planAuthList.value = CASE_PROJECT_PERMISSIONS;
+    planAuthList.value = enumUtils.getEnumValues(FuncPlanPermission);
   }
-  if (props.userInfo?.id === caseDetail.value.testerId && !planAuthList.value.includes('TEST')) {
-    planAuthList.value.push('TEST');
+  if (props.userInfo?.id === caseDetail.value.testerId && !planAuthList.value.includes(FuncPlanPermission.TEST)) {
+    planAuthList.value.push(FuncPlanPermission.TEST);
   }
 };
 const destroyInactiveTabPane = ref(true);
-watch(() => props.caseInfo, (newValue) => {
-  destroyInactiveTabPane.value = true;
-  if (newValue) {
-    caseDetail.value = newValue;
-    caseAuth.value = props.caseAcitonAuth || {};
-  }
-
-  if (!newValue && props.tabKey) {
-    getCaseInfo(props.caseId);
-  }
-  // activeKey.value = 'info';
-  nextTick(() => {
-    if (!detailRef.value) {
-      return;
-    }
-    detailRef.value.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-}, { deep: true, immediate: true });
 
 const actionAuth = computed(() => {
   return caseAuth.value[caseDetail.value?.id] || [];
 });
 
 const handleClick = (type: CaseActionAuth) => {
-  emits('onClick', type, caseDetail.value as CaseListObj);
+  emits('onClick', type, caseDetail.value);
 };
 
 // 复制Url
 const handleCopy = async () => {
-  const message = `${window.location.origin}/function#cases?&id=${caseDetail.value.id}&projectId=${projectId.value}&name=${caseDetail.value.name}&currIndex=${props.currIndex}&total=${props.queryParams.total}&pageNo=${props.queryParams.pageNo}&pageSize=${props.queryParams.pageSize}`;
+  const message = `${window.location.origin}/function#cases?
+  id=${caseDetail.value.id}&projectId=${projectId.value}&
+  name=${caseDetail.value.name}&currIndex=${props.currIndex}&
+  total=${props.queryParams.total}&pageNo=${props.queryParams.pageNo}&
+  pageSize=${props.queryParams.pageSize}`;
+
   toClipboard(message).then(() => {
     notification.success(t('functionCase.detail.copySuccess'));
   }).catch(() => {
@@ -268,6 +248,47 @@ const editSuccess = () => {
   }
 };
 
+const buttonGroupRef = ref<HTMLElement>();
+const buttonHeight = ref(0);
+let buttonErd:Erd;
+
+const buttonResizeHandler = debounce(duration.resize, (element) => {
+  buttonHeight.value = element.offsetHeight;
+});
+
+const activityLoading = ref(false);
+const activityNotify = ref(0);
+const activityParams = ref({
+  filters: [{ key: 'targetType', value: CombinedTargetType.FUNC_CASE, op: SearchCriteria.OpEnum.Equal }]
+});
+
+const refresh = () => {
+  if (['info', 'assocTask', 'assocCase'].includes(activeKey.value)) {
+    getCaseInfo(caseDetail.value.id);
+  }
+
+  if (activeKey.value === 'activity') {
+    activityNotify.value++;
+  }
+
+  if (activeKey.value === 'comments' && smartCommentRef.value) {
+    smartCommentRef.value.refresh();
+  }
+
+  if (reviewRecordRef.value) {
+    reviewRecordRef.value.refresh();
+  }
+};
+
+const getRefTaskNum = (type: TaskType) => {
+  return (caseDetail.value?.refTaskInfos || []).filter(item => item.taskType.value === type).length || 0;
+};
+
+const activityList = ref([]);
+const getActivityList = (data) => {
+  activityList.value = data;
+};
+
 watch(() => props.notify, () => {
   getCaseInfo(props.caseId);
 });
@@ -278,13 +299,27 @@ watch(() => activeKey.value, () => {
   immediate: true
 });
 
-const buttonGroupRef = ref<HTMLElement>();
-const buttonHeight = ref(0);
-let buttonErd:Erd;
+watch(() => props.caseInfo, (newValue) => {
+  destroyInactiveTabPane.value = true;
+  if (newValue) {
+    caseDetail.value = newValue;
+    caseAuth.value = props.caseActionAuth || {};
+  }
 
-const buttonResizeHandler = debounce(duration.resize, (element) => {
-  buttonHeight.value = element.offsetHeight;
-});
+  if (!newValue && props.tabKey) {
+    getCaseInfo(props.caseId);
+  }
+
+  nextTick(() => {
+    if (!detailRef.value) {
+      return;
+    }
+    detailRef.value.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+}, { deep: true, immediate: true });
 
 onMounted(() => {
   if (props.tabKey) {
@@ -309,37 +344,6 @@ onBeforeUnmount(() => {
   }
 });
 
-const activityLoading = ref(false);
-const activityNotify = ref(0);
-const activityParams = ref({ filters: [{ key: 'targetType', value: 'FUNC_CASE', op: 'EQUAL' }] });
-
-const refresh = () => {
-  if (['info', 'assocTask', 'asscoCase'].includes(activeKey.value)) {
-    getCaseInfo(caseDetail.value.id);
-  }
-
-  if (activeKey.value === 'activty') {
-    activityNotify.value++;
-  }
-
-  if (activeKey.value === 'comments' && smartCommentRef.value) {
-    smartCommentRef.value.refresh();
-  }
-
-  if (reviewRecordRef.value) {
-    reviewRecordRef.value.refresh();
-  }
-};
-
-const getRefTaskNum = (type = 'TASK') => {
-  return (caseDetail.value?.refTaskInfos || []).filter(item => item.taskType.value === type).length || 0;
-};
-
-const activityList = ref([]);
-const getActivityList = (data) => {
-  activityList.value = data;
-};
-
 defineExpose({
   activeKey
 });
@@ -348,8 +352,8 @@ defineExpose({
   <div class="h-full pl-3 pb-3 pt-1">
     <div class="flex justify-between">
       <div ref="buttonGroupRef" class="flex items-center button-combination flex-wrap">
-        <template v-if="!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === 'PASSED')">
-          <template v-if="!['PASSED', 'NOT_PASSED', 'CANCELED'].includes(caseDetail?.testResult?.value)">
+        <template v-if="!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PASSED)">
+          <template v-if="![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail?.testResult?.value)">
             <Button
               :disabled="!actionAuth.includes('updateTestResult')"
               type="primary"
@@ -359,16 +363,18 @@ defineExpose({
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
               <span>{{ t('functionCase.detail.testPassed') }}</span>
             </Button>
+
             <Button
               :disabled="!actionAuth.includes('updateTestResult')"
               type="primary"
               class="mt-2 mr-2"
               size="small"
-              @click="handleClick('updateTestResult_notpassed')">
+              @click="handleClick('updateTestResult_notPassed')">
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
               <span>{{ t('functionCase.detail.testNotPassed') }}</span>
             </Button>
           </template>
+
           <template v-else>
             <Button
               :disabled="!actionAuth.includes('retestResult')"
@@ -380,6 +386,7 @@ defineExpose({
               <span>{{ t('functionCase.detail.retest') }}</span>
             </Button>
           </template>
+
           <Button
             v-if="+(caseDetail?.testNum || 0) > 0"
             :disabled="!actionAuth.includes('resetTestResult')"
@@ -398,8 +405,10 @@ defineExpose({
             </Popover>
           </Button>
         </template>
+
         <Button
-          v-if="(!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === 'PASSED')) && !['PASSED', 'NOT_PASSED','CANCELED'].includes(caseDetail?.testResult?.value)"
+          v-if="(!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PASSED))
+            && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail?.testResult?.value)"
           :disabled="!actionAuth.includes('updateTestResult')"
           class="mt-2 mr-2"
           size="small"
@@ -407,8 +416,10 @@ defineExpose({
           <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
           {{ t('functionCase.detail.setBlocked') }}
         </Button>
+
         <Button
-          v-if="!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === 'PASSED') && !['PASSED', 'NOT_PASSED','CANCELED'].includes(caseDetail?.testResult?.value)"
+          v-if="!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PASSED)
+            && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail?.testResult?.value)"
           :disabled="!actionAuth.includes('updateTestResult')"
           class="mt-2 mr-2"
           size="small"
@@ -416,8 +427,9 @@ defineExpose({
           <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
           {{ t('functionCase.detail.cancel') }}
         </Button>
+
         <Button
-          v-if="caseDetail?.testResult?.value === 'NOT_PASSED'"
+          v-if="caseDetail?.testResult?.value === CaseTestResult.NOT_PASSED"
           size="small"
           class="mt-2 mr-2"
           :disabled="!actionAuth.includes('edit')"
@@ -425,6 +437,7 @@ defineExpose({
           <Icon class="mr-1" icon="icon-bianji" />
           <span>{{ t('functionCase.detail.submitBug') }}</span>
         </Button>
+
         <Button
           size="small"
           class="mt-2 mr-2"
@@ -433,6 +446,7 @@ defineExpose({
           <Icon class="mr-1" icon="icon-bianji" />
           <span>{{ t('functionCase.detail.edit') }}</span>
         </Button>
+
         <Button
           :disabled="!actionAuth.includes('clone')"
           class="mt-2 mr-2"
@@ -441,6 +455,7 @@ defineExpose({
           <Icon class="mr-1" icon="icon-fuzhi" />
           <span>{{ t('functionCase.detail.clone') }}</span>
         </Button>
+
         <Button
           :disabled="!actionAuth.includes('move')"
           class="mt-2 mr-2"
@@ -449,6 +464,7 @@ defineExpose({
           <Icon class="mr-1 text-3" icon="icon-yidong" />
           <span>{{ t('functionCase.detail.move') }}</span>
         </Button>
+
         <Button
           class="mt-2 mr-2"
           size="small"
@@ -456,6 +472,7 @@ defineExpose({
           <Icon class="mr-1 text-3" :icon="caseDetail?.favourite?'icon-quxiaoshoucang':'icon-yishoucang'" />
           <span>{{ caseDetail?.favourite ? t('functionCase.detail.unfavourite') : t('functionCase.detail.favourite') }}</span>
         </Button>
+
         <Button
           class="mt-2 mr-2"
           size="small"
@@ -463,6 +480,7 @@ defineExpose({
           <Icon class="mr-1 text-3" :icon="caseDetail?.follow?'icon-quxiaoguanzhu':'icon-yiguanzhu'" />
           <span>{{ caseDetail?.follow ? t('functionCase.detail.unfollow') : t('functionCase.detail.follow') }}</span>
         </Button>
+
         <Button
           :disabled="!actionAuth.includes('delete')"
           class="mt-2 mr-2"
@@ -471,6 +489,7 @@ defineExpose({
           <Icon class="mr-1" icon="icon-qingchu" />
           <span>{{ t('functionCase.detail.delete') }}</span>
         </Button>
+
         <template v-if="!['share'].includes(props.source)">
           <Button
             class="mt-2 mr-2"
@@ -481,6 +500,7 @@ defineExpose({
           </Button>
         </template>
       </div>
+
       <div v-if="props.tabKey" class="whitespace-nowrap">
         <Button
           size="small"
@@ -489,6 +509,7 @@ defineExpose({
           @click="getData('before')">
           <Icon class="mr-1" icon="icon-chakanshangyitiao" />{{ t('functionCase.detail.viewPrevious') }}
         </Button>
+
         <Button
           size="small"
           class="mt-2 mr-2"
@@ -498,6 +519,7 @@ defineExpose({
         </Button>
       </div>
     </div>
+
     <Tabs
       v-model:activeKey="activeKey"
       class="mt-1"
@@ -515,6 +537,7 @@ defineExpose({
           {{ t('functionCase.detail.refresh') }}
         </Button>
       </template>
+
       <TabPane
         key="info"
         class="h-full"
@@ -524,6 +547,7 @@ defineExpose({
           :actionAuth="actionAuth"
           @editSuccess="editSuccess" />
       </TabPane>
+
       <TabPane
         v-if="!!caseDetail?.review"
         key="reviewRecord"
@@ -533,33 +557,35 @@ defineExpose({
           :caseDetail="caseDetail" />
       </TabPane>
 
-      <TabPane key="asscoCase">
+      <TabPane key="assocCase">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.case') }}</span>
             <span>({{ caseDetail?.refCaseInfos?.length || 0 }})</span>
           </div>
         </template>
+
         <AssocCaseTab
           :dataSource="caseDetail?.refCaseInfos"
           :projectId="projectId"
           :caseId="caseDetail?.id"
           @editSuccess="editSuccess" />
       </TabPane>
+
       <TabPane key="assocTask">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.task') }}</span>
-            <span>({{ getRefTaskNum('TASK') }})</span>
+            <span>({{ getRefTaskNum(TaskType.TASK) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="TASK"
+          :key="TaskType.TASK"
           :dataSource="caseDetail?.refTaskInfos"
           :projectId="projectId"
           :caseId="caseDetail?.id"
           :title="t('functionCase.detail.task')"
-          taskType="TASK"
+          :taskType="TaskType.TASK"
           :tips="t('functionCase.detail.taskTip')"
           @editSuccess="editSuccess" />
       </TabPane>
@@ -568,97 +594,102 @@ defineExpose({
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.requirement') }}</span>
-            <span>({{ getRefTaskNum('REQUIREMENT') }})</span>
+            <span>({{ getRefTaskNum(TaskType.REQUIREMENT) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="REQUIREMENT"
+          :key="TaskType.REQUIREMENT"
           :projectId="projectId"
           :userInfo="props.userInfo"
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
           :title="t('functionCase.detail.requirement')"
-          taskType="REQUIREMENT"
+          :taskType="TaskType.REQUIREMENT"
           :tips="t('functionCase.detail.requirementTip')"
           @editSuccess="editSuccess" />
       </TabPane>
+
       <TabPane key="assocStory">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.story') }}</span>
-            <span>({{ getRefTaskNum('STORY') }})</span>
+            <span>({{ getRefTaskNum(TaskType.STORY) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="STORY"
+          :key="TaskType.STORY"
           :projectId="projectId"
           :userInfo="props.userInfo"
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
           :title="t('functionCase.detail.story')"
-          taskType="STORY"
+          :taskType="TaskType.STORY"
           :tips="t('functionCase.detail.storyTip')"
           @editSuccess="editSuccess" />
       </TabPane>
-      <TabPane key="asscoBug">
+
+      <TabPane key="assocBug">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.bug') }}</span>
-            <span>({{ getRefTaskNum('BUG') }})</span>
+            <span>({{ getRefTaskNum(TaskType.BUG) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="BUG"
+          :key="TaskType.BUG"
           :projectId="projectId"
           :userInfo="props.userInfo"
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
           :title="t('functionCase.detail.bug')"
-          taskType="BUG"
+          :taskType="TaskType.BUG"
           :tips="t('functionCase.detail.bugTip')"
           @editSuccess="editSuccess" />
       </TabPane>
+
       <TabPane key="assocApiTest">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.apiTest') }}</span>
-            <span>({{ getRefTaskNum('API_TEST') }})</span>
+            <span>({{ getRefTaskNum(TaskType.API_TEST) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="API_TEST"
+          :key="TaskType.API_TEST"
           :projectId="projectId"
           :userInfo="props.userInfo"
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
           :title="t('functionCase.detail.apiTest')"
-          taskType="API_TEST"
+          :taskType="TaskType.API_TEST"
           :tips="t('functionCase.detail.apiTestTip')"
           @editSuccess="editSuccess" />
       </TabPane>
+
       <TabPane key="assocScenarioTest">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.scenarioTest') }}</span>
-            <span>({{ getRefTaskNum('SCENARIO_TEST') }})</span>
+            <span>({{ getRefTaskNum(TaskType.SCENARIO_TEST) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="SCENARIO_TEST"
+          :key="TaskType.SCENARIO_TEST"
           :projectId="projectId"
           :userInfo="props.userInfo"
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
           :title="t('functionCase.detail.scenarioTest')"
-          taskType="SCENARIO_TEST"
+          :taskType="TaskType.SCENARIO_TEST"
           :tips="t('functionCase.detail.scenarioTestTip')"
           @editSuccess="editSuccess" />
       </TabPane>
+
       <TabPane
         key="comments"
         class="h-full">
@@ -668,7 +699,7 @@ defineExpose({
         <SmartComment
           ref="smartCommentRef"
           class="!shadow-none h-full overflow-y-auto pr-3.5"
-          targetType="FUNC_CASE"
+          :targetType="CombinedTargetType.FUNC_CASE"
           avatar
           :showPublishTitle="false"
           :bordered="false"
@@ -679,7 +710,7 @@ defineExpose({
       </TabPane>
 
       <TabPane
-        key="activty"
+        key="activity"
         class="h-full">
         <template #tab>
           <span>{{ t('functionCase.detail.activity') }}({{ caseDetail?.activityNum || 0 }})</span>
@@ -698,6 +729,7 @@ defineExpose({
         </Scroll>
       </TabPane>
     </Tabs>
+
     <AsyncComponent :visible="taskModalVisible">
       <AddTaskModal
         v-model:visible="taskModalVisible"
@@ -708,7 +740,7 @@ defineExpose({
         :refCaseIds="[caseDetail.id]"
         :name="t('functionCase.mainView.testNotPassedName', {name: caseDetail.name})"
         :description="caseDetail.testRemark"
-        taskType="BUG"
+        :taskType="TaskType.BUG"
         :confirmerId="caseDetail?.testerId"
         @ok="handleAddTask" />
     </AsyncComponent>

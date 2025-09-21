@@ -6,25 +6,13 @@ import { utils, upload } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
-import { CaseInfo } from '../types';
-
-type AttachmentItem = {
-  id: string;
-  name: string;
-  url: string;
-}
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: CaseInfo;
-  canEdit: boolean;
-}
+import { CaseDetail } from '@/views/function/types';
+import { CaseInfoEditProps } from '@/views/function/case/list/types';
+import { AttachmentInfo } from '@/types/types';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -35,14 +23,14 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: CaseInfo): void;
-  (event: 'update:dataSource', value: CaseInfo): void;
+  (event: 'change', value: CaseDetail): void;
+  (event: 'update:dataSource', value: CaseDetail): void;
 }>();
 
 const MAX_SIZE = 10;
 
 const loading = ref(false);
-const attachments = ref<AttachmentItem[]>([]);
+const attachments = ref<AttachmentInfo[]>([]);
 
 const uploadChange = async ({ file }: { file: UploadFile }) => {
   if (file.size! > maxFileSize.value) {
@@ -75,10 +63,10 @@ const uploadChange = async ({ file }: { file: UploadFile }) => {
     url: data.url
   });
 
-  updateAttachments(attachmentList);
+  await updateAttachments(attachmentList);
 };
 
-const toDelete = async (data: AttachmentItem) => {
+const toDelete = async (data: AttachmentInfo) => {
   const attachmentList = attachments.value.filter(item => item.id !== data.id).map(item => {
     return {
       name: item.name,
@@ -86,7 +74,7 @@ const toDelete = async (data: AttachmentItem) => {
     };
   });
 
-  updateAttachments(attachmentList);
+  await updateAttachments(attachmentList);
 };
 
 const updateAttachments = async (data:{name:string;url:string}[]) => {
@@ -100,7 +88,7 @@ const updateAttachments = async (data:{name:string;url:string}[]) => {
     return;
   }
 
-  change();
+  await change();
 };
 
 const customRequest = () => {
@@ -129,6 +117,13 @@ const change = async () => {
   emit('update:dataSource', data);
 };
 
+const caseId = computed(() => props.dataSource?.id);
+const isEmpty = computed(() => !attachments.value.length);
+
+const maxFileSize = computed(() => {
+  return 1024 * 1024 * MAX_SIZE;
+});
+
 onMounted(() => {
   watch(() => props.dataSource, (newValue) => {
     if (!newValue) {
@@ -144,18 +139,14 @@ onMounted(() => {
     });
   }, { immediate: true });
 });
-
-const caseId = computed(() => props.dataSource?.id);
-const isEmpty = computed(() => !attachments.value.length);
-
-const maxFileSize = computed(() => {
-  return 1024 * 1024 * MAX_SIZE;
-});
 </script>
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.infoAttachment.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('functionCase.kanbanView.infoAttachment.title') }}
+    </div>
+
     <Spin
       :spinning="loading"
       :class="{ empty: isEmpty }"

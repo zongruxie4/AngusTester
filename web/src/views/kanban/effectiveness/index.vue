@@ -58,12 +58,11 @@ const {
   cleanup
 } = useEffectivenessLifecycle(props, loadEffectivenessData, () => resizeAllCharts());
 
-
-
 // Initialize configuration
-const {   taskOverViewConfig,
-  caseOverViewConfig, } = useEffectivenessConfig(props.countType);
-
+const {
+  taskOverViewConfig,
+  caseOverViewConfig
+} = useEffectivenessConfig(props.countType);
 
 const currentOverviewConfig = computed(() => {
   return props.countType === 'task' ? taskOverViewConfig : caseOverViewConfig;
@@ -160,7 +159,6 @@ defineExpose({
 
 <template>
   <div class="effectiveness-dashboard">
-
     <!-- Overview Section -->
     <div class="overview-section">
       <div class="overview-grid">

@@ -243,9 +243,9 @@ export const createOverdueAssessmentConfig = (): ChartConfig => {
       text: t('kanban.cto.overdue.overdueTaskRatio'),
       fill: 'rgb(100 116 139)',
       font: '14px "Microsoft YaHei", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif',
-      textAlign: 'center',
-    },
-    
+      textAlign: 'center'
+    }
+
   };
   config.title.left = '35%';
   config.title.top = '40%';

@@ -99,6 +99,7 @@ public class TaskUpdateDto {
   @Schema(description = "Actual workload for performance tracking and analysis")
   private BigDecimal actualWorkload;
 
+  @Schema(description = "Parent task identifier for hierarchical task relationships")
   private Long parentTaskId;
 
   @Size(max = MAX_CASE_OR_TASK_REFS_NUM)

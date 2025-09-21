@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { Grid, ReviewStatus } from '@xcan-angus/vue-ui';
+import { EvalWorkloadMethod } from '@xcan-angus/infra';
 import { Tag } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
+
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
 interface Props {
@@ -16,33 +18,53 @@ const props = withDefaults(defineProps<Props>(), {
 
 const infoColumns = computed(() => [
   [
-    { label: t('functionCase.kanbanView.reviewRecord.name'), dataIndex: 'name' },
-    // { label: 'ID', dataIndex: 'id' },
-    { label: t('functionCase.kanbanView.reviewRecord.code'), dataIndex: 'code' },
+    {
+      label: t('functionCase.kanbanView.reviewRecord.name'),
+      dataIndex: 'name'
+    },
+    {
+      label: t('functionCase.kanbanView.reviewRecord.code'),
+      dataIndex: 'code'
+    },
     {
       label: t('functionCase.kanbanView.reviewRecord.reviewStatus'),
       dataIndex: 'reviewStatus'
     },
-    { label: t('functionCase.kanbanView.reviewRecord.priority'), dataIndex: 'priority' },
-    { label: t('functionCase.kanbanView.reviewRecord.tags'), dataIndex: 'tags' },
-
-    // { label: '所属计划', dataIndex: 'planName' },
-    // { label: '所属模块', dataIndex: 'moduleName' },
+    {
+      label: t('functionCase.kanbanView.reviewRecord.priority'),
+      dataIndex: 'priority'
+    },
+    {
+      label: t('functionCase.kanbanView.reviewRecord.tags'),
+      dataIndex: 'tags'
+    },
     {
       label: t('functionCase.kanbanView.reviewRecord.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.reviewRecord.evalWorkload') : t('functionCase.kanbanView.reviewRecord.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.reviewRecord.actualWorkload') : t('functionCase.kanbanView.reviewRecord.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
+    {
+      label: props.caseInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+        ? t('functionCase.kanbanView.reviewRecord.evalWorkload')
+        : t('functionCase.kanbanView.reviewRecord.evalWorkload'),
+      dataIndex: 'evalWorkload',
+      customRender: ({ text }) => text || '--'
+    },
+    {
+      label: props.caseInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+        ? t('functionCase.kanbanView.reviewRecord.actualWorkload')
+        : t('functionCase.kanbanView.reviewRecord.actualWorkload'),
+      dataIndex: 'actualWorkload',
+      customRender: ({ text }) => text || '--'
+    }
   ]
 ]);
-
 </script>
 <template>
   <div class="space-y-3">
     <div class="font-semibold text-3.5">
       {{ t('functionCase.kanbanView.reviewRecord.basicInfo') }}
     </div>
+
     <Grid
       :columns="infoColumns"
       :dataSource="caseInfo"
@@ -54,6 +76,7 @@ const infoColumns = computed(() => [
       <template #priority="{text}">
         <TaskPriority :value="text" />
       </template>
+
       <template #tags="{text}">
         <Tag
           v-for="(tag,index) in (text || [])"
@@ -65,21 +88,26 @@ const infoColumns = computed(() => [
         </Tag>
         <template v-if="!text?.length">--</template>
       </template>
+
       <template #evalWorkload="{text}">
         {{ text || '--' }}
       </template>
+
       <template #actualWorkload="{text}">
         {{ text || '--' }}
       </template>
+
       <template #planName="{text}">
         <span>
           <Icon icon="icon-jihua" class="mr-1.25 flex-none -mt-0.25" />{{ text }}
         </span>
       </template>
+
       <template #moduleName="{text}">
         <template v-if="!text">
           --
         </template>
+
         <div v-else class="-mt-1 flex">
           <Tag
             class="px-0 py-1 font-normal text-theme-content rounded bg-white flex border-none">
@@ -88,6 +116,7 @@ const infoColumns = computed(() => [
           </Tag>
         </div>
       </template>
+
       <template #reviewStatus="{text}">
         <template v-if="text">
           <ReviewStatus :value="text" />
@@ -96,6 +125,7 @@ const infoColumns = computed(() => [
           --
         </template>
       </template>
+
       <template #testResult="{text}">
         <div class="flex items-center">
           <TestResult :value="text" />

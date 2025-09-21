@@ -2,14 +2,14 @@
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { CountObj } from './PropsType';
 import Charts from './Charts.vue';
 import { ReviewStatus, enumUtils } from '@xcan-angus/infra';
+import { CaseCount } from '@/views/function/case/types';
 
 const { t } = useI18n();
 
 interface Props {
-  dataSource:CountObj;
+  dataSource:CaseCount;
 }
 
 const props = withDefaults(defineProps<Props>(), {

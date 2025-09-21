@@ -5,19 +5,14 @@ import { Icon, NoData } from '@xcan-angus/vue-ui';
 import { cloneDeep } from 'lodash-es';
 import { funcCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { CaseInfo } from '../types';
+import { CaseDetail } from '@/views/function/types';
+import { CaseInfoEditProps } from '@/views/function/case/list/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: CaseInfo;
-  canEdit: boolean;
-}
+const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -28,11 +23,9 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: CaseInfo): void;
-  (event: 'update:dataSource', value: CaseInfo): void;
+  (event: 'change', value: CaseDetail): void;
+  (event: 'update:dataSource', value: CaseDetail): void;
 }>();
-
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
 
 const editFlag = ref(false);
 const steps = ref<{expectedResult:string;step:string;}[]>([]);
@@ -84,6 +77,10 @@ const loadingChange = (value:boolean) => {
   emit('loadingChange', value);
 };
 
+const defaultValue = computed(() => {
+  return editFlag.value ? stepsContent.value : steps.value;
+});
+
 onMounted(() => {
   watch(() => props.dataSource, (newValue) => {
     if (!newValue) {
@@ -95,16 +92,15 @@ onMounted(() => {
     stepsContent.value = cloneDeep(steps.value);
   }, { immediate: true });
 });
-
-const defaultValue = computed(() => {
-  return editFlag.value ? stepsContent.value : steps.value;
-});
 </script>
 
 <template>
   <div class="mt-4">
     <div class="flex items-center text-theme-title mb-1.75">
-      <span class="font-semibold">{{ t('functionCase.kanbanView.testSteps') }}</span>
+      <span class="font-semibold">
+        {{ t('functionCase.kanbanView.testSteps') }}
+      </span>
+
       <Button
         v-if="props.canEdit"
         v-show="!editFlag"
@@ -114,13 +110,16 @@ const defaultValue = computed(() => {
         <Icon icon="icon-shuxie" class="text-3.5" />
       </Button>
     </div>
+
     <NoData v-if="!editFlag&&!steps.length" size="small" />
+
     <CaseStep
       v-if="steps.length || editFlag"
       v-model:value="stepsContent"
       :stepView="props.dataSource?.stepView?.value"
       :defaultValue="defaultValue"
       :readonly="!editFlag" />
+
     <div v-show="editFlag" class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
       <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
       <Button

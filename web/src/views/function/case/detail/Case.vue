@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, watch, Ref } from 'vue';
+import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue';
 import {
   DatePicker,
   Grid,
@@ -13,16 +13,17 @@ import {
   Toggle
 } from '@xcan-angus/vue-ui';
 import { Button, Popover, Tag, Upload } from 'ant-design-vue';
-import { download, upload, TESTER, duration, utils } from '@xcan-angus/infra';
-import RichEditor from '@/components/richEditor/index.vue';
+import { download, duration, EvalWorkloadMethod, Priority, TESTER, upload, utils, SearchCriteria } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
-import { CaseInfoObj, Priority } from './types';
+import { useI18n } from 'vue-i18n';
 
-import TestResult from '@/components/TestResult/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { funcCase } from '@/api/tester';
+import { CaseDetail } from '@/views/function/types';
+import { CaseTestResult, SoftwareVersionStatus } from '@/enums/enums';
+
 import {
   bigApisInfoColumns,
   bigDateInfoColumns,
@@ -35,13 +36,16 @@ import {
   minReviewInfoColumns,
   minTestInfoColumns
 } from './config';
-import { funcCase } from '@/api/tester';
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
-import { useI18n } from 'vue-i18n';
+import RichEditor from '@/components/richEditor/index.vue';
+import TestResult from '@/components/TestResult/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
+
+const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
 
 interface Props {
-  caseDetail: CaseInfoObj;
+  caseDetail: CaseDetail;
   actionAuth: {[key: string]: any}
 }
 
@@ -56,8 +60,6 @@ const emit = defineEmits<{
   (e: 'loadingChange', value:boolean):void;
 }>();
 
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
-
 const { t } = useI18n();
 
 const userInfo = inject('userInfo');
@@ -65,12 +67,13 @@ const userInfo = inject('userInfo');
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
-const bigLayout = ref(true); // 是否大屏显示
+const bigLayout = ref(true);
 const detailRef = ref();
 let erd:Erd;
 const resizeHandler = debounce(duration.resize, (element) => {
   bigLayout.value = element.offsetWidth >= 960;
 });
+
 export type GridColumns = {
   label: string;
   dataIndex: string;
@@ -121,7 +124,11 @@ const infoColumns = computed<GridColumns[][]>(() => [
     { label: t('functionCase.detail.caseDetail.version'), dataIndex: 'version' },
     { label: t('functionCase.detail.caseDetail.softwareVersion'), dataIndex: 'softwareVersion' },
     { label: t('functionCase.detail.caseDetail.priority'), dataIndex: 'priority' },
-    { label: t('functionCase.detail.caseDetail.unplannedCase'), dataIndex: 'unplanned', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
+    {
+      label: t('functionCase.detail.caseDetail.unplannedCase'),
+      dataIndex: 'unplanned',
+      customRender: ({ text }) => text ? t('status.yes') : t('status.no')
+    }
   ],
   [
     { label: t('functionCase.detail.caseDetail.tags'), dataIndex: 'tags' },
@@ -131,21 +138,39 @@ const infoColumns = computed<GridColumns[][]>(() => [
       label: t('functionCase.detail.caseDetail.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.caseDetail.evalWorkload') : t('functionCase.detail.caseDetail.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.caseDetail.actualWorkload') : t('functionCase.detail.caseDetail.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
+    {
+      label: props.caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+        ? t('functionCase.detail.caseDetail.evalWorkload')
+        : t('functionCase.detail.caseDetail.evalWorkload'),
+      dataIndex: 'evalWorkload',
+      customRender: ({ text }) => text || '--'
+    },
+    {
+      label: props.caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+        ? t('functionCase.detail.caseDetail.actualWorkload')
+        : t('functionCase.detail.caseDetail.actualWorkload'),
+      dataIndex: 'actualWorkload',
+      customRender: ({ text }) => text || '--'
+    }
   ]
 ]);
 
 const getOneTestPass = computed(() => {
   if (props.caseDetail?.testNum && Number(props.caseDetail.testNum) > 0) {
-    return props.caseDetail?.testFailNum === '0' && props.caseDetail?.testResult?.value === 'PASSED' ? t('status.yes') : t('status.no');
+    return props.caseDetail?.testFailNum === '0' &&
+    props.caseDetail?.testResult?.value === CaseTestResult.PASSED
+      ? t('status.yes')
+      : t('status.no');
   }
   return '--';
 });
 
 const getOneReviewPass = computed(() => {
   if (props.caseDetail?.reviewNum && Number(props.caseDetail.reviewNum) > 0) {
-    return props.caseDetail?.reviewFailNum === '0' && props.caseDetail?.reviewStatus?.value === 'PASSED' ? t('status.yes') : t('status.no');
+    return props.caseDetail?.reviewFailNum === '0' &&
+    props.caseDetail?.reviewStatus?.value === CaseTestResult.PASSED
+      ? t('status.yes')
+      : t('status.no');
   }
   return '--';
 });
@@ -303,7 +328,7 @@ const editTag = async () => {
 };
 
 // 修改时间
-const datePickertRef = ref();
+const datePickerRef = ref();
 const isEditDisabledDate = ref(false);
 const deadlineDate = ref(dayjs().add(1, 'day').format(DATE_TIME_FORMAT));
 const loading = ref(false);
@@ -311,7 +336,7 @@ const openEditDeadlineDate = () => {
   deadlineDate.value = props.caseDetail?.deadlineDate;
   isEditDisabledDate.value = true;
   nextTick(() => {
-    datePickertRef.value.focus();
+    datePickerRef.value.focus();
   });
 };
 
@@ -376,7 +401,7 @@ const upLoadFile = async function (file) {
     return;
   }
 
-  updateAttachment(data);
+  await updateAttachment(data);
 };
 
 const uploadLoading = ref<boolean>(false);
@@ -466,26 +491,11 @@ const saveSteps = async () => {
   emit('editSuccess');
 };
 
-// 修改描述
-const uploadOptions = { bizKey: 'angusTesterCaseAttachments' };
-const editorInit = {
-  menubar: false,
-  height: 368,
-  selector: 'textarea', // 选择器，指定要转换为富文本编辑器的textarea元素
-  content_style: `
-  body { font-size: 12px; }
-    #tinymce.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
-    color: #BFBFBF !important;
-  }
-  `,
-  placeholder: t('functionCase.detail.caseDetail.inputPrecondition') // 设置内容区的占位文字提示
-};
-
 const descRichRef = ref();
 const descError = ref(false);
 const isEditDescription = ref(false);
 const descriptionContent = ref();
-const savedescriptionLoading = ref(false);
+const saveDescriptionLoading = ref(false);
 const handleEditDescription = () => {
   isEditDescription.value = true;
   descriptionContent.value = props.caseDetail?.description || undefined;
@@ -503,15 +513,15 @@ const saveDescription = async () => {
     isEditDescription.value = false;
     return;
   }
-  if (savedescriptionLoading.value) {
+  if (saveDescriptionLoading.value) {
     return;
   }
-  savedescriptionLoading.value = true;
+  saveDescriptionLoading.value = true;
   const [error] = await funcCase.updateCase([{
     id: props.caseDetail.id,
     description: descriptionContent.value
   }]);
-  savedescriptionLoading.value = false;
+  saveDescriptionLoading.value = false;
   if (error) {
     return;
   }
@@ -610,14 +620,6 @@ const versionBlur = async () => {
   emit('editSuccess');
 };
 
-const editOk = () => {
-  emit('editSuccess');
-};
-
-const loadingChange = (value:boolean) => {
-  emit('loadingChange', value);
-};
-
 onMounted(() => {
   erd = elementResizeDetector();
   erd.listenTo(detailRef.value, resizeHandler);
@@ -657,6 +659,7 @@ onBeforeUnmount(() => {
                   :placeholder="t('functionCase.detail.caseDetail.name')"
                   @blur="editName" />
               </template>
+
               <template v-else>
                 <span> {{ text }}
                   <Icon
@@ -668,6 +671,7 @@ onBeforeUnmount(() => {
               </template>
             </div>
           </template>
+
           <template #priority="{text}">
             <div class="flex items-center relative">
               <template v-if="isEditPriority">
@@ -687,6 +691,7 @@ onBeforeUnmount(() => {
                   </template>
                 </SelectEnum>
               </template>
+
               <template v-else>
                 <TaskPriority :value="text" />
                 <Icon
@@ -697,6 +702,7 @@ onBeforeUnmount(() => {
               </template>
             </div>
           </template>
+
           <template #tags="{text}">
             <div class="flex items-center flex-wrap">
               <template v-if="isEditTag">
@@ -715,6 +721,7 @@ onBeforeUnmount(() => {
                   class="w-full"
                   @blur="editTag" />
               </template>
+
               <template v-else>
                 <div class="inline-flex items-center leading-6">
                   <Tag
@@ -736,6 +743,7 @@ onBeforeUnmount(() => {
               </template>
             </div>
           </template>
+
           <template #evalWorkload="{text}">
             <div class="flex items-center relative">
               <template v-if="isEditEvalWorkload">
@@ -752,6 +760,7 @@ onBeforeUnmount(() => {
                   class="w-65 absolute -top-1.25"
                   @blur="editEvalWorkload" />
               </template>
+
               <template v-else>
                 {{ text || '--' }}
                 <Icon
@@ -763,13 +772,16 @@ onBeforeUnmount(() => {
                   placement="rightTop"
                   arrowPointAtCenter>
                   <template #content>
-                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT'?t('functionCase.kanbanView.infoBasic.evalWorkloadTip'):t('functionCase.kanbanView.infoBasic.evalWorkloadTipTime') }}</div>
+                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">
+                      {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT ? t('functionCase.kanbanView.infoBasic.evalWorkloadTip') :t ('functionCase.kanbanView.infoBasic.evalWorkloadTipTime') }}
+                    </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
                 </Popover>
               </template>
             </div>
           </template>
+
           <template #actualWorkload="{text}">
             <div class="flex items-center relative">
               <template v-if="isEditActualWorkload">
@@ -786,6 +798,7 @@ onBeforeUnmount(() => {
                   class="w-65 absolute -top-1.25"
                   @blur="editActualWorkload" />
               </template>
+
               <template v-else>
                 {{ text || '--' }}
                 <Icon
@@ -797,18 +810,22 @@ onBeforeUnmount(() => {
                   placement="rightTop"
                   arrowPointAtCenter>
                   <template #content>
-                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT'?t('functionCase.kanbanView.infoBasic.actualWorkloadTip'):t('functionCase.kanbanView.infoBasic.actualWorkloadTipTime') }}</div>
+                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">
+                      {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT ? t('functionCase.kanbanView.infoBasic.actualWorkloadTip') : t('functionCase.kanbanView.infoBasic.actualWorkloadTipTime') }}
+                    </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
                 </Popover>
               </template>
             </div>
           </template>
+
           <template #planName="{text}">
             <span>
               <Icon icon="icon-jihua" class="mr-1.25 flex-none -mt-0.25" />{{ text }}
             </span>
           </template>
+
           <template #moduleName="{text}">
             <template v-if="!text">
               --
@@ -821,6 +838,7 @@ onBeforeUnmount(() => {
               </Tag>
             </div>
           </template>
+
           <template #reviewStatus="{text}">
             <template v-if="text">
               <ReviewStatus :value="text" />
@@ -829,6 +847,7 @@ onBeforeUnmount(() => {
               --
             </template>
           </template>
+
           <template #testResult="{text}">
             <div class="flex items-center">
               <TestResult :value="text" />
@@ -840,10 +859,12 @@ onBeforeUnmount(() => {
               </div>
             </div>
           </template>
+
           <template #version="{text}">
             <span v-if="text">v{{ text }}</span>
             <template v-else>--</template>
           </template>
+
           <template #softwareVersion="{text}">
             <template v-if="versionEditFlag">
               <Select
@@ -854,12 +875,13 @@ onBeforeUnmount(() => {
                 lazy
                 class="w-full max-w-60"
                 :action="`${TESTER}/software/version?projectId=${projectId}`"
-                :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+                :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: SearchCriteria.OpEnum.In}]}"
                 :fieldNames="{value:'name', label: 'name'}"
                 @blur="versionBlur"
                 @change="versionChange">
               </Select>
             </template>
+
             <template v-else>
               <div class="flex space-x-1">
                 <RouterLink
@@ -882,6 +904,7 @@ onBeforeUnmount(() => {
           </template>
         </Grid>
       </Toggle>
+
       <template v-if="!bigLayout">
         <Toggle
           :title="t('functionCase.detail.caseDetail.personnel')"
@@ -923,6 +946,7 @@ onBeforeUnmount(() => {
             </template>
           </Grid>
         </Toggle>
+
         <Toggle
           :title="t('functionCase.detail.caseDetail.date')"
           class="mt-3.5">
@@ -945,7 +969,7 @@ onBeforeUnmount(() => {
                 </template>
                 <template v-else>
                   <DatePicker
-                    ref="datePickertRef"
+                    ref="datePickerRef"
                     v-model:value="deadlineDate"
                     :allowClear="false"
                     :disabledDate="disabledDate"
@@ -959,6 +983,7 @@ onBeforeUnmount(() => {
             </template>
           </Grid>
         </Toggle>
+
         <Toggle
           :title="t('functionCase.detail.caseDetail.reviewInfo')"
           class="mt-3.5">
@@ -974,6 +999,7 @@ onBeforeUnmount(() => {
             </template>
           </Grid>
         </Toggle>
+
         <Toggle
           :title="t('functionCase.detail.caseDetail.testInfo')"
           class="mt-3.5">
@@ -994,6 +1020,7 @@ onBeforeUnmount(() => {
           </Grid>
         </Toggle>
       </template>
+
       <Toggle
         v-model:open="preconditionExpand"
         class="mt-3.5">
@@ -1023,6 +1050,7 @@ onBeforeUnmount(() => {
               @click="handleEditPrecondition" />
           </div>
         </template>
+
         <template #default>
           <template v-if="isEditPrecondition">
             <RichEditor
@@ -1044,6 +1072,7 @@ onBeforeUnmount(() => {
           </template>
         </template>
       </Toggle>
+
       <Toggle
         v-model:open="conditionsExpand"
         class="mt-3.5">
@@ -1073,6 +1102,7 @@ onBeforeUnmount(() => {
               @click="handleEditSteps" />
           </div>
         </template>
+
         <template #default>
           <template v-if="isEditSteps || caseDetail?.steps?.length">
             <CaseStep
@@ -1081,6 +1111,7 @@ onBeforeUnmount(() => {
               :defaultValue="isEditSteps ? stepsContent : caseDetail.steps"
               :readonly="!isEditSteps" />
           </template>
+
           <template v-else>
             <NoData
               :text="t('functionCase.detail.caseDetail.noData')"
@@ -1089,6 +1120,7 @@ onBeforeUnmount(() => {
           </template>
         </template>
       </Toggle>
+
       <Toggle
         v-model:open="remarkExpand"
         class="mt-3.5">
@@ -1118,6 +1150,7 @@ onBeforeUnmount(() => {
               @click="handleEditDescription" />
           </div>
         </template>
+
         <template #default>
           <template v-if="isEditDescription">
             <div class="mt-3 mx-2">
@@ -1128,11 +1161,13 @@ onBeforeUnmount(() => {
               <div v-show="descError" class="text-status-error">{{ t('functionCase.detail.caseDetail.descCharLimit2000') }}</div>
             </div>
           </template>
+
           <template v-else-if="caseDetail?.description">
             <RichEditor
               :value="caseDetail.description"
               mode="view" />
           </template>
+
           <template v-else>
             <NoData
               :text="t('functionCase.detail.caseDetail.noData')"
@@ -1141,6 +1176,7 @@ onBeforeUnmount(() => {
           </template>
         </template>
       </Toggle>
+
       <template v-if="!bigLayout">
         <Toggle
           :title="t('functionCase.detail.caseDetail.attachments')"
@@ -1172,6 +1208,7 @@ onBeforeUnmount(() => {
                 </div>
               </div>
             </template>
+
             <div class="flex justify-around h-6">
               <template v-if="props.actionAuth.includes('edit') && (caseDetail?.attachments?.length || 0) < 5">
                 <Upload
@@ -1187,6 +1224,7 @@ onBeforeUnmount(() => {
         </Toggle>
       </template>
     </div>
+
     <div v-if="bigLayout" class="w-75 flex-none ml-2">
       <Toggle :title="t('functionCase.detail.caseDetail.personnel')">
         <Grid
@@ -1206,6 +1244,7 @@ onBeforeUnmount(() => {
                 size="small"
                 @blur="saveTester" />
             </template>
+
             <template v-else>
               <span>{{ text }}</span>
               <Icon
@@ -1248,9 +1287,10 @@ onBeforeUnmount(() => {
                   icon="icon-shuxie"
                   @click="openEditDeadlineDate" />
               </template>
+
               <template v-else>
                 <DatePicker
-                  ref="datePickertRef"
+                  ref="datePickerRef"
                   v-model:value="deadlineDate"
                   :allowClear="false"
                   :disabledDate="disabledDate"
@@ -1301,20 +1341,7 @@ onBeforeUnmount(() => {
           </template>
         </Grid>
       </Toggle>
-      <!-- <refTasks
-        class="mt-3.5"
-        :dataSource="caseDetail?.refTaskInfos"
-        :projectId="projectId"
-        :caseId="caseDetail?.id"
-        :case="caseDetail?.refCaseInfos"
-        @ok="editOk" />
-      <assocCase
-        class="mt-3.5"
-        :dataSource="caseDetail?.refCaseInfos"
-        :projectId="projectId"
-        :caseId="caseDetail?.id"
-        :taskList="caseDetail?.refTaskInfos"
-        @ok="editOk" /> -->
+
       <Toggle
         :title="t('functionCase.detail.caseDetail.attachments')"
         class="mt-3.5">
@@ -1345,6 +1372,7 @@ onBeforeUnmount(() => {
               </div>
             </div>
           </template>
+
           <div class="flex justify-around h-6">
             <template v-if="props.actionAuth.includes('edit') && (caseDetail?.attachments?.length || 0) < 5">
               <Upload

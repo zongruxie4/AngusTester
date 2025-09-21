@@ -2,13 +2,13 @@
 import { onMounted, ref, watch } from 'vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import { EnumMessage, enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, enumUtils, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { CaseTestResult } from '@/enums/enums';
 import type { Rule } from 'ant-design-vue/es/form';
 import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
-import { CaseListObj } from './types';
+import { CaseDetailChecked } from '../types';
 
 const { t } = useI18n();
 
@@ -22,10 +22,9 @@ type Params = {
 interface Props {
   visible: boolean;
   type: 'batch' | 'one',
-  selectedCase?: CaseListObj;
+  selectedCase?: CaseDetailChecked;
   selectedRowKeys?: string[];
   resultPassed?: boolean;
-
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -45,7 +44,8 @@ const emits = defineEmits<{
 }>();
 
 const formRef = ref();
-const formState = ref<{ testRemark: string; testResult: string, evalWorkload?: string, actualWorkload?: string }>({ testRemark: '', testResult: 'PASSED' });
+const formState = ref<{ testRemark: string; testResult: string, evalWorkload?: string, actualWorkload?: string }>
+({ testRemark: '', testResult: CaseTestResult.PASSED });
 
 const close = () => {
   emits('update:visible', false);
@@ -98,24 +98,8 @@ const loadEnums = () => {
   if (!data) {
     return;
   }
-  testResultEnum.value = data.filter(item => !['PENDING', 'BLOCKED', 'CANCELED'].includes(item.value)) || [];
+  testResultEnum.value = data.filter(item => ![CaseTestResult.PENDING, CaseTestResult.BLOCKED, CaseTestResult.CANCELED].includes(item.value)) || [];
 };
-
-onMounted(() => {
-  loadEnums();
-});
-
-watch(() => props.visible, (newValue) => {
-  if (!newValue || !props.selectedCase) {
-    return;
-  }
-  formState.value.testResult = props.resultPassed ? 'PASSED' : 'NOT_PASSED';
-
-  formState.value.evalWorkload = props.selectedCase.evalWorkload;
-  formState.value.actualWorkload = props.selectedCase.actualWorkload || props.selectedCase.evalWorkload;
-}, {
-  immediate: true
-});
 
 const actualWorkloadChange = (value) => {
   if (!value) {
@@ -141,6 +125,22 @@ const validateDate = async (_rule: Rule, value: string) => {
     return Promise.resolve();
   }
 };
+
+onMounted(() => {
+  loadEnums();
+});
+
+watch(() => props.visible, (newValue) => {
+  if (!newValue || !props.selectedCase) {
+    return;
+  }
+  formState.value.testResult = props.resultPassed ? CaseTestResult.PASSED : CaseTestResult.NOT_PASSED;
+
+  formState.value.evalWorkload = props.selectedCase.evalWorkload;
+  formState.value.actualWorkload = props.selectedCase.actualWorkload || props.selectedCase.evalWorkload;
+}, {
+  immediate: true
+});
 </script>
 <template>
   <Modal
@@ -157,7 +157,8 @@ const validateDate = async (_rule: Rule, value: string) => {
       layout="horizontal"
       @finish="onFinish(false)">
       <FormItem
-        :label="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.updateCaseResultModal.evalWorkload') : t('functionCase.updateCaseResultModal.evalWorkload')"
+        :label="props.selectedCase?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+          ? t('functionCase.updateCaseResultModal.evalWorkload') : t('functionCase.updateCaseResultModal.evalWorkload')"
         name="evalWorkload"
         :rules="{validator: validateDate, trigger: 'change' }">
         <div class="flex items-center text-3">
@@ -170,12 +171,14 @@ const validateDate = async (_rule: Rule, value: string) => {
             :placeholder="t('functionCase.updateCaseResultModal.minMaxRange')"
             @blur="evalWorkloadChange($event.target.value)" />
           <span
-            v-if="props.selectedCase?.evalWorkloadMethod?.value !== 'STORY_POINT'"
+            v-if="props.selectedCase?.evalWorkloadMethod?.value !== EvalWorkloadMethod.STORY_POINT"
             class="whitespace-nowrap ml-1">{{ t('functionCase.updateCaseResultModal.hour') }}</span>
         </div>
       </FormItem>
+
       <FormItem
-        :label="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.updateCaseResultModal.actualWorkload') : t('functionCase.updateCaseResultModal.actualWorkload')"
+        :label="props.selectedCase?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+          ? t('functionCase.updateCaseResultModal.actualWorkload') : t('functionCase.updateCaseResultModal.actualWorkload')"
         name="actualWorkload">
         <div class="flex items-center text-3">
           <Input
@@ -187,14 +190,15 @@ const validateDate = async (_rule: Rule, value: string) => {
             :placeholder="t('functionCase.updateCaseResultModal.minMaxRange')"
             @change="actualWorkloadChange($event.target.value)" />
           <span
-            v-if="props.selectedCase?.evalWorkloadMethod?.value !== 'STORY_POINT'"
+            v-if="props.selectedCase?.evalWorkloadMethod?.value !== EvalWorkloadMethod.STORY_POINT"
             class="whitespace-nowrap ml-1">{{ t('functionCase.updateCaseResultModal.hour') }}</span>
         </div>
       </FormItem>
+
       <FormItem
         :label="props.resultPassed ? t('functionCase.updateCaseResultModal.testRemark') : t('functionCase.updateCaseResultModal.notPassedReason')"
         name="testRemark"
-        :required="props.resultPassed === false">
+        :required="!props.resultPassed">
         <Input
           v-model:value="formState.testRemark"
           size="small"
@@ -203,6 +207,7 @@ const validateDate = async (_rule: Rule, value: string) => {
           :maxlength="200"
           :placeholder="t('functionCase.updateCaseResultModal.testResultOrProcess')" />
       </FormItem>
+
       <FormItem class="mt-5">
         <div class="flex justify-end space-x-2">
           <Button

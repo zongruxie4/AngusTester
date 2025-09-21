@@ -3,20 +3,13 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { SmartComment } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { CombinedTargetType } from '@/enums/enums';
 
-import { CaseInfo } from './types';
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: CaseInfo;
-  canEdit: boolean;
-}
+import { CaseInfoEditProps } from '@/views/function/case/list/types';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -44,7 +37,9 @@ const caseId = computed(() => {
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.comment.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('functionCase.kanbanView.comment.title') }}
+    </div>
 
     <SmartComment
       v-if="caseId"
@@ -52,7 +47,7 @@ const caseId = computed(() => {
       class="overflow-auto"
       style="height: calc(100% - 30px);box-shadow: 0;"
       avatar
-      targetType="FUNC_CASE"
+      :targetType="CombinedTargetType.FUNC_CASE"
       :bordered="false"
       :public0="false"
       :showPublishTitle="false"

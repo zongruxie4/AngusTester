@@ -1,35 +1,31 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Dropdown, Icon, Input } from '@xcan-angus/vue-ui';
+import { Dropdown, Icon } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
+import { CaseTestStep } from '@/views/function/types';
+import { CaseStepView } from '@/enums/enums';
 
 import RichEditor from '@/components/richEditor/index.vue';
 
 const { t } = useI18n();
 
 interface Props {
-  value: {
-    expectedResult: string;
-    step: string;
-  }[];
-  defaultValue: {
-    expectedResult: string;
-    step: string;
-  }[];
+  value: CaseTestStep[];
+  defaultValue: CaseTestStep[];
   readonly: boolean;
   showOutBorder: boolean;
-  stepView: 'TABLE'|'TEXT'
+  stepView: CaseStepView
 }
 
 const props = withDefaults(defineProps<Props>(), {
   value: () => [],
   readonly: false,
   showOutBorder: true,
-  stepView: 'TABLE'
+  stepView: CaseStepView.TABLE
 });
 
-const emits = defineEmits<{(e: 'update:value', value: { expectedResult: string; step: string; }[]): void;
+const emits = defineEmits<{(e: 'update:value', value: CaseTestStep[]): void;
   (e:'change', hasErr: boolean):void;
 }>();
 
@@ -127,7 +123,7 @@ watch(() => props.defaultValue, (newValue) => {
 });
 
 watch(() => props.stepView, (newValue, oldValue) => {
-  if (newValue === 'TEXT') {
+  if (newValue === CaseStepView.TEXT) {
     steps.value = steps.value.slice(0, 1);
   }
 });
@@ -178,14 +174,21 @@ const handleClick = (key:string, item, index) => {
 </script>
 <template>
   <div class="text-3">
-    <template v-if="props.stepView === 'TABLE'">
+    <template v-if="props.stepView === CaseStepView.TABLE">
       <div class="border-theme-text-box rounded" :class="{'border': props.showOutBorder}">
         <div class="flex">
           <div class="w-8 flex justify-center pt-1 flex-none">#</div>
-          <div class="px-1.5 py-1 border-theme-text-box border-r flex-1/2">{{ t('functionCase.addCaseModal.stepDescription') }}</div>
-          <div class="px-1.5 py-1 border-theme-text-box flex-1/2" :class="{'border-r': !props.readonly || props.showOutBorder}">{{ t('functionCase.addCaseModal.expectedResult') }}</div>
-          <div v-show="!props.readonly" class="w-12 flex-none py-1 text-center">操作</div>
+          <div class="px-1.5 py-1 border-theme-text-box border-r flex-1/2">
+            {{ t('functionCase.addCaseModal.stepDescription') }}
+          </div>
+          <div
+            class="px-1.5 py-1 border-theme-text-box flex-1/2"
+            :class="{'border-r': !props.readonly || props.showOutBorder}">
+            {{ t('functionCase.addCaseModal.expectedResult') }}
+          </div>
+          <div v-show="!props.readonly" class="w-12 flex-none py-1 text-center">{{ t('common.actions') }}</div>
         </div>
+
         <div
           class="border-t border-theme-text-box step-list-input">
           <div
@@ -195,13 +198,14 @@ const handleClick = (key:string, item, index) => {
             class="flex  cursor-pointer">
             <div
               class="w-8 flex justify-center pt-1 flex-none"
-              :draggable="!props.readonly ? true : false"
+              :draggable="!props.readonly"
               @drop="(e)=>handleDrop(e,index)"
               @dragend="handleDragEnd"
               @dragstart="(e)=>handleDragStart(e,index,item)"
               @dragover.prevent="handleDragOver">
               <div class="h-4 text-center leading-4 mt-1.25 whitespace-nowrap">{{ index+1 }}.</div>
             </div>
+
             <div class="p-1 border-theme-text-box border-r flex-1/2">
               <RichEditor
                 v-if="props.readonly"
@@ -212,6 +216,7 @@ const handleClick = (key:string, item, index) => {
                 :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterStepDescription')}"
                 class="step-content"
                 height="auto" />
+
               <RichEditor
                 v-else
                 :key="`${index}_step`"
@@ -223,6 +228,7 @@ const handleClick = (key:string, item, index) => {
                 height="auto"
                 @change="inputChange" />
             </div>
+
             <div class="py-1 px-1 border-theme-text-box flex-1/2" :class="{'border-r': !props.readonly || props.showOutBorder}">
               <RichEditor
                 v-if="props.readonly"
@@ -233,6 +239,7 @@ const handleClick = (key:string, item, index) => {
                 :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterExpectedResult')}"
                 class="step-content"
                 height="auto" />
+
               <RichEditor
                 v-else
                 :key="`${index}_expectedResult`"
@@ -243,6 +250,7 @@ const handleClick = (key:string, item, index) => {
                 height="auto"
                 @change="inputChange" />
             </div>
+
             <div
               v-show="!props.readonly"
               class="w-12 flex-none py-1  flex flex-col justify-center"
@@ -258,6 +266,7 @@ const handleClick = (key:string, item, index) => {
           </div>
         </div>
       </div>
+
       <div v-show="!props.readonly" class="flex items-center justify-between  mt-1">
         <Button
           type="link"
@@ -267,7 +276,8 @@ const handleClick = (key:string, item, index) => {
         </Button>
       </div>
     </template>
-    <template v-if="props.stepView === 'TEXT'">
+
+    <template v-if="props.stepView === CaseStepView.TEXT">
       <div class="pl-1">{{ t('functionCase.addCaseModal.stepDescription') }}</div>
       <RichEditor
         v-model:value="steps[0].step"
@@ -278,7 +288,9 @@ const handleClick = (key:string, item, index) => {
         :height="100"
         class="border"
         @change="inputChange" />
+
       <div class="mt-3 pl-1">{{ t('functionCase.addCaseModal.expectedResult') }}</div>
+
       <RichEditor
         v-model:value="steps[0].expectedResult"
         :mode="props.readonly ? 'view' : 'edit'"

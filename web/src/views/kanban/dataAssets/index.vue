@@ -346,7 +346,7 @@ const refreshData = async () => {
   loadScript();
   loadMock();
   loadData();
-}
+};
 
 /**
  * Component mounted lifecycle hook
@@ -455,8 +455,6 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleWindowResize);
   erd.removeListener(rightWrapRef.value, resizeRightEchart);
 });
-
-
 
 // Expose methods for parent component access
 defineExpose({

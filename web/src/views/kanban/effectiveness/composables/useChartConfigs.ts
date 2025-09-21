@@ -215,7 +215,7 @@ export const createTargetCountConfig = (): ChartConfig => {
   config.legend = {
     show: true,
     bottom: 0
-  }
+  };
   config.series = [
     {
       name: t('kanban.effectiveness.total'),

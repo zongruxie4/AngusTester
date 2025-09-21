@@ -6,19 +6,12 @@ import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
-import { CaseInfo } from './types';
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: CaseInfo;
-  canEdit: boolean;
-}
+import { CaseDetail } from '@/views/function/types';
+import { CaseInfoEditProps } from '@/views/function/case/list/types';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -29,8 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change', value: CaseInfo): void;
-  (event: 'update:dataSource', value: CaseInfo): void;
+  (event: 'change', value: CaseDetail): void;
+  (event: 'update:dataSource', value: CaseDetail): void;
 }>();
 
 const editFlag = ref(false);
@@ -56,7 +49,6 @@ const ok = async () => {
   if (error) {
     return;
   }
-
   change();
 };
 

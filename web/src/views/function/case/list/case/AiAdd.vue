@@ -1,41 +1,31 @@
 <script lang="ts" setup>
 import { inject, nextTick, onMounted, ref, watch, Ref } from 'vue';
 import {
-  DatePicker,
-  Hints,
-  Icon,
-  IconTask,
-  Input,
-  Modal,
-  notification,
-  Select,
-  Spin,
-  Dropdown
-  , VuexHelper
+  DatePicker, Hints, Icon, IconTask, Input, Modal, notification, Select, Spin, Dropdown, VuexHelper
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
-import { EnumMessage, EvalWorkloadMethod, enumUtils, TESTER, upload, utils } from '@xcan-angus/infra';
-import { CaseStepView } from '@/enums/enums';
+import {
+  EnumMessage, EvalWorkloadMethod, SearchCriteria, Priority, enumUtils, TESTER, upload, utils, appContext
+} from '@xcan-angus/infra';
 import dayjs from 'dayjs';
-import RichEditor from '@/components/richEditor/index.vue';
-import { funcCase, project, modules } from '@/api/tester';
-import { ai } from '@/api/gm';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
-import TaskPriority from '@/components/TaskPriority/index.vue';
 
 import { useI18n } from 'vue-i18n';
-import CaseSteps from './CaseSteps.vue';
-import { EditFormState } from '@/views/function/case/list/case/types';
+import { CaseEditState } from '@/views/function/case/list/types';
+import { CaseStepView, SoftwareVersionStatus } from '@/enums/enums';
+import { VisibleProps } from '@/types/types';
+import { funcCase, project, modules } from '@/api/tester';
+import { ai } from '@/api/gm';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+
+import CaseSteps from '@/views/function/case/list/case/CaseSteps.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
+import RichEditor from '@/components/richEditor/index.vue';
 
 const { t } = useI18n();
 
-interface Props {
-  visible: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<VisibleProps>(), {
   visible: false
 });
 
@@ -45,16 +35,16 @@ const { useMutations, useState } = VuexHelper;
 const { stepVisible, stepKey } = useState(['stepVisible', 'stepKey', 'stepContent'], 'guideStore');
 const { updateGuideStep } = useMutations(['updateGuideStep'], 'guideStore');
 
-const userInfo: any = inject('userInfo');
-// Inject project information
+const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
 // 生成的用例列表
-const caseList = ref<EditFormState[]>([]);
+const caseList = ref<CaseEditState[]>([]);
 const generateLoading = ref(false);
 const question = ref();
 
-let defaultCaseItem = {
+// TODO 字段顺序保持一致
+let defaultCaseItem:CaseEditState = {
   attachments: [],
   deadlineDate: '',
   description: '',
@@ -64,17 +54,18 @@ let defaultCaseItem = {
   name: '',
   planId: undefined,
   precondition: '',
-  priority: 'MEDIUM',
+  priority: Priority.MEDIUM,
+  stepView: CaseStepView.TABLE,
   steps: [],
   tagIds: [],
-  testerId: userInfo?.id,
+  testerId: userInfo.value?.id,
   refTaskIds: [],
   refCaseIds: [],
   developerId: undefined
 };
 
 const formRef = ref();
-const formState = ref<EditFormState>({
+const formState = ref<CaseEditState>({
   attachments: [],
   deadlineDate: '',
   description: '',
@@ -84,15 +75,15 @@ const formState = ref<EditFormState>({
   name: '',
   planId: undefined,
   precondition: '',
-  priority: 'MEDIUM',
+  priority: Priority.MEDIUM,
+  stepView: CaseStepView.TABLE,
   steps: [],
   tagIds: [],
-  testerId: userInfo?.id,
+  testerId: userInfo.value?.id,
   refCaseIds: [],
   refTaskIds: [],
   developerId: undefined,
-  softwareVersion: undefined,
-  stepView: 'TABLE'
+  softwareVersion: undefined
 });
 
 const generateCaseList = async () => {
@@ -185,8 +176,8 @@ const validateList = () => {
 
       formRef.value.validate(_ruleKeys)
         .then(async () => {
-          if (stupsErr.value) {
-          }
+          // eslint-disable-next-line no-empty
+          if (stupsErr.value) {}
         });
     });
   }
@@ -310,8 +301,8 @@ const validateDate = async (_rule: Rule, value: string) => {
 
 // 指派测试人为当前登录人
 const setTesterForMe = () => {
-  if (userInfo?.id) {
-    formState.value.testerId = userInfo.id;
+  if (userInfo.value?.id) {
+    formState.value.testerId = userInfo.value.id;
   }
 };
 
@@ -333,27 +324,6 @@ const loadMembers = async () => {
     formState.value.developerId = members.value[0].value;
   }
 };
-
-onMounted(() => {
-  watch(() => props.visible, async (newValue) => {
-    if (newValue) {
-      caseList.value = [];
-      await getModuleTreeData();
-      resetForm();
-    }
-  }, {
-    immediate: true
-  });
-  watch(() => projectInfo.value, (newValue) => {
-    if (newValue.id) {
-      loadMembers();
-      getModuleTreeData();
-    }
-  }, {
-    immediate: true
-  });
-  loadEnums();
-});
 
 const evalWorkloadMethod = ref();
 // const planEndDate = ref<string>();
@@ -457,6 +427,27 @@ const delCase = (caseItem, idx) => {
     caseList.value.splice(idx, 1);
   }
 };
+
+onMounted(() => {
+  watch(() => props.visible, async (newValue) => {
+    if (newValue) {
+      caseList.value = [];
+      await getModuleTreeData();
+      resetForm();
+    }
+  }, {
+    immediate: true
+  });
+  watch(() => projectId.value, (newValue) => {
+    if (newValue) {
+      loadMembers();
+      getModuleTreeData();
+    }
+  }, {
+    immediate: true
+  });
+  loadEnums();
+});
 </script>
 <template>
   <Modal
@@ -480,6 +471,7 @@ const delCase = (caseItem, idx) => {
         {{ t('functionCase.addCaseModal.generateCases') }}
       </Button>
     </div>
+
     <Spin :spinning="loading || generateLoading" class="h-full">
       <div class="flex space-x-2" :style="{height: '75vh'}">
         <div v-if="!!caseList.length" class="w-40 h-full overflow-y-auto bg-gray-1">
@@ -502,6 +494,7 @@ const delCase = (caseItem, idx) => {
             </Button>
           </div>
         </div>
+
         <Form
           ref="formRef"
           :model="formState"
@@ -520,6 +513,7 @@ const delCase = (caseItem, idx) => {
                   :maxlength="400"
                   :placeholder="t('functionCase.addCaseModal.enterCaseName')" />
               </FormItem>
+
               <FormItem
                 name="precondition"
                 :rules="[{validator: validateCondition}]">
@@ -534,14 +528,8 @@ const delCase = (caseItem, idx) => {
                   v-model:value="formState.precondition"
                   :height="100"
                   :placeholder="t('functionCase.addCaseModal.enterPrecondition')" />
-                <!-- <Input
-                  v-model:value="formState.precondition"
-                  size="small"
-                  type="textarea"
-                  :autoSize="{ minRows: 6, maxRows: 6}"
-                  :maxlength="2000"
-                  :placeholder="t('输入前置条件，最多支持2000字符。')" /> -->
               </FormItem>
+
               <FormItem>
                 <template #label>
                   <div class="text-3 flex space-x-2 items-center">
@@ -550,11 +538,14 @@ const delCase = (caseItem, idx) => {
                       :value="[formState.stepView]"
                       :menuItems="stepViewOpt"
                       @click="changeStepView">
-                      <span class="text-theme-special">{{ t('functionCase.addCaseModal.switchType') }} <Icon icon="icon-xiajiantou" /></span>
+                      <span class="text-theme-special">
+                        {{ t('functionCase.addCaseModal.switchType') }} <Icon icon="icon-xiajiantou" />
+                      </span>
                     </Dropdown>
                     <Hints :text="t('functionCase.addCaseModal.testStepsHint')" />
                   </div>
                 </template>
+
                 <CaseSteps
                   ref="stepsRef"
                   v-model:value="formState.steps"
@@ -562,18 +553,22 @@ const delCase = (caseItem, idx) => {
                   :stepView="formState.stepView"
                   @change="stepsChange" />
               </FormItem>
+
               <FormItem
                 name="description">
                 <template #label>
                   <div class="text-3 flex space-x-2 items-center">
-                    <span>{{ t('functionCase.addCaseModal.description') }}</span> <Hints :text="t('functionCase.addCaseModal.descriptionHint')" />
+                    <span>{{ t('functionCase.addCaseModal.description') }}</span>
+                    <Hints :text="t('functionCase.addCaseModal.descriptionHint')" />
                   </div>
                 </template>
+
                 <RichEditor
                   v-model:value="formState.description"
                   class="add-case" />
               </FormItem>
             </div>
+
             <div style="width: 320px;" class="ml-5 h-full">
               <FormItem
                 Key=""
@@ -598,6 +593,7 @@ const delCase = (caseItem, idx) => {
                   </template>
                 </Select>
               </FormItem>
+
               <FormItem
                 :label="t('functionCase.addCaseModal.module')"
                 name="moduleId">
@@ -617,6 +613,7 @@ const delCase = (caseItem, idx) => {
                   </template>
                 </TreeSelect>
               </FormItem>
+
               <FormItem
                 :label="t('functionCase.addCaseModal.tester')"
                 name="testerId"
@@ -636,6 +633,7 @@ const delCase = (caseItem, idx) => {
                   </Button>
                 </div>
               </FormItem>
+
               <FormItem
                 :label="t('functionCase.addCaseModal.developer')"
                 name="developerId"
@@ -646,6 +644,7 @@ const delCase = (caseItem, idx) => {
                   class="flex-1"
                   size="small" />
               </FormItem>
+
               <FormItem
                 name="priority"
                 required>
@@ -661,6 +660,7 @@ const delCase = (caseItem, idx) => {
                     </Tooltip>
                   </span>
                 </template>
+
                 <SelectEnum
                   v-model:value="formState.priority"
                   enumKey="Priority"
@@ -670,21 +670,25 @@ const delCase = (caseItem, idx) => {
                   </template>
                 </SelectEnum>
               </FormItem>
+
               <FormItem
                 name="evalWorkload"
                 :rules="{required: formState.actualWorkload, validator: evalWorkloadValidateDate,trigger: 'change' }">
                 <template #label>
                   <span class="flex items-center">
-                    {{ evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.estimatedStoryPoints') : t('functionCase.addCaseModal.estimatedWorkHours') }}
+                    {{ evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                      ? t('functionCase.addCaseModal.estimatedStoryPoints') : t('functionCase.addCaseModal.estimatedWorkHours') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
-                      :title="evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.storyPointsHint') : t('functionCase.addCaseModal.workHoursHint')">
+                      :title="evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                        ? t('functionCase.addCaseModal.storyPointsHint') : t('functionCase.addCaseModal.workHoursHint')">
                       <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
                 </template>
+
                 <Input
                   v-model:value="formState.evalWorkload"
                   size="small"
@@ -695,6 +699,7 @@ const delCase = (caseItem, idx) => {
                   dataType="float"
                   @blur="evalWorkloadChange($event.target.value)" />
               </FormItem>
+
               <FormItem
                 name="softwareVersion"
                 :label="t('functionCase.addCaseModal.softwareVersion')">
@@ -703,10 +708,11 @@ const delCase = (caseItem, idx) => {
                   allowClear
                   :placeholder="t('functionCase.addCaseModal.pleaseSelectVersion')"
                   :action="`${TESTER}/software/version?projectId=${projectId}`"
-                  :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+                  :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: SearchCriteria.OpEnum.In}]}"
                   :fieldNames="{value:'name', label: 'name'}">
                 </Select>
               </FormItem>
+
               <FormItem
                 name="deadlineDate"
                 :rules="{required: true, validator: validateDate,trigger: 'change' }">
@@ -722,6 +728,7 @@ const delCase = (caseItem, idx) => {
                     </Tooltip>
                   </span>
                 </template>
+
                 <DatePicker
                   v-model:value="formState.deadlineDate"
                   :disabledDate="disabledDate"
@@ -733,6 +740,7 @@ const delCase = (caseItem, idx) => {
                   type="date"
                   class="w-full" />
               </FormItem>
+
               <FormItem
                 name="tagIds">
                 <template #label>
@@ -746,6 +754,7 @@ const delCase = (caseItem, idx) => {
                     </Tooltip>
                   </span>
                 </template>
+
                 <Select
                   v-model:value="formState.tagIds"
                   showSearch
@@ -852,6 +861,7 @@ const delCase = (caseItem, idx) => {
                           @click="delFile(index)" />
                       </div>
                     </div>
+
                     <div v-if="formState.attachments.length < 5" class="flex justify-end">
                       <Upload
                         :fileList="[]"
@@ -864,6 +874,7 @@ const delCase = (caseItem, idx) => {
                       </Upload>
                     </div>
                   </template>
+
                   <template v-else>
                     <div class="flex justify-center">
                       <Upload
@@ -882,6 +893,7 @@ const delCase = (caseItem, idx) => {
           </div>
         </Form>
       </div>
+
       <div class="flex justify-end mt-5">
         <Button
           type="primary"
@@ -908,7 +920,7 @@ const delCase = (caseItem, idx) => {
 }
 
 :deep(.tox-tinymce-aux > .tox-textarea > textarea::placeholder) {
-  color: red !important;  /* 这里可以设置你想要的颜色 */
+  color: red !important;
 }
 </style>
 <style>

@@ -5,6 +5,10 @@ export type LoadingProps = {
   loading: boolean;
 }
 
+export interface VisibleProps {
+  visible: boolean;
+}
+
 export type BaseProps = {
   id: string;
   notify?: string;

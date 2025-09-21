@@ -3,30 +3,22 @@ import { computed, ref } from 'vue';
 import { Badge } from 'ant-design-vue';
 import { Dropdown, Icon, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { PageQuery } from '@xcan-angus/infra';
+
+import { CaseActionAuth, CaseDetailChecked, EnabledGroup, GroupCaseList } from '../../types';
+
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
 
-import { CaseActionAuth, CaseListObj, EnabledGroup, GroupCaseListObj } from '../types';
-
-type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH' | 'MATCH' | 'IN' | 'NOT_IN';
-type Filters = { key: string, value: string | boolean | string[], op: FilterOp }
-
 interface Props {
-  params: {
-    pageNo: number;
-    pageSize: number;
-    filters?: Filters[];
-    orderBy?: string;
-    orderSort?: 'ASC' | 'DESC';
-    [key: string]: any;
-  };
+  params: PageQuery;
   total: number;
   loading: boolean;
   enabledGroup: EnabledGroup;
-  caseAcitonAuth: Record<string, string[]>;
+  caseActionAuth: Record<string, string[]>;
   actionMenus: Record<string, any[]>;
-  caseList: CaseListObj[];
-  groupCaseList: GroupCaseListObj[];
+  caseList: CaseDetailChecked[];
+  groupCaseList: GroupCaseList[];
   selectedRowKeys: string[];
 }
 
@@ -35,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   total: 0,
   loading: false,
   enabledGroup: false,
-  caseAcitonAuth: () => ({}),
+  caseActionAuth: () => ({}),
   actionMenus: () => ({}),
   caseList: () => [],
   groupCaseList: () => [],
@@ -45,8 +37,8 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'update:selectedRowKeys', value: string[]): void;
-  (e: 'onClick', type:CaseActionAuth, value:CaseListObj):void;
-  (e: 'openInfo', value:CaseListObj):void;
+  (e: 'onClick', type:CaseActionAuth, value:CaseDetailChecked):void;
+  (e: 'openInfo', value:CaseDetailChecked):void;
   (e: 'change', value:{pagination, sorter}):void;
 }>();
 
@@ -57,7 +49,11 @@ const pagination = computed(() => {
     current: props.params.pageNo,
     pageSize: props.params.pageSize,
     total: +props.total,
-    showTotal: (_total: number) => { return props.enabledGroup ? t('functionCase.tableView.totalGroups', { total: _total }) : t('functionCase.tableView.totalItems', { total: _total }); }
+    showTotal: (_total: number) => {
+      return props.enabledGroup
+        ? t('functionCase.tableView.totalGroups', { total: _total })
+        : t('functionCase.tableView.totalItems', { total: _total });
+    }
   };
 });
 
@@ -146,6 +142,7 @@ const tableColumns = computed(() => [
     width: 140
   }
 ].filter(Boolean));
+
 // 表格视图下 所有所选中的用例的Ids，table功能
 const selectedRowKeys = ref<string[]>([]);
 
@@ -160,11 +157,11 @@ const onSelectChange = (_selectedRowKeys) => {
   }));
 };
 
-const handleClick = async (type: CaseActionAuth, value: CaseListObj) => {
+const handleClick = async (type: CaseActionAuth, value: CaseDetailChecked) => {
   emits('onClick', type, value);
 };
 
-const handleViewInfo = (value:CaseListObj) => {
+const handleViewInfo = (value:CaseDetailChecked) => {
   emits('openInfo', value);
 };
 
@@ -197,6 +194,7 @@ defineExpose({
         </div>
         <div v-else>{{ text }}</div>
       </template>
+
       <template v-if="column.dataIndex === 'name'">
         <span v-if="!record.groupName" class="flex items-center">
           <Icon
@@ -211,10 +209,12 @@ defineExpose({
         </span>
         <span v-else></span>
       </template>
+
       <template v-if="column.dataIndex === 'priority'">
         <TaskPriority v-if="!record.groupName" :value="record?.priority" />
         <span v-else></span>
       </template>
+
       <template v-if="column.dataIndex === 'reviewStatus'">
         <span v-if="record.groupName"></span>
         <template v-else-if="text">
@@ -224,20 +224,25 @@ defineExpose({
           --
         </template>
       </template>
+
       <template v-if="column.dataIndex === 'testResult'">
         <TestResult :value="text" />
       </template>
+
       <template v-if="column.dataIndex === 'source'">
         {{ text?.message }}
       </template>
+
       <template v-if="column.dataIndex === 'createdByName'">
         <span v-if="record.groupName"></span>
         <template v-else>{{ text || '--' }}</template>
       </template>
+
       <template v-if="column.dataIndex === 'testerName'">
         <span v-if="record.groupName"></span>
         <template v-else>{{ text || '--' }}</template>
       </template>
+
       <template v-if="column.dataIndex === 'enabled'">
         <Badge
           v-if="record.enabled"
@@ -251,7 +256,7 @@ defineExpose({
 
       <div v-else-if="column.dataIndex === 'action' && !record.groupName" class="flex items-center">
         <Button
-          :disabled="!(caseAcitonAuth[record.id] || []).includes('edit')"
+          :disabled="!(caseActionAuth[record.id] || []).includes('edit')"
           type="text"
           size="small"
           class="flex items-center px-0 mr-2.5"
@@ -261,7 +266,7 @@ defineExpose({
         </Button>
 
         <Button
-          :disabled="!(caseAcitonAuth[record.id] || [])?.includes('delete')"
+          :disabled="!(caseActionAuth[record.id] || [])?.includes('delete')"
           type="text"
           size="small"
           class="flex items-center px-0 mr-2.5"
@@ -272,7 +277,7 @@ defineExpose({
 
         <Dropdown
           :menuItems="props.actionMenus[record.id]"
-          :permissions="caseAcitonAuth[record.id] || []"
+          :permissions="caseActionAuth[record.id] || []"
           @click="handleClick($event.key, record)">
           <Button
             type="text"

@@ -4,6 +4,11 @@ import { AsyncComponent } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 import { TaskDetail } from '@/views/task/types';
 
+// ASYNC COMPONENTS
+const TaskDetailPage = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/index.vue'));
+const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
+const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Move.vue'));
+
 /**
  * Component props interface for task details page
  */
@@ -30,11 +35,6 @@ const props = withDefaults(defineProps<Props>(), {
   activeKey: undefined,
   data: undefined
 });
-
-// ASYNC COMPONENTS
-const TaskDetail = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/index.vue'));
-const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
-const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Move.vue'));
 
 // COMPOSABLES & INJECTIONS
 const route = useRoute();
@@ -134,7 +134,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <TaskDetail
+  <TaskDetailPage
     v-bind="props.data"
     :notify="refreshNotification"
     :userInfo="props.userInfo"

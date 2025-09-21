@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import {
   Arrow,
@@ -13,17 +13,34 @@ import {
   notification,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { appContext, enumUtils } from '@xcan-angus/infra';
-import { CaseTestResult } from '@/enums/enums';
+import { appContext, enumUtils, PageQuery, ProjectPageQuery, ReviewStatus } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import { funcCase, funcPlan } from '@/api/tester';
+import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
+import { CaseDetail } from '@/views/function/types';
+import { ActionMenuItem } from '@/views/function/case/list/types';
+
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
-import { ActionMenuItem, CaseInfo, PlanPermissionKey } from './types';
-import { userInfo } from 'os';
+const EditTaskModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Edit.vue'));
+const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Move.vue'));
+const UpdateResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/UpdateResult.vue'));
+const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Basic.vue'));
+const TestSteps = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestSteps.vue'));
+const PersonnelInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Personnel.vue'));
+const DateInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Date.vue'));
+const ReviewInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/review/ReviewInfo.vue'));
+const TestInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestInfo.vue'));
+const AssocTask = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/AssocTask.vue'));
+const AssocCase = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/AssocCase.vue'));
+const AttachmentInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Attachment.vue'));
+const ReviewRecord = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/review/ReviewRecord.vue'));
+const Comment = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/Comment.vue'));
+const Activity = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/Activity.vue'));
 
 type Props = {
   projectId: string;
@@ -34,7 +51,7 @@ type Props = {
   moduleId: string;
   groupKey: 'none' | 'testerName' | 'lastModifiedByName';
   orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName';
-  orderSort: 'DESC' | 'ASC';
+  orderSort: PageQuery.OrderSort;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,35 +71,18 @@ const emit = defineEmits<{
   (event: 'refreshChange'): void;
 }>();
 
-const EditTaskModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Edit.vue'));
-const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Move.vue'));
-const UpdateResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/UpdateResult.vue'));
-const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
-const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Basic.vue'));
-const TestSteps = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestSteps.vue'));
-const PersonnelInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Personnel.vue'));
-const DateInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Date.vue'));
-const ReviewInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/review/ReviewInfo.vue'));
-const TestInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestInfo.vue'));
-const AssocTask = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/AssocTask.vue'));
-const AssocCase = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/AssocCase.vue'));
-const AttachmentInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Attachment.vue'));
-const ReviewRecord = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/review/ReviewRecord.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/Comment.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/Activity.vue'));
-
 const { t } = useI18n();
 
 const isAdmin = computed(() => appContext.isAdmin());
 
 const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment' | 'activity' | 'refTasks' | 'refCases' | 'attachments' | 'remarks'>('basic');
 
-const planPermissionsMap = ref<Map<string, PlanPermissionKey[]>>(new Map());
+const planPermissionsMap = ref<Map<string, FuncPlanPermission[]>>(new Map());
 const planAuthMap = ref({});
 
 const testResultList = ref<{ message: string; value: CaseTestResult }[]>([]);
-const caseList = ref<CaseInfo[]>([]);
-const caseDataMap = ref<{ [key in CaseTestResult]: CaseInfo[] }>({
+const caseList = ref<CaseDetail[]>([]);
+const caseDataMap = ref<{ [key in CaseTestResult]: CaseDetail[] }>({
   PENDING: [],
   PASSED: [],
   NOT_PASSED: [],
@@ -99,7 +99,7 @@ const numMap = ref<{ [key in CaseTestResult]: number }>({
 
 const testerNameList = ref<{ name: string; value: string }[]>([]);
 const lastModifiedByNameList = ref<{ name: string; value: string }[]>([]);
-const groupDataMap = ref<{ [key: string]: { [key in CaseTestResult]: CaseInfo[] } }>({});
+const groupDataMap = ref<{ [key: string]: { [key in CaseTestResult]: CaseDetail[] } }>({});
 
 const isDraggingToColumn = ref<number|null>(null);
 const isDraggingToColumnTestResult = ref<CaseTestResult[]>([]);
@@ -107,13 +107,13 @@ const isDraggingToColumnTestResult = ref<CaseTestResult[]>([]);
 const openFlag = ref(false);
 const arrowOpenSet = ref(new Set<string>());
 
-const checkedCaseInfo = ref<CaseInfo>();
+const checkedCaseInfo = ref<CaseDetail>();
 const checkedPlanInfo = ref<{ id: string; name: string; }>();
 const checkedGroupKey = ref<string>();
 
 const selectedIndex = ref<number>();
 const selectedTestResult = ref<CaseTestResult>();
-const selectedCaseInfo = ref<CaseInfo>();
+const selectedCaseInfo = ref<CaseDetail>();
 
 // 拖动到确认完成、确认未完成相关数据，用于取消确认完成、取消确认未完成时重置数据
 const selectedToTestResult = ref<CaseTestResult>();
@@ -144,14 +144,14 @@ const loadData = async () => {
 
   const { list, total } = (res?.data || { total: 0, list: [] });
   const len = list.length;
-  const _caseList: CaseInfo[] = [];
+  const _caseList: CaseDetail[] = [];
   _caseList.push(...list);
   if (len < +total) {
     const pages = Math.ceil((total - len) / params.pageSize);
     for (let i = 0, len = pages; i < len; i++) {
       const pageNo = i + 2;
       const _params = { ...params, pageNo };
-      const [_error, _res] = await funcCase.getCaseList({ infoScope: 'DETAIL', ..._params });
+      const [_error, _res] = await funcCase.getCaseList({ infoScope: PageQuery.InfoScope.DETAIL, ..._params });
       if (_error) {
         emit('loadingChange', false);
         return;
@@ -165,7 +165,7 @@ const loadData = async () => {
   // 保存原始数据
   caseList.value = _caseList;
 
-  const newList: CaseInfo[] = [];
+  const newList: CaseDetail[] = [];
   const planIdSet = new Set<string>();
   const testerNameSet = new Set<string>();
   const lastModifiedByNameSet = new Set<string>();
@@ -230,24 +230,7 @@ const loadData = async () => {
     for (let i = 0, len = sprintIds.length; i < len; i++) {
       const id = sprintIds[i];
       planAuthMap.value[id] = true;
-      planPermissionsMap.value.set(id, [
-        'ADD',
-        'VIEW',
-        'MODIFY',
-        'DELETE',
-        'GRANT',
-        'ADD_PLAN',
-        'MODIFY_PLAN',
-        'DELETE_PLAN',
-        'ADD_CASE',
-        'MODIFY_CASE',
-        'DELETE_CASE',
-        'EXPORT_CASE',
-        'REVIEW',
-        'RESET_REVIEW_RESULT',
-        'TEST',
-        'RESET_TEST_RESULT'
-      ]);
+      planPermissionsMap.value.set(id, enumUtils.getEnumValues(FuncPlanPermission));
     }
   }
 
@@ -255,18 +238,13 @@ const loadData = async () => {
 };
 
 const getParams = () => {
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    infoScope: 'DETAIL';
+  const params: ProjectPageQuery & {
     moduleId?: string;
-    filters?: { key: string; op: string; value: boolean | string | string[]; }[];
   } = {
     projectId: props.projectId,
     pageNo: 1,
     pageSize: 500,
-    infoScope: 'DETAIL'
+    infoScope: PageQuery.InfoScope.DETAIL
   };
 
   if (props.filters?.length) {
@@ -276,11 +254,10 @@ const getParams = () => {
   if (props.moduleId) {
     params.moduleId = props.moduleId;
   }
-
   return params;
 };
 
-const setGroupData = (data:CaseInfo) => {
+const setGroupData = (data:CaseDetail) => {
   const { testResult: { value: testResultValue }, testerId = '-1', lastModifiedBy } = data;
   let key = '';
   if (props.groupKey === 'testerName') {
@@ -314,7 +291,6 @@ const setDefaultGroupData = () => {
 };
 
 const dragMove = (event) => {
-  // 设置正在拖动的列索引
   const [, toIndex] = event.to.id.split('-') as [CaseTestResult, number];
   const [fromResult] = event.from.id.split('-') as [CaseTestResult, number];
   const [, , draggedId] = event.dragged.id.split('-') as [CaseTestResult, number, string];
@@ -326,35 +302,35 @@ const dragMove = (event) => {
     cancelDisabled = !!cancelItem?.disabled;
   }
 
-  if (fromResult === 'PENDING') {
-    isDraggingToColumnTestResult.value = ['PASSED', 'NOT_PASSED', 'BLOCKED'];
+  if (fromResult === CaseTestResult.PENDING) {
+    isDraggingToColumnTestResult.value = [CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.BLOCKED];
     if (!cancelDisabled) {
-      isDraggingToColumnTestResult.value.push('CANCELED');
+      isDraggingToColumnTestResult.value.push(CaseTestResult.CANCELED);
     }
     isDraggingToColumn.value = +toIndex;
     return;
   }
 
-  if (fromResult === 'PASSED' || fromResult === 'NOT_PASSED') {
-    isDraggingToColumnTestResult.value = ['PENDING'];
+  if (fromResult === CaseTestResult.PASSED || fromResult === CaseTestResult.NOT_PASSED) {
+    isDraggingToColumnTestResult.value = [CaseTestResult.PENDING];
     if (!cancelDisabled) {
-      isDraggingToColumnTestResult.value.push('CANCELED');
+      isDraggingToColumnTestResult.value.push(CaseTestResult.CANCELED);
     }
     isDraggingToColumn.value = +toIndex;
     return;
   }
 
-  if (fromResult === 'BLOCKED') {
-    isDraggingToColumnTestResult.value = ['PASSED', 'NOT_PASSED'];
+  if (fromResult === CaseTestResult.BLOCKED) {
+    isDraggingToColumnTestResult.value = [CaseTestResult.PASSED, CaseTestResult.NOT_PASSED];
     if (!cancelDisabled) {
-      isDraggingToColumnTestResult.value.push('CANCELED');
+      isDraggingToColumnTestResult.value.push(CaseTestResult.CANCELED);
     }
     isDraggingToColumn.value = +toIndex;
     return;
   }
 
-  if (fromResult === 'CANCELED') {
-    isDraggingToColumnTestResult.value = ['PENDING'];
+  if (fromResult === CaseTestResult.CANCELED) {
+    isDraggingToColumnTestResult.value = [CaseTestResult.PENDING];
     isDraggingToColumn.value = +toIndex;
   }
 };
@@ -371,12 +347,18 @@ const dragEnd = () => {
   isDraggingToColumnTestResult.value = [];
 };
 
-const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:CaseTestResult, index:number, groupKey?:'none' | 'testerName' | 'lastModifiedByName') => {
+const dragHandler = (
+  data:CaseDetail,
+  testResult:CaseTestResult,
+  toTestResult:CaseTestResult,
+  index:number,
+  groupKey?:'none' | 'testerName' | 'lastModifiedByName'
+) => {
   const { review, reviewStatus: { value: reviewStatus }, planId, id } = data;
   const permissions = planPermissionsMap.value.get(planId) || [];
-  if (testResult === 'PENDING') {
+  if (testResult === CaseTestResult.PENDING) {
     if (review) {
-      if (reviewStatus === 'PENDING') {
+      if (reviewStatus === ReviewStatus.PENDING) {
         if (groupKey) {
           resetGroupDrag(id, index, testResult, toTestResult, groupKey);
         } else {
@@ -386,7 +368,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
         return;
       }
 
-      if (reviewStatus === 'FAILED') {
+      if (reviewStatus === ReviewStatus.FAILED) {
         if (groupKey) {
           resetGroupDrag(id, index, testResult, toTestResult, groupKey);
         } else {
@@ -396,13 +378,13 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
         return;
       }
 
-      if (!isAdmin.value && !permissions.includes('TEST')) {
+      if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
         notification.warning(t('functionCase.kanbanView.noTestPermission'));
         return;
       }
     }
 
-    if (toTestResult === 'PASSED') {
+    if (toTestResult === CaseTestResult.PASSED) {
       selectedCaseInfo.value = data;
       selectedIndex.value = index;
       selectedGroupKey.value = groupKey;
@@ -412,7 +394,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       return;
     }
 
-    if (toTestResult === 'NOT_PASSED') {
+    if (toTestResult === CaseTestResult.NOT_PASSED) {
       selectedCaseInfo.value = data;
       selectedIndex.value = index;
       selectedGroupKey.value = groupKey;
@@ -422,7 +404,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       return;
     }
 
-    if (toTestResult === 'BLOCKED') {
+    if (toTestResult === CaseTestResult.BLOCKED) {
       toBlock(data, false, () => {
         if (groupKey) {
           resetGroupDrag(id, index, testResult, toTestResult, groupKey);
@@ -433,7 +415,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       return;
     }
 
-    if (toTestResult === 'CANCELED') {
+    if (toTestResult === CaseTestResult.CANCELED) {
       toCancel(data, false, () => {
         if (groupKey) {
           resetGroupDrag(id, index, testResult, toTestResult, groupKey);
@@ -447,8 +429,8 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
     return;
   }
 
-  if (testResult === 'PASSED' || testResult === 'NOT_PASSED' || testResult === 'CANCELED') {
-    if (toTestResult !== 'PENDING') {
+  if (testResult === CaseTestResult.PASSED || testResult === CaseTestResult.NOT_PASSED || testResult === CaseTestResult.CANCELED) {
+    if (toTestResult !== CaseTestResult.PENDING) {
       if (groupKey) {
         resetGroupDrag(id, index, testResult, toTestResult, groupKey);
       } else {
@@ -457,7 +439,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       notification.warning(t('functionCase.kanbanView.canOnlyMoveToPending'));
       return;
     } else {
-      if (!isAdmin.value && !permissions.includes('TEST')) {
+      if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
         if (groupKey) {
           resetGroupDrag(id, index, testResult, toTestResult, groupKey);
         } else {
@@ -478,8 +460,8 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
     return;
   }
 
-  if (testResult === 'BLOCKED') {
-    if (toTestResult !== 'PASSED' && toTestResult !== 'NOT_PASSED' && toTestResult !== 'CANCELED') {
+  if (testResult === CaseTestResult.BLOCKED) {
+    if (toTestResult !== CaseTestResult.PASSED && toTestResult !== CaseTestResult.NOT_PASSED && toTestResult !== CaseTestResult.CANCELED) {
       if (groupKey) {
         resetGroupDrag(id, index, testResult, toTestResult, groupKey);
       } else {
@@ -488,7 +470,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       notification.warning(t('functionCase.kanbanView.canOnlyMoveToTestResults'));
       return;
     } else {
-      if (!isAdmin.value && !permissions.includes('TEST')) {
+      if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
         if (groupKey) {
           resetGroupDrag(id, index, testResult, toTestResult, groupKey);
         } else {
@@ -499,7 +481,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       }
     }
 
-    if (toTestResult === 'PASSED') {
+    if (toTestResult === CaseTestResult.PASSED) {
       selectedCaseInfo.value = data;
       selectedIndex.value = index;
       selectedGroupKey.value = groupKey;
@@ -509,7 +491,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       return;
     }
 
-    if (toTestResult === 'NOT_PASSED') {
+    if (toTestResult === CaseTestResult.NOT_PASSED) {
       selectedCaseInfo.value = data;
       selectedIndex.value = index;
       selectedGroupKey.value = groupKey;
@@ -519,7 +501,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       return;
     }
 
-    if (toTestResult === 'CANCELED') {
+    if (toTestResult === CaseTestResult.CANCELED) {
       toCancel(data, false, () => {
         if (groupKey) {
           resetGroupDrag(id, index, testResult, toTestResult, groupKey);
@@ -569,14 +551,14 @@ const resetGroupDrag = (id: string, index: number, testResult: CaseTestResult, t
   groupDataMap.value[groupKey][testResult].splice(index, 0, dragData);
 };
 
-const toSort = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName'; orderSort: 'DESC' | 'ASC'; }) => {
+const toSort = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName'; orderSort: PageQuery.OrderSort; }) => {
   sortData(data.orderBy, data.orderSort);
 };
 
-const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName', orderSort: 'DESC' | 'ASC') => {
+const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName', orderSort: PageQuery.OrderSort) => {
   const map = caseDataMap.value;
   if (orderBy === 'priority') {
-    const sortKeys = orderSort === 'DESC' ? ['HIGHEST', 'HIGH', 'MEDIUM', 'LOW', 'LOWEST'] : ['LOWEST', 'LOW', 'MEDIUM', 'HIGH', 'HIGHEST'];
+    const sortKeys = orderSort === PageQuery.OrderSort.Desc ? ['HIGHEST', 'HIGH', 'MEDIUM', 'LOW', 'LOWEST'] : ['LOWEST', 'LOW', 'MEDIUM', 'HIGH', 'HIGHEST'];
     for (const key in map) {
       map[key].sort((a, b) => {
         const index1 = sortKeys.indexOf(a.priority.value);
@@ -589,35 +571,30 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'test
   }
 
   if (orderBy === 'deadlineDate') {
-    if (orderSort === 'DESC') {
+    if (orderSort === PageQuery.OrderSort.Desc) {
       for (const key in map) {
         map[key].sort((a, b) => {
           if (dayjs(a.deadlineDate).isBefore(dayjs(b.deadlineDate))) {
             return 1;
           }
-
           if (dayjs(a.deadlineDate).isAfter(dayjs(b.deadlineDate))) {
             return -1;
           }
-
           return 0;
         });
       }
-
       return;
     }
 
-    if (orderSort === 'ASC') {
+    if (orderSort === PageQuery.OrderSort.Asc) {
       for (const key in map) {
         map[key].sort((a, b) => {
           if (dayjs(a.deadlineDate).isBefore(dayjs(b.deadlineDate))) {
             return -1;
           }
-
           if (dayjs(a.deadlineDate).isAfter(dayjs(b.deadlineDate))) {
             return 1;
           }
-
           return 0;
         });
       }
@@ -627,15 +604,14 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'test
   }
 
   if (orderBy === 'testerName' || orderBy === 'createdByName') {
-    if (orderSort === 'DESC') {
+    if (orderSort === PageQuery.OrderSort.Desc) {
       for (const key in map) {
         map[key] = reverse(sortBy(map[key], orderBy));
       }
-
       return;
     }
 
-    if (orderSort === 'ASC') {
+    if (orderSort === PageQuery.OrderSort.Asc) {
       for (const key in map) {
         map[key] = sortBy(map[key], orderBy);
       }
@@ -650,7 +626,6 @@ const toGroup = (value: 'none' | 'testerName' | 'lastModifiedByName') => {
     if (props.orderBy) {
       sortData(props.orderBy, props.orderSort);
     }
-
     return;
   }
 
@@ -663,7 +638,7 @@ const toGroup = (value: 'none' | 'testerName' | 'lastModifiedByName') => {
   setDefaultGroupData();
 };
 
-const toChecked = async (caseInfo: CaseInfo, index:number, groupKey:string) => {
+const toChecked = async (caseInfo: CaseDetail, index:number, groupKey:string) => {
   const id = caseInfo.id;
   if (id === checkedCaseInfo.value?.id) {
     drawerClose();
@@ -697,7 +672,12 @@ const drawerClose = () => {
   selectedIndex.value = undefined;
 };
 
-const dropdownClick = (menuItem: ActionMenuItem, data: CaseInfo, index: number, testResult: CaseTestResult) => {
+const dropdownClick = (
+  menuItem: ActionMenuItem,
+  data: CaseDetail,
+  index: number,
+  testResult: CaseTestResult
+) => {
   const key = menuItem.key;
   if (key === 'edit') {
     toEdit(data, index, testResult);
@@ -774,7 +754,7 @@ const dropdownClick = (menuItem: ActionMenuItem, data: CaseInfo, index: number, 
   }
 };
 
-const toEdit = (data: CaseInfo, index: number, testResult: CaseTestResult) => {
+const toEdit = (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   selectedCaseInfo.value = data;
   selectedIndex.value = index;
   selectedTestResult.value = testResult;
@@ -797,7 +777,7 @@ const editOk = async (id:string) => {
   selectedTestResult.value = undefined;
 };
 
-const toDelete = (data: CaseInfo) => {
+const toDelete = (data: CaseDetail) => {
   modal.confirm({
     content: t('functionCase.kanbanView.confirmDeleteCase', { name: data.name }),
     async onOk () {
@@ -816,7 +796,7 @@ const toDelete = (data: CaseInfo) => {
   });
 };
 
-const toFavourite = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
+const toFavourite = async (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.AddFavouriteCase(data.id);
   emit('loadingChange', false);
@@ -828,7 +808,7 @@ const toFavourite = async (data: CaseInfo, index: number, testResult: CaseTestRe
   caseDataMap.value[testResult][index].favourite = true;
 };
 
-const toDeleteFavourite = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
+const toDeleteFavourite = async (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.cancelFavouriteCase(data.id);
   emit('loadingChange', false);
@@ -840,7 +820,7 @@ const toDeleteFavourite = async (data: CaseInfo, index: number, testResult: Case
   caseDataMap.value[testResult][index].favourite = false;
 };
 
-const toFollow = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
+const toFollow = async (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.addFollowCase(data.id);
   emit('loadingChange', false);
@@ -852,7 +832,7 @@ const toFollow = async (data: CaseInfo, index: number, testResult: CaseTestResul
   caseDataMap.value[testResult][index].follow = true;
 };
 
-const toDeleteFollow = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
+const toDeleteFollow = async (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.cancelFollowCase(data.id);
   emit('loadingChange', false);
@@ -864,7 +844,7 @@ const toDeleteFollow = async (data: CaseInfo, index: number, testResult: CaseTes
   caseDataMap.value[testResult][index].follow = false;
 };
 
-const toClone = async (data: CaseInfo) => {
+const toClone = async (data: CaseDetail) => {
   const id = data.id;
   emit('loadingChange', true);
   const [error] = await funcCase.cloneCase([id]);
@@ -875,10 +855,10 @@ const toClone = async (data: CaseInfo) => {
 
   emit('refreshChange');
   notification.success(t('functionCase.kanbanView.caseCloneSuccess'));
-  loadData();
+  await loadData();
 };
 
-const toMove = (data: CaseInfo) => {
+const toMove = (data: CaseDetail) => {
   selectedCaseInfo.value = data;
   moveModalVisible.value = true;
 };
@@ -889,13 +869,13 @@ const moveOk = () => {
   loadData();
 };
 
-const toPassed = async (data: CaseInfo) => {
+const toPassed = async (data: CaseDetail) => {
   selectedCaseInfo.value = data;
   updateTestResultVisible.value = true;
   resultPassed.value = true;
 };
 
-const toNotPassed = async (data: CaseInfo) => {
+const toNotPassed = async (data: CaseDetail) => {
   selectedCaseInfo.value = data;
   updateTestResultVisible.value = true;
   resultPassed.value = false;
@@ -906,7 +886,7 @@ const testOk = async () => {
   resultPassed.value = false;
   emit('refreshChange');
   notification.success(t('functionCase.kanbanView.testResultUpdateSuccess'));
-  loadData();
+  await loadData();
 };
 
 const updateTestResultCancel = () => {
@@ -932,7 +912,7 @@ const updateTestResultCancel = () => {
   selectedToTestResult.value = undefined;
 };
 
-const toAddBug = (data: CaseInfo, index: number, testResult: CaseTestResult) => {
+const toAddBug = (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   selectedCaseInfo.value = data;
   selectedIndex.value = index;
   selectedTestResult.value = testResult;
@@ -973,7 +953,7 @@ const addTaskOk = async (data) => {
   selectedTestResult.value = undefined;
 };
 
-const toRetest = async (data: CaseInfo, notificationFlag = true, errorCallback?:()=>void) => {
+const toRetest = async (data: CaseDetail, notificationFlag = true, errorCallback?:()=>void) => {
   const id = data.id;
   emit('loadingChange', true);
   const [error] = await funcCase.retestResult([id]);
@@ -992,7 +972,7 @@ const toRetest = async (data: CaseInfo, notificationFlag = true, errorCallback?:
   loadData();
 };
 
-const toResetTestResult = async (data: CaseInfo) => {
+const toResetTestResult = async (data: CaseDetail) => {
   const id = data.id;
   emit('loadingChange', true);
   const [error] = await funcCase.resetCaseResult([id]);
@@ -1006,10 +986,10 @@ const toResetTestResult = async (data: CaseInfo) => {
   loadData();
 };
 
-const toBlock = async (data: CaseInfo, notificationFlag = true, errorCallback?:()=>void) => {
+const toBlock = async (data: CaseDetail, notificationFlag = true, errorCallback?:()=>void) => {
   const id = data.id;
   emit('loadingChange', true);
-  const [error] = await funcCase.updateCaseResult([{ id, testResult: 'BLOCKED' }]);
+  const [error] = await funcCase.updateCaseResult([{ id, testResult: CaseTestResult.BLOCKED }]);
   emit('loadingChange', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -1025,10 +1005,10 @@ const toBlock = async (data: CaseInfo, notificationFlag = true, errorCallback?:(
   loadData();
 };
 
-const toCancel = async (data: CaseInfo, notificationFlag = true, errorCallback?:()=>void) => {
+const toCancel = async (data: CaseDetail, notificationFlag = true, errorCallback?:()=>void) => {
   const id = data.id;
   emit('loadingChange', true);
-  const [error] = await funcCase.updateCaseResult([{ id, testResult: 'CANCELED' }], { dataType: true });
+  const [error] = await funcCase.updateCaseResult([{ id, testResult: CaseTestResult.CANCELED }], { dataType: true });
   emit('loadingChange', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -1082,7 +1062,7 @@ const loadingChange = (value:boolean) => {
   emit('loadingChange', value);
 };
 
-const caseInfoChange = (data: Partial<CaseInfo>) => {
+const caseInfoChange = (data: Partial<CaseDetail>) => {
   if (checkedCaseInfo.value) {
     checkedCaseInfo.value = { ...checkedCaseInfo.value, ...data };
   }
@@ -1103,22 +1083,6 @@ const caseInfoChange = (data: Partial<CaseInfo>) => {
   if (groupDataMap.value[checkedGroupKey.value]?.[selectedTestResult.value]?.[selectedIndex.value]) {
     groupDataMap.value[checkedGroupKey.value][selectedTestResult.value][selectedIndex.value] = data;
   }
-
-  // const id = checkedCaseInfo.value?.id;
-  // const testResult = checkedCaseInfo.value?.testResult?.value || 'none';
-  // let list:case [] = [];
-  // if (props.groupKey === 'none') {
-  //   list = caseDataMap.value[testResult];
-  // } else {
-  //   list = groupDataMap.value[_createdByName.value][testResult];
-  // }
-
-  // for (let i = 0, len = list.length; i < len; i++) {
-  //   if (list[i].id === id) {
-  //     list[i] = data;
-  //     return;
-  //   }
-  // }
 };
 
 const resetData = () => {
@@ -1170,14 +1134,14 @@ onMounted(() => {
 const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
   const map = new Map<string, ActionMenuItem[]>();
   for (const key in caseDataMap.value) {
-    const list = (caseDataMap.value[key] || []) as CaseInfo[];
+    const list = (caseDataMap.value[key] || []) as CaseDetail[];
     for (let i = 0, len = list.length; i < len; i++) {
       const item = list[i];
       const planId = item.planId;
 
       const permissions = planPermissionsMap.value.get(planId) || [];
-      if (props.userInfo?.id === item.testerId && !permissions.includes('TEST')) {
-        permissions.push('TEST');
+      if (props.userInfo?.id === item.testerId && !permissions.includes(FuncPlanPermission.TEST)) {
+        permissions.push(FuncPlanPermission.TEST);
       }
       const { favourite, follow, testNum, review, reviewStatus: { value: reviewStatus }, testResult: { value: testResult } } = item;
 
@@ -1186,25 +1150,25 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           name: t('functionCase.kanbanView.edit'),
           key: 'edit',
           icon: 'icon-shuxie',
-          disabled: !isAdmin.value && !permissions.includes('MODIFY_CASE'),
+          disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.MODIFY_CASE),
           hide: false
         },
         {
           name: t('functionCase.kanbanView.delete'),
           key: 'delete',
           icon: 'icon-qingchu',
-          disabled: !isAdmin.value && !permissions.includes('DELETE_CASE'),
+          disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.DELETE_CASE),
           hide: false
         }
       ];
 
-      if (!review || (review && reviewStatus === 'PASSED')) {
-        if (testResult === 'PENDING' || testResult === 'BLOCKED') {
+      if (!review || (review && reviewStatus === ReviewStatus.PASSED)) {
+        if (testResult === CaseTestResult.PENDING || testResult === CaseTestResult.BLOCKED) {
           menuItems.push({
             name: t('functionCase.kanbanView.testPassed'),
             key: 'testPassed',
             icon: 'icon-xiugaiceshijieguo',
-            disabled: !isAdmin.value && !permissions.includes('TEST'),
+            disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
             hide: false
           });
 
@@ -1212,34 +1176,34 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: t('functionCase.kanbanView.testNotPassed'),
             key: 'testNotPassed',
             icon: 'icon-xiugaiceshijieguo',
-            disabled: !isAdmin.value && !permissions.includes('TEST'),
+            disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
             hide: false
           });
 
-          if (testResult === 'PENDING') {
+          if (testResult === CaseTestResult.PENDING) {
             menuItems.push({
               name: t('functionCase.kanbanView.setBlocked'),
               key: 'block',
               icon: 'icon-xiugaiceshijieguo',
-              disabled: !isAdmin.value && !permissions.includes('TEST'),
+              disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
               hide: false
             });
           }
-        } else if (testResult === 'PASSED' || testResult === 'NOT_PASSED' || testResult === 'CANCELED') {
+        } else if (testResult === CaseTestResult.PASSED || testResult === CaseTestResult.NOT_PASSED || testResult === CaseTestResult.CANCELED) {
           menuItems.push({
             name: t('functionCase.kanbanView.retest'),
             key: 'retest',
             icon: 'icon-xiugaiceshijieguo',
-            disabled: !isAdmin.value && (!permissions.includes('RESET_TEST_RESULT') || planAuthMap.value[item.planId]) && item.testerId !== userInfo?.id,
+            disabled: !isAdmin.value && (!permissions.includes(FuncPlanPermission.RESET_TEST_RESULT) || planAuthMap.value[item.planId]) && item.testerId !== props.userInfo?.id,
             hide: false
           });
 
-          if (testResult === 'NOT_PASSED') {
+          if (testResult === CaseTestResult.NOT_PASSED) {
             menuItems.push({
               name: t('functionCase.kanbanView.addBug'),
               key: 'addBug',
               icon: 'icon-bianji',
-              disabled: !isAdmin.value && !permissions.includes('MODIFY_CASE'),
+              disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.MODIFY_CASE),
               hide: false
             });
           }
@@ -1251,18 +1215,18 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: t('functionCase.kanbanView.resetTestResult'),
             key: 'resetTestResult',
             icon: 'icon-zhongzhiceshijieguo',
-            disabled: !isAdmin.value && (!permissions.includes('RESET_TEST_RESULT') || planAuthMap.value[item.planId]),
+            disabled: !isAdmin.value && (!permissions.includes(FuncPlanPermission.RESET_TEST_RESULT) || planAuthMap.value[item.planId]),
             hide: false,
             tip: t('functionCase.kanbanView.resetTestResultTip')
           });
         }
 
-        if (testResult === 'PENDING' || testResult === 'BLOCKED') {
+        if (testResult === CaseTestResult.PENDING || testResult === CaseTestResult.BLOCKED) {
           menuItems.push({
             name: t('functionCase.kanbanView.cancel'),
             key: 'cancel',
             icon: 'icon-qingchu',
-            disabled: !isAdmin.value && !permissions.includes('TEST'),
+            disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
             hide: false
           });
         }
@@ -1280,7 +1244,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('functionCase.kanbanView.move'),
         key: 'move',
         icon: 'icon-yidong',
-        disabled: !isAdmin.value && !permissions.includes('MODIFY_CASE'),
+        disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.MODIFY_CASE),
         hide: false
       });
 
@@ -1370,7 +1334,7 @@ const checkedCaseId = computed(() => {
           @start="dragStart"
           @end="dragEnd"
           @add="dragAdd($event, item.value)">
-          <template #item="{ element, index }: { element: CaseInfo; index: number; }">
+          <template #item="{ element, index }: { element: CaseDetail; index: number; }">
             <div
               :id="`${item.value}-${index}-${element.id}`"
               :class="{ 'active-item': checkedCaseId === element.id }"
@@ -1511,7 +1475,7 @@ const checkedCaseId = computed(() => {
                 @start="dragStart"
                 @end="dragEnd"
                 @add="groupDragAdd($event, _testResult.value)">
-                <template #item="{ element, index }: { element: CaseInfo; index: number; }">
+                <template #item="{ element, index }: { element: CaseDetail; index: number; }">
                   <div
                     :id="`${_testResult.value}-${index}-${element.id}-${_createdByName.value}`"
                     :class="{ 'active-item': checkedCaseId === element.id }"
@@ -1860,7 +1824,7 @@ const checkedCaseId = computed(() => {
       :appInfo="props.appInfo"
       :assigneeId="selectedCaseInfo?.developerId"
       :userInfo="userInfo"
-      taskType="BUG"
+      :taskType="TaskType.BUG"
       :confirmerId="selectedCaseInfo?.testerId"
       @ok="addTaskOk" />
   </AsyncComponent>

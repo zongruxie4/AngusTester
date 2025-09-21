@@ -2,30 +2,21 @@
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Pagination } from 'ant-design-vue';
 import { Colon, Icon, ReviewStatus } from '@xcan-angus/vue-ui';
+import { ReviewStatus as ReviewStatusEnum, PageQuery } from '@xcan-angus/infra';
+import { CaseDetailChecked, EnabledGroup, GroupCaseList } from '../../types';
 
-import { CaseListObj, EnabledGroup, GroupCaseListObj } from '../types';
 import TestResult from '@/components/TestResult/index.vue';
 
 const { t } = useI18n();
 
-type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH' | 'MATCH' | 'IN' | 'NOT_IN';
-type Filters = { key: string, value: string | boolean | string[], op: FilterOp }
-
 interface Props {
-  params: {
-    pageNo: number;
-    pageSize: number;
-    filters?: Filters[];
-    orderBy?: string;
-    orderSort?: 'ASC' | 'DESC';
-    [key: string]: any;
-  };
+  params: PageQuery;
   total: number;
   loading: boolean;
-  checkedCase: CaseListObj;
+  checkedCase: CaseDetailChecked;
   enabledGroup: EnabledGroup;
-  caseList: CaseListObj[];
-  groupCaseList: GroupCaseListObj[];
+  caseList: CaseDetailChecked[];
+  groupCaseList: GroupCaseList[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -41,14 +32,16 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'update:selectedRowKeys', value: string[]): void;
-  (e: 'select', value: CaseListObj): void;
+  (e: 'select', value: CaseDetailChecked): void;
   (e: 'change', value: { current: number; pageSize: number; }): void;
   (e: 'update:params', params): void;
   (e: 'getData'): void;
 }>();
 
 const showTotal = (_total: number) => {
-  return props.enabledGroup ? t('functionCase.infoView.totalGroups', { total: _total }) : t('functionCase.infoView.totalItems', { total: _total });
+  return props.enabledGroup
+    ? t('functionCase.infoView.totalGroups', { total: _total })
+    : t('functionCase.infoView.totalItems', { total: _total });
 };
 
 const hanldeListExpand = (item) => {
@@ -129,7 +122,7 @@ const handleCheckOne = (e, groupItem, item) => {
 };
 
 // 平铺视图点击数据获取详情
-const hanldeSelectCase = (_case: CaseListObj) => {
+const hanldeSelectCase = (_case: CaseDetailChecked) => {
   emits('select', _case);
 };
 
@@ -156,11 +149,13 @@ defineExpose({
                   :icon="groupCase.isOpen ? 'icon-jian' : 'icon-jia'"
                   @click="hanldeListExpand(groupCase)" />
               </Button>
+
               <Checkbox
                 class="mx-2"
                 :checked="groupCase.checkAll"
                 :indeterminate="groupCase.indeterminate"
                 @change="(e) => handleCheckAll(e, groupCase)" />
+
               <div class="flex items-center text-theme-title flex-1">
                 <Icon icon="icon-mokuai" class="mr-1 flex-none text-4" />
                 <div
@@ -171,6 +166,7 @@ defineExpose({
                 </div>
               </div>
             </div>
+
             <template v-if="groupCase.isOpen">
               <div
                 v-for="item in groupCase.children"
@@ -184,6 +180,7 @@ defineExpose({
                   :value="item.id"
                   @click.stop
                   @change="(e) => handleCheckOne(e, groupCase, item)" />
+
                 <div class="flex-1">
                   <div class="flex justify-between">
                     <div class="flex items-center text-theme-title">
@@ -197,13 +194,16 @@ defineExpose({
                         {{ item.name }}
                       </div>
                     </div>
-                    <template v-if="item.reviewStatus?.value && item.reviewStatus?.value !== 'PASSED'">
+
+                    <template v-if="item.reviewStatus?.value && item.reviewStatus?.value !== ReviewStatusEnum.PASSED">
                       <ReviewStatus :value="item.reviewStatus" class="ml-5" />
                     </template>
+
                     <template v-else>
                       <TestResult :value="item.testResult" class="ml-5" />
                     </template>
                   </div>
+
                   <div class="flex justify-between mt-2 text-3">
                     <div>{{ item.code }}</div>
                     <div>
@@ -216,6 +216,7 @@ defineExpose({
             </template>
           </div>
         </template>
+
         <template v-else>
           <div
             v-for="item in props.caseList"
@@ -229,6 +230,7 @@ defineExpose({
               :value="item.id"
               @click.stop
               @change="(e) => handleCheckOne(e, undefined, item)" />
+
             <div class="flex-1 min-w-0">
               <div class="flex items-center text-theme-title">
                 <Icon
@@ -240,23 +242,21 @@ defineExpose({
                   {{ item.name }}
                 </div>
               </div>
+
               <div class="flex mt-2">
                 <div class="pl-5">{{ item.code }}</div>
-                <template v-if="item.reviewStatus?.value && item.reviewStatus?.value !== 'PASSED'">
+                <template v-if="item.reviewStatus?.value && item.reviewStatus?.value !== ReviewStatusEnum.PASSED">
                   <ReviewStatus :value="item.reviewStatus" class="ml-5" />
                 </template>
                 <template v-else>
                   <TestResult :value="item.testResult" class="ml-5" />
                 </template>
-                <!-- <div>
-                  优先级
-                  <Colon class="mr-1" />{{ item.priority?.message }}
-                </div> -->
               </div>
             </div>
           </div>
         </template>
       </div>
+
       <template v-if="props.caseList.length">
         <Pagination
           :current="props.params.pageNo"

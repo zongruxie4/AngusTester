@@ -185,7 +185,6 @@ export function useForm (
         : 'project.projectEdit.messages.createSuccess';
       notification.success(t(messageKey));
 
-
       getNewCurrentProject();
     } catch (error) {
       console.error('Error submitting form:', error);

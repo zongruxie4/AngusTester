@@ -1664,11 +1664,11 @@
         "title": "Stories",
         "tips": "Trace user-centric functional requirements to help understand the background and scope of the problem."
       },
-      "asscoBug": {
+      "assocBug": {
         "title": "Bugs",
         "tips": "Trace problems to the original requirements to help understand the background and scope of the problem."
       },
-      "asscoCase": {
+      "assocCase": {
         "title": "Functional Cases",
         "tips": "Record other tasks associated with the current task to help the team understand the dependencies between tasks."
       },

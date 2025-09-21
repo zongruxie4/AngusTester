@@ -5,15 +5,17 @@ import { AsyncComponent, BrowserTab, Icon, modal, notification, Spin, VuexHelper
 import { appContext } from '@xcan-angus/infra';
 import { useRoute, useRouter } from 'vue-router';
 import { funcCase } from '@/api/tester';
-
-import type { CaseActionAuth, CaseListObj } from './types';
+import { CaseTestResult } from '@/enums/enums';
 
 import { useI18n } from 'vue-i18n';
+import { CaseDetail } from '@/views/function/types';
 
 const { t } = useI18n();
 
-const CaseHome = defineAsyncComponent(() => import('@/views/function/case/list/index.vue'));
-const FunctionCaseInfo = defineAsyncComponent(() => import('@/views/function/case/detail/index.vue'));
+export type CaseActionAuth = 'edit'| 'debug' | 'review' | 'clone' | 'move' | 'delete' | 'updateTestResult_passed' | 'updateTestResult_notPassed' | 'updateTestResult_blocked' | 'updateTestResult_canceled' | 'resetTestResult' | 'resetReviewResult' | 'retestResult' | 'copy' | 'favourite' | 'follow' | 'copyUrl'
+
+const CaseList = defineAsyncComponent(() => import('@/views/function/case/list/index.vue'));
+const CaseInfo = defineAsyncComponent(() => import('@/views/function/case/detail/index.vue'));
 const AddCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Edit.vue'));
 const ReviewModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Review.vue'));
 const MoveCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Move.vue'));
@@ -27,7 +29,7 @@ const appInfo = ref(appContext.getAccessApp());
 const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
-const funcHomeRef = ref();
+const caseListRef = ref();
 const addTabPane = (data) => {
   if (typeof browserTabRef.value?.add === 'function') {
     browserTabRef.value.add(() => {
@@ -46,67 +48,8 @@ const { updateGuideStep } = useMutations(['updateGuideType', 'updateGuideStep'],
 
 const tabGuideStep = () => {
   updateGuideStep({ visible: true, key: 'createPlanOne' });
-  addTabPane({ _id: 'usecase_home' });
+  addTabPane({ _id: 'case_home' });
 };
-
-onMounted(() => {
-  watch(() => browserTabRef.value, () => {
-    if (typeof browserTabRef.value?.update === 'function') {
-      const tabData = browserTabRef.value.getData().map(item => item.type);
-      if (!tabData.includes('funcHome')) {
-        addTabPane({
-          _id: 'usecase_home',
-          name: t('functionCase.name'),
-          type: 'funcHome',
-          closable: false,
-          icon: 'icon-zhuye',
-          notify: 0
-        });
-      } else {
-        updateTabPane({
-          _id: 'usecase_home',
-          name: t('functionCase.name'),
-          type: 'funcHome',
-          closable: false,
-          icon: 'icon-zhuye',
-          notify: 0
-        });
-      }
-    }
-  }, { immediate: true });
-
-  watch(() => route.fullPath, () => {
-    if (!route.fullPath.includes('/function#cases')) {
-      return;
-    }
-    const fullPath = decodeURI(route.fullPath);
-    const queryStr = fullPath.split('?')[1];
-    if (queryStr) {
-      const result:{[key:string]: string} = {};
-      const querries = queryStr.split('&');
-      querries.forEach(query => {
-        const keyValue = query.split('=');
-        result[keyValue[0]] = keyValue[1];
-      });
-      if (result.id) {
-        addTabPane({
-          _id: 'case' + result.id,
-          name: result.name,
-          type: 'caseInfo',
-          projectId: result.projectId,
-          closable: true,
-          caseId: result.id,
-          notify: 0,
-          queryParams: restoreFilters(result)
-        });
-        router.replace('/function#cases');
-      }
-    }
-  }, {
-    immediate: true,
-    deep: true
-  });
-});
 
 const restoreFilters = (data) => {
   const filters = [];
@@ -134,7 +77,7 @@ const updateCaseTab = async (value) => {
 };
 
 const favoriteFollowRef = ref(null);
-const updateFollowFavourite = (type: 'follow' | 'favourit') => {
+const updateFollowFavourite = (type: 'follow' | 'favourite') => {
   if (!favoriteFollowRef.value) {
     return;
   }
@@ -179,7 +122,7 @@ const scrollToTop = () => {
 // 详情操作按钮
 const currTabInfo = ref();
 const selectedCase = ref();
-const handleDetailAction = (type: CaseActionAuth, value: CaseListObj, tabInfo) => {
+const handleDetailAction = (type: CaseActionAuth, value: CaseDetail, tabInfo) => {
   currTabInfo.value = tabInfo;
   selectedCase.value = value;
   switch (type) {
@@ -201,17 +144,17 @@ const handleDetailAction = (type: CaseActionAuth, value: CaseListObj, tabInfo) =
     case 'updateTestResult_passed':
       handleAction('updateTestResult_passed');
       break;
-    case 'updateTestResult_notpassed':
-      handleAction('updateTestResult_notpassed');
+    case 'updateTestResult_notPassed':
+      handleAction('updateTestResult_notPassed');
       break;
     case 'updateTestResult_blocked':
-      handleSetREsultBlocked(value);
+      handleSetResultBlocked(value);
       break;
     case 'updateTestResult_canceled':
-      handleSetREsultCanceled(value);
+      handleSetResultCanceled(value);
       break;
     case 'resetTestResult':
-      hanldeResetTestResults(value);
+      handelResetTestResults(value);
       break;
     case 'retestResult':
       handleReTest(value);
@@ -230,35 +173,44 @@ const handleDetailAction = (type: CaseActionAuth, value: CaseListObj, tabInfo) =
 
 // 收藏
 const favouriteLoading = ref(false);
-const handleFavourite = async (rowData: CaseListObj) => {
+const handleFavourite = async (rowData: CaseDetail) => {
   if (favouriteLoading.value) {
     return;
   }
   favouriteLoading.value = true;
-  const [error] = rowData.favourite ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.AddFavouriteCase(rowData.id);
+  const [error] = rowData.favourite
+    ? await funcCase.cancelFavouriteCase(rowData.id)
+    : await funcCase.AddFavouriteCase(rowData.id);
   favouriteLoading.value = false;
   if (error) {
     return;
   }
-  notification.success(rowData.favourite ? t('functionCase.cancelFavouriteSuccess') : t('functionCase.favouriteSuccess'));
+  notification.success(rowData.favourite
+    ? t('functionCase.cancelFavouriteSuccess')
+    : t('functionCase.favouriteSuccess'));
   rowData.favourite = !rowData.favourite;
-  updateFollowFavourite('favourit');
+  updateFollowFavourite('favourite');
 };
 
 // 关注
 const followLoading = ref(false);
-const handleFollow = async (rowData: CaseListObj) => {
+const handleFollow = async (rowData: CaseDetail) => {
   if (followLoading.value) {
     return;
   }
   followLoading.value = true;
-  const [error] = rowData.follow ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.addFollowCase(rowData.id);
+  const [error] = rowData.follow
+    ? await funcCase.cancelFollowCase(rowData.id)
+    : await funcCase.addFollowCase(rowData.id);
   favouriteLoading.value = false;
   followLoading.value = false;
   if (error) {
     return;
   }
-  notification.success(rowData.follow ? t('functionCase.cancelFollowSuccess') : t('functionCase.followSuccess'));
+
+  notification.success(rowData.follow
+    ? t('functionCase.cancelFollowSuccess')
+    : t('functionCase.followSuccess'));
   rowData.follow = !rowData.follow;
   updateFollowFavourite('follow');
 };
@@ -266,15 +218,15 @@ const handleFollow = async (rowData: CaseListObj) => {
 // 编辑用例
 const editCaseVisible = ref(false);
 const isDebug = ref(false);
-const editCase = ref<CaseListObj>();
-const handleEdit = (rowData: CaseListObj) => {
+const editCase = ref<CaseDetail>();
+const handleEdit = (rowData: CaseDetail) => {
   editCase.value = rowData;
   isDebug.value = false;
   editCaseVisible.value = true;
 };
 
 // 编辑或者添加用例成功更新列表
-const addOrEidtSuccess = () => {
+const addOrEditSuccess = () => {
   getCaseInfo();
 };
 
@@ -283,7 +235,7 @@ const getCaseInfo = async () => {
   browserTabRef.value.update({ ...currTabInfo.value, notify: currTabInfo.value.notify + 1 });
 };
 
-const handleClone = async (rowData?: CaseListObj) => {
+const handleClone = async (rowData?: CaseDetail) => {
   if (caseInfoLoading.value) {
     return;
   }
@@ -301,7 +253,7 @@ const caseReviewVisible = ref(false);
 const caseMoveVisible = ref(false);
 const caseUpdateTestResultVisible = ref(false);
 const resultPassed = ref(false);
-const handleAction = (action: 'review' | 'move' | 'updateTestResult_passed'| 'updateTestResult_notpassed') => {
+const handleAction = (action: 'review' | 'move' | 'updateTestResult_passed'| 'updateTestResult_notPassed') => {
   switch (action) {
     case 'review':
       caseReviewVisible.value = true;
@@ -313,7 +265,7 @@ const handleAction = (action: 'review' | 'move' | 'updateTestResult_passed'| 'up
       caseUpdateTestResultVisible.value = true;
       resultPassed.value = true;
       break;
-    case 'updateTestResult_notpassed':
+    case 'updateTestResult_notPassed':
       caseUpdateTestResultVisible.value = true;
       resultPassed.value = false;
       break;
@@ -325,11 +277,11 @@ const updateCaseSuccess = () => {
 };
 
 // 设为阻塞中
-const handleSetREsultBlocked = async (value) => {
+const handleSetResultBlocked = async (value) => {
   const params = [
     {
       id: value.id,
-      testResult: 'BLOCKED'
+      testResult: CaseTestResult.BLOCKED
     }
   ];
   const [error] = await funcCase.updateCaseResult(params);
@@ -337,15 +289,15 @@ const handleSetREsultBlocked = async (value) => {
     return;
   }
   notification.success(t('functionCase.caseSetBlocked'));
-  getCaseInfo();
+  await getCaseInfo();
 };
 
 // 取消case
-const handleSetREsultCanceled = async (value) => {
+const handleSetResultCanceled = async (value) => {
   const params = [
     {
       id: value.id,
-      testResult: 'CANCELED'
+      testResult: CaseTestResult.CANCELED
     }
   ];
   const [error] = await funcCase.updateCaseResult(params);
@@ -353,11 +305,11 @@ const handleSetREsultCanceled = async (value) => {
     return;
   }
   notification.success(t('functionCase.cancelSuccess'));
-  getCaseInfo();
+  await getCaseInfo();
 };
 
 // 重置测试
-const hanldeResetTestResults = async (rowData: CaseListObj) => {
+const handelResetTestResults = async (rowData: CaseDetail) => {
   if (caseInfoLoading.value) {
     return;
   }
@@ -369,11 +321,11 @@ const hanldeResetTestResults = async (rowData: CaseListObj) => {
   }
 
   notification.success(t('functionCase.resetTestResultSuccess'));
-  getCaseInfo();
+  await getCaseInfo();
 };
 
 // 重置评审
-const handleResetReviewResult = async (rowData: CaseListObj) => {
+const handleResetReviewResult = async (rowData: CaseDetail) => {
   if (caseInfoLoading.value) {
     return;
   }
@@ -384,11 +336,11 @@ const handleResetReviewResult = async (rowData: CaseListObj) => {
     return;
   }
   notification.success(t('functionCase.resetReviewSuccess'));
-  getCaseInfo();
+  await getCaseInfo();
 };
 
 // 重新测试 将用例改为待测试
-const handleReTest = async (rowData: CaseListObj) => {
+const handleReTest = async (rowData: CaseDetail) => {
   if (caseInfoLoading.value) {
     return;
   }
@@ -397,25 +349,27 @@ const handleReTest = async (rowData: CaseListObj) => {
     return;
   }
   notification.success(t('functionCase.resetTestStatusSuccess'));
-  getCaseInfo();
+  await getCaseInfo();
 };
 
 // 删除用例
-const handleDeleteCase = async (rowData?: CaseListObj) => {
+const handleDeleteCase = async (rowData?: CaseDetail) => {
   if (caseInfoLoading.value) {
     return;
   }
   modal.confirm({
     centered: true,
     title: t('functionCase.deleteCase'),
-    content: rowData ? t('functionCase.confirmDeleteCase', { name: rowData.name }) : t('functionCase.confirmDeleteSelectedCases'),
+    content: rowData
+      ? t('functionCase.confirmDeleteCase', { name: rowData.name })
+      : t('functionCase.confirmDeleteSelectedCases'),
     async onOk () {
       await delCase(rowData);
     }
   });
 };
 
-const delCase = async (rowData?: CaseListObj) => {
+const delCase = async (rowData?: CaseDetail) => {
   caseInfoLoading.value = true;
   const [error] = await funcCase.deleteCase([rowData.id]);
   caseInfoLoading.value = false;
@@ -440,7 +394,7 @@ const handleMoveSuccess = (oldPlanId: string, newPlanId: string) => {
     const tabData = browserTabRef.value.getData();
     for (let i = 0; i < tabData.length; i++) {
       const tabInfo = tabData[i];
-      if (tabInfo.type === 'funcHome' || tabInfo.key.includes(oldPlanId) || tabInfo.key.includes(newPlanId)) {
+      if (tabInfo.type === 'caseList' || tabInfo.key.includes(oldPlanId) || tabInfo.key.includes(newPlanId)) {
         browserTabRef.value.update({ ...tabInfo, notify: tabInfo.notify++ });
       }
     }
@@ -461,21 +415,74 @@ const handleViewCaseInfo = async (value) => {
 };
 
 const setCaseListPlanParam = () => {
-  browserTabRef.value.open('usecase_home');
-  if (funcHomeRef.value) {
-    funcHomeRef.value.resetParam();
+  browserTabRef.value.open('case_home');
+  if (caseListRef.value) {
+    caseListRef.value.resetParam();
   }
 };
 
-// 打开新的tab
+onMounted(() => {
+  watch(() => browserTabRef.value, () => {
+    if (typeof browserTabRef.value?.update === 'function') {
+      const tabData = browserTabRef.value.getData().map(item => item.type);
+      if (!tabData.includes('caseList')) {
+        addTabPane({
+          _id: 'case_home',
+          name: t('functionCase.name'),
+          type: 'caseList',
+          closable: false,
+          icon: 'icon-zhuye',
+          notify: 0
+        });
+      } else {
+        updateTabPane({
+          _id: 'case_home',
+          name: t('functionCase.name'),
+          type: 'caseList',
+          closable: false,
+          icon: 'icon-zhuye',
+          notify: 0
+        });
+      }
+    }
+  }, { immediate: true });
+
+  watch(() => route.fullPath, () => {
+    if (!route.fullPath.includes('/function#cases')) {
+      return;
+    }
+    const fullPath = decodeURI(route.fullPath);
+    const queryStr = fullPath.split('?')[1];
+    if (queryStr) {
+      const result:{[key:string]: string} = {};
+      const queryParams = queryStr.split('&');
+      queryParams.forEach(query => {
+        const keyValue = query.split('=');
+        result[keyValue[0]] = keyValue[1];
+      });
+      if (result.id) {
+        addTabPane({
+          _id: 'case' + result.id,
+          name: result.name,
+          type: 'caseInfo',
+          projectId: result.projectId,
+          closable: true,
+          caseId: result.id,
+          notify: 0,
+          queryParams: restoreFilters(result)
+        });
+        router.replace('/function#cases');
+      }
+    }
+  }, {
+    immediate: true,
+    deep: true
+  });
+});
+
 provide('addTabPane', addTabPane);
-
-// 更新已经打开的tab
 provide('updateTabPane', updateTabPane);
-
-// 删除已经打开的tab
 provide('deleteTabPane', deleteTabPane);
-
 provide('userInfo', userInfo.value);
 provide('appInfo', appInfo.value);
 
@@ -484,7 +491,6 @@ defineExpose({
   updateTabPane,
   setCaseListPlanParam
 });
-
 </script>
 <template>
   <div class="flex flex-1 h-full">
@@ -501,9 +507,9 @@ defineExpose({
       class="flex-1 h-full"
       @updateGuideStep="tabGuideStep">
       <template #default="record">
-        <template v-if="record.type==='funcHome'">
-          <CaseHome
-            ref="funcHomeRef"
+        <template v-if="record.type==='caseList'">
+          <CaseList
+            ref="caseListRef"
             :userInfo="userInfo"
             :notify="record.notify"
             :queryParams="record.queryParams"
@@ -512,8 +518,9 @@ defineExpose({
             @moveSuccess="handleMoveSuccess"
             @openInfo="handleViewCaseInfo" />
         </template>
+
         <template v-if="record.type==='plan'">
-          <CaseHome
+          <CaseList
             :userInfo="userInfo"
             :notify="record.notify"
             :queryParams="record.queryParams"
@@ -524,6 +531,7 @@ defineExpose({
             @moveSuccess="handleMoveSuccess"
             @openInfo="handleViewCaseInfo" />
         </template>
+
         <template v-if="record.type === 'caseInfo'">
           <div class="relative h-full overflow-auto">
             <Spin
@@ -531,7 +539,7 @@ defineExpose({
               :spinning="caseInfoLoading"
               class="overflow-y-auto overflow-x-hidden h-full relative"
               @scroll="checkScroll">
-              <FunctionCaseInfo
+              <CaseInfo
                 v-model:loading="caseInfoLoading"
                 :tabKey="record._id"
                 :caseId="record.caseId"
@@ -545,6 +553,7 @@ defineExpose({
                 @updateFollowFavourite="updateFollowFavourite"
                 @onClick="(type, value) => handleDetailAction(type, value, record)" />
             </Spin>
+
             <Tooltip placement="topLeft" :title="t('functionCase.backToTop')">
               <div
                 v-if="showAnchor"
@@ -558,12 +567,14 @@ defineExpose({
       </template>
     </BrowserTab>
   </div>
+
   <AsyncComponent :visible="editCaseVisible">
     <AddCaseModal
       v-model:visible="editCaseVisible"
       :editCase="editCase"
-      @update="addOrEidtSuccess" />
+      @update="addOrEditSuccess" />
   </AsyncComponent>
+
   <AsyncComponent :visible="caseReviewVisible">
     <ReviewModal
       v-model:visible="caseReviewVisible"
@@ -572,6 +583,7 @@ defineExpose({
       type="one"
       @update="updateCaseSuccess" />
   </AsyncComponent>
+
   <AsyncComponent :visible="caseMoveVisible">
     <MoveCaseModal
       v-model:visible="caseMoveVisible"
@@ -579,6 +591,7 @@ defineExpose({
       type="one"
       @update="updateCaseSuccess" />
   </AsyncComponent>
+
   <AsyncComponent :visible="caseUpdateTestResultVisible">
     <UpdateTestResultModal
       v-model:visible="caseUpdateTestResultVisible"
