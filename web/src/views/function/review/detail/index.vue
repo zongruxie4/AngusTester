@@ -17,7 +17,7 @@ import RichEditor from '@/components/richEditor/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
-// PROPS AND COMPONENT DEFINITIONS
+// Props and component definitions
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -39,12 +39,12 @@ const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/de
 const AssocCases = defineAsyncComponent(() => import('@/views/function/review/detail/case/AssocCase.vue'));
 const Description = defineAsyncComponent(() => import('@/views/function/review/detail/case/Description.vue'));
 
-// COMPOSABLES AND INJECTIONS
+// Composables and injections
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const isAdmin = computed(() => appContext.isAdmin());
 
-// UI STATE
+// Ui state
 const selectModalVisible = ref(false);
 const loading = ref(false);
 const startLoading = ref(false);

@@ -2,28 +2,10 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { Button, Divider, Form, FormItem, Radio, RadioGroup, Switch, TabPane, Tabs, Upload } from 'ant-design-vue';
 import {
-  AsyncComponent,
-  DatePicker,
-  Icon,
-  IconRequired,
-  Input,
-  modal,
-  notification,
-  Popover,
-  SelectUser,
-  Select,
-  Spin,
-  Tooltip
+  AsyncComponent, DatePicker, Icon, Input, modal, notification, SelectUser, Spin, Tooltip
 } from '@xcan-angus/vue-ui';
 import {
-  appContext,
-  EnumMessage,
-  enumUtils,
-  EvalWorkloadMethod,
-  TESTER,
-  toClipboard,
-  upload,
-  utils
+  appContext, EnumMessage, enumUtils, EvalWorkloadMethod, TESTER, toClipboard, upload, utils
 } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
@@ -141,51 +123,27 @@ const validateTesterSelection = async () => {
 };
 
 /**
- * Validates required rich text fields.
- * Ensures the field contains meaningful content.
- */
-const validateRequiredRichText = async (value) => {
-  if (formState.value[value.field]) {
-    try {
-      const valueField = JSON.parse(formState.value[value.field]);
-      if (typeof valueField === 'object' && valueField.length > 1) {
-        return Promise.resolve();
-      }
-      if (typeof valueField === 'object' && valueField.length === 1) {
-        if (valueField[0].insert.replaceAll('\n', '')) {
-          return Promise.resolve();
-        }
-      }
-      return Promise.reject(new Error(value.message));
-    } catch {
-      return Promise.reject(new Error(value.message));
-    }
-  }
-  return Promise.reject(new Error(value.message));
-};
-
-/**
  * Validates maximum character length for rich text fields.
  * Ensures content does not exceed 2000 characters.
  */
 const validateRichTextMaxLength = async (value) => {
   if (value.field === 'testingObjectives') {
-    if (objectiveRichRef.value && objectiveRichRef.value.getLength() > 2000) {
+    if (objectiveRichRef.value && objectiveRichRef.value.getLength() >= 2000) {
       Promise.reject(new Error(t('functionPlan.editForm.validation.charLimit2000')));
     }
   }
   if (value.field === 'otherInformation') {
-    if (infoRichRef.value && infoRichRef.value.getLength() > 2000) {
+    if (infoRichRef.value && infoRichRef.value.getLength() >= 2000) {
       Promise.reject(new Error(t('functionPlan.editForm.validation.charLimit2000')));
     }
   }
   if (value.field === 'acceptanceCriteria') {
-    if (criteriaRichRef.value && criteriaRichRef.value.getLength() > 2000) {
+    if (criteriaRichRef.value && criteriaRichRef.value.getLength() >= 2000) {
       Promise.reject(new Error(t('functionPlan.editForm.validation.charLimit2000')));
     }
   }
   if (value.field === 'testingScope') {
-    if (scopeRichRef.value && scopeRichRef.value.getLength() > 2000) {
+    if (scopeRichRef.value && scopeRichRef.value.getLength() >= 2000) {
       Promise.reject(new Error(t('functionPlan.editForm.validation.charLimit2000')));
     }
   }
@@ -247,7 +205,6 @@ const handleReviewFlagChange = (checked) => {
     formState.value.review = true;
     return;
   }
-
   reviewFlagVisible.value = true;
 };
 
@@ -731,7 +688,7 @@ const loadProjectMembers = async () => {
 /**
  * Cancels the edit operation and closes the tab.
  */
- const cancelEdit = async () => {
+const cancelEdit = async () => {
   if (props.data?._id) {
     deleteTabPane([props.data._id]);
   }
@@ -924,6 +881,7 @@ onMounted(() => {
           :placeholder="t('functionPlan.editForm.form.selectOwnerPlaceholder')"
           :action="`${TESTER}/project/${props.projectId}/member/user`"
           :maxlength="80" />
+
         <Tooltip
           placement="right"
           arrowPointAtCenter
@@ -950,6 +908,7 @@ onMounted(() => {
           type="date-range"
           size="small"
           class="w-full" />
+
         <Tooltip
           placement="right"
           arrowPointAtCenter
@@ -973,6 +932,7 @@ onMounted(() => {
           :members="planDetailData?.members"
           :membersOptions="projectMembers"
           @change="handleTesterChange" />
+
         <Tooltip
           placement="right"
           arrowPointAtCenter
@@ -999,9 +959,13 @@ onMounted(() => {
           <template #title>
             <div>
               <span class="mr-2">{{ t('functionPlan.editForm.form.reviewCloseConfirm') }}</span>
-              <a class="text-theme-special" @click="confirmDisableReview">{{ t('functionPlan.editForm.form.confirm') }}</a>
+              <a
+                class="text-theme-special"
+                @click="confirmDisableReview">{{ t('functionPlan.editForm.form.confirm') }}</a>
               <Divider type="vertical" />
-              <a class="text-theme-special" @click="cancelDisableReview">{{ t('functionPlan.editForm.form.cancel') }}</a>
+              <a
+                class="text-theme-special"
+                @click="cancelDisableReview">{{ t('functionPlan.editForm.form.cancel') }}</a>
             </div>
           </template>
           <Switch
@@ -1010,6 +974,7 @@ onMounted(() => {
             size="small"
             @change="handleReviewFlagChange" />
         </Tooltip>
+
         <Tooltip
           placement="right"
           arrowPointAtCenter
@@ -1038,6 +1003,7 @@ onMounted(() => {
             {{ item.message }}
           </Radio>
         </RadioGroup>
+
         <Tooltip
           placement="right"
           arrowPointAtCenter
@@ -1062,6 +1028,7 @@ onMounted(() => {
           :disabled="!!planDetailData?.id"
           :maxlength="40"
           :placeholder="t('functionPlan.editForm.form.casePrefixPlaceholder')" />
+
         <Tooltip
           placement="right"
           arrowPointAtCenter
@@ -1085,6 +1052,7 @@ onMounted(() => {
               <span class="whitespace-nowrap">{{ t('functionPlan.editForm.form.uploadAttachments') }}</span>
             </a>
           </Upload>
+
           <Tooltip :overlayStyle="{ 'max-width': '400px' }">
             <template #title>
               <div class="text-3 text-theme-sub-content leading-4 break-all">
@@ -1125,37 +1093,39 @@ onMounted(() => {
         <TabPane key="testingObjectives" forceRender>
           <template #tab>
             <div class="text-right pr-2">
-              <IconRequired />
               <span>{{ t('functionPlan.editForm.form.testingObjectives') }}</span>
             </div>
           </template>
+
           <FormItem
             label=""
             class="!mb-5"
             name="testingObjectives"
-            :rules="[{ validator: validateRequiredRichText, message: t('functionPlan.editForm.form.enterTestingObjectives') }, {validator: validateRichTextMaxLength}]">
+            :rules="[{validator: validateRichTextMaxLength}]">
             <RichEditor
               ref="objectiveRichRef"
               v-model:value="formState.testingObjectives"
               :options="{placeholder: t('functionPlan.editForm.form.testingObjectivesPlaceholder')}" />
           </FormItem>
         </TabPane>
+
         <TabPane key="testingScope" forceRender>
           <template #tab>
-            <IconRequired />
             <span>{{ t('functionPlan.editForm.form.testingScope') }}</span>
           </template>
+
           <FormItem
             label=""
             name="testingScope"
             class="!mb-5"
-            :rules="[{ validator: validateRequiredRichText, message: t('functionPlan.editForm.form.enterTestingScope') }, {validator: validateRichTextMaxLength}]">
+            :rules="[{validator: validateRichTextMaxLength}]">
             <RichEditor
               ref="scopeRichRef"
               v-model:value="formState.testingScope"
               :options="{placeholder: t('functionPlan.editForm.form.testingScopePlaceholder')}" />
           </FormItem>
         </TabPane>
+
         <TabPane
           key="acceptanceCriteria"
           :tab="t('functionPlan.editForm.form.acceptanceCriteria')"
@@ -1170,6 +1140,7 @@ onMounted(() => {
               :options="{placeholder: t('functionPlan.editForm.form.acceptanceCriteriaPlaceholder')}" />
           </FormItem>
         </TabPane>
+
         <TabPane
           key="otherInformation"
           :tab="t('functionPlan.editForm.form.otherInformation')"

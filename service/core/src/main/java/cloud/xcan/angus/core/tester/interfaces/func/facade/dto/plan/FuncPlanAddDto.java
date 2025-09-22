@@ -55,14 +55,12 @@ public class FuncPlanAddDto {
   @Schema(description = "Tester responsibility mapping for role definition and task assignment", requiredMode = RequiredMode.REQUIRED)
   private LinkedHashMap<Long, @Length(max = MAX_REMARK_LENGTH_X4) String> testerResponsibilities;
 
-  @NotEmpty
   @EditorContentLength
-  @Schema(description = "Comprehensive testing scope definition for activity coverage", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Comprehensive testing scope definition for activity coverage")
   private String testingScope;
 
-  @NotEmpty
   @EditorContentLength
-  @Schema(description = "Testing objectives specification for outcome focus and validation", requiredMode = RequiredMode.REQUIRED)
+  @Schema(description = "Testing objectives specification for outcome focus and validation")
   private String testingObjectives;
 
   @EditorContentLength
