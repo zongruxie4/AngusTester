@@ -131,7 +131,7 @@
         "actions": "Actions"
       },
       "deleteFirm": {
-        "title": "Are you sure to delete design[{name}]?"
+        "title": "Are you sure to delete design「{name}」?"
       }
     },
     "importServiceModal": {
@@ -392,7 +392,7 @@
           "yamlFormatError": "YAML content format error, please check and correct"
         },
         "confirmations": {
-          "deleteApi": "Are you sure to delete the API [{summary}]?",
+          "deleteApi": "Are you sure to delete the API 「{summary}」?",
           "refreshInstance": "Refreshing the instance API will force synchronization of current Mock API information to the running service instance."
         },
         "menuItems": {
@@ -794,8 +794,8 @@
     "sidebar": {
       "deleteService": "Delete Service",
       "deleteServiceTip": "Deleting a service will delete all APIs under the service, as well as associated favorites, metrics, variables, and other information. Please confirm whether to delete?",
-      "restartServiceTip": "All tasks under the service will be updated to \"Pending Test\", and related statistics and status will be cleared. Are you sure to restart the test task [{name}]?",
-      "reopenServiceTip": "All tasks under the service will be updated to \"Pending Test\", and statistics and status will not be cleared. Are you sure to reopen the test task [{name}]?",
+      "restartServiceTip": "All tasks under the service will be updated to \"Pending Test\", and related statistics and status will be cleared. Are you sure to restart the test task 「{name}」?",
+      "reopenServiceTip": "All tasks under the service will be updated to \"Pending Test\", and statistics and status will not be cleared. Are you sure to reopen the test task 「{name}」?",
       "funcTestExecSmokeTip": "Execute the smoke test case for all APIs under the current service. If the smoke test script for the test service does not exist, the test script will be automatically generated based on the API smoke test case. If it exists, the corresponding test script will be started.",
       "funcTestExecSecurityTip": "Execute the security test case for all APIs under the current service. If the security test script for the test service does not exist, the test script will be automatically generated based on the API security test case. If it exists, the corresponding test script will be started.",
       "funcTestExecTip": "Execute the functional test for all APIs under the current service that are enabled for functional testing. If the test script does not exist, the test script will be automatically generated based on the API. If it exists, the corresponding test script will be started.",
@@ -1138,7 +1138,7 @@
         "proxyError": "Request error (please check request parameters or proxy connection status)",
         "wsProxyErr": "Request error (please check request parameters or whether the browser triggers the \"CORS-Cross-Origin Resource Sharing\" limit, if the cross-domain limit is triggered, please use a proxy or configure the interface service to allow cross-domain access)",
         "conditionMessageEmpty": "Expression is empty, execute the assertion",
-        "conditionMsgFormat": "Expression format error, only support operators [\"=\", \"!=\", \">=\", \"<=\", \">\", \"<\"]",
+        "conditionMsgFormat": "Expression format error, only support operators 「\"=\", \"!=\", \">=\", \"<=\", \">\", \"<\"」",
         "conditionMsgFormatFail": "Expression format error, cannot extract variable name",
         "conditionMsgFormatErr": "Expression format error, ignore the assertion",
         "conditionMsgDefineFail": "The variable is not defined, the value of the variable is processed by the variable name",
@@ -1280,7 +1280,7 @@
           "title": "Path Parameters",
           "rules": {
             "primitive": "Primitive id = 5 -> /users/5",
-            "array": "Array id = [3, 4, 5] -> /users/3,4,5",
+            "array": "Array id = 「3, 4, 5」 -> /users/3,4,5",
             "object": "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> /users/role=admin,firstName=Alex",
             "limit": "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
           }
@@ -1289,7 +1289,7 @@
           "title": "Query and Form Parameters",
           "rules": {
             "primitive": "Primitive id = 5 -> id=5",
-            "array": "Array id = [3, 4, 5] -> id[0]=3&id[1]=4&id[2]=5",
+            "array": "Array id = 「3, 4, 5」 -> id「0」=3&id「1」=4&id「2」=5",
             "object": "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> id.role=admin&id.firstName=Alex",
             "support": "> Supports all types, including object and array type nesting."
           }
@@ -1298,7 +1298,7 @@
           "title": "Header Parameters",
           "rules": {
             "primitive": "Primitive X-MyHeader = 5 ->  X-MyHeader: 5",
-            "array": "Array X-MyHeader = [3, 4, 5] -> X-MyHeader: 3,4,5",
+            "array": "Array X-MyHeader = 「3, 4, 5」 -> X-MyHeader: 3,4,5",
             "object": "Object X-MyHeader = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> X-MyHeader: role=admin,firstName=Alex",
             "limit": "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
           }
@@ -1307,7 +1307,7 @@
           "title": "Cookie Parameters",
           "rules": {
             "primitive": "Primitive id = 5 ->  Cookie: id=5",
-            "array": "Array id = [3, 4, 5] -> Cookie: id=3,4,5",
+            "array": "Array id = 「3, 4, 5」 -> Cookie: id=3,4,5",
             "object": "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> Cookie: id=role,admin,firstName,Alex",
             "limit": "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
           }
@@ -2655,8 +2655,8 @@
         "deleteTestTask": "Delete functional, performance and stability test tasks for the API, including test scripts."
       },
       "confirm": {
-        "restartTestTask": "Update the API test task to \"Pending\", related statistics and status will be cleared. Do you confirm to restart the test task [{summary}]?",
-        "reopenTestTask": "Update the API test task to \"Pending\", without clearing statistics and status. Do you confirm to reopen the test task [{summary}]?"
+        "restartTestTask": "Update the API test task to \"Pending\", related statistics and status will be cleared. Do you confirm to restart the test task 「{summary}」?",
+        "reopenTestTask": "Update the API test task to \"Pending\", without clearing statistics and status. Do you confirm to reopen the test task 「{summary}」?"
       },
       "execTest": {
         "tips": {
@@ -2760,7 +2760,7 @@
       "copy": "Copy",
       "edit": "Edit",
       "delete": "Delete",
-      "confirmDelete": "Are you sure to delete share [{name}]?",
+      "confirmDelete": "Are you sure to delete share 「{name}」?",
       "columns": {
         "name": "Name",
         "status": "Status",

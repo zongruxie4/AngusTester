@@ -313,7 +313,7 @@
             "title": "Path Parameters",
             "rules": [
               "Primitive id = 5 -> /users/5",
-              "Array id = [3, 4, 5] -> /users/3,4,5",
+              "Array id = 「3, 4, 5」 -> /users/3,4,5",
               "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> /users/role=admin,firstName=Alex",
               "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
             ]
@@ -322,7 +322,7 @@
             "title": "Query and Form Parameters",
             "rules": [
               "Primitive id = 5 -> id=5",
-              "Array id = [3, 4, 5] -> id[0]=3&id[1]=4&id[2]=5",
+              "Array id = 「3, 4, 5」 -> id「0」=3&id「1」=4&id「2」=5",
               "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> id.role=admin&id.firstName=Alex",
               "> Supports all types, including object and array type nesting."
             ]
@@ -331,7 +331,7 @@
             "title": "Header Parameters",
             "rules": [
               "Primitive X-MyHeader = 5 ->  X-MyHeader: 5",
-              "Array X-MyHeader = [3, 4, 5] -> X-MyHeader: 3,4,5",
+              "Array X-MyHeader = 「3, 4, 5」 -> X-MyHeader: 3,4,5",
               "Object X-MyHeader = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> X-MyHeader: role=admin,firstName=Alex",
               "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
             ]
@@ -340,7 +340,7 @@
             "title": "Cookie Parameters",
             "rules": [
               "Primitive id = 5 ->  Cookie: id=5",
-              "Array id = [3, 4, 5] -> Cookie: id=3,4,5",
+              "Array id = 「3, 4, 5」 -> Cookie: id=3,4,5",
               "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> Cookie: id=role,admin,firstName,Alex",
               "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
             ]
@@ -474,7 +474,7 @@
             "stopThreadTooltip": "After all data rows in the dataset are used, stop the current sampling thread execution. When all threads finish reading all rows, the entire execution exits and ends.",
             "allThreadTooltip": "All threads share the same dataset data.",
             "currentThreadTooltip": "Each thread copies its own dataset data.",
-            "confirmUnlinkDataset": "Are you sure to unlink dataset [{name}]?",
+            "confirmUnlinkDataset": "Are you sure to unlink dataset 「{name}」?",
             "unlinkDataset": "Unlink",
             "viewDefinition": "View Definition",
             "parameters": "Parameters",
@@ -492,7 +492,7 @@
             },
             "jsonpath": {
               "title": "JSONPath Match",
-              "data": "When position is not specified, the merged result is taken by default: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}."
+              "data": "When position is not specified, the merged result is taken by default: 「{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}」. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}."
             },
             "xpath": {
               "title": "XPath Match",
@@ -543,7 +543,7 @@
             "matchResult": "Match Result",
             "matchItem": "Match Item",
             "regexpItemDescription": "When position is not specified or position 0 is specified, both take the merged match value at position 0: \"1888888888813999999999\". Specifying position 1 takes value: \"18888888888\". Specifying position 2 takes value: \"13999999999\".",
-            "jsonpathItemDescription": "When position is not specified, the merged result is taken by default: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}.",
+            "jsonpathItemDescription": "When position is not specified, the merged result is taken by default: 「{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}」. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}.",
             "xpathItemDescription": "When position is not specified, the merged result is taken by default: \"30codingbasketballAngus132codingAngus2\". Specifying position 0 takes value: \"30codingbasketballAngus1\". Specifying position 1 takes value: \"32codingAngus2\"."
           },
           "matchItemPopover": {
@@ -557,7 +557,7 @@
             "matchResult": "Match Result",
             "matchItem": "Match Item",
             "regexpItemDescription": "When position is not specified or position 0 is specified, both take the merged match value at position 0: \"1888888888813999999999\". Specifying position 1 takes value: \"18888888888\". Specifying position 2 takes value: \"13999999999\".",
-            "jsonpathItemDescription": "When position is not specified, the merged result is taken by default: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}.",
+            "jsonpathItemDescription": "When position is not specified, the merged result is taken by default: 「{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}」. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}.",
             "xpathItemDescription": "When position is not specified, the merged result is taken by default: \"30codingbasketballAngus132codingAngus2\". Specifying position 0 takes value: \"30codingbasketballAngus1\". Specifying position 1 takes value: \"32codingAngus2\"."
           },
           "assertion": {
@@ -1490,7 +1490,7 @@
       "exportScriptModal": "Export Script Modal",
       "authorizeModal": "Show Permission Modal",
       "abortController": "Abort Controller for terminating requests",
-      "defaultViewDescription": "Default page view, new scenarios don't show [Execute Test], [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
+      "defaultViewDescription": "Default page view, new scenarios don't show 「Execute Test」, 「Export Script」, 「Follow」, 「Cancel Follow」, 「Favorite」, 「Cancel Favorite」, 「Permission」, 「Refresh」 buttons before saving",
       "scenarioConfigData": "Scenario configuration data",
       "rampUpInterval": "Ramp Up Interval",
       "rampUpThreads": "Ramp Up Threads"
@@ -1577,7 +1577,7 @@
       "exportScriptModal": "Export Script Modal",
       "authorizeModal": "Show Permission Modal",
       "abortController": "Abort Controller for terminating requests",
-      "defaultViewDescription": "Default page view, new scenarios don't show [Execute Test], [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
+      "defaultViewDescription": "Default page view, new scenarios don't show 「Execute Test」, 「Export Script」, 「Follow」, 「Cancel Follow」, 「Favorite」, 「Cancel Favorite」, 「Permission」, 「Refresh」 buttons before saving",
       "scenarioConfigData": "Scenario configuration data",
       "rampUpInterval": "Ramp Up Interval",
       "rampUpThreads": "Ramp Up Threads"
@@ -1658,7 +1658,7 @@
       "exportScriptModal": "Export script modal",
       "authorizeModal": "Show permission modal",
       "abortController": "Instance for terminating requests",
-      "defaultViewDescription": "Default display page view, new scenarios do not show [Execute Test], [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
+      "defaultViewDescription": "Default display page view, new scenarios do not show 「Execute Test」, 「Export Script」, 「Follow」, 「Cancel Follow」, 「Favorite」, 「Cancel Favorite」, 「Permission」, 「Refresh」 buttons before saving",
       "scenarioConfigData": "Scenario detail information",
       "rampUpInterval": "Ramp Up Interval",
       "rampUpThreads": "Ramp Up Threads"
@@ -1830,7 +1830,7 @@
       "exportModalVisible": "Export script modal",
       "authVisible": "Show permission modal",
       "controller": "Instance for terminating requests",
-      "defaultViewMode": "Default display page view, new scenarios do not show [Execute Test] [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
+      "defaultViewMode": "Default display page view, new scenarios do not show 「Execute Test」 「Export Script」, 「Follow」, 「Cancel Follow」, 「Favorite」, 「Cancel Favorite」, 「Permission」, 「Refresh」 buttons before saving",
       "scenarioConfigData": "Scenario detail information",
       "rampUpInterval": "Ramp up interval",
       "rampUpThreads": "Ramp up threads"
@@ -1907,7 +1907,7 @@
       "exportModalVisible": "Export script modal",
       "authVisible": "Show permission modal",
       "controller": "Instance for terminating requests",
-      "defaultViewMode": "Default display page view, new scenarios do not show [Execute Test] [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
+      "defaultViewMode": "Default display page view, new scenarios do not show 「Execute Test」 「Export Script」, 「Follow」, 「Cancel Follow」, 「Favorite」, 「Cancel Favorite」, 「Permission」, 「Refresh」 buttons before saving",
       "scenarioConfigData": "Scenario detail information",
       "rampUpInterval": "Ramp up interval",
       "rampUpThreads": "Ramp up threads"
@@ -2076,7 +2076,7 @@
       "operationSuccess": "Operation Successful",
       "operationFailed": "Operation Failed",
       "generateDataSuccess": "Data generation created successfully, please check progress and results in 'Execution'.",
-      "generateDataSuccessWithName": "Data generation [{name}] created successfully, please check progress and results in 'Execution'.",
+      "generateDataSuccessWithName": "Data generation 「{name}」 created successfully, please check progress and results in 'Execution'.",
       "confirmDelete": "Confirm Delete",
       "noData": "No Data",
       "loading": "Loading...",
@@ -2179,7 +2179,7 @@
       "storageTips": {
         "datasource": "Datasource storage, writes generated data to database.",
         "dataspace": "Data space storage, stores data in AngusTester application 'Data' -> 'Space'.",
-        "local": "Local storage, generated data will be stored as files on execution nodes, you can enter execution details page to download data files. Default storage path: ${AGENT_HOME}/data/exec/[ExecutionID]/data.[DataFormat].",
+        "local": "Local storage, generated data will be stored as files on execution nodes, you can enter execution details page to download data files. Default storage path: ${AGENT_HOME}/data/exec/「ExecutionID」/data.「DataFormat」.",
         "pushThird": "Push to third-party interface, supports sending generated data as text or file to an Http interface."
       },
       "validation": {

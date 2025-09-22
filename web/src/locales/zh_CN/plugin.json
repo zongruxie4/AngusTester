@@ -313,7 +313,7 @@
             "title": "Path参数",
             "rules": [
               "Primitive id = 5 -> /users/5",
-              "Array id = [3, 4, 5] -> /users/3,4,5",
+              "Array id = 「3, 4, 5」 -> /users/3,4,5",
               "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> /users/role=admin,firstName=Alex",
               "> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。"
             ]
@@ -322,7 +322,7 @@
             "title": "Query 和 Form 参数",
             "rules": [
               "Primitive id = 5 -> id=5",
-              "Array id = [3, 4, 5] -> id[0]=3&id[1]=4&id[2]=5",
+              "Array id = 「3, 4, 5」 -> id「0」=3&id「1」=4&id「2」=5",
               "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> id.role=admin&id.firstName=Alex",
               "> 支持所有类型，及对象和数组类型嵌套。"
             ]
@@ -331,7 +331,7 @@
             "title": "Header 参数",
             "rules": [
               "Primitive X-MyHeader = 5 ->  X-MyHeader: 5",
-              "Array X-MyHeader = [3, 4, 5] -> X-MyHeader: 3,4,5",
+              "Array X-MyHeader = 「3, 4, 5」 -> X-MyHeader: 3,4,5",
               "Object X-MyHeader = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> X-MyHeader: role=admin,firstName=Alex",
               "> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。"
             ]
@@ -340,7 +340,7 @@
             "title": "Cookie 参数",
             "rules": [
               "Primitive id = 5 ->  Cookie: id=5",
-              "Array id = [3, 4, 5] -> Cookie: id=3,4,5",
+              "Array id = 「3, 4, 5」 -> Cookie: id=3,4,5",
               "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> Cookie: id=role,admin,firstName,Alex",
               "> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。"
             ]
@@ -474,7 +474,7 @@
             "stopThreadTooltip": "数据集中所有数据行都被使用后，停止当前采样线程执行，所有线程都读完所有行时整个执行退出并结束。",
             "allThreadTooltip": "所有线程共享同一份数据集数据。",
             "currentThreadTooltip": "每个线程各自复制一份数据集数据。",
-            "confirmUnlinkDataset": "确定取消引用数据集[{name}]吗？",
+            "confirmUnlinkDataset": "确定取消引用数据集「{name}」吗？",
             "unlinkDataset": "取消引用",
             "viewDefinition": "查看定义",
             "parameters": "参数",
@@ -492,7 +492,7 @@
             },
             "jsonpath": {
               "title": "JSONPath匹配",
-              "data": "不指定位置默认取合并结果：[{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]，指定位置0取值：{\"title\":\"Sayings of the Century\",\"price\":100}，指定位置1取值：{\"title\":\"confucianism\",\"price\":200}。"
+              "data": "不指定位置默认取合并结果：「{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}」，指定位置0取值：{\"title\":\"Sayings of the Century\",\"price\":100}，指定位置1取值：{\"title\":\"confucianism\",\"price\":200}。"
             },
             "xpath": {
               "title": "XPath匹配",
@@ -543,7 +543,7 @@
             "matchResult": "匹配结果",
             "matchItem": "匹配项",
             "regexpItemDescription": "不指定位置和指定位置0都取位置0对应合并匹配值：\"1888888888813999999999\"，指定位置1取值：\"18888888888\"，指定位置2取值：\"13999999999\"。",
-            "jsonpathItemDescription": "不指定位置默认取合并结果：[{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]，指定位置0取值：{\"title\":\"Sayings of the Century\",\"price\":100}，指定位置1取值：{\"title\":\"confucianism\",\"price\":200}。",
+            "jsonpathItemDescription": "不指定位置默认取合并结果：「{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}」，指定位置0取值：{\"title\":\"Sayings of the Century\",\"price\":100}，指定位置1取值：{\"title\":\"confucianism\",\"price\":200}。",
             "xpathItemDescription": "不指定位置默认取合并结果：\"30codingbasketballAngus132codingAngus2\"，指定位置0取值：\"30codingbasketballAngus1\"，指定位置1取值：\"32codingAngus2\"。"
           },
           "matchItemPopover": {
@@ -557,7 +557,7 @@
             "matchResult": "匹配结果",
             "matchItem": "匹配项",
             "regexpItemDescription": "不指定位置和指定位置0都取位置0对应合并匹配值：\"1888888888813999999999\"，指定位置1取值：\"18888888888\"，指定位置2取值：\"13999999999\"。",
-            "jsonpathItemDescription": "不指定位置默认取合并结果：[{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]，指定位置0取值：{\"title\":\"Sayings of the Century\",\"price\":100}，指定位置1取值：{\"title\":\"confucianism\",\"price\":200}。",
+            "jsonpathItemDescription": "不指定位置默认取合并结果：「{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}」，指定位置0取值：{\"title\":\"Sayings of the Century\",\"price\":100}，指定位置1取值：{\"title\":\"confucianism\",\"price\":200}。",
             "xpathItemDescription": "不指定位置默认取合并结果：\"30codingbasketballAngus132codingAngus2\"，指定位置0取值：\"30codingbasketballAngus1\"，指定位置1取值：\"32codingAngus2\"。"
           },
           "assertion": {
@@ -1491,7 +1491,7 @@
       "exportScriptModal": "导出脚本弹窗",
       "authorizeModal": "显示权限弹窗",
       "abortController": "用于终止请求的实例",
-      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示[执行测试][导出脚本]、[关注]、[取消关注]、[收藏]、[取消收藏]、[权限]、[刷新]按钮",
+      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示「执行测试」「导出脚本」、「关注」、「取消关注」、「收藏」、「取消收藏」、「权限」、「刷新」按钮",
       "scenarioConfigData": "场景详情信息",
       "rampUpInterval": "增压间隔",
       "rampUpThreads": "增压线程数"
@@ -1578,7 +1578,7 @@
       "exportScriptModal": "导出脚本弹窗",
       "authorizeModal": "显示权限弹窗",
       "abortController": "用于终止请求的实例",
-      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示[执行测试][导出脚本]、[关注]、[取消关注]、[收藏]、[取消收藏]、[权限]、[刷新]按钮",
+      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示「执行测试」「导出脚本」、「关注」、「取消关注」、「收藏」、「取消收藏」、「权限」、「刷新」按钮",
       "scenarioConfigData": "场景详情信息",
       "rampUpInterval": "增压间隔",
       "rampUpThreads": "增压线程数"
@@ -1659,7 +1659,7 @@
       "exportScriptModal": "导出脚本弹窗",
       "authorizeModal": "显示权限弹窗",
       "abortController": "用于终止请求的实例",
-      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示[执行测试][导出脚本]、[关注]、[取消关注]、[收藏]、[取消收藏]、[权限]、[刷新]按钮",
+      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示「执行测试」「导出脚本」、「关注」、「取消关注」、「收藏」、「取消收藏」、「权限」、「刷新」按钮",
       "scenarioConfigData": "场景详情信息",
       "rampUpInterval": "增压间隔",
       "rampUpThreads": "增压线程数"
@@ -1831,7 +1831,7 @@
       "exportModalVisible": "导出脚本弹窗",
       "authVisible": "显示权限弹窗",
       "controller": "用于终止请求的实例",
-      "defaultViewMode": "默认显示页面视图，新建场景没有保存之前不显示[执行测试][导出脚本]、[关注]、[取消关注]、[收藏]、[取消收藏]、[权限]、[刷新]按钮",
+      "defaultViewMode": "默认显示页面视图，新建场景没有保存之前不显示「执行测试」「导出脚本」、「关注」、「取消关注」、「收藏」、「取消收藏」、「权限」、「刷新」按钮",
       "scenarioConfigData": "场景详情信息",
       "rampUpInterval": "增压间隔",
       "rampUpThreads": "增压线程数"
@@ -1908,7 +1908,7 @@
       "exportModalVisible": "导出脚本弹窗",
       "authVisible": "显示权限弹窗",
       "controller": "用于终止请求的实例",
-      "defaultViewMode": "默认显示页面视图，新建场景没有保存之前不显示[执行测试][导出脚本]、[关注]、[取消关注]、[收藏]、[取消收藏]、[权限]、[刷新]按钮",
+      "defaultViewMode": "默认显示页面视图，新建场景没有保存之前不显示「执行测试」「导出脚本」、「关注」、「取消关注」、「收藏」、「取消收藏」、「权限」、「刷新」按钮",
       "scenarioConfigData": "场景详情信息",
       "rampUpInterval": "增压间隔",
       "rampUpThreads": "增压线程数"
@@ -2077,7 +2077,7 @@
       "operationSuccess": "操作成功",
       "operationFailed": "操作失败",
       "generateDataSuccess": "创建生成数据成功，请在\"执行\"中查看进度和结果。",
-      "generateDataSuccessWithName": "创建生成数据[{name}]成功，请在\"执行\"中查看进度和结果。",
+      "generateDataSuccessWithName": "创建生成数据「{name}」成功，请在\"执行\"中查看进度和结果。",
       "confirmDelete": "确认删除",
       "noData": "暂无数据",
       "loading": "加载中...",
@@ -2180,7 +2180,7 @@
       "storageTips": {
         "datasource": "数据源存储，将生成数据写入到数据库。",
         "dataspace": "数据空间存储，将数据存储到 AngusTester 应用\"数据\"->\"空间\"。",
-        "local": "本地存储，生成数据会以文件形式存储在执行节点，您可以进入执行详情页面点击下载数据文件。默认存储路径：${AGENT_HOME}/data/exec/[执行ID]/data.[数据格式]。",
+        "local": "本地存储，生成数据会以文件形式存储在执行节点，您可以进入执行详情页面点击下载数据文件。默认存储路径：${AGENT_HOME}/data/exec/「执行ID」/data.「数据格式」。",
         "pushThird": "推送三方接口，支持将生成数据以文本或文件形式发送到一个 Http 接口。"
       },
       "validation": {

@@ -44,8 +44,8 @@
       "selectGroup": "选择组"
     },
     "messages": {
-      "confirmDelete": "确认删除分析[{name}]吗？",
-      "confirmUpdateSnapshot": "确认更新分析[{name}]的快照内容吗？",
+      "confirmDelete": "确认删除分析「{name}」吗？",
+      "confirmUpdateSnapshot": "确认更新分析「{name}」的快照内容吗？",
       "deleteSuccess": "删除成功",
       "updateSuccess": "更新成功",
       "addSuccess": "添加分析成功",
@@ -470,7 +470,7 @@
       "taskName": "任务名称，最大支持200字符"
     },
     "messages": {
-      "confirmDelete": "确认删除任务[{name}]吗？",
+      "confirmDelete": "确认删除任务「{name}」吗？",
       "deleteSuccess": "删除成功",
       "addSuccess": "添加成功",
       "editSuccess": "编辑成功",
@@ -913,7 +913,7 @@
         "delete": "删除"
       },
       "messages": {
-        "confirmDelete": "确定删除任务【{name}】吗？",
+        "confirmDelete": "确定删除任务「{name}」吗？",
         "deleteSuccess": "删除任务成功",
         "unfavoriteSuccess": "任务取消收藏成功",
         "unfollowSuccess": "任务取消关注成功"
@@ -958,7 +958,7 @@
     "aboutMeetingDesc": "会议在敏捷框架中起到关键作用，通过定期的沟通、反馈和反思，帮助团队持续改进，提高工作效率，确保项目能够灵活应对变化。",
     "addedMeetings": "已添加的会议",
     "notAddedYet": "您尚未添加任何会议，立即",
-    "confirmDelete": "确定删除会议[{name}]吗？",
+    "confirmDelete": "确定删除会议「{name}」吗？",
     "deleteSuccess": "会议删除成功， 您可以在回收站查看删除后的会议",
     "addSuccess": "添加成功",
     "editSuccess": "修改成功",
@@ -1131,7 +1131,7 @@
       "expand": "展开"
     },
     "messages": {
-      "confirmDelete": "确认删除任务[{name}]吗？",
+      "confirmDelete": "确认删除任务「{name}」吗？",
       "deleteSuccess": "删除成功",
       "addSuccess": "添加成功",
       "editSuccess": "编辑成功",
@@ -1313,7 +1313,7 @@
         "batchExport": "批量导出"
       },
       "messages": {
-        "confirmDelete": "确认删除任务[{name}]吗？",
+        "confirmDelete": "确认删除任务「{name}」吗？",
         "confirmBatchDelete": "确认删除选中的{count}个任务吗？",
         "deleteSuccess": "删除成功",
         "batchDeleteSuccess": "批量删除成功",
@@ -1584,7 +1584,7 @@
         "editFailed": "任务编辑失败",
         "refreshSuccess": "刷新成功",
         "refreshFailed": "刷新失败",
-        "confirmDelete": "确定删除任务[{name}]吗？",
+        "confirmDelete": "确定删除任务「{name}」吗？",
         "favouriteSuccess": "任务收藏成功",
         "cancelFavouriteSuccess": "任务取消收藏成功",
         "followSuccess": "任务关注成功",
@@ -1759,7 +1759,7 @@
         "cancelFollowNumSuccess": "选中的 {num} 条任务全部取消关注成功",
         "cancelFollowFail": "选中的 {num} 条任务全部取消关注失败",
         "cancelFollowPartial": "选中的 {successNum} 条任务取消关注成功，{errorNum} 条任务取消关注失败",
-        "deleteTaskConfirm": "确定删除任务[{name}]吗？",
+        "deleteTaskConfirm": "确定删除任务「{name}」吗？",
         "deleteTaskSuccess": "任务删除成功，您可以在回收站查看删除后的任务",
         "favouriteSuccess": "任务收藏成功",
         "cancelFavouriteSuccess": "任务取消收藏成功",
@@ -1972,7 +1972,7 @@
         "cancel": "取消"
       },
       "messages": {
-        "confirmCancelCase": "确认取消关联用例[{name}]吗？"
+        "confirmCancelCase": "确认取消关联用例「{name}」吗？"
       },
       "columns": {
         "code": "编号",
@@ -1994,7 +1994,7 @@
         "cancel": "取消"
       },
       "messages": {
-        "confirmCancelTask": "确认取消关联任务[{name}]吗？"
+        "confirmCancelTask": "确认取消关联任务「{name}」吗？"
       },
       "columns": {
         "code": "编号",
@@ -2036,7 +2036,7 @@
         "add": "添加"
       },
       "messages": {
-        "confirmCancelSubTask": "确定取消子任务[{name}]吗？",
+        "confirmCancelSubTask": "确定取消子任务「{name}」吗？",
         "associateSubTaskSuccess": "关联子任务成功",
         "cancelSubTaskSuccess": "取消子任务成功",
         "favouriteSuccess": "任务收藏成功",
@@ -2375,7 +2375,7 @@
       "attachmentTip": "支持上传相关文档、设计稿、需求文档等附件，便于团队成员查阅"
     },
     "messages": {
-      "confirmDelete": "确认删除迭代[{name}]吗？",
+      "confirmDelete": "确认删除迭代「{name}」吗？",
       "deleteSuccess": "删除成功",
       "addSuccess": "添加成功",
       "editSuccess": "编辑成功",

@@ -57,7 +57,7 @@
         "pageInfo": "Page {current}/{totalPage}"
       },
       "messages": {
-        "deleteConfirm": "Are you sure to delete [{name}]?",
+        "deleteConfirm": "Are you sure to delete 「{name}」?",
         "deleteSuccess": "Delete successful"
       },
       "emptyData": {
@@ -115,7 +115,7 @@
         "clone": "Clone"
       },
       "messages": {
-        "deleteConfirm": "Are you sure to delete variable [{name}]?",
+        "deleteConfirm": "Are you sure to delete variable 「{name}」?",
         "deleteSuccess": "Variable deleted successfully",
         "cloneSuccess": "Variable cloned successfully",
         "batchDeleteConfirm": "Are you sure to delete the selected {num} variables?",
@@ -128,7 +128,7 @@
         "all": "All",
         "createdByMe": "Created by Me",
         "modifiedByMe": "Modified by Me",
-        "lastDay": "Last 1 Day",
+        "lastDay": "Last Day",
         "lastThreeDays": "Last 3 Days",
         "lastWeek": "Last 7 Days",
         "searchOptions": {
@@ -197,7 +197,7 @@
     },
     "detail": {
       "notifications": {
-        "deleteConfirm": "Are you sure to delete variable [{name}]?",
+        "deleteConfirm": "Are you sure to delete variable 「{name}」?",
         "deleteSuccess": "Variable deleted successfully",
         "cloneSuccess": "Variable cloned successfully",
         "copyLinkSuccess": "Link copied successfully",
@@ -500,7 +500,7 @@
         "clone": "Clone"
       },
       "messages": {
-        "deleteConfirm": "Are you sure to delete dataset [{name}]?",
+        "deleteConfirm": "Are you sure to delete dataset 「{name}」?",
         "deleteSuccess": "Dataset deleted successfully",
         "cloneSuccess": "Dataset cloned successfully",
         "batchDeleteMaxError": "Maximum {maxNum} datasets can be batch deleted, currently {num} datasets are selected.",
@@ -515,7 +515,7 @@
         "all": "All",
         "myCreated": "My Created",
         "myModified": "My Modified",
-        "lastDay": "Last 1 Day",
+        "lastDay": "Last Day",
         "lastThreeDays": "Last 3 Days",
         "lastWeek": "Last 7 Days"
       },
@@ -584,7 +584,7 @@
     },
     "detail": {
       "notifications": {
-        "deleteConfirm": "Are you sure to delete dataset [{name}]?",
+        "deleteConfirm": "Are you sure to delete dataset 「{name}」?",
         "deleteSuccess": "Dataset deleted successfully",
         "cloneSuccess": "Dataset cloned successfully",
         "copyLinkSuccess": "Copy link successfully",
@@ -692,7 +692,7 @@
       },
       "useList": {
         "notifications": {
-          "deleteConfirm": "Confirm to delete resource [{name}]?",
+          "deleteConfirm": "Confirm to delete resource 「{name}」?",
           "deleteSuccess": "Delete resource successfully",
           "batchDeleteLimit": "Maximum support batch deletion of {max} resources, currently {current} resources are selected.",
           "batchDeleteConfirm": "Confirm to delete the selected {num} resources?",
@@ -735,7 +735,7 @@
             "result": "Match Result",
             "item": "Match Item"
           },
-          "item": "Default to merge match values when not specified position: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}], specified position 0 to get value: {\"title\":\"Sayings of the Century\",\"price\":100}, specified position 1 to get value: {\"title\":\"confucianism\",\"price\":200}."
+          "item": "Default to merge match values when not specified position: 「{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}」, specified position 0 to get value: {\"title\":\"Sayings of the Century\",\"price\":100}, specified position 1 to get value: {\"title\":\"confucianism\",\"price\":200}."
         },
         "xpath": {
           "name": "XPath Match",
@@ -804,7 +804,7 @@
     },
     "lastModifiedBy": "Last modified by",
     "messages": {
-      "deleteConfirm": "Are you sure to delete [{name}]?",
+      "deleteConfirm": "Are you sure to delete 「{name}」?",
       "deleteSuccess": "Deleted successfully",
       "addSuccess": "Added successfully",
       "editSuccess": "Modified successfully"
@@ -874,7 +874,7 @@
       "delete": "Delete"
     },
     "messages": {
-      "deleteConfirm": "Confirm delete [{name}]?",
+      "deleteConfirm": "Confirm delete 「{name}」?",
       "deleteSuccess": "Deleted successfully"
     },
     "drawer": {

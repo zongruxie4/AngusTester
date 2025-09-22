@@ -424,7 +424,7 @@
           "readDisk": "Read Disk",
           "action": "Action"
         },
-        "confirmKillProcess": "Confirm to force exit process [{processId}]?",
+        "confirmKillProcess": "Confirm to force exit process 「{processId}」?",
         "processExitSuccess": "Process exit successfully",
         "processCount": "Process Count",
         "threadCount": "Thread Count",
@@ -632,7 +632,7 @@
         "applicationNode": "Application Node: Hosts the testing application and monitors target node load during stress tests for performance diagnostics."
       },
       "confirm": {
-        "deleteNode": "Are you sure to delete node [{name}]?"
+        "deleteNode": "Are you sure to delete node 「{name}」?"
       },
       "installSteps": {
         "linuxTitle": "Linux or Mac System Automatic Installation Steps",

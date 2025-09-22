@@ -8,7 +8,7 @@
     "projectList": "项目列表",
     "addedProjects": "已添加项目",
     "projectDescription": "项目是管理和组织研发活动、工作流程、各类资源等基本单位。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。",
-    "confirmDelete": "确定删除项目[{name}]吗？",
+    "confirmDelete": "确定删除项目「{name}」吗？",
     "deleteSuccess": "删除项目成功",
     "searchPlaceholder": "输入查询关键词",
     "adminHint": "只允许管理员、创建人和负责人修改和删除项目。",
@@ -241,7 +241,7 @@
       "refresh": "刷新"
     },
     "messages": {
-      "deleteConfirm": "确定删除版本[{name}]吗？",
+      "deleteConfirm": "确定删除版本「{name}」吗？",
       "deleteSuccess": "删除成功",
       "editSuccess": "修改成功",
       "mergeWarning": "警告：版本一旦合成后，将无法还原！",
@@ -392,7 +392,7 @@
     "updateSuccess": "修改成功",
     "deleteSuccess": "删除模块成功",
     "moveSuccess": "移动成功",
-    "confirmDelete": "确定删除模块[{name}]吗？"
+    "confirmDelete": "确定删除模块「{name}」吗？"
   },
   "tag": {
     "title": "数据标签",
@@ -411,7 +411,7 @@
     "addSuccess": "标签添加成功",
     "updateSuccess": "修改成功",
     "deleteSuccess": "删除标签成功",
-    "confirmDelete": "确定删除标签[{name}]吗？"
+    "confirmDelete": "确定删除标签「{name}」吗？"
   },
   "projectActivity": {
     "name": "活动",

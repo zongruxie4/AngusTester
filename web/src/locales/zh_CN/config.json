@@ -425,7 +425,7 @@
           "readDisk": "读磁盘",
           "action": "操作"
         },
-        "confirmKillProcess": "确认强制退出进程[{processId}]？",
+        "confirmKillProcess": "确认强制退出进程「{processId}」？",
         "processExitSuccess": "进程退出成功",
         "processCount": "进程数",
         "threadCount": "线程数",
@@ -631,7 +631,7 @@
         "applicationNode": "应用节点: 应用所在节点，用于压测时观察被压测应用节点系统负载，定位分析性能问题。"
       },
       "confirm": {
-        "deleteNode": "确定删除节点[{name}]吗?"
+        "deleteNode": "确定删除节点「{name}」吗?"
       },
       "installSteps": {
         "linuxTitle": "Linux或者Mac系统自动安装步骤",

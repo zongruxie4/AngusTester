@@ -27,7 +27,7 @@
         "all": "All",
         "myAdded": "My Created",
         "myModified": "My Modified",
-        "last1Day": "Last 1 Day",
+        "last1Day": "Last Day",
         "last3Days": "Last 3 Days",
         "last7Days": "Last 7 Days"
       }
@@ -100,9 +100,9 @@
         "importExampleSuccess": "Import example successfully",
         "addExecuteSuccess": "Script created and executed successfully, please check details in \"Execute\"",
         "cloneSuccess": "Script cloned successfully",
-        "deleteScriptConfirm": "Deleting script [{name}] will also delete associated scenarios, are you sure to delete?",
-        "deleteScriptConfirmSimple": "Are you sure to delete script [{name}]?",
-        "executeScriptConfirmSimple": "Are you sure to execute script [{name}]?",
+        "deleteScriptConfirm": "Deleting script 「{name}」 will also delete associated scenarios, are you sure to delete?",
+        "deleteScriptConfirmSimple": "Are you sure to delete script 「{name}」?",
+        "executeScriptConfirmSimple": "Are you sure to execute script 「{name}」?",
         "deleteScriptSuccess": "Script deleted successfully",
         "noScriptData": "No script data, ",
         "importExample": "Import Example",

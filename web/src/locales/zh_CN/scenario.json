@@ -41,7 +41,7 @@
           "addScenario": "添加场景",
           "noFavoritedScenarios": "您没有收藏的场景",
           "noFollowedScenarios": "您没有关注的场景",
-          "deleteConfirm": "确定删除场景[{name}]吗？",
+          "deleteConfirm": "确定删除场景「{name}」吗？",
           "deleteSuccess": "删除场景成功",
           "unfavoriteSuccess": "场景取消收藏成功",
           "unfollowSuccess": "场景取消关注成功",
@@ -132,8 +132,8 @@
       "createdBy": "创建于",
       "in": "在",
       "executeNow": "立即执行",
-      "deleteConfirm": "确定删除监控[{name}]吗？",
-      "executeConfirm": "立即执行监控[{name}]"
+      "deleteConfirm": "确定删除监控「{name}」吗？",
+      "executeConfirm": "立即执行监控「{name}」"
     },
     "searchPanel": {
       "statusOptions": {
@@ -265,12 +265,12 @@
         "cancelFavouriteSuccess": "取消收藏成功",
         "cancelFollowSuccess": "取消关注成功",
         "cloneSuccess": "克隆成功",
-        "deleteConfirm": "删除场景将同步删除关联的关注、收藏、指标、变量等信息，请确认是否删除[{name}]？",
+        "deleteConfirm": "删除场景将同步删除关联的关注、收藏、指标、变量等信息，请确认是否删除「{name}」？",
         "deleteSuccess": "删除成功，您可以在回收站查看删除后的场景。",
         "favouriteSuccess": "收藏成功",
         "followSuccess": "关注成功",
-        "reopenConfirm": "将场景下所有已完成的任务状态重置为\"待测试\"，保留历史统计数据和状态记录。确认重新打开测试任务[{name}]吗？",
-        "restartConfirm": "将场景下所有已完成的任务状态重置为\"待测试\"，清除所有统计计数和状态记录。确认重新开始测试[{name}]吗？"
+        "reopenConfirm": "将场景下所有已完成的任务状态重置为\"待测试\"，保留历史统计数据和状态记录。确认重新打开测试任务「{name}」吗？",
+        "restartConfirm": "将场景下所有已完成的任务状态重置为\"待测试\"，清除所有统计计数和状态记录。确认重新开始测试「{name}」吗？"
       },
       "tips": {
         "authOn": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
@@ -337,7 +337,7 @@
     },
     "detail": {
       "messages": {
-        "deleteConfirm": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除[{name}]？",
+        "deleteConfirm": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除「{name}」？",
         "deleteSuccess": "删除成功，您可以在回收站查看删除后的场景。",
         "cancelFollowSuccess": "取消关注",
         "followSuccess": "关注成功",
