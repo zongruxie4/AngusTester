@@ -140,12 +140,12 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
       protected FuncPlan process() {
         List<FuncPlan> plans = List.of(planDb);
         Set<Long> ids = Set.of(id);
-        
+
         // Enrich plan with case counts, progress, and member information
         setCaseNum(plans, ids);
         setProgress(plans, ids);
         setMembers(plans, ids);
-        
+
         // Set user name and avatar for plan owner
         userManager.setUserNameAndAvatar(List.of(planDb), "ownerId", "ownerName", "ownerAvatar");
         return planDb;
@@ -184,7 +184,6 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
       protected Page<FuncPlan> process() {
         Set<SearchCriteria> criteria = spec.getCriteria();
         criteria.add(SearchCriteria.equal("deleted", false));
-        criteria.add(SearchCriteria.equal("planDeleted", false));
 
         // Note: All project members are visible, no additional authorization filtering needed
         // checkAndSetAuthObjectIdCriteria(criteria); -> All project members are visible
@@ -193,16 +192,16 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
         Page<FuncPlan> page = fullTextSearch
             ? funcPlanSearchRepo.find(criteria, pageable, FuncPlan.class, match)
             : funcPlanRepo.findAll(spec, pageable);
-            
+
         if (page.hasContent()) {
           Set<Long> planIds = page.getContent().stream().map(FuncPlan::getId)
               .collect(Collectors.toSet());
-              
+
           // Enrich plans with case counts, progress, and member information
           setCaseNum(page.getContent(), planIds);
           setProgress(page.getContent(), planIds);
           setMembers(page.getContent(), planIds);
-          
+
           // Set user name and avatar for plan owners
           userManager.setUserNameAndAvatar(page.getContent(), "ownerId", "ownerName",
               "ownerAvatar");
@@ -239,14 +238,14 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
       @Override
       protected List<FuncCaseInfo> process() {
         Set<Long> excludeCaseIds = new HashSet<>();
-        
+
         // Exclude cases that are already in review or have been reviewed
         if (nonNull(reviewId)) {
           // Exclude cases pending in other reviews
           Set<Long> otherReviewPendingCaseIds =
               funcReviewCaseRepo.findPendingCaseIdByPlanIdAndReviewIdNot(planId, reviewId);
           excludeCaseIds.addAll(otherReviewPendingCaseIds);
-          
+
           // Exclude cases already in current review
           Set<Long> currentReviewCaseIds =
               funcReviewCaseRepo.findCaseIdByPlanIdAndReviewId(planId, reviewId);
@@ -261,7 +260,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
         Set<SearchCriteria> filters = new HashSet<>();
         filters.add(SearchCriteria.equal("planId", planId));
         filters.add(SearchCriteria.notEqual("reviewStatus", ReviewStatus.PASSED.getValue()));
-        
+
         if (nonNull(moduleId)) {
           filters.add(SearchCriteria.equal("moduleId", moduleId));
         }
@@ -311,11 +310,11 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
       protected List<FuncCaseInfo> process() {
         Set<SearchCriteria> filters = new HashSet<>();
         filters.add(SearchCriteria.equal("planId", planId));
-        
+
         if (nonNull(moduleId)) {
           filters.add(SearchCriteria.equal("moduleId", moduleId));
         }
-        
+
         // Exclude cases already in the specified baseline
         if (nonNull(funcBaselineDb) && isNotEmpty(funcBaselineDb.getCaseIds())) {
           filters.add(SearchCriteria.notIn("id", funcBaselineDb.getCaseIds()));
@@ -385,7 +384,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
   public List<FuncPlan> checkAndFind(Collection<Long> ids) {
     List<FuncPlan> plans = funcPlanRepo.findAllById(ids);
     assertResourceNotFound(isNotEmpty(plans), ids.iterator().next(), "FuncPlan");
-    
+
     // Validate that all requested plans were found
     if (ids.size() != plans.size()) {
       for (FuncPlan plan : plans) {
@@ -542,7 +541,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
       // Retrieve passed case counts for all plans
       Map<Long, Long> planPassedNumsMap = funcCaseRepo.findPlanPassedCaseNumsGroupByPlanId(planIds)
           .stream().collect(toMap(PlanCaseNum::getPlanId, PlanCaseNum::getCaseNum));
-          
+
       for (FuncPlan plan : plans) {
         if (planPassedNumsMap.containsKey(plan.getId())) {
           // Calculate progress with completion rate
@@ -583,16 +582,16 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
           testerIds.addAll(plan.getTesterResponsibilities().keySet());
         }
       }
-      
+
       if (isEmpty(testerIds)) {
         return;
       }
-      
+
       // Retrieve user information for all testers
       Map<Long, UserInfo> userMap = userManager.getUserBaseMap(testerIds).entrySet().stream()
           .collect(toMap(Entry::getKey, x -> new UserInfo().setId(x.getValue().getId())
               .setFullName(x.getValue().getFullName()).setAvatar(x.getValue().getAvatar())));
-              
+
       // Set member information for each plan
       for (FuncPlan plan : plans) {
         if (isNotEmpty(plan.getTesterResponsibilities())) {
@@ -622,7 +621,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
     String clonedName = funcPlanRepo.existsByProjectIdAndName(
         plan.getProjectId(), plan.getName() + "-Copy")
         ? plan.getName() + "-Copy." + saltName : plan.getName() + "-Copy";
-        
+
     // Handle length constraints efficiently
     clonedName = clonedName.length() > MAX_NAME_LENGTH ? clonedName.substring(0,
         MAX_NAME_LENGTH_X2 - 3) + saltName : clonedName;
@@ -648,7 +647,7 @@ public class FuncPlanQueryImpl implements FuncPlanQuery {
     if (Objects.nonNull(adminCriteria)) {
       admin = Boolean.parseBoolean(adminCriteria.getValue().toString().replaceAll("\"", ""));
     }
-    
+
     // Add authorization filtering unless admin override is enabled and user is admin
     if (!admin || !funcPlanAuthQuery.isAdminUser()) {
       criteria.add(SearchCriteria.in("authObjectId", userManager.getValidOrgAndUserIds()));

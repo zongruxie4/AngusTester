@@ -121,7 +121,7 @@ public class FuncPlanAssembler {
         .rangeSearchFields("id", "createdDate", "startDate", "deadlineDate")
         .orderByFields("id", "name", "ownerId", "createdBy", "createdDate", "lastModifiedBy"
             , "startDate", "deadlineDate")
-        .matchSearchFields("name", "other_information")
+        .matchSearchFields("name", "otherInformation")
         .build();
     return new GenericSpecification<>(filters);
   }
