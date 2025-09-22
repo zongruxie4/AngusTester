@@ -56,21 +56,13 @@ const searchPanelOptions = [
     maxlength: 100
   },
   {
-    valueKey: 'startDate',
-    type: 'date',
-    valueType: 'start',
-    op: SearchCriteria.OpEnum.GreaterThanEqual,
-    placeholder: t('caseReview.list.reviewStartTimeGreaterEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
-    allowClear: true
-  },
-  {
-    valueKey: 'deadlineDate',
-    type: 'date',
-    valueType: 'start',
-    op: SearchCriteria.OpEnum.LessThanEqual,
-    placeholder: t('caseReview.list.reviewDeadlineTimeLessEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
+    type: 'date-range',
+    valueKey: 'createdDate',
+    placeholder: [
+      t('caseReview.list.createdTimeGreaterEqual'), 
+      t('caseReview.list.createdTimeLessEqual')
+    ],
+    showTime: true,
     allowClear: true
   }
 ];

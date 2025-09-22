@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Button, Pagination } from 'ant-design-vue';
-import { Colon, Icon, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
+import { modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { ProjectPageQuery } from '@xcan-angus/infra';
 import { func } from '@/api/tester';
 
 import { BaselineDetail } from '@/views/function/baseline/types';
 import { BasicProps } from '@/types/types';
 
-import SearchPanel from '@/views/function/baseline/list/SearchPanel.vue';
-import RichText from '@/components/richEditor/textContent/index.vue';
-
 // Async Components
+const SearchPanel = defineAsyncComponent(() => import('@/views/function/baseline/list/SearchPanel.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/function/baseline/list/Introduce.vue'));
+const List = defineAsyncComponent(() => import('@/views/function/baseline/list/List.vue'));
 
 const { t } = useI18n();
 
@@ -192,120 +190,18 @@ onMounted(() => {
             @refresh="handleRefreshClick"
             @change="handleSearchParametersChange" />
 
-          <NoData v-if="baselineList.length === 0" class="flex-1" />
-
-          <template v-else>
-            <div
-              v-for="(item, index) in baselineList"
-              :key="item.id"
-              class="mb-3.5 border border-theme-text-box rounded">
-              <div class="px-3.5 py-2 flex items-center justify-between bg-theme-form-head w-full relative">
-                <div class="truncate" style="width:35%;max-width: 360px;">
-                  <RouterLink
-                    class="router-link flex-1 truncate"
-                    :title="item.name"
-                    :to="`/function#baseline?id=${item.id}`">
-                    {{ item.name }}
-                  </RouterLink>
-                </div>
-
-                <div class="flex">
-                  <div
-                    class="text-theme-sub-content text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
-                    <Icon
-                      v-if="item.established"
-                      icon="icon-duihao-copy"
-                      class="mr-1" />
-                    <div>{{ item.established ? t('functionBaseline.list.established') : t('functionBaseline.list.notEstablished') }}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
-                <div class="flex flex-wrap space-x-8">
-                  <div class="flex mt-3">
-                    <div class="mr-2 whitespace-nowrap">
-                      <span>ID</span>
-                      <Colon />
-                    </div>
-                    <div class="text-theme-content">{{ item.id || "--" }}</div>
-                  </div>
-
-                  <div class="flex mt-3">
-                    <div class="mr-2 whitespace-nowrap">
-                      <span>{{ t('functionBaseline.list.testPlan') }}</span>
-                      <Colon />
-                    </div>
-                    <div class="text-theme-content">{{ item.planName || "--" }}</div>
-                  </div>
-                </div>
-
-                <div class="flex ml-8 mt-3">
-                  <div
-                    class="truncate text-theme-content"
-                    style="max-width: 100px;"
-                    :title="item.lastModifiedByName">
-                    {{ item.lastModifiedByName }}
-                  </div>
-                  <div class="mx-2 whitespace-nowrap">{{ t('functionBaseline.list.modifiedBy') }}</div>
-                  <div class="whitespace-nowrap text-theme-content">
-                    {{ item.lastModifiedDate }}
-                  </div>
-                </div>
-              </div>
-
-              <div class="px-3.5 flex justify-between items-end text-3 my-2.5 relative">
-                <div class="truncate mr-8" :title="item.descriptionText || ''">
-                  <template v-if="item.description">
-                    <RichText
-                      v-model:textValue="item.descriptionText"
-                      :value="item.description"
-                      :emptyText="t('functionBaseline.list.noDescription')" />
-                  </template>
-                  <span v-else class="text-text-sub-content">
-                    {{ t('functionBaseline.list.noDescription') }}
-                  </span>
-                </div>
-                <div class="flex space-x-3 items-center justify-between h-4 leading-5">
-                  <RouterLink class="flex items-center space-x-1" :to="`/function#baseline?id=${item.id}&type=edit`">
-                    <Icon icon="icon-shuxie" class="text-3.5" />
-                    <span>{{ t('functionBaseline.list.edit') }}</span>
-                  </RouterLink>
-
-                  <Button
-                    v-if="!item.established"
-                    size="small"
-                    type="text"
-                    class="px-0 flex items-center space-x-1"
-                    @click="handleBaselineEstablishment(item)">
-                    <Icon icon="icon-yiwancheng" class="text-3.5" />
-                    <span>{{ t('functionBaseline.list.establishBaseline') }}</span>
-                  </Button>
-
-                  <Button
-                    size="small"
-                    type="text"
-                    class="px-0 flex items-center space-x-1"
-                    @click="handleBaselineDeletion(item)">
-                    <Icon icon="icon-yiwancheng" class="text-3.5" />
-                    <span>{{ t('functionBaseline.list.delete') }}</span>
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            <Pagination
-              v-if="total > 5"
-              :current="currentPageNo"
-              :pageSize="currentPageSize"
-              :pageSizeOptions="pageSizeOptions"
-              :total="totalCount"
-              :hideOnSinglePage="false"
-              showSizeChanger
-              size="default"
-              class="text-right"
-              @change="handlePaginationChange" />
-          </template>
+          <List
+            :baselineList="baselineList"
+            :loading="isLoading"
+            :total="totalCount"
+            :currentPageNo="currentPageNo"
+            :currentPageSize="currentPageSize"
+            :pageSizeOptions="pageSizeOptions"
+            :isAdmin="true"
+            @paginationChange="handlePaginationChange"
+            @establishBaseline="handleBaselineEstablishment"
+            @deleteBaseline="handleBaselineDeletion"
+            @refresh="handleRefreshClick" />
         </template>
       </template>
     </Spin>
