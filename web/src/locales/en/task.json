@@ -2353,7 +2353,7 @@
       "taskPrefix": "Task Prefix",
       "workloadAssessment": "Workload Assessment",
       "attachments": "Attachments",
-      "uploadAttachment": "Upload Attachment",
+      "uploadAttachment": "Upload",
       "acceptanceCriteria": "Acceptance Criteria",
       "otherInformation": "Other Information"
     },
