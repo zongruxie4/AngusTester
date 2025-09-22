@@ -21,7 +21,8 @@ type OrderByKey = string;
 // Event Emitters
 const emits = defineEmits<{
   (e: 'change', value: { orderBy?: string; orderSort?: PageQuery.OrderSort; filters: SearchCriteria[]; }):void,
-  (e: 'refresh'):void}>();
+  (e: 'refresh'):void
+}>();
 
 // State Management
 const currentUser = ref(appContext.getUser());
