@@ -1377,8 +1377,6 @@
       "addPlan": "Add Plan"
     },
     "list": {
-      "agileTesting": "Agile Testing",
-      "agileTestingDesc": "Software testing conducted in an agile software development environment, with close collaboration between testing and development, improving software quality and meeting user requirements through continuous feedback and collaboration.",
       "addedPlans": "Added Plans",
       "noPlans": "You haven't added any plans yet, ",
       "addPlan": "Add Plan",
@@ -1436,27 +1434,27 @@
       "description": "Test plans serve as the core component of the software testing lifecycle, providing a systematic framework for testing teams. Through detailed test planning, we ensure organized testing activities, improve efficiency and quality, while reducing project risks.",
       "testScope": {
         "title": "Define Test Scope",
-        "description": "Define functional modules and business scenarios to test, establish boundaries, avoid omissions and redundancy, ensure comprehensive coverage."
+        "description": "Define functional and business test scenarios, avoid omissions and redundancy."
       },
       "timeManagement": {
         "title": "Time Planning Management",
         "description": "Create test schedules, arrange phase timelines, ensure on-time project delivery."
       },
       "riskManagement": {
-        "title": "Risk Identification and Control",
-        "description": "Identify risk factors affecting test progress and quality, develop mitigation strategies."
+        "title": "Risk Identification",
+        "description": "Identify risk factors affecting test progress and quality."
       },
       "communication": {
-        "title": "Team Collaboration and Communication",
-        "description": "Define roles and responsibilities, establish communication mechanisms, avoid confusion from unclear duties."
+        "title": "Team Collaboration",
+        "description": "Establish communication mechanisms, avoid confusion from unclear duties."
       },
       "continuousImprovement": {
-        "title": "Continuous Optimization and Improvement",
-        "description": "Through plan execution and review, accumulate lessons learned, optimize testing processes and methods."
+        "title": "Continuous Optimization",
+        "description": "Through plan execution and review, optimize testing processes and methods."
       },
       "standards": {
         "title": "Quality Standards Definition",
-        "description": "Establish quality assessment criteria and test pass requirements, ensure objective and comparable results."
+        "description": "Establish quality assessment criteria and test pass requirements."
       }
     },
     "editForm": {

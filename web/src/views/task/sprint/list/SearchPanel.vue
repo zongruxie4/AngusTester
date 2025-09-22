@@ -74,7 +74,7 @@ const searchPanelConfig = [
     valueKey: 'startDate',
     type: 'date' as const,
     valueType: 'start',
-    op: 'GREATER_THAN_EQUAL' as const,
+    op: SearchCriteria.OpEnum.GreaterThanEqual,
     placeholder: t('taskSprint.searchPanel.startDateGreaterEqual'),
     showTime: true,
     allowClear: true
@@ -83,7 +83,7 @@ const searchPanelConfig = [
     valueKey: 'deadlineDate',
     type: 'date' as const,
     valueType: 'start',
-    op: 'LESS_THAN_EQUAL' as const,
+    op: SearchCriteria.OpEnum.LessThanEqual,
     placeholder: t('taskSprint.searchPanel.deadlineDateLessEqual'),
     showTime: true,
     allowClear: true
@@ -176,7 +176,8 @@ const generateDateRangeFilters = (timePeriodKey: string) => {
       : null,
     endDate
       ? { value: endDate.format(DATE_TIME_FORMAT), op: SearchCriteria.OpEnum.LessThanEqual, key: 'createdDate' }
-      : null].filter(Boolean) as SearchCriteria[];
+      : null
+  ].filter(Boolean) as SearchCriteria[];
 };
 
 /**
@@ -295,11 +296,7 @@ const handleQuickFilterClick = (filterItem) => {
     if (key === '') {
       return null;
     } else if (statusKeys.includes(key)) {
-      return {
-        key: 'status',
-        op: SearchCriteria.OpEnum.Equal,
-        value: key
-      };
+      return { key: 'status', op: SearchCriteria.OpEnum.Equal, value: key };
     } else if (timePeriodKeys.includes(key)) {
       dateRangeFilters = generateDateRangeFilters(key);
       return null;
@@ -309,9 +306,7 @@ const handleQuickFilterClick = (filterItem) => {
       }
       return null;
     } else {
-      return {
-        key, op: SearchCriteria.OpEnum.Equal, value: String(currentUserId)
-      };
+      return { key, op: SearchCriteria.OpEnum.Equal, value: String(currentUserId) };
     }
   }).filter(Boolean) as SearchCriteria[];
 
@@ -347,10 +342,12 @@ onMounted(() => {
     <div class="flex items-center mb-3">
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
+
         <div class="whitespace-nowrap text-3 mt-0.5 text-text-sub-content">
           <span>{{ t('quickSearch') }}</span>
           <Colon />
         </div>
+
         <div class="flex flex-wrap ml-2">
           <div
             v-for="item in quickSearchOptions"

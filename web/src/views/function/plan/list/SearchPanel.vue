@@ -19,18 +19,26 @@ const props = withDefaults(defineProps<LoadingProps>(), {
 
 type OrderByKey = string;
 
-const emits = defineEmits<{(e: 'change', value: {
-  orderBy?: string;
-  orderSort?: PageQuery.OrderSort;
-  filters: SearchCriteria[];
-}):void,
- (e: 'refresh'):void}>();
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+    (e: 'change', value: { orderBy?: string; orderSort?: PageQuery.OrderSort; filters: SearchCriteria[]; }):void,
+    (e: 'refresh'):void
+  }>();
 
 // reactive data
 const userInfo = ref(appContext.getUser());
 const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
 const planStatusOptions = ref<{name: string; key: string}[]>([]);
+
+// search state
+const orderBy = ref();
+const orderSort = ref();
+const searchFilters = ref<SearchCriteria[]>([]);
+const quickSearchFilters = ref<SearchCriteria[]>([]);
+const assocFilters = ref<SearchCriteria[]>([]);
+const assocKeys = ['ownerId'];
+const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
 
 /**
  * Loads plan status enum options and maps them to display format
@@ -143,15 +151,6 @@ const menuItems = computed(() => [
   }
 ]);
 
-// search state
-const orderBy = ref();
-const orderSort = ref();
-const searchFilters = ref<SearchCriteria[]>([]);
-const quickSearchFilters = ref<SearchCriteria[]>([]);
-const assocFilters = ref<SearchCriteria[]>([]);
-const assocKeys = ['ownerId'];
-const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
-
 /**
  * Formats date range based on time key for quick search filters
  * @param key - Time key for date range calculation
@@ -178,19 +177,12 @@ const formatDateString = (key: string) => {
 
   return [
     startDate
-      ? {
-          value: startDate.format(DATE_TIME_FORMAT),
-          op: SearchCriteria.OpEnum.GreaterThanEqual,
-          key: 'createdDate'
-        }
+      ? { value: startDate.format(DATE_TIME_FORMAT), op: SearchCriteria.OpEnum.GreaterThanEqual, key: 'createdDate' }
       : '',
     endDate
-      ? {
-          value: endDate.format(DATE_TIME_FORMAT),
-          op: SearchCriteria.OpEnum.LessThanEqual,
-          key: 'createdDate'
-        }
-      : ''].filter(Boolean);
+      ? { value: endDate.format(DATE_TIME_FORMAT), op: SearchCriteria.OpEnum.LessThanEqual, key: 'createdDate' }
+      : ''
+  ].filter(Boolean);
 };
 
 /**
@@ -288,18 +280,14 @@ const handleMenuItemClick = (data) => {
   }
 
   const userId = userInfo.value?.id;
-  let timeFilters: {key: string; op: string; value: string}[] = [];
+  let timeFilters: SearchCriteria[] = [];
   const assocFiltersInQuick = [];
 
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
     if (key === '') {
       return undefined;
     } else if (statusTypeKeys.includes(key)) {
-      return {
-        key: 'status',
-        op: SearchCriteria.OpEnum.Equal,
-        value: key
-      };
+      return { key: 'status', op: SearchCriteria.OpEnum.Equal, value: key };
     } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
       timeFilters = formatDateString(key);
       return undefined;
@@ -309,11 +297,7 @@ const handleMenuItemClick = (data) => {
       }
       return undefined;
     } else {
-      return {
-        key,
-        op: SearchCriteria.OpEnum.Equal,
-        value: userId
-      };
+      return { key, op: SearchCriteria.OpEnum.Equal, value: userId };
     }
   }).filter(Boolean);
 
@@ -343,22 +327,28 @@ onMounted(() => {
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex">
-      <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>{{ t('quickSearchTags.title') }}</span>
-        <Colon />
-      </div>
-      <div class="flex  flex-wrap ml-2">
-        <div
-          v-for="item in menuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="handleMenuItemClick(item)">
-          {{ item.name }}
+    <div class="flex items-center mb-3">
+      <div class="flex items-start transform-gpu translate-y-0.5">
+        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
+
+        <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
+          <span>{{ t('quickSearchTags.title') }}</span>
+          <Colon />
+        </div>
+
+        <div class="flex  flex-wrap ml-2">
+          <div
+            v-for="item in menuItems"
+            :key="item.key"
+            :class="{ 'active-key': selectedMenuMap[item.key] }"
+            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
+            @click="handleMenuItemClick(item)">
+            {{ item.name }}
+          </div>
         </div>
       </div>
     </div>
+
     <div class="flex items-start justify-between ">
       <SearchPanel
         ref="searchPanelRef"
