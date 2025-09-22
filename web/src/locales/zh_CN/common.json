@@ -19,14 +19,15 @@
     "node": "节点",
     "detail": "详情"
   },
-  "time": {
+  "unit": {
     "year": "年",
     "month": "月",
     "week": "周",
     "day": "天",
     "hour": "时",
     "minute": "分",
-    "second": "秒"
+    "second": "秒",
+    "user": "人"
   },
   "status": {
     "success": "成功",
@@ -36,7 +37,9 @@
     "completed": "已完成",
     "cancelled": "已取消",
     "yes": "是",
-    "no": "否"
+    "no": "否",
+    "on": "开启",
+    "off": "关闭"
   },
   "chart": {
     "timeUnit": "时间单位",

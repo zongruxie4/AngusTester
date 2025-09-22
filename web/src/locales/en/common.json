@@ -19,14 +19,15 @@
     "node": "Node",
     "detail": "Detail"
   },
-  "time": {
+  "unit": {
     "year": "Year",
     "month": "Month",
     "week": "Week",
     "day": "Day",
     "hour": "Hour",
     "minute": "Minute",
-    "second": "Second"
+    "second": "Second",
+    "user": "Users"
   },
   "status": {
     "success": "Success",
@@ -36,7 +37,9 @@
     "completed": "Completed",
     "cancelled": "Cancelled",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "on": "ON",
+    "off": "OFF"
   },
   "chart": {
     "timeUnit": "Time Unit",

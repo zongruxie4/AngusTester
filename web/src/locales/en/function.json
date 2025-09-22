@@ -392,7 +392,7 @@
       "established": "Established",
       "notEstablished": "Not Established",
       "testPlan": "Test Plan",
-      "modifiedBy": "Modified By",
+      "modifiedBy": "Modified at",
       "noDescription": "No description~",
       "edit": "Edit",
       "establishBaseline": "Establish",
@@ -719,7 +719,7 @@
       "delete": "Delete",
       "testPassed": "Test Passed",
       "testNotPassed": "Test Not Passed",
-      "testNotPassedName": "“{name}” Test Not Passed",
+      "testNotPassedName": "\"{name}\" Test Not Passed",
       "cancelBatchOperation": "Cancel Batch Operation",
       "resetTestResult": "Reset Test Result",
       "cancel": "Cancel",
@@ -1381,7 +1381,7 @@
       "noPlans": "You haven't added any plans yet, ",
       "addPlan": "Add Plan",
       "searchPlanName": "Search plan name or description",
-      "isReview": "Is Review",
+      "isReview": "Review",
       "selectStatus": "Select Status",
       "selectOwner": "Select Owner",
       "planStartTime": "Plan start date",
@@ -1392,9 +1392,9 @@
       "clone": "Clone",
       "resetTest": "Reset Test",
       "resetReview": "Reset Review",
-      "viewBurnDown": "View Burndown Chart",
-      "viewProgress": "View Member Progress",
-      "viewWorkCalendar": "View Work Calendar",
+      "viewBurnDown": "Burndown Chart",
+      "viewProgress": "Member Progress",
+      "viewWorkCalendar": "Work Calendar",
       "exportCase": "Export Cases",
       "sortByName": "Sort by Name",
       "sortByOwner": "Sort by Owner",
@@ -1404,13 +1404,13 @@
       "owner": "Owner",
       "members": "Members",
       "allMembers": "All Members",
-      "totalCases": "Total {count} cases",
+      "totalCases": "Total {count} Cases",
       "id": "ID",
-      "isReviewLabel": "Is Review",
+      "isReviewLabel": "Review",
       "workloadAssessment": "Workload Assessment",
       "casePrefix": "Case Prefix",
-      "attachmentCount": "Attachment Count",
-      "modifiedBy": "Modified by",
+      "attachmentCount": "Attachments",
+      "modifiedBy": "Modified at",
       "noDescription": "No description~",
       "edit": "Edit",
       "viewCases": "View Cases",
@@ -1509,7 +1509,7 @@
         "timePlanTooltip": "Determine the start and end times of the test activity to ensure that all tests are completed within the project cycle.",
         "testers": "Testers",
         "testersTooltip": "Clearly define the testers participating in this test plan, only allowing testers to participate in test activities. Determine the role of the tester, the scope of the test, or the test tasks and test cases to be executed, to avoid responsibility ambiguity and task omissions.",
-        "isReview": "Is Review",
+        "isReview": "Review",
         "reviewTooltip": "After enabling, the team can evaluate the quality and effectiveness of test cases, test steps, and test results through the review process, and only after the test case review is passed can it enter the test, which is enabled by default.",
         "reviewCloseConfirm": "After disabling, the test case review status will be automatically cleared (excluding review count), confirm whether to continue?",
         "confirm": "Confirm",
@@ -1551,7 +1551,7 @@
         "to": "To",
         "timePlan": "Time Plan",
         "testers": "Testers",
-        "isReview": "Is Review",
+        "isReview": "Review",
         "casePrefix": "Case Prefix",
         "attachments": "Attachments",
         "progress": "Progress",
@@ -1664,13 +1664,13 @@
       "participants": "Participants",
       "allParticipants": "All participants",
       "testPlan": "Test Plan",
-      "attachmentCount": "Attachment Count",
-      "modifiedBy": "Modified by",
+      "attachmentCount": "Attachments",
+      "modifiedBy": "Modified at",
       "edit": "Edit",
       "goToReview": "Review",
       "start": "Start",
       "complete": "Complete",
-      "totalCases": "Total {count} cases",
+      "totalCases": "Total {count} Cases",
       "id": "ID",
       "quickQuery": "Quick Query",
       "all": "All",
@@ -1685,30 +1685,30 @@
     },
     "introduce": {
       "aboutReview": "About Review",
-      "description": "Test case review is the process of systematically analyzing and discussing software test cases to ensure their quality, completeness, and effectiveness. Reviews typically involve multiple stakeholders, including testers, developers, product managers, and others.",
+      "description": "Test case review is a structured check and discussion of cases to improve correctness, completeness, and executability. Reviews typically involve testers, developers, product managers and other stakeholders.",
       "improveQuality": {
         "title": "Improve Test Case Quality",
-        "description": "Team reviews can discover and correct errors and inconsistencies in test cases to ensure accuracy and effectiveness."
+        "description": "Identify and fix ambiguity, omissions and inconsistencies early to improve quality and maintainability."
       },
       "ensureCoverage": {
         "title": "Ensure Test Coverage",
-        "description": "Reviews can verify whether test cases comprehensively cover all functional requirements and business scenarios, avoiding missed critical test points and ensuring all business logic is thoroughly validated."
+        "description": "Validate coverage of core functions, edge conditions and business scenarios to reduce missed tests."
       },
       "findDefects": {
         "title": "Early Detection of Potential Defects",
-        "description": "Through group discussion, potential defects and design issues in test cases can be identified early, reducing rework, improving requirement rationality, and lowering the risk of issues being discovered in later testing stages."
+        "description": "Surface potential defects and design issues before execution to cut rework and late-stage fix costs."
       },
       "promoteKnowledge": {
         "title": "Promote Knowledge Sharing",
-        "description": "Through the review process, team members can share testing experiences and best practices, enhancing overall testing capabilities and knowledge levels."
+        "description": "Share context and best practices to align understanding of requirements and testing intent."
       },
       "optimizeStrategy": {
         "title": "Optimize Test Strategy",
-        "description": "Through reviews, teams can adjust test case priorities and execution strategies based on feedback, enabling more effective allocation of testing resources and time."
+        "description": "Adjust priorities and execution strategy based on outcomes for more focused use of resources."
       },
       "reduceRework": {
         "title": "Reduce Rework Costs",
-        "description": "Collecting review feedback provides input to improve future test case authoring and review processes, promoting continuous optimization and efficiency enhancement of the testing process."
+        "description": "Codify review learnings into guidelines and templates to continuously improve authoring and review."
       }
     },
     "editForm": {

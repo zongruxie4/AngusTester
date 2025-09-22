@@ -11,7 +11,7 @@
       "owner": "负责人",
       "participants": "参与人员",
       "caseNum": "用例数",
-      "attachmentCount": "附件数",
+      "attachmentCount": "附件",
       "testPlan": "测试计划",
       "addReview": "添加评审",
       "noReviewsAdded": "您尚未添加任何评审，立即",
@@ -731,7 +731,7 @@
       "delete": "删除",
       "testPassed": "测试通过",
       "testNotPassed": "测试未通过",
-      "testNotPassedName": "“{name}” 测试不通过",
+      "testNotPassedName": "\"{name}\"测试不通过",
       "cancelBatchOperation": "取消批量操作",
       "resetTestResult": "重置测试结果",
       "cancel": "取消",
@@ -1415,7 +1415,7 @@
       "noPlans": "您尚未添加任何计划，立即",
       "addPlan": "添加计划",
       "searchPlanName": "查询计划名称、描述",
-      "isReview": "是否评审",
+      "isReview": "评审",
       "selectStatus": "选择状态",
       "selectOwner": "选择负责人",
       "planStartTime": "计划开始时间",
@@ -1426,9 +1426,9 @@
       "clone": "克隆",
       "resetTest": "重置测试",
       "resetReview": "重置评审",
-      "viewBurnDown": "查看燃尽图",
-      "viewProgress": "查看成员进度",
-      "viewWorkCalendar": "查看工作日历",
+      "viewBurnDown": "燃尽图",
+      "viewProgress": "成员进度",
+      "viewWorkCalendar": "工作日历",
       "exportCase": "导出用例",
       "sortByName": "按名称",
       "sortByOwner": "按负责人",
@@ -1698,7 +1698,7 @@
       "participants": "参与人员",
       "allParticipants": "所有参与人员",
       "testPlan": "测试计划",
-      "attachmentCount": "附件数",
+      "attachmentCount": "附件",
       "modifiedBy": "修改于",
       "edit": "编辑",
       "goToReview": "去评审",
@@ -1719,30 +1719,30 @@
     },
     "introduce": {
       "aboutReview": "关于评审",
-      "description": "测试用例评审是指对软件测试用例进行系统性分析和讨论的过程，旨在确保测试用例的质量、完整性和有效性。评审通常由多个利益相关者参与，包括测试人员、开发人员、产品经理等。",
+      "description": "测试用例评审是对测试用例进行系统性检查与讨论，目标是提升用例的正确性、完整性与可执行性。评审通常由测试、开发、产品等相关角色共同参与。",
       "improveQuality": {
         "title": "提高测试用例质量",
-        "description": "通过团队共同评审，能够发现和纠正测试用例中的错误和不一致之处，确保测试用例的准确性和有效性。"
+        "description": "通过多人审阅及时发现并纠正歧义、遗漏与不一致，提升用例质量与可维护性。"
       },
       "ensureCoverage": {
         "title": "确保测试覆盖率",
-        "description": "评审可以验证测试用例是否全面覆盖了所有功能需求和业务场景，避免遗漏关键测试点，确保所有业务逻辑都得到充分验证。"
+        "description": "核验是否覆盖核心功能、边界条件与业务场景，降低漏测风险。"
       },
       "findDefects": {
         "title": "及早发现潜在缺陷",
-        "description": "通过集体讨论，可以及早识别测试用例中的潜在缺陷和设计问题，减少返工，提高需求合理性，降低后续测试阶段发现问题的风险。"
+        "description": "在执行前暴露潜在缺陷与设计问题，减少返工与后期修复成本。"
       },
       "promoteKnowledge": {
         "title": "促进知识共享",
-        "description": "通过评审过程，团队成员可以分享测试经验和最佳实践，提升整体测试能力和知识水平。"
+        "description": "共享背景与最佳实践，达成对需求与测试意图的一致理解。"
       },
       "optimizeStrategy": {
         "title": "优化测试策略",
-        "description": "通过评审，可以根据团队反馈调整测试用例的优先级和执行策略，从而更有效地分配测试资源和时间。"
+        "description": "根据评审结论调整优先级与执行策略，使资源投入更加聚焦有效。"
       },
       "reduceRework": {
         "title": "减少返工成本",
-        "description": "收集评审反馈可以为未来的测试用例编写和评审流程提供改进依据，促进整个测试过程的持续优化和效率提升。"
+        "description": "沉淀评审结论为规范与模板，持续优化用例编写与评审流程。"
       }
     },
     "editForm": {
