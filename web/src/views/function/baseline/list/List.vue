@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject } from 'vue';
 import { Button, Pagination } from 'ant-design-vue';
-import { Colon, Icon, modal, NoData, notification } from '@xcan-angus/vue-ui';
+import { Icon, modal, NoData, notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { func } from '@/api/tester';
 import { BaselineDetail } from '@/views/function/baseline/types';

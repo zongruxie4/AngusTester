@@ -30,19 +30,20 @@ const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({
 const isDataLoaded = ref(false);
 const isLoading = ref(false);
 const hasSearchFilters = ref(false);
-const currentPageNo = ref(1);
-const currentPageSize = ref(5);
 const searchParameters = ref({
   orderBy: undefined,
   orderSort: undefined,
   filters: []
 });
+
+const currentPageNo = ref(1);
+const currentPageSize = ref(4);
 const totalCount = ref(0);
 const baselineList = ref<BaselineDetail[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
 
 // Pagination Configuration
-const pageSizeOptions = ['5', '10', '15', '20', '30'];
+const pageSizeOptions = ['4', '10', '15', '20', '30'];
 
 /**
  * Handle refresh button click

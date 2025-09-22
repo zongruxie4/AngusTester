@@ -48,7 +48,8 @@ const searchPanelParams = ref({
   filters: []
 });
 const pageNo = ref(1);
-const pageSize = ref(5);
+const pageSize = ref(4);
+const pageSizeOptions = ['4', '10', '15', '20', '30'];
 
 // Data state
 const total = ref(0);
@@ -347,8 +348,6 @@ const dropdownPermissionsMap = computed(() => {
   }
   return map;
 });
-
-const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
 // lifecycle hooks
 onMounted(() => {

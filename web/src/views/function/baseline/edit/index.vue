@@ -102,7 +102,7 @@ const handleBaselineEditConfirm = async () => {
 
   const id = params.id;
   const name = params.name;
-  updateTabPane({ _id: id, name });
+  updateTabPane({ name, _id: id });
   if (baselineDataSource.value) {
     baselineDataSource.value.name = name;
   }
@@ -486,7 +486,7 @@ onMounted(() => {
     <Form
       ref="formRef"
       :model="currentFormState"
-      :labelCol="{ style: { width: '75px' } }"
+      :labelCol="{ style: { width: '120px' } }"
       class="max-w-242.5"
       size="small"
       layout="horizontal">
@@ -512,17 +512,6 @@ onMounted(() => {
           :fieldNames="{value: 'id', label: 'name'}"
           :placeholder="t('functionBaseline.editForm.selectTestPlan')"
           @change="handlePlanIdChange" />
-      </FormItem>
-
-      <FormItem
-        :label="t('functionBaseline.editForm.description')"
-        name="description"
-        :rules="[{validator: validateDescription}]">
-        <RichEditor
-          ref="richEditorRef"
-          v-model:value="currentFormState.description"
-          :placeholder="t('functionBaseline.editForm.baselineBriefOverview2000')"
-          :height="100" />
       </FormItem>
 
       <Tabs
@@ -569,7 +558,44 @@ onMounted(() => {
             </template>
           </Table>
         </TabPane>
+
+        <TabPane
+          key="description"
+          :tab="t('functionBaseline.editForm.description')">
+          <FormItem
+            label=""
+            name="description"
+            :rules="[{validator: validateDescription}]">
+            <RichEditor
+              ref="richEditorRef"
+              v-model:value="currentFormState.description"
+              :placeholder="t('functionBaseline.editForm.baselineBriefOverview2000')"
+              :height="200" />
+          </FormItem>
+        </TabPane>
       </Tabs>
+
+      <FormItem
+        v-if="currentFormState?.attachments?.length"
+        :colon="false"
+        label=" "
+        class="-mt-5">
+        <div
+          v-for="(item, index) in currentFormState.attachments"
+          :key="index"
+          class="flex items-center text-3 leading-5 pb-1 px-3 space-x-5 bg-gray-100 first:rounded-t first:pt-2 last:rounded-b last:pb-2">
+          <div class="flex-1 truncate">{{ item.name }}</div>
+          <Button
+            type="text"
+            size="small"
+            class="flex-shrink-0 flex items-center justify-center px-0 leading-5 h-5">
+            <Icon
+              icon="icon-qingchu"
+              class="text-3.5"
+              @click="removeAttachment(index)" />
+          </Button>
+        </div>
+      </FormItem>
     </Form>
     <AsyncComponent :visible="selectModalVisible">
       <SelectCaseModal
@@ -587,7 +613,12 @@ onMounted(() => {
   margin-right: 10px;
 }
 
-.ant-tabs-small>:deep(.ant-tabs-nav) .ant-tabs-tab {
+:deep(.ant-form-item-label>label) {
+  font-weight: 500;
+  color: #000;
+}
+
+.ant-tabs-small > :deep(.ant-tabs-nav) .ant-tabs-tab {
   padding-top: 0;
 }
 </style>

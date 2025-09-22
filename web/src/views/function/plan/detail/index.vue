@@ -25,6 +25,7 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
 const BurnDownChart = defineAsyncComponent(() => import('@/views/function/plan/detail/BurndownChart.vue'));
 const MemberProgress = defineAsyncComponent(() => import('@/views/function/plan/detail/MemberProgress.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/function/home/WorkCalendar.vue'));
+const BasicInfo = defineAsyncComponent(() => import('./BasicInfo.vue'));
 
 // Injected dependencies
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
@@ -334,50 +335,9 @@ onMounted(() => {
       </Button>
     </div>
 
-    <div class="max-w-250 mb-2">
-      <div class="text-theme-title mb-2">{{ t('functionPlan.planDetail.basicInfo.title') }}</div>
-      <Grid
-        :columns="basicInfoGridColumns"
-        :dataSource="planDetailData">
-        <template #time>
-          <div class="text-3 whitespace-nowrap">
-            <span>{{ planDetailData?.startDate }}</span>
-            <span class="mx-2">{{ t('functionPlan.planDetail.basicInfo.to') }}</span>
-            <span>{{ planDetailData?.deadlineDate }}</span>
-          </div>
-        </template>
-        <template #review>
-          {{ planDetailData?.review?t('status.yes'):t('status.no') }}
-        </template>
-        <template #workloadAssessment>
-          {{ planDetailData?.evalWorkloadMethod?.message }}
-        </template>
-        <template #status>
-          <div
-            class="text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
-            <div class="h-1.5 w-1.5 rounded-full mr-1" :class="planDetailData?.status?.value"></div>
-            <div>{{ planDetailData?.status?.message }}</div>
-          </div>
-        </template>
-        <template #progress>
-          <Progress :percent="completedRate" style="width:150px;" />
-        </template>
-        <template #attachments>
-          <div class="space-y-1 truncate">
-            <a
-              v-for="(item, index) in attachmentList"
-              :key="index"
-              class="block w-auto truncate"
-              :download="item.name"
-              :href="item.url">
-              {{ item.name }}
-            </a>
-          </div>
-        </template>
-      </Grid>
-    </div>
+    <BasicInfo :planData="planDetailData" :completionRate="completedRate" />
 
-    <Tabs size="small" class="max-w-250">
+    <Tabs size="small">
       <TabPane key="testerResponsibilities" :tab="t('functionPlan.planDetail.tabs.testers')">
         <Table
           :columns="testerTableColumns"

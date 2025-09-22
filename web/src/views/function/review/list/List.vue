@@ -3,7 +3,6 @@ import { defineAsyncComponent, inject } from 'vue';
 import { Avatar, Button, Pagination, Popover, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { Colon, Dropdown, Icon, Image, modal, NoData, notification } from '@xcan-angus/vue-ui';
-import { download } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { func } from '@/api/tester';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';

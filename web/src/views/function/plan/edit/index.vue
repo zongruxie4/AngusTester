@@ -10,6 +10,7 @@ import {
   modal,
   notification,
   Popover,
+  SelectUser,
   Select,
   Spin,
   Tooltip
@@ -727,6 +728,15 @@ const loadProjectMembers = async () => {
   });
 };
 
+/**
+ * Cancels the edit operation and closes the tab.
+ */
+ const cancelEdit = async () => {
+  if (props.data?._id) {
+    deleteTabPane([props.data._id]);
+  }
+};
+
 // Lifecycle hooks
 onMounted(() => {
   loadWorkloadMethodOptions();
@@ -747,15 +757,6 @@ onMounted(() => {
     await loadPlanData(planId);
   }, { immediate: true });
 });
-
-/**
- * Cancels the edit operation and closes the tab.
- */
-const cancelEdit = async () => {
-  if (props.data?._id) {
-    deleteTabPane([props.data._id]);
-  }
-};
 </script>
 
 <template>
@@ -897,7 +898,7 @@ const cancelEdit = async () => {
     <Form
       ref="formRef"
       :model="formState"
-      :labelCol="{ style: { width: '75px' } }"
+      :labelCol="{ style: { width: '150px' } }"
       class="max-w-242.5"
       size="small"
       layout="horizontal">
@@ -917,11 +918,12 @@ const cancelEdit = async () => {
         name="ownerId"
         class="relative"
         :rules="{ required: true, message: t('functionPlan.editForm.form.selectOwner') }">
-        <Select
+        <SelectUser
           v-model:value="formState.ownerId"
-          :options="projectMembers"
           size="small"
-          :placeholder="t('functionPlan.editForm.form.selectOwnerPlaceholder')" />
+          :placeholder="t('functionPlan.editForm.form.selectOwnerPlaceholder')"
+          :action="`${TESTER}/project/${props.projectId}/member/user`"
+          :maxlength="80" />
         <Tooltip
           placement="right"
           arrowPointAtCenter
@@ -1083,17 +1085,14 @@ const cancelEdit = async () => {
               <span class="whitespace-nowrap">{{ t('functionPlan.editForm.form.uploadAttachments') }}</span>
             </a>
           </Upload>
-          <Popover
-            placement="right"
-            arrowPointAtCenter
-            :overlayStyle="{ 'max-width': '400px' }">
-            <template #content>
+          <Tooltip :overlayStyle="{ 'max-width': '400px' }">
+            <template #title>
               <div class="text-3 text-theme-sub-content leading-4 break-all">
                 {{ t('functionPlan.editForm.form.attachmentsTooltip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1 -mt-0.25 text-3.5 cursor-pointer" />
-          </Popover>
+          </Tooltip>
         </div>
       </FormItem>
 
@@ -1105,13 +1104,17 @@ const cancelEdit = async () => {
         <div
           v-for="(item, index) in formState.attachments"
           :key="index"
-          :class="{ 'rounded-t pt-2': index === 0, 'rounded-b': index === formState.attachments.length - 1 }"
-          class="flex items-center justify-between text-3 leading-3 pb-2 px-3 bg-gray-100">
-          <div class="w-150 truncate text-theme-sub-content leading-4">{{ item.name }}</div>
-          <Icon
-            icon="icon-qingchu"
-            class="text-theme-special text-theme-text-hover cursor-pointer flex-shrink-0 leading-4 text-3.5"
-            @click="removeAttachment(index)" />
+          class="flex items-center text-3 leading-5 pb-1 px-3 space-x-5 bg-gray-100 first:rounded-t first:pt-2 last:rounded-b last:pb-2">
+          <div class="flex-1 truncate">{{ item.name }}</div>
+          <Button
+            type="text"
+            size="small"
+            class="flex-shrink-0 flex items-center justify-center px-0 leading-5 h-5">
+            <Icon
+              icon="icon-qingchu"
+              class="text-3.5"
+              @click="removeAttachment(index)" />
+          </Button>
         </div>
       </FormItem>
 
@@ -1206,6 +1209,11 @@ const cancelEdit = async () => {
 <style scoped>
 :deep(.ant-form-item-label>label::after) {
   margin-right: 10px;
+}
+
+:deep(.ant-form-item-label>label) {
+  font-weight: 500;
+  color: #000;
 }
 
 .ant-tabs-small > :deep(.ant-tabs-nav) .ant-tabs-tab {

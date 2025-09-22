@@ -30,18 +30,20 @@ const isAdmin = computed(() => appContext.isAdmin());
 const loaded = ref(false);
 const loading = ref(false);
 const searchedFlag = ref(false);
-
-const currentPage = ref(1);
-const pageSize = ref(5);
 const searchParams = ref({
   orderBy: undefined,
   orderSort: undefined,
   filters: []
 });
 
+const currentPage = ref(1);
+const pageSize = ref(4);
 const totalCount = ref(0);
 const reviewList = ref<ReviewDetail[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
+
+// Configuration Constants
+const pageSizeOptions = ['4', '10', '15', '20', '30'];
 
 /**
  * Refreshes the review list by resetting pagination and reloading data
@@ -265,9 +267,6 @@ const dropdownPermissionsMap = computed(() => {
   }
   return resultPermissionsMap;
 });
-
-// Configuration Constants
-const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
 // Lifecycle and Watchers
 onMounted(() => {

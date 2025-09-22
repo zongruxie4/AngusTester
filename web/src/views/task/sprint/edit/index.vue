@@ -17,8 +17,7 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { BasicProps } from '@/types/types';
 
 /**
- * <p>Component props interface for SprintEdit component</p>
- * <p>Defines the required data structure for sprint editing functionality</p>
+ * Component props interface for SprintEdit component
  */
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
@@ -94,7 +93,7 @@ const acceptanceCriteriaEditorRef = ref();
 const otherInformationEditorRef = ref();
 
 /**
- * <p>Form state containing all sprint editing data</p>
+ * Form state containing all sprint editing data
  */
 const formState = ref<EditFormState>({
   taskPrefix: '',
@@ -111,9 +110,9 @@ const formState = ref<EditFormState>({
 });
 
 /**
- * <p>Prepares form data for API submission</p>
- * <p>Transforms form state into the format expected by backend APIs</p>
- * <p>Removes empty optional fields and formats date range</p>
+ * Prepares form data for API submission
+ * Transforms form state into the format expected by backend APIs
+ * Removes empty optional fields and formats date range
  * @returns {EditFormState} Formatted parameters ready for API call
  */
 const prepareFormParams = () => {
@@ -155,7 +154,7 @@ const prepareFormParams = () => {
 };
 
 /**
- * <p>Refreshes the sprint list in parent component</p>
+ * Refreshes the sprint list in parent component
  */
 const refreshSprintList = () => {
   nextTick(() => {
@@ -164,7 +163,7 @@ const refreshSprintList = () => {
 };
 
 /**
- * <p>Handles sprint update operation</p>
+ * Handles sprint update operation
  */
 const handleSprintUpdate = async () => {
   const params = prepareFormParams();
@@ -189,7 +188,7 @@ const handleSprintUpdate = async () => {
 };
 
 /**
- * <p>Handles sprint creation operation</p>
+ * Handles sprint creation operation
  */
 const handleSprintCreation = async () => {
   const params = prepareFormParams();
@@ -219,8 +218,8 @@ const handleSprintCreation = async () => {
 };
 
 /**
- * <p>Validates maximum length for rich text editor fields</p>
- * <p>Ensures content doesn't exceed 2000 characters limit</p>
+ * Validates maximum length for rich text editor fields
+ * Ensures content doesn't exceed 2000 characters limit
  * @param {Object} validationRule - Form validation rule object
  * @returns {Promise} Validation result promise
  */
@@ -240,8 +239,8 @@ const validateRichTextMaxLength = (validationRule) => {
 };
 
 /**
- * <p>Main form submission handler</p>
- * <p>Validates form and delegates to appropriate create or update handler</p>
+ * Main form submission handler
+ * Validates form and delegates to appropriate create or update handler
  */
 const handleFormSubmission = async () => {
   formRef.value.validate().then(async () => {
@@ -255,8 +254,8 @@ const handleFormSubmission = async () => {
 };
 
 /**
- * <p>Starts the current sprint</p>
- * <p>Changes sprint status from PENDING/BLOCKED/COMPLETED to IN_PROGRESS</p>
+ * Starts the current sprint
+ * Changes sprint status from PENDING/BLOCKED/COMPLETED to IN_PROGRESS
  */
 const startSprint = async () => {
   const sprintId = currentSprintData.value?.id;
@@ -278,8 +277,8 @@ const startSprint = async () => {
 };
 
 /**
- * <p>Completes the current sprint</p>
- * <p>Changes sprint status from IN_PROGRESS to COMPLETED</p>
+ * Completes the current sprint
+ * Changes sprint status from IN_PROGRESS to COMPLETED
  */
 const completeSprint = async () => {
   const sprintId = currentSprintData.value?.id;
@@ -301,8 +300,8 @@ const completeSprint = async () => {
 };
 
 /**
- * <p>Deletes the current sprint with confirmation</p>
- * <p>Shows confirmation dialog before proceeding with deletion</p>
+ * Deletes the current sprint with confirmation
+ * Shows confirmation dialog before proceeding with deletion
  */
 const deleteSprint = async () => {
   const sprintData = currentSprintData.value;
@@ -317,7 +316,6 @@ const deleteSprint = async () => {
       isLoading.value = true;
       const [error] = await task.deleteSprint(sprintId);
       isLoading.value = false;
-
       if (error) {
         return;
       }
@@ -332,15 +330,15 @@ const deleteSprint = async () => {
 };
 
 /**
- * <p>Opens the authorization modal for permission management</p>
+ * Opens the authorization modal for permission management
  */
 const openPermissionModal = () => {
   isAuthorizeModalVisible.value = true;
 };
 
 /**
- * <p>Handles permission changes after authorization modal updates</p>
- * <p>Reloads sprint data and refreshes list to reflect permission changes</p>
+ * Handles permission changes after authorization modal updates
+ * Reloads sprint data and refreshes list to reflect permission changes
  */
 const handlePermissionChange = async () => {
   const sprintId = currentSprintData.value?.id;
@@ -353,8 +351,8 @@ const handlePermissionChange = async () => {
 };
 
 /**
- * <p>Clones the current sprint</p>
- * <p>Creates a copy of the sprint with same configuration</p>
+ * Clones the current sprint
+ * Creates a copy of the sprint with same configuration
  */
 const cloneSprint = async () => {
   const sprintId = currentSprintData.value?.id;
@@ -365,7 +363,6 @@ const cloneSprint = async () => {
   isLoading.value = true;
   const [error] = await task.cloneSprint(sprintId);
   isLoading.value = false;
-
   if (error) {
     return;
   }
@@ -375,8 +372,8 @@ const cloneSprint = async () => {
 };
 
 /**
- * <p>Copies sprint link to clipboard</p>
- * <p>Generates shareable URL for the current sprint</p>
+ * Copies sprint link to clipboard
+ * Generates shareable URL for the current sprint
  */
 const copySprintLink = () => {
   const sprintId = currentSprintData.value?.id;
@@ -393,20 +390,19 @@ const copySprintLink = () => {
 };
 
 /**
- * <p>Refreshes current sprint data</p>
- * <p>Reloads sprint information from server</p>
+ * Refreshes current sprint data
+ * Reloads sprint information from server
  */
 const refreshSprintData = () => {
   const sprintId = currentSprintData.value?.id;
   if (!sprintId) {
     return;
   }
-
   loadSprintData(sprintId);
 };
 
 /**
- * <p>Closes the current tab and returns to sprint list</p>
+ * Closes the current tab and returns to sprint list
  */
 const closeCurrentTab = () => {
   if (props.data?._id) {
@@ -415,16 +411,16 @@ const closeCurrentTab = () => {
 };
 
 /**
- * <p>Loads enum options for workload evaluation methods</p>
- * <p>Populates radio group options from EvalWorkloadMethod enum</p>
+ * Loads enum options for workload evaluation methods
+ * Populates radio group options from EvalWorkloadMethod enum
  */
 const loadWorkloadMethodOptions = () => {
   workloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
 /**
- * <p>Loads user permissions for the current sprint</p>
- * <p>Determines which actions the user can perform based on their role and permissions</p>
+ * Loads user permissions for the current sprint
+ * Determines which actions the user can perform based on their role and permissions
  * @param {string} sprintId - The ID of the sprint to load permissions for
  */
 const loadUserPermissions = async (sprintId: string) => {
@@ -463,15 +459,14 @@ const loadUserPermissions = async (sprintId: string) => {
 };
 
 /**
- * <p>Loads sprint detail data from server</p>
- * <p>Fetches complete sprint information and populates form</p>
+ * Loads sprint detail data from server
+ * Fetches complete sprint information and populates form
  * @param {string} sprintId - The ID of the sprint to load
  */
 const loadSprintData = async (sprintId: string) => {
   isLoading.value = true;
   const [error, response] = await task.getSprintDetail(sprintId);
   isLoading.value = false;
-
   if (error) {
     return;
   }
@@ -492,8 +487,8 @@ const loadSprintData = async (sprintId: string) => {
 };
 
 /**
- * <p>Populates form with sprint data or sets default values</p>
- * <p>Handles both new sprint creation and existing sprint editing scenarios</p>
+ * Populates form with sprint data or sets default values
+ * Handles both new sprint creation and existing sprint editing scenarios
  * @param {SprintInfo} sprintData - Sprint data to populate form with, null for new sprint
  */
 const populateFormWithSprintData = (sprintData: SprintInfo) => {
@@ -554,8 +549,8 @@ const populateFormWithSprintData = (sprintData: SprintInfo) => {
 };
 
 /**
- * <p>Validates date range selection</p>
- * <p>Ensures both start and end dates are selected for sprint planning</p>
+ * Validates date range selection
+ * Ensures both start and end dates are selected for sprint planning
  * @param {Rule} _validationRule - Form validation rule object (unused)
  * @param {Array} dateRange - Array containing start and end dates
  * @returns {Promise} Validation result promise
@@ -573,8 +568,8 @@ const validateDateRange = async (_validationRule: Rule, dateRange: string[]) => 
 };
 
 /**
- * <p>Handles file upload for sprint attachments</p>
- * <p>Uploads file to server and adds to attachment list with size limit</p>
+ * Handles file upload for sprint attachments
+ * Uploads file to server and adds to attachment list with size limit
  * @param {Object} uploadInfo - Upload event containing file information
  */
 const handleFileUpload = async (uploadInfo: any) => {
@@ -595,7 +590,6 @@ const handleFileUpload = async (uploadInfo: any) => {
     bizKey: 'angusTesterCaseAttachments'
   });
   isLoading.value = false;
-
   if (error) {
     return;
   }
@@ -616,8 +610,8 @@ const handleFileUpload = async (uploadInfo: any) => {
 };
 
 /**
- * <p>Removes attachment from the list</p>
- * <p>Deletes file reference from form state by index</p>
+ * Removes attachment from the list
+ * Deletes file reference from form state by index
  * @param {number} attachmentIndex - Index of attachment to remove
  */
 const removeAttachment = (attachmentIndex: number) => {
@@ -625,24 +619,24 @@ const removeAttachment = (attachmentIndex: number) => {
 };
 
 /**
- * <p>Current sprint status value</p>
- * <p>Returns the status enum value for conditional rendering</p>
+ * Current sprint status value
+ * Returns the status enum value for conditional rendering
  */
 const currentSprintStatus = computed(() => {
   return currentSprintData.value?.status?.value;
 });
 
 /**
- * <p>Determines if component is in edit mode</p>
- * <p>True when editing existing sprint, false when creating new sprint</p>
+ * Determines if component is in edit mode
+ * True when editing existing sprint, false when creating new sprint
  */
 const isEditMode = computed(() => {
   return !!props.data?.id;
 });
 
 /**
- * <p>Determines if form fields should be disabled</p>
- * <p>Disables editing when sprint is in progress or completed</p>
+ * Determines if form fields should be disabled
+ * Disables editing when sprint is in progress or completed
  */
 const isFormDisabled = computed(() => {
   const status = currentSprintData.value?.status?.value;
@@ -653,8 +647,8 @@ const isFormDisabled = computed(() => {
 });
 
 /**
- * <p>Component initialization and data loading</p>
- * <p>Sets up watchers and loads initial data when component mounts</p>
+ * Component initialization and data loading
+ * Sets up watchers and loads initial data when component mounts
  */
 onMounted(() => {
   // Load enum options for form dropdowns

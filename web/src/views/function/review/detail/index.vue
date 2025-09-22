@@ -10,7 +10,7 @@ import { FuncPlanPermission, FuncPlanStatus } from '@/enums/enums';
 
 // Type imports
 import { BasicProps } from '@/types/types';
-import { ReviewDetail } from '@/views/function/review/types';
+import type { ReviewDetail } from '@/views/function/review/types';
 
 // Component imports
 import RichEditor from '@/components/richEditor/index.vue';
@@ -63,7 +63,7 @@ const reviewStatus = ref();
 
 // Data state
 const permissions = ref<string[]>([]);
-const reviewDetail = ref(ReviewDetail);
+const reviewDetail = ref<ReviewDetail>();
 const caseList = ref([]);
 const reviewId = ref();
 
@@ -120,13 +120,13 @@ const columns = [
     customRender: ({ text }) => {
       return text?.version ? `v${text.version}` : '--';
     },
-    width: 90
+    width: 100
   },
   {
     title: t('caseReview.detail.priority'),
     dataIndex: 'priority',
     customRender: ({ text }):string => text?.message,
-    width: 80,
+    width: 100,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
@@ -135,7 +135,7 @@ const columns = [
     title: t('caseReview.detail.reviewStatus'),
     dataIndex: 'reviewStatus',
     customRender: ({ text }):string => text?.message,
-    width: '10%',
+    width: '12%',
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
@@ -143,7 +143,7 @@ const columns = [
   {
     title: t('caseReview.detail.creator'),
     dataIndex: 'createdByName',
-    width: '10%',
+    width: '12%',
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
@@ -481,18 +481,18 @@ onMounted(() => {
           <div class="flex-1">
             <div class="flex leading-8 h-8">
               <div class="inline-flex flex-1 pr-2">
-                <label class="w-16">{{ t('caseReview.detail.testPlan') }}：</label>
+                <label class="w-25 text-right font-semibold text-black">{{ t('caseReview.detail.testPlan') }}：</label>
                 <div>{{ reviewDetail?.planName }}</div>
               </div>
               <div class="inline-flex flex-1 pr-2">
-                <label class="w-16">{{ t('caseReview.detail.owner') }}：</label>
+                <label class="w-25 text-right font-semibold text-black">{{ t('caseReview.detail.owner') }}：</label>
                 <div>{{ reviewDetail?.ownerName }}</div>
               </div>
             </div>
 
             <div class="flex leading-8 h-8">
               <div class="inline-flex flex-1 pr-2">
-                <label class="w-16">{{ t('caseReview.detail.attachments') }}：</label>
+                <label class="w-25 text-right font-semibold text-black">{{ t('caseReview.detail.attachments') }}：</label>
                 <div class="flex space-x-2 flex-1">
                   <a
                     v-for="file in (reviewDetail?.attachments || [])"
@@ -505,7 +505,7 @@ onMounted(() => {
               </div>
 
               <div class="inline-flex flex-1 pr-2">
-                <label class="w-16">{{ t('caseReview.detail.participants') }}：</label>
+                <label class="w-25 text-right font-semibold text-black">{{ t('caseReview.detail.participants') }}：</label>
                 <div class="flex space-x-2 flex-wrap flex-1 items-center">
                   <div
                     v-for="person in (reviewDetail?.participants || []).slice(0, 5)"

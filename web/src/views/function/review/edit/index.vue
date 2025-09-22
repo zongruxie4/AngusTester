@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch
 import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, TabPane, Tabs, Upload } from 'ant-design-vue';
 import {
-  AsyncComponent, Icon, Input, modal, notification, Popover, ReviewStatus, Select, Spin, Table
+  AsyncComponent, Icon, Input, modal, notification, Popover, ReviewStatus, Select, Spin, Table, Tooltip, SelectUser
 } from '@xcan-angus/vue-ui';
 import {
   EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils, upload, duration, appContext
@@ -670,7 +670,7 @@ onMounted(async () => {
     <Form
       ref="formRef"
       :model="formState"
-      :labelCol="{ style: { width: '75px' } }"
+      :labelCol="{ style: { width: '150px' } }"
       class="max-w-242.5"
       size="small"
       layout="horizontal">
@@ -704,11 +704,12 @@ onMounted(async () => {
         name="ownerId"
         class="relative"
         :rules="{ required: true, message: t('caseReview.editForm.selectOwner') }">
-        <Select
+        <SelectUser
           v-model:value="formState.ownerId"
-          :options="members"
           size="small"
-          :placeholder="t('caseReview.editForm.selectOwnerPlaceholder')" />
+          :placeholder="t('caseReview.editForm.selectOwnerPlaceholder')"
+          :action="`${TESTER}/project/${props.projectId}/member/user`"
+          :maxlength="80" />
       </FormItem>
 
       <FormItem
@@ -724,7 +725,7 @@ onMounted(async () => {
           :placeholder="t('caseReview.editForm.selectParticipantsPlaceholder')" />
       </FormItem>
 
-      <FormItem label="t('caseReview.editForm.attachments')">
+      <FormItem :label="t('caseReview.editForm.attachments')">
         <div class="flex items-center mt-0.5">
           <Upload
             v-if="!formState?.attachments || formState?.attachments?.length < 10"
@@ -738,17 +739,14 @@ onMounted(async () => {
             </a>
           </Upload>
 
-          <Popover
-            placement="right"
-            arrowPointAtCenter
-            :overlayStyle="{ 'max-width': '400px' }">
-            <template #content>
+          <Tooltip :overlayStyle="{ 'max-width': '400px' }">
+            <template #title>
               <div class="text-3 text-theme-sub-content leading-4 break-all">
                 {{ t('caseReview.editForm.attachmentsDescription') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1 -mt-0.25 text-3.5 cursor-pointer" />
-          </Popover>
+          </Tooltip>
         </div>
       </FormItem>
 
@@ -760,14 +758,17 @@ onMounted(async () => {
         <div
           v-for="(item, index) in formState.attachments"
           :key="index"
-          :class="{ 'rounded-t pt-2': index === 0, 'rounded-b': index === formState.attachments.length - 1 }"
-          class="flex items-center justify-between text-3 leading-3 pb-2 px-3 bg-gray-100">
-          <div class="w-150 truncate text-theme-sub-content leading-4">{{ item.name }}</div>
-
-          <Icon
-            icon="icon-qingchu"
-            class="text-theme-special text-theme-text-hover cursor-pointer flex-shrink-0 leading-4 text-3.5"
-            @click="removeAttachmentFile(index)" />
+          class="flex items-center text-3 leading-5 pb-1 px-3 space-x-5 bg-gray-100 first:rounded-t first:pt-2 last:rounded-b last:pb-2">
+          <div class="flex-1 truncate">{{ item.name }}</div>
+          <Button
+            type="text"
+            size="small"
+            class="flex-shrink-0 flex items-center justify-center px-0 leading-5 h-5">
+            <Icon
+              icon="icon-qingchu"
+              class="text-3.5"
+              @click="removeAttachmentFile(index)" />
+          </Button>
         </div>
       </FormItem>
 
@@ -851,7 +852,12 @@ onMounted(async () => {
   margin-right: 10px;
 }
 
-.ant-tabs-small>:deep(.ant-tabs-nav) .ant-tabs-tab {
+:deep(.ant-form-item-label>label) {
+  font-weight: 500;
+  color: #000;
+}
+
+.ant-tabs-small > :deep(.ant-tabs-nav) .ant-tabs-tab {
   padding-top: 0;
 }
 </style>
