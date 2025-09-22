@@ -903,7 +903,7 @@ const loadEnums = () => {
 };
 
 // 模块相关
-const moduleTreeData = ref([{ name: t('functionCase.mainView.noModuleCase'), id: '-1' }]);
+const moduleTreeData = ref([{ name: t('functionCase.case.moduleTree.noModuleCases'), id: '-1' }]);
 const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
   const [error, { data }] = await modules.getModuleTree({
@@ -919,7 +919,7 @@ const loadModuleTree = async (keywords?: string) => {
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: t('functionCase.mainView.noModuleCase'), id: '-1' }, ...travelTreeData(data || [])];
+  moduleTreeData.value = [{ name: t('functionCase.case.moduleTree.noModuleCases'), id: '-1' }, ...travelTreeData(data || [])];
   if (moduleId.value && keywords && !moduleTreeData.value.find(item => item.id === moduleId.value)) {
     moduleId.value = '';
   }

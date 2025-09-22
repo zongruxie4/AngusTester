@@ -507,7 +507,7 @@
       },
       "moduleTree": {
         "allCases": "All Cases",
-        "noModuleCases": "No Module Cases",
+        "noModuleCases": "No Module",
         "enterModuleName": "Please enter module name",
         "cancel": "Cancel",
         "confirmDeleteModule": "Are you sure you want to delete module 【{name}】?",
@@ -727,7 +727,6 @@
       "retest": "Retest",
       "clone": "Clone",
       "copyLink": "Copy Link",
-      "noModuleCase": "No Module Case",
       "tileView": "Tile View",
       "listView": "List View",
       "kanbanView": "Kanban View",

@@ -291,7 +291,7 @@ const resetComponent = () => {
  * Computed property that maps review IDs to their available dropdown permissions
  */
 const dropdownPermissionsMap = computed(() => {
-  const permissionsMap = new Map<string, string[]>();
+  const resultPermissionsMap = new Map<string, string[]>();
   if (reviewList.value.length) {
     const isAdminUser = isAdmin.value;
     const userPermissionsMap = permissionsMap.value;
@@ -322,10 +322,10 @@ const dropdownPermissionsMap = computed(() => {
       if (isAdminUser || userPermissions.includes(FuncPlanPermission.EXPORT_CASE)) {
         availablePermissions.push('export');
       }
-      permissionsMap.set(id, availablePermissions);
+      resultPermissionsMap.set(id, availablePermissions);
     }
   }
-  return permissionsMap;
+  return resultPermissionsMap;
 });
 
 // Configuration Constants
