@@ -6,9 +6,9 @@ import { ReviewStatus } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 
 const CaseInfo = defineAsyncComponent(() => import('@/views/function/case/list/flat/detail/CaseInfo.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/function/review/case/Precondition.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/function/review/detail/case/Precondition.vue'));
 const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/CaseSteps.vue'));
-const Description = defineAsyncComponent(() => import('@/views/function/review/case/Description.vue'));
+const Description = defineAsyncComponent(() => import('@/views/function/review/detail/case/Description.vue'));
 
 interface Props {
   caseDetail: {id: string; reviewNum: number; reviewFailNum: number;};
