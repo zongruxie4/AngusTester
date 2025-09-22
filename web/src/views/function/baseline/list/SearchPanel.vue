@@ -5,7 +5,7 @@ import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus
 import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { LoadingProps } from '@/types/types';
 
 const { t } = useI18n();
@@ -19,12 +19,9 @@ const props = withDefaults(defineProps<LoadingProps>(), {
 type OrderByKey = string;
 
 // Emits Definition
+// eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
-  (e: 'change', value: {
-  orderBy?: string;
-  orderSort?: PageQuery.OrderSort;
-  filters: SearchCriteria[];
-}):void,
+  (e: 'change', value: { orderBy?: string; orderSort?: PageQuery.OrderSort; filters: SearchCriteria[]; }):void,
   (e: 'refresh'):void
 }>();
 
@@ -32,11 +29,11 @@ const emits = defineEmits<{
 const currentUserInfo = ref(appContext.getUser());
 const searchPanelRef = ref();
 const selectedMenuItemsMap = ref<{[key: string]: boolean}>({});
-const currentOrderBy = ref();
-const currentOrderSort = ref();
 const searchFilters = ref<SearchCriteria[]>([]);
 const quickSearchFilters = ref<SearchCriteria[]>([]);
 const associatedFilters = ref<SearchCriteria[]>([]);
+const currentOrderBy = ref();
+const currentOrderSort = ref();
 
 // Configuration Constants
 const ASSOCIATED_KEYS = ['ownerId'];
@@ -158,19 +155,12 @@ const formatDateStringForTimeFilter = (key: string) => {
 
   return [
     startDate
-      ? {
-          value: startDate.format(DATE_TIME_FORMAT),
-          op: SearchCriteria.OpEnum.GreaterThanEqual,
-          key: 'createdDate'
-        }
+      ? { value: startDate.format(DATE_TIME_FORMAT), op: SearchCriteria.OpEnum.GreaterThanEqual, key: 'createdDate' }
       : '',
     endDate
-      ? {
-          value: endDate.format(DATE_TIME_FORMAT),
-          op: SearchCriteria.OpEnum.LessThanEqual,
-          key: 'createdDate'
-        }
-      : ''].filter(Boolean);
+      ? { value: endDate.format(DATE_TIME_FORMAT), op: SearchCriteria.OpEnum.LessThanEqual, key: 'createdDate' }
+      : ''
+  ].filter(Boolean);
 };
 
 /**
@@ -321,19 +311,24 @@ const handleRefreshClick = () => {
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex">
-      <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>{{ t('functionBaseline.list.quickSearch') }}</span>
-        <Colon />
-      </div>
-      <div class="flex  flex-wrap ml-2">
-        <div
-          v-for="item in quickSearchMenuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuItemsMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="handleQuickSearchMenuItemClick(item)">
-          {{ item.name }}
+    <div class="flex items-center mb-3">
+      <div class="flex items-start transform-gpu translate-y-0.5">
+        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
+
+        <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
+          <span>{{ t('functionBaseline.list.quickSearch') }}</span>
+          <Colon />
+        </div>
+
+        <div class="flex flex-wrap ml-2">
+          <div
+            v-for="item in quickSearchMenuItems"
+            :key="item.key"
+            :class="{ 'active-key': selectedMenuItemsMap[item.key] }"
+            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
+            @click="handleQuickSearchMenuItemClick(item)">
+            {{ item.name }}
+          </div>
         </div>
       </div>
     </div>

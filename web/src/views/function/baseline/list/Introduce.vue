@@ -8,7 +8,7 @@ const { t } = useI18n();
   <div>
     <div class="text-3.5 font-semibold mb-2.5">{{ t('functionBaseline.list.aboutBaseline') }}</div>
     <div class="mb-6">
-      <div>{{ t('functionBaseline.list.baselineDescription') }}</div>
+      <div class="text-3.5">{{ t('functionBaseline.list.baselineDescription') }}</div>
     </div>
 
     <div class="space-y-6">
@@ -17,7 +17,7 @@ const { t } = useI18n();
           <img src="./images/banbenkongzhi.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('functionBaseline.list.versionControl') }}</div>
-            <div>{{ t('functionBaseline.list.versionControlDescription') }}</div>
+            <div class="text-3.5">{{ t('functionBaseline.list.versionControlDescription') }}</div>
           </div>
         </div>
 
@@ -25,7 +25,7 @@ const { t } = useI18n();
           <img src="./images/biangengguanli.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('functionBaseline.list.changeManagement') }}</div>
-            <div>{{ t('functionBaseline.list.changeManagementDescription') }}</div>
+            <div class="text-3.5">{{ t('functionBaseline.list.changeManagementDescription') }}</div>
           </div>
         </div>
 
@@ -33,7 +33,7 @@ const { t } = useI18n();
           <img src="./images/shenjihehegui.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('functionBaseline.list.auditCompliance') }}</div>
-            <div>{{ t('functionBaseline.list.auditComplianceDescription') }}</div>
+            <div class="text-3.5">{{ t('functionBaseline.list.auditComplianceDescription') }}</div>
           </div>
         </div>
       </div>

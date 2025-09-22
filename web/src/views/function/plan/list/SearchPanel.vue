@@ -336,7 +336,7 @@ onMounted(() => {
           <Colon />
         </div>
 
-        <div class="flex  flex-wrap ml-2">
+        <div class="flex flex-wrap ml-2">
           <div
             v-for="item in menuItems"
             :key="item.key"

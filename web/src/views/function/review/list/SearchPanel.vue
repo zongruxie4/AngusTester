@@ -6,7 +6,7 @@ import { FuncPlanStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { LoadingProps } from '@/types/types';
 
 // Props and Component Setup
@@ -19,6 +19,7 @@ const { t } = useI18n();
 type OrderByKey = string;
 
 // Event Emitters
+// eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'change', value: { orderBy?: string; orderSort?: PageQuery.OrderSort; filters: SearchCriteria[]; }):void,
   (e: 'refresh'):void
@@ -28,8 +29,16 @@ const emits = defineEmits<{
 const currentUser = ref(appContext.getUser());
 const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
-
 const planStatusOptions = ref<EnumMessage<FuncPlanStatus>[]>([]);
+
+// Search State
+const searchFilters = ref<SearchCriteria[]>([]);
+const quickSearchFilters = ref<SearchCriteria[]>([]);
+const associatedFilters = ref<SearchCriteria[]>([]);
+const currentOrderBy = ref();
+const currentOrderSort = ref();
+const associatedKeys = ['ownerId'];
+const timeRangeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
 
 /**
  * Loads the plan status enum options for filtering
@@ -59,7 +68,7 @@ const searchPanelOptions = [
     type: 'date-range',
     valueKey: 'createdDate',
     placeholder: [
-      t('caseReview.list.createdTimeGreaterEqual'), 
+      t('caseReview.list.createdTimeGreaterEqual'),
       t('caseReview.list.createdTimeLessEqual')
     ],
     showTime: true,
@@ -126,15 +135,6 @@ const quickMenuItems = computed(() => [
     name: t('caseReview.list.lastWeek')
   }
 ]);
-
-// Search State
-const currentOrderBy = ref();
-const currentOrderSort = ref();
-const searchFilters = ref<SearchCriteria[]>([]);
-const quickSearchFilters = ref<SearchCriteria[]>([]);
-const associatedFilters = ref<SearchCriteria[]>([]);
-const associatedKeys = ['ownerId'];
-const timeRangeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
 
 /**
  * Formats date range strings for time-based filtering
@@ -314,20 +314,24 @@ onMounted(() => {
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex">
-      <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>{{ t('caseReview.list.quickQuery') }}</span>
-        <Colon />
-      </div>
+    <div class="flex items-center mb-3">
+      <div class="flex items-start transform-gpu translate-y-0.5">
+        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
 
-      <div class="flex  flex-wrap ml-2">
-        <div
-          v-for="item in quickMenuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="handleQuickMenuItemClick(item)">
-          {{ item.name }}
+        <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
+          <span>{{ t('caseReview.list.quickQuery') }}</span>
+          <Colon />
+        </div>
+
+        <div class="flex  flex-wrap ml-2">
+          <div
+            v-for="item in quickMenuItems"
+            :key="item.key"
+            :class="{ 'active-key': selectedMenuMap[item.key] }"
+            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
+            @click="handleQuickMenuItemClick(item)">
+            {{ item.name }}
+          </div>
         </div>
       </div>
     </div>
