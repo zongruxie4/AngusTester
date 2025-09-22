@@ -257,7 +257,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
                 || ![TaskSprintStatus.PENDING].includes(item.status?.value)"
               size="small"
               type="text"
-              class="px-0 flex items-center ml-1"
+              class="px-0 flex items-center ml-2"
               @click="props.startSprint(item, index)">
               <Icon icon="icon-kaishi" class="mr-0.5" />
               <span>{{ t('taskSprint.actions.start') }}</span>
@@ -269,13 +269,14 @@ const getSprintStatusDotStyle = (statusValue: string) => {
                 || ![TaskSprintStatus.IN_PROGRESS].includes(item.status?.value)"
               size="small"
               type="text"
-              class="px-0 flex items-center mr-1"
+              class="px-0 flex items-center ml-2"
               @click="props.completeSprint(item, index)">
               <Icon icon="icon-yiwancheng" class="mr-0.5" />
               <span>{{ t('taskSprint.actions.complete') }}</span>
             </Button>
 
             <Dropdown
+              class="ml-2"
               :admin="false"
               :menuItems="props.getDropdownMenuItems()"
               :permissions="props.dropdownPermissionsMap.get(item.id)"

@@ -77,7 +77,7 @@
       "lastModifiedAt": "Last modified at",
       "charts": "Chart",
       "detail": "Detail",
-      "snapshot":"Snapshot",
+      "snapshot": "Snapshot",
       "realTime": "Real-time",
       "backlogTasks": {
         "total": "Total",
@@ -412,8 +412,8 @@
       "versionControlDescription": "Baselines help teams track and manage functional test cases across different versions, ensuring all members work on the same foundation.",
       "changeManagement": "Change Management",
       "changeManagementDescription": "By establishing baselines, teams can effectively manage functional changes, ensuring all changes are confirmed and approved, avoiding confusion.",
-               "auditCompliance": "Audit and Compliance",
-         "auditComplianceDescription": "Baselines provide necessary records (snapshots) for audit and compliance checks, facilitating verification of transparency and compliance in development and testing processes."
+      "auditCompliance": "Audit and Compliance",
+      "auditComplianceDescription": "Baselines provide necessary records (snapshots) for audit and compliance checks, facilitating verification of transparency and compliance in development and testing processes."
     },
     "editForm": {
       "save": "Save",
@@ -482,13 +482,13 @@
       "associatedCases": "Associated Cases",
       "attachments": "Attachments",
       "compareTag": {
-      "new": "New",
-      "deleted": "Deleted",
-      "modified": "Modified"
+        "new": "New",
+        "deleted": "Deleted",
+        "modified": "Modified"
       },
       "stepDescription": "Step Description",
       "expectedResult": "Expected Result",
-      "searchPanel":{
+      "searchPanel": {
         "reviewDateFrom": "Review time from",
         "reviewDateTo": "Review time to",
         "updateDateFrom": "Update time from",
@@ -507,7 +507,7 @@
       },
       "moduleTree": {
         "allCases": "All Cases",
-        "noModuleCases": "No Module Cases",
+        "noModuleCases": "No Module",
         "enterModuleName": "Please enter module name",
         "cancel": "Cancel",
         "confirmDeleteModule": "Are you sure you want to delete module 【{name}】?",
@@ -535,25 +535,25 @@
     "deleteSuccess": "Deleted successfully, you can view the deleted case in the recycle bin",
     "backToTop": "Back to top",
     "statisticsPanel": {
-    "progress": "Progress",
-    "totalCaseNum": "Total Cases",
-    "pendingTestNum": "Pending Test",
-    "passedTestNum": "Test Passed",
-    "notPassedTestNum": "Test Not Passed",
-    "oneTimePassedTestNum": "One-time Test Passed Count",
-    "oneTimePassedTestRate": "One-time Test Pass Rate",
-    "overdueNum": "Overdue",
-    "blockedTestNum": "Blocked",
-    "canceledTestNum": "Cancelled",
-    "evalWorkload": "Estimated Workload",
-    "completedWorkload": "Completed Workload",
-    "oneTimePassReviewNum": "One-time Review Passed Count",
-    "oneTimePassReviewRate": "One-time Review Pass Rate",
-    "reviewStatus": "Review Status",
-    "total": "Total",
-    "pendingReview": "Pending Review",
-    "reviewPassed": "Review Passed",
-    "reviewNotPassed": "Review Not Passed"
+      "progress": "Progress",
+      "totalCaseNum": "Total Cases",
+      "pendingTestNum": "Pending Test",
+      "passedTestNum": "Test Passed",
+      "notPassedTestNum": "Test Not Passed",
+      "oneTimePassedTestNum": "One-time Test Passed Count",
+      "oneTimePassedTestRate": "One-time Test Pass Rate",
+      "overdueNum": "Overdue",
+      "blockedTestNum": "Blocked",
+      "canceledTestNum": "Cancelled",
+      "evalWorkload": "Estimated Workload",
+      "completedWorkload": "Completed Workload",
+      "oneTimePassReviewNum": "One-time Review Passed Count",
+      "oneTimePassReviewRate": "One-time Review Pass Rate",
+      "reviewStatus": "Review Status",
+      "total": "Total",
+      "pendingReview": "Pending Review",
+      "reviewPassed": "Review Passed",
+      "reviewNotPassed": "Review Not Passed"
     },
     "addCaseModal": {
       "editCase": "Edit Function Case",
@@ -727,7 +727,6 @@
       "retest": "Retest",
       "clone": "Clone",
       "copyLink": "Copy Link",
-      "noModuleCase": "No Module Case",
       "tileView": "Tile View",
       "listView": "List View",
       "kanbanView": "Kanban View",
@@ -919,7 +918,7 @@
         "evalWorkload": "Estimated Workload",
         "actualStoryPoint": "Actual Story Points",
         "actualWorkload": "Actual Workload",
-                    "overdue": "Overdue"
+        "overdue": "Overdue"
       },
       "infoAttachment": {
         "title": "Attachments",
@@ -1200,22 +1199,22 @@
       },
       "stepDescription": "Step Description",
       "expectedResult": "Expected Result",
-      "searchPanel":{
-          "reviewDateFrom": "Review time from",
-          "reviewDateTo": "Review time to",
-          "updateDateFrom": "Update time from",
-          "updateDateTo": "Update time to",
-          "deadlineDateFrom": "Deadline time from",
-          "deadlineDateTo": "Deadline time to",
-          "createdDateFrom": "Created time from",
-          "createdDateTo": "Created time to",
-          "testResultHandleDateFrom": "Test time from",
-          "testResultHandleDateTo": "Test time to",
-          "overdue": "Overdue",
-          "addCase": "Add baseline case",
-          "testFailNumPlaceholder": "Test fail times",
-          "reviewNumPlaceholder": "Review times",
-          "testNumPlaceholder": "Test times"
+      "searchPanel": {
+        "reviewDateFrom": "Review time from",
+        "reviewDateTo": "Review time to",
+        "updateDateFrom": "Update time from",
+        "updateDateTo": "Update time to",
+        "deadlineDateFrom": "Deadline time from",
+        "deadlineDateTo": "Deadline time to",
+        "createdDateFrom": "Created time from",
+        "createdDateTo": "Created time to",
+        "testResultHandleDateFrom": "Test time from",
+        "testResultHandleDateTo": "Test time to",
+        "overdue": "Overdue",
+        "addCase": "Add baseline case",
+        "testFailNumPlaceholder": "Test fail times",
+        "reviewNumPlaceholder": "Review times",
+        "testNumPlaceholder": "Test times"
       },
       "moduleTree": {
         "allCases": "All Cases",
@@ -1432,33 +1431,32 @@
       "permissionControlOnTips": "After enabling \"Permission Control\", you need to manually authorize service permissions to have plan operation permissions. Permission control is enabled by default. Note: If the authorized object does not have parent project permissions, view permissions will be automatically granted.",
       "permissionControlOffTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current plan. Users viewing the plan must also have parent project permissions for the current plan."
     },
-    "introduce": {  
-      "title": "About Plan",
-      "description": "Plan enables testers to conduct project testing activities in an organized manner, ensuring the effectiveness and efficiency of software testing activities. As an important part of the software testing life cycle, the plan comprehensively describes the scope, method, resources, and time arrangement of testing activities.",
-      "benefitsIntro": "By detailed planning and proper management, test plans help the team to clarify goals, coordinate resources, and control risks, ensuring the quality and reliability of software products. The main benefits are:",
+    "introduce": {
+      "title": "About Test Plan",
+      "description": "Test plans serve as the core component of the software testing lifecycle, providing a systematic framework for testing teams. Through detailed test planning, we ensure organized testing activities, improve efficiency and quality, while reducing project risks.",
       "testScope": {
-        "title": "Clearly Define Test Scope",
-        "description": "Clearly define which functions and modules need to be tested and which can be ignored to avoid omissions or repeated testing during the test process."
+        "title": "Define Test Scope",
+        "description": "Define functional modules and business scenarios to test, establish boundaries, avoid omissions and redundancy, ensure comprehensive coverage."
       },
       "timeManagement": {
-        "title": "Time Management",
-        "description": "The timetable of test activities, clearly defining the start and end times of each stage to help the project complete on time."
+        "title": "Time Planning Management",
+        "description": "Create test schedules, arrange phase timelines, ensure on-time project delivery."
       },
       "riskManagement": {
-        "title": "Risk Management",
-        "description": "Identifying potential risks that could affect test progress and quality, such as personnel shortages or unstable test environments."
+        "title": "Risk Identification and Control",
+        "description": "Identify risk factors affecting test progress and quality, develop mitigation strategies."
       },
       "communication": {
-        "title": "Improve Communication and Coordination",
-        "description": "Clearly defining the responsibilities and divisions of each team member to avoid confusion and chaos caused by unclear roles."
+        "title": "Team Collaboration and Communication",
+        "description": "Define roles and responsibilities, establish communication mechanisms, avoid confusion from unclear duties."
       },
       "continuousImprovement": {
-        "title": "Promote Continuous Improvement",
-        "description": "By executing and reviewing test plans, the team can summarize the problems and experiences encountered during the test process, promoting continuous improvement of the test process."
+        "title": "Continuous Optimization and Improvement",
+        "description": "Through plan execution and review, accumulate lessons learned, optimize testing processes and methods."
       },
       "standards": {
-        "title": "Clearly Define Standards and Requirements",
-        "description": "Specifying the measurement standards and test passing requirements for software quality to ensure the objectivity and comparability of test results."
+        "title": "Quality Standards Definition",
+        "description": "Establish quality assessment criteria and test pass requirements, ensure objective and comparable results."
       }
     },
     "editForm": {
@@ -1485,7 +1483,7 @@
         "copyLinkFailed": "Copy link failed"
       },
       "buttons": {
-          "save": "Save",
+        "save": "Save",
         "restart": "Restart",
         "start": "Start",
         "complete": "Complete",
@@ -1546,56 +1544,83 @@
         "onTips": "After enabling \"Permission Control\", you need to manually authorize service permissions to have plan operation permissions. Permission control is enabled by default. Note: If the authorized object does not have parent project permissions, view permissions will be automatically granted.",
         "offTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current plan. Users viewing the plan must also have parent project permissions for the current plan."
       }
-
     },
     "planDetail": {
-        "basicInfo": {
-          "title": "Basic Information",
-          "planName": "Plan Name",
-          "owner": "Owner",
-          "to": "To",
-          "timePlan": "Time Plan",
-          "testers": "Testers",
-          "isReview": "Is Review",
-          "casePrefix": "Case Prefix",
-          "attachments": "Attachments",
-          "progress": "Progress",
-          "status": "Status",
-          "workloadAssessment": "Workload Assessment",
-          "acceptanceCriteria": "Acceptance Criteria",
-          "otherInformation": "Other Information"
+      "basicInfo": {
+        "title": "Basic Information",
+        "planName": "Plan Name",
+        "owner": "Owner",
+        "to": "To",
+        "timePlan": "Time Plan",
+        "testers": "Testers",
+        "isReview": "Is Review",
+        "casePrefix": "Case Prefix",
+        "attachments": "Attachments",
+        "progress": "Progress",
+        "status": "Status",
+        "workloadAssessment": "Workload Assessment",
+        "acceptanceCriteria": "Acceptance Criteria",
+        "otherInformation": "Other Information"
+      },
+      "tabs": {
+        "workCalendar": "Work Calendar",
+        "memberProgress": "Member Progress",
+        "burnDownChart": "Burn Down Chart",
+        "otherInformation": "Other Information",
+        "acceptanceCriteria": "Acceptance Criteria",
+        "testingScope": "Testing Scope",
+        "testingObjectives": "Testing Objectives",
+        "testers": "Testers"
+      },
+      "buttons": {
+        "edit": "Edit",
+        "viewCases": "View Cases",
+        "exportCases": "Export Cases",
+        "copyLink": "Copy Link",
+        "refresh": "Refresh"
+      },
+      "table": {
+        "name": "Name",
+        "content": "Work Responsibilities",
+        "viewCases": "View Cases",
+        "exportCases": "Export Cases",
+        "copyLink": "Copy Link",
+        "refresh": "Refresh",
+        "workResponsibilities": "Work Responsibilities"
+      },
+      "notifications": {
+        "copySuccess": "Copy Success",
+        "copyFailed": "Copy Failed"
+      },
+      "memberProgress": {
+        "member": "Member",
+        "progress": "Progress",
+        "totalCaseNum": "Total Case Num",
+        "validCaseNum": "Valid Case Num",
+        "passedTestNum": "Passed Test Num",
+        "evalWorkload": "Eval Workload",
+        "completedWorkload": "Completed Workload",
+        "completedWorkloadRate": "Completed Workload Rate",
+        "overdueNum": "Overdue Num",
+        "overdueRate": "Overdue Rate",
+        "completed": "Completed"
+      },
+      "burnDownChart": {
+        "caseCount": "Case Count",
+        "workload": "Workload",
+        "remaining": "Remaining",
+        "expected": "Expected"
+      },
+      "comp": {
+        "burndownChart": {
+          "title": "Burndown Chart",
+          "caseCount": "Case Count",
+          "workload": "Workload",
+          "remaining": "Remaining",
+          "expected": "Expected"
         },
-        "tabs": {
-          "workCalendar": "Work Calendar",
-          "memberProgress": "Member Progress",
-          "burnDownChart": "Burn Down Chart",
-          "otherInformation": "Other Information",
-          "acceptanceCriteria": "Acceptance Criteria",
-          "testingScope": "Testing Scope",
-          "testingObjectives": "Testing Objectives",
-          "testers": "Testers"
-        },
-        "buttons": {
-          "edit": "Edit",
-          "viewCases": "View Cases",
-          "exportCases": "Export Cases",
-          "copyLink": "Copy Link",
-          "refresh": "Refresh"
-        },
-        "table": {
-          "name": "Name",
-          "content": "Work Responsibilities",
-          "viewCases": "View Cases",
-          "exportCases": "Export Cases",
-          "copyLink": "Copy Link",
-          "refresh": "Refresh",
-            "workResponsibilities": "Work Responsibilities"
-        },
-        "notifications": {
-          "copySuccess": "Copy Success",
-          "copyFailed": "Copy Failed"
-        },
-        "memberProgress": {
+        "progress": {
+          "title": "Member Progress",
           "member": "Member",
           "progress": "Progress",
           "totalCaseNum": "Total Case Num",
@@ -1608,39 +1633,11 @@
           "overdueRate": "Overdue Rate",
           "completed": "Completed"
         },
-        "burnDownChart": {
-          "caseCount": "Case Count",
-          "workload": "Workload",
-          "remaining": "Remaining",
-          "expected": "Expected"
-        },
-        "comp": {
-          "burndownChart": {
-            "title": "Burndown Chart",
-            "caseCount": "Case Count",
-            "workload": "Workload",
-            "remaining": "Remaining",
-            "expected": "Expected"
-          },
-          "progress": {
-            "title": "Member Progress",
-            "member": "Member",
-            "progress": "Progress",
-            "totalCaseNum": "Total Case Num",
-            "validCaseNum": "Valid Case Num",
-            "passedTestNum": "Passed Test Num",
-            "evalWorkload": "Eval Workload",
-            "completedWorkload": "Completed Workload",
-            "completedWorkloadRate": "Completed Workload Rate",
-            "overdueNum": "Overdue Num",
-            "overdueRate": "Overdue Rate",
-            "completed": "Completed"
-          },
-          "workCalendar": {
-            "title": "Work Calendar"
-          }
+        "workCalendar": {
+          "title": "Work Calendar"
         }
       }
+    }
   },
   "caseReview": {
     "name": "Review",

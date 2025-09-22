@@ -9,7 +9,6 @@ const { t } = useI18n();
     <div class="text-3.5 font-semibold mb-2.5">{{ t('functionPlan.introduce.title') }}</div>
     <div class="mb-6">
       <div>{{ t('functionPlan.introduce.description') }}</div>
-      <div>{{ t('functionPlan.introduce.benefitsIntro') }}</div>
     </div>
 
     <div class="space-y-6">

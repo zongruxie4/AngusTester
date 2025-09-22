@@ -381,7 +381,7 @@
         "pushbackRequestTimeoutTooltip": "回推请求超时时间（毫秒），默认-1不超时。",
         "security": "接口安全",
         "securityHints": "修改后需重启服务生效。",
-        "securityTooltip": "配置接口访问授权，开启后需携带授权参数访问。最多10个。" ,
+        "securityTooltip": "配置接口访问授权，开启后需携带授权参数访问。最多10个。",
         "in": "位置",
         "paramsName": "参数名",
         "paramsValue": "参数值",
@@ -1310,7 +1310,6 @@
         "serializationDescription": "AngusTester 序列化规则基于 RFC6570 定义的UR模板的子集。支持OAS3 Schema数据类型包括：string、boolean、integer、number、object、array。",
         "serializationDescription_pre": "AngusTester 序列化规则基于",
         "serializationDescription_later": "定义的UR模板的子集。支持OAS3 Schema数据类型包括：string、boolean、integer、number、object、array。"
-    
       },
       "menus": {
         "request": "基本",
@@ -1404,19 +1403,19 @@
         "preview": "预览"
       },
       "navs": {
-          "apiInfo": "接口信息",
-          "performance": "测试指标",
-          "testInfo": "测试结果",
-          "case": "接口用例",
-          "activity": "活动",
-          "agent": "接口代理",
-          "code": "代码",
-          "apiMock": "Mock接口",
-          "saveUnarchived": "保存到未归档",
-          "save": "归档到服务",
-          "indicator": "接口指标",
-          "test": "测试结果",
-          "variable": "变量"
+        "apiInfo": "接口信息",
+        "performance": "测试指标",
+        "testInfo": "测试结果",
+        "case": "接口用例",
+        "activity": "活动",
+        "agent": "接口代理",
+        "code": "代码",
+        "apiMock": "Mock接口",
+        "saveUnarchived": "保存到未归档",
+        "save": "归档到服务",
+        "indicator": "接口指标",
+        "test": "测试结果",
+        "variable": "变量"
       },
       "serviceNav": {
         "projectInfo": "服务信息",

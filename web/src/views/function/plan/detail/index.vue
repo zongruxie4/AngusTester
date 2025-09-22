@@ -87,9 +87,7 @@ const loadUserPermissions = async (planId: string) => {
 };
 
 /**
- * <p>
  * Loads detailed plan information from the API.
- * </p>
  * <p>
  * Processes the plan data, calculates completion rate, builds tester responsibilities
  * list, and updates the tab pane title.

@@ -1235,7 +1235,7 @@
       },
       "module": {
         "addModule": "添加模块",
-        "allTasks": "所有问题",
+        "allTasks": "全部问题",
         "createSubModule": "创建子模块",
         "moveToUpperLevel": "移动到上级",
         "moveUp": "上移",
