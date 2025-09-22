@@ -20,7 +20,6 @@ import { EditAnalysisState } from '@/views/function/analysis/types';
 // Component setup
 const { t } = useI18n();
 
-
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -32,7 +31,6 @@ const emits = defineEmits<{(e: 'ok')}>();
 // Injected dependencies
 const deleteTabPane = inject('deleteTabPane', (value) => value);
 const formRef = ref();
-
 
 /**
  * Organization type options for assignee-based analysis.

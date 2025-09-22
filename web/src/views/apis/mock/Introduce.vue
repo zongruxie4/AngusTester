@@ -11,7 +11,7 @@ const { textList } = useMockUI();
 <template>
   <div class="bg-gray-2 flex items-center text-3 pl-7.5 rounded h-45">
     <img
-      src="../../../assets/home/mock.svg"
+      src="../../../assets/images/home/mock.svg"
       class="mr-7.75 w-45 h-45" />
     <div class="p-8 flex-1 h-full flex flex-col justify-between font-serif">
       <div class="text-3.5 font-semibold">{{ t('mock.introduce.description') }}</div>

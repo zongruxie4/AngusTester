@@ -101,31 +101,31 @@ const {
                   <!-- Database Icon -->
                   <div style="background-color: #F7F8FB;" class="w-15 h-15 flex-none p-1.25 rounded mr-2.5">
                     <template v-if="record.database === 'H2'">
-                      <img src="../../../assets/database/H2.png" class="w-full h-full" />
+                      <img src="../../../assets/images/database/H2.png" class="w-full h-full" />
                     </template>
                     <template v-if="record.database === 'HSQLDB'">
-                      <img src="../../../assets/database/HSQLDB.png" class="w-full h-full" />
+                      <img src="../../../assets/images/database/HSQLDB.png" class="w-full h-full" />
                     </template>
                     <template v-if="record.database === 'SQLITE'">
-                      <img src="../../../assets/database/SQLITE.png" class="w-full h-full" />
+                      <img src="../../../assets/images/database/SQLITE.png" class="w-full h-full" />
                     </template>
                     <template v-if="record.database === 'POSTGRES'">
-                      <img src="../../../assets/database/POSTGRES.png" class="w-full h-full" />
+                      <img src="../../../assets/images/database/POSTGRES.png" class="w-full h-full" />
                     </template>
                     <template v-if="record.database === 'MARIADB'">
-                      <img src="../../../assets/database/MARIADB.png" class="w-full h-full" />
+                      <img src="../../../assets/images/database/MARIADB.png" class="w-full h-full" />
                     </template>
                     <template v-if="record.database === 'MYSQL'">
-                      <img src="../../../assets/database/MYSQL.png" class="w-full h-full" />
+                      <img src="../../../assets/images/database/MYSQL.png" class="w-full h-full" />
                     </template>
                     <template v-if="record.database === 'ORACLE'">
-                      <img src="../../../assets/database/ORACLE.png" class="w-full h-full" />
+                      <img src="../../../assets/images/database/ORACLE.png" class="w-full h-full" />
                     </template>
                     <template v-if="record.database === 'SQLSERVER'">
-                      <img src="../../../assets/database/SQLSERVER.png" class="w-full h-full" />
+                      <img src="../../../assets/images/database/SQLSERVER.png" class="w-full h-full" />
                     </template>
                     <template v-if="record.database === 'DB2'">
-                      <img src="../../../assets/database/DB2.png" class="w-full h-full" />
+                      <img src="../../../assets/images/database/DB2.png" class="w-full h-full" />
                     </template>
                   </div>
 

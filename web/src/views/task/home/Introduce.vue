@@ -11,7 +11,7 @@ const { t } = useI18n();
       {{ t('taskHome.welcomeToAngusTask') }}
     </div>
     <div class="flex items-center justify-between space-x-2.5">
-      <img class="w-1/3" src="./images/introduce.png" />
+      <img class="w-1/3" src="../../../assets/images/home/task.png" />
       <div>{{ t('taskHome.taskDescription') }}</div>
     </div>
     <div class="mt-2 mr-5">

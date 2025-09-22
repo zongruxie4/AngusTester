@@ -18,7 +18,7 @@ const { dashboardConfig, dashboardConstants } = useDashboardConfig();
   <div class="flex content items-center">
     <!-- Left content area - flexible width -->
     <div class="flex content items-center flex-1 pr-20">
-      <img src="../../assets/home/exec.svg" class="w-43 h-35" />
+      <img src="../../assets/images/home/exec.svg" class="w-43 h-35" />
       <div class="ml-3.25 text-content flex-1 font-serif">
         <div class="text-3.5 font-semibold">{{ t('execution.header.title') }}</div>
         <div class="mt-3">

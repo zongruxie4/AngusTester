@@ -40,7 +40,7 @@ const introductionTips: IntroductionTip[] = [
     <div class="flex items-center justify-between space-x-2.5">
       <img
         class="w-1/3"
-        src="./images/introduce.png"
+        src="../../../assets/images/home/data.png"
         alt="Introduction illustration" />
       <div class="text-text-content">
         {{ t('dataHome.introduce.description') }}

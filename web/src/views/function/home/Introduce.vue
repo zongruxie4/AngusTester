@@ -11,7 +11,7 @@ const { t } = useI18n();
       {{ t('functionHome.introduce.welcome') }}
     </div>
     <div class="flex items-center justify-between space-x-2.5">
-      <img class="w-1/3" src="./images/introduce.png" />
+      <img class="w-1/3" src="../../../assets/images/home/test.png" />
       <div>{{ t('functionHome.introduce.description') }}</div>
     </div>
     <div class="mt-2 mr-5">
