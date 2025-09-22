@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
-import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
-import { Grid, Icon, Image, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { Button, TabPane, Tabs } from 'ant-design-vue';
+import { Icon, Image, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { appContext, download, TESTER, toClipboard, enumUtils } from '@xcan-angus/infra';
 import { funcPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
@@ -35,9 +35,6 @@ const setCaseListPlanParam = inject<(value: any) => void>('setCaseListPlanParam'
 const isAdmin = computed(() => appContext.isAdmin());
 const currentPlanId = computed(() => {
   return planDetailData.value?.id;
-});
-const attachmentList = computed(() => {
-  return planDetailData.value?.attachments || [];
 });
 
 // Reactive data
@@ -218,49 +215,6 @@ const testerTableColumns = [
     title: t('functionPlan.planDetail.table.workResponsibilities'),
     ellipsis: true
   }
-];
-
-const basicInfoGridColumns = [
-  [
-    {
-      dataIndex: 'name',
-      label: t('functionPlan.planDetail.basicInfo.planName')
-    },
-    {
-      dataIndex: 'ownerName',
-      label: t('functionPlan.planDetail.basicInfo.owner')
-    },
-    {
-      dataIndex: 'review',
-      label: t('functionPlan.planDetail.basicInfo.isReview')
-    },
-    {
-      dataIndex: 'status',
-      label: t('functionPlan.planDetail.basicInfo.status')
-    },
-    {
-      dataIndex: 'attachments',
-      label: t('functionPlan.planDetail.basicInfo.attachments')
-    }
-  ],
-  [
-    {
-      dataIndex: 'time',
-      label: t('functionPlan.planDetail.basicInfo.timePlan')
-    },
-    {
-      dataIndex: 'casePrefix',
-      label: t('functionPlan.planDetail.basicInfo.casePrefix')
-    },
-    {
-      dataIndex: 'workloadAssessment',
-      label: t('functionPlan.planDetail.basicInfo.workloadAssessment')
-    },
-    {
-      dataIndex: 'progress',
-      label: t('functionPlan.planDetail.basicInfo.progress')
-    }
-  ]
 ];
 
 // Lifecycle hooks

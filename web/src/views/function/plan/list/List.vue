@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject } from 'vue';
+import { defineAsyncComponent } from 'vue';
 import { Avatar, Button, Pagination, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
-import { Colon, Dropdown, Icon, Image, modal, NoData, notification, Popover } from '@xcan-angus/vue-ui';
+import { Colon, Dropdown, Icon, Image, NoData, Popover } from '@xcan-angus/vue-ui';
 import { download } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { funcPlan } from '@/api/tester';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { PlanDetail } from '../types';
 
@@ -35,17 +34,11 @@ const emit = defineEmits<{
   deletePlan: [planData: PlanDetail];
   grantPermission: [planData: PlanDetail];
   goToCases: [planData: PlanDetail];
-  viewProgress: [planData: PlanDetail];
-  viewBurnDown: [planData: PlanDetail];
-  viewWorkCalendar: [planData: PlanDetail];
   dropdownClick: [planData: PlanDetail, itemIndex: number, actionKey: string];
   refresh: [];
 }>();
 
 const { t } = useI18n();
-
-// Dependency injection
-const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
 /**
  * Get plan status style based on status value
@@ -119,21 +112,7 @@ const handleBlockPlan = async (planData: PlanDetail, itemIndex: number) => {
  * @param planData - The plan data to delete
  */
 const handleDeletePlan = async (planData: PlanDetail) => {
-  modal.confirm({
-    content: t('functionPlan.list.confirmDeletePlan', { name: planData.name }),
-    async onOk () {
-      const id = planData.id;
-      const [error] = await funcPlan.deletePlan(id);
-      if (error) {
-        return;
-      }
-
-      notification.success(t('functionPlan.list.planDeleteSuccess'));
-      emit('refresh');
-
-      deleteTabPane([id]);
-    }
-  });
+  emit('deletePlan', planData);
 };
 
 /**
@@ -153,30 +132,6 @@ const handleGoToCases = (planData: PlanDetail) => {
 };
 
 /**
- * Opens the member progress modal for the selected plan
- * @param planData - The plan data
- */
-const handleViewProgress = (planData: PlanDetail) => {
-  emit('viewProgress', planData);
-};
-
-/**
- * Opens the burndown chart modal for the selected plan
- * @param planData - The plan data
- */
-const handleViewBurnDown = (planData: PlanDetail) => {
-  emit('viewBurnDown', planData);
-};
-
-/**
- * Opens the work calendar modal for the selected plan
- * @param planData - The plan data
- */
-const handleViewWorkCalendar = (planData: PlanDetail) => {
-  emit('viewWorkCalendar', planData);
-};
-
-/**
  * Handles dropdown menu item clicks
  * @param planData - The plan data
  * @param itemIndex - The index of the item in the list
@@ -185,7 +140,7 @@ const handleViewWorkCalendar = (planData: PlanDetail) => {
 const handleDropdownClick = (
   planData: PlanDetail,
   itemIndex: number,
-  actionKey: 'delete' | 'block' | 'grant' | 'viewProgress' | 'viewBurnDown' | 'viewWorkCalendar'
+  actionKey: 'delete' | 'block' | 'grant'
 ) => {
   switch (actionKey) {
     case 'delete':
@@ -196,15 +151,6 @@ const handleDropdownClick = (
       break;
     case 'grant':
       handleGrantPermission(planData);
-      break;
-    case 'viewProgress':
-      handleViewProgress(planData);
-      break;
-    case 'viewBurnDown':
-      handleViewBurnDown(planData);
-      break;
-    case 'viewWorkCalendar':
-      handleViewWorkCalendar(planData);
       break;
     default:
       emit('dropdownClick', planData, itemIndex, actionKey);
@@ -239,21 +185,6 @@ const dropdownMenuItems = [
     key: 'grant',
     icon: 'icon-quanxian1',
     name: t('functionPlan.list.permission')
-  },
-  {
-    key: 'viewProgress',
-    icon: 'icon-zhengyan',
-    name: t('functionPlan.list.viewProgress')
-  },
-  {
-    key: 'viewBurnDown',
-    icon: 'icon-zhengyan',
-    name: t('functionPlan.list.viewBurnDown')
-  },
-  {
-    key: 'viewWorkCalendar',
-    icon: 'icon-zhengyan',
-    name: t('functionPlan.list.viewWorkCalendar')
   }
 ];
 </script>

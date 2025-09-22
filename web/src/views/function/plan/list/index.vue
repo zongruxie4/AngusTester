@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
-import { AsyncComponent, notification, Spin } from '@xcan-angus/vue-ui';
+import { AsyncComponent, notification, Spin, modal } from '@xcan-angus/vue-ui';
 import { appContext, TESTER, utils, ProjectPageQuery } from '@xcan-angus/infra';
 import { funcPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
@@ -16,9 +16,6 @@ const SearchPanel = defineAsyncComponent(() => import('@/views/function/plan/lis
 const List = defineAsyncComponent(() => import('@/views/function/plan/list/List.vue'));
 
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const ProgressModal = defineAsyncComponent(() => import('@/views/function/plan/list/MemberProgress.vue'));
-const BurnDownModal = defineAsyncComponent(() => import('@/views/function/plan/list/BurndownChart.vue'));
-const WorkCalendarModal = defineAsyncComponent(() => import('@/views/function/plan/list/WorkCalendar.vue'));
 
 // Composables
 const { t } = useI18n();
@@ -31,6 +28,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
   notify: undefined
 });
 
+const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const setCaseListPlanParam = inject<(value: any) => void>('setCaseListPlanParam');
 
 // Computed properties
@@ -59,9 +57,6 @@ const permissionsMap = ref<Map<string, string[]>>(new Map());
 // Modal state
 const selectedData = ref<PlanDetail>();
 const authorizeModalVisible = ref(false);
-const progressVisible = ref(false);
-const burndownVisible = ref(false);
-const workCalendarVisible = ref(false);
 
 /**
  * Refreshes the data list and resets pagination
@@ -83,33 +78,6 @@ const handleSearchChange = (data) => {
 };
 
 /**
- * Opens the member progress modal for the selected plan
- * @param data - Plan detail data
- */
-const handleViewProgress = (data: PlanDetail) => {
-  progressVisible.value = true;
-  selectedData.value = data;
-};
-
-/**
- * Opens the burndown chart modal for the selected plan
- * @param data - Plan detail data
- */
-const handleViewBurnDown = (data: PlanDetail) => {
-  burndownVisible.value = true;
-  selectedData.value = data;
-};
-
-/**
- * Opens the work calendar modal for the selected plan
- * @param data - Plan detail data
- */
-const handleViewWorkCalendar = (data: PlanDetail) => {
-  workCalendarVisible.value = true;
-  selectedData.value = data;
-};
-
-/**
  * Updates table data for a specific plan by index
  * @param id - Plan ID
  * @param index - Index in the data list
@@ -122,7 +90,24 @@ const updateTableData = async (id: string, index: number) => {
   }
 
   if (res?.data) {
-    dataList.value[index] = res?.data;
+    const item = res.data as PlanDetail;
+
+    if (item.progress?.completedRate) {
+      item.progress.completedRate = item.progress.completedRate.replace(/(\d+\.\d{2})\d+/, '$1');
+    }
+
+    if (item.attachments?.length) {
+      item.attachments = item.attachments.map(att => ({
+        ...att,
+        id: utils.uuid()
+      }));
+    }
+
+    if (item.members) {
+      item.showMembers = item.members.slice(0, 10);
+    }
+
+    dataList.value.splice(index, 1, item);
   }
 };
 
@@ -178,6 +163,28 @@ const handleBlockPlan = async (data: PlanDetail, index: number) => {
 
   notification.success(t('functionPlan.list.planBlockedSuccess'));
   await updateTableData(id, index);
+};
+
+/**
+ * Deletes a plan with confirmation
+ * @param planData - The plan data to delete
+ */
+const handleDeletePlan = async (planData: PlanDetail) => {
+  modal.confirm({
+    content: t('functionPlan.list.confirmDeletePlan', { name: planData.name }),
+    async onOk () {
+      const id = planData.id;
+      const [error] = await funcPlan.deletePlan(id);
+      if (error) {
+        return;
+      }
+
+      notification.success(t('functionPlan.list.planDeleteSuccess'));
+      refresh();
+
+      deleteTabPane([id]);
+    }
+  });
 };
 
 /**
@@ -413,25 +420,10 @@ onMounted(() => {
             @deletePlan="handleDeletePlan"
             @grantPermission="handleGrantPermission"
             @goToCases="handleGoToCases"
-            @viewProgress="handleViewProgress"
-            @viewBurnDown="handleViewBurnDown"
-            @viewWorkCalendar="handleViewWorkCalendar"
             @refresh="refresh" />
         </template>
       </template>
     </Spin>
-    <AsyncComponent :visible="burndownVisible">
-      <BurnDownModal
-        v-model:visible="burndownVisible"
-        :planId="selectedData?.id" />
-    </AsyncComponent>
-
-    <AsyncComponent :visible="progressVisible">
-      <ProgressModal
-        v-model:visible="progressVisible"
-        :planId="selectedData?.id"
-        :projectId="props.projectId" />
-    </AsyncComponent>
 
     <AsyncComponent :visible="authorizeModalVisible">
       <AuthorizeModal
@@ -448,13 +440,6 @@ onMounted(() => {
         :offTips="t('functionPlan.list.permissionControlOffTips')"
         :title="t('functionPlan.list.planPermission')"
         @change="handleAuthFlagChange" />
-    </AsyncComponent>
-
-    <AsyncComponent :visible="workCalendarVisible">
-      <WorkCalendarModal
-        v-model:visible="workCalendarVisible"
-        :projectId="props.projectId"
-        :planId="selectedData.id" />
     </AsyncComponent>
   </div>
 </template>
