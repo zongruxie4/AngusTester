@@ -20,6 +20,7 @@ import { EditAnalysisState } from '@/views/function/analysis/types';
 // Component setup
 const { t } = useI18n();
 
+
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -32,10 +33,6 @@ const emits = defineEmits<{(e: 'ok')}>();
 const deleteTabPane = inject('deleteTabPane', (value) => value);
 const formRef = ref();
 
-/**
- * Data source options for analysis configuration.
- */
-const dataSourceOptions = computed(() => enumOptionUtils.loadEnumAsOptions(AnalysisDataSource));
 
 /**
  * Organization type options for assignee-based analysis.
@@ -43,6 +40,7 @@ const dataSourceOptions = computed(() => enumOptionUtils.loadEnumAsOptions(Analy
 const organizationTypeOptions = computed(() => enumOptionUtils.loadEnumAsOptions(AuthObjectType));
 
 // Reactive state
+const dataSourceOptions = ref<EnumMessage<AnalysisDataSource>[]>([]);
 const templateDescriptionOptions = ref<EnumMessage<AnalysisCaseTemplateDesc>[]>([]);
 const analysisCaseObjectOptions = ref<EnumMessage<AnalysisCaseObject>[]>([]);
 const analysisTimeRangeOptions = ref<{value: string, message: string, label: string}[]>([]);
@@ -86,6 +84,13 @@ const loadAnalysisCaseObjectOptions = () => {
 const loadAnalysisTimeRangeOptions = () => {
   const data = enumUtils.enumToMessages(AnalysisTimeRange);
   analysisTimeRangeOptions.value = (data || []).map(item => ({ ...item, label: item.message }));
+};
+
+/**
+ * Load Data source options for analysis configuration.
+ */
+const loadAnalysisDataSourceOptions = () => {
+  dataSourceOptions.value = enumOptionUtils.loadEnumAsOptions(AnalysisDataSource);
 };
 
 /**
@@ -222,6 +227,7 @@ onMounted(async () => {
   await loadTemplateDescriptionOptions();
   loadAnalysisCaseObjectOptions();
   loadAnalysisTimeRangeOptions();
+  loadAnalysisDataSourceOptions();
 
   // Initialize form data if editing existing analysis
   if (props.data) {
@@ -265,7 +271,7 @@ onMounted(async () => {
     <Form
       ref="formRef"
       :colon="false"
-      :labelCol="{style: {width: '90px'}}"
+      :labelCol="{style: {'min-width': '90px'}}"
       :model="formData"
       class="w-200 mt-5">
       <FormItem

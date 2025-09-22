@@ -209,9 +209,8 @@ onMounted(() => {
       ref="formRef"
       :model="formState"
       size="small"
-      :labelCol="{ style: { width: '75px' } }"
       class="max-w-242.5"
-      layout="horizontal">
+      layout="vertical">
       <!-- Scenario selection -->
       <FormItem
         required
