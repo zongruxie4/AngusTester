@@ -374,17 +374,21 @@ onMounted(async () => {
               </FormItem>
             </template>
             <FormItem>
-              <RouterLink to="/mockservice">
-                <Button size="small">{{ t('mock.addMock.buttons.cancel') }}</Button>
-              </RouterLink>
               <Button
                 size="small"
                 type="primary"
-                class="ml-3"
+                class="mr-3"
                 :loading="isSubmitting"
                 @click="handleSubmit">
+                <Icon icon="icon-dangqianxuanzhong" class="mr-1" />
                 {{ t('mock.addMock.buttons.confirm') }}
               </Button>
+              <RouterLink to="/apis#mock">
+                <Button size="small">
+                  <Icon icon="icon-zhongzhi2" class="mr-1" />
+                  {{ t('mock.addMock.buttons.cancel') }}
+                </Button>
+              </RouterLink>
             </FormItem>
           </div>
         </div>
