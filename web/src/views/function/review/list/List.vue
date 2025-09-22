@@ -9,7 +9,7 @@ import { func } from '@/api/tester';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { ReviewDetail } from '../types';
 
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 // Props definition
 interface Props {
@@ -39,6 +39,46 @@ const { t } = useI18n();
 
 // Dependency injection
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
+
+/**
+ * Get review status style based on status value
+ * @param statusValue - Review status value
+ * @returns CSS classes for review status container
+ */
+const getReviewStatusStyle = (statusValue: string) => {
+  switch (statusValue) {
+    case FuncPlanStatus.PENDING:
+      return 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+    case FuncPlanStatus.IN_PROGRESS:
+      return 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100';
+    case FuncPlanStatus.COMPLETED:
+      return 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100';
+    case FuncPlanStatus.BLOCKED:
+      return 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100';
+    default:
+      return 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+  }
+};
+
+/**
+ * Get review status dot style based on status value
+ * @param statusValue - Review status value
+ * @returns CSS classes for review status dot
+ */
+const getReviewStatusDotStyle = (statusValue: string) => {
+  switch (statusValue) {
+    case FuncPlanStatus.PENDING:
+      return 'bg-gray-500';
+    case FuncPlanStatus.IN_PROGRESS:
+      return 'bg-blue-500';
+    case FuncPlanStatus.COMPLETED:
+      return 'bg-green-500';
+    case FuncPlanStatus.BLOCKED:
+      return 'bg-red-500';
+    default:
+      return 'bg-gray-500';
+  }
+};
 
 /**
  * Starts a review and emits the event to parent
@@ -146,7 +186,7 @@ const dropdownMenuItems = [
 </script>
 <template>
   <div>
-    <NoData v-if="props.reviewList.length === 0" class="flex-1" />
+    <NoData v-if="props.reviewList.length === 0" class="flex-1 mt-20" />
 
     <template v-else>
       <div
@@ -163,9 +203,9 @@ const dropdownMenuItems = [
             </RouterLink>
           </div>
 
-          <div class="flex">
+          <div class="flex items-center">
             <div
-              class="text-theme-sub-content text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
+              class="text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
               <div class="h-1.5 w-1.5 rounded-full mr-1" :class="item.status?.value"></div>
               <div>{{ item.status?.message }}</div>
             </div>
@@ -173,201 +213,206 @@ const dropdownMenuItems = [
           </div>
         </div>
 
-        <div class="px-3.5 flex mt-3 justify-between text-3 text-theme-sub-content">
-          <div class="flex leading-5">
-            <div class="flex mr-10 items-center">
-              <div class="mr-2">
-                <span>{{ t('caseReview.list.owner') }}</span>
-                <Colon />
+        <!-- Review information card -->
+        <div class="px-4 py-3 bg-theme-bg-subtle/30 border-t border-theme-border-subtle">
+          <div class="flex items-center justify-between">
+            <!-- Left side: Owner + Status + Case count + Participants -->
+            <div class="flex items-center space-x-16">
+              <!-- Owner -->
+              <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-theme-border">
+                  <Image
+                    class="w-full h-full"
+                    :src="item.ownerAvatar"
+                    type="avatar" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs text-theme-sub-content">{{ t('caseReview.list.owner') }}</span>
+                  <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.ownerName">
+                    {{ item.ownerName }}
+                  </span>
+                </div>
               </div>
 
-              <div class="w-5 h-5 rounded-full mr-1 overflow-hidden">
-                <Image
-                  class="w-full"
-                  :src="item.ownerAvatar"
-                  type="avatar" />
+              <!-- Review status -->
+              <div class="flex items-center space-x-2">
+                <div
+                  class="px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm border transition-all duration-200 hover:shadow-md"
+                  :class="getReviewStatusStyle(item.status?.value)">
+                  <div class="flex items-center space-x-1.5">
+                    <div
+                      class="w-2 h-2 rounded-full"
+                      :class="getReviewStatusDotStyle(item.status?.value)">
+                    </div>
+                    <span>{{ item.status?.message }}</span>
+                  </div>
+                </div>
               </div>
 
-              <div
-                class="text-theme-content truncate"
-                :title="item.ownerName"
-                style="max-width: 200px;">
-                {{ item.ownerName }}
+              <!-- Case count -->
+              <div class="flex items-center space-x-2">
+                <div class="flex flex-col">
+                  <span class="text-xs text-theme-sub-content">{{ t('caseReview.list.totalCases', {count: '' }).replace(':', '') }}</span>
+                  <span class="text-sm font-medium text-theme-content">
+                    {{ item.caseNum }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Participants -->
+              <div class="flex items-center space-x-2">
+                <div class="flex flex-col">
+                  <span class="text-xs text-theme-sub-content">{{ t('caseReview.list.participants') }}</span>
+                  <span class="text-sm font-medium text-theme-content">
+                    {{ item.participants?.length || 0 }} 人
+                  </span>
+                </div>
+                <div class="flex -space-x-1">
+                  <template v-if="item.participants?.length">
+                    <div
+                      v-for="user in item.participants.slice(0, 8)"
+                      :key="user.id"
+                      :title="user.fullName"
+                      class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-white shadow-sm">
+                      <Image
+                        :src="user.avatar"
+                        type="avatar"
+                        class="w-full h-full" />
+                    </div>
+                    <Popover
+                      v-if="item.participants.length > 8"
+                      placement="bottomLeft"
+                      internal>
+                      <template #title>
+                        <span class="text-sm font-medium">{{ t('caseReview.list.participants') }} ({{ item.participants.length }})</span>
+                      </template>
+                      <template #content>
+                        <div class="grid grid-cols-5 gap-2 max-w-md">
+                          <div
+                            v-for="_user in item.participants"
+                            :key="_user.id"
+                            class="flex flex-col items-center space-y-1 p-2">
+                            <div class="w-8 h-8 rounded-full overflow-hidden">
+                              <Image
+                                class="w-full h-full"
+                                :src="_user.avatar"
+                                type="avatar" />
+                            </div>
+                            <span class="text-xs text-theme-content text-center truncate w-full" :title="_user.fullName">{{ _user.fullName }}</span>
+                          </div>
+                        </div>
+                      </template>
+                      <div class="w-6 h-6 rounded-full bg-theme-primary/20 flex items-center justify-center text-xs font-bold text-theme-primary ring-1 ring-white shadow-sm cursor-pointer">
+                        +{{ item.participants.length - 8 }}
+                      </div>
+                    </Popover>
+                  </template>
+                  <Avatar
+                    v-else
+                    size="small"
+                    class="w-6 h-6">
+                    <template #icon>
+                      <UserOutlined />
+                    </template>
+                  </Avatar>
+                </div>
               </div>
             </div>
 
+            <!-- Right side: Last modified info -->
             <div class="flex items-center">
-              <div class="mr-2">
-                <span>{{ t('caseReview.list.participants') }}</span>
-                <Colon />
+              <div class="flex items-center space-x-2 text-xs text-theme-sub-content">
+                <span class="text-theme-content font-medium truncate max-w-16" :title="item.lastModifiedByName">
+                  {{ item.lastModifiedByName }}
+                </span>
+                <span>{{ t('caseReview.list.modifiedBy') }}</span>
+                <span class="text-theme-sub-content">{{ item.lastModifiedDate }}</span>
               </div>
-
-              <template v-if="item.participants?.length">
-                <div
-                  v-for="user in item.participants.slice(0, 10)"
-                  :key="user.id"
-                  :title="user.fullName"
-                  class="w-5 h-5 mr-2 overflow-hidden rounded-full">
-                  <Image
-                    :src="user.avatar"
-                    type="avatar"
-                    class="w-full" />
-                </div>
-
-                <Popover
-                  v-if="item.participants.length > 5"
-                  placement="bottomLeft"
-                  internal>
-                  <template #title>
-                    <span class="text-3">{{ t('caseReview.list.allParticipants') }}</span>
-                  </template>
-
-                  <template #content>
-                    <div class="flex flex-wrap" style="max-width: 700px;">
-                      <div
-                        v-for="_user in item.participants"
-                        :key="_user.id"
-                        class="flex text-3 leading-5 mr-2 mb-2">
-                        <div class="w-5 h-5 rounded-full mr-1 flex-none overflow-hidden">
-                          <Image
-                            class="w-full"
-                            :src="_user.avatar"
-                            type="avatar" />
-                        </div>
-                        <span class="flex-1 truncate">{{ _user.fullName }}</span>
-                      </div>
-                    </div>
-                  </template>
-                  <a class="text-theme-special text-5">...</a>
-                </Popover>
-              </template>
-
-              <Avatar
-                v-else
-                size="small"
-                style="font-size: 12px;"
-                class="w-5 h-5 leading-5">
-                <template #icon>
-                  <UserOutlined />
-                </template>
-              </Avatar>
             </div>
           </div>
-
-          <div class="ml-8 text-theme-content">{{ t('caseReview.list.totalCases', {count: item.caseNum}) }}</div>
         </div>
 
-        <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
-          <div class="flex flex-wrap">
-            <div class="flex mt-3">
-              <div class="mr-2 whitespace-nowrap">
+        <!-- Divider line -->
+        <div class="border-t border-theme-border-subtle/50"></div>
+
+        <!-- Second row: ID/Plan + Description + Action buttons -->
+        <div class="px-4 py-2 bg-theme-bg-subtle/10">
+          <div class="flex flex-col">
+            <!-- Top sub-row: ID + Test Plan -->
+            <div class="flex text-3 text-theme-sub-content">
+              <div class="flex items-center mr-8 mt-1">
                 <span>{{ t('caseReview.list.id') }}</span>
                 <Colon />
+                <span class="text-theme-content ml-2">{{ item.id || "--" }}</span>
               </div>
-              <div class="text-theme-content">{{ item.id || "--" }}</div>
-            </div>
-
-            <div class="flex mt-3 ml-8">
-              <div class="mr-2 whitespace-nowrap">
+              <div class="flex items-center mr-8 mt-1">
                 <span>{{ t('caseReview.list.testPlan') }}</span>
                 <Colon />
+                <span class="text-theme-content ml-2 truncate max-w-48" :title="item.planName">{{ item.planName || "--" }}</span>
               </div>
-              <div class="text-theme-content">{{ item.planName || "--" }}</div>
             </div>
 
-            <div v-if="item.attachments?.length" class="whitespace-nowrap ml-8 mt-3">
-              <span>{{ t('caseReview.list.attachmentCount') }}</span>
-              <Colon />
-              <Popover placement="bottomLeft" internal>
-                <template #content>
-                  <div class="flex flex-col text-3 leading-5 space-y-1">
-                    <div
-                      v-for="_attachment in item.attachments"
-                      :key="_attachment.id"
-                      :title="_attachment.name"
-                      class="flex-1 px-2 py-1 truncate link"
-                      @click="download(_attachment.url)">
-                      {{ _attachment.name }}
-                    </div>
-                  </div>
-                </template>
-                <span style="color:#1890ff" class="pl-2 pr-2 cursor-pointer">{{ item.attachments?.length }}</span>
-              </Popover>
+            <!-- Bottom sub-row: Description + Action buttons in the same line -->
+            <div class="flex justify-between items-start text-3 mt-2 relative">
+              <div
+                class="truncate mr-8"
+                :title="item.description"
+                style="max-width: 70%;">
+                <RichText
+                  v-model:textValue="item.descriptionText"
+                  :value="item.description"
+                  :emptyText="t('common.noDescription')" />
+              </div>
+
+              <div class="flex items-center justify-between h-4 leading-5">
+                <RouterLink class="flex items-center space-x-1" :to="`/function#reviews?id=${item.id}&type=edit`">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                  <span>{{ t('caseReview.list.edit') }}</span>
+                </RouterLink>
+
+                <RouterLink class="flex items-center ml-3" :to="`/function#reviews?id=${item.id}`">
+                  <Icon icon="icon-shuxie" class="mr-0.5" />
+                  <span>{{ t('caseReview.list.goToReview') }}</span>
+                </RouterLink>
+
+                <Button
+                  :disabled="(!props.isAdmin && !props.permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN))
+                    || ![FuncPlanStatus.PENDING, FuncPlanStatus.BLOCKED, FuncPlanStatus.COMPLETED].includes(item.status?.value)"
+                  size="small"
+                  type="text"
+                  class="px-0 flex items-center ml-2"
+                  @click="startReview(item, index)">
+                  <Icon icon="icon-kaishi" class="mr-0.5" />
+                  <span>{{ t('caseReview.list.start') }}</span>
+                </Button>
+
+                <Button
+                  :disabled="(!props.isAdmin && !props.permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN))
+                    || ![FuncPlanStatus.IN_PROGRESS].includes(item.status?.value)"
+                  size="small"
+                  type="text"
+                  class="px-0 flex items-center ml-2"
+                  @click="completeReview(item, index)">
+                  <Icon icon="icon-yiwancheng" class="mr-0.5" />
+                  <span>{{ t('caseReview.list.complete') }}</span>
+                </Button>
+
+                <Dropdown
+                  class="ml-2"
+                  :admin="false"
+                  :menuItems="dropdownMenuItems"
+                  :permissions="props.dropdownPermissionsMap.get(item.id)"
+                  @click="handleDropdownAction(item, index, $event.key)">
+                  <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
+                </Dropdown>
+              </div>
             </div>
-          </div>
-
-          <div class="flex ml-8 mt-3">
-            <div
-              class="truncate text-theme-content"
-              style="max-width: 100px;"
-              :title="item.lastModifiedByName">
-              {{ item.lastModifiedByName }}
-            </div>
-
-            <div class="mx-2 whitespace-nowrap">{{ t('caseReview.list.modifiedBy') }}</div>
-
-            <div class="whitespace-nowrap text-theme-content">
-              {{ item.lastModifiedDate }}
-            </div>
-          </div>
-        </div>
-
-        <div class="px-3.5 flex justify-between items-start text-3 my-2.5 relative">
-          <div
-            class="truncate mr-8"
-            style="max-width: 70%;">
-            <RichEditor
-              v-if="item.otherInformation"
-              :value="item.otherInformation"
-              mode="view" />
-          </div>
-
-          <div class="flex space-x-3 items-center justify-between h-4 leading-5">
-            <RouterLink class="flex items-center space-x-1" :to="`/function#reviews?id=${item.id}&type=edit`">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-              <span>{{ t('caseReview.list.edit') }}</span>
-            </RouterLink>
-
-            <RouterLink class="flex items-center space-x-1" :to="`/function#reviews?id=${item.id}`">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-              <span>{{ t('caseReview.list.goToReview') }}</span>
-            </RouterLink>
-
-            <Button
-              :disabled="(!props.isAdmin && !props.permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN))
-                || ![FuncPlanStatus.PENDING, FuncPlanStatus.BLOCKED, FuncPlanStatus.COMPLETED].includes(item.status?.value)"
-              size="small"
-              type="text"
-              class="px-0 flex items-center space-x-1"
-              @click="startReview(item, index)">
-              <Icon icon="icon-kaishi" class="text-3.5" />
-              <span>{{ t('caseReview.list.start') }}</span>
-            </Button>
-
-            <Button
-              :disabled="(!props.isAdmin && !props.permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN))
-                || ![FuncPlanStatus.IN_PROGRESS].includes(item.status?.value)"
-              size="small"
-              type="text"
-              class="px-0 flex items-center space-x-1"
-              @click="completeReview(item, index)">
-              <Icon icon="icon-yiwancheng" class="text-3.5" />
-              <span>{{ t('caseReview.list.complete') }}</span>
-            </Button>
-
-            <Dropdown
-              :admin="false"
-              :menuItems="dropdownMenuItems"
-              :permissions="props.dropdownPermissionsMap.get(item.id)"
-              @click="handleDropdownAction(item, index, $event.key)">
-              <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
-            </Dropdown>
           </div>
         </div>
       </div>
 
       <Pagination
-        v-if="props.totalCount > 5"
+        v-if="props.totalCount > 4"
         :current="props.currentPage"
         :pageSize="props.pageSize"
         :pageSizeOptions="props.pageSizeOptions"

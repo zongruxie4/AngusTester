@@ -43,7 +43,7 @@ const { t } = useI18n();
           <img src="./images/cujinzhishigongxiang.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('caseReview.introduce.promoteKnowledge.title') }}</div>
-            <div>{{ t('caseReview.introduce.promoteKnowledge.description') }}</div>
+            <div class="text-3.5">{{ t('caseReview.introduce.promoteKnowledge.description') }}</div>
           </div>
         </div>
 
@@ -51,7 +51,7 @@ const { t } = useI18n();
           <img src="./images/youhuaceshicelve.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('caseReview.introduce.optimizeStrategy.title') }}</div>
-            <div>{{ t('caseReview.introduce.optimizeStrategy.description') }}</div>
+            <div class="text-3.5">{{ t('caseReview.introduce.optimizeStrategy.description') }}</div>
           </div>
         </div>
 
@@ -59,7 +59,7 @@ const { t } = useI18n();
           <img src="./images/jianshaochonggong.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('caseReview.introduce.reduceRework.title') }}</div>
-            <div>{{ t('caseReview.introduce.reduceRework.description') }}</div>
+            <div class="text-3.5">{{ t('caseReview.introduce.reduceRework.description') }}</div>
           </div>
         </div>
       </div>
