@@ -45,7 +45,24 @@
     },
     "statistics": {
       "today": "Today:",
-      "lastWeek": "Last Week:"
+      "lastWeek": "Last Week:",
+      "title": "Resource Statistics",
+      "service": "Total Services",
+      "apis": "Total APIs",
+      "method": "Request Method"
+    },
+    "apiStatus": {
+      "unknown": "Unknown",
+      "inDesign": "In Design",
+      "inDevelopment": "In Development",
+      "developmentCompleted": "Development Completed",
+      "released": "Released"
+    },
+    "statisticsCreated": {
+      "title": "Added by Me",
+      "service": "Service",
+      "apis": "API",
+      "unfiled": "Unarchived APIs"
     },
     "actions": {
       "cancelAllFavorites": "Cancel All Favorites",
@@ -91,6 +108,32 @@
       "testResult": "Test Result",
       "dueTime": "Due Time",
       "priority": "Priority"
+    },
+    "myApis": {
+      "title": "My APIs",
+      "createdTab": "Added",
+      "followTab": "Followed",
+      "favoriteTab": "Favorited",
+      "createdEmptyTip": "You haven't added any APIs yet, ",
+      "addApiAction": "Add API",
+      "addApiTabName": "Add API",
+      "followEmptyTip": "No followed APIs",
+      "favoriteEmptyTip": "No favorited APIs",
+      "deleteTip": "Are you sure you want to delete API 「{name}」?",
+      "deleteSuccess": "API deleted successfully",
+      "cancelFavoriteSuccess": "API unfavorited successfully",
+      "cancelFollowSuccess": "API unfollowed successfully",
+      "columns": {
+        "summary": "Name",
+        "endpoint": "Path",
+        "status": "Status",
+        "createdDate": "Created Time",
+        "action": "Actions"
+      }
+    },
+    "activity": {
+      "my": "My Activities",
+      "all": "All Activities"
     }
   },
   "design": {
