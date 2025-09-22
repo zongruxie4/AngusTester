@@ -451,7 +451,7 @@ export function useChartManagement () {
       // Update API open test chart
       if (apiOpenTestChart) {
         const apisTestData = [enabledTestApiNum, totalApiNum - enabledTestApiNum];
-        const enabledRate = isNaN(enabledTestApiRate) ? '0' : enabledTestApiRate.toFixed(2);
+        const enabledRate = isNaN(Number(enabledTestApiRate)) ? '0' : Number(enabledTestApiRate).toFixed(2);
         apiOpenTestConfig.value.title.text = enabledRate + '%';
         apiOpenTestConfig.value.series[0].data.forEach((item, idx) => {
           item.value = apisTestData[idx];
@@ -478,7 +478,7 @@ export function useChartManagement () {
       // Update scenario open test chart
       if (scenarioOpenTestChart) {
         const scenarioTestData = [enabledTestScenarioNum, totalScenarioNum - enabledTestScenarioNum];
-        const enabledScenarioRate = isNaN(enabledTestScenarioRate) ? '0' : enabledTestScenarioRate.toFixed(2);
+        const enabledScenarioRate = isNaN(Number(enabledTestScenarioRate)) ? '0' : Number(enabledTestScenarioRate).toFixed(2);
         scenarioOpenTestConfig.value.title.text = enabledScenarioRate + '%';
         scenarioOpenTestConfig.value.series[0].data.forEach((item, idx) => {
           item.value = scenarioTestData[idx];
@@ -579,7 +579,7 @@ export function useChartManagement () {
     // Update recent completion rate chart
     if (recentCompletionRateChart) {
       const recentCompleteRateData = [completedNum, totalNum - completedNum];
-      const completionRate = isNaN(completedRate) ? '0' : completedRate.toFixed(1);
+      const completionRate = isNaN(Number(completedRate)) ? '0' : Number(completedRate).toFixed(1);
       recentCompletionRateConfig.value.title.text = completionRate + '%';
       recentCompletionRateConfig.value.series[0].data.forEach((item, idx) => {
         item.value = recentCompleteRateData[idx];
@@ -590,7 +590,7 @@ export function useChartManagement () {
     // Update recent overdue rate chart
     if (recentOverdueRateChart) {
       const recentOverdueRateData = [overdueNum, totalNum - overdueNum];
-      const overdueRateValue = isNaN(overdueRate) ? '0' : overdueRate.toFixed(1);
+      const overdueRateValue = isNaN(Number(overdueRate)) ? '0' : Number(overdueRate).toFixed(1);
       recentOverdueRateConfig.value.title.text = overdueRateValue + '%';
       recentOverdueRateConfig.value.series[0].data.forEach((item, idx) => {
         item.value = recentOverdueRateData[idx];
@@ -601,7 +601,7 @@ export function useChartManagement () {
     // Update recent completed workload chart
     if (recentCompletedWorkloadChart) {
       const completedWorkloadData = [completedWorkload, totalNum - completedWorkload];
-      const completedWorkloadRateValue = isNaN(completedWorkloadRate) ? '0' : completedWorkloadRate.toFixed(1);
+      const completedWorkloadRateValue = isNaN(Number(completedWorkloadRate)) ? '0' : Number(completedWorkloadRate).toFixed(1);
       recentCompletedWorkloadConfig.value.title.text = completedWorkloadRateValue + '%';
       recentCompletedWorkloadConfig.value.series[0].data.forEach((item, idx) => {
         item.value = completedWorkloadData[idx];
@@ -612,7 +612,7 @@ export function useChartManagement () {
     // Update recent saving rate chart
     if (recentSavingRateChart) {
       const recentSavingWorkloadData = [savingWorkload, totalWorkload - savingWorkload];
-      const savingWorkloadRateValue = isNaN(savingWorkloadRate) ? '0' : savingWorkloadRate.toFixed(1);
+      const savingWorkloadRateValue = isNaN(Number(savingWorkloadRate)) ? '0' : Number(savingWorkloadRate).toFixed(1);
       recentSavingRateConfig.value.title.text = savingWorkloadRateValue + '%';
       recentSavingRateConfig.value.series[0].data.forEach((item, idx) => {
         item.value = recentSavingWorkloadData[idx];
