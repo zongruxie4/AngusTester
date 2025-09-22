@@ -33,7 +33,7 @@ const formRef = ref();
 /**
  * Data source options for analysis configuration.
  */
-const dataSourceOptions = computed(() => enumOptionUtils.loadEnumAsOptions(AnalysisDataSource));
+const dataSourceOptions = ref<EnumMessage<AnalysisDataSource>[]>([]);
 
 /**
  * Organization type options for assignee-based analysis.
@@ -67,6 +67,14 @@ const timeRangeOptions = ref<{message: string, value:string}[]>([]);
 const loadTimeRangeOptions = () => {
   const enumData = enumUtils.enumToMessages(AnalysisTimeRange);
   timeRangeOptions.value = enumData.map(item => ({ ...item, label: item.message }));
+};
+
+
+/**
+ * Load Data source options for analysis configuration.
+ */
+ const loadAnalysisDataSourceOptions = () => {
+  dataSourceOptions.value = enumOptionUtils.loadEnumAsOptions(AnalysisDataSource);
 };
 
 /**
@@ -236,6 +244,7 @@ onMounted(async () => {
   loadTemplateDescriptionOptions();
   loadAnalysisObjectOptions();
   loadTimeRangeOptions();
+  loadAnalysisDataSourceOptions();
 
   // Initialize form data if editing existing analysis
   if (props.data) {
