@@ -48,6 +48,46 @@ const { t } = useI18n();
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
 /**
+ * Get plan status style based on status value
+ * @param statusValue - Plan status value
+ * @returns CSS classes for plan status container
+ */
+const getPlanStatusStyle = (statusValue: string) => {
+  switch (statusValue) {
+    case FuncPlanStatus.PENDING:
+      return 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+    case FuncPlanStatus.IN_PROGRESS:
+      return 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100';
+    case FuncPlanStatus.COMPLETED:
+      return 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100';
+    case FuncPlanStatus.BLOCKED:
+      return 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100';
+    default:
+      return 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+  }
+};
+
+/**
+ * Get plan status dot style based on status value
+ * @param statusValue - Plan status value
+ * @returns CSS classes for plan status dot
+ */
+const getPlanStatusDotStyle = (statusValue: string) => {
+  switch (statusValue) {
+    case FuncPlanStatus.PENDING:
+      return 'bg-gray-500';
+    case FuncPlanStatus.IN_PROGRESS:
+      return 'bg-blue-500';
+    case FuncPlanStatus.COMPLETED:
+      return 'bg-green-500';
+    case FuncPlanStatus.BLOCKED:
+      return 'bg-red-500';
+    default:
+      return 'bg-gray-500';
+  }
+};
+
+/**
  * Starts a plan and emits the event to parent
  * @param planData - The plan data to start
  * @param itemIndex - The index of the item in the list
@@ -197,34 +237,30 @@ const dropdownMenuItems = [
   },
   {
     key: 'grant',
-    icon: 'icon-shouquan',
-    name: t('functionPlan.list.grant'),
-    permission: 'grant'
+    icon: 'icon-quanxian1',
+    name: t('functionPlan.list.permission')
   },
   {
     key: 'viewProgress',
-    icon: 'icon-jindu',
-    name: t('functionPlan.list.viewProgress'),
-    permission: 'viewProgress'
+    icon: 'icon-zhengyan',
+    name: t('functionPlan.list.viewProgress')
   },
   {
     key: 'viewBurnDown',
-    icon: 'icon-tuibiao',
-    name: t('functionPlan.list.viewBurnDown'),
-    permission: 'viewBurnDown'
+    icon: 'icon-zhengyan',
+    name: t('functionPlan.list.viewBurnDown')
   },
   {
     key: 'viewWorkCalendar',
-    icon: 'icon-gongzuori',
-    name: t('functionPlan.list.viewWorkCalendar'),
-    permission: 'viewWorkCalendar'
+    icon: 'icon-zhengyan',
+    name: t('functionPlan.list.viewWorkCalendar')
   }
 ];
 </script>
 
 <template>
   <div>
-    <NoData v-if="props.dataList.length === 0" class="flex-1" />
+    <NoData v-if="props.dataList.length === 0" class="flex-1 mt-20" />
 
     <template v-else>
       <div
@@ -257,86 +293,128 @@ const dropdownMenuItems = [
           </div>
         </div>
 
-        <div class="px-3.5 flex mt-3 justify-between text-3 text-theme-sub-content">
-          <div class="flex leading-5">
-            <div class="flex mr-10 items-center">
-              <div class="mr-2">
-                <span>{{ t('functionPlan.list.owner') }}</span>
-                <Colon />
+        <!-- Plan information card -->
+        <div class="px-4 py-3 bg-theme-bg-subtle/30 border-t border-theme-border-subtle">
+          <div class="flex items-center justify-between">
+            <!-- Left side: Owner + Status + Case count + Members -->
+            <div class="flex items-center space-x-16">
+              <!-- Owner -->
+              <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-theme-border">
+                  <Image
+                    class="w-full h-full"
+                    :src="item.ownerAvatar"
+                    type="avatar" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs text-theme-sub-content">{{ t('functionPlan.list.owner') }}</span>
+                  <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.ownerName">
+                    {{ item.ownerName }}
+                  </span>
+                </div>
               </div>
-              <div class="w-5 h-5 rounded-full mr-1 overflow-hidden">
-                <Image
-                  class="w-full"
-                  :src="item.ownerAvatar"
-                  type="avatar" />
+
+              <!-- Plan status -->
+              <div class="flex items-center space-x-2">
+                <div
+                  class="px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm border transition-all duration-200 hover:shadow-md"
+                  :class="getPlanStatusStyle(item.status?.value)">
+                  <div class="flex items-center space-x-1.5">
+                    <div
+                      class="w-2 h-2 rounded-full"
+                      :class="getPlanStatusDotStyle(item.status?.value)">
+                    </div>
+                    <span>{{ item.status?.message }}</span>
+                  </div>
+                </div>
               </div>
-              <div
-                class="text-theme-content truncate"
-                :title="item.ownerName"
-                style="max-width: 200px;">
-                {{ item.ownerName }}
+
+              <!-- Case count -->
+              <div class="flex items-center space-x-2">
+                <div class="flex flex-col">
+                  <span class="text-xs text-theme-sub-content">{{ t('functionPlan.list.totalCases', { count: '' }).replace(':', '') }}</span>
+                  <span class="text-sm font-medium text-theme-content">
+                    {{ item.caseNum }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Members -->
+              <div class="flex items-center space-x-2">
+                <div class="flex flex-col">
+                  <span class="text-xs text-theme-sub-content">{{ t('functionPlan.list.members') }}</span>
+                  <span class="text-sm font-medium text-theme-content">
+                    {{ item.members?.length || 0 }} {{ t('unit.user') }}
+                  </span>
+                </div>
+                <div class="flex -space-x-1">
+                  <template v-if="item.members?.length">
+                    <div
+                      v-for="user in item.showMembers.slice(0, 8)"
+                      :key="user.id"
+                      :title="user.fullName"
+                      class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-white shadow-sm">
+                      <Image
+                        :src="user.avatar"
+                        type="avatar"
+                        class="w-full h-full" />
+                    </div>
+                    <Popover
+                      v-if="item.members.length > 8"
+                      placement="bottomLeft"
+                      internal>
+                      <template #title>
+                        <span class="text-sm font-medium">{{ t('functionPlan.list.members') }} ({{ item.members.length }})</span>
+                      </template>
+                      <template #content>
+                        <div class="grid grid-cols-5 gap-2 max-w-md">
+                          <div
+                            v-for="_user in item.members"
+                            :key="_user.id"
+                            class="flex flex-col items-center space-y-1 p-2">
+                            <div class="w-8 h-8 rounded-full overflow-hidden">
+                              <Image
+                                class="w-full h-full"
+                                :src="_user.avatar"
+                                type="avatar" />
+                            </div>
+                            <span class="text-xs text-theme-content text-center truncate w-full" :title="_user.fullName">{{ _user.fullName }}</span>
+                          </div>
+                        </div>
+                      </template>
+                      <div class="w-6 h-6 rounded-full bg-theme-primary/20 flex items-center justify-center text-xs font-bold text-theme-primary ring-1 ring-white shadow-sm cursor-pointer">
+                        +{{ item.members.length - 8 }}
+                      </div>
+                    </Popover>
+                  </template>
+                  <Avatar
+                    v-else
+                    size="small"
+                    class="w-6 h-6">
+                    <template #icon>
+                      <UserOutlined />
+                    </template>
+                  </Avatar>
+                </div>
               </div>
             </div>
 
+            <!-- Right side: Last modified info -->
             <div class="flex items-center">
-              <div class="mr-2">
-                <span>{{ t('functionPlan.list.members') }}</span>
-                <Colon />
+              <!-- Last modified -->
+              <div class="flex items-center space-x-2 text-xs text-theme-sub-content">
+                <span class="text-theme-content font-medium truncate max-w-16" :title="item.lastModifiedByName">
+                  {{ item.lastModifiedByName }}
+                </span>
+                <span>{{ t('functionPlan.list.modifiedBy') }}</span>
+                <span class="text-theme-sub-content">{{ item.lastModifiedDate }}</span>
               </div>
-
-              <template v-if="item.members?.length">
-                <div
-                  v-for="user in item.showMembers"
-                  :key="user.id"
-                  :title="user.fullName"
-                  class="w-5 h-5 mr-2 overflow-hidden rounded-full">
-                  <Image
-                    :src="user.avatar"
-                    type="avatar"
-                    class="w-full" />
-                </div>
-
-                <Popover
-                  v-if="item.members.length > 10"
-                  placement="bottomLeft"
-                  internal>
-                  <template #title>
-                    <span class="text-3">{{ t('functionPlan.list.allMembers') }}</span>
-                  </template>
-                  <template #content>
-                    <div class="flex flex-wrap" style="max-width: 700px;">
-                      <div
-                        v-for="_user in item.members"
-                        :key="_user.id"
-                        class="flex text-3 leading-5 mr-2 mb-2">
-                        <div class="w-5 h-5 rounded-full mr-1 flex-none overflow-hidden">
-                          <Image
-                            class="w-full"
-                            :src="_user.avatar"
-                            type="avatar" />
-                        </div>
-                        <span class="flex-1 truncate">{{ _user.fullName }}</span>
-                      </div>
-                    </div>
-                  </template>
-                  <a class="text-theme-special text-5">...</a>
-                </Popover>
-              </template>
-
-              <Avatar
-                v-else
-                size="small"
-                style="font-size: 12px;"
-                class="w-5 h-5 leading-5">
-                <template #icon>
-                  <UserOutlined />
-                </template>
-              </Avatar>
             </div>
           </div>
-
-          <div class="ml-8 text-theme-content">{{ t('functionPlan.list.totalCases', { count: item.caseNum }) }}</div>
         </div>
+
+        <!-- Divider line -->
+        <div class="border-t border-theme-border-subtle/50"></div>
 
         <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
           <div class="flex flex-wrap">
@@ -353,7 +431,7 @@ const dropdownMenuItems = [
                 <span>{{ t('functionPlan.list.isReviewLabel') }}</span>
                 <Colon />
               </div>
-              <div class="text-theme-content">{{ item.review ? t('status.yes') : t('status.no') }}</div>
+              <div :class="item.review ? 'text-green-600' : 'text-red-500'">{{ item.review ? t('status.on') : t('status.off') }}</div>
             </div>
 
             <div class="flex ml-8  mt-3">
@@ -397,19 +475,6 @@ const dropdownMenuItems = [
               </Popover>
             </div>
           </div>
-
-          <div class="flex ml-8 mt-3">
-            <div
-              class="truncate text-theme-content"
-              style="max-width: 100px;"
-              :title="item.lastModifiedByName">
-              {{ item.lastModifiedByName }}
-            </div>
-            <div class="mx-2 whitespace-nowrap">{{ t('functionPlan.list.modifiedBy') }}</div>
-            <div class="whitespace-nowrap text-theme-content">
-              {{ item.lastModifiedDate }}
-            </div>
-          </div>
         </div>
 
         <div class="px-3.5 flex justify-between items-start text-3 my-2.5 relative">
@@ -422,7 +487,7 @@ const dropdownMenuItems = [
               :value="item.otherInformation"
               :emptyText="t('functionPlan.list.noDescription')" />
           </div>
-          <div class="flex space-x-3 items-center justify-between h-4 leading-5">
+          <div class="flex items-center justify-between h-4 leading-5">
             <RouterLink class="flex items-center space-x-1" :to="`/function#plans?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
               <span>{{ t('functionPlan.list.edit') }}</span>
@@ -432,33 +497,36 @@ const dropdownMenuItems = [
               :disabled="!props.isAdmin && !props.permissionsMap.get(item.id)?.includes('VIEW')"
               size="small"
               type="text"
-              class="px-0 flex items-center space-x-1"
+              class="px-0 flex items-center ml-3"
               @click="handleGoToCases(item)">
-              <Icon icon="icon-ceshiyongli1" class="text-3.5" />
+              <Icon icon="icon-ceshiyongli1" class="mr-0.5" />
               <span>{{ t('functionPlan.list.viewCases') }}</span>
             </Button>
 
             <Button
-              :disabled="(!props.isAdmin && !props.permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN)) || ![FuncPlanStatus.PENDING, FuncPlanStatus.BLOCKED, FuncPlanStatus.COMPLETED].includes(item.status?.value)"
+              :disabled="(!props.isAdmin && !props.permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN))
+                || ![FuncPlanStatus.PENDING, FuncPlanStatus.BLOCKED, FuncPlanStatus.COMPLETED].includes(item.status?.value)"
               size="small"
               type="text"
-              class="px-0 flex items-center space-x-1"
+              class="px-0 flex items-center ml-2"
               @click="handleStartPlan(item, index)">
-              <Icon icon="icon-kaishi" class="text-3.5" />
+              <Icon icon="icon-kaishi" class="mr-0.5" />
               <span>{{ item.status.value === FuncPlanStatus.COMPLETED ? t('functionPlan.list.restart') : t('functionPlan.list.start') }}</span>
             </Button>
 
             <Button
-              :disabled="(!props.isAdmin && !props.permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN)) || ![FuncPlanStatus.IN_PROGRESS].includes(item.status?.value)"
+              :disabled="(!props.isAdmin && !props.permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN))
+                || ![FuncPlanStatus.IN_PROGRESS].includes(item.status?.value)"
               size="small"
               type="text"
-              class="px-0 flex items-center space-x-1"
+              class="px-0 flex items-center ml-2"
               @click="handleCompletePlan(item, index)">
-              <Icon icon="icon-yiwancheng" class="text-3.5" />
+              <Icon icon="icon-yiwancheng" class="mr-0.5" />
               <span>{{ t('functionPlan.list.complete') }}</span>
             </Button>
 
             <Dropdown
+              class="ml-2"
               :admin="false"
               :menuItems="dropdownMenuItems"
               :permissions="props.dropdownPermissionsMap.get(item.id)"
@@ -470,7 +538,7 @@ const dropdownMenuItems = [
       </div>
 
       <Pagination
-        v-if="props.total > 5"
+        v-if="props.total > 4"
         :current="props.pageNo"
         :pageSize="props.pageSize"
         :pageSizeOptions="props.pageSizeOptions"
