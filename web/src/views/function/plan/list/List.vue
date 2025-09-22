@@ -347,6 +347,7 @@ const dropdownMenuItems = [
                     {{ item.members?.length || 0 }} {{ t('unit.user') }}
                   </span>
                 </div>
+
                 <div class="flex -space-x-1">
                   <template v-if="item.members?.length">
                     <div
@@ -359,6 +360,7 @@ const dropdownMenuItems = [
                         type="avatar"
                         class="w-full h-full" />
                     </div>
+
                     <Popover
                       v-if="item.members.length > 8"
                       placement="bottomLeft"
@@ -366,6 +368,7 @@ const dropdownMenuItems = [
                       <template #title>
                         <span class="text-sm font-medium">{{ t('functionPlan.list.members') }} ({{ item.members.length }})</span>
                       </template>
+
                       <template #content>
                         <div class="grid grid-cols-5 gap-2 max-w-md">
                           <div
@@ -382,11 +385,13 @@ const dropdownMenuItems = [
                           </div>
                         </div>
                       </template>
+
                       <div class="w-6 h-6 rounded-full bg-theme-primary/20 flex items-center justify-center text-xs font-bold text-theme-primary ring-1 ring-white shadow-sm cursor-pointer">
                         +{{ item.members.length - 8 }}
                       </div>
                     </Popover>
                   </template>
+
                   <Avatar
                     v-else
                     size="small"
@@ -406,7 +411,9 @@ const dropdownMenuItems = [
                 <span class="text-theme-content font-medium truncate max-w-16" :title="item.lastModifiedByName">
                   {{ item.lastModifiedByName }}
                 </span>
+
                 <span>{{ t('functionPlan.list.modifiedBy') }}</span>
+
                 <span class="text-theme-sub-content">{{ item.lastModifiedDate }}</span>
               </div>
             </div>
@@ -423,6 +430,7 @@ const dropdownMenuItems = [
                 <span>{{ t('functionPlan.list.id') }}</span>
                 <Colon />
               </div>
+
               <div class="text-theme-content">{{ item.id || "--" }}</div>
             </div>
 
@@ -439,6 +447,7 @@ const dropdownMenuItems = [
                 <span>{{ t('functionPlan.list.workloadAssessment') }}</span>
                 <Colon />
               </div>
+
               <div class="text-theme-content">{{ item.evalWorkloadMethod.message }}</div>
             </div>
 
@@ -447,6 +456,7 @@ const dropdownMenuItems = [
                 <span>{{ t('functionPlan.list.casePrefix') }}</span>
                 <Colon />
               </div>
+
               <div
                 class="truncate text-theme-content"
                 style="max-width: 100px;"
@@ -457,7 +467,9 @@ const dropdownMenuItems = [
 
             <div v-if="item.attachments?.length" class="whitespace-nowrap ml-8 mt-3">
               <span>{{ t('functionPlan.list.attachmentCount') }}</span>
+
               <Colon />
+
               <Popover placement="bottomLeft" internal>
                 <template #content>
                   <div class="flex flex-col text-3 leading-5 space-y-1">
@@ -471,6 +483,7 @@ const dropdownMenuItems = [
                     </div>
                   </div>
                 </template>
+
                 <span style="color:#1890ff" class="pl-2 pr-2 cursor-pointer">{{ item.attachments?.length }}</span>
               </Popover>
             </div>
@@ -487,6 +500,7 @@ const dropdownMenuItems = [
               :value="item.otherInformation"
               :emptyText="t('functionPlan.list.noDescription')" />
           </div>
+
           <div class="flex items-center justify-between h-4 leading-5">
             <RouterLink class="flex items-center space-x-1" :to="`/function#plans?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
@@ -494,7 +508,7 @@ const dropdownMenuItems = [
             </RouterLink>
 
             <Button
-              :disabled="!props.isAdmin && !props.permissionsMap.get(item.id)?.includes('VIEW')"
+              :disabled="!props.isAdmin && props.permissionsMap.size < 1"
               size="small"
               type="text"
               class="px-0 flex items-center ml-3"
