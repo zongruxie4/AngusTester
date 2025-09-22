@@ -605,19 +605,19 @@ onMounted(async () => {
   await loadProjectMembers();
 
   watch(() => props.data, async (newData, oldData) => {
-    const reviewId = newData?.id;
-    if (!reviewId) {
+    const newReviewId = newData?.id;
+    if (!newReviewId) {
       return;
     }
 
     const previousReviewId = oldData?.id;
-    if (reviewId === previousReviewId) {
+    if (newReviewId === previousReviewId) {
       return;
     }
 
-    reviewId.value = reviewId;
+    reviewId.value = newReviewId;
 
-    await loadReviewDetail(reviewId);
+    await loadReviewDetail(newReviewId);
     await loadReviewCaseList();
   }, { immediate: true });
 });
