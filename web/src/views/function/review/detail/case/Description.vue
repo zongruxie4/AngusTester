@@ -15,15 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 </script>
 <template>
-  <div class="bg-white rounded-lg border border-gray-200 p-6">
-    <div class="flex items-center mb-4">
-      <Icon icon="icon-miaoshu" class="text-purple-500 mr-2" />
-      <h3 class="text-lg font-semibold text-gray-900">
-        {{ t('caseReview.comp.description.title') }}
-        <span v-if="props.contentBg" class="text-sm text-gray-500 ml-2">{{ props.contentBg }}</span>
-      </h3>
-    </div>
-
+  <div class="bg-white rounded-lg">
     <div v-if="props.caseInfo?.description" class="bg-gray-50 rounded-lg p-4">
       <RichEditor
         :value="props.caseInfo?.description"

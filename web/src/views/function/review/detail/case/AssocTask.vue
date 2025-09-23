@@ -66,7 +66,7 @@ const dataList = computed(() => {
 
     <div v-else class="text-center py-8 text-gray-400">
       <Icon icon="icon-kong" class="text-4xl mb-2" />
-      <div>{{ t('caseReview.comp.assocTask.noData') }}</div>
+      <div>{{ t('common.noData') }}</div>
     </div>
   </div>
 </template>

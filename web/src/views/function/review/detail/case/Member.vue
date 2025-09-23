@@ -37,14 +37,7 @@ const peopleInfoColumns = [
 
 </script>
 <template>
-  <div class="bg-white rounded-lg border border-gray-200 p-6">
-    <div class="flex items-center mb-4">
-      <Icon icon="icon-chengyuan" class="text-pink-500 mr-2" />
-      <h3 class="text-lg font-semibold text-gray-900">
-        {{ t('caseReview.comp.member.title') }}
-      </h3>
-    </div>
-
+  <div class="bg-white rounded-lg p-6">
     <Grid
       :columns="peopleInfoColumns"
       :dataSource="props.caseInfo"

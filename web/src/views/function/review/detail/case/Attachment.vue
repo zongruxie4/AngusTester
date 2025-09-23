@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { NoData } from '@xcan-angus/vue-ui';
 import { download } from '@xcan-angus/infra';
 
 const { t } = useI18n();
@@ -10,6 +9,7 @@ interface Props {
   caseInfo?: {[key: string]: any};
   hideTitle: boolean;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   caseInfo: undefined,
   hideTitle: false
@@ -57,7 +57,7 @@ const handleDownload = (url:string) => {
     <template v-else>
       <div class="text-center py-8 text-gray-400">
         <Icon icon="icon-kong" class="text-4xl mb-2" />
-        <div>{{ t('caseReview.comp.attachment.noAttachments') }}</div>
+        <div>{{ t('common.noAttachment') }}</div>
       </div>
     </template>
   </div>

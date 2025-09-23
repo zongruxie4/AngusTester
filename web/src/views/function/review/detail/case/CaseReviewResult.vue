@@ -1,18 +1,12 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 import { ReviewStatus } from '@xcan-angus/vue-ui';
+import { CaseDetail } from '@/views/function/types';
 
 const { t } = useI18n();
 
 interface Props {
-  caseInfo?: {
-    review: boolean;
-    reviewRemark?: string;
-    reviewStatus: {
-      value: string;
-      message: string;
-    }
-  }
+  caseInfo?: CaseDetail
 }
 const props = withDefaults(defineProps<Props>(), {
   caseInfo: undefined
@@ -20,14 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 </script>
 <template>
-  <div class="bg-white rounded-lg border border-gray-200 p-6">
-    <div class="flex items-center mb-4">
-      <Icon icon="icon-pingshenjieguo" class="text-green-500 mr-2" />
-      <h3 class="text-lg font-semibold text-gray-900">
-        {{ t('caseReview.comp.caseReviewResult.title') }}
-      </h3>
-    </div>
-
+  <div class="bg-white rounded-lg p-6">
     <div class="space-y-4">
       <div class="flex items-center">
         <label class="w-24 text-gray-600 font-medium">{{ t('caseReview.comp.caseReviewResult.reviewStatus') }}：</label>

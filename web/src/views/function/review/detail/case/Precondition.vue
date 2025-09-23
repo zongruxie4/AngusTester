@@ -17,14 +17,7 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
 
 </script>
 <template>
-  <div class="bg-white rounded-lg border border-gray-200 p-6">
-    <div class="flex items-center mb-4">
-      <Icon icon="icon-qianti" class="text-orange-500 mr-2" />
-      <h3 class="text-lg font-semibold text-gray-900">
-        {{ t('caseReview.comp.precondition.title') }}
-      </h3>
-    </div>
-
+  <div class="bg-white rounded-lg">
     <div v-if="props.caseInfo?.precondition" :class="props.contentClass">
       <div class="bg-gray-50 rounded-lg p-4">
         <RichEditor :value="props.caseInfo?.precondition" mode="view" />
@@ -35,7 +28,7 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
       class="text-center py-8 text-gray-400"
       :class="props.contentClass">
       <Icon icon="icon-kong" class="text-4xl mb-2" />
-      <div>{{ t('caseReview.comp.precondition.noData') }}</div>
+      <div>{{ t('common.noData') }}</div>
     </div>
   </div>
 </template>

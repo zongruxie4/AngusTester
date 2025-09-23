@@ -9,6 +9,7 @@ import { appContext, download, duration, enumUtils, SearchCriteria, ReviewStatus
 import { debounce } from 'throttle-debounce';
 import { func, funcPlan } from '@/api/tester';
 import { FuncPlanPermission, FuncPlanStatus } from '@/enums/enums';
+import { CaseInfo } from '@/views/function/types';
 
 // Type imports
 import { BasicProps } from '@/types/types';
@@ -35,7 +36,7 @@ const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/C
 const CaseBasicInfo = defineAsyncComponent(() => import('@/views/function/review/detail/case/CaseBasicInfo.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/function/review/detail/case/Precondition.vue'));
 const Members = defineAsyncComponent(() => import('@/views/function/review/detail/case/Member.vue'));
-const TestInfo = defineAsyncComponent(() => import('@/views/function/review/detail/case/TestInfo.vue'));
+const TestResult = defineAsyncComponent(() => import('@/views/function/review/detail/case/TestResult.vue'));
 const Attachment = defineAsyncComponent(() => import('@/views/function/review/detail/case/Attachment.vue'));
 const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/detail/case/AssocTask.vue'));
 const AssocCases = defineAsyncComponent(() => import('@/views/function/review/detail/case/AssocCase.vue'));
@@ -85,7 +86,7 @@ const reviewStatus = ref();
 // Data state
 const permissions = ref<string[]>([]);
 const reviewDetail = ref<ReviewDetail>();
-const reviewCaseList = ref([]);
+const reviewCaseList = ref<CaseInfo[]>([]);
 const reviewId = ref();
 
 // Selection state
@@ -103,6 +104,7 @@ const columns = [
   },
   {
     title: t('caseReview.detail.caseCode'),
+    key: 'caseCode',
     dataIndex: 'caseInfo',
     customRender: ({ text }) => {
       return text?.code;
@@ -112,10 +114,8 @@ const columns = [
   {
     title: t('caseReview.detail.caseName'),
     dataIndex: 'caseInfo',
+    key: 'caseName',
     ellipsis: true,
-    customRender: ({ text }) => {
-      return text?.name;
-    },
     customCell: () => {
       return { style: 'white-space: nowrap;' };
     }
@@ -123,6 +123,7 @@ const columns = [
   {
     title: t('caseReview.detail.version'),
     dataIndex: 'caseInfo',
+    key: 'caseVersion',
     customRender: ({ text }) => {
       return text?.version ? `v${text.version}` : '--';
     },
@@ -642,7 +643,8 @@ onUnmounted(() => {
 
                   <Button
                     size="small"
-                    :disabled="!reviewDetail?.planId || !permissions.includes(FuncPlanPermission.REVIEW) || reviewDetail?.status?.value === FuncPlanStatus.COMPLETED"
+                    :disabled="!reviewDetail?.planId || !permissions.includes(FuncPlanPermission.REVIEW)
+                      || reviewDetail?.status?.value === FuncPlanStatus.COMPLETED"
                     type="primary"
                     class="shadow-sm search-actions"
                     :class="{ 'w-full': isMobile }"
@@ -677,6 +679,18 @@ onUnmounted(() => {
                         :checked="selectReviewCaseIds.includes(record.id)"
                         @click="onCheckedChange($event, record.id)">
                       </Checkbox>
+                    </template>
+
+                    <template v-if="column.key === 'caseName'">
+                      <span class="inline-flex items-center">
+                        <span class="truncate">{{ record.caseInfo.name }}</span>
+                        <span
+                          v-if="record?.caseInfo?.overdue"
+                          class="ml-3 inline-flex items-center justify-center text-red-700 text-xs font-medium rounded-full border border-red-200 bg-red-100 whitespace-nowrap text-center"
+                          style="width: 70px; height: 20px; line-height: 20px;">
+                          {{ t('caseReview.comp.caseBasicInfo.overdue') }}
+                        </span>
+                      </span>
                     </template>
 
                     <template v-if="column.dataIndex === 'reviewStatus'">
@@ -765,7 +779,7 @@ onUnmounted(() => {
 
       <!-- Right side detail drawer -->
       <div
-        class="flex flex-col transition-all duration-300 ease-in-out bg-white border-l border-gray-200 shadow-lg"
+        class="flex flex-col mt-4 transition-all duration-300 ease-in-out bg-white border border-gray-200 shadow-lg"
         :class="{
           'w-0 opacity-0 overflow-hidden': !selectedRowKey,
           'opacity-100 w-[28.8rem]': !!selectedRowKey && !isMobile,
@@ -807,7 +821,7 @@ onUnmounted(() => {
             <div class="space-y-2">
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('precondition')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
-                  <Icon icon="icon-qianti" class="mr-1 text-orange-500" />
+                  <Icon icon="icon-shezhi1" class="mr-1 text-orange-500" />
                   <span>{{ t('caseReview.comp.precondition.title') }}</span>
                 </div>
                 <Icon :icon="expand.precondition ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
@@ -821,7 +835,7 @@ onUnmounted(() => {
             <div class="space-y-2">
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('steps')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
-                  <Icon icon="icon-ceshiyongli1" class="mr-1 text-indigo-500" />
+                  <Icon icon="icon-jihua1" class="mr-1 text-indigo-500" />
                   <span>{{ t('caseReview.detail.testSteps') }}</span>
                 </div>
                 <Icon :icon="expand.steps ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
@@ -831,6 +845,20 @@ onUnmounted(() => {
                   :defaultValue="selectReviewCaseInfo?.caseInfo?.steps || []"
                   :stepView="selectReviewCaseInfo?.caseInfo?.stepView?.value"
                   :readonly="true" />
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('description')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-shuoming" class="mr-1 text-purple-500" />
+                  <span>{{ t('caseReview.comp.description.title') }}</span>
+                </div>
+                <Icon :icon="expand.description ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.description">
+                <Description :caseInfo="selectReviewCaseInfo?.caseInfo" />
               </div>
             </div>
 
@@ -858,21 +886,7 @@ onUnmounted(() => {
                 <Icon :icon="expand.testInfo ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
               <div v-show="expand.testInfo">
-                <TestInfo :caseInfo="selectReviewCaseInfo?.caseInfo" />
-              </div>
-            </div>
-
-            <!-- Description -->
-            <div class="space-y-2">
-              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('description')">
-                <div class="flex items-center text-gray-800 text-sm font-medium">
-                  <Icon icon="icon-miaoshu" class="mr-1 text-purple-500" />
-                  <span>{{ t('caseReview.comp.description.title') }}</span>
-                </div>
-                <Icon :icon="expand.description ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
-              </div>
-              <div v-show="expand.description">
-                <Description :caseInfo="selectReviewCaseInfo?.caseInfo" />
+                <TestResult :caseInfo="selectReviewCaseInfo?.caseInfo" />
               </div>
             </div>
 
@@ -880,7 +894,7 @@ onUnmounted(() => {
             <div class="space-y-2">
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('members')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
-                  <Icon icon="icon-chengyuan" class="mr-1 text-pink-500" />
+                  <Icon icon="icon-chuangjianren" class="mr-1 text-pink-500" />
                   <span>{{ t('caseReview.comp.member.title') }}</span>
                 </div>
                 <Icon :icon="expand.members ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
@@ -891,7 +905,7 @@ onUnmounted(() => {
             </div>
 
             <!-- Related tasks -->
-            <div class="space-y-2">
+            <div class="space-y-2 space-x-4">
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('assocTasks')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-renwu" class="mr-1 text-emerald-500" />
@@ -909,7 +923,7 @@ onUnmounted(() => {
             </div>
 
             <!-- Related cases -->
-            <div class="space-y-2">
+            <div class="space-y-2 space-x-4">
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('assocCases')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-gongnengyongli" class="mr-1 text-cyan-500" />
@@ -927,10 +941,10 @@ onUnmounted(() => {
             </div>
 
             <!-- Attachments -->
-            <div class="space-y-2">
+            <div class="space-y-2 space-x-4">
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('attachments')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
-                  <Icon icon="icon-fujian" class="mr-1 text-indigo-500" />
+                  <Icon icon="icon-wenjian" class="mr-1 text-indigo-500" />
                   <span>{{ t('caseReview.comp.attachment.title') }}</span>
                 </div>
                 <Icon :icon="expand.attachments ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />

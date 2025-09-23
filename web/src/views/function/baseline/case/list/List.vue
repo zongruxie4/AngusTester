@@ -5,6 +5,7 @@ import { Icon, modal, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { func } from '@/api/tester';
 import TaskPriority from '@/components/TaskPriority/index.vue';
+import { CaseDetail } from '@/views/function/types';
 
 const { t } = useI18n();
 
@@ -18,7 +19,7 @@ const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/C
 const CaseBasicInfo = defineAsyncComponent(() => import('@/views/function/review/detail/case/CaseBasicInfo.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/function/review/detail/case/Precondition.vue'));
 const Members = defineAsyncComponent(() => import('@/views/function/review/detail/case/Member.vue'));
-const TestInfo = defineAsyncComponent(() => import('@/views/function/review/detail/case/TestInfo.vue'));
+const TestInfo = defineAsyncComponent(() => import('@/views/function/review/detail/case/TestResult.vue'));
 const Attachment = defineAsyncComponent(() => import('@/views/function/review/detail/case/Attachment.vue'));
 const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/detail/case/AssocTask.vue'));
 const AssocCases = defineAsyncComponent(() => import('@/views/function/review/detail/case/AssocCase.vue'));
@@ -191,7 +192,7 @@ const handleSearchParametersChange = (params) => {
 
 // Component State
 const selectedRowKey = ref();
-const selectedCaseInfo = ref();
+const selectedCaseInfo = ref<CaseDetail>();
 
 /**
  * Create custom row click handler

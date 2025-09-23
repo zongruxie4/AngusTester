@@ -1823,23 +1823,19 @@
         "resultRemark": "Result Remark"
       },
       "caseBasicInfo": {
-        "title": "Basic Info",
+        "title": "Basic Information",
         "name": "Name",
         "id": "ID",
         "code": "Code",
-        "reviewStatus": "Review Status",
-        "version": "Version",
+        "version": "Case Version",
         "softwareVersion": "Software Version",
         "priority": "Priority",
         "tags": "Tags",
         "planName": "Plan",
         "moduleName": "Module",
         "testResult": "Test Result",
-        "evalStoryPoint": "Estimated Story Points",
         "evalWorkload": "Estimated Workload",
-        "actualStoryPoint": "Actual Story Points",
-        "actualWorkload": "Actual Work Hours",
-        "unplannedCase": "Unplanned Case",
+        "actualWorkload": "Actual Workload",
         "overdue": "Overdue"
       },
       "member": {
