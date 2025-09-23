@@ -1794,7 +1794,6 @@
       "version": "版本",
       "priority": "优先级",
       "reviewStatus": "评审状态",
-      "creator": "添加人",
       "action": "操作",
       "confirmCancelReviewCase": "确认取消评审用例「{name}」吗？",
       "restartReview": "重新开始评审",

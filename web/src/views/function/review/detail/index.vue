@@ -2,8 +2,10 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Popover, TabPane, Tabs, Tag } from 'ant-design-vue';
-import { AsyncComponent, Icon, Image, Input, modal, notification, ReviewStatus, Spin, Table } from '@xcan-angus/vue-ui';
-import { appContext, download, duration, enumUtils } from '@xcan-angus/infra';
+import {
+  AsyncComponent, Icon, Image, Input, modal, notification, ReviewStatus as ReviewStatusView, Spin, Table
+} from '@xcan-angus/vue-ui';
+import { appContext, download, duration, enumUtils, SearchCriteria, ReviewStatus } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { func, funcPlan } from '@/api/tester';
 import { FuncPlanPermission, FuncPlanStatus } from '@/enums/enums';
@@ -64,7 +66,7 @@ const reviewStatus = ref();
 // Data state
 const permissions = ref<string[]>([]);
 const reviewDetail = ref<ReviewDetail>();
-const caseList = ref([]);
+const reviewCaseList = ref([]);
 const reviewId = ref();
 
 // Selection state
@@ -135,19 +137,19 @@ const columns = [
     title: t('caseReview.detail.reviewStatus'),
     dataIndex: 'reviewStatus',
     customRender: ({ text }):string => text?.message,
-    width: '12%',
+    width: 100,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
   },
-  {
+  /*{
     title: t('caseReview.detail.creator'),
     dataIndex: 'createdByName',
-    width: '12%',
+    width: 100,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
-  },
+  },*/
   {
     title: t('caseReview.detail.action'),
     dataIndex: 'action',
@@ -215,7 +217,7 @@ const loadReviewCaseList = async (reviewId: string) => {
   const { current, pageSize } = pagination.value;
   const [error, { data }] = await func.getReviewCaseList({
     reviewId: reviewId,
-    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH' }] : [],
+    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: SearchCriteria.OpEnum.Match }] : [],
     reviewStatus: reviewStatus.value,
     pageNo: current,
     pageSize
@@ -224,7 +226,7 @@ const loadReviewCaseList = async (reviewId: string) => {
   if (error) {
     return;
   }
-  caseList.value = data?.list || [];
+  reviewCaseList.value = data?.list || [];
   pagination.value.total = +data.total || 0;
   selectCaseIds.value = [];
 };
@@ -345,7 +347,7 @@ const delCase = async (record) => {
       if (error) {
         return;
       }
-      if (pagination.value.current !== 1 && caseList.value.length === 1) {
+      if (pagination.value.current !== 1 && reviewCaseList.value.length === 1) {
         pagination.value.current -= 1;
       }
       await loadReviewCaseList(reviewId.value);
@@ -558,11 +560,8 @@ onMounted(() => {
                 class="w-50 ml-2"
                 :placeholder="t('caseReview.detail.selectReviewStatus')"
                 enumKey="ReviewStatus"
-                :allowClear="true"
+                allowClear="true"
                 @change="handleChangeStatus">
-                <template #option="item">
-                  <ReviewStatus :value="item" />
-                </template>
               </SelectEnum>
 
               <div class="flex-1"></div>
@@ -580,7 +579,7 @@ onMounted(() => {
             <Table
               size="small"
               :columns="columns"
-              :dataSource="caseList"
+              :dataSource="reviewCaseList"
               :customRow="customRow"
               :rowClassName="(record) => record.id === selectedRowKey ? 'ant-table-row-selected' : ''"
               :pagination="pagination"
@@ -598,7 +597,7 @@ onMounted(() => {
                 </template>
 
                 <template v-if="column.dataIndex === 'reviewStatus'">
-                  <ReviewStatus :value="record.reviewStatus" />
+                  <ReviewStatusView :value="record.reviewStatus" />
                 </template>
 
                 <template v-if="column.dataIndex === 'priority'">
