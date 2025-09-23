@@ -137,7 +137,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
                   <span class="text-xs text-theme-sub-content">ID</span>
-                  <span class="text-sm font-medium text-theme-content">
+                  <span class="text-sm text-theme-content">
                     {{ item.id || "--" }}
                   </span>
                 </div>
@@ -147,7 +147,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
                   <span class="text-xs text-theme-sub-content">{{ t('functionBaseline.list.testPlan') }}</span>
-                  <span class="text-sm font-medium text-theme-content truncate max-w-82" :title="item.planName">
+                  <span class="text-sm text-theme-content truncate max-w-82" :title="item.planName">
                     {{ item.planName || "--" }}
                   </span>
                 </div>

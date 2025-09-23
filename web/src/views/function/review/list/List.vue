@@ -251,7 +251,7 @@ const dropdownMenuItems = [
               <!-- Case count -->
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('caseReview.list.totalCases', {count: '' }).replace(':', '') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('caseReview.list.totalCases') }}</span>
                   <span class="text-sm font-medium text-theme-content">
                     {{ item.caseNum }}
                   </span>
