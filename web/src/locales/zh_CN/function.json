@@ -1780,6 +1780,7 @@
       "code": "编号",
       "tester": "测试人",
       "developer": "开发人",
+      "priority": "优先级",
       "allCases": "全部用例",
       "enterModuleName": "请输入模块名称",
       "confirmDeleteModule": "确定删除模块「{name}」吗？",

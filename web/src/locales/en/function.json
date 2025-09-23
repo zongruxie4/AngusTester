@@ -1746,6 +1746,7 @@
       "code": "Code",
       "tester": "Tester",
       "developer": "Developer",
+      "priority": "Priority",
       "allCases": "All Cases",
       "enterModuleName": "Please enter module name",
       "confirmDeleteModule": "Are you sure you want to delete module 「{name}」?",

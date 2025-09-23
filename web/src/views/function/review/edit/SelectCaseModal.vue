@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
+import { Input, Modal, ReviewStatus, Priority, Table } from '@xcan-angus/vue-ui';
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { funcPlan } from '@/api/tester';
 import { ReviewCaseInfo } from '@/views/function/review/types';
 
 // Component imports
+import TaskPriority from '@/components/TaskPriority/index.vue';
 const ModuleTree = defineAsyncComponent(() => import('@/views/function/review/edit/ModuleTree.vue'));
 
 // Type Definitions
@@ -123,24 +124,32 @@ const handleSearchFilter = debounce(duration.search, () => {
 const tableColumns = [
   {
     title: t('caseReview.editForm.code'),
-    dataIndex: 'code'
+    dataIndex: 'code',
+    width: 120
   },
   {
     title: t('caseReview.editForm.name'),
-    dataIndex: 'name',
-    width: '40%'
+    dataIndex: 'name'
+  },
+  {
+    title: t('caseReview.editForm.priority'),
+    dataIndex: 'priority',
+    width: 80
   },
   {
     title: t('caseReview.editForm.tester'),
-    dataIndex: 'testerName'
+    dataIndex: 'testerName',
+    width: 100
   },
   {
     title: t('caseReview.editForm.developer'),
-    dataIndex: 'developerName'
+    dataIndex: 'developerName',
+    width: 100
   },
   {
     title: t('caseReview.editForm.reviewStatus'),
-    dataIndex: 'reviewStatus'
+    dataIndex: 'reviewStatus',
+    width: 100
   }
 ];
 
@@ -186,7 +195,7 @@ watch(() => props.visible, (isVisible) => {
   <Modal
     :title="t('caseReview.editForm.selectCase')"
     :visible="props.visible"
-    :width="1000"
+    :width="1100"
     :loading="loading"
     @cancel="handleModalCancel"
     @ok="handleModalConfirm">
@@ -201,6 +210,7 @@ watch(() => props.visible, (isVisible) => {
           v-model:value="searchKeywords"
           :placeholder="t('caseReview.editForm.queryNameCode')"
           class="w-100"
+          allowClear="true"
           @change="handleSearchFilter" />
         <Table
           :columns="tableColumns"
@@ -212,6 +222,9 @@ watch(() => props.visible, (isVisible) => {
           rowKey="id"
           noDataSize="small">
           <template #bodyCell="{record, column}">
+            <template v-if="column.dataIndex === 'priority'">
+              <TaskPriority :value="record.priority" />
+            </template>
             <template v-if="column.dataIndex === 'reviewStatus'">
               <ReviewStatus :value="record.reviewStatus" />
             </template>
