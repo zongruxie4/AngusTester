@@ -36,6 +36,7 @@ interface Props {
    * Whether to render dropdown to parent node instead of document body
    */
   internal?: boolean;
+  allowClear?: boolean;
 }
 
 // Props and Emits Configuration
@@ -169,10 +170,10 @@ const handleDropdownVisibilityChange = async (isOpen: boolean) => {
  */
 const handleValueChange = (selectedValue: any) => {
   if (selectedValue === undefined || selectedValue === null) {
-    return;
+    selectedValue = undefined
   }
 
-  const stringValue = String(selectedValue);
+  const stringValue = selectedValue ? String(selectedValue) : selectedValue;
   currentSelectedValue.value = stringValue;
   const option = availableOptions.value.find(opt => opt[valueFieldName.value] === stringValue);
   emit('update:value', stringValue);
@@ -243,6 +244,7 @@ onMounted(() => {
   <Select
     ref="selectRef"
     size="small"
+    v-bind="props"
     :error="props.error"
     :value="props.value"
     :disabled="isComponentDisabled"

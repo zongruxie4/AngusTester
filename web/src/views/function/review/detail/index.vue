@@ -636,7 +636,7 @@ onUnmounted(() => {
                       :class="isMobile ? 'w-full' : 'w-40'"
                       :placeholder="t('caseReview.detail.selectReviewStatus')"
                       enumKey="ReviewStatus"
-                      allowClear="true"
+                      allowClear
                       @change="handleChangeStatus">
                     </SelectEnum>
                   </div>
