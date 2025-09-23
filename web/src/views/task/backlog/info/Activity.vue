@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
+import { ActivityInfo as ActivityInfoView, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { CombinedTargetType } from '@/enums/enums';
 
@@ -69,7 +69,7 @@ onMounted(() => {
           transition
           style="height:calc(100% - 30px);"
           @change="handleActivityDataChange">
-          <ActivityInfo
+          <ActivityInfoView
             :dataSource="activityList"
             infoKey="description"
             class="pr-5" />
