@@ -15,16 +15,16 @@ const { textList } = useMockUI();
       class="mr-7.75 w-45 h-45" />
     <div class="p-8 flex-1 h-full flex flex-col justify-between font-serif">
       <div class="text-3.5 font-semibold">{{ t('mock.introduce.description') }}</div>
-      <div class="mt-5">
+      <div class="mt-3">
         <ul class="w-full flex justify-between">
           <li
             v-for="(item,index) in textList"
             :key="index"
             class="flex-1/3 flex pr-8">
             <Icon :icon="item.icon" class="text-10 mr-3.5 flex-none" />
-            <div class="h-full flex flex-col py-0.5">
+            <div class="h-full flex flex-col">
               <p class="text-3.5 leading-3 text-theme-title font-semibold">{{ item.name }}</p>
-              <p class="text-3.5 text-theme-sub-content whitespace-break-spaces break-all">{{ item.description }}</p>
+              <p class="text-3.5 text-theme-sub-content whitespace-break-spaces break-all mt-1.5">{{ item.description }}</p>
             </div>
           </li>
         </ul>

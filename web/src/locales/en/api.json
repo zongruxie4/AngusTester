@@ -233,7 +233,7 @@
     "introduce": {
       "description": "Mock can quickly simulate dependent APIs, enabling parallel development and testing, improving efficiency while avoiding production data pollution.",
       "addMockService": "Add Mock Service",
-      "addMockServiceDesc": "Manually add interfaces after creating Mock service.",
+      "addMockServiceDesc": "Manually add apis after creating Mock service.",
       "importService": "Associate Existing Service",
       "importServiceDesc": "Create Mock based on existing services and apis, system automatically establishes associations.",
       "importFile": "Import from File",
