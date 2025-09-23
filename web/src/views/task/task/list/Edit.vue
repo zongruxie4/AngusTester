@@ -1437,8 +1437,7 @@ onMounted(() => {
                     :fileList="[]"
                     name="file"
                     class="-mb-1 mr-1"
-                    :customRequest="() => {}"
-                    @change="handleFileUpload">
+                    :customRequest="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
                     <span class="text-3 leading-3 text-theme-text-hover">{{ t('task.editModal.form.attachmentsContinue') }}</span>
                   </Upload>
@@ -1449,8 +1448,7 @@ onMounted(() => {
                   <Upload
                     name="file"
                     :fileList="[]"
-                    :customRequest="() => {}"
-                    @change="handleFileUpload">
+                    :customRequest="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                     <span class="text-3 text-theme-text-hover">{{ t('task.editModal.form.attachmentsUpload') }}</span>
                   </Upload>
