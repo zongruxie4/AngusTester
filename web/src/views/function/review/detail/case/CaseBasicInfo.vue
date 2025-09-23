@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
   caseInfo: undefined
 });
 
-const infoColumns = computed<GridColumns[][]>(() => [
+const infoColumns = computed(() => [
   [
     { label: t('caseReview.comp.caseBasicInfo.name'), dataIndex: 'name' },
     { label: t('caseReview.comp.caseBasicInfo.id'), dataIndex: 'id' },
@@ -49,31 +49,34 @@ const infoColumns = computed<GridColumns[][]>(() => [
 
 </script>
 <template>
-  <div class="space-y-3">
-    <div class="font-semibold text-3.5">
-      {{ t('caseReview.comp.caseBasicInfo.title') }}
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="flex items-center mb-4">
+      <Icon icon="icon-jibenxinxi" class="text-blue-500 mr-2" />
+      <h3 class="text-lg font-semibold text-gray-900">
+        {{ t('caseReview.comp.caseBasicInfo.title') }}
+      </h3>
     </div>
     <Grid
       :columns="infoColumns"
       :dataSource="caseInfo"
-      :spacing="20"
-      :marginBottom="4"
-      labelSpacing="10px"
-      font-size="12px"
-      class="">
+      :spacing="24"
+      :marginBottom="6"
+      labelSpacing="12px"
+      font-size="14px"
+      class="case-basic-info-grid">
       <template #priority="{text}">
         <TaskPriority :value="text" />
       </template>
       <template #tags="{text}">
-        <Tag
-          v-for="(tag,index) in (text || [])"
-          :key="tag.id"
-          :class="{'min-w-17.5':!tag.name,'last-child':index===text.length-1}"
-          color="rgba(252, 253, 255, 1)"
-          class="text-3 px-2 font-normal text-theme-sub-content mr-2 h-6 py-1 border-border-divider">
-          {{ tag.name }}
-        </Tag>
-        <template v-if="!text?.length">--</template>
+        <div class="flex flex-wrap gap-2">
+          <Tag
+            v-for="(tag,index) in (text || [])"
+            :key="tag.id"
+            class="px-3 py-1 text-sm font-medium bg-blue-50 text-blue-700 border-blue-200 rounded-full">
+            {{ tag.name }}
+          </Tag>
+          <span v-if="!text?.length" class="text-gray-400 text-sm">--</span>
+        </div>
       </template>
       <template #evalWorkload="{text}">
         {{ text || '--' }}
@@ -82,21 +85,19 @@ const infoColumns = computed<GridColumns[][]>(() => [
         {{ text || '--' }}
       </template>
       <template #planName="{text}">
-        <span>
-          <Icon icon="icon-jihua" class="mr-1.25 flex-none -mt-0.25" />{{ text }}
-        </span>
+        <div class="flex items-center text-gray-700">
+          <Icon icon="icon-jihua" class="mr-2 text-blue-500" />
+          <span class="font-medium">{{ text }}</span>
+        </div>
       </template>
       <template #moduleName="{text}">
-        <template v-if="!text">
-          --
-        </template>
-        <div v-else class="-mt-1 flex">
-          <Tag
-            class="px-0 py-1 font-normal text-theme-content rounded bg-white flex border-none">
-            <Icon icon="icon-mokuai" class="mr-1.25 flex-none mt-0.5" />
-            <div class="flex-1  whitespace-break-spaces break-all leading-4">{{ text }}</div>
+        <div v-if="text" class="flex items-center">
+          <Tag class="px-3 py-1 bg-gray-100 text-gray-700 border-gray-200 rounded-full flex items-center">
+            <Icon icon="icon-mokuai" class="mr-2 text-gray-500" />
+            <span class="text-sm">{{ text }}</span>
           </Tag>
         </div>
+        <span v-else class="text-gray-400 text-sm">--</span>
       </template>
       <template #reviewStatus="{text}">
         <template v-if="text">
@@ -111,20 +112,31 @@ const infoColumns = computed<GridColumns[][]>(() => [
           <TestResult :value="text" />
           <div
             v-if="caseInfo?.overdue"
-            class="border border-status-error rounded px-0.5 ml-5"
-            style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
+            class="ml-3 px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded-full border border-red-200">
             {{ t('caseReview.comp.caseBasicInfo.overdue') }}
           </div>
         </div>
       </template>
       <template #version="{text}">
-        <span v-if="text">v{{ text }}</span>
-        <template v-else>--</template>
+        <span v-if="text" class="px-2 py-1 bg-gray-100 text-gray-700 text-sm rounded">{{ text }}</span>
+        <span v-else class="text-gray-400 text-sm">--</span>
       </template>
       <template #softwareVersion="{text}">
-        <span v-if="text">{{ text }}</span>
-        <template v-else>--</template>
+        <span v-if="text" class="px-2 py-1 bg-gray-100 text-gray-700 text-sm rounded">{{ text }}</span>
+        <span v-else class="text-gray-400 text-sm">--</span>
       </template>
     </Grid>
   </div>
 </template>
+
+<style scoped>
+:deep(.case-basic-info-grid) {
+  .ant-descriptions-item-label {
+    @apply text-gray-600 font-medium;
+  }
+
+  .ant-descriptions-item-content {
+    @apply text-gray-900;
+  }
+}
+</style>

@@ -108,61 +108,71 @@ onMounted(() => {
 });
 </script>
 <template>
-  <Form
-    :model="formState"
-    size="small"
-    layout="horizontal"
-    :labelCol="{style: { width: '80px', textAlign: 'left' }}"
-    @finish="reviewCase">
-    <FormItem
-      name="reviewStatus"
-      :label="t('caseReview.detail.reviewResult')"
-      class="mb-1">
-      <RadioGroup
-        v-model:value="formState.reviewStatus"
-        class="mt-0.5">
-        <Radio
-          v-for="item in reviewStatusEnum"
-          :key="item.value"
-          :value="item.value">
-          {{ item.message }}
-        </Radio>
-      </RadioGroup>
-    </FormItem>
+  <div class="bg-white rounded-lg p-6">
+    <Form
+      :model="formState"
+      layout="vertical"
+      @finish="reviewCase">
+      <FormItem
+        name="reviewStatus"
+        :label="t('caseReview.detail.reviewResult')"
+        class="mb-6">
+        <RadioGroup
+          v-model:value="formState.reviewStatus"
+          class="grid grid-cols-2 gap-4">
+          <Radio
+            v-for="item in reviewStatusEnum"
+            :key="item.value"
+            :value="item.value"
+            class="p-2 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all cursor-pointer">
+            <span class="font-medium">{{ item.message }}</span>
+          </Radio>
+        </RadioGroup>
+      </FormItem>
 
-    <FormItem
-      name="reviewRemark"
-      :label="t('caseReview.detail.reviewOpinion')">
-      <Select
-        v-show="formState.reviewStatus === ReviewStatus.FAILED"
-        v-model:value="failMessageValue"
-        :options="failMessageSelectOptions"
-        class="w-100"
-        :placeholder="t('caseReview.detail.selectFailReason')"
-        @change="changeFailMessage" />
+      <FormItem
+        name="reviewRemark"
+        :label="t('caseReview.detail.reviewOpinion')"
+        class="mb-6">
+        <div class="space-y-4">
+          <Select
+            v-show="formState.reviewStatus === ReviewStatus.FAILED"
+            v-model:value="failMessageValue"
+            :options="failMessageSelectOptions"
+            class="w-full"
+            :placeholder="t('caseReview.detail.selectFailReason')"
+            @change="changeFailMessage" />
 
-      <Input
-        v-show="formState.reviewStatus !== ReviewStatus.FAILED || failMessageValue === 'other'"
-        v-model:value="formState.reviewRemark"
-        size="small"
-        type="textarea"
-        class="mt-1"
-        :autoSize="{ minRows: 6, maxRows: 6}"
-        :maxlength="200"
-        :placeholder="t('caseReview.detail.enterReviewOpinion')" />
-    </FormItem>
+          <Input
+            v-show="formState.reviewStatus !== ReviewStatus.FAILED || failMessageValue === 'other'"
+            v-model:value="formState.reviewRemark"
+            type="textarea"
+            class="w-full"
+            :autoSize="{ minRows: 4, maxRows: 8}"
+            :maxlength="200"
+            :placeholder="t('caseReview.detail.enterReviewOpinion')"
+            :showCount="true" />
+        </div>
+      </FormItem>
 
-    <FormItem class="mt-5">
-      <div class="flex justify-end">
-        <Button
-          :loading="loading"
-          type="primary"
-          size="small"
-          htmlType="submit"
-          class="px-3">
-          {{ t('caseReview.detail.submit') }}
-        </Button>
-      </div>
-    </FormItem>
-  </Form>
+      <FormItem>
+        <div class="flex justify-end space-x-3">
+          <Button
+            size="middle"
+            @click="$emit('cancel')">
+            {{ t('actions.cancel') }}
+          </Button>
+          <Button
+            :loading="loading"
+            type="primary"
+            size="middle"
+            htmlType="submit"
+            class="px-6">
+            <Icon icon="icon-tijiao" class="mr-2" />
+            {{ t('actions.confirm') }}
+          </Button>
+        </div>
+      </FormItem>
+    </Form>
+  </div>
 </template>

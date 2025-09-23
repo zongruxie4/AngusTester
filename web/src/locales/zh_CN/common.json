@@ -114,6 +114,9 @@
     "shareSuccess": "分享成功",
     "copyFailed": "复制失败"
   },
+  "page": {
+    "items": "条"
+  },
   "sort": "排序",
   "quickSearch": "快速查询",
   "group": "分组"

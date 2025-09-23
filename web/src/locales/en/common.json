@@ -113,6 +113,9 @@
     "shareSuccess": "Share successful",
     "copyFailed": "Copy failed"
   },
+  "page": {
+    "items": "Items"
+  },
   "sort": "Sort",
   "quickSearch": "Quick Search",
   "group": "Group"

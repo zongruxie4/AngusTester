@@ -33,6 +33,7 @@ import cloud.xcan.angus.core.tester.domain.func.review.FuncReviewRepo;
 import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCase;
 import cloud.xcan.angus.core.tester.domain.func.review.cases.FuncReviewCaseRepo;
 import cloud.xcan.angus.core.tester.domain.func.review.record.FuncReviewCaseRecord;
+import cloud.xcan.angus.core.tester.domain.func.summary.FuncCaseDetailSummary;
 import cloud.xcan.angus.core.utils.CoreUtils;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import jakarta.annotation.Resource;
@@ -332,12 +333,19 @@ public class FuncReviewCaseCmdImpl extends CommCmd<FuncReviewCase, Long>
       Map<Long, FuncCase> casesDbMap, Map<Long, FuncReviewCase> reviewCaseMap) {
     for (FuncReviewCase reviewCaseDb : reviewCasesDb) {
       FuncReviewCase reviewCase = reviewCaseMap.get(reviewCaseDb.getId());
+      FuncCase funcCase = casesDbMap.get(reviewCaseDb.getCaseId());
+      FuncCaseDetailSummary detailSummary = joinSupplier.execute(
+          () -> getCaseDetailSummary(funcCase));
+      detailSummary.setReviewNum(detailSummary.getReviewNum() + 1)
+          .setReviewFailNum(detailSummary.getReviewFailNum()
+              + (reviewCase.getReviewStatus().isFailed() ? 1 : 0)
+          )
+          .setReviewRemark(reviewCase.getReviewRemark());
       reviewCaseDb.setReviewerId(getUserId())
           .setReviewDate(LocalDateTime.now())
           .setReviewStatus(reviewCase.getReviewStatus())
           .setReviewRemark(reviewCase.getReviewRemark())
-          .setReviewedCase(joinSupplier.execute(
-              () -> getCaseDetailSummary(casesDbMap.get(reviewCaseDb.getCaseId()))));
+          .setReviewedCase(detailSummary);
     }
   }
 

@@ -37,18 +37,34 @@ const peopleInfoColumns = [
 
 </script>
 <template>
-  <div class="space-y-3">
-    <div class="font-semibold text-3.5">
-      {{ t('caseReview.comp.member.title') }}
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="flex items-center mb-4">
+      <Icon icon="icon-chengyuan" class="text-pink-500 mr-2" />
+      <h3 class="text-lg font-semibold text-gray-900">
+        {{ t('caseReview.comp.member.title') }}
+      </h3>
     </div>
+
     <Grid
       :columns="peopleInfoColumns"
       :dataSource="props.caseInfo"
-      :spacing="20"
-      :marginBottom="4"
-      labelSpacing="10px"
-      font-size="12px"
-      class="">
+      :spacing="24"
+      :marginBottom="6"
+      labelSpacing="12px"
+      font-size="14px"
+      class="member-info-grid">
     </Grid>
   </div>
 </template>
+
+<style scoped>
+:deep(.member-info-grid) {
+  .ant-descriptions-item-label {
+    @apply text-gray-600 font-medium;
+  }
+
+  .ant-descriptions-item-content {
+    @apply text-gray-900;
+  }
+}
+</style>

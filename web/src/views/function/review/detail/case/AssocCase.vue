@@ -39,24 +39,30 @@ const dataList = computed(() => {
 </script>
 
 <template>
-  <div>
-    <div v-if="!hideTitle" class="font-semibold text-3.5">
-      {{ t('caseReview.comp.assocCase.title') }}
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div v-if="!hideTitle" class="flex items-center mb-4">
+      <Icon icon="icon-gongnengyongli" class="text-cyan-500 mr-2" />
+      <h3 class="text-lg font-semibold text-gray-900">
+        {{ t('caseReview.comp.assocCase.title') }}
+      </h3>
     </div>
-    <div v-if="dataList.length" class="text-3 leading-5 pl-5.5 pt-2 space-y-0.5">
+
+    <div v-if="dataList.length" class="space-y-2">
       <RouterLink
         v-for="item in dataList"
         :key="item.id"
         :to="item.linkUrl"
         target="_blank"
-        class="flex items-center overflow-hidden">
-        <Icon icon="icon-gongnengyongli" class="text-4 flex-shrink-0" />
-        <span class="truncate ml-1.5">{{ item.name }}</span>
+        class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-cyan-50 hover:border-cyan-200 border border-transparent transition-all group">
+        <Icon icon="icon-gongnengyongli" class="text-gray-400 group-hover:text-cyan-500 mr-3 flex-shrink-0" />
+        <span class="text-sm text-gray-700 group-hover:text-cyan-600 truncate">{{ item.name }}</span>
+        <Icon icon="icon-wailian" class="text-gray-400 group-hover:text-cyan-500 ml-auto flex-shrink-0" />
       </RouterLink>
     </div>
-    <NoData
-      v-else
-      size="small"
-      class="my-3.5" />
+
+    <div v-else class="text-center py-8 text-gray-400">
+      <Icon icon="icon-kong" class="text-4xl mb-2" />
+      <div>{{ t('caseReview.comp.assocCase.noData') }}</div>
+    </div>
   </div>
 </template>

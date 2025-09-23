@@ -1755,6 +1755,7 @@
       "noModuleCases": "No module cases"
     },
     "detail": {
+      "title": "Case Details",
       "reviewStartedSuccess": "Review started successfully",
       "caseCode": "Case Code",
       "caseName": "Case Name",

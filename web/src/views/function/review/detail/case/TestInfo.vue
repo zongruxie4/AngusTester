@@ -44,20 +44,28 @@ const getOneTestPass = computed(() => {
 
 </script>
 <template>
-  <div class="space-y-3">
-    <div class="font-semibold text-3.5">
-      {{ t('caseReview.comp.testInfo.title') }}
+  <div class="bg-white rounded-lg border border-gray-200 p-6">
+    <div class="flex items-center mb-4">
+      <Icon icon="icon-ceshixinxi" class="text-amber-500 mr-2" />
+      <h3 class="text-lg font-semibold text-gray-900">
+        {{ t('caseReview.comp.testInfo.title') }}
+      </h3>
     </div>
+
     <Grid
       :columns="testInfoColumns"
       :dataSource="props.caseInfo"
-      :spacing="20"
-      :marginBottom="4"
-      labelSpacing="10px"
-      font-size="12px"
-      class="">
+      :spacing="24"
+      :marginBottom="6"
+      labelSpacing="12px"
+      font-size="14px"
+      class="test-info-grid">
       <template #oneTestPass>
-        {{ getOneTestPass }}
+        <span
+          class="px-2 py-1 text-xs font-medium rounded-full"
+          :class="getOneTestPass === t('status.yes') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
+          {{ getOneTestPass }}
+        </span>
       </template>
       <template #testResult="{text}">
         <TestResult :value="text" />
@@ -65,3 +73,15 @@ const getOneTestPass = computed(() => {
     </Grid>
   </div>
 </template>
+
+<style scoped>
+:deep(.test-info-grid) {
+  .ant-descriptions-item-label {
+    @apply text-gray-600 font-medium;
+  }
+
+  .ant-descriptions-item-content {
+    @apply text-gray-900;
+  }
+}
+</style>

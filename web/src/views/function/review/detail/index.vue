@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Button, Checkbox, Popover, TabPane, Tabs, Tag } from 'ant-design-vue';
+import { Button, Checkbox, TabPane, Tabs, Tag } from 'ant-design-vue';
 import {
   AsyncComponent, Icon, Image, Input, modal, notification, ReviewStatus as ReviewStatusView, Spin, Table
 } from '@xcan-angus/vue-ui';
@@ -51,6 +51,25 @@ const selectModalVisible = ref(false);
 const loading = ref(false);
 const startLoading = ref(false);
 const drawerRef = ref();
+const isMobile = ref(false);
+
+// Right drawer section expand states
+const expand = ref({
+  basicInfo: true,
+  precondition: true,
+  steps: true,
+  reviewResult: true,
+  description: true,
+  members: true,
+  testInfo: true,
+  assocTasks: true,
+  assocCases: true,
+  attachments: true
+});
+
+const toggleSection = (key: keyof typeof expand.value) => {
+  expand.value[key] = !expand.value[key];
+};
 
 // Pagination state
 const pagination = ref({
@@ -71,24 +90,9 @@ const reviewId = ref();
 
 // Selection state
 const selectedRowKey = ref<string|undefined>();
-const selectCaseInfo = ref();
-const selectCaseIds = ref<string[]>([]);
+const selectReviewCaseInfo = ref();
+const selectReviewCaseIds = ref<string[]>([]);
 const activeMenuKey = ref();
-
-/**
- * <p>Starts the review process for the current review.</p>
- * <p>Shows loading state and displays success notification upon completion.</p>
- */
-const startReview = async () => {
-  startLoading.value = true;
-  const [error] = await func.startReview(reviewId.value);
-  startLoading.value = false;
-  if (error) {
-    return;
-  }
-  notification.success(t('caseReview.detail.reviewStartedSuccess'));
-  await loadReviewDetail(reviewId.value);
-};
 
 // Table columns
 const columns = [
@@ -142,20 +146,27 @@ const columns = [
       return { style: 'white-space:nowrap;' };
     }
   },
-  /*{
-    title: t('caseReview.detail.creator'),
-    dataIndex: 'createdByName',
-    width: 100,
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },*/
   {
     title: t('caseReview.detail.action'),
     dataIndex: 'action',
     width: 320
   }
 ];
+
+/**
+ * <p>Starts the review process for the current review.</p>
+ * <p>Shows loading state and displays success notification upon completion.</p>
+ */
+const startReview = async () => {
+  startLoading.value = true;
+  const [error] = await func.startReview(reviewId.value);
+  startLoading.value = false;
+  if (error) {
+    return;
+  }
+  notification.success(t('caseReview.detail.reviewStartedSuccess'));
+  await loadReviewDetail(reviewId.value);
+};
 
 /**
  * <p>Loads user permissions for the specified plan.</p>
@@ -167,16 +178,13 @@ const loadPermissions = async (planId: string) => {
     return;
   }
 
-  const params = {
-    admin: true
-  };
+  const params = { admin: true };
   loading.value = true;
   const [error, res] = await funcPlan.getCurrentAuthByPlanId(planId, params);
   loading.value = false;
   if (error) {
     return;
   }
-
   permissions.value = (res?.data?.permissions || []).map(item => item.value);
 };
 
@@ -228,7 +236,7 @@ const loadReviewCaseList = async (reviewId: string) => {
   }
   reviewCaseList.value = data?.list || [];
   pagination.value.total = +data.total || 0;
-  selectCaseIds.value = [];
+  selectReviewCaseIds.value = [];
 };
 
 /**
@@ -273,14 +281,14 @@ const customRow = (record) => {
  * <p>Loads detailed information for the selected case.</p>
  * <p>Determines which case version to display based on review status.</p>
  */
-const loadCaseContentInfo = async () => {
+const loadReviewCaseDetail = async () => {
   const [error, { data }] = await func.getReviewCaseDetail(selectedRowKey.value);
   if (error) {
     return;
   }
-  selectCaseInfo.value = {
+  selectReviewCaseInfo.value = {
     ...data,
-    caseInfo: data.reviewStatus?.value === ReviewStatus.PENDING ? data.latestCase : data.reviewedCase
+    caseInfo: data.reviewStatus?.value === ReviewStatus.PASSED ? data.reviewedCase : data.latestCase
   };
 };
 
@@ -298,9 +306,9 @@ const onCloseDrawer = () => {
 const onCheckedChange = (event, caseId: string) => {
   event.stopPropagation();
   if (event.target.checked) {
-    selectCaseIds.value.push(caseId);
+    selectReviewCaseIds.value.push(caseId);
   } else {
-    selectCaseIds.value = selectCaseIds.value.filter(id => id !== caseId);
+    selectReviewCaseIds.value = selectReviewCaseIds.value.filter(id => id !== caseId);
   }
 };
 
@@ -327,12 +335,20 @@ const handleChangeStatus = () => {
  * <p>Refreshes case content if currently selected case was reviewed.</p>
  */
 const handleReviewOk = () => {
-  if (selectedRowKey.value && selectCaseIds.value.includes(selectedRowKey.value)) {
-    loadCaseContentInfo();
+  if (selectedRowKey.value && selectReviewCaseIds.value.includes(selectedRowKey.value)) {
+    loadReviewCaseDetail();
   }
-  selectCaseIds.value = [];
+  selectReviewCaseIds.value = [];
   loadReviewCaseList(reviewId.value);
   loadReviewDetail(reviewId.value);
+};
+
+/**
+ * <p>Handles cancel action from ReviewForm.</p>
+ * <p>Clears selected cases to hide the form.</p>
+ */
+const handleReviewCancel = () => {
+  selectReviewCaseIds.value = [];
 };
 
 /**
@@ -408,21 +424,37 @@ const handleAddCase = async (caseIds: string[]) => {
   await loadReviewDetail(reviewId.value);
 };
 
-/**
- * <p>Watches for changes in selected row key.</p>
- * <p>Loads case content when a new case is selected.</p>
- */
-watch(() => selectedRowKey.value, newValue => {
-  if (newValue) {
-    loadCaseContentInfo();
-  }
+// Visibility conditions
+const hasReviewInfo = computed(() => {
+  const info = selectReviewCaseInfo.value?.caseInfo as any | undefined;
+  const reviewNumRaw = info?.reviewNum ?? 0;
+  const n = typeof reviewNumRaw === 'string' ? Number(reviewNumRaw) : reviewNumRaw;
+  return (n ?? 0) > 0;
 });
+
+const hasTestInfo = computed(() => {
+  const info = selectReviewCaseInfo.value?.caseInfo as any | undefined;
+  const testNumRaw = info?.testNum ?? 0;
+  const n = typeof testNumRaw === 'string' ? Number(testNumRaw) : testNumRaw;
+  return (n ?? 0) > 0;
+});
+
+/**
+ * <p>Checks if the current screen size is mobile.</p>
+ */
+const checkMobile = () => {
+  isMobile.value = window.innerWidth < 1024;
+};
 
 /**
  * <p>Component mounted lifecycle hook.</p>
  * <p>Watches for changes in props data and loads review information accordingly.</p>
  */
 onMounted(() => {
+  // Responsive detection
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
+
   watch(() => props.data, async (newValue, oldValue) => {
     const id = newValue?.id;
     if (!id) {
@@ -438,298 +470,476 @@ onMounted(() => {
     await loadReviewCaseList(id);
   }, { immediate: true });
 });
+
+/**
+ * <p>Watches for changes in selected row key.</p>
+ * <p>Loads case content when a new case is selected.</p>
+ */
+watch(() => selectedRowKey.value, newValue => {
+  if (newValue) {
+    loadReviewCaseDetail();
+  }
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile);
+});
 </script>
 
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5">
-    <div class="flex h-full">
-      <div class="flex-1 px-5 py-5 overflow-auto">
-        <div class="font-semibold text-4 mb-3">
-          {{ reviewDetail?.name }}
-          <Tag class="ml-2 text-white" :class="reviewDetail?.status?.value">
-            {{ reviewDetail?.status?.message }}
-          </Tag>
-
-          <Button
-            v-if="reviewDetail?.status?.value === ReviewStatus.PENDING"
-            size="small"
-            type="primary"
-            ghost
-            class="ml-3"
-            @click="startReview">
-            <Icon icon="icon-kaishi" class="mr-1" />
-            {{ t('caseReview.detail.startReview') }}
-          </Button>
-        </div>
-        <div class="flex space-x-12">
-          <div class="space-y-1">
-            <div class="text-center h-6 leading-6 space-x-3">
-              <span>{{ t('caseReview.detail.progress') }}</span>
-              <span class="font-semibold text-3.5">{{
-                reviewDetail?.progress?.completed || 0
-              }} / {{ reviewDetail?.progress?.total || 0 }}</span>
-            </div>
-
-            <div class="w-30 flex h-2 rounded bg-gray-3">
-              <div class="text-center bg-status-success rounded" :style="{width: `${reviewDetail?.progress?.completedRate || 0}%`}">
+    <div class="flex h-full bg-gray-50">
+      <!-- Main content area -->
+      <div class="flex-1 flex flex-col min-w-0">
+        <div class="px-4 mt-4">
+          <!-- Page header section -->
+          <div class="bg-white border-b border-gray-200 px-4 py-3 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <h1 class="text-xl font-semibold text-gray-900">
+                  {{ reviewDetail?.name }}
+                </h1>
+                <Tag
+                  class="px-3 py-1 text-sm font-medium rounded-full"
+                  :class="reviewDetail?.status?.value">
+                  {{ reviewDetail?.status?.message }}
+                </Tag>
               </div>
-            </div>
-
-            <div class="text-center text-4 font-medium">
-              {{ reviewDetail?.progress?.completedRate || 0 }} %
-            </div>
-          </div>
-
-          <div class="flex-1">
-            <div class="flex leading-8 h-8">
-              <div class="inline-flex flex-1 pr-2">
-                <label class="w-25 text-right font-semibold text-black">{{ t('caseReview.detail.testPlan') }}：</label>
-                <div>{{ reviewDetail?.planName }}</div>
-              </div>
-              <div class="inline-flex flex-1 pr-2">
-                <label class="w-25 text-right font-semibold text-black">{{ t('caseReview.detail.owner') }}：</label>
-                <div>{{ reviewDetail?.ownerName }}</div>
-              </div>
-            </div>
-
-            <div class="flex leading-8 h-8">
-              <div class="inline-flex flex-1 pr-2">
-                <label class="w-25 text-right font-semibold text-black">{{ t('caseReview.detail.attachments') }}：</label>
-                <div class="flex space-x-2 flex-1">
-                  <a
-                    v-for="file in (reviewDetail?.attachments || [])"
-                    class="text-blue-hover"
-                    @click="download(file.url)">
-                    {{ file.name }}
-                  </a>
-                  <div v-if="!reviewDetail?.attachments?.length">{{ t('caseReview.detail.noAttachments') }}</div>
-                </div>
-              </div>
-
-              <div class="inline-flex flex-1 pr-2">
-                <label class="w-25 text-right font-semibold text-black">{{ t('caseReview.detail.participants') }}：</label>
-                <div class="flex space-x-2 flex-wrap flex-1 items-center">
-                  <div
-                    v-for="person in (reviewDetail?.participants || []).slice(0, 5)"
-                    :key="person.id"
-                    class="inline-flex space-x-1 items-center">
-                    <Image
-                      type="avatar"
-                      :src="person.avatar"
-                      class="w-4 h-4 rounded-full" />
-                    <span>{{ person.fullName }}</span>
-                  </div>
-
-                  <Popover placement="bottom">
-                    <template #content>
-                      <div class="max-w-100">
-                        <div
-                          v-for="person in (reviewDetail?.participants || []).slice(5)"
-                          :key="person.id"
-                          class="inline-flex space-x-1 items-center">
-                          <Image
-                            type="avatar"
-                            :src="person.avatar"
-                            class="w-4 h-4 rounded-full" />
-                          <span>{{ person.fullName }}</span>
-                        </div>
-                      </div>
-                    </template>
-                    <Icon
-                      v-if="(reviewDetail?.participants || []).length > 5"
-                      icon="icon-gengduo"
-                      class="text-blue-1" />
-                  </Popover>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <Tabs size="small" class="mt-5">
-          <TabPane key="testerResponsibilities" :tab="t('caseReview.detail.testCases')">
-            <div class="flex mb-3">
-              <Input
-                v-model:value="keywords"
-                :placeholder="t('caseReview.detail.enterQueryName')"
-                class="w-50"
-                @change="handleKeywordChange" />
-
-              <SelectEnum
-                v-model:value="reviewStatus"
-                class="w-50 ml-2"
-                :placeholder="t('caseReview.detail.selectReviewStatus')"
-                enumKey="ReviewStatus"
-                allowClear="true"
-                @change="handleChangeStatus">
-              </SelectEnum>
-
-              <div class="flex-1"></div>
 
               <Button
-                :disabled="!reviewDetail?.planId || !permissions.includes(FuncPlanPermission.REVIEW) || reviewDetail?.status?.value === FuncPlanStatus.COMPLETED"
+                v-if="reviewDetail?.status?.value === ReviewStatus.PENDING"
                 size="small"
                 type="primary"
-                @click="addReviewCase">
-                <Icon icon="icon-jia" class="mr-1" />
-                {{ t('caseReview.detail.addReviewCase') }}
+                class="shadow-sm"
+                :loading="startLoading"
+                @click="startReview">
+                <Icon icon="icon-kaishi" class="mr-2" />
+                {{ t('caseReview.detail.startReview') }}
               </Button>
             </div>
-
-            <Table
-              size="small"
-              :columns="columns"
-              :dataSource="reviewCaseList"
-              :customRow="customRow"
-              :rowClassName="(record) => record.id === selectedRowKey ? 'ant-table-row-selected' : ''"
-              :pagination="pagination"
-              noDataSize="small"
-              @change="changePage">
-              <template #bodyCell="{record, column}">
-                <template v-if="column.dataIndex === 'checkbox'">
-                  <Checkbox
-                    :disabled="record.reviewStatus?.value !== ReviewStatus.PENDING
-                      || !permissions.includes(FuncPlanPermission.REVIEW)
-                      || reviewDetail?.status?.value === ReviewStatus.PENDING"
-                    :checked="selectCaseIds.includes(record.id)"
-                    @click="onCheckedChange($event, record.id)">
-                  </Checkbox>
-                </template>
-
-                <template v-if="column.dataIndex === 'reviewStatus'">
-                  <ReviewStatusView :value="record.reviewStatus" />
-                </template>
-
-                <template v-if="column.dataIndex === 'priority'">
-                  <TaskPriority :value="record?.caseInfo?.priority" />
-                </template>
-
-                <template v-if="column.dataIndex === 'action'">
-                  <Button
-                    type="text"
-                    size="small"
-                    :disabled="!permissions.includes(FuncPlanPermission.REVIEW)"
-                    @click.stop="delCase(record)">
-                    <Icon icon="icon-qingchu" class="mr-1" />
-                    {{ t('caseReview.detail.cancel') }}
-                  </Button>
-
-                  <Button
-                    :disabled="!permissions.includes(FuncPlanPermission.REVIEW)
-                      || record.reviewStatus?.value === ReviewStatus.PENDING
-                      || reviewDetail?.status?.value === ReviewStatus.PENDING"
-                    type="text"
-                    size="small"
-                    @click.stop="restart(record)">
-                    <Icon icon="icon-zhongxinkaishi" class="mr-1" />
-                    {{ t('caseReview.detail.restartNewReview') }}
-                  </Button>
-
-                  <Button
-                    :disabled="!permissions.includes(FuncPlanPermission.REVIEW)
-                      || record.reviewStatus?.value === ReviewStatus.PENDING
-                      || reviewDetail?.status?.value === ReviewStatus.PENDING"
-                    type="text"
-                    size="small"
-                    @click.stop="reset(record)">
-                    <Icon icon="icon-zhongzhipingshenjieguo" class="mr-1" />
-                    {{ t('caseReview.detail.resetReview') }}
-                  </Button>
-
-                  <RouterLink :to="`/function#cases?id=${record.caseId}`">
-                    <Button
-                      type="text"
-                      size="small"
-                      @click.stop>
-                      <Icon icon="icon-chakanhuodong" class="mr-1" />
-                      {{ t('caseReview.detail.view') }}
-                    </Button>
-                  </RouterLink>
-                </template>
-              </template>
-            </Table>
-
-            <template v-if="selectCaseIds.length">
-              <div class="font-semibold text-3.5 mt-5">
-                {{ t('caseReview.detail.reviewInfoSelected') }}
-                <span class="text-sub-content">{{ t('caseReview.detail.selectedCount', { count: selectCaseIds.length }) }}</span>
-              </div>
-              <ReviewForm
-                class="mt-5 w-100"
-                :selectedRowKeys="selectCaseIds"
-                @update="handleReviewOk" />
-            </template>
-          </TabPane>
-          <TabPane key="description" :tab="t('caseReview.detail.reviewDescription')">
-            <div v-if="reviewDetail?.description" class="">
-              <RichEditor
-                :value="reviewDetail?.description"
-                mode="view" />
-            </div>
-            <div v-else class="text-sub-content">
-              {{ t('caseReview.detail.noDescription') }}
-            </div>
-          </TabPane>
-        </Tabs>
-      </div>
-      <div class="flex flex-col transition-all" :class="{'w-0': !selectedRowKey, 'w-100 border-l p-2': !!selectedRowKey}">
-        <div>
-          <Icon
-            icon="icon-shanchuguanbi"
-            class="text-5 cursor-pointer"
-            @click="onCloseDrawer" />
-        </div>
-
-        <div class="flex-1 overflow-auto p-4">
-          <CaseBasicInfo
-            class="pb-5"
-            :caseInfo="selectCaseInfo?.caseInfo" />
-
-          <Precondition
-            class="py-5"
-            :caseInfo="selectCaseInfo?.caseInfo" />
-
-          <div class="font-semibold text-3.5">
-            {{ t('caseReview.detail.testSteps') }}
           </div>
 
-          <CaseStep
-            class="pb-5 pt-3"
-            :defaultValue="selectCaseInfo?.caseInfo?.steps || []"
-            :stepView="selectCaseInfo?.caseInfo?.stepView?.value"
-            :readonly="true" />
+          <!-- Progress and summary info -->
+          <div class="bg-white border-b border-gray-200 px-4 py-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-8">
+                <!-- Progress bar -->
+                <div class="flex items-center space-x-4">
+                  <div class="text-sm text-gray-600">
+                    {{ t('caseReview.detail.progress') }}
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <div class="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div
+                        class="h-full bg-gradient-to-r from-blue-500 to-green-500 transition-all duration-300"
+                        :style="{width: `${reviewDetail?.progress?.completedRate || 0}%`}">
+                      </div>
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">
+                      {{ reviewDetail?.progress?.completed || 0 }} / {{ reviewDetail?.progress?.total || 0 }}
+                    </span>
+                    <span class="text-sm text-gray-500">
+                      ({{ reviewDetail?.progress?.completedRate || 0 }}%)
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-          <CaseReviewResult
-            class="py-5"
-            :caseInfo="selectCaseInfo" />
+              <!-- Summary (only plan) -->
+              <div class="flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                  <Icon icon="icon-jihua" class="text-gray-400" />
+                  <span class="text-gray-600">{{ t('caseReview.detail.testPlan') }}：</span>
+                  <span class="font-medium text-gray-900">{{ reviewDetail?.planName }}</span>
+                </div>
+              </div>
+            </div>
 
-          <Description
-            class="py-5"
-            :caseInfo="selectCaseInfo?.caseInfo" />
+            <!-- Participants and attachments -->
+            <div class="mt-3 flex items-center justify-between">
+              <div class="flex items-center space-x-10">
+                <!-- Owner (placed before participants) -->
+                <div class="flex items-center space-x-2">
+                  <span class="text-gray-600">{{ t('caseReview.detail.owner') }}：</span>
+                  <span class="font-medium text-gray-900">{{ reviewDetail?.ownerName }}</span>
+                </div>
 
-          <Members
-            class="py-5"
-            :caseInfo="selectCaseInfo?.caseInfo" />
+                <!-- Participants -->
+                <div class="flex items-center space-x-2">
+                  <Icon icon="icon-tuandui" class="text-gray-400" />
+                  <span class="text-gray-600">{{ t('caseReview.detail.participants') }}：</span>
+                  <div class="flex items-center space-x-1">
+                    <div
+                      v-for="person in (reviewDetail?.participants || []).slice(0, 6)"
+                      :key="person.id"
+                      class="flex items-center space-x-1"
+                      :title="person.fullName">
+                      <Image
+                        type="avatar"
+                        :src="person.avatar"
+                        class="w-5 h-5 rounded-full border border-white" />
+                    </div>
+                    <span v-if="(reviewDetail?.participants || []).length > 6" class="text-xs text-gray-500">
+                      +{{ (reviewDetail?.participants || []).length - 6 }}
+                    </span>
+                  </div>
+                </div>
 
-          <TestInfo
-            class="py-5"
-            :caseInfo="selectCaseInfo?.caseInfo" />
+                <!-- Attachments -->
+                <div class="flex items-center space-x-2">
+                  <Icon icon="icon-fujian" class="text-gray-400" />
+                  <span class="text-gray-600">{{ t('caseReview.detail.attachments') }}：</span>
+                  <div class="flex items-center space-x-2">
+                    <a
+                      v-for="file in (reviewDetail?.attachments || [])"
+                      :key="file.id"
+                      class="text-blue-600 hover:text-blue-800 text-sm cursor-pointer"
+                      @click="download(file.url)">
+                      {{ file.name }}
+                    </a>
+                    <span v-if="!reviewDetail?.attachments?.length" class="text-sm text-gray-400">
+                      {{ t('caseReview.detail.noAttachments') }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <AssocTasks
-            class="py-5"
-            :dataSource="selectCaseInfo?.caseInfo?.refTaskInfos"
-            :projectId="props.projectId"
-            :caseInfo="selectCaseInfo?.caseInfo" />
+        <!-- Primary content area -->
+        <div class="flex-1 px-4 py-3 overflow-auto">
+          <!-- Tabs area -->
+          <Tabs
+            size="small"
+            class="bg-white rounded-lg shadow-sm font-medium text-xs"
+            :tabBarStyle="{ marginBottom: 0, padding: '0 10px' }">
+            <TabPane key="testerResponsibilities" :tab="t('caseReview.detail.testCases')">
+              <!-- Search and actions bar -->
+              <div class="p-3 border-b border-gray-100 text-xs">
+                <div class="flex items-center justify-between" :class="{ 'mobile-search': isMobile }">
+                  <div class="flex items-center space-x-2 search-inputs" :class="{ 'w-full': isMobile }">
+                    <Input
+                      v-model:value="keywords"
+                      :placeholder="t('caseReview.detail.enterQueryName')"
+                      :class="isMobile ? 'w-full' : 'w-56'"
+                      allowClear
+                      @change="handleKeywordChange">
+                      <template #prefix>
+                        <Icon icon="icon-sousuo" class="text-gray-400" />
+                      </template>
+                    </Input>
 
-          <AssocCases
-            class="py-5"
-            :dataSource="selectCaseInfo?.caseInfo?.refCaseInfos"
-            :projectId="props.projectId"
-            :caseInfo="selectCaseInfo?.caseInfo" />
+                    <SelectEnum
+                      v-model:value="reviewStatus"
+                      :class="isMobile ? 'w-full' : 'w-40'"
+                      :placeholder="t('caseReview.detail.selectReviewStatus')"
+                      enumKey="ReviewStatus"
+                      allowClear="true"
+                      @change="handleChangeStatus">
+                    </SelectEnum>
+                  </div>
 
-          <Attachment
-            class="py-5"
-            :caseInfo="selectCaseInfo?.caseInfo" />
+                  <Button
+                    size="small"
+                    :disabled="!reviewDetail?.planId || !permissions.includes(FuncPlanPermission.REVIEW) || reviewDetail?.status?.value === FuncPlanStatus.COMPLETED"
+                    type="primary"
+                    class="shadow-sm search-actions"
+                    :class="{ 'w-full': isMobile }"
+                    @click="addReviewCase">
+                    <Icon icon="icon-jia" class="mr-2" />
+                    {{ t('caseReview.detail.addReviewCase') }}
+                  </Button>
+                </div>
+              </div>
+
+              <!-- Table area -->
+              <div class="p-3 text-xs">
+                <Table
+                  :columns="columns"
+                  :dataSource="reviewCaseList"
+                  :customRow="customRow"
+                  :rowClassName="(record) => record.id === selectedRowKey ? 'ant-table-row-selected' : ''"
+                  :pagination="{
+                    ...pagination,
+                    showSizeChanger: true,
+                    showQuickJumper: true,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} / ${total} t('page.items')`
+                  }"
+                  class="review-case-table"
+                  @change="changePage">
+                  <template #bodyCell="{record, column}">
+                    <template v-if="column.dataIndex === 'checkbox'">
+                      <Checkbox
+                        :disabled="record.reviewStatus?.value !== ReviewStatus.PENDING
+                          || !permissions.includes(FuncPlanPermission.REVIEW)
+                          || reviewDetail?.status?.value === ReviewStatus.PENDING"
+                        :checked="selectReviewCaseIds.includes(record.id)"
+                        @click="onCheckedChange($event, record.id)">
+                      </Checkbox>
+                    </template>
+
+                    <template v-if="column.dataIndex === 'reviewStatus'">
+                      <ReviewStatusView :value="record.reviewStatus" />
+                    </template>
+
+                    <template v-if="column.dataIndex === 'priority'">
+                      <TaskPriority :value="record?.caseInfo?.priority" />
+                    </template>
+
+                    <template v-if="column.dataIndex === 'action'">
+                      <Button
+                        type="text"
+                        size="small"
+                        :disabled="!permissions.includes(FuncPlanPermission.REVIEW)"
+                        @click.stop="delCase(record)">
+                        <Icon icon="icon-qingchu" class="mr-1" />
+                        {{ t('caseReview.detail.cancel') }}
+                      </Button>
+
+                      <Button
+                        :disabled="!permissions.includes(FuncPlanPermission.REVIEW)
+                          || record.reviewStatus?.value === ReviewStatus.PENDING
+                          || reviewDetail?.status?.value === ReviewStatus.PENDING"
+                        type="text"
+                        size="small"
+                        @click.stop="restart(record)">
+                        <Icon icon="icon-zhongxinkaishi" class="mr-1" />
+                        {{ t('caseReview.detail.restartNewReview') }}
+                      </Button>
+
+                      <Button
+                        :disabled="!permissions.includes(FuncPlanPermission.REVIEW)
+                          || record.reviewStatus?.value === ReviewStatus.PENDING
+                          || reviewDetail?.status?.value === ReviewStatus.PENDING"
+                        type="text"
+                        size="small"
+                        @click.stop="reset(record)">
+                        <Icon icon="icon-zhongzhipingshenjieguo" class="mr-1" />
+                        {{ t('caseReview.detail.resetReview') }}
+                      </Button>
+
+                      <RouterLink :to="`/function#cases?id=${record.caseId}`">
+                        <Button
+                          type="text"
+                          size="small"
+                          @click.stop>
+                          <Icon icon="icon-chakanhuodong" class="mr-1" />
+                          {{ t('caseReview.detail.view') }}
+                        </Button>
+                      </RouterLink>
+                    </template>
+                  </template>
+                </Table>
+              </div>
+
+              <template v-if="selectReviewCaseIds.length">
+                <div class="ml-10">
+                  <div class="font-semibold text-3.5 mt-5">
+                    {{ t('caseReview.detail.reviewInfoSelected') }}
+                    <span class="text-sub-content">{{
+                      t('caseReview.detail.selectedCount', {count: selectReviewCaseIds.length})
+                    }}</span>
+                  </div>
+                  <ReviewForm
+                    class="mt-5 w-150"
+                    :selectedRowKeys="selectReviewCaseIds"
+                    @update="handleReviewOk"
+                    @cancel="handleReviewCancel" />
+                </div>
+              </template>
+            </TabPane>
+            <TabPane key="description" :tab="t('caseReview.detail.reviewDescription')">
+              <div v-if="reviewDetail?.description" class="">
+                <RichEditor
+                  :value="reviewDetail?.description"
+                  mode="view" />
+              </div>
+              <div v-else class="text-sub-content">
+                {{ t('caseReview.detail.noDescription') }}
+              </div>
+            </TabPane>
+          </Tabs>
+        </div>
+      </div>
+
+      <!-- Right side detail drawer -->
+      <div
+        class="flex flex-col transition-all duration-300 ease-in-out bg-white border-l border-gray-200 shadow-lg"
+        :class="{
+          'w-0 opacity-0 overflow-hidden': !selectedRowKey,
+          'opacity-100 w-[28.8rem]': !!selectedRowKey && !isMobile,
+          'fixed inset-0 z-50 w-full': selectedRowKey && isMobile
+        }">
+        <!-- Drawer header -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50">
+          <h3 class="text-lg font-semibold text-gray-900">
+            {{ t('caseReview.detail.title') }}
+          </h3>
+          <Button
+            type="text"
+            size="small"
+            class="text-gray-400 hover:text-gray-600"
+            @click="onCloseDrawer">
+            <Icon icon="icon-shanchuguanbi" class="text-lg" />
+          </Button>
+        </div>
+
+        <!-- Drawer content -->
+        <div class="flex-1 overflow-auto">
+          <!-- Case details content: title outside the card, supports collapse -->
+          <div class="p-4 space-y-4 drawer-sections">
+            <!-- Basic info -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('basicInfo')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-jibenxinxi" class="mr-1 text-blue-500" />
+                  <span>{{ t('caseReview.comp.caseBasicInfo.title') }}</span>
+                </div>
+                <Icon :icon="expand.basicInfo ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.basicInfo">
+                <CaseBasicInfo :caseInfo="selectReviewCaseInfo?.caseInfo" />
+              </div>
+            </div>
+
+            <!-- Precondition -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('precondition')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-qianti" class="mr-1 text-orange-500" />
+                  <span>{{ t('caseReview.comp.precondition.title') }}</span>
+                </div>
+                <Icon :icon="expand.precondition ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.precondition">
+                <Precondition :caseInfo="selectReviewCaseInfo?.caseInfo" />
+              </div>
+            </div>
+
+            <!-- Test steps -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('steps')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-ceshiyongli1" class="mr-1 text-indigo-500" />
+                  <span>{{ t('caseReview.detail.testSteps') }}</span>
+                </div>
+                <Icon :icon="expand.steps ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.steps">
+                <CaseStep
+                  :defaultValue="selectReviewCaseInfo?.caseInfo?.steps || []"
+                  :stepView="selectReviewCaseInfo?.caseInfo?.stepView?.value"
+                  :readonly="true" />
+              </div>
+            </div>
+
+            <!-- Review result (visible only when data exists) -->
+            <div v-if="hasReviewInfo" class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('reviewResult')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-pingshen" class="mr-1 text-green-500" />
+                  <span>{{ t('caseReview.comp.caseReviewResult.title') }}</span>
+                </div>
+                <Icon :icon="expand.reviewResult ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.reviewResult">
+                <CaseReviewResult :caseInfo="selectReviewCaseInfo" />
+              </div>
+            </div>
+
+            <!-- Test info (after review result, visible only when data exists) -->
+            <div v-if="hasTestInfo" class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('testInfo')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-ceshixinxi" class="mr-1 text-amber-500" />
+                  <span>{{ t('caseReview.comp.testInfo.title') }}</span>
+                </div>
+                <Icon :icon="expand.testInfo ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.testInfo">
+                <TestInfo :caseInfo="selectReviewCaseInfo?.caseInfo" />
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('description')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-miaoshu" class="mr-1 text-purple-500" />
+                  <span>{{ t('caseReview.comp.description.title') }}</span>
+                </div>
+                <Icon :icon="expand.description ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.description">
+                <Description :caseInfo="selectReviewCaseInfo?.caseInfo" />
+              </div>
+            </div>
+
+            <!-- Members -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('members')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-chengyuan" class="mr-1 text-pink-500" />
+                  <span>{{ t('caseReview.comp.member.title') }}</span>
+                </div>
+                <Icon :icon="expand.members ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.members">
+                <Members :caseInfo="selectReviewCaseInfo?.caseInfo" />
+              </div>
+            </div>
+
+            <!-- Related tasks -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('assocTasks')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-renwu" class="mr-1 text-emerald-500" />
+                  <span>{{ t('caseReview.comp.assocTask.title') }}</span>
+                </div>
+                <Icon :icon="expand.assocTasks ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.assocTasks">
+                <AssocTasks
+                  :dataSource="selectReviewCaseInfo?.caseInfo?.refTaskInfos"
+                  :projectId="props.projectId"
+                  :caseInfo="selectReviewCaseInfo?.caseInfo"
+                  :hideTitle="true" />
+              </div>
+            </div>
+
+            <!-- Related cases -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('assocCases')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-gongnengyongli" class="mr-1 text-cyan-500" />
+                  <span>{{ t('caseReview.comp.assocCase.title') }}</span>
+                </div>
+                <Icon :icon="expand.assocCases ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.assocCases">
+                <AssocCases
+                  :dataSource="selectReviewCaseInfo?.caseInfo?.refCaseInfos"
+                  :projectId="props.projectId"
+                  :caseInfo="selectReviewCaseInfo?.caseInfo"
+                  :hideTitle="true" />
+              </div>
+            </div>
+
+            <!-- Attachments -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('attachments')">
+                <div class="flex items-center text-gray-800 text-sm font-medium">
+                  <Icon icon="icon-fujian" class="mr-1 text-indigo-500" />
+                  <span>{{ t('caseReview.comp.attachment.title') }}</span>
+                </div>
+                <Icon :icon="expand.attachments ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
+              </div>
+              <div v-show="expand.attachments">
+                <Attachment :caseInfo="selectReviewCaseInfo?.caseInfo" :hideTitle="true" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -745,25 +955,112 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* Status tag style */
 .PENDING {
-  background-color: rgba(45, 142, 255, 100%);
+  @apply bg-blue-100 text-blue-800;
 }
 
 .IN_PROGRESS {
-  background-color: rgba(103, 215, 255, 100%);
+  @apply bg-cyan-100 text-cyan-800;
 }
 
 .COMPLETED {
-  background-color: rgba(82, 196, 26, 100%);
+  @apply bg-green-100 text-green-800;
 }
 
 .BLOCKED {
-  background-color: rgba(255, 165, 43, 100%);
+  @apply bg-orange-100 text-orange-800;
 }
 
-.meeting-container {
-  border: 1px solid var(--border-text-box);
-  border-radius: 4px;
-  background-color: #fafafa;
+/* Table style enhancement */
+:deep(.review-case-table) {
+  .ant-table-thead > tr > th {
+    @apply bg-gray-50 text-gray-700 font-semibold;
+  }
+
+  .ant-table-tbody > tr:hover > td {
+    @apply bg-blue-50;
+  }
+
+  .ant-table-tbody > tr.ant-table-row-selected > td {
+    @apply bg-blue-100;
+  }
+}
+
+/* Drawer animation */
+.drawer-enter-active,
+.drawer-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.drawer-enter-from,
+.drawer-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+/* Progress bar animation */
+.progress-bar {
+  transition: width 0.6s ease-in-out;
+}
+
+/* Card shadow effect */
+.card-shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .drawer-mobile {
+    @apply fixed inset-0 z-50;
+  }
+
+  /* Mobile table optimization */
+  :deep(.review-case-table) {
+    .ant-table-thead > tr > th {
+      @apply text-xs px-2;
+    }
+
+    .ant-table-tbody > tr > td {
+      @apply text-xs px-2 py-2;
+    }
+  }
+
+  /* Mobile search bar optimization */
+  .mobile-search {
+    @apply flex-col space-y-3;
+  }
+
+  .mobile-search .search-inputs {
+    @apply w-full;
+  }
+
+  .mobile-search .search-actions {
+    @apply w-full justify-center;
+  }
+}
+
+/* Scrollbar style */
+:deep(.ant-table-body) {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+:deep(.ant-table-body)::-webkit-scrollbar {
+  height: 6px;
+}
+
+:deep(.ant-table-body)::-webkit-scrollbar-track {
+  background: #f7fafc;
+  border-radius: 3px;
+}
+
+:deep(.ant-table-body)::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 3px;
+}
+
+:deep(.ant-table-body)::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
 }
 </style>

@@ -1789,6 +1789,7 @@
       "noModuleCases": "无模块用例"
     },
     "detail": {
+      "title": "用例详情",
       "reviewStartedSuccess": "评审开始成功",
       "caseCode": "用例编号",
       "caseName": "用例名称",
