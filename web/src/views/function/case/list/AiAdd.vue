@@ -867,8 +867,7 @@ onMounted(() => {
                         :fileList="[]"
                         name="file"
                         class="-mb-1 mr-1"
-                        :customRequest="() => {}"
-                        @change="upLoadFile">
+                        :customRequest="upLoadFile"">
                         <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
                         <span class="text-3 leading-3 text-theme-text-hover">{{ t('functionCase.addCaseModal.continueUpload') }}</span>
                       </Upload>
@@ -880,8 +879,7 @@ onMounted(() => {
                       <Upload
                         name="file"
                         :fileList="[]"
-                        :customRequest="() => {}"
-                        @change="upLoadFile">
+                        :customRequest="upLoadFile">
                         <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                         <span class="text-3 text-theme-text-hover">{{ t('functionCase.addCaseModal.uploadAttachments') }}</span>
                       </Upload>

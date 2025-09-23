@@ -886,8 +886,7 @@ onMounted(() => {
           <Upload
             :fileList="[]"
             name="file"
-            :customRequest="() => { }"
-            @change="handleFileUpload">
+            :customRequest="handleFileUpload">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
               <Icon icon="icon-lianjie1" class="mr-1" />
               <span class="whitespace-nowrap">{{ t('taskSprint.form.uploadAttachment') }}</span>
