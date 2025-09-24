@@ -22,9 +22,11 @@ const Trash = defineAsyncComponent(() => import('@/views/function/trash/index.vu
 const { t } = useI18n();
 const router = useRouter();
 
+const projectInfo = inject('projectInfo', ref({}))
+
 // Reactive State
 const currentUserInfo = ref(appContext.getUser());
-const currentProjectId = inject<Ref<string>>('projectId', ref(''));
+const currentProjectId = computed(() => projectInfo.value?.id);
 const applicationInfo = ref(appContext.getAccessApp());
 const changeProjectInfo = inject('changeProjectInfo', () => undefined);
 
