@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, onUnmounted, readonly, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, TabPane, Tabs, Tag } from 'ant-design-vue';
 import {
@@ -28,11 +28,13 @@ const props = withDefaults(defineProps<BasicProps>(), {
   data: undefined
 });
 
+
 // Async component definitions
 const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/review/edit/SelectCaseModal.vue'));
 const ReviewForm = defineAsyncComponent(() => import('@/views/function/review/detail/ReviewForm.vue'));
 const CaseReviewResult = defineAsyncComponent(() => import('@/views/function/review/detail/case/CaseReviewResult.vue'));
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/CaseSteps.vue'));
+// const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/CaseSteps.vue'));
+const CaseStep = defineAsyncComponent(() => import('@/views/function/review/detail/case/CaseSteps.vue'));
 const CaseBasicInfo = defineAsyncComponent(() => import('@/views/function/review/detail/case/CaseBasicInfo.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/function/review/detail/case/Precondition.vue'));
 const Members = defineAsyncComponent(() => import('@/views/function/review/detail/case/Member.vue'));
@@ -472,15 +474,24 @@ onMounted(() => {
   }, { immediate: true });
 });
 
+
+
 /**
  * <p>Watches for changes in selected row key.</p>
  * <p>Loads case content when a new case is selected.</p>
  */
-watch(() => selectedRowKey.value, newValue => {
+watch(() => selectedRowKey.value, async (newValue) => {
   if (newValue) {
-    loadReviewCaseDetail();
+    await loadReviewCaseDetail();
   }
 });
+
+const refreshReviewCase = async (refreshList = false) => {
+  loadReviewCaseDetail();
+  if (refreshList) {
+    loadReviewCaseList(reviewId.value);
+  }
+}
 
 onUnmounted(() => {
   window.removeEventListener('resize', checkMobile);
@@ -636,7 +647,7 @@ onUnmounted(() => {
                       :class="isMobile ? 'w-full' : 'w-40'"
                       :placeholder="t('caseReview.detail.selectReviewStatus')"
                       enumKey="ReviewStatus"
-                      allowClear="true"
+                      allowClear
                       @change="handleChangeStatus">
                     </SelectEnum>
                   </div>
@@ -813,7 +824,11 @@ onUnmounted(() => {
                 <Icon :icon="expand.basicInfo ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
               <div v-show="expand.basicInfo">
-                <CaseBasicInfo :caseInfo="selectReviewCaseInfo?.caseInfo" />
+                <CaseBasicInfo
+                  :caseInfo="selectReviewCaseInfo?.caseInfo"
+                  :projectId="props.projectId"
+                  :readonly="!permissions.includes(FuncPlanPermission.MODIFY_CASE)"
+                  @change="refreshReviewCase(true)" />
               </div>
             </div>
 
@@ -827,7 +842,9 @@ onUnmounted(() => {
                 <Icon :icon="expand.precondition ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
               <div v-show="expand.precondition">
-                <Precondition :caseInfo="selectReviewCaseInfo?.caseInfo" />
+                <Precondition :caseInfo="selectReviewCaseInfo?.caseInfo"
+                :readonly="!permissions.includes(FuncPlanPermission.MODIFY_CASE)"
+                @change="refreshReviewCase" />
               </div>
             </div>
 
@@ -841,10 +858,9 @@ onUnmounted(() => {
                 <Icon :icon="expand.steps ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
               <div v-show="expand.steps">
-                <CaseStep
-                  :defaultValue="selectReviewCaseInfo?.caseInfo?.steps || []"
-                  :stepView="selectReviewCaseInfo?.caseInfo?.stepView?.value"
-                  :readonly="true" />
+                <CaseStep :caseInfo="selectReviewCaseInfo?.caseInfo"
+                :readonly="!permissions.includes(FuncPlanPermission.MODIFY_CASE)"
+                @change="refreshReviewCase" />
               </div>
             </div>
 
@@ -858,7 +874,10 @@ onUnmounted(() => {
                 <Icon :icon="expand.description ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
               <div v-show="expand.description">
-                <Description :caseInfo="selectReviewCaseInfo?.caseInfo" />
+                <Description
+                :caseInfo="selectReviewCaseInfo?.caseInfo"
+                :readonly="!permissions.includes(FuncPlanPermission.MODIFY_CASE)"
+                @change="refreshReviewCase" />
               </div>
             </div>
 
@@ -900,7 +919,11 @@ onUnmounted(() => {
                 <Icon :icon="expand.members ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
               <div v-show="expand.members">
-                <Members :caseInfo="selectReviewCaseInfo?.caseInfo" />
+                <Members
+                :caseInfo="selectReviewCaseInfo?.caseInfo"
+                :userInfo="props.userInfo"
+                :readonly="!permissions.includes(FuncPlanPermission.MODIFY_CASE)"
+                @change="refreshReviewCase" />
               </div>
             </div>
 
