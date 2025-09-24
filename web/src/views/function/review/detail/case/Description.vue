@@ -67,23 +67,25 @@ const confirm = async () => {
 </script>
 <template>
   <div class="bg-white rounded-lg">
-    <div v-show="!isEditDescription" class="flex justify-end">
-        <Button size="small" type="link" @click="toEdit">
-            <Icon icon="icon-xiugai" />
-        </Button>
-    </div>
-    <div v-show="isEditDescription" class="flex justify-end">
-        <Button size="small" type="link" @click="cancel">
-            {{ t('actions.cancel') }}
-        </Button>
-        <Button
-            :loading="saveLoading"
-            size="small"
-            type="link"
-            @click="confirm">
-            {{ t('actions.confirm') }}
-        </Button>
-    </div>
+    <template v-if="!props.readonly">
+      <div v-show="!isEditDescription" class="flex justify-end">
+          <Button size="small" type="link" @click="toEdit">
+              <Icon icon="icon-xiugai" />
+          </Button>
+      </div>
+      <div v-show="isEditDescription" class="flex justify-end">
+          <Button size="small" type="link" @click="cancel">
+              {{ t('actions.cancel') }}
+          </Button>
+          <Button
+              :loading="saveLoading"
+              size="small"
+              type="link"
+              @click="confirm">
+              {{ t('actions.confirm') }}
+          </Button>
+      </div>
+    </template>
     
 
     <template v-if="isEditDescription">
