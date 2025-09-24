@@ -67,7 +67,7 @@ export function useTableColumns () {
     {
       dataIndex: 'action',
       key: 'action',
-      title: t('fileSpace.columns.action'),
+      title: t('common.actions'),
       width: 160
     }
   ]);
@@ -108,7 +108,7 @@ export function useTableColumns () {
       width: 160
     },
     {
-      title: t('fileSpace.columns.action'),
+      title: t('common.actions'),
       dataIndex: 'action',
       width: 380,
       fixed: 'right'

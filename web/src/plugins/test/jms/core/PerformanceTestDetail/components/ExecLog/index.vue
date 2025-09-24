@@ -147,7 +147,7 @@ const refreshExecLog = (event) => {
                 {{ schedulingLogItem?.success ? t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.success') : t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.fail') }}
               </template>
               <template v-else>
-                {{ t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.noData') }}
+                {{ t('common.noData') }}
               </template>
             </div>
           </div>
@@ -157,7 +157,7 @@ const refreshExecLog = (event) => {
           </div>
         </div>
         <div>
-          <Tooltip :title="t('ftpPlugin.performanceTestDetail.execLog.tooltips.export')" placement="top">
+          <Tooltip :title="t('actions.export')" placement="top">
             <Icon
               icon="icon-daochu1"
               class="text-4 cursor-pointer hover:text-text-link-hover mr-2"
@@ -192,13 +192,13 @@ const refreshExecLog = (event) => {
           </template>
         </div>
         <div>
-          <Tooltip :title="t('ftpPlugin.performanceTestDetail.execLog.tooltips.export')" placement="top">
+          <Tooltip :title="t('actions.export')" placement="top">
             <Icon
               icon="icon-daochu1"
               class="text-4 cursor-pointer hover:text-text-link-hover mr-2"
               @click="downloadLog('exec')" />
           </Tooltip>
-          <Tooltip :title="t('ftpPlugin.performanceTestDetail.execLog.tooltips.refresh')" placement="top">
+          <Tooltip :title="t('actions.refresh')" placement="top">
             <Icon
               icon="icon-shuaxin"
               class="text-4 cursor-pointer hover:text-text-link-hover mr-2"

@@ -491,7 +491,7 @@ onMounted(() => {
               type="default"
               size="small"
               @click="cancelAISplitMode">
-              {{ t('backlog.splitTask.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
           </div>
         </template>
@@ -661,7 +661,7 @@ onMounted(() => {
         class="flex items-center px-0 mt-1"
         @click="addNewSubTask">
         <Icon icon="icon-jia" class="mr-1 text-3.5" />
-        <span>{{ t('backlog.splitTask.continueAdd') }}</span>
+        <span>{{ t('actions.saveAndContinue') }}</span>
       </Button>
     </Spin>
   </Modal>

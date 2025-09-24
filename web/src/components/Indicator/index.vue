@@ -631,7 +631,7 @@ onMounted(() => {
           <Button
             class="mr-2 rounded text-3 leading-3 size-sm"
             @click="cancel">
-            {{ t('xcan_indicator.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
           <Button
             class="rounded text-3 leading-3 size-sm"
@@ -796,7 +796,7 @@ onMounted(() => {
           <Button
             class="mr-2 rounded text-3 leading-3 size-sm"
             @click="cancel">
-            {{ t('xcan_indicator.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
           <Button
             class="rounded text-3 leading-3 size-sm"
@@ -903,7 +903,7 @@ onMounted(() => {
             <Button
               class="mr-2 rounded text-3 leading-3 size-sm"
               @click="cancel">
-              {{ t('xcan_indicator.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
             <Button
               class="rounded text-3 leading-3 size-sm"

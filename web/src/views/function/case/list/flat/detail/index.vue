@@ -117,38 +117,34 @@ const infoExpand = ref(true);
 
 const infoColumns = computed<GridColumns[][]>(() => [
   [
-    { label: t('functionCase.detail.caseDetail.name'), dataIndex: 'name' },
-    { label: t('functionCase.detail.caseDetail.id'), dataIndex: 'id' },
-    { label: t('functionCase.detail.caseDetail.code'), dataIndex: 'code' },
-    { label: t('functionCase.detail.caseDetail.reviewStatus'), dataIndex: 'reviewStatus' },
-    { label: t('functionCase.detail.caseDetail.version'), dataIndex: 'version' },
-    { label: t('functionCase.detail.caseDetail.softwareVersion'), dataIndex: 'softwareVersion' },
-    { label: t('functionCase.detail.caseDetail.priority'), dataIndex: 'priority' },
+    { label: t('common.name'), dataIndex: 'name' },
+    { label: t('common.id'), dataIndex: 'id' },
+    { label: t('common.code'), dataIndex: 'code' },
+    { label: t('common.reviewStatus'), dataIndex: 'reviewStatus' },
+    { label: t('common.version'), dataIndex: 'version' },
+    { label: t('common.softwareVersion'), dataIndex: 'softwareVersion' },
+    { label: t('common.priority'), dataIndex: 'priority' },
     {
-      label: t('functionCase.detail.caseDetail.unplannedCase'),
+      label: t('common.unplanned'),
       dataIndex: 'unplanned',
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     }
   ],
   [
-    { label: t('functionCase.detail.caseDetail.tags'), dataIndex: 'tags' },
-    { label: t('functionCase.detail.caseDetail.planName'), dataIndex: 'planName' },
-    { label: t('functionCase.detail.caseDetail.moduleName'), dataIndex: 'moduleName' },
+    { label: t('common.tags'), dataIndex: 'tags' },
+    { label: t('common.plan'), dataIndex: 'planName' },
+    { label: t('common.module'), dataIndex: 'moduleName' },
     {
-      label: t('functionCase.detail.caseDetail.testResult'),
+      label: t('common.testResult'),
       dataIndex: 'testResult'
     },
     {
-      label: props.caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-        ? t('functionCase.detail.caseDetail.evalWorkload')
-        : t('functionCase.detail.caseDetail.evalWorkload'),
+      label: t('common.evalWorkload'),
       dataIndex: 'evalWorkload',
       customRender: ({ text }) => text || '--'
     },
     {
-      label: props.caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-        ? t('functionCase.detail.caseDetail.actualWorkload')
-        : t('functionCase.detail.caseDetail.actualWorkload'),
+      label: t('fcommon.actualWorkload'),
       dataIndex: 'actualWorkload',
       customRender: ({ text }) => text || '--'
     }
@@ -857,7 +853,7 @@ onBeforeUnmount(() => {
                 v-if="caseDetail?.overdue"
                 class="border border-status-error rounded px-0.5 ml-5"
                 style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                {{ t('functionCase.detail.caseDetail.overdue') }}
+                {{ t('status.overdue') }}
               </div>
             </div>
           </template>
@@ -1035,14 +1031,14 @@ onBeforeUnmount(() => {
                 type="link"
                 size="small"
                 @click="savePrecondition">
-                {{ t('functionCase.detail.caseDetail.save') }}
+                {{ t('actions.save') }}
               </Button>
               <Button
                 class="font-normal text-theme-special"
                 type="link"
                 size="small"
                 @click="cancelEditPrecondition">
-                {{ t('functionCase.detail.caseDetail.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
             </template>
             <Icon
@@ -1067,7 +1063,7 @@ onBeforeUnmount(() => {
             </template>
             <template v-else>
               <NoData
-                :text="t('functionCase.detail.caseDetail.noData')"
+                :text="t('common.noData')"
                 class="my-8"
                 size="small" />
             </template>
@@ -1116,7 +1112,7 @@ onBeforeUnmount(() => {
 
           <template v-else>
             <NoData
-              :text="t('functionCase.detail.caseDetail.noData')"
+              :text="t('common.noData')"
               size="small"
               class="my-8" />
           </template>
@@ -1172,7 +1168,7 @@ onBeforeUnmount(() => {
 
           <template v-else>
             <NoData
-              :text="t('functionCase.detail.caseDetail.noData')"
+              :text="t('common.noData')"
               size="small"
               class="mt-20" />
           </template>

@@ -447,7 +447,7 @@ const cloneProject = async (item: any) => {
     return;
   }
   refreshHandler();
-  notification.success(t('tips.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
 };
 
 const projectStatus = ref();
@@ -777,7 +777,7 @@ const foldActions = ref<{ name: string; key: FoldActionKey; icon: string; }[]>([
     icon: 'icon-daochu1'
   },
   {
-    name: t('actions.authority'),
+    name: t('actions.permission'),
     key: 'authorization',
     icon: 'icon-quanxian1'
   }
@@ -802,7 +802,7 @@ const buttonProps = {
       icon: 'icon-daochu1'
     },
     {
-      name: t('actions.authority'),
+      name: t('actions.permission'),
       key: 'authorization',
       icon: 'icon-quanxian1'
     }

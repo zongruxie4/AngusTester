@@ -126,16 +126,16 @@ const handleModalClose = () => {
     <div class="space-y-0.5 mb-5">
       <div>{{ t('mock.detail.apis.components.importApiModal.duplicateStrategy') }}</div>
       <RadioGroup v-model:value="duplicatedValue">
-        <Radio value="COVER">{{ t('mock.detail.apis.components.importApiModal.cover') }}</Radio>
-        <Radio value="IGNORE">{{ t('mock.detail.apis.components.importApiModal.ignore') }}</Radio>
+        <Radio value="COVER">{{ t('actions.cover') }}</Radio>
+        <Radio value="IGNORE">{{ t('actions.ignore') }}</Radio>
       </RadioGroup>
     </div>
 
     <div class="space-y-0.5">
       <div>{{ t('mock.detail.apis.components.importApiModal.deleteNotExisted') }}</div>
       <RadioGroup v-model:value="notExistedValue">
-        <Radio value="true">{{ t('mock.detail.apis.components.importApiModal.yes') }}</Radio>
-        <Radio value="false">{{ t('mock.detail.apis.components.importApiModal.no') }}</Radio>
+        <Radio value="true">{{ t('status.yes') }}</Radio>
+        <Radio value="false">{{ t('status.no') }}</Radio>
       </RadioGroup>
     </div>
   </Modal>

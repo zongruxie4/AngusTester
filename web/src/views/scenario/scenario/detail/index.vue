@@ -95,7 +95,7 @@ onMounted(() => {
         :disabled="auth && !authPermissions.includes(ScenarioPermission.EXPORT)"
         @click="showExportScript">
         <Icon icon="icon-daochu" class="mr-1" />
-        {{ t('scenario.detail.actions.export') }}
+        {{ t('actions.export') }}
       </Button>
       <Button
         size="small"
@@ -103,7 +103,7 @@ onMounted(() => {
         :disabled="auth && !authPermissions.includes(ScenarioPermission.GRANT)"
         @click="showAuthorization">
         <Icon icon="icon-quanxian1" class="mr-1" />
-        {{ t('scenario.detail.actions.auth') }}
+        {{ t('actions.permission') }}
       </Button>
       <Button
         :loading="followLoading"
@@ -111,7 +111,7 @@ onMounted(() => {
         type="text"
         @click="handleFollow">
         <Icon :icon="scenarioData.follow ? 'icon-quxiaoguanzhu' : 'icon-yiguanzhu'" class="mr-1" />
-        {{ scenarioData.follow ? t('scenario.detail.actions.cancelFollow') : t('scenario.detail.actions.follow') }}
+        {{ scenarioData.follow ? t('actions.cancelFollow') : t('actions.addFollow') }}
       </Button>
       <Button
         :loading="favouriteLoading"
@@ -119,7 +119,7 @@ onMounted(() => {
         type="text"
         @click="handleFavourite">
         <Icon :icon="scenarioData.favourite ? 'icon-quxiaoshoucang' : 'icon-yishoucang'" class="mr-1" />
-        {{ scenarioData.favourite ? t('scenario.detail.actions.cancelFavourite') : t('scenario.detail.actions.favourite') }}
+          {{ scenarioData.favourite ? t('actions.cancelFavourite') : t('actions.addFavourite') }}
       </Button>
     </div>
     <TestSummary

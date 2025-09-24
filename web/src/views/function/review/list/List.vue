@@ -171,13 +171,13 @@ const dropdownMenuItems = [
   {
     key: 'delete',
     icon: 'icon-qingchu',
-    name: t('caseReview.list.delete'),
+    name: t('actions.delete'),
     permission: 'delete'
   },
   {
     key: 'clone',
     icon: 'icon-fuzhi',
-    name: t('caseReview.list.clone'),
+    name: t('actions.clone'),
     noAuth: true,
     permission: 'clone'
   }
@@ -366,7 +366,7 @@ const dropdownMenuItems = [
               <div class="flex items-center justify-between h-4 leading-5">
                 <RouterLink class="flex items-center space-x-1" :to="`/function#reviews?id=${item.id}&type=edit`">
                   <Icon icon="icon-shuxie" class="text-3.5" />
-                  <span>{{ t('caseReview.list.edit') }}</span>
+                  <span>{{ t('actions.edit') }}</span>
                 </RouterLink>
 
                 <RouterLink class="flex items-center ml-3" :to="`/function#reviews?id=${item.id}`">
@@ -382,7 +382,7 @@ const dropdownMenuItems = [
                   class="px-0 flex items-center ml-2"
                   @click="startReview(item, index)">
                   <Icon icon="icon-kaishi" class="mr-0.5" />
-                  <span>{{ t('caseReview.list.start') }}</span>
+                  <span>{{ t('actions.start') }}</span>
                 </Button>
 
                 <Button
@@ -393,7 +393,7 @@ const dropdownMenuItems = [
                   class="px-0 flex items-center ml-2"
                   @click="completeReview(item, index)">
                   <Icon icon="icon-yiwancheng" class="mr-0.5" />
-                  <span>{{ t('caseReview.list.complete') }}</span>
+                  <span>{{ t('actions.complete') }}</span>
                 </Button>
 
                 <Dropdown

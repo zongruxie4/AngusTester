@@ -133,8 +133,8 @@ watch(() => props.visible, () => {
           <Switch
             v-show="showOpt.includes(opt.value)"
             :checked="checked.includes(opt.value)"
-            :checkedChildren="t('commonComp.apis.enabledTestModal.enabled')"
-            :unCheckedChildren="t('commonComp.apis.enabledTestModal.disabled')"
+            :checkedChildren="t('status.enabled')"
+            :unCheckedChildren="t('status.disabled')"
             size="small"
             @click="changeChecked($event, opt.value)" />
         </div>

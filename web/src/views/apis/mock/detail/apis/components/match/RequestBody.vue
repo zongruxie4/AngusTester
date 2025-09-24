@@ -292,7 +292,7 @@ defineExpose({
           type="link"
           size="small"
           @click="handleDelete">
-          <span>{{ t('mock.detail.apis.components.match.delete') }}</span>
+          <span>{{ t('actions.delete') }}</span>
         </Button>
         <template v-if="showEditor">
           <Button
@@ -307,7 +307,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleClear">
-            <span>{{ t('mock.detail.apis.components.match.clear') }}</span>
+            <span>{{ t('actions.clear') }}</span>
           </Button>
         </template>
       </div>

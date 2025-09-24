@@ -19,7 +19,7 @@ const Chart = defineAsyncComponent(() => import('./chart.vue'));
 <template>
   <Chart
     :dataSource="props.dataSource?.NUM"
-    :title="t('reportPreview.projectProgress.funcCaseSummary.burndownChart.caseCount')"
+    :title="t('chart.burndown.countBurndown')"
     class="mb-4" />
-  <Chart :dataSource="props.dataSource?.WORKLOAD" :title="t('reportPreview.projectProgress.funcCaseSummary.burndownChart.workload')" />
+  <Chart :dataSource="props.dataSource?.WORKLOAD" :title="t('chart.burndown.workloadBurndown')" />
 </template>

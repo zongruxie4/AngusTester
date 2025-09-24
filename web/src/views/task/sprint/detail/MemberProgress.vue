@@ -65,7 +65,7 @@ const tableColumns = [
   },
   {
     key: 'completedRate',
-    title: t('taskSprint.progress.progress'),
+    title: t('common.progress'),
     dataIndex: 'completedRate',
     width: '15%',
     sorter: (a, b) => +a.completedRate - (+b.completedRate),
@@ -163,7 +163,7 @@ const tableColumns = [
             v-if="+record?.completedRate === 100"
             class="text-white rounded-full bg-status-success text-3 px-1"
             style="transform: scale(0.8);">
-            {{ t('taskSprint.progress.completed') }}
+            {{ t('status.completed') }}
           </div>
         </div>
       </template>

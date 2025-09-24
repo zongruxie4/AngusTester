@@ -160,7 +160,7 @@ const change = ({ ids }) => {
         size="small"
         type="primary"
         @click="ok('copy')">
-        {{ t('websocketPlugin.uiConfig.selectApiModal.buttons.copy') }}
+        {{ t('actions.copy') }}
       </Button>
       <Button
         :loading="linking"

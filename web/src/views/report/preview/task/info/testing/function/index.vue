@@ -112,12 +112,12 @@ const len = computed(() => {
           {{ item.caseName }}
         </div>
         <div class="w-27 px-1.5 py-1.5 break-all whitespace-pre-wrap">
-          {{ item.passed ? t('reportPreview.task.info.testing.function.testedCases.options.passed') : t('reportPreview.task.info.testing.function.testedCases.options.failed') }}
+          {{ item.passed ? t('rstatus.passed') : t('status.failed') }}
         </div>
       </div>
     </div>
 
-    <div v-else class="content-text-container">{{ t('reportPreview.task.info.testing.function.testedCases.noData') }}</div>
+    <div v-else class="content-text-container">{{ t('common.noData') }}</div>
   </div>
 </template>
 

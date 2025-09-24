@@ -12,8 +12,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const configInfo = [
-  [{ label: t('xcan_httpTestInfo.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: t('xcan_httpTestInfo.passed'), dataIndex: 'successNum', bgColor: 'bg-status-success' }],
-  [{ label: t('xcan_httpTestInfo.failed'), dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: t('xcan_httpTestInfo.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
+  [{ label: t('status.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: t('status.passed'), dataIndex: 'successNum', bgColor: 'bg-status-success' }],
+  [{ label: t('status.failed'), dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: t('status.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
 ];
 
 </script>

@@ -550,7 +550,7 @@ const tableColumns = [
     dataIndex: 'reviewStatus'
   },
   {
-    title: t('caseReview.editForm.action'),
+    title: t('common.actions'),
     dataIndex: 'action'
   }
 ];
@@ -633,7 +633,7 @@ onMounted(async () => {
         class="flex items-center space-x-1"
         @click="handleFormSubmit">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>{{ t('caseReview.editForm.save') }}</span>
+        <span>{{ t('actions.save') }}</span>
       </Button>
 
       <template v-if="isEditMode">
@@ -644,7 +644,7 @@ onMounted(async () => {
           class="flex items-center space-x-1"
           @click="handleReviewDeletion">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span>{{ t('caseReview.editForm.delete') }}</span>
+          <span>{{ t('actions.delete') }}</span>
         </Button>
 
         <Button
@@ -663,7 +663,7 @@ onMounted(async () => {
         class="flex items-center space-x-1"
         @click="handleFormCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5" />
-        <span>{{ t('caseReview.editForm.cancel') }}</span>
+        <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>
 
@@ -814,7 +814,7 @@ onMounted(async () => {
                   size="small"
                   @click="handleCaseDeletion(record)">
                   <Icon icon="icon-qingchu" />
-                  {{ t('caseReview.editForm.delete') }}
+                  {{ t('actions.delete') }}
                 </Button>
               </template>
 

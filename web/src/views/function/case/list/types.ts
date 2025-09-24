@@ -8,13 +8,13 @@ export type CaseActionAuth =
   | 'clone' | 'move' | 'delete' | 'updateTestResult_passed'
   | 'updateTestResult_notPassed' | 'updateTestResult_blocked'
   | 'updateTestResult_canceled' | 'resetTestResult' | 'retestResult'
-  | 'resetReviewResult' | 'copy' | 'favourite' | 'follow' | 'copyUrl'
+  | 'resetReviewResult' | 'copy' | 'addFavourite' | 'addFollow' | 'copyUrl'
 
 export type ActionMenuItem = {
   name: string;
   key:'addBug' | 'delete' | 'edit' | 'testPassed' | 'testNotPassed'
     | 'retest' | 'cancel' | 'clone' | 'move' | 'cancelFavourite'
-    | 'favourite' | 'cancelFollow' | 'follow' | 'resetTestResult' | 'block';
+    | 'addFavourite' | 'cancelFollow' | 'addFollow' | 'resetTestResult' | 'block';
   icon: string;
   disabled: boolean;
   hide: boolean;

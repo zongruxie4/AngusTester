@@ -9,6 +9,7 @@ import { funcPlan } from '@/api/tester';
 import { BaselineCaseInfo } from '@/views/function/baseline/types';
 
 import TestResult from '@/components/TestResult/index.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 const { t } = useI18n();
 
@@ -91,25 +92,39 @@ const handleSearchFilter = debounce(duration.search, () => {
 // Table Configuration
 const tableColumns = [
   {
-    title: t('functionBaseline.editForm.code'),
-    dataIndex: 'code'
+    title: t('functionBaseline.editForm.caseCode'),
+    dataIndex: 'code',
+    width: 120
   },
   {
     title: t('functionBaseline.editForm.caseName'),
-    dataIndex: 'name',
-    width: '40%'
+    dataIndex: 'name'
+  },
+  {
+    title: t('functionBaseline.editForm.version'),
+    dataIndex: 'version',
+    width: 80,
+    customRender: ({ text }) => 'v' + text || '--'
+  },
+  {
+    title: t('functionBaseline.editForm.priority'),
+    dataIndex: 'priority',
+    width: 80
   },
   {
     title: t('functionBaseline.editForm.reviewStatus'),
-    dataIndex: 'reviewStatus'
+    dataIndex: 'reviewStatus',
+    width: 100
   },
   {
     title: t('functionBaseline.editForm.testResult'),
-    dataIndex: 'testResult'
+    dataIndex: 'testResult',
+    width: 100
   },
   {
     title: t('functionBaseline.editForm.tester'),
-    dataIndex: 'testerName'
+    dataIndex: 'testerName',
+    width: 90
   }
 ];
 
@@ -147,7 +162,7 @@ watch(() => selectedModuleId.value, () => {
   <Modal
     :title="t('functionBaseline.editForm.selectCase')"
     :visible="props.visible"
-    :width="1000"
+    :width="1280"
     :loading="isLoading"
     @cancel="handleModalCancel"
     @ok="handleModalConfirm">
@@ -173,9 +188,14 @@ watch(() => selectedModuleId.value, () => {
           rowKey="id"
           noDataSize="small">
           <template #bodyCell="{record, column}">
+            <template v-if="column.dataIndex === 'priority'">
+              <TaskPriority :value="record.priority" />
+            </template>
+
             <template v-if="column.dataIndex === 'reviewStatus'">
               <ReviewStatus :value="record.reviewStatus" />
             </template>
+
             <template v-if="column.dataIndex === 'testResult'">
               <TestResult :value="record.testResult" />
             </template>

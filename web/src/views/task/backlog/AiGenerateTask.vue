@@ -414,7 +414,7 @@ onMounted(() => {
           type="primary"
           size="small"
           @click="generateTasksWithAI">
-          {{ t('backlog.aiGenerateTask.generate') }}
+          {{ t('actions.generate') }}
         </Button>
       </div>
 
@@ -564,7 +564,7 @@ onMounted(() => {
         class="flex items-center px-0 mt-1"
         @click="addNewTask">
         <Icon icon="icon-jia" class="mr-1 text-3.5" />
-        <span>{{ t('backlog.aiGenerateTask.continueAdd') }}</span>
+        <span>{{ t('actions.saveAndContinue') }}</span>
       </Button>
     </Spin>
   </Modal>

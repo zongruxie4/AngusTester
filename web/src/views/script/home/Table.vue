@@ -65,7 +65,7 @@ const exportVisible = ref<boolean>(false);
 /**
  * Import demo scripts
  */
-const importDemo = async () => {
+const importExamples = async () => {
   emit('update:loading', true);
   const [error] = await script.importScriptDemo();
   emit('update:loading', false);
@@ -211,8 +211,8 @@ rowSelection.value.onChange = (keys: string[]) => {
           type="link"
           size="small"
           class="px-0"
-          @click="importDemo">
-          {{ t('scriptHome.table.messages.importExample') }}
+          @click="importExamples">
+          {{ t('actions.importExamples') }}
         </Button>
       </div>
     </div>
@@ -227,7 +227,7 @@ rowSelection.value.onChange = (keys: string[]) => {
           size="small"
           class="flex items-center px-0 h-5 leading-5"
           @click="handleBatchExecClick">
-          {{ t('scriptHome.table.actions.execute') }}
+          {{ t('actions.execute') }}
         </Button>
 
         <Button
@@ -236,7 +236,7 @@ rowSelection.value.onChange = (keys: string[]) => {
           size="small"
           class="flex items-center px-0 h-5 leading-5"
           @click="handleBatchDeleteClick">
-          {{ t('scriptHome.table.actions.delete') }}
+          {{ t('actions.delete') }}
         </Button>
 
         <Button
@@ -245,7 +245,7 @@ rowSelection.value.onChange = (keys: string[]) => {
           size="small"
           class="flex items-center px-0 h-5 leading-5"
           @click="handleBatchExportClick">
-          {{ t('scriptHome.table.actions.export') }}
+          {{ t('actions.export') }}
         </Button>
 
         <Button
@@ -254,7 +254,7 @@ rowSelection.value.onChange = (keys: string[]) => {
           size="small"
           class="flex items-center px-0 h-5 leading-5"
           @click="cancelBatchOperation">
-          <span>{{ t('scriptHome.table.messages.cancelBatchOperation') }}</span>
+          <span>{{ t('actions.cancelBatch') }}</span>
           <span class="ml-1">({{ selectedIds.length }})</span>
         </Button>
       </div>
@@ -354,7 +354,7 @@ rowSelection.value.onChange = (keys: string[]) => {
               class="flex items-center px-0 mr-1"
               @click="() => handleSingleExecClick(record)">
               <Icon icon="icon-zhihangjiaoben" class="mr-1" />
-              <span>{{ t('scriptHome.table.actions.execute') }}</span>
+              <span>{{ t('actions.execute') }}</span>
             </Button>
 
             <Button
@@ -364,7 +364,7 @@ rowSelection.value.onChange = (keys: string[]) => {
               class="flex items-center px-0 mr-1"
               @click="() => handleEditClick(record)">
               <Icon icon="icon-shuxie" class="mr-1" />
-              <span>{{ t('scriptHome.table.actions.edit') }}</span>
+              <span>{{ t('actions.edit') }}</span>
             </Button>
 
             <Dropdown

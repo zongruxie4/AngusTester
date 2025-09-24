@@ -35,7 +35,7 @@ export const createTaskTypeConfig = (): ChartConfig => {
     },
     series: [
       {
-        name: t('kanban.effectiveness.total'),
+        name: t('chart.total'),
         type: 'pie',
         radius: ['30%', '50%'],
         center: ['35%', '50%'],
@@ -143,13 +143,13 @@ export const createBurnDownConfig = (): ChartConfig => {
     },
     series: [
       {
-        name: t('kanban.effectiveness.remaining'),
+        name: t('chart.burndown.remaining'),
         data: [],
         type: 'line',
         smooth: true
       },
       {
-        name: t('kanban.effectiveness.expected'),
+        name: t('chart.burndown.expected'),
         data: [],
         type: 'line'
       }
@@ -218,7 +218,7 @@ export const createTargetCountConfig = (): ChartConfig => {
   };
   config.series = [
     {
-      name: t('kanban.effectiveness.total'),
+      name: t('chart.total'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'
@@ -281,7 +281,7 @@ export const createWorkloadConfig = (): ChartConfig => {
   };
   config.series = [
     {
-      name: t('kanban.effectiveness.total'),
+      name: t('chart.total'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'
@@ -343,7 +343,7 @@ export const createOverdueConfig = (): ChartConfig => {
   };
   config.series = [
     {
-      name: t('kanban.effectiveness.total'),
+      name: t('chart.total'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'
@@ -406,7 +406,7 @@ export const createOneTimePassedTestConfig = (): ChartConfig => {
   };
   config.series = [
     {
-      name: t('kanban.effectiveness.total'),
+      name: t('chart.total'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'
@@ -469,7 +469,7 @@ export const createOneTimeUnpassedTestConfig = (): ChartConfig => {
   };
   config.series = [
     {
-      name: t('kanban.effectiveness.total'),
+      name: t('chart.total'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'

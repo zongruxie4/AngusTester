@@ -689,7 +689,7 @@ const dropdownClick = (
     return;
   }
 
-  if (key === 'favourite') {
+  if (key === 'addFavourite') {
     toFavourite(data, index, testResult);
     return;
   }
@@ -699,7 +699,7 @@ const dropdownClick = (
     return;
   }
 
-  if (key === 'follow') {
+  if (key === 'addFollow') {
     toFollow(data, index, testResult);
     return;
   }
@@ -1147,14 +1147,14 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       const menuItems: ActionMenuItem[] = [
         {
-          name: t('functionCase.kanbanView.edit'),
+          name: t('actions.edit'),
           key: 'edit',
           icon: 'icon-shuxie',
           disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.MODIFY_CASE),
           hide: false
         },
         {
-          name: t('functionCase.kanbanView.delete'),
+          name: t('actions.delete'),
           key: 'delete',
           icon: 'icon-qingchu',
           disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.DELETE_CASE),
@@ -1223,7 +1223,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
         if (testResult === CaseTestResult.PENDING || testResult === CaseTestResult.BLOCKED) {
           menuItems.push({
-            name: t('functionCase.kanbanView.cancel'),
+            name: t('actions.cancel'),
             key: 'cancel',
             icon: 'icon-qingchu',
             disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
@@ -1233,7 +1233,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       }
 
       menuItems.push({
-        name: t('functionCase.kanbanView.clone'),
+        name: t('actions.clone'),
         key: 'clone',
         icon: 'icon-fuzhi',
         disabled: !isAdmin.value && !permissions.includes('ADD_CASE'),
@@ -1241,7 +1241,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       });
 
       menuItems.push({
-        name: t('functionCase.kanbanView.move'),
+        name: t('actions.move'),
         key: 'move',
         icon: 'icon-yidong',
         disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.MODIFY_CASE),
@@ -1250,7 +1250,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (favourite) {
         menuItems.push({
-          name: t('functionCase.kanbanView.unfavourite'),
+          name: t('actions.cancelFavourite'),
           key: 'cancelFavourite',
           icon: 'icon-quxiaoshoucang',
           disabled: false,
@@ -1258,8 +1258,8 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       } else {
         menuItems.push({
-          name: t('functionCase.kanbanView.favourite'),
-          key: 'favourite',
+          name: t('actions.addFavourite'),
+          key: 'addFavourite',
           icon: 'icon-yishoucang',
           disabled: false,
           hide: false
@@ -1268,7 +1268,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (follow) {
         menuItems.push({
-          name: t('functionCase.kanbanView.unfollow'),
+          name: t('actions.cancelFollow'),
           key: 'cancelFollow',
           icon: 'icon-quxiaoguanzhu',
           disabled: false,
@@ -1276,8 +1276,8 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       } else {
         menuItems.push({
-          name: t('functionCase.kanbanView.follow'),
-          key: 'follow',
+          name: t('actions.addFollow'),
+          key: 'addFollow',
           icon: 'icon-yiguanzhu',
           disabled: false,
           hide: false
@@ -1347,7 +1347,7 @@ const checkedCaseId = computed(() => {
                   v-if="element.overdue"
                   class="flex-shrink-0 border border-testResult-error rounded px-0.5"
                   style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                  <span class="inline-block transform-gpu scale-90">{{ t('functionCase.kanbanView.overdue') }}</span>
+                  <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
                 </span>
                 <Dropdown
                   :menuItems="menuItemsMap.get(element.id)"
@@ -1488,7 +1488,7 @@ const checkedCaseId = computed(() => {
                         v-if="element.overdue"
                         class="flex-shrink-0 border border-testResult-error rounded px-0.5"
                         style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                        <span class="inline-block transform-gpu scale-90">{{ t('functionCase.kanbanView.overdue') }}</span>
+                        <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
                       </span>
                       <Dropdown
                         :menuItems="menuItemsMap.get(element.id)"

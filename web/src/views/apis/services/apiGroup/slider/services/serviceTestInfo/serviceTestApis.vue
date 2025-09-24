@@ -193,10 +193,10 @@ onBeforeUnmount(() => {
                         <span class="text-status-success">{{ t('service.serviceTestDetail.status.passed') }}</span>
                       </template>
                       <template v-else-if="item.stabilityTestPassed === false">
-                        <div class="text-status-error"> {{ t('service.serviceTestDetail.status.unpassed') }}<span>{{ item.stabilityTestFailureMessage }}</span></div>
+                        <div class="text-status-error"> {{ t('status.notPassed') }}<span>{{ item.stabilityTestFailureMessage }}</span></div>
                       </template>
                       <template v-else>
-                        {{ props.enabledTestApiIds.STABILITY.includes(item.id) ? t('service.serviceTestDetail.status.unTested') : t('service.serviceTestDetail.status.notEnabled') }}
+                        {{ props.enabledTestApiIds.STABILITY.includes(item.id) ? t('status.notTested') : t('status.disabled') }}
                       </template>
                     </template>
                   </Grid>

@@ -31,7 +31,7 @@ const emit = defineEmits<{
       @click="emit('click', 'ok')">
       <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
       <span>
-        {{ t('dataset.detail.buttonGroup.save') }}
+        {{ t('actions.save') }}
       </span>
     </Button>
 
@@ -43,7 +43,7 @@ const emit = defineEmits<{
         @click="emit('click', 'delete')">
         <Icon icon="icon-qingchu" class="text-3.5" />
         <span>
-          {{ t('dataset.detail.buttonGroup.delete') }}
+          {{ t('actions.delete') }}
         </span>
       </Button>
 
@@ -54,7 +54,7 @@ const emit = defineEmits<{
         @click="emit('click', 'export')">
         <Icon icon="icon-fuzhizujian2" class="text-3.5" />
         <span>
-          {{ t('dataset.detail.buttonGroup.export') }}
+          {{ t('actions.export') }}
         </span>
       </Button>
 
@@ -65,7 +65,7 @@ const emit = defineEmits<{
         @click="emit('click', 'clone')">
         <Icon icon="icon-fuzhizujian2" class="text-3.5" />
         <span>
-          {{ t('dataset.detail.buttonGroup.clone') }}
+          {{ t('actions.clone') }}
         </span>
       </Button>
 
@@ -76,7 +76,7 @@ const emit = defineEmits<{
         @click="emit('click', 'copyLink')">
         <Icon icon="icon-fuzhi" class="text-3.5" />
         <span>
-          {{ t('dataset.detail.buttonGroup.copyLink') }}
+          {{ t('actions.copyLink') }}
         </span>
       </Button>
 
@@ -87,7 +87,7 @@ const emit = defineEmits<{
         @click="emit('click', 'refresh')">
         <Icon icon="icon-shuaxin" class="text-3.5" />
         <span>
-          {{ t('dataset.detail.buttonGroup.refresh') }}
+          {{ t('actions.refresh') }}
         </span>
       </Button>
     </template>

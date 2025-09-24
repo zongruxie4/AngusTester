@@ -15,7 +15,7 @@ export function useButtonGroup () {
     {
       key: 'ok',
       icon: 'icon-dangqianxuanzhong',
-      text: t('dataset.detail.buttonGroup.save'),
+      text: t('actions.save'),
       type: 'primary' as const,
       size: 'small' as const
     }
@@ -29,35 +29,35 @@ export function useButtonGroup () {
     {
       key: 'delete',
       icon: 'icon-qingchu',
-      text: t('dataset.detail.buttonGroup.delete'),
+      text: t('actions.delete'),
       type: 'default' as const,
       size: 'small' as const
     },
     {
       key: 'export',
       icon: 'icon-fuzhizujian2',
-      text: t('dataset.detail.buttonGroup.export'),
+      text: t('actions.export'),
       type: 'default' as const,
       size: 'small' as const
     },
     {
       key: 'clone',
       icon: 'icon-fuzhizujian2',
-      text: t('dataset.detail.buttonGroup.clone'),
+      text: t('actions.clone'),
       type: 'default' as const,
       size: 'small' as const
     },
     {
       key: 'copyLink',
       icon: 'icon-fuzhi',
-      text: t('dataset.detail.buttonGroup.copyLink'),
+      text: t('actions.copyLink'),
       type: 'default' as const,
       size: 'small' as const
     },
     {
       key: 'refresh',
       icon: 'icon-shuaxin',
-      text: t('dataset.detail.buttonGroup.refresh'),
+      text: t('actions.refresh'),
       type: 'default' as const,
       size: 'small' as const
     }

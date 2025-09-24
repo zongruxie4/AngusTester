@@ -256,7 +256,7 @@ onMounted(() => {
     <div class="relative">
       <div :id="chartDomId" class="w-full h-50"></div>
       <div :style="centerMarkStyle" class="absolute mark-container">
-        <div class="text-theme-sub-content mb-1 text-center">{{ t('scenarioHome.chart.total') }}</div>
+        <div class="text-theme-sub-content mb-1 text-center">{{ t('chart.total') }}</div>
         <div class="text-3.5 text-center">{{ totalTestScenariosCount }}</div>
       </div>
     </div>

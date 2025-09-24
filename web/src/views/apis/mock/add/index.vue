@@ -340,7 +340,7 @@ onMounted(async () => {
                     </div>
                     <a
                       class="absolute right-3.5 top-0 text-3 text-text-link"
-                      @click="handleDeleteUploadText">{{ t('mock.addMock.upload.clear') }}</a>
+                      @click="handleDeleteUploadText">{{ t('actions.clear') }}</a>
                   </template>
                   <div
                     v-if="formState.file"
@@ -381,12 +381,12 @@ onMounted(async () => {
                 :loading="isSubmitting"
                 @click="handleSubmit">
                 <Icon icon="icon-dangqianxuanzhong" class="mr-1" />
-                {{ t('mock.addMock.buttons.confirm') }}
+                {{ t('actions.confirm') }}
               </Button>
               <RouterLink to="/apis#mock">
                 <Button size="small">
                   <Icon icon="icon-zhongzhi2" class="mr-1" />
-                  {{ t('mock.addMock.buttons.cancel') }}
+                  {{ t('actions.cancel') }}
                 </Button>
               </RouterLink>
             </FormItem>

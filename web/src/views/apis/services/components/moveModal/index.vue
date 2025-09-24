@@ -43,7 +43,7 @@ const cancel = () => {
 const onOk = async () => {
   const id = props.id;
   cancel();
-  notification.success(t('tips.moveSuccess'));
+  notification.success(t('actions.tips.moveSuccess'));
   emits('ok', { id: id!, fromId: props.pid });
 };
 

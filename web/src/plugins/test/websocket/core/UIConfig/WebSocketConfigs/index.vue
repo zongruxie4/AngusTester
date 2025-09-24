@@ -399,13 +399,13 @@ const autoSize = {
               :checked="enabled"
               size="small"
               @change="enabledChange" />
-            <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('websocketPlugin.uiConfig.websocketConfigs.actions.clone')">
+            <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('actions.clone')">
               <Icon
                 icon="icon-fuzhi"
                 class="text-3.5"
                 @click="actionClick('clone')" />
             </div>
-            <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('websocketPlugin.uiConfig.websocketConfigs.actions.delete')">
+            <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('actions.delete')">
               <Icon
                 icon="icon-qingchu"
                 class="text-3.5"

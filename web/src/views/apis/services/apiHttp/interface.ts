@@ -79,7 +79,7 @@ export const navs = [
   },
   {
     icon: 'icon-fuwuxinxi',
-    name: t('service.apis.navs.save'),
+    name: t('actions.save'),
     value: 'save',
     disabled: false,
     auth: 'MODIFY'

@@ -158,8 +158,8 @@ const ellipsis = computed(() => {
     <div class="space-y-0.5 leading-5 text-3">
       <div>{{ t('dataset.importDataset.duplicateStrategy.title') }}</div>
       <RadioGroup v-model:value="strategyWhenDuplicated">
-        <Radio value="COVER">{{ t('dataset.importDataset.duplicateStrategy.cover') }}</Radio>
-        <Radio value="IGNORE">{{ t('dataset.importDataset.duplicateStrategy.ignore') }}</Radio>
+        <Radio value="COVER">{{ t('actions.cover') }}</Radio>
+        <Radio value="IGNORE">{{ t('actions.ignore') }}</Radio>
       </RadioGroup>
     </div>
   </Modal>

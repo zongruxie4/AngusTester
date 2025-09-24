@@ -216,20 +216,20 @@ onMounted(async () => {
             class="flex items-center space-x-1 leading-6.5 px-1.75"
             to="/execution/add">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('execution.searchPanel.addExecution') }}</span>
+            <span>{{ t('actions.addExecution') }}</span>
           </RouterLink>
         </Button>
 
         <DropdownSort :menuItems="sortMenus" @click="toSort">
           <Button size="small">
             <Icon icon="icon-biaotoupaixu" class="text-3.5 mr-1" />
-            <span>{{ t('execution.searchPanel.sort') }}</span>
+            <span>{{ t('actions.sort') }}</span>
           </Button>
         </DropdownSort>
 
         <Button size="small" @click="handleRefresh">
           <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-          <span>{{ t('execution.searchPanel.refresh') }}</span>
+          <span>{{ t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>

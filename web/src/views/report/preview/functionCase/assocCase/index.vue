@@ -35,34 +35,38 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a10" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.10') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.functionCase.assocCase.title') }}</span>
+      <span id="a10" class="text-4 text-theme-title font-medium">
+        {{ t('reportPreview.serial.10') }}
+        <em class="inline-block w-0.25"></em>
+        {{ t('reportPreview.functionCase.assocCase.title') }}
+      </span>
     </h1>
 
     <div v-if="len>0" class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-37 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          ID
+          {{ t('common.id') }}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.assocCase.fields.code') }}
+          {{ t('common.code') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5">
-          {{ t('reportPreview.functionCase.assocCase.fields.name') }}
+          {{ t('common.name') }}
         </div>
         <div
           class="w-25 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.assocCase.fields.testStatus') }}
+          {{ t('common.testStatus') }}
         </div>
         <div
           class="w-25 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.assocCase.fields.reviewStatus') }}
+          {{ t('common.reviewStatus') }}
         </div>
         <div
           class="w-25 flex items-center bg-blue-table px-1.5 py-1.5 ">
-          {{ t('reportPreview.functionCase.assocCase.fields.tester') }}
+          {{ t('common.tester') }}
         </div>
       </div>
 
@@ -92,7 +96,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">{{ t('reportPreview.functionCase.assocCase.noData') }}</div>
+    <div v-else class="content-text-container">{{ t('common.noData') }}</div>
   </div>
 </template>
 

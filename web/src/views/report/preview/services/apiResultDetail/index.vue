@@ -64,7 +64,7 @@ const columns = computed(() => [
       dataIndex: 'testFuncFlag',
       name: t('reportPreview.services.apiResultDetail.fields.enableFuncTest'),
       customRender: (text) => {
-        return text ? t('reportPreview.services.apiResultDetail.options.yes') : t('reportPreview.services.apiResultDetail.options.no');
+        return text ? t('status.yes') : t('status.no');
       }
     }
   ],
@@ -75,7 +75,7 @@ const columns = computed(() => [
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
-          return target.funcTestPassed === true ? t('reportPreview.services.apiResultDetail.options.yes') : target.funcTestPassed === false ? t('reportPreview.services.apiResultDetail.options.no') : t('reportPreview.services.apiResultDetail.options.notTested');
+          return target.funcTestPassed === true ? t('status.yes') : target.funcTestPassed === false ? t('status.no') : t('reportPreview.services.apiResultDetail.options.notTested');
         }
         return '';
       }
@@ -97,7 +97,7 @@ const columns = computed(() => [
       dataIndex: 'testPerfFlag',
       name: t('reportPreview.services.apiResultDetail.fields.enablePerfTest'),
       customRender: (text) => {
-        return text ? t('reportPreview.services.apiResultDetail.options.yes') : t('reportPreview.services.apiResultDetail.options.no');
+        return text ? t('status.yes') : t('status.no');
       }
     },
     {
@@ -106,7 +106,7 @@ const columns = computed(() => [
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
-          return target.perfTestPassed === true ? t('reportPreview.services.apiResultDetail.options.yes') : target.perfTestPassed === false ? t('reportPreview.services.apiResultDetail.options.no') : t('reportPreview.services.apiResultDetail.options.notTested');
+          return target.perfTestPassed === true ? t('status.yes') : target.perfTestPassed === false ? t('status.no') : t('reportPreview.services.apiResultDetail.options.notTested');
         }
         return '';
       }
@@ -128,7 +128,7 @@ const columns = computed(() => [
       dataIndex: 'testStabilityFlag',
       name: t('reportPreview.services.apiResultDetail.fields.enableStabilityTest'),
       customRender: (text) => {
-        return text ? t('reportPreview.services.apiResultDetail.options.yes') : t('reportPreview.services.apiResultDetail.options.no');
+        return text ? t('status.yes') : t('status.no');
       }
     }
   ],
@@ -139,7 +139,7 @@ const columns = computed(() => [
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
-          return target.stabilityTestPassed === true ? t('reportPreview.services.apiResultDetail.options.yes') : target.stabilityTestPassed === false ? t('reportPreview.services.apiResultDetail.options.no') : t('reportPreview.services.apiResultDetail.options.notTested');
+          return target.stabilityTestPassed === true ? t('status.yes') : target.stabilityTestPassed === false ? t('status.no') : t('reportPreview.services.apiResultDetail.options.notTested');
         }
         return '';
       }

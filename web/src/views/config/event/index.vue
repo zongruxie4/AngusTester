@@ -56,20 +56,20 @@ onMountedInit();
     <Hints :text="t('event.hints')" class="!leading-4.5" />
     <div class="flex space-x-2 w-250 mt-2">
       <InfoCard
-        :name="t('event.status.summary')"
+        :name="t('common.total')"
         :value="state.count.total"
         icon="icon-zonglan" />
       <InfoCard
-        :name="t('event.status.pending')"
+        :name="t('status.pending')"
         :value="state.count.pushSuccess"
         iconColor="rgba(255, 129, 0, 1)"
         icon="icon-tuisongchenggong" />
       <InfoCard
-        :name="t('event.status.failure')"
+        :name="t('status.failed')"
         :value="state.count.pushFail"
         icon="icon-tuisongshibai" />
       <InfoCard
-        :name="t('event.status.ignore')"
+        :name="t('status.ignored')"
         :value="state.count.ignore"
         icon="icon-yiquxiao" />
     </div>

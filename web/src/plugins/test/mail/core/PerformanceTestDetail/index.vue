@@ -113,13 +113,13 @@ const countCard = computed(() => {
     },
     {
       key: 'export',
-      name: t('httpPlugin.performanceTestDetail.countCards.export'),
+      name: t('actions.export'),
       icon: 'icon-xiazaida',
       color: '111, 198, 191'
     },
     {
       key: 'upload',
-      name: t('httpPlugin.performanceTestDetail.countCards.upload'),
+      name: t('actions.upload'),
       icon: 'icon-shangchuanda',
       color: '175, 196, 32'
     }

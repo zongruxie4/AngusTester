@@ -661,7 +661,7 @@ onMounted(() => {
               <span
                 v-if="isOverdue"
                 class="overdue-badge">
-                {{ t('backlog.info.apis.overdue') }}
+                {{ t('status.overdue') }}
               </span>
             </div>
           </div>

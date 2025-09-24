@@ -35,34 +35,38 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a7" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.7') }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.assocCase.title') }}</span>
+      <span id="a7" class="text-4 text-theme-title font-medium">
+        {{ t('reportPreview.serial.7') }}、
+        <em class="inline-block w-0.25"></em>
+        {{ t('reportPreview.task.assocCase.title') }}
+      </span>
     </h1>
 
     <div v-if="len>0" class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-37 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.assocCase.fields.id') }}
+          {{ t('common.id') }}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.assocCase.fields.code') }}
+          {{ t('common.code') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.assocCase.fields.name') }}
+          {{ t('common.name') }}
         </div>
         <div
           class="w-25 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.assocCase.fields.testStatus') }}
+          {{ t('common.testStatus') }}
         </div>
         <div
           class="w-25 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.assocCase.fields.reviewStatus') }}
+          {{ t('common.reviewStatus') }}
         </div>
         <div
           class="w-25 flex items-center bg-blue-table px-1.5 py-1.5 ">
-          {{ t('reportPreview.task.assocCase.fields.tester') }}
+          {{ t('common.tester') }}
         </div>
       </div>
 
@@ -92,7 +96,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">{{ t('reportPreview.task.assocCase.noData') }}</div>
+    <div v-else class="content-text-container">{{ t('common.noData') }}</div>
   </div>
 </template>
 

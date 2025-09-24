@@ -82,7 +82,7 @@ const handleToggleDateFilter = (value: string) => {
       @change="handleSearchChange" />
 
     <div class="whitespace-nowrap text-text-sub-content mr-2 font-semibold">
-      <span>{{ t('quickSearch') }}</span>
+      <span>{{ t('quickSearch.title') }}</span>
       <Colon />
     </div>
 
@@ -111,7 +111,7 @@ const handleToggleDateFilter = (value: string) => {
       :class="{ 'active-key': search.quickDate === '1' }"
       class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2 font-semibold"
       @click="handleToggleDateFilter('1')">
-      {{ t('backlog.quickSearch.lastDay') }}
+      {{ t('backlog.quickSearch.last1Day') }}
     </div>
 
     <div

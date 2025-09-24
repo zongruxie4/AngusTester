@@ -65,23 +65,23 @@ export function useActivitySearch () {
   const menuItems = computed<QuickSearchItem[]>(() => [
     {
       key: '',
-      name: t('projectActivity.searchPanel.quickQuery.all')
+      name: t('quickSearch.all')
     },
     {
       key: 'userId',
-      name: t('projectActivity.searchPanel.quickQuery.myActivity')
+      name: t('quickSearch.myActivity')
     },
     {
       key: 'lastDay',
-      name: t('projectActivity.searchPanel.quickQuery.last1Day')
+      name: t('quickSearch.last1Day')
     },
     {
       key: 'lastThreeDays',
-      name: t('projectActivity.searchPanel.quickQuery.last3Days')
+      name: t('quickSearch.last3Days')
     },
     {
       key: 'lastWeek',
-      name: t('projectActivity.searchPanel.quickQuery.last7Days')
+      name: t('quickSearch.last7Days')
     }
   ]);
 

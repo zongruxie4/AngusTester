@@ -38,7 +38,7 @@ export const columns = [
     width: '15%'
   },
   {
-    title: t('fileSpace.columns.action'),
+    title: t('common.actions'),
     dataIndex: 'action'
   }
 ];

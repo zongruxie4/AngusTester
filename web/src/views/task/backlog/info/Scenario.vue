@@ -657,7 +657,7 @@ onMounted(() => {
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
               <span class="inline-block transform-gpu scale-90">
-                {{ t('backlog.info.scenario.overdue') }}
+                {{ t('status.overdue') }}
               </span>
             </span>
           </div>

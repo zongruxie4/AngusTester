@@ -114,12 +114,12 @@ export function useTestSummary (dataSource: Ref<ScenarioResult>) {
    */
   const configInfo: ConfigInfoItem[][] = [
     [
-      { label: t('scenario.detail.testSummary.table.labels.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' },
-      { label: t('scenario.detail.testSummary.table.labels.success'), dataIndex: 'successNum', bgColor: 'bg-status-success' }
+      { label: t('chart.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' },
+      { label: t('status.success'), dataIndex: 'successNum', bgColor: 'bg-status-success' }
     ],
     [
-      { label: t('scenario.detail.testSummary.table.labels.fail'), dataIndex: 'failNum', bgColor: 'bg-status-error' },
-      { label: t('scenario.detail.testSummary.table.labels.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }
+      { label: t('status.failed'), dataIndex: 'failNum', bgColor: 'bg-status-error' },
+      { label: t('status.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }
     ]
   ];
 

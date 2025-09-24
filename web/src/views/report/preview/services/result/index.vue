@@ -83,14 +83,14 @@ onMounted(() => {
     const testConfig = JSON.parse(JSON.stringify(echartsConfigOption));
     testConfig.series[0].data = [
       {
-        name: t('reportPreview.services.result.testStatusStats.fields.tested'),
+        name: t('status.tested'),
         value: newValue.testedNum || 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: t('reportPreview.services.result.testStatusStats.fields.notTested'),
+        name: t('status.notTested'),
         value: newValue.unTestedNum || 0,
         itemStyle: {
           color: 'rgba(200, 202, 208, 1)'
@@ -103,14 +103,14 @@ onMounted(() => {
 
     passdConfig.series[0].data = [
       {
-        name: t('reportPreview.services.result.testStatusStats.fields.passed'),
+        name: t('status.passed'),
         value: newValue.testPassedNum || 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: t('reportPreview.services.result.testStatusStats.fields.failed'),
+        name: t('status.failed'),
         value: newValue.testUnPassedNum || 0,
         itemStyle: {
           color: 'rgba(200, 202, 208, 1)'
@@ -149,7 +149,7 @@ onMounted(() => {
         <img class="w-10" src="./image/jindu.png" />
         <div>
           <div class="text-4 font-semibold">{{ testResult.progress.completedRate + '%' }}</div>
-          {{ t('reportPreview.services.result.testProgress.progress') }}
+          {{ t('common.progress') }}
         </div>
       </div>
     </div>

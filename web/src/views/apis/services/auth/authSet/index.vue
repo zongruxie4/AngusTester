@@ -729,7 +729,7 @@ const projectCheckboxOptions = computed(() => {
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < apiCheckboxOptions.length)"
                 class="whitespace-nowrap"
                 @change="checkAllChange($event, item)">
-                {{ t('service.authSetting.actions.selectAll') }}
+                {{ t('actions.selectAll') }}
               </Checkbox>
               <CheckboxGroup
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
@@ -779,7 +779,7 @@ const projectCheckboxOptions = computed(() => {
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < projectCheckboxOptions.length)"
                 class="whitespace-nowrap"
                 @change="checkAllChange($event, item)">
-                {{ t('service.authSetting.actions.selectAll') }}
+                {{ t('actions.selectAll') }}
               </Checkbox>
               <CheckboxGroup
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"

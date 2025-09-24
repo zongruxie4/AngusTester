@@ -251,7 +251,7 @@ const columns = [
     width: '8%'
   },
   {
-    title: t('apiShare.list.columns.actions'),
+    title: t('common.actions'),
     dataIndex: 'actions',
     width: '15%'
   }
@@ -269,7 +269,7 @@ const columns = [
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>{{ t('apiShare.list.noData') }}</span>
+            <span>{{ t('common.noData') }}</span>
             <Button type="link" @click="editVersion">{{ t('apiShare.list.addShare') }}</Button>
           </div>
         </div>

@@ -273,13 +273,13 @@ const handleDropdownMenuClick = (menuItem: any, taskData: TaskDetail) => {
   const actionKey = menuItem.key;
 
   switch (actionKey) {
-    case 'favourite':
+    case 'addFavourite':
       addToFavourites(taskData);
       break;
     case 'cancelFavourite':
       removeFromFavourites(taskData);
       break;
-    case 'follow':
+    case 'addFollow':
       followTask(taskData);
       break;
     case 'cancelFollow':
@@ -438,7 +438,7 @@ const subTaskMenuItemsMap = computed(() => {
     // Favourite menu item
     if (favourite) {
       menuItems.push({
-        name: t('task.subTask.dropdown.cancelFavourite'),
+        name: t('actions.cancelFavourite'),
         key: 'cancelFavourite',
         icon: 'icon-quxiaoshoucang',
         disabled: false,
@@ -446,8 +446,8 @@ const subTaskMenuItemsMap = computed(() => {
       });
     } else {
       menuItems.push({
-        name: t('task.subTask.dropdown.favourite'),
-        key: 'favourite',
+        name: t('actions.addFavourite'),
+        key: 'addFavourite',
         icon: 'icon-yishoucang',
         disabled: false,
         hide: false
@@ -457,7 +457,7 @@ const subTaskMenuItemsMap = computed(() => {
     // Follow menu item
     if (follow) {
       menuItems.push({
-        name: t('task.subTask.dropdown.cancelFollow'),
+        name: t('actions.cancelFollow'),
         key: 'cancelFollow',
         icon: 'icon-quxiaoguanzhu',
         disabled: false,
@@ -465,8 +465,8 @@ const subTaskMenuItemsMap = computed(() => {
       });
     } else {
       menuItems.push({
-        name: t('task.subTask.dropdown.follow'),
-        key: 'follow',
+        name: t('actions.addFollow'),
+        key: 'addFollow',
         icon: 'icon-yiguanzhu',
         disabled: false,
         hide: false
@@ -488,57 +488,55 @@ const subTaskTableColumns = [
   {
     key: 'code',
     dataIndex: 'code',
-    title: t('task.subTask.columns.code')
+    title: t('common.code')
   },
   {
     key: 'name',
     dataIndex: 'name',
-    title: t('task.subTask.columns.name')
+    title: t('common.name')
   },
   {
     key: 'progress',
     dataIndex: 'progress',
-    title: t('task.subTask.columns.progress')
+    title: t('common.progress')
   },
   {
     key: 'taskType',
     dataIndex: 'taskType',
-    title: t('task.subTask.columns.taskType')
+    title: t('common.taskType')
   },
   {
     key: 'priority',
     dataIndex: 'priority',
-    title: t('task.subTask.columns.priority'),
+    title: t('common.priority'),
     groupName: 'task'
   },
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: (props.taskInfo as any)?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-      ? t('task.subTask.columns.evalWorkload')
-      : t('task.subTask.columns.evalWorkload'),
+    title: t('common.evalWorkload'),
     groupName: 'task',
     hide: true
   },
   {
     key: 'status',
     dataIndex: 'status',
-    title: t('task.subTask.columns.status')
+    title: t('common.status')
   },
   {
     key: 'assigneeName',
     dataIndex: 'assigneeName',
-    title: t('task.subTask.columns.assigneeName')
+    title: t('common.assignee')
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('task.subTask.columns.deadlineDate')
+    title: t('common.deadlineDate')
   },
   {
     key: 'action',
     dataIndex: 'action',
-    title: t('task.subTask.columns.action')
+    title: t('common.actions')
   }
 ];
 </script>
@@ -550,7 +548,7 @@ const subTaskTableColumns = [
       <!-- Progress indicator -->
       <div class="flex items-center flex-nowrap h-8 px-3.5 rounded" style="background-color:#FAFAFA;">
         <span class="flex-shrink-0 font-semibold text-theme-title">
-          {{ t('task.subTask.progress') }}
+          {{ t('common.progress') }}
         </span>
         <Colon class="mr-1.5" />
         <span class="font-semibold text-3.5" style="color: #07F;">
@@ -653,7 +651,7 @@ const subTaskTableColumns = [
               class="flex items-center px-0"
               @click="deleteSubTask(record)">
               <Icon icon="icon-qingchu" class="text-3.5 mr-1" />
-              <span>{{ t('task.subTask.actions.cancel') }}</span>
+              <span>{{ t('actions.cancel') }}</span>
             </Button>
 
             <Button
@@ -662,7 +660,7 @@ const subTaskTableColumns = [
               class="flex items-center px-0"
               @click="editSubTask(record)">
               <Icon icon="icon-shuxie" class="text-3.5 mr-1" />
-              <span>{{ t('task.subTask.actions.edit') }}</span>
+              <span>{{ t('actions.edit') }}</span>
             </Button>
 
             <Dropdown :menuItems="subTaskMenuItemsMap[record.id]" @click="handleDropdownMenuClick($event,record)">

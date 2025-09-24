@@ -434,7 +434,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 
     <DescriptionsItem :label="t('xcan_assertionsResult.executionConditionResult')">
       <template v-if="props.ignoreAssertions||!props.value?.enabled">
-        <Badge status="default" :text="t('xcan_assertionsResult.ignore')" />
+        <Badge status="default" :text="t('status.ignored')" />
       </template>
       <template v-else-if="conditionFailure">
         <Badge status="error" :text="conditionResultMessage" />
@@ -451,7 +451,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showRealValue" />
-          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('real')">{{ t('xcan_assertionsResult.view') }}</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('real')">{{ t('actions.view') }}</div>
         </div>
       </template>
 
@@ -477,7 +477,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showExpectedValue" />
-          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('xcan_assertionsResult.view') }}</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('actions.view') }}</div>
         </div>
       </template>
 
@@ -488,7 +488,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 
     <template v-if="assertionIgnored">
       <DescriptionsItem :label="t('xcan_assertionsResult.assertionResult')" :span="3">
-        <Badge status="default" :text="t('xcan_assertionsResult.ignore')" />
+        <Badge status="default" :text="t('status.ignored')" />
       </DescriptionsItem>
     </template>
 
@@ -498,7 +498,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
           <Badge
             class="flex-shrink-0"
             status="error"
-            :text="t('xcan_assertionsResult.failed')" />
+            :text="t('status.failed')" />
         </DescriptionsItem>
 
         <DescriptionsItem
@@ -511,7 +511,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 
       <template v-else>
         <DescriptionsItem :label="t('xcan_assertionsResult.assertionResult')" :span="3">
-          <Badge status="success" :text="t('xcan_assertionsResult.success')" />
+          <Badge status="success" :text="t('status.success')" />
         </DescriptionsItem>
       </template>
     </template>

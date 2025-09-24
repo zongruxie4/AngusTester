@@ -13,18 +13,18 @@ const props = withDefaults(defineProps<Props>(), {
 
 const text = computed(() => {
   if (props.value === 'fail') {
-    return t('xcan_statusTag.fail');
+    return t('status.faild');
   }
 
   if (props.value === 'success') {
-    return t('xcan_statusTag.success');
+    return t('status.success');
   }
 
   if (props.value === 'block') {
-    return t('xcan_statusTag.block');
+    return t('status.blockd');
   }
 
-  return t('xcan_statusTag.ignore');
+  return t('status.ignored');
 });
 
 const style = computed(() => {

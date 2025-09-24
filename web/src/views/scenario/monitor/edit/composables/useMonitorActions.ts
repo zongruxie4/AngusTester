@@ -48,7 +48,7 @@ export function useMonitorActions () {
       return false;
     }
 
-    notification.success(t('tips.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
     return true;
   };
 
@@ -65,7 +65,7 @@ export function useMonitorActions () {
       return false;
     }
 
-    notification.success(t('tips.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
     return true;
   };
 

@@ -178,7 +178,7 @@ const exportTestCases = async () => {
 const copyPlanUrl = () => {
   const planUrl = window.location.origin + '/function#plans?id=' + currentPlanId.value;
   toClipboard(planUrl).then(() => {
-    notification.success(t('tips.copySuccess'));
+    notification.success(t('actions.tips.copySuccess'));
   }).catch(() => {
     notification.error(t('functionPlan.planDetail.notifications.copyFailed'));
   });
@@ -247,7 +247,7 @@ onMounted(() => {
           class="flex items-center space-x-1 leading-6.5 px-1.75"
           :to="`/function#plans?id=${currentPlanId}&type=edit`">
           <Icon icon="icon-shuxie" class="text-3.5" />
-          <span>{{ t('functionPlan.planDetail.buttons.edit') }}</span>
+          <span>{{ t('actions.edit') }}</span>
         </RouterLink>
       </Button>
 
@@ -276,7 +276,7 @@ onMounted(() => {
         class="flex items-center"
         @click="copyPlanUrl">
         <Icon class="mr-1 flex-shrink-0" icon="icon-fuzhi" />
-        <span>{{ t('functionPlan.planDetail.buttons.copyLink') }}</span>
+        <span>{{ t('actions.copyLink') }}</span>
       </Button>
 
       <Button
@@ -285,7 +285,7 @@ onMounted(() => {
         class="flex items-center"
         @click="refreshPlanData">
         <Icon class="mr-1 flex-shrink-0" icon="icon-shuaxin" />
-        <span>{{ t('functionPlan.planDetail.buttons.refresh') }}</span>
+        <span>{{ t('actions.refresh') }}</span>
       </Button>
     </div>
 
@@ -344,7 +344,7 @@ onMounted(() => {
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="chart" :tab="t('functionPlan.planDetail.tabs.burnDownChart')">
+      <TabPane key="chart" :tab="t('chart.burndown.title')">
         <BurnDownChart :planId="currentPlanId" />
       </TabPane>
       <TabPane key="progress" :tab="t('functionPlan.planDetail.tabs.memberProgress')">

@@ -407,7 +407,7 @@ const handleDropdownClick = async ({ key }: { key: 'clone' | 'delete' | 'export'
   }
 };
 
-const buttonDropdownClick = ({ key }: { key: 'copyApi' | 'linkApi' | 'import' | 'importDemo' }) => {
+const buttonDropdownClick = ({ key }: { key: 'copyApi' | 'linkApi' | 'import' | 'importExamples' }) => {
   // 选择接口添加
   if (key === 'copyApi') {
     apiCopyModalVisible.value = true;
@@ -427,8 +427,8 @@ const buttonDropdownClick = ({ key }: { key: 'copyApi' | 'linkApi' | 'import' | 
   }
 
   // 导入示例
-  if (key === 'importDemo') {
-    importDemo();
+  if (key === 'importExamples') {
+    importExamples();
   }
 };
 
@@ -476,7 +476,7 @@ const importApiOk = () => {
 };
 
 // 导入示例
-const importDemo = async () => {
+const importExamples = async () => {
   if (loading.value) {
     return;
   }
@@ -1283,19 +1283,19 @@ const menuItems = ref([
   {
     key: 'clone',
     icon: 'icon-fuzhizujian2',
-    name: t('mock.detail.apis.menuItems.clone'),
+    name: t('actions.clone'),
     permission: MockServicePermission.ADD
   },
   {
     key: 'delete',
     icon: 'icon-fz',
-    name: t('mock.detail.apis.menuItems.delete'),
+    name: t('actions.delete'),
     permission: MockServicePermission.DELETE
   },
   {
     key: 'export',
     icon: 'icon-daochu1',
-    name: t('mock.detail.apis.menuItems.export'),
+    name: t('actions.export'),
     permission: MockServicePermission.EXPORT
   }
 ]);
@@ -1315,13 +1315,13 @@ const dropdownMenuItems = ref([
   {
     key: 'import',
     icon: 'icon-daoru',
-    name: t('mock.detail.apis.menuItems.import'),
+    name: t('actions.import'),
     noAuth: true
   },
   {
-    key: 'importDemo',
+    key: 'importExamples',
     icon: 'icon-daoru',
-    name: t('mock.detail.apis.menuItems.importDemo'),
+    name: t('actions.importExamples'),
     noAuth: true
   }
 ]);
@@ -1445,7 +1445,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="save">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-baocun" />
-            <span>{{ t('mock.detail.apis.save') }}</span>
+            <span>{{ t('actions.save') }}</span>
           </div>
         </Button>
         <Button
@@ -1455,7 +1455,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="handleClone(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fuzhizujian2" />
-            <span>{{ t('mock.detail.apis.clone') }}</span>
+            <span>{{ t('actions.clone') }}</span>
           </div>
         </Button>
         <Button
@@ -1465,7 +1465,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="handleExport(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fuzhizujian2" />
-            <span>{{ t('mock.detail.apis.export') }}</span>
+            <span>{{ t('actions.export') }}</span>
           </div>
         </Button>
         <Button
@@ -1476,7 +1476,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="handleDelete(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-qingchu" />
-            <span>{{ t('mock.detail.apis.delete') }}</span>
+            <span>{{ t('actions.delete') }}</span>
           </div>
         </Button>
         <Button
@@ -1498,7 +1498,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="refreshInfo">
           <div class="flex items-center space-x-1">
             <IconRefresh />
-            <span>{{ t('mock.detail.apis.refresh') }}</span>
+            <span>{{ t('actions.refresh') }}</span>
           </div>
         </Button>
         <Button
@@ -1507,7 +1507,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="goback">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fanhui" />
-            <span>{{ t('mock.detail.apis.back') }}</span>
+            <span>{{ t('actions.back') }}</span>
           </div>
         </Button>
       </div>

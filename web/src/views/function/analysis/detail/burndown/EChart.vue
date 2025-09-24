@@ -64,12 +64,12 @@ const burndownEchartConfig = {
   },
   series: [
     {
-      name: t('functionAnalysis.detail.burndown.remaining'),
+      name: t('chart.burndown.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: t('functionAnalysis.detail.burndown.expected'),
+      name: t('chart.burndown.expected'),
       data: [],
       type: 'line',
       smooth: true

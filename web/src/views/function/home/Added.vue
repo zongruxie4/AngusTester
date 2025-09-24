@@ -60,7 +60,7 @@ const commentedCasesParams = {
       <TabPane key="create" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('functionHome.myCases.added') }}</span>
+            <span class="mr-1">{{ t('status.added') }}</span>
             <span>(</span>
             <span>{{ createdByMeCount }}</span>
             <span>)</span>
@@ -96,7 +96,7 @@ const commentedCasesParams = {
       <TabPane key="follow" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('functionHome.myCases.followed') }}</span>
+            <span class="mr-1">{{ t('status.followed') }}</span>
             <span>(</span>
             <span>{{ followedCasesCount }}</span>
             <span>)</span>
@@ -114,7 +114,7 @@ const commentedCasesParams = {
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('functionHome.myCases.favorited') }}</span>
+            <span class="mr-1">{{ t('status.favorited') }}</span>
             <span>(</span>
             <span>{{ favoriteCasesCount }}</span>
             <span>)</span>
@@ -132,7 +132,7 @@ const commentedCasesParams = {
       <TabPane key="commentBy" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('functionHome.myCases.commented') }}</span>
+            <span class="mr-1">{{ t('status.commented') }}</span>
             <span>(</span>
             <span>{{ commentedCasesCount }}</span>
             <span>)</span>

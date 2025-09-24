@@ -14,10 +14,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Configuration for test case statistics display
 const configInfo = [
-  [{ label: t('execution.testResult.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' },
-    { label: t('execution.testResult.passed'), dataIndex: 'successNum', bgColor: 'bg-status-success' },
-    { label: t('execution.testResult.notPassed'), dataIndex: 'failNum', bgColor: 'bg-status-error' },
-    { label: t('execution.testResult.notEnabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
+  [{ label: t('status.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' },
+    { label: t('status.passed'), dataIndex: 'successNum', bgColor: 'bg-status-success' },
+    { label: t('status.notPassed'), dataIndex: 'failNum', bgColor: 'bg-status-error' },
+    { label: t('status.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
 ];
 
 // Configuration for test case type icons
@@ -80,10 +80,10 @@ onMounted(() => {
           <!-- Display case status -->
           <span
             v-if="!item.enabled"
-            class="px-2 rounded">{{ t('execution.testResult.notEnabled') }}</span>
+            class="px-2 rounded">{{ t('status.disabled') }}</span>
           <span
             v-else-if="item.passed"
-            class="px-2 rounded text-status-success">{{ t('execution.testResult.passed') }}</span>
+            class="px-2 rounded text-status-success">{{ t('status.passed') }}</span>
           <span v-else class="px-2 rounded text-status-error ">
             {{ t('execution.testResult.notPassedWithReason') }}{{ item.failureMessage }}
           </span>

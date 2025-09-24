@@ -141,7 +141,7 @@ defineExpose({
           size="small"
           @click="clearContent">
           <!-- <Icon icon="icon-qingchu" class="mr-0.5 text-3.25" /> -->
-          <span>{{ t('mock.detail.apis.components.textareaEditor.clear') }}</span>
+          <span>{{ t('actions.clear') }}</span>
         </Button>
       </div>
     </div>

@@ -50,7 +50,7 @@ const createQueryParams = (type: 'createdBy' | 'followBy' | 'favouriteBy'): Scen
       <TabPane key="create" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('scenarioHome.myScenarios.added') }}</span>
+            <span class="mr-1">{{ t('status.added') }}</span>
             <span>(</span>
             <span>{{ createdTotal }}</span>
             <span>)</span>
@@ -65,7 +65,7 @@ const createQueryParams = (type: 'createdBy' | 'followBy' | 'favouriteBy'): Scen
       <TabPane key="follow" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('scenarioHome.myScenarios.followed') }}</span>
+            <span class="mr-1">{{ t('status.followed') }}</span>
             <span>(</span>
             <span>{{ followTotal }}</span>
             <span>)</span>
@@ -80,7 +80,7 @@ const createQueryParams = (type: 'createdBy' | 'followBy' | 'favouriteBy'): Scen
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('scenarioHome.myScenarios.favorited') }}</span>
+            <span class="mr-1">{{ t('status.favorited') }}</span>
             <span>(</span>
             <span>{{ favoriteTotal }}</span>
             <span>)</span>

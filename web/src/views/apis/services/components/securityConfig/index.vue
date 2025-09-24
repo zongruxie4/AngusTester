@@ -193,7 +193,7 @@ const hanldeDelete = async (auth:AuthConfigObj) => {
   if (error) {
     return;
   }
-  notification.success(t('tips.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
   emit('deleteSuccess');
   // 如果删除成功
   authConfigList.value = authConfigList.value.filter(item => item.id !== auth.id);
@@ -241,7 +241,7 @@ const handleSave = async (auth:AuthConfigObj) => {
     return false;
   }
 
-  notification.success(t('tips.saveSuccess'));
+  notification.success(t('actions.tips.saveSuccess'));
   emit('saveSuccess');
   loadAuthConfig();
 };

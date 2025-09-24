@@ -91,42 +91,42 @@ const columns = [
   {
     key: 'code',
     dataIndex: 'code',
-    title: t('functionCase.kanbanView.assocCase.code')
+    title: t('common.code')
   },
   {
     key: 'name',
     dataIndex: 'name',
-    title: t('functionCase.kanbanView.assocCase.name')
+    title: t('common.name')
   },
   {
     key: 'priority',
     dataIndex: 'priority',
-    title: t('functionCase.kanbanView.assocCase.priority')
+    title: t('common.priority')
   },
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: t('functionCase.kanbanView.assocCase.evalWorkload')
+    title: t('common.evalWorkload')
   },
   {
     key: 'status',
     dataIndex: 'status',
-    title: t('functionCase.kanbanView.assocCase.status')
+    title: t('common.status')
   },
   {
     key: 'testerName',
     dataIndex: 'testerName',
-    title: t('functionCase.kanbanView.assocCase.tester')
+    title: t('common.tester')
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('functionCase.kanbanView.assocCase.deadline')
+    title: t('common.deadline')
   },
   {
     key: 'action',
     dataIndex: 'action',
-    title: t('functionCase.kanbanView.assocCase.actions')
+    title: t('common.actions')
   }
 ];
 </script>

@@ -1,15 +1,160 @@
 {
-  "reportAdd": {
-    "title": {
-      "add": "Add Report",
-      "edit": "Edit Report"
+  "reportHome": {
+    "messages": {
+      "deleteSuccess": "Delete successful",
+      "getTokenFailed": "Failed to get token",
+      "shareLinkCopied": "Share link copied to clipboard",
+      "generatingReport": "Generating report"
     },
+    "modal": {
+      "deleteReport": "Delete Report",
+      "confirmDelete": "Are you sure you want to delete report 「{name}」?",
+      "reportPermission": "Report Permission"
+    },
+    "actions": {
+      "generateNow": "Generate Now"
+    },
+    "table": {
+      "template": "Template",
+      "resourceName": "Resource Name",
+      "resourceType": "Resource Type",
+      "resourceId": "Resource ID",
+      "nextGenerateTime": "Next Generate Time"
+    },
+    "permission": {
+      "onTips": "After enabling permission control, manual authorization is required for corresponding operation permissions.",
+      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
+    },
+    "globalAuth": {
+      "title": "Report Permission",
+      "description": "Grant operation permissions for specified 'functions' to users, departments, and groups. 'View' permission is required when granting permissions. Users can only authorize functions they have permission to authorize.",
+      "tabs": {
+        "user": "User",
+        "dept": "Department",
+        "group": "Group"
+      },
+      "authSet": {
+        "searchPlaceholder": "Search name",
+      },
+      "groupSet": {
+        "searchUser": "Search user",
+        "searchDept": "Search department",
+        "searchGroup": "Search group"
+      }
+    },
+    "summary": {
+      "description": "Through 'reports', teams can comprehensively summarize all aspects of development activities, including progress, efficiency, quality, execution status, result analysis, etc. This helps improve transparency and communication, providing strong support for successful project delivery.",
+      "workTitle": "Here you and your team can complete the following work:",
+      "features": {
+        "generateReport": "Generate reports based on report templates at specified times and notify relevant personnel through events.",
+        "viewReport": "View reports I added or reports authorized to me and their content."
+      }
+    },
+    "searchPanel": {
+      "quickQuery": "Quick Query",
+      "menuItems": {
+        "all": "All",
+        "myAdded": "My Added",
+        "myModified": "My Modified",
+        "last1Day": "Last Day",
+        "last3Days": "Last 3 Days",
+        "last7Days": "Last 7 Days"
+      },
+      "searchOptions": {
+        "namePlaceholder": "Search name, description",
+        "resourceTypePlaceholder": "Select resource type",
+        "resourcePlaceholder": "Select resource",
+        "creatorPlaceholder": "Creator",
+        "createTimeFrom": "Create time from",
+        "createTimeTo": "Create time to"
+      },
+      "resourceSelect": {
+        "project": "Select project",
+        "service": "Select service",
+        "api": "Select API",
+        "task": "Select task",
+        "sprint": "Select sprint",
+        "plan": "Select plan",
+        "case": "Select case",
+        "execution": "Select execution",
+        "scenario": "Select scenario"
+      },
+      "sortMenus": {
+        "byCreateTime": "By create time",
+        "byCreator": "By creator"
+      },
+      "actions": {
+        "addReport": "Add Report",
+        "reportPermission": "Report Permission"
+      }
+    },
+    "chart": {
+      "categories": {
+        "allReports": "All Reports",
+        "project": "Project",
+        "functional": "Functional",
+        "api": "API",
+        "scenario": "Scenario",
+        "task": "Task",
+        "execution": "Execution"
+      },
+      "labels": {
+        "category": "Category",
+        "status": "Status"
+      }
+    },
+    "reportDetail": {
+      "title": "View Report",
+      "info": {
+        "category": "Category",
+      },
+      "tabs": {
+        "createdDate": "Created Date",
+        "basic": "Basic Info",
+        "content": "Content",
+        "record": "Report Record",
+        "activity": "Activity"
+      },
+      "generateTime": {
+        "nextGenerateTime": "Next Generate Time",
+        "dayOfMonth": "Day"
+      },
+      "content": {
+        "organizationPersonnel": "Organization Personnel",
+        "time": "Time",
+        "project": "Project",
+        "sprint": "Sprint",
+        "task": "Task",
+        "plan": "Plan",
+        "case": "Case",
+        "service": "Service",
+        "api": "API",
+        "scenario": "Scenario",
+        "execution": "Execution",
+        "content": "Content",
+        "contentHint": "The following is the report output content directory information.",
+        "memberTypes": {
+          "user": "User",
+          "dept": "Department",
+          "group": "Group"
+        }
+      },
+      "generateRecord": {
+        "reportName": "Report Name",
+        "type": "Type",
+        "template": "Template",
+        "creator": "Creator",
+        "generateTime": "Generate Time",
+        "deleteRecord": "Delete Report Record",
+        "confirmDelete": "Confirm delete report record「{name}」?",
+        "deleteSuccess": "Delete successful"
+      }
+    }
+  },
+  "reportAdd": {
     "form": {
-      "name": "Name",
       "namePlaceholder": "Report name, maximum 100 characters",
-      "version": "Version",
       "versionPlaceholder": "Report version, default 1.0.0, maximum 20 characters",
-      "description": "Description",
       "descriptionPlaceholder": "Report description, use description to explain the content and purpose of this report, or add links to other resources, maximum 200 characters"
     },
     "tabs": {
@@ -105,7 +250,6 @@
         "basic": "Execution basic information",
         "execResult": "Execution result",
         "total": "Summary results",
-        "name": "Name",
         "sampling": "Sampling number",
         "qps": "Transaction number",
         "minmax": "Minimum/Maximum/Average",
@@ -158,7 +302,6 @@
     },
     "basic": {
       "options": {
-        "name": "Report name",
         "user": "Report person",
         "createdDate": "Report generation time",
         "version": "Report version",
@@ -324,7 +467,6 @@
         "resultkDetail": "Test person summary results",
         "testTotal": "Test summary results",
         "reviewTotal": "Review summary results",
-        "burndown": "Burn-down chart",
         "groupedTotal": "Grouped statistics"
       }
     },
@@ -374,193 +516,7 @@
       }
     }
   },
-  "reportHome": {
-    "messages": {
-      "deleteSuccess": "Delete successful",
-      "getTokenFailed": "Failed to get token",
-      "shareLinkCopied": "Share link copied to clipboard",
-      "generatingReport": "Generating report"
-    },
-    "modal": {
-      "deleteReport": "Delete Report",
-      "confirmDelete": "Are you sure you want to delete report 「{name}」?",
-      "reportPermission": "Report Permission"
-    },
-    "actions": {
-      "generateNow": "Generate Now",
-      "permission": "Permission",
-      "delete": "Delete",
-      "edit": "Edit",
-      "view": "View"
-    },
-    "table": {
-      "name": "Name",
-      "version": "Version",
-      "template": "Template",
-      "status": "Status",
-      "resourceName": "Resource Name",
-      "resourceType": "Resource Type",
-      "resourceId": "Resource ID",
-      "description": "Description",
-      "creator": "Creator",
-      "createTime": "Create Time",
-      "lastModifier": "Last Modifier",
-      "lastModifyTime": "Last Modify Time",
-      "nextGenerateTime": "Next Generate Time",
-      "actions": "Actions"
-    },
-    "permission": {
-      "onTips": "After enabling permission control, manual authorization is required for corresponding operation permissions.",
-      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
-    },
-    "globalAuth": {
-      "title": "Report Permission",
-      "description": "Grant operation permissions for specified 'functions' to users, departments, and groups. 'View' permission is required when granting permissions. Users can only authorize functions they have permission to authorize.",
-      "tabs": {
-        "user": "User",
-        "dept": "Department",
-        "group": "Group"
-      },
-      "authSet": {
-        "searchPlaceholder": "Search name",
-        "name": "Name",
-        "permissionControl": "Permission Control",
-        "permission": "Permission",
-        "loading": "Loading...",
-        "all": "All"
-      },
-      "groupSet": {
-        "searchUser": "Search user",
-        "searchDept": "Search department",
-        "searchGroup": "Search group"
-      }
-    },
-    "summary": {
-      "description": "Through 'reports', teams can comprehensively summarize all aspects of development activities, including progress, efficiency, quality, execution status, result analysis, etc. This helps improve transparency and communication, providing strong support for successful project delivery.",
-      "workTitle": "Here you and your team can complete the following work:",
-      "features": {
-        "generateReport": "Generate reports based on report templates at specified times and notify relevant personnel through events.",
-        "viewReport": "View reports I added or reports authorized to me and their content."
-      }
-    },
-    "searchPanel": {
-      "quickQuery": "Quick Query",
-      "menuItems": {
-        "all": "All",
-        "myAdded": "My Added",
-        "myModified": "My Modified",
-        "last1Day": "Last Day",
-        "last3Days": "Last 3 Days",
-        "last7Days": "Last 7 Days"
-      },
-      "searchOptions": {
-        "namePlaceholder": "Search name, description",
-        "resourceTypePlaceholder": "Select resource type",
-        "resourcePlaceholder": "Select resource",
-        "creatorPlaceholder": "Creator",
-        "createTimeFrom": "Create time from",
-        "createTimeTo": "Create time to"
-      },
-      "resourceSelect": {
-        "project": "Select project",
-        "service": "Select service",
-        "api": "Select API",
-        "task": "Select task",
-        "sprint": "Select sprint",
-        "plan": "Select plan",
-        "case": "Select case",
-        "execution": "Select execution",
-        "scenario": "Select scenario"
-      },
-      "sortMenus": {
-        "byCreateTime": "By create time",
-        "byCreator": "By creator"
-      },
-      "actions": {
-        "addReport": "Add Report",
-        "reportPermission": "Report Permission",
-        "sort": "Sort",
-        "refresh": "Refresh"
-      }
-    },
-    "chart": {
-      "categories": {
-        "allReports": "All Reports",
-        "project": "Project",
-        "functional": "Functional",
-        "api": "API",
-        "scenario": "Scenario",
-        "task": "Task",
-        "execution": "Execution"
-      },
-      "status": {
-        "success": "Success",
-        "failure": "Failure"
-      },
-      "labels": {
-        "category": "Category",
-        "status": "Status"
-      }
-    },
-    "reportDetail": {
-      "title": "View Report",
-      "info": {
-        "category": "Category",
-        "creator": "Creator",
-        "description": "Description"
-      },
-      "form": {
-        "name": "Name",
-        "version": "Version",
-        "description": "Description"
-      },
-      "tabs": {
-        "createdDate": "Created Date",
-        "basic": "Basic Info",
-        "content": "Content",
-        "record": "Report Record",
-        "activity": "Activity"
-      },
-      "generateTime": {
-        "nextGenerateTime": "Next Generate Time",
-        "dayOfMonth": "Day"
-      },
-      "content": {
-        "organizationPersonnel": "Organization Personnel",
-        "time": "Time",
-        "project": "Project",
-        "sprint": "Sprint",
-        "task": "Task",
-        "plan": "Plan",
-        "case": "Case",
-        "service": "Service",
-        "api": "API",
-        "scenario": "Scenario",
-        "execution": "Execution",
-        "content": "Content",
-        "contentHint": "The following is the report output content directory information.",
-        "memberTypes": {
-          "user": "User",
-          "dept": "Department",
-          "group": "Group"
-        }
-      },
-      "generateRecord": {
-        "reportName": "Report Name",
-        "type": "Type",
-        "template": "Template",
-        "creator": "Creator",
-        "generateTime": "Generate Time",
-        "actions": "Actions",
-        "delete": "Delete",
-        "deleteRecord": "Delete Report Record",
-        "confirmDelete": "Confirm delete report record「{name}」?",
-        "deleteSuccess": "Delete successful"
-      }
-    }
-  },
   "reportPreview": {
-    "loading": "Loading data...",
     "generating": "Generating PDF file...",
     "mainTitle": {
       "reporter": "Reporter",
@@ -570,7 +526,6 @@
     },
     "description": {
       "summary": "Summary",
-      "progress": "Progress",
       "description": "Description",
       "contact": "Contact",
       "copyright": "Copyright",
@@ -661,23 +616,14 @@
           "stabilityTestPassed": "Stability Test Passed",
           "stabilityTestFailureReason": "Stability Test Failure Reason"
         },
-        "status": {
-          "passed": "Passed",
-          "failed": "Failed",
-          "notTested": "Not Tested",
-          "enabled": "Enabled",
-          "disabled": "Disabled"
-        }
       },
       "testResultDetail": {
         "title": "Scenario Test Result Details",
-        "noData": "None",
         "functionalTest": {
           "title": "Functional Test Results",
           "basicInfo": "Test Basic Information",
           "testCases": "Test Cases",
-          "testCaseResults": "Test Case Result Details",
-          "noData": "None"
+          "testCaseResults": "Test Case Result Details"
         },
         "performanceTest": {
           "title": "Performance Test",
@@ -729,13 +675,6 @@
           "diskUsage": "Disk Usage",
           "networkUsage": "Network Usage"
         },
-        "status": {
-          "passed": "Passed",
-          "failed": "Failed",
-          "notTested": "Not Tested",
-          "enabled": "Enabled",
-          "disabled": "Disabled"
-        }
       }
     },
     "execFunction": {
@@ -761,17 +700,12 @@
           "copyright": "Copyright",
           "other": "Other"
         },
-        "status": {
-          "passed": "Passed",
-          "failed": "Failed"
-        }
       },
       "detail": {
         "title": "Execution Information",
         "basicInfo": {
           "title": "Execution Basic Information",
           "fields": {
-            "name": "Name",
             "testScriptId": "Test Script ID",
             "testScriptName": "Test Script Name",
             "plugin": "Plugin",
@@ -788,8 +722,6 @@
             "createTime": "Create Time"
           },
           "options": {
-            "ignore": "Ignore",
-            "notIgnore": "Not Ignore",
             "update": "Update",
             "notUpdate": "Not Update"
           }
@@ -800,12 +732,6 @@
             "testResult": "Test Result",
             "failureReason": "Failure Reason",
             "testCases": "Test Cases"
-          },
-          "summary": {
-            "total": "Total",
-            "passed": "Passed",
-            "failed": "Failed",
-            "disabled": "Disabled"
           }
         }
       },
@@ -817,10 +743,6 @@
             "schedulingResult": "Scheduling Result",
             "processExitCode": "Process Exit Code"
           },
-          "status": {
-            "success": "Success",
-            "failed": "Failed"
-          }
         },
         "samplingLog": {
           "title": "Execution Sampling Information",
@@ -857,18 +779,11 @@
             "waitTimeout": "Wait Timeout"
           },
           "statusTag": {
-            "failed": "Failed",
-            "passed": "Passed",
-            "notExecuted": "Not Executed",
-            "notEnabled": "Not Enabled"
+            "notExecuted": "Not Executed"
           },
           "assertionResult": {
             "title": "Assertion Results",
-            "none": "None",
-            "failed": "Failed",
-            "passed": "Passed",
-            "ignored": "Ignored",
-            "notEnabled": "Not Enabled"
+            "none": "None"
           }
         }
       }
@@ -905,10 +820,6 @@
           "copyright": "Copyright",
           "other": "Other"
         },
-        "status": {
-          "passed": "Passed",
-          "failed": "Failed"
-        }
       },
       "detail": {
         "title": "Execution Information",
@@ -982,7 +893,6 @@
       "samplingSummary": {
         "title": "Summary Result",
         "fields": {
-          "name": "Name",
           "samplingCount": "Sampling Count",
           "transactionCount": "Transaction Count",
           "tps": "TPS",
@@ -1009,28 +919,19 @@
           "overlayAnalysisTitle": "Overlay Analysis",
           "none": "None",
           "throughput": {
-            "name": "Name",
             "queriesPerSecond": "Queries Per Second",
             "transactionsPerSecond": "Transactions Per Second",
             "queriesPerSecondWithStats": "Queries Per Second (Current | Min | Max | Average)",
             "transactionsPerSecondWithStats": "Transactions Per Second (Current | Min | Max | Average)"
           },
           "error": {
-            "name": "Name",
             "sampleCount": "Sample Count",
             "requestCount": "Request Count",
             "transactionCount": "Transaction Count",
             "errorCount": "Error Count",
             "errorRate": "Error Rate"
           },
-          "responseTime": {
-            "name": "Name",
-            "average": "Average",
-            "minimum": "Minimum",
-            "maximum": "Maximum"
-          },
           "concurrency": {
-            "name": "Name",
             "threadCount": "Thread Count",
             "activeThreadCount": "Active Thread Count",
             "maxThreadCount": "Max Thread Count"
@@ -1104,7 +1005,6 @@
           "threadPoolSize": "Thread Count",
           "threadPoolActiveSize": "Active Thread Count",
           "threadMaxPoolSize": "Max Thread Count",
-          "name": "Name",
           "current": "Current",
           "brpsAll": "Download/Second (Current | Min | Max | Average)",
           "bwpsAll": "Upload/Second (Current | Min | Max | Average)",
@@ -1122,10 +1022,6 @@
             "schedulingResult": "Scheduling Result",
             "processExitCode": "Process Exit Code"
           },
-          "status": {
-            "success": "Success",
-            "failed": "Failed"
-          }
         },
         "samplingLog": {
           "title": "Execution Sampling Information",
@@ -1171,26 +1067,17 @@
         "basic": {
           "title": "Basic Information",
           "fields": {
-            "name": "Name",
-            "priority": "Priority",
             "testResult": "Test Result",
-            "code": "Code",
             "reviewStatus": "Review Status",
-            "project": "Project",
-            "module": "Module",
-            "tags": "Tags",
             "workloadEvalMethod": "Workload Evaluation",
             "evalWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "processCount": "Process Count",
             "processFailCount": "Process Failure Count",
-            "overdue": "Overdue",
             "oneTimePass": "One-time Pass",
             "unplannedCase": "Unplanned Case"
           },
           "options": {
-            "yes": "Yes",
-            "no": "No",
             "storyPoint": "Story Points",
             "workTime": "Work Hours",
             "actualStoryPoint": "Actual Story Points",
@@ -1217,21 +1104,17 @@
           }
         },
         "precondition": {
-          "title": "Precondition",
-          "noData": "None"
+          "title": "Precondition"
         },
         "testSteps": {
           "title": "Test Steps",
           "fields": {
-            "code": "Code",
             "testStep": "Test Step",
             "expectedResult": "Expected Result"
-          },
-          "noData": "None"
+          }
         },
         "description": {
-          "title": "Description",
-          "noData": "None"
+          "title": "Description"
         },
         "testInfo": {
           "title": "Test Information",
@@ -1240,10 +1123,6 @@
             "testFailCount": "Test Failure Count",
             "oneTimeTestPass": "One-time Test Pass",
             "testRemark": "Test Remark"
-          },
-          "options": {
-            "yes": "Yes",
-            "no": "No"
           }
         }
       },
@@ -1255,33 +1134,13 @@
           "reviewFailCount": "Review Failure Count",
           "oneTimeReviewPass": "One-time Review Pass",
           "reviewOpinion": "Review Opinion"
-        },
-        "options": {
-          "yes": "Yes",
-          "no": "No"
         }
       },
       "assocTask": {
         "title": "Associated Tasks",
-        "fields": {
-          "code": "Code",
-          "type": "Type",
-          "name": "Name",
-          "status": "Status",
-          "assignee": "Assignee"
-        },
-        "noData": "None"
       },
       "assocCase": {
         "title": "Associated Cases",
-        "fields": {
-          "code": "Code",
-          "name": "Name",
-          "testStatus": "Test Status",
-          "reviewStatus": "Review Status",
-          "tester": "Tester"
-        },
-        "noData": "None"
       },
       "activity": {
         "title": "Activity",
@@ -1289,8 +1148,7 @@
           "activityTime": "Activity Time",
           "activityPerson": "Activity Person",
           "activityDescription": "Activity Description"
-        },
-        "noData": "None"
+        }
       },
       "comment": {
         "title": "Comments",
@@ -1299,8 +1157,7 @@
           "commenter": "Commenter",
           "commentContent": "Comment Content",
           "reply": "Reply"
-        },
-        "noData": "None"
+        }
       }
     },
     "functionPlan": {
@@ -1318,7 +1175,6 @@
           "caseSummary": "Case Summary Results",
           "testSummary": "Test Summary Results",
           "reviewSummary": "Review Summary Results",
-          "burndownChart": "Burndown Chart",
           "groupStats": "Group Statistics",
           "testerSummary": "Tester Summary Results"
         }
@@ -1326,7 +1182,6 @@
       "summary": {
         "title": "Summary",
         "fields": {
-          "progress": "Progress",
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
@@ -1349,10 +1204,6 @@
             "createTime": "Create Time",
             "workloadEvalMethod": "Workload Evaluation",
             "reviewCase": "Review Cases"
-          },
-          "options": {
-            "yes": "Yes",
-            "no": "No"
           }
         },
         "testerAndDuty": {
@@ -1363,20 +1214,16 @@
           }
         },
         "testTarget": {
-          "title": "Test Target",
-          "noData": "None"
+          "title": "Test Target"
         },
         "testScope": {
-          "title": "Test Scope",
-          "noData": "None"
+          "title": "Test Scope"
         },
         "acceptanceCriteria": {
-          "title": "Acceptance Criteria",
-          "noData": "None"
+          "title": "Acceptance Criteria"
         },
         "otherInfo": {
-          "title": "Other Information",
-          "noData": "None"
+          "title": "Other Information"
         }
       },
       "caseSummary": {
@@ -1384,15 +1231,9 @@
         "testSummary": {
           "title": "Test Summary Results",
           "fields": {
-            "progress": "Progress",
             "totalCases": "Total Cases",
             "validCases": "Valid Cases",
             "pendingTest": "Pending Test",
-            "passed": "Passed",
-            "failed": "Failed",
-            "blocked": "Blocked",
-            "cancelled": "Cancelled",
-            "overdue": "Overdue",
             "overdueRate": "Overdue Rate",
             "oneTimeTestPass": "One-time Test Pass",
             "oneTimeTestPassRate": "One-time Test Pass Rate",
@@ -1418,20 +1259,11 @@
             "oneTimeReviewPassRate": "One-time Review Pass Rate"
           }
         },
-        "burndownChart": {
-          "title": "Burndown Chart",
-          "caseCount": "Case Count",
-          "workload": "Workload",
-          "remaining": "Remaining",
-          "expected": "Expected"
-        },
         "groupStats": {
           "title": "Group Statistics",
           "byStatus": "By Status",
           "byPriority": "By Priority",
-          "statuses": {
-            "cancelled": "Cancelled",
-            "blocked": "Blocked",
+          "status": {
             "testFailed": "Test Failed",
             "testPassed": "Test Passed",
             "pendingTest": "Pending Test"
@@ -1450,15 +1282,9 @@
         "testSummary": {
           "title": "Test Summary Results",
           "fields": {
-            "progress": "Progress",
             "totalCases": "Total Cases",
             "validCases": "Valid Cases",
             "pendingTest": "Pending Test",
-            "passed": "Passed",
-            "failed": "Failed",
-            "blocked": "Blocked",
-            "cancelled": "Cancelled",
-            "overdue": "Overdue",
             "overdueRate": "Overdue Rate",
             "oneTimeTestPass": "One-time Test Pass",
             "oneTimeTestPassRate": "One-time Test Pass Rate",
@@ -1484,26 +1310,15 @@
             "oneTimeReviewPassRate": "One-time Review Pass Rate"
           }
         },
-        "burndownChart": {
-          "title": "Burndown Chart"
-        },
         "groupStats": {
           "title": "Group Statistics"
         },
         "caseList": {
           "fields": {
-            "code": "Code",
-            "priority": "Priority",
-            "module": "Module",
-            "overdue": "Overdue",
-            "deadline": "Deadline",
-            "tester": "Tester",
-            "testResult": "Test Result",
             "testResultRemark": "Test Result Remark",
             "testCompleteTime": "Test Complete Time",
             "reviewCase": "Review Case",
             "reviewStatus": "Review Status",
-            "reviewer": "Reviewer",
             "reviewOpinion": "Review Opinion",
             "reviewTime": "Review Time",
             "workloadEvalMethod": "Workload Evaluation",
@@ -1511,14 +1326,6 @@
             "actualWorkload": "Actual Workload",
             "totalTestCount": "Total Test Count",
             "testFailCount": "Test Failure Count",
-            "creator": "Creator",
-            "createTime": "Create Time",
-            "lastModifier": "Last Modifier",
-            "lastModifyTime": "Last Modify Time"
-          },
-          "options": {
-            "yes": "Yes",
-            "no": "No"
           }
         }
       }
@@ -1549,7 +1356,6 @@
       "summary": {
         "title": "Summary",
         "fields": {
-          "progress": "Progress",
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
@@ -1559,11 +1365,7 @@
       "info": {
         "title": "Project Information",
         "fields": {
-          "name": "Name",
           "planTime": "Plan Time",
-          "owner": "Owner",
-          "members": "Members",
-          "description": "Description"
         }
       },
       "taskSummary": {
@@ -1571,7 +1373,6 @@
         "summary": {
           "title": "Task Summary Results",
           "fields": {
-            "progress": "Progress",
             "totalTasks": "Total Tasks",
             "validTasks": "Valid Tasks",
             "totalBugs": "Total Bugs",
@@ -1592,27 +1393,11 @@
             "workloadSaveRate": "Workload Save Rate"
           }
         },
-        "burndownChart": {
-          "title": "Task Burndown Chart",
-          "remaining": "Remaining",
-          "expected": "Expected",
-          "caseCount": "Case Count",
-          "workload": "Workload",
-          "taskCount": "Count"
-        },
         "groupStats": {
           "title": "Task Group Statistics",
           "byStatus": "By Status",
           "byPriority": "By Priority",
           "byTaskType": "By Task Type",
-          "total": "Total",
-          "statuses": {
-            "cancelled": "Cancelled",
-            "completed": "Completed",
-            "pendingConfirm": "Pending Confirm",
-            "processing": "Processing",
-            "pending": "Pending"
-          },
           "priorities": {
             "highest": "Highest",
             "high": "High",
@@ -1635,15 +1420,9 @@
         "testSummary": {
           "title": "Case Test Summary Results",
           "fields": {
-            "progress": "Progress",
             "totalCases": "Total Cases",
             "validCases": "Valid Cases",
             "pendingTest": "Pending Test",
-            "passed": "Passed",
-            "failed": "Failed",
-            "blocked": "Blocked",
-            "cancelled": "Cancelled",
-            "overdue": "Overdue",
             "overdueRate": "Overdue Rate",
             "oneTimeTestPass": "One-time Test Pass",
             "oneTimeTestPassRate": "One-time Test Pass Rate",
@@ -1658,7 +1437,6 @@
         "reviewSummary": {
           "title": "Case Review Summary Results",
           "fields": {
-            "progress": "Progress",
             "totalReviewCases": "Total Review Cases",
             "pendingReview": "Pending Review",
             "reviewPassed": "Review Passed",
@@ -1670,19 +1448,11 @@
             "oneTimeReviewPassRate": "One-time Review Pass Rate"
           }
         },
-        "burndownChart": {
-          "title": "Case Burndown Chart",
-          "remaining": "Remaining",
-          "expected": "Expected"
-        },
         "groupStats": {
           "title": "Case Group Statistics",
           "byStatus": "By Status",
           "byPriority": "By Priority",
-          "total": "Total",
-          "statuses": {
-            "cancelled": "Cancelled",
-            "blocked": "Blocked",
+          "status": {
             "testFailed": "Test Failed",
             "testPassed": "Test Passed",
             "pendingTest": "Pending Test"
@@ -1701,7 +1471,6 @@
         "testSummary": {
           "title": "API Test Summary Results",
           "fields": {
-            "progress": "Progress",
             "totalApis": "Total APIs",
             "enabledApiTest": "Enabled API Test",
             "disabledApiTest": "Disabled API Test",
@@ -1717,8 +1486,7 @@
           "title": "API Group Statistics",
           "byStatus": "By Status",
           "byRequestMethod": "By Request Method",
-          "total": "Total",
-          "statuses": {
+          "status": {
             "published": "Published",
             "devCompleted": "Development Completed",
             "devInProgress": "Development In Progress",
@@ -1732,7 +1500,6 @@
         "testSummary": {
           "title": "Scenario Test Summary Results",
           "fields": {
-            "progress": "Progress",
             "totalScenarios": "Total Scenarios",
             "enabledScenarioTest": "Enabled Scenario Test",
             "disabledScenarioTest": "Disabled Scenario Test",
@@ -1748,7 +1515,6 @@
           "title": "Scenario Group Statistics",
           "byProtocol": "By Protocol",
           "byTestType": "By Test Type",
-          "total": "Total",
           "quantity": "Quantity",
           "testTypes": {
             "perfTest": "Performance Test",
@@ -1781,26 +1547,14 @@
           "copyright": "Copyright",
           "other": "Other"
         },
-        "options": {
-          "passed": "Passed",
-          "failed": "Failed",
-          "notTested": "Not Tested"
-        }
       },
       "info": {
         "title": "Scenario Information",
         "fields": {
-          "name": "Name",
-          "description": "Description",
-          "project": "Project",
           "plugin": "Plugin",
           "scriptType": "Script Type",
           "scriptId": "Script ID",
           "scriptName": "Script Name",
-          "creator": "Creator",
-          "createTime": "Create Time",
-          "lastModifier": "Last Modifier",
-          "lastModifyTime": "Last Modify Time"
         }
       },
       "testResult": {
@@ -1817,13 +1571,6 @@
           "stabilityTestPassed": "Stability Test Passed",
           "stabilityTestFailReason": "Stability Test Failure Reason"
         },
-        "options": {
-          "passed": "Passed",
-          "failed": "Failed",
-          "notTested": "Not Tested",
-          "enabled": "Enabled",
-          "disabled": "Disabled"
-        }
       },
       "testResultDetail": {
         "title": "Scenario Test Result Detailed Information",
@@ -1843,11 +1590,6 @@
               "lastExecutor": "Last Executor",
               "lastExecTime": "Last Execution Time"
             },
-            "options": {
-              "passed": "Passed",
-              "failed": "Failed",
-              "notTested": "Not Tested"
-            }
           },
           "apiStats": {
             "title": "Test API Statistics",
@@ -1862,21 +1604,12 @@
             "title": "Test Case Result Details",
             "fields": {
               "type": "Type",
-              "enabled": "Enabled",
               "testPassed": "Test Passed",
               "testFailReason": "Test Failure Reason",
               "testCount": "Test Count",
               "testFailCount": "Test Failure Count"
             },
-            "options": {
-              "enabled": "Enabled",
-              "disabled": "Disabled",
-              "passed": "Passed",
-              "failed": "Failed",
-              "notTested": "Not Tested"
-            }
-          },
-          "noData": "None"
+          }
         },
         "perfTestResult": {
           "title": "Performance Test",
@@ -1894,11 +1627,6 @@
               "lastExecutor": "Last Executor",
               "lastExecTime": "Last Execution Time"
             },
-            "options": {
-              "passed": "Passed",
-              "failed": "Failed",
-              "notTested": "Not Tested"
-            }
           },
           "metrics": {
             "title": "Test Metrics and Results",
@@ -1913,8 +1641,7 @@
               "tps": "Transactions Per Second",
               "errorRate": "Error Rate"
             }
-          },
-          "noData": "None"
+          }
         },
         "stabilityTestResult": {
           "title": "Stability Test",
@@ -1932,11 +1659,6 @@
               "lastExecutor": "Last Executor",
               "lastExecTime": "Last Execution Time"
             },
-            "options": {
-              "passed": "Passed",
-              "failed": "Failed",
-              "notTested": "Not Tested"
-            }
           },
           "metrics": {
             "title": "Test Metrics and Results",
@@ -1965,8 +1687,7 @@
             "title": "Application System Average Load",
             "average": "Average",
             "maximum": "Maximum"
-          },
-          "noData": "None"
+          }
         },
         "performanceTest": {
           "title": "Performance Test",
@@ -2008,13 +1729,6 @@
           "diskUsage": "Disk Usage",
           "networkUsage": "Network Usage"
         },
-        "status": {
-          "passed": "Passed",
-          "failed": "Failed",
-          "notTested": "Not Tested",
-          "enabled": "Enabled",
-          "disabled": "Disabled"
-        }
       }
     },
     "services": {
@@ -2043,22 +1757,15 @@
       "info": {
         "title": "Service Information",
         "fields": {
-          "name": "Name",
-          "status": "Status",
-          "project": "Project",
           "apiCount": "API Count",
           "apiCaseCount": "API Case Count",
-          "creator": "Creator",
-          "createTime": "Create Time",
-          "lastModifier": "Last Modifier",
-          "lastModifyTime": "Last Modify Time"
         }
       },
       "apisGroup": {
         "title": "API Group Statistics",
         "byStatus": {
           "title": "By Status",
-          "statuses": {
+          "status": {
             "unknown": "Unknown",
             "designing": "Designing",
             "devInProgress": "Development In Progress",
@@ -2068,15 +1775,13 @@
         },
         "byRequestMethod": {
           "title": "By Request Method"
-        },
-        "total": "Total"
+        }
       },
       "result": {
         "title": "Test Result Summary",
         "testProgress": {
           "title": "Test Progress",
           "totalApis": "Total APIs",
-          "progress": "Progress"
         },
         "testApiStats": {
           "title": "Test API Statistics",
@@ -2089,12 +1794,6 @@
         },
         "testStatusStats": {
           "title": "Test Status Statistics",
-          "fields": {
-            "tested": "Tested",
-            "notTested": "Not Tested",
-            "passed": "Passed",
-            "failed": "Failed"
-          }
         }
       },
       "apiResultDetail": {
@@ -2116,8 +1815,6 @@
           "stabilityTestFailReason": "Stability Test Failure Reason"
         },
         "options": {
-          "yes": "Yes",
-          "no": "No",
           "notTested": "Not Tested"
         }
       }
@@ -2134,7 +1831,6 @@
           "otherInfo": "Other Information",
           "devTask": "Development Tasks",
           "taskSummary": "Task Summary Results",
-          "burndownChart": "Burndown Chart",
           "groupStats": "Group Statistics",
           "assigneeSummary": "Assignee Summary Results"
         }
@@ -2142,7 +1838,6 @@
       "summary": {
         "title": "Summary",
         "fields": {
-          "progress": "Progress",
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
@@ -2154,24 +1849,16 @@
         "basicInfo": {
           "title": "Basic Information",
           "fields": {
-            "name": "Name",
             "taskPrefix": "Task Prefix",
-            "status": "Status",
-            "owner": "Owner",
-            "project": "Project",
             "sprintTime": "Sprint Time",
-            "creator": "Creator",
-            "createTime": "Create Time",
             "workloadEstimationMethod": "Workload Estimation Method"
           }
         },
         "acceptanceCriteria": {
-          "title": "Acceptance Criteria",
-          "noData": "None"
+          "title": "Acceptance Criteria"
         },
         "meetingRecord": {
           "title": "Meeting Records",
-          "noData": "None",
           "meetingTopic": "Meeting Topic",
           "fields": {
             "meetingType": "Meeting Type",
@@ -2185,39 +1872,17 @@
           }
         },
         "otherInfo": {
-          "title": "Other Information",
-          "noData": "None"
+          "title": "Other Information"
         }
       },
       "taskDetail": {
         "title": "Task Detail",
         "fields": {
-          "code": "Code",
-          "priority": "Priority",
-          "module": "Module",
-          "taskType": "Task Type",
-          "testType": "Test Type",
-          "taskStatus": "Task Status",
           "completionTime": "Completion Time",
-          "overdue": "Overdue",
-          "deadline": "Deadline",
-          "assignee": "Assignee",
           "startTime": "Start Time",
           "confirmTask": "Confirm Task",
-          "confirmer": "Confirmer",
-          "workloadEstimationMethod": "Workload Estimation Method",
-          "estimatedWorkload": "Estimated Workload",
-          "actualWorkload": "Actual Workload",
           "totalProcessCount": "Total Process Count",
           "failedProcessCount": "Failed Process Count",
-          "creator": "Creator",
-          "createTime": "Create Time",
-          "lastModifier": "Last Modifier",
-          "lastModifyTime": "Last Modify Time"
-        },
-        "options": {
-          "yes": "Yes",
-          "no": "No"
         }
       },
       "taskSummary": {
@@ -2225,7 +1890,6 @@
         "summary": {
           "title": "Task Summary Results",
           "fields": {
-            "progress": "Progress",
             "totalTasks": "Total Tasks",
             "validTasks": "Valid Tasks",
             "totalBugs": "Total Bugs",
@@ -2246,26 +1910,11 @@
             "workloadSaveRate": "Workload Save Rate"
           }
         },
-        "burndownChart": {
-          "title": "Burndown Chart",
-          "taskCount": "Count",
-          "workload": "Workload",
-          "remaining": "Remaining",
-          "expected": "Expected"
-        },
         "groupStats": {
           "title": "Group Statistics",
           "byStatus": "By Status",
           "byPriority": "By Priority",
           "byTaskType": "By Task Type",
-          "total": "Total",
-          "statuses": {
-            "cancelled": "Cancelled",
-            "completed": "Completed",
-            "pendingConfirm": "Pending Confirm",
-            "processing": "Processing",
-            "pending": "Pending"
-          },
           "priorities": {
             "highest": "Highest",
             "high": "High",
@@ -2288,7 +1937,6 @@
         "summary": {
           "title": "Task Summary Results",
           "fields": {
-            "progress": "Progress",
             "totalTasks": "Total Tasks",
             "validTasks": "Valid Tasks",
             "totalBugs": "Total Bugs",
@@ -2308,13 +1956,6 @@
             "savedWorkload": "Saved Workload",
             "workloadSaveRate": "Workload Save Rate"
           }
-        },
-        "burndownChart": {
-          "title": "Burndown Chart",
-          "taskCount": "Task Count",
-          "workload": "Workload",
-          "remaining": "Remaining",
-          "expected": "Expected"
         },
         "groupStats": {
           "title": "Group Statistics"
@@ -2356,16 +1997,7 @@
         "basicInfo": {
           "title": "Basic Information",
           "fields": {
-            "name": "Name",
-            "priority": "Priority",
-            "taskType": "Task Type",
             "missedDefect": "Missed Defect",
-            "taskStatus": "Task Status",
-            "project": "Project",
-            "code": "Code",
-            "overdue": "Overdue",
-            "module": "Module",
-            "tag": "Tag",
             "workloadEstimationMethod": "Workload Estimation Method",
             "estimatedStoryPoint": "Estimated Story Points",
             "estimatedWorkTime": "Estimated Work Time",
@@ -2375,10 +2007,6 @@
             "failedProcessCount": "Failed Process Count",
             "oneTimePass": "One-time Pass",
             "unplannedTask": "Unplanned Task"
-          },
-          "options": {
-            "yes": "Yes",
-            "no": "No"
           }
         },
         "personnelInfo": {
@@ -2407,12 +2035,10 @@
           }
         },
         "description": {
-          "title": "Description",
-          "noData": "None"
+          "title": "Description"
         },
         "remark": {
-          "title": "Remarks",
-          "noData": "None"
+          "title": "Remarks"
         },
         "testingInfo": {
           "title": "Testing Information",
@@ -2448,47 +2074,18 @@
                 "failCount": "Failure Count",
                 "failReason": "Failure Reason"
               },
-              "options": {
-                "passed": "Passed",
-                "failed": "Failed"
-              }
             }
           }
         }
       },
       "subTask": {
         "title": "Sub Tasks",
-        "progress": "Progress",
-        "fields": {
-          "code": "Code",
-          "type": "Type",
-          "name": "Name",
-          "status": "Status",
-          "assignee": "Assignee"
-        },
-        "noData": "None"
       },
       "assocTask": {
         "title": "Associated Tasks",
-        "fields": {
-          "code": "Code",
-          "type": "Type",
-          "name": "Name",
-          "status": "Status",
-          "assignee": "Assignee"
-        },
-        "noData": "None"
       },
       "assocCase": {
         "title": "Associated Cases",
-        "fields": {
-          "code": "Code",
-          "name": "Name",
-          "testStatus": "Test Status",
-          "reviewStatus": "Review Status",
-          "tester": "Tester"
-        },
-        "noData": "None"
       },
       "activity": {
         "title": "Activities",
@@ -2496,8 +2093,7 @@
           "activityTime": "Activity Time",
           "activityUser": "Activity User",
           "activityDesc": "Activity Description"
-        },
-        "noData": "None"
+        }
       },
       "comment": {
         "title": "Comments",
@@ -2506,8 +2102,7 @@
           "commentUser": "Comment User",
           "commentContent": "Comment Content",
           "reply": "Reply"
-        },
-        "noData": "None"
+        }
       },
       "testing": {
         "function": {
@@ -2528,11 +2123,6 @@
               "caseName": "Case Name",
               "status": "Status"
             },
-            "options": {
-              "passed": "Passed",
-              "failed": "Failed"
-            },
-            "noData": "None"
           }
         },
         "perf": {

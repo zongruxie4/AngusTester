@@ -19,48 +19,48 @@ withDefaults(defineProps<Props>(), {
 const infoColumns = computed(() => [
   [
     {
-      label: t('caseReview.comp.caseBasicInfo.name'),
+      label: t('common.name'),
       dataIndex: 'name'
     },
     {
-      label: t('caseReview.comp.caseBasicInfo.id'),
+      label: t('common.id'),
       dataIndex: 'id'
     },
     {
-      label: t('caseReview.comp.caseBasicInfo.code'),
+      label: t('common.code'),
       dataIndex: 'code'
     },
     {
-      label: t('caseReview.comp.caseBasicInfo.version'),
+      label: t('common.version'),
       dataIndex: 'version'
     },
     {
-      label: t('caseReview.comp.caseBasicInfo.softwareVersion'),
+      label: t('common.softwareVersion'),
       dataIndex: 'softwareVersion'
     },
     {
-      label: t('caseReview.comp.caseBasicInfo.priority'),
+      label: t('common.priority'),
       dataIndex: 'priority'
     },
     {
-      label: t('caseReview.comp.caseBasicInfo.tags'),
+      label: t('common.tags'),
       dataIndex: 'tags'
     },
     {
-      label: t('caseReview.comp.caseBasicInfo.planName'),
+      label: t('common.plan'),
       dataIndex: 'planName'
     },
     {
-      label: t('caseReview.comp.caseBasicInfo.moduleName'),
+      label: t('common.module'),
       dataIndex: 'moduleName'
     },
     {
-      label: t('caseReview.comp.caseBasicInfo.evalWorkload'),
+      label: t('common.evalWorkload'),
       dataIndex: 'evalWorkload',
       customRender: ({ text }) => text || '--'
     },
     {
-      label: t('caseReview.comp.caseBasicInfo.actualWorkload'),
+      label: t('common.actualWorkload'),
       dataIndex: 'actualWorkload',
       customRender: ({ text }) => text || '--'
     }

@@ -148,7 +148,7 @@ const columns = [
     }
   },
   {
-    title: t('caseReview.detail.action'),
+    title: t('common.actions'),
     dataIndex: 'action',
     width: 320
   }
@@ -527,7 +527,7 @@ onUnmounted(() => {
                 <!-- Progress bar -->
                 <div class="flex items-center space-x-4">
                   <div class="text-sm text-gray-600">
-                    {{ t('caseReview.detail.progress') }}
+                    {{ t('common') }}
                   </div>
                   <div class="flex items-center space-x-2">
                     <div class="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -688,7 +688,7 @@ onUnmounted(() => {
                           v-if="record?.caseInfo?.overdue"
                           class="ml-3 inline-flex items-center justify-center text-red-700 text-xs font-medium rounded-full border border-red-200 bg-red-100 whitespace-nowrap text-center"
                           style="width: 70px; height: 20px; line-height: 20px;">
-                          {{ t('caseReview.comp.caseBasicInfo.overdue') }}
+                          {{ t('status.overdue') }}
                         </span>
                       </span>
                     </template>
@@ -708,13 +708,13 @@ onUnmounted(() => {
                         :disabled="!permissions.includes(FuncPlanPermission.REVIEW)"
                         @click.stop="delCase(record)">
                         <Icon icon="icon-qingchu" class="mr-1" />
-                        {{ t('caseReview.detail.cancel') }}
+                        {{ t('actions.cancel') }}
                       </Button>
 
                       <Button
                         :disabled="!permissions.includes(FuncPlanPermission.REVIEW)
                           || record.reviewStatus?.value === ReviewStatus.PENDING
-                          || reviewDetail?.status?.value === ReviewStatus.PENDING"
+                          || reviewDetail?.status?.value === FuncPlanStatus.PENDING"
                         type="text"
                         size="small"
                         @click.stop="restart(record)">
@@ -739,7 +739,7 @@ onUnmounted(() => {
                           size="small"
                           @click.stop>
                           <Icon icon="icon-chakanhuodong" class="mr-1" />
-                          {{ t('caseReview.detail.view') }}
+                          {{ t('actions.view') }}
                         </Button>
                       </RouterLink>
                     </template>

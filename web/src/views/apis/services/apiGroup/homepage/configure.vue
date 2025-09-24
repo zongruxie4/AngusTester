@@ -26,9 +26,9 @@ const dataSource = computed(() => [[{
   id: 'syncConfig',
   key: 'syncConfig',
   icon: 'icon-peizhifuwutongbu',
-  title: t('apis.configuration.sync'),
+  title: t('actions.sync'),
   content: t('apis.configuration.syncDescription', { type: projectType.value }),
-  linkText: t('apis.configuration.action'),
+  linkText: t('common.actions'),
   disabled: !props.projectAuths.includes('MODIFY')
 },
 {
@@ -37,7 +37,7 @@ const dataSource = computed(() => [[{
   icon: 'icon-renzhengtou',
   title: t('apis.configuration.security'),
   content: t('apis.configuration.securityDescription', { type: projectType.value }),
-  linkText: t('apis.configuration.action'),
+  linkText: t('common.actions'),
   disabled: !props.projectAuths.includes('MODIFY')
 },
 {
@@ -46,39 +46,10 @@ const dataSource = computed(() => [[{
   icon: 'icon-host',
   title: t('apis.configuration.server'),
   content: t('apis.configuration.serverDescription'),
-  linkText: t('apis.configuration.action'),
+  linkText: t('common.actions'),
   disabled: !props.projectAuths.includes('MODIFY')
 }
 ]
-// [
-//   {
-//   id: 'perf',
-//   key: 'perf',
-//   icon: 'icon-zhibiao',
-//   title: t('apis.configuration.performance'),
-//   content: `为${projectType.value}下接口设置默认性能指标，性能指标会影响性能测试通过率；如果您想为某个接口单独设置性能指标，您可以在接口性能配置里设置`,
-//   linkText: t('apis.configuration.action'),
-//   disabled: !props.projectAuths.includes('MODIFY')
-// },
-// {
-//   id: 'shareList',
-//   key: 'shareList',
-//   icon: 'icon-fenxiang',
-//   title:  t('apis.configuration.share'),,
-//   content: t('apis.configuration.shareDescription'),
-//   linkText: t('apis.configuration.action'),
-//   disabled: !props.projectAuths.includes('SHARE')
-// },
-  // {
-  //   id: 'variable',
-  //   key: 'variable',
-  //   icon: 'icon-bianliang',
-  //   title: t('apis.configuration.variables'),
-  //   content: t('apis.configuration.variablesDescription'),
-  //   linkText: t('apis.configuration.action'),
-  //   disabled: !props.projectAuths.includes('MODIFY')
-  // }
-// ]
 ]);
 
 const openDrawer = (key: string) => {

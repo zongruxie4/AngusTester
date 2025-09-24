@@ -30,7 +30,7 @@ export function useMatchItemData () {
   const matchItemList = [
     {
       key: 'regexp',
-      name: t('dataset.detail.matchItemPopover.regexp.name'),
+      name: t('dataset.detail.matchItemPopover.regexp.title'),
       columns: [[
         {
           dataIndex: 'data',
@@ -58,7 +58,7 @@ export function useMatchItemData () {
     },
     {
       key: 'jsonpath',
-      name: t('dataset.detail.matchItemPopover.jsonpath.name'),
+      name: t('dataset.detail.matchItemPopover.jsonpath.title'),
       columns: [[
         {
           dataIndex: 'data',
@@ -81,12 +81,12 @@ export function useMatchItemData () {
         data: { store: { book: [{ title: 'Sayings of the Century', price: 100 }, { title: 'Confucianism', price: 200 }] } },
         expression: '$.store.book[*]',
         result: '[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]',
-        item: t('dataset.detail.matchItemPopover.jsonpath.item')
+        item: t('dataset.detail.matchItemPopover.jsonpath.title')
       }
     },
     {
       key: 'xpath',
-      name: t('dataset.detail.matchItemPopover.xpath.name'),
+      name: t('dataset.detail.matchItemPopover.xpath.title'),
       columns: [[
         {
           dataIndex: 'data',

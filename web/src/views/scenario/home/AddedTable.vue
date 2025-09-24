@@ -107,9 +107,9 @@ const getActionHandler = (actionKey: string | undefined, record: any) => {
 const getActionTitle = (actionKey: string | undefined) => {
   switch (actionKey) {
     case 'favouriteBy':
-      return t('scenarioHome.myScenarios.table.actions.unfavorite');
+      return t('actions.cancelFavourite');
     case 'followBy':
-      return t('scenarioHome.myScenarios.table.actions.unfollow');
+      return t('actions.cancelFollow');
     default:
       return t('actions.delete');
   }

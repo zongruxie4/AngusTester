@@ -1,10 +1,5 @@
 {
   "dataHome": {
-    "name": "Home",
-    "activityTimeline": {
-      "myActivity": "My Activities",
-      "allActivity": "All Activities"
-    },
     "statistics": {
       "resourceStatistics": "Total Resources",
       "variable": "Variable",
@@ -45,13 +40,10 @@
     },
     "summaryTable": {
       "columns": {
-        "id": "ID",
-        "name": "Name",
         "createdBy": "Created By",
         "createdDate": "Created Date",
         "lastModifiedBy": "Last Modified By",
-        "lastModifiedDate": "Last Modified Date",
-        "action": "Action"
+        "lastModifiedDate": "Last Modified Date"
       },
       "pagination": {
         "pageInfo": "Page {current}/{totalPage}"
@@ -67,14 +59,10 @@
         "addDataset": "Add Dataset",
         "noSpace": "You haven't added any spaces",
         "noDataSource": "You haven't added any data sources"
-      },
-      "buttons": {
-        "delete": "Delete"
       }
     }
   },
   "dataVariable": {
-    "name": "Variable",
     "title": "Variable",
     "addVariable": {
       "static": "Add Static Variable",
@@ -84,7 +72,7 @@
     },
     "list": {
       "title": "Added Variables",
-      "noData": "You haven't added any variables yet, ",
+      "noVariableData": "You haven't added any variables yet, ",
       "addStaticVariable": "Add Static Variable",
       "uploadVariable": "Upload Variable",
       "or": "or",
@@ -92,7 +80,6 @@
       "isPassword": "Yes",
       "notPassword": "No",
       "columns": {
-        "name": "Name",
         "value": "Value",
         "description": "Description",
         "password": "Password",
@@ -100,19 +87,12 @@
         "lastModifiedBy": "Last Modified By",
         "createdBy": "Created By",
         "lastModifiedDate": "Last Modified Date",
-        "createdDate": "Created Date",
-        "action": "Action"
-      },
-      "buttons": {
-        "edit": "Edit",
-        "delete": "Delete"
+        "createdDate": "Created Date"
       },
       "dropdown": {
         "fileExtract": "File Extraction Variable",
         "httpExtract": "Http Extraction Variable",
-        "jdbcExtract": "Jdbc Extraction Variable",
-        "export": "Export",
-        "clone": "Clone"
+        "jdbcExtract": "Jdbc Extraction Variable"
       },
       "messages": {
         "deleteConfirm": "Are you sure to delete variable 「{name}」?",
@@ -146,8 +126,7 @@
           "deleteSelected": "Delete Selected",
           "cancelDelete": "Cancel Delete",
           "addStaticVariable": "Add Static Variable",
-          "batchDelete": "Batch Delete",
-          "refresh": "Refresh"
+          "batchDelete": "Batch Delete"
         },
         "tooltips": {
           "uploadVariable": "Upload Variable",
@@ -186,9 +165,7 @@
       },
       "fileSizeError": "File size cannot exceed {maxSize}M",
       "duplicateStrategy": {
-        "title": "Processing strategy when encountering duplicates",
-        "cover": "Cover",
-        "ignore": "Ignore"
+        "title": "Processing strategy when encountering duplicates"
       }
     },
     "exportModal": {
@@ -203,19 +180,11 @@
         "copyLinkSuccess": "Link copied successfully",
         "copyLinkFail": "Link copied failed"
       },
-      "buttonGroup": {
-        "save": "Save",
-        "delete": "Delete",
-        "export": "Export",
-        "clone": "Clone",
-        "copyLink": "Copy Link",
-        "refresh": "Refresh"
-      },
       "matchItemPopover": {
         "title": "Match Item Description",
         "description": "Match item is used to extract data from the response, supports multiple matching methods:",
         "regexp": {
-          "name": "Regular Expression",
+          "title": "Regular Expression",
           "columns": {
             "data": "Data",
             "regexp": "Regular Expression",
@@ -224,7 +193,7 @@
           "item": "Use regular expression to extract data from the response, support group capture."
         },
         "jsonpath": {
-          "name": "JSONPath",
+          "title": "JSONPath",
           "columns": {
             "data": "Data",
             "jsonpath": "JSONPath Expression",
@@ -233,7 +202,7 @@
           "item": "Use JSONPath expression to extract data from the JSON response."
         },
         "xpath": {
-          "name": "XPath",
+          "title": "XPath",
           "columns": {
             "data": "Data",
             "xpath": "XPath Expression",
@@ -244,38 +213,23 @@
       },
       "useList": {
         "title": "Use List",
-        "noData": "No use record",
         "columns": {
           "targetType": "Resource Type",
           "targetId": "Resource ID",
-          "targetName": "Resource Name",
-          "action": "Action"
-        },
-        "buttons": {
-          "batchDelete": "Batch Delete",
-          "refresh": "Refresh",
-          "deleteSelected": "Delete Selected",
-          "cancelDelete": "Cancel Delete",
-          "delete": "Delete"
+          "targetName": "Resource Name"
         }
       },
       "previewData": {
         "title": "Preview Data",
-        "tip": "Variable values resolve before sampling and persist unchanged throughout execution.",
-        "noData": "No data",
-        "refresh": "Refresh"
+        "tip": "Variable values resolve before sampling and persist unchanged throughout execution."
       },
       "staticVariable": {
         "notifications": {
           "editSuccess": "Edit Success",
           "addSuccess": "Add Success"
         },
-        "name": "Name",
-        "description": "Description",
         "value": "Value",
         "password": "Password",
-        "no": "No",
-        "yes": "Yes",
         "preview": "Preview",
         "use": "Use",
         "namePlaceholder": "Enter parameter name, maximum 100 characters",
@@ -289,9 +243,7 @@
           "editSuccess": "Edit Success",
           "addSuccess": "Add Success"
         },
-        "name": "Name",
         "nameSupport": "Enter parameter name",
-        "description": "Description",
         "extract": "Extract",
         "preview": "Preview",
         "use": "Use",
@@ -343,7 +295,6 @@
           "compressRawContent": "Compress",
           "uploadFile": "Upload File",
           "parameterInput": {
-            "name": "Parameter Name",
             "value": "Parameter Value",
             "namePlaceholder": "Please enter the parameter name",
             "valuePlaceholder": "Please enter the parameter value",
@@ -367,8 +318,7 @@
         },
         "selectApiModal": {
           "title": "Select Api",
-          "searchPlaceholder": "Search Api Name",
-          "noData": "No Api Data"
+          "searchPlaceholder": "Search Api Name"
         }
       },
       "jdbcVariable": {
@@ -376,9 +326,7 @@
           "editSuccess": "Edit Success",
           "addSuccess": "Add Success"
         },
-        "name": "Name",
         "nameSupport": "Enter parameter name",
-        "description": "Description",
         "extract": "Extract",
         "preview": "Preview",
         "use": "Use",
@@ -414,8 +362,7 @@
         "defaultValuePlaceholder": "Default Value, maximum 4096 characters",
         "selectDatasource": {
           "title": "Select Datasource",
-          "searchPlaceholder": "Search Datasource Name",
-          "noData": "No Datasource"
+          "searchPlaceholder": "Search Datasource Name"
         }
       },
       "fileVariable": {
@@ -423,9 +370,7 @@
           "editSuccess": "Edit Success",
           "addSuccess": "Add Success"
         },
-        "name": "Name",
         "nameSupport": "Enter parameter name",
-        "description": "Description",
         "extract": "Extract",
         "preview": "Preview",
         "use": "Use",
@@ -463,16 +408,14 @@
     }
   },
   "dataset": {
-    "name": "Dataset",
+    "title": "Dataset",
     "addStaticDataset": "Add Static Dataset",
     "addFileDataset": "Add File Dataset",
     "addJdbcDataset": "Add Jdbc Dataset",
     "preview": {
       "hints": "A maximum of 10,000 data records can be previewed at a time. Mock function actual parameter values are generated during execution sampling.",
       "previewRows": "Preview Rows",
-      "placeholder": "1 ~ 10000",
-      "refresh": "Refresh",
-      "noData": "No Data"
+      "placeholder": "1 ~ 10000"
     },
     "list": {
       "title": "Added Datasets",
@@ -485,19 +428,14 @@
         "jdbcExtractDataset": "Jdbc Extract Dataset"
       },
       "columns": {
-        "name": "Name",
-        "description": "Description",
         "valueSource": "Source",
         "lastModifiedBy": "Last Modified By",
         "createdBy": "Created By",
         "lastModifiedDate": "Last Modified Date",
-        "createdDate": "Created Date",
-        "action": "Action"
+        "createdDate": "Created Date"
       },
       "tableDropdown": {
-        "previewData": "Preview Data",
-        "export": "Export",
-        "clone": "Clone"
+        "previewData": "Preview Data"
       },
       "messages": {
         "deleteConfirm": "Are you sure to delete dataset 「{name}」?",
@@ -534,8 +472,7 @@
         "deleteSelected": "Delete Selected",
         "cancelDelete": "Cancel Delete",
         "addStaticDataset": "Add Static Dataset",
-        "batchDelete": "Batch Delete",
-        "refresh": "Refresh"
+        "batchDelete": "Batch Delete"
       },
       "tooltips": {
         "uploadDataset": "Upload Dataset",
@@ -573,9 +510,7 @@
       },
       "fileSizeError": "File size cannot exceed {maxSize}M",
       "duplicateStrategy": {
-        "title": "Processing strategy when encountering duplicates",
-        "cover": "Cover",
-        "ignore": "Ignore"
+        "title": "Processing strategy when encountering duplicates"
       }
     },
     "exportModal": {
@@ -590,23 +525,13 @@
         "copyLinkSuccess": "Copy link successfully",
         "copyLinkFail": "Copy link failed"
       },
-      "buttonGroup": {
-        "save": "Save",
-        "delete": "Delete",
-        "export": "Export",
-        "clone": "Clone",
-        "copyLink": "Copy Link",
-        "refresh": "Refresh"
-      },
       "fileDataset": {
         "notifications": {
           "updateSuccess": "Dataset modified successfully",
           "addSuccess": "Dataset added successfully"
         },
         "form": {
-          "name": "Name",
           "namePlaceholder": "Dataset name, maximum 100 characters",
-          "description": "Description",
           "descriptionPlaceholder": "Dataset description, maximum 200 characters",
           "extraction": "Extraction",
           "hints": "Read dataset from file, each dataset allows a maximum of 200 parameters, each parameter file cannot exceed 500MB, and the total number of rows cannot exceed 1000000.",
@@ -649,9 +574,7 @@
           "addSuccess": "Dataset added successfully"
         },
         "form": {
-          "name": "Name",
           "namePlaceholder": "Dataset name, maximum 100 characters",
-          "description": "Description",
           "descriptionPlaceholder": "Dataset description, maximum 200 characters",
           "extraction": "Extraction",
           "hints": "Extract a value from the database query result before each test execution as a dataset value.",
@@ -704,13 +627,7 @@
         "table": {
           "resourceType": "Resource Type",
           "resourceId": "Resource ID",
-          "resourceName": "Resource Name",
-          "action": "Action"
-        },
-        "buttons": {
-          "batchDelete": "Batch Delete",
-          "deleteSelected": "Delete Selected",
-          "cancelDelete": "Cancel Delete"
+          "resourceName": "Resource Name"
         },
         "hints": "View resource information using datasets."
       },
@@ -718,7 +635,7 @@
         "title": "Match Item",
         "description": "When the expression matches multiple values or the result is an array, specify the value as the expected value of the expression, support position from 0 to maximum value 2000, return null when the specified position data does not exist, and merge multiple values into a value when not specified.",
         "regexp": {
-          "name": "Regexp Match",
+          "title": "Regexp Match",
           "columns": {
             "data": "Match Value",
             "expression": "Expression",
@@ -728,7 +645,7 @@
           "item": "Default to merge match values when not specified position: \"1888888888813999999999\", specified position 0 to get value: \"18888888888\", specified position 1 to get value: \"13999999999\"."
         },
         "jsonpath": {
-          "name": "JSONPath Match",
+          "title": "JSONPath Match",
           "columns": {
             "data": "Match Value",
             "expression": "Expression",
@@ -738,7 +655,7 @@
           "item": "Default to merge match values when not specified position: 「{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}」, specified position 0 to get value: {\"title\":\"Sayings of the Century\",\"price\":100}, specified position 1 to get value: {\"title\":\"confucianism\",\"price\":200}."
         },
         "xpath": {
-          "name": "XPath Match",
+          "title": "XPath Match",
           "columns": {
             "data": "Match Value",
             "expression": "Expression",
@@ -749,7 +666,6 @@
         }
       },
       "parameterNameInput": {
-        "name": "Name",
         "readColumn": "Read Column",
         "tooltip": "The parameter name order must be consistent with the file column data order, each name must be 100 characters or less.",
         "placeholder": "Enter parameter name, maximum 100 characters",
@@ -763,8 +679,6 @@
           "editSuccess": "Dataset modified successfully",
           "addSuccess": "Dataset added successfully"
         },
-        "name": "Name",
-        "description": "Description",
         "parameters": "Parameters",
         "preview": "Preview",
         "use": "Use",
@@ -772,7 +686,6 @@
         "descriptionPlaceholder": "Dataset description, maximum 200 characters",
         "hints": "Generate parameter values dynamically using Mock data functions. Each dataset supports up to 200 parameters and can generate up to 100 billion rows of data.",
         "parameterInput": {
-          "name": "Name",
           "value": "Value",
           "namePlaceholder": "Enter parameter name, maximum 100 characters",
           "valuePlaceholder": "Parameter value, value can be constant or Mock function, maximum 4096 characters",
@@ -785,8 +698,8 @@
     }
   },
   "datasource": {
-    "name": "Data Source",
-    "title": "About Datasource",
+    "title": "Data Source",
+    "titleTip": "About Datasource",
     "description": "Supports managing and connecting multiple datasource. After configuring datasource information, you can quickly generate test data, project demonstration scenarios, and quickly reference data source configuration information in JDBC tests, parameterized variables, and datasets.",
     "addedTitle": "Added Datasource",
     "addDataSource": "Add Datasource",
@@ -797,8 +710,6 @@
     },
     "testConnection": {
       "testing": "Testing...",
-      "success": "Success",
-      "failed": "Failed",
       "retest": "Retest",
       "testConnection": "Test Connection"
     },
@@ -810,36 +721,26 @@
       "editSuccess": "Modified successfully"
     },
     "form": {
-      "title": {
-        "add": "Add Datasource",
-        "edit": "Edit Datasource"
-      },
       "labels": {
-        "type": "Type",
-        "name": "Name",
         "driverClassName": "Driver Class Name",
         "jdbcUrl": "Jdbc URL",
         "username": "Username",
-        "password": "Password"
       },
       "placeholders": {
         "databaseType": "Database Type",
-        "name": "Name",
         "driverClassName": "Driver Class Name",
         "jdbcUrl": "Jdbc URL",
         "username": "Username",
-        "password": "Password"
       },
       "rules": {
         "databaseType": "Please select database type",
-        "name": "Please enter name",
         "jdbcUrl": "Please enter Jdbc URL"
       }
     }
   },
   "fileSpace": {
-    "name": "File",
-    "title": "About Files",
+    "title": "File",
+    "titleTip": "About Files",
     "addedTitle": "Added Spaces",
     "searchPlaceholder": "Search space name",
     "type": {
@@ -847,13 +748,10 @@
       "file": "File",
       "space": "Space"
     },
-    "compressFile": {
-      "name": "Compress File"
-    },
+    "compressFile": "Compress File",
     "buttons": {
       "generateData": "Generate Data",
-      "addSpace": "Add Space",
-      "spacePermission": "Permission"
+      "addSpace": "Add Space"
     },
     "columns": {
       "spaceName": "Space Name",
@@ -862,16 +760,8 @@
       "used": "Used",
       "quota": "Quota",
       "addTime": "Created Date",
-      "addBy": "Created By",
-      "action": "Action",
-      "name": "Name",
       "actualSize": "Actual Size",
       "lastModifiedDate": "Last Modified Date"
-    },
-    "actions": {
-      "edit": "Edit",
-      "permission": "Permission",
-      "delete": "Delete"
     },
     "messages": {
       "deleteConfirm": "Confirm delete 「{name}」?",
@@ -889,17 +779,9 @@
     },
     "fileManagement": {
       "directory": "Directory",
-      "upload": "Upload",
-      "delete": "Delete",
-      "move": "Move",
-      "refresh": "Refresh",
       "createDirectory": "Enter directory name, limited to 50 characters",
       "fileActions": {
-        "delete": "Delete",
-        "rename": "Rename",
-        "move": "Move",
         "details": "Details",
-        "download": "Download",
         "shareLink": "Share Link"
       },
       "messages": {
@@ -948,9 +830,6 @@
         "password": "Password",
         "validityPeriod": "Validity Period",
         "permanentValid": "Permanent",
-        "confirm": "Confirm",
-        "cancel": "Cancel",
-        "loadMore": "Load More",
         "notifications": {
           "deleteSuccess": "Delete Share Record Success",
           "passwordEmpty": "The input password cannot be empty",
@@ -997,11 +876,6 @@
       },
       "authSet": {
         "searchPlaceholder": "Search name",
-        "headers": {
-          "name": "Name",
-          "permissionControl": "Permission Control",
-          "permissions": "Permissions"
-        },
         "allPermissions": "All",
         "loadingTip": "Loading..."
       }
@@ -1024,16 +898,8 @@
       "quotaDescription": "(Limit the total storage size that the space can use, minimum 100MB)"
     },
     "capacity": {
-      "loading": "Loading...",
       "used": "Used",
       "upgradeCapacity": "Upgrade Capacity"
-    },
-    "crumb": {
-      "home": "Home",
-      "ellipsis": "..."
-    },
-    "search": {
-      "title": "Search"
     },
     "sort": {
       "title": "Sort",
@@ -1046,16 +912,13 @@
       "clickToUpload": "Click here to upload files",
       "uploadComplete": "Upload Complete",
       "uploadFailed": "Upload Failed",
-      "continueUpload": "Continue Upload",
-      "cancel": "Cancel"
+      "continueUpload": "Continue Upload"
     },
     "moveModal": {
       "title": "Select Move Path"
     },
     "spaceDetail": {
       "columns": {
-        "name": "Name",
-        "id": "ID",
         "actualSize": "Actual Size",
         "quota": "Quota",
         "format": "Format",

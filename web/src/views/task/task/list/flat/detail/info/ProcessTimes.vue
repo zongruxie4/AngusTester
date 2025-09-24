@@ -28,7 +28,7 @@ const totalProcessCount = computed(() => +(props.dataSource?.totalNum || 0));
 const failedProcessCount = computed(() => +(props.dataSource?.failNum || 0));
 const onePassStatusText = computed(() => {
   if (totalProcessCount.value <= 0) return '--';
-  return failedProcessCount.value === 0 ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no');
+  return failedProcessCount.value === 0 ? t('status.yes') : t('status.no');
 });
 
 // One pass status methods

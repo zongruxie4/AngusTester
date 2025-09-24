@@ -80,15 +80,15 @@ watch(() => props.value, newValue => {
           {{ t('xcan_httpTestInfo.untested') }}
         </template>
         <template v-else-if="props.enabled === false && !dataSource.id">
-          {{ t('xcan_httpTestInfo.disabled') }}
+          {{ t('status.disabled') }}
         </template>
         <template v-else-if="text">
           <Icon icon="icon-duihao" class="text-status-success" />
-          {{ t('xcan_httpTestInfo.passed') }} {{ props.enabled === false ? `(${t('xcan_httpTestInfo.disabled')})` : '' }}
+          {{ t('status.passed') }} {{ props.enabled === false ? `(${t('status.disabled')})` : '' }}
         </template>
         <template v-else>
           <Icon icon="icon-chahao" class="text-status-error" />
-          {{ t('xcan_httpTestInfo.failed') }} {{ props.enabled === false ? `(${t('xcan_httpTestInfo.disabled')})` : '' }}
+          {{ t('status.failed') }} {{ props.enabled === false ? `(${t('status.disabled')})` : '' }}
         </template>
       </div>
     </template>

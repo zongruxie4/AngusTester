@@ -52,7 +52,13 @@ const caseBarEchartsConfig = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: [t('reportPreview.functionPlan.caseSummary.groupStats.statuses.cancelled'), t('reportPreview.functionPlan.caseSummary.groupStats.statuses.blocked'), t('reportPreview.functionPlan.caseSummary.groupStats.statuses.testFailed'), t('reportPreview.functionPlan.caseSummary.groupStats.statuses.testPassed'), t('reportPreview.functionPlan.caseSummary.groupStats.statuses.pendingTest')]
+    data: [
+      t('status.cancelled'),
+      t('status.blocked'),
+      t('reportPreview.functionPlan.caseSummary.groupStats.status.testFailed'),
+      t('reportPreview.functionPlan.caseSummary.groupStats.status.testPassed'),
+      t('reportPreview.functionPlan.caseSummary.groupStats.status.pendingTest')
+    ]
   },
   series: [
     {

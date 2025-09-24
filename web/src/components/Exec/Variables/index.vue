@@ -315,7 +315,7 @@ const columns = [
     width: '8%'
   },
   {
-    title: t('xcan_exec.variable.action'),
+    title: t('common.actions'),
     dataIndex: 'action',
     width: 170
   }

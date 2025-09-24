@@ -194,7 +194,7 @@ const save = async () => {
     if (isUnarchivedApi.value) {
       refreshUnarchived();
     }
-    notification.success(t('tips.saveSuccess'));
+    notification.success(t('actions.tips.saveSuccess'));
     handleClose();
   });
 };
@@ -265,7 +265,7 @@ onMounted(() => {
                   size="small"
                   type="primary"
                   @click="guideStep('debugApiSeven')">
-                  {{ t('service.apiSliderSave.actions.nextStep') }}
+                  {{ t('actions.nextStep') }}
                 </Button>
               </div>
             </div>

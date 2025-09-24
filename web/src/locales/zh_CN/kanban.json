@@ -30,15 +30,11 @@
       "targetRate": "目标率",
       "workloadRate": "工作量率",
       "overview": "总览",
-      "total": "总数",
       "completionRate": "完成率",
       "taskCount": "任务数",
       "useCaseCount": "用例数",
-      "remaining": "剩余",
-      "expected": "期望",
       "categoryStatistics": "分类统计",
       "reviewStatusDistribution": "评审状态分布",
-      "burnDownChart": "燃尽图",
       "taskNumber": "任务数",
       "testNumber": "测试数",
       "targetCount": "完成数",
@@ -80,12 +76,6 @@
         "scenarioTest": "场景测试"
       },
       "totalCount": "总数",
-      "progress": "进度",
-      "pending": "待处理",
-      "inProgress": "进行中",
-      "confirming": "确认中",
-      "completed": "已完成",
-      "canceled": "已取消",
       "evalWorkload": "评估工作量",
       "actualWorkload": "实际工作量",
       "savingWorkload": "节省工作量",
@@ -103,7 +93,6 @@
       "growthTrend": "增长趋势",
       "contributionRanking": "贡献排行榜",
       "rankingDescription": "用例、接口、任务、场景、脚本、参数数据、报告和Mock接口汇总排名。",
-      "total": "总数",
       "categories": {
         "testCustomization": "自定义测试",
         "testFunctionality": "功能测试",
@@ -123,7 +112,6 @@
         "dataDataset": "数据集",
         "dataDatasource": "数据源",
         "dataVariable": "变量",
-        "total": "合计",
         "report": "报告",
         "reportRecord": "记录",
         "data": "数据",
@@ -139,8 +127,6 @@
         "scenario": "场景"
       },
       "status": {
-        "cancelled": "已取消",
-        "blocked": "阻塞",
         "testFailed": "测试未通过",
         "testPassed": "测试通过",
         "pendingTest": "待测试",
@@ -148,13 +134,7 @@
         "designing": "设计中",
         "developing": "开发中",
         "developmentCompleted": "开发完成",
-        "published": "已发布",
-        "completed": "已完成",
-        "pendingConfirmation": "待确认",
-        "inProgress": "进行中",
-        "pending": "待处理",
-        "pendingStart": "待开始",
-        "blockedStatus": "阻塞中"
+        "published": "已发布"
       },
       "reviewStatus": {
         "pendingReview": "待评审",
@@ -186,8 +166,6 @@
       },
       "progress": {
         "totalProgress": "总进度",
-        "incomplete": "未完成",
-        "completed": "已完成",
         "totalCount": "总数",
         "totalUseCaseCount": "总用例数",
         "totalWorkload": "总工作量",
@@ -248,20 +226,12 @@
         "estimatedTime": "预计耗时"
       },
       "taskTypes": {
-        "total": "总数",
         "story": "故事",
         "requirement": "需求",
         "task": "任务",
         "bug": "缺陷",
         "apiTest": "接口测试",
         "scenarioTest": "场景测试"
-      },
-      "taskStatus": {
-        "pendingConfirmation": "待确认",
-        "inProgress": "进行中",
-        "pending": "待处理",
-        "completed": "已完成",
-        "cancelled": "已取消"
       },
       "deliveryCycle": {
         "deliveryCycle": "交付周期",
@@ -320,8 +290,6 @@
         "pendingTest": "待测试",
         "testPassed": "测试通过",
         "testFailed": "测试未通过",
-        "blocked": "阻塞",
-        "cancelled": "已取消"
       },
       "reviewStatus": {
         "pendingReview": "待评审",

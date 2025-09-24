@@ -140,13 +140,13 @@ const countCard = computed(() => {
     },
     {
       key: 'export',
-      name: t('ftpPlugin.performanceTestDetail.basicInfo.download'),
+      name: t('actions.download'),
       icon: 'icon-xiazaida',
       color: '111, 198, 191'
     },
     {
       key: 'upload',
-      name: t('ftpPlugin.performanceTestDetail.basicInfo.upload'),
+      name: t('actions.upload'),
       icon: 'icon-shangchuanda',
       color: '175, 196, 32'
     }

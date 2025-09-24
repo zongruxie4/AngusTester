@@ -99,7 +99,7 @@ const attachments = computed(() => props.sprintData?.attachments || []);
       <div class="flex items-start space-x-5">
         <div class="w-1/2 flex items-center">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right mr-1.5">
-            <span class="font-semibold text-black">{{ t('taskSprint.columns.progress') }}</span>
+            <span class="font-semibold text-black">{{ t('common.progress') }}</span>
             <Colon class="w-1" />
           </div>
 

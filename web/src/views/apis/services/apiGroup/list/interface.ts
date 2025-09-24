@@ -4,21 +4,21 @@ const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
 export const CollapseButtonGroup = [
   {
-    label: t('service.apis.collapseButtonGroup.edit'),
+    label: t('actions.edit'),
     value: 'edit',
     auth: 'VIEW',
     icon: 'icon-bianji',
     disabled: false
   },
   {
-    label: t('service.apis.collapseButtonGroup.clone'),
+    label: t('actions.clone'),
     value: 'patchClone',
     auth: 'VIEW',
     icon: 'icon-fuzhi',
     disabled: false
   },
   {
-    label: t('service.apis.collapseButtonGroup.delete'),
+    label: t('actions.delete'),
     value: 'del',
     icon: 'icon-qingchu',
     auth: 'DELETE',
@@ -33,44 +33,44 @@ export const ButtonGroup = [
     permission: 'MOCK',
     icon: 'icon-mockjiedian'
   }, {
-    name: t('service.apis.buttonGroup.addWatch'),
-    key: 'addWatch',
+    name: t('actions.addFollow'),
+    key: 'addFollow',
     permission: 'VIEW',
     disabled: false,
     icon: 'icon-yiguanzhu'
   }, {
-    name: t('service.apis.buttonGroup.cancelWatch'),
-    key: 'cancelWatch',
+    name: t('actions.cancelFollow'),
+    key: 'cancelFollow',
     permission: 'VIEW',
     disabled: false,
     icon: 'icon-quxiaoguanzhu'
   }, {
-    name: t('service.apis.buttonGroup.addFavourite'),
+    name: t('actions.addFavourite'),
     key: 'addFavourite',
     permission: 'VIEW',
     disabled: false,
     icon: 'icon-shoucang2'
   }, {
-    name: t('service.apis.buttonGroup.cancelFavourite'),
+    name: t('actions.cancelFavourite'),
     key: 'cancelFavourite',
     permission: 'VIEW',
     disabled: false,
     icon: 'icon-quxiaoshoucang'
   },
   {
-    name: t('service.apis.buttonGroup.remove'),
+    name: t('actions.remove'),
     key: 'remove',
     permission: 'MODIFY',
     disabled: false,
     icon: 'icon-yidong'
   }, {
-    name: t('service.apis.buttonGroup.auth'),
+    name: t('actions.permission'),
     key: 'auth',
     permission: 'GRANT',
     disabled: false,
     icon: 'icon-quanxian1'
   }, {
-    name: t('service.apis.buttonGroup.export'),
+    name: t('actions.export'),
     key: 'export',
     permission: 'EXPORT',
     disabled: false,

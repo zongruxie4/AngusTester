@@ -182,7 +182,7 @@ const navs = computed(() => [
   },
   {
     icon: 'icon-baocun',
-    name: props.valueObj?.unarchived ? t('service.apiWebSocket.navigation.archiveToService') : t('service.apiWebSocket.navigation.save'),
+    name: props.valueObj?.unarchived ? t('service.apiWebSocket.navigation.archiveToService') : t('actions.save'),
     key: 'save'
   },
   !props.valueObj.unarchived && {
@@ -535,7 +535,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
               v-if="props.valueObj.id"
               class="ml-2"
               @click="save">
-              {{ t('service.apiWebSocket.actions.save') }}
+              {{ t('actions.save') }}
             </Button>
             <Button
               v-else
@@ -656,7 +656,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
                 <Button
                   class="h-7 leading-7 py-0 px-3 text-3"
                   @click="delAllMsg">
-                  <Icon icon="icon-qingsao" class="mr-2 text-3 -mt-0.5" />{{ t('service.apiWebSocket.actions.clear') }}
+                  <Icon icon="icon-qingsao" class="mr-2 text-3 -mt-0.5" />{{ t('actions.clear') }}
                 </Button>
               </div>
               <MessageList

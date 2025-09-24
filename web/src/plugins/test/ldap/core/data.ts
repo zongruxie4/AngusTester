@@ -69,7 +69,7 @@ export const DRAWER_MENUITEMS:{
 }[] = [
   {
     icon: 'icon-fuwuxinxi',
-    name: t('commonPlugin.menuData.drawer.save'),
+    name: t('cactions.save'),
     key: 'save'
   },
   {

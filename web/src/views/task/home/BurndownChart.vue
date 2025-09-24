@@ -85,12 +85,12 @@ const chartConfiguration = {
   },
   series: [
     {
-      name: t('taskHome.remaining'),
+      name: t('chart.burndown.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: t('taskHome.expected'),
+      name: t('chart.burndown.expected'),
       data: [],
       type: 'line',
       smooth: true
@@ -180,7 +180,7 @@ onBeforeUnmount(() => {
   <div class="pt-1.5 flex flex-col">
     <!-- Chart header with title and metric selection -->
     <div class="text-3.5 font-semibold flex justify-between">
-      {{ t('taskHome.myBurndownChart') }}
+      {{ t('chart.burndown.myTitle') }}
       <RadioGroup v-model:value="selectedMetric" :options="chartDisplayOptions">
       </RadioGroup>
     </div>

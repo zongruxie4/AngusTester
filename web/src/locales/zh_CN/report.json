@@ -1,15 +1,152 @@
 {
-  "reportAdd": {
-    "title": {
-      "add": "添加报告",
-      "edit": "编辑报告"
+  "reportHome": {
+    "messages": {
+      "deleteSuccess": "删除成功",
+      "getTokenFailed": "获取token失败",
+      "shareLinkCopied": "已复制分享链接到剪贴板",
+      "generatingReport": "正在生成报告"
     },
+    "modal": {
+      "deleteReport": "删除报告",
+      "confirmDelete": "确认删除报告「{name}」吗？",
+      "reportPermission": "报告权限"
+    },
+    "actions": {
+      "generateNow": "立即生成"
+    },
+    "table": {
+      "template": "模板",
+      "resourceName": "资源名称",
+      "resourceType": "资源类型",
+      "resourceId": "资源ID",
+      "nextGenerateTime": "下次生成时间"
+    },
+    "permission": {
+      "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
+      "offTips": "无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
+    },
+    "globalAuth": {
+      "title": "报告权限",
+      "description": "授权给指定的\"功能\"操作权限给用户、部门、组，授予权限时\"查看\"权限是必须的。用户只能授权自己有授权权限的功能。",
+      "tabs": {
+        "user": "用户",
+        "dept": "部门",
+        "group": "组"
+      }
+    },
+    "summary": {
+      "description": "通过\"报告\"帮助团队可以全面总结研发活动的各个方面，包括进度、效能、质量、执行情况、结果分析等，这有助于提高透明度和沟通，为项目的成功交付提供有力支持。",
+      "workTitle": "在这里您和您的团队可以完成以下工作：",
+      "features": {
+        "generateReport": "根据报告模版在指定时间生成报告，并通过事件通知到相关人。",
+        "viewReport": "查看我添加的或者授权给我的报告及内容。"
+      }
+    },
+    "searchPanel": {
+      "quickQuery": "快速查询",
+      "menuItems": {
+        "all": "所有",
+        "myAdded": "我添加的",
+        "myModified": "我修改的",
+        "last1Day": "近1天",
+        "last3Days": "近3天",
+        "last7Days": "近7天"
+      },
+      "searchOptions": {
+        "namePlaceholder": "查询名称、描述",
+        "resourceTypePlaceholder": "选择资源类型",
+        "resourcePlaceholder": "选择资源",
+        "creatorPlaceholder": "添加人",
+        "createTimeFrom": "添加时间从",
+        "createTimeTo": "添加时间到"
+      },
+      "resourceSelect": {
+        "project": "选择项目",
+        "service": "选择服务",
+        "api": "选择接口",
+        "task": "选择任务",
+        "sprint": "选择迭代",
+        "plan": "选择计划",
+        "case": "选择用例",
+        "execution": "选择执行",
+        "scenario": "选择场景"
+      },
+      "sortMenus": {
+        "byCreateTime": "按添加时间",
+        "byCreator": "按添加人"
+      },
+      "actions": {
+        "addReport": "添加报告",
+        "reportPermission": "报告权限"
+      }
+    },
+    "chart": {
+      "categories": {
+        "allReports": "全部报告",
+        "project": "项目",
+        "functional": "功能",
+        "api": "接口",
+        "scenario": "场景",
+        "task": "任务",
+        "execution": "执行"
+      },
+      "labels": {
+        "category": "分类",
+        "status": "状态"
+      }
+    },
+    "reportDetail": {
+      "title": "查看报告",
+      "info": {
+        "category": "分类",
+      },
+      "tabs": {
+        "createdDate": "添加时间",
+        "basic": "基本信息",
+        "content": "内容",
+        "record": "报告记录",
+        "activity": "活动"
+      },
+      "generateTime": {
+        "nextGenerateTime": "下次生成时间",
+        "dayOfMonth": "日"
+      },
+      "content": {
+        "organizationPersonnel": "组织人员",
+        "time": "时间",
+        "project": "项目",
+        "sprint": "迭代",
+        "task": "任务",
+        "plan": "计划",
+        "case": "用例",
+        "service": "服务",
+        "api": "接口",
+        "scenario": "场景",
+        "execution": "执行",
+        "content": "内容",
+        "contentHint": "以下是报告输出内容目录信息。",
+        "memberTypes": {
+          "user": "用户",
+          "dept": "部门",
+          "group": "组"
+        }
+      },
+      "generateRecord": {
+        "reportName": "报告名称",
+        "type": "类型",
+        "template": "模板",
+        "creator": "添加人",
+        "generateTime": "生成时间",
+        "deleteRecord": "删除报告记录",
+        "confirmDelete": "确认删除报告记录「{name}」吗？",
+        "deleteSuccess": "删除成功"
+      }
+    }
+  },
+  "reportAdd": {
     "form": {
-      "name": "名称",
       "namePlaceholder": "报告名称，最长100个字符",
-      "version": "版本",
       "versionPlaceholder": "报告版本，默认1.0.0，最长20个字符",
-      "description": "描述",
       "descriptionPlaceholder": "报告描述，使用描述解释此报告的内容和目的，或添加其他资源的链接，最长200个字符"
     },
     "tabs": {
@@ -104,8 +241,6 @@
         "exec": "执行信息",
         "basic": "执行基本信息",
         "execResult": "执行结果",
-        "total": "汇总结果",
-        "name": "名称",
         "sampling": "采样数",
         "qps": "事务数",
         "minmax": "最小/最大/平均",
@@ -158,10 +293,10 @@
     },
     "basic": {
       "options": {
-        "name": "展示报告名称",
-        "user": "展示报告人",
-        "createdDate": "展示报告生成时间",
-        "version": "展示报告版本",
+        "showName": "展示报告名称",
+        "showUser": "展示报告人",
+        "showCreatedDate": "展示报告生成时间",
+        "showVersion": "展示报告版本",
         "reportContacts": "展示联系人",
         "description": "展示报告描述",
         "reportCopyright": "展示版权说明",
@@ -325,7 +460,6 @@
         "resultkDetail": "测试人汇总结果",
         "testTotal": "测试汇总结果",
         "reviewTotal": "评审汇总结果",
-        "burndown": "燃尽图",
         "groupedTotal": "分组统计"
       }
     },
@@ -375,193 +509,7 @@
       }
     }
   },
-  "reportHome": {
-    "messages": {
-      "deleteSuccess": "删除成功",
-      "getTokenFailed": "获取token失败",
-      "shareLinkCopied": "已复制分享链接到剪贴板",
-      "generatingReport": "正在生成报告"
-    },
-    "modal": {
-      "deleteReport": "删除报告",
-      "confirmDelete": "确认删除报告「{name}」吗？",
-      "reportPermission": "报告权限"
-    },
-    "actions": {
-      "generateNow": "立即生成",
-      "permission": "权限",
-      "delete": "删除",
-      "edit": "编辑",
-      "view": "查看"
-    },
-    "table": {
-      "name": "名称",
-      "version": "版本",
-      "template": "模板",
-      "status": "状态",
-      "resourceName": "资源名称",
-      "resourceType": "资源类型",
-      "resourceId": "资源ID",
-      "description": "描述",
-      "creator": "添加人",
-      "createTime": "添加时间",
-      "lastModifier": "最后修改人",
-      "lastModifyTime": "最后修改时间",
-      "nextGenerateTime": "下次生成时间",
-      "actions": "操作"
-    },
-    "permission": {
-      "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
-      "offTips": "无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
-    },
-    "globalAuth": {
-      "title": "报告权限",
-      "description": "授权给指定的\"功能\"操作权限给用户、部门、组，授予权限时\"查看\"权限是必须的。用户只能授权自己有授权权限的功能。",
-      "tabs": {
-        "user": "用户",
-        "dept": "部门",
-        "group": "组"
-      },
-      "authSet": {
-        "searchPlaceholder": "查询名称",
-        "name": "名称",
-        "permissionControl": "权限控制",
-        "permission": "权限",
-        "loading": "加载中...",
-        "all": "全部"
-      },
-      "groupSet": {
-        "searchUser": "查询用户",
-        "searchDept": "查询部门",
-        "searchGroup": "查询组"
-      }
-    },
-    "summary": {
-      "description": "通过\"报告\"帮助团队可以全面总结研发活动的各个方面，包括进度、效能、质量、执行情况、结果分析等，这有助于提高透明度和沟通，为项目的成功交付提供有力支持。",
-      "workTitle": "在这里您和您的团队可以完成以下工作：",
-      "features": {
-        "generateReport": "根据报告模版在指定时间生成报告，并通过事件通知到相关人。",
-        "viewReport": "查看我添加的或者授权给我的报告及内容。"
-      }
-    },
-    "searchPanel": {
-      "quickQuery": "快速查询",
-      "menuItems": {
-        "all": "所有",
-        "myAdded": "我添加的",
-        "myModified": "我修改的",
-        "last1Day": "近1天",
-        "last3Days": "近3天",
-        "last7Days": "近7天"
-      },
-      "searchOptions": {
-        "namePlaceholder": "查询名称、描述",
-        "resourceTypePlaceholder": "选择资源类型",
-        "resourcePlaceholder": "选择资源",
-        "creatorPlaceholder": "添加人",
-        "createTimeFrom": "添加时间从",
-        "createTimeTo": "添加时间到"
-      },
-      "resourceSelect": {
-        "project": "选择项目",
-        "service": "选择服务",
-        "api": "选择接口",
-        "task": "选择任务",
-        "sprint": "选择迭代",
-        "plan": "选择计划",
-        "case": "选择用例",
-        "execution": "选择执行",
-        "scenario": "选择场景"
-      },
-      "sortMenus": {
-        "byCreateTime": "按添加时间",
-        "byCreator": "按添加人"
-      },
-      "actions": {
-        "addReport": "添加报告",
-        "reportPermission": "报告权限",
-        "sort": "排序",
-        "refresh": "刷新"
-      }
-    },
-    "chart": {
-      "categories": {
-        "allReports": "全部报告",
-        "project": "项目",
-        "functional": "功能",
-        "api": "接口",
-        "scenario": "场景",
-        "task": "任务",
-        "execution": "执行"
-      },
-      "status": {
-        "success": "成功",
-        "failure": "失败"
-      },
-      "labels": {
-        "category": "分类",
-        "status": "状态"
-      }
-    },
-    "reportDetail": {
-      "title": "查看报告",
-      "info": {
-        "category": "分类",
-        "creator": "报告人",
-        "description": "描述"
-      },
-      "form": {
-        "name": "名称",
-        "version": "版本号",
-        "description": "描述"
-      },
-      "tabs": {
-        "createdDate": "添加时间",
-        "basic": "基本信息",
-        "content": "内容",
-        "record": "报告记录",
-        "activity": "活动"
-      },
-      "generateTime": {
-        "nextGenerateTime": "下次生成时间",
-        "dayOfMonth": "日"
-      },
-      "content": {
-        "organizationPersonnel": "组织人员",
-        "time": "时间",
-        "project": "项目",
-        "sprint": "迭代",
-        "task": "任务",
-        "plan": "计划",
-        "case": "用例",
-        "service": "服务",
-        "api": "接口",
-        "scenario": "场景",
-        "execution": "执行",
-        "content": "内容",
-        "contentHint": "以下是报告输出内容目录信息。",
-        "memberTypes": {
-          "user": "用户",
-          "dept": "部门",
-          "group": "组"
-        }
-      },
-      "generateRecord": {
-        "reportName": "报告名称",
-        "type": "类型",
-        "template": "模板",
-        "creator": "添加人",
-        "generateTime": "生成时间",
-        "actions": "操作",
-        "delete": "删除",
-        "deleteRecord": "删除报告记录",
-        "confirmDelete": "确认删除报告记录「{name}」吗？",
-        "deleteSuccess": "删除成功"
-      }
-    }
-  },
   "reportPreview": {
-    "loading": "数据加载中...",
     "generating": "生成pdf文件中...",
     "mainTitle": {
       "reporter": "报告人",
@@ -571,7 +519,6 @@
     },
     "description": {
       "summary": "摘要",
-      "progress": "进度",
       "description": "描述",
       "contact": "联系人",
       "copyright": "版权说明",
@@ -661,24 +608,15 @@
           "enableStabilityTest": "开启稳定性测试",
           "stabilityTestPassed": "稳定性测试通过",
           "stabilityTestFailureReason": "稳定性测试失败原因"
-        },
-        "status": {
-          "passed": "通过",
-          "failed": "未通过",
-          "notTested": "未测试",
-          "enabled": "开启",
-          "disabled": "未开启"
         }
       },
       "testResultDetail": {
         "title": "场景测试结果详细信息",
-        "noData": "无",
         "functionalTest": {
           "title": "功能测试结果",
           "basicInfo": "测试基本信息",
           "testCases": "测试用例",
-          "testCaseResults": "测试用例结果明细",
-          "noData": "无"
+          "testCaseResults": "测试用例结果明细"
         },
         "performanceTest": {
           "title": "性能测试",
@@ -729,13 +667,6 @@
           "memoryUsage": "内存使用率",
           "diskUsage": "磁盘使用率",
           "networkUsage": "网络使用量"
-        },
-        "status": {
-          "passed": "通过",
-          "failed": "未通过",
-          "notTested": "未测试",
-          "enabled": "开启",
-          "disabled": "未开启"
         }
       }
     },
@@ -761,10 +692,6 @@
           "contact": "联系人",
           "copyright": "版权说明",
           "other": "其他"
-        },
-        "status": {
-          "passed": "通过",
-          "failed": "未通过"
         }
       },
       "detail": {
@@ -772,25 +699,15 @@
         "basicInfo": {
           "title": "执行基本信息",
           "fields": {
-            "name": "名称",
             "testScriptId": "测试脚本ID",
             "testScriptName": "测试脚本名称",
             "plugin": "插件",
-            "status": "状态",
-            "type": "类型",
-            "priority": "优先级",
-            "startTime": "开始时间",
-            "endTime": "结束时间",
             "nodeCount": "节点数",
             "reportInterval": "报告间隔",
             "ignoreAssertions": "忽略断言",
             "updateTestResult": "更新测试结果",
-            "creator": "添加人",
-            "createTime": "添加时间"
           },
           "options": {
-            "ignore": "忽略",
-            "notIgnore": "不忽略",
             "update": "更新",
             "notUpdate": "不更新"
           }
@@ -801,12 +718,6 @@
             "testResult": "测试结果",
             "failureReason": "失败原因",
             "testCases": "测试用例"
-          },
-          "summary": {
-            "total": "总共",
-            "passed": "通过",
-            "failed": "未通过",
-            "disabled": "未启用"
           }
         }
       },
@@ -817,10 +728,6 @@
           "fields": {
             "schedulingResult": "调度结果",
             "processExitCode": "进程退出码"
-          },
-          "status": {
-            "success": "成功",
-            "failed": "失败"
           }
         },
         "samplingLog": {
@@ -858,18 +765,11 @@
             "waitTimeout": "等待超时"
           },
           "statusTag": {
-            "failed": "未通过",
-            "passed": "通过",
-            "notExecuted": "未执行",
-            "notEnabled": "未启用"
+            "notExecuted": "未执行"
           },
           "assertionResult": {
             "title": "断言结果",
-            "none": "无",
-            "failed": "未通过",
-            "passed": "通过",
-            "ignored": "忽略",
-            "notEnabled": "未启用"
+            "none": "无"
           }
         }
       }
@@ -905,10 +805,6 @@
           "contact": "联系人",
           "copyright": "版权说明",
           "other": "其他"
-        },
-        "status": {
-          "passed": "通过",
-          "failed": "未通过"
         }
       },
       "detail": {
@@ -933,8 +829,6 @@
             "createTime": "添加时间"
           },
           "options": {
-            "ignore": "忽略",
-            "notIgnore": "不忽略",
             "update": "更新",
             "notUpdate": "不更新"
           }
@@ -983,7 +877,6 @@
       "samplingSummary": {
         "title": "汇总结果",
         "fields": {
-          "name": "名称",
           "samplingCount": "采样数",
           "transactionCount": "事务数",
           "tps": "每秒事务数",
@@ -1010,28 +903,19 @@
           "overlayAnalysisTitle": "叠加分析",
           "none": "无",
           "throughput": {
-            "name": "名称",
             "queriesPerSecond": "每秒查询数",
             "transactionsPerSecond": "每秒事务数",
             "queriesPerSecondWithStats": "每秒查询数(当前 | 最小 | 最大 | 平均)",
             "transactionsPerSecondWithStats": "每秒事务数(当前 | 最小 | 最大 | 平均)"
           },
           "error": {
-            "name": "名称",
             "sampleCount": "采样数",
             "requestCount": "请求数",
             "transactionCount": "事务数",
             "errorCount": "错误数",
             "errorRate": "错误率"
           },
-          "responseTime": {
-            "name": "名称",
-            "average": "平均",
-            "minimum": "最小",
-            "maximum": "最大"
-          },
           "concurrency": {
-            "name": "名称",
             "threadCount": "线程数",
             "activeThreadCount": "活跃线程数",
             "maxThreadCount": "最大线程数"
@@ -1105,7 +989,6 @@
           "threadPoolSize": "线程数",
           "threadPoolActiveSize": "活跃线程数",
           "threadMaxPoolSize": "最大线程数",
-          "name": "名称",
           "current": "当前",
           "brpsAll": "下载/秒(当前 | 最小 | 最大 | 平均)",
           "bwpsAll": "上传/秒(当前 | 最小 | 最大 | 平均)"
@@ -1118,10 +1001,6 @@
           "fields": {
             "schedulingResult": "调度结果",
             "processExitCode": "进程退出码"
-          },
-          "status": {
-            "success": "成功",
-            "failed": "失败"
           }
         },
         "samplingLog": {
@@ -1168,17 +1047,6 @@
         "basic": {
           "title": "基本信息",
           "fields": {
-            "name": "名称",
-            "priority": "优先级",
-            "testResult": "测试结果",
-            "code": "编号",
-            "reviewStatus": "评审状态",
-            "project": "所属项目",
-            "module": "所属模块",
-            "tags": "标签",
-            "workloadEvalMethod": "工作量评估方式",
-            "evalWorkload": "评估工作量",
-            "actualWorkload": "实际工作量",
             "processCount": "处理次数",
             "processFailCount": "处理失败次数",
             "overdue": "是否逾期",
@@ -1186,8 +1054,6 @@
             "unplannedCase": "计划外用例"
           },
           "options": {
-            "yes": "是",
-            "no": "否",
             "storyPoint": "评估故事点",
             "workTime": "评估工时",
             "actualStoryPoint": "实际故事点",
@@ -1214,21 +1080,17 @@
           }
         },
         "precondition": {
-          "title": "前置条件",
-          "noData": "无"
+          "title": "前置条件"
         },
         "testSteps": {
           "title": "测试步骤",
           "fields": {
-            "code": "编号",
             "testStep": "测试步骤",
             "expectedResult": "预期结果"
-          },
-          "noData": "无"
+          }
         },
         "description": {
-          "title": "描述",
-          "noData": "无"
+          "title": "描述"
         },
         "testInfo": {
           "title": "测试信息",
@@ -1237,10 +1099,6 @@
             "testFailCount": "测试失败次数",
             "oneTimeTestPass": "一次性测试通过",
             "testRemark": "测试备注"
-          },
-          "options": {
-            "yes": "是",
-            "no": "否"
           }
         }
       },
@@ -1252,33 +1110,13 @@
           "reviewFailCount": "评审失败次数",
           "oneTimeReviewPass": "一次性评审通过",
           "reviewOpinion": "评审意见"
-        },
-        "options": {
-          "yes": "是",
-          "no": "否"
         }
       },
       "assocTask": {
         "title": "关联任务",
-        "fields": {
-          "code": "编码",
-          "type": "类型",
-          "name": "名称",
-          "status": "状态",
-          "assignee": "经办人"
-        },
-        "noData": "无"
       },
       "assocCase": {
         "title": "关联用例",
-        "fields": {
-          "code": "编码",
-          "name": "名称",
-          "testStatus": "测试状态",
-          "reviewStatus": "评审状态",
-          "tester": "测试人"
-        },
-        "noData": "无"
       },
       "activity": {
         "title": "活动",
@@ -1286,8 +1124,7 @@
           "activityTime": "活动时间",
           "activityPerson": "活动人",
           "activityDescription": "活动描述"
-        },
-        "noData": "无"
+        }
       },
       "comment": {
         "title": "评论",
@@ -1296,8 +1133,7 @@
           "commenter": "评论人",
           "commentContent": "评论内容",
           "reply": "回复"
-        },
-        "noData": "无"
+        }
       }
     },
     "functionPlan": {
@@ -1315,7 +1151,6 @@
           "caseSummary": "用例汇总结果",
           "testSummary": "测试汇总结果",
           "reviewSummary": "评审汇总结果",
-          "burndownChart": "燃尽图",
           "groupStats": "分组统计",
           "testerSummary": "测试人汇总结果"
         }
@@ -1323,8 +1158,6 @@
       "summary": {
         "title": "摘要",
         "fields": {
-          "progress": "进度",
-          "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
           "other": "其他"
@@ -1346,10 +1179,6 @@
             "createTime": "添加时间",
             "workloadEvalMethod": "工作量评估方式",
             "reviewCase": "是否评审用例"
-          },
-          "options": {
-            "yes": "是",
-            "no": "否"
           }
         },
         "testerAndDuty": {
@@ -1360,20 +1189,16 @@
           }
         },
         "testTarget": {
-          "title": "测试目标",
-          "noData": "无"
+          "title": "测试目标"
         },
         "testScope": {
-          "title": "测试范围",
-          "noData": "无"
+          "title": "测试范围"
         },
         "acceptanceCriteria": {
-          "title": "验收标准",
-          "noData": "无"
+          "title": "验收标准"
         },
         "otherInfo": {
-          "title": "其他说明",
-          "noData": "无"
+          "title": "其他说明"
         }
       },
       "caseSummary": {
@@ -1381,7 +1206,6 @@
         "testSummary": {
           "title": "测试汇总结果",
           "fields": {
-            "progress": "进度",
             "totalCases": "用例总数",
             "validCases": "有效用例数",
             "pendingTest": "待测试数",
@@ -1415,20 +1239,11 @@
             "oneTimeReviewPassRate": "一次性评审通过率"
           }
         },
-        "burndownChart": {
-          "title": "燃尽图",
-          "caseCount": "用例数",
-          "workload": "工作量",
-          "remaining": "剩余",
-          "expected": "期望"
-        },
         "groupStats": {
           "title": "分组统计",
           "byStatus": "按状态分组",
           "byPriority": "按优先级分组",
-          "statuses": {
-            "cancelled": "已取消",
-            "blocked": "阻塞",
+          "status": {
             "testFailed": "测试未通过",
             "testPassed": "测试通过",
             "pendingTest": "待测试"
@@ -1447,7 +1262,6 @@
         "testSummary": {
           "title": "测试汇总结果",
           "fields": {
-            "progress": "进度",
             "totalCases": "用例总数",
             "validCases": "有效用例数",
             "pendingTest": "待测试数",
@@ -1481,41 +1295,18 @@
             "oneTimeReviewPassRate": "一次性评审通过率"
           }
         },
-        "burndownChart": {
-          "title": "燃尽图"
-        },
         "groupStats": {
           "title": "分组统计"
         },
         "caseList": {
           "fields": {
-            "code": "编码",
-            "priority": "优先级",
-            "module": "所属模块",
-            "overdue": "是否逾期",
-            "deadline": "截止时间",
-            "tester": "测试人",
-            "testResult": "测试结果",
             "testResultRemark": "测试结果备注",
             "testCompleteTime": "测试完成时间",
             "reviewCase": "是否评审用例",
-            "reviewStatus": "评审状态",
-            "reviewer": "评审人",
             "reviewOpinion": "评审意见",
             "reviewTime": "评审时间",
-            "workloadEvalMethod": "工作量评估方式",
-            "estimatedWorkload": "评估工作量",
-            "actualWorkload": "实际工作量",
             "totalTestCount": "总测试次数",
-            "testFailCount": "测试失败次数",
-            "creator": "添加人",
-            "createTime": "添加时间",
-            "lastModifier": "最后修改人",
-            "lastModifyTime": "最后修改时间"
-          },
-          "options": {
-            "yes": "是",
-            "no": "否"
+            "testFailCount": "测试失败次数"
           }
         }
       }
@@ -1546,8 +1337,6 @@
       "summary": {
         "title": "摘要",
         "fields": {
-          "progress": "进度",
-          "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
           "other": "其他"
@@ -1556,11 +1345,9 @@
       "info": {
         "title": "项目信息",
         "fields": {
-          "name": "名称",
+
           "planTime": "计划时间",
-          "owner": "负责人",
-          "members": "成员",
-          "description": "描述"
+
         }
       },
       "taskSummary": {
@@ -1568,7 +1355,6 @@
         "summary": {
           "title": "任务汇总结果",
           "fields": {
-            "progress": "进度",
             "totalTasks": "任务总数",
             "validTasks": "有效任务数",
             "totalBugs": "缺陷总数",
@@ -1589,27 +1375,11 @@
             "workloadSaveRate": "工作量节省率"
           }
         },
-        "burndownChart": {
-          "title": "任务燃尽图",
-          "remaining": "剩余",
-          "expected": "期望",
-          "caseCount": "用例数",
-          "workload": "工作量",
-          "taskCount": "任务数"
-        },
         "groupStats": {
           "title": "任务分组统计",
           "byStatus": "按状态分组",
           "byPriority": "按优先级分组",
           "byTaskType": "按任务类型分组",
-          "total": "总数",
-          "statuses": {
-            "cancelled": "已取消",
-            "completed": "已完成",
-            "pendingConfirm": "待确认",
-            "processing": "进行中",
-            "pending": "待处理"
-          },
           "priorities": {
             "highest": "最高",
             "high": "高",
@@ -1632,7 +1402,6 @@
         "testSummary": {
           "title": "用例测试汇总结果",
           "fields": {
-            "progress": "进度",
             "totalCases": "用例总数",
             "validCases": "有效用例数",
             "pendingTest": "待测试数",
@@ -1655,7 +1424,6 @@
         "reviewSummary": {
           "title": "用例评审汇总结果",
           "fields": {
-            "progress": "进度",
             "totalReviewCases": "总评审用例数",
             "pendingReview": "待评审数",
             "reviewPassed": "评审通过数",
@@ -1667,21 +1435,11 @@
             "oneTimeReviewPassRate": "一次性评审通过率"
           }
         },
-        "burndownChart": {
-          "title": "用例燃尽图",
-          "remaining": "剩余",
-          "expected": "期望",
-          "caseCount": "用例数",
-          "workload": "工作量"
-        },
         "groupStats": {
           "title": "用例分组统计",
           "byStatus": "按状态分组",
           "byPriority": "按优先级分组",
-          "total": "总数",
-          "statuses": {
-            "cancelled": "已取消",
-            "blocked": "阻塞",
+          "status": {
             "testFailed": "测试未通过",
             "testPassed": "测试通过",
             "pendingTest": "待测试"
@@ -1700,7 +1458,6 @@
         "testSummary": {
           "title": "接口测试汇总结果",
           "fields": {
-            "progress": "进度",
             "totalApis": "接口总数",
             "enabledApiTest": "启用接口测试",
             "disabledApiTest": "未启用接口测试",
@@ -1716,8 +1473,7 @@
           "title": "接口分组统计",
           "byStatus": "按状态分组",
           "byRequestMethod": "按请求方法分组",
-          "total": "总数",
-          "statuses": {
+          "status": {
             "published": "已发布",
             "devCompleted": "开发完成",
             "devInProgress": "开发中",
@@ -1731,7 +1487,6 @@
         "testSummary": {
           "title": "场景测试汇总结果",
           "fields": {
-            "progress": "进度",
             "totalScenarios": "场景总数",
             "enabledScenarioTest": "启用场景测试",
             "disabledScenarioTest": "未启用场景测试",
@@ -1747,7 +1502,6 @@
           "title": "场景分组统计",
           "byProtocol": "按协议分组",
           "byTestType": "按测试类型分组",
-          "total": "总数",
           "quantity": "数量",
           "testTypes": {
             "perfTest": "性能测试",
@@ -1779,28 +1533,10 @@
           "contact": "联系人",
           "copyright": "版权说明",
           "other": "其他"
-        },
-        "options": {
-          "passed": "通过",
-          "failed": "未通过",
-          "notTested": "未测试"
         }
       },
       "info": {
         "title": "场景信息",
-        "fields": {
-          "name": "名称",
-          "description": "描述",
-          "project": "所属项目",
-          "plugin": "插件",
-          "scriptType": "脚本类型",
-          "scriptId": "脚本ID",
-          "scriptName": "脚本名称",
-          "creator": "添加人",
-          "createTime": "添加时间",
-          "lastModifier": "最后修改人",
-          "lastModifyTime": "最后修改时间"
-        }
       },
       "testResult": {
         "title": "场景测试汇总结果",
@@ -1815,13 +1551,6 @@
           "enableStabilityTest": "开启稳定性测试",
           "stabilityTestPassed": "稳定性测试通过",
           "stabilityTestFailReason": "稳定性测试失败原因"
-        },
-        "options": {
-          "passed": "通过",
-          "failed": "未通过",
-          "notTested": "未测试",
-          "enabled": "开启",
-          "disabled": "未开启"
         }
       },
       "testResultDetail": {
@@ -1841,11 +1570,6 @@
               "execName": "执行名称",
               "lastExecutor": "最后执行人",
               "lastExecTime": "最后执行时间"
-            },
-            "options": {
-              "passed": "通过",
-              "failed": "未通过",
-              "notTested": "未测试"
             }
           },
           "apiStats": {
@@ -1861,21 +1585,12 @@
             "title": "测试用例结果明细",
             "fields": {
               "type": "类型",
-              "enabled": "是否启用",
               "testPassed": "是否测试通过",
               "testFailReason": "测试失败原因",
               "testCount": "测试次数",
               "testFailCount": "测试失败次数"
-            },
-            "options": {
-              "enabled": "开启",
-              "disabled": "未开启",
-              "passed": "通过",
-              "failed": "未通过",
-              "notTested": "未测试"
             }
-          },
-          "noData": "无"
+          }
         },
         "perfTestResult": {
           "title": "性能测试",
@@ -1892,11 +1607,6 @@
               "execName": "执行名称",
               "lastExecutor": "最后执行人",
               "lastExecTime": "最后执行时间"
-            },
-            "options": {
-              "passed": "通过",
-              "failed": "未通过",
-              "notTested": "未测试"
             }
           },
           "metrics": {
@@ -1912,8 +1622,7 @@
               "tps": "每秒事务数",
               "errorRate": "错误率"
             }
-          },
-          "noData": "无"
+          }
         },
         "stabilityTestResult": {
           "title": "稳定性测试",
@@ -1930,11 +1639,6 @@
               "execName": "执行名称",
               "lastExecutor": "最后执行人",
               "lastExecTime": "最后执行时间"
-            },
-            "options": {
-              "passed": "通过",
-              "failed": "未通过",
-              "notTested": "未测试"
             }
           },
           "metrics": {
@@ -1964,8 +1668,7 @@
             "title": "应用系统平均负载",
             "average": "平均",
             "maximum": "最大"
-          },
-          "noData": "无"
+          }
         },
         "performanceTest": {
           "title": "性能测试",
@@ -2006,13 +1709,6 @@
           "memoryUsage": "内存使用率",
           "diskUsage": "磁盘使用率",
           "networkUsage": "网络使用量"
-        },
-        "status": {
-          "passed": "通过",
-          "failed": "未通过",
-          "notTested": "未测试",
-          "enabled": "开启",
-          "disabled": "未开启"
         }
       }
     },
@@ -2042,22 +1738,15 @@
       "info": {
         "title": "服务信息",
         "fields": {
-          "name": "名称",
-          "status": "状态",
-          "project": "所属项目",
           "apiCount": "接口数",
           "apiCaseCount": "接口用例数",
-          "creator": "添加人",
-          "createTime": "添加时间",
-          "lastModifier": "最后修改人",
-          "lastModifyTime": "最后修改时间"
         }
       },
       "apisGroup": {
         "title": "接口分组统计",
         "byStatus": {
           "title": "按状态分组",
-          "statuses": {
+          "status": {
             "unknown": "未知",
             "designing": "设计中",
             "devInProgress": "开发中",
@@ -2067,15 +1756,13 @@
         },
         "byRequestMethod": {
           "title": "按请求方法分组"
-        },
-        "total": "总数"
+        }
       },
       "result": {
         "title": "测试结果汇总",
         "testProgress": {
           "title": "测试进度",
-          "totalApis": "总接口",
-          "progress": "进度"
+          "totalApis": "总接口"
         },
         "testApiStats": {
           "title": "测试接口统计",
@@ -2087,13 +1774,7 @@
           }
         },
         "testStatusStats": {
-          "title": "测试状态统计",
-          "fields": {
-            "tested": "已测试",
-            "notTested": "未测试",
-            "passed": "已通过",
-            "failed": "未通过"
-          }
+          "title": "测试状态统计"
         }
       },
       "apiResultDetail": {
@@ -2115,8 +1796,6 @@
           "stabilityTestFailReason": "稳定性测试失败原因"
         },
         "options": {
-          "yes": "是",
-          "no": "否",
           "notTested": "未测试"
         }
       }
@@ -2133,7 +1812,6 @@
           "otherInfo": "其他说明",
           "devTask": "研发任务",
           "taskSummary": "任务汇总结果",
-          "burndownChart": "燃尽图",
           "groupStats": "分组统计",
           "assigneeSummary": "经办人汇总结果"
         }
@@ -2141,8 +1819,6 @@
       "summary": {
         "title": "摘要",
         "fields": {
-          "progress": "进度",
-          "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
           "other": "其他"
@@ -2153,24 +1829,15 @@
         "basicInfo": {
           "title": "基本信息",
           "fields": {
-            "name": "名称",
             "taskPrefix": "任务前缀",
-            "status": "状态",
-            "owner": "负责人",
-            "project": "所属项目",
             "sprintTime": "迭代时间",
-            "creator": "添加人",
-            "createTime": "添加时间",
-            "workloadEstimationMethod": "工作量评估方式"
           }
         },
         "acceptanceCriteria": {
-          "title": "验收标准",
-          "noData": "无"
+          "title": "验收标准"
         },
         "meetingRecord": {
           "title": "会议记录",
-          "noData": "无",
           "meetingTopic": "会议主题",
           "fields": {
             "meetingType": "会议类型",
@@ -2184,39 +1851,20 @@
           }
         },
         "otherInfo": {
-          "title": "其他说明",
-          "noData": "无"
+          "title": "其他说明"
         }
       },
       "taskDetail": {
         "title": "任务详情",
         "fields": {
-          "code": "编码",
-          "priority": "优先级",
-          "module": "所属模块",
-          "taskType": "任务类型",
-          "testType": "测试类型",
-          "taskStatus": "任务状态",
           "completionTime": "完成时间",
-          "overdue": "是否逾期",
-          "deadline": "截止时间",
-          "assignee": "经办人",
           "startTime": "开始时间",
           "confirmTask": "是否确认任务",
-          "confirmer": "确认人",
           "workloadEstimationMethod": "工作量评估方式",
           "estimatedWorkload": "评估工作量",
           "actualWorkload": "实际工作量",
           "totalProcessCount": "总处理次数",
-          "failedProcessCount": "处理失败次数",
-          "creator": "添加人",
-          "createTime": "添加时间",
-          "lastModifier": "最后修改人",
-          "lastModifyTime": "最后修改时间"
-        },
-        "options": {
-          "yes": "是",
-          "no": "否"
+          "failedProcessCount": "处理失败次数"
         }
       },
       "taskSummary": {
@@ -2224,7 +1872,6 @@
         "summary": {
           "title": "任务汇总结果",
           "fields": {
-            "progress": "进度",
             "totalTasks": "任务总数",
             "validTasks": "有效任务数",
             "totalBugs": "缺陷总数",
@@ -2245,26 +1892,11 @@
             "workloadSaveRate": "工作量节省率"
           }
         },
-        "burndownChart": {
-          "title": "燃尽图",
-          "taskCount": "任务数",
-          "workload": "工作量",
-          "remaining": "剩余",
-          "expected": "期望"
-        },
         "groupStats": {
           "title": "分组统计",
           "byStatus": "按状态分组",
           "byPriority": "按优先级分组",
           "byTaskType": "按任务类型分组",
-          "total": "总数",
-          "statuses": {
-            "cancelled": "已取消",
-            "completed": "已完成",
-            "pendingConfirm": "待确认",
-            "processing": "进行中",
-            "pending": "待处理"
-          },
           "priorities": {
             "highest": "最高",
             "high": "高",
@@ -2287,7 +1919,6 @@
         "summary": {
           "title": "任务汇总结果",
           "fields": {
-            "progress": "进度",
             "totalTasks": "任务总数",
             "validTasks": "有效任务数",
             "totalBugs": "缺陷总数",
@@ -2307,13 +1938,6 @@
             "savedWorkload": "节省工作量",
             "workloadSaveRate": "工作量节省率"
           }
-        },
-        "burndownChart": {
-          "title": "燃尽图",
-          "taskCount": "任务数",
-          "workload": "工作量",
-          "remaining": "剩余",
-          "expected": "期望"
         },
         "groupStats": {
           "title": "分组统计"
@@ -2355,16 +1979,7 @@
         "basicInfo": {
           "title": "基本信息",
           "fields": {
-            "name": "名称",
-            "priority": "优先级",
-            "taskType": "任务类型",
             "missedDefect": "漏测缺陷",
-            "taskStatus": "任务状态",
-            "project": "所属项目",
-            "code": "编号",
-            "overdue": "是否逾期",
-            "module": "所属模块",
-            "tag": "标签",
             "workloadEstimationMethod": "工作量评估方式",
             "estimatedStoryPoint": "评估故事点",
             "estimatedWorkTime": "评估工时",
@@ -2374,10 +1989,6 @@
             "failedProcessCount": "处理失败次数",
             "oneTimePass": "一次性通过",
             "unplannedTask": "计划外任务"
-          },
-          "options": {
-            "yes": "是",
-            "no": "否"
           }
         },
         "personnelInfo": {
@@ -2406,12 +2017,10 @@
           }
         },
         "description": {
-          "title": "描述",
-          "noData": "无"
+          "title": "描述"
         },
         "remark": {
-          "title": "备注",
-          "noData": "无"
+          "title": "备注"
         },
         "testingInfo": {
           "title": "测试信息",
@@ -2446,48 +2055,19 @@
                 "testCount": "测试次数",
                 "failCount": "失败次数",
                 "failReason": "失败原因"
-              },
-              "options": {
-                "passed": "通过",
-                "failed": "不通过"
               }
             }
           }
         }
       },
       "subTask": {
-        "title": "子任务",
-        "progress": "进度",
-        "fields": {
-          "code": "编码",
-          "type": "类型",
-          "name": "名称",
-          "status": "状态",
-          "assignee": "经办人"
-        },
-        "noData": "无"
+        "title": "子任务"
       },
       "assocTask": {
-        "title": "关联任务",
-        "fields": {
-          "code": "编码",
-          "type": "类型",
-          "name": "名称",
-          "status": "状态",
-          "assignee": "经办人"
-        },
-        "noData": "无"
+        "title": "关联任务"
       },
       "assocCase": {
-        "title": "关联用例",
-        "fields": {
-          "code": "编码",
-          "name": "名称",
-          "testStatus": "测试状态",
-          "reviewStatus": "评审状态",
-          "tester": "测试人"
-        },
-        "noData": "无"
+        "title": "关联用例"
       },
       "activity": {
         "title": "活动",
@@ -2495,8 +2075,7 @@
           "activityTime": "活动时间",
           "activityUser": "活动人",
           "activityDesc": "活动描述"
-        },
-        "noData": "无"
+        }
       },
       "comment": {
         "title": "评论",
@@ -2505,8 +2084,7 @@
           "commentUser": "评论人",
           "commentContent": "评论内容",
           "reply": "回复"
-        },
-        "noData": "无"
+        }
       },
       "testing": {
         "function": {
@@ -2526,12 +2104,7 @@
               "caseId": "用例ID",
               "caseName": "用例名称",
               "status": "状态"
-            },
-            "options": {
-              "passed": "通过",
-              "failed": "不通过"
-            },
-            "noData": "无"
+            }
           }
         },
         "perf": {

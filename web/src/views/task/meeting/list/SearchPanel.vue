@@ -119,7 +119,7 @@ const quickSearchMenuItems = computed(() => [
   },
   {
     key: 'lastDay',
-    name: t('taskMeeting.quickSearch.lastDay')
+    name: t('taskMeeting.quickSearch.last1Day')
   },
   {
     key: 'lastThreeDays',
@@ -325,7 +325,7 @@ const handleRefresh = () => {
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
         <div class="whitespace-nowrap text-3 mt-0.5 text-text-sub-content">
-          <span>{{ t('quickSearch') }}</span>
+          <span>{{ t('quickSearch.title') }}</span>
           <Colon />
         </div>
         <div class="flex flex-wrap ml-2">
@@ -365,7 +365,7 @@ const handleRefresh = () => {
           @click="handleSortChange">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
-            <span>{{ t('sort') }}</span>
+            <span>{{ t('actions.sort') }}</span>
           </div>
         </DropdownSort>
 

@@ -90,14 +90,14 @@ const echartConfig = {
       },
       data: [
         {
-          name: t('service.apiExecDetail.indicators.success'),
+          name: t('status.success'),
           value: 0,
           itemStyle: {
             color: '#52C41A'
           }
         },
         {
-          name: t('service.apiExecDetail.indicators.failed'),
+          name: t('status.failed'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 0.7)'
@@ -178,8 +178,8 @@ const getErrIconName = (testData) => {
 };
 
 const configInfo = [
-  [{ label: t('service.apiExecDetail.indicators.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: t('service.apiExecDetail.indicators.success'), dataIndex: 'successNum', bgColor: 'bg-status-success' }],
-  [{ label: t('service.apiExecDetail.indicators.failed'), dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: t('service.apiExecDetail.indicators.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
+  [{ label: t('status.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: t('status.success'), dataIndex: 'successNum', bgColor: 'bg-status-success' }],
+  [{ label: t('status.failed'), dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: t('status.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
 ];
 
 const resize = () => {

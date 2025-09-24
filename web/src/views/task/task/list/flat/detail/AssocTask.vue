@@ -156,17 +156,17 @@ const tableColumns = [
   {
     key: 'code',
     dataIndex: 'code',
-    title: t('task.assocTask.columns.code')
+    title: t('common.code')
   },
   {
     key: 'name',
     dataIndex: 'name',
-    title: t('task.assocTask.columns.name')
+    title: t('common.name')
   },
   {
     key: 'progress',
     dataIndex: 'progress',
-    title: t('task.assocTask.columns.progress')
+    title: t('common.progress')
   },
   {
     key: 'taskType',
@@ -201,7 +201,7 @@ const tableColumns = [
   {
     key: 'action',
     dataIndex: 'action',
-    title: t('task.assocTask.columns.action')
+    title: t('common.actions')
   }
 ];
 </script>

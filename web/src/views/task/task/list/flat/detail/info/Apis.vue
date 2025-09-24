@@ -393,7 +393,7 @@ const onePassStatusText = computed(() => {
   if (totalTestCount.value <= 0) {
     return '--';
   }
-  return failedTestCount.value === 0 ? t('task.detailInfo.apis.columns.yes') : t('task.detailInfo.apis.columns.no');
+  return failedTestCount.value === 0 ? t('status.yes') : t('status.no');
 });
 </script>
 
@@ -408,7 +408,7 @@ const onePassStatusText = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.code') }}</span>
+              <span>{{ t('common.code') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -417,7 +417,7 @@ const onePassStatusText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.testType') }}</span>
+              <span>{{ t('common.testType') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -428,7 +428,7 @@ const onePassStatusText = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.name') }}</span>
+              <span>{{ t('common.name') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -458,7 +458,7 @@ const onePassStatusText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.status') }}</span>
+              <span>{{ t('common.status') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -468,7 +468,7 @@ const onePassStatusText = computed(() => {
                 v-if="isTaskOverdue"
                 class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
                 style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                <span class="inline-block transform-gpu scale-90">{{ t('task.detailInfo.apis.columns.overdue') }}</span>
+                <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
               </span>
             </div>
           </div>
@@ -477,7 +477,7 @@ const onePassStatusText = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.type') }}</span>
+              <span>{{ t('common.type') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -489,7 +489,7 @@ const onePassStatusText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.sprint') }}</span>
+              <span>{{ t('common.sprint') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -502,7 +502,7 @@ const onePassStatusText = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.module') }}</span>
+              <span>{{ t('common.module') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -544,7 +544,7 @@ const onePassStatusText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.evalWorkloadMethod') }}</span>
+              <span>{{ t('common.evalWorkloadMethod') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -567,7 +567,7 @@ const onePassStatusText = computed(() => {
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>
-                {{ t('task.detailInfo.apis.columns.evalWorkload') }}
+                {{ t('common.evalWorkload') }}
               </span>
               <Colon class="w-1" />
             </div>
@@ -602,7 +602,7 @@ const onePassStatusText = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.priority') }}</span>
+              <span>{{ t('common.priority') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -649,7 +649,7 @@ const onePassStatusText = computed(() => {
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>
-                {{ t('task.detailInfo.apis.columns.actualWorkload') }}
+                {{ t('common.actualWorkload') }}
               </span>
               <Colon class="w-1" />
             </div>
@@ -693,7 +693,7 @@ const onePassStatusText = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.softwareVersion') }}</span>
+              <span>{{ t('common.softwareVersion') }}</span>
               <Colon class="w-1" />
             </div>
             <div class="flex-1 min-w-0">
@@ -735,7 +735,7 @@ const onePassStatusText = computed(() => {
           </div>
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.unplanned') }}</span>
+              <span>{{ t('common.unplanned') }}</span>
               <Colon class="w-1" />
             </div>
             <div class="">
@@ -747,7 +747,7 @@ const onePassStatusText = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.tags') }}</span>
+              <span>{{ t('common.tags') }}</span>
               <Colon class="w-1" />
             </div>
 

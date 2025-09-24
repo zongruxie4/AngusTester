@@ -58,7 +58,7 @@ export function useChartConfigs () {
     DATA_DATASET: t('kanban.dataAssets.categories.dataDataset'),
     DATA_DATASOURCE: t('kanban.dataAssets.categories.dataDatasource'),
     DATA_VARIABLE: t('kanban.dataAssets.categories.dataVariable'),
-    TOTAL: t('kanban.dataAssets.categories.total'),
+    TOTAL: t('chart.total'),
     REPORT: t('kanban.dataAssets.categories.report'),
     REPORT_RECORD: t('kanban.dataAssets.categories.reportRecord')
   };
@@ -147,8 +147,8 @@ export function useChartConfigs () {
       splitLine: { show: false },
       axisLine: { show: false },
       data: [
-        t('kanban.dataAssets.status.cancelled'),
-        t('kanban.dataAssets.status.blocked'),
+        t('status.cancelled'),
+        t('status.blocked'),
         t('kanban.dataAssets.status.testFailed'),
         t('kanban.dataAssets.status.testPassed'),
         t('kanban.dataAssets.status.pendingTest')
@@ -191,7 +191,7 @@ export function useChartConfigs () {
   const createCasePieConfig = (): ChartConfig => ({
     title: {
       text: 0,
-      subtext: t('kanban.dataAssets.total'),
+      subtext: t('chart.total'),
       left: '29.5%',
       top: '35%',
       padding: 2,
@@ -217,7 +217,7 @@ export function useChartConfigs () {
     } as any,
     series: [
       {
-        name: t('kanban.dataAssets.total'),
+        name: t('chart.total'),
         type: 'pie',
         radius: ['40%', '60%'],
         center: ['30%', '50%'],
@@ -466,11 +466,11 @@ export function useChartConfigs () {
       splitLine: { show: false },
       axisLine: { show: false },
       data: [
-        t('kanban.dataAssets.status.cancelled'),
-        t('kanban.dataAssets.status.completed'),
-        t('kanban.dataAssets.status.pendingConfirmation'),
-        t('kanban.dataAssets.status.inProgress'),
-        t('kanban.dataAssets.status.pending')
+        t('status.cancelled'),
+        t('status.completed'),
+        t('status.pendingConfirmation'),
+        t('status.inProgress'),
+        t('status.pending')
       ]
     },
     series: [
@@ -510,7 +510,7 @@ export function useChartConfigs () {
   const createTaskPieConfig = (): ChartConfig => ({
     title: {
       text: 0,
-      subtext: t('kanban.dataAssets.total'),
+      subtext: t('chart.total'),
       left: '29.5%',
       top: '35%',
       padding: 2,
@@ -601,7 +601,7 @@ export function useChartConfigs () {
   const createPlanPieConfig = (): ChartConfig => ({
     title: {
       text: 0,
-      subtext: t('kanban.dataAssets.total'),
+      subtext: t('chart.total'),
       left: '29.5%',
       top: '35%',
       padding: 2,
@@ -652,22 +652,22 @@ export function useChartConfigs () {
         },
         data: [
           {
-            name: t('kanban.dataAssets.status.pendingStart'),
+            name: t('status.pending'),
             value: 0,
             itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
-            name: t('kanban.dataAssets.status.inProgress'),
+            name: t('status.inProgress'),
             value: 0,
             itemStyle: { color: 'rgba(103, 215, 255, 1)' }
           },
           {
-            name: t('kanban.dataAssets.status.completed'),
+            name: t('status.completed'),
             value: 0,
             itemStyle: { color: 'rgba(82, 196, 26, 1)' }
           },
           {
-            name: t('kanban.dataAssets.status.blockedStatus'),
+            name: t('status.blocked'),
             value: 0,
             itemStyle: { color: 'rgba(245, 34, 45, 1)' }
           }
@@ -682,7 +682,7 @@ export function useChartConfigs () {
   const createSprintPieConfig = (): ChartConfig => ({
     title: {
       text: 0,
-      subtext: t('kanban.dataAssets.total'),
+      subtext: t('chart.total'),
       left: '29.5%',
       top: '35%',
       padding: 2,
@@ -733,22 +733,22 @@ export function useChartConfigs () {
         },
         data: [
           {
-            name: t('kanban.dataAssets.status.pendingStart'),
+            name: t('status.pending'),
             value: 0,
             itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
-            name: t('kanban.dataAssets.status.inProgress'),
+            name: t('status.inProgress'),
             value: 0,
             itemStyle: { color: 'rgba(103, 215, 255, 1)' }
           },
           {
-            name: t('kanban.dataAssets.status.completed'),
+            name: t('status.completed'),
             value: 0,
             itemStyle: { color: 'rgba(82, 196, 26, 1)' }
           },
           {
-            name: t('kanban.dataAssets.status.blockedStatus'),
+            name: t('status.blocked'),
             value: 0,
             itemStyle: { color: 'rgba(245, 34, 45, 1)' }
           }
@@ -763,7 +763,7 @@ export function useChartConfigs () {
   const createScenarioPieConfig = (): ChartConfig => ({
     title: {
       text: 0,
-      subtext: t('kanban.dataAssets.total'),
+      subtext: t('chart.total'),
       left: '29.5%',
       top: '35%',
       padding: 2,

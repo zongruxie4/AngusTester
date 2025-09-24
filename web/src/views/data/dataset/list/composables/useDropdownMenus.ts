@@ -35,12 +35,12 @@ export function useDropdownMenus () {
       icon: 'icon-zhengyan'
     },
     {
-      name: t('dataset.list.tableDropdown.export'),
+      name: t('actions.export'),
       key: 'export',
       icon: 'icon-daochu1'
     },
     {
-      name: t('dataset.list.tableDropdown.clone'),
+      name: t('actions.clone'),
       key: 'clone',
       icon: 'icon-fuzhi'
     }

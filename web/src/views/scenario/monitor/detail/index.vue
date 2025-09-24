@@ -216,10 +216,10 @@ const statusColorConfig = getStatusColorConfig();
 
       <div class="text-text-title font-medium">
         <template v-if="historyExecData?.status?.value === 'SUCCESS'">
-          {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('scenarioMonitor.detail.executionStatus.success') }}
+          {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('status.success') }}
         </template>
         <template v-if="historyExecData?.status?.value === 'FAILURE'">
-          {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('scenarioMonitor.detail.executionStatus.failure') }}，{{ t('scenarioMonitor.detail.executionStatus.reason') }}：{{ historyExecData?.failureMessage || '--' }}
+          {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('status.failed') }}，{{ t('scenarioMonitor.detail.executionStatus.reason') }}：{{ historyExecData?.failureMessage || '--' }}
         </template>
       </div>
 

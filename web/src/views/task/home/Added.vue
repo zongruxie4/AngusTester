@@ -86,7 +86,7 @@ const taskQueryParams = {
       <TabPane key="createBy" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('taskHome.added') }}</span>
+            <span class="mr-1">{{ t('status.added') }}</span>
             <span>(</span>
             <span>{{ taskCountTotals.createdBy }}</span>
             <span>)</span>
@@ -104,7 +104,7 @@ const taskQueryParams = {
       <TabPane key="pending" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('taskHome.pending') }}</span>
+            <span class="mr-1">{{ t('status.pending') }}</span>
             <span>(</span>
             <span>{{ taskCountTotals.pending }}</span>
             <span>)</span>
@@ -122,7 +122,7 @@ const taskQueryParams = {
       <TabPane key="confirming" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('taskHome.confirming') }}</span>
+            <span class="mr-1">{{ t('status.pendingConfirmation') }}</span>
             <span>(</span>
             <span>{{ taskCountTotals.confirming }}</span>
             <span>)</span>
@@ -140,7 +140,7 @@ const taskQueryParams = {
       <TabPane key="completed" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('taskHome.completedStatus') }}</span>
+            <span class="mr-1">{{ t('status.completed') }}</span>
             <span>(</span>
             <span>{{ taskCountTotals.completed }}</span>
             <span>)</span>
@@ -158,7 +158,7 @@ const taskQueryParams = {
       <TabPane key="follow" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('taskHome.followed') }}</span>
+            <span class="mr-1">{{ t('status.followed') }}</span>
             <span>(</span>
             <span>{{ taskCountTotals.followed }}</span>
             <span>)</span>
@@ -176,7 +176,7 @@ const taskQueryParams = {
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('taskHome.favorited') }}</span>
+            <span class="mr-1">{{ t('status.favorited') }}</span>
             <span>(</span>
             <span>{{ taskCountTotals.favorited }}</span>
             <span>)</span>
@@ -194,7 +194,7 @@ const taskQueryParams = {
       <TabPane key="commentBy" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('taskHome.commented') }}</span>
+            <span class="mr-1">{{ t('status.commented') }}</span>
             <span>(</span>
             <span>{{ taskCountTotals.commented }}</span>
             <span>)</span>

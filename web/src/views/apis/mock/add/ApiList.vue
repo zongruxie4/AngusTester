@@ -90,7 +90,7 @@ watch(checkedList, (newValue) => {
         :checked="(checkedList.length > 0 && checkedList.length === dataList.length)"
         :indeterminate="(checkedList.length > 0 && checkedList.length !== dataList.length)"
         @change="e => handleCheckAllChange(e.target.checked)">
-        {{ t('mock.addMock.apiList.selectAll') }}
+        {{ t('actions.selectAll') }}
       </Checkbox>
     </FormItemRest>
   </div>

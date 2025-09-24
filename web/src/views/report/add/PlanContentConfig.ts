@@ -68,7 +68,7 @@ export const contentTreeData = [
         key: 'reviewTotal'
       },
       {
-        title: t('reportAdd.planContent.contentTree.burndown'),
+        title: t('chart.burndown.title'),
         key: 'burndown'
       },
       {

@@ -68,7 +68,7 @@ const assignees = computed(() => {
         <DashedLine />
       </a>
       <a href="#a2.2" class="flex items-center space-x-2.5">
-        <span>2.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.sprint.catalog.sections.burndownChart') }}</span>
+        <span>2.2<em class="inline-block w-4.25 font-medium"></em>{{ t('chart.burndown.title') }}</span>
         <DashedLine />
       </a>
       <a href="#a2.3" class="flex items-center space-x-2.5">
@@ -85,7 +85,7 @@ const assignees = computed(() => {
         <DashedLine />
       </a>
       <a href="#a3.2" class="flex items-center space-x-2.5">
-        <span>3.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.sprint.catalog.sections.burndownChart') }}</span>
+        <span>3.2<em class="inline-block w-4.25 font-medium"></em>{{ t('chart.burndown.title') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.3" class="flex items-center space-x-2.5">

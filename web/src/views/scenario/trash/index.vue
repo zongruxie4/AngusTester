@@ -258,7 +258,7 @@ onMounted(() => {
                   </Button>
                 </Tooltip>
 
-                <Tooltip :title="t('scenarioTrash.actions.deleteAll')">
+                <Tooltip :title="t('actions.deleteAll')">
                   <Button
                     :disabled="!canPerformActions"
                     type="primary"
@@ -267,7 +267,7 @@ onMounted(() => {
                     class="action-button-danger"
                     @click="handleDeleteAll">
                     <Icon icon="icon-qingchu" class="mr-1 text-sm" />
-                    {{ $t('scenarioTrash.actions.deleteAll') }}
+                    {{ $t('actions.deleteAll') }}
                   </Button>
                 </Tooltip>
               </div>
@@ -352,7 +352,7 @@ onMounted(() => {
                   </Button>
                 </Tooltip>
 
-                <Tooltip :title="t('scenarioTrash.actions.delete')">
+                <Tooltip :title="t('actions.delete')">
                   <Button
                     :disabled="!canUserPerformActions(record)"
                     type="text"

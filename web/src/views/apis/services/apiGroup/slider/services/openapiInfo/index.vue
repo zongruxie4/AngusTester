@@ -568,7 +568,7 @@ onMounted(() => {
           class="flex-1"
           :content="description"
           :ellipsis="{ rows: 3, expandable: false }" />
-        <div :title="t('service.serviceOpenApi.tooltips.view')" class="block leading-3 h-3 w-3 flex-shrink-0 ml-2 mt-0.25 cursor-pointer text-text-link">
+        <div :title="t('actions.view')" class="block leading-3 h-3 w-3 flex-shrink-0 ml-2 mt-0.25 cursor-pointer text-text-link">
           <Icon icon="icon-spread" @click="previewDescription" />
         </div>
         <Icon

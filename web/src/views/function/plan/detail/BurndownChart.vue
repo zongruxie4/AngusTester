@@ -21,11 +21,11 @@ const props = withDefaults(defineProps<Props>(), {
 const chartTypeOptions = computed(() => [
   {
     value: 'NUM',
-    label: t('functionPlan.planDetail.burnDownChart.caseCount')
+    label: t('chart.burndown.countBurndown')
   },
   {
     value: 'WORKLOAD',
-    label: t('functionPlan.planDetail.burnDownChart.workload')
+    label: t('chart.burndown.workloadBurndown')
   }
 ]);
 
@@ -61,12 +61,12 @@ const chartConfiguration = {
   },
   series: [
     {
-      name: t('functionPlan.planDetail.burnDownChart.remaining'),
+      name: t('chart.burndown.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: t('functionPlan.planDetail.burnDownChart.expected'),
+      name: t('chart.burndown.expected'),
       data: [],
       type: 'line',
       smooth: true

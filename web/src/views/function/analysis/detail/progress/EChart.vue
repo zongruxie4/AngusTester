@@ -83,14 +83,14 @@ const progressEchartConfig = {
       },
       data: [
         {
-          name: t('functionAnalysis.detail.progress.notCompleted'),
+          name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
             color: 'rgb(246,159,42)'
           }
         },
         {
-          name: t('functionAnalysis.detail.progress.completed'),
+          name: t('status.completed'),
           value: 0,
           itemStyle: {
             color: '#52C41A'

@@ -4,8 +4,6 @@
       "quickSearch": "Quick Search",
       "addScript": "Add Script",
       "importScript": "Import Script",
-      "scriptAuth": "Permission",
-      "refresh": "Refresh",
       "searchPlaceholder": "Search script ID, name, description or plugin",
       "scriptTypePlaceholder": "Select script type",
       "sourcePlaceholder": "Select source",
@@ -34,25 +32,7 @@
     },
     "globalAuth": {
       "description": "Grant specified \"function\" operation permissions to users, departments, and groups. \"View\" permission is required when granting permissions. Users can only authorize functions for which they have authorization permissions.",
-      "title": "Script Permission",
-      "tabs": {
-        "user": "User",
-        "dept": "Department",
-        "group": "Group"
-      },
-      "authSet": {
-        "searchPlaceholder": "Search Name",
-        "authPlaceholder": "Auth Control",
-        "auth": "Auth",
-        "all": "All",
-        "loading": "Loading...",
-        "name": "Name"
-      },
-      "groupSet": {
-        "deptPlaceholder": "Search Department",
-        "groupPlaceholder": "Search Group",
-        "userPlaceholder": "Search User"
-      }
+      "title": "Script Permission"
     },
     "pieChart": {
       "title": "Script Type",
@@ -66,27 +46,9 @@
     },
     "table": {
       "columns": {
-        "name": "Name",
         "plugin": "Plugin",
-        "type": "Type",
-        "source": "Source",
         "resourceId": "Resource ID",
         "resourceName": "Resource Name",
-        "tags": "Tags",
-        "creator": "Creator",
-        "modifier": "Modifier",
-        "addTime": "Created Time",
-        "modifyTime": "Modified Date",
-        "operation": "Action"
-      },
-      "actions": {
-        "auth": "Permission",
-        "clone": "Clone",
-        "delete": "Delete",
-        "export": "Export",
-        "execute": "Execute",
-        "edit": "Edit",
-        "cancelBatch": "Cancel"
       },
       "messages": {
         "maxBatchLimit": "Maximum support for batch operations of {maxNum} scripts, currently selected {selectedNum} scripts.",
@@ -104,9 +66,7 @@
         "deleteScriptConfirmSimple": "Are you sure to delete script 「{name}」?",
         "executeScriptConfirmSimple": "Are you sure to execute script 「{name}」?",
         "deleteScriptSuccess": "Script deleted successfully",
-        "noScriptData": "No script data, ",
-        "importExample": "Import Example",
-        "cancelBatchOperation": "Cancel Batch Operation"
+        "noScriptData": "No script data, "
       },
       "tips": {
         "authOn": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
@@ -117,14 +77,11 @@
     "import": {
       "title": "Import Script",
       "form": {
-        "name": "Name",
         "namePlaceholder": "Please enter script name, maximum 200 characters",
-        "description": "Description",
         "descriptionPlaceholder": "Please enter script description, maximum 800 characters",
         "file": "File",
         "uploadFile": "Upload File",
-        "uploadTip": "Paste content directly or drag files or click to upload files, file size should not exceed 20M",
-        "clear": "Clear"
+        "uploadTip": "Paste content directly or drag files or click to upload files, file size should not exceed 20M"
       },
       "messages": {
         "importSuccess": "Import successful",
@@ -151,17 +108,7 @@
       "activity": "Activity"
     },
     "actions": {
-      "cancel": "Cancel",
-      "smartGenerate": "Smart Generate",
-      "saveScript": "Save",
-      "edit": "Edit",
-      "export": "Export",
-      "clone": "Clone",
-      "delete": "Delete",
-      "debug": "Debug",
-      "addExecution": "Add Execution",
-      "back": "Back",
-      "generate": "Generate"
+      "smartGenerate": "Smart Generate"
     },
     "messages": {
       "addScriptSuccess": "Script added successfully",

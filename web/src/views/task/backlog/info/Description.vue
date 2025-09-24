@@ -147,13 +147,13 @@ onMounted(() => {
 
           <div class="description-edit-actions">
             <Button size="small" @click="cancelDescriptionEditing">
-              {{ t('backlog.info.description.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
             <Button
               size="small"
               type="primary"
               @click="saveDescriptionChanges">
-              {{ t('backlog.info.description.confirm') }}
+              {{ t('actions.confirm') }}
             </Button>
           </div>
         </div>

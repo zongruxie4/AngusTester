@@ -43,7 +43,7 @@ const ok = async () => {
     if (error) {
       return;
     }
-    notification.success(t('tips.execSuccess'));
+    notification.success(t('actions.tips.execSuccess'));
   }
   emits('update:visible', false);
 };

@@ -48,14 +48,14 @@ const click = (value:'delete'|'clone') => {
       size="small"
       @change="enabledChange" />
 
-    <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('smtpPlugin.uiConfig.actions.clone')">
+    <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('actions.clone')">
       <Icon
         icon="icon-fuzhi"
         class="text-3.5"
         @click="click('clone')" />
     </div>
 
-    <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('smtpPlugin.uiConfig.actions.delete')">
+    <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('actions.delete')">
       <Icon
         icon="icon-qingchu"
         class="text-3.5"

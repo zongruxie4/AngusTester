@@ -149,13 +149,13 @@ const tranMax = computed(() => {
 });
 
 const pending = computed(() => {
-  return props.execInfo?.status?.value === 'RUNNING' ? t('httpPlugin.functionTestDetail.pending') : false;
+  return props.execInfo?.status?.value === 'RUNNING' ? t('status.pending') : false;
 });
 
 const timeTexts = computed(() => [
-  t('httpPlugin.functionTestDetail.timeTexts.minimum'),
-  t('httpPlugin.functionTestDetail.timeTexts.average'),
-  t('httpPlugin.functionTestDetail.timeTexts.maximum')
+  t('chart.minimum'),
+  t('chart.average'),
+  t('chart.maximum')
 ]);
 </script>
 <template>

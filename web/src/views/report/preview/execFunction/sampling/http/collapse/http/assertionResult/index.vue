@@ -76,7 +76,7 @@ const statusMap = computed((): { [key: string]: 'Disabled' | 'Ignored' | 'Succes
                   fill="#ff8100"
                   p-id="14097"></path></svg>
             </span>
-            <span>{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.failed') }}</span>
+            <span>{{ t('status.failed') }}</span>
           </div>
           <div
             v-else-if="statusMap[item.id] === 'Success'"
@@ -102,13 +102,13 @@ const statusMap = computed((): { [key: string]: 'Disabled' | 'Ignored' | 'Succes
             <span
               class="inline-block w-2 h-2 mr-1.5 rounded-md"
               style="background-color:rgba(170, 170, 170, 100%);"></span>
-            <span>{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.ignored') }}</span>
+            <span>{{ t('status.ignored') }}</span>
           </div>
           <div v-else-if="statusMap[item.id] === 'Disabled'" class="flex items-center flex-shrink-0">
             <span
               class="inline-block w-2 h-2 mr-1.5 rounded-md"
               style="background-color:rgba(170, 170, 170, 100%);"></span>
-            <span>{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.notEnabled') }}</span>
+            <span>{{ t('status.disabled') }}</span>
           </div>
         </div>
       </div>

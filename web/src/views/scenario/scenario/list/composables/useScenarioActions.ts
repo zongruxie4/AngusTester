@@ -84,7 +84,7 @@ export function useScenarioActions (
       return;
     }
 
-    notification.success(t('tips.cloneSuccess'));
+    notification.success(t('actions.tips.cloneSuccess'));
   };
 
   /**
@@ -118,7 +118,7 @@ export function useScenarioActions (
       }
 
       const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'cancelFavourite');
-      const data = dropdownMenuItems.value.find(item => item.key === 'favourite');
+      const data = dropdownMenuItems.value.find(item => item.key === 'addFavourite');
       dropdownMenuItemsMap.value[id].splice(index, 1, data!);
       notification.success(t('scenario.list.messages.cancelFavouriteSuccess'));
     } else {
@@ -127,7 +127,7 @@ export function useScenarioActions (
         return;
       }
 
-      const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'favourite');
+      const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'addFavourite');
       const data = dropdownMenuItems.value.find(item => item.key === 'cancelFavourite');
       dropdownMenuItemsMap.value[id].splice(index, 1, data!);
       notification.success(t('scenario.list.messages.favouriteSuccess'));
@@ -145,7 +145,7 @@ export function useScenarioActions (
       }
 
       const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'cancelFollow');
-      const data = dropdownMenuItems.value.find(item => item.key === 'follow');
+      const data = dropdownMenuItems.value.find(item => item.key === 'addFollow');
       dropdownMenuItemsMap.value[id].splice(index, 1, data!);
       notification.success(t('scenario.list.messages.cancelFollowSuccess'));
     } else {
@@ -154,7 +154,7 @@ export function useScenarioActions (
         return;
       }
 
-      const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'follow');
+      const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'addFollow');
       const data = dropdownMenuItems.value.find(item => item.key === 'cancelFollow');
       dropdownMenuItemsMap.value[id].splice(index, 1, data!);
       notification.success(t('scenario.list.messages.followSuccess'));

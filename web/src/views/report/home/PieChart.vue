@@ -183,11 +183,11 @@ const statusChartConfig: EChartsOption = {
       },
       data: [
         {
-          name: t('reportHome.chart.status.success'),
+          name: t('status.success'),
           value: 0
         },
         {
-          name: t('reportHome.chart.status.failure'),
+          name: t('status.failed'),
           value: 0
         }
       ]

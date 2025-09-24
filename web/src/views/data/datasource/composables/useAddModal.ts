@@ -158,7 +158,7 @@ export function useAddModal (projectId: string) {
         return false;
       }
 
-      notification.success(t('tips.addSuccess'));
+      notification.success(t('actions.tips.addSuccess'));
       return true;
     } finally {
       loading.value = false;
@@ -192,7 +192,7 @@ export function useAddModal (projectId: string) {
         return false;
       }
 
-      notification.success(t('tips.modifySuccess'));
+      notification.success(t('actions.tips.modifySuccess'));
       return true;
     } finally {
       loading.value = false;

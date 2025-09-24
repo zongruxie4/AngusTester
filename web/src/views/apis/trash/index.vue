@@ -237,11 +237,11 @@ const handleRefresh = () => {
                 </Tooltip>
 
                 <Popconfirm
-                  :title="t('apiTrash.confirm.deleteAll')"
+                  :title="t('actions.deleteAll')"
                   :okText="t('actions.confirm')"
                   :cancelText="t('actions.cancel')"
                   @confirm="handleDeleteAll">
-                  <Tooltip :title="t('apiTrash.actions.deleteAll')">
+                  <Tooltip :title="t('actions.deleteAll')">
                     <Button
                       :disabled="!canPerformActions"
                       type="primary"
@@ -249,7 +249,7 @@ const handleRefresh = () => {
                       size="small"
                       class="action-button-danger">
                       <Icon icon="icon-qingchu" class="mr-1 text-sm" />
-                      {{ $t('apiTrash.actions.deleteAll') }}
+                      {{ $t('actions.deleteAll') }}
                     </Button>
                   </Tooltip>
                 </Popconfirm>

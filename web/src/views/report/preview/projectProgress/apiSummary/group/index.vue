@@ -73,11 +73,11 @@ const taskStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: [t('reportPreview.projectProgress.apiSummary.groupStats.statuses.released'),
-      t('reportPreview.projectProgress.apiSummary.groupStats.statuses.devCompleted'),
-      t('reportPreview.projectProgress.apiSummary.groupStats.statuses.devInProgress'),
-      t('reportPreview.projectProgress.apiSummary.groupStats.statuses.designing'),
-      t('reportPreview.projectProgress.apiSummary.groupStats.statuses.unknown')
+    data: [t('reportPreview.projectProgress.apiSummary.groupStats.status.released'),
+      t('reportPreview.projectProgress.apiSummary.groupStats.status.devCompleted'),
+      t('reportPreview.projectProgress.apiSummary.groupStats.status.devInProgress'),
+      t('reportPreview.projectProgress.apiSummary.groupStats.status.designing'),
+      t('reportPreview.projectProgress.apiSummary.groupStats.status.unknown')
     ]
   },
   series: [
@@ -128,7 +128,7 @@ const taskStatusOption = {
 const priorityOptions = {
   title: {
     text: 0,
-    subtext: t('reportPreview.projectProgress.apiSummary.groupStats.total'),
+    subtext: t('chart.total'),
     left: '29.5%',
     top: '40%',
     padding: 2,

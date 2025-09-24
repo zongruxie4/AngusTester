@@ -20,6 +20,9 @@ import DefaultProjectImage from '@/assets/images/default.png';
 import { ProjectType } from '@/enums/enums';
 import { DetailProps } from '@/views/project/project/types';
 import { DATE_FORMAT } from '@/utils/constant';
+
+import { getProjectTypeTipConfig, getProjectTypeName } from './utils';
+
 // Initialize i18n
 const { t } = useI18n();
 
@@ -36,18 +39,10 @@ const props = withDefaults(defineProps<DetailProps>(), {
 // Async component definitions
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
-// Configuration objects
-const projectTypeTipConfig = {
-  AGILE: [t('project.projectDetail.projectTypeTip.agile.features'), t('project.projectDetail.projectTypeTip.agile.scenarios')],
-  GENERAL: [t('project.projectDetail.projectTypeTip.general.features'), t('project.projectDetail.projectTypeTip.general.scenarios')],
-  TESTING: [t('project.projectDetail.projectTypeTip.testing.features'), t('project.projectDetail.projectTypeTip.testing.scenarios')]
-};
-
-const projectTypeName = {
-  AGILE: t('project.projectDetail.projectTypeName.agile'),
-  GENERAL: t('project.projectDetail.projectTypeName.general'),
-  TESTING: t('project.projectDetail.projectTypeName.testing')
-};
+/** Project type configuration for tips display */
+const projectTypeTipConfig = getProjectTypeTipConfig();
+/** Project type name mapping for UI display */
+const projectTypeName = getProjectTypeName();
 
 // Use project data composable
 const { detailData, fetchProjectDetail } = useData();
@@ -188,9 +183,7 @@ watch(() => props.projectId, newValue => {
       <div class="space-y-6">
         <div class="space-y-4">
           <h3 class="section-title">
-            {{
-              detailData.type?.value ? projectTypeName[detailData.type.value as keyof typeof projectTypeName] : ''
-            }}
+            {{ projectTypeName[detailData.type.value] }}
           </h3>
           <div class="flex justify-center items-center py-8 preview-image">
             <img
@@ -211,7 +204,7 @@ watch(() => props.projectId, newValue => {
           </div>
           <div class="preview-features">
             <div
-              v-for="(item, index) in projectTypeTipConfig[detailData.type?.value as keyof typeof projectTypeTipConfig]"
+              v-for="(item, index) in projectTypeTipConfig[detailData.type.value]"
               :key="index"
               class="feature-item">
               <Icon icon="icon-duihao-copy" class="feature-icon" />

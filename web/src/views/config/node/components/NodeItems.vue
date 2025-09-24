@@ -308,7 +308,7 @@ defineExpose({
             @click="saveNodeEnhanced">
             {{ t('actions.save') }}
           </Button>
-          <Button class="node-normal-btn" @click="cancel(state)">{{ t('node.nodeItem.buttons.cancel') }}</Button>
+          <Button class="node-normal-btn" @click="cancel(state)">{{ t('actions.cancel') }}</Button>
           <Button
             :disabled="testBtnDisable"
             class="node-normal-btn"
@@ -554,7 +554,7 @@ defineExpose({
             type="link"
             size="small"
             @click="foldInstallAgent(state)">
-            {{ t('node.nodeItem.buttons.collapse') }}
+            {{ t('actions.collapse') }}
           </Button>
         </div>
       </div>

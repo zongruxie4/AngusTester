@@ -49,7 +49,7 @@ export function useTableColumns (params: ScenarioQueryParams) {
     // Add action column based on query parameters
     const actionColumn: TableColumn = {
       key: 'action',
-      title: t('scenarioHome.myScenarios.table.columns.operation'),
+      title: t('common.actions'),
       dataIndex: 'action',
       width: 80
     };

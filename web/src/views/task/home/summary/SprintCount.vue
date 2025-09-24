@@ -47,7 +47,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-daiceshi" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">{{ t('taskHome.summary.sprintCount.pending') }}</div>
+          <div class="text-theme-sub-content">{{ t('status.pending') }}</div>
           <div class="text-4">{{ pendingSprintCount }}</div>
         </div>
       </div>
@@ -55,7 +55,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-renwuceshizhong" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">{{ t('taskHome.summary.sprintCount.inProgress') }}</div>
+          <div class="text-theme-sub-content">{{ t('status.inProgress') }}</div>
           <div class="text-4">{{ inProgressSprintCount }}</div>
         </div>
       </div>
@@ -63,7 +63,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-zusaizhong" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">{{ t('taskHome.summary.sprintCount.blocked') }}</div>
+          <div class="text-theme-sub-content">{{ t('status.blocked') }}</div>
           <div class="text-4">{{ blockedSprintCount }}</div>
         </div>
       </div>
@@ -71,7 +71,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-jiaobenzhuyezhihang" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">{{ t('taskHome.summary.sprintCount.completed') }}</div>
+          <div class="text-theme-sub-content">{{ t('status.completed') }}</div>
           <div class="text-4">{{ completedSprintCount }}</div>
         </div>
       </div>

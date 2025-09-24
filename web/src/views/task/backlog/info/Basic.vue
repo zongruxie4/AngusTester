@@ -673,7 +673,7 @@ onMounted(() => {
         <!-- Task Code -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.columns.code') }}</span>
+            <span>{{ t('common.code') }}</span>
           </div>
           <div class="info-value">
             {{ props.dataSource?.code }}
@@ -683,8 +683,9 @@ onMounted(() => {
         <!-- Task Name -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.columns.name') }}</span>
+            <span>{{ t('common.name') }}</span>
           </div>
+
           <div class="info-value">
             <div v-show="!isTaskNameEditing" class="info-value-content">
               <span class="info-text">{{ taskName }}</span>
@@ -695,6 +696,7 @@ onMounted(() => {
                 <Icon icon="icon-shuxie" />
               </Button>
             </div>
+
             <AsyncComponent :visible="isTaskNameEditing">
               <Input
                 v-show="isTaskNameEditing"
@@ -715,13 +717,14 @@ onMounted(() => {
           <div class="info-label">
             <span>{{ t('backlog.taskStatus') }}</span>
           </div>
+
           <div class="info-value">
             <div class="info-value-content">
               <TaskStatus :value="taskStatus" />
               <span
                 v-if="isOverdue"
                 class="overdue-badge">
-                {{ t('backlog.overdue') }}
+                {{ t('status.overdue') }}
               </span>
             </div>
           </div>
@@ -730,8 +733,9 @@ onMounted(() => {
         <!-- Sprint -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.sprint') }}</span>
+            <span>{{ t('common.sprint') }}</span>
           </div>
+
           <div class="info-value">
             <div v-show="!isSprintEditing" class="info-value-content">
               <span class="info-text" :class="{ 'dash-text': !props.dataSource?.sprintName }">{{ props.dataSource?.sprintName || '--' }}</span>
@@ -761,7 +765,7 @@ onMounted(() => {
         <!-- Module -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.module') }}</span>
+            <span>{{ t('common.module') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isModuleEditing" class="info-value-content">
@@ -773,6 +777,7 @@ onMounted(() => {
                 <Icon icon="icon-shuxie" />
               </Button>
             </div>
+
             <AsyncComponent :visible="isModuleEditing">
               <div v-show="isModuleEditing" class="module-edit-container">
                 <TreeSelect
@@ -793,6 +798,7 @@ onMounted(() => {
                     </div>
                   </template>
                 </TreeSelect>
+
                 <div class="module-edit-actions">
                   <Icon
                     icon="icon-gouxuanzhong"
@@ -821,7 +827,7 @@ onMounted(() => {
         <!-- Task Type -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.type') }}</span>
+            <span>{{ t('common.type') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isTaskTypeEditing" class="info-value-content">
@@ -875,7 +881,7 @@ onMounted(() => {
         <!-- Priority -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.priority') }}</span>
+            <span>{{ t('common.priority') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isPriorityEditing" class="info-value-content">
@@ -908,7 +914,7 @@ onMounted(() => {
         <!-- Workload Estimation Method -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.evalWorkloadMethod') }}</span>
+            <span>{{ t('common.evalWorkloadMethod') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ props.dataSource?.evalWorkloadMethod?.message || '--' }}</span>
@@ -918,7 +924,7 @@ onMounted(() => {
         <!-- Estimated Workload -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.evalWorkload') }}</span>
+            <span>{{ t('common.evalWorkload') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isEvalWorkloadEditing" class="info-value-content">
@@ -950,7 +956,7 @@ onMounted(() => {
         <!-- Actual Workload -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.evalWorkload') }}</span>
+            <span>{{ t('common.evalWorkload') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isActualWorkloadEditing" class="info-value-content">
@@ -1002,7 +1008,7 @@ onMounted(() => {
         <!-- Tags -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.tags') }}</span>
+            <span>{{ t('common.tags') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isTagEditing" class="info-value-content">
@@ -1056,7 +1062,7 @@ onMounted(() => {
         <!-- Software Version -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.softwareVersion') }}</span>
+            <span>{{ t('common.softwareVersion') }}</span>
           </div>
           <div class="info-value">
             <template v-if="isVersionEditing">
@@ -1097,7 +1103,7 @@ onMounted(() => {
         <!-- Unplanned Task -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.unplannedTask') }}</span>
+            <span>{{ t('common.unplanned') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}</span>

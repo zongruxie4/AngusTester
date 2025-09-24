@@ -92,11 +92,11 @@ export function useScenarioPermissions () {
         return scenarioInfo.follow;
       }
 
-      if (key === 'favourite') {
+      if (key === 'addFavourite') {
         return !scenarioInfo.favourite;
       }
 
-      if (key === 'follow') {
+      if (key === 'addFollow') {
         return !scenarioInfo.follow;
       }
 

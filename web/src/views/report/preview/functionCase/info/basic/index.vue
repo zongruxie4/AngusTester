@@ -29,7 +29,7 @@ const onePassText = computed(() => {
     return '--';
   }
 
-  return +failNum === 0 ? t('reportPreview.functionCase.info.basic.options.yes') : t('reportPreview.functionCase.info.basic.options.no');
+  return +failNum === 0 ? t('status.yes') : t('status.no');
 });
 </script>
 
@@ -60,7 +60,7 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          ID
+          {{ t('common.id') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseInfo?.id }}
@@ -77,14 +77,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.code') }}
+          {{ t('common.code') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseInfo?.code }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.reviewStatus') }}
+          {{ t('common.reviewStatus') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.reviewStatus?.message }}
@@ -94,14 +94,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.project') }}
+          {{ t('common.project') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseInfo?.projectName }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.module') }}
+          {{ t('common.module') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.moduleName }}
@@ -111,14 +111,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.tags') }}
+          {{ t('common.tags') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseInfo?.tags?.join(',') }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.workloadEvalMethod') }}
+          {{ t('common.workloadEvalMethod') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.evalWorkloadMethod?.message }}
@@ -128,14 +128,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('reportPreview.functionCase.info.basic.options.storyPoint') : t('reportPreview.functionCase.info.basic.options.workTime') }}
+          {{ caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('common.storyPoint') : t('common.workTime') }} // TODO
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseInfo?.evalWorkload }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('reportPreview.functionCase.info.basic.options.actualWorkload') : t('reportPreview.functionCase.info.basic.options.actualWorkTime') }}
+          {{ caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('common.actualWorkload') : t('common.actualWorkTime') }} // TODO
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.actualWorkload }}
@@ -162,10 +162,10 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.overdue') }}
+          {{ t('status.overdue') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
-          {{ caseInfo?.overdue ? t('reportPreview.functionCase.info.basic.options.yes') : t('reportPreview.functionCase.info.basic.options.no') }}
+          {{ caseInfo?.overdue ? t('status.yes') : t('status.no') }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
@@ -179,10 +179,10 @@ const onePassText = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.unplannedCase') }}
+          {{ t('common.unplanned') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
-          {{ caseInfo?.unplanned ? t('reportPreview.functionCase.info.basic.options.yes') : t('reportPreview.functionCase.info.basic.options.no') }}
+          {{ caseInfo?.unplanned ? t('status.yes') : t('status.no') }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">

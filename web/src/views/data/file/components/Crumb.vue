@@ -37,11 +37,11 @@ const handleJump = (id?: string): void => {
   <div class="flex items-center text-3.5">
     <Breadcrumb separator=">">
       <BreadcrumbItem>
-        <a @click="handleJump()">{{ t('fileSpace.crumb.home') }}</a>
+        <a @click="handleJump()">{{ t('home.title') }}</a>
       </BreadcrumbItem>
       <template v-if="shouldShowEllipsis(props.crumb)">
         <BreadcrumbItem>
-          <span>{{ t('fileSpace.crumb.ellipsis') }}</span>
+          <span>...</span>
         </BreadcrumbItem>
         <BreadcrumbItem v-for="item in processCrumbItems(props.crumb)" :key="item.id">
           <a @click="handleJump(item.id)">{{ item.name }}</a>

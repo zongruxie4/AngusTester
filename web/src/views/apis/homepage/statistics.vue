@@ -435,10 +435,10 @@ onBeforeUnmount(() => {
         <div class="vertical-layout-top" :class="item.topClass"><div>{{ item.name }}</div><div>{{ state.statistic[item.total] }}</div></div>
         <div class="vertical-layout-bottom" :class="item.bottomClass">
           <div>
-            <div>{{ t('quickSearchTags.last7Days') }}</div><div>{{ state.statistic[item.week] }}</div>
+            <div>{{ t('quickSearch.last7Days') }}</div><div>{{ state.statistic[item.week] }}</div>
           </div>
           <div>
-            <div>{{ t('quickSearchTags.last30Days') }}</div>
+            <div>{{ t('quickSearch.last30Days') }}</div>
             <div>{{ state.statistic[item.month] }}</div>
           </div>
         </div>

@@ -74,7 +74,7 @@ const {
           size="small"
           :disabled="!logTextParam.logName || loadingLog"
           @click="loadLogContent">
-          {{ t('mock.detail.log.refresh') }}
+          {{ t('actions.refresh') }}
         </Button>
         <Icon
           class="text-3.5 ml-2 cursor-pointer"

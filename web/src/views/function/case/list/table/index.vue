@@ -68,7 +68,7 @@ const tableColumns = computed(() => [
     dataIndex: 'expend'
   },
   {
-    title: t('functionCase.tableView.code'),
+    title: t('common.code'),
     dataIndex: 'code',
     width: '11%',
     customCell: () => {
@@ -85,7 +85,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('functionCase.tableView.priority'),
+    title: t('common.priority'),
     dataIndex: 'priority',
     customRender: ({ text }):string => text?.message,
     width: '10%',
@@ -94,7 +94,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('functionCase.tableView.reviewStatus'),
+    title: t('common.reviewStatus'),
     dataIndex: 'reviewStatus',
     customRender: ({ text }):string => text?.message,
     width: '10%',
@@ -103,7 +103,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('functionCase.tableView.testResult'),
+    title: t('common.testResult'),
     dataIndex: 'testResult',
     customRender: ({ text }):string => text?.message,
     width: '10%',
@@ -112,7 +112,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('functionCase.tableView.creator'),
+    title: t('common.creator'),
     dataIndex: 'createdByName',
     width: '10%',
     customCell: () => {
@@ -120,7 +120,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('functionCase.tableView.tester'),
+    title: t('common.tester'),
     dataIndex: 'testerName',
     width: '10%',
     customCell: () => {
@@ -128,7 +128,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('functionCase.tableView.lastUpdateTime'),
+    title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     sorter: true,
     width: '10%',
@@ -137,7 +137,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('functionCase.tableView.actions'),
+    title: t('common.actions'),
     dataIndex: 'action',
     width: 140
   }

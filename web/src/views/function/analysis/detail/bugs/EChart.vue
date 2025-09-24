@@ -219,14 +219,14 @@ const validBugEchartConfig = JSON.parse(JSON.stringify({
     ...bugLevelEchartConfig.series[0],
     data: [
       {
-        name: t('functionAnalysis.detail.bugs.notCompleted'),
+        name: t('status.notCompleted'),
         value: 0,
         itemStyle: {
           color: 'rgba(136, 185, 242, 1)'
         }
       },
       {
-        name: t('functionAnalysis.detail.bugs.completed'),
+        name: t('status.completed'),
         value: 0,
         itemStyle: {
           color: 'rgba(245, 34, 45, 0.6)'

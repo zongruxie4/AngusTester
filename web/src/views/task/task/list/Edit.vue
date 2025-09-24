@@ -115,9 +115,9 @@ const currentUserId = computed(() => {
  */
 const modalTitle = computed(() => {
   if (props.taskId) {
-    return t('task.editModal.title.edit');
+    return t('actions.edit');
   }
-  return t('task.editModal.title.add');
+  return t('actions.add');
 });
 
 /**
@@ -930,8 +930,8 @@ onMounted(() => {
                 <Select
                   :value="(formState.missingBug as any)"
                   :options="[
-                    { value: (true as any), label: t('task.editModal.form.missingBugOptions.yes') },
-                    { value: (false as any), label: t('task.editModal.form.missingBugOptions.no') }
+                    { value: (true as any), label: t('status.yes') },
+                    { value: (false as any), label: t('status.no') }
                   ]">
                 </Select>
               </FormItem>
@@ -1368,7 +1368,7 @@ onMounted(() => {
                     v-if="record.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                     style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu">{{ t('task.editModal.status.overdue') }}</span>
+                    <span class="inline-block transform-gpu">{{ t('status.overdue') }}</span>
                   </div>
                 </div>
               </template>
@@ -1401,7 +1401,7 @@ onMounted(() => {
                     v-if="record.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                     style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu">{{ t('task.editModal.status.overdue') }}</span>
+                    <span class="inline-block transform-gpu">{{ t('status.overdue') }}</span>
                   </div>
                 </div>
               </template>
@@ -1474,7 +1474,7 @@ onMounted(() => {
         size="small"
         :disabled="loading"
         @click="handleFormSubmit(true)">
-        {{ t('task.editModal.actions.saveAndContinue') }}
+        {{ t('actions.saveAndContinue') }}
       </Button>
       <Button
         type="primary"

@@ -107,11 +107,11 @@ const downloadLog = () => {
           <Colon class="mr-2" />
           <template v-if="props.schedulingResult?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
-            <span>{{ t('xcan_execLog.success') }}</span>
+            <span>{{ t('status.success') }}</span>
           </template>
           <template v-else>
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-error"></span>
-            <span>{{ t('xcan_execLog.failure') }}</span>
+            <span>{{ t('status.failed') }}</span>
           </template>
         </div>
 
@@ -134,11 +134,11 @@ const downloadLog = () => {
           <Colon class="mr-2" />
           <template v-if="props.schedulingResult?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
-            <span>{{ t('xcan_execLog.success') }}</span>
+            <span>{{ t('status.success') }}</span>
           </template>
           <template v-else>
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-error"></span>
-            <span>{{ t('xcan_execLog.failure') }}</span>
+            <span>{{ t('status.failed') }}</span>
           </template>
         </div>
 

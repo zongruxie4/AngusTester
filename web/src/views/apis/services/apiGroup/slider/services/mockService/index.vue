@@ -203,13 +203,13 @@ const statusStyleMap = {
               <div>
                 <div v-if="text" class="flex items-start">
                   <span>{{ text }}</span>
-                  <span :title="t('service.mockService.actions.copy')">
+                  <span :title="t('actions.copy')">
                     <IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="text" />
                   </span>
                 </div>
                 <div v-if="mockServiceInfo?.serviceHostUrl">
                   <span>{{ mockServiceInfo.serviceHostUrl }}</span>
-                  <span :title="t('service.mockService.actions.copy')">
+                  <span :title="t('actions.copy')">
                     <IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="mockServiceInfo.serviceHostUrl" />
                   </span>
                 </div>
@@ -245,7 +245,7 @@ const statusStyleMap = {
                 type="primary"
                 :disabled="props.disabled"
                 @click="createMockSeviceById">
-                {{ t('service.mockService.actions.generate') }}
+                {{ t('actions.generate') }}
               </Button>
             </div>
           </template>

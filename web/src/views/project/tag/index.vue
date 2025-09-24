@@ -253,7 +253,7 @@ onMounted(() => {
                     <template #default>
                       <div class="flex items-center cursor-pointer text-gray-600 space-x-1 hover:text-gray-800 text-xs">
                         <Icon icon="icon-shuaxin" class="text-xs" />
-                        <span>{{ t('tag.refresh') }}</span>
+                        <span>{{ t('actions.refresh') }}</span>
                       </div>
                     </template>
                   </IconRefresh>

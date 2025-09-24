@@ -83,7 +83,7 @@ defineExpose({
 <template>
   <div>
     <div class="font-semibold pl-3">
-      {{ t('functionAnalysis.detail.unplannedTasks.total') }}
+      {{ t('chart.total') }}
     </div>
     <EChart
       ref="totalChartRef"

@@ -702,7 +702,7 @@ onMounted(() => {
                   @click="(e) => handleEdit(e, variable)" />
               </template>
             </Tooltip>
-            <Tooltip :title="t('xcan_variable.delete')" placement="top">
+            <Tooltip :title="t('actions.delete')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-qingchu"
@@ -917,14 +917,14 @@ onMounted(() => {
                 type="link"
                 :disabled="variable.saveloading || !variableList.length"
                 @click="handleSave(variable)">
-                {{ t('xcan_variable.save') }}
+                {{ t('actions.save') }}
               </Button>
               <Button
                 type="link"
                 size="small"
                 class="p-0 ml-2"
                 @click="(e) => cancelEdit(e,variable)">
-                {{ t('xcan_variable.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
             </template>
           </div>

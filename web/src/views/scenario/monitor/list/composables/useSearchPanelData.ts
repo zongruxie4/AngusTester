@@ -82,15 +82,15 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
     },
     {
       key: 'PENDING',
-      name: t('scenarioMonitor.searchPanel.statusOptions.pending')
+      name: t('status.pending')
     },
     {
       key: 'SUCCESS',
-      name: t('scenarioMonitor.searchPanel.statusOptions.success')
+      name: t('status.success')
     },
     {
       key: 'FAILURE',
-      name: t('scenarioMonitor.searchPanel.statusOptions.failure')
+      name: t('status.failed')
     },
     {
       key: 'lastDay',

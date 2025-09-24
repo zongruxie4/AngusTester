@@ -295,17 +295,17 @@ onMounted(() => {
         </div>
         <div class="flex-1"></div>
         <div class="inline-flex items-center space-x-1">
-          <span>{{ t('functionBaseline.case.compareTag.new') }}</span>
+          <span>{{ t('status.new') }}</span>
           <span class="w-4 h-4 inline-block bg-status-add"></span>
         </div>
 
         <div class="inline-flex items-center space-x-1">
-          <span>{{ t('functionBaseline.case.compareTag.deleted') }}</span>
+          <span>{{ t('status.deleted') }}</span>
           <span class="w-4 h-4 inline-block bg-status-del"></span>
         </div>
 
         <div class="inline-flex items-center space-x-1">
-          <span>{{ t('functionBaseline.case.compareTag.modified') }}</span>
+          <span>{{ t('status.modified') }}</span>
           <span class="w-4 h-4 inline-block bg-blue-active"></span>
         </div>
       </div>

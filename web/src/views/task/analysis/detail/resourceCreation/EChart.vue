@@ -57,7 +57,7 @@ const unplannedTaskEChartConfig = {
       t('taskAnalysis.detail.resourceCreation.chartLabels.task'),
       t('taskAnalysis.detail.resourceCreation.chartLabels.meeting'),
       t('taskAnalysis.detail.resourceCreation.chartLabels.analysis'),
-      t('taskAnalysis.detail.resourceCreation.chartLabels.total')
+      t('chart.total')
     ],
     axisLabel: {
       interval: 0,

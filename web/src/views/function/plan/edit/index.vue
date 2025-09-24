@@ -726,7 +726,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="handleFormSubmit">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>{{ t('functionPlan.editForm.buttons.save') }}</span>
+        <span>{{ t('actions.save') }}</span>
       </Button>
 
       <template v-if="isEditMode">
@@ -738,7 +738,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="startPlan">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>{{ t('functionPlan.editForm.buttons.restart') }}</span>
+          <span>{{ t('actions.restart') }}</span>
         </Button>
 
         <Button
@@ -749,7 +749,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="startPlan">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>{{ t('functionPlan.editForm.buttons.start') }}</span>
+          <span>{{ t('actions.start') }}</span>
         </Button>
 
         <template v-if="currentPlanStatus === FuncPlanStatus.IN_PROGRESS">
@@ -760,7 +760,7 @@ onMounted(() => {
             class="flex items-center space-x-1"
             @click="completePlan">
             <Icon icon="icon-yiwancheng" class="text-3.5" />
-            <span>{{ t('functionPlan.editForm.buttons.complete') }}</span>
+            <span>{{ t('actions.complete') }}</span>
           </Button>
 
           <Button
@@ -770,7 +770,7 @@ onMounted(() => {
             class="flex items-center space-x-1"
             @click="completePlan">
             <Icon icon="icon-zusai" class="text-3.5" />
-            <span>{{ t('functionPlan.editForm.buttons.block') }}</span>
+            <span>{{ t('actions.block') }}</span>
           </Button>
         </template>
 
@@ -781,7 +781,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="deletePlan">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span>{{ t('functionPlan.editForm.buttons.delete') }}</span>
+          <span>{{ t('actions.delete') }}</span>
         </Button>
 
         <Button
@@ -791,7 +791,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="openAuthorizationModal">
           <Icon icon="icon-quanxian1" class="text-3.5" />
-          <span>{{ t('functionPlan.editForm.buttons.permission') }}</span>
+          <span>{{ t('actions.permission') }}</span>
         </Button>
 
         <Button
@@ -800,7 +800,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="clonePlan">
           <Icon icon="icon-fuzhizujian2" class="text-3.5" />
-          <span>{{ t('functionPlan.editForm.buttons.clone') }}</span>
+          <span>{{ t('actions.clone') }}</span>
         </Button>
 
         <Button
@@ -829,7 +829,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="copyPlanLink">
           <Icon icon="icon-fuzhi" class="text-3.5" />
-          <span>{{ t('functionPlan.editForm.buttons.copyLink') }}</span>
+          <span>{{ t('actions.copyLink') }}</span>
         </Button>
 
         <Button
@@ -838,7 +838,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="refreshPlanData">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span>{{ t('functionPlan.editForm.buttons.refresh') }}</span>
+          <span>{{ t('actions.refresh') }}</span>
         </Button>
       </template>
 
@@ -848,7 +848,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="cancelEdit">
         <Icon icon="icon-zhongzhi2" class="text-3.5" />
-        <span>{{ t('functionPlan.editForm.buttons.cancel') }}</span>
+        <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>
 
@@ -961,11 +961,11 @@ onMounted(() => {
               <span class="mr-2">{{ t('functionPlan.editForm.form.reviewCloseConfirm') }}</span>
               <a
                 class="text-theme-special"
-                @click="confirmDisableReview">{{ t('functionPlan.editForm.form.confirm') }}</a>
+                @click="confirmDisableReview">{{ t('actions.confirm') }}</a>
               <Divider type="vertical" />
               <a
                 class="text-theme-special"
-                @click="cancelDisableReview">{{ t('functionPlan.editForm.form.cancel') }}</a>
+                @click="cancelDisableReview">{{ t('actions.cancel') }}</a>
             </div>
           </template>
           <Switch

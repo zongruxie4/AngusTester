@@ -47,7 +47,7 @@ const toImport = () => {
             class="flex space-x-1"
             @click="toDebug">
             <Icon icon="icon-tiaoshi" />
-            {{ t('apis.quickAccess.debug.action') }}
+            {{ t('common.actions') }}
           </Button>
         </div>
       </div>
@@ -68,7 +68,7 @@ const toImport = () => {
             class="flex space-x-1"
             @click="toImport">
             <Icon icon="icon-daoru" />
-            {{ t('apis.quickAccess.import.action') }}
+            {{ t('common.actions') }}
           </Button>
         </div>
       </div>

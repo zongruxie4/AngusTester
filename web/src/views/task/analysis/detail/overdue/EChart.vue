@@ -91,14 +91,14 @@ const completedWorkloadEChartConfig = {
       },
       data: [
         {
-          name: t('taskAnalysis.detail.overdueAssessment.chartLabels.uncompleted'),
+          name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
             color: 'rgb(117,246,42)'
           }
         },
         {
-          name: t('taskAnalysis.detail.overdueAssessment.chartLabels.completed'),
+          name: t('status.completed'),
           value: 0,
           itemStyle: {
             color: 'rgb(205,115,120)'

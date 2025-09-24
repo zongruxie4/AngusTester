@@ -139,7 +139,7 @@ onBeforeUnmount(() => {
       v-show="loading||!!idList?.length"
       :mask="false"
       :spinning="loading"
-      :tip="t('scriptHome.globalAuth.authSet.loading')"
+      :tip="t('common.loading')"
       style="height: calc(100% - 76px);">
       <div
         ref="containerRef"

@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const topCarObj = {
   progress: {
-    name: t('functionCase.statisticsPanel.progress'),
+    name: t('common.progress'),
     icon: 'icon-zonglan'
   },
   totalCaseNum: {

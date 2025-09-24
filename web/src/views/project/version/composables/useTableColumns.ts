@@ -20,7 +20,7 @@ export function useTableColumns () {
       width: 100
     },
     {
-      title: t('version.columns.progress'),
+      title: t('common.progress'),
       dataIndex: 'progress',
       width: 200
     },
@@ -68,7 +68,7 @@ export function useTableColumns () {
       width: 100
     },
     {
-      title: t('version.columns.actions'),
+      title: t('common.actions'),
       dataIndex: 'actions',
       width: 150
     }

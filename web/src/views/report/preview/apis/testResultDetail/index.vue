@@ -49,7 +49,7 @@ const basicColumns = computed(() => [
       dataIndex: 'passed',
       name: t('reportPreview.apis.testResultDetail.fields.testResult'),
       customRender: (text) => {
-        return text === true ? t('reportPreview.apis.testResult.status.passed') : text === false ? t('reportPreview.apis.testResult.status.failed') : t('reportPreview.apis.testResult.status.notTested');
+        return text === true ? t('reportPreview.apis.testResult.status.passed') : text === false ? t('status.failed') : t('status.notTested');
       }
     },
     {
@@ -135,7 +135,7 @@ const caseColumns = computed(() => [
       name: t('reportPreview.apis.testResultDetail.fields.isEnabled'),
       dataIndex: 'enabled',
       customRender: (text) => {
-        return text ? t('reportPreview.apis.testResult.status.enabled') : t('reportPreview.apis.testResult.status.disabled');
+        return text ? t('status.enabled') : t('status.disabled');
       }
     }
   ],
@@ -144,7 +144,7 @@ const caseColumns = computed(() => [
       name: t('reportPreview.apis.testResultDetail.fields.isTestPassed'),
       dataIndex: 'passed',
       customRender: (text) => {
-        return text === true ? t('reportPreview.apis.testResult.status.passed') : text === false ? t('reportPreview.apis.testResult.status.failed') : t('reportPreview.apis.testResult.status.notTested');
+        return text === true ? t('status.passed') : text === false ? t('status.failed') : t('status.notTested');
       }
     },
     {
@@ -586,7 +586,7 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      {{ t('reportPreview.apis.testResultDetail.noData') }}
+      {{ t('common.noData') }}
     </div>
 
     <li class="mb-2">
@@ -609,7 +609,7 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      {{ t('reportPreview.apis.testResultDetail.noData') }}
+      {{ t('common.noData') }}
     </div>
 
     <li class="mb-2">
@@ -633,7 +633,7 @@ const sysItems = [
       </template>
     </div>
     <div v-if="!TEST_FUNCTIONALITY?.caseResults?.length" class="mb-5">
-      {{ t('reportPreview.apis.testResultDetail.noData') }}
+      {{ t('common.noData') }}
     </div>
 
     <h1 class="text-theme-title font-medium mb-3.5">
@@ -660,7 +660,7 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      {{ t('reportPreview.apis.testResultDetail.noData') }}
+      {{ t('common.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
 
@@ -725,7 +725,7 @@ const sysItems = [
       </div>
     </div>
     <div v-else class="mb-5">
-      {{ t('reportPreview.apis.testResultDetail.noData') }}
+      {{ t('common.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
     <li class="mb-2">

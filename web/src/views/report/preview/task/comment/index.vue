@@ -119,7 +119,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">{{ t('reportPreview.task.comment.noData') }}</div>
+    <div v-else class="content-text-container">{{ t('common.noData') }}</div>
   </div>
 </template>
 

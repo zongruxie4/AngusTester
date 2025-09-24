@@ -85,7 +85,7 @@ export function useExecutionAction () {
 
     item.thread = value;
     item.editThread = false;
-    notification.success(t('tips.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**
@@ -117,7 +117,7 @@ export function useExecutionAction () {
 
     item.duration = value;
     item.editDuration = false;
-    notification.success(t('tips.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**
@@ -149,7 +149,7 @@ export function useExecutionAction () {
 
     item.iterations = value;
     item.editIterations = false;
-    notification.success(t('tips.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**
@@ -181,7 +181,7 @@ export function useExecutionAction () {
 
     item.editPriority = false;
     item.priority = value;
-    notification.success(t('tips.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**
@@ -213,7 +213,7 @@ export function useExecutionAction () {
 
     item.editReportInterval = false;
     item.reportInterval = value;
-    notification.success(t('tips.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**
@@ -234,7 +234,7 @@ export function useExecutionAction () {
 
     item.editStartDate = false;
     item.ignoreAssertions = value;
-    notification.success(t('tips.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**
@@ -255,7 +255,7 @@ export function useExecutionAction () {
 
     item.editStartDate = false;
     item.updateTestResult = value;
-    notification.success(t('tips.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**
@@ -390,7 +390,7 @@ export function useExecutionAction () {
           return;
         }
 
-        notification.success(t('tips.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
         pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, total.value);
         loadDataList();
       }

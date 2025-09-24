@@ -1,20 +1,22 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import { computed, ref, watch, defineAsyncComponent } from 'vue';
+import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Custom UI components
 import { DatePicker, Icon, Image, Input, Modal, Select, SelectUser } from '@xcan-angus/vue-ui';
 
 // Ant Design components
-import { Form, FormItem, RadioButton, RadioGroup, Upload, Popover } from 'ant-design-vue';
+import { Form, FormItem, Popover, RadioButton, RadioGroup, Upload } from 'ant-design-vue';
 
 // API and utilities
 import { GM, upload } from '@xcan-angus/infra';
 
 // Composables
-import { useManagement, useActions } from './composables';
+import { useActions, useManagement } from './composables';
 import type { Project } from './types';
+import { ProjectType } from '@/enums/enums';
+import { getProjectTypeName, getProjectTypeTipConfig } from '@/views/project/project/utils';
 
 // Initialize i18n
 const { t } = useI18n();
@@ -51,7 +53,6 @@ const {
   defaultOptionsDept,
   defaultOptionsGroup,
   formData,
-  projectTypeTipConfig,
   selectProjectType,
   initializeForm,
   loadProjectIntoForm,
@@ -72,9 +73,16 @@ const {
 const formRef = ref();
 const descRichRef = ref();
 
+/** Project type configuration for tips display */
+const projectTypeTipConfig = getProjectTypeTipConfig();
+/** Project type name mapping for UI display */
+const projectTypeName = getProjectTypeName();
+
 // Computed properties
 const modalTitle = computed(() => {
-  return props.dataSource?.id ? t('project.projectAddModal.modal.editProject') : t('project.projectAddModal.modal.addProject');
+  return props.dataSource?.id
+    ? t('project.projectAddModal.modal.editProject')
+    : t('project.projectAddModal.modal.addProject');
 });
 
 // Event handlers
@@ -173,43 +181,43 @@ watch(() => props.visible, (newValue) => {
         <div class="project-type-cards">
           <div
             class="project-type-card"
-            :class="{ 'selected': projectType === 'AGILE' }"
-            @click="selectProjectType('AGILE')">
+            :class="{ 'selected': projectType === ProjectType.AGILE }"
+            @click="selectProjectType(ProjectType.AGILE)">
             <Icon
-              v-show="projectType === 'AGILE'"
+              v-show="projectType === ProjectType.AGILE"
               icon="icon-xuanzhongduigou"
               class="selection-icon" />
             <Icon icon="icon-minjiexiangmuguanli" class="type-icon" />
-            <div class="type-name">{{ t('project.projectAddModal.projectTypeName.agile') }}</div>
+            <div class="type-name">{{ projectTypeName.get(ProjectType.AGILE) }}</div>
           </div>
           <div
             class="project-type-card"
-            :class="{ 'selected': projectType === 'GENERAL' }"
-            @click="selectProjectType('GENERAL')">
+            :class="{ 'selected': projectType === ProjectType.GENERAL }"
+            @click="selectProjectType(ProjectType.GENERAL)">
             <Icon
-              v-show="projectType === 'GENERAL'"
+              v-show="projectType === ProjectType.GENERAL"
               icon="icon-xuanzhongduigou"
               class="selection-icon" />
             <Icon icon="icon-jiandanxiangmuguanli" class="type-icon" />
-            <div class="type-name">{{ t('project.projectAddModal.projectTypeName.general') }}</div>
+            <div class="type-name">{{ projectTypeName.get(ProjectType.GENERAL) }}</div>
           </div>
           <div
             class="project-type-card"
-            :class="{ 'selected': projectType === 'TESTING' }"
-            @click="selectProjectType('TESTING')">
+            :class="{ 'selected': projectType === ProjectType.TESTING }"
+            @click="selectProjectType(ProjectType.TESTING)">
             <Icon
-              v-show="projectType === 'TESTING'"
+              v-show="projectType === ProjectType.TESTING"
               icon="icon-xuanzhongduigou"
               class="selection-icon" />
             <Icon icon="icon-ceshixiangmuguanli" class="type-icon" />
-            <div class="type-name">{{ t('project.projectAddModal.projectTypeName.testing') }}</div>
+            <div class="type-name">{{ projectTypeName.get(ProjectType.TESTING) }}</div>
           </div>
         </div>
       </div>
 
       <!-- Form fields area -->
       <div class="form-fields-section">
-        <h3 class="section-title">{{ t('project.projectAddModal.form.basicInfo') }}</h3>
+        <h3 class="section-title">{{ t('common.basicInfo') }}</h3>
         <Form
           ref="formRef"
           class="project-form"
@@ -313,11 +321,11 @@ watch(() => props.visible, (newValue) => {
             <!-- Import example -->
             <FormItem class="form-field with-tooltip flex-1">
               <template #label>
-                <span>{{ t('project.projectAddModal.form.importExample') }}</span>
+                <span>{{ t('actions.importExamples') }}</span>
               </template>
               <RadioGroup
                 v-model:value="formData.importExample"
-                :options="[{ value: true, label: t('project.projectAddModal.form.yes')}, { value: false, label: t('project.projectAddModal.form.no') }]"
+                :options="[{ value: true, label: t('status.yes')}, { value: false, label: t('status.no') }]"
                 class="enhanced-radio-group" />
               <Popover placement="right" overlayClassName="form-tooltip">
                 <template #content>
@@ -416,19 +424,19 @@ watch(() => props.visible, (newValue) => {
 
       <!-- Project type preview area -->
       <div class="project-preview-section">
-        <h3 class="section-title">{{ t('project.projectAddModal.projectTypeName.' + projectType.toLowerCase()) }}</h3>
+        <h3 class="section-title">{{ projectTypeName.get(projectType) }}</h3>
         <div class="preview-content">
           <div class="preview-image">
             <img
-              v-show="projectType==='AGILE'"
+              v-show="projectType===ProjectType.AGILE"
               src="./images/agile.png"
               class="preview-img agile" />
             <img
-              v-show="projectType==='GENERAL'"
+              v-show="projectType===ProjectType.GENERAL"
               src="./images/general.png"
               class="preview-img general" />
             <img
-              v-show="projectType==='TESTING'"
+              v-show="projectType===ProjectType.TESTING"
               src="./images/testing.png"
               class="preview-img testing" />
           </div>

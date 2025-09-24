@@ -397,7 +397,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 
     <DescriptionsItem :label="t('httpPlugin.functionTestDetail.http.assertions.executionConditionResult')">
       <template v-if="props.ignoreAssertions||!props.value?.enabled">
-        <Badge status="default" :text="t('httpPlugin.functionTestDetail.statusTag.ignore')" />
+        <Badge status="default" :text="t('status.ignored')" />
       </template>
       <template v-else-if="conditionFailure">
         <Badge status="error" :text="conditionResultMessage" />
@@ -414,7 +414,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showRealValue" />
-          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('real')">{{ t('httpPlugin.functionTestDetail.http.assertions.view') }}</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('real')">{{ t('actions.view') }}</div>
         </div>
       </template>
 
@@ -440,7 +440,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showExpectedValue" />
-          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('httpPlugin.functionTestDetail.http.assertions.view') }}</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('actions.view') }}</div>
         </div>
       </template>
 
@@ -451,7 +451,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 
     <template v-if="assertionIgnored">
       <DescriptionsItem :label="t('httpPlugin.functionTestDetail.http.assertions.assertionResult')" :span="3">
-        <Badge status="default" :text="t('httpPlugin.functionTestDetail.statusTag.ignore')" />
+        <Badge status="default" :text="t('status.ignored')" />
       </DescriptionsItem>
     </template>
 

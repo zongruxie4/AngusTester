@@ -270,7 +270,7 @@ const templateType = computed(() => {
 
 const tipText = computed(() => {
   if (loading.value) {
-    return t('reportPreview.loading');
+    return t('common.loading');
   }
 
   if (generating.value) {

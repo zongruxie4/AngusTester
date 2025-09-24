@@ -259,7 +259,7 @@ const params = computed(() => {
               </template>
             </Tooltip>
             <Tooltip
-              :title="t('commonComp.shareModal.delete')"
+              :title="t('actions.delete')"
               placement="top">
               <template v-if="props.disabled">
                 <Icon

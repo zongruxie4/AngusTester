@@ -42,7 +42,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-daiceshi" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">{{ t('functionHome.summary.review.pending') }}</div>
+          <div class="text-theme-sub-content">{{ t('status.pending') }}</div>
           <div class="text-4">{{ pendingTotal }}</div>
         </div>
       </div>
@@ -50,7 +50,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-renwuceshizhong" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">{{ t('functionHome.summary.review.inProgress') }}</div>
+          <div class="text-theme-sub-content">{{ t('status.inProgress') }}</div>
           <div class="text-4">{{ progressingTotal }}</div>
         </div>
       </div>
@@ -58,7 +58,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-ceshitongguo" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">{{ t('functionHome.summary.review.completed') }}</div>
+          <div class="text-theme-sub-content">{{ t('status.completed') }}</div>
           <div class="text-4">{{ completedTotal }}</div>
         </div>
       </div>

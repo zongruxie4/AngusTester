@@ -114,21 +114,21 @@ const burnDownCharts = computed(() => {
           <div class="flex border-b border-solid border-border-input">
             <div
               class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-              {{ t('reportPreview.functionPlan.caseSummary.fields.passed') }}
+              {{ t('status.passed') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
               {{ totalOverview?.passedTestNum || 0 }}
             </div>
             <div
               class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-              {{ t('reportPreview.functionPlan.caseSummary.fields.failed') }}
+              {{ t('status.failed') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
               {{ totalOverview?.notPassedTestNum || 0 }}
             </div>
             <div
               class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-              {{ t('reportPreview.functionPlan.caseSummary.fields.blocked') }}
+              {{ t('rstatus.blocked') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
               {{ totalOverview?.blockedTestNum || 0 }}
@@ -312,14 +312,14 @@ const burnDownCharts = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a2.3">2.3<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.caseSummary.burndownChart.title') }}</span>
+        <span id="a2.3">2.3<em class="inline-block w-3.5"></em>{{ t('chart.burndown.title') }}</span>
       </h2>
       <BurnDownChart :dataSource="burnDownCharts" />
     </div>
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a2.4">2.4<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.caseSummary.groupStats.title') }}</span>
+        <span id="a2.4">2.4<em class="inline-block w-3.5"></em>{{ t('chart.burndown.title') }}</span>
       </h2>
       <CaseGrouped
         :dataSource="props.dataSource" />

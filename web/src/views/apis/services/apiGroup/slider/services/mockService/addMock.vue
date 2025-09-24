@@ -99,7 +99,7 @@ const handleSave = () => {
     const [error, { data }] = projectDetail.value?.mockServiceId ? await mock.patchService(updateParams) : await mock.addServiceByAssoc(addParams);
     loading.value = false;
     if (error) { return; }
-    notification.success(projectDetail.value?.mockServiceId ? t('tips.updateSuccess') : t('tips.addSuccess'));
+    notification.success(projectDetail.value?.mockServiceId ? t('actions.tips.updateSuccess') : t('actions.tips.addSuccess'));
     emits('update:visible', false);
     emits('reload', data.id);
     reset();

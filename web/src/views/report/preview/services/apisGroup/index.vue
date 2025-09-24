@@ -72,7 +72,7 @@ const apisStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: [t('reportPreview.services.apisGroup.byStatus.statuses.unknown'), t('reportPreview.services.apisGroup.byStatus.statuses.designing'), t('reportPreview.services.apisGroup.byStatus.statuses.devInProgress'), t('reportPreview.services.apisGroup.byStatus.statuses.devCompleted'), t('reportPreview.services.apisGroup.byStatus.statuses.published')]
+    data: [t('reportPreview.services.apisGroup.byStatus.status.unknown'), t('reportPreview.services.apisGroup.byStatus.status.designing'), t('reportPreview.services.apisGroup.byStatus.status.devInProgress'), t('reportPreview.services.apisGroup.byStatus.status.devCompleted'), t('reportPreview.services.apisGroup.byStatus.status.published')]
   },
   series: [
     {
@@ -116,7 +116,7 @@ const apisStatusOption = {
 const methodOptions = {
   title: {
     text: 0,
-    subtext: t('reportPreview.services.apisGroup.total'),
+    subtext: t('chart.total'),
     left: '29.5%',
     top: '35%',
     padding: 2,

@@ -175,7 +175,7 @@ const testerResponsibilities = computed(() => {
         <span id="a1.3">1.3<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.testTarget.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ plan?.testingObjectives || t('reportPreview.functionPlan.detail.testTarget.noData') }}
+        {{ plan?.testingObjectives || t('common.noData') }}
       </div>
     </div>
 
@@ -184,7 +184,7 @@ const testerResponsibilities = computed(() => {
         <span id="a1.4">1.4<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.testScope.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ plan?.testingScope || t('reportPreview.functionPlan.detail.testScope.noData') }}
+        {{ plan?.testingScope || t('common.noData') }}
       </div>
     </div>
 
@@ -193,7 +193,7 @@ const testerResponsibilities = computed(() => {
         <span id="a1.5">1.5<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.acceptanceCriteria.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ plan?.acceptanceCriteria || t('reportPreview.functionPlan.detail.acceptanceCriteria.noData') }}
+        {{ plan?.acceptanceCriteria || t('common.noData') }}
       </div>
     </div>
 
@@ -202,7 +202,7 @@ const testerResponsibilities = computed(() => {
         <span id="a1.6">1.6<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.otherInfo.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ plan?.otherInformation || t('reportPreview.functionPlan.detail.otherInfo.noData') }}
+        {{ plan?.otherInformation || t('common.noData') }}
       </div>
     </div>
   </div>

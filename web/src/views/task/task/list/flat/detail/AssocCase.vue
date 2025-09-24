@@ -146,42 +146,42 @@ const tableColumns = [
   {
     key: 'code',
     dataIndex: 'code',
-    title: t('task.assocCase.columns.code')
+    title: t('common.code')
   },
   {
     key: 'name',
     dataIndex: 'name',
-    title: t('task.assocCase.columns.name')
+    title: t('common.name')
   },
   {
     key: 'priority',
     dataIndex: 'priority',
-    title: t('task.assocCase.columns.priority')
+    title: t('common.priority')
   },
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: t('task.assocCase.columns.evalWorkload')
+    title: t('common.evalWorkload')
   },
   {
     key: 'status',
     dataIndex: 'status',
-    title: t('task.assocCase.columns.status')
+    title: t('common.status')
   },
   {
     key: 'testerName',
     dataIndex: 'testerName',
-    title: t('task.assocCase.columns.testerName')
+    title: t('common.testerName')
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('task.assocCase.columns.deadlineDate')
+    title: t('common.deadlineDate')
   },
   {
     key: 'action',
     dataIndex: 'action',
-    title: t('task.assocCase.columns.action')
+    title: t('common.actions')
   }
 ];
 </script>
@@ -228,7 +228,7 @@ const tableColumns = [
             type="text"
             @click="handleCaseDisassociation(record)">
             <Icon icon="icon-qingchu" class="mr-1" />
-            {{ t('task.assocCase.actions.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
         </template>
 

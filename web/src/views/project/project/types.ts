@@ -50,7 +50,7 @@ export interface Project {
   /** Project owner's display name */
   ownerName?: string;
   /** Project type with enum value and display message */
-  type?: EnumMessage<ProjectType>;
+  type: EnumMessage<ProjectType>;
   /** All project members organized by type */
   members?: ProjectMembers;
   /** Total number of members (calculated field) */

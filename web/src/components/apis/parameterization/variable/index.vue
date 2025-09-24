@@ -202,7 +202,7 @@ const columns = [
     width: '8%'
   },
   {
-    title: t('commonComp.apis.parameterizationVariable.actions'),
+    title: t('common.actions'),
     dataIndex: 'action',
     width: 170
   }

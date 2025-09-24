@@ -77,7 +77,7 @@ const height = ref(34);
 const isFull = ref(false);
 const isOpen = ref(false);
 const isMoving = ref(false);
-const isUIViewMode = ref(true);
+const isPageViewMode = ref(true);
 const selectModalVisible = ref(false);// 选择脚本弹窗
 const uploadVisible = ref(false);// 导入脚本弹窗
 const exportModalVisible = ref(false);// 导出脚本弹窗
@@ -87,7 +87,7 @@ const loading = ref(false);
 const loaded = ref(false);
 const rendered = ref(false);
 // 默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮
-const hideButtonSet = ref<Set<ButtonGroupMenuKey>>(new Set<ButtonGroupMenuKey>(['test', 'UIView', 'export', 'follow', 'cancelFollow', 'favourite', 'cancelFavourite', 'authority', 'refresh']));
+const hideButtonSet = ref<Set<ButtonGroupMenuKey>>(new Set<ButtonGroupMenuKey>(['test', 'pageView', 'export', 'follow', 'cancelFollow', 'favourite', 'cancelFavourite', 'permission', 'refresh']));
 const scenarioConfigData = ref<ScenarioConfig>();// 场景详情信息
 const saveFormConfigData = ref<{
   id: string;
@@ -175,7 +175,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
     return;
   }
 
-  if (key === 'UIView') {
+  if (key === 'pageView') {
     if (typeof codeConfigRef.value?.isValid === 'function') {
       if (!codeConfigRef.value.isValid()) {
         return;
@@ -211,8 +211,8 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
     }
 
     hideButtonSet.value.delete('codeView');
-    hideButtonSet.value.add('UIView');
-    isUIViewMode.value = true;
+    hideButtonSet.value.add('pageView');
+    isPageViewMode.value = true;
     return;
   }
 
@@ -241,9 +241,9 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
     toOpenapiObject(scenarioConfigData.value.script);
     cleanupPipelines(scenarioConfigData.value.script?.task?.pipelines);
     cleanupVariables(scenarioConfigData.value.script?.configuration?.variables);
-    hideButtonSet.value.delete('UIView');
+    hideButtonSet.value.delete('pageView');
     hideButtonSet.value.add('codeView');
-    isUIViewMode.value = false;
+    isPageViewMode.value = false;
     return;
   }
 
@@ -292,7 +292,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
     return;
   }
 
-  if (key === 'authority') {
+  if (key === 'permission') {
     authVisible.value = true;
     return;
   }
@@ -351,7 +351,7 @@ const createTest = async () => {
 const selectScriptOk = (data: ScenarioConfig['script']) => {
   const scriptType = data.type;
   const newPipelines: PipelineConfig[] = data?.task?.pipelines || [];
-  if (hideButtonSet.value.has('UIView')) {
+  if (hideButtonSet.value.has('pageView')) {
     // UI视图
     let oldPipelines: PipelineConfig[] = [];
     oldPipelines = uiConfigRef.value?.getData() || [];
@@ -600,7 +600,7 @@ const getData = (): {
     pipelines: []
   };
 
-  if (hideButtonSet.value.has('UIView')) {
+  if (hideButtonSet.value.has('pageView')) {
     if (typeof uiConfigRef.value?.getData === 'function') {
       data.pipelines = uiConfigRef.value.getData();
     }
@@ -961,7 +961,7 @@ const loadDebugInfo = async () => {
 const initBtn = () => {
   // 已经保存的场景有【执行测试】、【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮
   hideButtonSet.value.delete('export');
-  hideButtonSet.value.delete('authority');
+  hideButtonSet.value.delete('permission');
   hideButtonSet.value.delete('refresh');
   hideButtonSet.value.delete('test');
 
@@ -1450,7 +1450,7 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-  return isUIViewMode.value ? { task: t('httpPlugin.tabs.taskConfig'), execute: t('httpPlugin.tabs.executeConfig') } : { task: '', execute: '' };
+  return isPageViewMode.value ? { task: t('httpPlugin.tabs.taskConfig'), execute: t('httpPlugin.tabs.executeConfig') } : { task: '', execute: '' };
 });
 
 const drawerMenuItems = computed(() => {
@@ -1511,15 +1511,15 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
           class="bg-white overflow-auto"
           :class="{ 'transition-150': !isMoving }"
           :style="'height:calc(100% - ' + height + 'px);'">
-          <AsyncComponent :visible="!isUIViewMode">
+          <AsyncComponent :visible="!isPageViewMode">
             <ScriptConfig
-              v-show="!isUIViewMode"
+              v-show="!isPageViewMode"
               ref="codeConfigRef"
               :value="scenarioConfigData?.script" />
           </AsyncComponent>
           <AsyncComponent :visible="activeKey === 'taskConfig'">
             <UIConfig
-              v-show="isUIViewMode && activeKey === 'taskConfig'"
+              v-show="isPageViewMode && activeKey === 'taskConfig'"
               ref="uiConfigRef"
               :loaded="loaded"
               :value="scenarioConfigData?.script?.task?.pipelines"
@@ -1529,7 +1529,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
           </AsyncComponent>
           <AsyncComponent :visible="activeKey === 'executeConfig'">
             <ExecuteConfig
-              v-show="isUIViewMode && activeKey === 'executeConfig'"
+              v-show="isPageViewMode && activeKey === 'executeConfig'"
               ref="executeConfigRef"
               :value="scriptConfig"
               :excludes="scriptTypeExcludes"
@@ -1627,9 +1627,9 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
         :updateUrl="`${TESTER}/scenario/auth`"
         :enabledUrl="`${TESTER}/scenario/${scenarioConfigData?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/scenario/${scenarioConfigData?.id}/auth/status`"
-        :onTips="t('httpPlugin.authority.onTips')"
-        :offTips="t('httpPlugin.authority.offTips')"
-        :title="t('httpPlugin.authority.title')"
+        :onTips="t('httpPlugin.permission.onTips')"
+        :offTips="t('httpPlugin.permission.offTips')"
+        :title="t('httpPlugin.permission.title')"
         @update:visible="authVisible = $event" />
     </AsyncComponent>
 

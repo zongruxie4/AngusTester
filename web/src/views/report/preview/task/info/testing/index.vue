@@ -179,7 +179,7 @@ const nameText = computed(() => {
               {{ t('reportPreview.task.info.testingInfo.testResult.basicInfo.fields.testResult') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
-              {{ testResult?.passed ? t('reportPreview.task.info.testingInfo.testResult.basicInfo.options.passed') : t('reportPreview.task.info.testingInfo.testResult.basicInfo.options.failed') }}
+              {{ testResult?.passed ? t('status.passed') : t('status.failed') }}
             </div>
             <div
               class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">

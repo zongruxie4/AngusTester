@@ -1,14 +1,8 @@
 {
   "execution": {
     "basic": {
-      "execute": "执行",
-      "name": "名称",
-      "type": "类型",
       "scenario": "脚本",
       "configure": "配置",
-      "status": "状态",
-      "creator": "添加人",
-      "createdTime": "添加时间",
       "concurrency": "并发数",
       "startTime": "开始时间",
       "endTime": "结束时间",
@@ -25,11 +19,8 @@
       "viewReport": "查看报告",
       "immediately": "立即执行",
       "timing": "定时执行",
-      "start": "启动",
-      "stop": "停止",
       "editExecutionConfig": "编辑执行配置",
-      "viewScheduleLog": "查看调度日志",
-      "clear": "清空"
+      "viewScheduleLog": "查看调度日志"
     },
     "search": {
       "executionName": "查询执行名称",
@@ -93,10 +84,7 @@
       "lastModifiedTimeTo": "最后修改时间到",
       "sortByCreatedTime": "按添加时间",
       "sortByPriority": "按优先级",
-      "experienceExecution": "体验执行",
-      "addExecution": "添加执行",
-      "sort": "排序",
-      "refresh": "刷新"
+      "experienceExecution": "体验执行"
     },
     "info": {
       "executionDetails": "执行详情",
@@ -105,10 +93,6 @@
       "executionScript": "执行脚本",
       "log": "执行日志",
       "testResult": "测试结果",
-      "start": "启动",
-      "stop": "停止",
-      "delete": "删除",
-      "back": "返回",
       "performanceTest": "性能测试",
       "stabilityTest": "稳定性测试",
       "functionalityTest": "功能测试",
@@ -135,8 +119,6 @@
       "ignoreAssertions": "忽略断言",
       "updateTestResult": "更新测试结果",
       "trial": "试用",
-      "id": "ID",
-      "modifiedBy": "最后修改"
     },
     "testResult": {
       "basicInfo": "基本信息",
@@ -153,13 +135,7 @@
       "testCount": "测试次数",
       "failureCount": "失败次数",
       "oneTimePass": "一次性通过",
-      "passed": "通过",
-      "notPassed": "不通过",
       "notPassedWithReason": "未通过：",
-      "notEnabled": "未启用",
-      "total": "总共",
-      "success": "成功",
-      "failure": "失败",
       "performanceTest": "性能测试",
       "testParameters": "测试参数",
       "testIndicators": "测试指标",
@@ -177,9 +153,7 @@
       "memoryUsage": "内存使用率",
       "diskUsage": "磁盘使用率",
       "networkUsage": "网络使用量",
-      "maximum": "最大",
-      "yes": "是",
-      "no": "否"
+      "maximum": "最大"
     },
     "infoServer": {
       "noDescription": "无描述~",
@@ -194,10 +168,6 @@
       "executionLog": "执行日志",
       "schedulingResult": "调度结果",
       "processExitCode": "进程退出码",
-      "success": "成功",
-      "failure": "失败",
-      "export": "导出",
-      "refresh": "刷新",
       "file": "文件",
       "noAccessProxyInfo": "无访问代理信息，连接失败地址：",
       "runnerLog": "runner.log",
@@ -234,9 +204,7 @@
       "executionStatus": "执行状态"
     },
     "add": {
-      "name": "名称",
       "script": "脚本",
-      "type": "类型",
       "config": "配置",
       "enterExecutionName": "请输入执行名称，最多100字符",
       "enterExecutionNameRequired": "请输入执行名称",
@@ -244,8 +212,6 @@
       "selectScript": "请选择脚本",
       "selectTestType": "请选择测试类型",
       "selectTestTypeRequired": "请选择测试类型",
-      "save": "保存",
-      "cancel": "取消",
       "modifySuccess": "修改成功",
       "addSuccess": "添加成功"
     },
@@ -278,18 +244,8 @@
         "threadMaxPoolSize": "最大线程数"
       },
       "columns": {
-        "name": "名称",
         "samplingCount": "采样数",
         "transactionCount": "事务数",
-        "average": "平均",
-        "minimum": "最小",
-        "maximum": "最大",
-        "p50": "P50",
-        "p75": "P75",
-        "p90": "P90",
-        "p95": "P95",
-        "p99": "P99",
-        "p999": "P999",
         "queriesPerSecond": "每秒查询数",
         "transactionsPerSecond": "每秒事务数",
         "errorCount": "错误数",

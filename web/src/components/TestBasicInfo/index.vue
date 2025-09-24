@@ -117,7 +117,7 @@ const letterMap = {
       </template>
     </template>
     <template #ignoreAssertions="{text}">
-      {{ typeof text ==='boolean'?text?t('xcan_testBasicInfo.ignore'):t('xcan_testBasicInfo.notIgnore'):'--' }}
+      {{ typeof text ==='boolean'?text?t('status.ignored'):t('status.notIgnored'):'--' }}
     </template>
     <template #reportInterval="{text}">
       <template v-if="text">

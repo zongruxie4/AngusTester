@@ -109,7 +109,7 @@ const groupedKey = ref('');
 const groups = [
   {
     key: '',
-    name: t('xcan_selectApisCase.noGrouping')
+    name: t('actions.noGroup')
   },
   {
     key: 'createdBy',
@@ -339,7 +339,7 @@ defineExpose({
       <div class="flex mb-1 justify-between">
         <Input
           v-model:value="caseKeywords"
-          :placeholder="t('xcan_selectApisCase.search')"
+          :placeholder="t('actions.search')"
           allowClear
           class="w-50"
           @change="handleChangeCaseKeywordChange" />

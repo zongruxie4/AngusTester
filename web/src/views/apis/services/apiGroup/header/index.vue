@@ -71,7 +71,7 @@ const enumList = reactive({
   groupList: [
     {
       key: '',
-      name: t('service.groupHeader.group.noGroup')
+      name: t('actions.noGroup')
     },
     {
       key: 'createdBy',
@@ -354,7 +354,7 @@ onBeforeUnmount(() => {
           class="px-0">
           <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
             <Icon icon="icon-shunxu" />
-            <span>{{ t('sort') }}</span>
+            <span>{{ t('actions.sort') }}</span>
           </div>
         </Button>
       </DropdownSort>

@@ -223,7 +223,7 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
               <Icon
                 :icon="record.status?.value !== MockServiceStatus.RUNNING ? 'icon-qidong' : 'icon-zhongzhi2'"
                 class="mr-1" />
-              {{ record.status?.value !== MockServiceStatus.RUNNING ? t('mock.actions.start') : t('mock.actions.stop') }}
+              {{ record.status?.value !== MockServiceStatus.RUNNING ? t('actions.start') : t('actions.stop') }}
             </a>
             <a
               v-else
@@ -232,7 +232,7 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
               <Icon
                 :icon="record.status?.value !== MockServiceStatus.RUNNING ? 'icon-qidong' : 'icon-zhongzhi2'"
                 class="mr-1" />
-              {{ record.status?.value !== MockServiceStatus.RUNNING ? t('mock.actions.start') : t('mock.actions.stop') }}
+              {{ record.status?.value !== MockServiceStatus.RUNNING ? t('actions.start') : t('actions.stop') }}
             </a>
             <a
               v-if="(!record.auth || record.currentAuthsValue.includes(MockServicePermission.DELETE)) &&

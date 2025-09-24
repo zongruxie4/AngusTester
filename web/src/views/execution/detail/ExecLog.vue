@@ -112,7 +112,7 @@ const {
                 <template v-if="props.execNodes?.length">
                   <div class="flex items-center">
                     <div class="w-1.5 h-1.5 mr-1 rounded" :class="schedulingLogItem?.success?'bg-status-success':'bg-status-error'"></div>
-                    {{ schedulingLogItem?.success ? t('execution.infoLog.success') : t('execution.infoLog.failure') }}
+                    {{ schedulingLogItem?.success ? t('status.success') : t('status.failed') }}
                   </div>
                 </template>
                 <template v-else>
@@ -127,7 +127,7 @@ const {
                 </template>
               </div>
               <div>
-                <Tooltip :title="t('execution.infoLog.export')" placement="top">
+                <Tooltip :title="t('actions.export')" placement="top">
                   <Icon
                     icon="icon-daochu1"
                     class="text-4 cursor-pointer hover:text-text-link-hover mr-2"
@@ -172,13 +172,13 @@ const {
                 </template>
               </div>
               <div>
-                <Tooltip :title="t('execution.infoLog.export')" placement="top">
+                <Tooltip :title="t('actions.export')" placement="top">
                   <Icon
                     icon="icon-daochu1"
                     class="text-4 cursor-pointer hover:text-text-link-hover mr-2"
                     @click="downloadLog('exec')" />
                 </Tooltip>
-                <Tooltip :title="t('execution.infoLog.refresh')" placement="top">
+                <Tooltip :title="t('actions.refresh')" placement="top">
                   <Icon
                     icon="icon-shuaxin"
                     class="text-4 cursor-pointer hover:text-text-link-hover mr-2"

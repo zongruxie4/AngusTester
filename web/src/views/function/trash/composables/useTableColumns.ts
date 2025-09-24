@@ -43,7 +43,7 @@ export function useTableColumns () {
       sorter: true
     },
     {
-      title: t('functionTrash.columns.actions'),
+      title: t('commons.actions'),
       dataIndex: 'action',
       key: 'action',
       width: 100,

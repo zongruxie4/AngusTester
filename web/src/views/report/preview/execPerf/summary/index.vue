@@ -34,7 +34,7 @@ const resultInfo = computed(() => {
   if (props.execResult) {
     return {
       label: t('reportPreview.execPerf.summary.fields.testPassed'),
-      value: props.execResult?.passed ? t('reportPreview.execPerf.summary.status.passed') : t('reportPreview.execPerf.summary.status.failed')
+      value: props.execResult?.passed ? t('status.passed') : t('status.failed')
     };
   }
 

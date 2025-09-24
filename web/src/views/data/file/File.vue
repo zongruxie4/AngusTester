@@ -324,7 +324,7 @@ onBeforeUnmount(() => {
                 class="!h-6"
                 @click.stop="showDeleteConfirm([record.id])">
                 <Icon icon="icon-qingchu" class="align-text-bottom mr-0.5" />
-                {{ t('fileSpace.fileManagement.fileActions.delete') }}
+                {{ t('actions.delete') }}
               </Button>
 
               <!-- Rename action -->
@@ -335,7 +335,7 @@ onBeforeUnmount(() => {
                 class="!h-6"
                 @click.stop="rename(record)">
                 <Icon icon="icon-bianji" class="align-text-bottom mr-0.5" />
-                {{ t('fileSpace.fileManagement.fileActions.rename') }}
+                {{ t('actions.rename') }}
               </Button>
 
               <!-- Move action -->
@@ -346,7 +346,7 @@ onBeforeUnmount(() => {
                 class="!h-6"
                 @click.stop="handleMove(record)">
                 <Icon icon="icon-yidong" class="align-text-bottom mr-0.5" />
-                {{ t('fileSpace.fileManagement.fileActions.move') }}
+                {{ t('actions.move') }}
               </Button>
 
               <!-- Details action -->

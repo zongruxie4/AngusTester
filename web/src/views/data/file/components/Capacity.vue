@@ -34,7 +34,7 @@ watch(() => props.id, newValue => {
 <template>
   <div class="text-3 text-center px-4">
     <Spin
-      :tip="t('fileSpace.capacity.loading')"
+      :tip="t('common.loading')"
       :spinning="state.loading">
       <Progress
         type="circle"

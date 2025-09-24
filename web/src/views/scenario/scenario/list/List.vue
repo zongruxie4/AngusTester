@@ -158,10 +158,10 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
     case 'export':
       openExportModal(data.scriptId);
       break;
-    case 'favourite':
+    case 'addFavourite':
       toggleScenarioFavorite(data.id, false);
       break;
-    case 'follow':
+    case 'addFollow':
       toggleScenarioFollow(data.id, false);
       break;
     case 'reopenTestTask':
@@ -259,7 +259,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
-                  :title="t('scenario.list.tooltips.edit')">
+                  :title="t('actions.edit')">
                   <RouterLink :to="record.editLinkUrl" class="w-full h-full flex items-center justify-center">
                     <Icon icon="icon-shuxie" class="text-3.5" />
                   </RouterLink>
@@ -272,7 +272,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
-                  :title="t('scenario.list.tooltips.clone')"
+                  :title="t('actions.clone')"
                   @click="toClone(record, emit)">
                   <Icon icon="icon-fuzhi" class="text-3.5" />
                 </Button>

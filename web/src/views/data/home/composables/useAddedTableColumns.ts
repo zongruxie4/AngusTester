@@ -65,7 +65,7 @@ export function useAddedTableColumns (type: DataType) {
 
     // Add action column
     const actionColumn = {
-      title: t('dataHome.summaryTable.columns.action'),
+      title: t('common.actions'),
       dataIndex: 'action',
       width: 50
     };

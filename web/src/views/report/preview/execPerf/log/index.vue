@@ -102,7 +102,7 @@ const schedulingLog = computed(() => {
           <div class="mr-0.5">{{ t('reportPreview.execPerf.log.schedulingLog.fields.schedulingResult') }}：</div>
           <div v-if="nodeIp" class="flex items-center">
             <div class="w-1.5 h-1.5 mr-1 rounded" :class="schedulingLog?.success?'bg-status-success':'bg-status-error'"></div>
-            {{ schedulingLog?.success ? t('reportPreview.execPerf.log.schedulingLog.status.success') : t('reportPreview.execPerf.log.schedulingLog.status.failed') }}
+            {{ schedulingLog?.success ? t('status.success') : t('status.failed') }}
           </div>
           <div v-else>--</div>
         </div>

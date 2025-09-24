@@ -796,7 +796,7 @@ const actionMenuItemsMap = computed(() => {
         hide: true
       },
       {
-        name: t('task.detail.actions.split'),
+        name: t('actions.split'),
         key: 'split' as any,
         icon: 'icon-guanlianziyuan',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any) && sprintAuth,
@@ -807,7 +807,7 @@ const actionMenuItemsMap = computed(() => {
     // Add status-specific menu items
     if (status === TaskStatus.PENDING) {
       menuItems.push({
-        name: t('task.actions.start'),
+        name: t(actions.start'),
         key: 'start',
         icon: 'icon-kaishi',
         disabled: !isAdmin && !isAssignee,
@@ -817,7 +817,7 @@ const actionMenuItemsMap = computed(() => {
 
     if (status === TaskStatus.IN_PROGRESS) {
       menuItems.push({
-        name: t('task.actions.complete'),
+        name: t('actions.complete'),
         key: 'processed',
         icon: 'icon-yichuli',
         disabled: !isAdmin && !isAssignee,
@@ -845,7 +845,7 @@ const actionMenuItemsMap = computed(() => {
 
     if (status === TaskStatus.CANCELED || status === TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('task.actions.reopen'),
+        name: t('actions.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.REOPEN_TASK as any) && !isAssignee,
@@ -854,7 +854,7 @@ const actionMenuItemsMap = computed(() => {
       });
 
       menuItems.push({
-        name: t('task.actions.restart'),
+        name: t('actions.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any),
@@ -876,7 +876,7 @@ const actionMenuItemsMap = computed(() => {
     // Add favorite/follow menu items
     if (favourite) {
       menuItems.push({
-        name: t('task.actions.unfavorite'),
+        name: t('actions.cancelFavourite'),
         key: 'cancelFavourite',
         icon: 'icon-quxiaoshoucang',
         disabled: false,
@@ -884,8 +884,8 @@ const actionMenuItemsMap = computed(() => {
       });
     } else {
       menuItems.push({
-        name: t('task.actions.favorite'),
-        key: 'favourite',
+        name: t('actions.favorite'),
+        key: 'addFavourite',
         icon: 'icon-yishoucang',
         disabled: false,
         hide: false
@@ -894,7 +894,7 @@ const actionMenuItemsMap = computed(() => {
 
     if (follow) {
       menuItems.push({
-        name: t('task.actions.unfollow'),
+        name: t('actions.cancelFollow'),
         key: 'cancelFollow',
         icon: 'icon-quxiaoguanzhu',
         disabled: false,
@@ -902,8 +902,8 @@ const actionMenuItemsMap = computed(() => {
       });
     } else {
       menuItems.push({
-        name: t('task.actions.follow'),
-        key: 'follow',
+        name: t('actions.addFollow'),
+        key: 'addFollow',
         icon: 'icon-yiguanzhu',
         disabled: false,
         hide: false
@@ -912,7 +912,7 @@ const actionMenuItemsMap = computed(() => {
 
     // Add common menu items
     menuItems.push({
-      name: t('task.actions.move'),
+      name: t('actions.move'),
       key: 'move',
       icon: 'icon-yidong',
       disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
@@ -920,7 +920,7 @@ const actionMenuItemsMap = computed(() => {
     });
 
     menuItems.push({
-      name: t('task.copyLink'),
+      name: t('actions.copyLink'),
       key: 'copyLink',
       icon: 'icon-fuzhi',
       disabled: false,
@@ -974,7 +974,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="startCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>{{ t('task.actions.start') }}</span>
+          <span>{{ t('actions.start') }}</span>
         </Button>
 
         <!-- Mark as Processed Button -->
@@ -986,7 +986,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="markTaskAsProcessed">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>{{ t('task.actions.complete') }}</span>
+          <span>{{ t('actions.complete') }}</span>
         </Button>
 
         <!-- Confirm Complete Button -->
@@ -1022,7 +1022,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="reopenCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>{{ t('task.actions.reopen') }}</span>
+          <span>{{ t('actions.reopen') }}</span>
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
@@ -1042,7 +1042,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="restartCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>{{ t('task.actions.restart') }}</span>
+          <span>{{ t('actions.restart') }}</span>
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
@@ -1061,7 +1061,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="navigateToEdit">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuxie" />
-          <span>{{ t('task.detail.actions.edit') }}</span>
+          <span>{{ t('actions.edit') }}</span>
         </Button>
 
         <!-- Split Task Button -->
@@ -1072,7 +1072,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="openSplitTaskDialog">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-guanlianziyuan" />
-          <span>{{ t('task.detail.actions.split') }}</span>
+          <span>{{ t('actions.split') }}</span>
         </Button>
 
         <!-- Cancel Task Button -->
@@ -1105,7 +1105,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="addToFavorites">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-yishoucang" />
-          <span>{{ t('task.actions.favorite') }}</span>
+          <span>{{ t('actions.favorite') }}</span>
         </Button>
 
         <!-- Remove from Favorites Button -->
@@ -1116,7 +1116,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="removeFromFavorites">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-quxiaoshoucang" />
-          <span>{{ t('task.actions.unfavorite') }}</span>
+          <span>{{ t('actions.cancelFavourite') }}</span>
         </Button>
 
         <!-- Follow Task Button -->
@@ -1127,7 +1127,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="followCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-yiguanzhu" />
-          <span>{{ t('task.actions.follow') }}</span>
+          <span>{{ t('actions.addFollow') }}</span>
         </Button>
 
         <!-- Unfollow Task Button -->
@@ -1138,7 +1138,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="unfollowCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-quxiaoguanzhu" />
-          <span>{{ t('task.actions.unfollow') }}</span>
+          <span>{{ t('actions.cancelFollow') }}</span>
         </Button>
 
         <!-- Move Task Button -->
@@ -1149,7 +1149,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="openMoveTaskDialog">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-yidong" />
-          <span>{{ t('task.detail.actions.move') }}</span>
+          <span>{{ t('actions.move') }}</span>
         </Button>
 
         <!-- Copy Link Button -->
@@ -1158,7 +1158,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="copyTaskLinkToClipboard">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-fuzhi" />
-          <span>{{ t('task.detail.actions.copyLink') }}</span>
+          <span>{{ t('actions.copyLink') }}</span>
         </Button>
 
         <!-- Full Screen Toggle Button -->
@@ -1215,7 +1215,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center mr-4"
           @click="refreshAllContent">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-          <span>{{ t('task.detail.actions.refresh') }}</span>
+          <span>{{ t('tactions.refresh') }}</span>
         </Button>
       </template>
 

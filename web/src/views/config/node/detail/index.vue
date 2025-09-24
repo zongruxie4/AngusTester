@@ -229,7 +229,7 @@ onMounted(() => {
               <Tooltip v-if="!canDeleteNode(state.infos)" :title="getDeleteTip(state.infos, isAdmin, tenantInfo, userInfo)">
                 <Button class="node-action-btn" :disabled="true">
                   <Icon icon="icon-qingchu" class="mr-1" />
-                  <span>{{ t('node.message.delete') }}</span>
+                  <span>{{ t('actions.delete') }}</span>
                 </Button>
               </Tooltip>
               <Button
@@ -237,7 +237,7 @@ onMounted(() => {
                 class="node-action-btn"
                 @click="handleDeleteNode">
                 <Icon icon="icon-qingchu" class="mr-1" />
-                <span>{{ t('node.message.delete') }}</span>
+                <span>{{ t('actions.delete') }}</span>
               </Button>
 
               <!-- Online Install Agent Button -->
@@ -283,7 +283,7 @@ onMounted(() => {
 
               <!-- Back Button -->
               <Button class="node-action-btn" @click="turnback">
-                <Icon icon="icon-fanhui" />{{ t('node.message.back') }}
+                <Icon icon="icon-fanhui" />{{ t('actions.back') }}
               </Button>
             </div>
           </div>
@@ -356,7 +356,7 @@ onMounted(() => {
               type="link"
               size="small"
               @click="foldInstallAgent">
-              {{ t('node.message.fold') }}
+              {{ t('actions.expand') }}
             </Button>
           </div>
 
@@ -396,7 +396,7 @@ onMounted(() => {
             </template>
             <template #enabled="{text}">
               <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
-                {{ text ? t('node.nodeItem.interface.nodeStatus.enabled') : t('node.nodeItem.interface.nodeStatus.notEnabled') }}
+                {{ text ? t('status.enabled') : t('status.disabled') }}
               </span>
             </template>
             <template #installAgent="{text}">

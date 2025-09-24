@@ -75,7 +75,7 @@ const burnDownCharts = computed(() => {
   <div class="flex items-center space-x-7 mb-7">
     <Progress
       :percent="progress"
-      :text="t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.progress')"
+      :text="t('common.progress')"
       class="ml-4" />
     <div class="flex-1 border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
@@ -105,21 +105,21 @@ const burnDownCharts = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.passed') }}
+          {{ t('rstatus.passed') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.passedTestNum || 0 }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.failed') }}
+          {{ t('status.failed') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.notPassedTestNum || 0 }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.blocked') }}
+          {{ t('status.blocked') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ totalOverview?.blockedTestNum || 0 }}
@@ -228,7 +228,7 @@ const burnDownCharts = computed(() => {
   <div class="flex items-center space-x-7 mb-7">
     <Progress
       :percent="reviewProgress"
-      :text="t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.progress')"
+      :text="t('common.progress')"
       class="ml-4" />
     <div class="flex-1 border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
@@ -306,7 +306,7 @@ const burnDownCharts = computed(() => {
   </div>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-    <span id="a9">{{ props.sequence.small[2] }}<em class="inline-block w-3.5"></em>{{ t('reportPreview.projectProgress.funcCaseSummary.burndownChart.title') }}</span>
+    <span id="a9">{{ props.sequence.small[2] }}<em class="inline-block w-3.5"></em>{{ t('chart.burndown.title') }}</span>
   </h2>
   <BurnDownChart :dataSource="burnDownCharts" />
   <div class="mb-7"></div>

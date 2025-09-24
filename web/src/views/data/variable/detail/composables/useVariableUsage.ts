@@ -58,7 +58,7 @@ export function useVariableUsage (props: { id: string }) {
       ellipsis: true
     },
     {
-      title: t('dataVariable.detail.useList.columns.action'),
+      title: t('common.actions'),
       dataIndex: 'action',
       width: 70
     }

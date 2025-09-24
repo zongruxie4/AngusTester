@@ -56,7 +56,7 @@ const searchPanelOptions = [
 const menuItems = computed(() => [
   {
     key: '',
-    name: t('quickSearchTags.all')
+    name: t('quickSearch.all')
   },
   {
     key: 'createdBy',
@@ -64,15 +64,15 @@ const menuItems = computed(() => [
   },
   {
     key: 'lastDay',
-    name: t('quickSearchTags.lastDay')
+    name: t('quickSearch.last1Day')
   },
   {
     key: 'lastThreeDays',
-    name: t('quickSearchTags.last3Days')
+    name: t('quickSearch.last3Days')
   },
   {
     key: 'lastWeek',
-    name: t('quickSearchTags.last7Days')
+    name: t('quickSearch.last7Days')
   }
 ]);
 
@@ -250,7 +250,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>{{ t('quickSearch') }}</span>
+        <span>{{ t('quickSearch.title') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">

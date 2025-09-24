@@ -12,47 +12,43 @@ interface Props {
 }
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   caseInfo: undefined
 });
 
 const infoColumns = computed(() => [
   [
     {
-      label: t('functionCase.kanbanView.reviewRecord.name'),
+      label: t('common.name'),
       dataIndex: 'name'
     },
     {
-      label: t('functionCase.kanbanView.reviewRecord.code'),
+      label: t('common.code'),
       dataIndex: 'code'
     },
     {
-      label: t('functionCase.kanbanView.reviewRecord.reviewStatus'),
+      label: t('common.reviewStatus'),
       dataIndex: 'reviewStatus'
     },
     {
-      label: t('functionCase.kanbanView.reviewRecord.priority'),
+      label: t('common.priority'),
       dataIndex: 'priority'
     },
     {
-      label: t('functionCase.kanbanView.reviewRecord.tags'),
+      label: t('common.tags'),
       dataIndex: 'tags'
     },
     {
-      label: t('functionCase.kanbanView.reviewRecord.testResult'),
+      label: t('common.testResult'),
       dataIndex: 'testResult'
     },
     {
-      label: props.caseInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-        ? t('functionCase.kanbanView.reviewRecord.evalWorkload')
-        : t('functionCase.kanbanView.reviewRecord.evalWorkload'),
+      label: t('common.evalWorkload'),
       dataIndex: 'evalWorkload',
       customRender: ({ text }) => text || '--'
     },
     {
-      label: props.caseInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-        ? t('functionCase.kanbanView.reviewRecord.actualWorkload')
-        : t('functionCase.kanbanView.reviewRecord.actualWorkload'),
+      label: t('common.actualWorkload'),
       dataIndex: 'actualWorkload',
       customRender: ({ text }) => text || '--'
     }
@@ -133,7 +129,7 @@ const infoColumns = computed(() => [
             v-if="caseInfo?.overdue"
             class="border border-status-error rounded px-0.5 ml-5"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            {{ t('functionCase.kanbanView.reviewRecord.overdue') }}
+            {{ t('status.overdue') }}
           </div>
         </div>
       </template>

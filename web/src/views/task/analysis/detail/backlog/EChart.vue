@@ -170,14 +170,14 @@ const backloggedTaskEChartConfig = {
       },
       data: [
         {
-          name: t('taskAnalysis.detail.backlogTasks.chartLabels.uncompleted'),
+          name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
             color: 'rgb(15,175,62)'
           }
         },
         {
-          name: t('taskAnalysis.detail.backlogTasks.chartLabels.completed'),
+          name: t('status.completed'),
           value: 0,
           itemStyle: {
             color: 'rgb(246,159,42)'

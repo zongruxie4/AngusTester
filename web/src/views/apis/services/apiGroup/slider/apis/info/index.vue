@@ -231,7 +231,7 @@ const handleSaveDesc = async (value) => {
 };
 
 // 是否弃用
-const deprecatedOpt = [{ value: true, label: t('service.groupApiDetail.deprecated.yes') }, { value: false, label: t('service.groupApiDetail.deprecated.no') }];
+const deprecatedOpt = [{ value: true, label: t('status.yes') }, { value: false, label: t('status.no') }];
 const editDeprecated = ref(false);
 const deprecatedInputRef = ref();
 let defaultDeprecated;
@@ -326,7 +326,7 @@ const openInterfaceAuthDialog = () => {
             @blur="handleOperationIdBlur" />
         </template>
         <template v-else>
-          {{ text || t('service.groupApiDetail.placeholder.noData') }}
+          {{ text || t('common.noData') }}
           <Icon
             v-if="!props.disabled && state.info.status?.value !== 'RELEASED'"
             icon="icon-shuxie"
@@ -374,7 +374,7 @@ const openInterfaceAuthDialog = () => {
             @blur="toggleEditDeprecated" />
         </template>
         <template v-else>
-          {{ text ? t('service.groupApiDetail.deprecated.yes') : t('service.groupApiDetail.deprecated.no') }}
+          {{ text ? t('status.yes') : t('status.no') }}
           <Icon
             v-show="(!disabled && state.info.status?.value !== 'RELEASED')"
             icon="icon-shuxie"
@@ -420,7 +420,7 @@ const openInterfaceAuthDialog = () => {
           </Tag>
         </template>
         <template v-else>
-          {{ t('service.groupApiDetail.placeholder.noData') }}
+          {{ t('common.noData') }}
         </template>
       </template>
       <template #securityTitle>

@@ -5,7 +5,6 @@
       "addScript": "添加脚本",
       "importScript": "导入脚本",
       "scriptAuth": "权限",
-      "refresh": "刷新",
       "searchPlaceholder": "搜索脚本ID、名称、描述或插件",
       "scriptTypePlaceholder": "选择脚本类型",
       "sourcePlaceholder": "选择来源",
@@ -43,10 +42,8 @@
       "authSet": {
         "searchPlaceholder": "查询名称",
         "authPlaceholder": "权限控制",
-        "auth": "权限",
+        "permission": "权限",
         "all": "全部",
-        "loading": "加载中...",
-        "name": "名称"
       },
       "groupSet": {
         "deptPlaceholder": "查询部门",
@@ -66,27 +63,9 @@
     },
     "table": {
       "columns": {
-        "name": "名称",
         "plugin": "插件",
-        "type": "类型",
-        "source": "来源",
         "resourceId": "资源ID",
         "resourceName": "资源名称",
-        "tags": "标签",
-        "creator": "创建人",
-        "modifier": "修改人",
-        "addTime": "创建时间",
-        "modifyTime": "修改时间",
-        "operation": "操作"
-      },
-      "actions": {
-        "auth": "权限",
-        "clone": "克隆",
-        "delete": "删除",
-        "export": "导出",
-        "execute": "执行",
-        "edit": "编辑",
-        "cancelBatch": "取消批量操作"
       },
       "messages": {
         "maxBatchLimit": "最大支持批量操作 {maxNum} 个脚本，当前已选中 {selectedNum} 个脚本。",
@@ -104,9 +83,7 @@
         "deleteScriptConfirmSimple": "确定删除「{name}」脚本吗？",
         "executeScriptConfirmSimple": "确定执行「{name}」脚本吗？",
         "deleteScriptSuccess": "脚本删除成功",
-        "noScriptData": "任何脚本数据，",
-        "importExample": "导入示例",
-        "cancelBatchOperation": "取消批量操作"
+        "noScriptData": "任何脚本数据，"
       },
       "tips": {
         "authOn": "开启权限控制后，需要手动授权后才会有相应操作权限。",
@@ -117,14 +94,11 @@
     "import": {
       "title": "导入脚本",
       "form": {
-        "name": "名称",
         "namePlaceholder": "请输入脚本名称，最多200字符",
-        "description": "描述",
         "descriptionPlaceholder": "请输入脚本描述，最多800字符",
         "file": "文件",
         "uploadFile": "上传文件",
-        "uploadTip": "直接粘贴内容或拖动文件或点击上传文件，文件大小不超过20M",
-        "clear": "清空"
+        "uploadTip": "直接粘贴内容或拖动文件或点击上传文件，文件大小不超过20M"
       },
       "messages": {
         "importSuccess": "导入成功",
@@ -152,17 +126,8 @@
       "activity": "活动"
     },
     "actions": {
-      "cancel": "取消",
       "smartGenerate": "智能生成",
-      "saveScript": "保存脚本",
-      "edit": "编辑",
-      "export": "导出",
-      "clone": "克隆",
-      "delete": "删除",
-      "debug": "调试",
-      "addExecution": "添加执行",
-      "back": "返回",
-      "generate": "生成"
+      "saveScript": "保存脚本"
     },
     "messages": {
       "addScriptSuccess": "添加脚本成功",

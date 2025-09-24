@@ -151,35 +151,35 @@ onBeforeUnmount(() => {
                     :columns="columns">
                     <template #funcTestPassed>
                       <template v-if="item.funcTestPassed === true">
-                        <span class="text-status-success">{{ t('xcan_httpTestInfo.passed') }}</span>
+                        <span class="text-status-success">{{ t('status.passed') }}</span>
                       </template>
                       <template v-else-if="item.funcTestPassed === false">
-                        <div class="text-status-error">{{ t('xcan_httpTestInfo.failed') }} <span>{{ item.funcTestFailureMessage }}</span></div>
+                        <div class="text-status-error">{{ t('status.failed') }} <span>{{ item.funcTestFailureMessage }}</span></div>
                       </template>
                       <template v-else>
-                        {{ props.enabledTestApiIds.FUNCTIONAL.includes(item.id) ? t('xcan_httpTestInfo.untested') : t('xcan_httpTestInfo.disabled') }}
+                        {{ props.enabledTestApiIds.FUNCTIONAL.includes(item.id) ? t('status.untTested') : t('status.disabled') }}
                       </template>
                     </template>
                     <template #perfTestPassed>
                       <template v-if="item.perfTestPassed === true">
-                        <span class="text-status-success">{{ t('xcan_httpTestInfo.passed') }}</span>
+                        <span class="text-status-success">{{ t('status.passed') }}</span>
                       </template>
                       <template v-else-if="item.perfTestPassed === false">
-                        <div class="text-status-error">{{ t('xcan_httpTestInfo.failed') }} <span>{{ item.perfTestFailureMessage }}</span></div>
+                        <div class="text-status-error">{{ t('status.failed') }} <span>{{ item.perfTestFailureMessage }}</span></div>
                       </template>
                       <template v-else>
-                        {{ props.enabledTestApiIds.PERFORMANCE.includes(item.id) ? t('xcan_httpTestInfo.untested') : t('xcan_httpTestInfo.disabled') }}
+                        {{ props.enabledTestApiIds.PERFORMANCE.includes(item.id) ? t('status.unTested') : t('status.disabled') }}
                       </template>
                     </template>
                     <template #stabilityTestPassed>
                       <template v-if="item.stabilityTestPassed === true">
-                        <span class="text-status-success">{{ t('xcan_httpTestInfo.passed') }}</span>
+                        <span class="text-status-success">{{ t('status.passed') }}</span>
                       </template>
                       <template v-else-if="item.stabilityTestPassed === false">
-                        <div class="text-status-error">{{ t('xcan_httpTestInfo.failed') }} <span>{{ item.stabilityTestFailureMessage }}</span></div>
+                        <div class="text-status-error">{{ t('status.failed') }} <span>{{ item.stabilityTestFailureMessage }}</span></div>
                       </template>
                       <template v-else>
-                        {{ props.enabledTestApiIds.STABILITY.includes(item.id) ? t('xcan_httpTestInfo.untested') : t('xcan_httpTestInfo.disabled') }}
+                        {{ props.enabledTestApiIds.STABILITY.includes(item.id) ? t('status.unTested') : t('status.disabled') }}
                       </template>
                     </template>
                   </Grid>
@@ -190,7 +190,7 @@ onBeforeUnmount(() => {
                 <span class="min-w-0 truncate flex-1" :title="item.apisName || item.caseName || item.summary">{{ item.apisName || item.caseName || item.summary }}</span>
                 <span
                   v-if="!item.enabledTest"
-                  class="px-2 rounded">{{ t('xcan_httpTestInfo.disabled') }}
+                  class="px-2 rounded">{{ t('status.disabled') }}
                 </span>
                 <span
                   v-else-if="!item.tested"
@@ -203,10 +203,10 @@ onBeforeUnmount(() => {
                     {{ t('xcan_httpTestInfo.partiallyPassed') }}
                   </template>
                   <template v-else>
-                    {{ t('xcan_httpTestInfo.passed') }}
+                    {{ t('status.passed') }}
                   </template>
                 </span>
-                <span v-else class="px-2 rounded text-status-error ">{{ t('xcan_httpTestInfo.failed') }}</span>
+                <span v-else class="px-2 rounded text-status-error ">{{ t('status.failed') }}</span>
               </div>
             </Tooltip>
           </div>

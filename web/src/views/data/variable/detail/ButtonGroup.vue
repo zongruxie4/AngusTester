@@ -49,7 +49,7 @@ const handleClick = (action: ButtonGroupAction) => {
       @click="handleClick('ok')">
       <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
       <span>
-        {{ t('dataVariable.detail.buttonGroup.save') }}
+        {{ t('actions.save') }}
       </span>
     </Button>
 
@@ -63,7 +63,7 @@ const handleClick = (action: ButtonGroupAction) => {
         @click="handleClick('delete')">
         <Icon icon="icon-qingchu" class="text-3.5" />
         <span>
-          {{ t('dataVariable.detail.buttonGroup.delete') }}
+          {{ t('actions.delete') }}
         </span>
       </Button>
 
@@ -75,7 +75,7 @@ const handleClick = (action: ButtonGroupAction) => {
         @click="handleClick('export')">
         <Icon icon="icon-fuzhizujian2" class="text-3.5" />
         <span>
-          {{ t('dataVariable.detail.buttonGroup.export') }}
+          {{ t('actions.export') }}
         </span>
       </Button>
 
@@ -87,7 +87,7 @@ const handleClick = (action: ButtonGroupAction) => {
         @click="handleClick('clone')">
         <Icon icon="icon-fuzhizujian2" class="text-3.5" />
         <span>
-          {{ t('dataVariable.detail.buttonGroup.clone') }}
+          {{ t('actions.clone') }}
         </span>
       </Button>
 
@@ -99,7 +99,7 @@ const handleClick = (action: ButtonGroupAction) => {
         @click="handleClick('copyLink')">
         <Icon icon="icon-fuzhi" class="text-3.5" />
         <span>
-          {{ t('dataVariable.detail.buttonGroup.copyLink') }}
+          {{ t('actions.copyLink') }}
         </span>
       </Button>
 
@@ -111,7 +111,7 @@ const handleClick = (action: ButtonGroupAction) => {
         @click="handleClick('refresh')">
         <Icon icon="icon-shuaxin" class="text-3.5" />
         <span>
-          {{ t('dataVariable.detail.buttonGroup.refresh') }}
+          {{ t('actions.refresh') }}
         </span>
       </Button>
     </template>

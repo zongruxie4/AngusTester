@@ -16,7 +16,7 @@ export const contentTreeData = [
         key: 'taskTotal'
       },
       {
-        title: t('reportAdd.projectProcessContent.contentTree.taskburndown'),
+        title: t('chart.burndown.countBurndown'),
         key: 'taskburndown'
       },
       {
@@ -38,7 +38,7 @@ export const contentTreeData = [
         key: 'funcReviewTotal'
       },
       {
-        title: t('reportAdd.projectProcessContent.contentTree.caseburndown'),
+        title: t('chart.burndown.countBurndown'),
         key: 'caseburndown'
       },
       {

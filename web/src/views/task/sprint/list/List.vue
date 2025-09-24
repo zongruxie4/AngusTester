@@ -241,7 +241,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
           <div class="flex items-center justify-between h-4 leading-5">
             <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
-              <span>{{ t('taskSprint.actions.edit') }}</span>
+              <span>{{ t('actions.edit') }}</span>
             </RouterLink>
 
             <RouterLink
@@ -260,7 +260,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
               class="px-0 flex items-center ml-2"
               @click="props.startSprint(item, index)">
               <Icon icon="icon-kaishi" class="mr-0.5" />
-              <span>{{ t('taskSprint.actions.start') }}</span>
+              <span>{{ t('actions.start') }}</span>
             </Button>
 
             <Button
@@ -272,7 +272,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
               class="px-0 flex items-center ml-2"
               @click="props.completeSprint(item, index)">
               <Icon icon="icon-yiwancheng" class="mr-0.5" />
-              <span>{{ t('taskSprint.actions.complete') }}</span>
+              <span>{{ t('actions.complete') }}</span>
             </Button>
 
             <Dropdown

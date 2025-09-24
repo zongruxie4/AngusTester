@@ -173,7 +173,7 @@ onMounted(() => {
         <template v-if="isEditFlag">
           <div class="flex items-center space-x-2.5">
             <Button size="small" @click="handleCancel(oldScriptValue, scriptValue, viewMode, pageNo, pageSize, router)">
-              {{ t('scriptDetail.actions.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
 
             <Button
@@ -201,47 +201,47 @@ onMounted(() => {
               :disabled="!permissionList.includes(ScriptPermission.MODIFY)"
               @click="() => handleEdit(drawerRef)">
               <Icon icon="icon-shuxie" class="mr-1" />
-              <span>{{ t('scriptDetail.actions.edit') }}</span>
+              <span>{{ t('actions.edit') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes(ScriptPermission.EXPORT)"
               @click="handleExport">
               <Icon icon="icon-daochu" class="mr-1" />
-              <span>{{ t('scriptDetail.actions.export') }}</span>
+              <span>{{ t('actions.export') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes(ScriptPermission.VIEW)"
               @click="cloneScript">
               <Icon icon="icon-fuzhi" class="mr-1" />
-              <span>{{ t('scriptDetail.actions.clone') }}</span>
+              <span>{{ t('actions.clone') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes(ScriptPermission.DELETE)"
               @click="handleDelete">
               <Icon icon="icon-qingchu" class="mr-1" />
-              <span>{{ t('scriptDetail.actions.delete') }}</span>
+              <span>{{ t('actions.delete') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes(ScriptPermission.TEST)"
               @click="startDebug">
               <Icon icon="icon-tiaoshi" class="mr-1" />
-              <span>{{ t('scriptDetail.actions.debug') }}</span>
+              <span>{{ t('actions.debug') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes(ScriptPermission.TEST)"
               @click="executeScript">
               <Icon icon="icon-zhihangjiaoben" class="mr-1" />
-              <span>{{ t('scriptDetail.actions.addExecution') }}</span>
+              <span>{{ t('actions.addExecution') }}</span>
             </Button>
             <RouterLink :to="`/script?pageNo=${pageNo}&pageSize=${pageSize}`">
               <Button size="small">
                 <Icon icon="icon-fanhui" class="mr-1" />
-                <span>{{ t('scriptDetail.actions.back') }}</span>
+                <span>{{ t('actions.back') }}</span>
               </Button>
             </RouterLink>
           </div>
@@ -368,7 +368,7 @@ onMounted(() => {
             type="primary"
             size="small"
             @click="generateScript">
-            {{ t('scriptDetail.actions.generate') }}
+            {{ t('actions.generate') }}
           </Button>
         </div>
         <MonacoEditor

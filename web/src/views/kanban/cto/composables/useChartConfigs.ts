@@ -72,14 +72,14 @@ export const createProgressChartConfig = (): ChartConfig => {
   const config = createBasePieConfig();
   config.series[0].data = [
     {
-      name: t('kanban.cto.progress.incomplete'),
+      name: t('status.notCompleted'),
       value: 0,
       itemStyle: {
         color: '#f59e0b' // amber-500
       }
     },
     {
-      name: t('kanban.cto.progress.completed'),
+      name: t('status.completed'),
       value: 0,
       itemStyle: {
         color: '#10b981' // emerald-500
@@ -355,7 +355,7 @@ export const createTaskTypeConfig = (): ChartConfig => ({
   },
   series: [
     {
-      name: t('kanban.cto.taskTypes.total'),
+      name: t('chart.total'),
       type: 'pie',
       radius: ['30%', '50%'],
       center: ['35%', '50%'],
@@ -435,7 +435,7 @@ export const createTaskStatusConfig = (): ChartConfig => ({
   },
   series: [
     {
-      name: t('kanban.cto.taskTypes.total'),
+      name: t('chart.total'),
       type: 'pie',
       radius: ['30%', '50%'],
       center: ['35%', '50%'],
@@ -460,27 +460,27 @@ export const createTaskStatusConfig = (): ChartConfig => ({
       },
       data: [
         {
-          name: t('kanban.cto.taskStatus.pendingConfirmation'),
+          name: t('status.pendingConfirmation'),
           value: 0,
           itemStyle: { color: '#6366f1' } // indigo-500
         },
         {
-          name: t('kanban.cto.taskStatus.inProgress'),
+          name: t('status.inProgress'),
           value: 0,
           itemStyle: { color: '#f59e0b' } // amber-500
         },
         {
-          name: t('kanban.cto.taskStatus.pending'),
+          name: t('status.pending'),
           value: 0,
           itemStyle: { color: '#eab308' } // yellow-500
         },
         {
-          name: t('kanban.cto.taskStatus.completed'),
+          name: t('status.completed'),
           value: 0,
           itemStyle: { color: '#10b981' } // emerald-500
         },
         {
-          name: t('kanban.cto.taskStatus.cancelled'),
+          name: t('status.cancelled'),
           value: 0,
           itemStyle: { color: '#9ca3af' } // gray-400
         }
@@ -613,7 +613,7 @@ export const createTestStatusConfig = (): ChartConfig => ({
   },
   series: [
     {
-      name: t('kanban.cto.taskTypes.total'),
+      name: t('chart.total'),
       type: 'pie',
       radius: ['30%', '50%'],
       center: ['35%', '50%'],
@@ -653,12 +653,12 @@ export const createTestStatusConfig = (): ChartConfig => ({
           itemStyle: { color: '#dc2626' } // red-600
         },
         {
-          name: t('kanban.cto.testStatus.blocked'),
+          name: t('status.blocked'),
           value: 0,
           itemStyle: { color: '#f59e0b' } // amber-500
         },
         {
-          name: t('kanban.cto.testStatus.cancelled'),
+          name: t('status.cancelled'),
           value: 0,
           itemStyle: { color: '#9ca3af' } // gray-400
         }
@@ -688,7 +688,7 @@ export const createReviewStatusConfig = (): ChartConfig => ({
   },
   series: [
     {
-      name: t('kanban.cto.taskTypes.total'),
+      name: t('chart.total'),
       type: 'pie',
       radius: ['30%', '50%'],
       center: ['35%', '50%'],

@@ -184,7 +184,7 @@ defineExpose({
           class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png" alt="No Data">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-7">
-            <span>{{ t('dataVariable.list.noData') }}</span>
+            <span>{{ t('common.noData') }}</span>
 
             <Dropdown
               :menuItems="buttonDropdownMenuItems"
@@ -316,7 +316,7 @@ defineExpose({
                   class="flex items-center px-0"
                   @click="navigateToEdit(record)">
                   <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
-                  <span>{{ t('dataVariable.list.buttons.edit') }}</span>
+                  <span>{{ t('actions.edit') }}</span>
                 </Button>
 
                 <Button
@@ -325,7 +325,7 @@ defineExpose({
                   class="flex items-center px-0"
                   @click="deleteVariable(record)">
                   <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-                  <span>{{ t('dataVariable.list.buttons.delete') }}</span>
+                  <span>{{ t('actions.delete') }}</span>
                 </Button>
 
                 <Dropdown

@@ -433,7 +433,7 @@ const handleTaskMoveComplete = () => {
  * @param actionKey - Action to perform
  * @param taskIds - Array of task IDs to perform action on
  */
-const handleBatchAction = (actionKey: 'cancel' | 'delete' | 'follow' | 'favourite' | 'move', taskIds: string[]) => {
+const handleBatchAction = (actionKey: 'cancel' | 'delete' | 'addFollow' | 'addFavourite' | 'move', taskIds: string[]) => {
   switch (actionKey) {
     case 'cancel':
       handleBatchCancel(taskIds);
@@ -441,7 +441,7 @@ const handleBatchAction = (actionKey: 'cancel' | 'delete' | 'follow' | 'favourit
     case 'delete':
       handleBatchDelete(taskIds);
       break;
-    case 'favourite':
+    case 'addFavourite':
       handleBatchFavourite();
       break;
     case 'move':
@@ -624,21 +624,21 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     const menuItems: ActionMenuItem[] = [
       {
-        name: t('task.actions.edit'),
+        name: t('actions.edit'),
         key: 'edit',
         icon: 'icon-shuxie',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
         hide: true
       },
       {
-        name: t('task.actions.delete'),
+        name: t('actions.delete'),
         key: 'delete',
         icon: 'icon-qingchu',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.DELETE_TASK) && sprintAuth,
         hide: true
       },
       {
-        name: t('task.actions.split'),
+        name: t('actions.split'),
         key: 'split',
         icon: 'icon-guanlianziyuan',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
@@ -648,7 +648,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (taskStatus === TaskStatus.PENDING) {
       menuItems.push({
-        name: t('task.actions.start'),
+        name: t('actions.start'),
         key: 'start',
         icon: 'icon-kaishi',
         disabled: !isCurrentUserAdmin && !isCurrentUserAssignee,
@@ -658,7 +658,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (taskStatus === TaskStatus.IN_PROGRESS) {
       menuItems.push({
-        name: t('task.actions.complete'),
+        name: t('actions.complete'),
         key: 'processed',
         icon: 'icon-yichuli',
         disabled: !isCurrentUserAdmin && !isCurrentUserAssignee,
@@ -686,19 +686,19 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (taskStatus === TaskStatus.CANCELED || taskStatus === TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('task.actions.reopen'),
+        name: t('actions.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
-        disabled: !isCurrentUserAdmin && !permissions.includes(TaskStatus.REOPEN_TASK) && !isCurrentUserAssignee,
+        disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isCurrentUserAssignee,
         hide: false,
         tip: t('task.tips.reopenTip')
       });
 
       menuItems.push({
-        name: t('task.actions.restart'),
+        name: t('actions.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
-        disabled: !isCurrentUserAdmin && !permissions.includes(TaskStatus.RESTART_TASK),
+        disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.RESTART_TASK),
         hide: false,
         tip: t('task.tips.restartTip')
       });
@@ -706,7 +706,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (taskStatus !== TaskStatus.CANCELED && taskStatus !== TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('task.actions.cancel'),
+        name: t('actions.cancel'),
         key: 'cancel',
         icon: 'icon-zhongzhi2',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
@@ -717,7 +717,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
     const { favourite, follow } = taskItem;
     if (favourite) {
       menuItems.push({
-        name: t('task.actions.unfavorite'),
+        name: t('actions.cancelFavourite'),
         key: 'cancelFavourite',
         icon: 'icon-quxiaoshoucang',
         disabled: false,
@@ -725,8 +725,8 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
       });
     } else {
       menuItems.push({
-        name: t('task.actions.favorite'),
-        key: 'favourite',
+        name: t('actions.favorite'),
+        key: 'addFavourite',
         icon: 'icon-yishoucang',
         disabled: false,
         hide: false
@@ -735,7 +735,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (follow) {
       menuItems.push({
-        name: t('task.actions.unfollow'),
+        name: t('actions.cancelFollow'),
         key: 'cancelFollow',
         icon: 'icon-quxiaoguanzhu',
         disabled: false,
@@ -743,8 +743,8 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
       });
     } else {
       menuItems.push({
-        name: t('task.actions.follow'),
-        key: 'follow',
+        name: t('actions.addFollow'),
+        key: 'addFollow',
         icon: 'icon-yiguanzhu',
         disabled: false,
         hide: false
@@ -752,7 +752,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
     }
 
     menuItems.push({
-      name: t('task.actions.move'),
+      name: t('actions.move'),
       key: 'move',
       icon: 'icon-yidong',
       disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
@@ -760,16 +760,14 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
     });
 
     menuItems.push({
-      name: t('task.copyLink'),
+      name: t('actions.copyLink'),
       key: 'copyLink',
       icon: 'icon-fuzhi',
       disabled: false,
       hide: false
     });
-
     menuItemsMap.set(taskItem.id, menuItems);
   }
-
   return menuItemsMap;
 });
 

@@ -54,12 +54,12 @@ export const nodeUseProgresses = [
 // Network information display configuration
 export const internetInfo = [
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.upload') + ': ',
+    label: t('actions.upload') + ': ',
     valueKey: 'txBytesRate',
     unit: 'MB/s'
   },
   {
-    label: ' ' + t('node.nodeItem.interface.nodeUseProgresses.download') + ': ',
+    label: ' ' + t('actions.download') + ': ',
     valueKey: 'rxBytesRate',
     unit: 'MB/s'
   },

@@ -476,7 +476,7 @@ const copy = (item: ShareObj, isCopy?: boolean) => {
     message = `${t('commonComp.shareModal.copyLabel.name')}: ${item.name}\n${t('commonComp.shareModal.copyLabel.link')}: ${item.url}`;
   }
   toClipboard(message).then(() => {
-    notification.success(isCopy ? t('tips.copySuccess') : t('tips.shareSuccess'));
+    notification.success(isCopy ? t('actions.tips.copySuccess') : t('actions.tips.shareSuccess'));
   });
 };
 
@@ -676,7 +676,7 @@ function isWithin5Minutes (timeStr: string) {
                     class="cursor-pointer ml-2"
                     @click="handleEdit(item,index)" />
                 </Tooltip>
-                <Tooltip :title="t('commonComp.shareModal.delete')" placement="top">
+                <Tooltip :title="t('actions.delete')" placement="top">
                   <Icon
                     v-if="item.id !== 'add'"
                     icon="icon-qingchu"
@@ -701,7 +701,7 @@ function isWithin5Minutes (timeStr: string) {
               }}
             </div>
             <div class="text-text-sub-content flex-none mr-2 mt-2.5">
-              {{ t('commonComp.shareModal.actions') }}
+              {{ t('common.actions') }}
               <Colon />
             </div>
             <div class="flex items-center h-7 -mt-0.5 px-2">
@@ -819,7 +819,7 @@ function isWithin5Minutes (timeStr: string) {
                       class="checkbox-border-black"
                       :indeterminate="apiIndeterminate"
                       @change="selectALLApi">
-                      {{ t('commonComp.shareModal.selectAll') }}
+                      {{ t('actions.selectAll') }}
                     </Checkbox>
                   </div>
                 </template>
@@ -833,14 +833,14 @@ function isWithin5Minutes (timeStr: string) {
                 size="small"
                 :loading="item.isLoading"
                 @click="handleOk(item)">
-                {{ t('commonComp.shareModal.saveAndCopy') }}
+                {{ t('actions.saveAndCopy') }}
               </Button>
               <Button
                 type="link"
                 size="small"
                 class="-mx-2"
                 @click="cancelEdit(item)">
-                {{ t('commonComp.shareModal.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
             </div>
           </template>

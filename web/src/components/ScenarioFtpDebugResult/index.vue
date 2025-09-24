@@ -169,14 +169,14 @@ const isUploadFile = (httpContent) => {
             class="mr-3"
             style="line-height: 20px;"
             color="#87d068">
-            {{ t('xcan_scenarioDebugResult.upload') }}
+            {{ t('actions.upload') }}
           </Tag>
           <Tag
             v-else
             class="mr-3"
             style="line-height: 20px;"
             color="#2db7f5">
-            {{ t('xcan_scenarioDebugResult.download') }}
+            {{ t('actions.download') }}
           </Tag>
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="showBasicInfo(httpContent)">

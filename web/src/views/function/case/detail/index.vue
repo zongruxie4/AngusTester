@@ -425,7 +425,7 @@ defineExpose({
           size="small"
           @click="handleClick('updateTestResult_canceled')">
           <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-          {{ t('functionCase.detail.cancel') }}
+          {{ t('actions.cancel') }}
         </Button>
 
         <Button
@@ -444,7 +444,7 @@ defineExpose({
           :disabled="!actionAuth.includes('edit')"
           @click="handleClick('edit')">
           <Icon class="mr-1" icon="icon-bianji" />
-          <span>{{ t('functionCase.detail.edit') }}</span>
+          <span>{{ t('actions.edit') }}</span>
         </Button>
 
         <Button
@@ -453,7 +453,7 @@ defineExpose({
           size="small"
           @click="handleClick('clone')">
           <Icon class="mr-1" icon="icon-fuzhi" />
-          <span>{{ t('functionCase.detail.clone') }}</span>
+          <span>{{ t('actions.clone') }}</span>
         </Button>
 
         <Button
@@ -462,23 +462,23 @@ defineExpose({
           size="small"
           @click="handleClick('move')">
           <Icon class="mr-1 text-3" icon="icon-yidong" />
-          <span>{{ t('functionCase.detail.move') }}</span>
+          <span>{{ t('actions.move') }}</span>
         </Button>
 
         <Button
           class="mt-2 mr-2"
           size="small"
-          @click="handleClick('favourite')">
+          @click="handleClick('addFavourite')">
           <Icon class="mr-1 text-3" :icon="caseDetail?.favourite?'icon-quxiaoshoucang':'icon-yishoucang'" />
-          <span>{{ caseDetail?.favourite ? t('functionCase.detail.unfavourite') : t('functionCase.detail.favourite') }}</span>
+          <span>{{ caseDetail?.favourite ? t('actions.cancelFavourite') : t('actions.addFavourite') }}</span>
         </Button>
 
         <Button
           class="mt-2 mr-2"
           size="small"
-          @click="handleClick('follow')">
+          @click="handleClick('addFollow')">
           <Icon class="mr-1 text-3" :icon="caseDetail?.follow?'icon-quxiaoguanzhu':'icon-yiguanzhu'" />
-          <span>{{ caseDetail?.follow ? t('functionCase.detail.unfollow') : t('functionCase.detail.follow') }}</span>
+          <span>{{ caseDetail?.follow ? t('actions.cancelFollow') : t('actions.addFollow') }}</span>
         </Button>
 
         <Button
@@ -487,7 +487,7 @@ defineExpose({
           size="small"
           @click="handleClick('delete')">
           <Icon class="mr-1" icon="icon-qingchu" />
-          <span>{{ t('functionCase.detail.delete') }}</span>
+          <span>{{ t('actions.delete') }}</span>
         </Button>
 
         <template v-if="!['share'].includes(props.source)">
@@ -496,7 +496,7 @@ defineExpose({
             size="small"
             @click="handleCopy">
             <Icon class="mr-1" icon="icon-fuzhi" />
-            <span>{{ t('functionCase.detail.copyLink') }}</span>
+            <span>{{ t('actions.copyLink') }}</span>
           </Button>
         </template>
       </div>
@@ -534,7 +534,7 @@ defineExpose({
           <Icon
             icon="icon-shuaxin"
             class="mr-1" />
-          {{ t('functionCase.detail.refresh') }}
+          {{ t('actions.refresh') }}
         </Button>
       </template>
 

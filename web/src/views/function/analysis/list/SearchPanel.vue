@@ -598,7 +598,7 @@ const sortMenuItems = [
             size="small"
             class="flex items-center cursor-pointer ">
             <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-            <span class="ml-1">{{ t('sort') }}</span>
+            <span class="ml-1">{{ t('actions.sort') }}</span>
           </Button>
         </DropdownSort>
 

@@ -137,7 +137,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: t('scriptHome.table.columns.operation'),
+      title: t('common.actions'),
       dataIndex: 'action',
       width: 180,
       key: 'action'
@@ -149,25 +149,25 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
     {
       key: 'auth',
       icon: 'icon-quanxian1',
-      name: t('scriptHome.table.actions.auth'),
+      name: t('actions.permission'),
       permission: 'GRANT'
     },
     {
       key: 'clone',
       icon: 'icon-fuzhi',
-      name: t('scriptHome.table.actions.clone'),
+      name: t('actions.clone'),
       permission: 'VIEW'
     },
     {
       key: 'delete',
       icon: 'icon-qingchu',
-      name: t('scriptHome.table.actions.delete'),
+      name: t('actions.delete'),
       permission: 'DELETE'
     },
     {
       key: 'export',
       icon: 'icon-daochu',
-      name: t('scriptHome.table.actions.export'),
+      name: t('actions.export'),
       permission: 'EXPORT'
     }
   ];
@@ -274,7 +274,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       return;
     }
     modal.confirm({
-      title: t('scriptHome.table.actions.delete'),
+      title: t('actions.delete'),
       content: t('scriptHome.table.messages.deleteConfirm', { num }),
       onOk: async () => {
         // Confirmation would be handled in the parent component
@@ -306,7 +306,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
    */
   const handleSingleExec = async (data: ScriptInfo, loadingSetter: (loading: boolean) => void) => {
     modal.confirm({
-      title: t('scriptHome.table.actions.execute'),
+      title: t('actions.execute'),
       content: t('scriptHome.table.messages.executeScriptConfirmSimple', { name: data.name }),
       onOk: async () => {
         loadingSetter(true);
@@ -347,7 +347,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
   const handleDelete = async (data: ScriptInfo, loadingSetter: (loading: boolean) => void, deleteCallback: (ids: string[]) => void) => {
     // Confirmation would be handled in the parent component
     modal.confirm({
-      title: t('scriptHome.table.actions.delete'),
+      title: t('actions.delete'),
       content: t('scriptHome.table.messages.deleteScriptConfirmSimple', { name: data.name }),
       onOk: async () => {
         const id = data.id;

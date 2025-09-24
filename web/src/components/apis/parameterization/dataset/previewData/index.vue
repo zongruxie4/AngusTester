@@ -161,7 +161,7 @@ onMounted(() => {
 });
 
 const noDataText = computed(() => {
-  return errorMessage.value ? errorMessage.value : t('commonComp.apis.parameterizationDataset.previewData.noData');
+  return errorMessage.value ? errorMessage.value : t('common.noData');
 });
 </script>
 

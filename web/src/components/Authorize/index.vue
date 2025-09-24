@@ -56,11 +56,11 @@ const userColumns = [
     ellipsis: true
   },
   {
-    title: t('xcan_authorize.permission'),
+    title: t('actions.permission'),
     dataIndex: 'auth'
   },
   {
-    title: t('xcan_authorize.operation'),
+    title: t('common.actions'),
     dataIndex: 'action',
     width: 100
   }
@@ -72,11 +72,11 @@ const deptColumns = [
     width: 200
   },
   {
-    title: t('xcan_authorize.permission'),
+    title: t('actions.permission'),
     dataIndex: 'auth'
   },
   {
-    title: t('xcan_authorize.operation'),
+    title: t('common.actions'),
     dataIndex: 'action',
     width: 100
   }
@@ -88,11 +88,11 @@ const groupColumns = [
     width: 200
   },
   {
-    title: t('xcan_authorize.permission'),
+    title: t('actions.permission'),
     dataIndex: 'auth'
   },
   {
-    title: t('xcan_authorize.operation'),
+    title: t('common.actions'),
     dataIndex: 'action',
     width: 100
   }

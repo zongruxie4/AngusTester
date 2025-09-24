@@ -66,7 +66,7 @@ const handleRefresh = () => {
         size="small"
         @click="handleBatchStart">
         <Icon icon="icon-qidong" class="mr-1 text-3.5" />
-        <span>{{ t('mock.actions.start') }}</span>
+        <span>{{ t('actions.start') }}</span>
       </Button>
       <Button
         size="small"

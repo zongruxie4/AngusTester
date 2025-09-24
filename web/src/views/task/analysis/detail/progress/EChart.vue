@@ -80,14 +80,14 @@ const progressEChartConfig = {
       },
       data: [
         {
-          name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'),
+          name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
             color: 'rgb(246,159,42)'
           }
         },
         {
-          name: t('taskAnalysis.detail.progress.chartLabels.completed'),
+          name: t('status.completed'),
           value: 0,
           itemStyle: {
             color: '#53c61b'

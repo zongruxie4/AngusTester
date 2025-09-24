@@ -176,7 +176,7 @@ watch(() => category.value, () => {
                   size="small"
                   @click="handleViewReport(record)">
                   <Icon icon="icon-chakanhuodong" class="mr-1" />
-                  {{ t('reportHome.actions.view') }}
+                  {{ t('actions.view') }}
                 </Button>
                 <Dropdown
                   :menuItems="actionItems"

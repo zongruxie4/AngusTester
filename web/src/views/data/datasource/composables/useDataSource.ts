@@ -60,7 +60,7 @@ export function useDataSource (projectId: string) {
   const handleDelete = (record: any): void => {
     uiActions.showDeleteConfirmation(record, async () => {
       await data.deleteDataSource(record.id);
-      uiActions.showSuccessNotification('tips.deleteSuccess');
+      uiActions.showSuccessNotification('actions.tips.deleteSuccess');
     });
   };
 

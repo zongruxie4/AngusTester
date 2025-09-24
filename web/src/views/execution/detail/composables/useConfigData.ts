@@ -108,7 +108,7 @@ export const useConfigData = (execId: string, execName: string, scriptInfo: any,
     }
 
     // Show success notification
-    notification.success(t('tips.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   // Return reactive state and functions

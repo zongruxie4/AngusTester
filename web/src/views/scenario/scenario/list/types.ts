@@ -42,9 +42,9 @@ export type MenuItemKey =
   'clone' |
   'delete' |
   'performTesting' |
-  'follow' |
+  'addFollow' |
   'cancelFollow' |
-  'favourite' |
+  'addFavourite' |
   'cancelFavourite' |
   'auth' |
   'export' |

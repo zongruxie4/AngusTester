@@ -152,7 +152,7 @@ const meetings = computed(() => {
         <span id="a1.2">1.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.sprintDetail.acceptanceCriteria.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ sprint?.acceptanceCriteria || t('reportPreview.sprint.sprintDetail.acceptanceCriteria.noData') }}
+        {{ sprint?.acceptanceCriteria || t('common.noData') }}
       </div>
     </div>
 
@@ -160,7 +160,7 @@ const meetings = computed(() => {
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
         <span id="a1.3">1.3<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.sprintDetail.meetingRecord.title') }}</span>
       </h2>
-      <div v-if="!meetings.length" class="content-text-container">{{ t('reportPreview.sprint.sprintDetail.meetingRecord.noData') }}</div>
+      <div v-if="!meetings.length" class="content-text-container">{{ t('common.noData') }}</div>
       <template v-else>
         <div
           v-for="(item, index) in meetings"
@@ -250,7 +250,7 @@ const meetings = computed(() => {
         <span id="a1.4">1.4<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.sprintDetail.otherInfo.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ sprint?.otherInformation || t('reportPreview.sprint.sprintDetail.otherInfo.noData') }}
+        {{ sprint?.otherInformation || t('common.noData') }}
       </div>
     </div>
   </div>

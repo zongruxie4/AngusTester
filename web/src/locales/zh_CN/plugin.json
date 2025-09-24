@@ -5,9 +5,7 @@
       "selectScriptTip": "请选择一个脚本",
       "searchPlaceholder": "查询脚本名称",
       "tableHeaders": {
-        "name": "名称",
         "plugin": "插件",
-        "type": "类型"
       }
     },
     "chartConfig": {
@@ -39,7 +37,6 @@
         "threadMaxPoolSize": "最大线程数"
       },
       "columns": {
-        "name": "名称",
         "current": "当前",
         "downloadPerSecond": "下载/秒",
         "uploadPerSecond": "上传/秒",
@@ -60,7 +57,6 @@
         "size": "大小"
       },
       "drawer": {
-        "save": "保存",
         "indicator": "测试指标",
         "testInfo": "测试结果",
         "activity": "活动",
@@ -86,28 +82,8 @@
   },
   "httpPlugin": {
     "actions": {
-      "save": "保存",
-      "cancel": "取消",
-      "confirm": "确认",
-      "refresh": "刷新",
-      "export": "导出脚本",
-      "import": "导入脚本",
-      "add": "添加",
-      "edit": "编辑",
-      "delete": "删除",
-      "view": "查看",
-      "download": "下载",
-      "upload": "上传",
       "select": "选择脚本",
-      "codeView": "代码视图",
-      "pageView": "页面视图",
-      "authority": "权限",
-      "follow": "关注",
-      "cancelFollow": "取消关注",
-      "favourite": "收藏",
-      "cancelFavourite": "取消收藏",
-      "createExecution": "创建执行",
-      "debug": "调试"
+      "createExecution": "创建执行"
     },
     "messages": {
       "saveSuccess": "保存成功",
@@ -130,23 +106,16 @@
       "paramError": "参数错误"
     },
     "form": {
-      "name": "名称",
-      "description": "描述",
       "type": "类型",
       "format": "格式",
       "size": "大小",
       "count": "数量",
-      "status": "状态",
-      "createTime": "创建时间",
-      "updateTime": "更新时间",
-      "creator": "创建者",
-      "updater": "更新者"
     },
     "tabs": {
       "taskConfig": "任务配置",
       "executeConfig": "执行配置"
     },
-    "authority": {
+    "permission": {
       "title": "场景权限",
       "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
       "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
@@ -163,15 +132,11 @@
       "samplingStatus": "采样状态"
     },
     "drawerItem": {
-      "id": "ID",
-      "name": "名称",
       "scriptName": "脚本名称",
       "scriptId": "脚本ID",
       "description": "描述",
       "namePlaceholder": "最长200个字符",
-      "descriptionPlaceholder": "最长800个字符",
-      "confirm": "确定",
-      "cancel": "取消"
+      "descriptionPlaceholder": "最长800个字符"
     },
     "execLog": {
       "node": "节点",
@@ -201,9 +166,7 @@
         "err": "错误(Error)",
         "currentIterations": "迭代次数",
         "rt": "响应时间(最小/平均/最大)",
-        "p50": "响应百分位(P50/P90/P99)",
-        "export": "下载",
-        "upload": "上传"
+        "p50": "响应百分位(P50/P90/P99)"
       },
       "tabs": {
         "aggregation": "汇总结果",
@@ -240,22 +203,15 @@
         "title": "选择API",
         "searchPlaceholder": "搜索API名称",
         "tableHeaders": {
-          "name": "名称",
           "method": "方法",
           "path": "路径"
         },
-        "copy": "复制",
         "reference": "引用",
         "alreadyReferenced": "已选中的接口中包含已被引用的接口，不能重复引用。"
       },
       "selectUseCaseModal": {
         "title": "选择用例",
         "searchPlaceholder": "搜索用例名称",
-        "tableHeaders": {
-          "name": "名称",
-          "description": "描述"
-        },
-        "copy": "复制",
         "reference": "引用",
         "alreadyReferenced": "已选中的用例中包含已被引用的用例，不能重复引用。"
       },
@@ -268,7 +224,6 @@
       },
       "transStart": {
         "title": "事务开始",
-        "name": "名称",
         "duplicateName": "名称重复",
         "namePlaceholder": "名称，最长400个字符"
       },
@@ -290,15 +245,7 @@
       },
       "transEnd": {
         "title": "事务结束",
-        "name": "名称",
         "suffix": "结束"
-      },
-      "actionsGroup": {
-        "add": "添加",
-        "delete": "删除",
-        "copy": "复制",
-        "moveUp": "上移",
-        "moveDown": "下移"
       },
       "httpConfigs": {
         "title": "HTTP配置",
@@ -427,9 +374,7 @@
               "title": "预览数据",
               "description": "查看数据集中的实际数据内容",
               "previewRows": "预览行数",
-              "previewRowsPlaceholder": "1 ~ 10000",
-              "noData": "暂无数据",
-              "refresh": "刷新"
+              "previewRowsPlaceholder": "1 ~ 10000"
             },
             "datasetModal": {
               "title": "引用变量",
@@ -438,8 +383,6 @@
               "lastModifiedBy": "最后修改人",
               "lastModifiedDate": "最后修改时间",
               "searchPlaceholder": "搜索名称或描述",
-              "refresh": "刷新",
-              "name": "名称",
               "descriptionColumn": "描述"
             },
             "extractParametersModal": {
@@ -448,7 +391,6 @@
             },
             "extractParametersField": {
               "readColumn": "读取列",
-              "name": "名称"
             },
             "staticParametersModal": {
               "title": "静态参数",
@@ -463,8 +405,7 @@
               "description": "查看使用变量的资源信息。",
               "resourceType": "资源类型",
               "resourceId": "资源ID",
-              "resourceName": "资源名称",
-              "refresh": "刷新"
+              "resourceName": "资源名称"
             },
             "hintTextMap": {
               "file": "从文件中读取数据集，每个数据集最大允许创建200个参数，每个参数文件最大不超过500MB，总行数不超过100万行。",
@@ -478,8 +419,6 @@
             "unlinkDataset": "取消引用",
             "viewDefinition": "查看定义",
             "parameters": "参数",
-            "name": "名称",
-            "value": "值"
           },
           "matchItemPopover": {
             "dataColumn": "匹配值",
@@ -666,7 +605,6 @@
       }
     },
     "functionTestDetail": {
-      "pending": "执行中...",
       "statusCode": "状态码",
       "duration": "耗时",
       "size": "大小",
@@ -680,29 +618,15 @@
       "collapse": {
         "iteration": "第{iteration}次迭代"
       },
-      "texts": {
-        "success": "通过",
-        "ignore": "忽略",
-        "block": "未测试",
-        "total": "总数"
-      },
       "timeTexts": {
         "minimum": "最小",
         "average": "平均",
         "maximum": "最大"
       },
       "ftp": {
-        "upload": "上传",
-        "download": "下载",
         "duration": "耗时",
         "request": "请求",
         "response": "响应"
-      },
-      "statusTag": {
-        "success": "通过",
-        "fail": "未通过",
-        "block": "未测试",
-        "ignore": "未启用"
       },
       "http": {
         "tabs": {
@@ -855,12 +779,6 @@
       "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
       "executeConfig": "执行配置 > 插件配置",
       "closeIgnoreAssertion": "中关闭忽略断言选项。",
-      "assertionStatus": {
-        "failed": "未通过",
-        "passed": "通过",
-        "ignored": "忽略",
-        "disabled": "未启用"
-      },
       "requestParameter": {
         "parameter": "参数",
         "result": "结果",
@@ -934,7 +852,6 @@
       "screen": "全屏"
     },
     "drawer": {
-      "save": "保存",
       "indicator": "性能指标",
       "testInfo": "测试结果",
       "activity": "活动",
@@ -943,26 +860,14 @@
     "messages": {
       "debugSaveRequired": "调试需要先保存当前数据，请保存后再执行调试"
     },
-    "auth": {
+    "permission": {
       "title": "场景权限",
       "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
       "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
     },
     "buttonGroup": {
-      "export": "导出脚本",
       "select": "选择脚本",
-      "import": "导入脚本",
-      "codeView": "代码视图",
-      "uiView": "页面视图",
-      "authority": "权限",
-      "follow": "关注",
-      "cancelFollow": "取消关注",
-      "favourite": "收藏",
-      "cancelFavourite": "取消收藏",
-      "refresh": "刷新",
-      "test": "创建执行",
-      "debug": "调试",
-      "save": "保存"
+      "test": "创建执行"
     },
     "debugLog": {
       "schedulingResult": "调度结果",
@@ -980,22 +885,13 @@
     },
     "drawerMenu": {
       "saveForm": {
-        "id": "ID",
-        "name": "名称",
         "scriptName": "脚本名称",
         "scriptId": "脚本ID",
-        "description": "描述",
-        "namePlaceholder": "最大支持200个字符",
-        "descriptionPlaceholder": "最大支持800个字符",
-        "confirm": "确定",
-        "cancel": "取消"
       }
     },
     "execLog": {
       "node": "节点",
       "schedulingResult": "调度结果",
-      "success": "成功",
-      "fail": "失败",
       "processExitCode": "进程退出码",
       "downloadFileName": "runner.log"
     },
@@ -1018,18 +914,10 @@
         "iteration": "第{iteration}次迭代"
       },
       "ftp": {
-        "upload": "上传",
-        "download": "下载",
         "duration": "耗时",
         "request": "请求",
         "response": "响应"
       },
-      "statusTag": {
-        "success": "通过",
-        "fail": "未通过",
-        "block": "未测试",
-        "ignore": "未启用"
-      }
     },
     "scriptConfig": {
       "messages": {
@@ -1045,9 +933,7 @@
         "errors": "错误(Error)",
         "iterations": "迭代次数",
         "responseTime": "响应时间(最小 / 平均 / 最大)",
-        "percentile": "响应百分位(P50 / P90 / P99)",
-        "download": "下载",
-        "upload": "上传"
+        "percentile": "响应百分位(P50 / P90 / P99)"
       },
       "tabs": {
         "aggregation": "汇总结果",
@@ -1082,7 +968,6 @@
         "title": "错误采样",
         "time": "时间",
         "samplingId": "采样ID",
-        "name": "名称"
       },
       "countTemplate": {
         "radioButtons": {
@@ -1182,10 +1067,6 @@
       "execSetting": {
         "messages": {
           "modifySuccess": "修改成功"
-        },
-        "actions": {
-          "save": "保存",
-          "cancel": "取消"
         }
       },
       "execLog": {
@@ -1193,21 +1074,13 @@
         "schedulingLog": {
           "title": "调度日志",
           "lastSchedulingTime": "最后调度时间",
-          "result": "结果",
-          "success": "成功",
-          "fail": "失败",
-          "exitCode": "退出码",
-          "noData": "--"
+          "exitCode": "退出码"
         },
         "execLog": {
           "title": "执行日志",
           "file": "文件",
           "noProxyInfo": "无访问代理信息，连接失败地址：",
           "downloadFileName": "runner.log"
-        },
-        "tooltips": {
-          "export": "导出",
-          "refresh": "刷新"
         },
         "downloadFileName": {
           "scheduling": "scheduling.log"
@@ -1235,10 +1108,6 @@
         "onlyOneEnabled": "只能启用一个",
         "cloneLocalFile": "克隆本地文件",
         "checkCloneNameExists": "判断克隆的名称是否已经存在"
-      },
-      "actions": {
-        "clone": "克隆",
-        "delete": "删除"
       },
       "form": {
         "nameDuplicate": "名称重复",
@@ -1268,17 +1137,11 @@
         "remoteFileName": "远程文件名",
         "remoteFileNamePlaceholder": "下载远程FTP服务器中的文件名称，最大支持4096个字符",
         "binaryFile": "二进制文件",
-        "binaryFileTooltip": "上传文件是否是二进制文件",
-        "binaryMode": {
-          "yes": "是",
-          "no": "否"
-        }
+        "binaryFileTooltip": "上传文件是否是二进制文件"
       },
       "requestConfig": {
         "title": "FTP请求配置",
         "uploadDownload": "上传 / 下载",
-        "upload": "上传",
-        "download": "下载",
         "uploadFileSource": "文件来源",
         "localFile": "本地文件",
         "remoteFile": "远程文件",
@@ -1335,7 +1198,6 @@
       "generated": "已生成参数文件",
       "source": "来源",
       "selectFile": "选择文件",
-      "select": "选择",
       "dataSource": "数据源"
     },
     "uiConfig": {
@@ -1343,8 +1205,6 @@
       "nameDuplicate": "名称重复",
       "namePlaceholder": "名称，最大支持400个字符",
       "descriptionPlaceholder": "描述，最大支持800个字符",
-      "clone": "克隆",
-      "delete": "删除",
       "mailSettings": "邮件设置",
       "protocol": "协议",
       "protocolPlaceholder": "协议",
@@ -1391,12 +1251,6 @@
       "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
       "executeConfig": "执行配置 > 插件配置",
       "closeIgnoreAssertion": "中关闭忽略断言选项。",
-      "assertionStatus": {
-        "failed": "未通过",
-        "passed": "通过",
-        "ignored": "忽略",
-        "disabled": "未启用"
-      },
       "requestHeaders": {
         "general": "常规",
         "requestHeaders": "请求头",
@@ -1433,8 +1287,6 @@
         "expected": "期望值",
         "conditionExpression": "执行条件表达式",
         "conditionResult": "执行条件结果",
-        "ignore": "忽略",
-        "pass": "通过",
         "typeMap": {
           "STATUS": "响应状态码",
           "HEADER": "响应头",
@@ -1500,9 +1352,6 @@
       "insertLdapRequest": "插入Ldap请求",
       "supportMultipleLdap": "支持同时编排多个Ldap接口，但每次只允许启用一个Ldap进行测试。",
       "nameDuplicate": "名称重复",
-      "clone": "克隆",
-      "delete": "删除",
-      "add": "添加",
       "serverConfig": "服务器配置",
       "hostnameOrIP": "主机名或IP",
       "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
@@ -1517,12 +1366,6 @@
       "testConfig": "测试配置",
       "testType": "测试类型",
       "uniqueCounter": "唯一计数器编号",
-      "testTypes": {
-        "add": "添加",
-        "delete": "删除",
-        "search": "搜索",
-        "modify": "修改"
-      },
       "customTest": "自定义测试",
       "entryDn": "DN条目名称",
       "entryDnAddPlaceholder": "自定义添加条目名称，最大支持4096个字符",
@@ -1627,7 +1470,6 @@
       "tranMean": "平均",
       "tranMin": "最小",
       "tranMax": "最大",
-      "name": "名称"
     }
   },
   "smtpPlugin": {
@@ -1802,10 +1644,6 @@
         "messageSizeStatistics": "计算消息大小",
         "enableDebugLogging": "启用调试日志记录"
       },
-      "actions": {
-        "clone": "克隆",
-        "delete": "删除"
-      },
       "upload": {
         "selectFile": "选择文件"
       }
@@ -1847,10 +1685,6 @@
       "comments": {
         "onlyOneEnabled": "只能启用一个",
         "checkCloneNameExists": "判断克隆的名称是否已经存在"
-      },
-      "actions": {
-        "clone": "克隆",
-        "delete": "删除"
       },
       "form": {
         "nameDuplicate": "名称重复",
@@ -1940,10 +1774,6 @@
         "response": "响应"
       }
     },
-    "actions": {
-      "clone": "克隆",
-      "delete": "删除"
-    },
     "form": {
       "nameDuplicate": "名称重复",
       "namePlaceholder": "名称，最大支持400个字符",
@@ -1986,14 +1816,8 @@
       "input": {
         "placeholder": "查询接口名称"
       },
-      "fields": {
-        "url": "URL",
-        "name": "名称"
-      },
       "referenced": "（已引用）",
       "buttons": {
-        "cancel": "取消",
-        "copy": "复制",
         "link": "引用"
       }
     },
@@ -2007,10 +1831,6 @@
         "nameDuplicate": "名称重复",
         "namePlaceholder": "名称，最大支持400个字符",
         "descriptionPlaceholder": "描述，最大支持800个字符"
-      },
-      "actions": {
-        "clone": "克隆",
-        "delete": "删除"
       },
       "connectionInfo": {
         "title": "连接信息",
@@ -2046,28 +1866,8 @@
       "tab": "Tab"
     },
     "actions": {
-      "save": "保存",
-      "cancel": "取消",
-      "confirm": "确定",
-      "refresh": "刷新",
-      "export": "导出",
-      "import": "导入",
-      "add": "添加",
-      "edit": "编辑",
-      "delete": "删除",
-      "view": "查看",
-      "download": "下载",
-      "upload": "上传",
       "select": "选择脚本",
-      "codeView": "代码视图",
-      "pageView": "页面视图",
-      "authority": "权限",
-      "follow": "关注",
-      "cancelFollow": "取消关注",
-      "favourite": "收藏",
-      "cancelFavourite": "取消收藏",
-      "createExecution": "创建执行",
-      "debug": "调试"
+      "createExecution": "创建执行"
     },
     "messages": {
       "saveSuccess": "保存成功",
@@ -2079,23 +1879,13 @@
       "generateDataSuccess": "创建生成数据成功，请在\"执行\"中查看进度和结果。",
       "generateDataSuccessWithName": "创建生成数据「{name}」成功，请在\"执行\"中查看进度和结果。",
       "confirmDelete": "确认删除",
-      "noData": "暂无数据",
-      "loading": "加载中...",
       "pleaseSelect": "请选择",
       "pleaseInput": "请输入"
     },
     "form": {
-      "name": "名称",
-      "description": "描述",
-      "type": "类型",
       "format": "格式",
       "size": "大小",
       "count": "数量",
-      "status": "状态",
-      "createTime": "创建时间",
-      "updateTime": "更新时间",
-      "creator": "创建人",
-      "updater": "更新人"
     },
     "dataConfig": {
       "title": "数据配置",
@@ -2295,7 +2085,6 @@
     "errorRate": "错误率",
     "threadCount": "线程数",
     "activeThreadCount": "活跃线程数",
-    "maxThreadCount": "最大线程数",
-    "name": "名称"
+    "maxThreadCount": "最大线程数"
   }
 }

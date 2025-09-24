@@ -12,7 +12,7 @@ const DefaultEfficiency = defineAsyncComponent(() => import('./DefaultEfficiency
 </script>
 <template>
   <div class="py-3.5 px-5 h-full overflow-auto">
-    <HeadIntroduction :title="t('indicator.title')" />
+    <HeadIntroduction :title="t('indicator.titleTip')" />
     <!-- <DefaultFunc class="mt-3" />-->
     <DefaultPerform class="mt-5" />
     <DefaultStability class="mt-10" />

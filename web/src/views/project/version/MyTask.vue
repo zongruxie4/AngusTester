@@ -89,7 +89,7 @@ const cancelTotal = computed((): number => {
           <div class="flex items-center space-x-1">
             <span class="text-8 font-semibold text-text-title">{{ currentTotal }}</span>
             <div class="leading-3.5">
-              <span>{{ t('version.taskTable.tabs.current') }}</span>
+              <span>{{ t('version.taskTable.currentVersion') }}</span>
               <div>{{ t('version.taskTable.units.tasks') }}</div>
             </div>
           </div>
@@ -107,7 +107,7 @@ const cancelTotal = computed((): number => {
             <span class="text-8 font-semibold text-status-success">{{ completedTotal }}</span>
             <div class="leading-3.5">
               <span>{{ t('version.taskTable.units.task') }}</span>
-              <div>{{ t('version.taskTable.tabs.completed') }}</div>
+              <div>{{ t('status.completed') }}</div>
             </div>
           </div>
         </template>
@@ -124,7 +124,7 @@ const cancelTotal = computed((): number => {
             <span class="text-8 font-semibold text-status-warn">{{ processingTotal }}</span>
             <div class="leading-3.5">
               <span>{{ t('version.taskTable.units.task') }}</span>
-              <div>{{ t('version.taskTable.tabs.processing') }}</div>
+              <div>{{ t('status.inProgress') }}</div>
             </div>
           </div>
         </template>
@@ -141,7 +141,7 @@ const cancelTotal = computed((): number => {
             <span class="text-8 font-semibold text-status-pending">{{ confirmingTotal }}</span>
             <div class="leading-3.5">
               <span>{{ t('version.taskTable.units.task') }}</span>
-              <div>{{ t('version.taskTable.tabs.confirming') }}</div>
+              <div>{{ t('status.pendingConfirmation') }}</div>
             </div>
           </div>
         </template>
@@ -158,7 +158,7 @@ const cancelTotal = computed((): number => {
             <span class="text-8 font-semibold text-blue-light">{{ pendingTotal }}</span>
             <div class="leading-3.5">
               <span>{{ t('version.taskTable.units.task') }}</span>
-              <div>{{ t('version.taskTable.tabs.pending') }}</div>
+              <div>{{ t('status.pending') }}</div>
             </div>
           </div>
         </template>
@@ -175,7 +175,7 @@ const cancelTotal = computed((): number => {
             <span class="text-8 font-semibold text-gray-3">{{ cancelTotal }}</span>
             <div class="leading-3.5">
               <span>{{ t('version.taskTable.units.task') }}</span>
-              <div>{{ t('version.taskTable.tabs.canceled') }}</div>
+              <div>{{ t('status.canceled') }}</div>
             </div>
           </div>
         </template>

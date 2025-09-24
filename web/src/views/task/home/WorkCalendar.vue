@@ -176,15 +176,15 @@ onMounted(() => {
                   <!-- Task statistics summary -->
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('taskHome.workloadLabel') }}</span>
+                      <span>{{ t('common.workload') }}</span>
                       <span>{{ calculateTotalTaskCount(getNonOverdueTasks(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('taskHome.completed') }}</span>
+                      <span>{{ t('status.completed') }}</span>
                       <span>{{ calculateCompletedTaskCount(getNonOverdueTasks(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('taskHome.remainingLabel') }}</span>
+                      <span>{{ t('chart.burndown.remaining') }}</span>
                       <span>{{ calculateRemainingTaskCount(getNonOverdueTasks(current)) }}</span>
                     </div>
                   </div>
@@ -215,15 +215,15 @@ onMounted(() => {
                   <!-- Overdue task statistics summary -->
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('taskHome.workloadLabel') }}</span>
+                      <span>{{ t('common.workload') }}</span>
                       <span>{{ calculateTotalTaskCount(getOverdueTasks(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('taskHome.completed') }}</span>
+                      <span>{{ t('status.completed') }}</span>
                       <span>{{ calculateCompletedTaskCount(getOverdueTasks(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('taskHome.remainingLabel') }}</span>
+                      <span>{{ t('chart.burndown.remaining') }}</span>
                       <span>{{ calculateRemainingTaskCount(getOverdueTasks(current)) }}</span>
                     </div>
                   </div>
@@ -240,7 +240,7 @@ onMounted(() => {
                       <span
                         class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                         style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                        <span class="inline-block transform-gpu scale-90">{{ t('taskHome.overdue') }}</span>
+                        <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
                       </span>
                     </div>
                   </div>

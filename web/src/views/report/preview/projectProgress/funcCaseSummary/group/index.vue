@@ -69,7 +69,13 @@ const taskStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: [t('reportPreview.projectProgress.funcCaseSummary.groupStats.statuses.cancelled'), t('reportPreview.projectProgress.funcCaseSummary.groupStats.statuses.blocked'), t('reportPreview.projectProgress.funcCaseSummary.groupStats.statuses.testFailed'), t('reportPreview.projectProgress.funcCaseSummary.groupStats.statuses.testPassed'), t('reportPreview.projectProgress.funcCaseSummary.groupStats.statuses.pendingTest')]
+    data: [
+      t('status.cancelled'),
+      t('status.blocked'),
+      t('reportPreview.projectProgress.funcCaseSummary.groupStats.status.testFailed'),
+      t('reportPreview.projectProgress.funcCaseSummary.groupStats.status.testPassed'),
+      t('reportPreview.projectProgress.funcCaseSummary.groupStats.status.pendingTest')
+    ]
   },
   series: [
     {
@@ -119,7 +125,7 @@ const taskStatusOption = {
 const priorityOptions = {
   title: {
     text: 0,
-    subtext: t('reportPreview.projectProgress.funcCaseSummary.groupStats.total'),
+    subtext: t('chart.total'),
     left: '29.5%',
     top: '40%',
     padding: 2,

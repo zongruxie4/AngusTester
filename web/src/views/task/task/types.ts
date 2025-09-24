@@ -106,7 +106,7 @@ export type TaskCount = {
  */
 export type ActionMenuItem = {
   name: string;
-  key: 'delete' | 'edit' | 'start' | 'processed' | 'uncompleted' | 'completed' | 'reopen' | 'restart' | 'cancel' | 'move' | 'cancelFavourite' | 'favourite' | 'cancelFollow' | 'follow' | 'copyLink';
+  key: 'delete' | 'edit' | 'start' | 'processed' | 'uncompleted' | 'completed' | 'reopen' | 'restart' | 'cancel' | 'move' | 'cancelFavourite' | 'addFavourite' | 'cancelFollow' | 'addFollow' | 'copyLink';
   icon: string;
   disabled: boolean;
   hide: boolean;

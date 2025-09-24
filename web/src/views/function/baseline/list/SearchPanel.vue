@@ -358,7 +358,7 @@ const handleRefreshClick = () => {
           @click="handleSortChange">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
-            <span>{{ t('functionBaseline.list.sort') }}</span>
+            <span>{{ t('actions.sort') }}</span>
           </div>
         </DropdownSort>
 
@@ -369,7 +369,7 @@ const handleRefreshClick = () => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{ t('functionBaseline.list.refresh') }}</span>
+              <span class="ml-1">{{ t('actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

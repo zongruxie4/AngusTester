@@ -62,7 +62,7 @@ const testers = computed(() => {
         <div class="flex items-center space-x-7">
           <Progress
             :percent="casesMap[item.id].statusOverview.progress"
-            :text="t('reportPreview.functionPlan.caseDetail.testSummary.fields.progress')"
+            :text="t('common.progress')"
             class="ml-4" />
           <div class="flex-1 border border-solid border-border-input">
             <div class="flex border-b border-solid border-border-input">
@@ -92,21 +92,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.passed') }}
+                {{ t('status.passed') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.passedTestNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.failed') }}
+                {{ t('status.failed') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.notPassedTestNum || 0 }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.blocked') }}
+                {{ t('status.blocked') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.blockedTestNum || 0 }}
@@ -299,7 +299,7 @@ const testers = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a3.3">3.3<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.burndownChart.title') }}</span>
+        <span id="a3.3">3.3<em class="inline-block w-3.5"></em>{{ t('chart.burndown.title') }}</span>
       </h2>
       <div
         v-for="(item) in testers"

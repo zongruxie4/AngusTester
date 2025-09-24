@@ -79,7 +79,13 @@ const taskStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: [t('reportPreview.projectProgress.taskSummary.groupStats.statuses.cancelled'), t('reportPreview.projectProgress.taskSummary.groupStats.statuses.completed'), t('reportPreview.projectProgress.taskSummary.groupStats.statuses.pendingConfirm'), t('reportPreview.projectProgress.taskSummary.groupStats.statuses.processing'), t('reportPreview.projectProgress.taskSummary.groupStats.statuses.pending')]
+    data: [
+      t('status.cancelled'),
+      t('status.completed'),
+      t('status.pendingConfirmation'),
+      t('status.inProgress'),
+      t('status.pending')
+    ]
   },
   series: [
     {
@@ -129,7 +135,7 @@ const taskStatusOption = {
 const priorityOptions = {
   title: {
     text: 0,
-    subtext: t('reportPreview.projectProgress.taskSummary.groupStats.total'),
+    subtext: t('chart.total'),
     left: '29.5%',
     top: '40%',
     padding: 2,
@@ -222,7 +228,7 @@ const priorityOptions = {
 const taskTypeOptions = {
   title: {
     text: 0,
-    subtext: t('reportPreview.projectProgress.taskSummary.groupStats.total'),
+    subtext: t('chart.total'),
     left: '29.5%',
     top: '40%',
     padding: 2,

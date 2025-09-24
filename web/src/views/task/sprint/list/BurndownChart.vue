@@ -36,11 +36,11 @@ let chartInstance: echarts.ECharts;
 const chartTypeOptions = computed(() => [
   {
     value: 'NUM',
-    label: t('taskSprint.burndown.taskCount')
+    label: t('chart.burndown.countBurndown')
   },
   {
     value: 'WORKLOAD',
-    label: t('taskSprint.burndown.workload')
+    label: t('chart.burndown.workloadBurndown')
   }
 ]);
 
@@ -76,12 +76,12 @@ const chartConfiguration = {
   },
   series: [
     {
-      name: t('taskSprint.burndown.remaining'),
+      name: t('chart.burndown.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: t('taskSprint.burndown.expected'),
+      name: t('chart.burndown.expected'),
       data: [],
       type: 'line',
       smooth: true

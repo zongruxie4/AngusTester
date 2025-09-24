@@ -314,21 +314,21 @@ const editorDataMap = computed(() => {
         :class="{ 'tab-selected': activeKey === 'success' }"
         class="flex justify-center items-center min-w-25 px-3 h-full"
         @click="change('success')">
-        <span>{{ t('xcan_responseAssert.passed') }}</span>
+        <span>{{ t('status.passed') }}</span>
         <span class="ml-1">(<span class="text-status-success">{{ successList.length }}</span>)</span>
       </div>
       <div
         :class="{ 'tab-selected': activeKey === 'fail' }"
         class="flex justify-center items-center min-w-25 px-3 h-full"
         @click="change('fail')">
-        <span>{{ t('xcan_responseAssert.failed') }}</span>
+        <span>{{ t('status.failed') }}</span>
         <span class="ml-1">(<span class="text-status-error">{{ failList.length }}</span>)</span>
       </div>
       <div
         :class="{ 'tab-selected': activeKey === 'ignore' }"
         class="flex justify-center items-center min-w-25 px-3 h-full"
         @click="change('ignore')">
-        <span>{{ t('xcan_responseAssert.ignored') }}</span>
+        <span>{{ t('status.ignored') }}</span>
         <span class="ml-1">(<span class="text-status-close">{{ ignoreList.length }}</span>)</span>
       </div>
     </div>
@@ -351,7 +351,7 @@ const editorDataMap = computed(() => {
               <template v-if="item._condition.ignored">
                 <BadgeRibbon
                   placement="start"
-                  :text="t('xcan_responseAssert.ignore')"
+                  :text="t('status.ignored')"
                   style="top: -4px;left: -49px;transform: scale(0.9);font-size: 12px;"
                   color="rgba(217, 217, 217, 1)">
                   <div class="flex justify-between items-center">
@@ -441,7 +441,7 @@ const editorDataMap = computed(() => {
                     style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
                     :ellipsis="ellipsis"
                     :content="item.result.realValueData.data" />
-                  <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal(item.id, 'real')">{{ t('xcan_responseAssert.view') }}</div>
+                  <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal(item.id, 'real')">{{ t('actions.view') }}</div>
                 </div>
               </template>
 
@@ -473,7 +473,7 @@ const editorDataMap = computed(() => {
                     style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
                     :ellipsis="ellipsis"
                     :content="item.result.expectedData.data" />
-                  <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal(item.id, 'expected')">{{ t('xcan_responseAssert.view') }}</div>
+                  <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal(item.id, 'expected')">{{ t('actions.view') }}</div>
                 </div>
               </template>
 
@@ -484,7 +484,7 @@ const editorDataMap = computed(() => {
 
             <template v-if="item._condition.ignored">
               <DescriptionsItem :label="t('xcan_responseAssert.assertionResult')" :span="3">
-                <Badge status="default" :text="t('xcan_responseAssert.ignore')" />
+                <Badge status="default" :text="t('status.ignored')" />
               </DescriptionsItem>
             </template>
 
@@ -494,7 +494,7 @@ const editorDataMap = computed(() => {
                   <Badge
                     class="flex-shrink-0"
                     status="error"
-                    :text="t('xcan_responseAssert.fail')" />
+                    :text="t('status.failed')" />
                 </DescriptionsItem>
 
                 <DescriptionsItem
@@ -507,7 +507,7 @@ const editorDataMap = computed(() => {
 
               <template v-else>
                 <DescriptionsItem :label="t('xcan_responseAssert.assertionResult')" :span="3">
-                  <Badge status="success" :text="t('xcan_responseAssert.pass')" />
+                  <Badge status="success" :text="t('status.passed')" />
                 </DescriptionsItem>
               </template>
             </template>

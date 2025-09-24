@@ -99,7 +99,7 @@ const saveModalData = async () => {
 
   resetModalData();
   emits('ok', resp.data || {});
-  notification.success(t('tips.importSuccess'));
+  notification.success(t('actions.tips.importSuccess'));
 };
 
 const customRequest = (info: UploadOption) => {

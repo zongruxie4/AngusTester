@@ -592,22 +592,22 @@ onBeforeUnmount(() => {
                 v-if="[ExecStatus.CREATED, ExecStatus.STOPPED, ExecStatus.FAILED, ExecStatus.COMPLETED, ExecStatus.TIMEOUT].includes(item?.status.value)
                   && item?.hasOperationPermission">
                 <a class="flex items-center" @click="handleRestartWithContext(item)">
-                  <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('execution.actions.start') }}</span>
+                  <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('actions.start') }}</span>
                 </a>
               </template>
               <template v-else>
                 <span class="flex items-center text-theme-disabled cursor-not-allowed">
-                  <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('execution.actions.start') }}</span>
+                  <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('actions.start') }}</span>
                 </span>
               </template>
               <template v-if="[ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status.value) && item?.hasOperationPermission">
                 <a class="flex items-center" @click="handleStopWithContext(item)">
-                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('execution.actions.stop') }}</span>
+                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('actions.stop') }}</span>
                 </a>
               </template>
               <template v-else>
                 <span class="flex items-center text-theme-disabled cursor-not-allowed">
-                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('execution.actions.stop') }}</span>
+                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('actions.stop') }}</span>
                 </span>
               </template>
               <div class="dropdown-row">

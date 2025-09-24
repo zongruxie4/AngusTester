@@ -593,7 +593,7 @@ onMounted(() => {
       <div class="basic-info-content">
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.code') }}</span>
+            <span>{{ t('common.code') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -604,7 +604,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.name') }}</span>
+            <span>{{ t('common.name') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -634,7 +634,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.type') }}</span>
+            <span>{{ t('common.type') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -655,7 +655,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.status') }}</span>
+            <span>{{ t('common.status') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -666,7 +666,7 @@ onMounted(() => {
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
               <span class="inline-block transform-gpu scale-90">
-                {{ t('task.detailInfo.apis.columns.overdue') }}
+                {{ t('status.overdue') }}
               </span>
             </span>
           </div>
@@ -674,7 +674,7 @@ onMounted(() => {
 
         <div v-if="proTypeShowMap.showSprint" class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.sprint') }}</span>
+            <span>{{ t('common.sprint') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -705,7 +705,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.module') }}</span>
+            <span>{{ t('common.module') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -795,7 +795,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.priority') }}</span>
+            <span>{{ t('common.priority') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -828,7 +828,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.evalWorkloadMethod') }}</span>
+            <span>{{ t('common.evalWorkloadMethod') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -840,7 +840,7 @@ onMounted(() => {
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
             <span>
-              {{ t('task.detailInfo.apis.columns.evalWorkload') }}
+              {{ t('common.evalWorkload') }}
             </span>
             <Colon class="w-1" />
           </div>
@@ -874,11 +874,7 @@ onMounted(() => {
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
             <span>
-              {{
-                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.detailInfo.apis.columns.actualWorkload')
-                  : t('task.detailInfo.apis.columns.actualWorkload')
-              }}
+              {{ t('task.detailInfo.apis.columns.actualWorkload') }}
             </span>
             <Colon class="w-1" />
           </div>
@@ -929,7 +925,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.tags') }}</span>
+            <span>{{ t('common.tags') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -983,7 +979,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.softwareVersion') }}</span>
+            <span>{{ t('common.softwareVersion') }}</span>
             <Colon class="w-1" />
           </div>
           <div class="flex-1 min-w-0">
@@ -1026,11 +1022,11 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.unplanned') }}</span>
+            <span>{{ t('common.unplanned') }}</span>
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplanned ? t('task.detailInfo.apis.columns.yes') : t('task.detailInfo.apis.columns.no') }}
+            {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
           </div>
         </div>
 

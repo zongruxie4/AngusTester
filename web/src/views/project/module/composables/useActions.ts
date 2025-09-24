@@ -75,7 +75,7 @@ export function useActions (onDataChange: () => Promise<void>) {
       }
 
       // Show success notification
-      notification.success(t('tips.modifySuccess'));
+      notification.success(t('actions.tips.modifySuccess'));
 
       // Refresh the data to show changes
       await onDataChange();
@@ -155,7 +155,7 @@ export function useActions (onDataChange: () => Promise<void>) {
 
     const success = await updateModule([updateParams]);
     if (success) {
-      notification.success(t('tips.moveSuccess'));
+      notification.success(t('actions.tips.moveSuccess'));
     }
   };
 
@@ -176,7 +176,7 @@ export function useActions (onDataChange: () => Promise<void>) {
 
     const success = await updateModule([updateParams]);
     if (success) {
-      notification.success(t('tips.moveSuccess'));
+      notification.success(t('actions.tips.moveSuccess'));
     }
   };
 

@@ -63,7 +63,7 @@ init();
     <div v-if="props.authObjectId" class="flex items-center h-11 pr-1.75 rounded bg-gray-light text-theme-title">
       <div class="flex-1 px-2 truncate">{{ t('reportHome.globalAuth.authSet.name') }}</div>
       <div style="width:70px;" class="flex-shrink-0 px-2">{{ t('reportHome.globalAuth.authSet.permissionControl') }}</div>
-      <div style="width:52%">{{ t('reportHome.globalAuth.authSet.permission') }}</div>
+      <div style="width:52%">{{ t('actions.permission') }}</div>
     </div>
     <NoData
       v-show="!loading && !idList?.length"
@@ -73,7 +73,7 @@ init();
       v-show="loading||!!idList?.length"
       :mask="false"
       :spinning="loading"
-      :tip="t('reportHome.globalAuth.authSet.loading')"
+      :tip="t('common.loading')"
       style="height: calc(100% - 76px);">
       <div
         ref="containerRef"

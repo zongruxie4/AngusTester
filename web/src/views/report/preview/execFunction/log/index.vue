@@ -105,7 +105,7 @@ const schedulingLog = computed(() => {
               class="w-1.5 h-1.5 mr-1 rounded"
               :class="schedulingLog?.success ? 'bg-status-success' : 'bg-status-error'">
             </div>
-            {{ schedulingLog?.success ? t('reportPreview.execFunction.log.schedulingLog.status.success') : t('reportPreview.execFunction.log.schedulingLog.status.failed') }}
+            {{ schedulingLog?.success ? t('status.success') : t('status.failed') }}
           </div>
           <div v-else>--</div>
         </div>

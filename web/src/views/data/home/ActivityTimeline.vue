@@ -27,7 +27,7 @@ const activityTypes = [CombinedTargetType.VARIABLE, CombinedTargetType.DATASET];
   <div class="bg-white rounded px-5" style="height: 340px">
     <Tabs size="small" class="h-full">
       <!-- All Activity Tab -->
-      <TabPane key="all" :tab="t('dataHome.activityTimeline.allActivity')">
+      <TabPane key="all" :tab="t('home.allActivity')">
         <ActivityTimeline
           key="all"
           :types="activityTypes"
@@ -35,7 +35,7 @@ const activityTypes = [CombinedTargetType.VARIABLE, CombinedTargetType.DATASET];
       </TabPane>
 
       <!-- My Activity Tab -->
-      <TabPane key="my" :tab="t('dataHome.activityTimeline.myActivity')">
+      <TabPane key="my" :tab="t('home.myActivity')">
         <ActivityTimeline
           key="my"
           :types="activityTypes"

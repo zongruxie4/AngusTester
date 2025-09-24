@@ -210,11 +210,11 @@ const tranMax = computed(() => {
 });
 
 const pending = computed(() => {
-  return props.execInfo?.status?.value === 'RUNNING' ? t('xcan_functionTestDetail.running') : false;
+  return props.execInfo?.status?.value === 'RUNNING' ? t('status.running') : false;
 });
 
-const texts = [t('xcan_functionTestDetail.pass'), t('xcan_functionTestDetail.ignore'), t('xcan_functionTestDetail.notEnabled'), t('xcan_functionTestDetail.total')];
-const timeTexts = [t('xcan_functionTestDetail.min'), t('xcan_functionTestDetail.average'), t('xcan_functionTestDetail.max')];
+const texts = [t('status.passed'), t('status.ignored'), t('status.disabled'), t('status.total')];
+const timeTexts = [t('chart.min'), t('chart.average'), t('chart.max')];
 </script>
 <template>
   <div class="px-5">

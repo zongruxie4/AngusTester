@@ -238,8 +238,8 @@ const request = [
                 @click="arrowChange(variable.id)" />
               <Switch
                 v-model:checked="variable.enabled"
-                :checkedChildren="t('xcan_execSettingForm.enabled')"
-                :unCheckedChildren="t('xcan_execSettingForm.disabled')"
+                :checkedChildren="t('status.enabled')"
+                :unCheckedChildren="t('status.disabled')"
                 size="small" />
             </div>
             <div>

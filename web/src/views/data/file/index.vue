@@ -226,13 +226,13 @@ const drawerMenu = computed(() => {
               <template v-if="getSafeAuth(record).includes('GRANT')">
                 <a class="whitespace-nowrap inline-flex items-center" @click.stop="editAuth(record)">
                   <Icon icon="icon-quanxian1" class="mr-0.5" />
-                  {{ t('fileSpace.actions.permission') }}
+                  {{ t('actions.permission') }}
                 </a>
               </template>
               <template v-else>
                 <span class="text-text-disabled whitespace-nowrap inline-flex items-center">
                   <Icon icon="icon-quanxian1" class="mr-0.5" />
-                  {{ t('fileSpace.actions.permission') }}
+                  {{ t('actions.permission') }}
                 </span>
               </template>
 

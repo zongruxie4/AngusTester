@@ -49,7 +49,7 @@ const emit = defineEmits<{
   (event: 'delete', value: string): void;
   (event: 'dataChange', value: Partial<TaskDetail>): void;
   (event: 'refreshChange'): void;
-  (event: 'batchAction', type: 'cancel' | 'delete' | 'follow' | 'cancelFollow' | 'favourite' | 'cancelFavourite' | 'move', value: string[]): void;
+  (event: 'batchAction', type: 'cancel' | 'delete' | 'addFollow' | 'cancelFollow' | 'addFavourite' | 'cancelFavourite' | 'move', value: string[]): void;
 }>();
 
 // Constants
@@ -278,7 +278,7 @@ const executeBatchFavourite = async () => {
         // All tasks favourited successfully
         if (failedCount === 0) {
           notification.success(t('task.table.messages.favouriteNumSuccess', { num: selectedCount }));
-          emit('batchAction', 'favourite', taskIds);
+          emit('batchAction', 'addFavourite', taskIds);
           rowSelection.value.selectedRowKeys = [];
           selectedTaskDataMap.value = {};
           return;
@@ -294,7 +294,7 @@ const executeBatchFavourite = async () => {
         const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
         notification.warning(t('task.table.messages.favouritePartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
-        emit('batchAction', 'favourite', successTaskIds);
+        emit('batchAction', 'addFavourite', successTaskIds);
 
         // Remove successful tasks from selection
         rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successTaskIds.includes(item));
@@ -338,7 +338,7 @@ const executeBatchCancelFavourite = async () => {
         // All tasks unfavourited successfully
         if (failedCount === 0) {
           notification.success(t('task.table.messages.cancelFavouriteNumSuccess', { num: selectedCount }));
-          emit('batchAction', 'favourite', taskIds);
+          emit('batchAction', 'addFavourite', taskIds);
           rowSelection.value.selectedRowKeys = [];
           selectedTaskDataMap.value = {};
           return;
@@ -354,7 +354,7 @@ const executeBatchCancelFavourite = async () => {
         const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
         notification.warning(t('task.table.messages.cancelFavouritePartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
-        emit('batchAction', 'favourite', successTaskIds);
+        emit('batchAction', 'addFavourite', successTaskIds);
 
         // Remove successful tasks from selection
         rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successTaskIds.includes(item));
@@ -398,7 +398,7 @@ const executeBatchFollow = async () => {
         // All tasks followed successfully
         if (failedCount === 0) {
           notification.success(t('task.table.messages.followNumSuccess', { num: selectedCount }));
-          emit('batchAction', 'follow', taskIds);
+          emit('batchAction', 'addFollow', taskIds);
           rowSelection.value.selectedRowKeys = [];
           selectedTaskDataMap.value = {};
           return;
@@ -414,7 +414,7 @@ const executeBatchFollow = async () => {
         const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
         notification.warning(t('task.table.messages.followPartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
-        emit('batchAction', 'follow', successTaskIds);
+        emit('batchAction', 'addFollow', successTaskIds);
 
         // Remove successful tasks from selection
         rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successTaskIds.includes(item));
@@ -541,13 +541,13 @@ const handleDropdownAction = (menuItem: ActionMenuItem, taskData: TaskDetail) =>
   const actionKey = menuItem.key;
 
   switch (actionKey) {
-    case 'favourite':
+    case 'addFavourite':
       addToFavourites(taskData);
       break;
     case 'cancelFavourite':
       removeFromFavourites(taskData);
       break;
-    case 'follow':
+    case 'addFollow':
       followTask(taskData);
       break;
     case 'cancelFollow':
@@ -869,21 +869,21 @@ const tableColumns: ({
   groupName?: string
 } & TableColumnProps)[] = [
   {
-    title: t('task.table.columns.code'),
+    title: t('common.code'),
     dataIndex: 'code',
     width: 110,
     sorter: true,
     ellipsis: true
   },
   {
-    title: t('task.table.columns.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     width: '45%',
     sorter: true,
     ellipsis: true
   },
   {
-    title: t('task.table.columns.sprint'),
+    title: t('common.sprint'),
     dataIndex: 'sprintName',
     groupName: 'target',
     width: '25%',
@@ -906,14 +906,14 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.priority'),
+    title: t('common.priority'),
     dataIndex: 'priority',
     width: 100,
     sorter: true,
     ellipsis: true
   },
   {
-    title: t('task.table.columns.status'),
+    title: t('common.status'),
     dataIndex: 'status',
     width: 120,
     groupName: 'status',
@@ -921,7 +921,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.execResult'),
+    title: t('common.execResult'),
     dataIndex: 'execResult',
     width: 120,
     groupName: 'status',
@@ -930,14 +930,14 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.assignee'),
+    title: t('common.assignee'),
     dataIndex: 'assigneeName',
     width: 110,
     groupName: 'personType',
     ellipsis: true
   },
   {
-    title: t('task.table.columns.creator'),
+    title: t('common.creator'),
     dataIndex: 'createdByName',
     width: 110,
     hide: true,
@@ -945,7 +945,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.confirmer'),
+    title: t('common.confirmer'),
     dataIndex: 'confirmerName',
     width: 110,
     hide: true,
@@ -953,7 +953,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.lastModifier'),
+    title: t('common.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     width: 110,
     hide: true,
@@ -961,7 +961,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.executor'),
+    title: t('common.executor'),
     dataIndex: 'execUserName',
     width: 110,
     hide: true,
@@ -969,7 +969,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.workload'),
+    title: t('common.workload'),
     dataIndex: 'evalWorkload',
     width: 100,
     sorter: true,
@@ -993,7 +993,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.addTime'),
+    title: t('common.createdDate'),
     dataIndex: 'createdDate',
     width: 160,
     groupName: 'date',
@@ -1001,7 +1001,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.deadline'),
+    title: t('common.deadlineDate'),
     dataIndex: 'deadlineDate',
     width: 160,
     hide: true,
@@ -1010,7 +1010,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.startTime'),
+    title: t('common.startDate'),
     dataIndex: 'startDate',
     width: 160,
     hide: true,
@@ -1019,7 +1019,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.processTime'),
+    title: t('common.processedDate'),
     dataIndex: 'processedDate',
     width: 160,
     hide: true,
@@ -1028,7 +1028,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.confirmTime'),
+    title: t('common.confirmedDate'),
     dataIndex: 'confirmedDate',
     width: 160,
     hide: true,
@@ -1037,7 +1037,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.completeTime'),
+    title: t('common.completedDate'),
     dataIndex: 'completedDate',
     width: 160,
     hide: true,
@@ -1046,7 +1046,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.cancelTime'),
+    title: t('common.canceledDate'),
     dataIndex: 'canceledDate',
     width: 160,
     hide: true,
@@ -1055,7 +1055,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.execTime'),
+    title: t('common.execCompletedDate'),
     dataIndex: 'execCompletedDate',
     width: 160,
     hide: true,
@@ -1064,7 +1064,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.lastModifyTime'),
+    title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     width: 160,
     hide: true,
@@ -1073,7 +1073,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.operation'),
+    title: t('common.actions'),
     dataIndex: 'action',
     align: 'center',
     width: 180
@@ -1114,7 +1114,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchFavourite">
-        {{ t('actions.favourite') }}
+        {{ t('actions.addFavourite') }}
       </Button>
 
       <Button
@@ -1123,7 +1123,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchCancelFavourite">
-        {{ t('actions.unFavourite') }}
+        {{ t('actions.cancelFavourite') }}
       </Button>
 
       <Button
@@ -1132,7 +1132,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchFollow">
-        {{ t('actions.follow') }}
+        {{ t('actions.addFollow') }}
       </Button>
 
       <Button
@@ -1141,7 +1141,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchCancelFollow">
-        {{ t('actions.unfollow') }}
+        {{ t('actions.cancelFollow') }}
       </Button>
 
       <Button
@@ -1159,7 +1159,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="clearBatchSelection">
-        <span>{{ t('task.table.batchActions.cancelBatch') }}</span>
+        <span>{{ t('actions.cancelBatch') }}</span>
         <span class="ml-1">({{ props.selectedIds.length }})</span>
       </Button>
     </div>
@@ -1184,7 +1184,7 @@ const EXEC_RESULT_COLOR = {
             v-if="record.overdue"
             class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            <span class="inline-block transform-gpu scale-90">{{ t('task.table.status.overdue') }}</span>
+            <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
           </span>
         </div>
 

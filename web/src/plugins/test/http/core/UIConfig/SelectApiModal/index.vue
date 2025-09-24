@@ -179,7 +179,7 @@ const hasLinkId = computed(() => {
           size="small"
           type="primary"
           @click="ok('copy')">
-          <span>{{ t('httpPlugin.uiConfig.selectApiModal.copy') }}</span>
+          <span>{{ t('actions.copy') }}</span>
         </Button>
         <Button
           :loading="linking"

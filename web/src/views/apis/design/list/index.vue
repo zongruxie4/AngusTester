@@ -80,7 +80,7 @@ const toDelete = async (data: DesignInfo) => {
       if (error) {
         return;
       }
-      notification.success(t('tips.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       if (pagination.value.current > 1 && dataList.value.length === 1) {
         pagination.value.current -= 1;
       }
@@ -177,7 +177,7 @@ const cloneDesign = async (record: {id: string; name: string; url?: string}) => 
   if (error) {
     return;
   }
-  notification.success(t('tips.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   loadData();
 };
 
@@ -289,7 +289,7 @@ const columns = [
     width: '10%'
   },
   {
-    title: t('design.home.columns.actions'),
+    title: t('common.actions'),
     dataIndex: 'actions',
     width: '12%'
   }

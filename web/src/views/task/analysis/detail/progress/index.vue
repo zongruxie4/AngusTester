@@ -28,12 +28,12 @@ onMounted(() => {
       } = sourceData;
 
       totalValue.value.value0 = [
-        { name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'), value: totalNum - completedNum },
-        { name: t('taskAnalysis.detail.progress.chartLabels.completed'), value: completedNum }
+        { name: t('status.notCompleted'), value: totalNum - completedNum },
+        { name: t('status.completed'), value: completedNum }
       ];
       totalValue.value.value1 = [
-        { name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'), value: evalWorkload - completedWorkload },
-        { name: t('taskAnalysis.detail.progress.chartLabels.completed'), value: completedWorkload }
+        { name: t('status.notCompleted'), value: evalWorkload - completedWorkload },
+        { name: t('status.completed'), value: completedWorkload }
       ];
 
       totalValue.value.title0 = completedRate + '%';
@@ -50,12 +50,12 @@ onMounted(() => {
           } = viewData;
           const chartData = {
             value0: [
-              { name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'), value: totalNum - completedNum },
-              { name: t('taskAnalysis.detail.progress.chartLabels.completed'), value: completedNum }
+              { name: t('status.notCompleted'), value: totalNum - completedNum },
+              { name: t('status.completed'), value: completedNum }
             ],
             value1: [
-              { name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'), value: evalWorkload - completedWorkload },
-              { name: t('taskAnalysis.detail.progress.chartLabels.completed'), value: completedWorkload }
+              { name: t('status.notCompleted'), value: evalWorkload - completedWorkload },
+              { name: t('status.completed'), value: completedWorkload }
             ],
             title0: completedRate + '%',
             title1: completedWorkloadRate + '%'
@@ -93,7 +93,7 @@ defineExpose({
 <template>
   <div>
     <div class="font-semibold pl-3">
-      {{ t('taskAnalysis.detail.progress.total') }}
+      {{ t('chart.total') }}
     </div>
     <EChart ref="totalChartRef" v-bind="totalValue" />
   </div>

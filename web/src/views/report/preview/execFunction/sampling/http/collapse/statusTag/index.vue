@@ -14,18 +14,18 @@ const props = withDefaults(defineProps<Props>(), {
 
 const text = computed(() => {
   if (props.value === 'fail') {
-    return t('reportPreview.execFunction.sampling.collapse.statusTag.failed');
+    return t('status.failed');
   }
 
   if (props.value === 'success') {
-    return t('reportPreview.execFunction.sampling.collapse.statusTag.passed');
+    return t('rstatus.passed');
   }
 
   if (props.value === 'block') {
     return t('reportPreview.execFunction.sampling.collapse.statusTag.notExecuted');
   }
 
-  return t('reportPreview.execFunction.sampling.collapse.statusTag.notEnabled');
+  return t('status.disabled');
 });
 
 const style = computed(() => {

@@ -402,7 +402,7 @@ const handleVersionBlur = async () => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.code') }}</span>
+              <span>{{ t('common.code') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -411,7 +411,7 @@ const handleVersionBlur = async () => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.testType') }}</span>
+              <span>{{ t('common.testType') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -422,7 +422,7 @@ const handleVersionBlur = async () => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.name') }}</span>
+              <span>{{ t('common.name') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -452,7 +452,7 @@ const handleVersionBlur = async () => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.status') }}</span>
+              <span>{{ t('common.status') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -463,7 +463,7 @@ const handleVersionBlur = async () => {
                 class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
                 style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
                 <span class="inline-block transform-gpu scale-90">
-                  {{ t('task.detailInfo.scenario.columns.overdue') }}
+                  {{ t('status.overdue') }}
                 </span>
               </span>
             </div>
@@ -473,7 +473,7 @@ const handleVersionBlur = async () => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.type') }}</span>
+              <span>{{ t('common.type') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -485,7 +485,7 @@ const handleVersionBlur = async () => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.sprint') }}</span>
+              <span>{{ t('common.sprint') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -498,7 +498,7 @@ const handleVersionBlur = async () => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.module') }}</span>
+              <span>{{ t('common.module') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -509,7 +509,7 @@ const handleVersionBlur = async () => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.evalWorkloadMethod') }}</span>
+              <span>{{ t('common.evalWorkloadMethod') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -543,7 +543,7 @@ const handleVersionBlur = async () => {
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>
-                {{ t('task.detailInfo.scenario.columns.evalWorkload') }}
+                {{ t('common.evalWorkload') }}
               </span>
               <Colon class="w-1" />
             </div>
@@ -588,7 +588,7 @@ const handleVersionBlur = async () => {
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>
-                {{ t('task.detailInfo.scenario.columns.actualWorkload') }}
+                {{ t('common.actualWorkload') }}
               </span>
               <Colon class="w-1" />
             </div>
@@ -623,7 +623,7 @@ const handleVersionBlur = async () => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.priority') }}</span>
+              <span>{{ t('common.priority') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -689,7 +689,7 @@ const handleVersionBlur = async () => {
         <div class="relative w-1/2 flex items-start">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.softwareVersion') }}</span>
+              <span>{{ t('common.softwareVersion') }}</span>
               <Colon class="w-1" />
             </div>
             <div class="flex-1 min-w-0">
@@ -731,18 +731,18 @@ const handleVersionBlur = async () => {
           </div>
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.unplanned') }}</span>
+              <span>{{ t('common.unplanned') }}</span>
               <Colon class="w-1" />
             </div>
             <div class="">
-              {{ props.dataSource?.unplanned ? t('task.detailInfo.scenario.columns.yes') : t('task.detailInfo.scenario.columns.no') }}
+              {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
             </div>
           </div>
         </div>
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.tags') }}</span>
+              <span>{{ t('common.tags') }}</span>
               <Colon class="w-1" />
             </div>
 

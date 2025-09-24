@@ -159,7 +159,7 @@ defineExpose({
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="t('projectActivity.searchPanel.ui.refresh')">
+          :title="t('actions.refresh')">
           <IconRefresh
             :loading="loading"
             class="text-4.5 ml-2"

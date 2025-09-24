@@ -257,12 +257,12 @@ onMounted(async () => {
         :loading="isSaving"
         @click="handleSave">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5 mr-1" />
-        {{ t('functionAnalysis.editForm.save') }}
+        {{ t('actions.save') }}
       </Button>
 
       <Button size="small" @click="handleCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5 mr-1" />
-        {{ t('functionAnalysis.editForm.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
     </div>
 

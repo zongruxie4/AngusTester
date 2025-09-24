@@ -1,14 +1,8 @@
 {
   "execution": {
     "basic": {
-      "execute": "Execute",
-      "name": "Name",
-      "type": "Type",
       "scenario": "Script",
       "configure": "Configure",
-      "status": "Status",
-      "creator": "Creator",
-      "createdTime": "Created Time",
       "concurrency": "Concurrency",
       "startTime": "Start Time",
       "endTime": "End Time",
@@ -16,7 +10,6 @@
       "iterations": "Iterations",
       "errorRate": "Error Rate",
       "scriptName": "Script Name",
-      "priority": "Priority"
     },
     "actions": {
       "createExecution": "Add Execution",
@@ -25,11 +18,8 @@
       "viewReport": "View Report",
       "immediately": "Execute Immediately",
       "timing": "Scheduled Execution",
-      "start": "Start",
-      "stop": "Stop",
       "editExecutionConfig": "Edit Execution Config",
-      "viewScheduleLog": "View Schedule Log",
-      "clear": "Clear"
+      "viewScheduleLog": "View Schedule Log"
     },
     "search": {
       "executionName": "Search execution name",
@@ -93,10 +83,7 @@
       "lastModifiedTimeTo": "Last modified time to",
       "sortByCreatedTime": "Sort by created time",
       "sortByPriority": "Sort by priority",
-      "experienceExecution": "Experience Execution",
-      "addExecution": "Add Execution",
-      "sort": "Sort",
-      "refresh": "Refresh"
+      "experienceExecution": "Experience Execution"
     },
     "info": {
       "executionDetails": "Detail",
@@ -105,10 +92,6 @@
       "executionScript": "Script",
       "log": "Log",
       "testResult": "Test Result",
-      "start": "Start",
-      "stop": "Stop",
-      "delete": "Delete",
-      "back": "Back",
       "performanceTest": "Performance Test",
       "stabilityTest": "Stability Test",
       "functionalityTest": "Functional Test",
@@ -135,7 +118,6 @@
       "ignoreAssertions": "Ignore Assertions",
       "updateTestResult": "Update Result",
       "trial": "Trial",
-      "id": "ID",
       "modifiedBy": "Modified by"
     },
     "units": {
@@ -160,13 +142,7 @@
       "testCount": "Test Count",
       "failureCount": "Failure Count",
       "oneTimePass": "One-time Pass",
-      "passed": "Passed",
-      "notPassed": "Not Passed",
       "notPassedWithReason": "Not Passed: ",
-      "notEnabled": "Not Enabled",
-      "total": "Total",
-      "success": "Success",
-      "failure": "Failure",
       "performanceTest": "Performance Test",
       "testParameters": "Test Parameters",
       "testIndicators": "Test Indicators",
@@ -184,9 +160,7 @@
       "memoryUsage": "Memory Usage",
       "diskUsage": "Disk Usage",
       "networkUsage": "Network Usage",
-      "maximum": "Maximum",
-      "yes": "Yes",
-      "no": "No"
+      "maximum": "Maximum"
     },
     "infoServer": {
       "noDescription": "No description~",
@@ -201,10 +175,6 @@
       "executionLog": "Execution Log",
       "schedulingResult": "Scheduling Result",
       "processExitCode": "Process Exit Code",
-      "success": "Success",
-      "failure": "Failure",
-      "export": "Export",
-      "refresh": "Refresh",
       "file": "File",
       "noAccessProxyInfo": "No access proxy info, connection failed address: ",
       "runnerLog": "runner.log",
@@ -241,9 +211,7 @@
       "executionStatus": "Exec Status"
     },
     "add": {
-      "name": "Name",
       "script": "Script",
-      "type": "Type",
       "config": "Configuration",
       "enterExecutionName": "Please enter execution name, max 100 characters",
       "enterExecutionNameRequired": "Please enter execution name",
@@ -251,8 +219,6 @@
       "selectScript": "Please select script",
       "selectTestType": "Please select test type",
       "selectTestTypeRequired": "Please select test type",
-      "save": "Save",
-      "cancel": "Cancel",
       "modifySuccess": "Modified successfully",
       "addSuccess": "Added successfully"
     },
@@ -285,7 +251,6 @@
         "threadMaxPoolSize": "Max Thread Count"
       },
       "columns": {
-        "name": "Name",
         "samplingCount": "Sampling Count",
         "transactionCount": "Transaction Count",
         "average": "Average",

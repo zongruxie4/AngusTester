@@ -18,7 +18,7 @@ export function useTableColumns (): UseTableColumnsReturn {
       permission: ReportPermission.GENERATE
     },
     {
-      name: t('reportHome.actions.permission'),
+      name: t('actions.permission'),
       key: 'auth',
       icon: 'icon-quanxian1',
       permission: ReportPermission.GRANT
@@ -144,7 +144,7 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'action',
       dataIndex: 'action',
-      title: t('reportHome.table.actions'),
+      title: t('common.actions'),
       width: 160
     }
   ];

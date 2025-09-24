@@ -80,7 +80,7 @@ const testers = computed(() => {
         <DashedLine />
       </a>
       <a href="#a2.3" class="flex items-center space-x-2.5">
-        <span>2.3<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.burndownChart') }}</span>
+        <span>2.3<em class="inline-block w-4.25 font-medium"></em>{{ t('chart.burndown.title') }}</span>
         <DashedLine />
       </a>
       <a href="#a2.4" class="flex items-center space-x-2.5">
@@ -101,7 +101,7 @@ const testers = computed(() => {
         <DashedLine />
       </a>
       <a href="#a3.3" class="flex items-center space-x-2.5">
-        <span>3.3<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.burndownChart') }}</span>
+        <span>3.3<em class="inline-block w-4.25 font-medium"></em>{{ t('chart.burndown.title') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.4" class="flex items-center space-x-2.5">

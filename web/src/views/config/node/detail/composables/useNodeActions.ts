@@ -32,7 +32,7 @@ export function useNodeActions () {
       notification.success(t('node.nodeDetail.labels.copySuccess'));
     } catch (error) {
       console.error('Failed to copy content:', error);
-      notification.error(t('tips.copyFailed'));
+      notification.error(t('actions.tips.copyFailed'));
     }
   };
 

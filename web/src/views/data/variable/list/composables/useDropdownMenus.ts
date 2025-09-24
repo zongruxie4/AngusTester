@@ -35,12 +35,12 @@ export function useDropdownMenus () {
    */
   const tableDropdownMenuItems: DropdownMenuItem[] = [
     {
-      name: t('dataVariable.list.dropdown.export'),
+      name: t('actions.export'),
       key: 'export',
       icon: 'icon-daochu1'
     },
     {
-      name: t('dataVariable.list.dropdown.clone'),
+      name: t('actions.clone'),
       key: 'clone',
       icon: 'icon-fuzhi'
     }

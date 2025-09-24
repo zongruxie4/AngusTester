@@ -41,11 +41,11 @@ let chartInstance: echarts.ECharts;
 const chartTargetOptions = computed(() => [
   {
     value: 'NUM',
-    label: t('functionHome.burndown.caseCount')
+    label: t('chart.burndown.countBurndown')
   },
   {
     value: 'WORKLOAD',
-    label: t('functionHome.burndown.workload')
+    label: t('chart.burndown.workloadBurndown')
   }
 ]);
 
@@ -82,12 +82,12 @@ const chartConfiguration = {
   },
   series: [
     {
-      name: t('functionHome.burndown.remaining'),
+      name: t('chart.burndown.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: t('functionHome.burndown.expected'),
+      name: t('chart.burndown.expected'),
       data: [],
       type: 'line',
       smooth: true

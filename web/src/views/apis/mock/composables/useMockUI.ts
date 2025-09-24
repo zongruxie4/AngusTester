@@ -151,7 +151,7 @@ export function useMockUI () {
       }
     },
     {
-      title: t('mock.columns.action'),
+      title: t('common.actions'),
       dataIndex: 'action',
       width: 160
     }
@@ -168,7 +168,7 @@ export function useMockUI () {
     {
       key: 'auth',
       icon: 'icon-quanxian1',
-      name: t('mock.actions.authority'),
+      name: t('actions.permission'),
       permission: MockServicePermission.GRANT
     },
     {
@@ -180,7 +180,7 @@ export function useMockUI () {
     {
       key: 'reset',
       icon: 'icon-shuaxin',
-      name: t('mock.actions.refresh'),
+      name: t('actions.refresh'),
       permission: MockServicePermission.VIEW
     }
   ];

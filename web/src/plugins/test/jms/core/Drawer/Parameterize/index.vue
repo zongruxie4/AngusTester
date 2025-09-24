@@ -33,7 +33,7 @@ const confirmFile = () => {
       size="small"
       class="mt-3"
       buttonStyle="solid">
-      <RadioButton value="upload">{{ t('jmsPlugin.parameterize.upload') }}</RadioButton>
+      <RadioButton value="upload">{{ t('actions.upload') }}</RadioButton>
       <RadioButton value="generated">{{ t('jmsPlugin.parameterize.generated') }}</RadioButton>
     </RadioGroup>
     <template v-if="activeType === 'upload'"></template>

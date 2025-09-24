@@ -367,7 +367,7 @@ const handleVersionBlur = async () => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.code') }}</span>
+              <span>{{ t('common.code') }}</span>
             </div>
             <div class="info-value">
               <span class="info-text">{{ props.dataSource?.code }}</span>
@@ -376,7 +376,7 @@ const handleVersionBlur = async () => {
 
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.status') }}</span>
+              <span>{{ t('common.status') }}</span>
             </div>
             <div class="info-value">
               <div class="flex items-center">
@@ -384,7 +384,7 @@ const handleVersionBlur = async () => {
                 <span
                   v-if="isTaskOverdue"
                   class="overdue-badge">
-                  {{ t('task.detailInfo.basic.columns.overdue') }}
+                  {{ t('status.overdue') }}
                 </span>
               </div>
             </div>
@@ -395,7 +395,7 @@ const handleVersionBlur = async () => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.name') }}</span>
+              <span>{{ t('common.name') }}</span>
             </div>
             <div class="info-value">
               <div v-show="!isTaskNameEditing" class="info-value-content">
@@ -425,7 +425,7 @@ const handleVersionBlur = async () => {
 
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.sprint') }}</span>
+              <span>{{ t('common.sprint') }}</span>
             </div>
             <div class="info-value">
               <span class="info-text">{{ props.dataSource?.sprintName || '--' }}</span>
@@ -437,7 +437,7 @@ const handleVersionBlur = async () => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.module') }}</span>
+              <span>{{ t('common.module') }}</span>
             </div>
             <div class="info-value">
               <span class="info-text">{{ props.dataSource?.moduleName || '--' }}</span>
@@ -467,7 +467,7 @@ const handleVersionBlur = async () => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.type') }}</span>
+              <span>{{ t('common.type') }}</span>
             </div>
             <div class="info-value">
               <div v-show="!isTaskTypeEditing" class="info-value-content">
@@ -523,7 +523,7 @@ const handleVersionBlur = async () => {
 
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.softwareVersion') }}</span>
+              <span>{{ t('common.softwareVersion') }}</span>
             </div>
             <div class="info-value">
               <template v-if="isVersionEditing">
@@ -566,7 +566,7 @@ const handleVersionBlur = async () => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.priority') }}</span>
+              <span>{{ t('common.priority') }}</span>
             </div>
             <div class="info-value">
               <div v-show="!isPriorityEditing" class="info-value-content">
@@ -601,11 +601,11 @@ const handleVersionBlur = async () => {
 
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.unplanned') }}</span>
+              <span>{{ t('common.unplanned') }}</span>
             </div>
             <div class="info-value">
               <span class="info-text">
-                {{ props.dataSource?.unplanned ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}
+                {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
               </span>
             </div>
           </div>
@@ -615,7 +615,7 @@ const handleVersionBlur = async () => {
         <div class="info-row">
           <div class="info-item info-item-full">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.tags') }}</span>
+              <span>{{ t('common.tags') }}</span>
             </div>
             <div class="info-value">
               <div v-show="!isTagEditing" class="info-value-content">

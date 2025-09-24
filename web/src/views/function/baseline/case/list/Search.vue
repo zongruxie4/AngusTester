@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Emits Definition
+// eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'change', value: { pageNo: number; pageSize: number, filters: SearchCriteria[] }),
   (e: 'handleAddCase')
@@ -43,7 +44,7 @@ const defaultUserOptions = computed(() => {
   return {};
 });
 
-const numberMatchConditions = ref<{ value: string, message: string }[]>(
+const numberMatchConditions = ref<{ value: SearchCriteria.OpEnum, message: string }[]>(
   [{ value: SearchCriteria.OpEnum.Equal, message: t('functionBaseline.case.equal') }]
 );
 const searchPanelRef = ref();
@@ -168,37 +169,37 @@ const searchPanelOptions = computed(() => [
 const quickSearchOptions = [
   {
     type: 'all',
-    name: t('quickSearchTags.all'),
+    name: t('quickSearch.all'),
     selected: false,
     group: 'all'
   },
   {
     type: 'createdBy',
-    name: t('quickSearchTags.addByMe'),
+    name: t('quickSearch.addByMe'),
     selected: false,
     group: 'createdBy'
   },
   {
     type: 'testerId',
-    name: t('quickSearchTags.tester'),
+    name: t('quickSearch.tester'),
     selected: false,
     group: 'testerId'
   },
   {
     type: 'lastDay',
-    name: t('quickSearchTags.lastDay'),
+    name: t('quickSearch.last1Day'),
     selected: false,
     group: 'time'
   },
   {
     type: 'lastThreeDays',
-    name: t('quickSearchTags.last3Days'),
+    name: t('quickSearch.last3Days'),
     selected: false,
     group: 'time'
   },
   {
     type: 'lastWeek',
-    name: t('quickSearchTags.last7Days'),
+    name: t('quickSearch.last7Days'),
     selected: false,
     group: 'time'
   }
@@ -606,7 +607,7 @@ const handleAddCaseClick = () => {
           :selectedTypes="selectedQuickSearchTypes"
           @change="handleQuickSearchTypeChange" />
         <div class="px-4 h-7 leading-7 mb-3">
-          <span>{{ t('functionBaseline.case.searchPanel.overdue') }}</span>
+          <span>{{ t('status.overdue') }}</span>
           <Colon class="mr-2" />
           <Switch
             :checked="isOverdueFilterEnabled"

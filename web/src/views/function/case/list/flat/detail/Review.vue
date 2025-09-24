@@ -108,7 +108,7 @@ defineExpose({
 
     <div class="flex w-150 space-x-15 mt-2">
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-blue-1 text-white rounded">{{ t('functionCase.detail.review.total') }}</label>
+        <label class="w-20 px-2 py-1 bg-blue-1 text-white rounded">{{ t('chart.total') }}</label>
         <div class=" px-2 py-1  w-15 font-medium">
           {{ reviewNum.total }}
         </div>

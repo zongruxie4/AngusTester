@@ -18,7 +18,7 @@ export const contentTreeData = [
     ]
   },
   {
-    title: t('reportAdd.execPerfContent.contentTree.total'),
+    title: t('chart.total'),
     key: 'total',
     children: [
       {

@@ -221,7 +221,7 @@ onMounted(() => {
             </Button>
           </Tooltip>
 
-          <Tooltip :title="t('taskTrash.actions.delete')">
+          <Tooltip :title="t('actions.delete')">
             <Button
               :disabled="record.disabled"
               type="text"

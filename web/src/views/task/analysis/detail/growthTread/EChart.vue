@@ -58,7 +58,7 @@ const growthTreadTaskEChartConfig = {
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.bug'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.apiTest'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.scenarioTest'),
-      t('taskAnalysis.detail.taskGrowthTread.chartLabels.total')
+      t('chart.total')
     ],
     axisLabel: {
       interval: 0,

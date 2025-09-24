@@ -1,6 +1,6 @@
 {
   "project": {
-    "name": "项目",
+    "title": "项目",
     "project": "项目",
     "addProject": "添加项目",
     "editProject": "编辑项目",
@@ -12,8 +12,6 @@
     "deleteSuccess": "删除项目成功",
     "searchPlaceholder": "输入查询关键词",
     "adminHint": "只允许管理员、创建人和负责人修改和删除项目。",
-    "sort": "排序",
-    "refresh": "刷新",
     "noDescription": "无描述~",
     "owner": "负责人",
     "members": "成员",
@@ -22,10 +20,6 @@
     "department": "部门",
     "group": "组",
     "modifyTime": "修改时间",
-    "edit": "编辑",
-    "delete": "删除",
-    "myActivity": "我的活动",
-    "allActivity": "全部活动",
     "agileProjectManagement": "敏捷项目",
     "sortByAddTime": "按添加时间",
     "sortByCreator": "按添加人",
@@ -38,6 +32,7 @@
     "projectNotExists": "项目不存在或未加入项目",
     "searchProject": "搜索项目名称",
     "projectNotFound": "不存在此项目",
+    "projectType": "项目类型",
     "addProjectStep": {
       "title": "添加项目",
       "text": "建立管理组织开发和测试活动的工作流程基本单元。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。"
@@ -78,11 +73,6 @@
           "scenarios": "适用场景：质量保障团队专项测试项目。"
         }
       },
-      "projectTypeName": {
-        "agile": "敏捷项目",
-        "general": "一般项目",
-        "testing": "测试项目"
-      },
       "validation": {
         "maxCharacters": "不能超过2000字符"
       },
@@ -98,7 +88,6 @@
         "owner": "负责人",
         "ownerPlaceholder": "请选择项目负责人",
         "ownerDescription": "通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。",
-        "importExample": "导入示例",
         "importExampleDescription": "导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。",
         "projectMembers": "项目成员",
         "membersDescription": "明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。",
@@ -112,17 +101,8 @@
         "descriptionPlaceholder": "请输入项目目标、范围等详细说明，最多2000个字符"
       },
       "actions": {
-        "save": "保存",
-        "cancel": "取消",
         "clickToReplaceIcon": "点击上传图标",
         "uploadIcon": "上传图标"
-      },
-      "tabs": {
-        "projectType": "项目类型",
-        "basicInfo": "基本信息",
-        "module": "软件模块",
-        "version": "软件版本",
-        "tag": "数据标签"
       }
     },
     "projectDetail": {
@@ -140,20 +120,9 @@
           "scenarios": "适用场景：质量保障团队专项测试项目。"
         }
       },
-      "projectTypeName": {
-        "agile": "敏捷项目",
-        "general": "一般项目",
-        "testing": "测试项目"
-      },
       "messages": {
         "updateSuccess": "修改项目成功",
         "addSuccess": "添加项目成功"
-      },
-      "tabs": {
-        "basicInfo": "基本信息",
-        "module": "模块",
-        "version": "版本",
-        "tag": "标签"
       },
       "form": {
         "projectName": "项目名称",
@@ -182,11 +151,6 @@
           "scenarios": "适用场景：质量保障团队专项测试项目。"
         }
       },
-      "projectTypeName": {
-        "agile": "敏捷项目",
-        "general": "一般项目",
-        "testing": "测试项目"
-      },
       "validation": {
         "maxCharacters": "不能超过2000字符",
         "timeRequired": "请输入时间",
@@ -201,7 +165,6 @@
         "addProject": "添加项目"
       },
       "form": {
-        "name": "名称",
         "projectNamePlaceholder": "输入一个简短的项目名称，最多100个字符",
         "timePlan": "时间计划",
         "time": "时间",
@@ -209,10 +172,7 @@
         "owner": "负责人",
         "ownerDescription": "通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。",
         "ownerPlaceholder": "请选择项目负责人",
-        "importExample": "导入示例",
         "importExampleDescription": "导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。",
-        "yes": "是",
-        "no": "否",
         "members": "成员",
         "user": "用户",
         "department": "部门",
@@ -228,17 +188,13 @@
     }
   },
   "version": {
-    "name": "版本",
-    "title": "版本管理",
+    "title": "版本",
     "placeholder": {
       "searchKeyword": "请输入关键字搜索"
     },
     "actions": {
       "addVersion": "添加版本",
-      "edit": "编辑",
-      "delete": "删除",
-      "merge": "版本合并",
-      "refresh": "刷新"
+      "merge": "版本合并"
     },
     "messages": {
       "deleteConfirm": "确定删除版本「{name}」吗？",
@@ -254,16 +210,13 @@
     },
     "columns": {
       "version": "版本",
-      "status": "状态",
-      "progress": "进度",
       "startDate": "开始日期",
       "releaseDate": "发布日期",
       "description": "描述",
       "lastModifier": "最后修改人",
       "creator": "添加人",
       "lastModifyTime": "最后修改时间",
-      "createTime": "添加时间",
-      "actions": "操作"
+      "createTime": "添加时间"
     },
     "form": {
       "editVersion": "编辑版本",
@@ -288,8 +241,6 @@
       "noReleaseDate": "没有设置发布日期",
       "chart": {
         "subtext": "完成任务进度",
-        "uncompleted": "未完成",
-        "completed": "已完成",
         "workload": "完成工作量进度"
       }
     },
@@ -299,30 +250,10 @@
       "noDescription": "无描述~"
     },
     "taskTable": {
-      "tabs": {
-        "current": "当前版本",
-        "completed": "已完成",
-        "processing": "正在处理",
-        "confirming": "待确认",
-        "pending": "待处理",
-        "canceled": "已取消"
-      },
+      "currentVersion": "当前版本",
       "units": {
         "tasks": "个任务",
         "task": "任务"
-      },
-      "columns": {
-        "code": "编码",
-        "name": "名称",
-        "sprint": "所属迭代",
-        "priority": "优先级",
-        "assignee": "经办人",
-        "confirmer": "确认人",
-        "deadline": "截止时间"
-      },
-      "messages": {
-        "noData": "暂无数据",
-        "overdue": "已逾期"
       }
     },
     "searchPanel": {
@@ -339,8 +270,7 @@
       },
       "actions": {
         "addVersion": "添加版本",
-        "mergeVersion": "合并版本",
-        "refresh": "刷新"
+        "mergeVersion": "合并版本"
       }
     },
     "introduce": {
@@ -376,16 +306,7 @@
     "noModulesDescription": "您尚未添加任何模块。",
     "moduleNamePlaceholder": "请输入模块名称",
     "addModuleHint": "回车或鼠标失焦时保存添加模块，双击已存在模块可进入编辑状态",
-    "refresh": "刷新",
-    "cancel": "取消",
     "newSubModule": "新建子模块",
-    "moveUp": "移到上一层",
-    "moveUpOne": "上移",
-    "moveDown": "下移",
-    "move": "移动",
-    "edit": "编辑",
-    "delete": "删除",
-    "loadMore": "加载更多",
     "moveModule": "移动模块",
     "addModuleTitle": "添加模块",
     "addSuccess": "模块添加成功",
@@ -404,9 +325,6 @@
     "addTag": "添加标签",
     "noTagsDescription": "您尚未添加任何标签。",
     "tagNamePlaceholder": "请输入标签名称",
-    "refresh": "刷新",
-    "cancel": "取消",
-    "loadMore": "加载更多",
     "addTagTitle": "添加标签",
     "addSuccess": "标签添加成功",
     "updateSuccess": "修改成功",
@@ -414,7 +332,7 @@
     "confirmDelete": "确定删除标签「{name}」吗？"
   },
   "projectActivity": {
-    "name": "活动",
+    "title": "活动",
     "table": {
       "operator": "活动人",
       "activityTime": "活动时间",
@@ -439,36 +357,16 @@
         "selectOperator": "选择活动人",
         "activityTimeFrom": "活动时间从",
         "activityTimeTo": "活动时间到"
-      },
-      "quickQuery": {
-        "all": "全部",
-        "myActivity": "我的活动",
-        "last1Day": "近1天",
-        "last3Days": "近3天",
-        "last7Days": "近7天"
-      },
-      "ui": {
-        "quickQuery": "快速查询",
-        "hideStatistics": "收起统计",
-        "viewStatistics": "查看统计",
-        "refresh": "刷新"
       }
     }
   },
   "projectTrash": {
-    "name": "回收站",
+    "title": "回收站",
     "messages": {
       "recoverAllSuccess": "全部还原成功",
       "deleteAllSuccess": "全部删除成功",
       "recoverSuccess": "还原成功",
       "deleteSuccess": "删除成功"
-    },
-    "table": {
-      "name": "名称",
-      "creator": "添加人",
-      "deleter": "删除人",
-      "deleteTime": "删除时间",
-      "actions": "操作"
     },
     "stats": {
       "items": "数量"
@@ -483,12 +381,7 @@
     },
     "ui": {
       "searchPlaceholder": "请输入查询关键字",
-      "adminHint": "只允许管理员和删除人还原或彻底删除回收站数据。",
-      "recoverAll": "全部还原",
-      "deleteAll": "全部删除",
-      "refresh": "刷新",
-      "recover": "还原",
-      "delete": "删除"
+      "adminHint": "只允许管理员和删除人还原或彻底删除回收站数据。"
     }
   },
   "AI": {

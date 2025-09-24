@@ -66,7 +66,7 @@ export function useDatasetUsage (props: { id: string }) {
       ellipsis: true
     },
     {
-      title: t('dataset.detail.useList.table.action'),
+      title: t('common.actions'),
       dataIndex: 'action',
       width: 70
     }

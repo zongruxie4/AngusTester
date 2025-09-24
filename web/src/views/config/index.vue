@@ -20,11 +20,11 @@ const menuItems: {
   name: string;
   key: string;
 }[] = [
-  { icon: 'icon-yingyongxinxi', name: t('app.name'), key: 'appInfo' },
-  { icon: 'icon-zhibiao', name: t('indicator.name'), key: 'indicator' },
-  { icon: 'icon-tuisongtongzhi', name: t('event.name'), key: 'event' },
-  { icon: 'icon-guanlijiedian', name: t('node.name'), key: 'node' },
-  { icon: 'icon-jiekoudaili', name: t('proxy.name'), key: 'proxy' }
+  { icon: 'icon-yingyongxinxi', name: t('app.title'), key: 'appInfo' },
+  { icon: 'icon-zhibiao', name: t('indicator.title'), key: 'indicator' },
+  { icon: 'icon-tuisongtongzhi', name: t('event.title'), key: 'event' },
+  { icon: 'icon-guanlijiedian', name: t('node.title'), key: 'node' },
+  { icon: 'icon-jiekoudaili', name: t('proxy.title'), key: 'proxy' }
 ];
 </script>
 <template>

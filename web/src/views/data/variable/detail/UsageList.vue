@@ -64,7 +64,7 @@ const {
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
           @click="refresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span class="ml-1">{{ t('dataVariable.detail.useList.buttons.refresh') }}</span>
+          <span class="ml-1">{{ t('actions.refresh') }}</span>
         </Button>
       </div>
 
@@ -126,7 +126,7 @@ const {
             class="flex items-center px-0"
             @click="toDelete(record)">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <span>{{ t('dataVariable.detail.useList.buttons.delete') }}</span>
+            <span>{{ t('actions.delete') }}</span>
           </Button>
         </template>
       </Table>

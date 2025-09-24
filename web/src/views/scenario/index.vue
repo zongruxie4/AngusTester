@@ -24,10 +24,10 @@ const menuItems: {
   name: string;
   key: MenuKey;
 }[] = [
-  { icon: 'icon-zhuye', name: t('scenarioHome.name'), key: 'homepage' },
-  { icon: 'icon-changjingguanli', name: t('scenario.name'), key: 'scenario' },
-  { icon: 'icon-jiankong2', name: t('scenarioMonitor.name'), key: 'monitor' },
-  { icon: 'icon-qingchu', name: t('scenarioTrash.name'), key: 'trash' }
+  { icon: 'icon-zhuye', name: t('home.title'), key: 'homepage' },
+  { icon: 'icon-changjingguanli', name: t('scenario.title'), key: 'scenario' },
+  { icon: 'icon-jiankong2', name: t('scenarioMonitor.title'), key: 'monitor' },
+  { icon: 'icon-qingchu', name: t('scenarioTrash.title'), key: 'trash' }
 ];
 
 const homeRefreshNotify = ref<string>('');

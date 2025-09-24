@@ -36,7 +36,7 @@ const columns = computed(() => [
       dataIndex: 'enabledTestTypes',
       name: t('reportPreview.scenario.testResult.fields.enableFuncTest'),
       customRender: (text) => {
-        return text.find(i => i.value === 'TEST_FUNCTIONALITY') ? t('reportPreview.scenario.testResult.options.enabled') : t('reportPreview.scenario.testResult.options.disabled');
+        return text.find(i => i.value === 'TEST_FUNCTIONALITY') ? t('status.enabled') : t('status.disabled');
       }
     }
   ],
@@ -45,7 +45,7 @@ const columns = computed(() => [
       dataIndex: 'resultDetailVoMap',
       name: t('reportPreview.scenario.testResult.fields.funcTestPassed'),
       customRender: (text) => {
-        return text?.TEST_FUNCTIONALITY?.passed === true ? t('reportPreview.scenario.testResult.options.passed') : text?.TEST_FUNCTIONALITY?.passed === false ? t('reportPreview.scenario.testResult.options.failed') : t('reportPreview.scenario.testResult.options.notTested');
+        return text?.TEST_FUNCTIONALITY?.passed === true ? t('status.passed') : text?.TEST_FUNCTIONALITY?.passed === false ? t('status.failed') : t('status.notTested');
       }
     },
     {
@@ -61,14 +61,14 @@ const columns = computed(() => [
       dataIndex: 'enabledTestTypes',
       name: t('reportPreview.scenario.testResult.fields.enablePerfTest'),
       customRender: (text) => {
-        return text.find(i => i.value === 'TEST_PERFORMANCE') ? t('reportPreview.scenario.testResult.options.enabled') : t('reportPreview.scenario.testResult.options.disabled');
+        return text.find(i => i.value === 'TEST_PERFORMANCE') ? t('status.enabled') : t('status.disabled');
       }
     },
     {
       dataIndex: 'resultDetailVoMap',
       name: t('reportPreview.scenario.testResult.fields.perfTestPassed'),
       customRender: (text) => {
-        return text?.TEST_PERFORMANCE?.passed === true ? t('reportPreview.scenario.testResult.options.passed') : text?.TEST_PERFORMANCE?.passed === false ? t('reportPreview.scenario.testResult.options.failed') : t('reportPreview.scenario.testResult.options.notTested');
+        return text?.TEST_PERFORMANCE?.passed === true ? t('status.passed') : text?.TEST_PERFORMANCE?.passed === false ? t('status.failed') : t('status.notTested');
       }
     }
   ],
@@ -84,7 +84,7 @@ const columns = computed(() => [
       dataIndex: 'enabledTestTypes',
       name: t('reportPreview.scenario.testResult.fields.enableStabilityTest'),
       customRender: (text) => {
-        return text.find(i => i.value === 'TEST_STABILITY') ? t('reportPreview.scenario.testResult.options.enabled') : t('reportPreview.scenario.testResult.options.disabled');
+        return text.find(i => i.value === 'TEST_STABILITY') ? t('status.enabled') : t('status.disabled');
       }
     }
   ],
@@ -93,7 +93,7 @@ const columns = computed(() => [
       dataIndex: 'resultDetailVoMap',
       name: t('reportPreview.scenario.testResult.fields.stabilityTestPassed'),
       customRender: (text) => {
-        return text?.TEST_STABILITY?.passed === true ? t('reportPreview.scenario.testResult.options.passed') : text?.TEST_STABILITY?.passed === false ? t('reportPreview.scenario.testResult.options.failed') : t('reportPreview.scenario.testResult.options.notTested');
+        return text?.TEST_STABILITY?.passed === true ? t('status.passed') : text?.TEST_STABILITY?.passed === false ? t('status.failed') : t('status.notTested');
       }
     },
     {

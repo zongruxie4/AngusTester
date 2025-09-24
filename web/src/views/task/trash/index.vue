@@ -254,11 +254,11 @@ onMounted(() => {
                 </Tooltip>
 
                 <Popconfirm
-                  :title="t('taskTrash.confirm.deleteAll')"
+                  :title="t('actions.deleteAll')"
                   :okText="t('actions.confirm')"
                   :cancelText="t('actions.cancel')"
                   @confirm="handleDeleteAll">
-                  <Tooltip :title="t('taskTrash.actions.deleteAll')">
+                  <Tooltip :title="t('actions.deleteAll')">
                     <Button
                       :disabled="!canPerformActions"
                       type="primary"
@@ -266,7 +266,7 @@ onMounted(() => {
                       size="small"
                       class="action-button-danger">
                       <Icon icon="icon-qingchu" class="mr-1 text-sm" />
-                      {{ $t('taskTrash.actions.deleteAll') }}
+                      {{ $t('actions.deleteAll') }}
                     </Button>
                   </Tooltip>
                 </Popconfirm>

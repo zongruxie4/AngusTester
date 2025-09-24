@@ -105,10 +105,10 @@ const saveSetting = async () => {
           type="primary"
           class="mr-5"
           @click="saveSetting">
-          {{ t('ftpPlugin.performanceTestDetail.execSetting.actions.save') }}
+          {{ t('actions.save') }}
         </Button>
         <RouterLink to="/execution">
-          <Button size="small">{{ t('ftpPlugin.performanceTestDetail.execSetting.actions.cancel') }}</Button>
+          <Button size="small">{{ t('actions.cancel') }}</Button>
         </RouterLink>
       </div>
     </div>

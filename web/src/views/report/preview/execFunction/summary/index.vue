@@ -55,7 +55,7 @@ const basicInfoSetting = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center justify-center space-x-5 px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ props.execResult?.passed ? t('reportPreview.execFunction.summary.status.passed') : t('reportPreview.execFunction.summary.status.failed') }}
+          {{ props.execResult?.passed ? t('status.passed') : t('status.failed') }}
         </div>
 
         <div class="flex-1">

@@ -55,7 +55,7 @@ const toDelete = async (value:UnarchivedItem) => {
 
   const _key = getKey(value.protocol?.value);
   deleteTabPane([id + _key]);
-  notification.success(t('tips.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
 };
 
 const scrollDelete = (id:string) => {

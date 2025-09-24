@@ -260,14 +260,14 @@ const tableColumns = computed(() => {
     ? [
         {
           key: 'code',
-          title: t('functionHome.myCases.code'),
+          title: t('common.code'),
           dataIndex: 'code',
           ellipsis: true,
           width: '12%'
         },
         {
           key: 'name',
-          title: t('functionHome.myCases.name'),
+          title: t('common.name'),
           dataIndex: 'name',
           ellipsis: true,
           sorter: true,
@@ -275,14 +275,14 @@ const tableColumns = computed(() => {
         },
         {
           key: 'plan',
-          title: t('functionHome.myCases.plan'),
+          title: t('common.plan'),
           dataIndex: 'planName',
           ellipsis: true,
           width: '25%'
         },
         {
           key: 'priority',
-          title: t('functionHome.myCases.priority'),
+          title: t('common.priority'),
           dataIndex: 'priority',
           ellipsis: true,
           sorter: true,
@@ -290,7 +290,7 @@ const tableColumns = computed(() => {
         },
         {
           key: 'deadline',
-          title: t('functionHome.myCases.deadline'),
+          title: t('common.deadline'),
           dataIndex: 'deadlineDate',
           ellipsis: true,
           sorter: true,
@@ -300,14 +300,14 @@ const tableColumns = computed(() => {
     : [
         {
           key: 'code',
-          title: t('functionHome.myCases.code'),
+          title: t('common.code'),
           dataIndex: 'code',
           ellipsis: true,
           width: '12%'
         },
         {
           key: 'name',
-          title: t('functionHome.myCases.name'),
+          title: t('common.name'),
           dataIndex: 'name',
           ellipsis: true,
           sorter: true,
@@ -315,21 +315,21 @@ const tableColumns = computed(() => {
         },
         {
           key: 'plan',
-          title: t('functionHome.myCases.plan'),
+          title: t('common.plan'),
           dataIndex: 'planName',
           ellipsis: true,
           width: '21%'
         },
         {
           key: 'testResult',
-          title: t('functionHome.myCases.testResult'),
+          title: t('common.testResult'),
           dataIndex: 'testResult',
           ellipsis: true,
           width: '12%'
         },
         {
           key: 'priority',
-          title: t('functionHome.myCases.priority'),
+          title: t('common.priority'),
           dataIndex: 'priority',
           ellipsis: true,
           sorter: true,
@@ -337,7 +337,7 @@ const tableColumns = computed(() => {
         },
         {
           key: 'deadline',
-          title: t('functionHome.myCases.deadline'),
+          title: t('common.deadlineDate'),
           dataIndex: 'deadlineDate',
           ellipsis: true,
           sorter: true,
@@ -355,7 +355,7 @@ const tableColumns = computed(() => {
     actionKey?: 'favouriteBy' | 'followBy';
   } = {
     key: 'action',
-    title: t('functionHome.myCases.actions'),
+    title: t('common.actions'),
     dataIndex: 'action',
     width: 80
   };
@@ -441,7 +441,7 @@ onMounted(() => {
         :emptyTextStyle="emptyTextStyle"
         :minSize="5"
         :noDataSize="'small'"
-        :noDataText="t('functionHome.myCases.noData')"
+        :noDataText="t('common.noData')"
         rowKey="id"
         size="small"
         @change="handleTableChange">
@@ -457,7 +457,7 @@ onMounted(() => {
               v-if="record.overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">{{ t('functionHome.myCases.overdue') }}</span>
+              <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
             </span>
           </div>
 
@@ -489,7 +489,7 @@ onMounted(() => {
 
             <template v-else>
               <Button
-                :title="t('functionHome.myCases.delete')"
+                :title="t('actions.delete')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"

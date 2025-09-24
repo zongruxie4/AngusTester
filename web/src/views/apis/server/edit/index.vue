@@ -98,7 +98,7 @@ const toSave = async () => {
     return;
   }
 
-  notification.success(t('tips.saveSuccess'));
+  notification.success(t('actions.tips.saveSuccess'));
 
   if (!serverId.value) {
     updateTabPane({ _id: 'serverList', notify: utils.uuid() });
@@ -218,7 +218,7 @@ const toClone = async () => {
     return;
   }
 
-  notification.success(t('tips.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   updateTabPane({ _id: 'serverList', notify: utils.uuid() });
 };
 
@@ -309,7 +309,7 @@ const serviceId = computed(() => {
           @click="toCopyLink">
           <Icon icon="icon-fuzhi" class="text-3.5" />
           <span>
-            {{ t('server.detail.copyLink') }}
+            {{ t('actions.copyLink') }}
           </span>
         </Button>
 

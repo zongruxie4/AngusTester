@@ -1,4 +1,6 @@
 import { useI18n } from 'vue-i18n';
+import { enumUtils } from '@xcan-angus/infra';
+import { ProjectType } from '@/enums/enums';
 import { TreeData } from '@/views/project/project/types';
 
 // Configuration objects - exported as functions to use i18n properly in component context
@@ -11,13 +13,9 @@ export const getProjectTypeTipConfig = () => {
   };
 };
 
+/** Project type name mapping for UI display */
 export const getProjectTypeName = () => {
-  const { t } = useI18n();
-  return {
-    AGILE: t('project.projectEdit.projectTypeName.agile'),
-    GENERAL: t('project.projectEdit.projectTypeName.general'),
-    TESTING: t('project.projectEdit.projectTypeName.testing')
-  };
+  return enumUtils.enumToMap(ProjectType);
 };
 
 export const toolbarOptions = ['title', 'color', 'weight', 'block', 'link', 'list', 'direction', 'table', 'zoom'];

@@ -23,26 +23,26 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
   const taskOverViewConfig: OverviewConfig = [
     [
       {
-        name: t('kanban.effectiveness.totalCount'),
+        name: t('status.total'),
         dataIndex: 'totalTaskNum',
         icon: 'icon-task',
         semantic: 'countHighGood'
       },
       {
-        name: t('kanban.effectiveness.progress'),
+        name: t('status.progress'),
         dataIndex: 'progress',
         icon: 'icon-progress',
         unit: '%',
         semantic: 'rateHighGood'
       },
       {
-        name: t('kanban.effectiveness.pending'),
+        name: t('status.pending'),
         dataIndex: 'pendingNum',
         icon: 'icon-pending',
         semantic: 'countLowGood'
       },
       {
-        name: t('kanban.effectiveness.inProgress'),
+        name: t('status.inProgress'),
         dataIndex: 'inProgressNum',
         icon: 'icon-in-progress',
         semantic: 'countHighGood'
@@ -50,25 +50,25 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
     ],
     [
       {
-        name: t('kanban.effectiveness.confirming'),
+        name: t('status.pendingConfirmation'),
         dataIndex: 'confirmingNum',
         icon: 'icon-confirming',
         semantic: 'countHighGood'
       },
       {
-        name: t('kanban.effectiveness.completed'),
+        name: t('status.completed'),
         dataIndex: 'completedNum',
         icon: 'icon-completed',
         semantic: 'countHighGood'
       },
       {
-        name: t('kanban.effectiveness.canceled'),
+        name: t('status.canceled'),
         dataIndex: 'canceledNum',
         icon: 'icon-canceled',
         semantic: 'countLowGood'
       },
       {
-        name: t('kanban.effectiveness.overdue'),
+        name: t('status.overdue'),
         dataIndex: 'overdueNum',
         icon: 'icon-overdue',
         semantic: 'countLowGood'
@@ -118,7 +118,7 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
         semantic: 'countHighGood'
       },
       {
-        name: t('kanban.effectiveness.progress'),
+        name: t('common.progress'),
         dataIndex: 'progress',
         icon: 'icon-progress',
         unit: '%',

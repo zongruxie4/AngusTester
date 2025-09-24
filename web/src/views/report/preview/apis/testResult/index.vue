@@ -28,14 +28,14 @@ const columns = computed(() => [
       dataIndex: 'passed',
       name: t('reportPreview.apis.testResult.fields.isPassed'),
       customRender: (text) => {
-        return text === true ? t('reportPreview.apis.testResult.status.passed') : text === false ? t('reportPreview.apis.testResult.status.failed') : t('reportPreview.apis.testResult.status.notTested');
+        return text === true ? t('rstatus.passed') : text === false ? t('status.failed') : t('status.notTested');
       }
     },
     {
       dataIndex: 'enabledTestTypes',
       name: t('reportPreview.apis.testResult.fields.enableFunctionalTest'),
       customRender: (text) => {
-        return text.find(i => i.value === 'TEST_FUNCTIONALITY') ? t('reportPreview.apis.testResult.status.enabled') : t('reportPreview.apis.testResult.status.disabled');
+        return text.find(i => i.value === 'TEST_FUNCTIONALITY') ? t('status.enabled') : t('status.disabled');
       }
     }
   ],
@@ -44,7 +44,7 @@ const columns = computed(() => [
       dataIndex: 'resultDetailVoMap',
       name: t('reportPreview.apis.testResult.fields.functionalTestPassed'),
       customRender: (text) => {
-        return text?.TEST_FUNCTIONALITY?.passed === true ? t('reportPreview.apis.testResult.status.passed') : text?.TEST_FUNCTIONALITY?.passed === false ? t('reportPreview.apis.testResult.status.failed') : t('reportPreview.apis.testResult.status.notTested');
+        return text?.TEST_FUNCTIONALITY?.passed === true ? t('status.passed') : text?.TEST_FUNCTIONALITY?.passed === false ? t('status.failed') : t('status.notTested');
       }
     },
     {
@@ -60,14 +60,14 @@ const columns = computed(() => [
       dataIndex: 'enabledTestTypes',
       name: t('reportPreview.apis.testResult.fields.enablePerformanceTest'),
       customRender: (text) => {
-        return text.find(i => i.value === 'TEST_PERFORMANCE') ? t('reportPreview.apis.testResult.status.enabled') : t('reportPreview.apis.testResult.status.disabled');
+        return text.find(i => i.value === 'TEST_PERFORMANCE') ? t('status.enabled') : t('status.disabled');
       }
     },
     {
       dataIndex: 'resultDetailVoMap',
       name: t('reportPreview.apis.testResult.fields.performanceTestPassed'),
       customRender: (text) => {
-        return text?.TEST_PERFORMANCE?.passed === true ? t('reportPreview.apis.testResult.status.passed') : text?.TEST_PERFORMANCE?.passed === false ? t('reportPreview.apis.testResult.status.failed') : t('reportPreview.apis.testResult.status.notTested');
+        return text?.TEST_PERFORMANCE?.passed === true ? t('status.passed') : text?.TEST_PERFORMANCE?.passed === false ? t('status.failed') : t('status.notTested');
       }
     }
   ],
@@ -83,7 +83,7 @@ const columns = computed(() => [
       dataIndex: 'enabledTestTypes',
       name: t('reportPreview.apis.testResult.fields.enableStabilityTest'),
       customRender: (text) => {
-        return text.find(i => i.value === 'TEST_STABILITY') ? t('reportPreview.apis.testResult.status.enabled') : t('reportPreview.apis.testResult.status.disabled');
+        return text.find(i => i.value === 'TEST_STABILITY') ? t('status.enabled') : t('status.disabled');
       }
     }
   ],
@@ -92,7 +92,7 @@ const columns = computed(() => [
       dataIndex: 'resultDetailVoMap',
       name: t('reportPreview.apis.testResult.fields.stabilityTestPassed'),
       customRender: (text) => {
-        return text?.TEST_STABILITY?.passed === true ? t('reportPreview.apis.testResult.status.passed') : text?.TEST_STABILITY?.passed === false ? t('reportPreview.apis.testResult.status.failed') : t('reportPreview.apis.testResult.status.notTested');
+        return text?.TEST_STABILITY?.passed === true ? t('status.passed') : text?.TEST_STABILITY?.passed === false ? t('status.failed') : t('status.notTested');
       }
     },
     {

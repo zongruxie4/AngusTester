@@ -82,7 +82,7 @@ const CaseTypeIconConfig = {
               <span class="min-w-0 truncate flex-1" :title="item.apisName || item.caseName || item.summary">{{ item.apisName || item.caseName || item.summary }}</span>
               <span
                 v-if="!item.enabled"
-                class="px-2 rounded">{{ t('xcan_httpTestInfo.disabled') }}</span>
+                class="px-2 rounded">{{ t('status.disabled') }}</span>
               <span
                 v-else-if="item.passed"
                 class="px-2 rounded text-status-success">{{ t('xcan_httpTestInfo.passed') }}</span>

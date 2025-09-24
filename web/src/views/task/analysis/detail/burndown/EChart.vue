@@ -64,12 +64,12 @@ const burndownEChartConfig: any = {
   },
   series: [
     {
-      name: t('taskAnalysis.detail.burndown.chartLabels.remaining'),
+      name: t('chart.burndown.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: t('taskAnalysis.detail.burndown.chartLabels.expected'),
+      name: t('chart.burndown.expected'),
       data: [],
       type: 'line',
       smooth: true
@@ -115,13 +115,13 @@ defineExpose({
     <div class="flex-1">
       <div ref="burndownRef" class="flex-1 h-50"></div>
       <div class="text-center font-medium  mt-1">
-        {{ t('taskAnalysis.detail.burndown.chartTitles.taskBurndown') }}
+        {{ t('chart.burndown.countBurndown') }}
       </div>
     </div>
     <div class="flex-1">
       <div ref="workloadBurndownRef" class="flex-1 h-50"></div>
       <div class="text-center font-medium mt-1">
-        {{ t('taskAnalysis.detail.burndown.chartTitles.workloadBurndown') }}
+        {{ t('chart.burndown.workloadBurndown') }}
       </div>
     </div>
   </div>

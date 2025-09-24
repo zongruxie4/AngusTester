@@ -16,7 +16,7 @@ export function useButtonGroup () {
     {
       key: 'ok' as ButtonGroupAction,
       icon: 'icon-dangqianxuanzhong',
-      text: t('dataVariable.detail.buttonGroup.save'),
+      text: t('actions.save'),
       type: 'primary' as const,
       size: 'small' as const
     }
@@ -30,35 +30,35 @@ export function useButtonGroup () {
     {
       key: 'delete' as ButtonGroupAction,
       icon: 'icon-qingchu',
-      text: t('dataVariable.detail.buttonGroup.delete'),
+      text: t('actions.delete'),
       type: 'default' as const,
       size: 'small' as const
     },
     {
       key: 'export' as ButtonGroupAction,
       icon: 'icon-fuzhizujian2',
-      text: t('dataVariable.detail.buttonGroup.export'),
+      text: t('actions.export'),
       type: 'default' as const,
       size: 'small' as const
     },
     {
       key: 'clone' as ButtonGroupAction,
       icon: 'icon-fuzhizujian2',
-      text: t('dataVariable.detail.buttonGroup.clone'),
+      text: t('actions.clone'),
       type: 'default' as const,
       size: 'small' as const
     },
     {
       key: 'copyLink' as ButtonGroupAction,
       icon: 'icon-fuzhi',
-      text: t('dataVariable.detail.buttonGroup.copyLink'),
+      text: t('actions.copyLink'),
       type: 'default' as const,
       size: 'small' as const
     },
     {
       key: 'refresh' as ButtonGroupAction,
       icon: 'icon-shuaxin',
-      text: t('dataVariable.detail.buttonGroup.refresh'),
+      text: t('actions.refresh'),
       type: 'default' as const,
       size: 'small' as const
     }

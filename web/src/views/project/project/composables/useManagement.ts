@@ -1,37 +1,10 @@
 import { ref, computed, reactive } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { appContext } from '@xcan-angus/infra';
 import { ProjectType } from '@/enums/enums';
-import type { Project, ProjectMember, ProjectTypeConfig, CreateProjectParams, UpdateProjectParams } from '../types';
+import type { Project, ProjectMember, CreateProjectParams, UpdateProjectParams } from '../types';
 
 export function useManagement () {
-  const { t } = useI18n();
   const userInfo = ref(appContext.getUser());
-
-  const getProjectTypeTipConfig = (): ProjectTypeConfig => {
-    return {
-      AGILE: [
-        t('project.projectEdit.projectTypeTip.agile.features'),
-        t('project.projectEdit.projectTypeTip.agile.scenarios')
-      ],
-      GENERAL: [
-        t('project.projectEdit.projectTypeTip.general.features'),
-        t('project.projectEdit.projectTypeTip.general.scenarios')
-      ],
-      TESTING: [
-        t('project.projectEdit.projectTypeTip.testing.features'),
-        t('project.projectEdit.projectTypeTip.testing.scenarios')
-      ]
-    };
-  };
-
-  const getProjectTypeNames = () => {
-    return {
-      AGILE: t('project.projectEdit.projectTypeName.agile'),
-      GENERAL: t('project.projectEdit.projectTypeName.general'),
-      TESTING: t('project.projectEdit.projectTypeName.testing')
-    };
-  };
 
   const memberType = ref<'user' | 'dept' | 'group'>('user');
   const projectType = ref<ProjectType>(ProjectType.AGILE);
@@ -66,9 +39,6 @@ export function useManagement () {
     dateRange: undefined,
     importExample: true
   });
-
-  const projectTypeTipConfig = computed(() => getProjectTypeTipConfig());
-  const projectTypeNames = computed(() => getProjectTypeNames());
 
   const isFormValid = computed(() => {
     return !!(formData.name?.trim() &&
@@ -176,8 +146,6 @@ export function useManagement () {
     defaultOptionsGroup,
     formData,
     userInfo,
-    projectTypeTipConfig,
-    projectTypeNames,
     isFormValid,
     totalMemberCount,
     selectProjectType,

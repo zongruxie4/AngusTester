@@ -462,39 +462,39 @@ const getDropdownMenuItems = () => {
     {
       key: 'block',
       icon: 'icon-zusai',
-      name: t('taskSprint.dropdownMenu.block'),
+      name: t('actions.block'),
       permission: 'block'
     },
     {
       key: 'delete',
       icon: 'icon-qingchu',
-      name: t('taskSprint.dropdownMenu.delete'),
+      name: t('actions.delete'),
       permission: 'delete'
     },
     {
       key: 'grant',
       icon: 'icon-quanxian1',
-      name: t('taskSprint.dropdownMenu.permission'),
+      name: t('actions.permission'),
       permission: 'grant'
     },
     {
       key: 'clone',
       icon: 'icon-fuzhi',
-      name: t('taskSprint.dropdownMenu.clone'),
+      name: t('actions.clone'),
       noAuth: true,
       permission: 'clone'
     },
     {
       key: 'reopen',
       icon: 'icon-zhongxindakai',
-      name: t('taskSprint.dropdownMenu.reopen'),
+      name: t('actions.reopen'),
       noAuth: true,
       permission: 'modify'
     },
     {
       key: 'restart',
       icon: 'icon-zhongxinkaishi',
-      name: t('taskSprint.dropdownMenu.restart'),
+      name: t('actions.restart'),
       noAuth: true,
       permission: 'modify'
     },
@@ -519,7 +519,7 @@ const getDropdownMenuItems = () => {
     {
       key: 'export',
       icon: 'icon-daochu',
-      name: t('taskSprint.dropdownMenu.export'),
+      name: t('actions.export'),
       permission: 'export'
     }
   ].filter(Boolean);

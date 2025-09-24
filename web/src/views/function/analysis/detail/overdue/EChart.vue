@@ -92,14 +92,14 @@ const completedWorkloadEchartConfig = {
       },
       data: [
         {
-          name: t('functionAnalysis.detail.overdueAssessment.notCompleted'),
+          name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
             color: 'rgb(246,159,42)'
           }
         },
         {
-          name: t('functionAnalysis.detail.overdueAssessment.completed'),
+          name: t('status.completed'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'

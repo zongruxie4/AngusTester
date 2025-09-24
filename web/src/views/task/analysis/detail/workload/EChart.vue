@@ -148,14 +148,14 @@ const completedWorkloadEChartConfig = {
       },
       data: [
         {
-          name: t('taskAnalysis.detail.workload.pieLabels.incomplete'),
+          name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
             color: 'rgb(246,159,42)'
           }
         },
         {
-          name: t('taskAnalysis.detail.workload.pieLabels.completed'),
+          name: t('status.completed'),
           value: 0,
           itemStyle: {
             color: '#52C41A'

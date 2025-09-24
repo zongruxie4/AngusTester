@@ -119,7 +119,7 @@ export function useScenarioSearch () {
   const groupingMenuItems = computed(() => [
     {
       key: 'none',
-      name: t('scenario.list.groupOptions.noGroup')
+      name: t('actions.noGroup')
     },
     {
       key: 'createdBy',

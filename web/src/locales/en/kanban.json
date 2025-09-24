@@ -20,7 +20,6 @@
       "dataAssets": "Data Assets"
     },
     "effectiveness": {
-      "overdue": "Overdue",
       "taskTypeTitle": "Task Type",
       "targetCountTitle": "Target Count",
       "oneTimePassedTest": "One-time Passed Test",
@@ -29,16 +28,12 @@
       "targetRate": "Target Rate",
       "workloadRate": "Workload Rate",
       "overview": "Overview",
-      "total": "Total",
       "completionRate": "Completion Rate",
       "taskCount": "Task Count",
       "useCaseCount": "Use Case Count",
       "workload": "Workload",
-      "remaining": "Remaining",
-      "expected": "Expected",
       "categoryStatistics": "Category Statistics",
       "reviewStatusDistribution": "Review Status Distribution",
-      "burnDownChart": "Burndown Chart",
       "taskNumber": "Task Count",
       "testNumber": "Test Count",
       "targetCount": "Completed Count",
@@ -80,12 +75,6 @@
         "scenarioTest": "Scenario Test"
       },
       "totalCount": "Total",
-      "progress": "Progress",
-      "pending": "Pending",
-      "inProgress": "In Progress",
-      "confirming": "Confirming",
-      "completed": "Completed",
-      "canceled": "Canceled",
       "evalWorkload": "Estimated Workload",
       "actualWorkload": "Actual Workload",
       "savingWorkload": "Saving Workload",
@@ -103,7 +92,6 @@
       "growthTrend": "Growth Trend",
       "contributionRanking": "Contribution Ranking",
       "rankingDescription": "Use cases, interfaces, tasks, scenarios, scripts, parameter data, reports and Mock interface summary ranking.",
-      "total": "Total",
       "categories": {
         "testCustomization": "Custom Test",
         "testFunctionality": "Functional Test",
@@ -123,7 +111,6 @@
         "dataDataset": "Data Set",
         "dataDatasource": "Data Source",
         "dataVariable": "Variable",
-        "total": "Total",
         "report": "Report",
         "reportRecord": "Record",
         "data": "Data",
@@ -139,8 +126,6 @@
         "scenario": "Scenario"
       },
       "status": {
-        "cancelled": "Cancelled",
-        "blocked": "Blocked",
         "testFailed": "Test Failed",
         "testPassed": "Test Passed",
         "pendingTest": "Pending Test",
@@ -148,13 +133,7 @@
         "designing": "Designing",
         "developing": "Developing",
         "developmentCompleted": "Development Completed",
-        "published": "Published",
-        "completed": "Completed",
-        "pendingConfirmation": "Pending Confirmation",
-        "inProgress": "In Progress",
-        "pending": "Pending",
-        "pendingStart": "Pending Start",
-        "blockedStatus": "Blocked"
+        "published": "Published"
       },
       "reviewStatus": {
         "pendingReview": "Pending Review",
@@ -186,8 +165,6 @@
       },
       "progress": {
         "totalProgress": "Total Progress",
-        "incomplete": "Incomplete",
-        "completed": "Completed",
         "totalCount": "Total",
         "totalUseCaseCount": "Total",
         "totalWorkload": "Workload",
@@ -248,20 +225,12 @@
         "estimatedTime": "Estimated Time"
       },
       "taskTypes": {
-        "total": "Total",
         "story": "Story",
         "requirement": "Requirement",
         "task": "Task",
         "bug": "Bug",
         "apiTest": "API Test",
         "scenarioTest": "Scenario Test"
-      },
-      "taskStatus": {
-        "pendingConfirmation": "Pending Confirmation",
-        "inProgress": "In Progress",
-        "pending": "Pending",
-        "completed": "Completed",
-        "cancelled": "Cancelled"
       },
       "deliveryCycle": {
         "deliveryCycle": "Delivery Cycle",
@@ -320,8 +289,6 @@
         "pendingTest": "Pending Test",
         "testPassed": "Test Passed",
         "testFailed": "Test Failed",
-        "blocked": "Blocked",
-        "cancelled": "Cancelled"
       },
       "reviewStatus": {
         "pendingReview": "Pending Review",

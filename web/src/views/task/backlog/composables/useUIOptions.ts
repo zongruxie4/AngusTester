@@ -21,23 +21,23 @@ export function useUIOptions (
    */
   const sortOption: SortOption[] = [
     {
-      name: t('backlog.columns.type'),
+      name: t('common.type'),
       key: 'taskType'
     },
     {
-      name: t('backlog.columns.priority'),
+      name: t('common.priority'),
       key: 'priority'
     },
     {
-      name: t('backlog.columns.code'),
+      name: t('common.code'),
       key: 'code'
     },
     {
-      name: t('backlog.columns.name'),
+      name: t('common.name'),
       key: 'name'
     },
     {
-      name: t('backlog.columns.assignee'),
+      name: t('common.assignee'),
       key: 'assigneeId'
     }
   ];
@@ -220,7 +220,7 @@ export function useUIOptions (
     },
     {
       key: 'lastDay',
-      label: t('backlog.quickSearch.lastDay'),
+      label: t('backlog.quickSearch.last1Day'),
       isActive: false
     },
     {

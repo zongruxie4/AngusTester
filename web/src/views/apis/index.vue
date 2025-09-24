@@ -92,13 +92,13 @@ provide('replaceTabPane', (params) => servicesRef.value && servicesRef.value.rep
 provide('updateApiGroup', (params) => servicesRef.value && servicesRef.value.updateApiGroup(params));
 
 const menuItems = [
-  { name: t('apis.name'), icon: 'icon-zhuye', key: 'homepage' },
-  { name: t('service.name'), icon: 'icon-fuwuxinxi', key: 'services' },
+  { name: t('home.title'), icon: 'icon-zhuye', key: 'homepage' },
+  { name: t('service.title'), icon: 'icon-fuwuxinxi', key: 'services' },
   { name: 'Mock', icon: 'icon-fuwuxinxi', key: 'mock' },
-  { name: t('design.name'), icon: 'icon-sheji', key: 'design' },
-  { name: t('apiShare.name'), icon: 'icon-fenxiang', key: 'share' },
-  { name: t('server.name'), icon: 'icon-host', key: 'server' },
-  { name: t('apiTrash.name'), icon: 'icon-qingchu', key: 'trash' }
+  { name: t('design.title'), icon: 'icon-sheji', key: 'design' },
+  { name: t('apiShare.title'), icon: 'icon-fenxiang', key: 'share' },
+  { name: t('server.title'), icon: 'icon-host', key: 'server' },
+  { name: t('apiTrash.title'), icon: 'icon-qingchu', key: 'trash' }
 ];
 </script>
 

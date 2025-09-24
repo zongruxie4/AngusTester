@@ -149,7 +149,7 @@ const caseSummary = computed(() => {
             {{ t('reportPreview.execFunction.detail.basicInfo.fields.ignoreAssertions') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-            {{ typeof props.execInfo?.ignoreAssertions ==='boolean'?(props.execInfo?.ignoreAssertions ? t('reportPreview.execFunction.detail.basicInfo.options.ignore') : t('reportPreview.execFunction.detail.basicInfo.options.notIgnore')):'' }}
+            {{ typeof props.execInfo?.ignoreAssertions ==='boolean'?(props.execInfo?.ignoreAssertions ? t('status.ignored') : t('status.notIgnored')):'' }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
@@ -186,7 +186,7 @@ const caseSummary = computed(() => {
       <div class="flex items-start">
         <div class="flex items-center flex-shrink-0 mr-10">
           <div class="flex-shrink-0 mr-0.5">{{ t('reportPreview.execFunction.detail.execResult.fields.testResult') }}：</div>
-          <div>{{ props.execResult?.passed ? t('reportPreview.execFunction.summary.status.passed') : t('reportPreview.execFunction.summary.status.failed') }}</div>
+          <div>{{ props.execResult?.passed ? t('status.passed') : t('status.failed') }}</div>
         </div>
         <div v-if="props.execResult?.failureMessage" class="flex items-start">
           <div class="flex-shrink-0 mr-0.5">{{ t('reportPreview.execFunction.detail.execResult.fields.failureReason') }}：</div>
@@ -198,22 +198,22 @@ const caseSummary = computed(() => {
         <div class="mb-1">{{ t('reportPreview.execFunction.detail.execResult.fields.testCases') }}：</div>
         <div class="flex items-center space-x-3.5">
           <div class="flex items-center leading-6 w-40">
-            <div class="flex-1 text-white px-2 rounded bg-blue-1">{{ t('reportPreview.execFunction.detail.execResult.summary.total') }}</div>
+            <div class="flex-1 text-white px-2 rounded bg-blue-1">{{ t('chart.total') }}</div>
             <div class="flex-1 bg-gray-light px-2 rounded-r">{{ caseSummary?.totalNum ||0 }}</div>
           </div>
 
           <div class="flex items-center leading-6 w-40">
-            <div class="flex-1 text-white px-2 rounded bg-status-success">{{ t('reportPreview.execFunction.detail.execResult.summary.passed') }}</div>
+            <div class="flex-1 text-white px-2 rounded bg-status-success">{{ t('status.passed') }}</div>
             <div class="flex-1 bg-gray-light px-2 rounded-r">{{ caseSummary?.successNum||0 }}</div>
           </div>
 
           <div class="flex items-center leading-6 w-40">
-            <div class="flex-1 text-white px-2 rounded bg-status-error">{{ t('reportPreview.execFunction.detail.execResult.summary.failed') }}</div>
+            <div class="flex-1 text-white px-2 rounded bg-status-error">{{ t('status.failed') }}</div>
             <div class="flex-1 bg-gray-light px-2 rounded-r">{{ caseSummary?.failNum ||0 }}</div>
           </div>
 
           <div class="flex items-center leading-6 w-40">
-            <div class="flex-1 text-white px-2 rounded bg-gray-icon">{{ t('reportPreview.execFunction.detail.execResult.summary.disabled') }}</div>
+            <div class="flex-1 text-white px-2 rounded bg-gray-icon">{{ t('status.disabled') }}</div>
             <div class="flex-1 bg-gray-light px-2 rounded-r">{{ caseSummary?.disabledNum ||0 }}</div>
           </div>
         </div>

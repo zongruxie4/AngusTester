@@ -42,27 +42,27 @@ const len = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-37 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          ID
+          {{ t('common.ID') }}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.assocTask.fields.code') }}
+          {{ t('common.code') }}
         </div>
         <div
           class="w-22 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.assocTask.fields.type') }}
+          {{ t('common.type') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.assocTask.fields.name') }}
+          {{ t('common.name') }}
         </div>
         <div
           class="w-20 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.assocTask.fields.status') }}
+          {{ t('common.status') }}
         </div>
         <div
           class="w-20 flex items-center bg-blue-table px-1.5 py-1.5">
-          {{ t('reportPreview.functionCase.assocTask.fields.assignee') }}
+          {{ t('common.assignee') }}
         </div>
       </div>
 
@@ -92,7 +92,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">{{ t('reportPreview.functionCase.assocTask.noData') }}</div>
+    <div v-else class="content-text-container">{{ t('common.noData') }}</div>
   </div>
 </template>
 

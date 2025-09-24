@@ -19,29 +19,25 @@ const props = withDefaults(defineProps<Props>(), {
 
 const infoColumns = computed(() => [
   [
-    { label: t('functionCase.detail.review.name'), dataIndex: 'name' },
-    { label: t('functionCase.detail.review.code'), dataIndex: 'code' },
+    { label: t('common.name'), dataIndex: 'name' },
+    { label: t('common.code'), dataIndex: 'code' },
     {
-      label: t('functionCase.detail.review.reviewStatus'),
+      label: t('common.reviewStatus'),
       dataIndex: 'reviewStatus'
     },
-    { label: t('functionCase.detail.review.priority'), dataIndex: 'priority' },
-    { label: t('functionCase.detail.review.tags'), dataIndex: 'tags' },
+    { label: t('common.priority'), dataIndex: 'priority' },
+    { label: t('common.tags'), dataIndex: 'tags' },
     {
-      label: t('functionCase.detail.review.testResult'),
+      label: t('common.testResult'),
       dataIndex: 'testResult'
     },
     {
-      label: props.caseInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-        ? t('functionCase.detail.review.evalWorkload')
-        : t('functionCase.detail.review.evalWorkload'),
+      label: t('common.evalWorkload'),
       dataIndex: 'evalWorkload',
       customRender: ({ text }) => text || '--'
     },
     {
-      label: props.caseInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-        ? t('functionCase.detail.review.actualWorkload')
-        : t('functionCase.detail.review.actualWorkload'),
+      label: t('common.actualWorkload'),
       dataIndex: 'actualWorkload',
       customRender: ({ text }) => text || '--'
     }
@@ -121,7 +117,7 @@ const infoColumns = computed(() => [
             v-if="caseInfo?.overdue"
             class="border border-status-error rounded px-0.5 ml-5"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            {{ t('functionCase.detail.review.overdue') }}
+            {{ t('status.overdue') }}
           </div>
         </div>
       </template>

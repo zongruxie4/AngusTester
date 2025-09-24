@@ -161,7 +161,7 @@ onMounted(() => {
 });
 
 const noDataText = computed(() => {
-  return errorMessage.value ? errorMessage.value : t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.noData');
+  return errorMessage.value ? errorMessage.value : t('common.noData');
 });
 </script>
 

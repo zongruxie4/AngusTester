@@ -52,7 +52,7 @@ const emit = defineEmits<{
   (event: 'refreshChange'): void;
   (event: 'splitOk'): void;
   (event: 'paginationChange', value: { current: number; pageSize: number; }): void;
-  (event: 'batchAction', type: 'cancel' | 'delete' | 'follow' | 'cancelFollow' | 'favourite' | 'cancelFavourite' | 'move', value: string[]): void;
+  (event: 'batchAction', type: 'cancel' | 'delete' | 'addFollow' | 'cancelFollow' | 'addFavourite' | 'cancelFavourite' | 'move', value: string[]): void;
 }>();
 
 // Async Components
@@ -329,7 +329,7 @@ const executeBatchFavourite = async () => {
         // Handle complete success
         if (failureCount === 0) {
           notification.success(t('task.detail.batchActions.favouriteSuccess', { num: selectedCount }));
-          emit('batchAction', 'favourite', taskIds);
+          emit('batchAction', 'addFavourite', taskIds);
           emit('update:selectedIds', []);
           selectedTaskDataMap.value = {};
           return;
@@ -348,7 +348,7 @@ const executeBatchFavourite = async () => {
           errorNum: failureCount
         }));
 
-        emit('batchAction', 'favourite', successfulTaskIds);
+        emit('batchAction', 'addFavourite', successfulTaskIds);
 
         // Update selection to only include failed tasks
         const remainingIds = props.selectedIds.filter((item) => !successfulTaskIds.includes(item));
@@ -396,7 +396,7 @@ const executeBatchCancelFavourite = async () => {
         // Handle complete success
         if (failureCount === 0) {
           notification.success(t('task.detail.batchActions.cancelFavouriteSuccess', { num: selectedCount }));
-          emit('batchAction', 'favourite', taskIds);
+          emit('batchAction', 'addFavourite', taskIds);
           emit('update:selectedIds', []);
           selectedTaskDataMap.value = {};
           return;
@@ -415,7 +415,7 @@ const executeBatchCancelFavourite = async () => {
           errorNum: failureCount
         }));
 
-        emit('batchAction', 'favourite', successfulTaskIds);
+        emit('batchAction', 'addFavourite', successfulTaskIds);
 
         // Update selection to only include failed tasks
         const remainingIds = props.selectedIds.filter((item) => !successfulTaskIds.includes(item));
@@ -463,7 +463,7 @@ const executeBatchFollow = async () => {
         // Handle complete success
         if (failureCount === 0) {
           notification.success(t('task.detail.batchActions.cancelFollowSuccess', { num: selectedCount }));
-          emit('batchAction', 'favourite', taskIds);
+          emit('batchAction', 'addFavourite', taskIds);
           emit('update:selectedIds', []);
           selectedTaskDataMap.value = {};
           return;
@@ -482,7 +482,7 @@ const executeBatchFollow = async () => {
           errorNum: failureCount
         }));
 
-        emit('batchAction', 'favourite', successfulTaskIds);
+        emit('batchAction', 'addFavourite', successfulTaskIds);
 
         // Update selection to only include failed tasks
         const remainingIds = props.selectedIds.filter((item) => !successfulTaskIds.includes(item));
@@ -530,7 +530,7 @@ const executeBatchCancelFollow = async () => {
         // Handle complete success
         if (failureCount === 0) {
           notification.success(t('task.detail.batchActions.cancelFollowNumSuccess', { num: selectedCount }));
-          emit('batchAction', 'favourite', taskIds);
+          emit('batchAction', 'addFavourite', taskIds);
           emit('update:selectedIds', []);
           selectedTaskDataMap.value = {};
           return;
@@ -549,7 +549,7 @@ const executeBatchCancelFollow = async () => {
           errorNum: failureCount
         }));
 
-        emit('batchAction', 'favourite', successfulTaskIds);
+        emit('batchAction', 'addFavourite', successfulTaskIds);
 
         // Update selection to only include failed tasks
         const remainingIds = props.selectedIds.filter((item) => !successfulTaskIds.includes(item));
@@ -693,7 +693,7 @@ onMounted(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchCancel">
-        {{ t('task.detail.batchActions.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
 
       <Button
@@ -702,7 +702,7 @@ onMounted(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchDelete">
-        {{ t('task.detail.batchActions.delete') }}
+        {{ t('actions.delete') }}
       </Button>
 
       <Button
@@ -711,7 +711,7 @@ onMounted(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchFavourite">
-        {{ t('task.detail.batchActions.favourite') }}
+        {{ t('actions.addFavourite') }}
       </Button>
 
       <Button
@@ -720,7 +720,7 @@ onMounted(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchCancelFavourite">
-        {{ t('task.detail.batchActions.cancelFavourite') }}
+        {{ t('actions.cancelFavourite') }}
       </Button>
 
       <Button
@@ -729,7 +729,7 @@ onMounted(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchFollow">
-        {{ t('task.detail.batchActions.follow') }}
+        {{ t('actions.addFollow') }}
       </Button>
 
       <Button
@@ -738,7 +738,7 @@ onMounted(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchCancelFollow">
-        {{ t('task.detail.batchActions.cancelFollow') }}
+        {{ t('actions.cancelFollow') }}
       </Button>
 
       <Button
@@ -747,7 +747,7 @@ onMounted(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="openBatchMoveModal">
-        {{ t('task.detail.batchActions.move') }}
+        {{ t('actions.move') }}
       </Button>
 
       <Button
@@ -756,7 +756,7 @@ onMounted(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="clearAllSelections">
-        <span>{{ t('task.detail.batchActions.cancelBatchOperation') }}</span>
+        <span>{{ t('actions.cancelBatch') }}</span>
         <span class="ml-1">({{ selectedIds.length }})</span>
       </Button>
     </div>

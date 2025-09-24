@@ -148,15 +148,15 @@ onMounted(() => {
                 <template #content>
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('functionHome.workCalendar.workload') }}</span>
+                      <span>{{ t('common.workload') }}</span>
                       <span>{{ calculateTotalCases(getNonOverdueCases(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('functionHome.workCalendar.completed') }}</span>
+                      <span>{{ t('chart.burndown.completed') }}</span>
                       <span>{{ calculateCompletedCases(getNonOverdueCases(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('functionHome.workCalendar.remaining') }}</span>
+                      <span>{{ t('chart.burndown.remaining') }}</span>
                       <span>{{ calculateRemainingCases(getNonOverdueCases(current)) }}</span>
                     </div>
                   </div>
@@ -184,15 +184,15 @@ onMounted(() => {
                 <template #content>
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('functionHome.workCalendar.workload') }}</span>
+                      <span>{{ t('common.workload') }}</span>
                       <span>{{ calculateTotalCases(getOverdueCases(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('functionHome.workCalendar.completed') }}</span>
+                      <span>{{ t('chart.burndown.completed') }}</span>
                       <span>{{ calculateCompletedCases(getOverdueCases(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>{{ t('functionHome.workCalendar.remaining') }}</span>
+                      <span>{{ t('chart.burndown.remaining') }}</span>
                       <span>{{ calculateRemainingCases(getOverdueCases(current)) }}</span>
                     </div>
                   </div>
@@ -207,7 +207,7 @@ onMounted(() => {
                       <span
                         class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                         style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                        <span class="inline-block transform-gpu scale-90">{{ t('functionHome.myCases.overdue') }}</span>
+                        <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
                       </span>
                     </div>
                   </div>

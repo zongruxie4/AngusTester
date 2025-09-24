@@ -10,17 +10,12 @@
         "functionalTest": "Functional Test",
         "performanceTest": "Performance Test",
         "stabilityTest": "Stability Test",
-        "enabled": "Enabled",
-        "disabled": "Disabled",
         "successMessage": "Successfully enabled or disabled testing"
       },
       "selectCaseModal": {
         "title": "Select API",
         "selectService": "Please select service",
         "searchApi": "Search API",
-        "search": "Search",
-        "group": "Group",
-        "noGroup": "No Group",
         "groupByCreator": "Group by Creator",
         "groupByMethod": "Group by Method",
         "groupByOwner": "Group by Owner",
@@ -41,9 +36,6 @@
         "currentThreadTooltip": "Each thread copies its own dataset data.",
         "addDataset": "Import Dataset",
         "noDataMessage": "You have not referenced any datasets yet",
-        "name": "Name",
-        "creator": "Creator",
-        "actions": "Actions",
         "cancelReference": "Cancel Reference",
         "cancelReferenceConfirm": "Are you sure you want to cancel referencing dataset 「{name}」?",
         "viewDefinition": "View Definition",
@@ -56,9 +48,6 @@
         "listModal": {
           "title": "Reference Variables",
           "searchPlaceholder": "Search name, description",
-          "refresh": "Refresh",
-          "name": "Name",
-          "description": "Description",
           "valueSource": "Value Source",
           "lastModifiedBy": "Last Modified By",
           "lastModifiedTime": "Last Modified Time",
@@ -70,25 +59,20 @@
           "jdbc": "(Jdbc)"
         },
         "extractParameter": {
-          "name": "Name",
           "readColumn": "Read Column"
         },
         "previewData": {
           "hintText": "Each time, at most 10,000 data can be previewed, and the actual parameter values of the Mock function are generated during sampling.",
-          "rowNum": "Preview Row Number",
-          "refresh": "Refresh",
-          "noData": "No Data"
+          "rowNum": "Preview Row Number"
         },
         "useList": {
           "targetType": "Resource Type",
           "targetId": "Resource ID",
           "targetName": "Resource Name",
-          "hintText": "View the resource information used by the variable.",
-          "refresh": "Refresh"
+          "hintText": "View the resource information used by the variable."
         },
         "staticParameter": {
           "hintText": "Generate parameter values dynamically during sampling, each dataset can create up to 200 parameters, and the maximum number of rows supported is 100 billion.",
-          "name": "Name",
           "value": "Value"
         }
       },
@@ -97,46 +81,28 @@
         "hints": "Import predefined variables that can be used as parameters in the current request. Note: Variables only take effect after being referenced.",
         "addVariable": "Reference Variables",
         "noDataMessage": "You have not referenced any variables yet",
-        "name": "Name",
-        "value": "Value",
-        "description": "Description",
         "reference": "Reference",
-        "creator": "Creator",
-        "actions": "Actions",
         "cancelReference": "Cancel Reference",
         "cancelReferenceConfirm": "Are you sure you want to cancel referencing variable 「{name}」?",
         "viewDefinition": "View Definition",
         "listModal": {
           "title": "Reference Variables",
           "searchPlaceholder": "Search name, description",
-          "refresh": "Refresh",
-          "name": "Name",
-          "description": "Description",
-          "value": "Value",
           "reference": "Reference",
-          "lastModifiedBy": "Last Modified By",
-          "lastModifiedTime": "Last Modified Time",
           "password": "Password",
           "staticValue": "Static Value",
           "exactValue": "Exact Value",
           "extractedValue": "Extracted Value",
           "file": "(File)",
           "http": "(Http)",
-          "jdbc": "(Jdbc)",
-          "ynOption": {
-            "yes": "Yes",
-            "no": "No"
-          }
+          "jdbc": "(Jdbc)"
         }
       },
       "selectCaseByModule": {
         "title": "Select Cases",
         "searchPlaceholder": "Search name, code",
-        "code": "Code",
-        "name": "Name",
         "reviewStatus": "Review Status",
         "testResult": "Test Result",
-        "tester": "Tester"
       },
       "moduleTreeSelector": {
         "title": "Cases",
@@ -149,7 +115,6 @@
         "moveModule": "Move Module",
         "moduleName": "Module Name",
         "inputModuleName": "Please enter module name",
-        "cancel": "Cancel",
         "confirmDelete": "Are you sure you want to delete module 「{name}」?",
         "updateSuccess": "Update successful",
         "deleteSuccess": "Module deleted successfully",
@@ -216,18 +181,6 @@
         "expiredDate": "Expiration Date",
         "createdBy": "Created By",
         "createdDate": "Created Date",
-        "actions": "Actions",
-        "edit": "Edit",
-        "delete": "Delete",
-        "copy": "Copy",
-        "cancel": "Cancel",
-        "confirm": "Confirm",
-        "save": "Save",
-        "close": "Close",
-        "search": "Search",
-        "refresh": "Refresh",
-        "noData": "No Data",
-        "loading": "Loading...",
         "form": {
           "namePlaceholder": "Please enter share name",
           "urlPlaceholder": "Please enter share URL",
@@ -264,12 +217,9 @@
         "noSelectedApis": "Please select APIs",
         "shareApis": "Share APIs",
         "copyLabel": {
-          "name": "Name",
           "link": "Link",
           "password": "Password"
-        },
-        "selectAll": "Select All",
-        "saveAndCopy": "Save and Copy"
+        }
       }
     },
     "createTaskTestModal": {
@@ -315,10 +265,6 @@
       "title": "Select Task",
       "task": "Task",
       "searchPlaceholder": "Search by name or code",
-      "code": "Code",
-      "name": "Name",
-      "status": "Status",
-      "type": "Type"
     },
     "exportScriptModal": {
       "title": "Export Script",
@@ -525,8 +471,6 @@
     "getToken": "Get Token",
     "configureExistingToken": "Configure Existing Token",
     "configureGenerateToken": "Configure Generate Token",
-    "name": "Name",
-    "value": "Value",
     "position": "Position",
     "proxyNotConnected": "Proxy not connected, please check proxy configuration"
   },
@@ -605,8 +549,6 @@
     "userName": "User Name",
     "departmentName": "Department Name",
     "groupName": "Group Name",
-    "permission": "Permission",
-    "operation": "Operation",
     "selectUser": "Please select user",
     "selectDepartment": "Please select department",
     "selectGroup": "Please select group",
@@ -621,27 +563,21 @@
     "closeAllTabs": "Close All Tabs"
   },
   "xcan_configProvider": {
-    "websiteUpdated": "The website has been updated. Please click refresh to experience the latest content. Before refreshing, we recommend saving your personal data to avoid loss. Thank you for your understanding and support!",
-    "refresh": "Refresh"
+    "websiteUpdated": "The website has been updated. Please click refresh to experience the latest content. Before refreshing, we recommend saving your personal data to avoid loss. Thank you for your understanding and support!"
   },
   "xcan_debugLog": {
     "schedulingResult": "Scheduling Result",
-    "success": "Success",
-    "failure": "Failure",
     "processExitCode": "Process Exit Code"
   },
   "xcan_debugResult": {
     "debugResult": "Debug Result",
-    "failure": "Failure",
     "exitCode": "Exit Code",
     "failureReason": "Failure Reason",
     "samplingStatus": "Sampling Status"
   },
   "xcan_exec": {
     "addVariable": "Add Variable",
-    "name": "Name",
     "scope": "Scope",
-    "description": "Description",
     "defineExtract": "Define/Extract",
     "extractionMethod": "Extraction Method",
     "extractionParameterName": "Extraction Parameter Name",
@@ -650,7 +586,6 @@
     "defaultValue": "Default Value",
     "service": "Service",
     "interface": "Interface",
-    "value": "Value",
     "define": "Define",
     "extract": "Extract",
     "defineExtractVariableTip": "Define/Extract variable interface does not support dependency on other variables.",
@@ -694,8 +629,6 @@
     "rampDownThreadsRule": "Please enter ramp down threads",
     "rampDownIntervalTooltip": "Adjust the thread gradually decreasing interval, the value cannot exceed the execution duration.",
     "rampDownThreadsTooltip": "Adjust the number of threads gradually decreasing, the value cannot exceed the maximum number of threads.",
-    "yes": "Yes",
-    "no": "No",
     "resetAfterRampTooltip": "After adjusting the number of threads, whether to clear the previous sampling data and re-measure the sampling.",
     "executionConcurrency": "Execution Concurrency",
     "executionTime": "Execution Time",
@@ -837,17 +770,11 @@
     "databasePassword": "Database Password",
     "connectionPoolMaximumPoolSize": "Connection Pool Maximum Pool Size",
     "variable": {
-      "name": "Name",
-      "value": "Value",
-      "description": "Description",
       "reference": "Reference",
-      "creator": "Creator",
-      "action": "Action",
       "staticValue": "Static Value",
       "exactValue": "Exact Value",
       "extractedValue": "Extracted Value",
       "file": "File",
-      "password": "Password",
       "valueSource": "Value Source",
       "lastModifier": "Last Modifier",
       "lastModifiedTime": "Last Modified Time",
@@ -861,9 +788,6 @@
       "batchDelete": "Batch Delete",
       "unreference": "Unreference",
       "viewDefinition": "View Definition",
-      "refresh": "Refresh",
-      "yes": "Yes",
-      "no": "No",
       "confirmUnreferenceVariable": "Are you sure to unreference variable 「{name}」?",
       "confirmUnreferenceSelectedVariables": "Are you sure to unreference the selected {num} variables?"
     }
@@ -900,19 +824,14 @@
     "existingToken": "Existing Token",
     "generateToken": "Generate Token",
     "accessToken": "Access Token",
-    "type": "Type",
     "maxCharacters": "Maximum {maxLength} characters allowed",
     "clientAuthentication": "Client Authentication",
     "getToken": "Get Token",
-    "name": "Name",
-    "value": "Value",
     "position": "Position"
   },
   "xcan_execLog": {
     "node": "Node",
     "schedulingResult": "Scheduling Result",
-    "success": "Success",
-    "failure": "Failure",
     "processExitCode": "Process Exit Code"
   },
   "xcan_execSettingForm": {
@@ -933,14 +852,6 @@
     "parameterName": "Parameter Name",
     "expression": "Expression",
     "defaultValue": "Default Value",
-    "enabled": "Enabled",
-    "disabled": "Disabled",
-    "edit": "Edit",
-    "delete": "Delete",
-    "save": "Save",
-    "cancel": "Cancel",
-    "expand": "Expand",
-    "collapse": "Collapse",
     "define": "Define",
     "extract": "Extract",
     "current": "Current",
@@ -979,8 +890,6 @@
     "gradualPressure": "Gradual Pressure",
     "directReduction": "Direct Reduction",
     "gradualReduction": "Gradual Reduction",
-    "yes": "Yes",
-    "no": "No",
     "rampUpInterval": "Ramp Up Interval",
     "rampUpThreads": "Ramp Up Threads",
     "rampDownInterval": "Ramp Down Interval",
@@ -1148,19 +1057,13 @@
     "pleaseEnterDatabaseConnectionURL": "Please enter database connection URL"
   },
   "xcan_favoriteFollow": {
-    "favorite": "Favorite",
-    "follow": "Follow",
     "cancelAllFavoritesSuccess": "Cancel all favorites successfully",
     "cancelAllFollowsSuccess": "Cancel all follows successfully",
     "cancelFavoriteSuccess": "Cancel favorite successfully",
     "cancelFollowSuccess": "Cancel follow successfully",
-    "cancelFavorite": "Cancel Favorite",
-    "cancelFollow": "Cancel Follow",
     "cancelAllFavorites": "Cancel All Favorites",
     "cancelAllFollows": "Cancel All Follows",
-    "searchName": "Search Name",
-    "cancelSearch": "Cancel Search",
-    "search": "Search"
+    "searchName": "Search Name"
   },
   "xcan_functionButton": {
     "mockFunctionHelper": "Mock Function Helper"
@@ -1176,8 +1079,6 @@
     "mockFunctionHelper": "Mock Function Helper",
     "searchName": "Search Name",
     "enterFunctionInstance": "Enter function instance, such as @Name() or Hello@Name()",
-    "test": "Test",
-    "copy": "Copy",
     "successfullyCopiedToClipboard": "Successfully copied to clipboard",
     "description": "Description",
     "constructor": "Constructor",
@@ -1192,12 +1093,6 @@
     "testInterface": "Test Interface",
     "testStatistics": "Test Statistics",
     "serviceInterface": "Service Interface",
-    "total": "Total",
-    "passed": "Passed",
-    "failed": "Failed",
-    "disabled": "Disabled",
-    "enabled": "Enabled",
-    "untested": "Untested",
     "partiallyPassed": "Partially Passed",
     "concurrency": "Concurrency",
     "testDuration": "Test Duration",
@@ -1216,7 +1111,6 @@
     "performanceTestCount": "Performance Test Count",
     "stabilityTestCount": "Stability Test Count",
     "totalInterfaces": "Total Interfaces",
-    "progress": "Progress",
     "searchName": "Search Name",
     "selectStatus": "Select Status",
     "testResult": "Test Result",
@@ -1261,9 +1155,6 @@
     "collapseStatistics": "Collapse Statistics",
     "viewStatistics": "View Statistics"
   },
-  "xcan_iconRefresh": {
-    "refresh": "Refresh"
-  },
   "xcan_indicator": {
     "functionalIndicator": "Functional Indicator",
     "performanceIndicator": "Performance Indicator",
@@ -1284,7 +1175,6 @@
     "networkUsage": "Network Usage",
     "modifyIndicator": "Modify Indicator",
     "useDefaultIndicator": "Use Default Indicator",
-    "cancel": "Cancel",
     "submitModification": "Submit Modification",
     "smokeTest": "Smoke Test",
     "smokeTestDescription": "Used by developers or testers to quickly verify that the basic functionality of the interface is available.",
@@ -1314,9 +1204,6 @@
   "xcan_leftDrawer": {
     "doubleClickToExpand": "Double click to expand",
     "searchName": "Search name",
-    "cancelSearch": "Cancel search",
-    "search": "Search",
-    "nextStep": "Next step",
     "exampleProject": "Example Project",
     "exampleDirectory": "Example Directory"
   },
@@ -1353,12 +1240,6 @@
   },
   "xcan_responseAssert": {
     "all": "All",
-    "passed": "Passed",
-    "failed": "Failed",
-    "ignored": "Ignored",
-    "ignore": "Ignore",
-    "pass": "Pass",
-    "fail": "Fail",
     "executionConditionExpression": "Execution Condition Expression",
     "variableValue": "Variable Value",
     "variable": "Variable",
@@ -1412,14 +1293,12 @@
     "selectService": "Select Service",
     "searchApiName": "Search API Name",
     "method": "Method",
-    "name": "Name",
     "alreadyLinked": "(Already Linked)"
   },
   "xcan_selectApisByServiceModal": {
     "selectApis": "Select APIs"
   },
   "xcan_selectApisCase": {
-    "noGrouping": "No Grouping",
     "groupByCreator": "Group by Creator",
     "groupByRequestMethod": "Group by Request Method",
     "groupByOwner": "Group by Owner",
@@ -1430,8 +1309,7 @@
     "caseType": "Case Type",
     "selectService": "Select Service",
     "searchApi": "Search API",
-    "grouping": "Grouping",
-    "search": "Search"
+    "grouping": "Grouping"
   },
   "xcan_selectApisCaseModal": {
     "title": "Select Interface"
@@ -1439,21 +1317,16 @@
   "xcan_selectApisTable": {
     "searchPlaceholder": "Search interface name or path",
     "grouping": "Grouping",
-    "noGrouping": "No Grouping",
     "groupByCreator": "Group by Creator",
     "groupByRequestMethod": "Group by Request Method",
     "groupByOwner": "Group by Owner",
     "groupByTag": "Group by Tag",
-    "name": "Name",
     "method": "Method",
     "path": "Path",
-    "owner": "Owner",
-    "noData": "No Data"
+    "owner": "Owner"
   },
   "xcan_selectUser": {
     "defaultPlaceholder": "Select or search user",
-    "id": "ID",
-    "name": "Name"
   },
   "xcan_shortDuration": {
     "maxDuration24Hours": "Maximum duration 24 hours"
@@ -1469,14 +1342,10 @@
     "defaultTipText": "In this area, you can upload by pasting content or directly dragging files, but please note that the uploaded file size should not exceed {maxSize}."
   },
   "xcan_testBasicInfo": {
-    "id": "ID",
-    "status": "Status",
     "execNodes": "Execution Nodes",
-    "name": "Name",
     "scriptType": "Type",
     "reportInterval": "Report Interval",
     "scriptName": "Script",
-    "priority": "Priority",
     "batchRows": "Batch Rows",
     "plugin": "Plugin",
     "createdByName": "Created By",
@@ -1486,8 +1355,6 @@
     "endDate": "End Time",
     "updateTestResult": "Update Test Result",
     "ignoreAssertions": "Ignore Assertions",
-    "ignore": "Ignore",
-    "notIgnore": "Not Ignore",
     "update": "Update",
     "notUpdate": "Not Update",
     "milliseconds": "Milliseconds",
@@ -1509,21 +1376,15 @@
     "globalVariableDescription": "Global variables are effective for all interfaces of the tenant. When global variables have the same name as interface/service/project variables, they have the lowest priority.",
     "searchVariableName": "Search variable name",
     "add": "Add",
-    "name": "Name",
     "extractionMethod": "Extraction Method",
     "extractionValue": "Extraction Value",
     "regexExpression": "Regular Expression",
     "extractionExpression": "Extraction Expression",
-    "value": "Value",
-    "source": "Source",
     "scope": "Scope",
     "lastModified": "Last Modified",
     "project": "Project",
     "service": "Service",
     "api": "API",
-    "edit": "Edit",
-    "delete": "Delete",
-    "type": "Type",
     "define": "Define",
     "extract": "Extract",
     "extractTooltip": "Defining extraction variables for interfaces does not support dependency on other variables.",
@@ -1535,8 +1396,6 @@
     "inputDefaultValue": "Enter default value",
     "description": "Description",
     "inputDescription": "Enter description, maximum 800 characters",
-    "save": "Save",
-    "cancel": "Cancel",
     "saveSuccess": "Save successful",
     "enableSuccess": "Enable successful",
     "disableSuccess": "Disable successful",
@@ -1556,14 +1415,7 @@
     "seconds": "Seconds",
     "minutes": "Minutes",
     "hours": "Hours",
-    "running": "Running...",
     "pass": "Pass",
-    "ignore": "Ignore",
-    "notEnabled": "Not Enabled",
-    "total": "Total",
-    "min": "Min",
-    "average": "Average",
-    "max": "Max",
     "runTime": "Run Time",
     "iterationCount": "Iteration Count",
     "requestCount": "Request Count",
@@ -1574,7 +1426,6 @@
     "fail": "Failed",
     "success": "Passed",
     "block": "Not Executed",
-    "ignore": "Not Enabled"
   },
   "xcan_rendezvous": {
     "userCount": "User Count",
@@ -1582,10 +1433,6 @@
     "milliseconds": "ms"
   },
   "xcan_assertionsResult": {
-    "notPassed": "Not Passed",
-    "passed": "Passed",
-    "ignored": "Ignored",
-    "notEnabled": "Not Enabled",
     "milliseconds": "Milliseconds",
     "seconds": "Seconds",
     "minutes": "Minutes",
@@ -1598,14 +1445,11 @@
     "executionConditionExpression": "Execution Condition Expression",
     "variableValue": "Value",
     "executionConditionResult": "Execution Condition Result",
-    "ignore": "Ignore",
     "assertionLabel": "Assertion Label",
     "view": "View",
     "assertionCondition": "Assertion Condition",
     "assertionResult": "Assertion Result",
-    "failed": "Failed",
     "failureReason": "Failure Reason",
-    "success": "Success",
     "responseStatusCode": "Response Status Code",
     "responseHeader": "Response Header",
     "responseBody": "Response Body",
@@ -1691,22 +1535,9 @@
     "milliseconds": "ms"
   },
   "xcan_PerfExecDetail": {
-    "name": "Name",
-    "status": "Status",
     "script": "Script",
-    "type": "Type",
     "plugin": "Plugin",
-    "priority": "Priority",
-    "startTime": "Start Time",
-    "endTime": "End Time",
     "testResult": "Test Result",
-    "modified": "Modified",
-    "created": "Created",
-    "pending": "Pending",
-    "running": "Running",
-    "stopped": "Stopped",
-    "failed": "Failed",
-    "completed": "Completed",
     "milliseconds": "Milliseconds",
     "seconds": "Seconds",
     "minutes": "Minutes",
@@ -1720,8 +1551,6 @@
     "iterationCount": "Iteration Count",
     "responseTime": "Response Time (Min | Mean | Max)",
     "responsePercentile": "Response Percentile (P50 | P90 | P99)",
-    "download": "Download",
-    "upload": "Upload",
     "aggregationResult": "Aggregation Result",
     "throughput": "Throughput",
     "concurrencyNumber": "Concurrency",
@@ -1767,20 +1596,13 @@
     "selectNode": "Select Node",
     "schedulingLog": "Scheduling Log",
     "lastSchedulingTime": "Last Scheduling Time",
-    "result": "Result",
-    "success": "Success",
-    "failure": "Failure",
     "exitCode": "Exit Code",
-    "export": "Export",
     "executionLog": "Execution Log",
     "file": "File",
-    "noAgentAccessInfo": "No agent access information, connection failed address: ",
-    "refresh": "Refresh"
+    "noAgentAccessInfo": "No agent access information, connection failed address: "
   },
   "xcan_execSetting": {
-    "modifySuccess": "Modified Successfully",
-    "save": "Save",
-    "cancel": "Cancel"
+    "modifySuccess": "Modified Successfully"
   },
   "xcan_execNodeData": {
     "executionNode": "Execution Node",
@@ -1848,18 +1670,10 @@
     "errorSampling": "Error Sampling",
     "time": "Time",
     "samplingId": "Sampling ID",
-    "name": "Name"
   },
   "xcan_execScriptInfo": {
     "scriptName": "Script Name",
     "scriptType": "Script Type",
-    "plugin": "Plugin",
-    "source": "Source",
-    "createdBy": "Created By",
-    "createdDate": "Created Date",
-    "lastModifiedBy": "Last Modified By",
-    "lastModifiedDate": "Last Modified Date",
-    "description": "Description",
     "pleaseSelectScriptType": "Please select script type",
     "pleaseEnterScriptName": "Please enter script name",
     "pleaseEnterScriptNamePlaceholder": "Please enter script name, maximum 200 characters",
@@ -1877,8 +1691,6 @@
     "size": "Size",
     "request": "Request",
     "response": "Response",
-    "upload": "Upload",
-    "download": "Download",
     "statusCode": "Status Code",
     "basic": "Basic",
     "requestBody": "Request Body",

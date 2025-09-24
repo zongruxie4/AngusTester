@@ -515,7 +515,7 @@ const dropdownClick = (menuItem: ActionMenuItem, data: TaskDetail, index: number
     return;
   }
 
-  if (key === 'favourite') {
+  if (key === 'addFavourite') {
     toFavourite(data, index, status);
     return;
   }
@@ -525,7 +525,7 @@ const dropdownClick = (menuItem: ActionMenuItem, data: TaskDetail, index: number
     return;
   }
 
-  if (key === 'follow') {
+  if (key === 'addFollow') {
     toFollow(data, index, status);
     return;
   }
@@ -1332,7 +1332,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           hide: false
         },
         {
-          name: t('task.kanbanView.actions.split'),
+          name: t('actions.split'),
           key: 'split',
           icon: 'icon-guanlianziyuan',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
@@ -1342,7 +1342,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (status === TaskStatus.PENDING) {
         menuItems.push({
-          name: t('task.kanbanView.actions.start'),
+          name: t('actions.start'),
           key: 'start',
           icon: 'icon-kaishi',
           disabled: !isAdmin && !isAssignee,
@@ -1363,7 +1363,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       if (confirmerId) {
         if (status === TaskStatus.CONFIRMING) {
           menuItems.push({
-            name: t('task.kanbanView.actions.completed'),
+            name: t('status.completed'),
             key: 'completed',
             icon: 'icon-yiwancheng',
             disabled: !isAdmin && !isConfirmer,
@@ -1371,7 +1371,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           });
 
           menuItems.push({
-            name: t('task.kanbanView.actions.uncompleted'),
+            name: t('status.notCompleted'),
             key: 'uncompleted',
             icon: 'icon-shibaiyuanyin',
             disabled: !isAdmin && !isConfirmer,
@@ -1382,7 +1382,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (status === TaskStatus.CANCELED || status === TaskStatus.COMPLETED) {
         menuItems.push({
-          name: t('task.kanbanView.actions.reopen'),
+          name: t('actions.reopen'),
           key: 'reopen',
           icon: 'icon-zhongxindakaiceshirenwu',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isAssignee,
@@ -1391,7 +1391,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
 
         menuItems.push({
-          name: t('task.kanbanView.actions.restart'),
+          name: t('actions.restart'),
           key: 'restart',
           icon: 'icon-zhongxinkaishiceshi',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.RESTART_TASK),
@@ -1413,7 +1413,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       const { favourite, follow } = item;
       if (favourite) {
         menuItems.push({
-          name: t('actions.unFavourite'),
+          name: t('actions.cancelFavourite'),
           key: 'cancelFavourite',
           icon: 'icon-quxiaoshoucang',
           disabled: false,
@@ -1421,8 +1421,8 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       } else {
         menuItems.push({
-          name: t('actions.favourite'),
-          key: 'favourite',
+          name: t('actions.addFavourite'),
+          key: 'addFavourite',
           icon: 'icon-yishoucang',
           disabled: false,
           hide: false
@@ -1431,7 +1431,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (follow) {
         menuItems.push({
-          name: t('actions.unFollow'),
+          name: t('actions.cancelFollow'),
           key: 'cancelFollow',
           icon: 'icon-quxiaoguanzhu',
           disabled: false,
@@ -1439,8 +1439,8 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       } else {
         menuItems.push({
-          name: t('actions.follow'),
-          key: 'follow',
+          name: t('actions.addFollow'),
+          key: 'addFollow',
           icon: 'icon-yiguanzhu',
           disabled: false,
           hide: false
@@ -1534,7 +1534,7 @@ onMounted(() => {
                     v-if="element.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5"
                     style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu scale-90">{{ t('task.table.status.overdue') }}</span>
+                    <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
                   </span>
                   <Dropdown
                     :menuItems="menuItemsMap.get(element.id)"
@@ -1680,7 +1680,7 @@ onMounted(() => {
                           v-if="element.overdue"
                           class="flex-shrink-0 border border-status-error rounded px-0.5"
                           style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                          <span class="inline-block transform-gpu scale-90">{{ t('task.table.status.overdue') }}</span>
+                          <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
                         </span>
                         <Dropdown
                           :menuItems="menuItemsMap.get(element.id)"

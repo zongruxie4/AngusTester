@@ -64,15 +64,15 @@ const columns = [
   },
   {
     dataIndex: 'enabled',
-    title: t('service.case.columns.enabled'),
-    customRender: ({ text }) => text ? t('service.case.enabled') : t('service.case.disabled')
+    title: t('service.case.columns.isEnabled'),
+    customRender: ({ text }) => text ? t('status.enabled') : t('status.disabled')
   },
   {
     dataIndex: 'description',
     title: t('service.case.columns.description'),
     ellipsis: true,
     width: '18%',
-    customRender: ({ text }) => text || '无'
+    customRender: ({ text }) => text || '--'
   },
   {
     dataIndex: 'createdByName',
@@ -98,7 +98,7 @@ const columns = [
   },
   {
     dataIndex: 'action',
-    title: t('service.case.columns.action'),
+    title: t('common.actions'),
     width: 230
   }
 ];
@@ -181,7 +181,7 @@ const cloneCase = async (item) => {
   if (error) {
     return;
   }
-  notification.success(t('tips.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   loadCaseData();
 };
 
@@ -193,7 +193,7 @@ const enabled = async (item) => {
   if (error) {
     return;
   }
-  notification.success(item.enabled ? t('tips.disabledSuccess') : t('tips.enabledSuccess'));
+  notification.success(item.enabled ? t('actions.tips.disabledSuccess') : t('actions.tips.enabledSuccess'));
   loadCaseData();
 };
 
@@ -294,7 +294,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="enabled(record)">
             <Icon icon="icon-qiyong" class="mr-1 text-3.5" />
-            <span>{{ record.enabled ? t('actions.disabled') : t('actions.enabled') }}</span>
+            <span>{{ record.enabled ? t('actions.disable') : t('actions.enable') }}</span>
           </Button>
           <Button
             :loading="delLoadingMap[record.id]"

@@ -245,7 +245,7 @@ const submitSchema = async () => {
   if (error) {
     return;
   }
-  notification.success(t('tips.saveSuccess'));
+  notification.success(t('actions.tips.saveSuccess'));
   emits('ok');
 };
 // const activeDrawerKey = ref('componnet');

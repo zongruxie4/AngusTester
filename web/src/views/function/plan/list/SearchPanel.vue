@@ -122,32 +122,32 @@ const sortMenuItems: {
 const menuItems = computed(() => [
   {
     key: '',
-    name: t('quickSearchTags.all')
+    name: t('quickSearch.all')
   },
   {
     key: 'ownerId',
-    name: t('quickSearchTags.myResponsible')
+    name: t('quickSearch.myResponsible')
   },
   {
     key: 'createdBy',
-    name: t('quickSearchTags.createdByMe')
+    name: t('quickSearch.createdByMe')
   },
   {
     key: 'lastModifiedBy',
-    name: t('quickSearchTags.modifiedByMe')
+    name: t('quickSearch.modifiedByMe')
   },
   ...planStatusOptions.value,
   {
     key: 'lastDay',
-    name: t('quickSearchTags.lastDay')
+    name: t('quickSearch.last1Day')
   },
   {
     key: 'lastThreeDays',
-    name: t('quickSearchTags.last3Days')
+    name: t('quickSearch.last3Days')
   },
   {
     key: 'lastWeek',
-    name: t('quickSearchTags.last7Days')
+    name: t('quickSearch.last7Days')
   }
 ]);
 
@@ -332,7 +332,7 @@ onMounted(() => {
         <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
 
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>{{ t('quickSearchTags.title') }}</span>
+          <span>{{ t('quickSearch.title') }}</span>
           <Colon />
         </div>
 
@@ -374,7 +374,7 @@ onMounted(() => {
           @click="handleSortChange">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
-            <span>{{ t('sort') }}</span>
+            <span>{{ t('actions.sort') }}</span>
           </div>
         </DropdownSort>
 

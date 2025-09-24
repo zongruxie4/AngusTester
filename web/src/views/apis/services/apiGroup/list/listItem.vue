@@ -60,10 +60,10 @@ const myButtonGroup = computed(() => {
     if (btn.key === 'cancelFavourite' && !props.item.favourite) {
       return null;
     }
-    if (btn.key === 'addWatch' && props.item.follow === true) {
+    if (btn.key === 'addFollow' && props.item.follow === true) {
       return null;
     }
-    if (btn.key === 'cancelWatch' && !props.item.follow) {
+    if (btn.key === 'cancelFollow' && !props.item.follow) {
       return null;
     }
     if (btn.key === 'testTask' && !proTypeShowMap.value.showTask) {
@@ -154,36 +154,36 @@ const getResultColor = (testFlag, testPassd = undefined) => {
               <span class="w-20">{{ t('service.apiList.template.testTask.funcTest') }}:</span>
               <div class="flex-1 min-w-0" :class="getResultColor(item.testFuncFlag, item.testFuncPassedFlag)">
                 {{ !item.testFuncFlag
-                  ? t('service.apiList.test.notEnabled')
+                  ? t('status.disabled')
                   : item.testFuncPassedFlag
                     ? t('service.apiList.test.passed')
                     : item.testFuncPassedFlag === false
                       ? t('service.apiList.test.unPassed')
-                      : t('service.apiList.test.notTested') }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span>
+                      : t('status.notTested') }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span>
               </div>
             </div>
             <div class="flex">
               <span class="w-20">{{ t('service.apiList.template.testTask.perfTest') }}:</span>
               <div class="flex-1 min-w-0" :class="getResultColor(item.testPerfFlag, item.testPerfPassedFlag)">
                 {{ !item.testPerfFlag
-                  ? t('service.apiList.test.notEnabled')
+                  ? t('status.disabled')
                   : item.testPerfPassedFlag
                     ? t('service.apiList.test.passed')
                     : item.testPerfPassedFlag === false
                       ? t('service.apiList.test.unPassed')
-                      : t('service.apiList.test.notTested') }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span>
+                      : t('status.notTested') }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span>
               </div>
             </div>
             <div class="flex">
               <span class="w-20">{{ t('service.apiList.template.testTask.stabilityTest') }}:</span>
               <div class="flex-1 min-w-0" :class="getResultColor(item.testStabilityFlag, item.testStabilityPassedFlag)">
                 {{ !item.testStabilityFlag
-                  ? t('service.apiList.test.notEnabled')
+                  ? t('status.disabled')
                   : item.testStabilityPassedFlag
                     ? t('service.apiList.test.passed')
                     : item.testStabilityPassedFlag === false
                       ? t('service.apiList.test.unPassed')
-                      : t('service.apiList.test.notTested') }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span>
+                      : t('status.notTested') }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span>
               </div>
             </div>
           </template>

@@ -137,7 +137,7 @@ watch(() => props.visible, (newVisible) => {
               size="small"
               @click="clearContent">
               <Icon icon="icon-qingchu" class="mr-1" />
-              {{ t('scriptHome.import.form.clear') }}
+              {{ t('actions.clear') }}
             </Button>
           </div>
 

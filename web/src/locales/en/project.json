@@ -1,6 +1,6 @@
 {
   "project": {
-    "name": "Project",
+    "title": "Project",
     "project": "Project",
     "addProject": "Add Project",
     "editProject": "Edit Project",
@@ -12,8 +12,6 @@
     "deleteSuccess": "Project deleted successfully",
     "searchPlaceholder": "Enter search keywords",
     "adminHint": "Only admin, creator, and owner can modify or delete projects.",
-    "sort": "Sort",
-    "refresh": "Refresh",
     "noDescription": "No description ~",
     "owner": "Owner",
     "members": "Members",
@@ -22,10 +20,6 @@
     "department": "Department",
     "group": "Group",
     "modifyTime": "Modified Time",
-    "edit": "Edit",
-    "delete": "Delete",
-    "myActivity": "My Activities",
-    "allActivity": "All Activities",
     "agileProjectManagement": "Agile Project",
     "sortByAddTime": "Sort by Add Time",
     "sortByCreator": "Sort by Creator",
@@ -37,6 +31,12 @@
     "projectNotExists": "Project does not exist or not joined",
     "searchProject": "Search project name",
     "projectNotFound": "Project not found",
+    "projectType": "Project Type",
+    "projectTypeName": {
+      "agile": "Agile Project",
+      "general": "General Project",
+      "testing": "Testing Project"
+    },
     "addProjectStep": {
       "title": "Add Project",
       "text": "Create the foundation for managing development and testing activities. Establish centralized planning, tracking, reporting, and acceptance workflows."
@@ -77,11 +77,6 @@
           "scenarios": "Ideal for: QA teams managing specialized testing projects"
         }
       },
-      "projectTypeName": {
-        "agile": "Agile Project",
-        "general": "General Project",
-        "testing": "Testing Project"
-      },
       "validation": {
         "maxCharacters": "Cannot exceed 2000 characters"
       },
@@ -97,7 +92,6 @@
         "owner": "Owner",
         "ownerPlaceholder": "Please select project owner",
         "ownerDescription": "Project owners clarify responsibilities and rights, enabling better progress control, problem resolution, and team collaboration.",
-        "importExample": "Example",
         "importExampleDescription": "Import sample business data to quickly familiarize with AngusTester features and functionality.",
         "projectMembers": "Members",
         "membersDescription": "Define project participants who will automatically receive project data permissions for seamless team collaboration.",
@@ -111,17 +105,8 @@
         "descriptionPlaceholder": "Describe your project goals, scope, and key details..., maximum 2000 characters"
       },
       "actions": {
-        "save": "Save",
-        "cancel": "Cancel",
         "clickToReplaceIcon": "Upload Icon",
         "uploadIcon": "Upload Icon"
-      },
-      "tabs": {
-        "projectType": "Project Type",
-        "basicInfo": "Basic Information",
-        "module": "Software Modules",
-        "version": "Software Version",
-        "tag": "Data Tags"
       }
     },
     "projectDetail": {
@@ -139,20 +124,9 @@
           "scenarios": "Ideal for: QA teams managing specialized testing projects"
         }
       },
-      "projectTypeName": {
-        "agile": "Agile Project",
-        "general": "General Project",
-        "testing": "Testing Project"
-      },
       "messages": {
         "updateSuccess": "Project updated successfully",
         "addSuccess": "Project added successfully"
-      },
-      "tabs": {
-        "basicInfo": "Basic Information",
-        "module": "Module",
-        "version": "Version",
-        "tag": "Tag"
       },
       "form": {
         "projectName": "Name",
@@ -181,11 +155,6 @@
           "scenarios": "Ideal for: QA teams managing specialized testing projects"
         }
       },
-      "projectTypeName": {
-        "agile": "Agile Project",
-        "general": "General Project",
-        "testing": "Testing Project"
-      },
       "validation": {
         "maxCharacters": "Cannot exceed 2000 characters",
         "timeRequired": "Please enter time",
@@ -200,7 +169,6 @@
         "addProject": "Add Project"
       },
       "form": {
-        "name": "Name",
         "projectNamePlaceholder": "A brief project name, maximum 100 characters",
         "timePlan": "Time",
         "time": "Time",
@@ -208,10 +176,7 @@
         "owner": "Owner",
         "ownerDescription": "Project owners clarify responsibilities and rights, enabling better progress control, problem resolution, and team collaboration.",
         "ownerPlaceholder": "Please select project owner",
-        "importExample": "Example",
         "importExampleDescription": "Import sample business data to quickly familiarize with AngusTester features and functionality.",
-        "yes": "Yes",
-        "no": "No",
         "members": "Members",
         "user": "User",
         "department": "Department",
@@ -227,17 +192,13 @@
     }
   },
   "version": {
-    "name": "Version",
-    "title": "Version Management",
+    "title": "Version",
     "placeholder": {
       "searchKeyword": "Please enter search keyword"
     },
     "actions": {
       "addVersion": "Add Version",
-      "edit": "Edit",
-      "delete": "Delete",
-      "merge": "Merge Versions",
-      "refresh": "Refresh"
+      "merge": "Merge Versions"
     },
     "messages": {
       "deleteConfirm": "Confirm deletion of version 「{name}」?",
@@ -254,15 +215,13 @@
     "columns": {
       "version": "Version",
       "status": "Status",
-      "progress": "Progress",
       "startDate": "Start Date",
       "releaseDate": "Release Date",
       "description": "Description",
       "lastModifier": "Last Modifier",
       "creator": "Creator",
       "lastModifyTime": "Last Modify Date",
-      "createTime": "Created Date",
-      "actions": "Actions"
+      "createTime": "Created Date"
     },
     "form": {
       "editVersion": "Edit Version",
@@ -287,8 +246,6 @@
       "noReleaseDate": "No release date set",
       "chart": {
         "subtext": "Task Completion Progress",
-        "uncompleted": "Uncompleted",
-        "completed": "Completed",
         "workload": "Workload Completion Progress"
       }
     },
@@ -298,30 +255,10 @@
       "noDescription": "No description~"
     },
     "taskTable": {
-      "tabs": {
-        "current": "Current Version",
-        "completed": "Completed",
-        "processing": "Processing",
-        "confirming": "Confirming",
-        "pending": "Pending",
-        "canceled": "Canceled"
-      },
+      "currentVersion": "Current Version",
       "units": {
         "tasks": "tasks",
         "task": "task"
-      },
-      "columns": {
-        "code": "Code",
-        "name": "Name",
-        "sprint": "Sprint",
-        "priority": "Priority",
-        "assignee": "Assignee",
-        "confirmer": "Confirmer",
-        "deadline": "Deadline"
-      },
-      "messages": {
-        "noData": "No data",
-        "overdue": "Overdue"
       }
     },
     "searchPanel": {
@@ -338,8 +275,7 @@
       },
       "actions": {
         "addVersion": "Add Version",
-        "mergeVersion": "Merge Version",
-        "refresh": "Refresh"
+        "mergeVersion": "Merge Version"
       }
     },
     "introduce": {
@@ -375,16 +311,7 @@
     "noModulesDescription": "You haven't added any modules yet.",
     "moduleNamePlaceholder": "Please enter module name",
     "addModuleHint": "Press Enter or lose focus to save. Double-click existing modules to edit.",
-    "refresh": "Refresh",
-    "cancel": "Cancel",
     "newSubModule": "New Sub-module",
-    "moveUp": "Move to Upper Level",
-    "moveUpOne": "Move Up",
-    "moveDown": "Move Down",
-    "move": "Move",
-    "edit": "Edit",
-    "delete": "Delete",
-    "loadMore": "Load More",
     "moveModule": "Move Module",
     "addModuleTitle": "Add Module",
     "addSuccess": "Module added successfully",
@@ -403,9 +330,6 @@
     "addTag": "Add Tag",
     "noTagsDescription": "You haven't added any tags yet.",
     "tagNamePlaceholder": "Please enter tag name",
-    "refresh": "Refresh",
-    "cancel": "Cancel",
-    "loadMore": "Load More",
     "addTagTitle": "Add Tag",
     "addSuccess": "Tag added successfully",
     "updateSuccess": "Updated successfully",
@@ -413,7 +337,7 @@
     "confirmDelete": "Are you sure you want to delete tag 「{name}」?"
   },
   "projectActivity": {
-    "name": "Activity",
+    "title": "Activity",
     "table": {
       "operator": "Operator",
       "activityTime": "Activity Time",
@@ -443,23 +367,15 @@
         "activityTimeFrom": "Start Date",
         "activityTimeTo": "End Date"
       },
-      "quickQuery": {
-        "all": "All",
-        "myActivity": "My Activities",
-        "last1Day": "Last Day",
-        "last3Days": "Last 3 Days",
-        "last7Days": "Last Week"
-      },
       "ui": {
         "quickQuery": "Quick Query",
         "hideStatistics": "Hide Statistics",
-        "viewStatistics": "View Statistics",
-        "refresh": "Refresh"
+        "viewStatistics": "View Statistics"
       }
     }
   },
   "projectTrash": {
-    "name": "Trash",
+    "title": "Trash",
     "messages": {
       "recoverAllSuccess": "All items recovered successfully",
       "deleteAllSuccess": "All items deleted successfully",
@@ -467,18 +383,12 @@
       "deleteSuccess": "Item deleted successfully"
     },
     "table": {
-      "name": "Name",
       "creator": "Creator",
       "deleter": "Deleter",
-      "deleteTime": "Delete Time",
-      "actions": "Actions"
+      "deleteTime": "Delete Time"
     },
     "stats": {
       "items": "Items"
-    },
-    "filters": {
-      "title": "Filter",
-      "all": "All"
     },
     "empty": {
       "description": "No projects in trash",
@@ -486,15 +396,10 @@
     },
     "ui": {
       "searchPlaceholder": "Please enter search keywords",
-      "adminHint": "Only administrators and deleter can recover or permanently delete trash data.",
-      "recoverAll": "Recover All",
-      "deleteAll": "Delete All",
-      "refresh": "Refresh",
-      "recover": "Recover",
-      "delete": "Delete"
+      "adminHint": "Only administrators and deleter can recover or permanently delete trash data."
     }
   },
   "AI": {
-    "name": "AI Assistant"
+    "title": "AI Assistant"
   }
 }

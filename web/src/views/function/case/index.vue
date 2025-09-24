@@ -12,7 +12,7 @@ import { CaseDetail } from '@/views/function/types';
 
 const { t } = useI18n();
 
-export type CaseActionAuth = 'edit'| 'debug' | 'review' | 'clone' | 'move' | 'delete' | 'updateTestResult_passed' | 'updateTestResult_notPassed' | 'updateTestResult_blocked' | 'updateTestResult_canceled' | 'resetTestResult' | 'resetReviewResult' | 'retestResult' | 'copy' | 'favourite' | 'follow' | 'copyUrl'
+export type CaseActionAuth = 'edit'| 'debug' | 'review' | 'clone' | 'move' | 'delete' | 'updateTestResult_passed' | 'updateTestResult_notPassed' | 'updateTestResult_blocked' | 'updateTestResult_canceled' | 'resetTestResult' | 'resetReviewResult' | 'retestResult' | 'copy' | 'addFavourite' | 'addFollow' | 'copyUrl'
 
 const CaseList = defineAsyncComponent(() => import('@/views/function/case/list/index.vue'));
 const CaseInfo = defineAsyncComponent(() => import('@/views/function/case/detail/index.vue'));
@@ -77,11 +77,11 @@ const updateCaseTab = async (value) => {
 };
 
 const favoriteFollowRef = ref(null);
-const updateFollowFavourite = (type: 'follow' | 'favourite') => {
+const updateFollowFavourite = (type: 'addFollow' | 'addFavourite') => {
   if (!favoriteFollowRef.value) {
     return;
   }
-  if (type === 'follow') {
+  if (type === 'addFollow') {
     favoriteFollowRef.value.followNotify++;
     return;
   }
@@ -162,10 +162,10 @@ const handleDetailAction = (type: CaseActionAuth, value: CaseDetail, tabInfo) =>
     case 'resetReviewResult':
       handleResetReviewResult(value);
       break;
-    case 'favourite':
+    case 'addFavourite':
       handleFavourite(value);
       break;
-    case 'follow':
+    case 'addFollow':
       handleFollow(value);
       break;
   }
@@ -189,7 +189,7 @@ const handleFavourite = async (rowData: CaseDetail) => {
     ? t('functionCase.cancelFavouriteSuccess')
     : t('functionCase.favouriteSuccess'));
   rowData.favourite = !rowData.favourite;
-  updateFollowFavourite('favourite');
+  updateFollowFavourite('addFavourite');
 };
 
 // 关注
@@ -212,7 +212,7 @@ const handleFollow = async (rowData: CaseDetail) => {
     ? t('functionCase.cancelFollowSuccess')
     : t('functionCase.followSuccess'));
   rowData.follow = !rowData.follow;
-  updateFollowFavourite('follow');
+  updateFollowFavourite('addFollow');
 };
 
 // 编辑用例

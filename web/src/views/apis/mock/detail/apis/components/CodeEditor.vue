@@ -181,7 +181,7 @@ defineExpose({
           type="link"
           size="small"
           @click="clearContent">
-          <span>{{ t('mock.detail.apis.components.codeEditor.clear') }}</span>
+          <span>{{ t('actions.clear') }}</span>
         </Button>
       </div>
     </div>

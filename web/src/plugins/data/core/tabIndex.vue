@@ -188,19 +188,19 @@ watch(() => props.params, (newValue) => {
         type="primary"
         size="small"
         @click="viewScript">
-        {{ t('genDataPlugin.actions.view') }}
+        {{ t('actions.view') }}
       </Button>
       <Button
         type="primary"
         size="small"
         @click="generateScript">
-        {{ t('genDataPlugin.actions.save') }}
+        {{ t('actions.save') }}
       </Button>
       <Button
         type="primary"
         size="small"
         @click="generatedata">
-        {{ t('genDataPlugin.actions.add') }}
+        {{ t('actions.add') }}
       </Button>
       <Button size="small" @click="cancel">{{ t('genDataPlugin.actions.cancel') }}</Button>
     </div>

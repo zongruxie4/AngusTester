@@ -229,7 +229,7 @@ watch(
             </Button>
           </Tooltip>
 
-          <Tooltip :title="t('functionTrash.actions.delete')">
+          <Tooltip :title="t('actions.delete')">
             <Button
               :disabled="!canPerformActions(record)"
               type="text"

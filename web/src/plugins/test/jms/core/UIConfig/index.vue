@@ -344,13 +344,13 @@ const selectOptions = [
                         :checked="dataMap[id].enabled"
                         size="small"
                         @change="enabledChange(id, $event)" />
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('jmsPlugin.uiConfig.clone')">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('actions.clone')">
                         <Icon
                           icon="icon-fuzhi"
                           class="text-3.5"
                           @click="actionClick(id, 'clone')" />
                       </div>
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('jmsPlugin.uiConfig.delete')">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('actions.delete')">
                         <Icon
                           icon="icon-qingchu"
                           class="text-3.5"

@@ -110,7 +110,7 @@ const pageNo = route.query.pageNo;
               <Icon
                 icon="icon-huifu"
                 class="mr-1 -mt-0.5 text-3" />
-              {{ t('execution.info.start') }}
+              {{ t('actions.start') }}
             </Button>
           </template>
           <template
@@ -125,7 +125,7 @@ const pageNo = route.query.pageNo;
               <Icon
                 icon="icon-jinyong"
                 class="mr-1 -mt-0.5 text-3" />
-              {{ t('execution.info.stop') }}
+              {{ t('actions.stop') }}
             </Button>
           </template>
           <template v-if="detail?.hasOperationPermission">
@@ -150,7 +150,7 @@ const pageNo = route.query.pageNo;
             <Icon
               icon="icon-fanhui"
               class="mr-1 -mt-0.5 text-3" />
-            {{ t('execution.info.back') }}
+            {{ t('actions.back') }}
           </Button>
         </RouterLink>
       </template>

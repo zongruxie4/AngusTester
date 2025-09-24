@@ -35,14 +35,14 @@ const activityResourceTypes = [
   <div class="bg-white rounded px-5" style="height: 520px">
     <Tabs size="small" class="h-full">
       <!-- All Activities Tab: Shows activities for all users in the project -->
-      <TabPane key="total" :tab="t('taskHome.allActivities')">
+      <TabPane key="total" :tab="t('home.allActivity')">
         <ActivityTimeline
           :types="activityResourceTypes as any"
           :projectId="props.projectId" />
       </TabPane>
 
       <!-- My Activities Tab: Shows activities for the current user only -->
-      <TabPane key="my" :tab="t('taskHome.myActivities')">
+      <TabPane key="my" :tab="t('home.myActivity')">
         <ActivityTimeline
           :types="activityResourceTypes as any"
           :userId="props.userInfo?.id"

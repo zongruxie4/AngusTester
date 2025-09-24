@@ -40,11 +40,15 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a5" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.5') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.subTask.title') }}</span>
+      <span id="a5" class="text-4 text-theme-title font-medium">
+        {{ t('reportPreview.serial.5') }}
+        <em class="inline-block w-0.25"></em>
+        {{ t('reportPreview.task.subTask.title') }}
+      </span>
     </h1>
 
     <div v-if="len>0" class="flex space-x-2 text-3.5 font-semibold">
-      <span>{{ t('reportPreview.task.subTask.progress') }} {{ (subTaskProgress?.completedRate || 0) + '%' }}</span>
+      <span>{{ t('common.progress') }} {{ (subTaskProgress?.completedRate || 0) + '%' }}</span>
       <Progress
         :percent="subTaskProgress?.completedRate"
         size="small"
@@ -56,27 +60,27 @@ const len = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-37 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.subTask.fields.id') }}
+          {{ t('common.id') }}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.subTask.fields.code') }}
+          {{ t('common.code') }}
         </div>
         <div
           class="w-19 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.subTask.fields.type') }}
+          {{ t('common.type') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.subTask.fields.name') }}
+          {{ t('common.name') }}
         </div>
         <div
           class="w-20 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.subTask.fields.status') }}
+          {{ t('common.status') }}
         </div>
         <div
           class="w-20 flex items-center bg-blue-table px-1.5 py-1.5">
-          {{ t('reportPreview.task.subTask.fields.assignee') }}
+          {{ t('common.assignee') }}
         </div>
       </div>
 
@@ -106,7 +110,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">{{ t('reportPreview.task.subTask.noData') }}</div>
+    <div v-else class="content-text-container">{{ t('common.noData') }}</div>
   </div>
 </template>
 

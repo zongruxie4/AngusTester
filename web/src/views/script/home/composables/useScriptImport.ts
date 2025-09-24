@@ -167,7 +167,7 @@ export function useScriptImport () {
         return;
       }
 
-      notification.success(t('tips.importSuccess'));
+      notification.success(t('actions.tips.importSuccess'));
       handleCancel();
       callback();
     } catch (error) {

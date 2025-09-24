@@ -61,7 +61,7 @@ const echartOption = {
   },
   series: [
     {
-      name: t('reportPreview.sprint.assigneeSummary.burndownChart.remaining'),
+      name: t('chart.burndown.remaining'),
       data: [],
       type: 'line',
       itemStyle: {
@@ -73,7 +73,7 @@ const echartOption = {
       areaStyle: {}
     },
     {
-      name: t('reportPreview.sprint.assigneeSummary.burndownChart.expected'),
+      name: t('chart.burndown.expected'),
       data: [],
       type: 'line',
       smooth: true,

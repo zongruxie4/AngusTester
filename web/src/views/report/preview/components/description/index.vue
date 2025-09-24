@@ -49,11 +49,11 @@ const percent = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-40 flex-shrink-0 flex items-center justify-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.description.progress') }}
+          {{ t('common.progress') }}
         </div>
         <div
           class="w-24 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.description.description') }}
+          {{ t('common.description') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-solid border-border-input">
           {{ report?.description }}

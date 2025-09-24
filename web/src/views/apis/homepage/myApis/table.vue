@@ -258,7 +258,7 @@ const columns = computed(() => {
     width?: string | number;
     actionKey?: 'favouriteBy' | 'followBy';
   } = {
-    title: t('apis.myApis.columns.action'),
+    title: t('common.actions'),
     dataIndex: 'action',
     width: 50
   };
@@ -351,7 +351,7 @@ const emptyTextStyle = {
           <div v-else-if="column.dataIndex === 'action'">
             <template v-if="column.actionKey === 'favouriteBy'">
               <Button
-                :title="t('actions.unFavourite')"
+                :title="t('actions.cancelFavourite')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -362,7 +362,7 @@ const emptyTextStyle = {
 
             <template v-else-if="column.actionKey === 'followBy'">
               <Button
-                :title="t('actions.unfollow')"
+                :title="t('actions.cancelFollow')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"

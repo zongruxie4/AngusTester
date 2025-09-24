@@ -1539,7 +1539,7 @@ const sortMenuItems = [
               size="small"
               @change="handleOverdueFilterToggle">
             </Switch>
-            <span>{{ t('task.searchPanel.overdue') }}</span>
+            <span>{{ t('status.overdue') }}</span>
           </div>
 
           <div class="inline-flex items-center mr-3 mb-3 space-x-1">
@@ -1631,7 +1631,7 @@ const sortMenuItems = [
                 type="text"
                 class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                 <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                <span class="ml-1">{{ t('sort') }}</span>
+                <span class="ml-1">{{ t('actions.sort') }}</span>
               </Button>
             </DropdownSort>
 
@@ -1644,7 +1644,7 @@ const sortMenuItems = [
                 type="text"
                 class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                 <Icon icon="icon-fenzu" class="text-3.5" />
-                <span class="ml-1">{{ t('group') }}</span>
+                <span class="ml-1">{{ t('actions.group') }}</span>
               </Button>
             </DropdownGroup>
           </template>
@@ -1854,7 +1854,7 @@ const sortMenuItems = [
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="props.collapse ? t('task.list.actions.collapse') : t('task.list.actions.expand')">
+          :title="props.collapse ? t('actions.collapse') : t('actions.expand')">
           <IconCount
             :value="!props.collapse"
             class="text-4 flex-shrink-0"
@@ -1864,7 +1864,7 @@ const sortMenuItems = [
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="t('task.list.actions.refresh')">
+          :title="t('actions.refresh')">
           <IconRefresh class="text-4 flex-shrink-0" @click="refreshSearchResults" />
         </Tooltip>
       </div>

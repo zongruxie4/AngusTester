@@ -56,7 +56,7 @@ export function useTrashActions (projectId: string | Ref<string>) {
         throw error;
       }
 
-      notification.success(t('tips.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       triggerRefresh();
       return true;
     } catch (error) {

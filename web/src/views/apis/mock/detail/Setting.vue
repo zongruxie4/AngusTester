@@ -114,11 +114,11 @@ const securityFormRef = ref();
             <template v-if="editName">
               <a
                 class="text-text-link text-3 leading-3"
-                @click="handleEdit('name','cancel','infoForm')">{{ t('mock.detail.buttons.cancel') }}</a>
+                @click="handleEdit('name','cancel','infoForm')">{{ t('actions.cancel') }}</a>
               <Divider type="vertical" />
               <a
                 class="text-text-link text-3 leading-3"
-                @click="handleEdit('name','save','infoForm')">{{ t('mock.detail.buttons.confirm') }}</a>
+                @click="handleEdit('name','save','infoForm')">{{ t('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -151,9 +151,9 @@ const securityFormRef = ref();
           :disabled="!editServiceDomain">
           <template v-if="editionType !== EditionType.CLOUD_SERVICE && hasEditAuth" #suffix>
             <template v-if="editServiceDomain">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','cancel','infoForm')">{{ t('mock.detail.buttons.cancel') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','cancel','infoForm')">{{ t('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','save','infoForm')">{{ t('mock.detail.buttons.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','save','infoForm')">{{ t('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -583,7 +583,7 @@ const securityFormRef = ref();
       <FormItem name="enabled" class="w-150">
         <template #label>
           <div class="flex items-center" @click.prevent>
-            <span>{{ t('mock.detail.cors.enabled') }}</span>
+            <span>{{ t('status.enabled') }}</span>
             <Tooltip
               :title="t('mock.detail.cors.enabledTooltip')"
               placement="topLeft"
@@ -622,9 +622,9 @@ const securityFormRef = ref();
             :disabled="!editOrigin">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editOrigin">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','cancel','apisCorsForm')">{{ t('mock.detail.buttons.cancel') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','cancel','apisCorsForm')">{{ t('actions.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','save','apisCorsForm')">{{ t('mock.detail.buttons.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','save','apisCorsForm')">{{ t('actions.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon

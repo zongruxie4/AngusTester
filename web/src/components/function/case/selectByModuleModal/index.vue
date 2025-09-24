@@ -82,24 +82,24 @@ const handleFilter = debounce(duration.search, () => {
 
 const columns = [
   {
-    title: t('commonComp.selectCaseByModule.code'),
+    title: t('common.code'),
     dataIndex: 'code'
   },
   {
-    title: t('commonComp.selectCaseByModule.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     width: '40%'
   },
   {
-    title: t('commonComp.selectCaseByModule.reviewStatus'),
+    title: t('common.reviewStatus'),
     dataIndex: 'reviewStatus'
   },
   {
-    title: t('commonComp.selectCaseByModule.testResult'),
+    title: t('common.testResult'),
     dataIndex: 'testResult'
   },
   {
-    title: t('commonComp.selectCaseByModule.tester'),
+    title: t('common.tester'),
     dataIndex: 'testerName'
   }
 ];

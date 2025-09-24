@@ -79,7 +79,7 @@ const burnDownCharts = computed(() => {
       <div class="flex items-center space-x-7">
         <Progress
           :percent="percent"
-          :text="t('reportPreview.sprint.taskSummary.summary.fields.progress')"
+          :text="t('common.progress')"
           class="ml-4" />
         <div class="flex-1 border border-solid border-border-input">
           <div class="flex border-b border-solid border-border-input">
@@ -231,7 +231,7 @@ const burnDownCharts = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a2.2">2.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.taskSummary.burndownChart.title') }}</span>
+        <span id="a2.2">2.2<em class="inline-block w-3.5"></em>{{ t('chart.burndown.title') }}</span>
       </h2>
       <BurnDownChart :dataSource="burnDownCharts" />
     </div>

@@ -210,7 +210,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showRealValue" />
-          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('real')">{{ t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.view') }}</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('real')">{{ t('actions.view') }}</div>
         </div>
       </template>
 
@@ -236,7 +236,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showExpectedValue" />
-          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.view') }}</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('actions.view') }}</div>
         </div>
       </template>
 
@@ -247,7 +247,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 
     <template v-if="assertionIgnored">
       <DescriptionsItem :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.assertionResult')" :span="3">
-        <Badge status="default" :text="t('jdbcPlugin.FunctionTestDetailJdbc.assertionStatus.ignored')" />
+        <Badge status="default" :text="t('status.ignored')" />
       </DescriptionsItem>
     </template>
 

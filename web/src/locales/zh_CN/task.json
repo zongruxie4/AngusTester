@@ -1,438 +1,67 @@
 {
-  "taskAnalysis": {
-    "name": "分析",
-    "title": "分析",
-    "addAnalysis": "添加分析",
-    "editAnalysis": "编辑分析",
-    "aboutAnalysis": "关于分析",
-    "aboutAnalysisDesc": "提供实时任务数据分析，支持数据驱动决策，确保信息透明，增强团队协作和问题追踪，提升项目管理效率。AngusTester内置燃尽图、积压任务、风险评估等分析模板，帮助快速查看仪表板和关键指标（KPI），用户也可根据业务需求自定义分析仪表板。",
-    "addedAnalysis": "已添加的分析",
-    "notCreatedYet": "还未创建，点击创建",
-    "createdAt": "创建于",
-    "lastModifiedBy": "最后修改于",
-    "realTime": "实时",
-    "snapshot": "快照",
-    "charts": "图表",
-    "details": "明细",
-    "today": "今天",
-    "lastWeek": "近一周",
-    "lastMonth": "近一月",
-    "sortByCreator": "按添加人排序",
-    "sortByCreateTime": "按添加时间排序",
-    "createTimeFrom": "添加时间从",
-    "createTimeTo": "添加时间到",
-    "searchNameDesc": "查询名称、描述",
-    "selectCreator": "选择添加人",
-    "all": "全部分析",
-    "columns": {
-      "name": "名称",
-      "template": "模版",
-      "description": "描述",
-      "object": "分析对象",
-      "timeRange": "分析期间",
-      "dataSource": "数据展示",
-      "createdBy": "创建人",
-      "createdDate": "创建时间",
-      "actions": "操作"
+  "taskHome": {
+    "backlogName": "待办",
+    "welcomeToAngusTask": "关于AngusTester问题",
+    "taskDescription": "问题管理可以帮助团队高效协作，跟踪项目进展，确保按时交付。通过系统化的任务分配、进度监控和团队协作机制，实现项目目标的可视化管理和持续优化。",
+    "workItem1": "通过迭代规划项目活动和排期；",
+    "workItem2": "明确责任人，高效分配和协作任务；",
+    "workItem3": "实时监控项目健康度和进展趋势。",
+    "myTasks": "我的任务",
+    "myActivities": "我的活动",
+    "allActivities": "所有活动",
+    "resourceStatistics": "资源统计",
+    "myCreation": "我添加的",
+    "taskCount": "任务数",
+    "workload": "工作量",
+    "workloadLabel": "工作量",
+    "remainingLabel": "剩余",
+    "last7Days": "近7天",
+    "last30Days": "近30天",
+    "backlog": "Backlog",
+    "sprint": "迭代",
+    "task": "任务",
+    "meeting": "会议",
+    "addedTable": {
+      "pagination": "第{current}/{total}页",
+      "noDataText": "暂无数据",
+      "emptyStates": {
+        "noCreatedTasks": "您尚未添加任何任务，立即",
+        "addTask": "添加任务",
+        "noPendingTasks": "您没有待处理的任务",
+        "noConfirmingTasks": "您没有待确认的任务",
+        "noCompletedTasks": "您没有已完成的任务",
+        "noFollowedTasks": "您没有关注的任务",
+        "noFavouriteTasks": "您没有收藏的任务",
+        "noCommentTasks": "您没有评论的任务"
+      },
+      "messages": {
+        "confirmDelete": "确定删除任务「{name}」吗？",
+        "deleteSuccess": "删除任务成功",
+        "unfavoriteSuccess": "任务取消收藏成功",
+        "unfollowSuccess": "任务取消关注成功"
+      }
     },
-    "placeholder": {
-      "inputAnalysisName": "输入分析名称，最多可输入100字符",
-      "inputAnalysisDesc": "输入分析描述，如分析的目的、背景等，最多支持200字符",
-      "selectSprint": "选择或查询迭代",
-      "selectUser": "选择用户",
-      "selectDept": "选择部门",
-      "selectGroup": "选择组"
-    },
-    "messages": {
-      "confirmDelete": "确认删除分析「{name}」吗？",
-      "confirmUpdateSnapshot": "确认更新分析「{name}」的快照内容吗？",
-      "deleteSuccess": "删除成功",
-      "updateSuccess": "更新成功",
-      "addSuccess": "添加分析成功",
-      "editSuccess": "修改分析成功",
-      "templateRequired": "请选择分析模版",
-      "nameRequired": "请输入分析名称",
-      "objectRequired": "请选择分析对象",
-      "timeRangeRequired": "请选择分析期间",
-      "dataSourceRequired": "请选择数据展示方式",
-      "iterationRequired": "请选择迭代",
-      "orgRequired": "请选择组织"
-    },
-    "form": {
-      "template": "分析模版",
-      "name": "分析名称",
-      "description": "分析描述",
-      "object": "分析对象",
-      "selectSprint": "选择迭代",
-      "selectOrg": "选择组织",
-      "timeRange": "分析期间",
-      "dataSource": "数据展示",
-      "containsUserAnalysis": "包含经办人分析",
-      "containsDataDetail": "包含数据明细"
-    },
-    "dataSource": {
-      "realTime": "实时数据",
-      "snapshot": "保存数据快照"
-    },
-    "orgType": {
-      "dept": "部门",
-      "group": "组",
-      "user": "用户"
-    },
-    "objectType": {
-      "currentProject": "当前项目",
-      "plan": "指定迭代",
-      "testerOrg": "指定组织"
-    },
-    "detail": {
-      "backlogTasks": {
-        "total": "总共",
-        "chartLabels": {
-          "backlogAmount": "积压量",
-          "totalAmount": "总量",
-          "taskCount": "任务数",
-          "workload": "工作量",
-          "backlogTaskRatio": "积压任务占比",
-          "backlogWorkloadRatio": "积压工作量占比",
-          "unbacklogged": "未积压",
-          "backlogged": "积压",
-          "unbackloggedWorkload": "未积压工作量",
-          "backloggedWorkload": "积压工作量",
-          "uncompleted": "未完成",
-          "completed": "已完成"
-        },
-        "statistics": {
-          "backlogWorkloadEstimatedTime": "积压工作量预计耗时",
-          "hours": "小时",
-          "averageDailyProcessedTasks": "每天平均处理任务数",
-          "averageDailyProcessedWorkload": "平均每天处理工作量"
-        }
+    "summary": {
+      "taskTypes": {
+        "story": "故事",
+        "task": "任务",
+        "bug": "缺陷",
+        "requirement": "需求",
+        "apiTest": "接口测试",
+        "scenarioTest": "场景测试"
       },
-      "bugs": {
-        "total": "总共",
-        "chartLabels": {
-          "totalBugs": "总缺陷",
-          "validBugs": "有效缺陷",
-          "invalidBugs": "无效缺陷",
-          "missingBugs": "漏测缺陷",
-          "criticalBugs": "致命",
-          "majorBugs": "严重",
-          "minorBugs": "一般",
-          "trivialBugs": "轻微",
-          "nonBugWorkload": "非缺陷工作量",
-          "bugWorkload": "缺陷工作量",
-          "nonMissingBugs": "非漏测缺陷数",
-          "missingBugsCount": "漏测缺陷数",
-          "uncompleted": "未完成",
-          "completed": "已完成"
-        },
-        "chartTitles": {
-          "bugCount": "缺陷数",
-          "bugLevel": "缺陷等级",
-          "validBugRatio": "有效缺陷占比",
-          "missingBugRatio": "漏测缺陷占比",
-          "bugWorkloadRatio": "缺陷工作量占比"
-        },
-        "pieChartLabels": {
-          "criticalCount": "致命数",
-          "majorCount": "严重数",
-          "minorCount": "一般数",
-          "trivialCount": "轻微数"
-        }
+      "taskCount": {
+        "totalTasks": "总任务"
       },
-      "burndown": {
-        "total": "总共",
-        "chartLabels": {
-          "remaining": "剩余",
-          "expected": "期望"
-        },
-        "chartTitles": {
-          "taskBurndown": "任务燃尽数",
-          "workloadBurndown": "工作量燃尽"
-        }
+      "sprintCount": {
+        "totalSprints": "总迭代"
       },
-      "coreKpi": {
-        "total": "总共",
-        "chartLabels": {
-          "taskCount": "任务数",
-          "workload": "工作量",
-          "overdueCount": "逾期数",
-          "bugCount": "缺陷数",
-          "completedCount": "完成量",
-          "totalCount": "总量",
-          "uncompletedTaskCount": "未完成任务数",
-          "completedTaskCount": "完成任务数",
-          "uncompletedWorkload": "未完成工作量",
-          "completedWorkload": "完成工作量",
-          "uncompletedOverdueCount": "未完成逾期数",
-          "completedOverdueCount": "完成逾期数",
-          "uncompletedBugCount": "未完成缺陷数",
-          "completedBugCount": "完成缺陷数"
-        },
-        "chartTitles": {
-          "coreKpi": "核心指标",
-          "completedTaskRatio": "完成任务占比",
-          "completedWorkloadRatio": "一次完成任务占比",
-          "completedOverdueRatio": "逾期逾期数占比",
-          "completedBugRatio": "完成缺陷占比"
-        }
-      },
-      "failures": {
-        "total": "总共",
-        "chartLabels": {
-          "totalFailures": "总故障",
-          "completedFailures": "完成数",
-          "overdueFailures": "逾期数",
-          "oneTimeFailures": "一次性故障",
-          "twoTimeFailures": "两次故障",
-          "totalFailureTime": "总时间",
-          "averageFailureTime": "平均时间",
-          "minFailureTime": "最小时间",
-          "maxFailureTime": "最大时间",
-          "criticalFailures": "致命",
-          "majorFailures": "严重",
-          "minorFailures": "一般",
-          "trivialFailures": "轻微"
-        },
-        "chartTitles": {
-          "failureCount": "故障数",
-          "failureTime": "故障时间(小时)",
-          "failureLevel": "故障等级"
-        },
-        "pieChartLabels": {
-          "criticalCount": "致命数",
-          "majorCount": "严重数",
-          "minorCount": "一般数",
-          "trivialCount": "轻微数"
-        }
-      },
-      "handlingEfficiency": {
-        "total": "总共",
-        "chartLabels": {
-          "completedTaskCount": "完成任务数",
-          "oneTimeCompletedCount": "一次性完成数",
-          "twoTimeCompletedCount": "两次完成数",
-          "uncompletedTaskCount": "未完成任务数",
-          "completedTaskCount2": "完成任务数",
-          "oneTimeUncompletedTaskCount": "一次性未完成任务数",
-          "oneTimeCompletedTaskCount": "一次性完成任务数",
-          "twoTimeUncompletedTaskCount": "两次未完成任务数",
-          "twoTimeCompletedTaskCount": "两次完成任务数"
-        },
-        "chartTitles": {
-          "completedTasks": "完成任务",
-          "completedTaskRatio": "完成任务占比",
-          "oneTimeCompletedRatio": "一次完成任务占比",
-          "twoTimeCompletedRatio": "两次完成任务占比"
-        }
-      },
-      "leadTime": {
-        "total": "总共",
-        "chartLabels": {
-          "average": "平均",
-          "min": "最小",
-          "max": "最大",
-          "p50": "P50",
-          "p75": "P75",
-          "p90": "P90",
-          "p95": "P95",
-          "p99": "P99"
-        },
-        "chartTitles": {
-          "taskDeliveryCycle": "任务交付周期(小时)"
-        },
-        "statistics": {
-          "totalProcessingTime": "总处理时长",
-          "hours": "小时",
-          "participants": "参与人员",
-          "averageDailyProcessingTime": "每天平均处理时长",
-          "perHour": "/小时"
-        }
-      },
-      "overdueAssessment": {
-        "total": "总共",
-        "chartLabels": {
-          "unoverdueCount": "未逾期数",
-          "overdueCount": "逾期数",
-          "unoverdueWorkload": "未逾期工作量",
-          "overdueWorkload": "逾期工作量",
-          "uncompleted": "未完成",
-          "completed": "已完成"
-        },
-        "chartTitles": {
-          "completedWorkloadRatio": "完成工作量占比",
-          "savingWorkloadRatio": "节省工作量占比"
-        },
-        "statistics": {
-          "overdueCount": "逾期数",
-          "overdueRisk": "逾期风险",
-          "overdueTime": "逾期时长",
-          "hours": "小时",
-          "averageDailyProcessedWorkload": "平均每天处理工作量",
-          "overdueWorkloadProcessingTime": "逾期预计处理时长"
-        }
-      },
-      "progress": {
-        "total": "总共",
-        "chartLabels": {
-          "uncompleted": "未完成",
-          "completed": "已完成"
-        },
-        "chartTitles": {
-          "taskProgress": "完成任务进度",
-          "workloadProgress": "完成工作量进度"
-        }
-      },
-      "recentDelivery": {
-        "total": "总共",
-        "chartLabels": {
-          "today": "今天",
-          "lastWeek": "近一周",
-          "lastMonth": "近一月",
-          "deliveryCount": "交付数",
-          "deliveryOverdueCount": "交付逾期数",
-          "totalCount": "总数"
-        },
-        "chartTitles": {
-          "deliveryCount": "交付数（完成数）",
-          "deliveryWorkload": "交付工作量（完成量）"
-        }
-      },
-      "resourceCreation": {
-        "total": "总共",
-        "chartLabels": {
-          "backlog": "backlog",
-          "sprint": "迭代",
-          "task": "任务",
-          "meeting": "会议",
-          "analysis": "分析",
-          "total": "总计"
-        },
-        "chartTitles": {
-          "resourceTotal": "创建资源总量",
-          "resourceGrowth": "创建资源增长趋势"
-        },
-        "resourceTypes": {
-          "TEST_CUSTOMIZATION": "自定义测试",
-          "TEST_FUNCTIONALITY": "功能测试",
-          "TEST_PERFORMANCE": "性能测试",
-          "TEST_STABILITY": "稳定性测试",
-          "SERVICES": "服务",
-          "APIS": "接口",
-          "CASES": "用例",
-          "PLAN": "计划",
-          "SPRINT": "迭代",
-          "TASK_SPRINT": "迭代",
-          "TASK": "任务",
-          "MOCK_APIS": "Mock接口",
-          "MOCK_PUSHBACK": "Mock回推",
-          "MOCK_RESPONSE": "Mock响应",
-          "MOCK_SERVICE": "Mock服务",
-          "DATA_DATASET": "数据集",
-          "DATA_DATASOURCE": "数据源",
-          "DATA_VARIABLE": "变量",
-          "TOTAL": "合计",
-          "REPORT": "报告",
-          "REPORT_RECORD": "记录",
-          "API_TEST": "接口测试",
-          "BUG": "缺陷",
-          "REQUIREMENT": "需求",
-          "STORY": "故事",
-          "SCENARIO_TEST": "场景测试",
-          "ANALYSIS": "分析",
-          "BACKLOG": "backlog",
-          "MEETING": "会议"
-        }
-      },
-      "taskGrowthTread": {
-        "total": "总共",
-        "chartLabels": {
-          "requirement": "需求",
-          "story": "故事",
-          "task": "任务",
-          "bug": "缺陷",
-          "apiTest": "接口测试",
-          "scenarioTest": "场景测试",
-          "total": "总计"
-        },
-        "chartTitles": {
-          "taskGrowth": "任务增长量",
-          "growthTrend": "增长趋势"
-        },
-        "resourceTypes": {
-          "TEST_CUSTOMIZATION": "自定义测试",
-          "TEST_FUNCTIONALITY": "功能测试",
-          "TEST_PERFORMANCE": "性能测试",
-          "TEST_STABILITY": "稳定性测试",
-          "SERVICES": "服务",
-          "APIS": "接口",
-          "CASES": "用例",
-          "PLAN": "计划",
-          "SPRINT": "迭代",
-          "TASK_SPRINT": "迭代",
-          "TASK": "任务",
-          "MOCK_APIS": "Mock接口",
-          "MOCK_PUSHBACK": "Mock回推",
-          "MOCK_RESPONSE": "Mock响应",
-          "MOCK_SERVICE": "Mock服务",
-          "DATA_DATASET": "数据集",
-          "DATA_DATASOURCE": "数据源",
-          "DATA_VARIABLE": "变量",
-          "TOTAL": "合计",
-          "REPORT": "报告",
-          "REPORT_RECORD": "记录",
-          "API_TEST": "接口测试",
-          "BUG": "缺陷",
-          "REQUIREMENT": "需求",
-          "STORY": "故事",
-          "SCENARIO_TEST": "场景测试"
-        }
-      },
-      "unplannedTasks": {
-        "total": "总共",
-        "chartLabels": {
-          "totalCount": "总数",
-          "unplannedCount": "计划外数",
-          "unplannedCompletedCount": "计划外完成数",
-          "totalWorkload": "总工作量",
-          "unplannedWorkload": "计划外工作量",
-          "unplannedCompletedWorkload": "计划外完成工作量"
-        },
-        "chartTitles": {
-          "taskCount": "任务数",
-          "workload": "工作量"
-        },
-        "metrics": {
-          "estimatedTime": "未计划任务预计耗时",
-          "hours": "小时"
-        }
-      },
-      "workload": {
-        "total": "总共",
-        "chartLabels": {
-          "estimatedWorkload": "估计工作量",
-          "actualWorkload": "实际工作量",
-          "completedWorkload": "完成工作量",
-          "savingWorkload": "节省工作量"
-        },
-        "chartTitles": {
-          "workload": "工作量",
-          "completedWorkloadRatio": "完成工作量占比",
-          "savingWorkloadRatio": "节省工作量占比"
-        },
-        "pieLabels": {
-          "incomplete": "未完成",
-          "completed": "已完成",
-          "incompleteWorkload": "未完成工作量",
-          "completedWorkload": "已完成工作量",
-          "incompleteSaving": "未节省工作量",
-          "completedSaving": "已节省工作量"
-        }
+      "backlogPie": {
+        "totalBacklog": "总Backlog"
       }
     }
   },
   "backlog": {
-    "name": "待办",
     "title": "待办",
     "aboutBacklog": "关于待办",
     "aboutBacklogDesc": "待办事项列表，包含产品待办和迭代待办。用于管理团队工作任务，涵盖当前和未来的所有工作项。",
@@ -448,23 +77,8 @@
     "noBacklog": "没有待办",
     "to": "至",
     "enterSprint": "进入迭代",
-    "edit": "编辑",
-    "sort": "排序",
-    "refresh": "刷新",
-    "split": "拆分",
     "moveTo": "移至",
-    "delete": "删除",
     "moveToBacklog": "待办",
-    "columns": {
-      "type": "类型",
-      "priority": "优先级",
-      "code": "编码",
-      "name": "名称",
-      "assignee": "经办人",
-      "taskCount": "任务数",
-      "storyPoint": "故事点",
-      "workHours": "工时"
-    },
     "placeholder": {
       "searchTaskName": "查询任务名称",
       "taskName": "任务名称，最大支持200字符"
@@ -496,32 +110,11 @@
     "addedRemark": "添加了备注",
     "basicInfo": "基本信息",
     "taskStatus": "状态",
-    "overdue": "已逾期",
     "aiGenerateTask": {
       "title": "自动创建Backlog",
       "generating": "生成中...",
-      "generate": "生成",
-      "continueAdd": "继续添加",
       "maxTasksWarning": "最大允许添加200条",
       "aiKeywordsPlaceholder": "给AI智能体描述您的需求，如：生成10个主要的Wiki系统产品Backlog。",
-      "headers": {
-        "type": "类型",
-        "priority": "优先级",
-        "name": "名称",
-        "evalWorkload": "评估工作量",
-        "assignee": "经办人",
-        "confirmer": "确认人",
-        "deadline": "截止时间"
-      },
-      "placeholders": {
-        "taskType": "任务类型",
-        "priority": "优先级",
-        "taskName": "任务名称，最大支持200字符",
-        "evalWorkload": "0.1~1000",
-        "assignee": "经办人",
-        "confirmer": "确认人",
-        "deadline": "截止时间"
-      },
       "tooltips": {
         "nameRepeat": "名称重复",
         "deadlineDate": "截止时间必须大于当前时间"
@@ -529,23 +122,13 @@
     },
     "assocCase": {
       "title": "关联功能用例",
-      "placeholder": "最多可关联20个用例",
-      "overdue": "已逾期",
-      "cancel": "取消",
-      "confirm": "确定"
+      "placeholder": "最多可关联20个用例"
     },
     "assocTask": {
       "title": "关联任务",
-      "placeholder": "最多可关联20个任务",
-      "overdue": "已逾期",
-      "cancel": "取消",
-      "confirm": "确定"
+      "placeholder": "最多可关联20个任务"
     },
     "editForm": {
-      "title": {
-        "add": "添加 Backlog",
-        "edit": "编辑 Backlog"
-      },
       "labels": {
         "type": "类型",
         "priority": "优先级",
@@ -618,10 +201,7 @@
       "buttons": {
         "assignToMe": "指派给我",
         "continueUpload": "继续上传",
-        "uploadAttachments": "上传附件，最多上传5个",
-        "cancel": "取消",
-        "saveAndContinue": "保存并继续添加",
-        "confirm": "确定"
+        "uploadAttachments": "上传附件，最多上传5个"
       },
       "messages": {
         "sprintDeadlineExceeded": "超过了迭代截止时间({deadline})",
@@ -633,8 +213,7 @@
         "selectApi": "请选择接口",
         "selectAssignee": "选择经办人",
         "contactAdminForTags": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。"
-      },
-      "overdue": "已逾期"
+      }
     },
     "splitTask": {
       "title": "拆分任务",
@@ -643,26 +222,8 @@
       "aiSplit": "智能拆分",
       "aiKeywords": "拆分任务\"{taskName}\"成多个子任务。",
       "aiPlaceholder": "给AI智能体描述您的需求，如：拆分任务\"{taskName}\"成多个子任务。",
-      "cancel": "取消",
-      "continueAdd": "继续添加",
       "headers": {
-        "type": "类型",
-        "priority": "优先级",
-        "name": "名称",
-        "subTask": "子任务",
-        "evalWorkload": "评估工作量",
-        "assignee": "经办人",
-        "confirmer": "确认人",
-        "deadline": "截止时间"
-      },
-      "placeholders": {
-        "taskType": "任务类型",
-        "priority": "优先级",
-        "taskName": "任务名称，最大支持200字符",
-        "workloadRange": "0.1~1000",
-        "assignee": "经办人",
-        "confirmer": "确认人",
-        "deadline": "截止时间"
+        "subTask": "子任务"
       },
       "tooltips": {
         "nameRepeat": "名称重复",
@@ -720,8 +281,6 @@
       },
       "description": {
         "title": "描述",
-        "cancel": "取消",
-        "confirm": "确定",
         "messages": {
           "maxLength": "描述最大支持8000个字符"
         }
@@ -744,21 +303,10 @@
       "scenario": {
         "basicInfo": "基本信息",
         "number": "编号",
-        "name": "名称",
-        "type": "类型",
-        "testType": "测试类型",
-        "taskStatus": "任务状态",
-        "overdue": "已逾期",
-        "sprint": "所属迭代",
-        "module": "所属模块",
         "parentTask": "父任务",
         "scenario": "场景",
-        "priority": "优先级",
-        "evalWorkloadMethod": "评估方法",
-        "evalWorkload": "评估工作量",
         "processCount": "处理次数",
         "processFailCount": "失败次数",
-        "tags": "标签",
         "oneTimePass": "一次性通过",
         "softwareVersion": "软件版本",
         "unplannedTask": "未计划的",
@@ -776,26 +324,12 @@
       "apis": {
         "basicInfo": "基本信息",
         "number": "编号",
-        "name": "名称",
-        "type": "类型",
-        "testType": "测试类型",
-        "taskStatus": "任务状态",
-        "overdue": "已逾期",
-        "sprint": "所属迭代",
-        "module": "所属模块",
         "parentTask": "父任务",
         "service": "所属服务",
         "api": "接口",
-        "priority": "优先级",
-        "evalWorkloadMethod": "评估方法",
-        "evalWorkload": "评估工作量",
-        "actualWorkload": "实际工作量",
         "processCount": "处理次数",
         "processFailCount": "失败次数",
-        "tags": "标签",
         "oneTimePass": "一次性通过",
-        "softwareVersion": "软件版本",
-        "unplannedTask": "未计划的",
         "placeholders": {
           "taskName": "任务名称，最大支持200字符",
           "selectOrSearchSprint": "选择或查询迭代",
@@ -822,13 +356,7 @@
     "main": {
       "addBacklog": "添加Backlog",
       "aiAddBacklog": "智能添加Backlog",
-      "save": "保存",
-      "cancel": "取消",
       "openAddModal": "打开添加弹窗",
-      "split": "拆分",
-      "assign": "分配",
-      "delete": "删除",
-      "edit": "编辑",
       "placeholders": {
         "taskType": "Backlog 类型",
         "selectPriority": "请选择优先级",
@@ -850,208 +378,13 @@
       }
     }
   },
-  "taskHome": {
-    "name": "主页",
-    "backlogName": "待办",
-    "welcomeToAngusTask": "关于AngusTester问题",
-    "taskDescription": "问题管理可以帮助团队高效协作，跟踪项目进展，确保按时交付。通过系统化的任务分配、进度监控和团队协作机制，实现项目目标的可视化管理和持续优化。",
-    "workItem1": "通过迭代规划项目活动和排期；",
-    "workItem2": "明确责任人，高效分配和协作任务；",
-    "workItem3": "实时监控项目健康度和进展趋势。",
-    "myTasks": "我的任务",
-    "myActivities": "我的活动",
-    "allActivities": "所有活动",
-    "resourceStatistics": "资源统计",
-    "myCreation": "我添加的",
-    "myBurndownChart": "我的燃尽图",
-    "taskCount": "任务数",
-    "workload": "工作量",
-    "remaining": "剩余",
-    "expected": "期望",
-    "workloadLabel": "工作量",
-    "completed": "已完成",
-    "remainingLabel": "剩余",
-    "last7Days": "近7天",
-    "last30Days": "近30天",
-    "backlog": "Backlog",
-    "sprint": "迭代",
-    "task": "任务",
-    "meeting": "会议",
-    "added": "添加的",
-    "pending": "待处理",
-    "confirming": "待确认",
-    "completedStatus": "已完成",
-    "followed": "关注的",
-    "favorited": "收藏的",
-    "commented": "评论的",
-    "addedTable": {
-      "pagination": "第{current}/{total}页",
-      "noDataText": "暂无数据",
-      "overdue": "已逾期",
-      "columns": {
-        "code": "编码",
-        "name": "名称",
-        "sprintName": "所属迭代",
-        "priority": "优先级",
-        "status": "状态",
-        "deadlineDate": "截止时间",
-        "action": "操作"
-      },
-      "emptyStates": {
-        "noCreatedTasks": "您尚未添加任何任务，立即",
-        "addTask": "添加任务",
-        "noPendingTasks": "您没有待处理的任务",
-        "noConfirmingTasks": "您没有待确认的任务",
-        "noCompletedTasks": "您没有已完成的任务",
-        "noFollowedTasks": "您没有关注的任务",
-        "noFavouriteTasks": "您没有收藏的任务",
-        "noCommentTasks": "您没有评论的任务"
-      },
-      "actions": {
-        "unfavorite": "取消收藏",
-        "unfollow": "取消关注",
-        "delete": "删除"
-      },
-      "messages": {
-        "confirmDelete": "确定删除任务「{name}」吗？",
-        "deleteSuccess": "删除任务成功",
-        "unfavoriteSuccess": "任务取消收藏成功",
-        "unfollowSuccess": "任务取消关注成功"
-      }
-    },
-    "summary": {
-      "taskTypes": {
-        "story": "故事",
-        "task": "任务",
-        "bug": "缺陷",
-        "requirement": "需求",
-        "apiTest": "接口测试",
-        "scenarioTest": "场景测试"
-      },
-      "taskCount": {
-        "totalTasks": "总任务",
-        "pending": "待处理",
-        "confirming": "待确认",
-        "overdue": "逾期",
-        "inProgress": "处理中",
-        "completed": "已完成",
-        "cancelled": "已取消"
-      },
-      "sprintCount": {
-        "totalSprints": "总迭代",
-        "pending": "待开始",
-        "inProgress": "进行中",
-        "blocked": "阻塞中",
-        "completed": "已完成"
-      },
-      "backlogPie": {
-        "totalBacklog": "总Backlog"
-      }
-    }
-  },
-  "taskMeeting": {
-    "name": "会议",
-    "title": "会议",
-    "addMeeting": "添加会议",
-    "editMeeting": "编辑会议",
-    "aboutMeeting": "关于会议",
-    "aboutMeetingDesc": "会议在敏捷框架中起到关键作用，通过定期的沟通、反馈和反思，帮助团队持续改进，提高工作效率，确保项目能够灵活应对变化。",
-    "addedMeetings": "已添加的会议",
-    "notAddedYet": "您尚未添加任何会议，立即",
-    "confirmDelete": "确定删除会议「{name}」吗？",
-    "deleteSuccess": "会议删除成功， 您可以在回收站查看删除后的会议",
-    "addSuccess": "添加成功",
-    "editSuccess": "修改成功",
-    "columns": {
-      "id": "ID",
-      "subject": "会议主题",
-      "type": "会议类型",
-      "date": "会议日期",
-      "time": "会议时间",
-      "location": "会议地点",
-      "moderator": "会议主持",
-      "participants": "参会人员",
-      "participantUnit": "人",
-      "content": "会议内容",
-      "sprint": "所属迭代",
-      "moderatorLabel": "主持人",
-      "participantsCount": "共{count}个参与者",
-      "lastModifiedBy": "修改于"
-    },
-    "placeholder": {
-      "inputSubject": "最多支持200个字符",
-      "selectSprint": "选择所属迭代",
-      "selectModerator": "选择会议主持人",
-      "selectParticipants": "选择参会人员",
-      "inputLocation": "记录会议地点或在线会议的链接",
-      "startTime": "开始时间",
-      "endTime": "结束时间",
-      "searchSubject": "查询会议主题",
-      "selectType": "会议类型",
-      "selectModeratorSearch": "选择主持人",
-      "selectCreator": "选择创建人",
-      "createTimeFrom": "添加时间从",
-      "createTimeTo": "添加时间到"
-    },
-    "messages": {
-      "subjectRequired": "请输入会议主题",
-      "typeRequired": "请选择会议类型",
-      "dateRequired": "请选择会议日期",
-      "timeRequired": "请选择会议时间",
-      "moderatorRequired": "请选择会议主持人",
-      "participantsRequired": "请选择参会人员",
-      "contentRequired": "请输入会议内容",
-      "meetingTypeTip": "指定会议类型，以便识别和管理。"
-    },
-    "form": {
-      "subject": "会议主题",
-      "type": "会议类型",
-      "sprint": "迭代",
-      "date": "会议日期",
-      "time": "会议时间",
-      "location": "会议地点",
-      "moderator": "会议主持",
-      "participants": "参会人员",
-      "content": "会议内容"
-    },
-    "meetingTypes": {
-      "productGrooming": "产品梳理会",
-      "productGroomingDesc": "明确产品愿景与短期目标，对待办梳理与优先级排序，确保可实施性。参与：产品负责人、开发团队、敏捷教练及相关干系人。",
-      "sprintPlanning": "迭代计划会议",
-      "sprintPlanningDesc": "确定本次迭代的交付范围与工作量。产品负责人展示待办，团队讨论与估算，选入可完成项。参与：敏捷教练、产品负责人、开发团队。",
-      "dailyStandup": "每日站会",
-      "dailyStandupDesc": "以最短时间同步进展、问题与计划，实时掌握迭代状态，促进协同。",
-      "sprintReview": "迭代回顾会议",
-      "sprintReviewDesc": "展示迭代产出，收集反馈并更新待办，确定后续方向。参与：敏捷团队及干系人。",
-      "sprintRetrospective": "迭代总结(反思)会",
-      "sprintRetrospectiveDesc": "回顾流程，识别问题与改进点，制定下一步改进行动。参与：敏捷团队。",
-      "other": "其他会议",
-      "otherDesc": "团队在敏捷过程中组织的其他会议，如技术/需求评审、发布计划、障碍消除、团队建设等。"
-    },
-    "quickSearch": {
-      "all": "全部",
-      "myModerated": "我主持的",
-      "myCreated": "我创建的",
-      "myModified": "我修改的",
-      "lastDay": "近1天",
-      "lastThreeDays": "近3天",
-      "lastWeek": "近7天"
-    },
-    "sort": {
-      "byCreateTime": "按添加时间",
-      "byCreator": "按添加人",
-      "bySubject": "主题"
-    }
-  },
   "task": {
-    "name": "任务",
     "title": "任务",
     "addTask": "添加任务",
     "editTask": "编辑任务",
     "deleteTask": "删除任务",
     "moveTask": "移动任务",
     "splitTask": "拆分任务",
-    "copyLink": "复制链接",
     "noModuleTask": "无模块",
     "moduleTree": "模块树",
     "statisticsPanel": "统计面板",
@@ -1073,33 +406,6 @@
       "createdByName": "按创建人排序",
       "assigneeName": "按负责人排序"
     },
-    "columns": {
-      "name": "任务名称",
-      "id": "ID",
-      "status": "状态",
-      "priority": "优先级",
-      "assignee": "负责人",
-      "sprint": "所属迭代",
-      "module": "所属模块",
-      "createdBy": "创建人",
-      "createdDate": "创建时间",
-      "deadlineDate": "截止时间",
-      "lastModifiedBy": "修改人",
-      "lastModifiedDate": "修改时间",
-      "workload": "工作量",
-      "progress": "进度",
-      "description": "描述",
-      "attachments": "附件",
-      "comments": "评论",
-      "activities": "活动"
-    },
-    "status": {
-      "pending": "待处理",
-      "inProgress": "处理中",
-      "completed": "已完成",
-      "blocked": "已阻塞",
-      "reopened": "重新打开"
-    },
     "priority": {
       "low": "低",
       "medium": "中",
@@ -1107,28 +413,8 @@
       "urgent": "紧急"
     },
     "actions": {
-      "edit": "编辑",
-      "delete": "删除",
-      "split": "拆分",
-      "start": "开始处理",
-      "complete": "已处理",
       "confirmComplete": "确认完成",
-      "confirmIncomplete": "确认未完成",
-      "reopen": "重新打开",
-      "restart": "重新开始",
-      "cancel": "取消",
-      "move": "移动",
-      "favorite": "收藏",
-      "unfavorite": "取消收藏",
-      "follow": "关注",
-      "unfollow": "取消关注",
-      "export": "导出",
-      "import": "导入",
-      "upload": "上传",
-      "download": "下载",
-      "refresh": "刷新",
-      "collapse": "折叠",
-      "expand": "展开"
+      "confirmIncomplete": "确认未完成"
     },
     "messages": {
       "confirmDelete": "确认删除任务「{name}」吗？",
@@ -1178,18 +464,6 @@
       "inputWorkload": "输入工作量",
       "inputModuleName": "请输入模块名称"
     },
-    "form": {
-      "name": "任务名称",
-      "description": "描述",
-      "assignee": "负责人",
-      "sprint": "所属迭代",
-      "module": "所属模块",
-      "priority": "优先级",
-      "status": "状态",
-      "deadlineDate": "截止时间",
-      "workload": "工作量",
-      "attachments": "附件"
-    },
     "batch": {
       "selectAll": "全选",
       "unselectAll": "取消全选",
@@ -1199,25 +473,10 @@
       "batchMove": "批量移动",
       "batchExport": "批量导出"
     },
-    "pagination": {
-      "total": "共 {total} 条",
-      "pageSize": "条/页",
-      "goTo": "跳至",
-      "page": "页"
-    },
     "module": {
-      "create": "创建模块",
-      "edit": "编辑模块",
-      "delete": "删除模块",
-      "move": "移动模块",
-      "name": "模块名称",
       "parentModule": "父级模块",
-      "description": "模块描述",
-      "addModule": "添加模块",
       "createSubModule": "新建子模块",
-      "moveUp": "上移",
       "moveToUpperLevel": "移到上一层",
-      "moveDown": "下移",
       "moveModule": "移动",
       "editModule": "编辑",
       "deleteModule": "删除",
@@ -1238,8 +497,6 @@
         "allTasks": "全部问题",
         "createSubModule": "创建子模块",
         "moveToUpperLevel": "移动到上级",
-        "moveUp": "上移",
-        "moveDown": "下移",
         "moveModule": "移动模块",
         "editModule": "编辑模块",
         "deleteModule": "删除模块"
@@ -1267,7 +524,6 @@
         "myCreated": "我创建的",
         "myAssigned": "分配给我的",
         "myConfirmed": "我确认的",
-        "overdue": "逾期",
         "lastDay": "近1天",
         "lastThreeDays": "近3天",
         "lastWeek": "近7天",
@@ -1303,9 +559,6 @@
         "uploadTasks": "上传任务",
         "exportTemplate": "导出模板",
         "importTasks": "导入任务",
-        "refresh": "刷新",
-        "collapse": "折叠",
-        "expand": "展开",
         "moduleTree": "模块树",
         "flowChart": "流程图",
         "batchDelete": "批量删除",
@@ -1346,8 +599,6 @@
         "canceledTasks": "已取消",
         "confirmingTasks": "待确认",
         "completionRate": "完成率",
-        "progress": "进度",
-        "workload": "工作量",
         "evalWorkload": "评估工作量",
         "completedWorkload": "已完成工作量",
         "remainingWorkload": "剩余工作量",
@@ -1387,22 +638,11 @@
         "tags": "标签",
         "description": "描述",
         "attachments": "附件",
-        "comments": "评论",
-        "actions": "操作"
-      },
-      "batchActions": {
-        "title": "批量操作",
-        "selectAll": "全选",
-        "unselectAll": "取消全选",
-        "selectedCount": "已选择{count}项",
-        "delete": "删除",
-        "move": "移动",
-        "export": "导出"
+        "comments": "评论"
       }
     },
     "searchPanel": {
       "quickSearch": "快速查询",
-      "overdue": "已逾期",
       "moduleGroup": "模块",
       "viewMode": {
         "flat": "平铺视图",
@@ -1475,67 +715,13 @@
       "assocCase": "关联用例",
       "assocTask": "关联任务",
       "columns": {
-        "name": "名称",
-        "code": "编号",
-        "status": "状态",
-        "priority": "优先级",
-        "assignee": "负责人",
         "reporter": "报告人",
-        "sprint": "所属迭代",
-        "createTime": "创建时间",
-        "updateTime": "更新时间",
-        "startDate": "开始时间",
-        "endDate": "结束时间",
-        "deadline": "截止时间",
-        "description": "描述",
-        "remark": "备注",
-        "attachment": "附件",
         "personnel": "人员信息",
         "date": "时间信息",
         "apis": "接口信息",
         "scenario": "场景信息"
       },
-      "actions": {
-        "edit": "编辑",
-        "move": "移动",
-        "delete": "删除",
-        "split": "拆分",
-        "copyLink": "复制链接",
-        "fullScreen": "全屏",
-        "exitFullScreen": "退出全屏",
-        "refresh": "刷新",
-        "cancel": "取消",
-        "save": "保存",
-        "confirm": "确认",
-        "close": "关闭",
-        "add": "添加",
-        "remove": "移除",
-        "upload": "上传",
-        "download": "下载",
-        "view": "查看",
-        "export": "导出",
-        "import": "导入",
-        "clone": "克隆",
-        "follow": "关注",
-        "unfollow": "取消关注",
-        "favourite": "收藏",
-        "cancelFavourite": "取消收藏",
-        "cancelFollow": "取消关注",
-        "start": "开始",
-        "pause": "暂停",
-        "complete": "完成",
-        "reopen": "重新打开",
-        "restart": "重新开始"
-      },
       "batchActions": {
-        "cancel": "取消",
-        "delete": "删除",
-        "favourite": "收藏",
-        "cancelFavourite": "取消收藏",
-        "follow": "关注",
-        "cancelFollow": "取消关注",
-        "move": "移动",
-        "cancelBatchOperation": "取消批量操作",
         "confirmCancel": "确定取消选中的 {num} 条任务吗？",
         "confirmDelete": "确定删除选中的 {num} 条任务吗？",
         "cancelSuccess": "选中的 {num} 条任务全部取消成功",
@@ -1617,18 +803,6 @@
         "deleteTip": "删除当前任务",
         "splitTip": "将当前任务拆分为多个子任务"
       },
-      "pagination": {
-        "total": "共{total}条",
-        "pageSize": "条/页",
-        "current": "第{current}页"
-      },
-      "status": {
-        "pending": "待处理",
-        "inProgress": "进行中",
-        "completed": "已完成",
-        "blocked": "已阻塞",
-        "cancelled": "已取消"
-      },
       "priority": {
         "low": "低",
         "medium": "中",
@@ -1698,42 +872,17 @@
     },
     "table": {
       "columns": {
-        "code": "编号",
-        "name": "名称",
-        "priority": "优先级",
-        "status": "状态",
         "execResult": "执行结果",
-        "assignee": "经办人",
-        "creator": "添加人",
-        "confirmer": "确认人",
-        "lastModifier": "最后修改人",
-        "executor": "执行人",
-        "workload": "工作量",
-        "sprint": "所属迭代",
         "apiScenario": "接口/场景",
         "service": "服务",
         "failCount": "失败次数",
         "processCount": "处理次数",
-        "addTime": "添加时间",
-        "deadline": "截止时间",
-        "startTime": "开始时间",
         "processTime": "处理时间",
         "confirmTime": "确认时间",
         "completeTime": "完成时间",
         "cancelTime": "取消时间",
         "execTime": "执行时间",
-        "lastModifyTime": "最后修改时间",
-        "operation": "操作"
-      },
-      "batchActions": {
-        "cancel": "取消",
-        "delete": "删除",
-        "favourite": "收藏",
-        "cancelFavourite": "取消收藏",
-        "follow": "关注",
-        "cancelFollow": "取消关注",
-        "move": "移动",
-        "cancelBatch": "取消批量操作"
+        "lastModifyTime": "最后修改时间"
       },
       "messages": {
         "maxBatchLimit": "最大支持批量操作 {maxNum} 个任务，当前已选中 {selectedNum} 个任务。",
@@ -1772,12 +921,6 @@
         "cancelSuccess": "任务取消成功",
         "copySuccess": "复制成功",
         "copyFail": "复制失败"
-      },
-      "status": {
-        "overdue": "已逾期"
-      },
-      "actions": {
-        "edit": "编辑"
       }
     },
     "moveModal": {
@@ -1811,32 +954,20 @@
       "title": "任务处理流程图"
     },
     "editModal": {
-      "title": {
-        "edit": "编辑任务",
-        "add": "添加任务"
-      },
       "tooltip": {
         "zoomIn": "全屏",
         "zoomOut": "缩小"
       },
       "form": {
-        "name": "名称",
         "namePlaceholder": "任务名称，最大支持200字符",
         "nameRule": "任务名称，最大支持200字符",
-        "type": "类型",
         "typePlaceholder": "请选择任务类型",
-        "priority": "优先级",
         "priorityPlaceholder": "请选择优先级",
         "bugLevel": "缺陷等级",
         "missingBug": "是否漏测",
-        "missingBugOptions": {
-          "yes": "是",
-          "no": "否"
-        },
         "scenario": "场景",
         "scenarioPlaceholder": "请选择场景",
         "scenarioRule": "请选择场景",
-        "testType": "测试类型",
         "testTypePlaceholder": "请选择测试类型",
         "service": "所属服务",
         "servicePlaceholder": "选择或查询服务",
@@ -1844,28 +975,21 @@
         "api": "接口",
         "apiPlaceholder": "请选择接口",
         "apiRule": "请选择接口",
-        "assignee": "经办人",
         "assigneePlaceholder": "选择经办人",
         "assigneeRule": "选择经办人",
         "assigneeTip": "负责实际执行分配的工作任务。",
         "assignToMe": "指派给我",
-        "confirmer": "确认人",
         "confirmerPlaceholder": "选择确认人",
         "confirmerTip": "负责核实和验证工作结果的人员，指定后会自动进入确认流程。",
-        "deadline": "截止时间",
         "deadlineRule": "请选择截止时间",
         "deadlineFutureRule": "截止时间必须是一个未来时间",
         "deadlineSprintRule": "超过了迭代截止时间({deadline})",
-        "tester": "测试人",
         "testerPlaceholder": "选择测试人",
         "testerTip": "负责测试和验证产品功能或服务质量的人员。",
-        "description": "描述",
         "descriptionPlaceholder": "任务描述，最大支持6000个字符",
         "descriptionRule": "描述最大支持6000个字符",
-        "sprint": "所属迭代",
         "sprintPlaceholder": "选择或查询迭代",
         "sprintRule": "请选择所属迭代",
-        "module": "所属模块",
         "modulePlaceholder": "选择或查模块",
         "parentTask": "父任务",
         "parentTaskPlaceholder": "请选择父任务",
@@ -1912,14 +1036,6 @@
       "messages": {
         "addSuccess": "任务添加成功",
         "editSuccess": "任务编辑成功"
-      },
-      "actions": {
-        "cancel": "取消",
-        "saveAndContinue": "保存并继续添加",
-        "confirm": "确定"
-      },
-      "status": {
-        "overdue": "已逾期"
       }
     },
     "kanbanView": {
@@ -1935,13 +1051,8 @@
         "activity": "活动"
       },
       "actions": {
-        "split": "拆分",
-        "start": "开始处理",
         "processed": "已处理",
-        "completed": "确认完成",
-        "uncompleted": "确认未完成",
-        "reopen": "重新打开",
-        "restart": "重新开始"
+        "completed": "确认完成"
       },
       "messages": {
         "noStartPermission": "没有开始处理权限",
@@ -1968,51 +1079,31 @@
       "title": "关联功能用例",
       "description": "跟踪任务功能测试用例完成情况，了解任务的哪些功能已经被实现和测试，方便更准确地评估任务进度。",
       "actions": {
-        "associateCase": "关联用例",
-        "cancel": "取消"
+        "associateCase": "关联用例"
       },
       "messages": {
         "confirmCancelCase": "确认取消关联用例「{name}」吗？"
       },
-      "columns": {
-        "code": "编号",
-        "name": "名称",
-        "priority": "优先级",
-        "evalWorkload": "评估工作量",
-        "status": "状态",
-        "testerName": "测试人",
-        "deadlineDate": "截止时间",
-        "action": "操作"
-      },
-      "selectCasePlaceholder": "最多可关联20个用例",
-      "overdue": "已逾期"
+      "selectCasePlaceholder": "最多可关联20个用例"
     },
     "assocTask": {
       "title": "关联任务",
       "actions": {
-        "associateTask": "关联{title}",
-        "cancel": "取消"
+        "associateTask": "关联{title}"
       },
       "messages": {
         "confirmCancelTask": "确认取消关联任务「{name}」吗？"
       },
       "columns": {
-        "code": "编号",
-        "name": "名称",
-        "progress": "进度",
         "taskType": "类型",
-        "priority": "优先级",
         "evalWorkload": "评估工作量",
-        "status": "状态",
         "assigneeName": "经办人",
-        "deadlineDate": "截止时间",
-        "action": "操作"
+        "deadlineDate": "截止时间"
       },
       "modal": {
         "selectTask": "选择{title}"
       },
-      "selectTaskPlaceholder": "最多可关联20个任务",
-      "overdue": "已逾期"
+      "selectTaskPlaceholder": "最多可关联20个任务"
     },
     "remark": {
       "placeholder": " 添加补充说明，如注意事项，确认不通过原因等，最大支持6000个字符",
@@ -2027,13 +1118,9 @@
     "subTask": {
       "title": "子任务",
       "description": "用于将大型复杂任务分解成更小、更易管理的子任务，便于团队成员分工协作。",
-      "progress": "进度",
       "actions": {
         "addSubTask": "添加子任务",
-        "associateSubTask": "关联子任务",
-        "cancel": "取消",
-        "edit": "编辑",
-        "add": "添加"
+        "associateSubTask": "关联子任务"
       },
       "messages": {
         "confirmCancelSubTask": "确定取消子任务「{name}」吗？",
@@ -2045,28 +1132,13 @@
         "cancelFollowSuccess": "任务取消关注成功"
       },
       "columns": {
-        "code": "编号",
-        "name": "名称",
-        "progress": "进度",
         "taskType": "类型",
-        "priority": "优先级",
         "evalWorkload": "评估故事点",
-        "evalWorkHours": "评估工时",
-        "status": "状态",
-        "assigneeName": "经办人",
-        "deadlineDate": "截止时间",
-        "action": "操作"
+        "evalWorkHours": "评估工时"
       },
       "form": {
         "taskType": "任务类型",
-        "priority": "优先级",
         "taskName": "输入任务名称，最大支持200字符，按回车键可自动保存"
-      },
-      "dropdown": {
-        "favourite": "收藏",
-        "cancelFavourite": "取消收藏",
-        "follow": "关注",
-        "cancelFollow": "取消关注"
       },
       "modal": {
         "title": "关联子任务",
@@ -2097,38 +1169,22 @@
       "apis": {
         "basicInfo": "基本信息",
         "columns": {
-          "code": "编号",
-          "testType": "测试类型",
-          "name": "名称",
           "namePlaceholder": "任务名称，最大支持200字符",
-          "status": "状态",
-          "overdue": "已逾期",
-          "type": "类型",
-          "sprint": "所属迭代",
-          "module": "所属模块",
           "selectModule": "选择或查询模块",
           "selectSprint": "选择或查询迭代",
           "service": "所属服务",
           "parentTask": "父任务",
-          "evalWorkloadMethod": "评估方法",
           "api": "接口",
           "priority": "优先级",
           "selectPriority": "请选择优先级",
           "onePass": "一次性通过",
-          "actualWorkload": "实际工作量",
-          "evalWorkload": "评估故事点",
-          "actualWorkloadPlaceholder": "支持值0.1~1000，最多2位小数",
-          "evalWorkloadPlaceholder": "支持值0.1~1000，最多2位小数",
           "failedProcessCount": "失败次数",
           "totalProcessCount": "总处理次数",
           "softwareVersion": "软件版本",
           "softwareVersionPlaceholder": "请选择所属版本",
           "unplanned": "未计划的",
-          "tags": "标签",
           "tagsPlaceholder": "最多可添加5个标签",
-          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
-          "yes": "是",
-          "no": "否"
+          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。"
         }
       },
       "description": {
@@ -2136,22 +1192,10 @@
         "placeholder": "添加详细说明，最大支持6000个字符",
         "validation": {
           "maxLength": "描述最大支持6000个字符"
-        },
-        "actions": {
-          "cancel": "取消",
-          "confirm": "确定"
         }
       },
       "personnel": {
         "title": "人员",
-        "fields": {
-          "assignee": "经办人",
-          "executor": "执行人",
-          "confirmer": "确认人",
-          "tester": "测试人",
-          "creator": "添加人",
-          "lastModifier": "最后修改人"
-        },
         "actions": {
           "assignToMe": "指派给我"
         },
@@ -2195,27 +1239,13 @@
         "workloadEvaluation": "评估方法",
         "processCount": "处理次数",
         "columns": {
-          "code": "编号",
-          "testType": "测试类型",
-          "name": "名称",
           "namePlaceholder": "任务名称，最大支持200字符",
-          "status": "任务状态",
-          "overdue": "已逾期",
-          "type": "类型",
-          "sprint": "所属迭代",
           "selectSprint": "选择或查询迭代",
-          "module": "所属模块",
           "selectModule": "选择或查询模块",
           "service": "所属服务",
           "parentTask": "父任务",
           "api": "接口",
-          "priority": "优先级",
           "onePass": "一次性通过",
-          "evalWorkloadMethod": "评估方法",
-          "actualWorkload": "实际工作量",
-          "evalWorkload": "评估工作量",
-          "actualWorkloadPlaceholder": "支持值0.1~1000，最多2位小数",
-          "evalWorkloadPlaceholder": "支持值0.1~1000，最多2位小数",
           "missingBug": "漏测",
           "selectTaskType": "请选择任务类型",
           "selectPriority": "请选择优先级",
@@ -2224,36 +1254,19 @@
           "softwareVersion": "软件版本",
           "softwareVersionPlaceholder": "请选择所属版本",
           "unplanned": "未计划的",
-          "tags": "标签",
           "tagsPlaceholder": "最多可添加5个标签",
-          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
-          "yes": "是",
-          "no": "否"
+          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。"
         }
       },
       "scenario": {
         "title": "基本信息",
         "columns": {
-          "code": "编号",
-          "testType": "测试类型",
-          "name": "名称",
           "namePlaceholder": "任务名称，最大支持200字符",
-          "status": "任务状态",
-          "overdue": "已逾期",
-          "type": "类型",
-          "sprint": "所属迭代",
           "selectSprint": "选择或查询迭代",
-          "module": "所属模块",
           "selectModule": "选择或查询模块",
           "service": "所属服务",
           "parentTask": "父任务",
           "scenario": "场景",
-          "evalWorkloadMethod": "评估方法",
-          "evalWorkload": "评估工作量",
-          "actualWorkload": "实际工作量",
-          "evalWorkloadPlaceholder": "支持值0.1~1000，最多2位小数",
-          "actualWorkloadPlaceholder": "支持值0.1~1000，最多2位小数",
-          "priority": "优先级",
           "selectPriority": "请选择优先级",
           "failNum": "失败次数",
           "totalNum": "处理次数",
@@ -2261,23 +1274,13 @@
           "softwareVersion": "软件版本",
           "softwareVersionPlaceholder": "请选择所属版本",
           "unplanned": "未计划的",
-          "tags": "标签",
           "tagsPlaceholder": "最多可添加5个标签",
-          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
-          "yes": "是",
-          "no": "否"
+          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。"
         }
-      },
-      "activity": {
-        "title": "活动"
       }
-    },
-    "comment": {
-      "title": "评论"
     }
   },
   "taskSprint": {
-    "name": "迭代",
     "title": "迭代",
     "addSprint": "添加迭代",
     "aboutSprint": "关于迭代",
@@ -2303,13 +1306,7 @@
       "enhanceSatisfactionDesc": "通过快速交付和反馈，提升客户和团队满意度"
     },
     "columns": {
-      "id": "ID",
-      "name": "名称",
       "timePlan": "时间计划",
-      "owner": "负责人",
-      "members": "成员",
-      "status": "状态",
-      "progress": "进度",
       "workloadAssessment": "评估方法",
       "taskPrefix": "任务前缀",
       "attachmentCount": "附件数",
@@ -2317,41 +1314,20 @@
       "basicInfo": "基本信息",
       "acceptanceCriteria": "验收标准",
       "otherInformation": "其他信息",
-      "burndownChart": "燃尽图",
       "memberProgress": "成员进度",
       "workCalendar": "工作日历",
       "meetingRecords": "会议记录"
     },
     "actions": {
-      "save": "保存",
-      "edit": "编辑",
-      "delete": "删除",
-      "start": "开始",
-      "complete": "完成",
-      "block": "阻塞",
-      "restart": "重新开始",
-      "permission": "权限",
-      "clone": "克隆",
-      "copyLink": "复制链接",
-      "refresh": "刷新",
-      "cancel": "取消",
       "viewTasks": "查看任务",
       "exportTasks": "导出任务"
     },
     "dropdownMenu": {
-      "block": "阻塞",
-      "delete": "删除",
-      "permission": "权限",
-      "clone": "克隆",
-      "reopen": "重新打开",
-      "restart": "重新开始",
       "viewBurndown": "查看燃尽图",
       "viewProgress": "查看进度",
-      "viewWorkCalendar": "查看工作日历",
-      "export": "导出"
+      "viewWorkCalendar": "查看工作日历"
     },
     "form": {
-      "name": "迭代名称",
       "timePlan": "时间计划",
       "owner": "负责人",
       "taskPrefix": "任务前缀",
@@ -2413,17 +1389,8 @@
       "sortByOwner": "按负责人",
       "myOwned": "我负责的"
     },
-    "burndown": {
-      "title": "燃尽图",
-      "taskCount": "任务数",
-      "workload": "工作量",
-      "remaining": "剩余",
-      "expected": "期望"
-    },
     "progress": {
       "title": "成员进度",
-      "member": "成员",
-      "progress": "进度",
       "totalTaskCount": "总任务数",
       "validTaskCount": "有效任务数",
       "completedTaskCount": "完成任务数",
@@ -2431,8 +1398,7 @@
       "completedWorkload": "完成工作量",
       "workloadCompletionRate": "工作量完成率",
       "overdueTaskCount": "逾期任务数",
-      "overdueRate": "逾期率",
-      "completed": "已完成"
+      "overdueRate": "逾期率"
     },
     "workCalendar": {
       "title": "工作日历"
@@ -2443,8 +1409,465 @@
       "offTips": "开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前迭代，查看用户同时需要有当前迭代父级项目权限。"
     }
   },
+  "taskMeeting": {
+    "title": "会议",
+    "addMeeting": "添加会议",
+    "editMeeting": "编辑会议",
+    "aboutMeeting": "关于会议",
+    "aboutMeetingDesc": "会议在敏捷框架中起到关键作用，通过定期的沟通、反馈和反思，帮助团队持续改进，提高工作效率，确保项目能够灵活应对变化。",
+    "addedMeetings": "已添加的会议",
+    "notAddedYet": "您尚未添加任何会议，立即",
+    "confirmDelete": "确定删除会议「{name}」吗？",
+    "deleteSuccess": "会议删除成功， 您可以在回收站查看删除后的会议",
+    "addSuccess": "添加成功",
+    "editSuccess": "修改成功",
+    "columns": {
+      "subject": "会议主题",
+      "type": "会议类型",
+      "date": "会议日期",
+      "time": "会议时间",
+      "location": "会议地点",
+      "moderator": "会议主持",
+      "participants": "参会人员",
+      "participantUnit": "人",
+      "content": "会议内容",
+      "sprint": "所属迭代",
+      "moderatorLabel": "主持人",
+      "participantsCount": "共{count}个参与者",
+      "lastModifiedBy": "修改于"
+    },
+    "placeholder": {
+      "inputSubject": "最多支持200个字符",
+      "selectSprint": "选择所属迭代",
+      "selectModerator": "选择会议主持人",
+      "selectParticipants": "选择参会人员",
+      "inputLocation": "记录会议地点或在线会议的链接",
+      "startTime": "开始时间",
+      "endTime": "结束时间",
+      "searchSubject": "查询会议主题",
+      "selectType": "会议类型",
+      "selectModeratorSearch": "选择主持人",
+      "selectCreator": "选择创建人",
+      "createTimeFrom": "添加时间从",
+      "createTimeTo": "添加时间到"
+    },
+    "messages": {
+      "subjectRequired": "请输入会议主题",
+      "typeRequired": "请选择会议类型",
+      "dateRequired": "请选择会议日期",
+      "timeRequired": "请选择会议时间",
+      "moderatorRequired": "请选择会议主持人",
+      "participantsRequired": "请选择参会人员",
+      "contentRequired": "请输入会议内容",
+      "meetingTypeTip": "指定会议类型，以便识别和管理。"
+    },
+    "form": {
+      "subject": "会议主题",
+      "type": "会议类型",
+      "sprint": "迭代",
+      "date": "会议日期",
+      "time": "会议时间",
+      "location": "会议地点",
+      "moderator": "会议主持",
+      "participants": "参会人员",
+      "content": "会议内容"
+    },
+    "meetingTypes": {
+      "productGrooming": "产品梳理会",
+      "productGroomingDesc": "明确产品愿景与短期目标，对待办梳理与优先级排序，确保可实施性。参与：产品负责人、开发团队、敏捷教练及相关干系人。",
+      "sprintPlanning": "迭代计划会议",
+      "sprintPlanningDesc": "确定本次迭代的交付范围与工作量。产品负责人展示待办，团队讨论与估算，选入可完成项。参与：敏捷教练、产品负责人、开发团队。",
+      "dailyStandup": "每日站会",
+      "dailyStandupDesc": "以最短时间同步进展、问题与计划，实时掌握迭代状态，促进协同。",
+      "sprintReview": "迭代回顾会议",
+      "sprintReviewDesc": "展示迭代产出，收集反馈并更新待办，确定后续方向。参与：敏捷团队及干系人。",
+      "sprintRetrospective": "迭代总结(反思)会",
+      "sprintRetrospectiveDesc": "回顾流程，识别问题与改进点，制定下一步改进行动。参与：敏捷团队。",
+      "other": "其他会议",
+      "otherDesc": "团队在敏捷过程中组织的其他会议，如技术/需求评审、发布计划、障碍消除、团队建设等。"
+    },
+    "quickSearch": {
+      "all": "全部",
+      "myModerated": "我主持的",
+      "myCreated": "我创建的",
+      "myModified": "我修改的",
+      "lastDay": "近1天",
+      "lastThreeDays": "近3天",
+      "lastWeek": "近7天"
+    },
+    "sort": {
+      "byCreateTime": "按添加时间",
+      "byCreator": "按添加人",
+      "bySubject": "主题"
+    }
+  },
+  "taskAnalysis": {
+    "title": "分析",
+    "addAnalysis": "添加分析",
+    "editAnalysis": "编辑分析",
+    "aboutAnalysis": "关于分析",
+    "aboutAnalysisDesc": "提供实时任务数据分析，支持数据驱动决策，确保信息透明，增强团队协作和问题追踪，提升项目管理效率。AngusTester内置燃尽图、积压任务、风险评估等分析模板，帮助快速查看仪表板和关键指标（KPI），用户也可根据业务需求自定义分析仪表板。",
+    "addedAnalysis": "已添加的分析",
+    "notCreatedYet": "还未创建，点击创建",
+    "createdAt": "创建于",
+    "lastModifiedBy": "最后修改于",
+    "realTime": "实时",
+    "snapshot": "快照",
+    "charts": "图表",
+    "details": "明细",
+    "today": "今天",
+    "lastWeek": "近一周",
+    "lastMonth": "近一月",
+    "sortByCreator": "按添加人排序",
+    "sortByCreateTime": "按添加时间排序",
+    "createTimeFrom": "添加时间从",
+    "createTimeTo": "添加时间到",
+    "searchNameDesc": "查询名称、描述",
+    "selectCreator": "选择添加人",
+    "all": "全部分析",
+    "columns": {
+      "template": "模版",
+      "object": "分析对象",
+      "timeRange": "分析期间",
+      "dataSource": "数据展示",
+      "createdBy": "创建人",
+      "createdDate": "创建时间"
+    },
+    "placeholder": {
+      "inputAnalysisName": "输入分析名称，最多可输入100字符",
+      "inputAnalysisDesc": "输入分析描述，如分析的目的、背景等，最多支持200字符",
+      "selectSprint": "选择或查询迭代"
+    },
+    "messages": {
+      "confirmDelete": "确认删除分析「{name}」吗？",
+      "confirmUpdateSnapshot": "确认更新分析「{name}」的快照内容吗？",
+      "deleteSuccess": "删除成功",
+      "updateSuccess": "更新成功",
+      "addSuccess": "添加分析成功",
+      "editSuccess": "修改分析成功",
+      "templateRequired": "请选择分析模版",
+      "nameRequired": "请输入分析名称",
+      "objectRequired": "请选择分析对象",
+      "timeRangeRequired": "请选择分析期间",
+      "dataSourceRequired": "请选择数据展示方式",
+      "iterationRequired": "请选择迭代",
+      "orgRequired": "请选择组织"
+    },
+    "form": {
+      "template": "分析模版",
+      "description": "分析描述",
+      "object": "分析对象",
+      "selectSprint": "选择迭代",
+      "selectOrg": "选择组织",
+      "timeRange": "分析期间",
+      "dataSource": "数据展示",
+      "containsUserAnalysis": "包含经办人分析",
+      "containsDataDetail": "包含数据明细"
+    },
+    "dataSource": {
+      "realTime": "实时数据",
+      "snapshot": "保存数据快照"
+    },
+    "orgType": {
+      "dept": "部门",
+      "group": "组",
+      "user": "用户"
+    },
+    "objectType": {
+      "currentProject": "当前项目",
+      "plan": "指定迭代",
+      "testerOrg": "指定组织"
+    },
+    "detail": {
+      "backlogTasks": {
+        "chartLabels": {
+          "backlogAmount": "积压量",
+          "totalAmount": "总量",
+          "taskCount": "任务数",
+          "workload": "工作量",
+          "backlogTaskRatio": "积压任务占比",
+          "backlogWorkloadRatio": "积压工作量占比",
+          "unbacklogged": "未积压",
+          "backlogged": "积压",
+          "unbackloggedWorkload": "未积压工作量",
+          "backloggedWorkload": "积压工作量"
+        },
+        "statistics": {
+          "backlogWorkloadEstimatedTime": "积压工作量预计耗时",
+          "hours": "小时",
+          "averageDailyProcessedTasks": "每天平均处理任务数",
+          "averageDailyProcessedWorkload": "平均每天处理工作量"
+        }
+      },
+      "bugs": {
+        "chartLabels": {
+          "totalBugs": "总缺陷",
+          "validBugs": "有效缺陷",
+          "invalidBugs": "无效缺陷",
+          "missingBugs": "漏测缺陷",
+          "criticalBugs": "致命",
+          "majorBugs": "严重",
+          "minorBugs": "一般",
+          "trivialBugs": "轻微",
+          "nonBugWorkload": "非缺陷工作量",
+          "bugWorkload": "缺陷工作量",
+          "nonMissingBugs": "非漏测缺陷数",
+          "missingBugsCount": "漏测缺陷数"
+        },
+        "chartTitles": {
+          "bugCount": "缺陷数",
+          "bugLevel": "缺陷等级",
+          "validBugRatio": "有效缺陷占比",
+          "missingBugRatio": "漏测缺陷占比",
+          "bugWorkloadRatio": "缺陷工作量占比"
+        },
+        "pieChartLabels": {
+          "criticalCount": "致命数",
+          "majorCount": "严重数",
+          "minorCount": "一般数",
+          "trivialCount": "轻微数"
+        }
+      },
+      "coreKpi": {
+        "chartLabels": {
+          "taskCount": "任务数",
+          "workload": "工作量",
+          "overdueCount": "逾期数",
+          "bugCount": "缺陷数",
+          "completedCount": "完成量",
+          "totalCount": "总量",
+          "uncompletedTaskCount": "未完成任务数",
+          "completedTaskCount": "完成任务数",
+          "uncompletedWorkload": "未完成工作量",
+          "completedWorkload": "完成工作量",
+          "uncompletedOverdueCount": "未完成逾期数",
+          "completedOverdueCount": "完成逾期数",
+          "uncompletedBugCount": "未完成缺陷数",
+          "completedBugCount": "完成缺陷数"
+        },
+        "chartTitles": {
+          "coreKpi": "核心指标",
+          "completedTaskRatio": "完成任务占比",
+          "completedWorkloadRatio": "一次完成任务占比",
+          "completedOverdueRatio": "逾期逾期数占比",
+          "completedBugRatio": "完成缺陷占比"
+        }
+      },
+      "failures": {
+        "chartLabels": {
+          "totalFailures": "总故障",
+          "completedFailures": "完成数",
+          "overdueFailures": "逾期数",
+          "oneTimeFailures": "一次性故障",
+          "twoTimeFailures": "两次故障",
+          "totalFailureTime": "总时间",
+          "averageFailureTime": "平均时间",
+          "minFailureTime": "最小时间",
+          "maxFailureTime": "最大时间",
+          "criticalFailures": "致命",
+          "majorFailures": "严重",
+          "minorFailures": "一般",
+          "trivialFailures": "轻微"
+        },
+        "chartTitles": {
+          "failureCount": "故障数",
+          "failureTime": "故障时间(小时)",
+          "failureLevel": "故障等级"
+        },
+        "pieChartLabels": {
+          "criticalCount": "致命数",
+          "majorCount": "严重数",
+          "minorCount": "一般数",
+          "trivialCount": "轻微数"
+        }
+      },
+      "handlingEfficiency": {
+        "chartLabels": {
+          "completedTaskCount": "完成任务数",
+          "oneTimeCompletedCount": "一次性完成数",
+          "twoTimeCompletedCount": "两次完成数",
+          "uncompletedTaskCount": "未完成任务数",
+          "completedTaskCount2": "完成任务数",
+          "oneTimeUncompletedTaskCount": "一次性未完成任务数",
+          "oneTimeCompletedTaskCount": "一次性完成任务数",
+          "twoTimeUncompletedTaskCount": "两次未完成任务数",
+          "twoTimeCompletedTaskCount": "两次完成任务数"
+        },
+        "chartTitles": {
+          "completedTasks": "完成任务",
+          "completedTaskRatio": "完成任务占比",
+          "oneTimeCompletedRatio": "一次完成任务占比",
+          "twoTimeCompletedRatio": "两次完成任务占比"
+        }
+      },
+      "leadTime": {
+        "chartTitles": {
+          "taskDeliveryCycle": "任务交付周期(小时)"
+        },
+        "statistics": {
+          "totalProcessingTime": "总处理时长",
+          "hours": "小时",
+          "participants": "参与人员",
+          "averageDailyProcessingTime": "每天平均处理时长",
+          "perHour": "/小时"
+        }
+      },
+      "overdueAssessment": {
+        "chartLabels": {
+          "unoverdueCount": "未逾期数",
+          "overdueCount": "逾期数",
+          "unoverdueWorkload": "未逾期工作量",
+          "overdueWorkload": "逾期工作量"
+        },
+        "chartTitles": {
+          "completedWorkloadRatio": "完成工作量占比",
+          "savingWorkloadRatio": "节省工作量占比"
+        },
+        "statistics": {
+          "overdueCount": "逾期数",
+          "overdueRisk": "逾期风险",
+          "overdueTime": "逾期时长",
+          "hours": "小时",
+          "averageDailyProcessedWorkload": "平均每天处理工作量",
+          "overdueWorkloadProcessingTime": "逾期预计处理时长"
+        }
+      },
+      "recentDelivery": {
+        "chartLabels": {
+          "today": "今天",
+          "lastWeek": "近一周",
+          "lastMonth": "近一月",
+          "deliveryCount": "交付数",
+          "deliveryOverdueCount": "交付逾期数",
+          "totalCount": "总数"
+        },
+        "chartTitles": {
+          "deliveryCount": "交付数（完成数）",
+          "deliveryWorkload": "交付工作量（完成量）"
+        }
+      },
+      "resourceCreation": {
+        "chartLabels": {
+          "backlog": "backlog",
+          "sprint": "迭代",
+          "task": "任务",
+          "meeting": "会议",
+          "analysis": "分析"
+        },
+        "chartTitles": {
+          "resourceTotal": "创建资源总量",
+          "resourceGrowth": "创建资源增长趋势"
+        },
+        "resourceTypes": {
+          "TEST_CUSTOMIZATION": "自定义测试",
+          "TEST_FUNCTIONALITY": "功能测试",
+          "TEST_PERFORMANCE": "性能测试",
+          "TEST_STABILITY": "稳定性测试",
+          "SERVICES": "服务",
+          "APIS": "接口",
+          "CASES": "用例",
+          "PLAN": "计划",
+          "SPRINT": "迭代",
+          "TASK_SPRINT": "迭代",
+          "TASK": "任务",
+          "MOCK_APIS": "Mock接口",
+          "MOCK_PUSHBACK": "Mock回推",
+          "MOCK_RESPONSE": "Mock响应",
+          "MOCK_SERVICE": "Mock服务",
+          "DATA_DATASET": "数据集",
+          "DATA_DATASOURCE": "数据源",
+          "DATA_VARIABLE": "变量",
+          "TOTAL": "合计",
+          "REPORT": "报告",
+          "REPORT_RECORD": "记录",
+          "API_TEST": "接口测试",
+          "BUG": "缺陷",
+          "REQUIREMENT": "需求",
+          "STORY": "故事",
+          "SCENARIO_TEST": "场景测试",
+          "ANALYSIS": "分析",
+          "BACKLOG": "backlog",
+          "MEETING": "会议"
+        }
+      },
+      "taskGrowthTread": {
+        "chartLabels": {
+          "requirement": "需求",
+          "story": "故事",
+          "task": "任务",
+          "bug": "缺陷",
+          "apiTest": "接口测试",
+          "scenarioTest": "场景测试"
+        },
+        "chartTitles": {
+          "taskGrowth": "任务增长量",
+          "growthTrend": "增长趋势"
+        },
+        "resourceTypes": {
+          "TEST_CUSTOMIZATION": "自定义测试",
+          "TEST_FUNCTIONALITY": "功能测试",
+          "TEST_PERFORMANCE": "性能测试",
+          "TEST_STABILITY": "稳定性测试",
+          "SERVICES": "服务",
+          "APIS": "接口",
+          "CASES": "用例",
+          "PLAN": "计划",
+          "SPRINT": "迭代",
+          "TASK_SPRINT": "迭代",
+          "TASK": "任务",
+          "MOCK_APIS": "Mock接口",
+          "MOCK_PUSHBACK": "Mock回推",
+          "MOCK_RESPONSE": "Mock响应",
+          "MOCK_SERVICE": "Mock服务",
+          "DATA_DATASET": "数据集",
+          "DATA_DATASOURCE": "数据源",
+          "DATA_VARIABLE": "变量",
+          "TOTAL": "合计",
+          "REPORT": "报告",
+          "REPORT_RECORD": "记录",
+          "API_TEST": "接口测试",
+          "BUG": "缺陷",
+          "REQUIREMENT": "需求",
+          "STORY": "故事",
+          "SCENARIO_TEST": "场景测试"
+        }
+      },
+      "unplannedTasks": {
+        "chartLabels": {
+          "totalCount": "总数",
+          "unplannedCount": "计划外数",
+          "unplannedCompletedCount": "计划外完成数",
+          "totalWorkload": "总工作量",
+          "unplannedWorkload": "计划外工作量",
+          "unplannedCompletedWorkload": "计划外完成工作量"
+        },
+        "metrics": {
+          "estimatedTime": "未计划任务预计耗时",
+          "hours": "小时"
+        }
+      },
+      "workload": {
+        "chartLabels": {
+          "estimatedWorkload": "估计工作量",
+          "actualWorkload": "实际工作量",
+          "completedWorkload": "完成工作量",
+          "savingWorkload": "节省工作量"
+        },
+        "chartTitles": {
+          "workload": "工作量",
+          "completedWorkloadRatio": "完成工作量占比",
+          "savingWorkloadRatio": "节省工作量占比"
+        },
+        "pieLabels": {
+          "incompleteWorkload": "未完成工作量",
+          "completedWorkload": "已完成工作量",
+          "incompleteSaving": "未节省工作量",
+          "completedSaving": "已节省工作量"
+        }
+      }
+    }
+  },
   "taskTrash": {
-    "name": "回收站",
     "title": "回收站",
     "placeholder": {
       "searchKeyword": "请输入查询关键字"
@@ -2452,29 +1875,9 @@
     "tips": {
       "adminOnly": "只允许管理员和删除人还原或彻底删除回收站数据。"
     },
-    "actions": {
-      "recoverAll": "全部还原",
-      "deleteAll": "全部删除",
-      "refresh": "刷新",
-      "recover": "还原",
-      "delete": "删除"
-    },
-    "messages": {
-      "recoverAllSuccess": "全部还原成功",
-      "deleteAllSuccess": "全部删除成功",
-      "recoverSuccess": "还原成功",
-      "deleteSuccess": "删除成功"
-    },
     "tabs": {
       "sprint": "迭代",
       "task": "任务"
-    },
-    "columns": {
-      "name": "名称",
-      "creator": "添加人",
-      "deleter": "删除人",
-      "deleteTime": "删除时间",
-      "actions": "操作"
     },
     "stats": {
       "items": "数量"

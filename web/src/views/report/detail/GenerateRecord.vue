@@ -78,7 +78,7 @@ const columns = [
   {
     key: 'action',
     dataIndex: 'action',
-    title: t('reportHome.reportDetail.generateRecord.actions')
+    title: t('common.actions')
   }
 ];
 
@@ -132,7 +132,7 @@ const delRecord = (record: Record) => {
             pagination.value.current -= 1;
           }
           loadRecord();
-          notification.success(t('tips.deleteSuccess'));
+          notification.success(t('actions.tips.deleteSuccess'));
         });
     }
   });

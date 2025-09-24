@@ -121,7 +121,7 @@ const save = async () => {
       id: res.data?.[0].id || state.id,
       name: summary
     });
-    notification.success(t('tips.saveSuccess'));
+    notification.success(t('actions.tips.saveSuccess'));
     handleClose();
   });
 };

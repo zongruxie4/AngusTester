@@ -29,14 +29,14 @@ const ACTIVITY_TYPES = [CombinedTargetType.SCENARIO, CombinedTargetType.SCENARIO
     <!-- Activity timeline with two tabs: personal and all activities -->
     <Tabs size="small">
       <!-- All activities tab - shows all users' activities in the project -->
-      <TabPane key="total" :tab="t('scenarioHome.activityTimeline.allActivity')">
+      <TabPane key="total" :tab="t('home.allActivity')">
         <ActivityTimeline
           :types="ACTIVITY_TYPES"
           :projectId="props.projectId" />
       </TabPane>
 
       <!-- Personal activity tab - shows only current user's activities -->
-      <TabPane key="my" :tab="t('scenarioHome.activityTimeline.myActivity')">
+      <TabPane key="my" :tab="t('home.myActivity')">
         <ActivityTimeline
           :types="ACTIVITY_TYPES"
           :userId="props.userInfo?.id"

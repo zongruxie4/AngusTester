@@ -116,7 +116,7 @@ defineExpose({
     <div class="flex flex-col space-y-2">
       <div class="flex items-center rounded overflow-hidden">
         <div class="w-20 px-2 py-1 bg-blue-1 text-white rounded">
-          {{ t('functionCase.kanbanView.reviewRecord.total') }}
+          {{ t('chart.total') }}
         </div>
         <div class="w-20 px-2 py-1 font-medium bg-gray-light">
           {{ reviewNum.total }}

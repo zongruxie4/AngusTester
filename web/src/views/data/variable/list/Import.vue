@@ -217,10 +217,10 @@ const acceptedFileTypes = '.zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.ym
       <div>{{ t('dataVariable.importModal.duplicateStrategy.title') }}</div>
       <RadioGroup v-model:value="strategyWhenDuplicated">
         <Radio value="COVER">
-          {{ t('dataVariable.importModal.duplicateStrategy.cover') }}
+          {{ t('actions.cover') }}
         </Radio>
         <Radio value="IGNORE">
-          {{ t('dataVariable.importModal.duplicateStrategy.ignore') }}
+          {{ t('actions.ignore') }}
         </Radio>
       </RadioGroup>
     </div>

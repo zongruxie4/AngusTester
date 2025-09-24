@@ -167,7 +167,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
                   v-if="record.overdue"
                   class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                   style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                  <span class="inline-block transform-gpu">{{ t('backlog.assocTask.overdue') }}</span>
+                  <span class="inline-block transform-gpu">{{ t('status.overdue') }}</span>
                 </div>
               </div>
             </template>
@@ -178,13 +178,13 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
               type="default"
               size="small"
               @click="cancelTaskAssociationEditing">
-              {{ t('backlog.assocTask.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
             <Button
               type="primary"
               size="small"
               @click="confirmTaskAssociationChanges">
-              {{ t('backlog.assocTask.confirm') }}
+              {{ t('actions.confirm') }}
             </Button>
           </div>
         </template>

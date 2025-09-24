@@ -191,11 +191,11 @@ const handleClick = (event:string, data:DataSourceType) => {
     // case 'test':
     //   test();
     //   break;
-    case 'addWatch':
-      addWatch(id);
+    case 'addFollow':
+      addFollow(id);
       break;
-    case 'cancelWatch':
-      cancelWatch(id);
+    case 'cancelFollow':
+      cancelFollow(id);
       break;
     case 'status':
       setStatus(data);
@@ -406,7 +406,7 @@ const cancelFavourite = async (id:string) => {
 };
 
 // 增加关注
-const addWatch = async (id:string) => {
+const addFollow = async (id:string) => {
   const [error] = await apis.addFollow(id);
   if (error) {
     return;
@@ -422,7 +422,7 @@ const addWatch = async (id:string) => {
 };
 
 // 取消关注
-const cancelWatch = async (id:string) => {
+const cancelFollow = async (id:string) => {
   const [error] = await apis.cancelFollow(id);
   if (error) {
     return;

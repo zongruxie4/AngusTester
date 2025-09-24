@@ -635,13 +635,13 @@ const selectProps = {
                         :checked="dataMap[id].enabled"
                         size="small"
                         @change="enabledChange(id, $event)" />
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('ftpPlugin.uiConfig.actions.clone')">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('actions.clone')">
                         <Icon
                           icon="icon-fuzhi"
                           class="text-3.5"
                           @click="toClone(id)" />
                       </div>
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('ftpPlugin.uiConfig.actions.delete')">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('actions.delete')">
                         <Icon
                           icon="icon-qingchu"
                           class="text-3.5"
@@ -767,8 +767,8 @@ const selectProps = {
                         v-model:value="dataMap[id].uploadFile"
                         :name="id + 'uploadFile'"
                         @change="uploadDownloadChange(id)">
-                        <Radio :value="true">{{ t('ftpPlugin.uiConfig.requestConfig.upload') }}</Radio>
-                        <Radio :value="false">{{ t('ftpPlugin.uiConfig.requestConfig.download') }}</Radio>
+                        <Radio :value="true">{{ t('actions.upload') }}</Radio>
+                        <Radio :value="false">{{ t('actions.download') }}</Radio>
                       </RadioGroup>
                     </div>
 
@@ -999,8 +999,8 @@ const selectProps = {
                           <Colon />
                         </div>
                         <RadioGroup v-model:value="dataMap[id].binaryMode" :name="id + 'binaryMode'">
-                          <Radio :value="true">{{ t('ftpPlugin.uiConfig.fileConfig.binaryMode.yes') }}</Radio>
-                          <Radio :value="false">{{ t('ftpPlugin.uiConfig.fileConfig.binaryMode.no') }}</Radio>
+                          <Radio :value="true">{{ t('status.yes') }}</Radio>
+                          <Radio :value="false">{{ t('status.no') }}</Radio>
                         </RadioGroup>
                       </div>
                     </template>

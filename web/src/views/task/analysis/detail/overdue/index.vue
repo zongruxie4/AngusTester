@@ -90,7 +90,7 @@ defineExpose({
   <div>
     <div>
       <div class="font-semibold pl-3">
-        {{ t('taskAnalysis.detail.overdueAssessment.total') }}
+        {{ t('chart.total') }}
       </div>
       <EChart
         ref="totalChartRef"

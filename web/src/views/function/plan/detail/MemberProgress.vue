@@ -57,7 +57,7 @@ const progressTableColumns = [
   },
   {
     key: 'passedTestRate',
-    title: t('functionPlan.planDetail.memberProgress.progress'),
+    title: t('common.progress'),
     dataIndex: 'passedTestRate',
     width: '13%',
     sorter: (a, b) => +a.passedTestRate - (+b.passedTestRate),
@@ -157,7 +157,7 @@ onMounted(() => {
             v-if="+record?.passedTestRate === 100"
             class="text-white rounded-full bg-status-success text-3 px-1"
             style="transform: scale(0.8);">
-            {{ t('functionPlan.planDetail.memberProgress.completed') }}
+            {{ t('status.completed') }}
           </div>
         </div>
       </template>

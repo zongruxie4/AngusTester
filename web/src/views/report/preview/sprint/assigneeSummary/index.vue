@@ -67,7 +67,7 @@ const totalOverview = computed(() => {
           <div class="flex items-center space-x-7">
             <Progress
               :percent="+item.totalOverview?.progress"
-              :text="t('reportPreview.sprint.assigneeSummary.summary.fields.progress')"
+              :text="t('common.progress')"
               :title="item.fullName"
               class="ml-4" />
             <div class="flex-shrink-0 w-157.75 border border-solid border-border-input">
@@ -222,7 +222,7 @@ const totalOverview = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a3.2">3.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.assigneeSummary.burndownChart.title') }}</span>
+        <span id="a3.2">3.2<em class="inline-block w-3.5"></em>{{ t('chart.burndown.title') }}</span>
       </h2>
       <div class="space-y-5">
         <div

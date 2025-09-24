@@ -107,14 +107,14 @@ watch(() => assertions.value, (newValue) => {
               class="flex items-center"
               style="color:rgba(217, 217, 217, 100%);">
               <span class="inline-block w-2 h-2 mr-1.5 rounded-md" style="background-color:rgba(217, 217, 217, 100%);"></span>
-              <span>{{ t('xcan_assertionsResult.ignored') }}</span>
+              <span>{{ t('status.ignored') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Disabled'"
               class="flex items-center"
               style="color:rgba(217, 217, 217, 100%);">
               <span class="inline-block w-2 h-2 mr-1.5 rounded-md" style="background-color:rgba(217, 217, 217, 100%);"></span>
-              <span>{{ t('xcan_assertionsResult.notEnabled') }}</span>
+              <span>{{ t('status.disabled') }}</span>
             </div>
           </div>
         </template>

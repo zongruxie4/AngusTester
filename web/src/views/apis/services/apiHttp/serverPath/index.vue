@@ -407,7 +407,7 @@ const serverListOpt = computed(() => {
                 size="small"
                 type="primary"
                 @click="guideStep('debugApiThree')">
-                {{ t('service.apiServerPath.actions.nextStep') }}
+                {{ t('actions.nextStep') }}
               </Button>
             </div>
           </div>
@@ -470,7 +470,7 @@ const serverListOpt = computed(() => {
                     size="small"
                     type="primary"
                     @click="guideStep('debugApiSix')">
-                    {{ t('service.apiServerPath.actions.nextStep') }}
+                    {{ t('actions.nextStep') }}
                   </Button>
                 </div>
               </div>

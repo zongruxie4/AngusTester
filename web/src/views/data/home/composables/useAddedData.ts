@@ -138,7 +138,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
         if (error) {
           return;
         }
-        notification.success(t('tips.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
 
         // Trigger refresh notifications
         if (typeof updateRefreshNotify === 'function') {

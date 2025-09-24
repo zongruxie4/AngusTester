@@ -401,7 +401,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="viewModeChange">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-daimashitu" class="text-3.5" />
-                  <span>{{ t('service.sidebar.apiGroup.viewMode.codeView') }}</span>
+                  <span>{{ t('views.code') }}</span>
                 </div>
               </Button>
               <Button
@@ -411,7 +411,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="viewModeChange">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-yemianshitu" class="text-3.5" />
-                  <span>{{ t('service.sidebar.apiGroup.viewMode.pageView') }}</span>
+                  <span>{{ t('views.page') }}</span>
                 </div>
               </Button>
               <Button
@@ -420,7 +420,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="refreshDoc">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-shuaxin" class="text-3.5" />
-                  <span>{{ t('service.sidebar.apiGroup.viewMode.refresh') }}</span>
+                  <span>{{ t('actions.refresh') }}</span>
                 </div>
               </Button>
             </div>

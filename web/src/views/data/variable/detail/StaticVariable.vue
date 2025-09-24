@@ -121,10 +121,10 @@ const handleBlurValue = (targetText: string) => {
       <span>{{ t('dataVariable.detail.staticVariable.password') }}</span>
     </div>
     <RadioGroup v-model:value="passwordValue" name="passwordValue">
-      <Radio :value="false">{{ t('dataVariable.detail.staticVariable.no') }}</Radio>
+      <Radio :value="false">{{ t('status.no') }}</Radio>
       <Radio :value="true">
         <div class="flex items-center">
-          <span class="mr-2">{{ t('dataVariable.detail.staticVariable.yes') }}</span>
+          <span class="mr-2">{{ t('status.yes') }}</span>
           <Hints :text="t('dataVariable.detail.staticVariable.passwordHint')" />
         </div>
       </Radio>

@@ -173,7 +173,7 @@ const handleSave = async () => {
   if (error) {
     return false;
   }
-  notification.success(t('tips.saveSuccess'));
+  notification.success(t('actions.tips.saveSuccess'));
   emits('ok');
 };
 
@@ -313,15 +313,15 @@ watch(() => props.visible, (newValue) => {
         <RadioGroup
           v-model:value="sync.strategyWhenDuplicated.value"
           class="mt-2 mb-5">
-          <Radio value="COVER">{{ t('service.syncConfig.form.cover') }}</Radio>
-          <Radio value="IGNORE">{{ t('service.syncConfig.form.ignore') }}</Radio>
+          <Radio value="COVER">{{ t('actions.cover') }}</Radio>
+          <Radio value="IGNORE">{{ t('actions.ignore') }}</Radio>
         </RadioGroup>
         <span>{{ t('service.syncConfig.form.deleteWhenNotExist') }}</span>
         <RadioGroup
           v-model:value="sync.deleteWhenNotExisted"
           class="mt-2 mb-5">
-          <Radio :value="true">{{ t('service.syncConfig.form.yes') }}</Radio>
-          <Radio :value="false">{{ t('service.syncConfig.form.no') }}</Radio>
+          <Radio :value="true">{{ t('status.yes') }}</Radio>
+          <Radio :value="false">{{ t('status.no') }}</Radio>
         </RadioGroup>
         <div class="flex items-center">
           <span class="mr-3.5">{{ t('service.syncConfig.form.auth') }}</span>

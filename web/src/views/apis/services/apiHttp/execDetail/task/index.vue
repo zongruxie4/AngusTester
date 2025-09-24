@@ -64,41 +64,41 @@ const columns = computed(() => {
     actionKey?: 'createdBy' | 'favouriteBy' | 'followBy';
   }[] = [
     {
-      title: t('service.apiExecDetail.task.columns.code'),
+      title: t('common.code'),
       dataIndex: 'code',
       ellipsis: true,
       width: 100
     },
     {
-      title: t('service.apiExecDetail.task.columns.name'),
+      title: t('common.name'),
       dataIndex: 'name',
       ellipsis: true,
       width: '25%'
     },
     {
-      title: t('service.apiExecDetail.task.columns.sprint'),
+      title: t('common.sprint'),
       dataIndex: 'sprintName',
       ellipsis: true,
       width: '25%'
     },
     {
-      title: t('service.apiExecDetail.task.columns.priority'),
+      title: t('common.priority'),
       dataIndex: 'priority',
       ellipsis: true,
       width: '9%'
     },
     {
-      title: t('service.apiExecDetail.task.columns.assignee'),
+      title: t('common.assignee'),
       dataIndex: 'assigneeName',
       width: 120
     },
     {
-      title: t('service.apiExecDetail.task.columns.confirmer'),
+      title: t('common.confirmer'),
       dataIndex: 'confirmerName',
       width: 120
     },
     {
-      title: t('service.apiExecDetail.task.columns.deadline'),
+      title: t('common.deadlineDate'),
       dataIndex: 'deadlineDate',
       ellipsis: true,
       width: '17%'
@@ -119,10 +119,11 @@ const emptyTextStyle = {
       <div class="flex-1 flex flex-col items-center justify-center">
         <img class="w-27.5" src="./images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3 leading-5">
-          {{ t('service.apiExecDetail.task.noData') }}
+          {{ t('common.noData') }}
         </div>
       </div>
     </template>
+
     <Table
       v-else
       :dataSource="taskList"
@@ -136,17 +137,19 @@ const emptyTextStyle = {
       <template #bodyCell="{ record, column }">
         <div v-if="column.dataIndex === 'name'" class="flex items-center">
           <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
+
           <RouterLink
             class="link truncate ml-1"
             :title="record.name"
             :to="record.linkUrl">
             {{ record.name }}
           </RouterLink>
+
           <span
             v-if="record.overdue"
             class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            <span class="inline-block transform-gpu scale-90">{{ t('service.apiExecDetail.task.overdue') }}</span>
+            <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
           </span>
         </div>
 

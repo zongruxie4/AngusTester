@@ -42,7 +42,7 @@ const formatPercentage = (value: string | undefined): string => {
           <span class="unit">%</span>
         </div>
         <div class="label">
-          {{ t('task.list.statistics.progress') }}
+          {{ t('common.progress') }}
         </div>
       </div>
     </div>

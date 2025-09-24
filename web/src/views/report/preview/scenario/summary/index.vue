@@ -57,7 +57,7 @@ const testResult = computed(() => {
       <div class="flex">
         <div
           class="w-24 flex-shrink-0 flex items-center justify-center space-x-5 px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ testResult?.passed === true ? t('reportPreview.scenario.summary.options.passed') : testResult?.passed === false ? t('reportPreview.scenario.summary.options.failed') : t('reportPreview.scenario.summary.options.notTested') }}
+          {{ testResult?.passed === true ? t('status.passed') : testResult?.passed === false ? t('status.failed') : t('status.notTested') }}
         </div>
 
         <div class="flex-1">

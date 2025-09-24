@@ -73,7 +73,7 @@ export function useTableColumns () {
     },
     {
       key: 'action',
-      title: t('dataset.list.columns.action'),
+      title: t('common.actions'),
       dataIndex: 'action',
       width: '180px'
     }

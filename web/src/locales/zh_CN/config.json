@@ -1,7 +1,7 @@
 {
   "proxy": {
-    "name": "代理",
-    "description": "通过设置请求代理，可以绕过跨域限制，使得请求能够成功发送到目标服务器。使用代理可以轻松捕获和查看发送和接收的请求和响应。这对于调试 API 调用、检查请求头、请求体和响应数据非常有用。您可根据自身的网络环境选择适合的代理服务。",
+    "title": "代理",
+    "hints": "通过设置请求代理，可以绕过跨域限制，使得请求能够成功发送到目标服务器。使用代理可以轻松捕获和查看发送和接收的请求和响应。这对于调试 API 调用、检查请求头、请求体和响应数据非常有用。您可根据自身的网络环境选择适合的代理服务。",
     "noProxy": "无代理",
     "noProxyDescription": "通过浏览器直接请求接口，需要取消跨域限制才能访问非同源服务器接口。",
     "clientProxy": "客户端代理",
@@ -19,8 +19,6 @@
     "enable": "是否开启：",
     "proxyAddress": "代理地址：",
     "addressTip": "请输入正确的代理地址",
-    "cancel": "取消",
-    "save": "保存",
     "connected": "已连接",
     "notConnected": "未链接",
     "inputHost": "请输入host",
@@ -30,15 +28,8 @@
     "connectionFailed": "连接失败"
   },
   "event": {
-    "name": "事件",
+    "title": "事件",
     "hints": "AngusTester 事件配置，为用户提供了即时的信息更新和状态反馈，帮助团队快速响应和处理潜在的问题。",
-    "status": {
-      "pending": "待推送",
-      "success": "成功",
-      "failure": "失败",
-      "ignore": "忽略",
-      "summary": "总共"
-    },
     "errMsg": "错误信息",
     "config": {
       "pushConfig": "推送配置",
@@ -56,7 +47,6 @@
       "notificationStatus": "通知状态",
       "receiveChannel": "接收通道",
       "sender": "发送人",
-      "actions": "操作",
       "executionId": "执行编号",
       "addTime": "添加时间",
       "pushTime": "推送时间",
@@ -102,19 +92,16 @@
     }
   },
   "app": {
-    "name": "应用",
     "title": "应用设置",
     "config": {
-      "name": "应用配置",
       "title": "应用配置",
       "labels": {
-        "name": "名称",
         "domain": "域名"
       },
       "tabs": {
         "member": "应用成员",
         "quota": "应用配额",
-        "permission": "许可信息"
+        "license": "许可信息"
       },
       "permitInfo": {
         "title": "许可信息",
@@ -184,11 +171,7 @@
             "policyCode": "策略编码",
             "policyDescription": "策略描述",
             "policySource": "策略来源",
-            "joinTime": "加入时间",
-            "action": "操作"
-          },
-          "actions": {
-            "cancelAuth": "取消授权"
+            "joinTime": "加入时间"
           },
           "sources": {
             "appDefault": "应用默认授权",
@@ -213,27 +196,10 @@
         "placeholders": {
           "searchPolicy": "查询策略名称"
         },
-        "table": {
-          "headers": {
-            "id": "ID",
-            "name": "名称",
-            "code": "编码",
-            "description": "描述",
-            "status": "状态"
-          },
-          "status": {
-            "enabled": "启用",
-            "disabled": "禁用"
-          }
-        },
-        "actions": {
-          "selectAll": "全选"
-        }
       }
     }
   },
   "script": {
-    "name": "脚本",
     "title": "脚本设置",
     "description": "配置脚本执行的相关参数和选项"
   },
@@ -242,8 +208,8 @@
     "description": "配置用户权限和访问控制"
   },
   "indicator": {
-    "name": "指标",
-    "title": "测试指标是评估软件功能、性能和稳定性的量化值，也是判断软件功能、性能和稳定性及研发质量是否达标的依据。您可以通过\"制定指标\"设置平台默认认功能、性能和稳定性指标，如果希望接口/场景的指标比平台默认指标更加宽松，也可以在接口/场景对应的指标页面进行修改。",
+    "title": "指标",
+    "hints": "测试指标是评估软件功能、性能和稳定性的量化值，也是判断软件功能、性能和稳定性及研发质量是否达标的依据。您可以通过\"制定指标\"设置平台默认认功能、性能和稳定性指标，如果希望接口/场景的指标比平台默认指标更加宽松，也可以在接口/场景对应的指标页面进行修改。",
     "efficiencyTitle": "效能指标用于项目、计划、迭代、组织人员工等工作效能等级标准设置和判定。",
     "efficiency": {
       "title": "平台默认效能指标",
@@ -327,17 +293,11 @@
     }
   },
   "node": {
-    "name": "节点",
     "title": "节点管理",
     "message": {
       "basicInfo": "基本信息",
-      "enable": "启用",
-      "disable": "禁用",
-      "delete": "删除",
       "onlineInstallAgent": "在线安装代理",
       "manualInstallAgent": "手动安装代理",
-      "back": "返回",
-      "fold": "收起",
       "estimatedTime": "预计需要几分钟时间",
       "installAgentPermission": "安装代理需要系统管理员或应用管理员权限",
       "manualInstallSteps": "请按照以下步骤手动安装代理：",
@@ -349,7 +309,6 @@
       "configInfo": "配置信息",
       "use": "使用",
       "idle": "空闲",
-      "total": "总计",
       "resourceMonitoring": "资源监控",
       "agentService": "代理服务",
       "executingTasks": "执行任务",
@@ -362,9 +321,7 @@
     },
     "buttons": {
       "addNode": "添加节点",
-      "buyNode": "购买节点",
-      "sort": "排序",
-      "refresh": "刷新"
+      "buyNode": "购买节点"
     },
     "labels": {
       "autoRefresh": "自动刷新",
@@ -422,8 +379,7 @@
           "threadCount": "线程数",
           "openFiles": "打开文件数",
           "writeDisk": "写磁盘",
-          "readDisk": "读磁盘",
-          "action": "操作"
+          "readDisk": "读磁盘"
         },
         "confirmKillProcess": "确认强制退出进程「{processId}」？",
         "processExitSuccess": "进程退出成功",
@@ -447,12 +403,8 @@
       "mockService": {
         "columns": {
           "serviceId": "服务ID",
-          "name": "名称",
-          "status": "状态",
           "accessUrl": "访问地址",
           "accessPort": "访问端口",
-          "creator": "添加人",
-          "createTime": "添加时间"
         }
       },
       "execute": {
@@ -466,13 +418,8 @@
         }
       },
       "buttons": {
-        "enable": "启用",
-        "disable": "禁用",
-        "delete": "删除",
         "onlineInstallAgent": "在线安装代理",
-        "manualInstallAgent": "手动安装代理",
-        "back": "返回",
-        "fold": "收起"
+        "manualInstallAgent": "手动安装代理"
       },
       "labels": {
         "resourceMonitoring": "资源监控",
@@ -482,7 +429,6 @@
         "mockServiceInstance": "Mock服务实例",
         "used": "已使用",
         "idle": "空闲",
-        "total": "总共",
         "estimatedTime": "预计需要一分钟",
         "disableDelete": "节点禁用后才能删除",
         "deleteNodeTip": "删除节点需要系统管理员或应用管理员权限",
@@ -499,8 +445,6 @@
         "copyScript": "2).将{scriptName}复制到自定义的安装目录，运行脚本安装："
       },
       "status": {
-        "enabled": "启用",
-        "disabled": "禁用",
         "installed": "已安装",
         "notInstalled": "未安装",
         "connected": "已连接",
@@ -520,7 +464,6 @@
           "threeHours": "最近3小时"
         },
         "columns": {
-          "name": "名称",
           "average": "平均值",
           "highest": "最高",
           "lowest": "最低",
@@ -571,17 +514,10 @@
     },
     "nodeItem": {
       "buttons": {
-        "save": "保存",
-        "cancel": "取消",
         "testConnection": "测试链接",
-        "edit": "编辑",
-        "enable": "启用",
-        "disable": "禁用",
-        "delete": "删除",
         "onlineInstall": "在线安装",
         "manualInstall": "手动安装",
-        "restartAgent": "重启代理",
-        "collapse": "收起"
+        "restartAgent": "重启代理"
       },
       "labels": {
         "role": "角色",
@@ -666,18 +602,14 @@
           "applicationNode": "应用节点"
         },
         "nodeStatus": {
-          "enabledStatus": "启用状态：",
-          "agentInstallStatus": "代理安装状态：",
-          "connectionStatus": "连接状态：",
-          "enabled": "已启用",
-          "notEnabled": "未启用",
+          "agentInstallStatus": "代理安装状态",
+          "connectionStatus": "连接状态",
           "installed": "已安装",
           "notInstalled": "未安装",
           "connected": "已连接",
           "notConnected": "未连接"
         },
         "viewItem": {
-          "id": "ID: ",
           "intranetIP": "内网IP: ",
           "publicIP": "公网IP: ",
           "source": "来源: ",
@@ -694,8 +626,6 @@
           "fileSystem": "文件系统",
           "swapArea": "交换区",
           "network": "网络",
-          "upload": "上传",
-          "download": "下载",
           "totalUpload": "总上传",
           "totalDownload": "总下载"
         },

@@ -31,7 +31,7 @@ export function usePreviewData (props: { dataSource?: PreviewDataSource }) {
    * Returns error message if exists, otherwise returns default no data text
    */
   const noDataText = computed(() => {
-    return errorMessage.value ? errorMessage.value : t('dataset.preview.noData');
+    return errorMessage.value ? errorMessage.value : t('common.noData');
   });
 
   /**

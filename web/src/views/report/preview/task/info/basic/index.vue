@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../../PropsType';
+import {TaskType} from "@/enums/enums";
 
 const { t } = useI18n();
 
@@ -30,28 +31,32 @@ const onePassText = computed(() => {
     return '--';
   }
 
-  return +failNum === 0 ? t('reportPreview.task.info.basicInfo.options.yes') : t('reportPreview.task.info.basicInfo.options.no');
+  return +failNum === 0 ? t('status.yes') : t('status.no');
 });
 </script>
 
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.info.basicInfo.title') }}</span>
+      <span id="a1" class="text-4 text-theme-title font-medium">
+        {{ t('reportPreview.serial.1') }}
+        <em class="inline-block w-0.25"></em>
+        {{ t('reportPreview.task.info.basicInfo.title') }}
+      </span>
     </h1>
 
     <div class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.name') }}
+          {{ t('common.name') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.name }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.priority') }}
+          {{ t('common.priority') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.priority?.message }}
@@ -61,11 +66,11 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.taskType') }}
+          {{ t('common.taskType') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.taskType?.message }}
-          <template v-if="task?.taskType?.value === 'BUG'">
+          <template v-if="task?.taskType?.value === TaskType.BUG">
             <Tag
               v-if="task?.bugLevel"
               color="error"
@@ -82,7 +87,7 @@ const onePassText = computed(() => {
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.taskStatus') }}
+          {{ t('common.taskStatus') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.status?.message }}
@@ -92,14 +97,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          ID
+          {{ t('common.id') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.id }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.project') }}
+          {{ t('common.project') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.projectName }}
@@ -109,14 +114,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.code') }}
+          {{ t('common.code') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.code }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.overdue') }}
+          {{ t('common.overdue') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.overdue ? t('status.yes') : t('status.no') }}
@@ -126,14 +131,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.module') }}
+          {{ t('common.module') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.moduleName }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.tag') }}
+          {{ t('common.tags') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.tags?.join(',') }}
@@ -143,14 +148,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.workloadEstimationMethod') }}
+          {{ t('common.evalWorkloadMethod') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.evalWorkloadMethod?.message }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ task?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('reportPreview.task.info.basicInfo.fields.estimatedStoryPoint') : t('reportPreview.task.info.basicInfo.fields.estimatedWorkTime') }}
+          {{ t('common.evalWorkload') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.evalWorkload }}
@@ -160,7 +165,7 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ task?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('reportPreview.task.info.basicInfo.fields.actualWorkload') : t('reportPreview.task.info.basicInfo.fields.actualWorkTime') }}
+          {{ t('common.actualWorkload') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.actualWorkload }}
@@ -194,10 +199,10 @@ const onePassText = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.basicInfo.fields.unplannedTask') }}
+          {{ t('common.unplanned') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-          {{ task?.unplanned ? t('reportPreview.task.info.basicInfo.options.yes') : t('reportPreview.task.info.basicInfo.options.no') }}
+          {{ task?.unplanned ? t('status.yes') : t('status.no') }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">

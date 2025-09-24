@@ -22,44 +22,44 @@ export function useScenarioMenuItems () {
    */
   const dropdownMenuItems = computed<readonly MenuItem[]>(() => [
     {
-      key: 'follow',
-      name: t('scenario.list.actions.follow'),
+      key: 'addFollow',
+      name: t('actions.addFollow'),
       permission: ScenarioPermission.VIEW,
       icon: 'icon-yiguanzhu'
     },
     {
       key: 'cancelFollow',
-      name: t('scenario.list.actions.cancelFollow'),
+      name: t('actions.cancelFollow'),
       permission: ScenarioPermission.VIEW,
       icon: 'icon-quxiaoguanzhu'
     },
     {
-      key: 'favourite',
-      name: t('scenario.list.actions.favourite'),
+      key: 'addFavourite',
+      name: t('actions.addFavourite'),
       permission: ScenarioPermission.VIEW,
       icon: 'icon-yishoucang'
     },
     {
       key: 'cancelFavourite',
-      name: t('scenario.list.actions.cancelFavourite'),
+      name: t('actions.cancelFavourite'),
       permission: ScenarioPermission.VIEW,
       icon: 'icon-quxiaoshoucang'
     },
     {
       key: 'auth',
-      name: t('scenario.list.actions.auth'),
+      name: t('actions.permission'),
       permission: ScenarioPermission.GRANT,
       icon: 'icon-quanxian1'
     },
     {
       key: 'export',
-      name: t('scenario.list.actions.export'),
+      name: t('actions.export'),
       permission: ScenarioPermission.EXPORT,
       icon: 'icon-daochu'
     },
     {
       key: 'delete',
-      name: t('scenario.list.actions.delete'),
+      name: t('actions.delete'),
       permission: ScenarioPermission.DELETE,
       icon: 'icon-qingchu'
     },

@@ -217,43 +217,43 @@ const infoColumns = [
       dataIndex: 'name'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.id'),
+      label: t('common.id'),
       dataIndex: 'id'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.code'),
+      label: t('fcommon.code'),
       dataIndex: 'code'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.reviewStatus'),
+      label: t('common.reviewStatus'),
       dataIndex: 'reviewStatus'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.version'),
+      label: t('common.version'),
       dataIndex: 'version'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.softwareVersion'),
+      label: t('common.softwareVersion'),
       dataIndex: 'softwareVersion'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.priority'),
+      label: t('common.priority'),
       dataIndex: 'priority'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.tags'),
+      label: t('common.tags'),
       dataIndex: 'tags'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.planName'),
+      label: t('common.plan'),
       dataIndex: 'planName'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.moduleName'),
+      label: t('common.module'),
       dataIndex: 'moduleName'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.testResult'),
+      label: t('common.testResult'),
       dataIndex: 'testResult'
     },
     {
@@ -506,7 +506,7 @@ const infoColumns = [
               v-if="props.dataSource?.overdue"
               class="border border-status-error rounded px-0.5 ml-5"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span>{{ t('functionCase.kanbanView.infoBasic.overdue') }}</span>
+              <span>{{ t('status.overdue') }}</span>
             </div>
           </div>
         </template>

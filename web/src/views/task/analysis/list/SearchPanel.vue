@@ -511,27 +511,27 @@ const saveSearchStateToDatabase = () => {
 const quickSearchMenuItems: MenuItem[] = [
   {
     key: 'none',
-    name: t('quickSearchTags.all')
+    name: t('quickSearch.all')
   },
   {
     key: 'createdBy',
-    name: t('quickSearchTags.addByMe')
+    name: t('quickSearch.addByMe')
   },
   {
     key: 'lastModifiedBy',
-    name: t('quickSearchTags.modifiedByMe')
+    name: t('quickSearch.modifiedByMe')
   },
   {
     key: 'lastDay',
-    name: t('quickSearchTags.lastDay')
+    name: t('quickSearch.last1Day')
   },
   {
     key: 'lastThreeDays',
-    name: t('quickSearchTags.last3Days')
+    name: t('quickSearch.last3Days')
   },
   {
     key: 'lastWeek',
-    name: t('quickSearchTags.last7Days')
+    name: t('quickSearch.last7Days')
   }
 ];
 
@@ -585,7 +585,7 @@ const sortMenuItems = [
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>{{ t('quickSearch') }}</span>
+          <span>{{ t('quickSearch.title') }}</span>
           <Colon />
         </div>
         <div class="flex  flex-wrap ml-2">
@@ -629,7 +629,7 @@ const sortMenuItems = [
             size="small"
             class="flex items-center cursor-pointer ">
             <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-            <span class="ml-1">{{ t('sort') }}</span>
+            <span class="ml-1">{{ t('actions.sort') }}</span>
           </Button>
         </DropdownSort>
 

@@ -20,7 +20,7 @@ const InfoConfig = [
   },
   {
     dataIndex: 'completedRate',
-    title: t('xcan_httpTestInfo.progress'),
+    title: t('common.progress'),
     icon: 'icon-renwuyicixingtongguo'
   }
 ];

@@ -40,7 +40,7 @@ const onePassText = computed(() => {
     return '--';
   }
 
-  return testFailureNum.value === 0 ? t('execution.testResult.yes') : t('execution.testResult.no');
+  return testFailureNum.value === 0 ? t('status.yes') : t('status.no');
 });
 </script>
 

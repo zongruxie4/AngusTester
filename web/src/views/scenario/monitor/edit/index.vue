@@ -193,14 +193,14 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="validateAndSubmit(handleSubmit, noticeSetting, notificationOrgs)">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>{{ t('scenarioMonitor.edit.save') }}</span>
+        <span>{{ t('actions.save') }}</span>
       </Button>
       <Button
         size="small"
         class="flex items-center space-x-1"
         @click="handleCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5" />
-        <span>{{ t('scenarioMonitor.edit.cancel') }}</span>
+        <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>
 

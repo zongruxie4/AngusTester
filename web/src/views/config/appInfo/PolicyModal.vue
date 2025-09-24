@@ -134,19 +134,19 @@ watch(() => props.visible, newValue => {
       </div>
       <div class="flex py-0.5 bg-theme-form-head text-theme-title text-3 font-normal mb-1">
         <div class="pl-6 w-46">
-          {{ t('app.config.policyModal.table.headers.id') }}
+          {{ t('common.id') }}
         </div>
         <div class="w-40 mr-2">
-          {{ t('app.config.policyModal.table.headers.name') }}
+          {{ t('common.name') }}
         </div>
         <div class="w-60 mr-2">
-          {{ t('app.config.policyModal.table.headers.code') }}
+          {{ t('common.code') }}
         </div>
         <div class="w-100 mr-2">
-          {{ t('app.config.policyModal.table.headers.description') }}
+          {{ t('common.description') }}
         </div>
         <div class="w-20">
-          {{ t('app.config.policyModal.table.headers.status') }}
+          {{ t('common.status') }}
         </div>
       </div>
       <Scroll
@@ -172,13 +172,13 @@ watch(() => props.visible, newValue => {
             <div class="truncate w-40 mr-2 mt-0.5" :title="item.name">{{ item.name }}</div>
             <div class="truncate w-60 mr-2 mt-0.5" :title="item.code">{{ item.code }}</div>
             <div class="truncate w-100 mr-2 mt-0.5" :title="item.description">{{ item.description }}</div>
-            <div class="truncate w-20 mt-0.5">{{ item.enabled ? t('app.config.policyModal.table.status.enabled') : t('app.config.policyModal.table.status.disabled') }}</div>
+            <div class="truncate w-20 mt-0.5">{{ item.enabled ? t('status.enabled') : t('status.disabled') }}</div>
           </div>
         </CheckboxGroup>
       </Scroll>
       <Divider class="my-2" />
       <Checkbox :indeterminate="indeterminate" @change="onCheckAllChange">
-        {{ t('app.config.policyModal.actions.selectAll') }}
+        {{ t('actions.selectAll') }}
       </Checkbox>
     </div>
   </Modal>

@@ -62,7 +62,7 @@ const projectId = computed(() => {
 const menuItems = computed(() => {
   const allMenuItems = [
     {
-      name: t('taskHome.name'),
+      name: t('home.title'),
       icon: 'icon-zhuye',
       key: 'homepage'
     },

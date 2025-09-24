@@ -185,7 +185,7 @@ const {
                       <div class="flex items-center">
                         <template v-if="dataMap[record.id]?.connSuccess">
                           <Icon icon="icon-duihao" class="text-status-success mr-1 text-3.25" />
-                          <span>{{ t('datasource.testConnection.success') }}</span>
+                          <span>{{ t('dstatus.success') }}</span>
                         </template>
                         <template v-else>
                           <Tooltip
@@ -195,7 +195,7 @@ const {
                             :overlayStyle="{'max-width': '400px'}">
                             <div class="flex items-center cursor-pointer">
                               <Icon icon="icon-jinggao" class="text-status-error mr-1 text-3.25 -mt-0.25" />
-                              <span>{{ t('datasource.testConnection.failed') }}</span>
+                              <span>{{ t('status.failed') }}</span>
                             </div>
                           </Tooltip>
                           <div>

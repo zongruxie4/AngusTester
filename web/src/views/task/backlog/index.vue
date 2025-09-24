@@ -307,7 +307,7 @@ onMounted(() => {
                               class="inline-flex space-x-1 items-center"
                               style="height:20px;padding:0;line-height:20px;">
                               <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                              <span>{{ t('backlog.sort') }}</span>
+                              <span>{{ t('actions.sort') }}</span>
                             </Button>
                           </DropdownSort>
 
@@ -318,7 +318,7 @@ onMounted(() => {
                             style="height:20px;padding:0;line-height:20px;">
                             <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}`">
                               <Icon icon="icon-shuxie" class="text-3.5" />
-                              <span>{{ t('backlog.edit') }}</span>
+                              <span>{{ t('actions.edit') }}</span>
                             </RouterLink>
                           </Button>
 
@@ -402,7 +402,7 @@ onMounted(() => {
                           class="px-0 h-5 leading-5 space-x-1 flex items-center"
                           @click.stop="openTaskEditModal(element.id, item.id)">
                           <Icon icon="icon-shuxie" class="text-3.5" />
-                          <span>{{ t('backlog.edit') }}</span>
+                          <span>{{ t('actions.edit') }}</span>
                         </Button>
 
                         <Button
@@ -412,7 +412,7 @@ onMounted(() => {
                           class="px-0 h-5 leading-5 space-x-1 flex items-center"
                           @click.stop="showSplitTaskModal(element)">
                           <Icon icon="icon-guanlianziyuan" class="text-3.5" />
-                          <span>{{ t('backlog.split') }}</span>
+                          <span>{{ t('actions.split') }}</span>
                         </Button>
 
                         <Popover
@@ -512,7 +512,7 @@ onMounted(() => {
                           class="inline-flex space-x-1 items-center"
                           style="height:20px;padding:0;line-height:20px;">
                           <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                          <span>{{ t('backlog.sort') }}</span>
+                          <span>{{ t('actions.sort') }}</span>
                         </Button>
                       </DropdownSort>
 
@@ -523,7 +523,7 @@ onMounted(() => {
                         style="height:20px;padding:0;line-height:20px;"
                         @click.stop="refreshBacklogData">
                         <Icon class="text-3.5" icon="icon-shuaxin" />
-                        <span>{{ t('backlog.refresh') }}</span>
+                        <span>{{ t('actions.refresh') }}</span>
                       </Button>
                     </div>
                   </div>
@@ -614,14 +614,14 @@ onMounted(() => {
                           type="primary"
                           size="small"
                           @click="createNewTask">
-                          {{ t('backlog.main.save') }}
+                          {{ t('actions.save') }}
                         </Button>
 
                         <Button
                           type="default"
                           size="small"
                           @click="cancelAddTask">
-                          {{ t('backlog.main.cancel') }}
+                          {{ t('actions.cancel') }}
                         </Button>
 
                         <Button
@@ -665,7 +665,7 @@ onMounted(() => {
                           size="small"
                           class="mr-2.5"
                           @click="handleTaskNameEditEnter(element,index)">
-                          {{ t('backlog.main.save') }}
+                          {{ t('actions.save') }}
                         </Button>
 
                         <Button
@@ -673,7 +673,7 @@ onMounted(() => {
                           size="small"
                           class="bg-white"
                           @click="cancelTaskNameEdit(element.id)">
-                          {{ t('backlog.main.cancel') }}
+                          {{ t('actions.cancel') }}
                         </Button>
                       </div>
 
@@ -694,7 +694,7 @@ onMounted(() => {
                         class="px-0 h-5 leading-5 space-x-1 flex items-center"
                         @click.stop="openTaskEditModal(element.id)">
                         <Icon icon="icon-shuxie" class="text-3.5" />
-                        <span>{{ t('backlog.main.edit') }}</span>
+                        <span>{{ t('actions.edit') }}</span>
                       </Button>
 
                       <Button
@@ -703,7 +703,7 @@ onMounted(() => {
                         class="px-0 h-5 leading-5 space-x-1 flex items-center"
                         @click.stop="showSplitTaskModal(element)">
                         <Icon icon="icon-guanlianziyuan" class="text-3.5" />
-                        <span>{{ t('backlog.main.split') }}</span>
+                        <span>{{ t('actions.split') }}</span>
                       </Button>
 
                       <Popover
@@ -730,7 +730,7 @@ onMounted(() => {
                           class="px-0 h-5 leading-5 space-x-1 flex items-center"
                           @click.stop="">
                           <Icon icon="icon-diedai" class="text-3.5" />
-                          <span>{{ t('backlog.main.assign') }}</span>
+                          <span>{{ t('actions.assign') }}</span>
                         </Button>
                       </Popover>
 
@@ -740,7 +740,7 @@ onMounted(() => {
                         class="px-0 h-5 leading-5 space-x-1 flex items-center"
                         @click.stop="confirmDeleteTask(element, index)">
                         <Icon icon="icon-qingchu" class="text-3.5" />
-                        <span>{{ t('backlog.main.delete') }}</span>
+                        <span>{{ t('actions.delete') }}</span>
                       </Button>
                     </div>
                   </div>

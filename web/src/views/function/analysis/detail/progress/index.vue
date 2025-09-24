@@ -29,12 +29,12 @@ onMounted(() => {
       } = sourceData;
 
       totalValue.value.value0 = [
-        { name: t('functionAnalysis.detail.progress.notCompleted'), value: totalNum - completedNum },
-        { name: t('functionAnalysis.detail.progress.completed'), value: completedNum }
+        { name: t('status.notCompleted'), value: totalNum - completedNum },
+        { name: t('status.completed'), value: completedNum }
       ];
       totalValue.value.value1 = [
-        { name: t('functionAnalysis.detail.progress.notCompleted'), value: evalWorkload - completedWorkload },
-        { name: t('functionAnalysis.detail.progress.completed'), value: completedWorkload }
+        { name: t('status.notCompleted'), value: evalWorkload - completedWorkload },
+        { name: t('status.completed'), value: completedWorkload }
       ];
 
       totalValue.value.title0 = completedRate + '%';
@@ -48,12 +48,12 @@ onMounted(() => {
           const { completedNum = 0, completedRate = 0, completedWorkload = 0, completedWorkloadRate = 0, evalWorkload = 0, totalNum = 0 } = viewData;
           const chartData = {
             value0: [
-              { name: t('functionAnalysis.detail.progress.notCompleted'), value: totalNum - completedNum },
-              { name: t('functionAnalysis.detail.progress.completed'), value: completedNum }
+              { name: t('status.notCompleted'), value: totalNum - completedNum },
+              { name: t('status.completed'), value: completedNum }
             ],
             value1: [
-              { name: t('functionAnalysis.detail.progress.notCompleted'), value: evalWorkload - completedWorkload },
-              { name: t('functionAnalysis.detail.progress.completed'), value: completedWorkload }
+              { name: t('status.notCompleted'), value: evalWorkload - completedWorkload },
+              { name: t('status.completed'), value: completedWorkload }
             ],
             title0: completedRate + '%',
             title1: completedWorkloadRate + '%'
@@ -91,7 +91,7 @@ defineExpose({
 <template>
   <div>
     <div class="font-semibold pl-3">
-      {{ t('functionAnalysis.detail.progress.total') }}
+      {{ t('chart.total') }}
     </div>
     <EChart ref="totalChartRef" v-bind="totalValue" />
   </div>

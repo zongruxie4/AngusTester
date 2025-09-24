@@ -78,7 +78,7 @@ watch(() => appInfo.value, (newValue) => {
         </TabPane>
         <TabPane
           key="permission"
-          :tab="t('app.config.tabs.permission')">
+          :tab="t('actions.permission')">
           <LicenseInfo />
         </TabPane>
       </Tabs>

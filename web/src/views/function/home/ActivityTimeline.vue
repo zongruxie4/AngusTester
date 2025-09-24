@@ -23,14 +23,14 @@ const types = [
 <template>
   <div class="bg-white rounded px-5" style="height: 520px">
     <Tabs size="small">
-      <TabPane key="all" :tab="t('functionHome.activityTimeline.allActivity')">
+      <TabPane key="all" :tab="t('home.allActivity')">
         <ActivityTimeline
           key="all"
           :types="types"
           :projectId="props.projectId" />
       </TabPane>
 
-      <TabPane key="my" :tab="t('functionHome.activityTimeline.myActivity')">
+      <TabPane key="my" :tab="t('home.myActivity')">
         <ActivityTimeline
           key="my"
           :types="types"

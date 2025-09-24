@@ -62,7 +62,7 @@ export default class API {
     return http.del(`${baseUrl}/${id}/follow`, {});
   }
 
-  cancelWatchAll (): Promise<[Error | null, any]> {
+  cancelFollowAll (): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/follow`, {});
   }
 

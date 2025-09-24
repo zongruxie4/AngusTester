@@ -222,7 +222,7 @@ defineExpose({
                 @click="handleSortChange">
                 <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                   <Icon icon="icon-shunxu" />
-                  <span>{{ t('project.sort') }}</span>
+                  <span>{{ t('actions.sort') }}</span>
                 </div>
               </DropdownSort>
 
@@ -436,11 +436,11 @@ defineExpose({
         size="small"
         class="w-right"
         :style="{ height: timelineHeight }">
-        <TabPane key="all" :tab="t('project.allActivity')">
+        <TabPane key="all" :tab="t('home.allActivity')">
           <ActivityTimeline :types="activityType" />
         </TabPane>
 
-        <TabPane key="my" :tab="t('project.myActivity')">
+        <TabPane key="my" :tab="t('home.myActivity')">
           <ActivityTimeline
             :types="activityType"
             :userId="String(props.userInfo?.id || '')"

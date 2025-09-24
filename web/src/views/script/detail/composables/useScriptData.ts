@@ -149,7 +149,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
       return;
     }
 
-    notification.success(t('tips.saveSuccess'));
+    notification.success(t('actions.tips.saveSuccess'));
     if (viewMode.value === 'view') {
       if (scriptInfo.value) {
         // Update script info
@@ -179,7 +179,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
       return;
     }
 
-    notification.success(t('tips.deleteSuccess'));
+    notification.success(t('actions.tips.deleteSuccess'));
     await router.push('/script');
   };
 
@@ -193,7 +193,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
     if (error) {
       return;
     }
-    notification.success(t('tips.cloneSuccess'));
+    notification.success(t('actions.tips.cloneSuccess'));
   };
 
   /**

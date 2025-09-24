@@ -83,7 +83,7 @@ export function useTableColumns () {
       hide: true
     },
     {
-      title: t('dataVariable.list.columns.action'),
+      title: t('common.actions'),
       dataIndex: 'action',
       width: '180px'
     }

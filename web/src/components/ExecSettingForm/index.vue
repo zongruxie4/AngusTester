@@ -2072,8 +2072,8 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               <template v-if="supercharged || stressReliever">
                 <FormItem class="h-7 leading-7 pr-5 relative" :name="['thread', 'resetAfterRamp']">
                   <CheckboxGroup :value="executParams.thread.resetAfterRamp" @change="updateRsetAfterRamp($event)">
-                    <Checkbox :value="true">{{ t('xcan_execSettingForm.yes') }}</Checkbox>
-                    <Checkbox :value="false">{{ t('xcan_execSettingForm.no') }}</Checkbox>
+                    <Checkbox :value="true">{{ t('status.yes') }}</Checkbox>
+                    <Checkbox :value="false">{{ t('status.no') }}</Checkbox>
                   </CheckboxGroup>
                   <Tooltip
                     :title="t('xcan_execSettingForm.resetSamplingResultsTooltip')"

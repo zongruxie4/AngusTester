@@ -95,52 +95,52 @@ const columns = [
   {
     key: 'code',
     dataIndex: 'code',
-    title: t('functionCase.detail.assocTask.code')
+    title: t('common.code')
   },
   {
     key: 'name',
     dataIndex: 'name',
-    title: t('functionCase.detail.assocTask.name')
+    title: t('common.name')
   },
   {
     key: 'progress',
     dataIndex: 'progress',
-    title: t('functionCase.detail.assocTask.progress')
+    title: t('common.progress')
   },
   {
     key: 'taskType',
     dataIndex: 'taskType',
-    title: t('functionCase.detail.assocTask.type')
+    title: t('common.type')
   },
   {
     key: 'priority',
     dataIndex: 'priority',
-    title: t('functionCase.detail.assocTask.priority')
+    title: t('common.priority')
   },
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: t('functionCase.detail.assocTask.evalWorkload')
+    title: t('common.evalWorkload')
   },
   {
     key: 'status',
     dataIndex: 'status',
-    title: t('functionCase.detail.assocTask.status')
+    title: t('common.status')
   },
   {
     key: 'assigneeName',
     dataIndex: 'assigneeName',
-    title: t('functionCase.detail.assocTask.assignee')
+    title: t('common.assignee')
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('functionCase.detail.assocTask.deadline')
+    title: t('common.deadlineDate')
   },
   {
     key: 'action',
     dataIndex: 'action',
-    title: t('functionCase.detail.assocTask.actions')
+    title: t('common.actions')
   }
 ];
 </script>
@@ -187,7 +187,7 @@ const columns = [
             type="text"
             @click="handleDelTask(record)">
             <Icon icon="icon-qingchu" class="mr-1" />
-            {{ t('functionCase.detail.assocTask.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
         </template>
 

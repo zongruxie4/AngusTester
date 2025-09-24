@@ -493,7 +493,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
               </div>
             </div>
             <div class="flex flex-none items-center mt-1.75 leading-5">
-              <Tooltip :title="t('service.tag.actions.edit')" placement="top">
+              <Tooltip :title="t('actions.edit')" placement="top">
                 <template v-if="props.disabled">
                   <Icon
                     icon="icon-shuxie"
@@ -507,7 +507,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                     @click="handleEdit(tag)" />
                 </template>
               </Tooltip>
-              <Tooltip :title="t('service.tag.actions.delete')" placement="top">
+              <Tooltip :title="t('actions.delete')" placement="top">
                 <template v-if="props.disabled">
                   <Icon
                     icon="icon-qingchu"
@@ -562,7 +562,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                   :content="tag.description"
                   :copyable="tag.showEllipsis?{ tooltip: false }:false">
                   <template v-if="tag.showEllipsis" #copyableIcon>
-                    <a @click="(e)=>handleDesExpand(e,tag)">{{ tag.ellipsis ? t('service.tag.actions.collapse') : t('service.tag.actions.expand') }}</a>
+                    <a @click="(e)=>handleDesExpand(e,tag)">{{ tag.ellipsis ? t('actions.collapse') : t('actions.expand') }}</a>
                   </template>
                 </TypographyParagraph>
               </template>
@@ -610,7 +610,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                   :content="tag.externalDocs.description"
                   :copyable="tag.externalDocs.showEllipsis ? { tooltip: false }:false">
                   <template v-if="tag.externalDocs.showEllipsis" #copyableIcon>
-                    <a @click="(e)=>handleExternalDocsDesExpand(e,tag)">{{ tag.externalDocs.ellipsis ? t('service.tag.actions.collapse') : t('service.tag.actions.expand') }}</a>
+                    <a @click="(e)=>handleExternalDocsDesExpand(e,tag)">{{ tag.externalDocs.ellipsis ? t('actions.collapse') : t('actions.expand') }}</a>
                   </template>
                 </TypographyParagraph>
               </template>

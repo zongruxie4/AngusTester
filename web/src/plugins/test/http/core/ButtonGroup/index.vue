@@ -31,22 +31,22 @@ const buttonItems = computed(() => {
 });
 
 const MENUITEMS:readonly ButtonGroupMenuItem[] = [
-  { name: t('httpPlugin.actions.export'), icon: 'icon-daochu', key: 'export' },
+  { name: t('actions.export'), icon: 'icon-daochu', key: 'export' },
   { name: t('httpPlugin.actions.select'), icon: 'icon-shengchengceshijiaoben', key: 'select' },
-  { name: t('httpPlugin.actions.import'), icon: 'icon-daoru', key: 'import' },
-  { name: t('httpPlugin.actions.codeView'), icon: 'icon-daimashitu', key: 'codeView' },
-  { name: t('httpPlugin.actions.pageView'), icon: 'icon-yemianshitu', key: 'UIView' },
-  { name: t('httpPlugin.actions.authority'), icon: 'icon-quanxian1', key: 'authority' },
-  { name: t('httpPlugin.actions.follow'), icon: 'icon-yiguanzhu', key: 'follow' },
-  { name: t('httpPlugin.actions.cancelFollow'), icon: 'icon-quxiaoguanzhu', key: 'cancelFollow' },
-  { name: t('httpPlugin.actions.favourite'), icon: 'icon-yishoucang', key: 'favourite' },
-  { name: t('httpPlugin.actions.cancelFavourite'), icon: 'icon-quxiaoshoucang', key: 'cancelFavourite' },
-  { name: t('httpPlugin.actions.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
+  { name: t('actions.import'), icon: 'icon-daoru', key: 'import' },
+  { name: t('views.code'), icon: 'icon-daimashitu', key: 'codeView' },
+  { name: t('views.page'), icon: 'icon-yemianshitu', key: 'pageView' },
+  { name: t('actions.permission'), icon: 'icon-quanxian1', key: 'permission' },
+  { name: t('actions.follow'), icon: 'icon-yiguanzhu', key: 'follow' },
+  { name: t('actions.cancelFollow'), icon: 'icon-quxiaoguanzhu', key: 'cancelFollow' },
+  { name: t('actions.favourite'), icon: 'icon-yishoucang', key: 'favourite' },
+  { name: t('actions.cancelFavourite'), icon: 'icon-quxiaoshoucang', key: 'cancelFavourite' },
+  { name: t('actions.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
   { name: t('httpPlugin.actions.createExecution'), icon: 'icon-tiaoshi', key: 'test' },
-  { name: t('httpPlugin.actions.debug'), icon: 'icon-tiaoshi', key: 'debug' }
+  { name: t('actions.debug'), icon: 'icon-tiaoshi', key: 'debug' }
 ];
 
-const SAVE_ITEM = { name: t('httpPlugin.actions.save'), icon: 'icon-baocun', key: 'save' };
+const SAVE_ITEM = { name: t('actions.save'), icon: 'icon-baocun', key: 'save' };
 </script>
 
 <template>
@@ -69,7 +69,7 @@ const SAVE_ITEM = { name: t('httpPlugin.actions.save'), icon: 'icon-baocun', key
       @click="click(SAVE_ITEM)">
       <div class="flex items-center space-x-1">
         <Icon icon="icon-baocun" class="text-3.5" />
-        <span>{{ t('httpPlugin.actions.save') }}</span>
+        <span>{{ t('actions.save') }}</span>
       </div>
     </Button>
   </div>

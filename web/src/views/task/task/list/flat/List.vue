@@ -79,7 +79,7 @@ const handleCheckboxChange = (event: { target: { checked: boolean; value: string
  * @returns The formatted total text
  */
 const formatPaginationTotal = (totalCount: number) => {
-  return t('task.detail.pagination.total', { total: totalCount });
+  return t('chart.total', { total: totalCount });
 };
 </script>
 <template>

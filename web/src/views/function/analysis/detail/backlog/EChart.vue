@@ -176,14 +176,14 @@ const backloggedTaskEchartConfig = {
       },
       data: [
         {
-          name: t('functionAnalysis.detail.backlogTasks.notCompleted'),
+          name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
             color: 'rgb(246,159,42)'
           }
         },
         {
-          name: t('functionAnalysis.detail.backlogTasks.completed'),
+          name: t('status.completed'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'

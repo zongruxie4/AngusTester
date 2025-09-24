@@ -76,7 +76,7 @@ export const actions = [
     disabled: false
   },
   {
-    name: t('service.sidebar.actions.rename'),
+    name: t('actions.rename'),
     icon: 'icon-bianji',
     key: 'rename',
     permission: 'RENAME',
@@ -90,7 +90,7 @@ export const actions = [
   //   disabled: false
   // },
   {
-    name: t('service.sidebar.actions.delete'),
+    name: t('actions.delete'),
     icon: 'icon-qingchu',
     key: 'delete',
     permission: 'DELETE',
@@ -103,7 +103,7 @@ export const actions = [
     disabled: false
   },
   {
-    name: t('service.sidebar.actions.clone'),
+    name: t('actions.clone'),
     icon: 'icon-fuzhi',
     key: 'clone',
     permission: 'CLONE',
@@ -117,7 +117,7 @@ export const actions = [
   //   disabled: false
   // },
   {
-    name: t('service.sidebar.actions.permission'),
+    name: t('actions.permission'),
     icon: 'icon-quanxian1',
     key: 'auth',
     permission: 'GRANT',

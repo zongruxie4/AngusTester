@@ -1,15 +1,400 @@
 {
+  "dataHome": {
+    "statistics": {
+      "resourceStatistics": "总资源",
+      "variable": "变量",
+      "dataset": "数据集",
+      "file": "文件",
+      "space": "空间",
+      "directory": "目录",
+      "datasource": "数据源",
+      "usedCount": "使用数",
+      "unusedCount": "未使用数"
+    },
+    "myCreationSummary": {
+      "title": "我的参数化",
+      "addedVariables": "添加的变量",
+      "addedDataSets": "添加的数据集",
+      "addedSpaces": "添加的空间",
+      "addedDataSources": "添加的数据源"
+    },
+    "introduce": {
+      "title": "AngusTester参数化方式",
+      "description": "定义可复用变量、动态数据、模拟函数及参数提取机制，支撑测试流程自动化。",
+      "variable": {
+        "title": "变量",
+        "content": "定义可在整个测试过程中重复使用的常量值。"
+      },
+      "dataset": {
+        "title": "数据集",
+        "content": "定义一组相关测试数据，执行时动态更新值。"
+      },
+      "mockFunction": {
+        "title": "Mock函数",
+        "content": "执行时动态生成参数值或随机值。"
+      },
+      "samplingExtraction": {
+        "title": "采样提取变量",
+        "content": "从上一个响应中提取值，作为后续采样的参数，每次迭代重新提取。"
+      }
+    },
+    "summaryTable": {
+      "emptyData": {
+        "noVariable": "您尚未添加任何变量，立即",
+        "addVariable": "添加变量",
+        "noDataset": "您尚未添加任何数据集，立即",
+        "addDataset": "添加数据集",
+        "noSpace": "您没有添加空间",
+        "noDataSource": "您没有添加数据源"
+      }
+    }
+  },
+  "dataVariable": {
+    "title": "变量",
+    "addVariable": {
+      "static": "添加静态变量",
+      "file": "添加文件变量",
+      "http": "添加Http变量",
+      "jdbc": "添加Jdbc变量"
+    },
+    "list": {
+      "title": "已添加变量",
+      "noVariableData": "您尚未添加任何变量，立即",
+      "addStaticVariable": "添加静态变量",
+      "uploadVariable": "上传变量",
+      "or": "或",
+      "noDescription": "无描述~",
+      "isPassword": "是",
+      "notPassword": "否",
+      "columns": {
+        "password": "密码",
+        "dataSource": "值来源",
+      },
+      "dropdown": {
+        "fileExtract": "文件提取变量",
+        "httpExtract": "Http提取变量",
+        "jdbcExtract": "Jdbc提取变量"
+      },
+      "messages": {
+        "deleteConfirm": "确定删除变量「{name}」吗？",
+        "deleteSuccess": "变量删除成功",
+        "cloneSuccess": "变量克隆成功",
+        "batchDeleteConfirm": "确定删除选中的 {num} 条变量吗？",
+        "batchDeleteSuccess": "选中的变量全部删除成功",
+        "maxBatchDelete": "最大支持批量删除 {maxNum} 个变量，当前已选中 {num} 个变量。",
+        "maxBatchDeleteError": "最大支持批量删除 {maxNum} 个变量，当前已选中 {num} 个变量。"
+      },
+      "searchPanel": {
+        "quickSearch": "快速查询",
+        "all": "全部",
+        "createdByMe": "我创建的",
+        "modifiedByMe": "我修改的",
+        "lastDay": "近1天",
+        "lastThreeDays": "近3天",
+        "lastWeek": "近7天",
+        "searchOptions": {
+          "namePlaceholder": "查询名称、描述",
+          "createdByPlaceholder": "选择创建人"
+        },
+        "sortOptions": {
+          "byName": "按名称",
+          "byCreator": "按添加人",
+          "byCreateTime": "按添加时间",
+          "byLastModifier": "按最后修改人",
+          "byLastModifyTime": "按最后修改时间"
+        },
+        "buttons": {
+          "deleteSelected": "删除选中",
+          "cancelDelete": "取消删除",
+          "addStaticVariable": "添加静态变量",
+          "batchDelete": "批量删除"
+        },
+        "tooltips": {
+          "uploadVariable": "上传变量",
+          "downloadVariable": "下载变量"
+        },
+        "dropdown": {
+          "fileExtract": "文件提取变量",
+          "httpExtract": "Http提取变量",
+          "jdbcExtract": "Jdbc提取变量"
+        }
+      }
+    },
+    "introduce": {
+      "title": "关于变量",
+      "description": "定义可重复使用的值。使用 {variableName} 占位符引用变量，让测试更高效灵活。注意：执行前占位符会被替换为实际值，执行过程中值不会改变。",
+      "types": {
+        "fileExtract": {
+          "title": "文件提取",
+          "description": "从文件中提取值作为变量。如：读取秘钥。"
+        },
+        "httpExtract": {
+          "title": "HTTP提取",
+          "description": "从HTTP请求中提取值作为变量。如：动态获取令牌。"
+        },
+        "jdbcExtract": {
+          "title": "JDBC提取",
+          "description": "根据SQL从数据源表中提取变量值。如：商品当前报价。"
+        }
+      }
+    },
+    "importModal": {
+      "title": "上传变量",
+      "uploadArea": {
+        "selectFile": "选择文件",
+        "description": "可直接将文件拖入此区域直接上传，文件大小不超过{maxSize}M，支持.json,.yaml,.yml类型文件。"
+      },
+      "fileSizeError": "文件大小不能超过{maxSize}M",
+      "duplicateStrategy": {
+        "title": "遇到重复时的处理策略"
+      }
+    },
+    "exportModal": {
+      "title": "下载变量",
+      "format": "格式"
+    },
+    "detail": {
+      "notifications": {
+        "deleteConfirm": "确定删除变量「{name}」吗？",
+        "deleteSuccess": "变量删除成功",
+        "cloneSuccess": "变量克隆成功",
+        "copyLinkSuccess": "复制链接成功",
+        "copyLinkFail": "复制链接失败"
+      },
+      "matchItemPopover": {
+        "title": "匹配项说明",
+        "description": "匹配项用于从响应中提取数据，支持多种匹配方式：",
+        "regexp": {
+          "title": "正则表达式",
+          "columns": {
+            "data": "数据",
+            "regexp": "正则表达式",
+            "group": "分组"
+          },
+          "item": "使用正则表达式从响应中提取数据，支持分组捕获。"
+        },
+        "jsonpath": {
+          "title": "JSONPath",
+          "columns": {
+            "data": "数据",
+            "jsonpath": "JSONPath表达式",
+            "result": "结果"
+          },
+          "item": "使用JSONPath表达式从JSON响应中提取数据。"
+        },
+        "xpath": {
+          "title": "XPath",
+          "columns": {
+            "data": "数据",
+            "xpath": "XPath表达式",
+            "result": "结果"
+          },
+          "item": "使用XPath表达式从XML响应中提取数据。"
+        }
+      },
+      "useList": {
+        "title": "使用列表",
+        "columns": {
+          "targetType": "资源类型",
+          "targetId": "资源ID",
+          "targetName": "资源名称"
+        }
+      },
+      "previewData": {
+        "title": "预览数据",
+        "tip": "实际变量值在执行采样前生成，并且会执行过程中保持不变。"
+      },
+      "staticVariable": {
+        "notifications": {
+          "editSuccess": "修改成功",
+          "addSuccess": "添加成功"
+        },
+        "password": "密码",
+        "preview": "预览",
+        "use": "使用",
+        "namePlaceholder": "输入参数名，最长100个字符",
+        "descriptionPlaceholder": "变量描述，最大支持200个字符",
+        "valuePlaceholder": "变量值，支持Mock函数，最大支持4096个字符",
+        "passwordHint": "如果是密码类型变量，变量值在界面上对用户不可见。",
+        "hints": "若变量值中含Mock函数，则 每次迭代前自动刷新（同一迭代内所有请求将复用该值）。"
+      },
+      "httpVariable": {
+        "notifications": {
+          "editSuccess": "修改成功",
+          "addSuccess": "添加成功"
+        },
+        "nameSupport": "支持数字、字母和!$%^&*_-+=./",
+        "extract": "提取",
+        "preview": "预览",
+        "use": "使用",
+        "namePlaceholder": "输入参数名，最长100个字符",
+        "descriptionPlaceholder": "变量描述，最长200个字符",
+        "hints": "每次执行测试前从Http中提取一个值作为变量值，常用于获取一个用户访问令牌，避免每次手动更新。",
+        "readConfig": "读取配置",
+        "extractConfig": "提取配置",
+        "selectApi": "选择接口",
+        "interfaceConfig": "接口配置",
+        "extractMethod": "提取方式",
+        "extractMethodPlaceholder": "提取方式",
+        "extractPosition": "提取位置",
+        "parameterName": "参数名称",
+        "parameterNamePlaceholder": "参数名称，最长400个字符",
+        "expression": "表达式",
+        "expressionPlaceholder": "表达式，最长1024个字符",
+        "matchItem": "匹配项",
+        "matchItemPlaceholder": "匹配项，范围0-2000（可选）",
+        "defaultValue": "缺省值",
+        "defaultValuePlaceholder": "缺省值，最长4096个字符",
+        "httpConfigs": {
+          "title": "HTTP配置",
+          "requestMethod": "请求方法",
+          "requestMethodPlaceholder": "请求方法",
+          "requestUrl": "请求地址",
+          "requestUrlPlaceholder": "接口路径，以 \" / \" 起始",
+          "requestParameters": "请求参数",
+          "requestHeaders": "请求头",
+          "requestCookie": "Cookie",
+          "requestAuthorization": "Authorization",
+          "requestBody": "请求体",
+          "requestBodyPlaceholder": "请输入请求体内容",
+          "responseHeaders": "响应头",
+          "responseBody": "响应体",
+          "extractConfig": "提取配置",
+          "extractMethod": "提取方式",
+          "extractExpression": "提取表达式",
+          "extractExpressionPlaceholder": "请输入提取表达式",
+          "testRequest": "测试请求",
+          "testResponse": "测试响应",
+          "selectApi": "选择接口",
+          "selectApiPlaceholder": "请选择接口",
+          "serverConfig": "服务器配置",
+          "serverPlaceholder": "服务器地址，接口地址URL前缀",
+          "serverConfigPlaceholder": "请选择服务器配置",
+          "serverVariableNotFound": "找不到该变量，请先定义变量或刷新再试",
+          "formatRawContent": "格式化",
+          "compressRawContent": "压缩",
+          "uploadFile": "上传文件",
+          "parameterInput": {
+            "namePlaceholder": "请输入参数名",
+            "valuePlaceholder": "请输入参数值",
+            "errors": {
+              "duplicate": "参数名重复",
+              "invalid": "参数名无效"
+            }
+          },
+          "requestBodyParameter": {
+            "title": "请求体参数",
+            "addParameter": "添加参数",
+            "deleteParameter": "删除参数",
+            "parameterName": "参数名",
+            "parameterValue": "参数值",
+            "parameterNamePlaceholder": "请输入参数名",
+            "parameterValuePlaceholder": "请输入参数值，最多可输入4096个字符",
+            "parameterTypePlaceholder": "请选择参数类型",
+            "selectFile": "选择文件",
+            "summaryFileSize": "总上传文件大小不能超过{maxSize}"
+          }
+        },
+        "selectApiModal": {
+          "title": "选择接口",
+          "searchPlaceholder": "搜索接口名称"
+        }
+      },
+      "jdbcVariable": {
+        "notifications": {
+          "editSuccess": "修改成功",
+          "addSuccess": "添加成功"
+        },
+        "nameSupport": "支持数字、字母和!$%^&*_-+=./",
+        "extract": "提取",
+        "preview": "预览",
+        "use": "使用",
+        "namePlaceholder": "输入参数名，最长100个字符",
+        "descriptionPlaceholder": "变量描述，最长200个字符",
+        "hints": "每次执行测试前从数据库中查询结果中提取一个值作为变量值。",
+        "readConfig": "读取配置",
+        "extractConfig": "提取配置",
+        "selectDataSource": "选择数据源",
+        "databaseType": "数据库类型",
+        "databaseTypePlaceholder": "数据库类型",
+        "jdbcUrl": "Jdbc URL",
+        "jdbcUrlPlaceholder": "Jdbc URL，最长2048个字符",
+        "username": "用户名",
+        "usernamePlaceholder": "用户名，最长200个字符",
+        "password": "密码",
+        "passwordPlaceholder": "密码，最长800个字符",
+        "selectStatement": "Select语句",
+        "selectStatementPlaceholder": "查询表数据Select语句，最长1024个字符",
+        "readStartRow": "读开始行",
+        "readStartRowPlaceholder": "读取行索引，默认从0开始",
+        "readStartRowTooltip": "读取参数值开始行，默认索引基于0开始，即读取第一行。",
+        "readStartColumn": "读开始列",
+        "readStartColumnPlaceholder": "读取列索引，默认从0开始",
+        "readStartColumnTooltip": "读取参数开始列，默认索引基于0开始，即读取第一列。",
+        "extractMethod": "提取方式",
+        "extractMethodPlaceholder": "提取方式",
+        "expression": "表达式",
+        "expressionPlaceholder": "表达式，最长1024个字符",
+        "matchItem": "匹配项",
+        "matchItemPlaceholder": "匹配项，范围0-2000（可选）",
+        "defaultValue": "缺省值",
+        "defaultValuePlaceholder": "缺省值，最长4096个字符",
+        "selectDatasource": {
+          "title": "选择数据源",
+          "searchPlaceholder": "搜索数据源名称"
+        }
+      },
+      "fileVariable": {
+        "notifications": {
+          "editSuccess": "修改成功",
+          "addSuccess": "添加成功"
+        },
+        "nameSupport": "支持数字、字母和!$%^&*_-+=./",
+        "extract": "提取",
+        "preview": "预览",
+        "use": "使用",
+        "namePlaceholder": "输入参数名，最长100个字符",
+        "descriptionPlaceholder": "变量描述，最长200个字符",
+        "hints": "每次执行测试前从文件中提取一个值作为变量值。",
+        "extractHint": "每次执行测试前从文件中提取一个值作为变量值。",
+        "readConfig": "读取配置",
+        "extractConfig": "提取配置",
+        "filePath": "文件路径",
+        "filePathPlaceholder": "文件本地路径或文件URL，最长800个字符",
+        "fileType": "文件类型",
+        "fileEncoding": "文件编码",
+        "readStartRow": "读开始行",
+        "readStartRowPlaceholder": "读取行索引，默认从0开始",
+        "readStartRowTooltip": "读取参数值开始行，默认索引基于0开始，即读取第一行。注意：第一行为参数名标题行时，通常需要从索引1即第二行读取数据。",
+        "readStartColumn": "读开始列",
+        "readStartColumnPlaceholder": "读取列索引，默认从0开始",
+        "readStartColumnTooltip": "读取参数开始列，默认索引基于0开始，即读取第一列。",
+        "separator": "分隔符",
+        "separatorTooltip": "Csv类型文件参数。用于分隔CSV文件中的不同字段或数据列，默认值为\",\"。",
+        "escapeChar": "转义符",
+        "escapeCharTooltip": "Csv类型文件参数，用于转义字段中的特殊字符，特别是将引号字符本身作为文字字符包含在内，默认为\"\\\\\"。",
+        "quoteChar": "引用符",
+        "quoteCharTooltip": "Csv类型文件参数。用于表示CSV文件中字段的开始和结束，特别是当字段包含分隔符（例如逗号）或换行符等特殊字符时，默认为\"\\\\\"。",
+        "extractMethod": "提取方式",
+        "extractMethodPlaceholder": "提取方式",
+        "expression": "表达式",
+        "expressionPlaceholder": "表达式，最长1024个字符",
+        "matchItem": "匹配项",
+        "matchItemPlaceholder": "匹配项，范围0 ~ 2000",
+        "defaultValue": "缺省值",
+        "defaultValuePlaceholder": "缺省值，最长4096个字符"
+      }
+    }
+  },
   "dataset": {
-    "name": "数据集",
+    "title": "数据集",
     "addStaticDataset": "添加静态数据集",
     "addFileDataset": "添加文件数据集",
     "addJdbcDataset": "添加Jdbc数据集",
     "preview": {
       "hints": "每次最多只允许预览1w条数据，Mock函数实际参数值在执行采样时生成。",
       "previewRows": "预览行数",
-      "placeholder": "1 ~ 10000",
-      "refresh": "刷新",
-      "noData": "无数据"
+      "placeholder": "1 ~ 10000"
     },
     "list": {
       "title": "已添加数据集",
@@ -22,19 +407,10 @@
         "jdbcExtractDataset": "Jdbc提取数据集"
       },
       "columns": {
-        "name": "名称",
-        "description": "描述",
         "valueSource": "值来源",
-        "lastModifiedBy": "最后修改人",
-        "createdBy": "创建人",
-        "lastModifiedDate": "最后修改时间",
-        "createdDate": "创建时间",
-        "action": "操作"
       },
       "tableDropdown": {
-        "previewData": "预览数据",
-        "export": "导出",
-        "clone": "克隆"
+        "previewData": "预览数据"
       },
       "messages": {
         "deleteConfirm": "确定删除数据集「{name}」吗？",
@@ -71,8 +447,7 @@
         "deleteSelected": "删除选中",
         "cancelDelete": "取消删除",
         "addStaticDataset": "添加静态数据集",
-        "batchDelete": "批量删除",
-        "refresh": "刷新"
+        "batchDelete": "批量删除"
       },
       "tooltips": {
         "uploadDataset": "上传数据集",
@@ -110,9 +485,7 @@
       },
       "fileSizeError": "文件大小不能超过{maxSize}M",
       "duplicateStrategy": {
-        "title": "遇到重复时的处理策略",
-        "cover": "覆盖",
-        "ignore": "忽略"
+        "title": "遇到重复时的处理策略"
       }
     },
     "exportModal": {
@@ -127,23 +500,13 @@
         "copyLinkSuccess": "复制链接成功",
         "copyLinkFail": "复制链接失败"
       },
-      "buttonGroup": {
-        "save": "保存",
-        "delete": "删除",
-        "export": "导出",
-        "clone": "克隆",
-        "copyLink": "复制链接",
-        "refresh": "刷新"
-      },
       "fileDataset": {
         "notifications": {
           "updateSuccess": "数据集修改成功",
           "addSuccess": "数据集添加成功"
         },
         "form": {
-          "name": "名称",
           "namePlaceholder": "数据集名称，最长100个字符",
-          "description": "描述",
           "descriptionPlaceholder": "数据集描述，最长200个字符",
           "extraction": "提取",
           "hints": "从文件中读取数据集，每个数据集最大允许添加200个参数，每个参数文件最大不超过500MB，总行数不超过100万行。",
@@ -186,9 +549,7 @@
           "addSuccess": "数据集添加成功"
         },
         "form": {
-          "name": "名称",
           "namePlaceholder": "数据集名称，最长100个字符",
-          "description": "描述",
           "descriptionPlaceholder": "数据集描述，最长200个字符",
           "extraction": "提取",
           "hints": "每次执行测试前从数据库中查询结果中提取一个值作为数据集值。",
@@ -241,13 +602,7 @@
         "table": {
           "resourceType": "资源类型",
           "resourceId": "资源ID",
-          "resourceName": "资源名称",
-          "action": "操作"
-        },
-        "buttons": {
-          "batchDelete": "批量删除",
-          "deleteSelected": "删除选中",
-          "cancelDelete": "取消删除"
+          "resourceName": "资源名称"
         },
         "hints": "查看使用数据集的资源信息。"
       },
@@ -255,7 +610,7 @@
         "title": "匹配项",
         "description": "当表达式匹配到多个值或者结果为数组时，指定第几个值作为表达式期望值，支持位置从0开始到最大值2000，指定位置数据不存在时返回null，不指定时合并多个值为一个值。",
         "regexp": {
-          "name": "正则表达式匹配",
+          "tip": "正则表达式匹配",
           "columns": {
             "data": "匹配值",
             "expression": "表达式",
@@ -265,7 +620,7 @@
           "item": "不指定位置默认取合并结果合并匹配值：\"1888888888813999999999\"，指定位置0取值：\"18888888888\"，指定位置1取值：\"13999999999\"。"
         },
         "jsonpath": {
-          "name": "JSONPath匹配",
+          "tip": "JSONPath匹配",
           "columns": {
             "data": "匹配值",
             "expression": "表达式",
@@ -275,7 +630,7 @@
           "item": "不指定位置默认取合并结果：「{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}」，指定位置0取值：{\"title\":\"Sayings of the Century\",\"price\":100}，指定位置1取值：{\"title\":\"confucianism\",\"price\":200}。"
         },
         "xpath": {
-          "name": "XPath匹配",
+          "tip": "XPath匹配",
           "columns": {
             "data": "匹配值",
             "expression": "表达式",
@@ -286,7 +641,6 @@
         }
       },
       "parameterNameInput": {
-        "name": "名称",
         "readColumn": "读取列",
         "tooltip": "参数名顺序必须和文件列数据顺序一致，每个名称最长100个字符。",
         "placeholder": "输入参数名，最长100个字符",
@@ -300,8 +654,6 @@
           "editSuccess": "数据集修改成功",
           "addSuccess": "数据集添加成功"
         },
-        "name": "名称",
-        "description": "描述",
         "parameters": "参数",
         "preview": "预览",
         "use": "使用",
@@ -309,8 +661,6 @@
         "descriptionPlaceholder": "数据集描述，最长200个字符",
         "hints": "在采样时根据Mock数据函数动态生成参数值，每个数据集最大允许添加200个参数，最大支持生成1000亿行数据。",
         "parameterInput": {
-          "name": "名称",
-          "value": "值",
           "namePlaceholder": "输入参数名，最长100个字符",
           "valuePlaceholder": "参数值，值可以是常量或Mock函数，最长4096个字符",
           "errors": {
@@ -322,9 +672,9 @@
     }
   },
   "datasource": {
-    "name": "数据源",
-    "title": "关于数据源",
-    "description": "支持管理和连接多种数据源，配置数据源信息后，可以快速生成测试、项目演示等场景数据，以及在JDBC测试、参数化变量、数据集中快速引用数据源配置信息。",
+    "title": "数据源",
+    "titleAbaot": "关于数据源",
+    "hits": "支持管理和连接多种数据源，配置数据源信息后，可以快速生成测试、项目演示等场景数据，以及在JDBC测试、参数化变量、数据集中快速引用数据源配置信息。",
     "addedTitle": "已添加数据源",
     "addDataSource": "添加数据源",
     "searchOptions": {
@@ -334,8 +684,6 @@
     },
     "testConnection": {
       "testing": "测试中...",
-      "success": "成功",
-      "failed": "失败",
       "retest": "重新测试",
       "testConnection": "测试连接"
     },
@@ -347,13 +695,7 @@
       "editSuccess": "修改成功"
     },
     "form": {
-      "title": {
-        "add": "添加数据源",
-        "edit": "修改数据源"
-      },
       "labels": {
-        "type": "类型",
-        "name": "名称",
         "driverClassName": "驱动类名",
         "jdbcUrl": "JBDC Url",
         "username": "用户名",
@@ -361,7 +703,6 @@
       },
       "placeholders": {
         "databaseType": "数据库类型",
-        "name": "名称",
         "driverClassName": "驱动类名",
         "jdbcUrl": "JBDC Url",
         "username": "用户名",
@@ -369,87 +710,11 @@
       },
       "rules": {
         "databaseType": "请选择数据库类型",
-        "name": "请输入名称",
         "jdbcUrl": "请输入JDBC Url"
       }
     }
   },
-  "dataHome": {
-    "name": "主页",
-    "activityTimeline": {
-      "myActivity": "我的活动",
-      "allActivity": "所有活动"
-    },
-    "statistics": {
-      "resourceStatistics": "总资源",
-      "variable": "变量",
-      "dataset": "数据集",
-      "file": "文件",
-      "space": "空间",
-      "directory": "目录",
-      "datasource": "数据源",
-      "usedCount": "使用数",
-      "unusedCount": "未使用数"
-    },
-    "myCreationSummary": {
-      "title": "我的参数化",
-      "addedVariables": "添加的变量",
-      "addedDataSets": "添加的数据集",
-      "addedSpaces": "添加的空间",
-      "addedDataSources": "添加的数据源"
-    },
-    "introduce": {
-      "title": "AngusTester参数化方式",
-      "description": "定义可复用变量、动态数据、模拟函数及参数提取机制，支撑测试流程自动化。",
-      "variable": {
-        "title": "变量",
-        "content": "定义可在整个测试过程中重复使用的常量值。"
-      },
-      "dataset": {
-        "title": "数据集",
-        "content": "定义一组相关测试数据，执行时动态更新值。"
-      },
-      "mockFunction": {
-        "title": "Mock函数",
-        "content": "执行时动态生成参数值或随机值。"
-      },
-      "samplingExtraction": {
-        "title": "采样提取变量",
-        "content": "从上一个响应中提取值，作为后续采样的参数，每次迭代重新提取。"
-      }
-    },
-    "summaryTable": {
-      "columns": {
-        "id": "ID",
-        "name": "名称",
-        "createdBy": "添加人",
-        "createdDate": "添加时间",
-        "lastModifiedBy": "最后修改人",
-        "lastModifiedDate": "最后修改时间",
-        "action": "操作"
-      },
-      "pagination": {
-        "pageInfo": "第{current}/{totalPage}页"
-      },
-      "messages": {
-        "deleteConfirm": "确定删除「{name}」吗？",
-        "deleteSuccess": "删除成功"
-      },
-      "emptyData": {
-        "noVariable": "您尚未添加任何变量，立即",
-        "addVariable": "添加变量",
-        "noDataset": "您尚未添加任何数据集，立即",
-        "addDataset": "添加数据集",
-        "noSpace": "您没有添加空间",
-        "noDataSource": "您没有添加数据源"
-      },
-      "buttons": {
-        "delete": "删除"
-      }
-    }
-  },
   "fileSpace": {
-    "name": "文件",
     "title": "关于文件",
     "addedTitle": "已添加空间",
     "searchPlaceholder": "查询空间名称",
@@ -458,9 +723,7 @@
       "file": "文件",
       "space": "空间"
     },
-    "compressFile": {
-      "name": "压缩文件"
-    },
+    "compressFile": "压缩文件",
     "buttons": {
       "generateData": "生成数据",
       "addSpace": "添加空间",
@@ -472,17 +735,7 @@
       "fileCount": "文件数",
       "used": "已用",
       "quota": "配额",
-      "addTime": "添加时间",
-      "addBy": "添加人",
-      "action": "操作",
-      "name": "名称",
-      "actualSize": "实际大小",
-      "lastModifiedDate": "修改时间"
-    },
-    "actions": {
-      "edit": "编辑",
-      "permission": "权限",
-      "delete": "删除"
+      "actualSize": "实际大小"
     },
     "messages": {
       "deleteConfirm": "确认删除「{name}」？",
@@ -500,17 +753,9 @@
     },
     "fileManagement": {
       "directory": "目录",
-      "upload": "上传",
-      "delete": "删除",
-      "move": "移动",
-      "refresh": "刷新",
       "createDirectory": "输入目录名称，限制50字符以内",
       "fileActions": {
-        "delete": "删除",
-        "rename": "重命名",
-        "move": "移动",
         "details": "详情",
-        "download": "下载",
         "shareLink": "分享链接"
       },
       "messages": {
@@ -559,9 +804,6 @@
         "password": "密码",
         "validityPeriod": "有效期",
         "permanentValid": "永久有效",
-        "confirm": "确认",
-        "cancel": "取消",
-        "loadMore": "加载更多",
         "notifications": {
           "deleteSuccess": "删除分享记录成功",
           "passwordEmpty": "输入的密码不能为空",
@@ -608,11 +850,6 @@
       },
       "authSet": {
         "searchPlaceholder": "查询名称",
-        "headers": {
-          "name": "名称",
-          "permissionControl": "权限控制",
-          "permissions": "权限"
-        },
         "allPermissions": "全部",
         "loadingTip": "加载中..."
       }
@@ -635,16 +872,8 @@
       "quotaDescription": "(限制空间可使用存储总大小，最小100MB)"
     },
     "capacity": {
-      "loading": "加载中...",
       "used": "已使用",
       "upgradeCapacity": "升级容量"
-    },
-    "crumb": {
-      "home": "首页",
-      "ellipsis": "..."
-    },
-    "search": {
-      "title": "查询"
     },
     "sort": {
       "title": "排序",
@@ -657,413 +886,18 @@
       "clickToUpload": "点击此处上传文件",
       "uploadComplete": "上传完成",
       "uploadFailed": "上传失败",
-      "continueUpload": "继续上传",
-      "cancel": "取消"
+      "continueUpload": "继续上传"
     },
     "moveModal": {
       "title": "选择移动路径"
     },
     "spaceDetail": {
       "columns": {
-        "name": "名称",
-        "id": "ID",
         "actualSize": "实际大小",
         "quota": "配额",
         "format": "格式",
-        "createdBy": "添加人",
-        "createdDate": "添加时间",
-        "lastModifiedDate": "更新时间",
         "remark": "备注",
         "mockFunc": "调用表达式"
-      }
-    }
-  },
-  "dataVariable": {
-    "name": "变量",
-    "title": "变量",
-    "addVariable": {
-      "static": "添加静态变量",
-      "file": "添加文件变量",
-      "http": "添加Http变量",
-      "jdbc": "添加Jdbc变量"
-    },
-    "list": {
-      "title": "已添加变量",
-      "noData": "您尚未添加任何变量，立即",
-      "addStaticVariable": "添加静态变量",
-      "uploadVariable": "上传变量",
-      "or": "或",
-      "noDescription": "无描述~",
-      "isPassword": "是",
-      "notPassword": "否",
-      "columns": {
-        "name": "名称",
-        "value": "值",
-        "description": "描述",
-        "password": "密码",
-        "dataSource": "值来源",
-        "lastModifiedBy": "最后修改人",
-        "createdBy": "创建人",
-        "lastModifiedDate": "最后修改时间",
-        "createdDate": "创建时间",
-        "action": "操作"
-      },
-      "buttons": {
-        "edit": "编辑",
-        "delete": "删除"
-      },
-      "dropdown": {
-        "fileExtract": "文件提取变量",
-        "httpExtract": "Http提取变量",
-        "jdbcExtract": "Jdbc提取变量",
-        "export": "导出",
-        "clone": "克隆"
-      },
-      "messages": {
-        "deleteConfirm": "确定删除变量「{name}」吗？",
-        "deleteSuccess": "变量删除成功",
-        "cloneSuccess": "变量克隆成功",
-        "batchDeleteConfirm": "确定删除选中的 {num} 条变量吗？",
-        "batchDeleteSuccess": "选中的变量全部删除成功",
-        "maxBatchDelete": "最大支持批量删除 {maxNum} 个变量，当前已选中 {num} 个变量。",
-        "maxBatchDeleteError": "最大支持批量删除 {maxNum} 个变量，当前已选中 {num} 个变量。"
-      },
-      "searchPanel": {
-        "quickSearch": "快速查询",
-        "all": "全部",
-        "createdByMe": "我创建的",
-        "modifiedByMe": "我修改的",
-        "lastDay": "近1天",
-        "lastThreeDays": "近3天",
-        "lastWeek": "近7天",
-        "searchOptions": {
-          "namePlaceholder": "查询名称、描述",
-          "createdByPlaceholder": "选择创建人"
-        },
-        "sortOptions": {
-          "byName": "按名称",
-          "byCreator": "按添加人",
-          "byCreateTime": "按添加时间",
-          "byLastModifier": "按最后修改人",
-          "byLastModifyTime": "按最后修改时间"
-        },
-        "buttons": {
-          "deleteSelected": "删除选中",
-          "cancelDelete": "取消删除",
-          "addStaticVariable": "添加静态变量",
-          "batchDelete": "批量删除",
-          "refresh": "刷新"
-        },
-        "tooltips": {
-          "uploadVariable": "上传变量",
-          "downloadVariable": "下载变量"
-        },
-        "dropdown": {
-          "fileExtract": "文件提取变量",
-          "httpExtract": "Http提取变量",
-          "jdbcExtract": "Jdbc提取变量"
-        }
-      }
-    },
-    "introduce": {
-      "title": "关于变量",
-      "description": "定义可重复使用的值。使用 {variableName} 占位符引用变量，让测试更高效灵活。注意：执行前占位符会被替换为实际值，执行过程中值不会改变。",
-      "types": {
-        "fileExtract": {
-          "title": "文件提取",
-          "description": "从文件中提取值作为变量。如：读取秘钥。"
-        },
-        "httpExtract": {
-          "title": "HTTP提取",
-          "description": "从HTTP请求中提取值作为变量。如：动态获取令牌。"
-        },
-        "jdbcExtract": {
-          "title": "JDBC提取",
-          "description": "根据SQL从数据源表中提取变量值。如：商品当前报价。"
-        }
-      }
-    },
-    "importModal": {
-      "title": "上传变量",
-      "uploadArea": {
-        "selectFile": "选择文件",
-        "description": "可直接将文件拖入此区域直接上传，文件大小不超过{maxSize}M，支持.json,.yaml,.yml类型文件。"
-      },
-      "fileSizeError": "文件大小不能超过{maxSize}M",
-      "duplicateStrategy": {
-        "title": "遇到重复时的处理策略",
-        "cover": "覆盖",
-        "ignore": "忽略"
-      }
-    },
-    "exportModal": {
-      "title": "下载变量",
-      "format": "格式"
-    },
-    "detail": {
-      "notifications": {
-        "deleteConfirm": "确定删除变量「{name}」吗？",
-        "deleteSuccess": "变量删除成功",
-        "cloneSuccess": "变量克隆成功",
-        "copyLinkSuccess": "复制链接成功",
-        "copyLinkFail": "复制链接失败"
-      },
-      "buttonGroup": {
-        "save": "保存",
-        "delete": "删除",
-        "export": "导出",
-        "clone": "克隆",
-        "copyLink": "复制链接",
-        "refresh": "刷新"
-      },
-      "matchItemPopover": {
-        "title": "匹配项说明",
-        "description": "匹配项用于从响应中提取数据，支持多种匹配方式：",
-        "regexp": {
-          "name": "正则表达式",
-          "columns": {
-            "data": "数据",
-            "regexp": "正则表达式",
-            "group": "分组"
-          },
-          "item": "使用正则表达式从响应中提取数据，支持分组捕获。"
-        },
-        "jsonpath": {
-          "name": "JSONPath",
-          "columns": {
-            "data": "数据",
-            "jsonpath": "JSONPath表达式",
-            "result": "结果"
-          },
-          "item": "使用JSONPath表达式从JSON响应中提取数据。"
-        },
-        "xpath": {
-          "name": "XPath",
-          "columns": {
-            "data": "数据",
-            "xpath": "XPath表达式",
-            "result": "结果"
-          },
-          "item": "使用XPath表达式从XML响应中提取数据。"
-        }
-      },
-      "useList": {
-        "title": "使用列表",
-        "noData": "暂无使用记录",
-        "columns": {
-          "targetType": "资源类型",
-          "targetId": "资源ID",
-          "targetName": "资源名称",
-          "action": "操作"
-        },
-        "buttons": {
-          "batchDelete": "批量删除",
-          "refresh": "刷新",
-          "deleteSelected": "删除选中",
-          "cancelDelete": "取消删除",
-          "delete": "删除"
-        }
-      },
-      "previewData": {
-        "title": "预览数据",
-        "tip": "实际变量值在执行采样前生成，并且会执行过程中保持不变。",
-        "noData": "暂无数据",
-        "refresh": "刷新"
-      },
-      "staticVariable": {
-        "notifications": {
-          "editSuccess": "修改成功",
-          "addSuccess": "添加成功"
-        },
-        "name": "名称",
-        "description": "描述",
-        "value": "值",
-        "password": "密码",
-        "no": "否",
-        "yes": "是",
-        "preview": "预览",
-        "use": "使用",
-        "namePlaceholder": "输入参数名，最长100个字符",
-        "descriptionPlaceholder": "变量描述，最大支持200个字符",
-        "valuePlaceholder": "变量值，支持Mock函数，最大支持4096个字符",
-        "passwordHint": "如果是密码类型变量，变量值在界面上对用户不可见。",
-        "hints": "若变量值中含Mock函数，则 每次迭代前自动刷新（同一迭代内所有请求将复用该值）。"
-      },
-      "httpVariable": {
-        "notifications": {
-          "editSuccess": "修改成功",
-          "addSuccess": "添加成功"
-        },
-        "name": "名称",
-        "nameSupport": "支持数字、字母和!$%^&*_-+=./",
-        "description": "描述",
-        "extract": "提取",
-        "preview": "预览",
-        "use": "使用",
-        "namePlaceholder": "输入参数名，最长100个字符",
-        "descriptionPlaceholder": "变量描述，最长200个字符",
-        "hints": "每次执行测试前从Http中提取一个值作为变量值，常用于获取一个用户访问令牌，避免每次手动更新。",
-        "readConfig": "读取配置",
-        "extractConfig": "提取配置",
-        "selectApi": "选择接口",
-        "interfaceConfig": "接口配置",
-        "extractMethod": "提取方式",
-        "extractMethodPlaceholder": "提取方式",
-        "extractPosition": "提取位置",
-        "parameterName": "参数名称",
-        "parameterNamePlaceholder": "参数名称，最长400个字符",
-        "expression": "表达式",
-        "expressionPlaceholder": "表达式，最长1024个字符",
-        "matchItem": "匹配项",
-        "matchItemPlaceholder": "匹配项，范围0-2000（可选）",
-        "defaultValue": "缺省值",
-        "defaultValuePlaceholder": "缺省值，最长4096个字符",
-        "httpConfigs": {
-          "title": "HTTP配置",
-          "requestMethod": "请求方法",
-          "requestMethodPlaceholder": "请求方法",
-          "requestUrl": "请求地址",
-          "requestUrlPlaceholder": "接口路径，以 \" / \" 起始",
-          "requestParameters": "请求参数",
-          "requestHeaders": "请求头",
-          "requestCookie": "Cookie",
-          "requestAuthorization": "Authorization",
-          "requestBody": "请求体",
-          "requestBodyPlaceholder": "请输入请求体内容",
-          "responseHeaders": "响应头",
-          "responseBody": "响应体",
-          "extractConfig": "提取配置",
-          "extractMethod": "提取方式",
-          "extractExpression": "提取表达式",
-          "extractExpressionPlaceholder": "请输入提取表达式",
-          "testRequest": "测试请求",
-          "testResponse": "测试响应",
-          "selectApi": "选择接口",
-          "selectApiPlaceholder": "请选择接口",
-          "serverConfig": "服务器配置",
-          "serverPlaceholder": "服务器地址，接口地址URL前缀",
-          "serverConfigPlaceholder": "请选择服务器配置",
-          "serverVariableNotFound": "找不到该变量，请先定义变量或刷新再试",
-          "formatRawContent": "格式化",
-          "compressRawContent": "压缩",
-          "uploadFile": "上传文件",
-          "parameterInput": {
-            "name": "参数名",
-            "value": "参数值",
-            "namePlaceholder": "请输入参数名",
-            "valuePlaceholder": "请输入参数值",
-            "errors": {
-              "duplicate": "参数名重复",
-              "invalid": "参数名无效"
-            }
-          },
-          "requestBodyParameter": {
-            "title": "请求体参数",
-            "addParameter": "添加参数",
-            "deleteParameter": "删除参数",
-            "parameterName": "参数名",
-            "parameterValue": "参数值",
-            "parameterNamePlaceholder": "请输入参数名",
-            "parameterValuePlaceholder": "请输入参数值，最多可输入4096个字符",
-            "parameterTypePlaceholder": "请选择参数类型",
-            "selectFile": "选择文件",
-            "summaryFileSize": "总上传文件大小不能超过{maxSize}"
-          }
-        },
-        "selectApiModal": {
-          "title": "选择接口",
-          "searchPlaceholder": "搜索接口名称",
-          "noData": "暂无接口数据"
-        }
-      },
-      "jdbcVariable": {
-        "notifications": {
-          "editSuccess": "修改成功",
-          "addSuccess": "添加成功"
-        },
-        "name": "名称",
-        "nameSupport": "支持数字、字母和!$%^&*_-+=./",
-        "description": "描述",
-        "extract": "提取",
-        "preview": "预览",
-        "use": "使用",
-        "namePlaceholder": "输入参数名，最长100个字符",
-        "descriptionPlaceholder": "变量描述，最长200个字符",
-        "hints": "每次执行测试前从数据库中查询结果中提取一个值作为变量值。",
-        "readConfig": "读取配置",
-        "extractConfig": "提取配置",
-        "selectDataSource": "选择数据源",
-        "databaseType": "数据库类型",
-        "databaseTypePlaceholder": "数据库类型",
-        "jdbcUrl": "Jdbc URL",
-        "jdbcUrlPlaceholder": "Jdbc URL，最长2048个字符",
-        "username": "用户名",
-        "usernamePlaceholder": "用户名，最长200个字符",
-        "password": "密码",
-        "passwordPlaceholder": "密码，最长800个字符",
-        "selectStatement": "Select语句",
-        "selectStatementPlaceholder": "查询表数据Select语句，最长1024个字符",
-        "readStartRow": "读开始行",
-        "readStartRowPlaceholder": "读取行索引，默认从0开始",
-        "readStartRowTooltip": "读取参数值开始行，默认索引基于0开始，即读取第一行。",
-        "readStartColumn": "读开始列",
-        "readStartColumnPlaceholder": "读取列索引，默认从0开始",
-        "readStartColumnTooltip": "读取参数开始列，默认索引基于0开始，即读取第一列。",
-        "extractMethod": "提取方式",
-        "extractMethodPlaceholder": "提取方式",
-        "expression": "表达式",
-        "expressionPlaceholder": "表达式，最长1024个字符",
-        "matchItem": "匹配项",
-        "matchItemPlaceholder": "匹配项，范围0-2000（可选）",
-        "defaultValue": "缺省值",
-        "defaultValuePlaceholder": "缺省值，最长4096个字符",
-        "selectDatasource": {
-          "title": "选择数据源",
-          "searchPlaceholder": "搜索数据源名称",
-          "noData": "暂无数据源"
-        }
-      },
-      "fileVariable": {
-        "notifications": {
-          "editSuccess": "修改成功",
-          "addSuccess": "添加成功"
-        },
-        "name": "名称",
-        "nameSupport": "支持数字、字母和!$%^&*_-+=./",
-        "description": "描述",
-        "extract": "提取",
-        "preview": "预览",
-        "use": "使用",
-        "namePlaceholder": "输入参数名，最长100个字符",
-        "descriptionPlaceholder": "变量描述，最长200个字符",
-        "hints": "每次执行测试前从文件中提取一个值作为变量值。",
-        "extractHint": "每次执行测试前从文件中提取一个值作为变量值。",
-        "readConfig": "读取配置",
-        "extractConfig": "提取配置",
-        "filePath": "文件路径",
-        "filePathPlaceholder": "文件本地路径或文件URL，最长800个字符",
-        "fileType": "文件类型",
-        "fileEncoding": "文件编码",
-        "readStartRow": "读开始行",
-        "readStartRowPlaceholder": "读取行索引，默认从0开始",
-        "readStartRowTooltip": "读取参数值开始行，默认索引基于0开始，即读取第一行。注意：第一行为参数名标题行时，通常需要从索引1即第二行读取数据。",
-        "readStartColumn": "读开始列",
-        "readStartColumnPlaceholder": "读取列索引，默认从0开始",
-        "readStartColumnTooltip": "读取参数开始列，默认索引基于0开始，即读取第一列。",
-        "separator": "分隔符",
-        "separatorTooltip": "Csv类型文件参数。用于分隔CSV文件中的不同字段或数据列，默认值为\",\"。",
-        "escapeChar": "转义符",
-        "escapeCharTooltip": "Csv类型文件参数，用于转义字段中的特殊字符，特别是将引号字符本身作为文字字符包含在内，默认为\"\\\\\"。",
-        "quoteChar": "引用符",
-        "quoteCharTooltip": "Csv类型文件参数。用于表示CSV文件中字段的开始和结束，特别是当字段包含分隔符（例如逗号）或换行符等特殊字符时，默认为\"\\\\\"。",
-        "extractMethod": "提取方式",
-        "extractMethodPlaceholder": "提取方式",
-        "expression": "表达式",
-        "expressionPlaceholder": "表达式，最长1024个字符",
-        "matchItem": "匹配项",
-        "matchItemPlaceholder": "匹配项，范围0 ~ 2000",
-        "defaultValue": "缺省值",
-        "defaultValuePlaceholder": "缺省值，最长4096个字符"
       }
     }
   }

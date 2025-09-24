@@ -53,7 +53,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-daiceshi" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.pending') }}</div>
+            <div class="text-theme-sub-content">{{ t('status.pending') }}</div>
             <div class="text-4">{{ pendingTaskCount }}</div>
           </div>
         </div>
@@ -61,7 +61,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-daiqueren" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.confirming') }}</div>
+            <div class="text-theme-sub-content">{{ t('status.pendingConfirmation') }}</div>
             <div class="text-4">{{ confirmingTaskCount }}</div>
           </div>
         </div>
@@ -69,7 +69,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-yiyuqi1" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.overdue') }}<span class="inline-block" style="width:1em;"></span></div>
+            <div class="text-theme-sub-content">{{ t('status.overdue') }}<span class="inline-block" style="width:1em;"></span></div>
             <div class="text-4">{{ overdueTaskCount }}</div>
           </div>
         </div>
@@ -77,7 +77,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-renwuceshizhong" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.inProgress') }}</div>
+            <div class="text-theme-sub-content">{{ t('status.inProgress') }}</div>
             <div class="text-4">{{ inProgressTaskCount }}</div>
           </div>
         </div>
@@ -85,7 +85,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-jiaobenzhuyezhihang" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.completed') }}</div>
+            <div class="text-theme-sub-content">{{ t('status.completed') }}</div>
             <div class="text-4">{{ completedTaskCount }}</div>
           </div>
         </div>
@@ -93,7 +93,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-yiquxiao" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.cancelled') }}</div>
+            <div class="text-theme-sub-content">{{ t('status.cancelled') }}</div>
             <div class="text-4">{{ canceledTaskCount }}</div>
           </div>
         </div>

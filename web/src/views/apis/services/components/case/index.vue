@@ -105,7 +105,7 @@ const delCase = async (item) => {
   if (error) {
     return;
   }
-  notification.success(t('tips.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
   const delIdx = caseData.value.findIndex(i => i.id === item.id);
   caseData.value.splice(delIdx, 1);
 };
@@ -116,7 +116,7 @@ const cloneCase = async (item) => {
   if (error) {
     return;
   }
-  notification.success(t('tips.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   loadCaseData();
 };
 

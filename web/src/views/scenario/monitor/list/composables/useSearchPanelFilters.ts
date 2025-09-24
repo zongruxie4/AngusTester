@@ -10,9 +10,9 @@ export function useSearchPanelFilters (): UseSearchPanelFiltersReturn {
 
   // Status options for filtering
   const statusOpt: MenuItem[] = [
-    { name: t('scenarioMonitor.searchPanel.statusOptions.pending'), key: ScenarioMonitorStatus.PENDING },
-    { name: t('scenarioMonitor.searchPanel.statusOptions.success'), key: ScenarioMonitorStatus.SUCCESS },
-    { name: t('scenarioMonitor.searchPanel.statusOptions.failure'), key: ScenarioMonitorStatus.FAILURE }
+    { name: t('status.pending'), key: ScenarioMonitorStatus.PENDING },
+    { name: t('status.success'), key: ScenarioMonitorStatus.SUCCESS },
+    { name: t('status.failed'), key: ScenarioMonitorStatus.FAILURE }
   ];
 
   const statusKeys = statusOpt.map(i => i.key);

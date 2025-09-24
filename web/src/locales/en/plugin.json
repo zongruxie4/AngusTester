@@ -5,9 +5,7 @@
       "selectScriptTip": "Please select a script",
       "searchPlaceholder": "Search script name",
       "tableHeaders": {
-        "name": "Name",
         "plugin": "Plugin",
-        "type": "Type"
       }
     },
     "chartConfig": {
@@ -39,7 +37,6 @@
         "threadMaxPoolSize": "Max Threads"
       },
       "columns": {
-        "name": "Name",
         "current": "Current",
         "downloadPerSecond": "Download/Second",
         "uploadPerSecond": "Upload/Second",
@@ -60,7 +57,6 @@
         "size": "Size"
       },
       "drawer": {
-        "save": "Save",
         "indicator": "Test Indicators",
         "testInfo": "Test Results",
         "activity": "Activity",
@@ -86,28 +82,8 @@
   },
   "httpPlugin": {
     "actions": {
-      "save": "Save",
-      "cancel": "Cancel",
-      "confirm": "Confirm",
-      "refresh": "Refresh",
-      "export": "Export Script",
-      "import": "Import Script",
-      "add": "Add",
-      "edit": "Edit",
-      "delete": "Delete",
-      "view": "View",
-      "download": "Download",
-      "upload": "Upload",
       "select": "Select Script",
-      "codeView": "Code View",
-      "pageView": "Page View",
-      "authority": "Authority",
-      "follow": "Follow",
-      "cancelFollow": "Cancel Follow",
-      "favourite": "Favourite",
-      "cancelFavourite": "Cancel Favourite",
-      "createExecution": "Create Execution",
-      "debug": "Debug"
+      "createExecution": "Create Execution"
     },
     "messages": {
       "saveSuccess": "Save successful",
@@ -130,13 +106,9 @@
       "paramError": "Parameter error"
     },
     "form": {
-      "name": "Name",
-      "description": "Description",
-      "type": "Type",
       "format": "Format",
       "size": "Size",
       "count": "Count",
-      "status": "Status",
       "createTime": "Create Time",
       "updateTime": "Update Time",
       "creator": "Creator",
@@ -146,8 +118,8 @@
       "taskConfig": "Task Configuration",
       "executeConfig": "Execute Configuration"
     },
-    "authority": {
-      "title": "Scenario Authority",
+    "permission": {
+      "title": "Scenario Permission",
       "onTips": "After enabling 'Permission Control', you need to manually authorize service permissions to have scenario operation permissions, 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
       "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario, and viewing users also need to have parent directory permissions for the current scenario."
     },
@@ -163,15 +135,11 @@
       "samplingStatus": "Sampling Status"
     },
     "drawerItem": {
-      "id": "ID",
-      "name": "Name",
       "scriptName": "Script Name",
       "scriptId": "Script ID",
       "description": "Description",
       "namePlaceholder": "Maximum 200 characters",
-      "descriptionPlaceholder": "Maximum 800 characters",
-      "confirm": "Confirm",
-      "cancel": "Cancel"
+      "descriptionPlaceholder": "Maximum 800 characters"
     },
     "execLog": {
       "node": "Node",
@@ -201,9 +169,7 @@
         "err": "Error",
         "currentIterations": "Iterations",
         "rt": "Response Time (Min / Avg / Max)",
-        "p50": "Response Percentile (P50 / P90 / P99)",
-        "export": "Download",
-        "upload": "Upload"
+        "p50": "Response Percentile (P50 / P90 / P99)"
       },
       "tabs": {
         "aggregation": "Summary Results",
@@ -240,22 +206,15 @@
         "title": "Select API",
         "searchPlaceholder": "Search API name",
         "tableHeaders": {
-          "name": "Name",
           "method": "Method",
           "path": "Path"
         },
-        "copy": "Copy",
         "reference": "Reference",
         "alreadyReferenced": "The selected interfaces contain already referenced interfaces and cannot be referenced repeatedly."
       },
       "selectUseCaseModal": {
         "title": "Select Use Case",
         "searchPlaceholder": "Search use case name",
-        "tableHeaders": {
-          "name": "Name",
-          "description": "Description"
-        },
-        "copy": "Copy",
         "reference": "Reference",
         "alreadyReferenced": "The selected use cases contain already referenced use cases and cannot be referenced repeatedly."
       },
@@ -268,7 +227,6 @@
       },
       "transStart": {
         "title": "Transaction Start",
-        "name": "Name",
         "duplicateName": "Duplicate Name",
         "namePlaceholder": "Name, max 400 characters"
       },
@@ -290,15 +248,7 @@
       },
       "transEnd": {
         "title": "Transaction End",
-        "name": "Name",
         "suffix": " End"
-      },
-      "actionsGroup": {
-        "add": "Add",
-        "delete": "Delete",
-        "copy": "Copy",
-        "moveUp": "Move Up",
-        "moveDown": "Move Down"
       },
       "httpConfigs": {
         "title": "HTTP Configuration",
@@ -427,20 +377,13 @@
               "title": "Preview Data",
               "description": "View actual data content in the dataset",
               "previewRows": "Preview Rows",
-              "previewRowsPlaceholder": "1 ~ 10000",
-              "noData": "No Data",
-              "refresh": "Refresh"
+              "previewRowsPlaceholder": "1 ~ 10000"
             },
             "datasetModal": {
               "title": "Reference Variables",
               "description": "Configure basic information and parameters of the dataset",
               "valueSource": "Value Source",
-              "lastModifiedBy": "Last Modified By",
-              "lastModifiedDate": "Last Modified Date",
-              "searchPlaceholder": "Search name or description",
-              "refresh": "Refresh",
-              "name": "Name",
-              "descriptionColumn": "Description"
+              "searchPlaceholder": "Search name or description"
             },
             "extractParametersModal": {
               "title": "Extract Parameters",
@@ -448,7 +391,6 @@
             },
             "extractParametersField": {
               "readColumn": "Read Column",
-              "name": "Name"
             },
             "staticParametersModal": {
               "title": "Static Parameters",
@@ -463,8 +405,7 @@
               "description": "View resource information that uses variables.",
               "resourceType": "Resource Type",
               "resourceId": "Resource ID",
-              "resourceName": "Resource Name",
-              "refresh": "Refresh"
+              "resourceName": "Resource Name"
             },
             "hintTextMap": {
               "file": "Read dataset from file, each dataset allows maximum 200 parameters, each parameter file maximum 500MB, total rows not exceeding 1 million.",
@@ -478,8 +419,6 @@
             "unlinkDataset": "Unlink",
             "viewDefinition": "View Definition",
             "parameters": "Parameters",
-            "name": "Name",
-            "value": "Value"
           },
           "matchItemPopover": {
             "dataColumn": "Match Value",
@@ -666,7 +605,6 @@
       }
     },
     "functionTestDetail": {
-      "pending": "Executing...",
       "statusCode": "Status Code",
       "duration": "Duration",
       "size": "Size",
@@ -680,29 +618,15 @@
       "collapse": {
         "iteration": "Iteration {iteration}"
       },
-      "texts": {
-        "success": "Passed",
-        "ignore": "Disabled",
-        "block": "Not Tested",
-        "total": "Total"
-      },
       "timeTexts": {
         "minimum": "Min",
         "average": "Avg",
         "maximum": "Max"
       },
       "ftp": {
-        "upload": "Upload",
-        "download": "Download",
         "duration": "Duration",
         "request": "Request",
         "response": "Response"
-      },
-      "statusTag": {
-        "success": "Passed",
-        "fail": "Failed",
-        "block": "Not Tested",
-        "ignore": "Disabled"
       },
       "http": {
         "tabs": {
@@ -855,12 +779,6 @@
       "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please",
       "executeConfig": "Execute Configuration > Plugin Configuration",
       "closeIgnoreAssertion": "to close the ignore assertion option.",
-      "assertionStatus": {
-        "failed": "Failed",
-        "passed": "Passed",
-        "ignored": "Ignored",
-        "disabled": "Disabled"
-      },
       "requestParameter": {
         "parameter": "Parameter",
         "result": "Result",
@@ -934,7 +852,6 @@
       "screen": "Full Screen"
     },
     "drawer": {
-      "save": "Save",
       "indicator": "Performance Indicators",
       "testInfo": "Test Results",
       "activity": "Activity",
@@ -943,52 +860,33 @@
     "messages": {
       "debugSaveRequired": "Debug requires saving current data first, please save before executing debug"
     },
-    "auth": {
+    "permission": {
       "title": "Scenario Permissions",
       "onTips": "After enabling \"Permission Control\", manual authorization of service permissions is required to have corresponding operation permissions for scenarios. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
       "offTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current scenario. Users viewing the scenario must also have parent directory permissions for the current scenario."
     },
     "buttonGroup": {
-      "export": "Export Script",
       "select": "Select Script",
       "import": "Import Script",
-      "codeView": "Code View",
-      "uiView": "Page View",
-      "authority": "Permissions",
-      "follow": "Follow",
-      "cancelFollow": "Unfollow",
-      "favourite": "Favourite",
-      "cancelFavourite": "Unfavourite",
-      "refresh": "Refresh",
-      "test": "Create Execution",
-      "debug": "Debug",
-      "save": "Save"
+      "test": "Create Execution"
     },
     "debugLog": {
       "schedulingResult": "Scheduling Result",
-      "success": "Success",
-      "fail": "Failed",
       "processExitCode": "Process Exit Code",
       "downloadFileName": "scheduling.log"
     },
     "debugResult": {
       "debugResult": "Debug Result",
-      "fail": "Failed",
       "exitCode": "Exit Code",
       "failureReason": "Failure Reason",
       "samplingStatus": "Sampling Status"
     },
     "drawerMenu": {
       "saveForm": {
-        "id": "ID",
-        "name": "Name",
         "scriptName": "Script Name",
         "scriptId": "Script ID",
-        "description": "Description",
         "namePlaceholder": "Maximum 200 characters",
-        "descriptionPlaceholder": "Maximum 800 characters",
-        "confirm": "Confirm",
-        "cancel": "Cancel"
+        "descriptionPlaceholder": "Maximum 800 characters"
       }
     },
     "execLog": {
@@ -1018,17 +916,9 @@
         "iteration": "Iteration {iteration}"
       },
       "ftp": {
-        "upload": "Upload",
-        "download": "Download",
         "duration": "Duration",
         "request": "Request",
         "response": "Response"
-      },
-      "statusTag": {
-        "success": "Passed",
-        "fail": "Failed",
-        "block": "Not Tested",
-        "ignore": "Disabled"
       }
     },
     "scriptConfig": {
@@ -1045,9 +935,7 @@
         "errors": "Errors (Error)",
         "iterations": "Iterations",
         "responseTime": "Response Time (Min /Avg / Max)",
-        "percentile": "Response Percentile (P50 / P90 / P99)",
-        "download": "Download",
-        "upload": "Upload"
+        "percentile": "Response Percentile (P50 / P90 / P99)"
       },
       "tabs": {
         "aggregation": "Aggregation Results",
@@ -1082,7 +970,6 @@
         "title": "Error Sampling",
         "time": "Time",
         "samplingId": "Sampling ID",
-        "name": "Name"
       },
       "countTemplate": {
         "radioButtons": {
@@ -1182,10 +1069,6 @@
       "execSetting": {
         "messages": {
           "modifySuccess": "Modified Successfully"
-        },
-        "actions": {
-          "save": "Save",
-          "cancel": "Cancel"
         }
       },
       "execLog": {
@@ -1196,18 +1079,13 @@
           "result": "Result",
           "success": "Success",
           "fail": "Failed",
-          "exitCode": "Exit Code",
-          "noData": "--"
+          "exitCode": "Exit Code"
         },
         "execLog": {
           "title": "Execution Log",
           "file": "File",
           "noProxyInfo": "No proxy access information, connection failed at: ",
           "downloadFileName": "runner.log"
-        },
-        "tooltips": {
-          "export": "Export",
-          "refresh": "Refresh"
         },
         "downloadFileName": {
           "scheduling": "scheduling.log"
@@ -1235,10 +1113,6 @@
         "onlyOneEnabled": "Only one can be enabled",
         "cloneLocalFile": "Clone local file",
         "checkCloneNameExists": "Check if clone name already exists"
-      },
-      "actions": {
-        "clone": "Clone",
-        "delete": "Delete"
       },
       "form": {
         "nameDuplicate": "Name Duplicate",
@@ -1268,17 +1142,11 @@
         "remoteFileName": "Remote File Name",
         "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
         "binaryFile": "Binary File",
-        "binaryFileTooltip": "Whether the uploaded file is a binary file",
-        "binaryMode": {
-          "yes": "Yes",
-          "no": "No"
-        }
+        "binaryFileTooltip": "Whether the uploaded file is a binary file"
       },
       "requestConfig": {
         "title": "FTP Request Configuration",
         "uploadDownload": "Upload/Download",
-        "upload": "Upload",
-        "download": "Download",
         "uploadFileSource": "File Source",
         "localFile": "Local File",
         "remoteFile": "Remote File",
@@ -1297,7 +1165,6 @@
         "selectFile": "Select File",
         "fileSizeLimit": "File size cannot exceed 1MB",
         "selectFileTooltip": "Please select local file",
-        "code": "Code",
         "fileEncoding": "File Encoding"
       }
     }
@@ -1334,7 +1201,6 @@
       "generated": "Generated Parameter File",
       "source": "Source",
       "selectFile": "Select File",
-      "select": "Select",
       "dataSource": "Data Source"
     },
     "uiConfig": {
@@ -1342,8 +1208,6 @@
       "nameDuplicate": "Name Duplicate",
       "namePlaceholder": "Name, maximum 400 characters",
       "descriptionPlaceholder": "Description, maximum 800 characters",
-      "clone": "Clone",
-      "delete": "Delete",
       "mailSettings": "Mail Settings",
       "protocol": "Protocol",
       "protocolPlaceholder": "Protocol",
@@ -1390,12 +1254,6 @@
       "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please",
       "executeConfig": "Execute Configuration > Plugin Configuration",
       "closeIgnoreAssertion": "to close the ignore assertion option.",
-      "assertionStatus": {
-        "failed": "Failed",
-        "passed": "Passed",
-        "ignored": "Ignored",
-        "disabled": "Disabled"
-      },
       "requestHeaders": {
         "general": "General",
         "requestHeaders": "Request Headers",
@@ -1432,7 +1290,6 @@
         "expected": "Expected",
         "conditionExpression": "Condition Expression",
         "conditionResult": "Condition Result",
-        "ignore": "Ignore",
         "pass": "Pass",
         "typeMap": {
           "STATUS": "Response Status Code",
@@ -1499,9 +1356,6 @@
       "insertLdapRequest": "Insert Ldap Request",
       "supportMultipleLdap": "Support multiple Ldap interfaces simultaneously, but only one Ldap can be enabled for testing at a time.",
       "nameDuplicate": "Name Duplicate",
-      "clone": "Clone",
-      "delete": "Delete",
-      "add": "Add",
       "serverConfig": "Server Configuration",
       "hostnameOrIP": "Hostname or IP",
       "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
@@ -1516,12 +1370,6 @@
       "testConfig": "Test Configuration",
       "testType": "Test Type",
       "uniqueCounter": "Unique Counter Number",
-      "testTypes": {
-        "add": "Add",
-        "delete": "Delete",
-        "search": "Search",
-        "modify": "Modify"
-      },
       "customTest": "Custom Test",
       "entryDn": "DN Entry Name",
       "entryDnAddPlaceholder": "Custom add entry name, maximum 4096 characters",
@@ -1626,7 +1474,6 @@
       "tranMean": "Average",
       "tranMin": "Min",
       "tranMax": "Max",
-      "name": "Name"
     }
   },
   "smtpPlugin": {
@@ -1801,10 +1648,6 @@
         "messageSizeStatistics": "Calculate message size",
         "enableDebugLogging": "Enable debug logging"
       },
-      "actions": {
-        "clone": "Clone",
-        "delete": "Delete"
-      },
       "upload": {
         "selectFile": "Select File"
       }
@@ -1846,10 +1689,6 @@
       "comments": {
         "onlyOneEnabled": "Only one can be enabled",
         "checkCloneNameExists": "Check if clone name already exists"
-      },
-      "actions": {
-        "clone": "Clone",
-        "delete": "Delete"
       },
       "form": {
         "nameDuplicate": "Name Duplicate",
@@ -1939,10 +1778,6 @@
         "response": "Response"
       }
     },
-    "actions": {
-      "clone": "Clone",
-      "delete": "Delete"
-    },
     "form": {
       "nameDuplicate": "Name Duplicate",
       "namePlaceholder": "Name, maximum 400 characters",
@@ -1987,12 +1822,9 @@
       },
       "fields": {
         "url": "URL",
-        "name": "Name"
       },
       "referenced": "(Referenced)",
       "buttons": {
-        "cancel": "Cancel",
-        "copy": "Copy",
         "link": "Reference"
       }
     },
@@ -2006,10 +1838,6 @@
         "nameDuplicate": "Name Duplicate",
         "namePlaceholder": "Name, maximum 400 characters",
         "descriptionPlaceholder": "Description, maximum 800 characters"
-      },
-      "actions": {
-        "clone": "Clone",
-        "delete": "Delete"
       },
       "connectionInfo": {
         "title": "Connection Information",
@@ -2045,28 +1873,8 @@
       "tab": "Tab"
     },
     "actions": {
-      "save": "Save",
-      "cancel": "Cancel",
-      "confirm": "Confirm",
-      "refresh": "Refresh",
-      "export": "Export Script",
-      "import": "Import Script",
-      "add": "Add",
-      "edit": "Edit",
-      "delete": "Delete",
-      "view": "View",
-      "download": "Download",
-      "upload": "Upload",
       "select": "Select Script",
-      "codeView": "Code View",
-      "pageView": "Page View",
-      "authority": "Authority",
-      "follow": "Follow",
-      "cancelFollow": "Cancel Follow",
-      "favourite": "Favourite",
-      "cancelFavourite": "Cancel Favourite",
-      "createExecution": "Create Execution",
-      "debug": "Debug"
+      "createExecution": "Create Execution"
     },
     "messages": {
       "saveSuccess": "Saved Successfully",
@@ -2078,23 +1886,13 @@
       "generateDataSuccess": "Data generation created successfully, please check progress and results in 'Execution'.",
       "generateDataSuccessWithName": "Data generation 「{name}」 created successfully, please check progress and results in 'Execution'.",
       "confirmDelete": "Confirm Delete",
-      "noData": "No Data",
-      "loading": "Loading...",
       "pleaseSelect": "Please Select",
       "pleaseInput": "Please Input"
     },
     "form": {
-      "name": "Name",
-      "description": "Description",
-      "type": "Type",
       "format": "Format",
       "size": "Size",
       "count": "Count",
-      "status": "Status",
-      "createTime": "Create Time",
-      "updateTime": "Update Time",
-      "creator": "Creator",
-      "updater": "Updater"
     },
     "dataConfig": {
       "title": "Data Configuration",
@@ -2295,7 +2093,6 @@
     "threadCount": "Thread Count",
     "activeThreadCount": "Active Thread Count",
     "maxThreadCount": "Max Thread Count",
-    "name": "Name"
   }
 }
 

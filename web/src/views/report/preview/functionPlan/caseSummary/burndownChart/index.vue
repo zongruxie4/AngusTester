@@ -17,7 +17,7 @@ const { t } = useI18n();
 </script>
 <template>
   <div class="space-y-4">
-    <Chart :dataSource="props.dataSource?.NUM" :title="t('reportPreview.functionPlan.caseSummary.burndownChart.caseCount')" />
-    <Chart :dataSource="props.dataSource?.WORKLOAD" :title="t('reportPreview.functionPlan.caseSummary.burndownChart.workload')" />
+    <Chart :dataSource="props.dataSource?.NUM" :title="t('chart.burndown.countBurndown')" />
+    <Chart :dataSource="props.dataSource?.WORKLOAD" :title="t('chart.burndown.workloadBurndown')" />
   </div>
 </template>

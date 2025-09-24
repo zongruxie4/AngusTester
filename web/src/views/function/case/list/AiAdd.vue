@@ -801,7 +801,7 @@ onMounted(() => {
                         v-if="record.overdue"
                         class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                         style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                        <span class="inline-block transform-gpu">{{ t('functionCase.addCaseModal.overdue') }}</span>
+                        <span class="inline-block transform-gpu">{{ t('status.overdue') }}</span>
                       </div>
                     </div>
                   </template>

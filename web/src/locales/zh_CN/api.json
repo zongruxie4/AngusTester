@@ -1,836 +1,6 @@
 {
-  "apis": {
-    "name": "主页",
-    "welcome": {
-      "title": "欢迎进入Angus接口！",
-      "description": "接口可以帮助开发人员和测试人员轻松地添加、测试、调试和文档化API，最终帮助企业达成API资产化目的。",
-      "featuresTitle": "在这里您和您的团队可以完成以下工作:",
-      "features": [
-        "在线编辑、调试接口；",
-        "管理项目、服务、接口以及测试任务；",
-        "开展接口功能测试、性能测试和稳定性测试，保证交付稳定且满足业务要求的系统。"
-      ]
-    },
-    "quickAccess": {
-      "title": "快速入口",
-      "addApiTabName": "添加API",
-      "debug": {
-        "title": "调试接口",
-        "description": "在线快速编辑、调试接口。",
-        "action": "调试"
-      },
-      "addProject": {
-        "title": "添加项目/服务",
-        "description": "通过项目或服务来组织接口，项目可以包含多个服务(如：微服务)和接口，服务只能包含接口。",
-        "addProject": "添加项目",
-        "addService": "添加服务"
-      },
-      "import": {
-        "title": "根据文件导入服务",
-        "description": "导入OpenAPI或Postman接口YAML文件或JSON文件。",
-        "action": "导入",
-        "template": "根据文件导入{type}"
-      }
-    },
-    "navigation": {
-      "myApis": "我的接口",
-      "projects": "项目",
-      "services": "服务",
-      "apis": "接口",
-      "scenarios": "场景",
-      "myTasks": "我的任务",
-      "favorites": "已收藏",
-      "follows": "已关注",
-      "activities": "活动",
-      "apiSamples": "API样例集合"
-    },
-    "statistics": {
-      "today": "今日：",
-      "lastWeek": "近一周：",
-      "title": "资源统计",
-      "service": "总服务",
-      "apis": "总接口",
-      "method": "请求方法"
-    },
-    "apiStatus": {
-      "unknown": "未知",
-      "inDesign": "设计中",
-      "inDevelopment": "开发中",
-      "developmentCompleted": "开发完成",
-      "released": "已发布"
-    },
-    "statisticsCreated": {
-      "title": "我添加的",
-      "service": "服务",
-      "apis": "接口",
-      "unfiled": "未归档接口"
-    },
-    "actions": {
-      "cancelAllFavorites": "取消全部收藏",
-      "cancelAllFollows": "取消全部关注",
-      "projectConfig": "项目配置"
-    },
-    "configuration": {
-      "type_service": "服务",
-      "sync": "同步配置",
-      "action": "配置",
-      "security": "安全方案配置",
-      "server": "服务器配置",
-      "performance": "服务性能指标",
-      "share": "添加分享",
-      "variables": "定义变量",
-      "syncDescription": "将外部OpenAPI自动导入到当前{type}",
-      "securityDescription": "定义当前{type}下所有接口可以使用的安全方案(Authorization)",
-      "serverDescription": "定义当前项目/服务下所有接口可以使用的服务器(Server URL)",
-      "performanceDescription": "为{type}下接口设置默认性能指标，性能指标会影响性能测试通过率；如果想为某个接口单独设置性能指标，可以在接口性能配置里设置",
-      "shareDescription": "通过分享能够授权其他人在指定时间内查看接口文档和调试接口",
-      "variablesDescription": "通过定义变量可以复用一个参数值或控制条件执行"
-    },
-    "search": {
-      "taskName": "查询任务名称",
-      "scenario": "查询场景"
-    },
-    "messages": {
-      "cancelAllFavoritesSuccess": "取消全部收藏成功",
-      "cancelAllFollowsSuccess": "取消全部关注成功",
-      "noFavorites": "暂无收藏",
-      "noFollows": "暂无关注",
-      "noData": "无数据",
-      "cancelSuccess": "取消成功",
-      "cancelFavorite": "取消收藏",
-      "cancelFollow": "取消关注",
-      "importProject": "导入项目",
-      "importSuccess": "导入成功"
-    },
-    "columns": {
-      "createdTime": "添加时间",
-      "executionId": "执行编号",
-      "executionStatus": "执行状态",
-      "taskStatus": "任务状态",
-      "testResult": "测试结果",
-      "dueTime": "到期时间",
-      "priority": "优先级"
-    },
-    "myApis": {
-      "title": "我的接口",
-      "createdTab": "添加的",
-      "followTab": "关注的",
-      "favoriteTab": "收藏的",
-      "createdEmptyTip": "尚未添加任何接口，立即",
-      "addApiAction": "添加接口",
-      "addApiTabName": "添加API",
-      "followEmptyTip": "没有收藏的接口",
-      "favoriteEmptyTip": "没有关注的接口",
-      "deleteTip": "确定删除接口「{name}」吗？",
-      "deleteSuccess": "删除接口成功",
-      "cancelFavoriteSuccess": "接口取消收藏成功",
-      "cancelFollowSuccess": "接口取消关注成功",
-      "columns": {
-        "summary": "名称",
-        "endpoint": "路径",
-        "status": "状态",
-        "createdDate": "添加时间",
-        "action": "操作"
-      }
-    },
-    "activity": {
-      "my": "我的活动",
-      "all": "所有活动"
-    }
-  },
-  "design": {
-    "name": "设计",
-    "home": {
-      "introduceTitle": "关于设计",
-      "introduceContent": "用于 OpenAPI 规范的接口设计，满足接口测试和文档生成的需求。图形化界面适合不熟悉 OpenAPI规范 的用户，而熟悉 OpenAPI 规范的用户则推荐使用 Swagger Editor，能更高效地完成设计。",
-      "tabTitle": "设计",
-      "title": "已添加的设计",
-      "noDataTip": "尚未添加任何设计，立即",
-      "add_action": "添加设计",
-      "design_action": "设计",
-      "generateService_action": "生成服务",
-      "import_service_action": "导入服务",
-      "import_design_action": "导入设计",
-      "refresh_action": "刷新",
-      "designByMe": "我设计的",
-      "importSuccess": "导入成功",
-      "released": "已发布",
-      "unreleased": "草稿",
-      "generated": "已生成服务",
-      "searchPanel": {
-        "name_placeholder": "查询名称、描述",
-        "created_placeholder": "选择添加人",
-        "data_placeholder1": "添加时间从",
-        "data_placeholder2": "添加时间到"
-      },
-      "columns": {
-        "name": "名称",
-        "openapiSpecVersion": "规范版本",
-        "status": "状态",
-        "designSource": "来源",
-        "designService": "关联服务",
-        "createdBy": "添加人",
-        "createdDate": "添加时间",
-        "lastModifiedBy": "最后修改人",
-        "lastModifiedDate": "最后修改时间",
-        "actions": "操作"
-      },
-      "deleteFirm": {
-        "title": "确定删除设计「{name}」吗？"
-      }
-    },
-    "importServiceModal": {
-      "title": "导入服务",
-      "serviceLabel": "服务",
-      "servicePlaceholder": "请选择所属服务"
-    },
-    "importDesignModal": {
-      "title": "导入设计",
-      "nameLabel": "名称",
-      "namePlaceholder": "输入设计名称, 限制100个字符",
-      "fileLabel": "文件",
-      "fileRule": "请上传文件",
-      "uploadFile": "上传文件",
-      "uploadTip": "点击上传Swagger2.0、OpenAPI3.x文件，文件大小不超过20M"
-    },
-    "exportModal": {
-      "title": "导出",
-      "formatLabel": "格式"
-    },
-    "editModal": {
-      "editTitle": "编辑设计",
-      "addTitle": "添加设计",
-      "nameLabel": "名称",
-      "namePlaceholder": "输入设计名称，最多可输入100字符",
-      "versionLabel": "版本",
-      "versionPlaceholder": "OpenAPI文档规范版本号，默认3.0.1。"
-    },
-    "detail": {
-      "saveSuccess": "保存成功",
-      "publishSuccess": "发布成功",
-      "saveAction": "保存草稿",
-      "publishAction": "发布设计",
-      "modifyTip": "最后修改于{time}"
-    }
-  },
-  "mock": {
-    "starting": "正在启动中",
-    "startSuccess": "启动成功",
-    "startFail": "启动失败,请尝试重新启动",
-    "batchStartFail": "批量启动失败",
-    "startPending": "启动中",
-    "serviceStartSuccess": "服务启动成功",
-    "deleteTip": "确定删除吗？",
-    "deleteSuccess": "删除成功",
-    "batchDelSuccess": "批量删除成功",
-    "start_fail": "启动失败",
-    "start_success": "启动成功",
-    "stop_fail": "停止失败",
-    "stop_success": "停止成功",
-    "in_starting": "正在启动中",
-    "refreshInstance_tip": "刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。",
-    "refreshInstance_success": "刷新实例成功",
-    "console": "控制台",
-    "exitCode": "退出码",
-    "introduce": {
-      "description": "Mock可快速模拟依赖的API，让开发和测试并行进行，提高开发效率，避免生产环境数据污染。",
-      "addMockService": "添加Mock服务",
-      "addMockServiceDesc": "创建Mock服务后需手动添加接口。",
-      "importService": "关联服务接口",
-      "importServiceDesc": "基于现有服务与接口创建Mock，系统自动建立关联。",
-      "importFile": "文件导入",
-      "importFileDesc": "Swagger、OpenAPI3.x、Postman2.0/2.1、Angus格式文件导入。"
-    },
-    "searchPanel": {
-      "namePlaceholder": "查询服务ID、名称",
-      "nodeIpPlaceholder": "查询服务IP",
-      "sourcePlaceholder": "选择来源",
-      "nodeIdPlaceholder": "选择或查询节点",
-      "createdByPlaceholder": "选择添加人",
-      "createdDatePlaceholder1": "添加时间从",
-      "createdDatePlaceholder2": "添加时间到"
-    },
-    "columns": {
-      "id": "ID",
-      "name": "名称",
-      "node": "所在节点",
-      "address": "地址",
-      "status": "状态",
-      "source": "来源",
-      "createdBy": "添加人",
-      "createdDate": "添加时间",
-      "lastModifiedBy": "最后更新人",
-      "lastModifiedDate": "最后更新时间",
-      "action": "操作"
-    },
-    "actions": {
-      "forceDelete": "强制删除",
-      "authority": "权限",
-      "refresh": "刷新实例",
-      "addMock": "添加Mock服务",
-      "start": "启动",
-      "stop": "停止"
-    },
-    "auth": {
-      "title": "服务权限",
-      "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
-      "offTips": "无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
-    },
-    "addMock": {
-      "validation": {
-        "enterDomain": "请输入域名",
-        "enterCorrectDomain": "请输入正确的域名",
-        "enterName": "请输入名称",
-        "enterPort": "请输入端口（1~65535）",
-        "selectNode": "请选择节点",
-        "selectProjectService": "请选择项目服务"
-      },
-      "notifications": {
-        "addSuccess": "添加成功"
-      },
-      "form": {
-        "name": "名称",
-        "namePlaceholder": "服务标识命名信息，最多允许100个字符",
-        "domain": "域名",
-        "domainPlaceholder": "为服务设置域名后，可以通过域名访问Mock接口",
-        "domainTooltip": "域名解析生效预计需要60秒以内的延迟。",
-        "port": "端口",
-        "portPlaceholder": "服务所监听的端口，服务添加后不允许修改(1~65535)",
-        "node": "节点",
-        "nodePlaceholder": "服务所运行的节点，服务添加后不允许修改",
-        "service": "服务",
-        "servicePlaceholder": "选择或查询服务",
-        "api": "接口",
-        "importSource": "来源",
-        "associated": "(已关联)"
-      },
-      "upload": {
-        "uploadFile": "上传文件",
-        "uploadDescription": "直接粘贴内容或拖动文件或点击上传文件，文件大小不超过20M",
-        "clear": "清空",
-        "fileRequired": "请先上传文件",
-        "fileSizeExceeded": "上传文件或文本大小超过20M，请重新上传",
-        "postmanVersionError": "请检查文件是否是Postman Collection V2/V2.1 版本JSON文件"
-      },
-      "buttons": {
-        "cancel": "取消",
-        "confirm": "确定"
-      },
-      "apiList": {
-        "searchApiName": "查询接口名称",
-        "requestMethod": "请求方法",
-        "apiName": "接口名称",
-        "selectAll": "全选"
-      }
-    },
-    "detail": {
-      "menu": {
-        "apis": "接口",
-        "request": "请求",
-        "log": "日志",
-        "activity": "活动",
-        "monitor": "监控",
-        "setting": "设置"
-      },
-      "buttons": {
-        "cancel": "取消",
-        "confirm": "确定"
-      },
-      "notifications": {
-        "modifySuccess": "修改成功"
-      },
-      "validation": {
-        "enterParamName": "请输入参数名",
-        "paramNameDuplicate": "参数名称重复",
-        "enterName": "请输入名称",
-        "enterDomain": "请输入域名"
-      },
-      "basicInfo": {
-        "title": "基本信息",
-        "name": "名称",
-        "nameTooltip": "服务名称，最多100个字符。",
-        "domain": "域名",
-        "domainTooltip": "设置域名后可通过域名访问Mock接口，域名需解析到节点IP。",
-        "port": "端口",
-        "portTooltip": "服务监听端口，添加后不可修改。",
-        "node": "节点",
-        "nodeTooltip": "服务运行节点，添加后不可修改。",
-        "serviceConfig": "服务配置",
-        "serviceConfigTooltip": "服务运行参数配置，修改后需重启生效。",
-        "useSsl": "开启SSL",
-        "useSslTooltip": "启用HTTPS安全连接，默认关闭。",
-        "workThreadNum": "线程数",
-        "workThreadNumTooltip": "服务处理线程数，默认100。",
-        "logLevel": "文件日志级别",
-        "logLevelTooltip": "日志记录级别：NONE、BASIC、HEADERS、FULL。",
-        "logFileLevel": {
-          "none": "不记录日志。",
-          "basic": "记录请求方法、URL、状态码和执行时间（默认）。",
-          "headers": "记录基本信息和请求响应头。",
-          "full": "记录完整的请求响应信息。"
-        },
-        "sendRequestLog": "记录请求日志",
-        "sendRequestLogTooltip": "是否记录Mock请求日志。",
-        "maxContentLength": "最大请求大小",
-        "maxContentLengthTooltip": "最大请求大小，默认1000MB。",
-        "pushbackThreadNum": "回推线程数",
-        "pushbackThreadNumTooltip": "回推处理线程数，默认8。",
-        "pushbackConnectTimeout": "回推连接超时",
-        "pushbackConnectTimeoutTooltip": "回推连接超时时间（毫秒），默认5000。",
-        "pushbackRequestTimeout": "回推请求超时",
-        "pushbackRequestTimeoutTooltip": "回推请求超时时间（毫秒），默认-1不超时。",
-        "security": "接口安全",
-        "securityHints": "修改后需重启服务生效。",
-        "securityTooltip": "配置接口访问授权，开启后需携带授权参数访问。最多10个。",
-        "in": "位置",
-        "paramsName": "参数名",
-        "paramsValue": "参数值",
-        "paramsValueRule": "请输入value"
-      },
-      "apis": {
-        "hints": "当某个接口尚未实现或无法访问时，可以通过Mock接口模仿真实接口的行为和数据返回，以便进行开发和测试工作，从而提高开发和测试效率。注意：Mock接口保存后才生效。",
-        "searchPlaceholder": "查询名称",
-        "addApi": "添加接口",
-        "save": "保存",
-        "clone": "克隆",
-        "export": "导出",
-        "delete": "删除",
-        "refreshInstance": "刷新实例接口",
-        "refresh": "刷新",
-        "back": "返回",
-        "request": "请求",
-        "name": "名称",
-        "namePlaceholder": "最大支持400个字符",
-        "description": "描述",
-        "descriptionPlaceholder": "最大支持20000个字符",
-        "response": "响应",
-        "maxResponseTip": "最大支持配置50个响应",
-        "addResponse": "添加响应",
-        "deleteResponse": "删除响应",
-        "match": "匹配",
-        "matchTooltip": "指定返回当前响应所需满足的匹配请求条件。注意：当存在满足匹配的多个响应时，将返回优先级最高的响应，如果没有配置匹配条件或优先级相同，则返回第一个条件或最先配置的条件。",
-        "priority": "优先级",
-        "priorityTooltip": "值越大优先级越高，值范围：0~2147483647。注意：仅当存在满足匹配的多个响应时，才会返回优先级最高的响应。",
-        "content": "内容",
-        "pushback": "回推",
-        "pushbackTooltip": "回推可以用于在接收到 Mock 请求后，自动向指定地址推送一个 Http 请求，如：支付回调。",
-        "enable": "启用",
-        "disable": "关闭",
-        "copyApiTitle": "复制接口添加",
-        "linkApiTitle": "关联接口添加",
-        "testRequest": "测试请求",
-        "proxy": "代理",
-        "terminate": "终止",
-        "send": "发送",
-        "responseTitle": "响应",
-        "notifications": {
-          "copyApiSuccess": "复制接口添加成功",
-          "linkApiSuccess": "关联接口添加成功",
-          "importDemoSuccess": "导入示例成功",
-          "cloneSuccess": "克隆成功",
-          "deleteSuccess": "删除成功",
-          "refreshInstanceSuccess": "刷新实例接口成功",
-          "saveSuccess": "保存成功",
-          "nameDuplicate": "名称重复",
-          "dataError": "数据有误，请检查并更正后再保存。",
-          "proxyNotConnected": "代理未链接， 请检查代理配置",
-          "yamlFormatError": "yaml内容格式错误，请检查并更正"
-        },
-        "confirmations": {
-          "deleteApi": "确认要删除接口「{summary}」吗？",
-          "refreshInstance": "刷新实例接口会强制同步当前Mock接口信息到运行的服务实例。"
-        },
-        "menuItems": {
-          "clone": "克隆",
-          "delete": "删除",
-          "export": "导出",
-          "copyApi": "复制接口添加",
-          "linkApi": "关联接口添加",
-          "import": "导入接口",
-          "importDemo": "导入示例"
-        },
-        "sortOptions": {
-          "byCreatedDate": "按添加时间",
-          "byId": "按ID"
-        },
-        "components": {
-          "delayParameter": {
-            "title": "延迟参数",
-            "delayTime": "延迟时间",
-            "delayTimePlaceholder": "请输入延迟时间（毫秒）",
-            "delayTimeTooltip": "延迟时间范围：0-300000毫秒",
-            "to": "至",
-            "maxLessThanMin": "最大值小于最小值",
-            "noDelay": "无延迟",
-            "fixedDelay": "固定延迟",
-            "randomDelay": "随机延迟"
-          },
-          "importFileModal": {
-            "title": "编码文件",
-            "selectFile": "选择文件",
-            "fileType": "文件类型",
-            "fileTypePlaceholder": "请选择文件类型",
-            "import": "导入",
-            "cancel": "取消",
-            "maxFileSize": "最大支持编码10M文件",
-            "encoding": "编码"
-          },
-          "inputGroup": {
-            "title": "输入组",
-            "addParameter": "添加参数",
-            "parameterName": "参数名",
-            "parameterValue": "参数值",
-            "parameterNamePlaceholder": "请输入参数名",
-            "parameterValuePlaceholder": "请输入参数值",
-            "queryParams": "查询参数",
-            "requestHeader": "请求头",
-            "cookie": "Cookie"
-          },
-          "pushBack": {
-            "title": "回推",
-            "url": "回推地址",
-            "urlPlaceholder": "最大支持800个字符",
-            "urlError": "回推地址格式错误",
-            "method": "请求方法",
-            "contentType": "Content-Type",
-            "requestBody": "请求体",
-            "send": "发送",
-            "terminate": "终止",
-            "testRequest": "测试请求",
-            "proxy": "代理",
-            "response": "响应",
-            "responseTitle": "响应",
-            "sendSuccess": "发送成功",
-            "requestError": "请求错误",
-            "proxyNotConnected": "代理未链接， 请检查代理配置",
-            "autoPush": "请求触发后自动推送",
-            "manualSend": "手动发送",
-            "delay": "回推延迟"
-          },
-          "requestBody": {
-            "title": "请求体",
-            "contentType": "Content-Type",
-            "none": "none",
-            "formUrlEncode": "application/x-www-form-urlencode",
-            "multipartFormData": "multipart/form-data",
-            "raw": "raw",
-            "applicationJson": "application/json",
-            "textHtml": "text/html",
-            "applicationXml": "application/xml",
-            "applicationJavascript": "application/javascript",
-            "textPlain": "text/plain",
-            "wildcard": "*/*"
-          },
-          "selectInputForm": {
-            "parameterName": "参数名称",
-            "parameterValue": "参数值",
-            "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-            "parameterValuePlaceholder": "参数值，最大支持4096个字符",
-            "addParameter": "添加参数"
-          },
-          "match": {
-            "title": "匹配",
-            "path": "路径",
-            "queryParams": "查询参数",
-            "header": "请求头",
-            "requestBody": "请求体",
-            "maxParametersTip": "匹配参数限制最大 20 个",
-            "pathTitle": "路径",
-            "pathTooltip": "路径以斜杠 / 开始，表示根路径。\n路径由多个路径段组成，路径段之间使用斜杠 / 分隔。\n每个路径段可以是字母、数字、减号、下划线等字符组成，且不包含特殊字符（如?、#等）。\n路径段不可以为空字符串。",
-            "operator": "运算条件",
-            "operatorPlaceholder": "运算条件",
-            "pathPlaceholder": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）",
-            "regexPlaceholder": "正则表达式",
-            "onlyOnePath": "只能添加一个路径",
-            "onlyOneRequestBody": "只能添加一个请求体",
-            "queryParamsTitle": "查询参数",
-            "parameterName": "参数名称",
-            "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-            "parameterValue": "参数值",
-            "parameterValuePlaceholder": "参数值，最大支持4096个字符",
-            "regexExpression": "正则表达式",
-            "value": "值",
-            "xpathExpression": "XPath表达式",
-            "jsonPathExpression": "JSONPath表达式",
-            "delete": "删除",
-            "format": "格式化",
-            "clear": "清空"
-          },
-          "agent": {
-            "title": "智能助手",
-            "description": "智能助手可以帮助您快速生成Mock接口的响应内容",
-            "generate": "生成",
-            "regenerate": "重新生成",
-            "copy": "复制",
-            "clear": "清空",
-            "generating": "生成中...",
-            "generateSuccess": "生成成功",
-            "generateError": "生成失败",
-            "copySuccess": "复制成功",
-            "copyError": "复制失败",
-            "proxyConfig": "代理配置",
-            "noProxy": "无代理",
-            "clientProxy": "客户端代理",
-            "serverProxy": "服务端代理",
-            "notConnected": "未连接",
-            "connected": "已连接",
-            "notConfigured": "未配置或启用服务端代理，请检查\"应用管理->代理配置\"",
-            "connectionFailed": "代理连接失败，请检查代理服务是否已运行。",
-            "tips": {
-              "noProxy": "通过浏览器直接请求接口，对非同源访问接口服务器端需要取消跨域限制。",
-              "clientProxy": "需要在访问浏览器所在电脑中安装\"<a href='https://www.xcan.cloud/help' target=\"_blank\"  class=\"text-text-link\">代理程序<a>\"，配置后将使用客户端代理发送请求。",
-              "serverProxy": "需要将\"代理程序\"单独安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑中安装代理程序，配置后将使用服务端代理发送请求。推荐方式",
-              "cloudProxy": "通过AngusTester云服务器节点请求接口，注意：不能访问到客户内网服务地址。"
-            }
-          },
-          "codeEditor": {
-            "title": "代码编辑器",
-            "language": "语言",
-            "content": "内容",
-            "placeholder": "请输入内容",
-            "format": "格式化",
-            "clear": "清空",
-            "maxLengthError": "最大支持{max}字符，已输入{current}字符"
-          },
-          "importApiModal": {
-            "title": "导入接口",
-            "selectApi": "选择接口",
-            "apiName": "接口名称",
-            "apiDescription": "接口描述",
-            "import": "导入",
-            "cancel": "取消",
-            "hints": "支持Swagger2.0、OpenAPI3.x、Angus格式接口文件导入。",
-            "duplicateStrategy": "遇到重复时的处理策略",
-            "cover": "覆盖",
-            "ignore": "忽略",
-            "deleteNotExisted": "当前接口在导入数据中不存在时是否删除",
-            "yes": "是",
-            "no": "否",
-            "success": "导入接口成功"
-          },
-          "pureFormInput": {
-            "title": "表单输入",
-            "addItem": "添加项",
-            "itemName": "项名称",
-            "itemValue": "项值",
-            "itemNamePlaceholder": "请输入项名称",
-            "itemValuePlaceholder": "请输入项值",
-            "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-            "parameterValuePlaceholder": "参数值，最大支持4096个字符"
-          },
-          "selectApiModal": {
-            "title": "选择接口",
-            "searchPlaceholder": "搜索接口",
-            "apiName": "接口名称",
-            "apiDescription": "接口描述",
-            "select": "选择",
-            "cancel": "取消"
-          },
-          "urlForm": {
-            "title": "URL表单",
-            "url": "URL",
-            "urlPlaceholder": "请输入URL",
-            "method": "请求方法",
-            "methodPlaceholder": "请选择请求方法",
-            "methodPath": "方法/路径",
-            "requestMethod": "请求方法",
-            "domain": "域名",
-            "maxLengthPlaceholder": "最大支持800个字符"
-          },
-          "textareaEditor": {
-            "title": "文本编辑器",
-            "placeholder": "请输入内容",
-            "maxLength": "最大长度",
-            "format": "格式化",
-            "clear": "清空",
-            "maxLengthPlaceholder": "最大支持{max}个字符",
-            "maxLengthError": "最大支持{max}字符，已输入{current}字符"
-          },
-          "content": {
-            "statusCode": "状态码",
-            "responseDelay": "响应延时",
-            "responseHeader": "响应头",
-            "responseBody": "响应体",
-            "maxHeadersTip": "最大支持 {max} 个响应头",
-            "maxHeadersTooltip": "最大支持{max}个响应头",
-            "mockFunctionHelper": "Mock函数助手",
-            "insertFile": "插入文件"
-          }
-        }
-      },
-      "cors": {
-        "title": "跨域设置",
-        "description": "解决浏览器跨域访问限制，配置跨域访问策略。修改后需重启服务生效。",
-        "enabled": "是否开启",
-        "enabledTooltip": "启用跨域访问配置，默认关闭。",
-        "allowOrigin": "允许的域",
-        "allowOriginTooltip": "允许跨域访问的域名，默认*（所有域名）。",
-        "allowCredentials": "允许访问凭证",
-        "allowCredentialsTooltip": "允许跨域请求携带凭证（如Cookie），默认开启。",
-        "allowRequestMethods": "允许的请求方法",
-        "allowRequestMethodsTooltip": "允许的HTTP请求方法，默认支持所有常用方法。",
-        "allowRequestHeaders": "允许的请求头",
-        "allowRequestHeadersTooltip": "允许的请求头字段，默认不限制。",
-        "allowExposeHeaders": "可访问的响应头",
-        "allowExposeHeadersTooltip": "允许客户端访问的响应头字段，默认不限制。"
-      },
-      "requestRecord": {
-        "apiName": "接口名称",
-        "requestId": "请求ID",
-        "requestTime": "请求时间",
-        "requestUrl": "请求地址",
-        "requestMethod": "请求方法",
-        "statusCode": "状态码",
-        "formatOptions": {
-          "beautify": "美化格式",
-          "raw": "原生格式",
-          "preview": "预览"
-        },
-        "basicInfo": "基本",
-        "requestInfo": "请求",
-        "requestHeader": "请求头",
-        "requestBody": "请求体",
-        "responseInfo": "响应",
-        "responseHeader": "响应头",
-        "responseBody": "响应体",
-        "hints": "Mock接口调用日志，每秒最多3条，每接口保留最近100条。开启/关闭日志收集请到\"设置\"->\"记录请求日志\"，开启后会影响性能。"
-      },
-      "log": {
-        "lineOptions": {
-          "last500": "最近500行",
-          "last1000": "最近1000行",
-          "last10000": "最近10000行"
-        },
-        "notifications": {
-          "noDownloadContent": "无可下载内容"
-        },
-        "errorInfo": "连接失败，地址：",
-        "logFile": "日志文件：",
-        "browseLog": "浏览日志：",
-        "download": "下载",
-        "refresh": "刷新",
-        "autoRefresh": "自动刷新："
-      },
-      "activity": {
-        "pageInfo": "共{total}条记录，第{current} / {totalPage}页",
-        "searchPlaceholder": "查询活动详情"
-      },
-      "monitor": {
-        "apiName": "接口名称",
-        "apiInfo": "接口信息",
-        "requestCount": "请求数",
-        "mockExceptionCount": "模拟异常数",
-        "pushbackCount": "回推数",
-        "successCount": "成功数",
-        "exceptionCount": "异常数",
-        "apiCount": "接口数",
-        "searchApiNamePath": "查询接口名称、路径",
-        "tooltips": {
-          "requestCount": "调用Mock接口次数。",
-          "mockExceptionCount": "返回Http状态码为4xx和5xx响应次数。",
-          "pushbackCount": "Mock服务向用户配置回推接口推送请求次数。",
-          "successCount": "返回状态码为2xx请求次数。",
-          "exceptionCount": "Mock接口配置错误或程序自身导致的错误。"
-        }
-      },
-      "settings": {
-        "logTooltip": "记录基本信息和请求响应头。",
-        "corsTooltip": "解决浏览器跨域访问限制，配置跨域访问策略。修改后需重启服务生效。",
-        "enableNettyLog": "开启Netty日志",
-        "enableNettyLogTooltip": "建议仅在调试时开启，默认关闭。"
-      }
-    },
-    "exportModal": {
-      "title": "导出",
-      "format": "格式",
-      "fields": {
-        "endpoint": "路径",
-        "summary": "名称"
-      },
-      "notifications": {
-        "exportSuccess": "导出成功"
-      }
-    }
-  },
-  "server": {
-    "name": "服务器",
-    "home": {
-      "tabTitle": "服务器",
-      "newTab": "添加服务器",
-      "searchPanel": {
-        "descriptionPlaceholder": "查询描述",
-        "servicePlaceholder": "选择服务"
-      },
-      "title": "已添加的服务器",
-      "addTip": "已添加{add}个，最多允许添加{max}个。",
-      "emptyTip": "尚未添加任何服务器，立即",
-      "actions": {
-        "addServer": "添加服务器",
-        "updateToApi": "更新到已关联接口"
-      },
-      "hasVariable": "有变量",
-      "hasNoVariable": "无变量",
-      "serviceBelong": "所属服务",
-      "cloneSuccess": "克隆成功",
-      "updateSuccess": "更新到已关联接口成功",
-      "noDescTip": "无描述~",
-      "deleteTip": "确认删除该服务器吗？"
-    },
-    "detail": {
-      "deleteTip": "确认删除服务器吗？",
-      "copyLinkSuccess": "复制链接成功",
-      "copyLinkFail": "复制链接失败",
-      "serverExample": "服务器示例",
-      "copyLink": "复制链接",
-      "serverTip": "Server URL已存在，请重新输入",
-      "serverVariableTip": "Server URL中的变量不允许重复",
-      "variableNameTip": "变量名称重复",
-      "variableValueTip": "变量值重复",
-      "serverConfigTip": "服务器配置错误，请检查更正后再保存。",
-      "urlPlaceholder": "指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}",
-      "serverLabel": "服务",
-      "serverPlaceholder": "选择服务",
-      "serverServiceTip": "服务器所属接口服务",
-      "descLabel": "描述",
-      "descPlaceholder": "服务器描述，最大支持400字符",
-      "variableTitle": "变量",
-      "variableLabel": "名称",
-      "variableNameTip1": "变量名称不能重复",
-      "variableTip": "最多可添加50个变量",
-      "variablePlaceholder": "变量名称，最大支持100字符",
-      "addVariable": "添加变量",
-      "deleteVariable": "删除变量",
-      "variableValueLabel": "值",
-      "variableValueTip1": "同一个变量的值不能重复",
-      "variableValuePlaceholder": "变量值，最大支持400字符",
-      "descriptionLabel": "描述",
-      "descriptionPlaceholder": "变量描述，最大支持400字符",
-      "variableDefault": "默认"
-    },
-    "introduce": {
-      "title": "关于服务器",
-      "description1": "定义 API 的服务器及服务器相关的动态部分，包括服务器(server)和变量(variables)两部分。其中服务器字段用于指定 API 的服务器列表，每个服务器都有一个 URL 和可选的描述信息，指示 API 的基础路径。",
-      "description2": "变量用于定义 URL 中的动态部分。它允许在服务器 URL 中使用占位符，这些占位符可以在不同的环境中被替换为实际的值。主要好处如下：",
-      "integration": {
-        "title": "易于与CICD集成",
-        "description": "在持续集成和持续部署的工作流中，定义的服务器可以帮助自动化测试流程，使得不同环境的 API 端点可以灵活配置，符合 DevOps 的要求。"
-      },
-      "env": {
-        "title": "支持多个环境",
-        "description": "通过定义多个服务器或通过不同变量值支持不同的环境（如开发、测试、生产等）。这使得开发者能够轻松切换环境，而不必在代码中手动更改 URL。"
-      },
-      "version": {
-        "title": "支持版本控制",
-        "description": "在不同版本的 API 中，可以通过定义不同的服务器或者变量值来管理和维护版本。可以在文档中清晰地区分各个版本的服务器，避免混淆。"
-      },
-      "url": {
-        "description": "完整 URL、服务器、和端点(endpoint)关系",
-        "title": "完整URL(path)"
-      }
-    }
-  },
   "service": {
-    "name": "服务",
+    "title": "服务",
     "home": {
       "addApiTabName": "添加API",
       "authTabName": "权限",
@@ -862,11 +32,7 @@
         "localImport": "本地导入",
         "exportApi": "导出接口",
         "mockService": "Mock服务",
-        "rename": "重命名",
-        "delete": "删除",
         "translate": "翻译",
-        "clone": "克隆",
-        "permission": "权限",
         "modifyStatus": "修改状态",
         "batchModifyParams": "批量修改参数",
         "batchAddParams": "批量添加参数",
@@ -962,9 +128,6 @@
       },
       "smokeResult": {
         "title": "冒烟测试",
-        "passed": "通过",
-        "id": "服务ID",
-        "name": "服务名称",
         "testName": "测试人",
         "testDate": "测试时间",
         "scriptId": "脚本ID",
@@ -991,11 +154,6 @@
           "testResult": "测试",
           "mock": "Mock",
           "doc": "文档"
-        },
-        "viewMode": {
-          "codeView": "代码视图",
-          "pageView": "页面视图",
-          "refresh": "刷新"
         },
         "messages": {
           "serviceNotExist": "服务不存在或者您没有查看全选"
@@ -1096,13 +254,10 @@
         "serviceMock": "Mock服务"
       },
       "form": {
-        "name": "名称",
         "required": "必填",
         "deprecated": "弃用",
-        "type": "类型",
         "format": "格式",
         "example": "example",
-        "description": "描述",
         "paramsNamePlaceholder": "参数名称",
         "attrTab": "属性",
         "refsTab": "引用",
@@ -1148,19 +303,6 @@
       "nameLabel": "名称",
       "statusLabel": "状态",
       "statusNotTested": "未测试",
-      "enabled": "已启用",
-      "disabled": "未启用",
-      "columns": {
-        "name": "名称",
-        "status": "测试状态",
-        "type": "测试类型",
-        "enabled": "启用状态",
-        "description": "描述",
-        "createdByName": "创建人",
-        "createdDate": "创建时间",
-        "lastModifiedDate": "最后修改时间",
-        "action": "操作"
-      },
       "execModalTitle": "执行用例",
       "addModal": {
         "title": "生成接口用例",
@@ -1238,8 +380,6 @@
       "designCompAction": "设计组件",
       "addModal": {
         "detail": "详情",
-        "add": "添加",
-        "edit": "编辑",
         "typeLabel": "类型",
         "typePlaceholder": "选择类型",
         "nameLabel": "名称",
@@ -1268,9 +408,6 @@
         "test": "测试",
         "mock": "Mock",
         "doc": "文档"
-      },
-      "actions": {
-        "share": "分享"
       },
       "requestTabs": {
         "parameters": "请求参数",
@@ -1363,20 +500,8 @@
         "variableSupport": "接口中支持变量的位置：安全方案(Authorization)、Path参数、Query参数、Header参数、请求体Form参数、请求体Raw、断言条件表达式和断言期望值。",
         "functionSupport": "接口中支持函数的位置：Path参数、Query参数、Header参数、请求体Form参数和请求体Raw。"
       },
-      "collapseButtonGroup": {
-        "edit": "编辑",
-        "clone": "克隆",
-        "delete": "删除"
-      },
       "buttonGroup": {
         "mockApi": "Mock接口",
-        "addWatch": "关注",
-        "cancelWatch": "取消关注",
-        "addFavourite": "收藏",
-        "cancelFavourite": "取消收藏",
-        "remove": "移动",
-        "auth": "权限",
-        "export": "导出",
         "status": "修改状态",
         "testScript": "测试脚本",
         "generateTestScript": "生成测试脚本",
@@ -1412,7 +537,7 @@
         "code": "代码",
         "apiMock": "Mock接口",
         "saveUnarchived": "保存到未归档",
-        "save": "归档到服务",
+        "archiveToService": "归档到服务",
         "indicator": "接口指标",
         "test": "测试结果",
         "variable": "变量"
@@ -1497,10 +622,6 @@
         "addServerDemo": "服务器示例",
         "addServer": "服务器",
         "updateToApis": "更新到已关联接口",
-        "edit": "编辑",
-        "delete": "删除",
-        "cancel": "取消",
-        "save": "保存",
         "addVariable": "添加变量",
         "deleteVariable": "删除变量"
       },
@@ -1534,23 +655,12 @@
       },
       "columns": {
         "url": "URL",
-        "description": "描述",
         "variables": "变量",
-        "name": "名称",
         "value": "值"
       }
     },
     "shareModal": {
       "title": "分享管理",
-      "actions": {
-        "addShare": "添加分享",
-        "edit": "编辑",
-        "delete": "删除",
-        "copy": "复制",
-        "confirm": "确认",
-        "cancel": "取消",
-        "loadMore": "加载更多"
-      },
       "messages": {
         "deleteSuccess": "删除分享记录成功",
         "passwordRequired": "输入的密码不能为空",
@@ -1585,20 +695,6 @@
     "syncConfig": {
       "title": "同步配置",
       "hints": "将外部OpenAPI自动导入到当前服务，最多允许添加10个。",
-      "actions": {
-        "add": "添加",
-        "demo": "示例",
-        "syncAll": "同步所有",
-        "edit": "编辑",
-        "sync": "同步",
-        "test": "测试",
-        "delete": "删除",
-        "save": "保存",
-        "cancel": "取消",
-        "clear": "清空",
-        "addAuth": "添加",
-        "deleteAuth": "删除"
-      },
       "messages": {
         "deleteSuccess": "删除成功",
         "testSuccess": "配置测试通过",
@@ -1612,18 +708,11 @@
         "inputContent": "请输入内容"
       },
       "form": {
-        "name": "名称",
         "namePlaceholder": "名称",
-        "source": "来源",
         "address": "地址",
         "addressPlaceholder": "地址",
         "duplicateStrategy": "遇到重复时处理策略",
-        "cover": "覆盖",
-        "ignore": "忽略",
         "deleteWhenNotExist": "同步接口不存在时是否删除本地接口",
-        "yes": "是",
-        "no": "否",
-        "auth": "认证",
         "authRequired": "当同步地址受到保护时，它是必需的。最多允许添加10个。",
         "paramName": "参数名",
         "paramPosition": "参数位置",
@@ -1646,15 +735,6 @@
         "main": "标签作为API附加元信息用于对其分组，一个API可以有多个标签即归属于多个分组。定义标签的顺序会和API以标签分组时顺序、文档中接口展示顺序保持一致。",
         "sub": "每个标签名必须是唯一的；并非所有接口都需要关联标签；最多添加2000个。"
       },
-      "actions": {
-        "add": "添加",
-        "edit": "编辑",
-        "delete": "删除",
-        "save": "保存",
-        "cancel": "取消",
-        "expand": "展开",
-        "collapse": "收起"
-      },
       "messages": {
         "deleteSuccess": "删除成功",
         "saveSuccess": "保存成功",
@@ -1662,7 +742,6 @@
         "dataNotSaved": "数据未保存，请先保存数据或者取消编辑"
       },
       "form": {
-        "name": "名称",
         "namePlaceholder": "请输入标签名称",
         "description": "描述",
         "descriptionPlaceholder": "输入描述，支持Markdown语法",
@@ -1706,10 +785,6 @@
         "servicePlaceholder": "请选择服务",
         "sourceLanguage": "原语言",
         "targetLanguage": "目标语言"
-      },
-      "actions": {
-        "cancel": "取消",
-        "submit": "提交"
       },
       "messages": {
         "translateComplete": "翻译完成",
@@ -1764,8 +839,6 @@
         "getToken": "获取令牌"
       },
       "apiKey": {
-        "name": "名称",
-        "value": "值",
         "position": "位置"
       },
       "oauth2Fields": {
@@ -1826,26 +899,9 @@
         "notPassed": "不通过"
       },
       "indicators": {
-        "total": "总共",
-        "success": "成功",
-        "failed": "失败",
-        "disabled": "未启用",
         "tps": "每秒事务数(TPS)",
         "responseTime": "响应时间(P90)",
         "errorRate": "错误率"
-      },
-      "task": {
-        "noData": "暂无数据",
-        "columns": {
-          "code": "编码",
-          "name": "名称",
-          "sprint": "所属迭代",
-          "priority": "优先级",
-          "assignee": "经办人",
-          "confirmer": "确认人",
-          "deadline": "截止时间"
-        },
-        "overdue": "已逾期"
       }
     },
     "mockApi": {
@@ -1919,14 +975,10 @@
         }
       },
       "form": {
-        "name": "名称",
         "namePlaceholder": "请输入参数名称",
-        "type": "类型",
         "typePlaceholder": "请选择参数类型",
         "required": "必填",
-        "description": "描述",
         "descriptionPlaceholder": "请输入描述",
-        "value": "值",
         "valuePlaceholder": "请输入调试值，最大支持{maxLength}个字符",
         "format": "格式",
         "formatPlaceholder": "请选择格式",
@@ -2023,8 +1075,7 @@
         "saveToUnarchived": "保存到未归档",
         "archive": "归档",
         "generateCase": "生成用例",
-        "copyUrl": "复制Url",
-        "nextStep": "下一步"
+        "copyUrl": "复制Url"
       },
       "tips": {
         "variableNotFound": "找不到该变量，请先定义变量或刷新再试",
@@ -2085,11 +1136,6 @@
         "description": "描述",
         "externalDocs": "外部文档"
       },
-      "actions": {
-        "save": "保存",
-        "cancel": "取消",
-        "nextStep": "下一步"
-      },
       "tips": {
         "duplicateApi": "注意：相同服务下接口不允许重复，即请求方法和接口路径(不包含查询参数)组合必须唯一。",
         "tagsDescription": "标签作为API附加元信息用于对其分组。",
@@ -2121,10 +1167,6 @@
       "labels": {
         "summary": "接口名称",
         "description": "描述"
-      },
-      "actions": {
-        "save": "保存",
-        "cancel": "取消"
       },
       "tips": {
         "unarchivedApiDescription": "未归档接口为用户临时调试接口，只对添加用户可见"
@@ -2158,18 +1200,11 @@
         "responseMessage": "响应消息"
       },
       "actions": {
-        "disconnect": "断开连接",
-        "connect": "连接",
-        "save": "保存",
         "saveToUnarchived": "保存到未归档",
-        "archive": "归档",
-        "copyUrl": "复制Url",
-        "send": "发送",
-        "clear": "清空"
+        "archive": "归档"
       },
       "navigation": {
         "saveToUnarchived": "保存到未归档",
-        "save": "保存",
         "archiveToService": "归档到服务",
         "variable": "变量",
         "agent": "代理"
@@ -2277,10 +1312,6 @@
           "placeholder": "限制输入200字符以内"
         }
       },
-      "actions": {
-        "save": "保存",
-        "cancel": "取消"
-      },
       "messages": {
         "protocolWarning": "WebSocket协议必须以ws://或wss://开头",
         "addSuccess": "添加接口成功",
@@ -2330,45 +1361,19 @@
         "searchDept": "查询部门",
         "searchGroup": "查询组",
         "searchUser": "查询用户"
-      },
-      "loading": {
-        "tip": "加载中..."
-      },
-      "actions": {
-        "selectAll": "全部"
       }
     },
     "groupApiDetail": {
       "columns": {
-        "id": "ID",
         "summary": "名称",
         "operationId": "编码",
-        "source": "来源",
-        "status": "状态",
-        "auth": "权限",
         "deprecated": "是否弃用",
-        "createdByName": "添加人",
-        "ownerName": "负责人",
         "tags": "标签",
-        "createdDate": "添加时间",
-        "lastModifiedDate": "更新时间",
-        "description": "描述",
         "securityTitle": "安全需求",
         "externalDocsTitle": "外部文档"
       },
       "messages": {
         "selectApiFirst": "请先选择接口,再来查看"
-      },
-      "auth": {
-        "hasPermission": "有权限限制",
-        "noPermission": "无权限限制"
-      },
-      "deprecated": {
-        "yes": "是",
-        "no": "否"
-      },
-      "placeholder": {
-        "noData": "--"
       },
       "modal": {
         "title": "接口权限",
@@ -2378,8 +1383,6 @@
     },
     "ApiMock": {
       "columns": {
-        "id": "ID",
-        "name": "名称",
         "mockServiceId": "服务ID",
         "mockServiceName": "服务名称",
         "mockServiceHostUrl": "服务地址",
@@ -2401,9 +1404,6 @@
       "actions": {
         "cancelAssociate": "取消关联"
       },
-      "tooltips": {
-        "copy": "复制"
-      },
       "hints": {
         "selectMockServiceFirst": "生成或关联Mock接口请先选择Mock服务。",
         "generateMockApi": "基于当前接口生成Mock接口。",
@@ -2424,12 +1424,7 @@
     },
     "serviceDetail": {
       "columns": {
-        "id": "ID",
-        "name": "名称",
         "parentName": "所属项目",
-        "source": "来源",
-        "status": "状态",
-        "auth": "权限",
         "apisNum": "接口数量",
         "apisCaseNum": "用例数量",
         "createdByName": "添加人",
@@ -2442,10 +1437,6 @@
       },
       "hints": {
         "maxApis": "最大支持2000个"
-      },
-      "auth": {
-        "hasPermission": "有权限限制",
-        "noPermission": "无权限限制"
       },
       "modal": {
         "projectPermission": "项目权限",
@@ -2464,14 +1455,9 @@
     },
     "mockService": {
       "columns": {
-        "name": "名称",
         "serviceDomainUrl": "服务地址",
         "servicePort": "端口",
         "nodeName": "节点",
-        "status": "状态",
-        "auth": "权限",
-        "createdByName": "添加人",
-        "createdDate": "添加时间"
       },
       "stats": {
         "apisNum": "接口数",
@@ -2483,9 +1469,7 @@
       },
       "actions": {
         "cancelAssociate": "取消关联",
-        "generate": "生成",
-        "associate": "关联",
-        "copy": "复制"
+        "associate": "关联"
       },
       "messages": {
         "associateSuccess": "关联成功",
@@ -2499,10 +1483,6 @@
         "generateMockService": "基于当前服务生成Mock服务。",
         "associateMockService": "当前服务关联已存在的Mock服务。"
       },
-      "auth": {
-        "hasPermission": "有权限控制",
-        "noPermission": "无权限控制"
-      },
       "modal": {
         "title": "Mock服务权限",
         "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
@@ -2511,7 +1491,6 @@
       },
       "form": {
         "title": "生成Mock服务",
-        "name": "名称",
         "namePlaceholder": "服务标识命名信息，最多允许100个字符",
         "domain": "域名",
         "domainPlaceholder": "为服务设置域名后，您可以通过域名访问Mock接口",
@@ -2532,10 +1511,6 @@
         "domainInvalid": "请输入正确的域名",
         "portRequired": "请输入端口（1~65535）",
         "nodeRequired": "请选择节点"
-      },
-      "buttons": {
-        "cancel": "取消",
-        "confirm": "确定"
       },
       "placeholder": {
         "selectMockService": "请选择Mock服务"
@@ -2607,13 +1582,6 @@
         "stabilityTest": "稳定性测试"
       },
       "status": {
-        "passed_": "已通过",
-        "unpassed": "未通过",
-        "unTested": "未测试",
-        "passed": "通过",
-        "unPassed": "未通过",
-        "notEnabled": "未启用",
-        "notTested": "未测试",
         "partiallyPassed": "部分通过"
       },
       "placeholder": {
@@ -2631,8 +1599,6 @@
         "byCreatedBy": "按添加人"
       },
       "group": {
-        "title": "分组",
-        "noGroup": "不分组",
         "byCreatedBy": "按添加人分组",
         "byMethod": "按请求方法分组",
         "byOwner": "按负责人分组",
@@ -2642,8 +1608,7 @@
         "addHttpApi": "添加Http接口",
         "addWebSocketApi": "添加WebSocket接口",
         "serverConfig": "服务器配置",
-        "authConfig": "安全方案配置",
-        "refresh": "刷新"
+        "authConfig": "安全方案配置"
       }
     },
     "apiList": {
@@ -2660,24 +1625,10 @@
       "test": {
         "functionalTest": "功能测试",
         "performanceTest": "性能测试",
-        "stabilityTest": "稳定性测试",
-        "notEnabled": "未启用",
-        "passed": "通过",
-        "unPassed": "未通过",
-        "notTested": "未测试"
+        "stabilityTest": "稳定性测试"
       },
       "buttons": {
-        "edit": "编辑",
-        "clone": "克隆",
-        "delete": "删除",
         "mockApi": "Mock接口",
-        "follow": "关注",
-        "unfollow": "取消关注",
-        "favourite": "收藏",
-        "unfavourite": "取消收藏",
-        "move": "移动",
-        "permission": "权限",
-        "export": "导出",
         "modifyStatus": "修改状态",
         "testScript": "测试脚本",
         "generateTestScript": "生成测试脚本",
@@ -2718,7 +1669,7 @@
       },
       "template": {
         "other": "其他",
-        "auth": {
+        "permission": {
           "title": "接口权限",
           "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有接口相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级项目/服务权限将自动授权查看权限。",
           "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前接口，查看用户同时需要有当前接口父级项目或服务权限。"
@@ -2747,9 +1698,6 @@
         "noVariables": "无变量",
         "noDescription": "无描述",
         "variables": "变量",
-        "name": "名称",
-        "value": "值",
-        "description": "描述",
         "default": "默认",
         "url": "URL"
       },
@@ -2758,8 +1706,754 @@
       }
     }
   },
+  "apis": {
+    "welcome": {
+      "title": "欢迎进入Angus接口！",
+      "description": "接口可以帮助开发人员和测试人员轻松地添加、测试、调试和文档化API，最终帮助企业达成API资产化目的。",
+      "featuresTitle": "在这里您和您的团队可以完成以下工作:",
+      "features": [
+        "在线编辑、调试接口；",
+        "管理项目、服务、接口以及测试任务；",
+        "开展接口功能测试、性能测试和稳定性测试，保证交付稳定且满足业务要求的系统。"
+      ]
+    },
+    "quickAccess": {
+      "title": "快速入口",
+      "addApiTabName": "添加API",
+      "debug": {
+        "title": "调试接口",
+        "description": "在线快速编辑、调试接口。"
+      },
+      "addProject": {
+        "title": "添加项目/服务",
+        "description": "通过项目或服务来组织接口，项目可以包含多个服务(如：微服务)和接口，服务只能包含接口。",
+        "addProject": "添加项目",
+        "addService": "添加服务"
+      },
+      "import": {
+        "title": "根据文件导入服务",
+        "description": "导入OpenAPI或Postman接口YAML文件或JSON文件。",
+        "template": "根据文件导入{type}"
+      }
+    },
+    "navigation": {
+      "myApis": "我的接口",
+      "projects": "项目",
+      "services": "服务",
+      "apis": "接口",
+      "scenarios": "场景",
+      "myTasks": "我的任务",
+      "favorites": "已收藏",
+      "follows": "已关注",
+      "activities": "活动",
+      "apiSamples": "API样例集合"
+    },
+    "statistics": {
+      "today": "今日：",
+      "lastWeek": "近一周：",
+      "title": "资源统计",
+      "service": "总服务",
+      "apis": "总接口",
+      "method": "请求方法"
+    },
+    "apiStatus": {
+      "unknown": "未知",
+      "inDesign": "设计中",
+      "inDevelopment": "开发中",
+      "developmentCompleted": "开发完成",
+      "released": "已发布"
+    },
+    "statisticsCreated": {
+      "title": "我添加的",
+      "service": "服务",
+      "apis": "接口",
+      "unfiled": "未归档接口"
+    },
+    "actions": {
+      "cancelAllFavorites": "取消全部收藏",
+      "cancelAllFollows": "取消全部关注",
+      "projectConfig": "项目配置"
+    },
+    "configuration": {
+      "type_service": "服务",
+      "sync": "同步配置",
+      "security": "安全方案配置",
+      "server": "服务器配置",
+      "performance": "服务性能指标",
+      "share": "添加分享",
+      "variables": "定义变量",
+      "syncDescription": "将外部OpenAPI自动导入到当前{type}",
+      "securityDescription": "定义当前{type}下所有接口可以使用的安全方案(Authorization)",
+      "serverDescription": "定义当前项目/服务下所有接口可以使用的服务器(Server URL)",
+      "performanceDescription": "为{type}下接口设置默认性能指标，性能指标会影响性能测试通过率；如果想为某个接口单独设置性能指标，可以在接口性能配置里设置",
+      "shareDescription": "通过分享能够授权其他人在指定时间内查看接口文档和调试接口",
+      "variablesDescription": "通过定义变量可以复用一个参数值或控制条件执行"
+    },
+    "search": {
+      "taskName": "查询任务名称",
+      "scenario": "查询场景"
+    },
+    "messages": {
+      "cancelAllFavoritesSuccess": "取消全部收藏成功",
+      "cancelAllFollowsSuccess": "取消全部关注成功",
+      "noFavorites": "暂无收藏",
+      "noFollows": "暂无关注",
+      "cancelSuccess": "取消成功",
+      "importProject": "导入项目",
+      "importSuccess": "导入成功"
+    },
+    "columns": {
+      "createdTime": "添加时间",
+      "executionId": "执行编号",
+      "executionStatus": "执行状态",
+      "taskStatus": "任务状态",
+      "testResult": "测试结果",
+      "dueTime": "到期时间",
+      "priority": "优先级"
+    },
+    "myApis": {
+      "title": "我的接口",
+      "createdEmptyTip": "尚未添加任何接口，立即",
+      "addApiAction": "添加接口",
+      "addApiTabName": "添加API",
+      "followEmptyTip": "没有收藏的接口",
+      "favoriteEmptyTip": "没有关注的接口",
+      "deleteTip": "确定删除接口「{name}」吗？",
+      "deleteSuccess": "删除接口成功",
+      "cancelFavoriteSuccess": "接口取消收藏成功",
+      "cancelFollowSuccess": "接口取消关注成功",
+      "columns": {
+        "summary": "名称",
+        "endpoint": "路径",
+        "status": "状态",
+        "createdDate": "添加时间"
+      }
+    }
+  },
+  "design": {
+    "title": "设计",
+    "home": {
+      "introduceTitle": "关于设计",
+      "introduceContent": "用于 OpenAPI 规范的接口设计，满足接口测试和文档生成的需求。图形化界面适合不熟悉 OpenAPI规范 的用户，而熟悉 OpenAPI 规范的用户则推荐使用 Swagger Editor，能更高效地完成设计。",
+      "tabTitle": "设计",
+      "title": "已添加的设计",
+      "noDataTip": "尚未添加任何设计，立即",
+      "add_action": "添加设计",
+      "design_action": "设计",
+      "generateService_action": "生成服务",
+      "import_service_action": "导入服务",
+      "import_design_action": "导入设计",
+      "refresh_action": "刷新",
+      "designByMe": "我设计的",
+      "importSuccess": "导入成功",
+      "released": "已发布",
+      "unreleased": "草稿",
+      "generated": "已生成服务",
+      "searchPanel": {
+        "name_placeholder": "查询名称、描述",
+        "created_placeholder": "选择添加人",
+        "data_placeholder1": "添加时间从",
+        "data_placeholder2": "添加时间到"
+      },
+      "columns": {
+        "openapiSpecVersion": "规范版本",
+        "designSource": "来源",
+        "designService": "关联服务",
+      },
+      "deleteFirm": {
+        "title": "确定删除设计「{name}」吗？"
+      }
+    },
+    "importServiceModal": {
+      "title": "导入服务",
+      "serviceLabel": "服务",
+      "servicePlaceholder": "请选择所属服务"
+    },
+    "importDesignModal": {
+      "title": "导入设计",
+      "nameLabel": "名称",
+      "namePlaceholder": "输入设计名称, 限制100个字符",
+      "fileLabel": "文件",
+      "fileRule": "请上传文件",
+      "uploadFile": "上传文件",
+      "uploadTip": "点击上传Swagger2.0、OpenAPI3.x文件，文件大小不超过20M"
+    },
+    "exportModal": {
+      "title": "导出",
+      "formatLabel": "格式"
+    },
+    "editModal": {
+      "editTitle": "编辑设计",
+      "addTitle": "添加设计",
+      "nameLabel": "名称",
+      "namePlaceholder": "输入设计名称，最多可输入100字符",
+      "versionLabel": "版本",
+      "versionPlaceholder": "OpenAPI文档规范版本号，默认3.0.1。"
+    },
+    "detail": {
+      "saveSuccess": "保存成功",
+      "publishSuccess": "发布成功",
+      "saveAction": "保存草稿",
+      "publishAction": "发布设计",
+      "modifyTip": "最后修改于{time}"
+    }
+  },
+  "mock": {
+    "starting": "正在启动中",
+    "startSuccess": "启动成功",
+    "startFail": "启动失败,请尝试重新启动",
+    "batchStartFail": "批量启动失败",
+    "startPending": "启动中",
+    "serviceStartSuccess": "服务启动成功",
+    "deleteTip": "确定删除吗？",
+    "deleteSuccess": "删除成功",
+    "batchDelSuccess": "批量删除成功",
+    "start_fail": "启动失败",
+    "start_success": "启动成功",
+    "stop_fail": "停止失败",
+    "stop_success": "停止成功",
+    "in_starting": "正在启动中",
+    "refreshInstance_tip": "刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。",
+    "refreshInstance_success": "刷新实例成功",
+    "console": "控制台",
+    "exitCode": "退出码",
+    "introduce": {
+      "description": "Mock可快速模拟依赖的API，让开发和测试并行进行，提高开发效率，避免生产环境数据污染。",
+      "addMockService": "添加Mock服务",
+      "addMockServiceDesc": "创建Mock服务后需手动添加接口。",
+      "importService": "关联服务接口",
+      "importServiceDesc": "基于现有服务与接口创建Mock，系统自动建立关联。",
+      "importFile": "文件导入",
+      "importFileDesc": "Swagger、OpenAPI3.x、Postman2.0/2.1、Angus格式文件导入。"
+    },
+    "searchPanel": {
+      "namePlaceholder": "查询服务ID、名称",
+      "nodeIpPlaceholder": "查询服务IP",
+      "sourcePlaceholder": "选择来源",
+      "nodeIdPlaceholder": "选择或查询节点",
+      "createdByPlaceholder": "选择添加人",
+      "createdDatePlaceholder1": "添加时间从",
+      "createdDatePlaceholder2": "添加时间到"
+    },
+    "columns": {
+      "node": "所在节点",
+      "address": "地址"
+    },
+    "actions": {
+      "forceDelete": "强制删除",
+      "refreshInstance": "刷新实例",
+      "addMock": "添加Mock服务"
+    },
+    "addMock": {
+      "validation": {
+        "enterDomain": "请输入域名",
+        "enterCorrectDomain": "请输入正确的域名",
+        "enterName": "请输入名称",
+        "enterPort": "请输入端口（1~65535）",
+        "selectNode": "请选择节点",
+        "selectProjectService": "请选择项目服务"
+      },
+      "notifications": {
+        "addSuccess": "添加成功"
+      },
+      "form": {
+        "namePlaceholder": "服务标识命名信息，最多允许100个字符",
+        "domain": "域名",
+        "domainPlaceholder": "为服务设置域名后，可以通过域名访问Mock接口",
+        "domainTooltip": "域名解析生效预计需要60秒以内的延迟。",
+        "port": "端口",
+        "portPlaceholder": "服务所监听的端口，服务添加后不允许修改(1~65535)",
+        "node": "节点",
+        "nodePlaceholder": "服务所运行的节点，服务添加后不允许修改",
+        "service": "服务",
+        "servicePlaceholder": "选择或查询服务",
+        "api": "接口",
+        "importSource": "来源",
+        "associated": "(已关联)"
+      },
+      "upload": {
+        "uploadFile": "上传文件",
+        "uploadDescription": "直接粘贴内容或拖动文件或点击上传文件，文件大小不超过20M",
+        "fileRequired": "请先上传文件",
+        "fileSizeExceeded": "上传文件或文本大小超过20M，请重新上传",
+        "postmanVersionError": "请检查文件是否是Postman Collection V2/V2.1 版本JSON文件"
+      },
+      "apiList": {
+        "searchApiName": "查询接口名称",
+        "requestMethod": "请求方法",
+        "apiName": "接口名称"
+      }
+    },
+    "detail": {
+      "menu": {
+        "apis": "接口",
+        "request": "请求",
+        "log": "日志",
+        "activity": "活动",
+        "monitor": "监控",
+        "setting": "设置"
+      },
+      "notifications": {
+        "modifySuccess": "修改成功"
+      },
+      "validation": {
+        "enterParamName": "请输入参数名",
+        "paramNameDuplicate": "参数名称重复",
+        "enterName": "请输入名称",
+        "enterDomain": "请输入域名"
+      },
+      "basicInfo": {
+        "title": "基本信息",
+        "nameTooltip": "服务名称，最多100个字符。",
+        "domain": "域名",
+        "domainTooltip": "设置域名后可通过域名访问Mock接口，域名需解析到节点IP。",
+        "port": "端口",
+        "portTooltip": "服务监听端口，添加后不可修改。",
+        "node": "节点",
+        "nodeTooltip": "服务运行节点，添加后不可修改。",
+        "serviceConfig": "服务配置",
+        "serviceConfigTooltip": "服务运行参数配置，修改后需重启生效。",
+        "useSsl": "开启SSL",
+        "useSslTooltip": "启用HTTPS安全连接，默认关闭。",
+        "workThreadNum": "线程数",
+        "workThreadNumTooltip": "服务处理线程数，默认100。",
+        "logLevel": "文件日志级别",
+        "logLevelTooltip": "日志记录级别：NONE、BASIC、HEADERS、FULL。",
+        "logFileLevel": {
+          "none": "不记录日志。",
+          "basic": "记录请求方法、URL、状态码和执行时间（默认）。",
+          "headers": "记录基本信息和请求响应头。",
+          "full": "记录完整的请求响应信息。"
+        },
+        "sendRequestLog": "记录请求日志",
+        "sendRequestLogTooltip": "是否记录Mock请求日志。",
+        "maxContentLength": "最大请求大小",
+        "maxContentLengthTooltip": "最大请求大小，默认1000MB。",
+        "pushbackThreadNum": "回推线程数",
+        "pushbackThreadNumTooltip": "回推处理线程数，默认8。",
+        "pushbackConnectTimeout": "回推连接超时",
+        "pushbackConnectTimeoutTooltip": "回推连接超时时间（毫秒），默认5000。",
+        "pushbackRequestTimeout": "回推请求超时",
+        "pushbackRequestTimeoutTooltip": "回推请求超时时间（毫秒），默认-1不超时。",
+        "security": "接口安全",
+        "securityHints": "修改后需重启服务生效。",
+        "securityTooltip": "配置接口访问授权，开启后需携带授权参数访问。最多10个。",
+        "in": "位置",
+        "paramsName": "参数名",
+        "paramsValue": "参数值",
+        "paramsValueRule": "请输入value"
+      },
+      "apis": {
+        "hints": "当某个接口尚未实现或无法访问时，可以通过Mock接口模仿真实接口的行为和数据返回，以便进行开发和测试工作，从而提高开发和测试效率。注意：Mock接口保存后才生效。",
+        "searchPlaceholder": "查询名称",
+        "addApi": "添加接口",
+        "refreshInstance": "刷新实例接口",
+        "request": "请求",
+        "namePlaceholder": "最大支持400个字符",
+        "description": "描述",
+        "descriptionPlaceholder": "最大支持20000个字符",
+        "response": "响应",
+        "maxResponseTip": "最大支持配置50个响应",
+        "addResponse": "添加响应",
+        "deleteResponse": "删除响应",
+        "match": "匹配",
+        "matchTooltip": "指定返回当前响应所需满足的匹配请求条件。注意：当存在满足匹配的多个响应时，将返回优先级最高的响应，如果没有配置匹配条件或优先级相同，则返回第一个条件或最先配置的条件。",
+        "priority": "优先级",
+        "priorityTooltip": "值越大优先级越高，值范围：0~2147483647。注意：仅当存在满足匹配的多个响应时，才会返回优先级最高的响应。",
+        "content": "内容",
+        "pushback": "回推",
+        "pushbackTooltip": "回推可以用于在接收到 Mock 请求后，自动向指定地址推送一个 Http 请求，如：支付回调。",
+        "enable": "启用",
+        "disable": "关闭",
+        "copyApiTitle": "复制接口添加",
+        "linkApiTitle": "关联接口添加",
+        "testRequest": "测试请求",
+        "proxy": "代理",
+        "terminate": "终止",
+        "send": "发送",
+        "responseTitle": "响应",
+        "notifications": {
+          "copyApiSuccess": "复制接口添加成功",
+          "linkApiSuccess": "关联接口添加成功",
+          "importDemoSuccess": "导入示例成功",
+          "cloneSuccess": "克隆成功",
+          "deleteSuccess": "删除成功",
+          "refreshInstanceSuccess": "刷新实例接口成功",
+          "saveSuccess": "保存成功",
+          "nameDuplicate": "名称重复",
+          "dataError": "数据有误，请检查并更正后再保存。",
+          "proxyNotConnected": "代理未链接， 请检查代理配置",
+          "yamlFormatError": "yaml内容格式错误，请检查并更正"
+        },
+        "confirmations": {
+          "deleteApi": "确认要删除接口「{summary}」吗？",
+          "refreshInstance": "刷新实例接口会强制同步当前Mock接口信息到运行的服务实例。"
+        },
+        "menuItems": {
+          "copyApi": "复制接口添加",
+          "linkApi": "关联接口添加",
+          "import": "导入接口"
+        },
+        "sortOptions": {
+          "byCreatedDate": "按添加时间",
+          "byId": "按ID"
+        },
+        "components": {
+          "delayParameter": {
+            "title": "延迟参数",
+            "delayTime": "延迟时间",
+            "delayTimePlaceholder": "请输入延迟时间（毫秒）",
+            "delayTimeTooltip": "延迟时间范围：0-300000毫秒",
+            "to": "至",
+            "maxLessThanMin": "最大值小于最小值",
+            "noDelay": "无延迟",
+            "fixedDelay": "固定延迟",
+            "randomDelay": "随机延迟"
+          },
+          "importFileModal": {
+            "title": "编码文件",
+            "selectFile": "选择文件",
+            "fileType": "文件类型",
+            "fileTypePlaceholder": "请选择文件类型",
+            "maxFileSize": "最大支持编码10M文件",
+            "encoding": "编码"
+          },
+          "inputGroup": {
+            "title": "输入组",
+            "addParameter": "添加参数",
+            "parameterName": "参数名",
+            "parameterValue": "参数值",
+            "parameterNamePlaceholder": "请输入参数名",
+            "parameterValuePlaceholder": "请输入参数值",
+            "queryParams": "查询参数",
+            "requestHeader": "请求头",
+            "cookie": "Cookie"
+          },
+          "pushBack": {
+            "title": "回推",
+            "url": "回推地址",
+            "urlPlaceholder": "最大支持800个字符",
+            "urlError": "回推地址格式错误",
+            "method": "请求方法",
+            "contentType": "Content-Type",
+            "requestBody": "请求体",
+            "send": "发送",
+            "terminate": "终止",
+            "testRequest": "测试请求",
+            "proxy": "代理",
+            "response": "响应",
+            "responseTitle": "响应",
+            "sendSuccess": "发送成功",
+            "requestError": "请求错误",
+            "proxyNotConnected": "代理未链接， 请检查代理配置",
+            "autoPush": "请求触发后自动推送",
+            "manualSend": "手动发送",
+            "delay": "回推延迟"
+          },
+          "requestBody": {
+            "title": "请求体",
+            "contentType": "Content-Type",
+            "none": "none",
+            "formUrlEncode": "application/x-www-form-urlencode",
+            "multipartFormData": "multipart/form-data",
+            "raw": "raw",
+            "applicationJson": "application/json",
+            "textHtml": "text/html",
+            "applicationXml": "application/xml",
+            "applicationJavascript": "application/javascript",
+            "textPlain": "text/plain",
+            "wildcard": "*/*"
+          },
+          "selectInputForm": {
+            "parameterName": "参数名称",
+            "parameterValue": "参数值",
+            "parameterNamePlaceholder": "参数名称，最大支持400个字符",
+            "parameterValuePlaceholder": "参数值，最大支持4096个字符",
+            "addParameter": "添加参数"
+          },
+          "match": {
+            "title": "匹配",
+            "path": "路径",
+            "queryParams": "查询参数",
+            "header": "请求头",
+            "requestBody": "请求体",
+            "maxParametersTip": "匹配参数限制最大 20 个",
+            "pathTitle": "路径",
+            "pathTooltip": "路径以斜杠 / 开始，表示根路径。\n路径由多个路径段组成，路径段之间使用斜杠 / 分隔。\n每个路径段可以是字母、数字、减号、下划线等字符组成，且不包含特殊字符（如?、#等）。\n路径段不可以为空字符串。",
+            "operator": "运算条件",
+            "operatorPlaceholder": "运算条件",
+            "pathPlaceholder": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）",
+            "regexPlaceholder": "正则表达式",
+            "onlyOnePath": "只能添加一个路径",
+            "onlyOneRequestBody": "只能添加一个请求体",
+            "queryParamsTitle": "查询参数",
+            "parameterName": "参数名称",
+            "parameterNamePlaceholder": "参数名称，最大支持400个字符",
+            "parameterValue": "参数值",
+            "parameterValuePlaceholder": "参数值，最大支持4096个字符",
+            "regexExpression": "正则表达式",
+            "value": "值",
+            "xpathExpression": "XPath表达式",
+            "jsonPathExpression": "JSONPath表达式",
+            "format": "格式化"
+          },
+          "agent": {
+            "title": "智能助手",
+            "description": "智能助手可以帮助您快速生成Mock接口的响应内容",
+            "regenerate": "重新生成",
+            "generating": "生成中...",
+            "generateSuccess": "生成成功",
+            "generateError": "生成失败",
+            "copySuccess": "复制成功",
+            "copyError": "复制失败",
+            "proxyConfig": "代理配置",
+            "noProxy": "无代理",
+            "clientProxy": "客户端代理",
+            "serverProxy": "服务端代理",
+            "notConnected": "未连接",
+            "connected": "已连接",
+            "notConfigured": "未配置或启用服务端代理，请检查\"应用管理->代理配置\"",
+            "connectionFailed": "代理连接失败，请检查代理服务是否已运行。",
+            "tips": {
+              "noProxy": "通过浏览器直接请求接口，对非同源访问接口服务器端需要取消跨域限制。",
+              "clientProxy": "需要在访问浏览器所在电脑中安装\"<a href='https://www.xcan.cloud/help' target=\"_blank\"  class=\"text-text-link\">代理程序<a>\"，配置后将使用客户端代理发送请求。",
+              "serverProxy": "需要将\"代理程序\"单独安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑中安装代理程序，配置后将使用服务端代理发送请求。推荐方式",
+              "cloudProxy": "通过AngusTester云服务器节点请求接口，注意：不能访问到客户内网服务地址。"
+            }
+          },
+          "codeEditor": {
+            "title": "代码编辑器",
+            "language": "语言",
+            "content": "内容",
+            "placeholder": "请输入内容",
+            "format": "格式化",
+            "maxLengthError": "最大支持{max}字符，已输入{current}字符"
+          },
+          "importApiModal": {
+            "title": "导入接口",
+            "selectApi": "选择接口",
+            "apiName": "接口名称",
+            "apiDescription": "接口描述",
+            "hints": "支持Swagger2.0、OpenAPI3.x、Angus格式接口文件导入。",
+            "duplicateStrategy": "遇到重复时的处理策略",
+            "deleteNotExisted": "当前接口在导入数据中不存在时是否删除",
+            "success": "导入接口成功"
+          },
+          "pureFormInput": {
+            "title": "表单输入",
+            "addItem": "添加项",
+            "itemName": "项名称",
+            "itemValue": "项值",
+            "itemNamePlaceholder": "请输入项名称",
+            "itemValuePlaceholder": "请输入项值",
+            "parameterNamePlaceholder": "参数名称，最大支持400个字符",
+            "parameterValuePlaceholder": "参数值，最大支持4096个字符"
+          },
+          "selectApiModal": {
+            "title": "选择接口",
+            "searchPlaceholder": "搜索接口",
+            "apiName": "接口名称",
+            "apiDescription": "接口描述"
+          },
+          "urlForm": {
+            "title": "URL表单",
+            "url": "URL",
+            "urlPlaceholder": "请输入URL",
+            "method": "请求方法",
+            "methodPlaceholder": "请选择请求方法",
+            "methodPath": "方法/路径",
+            "requestMethod": "请求方法",
+            "domain": "域名",
+            "maxLengthPlaceholder": "最大支持800个字符"
+          },
+          "textareaEditor": {
+            "title": "文本编辑器",
+            "placeholder": "请输入内容",
+            "maxLength": "最大长度",
+            "format": "格式化",
+            "maxLengthPlaceholder": "最大支持{max}个字符",
+            "maxLengthError": "最大支持{max}字符，已输入{current}字符"
+          },
+          "content": {
+            "statusCode": "状态码",
+            "responseDelay": "响应延时",
+            "responseHeader": "响应头",
+            "responseBody": "响应体",
+            "maxHeadersTip": "最大支持 {max} 个响应头",
+            "maxHeadersTooltip": "最大支持{max}个响应头",
+            "mockFunctionHelper": "Mock函数助手",
+            "insertFile": "插入文件"
+          }
+        }
+      },
+      "cors": {
+        "title": "跨域设置",
+        "description": "解决浏览器跨域访问限制，配置跨域访问策略。修改后需重启服务生效。",
+        "enabledTooltip": "启用跨域访问配置，默认关闭。",
+        "allowOrigin": "允许的域",
+        "allowOriginTooltip": "允许跨域访问的域名，默认*（所有域名）。",
+        "allowCredentials": "允许访问凭证",
+        "allowCredentialsTooltip": "允许跨域请求携带凭证（如Cookie），默认开启。",
+        "allowRequestMethods": "允许的请求方法",
+        "allowRequestMethodsTooltip": "允许的HTTP请求方法，默认支持所有常用方法。",
+        "allowRequestHeaders": "允许的请求头",
+        "allowRequestHeadersTooltip": "允许的请求头字段，默认不限制。",
+        "allowExposeHeaders": "可访问的响应头",
+        "allowExposeHeadersTooltip": "允许客户端访问的响应头字段，默认不限制。"
+      },
+      "requestRecord": {
+        "apiName": "接口名称",
+        "requestId": "请求ID",
+        "requestTime": "请求时间",
+        "requestUrl": "请求地址",
+        "requestMethod": "请求方法",
+        "statusCode": "状态码",
+        "formatOptions": {
+          "beautify": "美化格式",
+          "raw": "原生格式",
+          "preview": "预览"
+        },
+        "basicInfo": "基本",
+        "requestInfo": "请求",
+        "requestHeader": "请求头",
+        "requestBody": "请求体",
+        "responseInfo": "响应",
+        "responseHeader": "响应头",
+        "responseBody": "响应体",
+        "hints": "Mock接口调用日志，每秒最多3条，每接口保留最近100条。开启/关闭日志收集请到\"设置\"->\"记录请求日志\"，开启后会影响性能。"
+      },
+      "log": {
+        "lineOptions": {
+          "last500": "最近500行",
+          "last1000": "最近1000行",
+          "last10000": "最近10000行"
+        },
+        "notifications": {
+          "noDownloadContent": "无可下载内容"
+        },
+        "errorInfo": "连接失败，地址：",
+        "logFile": "日志文件：",
+        "browseLog": "浏览日志：",
+        "autoRefresh": "自动刷新："
+      },
+      "activity": {
+        "pageInfo": "共{total}条记录，第{current} / {totalPage}页",
+        "searchPlaceholder": "查询活动详情"
+      },
+      "monitor": {
+        "apiName": "接口名称",
+        "apiInfo": "接口信息",
+        "requestCount": "请求数",
+        "mockExceptionCount": "模拟异常数",
+        "pushbackCount": "回推数",
+        "successCount": "成功数",
+        "exceptionCount": "异常数",
+        "apiCount": "接口数",
+        "searchApiNamePath": "查询接口名称、路径",
+        "tooltips": {
+          "requestCount": "调用Mock接口次数。",
+          "mockExceptionCount": "返回Http状态码为4xx和5xx响应次数。",
+          "pushbackCount": "Mock服务向用户配置回推接口推送请求次数。",
+          "successCount": "返回状态码为2xx请求次数。",
+          "exceptionCount": "Mock接口配置错误或程序自身导致的错误。"
+        }
+      },
+      "settings": {
+        "logTooltip": "记录基本信息和请求响应头。",
+        "corsTooltip": "解决浏览器跨域访问限制，配置跨域访问策略。修改后需重启服务生效。",
+        "enableNettyLog": "开启Netty日志",
+        "enableNettyLogTooltip": "建议仅在调试时开启，默认关闭。"
+      }
+    },
+    "exportModal": {
+      "title": "导出",
+      "format": "格式",
+      "fields": {
+        "endpoint": "路径",
+        "summary": "名称"
+      },
+      "notifications": {
+        "exportSuccess": "导出成功"
+      }
+    }
+  },
+  "server": {
+    "title": "服务器",
+    "home": {
+      "tabTitle": "服务器",
+      "newTab": "添加服务器",
+      "searchPanel": {
+        "descriptionPlaceholder": "查询描述",
+        "servicePlaceholder": "选择服务"
+      },
+      "title": "已添加的服务器",
+      "addTip": "已添加{add}个，最多允许添加{max}个。",
+      "emptyTip": "尚未添加任何服务器，立即",
+      "actions": {
+        "addServer": "添加服务器",
+        "updateToApi": "更新到已关联接口"
+      },
+      "hasVariable": "有变量",
+      "hasNoVariable": "无变量",
+      "serviceBelong": "所属服务",
+      "cloneSuccess": "克隆成功",
+      "updateSuccess": "更新到已关联接口成功",
+      "noDescTip": "无描述~",
+      "deleteTip": "确认删除该服务器吗？"
+    },
+    "detail": {
+      "deleteTip": "确认删除服务器吗？",
+      "copyLinkSuccess": "复制链接成功",
+      "copyLinkFail": "复制链接失败",
+      "serverExample": "服务器示例",
+      "serverTip": "Server URL已存在，请重新输入",
+      "serverVariableTip": "Server URL中的变量不允许重复",
+      "variableNameTip": "变量名称重复",
+      "variableValueTip": "变量值重复",
+      "serverConfigTip": "服务器配置错误，请检查更正后再保存。",
+      "urlPlaceholder": "指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}",
+      "serverLabel": "服务",
+      "serverPlaceholder": "选择服务",
+      "serverServiceTip": "服务器所属接口服务",
+      "descLabel": "描述",
+      "descPlaceholder": "服务器描述，最大支持400字符",
+      "variableTitle": "变量",
+      "variableLabel": "名称",
+      "variableNameTip1": "变量名称不能重复",
+      "variableTip": "最多可添加50个变量",
+      "variablePlaceholder": "变量名称，最大支持100字符",
+      "addVariable": "添加变量",
+      "deleteVariable": "删除变量",
+      "variableValueLabel": "值",
+      "variableValueTip1": "同一个变量的值不能重复",
+      "variableValuePlaceholder": "变量值，最大支持400字符",
+      "descriptionLabel": "描述",
+      "descriptionPlaceholder": "变量描述，最大支持400字符",
+      "variableDefault": "默认"
+    },
+    "introduce": {
+      "title": "关于服务器",
+      "description1": "定义 API 的服务器及服务器相关的动态部分，包括服务器(server)和变量(variables)两部分。其中服务器字段用于指定 API 的服务器列表，每个服务器都有一个 URL 和可选的描述信息，指示 API 的基础路径。",
+      "description2": "变量用于定义 URL 中的动态部分。它允许在服务器 URL 中使用占位符，这些占位符可以在不同的环境中被替换为实际的值。主要好处如下：",
+      "integration": {
+        "title": "易于与CICD集成",
+        "description": "在持续集成和持续部署的工作流中，定义的服务器可以帮助自动化测试流程，使得不同环境的 API 端点可以灵活配置，符合 DevOps 的要求。"
+      },
+      "env": {
+        "title": "支持多个环境",
+        "description": "通过定义多个服务器或通过不同变量值支持不同的环境（如开发、测试、生产等）。这使得开发者能够轻松切换环境，而不必在代码中手动更改 URL。"
+      },
+      "version": {
+        "title": "支持版本控制",
+        "description": "在不同版本的 API 中，可以通过定义不同的服务器或者变量值来管理和维护版本。可以在文档中清晰地区分各个版本的服务器，避免混淆。"
+      },
+      "url": {
+        "description": "完整 URL、服务器、和端点(endpoint)关系",
+        "title": "完整URL(path)"
+      }
+    }
+  },
   "apiShare": {
-    "name": "分享",
     "title": "分享",
     "addShare": "添加分享",
     "shareList": "分享列表",
@@ -2767,9 +2461,7 @@
     "shareEdit": "分享编辑",
     "editShare": "编辑分享",
     "form": {
-      "name": "分享名称",
       "namePlaceholder": "输入分享名称，最多可输入100字符",
-      "remark": "分享备注",
       "remarkPlaceholder": "请输入分享备注，会展示在分享信息中，最多支持400字符",
       "expiredDate": "到期日期",
       "expiredDateHint": "不指定时永久有效。",
@@ -2798,33 +2490,23 @@
     },
     "list": {
       "title": "已添加的分享",
-      "noData": "尚未添加任何分享，立即",
+      "noShareData": "尚未添加任何分享，立即",
       "addShare": "添加分享",
       "noRemark": "无~",
       "expired": "已过期",
       "notExpired": "未过期",
-      "copy": "复制",
-      "edit": "编辑",
-      "delete": "删除",
       "confirmDelete": "确定删除分享「{name}」吗？",
       "columns": {
-        "name": "名称",
-        "status": "状态",
         "sharePerson": "分享人",
         "shareScope": "分享范围",
         "expiredDate": "到期日期",
         "shareDate": "分享日期",
         "viewCount": "查看次数",
-        "remark": "备注",
-        "lastModifiedBy": "最后修改人",
-        "lastModifiedTime": "最后修改时间",
-        "actions": "操作"
       }
     },
     "searchPanel": {
       "title": "快速查询",
       "addShare": "添加分享",
-      "refresh": "刷新",
       "menuItems": {
         "all": "全部",
         "myShares": "我分享的",
@@ -2847,39 +2529,10 @@
     }
   },
   "apiTrash": {
-    "name": "回收站",
     "title": "回收站",
     "searchPlaceholder": "请输入搜索关键词",
     "tips": {
       "adminOnly": "仅管理员和删除者可以恢复或永久删除回收站数据。"
-    },
-    "buttons": {
-      "recoverAll": "全部恢复",
-      "deleteAll": "全部删除",
-      "refresh": "刷新"
-    },
-    "stats": {
-      "items": "数量"
-    },
-    "filters": {
-      "title": "筛选",
-      "all": "全部"
-    },
-    "actions": {
-      "recoverAll": "全部恢复",
-      "deleteAll": "全部删除",
-      "recover": "恢复",
-      "delete": "删除"
-    },
-    "confirm": {
-      "deleteAll": "确定要永久删除所有吗？",
-      "delete": "确定要永久删除此吗？"
-    },
-    "messages": {
-      "recoverSuccess": "恢复成功",
-      "deleteSuccess": "删除成功",
-      "recoverAllSuccess": "全部恢复成功",
-      "deleteAllSuccess": "全部删除成功"
     },
     "empty": {
       "description": "回收站为空",
@@ -2889,18 +2542,5 @@
       "service": "服务",
       "api": "接口"
     },
-    "table": {
-      "columns": {
-        "name": "名称",
-        "createdBy": "创建人",
-        "deletedBy": "删除人",
-        "deletedDate": "删除时间",
-        "action": "操作"
-      },
-      "actions": {
-        "recover": "恢复",
-        "delete": "删除"
-      }
-    }
   }
 }

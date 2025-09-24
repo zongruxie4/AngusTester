@@ -1,6 +1,6 @@
 {
   "proxy": {
-    "name": "Proxy",
+    "title": "Proxy",
     "description": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data. You can choose a suitable proxy service according to your network environment.",
     "noProxy": "No Proxy",
     "noProxyDescription": "Request interfaces directly through browser, cross-origin restrictions need to be removed to access non-same-origin server interfaces.",
@@ -18,8 +18,6 @@
     "serverRequestProxyConfig": "Server Client Proxy Configuration",
     "enable": "Enable:",
     "proxyAddress": "Proxy Address:",
-    "cancel": "Cancel",
-    "save": "Save",
     "connected": "Connected",
     "notConnected": "Not Connected",
     "inputHost": "Please enter host",
@@ -29,15 +27,8 @@
     "connectionFailed": "Connection failed"
   },
   "event": {
-    "name": "Event",
+    "title": "Event",
     "hints": "AngusTester event configuration provides real-time information updates and status feedback to help teams quickly respond and address potential issues.",
-    "status": {
-      "pending": "Pending",
-      "success": "Success",
-      "failure": "Failure",
-      "ignore": "Ignore",
-      "summary": "Total"
-    },
     "errMsg": "Error Message",
     "config": {
       "pushConfig": "Push Configuration",
@@ -55,7 +46,6 @@
       "notificationStatus": "Notification Status",
       "receiveChannel": "Receive Channel",
       "sender": "Sender",
-      "actions": "Actions",
       "executionId": "Execution ID",
       "addTime": "Add Time",
       "pushTime": "Push Time",
@@ -101,19 +91,16 @@
     }
   },
   "app": {
-    "name": "App",
-    "title": "Application Settings",
+    "title": "App",
     "config": {
-      "name": "Application Configuration",
       "title": "Application Configuration",
       "labels": {
-        "name": "Name",
         "domain": "Domain"
       },
       "tabs": {
         "member": "Application Members",
         "quota": "Application Quota",
-        "permission": "License Information"
+        "license": "License Information"
       },
       "permitInfo": {
         "title": "License Information",
@@ -183,11 +170,7 @@
             "policyCode": "Policy Code",
             "policyDescription": "Policy Description",
             "policySource": "Policy Source",
-            "joinTime": "Join Time",
-            "action": "Action"
-          },
-          "actions": {
-            "cancelAuth": "Cancel"
+            "joinTime": "Join Time"
           },
           "sources": {
             "appDefault": "Application Default Authorization",
@@ -212,27 +195,10 @@
         "placeholders": {
           "searchPolicy": "Search Policy Name"
         },
-        "table": {
-          "headers": {
-            "id": "ID",
-            "name": "Name",
-            "code": "Code",
-            "description": "Description",
-            "status": "Status"
-          },
-          "status": {
-            "enabled": "Enabled",
-            "disabled": "Disabled"
-          }
-        },
-        "actions": {
-          "selectAll": "Select All"
-        }
       }
     }
   },
   "script": {
-    "name": "Script",
     "title": "Script Settings",
     "description": "Configure script execution related parameters and options"
   },
@@ -241,8 +207,8 @@
     "description": "Configure user permissions and access control"
   },
   "indicator": {
-    "name": "Indicator",
-    "title": "Test indicators are quantitative values for evaluating software functionality, performance, and stability, and are also the basis for determining whether software functionality, performance, stability, and development quality meet standards. You can set platform default functionality, performance, and stability indicators through \"Setting Indicators\". If you want the indicators for interfaces/scenarios to be more lenient than the platform default indicators, you can also modify them on the corresponding indicator page for interfaces/scenarios.",
+    "title": "Indicator",
+    "titleTip": "Test indicators are quantitative values for evaluating software functionality, performance, and stability, and are also the basis for determining whether software functionality, performance, stability, and development quality meet standards. You can set platform default functionality, performance, and stability indicators through \"Setting Indicators\". If you want the indicators for interfaces/scenarios to be more lenient than the platform default indicators, you can also modify them on the corresponding indicator page for interfaces/scenarios.",
     "efficiencyTitle": "Efficiency indicators are used for setting and determining work efficiency level standards for projects, plans, iterations, organizational personnel, etc.",
     "efficiency": {
       "title": "Platform Default Efficiency Indicators",
@@ -326,8 +292,7 @@
     }
   },
   "node": {
-    "name": "Node",
-    "title": "Node Management",
+    "title": "Node",
     "message": {
       "basicInfo": "Basic Information",
       "enable": "Enable",
@@ -335,8 +300,6 @@
       "delete": "Delete",
       "onlineInstallAgent": "Online Install Agent",
       "manualInstallAgent": "Manual Install Agent",
-      "back": "Back",
-      "fold": "Fold",
       "estimatedTime": "Estimated to take several minutes",
       "installAgentPermission": "Installing agent requires system administrator or application administrator permissions",
       "manualInstallSteps": "Please follow the steps below to manually install the agent:",
@@ -348,7 +311,6 @@
       "configInfo": "Configuration Information",
       "use": "Used",
       "idle": "Idle",
-      "total": "Total",
       "resourceMonitoring": "Resource Monitoring",
       "agentService": "Agent Service",
       "executingTasks": "Executing Tasks",
@@ -361,9 +323,7 @@
     },
     "buttons": {
       "addNode": "Add Node",
-      "buyNode": "Buy Node",
-      "sort": "Sort",
-      "refresh": "Refresh"
+      "buyNode": "Buy Node"
     },
     "labels": {
       "autoRefresh": "Auto Refresh",
@@ -421,8 +381,7 @@
           "threadCount": "Thread Count",
           "openFiles": "Open Files",
           "writeDisk": "Write Disk",
-          "readDisk": "Read Disk",
-          "action": "Action"
+          "readDisk": "Read Disk"
         },
         "confirmKillProcess": "Confirm to force exit process 「{processId}」?",
         "processExitSuccess": "Process exit successfully",
@@ -446,7 +405,6 @@
       "mockService": {
         "columns": {
           "serviceId": "Service ID",
-          "name": "Name",
           "status": "Status",
           "accessUrl": "Access URL",
           "accessPort": "Access Port",
@@ -465,13 +423,8 @@
         }
       },
       "buttons": {
-        "enable": "Enable",
-        "disable": "Disable",
-        "delete": "Delete",
         "onlineInstallAgent": "Online Install Agent",
-        "manualInstallAgent": "Manual Install Agent",
-        "back": "Back",
-        "fold": "Fold"
+        "manualInstallAgent": "Manual Install Agent"
       },
       "labels": {
         "resourceMonitoring": "Resource Monitoring",
@@ -481,7 +434,6 @@
         "mockServiceInstance": "Mock Service Instance",
         "used": "Used",
         "idle": "Idle",
-        "total": "Total",
         "estimatedTime": "Estimated to take one minute",
         "disableDelete": "Node must be disabled before deletion",
         "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
@@ -498,8 +450,6 @@
         "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:"
       },
       "status": {
-        "enabled": "Enabled",
-        "disabled": "Disabled",
         "installed": "Installed",
         "notInstalled": "Not Installed",
         "connected": "Connected",
@@ -521,7 +471,6 @@
           "threeHours": "Last 3 hours"
         },
         "columns": {
-          "name": "Name",
           "average": "Average",
           "highest": "Highest",
           "lowest": "Lowest",
@@ -572,17 +521,10 @@
     },
     "nodeItem": {
       "buttons": {
-        "save": "Save",
-        "cancel": "Cancel",
         "testConnection": "Test Connection",
-        "edit": "Edit",
-        "enable": "Enable",
-        "disable": "Disable",
-        "delete": "Delete",
         "onlineInstall": "Online Install",
         "manualInstall": "Manual Install",
-        "restartAgent": "Restart Agent",
-        "collapse": "Collapse"
+        "restartAgent": "Restart Agent"
       },
       "labels": {
         "role": "Role",
@@ -667,18 +609,14 @@
           "applicationNode": "Application Node"
         },
         "nodeStatus": {
-          "enabledStatus": "Status:",
-          "agentInstallStatus": "Agent Status:",
-          "connectionStatus": "Connected:",
-          "enabled": "Enabled",
-          "notEnabled": "Disabled",
+          "agentInstallStatus": "Agent Status",
+          "connectionStatus": "Connected",
           "installed": "Installed",
           "notInstalled": "Not Installed",
           "connected": "Yes",
           "notConnected": "No"
         },
         "viewItem": {
-          "id": "ID: ",
           "intranetIP": "Intranet IP: ",
           "publicIP": "Public IP: ",
           "source": "Source: ",
@@ -695,8 +633,6 @@
           "fileSystem": "File System",
           "swapArea": "Swap",
           "network": "Network",
-          "upload": "Upload",
-          "download": "Download",
           "totalUpload": "Total",
           "totalDownload": "Total"
         },

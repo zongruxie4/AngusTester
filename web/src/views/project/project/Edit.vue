@@ -13,7 +13,7 @@ import { GM } from '@xcan-angus/infra';
 // Local imports
 import { ProjectType } from '@/enums/enums';
 import { cropperUploadOption } from '@/utils/constant';
-import { getProjectTypeTipConfig, toolbarOptions, uploadParams } from './utils';
+import { getProjectTypeTipConfig, getProjectTypeName, toolbarOptions, uploadParams } from './utils';
 
 // Composables
 import { useForm, useMembers, useAvatar } from './composables';
@@ -70,18 +70,12 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
 
 /** Project type configuration for tips display */
 const projectTypeTipConfig = getProjectTypeTipConfig();
-
 /** Project type name mapping for UI display */
-const projectTypeName = computed(() => ({
-  [ProjectType.AGILE]: t('project.projectEdit.projectTypeName.agile'),
-  [ProjectType.GENERAL]: t('project.projectEdit.projectTypeName.general'),
-  [ProjectType.TESTING]: t('project.projectEdit.projectTypeName.testing')
-}));
+const projectTypeName = getProjectTypeName();
 
 /** Get current project type name for display */
 const currentProjectTypeName = computed(() => {
-  const typeValue = projectDetail.value.type?.value;
-  return typeValue ? projectTypeName.value[typeValue as keyof typeof projectTypeName.value] : '';
+  return projectDetail.value.type?.message;
 });
 
 /**
@@ -148,7 +142,7 @@ onMounted(async () => {
           <div class="form-main-content">
             <!-- Project type selection area -->
             <div class="project-type-section">
-              <h3 class="section-title">{{ t('project.projectEdit.tabs.projectType') }}</h3>
+              <h3 class="section-title">{{ t('project.projectType') }}</h3>
               <div class="project-type-cards">
                 <div
                   class="project-type-card"
@@ -159,7 +153,7 @@ onMounted(async () => {
                     icon="icon-xuanzhongduigou"
                     class="selection-icon" />
                   <Icon icon="icon-minjiexiangmuguanli" class="type-icon" />
-                  <div class="type-name">{{ t('project.projectEdit.projectTypeName.agile') }}</div>
+                  <div class="type-name">{{ projectTypeName.get(ProjectType.AGILE) }}</div>
                 </div>
                 <div
                   class="project-type-card"
@@ -170,7 +164,7 @@ onMounted(async () => {
                     icon="icon-xuanzhongduigou"
                     class="selection-icon" />
                   <Icon icon="icon-jiandanxiangmuguanli" class="type-icon" />
-                  <div class="type-name">{{ t('project.projectEdit.projectTypeName.general') }}</div>
+                  <div class="type-name">{{ projectTypeName.get(ProjectType.GENERAL) }}</div>
                 </div>
                 <div
                   class="project-type-card"
@@ -181,7 +175,7 @@ onMounted(async () => {
                     icon="icon-xuanzhongduigou"
                     class="selection-icon" />
                   <Icon icon="icon-ceshixiangmuguanli" class="type-icon" />
-                  <div class="type-name">{{ t('project.projectEdit.projectTypeName.testing') }}</div>
+                  <div class="type-name">{{ projectTypeName.get(ProjectType.TESTING) }}</div>
                 </div>
               </div>
             </div>
@@ -215,6 +209,7 @@ onMounted(async () => {
                     </div>
                   </div>
                 </FormItem>
+
                 <FormItem
                   :label="t('project.projectEdit.form.projectName')"
                   name="name"
@@ -272,7 +267,7 @@ onMounted(async () => {
                   </FormItem>
 
                   <FormItem
-                    :label="t('project.projectEdit.form.importExample')"
+                    :label="t('actions.importExamples')"
                     class="form-field with-tooltip flex-1">
                     <RadioGroup
                       v-model:value="projectDetail.importExample"
@@ -617,7 +612,7 @@ onMounted(async () => {
           <!-- Project type preview area -->
           <div class="project-preview-section">
             <h3 class="section-title">
-              {{ projectDetail.type?.value ? projectTypeName[projectDetail.type.value as keyof typeof projectTypeName] : '' }}
+              {{ projectDetail.type?.message }}
             </h3>
             <div class="preview-content">
               <div class="preview-image">

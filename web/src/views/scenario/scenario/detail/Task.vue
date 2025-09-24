@@ -37,7 +37,7 @@ onMounted(() => {
       <div class="flex-1 flex flex-col items-center justify-center">
         <img class="w-27.5" src="../../../../assets/images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3 leading-5">
-          {{ t('scenario.detail.task.noData') }}
+          {{ t('common.noData') }}
         </div>
       </div>
     </template>
@@ -66,7 +66,7 @@ onMounted(() => {
             v-if="record.overdue"
             class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            <span class="inline-block transform-gpu scale-90">{{ t('scenario.detail.task.overdue') }}</span>
+            <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
           </span>
         </div>
 

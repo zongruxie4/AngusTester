@@ -55,7 +55,7 @@ const initialize = () => {
         return {
           _id: 'dataSetList',
           value: 'dataSetList',
-          name: t('dataset.name'),
+          name: t('dataset.title'),
           closable: false
         };
       }

@@ -679,7 +679,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="handleFormSubmission">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>{{ t('taskSprint.actions.save') }}</span>
+        <span>{{ t('actions.save') }}</span>
       </Button>
 
       <template v-if="isEditMode">
@@ -691,7 +691,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="startSprint">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>{{ t('taskSprint.actions.restart') }}</span>
+          <span>{{ t('actions.restart') }}</span>
         </Button>
 
         <Button
@@ -702,7 +702,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="startSprint">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>{{ t('taskSprint.actions.start') }}</span>
+          <span>{{ t('actions.start') }}</span>
         </Button>
 
         <template v-if="currentSprintStatus === TaskSprintStatus.IN_PROGRESS">
@@ -713,7 +713,7 @@ onMounted(() => {
             class="flex items-center space-x-1"
             @click="completeSprint">
             <Icon icon="icon-yiwancheng" class="text-3.5" />
-            <span>{{ t('taskSprint.actions.complete') }}</span>
+            <span>{{ t('actions.complete') }}</span>
           </Button>
 
           <Button
@@ -723,7 +723,7 @@ onMounted(() => {
             class="flex items-center space-x-1"
             @click="completeSprint">
             <Icon icon="icon-zusai" class="text-3.5" />
-            <span>{{ t('taskSprint.actions.block') }}</span>
+            <span>{{ t('actions.block') }}</span>
           </Button>
         </template>
 
@@ -734,7 +734,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="deleteSprint">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span>{{ t('taskSprint.actions.delete') }}</span>
+          <span>{{ t('actions.delete') }}</span>
         </Button>
 
         <Button
@@ -744,7 +744,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="openPermissionModal">
           <Icon icon="icon-quanxian1" class="text-3.5" />
-          <span>{{ t('taskSprint.actions.permission') }}</span>
+          <span>{{ t('actions.permission') }}</span>
         </Button>
 
         <Button
@@ -753,7 +753,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="cloneSprint">
           <Icon icon="icon-fuzhizujian2" class="text-3.5" />
-          <span>{{ t('taskSprint.actions.clone') }}</span>
+          <span>{{ t('actions.clone') }}</span>
         </Button>
 
         <Button
@@ -762,7 +762,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="copySprintLink">
           <Icon icon="icon-fuzhi" class="text-3.5" />
-          <span>{{ t('taskSprint.actions.copyLink') }}</span>
+          <span>{{ t('actions.copyLink') }}</span>
         </Button>
 
         <Button
@@ -771,7 +771,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="refreshSprintData">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span>{{ t('taskSprint.actions.refresh') }}</span>
+          <span>{{ t('actions.refresh') }}</span>
         </Button>
       </template>
       <Button
@@ -780,7 +780,7 @@ onMounted(() => {
         class="flex items-center"
         @click="closeCurrentTab">
         <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
-        <span>{{ t('taskSprint.actions.cancel') }}</span>
+        <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>
 

@@ -32,7 +32,7 @@ const precondition = computed(() => {
 
     <div v-if="!!precondition?.length" class="break-all whitespace-pre-wrap">{{ precondition }}</div>
 
-    <div v-else class="content-text-container ">{{ t('reportPreview.functionCase.info.precondition.noData') }}</div>
+    <div v-else class="content-text-container ">{{ t('common.noData') }}</div>
   </div>
 </template>
 

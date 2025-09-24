@@ -200,7 +200,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
     },
     {
       key: 'action',
-      title: t('node.nodeDetail.execPropulsion.columns.action'),
+      title: t('common.actions'),
       dataIndex: 'action',
       customCell: (_, index: number) => ({
         rowSpan: index % 2 === 0 ? 2 : 0

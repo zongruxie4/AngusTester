@@ -238,7 +238,7 @@ const handleDelSync = async (sync:SyncObj) => {
   if (error) {
     return;
   }
-  notification.success(t('tips.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
   emit('deleteSuccess');
   syncList.value = syncList.value.filter(item => item.id !== sync.id);
   oldSyncList.value = oldSyncList.value.filter(item => item.id !== sync.id);
@@ -675,7 +675,7 @@ const handleSaveOk = () => {
         :disabled="props.disabled"
         @click="handleSyncAll">
         <Icon icon="icon-huifu" class="mr-1 -mt-0.5" />
-        {{ t('service.syncConfig.actions.syncAll') }}
+        {{ t('actions.syncAll') }}
         <Tooltip :title="t('service.syncConfig.tips.syncAllTip')" placement="top">
           <Icon icon="icon-tishi1" class="ml-1 text-tips text-3.5" />
         </Tooltip>
@@ -723,7 +723,7 @@ const handleSaveOk = () => {
             {{ t('service.syncConfig.tips.lastSync') }}<Colon class="ml-0.5 mr-2" />{{ sync?.lastSyncDate || "--" }}
           </div>
           <div class="text-3 flex-none ml-2 -mt-1">
-            <Tooltip :title="t('service.syncConfig.actions.edit')" placement="top">
+            <Tooltip :title="t('actions.edit')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-shuxie"
@@ -737,7 +737,7 @@ const handleSaveOk = () => {
                   @click="(e) => handleEdit(e, sync)" />
               </template>
             </Tooltip>
-            <Tooltip :title="t('service.syncConfig.actions.sync')" placement="top">
+            <Tooltip :title="t('actions.sync')" placement="top">
               <template v-if="props.disabled || sync.syncLoading || sync.isEdit || sync.isAdd">
                 <Icon
                   icon="icon-huifu"
@@ -765,7 +765,7 @@ const handleSaveOk = () => {
                   @click="handleTest(sync)" />
               </template>
             </Tooltip>
-            <Tooltip :title="t('service.syncConfig.actions.delete')" placement="top">
+            <Tooltip :title="t('actions.delete')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-qingchu"
@@ -821,16 +821,16 @@ const handleSaveOk = () => {
               v-model:value="sync.strategyWhenDuplicated.value"
               class="mt-2 mb-5"
               :disabled="!sync.isEdit">
-              <Radio value="COVER">{{ t('service.syncConfig.form.cover') }}</Radio>
-              <Radio value="IGNORE">{{ t('service.syncConfig.form.ignore') }}</Radio>
+              <Radio value="COVER">{{ t('actions.cover') }}</Radio>
+              <Radio value="IGNORE">{{ t('sactions.ignore') }}</Radio>
             </RadioGroup>
             <span>{{ t('service.syncConfig.form.deleteWhenNotExist') }}</span>
             <RadioGroup
               v-model:value="sync.deleteWhenNotExisted"
               class="mt-2 mb-5"
               :disabled="!sync.isEdit">
-              <Radio :value="true">{{ t('service.syncConfig.form.yes') }}</Radio>
-              <Radio :value="false">{{ t('service.syncConfig.form.no') }}</Radio>
+              <Radio :value="true">{{ t('status.yes') }}</Radio>
+              <Radio :value="false">{{ t('status.no') }}</Radio>
             </RadioGroup>
             <div class="flex items-center">
               <span class="mr-3.5">{{ t('service.syncConfig.form.auth') }}</span>
@@ -915,7 +915,7 @@ const handleSaveOk = () => {
                   class="px-0"
                   :loading="sync.saveloading"
                   @click="emptyingExample">
-                  {{ t('service.syncConfig.actions.clear') }}
+                  {{ t('actions.clear') }}
                 </Button>
               </template>
               <template v-if="sync.isEdit">

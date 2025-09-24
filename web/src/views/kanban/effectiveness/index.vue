@@ -187,7 +187,7 @@ defineExpose({
       <!-- Burn Down Chart -->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>{{ $t('kanban.effectiveness.burnDownChart') }}</h3>
+          <h3>{{ $t('chart.burndown.title') }}</h3>
           <div class="chart-controls">
             <RadioGroup
               v-model:value="burnDownOption"
@@ -228,7 +228,7 @@ defineExpose({
       <!-- Overdue Chart -->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>{{ $t('kanban.effectiveness.overdue') }}</h3>
+          <h3>{{ $t('status.overdue') }}</h3>
         </div>
         <div ref="overdueChartRef" class="chart-content"></div>
       </div>

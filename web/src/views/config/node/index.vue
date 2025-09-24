@@ -132,7 +132,7 @@ onMounted(async () => {
           @click="onSortChange">
           <Button class="rounded ml-3" size="small">
             <Icon icon="icon-shunxu" class="text-3.5 mr-1" />
-            <span>{{ $t('node.buttons.sort') }}</span>
+            <span>{{ $t('actions.sort') }}</span>
           </Button>
         </DropdownSort>
         <Button
@@ -141,7 +141,7 @@ onMounted(async () => {
           :disabled="loading"
           @click="refreshNodeList">
           <IconRefresh class="text-3.5 mr-1" :loading="loading" />
-          <span>{{ $t('node.buttons.refresh') }}</span>
+          <span>{{ $t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>

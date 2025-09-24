@@ -621,7 +621,7 @@ onMounted(() => {
         <!-- Task Code -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.code') }}</span>
+            <span>{{ t('common.code') }}</span>
           </div>
           <div class="info-value">
             {{ props.dataSource?.code }}
@@ -631,7 +631,7 @@ onMounted(() => {
         <!-- Task Name -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.name') }}</span>
+            <span>{{ t('common.name') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isTaskNameEditing" class="info-value-content">
@@ -661,13 +661,13 @@ onMounted(() => {
         <!-- Task Status -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.status') }}</span>
+            <span>{{ t('common.status') }}</span>
           </div>
           <div class="info-value">
             <div class="info-value-content">
               <TaskStatus :value="currentTaskStatus" />
               <span v-if="isTaskOverdue" class="overdue-badge">
-                {{ t('task.detailInfo.basic.columns.overdue') }}
+                {{ t('status.overdue') }}
               </span>
             </div>
           </div>
@@ -676,7 +676,7 @@ onMounted(() => {
         <!-- Sprint -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.sprint') }}</span>
+            <span>{{ t('common.sprint') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isSprintEditing" class="info-value-content">
@@ -707,7 +707,7 @@ onMounted(() => {
         <!-- Module -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.module') }}</span>
+            <span>{{ t('common.module') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isModuleEditing" class="info-value-content">
@@ -767,7 +767,7 @@ onMounted(() => {
         <!-- Task Type -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.type') }}</span>
+            <span>{{ t('common.type') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isTaskTypeEditing" class="info-value-content">
@@ -820,7 +820,7 @@ onMounted(() => {
         <!-- Priority -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.priority') }}</span>
+            <span>{{ t('common.priority') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isPriorityEditing" class="info-value-content">
@@ -853,7 +853,7 @@ onMounted(() => {
         <!-- Workload Estimation Method -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.evalWorkloadMethod') }}</span>
+            <span>{{ t('common.evalWorkloadMethod') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ props.dataSource?.evalWorkloadMethod?.message || '--' }}</span>
@@ -863,9 +863,7 @@ onMounted(() => {
         <!-- Estimated Workload -->
         <div class="info-row">
           <div class="info-label">
-            <span>
-              {{ t('task.detailInfo.basic.columns.evalWorkload') }}
-            </span>
+            <span>{{ t('common.evalWorkload') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isEvalWorkloadEditing" class="info-value-content">
@@ -898,7 +896,7 @@ onMounted(() => {
         <div class="info-row">
           <div class="info-label">
             <span>
-              {{ t('task.detailInfo.basic.columns.actualWorkload') }}
+              {{ t('common.actualWorkload') }}
             </span>
           </div>
           <div class="info-value">
@@ -951,7 +949,7 @@ onMounted(() => {
         <!-- Tags -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.tags') }}</span>
+            <span>{{ t('common.tags') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isTagEditing" class="info-value-content">
@@ -1005,7 +1003,7 @@ onMounted(() => {
         <!-- Software Version -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.softwareVersion') }}</span>
+            <span>{{ t('common.softwareVersion') }}</span>
           </div>
           <div class="info-value">
             <template v-if="isVersionEditing">
@@ -1046,10 +1044,10 @@ onMounted(() => {
         <!-- Unplanned Task -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.unplanned') }}</span>
+            <span>{{ t('common.unplanned') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text">{{ props.dataSource?.unplanned ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}</span>
+            <span class="info-text">{{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}</span>
           </div>
         </div>
       </div>

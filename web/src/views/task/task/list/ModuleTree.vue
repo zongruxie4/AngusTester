@@ -344,7 +344,7 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
             size="small"
             class="px-0 py-0 mr-1"
             @click="handleEditCancel">
-            {{ t('task.list.actions.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
         </div>
         <div v-else class="flex items-center space-x-2 tree-title">
@@ -371,11 +371,11 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
                 </MenuItem>
                 <MenuItem v-if="index > 0 || +pid > 0" key="up">
                   <Icon icon="icon-shangyi" />
-                  {{ index < 1 ? t('task.list.module.moveToUpperLevel') : t('task.list.module.moveUp') }}
+                  {{ index < 1 ? t('task.list.module.moveToUpperLevel') : t('actions.moveUp') }}
                 </MenuItem>
                 <MenuItem v-if="!isLast" key="down">
                   <Icon icon="icon-xiayi" />
-                  {{ t('task.list.module.moveDown') }}
+                  {{ t('actions.moveDown') }}
                 </MenuItem>
                 <MenuItem key="move">
                   <Icon icon="icon-yidong" />

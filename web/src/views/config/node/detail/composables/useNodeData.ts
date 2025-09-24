@@ -29,7 +29,7 @@ export const infoItem = [
     dataIndex: 'domain'
   }],
   [{
-    label: t('node.nodeItem.interface.nodeStatus.enabledStatus'),
+    label: t('common.enabledStatus'),
     dataIndex: 'enabled'
   },
   {

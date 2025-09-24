@@ -106,7 +106,7 @@ const {
           @click="toSort">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
-            <span>{{ $t('scenarioMonitor.searchPanel.sort') }}</span>
+            <span>{{ $t('actions.sort') }}</span>
           </div>
         </DropdownSort>
 
@@ -117,7 +117,7 @@ const {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{ $t('scenarioMonitor.searchPanel.refresh') }}</span>
+              <span class="ml-1">{{ $t('actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

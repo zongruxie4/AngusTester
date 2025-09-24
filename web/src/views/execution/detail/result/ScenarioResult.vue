@@ -22,10 +22,10 @@ const StabilityResult = defineAsyncComponent(() => import('./StabilityResult.vue
 
 // Configuration for target summary display
 const configInfo = [
-  [{ label: t('execution.testResult.total'), dataIndex: 'totalNum' },
-    { label: t('execution.testResult.success'), dataIndex: 'successNum' },
-    { label: t('execution.testResult.failure'), dataIndex: 'failNum' },
-    { label: t('execution.testResult.notEnabled'), dataIndex: 'disabledNum' }
+  [{ label: t('status.total'), dataIndex: 'totalNum' },
+    { label: t('status.success'), dataIndex: 'successNum' },
+    { label: t('status.failed'), dataIndex: 'failNum' },
+    { label: t('status.disabled'), dataIndex: 'disabledNum' }
   ]
 ];
 
@@ -48,7 +48,7 @@ const onePassText = computed(() => {
     return '--';
   }
 
-  return testFailureNum.value === 0 ? t('execution.testResult.yes') : t('execution.testResult.no');
+  return testFailureNum.value === 0 ? t('status.yes') : t('status.no');
 });
 </script>
 

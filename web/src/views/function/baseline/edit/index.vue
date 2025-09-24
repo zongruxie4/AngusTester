@@ -11,6 +11,12 @@ import { BasicProps } from '@/types/types';
 
 import { BaselineCaseInfo, BaselineDetail, BaselineEditState } from '@/views/function/baseline/types';
 
+// Components
+import TaskPriority from '@/components/TaskPriority/index.vue';
+import TestResult from '@/components/TestResult/index.vue';
+const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));
+
 const { t } = useI18n();
 
 // Props Definition
@@ -20,10 +26,6 @@ const props = withDefaults(defineProps<BasicProps>(), {
   appInfo: undefined,
   data: undefined
 });
-
-// Async Components
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
-const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));
 
 // Injected Dependencies
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
@@ -48,6 +50,48 @@ const currentFormState = ref<BaselineEditState>({
   name: '',
   caseIds: []
 });
+const baselineCaseList = ref<BaselineCaseInfo[]>([]);
+// Form Validation
+const richEditorRef = ref();
+
+// Table Configuration
+const paginationConfig = ref({
+  current: 1,
+  pageSize: 10,
+  total: 0
+});
+const tableColumns = [
+  {
+    title: t('functionBaseline.editForm.caseCode'),
+    dataIndex: 'code',
+    width: 120
+  },
+  {
+    title: t('functionBaseline.editForm.caseName'),
+    dataIndex: 'name'
+  },
+  {
+    title: t('functionBaseline.editForm.version'),
+    dataIndex: 'version',
+    width: 80,
+    customRender: ({ text }) => 'v' + text || '--'
+  },
+  {
+    title: t('functionBaseline.editForm.priority'),
+    dataIndex: 'priority',
+    width: 120
+  },
+  {
+    title: t('functionBaseline.editForm.testResult'),
+    dataIndex: 'testResult',
+    width: 120
+  },
+  {
+    title: t('common.actions'),
+    dataIndex: 'action',
+    width: 100
+  }
+];
 
 /**
  * Get form parameters for API calls
@@ -344,28 +388,6 @@ const handleAddCaseConfirm = async (caseIds: string[], cases: BaselineCaseInfo[]
   }
 };
 
-// Table Configuration
-const paginationConfig = ref({
-  current: 1,
-  pageSize: 10,
-  total: 0
-});
-const baselineCaseList = ref<BaselineCaseInfo[]>([]);
-const tableColumns = [
-  {
-    title: t('functionBaseline.editForm.caseId'),
-    dataIndex: 'id'
-  },
-  {
-    title: t('functionBaseline.editForm.caseName'),
-    dataIndex: 'name'
-  },
-  {
-    title: t('functionBaseline.editForm.operation'),
-    dataIndex: 'action'
-  }
-];
-
 /**
  * Delete case from baseline
  * @param record - Case record to delete
@@ -382,16 +404,13 @@ const deleteCaseFromBaseline = async (record: BaselineCaseInfo) => {
         if (paginationConfig.value.current !== 1 && baselineCaseList.value.length === 1) {
           paginationConfig.value.current -= 1;
         }
-        loadBaselineCaseList();
+        await loadBaselineCaseList();
       }
     });
   } else {
     baselineCaseList.value = baselineCaseList.value.filter(i => i.id !== record.id);
   }
 };
-
-// Form Validation
-const richEditorRef = ref();
 
 /**
  * Validate description field
@@ -459,7 +478,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="handleFormSubmit">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>{{ t('functionBaseline.editForm.save') }}</span>
+        <span>{{ t('actions.save') }}</span>
       </Button>
 
       <template v-if="isEditMode">
@@ -469,7 +488,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="handleBaselineDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span>{{ t('functionBaseline.editForm.delete') }}</span>
+          <span>{{ t('actions.delete') }}</span>
         </Button>
       </template>
 
@@ -479,7 +498,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="handleFormCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5" />
-        <span>{{ t('functionBaseline.editForm.cancel') }}</span>
+        <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>
 
@@ -500,6 +519,7 @@ onMounted(() => {
           :maxlength="200"
           :placeholder="t('functionBaseline.editForm.baselineBriefOverview')" />
       </FormItem>
+
       <FormItem
         :label="t('functionBaseline.editForm.testPlan')"
         name="planId"
@@ -538,6 +558,7 @@ onMounted(() => {
               {{ t('functionBaseline.editForm.addBaselineCase') }}
             </Button>
           </div>
+
           <Table
             :columns="tableColumns"
             :dataSource="baselineCaseList"
@@ -546,13 +567,21 @@ onMounted(() => {
             noDataSize="small"
             @change="handlePaginationChange">
             <template #bodyCell="{record, column}">
+              <template v-if="column.dataIndex === 'priority'">
+                <TaskPriority :value="record.priority" />
+              </template>
+
+              <template v-if="column.dataIndex === 'testResult'">
+                <TestResult :value="record.testResult" />
+              </template>
+
               <template v-if="column.dataIndex === 'action'">
                 <Button
                   type="text"
                   size="small"
                   @click="deleteCaseFromBaseline(record)">
-                  <Icon icon="icon-qingchu" />
-                  {{ t('functionBaseline.editForm.delete') }}
+                  <Icon class="mr-1" icon="icon-qingchu" />
+                  {{ t('actions.delete') }}
                 </Button>
               </template>
             </template>
@@ -597,7 +626,8 @@ onMounted(() => {
         </div>
       </FormItem>
     </Form>
-    <AsyncComponent :visible="selectModalVisible">
+
+    <AsyncComponent :visible="isSelectCaseModalVisible">
       <SelectCaseModal
         v-model:visible="isSelectCaseModalVisible"
         :planId="currentFormState.planId"

@@ -46,31 +46,32 @@ const props = withDefaults(defineProps<Props>(), {
 // Table Configuration
 const tableColumns = [
   {
-    title: t('functionBaseline.case.code'),
+    title: t('common.code'),
     dataIndex: 'code'
   },
   {
-    title: t('functionBaseline.case.name'),
+    title: t('common.name'),
     dataIndex: 'name'
   },
   {
-    title: t('functionBaseline.case.priority'),
+    title: t('common.version'),
+    dataIndex: 'version',
+    customRender: ({ text }) => 'v' + text || '--'
+  },
+  {
+    title: t('common.priority'),
     dataIndex: 'priority'
   },
   {
-    title: t('functionBaseline.case.version'),
-    dataIndex: 'version'
-  },
-  {
-    title: t('functionBaseline.case.creator'),
+    title: t('common.creator'),
     dataIndex: 'createdByName'
   },
   {
-    title: t('functionBaseline.case.createTime'),
+    title: t('common.createTime'),
     dataIndex: 'createdDate'
   },
   {
-    title: t('functionBaseline.case.operation'),
+    title: t('common.actions'),
     dataIndex: 'action'
   }
 ];
@@ -264,16 +265,13 @@ onMounted(() => {
             <TaskPriority
               :value="record.priority" />
           </template>
-          <template v-if="column.dataIndex === 'version'">
-            <span>v{{ record.version }}</span>
-          </template>
           <template v-if="column.dataIndex === 'action'">
             <Button
               type="text"
               size="small"
               @click.stop="deleteCaseFromBaseline(record)">
               <Icon icon="icon-qingchu" class="mr-1" />
-              {{ t('functionBaseline.case.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
           </template>
         </template>

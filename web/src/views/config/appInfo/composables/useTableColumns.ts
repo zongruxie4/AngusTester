@@ -52,7 +52,7 @@ export function useTableColumns (activeKey: AuthObjectType) {
         width: 140
       },
       {
-        title: t('app.config.memberList.table.columns.action'),
+        title: t('common.actions'),
         dataIndex: 'action',
         align: 'center',
         width: 100

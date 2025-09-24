@@ -185,7 +185,7 @@ const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
 const menuItems = computed(() => {
   const allMenuItems = [
     {
-      name: t('functionHome.name'),
+      name: t('home.title'),
       key: 'homepage',
       icon: 'icon-zhuye'
     },

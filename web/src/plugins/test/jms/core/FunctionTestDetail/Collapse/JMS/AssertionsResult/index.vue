@@ -94,28 +94,28 @@ watch(() => assertions.value, (newValue) => {
               class="flex items-center"
               style="color:rgba(255, 129, 0, 100%);">
               <Icon icon="icon-chahao" class="mr-1.5 text-3.5" />
-              <span>{{ t('jmsPlugin.functionTestDetailJms.assertionStatus.failed') }}</span>
+              <span>{{ t('status.failed') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Success'"
               class="flex items-center"
               style="color:#52c41a;">
               <Icon icon="icon-duihao" class="mr-1.5 text-3.5" />
-              <span>{{ t('jmsPlugin.functionTestDetailJms.assertionStatus.passed') }}</span>
+              <span>{{ t('status.passed') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Ignored'"
               class="flex items-center"
               style="color:rgba(217, 217, 217, 100%);">
               <span class="inline-block w-2 h-2 mr-1.5 rounded-md" style="background-color:rgba(217, 217, 217, 100%);"></span>
-              <span>{{ t('jmsPlugin.functionTestDetailJms.assertionStatus.ignored') }}</span>
+              <span>{{ t('status.ignored') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Disabled'"
               class="flex items-center"
               style="color:rgba(217, 217, 217, 100%);">
               <span class="inline-block w-2 h-2 mr-1.5 rounded-md" style="background-color:rgba(217, 217, 217, 100%);"></span>
-              <span>{{ t('jmsPlugin.functionTestDetailJms.assertionStatus.disabled') }}</span>
+              <span>{{ t('status.disabled') }}</span>
             </div>
           </div>
         </template>

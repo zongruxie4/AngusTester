@@ -235,7 +235,7 @@ export function useShareModal () {
     }
 
     toClipboard(message).then(() => {
-      notification.success(t('tips.copySuccess'));
+      notification.success(t('actions.tips.copySuccess'));
     });
   };
 

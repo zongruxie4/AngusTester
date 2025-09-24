@@ -50,7 +50,7 @@ export function useTableColumns () {
     },
     {
       key: 'action',
-      title: t('projectTrash.table.actions'),
+      title: t('common.actions'),
       dataIndex: 'action',
       width: 140
     }

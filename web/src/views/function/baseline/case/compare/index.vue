@@ -160,7 +160,7 @@ const rightColumnConfig = [
     class: 'w-20 border-r'
   },
   {
-    title: t('functionBaseline.case.operation'),
+    title: t('common.actions'),
     dataIndex: 'action',
     class: 'w-20 text-center'
   }

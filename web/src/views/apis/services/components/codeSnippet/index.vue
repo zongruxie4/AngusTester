@@ -302,7 +302,7 @@ const selectLanguage = (funcs, l) => {
 const copyCode = () => {
   toClipboard(codeContent.value)
     .then(() => {
-      notification.success(t('tips.copySuccess'));
+      notification.success(t('actions.tips.copySuccess'));
     });
 };
 

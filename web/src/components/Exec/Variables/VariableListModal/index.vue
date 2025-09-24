@@ -408,7 +408,7 @@ const columns = [
             </template>
 
             <div v-if="column.dataIndex === 'passwordValue'" class="flex items-center">
-              {{ record.passwordValue ? t('xcan_exec.variable.yes') : t('xcan_exec.variable.no') }}
+              {{ record.passwordValue ? t('status.yes') : t('status.no') }}
             </div>
           </template>
         </Table>

@@ -323,7 +323,7 @@ defineExpose({
             size="small"
             class="px-0 py-0 mr-1"
             @click="cancelModuleEditing">
-            {{ t('functionBaseline.case.moduleTree.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
         </div>
         <div v-else class="flex items-center space-x-2 tree-title">

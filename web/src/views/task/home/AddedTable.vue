@@ -308,14 +308,14 @@ const tableColumns = computed(() => {
         // Columns for status-filtered view (without status column)
         {
           key: 'code',
-          title: t('taskHome.addedTable.columns.code'),
+          title: t('common.code'),
           dataIndex: 'code',
           ellipsis: true,
           width: '12%'
         },
         {
           key: 'name',
-          title: t('taskHome.addedTable.columns.name'),
+          title: t('common.name'),
           dataIndex: 'name',
           ellipsis: true,
           sorter: true,
@@ -323,14 +323,14 @@ const tableColumns = computed(() => {
         },
         {
           key: 'sprintName',
-          title: t('taskHome.addedTable.columns.sprintName'),
+          title: t('common.sprint'),
           dataIndex: 'sprintName',
           ellipsis: true,
           width: '25%'
         },
         {
           key: 'priority',
-          title: t('taskHome.addedTable.columns.priority'),
+          title: t('common.priority'),
           dataIndex: 'priority',
           ellipsis: true,
           sorter: true,
@@ -338,7 +338,7 @@ const tableColumns = computed(() => {
         },
         {
           key: 'deadlineDate',
-          title: t('taskHome.addedTable.columns.deadlineDate'),
+          title: t('common.deadlineDate'),
           dataIndex: 'deadlineDate',
           ellipsis: true,
           sorter: true,
@@ -349,14 +349,14 @@ const tableColumns = computed(() => {
         // Columns for general view (with status column)
         {
           key: 'code',
-          title: t('taskHome.addedTable.columns.code'),
+          title: t('common.code'),
           dataIndex: 'code',
           ellipsis: true,
           width: '12%'
         },
         {
           key: 'name',
-          title: t('taskHome.addedTable.columns.name'),
+          title: t('common.name'),
           dataIndex: 'name',
           ellipsis: true,
           sorter: true,
@@ -364,14 +364,14 @@ const tableColumns = computed(() => {
         },
         {
           key: 'sprintName',
-          title: t('taskHome.addedTable.columns.sprintName'),
+          title: t('common.sprint'),
           dataIndex: 'sprintName',
           ellipsis: true,
           width: '21%'
         },
         {
           key: 'priority',
-          title: t('taskHome.addedTable.columns.priority'),
+          title: t('common.priority'),
           dataIndex: 'priority',
           ellipsis: true,
           sorter: true,
@@ -379,14 +379,14 @@ const tableColumns = computed(() => {
         },
         {
           key: 'status',
-          title: t('taskHome.addedTable.columns.status'),
+          title: t('common.status'),
           dataIndex: 'status',
           ellipsis: true,
           width: '9%'
         },
         {
           key: 'deadlineDate',
-          title: t('taskHome.addedTable.columns.deadlineDate'),
+          title: t('common.deadlineDate'),
           dataIndex: 'deadlineDate',
           ellipsis: true,
           sorter: true,
@@ -405,7 +405,7 @@ const tableColumns = computed(() => {
     actionKey?: 'favouriteBy' | 'followBy';
   } = {
     key: 'action',
-    title: t('taskHome.addedTable.columns.action'),
+    title: t('common.actions'),
     dataIndex: 'action',
     width: 80
   };
@@ -499,7 +499,7 @@ const emptyStateStyle = {
               v-if="record.overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">{{ t('taskHome.addedTable.overdue') }}</span>
+              <span class="inline-block transform-gpu scale-90">{{ t('status.overdue') }}</span>
             </span>
           </div>
 
@@ -514,7 +514,7 @@ const emptyStateStyle = {
           <div v-else-if="column.dataIndex === 'action'">
             <template v-if="column.actionKey === 'favouriteBy'">
               <Button
-                :title="t('taskHome.addedTable.actions.unfavorite')"
+                :title="t('actions.cancelFavourite')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -525,7 +525,7 @@ const emptyStateStyle = {
 
             <template v-else-if="column.actionKey === 'followBy'">
               <Button
-                :title="t('taskHome.addedTable.actions.unfollow')"
+                :title="t('actions.cancelFollow')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -536,7 +536,7 @@ const emptyStateStyle = {
 
             <template v-else>
               <Button
-                :title="t('taskHome.addedTable.actions.delete')"
+                :title="t('actions.delete')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"

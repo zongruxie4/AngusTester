@@ -86,10 +86,10 @@ export const roleOptions = [
 
 export const nodeStatus = [
   {
-    label: t('node.nodeItem.interface.nodeStatus.enabledStatus'),
+    label: t('common.enabledStatus'),
     valueName: {
-      true: t('node.nodeItem.interface.nodeStatus.enabled'),
-      false: t('node.nodeItem.interface.nodeStatus.notEnabled')
+      true: t('status.enabled'),
+      false: t('status.disabled')
     },
     status: {
       true: 'success',

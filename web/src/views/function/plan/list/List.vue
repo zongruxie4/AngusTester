@@ -172,19 +172,19 @@ const dropdownMenuItems = [
   {
     key: 'delete',
     icon: 'icon-qingchu',
-    name: t('functionPlan.list.delete'),
+    name: t('actions.delete'),
     permission: 'delete'
   },
   {
     key: 'block',
     icon: 'icon-zanting',
-    name: t('functionPlan.list.block'),
+    name: t('actions.block'),
     permission: 'block'
   },
   {
     key: 'grant',
     icon: 'icon-quanxian1',
-    name: t('functionPlan.list.permission')
+    name: t('actions.permission')
   }
 ];
 </script>
@@ -435,7 +435,7 @@ const dropdownMenuItems = [
           <div class="flex items-center justify-between h-4 leading-5">
             <RouterLink class="flex items-center space-x-1" :to="`/function#plans?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
-              <span>{{ t('functionPlan.list.edit') }}</span>
+              <span>{{ t('actions.edit') }}</span>
             </RouterLink>
 
             <Button
@@ -456,7 +456,7 @@ const dropdownMenuItems = [
               class="px-0 flex items-center ml-2"
               @click="handleStartPlan(item, index)">
               <Icon icon="icon-kaishi" class="mr-0.5" />
-              <span>{{ item.status.value === FuncPlanStatus.COMPLETED ? t('functionPlan.list.restart') : t('functionPlan.list.start') }}</span>
+              <span>{{ item.status.value === FuncPlanStatus.COMPLETED ? t('actions.restart') : t('actions.start') }}</span>
             </Button>
 
             <Button
@@ -467,7 +467,7 @@ const dropdownMenuItems = [
               class="px-0 flex items-center ml-2"
               @click="handleCompletePlan(item, index)">
               <Icon icon="icon-yiwancheng" class="mr-0.5" />
-              <span>{{ t('functionPlan.list.complete') }}</span>
+              <span>{{ t('actions.complete') }}</span>
             </Button>
 
             <Dropdown

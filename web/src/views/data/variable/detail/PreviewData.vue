@@ -48,7 +48,7 @@ const {
         class="px-0 h-5 leading-5 border-0 text-theme-content text-theme-text-hover"
         @click="refresh">
         <Icon icon="icon-shuaxin" class="text-3.5" />
-        <span class="ml-1">{{ t('dataVariable.detail.previewData.refresh') }}</span>
+        <span class="ml-1">{{ t('actions.refresh') }}</span>
       </Button>
     </div>
 
@@ -58,7 +58,7 @@ const {
       <span v-if="errorMessage" class="text-status-error">{{ errorMessage }}</span>
 
       <!-- No data message -->
-      <span v-else-if="!content">{{ t('dataVariable.detail.previewData.noData') }}</span>
+      <span v-else-if="!content">{{ t('common.noData') }}</span>
 
       <!-- Preview content -->
       <span v-else>{{ content }}</span>

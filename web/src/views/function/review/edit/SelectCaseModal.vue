@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Input, Modal, ReviewStatus, Priority, Table } from '@xcan-angus/vue-ui';
+import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { funcPlan } from '@/api/tester';
@@ -123,31 +123,31 @@ const handleSearchFilter = debounce(duration.search, () => {
  */
 const tableColumns = [
   {
-    title: t('caseReview.editForm.code'),
+    title: t('common.code'),
     dataIndex: 'code',
     width: 120
   },
   {
-    title: t('caseReview.editForm.name'),
+    title: t('common.name'),
     dataIndex: 'name'
   },
   {
-    title: t('caseReview.editForm.priority'),
+    title: t('common.priority'),
     dataIndex: 'priority',
     width: 80
   },
   {
-    title: t('caseReview.editForm.tester'),
+    title: t('common.tester'),
     dataIndex: 'testerName',
     width: 100
   },
   {
-    title: t('caseReview.editForm.developer'),
+    title: t('common.developer'),
     dataIndex: 'developerName',
     width: 100
   },
   {
-    title: t('caseReview.editForm.reviewStatus'),
+    title: t('common.reviewStatus'),
     dataIndex: 'reviewStatus',
     width: 100
   }

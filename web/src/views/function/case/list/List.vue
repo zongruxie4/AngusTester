@@ -99,7 +99,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{
   (e: 'update:count', value: CaseCount): void;
   (e: 'openInfo', infoTabParams): void;
-  (e: 'updateFollowFavourite', type: 'follow' | 'favourite'): void;
+  (e: 'updateFollowFavourite', type: 'addFollow' | 'addFavourite'): void;
   (e: 'cacheParams', value: any): void;
   (e: 'viewModeChange', value: CaseViewMode): void;
   (e: 'countChange'): void;
@@ -685,7 +685,7 @@ const tableAction = computed(() => {
       action.actionMenus[_case.id].push({
         key: 'updateTestResult_canceled',
         icon: 'icon-xiugaiceshijieguo',
-        name: t('functionCase.mainView.cancel'),
+        name: t('actions.cancel'),
         permission: 'edit'
       });
 
@@ -720,7 +720,7 @@ const tableAction = computed(() => {
       action.actionMenus[_case.id].push({
         key: 'move',
         icon: 'icon-yidong',
-        name: t('functionCase.mainView.move'),
+        name: t('actions.move'),
         permission: 'move'
       });
     }
@@ -733,23 +733,23 @@ const tableAction = computed(() => {
         permission: 'clone'
       },
       {
-        key: 'favourite',
+        key: 'addFavourite',
         icon: _case.favourite ? 'icon-quxiaoshoucang' : 'icon-yishoucang',
-        name: _case.favourite ? t('actions.unfavorite') : t('actions.favorite'),
+        name: _case.favourite ? t('actions.cancelFavourite') : t('actions.favorite'),
         permission: 'edit',
         noAuth: true
       },
       {
-        key: 'follow',
+        key: 'addFollow',
         icon: _case.follow ? 'icon-quxiaoguanzhu' : 'icon-yiguanzhu',
-        name: _case.follow ? t('actions.unfollow') : t('actions.follow'),
+        name: _case.follow ? t('actions.cancelFollow') : t('actions.addFollow'),
         permission: 'edit',
         noAuth: true
       },
       {
         key: 'copyUrl',
         icon: 'icon-fuzhi',
-        name: t('functionCase.detail.copyLink'),
+        name: t('actions.copyLink'),
         noAuth: true
       }
     );
@@ -1128,10 +1128,10 @@ const handleDetailAction = (type: CaseActionAuth, value: CaseDetailChecked) => {
     case 'resetReviewResult':
       handleResetReviewResult(value);
       break;
-    case 'favourite':
+    case 'addFavourite':
       handleFavourite(value);
       break;
-    case 'follow':
+    case 'addFollow':
       handleFollow(value);
       break;
     case 'copyUrl':
@@ -1304,7 +1304,7 @@ const handleFavourite = async (rowData: CaseDetailChecked) => {
     ? t('functionCase.mainView.cancelFavouriteSuccess')
     : t('functionCase.mainView.favouriteSuccess'));
   rowData.favourite = !rowData.favourite;
-  emits('updateFollowFavourite', 'favourite');
+  emits('updateFollowFavourite', 'addFavourite');
 };
 
 const handleFollow = async (rowData: CaseDetailChecked) => {
@@ -1318,7 +1318,7 @@ const handleFollow = async (rowData: CaseDetailChecked) => {
     ? t('functionCase.mainView.cancelFollowSuccess')
     : t('functionCase.mainView.followSuccess'));
   rowData.follow = !rowData.follow;
-  emits('updateFollowFavourite', 'follow');
+  emits('updateFollowFavourite', 'addFollow');
 };
 
 // 提Bug
@@ -1688,7 +1688,7 @@ const modeIcon = computed(() => {
 const groupMenuItems = [
   {
     key: 'none',
-    name: t('functionCase.mainView.noGroup')
+    name: t('actions.noGroup')
   },
   {
     key: 'testerName',
@@ -1758,7 +1758,7 @@ defineExpose({
               @change="quickSearchChange" />
 
             <div class="px-4 h-7 leading-7 mb-3">
-              <span>{{ t('functionCase.mainView.overdue') }}</span>
+              <span>{{ t('status.overdue') }}</span>
               <Colon class="mr-2" />
               <Switch
                 :checked="overdue"
@@ -1802,7 +1802,7 @@ defineExpose({
                   type="text"
                   class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                   <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                  <span class="ml-1">{{ t('sort') }}</span>
+                  <span class="ml-1">{{ t('actions.sort') }}</span>
                 </Button>
               </DropdownSort>
 
@@ -2038,7 +2038,7 @@ defineExpose({
             size="small"
             class="flex items-center px-0 h-5 leading-5"
             @click="cancelSelectedRowKeys">
-            <span>{{ t('functionCase.mainView.cancelBatchOperation') }}</span>
+            <span>{{ t('actions.cancelBatch') }}</span>
             <span class="ml-1">({{ selectedRowKeys?.length }})</span>
           </Button>
         </div>

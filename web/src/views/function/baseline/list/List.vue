@@ -189,7 +189,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
           <div class="flex items-center justify-between h-4 leading-5">
             <RouterLink class="flex items-center space-x-1" :to="`/function#baseline?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
-              <span>{{ t('functionBaseline.list.edit') }}</span>
+              <span>{{ t('actions.edit') }}</span>
             </RouterLink>
 
             <Button
@@ -208,7 +208,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
               class="px-0 flex items-center ml-2"
               @click="handleBaselineDeletion(item)">
               <Icon icon="icon-qingchu" class="mr-0.5" />
-              <span>{{ t('functionBaseline.list.delete') }}</span>
+              <span>{{ t('actions.delete') }}</span>
             </Button>
           </div>
         </div>

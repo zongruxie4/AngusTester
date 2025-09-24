@@ -63,7 +63,7 @@ const taskStatusOption = {
 const priorityOptions = {
   title: {
     text: 0,
-    subtext: t('reportPreview.projectProgress.scenarioTestSummary.groupStats.total'),
+    subtext: t('chart.total'),
     left: '29.5%',
     top: '40%',
     padding: 2,

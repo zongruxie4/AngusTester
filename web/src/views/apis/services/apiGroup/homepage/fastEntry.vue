@@ -46,7 +46,7 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
       title: t('apis.quickAccess.debug.title'),
       content: t('apis.quickAccess.debug.description'),
       icon: 'icon-tiaoshi',
-      action: t('apis.quickAccess.debug.action'),
+      action: t('common.actions'),
       click: debugging
     },
     {
@@ -54,7 +54,7 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
       title: t('apis.quickAccess.import.title'),
       content: t('apis.quickAccess.import.description'),
       icon: 'icon-daoru',
-      action: t('apis.quickAccess.import.action'),
+      action: t('common.actions'),
       click: openImport,
       disabled: !props.projectAuths.includes('ADD')
     }

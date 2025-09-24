@@ -29,24 +29,24 @@ const buttonItems = computed(() => {
   const hideKeys = props.hideKeys;
   return MENUITEMS.filter(item => !hideKeys.has(item.key));
 });
-
+// TODO 重复配置代码
 const MENUITEMS:readonly ButtonGroupMenuItem[] = [
-  { name: t('ftpPlugin.buttonGroup.export'), icon: 'icon-daochu', key: 'export' },
-  { name: t('ftpPlugin.buttonGroup.select'), icon: 'icon-shengchengceshijiaoben', key: 'select' },
-  { name: t('ftpPlugin.buttonGroup.import'), icon: 'icon-daoru', key: 'import' },
-  { name: t('ftpPlugin.buttonGroup.codeView'), icon: 'icon-daimashitu', key: 'codeView' },
-  { name: t('ftpPlugin.buttonGroup.uiView'), icon: 'icon-yemianshitu', key: 'UIView' },
-  { name: t('ftpPlugin.buttonGroup.authority'), icon: 'icon-quanxian1', key: 'authority' },
-  { name: t('ftpPlugin.buttonGroup.follow'), icon: 'icon-yiguanzhu', key: 'follow' },
-  { name: t('ftpPlugin.buttonGroup.cancelFollow'), icon: 'icon-quxiaoguanzhu', key: 'cancelFollow' },
-  { name: t('ftpPlugin.buttonGroup.favourite'), icon: 'icon-yishoucang', key: 'favourite' },
-  { name: t('ftpPlugin.buttonGroup.cancelFavourite'), icon: 'icon-quxiaoshoucang', key: 'cancelFavourite' },
-  { name: t('ftpPlugin.buttonGroup.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
-  { name: t('ftpPlugin.buttonGroup.test'), icon: 'icon-tiaoshi', key: 'test' },
-  { name: t('ftpPlugin.buttonGroup.debug'), icon: 'icon-tiaoshi', key: 'debug' }
+  { name: t('actions.export'), icon: 'icon-daochu', key: 'export' },
+  { name: t('actions.select'), icon: 'icon-shengchengceshijiaoben', key: 'select' },
+  { name: t('actions.import'), icon: 'icon-daoru', key: 'import' },
+  { name: t('views.code'), icon: 'icon-daimashitu', key: 'codeView' },
+  { name: t('views.page'), icon: 'icon-yemianshitu', key: 'pageView' },
+  { name: t('actions.permission'), icon: 'icon-quanxian1', key: 'permission' },
+  { name: t('actions.follow'), icon: 'icon-yiguanzhu', key: 'follow' },
+  { name: t('actions.cancelFollow'), icon: 'icon-quxiaoguanzhu', key: 'cancelFollow' },
+  { name: t('actions.favourite'), icon: 'icon-yishoucang', key: 'favourite' },
+  { name: t('actions.cancelFavourite'), icon: 'icon-quxiaoshoucang', key: 'cancelFavourite' },
+  { name: t('actions.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
+  { name: t('actions.test'), icon: 'icon-tiaoshi', key: 'test' },
+  { name: t('actions.debug'), icon: 'icon-tiaoshi', key: 'debug' }
 ];
 
-const SAVE_ITEM = { name: t('ftpPlugin.buttonGroup.save'), icon: 'icon-baocun', key: 'save' };
+const SAVE_ITEM = { name: t('actions.save'), icon: 'icon-baocun', key: 'save' };
 </script>
 
 <template>

@@ -684,7 +684,7 @@ defineExpose({
           <div class="flex px-2">
             <div class="px-2 text-center flex flex-col justify-center">
               <div class="text-3.5 font-semibold">{{ scriptTotal }}</div>
-              <div>{{ t('kanban.dataAssets.total') }}</div>
+              <div>{{ t('chart.total') }}</div>
             </div>
             <div ref="scriptRef" class="h-35 flex-1 min-w-0"></div>
           </div>
@@ -843,7 +843,7 @@ defineExpose({
             <div class="flex px-2">
               <div class="px-2 text-center flex flex-col justify-center">
                 <div class="text-3.5 font-semibold">{{ scriptTotal }}</div>
-                <div>{{ t('kanban.dataAssets.total') }}</div>
+                <div>{{ t('chart.total') }}</div>
               </div>
               <div ref="scriptRef" class="h-35 flex-1 min-w-0"></div>
             </div>

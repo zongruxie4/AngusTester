@@ -35,13 +35,13 @@ const iframeSrc = computed(() => {
 
 const menuItems = computed(() => {
   return [
-    { icon: 'icon-xiangmu', name: t('project.name'), key: 'project' },
-    aiEnabled.value && { icon: 'icon-AIzhushou', name: t('AI.name'), key: 'AI' },
-    projectId.value && { icon: 'icon-banben1', name: t('project.projectDetail.tabs.version'), key: 'version' },
-    projectId.value && { icon: 'icon-mokuai1', name: t('project.projectDetail.tabs.module'), key: 'module' },
-    projectId.value && { icon: 'icon-biaoqian3', name: t('project.projectDetail.tabs.tag'), key: 'tags' },
-    { icon: 'icon-fabu', name: t('projectActivity.name'), key: 'activity' },
-    { icon: 'icon-qingchu', name: t('projectTrash.name'), key: 'trash' }
+    { icon: 'icon-xiangmu', name: t('project.title'), key: 'project' },
+    { icon: 'icon-AIzhushou', name: t('AI.name'), key: 'AI' } && aiEnabled.value,
+    { icon: 'icon-banben1', name: t('version.title'), key: 'version' } && projectId.value,
+    { icon: 'icon-mokuai1', name: t('module.title'), key: 'module' } && projectId.value,
+    { icon: 'icon-biaoqian3', name: t('tag.title'), key: 'tags' } && projectId.value,
+    { icon: 'icon-fabu', name: t('projectActivity.title'), key: 'activity' },
+    { icon: 'icon-qingchu', name: t('projectTrash.title'), key: 'trash' }
   ].filter(Boolean) as { icon: string; name: string; key: string; }[];
 });
 

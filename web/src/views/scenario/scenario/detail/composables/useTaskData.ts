@@ -58,47 +58,47 @@ export function useTaskData (scenarioId: string, projectId: string) {
   const columns = computed((): TableColumn[] => [
     {
       key: 'code',
-      title: t('scenario.detail.task.table.columns.code'),
+      title: t('common.code'),
       dataIndex: 'code',
       ellipsis: true,
       width: 100
     },
     {
       key: 'name',
-      title: t('scenario.detail.task.table.columns.name'),
+      title: t('common.name'),
       dataIndex: 'name',
       ellipsis: true,
       width: '25%'
     },
     {
       key: 'sprintName',
-      title: t('scenario.detail.task.table.columns.iteration'),
+      title: t('common.sprint'),
       dataIndex: 'sprintName',
       ellipsis: true,
       width: '25%'
     },
     {
       key: 'priority',
-      title: t('scenario.detail.task.table.columns.priority'),
+      title: t('common.priority'),
       dataIndex: 'priority',
       ellipsis: true,
       width: '9%'
     },
     {
       key: 'assigneeName',
-      title: t('scenario.detail.task.table.columns.assignee'),
+      title: t('common.assignee'),
       dataIndex: 'assigneeName',
       width: 120
     },
     {
       key: 'confirmerName',
-      title: t('scenario.detail.task.table.columns.confirmer'),
+      title: t('common.confirmer'),
       dataIndex: 'confirmerName',
       width: 120
     },
     {
       key: 'deadlineDate',
-      title: t('scenario.detail.task.table.columns.deadline'),
+      title: t('common.deadlineDate'),
       dataIndex: 'deadlineDate',
       ellipsis: true,
       width: '17%'

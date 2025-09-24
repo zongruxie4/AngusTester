@@ -14,18 +14,18 @@ const { t } = useI18n();
 
 const text = computed(() => {
   if (props.value === 'fail') {
-    return t('ftpPlugin.functionTestDetail.statusTag.fail');
+    return t('status.failed');
   }
 
   if (props.value === 'success') {
-    return t('ftpPlugin.functionTestDetail.statusTag.success');
+    return t('status.success');
   }
 
   if (props.value === 'block') {
-    return t('ftpPlugin.functionTestDetail.statusTag.block');
+    return t('status.blocked');
   }
 
-  return t('ftpPlugin.functionTestDetail.statusTag.ignore');
+  return t('status.ignored');
 });
 
 const style = computed(() => {

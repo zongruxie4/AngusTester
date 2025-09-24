@@ -50,7 +50,7 @@ const basicColumns = computed(() => [
       dataIndex: 'passed',
       name: t('reportPreview.scenario.testResultDetail.fields.testResult'),
       customRender: (text) => {
-        return text === true ? t('reportPreview.scenario.testResultDetail.status.passed') : text === false ? t('reportPreview.scenario.testResultDetail.status.failed') : t('reportPreview.scenario.testResultDetail.status.notTested');
+        return text === true ? t('status.passed') : text === false ? t('status.failed') : t('status.notTested');
       }
     },
     {
@@ -136,7 +136,7 @@ const caseColumns = computed(() => [
       name: t('reportPreview.scenario.testResultDetail.fields.isEnabled'),
       dataIndex: 'enabled',
       customRender: (text) => {
-        return text ? t('reportPreview.scenario.testResultDetail.status.enabled') : t('reportPreview.scenario.testResultDetail.status.disabled');
+        return text ? t('status.enabled') : t('status.disabled');
       }
     }
   ],
@@ -145,7 +145,7 @@ const caseColumns = computed(() => [
       name: t('reportPreview.scenario.testResultDetail.fields.isTestPassed'),
       dataIndex: 'passed',
       customRender: (text) => {
-        return text === true ? t('reportPreview.scenario.testResultDetail.status.passed') : text === false ? t('reportPreview.scenario.testResultDetail.status.failed') : t('reportPreview.scenario.testResultDetail.status.notTested');
+        return text === true ? t('status.passed') : text === false ? t('status.failed') : t('status.notTested');
       }
     },
     {
@@ -583,7 +583,7 @@ const sysItems = computed(() => [
       </div>
     </div>
     <div v-else class="mb-5">
-      {{ t('reportPreview.scenario.testResultDetail.functionalTest.noData') }}
+      {{ t('common.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
 
@@ -607,7 +607,7 @@ const sysItems = computed(() => [
       </div>
     </div>
     <div v-else class="mb-5">
-      {{ t('reportPreview.scenario.testResultDetail.functionalTest.noData') }}
+      {{ t('common.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
 
@@ -632,7 +632,7 @@ const sysItems = computed(() => [
       </template>
     </div>
     <div v-if="!TEST_FUNCTIONALITY?.caseResults?.length" class="mb-5">
-      {{ t('reportPreview.scenario.testResultDetail.functionalTest.noData') }}
+      {{ t('common.noData') }}
     </div>
     <!-- <NoData v-if="!TEST_FUNCTIONALITY.caseResults?.length" size="small" class="my-5"/> -->
 
@@ -660,7 +660,7 @@ const sysItems = computed(() => [
       </div>
     </div>
     <div v-else class="mb-5">
-      {{ t('reportPreview.scenario.testResultDetail.noData') }}
+      {{ t('common.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
 
@@ -725,7 +725,7 @@ const sysItems = computed(() => [
       </div>
     </div>
     <div v-else class="mb-5">
-      {{ t('reportPreview.scenario.testResultDetail.noData') }}
+      {{ t('common.noData') }}
     </div>
     <!-- <NoData v-else size="small" class="my-5"/> -->
     <li class="mb-2">

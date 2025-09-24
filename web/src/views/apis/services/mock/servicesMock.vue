@@ -122,7 +122,7 @@ const handleSave = () => {
     const [error] = serviceInfo.value?.mockServiceId ? await mock.patchService(updateParams) : await mock.addServiceByAssoc(addParams);
     loading.value = false;
     if (error) { return; }
-    notification.success(serviceInfo.value?.mockServiceId ? t('tips.updateSuccess') : t('tips.addSuccess'));
+    notification.success(serviceInfo.value?.mockServiceId ? t('actions.tips.updateSuccess') : t('actions.tips.addSuccess'));
     router.push('/apis#mock');
   }, () => { /** */ });
 };

@@ -61,24 +61,24 @@ const tableRowSelection = {
 const tableColumns = [
   {
     key: 'code',
-    title: t('commonComp.selectTaskByModuleModal.code'),
+    title: t('common.code'),
     dataIndex: 'code',
     width: '20%'
   },
   {
     key: 'name',
-    title: t('commonComp.selectTaskByModuleModal.name'),
+    title: t('common.name'),
     dataIndex: 'name'
   },
   {
     key: 'status',
-    title: t('commonComp.selectTaskByModuleModal.status'),
+    title: t('common.status'),
     dataIndex: 'status',
     width: '10%'
   },
   {
     key: 'taskType',
-    title: t('commonComp.selectTaskByModuleModal.type'),
+    title: t('common.type'),
     dataIndex: 'taskType',
     width: '15%'
   }

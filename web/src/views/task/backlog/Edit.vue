@@ -708,9 +708,9 @@ const currentUserId = computed(() => {
 
 const modalTitle = computed(() => {
   if (props.taskId) {
-    return t('backlog.editForm.title.edit');
+    return t('actions.edit');
   }
-  return t('backlog.editForm.title.add');
+  return t('actions.add');
 });
 
 const isTaskTypeReadonly = computed(() => {
@@ -1350,7 +1350,7 @@ const getPopupContainer = () => {
                     v-if="record.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                     style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu">{{ t('backlog.editForm.overdue') }}</span>
+                    <span class="inline-block transform-gpu">{{ t('status.overdue') }}</span>
                   </div>
                 </div>
               </template>
@@ -1383,7 +1383,7 @@ const getPopupContainer = () => {
                     v-if="record.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                     style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu">{{ t('backlog.editForm.overdue') }}</span>
+                    <span class="inline-block transform-gpu">{{ t('status.overdue') }}</span>
                   </div>
                 </div>
               </template>
@@ -1453,7 +1453,7 @@ const getPopupContainer = () => {
         class="text-3 leading-3"
         size="small"
         @click="cancelModal">
-        {{ t('backlog.editForm.buttons.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
       <Button
         v-if="shouldShowContinueButton"
@@ -1462,7 +1462,7 @@ const getPopupContainer = () => {
         size="small"
         :disabled="isLoading"
         @click="submitForm(true)">
-        {{ t('backlog.editForm.buttons.saveAndContinue') }}
+        {{ t('actions.saveAndContinue') }}
       </Button>
       <Button
         type="primary"
@@ -1470,7 +1470,7 @@ const getPopupContainer = () => {
         size="small"
         :disabled="isLoading"
         @click="submitForm(false)">
-        {{ t('backlog.editForm.buttons.confirm') }}
+        {{ t('actions.confirm') }}
       </Button>
     </template>
   </Modal>
