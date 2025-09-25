@@ -135,13 +135,13 @@ const cloumns = [
     dataIndex: 'name'
   },
   {
-    title: t('xcan_selectApisCase.method'),
+    title: t('common.method'),
     dataIndex: 'method',
     width: 100,
     customRender: ({ text }) => text?.message
   },
   {
-    title: t('xcan_selectApisCase.path'),
+    title: t('common.path'),
     dataIndex: 'endpoint'
   },
   {

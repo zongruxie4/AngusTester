@@ -883,10 +883,7 @@
       "columns": {
         "apiName": "接口名称",
         "mockServiceName": "模拟服务名称",
-        "method": "方法",
         "mockServiceHostUrl": "服务地址",
-        "createdBy": "添加人",
-        "createdDate": "添加时间"
       },
       "actions": {
         "cancelAssociation": "取消关联",
@@ -2093,7 +2090,6 @@
             "url": "回推地址",
             "urlPlaceholder": "最大支持800个字符",
             "urlError": "回推地址格式错误",
-            "method": "请求方法",
             "contentType": "Content-Type",
             "requestBody": "请求体",
             "send": "发送",
@@ -2132,7 +2128,6 @@
           },
           "match": {
             "title": "匹配",
-            "path": "路径",
             "queryParams": "查询参数",
             "header": "请求头",
             "requestBody": "请求体",

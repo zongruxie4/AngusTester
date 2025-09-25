@@ -144,13 +144,13 @@ const cloumns = [
     dataIndex: 'name'
   },
   {
-    title: t('commonComp.apis.selectCaseModal.method'),
+    title: t('common.method'),
     dataIndex: 'method',
     width: 100,
     customRender: ({ text }) => text?.message
   },
   {
-    title: t('commonComp.apis.selectCaseModal.path'),
+    title: t('common.path'),
     dataIndex: 'endpoint'
   },
   {

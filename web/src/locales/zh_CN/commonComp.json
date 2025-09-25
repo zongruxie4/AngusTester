@@ -21,8 +21,6 @@
         "groupByOwner": "按负责人分组",
         "groupByTag": "按标签分组",
         "caseName": "用例名称",
-        "method": "方法",
-        "path": "路径",
         "caseType": "用例类型"
       },
       "parameterizationDataset": {
@@ -1282,8 +1280,6 @@
     "groupByOwner": "按负责人分组",
     "groupByTag": "按标签分组",
     "caseName": "用例名称",
-    "method": "方法",
-    "path": "路径",
     "caseType": "用例类型",
     "selectService": "请选择服务",
     "searchApi": "搜索接口"

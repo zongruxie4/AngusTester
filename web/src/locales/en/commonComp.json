@@ -21,8 +21,6 @@
         "groupByOwner": "Group by Owner",
         "groupByTag": "Group by Tag",
         "caseName": "Case Name",
-        "method": "Method",
-        "path": "Path",
         "caseType": "Case Type"
       },
       "parameterizationDataset": {
@@ -1267,10 +1265,8 @@
     "contentDownload": "Content Download"
   },
   "xcan_selectApi": {
-    "service": "Service",
     "selectService": "Select Service",
     "searchApiName": "Search API Name",
-    "method": "Method",
     "alreadyLinked": "(Already Linked)"
   },
   "xcan_selectApisByServiceModal": {
@@ -1282,7 +1278,6 @@
     "groupByOwner": "Group by Owner",
     "groupByTag": "Group by Tag",
     "caseName": "Case Name",
-    "method": "Method",
     "path": "Path",
     "caseType": "Case Type",
     "selectService": "Select Service",
@@ -1299,9 +1294,6 @@
     "groupByRequestMethod": "Group by Request Method",
     "groupByOwner": "Group by Owner",
     "groupByTag": "Group by Tag",
-    "method": "Method",
-    "path": "Path",
-    "owner": "Owner"
   },
   "xcan_selectUser": {
     "defaultPlaceholder": "Select or search user"

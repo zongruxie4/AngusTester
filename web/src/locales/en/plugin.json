@@ -192,10 +192,6 @@
       "selectApiModal": {
         "title": "Select API",
         "searchPlaceholder": "Search API name",
-        "tableHeaders": {
-          "method": "Method",
-          "path": "Path"
-        },
         "reference": "Reference",
         "alreadyReferenced": "The selected interfaces contain already referenced interfaces and cannot be referenced repeatedly."
       },

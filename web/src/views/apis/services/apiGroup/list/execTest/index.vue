@@ -271,7 +271,7 @@ const modalTitle = computed(() => {
 
             <div v-if="false" class="flex items-start leading-4.5 mb-2">
               <div class="flex-shrink-0 text-theme-sub-content mr-2">
-                <span>{{ t('service.serviceExecTest.labels.url') }}</span>
+                <span>{{ t('common.url') }}</span>
                 <Colon />
               </div>
               <TypographyParagraph

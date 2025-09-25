@@ -585,7 +585,7 @@ defineExpose({
     <div class="mb-3.5">
       <div class="flex items-center mb-0.5">
         <IconRequired />
-        <span>{{ t('service.serverConfig.form.url') }}</span>
+        <span>{{ t('common.url') }}</span>
       </div>
       <Validate :text="urlErrorMsg">
         <Input

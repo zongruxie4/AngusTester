@@ -304,7 +304,7 @@ defineExpose({
         size="small"
         @click="handleAddPath">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.path') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('common.path') }}</span>
         </div>
       </Button>
       <Button

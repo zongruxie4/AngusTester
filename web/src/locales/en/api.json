@@ -880,10 +880,7 @@
       "columns": {
         "apiName": "API Name",
         "mockServiceName": "Mock Service Name",
-        "method": "Method",
         "mockServiceHostUrl": "Service Address",
-        "createdBy": "Created By",
-        "createdDate": "Created Date"
       },
       "actions": {
         "cancelAssociation": "Cancel Association",
@@ -2086,7 +2083,6 @@
             "url": "Push Back URL",
             "urlPlaceholder": "Maximum 800 characters",
             "urlError": "Push back URL format error",
-            "method": "Request Method",
             "contentType": "Content-Type",
             "requestBody": "Request Body",
             "send": "Send",
@@ -2125,7 +2121,6 @@
           },
           "match": {
             "title": "Match",
-            "path": "Path",
             "queryParams": "Query Parameters",
             "header": "Request Header",
             "requestBody": "Request Body",

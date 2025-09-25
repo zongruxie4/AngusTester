@@ -249,7 +249,7 @@ defineExpose({
 <template>
   <div v-if="idList.length" class="leading-5">
     <div class="flex items-center">
-      <span class="mr-1 mb-0.5">{{ t('mock.detail.apis.components.match.path') }}</span>
+      <span class="mr-1 mb-0.5">{{ t('common.path') }}</span>
       <Popover destroyTooltipOnHide>
         <template #content>
           <ul style="max-width: 520px;" class="pl-4 list-disc whitespace-pre-line break-all space-y-1">

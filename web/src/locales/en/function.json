@@ -744,10 +744,6 @@
         "testCount": "Test Count",
         "failCount": "Fail Count",
         "resultRemark": "Result Remark",
-        "method": "Method",
-        "path": "Path",
-        "projectId": "Project ID",
-        "projectName": "Project Name"
       }
     },
     "review": {

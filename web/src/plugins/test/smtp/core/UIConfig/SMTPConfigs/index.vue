@@ -148,7 +148,7 @@ const emlMsgOpt = [
 const attachmentTypeOpt = [
   {
     value: 'path',
-    label: t('smtpPlugin.uiConfig.attachmentTypeOpt.path')
+    label: t('common.path')
   },
   {
     value: 'file',
@@ -158,7 +158,7 @@ const attachmentTypeOpt = [
 const emlTypeOpt = [
   {
     value: 'path',
-    label: t('smtpPlugin.uiConfig.emlTypeOpt.path')
+    label: t('common.path')
   },
   {
     value: 'file',
@@ -169,7 +169,7 @@ const emlTypeOpt = [
 const certificateTypeOpt = [
   {
     value: 'path',
-    label: t('smtpPlugin.uiConfig.certificateTypeOpt.path')
+    label: t('common.path')
   },
   {
     value: 'file',

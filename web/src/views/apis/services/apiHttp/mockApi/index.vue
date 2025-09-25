@@ -38,7 +38,7 @@ const columns = [[
   { label: t('service.mockApi.columns.apiName'), dataIndex: 'name' },
   { label: t('service.mockApi.columns.mockServiceName'), dataIndex: 'mockServiceName' }
 ], [
-  { label: t('service.mockApi.columns.method'), dataIndex: 'method' },
+  { label: t('common.method'), dataIndex: 'method' },
   { label: t('service.mockApi.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' }
 ],
 [

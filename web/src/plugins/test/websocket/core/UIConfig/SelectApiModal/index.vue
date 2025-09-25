@@ -84,7 +84,7 @@ const scrollProps = {
 const fields = [
   {
     key: 'uri',
-    name: t('websocketPlugin.uiConfig.selectApiModal.fields.url'),
+    name: t('common.url'),
     style: {
       flex: '1 1 45%',
       overflow: 'hidden',

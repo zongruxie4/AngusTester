@@ -532,7 +532,7 @@ const optionStyle = {
     </div>
     <div class="mt-2">
       <div class="mb-0.5">
-        <IconRequired /><span>{{ t('mock.detail.apis.components.pushBack.url') }}</span>
+        <IconRequired /><span>{{ t('common.url') }}</span>
       </div>
       <Composite>
         <SelectEnum
@@ -540,7 +540,7 @@ const optionStyle = {
           :optionStyle="optionStyle"
           class="w-25 flex-shrink-0"
           enumKey="HttpMethod"
-          :placeholder="t('mock.detail.apis.components.pushBack.method')"
+          :placeholder="t('common.method')"
           @change="handleHttpMethodChange" />
         <Validate
           fixed

@@ -467,7 +467,7 @@ onBeforeUnmount(() => {
         <div ref="apiRef" class="w-full h-65"></div>
       </div>
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold">{{ t('apis.statistics.method') }}</div>
+        <div class="font-semibold">{{ t('common.method') }}</div>
         <div ref="methodRef" class="w-full h-65"></div>
       </div>
     </div>

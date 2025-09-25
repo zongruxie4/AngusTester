@@ -194,10 +194,6 @@
       "selectApiModal": {
         "title": "选择API",
         "searchPlaceholder": "搜索API名称",
-        "tableHeaders": {
-          "method": "方法",
-          "path": "路径"
-        },
         "reference": "引用",
         "alreadyReferenced": "已选中的接口中包含已被引用的接口，不能重复引用。"
       },
