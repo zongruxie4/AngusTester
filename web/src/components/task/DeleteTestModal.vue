@@ -112,7 +112,7 @@ const handleDeleteConfirm = async () => {
         return;
       }
 
-      notification.success(t('commonComp.delTaskTestModal.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       emits('update:visible', false);
     });
 };

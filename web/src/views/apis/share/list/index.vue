@@ -77,7 +77,7 @@ const toDelete = async (data: ShareInfo) => {
       if (error) {
         return;
       }
-      notification.success(t('apiShare.messages.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       if (pagination.value.current > 1 && dataList.value.length === 1) {
         pagination.value.current -= 1;
       }

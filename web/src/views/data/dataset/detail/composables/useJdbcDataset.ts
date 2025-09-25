@@ -203,7 +203,7 @@ export function useJdbcDataset (
       return;
     }
 
-    notification.success(t('dataset.detail.jdbcDataset.notifications.updateSuccess'));
+    notification.success(t('actions.tips.updateSuccess'));
     emit('ok', params, true);
   };
 
@@ -219,7 +219,7 @@ export function useJdbcDataset (
       return;
     }
 
-    notification.success(t('dataset.detail.jdbcDataset.notifications.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
     const id = res?.data?.id;
     emit('ok', { ...params, id }, false);
   };

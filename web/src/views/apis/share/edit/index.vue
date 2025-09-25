@@ -157,11 +157,11 @@ const addOk = async () => {
   const [_error1, resp] = await apis.getShareDetail(data.id);
   loading.value = false;
   if (resp.data) {
-    toClipboard(t('apiShare.messages.copyLinkSuccess', { name: resp.data.name, url: resp.data.url })).then(() => {
-      notification.success(t('apiShare.messages.copySuccess'));
+    toClipboard(t('actions.tips.copyLinkSuccess', { name: resp.data.name, url: resp.data.url })).then(() => {
+      notification.success(t('actions.tips.copySuccess'));
     });
   } else {
-    notification.success(t('apiShare.messages.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
   }
   emits('ok');
   emits('update:visible', false);
@@ -177,7 +177,7 @@ const editOk = async () => {
   if (error) {
     return;
   }
-  notification.success(t('apiShare.messages.editSuccess'));
+  notification.success(t('actions.tips.editSuccess'));
   emits('ok');
   emits('update:visible', false);
 };

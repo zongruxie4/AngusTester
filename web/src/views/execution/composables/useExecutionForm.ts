@@ -210,9 +210,7 @@ export function useExecutionForm () {
       }
 
       notification.success(
-        route.params.id
-          ? t('execution.add.modifySuccess')
-          : t('execution.add.addSuccess')
+        route.params.id ? t('actions.tips.updateSuccess') : t('execution.add.addSuccess')
       );
 
       await router.push('/execution');

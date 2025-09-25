@@ -15,8 +15,8 @@ const { t } = useI18n();
 const stepData = [
   {
     type: 'step',
-    text: t('project.addProjectStep.text'),
-    title: t('project.addProjectStep.title'),
+    text: t('project.steps.addProject.text'),
+    title: t('project.steps.addProject.title'),
     icon: 'icon-chuangjianxiangmu'
   },
   {
@@ -25,8 +25,8 @@ const stepData = [
   },
   {
     type: 'step',
-    text: t('project.planIterationAndTest.text'),
-    title: t('project.planIterationAndTest.title'),
+    text: t('project.steps.sprintAndPlan.text'),
+    title: t('project.steps.sprintAndPlan.title'),
     icon: 'icon-jihua1'
   },
   {
@@ -35,8 +35,8 @@ const stepData = [
   },
   {
     type: 'step',
-    text: t('project.developAndTest.text'),
-    title: t('project.developAndTest.title'),
+    text: t('project.steps.developAndTest.text'),
+    title: t('project.steps.developAndTest.title'),
     icon: 'icon-ceshirenwu'
   },
   {
@@ -45,8 +45,8 @@ const stepData = [
   },
   {
     type: 'step',
-    text: t('project.reportResults.text'),
-    title: t('project.reportResults.title'),
+    text: t('project.steps.reportResults.text'),
+    title: t('project.steps.reportResults.title'),
     icon: 'icon-dingdanmokuai'
   }
 ];

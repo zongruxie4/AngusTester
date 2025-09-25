@@ -51,7 +51,7 @@ export function useTrashActions (projectId: string) {
       if (error) {
         throw error;
       }
-      notification.success(t('taskTrash.messages.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       triggerRefresh();
       return true;
     } catch (error) {

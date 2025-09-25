@@ -101,7 +101,7 @@ const fetchMeetingList = async () => {
  */
 const handleMeetingDeletion = async (meetingData: MeetingInfo) => {
   modal.confirm({
-    content: t('taskMeeting.confirmDelete', { name: meetingData.subject }),
+    content: t('actions.tips.confirmDelete', { name: meetingData.subject }),
     async onOk () {
       const meetingId = meetingData.id;
       const [error] = await task.deleteMeeting(meetingId);
@@ -109,7 +109,7 @@ const handleMeetingDeletion = async (meetingData: MeetingInfo) => {
         return;
       }
 
-      notification.success(t('taskMeeting.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       await fetchMeetingList();
       deleteTabPane([meetingId]);
     }

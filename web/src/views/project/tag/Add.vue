@@ -94,7 +94,7 @@ const handleCreateTag = async (): Promise<void> => {
     closeModal();
 
     // Show success notification
-    notification.success(t('tag.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
   } catch (error) {
     console.error('Unexpected error during tag creation:', error);
   } finally {

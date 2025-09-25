@@ -278,7 +278,7 @@ const executeBatchCancel = async () => {
 const executeBatchDelete = async () => {
   const selectedCount = props.selectedIds.length;
   modal.confirm({
-    content: t('task.detail.batchActions.confirmDelete', { num: selectedCount }),
+    content: t('actions.tips.confirmDelete', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const [error] = await task.deleteTask(taskIds);
@@ -288,7 +288,7 @@ const executeBatchDelete = async () => {
       }
 
       emit('refreshChange');
-      notification.success(t('task.detail.batchActions.deleteSuccess', { num: selectedCount }));
+      notification.success(t('actions.tips.deleteSuccess', { num: selectedCount }));
       emit('batchAction', 'delete', taskIds);
       emit('update:selectedIds', []);
       selectedTaskDataMap.value = {};

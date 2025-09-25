@@ -107,7 +107,7 @@ export function useVariableDetail (
     }
 
     modal.confirm({
-      content: t('dataVariable.detail.notifications.deleteConfirm', { name: data.name }),
+      content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         const id = data.id;
         const [error] = await variable.deleteVariables([id]);
@@ -115,7 +115,7 @@ export function useVariableDetail (
           return;
         }
 
-        notification.success(t('dataVariable.detail.notifications.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
         tabActions.deleteTabPane([id]);
 
         Promise.resolve().then(() => {
@@ -154,7 +154,7 @@ export function useVariableDetail (
       return;
     }
 
-    notification.success(t('dataVariable.detail.notifications.cloneSuccess'));
+    notification.success(t('actions.tips.cloneSuccess'));
     Promise.resolve().then(() => {
       tabActions.updateTabPane({ _id: 'variableList', notify: utils.uuid() });
       tabActions.refreshList();

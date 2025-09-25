@@ -1565,7 +1565,7 @@ const autoSave = async () => {
     if (error) {
       return;
     }
-    notification.success(t('service.apis.notifications.saveSuccess'));
+    notification.success(t('actions.tips.saveSuccess'));
   }
 };
 

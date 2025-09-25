@@ -217,7 +217,7 @@ export function useFileVariable (
       return;
     }
 
-    notification.success(t('dataVariable.detail.fileVariable.notifications.editSuccess'));
+    notification.success(t('actions.tips.editSuccess'));
     emit('ok', params, true);
   };
 
@@ -233,7 +233,7 @@ export function useFileVariable (
       return;
     }
 
-    notification.success(t('dataVariable.detail.fileVariable.notifications.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
     const id = res?.data?.id;
     emit('ok', { ...params, id }, false);
   };

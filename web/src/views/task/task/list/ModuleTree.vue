@@ -220,7 +220,7 @@ const handleModuleMoveUp = async (moduleRecord: any) => {
   if (error) {
     return;
   }
-  notification.success(t('task.list.moveSuccess'));
+  notification.success(t('actions.tips.moveSuccess'));
   emits('loadData', searchKeywords.value);
 };
 

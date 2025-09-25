@@ -8,24 +8,10 @@
     "projectList": "项目列表",
     "addedProjects": "已添加项目",
     "projectDescription": "项目是管理和组织研发活动、工作流程、各类资源等基本单位。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。",
-    "confirmDelete": "确定删除项目「{name}」吗？",
-    "deleteSuccess": "删除项目成功",
-    "searchPlaceholder": "输入查询关键词",
     "adminHint": "只允许管理员、创建人和负责人修改和删除项目。",
-    "noDescription": "无描述~",
-    "owner": "负责人",
-    "members": "成员",
-    "allMembers": "所有成员",
-    "user": "用户",
-    "department": "部门",
-    "group": "组",
-    "modifyTime": "修改时间",
     "agileProjectManagement": "敏捷项目",
-    "sortByAddTime": "按添加时间",
-    "sortByCreator": "按添加人",
     "configSoftwareModule": "配置软件模块",
     "configManagementSoftwareVersion": "配置管理软件版本",
-    "configDataTag": "配置数据标签",
     "aboutProject": "关于项目",
     "projectProcess": "项目流程",
     "noJoinedProjects": "没有添加或加入任何项目",
@@ -33,21 +19,37 @@
     "searchProject": "搜索项目名称",
     "projectNotFound": "不存在此项目",
     "projectType": "项目类型",
-    "addProjectStep": {
-      "title": "添加项目",
-      "text": "建立管理组织开发和测试活动的工作流程基本单元。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。"
+    "projectTypeTip": {
+      "agile": {
+        "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
+        "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
+      },
+      "general": {
+        "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
+        "scenarios": "适用场景：传统研发团队跨部门协作项目。"
+      },
+      "testing": {
+        "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
+        "scenarios": "适用场景：质量保障团队专项测试项目。"
+      }
     },
-    "planIterationAndTest": {
-      "title": "制定迭代和测试计划",
-      "text": "明确开发和测试活动的负责人、时间、目标、验收标准等。帮助团队有组织地开展活动，保证软件产品的质量和可靠性。"
-    },
-    "developAndTest": {
-      "title": "开展开发和测试活动",
-      "text": "按照计划开展开发和测试活动。随时跟踪和管理项目中的工作任务、缺陷、需求、用户故事、测试等工作项。"
-    },
-    "reportResults": {
-      "title": "报告结果",
-      "text": "总结研发活动的各个方面，包括项目进展、效能分析、数据资产、测试结果等。为项目的成功交付提供有力支持。"
+    "steps": {
+      "addProject": {
+        "title": "添加项目",
+        "text": "建立管理组织开发和测试活动的工作流程基本单元。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。"
+      },
+      "sprintAndPlan": {
+        "title": "制定迭代和测试计划",
+        "text": "明确开发和测试活动的负责人、时间、目标、验收标准等。帮助团队有组织地开展活动，保证软件产品的质量和可靠性。"
+      },
+      "developAndTest": {
+        "title": "开展开发和测试活动",
+        "text": "按照计划开展开发和测试活动。随时跟踪和管理项目中的工作任务、缺陷、需求、用户故事、测试等工作项。"
+      },
+      "reportResults": {
+        "title": "报告结果",
+        "text": "总结研发活动的各个方面，包括项目进展、效能分析、数据资产、测试结果等。为项目的成功交付提供有力支持。"
+      }
     },
     "moreButton": {
       "module": "配置软件模块",
@@ -59,20 +61,6 @@
       "createdByName": "按添加人"
     },
     "projectEdit": {
-      "projectTypeTip": {
-        "agile": {
-          "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
-          "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
-        },
-        "general": {
-          "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
-          "scenarios": "适用场景：传统研发团队跨部门协作项目。"
-        },
-        "testing": {
-          "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
-          "scenarios": "适用场景：质量保障团队专项测试项目。"
-        }
-      },
       "validation": {
         "maxCharacters": "不能超过2000字符"
       },
@@ -106,20 +94,6 @@
       }
     },
     "projectDetail": {
-      "projectTypeTip": {
-        "agile": {
-          "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
-          "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
-        },
-        "general": {
-          "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
-          "scenarios": "适用场景：传统研发团队跨部门协作项目。"
-        },
-        "testing": {
-          "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
-          "scenarios": "适用场景：质量保障团队专项测试项目。"
-        }
-      },
       "messages": {
         "updateSuccess": "修改项目成功",
         "addSuccess": "添加项目成功"
@@ -137,20 +111,6 @@
       }
     },
     "projectAddModal": {
-      "projectTypeTip": {
-        "agile": {
-          "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
-          "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
-        },
-        "general": {
-          "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
-          "scenarios": "适用场景：传统研发团队跨部门协作项目。"
-        },
-        "testing": {
-          "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
-          "scenarios": "适用场景：质量保障团队专项测试项目。"
-        }
-      },
       "validation": {
         "maxCharacters": "不能超过2000字符",
         "timeRequired": "请输入时间",

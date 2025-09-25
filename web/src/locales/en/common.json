@@ -88,7 +88,7 @@
     "enabledStatus": "Enabled Status",
     "actions": "Actions",
     "placeholders": {
-
+      "search": "Enter search keywords"
     },
     "rules": {},
     "hints": {
@@ -152,22 +152,7 @@
     "yes": "Yes",
     "no": "No",
     "on": "ON",
-    "off": "OFF",
-    "tips": {
-      "saveSuccess": "Save successful",
-      "deleteSuccess": "Delete successful",
-      "cloneSuccess": "Clone successful",
-      "addSuccess": "Add successful",
-      "updateSuccess": "Update successful",
-      "disabledSuccess": "Disable successful",
-      "enabledSuccess": "Enable successful",
-      "execSuccess": "Execute successful",
-      "importSuccess": "Import successful",
-      "moveSuccess": "Move successful",
-      "copySuccess": "Copy successful",
-      "shareSuccess": "Share successful",
-      "copyFailed": "Copy failed"
-    }
+    "off": "OFF"
   },
   "chart": {
     "timeUnit": "Time Unit",
@@ -264,12 +249,39 @@
     "nextStep": "Next Step",
     "more": "More",
     "expand": "Expand",
-    "collapse": "Collapse"
+    "collapse": "Collapse",
+    "tips": {
+      "confirmDelete": "Are you sure you want to delete project 「{name}」?",
+      "createSuccess": "Create successful",
+      "saveSuccess": "Save successful",
+      "deleteSuccess": "Delete successful",
+      "cloneSuccess": "Clone successful",
+      "addSuccess": "Add successful",
+      "updateSuccess": "Update successful",
+      "editSuccess": "Edit successful",
+      "modifySuccess": "Modify successful",
+      "disableSuccess": "Disable successful",
+      "enableSuccess": "Enable successful",
+      "execSuccess": "Execute successful",
+      "importSuccess": "Import successful",
+      "moveSuccess": "Move successful",
+      "copySuccess": "Copy successful",
+      "copyLinkSuccess": "Copy link successful",
+      "shareSuccess": "Share successful",
+      "copyFailed": "Copy failed"
+    }
   },
-  "orgNames": {
+  "organization": {
+    "allMembers": "All Members",
+    "tenant": "Tenant",
     "user": "User",
     "dept": "Department",
-    "group": "Group"
+    "group": "Group",
+    "placeholders": {
+      "selectUser": "Select User",
+      "selectDepartment": "Select Department",
+      "selectGroup": "Select Group"
+    }
   },
   "quickSearch": {
     "title": "Quick Search",

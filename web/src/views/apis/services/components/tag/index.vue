@@ -145,7 +145,7 @@ const hanldeDelete = async (tag:TagObj) => {
   if (error) {
     return;
   }
-  notification.success(t('service.tag.messages.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
   // 如果删除成功
   tagList.value = tagList.value.filter(item => item.id !== tag.id);
   oldtagList.value = oldtagList.value.filter(item => item.id !== tag.id);
@@ -236,7 +236,7 @@ const saveNewData = async (tag:TagObj) => {
   tag.isExpand = lastIsExpandState.value;
   addBtnDisabled.value = false;
   currEditData.value = undefined;
-  notification.success(t('service.tag.messages.saveSuccess'));
+  notification.success(t('actions.tips.saveSuccess'));
   if (tag.isAdd) {
     tag.isAdd = false;
   }

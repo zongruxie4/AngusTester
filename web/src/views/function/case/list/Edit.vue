@@ -237,7 +237,7 @@ const editSave = async () => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.addCaseModal.modifySuccess'));
+  notification.success(t('actions.tips.modifySuccess'));
   emits('update:visible', false);
   emits('update', props.editCase.id);
 };
@@ -249,7 +249,7 @@ const addSave = async () => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.addCaseModal.addSuccess'));
+  notification.success(t('actions.tips.addSuccess'));
 
   emits('update');
   if (saveType.value === 'save') {

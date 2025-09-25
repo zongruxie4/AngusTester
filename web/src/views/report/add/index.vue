@@ -287,9 +287,9 @@ const ok = () => {
       return;
     }
     if (reportIdRef.value) {
-      notification.success(t('reportAdd.notification.updateSuccess'));
+      notification.success(t('actions.tips.updateSuccess'));
     } else {
-      notification.success(t('reportAdd.notification.addSuccess'));
+      notification.success(t('actions.tips.addSuccess'));
     }
     emits('ok');
     cancel();

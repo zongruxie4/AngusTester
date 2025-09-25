@@ -133,7 +133,7 @@ const loadData = async () => {
 
 const deleteHandler = (data: ApiItem) => {
   modal.confirm({
-    content: t('apis.myApis.deleteTip', { name: data.summary }),
+    content: t('actions.tips.confirmDelete', { name: data.summary }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -142,7 +142,7 @@ const deleteHandler = (data: ApiItem) => {
         return;
       }
 
-      notification.success(t('apis.myApis.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       emit('update:deletedNotify', utils.uuid());
 
       // 删除已经打开的tabpane

@@ -229,7 +229,7 @@ const executeBatchCancel = async () => {
 const executeBatchDelete = async () => {
   const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.deleteConfirm', { num: selectedCount }),
+    content: t('actions.tips.confirmDelete', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const [error] = await task.deleteTask(taskIds);
@@ -238,7 +238,7 @@ const executeBatchDelete = async () => {
       }
 
       emit('refreshChange');
-      notification.success(t('task.table.messages.deleteSuccess', { num: selectedCount }));
+      notification.success(t('actions.tips.deleteSuccess', { num: selectedCount }));
       emit('batchAction', 'delete', taskIds);
       rowSelection.value.selectedRowKeys = [];
       selectedTaskDataMap.value = {};
@@ -771,9 +771,9 @@ const cancelTask = async (taskData: TaskDetail) => {
 const copyTaskLink = (taskData: TaskDetail) => {
   const taskUrl = window.location.origin + (taskData.linkUrl || '');
   toClipboard(taskUrl).then(() => {
-    notification.success(t('task.table.messages.copySuccess'));
+    notification.success(t('actions.tips.copySuccess'));
   }).catch(() => {
-    notification.error(t('task.table.messages.copyFail'));
+    notification.error(t('actions.tips.copyFail'));
   });
 };
 

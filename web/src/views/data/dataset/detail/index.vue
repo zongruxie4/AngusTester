@@ -68,7 +68,7 @@ const toDelete = () => {
   }
 
   modal.confirm({
-    content: t('dataset.detail.notifications.deleteConfirm', { name: data.name }),
+    content: t('actions.tips.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await dataSet.deleteDataSet([id]);
@@ -76,7 +76,7 @@ const toDelete = () => {
         return;
       }
 
-      notification.success(t('dataset.detail.notifications.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       deleteTabPane([id]);
 
       nextTick(() => {
@@ -104,7 +104,7 @@ const toClone = async () => {
     return;
   }
 
-  notification.success(t('dataset.detail.notifications.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   nextTick(() => {
     updateTabPane({ _id: 'dataSetList', notify: utils.uuid() });
   });
@@ -112,9 +112,9 @@ const toClone = async () => {
 
 const toCopyLink = (id: string) => {
   toClipboard(window.location.origin + `/data#dataSet?id=${id}`).then(() => {
-    notification.success(t('dataset.detail.notifications.copyLinkSuccess'));
+    notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
-    notification.error(t('dataset.detail.notifications.copyLinkFail'));
+    notification.error(t('actions.tips.copyFail'));
   });
 };
 

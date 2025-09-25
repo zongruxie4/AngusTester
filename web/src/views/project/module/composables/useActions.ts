@@ -46,7 +46,7 @@ export function useActions (onDataChange: () => Promise<void>) {
       const createdId = response?.data?.[0]?.id;
 
       // Show success notification
-      notification.success(t('module.addSuccess'));
+      notification.success(t('actions.tips.addSuccess'));
 
       // Refresh the data to show the new module
       await onDataChange();
@@ -95,7 +95,7 @@ export function useActions (onDataChange: () => Promise<void>) {
    */
   const deleteModule = (moduleItem: ModuleItem): void => {
     modal.confirm({
-      content: t('module.confirmDelete', { name: moduleItem.name }),
+      content: t('actions.tips.confirmDelete', { name: moduleItem.name }),
       async onOk () {
         try {
           const params: DeleteModuleParams = {
@@ -110,7 +110,7 @@ export function useActions (onDataChange: () => Promise<void>) {
           }
 
           // Show success notification
-          notification.success(t('module.deleteSuccess'));
+          notification.success(t('actions.tips.deleteSuccess'));
 
           // Refresh the data to reflect deletion
           await onDataChange();

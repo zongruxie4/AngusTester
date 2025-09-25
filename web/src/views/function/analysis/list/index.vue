@@ -169,11 +169,11 @@ const loadAnalysisList = async () => {
  */
 const handleDeleteAnalysis = (analysisData) => {
   modal.confirm({
-    content: t('functionAnalysis.list.deleteConfirm', { name: analysisData.name }),
+    content: t('actions.tips.confirmDelete', { name: analysisData.name }),
     onOk () {
       return analysis.deleteAnalysis([analysisData.id])
         .then(() => {
-          notification.success(t('functionAnalysis.list.deleteSuccess'));
+          notification.success(t('actions.tips.deleteSuccess'));
           paginationConfig.pageNo = 1;
           loadAnalysisList();
         });
@@ -194,7 +194,7 @@ const handleUpdateSnapshot = (analysisData) => {
           if (error) {
             return;
           }
-          notification.success(t('functionAnalysis.list.updateSuccess'));
+          notification.success(t('actions.tips.updateSuccess'));
         });
     }
   });

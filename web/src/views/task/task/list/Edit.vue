@@ -553,7 +553,7 @@ const handleTaskCreation = async (shouldContinue = false) => {
     return;
   }
 
-  notification.success(t('task.editModal.messages.addSuccess'));
+  notification.success(t('actions.tips.addSuccess'));
   emit('ok', res?.data, true);
 
   if (!shouldContinue) {
@@ -573,7 +573,7 @@ const handleTaskUpdate = async () => {
     return;
   }
 
-  notification.success(t('task.editModal.messages.editSuccess'));
+  notification.success(t('actions.tips.editSuccess'));
   const updatedTaskData = await loadTaskData();
   emit('ok', updatedTaskData);
   closeModal();

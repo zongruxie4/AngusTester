@@ -170,7 +170,7 @@ const ok = async () => {
     return;
   }
 
-  notification.success(t('service.sidebar.execTest.execSuccess'));
+  notification.success(t('actions.tips.execSuccess'));
   reset();
   emit('update:visible', false);
   emit('update:id', undefined);

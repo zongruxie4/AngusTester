@@ -111,7 +111,7 @@ const handleModuleNameEditConfirm = async (id: string, event: { target: { value:
   if (error) {
     return;
   }
-  notification.success(t('functionBaseline.case.moduleTree.modifySuccess'));
+  notification.success(t('actions.tips.modifySuccess'));
   editingModuleId.value = undefined;
   emits('loadData', searchKeywords.value);
 };
@@ -193,7 +193,7 @@ const moveModuleUp = async (record) => {
   if (error) {
     return;
   }
-  notification.success(t('functionBaseline.case.moduleTree.moveSuccess'));
+  notification.success(t('actions.tips.moveSuccess'));
   emits('loadData', searchKeywords.value);
 };
 
@@ -222,7 +222,7 @@ const moveModuleDown = async (record) => {
   if (error) {
     return;
   }
-  notification.success(t('functionBaseline.case.moduleTree.moveSuccess'));
+  notification.success(t('actions.tips.moveSuccess'));
   emits('loadData', searchKeywords.value);
 };
 

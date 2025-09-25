@@ -228,9 +228,9 @@ const handleSave = async () => {
 
     // Show success notification
     if (!submissionParams.id) {
-      notification.success(t('taskAnalysis.messages.addSuccess'));
+      notification.success(t('actions.tips.addSuccess'));
     } else {
-      notification.success(t('taskAnalysis.messages.editSuccess'));
+      notification.success(t('actions.tips.editSuccess'));
     }
 
     emits('ok');

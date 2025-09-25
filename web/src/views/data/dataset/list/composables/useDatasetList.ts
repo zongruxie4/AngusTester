@@ -122,7 +122,7 @@ export function useDatasetList (props: {
       return;
     }
 
-    notification.success(t('dataset.list.messages.deleteSuccess'));
+    notification.success(t('actions.tips.deleteSuccess'));
     pagination.value.current = getCurrentPage(
       pagination.value.current,
       pagination.value.pageSize,
@@ -145,7 +145,7 @@ export function useDatasetList (props: {
       return;
     }
 
-    notification.success(t('dataset.list.messages.cloneSuccess'));
+    notification.success(t('actions.tips.cloneSuccess'));
     loadData();
   };
 

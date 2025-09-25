@@ -87,7 +87,7 @@ export function useShareList () {
       return;
     }
 
-    notification.success(t('fileSpace.share.shareList.notifications.deleteSuccess'));
+    notification.success(t('actions.tips.deleteSuccess'));
     pagination.current = 1;
     await loadList();
   };
@@ -106,7 +106,7 @@ export function useShareList () {
     }
 
     toClipboard(message).then(() => {
-      notification.success(t('fileSpace.share.shareList.notifications.copySuccess'));
+      notification.success(t('actions.tips.copySuccess'));
     });
   };
 

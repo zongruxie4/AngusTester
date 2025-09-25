@@ -175,7 +175,7 @@ const handleSprintUpdate = async () => {
     return;
   }
 
-  notification.success(t('taskSprint.messages.editSuccess'));
+  notification.success(t('actions.tips.editSuccess'));
 
   // Update tab title and local data
   const sprintId = params.id;
@@ -200,7 +200,7 @@ const handleSprintCreation = async () => {
     return;
   }
 
-  notification.success(t('taskSprint.messages.addSuccess'));
+  notification.success(t('actions.tips.addSuccess'));
 
   // Navigate to the newly created sprint
   const currentTabId = props.data?._id;
@@ -310,7 +310,7 @@ const deleteSprint = async () => {
   }
 
   modal.confirm({
-    content: t('taskSprint.messages.confirmDelete', { name: sprintData.name }),
+    content: t('actions.tips.confirmDelete', { name: sprintData.name }),
     async onOk () {
       const sprintId = sprintData.id;
       isLoading.value = true;
@@ -320,7 +320,7 @@ const deleteSprint = async () => {
         return;
       }
 
-      notification.success(t('taskSprint.messages.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       if (props.data?._id) {
         deleteTabPane([props.data._id]);
       }
@@ -367,7 +367,7 @@ const cloneSprint = async () => {
     return;
   }
 
-  notification.success(t('taskSprint.messages.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   refreshSprintList();
 };
 

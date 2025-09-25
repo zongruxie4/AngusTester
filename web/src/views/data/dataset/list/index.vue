@@ -95,7 +95,7 @@ const {
  */
 const toDelete = (data: DataSetItem) => {
   modal.confirm({
-    content: t('dataset.list.messages.deleteConfirm', { name: data.name }),
+    content: t('actions.tips.confirmDelete', { name: data.name }),
     async onOk () {
       await deleteDataset(data, t);
     }

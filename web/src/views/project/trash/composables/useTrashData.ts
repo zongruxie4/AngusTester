@@ -71,7 +71,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
       return;
     }
 
-    notification.success(t('projectTrash.messages.deleteSuccess'));
+    notification.success(t('actions.tips.deleteSuccess'));
     pagination.value.current = getCurrentPage(
       pagination.value.current,
       pagination.value.pageSize,

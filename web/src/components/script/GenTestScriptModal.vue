@@ -148,7 +148,7 @@ const submit = async () => {
     if (error) {
       return;
     }
-    notification.success(t('commonComp.genTestScriptModal.updateSuccess'));
+    notification.success(t('actions.tips.updateSuccess'));
     cancel();
   }
 };

@@ -96,7 +96,7 @@ const shareIds = ref<string[]>([]);
 const showDeleteConfirm = (fileList = state.selectedRowKeys) => {
   modal.confirm({
     centered: true,
-    content: t('fileSpace.fileManagement.messages.deleteConfirm'),
+    content: t('actions.tips.confirmDelete'),
     onOk: () => {
       delFile(fileList);
     }

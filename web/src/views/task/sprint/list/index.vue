@@ -223,7 +223,7 @@ const blockSprint = async (sprint: SprintInfo, index: number) => {
  */
 const deleteSprint = async (sprint: SprintInfo) => {
   modal.confirm({
-    content: t('taskSprint.messages.confirmDelete', { name: sprint.name }),
+    content: t('actions.tips.confirmDelete', { name: sprint.name }),
     async onOk () {
       const sprintId = sprint.id;
       const [error] = await task.deleteSprint(sprintId);
@@ -231,7 +231,7 @@ const deleteSprint = async (sprint: SprintInfo) => {
         return;
       }
 
-      notification.success(t('taskSprint.messages.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       await loadSprintData();
       deleteTabPane([sprintId]);
     }
@@ -271,7 +271,7 @@ const cloneSprint = async (sprint: SprintInfo) => {
   if (error) {
     return;
   }
-  notification.success(t('taskSprint.messages.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   await loadSprintData();
 };
 

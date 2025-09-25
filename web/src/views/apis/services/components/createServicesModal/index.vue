@@ -54,7 +54,7 @@ const ok = async () => {
   refreshSidebar();
   emit('ok');
   cancel();
-  notification.success(t('actions.addSuccess'));
+  notification.success(t('actions.tips.addSuccess'));
 };
 
 const title = computed(() => {

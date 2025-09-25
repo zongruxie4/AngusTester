@@ -93,7 +93,7 @@ export function useScenarioActions (
   const deleteScenario = async (name: string, id: string, emit: (e: 'delete', value: string) => void) => {
     modal.confirm({
       centered: true,
-      content: t('scenario.list.messages.deleteConfirm', { name }),
+      content: t('actions.tips.confirmDelete', { name }),
       async onOk () {
         const [error] = await scenario.deleteScenario(id);
         if (error) {
@@ -101,7 +101,7 @@ export function useScenarioActions (
         }
 
         deleteTabPane([id]); // Notify tabs to delete this tab
-        notification.success(t('scenario.list.messages.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
         emit('delete', id);
       }
     });

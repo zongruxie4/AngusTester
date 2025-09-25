@@ -31,13 +31,13 @@ export function useScenarioActions (
 
     modal.confirm({
       centered: true,
-      content: t('scenario.detail.messages.deleteConfirm', { name: scenarioName }),
+      content: t('actions.tips.confirmDelete', { name: scenarioName }),
       async onOk () {
         const [error] = await scenario.deleteScenario(scenarioId);
         if (error) {
           return;
         }
-        notification.success(t('scenario.detail.messages.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
         deleteTabPane([scenarioId, scenarioId + '-detail']);
       }
     });

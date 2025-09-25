@@ -981,7 +981,7 @@ const handleClone = async (rowData: CaseDetailChecked) => {
     updateLoading(false);
     return;
   }
-  notification.success(t('functionCase.mainView.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   refreshChange();
 };
 
@@ -1016,7 +1016,7 @@ const delCase = async (rowData?: CaseDetailChecked) => {
   actionType.value = 'del';
   refreshChange();
   refreshRecycleBin('useCase');
-  notification.success(t('functionCase.mainView.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
 };
 
 const getCurrentPage = (pageNo: number, pageSize: number, total: number): number => {
@@ -1207,9 +1207,9 @@ const handleCopy = async (value) => {
 
   const message = `${window.location.origin}/function#cases?id=${value.id}&name=${value.name}&projectId=${projectInfo.value.id}&${_params}&total=${total.value}`;
   toClipboard(message).then(() => {
-    notification.success(t('functionCase.mainView.copySuccess'));
+    notification.success(t('actions.tips.copySuccess'));
   }).catch(() => {
-    notification.error(t('functionCase.mainView.copyFailed'));
+    notification.error(t('actions.tips.copyFailed'));
   });
 };
 

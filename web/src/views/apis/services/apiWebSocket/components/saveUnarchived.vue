@@ -70,9 +70,9 @@ const save = () => {
       return;
     }
     if (props.id) {
-      notification.success(t('service.webSocketSaveUnarchived.messages.updateSuccess'));
+      notification.success(t('actions.tips.updateSuccess'));
     } else {
-      notification.success(t('service.webSocketSaveUnarchived.messages.addSuccess'));
+      notification.success(t('actions.tips.addSuccess'));
       refreshUnarchived();
     }
     const id = props.id || resp.data[0]?.id;

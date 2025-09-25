@@ -45,7 +45,7 @@ export function useActions (
       const createdId = response?.data?.[0]?.id;
 
       // Show success notification
-      notification.success(t('tag.addSuccess'));
+      notification.success(t('actions.tips.addSuccess'));
 
       // Update local data with the new tag
       if (createdId && params.names.length > 0) {
@@ -80,7 +80,7 @@ export function useActions (
       }
 
       // Show success notification
-      notification.success(t('tag.updateSuccess'));
+      notification.success(t('actions.tips.updateSuccess'));
 
       // Update local data with the new tag information
       if (tagData.length > 0) {
@@ -106,7 +106,7 @@ export function useActions (
    */
   const deleteTag = (tagItem: TagItem, index: number): void => {
     modal.confirm({
-      content: t('tag.confirmDelete', { name: tagItem.name }),
+      content: t('actions.tips.confirmDelete', { name: tagItem.name }),
       async onOk () {
         try {
           const [error] = await tag.deleteTag([tagItem.id]);
@@ -117,7 +117,7 @@ export function useActions (
           }
 
           // Show success notification
-          notification.success(t('tag.deleteSuccess'));
+          notification.success(t('actions.tips.deleteSuccess'));
 
           // Update local data by removing the tag
           await onTagRemoved(index);

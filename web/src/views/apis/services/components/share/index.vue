@@ -79,7 +79,7 @@ const delShare = async (id:string) => {
   if (error) {
     return;
   }
-  notification.success(t('service.shareModal.messages.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
   pagination.current = 1;
   loadList();
 };
@@ -142,7 +142,7 @@ const copy = (item:ListType) => {
     message = t('service.shareModal.copyFormat.withoutPassword', { url: item.url });
   }
   toClipboard(message).then(() => {
-    notification.success(t('service.shareModal.messages.copySuccess'));
+    notification.success(t('actions.tips.copySuccess'));
   });
 };
 

@@ -85,7 +85,7 @@ const saveSetting = async () => {
   if (error) {
     return;
   }
-  notification.success(t('ftpPlugin.performanceTestDetail.execSetting.messages.modifySuccess'));
+  notification.success(t('actions.tips.modifySuccess'));
   router.push('/execution');
 };
 </script>

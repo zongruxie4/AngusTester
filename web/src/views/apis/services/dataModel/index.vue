@@ -126,7 +126,7 @@ const submitOpenapi = async (data) => {
   if (error) {
     return;
   }
-  notification.success(t('service.dataModel.updateSuccess'));
+  notification.success(t('actions.tips.updateSuccess'));
   loadProjectOpenapi();
 };
 
@@ -138,7 +138,7 @@ const submitOverview = async (data) => {
   if (error) {
     return;
   }
-  notification.success(t('service.dataModel.updateSuccess'));
+  notification.success(t('actions.tips.updateSuccess'));
   loadProjectOpenapi();
 };
 
@@ -157,7 +157,7 @@ const copyComp = async (comp, key) => {
   if (error1) {
     return;
   }
-  notification.success(t('service.dataModel.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   getProjectCompList();
 };
 
@@ -166,7 +166,7 @@ const delComp = async (comp) => {
   if (error) {
     return;
   }
-  notification.success(t('service.dataModel.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
   getProjectCompList();
 };
 

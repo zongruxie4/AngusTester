@@ -112,10 +112,10 @@ const save = () => {
       return;
     }
     if (isUnarchived.value || !props.id) {
-      notification.success(t('service.webSocketSave.messages.addSuccess'));
+      notification.success(t('actions.tips.addSuccess'));
       refreshUnarchived();
     } else {
-      notification.success(t('service.webSocketSave.messages.updateSuccess'));
+      notification.success(t('actions.tips.updateSuccess'));
     }
     const id = props.id || resp.data[0]?.id;
     if (props.id) {

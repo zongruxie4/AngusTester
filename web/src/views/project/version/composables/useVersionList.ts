@@ -119,7 +119,7 @@ export function useVersionList (props: VersionListProps) {
    */
   const toDelete = async (data: VersionInfo): Promise<void> => {
     modal.confirm({
-      content: t('version.messages.deleteConfirm', { name: data.name }),
+      content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         const id = data.id;
         const [error] = await software.deleteSoftwareVersion([id]);
@@ -127,7 +127,7 @@ export function useVersionList (props: VersionListProps) {
           return;
         }
 
-        notification.success(t('version.messages.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
 
         // Adjust pagination if needed
         if (pagination.value.current > 1 && dataList.value.length === 1) {
@@ -173,7 +173,7 @@ export function useVersionList (props: VersionListProps) {
           return;
         }
 
-        notification.success(t('version.messages.editSuccess'));
+        notification.success(t('actions.tips.editSuccess'));
         loadData();
       }
     });

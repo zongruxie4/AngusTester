@@ -29,7 +29,7 @@ export function useNodeActions () {
   const copyContent = async (text: string) => {
     try {
       await toClipboard(text);
-      notification.success(t('node.nodeDetail.labels.copySuccess'));
+      notification.success(t('actions.tips.copySuccess'));
     } catch (error) {
       console.error('Failed to copy content:', error);
       notification.error(t('actions.tips.copyFailed'));

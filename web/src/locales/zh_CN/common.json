@@ -86,6 +86,7 @@
     "enabledStatus": "启用状态",
     "actions": "操作",
     "placeholders": {
+      "search": "输入查询关键词"
     },
     "rules": {},
     "hints": {
@@ -246,26 +247,38 @@
     "expand": "展开",
     "collapse": "收起",
     "tips": {
+      "confirmDelete": "确定删除「{name}」吗？",
+      "createSuccess": "创建成功",
       "saveSuccess": "保存成功",
       "deleteSuccess": "删除成功",
       "cloneSuccess": "克隆成功",
       "addSuccess": "添加成功",
       "updateSuccess": "更新成功",
-      "disabledSuccess": "禁用成功",
-      "enabledSuccess": "启用成功",
+      "editSuccess": "编辑成功",
+      "modifySuccess": "修改成功",
+      "disableSuccess": "禁用成功",
+      "enableSuccess": "启用成功",
       "execSuccess": "执行成功",
       "importSuccess": "导入成功",
       "moveSuccess": "移动成功",
-      "modifySuccess": "修改成功",
       "copySuccess": "复制成功",
+      "copyLinkSuccess": "复制链接成功",
       "shareSuccess": "分享成功",
       "copyFailed": "复制失败"
     }
   },
-  "orgNames": {
+  "organization": {
+    "allMembers": "所有成员",
+    "tenant": "租户",
     "user": "用户",
     "dept": "部门",
-    "group": "组"
+    "group": "组",
+    "placeholders": {
+      "selectTenant": "Select Tenant",
+      "selectUser": "Select User",
+      "selectDepartment": "Select Department",
+      "selectGroup": "Select Group"
+    }
   },
   "quickSearch": {
     "title": "快速查询",

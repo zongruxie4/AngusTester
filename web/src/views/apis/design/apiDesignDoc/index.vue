@@ -48,7 +48,7 @@ const updateContent = async () => {
   if (error) {
     return;
   }
-  notification.success(t('design.detail.saveSuccess'));
+  notification.success(t('actions.tips.saveSuccess'));
 };
 
 const releaseDesign = async () => {

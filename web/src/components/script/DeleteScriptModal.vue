@@ -60,7 +60,7 @@ const handleDel = async () => {
     return;
   }
   loading.value = false;
-  notification.success(t('commonComp.delScriptModal.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
   emits('update:visible', false);
 };
 

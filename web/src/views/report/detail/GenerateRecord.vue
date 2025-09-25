@@ -118,8 +118,7 @@ const changePage = (page) => {
  */
 const delRecord = (record: Record) => {
   modal.confirm({
-    title: t('reportHome.reportDetail.generateRecord.deleteRecord'),
-    content: t('reportHome.reportDetail.generateRecord.confirmDelete', { name: record.reportName }),
+    content: t('actions.tips.confirmDelete', { name: record.reportName }),
     onOk () {
       return report.deleteReportRecord([record.id])
         .then((resp) => {

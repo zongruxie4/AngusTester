@@ -149,7 +149,7 @@ export function useStaticVariable (
       return;
     }
 
-    notification.success(t('dataVariable.detail.staticVariable.notifications.editSuccess'));
+    notification.success(t('actions.tips.editSuccess'));
     emit('ok', params, true);
   };
 
@@ -165,7 +165,7 @@ export function useStaticVariable (
       return;
     }
 
-    notification.success(t('dataVariable.detail.staticVariable.notifications.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
     const id = res?.data?.id;
     emit('ok', { ...params, id }, false);
   };

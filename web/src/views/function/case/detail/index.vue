@@ -222,9 +222,9 @@ const handleCopy = async () => {
   pageSize=${props.queryParams.pageSize}`;
 
   toClipboard(message).then(() => {
-    notification.success(t('functionCase.detail.copySuccess'));
+    notification.success(t('actions.tips.copySuccess'));
   }).catch(() => {
-    notification.error(t('functionCase.detail.copyFailed'));
+    notification.error(t('actions.tips.copyFailed'));
   });
 };
 

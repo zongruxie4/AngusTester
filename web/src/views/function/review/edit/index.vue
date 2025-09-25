@@ -167,7 +167,7 @@ const handleReviewUpdate = async () => {
     return;
   }
 
-  notification.success(t('caseReview.editForm.modifySuccess'));
+  notification.success(t('actions.tips.modifySuccess'));
 
   const reviewId = params.id;
   const reviewName = params.name;
@@ -193,7 +193,7 @@ const handleReviewCreation = async () => {
     return;
   }
 
-  notification.success(t('caseReview.editForm.addSuccess'));
+  notification.success(t('actions.tips.addSuccess'));
 
   const currentTabId = props.data?._id;
   const newReviewId = response?.data?.id;

@@ -153,7 +153,7 @@ export function useSpaceData () {
    */
   const delConfirm = (record: SpaceInfoType, projectId: string, isAdmin: boolean) => {
     modal.confirm({
-      content: t('fileSpace.messages.deleteConfirm', { name: record.name }),
+      content: t('actions.tips.confirmDelete', { name: record.name }),
       onOk: () => {
         return new Promise<void>((resolve, reject) => {
           space.deleteSpace(record.id).then(([error]) => {

@@ -175,7 +175,7 @@ const handleSubmit = () => {
       return;
     }
 
-    notification.success(t('mock.addMock.notifications.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
     await router.push('/apis#mock');
   }, () => {
     // Validation failed

@@ -183,7 +183,7 @@ export function useFileDataset (
       return;
     }
 
-    notification.success(t('dataset.detail.fileDataset.notifications.updateSuccess'));
+    notification.success(t('actions.tips.updateSuccess'));
     emit('ok', params, true);
   };
 
@@ -199,7 +199,7 @@ export function useFileDataset (
       return;
     }
 
-    notification.success(t('dataset.detail.fileDataset.notifications.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
     const id = res?.data?.id;
     emit('ok', { ...params, id }, false);
   };

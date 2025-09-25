@@ -260,7 +260,7 @@ const patchClone = async (id:string) => {
   if (error) {
     return;
   }
-  notification.success(t('service.apiList.messages.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   refreshList();
 };
 
@@ -270,7 +270,7 @@ const patchClone = async (id:string) => {
 const deleteConfirm = (id: string) => {
   modal.confirm({
     centered: true,
-    content: t('service.apiList.messages.deleteConfirm'),
+    content: t('actions.tips.confirmDelete'),
     onOk () {
       deleteInterface(id);
     }
@@ -289,7 +289,7 @@ const deleteInterface = async (id: string): Promise<void> => {
   state.type = undefined;
   deleteTabPane([id + 'API', id + 'socket', id + 'execute']);
   refreshRecycleBin('api');
-  notification.success(t('service.apiList.messages.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
   refreshList();
 };
 

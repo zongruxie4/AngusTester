@@ -96,7 +96,7 @@ const generateScript = async () => {
       return;
     }
     scriptId.value = data.id;
-    notification.success(t('genDataPlugin.messages.saveSuccess'));
+    notification.success(t('actions.tips.saveSuccess'));
   });
 };
 

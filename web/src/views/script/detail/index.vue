@@ -125,7 +125,7 @@ const handleSave = () => {
 const handleDelete = async () => {
   modal.confirm({
     centered: true,
-    content: t('scriptDetail.messages.deleteConfirm'),
+    content: t('scriptDetail.messages.confirmDelete'),
     async onOk () {
       await deleteScript();
     }

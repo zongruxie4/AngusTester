@@ -27,9 +27,9 @@ const activeKey = ref(AuthObjectType.USER);
       buttonStyle="solid"
       class="w-70 flex"
       size="small">
-      <RadioButton :value="AuthObjectType.USER" :tab="$t('orgNames.user')">{{ $t('orgNames.user') }}</RadioButton>
-      <RadioButton :value="AuthObjectType.DEPT" :tab="$t('orgNames.dept')">{{ $t('orgNames.dept') }}</RadioButton>
-      <RadioButton :value="AuthObjectType.GROUP" :tab="$t('orgNames.group')">{{ $t('orgNames.group') }}</RadioButton>
+      <RadioButton :value="AuthObjectType.USER" :tab="$t('organization.user')">{{ $t('organization.user') }}</RadioButton>
+      <RadioButton :value="AuthObjectType.DEPT" :tab="$t('organization.dept')">{{ $t('organization.dept') }}</RadioButton>
+      <RadioButton :value="AuthObjectType.GROUP" :tab="$t('organization.group')">{{ $t('organization.group') }}</RadioButton>
     </RadioGroup>
 
     <!-- Conditional rendering of MemberList based on active member type -->

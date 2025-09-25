@@ -40,7 +40,7 @@ const ok = async () => {
     if (error) {
       return;
     }
-    notification.success(t('design.home.importSuccess'));
+    notification.success(t('actions.tips.importSuccess'));
     cancel();
     emits('ok');
   });

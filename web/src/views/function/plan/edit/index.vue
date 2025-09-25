@@ -279,7 +279,7 @@ const handlePlanUpdate = async () => {
     return;
   }
 
-  notification.success(t('functionPlan.editForm.notifications.saveSuccess'));
+  notification.success(t('actions.tips.saveSuccess'));
 
   const id = params.id;
   const name = params.name;
@@ -302,7 +302,7 @@ const handlePlanCreation = async () => {
     return;
   }
 
-  notification.success(t('functionPlan.editForm.notifications.addSuccess'));
+  notification.success(t('actions.tips.addSuccess'));
 
   const currentTabId = props.data?._id;
   const newPlanId = res?.data?.id;

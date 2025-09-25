@@ -73,7 +73,7 @@ const searchChange = (data) => {
 
 const toDelete = async (data: DesignInfo) => {
   modal.confirm({
-    content: t('design.home.deleteFirm.title', { name: data.name }),
+    content: t('actions.tips.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await apis.deleteDesign([id]);

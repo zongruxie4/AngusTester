@@ -136,7 +136,7 @@ export function useMockSetting (id: string) {
       }
 
       await loadInfo();
-      notification.success(t('mock.detail.notifications.modifySuccess'));
+      notification.success(t('actions.tips.modifySuccess'));
     }
   };
 
@@ -293,7 +293,7 @@ export function useMockSetting (id: string) {
       mockServiceInfo.value[keyPath[0]][keyPath[1]] = params[keyPath[0]][keyPath[1]];
     }
 
-    notification.success(t('mock.detail.notifications.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
     editValue.value = false;
   };
 
@@ -327,7 +327,7 @@ export function useMockSetting (id: string) {
 
     mockServiceInfo.value.setting[key] = _params.setting[key];
     setting.value[key] = _params.setting[key];
-    notification.success(t('mock.detail.notifications.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**
@@ -356,7 +356,7 @@ export function useMockSetting (id: string) {
 
     mockServiceInfo.value.apisCors[key] = _params.apisCors[key];
     apisCors.value[key] = _params.apisCors[key];
-    notification.success(t('mock.detail.notifications.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**
@@ -384,7 +384,7 @@ export function useMockSetting (id: string) {
       return;
     }
 
-    notification.success(t('mock.detail.notifications.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**

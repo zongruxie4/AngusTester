@@ -826,7 +826,7 @@ const save = async (data?: {
   }
 
   if (notificationFlag) {
-    notification.success(t('ldapPlugin.notifications.saveSuccess'));
+    notification.success(t('actions.tips.saveSuccess'));
   }
 
   if (typeof drawerRef.value?.open === 'function') {

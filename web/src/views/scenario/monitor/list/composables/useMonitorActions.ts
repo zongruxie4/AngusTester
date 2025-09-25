@@ -18,7 +18,7 @@ export function useMonitorActions (
    */
   const toDelete = async (data: MonitorInfo): Promise<void> => {
     modal.confirm({
-      content: t('scenarioMonitor.list.deleteConfirm', { name: data.name }),
+      content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         const id = data.id;
         const [error] = await scenario.deleteMonitor({

@@ -44,7 +44,7 @@ export function useTrashActions (projectId: string) {
       return false;
     }
 
-    notification.success(t('functionTrash.messages.deleteSuccess'));
+    notification.success(t('actions.tips.deleteSuccess'));
     return true;
   };
 

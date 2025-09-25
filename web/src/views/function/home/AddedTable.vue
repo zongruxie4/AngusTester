@@ -185,7 +185,7 @@ const loadTableData = async () => {
  */
 const handleDeleteCase = (caseData: CaseInfo) => {
   modal.confirm({
-    content: t('functionHome.myCases.confirmDeleteCase', { name: caseData.name }),
+    content: t('factions.tips.confirmDeleteCase', { name: caseData.name }),
     async onOk () {
       const caseId = caseData.id;
       const deleteParams = [caseId];
@@ -194,7 +194,7 @@ const handleDeleteCase = (caseData: CaseInfo) => {
         return;
       }
 
-      notification.success(t('functionHome.myCases.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       emit('update:deletedNotify', utils.uuid());
 
       deleteTabPane(['case' + caseId]);

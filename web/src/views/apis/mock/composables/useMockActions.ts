@@ -235,7 +235,7 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
   const handleDelete = async (ids: string[]) => {
     modal.confirm({
       centered: true,
-      content: t('mock.deleteTip'),
+      content: t('actions.tips.confirmDelete'),
       async onOk () {
         loading.value = true;
         const [error] = await mock.deleteService(ids);
@@ -245,7 +245,7 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
           return;
         }
 
-        notification.success(t('mock.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
         getCurrentPageAfterDeletion();
         fetchList();
       }
@@ -258,7 +258,7 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
   const forceDelete = (record: MockService) => {
     modal.confirm({
       centered: true,
-      content: t('mock.deleteTip'),
+      content: t('actions.tips.confirmDelete'),
       async onOk () {
         loading.value = true;
         const [error] = await mock.deleteServiceByForce([record.id]);
@@ -268,7 +268,7 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
           return;
         }
 
-        notification.success(t('mock.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
         getCurrentPageAfterDeletion();
         fetchList();
       }

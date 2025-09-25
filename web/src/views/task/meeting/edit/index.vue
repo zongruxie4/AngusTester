@@ -152,7 +152,7 @@ const handleMeetingUpdate = async () => {
     return;
   }
 
-  notification.success(t('taskMeeting.editSuccess'));
+  notification.success(t('actions.tips.editSuccess'));
 
   const meetingId = apiParams.id;
   const meetingSubject = apiParams.subject;

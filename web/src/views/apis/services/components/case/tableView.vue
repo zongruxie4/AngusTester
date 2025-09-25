@@ -193,7 +193,7 @@ const enabled = async (item) => {
   if (error) {
     return;
   }
-  notification.success(item.enabled ? t('actions.tips.disabledSuccess') : t('actions.tips.enabledSuccess'));
+  notification.success(item.enabled ? t('actions.tips.disableSuccess') : t('actions.tips.enableSuccess'));
   loadCaseData();
 };
 

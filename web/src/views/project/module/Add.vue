@@ -97,7 +97,7 @@ const handleCreateModule = async (): Promise<void> => {
     closeModal();
 
     // Show success notification
-    notification.success(t('module.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
   } catch (error) {
     console.error('Unexpected error during module creation:', error);
   } finally {

@@ -95,7 +95,7 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.moduleTree.editSuccess'));
+  notification.success(t('actions.tips.editSuccess'));
   editId.value = undefined;
   emits('loadData', keywords.value);
 };
@@ -165,7 +165,7 @@ const moveUp = async (record) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.moduleTree.moveSuccess'));
+  notification.success(t('actions.tips.moveSuccess'));
   emits('loadData', keywords.value);
 };
 
@@ -190,7 +190,7 @@ const moveDown = async (record) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.moduleTree.moveSuccess'));
+  notification.success(t('actions.tips.moveSuccess'));
   emits('loadData', keywords.value);
 };
 

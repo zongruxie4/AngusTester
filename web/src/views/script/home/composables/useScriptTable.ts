@@ -275,7 +275,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
     }
     modal.confirm({
       title: t('actions.delete'),
-      content: t('scriptHome.table.messages.deleteConfirm', { num }),
+      content: t('actions.tips.confirmDelete', { num }),
       onOk: async () => {
         // Confirmation would be handled in the parent component
         loadingSetter(true);
@@ -286,7 +286,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
         if (error) {
           return;
         }
-        notification.success(t('scriptHome.table.messages.deleteSuccess', { num }));
+        notification.success(t('actions.tips.deleteSuccess', { num }));
         deleteCallback(ids);
         rowSelection.value.selectedRowKeys = [];
         selectedDataMap.value = {};
@@ -337,7 +337,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
     if (error) {
       return;
     }
-    notification.success(t('scriptHome.table.messages.cloneSuccess'));
+    notification.success(t('actions.tips.cloneSuccess'));
     refreshCallback();
   };
 

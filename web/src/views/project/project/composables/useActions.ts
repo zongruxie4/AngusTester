@@ -91,7 +91,7 @@ export function useActions (options: {
         return false;
       }
 
-      notification.success(t('project.messages.createSuccess'));
+      notification.success(t('actions.tips.createSuccess'));
       options.onDataChange?.();
 
       if (response.data?.id) {
@@ -117,7 +117,7 @@ export function useActions (options: {
         return false;
       }
 
-      notification.success(t('project.messages.updateSuccess'));
+      notification.success(t('actions.tips.updateSuccess'));
       options.onDataChange?.();
       changeProjectInfo(params.id, true);
 
@@ -137,7 +137,7 @@ export function useActions (options: {
   ): Promise<boolean> => {
     return new Promise((resolve) => {
       modal.confirm({
-        content: t('project.confirmDelete', { name: projectData.name }),
+        content: t('actions.tips.confirmDelete', { name: projectData.name }),
         async onOk () {
           try {
             operationLoading.value = true;
@@ -149,7 +149,7 @@ export function useActions (options: {
               return;
             }
 
-            notification.success(t('project.messages.deleteSuccess'));
+            notification.success(t('actions.tips.deleteSuccess'));
 
             // Calculate new current page after deletion (used for pagination update)
             options.getCurrentPage

@@ -52,7 +52,7 @@ const toUpdate = async (data) => {
     return;
   }
 
-  notification.success(t('server.home.updateSuccess'));
+  notification.success(t('actions.tips.updateSuccess'));
 };
 
 const toClone = async (data:{serviceId:string;serviceName:string;server:ServerInfo}) => {

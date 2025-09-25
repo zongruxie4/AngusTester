@@ -221,7 +221,7 @@ export function useJdbcVariable (
       return;
     }
 
-    notification.success(t('dataVariable.detail.jdbcVariable.notifications.editSuccess'));
+    notification.success(t('actions.tips.editSuccess'));
     emit('ok', params, true);
   };
 
@@ -237,7 +237,7 @@ export function useJdbcVariable (
       return;
     }
 
-    notification.success(t('dataVariable.detail.jdbcVariable.notifications.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
     const id = res?.data?.id;
     emit('ok', { ...params, id }, false);
   };

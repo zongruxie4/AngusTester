@@ -244,7 +244,7 @@ const addSave = async () => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.addCaseModal.addSuccess'));
+  notification.success(t('actions.tips.addSuccess'));
   if (stepVisible.value && stepKey.value === 'createCaseTwo') {
     updateGuideStep({ visible: true, key: 'viewCase' });
   }

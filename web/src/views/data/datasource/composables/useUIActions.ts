@@ -51,7 +51,7 @@ export function useUIActions () {
   ): void => {
     modal.confirm({
       centered: true,
-      content: t('datasource.messages.deleteConfirm', { name: record.name }),
+      content: t('actions.tips.confirmDelete', { name: record.name }),
       async onOk () {
         await onConfirm();
       }

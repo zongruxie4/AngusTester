@@ -154,7 +154,7 @@ const hanldeDelete = async (variable:VariableObj) => {
   if (error) {
     return;
   }
-  notification.success(t('xcan_variable.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
   // 如果删除成功 todo 可能不需要重置到第一页
   params.value.pageNo = 1;
   notify.value++;
@@ -199,7 +199,7 @@ const saveData = async (variable:VariableObj) => {
   variable.isExpand = lastIsExpandState.value;
   addBtnDisabled.value = false;
   currEditData.value = undefined;
-  notification.success(t('xcan_variable.saveSuccess'));
+  notification.success(t('actions.tips.saveSuccess'));
   notify.value++;
   if (variable.isAdd) {
     variable.isAdd = false;
@@ -313,7 +313,7 @@ const variableSwitchChange = async (variable:VariableObj) => {
     return;
   }
   variable.enabled = !variable.enabled;
-  notification.success(variable.enabled ? t('xcan_variable.enableSuccess') : t('xcan_variable.disableSuccess'));
+  notification.success(variable.enabled ? t('actions.tips.enableSuccess') : t('actions.tips.disableSuccess'));
 };
 
 // 记录正在编辑的数据 同时只有一个编辑

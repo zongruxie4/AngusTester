@@ -222,7 +222,7 @@ export function useHttpVariable (
       return;
     }
 
-    notification.success(t('dataVariable.detail.httpVariable.notifications.editSuccess'));
+    notification.success(t('actions.tips.editSuccess'));
     emit('ok', params, true);
   };
 
@@ -238,7 +238,7 @@ export function useHttpVariable (
       return;
     }
 
-    notification.success(t('dataVariable.detail.httpVariable.notifications.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
     const id = res?.data?.id;
     emit('ok', { ...params, id }, false);
   };

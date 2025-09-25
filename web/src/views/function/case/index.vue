@@ -246,7 +246,7 @@ const handleClone = async (rowData?: CaseDetail) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
 };
 
 const caseReviewVisible = ref(false);
@@ -378,7 +378,7 @@ const delCase = async (rowData?: CaseDetail) => {
   }
 
   deleteTabPane([currTabInfo.value._id]);
-  notification.success(t('functionCase.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
 };
 
 const updateTabPane = (data) => {

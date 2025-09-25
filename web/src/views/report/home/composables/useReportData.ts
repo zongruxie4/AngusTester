@@ -99,8 +99,7 @@ export function useReportData () {
    */
   const deleteReport = (report: Report) => {
     modal.confirm({
-      title: t('reportHome.modal.deleteReport'),
-      content: t('reportHome.modal.confirmDelete', { name: report.name }),
+      content: t('actions.tips.confirmDelete', { name: report.name }),
       onOk () {
         return report.deleteReport([report.id]).then((resp) => {
           const [error] = resp;
@@ -114,7 +113,7 @@ export function useReportData () {
             pagination.value.total
           );
           loadDataList();
-          notification.success(t('reportHome.messages.deleteSuccess'));
+          notification.success(t('actions.tips.deleteSuccess'));
         });
       }
     });

@@ -278,7 +278,7 @@ export function useFileManagement () {
     }
 
     state.selectedRowKeys = [];
-    notification.success(t('fileSpace.fileManagement.messages.deleteSuccess'));
+    notification.success(t('actions.tips.deleteSuccess'));
 
     if (state.dataSource.length === ids.length && state.pagination.current > 1) {
       state.pagination.current--;

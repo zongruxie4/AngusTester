@@ -156,7 +156,7 @@ const deleteCurrentTask = () => {
 
   const { name, id } = currentTaskInfo.value;
   modal.confirm({
-    content: t('task.detail.messages.confirmDelete', { name }),
+    content: t('actions.tips.confirmDelete', { name }),
     async onOk () {
       const [error] = await task.deleteTask([id]);
       if (error) {
@@ -165,7 +165,7 @@ const deleteCurrentTask = () => {
 
       emit('refreshChange');
       emit('delete', id);
-      notification.success(t('task.detail.messages.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
     }
   });
 };

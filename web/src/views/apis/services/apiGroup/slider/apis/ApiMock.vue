@@ -52,7 +52,7 @@ const createMockApiById = async () => {
   createApiLoading.value = false;
   if (error) { return; }
   mockApisId.value = data?.id;
-  notification.success(t('service.ApiMock.messages.createSuccess'));
+  notification.success(t('actions.tips.createSuccess'));
   loadMockApiInfo(props.id);
 };
 

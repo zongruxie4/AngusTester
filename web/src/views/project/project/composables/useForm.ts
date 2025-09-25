@@ -180,9 +180,7 @@ export function useForm (
       }
 
       // Show success message
-      const messageKey = projectId
-        ? 'project.projectEdit.messages.updateSuccess'
-        : 'project.projectEdit.messages.createSuccess';
+      const messageKey = projectId ? 'actions.tips.updateSuccess' : 'actions.tips.createSuccess';
       notification.success(t(messageKey));
 
       getNewCurrentProject();

@@ -142,7 +142,7 @@ const handleBaselineEditConfirm = async () => {
     return;
   }
 
-  notification.success(t('functionBaseline.editForm.modifySuccess'));
+  notification.success(t('actions.tips.modifySuccess'));
 
   const id = params.id;
   const name = params.name;
@@ -164,7 +164,7 @@ const handleBaselineAddConfirm = async () => {
     return;
   }
 
-  notification.success(t('functionBaseline.editForm.addSuccess'));
+  notification.success(t('actions.tips.addSuccess'));
 
   const _id = props.data?._id;
   const newId = res?.data?.id;

@@ -825,7 +825,7 @@ const save = async (data?: {
   }
 
   if (notificationFlag) {
-    notification.success(t('httpPlugin.messages.saveSuccess'));
+    notification.success(t('actions.tips.saveSuccess'));
   }
 
   if (typeof drawerRef.value?.open === 'function') {

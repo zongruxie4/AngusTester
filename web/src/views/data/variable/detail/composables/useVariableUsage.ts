@@ -70,7 +70,7 @@ export function useVariableUsage (props: { id: string }) {
    */
   const toDelete = (data: SourceItem) => {
     modal.confirm({
-      content: t('dataVariable.detail.useList.notifications.deleteConfirm', { name: data.targetName }),
+      content: t('actions.tips.confirmDelete', { name: data.targetName }),
       async onOk () {
         loading.value = true;
         const params = [props.id];
@@ -81,7 +81,7 @@ export function useVariableUsage (props: { id: string }) {
         }
 
         pagination.value.total = pagination.value.total - 1;
-        notification.success(t('dataVariable.detail.useList.notifications.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
         dataList.value = dataList.value.filter((item) => item.targetId !== data.targetId);
       }
     });

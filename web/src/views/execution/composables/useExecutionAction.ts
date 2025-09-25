@@ -46,7 +46,7 @@ export function useExecutionAction () {
 
     item.editName = false;
     item.name = name;
-    notification.success(t('execution.messages.modifySuccess'));
+    notification.success(t('actions.tips.modifySuccess'));
   };
 
   /**
@@ -380,7 +380,7 @@ export function useExecutionAction () {
 
     modal.confirm({
       centered: true,
-      content: t('execution.messages.deleteConfirm', { name: item.name }),
+      content: t('actions.tips.confirmDelete', { name: item.name }),
       async onOk () {
         loading.value = true;
         const [error] = await exec.deleteExec([item.id], { dataType: true });

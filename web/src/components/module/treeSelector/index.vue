@@ -91,7 +91,7 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
   if (error) {
     return;
   }
-  notification.success(t('commonComp.moduleTreeSelector.updateSuccess'));
+  notification.success(t('actions.tips.updateSuccess'));
   editId.value = undefined;
   emits('loadData', keywords.value);
 };
@@ -107,7 +107,7 @@ const hadleblur = (id: string, event: { target: { value: string } }) => {
 // 删除弹框
 const toDelete = (data: TagItem) => {
   modal.confirm({
-    content: t('commonComp.moduleTreeSelector.confirmDelete', { name: data.name }),
+    content: t('actions.tips.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -118,7 +118,7 @@ const toDelete = (data: TagItem) => {
         return;
       }
 
-      notification.success(t('commonComp.moduleTreeSelector.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       emits('loadData', keywords.value);
     }
   });
@@ -168,7 +168,7 @@ const moveUp = async (record) => {
   if (error) {
     return;
   }
-  notification.success(t('commonComp.moduleTreeSelector.moveSuccess'));
+  notification.success(t('actions.tips.moveSuccess'));
   emits('loadData', keywords.value);
 };
 
@@ -196,7 +196,7 @@ const moveDown = async (record) => {
   if (error) {
     return;
   }
-  notification.success(t('commonComp.moduleTreeSelector.moveSuccess'));
+  notification.success(t('actions.tips.moveSuccess'));
   emits('loadData', keywords.value);
 };
 

@@ -46,7 +46,7 @@ const delShare = async (id:string) => {
   if (error) {
     return;
   }
-  notification.success(t('commonComp.shareModal.deleteSuccess'));
+  notification.success(t('actions.tips.deleteSuccess'));
   notify.value++;
 };
 
@@ -113,7 +113,7 @@ const copy = (item:ListType) => {
     message = `${t('commonComp.shareModal.copyLabel.name')}: ${item.name}\n${t('commonComp.shareModal.copyLabel.link')}: ${item.url}`;
   }
   toClipboard(message).then(() => {
-    notification.success(t('commonComp.shareModal.copySuccess'));
+    notification.success(t('actions.tips.copySuccess'));
   });
 };
 

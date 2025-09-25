@@ -204,14 +204,14 @@ const loadTaskData = async () => {
  */
 const handleTaskDeletion = (taskData: TaskDetail) => {
   modal.confirm({
-    content: t('taskHome.addedTable.messages.confirmDelete', { name: taskData.name }),
+    content: t('actions.tips.confirmDelete', { name: taskData.name }),
     async onOk () {
       const [error] = await task.deleteTask([taskData.id]);
       if (error) {
         return;
       }
 
-      notification.success(t('taskHome.addedTable.messages.deleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       emit('update:deletedNotify', utils.uuid());
 
       if (typeof updateRefreshNotify === 'function') {

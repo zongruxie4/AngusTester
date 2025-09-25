@@ -65,7 +65,7 @@ export function useTaskActions (
       return;
     }
 
-    notification.success(t('backlog.main.messages.saveSuccess'));
+    notification.success(t('actions.tips.saveSuccess'));
 
     // Reset form
     newTask.newTaskName = undefined;
@@ -244,7 +244,7 @@ export function useTaskActions (
    */
   const confirmDeleteTask = (data: TaskDetail, index: number, sprintId?: string) => {
     (modal as any).confirm({
-      content: t('backlog.messages.confirmDelete', { name: data.name }),
+      content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         const id = data.id;
         const [error] = await task.deleteTask([id]);
@@ -252,7 +252,7 @@ export function useTaskActions (
           return;
         }
 
-        notification.success(t('backlog.messages.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
 
         if (typeof deleteTabPane === 'function') {
           deleteTabPane([id]);

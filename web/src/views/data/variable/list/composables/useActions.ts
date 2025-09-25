@@ -128,12 +128,12 @@ export function useActions (
    */
   const deleteVariable = (data: VariableItem) => {
     modal.confirm({
-      content: t('dataVariable.list.messages.deleteConfirm', { name: data.name }),
+      content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         const [error] = await variable.deleteVariables([data.id]);
         if (error) return;
 
-        notification.success(t('dataVariable.list.messages.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
 
         // Update pagination and reload data
         pagination.current = getCurrentPage(
@@ -160,7 +160,7 @@ export function useActions (
     const [error] = await variable.cloneVariable([data.id]);
     if (error) return;
 
-    notification.success(t('dataVariable.list.messages.cloneSuccess'));
+    notification.success(t('actions.tips.cloneSuccess'));
     loadData();
   };
 

@@ -507,7 +507,7 @@ const handleClone = async (id: string) => {
   }
 
   handleRefresh();
-  notification.success(t('mock.detail.apis.notifications.cloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
 };
 
 /**
@@ -539,7 +539,7 @@ const handleDelete = async (id: string) => {
           return;
         }
 
-        notification.success(t('mock.detail.apis.notifications.deleteSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
 
         if (typeof scrollRef.value?.delete === 'function') {
           if (apiIds.value.length === 1) {
@@ -872,7 +872,7 @@ const saveResponse = async (id: string, isUpdateFlag: boolean) => {
     return;
   }
 
-  notification.success(t('mock.detail.apis.notifications.saveSuccess'));
+  notification.success(t('actions.tips.saveSuccess'));
   loading.value = false;
 };
 

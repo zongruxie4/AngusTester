@@ -196,11 +196,11 @@ const openAnalysisDetailView = (analysisData) => {
  */
 const deleteAnalysis = (analysisData) => {
   modal.confirm({
-    content: t('taskAnalysis.messages.confirmDelete', { name: analysisData.name }),
+    content: t('actions.tips.confirmDelete', { name: analysisData.name }),
     onOk () {
       return analysis.deleteAnalysis([analysisData.id])
         .then(() => {
-          notification.success(t('taskAnalysis.messages.deleteSuccess'));
+          notification.success(t('actions.tips.deleteSuccess'));
           paginationConfig.currentPage = 1;
           loadAnalysisList();
         });
@@ -221,7 +221,7 @@ const updateAnalysisSnapshot = (analysisData) => {
           if (error) {
             return;
           }
-          notification.success(t('taskAnalysis.messages.updateSuccess'));
+          notification.success(t('actions.tips.updateSuccess'));
         });
     }
   });

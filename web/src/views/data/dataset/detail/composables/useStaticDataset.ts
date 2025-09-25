@@ -123,7 +123,7 @@ export function useStaticDataset (
       return;
     }
 
-    notification.success(t('dataset.detail.staticDataset.notifications.editSuccess'));
+    notification.success(t('actions.tips.editSuccess'));
     emit('ok', params, true);
   };
 
@@ -139,7 +139,7 @@ export function useStaticDataset (
       return;
     }
 
-    notification.success(t('dataset.detail.staticDataset.notifications.addSuccess'));
+    notification.success(t('actions.tips.addSuccess'));
     const id = res?.data?.id;
     emit('ok', { ...params, id }, false);
   };

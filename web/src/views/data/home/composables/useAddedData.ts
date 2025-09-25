@@ -126,7 +126,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
    */
   const deleteItem = (data: AddedItem) => {
     modal.confirm({
-      content: t('dataHome.summaryTable.messages.deleteConfirm', { name: data.name }),
+      content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         let error: Error | null = null;
         if (type === 'dataSource' || type === 'space') {

@@ -26,7 +26,7 @@ export function useTableActions (
    */
   const handleDelete = (data: ScenarioItem): void => {
     modal.confirm({
-      content: t('scenarioHome.myScenarios.table.messages.deleteConfirm', { name: data.name }),
+      content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         try {
           const [error] = await scenario.deleteScenario(data.id);
@@ -35,7 +35,7 @@ export function useTableActions (
             return;
           }
 
-          notification.success(t('scenarioHome.myScenarios.table.messages.deleteSuccess'));
+          notification.success(t('actions.tips.deleteSuccess'));
           emit('update:deletedNotify', utils.uuid());
 
           // Trigger refresh notification if available
