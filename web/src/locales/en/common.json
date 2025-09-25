@@ -23,6 +23,7 @@
     "value": "Value",
     "category": "Category",
     "position": "Position",
+    "address": "Address",
     "username": "Username",
     "password": "Password",
     "default": "Default",

@@ -145,19 +145,6 @@
       "description": "描述",
       "descriptionPlaceholder": "请输入脚本描述，最多800字符"
     },
-    "info": {
-      "scriptName": "名称",
-      "scriptType": "类型",
-      "plugin": "插件",
-      "source": "来源",
-      "resourceId": "资源ID",
-      "resourceName": "资源名称",
-      "tags": "标签",
-      "creator": "添加人",
-      "lastUpdater": "最后更新人",
-      "lastModifyTime": "最后修改时间",
-      "description": "描述"
-    },
     "record": {
       "executionId": "执行ID",
       "executionName": "执行名称",

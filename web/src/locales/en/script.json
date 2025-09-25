@@ -126,19 +126,6 @@
       "description": "Description",
       "descriptionPlaceholder": "Please enter script description, maximum 800 characters"
     },
-    "info": {
-      "scriptName": "Name",
-      "scriptType": "Type",
-      "description": "Description",
-      "plugin": "Plugin",
-      "source": "Source",
-      "resourceId": "Resource ID",
-      "resourceName": "Resource Name",
-      "tags": "Tags",
-      "creator": "Creator",
-      "lastUpdater": "Modifier",
-      "lastModifyTime": "Modify Date"
-    },
     "record": {
       "executionId": "Execution ID",
       "executionName": "Execution Name",

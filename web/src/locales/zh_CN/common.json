@@ -23,6 +23,7 @@
     "value": "值",
     "category": "分类",
     "position": "位置",
+    "address": "地址",
     "username": "用户名",
     "password": "密码",
     "default": "默认",

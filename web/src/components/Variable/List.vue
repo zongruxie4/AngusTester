@@ -597,7 +597,7 @@ onMounted(() => {
               <div>{{ t('xcan_variable.value') }}<Colon /></div>
             </template>
             <template v-if="props.tabKey !== 'CURRENT'">
-              <div>{{ t('xcan_variable.source') }}<Colon /></div>
+              <div>{{ t('common.source') }}<Colon /></div>
             </template>
             <div>{{ t('xcan_variable.scope') }}<Colon /></div>
             <div>{{ t('xcan_variable.lastModified') }}<Colon /></div>

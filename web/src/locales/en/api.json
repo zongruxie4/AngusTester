@@ -697,8 +697,6 @@
       },
       "form": {
         "namePlaceholder": "Name",
-        "source": "Source",
-        "address": "Address",
         "addressPlaceholder": "Address",
         "duplicateStrategy": "Strategy when encountering duplicates",
         "deleteWhenNotExist": "Whether to delete local APIs when sync APIs do not exist",

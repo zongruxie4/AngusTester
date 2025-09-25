@@ -615,7 +615,6 @@
         "viewItem": {
           "intranetIP": "Intranet IP: ",
           "publicIP": "Public IP: ",
-          "source": "Source: ",
           "role": "Role: ",
           "specification": "Specification: ",
           "system": "System: ",

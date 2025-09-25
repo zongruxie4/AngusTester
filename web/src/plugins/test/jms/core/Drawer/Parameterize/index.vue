@@ -39,7 +39,7 @@ const confirmFile = () => {
     <template v-if="activeType === 'upload'"></template>
     <template v-if="activeType === 'generated'">
       <div class="mt-4">
-        <div>{{ t('jmsPlugin.parameterize.source') }}</div>
+        <div>{{ t('common.source') }}</div>
         <RadioGroup
           v-model:value="activeSource"
           :options="sourceOpt" />

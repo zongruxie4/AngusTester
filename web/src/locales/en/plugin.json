@@ -933,15 +933,6 @@
         "analyze": "Superimpose Analysis"
       },
       "scriptInfo": {
-        "scriptName": "Script Name",
-        "scriptType": "Script Type",
-        "plugin": "Plugin",
-        "source": "Source",
-        "creator": "Creator",
-        "createTime": "Create Time",
-        "lastModifier": "Last Modifier",
-        "lastModifyTime": "Last Modify Time",
-        "description": "Description",
         "form": {
           "scriptTypeRequired": "Please select script type",
           "scriptTypePlaceholder": "Please select script type",

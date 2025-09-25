@@ -935,15 +935,6 @@
         "analyze": "叠加分析"
       },
       "scriptInfo": {
-        "scriptName": "脚本名称",
-        "scriptType": "脚本类型",
-        "plugin": "插件",
-        "source": "来源",
-        "creator": "创建人",
-        "createTime": "创建时间",
-        "lastModifier": "最后更新人",
-        "lastModifyTime": "最后更新时间",
-        "description": "描述",
         "form": {
           "scriptTypeRequired": "请选择脚本类型",
           "scriptTypePlaceholder": "请选择脚本类型",

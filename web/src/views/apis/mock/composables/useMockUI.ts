@@ -105,7 +105,7 @@ export function useMockUI () {
       }
     },
     {
-      title: t('mock.columns.source'),
+      title: t('common.source'),
       dataIndex: 'source',
       width: '8%',
       customCell: () => {

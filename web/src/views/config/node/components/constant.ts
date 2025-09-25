@@ -137,7 +137,7 @@ export const viewItem = [
     valueKey: 'publicIp'
   },
   {
-    label: t('node.nodeItem.interface.viewItem.source'),
+    label: t('common.source'),
     valueKey: 'sourceName'
   },
   {

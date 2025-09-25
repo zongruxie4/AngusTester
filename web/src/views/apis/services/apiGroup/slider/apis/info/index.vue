@@ -80,7 +80,7 @@ const columns = computed(() => {
       { label: t('common.id'), dataIndex: 'id' },
       { label: t('service.groupApiDetail.columns.summary'), dataIndex: 'summary' },
       { label: t('service.groupApiDetail.columns.operationId'), dataIndex: 'operationId' },
-      { label: t('service.groupApiDetail.columns.source'), dataIndex: 'source', type: '1' },
+      { label: t('common.source'), dataIndex: 'source', type: '1' },
       { label: t('common.status'), dataIndex: 'status' },
       { label: t('service.groupApiDetail.columns.auth'), dataIndex: 'auth' },
       { label: t('service.groupApiDetail.columns.deprecated'), dataIndex: 'deprecated' },

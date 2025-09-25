@@ -64,7 +64,7 @@ const infoConfig = [[
     dataIndex: 'plugin'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.scriptInfo.source'),
+    label: t('common.source'),
     dataIndex: 'sourceName'
   },
   {

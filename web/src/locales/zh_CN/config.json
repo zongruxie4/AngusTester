@@ -611,13 +611,9 @@
         "viewItem": {
           "intranetIP": "内网IP: ",
           "publicIP": "公网IP: ",
-          "source": "来源: ",
           "role": "角色: ",
           "specification": "规格: ",
           "system": "系统: ",
-          "creator": "添加人: ",
-          "addTime": "添加时间: ",
-          "expiredTime": "到期时间: "
         },
         "nodeUseProgresses": {
           "cpu": "CPU",
