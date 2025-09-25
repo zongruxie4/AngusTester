@@ -118,12 +118,9 @@
       "addExecutionSuccess": "Execution added successfully, please check details in \"Execute\"."
     },
     "form": {
-      "scriptType": "Type",
       "selectScriptType": "Please select script type",
-      "scriptName": "Name",
       "enterScriptName": "Please enter script name",
       "namePlaceholder": "Please enter script name, maximum 200 characters",
-      "description": "Description",
       "descriptionPlaceholder": "Please enter script description, maximum 800 characters"
     },
     "record": {

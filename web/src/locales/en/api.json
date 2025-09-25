@@ -129,16 +129,12 @@
         "title": "Smoke Test",
         "testName": "Test Name",
         "testDate": "Test Date",
-        "scriptId": "Script ID",
-        "scriptName": "Script Name"
       },
       "securityResult": {
         "title": "Security Test",
         "passed": "Passed",
         "testName": "Test Name",
         "testerDate": "Test Date",
-        "scriptId": "Script ID",
-        "scriptName": "Script Name"
       },
       "topAction": {
         "addService": "Add Service"

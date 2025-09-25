@@ -96,7 +96,7 @@ watch(() => props.visible, () => {
     <div class="modal-content">
       <!-- Script type selection section -->
       <div class="selection-section">
-        <h3 class="section-title">{{ t('commonComp.delScriptModal.scriptType') }}</h3>
+        <h3 class="section-title">{{ t('common.scriptType') }}</h3>
         <div class="checkbox-container">
           <CheckboxGroup
             v-model:value="checked"

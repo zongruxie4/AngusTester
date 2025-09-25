@@ -142,11 +142,11 @@ defineExpose({
     size="small">
     <FormItem
       name="name"
-      :label="t('genDataPlugin.excuteConfig.scriptName')"
+      :label="t('common.scriptName')"
       :rules="{required: true, message: t('genDataPlugin.excuteConfig.validation.scriptNameRequired')}">
       <Input
         v-model:value="formState.name"
-        :placeholder="t('genDataPlugin.excuteConfig.placeholders.scriptName')"
+        :placeholder="t('common.scriptName')"
         :maxLength="200"
         class="mr-2" />
     </FormItem>

@@ -783,7 +783,6 @@
           "title": "执行基本信息",
           "fields": {
             "execName": "执行名称",
-            "scriptName": "脚本名称",
             "testScriptId": "测试脚本ID",
             "nodeCount": "节点数",
             "samplingInterval": "采样间隔",
@@ -1982,9 +1981,6 @@
               "execResult": "执行结果",
               "execId": "执行ID",
               "execName": "执行名称",
-              "executor": "执行人",
-              "scriptId": "脚本ID",
-              "scriptName": "脚本名称",
               "lastExecTime": "最后执行时间"
             }
           },

@@ -16,8 +16,8 @@ const columns = [
     { dataIndex: 'testByDate', label: t('service.sidebar.securityResult.testerDate') }
   ],
   [
-    { dataIndex: 'scriptId', label: t('service.sidebar.securityResult.scriptId') },
-    { dataIndex: 'scriptName', label: t('service.sidebar.securityResult.scriptName') }
+    { dataIndex: 'scriptId', label: t('common.scriptId') },
+    { dataIndex: 'scriptName', label: t('common.scriptName') }
   ]
 ];
 

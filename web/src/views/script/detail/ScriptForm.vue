@@ -38,7 +38,7 @@ defineExpose({ getFormData, validate });
       layout="vertical"
       size="small">
       <FormItem
-        :label="t('scriptDetail.form.scriptType')"
+        :label="t('common.scriptType')"
         name="type"
         :rules="[{ required: true, message: t('scriptDetail.form.selectScriptType') }]">
         <SelectEnum
@@ -50,7 +50,7 @@ defineExpose({ getFormData, validate });
       </FormItem>
 
       <FormItem
-        :label="t('scriptDetail.form.scriptName')"
+        :label="t('common.scriptName')"
         name="name"
         size="small"
         :rules="[{ required: true, message: t('scriptDetail.form.enterScriptName') }]">

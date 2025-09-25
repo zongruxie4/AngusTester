@@ -473,7 +473,7 @@ onBeforeUnmount(() => {
                       {{ t('execution.basic.priority') }}:
                     </div>
                     <div class="whitespace-nowrap h-7 text-right">
-                      {{ t('execution.basic.scriptName') }}:
+                      {{ t('common.scriptName') }}:
                     </div>
                     <div class="whitespace-nowrap h-7 text-right">
                       {{ t('execution.messages.modifiedBy') }}:

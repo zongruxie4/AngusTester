@@ -123,9 +123,6 @@
       "samplingStatus": "采样状态"
     },
     "drawerItem": {
-      "scriptName": "脚本名称",
-      "scriptId": "脚本ID",
-      "description": "描述",
       "namePlaceholder": "最长200个字符",
       "descriptionPlaceholder": "最长800个字符"
     },
@@ -135,12 +132,8 @@
       "processExitCode": "进程退出码",
       "downloadFileName": "runner.log"
     },
-    "executeConfig": {
-      "scriptType": "脚本类型"
-    },
     "exportScriptModal": {
       "title": "导出脚本",
-      "format": "格式"
     },
     "importScript": {
       "title": "导入脚本"
@@ -866,24 +859,14 @@
       "failureReason": "失败原因",
       "samplingStatus": "采样状态"
     },
-    "drawerMenu": {
-      "saveForm": {
-        "scriptName": "脚本名称",
-        "scriptId": "脚本ID"
-      }
-    },
     "execLog": {
       "node": "节点",
       "schedulingResult": "调度结果",
       "processExitCode": "进程退出码",
       "downloadFileName": "runner.log"
     },
-    "executeConfig": {
-      "scriptType": "脚本类型"
-    },
     "exportScriptModal": {
       "title": "导出脚本",
-      "format": "格式"
     },
     "functionTestDetail": {
       "basicInfo": {
@@ -1894,7 +1877,6 @@
       }
     },
     "excuteConfig": {
-      "scriptName": "脚本名称",
       "execThreads": "执行线程数",
       "selectMockNode": "选择Mock节点",
       "execPriority": "执行优先级",

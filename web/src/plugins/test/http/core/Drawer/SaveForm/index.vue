@@ -136,7 +136,7 @@ defineExpose({ isValid, getData });
 
     <div v-if="scriptName" class="space-y-0">
       <div class="flex items-center">
-        <span>{{ t('httpPlugin.drawerItem.scriptName') }}</span>
+        <span>{{ t('common.scriptName') }}</span>
       </div>
       <div class="flex-1 flex items-center space-x-2">
         <span :title="scriptName" class="truncate">{{ scriptName }}</span>
@@ -146,7 +146,7 @@ defineExpose({ isValid, getData });
 
     <div v-if="scriptId" class="space-y-0">
       <div class="flex items-center">
-        <span>{{ t('httpPlugin.drawerItem.scriptId') }}</span>
+        <span>{{ t('common.scriptId') }}</span>
       </div>
       <div class="flex-1 flex items-center space-x-2">
         <span :title="scriptId" class="truncate">{{ scriptId }}</span>

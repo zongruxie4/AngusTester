@@ -1044,8 +1044,6 @@
           "execId": "执行ID",
           "execName": "执行名称",
           "execByName": "执行人",
-          "scriptId": "脚本ID",
-          "scriptName": "脚本名称",
           "lastExecTime": "最后执行时间"
         }
       },

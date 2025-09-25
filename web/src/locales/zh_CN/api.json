@@ -130,16 +130,12 @@
         "title": "冒烟测试",
         "testName": "测试人",
         "testDate": "测试时间",
-        "scriptId": "脚本ID",
-        "scriptName": "脚本名称"
       },
       "securityResult": {
         "title": "安全测试",
         "passed": "通过",
         "testName": "测试人",
         "testerDate": "测试时间",
-        "scriptId": "脚本ID",
-        "scriptName": "脚本名称"
       },
       "topAction": {
         "addService": "添加服务"

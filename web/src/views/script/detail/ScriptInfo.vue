@@ -40,7 +40,7 @@ const {
     <!-- Script Name -->
     <div class="relative flex items-start group">
       <div class="w-21.75 flex items-center flex-shrink-0">
-        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.scriptName') }}</span>
+        <span class="text-theme-sub-content font-medium">{{ t('common.scriptName') }}</span>
         <Colon class="w-1 text-theme-sub-content" />
       </div>
       <div class="flex items-start whitespace-pre-wrap break-words break-all text-theme-title font-medium">
@@ -51,7 +51,7 @@ const {
     <!-- Script Type -->
     <div class="relative flex items-start group">
       <div class="w-21.75 flex items-center flex-shrink-0">
-        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.scriptType') }}</span>
+        <span class="text-theme-sub-content font-medium">{{ t('common.scriptType') }}</span>
         <Colon class="w-1 text-theme-sub-content" />
       </div>
       <div class="whitespace-pre-wrap break-words break-all">

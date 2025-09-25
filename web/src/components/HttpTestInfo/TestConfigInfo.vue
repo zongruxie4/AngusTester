@@ -35,11 +35,11 @@ const columns = computed(() => {
       dataIndex: 'testFailureNum'
     },
     {
-      label: t('xcan_httpTestInfo.scriptId'),
+      label: t('common.scriptId'),
       dataIndex: 'scriptId'
     },
     {
-      label: t('xcan_httpTestInfo.scriptName'),
+      label: t('common.scriptName'),
       dataIndex: 'scriptName',
       ellipsis: true
     },

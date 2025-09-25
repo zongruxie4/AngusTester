@@ -24,7 +24,7 @@ export function useDashboardConfig () {
     charts: [
       {
         type: ChartType.PIE,
-        title: t('execution.chartInfo.scriptType'),
+        title: t('common.scriptType'),
         field: 'script_type',
         enumKey: scriptTypeEnums,
         pieConfig: {

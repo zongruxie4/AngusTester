@@ -4,13 +4,9 @@
       "scenario": "脚本",
       "configure": "配置",
       "concurrency": "并发数",
-      "startTime": "开始时间",
-      "endTime": "结束时间",
       "executionTime": "执行时长（秒）",
       "iterations": "迭代次数",
       "errorRate": "错误率",
-      "scriptName": "脚本名称",
-      "priority": "优先级"
     },
     "actions": {
       "createExecution": "添加执行",
@@ -188,7 +184,6 @@
       "overlayAnalysis": "叠加分析"
     },
     "chartInfo": {
-      "scriptType": "脚本类型",
       "executionStatus": "执行状态"
     },
     "add": {

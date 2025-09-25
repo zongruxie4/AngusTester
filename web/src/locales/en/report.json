@@ -1499,12 +1499,6 @@
       },
       "info": {
         "title": "Scenario Information",
-        "fields": {
-          "plugin": "Plugin",
-          "scriptType": "Script Type",
-          "scriptId": "Script ID",
-          "scriptName": "Script Name"
-        }
       },
       "testResult": {
         "title": "Scenario Test Summary Results",
@@ -1996,12 +1990,6 @@
           "execInfo": {
             "title": "Execution Information",
             "fields": {
-              "execResult": "Execution Result",
-              "execId": "Execution ID",
-              "execName": "Execution Name",
-              "executor": "Executor",
-              "scriptId": "Script ID",
-              "scriptName": "Script Name",
               "lastExecTime": "Last Execution Time"
             }
           },

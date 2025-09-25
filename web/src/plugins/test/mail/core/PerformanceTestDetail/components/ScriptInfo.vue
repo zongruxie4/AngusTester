@@ -52,11 +52,11 @@ const formData = reactive({
 
 const infoConfig = [[
   {
-    label: t('ftpPlugin.performanceTestDetail.scriptInfo.scriptName'),
+    label: t('common.scriptName'),
     dataIndex: 'name'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.scriptInfo.scriptType'),
+    label: t('common.scriptType'),
     dataIndex: 'typeName'
   },
   {
@@ -134,7 +134,7 @@ defineExpose({ getFormData, validate, isSpread, toggle });
         layout="vertical"
         size="small">
         <FormItem
-          :label="t('ftpPlugin.performanceTestDetail.scriptInfo.scriptType')"
+          :label="t('common.scriptType')"
           name="type"
           :rules="[{required: true, message: t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptTypeRequired')}]">
           <SelectEnum
@@ -143,7 +143,7 @@ defineExpose({ getFormData, validate, isSpread, toggle });
             :placeholder="t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptTypePlaceholder')" />
         </FormItem>
         <FormItem
-          :label="t('ftpPlugin.performanceTestDetail.scriptInfo.scriptName')"
+          :label="t('common.scriptName')"
           name="name"
           size="small"
           :rules="[{required: true, message: t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptNameRequired')}]">

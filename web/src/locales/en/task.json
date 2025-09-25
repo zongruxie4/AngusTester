@@ -1049,8 +1049,6 @@
           "execId": "Execution ID",
           "execName": "Execution Name",
           "execByName": "Executor",
-          "scriptId": "Script ID",
-          "scriptName": "Script Name",
           "lastExecTime": "Last Execution Time"
         }
       },

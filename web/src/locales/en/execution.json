@@ -9,7 +9,6 @@
       "executionTime": "Execution Time (seconds)",
       "iterations": "Iterations",
       "errorRate": "Error Rate",
-      "scriptName": "Script Name"
     },
     "actions": {
       "createExecution": "Add Execution",
@@ -195,7 +194,6 @@
       "overlayAnalysis": "Overlay Analysis"
     },
     "chartInfo": {
-      "scriptType": "Script Type",
       "executionStatus": "Exec Status"
     },
     "add": {

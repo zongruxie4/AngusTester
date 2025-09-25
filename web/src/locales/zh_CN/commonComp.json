@@ -119,7 +119,6 @@
       },
       "delScriptModal": {
         "title": "删除测试脚本",
-        "scriptType": "脚本类型",
         "functionalTest": "功能测试",
         "performanceTest": "性能测试",
         "stabilityTest": "稳定性测试",
@@ -1041,8 +1040,6 @@
     "failureReason": "失败原因",
     "testCount": "测试次数",
     "failureCount": "失败次数",
-    "scriptId": "脚本ID",
-    "scriptName": "脚本名称",
     "tested": "已测试",
     "executionId": "执行ID",
     "executionName": "执行名称",
@@ -1192,9 +1189,7 @@
   },
   "xcan_testBasicInfo": {
     "execNodes": "节点数",
-    "scriptType": "类型",
     "reportInterval": "报告间隔",
-    "scriptName": "脚本",
     "batchRows": "批量行数",
     "plugin": "插件",
     "mockFileUrl": "生成文件",

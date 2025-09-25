@@ -133,12 +133,8 @@
       "processExitCode": "Process Exit Code",
       "downloadFileName": "runner.log"
     },
-    "executeConfig": {
-      "scriptType": "Script Type"
-    },
     "exportScriptModal": {
       "title": "Export Script",
-      "format": "Format"
     },
     "importScript": {
       "title": "Import Script"
@@ -862,8 +858,6 @@
     },
     "drawerMenu": {
       "saveForm": {
-        "scriptName": "Script Name",
-        "scriptId": "Script ID",
         "namePlaceholder": "Maximum 200 characters",
         "descriptionPlaceholder": "Maximum 800 characters"
       }
@@ -875,9 +869,6 @@
       "fail": "Failed",
       "processExitCode": "Process Exit Code",
       "downloadFileName": "runner.log"
-    },
-    "executeConfig": {
-      "scriptType": "Script Type"
     },
     "exportScriptModal": {
       "title": "Export Script",
@@ -1898,7 +1889,6 @@
       }
     },
     "excuteConfig": {
-      "scriptName": "Script Name",
       "execThreads": "Execution Threads",
       "selectMockNode": "Select Mock Node",
       "execPriority": "Execution Priority",
@@ -1924,9 +1914,6 @@
       "validation": {
         "scriptNameRequired": "Please enter data script name",
         "selectNode": "Please select node"
-      },
-      "placeholders": {
-        "scriptName": "Enter data script name, limited to 200 characters"
       }
     },
     "FuncModal": {

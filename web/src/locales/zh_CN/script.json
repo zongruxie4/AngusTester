@@ -137,12 +137,9 @@
       "addExecutionSuccess": "添加执行成功，请在\"执行\"中查看详情。"
     },
     "form": {
-      "scriptType": "脚本类型",
       "selectScriptType": "请选择脚本类型",
-      "scriptName": "脚本名称",
       "enterScriptName": "请填写脚本名称",
       "namePlaceholder": "请输入脚本名称,最多200字符",
-      "description": "描述",
       "descriptionPlaceholder": "请输入脚本描述，最多800字符"
     },
     "record": {
