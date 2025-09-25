@@ -14,9 +14,8 @@ import { GM, upload } from '@xcan-angus/infra';
 
 // Composables
 import { useActions, useManagement } from './composables';
-import type { Project } from './types';
+import { getProjectTypeName, getProjectTypeTipConfig, Project } from './types';
 import { ProjectType } from '@/enums/enums';
-import { getProjectTypeName, getProjectTypeTipConfig } from '@/views/project/project/utils';
 
 // Initialize i18n
 const { t } = useI18n();
@@ -76,7 +75,9 @@ const descRichRef = ref();
 /** Project type configuration for tips display */
 const projectTypeTipConfig = getProjectTypeTipConfig();
 /** Project type name mapping for UI display */
-const projectTypeName = getProjectTypeName();
+const projectTypeName = computed(() => {
+  return getProjectTypeName();
+});
 
 // Computed properties
 const modalTitle = computed(() => {

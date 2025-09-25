@@ -1,6 +1,37 @@
-import { EnumMessage, PageQuery } from '@xcan-angus/infra';
+import { EnumMessage, enumUtils, PageQuery } from '@xcan-angus/infra';
 import { ProjectType } from '@/enums/enums';
 import { Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// Configuration objects - exported as functions to use i18n properly in component context
+export const getProjectTypeTipConfig = () => {
+  const { t } = useI18n();
+  return {
+    AGILE: [
+      t('project.projectEdit.projectTypeTip.agile.features'),
+      t('project.projectEdit.projectTypeTip.agile.scenarios')
+    ],
+    GENERAL: [
+      t('project.projectEdit.projectTypeTip.general.features'),
+      t('project.projectEdit.projectTypeTip.general.scenarios')
+    ],
+    TESTING: [
+      t('project.projectEdit.projectTypeTip.testing.features'),
+      t('project.projectEdit.projectTypeTip.testing.scenarios')
+    ]
+  };
+};
+
+/** Project type name mapping for UI display */
+export const getProjectTypeName = () => {
+  return enumUtils.enumToMap(ProjectType);
+};
+
+export const toolbarOptions = ['title', 'color', 'weight', 'block', 'link', 'list', 'direction', 'table', 'zoom'];
+
+export const uploadParams = {
+  bizKey: 'angusTesterProjectAvatar'
+};
 
 /**
  * Project member interface - represents a project member with basic info
@@ -73,35 +104,6 @@ export interface Project {
   dateRange?: [string, string];
   /** Whether to import example data on creation */
   importExample?: boolean;
-}
-
-/**
- * Tree data structure interface - used for hierarchical data display
- * @interface TreeData
- */
-export interface TreeData {
-  /** Display name of the tree node */
-  name: string;
-  /** Sequence/order of the node */
-  sequence: string;
-  /** Depth level in the tree (0-based) */
-  level: number;
-  /** Child nodes array */
-  children?: TreeData[];
-  /** Unique identifier for the tree node */
-  id: string;
-  /** Parent node ID (if applicable) */
-  pid?: string;
-  /** Index position among siblings */
-  index?: number;
-  /** Array of parent IDs (path from root) */
-  ids?: string[];
-  /** Whether this is the last child in its level */
-  isLast?: boolean;
-  /** Maximum depth of child levels */
-  childLevels?: number;
-  /** Whether the node is disabled for interaction */
-  disabled?: boolean;
 }
 
 /**

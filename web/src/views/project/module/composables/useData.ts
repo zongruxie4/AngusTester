@@ -1,7 +1,7 @@
 import { ref, type Ref } from 'vue';
 import { modules } from '@/api/tester';
-import { travelTreeData } from '@/views/project/project/utils';
 import type { ModuleItem, ModuleApiParams } from '../types';
+import { travelTreeData } from '@/utils/utils';
 
 /**
  * Composable for managing module data operations

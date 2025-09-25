@@ -10,9 +10,9 @@ import { Tree } from 'ant-design-vue';
 import { Icon, Modal } from '@xcan-angus/vue-ui';
 
 // Utilities and API
-import { travelTreeData } from '@/views/project/project/utils';
 import { modules } from '@/api/tester';
 import type { MoveModuleProps, ModuleItem } from './types';
+import {travelTreeData} from "@/utils/utils";
 
 /**
  * Component for moving modules to different parent locations

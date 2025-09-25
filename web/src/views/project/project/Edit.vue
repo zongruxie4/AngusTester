@@ -13,11 +13,16 @@ import { GM } from '@xcan-angus/infra';
 // Local imports
 import { ProjectType } from '@/enums/enums';
 import { cropperUploadOption } from '@/utils/constant';
-import { getProjectTypeTipConfig, getProjectTypeName, toolbarOptions, uploadParams } from './utils';
 
 // Composables
 import { useForm, useMembers, useAvatar } from './composables';
-import { ProjectEditEmits, ProjectEditProps } from '@/views/project/project/types';
+import {
+  getProjectTypeName, getProjectTypeTipConfig,
+  ProjectEditEmits,
+  ProjectEditProps,
+  toolbarOptions,
+  uploadParams
+} from '@/views/project/project/types';
 
 const delTabPane = inject('delTabPane',
   (tabKey: string) => { console.log('delTabPane not provided:', tabKey); }
@@ -71,7 +76,9 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
 /** Project type configuration for tips display */
 const projectTypeTipConfig = getProjectTypeTipConfig();
 /** Project type name mapping for UI display */
-const projectTypeName = getProjectTypeName();
+const projectTypeName = computed(() => {
+  return getProjectTypeName();
+});
 
 /** Get current project type name for display */
 const currentProjectTypeName = computed(() => {

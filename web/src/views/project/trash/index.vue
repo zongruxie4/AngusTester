@@ -69,7 +69,7 @@ onMounted(() => {
               </div>
               <div class="mt-3">
                 <h1 class="text-base font-bold text-gray-900">
-                  {{ $t('projectTrash.name') }}
+                  {{ $t('projectTrash.title') }}
                 </h1>
                 <p class="text-xs text-gray-500 mt-0.5">
                   {{ $t('projectTrash.ui.adminHint') }}

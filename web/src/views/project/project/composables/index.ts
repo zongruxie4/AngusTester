@@ -29,7 +29,7 @@ export type {
   DeleteProjectParams,
   ProjectListResponse,
   RawProjectData,
-  TreeData,
   ProjectTypeConfig,
   ProjectSortOption
 } from '../types';
+export {TreeData} from "@/types/types";
