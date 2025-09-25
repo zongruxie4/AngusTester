@@ -802,7 +802,7 @@ const handleSaveOk = () => {
               disabled
               class="mt-2 mb-5"
               :allowClear="false" />
-            <span><IconRequired />{{ t('service.syncConfig.form.address') }}</span>
+            <span><IconRequired />{{ t('common.address') }}</span>
             <div class="relative mt-2 mb-5">
               <Input
                 v-model:value="sync.apiDocsUrl"

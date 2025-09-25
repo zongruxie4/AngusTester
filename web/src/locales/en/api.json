@@ -1897,7 +1897,6 @@
     },
     "columns": {
       "node": "Node",
-      "address": "Address",
     },
     "actions": {
       "forceDelete": "Force Delete",

@@ -81,18 +81,18 @@ export function useMockUI () {
       }
     },
     {
-      title: t('mock.columns.name'),
+      title: t('common.name'),
       dataIndex: 'name',
       width: '13%'
     },
     {
-      title: t('mock.columns.node'),
+      title: t('common.node'),
       dataIndex: 'nodeName',
       customRender: ({ text }: { text: string }): string => text || '--',
       width: '10%'
     },
     {
-      title: t('mock.columns.address'),
+      title: t('common.address'),
       dataIndex: 'serviceHostUrl',
       customRender: ({ text }: { text: string }): string => text || '--'
     },

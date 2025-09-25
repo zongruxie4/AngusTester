@@ -696,7 +696,6 @@
       },
       "form": {
         "namePlaceholder": "名称",
-        "address": "地址",
         "addressPlaceholder": "地址",
         "duplicateStrategy": "遇到重复时处理策略",
         "deleteWhenNotExist": "同步接口不存在时是否删除本地接口",
@@ -1909,7 +1908,6 @@
     },
     "columns": {
       "node": "所在节点",
-      "address": "地址"
     },
     "actions": {
       "forceDelete": "强制删除",
