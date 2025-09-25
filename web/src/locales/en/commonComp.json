@@ -102,7 +102,7 @@
         "title": "Select Cases",
         "searchPlaceholder": "Search name, code",
         "reviewStatus": "Review Status",
-        "testResult": "Test Result",
+        "testResult": "Test Result"
       },
       "moduleTreeSelector": {
         "title": "Cases",
@@ -264,7 +264,7 @@
     "selectTaskByModuleModal": {
       "title": "Select Task",
       "task": "Task",
-      "searchPlaceholder": "Search by name or code",
+      "searchPlaceholder": "Search by name or code"
     },
     "exportScriptModal": {
       "title": "Export Script",
@@ -1326,7 +1326,7 @@
     "owner": "Owner"
   },
   "xcan_selectUser": {
-    "defaultPlaceholder": "Select or search user",
+    "defaultPlaceholder": "Select or search user"
   },
   "xcan_shortDuration": {
     "maxDuration24Hours": "Maximum duration 24 hours"
@@ -1425,7 +1425,7 @@
   "xcan_statusTag": {
     "fail": "Failed",
     "success": "Passed",
-    "block": "Not Executed",
+    "block": "Not Executed"
   },
   "xcan_rendezvous": {
     "userCount": "User Count",
@@ -1669,7 +1669,7 @@
   "xcan_execSampling": {
     "errorSampling": "Error Sampling",
     "time": "Time",
-    "samplingId": "Sampling ID",
+    "samplingId": "Sampling ID"
   },
   "xcan_execScriptInfo": {
     "scriptName": "Script Name",

@@ -36,10 +36,10 @@ const iframeSrc = computed(() => {
 const menuItems = computed(() => {
   return [
     { icon: 'icon-xiangmu', name: t('project.title'), key: 'project' },
-    { icon: 'icon-AIzhushou', name: t('AI.title'), key: 'AI' } && aiEnabled.value,
-    { icon: 'icon-banben1', name: t('version.title'), key: 'version' } && projectId.value,
-    { icon: 'icon-mokuai1', name: t('module.title'), key: 'module' } && projectId.value,
-    { icon: 'icon-biaoqian3', name: t('tag.title'), key: 'tags' } && projectId.value,
+    aiEnabled.value && { icon: 'icon-AIzhushou', name: t('AI.title'), key: 'AI' },
+    projectId.value && { icon: 'icon-banben1', name: t('version.title'), key: 'version' },
+    projectId.value && { icon: 'icon-mokuai1', name: t('module.title'), key: 'module' },
+    projectId.value && { icon: 'icon-biaoqian3', name: t('tag.title'), key: 'tags' },
     { icon: 'icon-fabu', name: t('projectActivity.title'), key: 'activity' },
     { icon: 'icon-qingchu', name: t('projectTrash.title'), key: 'trash' }
   ].filter(Boolean) as { icon: string; name: string; key: string; }[];

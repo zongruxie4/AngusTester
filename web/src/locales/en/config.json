@@ -194,7 +194,7 @@
         "title": "Authorize Policy",
         "placeholders": {
           "searchPolicy": "Search Policy Name"
-        },
+        }
       }
     }
   },

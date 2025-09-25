@@ -43,7 +43,7 @@
         "searchPlaceholder": "查询名称",
         "authPlaceholder": "权限控制",
         "permission": "权限",
-        "all": "全部",
+        "all": "全部"
       },
       "groupSet": {
         "deptPlaceholder": "查询部门",
@@ -65,7 +65,7 @@
       "columns": {
         "plugin": "插件",
         "resourceId": "资源ID",
-        "resourceName": "资源名称",
+        "resourceName": "资源名称"
       },
       "messages": {
         "maxBatchLimit": "最大支持批量操作 {maxNum} 个脚本，当前已选中 {selectedNum} 个脚本。",

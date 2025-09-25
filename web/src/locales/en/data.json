@@ -724,13 +724,13 @@
       "labels": {
         "driverClassName": "Driver Class Name",
         "jdbcUrl": "Jdbc URL",
-        "username": "Username",
+        "username": "Username"
       },
       "placeholders": {
         "databaseType": "Database Type",
         "driverClassName": "Driver Class Name",
         "jdbcUrl": "Jdbc URL",
-        "username": "Username",
+        "username": "Username"
       },
       "rules": {
         "databaseType": "Please select database type",

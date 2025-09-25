@@ -72,7 +72,7 @@
           "hintText": "查看使用变量的资源信息。"
         },
         "staticParameter": {
-          "hintText": "在采样时根据Mock数据函数动态生成参数值，每个数据集最大允许创建200个参数，最大支持生成1000亿行数据。",
+          "hintText": "在采样时根据Mock数据函数动态生成参数值，每个数据集最大允许创建200个参数，最大支持生成1000亿行数据。"
         }
       },
       "parameterizationVariable": {
@@ -101,7 +101,7 @@
       },
       "selectCaseByModule": {
         "title": "选择用例",
-        "searchPlaceholder": "查询名称、编码",
+        "searchPlaceholder": "查询名称、编码"
       },
       "moduleTreeSelector": {
         "title": "用例",
@@ -259,7 +259,7 @@
     },
     "selectTaskByModuleModal": {
       "title": "选择任务",
-      "searchPlaceholder": "查询名称、编码",
+      "searchPlaceholder": "查询名称、编码"
     },
     "exportScriptModal": {
       "title": "导出脚本",
@@ -1538,7 +1538,7 @@
   "xcan_execSampling": {
     "errorSampling": "错误采样",
     "time": "时间",
-    "samplingId": "采样ID",
+    "samplingId": "采样ID"
   },
   "xcan_execScriptInfo": {
     "pleaseSelectScriptType": "请选择脚本类型",

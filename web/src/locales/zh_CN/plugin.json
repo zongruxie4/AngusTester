@@ -5,7 +5,7 @@
       "selectScriptTip": "请选择一个脚本",
       "searchPlaceholder": "查询脚本名称",
       "tableHeaders": {
-        "plugin": "插件",
+        "plugin": "插件"
       }
     },
     "chartConfig": {
@@ -109,7 +109,7 @@
       "type": "类型",
       "format": "格式",
       "size": "大小",
-      "count": "数量",
+      "count": "数量"
     },
     "tabs": {
       "taskConfig": "任务配置",
@@ -390,7 +390,7 @@
               "description": "从数据集中提取参数配置"
             },
             "extractParametersField": {
-              "readColumn": "读取列",
+              "readColumn": "读取列"
             },
             "staticParametersModal": {
               "title": "静态参数",
@@ -418,7 +418,7 @@
             "confirmUnlinkDataset": "确定取消引用数据集「{name}」吗？",
             "unlinkDataset": "取消引用",
             "viewDefinition": "查看定义",
-            "parameters": "参数",
+            "parameters": "参数"
           },
           "matchItemPopover": {
             "dataColumn": "匹配值",
@@ -886,7 +886,7 @@
     "drawerMenu": {
       "saveForm": {
         "scriptName": "脚本名称",
-        "scriptId": "脚本ID",
+        "scriptId": "脚本ID"
       }
     },
     "execLog": {
@@ -917,7 +917,7 @@
         "duration": "耗时",
         "request": "请求",
         "response": "响应"
-      },
+      }
     },
     "scriptConfig": {
       "messages": {
@@ -967,7 +967,7 @@
       "sampling": {
         "title": "错误采样",
         "time": "时间",
-        "samplingId": "采样ID",
+        "samplingId": "采样ID"
       },
       "countTemplate": {
         "radioButtons": {
@@ -1469,7 +1469,7 @@
       "tps": "每秒行数",
       "tranMean": "平均",
       "tranMin": "最小",
-      "tranMax": "最大",
+      "tranMax": "最大"
     }
   },
   "smtpPlugin": {
@@ -1885,7 +1885,7 @@
     "form": {
       "format": "格式",
       "size": "大小",
-      "count": "数量",
+      "count": "数量"
     },
     "dataConfig": {
       "title": "数据配置",

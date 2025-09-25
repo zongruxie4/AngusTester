@@ -118,7 +118,7 @@
       "reportInterval": "报告间隔",
       "ignoreAssertions": "忽略断言",
       "updateTestResult": "更新测试结果",
-      "trial": "试用",
+      "trial": "试用"
     },
     "testResult": {
       "basicInfo": "基本信息",
