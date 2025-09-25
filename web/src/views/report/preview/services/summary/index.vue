@@ -47,7 +47,7 @@ const services = computed(() => {
         </div>
         <div
           class="w-24 inline-block bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.services.summary.fields.description') }}
+          {{ t('common.description') }}
         </div>
         <div class="inline-block px-1.5 py-1.5 break-all whitespace-pre-wrap border-solid border-border-input">
           {{ report?.description }}

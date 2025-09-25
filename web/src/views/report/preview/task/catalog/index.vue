@@ -55,7 +55,7 @@ const showTestInfo = computed(() => {
         <DashedLine />
       </a>
       <a href="#a4" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.4') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.description') }}</span>
+        <span class="h1">{{ t('common.description') }}</span>
         <DashedLine />
       </a>
       <a href="#a5" class="flex items-center space-x-2.5">

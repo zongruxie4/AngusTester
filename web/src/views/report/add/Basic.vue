@@ -50,7 +50,7 @@ const options = [
   },
   {
     value: 'description',
-    label: t('reportAdd.basic.options.description')
+    label: t('common.description')
   },
   {
     value: 'reportCopyright',

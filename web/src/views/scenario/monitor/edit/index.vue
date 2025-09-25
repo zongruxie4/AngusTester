@@ -239,7 +239,7 @@ onMounted(() => {
 
       <!-- Description -->
       <FormItem
-        :label="t('scenarioMonitor.edit.description')"
+        :label="t('common.description')"
         name="description"
         class="flex-1 min-w-0">
         <Textarea
@@ -273,7 +273,7 @@ onMounted(() => {
               <div class="font-bold text-text-title flex items-center">
                 <Icon icon="icon-fuwuqi" class="mr-1" />{{ serverObj.url }}
               </div>
-              <div class="my-3">{{ serverObj.description || t('scenarioMonitor.edit.noDescription') }}</div>
+              <div class="my-3">{{ serverObj.description || t('common.noDescription') }}</div>
 
               <!-- Variables section -->
               <ul v-if="hasVariables(serverObj.variables)" class="list-disc space-y-1 pl-4">

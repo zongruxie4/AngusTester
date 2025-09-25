@@ -360,7 +360,7 @@ onMounted(() => {
           :options="[{label: t('service.apiSliderSave.options.normal'), value: false}, {label: t('service.apiSliderSave.options.deprecated'), value: true}]">
         </Select>
       </FormItem>
-      <FormItem :label="t('service.apiSliderSave.labels.description')" name="externalDocs">
+      <FormItem :label="t('common.description')" name="externalDocs">
         <Input
           v-model:value="form.description"
           type="textarea"

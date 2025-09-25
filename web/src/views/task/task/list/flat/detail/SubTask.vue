@@ -569,7 +569,7 @@ const subTaskTableColumns = [
       </div>
 
       <!-- Description hints -->
-      <Hints :text="t('task.subTask.description')" class="flex-1 min-w-0 truncate ml-1" />
+      <Hints :text="t('common.description')" class="flex-1 min-w-0 truncate ml-1" />
 
       <!-- Action buttons -->
       <div class="flex items-center space-x-2.5">

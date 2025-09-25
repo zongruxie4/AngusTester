@@ -477,7 +477,7 @@ defineExpose({
           </div>
           <Input
             :placeholder="t('jdbcPlugin.UIConfigJdbc.assertionForm.descriptionPlaceholder')"
-            :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.description')"
+            :title="t('common.description')"
             type="textarea"
             trim
             :value="dataMap[item].description"

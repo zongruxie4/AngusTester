@@ -44,7 +44,7 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
     {
       titleIcon: 'icon-jiekoutiaoshi',
       title: t('apis.quickAccess.debug.title'),
-      content: t('apis.quickAccess.debug.description'),
+      content: t('common.description'),
       icon: 'icon-tiaoshi',
       action: t('common.actions'),
       click: debugging
@@ -52,7 +52,7 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
     {
       titleIcon: 'icon-daoruxiangmufuwu',
       title: t('apis.quickAccess.import.title'),
-      content: t('apis.quickAccess.import.description'),
+      content: t('common.description'),
       icon: 'icon-daoru',
       action: t('common.actions'),
       click: openImport,

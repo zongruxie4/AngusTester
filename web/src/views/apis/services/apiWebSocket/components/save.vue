@@ -228,7 +228,7 @@ onMounted(async () => {
           <span>{{ t('service.webSocketSave.form.tags.label') }}</span>
           <Tooltip placement="left">
             <Icon icon="icon-tishi1" class="text-blue-tips ml-0.5 text-3.5" />
-            <template #title> {{ t('service.webSocketSave.form.tags.description') }} </template>
+            <template #title> {{ t('common.description') }} </template>
           </Tooltip>
         </div>
       </template>

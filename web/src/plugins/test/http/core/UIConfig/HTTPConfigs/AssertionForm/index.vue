@@ -1031,7 +1031,7 @@ const enumFieldNames = { label: 'message', value: 'value' };
           <Input
             v-model:value="dataMap[item].description"
             :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.description.placeholder')"
-            :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.description.title')"
+            :title="t('common.description')"
             type="textarea"
             trim
             @change="descriptionChange($event,item)" />

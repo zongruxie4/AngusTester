@@ -53,7 +53,7 @@ const {
     <!-- Page Header -->
     <div class="text-3.5 font-semibold mb-2.5">{{ t('datasource.title') }}</div>
     <div class="mb-6 text-3.5">
-      <div>{{ t('datasource.description') }}</div>
+      <div>{{ t('common.description') }}</div>
     </div>
 
     <!-- Added Data Sources Section -->

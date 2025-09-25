@@ -154,7 +154,7 @@ const handleClose = () => {
           size="small"
           :placeholder="t('service.apiUnarchivedrSave.form.summaryPlaceholder')" />
       </FormItem>
-      <FormItem :label="t('service.apiUnarchivedrSave.labels.description')" name="externalDocs">
+      <FormItem :label="t('common.description')" name="externalDocs">
         <Input
           v-model:value="form.description"
           type="textarea"

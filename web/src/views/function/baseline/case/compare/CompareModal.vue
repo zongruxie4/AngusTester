@@ -347,7 +347,7 @@ onMounted(() => {
 
       <div v-show="!shouldHideSameItems || !!caseDescriptionHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
-          {{ t('functionBaseline.case.description') }}
+          {{ t('common.description') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
           <div v-if="baseCaseData?.description">

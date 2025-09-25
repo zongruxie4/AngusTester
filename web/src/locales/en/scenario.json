@@ -83,14 +83,8 @@
       },
       "table": {
         "columns": {
-          "plugin": "Plugin",
-          "scriptType": "Script Type",
-          "creator": "Creator",
-          "addTime": "Add Time",
           "lastExecStatus": "Last Exec Status"
         },
-        "noDescription": "No description~",
-        "createdBy": "Created At",
         "noExecute": "Not Tested"
       },
       "messages": {
@@ -119,14 +113,10 @@
         },
         "selectServer": "Please select server",
         "noVariables": "No Variables",
-        "noDescription": "No Description",
         "variables": "Variables",
         "labels": {
           "value": "Value",
           "default": "Default"
-        },
-        "ellipsis": {
-          "more": "More"
         },
         "messages": {
           "updateSuccess": "Successfully updated to associated interfaces"
@@ -204,7 +194,6 @@
       "descriptionPlaceholder": "Enter monitor description, up to 200 characters",
       "monitorTime": "Monitor Time",
       "serverConfig": "Server Configuration",
-      "noDescription": "No description~",
       "default": "Default",
       "noVariables": "No variables~",
       "notificationConfig": "Notification Configuration",

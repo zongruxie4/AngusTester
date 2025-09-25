@@ -1180,8 +1180,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
           </template>
           <Input
             v-model:value="dataMap[item].description"
-            :placeholder="t('xcan_apiAssert.description')"
-            :title="t('xcan_apiAssert.description')"
+            :placeholder="t('common.description')"
+            :title="t('common.description')"
 
             type="textarea"
             :readonly="props.viewType"

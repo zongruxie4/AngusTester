@@ -17,7 +17,7 @@ const { t } = useI18n();
             <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
             <div class="space-y-1 pr-10">
               <div class="text-3.5 font-semibold">{{ t('server.introduce.integration.title') }}</div>
-              <div>{{ t('server.introduce.integration.description') }}</div>
+              <div>{{ t('common.description') }}</div>
             </div>
           </div>
 
@@ -25,7 +25,7 @@ const { t } = useI18n();
             <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
             <div class="space-y-1 pr-10">
               <div class="text-3.5 font-semibold">{{ t('server.introduce.env.title') }}</div>
-              <div>{{ t('server.introduce.env.description') }}</div>
+              <div>{{ t('common.description') }}</div>
             </div>
           </div>
 
@@ -33,13 +33,13 @@ const { t } = useI18n();
             <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
             <div class="space-y-1 pr-10">
               <div class="text-3.5 font-semibold">{{ t('server.introduce.version.title') }}</div>
-              <div>{{ t('server.introduce.version.description') }}</div>
+              <div>{{ t('common.description') }}</div>
             </div>
           </div>
         </div>
       </div>
       <div class="flex-shrink-0">
-        <div class="font-semibold text-center">{{ t('server.introduce.url.description') }}</div>
+        <div class="font-semibold text-center">{{ t('common.description') }}</div>
         <div class="mb-1">https://api.example.com/v1/users?role=admin&status=active</div>
         <div class="flex items-center mb-6">
           <div class="diagonal-line line"></div>

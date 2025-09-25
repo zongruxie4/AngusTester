@@ -401,7 +401,7 @@ const urlMap = computed(() => {
 
                       <div class="flex items-start leading-4.5">
                         <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                          <span>{{ t('service.serverConfig.columns.description') }}</span>
+                          <span>{{ t('common.description') }}</span>
                           <Colon />
                         </div>
                         <TypographyParagraph

@@ -1709,7 +1709,6 @@
       },
       "labels": {
         "noVariables": "No Variables",
-        "noDescription": "No Description",
         "variables": "Variables",
         "default": "Default",
         "url": "URL"

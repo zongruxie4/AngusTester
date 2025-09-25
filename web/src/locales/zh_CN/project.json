@@ -142,8 +142,7 @@
     },
     "list": {
       "addedVersions": "已添加版本",
-      "noVersions": "您尚未添加任何版本，立即",
-      "noDescription": "无描述~"
+      "noVersions": "您尚未添加任何版本，立即"
     },
     "taskTable": {
       "currentVersion": "当前版本",

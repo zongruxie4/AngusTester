@@ -40,7 +40,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
       <div class="text-3 leading-3 flex">
         <Icon class="text-tips text-3.5 mt-0.5" icon="icon-tishi1" />
         <p class="font-semibold text-3.5 font-serif ml-1.5 leading-5 whitespace-pre-wrap">
-          {{ t('proxy.description') }}
+          {{ t('common.description') }}
         </p>
       </div>
 

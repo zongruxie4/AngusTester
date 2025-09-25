@@ -900,7 +900,7 @@ const getPopupContainer = () => {
                   :allowClear="false"
                   :lazy="false" />
               </FormItem>
-              
+
               <FormItem
                 name="missingBug"
                 :label="t('backlog.editForm.labels.missingBug')"
@@ -1126,7 +1126,7 @@ const getPopupContainer = () => {
 
           <FormItem
             name="description"
-            :label="t('backlog.editForm.labels.description')"
+            :label="t('common.description')"
             :rules="{validator: validateDescriptionLength}">
             <AsyncComponent :visible="shouldShowEditor">
               <RichEditor

@@ -250,7 +250,7 @@ defineExpose({
               </div>
 
               <template v-if="column.dataIndex === 'description'">
-                <span v-if="!record.description" class="text-text-sub-content">{{ t('dataset.list.noDescription') }}</span>
+                <span v-if="!record.description" class="text-text-sub-content">{{ t('common.noDescription') }}</span>
               </template>
 
               <!-- Value Column -->

@@ -31,7 +31,7 @@ const columns = [[
   { label: t('service.serviceOpenApi.columns.license'), dataIndex: 'license' },
   { label: t('service.serviceOpenApi.columns.version'), dataIndex: 'version' },
   { label: t('service.serviceOpenApi.columns.externalDocs'), dataIndex: 'externalDocs' },
-  { label: t('service.serviceOpenApi.columns.description'), dataIndex: 'description' }
+  { label: t('common.description'), dataIndex: 'description' }
 ]];
 
 const title = ref<string>();

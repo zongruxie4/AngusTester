@@ -31,7 +31,7 @@ const toImport = () => {
             <Icon icon="icon-jiekoutiaoshi" class="text-5" />
             <span class="title-normal">{{ t('apis.quickAccess.debug.title') }}</span>
           </div>
-          <div>{{ t('apis.quickAccess.debug.description') }}</div>
+          <div>{{ t('common.description') }}</div>
         </div>
 
         <div class="flex items-start">
@@ -58,7 +58,7 @@ const toImport = () => {
             <Icon icon="icon-daoruxiangmufuwu" class="text-5" />
             <span class="title-normal">{{ t('apis.quickAccess.import.title') }}</span>
           </div>
-          <div>{{ t('apis.quickAccess.import.description') }}</div>
+          <div>{{ t('common.description') }}</div>
         </div>
 
         <div class="flex items-start">

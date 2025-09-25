@@ -18,7 +18,7 @@ export function useTableColumns () {
     },
     {
       key: 'description',
-      title: t('dataset.list.columns.description'),
+      title: t('common.description'),
       dataIndex: 'description',
       ellipsis: true,
       width: '36%'

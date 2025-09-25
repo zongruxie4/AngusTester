@@ -371,7 +371,7 @@ defineExpose({
           <span>{{ t('smtpPlugin.uiConfig.title') }}</span>
         </div>
       </Button>
-      <Hints :text="t('smtpPlugin.uiConfig.description')"></Hints>
+      <Hints :text="t('common.description')"></Hints>
     </div>
     <template v-if="props.loaded && !dataList.length">
       <NoData />

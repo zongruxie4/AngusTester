@@ -8,7 +8,7 @@ const { t } = useI18n();
   <div class="flex content items-center flex-1">
     <img src="../../../assets/images/home/report.png" class="w-45 h-45" />
     <div class="ml-3.25 text-content flex-1">
-      <div>{{ t('reportHome.summary.description') }}</div>
+      <div>{{ t('common.description') }}</div>
       <div class="mt-2">{{ t('reportHome.summary.workTitle') }}</div>
 
       <div class="mt-1">

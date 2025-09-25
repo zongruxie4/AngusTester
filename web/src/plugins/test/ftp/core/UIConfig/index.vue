@@ -564,12 +564,12 @@ const selectProps = {
           <span>{{ t('ftpPlugin.uiConfig.title') }}</span>
         </div>
       </Button>
-      <div class="flex-1 flex items-center overflow-hidden" :title="t('ftpPlugin.uiConfig.description')">
+      <div class="flex-1 flex items-center overflow-hidden" :title="t('common.description')">
         <Icon
           icon="icon-tishi1"
           class="flex-shrink-0 text-3.5 mr-0.5"
           style="color:#a6ceff;" />
-        <span class="text-theme-sub-content truncate">{{ t('ftpPlugin.uiConfig.description') }}</span>
+        <span class="text-theme-sub-content truncate">{{ t('common.description') }}</span>
       </div>
     </div>
     <template v-if="props.loaded">

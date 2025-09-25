@@ -43,7 +43,7 @@ onBeforeUnmount(() => {
       {{ t('functionAnalysis.introduce.title') }}
     </div>
     <div class="mb-6">
-      <div>{{ t('functionAnalysis.introduce.description') }}</div>
+      <div>{{ t('common.description') }}</div>
     </div>
   </div>
 </template>

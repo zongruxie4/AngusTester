@@ -109,7 +109,7 @@ onMounted(() => {
 <template>
   <div class="info-row description-row">
     <div class="info-label">
-      <span>{{ t('backlog.info.description.title') }}</span>
+      <span>{{ t('common.description') }}</span>
     </div>
     <div class="info-value">
       <div v-show="!isDescriptionEditing" class="info-value-content">

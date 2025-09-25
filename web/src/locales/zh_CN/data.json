@@ -63,7 +63,6 @@
       "addStaticVariable": "添加静态变量",
       "uploadVariable": "上传变量",
       "or": "或",
-      "noDescription": "无描述~",
       "isPassword": "是",
       "notPassword": "否",
       "columns": {
@@ -401,7 +400,6 @@
       "noDataText": "您尚未添加任何数据集，立即",
       "or": "或",
       "uploadDataset": "上传数据集",
-      "noDescription": "无描述~",
       "buttonDropdown": {
         "fileExtractDataset": "文件提取数据集",
         "jdbcExtractDataset": "Jdbc提取数据集"

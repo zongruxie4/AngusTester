@@ -105,7 +105,7 @@ const { columns } = useTableColumns();
                 </template>
                 <template v-if="column.dataIndex === 'description'">
                   <template v-if="record.description">{{ record.description }}</template>
-                  <span v-else class="text-text-sub-content">{{ t('version.list.noDescription') }}</span>
+                  <span v-else class="text-text-sub-content">{{ t('common.noDescription') }}</span>
                 </template>
                 <template v-if="column.dataIndex === 'actions'">
                   <Button

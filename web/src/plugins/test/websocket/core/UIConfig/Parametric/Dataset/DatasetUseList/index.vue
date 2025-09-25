@@ -78,7 +78,7 @@ const columns = [
 <template>
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center justify-between mb-2">
-      <Hints :text="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.description')" />
+      <Hints :text="t('common.description')" />
       <Button
         :disabled="loading"
         size="small"

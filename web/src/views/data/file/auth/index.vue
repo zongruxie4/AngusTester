@@ -43,7 +43,7 @@ onMounted(() => {
 });
 
 // Computed values
-const text = t('fileSpace.globalAuth.description');
+const text = t('common.description');
 
 const bodyStyle = {
   padding: '0 20px',

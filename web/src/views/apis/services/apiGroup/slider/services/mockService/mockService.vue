@@ -265,7 +265,7 @@ const statusStyleMap = {
       </template>
       <template v-else>
         <div class="p-2 border border-blue-border rounded bg-blue-bg-light">
-          <Hints :text="t('service.mockService.description.title')" />
+          <Hints :text="t('common.description')" />
         </div>
         <div class=" mt-3">
           <RadioGroup

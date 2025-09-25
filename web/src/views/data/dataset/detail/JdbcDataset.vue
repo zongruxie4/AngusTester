@@ -104,7 +104,7 @@ defineExpose({
   <div class="flex items-start">
     <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1 font-semibold w-18 text-3 text-right">
       <IconRequired class="invisible" />
-      <span>{{ t('dataset.detail.jdbcDataset.form.description') }}</span>
+      <span>{{ t('common.description') }}</span>
     </div>
     <Input
       v-model:value="description"

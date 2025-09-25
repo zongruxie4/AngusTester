@@ -354,7 +354,7 @@ const position = ref({
             <div class="p-2 pl-5 bg-gray-bg leading-6 rounded">
               <ul style="list-style-type:disc;">
                 <li class="whitespace-pre-wrap">
-                  {{ t('xcan_paramTextarea.description') }}： {{ currentFunction.description }}
+                  {{ t('common.description') }}： {{ currentFunction.description }}
                 </li>
                 <li>
                   {{ t('xcan_paramTextarea.constructor') }}：

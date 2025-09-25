@@ -43,7 +43,7 @@ onMounted(() => {
       <div class="font-bold text-text-title flex items-center">
         <Icon icon="icon-fuwuqi" class="mr-1" />{{ serverObj.url }}
       </div>
-      <div class="my-3 ">{{ serverObj.description || t('execution.infoServer.noDescription') }}</div>
+      <div class="my-3 ">{{ serverObj.description || t('common.noDescription') }}</div>
       <ul v-if="hasVariable(serverObj.variables)" class="list-disc space-y-1 pl-4">
         <li v-for="(_value, key) in (serverObj.variables || defaultVariable)" :key="key">
           <div

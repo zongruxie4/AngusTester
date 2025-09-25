@@ -391,7 +391,7 @@ onMounted(() => {
                   <Icon icon="icon-qingchu" class="text-2xl text-blue-400" />
                 </div>
                 <h3 class="text-sm font-medium text-gray-900 mb-1">
-                  {{ $t('scenarioTrash.empty.description') }}
+                  {{ $t('common.description') }}
                 </h3>
                 <p class="text-xs text-gray-500 max-w-sm mx-auto">
                   {{ $t('scenarioTrash.empty.hint') }}

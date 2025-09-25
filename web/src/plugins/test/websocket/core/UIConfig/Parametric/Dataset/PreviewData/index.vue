@@ -168,7 +168,7 @@ const noDataText = computed(() => {
 <template>
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center justify-between transform-gpu -translate-y-1">
-      <Hints :text="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.description')" />
+      <Hints :text="t('common.description')" />
 
       <div class="flex items-center flex-nowrap space-x-2.5">
         <div class="flex items-center">

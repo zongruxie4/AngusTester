@@ -409,7 +409,7 @@ watch(() => props.visible, (newValue) => {
 
           <!-- Project description -->
           <FormItem
-            :label="t('project.edit.form.description')"
+            :label="t('common.description')"
             name="description"
             class="form-field description-field"
             :rules="[{validator: validateDesc}]">

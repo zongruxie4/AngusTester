@@ -19,7 +19,7 @@ const { matchItemList } = useMatchItemData();
       <div class="w-196 space-y-2 text-3 text-theme-content">
         <Hints :text="t('dataset.detail.matchItemPopover.title')" class="!font-semibold !text-theme-content" />
         <div>
-          {{ t('dataset.detail.matchItemPopover.description') }}
+          {{ t('common.description') }}
         </div>
         <ol class="pl-4 space-y-2">
           <li

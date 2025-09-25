@@ -10,7 +10,7 @@ const { t } = useI18n();
     <div class="text-3.5 font-semibold mb-2.5">{{ t('apis.welcome.title') }}</div>
     <div class="flex items-center justify-between space-x-2.5">
       <img class="w-1/3" src="./images/1.png" />
-      <div>{{ t('apis.welcome.description') }}</div>
+      <div>{{ t('common.description') }}</div>
     </div>
     <div class="mt-2 mr-5">
       <div class="font-semibold mb-1.5">{{ t('apis.welcome.featuresTitle') }}</div>

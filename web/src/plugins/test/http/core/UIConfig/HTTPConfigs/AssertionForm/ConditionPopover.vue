@@ -17,7 +17,7 @@ const { t } = useI18n();
       <div style="max-height: 60vh; overflow: auto;" class="leading-4.5 text-3 text-theme-content">
         <div class="mb-4">
           <Hints :text="t('httpPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.title')" class="mb-2 !font-semibold !text-theme-content" />
-          <div class="mb-3">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.description') }}</div>
+          <div class="mb-3">{{ t('common.description') }}</div>
         </div>
         <ol class="pl-4 space-y-3">
           <li style="list-style-type: circle;" class="space-y-2 text-theme-sub-content">

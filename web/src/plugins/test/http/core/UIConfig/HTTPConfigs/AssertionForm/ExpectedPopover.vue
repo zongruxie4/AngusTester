@@ -115,7 +115,7 @@ const matchItemList = [
       <div style="max-height: 60vh; overflow: auto;" class="w-196 leading-4.5 space-y-5 text-3 text-theme-content">
         <div>
           <Hints :text="t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.title')" class="mb-2 !font-semibold !text-theme-content" />
-          <div class="mb-3">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.description') }}</div>
+          <div class="mb-3">{{ t('common.description') }}</div>
           <ol class="pl-4 space-y-3">
             <li style="list-style-type: circle;" class="space-y-2">
               <div class="font-semibold">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.emptyExpected') }}</div>

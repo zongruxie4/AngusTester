@@ -122,7 +122,7 @@ const {
   <div class="flex items-start">
     <div class="mr-2.5 w-18 font-semibold flex justify-end items-center flex-shrink-0 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
-      <span>{{ t('dataVariable.detail.fileVariable.description') }}</span>
+      <span>{{ t('common.description') }}</span>
     </div>
     <Input
       v-model:value="description"

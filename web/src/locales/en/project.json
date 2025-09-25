@@ -142,8 +142,7 @@
     },
     "list": {
       "addedVersions": "Added Versions",
-      "noVersions": "You haven't added any versions yet, ",
-      "noDescription": "No description~"
+      "noVersions": "You haven't added any versions yet, "
     },
     "taskTable": {
       "currentVersion": "Current Version",

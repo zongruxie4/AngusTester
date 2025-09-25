@@ -151,21 +151,21 @@ const modalTitle = computed(() => props.title || t('scenario.list.execTest.title
               </div>
               <TypographyParagraph
                 class="break-all"
-                :ellipsis="{ rows: 2, expandable: true, symbol: t('scenario.list.execTest.ellipsis.more') }"
+                :ellipsis="{ rows: 2, expandable: true, symbol: t('common.ellipsis') }"
                 :content="item.url" />
             </div>
 
             <div class="flex items-start leading-4.5 mb-2.5">
               <div v-if="false" class="flex-shrink-0 text-theme-sub-content mr-2">
-                <span>{{ t('scenario.list.execTest.labels.description') }}</span>
+                <span>{{ t('common.description') }}</span>
                 <Colon />
               </div>
               <TypographyParagraph
                 v-if="item.description"
                 class="break-all"
-                :ellipsis="{ rows: 2, expandable: true, symbol: t('scenario.list.execTest.ellipsis.more') }"
+                :ellipsis="{ rows: 2, expandable: true, symbol: t('common.ellipsis') }"
                 :content="item.description" />
-              <div v-else>{{ t('scenario.list.execTest.noDescription') }}</div>
+              <div v-else>{{ t('common.noDescription') }}</div>
             </div>
 
             <div v-if="!!item.variables?.length">
@@ -213,12 +213,12 @@ const modalTitle = computed(() => props.title || t('scenario.list.execTest.title
 
                   <div v-if="false" class="flex items-start leading-4.5">
                     <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>{{ t('scenario.list.execTest.labels.description') }}</span>
+                      <span>{{ t('common.description') }}</span>
                       <Colon />
                     </div>
                     <TypographyParagraph
                       class="break-all"
-                      :ellipsis="{ rows: 2, expandable: true, symbol: t('scenario.list.execTest.ellipsis.more') }"
+                      :ellipsis="{ rows: 2, expandable: true, symbol: t('common.ellipsis') }"
                       :content="_variable.description" />
                   </div>
                 </div>

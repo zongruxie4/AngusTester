@@ -1696,10 +1696,8 @@
       },
       "labels": {
         "noVariables": "无变量",
-        "noDescription": "无描述",
         "variables": "变量",
-        "default": "默认",
-        "url": "URL"
+        "default": "默认"
       },
       "buttons": {
         "more": "更多"

@@ -191,7 +191,7 @@ defineExpose({ isValid, getData });
       </div>
     </div>
     <div class="space-y-0.5">
-      <div class="flex items-center">{{ t('ftpPlugin.drawerMenu.saveForm.description') }}</div>
+      <div class="flex items-center">{{ t('common.description') }}</div>
       <Input
         :maxlength="800"
         :value="description"

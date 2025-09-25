@@ -62,7 +62,7 @@ defineExpose({ getFormData, validate });
     </Form>
 
     <div class="leading-5 mt-5">
-      <div class="mb-0.5">{{ t('scriptDetail.form.description') }}</div>
+      <div class="mb-0.5">{{ t('common.description') }}</div>
       <Input
         v-model:value="formData.description"
         :placeholder="t('scriptDetail.form.descriptionPlaceholder')"

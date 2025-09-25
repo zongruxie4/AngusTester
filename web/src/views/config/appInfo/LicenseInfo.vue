@@ -27,7 +27,7 @@ init();
   <div class="license-info-container">
     <div class="page-header">
       <h2 class="page-title">{{ t('app.config.permitInfo.title') }}</h2>
-      <p class="page-subtitle">{{ t('app.config.permitInfo.description') }}</p>
+      <p class="page-subtitle">{{ t('common.description') }}</p>
     </div>
 
     <div class="license-content">

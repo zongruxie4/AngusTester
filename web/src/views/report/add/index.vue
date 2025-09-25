@@ -375,7 +375,7 @@ onMounted(() => {
                 <div class="text-3 flex-1">{{ t('reportAdd.reportInfo.category') }}： {{ reportTypeName }}</div>
                 <div class="text-3 flex-1">{{ t('reportAdd.reportInfo.reporter') }}： {{ reportId ? createdByName : tenantInfo?.fullName }}</div>
               </div>
-              <div class="text-3">{{ t('reportAdd.reportInfo.description') }}： {{ report?.description }}</div>
+              <div class="text-3">{{ t('common.description') }}： {{ report?.description }}</div>
             </div>
           </div>
           <Form :labelCol="{style: {width: '50px'}}">

@@ -34,7 +34,7 @@ onBeforeUnmount(() => {
     <div class="text-3.5 font-semibold mb-2.5">{{ t('apiShare.introduce.title') }}</div>
     <div class="mb-2">
       <div>
-        {{ t('apiShare.introduce.description') }}
+        {{ t('common.description') }}
       </div>
     </div>
   </div>

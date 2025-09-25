@@ -16,7 +16,7 @@ interface Props {
 
 const columns = [
   [
-    { dataIndex: 'description', label: t('xcan_httpTestInfo.description') },
+    { dataIndex: 'description', label: t('common.description') },
     { dataIndex: 'scenarioId', label: t('xcan_httpTestInfo.associatedScenarioId') },
     { dataIndex: 'scenarioName', label: t('xcan_httpTestInfo.associatedScenarioName') },
     { dataIndex: 'createdByName', label: t('xcan_httpTestInfo.creator') },

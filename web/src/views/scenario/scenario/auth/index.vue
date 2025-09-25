@@ -50,7 +50,7 @@ onMounted(() => {
 });
 
 // Computed properties
-const descriptionText = t('scenario.auth.description');
+const descriptionText = t('common.description');
 </script>
 <!-- TODO 调试权限功能、页面不展示、功能未验证 -->
 <template>

@@ -71,7 +71,7 @@ onMounted(() => {
     <!-- 上方：OpenAPI翻译说明 -->
     <div>
       <div class="text-3.5 font-medium -mt-2">
-        {{ t('service.translateModal.description.title') }}
+        {{ t('common.description') }}
       </div>
 
       <div class="grid-container leading-7 mt-2">

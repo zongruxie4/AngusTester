@@ -87,7 +87,7 @@ onMounted(() => {
   <div class="mt-4">
     <div class="flex items-center text-theme-title mb-1.75">
       <span class="font-semibold">
-        {{ t('functionCase.kanbanView.infoDescription.title') }}
+        {{ t('common.description') }}
       </span>
 
       <Button

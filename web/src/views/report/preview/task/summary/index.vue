@@ -47,7 +47,7 @@ const task = computed(() => {
         </div>
         <div
           class="w-24 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.summary.fields.description') }}
+          {{ t('common.description') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-solid border-border-input">
           {{ report?.description }}

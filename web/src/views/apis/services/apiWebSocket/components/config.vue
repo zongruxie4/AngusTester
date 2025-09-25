@@ -56,7 +56,7 @@ onMounted(() => {
     :rules="rules">
     <FormItem name="connectTimeout">
       <template #label>
-        <p class="text-3">{{ t('service.webSocketSetting.form.connectTimeout.label') }}<span class="text-gray-text">({{ t('service.webSocketSetting.form.connectTimeout.description') }})</span></p>
+        <p class="text-3">{{ t('common.description') }})</span></p>
       </template>
       <Input
         v-model:value="form.connectTimeout"
@@ -72,7 +72,7 @@ onMounted(() => {
     </FormItem>
     <FormItem name="maxReconnections">
       <template #label>
-        <p class="text-3">{{ t('service.webSocketSetting.form.maxReconnections.label') }}<span class="text-gray-text">({{ t('service.webSocketSetting.form.maxReconnections.description') }})</span></p>
+        <p class="text-3">{{ t('common.description') }})</span></p>
       </template>
       <Input
         v-model:value="form.maxReconnections"
@@ -85,7 +85,7 @@ onMounted(() => {
     </FormItem>
     <FormItem name="reconnectionInterval">
       <template #label>
-        <p class="text-3">{{ t('service.webSocketSetting.form.reconnectionInterval.label') }}<span class="text-gray-text">({{ t('service.webSocketSetting.form.reconnectionInterval.description') }})</span></p>
+        <p class="text-3">{{ t('common.description') }})</span></p>
       </template>
       <Input
         v-model:value="form.reconnectionInterval"

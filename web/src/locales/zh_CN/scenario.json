@@ -87,7 +87,6 @@
           "plugin": "插件",
           "lastExecStatus": "最后执行状态"
         },
-        "noDescription": "无描述~",
         "createdBy": "创建于",
         "noExecute": "未执行"
       },
@@ -117,11 +116,7 @@
         },
         "selectServer": "请选择服务器",
         "noVariables": "无变量",
-        "noDescription": "无描述",
         "variables": "变量",
-        "ellipsis": {
-          "more": "更多"
-        },
         "messages": {
           "updateSuccess": "更新到已关联接口成功"
         }
@@ -193,12 +188,9 @@
       "selectScenario": "选择场景",
       "monitorName": "监控名称",
       "monitorNamePlaceholder": "输入监控名称，最多可输入100字符",
-      "description": "描述",
       "descriptionPlaceholder": "输入监控描述，最多可输入200字符",
       "monitorTime": "监控时间",
       "serverConfig": "服务器配置",
-      "noDescription": "无描述~",
-      "default": "默认",
       "noVariables": "无变量~",
       "notificationConfig": "通知配置",
       "notificationOptions": {

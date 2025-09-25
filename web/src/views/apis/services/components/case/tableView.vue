@@ -69,7 +69,7 @@ const columns = [
   },
   {
     dataIndex: 'description',
-    title: t('service.case.columns.description'),
+    title: t('common.description'),
     ellipsis: true,
     width: '18%',
     customRender: ({ text }) => text || '--'

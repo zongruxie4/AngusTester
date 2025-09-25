@@ -156,9 +156,7 @@
       "maximum": "最大"
     },
     "infoServer": {
-      "noDescription": "无描述~",
-      "noVariables": "无变量~",
-      "default": "默认"
+      "noVariables": "无变量~"
     },
     "infoLog": {
       "selectNode": "选择节点",

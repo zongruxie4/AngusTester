@@ -172,7 +172,7 @@ watch(() => props.visible, (newVisible) => {
         </div>
       </FormItem>
 
-      <FormItem :label="t('scriptHome.import.form.description')" name="description">
+      <FormItem :label="t('common.description')" name="description">
         <Input
           v-model:value="formState.description"
           :autosize="{ minRows: 6, maxRows: 8 }"

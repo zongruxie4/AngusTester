@@ -86,7 +86,7 @@ const handleOk = async () => {
         </FormItem>
       </div>
       <FormItem
-        :label="t('version.form.description')"
+        :label="t('common.description')"
         class="flex-1 !mb-5"
         name="content">
         <Textarea

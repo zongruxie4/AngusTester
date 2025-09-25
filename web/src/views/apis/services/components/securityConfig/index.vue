@@ -1238,7 +1238,7 @@ const OAuth2AuthorizationTypeOptions = [
                 </template>
               </template>
               <template v-if="auth.isEdit">
-                <div class="pl-1.75">{{ t('service.securityModal.description') }}</div>
+                <div class="pl-1.75">{{ t('common.description') }}</div>
                 <Input
                   v-model:value="auth.description"
                   size="small"
@@ -1251,7 +1251,7 @@ const OAuth2AuthorizationTypeOptions = [
               </template>
               <template v-else>
                 <template v-if="auth.description">
-                  <div>{{ t('service.securityModal.description') }}</div>
+                  <div>{{ t('common.description') }}</div>
                   <Input
                     :value="auth.description"
                     size="small"

@@ -91,7 +91,7 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'description',
       dataIndex: 'description',
-      title: t('reportHome.table.description'),
+      title: t('common.description'),
       ellipsis: true
     },
     {

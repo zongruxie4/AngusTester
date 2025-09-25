@@ -180,10 +180,10 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
               <RichText
                 v-model:textValue="item.descriptionText"
                 :value="item.description"
-                :emptyText="t('functionBaseline.list.noDescription')" />
+                :emptyText="t('common.noDescription')" />
             </template>
             <span v-else class="text-theme-sub-content">
-              {{ t('functionBaseline.list.noDescription') }}
+              {{ t('common.noDescription') }}
             </span>
           </div>
           <div class="flex items-center justify-between h-4 leading-5">

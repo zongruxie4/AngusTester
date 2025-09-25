@@ -287,7 +287,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: t('xcan_exec.variable.description'),
+    title: t('common.description'),
     dataIndex: 'description',
     ellipsis: true
   },

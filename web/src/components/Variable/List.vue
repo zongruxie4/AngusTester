@@ -889,7 +889,7 @@ onMounted(() => {
           <!--            class="w-full mt-2"-->
           <!--            disabled />-->
           <template v-if="variable.isEdit">
-            <div class="pl-1.75 mt-5">{{ t('xcan_variable.description') }}</div>
+            <div class="pl-1.75 mt-5">{{ t('common.description') }}</div>
             <Textarea
               v-model:value="variable.description"
               :placeholder="t('xcan_variable.inputDescription')"
@@ -900,7 +900,7 @@ onMounted(() => {
           </template>
           <template v-else>
             <template v-if="variable.description">
-              <div class="pl-1.75 mt-5">{{ t('xcan_variable.description') }}</div>
+              <div class="pl-1.75 mt-5">{{ t('common.description') }}</div>
               <Textarea
                 :value="variable.description"
                 size="small"

@@ -53,7 +53,7 @@ onBeforeUnmount(() => {
         <span class="text-3.5 font-semibold mb-1.5">{{ t('version.introduce.title') }}</span>
       </div>
       <div class="mb-4">
-        {{ t('version.introduce.description') }}
+        {{ t('common.description') }}
       </div>
     </div>
 
@@ -67,7 +67,7 @@ onBeforeUnmount(() => {
                 {{ t('version.introduce.features.versionTracking.title') }}
               </h3>
               <p class="text-gray-600 leading-relaxed">
-                {{ t('version.introduce.features.versionTracking.description') }}
+                {{ t('common.description') }}
               </p>
             </div>
           </div>
@@ -81,7 +81,7 @@ onBeforeUnmount(() => {
                 {{ t('version.introduce.features.versionPlanning.title') }}
               </h3>
               <p class="text-gray-600 leading-relaxed">
-                {{ t('version.introduce.features.versionPlanning.description') }}
+                {{ t('common.description') }}
               </p>
             </div>
           </div>
@@ -95,7 +95,7 @@ onBeforeUnmount(() => {
                 {{ t('version.introduce.features.versionProgress.title') }}
               </h3>
               <p class="text-gray-600 leading-relaxed">
-                {{ t('version.introduce.features.versionProgress.description') }}
+                {{ t('common.description') }}
               </p>
             </div>
           </div>
@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
                 {{ t('version.introduce.features.verifiableDeliverables.title') }}
               </h3>
               <p class="text-gray-600 leading-relaxed">
-                {{ t('version.introduce.features.verifiableDeliverables.description') }}
+                {{ t('common.description') }}
               </p>
             </div>
           </div>

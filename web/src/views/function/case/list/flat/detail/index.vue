@@ -1124,7 +1124,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('functionCase.detail.caseDetail.description') }}</span>
+            <span>{{ t('common.description') }}</span>
             <template v-if="isEditDescription">
               <Button
                 class="font-normal text-theme-special"

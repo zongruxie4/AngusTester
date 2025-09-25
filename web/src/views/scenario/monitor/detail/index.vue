@@ -108,7 +108,7 @@ const statusColorConfig = getStatusColorConfig();
 
         <div>
           <template v-if="dataSource?.description">{{ dataSource?.description }}</template>
-          <span v-else class="text-text-sub-content">{{ t('scenarioMonitor.edit.noDescription') }}</span>
+          <span v-else class="text-text-sub-content">{{ t('common.noDescription') }}</span>
         </div>
 
         <div class="flex items-center">

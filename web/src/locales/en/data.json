@@ -76,7 +76,6 @@
       "addStaticVariable": "Add Static Variable",
       "uploadVariable": "Upload Variable",
       "or": "or",
-      "noDescription": "No description ~",
       "isPassword": "Yes",
       "notPassword": "No",
       "columns": {
@@ -422,7 +421,6 @@
       "noDataText": "You haven't added any datasets yet, immediately",
       "or": "or",
       "uploadDataset": "Upload Dataset",
-      "noDescription": "No description ~",
       "buttonDropdown": {
         "fileExtractDataset": "File Extract Dataset",
         "jdbcExtractDataset": "Jdbc Extract Dataset"

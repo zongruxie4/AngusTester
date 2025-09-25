@@ -590,7 +590,7 @@ onMounted(() => {
 
         <TabPane
           key="description"
-          :tab="t('functionBaseline.editForm.description')">
+          :tab="t('common.description')">
           <FormItem
             label=""
             name="description"

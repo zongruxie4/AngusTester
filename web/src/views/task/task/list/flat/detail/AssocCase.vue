@@ -190,7 +190,7 @@ const tableColumns = [
     <!-- Header section with description and action button -->
     <div class="flex mb-2 items-center pr-2">
       <div class="flex-1 min-w-0 truncate px-1">
-        <Hints :text="t('task.assocCase.description')" />
+        <Hints :text="t('common.description')" />
       </div>
       <Button
         :disabled="(props.dataSource as any)?.refCaseInfos?.length > 19"

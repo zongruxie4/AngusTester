@@ -83,7 +83,6 @@
       "casePrefix": "Case Prefix",
       "attachmentCount": "Attachments",
       "modifiedBy": "Modified at",
-      "noDescription": "No description~",
       "viewCases": "View Cases",
       "planStartSuccess": "Plan started successfully",
       "planCompletedSuccess": "Plan completed",
@@ -971,7 +970,6 @@
       "selectedCount": "(Selected {count})",
       "testCases": "Review Cases",
       "reviewDescription": "Review Description",
-      "noDescription": "No description~",
       "testSteps": "Test Steps",
       "reviewSuccess": "Review successful",
       "reviewResult": "Review Result",
@@ -1035,10 +1033,6 @@
         "reviewStatus": "Review Status",
         "reviewOpinion": "Review Opinion",
         "noOpinion": "None"
-      },
-      "description": {
-        "title": "Description",
-        "noDescription": "No description."
       }
     }
   },
@@ -1060,16 +1054,9 @@
       "established": "Established",
       "notEstablished": "Not Established",
       "testPlan": "Test Plan",
-      "modifiedBy": "Modified at",
-      "noDescription": "No description~",
       "establishBaseline": "Establish",
       "quickSearch": "Quick Search",
       "all": "All",
-      "myCreated": "My Created",
-      "myModified": "My Modified",
-      "lastDay": "Last Day",
-      "lastThreeDays": "Last 3 Days",
-      "lastWeek": "Last 7 Days",
       "sortByName": "Sort by name",
       "aboutBaseline": "About Baseline",
       "baselineDescription": "A baseline is a standard reference point defined and recorded at a specific stage of the software development lifecycle, encompassing functional features and related attributes. Baselines provide a clear framework for testing activities, enabling teams to compare, evaluate, and manage based on unified standards.",

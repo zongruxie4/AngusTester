@@ -240,7 +240,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: t('commonComp.apis.parameterizationDataset.listModal.description'),
+    title: t('common.description'),
     dataIndex: 'description',
     ellipsis: true
   },

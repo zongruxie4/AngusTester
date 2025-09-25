@@ -1554,7 +1554,7 @@ provide('proxyOptObj', proxyOptObj);
               :options="serviceUrlOptions" />
 
             <div class="pr-5.25">
-              <div class="mb-0.5">{{ t('mock.detail.apis.description') }}</div>
+              <div class="mb-0.5">{{ t('common.description') }}</div>
               <Input
                 :maxlength="20000"
                 :value="description"

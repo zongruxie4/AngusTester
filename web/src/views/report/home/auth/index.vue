@@ -78,7 +78,7 @@ const bodyStyle = {
     wrapClassName="authorize-modal-wrapper"
     @cancel="cancel">
     <div class="h-full pt-2">
-      <Hints :text="t('reportHome.globalAuth.description')" />
+      <Hints :text="t('common.description')" />
       <Tabs
         v-model:activeKey="activeKey"
         size="small"

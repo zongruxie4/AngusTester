@@ -295,7 +295,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: t('commonComp.apis.parameterizationVariable.listModal.description'),
+    title: t('common.description'),
     dataIndex: 'description',
     ellipsis: true
   },

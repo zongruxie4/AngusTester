@@ -32,7 +32,7 @@ onBeforeUnmount(() => {
         <span class="text-3.5 font-semibold mb-1.5">{{ t('scenarioMonitor.introduce.aboutMonitor') }}</span>
       </div>
       <div class="mb-4">
-        {{ t('scenarioMonitor.introduce.description') }}
+        {{ t('common.description') }}
       </div>
     </div>
 
@@ -48,7 +48,7 @@ onBeforeUnmount(() => {
               {{ t('scenarioMonitor.introduce.scenarios.apiDelay.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('scenarioMonitor.introduce.scenarios.apiDelay.description') }}
+              {{ t('common.description') }}
             </p>
           </div>
         </div>
@@ -65,7 +65,7 @@ onBeforeUnmount(() => {
               {{ t('scenarioMonitor.introduce.scenarios.healthCheck.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('scenarioMonitor.introduce.scenarios.healthCheck.description') }}
+              {{ t('common.description') }}
             </p>
           </div>
         </div>
@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
               {{ t('scenarioMonitor.introduce.scenarios.apiFunctionality.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('scenarioMonitor.introduce.scenarios.apiFunctionality.description') }}
+              {{ t('common.description') }}
             </p>
           </div>
         </div>
@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
               {{ t('scenarioMonitor.introduce.scenarios.businessProcess.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('scenarioMonitor.introduce.scenarios.businessProcess.description') }}
+              {{ t('common.description') }}
             </p>
           </div>
         </div>

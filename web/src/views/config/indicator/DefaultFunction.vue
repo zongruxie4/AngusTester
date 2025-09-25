@@ -151,8 +151,8 @@
 <!--        </div>-->
 <!--      </div>-->
 <!--      <div class="flex text-3 px-3 items-center">-->
-<!--        <div class="mt-2 pl-8 flex-1">{{ t('indicator.function.testCases.smoke.description') }}</div>-->
-<!--        <div class="mt-2 pl-8 flex-1">{{ t('indicator.function.testCases.security.description') }}</div>-->
+<!--        <div class="mt-2 pl-8 flex-1">{{ t('common.description') }}</div>-->
+<!--        <div class="mt-2 pl-8 flex-1">{{ t('common.description') }}</div>-->
 <!--      </div>-->
 <!--      <div class="flex text-3 px-3 pb-3">-->
 <!--        <div class="mt-2 pl-8 flex-1">-->

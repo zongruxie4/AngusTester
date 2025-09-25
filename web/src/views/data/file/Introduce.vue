@@ -34,7 +34,7 @@ const tipList = [
 <template>
   <div class="text-3.5">
     <div class="mb-6">
-      <div>{{ t('fileSpace.introduce.description') }}</div>
+      <div>{{ t('common.description') }}</div>
     </div>
     <div class="flex items-start justify-between">
       <div

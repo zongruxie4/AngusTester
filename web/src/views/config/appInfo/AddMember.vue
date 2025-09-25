@@ -96,7 +96,7 @@ const getPopupContainer = (el: HTMLElement): HTMLElement => {
         <div class="tips-icon">💡</div>
         <div class="tips-content">
           <p class="tips-title">{{ t('app.config.addMembers.tips.title') }}</p>
-          <p class="tips-text">{{ t('app.config.addMembers.tips.description') }}</p>
+          <p class="tips-text">{{ t('common.description') }}</p>
         </div>
       </div>
 

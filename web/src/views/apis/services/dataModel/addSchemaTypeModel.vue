@@ -418,7 +418,7 @@ defineExpose({
       <Input
         v-model:value="description"
         :maxlength="1000"
-        :placeholder="t('service.dataModel.form.description')"
+        :placeholder="t('common.description')"
         type="textarea" />
     </div>
   </template>

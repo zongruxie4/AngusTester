@@ -129,7 +129,7 @@ const hintTextMap = {
       <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.title') }}</div>
       <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 mr-1" />
       <div class="flex-shrink-0 break-all whitespace-pre-wrap">
-        {{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.description') }}
+        {{ t('common.description') }}
       </div>
     </div>
 

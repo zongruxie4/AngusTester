@@ -212,7 +212,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
               </div>
             </div>
             <div v-if="!record.description" class="h-9 leading-4.5 mb-2.5 text-theme-sub-content">
-              {{ t('scenario.list.table.noDescription') }}
+              {{ t('common.noDescription') }}
             </div>
             <TypographyParagraph
               v-else

@@ -483,7 +483,7 @@ defineExpose({
         <div v-show="state.showInstallAgent" class="border-t pt-4 pb-4 relative">
           <Tabs size="small">
             <TabPane key="linux" :tab="t('node.nodeItem.installSteps.linuxTitle')">
-              <div class="text-3">{{ t('node.nodeItem.installSteps.description') }}</div>
+              <div class="text-3">{{ t('common.description') }}</div>
               <div class="text-3">
                 {{ t('node.nodeItem.installSteps.method1') }}<Icon
                   icon="icon-fuzhi"

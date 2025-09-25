@@ -8,7 +8,7 @@ const { t } = useI18n();
   <div class="flex content items-center flex-1">
     <img src="../../../assets/images/home/script.svg" class="w-45 h-45" />
     <div class="ml-3.25 text-content flex-1 font-serif">
-      <div class="text-3.5 font-semibold">{{ t('scriptHome.introduce.description') }}</div>
+      <div class="text-3.5 font-semibold">{{ t('common.description') }}</div>
 
       <div class="mt-3">
         <Icon icon="icon-duihaolv" class="mr-2.5" />

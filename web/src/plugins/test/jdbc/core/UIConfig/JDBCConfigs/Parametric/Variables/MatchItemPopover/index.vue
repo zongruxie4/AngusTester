@@ -112,7 +112,7 @@ const matchItemList = [
       <div class="w-196 space-y-2 text-3 text-theme-content">
         <Hints :text="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.hints')" class="!font-semibold !text-theme-content" />
         <div>
-          {{ t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.description') }}
+          {{ t('common.description') }}
         </div>
         <ol class="pl-4 space-y-2">
           <li

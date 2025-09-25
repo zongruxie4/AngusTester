@@ -28,7 +28,7 @@ const {
 
         <!-- Description -->
         <div>
-          {{ t('dataVariable.detail.matchItemPopover.description') }}
+          {{ t('common.description') }}
         </div>
 
         <!-- Examples list -->

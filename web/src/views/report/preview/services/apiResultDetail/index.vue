@@ -58,7 +58,7 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'description',
-      name: t('reportPreview.services.apiResultDetail.fields.description')
+      name: t('common.description')
     },
     {
       dataIndex: 'testFuncFlag',

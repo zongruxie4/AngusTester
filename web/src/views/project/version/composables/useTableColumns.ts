@@ -37,7 +37,7 @@ export function useTableColumns () {
       width: 150
     },
     {
-      title: t('version.columns.description'),
+      title: t('common.description'),
       dataIndex: 'description',
       width: 200
     },

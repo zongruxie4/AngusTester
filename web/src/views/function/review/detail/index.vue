@@ -781,7 +781,7 @@ onUnmounted(() => {
                   mode="view" />
               </div>
               <div v-else class="text-sub-content">
-                {{ t('caseReview.detail.noDescription') }}
+                {{ t('common.noDescription') }}
               </div>
             </TabPane>
           </Tabs>
@@ -869,7 +869,7 @@ onUnmounted(() => {
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('description')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-shuoming" class="mr-1 text-purple-500" />
-                  <span>{{ t('caseReview.comp.description.title') }}</span>
+                  <span>{{ t('common.description') }}</span>
                 </div>
                 <Icon :icon="expand.description ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>

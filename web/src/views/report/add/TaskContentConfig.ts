@@ -16,7 +16,7 @@ export const contentTreeData = [
     key: 'date'
   },
   {
-    title: t('reportAdd.taskContent.contentTree.description'),
+    title: t('common.description'),
     key: 'description'
   },
   {

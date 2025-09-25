@@ -36,7 +36,7 @@ const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
         <DashedLine />
       </a>
       <a href="#a6" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.6') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.functionCase.catalog.sections.description') }}</span>
+        <span class="h1">{{ t('common.description') }}</span>
         <DashedLine />
       </a>
       <a href="#a7" class="flex items-center space-x-2.5">

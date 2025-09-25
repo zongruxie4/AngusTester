@@ -86,7 +86,7 @@ const confirm = async () => {
           </Button>
       </div>
     </template>
-    
+
 
     <template v-if="isEditDescription">
       <div class="mt-3 mx-2">
@@ -106,7 +106,7 @@ const confirm = async () => {
 
     <div v-else class="text-center py-8 text-gray-400">
       <Icon icon="icon-kong" class="text-4xl mb-2" />
-      <div>{{ t('caseReview.comp.description.noDescription') }}</div>
+      <div>{{ t('common.noDescription') }}</div>
     </div>
   </div>
 </template>

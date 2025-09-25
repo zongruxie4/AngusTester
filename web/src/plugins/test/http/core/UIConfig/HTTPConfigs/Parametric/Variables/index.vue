@@ -235,7 +235,7 @@ defineExpose({
       <div class="flex-shrink-0 w-1 h-3.5 rounded bg-blue-400 mr-1.5"></div>
       <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('httpPlugin.uiConfig.httpConfigs.parametric.variables.title') }}</div>
       <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 mr-1" />
-      <div class="flex-shrink-0 break-all whitespace-pre-wrap">{{ t('httpPlugin.uiConfig.httpConfigs.parametric.variables.description') }}</div>
+      <div class="flex-shrink-0 break-all whitespace-pre-wrap">{{ t('common.description') }}</div>
     </div>
     <div class="mb-2">
       <Button

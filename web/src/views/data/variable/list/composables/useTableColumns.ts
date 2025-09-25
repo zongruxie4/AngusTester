@@ -27,7 +27,7 @@ export function useTableColumns () {
       width: '20%'
     },
     {
-      title: t('dataVariable.list.columns.description'),
+      title: t('common.description'),
       dataIndex: 'description',
       ellipsis: true,
       width: '26%'

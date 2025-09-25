@@ -90,7 +90,7 @@ const columns = computed(() => {
       { label: t('service.groupApiDetail.columns.tags'), dataIndex: 'tags' },
       { label: t('service.groupApiDetail.columns.createdDate'), dataIndex: 'createdDate' },
       { label: t('service.groupApiDetail.columns.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
-      { label: t('service.groupApiDetail.columns.description'), dataIndex: 'description' },
+      { label: t('common.description'), dataIndex: 'description' },
       { label: t('service.groupApiDetail.columns.securityTitle'), dataIndex: 'securityTitle' },
       { dataIndex: 'security', fullWidthContent: true },
       { label: t('service.groupApiDetail.columns.externalDocsTitle'), dataIndex: 'externalDocsTitle' },

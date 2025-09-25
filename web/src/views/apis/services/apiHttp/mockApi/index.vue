@@ -209,7 +209,7 @@ const format = (data) => {
       </template>
       <template v-if="!mockApiInfo && !loading">
         <div class="p-2 border border-blue-border rounded bg-blue-bg-light">
-          <Hints :text="t('service.mockApi.description')" />
+          <Hints :text="t('common.description')" />
         </div>
         <div class=" mt-4">
           <RadioGroup
@@ -218,11 +218,11 @@ const format = (data) => {
             class="flex flex-col space-y-3.5">
             <Radio value="1">
               <span class="font-semibold">{{ t('service.mockApi.createTypes.generate.title') }}</span>
-              <div>{{ t('service.mockApi.createTypes.generate.description') }}</div>
+              <div>{{ t('common.description') }}</div>
             </Radio>
             <Radio value="2">
               <span class="font-semibold">{{ t('service.mockApi.createTypes.associate.title') }}</span>
-              <div>{{ t('service.mockApi.createTypes.associate.description') }}</div>
+              <div>{{ t('common.description') }}</div>
             </Radio>
           </RadioGroup>
           <Modal

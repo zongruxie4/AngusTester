@@ -29,7 +29,10 @@ const description = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a4" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.4') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.info.description.title') }}</span>
+      <span id="a4" class="text-4 text-theme-title font-medium">
+        {{ t('reportPreview.serial.4') }}
+        <em class="inline-block w-0.25"></em>
+        {{ t('common.description') }}</span>
     </h1>
 
     <RichEditor

@@ -603,7 +603,7 @@ defineExpose({
 
     <div class="mb-3.5">
       <div class="flex items-center mb-0.5">
-        <span>{{ t('service.serverConfig.form.description') }}</span>
+        <span>{{ t('common.description') }}</span>
       </div>
       <Input
         v-model:value="description"

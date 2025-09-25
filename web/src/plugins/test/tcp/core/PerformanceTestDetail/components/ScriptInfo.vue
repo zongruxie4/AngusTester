@@ -84,7 +84,7 @@ const infoConfig = [[
     dataIndex: 'lastModifiedDate'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.scriptInfo.description'),
+    label: t('common.description'),
     dataIndex: 'description'
   }
 ]];
@@ -153,7 +153,7 @@ defineExpose({ getFormData, validate, isSpread, toggle });
             :placeholder="t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptNamePlaceholder  ')" />
         </FormItem>
         <FormItem
-          :label="t('ftpPlugin.performanceTestDetail.scriptInfo.description')"
+          :label="t('common.description')"
           name="description">
           <Input
             v-model:value="formData.description"

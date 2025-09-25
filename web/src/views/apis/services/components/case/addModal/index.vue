@@ -371,7 +371,7 @@ watch([() => apiDebugRef.value], () => {
               </FormItem>
             </div>
             <FormItem
-              :label="t('service.case.debugModal.description')"
+              :label="t('common.description')"
               name="description"
               class="pr-20">
               <Input

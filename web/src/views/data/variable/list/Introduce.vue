@@ -11,7 +11,7 @@ const { t } = useI18n();
         <span class="text-3.5 font-semibold mb-1.5">{{ t('dataVariable.introduce.title') }}</span>
       </div>
       <div class="mb-4">
-        {{ t('dataVariable.introduce.description') }}
+        {{ t('common.description') }}
       </div>
     </div>
 
@@ -27,7 +27,7 @@ const { t } = useI18n();
               {{ t('dataVariable.introduce.types.fileExtract.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('dataVariable.introduce.types.fileExtract.description') }}
+              {{ t('common.description') }}
             </p>
           </div>
         </div>
@@ -44,7 +44,7 @@ const { t } = useI18n();
               {{ t('dataVariable.introduce.types.httpExtract.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('dataVariable.introduce.types.httpExtract.description') }}
+              {{ t('common.description') }}
             </p>
           </div>
         </div>
@@ -61,7 +61,7 @@ const { t } = useI18n();
               {{ t('dataVariable.introduce.types.jdbcExtract.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('dataVariable.introduce.types.jdbcExtract.description') }}
+              {{ t('common.description') }}
             </p>
           </div>
         </div>
