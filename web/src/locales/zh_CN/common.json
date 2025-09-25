@@ -56,6 +56,7 @@
     "executor": "执行人",
     "creator": "创建人",
     "modifier": "修改人",
+    "reporter": "报告人",
     "project": "项目",
     "projectType": "项目类型",
     "projectId": "项目Id",

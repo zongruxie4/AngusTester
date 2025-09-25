@@ -93,9 +93,6 @@
     },
     "reportDetail": {
       "title": "查看报告",
-      "info": {
-        "category": "分类"
-      },
       "tabs": {
         "createdDate": "添加时间",
         "basic": "基本信息",

@@ -101,9 +101,6 @@
     },
     "reportDetail": {
       "title": "View Report",
-      "info": {
-        "category": "Category"
-      },
       "tabs": {
         "createdDate": "Created Date",
         "basic": "Basic Info",
@@ -156,11 +153,6 @@
       "createdDate": "Created Date",
       "basic": "Basic Info",
       "content": "Content"
-    },
-    "reportInfo": {
-      "category": "Category",
-      "reporter": "Reporter",
-      "description": "Description"
     },
     "notifications": {
       "updateSuccess": "Update report successfully",

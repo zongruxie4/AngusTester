@@ -17,7 +17,7 @@ export function useTableColumns () {
       dataIndex: 'eventName'
     },
     {
-      title: t('event.columns.category'),
+      title: t('common.category'),
       dataIndex: 'targetType'
     },
     {

@@ -372,7 +372,7 @@ onMounted(() => {
             <div class="space-y-2 flex-1 min-w-0">
               <div class="font-semibold text-3.5">{{ report?.label }}</div>
               <div class="flex justify-between">
-                <div class="text-3 flex-1">{{ t('reportAdd.reportInfo.category') }}： {{ reportTypeName }}</div>
+                <div class="text-3 flex-1">{{ t('common.category') }}： {{ reportTypeName }}</div>
                 <div class="text-3 flex-1">{{ t('reportAdd.reportInfo.reporter') }}： {{ reportId ? createdByName : tenantInfo?.fullName }}</div>
               </div>
               <div class="text-3">{{ t('common.description') }}： {{ report?.description }}</div>

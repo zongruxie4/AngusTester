@@ -359,7 +359,7 @@ onMounted(() => {
         ref="categoryChartRef"
         class="w-70 h-34"></div>
       <div class="mark-container">
-        <div class="text-center">{{ t('reportHome.chart.labels.category') }}</div>
+        <div class="text-center">{{ t('common.category') }}</div>
         <div class="text-3.5 text-center font-semibold">{{ totalCount || 0 }}</div>
       </div>
     </div>

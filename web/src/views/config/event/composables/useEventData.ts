@@ -293,7 +293,7 @@ export function useEventData () {
         key: 'eventName'
       },
       {
-        title: t('event.columns.category'),
+        title: t('common.category'),
         dataIndex: 'targetType',
         key: 'targetType'
       },
