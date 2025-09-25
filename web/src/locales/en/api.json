@@ -653,8 +653,6 @@
         "copySuccess": "Copied successfully"
       },
       "form": {
-        "link": "Link",
-        "password": "Password",
         "validityPeriod": "Validity Period",
         "permanent": "Permanent"
       },

@@ -110,7 +110,7 @@ const copy = (item:ListType) => {
   if (!item.public0) {
     message = `${t('common.password')}: ${item.password || ''}`;
   } else {
-    message = `${t('commonComp.shareModal.copyLabel.name')}: ${item.name}\n${t('commonComp.shareModal.copyLabel.link')}: ${item.url}`;
+    message = `${t('common.link')}: ${item.url}`;
   }
   toClipboard(message).then(() => {
     notification.success(t('actions.tips.copySuccess'));

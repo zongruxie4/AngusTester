@@ -1563,8 +1563,6 @@
         "attachmentHints": "附件文件路径，多个文件路径可以用逗号分隔。",
         "emlFile": "邮件文件(.eml)",
         "selectEmlFile": "选择EML文件",
-        "subject": "邮件主题",
-        "message": "邮件内容",
         "includeTimestamp": "在主题中包含时间戳",
         "suppressSubject": "抑制主题",
         "sendEmlMessage": "发送EML消息",
@@ -1779,9 +1777,6 @@
         "placeholder": "查询接口名称"
       },
       "referenced": "（已引用）",
-      "buttons": {
-        "link": "引用"
-      }
     },
     "websocketConfigs": {
       "urlFormatError": "url格式错误",

@@ -1553,8 +1553,6 @@
         "nameTip": "Name Duplicate",
         "themeConfig": "Theme Configuration",
         "title": "Email Content Settings",
-        "subject": "Email Subject",
-        "themePlaceholder": "Theme",
         "disableSubject": "Disable subject",
         "subjectHints": "If the subject of the email is disabled, the email will not have a subject line.",
         "addHeader": "Add header",
@@ -1782,13 +1780,7 @@
       "input": {
         "placeholder": "Search interface name"
       },
-      "fields": {
-        "url": "URL"
-      },
       "referenced": "(Referenced)",
-      "buttons": {
-        "link": "Reference"
-      }
     },
     "websocketConfigs": {
       "urlFormatError": "URL format error",

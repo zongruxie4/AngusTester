@@ -369,7 +369,7 @@ onMounted(async () => {
       <FormItem
         required
         name="subject"
-        :label="t('taskMeeting.form.subject')">
+        :label="t('common.subject')">
         <Input
           v-model:value="meetingFormState.subject"
           :maxlength="200"

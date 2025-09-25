@@ -787,7 +787,6 @@
       "messages": {
         "generateShareLink": "Share link generated",
         "copySuccess": "Copied successfully",
-        "link": "Link: {url}",
         "linkAndPassword": "Link: {url} Password: {password}"
       },
       "shareList": {

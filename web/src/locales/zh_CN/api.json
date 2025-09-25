@@ -657,8 +657,6 @@
         "copySuccess": "复制成功"
       },
       "form": {
-        "link": "链接",
-        "password": "密码",
         "validityPeriod": "有效期",
         "permanent": "永久有效"
       },

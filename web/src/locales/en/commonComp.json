@@ -215,10 +215,6 @@
         "noShareApis": "No shareable APIs",
         "noSelectedApis": "Please select APIs",
         "shareApis": "Share APIs",
-        "copyLabel": {
-          "link": "Link",
-          "password": "Password"
-        }
       }
     },
     "createTaskTestModal": {

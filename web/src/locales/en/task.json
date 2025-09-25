@@ -1342,10 +1342,8 @@
     "addSuccess": "Add successful",
     "editSuccess": "Edit successful",
     "columns": {
-      "subject": "Subject",
       "date": "Date",
       "time": "Time",
-      "location": "Location",
       "moderator": "Moderator",
       "participants": "Participants",
       "participantUnit": "users",

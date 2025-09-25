@@ -783,7 +783,6 @@
       "messages": {
         "generateShareLink": "生成分享链接",
         "copySuccess": "复制成功",
-        "link": "链接: {url}",
         "linkAndPassword": "链接: {url} 密码: {password}"
       },
       "shareList": {

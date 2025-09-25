@@ -168,7 +168,7 @@ const change = ({ ids }) => {
         size="small"
         type="primary"
         @click="ok('link')">
-        {{ t('websocketPlugin.uiConfig.selectApiModal.buttons.link') }}
+        {{ t('common.link') }}
       </Button>
     </template>
   </Modal>

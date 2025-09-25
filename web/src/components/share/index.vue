@@ -473,7 +473,7 @@ const copy = (item: ShareObj, isCopy?: boolean) => {
   if (!item.public0) {
     message = `${t('common.password')}: ${item.password || ''}`;
   } else {
-    message = `${t('commonComp.shareModal.copyLabel.name')}: ${item.name}\n${t('commonComp.shareModal.copyLabel.link')}: ${item.url}`;
+    message = `${t('common.link')}: ${item.url}`;
   }
   toClipboard(message).then(() => {
     notification.success(isCopy ? t('actions.tips.copySuccess') : t('actions.tips.shareSuccess'));

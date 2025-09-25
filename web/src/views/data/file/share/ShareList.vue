@@ -90,7 +90,7 @@ const addShare = () => {
           {{ item.type.message }}
         </column-item> -->
         <column-item
-          :label="t('fileSpace.share.shareList.link')"
+          :label="t('common.link')"
           className="w-18">
           <Tooltip>
             <template #title>

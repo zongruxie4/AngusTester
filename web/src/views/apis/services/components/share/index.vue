@@ -174,7 +174,7 @@ onMounted(() => {
         v-for="(item,index) in state.list"
         :key="index">
         <column-item
-          :label="t('service.shareModal.form.link')"
+          :label="t('common.link')"
           className="w-18">
           <Tooltip>
             <template #title>
