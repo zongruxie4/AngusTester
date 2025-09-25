@@ -160,7 +160,7 @@ const handleDeveloper = () => {
                 @click="toEditTester" />
             </Button>
             <Button
-              v-show="!props.readonly"
+              v-show="!props.readonly && props.caseInfo?.testerId !== props.userInfo?.id"
               :loading="saveTesterLoading"
               type="link"
               size="small"
@@ -200,7 +200,7 @@ const handleDeveloper = () => {
                 @click="toEditDeveloper" />
             </Button>
             <Button
-              v-show="!props.readonly"
+              v-show="!props.readonly && props.caseInfo?.developerId !== props.userInfo?.id"
               :loading="saveDeveloperLoading"
               type="link"
               size="small"
