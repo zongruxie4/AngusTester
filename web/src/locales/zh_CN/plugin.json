@@ -53,8 +53,6 @@
         "execLog": "执行日志",
         "toggle": "展开收起",
         "screen": "全屏",
-        "duration": "耗时",
-        "size": "大小"
       },
       "drawer": {
         "indicator": "测试指标",
@@ -599,8 +597,6 @@
     },
     "functionTestDetail": {
       "statusCode": "状态码",
-      "duration": "耗时",
-      "size": "大小",
       "basicInfo": {
         "duration": "运行时间",
         "iteration": "迭代数",
@@ -1233,7 +1229,6 @@
     "functionTestDetailJms": {
       "statusCode": "状态码",
       "duration": "耗时",
-      "size": "大小",
       "tabs": {
         "general": "基本",
         "requestBody": "请求体",
@@ -1424,7 +1419,6 @@
       "totalEmails": "总共{count}个邮件",
       "readEmails": "读取{count}个邮件",
       "duration": "耗时",
-      "size": "大小",
       "request": "请求",
       "response": "响应",
       "responseHeaders": "响应头",
@@ -1504,10 +1498,6 @@
         "text": "文本",
         "emlFile": "eml文件",
         "attachment": "附件"
-      },
-      "metrics": {
-        "duration": "耗时",
-        "size": "大小"
       },
       "tabs": {
         "request": "请求",
@@ -1874,11 +1864,6 @@
       "confirmDelete": "确认删除",
       "pleaseSelect": "请选择",
       "pleaseInput": "请输入"
-    },
-    "form": {
-      "format": "格式",
-      "size": "大小",
-      "count": "数量"
     },
     "dataConfig": {
       "title": "数据配置",

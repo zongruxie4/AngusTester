@@ -31,7 +31,7 @@ export const TOOLBAR_EXTRA_MENUITEMS: {
   },
   {
     key: 'size',
-    name: t('commonPlugin.menuData.toolbar.size')
+    name: t('common.size')
   },
   {
     key: 'toggle',

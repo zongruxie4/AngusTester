@@ -178,7 +178,7 @@ const failMessage = (httpContent) => {
                   <span class="text-theme-sub-content"> {{ getRuntime(httpContent) }}</span>
                 </div>
                 <div class="mr-5">
-                  <span class="mr-0.5">{{ t('xcan_scenarioDebugResult.size') }}<Colon /></span>
+                  <span class="mr-0.5">{{ t('common.size') }}<Colon /></span>
                   <span class="text-theme-sub-content"> {{ bodySize(httpContent) }}</span>
                 </div>
               </template>

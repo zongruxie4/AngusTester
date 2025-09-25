@@ -78,7 +78,7 @@ const arrowChange = (id: string, idx) => {
             <div class="w-full flex items-center pr-2">
               <Arrow :open="spreadMap[idx].includes(item.id)" @change="arrowChange(item.id, idx)" />
               <div class="ml-1 font-bold">{{ item.name }}</div>
-              <div v-show="item.id==='headers'" class="flex-1 text-right">{{ t('xcan_scenarioMail.size') }}：{{ utils.formatBytes(itemResp.dataSize) }}</div>
+              <div v-show="item.id==='headers'" class="flex-1 text-right">{{ t('common.size') }}：{{ utils.formatBytes(itemResp.dataSize) }}</div>
             </div>
           </template>
           <template v-if="item.key==='headers'">

@@ -1378,7 +1378,6 @@
     "hours": "小时",
     "statusCode": "状态码",
     "timeConsuming": "耗时",
-    "size": "大小",
     "basic": "基本",
     "requestBody": "请求体",
     "response": "响应",
@@ -1552,7 +1551,6 @@
     "emlFile": "eml文件",
     "attachment": "附件",
     "duration": "耗时",
-    "size": "大小",
     "request": "请求",
     "response": "响应",
     "statusCode": "状态码",
@@ -1609,6 +1607,5 @@
     "responseHeaders": "响应头",
     "responseBody": "响应体",
     "email": "邮件{num}",
-    "size": "大小"
   }
 }

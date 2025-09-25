@@ -1972,7 +1972,7 @@ provide('selectHandle', closeDrawer);
                         + 'ms') }}</span>
                   </div>
                   <div class="flex items-center flex-nowrap whitespace-nowrap">
-                    <span class="mr-1">{{ t('service.apis.toolbar.size') }}:</span>
+                    <span class="mr-1">{{ t('common.size') }}:</span>
                     <span class>{{ isNaN(Number(responseState?.size)) ? responseState?.size :
                       formatBytes(Number(responseState?.size)) }}</span>
                   </div>

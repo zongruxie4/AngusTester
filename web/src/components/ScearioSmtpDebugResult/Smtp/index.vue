@@ -144,7 +144,7 @@ const failMessage = computed(() => {
                 <span class="text-theme-sub-content"> {{ runtime }}</span>
               </div>
               <div class="mr-5">
-                <span class="mr-0.5">{{ t('xcan_scenarioDebugResult.size') }}<Colon /></span>
+                <span class="mr-0.5">{{ t('common.size') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ bodySize }}</span>
               </div>
               <StatusTag :value="status" />

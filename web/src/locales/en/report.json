@@ -747,7 +747,6 @@
           "http": {
             "statusCode": "Status Code",
             "duration": "Duration",
-            "size": "Size"
           },
           "throughput": {
             "requestsPerSecond": "Requests Per Second",

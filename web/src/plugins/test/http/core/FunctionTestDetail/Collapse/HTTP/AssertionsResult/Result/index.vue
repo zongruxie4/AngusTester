@@ -341,7 +341,7 @@ const TYPE_MAP = computed(() => ({
   HEADER: t('httpPlugin.functionTestDetail.http.typeMap.header'),
   BODY: t('httpPlugin.functionTestDetail.http.typeMap.body'),
   BODY_SIZE: t('httpPlugin.functionTestDetail.http.typeMap.bodySize'),
-  SIZE: t('httpPlugin.functionTestDetail.http.typeMap.size'),
+  SIZE: t('common.size'),
   DURATION: t('httpPlugin.functionTestDetail.http.typeMap.duration')
 }));
 

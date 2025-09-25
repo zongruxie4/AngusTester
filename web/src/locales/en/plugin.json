@@ -54,7 +54,6 @@
         "toggle": "Expand/Collapse",
         "screen": "Full Screen",
         "duration": "Duration",
-        "size": "Size"
       },
       "drawer": {
         "indicator": "Test Indicators",
@@ -104,15 +103,6 @@
       "favouriteSuccess": "Favourite successful",
       "cancelFavouriteSuccess": "Cancel favourite successful",
       "paramError": "Parameter error"
-    },
-    "form": {
-      "format": "Format",
-      "size": "Size",
-      "count": "Count",
-      "createTime": "Create Time",
-      "updateTime": "Update Time",
-      "creator": "Creator",
-      "updater": "Updater"
     },
     "tabs": {
       "taskConfig": "Task Configuration",
@@ -603,7 +593,6 @@
     "functionTestDetail": {
       "statusCode": "Status Code",
       "duration": "Duration",
-      "size": "Size",
       "basicInfo": {
         "duration": "Duration",
         "iteration": "Iterations",
@@ -1239,7 +1228,6 @@
     "functionTestDetailJms": {
       "statusCode": "Status Code",
       "duration": "Duration",
-      "size": "Size",
       "tabs": {
         "general": "General",
         "requestBody": "Request Body",
@@ -1431,7 +1419,6 @@
       "totalEmails": "Total {count} emails",
       "readEmails": "Read {count} emails",
       "duration": "Duration",
-      "size": "Size",
       "request": "Request",
       "response": "Response",
       "responseHeaders": "Response Headers",
@@ -1514,7 +1501,6 @@
       },
       "metrics": {
         "duration": "Duration",
-        "size": "Size"
       },
       "tabs": {
         "request": "Request",
@@ -1884,11 +1870,6 @@
       "confirmDelete": "Confirm Delete",
       "pleaseSelect": "Please Select",
       "pleaseInput": "Please Input"
-    },
-    "form": {
-      "format": "Format",
-      "size": "Size",
-      "count": "Count"
     },
     "dataConfig": {
       "title": "Data Configuration",

@@ -12,6 +12,7 @@
     "total": "总数",
     "count": "数量",
     "size": "大小",
+    "duration": "耗时",
     "id": "ID",
     "code": "编号",
     "name": "名称",
@@ -102,31 +103,6 @@
     "hints": {
     }
   },
-  "home": {
-    "title": "首页",
-    "myActivity": "我的活动",
-    "allActivity": "所有活动"
-  },
-  "routes": {
-    "fileData": "文件数据",
-    "generateData": "生成数据",
-    "experienceExecution": "体验执行",
-    "modifyExecutionConfig": "修改执行配置",
-    "mock": "Mock",
-    "add": "添加",
-    "node": "节点",
-    "detail": "详情"
-  },
-  "unit": {
-    "year": "年",
-    "month": "月",
-    "week": "周",
-    "day": "天",
-    "hour": "时",
-    "minute": "分",
-    "second": "秒",
-    "user": "人"
-  },
   "status": {
     "success": "成功",
     "failed": "失败",
@@ -160,34 +136,6 @@
     "no": "否",
     "on": "开启",
     "off": "关闭"
-  },
-  "chart": {
-    "timeUnit": "时间单位",
-    "total": "总数",
-    "today": "今日",
-    "last7Days": "近7天",
-    "lastMonth": "近1月",
-    "lastYear": "近1年",
-    "average": "平均",
-    "minimum": "最小",
-    "maximum": "最大",
-    "p50": "P50",
-    "p75": "P75",
-    "p90": "P90",
-    "p95": "P95",
-    "p99": "P99",
-    "p999": "P999",
-    "burndown": {
-      "remaining": "剩余量",
-      "expected": "期望值",
-      "completed": "完成量",
-      "countBurndown": "数量燃尽",
-      "workloadBurndown": "工作量燃尽"
-    }
-  },
-  "views": {
-    "codeView": "代码视图",
-    "pageView": "页面视图"
   },
   "actions": {
     "view": "查看",
@@ -277,18 +225,10 @@
       "copyFailed": "复制失败"
     }
   },
-  "organization": {
-    "allMembers": "所有成员",
-    "tenant": "租户",
-    "user": "用户",
-    "dept": "部门",
-    "group": "组",
-    "placeholders": {
-      "selectTenant": "--请选择租户--",
-      "selectUser": "--请选择用户--",
-      "selectDept": "--请选择部门--",
-      "selectGroup": "--请选择组--"
-    }
+  "home": {
+    "title": "首页",
+    "myActivity": "我的活动",
+    "allActivity": "所有活动"
   },
   "quickSearch": {
     "title": "快速查询",
@@ -306,5 +246,68 @@
   },
   "page": {
     "items": "条"
+  },
+  "views": {
+    "codeView": "代码视图",
+    "pageView": "页面视图"
+  },
+  "organization": {
+    "allMembers": "所有成员",
+    "tenant": "租户",
+    "user": "用户",
+    "dept": "部门",
+    "group": "组",
+    "placeholders": {
+      "selectTenant": "--请选择租户--",
+      "selectUser": "--请选择用户--",
+      "selectDept": "--请选择部门--",
+      "selectGroup": "--请选择组--"
+    }
+  },
+  "chart": {
+    "timeUnit": "时间单位",
+    "total": "总数",
+    "today": "今日",
+    "last7Days": "近7天",
+    "lastMonth": "近1月",
+    "lastYear": "近1年",
+    "average": "平均",
+    "minimum": "最小",
+    "maximum": "最大",
+    "p50": "P50",
+    "p75": "P75",
+    "p90": "P90",
+    "p95": "P95",
+    "p99": "P99",
+    "p999": "P999",
+    "burndown": {
+      "remaining": "剩余量",
+      "expected": "期望值",
+      "completed": "完成量",
+      "countBurndown": "数量燃尽",
+      "workloadBurndown": "工作量燃尽"
+    }
+  },
+  "unit": {
+    "year": "年",
+    "month": "月",
+    "week": "周",
+    "day": "天",
+    "hour": "时",
+    "minute": "分",
+    "second": "秒",
+    "user": "人"
+  },
+  "http": {
+  },
+  "routes": {
+    "fileData": "文件数据",
+    "generateData": "生成数据",
+    "experienceExecution": "体验执行",
+    "modifyExecutionConfig": "修改执行配置",
+    "mock": "Mock",
+    "add": "添加",
+    "node": "节点",
+    "detail": "详情"
   }
 }

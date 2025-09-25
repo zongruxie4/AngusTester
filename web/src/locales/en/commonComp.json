@@ -1506,7 +1506,6 @@
     "hours": "Hours",
     "statusCode": "Status Code",
     "timeConsuming": "Time Consuming",
-    "size": "Size",
     "basic": "Basic",
     "requestBody": "Request Body",
     "response": "Response",
@@ -1684,7 +1683,6 @@
     "emlFile": "EML File",
     "attachment": "Attachment",
     "duration": "Duration",
-    "size": "Size",
     "request": "Request",
     "response": "Response",
     "statusCode": "Status Code",
@@ -1741,6 +1739,5 @@
     "responseHeaders": "Response Headers",
     "responseBody": "Response Body",
     "email": "Email {num}",
-    "size": "Size"
   }
 }

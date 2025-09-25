@@ -416,7 +416,6 @@
       "toolbar": {
         "statusCode": "Status Code:",
         "duration": "Duration:",
-        "size": "Size:"
       },
       "errors": {
         "invalidUrl": "Error!",

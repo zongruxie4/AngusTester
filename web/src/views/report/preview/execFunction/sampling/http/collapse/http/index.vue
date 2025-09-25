@@ -141,7 +141,7 @@ const showBasicInfo = computed(() => {
             <span class="text-theme-sub-content"> {{ runtime }}</span>
           </div>
           <div class="mr-3.5 flex-shrink-0">
-            <span class="mr-0.5">{{ t('reportPreview.execFunction.sampling.collapse.http.size') }}<Colon /></span>
+            <span class="mr-0.5">{{ t('common.size') }}<Colon /></span>
             <span class="text-theme-sub-content"> {{ bodySize }}</span>
           </div>
         </template>
