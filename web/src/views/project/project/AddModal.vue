@@ -82,8 +82,8 @@ const projectTypeName = computed(() => {
 // Computed properties
 const modalTitle = computed(() => {
   return props.dataSource?.id
-    ? t('project.projectAddModal.modal.editProject')
-    : t('project.projectAddModal.modal.addProject');
+    ? t('project.edit.modal.editProject')
+    : t('project.edit.modal.addProject');
 });
 
 // Event handlers
@@ -111,7 +111,7 @@ const cancel = () => {
 // Form validation
 const validateDesc = () => {
   if (descRichRef.value && descRichRef.value.getLength() > 2000) {
-    return Promise.reject(t('project.projectAddModal.validation.maxCharacters'));
+    return Promise.reject(t('project.edit.rules.maxCharacters'));
   }
   return Promise.resolve();
 };
@@ -178,7 +178,7 @@ watch(() => props.visible, (newValue) => {
     <div class="modal-content">
       <!-- Project type selection area -->
       <div class="project-type-section">
-        <h3 class="section-title">{{ t('project.projectAddModal.form.selectProjectType') }}</h3>
+        <h3 class="section-title">{{ t('project.edit.form.selectProjectType') }}</h3>
         <div class="project-type-cards">
           <div
             class="project-type-card"
@@ -251,7 +251,7 @@ watch(() => props.visible, (newValue) => {
                   class="upload-component">
                   <div class="upload-area">
                     <img src="../../../assets/images/default.png" class="upload-icon" />
-                    <div class="upload-text">{{ t('project.projectAddModal.form.clickToReplaceIcon') }}</div>
+                    <div class="upload-text">{{ t('project.edit.actions.clickToReplaceIcon') }}</div>
                   </div>
                 </Upload>
               </div>
@@ -260,13 +260,13 @@ watch(() => props.visible, (newValue) => {
 
           <!-- Project name -->
           <FormItem
-            :label="t('project.projectAddModal.form.name')"
+            :label="t('project.edit.form.name')"
             name="name"
             class="form-field"
             required>
             <Input
               v-model:value="formData.name"
-              :placeholder="t('project.projectAddModal.form.projectNamePlaceholder')"
+              :placeholder="t('project.edit.form.projectNamePlaceholder')"
               :maxlength="100"
               class="enhanced-input" />
           </FormItem>
@@ -275,9 +275,9 @@ watch(() => props.visible, (newValue) => {
           <FormItem
             name="dateRange"
             class="form-field with-tooltip"
-            :rules="[{ required: true, message: t('project.projectAddModal.validation.timeRequired')}]">
+            :rules="[{ required: true, message: t('project.edit.rules.timeRequired')}]">
             <template #label>
-              <span>{{ t('project.projectAddModal.form.time') }}</span>
+              <span>{{ t('project.edit.form.time') }}</span>
             </template>
             <DatePicker
               v-model:value="formData.dateRange"
@@ -287,7 +287,7 @@ watch(() => props.visible, (newValue) => {
             <Popover placement="right" overlayClassName="form-tooltip">
               <template #content>
                 <div class="tooltip-content">
-                  {{ t('project.projectAddModal.form.timeDescription') }}
+                  {{ t('project.edit.form.planTimeDescription') }}
                 </div>
               </template>
               <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -299,20 +299,20 @@ watch(() => props.visible, (newValue) => {
             <FormItem
               name="ownerId"
               class="form-field with-tooltip flex-1"
-              :rules="[{ required: true, message: t('project.projectAddModal.validation.ownerRequired')}]">
+              :rules="[{ required: true, message: t('project.edit.rules.ownerRequired')}]">
               <template #label>
-                <span>{{ t('project.projectAddModal.form.owner') }}</span>
+                <span>{{ t('project.edit.form.owner') }}</span>
               </template>
               <SelectUser
                 v-model:value="formData.ownerId"
                 size="small"
-                :placeholder="t('project.projectAddModal.form.ownerPlaceholder')"
+                :placeholder="t('project.edit.form.ownerPlaceholder')"
                 :allowClear="false"
                 class="enhanced-select" />
               <Popover placement="right" overlayClassName="form-tooltip">
                 <template #content>
                   <div class="tooltip-content">
-                    {{ t('project.projectAddModal.form.ownerDescription') }}
+                    {{ t('project.edit.form.ownerDescription') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -331,7 +331,7 @@ watch(() => props.visible, (newValue) => {
               <Popover placement="right" overlayClassName="form-tooltip">
                 <template #content>
                   <div class="tooltip-content">
-                    {{ t('project.projectAddModal.form.importExampleDescription') }}
+                    {{ t('project.edit.form.importExampleDescription') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -341,7 +341,7 @@ watch(() => props.visible, (newValue) => {
 
           <!-- Project members -->
           <FormItem
-            :label="t('project.projectAddModal.form.members')"
+            :label="t('project.edit.form.members')"
             class="form-field members-field"
             required>
             <div class="members-selector">
@@ -352,19 +352,19 @@ watch(() => props.visible, (newValue) => {
                   size="small"
                   class="enhanced-radio-group">
                   <RadioButton value="user">
-                    {{ t('project.projectAddModal.form.user') }}
+                    {{ t('project.edit.form.user') }}
                   </RadioButton>
                   <RadioButton value="dept">
-                    {{ t('project.projectAddModal.form.department') }}
+                    {{ t('project.edit.form.department') }}
                   </RadioButton>
                   <RadioButton value="group">
-                    {{ t('project.projectAddModal.form.group') }}
+                    {{ t('project.edit.form.group') }}
                   </RadioButton>
                 </RadioGroup>
                 <Popover placement="right" overlayClassName="form-tooltip">
                   <template #content>
                     <div class="tooltip-content">
-                      {{ t('project.projectAddModal.form.membersDescription') }}
+                      {{ t('project.edit.form.membersDescription') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -375,7 +375,7 @@ watch(() => props.visible, (newValue) => {
                   v-show="memberType === 'user'"
                   v-model:value="members.USER"
                   :showSearch="true"
-                  :placeholder="t('project.projectAddModal.form.selectUser')"
+                  :placeholder="t('project.edit.form.selectUser')"
                   :action="`${GM}/user?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsUser"
                   mode="multiple"
@@ -385,7 +385,7 @@ watch(() => props.visible, (newValue) => {
                 <Select
                   v-show="memberType === 'dept'"
                   v-model:value="members.DEPT"
-                  :placeholder="t('project.projectAddModal.form.selectDepartment')"
+                  :placeholder="t('project.edit.form.selectDepartment')"
                   :showSearch="true"
                   :action="`${GM}/dept?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsDept"
@@ -396,7 +396,7 @@ watch(() => props.visible, (newValue) => {
                 <Select
                   v-show="memberType === 'group'"
                   v-model:value="members.GROUP"
-                  :placeholder="t('project.projectAddModal.form.selectGroup')"
+                  :placeholder="t('project.edit.form.selectGroup')"
                   :showSearch="true"
                   :action="`${GM}/group?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsGroup"
@@ -409,7 +409,7 @@ watch(() => props.visible, (newValue) => {
 
           <!-- Project description -->
           <FormItem
-            :label="t('project.projectAddModal.form.description')"
+            :label="t('project.edit.form.description')"
             name="description"
             class="form-field description-field"
             :rules="[{validator: validateDesc}]">
@@ -418,7 +418,7 @@ watch(() => props.visible, (newValue) => {
               v-model:value="formData.description"
               class="enhanced-editor"
               :height="80"
-              :options="{placeholder: t('project.projectAddModal.form.descriptionPlaceholder'), theme: 'bubble'}" />
+              :options="{placeholder: t('project.edit.form.descriptionPlaceholder'), theme: 'bubble'}" />
           </FormItem>
         </Form>
       </div>

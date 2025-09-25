@@ -1457,7 +1457,7 @@
       "columns": {
         "serviceDomainUrl": "服务地址",
         "servicePort": "端口",
-        "nodeName": "节点",
+        "nodeName": "节点"
       },
       "stats": {
         "apisNum": "接口数",
@@ -1858,7 +1858,7 @@
       "columns": {
         "openapiSpecVersion": "规范版本",
         "designSource": "来源",
-        "designService": "关联服务",
+        "designService": "关联服务"
       },
       "deleteFirm": {
         "title": "确定删除设计「{name}」吗？"
@@ -2501,7 +2501,7 @@
         "shareScope": "分享范围",
         "expiredDate": "到期日期",
         "shareDate": "分享日期",
-        "viewCount": "查看次数",
+        "viewCount": "查看次数"
       }
     },
     "searchPanel": {
@@ -2541,6 +2541,6 @@
     "tabs": {
       "service": "服务",
       "api": "接口"
-    },
+    }
   }
 }

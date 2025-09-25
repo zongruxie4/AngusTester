@@ -111,9 +111,7 @@ const formState = reactive<TaskEditState>({
 });
 
 /** Task type name mapping for UI display */
-const taskTypeName = computed(() => {
-  return getTaskTypeName();
-});
+const taskTypeName = getTaskTypeName();
 
 // User Selection Default Options
 const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
@@ -133,7 +131,6 @@ const toggleModalZoom = () => {
   localStore.set(zoomInFlagCacheKey.value, isZoomedIn.value);
 };
 
-// Form Event Handlers
 /**
  * <p>Handle sprint selection change</p>
  * <p>Updates deadline date and evaluation workload method when sprint changes</p>
@@ -207,7 +204,7 @@ const handleActualWorkloadChange = (value: string) => {
  */
 const handleEvaluationWorkloadChange = (value: string) => {
   if (!value) {
-    formState.actualWorkload = '';
+    formState.actualWorkload = undefined;
     formRef.value.clearValidate('evalWorkload');
   }
 };
@@ -903,6 +900,7 @@ const getPopupContainer = () => {
                   :allowClear="false"
                   :lazy="false" />
               </FormItem>
+              
               <FormItem
                 name="missingBug"
                 :label="t('backlog.editForm.labels.missingBug')"

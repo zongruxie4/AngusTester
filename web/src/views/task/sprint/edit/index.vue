@@ -803,7 +803,7 @@ onMounted(() => {
       </FormItem>
 
       <FormItem
-        :label="t('taskSprint.form.timePlan')"
+        :label="t('common.planTime')"
         name="date"
         :rules="{ required: true, validator: validateDateRange, trigger: 'change' }">
         <DatePicker

@@ -15,8 +15,8 @@ const { t } = useI18n();
 const stepData = [
   {
     type: 'step',
-    text: t('project.steps.addProject.text'),
-    title: t('project.steps.addProject.title'),
+    text: t('project.introduce.steps.addProject.text'),
+    title: t('project.introduce.steps.addProject.title'),
     icon: 'icon-chuangjianxiangmu'
   },
   {
@@ -25,8 +25,8 @@ const stepData = [
   },
   {
     type: 'step',
-    text: t('project.steps.sprintAndPlan.text'),
-    title: t('project.steps.sprintAndPlan.title'),
+    text: t('project.introduce.steps.sprintAndPlan.text'),
+    title: t('project.introduce.steps.sprintAndPlan.title'),
     icon: 'icon-jihua1'
   },
   {
@@ -35,8 +35,8 @@ const stepData = [
   },
   {
     type: 'step',
-    text: t('project.steps.developAndTest.text'),
-    title: t('project.steps.developAndTest.title'),
+    text: t('project.introduce.steps.developAndTest.text'),
+    title: t('project.introduce.steps.developAndTest.title'),
     icon: 'icon-ceshirenwu'
   },
   {
@@ -45,8 +45,8 @@ const stepData = [
   },
   {
     type: 'step',
-    text: t('project.steps.reportResults.text'),
-    title: t('project.steps.reportResults.title'),
+    text: t('project.introduce.steps.reportResults.text'),
+    title: t('project.introduce.steps.reportResults.title'),
     icon: 'icon-dingdanmokuai'
   }
 ];
@@ -54,9 +54,11 @@ const stepData = [
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-1.5">{{ t('project.aboutProject') }}</div>
+    <div class="text-3.5 font-semibold mb-1.5">
+      {{ t('project.introduce.aboutProject') }}
+    </div>
     <div class="mb-6 text-3.5">
-      <div>{{ t('project.projectDescription') }}</div>
+      <div>{{ t('project.introduce.description') }}</div>
     </div>
 
     <div class="flex items-center justify-center">

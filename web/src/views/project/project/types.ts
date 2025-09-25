@@ -8,16 +8,16 @@ export const getProjectTypeTipConfig = () => {
   const { t } = useI18n();
   return {
     AGILE: [
-      t('project.projectTypeTip.agile.features'),
-      t('project.projectTypeTip.agile.scenarios')
+      t('project.edit.form.projectTypeTip.agile.features'),
+      t('project.edit.form.projectTypeTip.agile.scenarios')
     ],
     GENERAL: [
-      t('project.projectTypeTip.general.features'),
-      t('project.projectTypeTip.general.scenarios')
+      t('project.edit.form.projectTypeTip.general.features'),
+      t('project.edit.form.projectTypeTip.general.scenarios')
     ],
     TESTING: [
-      t('project.projectTypeTip.testing.features'),
-      t('project.projectTypeTip.testing.scenarios')
+      t('project.edit.form.projectTypeTip.testing.features'),
+      t('project.edit.form.projectTypeTip.testing.scenarios')
     ]
   };
 };

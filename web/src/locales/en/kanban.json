@@ -288,7 +288,7 @@
       "testStatus": {
         "pendingTest": "Pending Test",
         "testPassed": "Test Passed",
-        "testFailed": "Test Failed",
+        "testFailed": "Test Failed"
       },
       "reviewStatus": {
         "pendingReview": "Pending Review",

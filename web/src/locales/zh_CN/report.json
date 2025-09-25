@@ -98,7 +98,7 @@
     "reportDetail": {
       "title": "查看报告",
       "info": {
-        "category": "分类",
+        "category": "分类"
       },
       "tabs": {
         "createdDate": "添加时间",
@@ -705,7 +705,7 @@
             "nodeCount": "节点数",
             "reportInterval": "报告间隔",
             "ignoreAssertions": "忽略断言",
-            "updateTestResult": "更新测试结果",
+            "updateTestResult": "更新测试结果"
           },
           "options": {
             "update": "更新",
@@ -1113,10 +1113,10 @@
         }
       },
       "assocTask": {
-        "title": "关联任务",
+        "title": "关联任务"
       },
       "assocCase": {
-        "title": "关联用例",
+        "title": "关联用例"
       },
       "activity": {
         "title": "活动",
@@ -1345,9 +1345,7 @@
       "info": {
         "title": "项目信息",
         "fields": {
-
-          "planTime": "计划时间",
-
+          "planTime": "计划时间"
         }
       },
       "taskSummary": {
@@ -1536,7 +1534,7 @@
         }
       },
       "info": {
-        "title": "场景信息",
+        "title": "场景信息"
       },
       "testResult": {
         "title": "场景测试汇总结果",
@@ -1739,7 +1737,7 @@
         "title": "服务信息",
         "fields": {
           "apiCount": "接口数",
-          "apiCaseCount": "接口用例数",
+          "apiCaseCount": "接口用例数"
         }
       },
       "apisGroup": {
@@ -1830,7 +1828,7 @@
           "title": "基本信息",
           "fields": {
             "taskPrefix": "任务前缀",
-            "sprintTime": "迭代时间",
+            "sprintTime": "迭代时间"
           }
         },
         "acceptanceCriteria": {

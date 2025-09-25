@@ -34,7 +34,7 @@
         "group": "Group"
       },
       "authSet": {
-        "searchPlaceholder": "Search name",
+        "searchPlaceholder": "Search name"
       },
       "groupSet": {
         "searchUser": "Search user",
@@ -106,7 +106,7 @@
     "reportDetail": {
       "title": "View Report",
       "info": {
-        "category": "Category",
+        "category": "Category"
       },
       "tabs": {
         "createdDate": "Created Date",
@@ -615,7 +615,7 @@
           "enableStabilityTest": "Enable Stability Test",
           "stabilityTestPassed": "Stability Test Passed",
           "stabilityTestFailureReason": "Stability Test Failure Reason"
-        },
+        }
       },
       "testResultDetail": {
         "title": "Scenario Test Result Details",
@@ -674,7 +674,7 @@
           "memoryUsage": "Memory Usage",
           "diskUsage": "Disk Usage",
           "networkUsage": "Network Usage"
-        },
+        }
       }
     },
     "execFunction": {
@@ -699,7 +699,7 @@
           "contact": "Contact",
           "copyright": "Copyright",
           "other": "Other"
-        },
+        }
       },
       "detail": {
         "title": "Execution Information",
@@ -742,7 +742,7 @@
           "fields": {
             "schedulingResult": "Scheduling Result",
             "processExitCode": "Process Exit Code"
-          },
+          }
         },
         "samplingLog": {
           "title": "Execution Sampling Information",
@@ -819,7 +819,7 @@
           "contact": "Contact",
           "copyright": "Copyright",
           "other": "Other"
-        },
+        }
       },
       "detail": {
         "title": "Execution Information",
@@ -1021,7 +1021,7 @@
           "fields": {
             "schedulingResult": "Scheduling Result",
             "processExitCode": "Process Exit Code"
-          },
+          }
         },
         "samplingLog": {
           "title": "Execution Sampling Information",
@@ -1137,10 +1137,10 @@
         }
       },
       "assocTask": {
-        "title": "Associated Tasks",
+        "title": "Associated Tasks"
       },
       "assocCase": {
-        "title": "Associated Cases",
+        "title": "Associated Cases"
       },
       "activity": {
         "title": "Activity",
@@ -1325,7 +1325,7 @@
             "estimatedWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "totalTestCount": "Total Test Count",
-            "testFailCount": "Test Failure Count",
+            "testFailCount": "Test Failure Count"
           }
         }
       }
@@ -1365,7 +1365,7 @@
       "info": {
         "title": "Project Information",
         "fields": {
-          "planTime": "Plan Time",
+          "planTime": "Plan Time"
         }
       },
       "taskSummary": {
@@ -1546,7 +1546,7 @@
           "contact": "Contact",
           "copyright": "Copyright",
           "other": "Other"
-        },
+        }
       },
       "info": {
         "title": "Scenario Information",
@@ -1554,7 +1554,7 @@
           "plugin": "Plugin",
           "scriptType": "Script Type",
           "scriptId": "Script ID",
-          "scriptName": "Script Name",
+          "scriptName": "Script Name"
         }
       },
       "testResult": {
@@ -1570,7 +1570,7 @@
           "enableStabilityTest": "Enable Stability Test",
           "stabilityTestPassed": "Stability Test Passed",
           "stabilityTestFailReason": "Stability Test Failure Reason"
-        },
+        }
       },
       "testResultDetail": {
         "title": "Scenario Test Result Detailed Information",
@@ -1589,7 +1589,7 @@
               "execName": "Execution Name",
               "lastExecutor": "Last Executor",
               "lastExecTime": "Last Execution Time"
-            },
+            }
           },
           "apiStats": {
             "title": "Test API Statistics",
@@ -1608,7 +1608,7 @@
               "testFailReason": "Test Failure Reason",
               "testCount": "Test Count",
               "testFailCount": "Test Failure Count"
-            },
+            }
           }
         },
         "perfTestResult": {
@@ -1626,7 +1626,7 @@
               "execName": "Execution Name",
               "lastExecutor": "Last Executor",
               "lastExecTime": "Last Execution Time"
-            },
+            }
           },
           "metrics": {
             "title": "Test Metrics and Results",
@@ -1658,7 +1658,7 @@
               "execName": "Execution Name",
               "lastExecutor": "Last Executor",
               "lastExecTime": "Last Execution Time"
-            },
+            }
           },
           "metrics": {
             "title": "Test Metrics and Results",
@@ -1728,7 +1728,7 @@
           "memoryUsage": "Memory Usage",
           "diskUsage": "Disk Usage",
           "networkUsage": "Network Usage"
-        },
+        }
       }
     },
     "services": {
@@ -1758,7 +1758,7 @@
         "title": "Service Information",
         "fields": {
           "apiCount": "API Count",
-          "apiCaseCount": "API Case Count",
+          "apiCaseCount": "API Case Count"
         }
       },
       "apisGroup": {
@@ -1781,7 +1781,7 @@
         "title": "Test Result Summary",
         "testProgress": {
           "title": "Test Progress",
-          "totalApis": "Total APIs",
+          "totalApis": "Total APIs"
         },
         "testApiStats": {
           "title": "Test API Statistics",
@@ -1793,7 +1793,7 @@
           }
         },
         "testStatusStats": {
-          "title": "Test Status Statistics",
+          "title": "Test Status Statistics"
         }
       },
       "apiResultDetail": {
@@ -1882,7 +1882,7 @@
           "startTime": "Start Time",
           "confirmTask": "Confirm Task",
           "totalProcessCount": "Total Process Count",
-          "failedProcessCount": "Failed Process Count",
+          "failedProcessCount": "Failed Process Count"
         }
       },
       "taskSummary": {
@@ -2073,19 +2073,19 @@
                 "testCount": "Test Count",
                 "failCount": "Failure Count",
                 "failReason": "Failure Reason"
-              },
+              }
             }
           }
         }
       },
       "subTask": {
-        "title": "Sub Tasks",
+        "title": "Sub Tasks"
       },
       "assocTask": {
-        "title": "Associated Tasks",
+        "title": "Associated Tasks"
       },
       "assocCase": {
-        "title": "Associated Cases",
+        "title": "Associated Cases"
       },
       "activity": {
         "title": "Activities",
@@ -2122,7 +2122,7 @@
               "caseId": "Case ID",
               "caseName": "Case Name",
               "status": "Status"
-            },
+            }
           }
         },
         "perf": {

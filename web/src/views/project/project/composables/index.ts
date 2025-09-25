@@ -32,4 +32,3 @@ export type {
   ProjectTypeConfig,
   ProjectSortOption
 } from '../types';
-export {TreeData} from "@/types/types";

@@ -1870,7 +1870,7 @@
       "columns": {
         "openapiSpecVersion": "Specification Version",
         "designSource": "Source",
-        "designService": "Associated Service",
+        "designService": "Associated Service"
       },
       "deleteFirm": {
         "title": "Are you sure to delete design「{name}」?"

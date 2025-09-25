@@ -68,7 +68,7 @@
       "notPassword": "否",
       "columns": {
         "password": "密码",
-        "dataSource": "值来源",
+        "dataSource": "值来源"
       },
       "dropdown": {
         "fileExtract": "文件提取变量",
@@ -407,7 +407,7 @@
         "jdbcExtractDataset": "Jdbc提取数据集"
       },
       "columns": {
-        "valueSource": "值来源",
+        "valueSource": "值来源"
       },
       "tableDropdown": {
         "previewData": "预览数据"

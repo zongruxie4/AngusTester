@@ -58,7 +58,7 @@ export function useActions (options: {
     addTabPane({
       type: 'project',
       _id: 'addProject',
-      name: t('project.addProject')
+      name: t('project.edit.modal.addProject')
     });
   };
 

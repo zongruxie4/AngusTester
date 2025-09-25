@@ -896,7 +896,7 @@ onMounted(() => {
       </FormItem>
 
       <FormItem
-        :label="t('functionPlan.editForm.form.timePlan')"
+        :label="t('common.planTime')"
         name="date"
         :rules="{ required: true, validator: validateDateRange, trigger: 'change' }">
         <DatePicker

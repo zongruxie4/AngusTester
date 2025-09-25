@@ -75,14 +75,14 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
 
 /** Project type configuration for tips display */
 const projectTypeTipConfig = getProjectTypeTipConfig();
+
 /** Project type name mapping for UI display */
-const projectTypeName = computed(() => {
-  return getProjectTypeName();
-});
+const projectTypeName = getProjectTypeName();
 
 /** Get current project type name for display */
 const currentProjectTypeName = computed(() => {
-  return projectDetail.value.type?.message;
+  const typeValue = projectDetail.value.type?.value || ProjectType.AGILE;
+  return projectTypeName.get(typeValue);
 });
 
 /**
@@ -149,7 +149,7 @@ onMounted(async () => {
           <div class="form-main-content">
             <!-- Project type selection area -->
             <div class="project-type-section">
-              <h3 class="section-title">{{ t('project.projectType') }}</h3>
+              <h3 class="section-title">{{ t('common.projectType') }}</h3>
               <div class="project-type-cards">
                 <div
                   class="project-type-card"
@@ -211,27 +211,27 @@ onMounted(async () => {
                         class="upload-area"
                         @click="openCropper">
                         <img src="../../../assets/images/default.png" class="upload-icon" />
-                        <div class="upload-text">{{ t('project.projectEdit.actions.clickToReplaceIcon') }}</div>
+                        <div class="upload-text">{{ t('project.edit.actions.clickToReplaceIcon') }}</div>
                       </div>
                     </div>
                   </div>
                 </FormItem>
 
                 <FormItem
-                  :label="t('project.projectEdit.form.projectName')"
+                  :label="t('common.name')"
                   name="name"
                   class="form-field"
                   required>
                   <Input
                     v-model:value="projectDetail.name"
-                    :placeholder="t('project.projectEdit.form.projectNamePlaceholder')"
+                    :placeholder="t('project.edit.form.projectNamePlaceholder')"
                     :maxlength="100"
                     class="enhanced-input">
                   </Input>
                 </FormItem>
 
                 <FormItem
-                  :label="t('project.projectEdit.form.timePlan')"
+                  :label="t('common.planTime')"
                   name="dateRange"
                   class="form-field with-tooltip"
                   required>
@@ -244,7 +244,7 @@ onMounted(async () => {
                   <Popover placement="right" overlayClassName="form-tooltip">
                     <template #content>
                       <div class="tooltip-content">
-                        {{ t('project.projectEdit.form.timePlanDescription') }}
+                        {{ t('project.edit.form.planTimeDescription') }}
                       </div>
                     </template>
                     <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -253,20 +253,20 @@ onMounted(async () => {
 
                 <div class="form-row">
                   <FormItem
-                    :label="t('project.projectEdit.form.owner')"
+                    :label="t('common.owner')"
                     name="ownerId"
                     required
                     class="form-field with-tooltip flex-1">
                     <SelectUser
                       v-model:value="projectDetail.ownerId"
                       size="small"
-                      :placeholder="t('project.projectEdit.form.ownerPlaceholder')"
+                      :placeholder="t('project.edit.form.ownerPlaceholder')"
                       :allowClear="false"
                       class="enhanced-select" />
                     <Popover placement="right" overlayClassName="form-tooltip">
                       <template #content>
                         <div class="tooltip-content">
-                          {{ t('project.projectEdit.form.ownerDescription') }}
+                          {{ t('project.edit.form.ownerDescription') }}
                         </div>
                       </template>
                       <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -284,7 +284,7 @@ onMounted(async () => {
                     <Popover placement="right" overlayClassName="form-tooltip">
                       <template #content>
                         <div class="tooltip-content">
-                          {{ t('project.projectEdit.form.importExampleDescription') }}
+                          {{ t('project.edit.form.importExampleDescription') }}
                         </div>
                       </template>
                       <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -293,7 +293,7 @@ onMounted(async () => {
                 </div>
 
                 <FormItem
-                  :label="t('project.projectEdit.form.projectMembers')"
+                  :label="t('common.members')"
                   class="form-field members-field"
                   required>
                   <div class="members-selector">
@@ -304,19 +304,19 @@ onMounted(async () => {
                         size="small"
                         class="enhanced-radio-group">
                         <RadioButton value="user">
-                          {{ t('project.projectEdit.form.user') }}
+                          {{ t('organization.user') }}
                         </RadioButton>
                         <RadioButton value="dept">
-                          {{ t('project.projectEdit.form.department') }}
+                          {{ t('organization.dept') }}
                         </RadioButton>
                         <RadioButton value="group">
-                          {{ t('project.projectEdit.form.group') }}
+                          {{ t('organization.group') }}
                         </RadioButton>
                       </RadioGroup>
                       <Popover placement="right" overlayClassName="form-tooltip">
                         <template #content>
                           <div class="tooltip-content">
-                            {{ t('project.projectEdit.form.membersDescription') }}
+                            {{ t('project.edit.form.membersDescription') }}
                           </div>
                         </template>
                         <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -327,7 +327,7 @@ onMounted(async () => {
                         v-show="memberType === 'user'"
                         v-model:value="members.USER"
                         :showSearch="true"
-                        :placeholder="t('project.projectEdit.form.selectUser')"
+                        :placeholder="t('organization.placeholders.selectUser')"
                         :action="`${GM}/user?fullTextSearch=true`"
                         :defaultOptions="defaultOptionsUser"
                         mode="multiple"
@@ -338,7 +338,7 @@ onMounted(async () => {
                       <Select
                         v-show="memberType === 'dept'"
                         v-model:value="members.DEPT"
-                        :placeholder="t('project.projectEdit.form.selectDepartment')"
+                        :placeholder="t('organization.placeholders.selectDept')"
                         :showSearch="true"
                         :action="`${GM}/dept?fullTextSearch=true`"
                         :defaultOptions="defaultOptionsDept"
@@ -350,7 +350,7 @@ onMounted(async () => {
                       <Select
                         v-show="memberType === 'group'"
                         v-model:value="members.GROUP"
-                        :placeholder="t('project.projectEdit.form.selectGroup')"
+                        :placeholder="t('organization.placeholders.selectGroup')"
                         :showSearch="true"
                         :action="`${GM}/group?fullTextSearch=true`"
                         :defaultOptions="defaultOptionsGroup"
@@ -363,7 +363,7 @@ onMounted(async () => {
                 </FormItem>
 
                 <FormItem
-                  :label="t('project.projectEdit.form.description')"
+                  :label="t('common.description')"
                   name="description"
                   :rules="[{validator: validateDescription}]"
                   class="form-field description-field">
@@ -371,7 +371,7 @@ onMounted(async () => {
                     ref="descRef"
                     v-model:value="projectDetail.description"
                     :toolbarOptions="toolbarOptions"
-                    :options="{placeholder: t('project.projectEdit.form.descriptionPlaceholder')}"
+                    :options="{placeholder: t('project.edit.form.descriptionPlaceholder')}"
                     class="enhanced-editor" />
                 </FormItem>
               </div>
@@ -469,19 +469,19 @@ onMounted(async () => {
                       class="upload-area"
                       @click="openCropper">
                       <img src="../../../assets/images/default.png" class="upload-icon" />
-                      <div class="upload-text">{{ t('project.projectEdit.actions.clickToReplaceIcon') }}</div>
+                      <div class="upload-text">{{ t('project.edit.actions.clickToReplaceIcon') }}</div>
                     </div>
                   </div>
                 </div>
               </FormItem>
               <FormItem
-                :label="t('project.projectEdit.form.projectName')"
+                :label="t('common.name')"
                 name="name"
                 class="form-field"
                 required>
                 <Input
                   v-model:value="projectDetail.name"
-                  :placeholder="t('project.projectEdit.form.projectNamePlaceholder')"
+                  :placeholder="t('project.edit.form.projectNamePlaceholder')"
                   :maxlength="100"
                   class="enhanced-input">
                 </Input>
@@ -489,7 +489,7 @@ onMounted(async () => {
 
               <div class="form-row">
                 <FormItem
-                  :label="t('project.projectEdit.form.timePlan')"
+                  :label="t('common.planTime')"
                   name="dateRange"
                   class="form-field with-tooltip flex-1"
                   required>
@@ -502,7 +502,7 @@ onMounted(async () => {
                   <Popover placement="right" overlayClassName="form-tooltip">
                     <template #content>
                       <div class="tooltip-content">
-                        {{ t('project.projectEdit.form.timePlanDescription') }}
+                        {{ t('project.edit.form.planTimeDescription') }}
                       </div>
                     </template>
                     <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -510,20 +510,20 @@ onMounted(async () => {
                 </FormItem>
 
                 <FormItem
-                  :label="t('project.projectEdit.form.owner')"
+                  :label="t('common.owner')"
                   name="ownerId"
                   required
                   class="form-field with-tooltip flex-1">
                   <SelectUser
                     v-model:value="projectDetail.ownerId"
                     size="small"
-                    :placeholder="t('project.projectEdit.form.ownerPlaceholder')"
+                    :placeholder="t('project.edit.form.ownerPlaceholder')"
                     :allowClear="false"
                     class="enhanced-select" />
                   <Popover placement="right" overlayClassName="form-tooltip">
                     <template #content>
                       <div class="tooltip-content">
-                        {{ t('project.projectEdit.form.ownerDescription') }}
+                        {{ t('project.edit.form.ownerDescription') }}
                       </div>
                     </template>
                     <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -532,7 +532,7 @@ onMounted(async () => {
               </div>
 
               <FormItem
-                :label="t('project.projectEdit.form.projectMembers')"
+                :label="t('common.members')"
                 class="form-field members-field"
                 required>
                 <div class="members-selector">
@@ -543,19 +543,19 @@ onMounted(async () => {
                       size="small"
                       class="enhanced-radio-group">
                       <RadioButton value="user">
-                        {{ t('project.projectEdit.form.user') }}
+                        {{ t('organization.user') }}
                       </RadioButton>
                       <RadioButton value="dept">
-                        {{ t('project.projectEdit.form.department') }}
+                        {{ t('organization.dept') }}
                       </RadioButton>
                       <RadioButton value="group">
-                        {{ t('project.projectEdit.form.group') }}
+                        {{ t('organization.group') }}
                       </RadioButton>
                     </RadioGroup>
                     <Popover placement="right" overlayClassName="form-tooltip">
                       <template #content>
                         <div class="tooltip-content">
-                          {{ t('project.projectEdit.form.membersDescription') }}
+                          {{ t('project.edit.form.membersDescription') }}
                         </div>
                       </template>
                       <Icon icon="icon-tishi1" class="tooltip-icon" />
@@ -566,7 +566,7 @@ onMounted(async () => {
                       v-show="memberType === 'user'"
                       v-model:value="members.USER"
                       :showSearch="true"
-                      :placeholder="t('project.projectEdit.form.selectUser')"
+                      :placeholder="t('organization.placeholders.selectUser')"
                       :action="`${GM}/user?fullTextSearch=true`"
                       :defaultOptions="defaultOptionsUser"
                       mode="multiple"
@@ -577,7 +577,7 @@ onMounted(async () => {
                     <Select
                       v-show="memberType === 'dept'"
                       v-model:value="members.DEPT"
-                      :placeholder="t('project.projectEdit.form.selectDepartment')"
+                      :placeholder="t('organization.placeholders.selectDept')"
                       :showSearch="true"
                       :action="`${GM}/dept?fullTextSearch=true`"
                       :defaultOptions="defaultOptionsDept"
@@ -589,7 +589,7 @@ onMounted(async () => {
                     <Select
                       v-show="memberType === 'group'"
                       v-model:value="members.GROUP"
-                      :placeholder="t('project.projectEdit.form.selectGroup')"
+                      :placeholder="t('organization.placeholders.selectGroup')"
                       :showSearch="true"
                       :action="`${GM}/group?fullTextSearch=true`"
                       :defaultOptions="defaultOptionsGroup"
@@ -602,7 +602,7 @@ onMounted(async () => {
               </FormItem>
 
               <FormItem
-                :label="t('project.projectEdit.form.description')"
+                :label="t('common.description')"
                 name="description"
                 :rules="[{validator: validateDescription}]"
                 class="form-field description-field">
@@ -610,7 +610,7 @@ onMounted(async () => {
                   ref="descRef"
                   v-model:value="projectDetail.description"
                   :toolbarOptions="toolbarOptions"
-                  :options="{placeholder: t('project.projectEdit.form.descriptionPlaceholder')}"
+                  :options="{placeholder: t('project.edit.form.descriptionPlaceholder')}"
                   class="enhanced-editor" />
               </FormItem>
             </div>
@@ -619,7 +619,7 @@ onMounted(async () => {
           <!-- Project type preview area -->
           <div class="project-preview-section">
             <h3 class="section-title">
-              {{ projectDetail.type?.message }}
+              {{ currentProjectTypeName }}
             </h3>
             <div class="preview-content">
               <div class="preview-image">
@@ -675,7 +675,7 @@ onMounted(async () => {
 
     <Cropper
       v-model:visible="uploadAvatarVisible"
-      :title="t('project.projectEdit.actions.uploadIcon')"
+      :title="t('project.edit.actions.uploadIcon')"
       :params="uploadParams"
       :options="cropperUploadOption"
       @success="handleImageUpload" />

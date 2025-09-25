@@ -2,140 +2,83 @@
   "project": {
     "title": "Project",
     "project": "Project",
-    "addProject": "Add Project",
-    "editProject": "Edit Project",
-    "deleteProject": "Delete Project",
-    "projectList": "Project List",
-    "addedProjects": "Added Projects",
-    "projectDescription": "Projects are fundamental units for organizing R&D activities, workflows, and resources. They provide teams with centralized planning, tracking, reporting, and acceptance capabilities.",
-    "adminHint": "Only admin, creator, and owner can modify or delete projects.",
-    "agileProjectManagement": "Agile Project",
-    "configSoftwareModule": "Configure Module",
-    "configManagementSoftwareVersion": "Configure Version",
-    "aboutProject": "About Project",
-    "noJoinedProjects": "No projects added or joined",
-    "projectNotExists": "Project does not exist or not joined",
-    "searchProject": "Search project name",
-    "projectNotFound": "Project not found",
-    "projectType": "Project Type",
-    "projectTypeTip": {
-      "agile": {
-        "features": "Core Features: Scrum Framework • Incremental Delivery • User-Driven Requirements",
-        "scenarios": "Ideal for: Agile development teams requiring rapid sprint"
-      },
-      "general": {
-        "features": "Core Features: Work Breakdown • Progress Management • Dependency Visualization",
-        "scenarios": "Ideal for: Traditional R&D teams with cross-departmental projects"
-      },
-      "testing": {
-        "features": "Core Features: Custom Test Plans • Multi-type Testing • Defect Tracking",
-        "scenarios": "Ideal for: QA teams managing specialized testing projects"
+    "introduce": {
+      "aboutProject": "About Project",
+      "description": "Projects are fundamental units for organizing R&D activities, workflows, and resources. They provide teams with centralized planning, tracking, reporting, and acceptance capabilities.",
+      "steps": {
+        "addProject": {
+          "title": "Add Project",
+          "text": "Create the foundation for managing development and testing activities. Establish centralized planning, tracking, reporting, and acceptance workflows."
+        },
+        "sprintAndPlan": {
+          "title": "Sprint & Plan",
+          "text": "Define responsibilities, timelines, goals, and acceptance criteria. Enable organized execution while ensuring software quality and reliability."
+        },
+        "developAndTest": {
+          "title": "Execute Development & Testing",
+          "text": "Follow plans to conduct development and testing activities. Continuously track tasks, defects, requirements, user stories, and test items."
+        },
+        "reportResults": {
+          "title": "Report Results",
+          "text": "Summarize R&D outcomes including progress, efficiency metrics, data assets, and test results to support successful project delivery."
+        }
       }
     },
-    "steps": {
-      "addProject": {
-        "title": "Add Project",
-        "text": "Create the foundation for managing development and testing activities. Establish centralized planning, tracking, reporting, and acceptance workflows."
-      },
-      "sprintAndPlan": {
-        "title": "Plan & Sprint & Testing",
-        "text": "Define responsibilities, timelines, goals, and acceptance criteria. Enable organized execution while ensuring software quality and reliability."
-      },
-      "developAndTest": {
-        "title": "Execute Development & Testing",
-        "text": "Follow plans to conduct development and testing activities. Continuously track tasks, defects, requirements, user stories, and test items."
-      },
-      "reportResults": {
-        "title": "Report Results",
-        "text": "Summarize R&D outcomes including progress, efficiency metrics, data assets, and test results to support successful project delivery."
-      }
-    },
-    "moreButton": {
-      "module": "Configure Module",
-      "version": "Configure Version",
-      "tag": "Configure Tags"
-    },
-    "sortMenu": {
-      "createdDate": "Sort by Created Time",
-      "createdByName": "Sort by Creator"
-    },
-    "projectEdit": {
-      "validation": {
-        "maxCharacters": "Cannot exceed 2000 characters"
-      },
-      "messages": {
-        "updateSuccess": "Project updated successfully",
-        "createSuccess": "Project created successfully"
-      },
-      "form": {
-        "projectName": "Name",
-        "projectNamePlaceholder": "A brief project name, maximum 100 characters",
-        "timePlan": "Time",
-        "timePlanDescription": "Time constraints ensure project completion within agreed deadlines, meeting customer expectations and contractual requirements.",
-        "owner": "Owner",
-        "ownerPlaceholder": "Please select project owner",
-        "ownerDescription": "Project owners clarify responsibilities and rights, enabling better progress control, problem resolution, and team collaboration.",
-        "importExampleDescription": "Import sample business data to quickly familiarize with AngusTester features and functionality.",
-        "projectMembers": "Members",
-        "membersDescription": "Define project participants who will automatically receive project data permissions for seamless team collaboration.",
-        "descriptionPlaceholder": "Describe your project goals, scope, and key details..., maximum 2000 characters"
-      },
+    "list": {
+      "addedProjects": "Added Projects",
+      "permissionHint": "Only admin, creator, and owner can modify or delete projects.",
+      "noJoinedProjects": "No projects added or joined",
+      "projectNotExists": "Project does not exist or not joined",
+      "projectNotFound": "Project not found",
       "actions": {
-        "clickToReplaceIcon": "Upload Icon",
-        "uploadIcon": "Upload Icon"
+        "addProject": "Add Project",
+        "editProject": "Edit Project",
+        "deleteProject": "Delete Project",
+        "configModule": "Configure Module",
+        "configVersion": "Configure Version",
+        "configTag": "Configure Tag"
+      },
+      "sortMenu": {
+        "createdDate": "Sort by Created Time",
+        "createdByName": "Sort by Creator"
       }
     },
-    "projectDetail": {
-      "messages": {
-        "updateSuccess": "Project updated successfully",
-        "addSuccess": "Project added successfully"
-      },
-      "form": {
-        "projectName": "Name",
-        "timePlan": "Time",
-        "owner": "Owner",
-        "projectMembers": "Members",
-        "user": "User",
-        "group": "Group",
-        "department": "Department",
-        "projectDescription": "Description",
-        "noDescription": "No description ~"
-      }
-    },
-    "projectAddModal": {
-      "validation": {
-        "maxCharacters": "Cannot exceed 2000 characters",
-        "timeRequired": "Please enter time",
-        "ownerRequired": "Please enter owner"
-      },
-      "messages": {
-        "updateSuccess": "Project updated successfully",
-        "addSuccess": "Project added successfully"
-      },
+    "edit": {
       "modal": {
         "editProject": "Edit Project",
         "addProject": "Add Project"
       },
+      "rules": {
+        "maxCharacters": "Cannot exceed 2000 characters",
+        "timeRequired": "Please enter time",
+        "ownerRequired": "Please enter owner"
+      },
       "form": {
-        "projectNamePlaceholder": "A brief project name, maximum 100 characters",
-        "timePlan": "Time",
-        "time": "Time",
-        "timeDescription": "Time constraints ensure project completion within agreed deadlines, meeting customer expectations and contractual requirements.",
-        "owner": "Owner",
-        "ownerDescription": "Project owners clarify responsibilities and rights, enabling better progress control, problem resolution, and team collaboration.",
+        "projectTypeTip": {
+          "agile": {
+            "features": "Core Features: Scrum Framework • Incremental Delivery • User-Driven Requirements",
+            "scenarios": "Ideal for: Agile development teams requiring rapid sprint"
+          },
+          "general": {
+            "features": "Core Features: Work Breakdown • Progress Management • Dependency Visualization",
+            "scenarios": "Ideal for: Traditional R&D teams with cross-departmental projects"
+          },
+          "testing": {
+            "features": "Core Features: Custom Test Plans • Multi-type Testing • Defect Tracking",
+            "scenarios": "Ideal for: QA teams managing specialized testing projects"
+          }
+        },
+        "projectNamePlaceholder": "Enter a brief project name, maximum 100 characters",
+        "planTimeDescription": "Time constraints help ensure projects are completed within agreed timeframes, which is crucial for meeting customer expectations and contractual obligations.",
         "ownerPlaceholder": "Please select project owner",
-        "importExampleDescription": "Import sample business data to quickly familiarize with AngusTester features and functionality.",
-        "members": "Members",
-        "user": "User",
-        "department": "Department",
-        "group": "Group",
-        "membersDescription": "Define project participants who will automatically receive project data permissions for seamless team collaboration.",
-        "selectUser": "Select User",
-        "selectDepartment": "Select Department",
-        "selectGroup": "Select Group",
-        "description": "Description",
-        "descriptionPlaceholder": "Describe your project goals, scope, and key details..., maximum 2000 characters",
-        "clickToReplaceIcon": "Upload Icon"
+        "ownerDescription": "By setting a project owner, responsibilities and authorities are clarified, better promoting project completion and progress control, such as: problem solving, progress advancement, team member collaboration, etc.",
+        "importExampleDescription": "Import main business sample data for quickly familiarizing with AngusTester business and feature demonstration.",
+        "membersDescription": "Define project participants. Project members will automatically be assigned data permissions under the project for convenient team collaboration.",
+        "descriptionPlaceholder": "Please enter detailed project objectives, scope, etc., maximum 2000 characters"
+      },
+      "actions": {
+        "clickToReplaceIcon": "Upload Icon",
+        "uploadIcon": "Upload Icon"
       }
     }
   },
@@ -250,7 +193,7 @@
     }
   },
   "module": {
-    "title": "Software Modules",
+    "title": "Module",
     "about": "About Module",
     "aboutDescription": "Software modules organize independent functional sets within systems, enabling task division and improved maintainability.",
     "addedModules": "Added Modules",
@@ -269,7 +212,7 @@
     "confirmDelete": "Are you sure you want to delete module 「{name}」?"
   },
   "tag": {
-    "title": "Data Tags",
+    "title": "Tag",
     "about": "About Tag",
     "aboutDescription": "Data tags categorize tasks and use cases, improving search efficiency and team collaboration. Examples: boundary testing, business process testing, error handling, input validation, security testing, compatibility testing.",
     "addedTags": "Added Tags",

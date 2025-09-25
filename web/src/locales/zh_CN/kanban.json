@@ -289,7 +289,7 @@
       "testStatus": {
         "pendingTest": "待测试",
         "testPassed": "测试通过",
-        "testFailed": "测试未通过",
+        "testFailed": "测试未通过"
       },
       "reviewStatus": {
         "pendingReview": "待评审",

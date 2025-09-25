@@ -9,7 +9,7 @@
       "executionTime": "Execution Time (seconds)",
       "iterations": "Iterations",
       "errorRate": "Error Rate",
-      "scriptName": "Script Name",
+      "scriptName": "Script Name"
     },
     "actions": {
       "createExecution": "Add Execution",

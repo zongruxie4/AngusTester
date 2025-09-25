@@ -34,7 +34,7 @@ export function useTableColumns () {
     },
     {
       key: 'projectName',
-      title: t('projectActivity.table.projectName'),
+      title: t('common.projectName'),
       dataIndex: 'projectName',
       groupName: 'project',
       width: '15%',
@@ -42,7 +42,7 @@ export function useTableColumns () {
     },
     {
       key: 'projectId',
-      title: t('projectActivity.table.projectId'),
+      title: t('common.projectId'),
       dataIndex: 'projectId',
       groupName: 'project',
       hide: true,

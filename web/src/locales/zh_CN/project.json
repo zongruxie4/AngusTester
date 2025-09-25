@@ -2,148 +2,84 @@
   "project": {
     "title": "项目",
     "project": "项目",
-    "addProject": "添加项目",
-    "editProject": "编辑项目",
-    "deleteProject": "删除项目",
-    "projectList": "项目列表",
-    "addedProjects": "已添加项目",
-    "projectDescription": "项目是管理和组织研发活动、工作流程、各类资源等基本单位。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。",
-    "adminHint": "只允许管理员、创建人和负责人修改和删除项目。",
-    "agileProjectManagement": "敏捷项目",
-    "configSoftwareModule": "配置软件模块",
-    "configManagementSoftwareVersion": "配置管理软件版本",
-    "aboutProject": "关于项目",
-    "projectProcess": "项目流程",
-    "noJoinedProjects": "没有添加或加入任何项目",
-    "projectNotExists": "项目不存在或未加入项目",
-    "searchProject": "搜索项目名称",
-    "projectNotFound": "不存在此项目",
-    "projectType": "项目类型",
-    "projectTypeTip": {
-      "agile": {
-        "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
-        "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
-      },
-      "general": {
-        "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
-        "scenarios": "适用场景：传统研发团队跨部门协作项目。"
-      },
-      "testing": {
-        "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
-        "scenarios": "适用场景：质量保障团队专项测试项目。"
+    "introduce": {
+      "aboutProject": "关于项目",
+      "description": "项目是管理和组织研发活动、工作流程、各类资源等基本单位。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。",
+      "steps": {
+        "addProject": {
+          "title": "添加项目",
+          "text": "建立管理组织开发和测试活动的工作流程基本单元。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。"
+        },
+        "sprintAndPlan": {
+          "title": "制定迭代和测试计划",
+          "text": "明确开发和测试活动的负责人、时间、目标、验收标准等。帮助团队有组织地开展活动，保证软件产品的质量和可靠性。"
+        },
+        "developAndTest": {
+          "title": "开展开发和测试活动",
+          "text": "按照计划开展开发和测试活动。随时跟踪和管理项目中的工作任务、缺陷、需求、用户故事、测试等工作项。"
+        },
+        "reportResults": {
+          "title": "报告结果",
+          "text": "总结研发活动的各个方面，包括项目进展、效能分析、数据资产、测试结果等。为项目的成功交付提供有力支持。"
+        }
       }
     },
-    "steps": {
-      "addProject": {
-        "title": "添加项目",
-        "text": "建立管理组织开发和测试活动的工作流程基本单元。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。"
+    "list": {
+      "addedProjects": "已添加项目",
+      "permissionHint": "只允许管理员、创建人和负责人修改和删除项目。",
+      "noJoinedProjects": "没有添加或加入任何项目",
+      "projectNotExists": "项目不存在或未加入项目",
+      "projectNotFound": "不存在此项目",
+      "actions": {
+        "addProject": "添加项目",
+        "editProject": "编辑项目",
+        "deleteProject": "删除项目",
+        "configModule": "配置模块",
+        "configVersion": "配置版本",
+        "configTag": "配置标签"
       },
-      "sprintAndPlan": {
-        "title": "制定迭代和测试计划",
-        "text": "明确开发和测试活动的负责人、时间、目标、验收标准等。帮助团队有组织地开展活动，保证软件产品的质量和可靠性。"
-      },
-      "developAndTest": {
-        "title": "开展开发和测试活动",
-        "text": "按照计划开展开发和测试活动。随时跟踪和管理项目中的工作任务、缺陷、需求、用户故事、测试等工作项。"
-      },
-      "reportResults": {
-        "title": "报告结果",
-        "text": "总结研发活动的各个方面，包括项目进展、效能分析、数据资产、测试结果等。为项目的成功交付提供有力支持。"
+      "sortMenu": {
+        "createdDate": "按添加时间",
+        "createdByName": "按添加人"
       }
     },
-    "moreButton": {
-      "module": "配置软件模块",
-      "version": "配置管理软件版本",
-      "tag": "配置数据标签"
-    },
-    "sortMenu": {
-      "createdDate": "按添加时间",
-      "createdByName": "按添加人"
-    },
-    "projectEdit": {
-      "validation": {
-        "maxCharacters": "不能超过2000字符"
+    "edit": {
+      "modal": {
+        "editProject": "编辑项目",
+        "addProject": "添加项目"
       },
-      "messages": {
-        "updateSuccess": "修改项目成功",
-        "createSuccess": "创建项目成功"
+      "rules": {
+        "maxCharacters": "不能超过2000字符",
+        "timeRequired": "请输入时间",
+        "ownerRequired": "请输入负责人"
       },
       "form": {
-        "projectName": "项目名称",
+        "projectType": "项目类型",
+        "projectTypeTip": {
+          "agile": {
+            "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
+            "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
+          },
+          "general": {
+            "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
+            "scenarios": "适用场景：传统研发团队跨部门协作项目。"
+          },
+          "testing": {
+            "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
+            "scenarios": "适用场景：质量保障团队专项测试项目。"
+          }
+        },
         "projectNamePlaceholder": "输入一个简短的项目名称，最多100个字符",
-        "timePlan": "时间计划",
-        "timePlanDescription": "时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。",
-        "owner": "负责人",
+        "planTimeDescription": "时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。",
         "ownerPlaceholder": "请选择项目负责人",
         "ownerDescription": "通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。",
         "importExampleDescription": "导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。",
-        "projectMembers": "项目成员",
         "membersDescription": "明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。",
-        "user": "用户",
-        "department": "部门",
-        "group": "组",
-        "selectUser": "选择用户",
-        "selectDepartment": "选择部门",
-        "selectGroup": "选择组",
-        "description": "项目描述",
         "descriptionPlaceholder": "请输入项目目标、范围等详细说明，最多2000个字符"
       },
       "actions": {
         "clickToReplaceIcon": "点击上传图标",
         "uploadIcon": "上传图标"
-      }
-    },
-    "projectDetail": {
-      "messages": {
-        "updateSuccess": "修改项目成功",
-        "addSuccess": "添加项目成功"
-      },
-      "form": {
-        "projectName": "项目名称",
-        "timePlan": "时间计划",
-        "owner": "负责人",
-        "projectMembers": "项目成员",
-        "user": "用户",
-        "group": "组",
-        "department": "部门",
-        "projectDescription": "项目描述",
-        "noDescription": "无描述~"
-      }
-    },
-    "projectAddModal": {
-      "validation": {
-        "maxCharacters": "不能超过2000字符",
-        "timeRequired": "请输入时间",
-        "ownerRequired": "请输入负责人"
-      },
-      "messages": {
-        "updateSuccess": "修改项目成功",
-        "addSuccess": "添加项目成功"
-      },
-      "modal": {
-        "editProject": "编辑项目",
-        "addProject": "添加项目"
-      },
-      "form": {
-        "projectNamePlaceholder": "输入一个简短的项目名称，最多100个字符",
-        "timePlan": "时间计划",
-        "time": "时间",
-        "timeDescription": "时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。",
-        "owner": "负责人",
-        "ownerDescription": "通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。",
-        "ownerPlaceholder": "请选择项目负责人",
-        "importExampleDescription": "导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。",
-        "members": "成员",
-        "user": "用户",
-        "department": "部门",
-        "group": "组",
-        "membersDescription": "明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。",
-        "selectUser": "选择用户",
-        "selectDepartment": "选择部门",
-        "selectGroup": "选择组",
-        "description": "描述",
-        "descriptionPlaceholder": "请输入项目目标、范围等详细说明，最多2000个字符",
-        "clickToReplaceIcon": "点击上传图标"
       }
     }
   },
@@ -257,7 +193,7 @@
     }
   },
   "module": {
-    "title": "软件模块",
+    "title": "模块",
     "about": "关于模块",
     "aboutDescription": "软件模块用于定义和组织软件系统中相对独立的功能集，通过模块可以划分任务和功能用例，从而提高可维护性。",
     "addedModules": "已添加模块",
@@ -276,7 +212,7 @@
     "confirmDelete": "确定删除模块「{name}」吗？"
   },
   "tag": {
-    "title": "数据标签",
+    "title": "标签",
     "about": "关于标签",
     "aboutDescription": "数据标签可以方便对任务、功能用例等分类、提高检索和管理效率，促进团队高效协作。示例：边界测试、业务流程测试、错误处理、输入验证、输出验证、异常条件测试、安全性测试、兼容性测试等。",
     "addedTags": "已添加标签",

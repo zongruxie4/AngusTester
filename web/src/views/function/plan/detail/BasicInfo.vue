@@ -35,7 +35,7 @@ const attachments = computed(() => props.planData?.attachments || []);
 
         <div class="w-1/2 flex items-start mt-2.5">
           <div class="w-24 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('functionPlan.planDetail.basicInfo.timePlan') }}</span>
+            <span class="font-semibold text-black">{{ t('common.planTime') }}</span>
             <Colon class="w-1" />
           </div>
 

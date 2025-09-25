@@ -69,12 +69,12 @@ const {
 // Sort menu configuration
 const sortMenuItems = computed(() => [
   {
-    name: t('project.sortMenu.createdDate'),
+    name: t('project.list.sortMenu.createdDate'),
     key: 'createdDate' as OrderByKey,
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('project.sortMenu.createdByName'),
+    name: t('project.list.createdByName'),
     key: 'createdByName' as OrderByKey,
     orderSort: PageQuery.OrderSort.Asc
   }
@@ -84,15 +84,15 @@ const sortMenuItems = computed(() => [
 const moreButton = computed(() => [
   {
     key: 'module',
-    name: t('project.moreButton.module')
+    name: t('project.list.actions.configModule')
   },
   {
     key: 'version',
-    name: t('project.moreButton.version')
+    name: t('project.list.actions.configVersion')
   },
   {
     key: 'biaoqian',
-    name: t('project.moreButton.tag')
+    name: t('project.list.actions.configTag')
   }
 ]);
 
@@ -188,7 +188,7 @@ defineExpose({
     <Introduce class="mb-5" />
     <div class="flex space-x-6 min-h-0 flex-1">
       <div class="flex-1 space-y-2 mr-8 min-w-0">
-        <div class="text-3.5 font-semibold mb-1">{{ t('project.addedProjects') }}</div>
+        <div class="text-3.5 font-semibold mb-1">{{ t('project.list.addedProjects') }}</div>
         <Spin
           :spinning="loading"
           :delay="0"
@@ -201,9 +201,9 @@ defineExpose({
                 trim
                 :maxlength="100"
                 :allowClear="true"
-                :placeholder="t('project.searchPlaceholder')"
+                :placeholder="t('common.placeholders.search')"
                 @change="handleKeywordChange" />
-              <Hints :text="t('project.adminHint')" class="ml-2" />
+              <Hints :text="t('project.list.permissionHint')" class="ml-2" />
             </div>
 
             <div class="flex items-center space-x-3">
@@ -212,7 +212,7 @@ defineExpose({
                 size="small"
                 @click="addProjectTab">
                 <Icon icon="icon-jia" />
-                <span class="ml-1">{{ t('project.addProject') }}</span>
+                <span class="ml-1">{{ t('project.list.actions.addProject') }}</span>
               </Button>
 
               <DropdownSort
@@ -261,8 +261,9 @@ defineExpose({
                     @click="handleOpenDetailTab(item)">
                     {{ item.name }}
                   </div>
-                  <Tag class="project-type-tag">{{ item.type?.message || 'Agile Project' }}</Tag>
-                  <div class="project-id-text" :title="item.id">ID: <span>{{ item.id }}</span></div>
+                  <Tag class="project-type-tag">{{ item.type?.message }}</Tag>
+                  <div class="project-id-text" :title="item.id">
+                    ID: <span>{{ item.id }}</span></div>
                 </div>
 
                 <div class="project-description-row">
@@ -271,19 +272,21 @@ defineExpose({
                     class="project-description-text">
                     <RichText :value="item.description" />
                   </p>
-                  <p v-else class="project-no-description-text">{{ t('project.noDescription') }}</p>
+                  <p v-else class="project-no-description-text">
+                    {{ t('common.noDescription') }}
+                  </p>
                 </div>
               </div>
 
               <div class="project-details-section">
                 <div class="project-members-info">
                   <div class="owner-info">
-                    <span class="info-label">{{ t('project.owner') }}: </span>
+                    <span class="info-label">{{ t('common.owner') }}: </span>
                     <span class="info-value">{{ item.ownerName }}</span>
                   </div>
 
                   <div class="members-info">
-                    <span class="info-label">{{ t('project.members') }}: </span>
+                    <span class="info-label">{{ t('common.members') }}: </span>
                     <div class="members-avatars-container">
                       <Tooltip
                         v-for="(avatars, idx) in item.showMembers?.USER || []"
@@ -303,9 +306,9 @@ defineExpose({
                       <Tooltip
                         v-for="(avatars, idx) in item.showMembers?.GROUP || []"
                         :key="idx"
-                        :title="t('project.group')">
+                        :title="t('organization.group')">
                         <template #title>
-                          <span>{{ t('project.group') }}</span>
+                          <span>{{ t('organization.group') }}</span>
                         </template>
                         <Tag class="group-tag">{{ avatars.name }}</Tag>
                       </Tooltip>
@@ -313,9 +316,9 @@ defineExpose({
                       <Tooltip
                         v-for="(avatars, idx) in item.showMembers?.DEPT || []"
                         :key="idx"
-                        :title="t('project.department')">
+                        :title="t('organization.dept')">
                         <template #title>
-                          <span>{{ t('project.department') }}</span>
+                          <span>{{ t('organization.dept') }}</span>
                         </template>
                         <div>
                           <Tag class="dept-tag">{{ avatars.name }}</Tag>
@@ -323,11 +326,11 @@ defineExpose({
                       </Tooltip>
 
                       <Popover v-if="(item.membersNum || 0) > 10">
-                        <template #title>{{ t('project.allMembers') }}</template>
+                        <template #title>{{ t('organization.allMembers') }}</template>
                         <template #content>
                           <div class="space-y-4 max-w-100">
                             <div v-if="item.members?.USER?.length" class="flex">
-                              <span class="w-15 text-right">{{ t('project.user') }}：</span>
+                              <span class="w-15 text-right">{{ t('organization.user') }}：</span>
                               <div class="flex flex-1 flex-wrap">
                                 <div
                                   v-for="(avatars, idx) in item.members.USER || []"
@@ -343,7 +346,7 @@ defineExpose({
                             </div>
 
                             <div v-if="item.members?.GROUP?.length" class="flex">
-                              <span class="w-15 text-right">{{ t('project.group') }}：</span>
+                              <span class="w-15 text-right">{{ t('organization.group') }}：</span>
                               <div class="flex flex-1 flex-wrap">
                                 <div
                                   v-for="(avatars, idx) in item.members?.GROUP || []"
@@ -355,7 +358,7 @@ defineExpose({
                             </div>
 
                             <div v-if="item.members?.DEPT?.length" class="flex">
-                              <span class="w-15 text-right">{{ t('project.department') }}：</span>
+                              <span class="w-15 text-right">{{ t('organization.dept') }}：</span>
                               <div class="flex flex-1 flex-wrap">
                                 <div
                                   v-for="(avatars, idx) in item.members?.DEPT || []"
@@ -374,7 +377,7 @@ defineExpose({
                 </div>
 
                 <div class="project-time-info">
-                  <span class="info-label">{{ t('project.modifyTime') }}: </span>
+                  <span class="info-label">{{ t('common.lastModifiedDate') }}: </span>
                   <span class="info-value">{{ item.lastModifiedDate }}</span>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import { defineAsyncComponent, watch } from 'vue';
+import { defineAsyncComponent, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // External libraries
@@ -18,7 +18,7 @@ import { useData } from './composables/useData';
 // Static assets
 import DefaultProjectImage from '@/assets/images/default.png';
 import { ProjectType } from '@/enums/enums';
-import {DetailProps, getProjectTypeName, getProjectTypeTipConfig} from '@/views/project/project/types';
+import { DetailProps, getProjectTypeName, getProjectTypeTipConfig } from '@/views/project/project/types';
 import { DATE_FORMAT } from '@/utils/constant';
 
 // Initialize i18n
@@ -41,6 +41,11 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
 const projectTypeTipConfig = getProjectTypeTipConfig();
 /** Project type name mapping for UI display */
 const projectTypeName = getProjectTypeName();
+
+// Safe current project type value
+const currentProjectTypeValue = computed(() => {
+  return detailData.value?.type?.value || ProjectType.AGILE;
+});
 
 // Use project data composable
 const { detailData, fetchProjectDetail } = useData();
@@ -84,7 +89,7 @@ watch(() => props.projectId, newValue => {
           <div v-if="detailData.startDate" class="space-y-2">
             <div class="flex items-center space-x-2">
               <div class="w-1 h-4 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-              <span class="text-xs font-semibold text-gray-600">{{ t('project.projectDetail.form.timePlan') }}</span>
+              <span class="text-xs font-semibold text-gray-600">{{ t('common.planTime') }}</span>
             </div>
             <div class="flex items-center space-x-1 text-green-600 ">
               <Icon icon="icon-time" class="text-xs" />
@@ -100,7 +105,7 @@ watch(() => props.projectId, newValue => {
           <div class="space-y-2">
             <div class="flex items-center space-x-2">
               <div class="w-1 h-4 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-              <span class="text-xs font-semibold text-gray-600">{{ t('project.projectDetail.form.owner') }}</span>
+              <span class="text-xs font-semibold text-gray-600">{{ t('common.owner') }}</span>
             </div>
             <div class="flex items-center space-x-1 text-purple-600 ">
               <Icon icon="icon-user" class="text-xs" />
@@ -113,10 +118,10 @@ watch(() => props.projectId, newValue => {
         <div class="space-y-4">
           <div class="flex items-center space-x-2">
             <div class="w-1 h-4 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-            <span class="text-xs font-semibold text-gray-600">{{ t('project.projectDetail.form.projectMembers') }}</span>
+            <span class="text-xs font-semibold text-gray-600">{{ t('common.members') }}</span>
           </div>
           <Tabs size="small" class="member-tabs">
-            <TabPane key="user" :tab="t('project.projectDetail.form.user')">
+            <TabPane key="user" :tab="t('organization.user')">
               <div v-if="detailData.members?.USER && detailData.members.USER.length > 0" class="flex flex-wrap gap-2">
                 <div
                   v-for="(member, idx) in detailData.members.USER"
@@ -133,7 +138,7 @@ watch(() => props.projectId, newValue => {
                 {{ t('common.noData') }}
               </div>
             </TabPane>
-            <TabPane key="group" :tab="t('project.projectDetail.form.group')">
+            <TabPane key="group" :tab="t('organization.group')">
               <div v-if="detailData.members?.GROUP && detailData.members.GROUP.length > 0" class="flex flex-wrap gap-2">
                 <Tag
                   v-for="(group, idx) in detailData.members.GROUP"
@@ -146,7 +151,7 @@ watch(() => props.projectId, newValue => {
                 {{ t('common.noData') }}
               </div>
             </TabPane>
-            <TabPane key="dept" :tab="t('project.projectDetail.form.department')">
+            <TabPane key="dept" :tab="t('organization.dept')">
               <div v-if="detailData.members?.DEPT && detailData.members.DEPT.length > 0" class="flex flex-wrap gap-2">
                 <Tag
                   v-for="(dept, idx) in detailData.members.DEPT"
@@ -166,12 +171,12 @@ watch(() => props.projectId, newValue => {
         <div class="space-y-3">
           <div class="flex items-center space-x-2">
             <div class="w-1 h-4 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-            <span class="text-xs font-semibold text-gray-600">{{ t('project.projectDetail.form.projectDescription') }}</span>
+            <span class="text-xs font-semibold text-gray-600">{{ t('common.description') }}</span>
           </div>
           <div class="text-gray-700 text-xs ">
             <RichEditor
               :value="detailData.description"
-              :emptyText="t('project.projectDetail.form.noDescription')"
+              :emptyText="t('common.noDescription')"
               mode="view" />
           </div>
         </div>
@@ -181,28 +186,28 @@ watch(() => props.projectId, newValue => {
       <div class="space-y-6">
         <div class="space-y-4">
           <h3 class="section-title">
-            {{ projectTypeName[detailData.type.value] }}
+            {{ projectTypeName.get(currentProjectTypeValue) }}
           </h3>
           <div class="flex justify-center items-center py-8 preview-image">
             <img
-              v-show="detailData.type?.value === ProjectType.AGILE"
+              v-show="currentProjectTypeValue === ProjectType.AGILE"
               src="./images/agile.png"
               class="max-w-full h-auto"
               style="width: 64%" />
             <img
-              v-show="detailData.type?.value === ProjectType.GENERAL"
+              v-show="currentProjectTypeValue === ProjectType.GENERAL"
               src="./images/general.png"
               class="max-w-full h-auto"
               style="width: 72%" />
             <img
-              v-show="detailData.type?.value === ProjectType.TESTING"
+              v-show="currentProjectTypeValue === ProjectType.TESTING"
               src="./images/testing.png"
               class="max-w-full h-auto"
               style="width: 60%" />
           </div>
           <div class="preview-features">
             <div
-              v-for="(item, index) in projectTypeTipConfig[detailData.type.value]"
+              v-for="(item, index) in projectTypeTipConfig[currentProjectTypeValue]"
               :key="index"
               class="feature-item">
               <Icon icon="icon-duihao-copy" class="feature-icon" />

@@ -96,9 +96,7 @@ const formState = reactive<TaskEditState>({
 });
 
 /** Task type name mapping for UI display */
-const taskTypeName = computed(() => {
-  return getTaskTypeName();
-});
+const taskTypeName = getTaskTypeName();
 
 /**
  * Determine if the "Save and Continue" button should be shown

@@ -47,8 +47,10 @@
     "creator": "创建人",
     "modifier": "修改人",
     "project": "项目",
+    "projectType": "项目类型",
     "projectId": "项目Id",
     "projectName": "项目名称",
+    "projectMembers": "项目成员",
     "module": "模块",
     "sprint": "迭代",
     "plan": "计划",
@@ -93,9 +95,9 @@
     }
   },
   "home": {
-    "title": "Home",
-    "myActivity": "My Activities",
-    "allActivity": "All Activities"
+    "title": "首页",
+    "myActivity": "我的活动",
+    "allActivity": "所有活动"
   },
   "routes": {
     "fileData": "文件数据",
@@ -274,10 +276,10 @@
     "dept": "部门",
     "group": "组",
     "placeholders": {
-      "selectTenant": "Select Tenant",
-      "selectUser": "Select User",
-      "selectDepartment": "Select Department",
-      "selectGroup": "Select Group"
+      "selectTenant": "--请选择租户--",
+      "selectUser": "--请选择用户--",
+      "selectDept": "--请选择部门--",
+      "selectGroup": "--请选择组--"
     }
   },
   "quickSearch": {

@@ -31,7 +31,7 @@
     "isEnabled": "Enabled",
     "isExpired": "Expired",
     "taskType": "Task Type",
-    "taskStatus":"Task Status",
+    "taskStatus": "Task Status",
     "script": "Script",
     "scriptId": "Script Id",
     "scriptName": "Script Name",
@@ -47,8 +47,10 @@
     "creator": "Creator",
     "modifier": "Modifier",
     "project": "Project",
+    "projectType": "Project Type",
     "projectId": "Project Id",
     "projectName": "Project Name",
+    "projectMembers": "Project Members",
     "module": "Module",
     "sprint": "Sprint",
     "plan": "Plan",
@@ -92,7 +94,6 @@
     },
     "rules": {},
     "hints": {
-
     }
   },
   "home": {
@@ -278,9 +279,10 @@
     "dept": "Department",
     "group": "Group",
     "placeholders": {
-      "selectUser": "Select User",
-      "selectDepartment": "Select Department",
-      "selectGroup": "Select Group"
+      "selectTenant": "--Select tenant-- ",
+      "selectUser": "--Select user--",
+      "selectDept": "--Select department--",
+      "selectGroup": "--Select group--"
     }
   },
   "quickSearch": {

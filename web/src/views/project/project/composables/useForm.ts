@@ -50,7 +50,7 @@ export function useForm (
    */
   const validateDescription = async (): Promise<void> => {
     if (descRef.value && descRef.value.getLength() > 2000) {
-      return Promise.reject(t('project.projectEdit.validation.maxCharacters'));
+      return Promise.reject(t('project.edit.rules.maxCharacters'));
     }
     return Promise.resolve();
   };
@@ -89,7 +89,7 @@ export function useForm (
 
       if (error) {
         console.error('Failed to load project detail:', error);
-        notification.error(t('project.projectEdit.messages.loadError'));
+        notification.error(t('project.edit.messages.loadError'));
         return;
       }
 
@@ -119,7 +119,7 @@ export function useForm (
       };
     } catch (error) {
       console.error('Error loading project detail:', error);
-      notification.error(t('project.projectEdit.messages.loadError'));
+      notification.error(t('project.edit.messages.loadError'));
     } finally {
       loading.value = false;
     }
@@ -186,7 +186,7 @@ export function useForm (
       getNewCurrentProject();
     } catch (error) {
       console.error('Error submitting form:', error);
-      notification.error(t('project.projectEdit.messages.submitError'));
+      notification.error(t('project.edit.messages.submitError'));
     } finally {
       loading.value = false;
     }

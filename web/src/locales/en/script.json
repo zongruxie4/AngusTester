@@ -48,7 +48,7 @@
       "columns": {
         "plugin": "Plugin",
         "resourceId": "Resource ID",
-        "resourceName": "Resource Name",
+        "resourceName": "Resource Name"
       },
       "messages": {
         "maxBatchLimit": "Maximum support for batch operations of {maxNum} scripts, currently selected {selectedNum} scripts.",
