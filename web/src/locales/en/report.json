@@ -97,10 +97,6 @@
         "scenario": "Scenario",
         "task": "Task",
         "execution": "Execution"
-      },
-      "labels": {
-        "category": "Category",
-        "status": "Status"
       }
     },
     "reportDetail": {
@@ -582,13 +578,6 @@
           "apiUrl": "API URL",
           "requestMethod": "Request Method",
           "operationId": "Operation ID",
-          "owner": "Owner",
-          "description": "Description",
-          "status": "Status",
-          "creator": "Creator",
-          "createTime": "Create Time",
-          "lastModifier": "Last Modifier",
-          "lastModifyTime": "Last Modify Time"
         }
       },
       "summary": {
@@ -1170,15 +1159,7 @@
         "basicInfo": {
           "title": "Basic Information",
           "fields": {
-            "planName": "Plan Name",
             "casePrefix": "Case Prefix",
-            "status": "Status",
-            "owner": "Owner",
-            "project": "Project",
-            "timePlan": "Time Plan",
-            "creator": "Creator",
-            "createTime": "Create Time",
-            "workloadEvalMethod": "Workload Evaluation",
             "reviewCase": "Review Cases"
           }
         },
@@ -1957,8 +1938,6 @@
       "summary": {
         "title": "Summary",
         "fields": {
-          "status": "Status",
-          "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
           "other": "Other"
@@ -2092,7 +2071,6 @@
             "fields": {
               "caseId": "Case ID",
               "caseName": "Case Name",
-              "status": "Status"
             }
           }
         },
@@ -2102,7 +2080,6 @@
             "title": "Result Information",
             "testParams": "Test Parameters",
             "testMetrics": "Test Metrics",
-            "status": "Status",
             "fields": {
               "concurrency": "Concurrency",
               "testDuration": "Test Duration",
@@ -2128,7 +2105,6 @@
             "title": "Result Information",
             "testParams": "Test Parameters",
             "testMetrics": "Test Metrics",
-            "status": "Status",
             "fields": {
               "concurrency": "Concurrency",
               "testDuration": "Test Duration",

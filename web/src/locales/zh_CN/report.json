@@ -89,10 +89,6 @@
         "scenario": "场景",
         "task": "任务",
         "execution": "执行"
-      },
-      "labels": {
-        "category": "分类",
-        "status": "状态"
       }
     },
     "reportDetail": {
@@ -569,13 +565,6 @@
           "apiUrl": "接口地址",
           "requestMethod": "请求方法",
           "operationId": "操作ID",
-          "owner": "负责人",
-          "description": "描述",
-          "status": "状态",
-          "creator": "添加人",
-          "createTime": "添加时间",
-          "lastModifier": "最后修改人",
-          "lastModifyTime": "最后修改时间"
         }
       },
       "summary": {
@@ -1143,15 +1132,7 @@
         "basicInfo": {
           "title": "基本信息",
           "fields": {
-            "planName": "计划名称",
             "casePrefix": "用例前缀",
-            "status": "状态",
-            "owner": "负责人",
-            "project": "所属项目",
-            "timePlan": "时间计划",
-            "creator": "添加人",
-            "createTime": "添加时间",
-            "workloadEvalMethod": "工作量评估方式",
             "reviewCase": "是否评审用例"
           }
         },
@@ -1935,8 +1916,6 @@
       "summary": {
         "title": "摘要",
         "fields": {
-          "status": "状态",
-          "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
           "other": "其他"
@@ -2070,7 +2049,6 @@
             "fields": {
               "caseId": "用例ID",
               "caseName": "用例名称",
-              "status": "状态"
             }
           }
         },
@@ -2080,7 +2058,6 @@
             "title": "结果信息",
             "testParams": "测试参数",
             "testMetrics": "测试指标",
-            "status": "状态",
             "fields": {
               "concurrency": "并发数",
               "testDuration": "测试时长",
@@ -2106,7 +2083,6 @@
             "title": "结果信息",
             "testParams": "测试参数",
             "testMetrics": "测试指标",
-            "status": "状态",
             "fields": {
               "concurrency": "并发数",
               "testDuration": "测试时长",

@@ -58,7 +58,7 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'status',
       dataIndex: 'status',
-      title: t('reportHome.table.status'),
+      title: t('common.status'),
       customRender: ({ text }) => {
         return text?.message;
       },

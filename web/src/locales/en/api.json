@@ -495,7 +495,6 @@
       },
       "buttonGroup": {
         "mockApi": "Mock Api",
-        "status": "Modify Status",
         "testScript": "Test Script",
         "generateTestScript": "Generate Test Script",
         "generateTestScriptTip": "Generate interface functional, performance and stability test scripts.",
@@ -674,9 +673,6 @@
       "title": "Modify Status",
       "messages": {
         "updateStatusSuccess": "Status updated successfully"
-      },
-      "form": {
-        "status": "Status"
       },
       "tips": {
         "serviceStatusChange": "Modifying service status will synchronously modify the status of all APIs under the service.",
@@ -1122,12 +1118,6 @@
       "labels": {
         "summary": "API Name",
         "operationId": "Operation ID",
-        "owner": "API Owner",
-        "service": "Service",
-        "tags": "Tags",
-        "status": "Status",
-        "deprecated": "Deprecated",
-        "description": "Description",
         "externalDocs": "External Documentation"
       },
       "tips": {
@@ -1361,15 +1351,6 @@
       "columns": {
         "summary": "Name",
         "operationId": "Code",
-        "source": "Source",
-        "status": "Status",
-        "deprecated": "Deprecated",
-        "createdByName": "Creator",
-        "ownerName": "Owner",
-        "tags": "Tags",
-        "createdDate": "Created Date",
-        "lastModifiedDate": "Last Modified Date",
-        "description": "Description",
         "securityTitle": "Security Requirements",
         "externalDocsTitle": "External Documentation"
       },
@@ -1423,13 +1404,8 @@
     },
     "serviceDetail": {
       "columns": {
-        "source": "Source",
-        "status": "Status",
         "apisNum": "API Count",
         "apisCaseNum": "Case Count",
-        "createdByName": "Creator",
-        "createdDate": "Created Date",
-        "lastModifiedDate": "Last Modified Date",
         "securityTitle": "Security Requirements"
       },
       "placeholder": {
@@ -1458,9 +1434,6 @@
         "serviceDomainUrl": "Service URL",
         "servicePort": "Port",
         "nodeName": "Node",
-        "status": "Status",
-        "createdByName": "Creator",
-        "createdDate": "Created Date"
       },
       "stats": {
         "apisNum": "API Count",
@@ -1826,8 +1799,6 @@
       "columns": {
         "summary": "Name",
         "endpoint": "Path",
-        "status": "Status",
-        "createdDate": "Created Time"
       }
     }
   },
@@ -1938,12 +1909,6 @@
     "columns": {
       "node": "Node",
       "address": "Address",
-      "status": "Status",
-      "source": "Source",
-      "createdBy": "Creator",
-      "createdDate": "Created Date",
-      "lastModifiedBy": "Last Modified By",
-      "lastModifiedDate": "Last Modified Date"
     },
     "actions": {
       "forceDelete": "Force Delete",

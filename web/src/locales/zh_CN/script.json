@@ -161,9 +161,6 @@
     "record": {
       "executionId": "执行ID",
       "executionName": "执行名称",
-      "status": "状态",
-      "startTime": "开始时间",
-      "endTime": "结束时间"
     },
     "log": {
       "node": "节点",

@@ -345,7 +345,7 @@ onMounted(() => {
           @dropdownVisibleChange="loadTagfromProject">
         </Select>
       </FormItem>
-      <FormItem :label="t('service.apiSliderSave.labels.status')" name="status">
+      <FormItem :label="t('common.status')" name="status">
         <SelectEnum
           v-model:value="form.status"
           :disabled="disabled"

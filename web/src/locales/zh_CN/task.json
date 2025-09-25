@@ -494,23 +494,12 @@
         "lastMonth": "近30天"
       },
       "search": {
-        "taskName": "任务名称",
         "taskNamePlaceholder": "请输入任务名称",
-        "module": "模块",
         "modulePlaceholder": "请选择模块",
-        "sprint": "迭代",
         "sprintPlaceholder": "请选择迭代",
-        "priority": "优先级",
-        "status": "状态",
-        "deadlineDate": "截止时间",
-        "workload": "工作量",
-        "assignee": "负责人",
         "assigneePlaceholder": "请选择负责人",
-        "creator": "创建人",
         "creatorPlaceholder": "请选择创建人",
-        "confirmer": "确认人",
         "confirmerPlaceholder": "请选择确认人",
-        "tags": "标签",
         "tagsPlaceholder": "请选择标签",
         "createTimeFrom": "创建时间从",
         "createTimeTo": "创建时间到",
@@ -585,17 +574,6 @@
           "stability": "稳定性",
           "scenarioTest": "场景测试"
         }
-      },
-      "columns": {
-        "taskName": "任务名称",
-        "module": "模块",
-        "sprint": "迭代",
-        "priority": "优先级",
-        "status": "状态",
-        "assignee": "负责人",
-        "creator": "创建人",
-        "confirmer": "确认人",
-        "deadlineDate": "截止时间",
       }
     },
     "searchPanel": {

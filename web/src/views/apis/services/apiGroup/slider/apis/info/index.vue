@@ -81,7 +81,7 @@ const columns = computed(() => {
       { label: t('service.groupApiDetail.columns.summary'), dataIndex: 'summary' },
       { label: t('service.groupApiDetail.columns.operationId'), dataIndex: 'operationId' },
       { label: t('service.groupApiDetail.columns.source'), dataIndex: 'source', type: '1' },
-      { label: t('service.groupApiDetail.columns.status'), dataIndex: 'status' },
+      { label: t('common.status'), dataIndex: 'status' },
       { label: t('service.groupApiDetail.columns.auth'), dataIndex: 'auth' },
       { label: t('service.groupApiDetail.columns.deprecated'), dataIndex: 'deprecated' },
       // !state.info.protocol?.value?.includes('ws') && { label: '用例数量', dataIndex: 'apiCaseNum' },

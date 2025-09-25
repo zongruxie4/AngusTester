@@ -1751,7 +1751,6 @@
         "basedOnEOM": "基于EOM",
         "basedOnLengthPrefix": "基于长度前缀"
       },
-      "duration": "耗时",
       "tabs": {
         "request": "请求",
         "response": "响应"

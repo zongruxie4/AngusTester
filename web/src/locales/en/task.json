@@ -432,17 +432,6 @@
       "inputWorkload": "Enter workload",
       "inputModuleName": "Please enter module name"
     },
-    "form": {
-      "description": "Description",
-      "assignee": "Assignee",
-      "sprint": "Sprint",
-      "module": "Module",
-      "priority": "Priority",
-      "status": "Status",
-      "deadlineDate": "Deadline",
-      "workload": "Workload",
-      "attachments": "Attachments"
-    },
     "batch": {
       "selectAll": "Select All",
       "unselectAll": "Unselect All",
@@ -513,21 +502,11 @@
       "search": {
         "taskName": "Task Name",
         "taskNamePlaceholder": "Please enter task name",
-        "module": "Module",
         "modulePlaceholder": "Please select module",
-        "sprint": "Sprint",
         "sprintPlaceholder": "Please select sprint",
-        "priority": "Priority",
-        "status": "Status",
-        "deadlineDate": "Deadline",
-        "workload": "Workload",
-        "assignee": "Assignee",
         "assigneePlaceholder": "Please select assignee",
-        "creator": "Creator",
         "creatorPlaceholder": "Please select creator",
-        "confirmer": "Confirmer",
         "confirmerPlaceholder": "Please select confirmer",
-        "tags": "Tags",
         "tagsPlaceholder": "Please select tags",
         "createTimeFrom": "Create time from",
         "createTimeTo": "Create time to",
@@ -603,24 +582,6 @@
           "scenarioTest": "Scenario Test"
         }
       },
-      "columns": {
-        "taskName": "Task Name",
-        "module": "Module",
-        "sprint": "Sprint",
-        "priority": "Priority",
-        "status": "Status",
-        "assignee": "Assignee",
-        "creator": "Creator",
-        "confirmer": "Confirmer",
-        "deadlineDate": "Deadline",
-        "workload": "Workload",
-        "createTime": "Create Time",
-        "lastModifiedTime": "Last Modified Time",
-        "tags": "Tags",
-        "description": "Description",
-        "attachments": "Attachments",
-        "comments": "Comments"
-      }
     },
     "searchPanel": {
       "quickSearch": "Quick Search",

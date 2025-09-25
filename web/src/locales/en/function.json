@@ -204,11 +204,8 @@
         "owner": "Owner",
         "to": "To",
         "timePlan": "Time Plan",
-        "testers": "Testers",
         "isReview": "Review",
         "casePrefix": "Case Prefix",
-        "attachments": "Attachments",
-        "status": "Status",
         "workloadAssessment": "Workload Assessment",
         "acceptanceCriteria": "Acceptance Criteria",
         "otherInformation": "Other Information"

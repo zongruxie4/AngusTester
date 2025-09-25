@@ -237,7 +237,7 @@ const columns = computed(() => {
       ellipsis: true
     },
     {
-      title: t('apis.myApis.columns.status'),
+      title: t('common.status'),
       dataIndex: 'status',
       width: '7%'
     },

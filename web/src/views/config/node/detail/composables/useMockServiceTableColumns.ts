@@ -28,7 +28,7 @@ export function useMockServiceTableColumns () {
     },
     {
       dataIndex: 'status',
-      title: t('node.nodeDetail.mockService.columns.status'),
+      title: t('common.status'),
       width: 100
     },
     {

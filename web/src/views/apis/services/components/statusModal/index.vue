@@ -90,7 +90,7 @@ watch(() => props.visible, newValue => {
     </Hints>
     <div class="flex items-center">
       <span class="w-10">
-        {{ t('service.statusModal.form.status') }}
+        {{ t('common.status') }}
       </span>
       <SelectEnum
         v-model:value="statusValue"

@@ -244,7 +244,7 @@ const columns = [
     width: '8%'
   },
   {
-    title: t('design.home.columns.status'),
+    title: t('common.status'),
     dataIndex: 'released',
     width: '8%'
   },

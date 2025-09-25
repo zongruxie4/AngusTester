@@ -404,11 +404,8 @@
       "mockService": {
         "columns": {
           "serviceId": "Service ID",
-          "status": "Status",
           "accessUrl": "Access URL",
           "accessPort": "Access Port",
-          "creator": "Creator",
-          "createTime": "Create Time"
         }
       },
       "execute": {

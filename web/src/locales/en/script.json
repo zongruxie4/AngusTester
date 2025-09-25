@@ -142,9 +142,6 @@
     "record": {
       "executionId": "Execution ID",
       "executionName": "Execution Name",
-      "status": "Status",
-      "startTime": "Start Time",
-      "endTime": "End Time"
     },
     "log": {
       "node": "Node",

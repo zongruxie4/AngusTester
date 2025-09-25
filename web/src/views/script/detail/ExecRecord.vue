@@ -66,7 +66,7 @@ const params = {
 
         <div class="relative flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('scriptDetail.record.status') }}</span>
+            <span>{{ t('common.status') }}</span>
             <Colon class="w-1" />
           </div>
 

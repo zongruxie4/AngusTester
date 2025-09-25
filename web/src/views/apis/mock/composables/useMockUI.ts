@@ -97,7 +97,7 @@ export function useMockUI () {
       customRender: ({ text }: { text: string }): string => text || '--'
     },
     {
-      title: t('mock.columns.status'),
+      title: t('common.status'),
       dataIndex: 'status',
       width: '8%',
       customCell: () => {

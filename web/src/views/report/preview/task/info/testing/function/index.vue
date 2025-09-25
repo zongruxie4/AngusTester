@@ -96,7 +96,7 @@ const len = computed(() => {
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5">
-          {{ t('reportPreview.task.info.testing.function.testedCases.fields.status') }}
+          {{ t('common.status') }}
         </div>
       </div>
 

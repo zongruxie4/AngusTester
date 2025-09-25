@@ -15,7 +15,7 @@ export function useTableColumns () {
       width: 100
     },
     {
-      title: t('version.columns.status'),
+      title: t('common.status'),
       dataIndex: 'status',
       width: 100
     },

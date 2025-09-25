@@ -337,7 +337,7 @@ const onEllipsis = () => { };// 删除该方法不会触发省略
 const ellipsis = { rows: 1, expandable: false, onEllipsis };
 
 const TYPE_MAP = computed(() => ({
-  STATUS: t('httpPlugin.functionTestDetail.http.typeMap.status'),
+  STATUS: t('common.status'),
   HEADER: t('httpPlugin.functionTestDetail.http.typeMap.header'),
   BODY: t('httpPlugin.functionTestDetail.http.typeMap.body'),
   BODY_SIZE: t('httpPlugin.functionTestDetail.http.typeMap.bodySize'),

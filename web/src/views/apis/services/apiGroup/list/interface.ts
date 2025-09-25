@@ -76,7 +76,7 @@ export const ButtonGroup = [
     disabled: false,
     icon: 'icon-daochu'
   }, {
-    name: t('service.apis.buttonGroup.status'),
+    name: t('common.status'),
     key: 'status',
     permission: 'MODIFY',
     disabled: false,

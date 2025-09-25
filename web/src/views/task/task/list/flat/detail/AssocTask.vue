@@ -186,7 +186,7 @@ const tableColumns = [
   {
     key: 'status',
     dataIndex: 'status',
-    title: t('task.assocTask.columns.status')
+    title: t('common.status')
   },
   {
     key: 'assigneeName',

@@ -500,7 +500,6 @@
       },
       "buttonGroup": {
         "mockApi": "Mock接口",
-        "status": "修改状态",
         "testScript": "测试脚本",
         "generateTestScript": "生成测试脚本",
         "generateTestScriptTip": "生成接口功能、性能和稳定性测试脚本。",
@@ -678,9 +677,6 @@
       "title": "修改状态",
       "messages": {
         "updateStatusSuccess": "修改状态成功"
-      },
-      "form": {
-        "status": "状态"
       },
       "tips": {
         "serviceStatusChange": "修改服务时会同步修改服务下所有接口状态。",
@@ -1122,11 +1118,6 @@
       "labels": {
         "summary": "接口名称",
         "operationId": "编码",
-        "owner": "接口负责人",
-        "service": "所属服务",
-        "tags": "标签",
-        "status": "状态",
-        "deprecated": "是否弃用",
         "description": "描述",
         "externalDocs": "外部文档"
       },
@@ -1816,8 +1807,6 @@
       "columns": {
         "summary": "名称",
         "endpoint": "路径",
-        "status": "状态",
-        "createdDate": "添加时间"
       }
     }
   },

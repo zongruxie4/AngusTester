@@ -106,7 +106,7 @@ const artResult = computed(() => {
           {{ t('reportPreview.task.info.testing.stability.resultInfo.testMetrics') }}
         </div>
         <div class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5">
-          {{ t('reportPreview.task.info.testing.stability.resultInfo.status') }}
+          {{ t('common.status') }}
         </div>
       </div>
 

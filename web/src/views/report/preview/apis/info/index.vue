@@ -54,7 +54,7 @@ const columns = computed(() => [
     },
     {
       dataIndex: 'status',
-      name: t('reportPreview.apis.info.fields.status'),
+      name: t('common.status'),
       customRender: (text) => {
         return text?.message;
       }

@@ -169,7 +169,7 @@ const onEllipsis = () => { };// 删除该方法不会触发省略
 const ellipsis = { rows: 1, expandable: false, onEllipsis };
 
 const TYPE_MAP = {
-  STATUS: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.typeMap.STATUS'),
+  STATUS: t('common.status'),
   HEADER: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.typeMap.HEADER'),
   BODY: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.typeMap.BODY'),
   BODY_SIZE: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.typeMap.BODY_SIZE'),
