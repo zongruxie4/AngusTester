@@ -49,6 +49,7 @@
     "execId": "Execution ID",
     "execName": "Execution Name",
     "execStatus": "Execution Status",
+    "execResult": "Execution Result",
     "plugin": "Plugin",
     "priority": "Priority",
     "assignee": "Assignee",

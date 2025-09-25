@@ -12,7 +12,7 @@ export const contentTreeData = [
         key: 'basic'
       },
       {
-        title: t('reportAdd.execFuncContent.contentTree.execResult'),
+        title: t('common.execResult'),
         key: 'execResult'
       }
     ]

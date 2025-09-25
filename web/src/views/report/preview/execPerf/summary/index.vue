@@ -39,7 +39,7 @@ const resultInfo = computed(() => {
   }
 
   return {
-    label: t('reportPreview.execPerf.summary.fields.execStatus'),
+    label: t('common.execStatus'),
     value: props.execInfo?.status?.message
   };
 });

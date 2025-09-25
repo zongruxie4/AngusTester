@@ -786,7 +786,6 @@
     },
     "table": {
       "columns": {
-        "execResult": "Execution Result",
         "workload": "Workload",
         "apiScenario": "API/Scenario",
         "service": "Service",
@@ -799,7 +798,6 @@
         "confirmTime": "Confirm Time",
         "completeTime": "Complete Time",
         "cancelTime": "Cancel Time",
-        "execTime": "Execute Time",
         "lastModifyTime": "Modify Time"
       },
       "messages": {
@@ -1044,13 +1042,6 @@
       "title": "Testing",
       "execResult": {
         "title": "Execution Information",
-        "fields": {
-          "execResult": "Execution Result",
-          "execId": "Execution ID",
-          "execName": "Execution Name",
-          "execByName": "Executor",
-          "lastExecTime": "Last Execution Time"
-        }
       },
       "testResult": {
         "title": "Test Result"

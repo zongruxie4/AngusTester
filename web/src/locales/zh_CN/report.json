@@ -228,7 +228,6 @@
       "contentTree": {
         "exec": "执行信息",
         "basic": "执行基本信息",
-        "execResult": "执行结果",
         "sampling": "采样数",
         "qps": "事务数",
         "minmax": "最小/最大/平均",
@@ -270,7 +269,6 @@
       "contentTree": {
         "exec": "执行信息",
         "basic": "执行基本信息",
-        "execResult": "执行结果",
         "sprint": "迭代结果",
         "log": "日志信息",
         "dispatch": "执行调度日志",
@@ -652,7 +650,6 @@
         "sections": {
           "execInfo": "执行信息",
           "execBasicInfo": "执行基本信息",
-          "execResult": "执行结果",
           "iterationResult": "迭代结果",
           "logInfo": "日志信息",
           "schedulingLog": "执行调度日志",
@@ -750,7 +747,6 @@
         "sections": {
           "execInfo": "执行信息",
           "execBasicInfo": "执行基本信息",
-          "execResult": "执行结果",
           "summaryResult": "汇总结果",
           "samplingIndicators": "采样指标",
           "throughput": "吞吐量",
@@ -769,8 +765,6 @@
         "title": "摘要",
         "fields": {
           "testPassed": "测试是否通过",
-          "execStatus": "执行状态",
-          "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
           "other": "其他"
@@ -781,7 +775,6 @@
         "basicInfo": {
           "title": "执行基本信息",
           "fields": {
-            "execName": "执行名称",
             "testScriptId": "测试脚本ID",
             "nodeCount": "节点数",
             "samplingInterval": "采样间隔",
@@ -1514,8 +1507,6 @@
               "failCount": "失败次数",
               "testScriptId": "测试脚本ID",
               "testScriptName": "测试脚本名称",
-              "execId": "执行ID",
-              "execName": "执行名称",
               "lastExecutor": "最后执行人",
               "lastExecTime": "最后执行时间"
             }
@@ -1550,10 +1541,6 @@
               "failCount": "失败次数",
               "testScriptId": "测试脚本ID",
               "testScriptName": "测试脚本名称",
-              "execId": "执行ID",
-              "execName": "执行名称",
-              "lastExecutor": "最后执行人",
-              "lastExecTime": "最后执行时间"
             }
           },
           "metrics": {
@@ -1582,8 +1569,6 @@
               "failCount": "失败次数",
               "testScriptId": "测试脚本ID",
               "testScriptName": "测试脚本名称",
-              "execId": "执行ID",
-              "execName": "执行名称",
               "lastExecutor": "最后执行人",
               "lastExecTime": "最后执行时间"
             }
@@ -1952,7 +1937,6 @@
             "confirmTime": "确认时间",
             "completionTime": "完成时间",
             "cancelTime": "取消时间",
-            "execTime": "执行时间",
             "createTime": "添加时间",
             "lastModifyTime": "最后修改时间"
           }
@@ -1976,12 +1960,6 @@
           },
           "execInfo": {
             "title": "执行信息",
-            "fields": {
-              "execResult": "执行结果",
-              "execId": "执行ID",
-              "execName": "执行名称",
-              "lastExecTime": "最后执行时间"
-            }
           },
           "testResult": {
             "title": "测试结果",

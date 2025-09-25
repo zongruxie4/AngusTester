@@ -94,7 +94,7 @@ const shouldShowContent = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.testing.execResult.fields.execResult') }}</span>
+              <span>{{ t('common.execResult') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -108,7 +108,7 @@ const shouldShowContent = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.testing.execResult.fields.execId') }}</span>
+              <span>{{ t('common.execId') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -120,7 +120,7 @@ const shouldShowContent = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.testing.execResult.fields.execName') }}</span>
+              <span>{{ t('common.execName') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -184,7 +184,7 @@ const shouldShowContent = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.testing.execResult.fields.lastExecTime') }}</span>
+              <span>{{ t('common.execDate') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -199,7 +199,7 @@ const shouldShowContent = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.testing.execResult.fields.execResult') }}</span>
+              <span>{{ t('common.execResult') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -213,7 +213,7 @@ const shouldShowContent = computed(() => {
 
           <div class="relative w-1/3 flex items-start">
             <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.testing.execResult.fields.execId') }}</span>
+              <span>{{ t('common.execId') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -222,7 +222,7 @@ const shouldShowContent = computed(() => {
 
           <div class="relative w-1/3 flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.testing.execResult.fields.execName') }}</span>
+              <span>{{ t('common.execName') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -286,7 +286,7 @@ const shouldShowContent = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.testing.execResult.fields.lastExecTime') }}</span>
+              <span>{{ t('common.execDate') }}</span>
               <Colon class="w-1" />
             </div>
 

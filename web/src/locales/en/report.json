@@ -235,7 +235,6 @@
       "contentTree": {
         "exec": "Execution information",
         "basic": "Execution basic information",
-        "execResult": "Execution result",
         "total": "Summary results",
         "sampling": "Sampling number",
         "qps": "Transaction number",
@@ -278,7 +277,6 @@
       "contentTree": {
         "exec": "Execution information",
         "basic": "Execution basic information",
-        "execResult": "Execution result",
         "sprint": "Iteration result",
         "log": "Log information",
         "dispatch": "Execution scheduling log",
@@ -660,7 +658,6 @@
         "sections": {
           "execInfo": "Execution Information",
           "execBasicInfo": "Execution Basic Information",
-          "execResult": "Execution Result",
           "iterationResult": "Iteration Result",
           "logInfo": "Log Information",
           "schedulingLog": "Execution Scheduling Log",
@@ -762,7 +759,6 @@
         "sections": {
           "execInfo": "Execution Information",
           "execBasicInfo": "Execution Basic Information",
-          "execResult": "Execution Result",
           "summaryResult": "Summary Result",
           "samplingIndicators": "Sampling Indicators",
           "throughput": "Throughput",
@@ -781,8 +777,6 @@
         "title": "Summary",
         "fields": {
           "testPassed": "Test Passed",
-          "execStatus": "Execution Status",
-          "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
           "other": "Other"
@@ -793,8 +787,6 @@
         "basicInfo": {
           "title": "Execution Basic Information",
           "fields": {
-            "execName": "Execution Name",
-            "scriptName": "Script Name",
             "testScriptId": "Test Script ID",
             "nodeCount": "Node Count",
             "samplingInterval": "Sampling Interval",
@@ -1528,8 +1520,6 @@
               "failCount": "Failure Count",
               "testScriptId": "Test Script ID",
               "testScriptName": "Test Script Name",
-              "execId": "Execution ID",
-              "execName": "Execution Name",
               "lastExecutor": "Last Executor",
               "lastExecTime": "Last Execution Time"
             }
@@ -1564,8 +1554,6 @@
               "failCount": "Failure Count",
               "testScriptId": "Test Script ID",
               "testScriptName": "Test Script Name",
-              "execId": "Execution ID",
-              "execName": "Execution Name",
               "lastExecutor": "Last Executor",
               "lastExecTime": "Last Execution Time"
             }
@@ -1596,8 +1584,6 @@
               "failCount": "Failure Count",
               "testScriptId": "Test Script ID",
               "testScriptName": "Test Script Name",
-              "execId": "Execution ID",
-              "execName": "Execution Name",
               "lastExecutor": "Last Executor",
               "lastExecTime": "Last Execution Time"
             }
@@ -1965,7 +1951,6 @@
             "confirmTime": "Confirm Time",
             "completionTime": "Completion Time",
             "cancelTime": "Cancel Time",
-            "execTime": "Execution Time",
             "createTime": "Create Time",
             "lastModifyTime": "Last Modify Time"
           }

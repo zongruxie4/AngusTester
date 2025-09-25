@@ -791,7 +791,6 @@
     },
     "table": {
       "columns": {
-        "execResult": "执行结果",
         "apiScenario": "接口/场景",
         "service": "服务",
         "failCount": "失败次数",
@@ -800,7 +799,6 @@
         "confirmTime": "确认时间",
         "completeTime": "完成时间",
         "cancelTime": "取消时间",
-        "execTime": "执行时间",
         "lastModifyTime": "最后修改时间"
       },
       "messages": {
@@ -1040,9 +1038,6 @@
       "execResult": {
         "title": "执行信息",
         "fields": {
-          "execResult": "执行结果",
-          "execId": "执行ID",
-          "execName": "执行名称",
           "execByName": "执行人",
           "lastExecTime": "最后执行时间"
         }

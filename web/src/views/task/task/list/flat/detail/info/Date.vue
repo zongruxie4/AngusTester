@@ -257,7 +257,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.date.fields.execTime') }}</span>
+              <span>{{ t('common.execDate') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskExecDate }" class="info-text">

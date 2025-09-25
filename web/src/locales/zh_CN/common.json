@@ -49,6 +49,7 @@
     "execId": "执行ID",
     "execName": "执行名",
     "execStatus": "执行状态",
+    "execResult": "执行结果",
     "plugin": "插件",
     "priority": "优先级",
     "assignee": "经办人",

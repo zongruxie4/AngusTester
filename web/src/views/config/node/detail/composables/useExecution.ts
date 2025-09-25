@@ -70,13 +70,13 @@ export function useExecution (nodeId: string) {
     {
       key: 'execId',
       dataIndex: 'id',
-      title: t('node.nodeDetail.execute.columns.execId'),
+      title: t('common.execId'),
       width: 120
     },
     {
       key: 'execName',
       dataIndex: 'name',
-      title: t('node.nodeDetail.execute.columns.execName'),
+      title: t('common.execName'),
       width: 200
     },
     {

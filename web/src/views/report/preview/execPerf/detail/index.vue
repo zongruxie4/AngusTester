@@ -39,7 +39,7 @@ const resultInfo = computed(() => {
   }
 
   return {
-    label: t('reportPreview.execPerf.summary.fields.execStatus'),
+    label: t('common.execStatus'),
     value: props.execInfo?.status?.message
   };
 });
@@ -66,7 +66,7 @@ const resultInfo = computed(() => {
           </div> -->
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execPerf.detail.basicInfo.fields.execName') }}
+            {{ t('common.execName') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.name }}
