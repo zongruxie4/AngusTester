@@ -237,7 +237,7 @@
       "averageDelay": "Average Delay",
       "willRun": "Will run",
       "lastRun": "Last run",
-      "createdBy": "Created At",
+      "createdAt": "Created At",
       "in": "In",
       "executeNow": "Execute Now",
       "deleteConfirm": "Are you sure you want to delete monitor 「{name}」?",

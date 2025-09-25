@@ -68,7 +68,7 @@ const columns = [
   {
     key: 'createdByName',
     dataIndex: 'createdByName',
-    title: t('reportHome.reportDetail.generateRecord.creator')
+    title: t('common.creator')
   },
   {
     key: 'createdDate',

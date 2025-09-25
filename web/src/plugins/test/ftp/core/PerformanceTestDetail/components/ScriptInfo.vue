@@ -68,7 +68,7 @@ const infoConfig = [[
     dataIndex: 'sourceName'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.scriptInfo.creator'),
+    label: t('common.creator'),
     dataIndex: 'createdBy'
   },
   {

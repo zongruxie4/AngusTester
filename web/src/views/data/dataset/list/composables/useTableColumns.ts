@@ -33,7 +33,7 @@ export function useTableColumns () {
     },
     {
       key: 'createdBy',
-      title: t('dataset.list.columns.createdBy'),
+      title: t('common.createdBy'),
       dataIndex: 'createdBy',
       ellipsis: true,
       width: '15%',
@@ -43,7 +43,7 @@ export function useTableColumns () {
     },
     {
       key: 'lastModifiedBy',
-      title: t('dataset.list.columns.lastModifiedBy'),
+      title: t('common.lastModifiedBy'),
       dataIndex: 'lastModifiedBy',
       ellipsis: true,
       width: '15%',

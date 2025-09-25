@@ -263,7 +263,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: t('design.home.columns.createdBy'),
+    title: t('common.createdBy'),
     dataIndex: 'createdByAvatar',
     width: '10%',
     sorter: true
@@ -275,7 +275,7 @@ const columns = [
     sorter: true
   },
   {
-    title: t('design.home.columns.lastModifiedBy'),
+    title: t('common.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     width: '10%',
     groupName: 'lastModifiedByName',

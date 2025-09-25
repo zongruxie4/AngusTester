@@ -155,7 +155,7 @@ const {
                     {{ record.lastModifiedByName }}
                   </div>
                   <div class="flex-none leading-5">
-                    &nbsp;&nbsp;{{ t('datasource.lastModifiedBy') }}&nbsp;&nbsp;{{ record.lastModifiedDate }}
+                    &nbsp;&nbsp;{{ t('common.lastModifiedBy') }}&nbsp;&nbsp;{{ record.lastModifiedDate }}
                   </div>
                 </div>
               </div>

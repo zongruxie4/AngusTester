@@ -19,7 +19,7 @@ const columns = [
     { dataIndex: 'description', label: t('common.description') },
     { dataIndex: 'scenarioId', label: t('xcan_httpTestInfo.associatedScenarioId') },
     { dataIndex: 'scenarioName', label: t('xcan_httpTestInfo.associatedScenarioName') },
-    { dataIndex: 'createdByName', label: t('xcan_httpTestInfo.creator') },
+    { dataIndex: 'createdByName', label: t('common.creator') },
     { dataIndex: 'createdDate', label: t('xcan_httpTestInfo.creationTime') }
   ]
 ];

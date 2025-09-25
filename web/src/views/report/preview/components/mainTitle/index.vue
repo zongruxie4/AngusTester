@@ -34,7 +34,7 @@ const report = computed(() => {
     <div class="text-center space-x-5 mt-5">
       <div class="inline-flex items-start mb-1">
         <div class="flex-shrink-0 flex items-center mr-1.5">
-          <span class="flex-shrink-0">{{ t('reportPreview.mainTitle.reporter') }}</span>
+          <span class="flex-shrink-0">{{ t('common.reporter') }}</span>
           <Colon />
         </div>
         <div>{{ report?.createdByName }}</div>

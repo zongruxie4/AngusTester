@@ -135,7 +135,6 @@
       "generateRecord": {
         "reportName": "Report Name",
         "template": "Template",
-        "creator": "Creator",
         "generateTime": "Generate Time",
         "deleteRecord": "Delete Report Record",
         "confirmDelete": "Confirm delete report record「{name}」?",
@@ -504,7 +503,6 @@
   "reportPreview": {
     "generating": "Generating PDF file...",
     "mainTitle": {
-      "reporter": "Reporter",
       "reportDate": "Report Date",
       "reportVersion": "Report Version",
       "reportTemplate": "Report Template"
@@ -1036,12 +1034,6 @@
         },
         "personnel": {
           "title": "Personnel Information",
-          "fields": {
-            "tester": "Tester",
-            "creator": "Creator",
-            "reviewer": "Reviewer",
-            "lastModifier": "Last Modifier"
-          }
         },
         "date": {
           "title": "Date Information",
@@ -1150,7 +1142,6 @@
         "testerAndDuty": {
           "title": "Tester and Duty",
           "fields": {
-            "tester": "Tester",
             "duty": "Duty"
           }
         },
@@ -1933,14 +1924,6 @@
         },
         "personnelInfo": {
           "title": "Personnel Information",
-          "fields": {
-            "assignee": "Assignee",
-            "confirmer": "Confirmer",
-            "creator": "Creator",
-            "executor": "Executor",
-            "lastModifier": "Last Modifier",
-            "tester": "Tester"
-          }
         },
         "dateInfo": {
           "title": "Date Information",

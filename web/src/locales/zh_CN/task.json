@@ -249,13 +249,6 @@
       },
       "personnel": {
         "title": "人员",
-        "creator": "添加人",
-        "assignee": "经办人",
-        "executor": "执行人",
-        "confirmer": "确认人",
-        "tester": "测试人",
-        "lastModifier": "最后修改人",
-        "assignToMe": "指派给我",
         "placeholders": {
           "selectAssignee": "选择经办人",
           "selectConfirmer": "选择确认人",
@@ -641,7 +634,6 @@
       "assocCase": "关联用例",
       "assocTask": "关联任务",
       "columns": {
-        "reporter": "报告人",
         "personnel": "人员信息",
         "date": "时间信息",
         "apis": "接口信息",
@@ -1188,7 +1180,6 @@
       "workloadAssessment": "评估方法",
       "taskPrefix": "任务前缀",
       "attachmentCount": "附件数",
-      "lastModifiedBy": "最后修改于",
       "acceptanceCriteria": "验收标准",
       "otherInformation": "其他信息",
       "memberProgress": "成员进度",
@@ -1311,7 +1302,6 @@
       "sprint": "所属迭代",
       "moderatorLabel": "主持人",
       "participantsCount": "共{count}个参与者",
-      "lastModifiedBy": "修改于"
     },
     "placeholder": {
       "inputSubject": "最多支持200个字符",
@@ -1387,7 +1377,6 @@
     "addedAnalysis": "已添加的分析",
     "notCreatedYet": "还未创建，点击创建",
     "createdAt": "创建于",
-    "lastModifiedBy": "最后修改于",
     "realTime": "实时",
     "snapshot": "快照",
     "charts": "图表",
@@ -1407,8 +1396,6 @@
       "object": "分析对象",
       "timeRange": "分析期间",
       "dataSource": "数据展示",
-      "createdBy": "创建人",
-      "createdDate": "创建时间"
     },
     "placeholder": {
       "inputAnalysisName": "输入分析名称，最多可输入100字符",

@@ -344,7 +344,7 @@ onBeforeUnmount(() => {
               <div class="mt-1  text-right">
                 <div>
                   <span class="font-semibold mr-1">{{ item.createdByName }}</span>
-                  {{ t('functionAnalysis.list.createdBy') }}{{ item.createdDate }}
+                  {{ t('common.createdBy') }}{{ item.createdDate }}
                 </div>
               </div>
             </div>

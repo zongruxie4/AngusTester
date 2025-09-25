@@ -29,7 +29,7 @@ export function useTableColumns () {
     },
     {
       key: 'createdByName',
-      title: t('projectTrash.table.creator'),
+      title: t('common.creator'),
       dataIndex: 'createdByName',
       ellipsis: true,
       sorter: false

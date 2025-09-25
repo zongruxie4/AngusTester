@@ -345,7 +345,7 @@ const handleTesterSelectionBlur = async () => {
         <!-- Creator -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.personnel.fields.creator') }}</span>
+            <span>{{ t('common.creator') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ taskCreatedByName }}</span>
@@ -355,7 +355,7 @@ const handleTesterSelectionBlur = async () => {
         <!-- Assignee -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.personnel.fields.assignee') }}</span>
+            <span>{{ t('common.assignee') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isAssigneeEditing" class="info-value-content">
@@ -395,7 +395,7 @@ const handleTesterSelectionBlur = async () => {
         <!-- Executor -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.personnel.fields.executor') }}</span>
+            <span>{{ t('common.executor') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !taskExecByName }">{{ taskExecByName || '--' }}</span>
@@ -405,7 +405,7 @@ const handleTesterSelectionBlur = async () => {
         <!-- Confirmer -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.personnel.fields.confirmer') }}</span>
+            <span>{{ t('common.confirmer') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isConfirmerEditing" class="info-value-content">
@@ -445,7 +445,7 @@ const handleTesterSelectionBlur = async () => {
         <!-- Tester -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.personnel.fields.tester') }}</span>
+            <span>{{ t('common.tester') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isTesterEditing" class="info-value-content">

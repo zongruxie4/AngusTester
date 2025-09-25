@@ -45,7 +45,7 @@ export function useSpaceInfo (props: Props) {
         label: t('fileSpace.spaceDetail.columns.format'),
         customRender: ({ text }: { text: any }) => text?.message || t('fileSpace.type.space')
       },
-      { dataIndex: 'createdByName', label: t('fileSpace.spaceDetail.columns.createdBy') },
+      { dataIndex: 'createdByName', label: t('common.createdBy') },
       { dataIndex: 'createdDate', label: t('fileSpace.spaceDetail.columns.createdDate') },
       { dataIndex: 'lastModifiedDate', label: t('fileSpace.spaceDetail.columns.lastModifiedDate') },
       props.type === 'space' && { dataIndex: 'remark', label: t('fileSpace.spaceDetail.columns.remark') },

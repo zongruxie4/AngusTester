@@ -2115,7 +2115,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             :class="runnerParamsOpen ? 'open-params' : 'stop-params'"
             class="overflow-hidden transition-all"
             style="transition-duration: 400ms;">
-            <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 reportInterval">{{ t('xcan_exec.executor') }}</div>
+            <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 reportInterval">{{ t('common.executor') }}</div>
             <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 lang">{{ t('xcan_exec.samplingInitializationTimeout') }}</div>
           </div>
           <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-1.75  font-medium">
@@ -2488,7 +2488,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                 :value="globalParams.startupTimeout + startupTimeoutUnit"
                 size="small"
                 :max="2 * 60 * 60"
-                :inputProps="{ placeholder: t('xcan_exec.executor') }"
+                :inputProps="{ placeholder: t('common.executor') }"
                 :selectProps="startupTimeoutSelectProps"
                 @change="startupTimeoutChange" />
               <Tooltip

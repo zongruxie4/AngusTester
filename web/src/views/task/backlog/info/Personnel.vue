@@ -306,7 +306,7 @@ const testerDefaultOptions = computed(() => {
         <!-- Creator -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.personnel.creator') }}</span>
+            <span>{{ t('common.creator') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ createdByName }}</span>
@@ -316,7 +316,7 @@ const testerDefaultOptions = computed(() => {
         <!-- Assignee -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.personnel.assignee') }}</span>
+            <span>{{ t('common.assignee') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isAssigneeEditing" class="info-value-content">
@@ -356,7 +356,7 @@ const testerDefaultOptions = computed(() => {
         <!-- Executor -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.personnel.executor') }}</span>
+            <span>{{ t('common.executor') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !execByName }">{{ execByName || '--' }}</span>
@@ -366,7 +366,7 @@ const testerDefaultOptions = computed(() => {
         <!-- Confirmer -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.personnel.confirmer') }}</span>
+            <span>{{ t('common.confirmer') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isConfirmerEditing" class="info-value-content">
@@ -406,7 +406,7 @@ const testerDefaultOptions = computed(() => {
         <!-- Tester -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.personnel.tester') }}</span>
+            <span>{{ t('common.tester') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isTesterEditing" class="info-value-content">

@@ -12,7 +12,7 @@ export const contentTreeData = [
         key: 'basic'
       },
       {
-        title: t('reportAdd.planContent.contentTree.tester'),
+        title: t('common.tester'),
         key: 'tester'
       },
       {

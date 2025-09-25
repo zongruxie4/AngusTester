@@ -355,8 +355,6 @@
               "title": "引用变量",
               "description": "配置数据集的基本信息和参数",
               "valueSource": "值来源",
-              "lastModifiedBy": "最后修改人",
-              "lastModifiedDate": "最后修改时间",
               "searchPlaceholder": "搜索名称或描述",
               "descriptionColumn": "描述"
             },

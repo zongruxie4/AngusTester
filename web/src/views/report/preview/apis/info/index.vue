@@ -63,7 +63,7 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'createdByName',
-      name: t('reportPreview.apis.info.fields.creator')
+      name: t('common.creator')
     },
     {
       dataIndex: 'createdDate',

@@ -1365,7 +1365,7 @@ const checkedCaseId = computed(() => {
                 <Tooltip trigger="hover">
                   <template #title>
                     <div class="flex items-center overflow-hidden">
-                      <span class="flex-shrink-0">{{ t('functionCase.kanbanView.tester') }}</span>
+                      <span class="flex-shrink-0">{{ t('common.tester') }}</span>
                       <Colon class="mr-1.5" />
                       <span :title="element.testerName" class="truncate">{{ element.testerName }}</span>
                     </div>
@@ -1506,7 +1506,7 @@ const checkedCaseId = computed(() => {
                       <Tooltip trigger="hover">
                         <template #title>
                           <div class="flex items-center overflow-hidden">
-                            <span class="flex-shrink-0">{{ t('functionCase.kanbanView.tester') }}</span>
+                            <span class="flex-shrink-0">{{ t('common.tester') }}</span>
                             <Colon class="mr-1.5" />
                             <span :title="element.testerName" class="truncate">{{ element.testerName }}</span>
                           </div>

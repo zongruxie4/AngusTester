@@ -21,19 +21,19 @@ const emits = defineEmits<{(e: 'change')}>()
 const peopleInfoColumns = [
   [
     {
-      label: t('caseReview.comp.member.tester'),
+      label: t('common.tester'),
       dataIndex: 'testerName'
     },
     {
-      label: t('caseReview.comp.member.developer'),
+      label: t('common.developer'),
       dataIndex: 'developerName'
     },
     {
-      label: t('caseReview.comp.member.reviewer'),
+      label: t('common.reviewer'),
       dataIndex: 'reviewerName'
     },
     {
-      label: t('caseReview.comp.member.creator'),
+      label: t('common.creator'),
       dataIndex: 'createdByName'
     },
     {
@@ -53,7 +53,7 @@ const toEditTester = () => {
   nextTick(() => {
     testerSelectRef.value.focus();
   });
-  
+
 };
 
 const saveTester = async () => {
@@ -93,7 +93,7 @@ const toEditDeveloper = () => {
   nextTick(() => {
     developerSelectRef.value.focus();
   });
-  
+
 };
 
 const saveDeveloper = async () => {
@@ -169,10 +169,10 @@ const handleDeveloper = () => {
               {{ t('functionCase.detail.caseDetail.assignToMe') }}
             </Button>
           </div>
-          
+
         </template>
 
-        
+
       </template>
 
 
@@ -211,7 +211,7 @@ const handleDeveloper = () => {
           </div>
         </template>
 
-        
+
       </template>
     </Grid>
   </div>

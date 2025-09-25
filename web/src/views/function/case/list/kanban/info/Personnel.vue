@@ -142,7 +142,7 @@ const change = async () => {
     <div class="space-y-2.5">
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('functionCase.kanbanView.infoPersonnel.tester') }}</span>
+          <span>{{ t('common.tester') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -185,7 +185,7 @@ const change = async () => {
 
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('functionCase.kanbanView.infoPersonnel.developer') }}</span>
+          <span>{{ t('common.developer') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -194,7 +194,7 @@ const change = async () => {
 
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('functionCase.kanbanView.infoPersonnel.reviewer') }}</span>
+          <span>{{ t('common.reviewer') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -203,7 +203,7 @@ const change = async () => {
 
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('functionCase.kanbanView.infoPersonnel.creator') }}</span>
+          <span>{{ t('common.creator') }}</span>
           <Colon class="w-1" />
         </div>
 

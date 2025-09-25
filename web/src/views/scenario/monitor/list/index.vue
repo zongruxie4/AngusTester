@@ -159,8 +159,8 @@ const {
                 <div class="flex justify-between items-center mt-2">
                   <span
                     class="flex-1 min-w-0 truncate"
-                    :title="`${item.createdByName} ${t('scenarioMonitor.list.createdBy')} ${ item.createdDate }`">
-                    {{ item.createdByName }} {{ t('scenarioMonitor.list.createdBy') }} {{ item.createdDate }}
+                    :title="`${item.createdByName} ${t('common.createdBy')} ${ item.createdDate }`">
+                    {{ item.createdByName }} {{ t('common.createdBy') }} {{ item.createdDate }}
                   </span>
                   <div>
                     <Popover>

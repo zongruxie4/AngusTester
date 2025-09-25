@@ -254,7 +254,7 @@ const columns = [
     width: '10%'
   },
   {
-    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.lastModifiedBy'),
+    title: t('common.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     ellipsis: true,
     width: '11%',

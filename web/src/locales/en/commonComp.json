@@ -47,8 +47,6 @@
           "title": "Reference Variables",
           "searchPlaceholder": "Search name, description",
           "valueSource": "Value Source",
-          "lastModifiedBy": "Last Modified By",
-          "lastModifiedTime": "Last Modified Time",
           "staticValue": "Static Value",
           "exactValue": "Exact Value",
           "extractedValue": "Extracted Value",
@@ -171,11 +169,6 @@
         "shareCreateSuccess": "Share created successfully",
         "shareUpdateSuccess": "Share updated successfully",
         "shareDeleteSuccess": "Share deleted successfully",
-        "expired": "Expired",
-        "notExpired": "Not Expired",
-        "expiredDate": "Expiration Date",
-        "createdBy": "Created By",
-        "createdDate": "Created Date",
         "form": {
           "namePlaceholder": "Please enter share name",
           "urlPlaceholder": "Please enter share URL",
@@ -477,7 +470,6 @@
     "component": "Component",
     "searchComponentName": "Search component name",
     "componentName": "Component Name",
-    "modifier": "Modifier",
     "modifyTime": "Modify Time"
   },
   "xcan_apiCookie": {
@@ -639,7 +631,6 @@
     "samplingInterval": "Sampling Interval",
     "language": "Language",
     "startupConfiguration": "Startup Configuration",
-    "executor": "Executor",
     "samplingInitializationTimeout": "Sampling Initialization Timeout",
     "stopConfiguration": "Stop Configuration",
     "stopExecutionTimeout": "Stop Execution Timeout",

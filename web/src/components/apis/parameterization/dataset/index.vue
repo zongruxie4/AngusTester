@@ -290,7 +290,7 @@ const hintTextMap = {
       <div v-else>
         <div class="flex items-center table-thead-tr">
           <div class="table-thead-th">{{ t('commonComp.apis.parameterizationDataset.name') }}</div>
-          <div class="table-thead-th">{{ t('commonComp.apis.parameterizationDataset.creator') }}</div>
+          <div class="table-thead-th">{{ t('common.creator') }}</div>
           <div class="table-thead-th">{{ t('common.actions') }}</div>
         </div>
 

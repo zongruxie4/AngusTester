@@ -113,7 +113,7 @@ export function useMockUI () {
       }
     },
     {
-      title: t('mock.columns.createdBy'),
+      title: t('common.createdBy'),
       dataIndex: 'createdByName',
       width: '10%',
       groupName: 'createdByName',
@@ -121,7 +121,7 @@ export function useMockUI () {
       ellipsis: true
     },
     {
-      title: t('mock.columns.lastModifiedBy'),
+      title: t('common.lastModifiedBy'),
       dataIndex: 'lastModifiedByName',
       width: '10%',
       groupName: 'createdByName',

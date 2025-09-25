@@ -528,10 +528,6 @@
       "addBug": "提BUG",
       "resetTestResult": "重置测试结果",
       "resetTestResultTip": "将用例更新为`待测试`，相关统计计数和状态会被清除。",
-      "tester": "测试人",
-      "deadline": "截止",
-      "expandAll": "全部展开",
-      "collapseAll": "全部收起",
       "swimLane": "泳道",
       "cases": "个用例",
       "testSteps": "测试步骤",
@@ -624,13 +620,6 @@
       },
       "infoPersonnel": {
         "title": "人员",
-        "tester": "测试人",
-        "developer": "开发人",
-        "reviewer": "评审人",
-        "creator": "添加人",
-        "lastModifier": "最后修改人",
-        "selectTester": "选择测试人",
-        "assignToMe": "指派给我"
       },
       "infoPrecondition": {
         "title": "前置条件",
@@ -678,12 +667,6 @@
         "actualStoryPoint": "实际故事点",
         "actualWorkload": "实际工时",
         "personnel": "人员",
-        "tester": "测试人",
-        "developer": "开发人",
-        "reviewer": "评审人",
-        "creator": "添加人",
-        "lastModifier": "最后修改人",
-        "assignToMe": "指派给我",
         "date": "日期",
         "reviewTime": "评审时间",
         "testCompleteTime": "测试完成时间",
@@ -969,11 +952,6 @@
       },
       "member": {
         "title": "人员信息",
-        "tester": "测试人",
-        "developer": "开发人",
-        "reviewer": "评审人",
-        "creator": "添加人",
-        "lastModifier": "最后修改人"
       },
       "precondition": {
         "title": "前置条件"
@@ -1123,7 +1101,7 @@
       "updateSuccess": "更新成功",
       "realTime": "实时",
       "snapshot": "快照",
-      "createdBy": "创建于",
+      "createdAt": "创建于",
       "notCreated": "还未创建，点击创建",
       "create": "创建"
     },

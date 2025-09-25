@@ -48,7 +48,7 @@ export function useTableColumns () {
       width: 100
     },
     {
-      title: t('version.columns.creator'),
+      title: t('common.creator'),
       dataIndex: 'createdByName',
       groupName: 'person',
       hide: true,

@@ -258,11 +258,6 @@
       "recoverSuccess": "Item recovered successfully",
       "deleteSuccess": "Item deleted successfully"
     },
-    "table": {
-      "creator": "Creator",
-      "deleter": "Deleter",
-      "deleteTime": "Delete Time"
-    },
     "stats": {
       "items": "Items"
     },

@@ -43,7 +43,7 @@ export function useMockServiceTableColumns () {
     },
     {
       dataIndex: 'createdByName',
-      title: t('node.nodeDetail.mockService.columns.creator'),
+      title: t('common.creator'),
       width: 120
     },
     {

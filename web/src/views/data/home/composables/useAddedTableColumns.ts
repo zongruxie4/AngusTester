@@ -39,7 +39,7 @@ export function useAddedTableColumns (type: DataType) {
     if (['space', 'dataSource'].includes(type)) {
       typeSpecificColumns.push(
         {
-          title: t('dataHome.summaryTable.columns.createdBy'),
+          title: t('common.createdBy'),
           dataIndex: 'createdByName'
         },
         {
@@ -52,7 +52,7 @@ export function useAddedTableColumns (type: DataType) {
     if (['variable', 'dataSet'].includes(type)) {
       typeSpecificColumns.push(
         {
-          title: t('dataHome.summaryTable.columns.lastModifiedBy'),
+          title: t('common.lastModifiedBy'),
           dataIndex: 'lastModifiedByName',
           ellipsis: true
         },

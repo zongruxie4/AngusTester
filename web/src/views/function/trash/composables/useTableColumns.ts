@@ -22,7 +22,7 @@ export function useTableColumns () {
       sorter: false
     },
     {
-      title: t('functionTrash.columns.creator'),
+      title: t('common.creator'),
       dataIndex: 'createdByName',
       key: 'createdByName',
       ellipsis: true,

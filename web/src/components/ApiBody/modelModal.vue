@@ -104,7 +104,7 @@ watch(() => props.visible, newValue => {
     <div class="leading-8 text-theme-content">
       <div style="background-color: #fafafa;" class="flex items-center px-3 rounded">
         <div class="flex-1/3">{{ t('xcan_apiBody.componentName') }}</div>
-        <div class="flex-1/3">{{ t('xcan_apiBody.modifier') }}</div>
+        <div class="flex-1/3">{{ t('common.modifier') }}</div>
         <div class="flex-1/3">{{ t('xcan_apiBody.modifyTime') }}</div>
       </div>
       <Spin :spinning="loading">

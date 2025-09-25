@@ -4,19 +4,19 @@ const t = i18n.getI18n()?.global?.t || ((value: string) => value);
 export const bigPeopleInfoColumns = [
   [
     {
-      label: t('functionCase.detail.caseColumConfig.tester'),
+      label: t('common.tester'),
       dataIndex: 'testerName'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.developer'),
+      label: t('common.developer'),
       dataIndex: 'developerName'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.reviewer'),
+      label: t('common.reviewer'),
       dataIndex: 'reviewerName'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.creator'),
+      label: t('common.creator'),
       dataIndex: 'createdByName'
     },
     {

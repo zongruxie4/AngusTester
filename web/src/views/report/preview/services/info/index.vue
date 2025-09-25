@@ -54,7 +54,7 @@ const columns = computed(() => [
     },
     {
       dataIndex: 'createdByName',
-      name: t('reportPreview.services.info.fields.creator')
+      name: t('common.creator')
     }
   ],
   [

@@ -122,7 +122,7 @@ const tableColumns = [
     width: 100
   },
   {
-    title: t('functionBaseline.editForm.tester'),
+    title: t('common.tester'),
     dataIndex: 'testerName',
     width: 90
   }

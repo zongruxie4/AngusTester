@@ -95,7 +95,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       width: '14%'
     },
     {
-      title: t('scriptHome.table.columns.creator'),
+      title: t('common.creator'),
       dataIndex: 'createdByName',
       width: '8%',
       groupName: 'createdByName',
@@ -104,7 +104,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       ellipsis: true
     },
     {
-      title: t('scriptHome.table.columns.modifier'),
+      title: t('common.modifier'),
       dataIndex: 'lastModifiedByName',
       width: '8%',
       groupName: 'createdByName',

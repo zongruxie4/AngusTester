@@ -1343,8 +1343,6 @@
         "mockServiceId": "服务ID",
         "mockServiceName": "服务名称",
         "mockServiceHostUrl": "服务地址",
-        "createdBy": "服务人",
-        "createdDate": "添加时间"
       },
       "messages": {
         "createSuccess": "生成Mock接口成功",

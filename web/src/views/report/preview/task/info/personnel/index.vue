@@ -34,14 +34,14 @@ const task = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.personnelInfo.fields.assignee') }}
+          {{ t('common.assignee') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.assigneeName }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.personnelInfo.fields.confirmer') }}
+          {{ t('common.confirmer') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.confirmerName }}
@@ -51,14 +51,14 @@ const task = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.personnelInfo.fields.creator') }}
+          {{ t('common.creator') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.createdByName }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.personnelInfo.fields.executor') }}
+          {{ t('common.executor') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.execByName }}
@@ -75,7 +75,7 @@ const task = computed(() => {
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.personnelInfo.fields.tester') }}
+          {{ t('common.tester') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.testerName }}
@@ -87,14 +87,14 @@ const task = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.personnelInfo.fields.tester') }}
+          {{ t('common.tester') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.execByName }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.personnelInfo.fields.assignee') }}
+          {{ t('common.assignee') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.assigneeName }}
@@ -104,14 +104,14 @@ const task = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.personnelInfo.fields.confirmer') }}
+          {{ t('common.confirmer') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.confirmerName }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.personnelInfo.fields.creator') }}
+          {{ t('common.creator') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.createdByName }}
@@ -121,7 +121,7 @@ const task = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.task.info.personnelInfo.fields.executor') }}
+          {{ t('common.executor') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.execByName }}

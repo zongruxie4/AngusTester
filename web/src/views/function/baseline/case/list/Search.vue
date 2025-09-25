@@ -181,7 +181,7 @@ const quickSearchOptions = [
   },
   {
     type: 'testerId',
-    name: t('quickSearch.tester'),
+    name: t('common.tester'),
     selected: false,
     group: 'testerId'
   },

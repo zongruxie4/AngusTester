@@ -78,7 +78,7 @@
         "executeTest": "执行测试"
       },
       "table": {
-        "createdBy": "创建于",
+        "createdAt": "创建于",
         "noExecute": "未执行"
       },
       "messages": {
@@ -235,7 +235,7 @@
       "averageDelay": "平均延迟",
       "willRun": "将运行",
       "lastRun": "最后运行",
-      "createdBy": "创建于",
+      "createdAt": "创建于",
       "in": "在",
       "executeNow": "立即执行",
       "deleteConfirm": "确定删除监控「{name}」吗？",

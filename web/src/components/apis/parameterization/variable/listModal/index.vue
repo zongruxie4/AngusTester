@@ -312,7 +312,7 @@ const columns = [
     width: '10%'
   },
   {
-    title: t('commonComp.apis.parameterizationVariable.listModal.lastModifiedBy'),
+    title: t('common.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     ellipsis: true,
     width: '10%',

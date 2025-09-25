@@ -111,13 +111,6 @@
       "generating": "Generating...",
       "maxTasksWarning": "Maximum 200 tasks allowed",
       "aiKeywordsPlaceholder": "Describe your requirements to the AI agent, such as: Generate 10 main Wiki system product Backlogs.",
-      "placeholders": {
-        "taskName": "Task name, max 200 characters",
-        "evalWorkload": "0.1~1000",
-        "assignee": "Assignee",
-        "confirmer": "Confirmer",
-        "deadline": "Deadline"
-      },
       "tooltips": {
         "nameRepeat": "Name repeated",
         "deadlineDate": "Deadline must be greater than current time"
@@ -244,13 +237,6 @@
       },
       "personnel": {
         "title": "Personnel",
-        "creator": "Creator",
-        "assignee": "Assignee",
-        "executor": "Executor",
-        "confirmer": "Confirmer",
-        "tester": "Tester",
-        "lastModifier": "Last Modifier",
-        "assignToMe": "Assign to Me",
         "placeholders": {
           "selectAssignee": "Select assignee",
           "selectConfirmer": "Select confirmer",
@@ -637,8 +623,6 @@
       "assocCaseTitle": "Associated Cases",
       "assocTaskTitle": "Associated Tasks",
       "columns": {
-        "reporter": "Reporter",
-        "remark": "Remarks",
         "personnel": "Personnel Information",
         "date": "Time Information",
         "apis": "API Information",
@@ -886,19 +870,15 @@
         "serviceRule": "Please select service",
         "apiPlaceholder": "Please select API",
         "apiRule": "Please select API",
-        "assignee": "Assignee",
         "assigneePlaceholder": "Select assignee",
         "assigneeRule": "Select assignee",
         "assigneeTip": "Responsible for actually executing assigned work tasks.",
-        "assignToMe": "Assign to Me",
-        "confirmer": "Confirmer",
         "confirmerPlaceholder": "Select confirmer",
         "confirmerTip": "Person responsible for verifying and validating work results, will automatically enter confirmation process when specified.",
         "deadline": "Deadline",
         "deadlineRule": "Please select deadline",
         "deadlineFutureRule": "Deadline must be a future time",
         "deadlineSprintRule": "Exceeds sprint deadline ({deadline})",
-        "tester": "Tester",
         "testerPlaceholder": "Select tester",
         "testerTip": "Person responsible for testing and validating product functionality or service quality.",
         "description": "Description",
@@ -1100,14 +1080,6 @@
       },
       "personnel": {
         "title": "Personnel",
-        "fields": {
-          "assignee": "Assignee",
-          "executor": "Executor",
-          "confirmer": "Confirmer",
-          "tester": "Tester",
-          "creator": "Creator",
-          "lastModifier": "Last Modifier"
-        },
         "placeholders": {
           "selectAssignee": "Select Assignee",
           "selectConfirmer": "Select Confirmer",
@@ -1201,7 +1173,6 @@
       "workloadAssessment": "Workload Assessment",
       "taskPrefix": "Task Prefix",
       "attachmentCount": "Attachment Count",
-      "lastModifiedBy": "Last Modified By",
       "acceptanceCriteria": "Acceptance Criteria",
       "otherInformation": "Other Information",
       "memberProgress": "Member Progress",
@@ -1319,7 +1290,6 @@
       "sprint": "Sprint",
       "moderatorLabel": "Moderator",
       "participantsCount": "{count} participants",
-      "lastModifiedBy": "Modified by"
     },
     "placeholder": {
       "inputSubject": "Maximum 200 characters",

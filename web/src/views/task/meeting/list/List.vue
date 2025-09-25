@@ -217,7 +217,7 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
           <div class="flex items-center">
             <!-- Last modified -->
             <div class="flex items-center space-x-2 text-xs text-theme-sub-content">
-              <span>{{ t('taskMeeting.columns.lastModifiedBy') }}</span>
+              <span>{{ t('common.lastModifiedBy') }}</span>
               <span class="text-theme-content font-medium truncate max-w-16" :title="item.lastModifiedByName">
                 {{ item.lastModifiedByName }}
               </span>

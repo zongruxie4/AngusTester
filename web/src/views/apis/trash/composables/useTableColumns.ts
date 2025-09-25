@@ -22,7 +22,7 @@ export function useTableColumns () {
       sorter: false
     },
     {
-      title: t('apiTrash.table.columns.createdBy'),
+      title: t('common.createdBy'),
       dataIndex: 'createdByName',
       key: 'createdByName',
       ellipsis: true,

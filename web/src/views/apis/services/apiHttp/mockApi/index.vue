@@ -42,7 +42,7 @@ const columns = [[
   { label: t('service.mockApi.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' }
 ],
 [
-  { label: t('service.mockApi.columns.createdBy'), dataIndex: 'createdByName' },
+  { label: t('common.createdBy'), dataIndex: 'createdByName' },
   { label: t('service.mockApi.columns.createdDate'), dataIndex: 'createdDate' }
 ]];
 

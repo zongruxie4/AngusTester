@@ -146,7 +146,7 @@ defineExpose({ validate: validateForm, reset: resetForm });
 <template>
   <div class="space-y-5">
     <div class="text-3 text-theme-content">
-      <div class="mb-1">{{ t('commonComp.createTaskTestModal.assignee') }}</div>
+      <div class="mb-1">{{ t('common.assignee') }}</div>
       <Select
         showSearch
         :error="isAssigneeFieldEmpty"

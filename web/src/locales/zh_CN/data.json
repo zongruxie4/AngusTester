@@ -676,7 +676,6 @@
       "retest": "重新测试",
       "testConnection": "测试连接"
     },
-    "lastModifiedBy": "最后修改于",
     "messages": {
       "deleteConfirm": "确定「{name}」吗？",
       "deleteSuccess": "删除成功",

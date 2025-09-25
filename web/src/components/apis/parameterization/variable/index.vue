@@ -196,7 +196,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: t('commonComp.apis.parameterizationVariable.creator'),
+    title: t('common.creator'),
     dataIndex: 'createdByName',
     ellipsis: true,
     width: '8%'

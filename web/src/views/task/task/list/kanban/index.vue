@@ -1551,7 +1551,7 @@ onMounted(() => {
                   <Tooltip trigger="hover">
                     <template #title>
                       <div class="flex items-center overflow-hidden">
-                        <span class="flex-shrink-0">{{ t('task.detail.columns.assignee') }}</span>
+                        <span class="flex-shrink-0">{{ t('common.assignee') }}</span>
                         <Colon class="mr-1.5" />
                         <span :title="element.assigneeName" class="truncate">{{ element.assigneeName }}</span>
                       </div>
@@ -1697,7 +1697,7 @@ onMounted(() => {
                         <Tooltip trigger="hover">
                           <template #title>
                             <div class="flex items-center overflow-hidden">
-                              <span class="flex-shrink-0">{{ t('task.detail.columns.assignee') }}</span>
+                              <span class="flex-shrink-0">{{ t('common.assignee') }}</span>
                               <Colon class="mr-1.5" />
                               <span :title="element.assigneeName" class="truncate">{{ element.assigneeName }}</span>
                             </div>

@@ -237,7 +237,7 @@ const columns = [
     width: '12%'
   },
   {
-    title: t('apiShare.list.columns.lastModifiedBy'),
+    title: t('common.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     groupName: 'lastModifiedByName',
     ellipsis: true,

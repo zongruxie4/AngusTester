@@ -216,6 +216,8 @@
     "more": "更多",
     "expand": "展开",
     "collapse": "收起",
+    "expandAll": "全部展开",
+    "collapseAll": "全部收起",
     "tips": {
       "confirmDelete": "确定删除「{name}」吗？",
       "createSuccess": "创建成功",

@@ -219,6 +219,8 @@
     "more": "More",
     "expand": "Expand",
     "collapse": "Collapse",
+    "expandAll": "Expand All",
+    "collapseAll": "Collapse All",
     "tips": {
       "confirmDelete": "Are you sure you want to delete project 「{name}」?",
       "createSuccess": "Create successful",

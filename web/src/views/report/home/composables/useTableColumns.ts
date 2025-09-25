@@ -97,7 +97,7 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'createdBy',
       dataIndex: 'createdBy',
-      title: t('reportHome.table.creator'),
+      title: t('common.creator'),
       groupName: 'creat',
       hide: false,
       width: 90,

@@ -67,7 +67,7 @@ export const infoItem = [
     dataIndex: 'online'
   },
   {
-    label: t('node.nodeItem.interface.viewItem.creator'),
+    label: t('common.creator'),
     dataIndex: 'createdByName'
   },
   {

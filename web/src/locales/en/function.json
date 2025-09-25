@@ -531,10 +531,6 @@
       "addBug": "Add Bug",
       "resetTestResult": "Reset Test Result",
       "resetTestResultTip": "Update case to 'Pending Test', related statistics and status will be cleared.",
-      "tester": "Tester",
-      "deadline": "Deadline",
-      "expandAll": "Expand All",
-      "collapseAll": "Collapse All",
       "swimLane": "Swim Lane",
       "cases": "cases",
       "testSteps": "Test Steps",
@@ -628,13 +624,6 @@
       },
       "infoPersonnel": {
         "title": "Personnel",
-        "tester": "Tester",
-        "developer": "Developer",
-        "reviewer": "Reviewer",
-        "creator": "Creator",
-        "lastModifier": "Last Modifier",
-        "selectTester": "Select Tester",
-        "assignToMe": "Assign to Me"
       },
       "infoPrecondition": {
         "title": "Precondition",
@@ -682,12 +671,6 @@
         "actualStoryPoint": "Actual Story Points",
         "actualWorkload": "Actual Workload",
         "personnel": "Personnel",
-        "tester": "Tester",
-        "developer": "Developer",
-        "reviewer": "Reviewer",
-        "creator": "Creator",
-        "lastModifier": "Last Modifier",
-        "assignToMe": "Assign to Me",
         "date": "Date",
         "reviewTime": "Review Time",
         "testCompleteTime": "Test Complete Time",
@@ -721,15 +704,7 @@
         "associateCaseTip": "\"Associated Cases\" are used to establish relationships between different cases for easy management and traceability. Cases that can establish associations include: dependent cases, extended cases, same functionality cases, key functionality cases, etc."
       },
       "caseColumConfig": {
-        "tester": "Tester",
-        "developer": "Developer",
-        "reviewer": "Reviewer",
-        "creator": "Creator",
-        "lastModifier": "Last Modifier",
-        "reviewTime": "Review Time",
         "testCompleteTime": "Test Complete Time",
-        "addTime": "Add Time",
-        "deadline": "Deadline",
         "lastModifiedTime": "Last Modified Time",
         "enableReview": "Enable Review",
         "reviewCount": "Review Count",
@@ -978,11 +953,6 @@
       },
       "member": {
         "title": "Member Info",
-        "tester": "Tester",
-        "developer": "Developer",
-        "reviewer": "Reviewer",
-        "creator": "Creator",
-        "lastModifier": "Last Modifier"
       },
       "precondition": {
         "title": "Precondition"
@@ -1054,9 +1024,6 @@
       "confirmDeleteCase": "Confirm delete 「{name}」?",
       "selectCase": "Select Case",
       "queryNameCode": "Query name, code",
-      "reviewStatus": "Review Status",
-      "testResult": "Test Result",
-      "tester": "Tester"
     },
     "case": {
       "baselineCases": "Baseline Cases",
@@ -1124,7 +1091,6 @@
       "updateSuccess": "Update successful",
       "realTime": "Real-time",
       "snapshot": "Snapshot",
-      "createdBy": "Created by",
       "notCreated": "Not created yet, click to create",
       "create": "Create"
     },

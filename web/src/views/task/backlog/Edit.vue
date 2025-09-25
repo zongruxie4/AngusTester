@@ -1012,10 +1012,10 @@ const getPopupContainer = () => {
               class="flex-1/2"
               :rules="{ required: true, message: t('backlog.editForm.messages.selectAssignee') }">
               <template #label>
-                {{ t('backlog.editForm.labels.assignee') }}<Popover placement="rightTop">
+                {{ t('common.assignee') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('backlog.editForm.descriptions.assignee') }}
+                      {{ t('common.assignee') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1043,10 +1043,10 @@ const getPopupContainer = () => {
 
             <FormItem name="confirmerId" class="flex-1/2">
               <template #label>
-                {{ t('backlog.editForm.labels.confirmer') }}<Popover placement="rightTop">
+                {{ t('common.confirmer') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('backlog.editForm.descriptions.confirmer') }}
+                      {{ t('common.confirmer') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1093,10 +1093,10 @@ const getPopupContainer = () => {
 
             <FormItem name="confirmerId" class="flex-1/2">
               <template #label>
-                {{ t('backlog.editForm.labels.tester') }}<Popover placement="rightTop">
+                {{ t('common.tester') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('backlog.editForm.descriptions.tester') }}
+                      {{ t('common.tester') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />

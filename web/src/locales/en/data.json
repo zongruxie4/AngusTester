@@ -39,12 +39,6 @@
       }
     },
     "summaryTable": {
-      "columns": {
-        "createdBy": "Created By",
-        "createdDate": "Created Date",
-        "lastModifiedBy": "Last Modified By",
-        "lastModifiedDate": "Last Modified Date"
-      },
       "pagination": {
         "pageInfo": "Page {current}/{totalPage}"
       },
@@ -402,10 +396,6 @@
       },
       "columns": {
         "valueSource": "Source",
-        "lastModifiedBy": "Last Modified By",
-        "createdBy": "Created By",
-        "lastModifiedDate": "Last Modified Date",
-        "createdDate": "Created Date"
       },
       "tableDropdown": {
         "previewData": "Preview Data"
@@ -680,7 +670,6 @@
       "retest": "Retest",
       "testConnection": "Test Connection"
     },
-    "lastModifiedBy": "Last modified by",
     "messages": {
       "deleteConfirm": "Are you sure to delete 「{name}」?",
       "deleteSuccess": "Deleted successfully",
@@ -884,11 +873,6 @@
       "columns": {
         "actualSize": "Actual Size",
         "quota": "Quota",
-        "format": "Format",
-        "createdBy": "Created By",
-        "createdDate": "Created Date",
-        "lastModifiedDate": "Last Modified Date",
-        "remark": "Remark",
         "mockFunc": "Mock Function"
       }
     }

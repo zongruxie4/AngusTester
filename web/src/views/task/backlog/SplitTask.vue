@@ -607,7 +607,7 @@ onMounted(() => {
           <SelectUser
             v-model:value="taskDataMap[taskId].assigneeId"
             :error="assigneeIdErrorSet.has(taskId)"
-            :placeholder="t('backlog.splitTask.placeholders.assignee')"
+            :placeholder="t('common.assignee')"
             allowClear
             class="w-25 mr-2.5"
             :action="`${TESTER}/project/${props.projectId}/member/user`"
@@ -616,7 +616,7 @@ onMounted(() => {
 
           <SelectUser
             v-model:value="taskDataMap[taskId].confirmerId"
-            :placeholder="t('backlog.splitTask.placeholders.confirmer')"
+            :placeholder="t('common.confirmer')"
             allowClear
             class="w-25 mr-2.5"
             :action="`${TESTER}/project/${props.projectId}/member/user`"

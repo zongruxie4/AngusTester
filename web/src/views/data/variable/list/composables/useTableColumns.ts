@@ -47,7 +47,7 @@ export function useTableColumns () {
       customRender: ({ text }: { text: any }) => text?.message
     },
     {
-      title: t('dataVariable.list.columns.createdBy'),
+      title: t('common.createdBy'),
       dataIndex: 'createdBy',
       ellipsis: true,
       width: '12%',
@@ -56,7 +56,7 @@ export function useTableColumns () {
       customRender: ({ record }: { record: any }) => record.createdByName
     },
     {
-      title: t('dataVariable.list.columns.lastModifiedBy'),
+      title: t('common.lastModifiedBy'),
       dataIndex: 'lastModifiedBy',
       ellipsis: true,
       width: '12%',

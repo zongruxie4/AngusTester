@@ -144,7 +144,7 @@ const {
     <!-- Creator -->
     <div class="relative flex items-start group">
       <div class="w-21.75 flex items-center flex-shrink-0">
-        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.creator') }}</span>
+        <span class="text-theme-sub-content font-medium">{{ t('common.creator') }}</span>
         <Colon class="w-1 text-theme-sub-content" />
       </div>
       <div class="whitespace-pre-wrap break-words break-all text-theme-title">

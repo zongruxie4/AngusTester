@@ -309,7 +309,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: t('xcan_exec.variable.creator'),
+    title: t('common.creator'),
     dataIndex: 'createdByName',
     ellipsis: true,
     width: '8%'

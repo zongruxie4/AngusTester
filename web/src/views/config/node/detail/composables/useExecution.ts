@@ -94,7 +94,7 @@ export function useExecution (nodeId: string) {
     {
       key: 'executor',
       dataIndex: 'execByName',
-      title: t('node.nodeDetail.execute.columns.executor'),
+      title: t('common.executor'),
       width: 120
     },
     {

@@ -227,7 +227,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
                 class="flex-shrink-0 w-6 h-6 rounded-xl" />
               <div class="flex items-center space-x-3">
                 <span>{{ record.createdByName }}</span>
-                <span>{{ t('scenario.list.table.createdBy') }}&nbsp;{{ record.createdDate }}</span>
+                <span>{{ t('common.createdBy') }}&nbsp;{{ record.createdDate }}</span>
               </div>
             </div>
 

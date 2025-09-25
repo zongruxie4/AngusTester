@@ -604,7 +604,6 @@
           "role": "Role: ",
           "specification": "Specification: ",
           "system": "System: ",
-          "creator": "Creator: ",
           "addTime": "Add Time: ",
           "expiredTime": "Expired Time: "
         },

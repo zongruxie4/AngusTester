@@ -143,10 +143,6 @@
       "basic": "基本信息",
       "content": "内容"
     },
-    "reportInfo": {
-      "category": "分类",
-      "reporter": "报告人",
-    },
     "notifications": {
       "updateSuccess": "更新报告成功",
       "addSuccess": "添加报告成功"
@@ -496,7 +492,6 @@
   "reportPreview": {
     "generating": "生成pdf文件中...",
     "mainTitle": {
-      "reporter": "报告人",
       "reportDate": "报告日期",
       "reportVersion": "报告版本",
       "reportTemplate": "报告模板"
@@ -1014,12 +1009,6 @@
         },
         "personnel": {
           "title": "人员信息",
-          "fields": {
-            "tester": "测试人",
-            "creator": "添加人",
-            "reviewer": "评审人",
-            "lastModifier": "最后修改人"
-          }
         },
         "date": {
           "title": "日期信息",
@@ -1127,7 +1116,6 @@
         "testerAndDuty": {
           "title": "测试人与职责",
           "fields": {
-            "tester": "测试人",
             "duty": "职责"
           }
         },
@@ -1919,14 +1907,6 @@
         },
         "personnelInfo": {
           "title": "人员信息",
-          "fields": {
-            "assignee": "经办人",
-            "confirmer": "确认人",
-            "creator": "添加人",
-            "executor": "执行人",
-            "lastModifier": "最后修改人",
-            "tester": "测试人"
-          }
         },
         "dateInfo": {
           "title": "日期信息",
