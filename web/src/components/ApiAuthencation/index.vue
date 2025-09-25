@@ -718,7 +718,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
         <div class="flex items-center flex-grow flex-shrink mb-3">
           <span class="text-3 leading-3 text-theme-sub-content w-15 relative">
             <IconRequired class="absolute -left-2" />
-            {{ t('xcan_apiAuthencation.username') }}
+            {{ t('common.username') }}
           </span>
           <Input
             :placeholder="t('xcan_apiAuthencation.enterUsername')"
@@ -730,7 +730,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
             @blur="handleBlur($event, 'name')" />
         </div>
         <div class="flex items-center flex-grow flex-shrink">
-          <span class="text-3 leading-3 text-theme-sub-content  w-15">{{ t('xcan_apiAuthencation.password') }}</span>
+          <span class="text-3 leading-3 text-theme-sub-content  w-15">{{ t('common.password') }}</span>
           <Input
             :placeholder="t('xcan_apiAuthencation.enterPassword')"
             :value="httpAuthData?.[valueKey]"

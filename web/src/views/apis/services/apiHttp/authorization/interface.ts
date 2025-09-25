@@ -85,7 +85,7 @@ export const flowAuthType = [
   },
   {
     value: 'password',
-    label: t('service.apiAuthorization.flowTypes.password')
+    label: t('common.password')
   },
   {
     value: 'implicit',
@@ -150,13 +150,13 @@ export const authLabels = [
   },
   {
     valueKey: 'x-xc-oauth2-username',
-    label: t('service.apiAuthorization.oauth2Fields.username'),
+    label: t('common.username'),
     maxLength: 400,
     required: true
   },
   {
     valueKey: 'x-xc-oauth2-password',
-    label: t('service.apiAuthorization.oauth2Fields.password'),
+    label: t('common.password'),
     maxLength: 1024,
     required: true
   },

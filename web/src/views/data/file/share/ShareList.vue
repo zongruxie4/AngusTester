@@ -101,7 +101,7 @@ const addShare = () => {
         </column-item>
         <column-item
           v-if="!item.public0"
-          :label="t('fileSpace.share.shareList.password')"
+          :label="t('common.password')"
           className="w-18">
           <div class="flex items-center">
             <template v-if="!item.editPassd">

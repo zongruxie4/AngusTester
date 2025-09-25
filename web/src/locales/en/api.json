@@ -802,9 +802,7 @@
         "selectServiceSecurity": "Select Service Security Authentication"
       },
       "basic": {
-        "username": "Username",
         "usernamePlaceholder": "Please enter username",
-        "password": "Password",
         "passwordPlaceholder": "Please enter password"
       },
       "bearer": {
@@ -826,8 +824,6 @@
         "refreshUrl": "Refresh Token URL",
         "clientId": "Client ID",
         "clientSecret": "Client Secret",
-        "username": "Username",
-        "password": "Password",
         "encryptionMethod": "Encryption Method",
         "verificationCode": "Verification Code",
         "scope": "Scope"

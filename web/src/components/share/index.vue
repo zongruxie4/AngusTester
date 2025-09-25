@@ -471,7 +471,7 @@ const clickCopyIcon = (item: ShareObj) => {
 const copy = (item: ShareObj, isCopy?: boolean) => {
   let message;
   if (!item.public0) {
-    message = `${t('commonComp.shareModal.copyLabel.name')}: ${item.name}\n${t('commonComp.shareModal.copyLabel.link')}: ${item.url}\n${t('commonComp.shareModal.copyLabel.password')}: ${item.password || ''}`;
+    message = `${t('common.password')}: ${item.password || ''}`;
   } else {
     message = `${t('commonComp.shareModal.copyLabel.name')}: ${item.name}\n${t('commonComp.shareModal.copyLabel.link')}: ${item.url}`;
   }

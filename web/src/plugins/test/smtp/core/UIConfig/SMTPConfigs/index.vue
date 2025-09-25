@@ -889,14 +889,14 @@ defineExpose({
             <Input
               v-model:value="server.username"
               :disabled="!server.useAuth"
-              :placeholder="t('smtpPlugin.uiConfig.authenticationConfig.username')"
+              :placeholder="t('common.username')"
               :maxlength="80"
               :error="validated && server.useAuth && !server.username" />
             <Input
               v-model:value="server.password"
               :disabled="!server.useAuth"
               type="password"
-              :placeholder="t('smtpPlugin.uiConfig.authenticationConfig.password')"
+              :placeholder="t('common.password')"
               :maxlength="50"
               :error="validated && server.useAuth && !server.username" />
           </div>

@@ -3009,10 +3009,10 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                     <IconRequired />{{ t('xcan_exec.databaseConnectionURL') }}
                   </div>
                   <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-3.5 jdbcSetting-username">
-                    <IconRequired />{{ t('xcan_exec.username') }}
+                    <IconRequired />{{ t('common.username') }}
                   </div>
                   <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 jdbcSetting-password">
-                    {{ t('xcan_exec.password') }}
+                    {{ t('common.password') }}
                   </div>
                   <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 jdbcSetting-isolation">
                     {{ t('xcan_exec.transactionIsolationLevel') }}

@@ -867,7 +867,7 @@ const OAuth2AuthorizationTypeOptions = [
   },
   {
     value: 'password',
-    label: t('service.securityModal.oauth2Opt.password')
+    label: t('common.password')
   },
   {
     value: 'implicit',

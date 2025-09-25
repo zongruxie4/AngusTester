@@ -318,9 +318,7 @@
         "databaseTypePlaceholder": "数据库类型",
         "jdbcUrl": "Jdbc URL",
         "jdbcUrlPlaceholder": "Jdbc URL，最长2048个字符",
-        "username": "用户名",
         "usernamePlaceholder": "用户名，最长200个字符",
-        "password": "密码",
         "passwordPlaceholder": "密码，最长800个字符",
         "selectStatement": "Select语句",
         "selectStatementPlaceholder": "查询表数据Select语句，最长1024个字符",
@@ -559,9 +557,7 @@
           "databaseTypePlaceholder": "数据库类型",
           "jdbcUrl": "JdbcUrl",
           "jdbcUrlPlaceholder": "Jdbc URL，最长2048个字符",
-          "username": "用户名",
           "usernamePlaceholder": "用户名，最长200个字符",
-          "password": "密码",
           "passwordPlaceholder": "密码，最长800个字符",
           "selectStatement": "Select语句",
           "selectStatementPlaceholder": "查询表数据Select语句，不需要指定分页参数，默认每次拉取5000条，最长1024个字符",
@@ -696,15 +692,11 @@
       "labels": {
         "driverClassName": "驱动类名",
         "jdbcUrl": "JBDC Url",
-        "username": "用户名",
-        "password": "密码"
       },
       "placeholders": {
         "databaseType": "数据库类型",
         "driverClassName": "驱动类名",
         "jdbcUrl": "JBDC Url",
-        "username": "用户名",
-        "password": "密码"
       },
       "rules": {
         "databaseType": "请选择数据库类型",

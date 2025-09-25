@@ -118,7 +118,7 @@ const handleBlurValue = (targetText: string) => {
   <div class="flex items-center mb-3.5">
     <div class="flex justify-end items-center flex-shrink-0 mr-2.5 w-18 font-semibold">
       <IconRequired />
-      <span>{{ t('dataVariable.detail.staticVariable.password') }}</span>
+      <span>{{ t('common.password') }}</span>
     </div>
     <RadioGroup v-model:value="passwordValue" name="passwordValue">
       <Radio :value="false">{{ t('status.no') }}</Radio>

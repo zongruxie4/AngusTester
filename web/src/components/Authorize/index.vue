@@ -50,7 +50,7 @@ const activeKey = ref<Tabkey>('USER');
 
 const userColumns = [
   {
-    title: t('xcan_authorize.userName'),
+    title: t('common.username'),
     dataIndex: 'name',
     width: 200,
     ellipsis: true

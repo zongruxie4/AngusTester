@@ -697,7 +697,7 @@ const selectProps = {
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
-                        <span>{{ t('ftpPlugin.uiConfig.serverConfig.username') }}</span>
+                        <span>{{ t('common.username') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -709,7 +709,7 @@ const selectProps = {
                           style="width:calc((100% - 82px)/2);" />
                         <div class="flex-1 flex items-center">
                           <div class="flex-shrink-0 w-15.5 flex items-center">
-                            <span>{{ t('ftpPlugin.uiConfig.serverConfig.password') }}</span>
+                            <span>{{ t('common.password') }}</span>
                             <Colon />
                           </div>
                           <Input

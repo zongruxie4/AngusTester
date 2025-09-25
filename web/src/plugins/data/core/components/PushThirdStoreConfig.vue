@@ -297,8 +297,8 @@ defineExpose({
       </div>
       <template v-if="formState.authentication">
         <template v-if="authType === 'Basic'">
-          <div class="flex mt-1"><span class="w-20">{{ t('genDataPlugin.pushThirdStoreConfig.username') }}</span> <Input v-model:value="basicUserName" class="w-80" /></div>
-          <div class="flex mt-1"><span class="w-20">{{ t('genDataPlugin.pushThirdStoreConfig.password') }}</span> <Input v-model:value="basicPassd" class="w-80" /></div>
+          <div class="flex mt-1"><span class="w-20">{{ t('common.username') }}</span> <Input v-model:value="basicUserName" class="w-80" /></div>
+          <div class="flex mt-1"><span class="w-20">{{ t('common.password') }}</span> <Input v-model:value="basicPassd" class="w-80" /></div>
         </template>
         <template v-if="authType === 'Bearer'">
           <div class="flex mt-1"><span class="w-20">{{ t('genDataPlugin.pushThirdStoreConfig.token') }}</span> <Input v-model:value="bearerToken" class="w-80" /></div>

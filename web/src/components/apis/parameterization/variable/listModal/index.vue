@@ -300,7 +300,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: t('commonComp.apis.parameterizationVariable.listModal.password'),
+    title: t('common.password'),
     dataIndex: 'passwordValue',
     ellipsis: true,
     width: '5%'

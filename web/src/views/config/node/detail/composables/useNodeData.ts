@@ -17,7 +17,7 @@ export const infoItem = [
     dataIndex: 'name'
   },
   {
-    label: t('node.nodeItem.interface.formItems.username'),
+    label: t('common.username'),
     dataIndex: 'username'
   },
   {
@@ -37,7 +37,7 @@ export const infoItem = [
     dataIndex: 'ip'
   },
   {
-    label: t('node.nodeItem.interface.formItems.password'),
+    label: t('common.password'),
     dataIndex: 'password'
   },
   {

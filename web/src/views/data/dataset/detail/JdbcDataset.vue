@@ -187,7 +187,7 @@ defineExpose({
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataset.detail.jdbcDataset.form.username') }}</span>
+                <span>{{ t('common.username') }}</span>
               </div>
               <Input
                 v-model:value="username"
@@ -200,7 +200,7 @@ defineExpose({
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataset.detail.jdbcDataset.form.password') }}</span>
+                <span>{{ t('common.password') }}</span>
               </div>
               <Input
                 v-model:value="password"

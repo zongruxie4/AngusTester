@@ -111,7 +111,7 @@ const cancel = () => {
           dataType="mixin-en"
           :maxlength="40"
           size="small"
-          :placeholder="t('fileSpace.share.placeholders.password')"
+          :placeholder="t('common.password')"
           class="w-50 rounded mt-1"
           :class="{'!border-status-error': !form.password}" />
       </FormItem>

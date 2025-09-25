@@ -201,7 +201,7 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.jdbcVariable.username') }}</span>
+                <span>{{ t('common.username') }}</span>
               </div>
               <Input
                 v-model:value="username"
@@ -214,7 +214,7 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-25 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.jdbcVariable.password') }}</span>
+                <span>{{ t('common.password') }}</span>
               </div>
               <Input
                 v-model:value="password"

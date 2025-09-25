@@ -151,13 +151,13 @@ export const authLabels = [
   },
   {
     valueKey: 'x-xc-oauth2-username',
-    label: t('xcan_apiAuthencation.username'),
+    label: t('common.username'),
     maxLength: 400,
     required: true
   },
   {
     valueKey: 'x-xc-oauth2-password',
-    label: t('xcan_apiAuthencation.password'),
+    label: t('common.password'),
     maxLength: 1024,
     required: true
   },

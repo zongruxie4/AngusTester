@@ -582,8 +582,6 @@
           "intranetIP": "内网IP",
           "publicIP": "公网IP",
           "domain": "域名",
-          "username": "用户名",
-          "password": "密码",
           "sshPort": "SSH端口",
           "role": "角色",
           "inputLimit200": "输入限制200字符以内",

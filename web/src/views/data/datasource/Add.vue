@@ -146,14 +146,14 @@ watch(() => props.visible, (newValue) => {
         <FormItem name="username">
           <Input
             v-model:value="formState.username"
-            :placeholder="t('datasource.form.placeholders.username')"
+            :placeholder="t('common.username')"
             :disabled="!!props.editData"
             :maxlength="50" />
         </FormItem>
         <FormItem name="password">
           <Input
             v-model:value="formState.password"
-            :placeholder="t('datasource.form.placeholders.password')"
+            :placeholder="t('common.password')"
             :maxlength="50"
             type="password" />
         </FormItem>

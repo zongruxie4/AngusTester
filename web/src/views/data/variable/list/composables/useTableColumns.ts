@@ -33,7 +33,7 @@ export function useTableColumns () {
       width: '26%'
     },
     {
-      title: t('dataVariable.list.columns.password'),
+      title: t('common.password'),
       dataIndex: 'passwordValue',
       ellipsis: true,
       width: '6%',

@@ -154,13 +154,13 @@ export const authLabels = [
   },
   {
     valueKey: 'username',
-    label: t('xcan_execAuthencation.username'),
+    label: t('common.username'),
     maxLength: 400,
     required: true
   },
   {
     valueKey: 'password',
-    label: t('xcan_execAuthencation.password'),
+    label: t('common.password'),
     maxLength: 1024,
     required: true
   },

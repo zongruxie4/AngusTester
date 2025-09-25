@@ -418,13 +418,13 @@ const selectOptions = [
                             v-model:value="dataMap[id].username"
                             :maxlength="200"
                             trimAll
-                            :title="t('jmsPlugin.uiConfig.username')"
+                            :title="t('common.username')"
                             :placeholder="t('jmsPlugin.uiConfig.usernamePlaceholder')" />
                           <Input
                             v-model:value="dataMap[id].password"
                             :maxlength="200"
                             trimAll
-                            :title="t('jmsPlugin.uiConfig.password')"
+                            :title="t('common.password')"
                             :placeholder="t('jmsPlugin.uiConfig.passwordPlaceholder')"
                             type="password" />
                         </div>
@@ -484,7 +484,7 @@ const selectOptions = [
                           v-model:value="dataMap[id].username"
                           :maxlength="200"
                           trimAll
-                          :title="t('jmsPlugin.uiConfig.username')"
+                          :title="t('common.username')"
                           :placeholder="t('jmsPlugin.uiConfig.usernamePlaceholder')"
                           class="flex-1 max-w-175" />
                       </div>

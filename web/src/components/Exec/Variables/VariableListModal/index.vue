@@ -292,7 +292,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: t('xcan_exec.variable.password'),
+    title: t('common.password'),
     dataIndex: 'passwordValue',
     ellipsis: true,
     width: '5%'

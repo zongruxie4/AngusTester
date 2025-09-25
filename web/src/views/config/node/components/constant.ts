@@ -40,7 +40,7 @@ export const formItems = [
     width: '33.3%'
   },
   {
-    label: t('node.nodeItem.interface.formItems.username'),
+    label: t('common.username'),
     inputType: 'text',
     placeholder: t('node.nodeItem.interface.formItems.inputUsername'),
     valueKey: 'username',
@@ -48,7 +48,7 @@ export const formItems = [
     width: '18%'
   },
   {
-    label: t('node.nodeItem.interface.formItems.password'),
+    label: t('common.password'),
     inputType: 'text',
     type: 'password',
     placeholder: t('node.nodeItem.interface.formItems.inputPassword'),

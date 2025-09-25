@@ -318,9 +318,7 @@
         "databaseTypePlaceholder": "Database Type",
         "jdbcUrl": "Jdbc URL",
         "jdbcUrlPlaceholder": "Jdbc URL, maximum 2048 characters",
-        "username": "Username",
         "usernamePlaceholder": "Username, maximum 200 characters",
-        "password": "Password",
         "passwordPlaceholder": "Password, maximum 800 characters",
         "selectStatement": "Select SQL",
         "selectStatementPlaceholder": "Query Table Data Select Statement, maximum 1024 characters",
@@ -563,9 +561,7 @@
           "databaseTypePlaceholder": "Database Type",
           "jdbcUrl": "Jdbc URL",
           "jdbcUrlPlaceholder": "Jdbc URL, maximum 2048 characters",
-          "username": "Username",
           "usernamePlaceholder": "Username, maximum 200 characters",
-          "password": "Password",
           "passwordPlaceholder": "Password, maximum 800 characters",
           "selectStatement": "Select SQL",
           "selectStatementPlaceholder": "Select statement to query table data, no need to specify paging parameters, default fetch 5000 rows each time, maximum 1024 characters",
@@ -698,13 +694,11 @@
       "labels": {
         "driverClassName": "Driver Class Name",
         "jdbcUrl": "Jdbc URL",
-        "username": "Username"
       },
       "placeholders": {
         "databaseType": "Database Type",
         "driverClassName": "Driver Class Name",
         "jdbcUrl": "Jdbc URL",
-        "username": "Username"
       },
       "rules": {
         "databaseType": "Please select database type",

@@ -628,7 +628,7 @@ defineExpose({
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
-                        <span>{{ t('ldapPlugin.uiConfig.username') }}</span>
+                        <span>{{ t('common.username') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -640,7 +640,7 @@ defineExpose({
                           style="width:calc((100% - 58px)/2);" />
                         <div class="flex-1 flex items-center">
                           <div class="flex-shrink-0 w-9.5 flex items-center">
-                            <span>{{ t('ldapPlugin.uiConfig.password') }}</span>
+                            <span>{{ t('common.password') }}</span>
                             <Colon />
                           </div>
                           <Input

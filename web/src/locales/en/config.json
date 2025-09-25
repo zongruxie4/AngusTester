@@ -586,8 +586,6 @@
           "intranetIP": "Intranet IP",
           "publicIP": "Public IP",
           "domain": "Domain",
-          "username": "Username",
-          "password": "Password",
           "sshPort": "SSH Port",
           "role": "Role",
           "inputLimit200": "Input limit 200 characters",
