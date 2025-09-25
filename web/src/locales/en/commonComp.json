@@ -1497,7 +1497,6 @@
   },
   "xcan_PerfExecDetail": {
     "script": "Script",
-    "plugin": "Plugin",
     "testResult": "Test Result",
     "milliseconds": "Milliseconds",
     "seconds": "Seconds",

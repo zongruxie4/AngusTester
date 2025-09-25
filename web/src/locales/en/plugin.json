@@ -4,9 +4,6 @@
       "title": "Select Script",
       "selectScriptTip": "Please select a script",
       "searchPlaceholder": "Search script name",
-      "tableHeaders": {
-        "plugin": "Plugin"
-      }
     },
     "chartConfig": {
       "names": {

@@ -37,7 +37,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       key: 'name'
     },
     {
-      title: t('scriptHome.table.columns.plugin'),
+      title: t('common.plugin'),
       dataIndex: 'plugin',
       sorter: true,
       width: '6%',

@@ -405,16 +405,6 @@
           "accessPort": "访问端口"
         }
       },
-      "execute": {
-        "columns": {
-          "execId": "执行ID",
-          "execName": "执行名称",
-          "testType": "测试类型",
-          "plugin": "插件",
-          "executor": "执行人",
-          "startTime": "开始时间"
-        }
-      },
       "buttons": {
         "onlineInstallAgent": "在线安装代理",
         "manualInstallAgent": "手动安装代理"

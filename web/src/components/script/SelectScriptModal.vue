@@ -203,7 +203,7 @@ const handleCancel = () => {
         <div class="table-header">
           <div class="table-cell checkbox-cell"></div>
           <div class="table-cell name-cell">{{ t('commonPlugin.selectScriptModal.tableHeaders.name') }}</div>
-          <div class="table-cell plugin-cell">{{ t('commonPlugin.selectScriptModal.tableHeaders.plugin') }}</div>
+          <div class="table-cell plugin-cell">{{ t('common.plugin') }}</div>
           <div class="table-cell type-cell">{{ t('common.type') }}</div>
         </div>
 

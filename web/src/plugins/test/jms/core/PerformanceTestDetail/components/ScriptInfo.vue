@@ -60,7 +60,7 @@ const infoConfig = [[
     dataIndex: 'typeName'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.scriptInfo.plugin'),
+    label: t('common.plugin'),
     dataIndex: 'plugin'
   },
   {

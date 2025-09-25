@@ -15,11 +15,6 @@
     "myScenarios": {
       "title": "My Scenarios",
       "table": {
-        "columns": {
-          "plugin": "Plugin",
-          "testType": "Test Type",
-          "addTime": "Add Time"
-        },
         "messages": {
           "noAddedScenarios": "You haven't added any scenarios yet, ",
           "addScenario": "Add Scenario",

@@ -407,16 +407,6 @@
           "accessPort": "Access Port",
         }
       },
-      "execute": {
-        "columns": {
-          "execId": "Execution ID",
-          "execName": "Execution Name",
-          "testType": "Test Type",
-          "plugin": "Plugin",
-          "executor": "Executor",
-          "startTime": "Start Time"
-        }
-      },
       "buttons": {
         "onlineInstallAgent": "Online Install Agent",
         "manualInstallAgent": "Manual Install Agent"

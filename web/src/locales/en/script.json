@@ -46,7 +46,6 @@
     },
     "table": {
       "columns": {
-        "plugin": "Plugin",
         "resourceId": "Resource ID",
         "resourceName": "Resource Name"
       },

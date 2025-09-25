@@ -24,7 +24,7 @@ export function useTableColumns (params: ScenarioQueryParams) {
       },
       {
         key: 'plugin',
-        title: t('scenarioHome.myScenarios.table.columns.plugin'),
+        title: t('common.plugin'),
         dataIndex: 'plugin',
         width: '15%',
         ellipsis: true

@@ -1191,7 +1191,6 @@
     "execNodes": "节点数",
     "reportInterval": "报告间隔",
     "batchRows": "批量行数",
-    "plugin": "插件",
     "mockFileUrl": "生成文件",
     "actualStartDate": "开始时间",
     "endDate": "结束时间",

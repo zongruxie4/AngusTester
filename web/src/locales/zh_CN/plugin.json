@@ -4,9 +4,6 @@
       "title": "选择脚本",
       "selectScriptTip": "请选择一个脚本",
       "searchPlaceholder": "查询脚本名称",
-      "tableHeaders": {
-        "plugin": "插件"
-      }
     },
     "chartConfig": {
       "names": {

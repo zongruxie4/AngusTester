@@ -142,7 +142,7 @@ const action = `${TESTER}/script`;
         <div class="bg-table-header flex items-center pl-2 h-8 leading-5 rounded">
           <div class="w-4 h-5 flex items-center justify-center flex-shrink-0"></div>
           <div class="flex-1 px-2">{{ t('httpPlugin.selectScriptModal.tableHeaders.name') }}</div>
-          <div class="flex-shrink-0 px-2 w-25">{{ t('httpPlugin.selectScriptModal.tableHeaders.plugin') }}</div>
+          <div class="flex-shrink-0 px-2 w-25">{{ t('common.plugin') }}</div>
           <div class="flex-shrink-0 px-2 w-28">{{ t('common.type') }}</div>
         </div>
 

@@ -15,11 +15,6 @@
     "myScenarios": {
       "title": "我的场景",
       "table": {
-        "columns": {
-          "plugin": "插件",
-          "testType": "测试类型",
-          "addTime": "添加时间"
-        },
         "messages": {
           "noAddedScenarios": "您尚未添加任何场景，立即",
           "addScenario": "添加场景",
@@ -83,10 +78,6 @@
         "executeTest": "执行测试"
       },
       "table": {
-        "columns": {
-          "plugin": "插件",
-          "lastExecStatus": "最后执行状态"
-        },
         "createdBy": "创建于",
         "noExecute": "未执行"
       },

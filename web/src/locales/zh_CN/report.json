@@ -676,7 +676,6 @@
           "fields": {
             "testScriptId": "测试脚本ID",
             "testScriptName": "测试脚本名称",
-            "plugin": "插件",
             "nodeCount": "节点数",
             "reportInterval": "报告间隔",
             "ignoreAssertions": "忽略断言",

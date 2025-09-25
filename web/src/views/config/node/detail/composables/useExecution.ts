@@ -88,7 +88,7 @@ export function useExecution (nodeId: string) {
     {
       key: 'plugin',
       dataIndex: 'plugin',
-      title: t('node.nodeDetail.execute.columns.plugin'),
+      title: t('common.plugin'),
       width: 150
     },
     {
