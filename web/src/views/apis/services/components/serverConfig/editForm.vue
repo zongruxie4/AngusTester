@@ -690,7 +690,7 @@ defineExpose({
                       @change="variableValueChange($event,item,_enum.id,_index)">
                       <template #suffix>
                         <div class="flex items-center leading-5">
-                          <div v-if="defaultValueMap[item]===_enum.id" class="mr-1 text-text-sub-content text-3">{{ t('service.serverConfig.form.default') }}</div>
+                          <div v-if="defaultValueMap[item]===_enum.id" class="mr-1 text-text-sub-content text-3">{{ t('common.default') }}</div>
                           <Radio
                             size="small"
                             :disabled="_index===variableDataMap[item].enum.length-1"

@@ -243,7 +243,6 @@
         "assertions": "Assertions",
         "parameters": "Parameters",
         "serverEndpoint": "Server Endpoint",
-        "default": "Default",
         "docInfo": {
           "pathParams": {
             "title": "Path Parameters",
@@ -1790,9 +1789,6 @@
       "buttons": {
         "link": "Reference"
       }
-    },
-    "serverUri": {
-      "default": "Default"
     },
     "websocketConfigs": {
       "urlFormatError": "URL format error",

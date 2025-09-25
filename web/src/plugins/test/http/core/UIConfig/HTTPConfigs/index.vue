@@ -1220,7 +1220,7 @@ const overlayStyle = {
                             <div
                               v-if="server.variables?.[_variable._name]?.defaultValue === _value"
                               class="text-theme-sub-content">
-                              <span>{{ t('httpPlugin.uiConfig.httpConfigs.labels.default') }}</span>
+                              <span>{{ t('common.default') }}</span>
                             </div>
                             <Radio
                               :checked="server.variables?.[_variable._name]?.defaultValue === _value"

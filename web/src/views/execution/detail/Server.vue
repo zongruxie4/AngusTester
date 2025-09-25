@@ -64,7 +64,7 @@ onMounted(() => {
                 {{ en }}
               </div>
               <div class="inline-flex items-center space-x-1">
-                <span v-show="_value.default === en">{{ t('execution.infoServer.default') }}</span>
+                <span v-show="_value.default === en">{{ t('common.default') }}</span>
                 <Radio
                   size="small"
                   disabled

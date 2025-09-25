@@ -637,7 +637,6 @@
         "variableValuePlaceholder": "Variable value, maximum 400 characters",
         "variableDescription": "Description",
         "variableDescriptionPlaceholder": "Variable description, maximum 400 characters",
-        "default": "Default"
       },
       "tips": {
         "maxVariables": "Maximum 50 variables can be added",
@@ -1658,11 +1657,6 @@
       "labels": {
         "noVariables": "No Variables",
         "variables": "Variables",
-        "default": "Default",
-        "url": "URL"
-      },
-      "buttons": {
-        "more": "More"
       }
     }
   },

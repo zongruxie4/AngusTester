@@ -296,7 +296,7 @@ onMounted(() => {
                         {{ enumValue }}
                       </div>
                       <div class="inline-flex items-center space-x-1">
-                        <span v-show="variableValue.default === enumValue">{{ t('scenarioMonitor.edit.default') }}</span>
+                        <span v-show="variableValue.default === enumValue">{{ t('common.default') }}</span>
                         <Radio
                           size="small"
                           :checked="variableValue.default === enumValue"

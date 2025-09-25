@@ -81,7 +81,7 @@ const overlayStyle = {
                 <div class="flex-1 truncate">{{ _ele }}</div>
                 <div class="flex items-center flex-shrink-0 space-x-1">
                   <div v-if="props.server?.variables?.[item._name]?.defaultValue === _ele" class="text-theme-sub-content">
-                    <span>{{ t('httpPlugin.uiConfig.httpConfigs.default') }}</span>
+                    <span>{{ t('common.default') }}</span>
                   </div>
                   <Radio
                     :checked="props.server?.variables?.[item._name]?.defaultValue === _ele"

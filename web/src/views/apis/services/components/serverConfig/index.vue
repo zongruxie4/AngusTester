@@ -393,7 +393,7 @@ const urlMap = computed(() => {
                             class="flex items-center justify-between">
                             <div :title="_enum.value" class="truncate flex-1">{{ _enum.value }}</div>
                             <div :class="{invisible:_enum.value!==_variable.default}" class="flex-shrink-0">
-                              {{ t('service.serverConfig.form.default') }}
+                              {{ t('common.default') }}
                             </div>
                           </div>
                         </div>

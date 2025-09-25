@@ -641,7 +641,6 @@
         "variableValuePlaceholder": "变量值，最大支持400字符",
         "variableDescription": "描述",
         "variableDescriptionPlaceholder": "变量描述，最大支持400字符",
-        "default": "默认"
       },
       "tips": {
         "maxVariables": "最多可添加50个变量",
@@ -1668,10 +1667,6 @@
       "labels": {
         "noVariables": "无变量",
         "variables": "变量",
-        "default": "默认"
-      },
-      "buttons": {
-        "more": "更多"
       }
     }
   },

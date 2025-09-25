@@ -163,7 +163,6 @@
     },
     "infoServer": {
       "noVariables": "No variables~",
-      "default": "Default"
     },
     "infoLog": {
       "selectNode": "Select Node",

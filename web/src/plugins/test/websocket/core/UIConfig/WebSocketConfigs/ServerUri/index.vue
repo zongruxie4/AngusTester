@@ -77,7 +77,7 @@ const overlayStyle = {
                 class="flex items-center pl-7">
                 <div class="flex-1 truncate">{{ _ele }}</div>
                 <div class="flex items-center flex-shrink-0 space-x-1">
-                  <div v-if="props.server?.variables[item._key].defaultValue === _ele" class="text-theme-sub-content">{{ t('websocketPlugin.uiConfig.serverUri.default') }}</div>
+                  <div v-if="props.server?.variables[item._key].defaultValue === _ele" class="text-theme-sub-content">{{ t('common.default') }}</div>
                   <Radio :checked="props.server?.variables[item._key].defaultValue === _ele" @change="radioChange(item._key, _ele)" />
                 </div>
               </div>

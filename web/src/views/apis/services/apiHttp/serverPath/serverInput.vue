@@ -243,7 +243,7 @@ onBeforeUnmount(() => {
                       {{ en }}
                     </div>
                     <div class="flex items-center">
-                      <span v-show="_value.default === en">{{ t('service.apiServerPath.tips.default') }}</span>
+                      <span v-show="_value.default === en">{{ t('common.default') }}</span>
                       <Radio
                         size="small"
                         :checked="_value.default === en"

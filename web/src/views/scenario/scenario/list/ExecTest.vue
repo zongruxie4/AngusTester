@@ -199,7 +199,7 @@ const modalTitle = computed(() => props.title || t('scenario.list.execTest.title
                         <div :title="_enum.value" class="truncate flex-1">{{ _enum.value }}</div>
                         <div class="flex items-center leading-5">
                           <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">
-                            {{ t('scenario.list.execTest.labels.default') }}
+                            {{ t('common.default') }}
                           </div>
                           <Radio
                             size="small"

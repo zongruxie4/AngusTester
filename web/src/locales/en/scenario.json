@@ -189,7 +189,6 @@
       "descriptionPlaceholder": "Enter monitor description, up to 200 characters",
       "monitorTime": "Monitor Time",
       "serverConfig": "Server Configuration",
-      "default": "Default",
       "noVariables": "No variables~",
       "notificationConfig": "Notification Configuration",
       "notificationOptions": {

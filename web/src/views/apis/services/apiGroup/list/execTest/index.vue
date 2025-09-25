@@ -323,14 +323,14 @@ const modalTitle = computed(() => {
                         class="flex items-center justify-between">
                         <div :title="_enum.value" class="truncate flex-1">{{ _enum.value }}</div>
                         <div class="flex items-center leading-5">
-                          <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">{{ t('service.serviceExecTest.labels.default') }}</div>
+                          <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">{{ t('common.default') }}</div>
                           <Radio
                             size="small"
                             :checked="_enum.value === _variable.default"
                             style="transform: translateY(-4px);"
                             @change="_variable.default=_enum.value" />
                         </div>
-                        <!-- <div :class="{ invisible: _enum.value !== _variable.default }" class="flex-shrink-0">{{ t('service.serviceExecTest.labels.default') }}</div> -->
+                        <!-- <div :class="{ invisible: _enum.value !== _variable.default }" class="flex-shrink-0">{{ t('common.default') }}</div> -->
                       </div>
                     </div>
                   </div>

@@ -245,7 +245,6 @@
         "assertions": "断言",
         "parameters": "参数",
         "serverEndpoint": "服务器端点",
-        "default": "默认",
         "docInfo": {
           "pathParams": {
             "title": "Path参数",
@@ -1783,9 +1782,6 @@
       "buttons": {
         "link": "引用"
       }
-    },
-    "serverUri": {
-      "default": "默认"
     },
     "websocketConfigs": {
       "urlFormatError": "url格式错误",
