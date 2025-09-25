@@ -98,7 +98,7 @@ const tableData = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="flex-1 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>{{ t('reportPreview.execPerf.sampling.testDetail.throughput.name') }}</span>
+          <span>{{ t('common.name') }}</span>
         </div>
         <div
           class="w-80 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">

@@ -92,17 +92,17 @@ const activityType = ['REPORT'];
         <div class="space-y-2 flex-1 min-w-0">
           <div class="font-semibold text-3.5">{{ report?.template?.message }}</div>
           <div class="flex justify-between">
-            <div class="text-3 flex-1">{{ t('reportHome.reportDetail.info.category') }}： {{ report.category?.message }}</div>
-            <div class="text-3 flex-1">{{ t('reportHome.reportDetail.info.creator') }}： {{ report.createdByName }}</div>
+            <div class="text-3 flex-1">{{ t('common.category') }}： {{ report.category?.message }}</div>
+            <div class="text-3 flex-1">{{ t('common.creator') }}： {{ report.createdByName }}</div>
           </div>
-          <div class="text-3">{{ t('reportHome.reportDetail.info.description') }}： {{ reportTypeObj?.description }}</div>
+          <div class="text-3">{{ t('common.description') }}： {{ reportTypeObj?.description }}</div>
         </div>
       </div>
 
       <div class="flex items-start space-x-4 mt-5">
         <div class="flex-1/2 inline-flex min-w-0">
           <div class="w-12 px-1 text-right h-7" style="line-height: 28px; ">
-            {{ t('reportHome.reportDetail.form.name') }}
+            {{ t('common.name') }}
           </div>
           <Colon class="h-7" style="line-height: 28px;" />
           <div class="px-1" style="line-height: 28px;">
@@ -111,7 +111,7 @@ const activityType = ['REPORT'];
         </div>
         <div class="flex-1/2 inline-flex min-w-0">
           <div class="w-12 px-1 text-right h-7" style="line-height: 28px;">
-            {{ t('reportHome.reportDetail.form.version') }}
+            {{ t('common.version') }}
           </div>
           <Colon class="h-7" style="line-height: 28px;" />
           <div class="px-1" style="line-height: 28px;">
@@ -121,7 +121,7 @@ const activityType = ['REPORT'];
       </div>
       <div class="flex leading-7">
         <div class="w-12 px-1 text-right h-7" style="line-height: 28px;">
-          {{ t('reportHome.reportDetail.form.description') }}
+          {{ t('common.description') }}
         </div>
         <Colon class="h-7" style="line-height: 28px;" />
         <div class="px-1">

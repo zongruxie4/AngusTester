@@ -564,17 +564,17 @@ const searchPanelOptions = [
 const sortMenuItems = [
   {
     key: 'name',
-    name: t('taskAnalysis.columns.name'),
+    name: t('common.name'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'createdByName',
-    name: t('taskAnalysis.sortByCreator'),
+    name: t('common.createdByName'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'createdDate',
-    name: t('taskAnalysis.sortByCreateTime'),
+    name: t('common.createdDate'),
     orderSort: PageQuery.OrderSort.Asc
   }
 ];

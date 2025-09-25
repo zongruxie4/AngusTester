@@ -32,7 +32,7 @@ export const allCvsNames = {
 
 export const allColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     width: '8%',
     ellipsis: true
@@ -126,7 +126,7 @@ export const allColumns = [
 
 export const allResponseTimeColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -179,7 +179,7 @@ export const allResponseTimeColumns = [
 
 export const allErrorsColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -191,7 +191,7 @@ export const allErrorsColumns = [
 
 export const allErrorRateColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -203,7 +203,7 @@ export const allErrorRateColumns = [
 
 export const allUploadColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -221,7 +221,7 @@ export const allUploadColumns = [
 
 export const oneUploadColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -239,7 +239,7 @@ export const oneUploadColumns = [
 
 export const allRowsColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -275,7 +275,7 @@ export const throughputOptions = [
 
 export const oneThroughputColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -303,7 +303,7 @@ export const oneThroughputColumns = [
 
 export const throughputColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -338,7 +338,7 @@ export const threadOptions = [
 
 export const threadColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -402,7 +402,7 @@ export const responseTimeOptions = [
 
 export const responseTimeColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -479,7 +479,7 @@ export const errorOptions = [
 ];
 export const errorColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },
@@ -512,7 +512,7 @@ export const errorColumns = [
 
 export const oneApiErrorColumns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true
   },

@@ -41,14 +41,6 @@
       }
     },
     "summary": {
-      "taskTypes": {
-        "story": "Story",
-        "task": "Task",
-        "bug": "Bug",
-        "requirement": "Requirement",
-        "apiTest": "API Test",
-        "scenarioTest": "Scenario Test"
-      },
       "taskCount": {
         "totalTasks": "Total Tasks"
       },
@@ -81,6 +73,14 @@
     "placeholder": {
       "searchTaskName": "Search task name",
       "taskName": "Task name, maximum 200 characters"
+    },
+    "taskTypeDescriptions": {
+      "requirement": "User expectations or requirements for business, functionality, etc., with broad descriptions.",
+      "story": "Specific goals or expectations that users want to achieve, usually described in concise, understandable language, such as: As a <role>, I want <goal> so that <benefit>.",
+      "task": "General work items or activities",
+      "bug": "Program errors or vulnerabilities",
+      "apiTest": "API functionality, performance, and stability testing tasks",
+      "scenarioTest": "Scenario functionality, performance, and stability testing tasks"
     },
     "messages": {
       "confirmDelete": "Confirm delete task 「{name}」?",
@@ -189,22 +189,6 @@
         "evalWorkload": "Estimated value of work task volume, comprehensive difficulty, and complexity.",
         "actualWorkload": "Actual value of work task volume, comprehensive difficulty, and complexity.",
         "tags": "\"Task tags\" can help you organize tasks with common points, such as \"project name, sprint version, business identifier\", etc."
-      },
-      "taskTypes": {
-        "requirement": "Requirement",
-        "story": "Story",
-        "task": "Task",
-        "bug": "Bug",
-        "apiTest": "API Test",
-        "scenarioTest": "Scenario Test"
-      },
-      "taskTypeDescriptions": {
-        "requirement": "User expectations or requirements for business, functionality, etc., with broad descriptions.",
-        "story": "Specific goals or expectations that users want to achieve, usually described in concise, understandable language, such as: As a <role>, I want <goal> so that <benefit>.",
-        "task": "General work items or activities",
-        "bug": "Program errors or vulnerabilities",
-        "apiTest": "API functionality, performance, and stability testing tasks",
-        "scenarioTest": "Scenario functionality, performance, and stability testing tasks"
       },
       "buttons": {
         "assignToMe": "Assign to Me",
@@ -838,13 +822,6 @@
         "high": "High",
         "urgent": "Urgent"
       },
-      "taskType": {
-        "apiTest": "API Test",
-        "scenarioTest": "Scenario Test",
-        "manualTest": "Manual Test",
-        "uiTest": "UI Test",
-        "performanceTest": "Performance Test"
-      },
       "tabs": {
         "basicInfo": "Basic Information",
         "remark": "Remarks",
@@ -859,7 +836,7 @@
         "title": "Tasks",
         "tips": "Record other tasks associated with the current task to help the team understand the dependencies between tasks."
       },
-      "assocRequirements": {
+      "assocRequirementTab": {
         "title": "Requirements",
         "tips": "Trace problems to the original requirements to help understand the background and scope of the problem."
       },
@@ -867,19 +844,19 @@
         "title": "Stories",
         "tips": "Trace user-centric functional requirements to help understand the background and scope of the problem."
       },
-      "assocBug": {
+      "assocBugTab": {
         "title": "Bugs",
         "tips": "Trace problems to the original requirements to help understand the background and scope of the problem."
       },
-      "assocCase": {
+      "assocCaseTab": {
         "title": "Functional Cases",
         "tips": "Record other tasks associated with the current task to help the team understand the dependencies between tasks."
       },
-      "assocApiTest": {
+      "assocApiTestTab": {
         "title": "API Tests",
         "tips": "Establish a relationship with the corresponding API test task to facilitate the tracking of API test progress and ensure normal operation of the interface."
       },
-      "assocScenarioTest": {
+      "assocScenarioTestTab": {
         "title": "Scenario Tests",
         "tips": "Establish a relationship with the corresponding scenario test task to facilitate the understanding of the effectiveness of functions in real scenarios and ensure the completeness of the solution."
       },
@@ -1060,22 +1037,6 @@
         "attachmentsAdd": "Add attachments, maximum 5 attachments",
         "attachmentsContinue": "Continue Upload",
         "attachmentsUpload": "Upload attachments, maximum 5 attachments"
-      },
-      "taskTypes": {
-        "requirement": "Requirement",
-        "story": "Story",
-        "task": "Task",
-        "bug": "Bug",
-        "apiTest": "API Test",
-        "scenarioTest": "Scenario Test"
-      },
-      "taskTypeDescriptions": {
-        "requirement": "User expectations or requirements for business, functionality, etc., with broad descriptions.",
-        "story": "Specific goals or expectations that users want to achieve, usually described in simple, understandable language, such as: As a <role>, I want <goal> so that <benefit>.",
-        "task": "General work items or activities",
-        "bug": "Program errors or vulnerabilities",
-        "apiTest": "API functionality, performance, stability testing tasks",
-        "scenarioTest": "Scenario functionality, performance, stability testing tasks"
       },
       "messages": {
         "addSuccess": "Task added successfully",
@@ -1571,7 +1532,7 @@
       "template": "Template",
       "object": "Analysis Object",
       "timeRange": "Analysis Period",
-      "dataSource": "Data Display",
+      "dataSource": "Data Display"
     },
     "placeholder": {
       "inputAnalysisName": "Enter analysis name, maximum 100 characters",
@@ -1849,14 +1810,6 @@
         }
       },
       "taskGrowthTread": {
-        "chartLabels": {
-          "requirement": "Requirement",
-          "story": "Story",
-          "task": "Task",
-          "bug": "Bug",
-          "apiTest": "API Test",
-          "scenarioTest": "Scenario Test"
-        },
         "chartTitles": {
           "taskGrowth": "Task Growth Volume",
           "growthTrend": "Growth Trend"

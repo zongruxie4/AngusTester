@@ -61,8 +61,8 @@ init();
       class="mb-2"
       @change="handleSearchInputChange" />
     <div v-if="props.authObjectId" class="flex items-center h-11 pr-1.75 rounded bg-gray-light text-theme-title">
-      <div class="flex-1 px-2 truncate">{{ t('reportHome.globalAuth.authSet.name') }}</div>
-      <div style="width:70px;" class="flex-shrink-0 px-2">{{ t('reportHome.globalAuth.authSet.permissionControl') }}</div>
+      <div class="flex-1 px-2 truncate">{{ t('common.name') }}</div>
+      <div style="width:70px;" class="flex-shrink-0 px-2">{{ t('common.authControl') }}</div>
       <div style="width:52%">{{ t('actions.permission') }}</div>
     </div>
     <NoData
@@ -97,11 +97,11 @@ init();
             <div style="width:52%" class="flex items-start">
               <Checkbox
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
-                :checked="!!(permissionsMap[item]?.permissions.length === props.permissions.length)"
+                :checked="(permissionsMap[item]?.permissions.length === props.permissions.length)"
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < props.permissions.length)"
                 class="whitespace-nowrap"
                 @change="handleCheckAllChange($event, item)">
-                {{ t('reportHome.globalAuth.authSet.all') }}
+                {{ t('common.all') }}
               </Checkbox>
               <CheckboxGroup
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"

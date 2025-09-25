@@ -279,7 +279,7 @@ watch(() => props.visible, (newValue) => {
     <div
       class="transition-height duration-500 overflow-hidden leading-3">
       <div class="flex flex-col">
-        <span><IconRequired />{{ t('service.syncConfig.form.name') }}</span>
+        <span><IconRequired />{{ t('common.name') }}</span>
         <Input
           v-model:value="sync.name"
           :placeholder="t('service.syncConfig.form.namePlaceholder')"
@@ -289,7 +289,7 @@ watch(() => props.visible, (newValue) => {
 
           :error="sync?.nameErr"
           @change="(event)=>syncNameChange(event.target.value)" />
-        <span><IconRequired />{{ t('service.syncConfig.form.source') }}</span>
+        <span><IconRequired />{{ t('common.source') }}</span>
         <Select
           value="OpenAPI"
           size="small"
@@ -324,7 +324,7 @@ watch(() => props.visible, (newValue) => {
           <Radio :value="false">{{ t('status.no') }}</Radio>
         </RadioGroup>
         <div class="flex items-center">
-          <span class="mr-3.5">{{ t('service.syncConfig.form.auth') }}</span>
+          <span class="mr-3.5">{{ t('common.auth') }}</span>
           <Switch
             v-model:checked="sync.auth"
             size="small"

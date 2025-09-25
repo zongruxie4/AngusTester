@@ -49,17 +49,17 @@ const columns = [
   },
   {
     dataIndex: 'name',
-    title: t('service.case.columns.name'),
+    title: t('common.name'),
     ellipsis: true,
     width: '18%'
   },
   {
     dataIndex: 'status',
-    title: t('service.case.columns.status')
+    title: t('common.status')
   },
   {
     dataIndex: 'type',
-    title: t('service.case.columns.type'),
+    title: t('common.type'),
     customRender: ({ text }) => text?.message
   },
   {

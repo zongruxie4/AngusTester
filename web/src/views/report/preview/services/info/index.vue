@@ -27,11 +27,11 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'name',
-      name: t('reportPreview.services.info.fields.name')
+      name: t('common.name')
     },
     {
       dataIndex: 'status',
-      name: t('reportPreview.services.info.fields.status'),
+      name: t('common.status'),
       customRender: (text) => {
         return text?.message;
       }

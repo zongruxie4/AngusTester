@@ -384,7 +384,7 @@ onMounted(() => {
                 class="flex-1 min-w-0 !mb-5"
                 :class="{'ant-form-item-has-error': isValid && !formState.name}"
                 required
-                :label="t('reportAdd.form.name')">
+                :label="t('common.name')">
                 <Input
                   v-model:value="formState.name"
                   :maxlength="100"
@@ -394,7 +394,7 @@ onMounted(() => {
                 class="flex-1 min-w-0 !mb-5"
                 :class="{'ant-form-item-has-error': isValid && !formState.version }"
                 required
-                :label="t('reportAdd.form.version')">
+                :label="t('common.version')">
                 <Input
                   v-model:value="formState.version"
                   :maxlength="20"
@@ -402,7 +402,9 @@ onMounted(() => {
               </FormItem>
             </div>
             <div class="flex space-x-2 items-center">
-              <FormItem class="flex-1 min-w-0 !mb-5" :label="t('reportAdd.form.description')">
+              <FormItem
+                class="flex-1 min-w-0 !mb-5"
+                :label="t('common.description')">
                 <Textarea
                   v-model:value="formState.description"
                   :maxlength="200"
@@ -414,7 +416,7 @@ onMounted(() => {
             </div>
           </Form>
           <Tabs v-model:activeKey="activeTab" size="small">
-            <TabPane key="createdDate" :tab="t('reportAdd.tabs.createdDate')">
+            <TabPane key="createdDate" :tab="t('common.createdDate')">
               <CreatedDate
                 ref="createdDateRef"
                 :createTimeSetting="createTimeSetting"

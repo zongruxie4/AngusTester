@@ -185,14 +185,14 @@ const handleEnterShare = async (shareId: string) => {
 
 const columns = [
   {
-    title: t('apiShare.list.columns.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     width: '15%',
     ellipsis: true,
     sorter: true
   },
   {
-    title: t('apiShare.list.columns.status'),
+    title: t('common.isExpired'),
     dataIndex: 'isExpired',
     width: '8%'
   },

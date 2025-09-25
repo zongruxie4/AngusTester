@@ -349,7 +349,7 @@ const urlMap = computed(() => {
               <div>
                 <div class="flex items-start leading-4.5 mb-3">
                   <div class="flex-shrink-0 text-theme-sub-content mr-2">
-                    <span>{{ t('service.serverConfig.columns.url') }}</span>
+                    <span>{{ t('common.url') }}</span>
                     <Colon />
                   </div>
                   <TypographyParagraph
@@ -360,7 +360,7 @@ const urlMap = computed(() => {
 
                 <div class="flex items-start leading-4.5 mb-3">
                   <div class="flex-shrink-0 text-theme-sub-content mr-2">
-                    <span>{{ t('service.serverConfig.columns.description') }}</span>
+                    <span>{{ t('common.description') }}</span>
                     <Colon />
                   </div>
                   <TypographyParagraph
@@ -375,7 +375,7 @@ const urlMap = computed(() => {
                     <div v-for="(_variable, _index) in item.variables" :key="_variable.id">
                       <div class="flex items-start leading-4.5 mb-2">
                         <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                          <span>{{ t('service.serverConfig.columns.name') }}</span>
+                          <span>{{ t('common.name') }}</span>
                           <Colon />
                         </div>
                         <div :title="_variable.name" class="flex-1 truncate">{{ _variable.name }}</div>
@@ -383,7 +383,7 @@ const urlMap = computed(() => {
 
                       <div class="flex items-start leading-4.5 mb-2">
                         <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                          <span>{{ t('service.serverConfig.columns.value') }}</span>
+                          <span>{{ t('common.value') }}</span>
                           <Colon />
                         </div>
                         <div class="flex-1 space-y-1">
@@ -392,7 +392,9 @@ const urlMap = computed(() => {
                             :key="_enum.id"
                             class="flex items-center justify-between">
                             <div :title="_enum.value" class="truncate flex-1">{{ _enum.value }}</div>
-                            <div :class="{invisible:_enum.value!==_variable.default}" class="flex-shrink-0">{{ t('service.serverConfig.form.default') }}</div>
+                            <div :class="{invisible:_enum.value!==_variable.default}" class="flex-shrink-0">
+                              {{ t('service.serverConfig.form.default') }}
+                            </div>
                           </div>
                         </div>
                       </div>

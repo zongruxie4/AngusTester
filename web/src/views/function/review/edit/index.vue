@@ -526,7 +526,7 @@ const caseList = ref<ReviewCaseInfo[]>([]);
  */
 const tableColumns = [
   {
-    title: t('caseReview.editForm.caseId'),
+    title: t('common.id'),
     dataIndex: 'caseId',
     customRender: ({ record }) => {
       if (reviewId.value) {
@@ -536,7 +536,7 @@ const tableColumns = [
     }
   },
   {
-    title: t('caseReview.editForm.name'),
+    title: t('common.name'),
     dataIndex: 'caseName',
     customRender: ({ record }) => {
       if (reviewId.value) {
@@ -546,7 +546,7 @@ const tableColumns = [
     }
   },
   {
-    title: t('caseReview.editForm.reviewStatus'),
+    title: t('common.reviewStatus'),
     dataIndex: 'reviewStatus'
   },
   {

@@ -576,7 +576,7 @@ onMounted(() => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('backlog.info.scenario.basicInfo') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.basicInfo') }}</h3>
     </div>
 
     <!-- Scrollable Content Area -->
@@ -584,7 +584,7 @@ onMounted(() => {
       <div class="basic-info-content">
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.number') }}</span>
+            <span>{{ t('common.code') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -625,7 +625,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.type') }}</span>
+            <span>{{ t('common.type') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -637,7 +637,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.testType') }}</span>
+            <span>{{ t('common.testType') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -646,7 +646,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.taskStatus') }}</span>
+            <span>{{ t('common.taskStatus') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -665,7 +665,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.sprint') }}</span>
+            <span>{{ t('common.sprint') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -696,7 +696,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.module') }}</span>
+            <span>{{ t('common.module') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -745,7 +745,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.parentTask') }}</span>
+            <span>{{ t('common.parentName') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -756,7 +756,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.scenario') }}</span>
+            <span>{{ t('common.scenario') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -767,7 +767,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.priority') }}</span>
+            <span>{{ t('common.priority') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -800,7 +800,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.evalWorkloadMethod') }}</span>
+            <span>{{ t('common.evalWorkloadMethod') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -811,7 +811,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.evalWorkload') }}</span>
+            <span>{{ t('common.evalWorkload') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -843,7 +843,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.evalWorkload') }}</span>
+            <span>{{ t('common.evalWorkload') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -893,7 +893,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.tags') }}</span>
+            <span>{{ t('common.tags') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -947,7 +947,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.softwareVersion') }}</span>
+            <span>{{ t('common.softwareVersion') }}</span>
             <Colon class="w-1" />
           </div>
           <div class="truncate flex-1" :title="props.dataSource?.softwareVersion">
@@ -990,7 +990,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.unplannedTask') }}</span>
+            <span>{{ t('common.unplanned') }}</span>
             <Colon class="w-1" />
           </div>
           <div>

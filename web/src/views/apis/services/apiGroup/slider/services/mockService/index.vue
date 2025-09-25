@@ -30,14 +30,14 @@ const mockServiceInfo = ref();
 const loading = ref();
 
 const columns = [[
-  { label: t('service.mockService.columns.name'), dataIndex: 'name' },
+  { label: t('common.name'), dataIndex: 'name' },
   { label: t('service.mockService.columns.serviceDomainUrl'), dataIndex: 'serviceDomainUrl' },
   { label: t('service.mockService.columns.servicePort'), dataIndex: 'servicePort' },
   { label: t('service.mockService.columns.nodeName'), dataIndex: 'nodeName' },
-  { label: t('service.mockService.columns.status'), dataIndex: 'status' },
-  { label: t('service.mockService.columns.auth'), dataIndex: 'auth' },
-  { label: t('service.mockService.columns.createdByName'), dataIndex: 'createdByName' },
-  { label: t('service.mockService.columns.createdDate'), dataIndex: 'createdDate' }
+  { label: t('common.status'), dataIndex: 'status' },
+  { label: t('common.authControl'), dataIndex: 'auth' },
+  { label: t('common.createdByName'), dataIndex: 'createdByName' },
+  { label: t('common.createdDate'), dataIndex: 'createdDate' }
 ]];
 
 const selectedMockServiceId = ref();

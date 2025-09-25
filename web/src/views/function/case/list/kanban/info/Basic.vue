@@ -213,7 +213,7 @@ const change = async () => {
 const infoColumns = [
   [
     {
-      label: t('functionCase.kanbanView.infoBasic.name'),
+      label: t('common.name'),
       dataIndex: 'name'
     },
     {
@@ -257,21 +257,17 @@ const infoColumns = [
       dataIndex: 'testResult'
     },
     {
-      label: props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-        ? t('functionCase.kanbanView.infoBasic.evalWorkload')
-        : t('functionCase.kanbanView.infoBasic.evalWorkload'),
+      label: t('fcommon.evalWorkload'),
       dataIndex: 'evalWorkload',
       customRender: ({ text }) => text || '--'
     },
     {
-      label: props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-        ? t('functionCase.kanbanView.infoBasic.actualWorkload')
-        : t('functionCase.kanbanView.infoBasic.actualWorkload'),
+      label: t('common.actualWorkload'),
       dataIndex: 'actualWorkload',
       customRender: ({ text }) => text || '--'
     },
     {
-      label: t('functionCase.kanbanView.infoBasic.unplannedCase'),
+      label: t('common.unplanned'),
       dataIndex: 'unplanned',
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     }
@@ -282,7 +278,7 @@ const infoColumns = [
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div>
       <div class="text-theme-title mb-2.5 font-semibold">
-        {{ t('functionCase.kanbanView.infoBasic.title') }}
+        {{ t('common.basicInfo') }}
       </div>
 
       <Grid

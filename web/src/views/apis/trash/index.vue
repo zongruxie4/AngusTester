@@ -163,7 +163,7 @@ const handleRefresh = () => {
               </div>
               <div class="mt-3">
                 <h1 class="text-base font-bold text-gray-900">
-                  {{ $t('apiTrash.name') }}
+                  {{ $t('apiTrash.title') }}
                 </h1>
                 <p class="text-xs text-gray-500 mt-0.5">
                   {{ $t('apiTrash.tips.adminOnly') }}

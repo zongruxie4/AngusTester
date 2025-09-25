@@ -3,7 +3,7 @@ const t = i18n.getI18n()?.global?.t || ((val: string) => val);
 
 export const columns = [
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     key: 'name'
   },

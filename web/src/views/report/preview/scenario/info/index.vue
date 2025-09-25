@@ -27,60 +27,60 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'name',
-      name: t('reportPreview.scenario.info.fields.name')
+      name: t('common.name')
     },
     {
       dataIndex: 'description',
-      name: t('reportPreview.scenario.info.fields.description')
+      name: t('common.description')
     }
   ],
   [
     {
       dataIndex: 'projectName',
-      name: t('reportPreview.scenario.info.fields.project')
+      name: t('common.project')
     },
     {
       dataIndex: 'plugin',
-      name: t('reportPreview.scenario.info.fields.plugin')
+      name: t('common.plugin')
     }
   ],
   [
     {
       dataIndex: 'scriptType',
-      name: t('reportPreview.scenario.info.fields.scriptType'),
+      name: t('common.scriptType'),
       customRender: (text) => {
         return text?.message;
       }
     },
     {
       dataIndex: 'scriptId',
-      name: t('reportPreview.scenario.info.fields.scriptId')
+      name: t('common.scriptId')
     }
   ],
   [
     {
       dataIndex: 'scriptName',
-      name: t('reportPreview.scenario.info.fields.scriptName')
+      name: t('common.scriptName')
     },
     {
       dataIndex: 'createdByName',
-      name: t('reportPreview.scenario.info.fields.creator')
+      name: t('common.creator')
     }
   ],
   [
     {
       dataIndex: 'createdDate',
-      name: t('reportPreview.scenario.info.fields.createTime')
+      name: t('common.createdDate')
     },
     {
       dataIndex: 'lastModifiedByName',
-      name: t('reportPreview.scenario.info.fields.lastModifier')
+      name: t('common.lastModifiedByName')
     }
   ],
   [
     {
       dataIndex: 'lastModifiedDate',
-      name: t('reportPreview.scenario.info.fields.lastModifyTime')
+      name: t('common.lastModifiedDate')
     }
   ]
 ]);

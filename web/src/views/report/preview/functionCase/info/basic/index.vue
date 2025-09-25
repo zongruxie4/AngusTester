@@ -36,21 +36,25 @@ const onePassText = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.functionCase.info.basic.title') }}</span>
+      <span id="a1" class="text-4 text-theme-title font-medium">
+        {{ t('reportPreview.serial.1') }}
+        <em class="inline-block w-0.25"></em>
+        {{ t('reportPreview.functionCase.info.basic.title') }}
+      </span>
     </h1>
 
     <div class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.name') }}
+          {{ t('common.name') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseInfo?.name }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.priority') }}
+          {{ t('common.priority') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.priority?.message }}
@@ -67,7 +71,7 @@ const onePassText = computed(() => {
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.functionCase.info.basic.fields.testResult') }}
+          {{ t('common.testResult') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.testResult?.message }}

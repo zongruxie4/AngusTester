@@ -128,28 +128,28 @@ export const minTestInfoColumns = [
 export const bigApisInfoColumns = [
   [
     {
-      label: t('functionCase.detail.caseColumConfig.id'),
+      label: t('common.id'),
       dataIndex: 'apisId'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.name'),
+      label: t('common.name'),
       dataIndex: 'apisSummary'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.method'),
+      label: t('common.method'),
       dataIndex: 'method',
       customRender: ({ text }) => text?.message
     },
     {
-      label: t('functionCase.detail.caseColumConfig.path'),
+      label: t('common.path'),
       dataIndex: 'endpoint'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.projectId'),
+      label: t('common.projectId'),
       dataIndex: 'apisProjectId'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.projectName'),
+      label: t('common.projectName'),
       dataIndex: 'apisProjectName'
     }
   ]

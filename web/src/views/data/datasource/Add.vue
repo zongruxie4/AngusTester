@@ -86,10 +86,10 @@ watch(() => props.visible, (newValue) => {
       <!-- Form Labels -->
       <div class="space-y-5 pt-1.5 mr-5">
         <div class="h-7">
-          <IconRequired />{{ t('datasource.form.labels.type') }}
+          <IconRequired />{{ t('common.type') }}
         </div>
         <div class="h-7">
-          <IconRequired />{{ t('datasource.form.labels.name') }}
+          <IconRequired />{{ t('common.name') }}
         </div>
         <div class="h-7 pl-1.75">
           {{ t('datasource.form.labels.driverClassName') }}
@@ -98,10 +98,10 @@ watch(() => props.visible, (newValue) => {
           <IconRequired />{{ t('datasource.form.labels.jdbcUrl') }}
         </div>
         <div class="h-7 pl-1.75">
-          {{ t('datasource.form.labels.username') }}
+          {{ t('common.username') }}
         </div>
         <div class="h-7 pl-1.75">
-          {{ t('datasource.form.labels.password') }}
+          {{ t('common.password') }}
         </div>
       </div>
 

@@ -302,7 +302,7 @@ const modalTitle = computed(() => {
                   class="space-y-2 relative variable-item">
                   <div class="flex items-start leading-4.5">
                     <div v-if="false" class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>{{ t('service.serviceExecTest.labels.name') }}</span>
+                      <span>{{ t('common.name') }}</span>
                       <Colon />
                     </div>
                     <div :title="_variable.name" class="text-theme-title font-semibold flex-1 truncate">

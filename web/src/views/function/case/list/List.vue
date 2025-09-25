@@ -41,10 +41,11 @@ import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { analysis, funcCase, funcPlan, modules } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { travelTreeData } from '@/utils/utils';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
 
-import { CaseActionAuth, CaseDetailChecked, EnabledGroup, travelTreeData } from './types';
+import { CaseActionAuth, CaseDetailChecked, EnabledGroup } from './types';
 import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
 import { CaseCount, CaseViewMode, getActionAuth } from '@/views/function/case/types';
 import { CaseDetail } from '@/views/function/types';

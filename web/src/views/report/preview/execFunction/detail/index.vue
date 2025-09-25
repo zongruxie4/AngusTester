@@ -44,14 +44,14 @@ const caseSummary = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            ID
+            {{ t('common.id') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.id }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.name') }}
+            {{ t('common.name') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.name }}
@@ -61,14 +61,14 @@ const caseSummary = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.testScriptId') }}
+            {{ t('common.scriptId') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.scriptId }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.testScriptName') }}
+            {{ t('common.scriptName') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.scriptName }}
@@ -78,14 +78,14 @@ const caseSummary = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.plugin') }}
+            {{ t('common.plugin') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.plugin }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.status') }}
+            {{ t('common.status') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.status?.message }}
@@ -95,14 +95,14 @@ const caseSummary = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.type') }}
+            {{ t('common.type') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.createdByName }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.priority') }}
+            {{ t('common.priority') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.priority }}
@@ -112,14 +112,14 @@ const caseSummary = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.startTime') }}
+            {{ t('common.startTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.actualStartDate }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.endTime') }}
+            {{ t('common.endTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.endDate }}
@@ -163,14 +163,14 @@ const caseSummary = computed(() => {
         <div class="flex">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.creator') }}
+            {{ t('common.creator') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.createdByName }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execFunction.detail.basicInfo.fields.createTime') }}
+            {{ t('common.createdDate') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.createdDate }}

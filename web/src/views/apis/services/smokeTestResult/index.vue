@@ -13,16 +13,16 @@ const props = withDefaults(defineProps<Props>(), {
 
 const columns = [
   [
-    { dataIndex: 'serviceId', label: t('service.sidebar.smokeResult.id') },
-    { dataIndex: 'serviceName', label: t('service.sidebar.smokeResult.name') }
+    { dataIndex: 'serviceId', label: t('common.id') },
+    { dataIndex: 'serviceName', label: t('common.name') }
   ],
   [
     { dataIndex: 'testByName', label: t('service.sidebar.smokeResult.testName') },
     { dataIndex: 'testByDate', label: t('service.sidebar.smokeResult.testDate') }
   ],
   [
-    { dataIndex: 'scriptId', label: t('service.sidebar.smokeResult.scriptId') },
-    { dataIndex: 'scriptName', label: t('service.sidebar.smokeResult.scriptName') }
+    { dataIndex: 'scriptId', label: t('common.scriptId') },
+    { dataIndex: 'scriptName', label: t('common.scriptName') }
   ]
 ];
 

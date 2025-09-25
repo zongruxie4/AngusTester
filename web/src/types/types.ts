@@ -1,4 +1,4 @@
-import {CreatedAt, PeriodicCreationUnit, EnumMessage, User, AppInfo} from '@xcan-angus/infra';
+import {AppInfo, CreatedAt, EnumMessage, PeriodicCreationUnit, User} from '@xcan-angus/infra';
 import {CombinedTargetType} from '@/enums/enums';
 
 export type LoadingProps = {
@@ -79,4 +79,33 @@ export type ProgressInfo = {
   total: number;
   completed: number;
   completedRate: number;
+}
+
+/**
+ * Tree data structure interface - used for hierarchical data display
+ * @interface TreeData
+ */
+export interface TreeData {
+  /** Display name of the tree node */
+  name: string;
+  /** Sequence/order of the node */
+  sequence: string;
+  /** Depth level in the tree (0-based) */
+  level: number;
+  /** Child nodes array */
+  children?: TreeData[];
+  /** Unique identifier for the tree node */
+  id: string;
+  /** Parent node ID (if applicable) */
+  pid?: string;
+  /** Index position among siblings */
+  index?: number;
+  /** Array of parent IDs (path from root) */
+  ids?: string[];
+  /** Whether this is the last child in its level */
+  isLast?: boolean;
+  /** Maximum depth of child levels */
+  childLevels?: number;
+  /** Whether the node is disabled for interaction */
+  disabled?: boolean;
 }

@@ -822,7 +822,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
           :key="index"
           class="space-y-2 mb-4">
           <div class="flex items-center">
-            <span class="w-15">{{ t('service.apiAuthorization.apiKey.name') }}</span>
+            <span class="w-15">{{ t('common.name') }}</span>
             <Input
               v-model:value="item.name"
               class="w-100"
@@ -842,7 +842,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
               @click="handleAddApiKey" />
           </div>
           <div class="flex items-center">
-            <span class="w-15">{{ t('service.apiAuthorization.apiKey.value') }}</span>
+            <span class="w-15">{{ t('common.value') }}</span>
             <Input
               v-model:value="item[valueKey]"
               :allowClear="true"

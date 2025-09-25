@@ -42,14 +42,6 @@
       }
     },
     "summary": {
-      "taskTypes": {
-        "story": "故事",
-        "task": "任务",
-        "bug": "缺陷",
-        "requirement": "需求",
-        "apiTest": "接口测试",
-        "scenarioTest": "场景测试"
-      },
       "taskCount": {
         "totalTasks": "总任务"
       },
@@ -82,6 +74,14 @@
     "placeholder": {
       "searchTaskName": "查询任务名称",
       "taskName": "任务名称，最大支持200字符"
+    },
+    "taskTypeDescriptions": {
+      "requirement": "用户对业务、功能等的期望或要求，描述有广泛性。",
+      "story": "用户想要实现的具体目标或期望，通常以简洁、可理解的语言进行描述，如：作为 <角色>，我希望 <目标>，以便 <收益>。",
+      "task": "一般工作事项或活动",
+      "bug": "程序错误或漏洞",
+      "apiTest": "接口的功能、性能、稳定性测试任务",
+      "scenarioTest": "场景的功能、性能、稳定性测试任务"
     },
     "messages": {
       "confirmDelete": "确认删除任务「{name}」吗？",
@@ -181,22 +181,6 @@
         "evalWorkload": "工作任务量、综合难度、复杂度等的评估值。",
         "actualWorkload": "工作任务量、综合难度、复杂度等的实际值。",
         "tags": "\"任务标签\"可以帮助您组织有共同点的任务，例如\"项目名称、迭代版本、业务标识\"等。"
-      },
-      "taskTypes": {
-        "requirement": "需求",
-        "story": "故事",
-        "task": "任务",
-        "bug": "缺陷",
-        "apiTest": "接口测试",
-        "scenarioTest": "场景测试"
-      },
-      "taskTypeDescriptions": {
-        "requirement": "用户对业务、功能等的期望或要求，描述有广泛性。",
-        "story": "用户想要实现的具体目标或期望，通常以简洁、可理解的语言进行描述，如：作为 <角色>，我希望 <目标>，以便 <收益>。",
-        "task": "一般工作事项或活动",
-        "bug": "程序错误或漏洞",
-        "apiTest": "接口的功能、性能、稳定性测试任务",
-        "scenarioTest": "场景的功能、性能、稳定性测试任务"
       },
       "buttons": {
         "assignToMe": "指派给我",
@@ -809,13 +793,6 @@
         "high": "高",
         "urgent": "紧急"
       },
-      "taskType": {
-        "apiTest": "接口测试",
-        "scenarioTest": "场景测试",
-        "manualTest": "手工测试",
-        "uiTest": "UI测试",
-        "performanceTest": "性能测试"
-      },
       "tabs": {
         "basicInfo": "基本信息",
         "remark": "备注",
@@ -830,27 +807,27 @@
         "title": "任务",
         "tips": "记录与当前任务相关联的其他任务，帮助团队了解任务之间的依赖关系。"
       },
-      "assocRequirements": {
+      "assocRequirementTab": {
         "title": "需求",
         "tips": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。"
       },
-      "assocStory": {
+      "assocStoryTab": {
         "title": "故事",
         "tips": "追溯用户角度描述功能需求，方便理解问题产生的背景和影响范围。"
       },
-      "assocBug": {
+      "assocBugTab": {
         "title": "缺陷",
         "tips": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。"
       },
-      "assocCase": {
+      "assocCaseTab": {
         "title": "功能用例",
         "tips": "记录与当前任务相关联的其他任务，帮助团队了解任务之间的依赖关系。"
       },
-      "assocApiTest": {
+      "assocApiTestTab": {
         "title": "接口测试",
         "tips": "建立与对应接口测试任务关联关系，方便追溯接口测试进展，确保接口正常工作。"
       },
-      "assocScenarioTest": {
+      "assocScenarioTestTab": {
         "title": "场景测试",
         "tips": "建立与对应场景测试任务关联关系，方便了解真实场景中功能的有效性，确保解决方案的完整性。"
       },
@@ -1016,22 +993,6 @@
         "attachmentsAdd": "添加附件,最多上传5个附件",
         "attachmentsContinue": "继续上传",
         "attachmentsUpload": "上传附件，最多上传5个"
-      },
-      "taskTypes": {
-        "requirement": "需求",
-        "story": "故事",
-        "task": "任务",
-        "bug": "缺陷",
-        "apiTest": "接口测试",
-        "scenarioTest": "场景测试"
-      },
-      "taskTypeDescriptions": {
-        "requirement": "用户对业务、功能等的期望或要求，描述有广泛性。",
-        "story": "用户想要实现的具体目标或期望，通常以简洁、可理解的语言进行描述，如：作为 <角色>，我希望 <目标>，以便 <收益>。",
-        "task": "一般工作事项或活动",
-        "bug": "程序错误或漏洞",
-        "apiTest": "接口的功能、性能、稳定性测试任务",
-        "scenarioTest": "场景的功能、性能、稳定性测试任务"
       },
       "messages": {
         "addSuccess": "任务添加成功",
@@ -1791,14 +1752,6 @@
         }
       },
       "taskGrowthTread": {
-        "chartLabels": {
-          "requirement": "需求",
-          "story": "故事",
-          "task": "任务",
-          "bug": "缺陷",
-          "apiTest": "接口测试",
-          "scenarioTest": "场景测试"
-        },
         "chartTitles": {
           "taskGrowth": "任务增长量",
           "growthTrend": "增长趋势"

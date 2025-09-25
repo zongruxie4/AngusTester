@@ -33,18 +33,18 @@ const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 const showSecurity = ref(true);
 const columns = computed(() => [
   [
-    { label: t('service.serviceDetail.columns.id'), dataIndex: 'id' },
-    { label: t('service.serviceDetail.columns.name'), dataIndex: 'name' },
-    { label: t('service.serviceDetail.columns.parentName'), dataIndex: 'parentName' },
-    { label: t('service.serviceDetail.columns.source'), dataIndex: 'source' },
-    { label: t('service.serviceDetail.columns.status'), dataIndex: 'status' },
-    { label: t('service.serviceDetail.columns.auth'), dataIndex: 'auth' },
+    { label: t('common.id'), dataIndex: 'id' },
+    { label: t('common.name'), dataIndex: 'name' },
+    { label: t('common.parentName'), dataIndex: 'parentName' },
+    { label: t('common.source'), dataIndex: 'source' },
+    { label: t('common.status'), dataIndex: 'status' },
+    { label: t('common.authControl'), dataIndex: 'auth' },
     { label: t('service.serviceDetail.columns.apisNum'), dataIndex: 'apisNum' },
     { label: t('service.serviceDetail.columns.apisCaseNum'), dataIndex: 'apisCaseNum' }, // @todo
-    { label: t('service.serviceDetail.columns.createdByName'), dataIndex: 'createdByName' },
-    { label: t('service.serviceDetail.columns.createdDate'), dataIndex: 'createdDate' },
-    { label: t('service.serviceDetail.columns.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
-    { label: t('service.serviceDetail.columns.securityTitle'), dataIndex: 'securityTitle' },
+    { label: t('common.createdByName'), dataIndex: 'createdByName' },
+    { label: t('common.createdDate'), dataIndex: 'createdDate' },
+    { label: t('common.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
+    { label: t('common.securityTitle'), dataIndex: 'securityTitle' },
     { dataIndex: 'security', fullWidthContent: true }
   ].filter(Boolean)
 ]);

@@ -51,7 +51,7 @@ watch(() => appInfo.value, (newValue) => {
           :defaultImg="defaultImg" />
       </div>
       <div class="mt-5">
-        <div class="font-medium text-3.5 leading-3.5 text-theme-title">{{ t('app.config.labels.name') }}</div>
+        <div class="font-medium text-3.5 leading-3.5 text-theme-title">{{ t('common.name') }}</div>
         <Input
           v-model:value="appName"
           :maxlength="50"

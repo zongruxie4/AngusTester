@@ -600,7 +600,7 @@ onMounted(() => {
         <!-- Task Name -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.name') }}</span>
+            <span>{{ t('common.name') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isTaskNameEditing" class="info-value-content">
@@ -630,7 +630,7 @@ onMounted(() => {
         <!-- Task Type -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.type') }}</span>
+            <span>{{ t('common.type') }}</span>
           </div>
           <div class="info-value">
             <div class="info-value-content">
@@ -643,7 +643,7 @@ onMounted(() => {
         <!-- Test Type -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.testType') }}</span>
+            <span>{{ t('common.testType') }}</span>
           </div>
           <div class="info-value">
             <ScriptTypeTag :value="props.dataSource?.testType" />
@@ -653,7 +653,7 @@ onMounted(() => {
         <!-- Task Status -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.taskStatus') }}</span>
+            <span>{{ t('common.taskStatus') }}</span>
           </div>
           <div class="info-value">
             <div class="info-value-content">
@@ -670,7 +670,7 @@ onMounted(() => {
         <!-- Sprint -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.sprint') }}</span>
+            <span>{{ t('common.sprint') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isSprintEditing" class="info-value-content">
@@ -701,7 +701,7 @@ onMounted(() => {
         <!-- Module -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.module') }}</span>
+            <span>{{ t('common.module') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isModuleEditing" class="info-value-content">
@@ -751,7 +751,7 @@ onMounted(() => {
         <!-- Parent Task -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.parentTask') }}</span>
+            <span>{{ t('common.parentName') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text dash-text">{{ props.dataSource?.parentTaskName || '--' }}</span>
@@ -761,7 +761,7 @@ onMounted(() => {
         <!-- Service -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.service') }}</span>
+            <span>{{ t('common.service') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ props.dataSource?.targetParentName }}</span>
@@ -771,7 +771,7 @@ onMounted(() => {
         <!-- API -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.api') }}</span>
+            <span>{{ t('common.api') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ props.dataSource?.targetName }}</span>
@@ -781,7 +781,7 @@ onMounted(() => {
         <!-- Priority -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.priority') }}</span>
+            <span>{{ t('common.priority') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isPriorityEditing" class="info-value-content">
@@ -814,7 +814,7 @@ onMounted(() => {
         <!-- Workload Estimation Method -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.evalWorkloadMethod') }}</span>
+            <span>{{ t('common.evalWorkloadMethod') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ props.dataSource?.evalWorkloadMethod?.message || '--' }}</span>
@@ -824,7 +824,7 @@ onMounted(() => {
         <!-- Estimated Workload -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.evalWorkload') }}</span>
+            <span>{{ t('common.evalWorkload') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isEvalWorkloadEditing" class="info-value-content">
@@ -856,7 +856,7 @@ onMounted(() => {
         <!-- Actual Workload -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.evalWorkload') }}</span>
+            <span>{{ t('common.evalWorkload') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isActualWorkloadEditing" class="info-value-content">
@@ -908,7 +908,7 @@ onMounted(() => {
         <!-- Tags -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.apis.tags') }}</span>
+            <span>{{ t('common.tags') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isTagEditing" class="info-value-content">
@@ -964,7 +964,7 @@ onMounted(() => {
       <!-- Software Version -->
       <div class="info-row">
         <div class="info-label">
-          <span>{{ t('backlog.info.apis.softwareVersion') }}</span>
+          <span>{{ t('common.softwareVersion') }}</span>
         </div>
         <div class="info-value">
           <template v-if="isVersionEditing">
@@ -1005,7 +1005,7 @@ onMounted(() => {
       <!-- Unplanned Task -->
       <div class="info-row">
         <div class="info-label">
-          <span>{{ t('backlog.info.apis.unplannedTask') }}</span>
+          <span>{{ t('common.unplanned') }}</span>
         </div>
         <div class="info-value">
           <span class="info-text">{{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}</span>

@@ -792,7 +792,7 @@ onMounted(() => {
       class="max-w-242.5"
       layout="horizontal">
       <FormItem
-        :label="t('taskSprint.form.name')"
+        :label="t('common.name')"
         name="name"
         :rules="{ required: true, message: t('taskSprint.messages.nameRequired') }">
         <Input
@@ -817,7 +817,7 @@ onMounted(() => {
       </FormItem>
 
       <FormItem
-        :label="t('taskSprint.form.owner')"
+        :label="t('common.owner')"
         name="ownerId"
         class="relative"
         :rules="{ required: true, message: t('taskSprint.messages.ownerRequired') }">
@@ -881,7 +881,7 @@ onMounted(() => {
         </Tooltip>
       </FormItem>
 
-      <FormItem :label="t('taskSprint.form.attachments')">
+      <FormItem :label="t('common.attachments')">
         <div class="flex items-center">
           <Upload
             :fileList="[]"

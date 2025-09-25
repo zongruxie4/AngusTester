@@ -428,7 +428,7 @@ onMounted(() => {
       if (!tabData.includes('caseList')) {
         addTabPane({
           _id: 'case_home',
-          name: t('functionCase.name'),
+          name: t('functionCase.title'),
           type: 'caseList',
           closable: false,
           icon: 'icon-zhuye',
@@ -437,7 +437,7 @@ onMounted(() => {
       } else {
         updateTabPane({
           _id: 'case_home',
-          name: t('functionCase.name'),
+          name: t('functionCase.title'),
           type: 'caseList',
           closable: false,
           icon: 'icon-zhuye',

@@ -785,7 +785,7 @@ const handleSaveOk = () => {
           :class="sync.isExpand ? 'open-info' : 'stop-info'"
           class="transition-height duration-500 overflow-hidden leading-3">
           <div class="flex flex-col" :class="!sync.isEdit?'border-t border-dashed border-border-divider pt-2 mt-2':''">
-            <span><IconRequired />{{ t('service.syncConfig.form.name') }}</span>
+            <span><IconRequired />{{ t('common.name') }}</span>
             <Input
               v-model:value="sync.name"
               :placeholder="t('service.syncConfig.form.namePlaceholder')"
@@ -795,7 +795,7 @@ const handleSaveOk = () => {
               :disabled="!sync.isAdd || !sync.isEdit"
               :error="sync.nameErr"
               @change="(event)=>syncNameChange(event.target.value,sync)" />
-            <span><IconRequired />{{ t('service.syncConfig.form.source') }}</span>
+            <span><IconRequired />{{ t('common.source') }}</span>
             <Select
               value="OpenAPI"
               size="small"
@@ -822,7 +822,7 @@ const handleSaveOk = () => {
               class="mt-2 mb-5"
               :disabled="!sync.isEdit">
               <Radio value="COVER">{{ t('actions.cover') }}</Radio>
-              <Radio value="IGNORE">{{ t('sactions.ignore') }}</Radio>
+              <Radio value="IGNORE">{{ t('actions.ignore') }}</Radio>
             </RadioGroup>
             <span>{{ t('service.syncConfig.form.deleteWhenNotExist') }}</span>
             <RadioGroup
@@ -833,7 +833,7 @@ const handleSaveOk = () => {
               <Radio :value="false">{{ t('status.no') }}</Radio>
             </RadioGroup>
             <div class="flex items-center">
-              <span class="mr-3.5">{{ t('service.syncConfig.form.auth') }}</span>
+              <span class="mr-3.5">{{ t('common.auth') }}</span>
               <Switch
                 v-model:checked="sync.auth"
                 size="small"

@@ -532,7 +532,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
           class="transition-height duration-500 overflow-hidden leading-3 text-3">
           <template v-if="tag.isExpand">
             <div v-if="tag.isEdit" class="flex-1 text-3">
-              <div><IconRequired />{{ t('service.tag.form.name') }}</div>
+              <div><IconRequired />{{ t('common.name') }}</div>
               <Input
                 v-model:value="tag.name"
                 :placeholder="t('service.tag.form.namePlaceholder')"
@@ -544,7 +544,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                 @change="(event)=>tagNameChange(event.target.value,tag)" />
             </div>
             <template v-if="tag.isEdit">
-              <div class="pl-1.75">{{ t('service.tag.form.description') }}</div>
+              <div class="pl-1.75">{{ t('common.description') }}</div>
               <Textarea
                 v-model:value="tag.description"
                 size="small"
@@ -580,11 +580,16 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                 @change="(event)=>externalDocsUrlChange(event.target.value,tag)" />
               <div v-if="tag.isEdit" class="text-rule text-3 h-5">
                 <template v-if="tag.externalDocs.urlErr.emptyUrl">{{ t('service.tag.validation.enterUrl') }}</template>
-                <template v-if="!tag.externalDocs.urlErr.emptyUrl && tag.externalDocs.urlErr.errUrl">{{ t('service.tag.validation.enterCorrectUrl') }}</template>
+                <template v-if="!tag.externalDocs.urlErr.emptyUrl && tag.externalDocs.urlErr.errUrl">
+                  {{ t('service.tag.validation.enterCorrectUrl') }}
+                </template>
               </div>
             </div>
             <template v-else>
-              <div v-if="tag.externalDocs.url" class="mt-2 mb-1 leading-5"><Icon icon="icon-lianjie2" class="text-3 mr-1 -mt-0.5" />{{ t('service.tag.form.externalDocsLink') }}</div>
+              <div v-if="tag.externalDocs.url" class="mt-2 mb-1 leading-5">
+                <Icon icon="icon-lianjie2" class="text-3 mr-1 -mt-0.5" />
+                {{ t('service.tag.form.externalDocsLink') }}
+              </div>
               <a
                 :href="tag.externalDocs.url"
                 target="_blank"
@@ -610,7 +615,9 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                   :content="tag.externalDocs.description"
                   :copyable="tag.externalDocs.showEllipsis ? { tooltip: false }:false">
                   <template v-if="tag.externalDocs.showEllipsis" #copyableIcon>
-                    <a @click="(e)=>handleExternalDocsDesExpand(e,tag)">{{ tag.externalDocs.ellipsis ? t('actions.collapse') : t('actions.expand') }}</a>
+                    <a @click="(e)=>handleExternalDocsDesExpand(e,tag)">
+                      {{ tag.externalDocs.ellipsis ? t('actions.collapse') : t('actions.expand') }}
+                    </a>
                   </template>
                 </TypographyParagraph>
               </template>

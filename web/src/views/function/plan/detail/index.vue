@@ -205,7 +205,7 @@ const testerTableColumns = [
   {
     key: 'name',
     dataIndex: 'name',
-    title: t('functionPlan.planDetail.table.name'),
+    title: t('common.name'),
     width: '25%',
     ellipsis: true
   },

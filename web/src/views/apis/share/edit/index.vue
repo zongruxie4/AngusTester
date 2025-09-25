@@ -238,14 +238,14 @@ const schemaStyleOpt = [
       <FormItem
         required
         name="name"
-        :label="t('apiShare.form.name')">
+        :label="t('common.name')">
         <Input
           v-model:value="formState.name"
           :maxlength="100"
           :placeholder="t('apiShare.form.namePlaceholder')" />
       </FormItem>
       <FormItem
-        :label="t('apiShare.form.remark')"
+        :label="t('common.remark')"
         class="!mb-5"
         name="remark">
         <Textarea
@@ -256,7 +256,7 @@ const schemaStyleOpt = [
       </FormItem>
       <FormItem
         name="expiredDate"
-        :label="t('apiShare.form.expiredDate')"
+        :label="t('common.expiredDate')"
         class="min-w-0">
         <div class="flex items-center space-x-1">
           <DatePicker

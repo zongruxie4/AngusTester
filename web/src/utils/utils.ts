@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { DATE_FORMAT } from '@/utils/constant';
+import { TreeData } from '@/types/types';
 
 export const sizeUnitFormat = (value: number, unit?: 'B' | 'KB' | 'MB' | 'GB' | 'TB' | 'PB' | 'EB' | 'ZB' | 'YB'): string => {
   const k = 1024;
@@ -185,4 +186,37 @@ export const getDateArrWithTime = (start, end) => {
     }
   }
   return dates;
+};
+
+/**
+ * Recursively traverse tree data and apply callback to each node
+ * @param treeData - Array of tree nodes to traverse
+ * @param callback - Function to apply to each node
+ * @returns Processed tree data
+ */
+export const travelTreeData = (treeData: TreeData[], callback = (item: TreeData) => item): TreeData[] => {
+  function travel (treeData: TreeData[], level = 0, ids: string[] = []) {
+    treeData.forEach((item, idx) => {
+      // Set node properties for tree structure
+      item.level = level;
+      item.index = idx;
+      item.ids = [...ids, item.id];
+      item.isLast = idx === (treeData.length - 1);
+
+      // Recursively process children
+      travel(item.children || [], level + 1, item.ids);
+
+      // Calculate child levels for depth validation
+      item.childLevels = (item.children?.length ? Math.max(...item.children.map(i => i.childLevels || 0)) : 0) + 1;
+
+      // Apply callback function to current item
+      const processedItem = callback(item);
+      if (processedItem !== item) {
+        Object.assign(item, processedItem);
+      }
+    });
+  }
+
+  travel(treeData);
+  return treeData;
 };

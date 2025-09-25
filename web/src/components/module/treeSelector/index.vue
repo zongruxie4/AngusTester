@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
 import { modules } from '@/api/tester';
+import { travelTreeData } from '@/utils/utils';
 
 const { t } = useI18n();
 
@@ -220,22 +221,6 @@ const onMenuClick = (menu, record) => {
   } else if (menu.key === 'move') {
     moveLevel(record);
   }
-};
-
-const travelTreeData = (treeData, callback = (item) => item) => {
-  function travel (treeData, level = 0, ids: string[] = []) {
-    treeData.forEach((item, idx) => {
-      item.level = level;
-      item.index = idx;
-      item.ids = [...ids, item.id];
-      item.isLast = idx === (treeData.length - 1);
-      travel(item.children || [], level + 1, item.ids),
-      item.childLevels = (item.children?.length ? Math.max(...item.children.map(i => i.childLevels)) : 0) + 1;
-      item = callback(item);
-    });
-  }
-  travel(treeData);
-  return treeData;
 };
 
 const moduleTreeData = ref([{ name: t('commonComp.moduleTreeSelector.noModule') + modalTitle.value, id: '-1' }]);

@@ -192,34 +192,34 @@ const menuItems = computed(() => {
       icon: 'icon-zhuye'
     },
     {
-      name: t('functionPlan.name'),
+      name: t('functionPlan.title'),
       key: 'plans',
       icon: 'icon-jihua1'
     },
     {
-      name: t('functionCase.name'),
+      name: t('functionCase.title'),
       key: 'cases',
       icon: 'icon-ceshiyongli1'
     },
     {
-      name: t('caseReview.name'),
+      name: t('caseReview.title'),
       key: 'reviews',
       icon: 'icon-pingshen'
     },
     {
-      name: t('functionBaseline.name'),
+      name: t('functionBaseline.title'),
       key: 'baseline',
       icon: 'icon-jixian'
     },
     currentEditionType.value !== EditionType.COMMUNITY
       ? {
-          name: t('functionAnalysis.name'),
+          name: t('functionAnalysis.title'),
           key: 'analysis',
           icon: 'icon-fenxi'
         }
       : null,
     {
-      name: t('functionTrash.name'),
+      name: t('functionTrash.title'),
       key: 'trash',
       icon: 'icon-qingchu'
     }

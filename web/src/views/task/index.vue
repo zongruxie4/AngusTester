@@ -75,32 +75,32 @@ const menuItems = computed(() => {
       : null,
     projectTypeVisibilityMap.value.showSprint
       ? {
-          name: t('taskSprint.name'),
+          name: t('taskSprint.title'),
           icon: 'icon-diedai',
           key: 'sprint'
         }
       : null,
     {
-      name: t('task.name'),
+      name: t('task.title'),
       icon: 'icon-renwu2',
       key: 'task'
     },
     projectTypeVisibilityMap.value.showMeeting
       ? {
-          name: t('taskMeeting.name'),
+          name: t('taskMeeting.title'),
           icon: 'icon-RT',
           key: 'meeting'
         }
       : null,
     editionType.value !== EditionType.COMMUNITY
       ? {
-          name: t('taskAnalysis.name'),
+          name: t('taskAnalysis.title'),
           icon: 'icon-fenxi',
           key: 'analysis'
         }
       : null,
     {
-      name: t('taskTrash.name'),
+      name: t('taskTrash.title'),
       icon: 'icon-qingchu',
       key: 'trash'
     }

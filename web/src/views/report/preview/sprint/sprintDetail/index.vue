@@ -65,7 +65,7 @@ const meetings = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.name') }}
+            {{ t('common.name') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ sprint?.name }}
@@ -82,14 +82,14 @@ const meetings = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.status') }}
+            {{ t('common.status') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ sprint?.status?.message }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.owner') }}
+            {{ t('common.owner') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ sprint?.ownerName }}
@@ -99,7 +99,7 @@ const meetings = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.project') }}
+            {{ t('common.project') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ sprint?.projectName }}
@@ -109,21 +109,21 @@ const meetings = computed(() => {
             {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.sprintTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-            {{ sprint?.startDate }} {{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.to') }} {{ sprint?.deadlineDate }}
+            {{ sprint?.startDate }} - {{ sprint?.deadlineDate }}
           </div>
         </div>
 
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.creator') }}
+            {{ t('common.creator') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ sprint?.createdByName }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.createTime') }}
+            {{ t('common.createdDate') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ sprint?.createdDate }}
@@ -133,7 +133,7 @@ const meetings = computed(() => {
         <div class="flex">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.workloadEstimationMethod') }}
+            {{ t('common.evalWorkloadMethod') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ sprint?.evalWorkloadMethod?.message }}
@@ -196,7 +196,7 @@ const meetings = computed(() => {
 
               <div class="text-3 whitespace-nowrap">
                 <span>{{ item.startTime }}</span>
-                <span class="mx-2">{{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.to') }}</span>
+                <span class="mx-2">-</span>
                 <span>{{ item.endTime }}</span>
               </div>
             </div>

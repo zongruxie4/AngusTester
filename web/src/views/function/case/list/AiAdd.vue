@@ -504,7 +504,7 @@ onMounted(() => {
           <div class="flex overflow-y-auto -mr-4.5 pr-4.5 pb-5" :style="{height: '75vh'}">
             <div class="flex-1">
               <FormItem
-                :label="t('functionCase.addCaseModal.name')"
+                :label="t('common.name')"
                 name="name"
                 :rules="[{ required: true, message: t('functionCase.addCaseModal.pleaseEnterCaseName') }]">
                 <Input
@@ -558,7 +558,7 @@ onMounted(() => {
                 name="description">
                 <template #label>
                   <div class="text-3 flex space-x-2 items-center">
-                    <span>{{ t('functionCase.addCaseModal.description') }}</span>
+                    <span>{{ t('common.description') }}</span>
                     <Hints :text="t('functionCase.addCaseModal.descriptionHint')" />
                   </div>
                 </template>
@@ -595,7 +595,7 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                :label="t('functionCase.addCaseModal.module')"
+                :label="t('common.module')"
                 name="moduleId">
                 <TreeSelect
                   v-model:value="formState.moduleId"
@@ -615,7 +615,7 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                :label="t('functionCase.addCaseModal.tester')"
+                :label="t('common.tester')"
                 name="testerId"
                 :rules="{required:true,message:t('functionCase.addCaseModal.pleaseSelectTester')}">
                 <div class="flex items-center">
@@ -635,7 +635,7 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                :label="t('functionCase.addCaseModal.developer')"
+                :label="t('common.developer')"
                 name="developerId"
                 :rules="{required:true,message:t('functionCase.addCaseModal.pleaseSelectDeveloper')}">
                 <Select
@@ -650,7 +650,7 @@ onMounted(() => {
                 required>
                 <template #label>
                   <span class="flex items-center">
-                    {{ t('functionCase.addCaseModal.priority') }}
+                    {{ t('common.priority') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter
@@ -676,8 +676,7 @@ onMounted(() => {
                 :rules="{required: formState.actualWorkload, validator: evalWorkloadValidateDate,trigger: 'change' }">
                 <template #label>
                   <span class="flex items-center">
-                    {{ evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                      ? t('functionCase.addCaseModal.estimatedStoryPoints') : t('functionCase.addCaseModal.estimatedWorkHours') }}
+                    {{ t('common.evalWorkloadMethod') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter

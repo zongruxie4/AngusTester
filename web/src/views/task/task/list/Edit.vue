@@ -820,7 +820,7 @@ onMounted(() => {
         <div class="flex-1 pr-8">
           <FormItem
             name="name"
-            :label="t('task.editModal.form.name')"
+            :label="t('common.name')"
             :rules="{ required: true, message: t('task.editModal.form.nameRule') }">
             <Input
               v-model:value="formState.name"
@@ -882,7 +882,7 @@ onMounted(() => {
 
             <FormItem
               name="priority"
-              :label="t('task.editModal.form.priority')"
+              :label="t('common.priority')"
               class="flex-1/2"
               required>
               <SelectEnum
@@ -902,7 +902,7 @@ onMounted(() => {
             <div class="flex space-x-4">
               <FormItem
                 name="bugLevel"
-                :label="t('task.editModal.form.bugLevel')"
+                :label="t('common.bugLevel')"
                 class="flex-1/2">
                 <SelectEnum
                   v-model:value="formState.bugLevel"
@@ -912,7 +912,7 @@ onMounted(() => {
               </FormItem>
               <FormItem
                 name="missingBug"
-                :label="t('task.editModal.form.missingBug')"
+                :label="t('common.missingBug')"
                 class="flex-1/2">
                 <Select
                   :value="(formState.missingBug as any)"
@@ -928,7 +928,7 @@ onMounted(() => {
           <div v-if="formState.taskType === TaskType.SCENARIO_TEST" class="flex space-x-4">
             <FormItem
               name="targetId"
-              :label="t('task.editModal.form.scenario')"
+              :label="t('common.scenario')"
               class="flex-1 min-w-0"
               :rules="{ required: true, message: t('task.editModal.form.scenarioRule') }">
               <Select
@@ -944,7 +944,7 @@ onMounted(() => {
             <FormItem
               v-if="shouldShowTestType"
               name="testType"
-              :label="t('task.editModal.form.testType')"
+              :label="t('common.testType')"
               class="flex-1"
               required>
               <SelectEnum
@@ -959,7 +959,7 @@ onMounted(() => {
           <template v-if="formState.taskType === TaskType.API_TEST">
             <FormItem
               name="targetParentId"
-              :label="t('task.editModal.form.service')"
+              :label="t('common.service')"
               :rules="{ required: true, message: t('task.editModal.form.serviceRule') }">
               <Select
                 v-model:value="formState.targetParentId"
@@ -986,7 +986,7 @@ onMounted(() => {
 
             <div class="flex space-x-4">
               <FormItem
-                :label="t('task.editModal.form.api')"
+                :label="t('common.api')"
                 name="targetId"
                 class="flex-1 min-w-0"
                 :rules="{ required: true, message: t('task.editModal.form.apiRule') }">
@@ -1004,7 +1004,7 @@ onMounted(() => {
                 v-if="shouldShowTestType"
                 class="flex-1"
                 name="testType"
-                :label="t('task.editModal.form.testType')"
+                :label="t('common.testType')"
                 required>
                 <SelectEnum
                   v-model:value="formState.testType"
@@ -1022,7 +1022,7 @@ onMounted(() => {
               class="flex-1/2"
               :rules="{ required: true, message: t('task.editModal.form.assigneeRule') }">
               <template #label>
-                {{ t('task.editModal.form.assignee') }}
+                {{ t('common.assignee') }}
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
@@ -1048,14 +1048,14 @@ onMounted(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToField('assigneeId')">
-                  {{ t('task.editModal.form.assignToMe') }}
+                  {{ t('common.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
 
             <FormItem name="confirmerId" class="flex-1/2">
               <template #label>
-                {{ t('task.editModal.form.confirmer') }}<Popover placement="rightTop">
+                {{ t('common.confirmer') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                       {{ t('task.editModal.form.confirmerTip') }}
@@ -1081,7 +1081,7 @@ onMounted(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToField('confirmerId')">
-                  {{ t('task.editModal.form.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1089,7 +1089,7 @@ onMounted(() => {
 
           <div class="flex space-x-4">
             <FormItem
-              :label="t('task.editModal.form.deadline')"
+              :label="t('common.deadlineDate')"
               name="deadlineDate"
               class="flex-1/2"
               :rules="{ required: true, validator: validateDeadlineDate }">
@@ -1107,7 +1107,7 @@ onMounted(() => {
 
             <FormItem name="confirmerId" class="flex-1/2">
               <template #label>
-                {{ t('task.editModal.form.tester') }}<Popover placement="rightTop">
+                {{ t('common.tester') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                       {{ t('task.editModal.form.testerTip') }}
@@ -1131,7 +1131,7 @@ onMounted(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToField('testerId')">
-                  {{ t('task.editModal.form.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1139,7 +1139,7 @@ onMounted(() => {
 
           <FormItem
             name="description"
-            :label="t('task.editModal.form.description')"
+            :label="t('common.description')"
             :rules="{validator: validateDescriptionLength}">
             <AsyncComponent :visible="shouldShowEditor">
               <RichEditor
@@ -1156,7 +1156,7 @@ onMounted(() => {
         <div class="w-80 pl-2 border-l">
           <FormItem
             v-if="proTypeShowMap.showSprint"
-            :label="t('task.editModal.form.sprint')"
+            :label="t('common.sprint')"
             name="sprintId"
             :rules="{ required: true, message: t('task.editModal.form.sprintRule') }">
             <Select
@@ -1178,7 +1178,7 @@ onMounted(() => {
           </FormItem>
 
           <FormItem
-            :label="t('task.editModal.form.module')"
+            :label="t('common.module')"
             name="moduleId">
             <TreeSelect
               v-model:value="formState.moduleId"
@@ -1200,7 +1200,7 @@ onMounted(() => {
           </FormItem>
 
           <FormItem
-            :label="t('task.editModal.form.parentTask')"
+            :label="t('common.parentTask')"
             name="parentTaskId">
             <Select
               v-if="!!props.parentTaskId"
@@ -1238,7 +1238,7 @@ onMounted(() => {
             name="evalWorkload"
             :rules="{ required: !!formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
-              {{ t('task.editModal.form.workload.evalWorkload') }}
+              {{ t('common.evalWorkload') }}
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
@@ -1263,7 +1263,7 @@ onMounted(() => {
           <template v-if="!!props.taskId">
             <FormItem name="actualWorkload">
               <template #label>
-                <span class="w-70">{{ t('task.editModal.form.workload.actualWorkload') }}</span>
+                <span class="w-70">{{ t('common.actualWorkload') }}</span>
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
@@ -1289,7 +1289,7 @@ onMounted(() => {
 
           <FormItem
             name="softwareVersion"
-            :label="t('task.editModal.form.softwareVersion')">
+            :label="t('common.softwareVersion')">
             <Select
               v-model:value="formState.softwareVersion"
               allowClear
@@ -1304,7 +1304,7 @@ onMounted(() => {
             name="tagIds"
             class="relative">
             <template #label>
-              {{ t('task.editModal.form.tags') }}
+              {{ t('common.tags') }}
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
@@ -1395,7 +1395,7 @@ onMounted(() => {
             </Select>
           </FormItem>
 
-          <FormItem :label="t('task.editModal.form.attachments')">
+          <FormItem :label="t('common.attachments')">
             <div
               style="height: 60px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
               class="border border-dashed rounded flex flex-col px-2 py-1"

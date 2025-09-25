@@ -101,11 +101,11 @@ export default defineComponent({
       columns: [[
         {
           dataIndex: 'name',
-          label: this.$t('service.dataModel.form.name')
+          label: this.$t('common.name')
         },
         {
           dataIndex: 'required',
-          label: this.$t('service.dataModel.form.required')
+          label: this.$t('common.required')
         },
         {
           dataIndex: 'nullabled',
@@ -113,23 +113,23 @@ export default defineComponent({
         },
         {
           dataIndex: 'deprecated',
-          label: this.$t('service.dataModel.form.deprecated')
+          label: this.$t('common.deprecated')
         },
         {
           dataIndex: 'type',
-          label: this.$t('service.dataModel.form.type')
+          label: this.$t('common.type')
         },
         {
           dataIndex: 'format',
-          label: this.$t('service.dataModel.form.format')
+          label: this.$t('common.format')
         },
         {
           dataIndex: 'example',
-          label: this.$t('service.dataModel.form.example')
+          label: this.$t('common.example')
         },
         {
           dataIndex: 'description',
-          label: this.$t('service.dataModel.form.description')
+          label: this.$t('common.description')
         }
       ]],
       typeColor: {

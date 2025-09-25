@@ -22,7 +22,7 @@ export const contentTreeData = [
     key: 'total',
     children: [
       {
-        title: t('reportAdd.execPerfContent.contentTree.name'),
+        title: t('common.name'),
         key: 'name'
       },
       {

@@ -294,7 +294,7 @@ onMounted(async () => {
       class="w-200 mt-5">
       <FormItem
         name="name"
-        :label="t('taskAnalysis.form.name')"
+        :label="t('common.name')"
         class="input-item"
         required>
         <Input
@@ -319,7 +319,7 @@ onMounted(async () => {
 
       <FormItem
         name="description"
-        :label="t('taskAnalysis.form.description')">
+        :label="t('common.description')">
         <Textarea
           v-model:value="formData.description"
           :maxlength="200"

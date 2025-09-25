@@ -34,13 +34,13 @@ const loadMockApiInfo = async (id:string) => {
 };
 
 const columns = [[
-  { label: t('service.ApiMock.columns.id'), dataIndex: 'id' },
-  { label: t('service.ApiMock.columns.name'), dataIndex: 'name' },
+  { label: t('common.id'), dataIndex: 'id' },
+  { label: t('common.name'), dataIndex: 'name' },
   { label: t('service.ApiMock.columns.mockServiceId'), dataIndex: 'mockServiceId' },
   { label: t('service.ApiMock.columns.mockServiceName'), dataIndex: 'mockServiceName' },
   { label: t('service.ApiMock.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' },
-  { label: t('service.ApiMock.columns.createdBy'), dataIndex: 'createdBy' },
-  { label: t('service.ApiMock.columns.createdDate'), dataIndex: 'createdDate' }
+  { label: t('common.createdBy'), dataIndex: 'createdBy' },
+  { label: t('common.createdDate'), dataIndex: 'createdDate' }
 ]];
 
 const summary = ref('');

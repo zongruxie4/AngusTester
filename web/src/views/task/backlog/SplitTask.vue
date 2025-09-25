@@ -500,17 +500,17 @@ onMounted(() => {
       <div class="head-container flex items-center space-x-2.5 mb-1.5 px-2 rounded">
         <div class="w-27 space-x-0.5 head-item-container">
           <IconRequired />
-          <span>{{ t('backlog.splitTask.headers.type') }}</span>
+          <span>{{ t('common.type') }}</span>
         </div>
 
         <div class="w-20 space-x-0.5 head-item-container">
           <IconRequired />
-          <span>{{ t('backlog.splitTask.headers.priority') }}</span>
+          <span>{{ t('common.priority') }}</span>
         </div>
 
         <div class="flex-1 space-x-0.5 head-item-container">
           <IconRequired />
-          <span>{{ t('backlog.splitTask.headers.name') }}</span>
+          <span>{{ t('common.name') }}</span>
         </div>
 
         <div class="w-9 space-x-0.5 head-item-container">
@@ -519,26 +519,22 @@ onMounted(() => {
 
         <div class="w-20 space-x-0.5 head-item-container">
           <span>
-            {{
-              props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                ? t('backlog.splitTask.headers.evalWorkload')
-                : t('backlog.splitTask.headers.evalWorkload')
-            }}
+            {{ t('backlog.splitTask.headers.evalWorkload') }}
           </span>
         </div>
 
         <div class="w-25 space-x-0.5 head-item-container">
           <IconRequired />
-          <span>{{ t('backlog.splitTask.headers.assignee') }}</span>
+          <span>{{ t('common.assignee') }}</span>
         </div>
 
         <div class="w-25 space-x-0.5 head-item-container">
-          <span>{{ t('backlog.splitTask.headers.confirmer') }}</span>
+          <span>{{ t('common.confirmer') }}</span>
         </div>
 
         <div class="w-42 space-x-0.5 head-item-container">
           <IconRequired />
-          <span>{{ t('backlog.splitTask.headers.deadline') }}</span>
+          <span>{{ t('common.deadline') }}</span>
         </div>
 
         <div class="w-5 h-5"></div>

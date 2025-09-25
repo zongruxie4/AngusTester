@@ -30,19 +30,19 @@ const props = withDefaults(defineProps<Props>(), {
 const options = [
   {
     value: 'name',
-    label: t('reportAdd.basic.options.name')
+    label: t('reportAdd.basic.options.showName')
   },
   {
     value: 'user',
-    label: t('reportAdd.basic.options.user')
+    label: t('reportAdd.basic.options.showUser')
   },
   {
     value: 'createdDate',
-    label: t('reportAdd.basic.options.createdDate')
+    label: t('reportAdd.basic.options.showCreatedDate')
   },
   {
     value: 'version',
-    label: t('reportAdd.basic.options.version')
+    label: t('reportAdd.basic.options.showVersion')
   },
   {
     value: 'reportContacts',

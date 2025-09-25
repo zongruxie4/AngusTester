@@ -1305,54 +1305,54 @@ const searchOptions = [
   {
     type: 'input' as const,
     valueKey: 'name',
-    placeholder: t('task.searchPanel.searchOptions.name')
+    placeholder: t('common.name')
   },
   {
     type: 'select-enum' as const,
     valueKey: 'status',
-    placeholder: t('task.searchPanel.searchOptions.status'),
+    placeholder: t('common.status'),
     enumKey: TaskStatusEnum
   },
   {
     type: 'select-enum' as const,
     valueKey: 'priority',
-    placeholder: t('task.searchPanel.searchOptions.priority'),
+    placeholder: t('common.priority'),
     enumKey: Priority
   },
   {
     type: 'select-user' as const,
     valueKey: 'assigneeId',
-    placeholder: t('task.searchPanel.searchOptions.assigneeId'),
+    placeholder: t('common.assignee'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user' as const,
     valueKey: 'confirmerId',
-    placeholder: t('task.searchPanel.searchOptions.confirmerId'),
+    placeholder: t('common.confirmer'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user' as const,
     valueKey: 'execBy',
-    placeholder: t('task.searchPanel.searchOptions.execBy'),
+    placeholder: t('common.executor'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user' as const,
     valueKey: 'createdBy',
-    placeholder: t('task.searchPanel.searchOptions.createdBy'),
+    placeholder: t('common.createdBy'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user' as const,
     valueKey: 'lastModifiedBy',
-    placeholder: t('task.searchPanel.searchOptions.lastModifiedBy'),
+    placeholder: t('common.lastModifiedBy'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-enum' as const,
     valueKey: 'testType',
-    placeholder: t('task.searchPanel.searchOptions.testType'),
+    placeholder: t('common.testType'),
     enumKey: TestType
   },
   {
@@ -1361,13 +1361,13 @@ const searchOptions = [
     params: { projectId: props.projectId },
     valueKey: 'moduleId',
     showSearch: true,
-    placeholder: t('task.searchPanel.searchOptions.moduleId'),
+    placeholder: t('comon.module'),
     fieldNames: { label: 'name', value: 'id' }
   },
   {
     type: 'select-enum' as const,
     valueKey: 'execResult',
-    placeholder: t('task.searchPanel.searchOptions.execResult'),
+    placeholder: t('common.execResult'),
     enumKey: Result
   },
   {

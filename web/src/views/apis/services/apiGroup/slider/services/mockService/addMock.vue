@@ -162,7 +162,7 @@ onMounted(() => {
         :rules="rules">
         <div class="flex">
           <div>
-            <FormItem :label="t('service.mockService.form.name')" required />
+            <FormItem :label="t('common.name')" required />
             <FormItem
               :label="t('service.mockService.form.domain')"
               :required="!isPrivate"
