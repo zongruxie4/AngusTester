@@ -148,8 +148,6 @@
           "ignoreAssertionsTooltip": "如果不忽略，断言失败时按采样错误处理。",
           "updateTestResult": "更新测试结果",
           "updateTestResultTooltip": "是否将测试结果更新到关联资源(API、用例或场景)。",
-          "priority": "优先级",
-          "authControl": "是否授权控制",
           "authControlTooltip": "生成的脚本是否受权限控制。受权限控制时，默认只有自己可见且有全部权限，其他用户需要通过\"脚本\" -> \"授权\"手动授权；不受权限控制所有用户可见且可操作。"
         }
       },
@@ -224,13 +222,10 @@
       "performanceTestConfig": "性能测试任务配置",
       "stabilityTestConfig": "稳定性测试任务配置",
       "taskSprint": "任务迭代",
-      "testType": "测试类型",
       "selectSprint": "请选择迭代",
       "selectTestType": "请选择测试类型",
-      "assignee": "分配经办人",
       "selectAssignee": "请选择经办人",
       "deadlineDate": "测试截止时间",
-      "priority": "优先级",
       "generateSuccess": "生成任务成功",
       "validation": {
         "testTypeRequired": "请选择测试类型"
@@ -603,7 +598,6 @@
     "hideXAxisTicks": "隐藏X轴刻度线",
     "advancedParameters": "高级参数",
     "startMode": "启动模式",
-    "priority": "优先级",
     "executionNodes": "执行节点",
     "executionNodeCount": "执行节点数",
     "availableExecutionNodes": "可用执行节点",
@@ -868,7 +862,6 @@
     "rampDownTooltip2": "调整线程逐渐减少的数量，值大小不能超过最大线程数。",
     "advancedParameters": "高级参数",
     "startupMode": "启动模式",
-    "priority": "优先级",
     "executionNodes": "执行节点",
     "executionNodeCount": "执行节点数",
     "availableExecutionNodes": "可用执行节点",

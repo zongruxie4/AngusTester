@@ -1505,7 +1505,7 @@ const sortMenuItems = [
   },
   {
     key: 'priority',
-    name: t('task.searchPanel.sortOptions.priority'),
+    name: t('common.priority'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {

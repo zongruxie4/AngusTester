@@ -176,7 +176,7 @@ const tableColumns = [
   {
     key: 'priority',
     dataIndex: 'priority',
-    title: t('task.assocTask.columns.priority')
+    title: t('common.priority')
   },
   {
     key: 'evalWorkload',

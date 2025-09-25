@@ -696,7 +696,7 @@ const subTaskTableColumns = [
         v-model:value="newSubTaskPriority"
         internal
         enumKey="Priority"
-        :placeholder="t('task.subTask.form.priority')"
+        :placeholder="t('common.priority')"
         class="w-28 mr-2">
         <template #option="record">
           <TaskPriority :value="record as any" />

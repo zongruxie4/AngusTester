@@ -64,7 +64,6 @@
       "selectService": "选择服务",
       "selectApi": "选择接口",
       "selectScenario": "选择场景",
-      "priority": "优先级",
       "plannedStartTimeFrom": "计划开始时间从",
       "plannedStartTimeTo": "计划开始时间到",
       "actualStartTimeFrom": "实际开始时间从",

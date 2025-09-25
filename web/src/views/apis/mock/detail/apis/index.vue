@@ -1661,7 +1661,7 @@ provide('proxyOptObj', proxyOptObj);
                   <div class="flex items-center leading-5 mb-5 space-x-2">
                     <div class="flex items-center">
                       <IconRequired />
-                      <span>{{ t('mock.detail.apis.priority') }}</span>
+                      <span>{{ t('common.priority') }}</span>
                       <Tooltip>
                         <template #title>{{ t('mock.detail.apis.priorityTooltip') }}</template>
                         <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-0.75" />

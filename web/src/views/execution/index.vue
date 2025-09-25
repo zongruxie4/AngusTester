@@ -470,7 +470,7 @@ onBeforeUnmount(() => {
                 <div class="flex w-1/2">
                   <div class="text-text-sub-content space-y-1 flex-none w-20">
                     <div class="whitespace-nowrap h-7 text-right">
-                      {{ t('execution.basic.priority') }}:
+                      {{ t('common.priority') }}:
                     </div>
                     <div class="whitespace-nowrap h-7 text-right">
                       {{ t('common.scriptName') }}:

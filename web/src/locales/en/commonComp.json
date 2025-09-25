@@ -148,7 +148,6 @@
           "ignoreAssertionsTooltip": "If not ignored, assertion failures will be treated as sampling errors.",
           "updateTestResult": "Update Test Result",
           "updateTestResultTooltip": "Whether to update test results to associated resources (API, test cases, or scenarios).",
-          "priority": "Priority",
           "authControl": "Authorization Control",
           "authControlTooltip": "Whether the generated script is subject to permission control. When under permission control, only the creator is visible by default and has full permissions. Other users need to manually authorize through 'Scripts' -> 'Authorization'. When not under permission control, all users are visible and can operate."
         }
@@ -223,13 +222,10 @@
       "performanceTestConfig": "Performance Test Task Configuration",
       "stabilityTestConfig": "Stability Test Task Configuration",
       "taskSprint": "Task Sprint",
-      "testType": "Test Type",
       "selectSprint": "Please select sprint",
       "selectTestType": "Please select test type",
-      "assignee": "Assignee",
       "selectAssignee": "Please select assignee",
       "deadlineDate": "Test Deadline",
-      "priority": "Priority",
       "generateSuccess": "Task generated successfully",
       "validation": {
         "testTypeRequired": "Please select test type"
@@ -624,7 +620,6 @@
     "hideXAxisTicks": "Hide X-axis Ticks",
     "advancedParameters": "Advanced Parameters",
     "startMode": "Start Mode",
-    "priority": "Priority",
     "executionNodes": "Execution Nodes",
     "executionNodeCount": "Execution Node Count",
     "availableExecutionNodes": "Available Execution Nodes",
@@ -887,7 +882,6 @@
     "rampDownTooltip2": "Adjust the number of threads gradually decreased, value cannot exceed maximum threads.",
     "advancedParameters": "Advanced Parameters",
     "startupMode": "Startup Mode",
-    "priority": "Priority",
     "executionNodes": "Execution Nodes",
     "executionNodeCount": "Execution Node Count",
     "availableExecutionNodes": "Available Execution Nodes",

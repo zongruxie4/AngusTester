@@ -319,12 +319,8 @@
       "selectOrQueryPlan": "Select or query plan",
       "module": "Module",
       "selectOrQueryModule": "Select or query module",
-      "tester": "Tester",
       "pleaseSelectTester": "Please select tester",
-      "assignToMe": "Assign to me",
-      "developer": "Developer",
       "pleaseSelectDeveloper": "Please select developer",
-      "priority": "Priority",
       "priorityHint": "Priority is used to identify the importance and urgency of cases. Use high priority for important, real-time, or cases that may block other activities.",
       "estimatedStoryPoints": "Estimated Story Points",
       "estimatedWorkHours": "Estimated Work Hours",
@@ -488,7 +484,6 @@
     "infoView": {
       "totalGroups": "Total {total} groups",
       "totalItems": "Total {total} items",
-      "priority": "Priority"
     },
     "tableView": {
       "totalGroups": "Total {total} groups",
@@ -916,10 +911,6 @@
     "detail": {
       "title": "Case Details",
       "reviewStartedSuccess": "Review started successfully",
-      "caseCode": "Case Code",
-      "caseName": "Case Name",
-      "version": "Version",
-      "priority": "Priority",
       "reviewStatus": "Review Status",
       "confirmCancelReviewCase": "Confirm to cancel review case 「{name}」?",
       "restartReview": "Restart Review",
@@ -1060,10 +1051,6 @@
       "description": "Baseline Description",
       "enterQueryName": "Enter query name",
       "addBaselineCase": "Add Cases",
-      "caseCode": "Case Code",
-      "caseName": "Case Name",
-      "priority": "Priority",
-      "version": "Version",
       "confirmDeleteCase": "Confirm delete 「{name}」?",
       "selectCase": "Select Case",
       "queryNameCode": "Query name, code",

@@ -122,7 +122,7 @@ onMounted(async () => {
             dataType="float"
             size="small"
             allowClear
-            :placeholder="t('execution.searchPanel.priority')"
+            :placeholder="t('common.priority')"
             class="!w-72 ml-2"
             :min="0"
             @change="priorityInputChange">

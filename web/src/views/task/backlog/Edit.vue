@@ -871,7 +871,7 @@ const getPopupContainer = () => {
 
             <FormItem
               name="priority"
-              :label="t('backlog.editForm.labels.priority')"
+              :label="t('common.priority')"
               class="flex-1/2"
               required>
               <SelectEnum

@@ -77,7 +77,7 @@ const tableColumns = [
     customRender: ({ text }) => 'v' + text || '--'
   },
   {
-    title: t('functionBaseline.editForm.priority'),
+    title: t('common.priority'),
     dataIndex: 'priority',
     width: 120
   },

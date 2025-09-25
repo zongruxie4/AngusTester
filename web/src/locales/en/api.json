@@ -1994,7 +1994,6 @@
         "deleteResponse": "Delete Response",
         "match": "Match",
         "matchTooltip": "Specify the matching request conditions that need to be met to return the current response. Note: When there are multiple responses that meet the matching conditions, the response with the highest priority will be returned. If no matching conditions are configured or the priorities are the same, the first condition or the first configured condition will be returned.",
-        "priority": "Priority",
         "priorityTooltip": "The higher the value, the higher the priority. Value range: 0~2147483647. Note: The response with the highest priority will only be returned when there are multiple responses that meet the matching conditions.",
         "content": "Content",
         "pushback": "Pushback",

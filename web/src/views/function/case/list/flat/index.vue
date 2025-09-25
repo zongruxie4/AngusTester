@@ -207,7 +207,7 @@ defineExpose({
                   <div class="flex justify-between mt-2 text-3">
                     <div>{{ item.code }}</div>
                     <div>
-                      {{ t('functionCase.infoView.priority') }}
+                      {{ t('common.priority') }}
                       <Colon class="mr-1" />{{ item.priority.message }}
                     </div>
                   </div>

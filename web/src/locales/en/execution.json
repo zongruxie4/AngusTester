@@ -66,7 +66,6 @@
       "selectService": "Select service",
       "selectApi": "Select API",
       "selectScenario": "Select scenario",
-      "priority": "Priority",
       "plannedStartTimeFrom": "Planned start time from",
       "plannedStartTimeTo": "Planned start time to",
       "actualStartTimeFrom": "Actual start time from",

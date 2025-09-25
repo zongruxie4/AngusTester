@@ -2029,7 +2029,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
           </div>
           <div v-if="globalParams.startMode === 'TIMING'" class="h-7 whitespace-nowrap mb-5 -mt-3 startAtDate"></div>
           <div class="h-7 whitespace-nowrap mb-5 priority pl-1.75">
-            {{ t('xcan_exec.priority') }}
+            {{ t('common.priority') }}
           </div>
           <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-1.75 font-medium ">
             {{ t('xcan_exec.executionNodes') }}
@@ -2178,7 +2178,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               dataType="number"
               :min="1"
               :max="2147483647"
-              :placeholder="t('xcan_exec.priority')" />
+              :placeholder="t('common.priority')" />
             <Tooltip
               :title="t('xcan_exec.priorityTooltip')"
               placement="topLeft"

@@ -132,7 +132,7 @@ const columns = [
     width: 100
   },
   {
-    title: t('caseReview.detail.priority'),
+    title: t('common.priority'),
     dataIndex: 'priority',
     customRender: ({ text }):string => text?.message,
     width: 100,

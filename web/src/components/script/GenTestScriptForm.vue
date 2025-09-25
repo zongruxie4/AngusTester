@@ -297,7 +297,7 @@ defineExpose({
 
         <!-- Priority -->
         <FormItem
-          :label="t('commonComp.genTestScriptModal.testForm.priority')"
+          :label="t('common.priority')"
           required
           class="form-item">
           <SelectEnum
