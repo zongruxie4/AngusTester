@@ -68,7 +68,7 @@ const splitTime = (str: string): [string, string] => {
 
 const getCurrentDuration = (_currentDurationStr, _durationStr) => {
   if (!_currentDurationStr) {
-    return t('commonPlugin.utils.defaultValue');
+    return t('common.defaultValue');
   }
 
   const _durationUnit = _durationStr.replace(/\d/g, '');

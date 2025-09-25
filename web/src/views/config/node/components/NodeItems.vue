@@ -264,7 +264,7 @@ defineExpose({
             <span
               v-if="item.required"
               class="text-status-error absolute left-0 -bottom-1.5"
-              :class="[validated && !(nodeParams[item.valueKey]?.trim()) ? 'inline' : 'hidden']">{{ t('node.nodeItem.labels.required') }}</span>
+              :class="[validated && !(nodeParams[item.valueKey]?.trim()) ? 'inline' : 'hidden']">{{ t('common.required') }}</span>
             <span
               v-if="item.valueKey === 'sshPort'"
               class="text-status-error absolute left-0 -bottom-1.5"

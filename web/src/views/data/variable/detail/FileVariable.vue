@@ -298,7 +298,7 @@ const {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired class="invisible" />
-                  <span>{{ t('dataVariable.detail.fileVariable.defaultValue') }}</span>
+                  <span>{{ t('common.defaultValue') }}</span>
                 </div>
                 <Input
                   v-model:value="defaultValue"
@@ -358,7 +358,7 @@ const {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired class="invisible" />
-                  <span>{{ t('dataVariable.detail.fileVariable.defaultValue') }}</span>
+                  <span>{{ t('common.defaultValue') }}</span>
                 </div>
                 <Input
                   v-model:value="defaultValue"

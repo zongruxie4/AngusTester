@@ -626,7 +626,6 @@
         "variableValueRepeat": "Variable value is duplicated"
       },
       "form": {
-        "url": "URL",
         "urlPlaceholder": "URL prefix pointing to target host, e.g.: https://{env}.xcan.cloud:{prot}/{path}",
         "description": "Description",
         "descriptionPlaceholder": "Server description, maximum 400 characters",
@@ -945,15 +944,10 @@
       "form": {
         "namePlaceholder": "Please enter parameter name",
         "typePlaceholder": "Please select parameter type",
-        "required": "Required",
         "descriptionPlaceholder": "Please enter description",
-        "value": "Value",
         "valuePlaceholder": "Please enter debug value, maximum {maxLength} characters supported",
-        "format": "Format",
         "formatPlaceholder": "Please select format",
-        "example": "Example",
         "examplePlaceholder": "Please enter example value",
-        "defaultValue": "Default Value",
         "defaultValuePlaceholder": "Please enter default value",
         "minLength": "Min Length",
         "minLengthPlaceholder": "Please enter minimum length",
@@ -2211,7 +2205,6 @@
           },
           "urlForm": {
             "title": "URL Form",
-            "url": "URL",
             "urlPlaceholder": "Please enter URL",
             "method": "Request Method",
             "methodPlaceholder": "Please select request method",

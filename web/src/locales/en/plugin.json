@@ -76,7 +76,6 @@
         "minutes": "min",
         "hours": "h"
       },
-      "defaultValue": "--"
     }
   },
   "httpPlugin": {

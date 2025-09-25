@@ -568,7 +568,6 @@
     "extractionParameterName": "Extraction Parameter Name",
     "regexExpression": "Regex Expression",
     "extractionExpression": "Extraction Expression",
-    "defaultValue": "Default Value",
     "service": "Service",
     "interface": "Interface",
     "define": "Define",

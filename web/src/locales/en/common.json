@@ -21,6 +21,7 @@
     "status": "Status",
     "source": "Source",
     "value": "Value",
+    "defaultValue": "Default Value",
     "category": "Category",
     "position": "Position",
     "address": "Address",

@@ -75,7 +75,6 @@
         "minutes": "分",
         "hours": "小时"
       },
-      "defaultValue": "--"
     }
   },
   "httpPlugin": {

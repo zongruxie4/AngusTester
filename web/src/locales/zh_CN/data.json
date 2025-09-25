@@ -242,7 +242,6 @@
         "expressionPlaceholder": "表达式，最长1024个字符",
         "matchItem": "匹配项",
         "matchItemPlaceholder": "匹配项，范围0-2000（可选）",
-        "defaultValue": "缺省值",
         "defaultValuePlaceholder": "缺省值，最长4096个字符",
         "httpConfigs": {
           "title": "HTTP配置",
@@ -334,7 +333,6 @@
         "expressionPlaceholder": "表达式，最长1024个字符",
         "matchItem": "匹配项",
         "matchItemPlaceholder": "匹配项，范围0-2000（可选）",
-        "defaultValue": "缺省值",
         "defaultValuePlaceholder": "缺省值，最长4096个字符",
         "selectDatasource": {
           "title": "选择数据源",
@@ -378,7 +376,6 @@
         "expressionPlaceholder": "表达式，最长1024个字符",
         "matchItem": "匹配项",
         "matchItemPlaceholder": "匹配项，范围0 ~ 2000",
-        "defaultValue": "缺省值",
         "defaultValuePlaceholder": "缺省值，最长4096个字符"
       }
     }
@@ -527,7 +524,6 @@
           "extractionConfig": "提取配置",
           "extractionMethod": "提取方式",
           "extractionMethodPlaceholder": "提取方式",
-          "defaultValue": "缺省值",
           "defaultValuePlaceholder": "缺省值，最长4096个字符",
           "expression": "表达式",
           "expressionPlaceholder": "表达式，最长1024个字符",
@@ -570,7 +566,6 @@
           "extractionConfig": "提取配置",
           "extractionMethod": "提取方式",
           "extractionMethodPlaceholder": "提取方式",
-          "defaultValue": "缺省值",
           "defaultValuePlaceholder": "缺省值，最长4096个字符",
           "expression": "表达式",
           "expressionPlaceholder": "表达式，最长1024个字符",

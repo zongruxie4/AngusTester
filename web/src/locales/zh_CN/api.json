@@ -254,7 +254,6 @@
         "serviceMock": "Mock服务"
       },
       "form": {
-        "required": "必填",
         "deprecated": "弃用",
         "format": "格式",
         "example": "example",
@@ -631,7 +630,6 @@
         "variableValueRepeat": "变量值重复"
       },
       "form": {
-        "url": "URL",
         "urlPlaceholder": "指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}",
         "descriptionPlaceholder": "服务器描述，最大支持400字符",
         "variables": "变量",
@@ -951,11 +949,8 @@
         "required": "必填",
         "descriptionPlaceholder": "请输入描述",
         "valuePlaceholder": "请输入调试值，最大支持{maxLength}个字符",
-        "format": "格式",
         "formatPlaceholder": "请选择格式",
-        "example": "示例",
         "examplePlaceholder": "请输入示例值",
-        "defaultValue": "默认值",
         "defaultValuePlaceholder": "请输入默认值",
         "minLength": "最小长度",
         "minLengthPlaceholder": "请输入最小长度",
@@ -2211,7 +2206,6 @@
           },
           "urlForm": {
             "title": "URL表单",
-            "url": "URL",
             "urlPlaceholder": "请输入URL",
             "method": "请求方法",
             "methodPlaceholder": "请选择请求方法",

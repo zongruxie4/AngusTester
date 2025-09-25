@@ -241,7 +241,6 @@
         "expressionPlaceholder": "Expression, maximum 1024 characters",
         "matchItem": "Match Item",
         "matchItemPlaceholder": "Match Item, range 0-2000 (optional)",
-        "defaultValue": "Default Value",
         "defaultValuePlaceholder": "Default Value, maximum 4096 characters",
         "httpConfigs": {
           "title": "HTTP Configuration",
@@ -378,7 +377,6 @@
         "expressionPlaceholder": "Expression, maximum 1024 characters",
         "matchItem": "Match Item",
         "matchItemPlaceholder": "Match Item, range 0 ~ 2000",
-        "defaultValue": "Default Value",
         "defaultValuePlaceholder": "Default Value, maximum 4096 characters"
       }
     }
@@ -574,7 +572,6 @@
           "extractionConfig": "Extraction Configuration",
           "extractionMethod": "Method",
           "extractionMethodPlaceholder": "Extraction Method",
-          "defaultValue": "Default Value",
           "defaultValuePlaceholder": "Default value, maximum 4096 characters",
           "expression": "Expression",
           "expressionPlaceholder": "Expression, maximum 1024 characters",

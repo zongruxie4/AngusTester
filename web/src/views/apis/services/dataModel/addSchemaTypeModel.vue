@@ -279,7 +279,7 @@ defineExpose({
       data-type="en"
       includes="-_." />
     <div class="flex items-center mt-2 space-x-1">
-      <span>{{ t('service.dataModel.form.required') }}</span>
+      <span>{{ t('common.required') }}</span>
       <Switch
         v-model:checked="required"
         size="small" />

@@ -519,7 +519,6 @@
       },
       "labels": {
         "role": "角色",
-        "required": "必填项",
         "portRangeTip": "请填写端口号范围在1 ~ 65535之间",
         "selectRole": "请选择角色",
         "connectionSuccess": "连接成功",

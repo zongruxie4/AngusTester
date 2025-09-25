@@ -21,6 +21,7 @@
     "status": "状态",
     "source": "来源",
     "value": "值",
+    "defaultValue": "缺省值",
     "category": "分类",
     "position": "位置",
     "address": "地址",

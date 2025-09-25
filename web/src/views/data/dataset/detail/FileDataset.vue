@@ -310,7 +310,7 @@ const inputProps = {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired class="invisible" />
-                  <span>{{ t('dataset.detail.fileDataset.form.defaultValue') }}</span>
+                  <span>{{ t('common.defaultValue') }}</span>
                 </div>
                 <Input
                   v-model:value="defaultValue"
@@ -369,7 +369,7 @@ const inputProps = {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired class="invisible" />
-                  <span>{{ t('dataset.detail.fileDataset.form.defaultValue') }}</span>
+                  <span>{{ t('common.defaultValue') }}</span>
                 </div>
                 <Input
                   v-model:value="defaultValue"

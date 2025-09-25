@@ -260,7 +260,7 @@ const request = [
               <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('xcan_execSettingForm.extractionMethod') }}</div>
               <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_execSettingForm.parameterName') }}</div>
               <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ variable.extraction.method.value === 'REGEX' ? t('xcan_execSettingForm.regexExpression') : t('xcan_execSettingForm.extractionExpression') }}</div>
-              <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('xcan_execSettingForm.defaultValue') }}</div>
+              <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('common.defaultValue') }}</div>
             </template>
             <template v-else>
               <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_execSettingForm.variableValue') }}</div>
