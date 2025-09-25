@@ -823,9 +823,6 @@
         "clientAuth": "客户端认证",
         "getToken": "获取令牌"
       },
-      "apiKey": {
-        "position": "位置"
-      },
       "oauth2Fields": {
         "authorizationUrl": "授权URL",
         "callbackUrl": "回调URL",

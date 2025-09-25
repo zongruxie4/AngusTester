@@ -469,7 +469,6 @@
     "getToken": "Get Token",
     "configureExistingToken": "Configure Existing Token",
     "configureGenerateToken": "Configure Generate Token",
-    "position": "Position",
     "proxyNotConnected": "Proxy not connected, please check proxy configuration"
   },
   "xcan_apiBody": {

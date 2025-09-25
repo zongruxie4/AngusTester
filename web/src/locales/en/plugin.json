@@ -1984,7 +1984,6 @@
       "form": {
         "paramName": "Parameter Name",
         "paramValue": "Parameter Value",
-        "position": "Position",
         "paramNamePlaceholder": "Parameter Name",
         "filePosition": "File Position"
       },

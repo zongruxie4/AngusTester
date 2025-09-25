@@ -850,7 +850,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
               @blur="changeApiKey" />
           </div>
           <div class="flex items-center">
-            <span class="w-15">{{ t('service.apiAuthorization.apiKey.position') }}</span>
+            <span class="w-15">{{ t('common.position') }}</span>
             <Select
               v-model:value="item.in"
               class="w-100"

@@ -1977,7 +1977,6 @@
       "form": {
         "paramName": "参数名",
         "paramValue": "参数值",
-        "position": "位置",
         "paramNamePlaceholder": "参数名称",
         "filePosition": "文件位置"
       },

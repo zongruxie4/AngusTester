@@ -218,7 +218,7 @@ defineExpose({
             v-model:value="item.in"
             :options="inOptions"
             size="small"
-            :placeholder="t('genDataPlugin.pushThirdStoreConfig.form.position')" />
+            :placeholder="t('common.position')" />
         </FormItem>
         <FormItem
           class="flex-1"
