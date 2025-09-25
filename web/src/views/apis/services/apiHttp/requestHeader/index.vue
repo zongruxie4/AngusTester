@@ -167,7 +167,7 @@ const copyValue = async (data: ParamsItem) => {
   }
 
   toClipboard(text).then(() => {
-    notification.success(t('service.apiRequestHeader.messages.copySuccess'));
+    notification.success(t('actions.tips.copySuccess'));
   });
 };
 

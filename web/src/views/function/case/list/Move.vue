@@ -43,7 +43,7 @@ const onFinish = async () => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.moveCaseModal.moveSuccess'));
+  notification.success(t('actions.tips.moveSuccess'));
   emits('update:visible', false);
   emits('update');
   formState.value.targetPlanId = undefined;

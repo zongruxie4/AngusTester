@@ -92,7 +92,7 @@ const handleModuleNameUpdate = async (moduleId: string, event: { target: { value
   if (error) {
     return;
   }
-  notification.success(t('caseReview.editForm.modifySuccess'));
+  notification.success(t('actions.tips.modifySuccess'));
   editingModuleId.value = undefined;
   emits('loadData', searchKeywords.value);
 };

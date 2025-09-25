@@ -40,7 +40,7 @@ export function useNodeUtils (props: NodeItemsProps) {
   const copyToClipboard = async (text: string) => {
     try {
       await toClipboard(text);
-      notification.success(t('node.nodeItem.labels.copySuccess'));
+      notification.success(t('actions.tips.copySuccess'));
     } catch (error) {
       console.error('Failed to copy to clipboard:', error);
     }

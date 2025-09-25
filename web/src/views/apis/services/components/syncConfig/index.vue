@@ -337,7 +337,7 @@ const handleSave = async (sync:SyncObj) => {
     return false;
   }
   currEditData.value = undefined;
-  notification.success(t('service.syncConfig.messages.saveSuccess'));
+  notification.success(t('actions.tips.saveSuccess'));
   emit('saveSuccess');
   getSynchronizationList();
 };
