@@ -125,7 +125,7 @@ export const nodeStatus = [
 
 export const viewItem = [
   {
-    label: t('node.nodeItem.interface.viewItem.id'),
+    label: t('common.id'),
     valueKey: 'id'
   },
   {

@@ -324,7 +324,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="flex items-center text-text-sub-content font-medium flex-none space-x-2 justify-end">
               <div>
-                <span>{{ t('execution.messages.id') }}:</span>
+                <span>{{ t('common.id') }}:</span>
                 <span class="text-text-content"> {{ item?.id || "--" }}</span>
               </div>
               <div>

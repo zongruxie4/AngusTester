@@ -77,7 +77,7 @@ const securityRef = ref();
 const columns = computed(() => {
   return [
     [
-      { label: t('service.groupApiDetail.columns.id'), dataIndex: 'id' },
+      { label: t('common.id'), dataIndex: 'id' },
       { label: t('service.groupApiDetail.columns.summary'), dataIndex: 'summary' },
       { label: t('service.groupApiDetail.columns.operationId'), dataIndex: 'operationId' },
       { label: t('service.groupApiDetail.columns.source'), dataIndex: 'source', type: '1' },

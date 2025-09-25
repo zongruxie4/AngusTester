@@ -29,7 +29,7 @@ export function useSpaceInfo (props: Props) {
   const infoColumns = computed<SpaceInfoColumnType[][]>(() => [
     [
       { dataIndex: 'name', label: t('fileSpace.spaceDetail.columns.name') },
-      { dataIndex: 'id', label: t('fileSpace.spaceDetail.columns.id') },
+      { dataIndex: 'id', label: t('common.id') },
       props.type !== 'space' && {
         dataIndex: 'summary',
         label: t('fileSpace.spaceDetail.columns.actualSize'),

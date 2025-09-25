@@ -358,7 +358,7 @@ const dropdownMenuItems = [
           <div class="flex flex-wrap">
             <div class="flex mt-3">
               <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('functionPlan.list.id') }}</span>
+                <span>{{ t('common.id') }}</span>
                 <Colon />
               </div>
 

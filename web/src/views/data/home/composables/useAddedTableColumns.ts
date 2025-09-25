@@ -22,7 +22,7 @@ export function useAddedTableColumns (type: DataType) {
   const columns = computed(() => {
     const baseColumns = [
       {
-        title: t('dataHome.summaryTable.columns.id'),
+        title: t('common.id'),
         dataIndex: 'id'
       },
       {

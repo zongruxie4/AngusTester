@@ -73,7 +73,7 @@ export function useMockUI () {
   // Table columns configuration
   const columns = [
     {
-      title: t('mock.columns.id'),
+      title: t('common.id'),
       dataIndex: 'id',
       width: '8%',
       customCell: () => {

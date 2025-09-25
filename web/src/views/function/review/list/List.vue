@@ -340,7 +340,7 @@ const dropdownMenuItems = [
             <!-- Top sub-row: ID + Test Plan -->
             <div class="flex text-3 text-theme-sub-content">
               <div class="flex items-center mr-8 mt-1">
-                <span>{{ t('caseReview.list.id') }}</span>
+                <span>{{ t('common.id') }}</span>
                 <Colon />
                 <span class="text-theme-content ml-2">{{ item.id || "--" }}</span>
               </div>

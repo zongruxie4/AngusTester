@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 const GridColumns = computed(() => {
   if (props.value?.scriptType?.value === 'MOCK_DATA') {
     return [
-      [{ dataIndex: 'id', label: t('xcan_testBasicInfo.id') }, { dataIndex: 'status', label: t('xcan_testBasicInfo.status') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
+      [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('xcan_testBasicInfo.status') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
       [{ dataIndex: 'name', label: t('xcan_testBasicInfo.name') }, { dataIndex: 'scriptType', label: t('xcan_testBasicInfo.scriptType') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }],
       [{ dataIndex: 'scriptName', label: t('xcan_testBasicInfo.scriptName') }, { dataIndex: 'priority', label: t('xcan_testBasicInfo.priority') }, { dataIndex: 'batchRows', label: t('xcan_testBasicInfo.batchRows') }],
       [{ dataIndex: 'plugin', label: t('xcan_testBasicInfo.plugin') }, { dataIndex: 'createdByName', label: t('xcan_testBasicInfo.createdByName') }, { dataIndex: 'modifiedByName', label: t('xcan_testBasicInfo.modifiedByName') }],
@@ -52,7 +52,7 @@ const GridColumns = computed(() => {
 
   if (props.hasIgnoreAssertions) {
     return [
-      [{ dataIndex: 'id', label: t('xcan_testBasicInfo.id') }, { dataIndex: 'status', label: t('xcan_testBasicInfo.status') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }, { dataIndex: 'endDate', label: t('xcan_testBasicInfo.endDate') }],
+      [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('xcan_testBasicInfo.status') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }, { dataIndex: 'endDate', label: t('xcan_testBasicInfo.endDate') }],
       [{ dataIndex: 'name', label: t('xcan_testBasicInfo.name') }, { dataIndex: 'scriptType', label: t('xcan_testBasicInfo.scriptType') }, { dataIndex: 'updateTestResult', label: t('xcan_testBasicInfo.updateTestResult') }, { dataIndex: 'modifiedByName', label: t('xcan_testBasicInfo.modifiedByName') }],
       [{ dataIndex: 'scriptName', label: t('xcan_testBasicInfo.scriptName') }, { dataIndex: 'priority', label: t('xcan_testBasicInfo.priority') }, { dataIndex: 'createdByName', label: t('xcan_testBasicInfo.createdByName') }],
       [{ dataIndex: 'plugin', label: t('xcan_testBasicInfo.plugin') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }, { dataIndex: 'actualStartDate', label: t('xcan_testBasicInfo.actualStartDate') }]
@@ -60,7 +60,7 @@ const GridColumns = computed(() => {
   }
 
   return [
-    [{ dataIndex: 'id', label: t('xcan_testBasicInfo.id') }, { dataIndex: 'status', label: t('xcan_testBasicInfo.status') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
+    [{ dataIndex: 'id', label: t('common.id') }, { dataIndex: 'status', label: t('xcan_testBasicInfo.status') }, { dataIndex: 'execNodes', label: t('xcan_testBasicInfo.execNodes') }],
     [{ dataIndex: 'name', label: t('xcan_testBasicInfo.name') }, { dataIndex: 'scriptType', label: t('xcan_testBasicInfo.scriptType') }, { dataIndex: 'reportInterval', label: t('xcan_testBasicInfo.reportInterval') }],
     [{ dataIndex: 'scriptName', label: t('xcan_testBasicInfo.scriptName') }, { dataIndex: 'priority', label: t('xcan_testBasicInfo.priority') }, { dataIndex: 'ignoreAssertions', label: t('xcan_testBasicInfo.ignoreAssertions') }],
     [{ dataIndex: 'plugin', label: t('xcan_testBasicInfo.plugin') }, { dataIndex: 'createdByName', label: t('xcan_testBasicInfo.createdByName') }, { dataIndex: 'modifiedByName', label: t('xcan_testBasicInfo.modifiedByName') }],

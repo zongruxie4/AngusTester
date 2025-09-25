@@ -113,7 +113,7 @@ defineExpose({ isValid, getData });
   <div class="space-y-4 leading-5">
     <div v-if="id" class="space-y-0">
       <div class="flex items-center">
-        <span>{{ t('ftpPlugin.drawerMenu.saveForm.id') }}</span>
+        <span>{{ t('common.id') }}</span>
       </div>
       <div class="flex-1 flex items-center space-x-2">
         <span :title="id" class="truncate">{{ id }}</span>
