@@ -29,6 +29,8 @@
     "url": "URL",
     "required": "必须",
     "deprecated": "过期",
+    "coding": "代码",
+    "encode": "编码",
     "format": "格式",
     "example": "示例",
     "isEnabled": "启用",
@@ -181,8 +183,8 @@
     }
   },
   "views": {
-    "code": "代码视图",
-    "page": "页面视图"
+    "codeView": "代码视图",
+    "pageView": "页面视图"
   },
   "actions": {
     "view": "查看",

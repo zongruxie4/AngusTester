@@ -533,7 +533,7 @@
         "case": "接口用例",
         "activity": "活动",
         "agent": "接口代理",
-        "code": "代码",
+        "coding": "代码",
         "apiMock": "Mock接口",
         "saveUnarchived": "保存到未归档",
         "archiveToService": "归档到服务",

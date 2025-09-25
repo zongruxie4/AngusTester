@@ -1160,7 +1160,7 @@
         "selectFile": "选择文件",
         "fileSizeLimit": "文件大小不能超过1MB",
         "selectFileTooltip": "请选择本地文件",
-        "code": "编码",
+        "encoding": "编码",
         "fileEncoding": "文件编码"
       }
     }

@@ -29,6 +29,8 @@
     "url": "URL",
     "required": "Required",
     "deprecated": "Deprecated",
+    "coding": "Code",
+    "encode": "Encode",
     "format": "Format",
     "example": "Example",
     "isEnabled": "Enabled",
@@ -185,8 +187,8 @@
     }
   },
   "views": {
-    "code": "Code View",
-    "page": "Page View"
+    "codeView": "Code View",
+    "pageView": "Page View"
   },
   "actions": {
     "view": "View",

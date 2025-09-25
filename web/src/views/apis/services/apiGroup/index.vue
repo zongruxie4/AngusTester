@@ -401,7 +401,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="viewModeChange">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-daimashitu" class="text-3.5" />
-                  <span>{{ t('views.code') }}</span>
+                  <span>{{ t('views.codeView') }}</span>
                 </div>
               </Button>
               <Button
@@ -411,7 +411,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="viewModeChange">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-yemianshitu" class="text-3.5" />
-                  <span>{{ t('views.page') }}</span>
+                  <span>{{ t('views.pageView') }}</span>
                 </div>
               </Button>
               <Button
