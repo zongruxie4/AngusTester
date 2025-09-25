@@ -73,6 +73,8 @@
     "api": "Api",
     "script": "Script",
     "scenario": "Scenario",
+    "useCase": "Use Case",
+    "execution": "Execution",
     "variables": "Variables",
     "authControl": "Auth",
     "planTime": "Plan Time",

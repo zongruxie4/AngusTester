@@ -73,6 +73,8 @@
     "api": "接口",
     "script": "脚本",
     "scenario": "场景",
+    "useCase": "用例",
+    "execution": "执行",
     "variables": "变量",
     "authControl": "授权控制",
     "planTime": "计划时间",

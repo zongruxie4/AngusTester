@@ -215,8 +215,6 @@
     "table": {
       "operator": "活动人",
       "activityTime": "活动时间",
-      "projectName": "所属项目",
-      "projectId": "所属项目ID",
       "resourceType": "资源类型",
       "targetId": "操作资源ID",
       "targetName": "操作资源",

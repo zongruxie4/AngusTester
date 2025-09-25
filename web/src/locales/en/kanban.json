@@ -128,12 +128,7 @@
         "scenarioTest": "Scenario Test"
       },
       "reportCategories": {
-        "api": "API",
         "functionalCase": "Functional Case",
-        "project": "Project",
-        "scenario": "Scenario",
-        "task": "Task",
-        "execution": "Execution"
       }
     },
     "cto": {

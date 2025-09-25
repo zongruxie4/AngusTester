@@ -215,8 +215,6 @@
     "table": {
       "operator": "Operator",
       "activityTime": "Activity Time",
-      "projectName": "Project Name",
-      "projectId": "Project ID",
       "resourceType": "Resource Type",
       "targetId": "Target ID",
       "targetName": "Target Name",
