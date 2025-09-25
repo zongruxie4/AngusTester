@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, onMounted, reactive, ref, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, Popover, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
@@ -17,7 +17,7 @@ import { TaskEditState } from '@/views/task/task/list/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskDetail } from '../types';
+import { TaskDetail, getTaskTypeName } from '../types';
 
 // Async Components
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
@@ -108,6 +108,11 @@ const formState = reactive<TaskEditState>({
   testerId: undefined,
   missingBug: false,
   softwareVersion: undefined
+});
+
+/** Task type name mapping for UI display */
+const taskTypeName = computed(() => {
+  return getTaskTypeName();
 });
 
 // User Selection Default Options
@@ -440,7 +445,7 @@ const handleTaskCreation = async (shouldContinue = false) => {
 const handleTaskUpdate = async () => {
   isLoading.value = true;
   const params = buildFormParameters();
-  const [error] = await task.putTask(props.taskId, params);
+  const [error] = await task.putTask(props.taskId!, params);
   isLoading.value = false;
   if (error) {
     return;
@@ -468,7 +473,7 @@ const cancelModal = () => {
 const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   isLoading.value = true;
   console.log('🔍 Fetching task details for taskId:', props.taskId);
-  const [error, res] = await task.getTaskDetail(props.taskId);
+  const [error, res] = await task.getTaskDetail(props.taskId!);
   isLoading.value = false;
 
   if (error) {
@@ -522,8 +527,8 @@ const resetFormToDefaults = () => {
   } else {
     formState.description = '';
   }
-  formState.evalWorkload = '';
-  formState.actualWorkload = '';
+  formState.evalWorkload = undefined;
+  formState.actualWorkload = undefined
   formState.name = props.name || '';
   formState.priority = Priority.MEDIUM;
   formState.bugLevel = BugLevel.MINOR;
@@ -806,7 +811,7 @@ const getPopupContainer = () => {
         <div class="flex-1 pr-8">
           <FormItem
             name="name"
-            :label="t('backlog.columns.name')"
+            :label="t('common.name')"
             :rules="{ required: true, message: t('backlog.messages.taskNameRequired') }">
             <Input
               v-model:value="formState.name"
@@ -822,43 +827,25 @@ const getPopupContainer = () => {
               class="flex-1/2"
               required>
               <template #label>
-                {{ t('backlog.editForm.labels.type') }}
+                {{ t('common.type') }}
                 <Popover>
                   <template #content>
                     <div class="flex items-center leading-5">
                       <div class="space-y-2 flex-shrink-0">
-                        <div class="flex items-center">
-                          <IconTask :value="TaskType.REQUIREMENT" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.requirement') }}</span>
-                        </div>
-                        <div class="flex items-center">
-                          <IconTask :value="TaskType.STORY" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.story') }}</span>
-                        </div>
-                        <div class="flex items-center">
-                          <IconTask :value="TaskType.TASK" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.task') }}</span>
-                        </div>
-                        <div class="flex items-center">
-                          <IconTask :value="TaskType.BUG" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.bug') }}</span>
-                        </div>
-                        <div class="flex items-center">
-                          <IconTask :value="TaskType.API_TEST" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.apiTest') }}</span>
-                        </div>
-                        <div class="flex items-center">
-                          <IconTask :value="TaskType.SCENARIO_TEST" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.scenarioTest') }}</span>
+                        <div
+                          v-for="[taskType, typeName] in taskTypeName"
+                          :key="taskType"
+                          class="flex items-center">
+                          <IconTask :value="taskType as TaskType" class="mr-1 text-4" />
+                          <span>{{ typeName }}</span>
                         </div>
                       </div>
                       <div class="ml-3.5 space-y-2">
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.requirement') }}</div>
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.story') }}</div>
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.task') }}</div>
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.bug') }}</div>
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.apiTest') }}</div>
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.scenarioTest') }}</div>
+                        <div
+                          v-for="[taskType, typeName] in taskTypeName"
+                          :key="taskType">
+                          {{ t(`backlog.taskTypeDescriptions.${taskType.toLowerCase()}`) }}
+                        </div>
                       </div>
                     </div>
                   </template>

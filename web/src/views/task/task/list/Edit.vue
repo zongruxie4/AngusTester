@@ -15,7 +15,7 @@ import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { BugLevel, SoftwareVersionStatus, TaskType } from '@/enums/enums';
 
 import { TaskEditState } from './types';
-import { TaskDetail } from '../../types';
+import { TaskDetail, getTaskTypeName } from '../../types';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
@@ -93,6 +93,11 @@ const formState = reactive<TaskEditState>({
   testerId: undefined,
   missingBug: false,
   softwareVersion: undefined
+});
+
+/** Task type name mapping for UI display */
+const taskTypeName = computed(() => {
+  return getTaskTypeName();
 });
 
 /**
@@ -639,8 +644,8 @@ const resetFormToDefaults = () => {
 
   // Reset form fields to default values
   formState.description = props.description || '';
-  formState.evalWorkload = '';
-  formState.actualWorkload = '';
+  formState.evalWorkload = undefined;
+  formState.actualWorkload = undefined;
   formState.name = props.name || '';
   formState.priority = Priority.MEDIUM;
   formState.bugLevel = BugLevel.MINOR;
@@ -831,43 +836,25 @@ onMounted(() => {
               class="flex-1/2"
               required>
               <template #label>
-                {{ t('task.editModal.form.type') }}
+                {{ t('common.type') }}
                 <Popover>
                   <template #content>
                     <div class="flex items-center leading-5">
                       <div class="space-y-2 flex-shrink-0">
-                        <div class="flex items-center">
-                          <IconTask value="REQUIREMENT" class="mr-1 text-4" />
-                          <span>{{ t('task.editModal.taskTypes.requirement') }}</span>
-                        </div>
-                        <div class="flex items-center">
-                          <IconTask value="STORY" class="mr-1 text-4" />
-                          <span>{{ t('task.editModal.taskTypes.story') }}</span>
-                        </div>
-                        <div class="flex items-center">
-                          <IconTask value="TASK" class="mr-1 text-4" />
-                          <span>{{ t('task.editModal.taskTypes.task') }}</span>
-                        </div>
-                        <div class="flex items-center">
-                          <IconTask value="BUG" class="mr-1 text-4" />
-                          <span>{{ t('task.editModal.taskTypes.bug') }}</span>
-                        </div>
-                        <div class="flex items-center">
-                          <IconTask value="API_TEST" class="mr-1 text-4" />
-                          <span>{{ t('task.editModal.taskTypes.apiTest') }}</span>
-                        </div>
-                        <div class="flex items-center">
-                          <IconTask value="SCENARIO_TEST" class="mr-1 text-4" />
-                          <span>{{ t('task.editModal.taskTypes.scenarioTest') }}</span>
+                        <div
+                          v-for="[taskType, typeName] in taskTypeName"
+                          :key="taskType"
+                          class="flex items-center">
+                          <IconTask :value="taskType as TaskType" class="mr-1 text-4" />
+                          <span>{{ typeName }}</span>
                         </div>
                       </div>
                       <div class="ml-3.5 space-y-2">
-                        <div>{{ t('task.editModal.taskTypeDescriptions.requirement') }}</div>
-                        <div>{{ t('task.editModal.taskTypeDescriptions.story') }}</div>
-                        <div>{{ t('task.editModal.taskTypeDescriptions.task') }}</div>
-                        <div>{{ t('task.editModal.taskTypeDescriptions.bug') }}</div>
-                        <div>{{ t('task.editModal.taskTypeDescriptions.apiTest') }}</div>
-                        <div>{{ t('task.editModal.taskTypeDescriptions.scenarioTest') }}</div>
+                        <div
+                          v-for="[taskType, typeName] in taskTypeName"
+                          :key="taskType">
+                          {{ t(`backlog.taskTypeDescriptions.${taskType.toLowerCase()}`) }}
+                        </div>
                       </div>
                     </div>
                   </template>

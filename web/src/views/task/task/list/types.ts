@@ -1,10 +1,12 @@
 import { Priority } from '@xcan-angus/infra';
-import { TaskType, BugLevel } from '@/enums/enums';
+import { TaskType, BugLevel, TestType } from '@/enums/enums';
 import { CaseInfo } from '@/views/function/types';
 import { TaskInfo } from '@/views/task/types';
 import { AttachmentInfo } from '@/types/types';
 
 export type TaskEditState = {
+  /** Project identifier for context */
+  projectId?: string | undefined;
   /** Sprint Id */
   sprintId: string | undefined;
   /** Function case module identifier for task categorization */
@@ -36,15 +38,21 @@ export type TaskEditState = {
   /** Detailed task description for requirements and context */
   description?: string | undefined;
   /** Estimated workload for task planning and resource allocation */
-  evalWorkload?: string | undefined;
+  evalWorkload?: number | undefined;
   /** Actual workload for performance tracking and analysis */
-  actualWorkload?: string | undefined;
+  actualWorkload?: number | undefined;
   /** Parent task identifier for hierarchical task relationships */
   parentTaskId?: string | undefined;
   /** Referenced task identifiers for dependency management */
   refTaskIds?: string[] | undefined;
   /** Referenced test case identifiers for test coverage linkage */
   refCaseIds?: string[] | undefined;
+  /** Test type for API and scenario testing */
+  testType?: TestType | undefined;
+  /** Target identifier for API and scenario testing */
+  targetId?: string | undefined;
+  /** Target parent identifier for API testing */
+  targetParentId?: string | undefined;
 
   // Temp for edit
   userInfo?: { id: string; };

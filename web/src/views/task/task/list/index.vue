@@ -7,9 +7,9 @@ import { appContext, download, enumUtils, http, PageQuery, SearchCriteria, utils
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskSprintPermission, TaskStatus } from '@/enums/enums';
-import { getCurrentPage } from '@/utils/utils';
+import { getCurrentPage, travelTreeData } from '@/utils/utils';
 import { TaskDetail } from '../../types';
-import { ActionMenuItem, TaskViewMode, travelTreeData } from '../types';
+import { ActionMenuItem, TaskViewMode } from '../types';
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Task_Template.xlsx?url';
 

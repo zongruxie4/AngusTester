@@ -114,22 +114,6 @@ export type ActionMenuItem = {
 }
 
 /**
- * Tree data structure interface for hierarchical task display
- */
-export type TreeData = {
-  name: string;
-  sequence: string;
-  level: number;
-  children?: TreeData[];
-  id: string;
-  pid?: string;
-  index: number;
-  ids: string[];
-  isLast: boolean;
-  childLevels?: number;
-}
-
-/**
  * Search panel option interface for filter dropdowns
  */
 export type SearchPanelOption = {
@@ -147,36 +131,3 @@ export type SearchPanelMenuItem = {
   name: string;
   groupKey?: 'assigneeId' | 'time';
 }
-
-/**
- * Traverses tree data structure and adds metadata for rendering
- * @param treeData - Array of tree data items to process
- * @param callback - Optional callback function to transform each item
- * @returns Processed tree data with added metadata
- */
-export const travelTreeData = (treeData: TreeData[], callback = (item: TreeData) => item): TreeData[] => {
-  /**
-   * Recursive function to traverse tree data and add metadata
-   * @param treeData - Current level of tree data
-   * @param level - Current depth level
-   * @param ids - Array of parent IDs for current path
-   */
-  function travel (treeData: TreeData[], level = 0, ids: string[] = []) {
-    treeData.forEach((item, idx) => {
-      item.level = level;
-      item.index = idx;
-      item.ids = [...ids, item.id];
-      item.isLast = idx === (treeData.length - 1);
-
-      // Recursively process children
-      travel(item.children || [], level + 1, item.ids);
-
-      // Calculate child levels for rendering purposes
-      item.childLevels = (item.children?.length ? Math.max(...item.children.map(i => i.childLevels || 0)) : 0) + 1;
-      item = callback(item);
-    });
-  }
-
-  travel(treeData);
-  return treeData;
-};

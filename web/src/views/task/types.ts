@@ -1,8 +1,13 @@
-import { EnumMessage, EvalWorkloadMethod, Priority } from '@xcan-angus/infra';
+import { EnumMessage, EvalWorkloadMethod, Priority, enumUtils } from '@xcan-angus/infra';
 import { BugLevel, ExecResult, TaskStatus, TaskType, TestType, AssociateUserType } from '@/enums/enums';
-import { ProgressInfo, TagInfo } from '@/types/types';
+import { AttachmentInfo, ProgressInfo, TagInfo } from '@/types/types';
 
 import { CaseInfo } from '@/views/function/types';
+
+/** Task type name mapping for UI display */
+export const getTaskTypeName = () => {
+  return enumUtils.enumToMap(TaskType);
+};
 
 /**
  * Task information interface containing all task-related data
@@ -48,6 +53,7 @@ export type TaskInfo = {
   actualWorkload: number;
   failNum: string;
   totalNum: string;
+  attachments?: AttachmentInfo[] | undefined;
   description: string;
   currentAssociateType: EnumMessage<AssociateUserType>[];
   confirmTask: boolean;
@@ -121,6 +127,7 @@ export type TaskDetail = {
   actualWorkload: number;
   failNum: string;
   totalNum: string;
+  attachments?: AttachmentInfo[] | undefined;
   description: string;
   currentAssociateType: EnumMessage<AssociateUserType>[];
   confirmTask: boolean;
