@@ -174,7 +174,7 @@ defineExpose({
           {{ record.reviewRemark }}
         </div>
         <div v-else class="text-sub-content mt-3 truncate">
-          {{ t('functionCase.kanbanView.reviewRecord.noRemark') }}
+          {{ t('common.noRemark') }}
         </div>
       </div>
     </div>

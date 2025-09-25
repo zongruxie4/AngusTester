@@ -307,7 +307,7 @@ const columns = [
                 </template>
                 <template v-if="column.dataIndex === 'remark'">
                   <template v-if="record.remark">{{ record.remark }}</template>
-                  <span v-else class="text-sub-content">{{ t('apiShare.list.noRemark') }}</span>
+                  <span v-else class="text-sub-content">{{ t('common.noRemark') }}</span>
                 </template>
                 <template v-if="column.dataIndex === 'isExpired'">
                   <Tag :color="record.expired ? 'error' : 'success'">{{ record.expired ? t('apiShare.list.expired') : t('apiShare.list.notExpired') }}</Tag>

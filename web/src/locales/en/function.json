@@ -585,7 +585,6 @@
         "reviewRecords": "Review Records",
         "reviewPassedCase": "Review passed the case",
         "reviewFailedCase": "Review failed the case",
-        "noRemark": "No remark~",
         "reviewVersion": "Review Version",
         "latestVersion": "Latest Version",
         "testSteps": "Test Steps"
@@ -761,7 +760,6 @@
       "reviewRecords": "Review Records",
       "reviewPassedCase": "Review passed the case",
       "reviewFailedCase": "Review failed the case",
-      "noRemark": "No remark~",
       "reviewVersion": "Review Version",
       "latestVersion": "Latest Version",
       "testSteps": "Test Steps",

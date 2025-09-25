@@ -2504,7 +2504,6 @@
     "list": {
       "title": "Added Shares",
       "addShare": "Add Share",
-      "noRemark": "None~",
       "expired": "Expired",
       "notExpired": "Not Expired",
       "confirmDelete": "Are you sure to delete share 「{name}」?",

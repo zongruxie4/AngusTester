@@ -155,7 +155,7 @@ defineExpose({
           :title="record.reviewRemark">
           {{ record.reviewRemark }}
         </div>
-        <div v-else class="text-sub-content mt-3 truncate">{{ t('functionCase.detail.review.noRemark') }}</div>
+        <div v-else class="text-sub-content mt-3 truncate">{{ t('common.noRemark') }}</div>
       </div>
     </div>
 
