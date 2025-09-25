@@ -211,11 +211,11 @@ const excludes = ({ value }: { value: string }): boolean => {
       </FormItem>
 
       <!-- Remarks field -->
-      <FormItem :label="t('fileSpace.spaceForm.form.remark')">
+      <FormItem :label="t('common.remark')">
         <Input
           v-model:value="form.remark"
           type="textarea"
-          :placeholder="t('fileSpace.spaceForm.placeholders.remark')"
+          :placeholder="t('common.remark')"
           showCount
           class="h-25 mb-4"
           :maxlength="200" />

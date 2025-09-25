@@ -1232,7 +1232,7 @@ const drawerMenuItems = computed(() => {
     },
     {
       icon: 'icon-pinglun',
-      name: t('ftpPlugin.drawer.comment'),
+      name: t('common.comments'),
       key: 'comment'
     }
   ];

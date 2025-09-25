@@ -73,7 +73,7 @@ export const createTaskTypeConfig = (): ChartConfig => {
             }
           },
           {
-            name: t('kanban.effectiveness.taskType.task'),
+            name: t('common.issue'),
             value: 0,
             itemStyle: {
               color: 'rgba(45, 142, 255, 1)'

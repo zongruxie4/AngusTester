@@ -145,12 +145,6 @@
         "localImport": "本地导入"
       },
       "apiGroup": {
-        "tabs": {
-          "api": "接口",
-          "testResult": "测试",
-          "mock": "Mock",
-          "doc": "文档"
-        },
         "messages": {
           "serviceNotExist": "服务不存在或者您没有查看全选"
         }
@@ -757,7 +751,6 @@
       },
       "configuration": {
         "title": "OpenAPI翻译配置",
-        "service": "接口服务",
         "servicePlaceholder": "请选择服务",
         "sourceLanguage": "原语言",
         "targetLanguage": "目标语言"
@@ -1450,9 +1443,7 @@
         "portPlaceholder": "服务所监听的端口，服务添加后不允许修改(1~65535)",
         "node": "节点",
         "nodePlaceholder": "服务所运行的节点，服务添加后不允许修改",
-        "service": "服务",
         "servicePlaceholder": "选择或查询服务",
-        "api": "接口",
         "domainSuffix": ".angusmock.cloud",
         "nodeFormat": "{name} ( {ip} )",
         "serviceFormat": "S"
@@ -1711,7 +1702,6 @@
     },
     "statisticsCreated": {
       "title": "我添加的",
-      "service": "服务",
       "apis": "接口",
       "unfiled": "未归档接口"
     },
@@ -1905,9 +1895,7 @@
         "portPlaceholder": "服务所监听的端口，服务添加后不允许修改(1~65535)",
         "node": "节点",
         "nodePlaceholder": "服务所运行的节点，服务添加后不允许修改",
-        "service": "服务",
         "servicePlaceholder": "选择或查询服务",
-        "api": "接口",
         "importSource": "来源",
         "associated": "(已关联)"
       },
@@ -2469,10 +2457,6 @@
     "empty": {
       "description": "回收站为空",
       "hint": "已删除的数据将在此显示"
-    },
-    "tabs": {
-      "service": "服务",
-      "api": "接口"
     }
   }
 }

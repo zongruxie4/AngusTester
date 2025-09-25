@@ -48,7 +48,7 @@ onMounted(async () => {
       style="max-width:1200px">
       <div class="space-y-5 mr-8 leading-7 text-text-title font-medium info-form">
         <div class="h-7 whitespace-nowrap name"><IconRequired />{{ t('execution.add.name') }}</div>
-        <div class="h-7 whitespace-nowrap scriptId"><IconRequired />{{ t('execution.add.script') }}</div>
+        <div class="h-7 whitespace-nowrap scriptId"><IconRequired />{{ t('common.script') }}</div>
         <div class="h-7 whitespace-nowrap scriptType"><IconRequired />{{ t('common.type') }}</div>
         <div class="h-7 whitespace-nowrap"><IconRequired />{{ t('execution.add.config') }}</div>
       </div>

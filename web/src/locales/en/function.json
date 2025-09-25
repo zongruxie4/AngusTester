@@ -17,9 +17,6 @@
     },
     "myCreationSummary": {
       "title": "My Creations",
-      "plan": "Plan",
-      "case": "Case",
-      "review": "Review",
       "baseline": "Baseline",
       "last7Days": "Last 7 Days",
       "last30Days": "Last 30 Days"
@@ -55,7 +52,6 @@
   "functionPlan": {
     "title": "Plan",
     "main": {
-      "plan": "Plan",
       "addPlan": "Add Plan"
     },
     "list": {
@@ -310,10 +306,8 @@
       "testStepsHint": "Specific operation steps and expected results to be taken when executing test cases, as criteria for pass/fail judgment.",
       "description": "Description",
       "descriptionHint": "Overall supplementary explanation and background introduction of test cases to help understand the purpose, scope and expected results of testing.",
-      "plan": "Plan",
       "pleaseSelectPlan": "Please select plan",
       "selectOrQueryPlan": "Select or query plan",
-      "module": "Module",
       "selectOrQueryModule": "Select or query module",
       "pleaseSelectTester": "Please select tester",
       "pleaseSelectDeveloper": "Please select developer",
@@ -375,7 +369,6 @@
       "moveSuccess": "Moved successfully"
     },
     "selectPlanModal": {
-      "plan": "Plan",
       "selectPlan": "Select Plan"
     },
     "reviewCase": {
@@ -420,7 +413,6 @@
     },
     "uploadCase": {
       "title": "Import Cases",
-      "plan": "Plan",
       "selectPlan": "Select Plan",
       "pleaseUploadFile": "Please upload file",
       "selectFile": "Select File",
@@ -1294,10 +1286,7 @@
         "services": "Services",
         "apis": "APIs",
         "cases": "Cases",
-        "plan": "Plan",
-        "sprint": "Sprint",
         "taskSprint": "Sprint",
-        "task": "Task",
         "mockApis": "Mock APIs",
         "mockPushback": "Mock Pushback",
         "mockResponse": "Mock Response",
@@ -1350,10 +1339,7 @@
         "services": "Services",
         "apis": "APIs",
         "cases": "Cases",
-        "plan": "Plan",
-        "sprint": "Sprint",
         "taskSprint": "Sprint",
-        "task": "Task",
         "mockApis": "Mock APIs",
         "mockPushback": "Mock Pushback",
         "mockResponse": "Mock Response",
@@ -1413,10 +1399,6 @@
     },
     "tips": {
       "adminOnly": "Only administrators and deleters can restore or permanently delete recycle bin data."
-    },
-    "tabs": {
-      "plan": "Plan",
-      "case": "Case"
     },
     "empty": {
       "description": "Trash is empty",

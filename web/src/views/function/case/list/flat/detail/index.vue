@@ -709,7 +709,7 @@ onBeforeUnmount(() => {
                   :defaultOptions="defaultTags"
                   :fieldNames="{ label: 'name', value: 'id' }"
                   :maxTags="5"
-                  :placeholder="t('functionCase.detail.caseDetail.tags')"
+                  :placeholder="t('common.tags')"
                   :class="{'border-error':tagsIds && tagsIds.length > 5 }"
                   :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
                   mode="multiple"
@@ -1177,7 +1177,7 @@ onBeforeUnmount(() => {
 
       <template v-if="!bigLayout">
         <Toggle
-          :title="t('functionCase.detail.caseDetail.attachments')"
+          :title="t('common.attachments')"
           class="mt-3.5">
           <div
             style="height: 108px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
@@ -1341,7 +1341,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        :title="t('functionCase.detail.caseDetail.attachments')"
+        :title="t('common.attachments')"
         class="mt-3.5">
         <div
           style="height: 108px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"

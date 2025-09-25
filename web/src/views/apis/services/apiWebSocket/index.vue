@@ -187,7 +187,7 @@ const navs = computed(() => [
   },
   !props.valueObj.unarchived && {
     icon: 'icon-bianliang',
-    name: t('service.apiWebSocket.navigation.variable'),
+    name: t('common.variables'),
     key: 'variable'
   },
   // !props.valueObj.unarchived && {

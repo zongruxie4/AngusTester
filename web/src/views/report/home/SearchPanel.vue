@@ -89,7 +89,7 @@ const {
             :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="$t('reportHome.searchPanel.resourceSelect.service')"
+            :placeholder="$t('common.service')"
             class="w-72 ml-2"
             showSearch
             @change="(value: any) => targetIdChange(String(value || ''))" />
@@ -101,7 +101,7 @@ const {
             :action="`${TESTER}/apis?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'summary', value: 'id' }"
             :allowClear="true"
-            :placeholder="$t('reportHome.searchPanel.resourceSelect.api')"
+            :placeholder="$t('common.api')"
             class="w-72 ml-2"
             showSearch
             @change="(value: any) => targetIdChange(String(value || ''))">
@@ -123,7 +123,7 @@ const {
             :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="$t('reportHome.searchPanel.resourceSelect.task')"
+            :placeholder="$t('common.issue')"
             class="w-72 ml-2"
             showSearch
             @change="(value: any) => targetIdChange(String(value || ''))" />
@@ -135,7 +135,7 @@ const {
             :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="$t('reportHome.searchPanel.resourceSelect.sprint')"
+            :placeholder="$t('common.sprint')"
             class="w-72 ml-2"
             showSearch
             @change="(value: any) => targetIdChange(String(value || ''))" />
@@ -147,7 +147,7 @@ const {
             :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="$t('reportHome.searchPanel.resourceSelect.plan')"
+            :placeholder="$t('common.plan')"
             class="w-72 ml-2"
             showSearch
             @change="(value: any) => targetIdChange(String(value || ''))" />
@@ -159,7 +159,7 @@ const {
             :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="$t('reportHome.searchPanel.resourceSelect.case')"
+            :placeholder="$t('common.useCase')"
             class="w-72 ml-2"
             showSearch
             @change="(value: any) => targetIdChange(String(value || ''))" />
@@ -171,7 +171,7 @@ const {
             :action="`${TESTER}/exec?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="$t('reportHome.searchPanel.resourceSelect.execution')"
+            :placeholder="$t('common.execution')"
             class="w-72 ml-2"
             showSearch
             @change="(value: any) => targetIdChange(String(value || ''))" />
@@ -183,7 +183,7 @@ const {
             :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="$t('reportHome.searchPanel.resourceSelect.scenario')"
+            :placeholder="$t('common.scenario')"
             class="w-72 ml-2"
             showSearch
             @change="(value: any) => targetIdChange(String(value || ''))" />

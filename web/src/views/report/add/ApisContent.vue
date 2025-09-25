@@ -113,7 +113,7 @@ defineExpose({
   <div class="flex mt-2 pl-2">
     <div class="inline-flex flex-1 items-center space-x-2">
       <span>
-        {{ t('reportAdd.apisContent.service') }}
+        {{ t('common.service') }}
       </span><Colon />
       <Select
         v-model:value="serviceId"
@@ -126,7 +126,7 @@ defineExpose({
         class="w-50" />
       <span>
         <IconRequired />
-        {{ t('reportAdd.apisContent.api') }}
+        {{ t('common.api') }}
       </span><Colon />
       <Select
         v-model:value="apisId"

@@ -144,12 +144,6 @@
         "localImport": "Local Import"
       },
       "apiGroup": {
-        "tabs": {
-          "api": "API",
-          "testResult": "Test",
-          "mock": "Mock",
-          "doc": "Document"
-        },
         "messages": {
           "serviceNotExist": "Service does not exist or you do not have permission to view"
         }
@@ -1443,9 +1437,7 @@
         "portPlaceholder": "Port that the service listens on, cannot be modified after service is added (1~65535)",
         "node": "Node",
         "nodePlaceholder": "Node where the service runs, cannot be modified after service is added",
-        "service": "Service",
         "servicePlaceholder": "Select or search service",
-        "api": "API",
         "domainSuffix": ".angusmock.cloud",
         "nodeFormat": "{name} ( {ip} )",
         "serviceFormat": "S"
@@ -1703,8 +1695,6 @@
     },
     "statisticsCreated": {
       "title": "Added by Me",
-      "service": "Service",
-      "apis": "API",
       "unfiled": "Unarchived APIs"
     },
     "actions": {
@@ -1901,9 +1891,7 @@
         "portPlaceholder": "The port listened by the service, the service cannot be modified after adding (1~65535)",
         "node": "Node",
         "nodePlaceholder": "The node where the service is running, the service cannot be modified after adding",
-        "service": "Service",
         "servicePlaceholder": "Select or search service",
-        "api": "Api",
         "importSource": "Source",
         "associated": "(Associated)"
       },
@@ -2479,10 +2467,6 @@
     "empty": {
       "description": "No items in trash",
       "hint": "Deleted items will appear here, you can restore or permanently delete them"
-    },
-    "tabs": {
-      "service": "Service",
-      "api": "API"
     }
   }
 }

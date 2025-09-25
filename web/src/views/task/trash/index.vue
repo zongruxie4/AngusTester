@@ -297,7 +297,7 @@ onMounted(() => {
             <TabPane
               v-if="proTypeShowMap.showSprint"
               :key="CombinedTargetType.TASK_SPRINT"
-              :tab="t('taskTrash.tabs.sprint')">
+              :tab="t('common.sprint')">
               <Table
                 v-model:spinning="loading"
                 :notify="notify"
@@ -309,7 +309,7 @@ onMounted(() => {
             </TabPane>
 
             <!-- TASK tab -->
-            <TabPane :key="CombinedTargetType.TASK" :tab="t('taskTrash.tabs.task')">
+            <TabPane :key="CombinedTargetType.TASK" :tab="t('common.issue')">
               <Table
                 v-model:spinning="loading"
                 :notify="notify"

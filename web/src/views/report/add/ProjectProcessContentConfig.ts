@@ -8,7 +8,7 @@ export const contentTreeData = [
     key: 'projectInfo'
   },
   {
-    title: t('reportAdd.projectProcessContent.contentTree.task'),
+    title: t('common.issue'),
     key: 'task',
     children: [
       {
@@ -48,7 +48,7 @@ export const contentTreeData = [
     ]
   },
   {
-    title: t('reportAdd.projectProcessContent.contentTree.apis'),
+    title: t('common.api'),
     key: 'apis',
     children: [
       {
@@ -62,7 +62,7 @@ export const contentTreeData = [
     ]
   },
   {
-    title: t('reportAdd.projectProcessContent.contentTree.scenario'),
+    title: t('common.scenario'),
     key: 'scenario',
     children: [
       {

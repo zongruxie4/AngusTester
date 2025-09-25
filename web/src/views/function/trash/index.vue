@@ -282,7 +282,7 @@ watch(
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <Tabs v-model:activeKey="activeKey" class="enhanced-tabs">
             <!-- Plans tab -->
-            <TabPane :key="FuncTargetType.PLAN" :tab="t('functionTrash.tabs.plan')">
+            <TabPane :key="FuncTargetType.PLAN" :tab="t('common.plan')">
               <Table
                 key="plan"
                 v-model:spinning="loading"
@@ -295,7 +295,7 @@ watch(
             </TabPane>
 
             <!-- Cases tab -->
-            <TabPane :key="FuncTargetType.CASE" :tab="t('functionTrash.tabs.case')">
+            <TabPane :key="FuncTargetType.CASE" :tab="t('common.useCase')">
               <Table
                 key="case"
                 v-model:spinning="loading"

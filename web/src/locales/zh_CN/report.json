@@ -106,15 +106,6 @@
       "content": {
         "organizationPersonnel": "组织人员",
         "time": "时间",
-        "project": "项目",
-        "sprint": "迭代",
-        "task": "任务",
-        "plan": "计划",
-        "case": "用例",
-        "service": "服务",
-        "api": "接口",
-        "scenario": "场景",
-        "execution": "执行",
         "content": "内容",
         "contentHint": "以下是报告输出内容目录信息。",
         "memberTypes": {
@@ -293,9 +284,7 @@
     },
     "taskContent": {
       "filter": "过滤",
-      "sprint": "迭代",
       "sprintPlaceholder": "选择迭代",
-      "task": "任务",
       "taskPlaceholder": "选择任务",
       "content": "内容",
       "contentHints": "以下是报告输出内容目录信息。",
@@ -318,7 +307,6 @@
     },
     "sprintContent": {
       "filter": "过滤",
-      "sprint": "迭代",
       "sprintPlaceholder": "选择迭代",
       "organization": "组织人员",
       "userPlaceholder": "选择用户",
@@ -347,7 +335,6 @@
     },
     "servicesContent": {
       "filter": "过滤",
-      "service": "服务",
       "servicePlaceholder": "选择服务",
       "content": "内容",
       "contentHints": "以下是报告输出内容目录信息。",
@@ -466,9 +453,7 @@
     },
     "apisContent": {
       "filter": "过滤",
-      "service": "服务",
       "servicePlaceholder": "选择服务",
-      "api": "接口",
       "apiPlaceholder": "选择接口",
       "content": "内容",
       "contentHints": "以下是报告输出内容目录信息。",

@@ -1771,7 +1771,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'attachments' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('task.kanbanView.drawer.attachments')"
+            :title="t('common.attachments')"
             @click="drawerActiveKeyChange('attachments')">
             <Icon icon="icon-lianjie1" class="text-4" />
           </div>
@@ -1787,7 +1787,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'comment' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('task.kanbanView.drawer.comments')"
+            :title="t('common.comments')"
             @click="drawerActiveKeyChange('comment')">
             <Icon icon="icon-pinglun" class="text-4" />
           </div>

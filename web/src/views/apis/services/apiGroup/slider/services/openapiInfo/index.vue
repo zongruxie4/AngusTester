@@ -29,7 +29,7 @@ const columns = [[
   { label: t('service.serviceOpenApi.columns.termsOfService'), dataIndex: 'termsOfService' },
   { label: t('service.serviceOpenApi.columns.contact'), dataIndex: 'contact' },
   { label: t('service.serviceOpenApi.columns.license'), dataIndex: 'license' },
-  { label: t('service.serviceOpenApi.columns.version'), dataIndex: 'version' },
+  { label: t('common.version'), dataIndex: 'version' },
   { label: t('service.serviceOpenApi.columns.externalDocs'), dataIndex: 'externalDocs' },
   { label: t('common.description'), dataIndex: 'description' }
 ]];
@@ -494,7 +494,7 @@ onMounted(() => {
             v-model:value="version"
             :maxlength="100"
             class="w-full"
-            :placeholder="t('service.serviceOpenApi.placeholder.version')"
+            :placeholder="t('common.version')"
             @pressEnter="confirmEditVersion" />
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"

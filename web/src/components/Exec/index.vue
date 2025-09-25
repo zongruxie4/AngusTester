@@ -3365,7 +3365,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
         <template #header>
           <div class="flex items-center text-3 text-text-title font-medium leading-5">
             <Icon icon="icon-gonggongbianliang" class="text-3.5 mr-2 -mt-0.5" />
-            <span>{{ t('xcan_exec.variables') }}</span>
+            <span>{{ t('common.variables') }}</span>
           </div>
         </template>
         <template #extra>

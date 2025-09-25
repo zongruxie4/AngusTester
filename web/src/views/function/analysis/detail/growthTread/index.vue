@@ -38,7 +38,7 @@ const getChartData = (data) => {
       return a > b ? 1 : a < b ? -1 : 0;
     });
     series = [{
-      name: t('functionAnalysis.detail.taskGrowthTread.cases'),
+      name: t('common.useCase'),
       data: xData.map(i => {
         const target = data.timeSeries.find(item => item.timeSeries === i);
         if (target) {

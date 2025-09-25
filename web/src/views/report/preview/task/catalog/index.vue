@@ -89,7 +89,7 @@ const showTestInfo = computed(() => {
           <DashedLine />
         </a>
         <a href="#a9" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.9') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.remark') }}</span>
+          <span class="h1">{{ t('common.remark') }}</span>
           <DashedLine />
         </a>
         <a href="#a10" class="flex items-center space-x-2.5">
@@ -97,14 +97,14 @@ const showTestInfo = computed(() => {
           <DashedLine />
         </a>
         <a href="#a11" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.11') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.comment') }}</span>
+          <span class="h1">{{ t('common.comments') }}</span>
           <DashedLine />
         </a>
       </template>
 
       <template v-else>
         <a href="#a8" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.remark') }}</span>
+          <span class="h1">{{ t('common.remark') }}</span>
           <DashedLine />
         </a>
         <a href="#a9" class="flex items-center space-x-2.5">
@@ -112,7 +112,7 @@ const showTestInfo = computed(() => {
           <DashedLine />
         </a>
         <a href="#a10" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.10') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.comment') }}</span>
+          <span class="h1">{{ t('common.comments') }}</span>
           <DashedLine />
         </a>
       </template>

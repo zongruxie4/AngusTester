@@ -871,7 +871,7 @@ onMounted(() => {
       </FormItem>
 
       <FormItem
-        :label="t('functionPlan.editForm.form.owner')"
+        :label="t('common.owner')"
         name="ownerId"
         class="relative"
         :rules="{ required: true, message: t('functionPlan.editForm.form.selectOwner') }">
@@ -1040,7 +1040,7 @@ onMounted(() => {
         </Tooltip>
       </FormItem>
 
-      <FormItem :label="t('functionPlan.editForm.form.attachments')">
+      <FormItem :label="t('common.attachments')">
         <div class="flex items-center mt-0.5">
           <Upload
             :fileList="[]"

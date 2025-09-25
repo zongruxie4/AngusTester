@@ -31,7 +31,7 @@ onMounted(() => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('backlog.comment') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.comments') }}</h3>
     </div>
 
     <!-- Scrollable Content Area -->

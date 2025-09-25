@@ -80,7 +80,7 @@ const initialize = () => {
         return {
           _id: 'planList',
           value: 'planList',
-          name: t('functionPlan.main.plan'),
+          name: t('common.plan'),
           closable: false
         };
       }

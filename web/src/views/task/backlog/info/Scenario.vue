@@ -927,7 +927,7 @@ onMounted(() => {
               :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
               allowClear
               showSearch
-              :placeholder="t('backlog.info.scenario.placeholders.tags')"
+              :placeholder="t('common.tags')"
               mode="multiple"
               class="edit-container"
               :notFoundContent="t('backlog.info.scenario.placeholders.notFoundTagContent')"
@@ -956,7 +956,7 @@ onMounted(() => {
                 ref="versionSelectRef"
                 v-model:value="versionInputValue"
                 allowClear
-                :placeholder="t('backlog.info.scenario.placeholders.version')"
+                :placeholder="t('common.version')"
                 lazy
                 class="w-full"
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"

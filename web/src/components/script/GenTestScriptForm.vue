@@ -314,7 +314,7 @@ defineExpose({
 
         <!-- Auth control -->
         <FormItem
-          :label="t('commonComp.genTestScriptModal.testForm.authControl')"
+          :label="t('common.authControl')"
           required
           class="form-item">
           <div class="switch-with-tooltip">

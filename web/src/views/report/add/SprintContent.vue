@@ -127,7 +127,7 @@ defineExpose({
     <div class="flex flex-1 items-center space-x-2">
       <div class="w-12 text-right">
         <IconRequired />
-        {{ t('reportAdd.sprintContent.sprint') }}
+        {{ t('common.sprint') }}
       </div>
       <Colon />
       <Select

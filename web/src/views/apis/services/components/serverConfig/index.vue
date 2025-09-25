@@ -370,7 +370,7 @@ const urlMap = computed(() => {
                 </div>
 
                 <div v-if="!!item.variables?.length">
-                  <div class="text-theme-sub-content mb-0.5">{{ t('service.serverConfig.columns.variables') }}</div>
+                  <div class="text-theme-sub-content mb-0.5">{{ t('common.variables') }}</div>
                   <div class="border border-solid border-theme-text-box rounded px-3 py-3">
                     <div v-for="(_variable, _index) in item.variables" :key="_variable.id">
                       <div class="flex items-start leading-4.5 mb-2">

@@ -572,7 +572,7 @@ onMounted(() => {
             <div style="width: 320px;" class="ml-5 h-full">
               <FormItem
                 Key=""
-                :label="t('functionCase.addCaseModal.plan')"
+                :label="t('common.plan')"
                 name="planId"
                 :rules="{required:true,message:t('functionCase.addCaseModal.pleaseSelectPlan')}">
                 <Select
@@ -701,7 +701,7 @@ onMounted(() => {
 
               <FormItem
                 name="softwareVersion"
-                :label="t('functionCase.addCaseModal.softwareVersion')">
+                :label="t('common.softwareVersion')">
                 <Select
                   v-model:value="formState.softwareVersion"
                   allowClear
@@ -743,7 +743,7 @@ onMounted(() => {
               <FormItem
                 name="tagIds">
                 <template #label>
-                  <span>{{ t('functionCase.addCaseModal.tags') }}
+                  <span>{{ t('common.tags') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter
@@ -835,7 +835,7 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                :label="t('functionCase.addCaseModal.attachments')"
+                :label="t('common.attachments')"
                 name="attachments">
                 <div
                   style="height: 90px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"

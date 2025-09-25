@@ -53,7 +53,7 @@ const unplannedTaskEchartConfig = {
     type: 'category',
     data: [
       t('functionAnalysis.detail.resourceCreation.plan2'),
-      t('functionAnalysis.detail.resourceCreation.case'),
+      t('common.useCase'),
       t('functionAnalysis.detail.resourceCreation.review2'),
       t('functionAnalysis.detail.resourceCreation.baseline2'),
       t('functionAnalysis.detail.resourceCreation.analysis2'),

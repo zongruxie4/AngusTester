@@ -916,7 +916,7 @@ const getPopupContainer = () => {
           <div v-if="formState.taskType === TaskType.SCENARIO_TEST" class="flex space-x-4">
             <FormItem
               name="targetId"
-              :label="t('backlog.editForm.labels.scenario')"
+              :label="t('common.scenario')"
               class="flex-1 min-w-0"
               :rules="{ required: true, message: t('backlog.editForm.messages.selectScenario') }">
               <Select
@@ -948,7 +948,7 @@ const getPopupContainer = () => {
           <template v-if="formState.taskType === TaskType.API_TEST">
             <FormItem
               name="targetParentId"
-              :label="t('backlog.editForm.labels.service')"
+              :label="t('common.service')"
               :rules="{ required: true, message: t('backlog.editForm.messages.selectService') }">
               <Select
                 v-model:value="formState.targetParentId"
@@ -975,7 +975,7 @@ const getPopupContainer = () => {
 
             <div class="flex space-x-4">
               <FormItem
-                :label="t('backlog.editForm.labels.api')"
+                :label="t('common.api')"
                 name="targetId"
                 class="flex-1 min-w-0"
                 :rules="{ required: true, message: t('backlog.editForm.messages.selectApi') }">
@@ -1142,7 +1142,7 @@ const getPopupContainer = () => {
 
         <div class="w-80  pl-2 border-l">
           <FormItem
-            :label="t('backlog.editForm.labels.sprint')"
+            :label="t('common.sprint')"
             name="sprintId">
             <Select
               v-model:value="formState.sprintId"
@@ -1162,7 +1162,7 @@ const getPopupContainer = () => {
             </Select>
           </FormItem>
 
-          <FormItem :label="t('backlog.editForm.labels.module')" name="moduleId">
+          <FormItem :label="t('common.module')" name="moduleId">
             <TreeSelect
               v-model:value="formState.moduleId"
               :treeData="moduleTreeData"
@@ -1270,7 +1270,7 @@ const getPopupContainer = () => {
 
           <FormItem
             name="softwareVersion"
-            :label="t('backlog.editForm.labels.softwareVersion')">
+            :label="t('common.softwareVersion')">
             <Select
               v-model:value="formState.softwareVersion"
               allowClear
@@ -1285,10 +1285,10 @@ const getPopupContainer = () => {
             name="tagIds"
             class="relative">
             <template #label>
-              {{ t('backlog.editForm.labels.tags') }}<Popover placement="rightTop">
+              {{ t('common.tags') }}<Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ t('backlog.editForm.descriptions.tags') }}
+                    {{ t('common.tags') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1375,7 +1375,7 @@ const getPopupContainer = () => {
             </Select>
           </FormItem>
 
-          <FormItem :label="t('backlog.editForm.labels.attachments')">
+          <FormItem :label="t('common.attachments')">
             <div
               style="height: 60px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
               class="border border-dashed rounded flex flex-col px-2 py-1"

@@ -17,10 +17,6 @@
     "remainingLabel": "剩余",
     "last7Days": "近7天",
     "last30Days": "近30天",
-    "backlog": "Backlog",
-    "sprint": "迭代",
-    "task": "任务",
-    "meeting": "会议",
     "addedTable": {
       "pagination": "第{current}/{total}页",
       "noDataText": "暂无数据",
@@ -199,8 +195,6 @@
     },
     "info": {
       "basic": {
-        "sprint": "所属迭代",
-        "module": "所属模块",
         "parentTask": "父任务",
         "missingBug": "漏测",
         "evalWorkloadMethod": "评估方法",
@@ -208,7 +202,6 @@
         "actualWorkload": "实际工作量",
         "processCount": "处理次数",
         "processFailCount": "失败次数",
-        "tags": "标签",
         "oneTimePass": "一次性通过",
         "softwareVersion": "软件版本",
         "unplannedTask": "未计划的",
@@ -274,9 +267,6 @@
       },
       "apis": {
         "number": "编号",
-        "parentTask": "父任务",
-        "service": "所属服务",
-        "api": "接口",
         "processCount": "处理次数",
         "processFailCount": "失败次数",
         "oneTimePass": "一次性通过",
@@ -869,14 +859,11 @@
         "priorityPlaceholder": "请选择优先级",
         "bugLevel": "缺陷等级",
         "missingBug": "是否漏测",
-        "scenario": "场景",
         "scenarioPlaceholder": "请选择场景",
         "scenarioRule": "请选择场景",
         "testTypePlaceholder": "请选择测试类型",
-        "service": "所属服务",
         "servicePlaceholder": "选择或查询服务",
         "serviceRule": "请选择服务",
-        "api": "接口",
         "apiPlaceholder": "请选择接口",
         "apiRule": "请选择接口",
         "assigneePlaceholder": "选择经办人",
@@ -1041,9 +1028,6 @@
           "namePlaceholder": "任务名称，最大支持200字符",
           "selectModule": "选择或查询模块",
           "selectSprint": "选择或查询迭代",
-          "service": "所属服务",
-          "parentTask": "父任务",
-          "api": "接口",
           "selectPriority": "请选择优先级",
           "onePass": "一次性通过",
           "failedProcessCount": "失败次数",
@@ -1109,9 +1093,6 @@
           "namePlaceholder": "任务名称，最大支持200字符",
           "selectSprint": "选择或查询迭代",
           "selectModule": "选择或查询模块",
-          "service": "所属服务",
-          "parentTask": "父任务",
-          "api": "接口",
           "onePass": "一次性通过",
           "missingBug": "漏测",
           "selectTaskType": "请选择任务类型",
@@ -1131,9 +1112,6 @@
           "namePlaceholder": "任务名称，最大支持200字符",
           "selectSprint": "选择或查询迭代",
           "selectModule": "选择或查询模块",
-          "service": "所属服务",
-          "parentTask": "父任务",
-          "scenario": "场景",
           "selectPriority": "请选择优先级",
           "failNum": "失败次数",
           "totalNum": "处理次数",
@@ -1323,7 +1301,6 @@
     "form": {
       "subject": "会议主题",
       "type": "会议类型",
-      "sprint": "迭代",
       "date": "会议日期",
       "time": "会议时间",
       "location": "会议地点",
@@ -1431,7 +1408,6 @@
     },
     "objectType": {
       "currentProject": "当前项目",
-      "plan": "指定迭代",
       "testerOrg": "指定组织"
     },
     "detail": {
@@ -1603,13 +1579,6 @@
         }
       },
       "resourceCreation": {
-        "chartLabels": {
-          "backlog": "backlog",
-          "sprint": "迭代",
-          "task": "任务",
-          "meeting": "会议",
-          "analysis": "分析"
-        },
         "chartTitles": {
           "resourceTotal": "创建资源总量",
           "resourceGrowth": "创建资源增长趋势"
@@ -1722,10 +1691,6 @@
     },
     "tips": {
       "adminOnly": "只允许管理员和删除人还原或彻底删除回收站数据。"
-    },
-    "tabs": {
-      "sprint": "迭代",
-      "task": "任务"
     },
     "stats": {
       "items": "数量"

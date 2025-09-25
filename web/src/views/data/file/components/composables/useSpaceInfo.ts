@@ -48,7 +48,7 @@ export function useSpaceInfo (props: Props) {
       { dataIndex: 'createdByName', label: t('common.createdBy') },
       { dataIndex: 'createdDate', label: t('common.createdDate') },
       { dataIndex: 'lastModifiedDate', label: t('common.lastModifiedDate') },
-      props.type === 'space' && { dataIndex: 'remark', label: t('fileSpace.spaceDetail.columns.remark') },
+      props.type === 'space' && { dataIndex: 'remark', label: t('common.remark') },
       props.type === 'file' && { dataIndex: 'mockFunc', label: t('fileSpace.spaceDetail.columns.mockFunc') }
     ].filter(Boolean) as SpaceInfoColumnType[]
   ]);

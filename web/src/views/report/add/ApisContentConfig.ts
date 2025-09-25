@@ -24,7 +24,7 @@ export const contentTreeData = [
             key: 'info'
           },
           {
-            title: t('reportAdd.apisContent.contentTree.cases'),
+            title: t('common.useCase'),
             key: 'cases'
           },
           {

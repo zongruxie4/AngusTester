@@ -52,7 +52,7 @@ const columns = computed(() => [
     },
     {
       dataIndex: 'ownerName',
-      name: t('reportPreview.services.apiResultDetail.fields.owner')
+      name: t('common.owner')
     }
   ],
   [

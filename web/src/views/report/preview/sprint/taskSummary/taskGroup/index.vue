@@ -286,7 +286,7 @@ const taskTypeOptions = {
           }
         },
         {
-          name: t('reportPreview.sprint.taskSummary.groupStats.taskTypes.task'),
+          name: t('common.issue'),
           value: 0,
           itemStyle: {
             color: taskTypeColorSet.TASK

@@ -26,7 +26,7 @@ export const contentTreeData = [
     ]
   },
   {
-    title: t('reportAdd.sprintContent.contentTree.task'),
+    title: t('common.issue'),
     key: 'task',
     children: [
       {

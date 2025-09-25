@@ -60,7 +60,7 @@ const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
         <DashedLine />
       </a>
       <a href="#a12" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.12') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.functionCase.catalog.sections.comment') }}</span>
+        <span class="h1">{{ t('common.comments') }}</span>
         <DashedLine />
       </a>
     </div>

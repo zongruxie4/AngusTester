@@ -154,7 +154,7 @@ const splitCondition = (condition: string, replace = true): [string, string, str
 };
 
 const conditionName = computed(() => {
-  return splitCondition(props.value?.condition)?.[0] || t('xcan_assertionsResult.variable');
+  return splitCondition(props.value?.condition)?.[0] || t('common.variables');
 });
 
 const conditionValue = computed(() => {

@@ -649,14 +649,14 @@ onMounted(() => {
                   </Tooltip>
                 </template>
                 <template v-if="variable.targetType.value === 'SERVICE'">
-                  <Tooltip :title="t('xcan_variable.service')" placement="top">
+                  <Tooltip :title="t('common.service')" placement="top">
                     <label class="w-4 h-4 rounded-full text-white text-center leading-4 bg-blue-badge-s">
                       S
                     </label>
                   </Tooltip>
                 </template>
                 <template v-if="variable.targetType.value === 'API'">
-                  <Tooltip :title="t('xcan_variable.api')" placement="top">
+                  <Tooltip :title="t('common.api')" placement="top">
                     <label class="w-4 h-4 rounded-full text-white text-center leading-4 bg-blue-300">
                       A
                     </label>

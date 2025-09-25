@@ -427,7 +427,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
           </template>
           <TabPane
             key="api"
-            :tab="t('service.sidebar.apiGroup.tabs.api')"
+            :tab="t('common.api')"
             class="flex flex-col">
             <InterfaceHeader
               v-model:name="state.name"
@@ -475,7 +475,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
           </TabPane>
           <TabPane
             key="doc"
-            :tab="t('service.sidebar.apiGroup.tabs.doc')"
+            :tab="t('common.doc')"
             style="width: 100%; height: 100%">
             <OpenApiDocument
               ref="openapiRef"

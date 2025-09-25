@@ -390,7 +390,7 @@ export const createTaskTypeConfig = (): ChartConfig => ({
           itemStyle: { color: '#a855f7' } // purple-500
         },
         {
-          name: t('kanban.cto.taskTypes.task'),
+          name: t('common.issue'),
           value: 0,
           itemStyle: { color: '#3b82f6' } // blue-500
         },

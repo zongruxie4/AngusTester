@@ -107,7 +107,7 @@ onMounted(() => {
         class="mt-2 translate-form-wrap"
         :model="formData">
         <FormItem
-          :label="t('service.translateModal.configuration.service')"
+          :label="t('common.service')"
           name="serviceId"
           :rules="[{required: true, message: t('service.translateModal.messages.selectService')}]">
           <TreeSelect

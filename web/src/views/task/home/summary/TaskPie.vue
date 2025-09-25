@@ -168,7 +168,7 @@ onMounted(() => {
 
     const data = newValue.taskByType;
     chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.story'), value: +data.STORY });
-    chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.task'), value: +data.TASK });
+    chartOptions.series?.[0].data.push({ name: t('common.issue'), value: +data.TASK });
     chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.bug'), value: +data.BUG });
     chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.requirement'), value: +data.REQUIREMENT });
     chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.apiTest'), value: +data.API_TEST });

@@ -38,7 +38,7 @@ const statusColorConfig: StatusColorConfig = {
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="flex itesm-center space-x-3">
       <div class="text-theme-title text-5">
-        {{ t('version.detail.version') }} {{ dataSource.name }}
+        {{ t('common.version') }} {{ dataSource.name }}
       </div>
       <Tag v-if="dataSource.status?.value" :color="statusColorConfig[dataSource.status?.value]">{{ dataSource.status?.message }}</Tag>
     </div>

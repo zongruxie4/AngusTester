@@ -152,7 +152,7 @@ const statisticConfig = [
     total: 'allService',
     week: 'serviceByLastWeek',
     month: 'serviceByLastMonth',
-    name: t('apis.statisticsCreated.service')
+    name: t('common.service')
   },
   {
     topClass: 'hong-top',
@@ -160,7 +160,7 @@ const statisticConfig = [
     total: 'allApis',
     week: 'apisByLastWeek',
     month: 'apisByLastMonth',
-    name: t('apis.statisticsCreated.apis')
+    name: t('common.api')
   },
   {
     topClass: 'lan-top',
@@ -459,11 +459,11 @@ onBeforeUnmount(() => {
     <div class="text-3.5 font-semibold mb-3">{{ t('apis.statistics.title') }}</div>
     <div ref="echartsWrapRef" class="flex space-x-3.75">
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold flex items-center px-2">{{ t('apis.statistics.service') }} <span class="text-4 ml-2">{{ allService }}</span></div>
+        <div class="font-semibold flex items-center px-2">{{ t('common.service') }} <span class="text-4 ml-2">{{ allService }}</span></div>
         <div ref="serviceRef" class="w-full h-65"></div>
       </div>
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold flex items-center px-2">{{ t('apis.statistics.apis') }} <span class="text-4 ml-2">{{ allApis }}</span></div>
+        <div class="font-semibold flex items-center px-2">{{ t('common.api') }} <span class="text-4 ml-2">{{ allApis }}</span></div>
         <div ref="apiRef" class="w-full h-65"></div>
       </div>
       <div class="border border-theme-text-box w-1/3 p-2 rounded">

@@ -101,7 +101,7 @@ const tableColumns = [
     dataIndex: 'name'
   },
   {
-    title: t('functionBaseline.editForm.version'),
+    title: t('common.version'),
     dataIndex: 'version',
     width: 80,
     customRender: ({ text }) => 'v' + text || '--'

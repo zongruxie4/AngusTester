@@ -24,11 +24,11 @@ export const contentTreeData = [
     key: 'subTask'
   },
   {
-    title: t('reportAdd.taskContent.contentTree.task'),
+    title: t('common.issue'),
     key: 'task'
   },
   {
-    title: t('reportAdd.taskContent.contentTree.cases'),
+    title: t('common.useCase'),
     key: 'cases'
   },
   {
@@ -41,7 +41,7 @@ export const contentTreeData = [
         key: 'testSource'
       },
       {
-        title: t('reportAdd.taskContent.contentTree.exec'),
+        title: t('common.execution'),
         key: 'exec'
       },
       {
@@ -51,7 +51,7 @@ export const contentTreeData = [
     ]
   },
   {
-    title: t('reportAdd.taskContent.contentTree.remark'),
+    title: t('common.remark'),
     key: 'remark'
   },
   {
@@ -59,7 +59,7 @@ export const contentTreeData = [
     key: 'activity'
   },
   {
-    title: t('reportAdd.taskContent.contentTree.comment'),
+    title: t('common.comments'),
     key: 'comment'
   }
 ];

@@ -395,7 +395,7 @@ onMounted(async () => {
         </FormItem>
 
         <FormItem
-          :label="t('taskMeeting.form.sprint')"
+          :label="t('common.sprint')"
           class="flex-1 min-w-0"
           name="sprintId">
           <div class="flex items-center space-x-1">

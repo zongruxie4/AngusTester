@@ -238,7 +238,7 @@ const dropdownMenuItems = [
                     type="avatar" />
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('functionPlan.list.owner') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('common.owner') }}</span>
                   <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.ownerName">
                     {{ item.ownerName }}
                   </span>
@@ -273,7 +273,7 @@ const dropdownMenuItems = [
               <!-- Members -->
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('functionPlan.list.members') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('common.members') }}</span>
                   <span class="text-sm font-medium text-theme-content">
                     {{ item.members?.length || 0 }} {{ t('unit.user') }}
                   </span>
@@ -297,7 +297,7 @@ const dropdownMenuItems = [
                       placement="bottomLeft"
                       internal>
                       <template #title>
-                        <span class="text-sm font-medium">{{ t('functionPlan.list.members') }} ({{ item.members.length }})</span>
+                        <span class="text-sm font-medium">{{ t('common.members') }} ({{ item.members.length }})</span>
                       </template>
 
                       <template #content>

@@ -21,12 +21,12 @@ const targetDataCategery = {
   TEST_PERFORMANCE: t('functionAnalysis.detail.resourceCreation.performanceTest'),
   TEST_STABILITY: t('functionAnalysis.detail.resourceCreation.stabilityTest'),
   SERVICES: t('functionAnalysis.detail.resourceCreation.services'),
-  APIS: t('functionAnalysis.detail.resourceCreation.apis'),
-  CASES: t('functionAnalysis.detail.resourceCreation.cases'),
-  PLAN: t('functionAnalysis.detail.resourceCreation.plan'),
-  SPRINT: t('functionAnalysis.detail.resourceCreation.sprint'),
+  APIS: t('common.api'),
+  CASES: t('common.useCase'),
+  PLAN: t('common.plan'),
+  SPRINT: t('common.sprint'),
   TASK_SPRINT: t('functionAnalysis.detail.resourceCreation.taskSprint'),
-  TASK: t('functionAnalysis.detail.resourceCreation.task'),
+  TASK: t('common.issue'),
   MOCK_APIS: t('functionAnalysis.detail.resourceCreation.mockApis'),
   MOCK_PUSHBACK: t('functionAnalysis.detail.resourceCreation.mockPushback'),
   MOCK_RESPONSE: t('functionAnalysis.detail.resourceCreation.mockResponse'),
@@ -42,12 +42,12 @@ const targetDataCategery = {
   REQUIREMENT: t('functionAnalysis.detail.resourceCreation.requirement'),
   STORY: t('functionAnalysis.detail.resourceCreation.story'),
   SCENARIO_TEST: t('functionAnalysis.detail.resourceCreation.scenarioTest'),
-  ANALYSIS: t('functionAnalysis.detail.resourceCreation.analysis'),
-  BACKLOG: t('functionAnalysis.detail.resourceCreation.backlog'),
-  MEETING: t('functionAnalysis.detail.resourceCreation.meeting'),
+  ANALYSIS: t('common.analysis'),
+  BACKLOG: t('common.backlog'),
+  MEETING: t('common.meeting'),
   BASELINE: t('functionAnalysis.detail.resourceCreation.baseline'),
-  CASE: t('functionAnalysis.detail.resourceCreation.case'),
-  REVIEW: t('functionAnalysis.detail.resourceCreation.review')
+  CASE: t('common.useCase'),
+  REVIEW: t('common.review')
 };
 
 const getChartData = (data) => {

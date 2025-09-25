@@ -139,7 +139,7 @@ onMounted(() => {
 
           <div class="flex items-start">
             <div class="w-24 flex items-center whitespace-nowrap flex-shrink-0 text-gray-900 font-medium text-3 text-right">
-              <span>{{ t('taskMeeting.columns.sprint') }}</span>
+              <span>{{ t('common.sprint') }}</span>
               <Colon class="w-1 mx-1" />
             </div>
 

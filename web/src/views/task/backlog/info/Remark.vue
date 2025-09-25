@@ -163,7 +163,7 @@ const queryParams = computed(() => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('backlog.remark') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.remark') }}</h3>
     </div>
 
     <div class="pr-2">

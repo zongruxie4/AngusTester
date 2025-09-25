@@ -52,11 +52,11 @@ const unplannedTaskEChartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('taskAnalysis.detail.resourceCreation.chartLabels.backlog'),
-      t('taskAnalysis.detail.resourceCreation.chartLabels.sprint'),
-      t('taskAnalysis.detail.resourceCreation.chartLabels.task'),
-      t('taskAnalysis.detail.resourceCreation.chartLabels.meeting'),
-      t('taskAnalysis.detail.resourceCreation.chartLabels.analysis'),
+      t('common.backlog'),
+      t('common.sprint'),
+      t('common.issue'),
+      t('common.meeting'),
+      t('common.analysis'),
       t('chart.total')
     ],
     axisLabel: {

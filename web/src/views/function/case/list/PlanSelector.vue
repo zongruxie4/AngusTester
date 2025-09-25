@@ -106,7 +106,7 @@ defineExpose({
         size="small"
         @click="todoHandler">
         <Icon icon="icon-jia" class="text-3 mr-1 -mt-0.25" />
-        {{ t('functionCase.selectPlanModal.plan') }}
+        {{ t('common.plan') }}
       </Button>
 
       <Select

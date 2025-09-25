@@ -292,7 +292,7 @@ onMounted(() => {
           size="small"
           :placeholder="t('service.apiSliderSave.form.operationIdPlaceholder')" />
       </FormItem>
-      <FormItem :label="t('service.apiSliderSave.labels.owner')" name="ownerId">
+      <FormItem :label="t('common.owner')" name="ownerId">
         <SelectUser
           v-model:value="form.ownerId"
           class="rounded-border"
@@ -302,7 +302,7 @@ onMounted(() => {
           :placeholder="t('service.apiSliderSave.form.ownerPlaceholder')"
           :allowClear="false" />
       </FormItem>
-      <FormItem :label="t('service.apiSliderSave.labels.service')" name="serviceId">
+      <FormItem :label="t('common.service')" name="serviceId">
         <TreeSelect
           v-model:defaultValue="defaultProject"
           :action="`${TESTER}/services?projectId=${projectId}&hasPermission=ADD&fullTextSearch=true`"
@@ -329,7 +329,7 @@ onMounted(() => {
       <FormItem name="tags">
         <template #label>
           <div>
-            <span>{{ t('service.apiSliderSave.labels.tags') }}</span>
+            <span>{{ t('common.tags') }}</span>
             <Tooltip placement="left">
               <Icon icon="icon-tishi1" class="text-blue-tips ml-0.5 text-3.5" />
               <template #title>{{ t('service.apiSliderSave.tips.tagsDescription') }}</template>

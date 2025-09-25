@@ -118,7 +118,7 @@ onMounted(() => {
     <div class="flex flex-1 space-x-3.75 justify-start">
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
-          <span class="text-3.5">{{ t('taskHome.backlog') }}</span>
+          <span class="text-3.5">{{ t('common.backlog') }}</span>
           <span class="text-4.5 font-semibold">{{ allBacklog }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
@@ -137,7 +137,7 @@ onMounted(() => {
 
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
-          <span class="text-3.5">{{ t('taskHome.sprint') }}</span>
+          <span class="text-3.5">{{ t('common.sprint') }}</span>
           <span class="text-4.5 font-semibold">{{ allSprint }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
@@ -156,7 +156,7 @@ onMounted(() => {
 
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
-          <span class="text-3.5">{{ t('taskHome.task') }}</span>
+          <span class="text-3.5">{{ t('common.issue') }}</span>
           <span class="text-4.5 font-semibold">{{ allTask }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
@@ -175,7 +175,7 @@ onMounted(() => {
 
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">
-          <span class="text-3.5">{{ t('taskHome.meeting') }}</span>
+          <span class="text-3.5">{{ t('common.meeting') }}</span>
           <span class="text-4.5 font-semibold">{{ allMeeting }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">

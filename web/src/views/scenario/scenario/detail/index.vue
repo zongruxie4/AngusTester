@@ -170,7 +170,7 @@ onMounted(() => {
           :scriptType="ScriptType.TEST_CUSTOMIZATION"
           @del="handleResultDeletion" />
       </TabPane>
-      <TabPane key="task" :tab="t('scenario.detail.tabs.task')">
+      <TabPane key="task" :tab="t('common.issue')">
         <Task :scenarioId="props.data?.scenarioId" :projectId="props.projectId" />
       </TabPane>
       <TabPane key="activity" :tab="t('scenario.detail.tabs.activity')">
@@ -180,7 +180,7 @@ onMounted(() => {
           :types="['SCENARIO']"
           class="w-150 h-full" />
       </TabPane>
-      <TabPane key="comment" :tab="t('scenario.detail.tabs.comment')">
+      <TabPane key="comment" :tab="t('common.comments')">
         <SmartComment
           ref="smartCommentRef"
           targetType="SCENARIO"

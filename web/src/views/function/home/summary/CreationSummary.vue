@@ -131,7 +131,7 @@ const resetSummaryValues = () => {
     <div class="flex flex-1 space-x-3.75 justify-start">
       <div class="p-3.5 rounded w-1/4 relative bg-img bg-yellow">
         <div class="space-x-2">
-          <span class="text-3.5">{{ t('functionHome.myCreationSummary.plan') }}</span>
+          <span class="text-3.5">{{ t('common.plan') }}</span>
           <span class="text-4.5 font-semibold">{{ allPlan }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
@@ -149,7 +149,7 @@ const resetSummaryValues = () => {
 
       <div class="p-3.5 rounded w-1/4 relative bg-img bg-red">
         <div class="space-x-2">
-          <span class="text-3.5">{{ t('functionHome.myCreationSummary.case') }}</span>
+          <span class="text-3.5">{{ t('common.useCase') }}</span>
           <span class="text-4.5 font-semibold">{{ allCase }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">
@@ -167,7 +167,7 @@ const resetSummaryValues = () => {
 
       <div class="p-3.5 rounded w-1/4 relative bg-img bg-blue">
         <div class="space-x-2">
-          <span class="text-3.5">{{ t('functionHome.myCreationSummary.review') }}</span>
+          <span class="text-3.5">{{ t('common.review') }}</span>
           <span class="text-4.5 font-semibold">{{ allReview }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">

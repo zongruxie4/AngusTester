@@ -202,7 +202,7 @@ watch(() => selectedModuleId.value, () => {
         <div class="module-tree-container">
           <ModuleTree
             v-model:moduleId="selectedModuleId"
-            :title="t('commonComp.selectTaskByModuleModal.task')"
+            :title="t('common.issue')"
             :projectId="props.projectId"
             :projectName="''" />
         </div>

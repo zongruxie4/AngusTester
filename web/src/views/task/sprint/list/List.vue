@@ -119,7 +119,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
                     type="avatar" />
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('taskSprint.columns.owner') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('common.owner') }}</span>
                   <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.ownerName">
                     {{ item.ownerName }}
                   </span>
@@ -154,7 +154,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
               <!-- Members -->
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('taskSprint.columns.members') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('common.members') }}</span>
                   <span class="text-sm font-medium text-theme-content">
                     {{ item.members?.length || 0 }} 人
                   </span>
@@ -176,7 +176,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
                       placement="bottomLeft"
                       internal>
                       <template #title>
-                        <span class="text-sm font-medium">{{ t('taskSprint.columns.members') }} ({{ item.members.length }})</span>
+                        <span class="text-sm font-medium">{{ t('common.members') }} ({{ item.members.length }})</span>
                       </template>
                       <template #content>
                         <div class="grid grid-cols-5 gap-2 max-w-md">

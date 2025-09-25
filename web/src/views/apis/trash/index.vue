@@ -277,7 +277,7 @@ const handleRefresh = () => {
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <Tabs v-model:activeKey="activeKey" class="enhanced-tabs">
             <!-- SERVICE tab -->
-            <TabPane key="SERVICE" :tab="t('apiTrash.tabs.service')">
+            <TabPane key="SERVICE" :tab="t('common.service')">
               <Table
                 v-model:spinning="loading"
                 :notify="notify"
@@ -288,7 +288,7 @@ const handleRefresh = () => {
             </TabPane>
 
             <!-- API tab -->
-            <TabPane key="API" :tab="t('apiTrash.tabs.api')">
+            <TabPane key="API" :tab="t('common.api')">
               <Table
                 v-model:spinning="loading"
                 :notify="notify"

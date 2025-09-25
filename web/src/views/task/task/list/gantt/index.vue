@@ -373,7 +373,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'attachments' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('task.ganttView.drawer.attachments')"
+          :title="t('common.attachments')"
           @click="changeActiveDrawerTab('attachments')">
           <Icon icon="icon-lianjie1" class="text-4" />
         </div>
@@ -389,7 +389,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'comment' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('task.ganttView.drawer.comments')"
+          :title="t('common.comments')"
           @click="changeActiveDrawerTab('comment')">
           <Icon icon="icon-pinglun" class="text-4" />
         </div>

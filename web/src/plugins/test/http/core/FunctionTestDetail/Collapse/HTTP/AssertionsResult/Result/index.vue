@@ -117,7 +117,7 @@ const splitCondition = (condition: string, replaceFlag = true): [string, string,
 };
 
 const conditionName = computed(() => {
-  return splitCondition(props.value?.condition)?.[0] || t('httpPlugin.functionTestDetail.http.assertions.variable');
+  return splitCondition(props.value?.condition)?.[0] || t('common.variables');
 });
 
 const conditionValue = computed(() => {

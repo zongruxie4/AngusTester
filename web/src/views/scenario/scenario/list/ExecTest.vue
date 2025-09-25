@@ -169,7 +169,7 @@ const modalTitle = computed(() => props.title || t('scenario.list.execTest.title
             </div>
 
             <div v-if="!!item.variables?.length">
-              <div v-if="false" class="text-theme-sub-content mb-0.5">{{ t('scenario.list.execTest.variables') }}</div>
+              <div v-if="false" class="text-theme-sub-content mb-0.5">{{ t('common.variables') }}</div>
               <div class="space-y-5">
                 <div
                   v-for="_variable in item.variables"

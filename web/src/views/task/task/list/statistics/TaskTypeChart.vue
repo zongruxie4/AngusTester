@@ -141,7 +141,7 @@ const updateChartData = (): void => {
     value: +props.dataSource.storyNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('task.list.statistics.typeColumns.task'),
+    name: t('common.issue'),
     value: +props.dataSource.taskNum
   });
   chartOptions.series?.[0].data.push({

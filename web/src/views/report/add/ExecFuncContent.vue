@@ -108,7 +108,7 @@ defineExpose({
   </div>
   <div class="flex mt-2 pl-2">
     <div class="inline-flex flex-1 items-center space-x-2">
-      <div class="w-10 text-right"><IconRequired class="mr-1" />{{ t('reportAdd.execFuncContent.execution') }}</div>
+      <div class="w-10 text-right"><IconRequired class="mr-1" />{{ t('common.execution') }}</div>
       <Colon />
       <Select
         v-model:value="execId"

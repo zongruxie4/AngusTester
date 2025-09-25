@@ -115,7 +115,7 @@ const splitCondition = (condition: string, replaceFlag = true): [string, string,
 };
 
 const conditionName = computed(() => {
-  return splitCondition(props.value?.condition)?.[0] || t('jmsPlugin.functionTestDetailJms.assertionResult.variable');
+  return splitCondition(props.value?.condition)?.[0] || t('common.variables');
 });
 
 const conditionValue = computed(() => {

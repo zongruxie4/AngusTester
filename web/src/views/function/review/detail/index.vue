@@ -123,7 +123,7 @@ const columns = [
     }
   },
   {
-    title: t('caseReview.detail.version'),
+    title: t('common.version'),
     dataIndex: 'caseInfo',
     key: 'caseVersion',
     customRender: ({ text }) => {
@@ -572,7 +572,7 @@ onUnmounted(() => {
               <div class="flex items-center space-x-10">
                 <!-- Owner (placed before participants) -->
                 <div class="flex items-center space-x-2">
-                  <span class="text-gray-600">{{ t('caseReview.detail.owner') }}：</span>
+                  <span class="text-gray-600">{{ t('common.owner') }}：</span>
                   <span class="font-medium text-gray-900">{{ reviewDetail?.ownerName }}</span>
                 </div>
 
@@ -600,7 +600,7 @@ onUnmounted(() => {
                 <!-- Attachments -->
                 <div class="flex items-center space-x-2">
                   <Icon icon="icon-fujian" class="text-gray-400" />
-                  <span class="text-gray-600">{{ t('caseReview.detail.attachments') }}：</span>
+                  <span class="text-gray-600">{{ t('common.attachments') }}：</span>
                   <div class="flex items-center space-x-2">
                     <a
                       v-for="file in (reviewDetail?.attachments || [])"

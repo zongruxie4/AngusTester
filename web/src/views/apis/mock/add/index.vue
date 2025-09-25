@@ -223,9 +223,9 @@ onMounted(async () => {
             <FormItem :label="t('mock.addMock.form.port')" required />
             <FormItem :label="t('mock.addMock.form.node')" required />
             <template v-if="activeTab===1">
-              <FormItem :label="t('mock.addMock.form.service')" required />
+              <FormItem :label="t('common.service')" required />
               <template v-if="formState.serviceId">
-                <FormItem :label="t('mock.addMock.form.api')" />
+                <FormItem :label="t('common.api')" />
               </template>
             </template>
             <template v-if="activeTab===2">

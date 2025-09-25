@@ -1442,7 +1442,7 @@ const checkedCaseId = computed(() => {
             </div>
             <div class="flex items-center">
               <span>{{ Object.values(groupDataMap[_createdByName.value] || {}).reduce((prev, cur) => prev + cur.length,0) }}</span>
-              <span>{{ t('functionCase.kanbanView.cases') }}</span>
+              <span>{{ t('common.useCase') }}</span>
             </div>
           </div>
           <div class="relative h-full flex items-start" style="width: calc(100% - 193px);">
@@ -1605,7 +1605,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'attachments' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.attachments')"
+          :title="t('common.attachments')"
           @click="drawerActiveKeyChange('attachments')">
           <Icon icon="icon-lianjie1" class="text-4" />
         </div>
@@ -1621,7 +1621,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'comment' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.comments')"
+          :title="t('common.comments')"
           @click="drawerActiveKeyChange('comment')">
           <Icon icon="icon-pinglun" class="text-4" />
         </div>
@@ -1629,7 +1629,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'activity' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.activities')"
+          :title="t('common.activities')"
           @click="drawerActiveKeyChange('activity')">
           <Icon icon="icon-chakanhuodong" class="text-4" />
         </div>

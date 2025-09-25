@@ -50,7 +50,7 @@ const attachments = computed(() => props.sprintData?.attachments || []);
       <div class="flex items-start space-x-5">
         <div class="w-1/2 flex items-start">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('taskSprint.columns.owner') }}</span>
+            <span class="font-semibold text-black">{{ t('common.owner') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -110,7 +110,7 @@ const attachments = computed(() => props.sprintData?.attachments || []);
       <div class="flex items-start">
         <div style="width:calc(50% - 10px);" class="flex items-start">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('taskSprint.form.attachments') }}</span>
+            <span class="font-semibold text-black">{{ t('common.attachments') }}</span>
             <Colon class="w-1" />
           </div>
 

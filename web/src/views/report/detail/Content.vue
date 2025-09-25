@@ -286,7 +286,7 @@ onMounted(() => {
     <div
       v-if="props.template && [ReportTemplate.TASK_SPRINT, ReportTemplate.TASK].includes(props.template)"
       class="leading-7 flex items-center space-x-2">
-      <span class="w-12">{{ t('reportHome.reportDetail.content.sprint') }}</span>
+      <span class="w-12">{{ t('common.sprint') }}</span>
       <Colon />
       <div>
         {{ sprintName }}
@@ -296,7 +296,7 @@ onMounted(() => {
     <div
       v-if="props.template && [ReportTemplate.TASK].includes(props.template)"
       class="leading-7 flex items-center space-x-2">
-      <span class="w-12">{{ t('reportHome.reportDetail.content.task') }}</span>
+      <span class="w-12">{{ t('common.issue') }}</span>
       <Colon />
       <div>
         {{ taskName }}
@@ -306,7 +306,7 @@ onMounted(() => {
     <div
       v-if="props.template && [ReportTemplate.FUNC_TESTING_PLAN, ReportTemplate.FUNC_TESTING_CASE].includes(props.template)"
       class="leading-7 flex items-center space-x-2">
-      <span class="w-12">{{ t('reportHome.reportDetail.content.plan') }}</span>
+      <span class="w-12">{{ t('common.plan') }}</span>
       <Colon />
       <div>
         {{ planName }}
@@ -316,7 +316,7 @@ onMounted(() => {
     <div
       v-if="props.template && [ReportTemplate.FUNC_TESTING_CASE].includes(props.template)"
       class="leading-7 flex items-center space-x-2">
-      <span class="w-12">{{ t('reportHome.reportDetail.content.case') }}</span>
+      <span class="w-12">{{ t('common.useCase') }}</span>
       <Colon />
       <div>
         {{ caseName }}
@@ -326,7 +326,7 @@ onMounted(() => {
     <div
       v-if="props.template && [ReportTemplate.SERVICES_TESTING_RESULT, ReportTemplate.APIS_TESTING_RESULT].includes(props.template)"
       class="leading-7 flex items-center space-x-2">
-      <span class="w-12">{{ t('reportHome.reportDetail.content.service') }}</span>
+      <span class="w-12">{{ t('common.service') }}</span>
       <Colon />
       <div>
         {{ serviceName }}
@@ -336,7 +336,7 @@ onMounted(() => {
     <div
       v-if="props.template && [ReportTemplate.APIS_TESTING_RESULT].includes(props.template)"
       class="leading-7 flex items-center space-x-2">
-      <span class="w-12">{{ t('reportHome.reportDetail.content.api') }}</span>
+      <span class="w-12">{{ t('common.api') }}</span>
       <Colon />
       <div>
         {{ apisName }}
@@ -346,7 +346,7 @@ onMounted(() => {
     <div
       v-if="props.template && [ReportTemplate.SCENARIO_TESTING_RESULT].includes(props.template)"
       class="leading-7 flex items-center space-x-2">
-      <span class="w-12">{{ t('reportHome.reportDetail.content.scenario') }}</span>
+      <span class="w-12">{{ t('common.scenario') }}</span>
       <Colon />
       <div>
         {{ scenarioName }}
@@ -356,7 +356,7 @@ onMounted(() => {
     <div
       v-if="props.template && props.template.includes('EXEC')"
       class="leading-7 flex items-center space-x-2">
-      <span class="w-12">{{ t('reportHome.reportDetail.content.execution') }}</span>
+      <span class="w-12">{{ t('common.execution') }}</span>
       <Colon />
       <div>
         {{ execName }}

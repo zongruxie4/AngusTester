@@ -898,7 +898,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.service'),
+    title: t('common.service'),
     hide: true,
     dataIndex: 'targetParentName',
     groupName: 'target',

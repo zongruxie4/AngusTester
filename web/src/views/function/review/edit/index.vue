@@ -700,7 +700,7 @@ onMounted(async () => {
       </FormItem>
 
       <FormItem
-        :label="t('caseReview.editForm.owner')"
+        :label="t('common.owner')"
         name="ownerId"
         class="relative"
         :rules="{ required: true, message: t('caseReview.editForm.selectOwner') }">
@@ -725,7 +725,7 @@ onMounted(async () => {
           :placeholder="t('caseReview.editForm.selectParticipantsPlaceholder')" />
       </FormItem>
 
-      <FormItem :label="t('caseReview.editForm.attachments')">
+      <FormItem :label="t('common.attachments')">
         <div class="flex items-center mt-0.5">
           <Upload
             v-if="!formState?.attachments || formState?.attachments?.length < 10"

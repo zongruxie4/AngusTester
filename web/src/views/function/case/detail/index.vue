@@ -560,7 +560,7 @@ defineExpose({
       <TabPane key="assocCase">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('functionCase.detail.case') }}</span>
+            <span>{{ t('common.useCase') }}</span>
             <span>({{ caseDetail?.refCaseInfos?.length || 0 }})</span>
           </div>
         </template>
@@ -575,7 +575,7 @@ defineExpose({
       <TabPane key="assocTask">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('functionCase.detail.task') }}</span>
+            <span>{{ t('common.issue') }}</span>
             <span>({{ getRefTaskNum(TaskType.TASK) }})</span>
           </div>
         </template>
@@ -584,7 +584,7 @@ defineExpose({
           :dataSource="caseDetail?.refTaskInfos"
           :projectId="projectId"
           :caseId="caseDetail?.id"
-          :title="t('functionCase.detail.task')"
+          :title="t('common.issue')"
           :taskType="TaskType.TASK"
           :tips="t('functionCase.detail.taskTip')"
           @editSuccess="editSuccess" />
@@ -694,7 +694,7 @@ defineExpose({
         key="comments"
         class="h-full">
         <template #tab>
-          <span>{{ t('functionCase.detail.comments') }} ({{ caseDetail?.commentNum || 0 }})</span>
+          <span>{{ t('common.comments') }} ({{ caseDetail?.commentNum || 0 }})</span>
         </template>
         <SmartComment
           ref="smartCommentRef"

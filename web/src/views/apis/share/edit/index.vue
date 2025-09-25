@@ -317,7 +317,7 @@ const schemaStyleOpt = [
         </FormItem>
         <FormItem
           v-if="['PARTIAL_APIS', 'SINGLE_APIS'].includes(formState.shareScope)"
-          :label="t('apiShare.form.apis')"
+          :label="t('common.api')"
           name="apisIds"
           class="flex-1 min-w-0"
           required>

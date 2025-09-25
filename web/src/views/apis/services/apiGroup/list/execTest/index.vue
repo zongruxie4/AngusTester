@@ -294,7 +294,7 @@ const modalTitle = computed(() => {
             </div>
 
             <div v-if="!!item.variables?.length">
-              <div v-if="false" class="text-theme-sub-content mb-0.5">{{ t('service.serviceExecTest.labels.variables') }}</div>
+              <div v-if="false" class="text-theme-sub-content mb-0.5">{{ t('common.variables') }}</div>
               <div class="space-y-5">
                 <div
                   v-for="_variable in item.variables"

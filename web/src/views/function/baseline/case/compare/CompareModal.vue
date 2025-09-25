@@ -509,7 +509,7 @@ onMounted(() => {
 
       <div v-show="!shouldHideSameItems || !!attachmentsHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
-          {{ t('functionBaseline.case.attachments') }}
+          {{ t('common.attachments') }}
         </div>
         <div class="flex-1 border-r px-2">
           <div v-if="baseCaseData?.attachment?.length" class="py-1">

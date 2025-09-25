@@ -42,7 +42,7 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'version',
       dataIndex: 'version',
-      title: t('reportHome.table.version'),
+      title: t('common.version'),
       width: 70,
       sorter: true
     },

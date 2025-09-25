@@ -21,12 +21,12 @@ const targetDataCategery = {
   TEST_PERFORMANCE: t('taskAnalysis.detail.resourceCreation.resourceTypes.TEST_PERFORMANCE'),
   TEST_STABILITY: t('taskAnalysis.detail.resourceCreation.resourceTypes.TEST_STABILITY'),
   SERVICES: t('taskAnalysis.detail.resourceCreation.resourceTypes.SERVICES'),
-  APIS: t('taskAnalysis.detail.resourceCreation.resourceTypes.APIS'),
-  CASES: t('taskAnalysis.detail.resourceCreation.resourceTypes.CASES'),
-  PLAN: t('taskAnalysis.detail.resourceCreation.resourceTypes.PLAN'),
-  SPRINT: t('taskAnalysis.detail.resourceCreation.resourceTypes.SPRINT'),
+  APIS: t('common.api'),
+  CASES: t('common.useCase'),
+  PLAN: t('common.plan'),
+  SPRINT: t('common.sprint'),
   TASK_SPRINT: t('taskAnalysis.detail.resourceCreation.resourceTypes.TASK_SPRINT'),
-  TASK: t('taskAnalysis.detail.resourceCreation.resourceTypes.TASK'),
+  TASK: t('common.issue'),
   MOCK_APIS: t('taskAnalysis.detail.resourceCreation.resourceTypes.MOCK_APIS'),
   MOCK_PUSHBACK: t('taskAnalysis.detail.resourceCreation.resourceTypes.MOCK_PUSHBACK'),
   MOCK_RESPONSE: t('taskAnalysis.detail.resourceCreation.resourceTypes.MOCK_RESPONSE'),
@@ -42,9 +42,9 @@ const targetDataCategery = {
   REQUIREMENT: t('taskAnalysis.detail.resourceCreation.resourceTypes.REQUIREMENT'),
   STORY: t('taskAnalysis.detail.resourceCreation.resourceTypes.STORY'),
   SCENARIO_TEST: t('taskAnalysis.detail.resourceCreation.resourceTypes.SCENARIO_TEST'),
-  ANALYSIS: t('taskAnalysis.detail.resourceCreation.resourceTypes.ANALYSIS'),
-  BACKLOG: t('taskAnalysis.detail.resourceCreation.resourceTypes.BACKLOG'),
-  MEETING: t('taskAnalysis.detail.resourceCreation.resourceTypes.MEETING')
+  ANALYSIS: t('common.analysis'),
+  BACKLOG: t('common.backlog'),
+  MEETING: t('common.meeting')
 };
 
 const getChartData = (data) => {

@@ -106,7 +106,7 @@ defineExpose({
           size="small"
           @click="todoHandler">
           <Icon icon="icon-jia" class="text-3 mr-1 -mt-0.25" />
-          {{ t('functionCase.selectTag.tag') }}
+          {{ t('common.tags') }}
         </Button>
       </template>
 

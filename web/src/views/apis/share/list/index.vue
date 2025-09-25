@@ -231,7 +231,7 @@ const columns = [
     width: '8%'
   },
   {
-    title: t('apiShare.list.columns.remark'),
+    title: t('common.remark'),
     dataIndex: 'remark',
     ellipsis: true,
     width: '12%'

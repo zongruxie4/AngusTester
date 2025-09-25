@@ -99,7 +99,7 @@ export const DRAWER_MENUITEMS:{
   },
   {
     icon: 'icon-pinglun',
-    name: t('commonPlugin.menuData.drawer.comment'),
+    name: t('common.comments'),
     key: 'comment'
   }
 ];

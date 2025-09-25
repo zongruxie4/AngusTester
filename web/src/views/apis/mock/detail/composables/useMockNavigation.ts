@@ -36,7 +36,7 @@ export function useMockNavigation (id: string) {
     {
       code: 'apis',
       icon: 'icon-jiekou',
-      showName: t('mock.detail.menu.apis'),
+      showName: t('common.api'),
       url: `/mockservice/${id}/apis`,
       show: true,
       enabled: true,
@@ -44,7 +44,7 @@ export function useMockNavigation (id: string) {
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: '/apis#mock', id: '1001' },
-        { name: t('mock.detail.menu.apis'), id: '1002' }
+        { name: t('common.api'), id: '1002' }
       ]
     },
     {

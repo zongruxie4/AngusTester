@@ -301,7 +301,7 @@ watch(() => props.visible, (newValue) => {
               class="form-field with-tooltip flex-1"
               :rules="[{ required: true, message: t('project.edit.rules.ownerRequired')}]">
               <template #label>
-                <span>{{ t('project.edit.form.owner') }}</span>
+                <span>{{ t('common.owner') }}</span>
               </template>
               <SelectUser
                 v-model:value="formData.ownerId"
@@ -341,7 +341,7 @@ watch(() => props.visible, (newValue) => {
 
           <!-- Project members -->
           <FormItem
-            :label="t('project.edit.form.members')"
+            :label="t('common.members')"
             class="form-field members-field"
             required>
             <div class="members-selector">

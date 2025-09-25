@@ -62,7 +62,7 @@ export const serviceNavItem: NavItem[] = [
   },
   {
     icon: 'icon-bianliang',
-    name: t('service.dataModel.navItems.variable'),
+    name: t('common.variables'),
     value: 'variable', // 4
     auth: 'MODIFY',
     disabled: true
@@ -83,7 +83,7 @@ export const serviceNavItem: NavItem[] = [
   },
   {
     icon: 'icon-biaoqian',
-    name: t('service.dataModel.navItems.tag'),
+    name: t('common.tags'),
     value: 'tag', // 9
     auth: 'MODIFY',
     disabled: true

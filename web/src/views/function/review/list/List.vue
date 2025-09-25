@@ -226,7 +226,7 @@ const dropdownMenuItems = [
                     type="avatar" />
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('caseReview.list.owner') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('common.owner') }}</span>
                   <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.ownerName">
                     {{ item.ownerName }}
                   </span>

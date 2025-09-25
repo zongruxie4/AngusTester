@@ -65,7 +65,7 @@ export const navs: NavItem[] = [
   },
   {
     icon: 'icon-yongliku',
-    name: t('service.apis.navs.case'),
+    name: t('common.useCase'),
     value: 'case', // 5
     auth: 'MODIFY',
     disabled: true
@@ -202,7 +202,7 @@ export const serviceNav: NavItem[] = [
   },
   {
     icon: 'icon-biaoqian',
-    name: t('service.apis.serviceNav.tag'),
+    name: t('common.tags'),
     value: 'tag', // 9
     auth: 'MODIFY',
     disabled: true

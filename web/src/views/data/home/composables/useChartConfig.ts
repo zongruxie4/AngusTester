@@ -107,7 +107,7 @@ export function useChartConfig () {
       total: 'allVariable',
       week: 'variableByLastWeek',
       month: 'variableByLastMonth',
-      name: t('dataHome.statistics.variable')
+      name: t('common.variables')
     },
     {
       topClass: 'hong-top',

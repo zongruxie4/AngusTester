@@ -4,7 +4,7 @@ const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
 export const contentTreeData = [
   {
-    title: t('reportAdd.scenarioContent.contentTree.scenario'),
+    title: t('common.scenario'),
     key: 'scenario'
   },
   {
@@ -25,7 +25,7 @@ export const contentTreeData = [
             key: 'info'
           },
           {
-            title: t('reportAdd.scenarioContent.contentTree.apis'),
+            title: t('common.api'),
             key: 'apis'
           },
           {

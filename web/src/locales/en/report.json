@@ -115,14 +115,7 @@
         "organizationPersonnel": "Organization Personnel",
         "time": "Time",
         "project": "Project",
-        "sprint": "Sprint",
-        "task": "Task",
-        "plan": "Plan",
         "case": "Case",
-        "service": "Service",
-        "api": "API",
-        "scenario": "Scenario",
-        "execution": "Execution",
         "content": "Content",
         "contentHint": "The following is the report output content directory information.",
         "memberTypes": {
@@ -301,9 +294,7 @@
     },
     "taskContent": {
       "filter": "Filter",
-      "sprint": "Sprint",
       "sprintPlaceholder": "Select sprint",
-      "task": "Task",
       "taskPlaceholder": "Select task",
       "content": "Content",
       "contentHints": "The following is the report output content directory information.",
@@ -327,7 +318,6 @@
     },
     "sprintContent": {
       "filter": "Filter",
-      "sprint": "Sprint",
       "sprintPlaceholder": "Select sprint",
       "organization": "Organization",
       "userPlaceholder": "Select user",
@@ -356,7 +346,6 @@
     },
     "servicesContent": {
       "filter": "Filter",
-      "service": "Service",
       "servicePlaceholder": "Select service",
       "content": "Content",
       "contentHints": "The following is the report output content directory information.",
@@ -476,9 +465,7 @@
     },
     "apisContent": {
       "filter": "Filter",
-      "service": "Service",
       "servicePlaceholder": "Select service",
-      "api": "API",
       "apiPlaceholder": "Select API",
       "content": "Content",
       "contentHints": "The following is the report output content directory information.",

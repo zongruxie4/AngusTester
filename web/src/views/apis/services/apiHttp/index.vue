@@ -1684,10 +1684,10 @@ provide('selectHandle', closeDrawer);
             buttonStyle="solid"
             size="small">
             <RadioButton value="debug">{{ t('service.apis.tabs.debug') }}</RadioButton>
-            <RadioButton value="case">{{ t('service.apis.tabs.case') }}</RadioButton>
+            <RadioButton value="case">{{ t('common.useCase') }}</RadioButton>
             <RadioButton value="test">{{ t('service.apis.tabs.test') }}</RadioButton>
             <RadioButton value="mock">{{ t('service.apis.tabs.mock') }}</RadioButton>
-            <RadioButton value="doc">{{ t('service.apis.tabs.doc') }}</RadioButton>
+            <RadioButton value="doc">{{ t('common.doc') }}</RadioButton>
           </RadioGroup>
 
           <div class="inline-flex items-center space-x-3">

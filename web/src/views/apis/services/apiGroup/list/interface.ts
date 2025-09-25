@@ -107,7 +107,7 @@ export const ButtonGroup = [
     ]
   },
   {
-    name: t('service.apis.buttonGroup.exec'),
+    name: t('common.execution'),
     key: 'exec',
     disabled: false,
     permission: 'TEST',

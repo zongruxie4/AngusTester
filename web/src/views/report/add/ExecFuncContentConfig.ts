@@ -4,7 +4,7 @@ const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
 export const contentTreeData = [
   {
-    title: t('reportAdd.execFuncContent.contentTree.exec'),
+    title: t('common.execution'),
     key: 'exec',
     children: [
       {
@@ -18,7 +18,7 @@ export const contentTreeData = [
     ]
   },
   {
-    title: t('reportAdd.execFuncContent.contentTree.sprint'),
+    title: t('common.sprint'),
     key: 'sprint'
   },
   {

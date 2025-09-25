@@ -45,7 +45,7 @@ export function useAgentInfo (props: AgentInfoProps) {
     [
       {
         dataIndex: 'version',
-        label: t('node.nodeDetail.agentInfo.columns.version')
+        label: t('common.version')
       },
       {
         dataIndex: 'home',

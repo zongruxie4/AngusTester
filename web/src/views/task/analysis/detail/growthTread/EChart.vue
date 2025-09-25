@@ -54,7 +54,7 @@ const growthTreadTaskEChartConfig = {
     data: [
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.requirement'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.story'),
-      t('taskAnalysis.detail.taskGrowthTread.chartLabels.task'),
+      t('common.issue'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.bug'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.apiTest'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.scenarioTest'),

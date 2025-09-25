@@ -17,10 +17,6 @@
     "remainingLabel": "Remaining",
     "last7Days": "Last 7 Days",
     "last30Days": "Last 30 Days",
-    "backlog": "Backlog",
-    "sprint": "Sprint",
-    "task": "Task",
-    "meeting": "Meeting",
     "addedTable": {
       "pagination": "Page {current}/{total}",
       "emptyStates": {
@@ -260,8 +256,6 @@
       "apis": {
         "number": "Number",
         "parentTask": "Parent",
-        "service": "Service",
-        "api": "API",
         "processCount": "Processing Count",
         "processFailCount": "Failed Count",
         "oneTimePass": "One-time Pass",
@@ -338,10 +332,6 @@
       "deadlineDate": "Sort by Deadline",
       "createdByName": "Sort by Creator",
       "assigneeName": "Sort by Assignee"
-    },
-    "columns": {
-      "sprint": "Sprint",
-      "module": "Module"
     },
     "priority": {
       "low": "Low",
@@ -768,7 +758,6 @@
       "columns": {
         "workload": "Workload",
         "apiScenario": "API/Scenario",
-        "service": "Service",
         "failCount": "Fail Count",
         "processCount": "Processing Count",
         "processTime": "Process Time",
@@ -877,10 +866,8 @@
         "description": "Description",
         "descriptionPlaceholder": "Task description, maximum 6000 characters",
         "descriptionRule": "Description maximum 6000 characters",
-        "sprint": "Sprint",
         "sprintPlaceholder": "Select or search sprint",
         "sprintRule": "Please select sprint",
-        "module": "Module",
         "modulePlaceholder": "Select or search module",
         "parentTask": "Parent",
         "parentTaskPlaceholder": "Please select parent task",
@@ -1021,9 +1008,7 @@
           "namePlaceholder": "Task name, maximum 200 characters",
           "selectModule": "Select or search module",
           "selectSprint": "Select or search sprint",
-          "service": "Service",
           "parentTask": "Parent",
-          "api": "API",
           "selectPriority": "Select priority",
           "onePass": "One-Time Pass",
           "evalWorkloadMethod": "Evaluation Method",
@@ -1048,9 +1033,6 @@
           "namePlaceholder": "Task name, maximum 200 characters",
           "selectModule": "Select or search module",
           "selectSprint": "Select or search sprint",
-          "service": "Service",
-          "parentTask": "Parent",
-          "api": "API",
           "onePass": "One-Time Pass",
           "actualWorkloadPlaceholder": "Value 0.1 - 1000, up to 2 decimal places",
           "evalWorkloadPlaceholder": "Value 0.1 - 1000, up to 2 decimal places",
@@ -1112,9 +1094,6 @@
         "columns": {
           "namePlaceholder": "Task name, maximum 200 characters",
           "selectSprint": "Select or search sprint",
-          "service": "Service",
-          "parentTask": "Parent",
-          "scenario": "Scenario",
           "evalWorkloadPlaceholder": "Value 0.1 - 1000, up to 2 decimal places",
           "actualWorkloadPlaceholder": "Value 0.1 - 1000, up to 2 decimal places",
           "selectPriority": "Please select priority",
@@ -1277,7 +1256,6 @@
       "participants": "Participants",
       "participantUnit": "users",
       "content": "Content",
-      "sprint": "Sprint",
       "moderatorLabel": "Moderator",
       "participantsCount": "{count} participants",
     },
@@ -1603,13 +1581,6 @@
         }
       },
       "resourceCreation": {
-        "chartLabels": {
-          "backlog": "Backlog",
-          "sprint": "Sprint",
-          "task": "Task",
-          "meeting": "Meeting",
-          "analysis": "Analysis"
-        },
         "chartTitles": {
           "resourceTotal": "Total Resource Creation",
           "resourceGrowth": "Resource Creation Growth Trend"
@@ -1732,10 +1703,6 @@
       "deleteAllSuccess": "All items deleted successfully",
       "recoverSuccess": "Restored successfully",
       "deleteSuccess": "Deleted successfully"
-    },
-    "tabs": {
-      "sprint": "Sprint",
-      "task": "Task"
     },
     "stats": {
       "items": "Items"

@@ -110,19 +110,19 @@ const categoryChartConfig: EChartsOption = {
           value: 0
         },
         {
-          name: t('reportHome.chart.categories.api'),
+          name: t('common.api'),
           value: 0
         },
         {
-          name: t('reportHome.chart.categories.scenario'),
+          name: t('common.scenario'),
           value: 0
         },
         {
-          name: t('reportHome.chart.categories.task'),
+          name: t('common.issue'),
           value: 0
         },
         {
-          name: t('reportHome.chart.categories.execution'),
+          name: t('common.execution'),
           value: 0
         }
       ]

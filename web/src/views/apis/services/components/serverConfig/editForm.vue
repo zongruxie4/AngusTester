@@ -617,7 +617,7 @@ defineExpose({
     <div>
       <div class="flex items-center justify-between mb-0.5">
         <div class="flex">
-          <div class="font-semibold mr-1">{{ t('service.serverConfig.form.variables') }}</div>
+          <div class="font-semibold mr-1">{{ t('common.variables') }}</div>
           <Tooltip :title="t('service.serverConfig.tips.maxVariables')">
             <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
           </Tooltip>

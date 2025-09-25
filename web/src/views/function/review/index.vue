@@ -79,7 +79,7 @@ const initialize = () => {
         return {
           _id: 'reviewList',
           value: 'reviewList',
-          name: t('caseReview.review'),
+          name: t('common.review'),
           closable: false
         };
       }

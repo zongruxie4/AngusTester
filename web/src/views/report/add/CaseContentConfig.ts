@@ -36,11 +36,11 @@ export const contentTreeData = [
     key: 'test'
   },
   {
-    title: t('reportAdd.caseContent.contentTree.task'),
+    title: t('common.issue'),
     key: 'task'
   },
   {
-    title: t('reportAdd.caseContent.contentTree.cases'),
+    title: t('common.useCase'),
     key: 'cases'
   },
   {
@@ -48,7 +48,7 @@ export const contentTreeData = [
     key: 'activity'
   },
   {
-    title: t('reportAdd.caseContent.contentTree.comment'),
+    title: t('common.comments'),
     key: 'comment'
   }
 ];

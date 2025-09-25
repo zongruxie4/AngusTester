@@ -179,7 +179,7 @@ export function useUIOptions (
     {
       key: 'attachments' as DrawerActiveKey,
       icon: 'icon-lianjie1',
-      title: t('backlog.main.drawerTitles.attachments')
+      title: t('common.attachments')
     },
     {
       key: 'remarks' as DrawerActiveKey,
@@ -189,7 +189,7 @@ export function useUIOptions (
     {
       key: 'comment' as DrawerActiveKey,
       icon: 'icon-pinglun',
-      title: t('backlog.main.drawerTitles.comments')
+      title: t('common.comments')
     },
     {
       key: 'activity' as DrawerActiveKey,

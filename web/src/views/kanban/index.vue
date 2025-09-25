@@ -103,7 +103,7 @@ watch(
               v-model:value="countType"
               name="countType"
               class="radio-group-small">
-              <Radio v-if="proTypeShowMap.showTask" value="task">{{ t('kanban.task') }}</Radio>
+              <Radio v-if="proTypeShowMap.showTask" value="task">{{ t('common.issue') }}</Radio>
               <Radio value="useCase">{{ t('kanban.test') }}</Radio>
             </RadioGroup>
           </div>

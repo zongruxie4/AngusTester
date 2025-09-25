@@ -69,7 +69,7 @@ defineExpose({
   </div>
   <div class="flex mt-2 pl-2">
     <div class="inline-flex flex-1 items-center space-x-2">
-      <div class="w-10 text-right"><IconRequired class="mr-1" />{{ t('reportAdd.servicesContent.service') }}</div>
+      <div class="w-10 text-right"><IconRequired class="mr-1" />{{ t('common.service') }}</div>
       <Colon />
       <Select
         v-model:value="serviceId"

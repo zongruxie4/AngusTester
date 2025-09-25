@@ -626,10 +626,10 @@ defineExpose({
           <Checkbox v-model:checked="mailContent.plainBody" class="mb-5">{{ t('smtpPlugin.uiConfig.mailContent.plainBody') }}</Checkbox>
           <div class="flex items-center text-theme-title text-3 mb-2">
             <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-            <span>{{ t('smtpPlugin.uiConfig.mailContent.attachment') }}</span>
+            <span>{{ t('common.attachments') }}</span>
           </div>
           <div class="flex items-center mb-2">
-            <span>{{ t('smtpPlugin.uiConfig.mailContent.attachment') }}：</span>
+            <span>{{ t('common.attachments') }}：</span>
             <RadioGroup v-model:value="attachmentType" :options="attachmentTypeOpt" />
           </div>
           <div v-if="attachmentType === 'file'" class="min-h-7 border rounded flex items-center mb-2">

@@ -140,7 +140,7 @@ const cancel = () => {
           class="!w-50 mt-1"
           :selectProps="durationSelectProps" />
       </FormItem>
-      <FormItem :label="t('fileSpace.share.form.remark')">
+      <FormItem :label="t('common.remark')">
         <Textarea
           v-model:value="form.remark"
           class="mb-3"

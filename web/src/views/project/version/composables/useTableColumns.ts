@@ -10,7 +10,7 @@ export function useTableColumns () {
    */
   const columns = computed(() => [
     {
-      title: t('version.columns.version'),
+      title: t('common.version'),
       dataIndex: 'name',
       width: 100
     },

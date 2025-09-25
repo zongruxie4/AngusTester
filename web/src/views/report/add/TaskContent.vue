@@ -106,7 +106,7 @@ defineExpose({
     <div class="flex flex-1 items-center space-x-2">
       <div class="w-10 text-right">
         <IconRequired />
-        {{ t('reportAdd.taskContent.sprint') }}
+        {{ t('common.sprint') }}
       </div>
       <Colon />
       <Select
@@ -125,7 +125,7 @@ defineExpose({
     <div class="flex flex-1 items-center space-x-2">
       <div class="w-10 text-right">
         <IconRequired />
-        {{ t('reportAdd.taskContent.task') }}
+        {{ t('common.issue') }}
       </div>
       <Colon />
       <Select

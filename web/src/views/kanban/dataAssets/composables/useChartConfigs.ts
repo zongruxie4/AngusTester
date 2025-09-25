@@ -45,12 +45,12 @@ export function useChartConfigs () {
     TEST_PERFORMANCE: t('kanban.dataAssets.categories.testPerformance'),
     TEST_STABILITY: t('kanban.dataAssets.categories.testStability'),
     SERVICES: t('kanban.dataAssets.categories.services'),
-    APIS: t('kanban.dataAssets.categories.apis'),
-    CASES: t('kanban.dataAssets.categories.cases'),
-    PLAN: t('kanban.dataAssets.categories.plan'),
-    SPRINT: t('kanban.dataAssets.categories.sprint'),
+    APIS: t('common.api'),
+    CASES: t('common.useCase'),
+    PLAN: t('common.plan'),
+    SPRINT: t('common.sprint'),
     TASK_SPRINT: t('kanban.dataAssets.categories.taskSprint'),
-    TASK: t('kanban.dataAssets.categories.task'),
+    TASK: t('common.issue'),
     MOCK_APIS: t('kanban.dataAssets.categories.mockApis'),
     MOCK_PUSHBACK: t('kanban.dataAssets.categories.mockPushback'),
     MOCK_RESPONSE: t('kanban.dataAssets.categories.mockResponse'),
@@ -571,7 +571,7 @@ export function useChartConfigs () {
             itemStyle: { color: 'rgba(201, 119, 255, 1)' }
           },
           {
-            name: t('kanban.dataAssets.taskTypes.task'),
+            name: t('common.issue'),
             value: 0,
             itemStyle: { color: 'rgba(255, 165, 43, 1)' }
           },
@@ -893,12 +893,12 @@ export function useChartConfigs () {
     xAxis: {
       type: 'category',
       data: [
-        t('kanban.dataAssets.categories.apis'),
-        t('kanban.dataAssets.categories.cases'),
+        t('common.api'),
+        t('common.useCase'),
         t('kanban.dataAssets.categories.project'),
-        t('kanban.dataAssets.categories.scenario'),
-        t('kanban.dataAssets.categories.task'),
-        t('kanban.dataAssets.categories.execution')
+        t('common.scenario'),
+        t('common.issue'),
+        t('common.execution')
       ],
       axisLabel: {
         interval: 0,

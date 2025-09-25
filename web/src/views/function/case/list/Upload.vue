@@ -110,7 +110,7 @@ watch(() => props.visible, newValue => {
       :model="formData"
       size="small">
       <FormItem
-        :label="t('functionCase.uploadCase.plan')"
+        :label="t('common.plan')"
         name="planId"
         required>
         <Select

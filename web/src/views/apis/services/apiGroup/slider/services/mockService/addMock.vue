@@ -169,9 +169,9 @@ onMounted(() => {
               :class="isPrivate?'pl-2.25':''" />
             <FormItem :label="t('service.mockService.form.port')" required />
             <FormItem :label="t('service.mockService.form.node')" required />
-            <FormItem :label="t('service.mockService.form.service')" required />
+            <FormItem :label="t('common.service')" required />
             <template v-if="formState.serviceId && projectDetail?.hasApis">
-              <FormItem :label="t('service.mockService.form.api')" />
+              <FormItem :label="t('common.api')" />
             </template>
           </div>
           <div class="w-150">

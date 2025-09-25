@@ -1361,7 +1361,7 @@ const searchOptions = [
     params: { projectId: props.projectId },
     valueKey: 'moduleId',
     showSearch: true,
-    placeholder: t('comon.module'),
+    placeholder: t('common.module'),
     fieldNames: { label: 'name', value: 'id' }
   },
   {
@@ -1583,7 +1583,7 @@ const sortMenuItems = [
             size="small"
             @click="showSprintSelector">
             <Icon icon="icon-jia" class="text-3 mr-1" />
-            <span>{{ t('task.list.search.sprint') }}</span>
+            <span>{{ t('common.sprint') }}</span>
           </Button>
 
           <Tag
@@ -1617,7 +1617,7 @@ const sortMenuItems = [
             size="small"
             @click="showTagSelector">
             <Icon icon="icon-jia" class="text-3 mr-1" />
-            <span>{{ t('task.list.search.tags') }}</span>
+            <span>{{ t('common.tags') }}</span>
           </Button>
 
           <template v-if="props.viewMode === TaskViewMode.kanban">

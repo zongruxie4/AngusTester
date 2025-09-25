@@ -89,7 +89,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: t('scriptHome.table.columns.tags'),
+      title: t('common.tags'),
       dataIndex: 'tags',
       key: 'tags',
       width: '14%'
