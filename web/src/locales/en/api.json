@@ -643,11 +643,6 @@
         "maxVariables": "Maximum 50 variables can be added",
         "variableNameNotRepeat": "Variable names cannot be duplicated",
         "variableValueNotRepeat": "Values of the same variable cannot be duplicated"
-      },
-      "columns": {
-        "url": "URL",
-        "variables": "Variables",
-        "value": "Value"
       }
     },
     "shareModal": {
@@ -823,10 +818,6 @@
         "accessToken": "Access Token",
         "clientAuth": "Client Authentication",
         "getToken": "Get Token"
-      },
-      "apiKey": {
-        "value": "Value",
-        "position": "Position"
       },
       "oauth2Fields": {
         "authorizationUrl": "Authorization URL",
@@ -2166,10 +2157,8 @@
             "parameterValue": "Parameter Value",
             "parameterValuePlaceholder": "Parameter value, maximum 4096 characters",
             "regexExpression": "Regular Expression",
-            "value": "Value",
             "xpathExpression": "XPath Expression",
             "jsonPathExpression": "JSONPath Expression",
-            "format": "Format"
           },
           "agent": {
             "title": "AI Agent",

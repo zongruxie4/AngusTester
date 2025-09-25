@@ -73,7 +73,6 @@
         },
         "staticParameter": {
           "hintText": "Generate parameter values dynamically during sampling, each dataset can create up to 200 parameters, and the maximum number of rows supported is 100 billion.",
-          "value": "Value"
         }
       },
       "parameterizationVariable": {
@@ -1469,7 +1468,6 @@
     "jsonPathMatch": "JSONPath Match",
     "extractedValue": "Extracted Value",
     "expectedValue": "Expected Value",
-    "value": "Value"
   },
   "xcan_debugResponseBody": {
     "prettyFormat": "Pretty Format",

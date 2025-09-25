@@ -127,13 +127,13 @@ const assertLabel = computed(() => {
     if (_type) {
       if (_type === 'HEADER') {
         if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(cur.assertionCondition)) {
-          prev[cur.id] = TYPE_MAP[_type] + (cur.parameterName ? cur.parameterName : '') + CONDITION_MAP[cur.assertionCondition] + t('xcan_responseAssert.value');
+          prev[cur.id] = TYPE_MAP[_type] + (cur.parameterName ? cur.parameterName : '') + CONDITION_MAP[cur.assertionCondition] + t('common.value');
         } else {
-          prev[cur.id] = TYPE_MAP[_type] + (cur.parameterName ? cur.parameterName : '') + t('xcan_responseAssert.value');
+          prev[cur.id] = TYPE_MAP[_type] + (cur.parameterName ? cur.parameterName : '') + t('common.value');
         }
       } else {
         if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(cur.assertionCondition)) {
-          prev[cur.id] = prev[cur.id] = TYPE_MAP[_type] + CONDITION_MAP[cur.assertionCondition] + t('xcan_responseAssert.value');
+          prev[cur.id] = prev[cur.id] = TYPE_MAP[_type] + CONDITION_MAP[cur.assertionCondition] + t('common.value');
         } else {
           prev[cur.id] = TYPE_MAP[_type];
         }

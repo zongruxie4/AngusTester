@@ -1191,7 +1191,6 @@
     "regexMatch": "正则匹配",
     "xpathMatch": "XPath匹配",
     "jsonPathMatch": "JSONPath匹配",
-    "value": "值"
   },
   "xcan_responseTimeAnalysis": {
     "timeConsumingItems": "耗时项",

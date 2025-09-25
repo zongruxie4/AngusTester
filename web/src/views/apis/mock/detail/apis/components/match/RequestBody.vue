@@ -257,10 +257,10 @@ const showEditor = computed(() => {
  * <p>Returns appropriate placeholder based on condition type</p>
  */
 const placeholderMap = {
-  GREATER_THAN: t('mock.detail.apis.components.match.value'),
-  GREATER_THAN_EQUAL: t('mock.detail.apis.components.match.value'),
-  LESS_THAN: t('mock.detail.apis.components.match.value'),
-  LESS_THAN_EQUAL: t('mock.detail.apis.components.match.value'),
+  GREATER_THAN: t('common.value'),
+  GREATER_THAN_EQUAL: t('common.value'),
+  LESS_THAN: t('common.value'),
+  LESS_THAN_EQUAL: t('common.value'),
   REG_MATCH: t('mock.detail.apis.components.match.regexExpression'),
   XPATH_MATCH: t('mock.detail.apis.components.match.xpathExpression'),
   JSON_PATH_MATCH: t('mock.detail.apis.components.match.jsonPathExpression')

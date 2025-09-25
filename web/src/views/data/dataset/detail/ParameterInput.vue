@@ -57,7 +57,7 @@ defineExpose({
       </div>
       <div class="flex-1 flex items-center">
         <IconRequired />
-        <span>{{ t('dataset.detail.staticDataset.parameterInput.value') }}</span>
+        <span>{{ t('common.value') }}</span>
       </div>
       <FunctionsButton class="text-3.5" />
     </div>

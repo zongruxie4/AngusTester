@@ -159,7 +159,7 @@ const handleBlurValue = (targetText: string) => {
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>{{ t('dataVariable.detail.staticVariable.value') }}</span>
+          <span>{{ t('common.value') }}</span>
         </div>
       </template>
 

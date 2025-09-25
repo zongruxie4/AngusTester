@@ -114,10 +114,6 @@
         "selectServer": "Please select server",
         "noVariables": "No Variables",
         "variables": "Variables",
-        "labels": {
-          "value": "Value",
-          "default": "Default"
-        },
         "messages": {
           "updateSuccess": "Successfully updated to associated interfaces"
         }

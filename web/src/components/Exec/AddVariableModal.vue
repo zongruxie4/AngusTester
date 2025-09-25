@@ -278,7 +278,7 @@ const typeChange = () => {
           <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('xcan_exec.interface') }}</div>
         </template>
         <template v-else>
-          <div class="h-7 whitespace-nowrap" style="margin-top: 22px;"><IconRequired />{{ t('xcan_exec.value') }}</div>
+          <div class="h-7 whitespace-nowrap" style="margin-top: 22px;"><IconRequired />{{ t('common.value') }}</div>
         </template>
       </div>
       <div v-if="visible" class="flex-1 flex flex-col space-y-5">

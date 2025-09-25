@@ -594,7 +594,7 @@ onMounted(() => {
               </template>
             </template>
             <template v-else>
-              <div>{{ t('xcan_variable.value') }}<Colon /></div>
+              <div>{{ t('common.value') }}<Colon /></div>
             </template>
             <template v-if="props.tabKey !== 'CURRENT'">
               <div>{{ t('common.source') }}<Colon /></div>
@@ -794,7 +794,7 @@ onMounted(() => {
             </Radio>
           </RadioGroup>
           <template v-if="!variable.type">
-            <div><IconRequired />{{ t('xcan_variable.value') }}</div>
+            <div><IconRequired />{{ t('common.value') }}</div>
             <Input
               v-model:value="variable.value"
               :error="variable.valueErr"

@@ -764,7 +764,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
               @click="handleAddApiKey" />
           </div>
           <div class="flex items-center">
-            <span class="w-15">{{ t('xcan_execAuthencation.value') }}</span>
+            <span class="w-15">{{ t('common.value') }}</span>
             <Input
               v-model:value="item.value"
               :allowClear="true"

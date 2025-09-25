@@ -216,14 +216,7 @@
         "tip": "Variable values resolve before sampling and persist unchanged throughout execution."
       },
       "staticVariable": {
-        "notifications": {
-          "editSuccess": "Edit Success",
-          "addSuccess": "Add Success"
-        },
-        "value": "Value",
         "password": "Password",
-        "preview": "Preview",
-        "use": "Use",
         "namePlaceholder": "Enter parameter name, maximum 100 characters",
         "descriptionPlaceholder": "Variable description, maximum 200 characters",
         "valuePlaceholder": "Variable value, support Mock function, maximum 4096 characters",
@@ -231,14 +224,7 @@
         "hints": "If a variable contains mock functions, it auto-refreshes before each iteration (the value persists for all requests within that iteration)."
       },
       "httpVariable": {
-        "notifications": {
-          "editSuccess": "Edit Success",
-          "addSuccess": "Add Success"
-        },
         "nameSupport": "Enter parameter name",
-        "extract": "Extract",
-        "preview": "Preview",
-        "use": "Use",
         "namePlaceholder": "Enter parameter name, maximum 100 characters",
         "descriptionPlaceholder": "Variable description, maximum 200 characters",
         "hints": "Extract a value from Http before each test execution, commonly used to obtain a user access token, avoiding manual updates each time.",
@@ -671,13 +657,10 @@
           "addSuccess": "Dataset added successfully"
         },
         "parameters": "Parameters",
-        "preview": "Preview",
-        "use": "Use",
         "namePlaceholder": "Dataset name, maximum 100 characters",
         "descriptionPlaceholder": "Dataset description, maximum 200 characters",
         "hints": "Generate parameter values dynamically using Mock data functions. Each dataset supports up to 200 parameters and can generate up to 100 billion rows of data.",
         "parameterInput": {
-          "value": "Value",
           "namePlaceholder": "Enter parameter name, maximum 100 characters",
           "valuePlaceholder": "Parameter value, value can be constant or Mock function, maximum 4096 characters",
           "errors": {

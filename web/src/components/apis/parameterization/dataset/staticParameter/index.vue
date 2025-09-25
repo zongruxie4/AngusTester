@@ -40,7 +40,7 @@ const dataList = computed(() => {
         <span>{{ t('commonComp.apis.parameterizationDataset.staticParameter.name') }}</span>
       </div>
       <div class="flex-1 flex items-center">
-        <span>{{ t('commonComp.apis.parameterizationDataset.staticParameter.value') }}</span>
+        <span>{{ t('common.value') }}</span>
       </div>
     </div>
 

@@ -188,7 +188,7 @@ const modalTitle = computed(() => props.title || t('scenario.list.execTest.title
 
                   <div class="flex items-start leading-4.5">
                     <div v-if="false" class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>{{ t('scenario.list.execTest.labels.value') }}</span>
+                      <span>{{ t('common.value') }}</span>
                       <Colon />
                     </div>
                     <div class="flex-1 space-y-1 pl-2.5">

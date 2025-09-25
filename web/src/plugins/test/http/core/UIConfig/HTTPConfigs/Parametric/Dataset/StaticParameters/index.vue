@@ -40,7 +40,7 @@ const dataList = computed(() => {
         <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.name') }}</span>
       </div>
       <div class="flex-1 flex items-center">
-        <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.value') }}</span>
+        <span>{{ t('common.value') }}</span>
       </div>
     </div>
 

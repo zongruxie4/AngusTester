@@ -104,7 +104,7 @@ const assertLabel = computed(() => {
   }
 
   if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(assertionCondition.value)) {
-    return TYPE_MAP[assertionType.value] + CONDITION_MAP[assertionCondition.value] + t('xcan_assertionsResult.value');
+    return TYPE_MAP[assertionType.value] + CONDITION_MAP[assertionCondition.value] + t('common.value');
   }
 
   return TYPE_MAP[assertionType.value];

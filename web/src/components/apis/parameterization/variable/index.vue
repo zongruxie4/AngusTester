@@ -181,7 +181,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: t('commonComp.apis.parameterizationVariable.value'),
+    title: t('common.value'),
     dataIndex: 'value',
     ellipsis: true
   },

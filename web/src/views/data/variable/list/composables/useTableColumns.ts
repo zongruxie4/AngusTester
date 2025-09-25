@@ -21,7 +21,7 @@ export function useTableColumns () {
       sorter: true
     },
     {
-      title: t('dataVariable.list.columns.value'),
+      title: t('common.value'),
       dataIndex: 'value',
       ellipsis: true,
       width: '20%'

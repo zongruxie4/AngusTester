@@ -647,11 +647,6 @@
         "maxVariables": "最多可添加50个变量",
         "variableNameNotRepeat": "变量名称不能重复",
         "variableValueNotRepeat": "同一个变量的值不能重复"
-      },
-      "columns": {
-        "url": "URL",
-        "variables": "变量",
-        "value": "值"
       }
     },
     "shareModal": {
