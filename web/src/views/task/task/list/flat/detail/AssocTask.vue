@@ -171,7 +171,7 @@ const tableColumns = [
   {
     key: 'taskType',
     dataIndex: 'taskType',
-    title: t('task.assocTask.columns.taskType')
+    title: t('common.taskType')
   },
   {
     key: 'priority',

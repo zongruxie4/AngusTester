@@ -1748,10 +1748,7 @@
       "createdTime": "Created Time",
       "executionId": "Execution ID",
       "executionStatus": "Execution Status",
-      "taskStatus": "Task Status",
-      "testResult": "Test Result",
       "dueTime": "Due Time",
-      "priority": "Priority"
     },
     "myApis": {
       "title": "My APIs",

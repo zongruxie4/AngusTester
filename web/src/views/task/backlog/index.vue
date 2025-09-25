@@ -577,7 +577,7 @@ onMounted(() => {
                       <SelectEnum
                         v-model:value="newTask.newTaskType"
                         enumKey="TaskType"
-                        :placeholder="t('backlog.main.placeholders.taskType')"
+                        :placeholder="t('common.taskType')"
                         :excludes="({value}) => [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value as any)"
                         class="w-28 mr-2">
                         <template #option="record">

@@ -1488,7 +1488,7 @@ const groupMenuItems = [
   },
   {
     key: 'taskType',
-    name: t('task.searchPanel.groupOptions.taskType')
+    name: t('common.taskType')
   }
 ];
 

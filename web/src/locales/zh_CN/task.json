@@ -104,11 +104,7 @@
     },
     "zoomIn": "全屏",
     "zoomOut": "缩小",
-    "comment": "评论",
-    "activity": "活动",
-    "remark": "备注",
     "addedRemark": "添加了备注",
-    "taskStatus": "状态",
     "aiGenerateTask": {
       "title": "自动创建Backlog",
       "generating": "生成中...",
@@ -323,7 +319,6 @@
       "aiAddBacklog": "智能添加Backlog",
       "openAddModal": "打开添加弹窗",
       "placeholders": {
-        "taskType": "Backlog 类型",
         "selectPriority": "请选择优先级",
         "taskName": "输入 Backlog 名称，最大支持200字符，按回车键可自动保存"
       },
@@ -561,8 +556,6 @@
         "testTypeDistribution": "测试类型分布",
         "priorityDistribution": "优先级分布",
         "statusDistribution": "状态分布",
-        "taskType": "任务类型",
-        "testType": "测试类型",
         "typeColumns": {
           "story": "故事",
           "task": "任务",
@@ -1002,12 +995,6 @@
       "messages": {
         "confirmCancelTask": "确认取消关联任务「{name}」吗？"
       },
-      "columns": {
-        "taskType": "类型",
-        "evalWorkload": "评估工作量",
-        "assigneeName": "经办人",
-        "deadlineDate": "截止时间"
-      },
       "modal": {
         "selectTask": "选择{title}"
       },
@@ -1039,13 +1026,7 @@
         "followSuccess": "任务关注成功",
         "cancelFollowSuccess": "任务取消关注成功"
       },
-      "columns": {
-        "taskType": "类型",
-        "evalWorkload": "评估故事点",
-        "evalWorkHours": "评估工时"
-      },
       "form": {
-        "taskType": "任务类型",
         "taskName": "输入任务名称，最大支持200字符，按回车键可自动保存"
       },
       "modal": {

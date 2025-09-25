@@ -53,27 +53,6 @@
       "oneTimePassRate": "One-time Pass Rate",
       "oneTimeTestPassRate": "One-time Test Pass Rate",
       "oneTimeReviewPassRate": "One-time Review Pass Rate",
-      "priority": {
-        "highest": "Highest",
-        "high": "High",
-        "medium": "Medium",
-        "low": "Low",
-        "lowest": "Lowest"
-      },
-      "reviewStatus": {
-        "noReview": "No Review",
-        "pendingReview": "Pending Review",
-        "reviewFailed": "Review Failed",
-        "reviewPassed": "Review Passed"
-      },
-      "taskType": {
-        "story": "Story",
-        "requirement": "Requirement",
-        "task": "Task",
-        "bug": "Bug",
-        "apiTest": "API Test",
-        "scenarioTest": "Scenario Test"
-      },
       "totalCount": "Total",
       "evalWorkload": "Estimated Workload",
       "actualWorkload": "Actual Workload",
@@ -281,7 +260,6 @@
         "nonMinorFailureRatio": "Non-Minor",
         "nonTrivialFailureRatio": "Non-Trivial"
       },
-      "taskType": "Task Type",
       "testStatusLable": "Test Status",
       "taskStatusName": "Task Status",
       "reviewStatusLable": "Review Status",

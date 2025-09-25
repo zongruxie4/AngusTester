@@ -106,15 +106,12 @@
     "comment": "Comments",
     "activity": "Activity",
     "addedRemark": "Added remark",
-    "taskStatus": "Status",
     "aiGenerateTask": {
       "title": "Auto Create Backlog",
       "generating": "Generating...",
       "maxTasksWarning": "Maximum 200 tasks allowed",
       "aiKeywordsPlaceholder": "Describe your requirements to the AI agent, such as: Generate 10 main Wiki system product Backlogs.",
       "placeholders": {
-        "taskType": "Task Type",
-        "priority": "Priority",
         "taskName": "Task name, max 200 characters",
         "evalWorkload": "0.1~1000",
         "assignee": "Assignee",
@@ -194,15 +191,6 @@
       "aiSplit": "AI Split",
       "aiKeywords": "Split task \"{taskName}\" into multiple subtasks.",
       "aiPlaceholder": "Describe your requirements to the AI agent, such as: Split task \"{taskName}\" into multiple subtasks.",
-      "placeholders": {
-        "taskType": "Task Type",
-        "priority": "Priority",
-        "taskName": "Task name, maximum 200 characters",
-        "workloadRange": "Value 0.1~1000",
-        "assignee": "Assignee",
-        "confirmer": "Confirmer",
-        "deadline": "Deadline"
-      },
       "tooltips": {
         "nameRepeat": "Name repeated",
         "deadlineMustBeFuture": "Deadline must be greater than current time"
@@ -323,7 +311,6 @@
       "aiAddBacklog": "AI Add Backlog",
       "openAddModal": "Open Add Modal",
       "placeholders": {
-        "taskType": "Backlog Type",
         "selectPriority": "Please select priority",
         "taskName": "Enter backlog name, maximum 200 characters, press Enter to auto-save"
       },
@@ -568,8 +555,6 @@
         "testTypeDistribution": "Test Type Distribution",
         "priorityDistribution": "Priority Distribution",
         "statusDistribution": "Status Distribution",
-        "taskType": "Task Type",
-        "testType": "Test Type",
         "typeColumns": {
           "story": "Story",
           "task": "Task",

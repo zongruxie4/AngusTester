@@ -682,7 +682,7 @@ const subTaskTableColumns = [
         v-model:value="newSubTaskType"
         :excludes="({value}: any) => [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value as any)"
         enumKey="TaskType"
-        :placeholder="t('task.subTask.form.taskType')"
+        :placeholder="t('common.taskType')"
         class="w-28 mr-2">
         <template #option="record">
           <div class="flex items-center">

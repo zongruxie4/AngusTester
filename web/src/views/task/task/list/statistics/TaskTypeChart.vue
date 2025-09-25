@@ -191,7 +191,7 @@ onMounted(() => {
       class="chart-container"></div>
     <!-- Chart center label -->
     <div class="chart-center-label">
-      <div class="label-title">{{ t('task.list.statistics.taskType') }}</div>
+      <div class="label-title">{{ t('common.taskType') }}</div>
       <div class="label-value">{{ props.dataSource?.totalTaskTypeNum }}</div>
     </div>
   </div>

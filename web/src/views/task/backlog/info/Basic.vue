@@ -715,7 +715,7 @@ onMounted(() => {
         <!-- Task Status -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.taskStatus') }}</span>
+            <span>{{ t('common.taskStatus') }}</span>
           </div>
 
           <div class="info-value">

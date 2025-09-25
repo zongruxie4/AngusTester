@@ -54,27 +54,6 @@
       "oneTimePassRate": "一次性通过率",
       "oneTimeTestPassRate": "一次性测试通过率",
       "oneTimeReviewPassRate": "一次性评审通过率",
-      "priority": {
-        "highest": "最高",
-        "high": "高",
-        "medium": "中",
-        "low": "低",
-        "lowest": "最低"
-      },
-      "reviewStatus": {
-        "noReview": "无需评审",
-        "pendingReview": "待评审",
-        "reviewFailed": "评审未通过",
-        "reviewPassed": "评审通过"
-      },
-      "taskType": {
-        "story": "故事",
-        "requirement": "需求",
-        "task": "任务",
-        "bug": "缺陷",
-        "apiTest": "接口测试",
-        "scenarioTest": "场景测试"
-      },
       "totalCount": "总数",
       "evalWorkload": "评估工作量",
       "actualWorkload": "实际工作量",
@@ -282,7 +261,6 @@
         "nonMinorFailureRatio": "非一般",
         "nonTrivialFailureRatio": "非轻微"
       },
-      "taskType": "任务类型",
       "testStatusLable": "测试状态",
       "taskStatusName": "任务状态",
       "reviewStatusLable": "评审状态",

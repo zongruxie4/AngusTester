@@ -1760,10 +1760,7 @@
       "createdTime": "添加时间",
       "executionId": "执行编号",
       "executionStatus": "执行状态",
-      "taskStatus": "任务状态",
-      "testResult": "测试结果",
       "dueTime": "到期时间",
-      "priority": "优先级"
     },
     "myApis": {
       "title": "我的接口",
