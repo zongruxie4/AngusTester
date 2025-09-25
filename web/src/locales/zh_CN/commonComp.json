@@ -1072,7 +1072,6 @@
     "associatedScenarioName": "关联场景名称",
     "creator": "创建人",
     "creationTime": "创建时间",
-    "basicInfo": "基本信息",
     "testCase": "测试用例",
     "testIndicator": "测试指标",
     "associatedScript": "关联脚本",

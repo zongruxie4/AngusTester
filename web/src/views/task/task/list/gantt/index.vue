@@ -333,7 +333,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'basic' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('task.ganttView.drawer.basicInfo')"
+          :title="t('common.basicInfo')"
           @click="changeActiveDrawerTab('basic')">
           <Icon icon="icon-wendangxinxi" class="text-4" />
         </div>

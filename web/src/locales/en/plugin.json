@@ -135,9 +135,6 @@
       "samplingStatus": "Sampling Status"
     },
     "drawerItem": {
-      "scriptName": "Script Name",
-      "scriptId": "Script ID",
-      "description": "Description",
       "namePlaceholder": "Maximum 200 characters",
       "descriptionPlaceholder": "Maximum 800 characters"
     },
@@ -252,7 +249,6 @@
       },
       "httpConfigs": {
         "title": "HTTP Configuration",
-        "basicInfo": "Basic Information",
         "requestBody": "Request Body",
         "assertions": "Assertions",
         "parameters": "Parameters",

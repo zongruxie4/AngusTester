@@ -19,7 +19,7 @@ const attachments = computed(() => props.sprintData?.attachments || []);
 <template>
   <div class="max-w-250 mb-2 basic-card">
     <div class="text-theme-title mb-2 text-3.5 font-semibold basic-title">
-      {{ t('taskSprint.columns.basicInfo') }}
+      {{ t('common.basicInfo') }}
     </div>
 
     <div class="space-y-2.5">

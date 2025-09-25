@@ -1540,7 +1540,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'basic' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.basicInfo')"
+          :title="t('common.basicInfo')"
           @click="drawerActiveKeyChange('basic')">
           <Icon icon="icon-wendangxinxi" class="text-4" />
         </div>

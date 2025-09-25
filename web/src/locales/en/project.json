@@ -103,25 +103,11 @@
       "released": "Released",
       "archived": "Archived"
     },
-    "columns": {
-      "version": "Version",
-      "status": "Status",
-      "startDate": "Start Date",
-      "releaseDate": "Release Date",
-      "description": "Description",
-      "lastModifier": "Last Modifier",
-      "creator": "Creator",
-      "lastModifyTime": "Last Modify Date",
-      "createTime": "Created Date"
-    },
     "form": {
       "editVersion": "Edit Version",
       "addVersion": "Add Version",
       "versionName": "Version",
       "versionNamePlaceholder": "Enter version name, maximum 40 characters, e.g.: v1.0",
-      "startDate": "Start Date",
-      "releaseDate": "Release Date",
-      "description": "Description",
       "descriptionPlaceholder": "Please enter version description, maximum 200 characters"
     },
     "merge": {

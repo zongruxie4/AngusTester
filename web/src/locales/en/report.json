@@ -621,13 +621,11 @@
         "title": "Scenario Test Result Details",
         "functionalTest": {
           "title": "Functional Test Results",
-          "basicInfo": "Test Basic Information",
           "testCases": "Test Cases",
           "testCaseResults": "Test Case Result Details"
         },
         "performanceTest": {
           "title": "Performance Test",
-          "basicInfo": "Test Basic Information",
           "indicatorsAndResults": "Test Indicators and Results",
           "performanceIndicators": "Performance Indicators",
           "results": "Results",
@@ -643,7 +641,6 @@
         },
         "stabilityTest": {
           "title": "Stability Test",
-          "basicInfo": "Test Basic Information",
           "indicatorsAndResults": "Test Indicators and Results",
           "stabilityIndicators": "Stability Indicators",
           "results": "Results",
@@ -1039,7 +1036,6 @@
       "catalog": {
         "title": "Catalog",
         "sections": {
-          "basicInfo": "Basic Information",
           "personnelInfo": "Personnel Information",
           "dateInfo": "Date Information",
           "precondition": "Precondition",
@@ -1166,7 +1162,6 @@
         "title": "Catalog",
         "sections": {
           "planInfo": "Test Plan Information",
-          "basicInfo": "Basic Information",
           "testerAndDuty": "Tester and Duty",
           "testTarget": "Test Target",
           "testScope": "Test Scope",
@@ -1691,7 +1686,6 @@
         },
         "performanceTest": {
           "title": "Performance Test",
-          "basicInfo": "Test Basic Information",
           "indicatorsAndResults": "Test Indicators and Results",
           "performanceIndicators": "Performance Indicators",
           "results": "Results",
@@ -1825,7 +1819,6 @@
         "title": "Catalog",
         "sections": {
           "sprintDetail": "Sprint Detailed Information",
-          "basicInfo": "Basic Information",
           "acceptanceCriteria": "Acceptance Criteria",
           "testScope": "Test Scope",
           "otherInfo": "Other Information",
@@ -1967,7 +1960,6 @@
       "catalog": {
         "title": "Catalog",
         "sections": {
-          "basicInfo": "Basic Information",
           "personnelInfo": "Personnel Information",
           "dateInfo": "Date Information",
           "description": "Description",

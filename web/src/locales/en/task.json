@@ -105,9 +105,7 @@
     "zoomOut": "Zoom Out",
     "comment": "Comments",
     "activity": "Activity",
-    "remark": "Remarks",
     "addedRemark": "Added remark",
-    "basicInfo": "Basic Information",
     "taskStatus": "Status",
     "aiGenerateTask": {
       "title": "Auto Create Backlog",
@@ -138,29 +136,11 @@
     },
     "editForm": {
       "labels": {
-        "type": "Type",
-        "priority": "Priority",
         "bugLevel": "Bug Level",
         "missingBug": "Escaped Bug",
-        "scenario": "Scenario",
-        "testType": "Test Type",
-        "service": "Service",
-        "api": "API",
-        "assignee": "Assignee",
-        "confirmer": "Confirmer",
-        "deadline": "Deadline",
-        "tester": "Tester",
-        "description": "Description",
-        "sprint": "Sprint",
-        "module": "Module",
         "parentTask": "Parent",
-        "evalWorkload": "Estimate Workload",
-        "actualWorkload": "Actual Workload",
-        "softwareVersion": "Software Version",
-        "tags": "Tags",
         "refTasks": "Related Tasks",
         "refCases": "Related Cases",
-        "attachments": "Attachments"
       },
       "placeholders": {
         "selectTaskType": "Please select task type",
@@ -278,7 +258,6 @@
         }
       },
       "description": {
-        "title": "Description",
         "messages": {
           "maxLength": "Description supports maximum 8000 characters"
         }
@@ -299,7 +278,6 @@
         }
       },
       "scenario": {
-        "basicInfo": "Basic Information",
         "number": "Number",
         "parentTask": "Parent",
         "scenario": "Scenario",
@@ -318,7 +296,6 @@
         }
       },
       "apis": {
-        "basicInfo": "Basic Information",
         "number": "Number",
         "parentTask": "Parent",
         "service": "Service",
@@ -359,7 +336,6 @@
         "taskName": "Enter backlog name, maximum 200 characters, press Enter to auto-save"
       },
       "drawerTitles": {
-        "basicInfo": "Basic Information",
         "personnel": "Personnel",
         "date": "Date",
         "relatedTasks": "Related Tasks",
@@ -718,11 +694,7 @@
     },
     "detail": {
       "title": "Task Detail",
-      "basicInfo": "Basic Information",
-      "remark": "Remarks",
       "testInfo": "Basic Information",
-      "comments": "Comments",
-      "activity": "Activity",
       "subTask": "Sub Tasks",
       "assocCaseTitle": "Associated Cases",
       "assocTaskTitle": "Associated Tasks",
@@ -823,8 +795,6 @@
         "urgent": "Urgent"
       },
       "tabs": {
-        "basicInfo": "Basic Information",
-        "remark": "Remarks",
         "testInfo": "Basic Information",
         "comments": "Comments",
         "activity": "Activity",
@@ -949,7 +919,6 @@
     },
     "ganttView": {
       "drawer": {
-        "basicInfo": "Basic Information",
         "personnel": "Personnel",
         "date": "Date",
         "assocTasks": "Associated Tasks",
@@ -1045,7 +1014,6 @@
     },
     "kanbanView": {
       "drawer": {
-        "basicInfo": "Basic Information",
         "personnel": "Personnel",
         "date": "Date",
         "assocTasks": "Associated Tasks",
@@ -1156,7 +1124,6 @@
     "detailInfo": {
       "title": "Detail Information",
       "apis": {
-        "basicInfo": "Basic Information",
         "columns": {
           "namePlaceholder": "Task name, maximum 200 characters",
           "selectModule": "Select or search module",
@@ -1315,7 +1282,6 @@
       "taskPrefix": "Task Prefix",
       "attachmentCount": "Attachment Count",
       "lastModifiedBy": "Last Modified By",
-      "basicInfo": "Basic Information",
       "acceptanceCriteria": "Acceptance Criteria",
       "otherInformation": "Other Information",
       "memberProgress": "Member Progress",

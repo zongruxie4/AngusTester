@@ -19,7 +19,7 @@ export function useDrawer (pageType: any, viewMode: any) {
       return [
         {
           key: 'basicInfo',
-          name: t('scriptDetail.tabs.basicInfo'),
+          name: t('common.basicInfo'),
           icon: 'icon-fuwuxinxi',
           noAuth: true
         }];
@@ -28,7 +28,7 @@ export function useDrawer (pageType: any, viewMode: any) {
     return [
       {
         key: 'basicInfo',
-        name: t('scriptDetail.tabs.basicInfo'),
+        name: t('common.basicInfo'),
         icon: 'icon-fuwuxinxi',
         noAuth: true
       },

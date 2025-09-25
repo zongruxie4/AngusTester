@@ -564,7 +564,7 @@ const sysItems = computed(() => [
     </h1>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.functionalTest.basicInfo') }}</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('common.basicInfo') }}</span>
     </li>
 
     <div v-if="TEST_FUNCTIONALITY" class="mb-5">
@@ -641,7 +641,7 @@ const sysItems = computed(() => [
     </h1>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.performanceTest.basicInfo') }}</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('common.basicInfo') }}</span>
     </li>
 
     <div v-if="TEST_PERFORMANCE" class="mb-5">
@@ -706,7 +706,7 @@ const sysItems = computed(() => [
     </h1>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.stabilityTest.basicInfo') }}</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('common.basicInfo') }}</span>
     </li>
 
     <div v-if="TEST_STABILITY" class="mb-5">

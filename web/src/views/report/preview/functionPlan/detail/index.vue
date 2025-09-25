@@ -48,7 +48,7 @@ const testerResponsibilities = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-        <span id="a1.1">1.1<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.detail.basicInfo') }}</span>
+        <span id="a1.1">1.1<em class="inline-block w-3.5"></em>{{ t('common.basicInfo') }}</span>
       </h2>
       <div class="border border-solid border-border-input">
         <div class="flex border-b border-solid border-border-input">

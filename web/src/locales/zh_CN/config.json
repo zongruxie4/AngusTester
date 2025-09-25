@@ -295,7 +295,6 @@
   "node": {
     "title": "节点管理",
     "message": {
-      "basicInfo": "基本信息",
       "onlineInstallAgent": "在线安装代理",
       "manualInstallAgent": "手动安装代理",
       "estimatedTime": "预计需要几分钟时间",

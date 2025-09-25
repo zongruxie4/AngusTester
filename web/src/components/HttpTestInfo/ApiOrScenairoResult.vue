@@ -105,7 +105,7 @@ onMounted(() => {
   <!-- 接口测试信息 -->
   <template v-if="props.type === 'API'">
     <div class="text-3 mt-3 mb-1 font-semibold">
-      {{ t('xcan_httpTestInfo.basicInfo') }}
+      {{ t('common.basicInfo') }}
     </div>
     <TestConfigInfo :value="basicInfo" :enabled="enabledTestMap.includes(props.testType)" />
     <template v-if="props.type === 'API' && props.testType === 'TEST_FUNCTIONALITY'">
@@ -149,7 +149,7 @@ onMounted(() => {
   <!-- 场景测试信息 -->
   <template v-else-if="['SCENARIO'].includes(props.type)">
     <div class="text-3 mt-3 mb-1 font-semibold">
-      {{ t('xcan_httpTestInfo.basicInfo') }}
+      {{ t('common.basicInfo') }}
     </div>
     <TestConfigInfo :value="basicInfo" />
     <template v-if="props.testType === 'TEST_FUNCTIONALITY'">

@@ -253,12 +253,6 @@
         "serviceMock": "Mock Service"
       },
       "form": {
-        "required": "Required",
-        "deprecated": "Deprecated",
-        "type": "Type",
-        "format": "Format",
-        "example": "example",
-        "description": "Description",
         "paramsNamePlaceholder": "Parameter name",
         "attrTab": "Attributes",
         "refsTab": "References",
@@ -343,7 +337,6 @@
         "duration": "Duration",
         "respSize": "Size",
         "debugAction": "Debug Case",
-        "description": "Description",
         "descriptionPlaceholder": "Enter case description, up to 800 characters"
       }
     },
@@ -2335,7 +2328,6 @@
           "raw": "Raw",
           "preview": "Preview"
         },
-        "basicInfo": "Basic",
         "requestInfo": "Request",
         "requestHeader": "Request Headers",
         "requestBody": "Request Body",

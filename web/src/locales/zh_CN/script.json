@@ -121,7 +121,6 @@
       "addExecutionSuccess": "添加执行成功"
     },
     "tabs": {
-      "basicInfo": "基本信息",
       "executionRecord": "执行记录",
       "activity": "活动"
     },

@@ -145,7 +145,7 @@ watch(selectedRecord, (newRecord) => {
       class="flex-1 ml-3.5 h-full -mr-3.5">
       <TabPane
         :key="0"
-        :tab="t('mock.detail.requestRecord.basicInfo')"
+        :tab="t('common.basicInfo')"
         class="h-full font-semibold">
         <template v-if="detail">
           <Grid

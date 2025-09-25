@@ -342,7 +342,6 @@
         "duration": "耗时",
         "respSize": "大小",
         "debugAction": "调试用例",
-        "description": "描述",
         "descriptionPlaceholder": "输入用例描述，最多可输入800个字符"
       }
     },
@@ -612,7 +611,6 @@
       "scopesPlaceholder": "输入scope，多个scope以英文逗号分隔",
       "clientAuthTypeLabel": "客户端认证",
       "clientAuthTypePlaceholder": "选择客户端认证",
-      "description": "描述",
       "descriptionPlaceholder": "输入描述，支持Markdown语法"
     },
     "serverConfig": {
@@ -637,7 +635,6 @@
       "form": {
         "url": "URL",
         "urlPlaceholder": "指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}",
-        "description": "描述",
         "descriptionPlaceholder": "服务器描述，最大支持400字符",
         "variables": "变量",
         "variableName": "名称",
@@ -743,7 +740,6 @@
       },
       "form": {
         "namePlaceholder": "请输入标签名称",
-        "description": "描述",
         "descriptionPlaceholder": "输入描述，支持Markdown语法",
         "externalDocsUrl": "外部文档地址",
         "externalDocsUrlPlaceholder": "请输入外部文档地址",
@@ -2311,7 +2307,6 @@
           "raw": "原生格式",
           "preview": "预览"
         },
-        "basicInfo": "基本",
         "requestInfo": "请求",
         "requestHeader": "请求头",
         "requestBody": "请求体",

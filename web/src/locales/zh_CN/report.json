@@ -157,7 +157,6 @@
     "reportInfo": {
       "category": "分类",
       "reporter": "报告人",
-      "description": "描述"
     },
     "notifications": {
       "updateSuccess": "更新报告成功",
@@ -323,7 +322,6 @@
         "basic": "基本信息",
         "user": "人员信息",
         "date": "日期信息",
-        "description": "描述",
         "subTask": "子任务",
         "task": "关联任务",
         "cases": "关联用例",
@@ -477,7 +475,6 @@
         "date": "日期信息",
         "condition": "前置条件",
         "steps": "测试步骤",
-        "description": "描述",
         "preview": "评审信息",
         "test": "测试信息",
         "task": "关联任务",
@@ -614,13 +611,11 @@
         "title": "场景测试结果详细信息",
         "functionalTest": {
           "title": "功能测试结果",
-          "basicInfo": "测试基本信息",
           "testCases": "测试用例",
           "testCaseResults": "测试用例结果明细"
         },
         "performanceTest": {
           "title": "性能测试",
-          "basicInfo": "测试基本信息",
           "indicatorsAndResults": "测试指标和结果",
           "performanceIndicators": "性能指标",
           "results": "结果",
@@ -636,7 +631,6 @@
         },
         "stabilityTest": {
           "title": "稳定性测试",
-          "basicInfo": "测试基本信息",
           "indicatorsAndResults": "测试指标和结果",
           "stabilityIndicators": "稳定性指标",
           "results": "结果",
@@ -1019,7 +1013,6 @@
       "catalog": {
         "title": "目录",
         "sections": {
-          "basicInfo": "基本信息",
           "personnelInfo": "人员信息",
           "dateInfo": "日期信息",
           "precondition": "前置条件",
@@ -1142,7 +1135,6 @@
         "title": "目录",
         "sections": {
           "planInfo": "测试计划信息",
-          "basicInfo": "基本信息",
           "testerAndDuty": "测试人与职责",
           "testTarget": "测试目标",
           "testScope": "测试范围",
@@ -1670,7 +1662,6 @@
         },
         "performanceTest": {
           "title": "性能测试",
-          "basicInfo": "测试基本信息",
           "indicatorsAndResults": "测试指标和结果",
           "performanceIndicators": "性能指标",
           "results": "结果",
@@ -1804,7 +1795,6 @@
         "title": "目录",
         "sections": {
           "sprintDetail": "迭代详细信息",
-          "basicInfo": "基本信息",
           "acceptanceCriteria": "验收标准",
           "testScope": "测试范围",
           "otherInfo": "其他说明",
@@ -1947,7 +1937,6 @@
       "catalog": {
         "title": "目录",
         "sections": {
-          "basicInfo": "基本信息",
           "personnelInfo": "人员信息",
           "dateInfo": "日期信息",
           "description": "描述",

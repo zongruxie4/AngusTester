@@ -47,7 +47,7 @@ const onePassText = computed(() => {
 <template>
   <div class="text-3 leading-5">
     <!-- Basic information section -->
-    <div class="font-semibold mb-2">{{ t('execution.testResult.basicInfo') }}</div>
+    <div class="font-semibold mb-2">{{ t('common.basicInfo') }}</div>
 
     <!-- Layout for smaller screens -->
     <div v-if="!props.largePageLayout" class="space-y-2.5">

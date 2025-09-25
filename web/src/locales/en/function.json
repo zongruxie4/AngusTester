@@ -545,7 +545,6 @@
       "collapseAll": "Collapse All",
       "swimLane": "Swim Lane",
       "cases": "cases",
-      "basicInfo": "Basic Info",
       "testSteps": "Test Steps",
       "personnel": "Personnel",
       "date": "Date",
@@ -589,10 +588,7 @@
         "noRemark": "No remark~",
         "reviewVersion": "Review Version",
         "latestVersion": "Latest Version",
-        "testSteps": "Test Steps",
-        "basicInfo": "Basic Information",
-        "reviewStatus": "Review Status",
-        "testResult": "Test Result"
+        "testSteps": "Test Steps"
       },
       "infoAttachment": {
         "title": "Attachments",
@@ -687,12 +683,6 @@
       "taskTip": "Record development or testing tasks associated with the current case, helping teams track testing tasks.",
       "bugTaskName": "Test Not Passed",
       "caseDetail": {
-        "basicInfo": "Basic Information",
-        "reviewStatus": "Review Status",
-        "version": "Version",
-        "softwareVersion": "Software Version",
-        "unplannedCase": "Unplanned Case",
-        "tags": "Tags",
         "planName": "Plan",
         "moduleName": "Module",
         "testResult": "Test Result",
@@ -775,8 +765,6 @@
       "reviewVersion": "Review Version",
       "latestVersion": "Latest Version",
       "testSteps": "Test Steps",
-      "basicInfo": "Basic Information",
-      "reviewStatus": "Review Status"
     },
     "case": {
       "baselineCases": "Baseline Cases",
@@ -797,7 +785,6 @@
       "compareModalTitle": "Case Compare",
       "hideSameItems": "Hide same items",
       "showSameItems": "Show same items",
-      "basicInfo": "Basic Info",
       "precondition": "Precondition",
       "description": "Description",
       "members": "Members",
@@ -948,7 +935,6 @@
       "confirmRestartReviewCase": "Confirm to restart review case 「{name}」?",
       "resetReview": "Reset",
       "confirmResetReviewCase": "Update the case to \"Pending Review\", related statistics and status will be cleared. Confirm to reset the review result for case 「{name}」?",
-      "basicInfo": "Basic Info",
       "precondition": "Precondition",
       "steps": "Steps",
       "reviewInfo": "Review Info",
@@ -1114,9 +1100,7 @@
       "compareModalTitle": "Case Compare",
       "hideSameItems": "Hide same items",
       "showSameItems": "Show same items",
-      "basicInfo": "Basic Info",
       "precondition": "Precondition",
-      "description": "Description",
       "members": "Members",
       "testInfo": "Test Info",
       "associatedTasks": "Associated Tasks",

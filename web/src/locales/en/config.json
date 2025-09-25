@@ -294,7 +294,6 @@
   "node": {
     "title": "Node",
     "message": {
-      "basicInfo": "Basic Information",
       "enable": "Enable",
       "disable": "Disable",
       "delete": "Delete",

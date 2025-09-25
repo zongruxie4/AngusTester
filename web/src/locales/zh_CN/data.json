@@ -740,7 +740,6 @@
       "deleteSuccess": "删除成功"
     },
     "drawer": {
-      "basicInfo": "基本信息",
       "spaceCapacity": "空间容量：",
       "accountStorageCapacity": "账户存储容量："
     },

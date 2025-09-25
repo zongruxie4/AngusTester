@@ -154,7 +154,7 @@ export function useUIOptions (
     {
       key: 'basic' as DrawerActiveKey,
       icon: 'icon-wendangxinxi',
-      title: t('backlog.main.drawerTitles.basicInfo')
+      title: t('common.basicInfo')
     },
     {
       key: 'person' as DrawerActiveKey,

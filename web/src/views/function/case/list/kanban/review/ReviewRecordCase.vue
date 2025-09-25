@@ -58,7 +58,7 @@ const infoColumns = computed(() => [
 <template>
   <div class="space-y-3">
     <div class="font-semibold text-3.5">
-      {{ t('functionCase.kanbanView.reviewRecord.basicInfo') }}
+      {{ t('common.basicInfo') }}
     </div>
 
     <Grid

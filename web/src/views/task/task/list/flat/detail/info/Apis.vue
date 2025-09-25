@@ -400,7 +400,7 @@ const onePassStatusText = computed(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5">{{ t('task.detailInfo.apis.basicInfo') }}</div>
+      <div class="text-3.5">{{ t('common.basicInfo') }}</div>
     </template>
 
     <template #default>

@@ -121,7 +121,6 @@
       "trial": "试用"
     },
     "testResult": {
-      "basicInfo": "基本信息",
       "resultInfo": "结果信息",
       "testCases": "测试用例",
       "testedCases": "已测试用例",
@@ -180,7 +179,6 @@
       "createdTime": "添加时间",
       "lastModifier": "最后更新人",
       "lastModifiedTime": "最后更新时间",
-      "description": "描述",
       "selectScriptType": "请选择脚本类型",
       "selectScriptTypeRequired": "请选择脚本类型",
       "enterScriptName": "请输入脚本名称,最多200字符",

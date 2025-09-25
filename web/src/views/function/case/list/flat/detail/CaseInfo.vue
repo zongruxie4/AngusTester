@@ -47,7 +47,7 @@ const infoColumns = computed(() => [
 <template>
   <div class="space-y-3">
     <div class="font-semibold text-3.5">
-      {{ t('functionCase.detail.review.basicInfo') }}
+      {{ t('common.basicInfo') }}
     </div>
 
     <Grid

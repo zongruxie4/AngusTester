@@ -43,7 +43,7 @@ const testers = computed(() => {
         <DashedLine />
       </a>
       <a href="#a1.1" class="flex items-center space-x-2.5">
-        <span>1.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.functionPlan.catalog.sections.basicInfo') }}</span>
+        <span>1.1<em class="inline-block w-4.25 font-medium"></em>{{ t('common.basicInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a1.2" class="flex items-center space-x-2.5">

@@ -633,7 +633,7 @@ onBeforeUnmount(() => {
     <div class="flex-1">
       <Toggle
         v-model:open="infoExpand"
-        :title="t('functionCase.detail.caseDetail.basicInfo')">
+        :title="t('common.basicInfo')">
         <Grid
           :columns="infoColumns"
           :dataSource="caseDetail"

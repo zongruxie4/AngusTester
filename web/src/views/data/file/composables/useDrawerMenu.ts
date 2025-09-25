@@ -22,7 +22,7 @@ export function useDrawerMenu () {
     return [
       {
         icon: 'icon-fuwuxinxi',
-        name: t('fileSpace.drawer.basicInfo'),
+        name: t('common.basicInfo'),
         key: 'info'
       },
       {
@@ -41,7 +41,7 @@ export function useDrawerMenu () {
     return [
       {
         icon: 'icon-fuwuxinxi',
-        name: t('fileSpace.drawer.basicInfo'),
+        name: t('common.basicInfo'),
         key: 'info'
       }
     ];
@@ -60,7 +60,7 @@ export function useDrawerMenu () {
       return [
         selectedRowKey && {
           icon: 'icon-fuwuxinxi',
-          name: t('fileSpace.drawer.basicInfo'),
+          name: t('common.basicInfo'),
           key: 'info'
         },
         selectedRowKey && {

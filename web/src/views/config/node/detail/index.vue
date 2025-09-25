@@ -205,7 +205,7 @@ onMounted(() => {
         <!-- Basic Information Section -->
         <div class="basic">
           <div class="title flex justify-between pt-2.5 items-center">
-            <span class="mr-15 font-semibold">{{ t('node.message.basicInfo') }}</span>
+            <span class="mr-15 font-semibold">{{ t('common.basicInfo') }}</span>
             <div class="detai-btns-wrapper">
               <!-- Enable/Disable Button -->
               <Button

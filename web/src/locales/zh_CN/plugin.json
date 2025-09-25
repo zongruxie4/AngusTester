@@ -249,7 +249,6 @@
       },
       "httpConfigs": {
         "title": "HTTP配置",
-        "basicInfo": "基本信息",
         "requestBody": "请求体",
         "assertions": "断言",
         "parameters": "参数",

@@ -79,14 +79,7 @@
       "isPassword": "Yes",
       "notPassword": "No",
       "columns": {
-        "value": "Value",
-        "description": "Description",
-        "password": "Password",
         "dataSource": "Source",
-        "lastModifiedBy": "Last Modified By",
-        "createdBy": "Created By",
-        "lastModifiedDate": "Last Modified Date",
-        "createdDate": "Created Date"
       },
       "dropdown": {
         "fileExtract": "File Extraction Variable",
@@ -766,7 +759,6 @@
       "deleteSuccess": "Deleted successfully"
     },
     "drawer": {
-      "basicInfo": "Basic Info",
       "spaceCapacity": "Space Capacity: ",
       "accountStorageCapacity": "Account Storage Capacity: "
     },

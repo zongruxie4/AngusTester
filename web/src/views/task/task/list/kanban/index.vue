@@ -1731,7 +1731,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'basic' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('task.kanbanView.drawer.basicInfo')"
+            :title="t('common.basicInfo')"
             @click="drawerActiveKeyChange('basic')">
             <Icon icon="icon-wendangxinxi" class="text-4" />
           </div>

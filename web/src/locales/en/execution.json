@@ -128,7 +128,6 @@
       "day": "day"
     },
     "testResult": {
-      "basicInfo": "Basic Info",
       "resultInfo": "Result Info",
       "testCases": "Test Cases",
       "testedCases": "Tested Cases",
@@ -180,15 +179,6 @@
       "schedulingLogFile": "scheduling.log"
     },
     "scriptInfo": {
-      "scriptName": "Script Name",
-      "scriptType": "Script Type",
-      "plugin": "Plugin",
-      "source": "Source",
-      "creator": "Creator",
-      "createdTime": "Created Time",
-      "lastModifier": "Last Modifier",
-      "lastModifiedTime": "Last Modified Time",
-      "description": "Description",
       "selectScriptType": "Please select script type",
       "selectScriptTypeRequired": "Please select script type",
       "enterScriptName": "Please enter script name, max 200 characters",
