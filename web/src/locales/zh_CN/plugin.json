@@ -105,12 +105,6 @@
       "cancelFavouriteSuccess": "取消收藏成功",
       "paramError": "参数错误"
     },
-    "form": {
-      "type": "类型",
-      "format": "格式",
-      "size": "大小",
-      "count": "数量"
-    },
     "tabs": {
       "taskConfig": "任务配置",
       "executeConfig": "执行配置"

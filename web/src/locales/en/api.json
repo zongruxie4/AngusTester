@@ -828,7 +828,6 @@
         "existingToken": "Existing Token",
         "generateToken": "Generate Token",
         "accessToken": "Access Token",
-        "type": "Type",
         "clientAuth": "Client Authentication",
         "getToken": "Get Token"
       },
@@ -1425,7 +1424,6 @@
     },
     "serviceDetail": {
       "columns": {
-        "parentName": "Parent Project",
         "source": "Source",
         "status": "Status",
         "apisNum": "API Count",

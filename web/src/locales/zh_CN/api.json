@@ -830,7 +830,6 @@
         "existingToken": "已有令牌",
         "generateToken": "生成令牌",
         "accessToken": "访问令牌",
-        "type": "类型",
         "clientAuth": "客户端认证",
         "getToken": "获取令牌"
       },
@@ -1420,7 +1419,6 @@
     },
     "serviceDetail": {
       "columns": {
-        "parentName": "所属项目",
         "apisNum": "接口数量",
         "apisCaseNum": "用例数量",
         "createdByName": "添加人",

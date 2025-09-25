@@ -875,8 +875,8 @@
     "sort": {
       "title": "排序",
       "menuItems": {
-        "lastModifiedDate": "按最后修改时间",
-        "type": "按添加类型"
+        "byLastModifiedDate": "按最后修改时间",
+        "byType": "按添加类型"
       }
     },
     "upload": {

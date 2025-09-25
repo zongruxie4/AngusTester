@@ -779,7 +779,7 @@ onMounted(() => {
             :placeholder="t('xcan_variable.inputVariableName')"
             size="small"
             @change="(event)=>variableNameChange(event.target.value,variable)" />
-          <div><IconRequired />{{ t('xcan_variable.type') }}</div>
+          <div><IconRequired />{{ t('common.type') }}</div>
           <RadioGroup
             v-model:value="variable.type"
             :disabled="!variable.isEdit"

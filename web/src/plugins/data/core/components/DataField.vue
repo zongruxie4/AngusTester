@@ -147,7 +147,7 @@ defineExpose({
           :options="inOptions"
           showSearch
           size="small"
-          :placeholder="t('genDataPlugin.form.type')" />
+          :placeholder="t('common.type')" />
       </FormItem>
       <FormItem
         class="flex-1"

@@ -141,7 +141,6 @@
       },
       "generateRecord": {
         "reportName": "Report Name",
-        "type": "Type",
         "template": "Template",
         "creator": "Creator",
         "generateTime": "Generate Time",
@@ -663,7 +662,6 @@
           "passedCount": "Passed Count",
           "failedCount": "Failed Count",
           "disabledCount": "Disabled Count",
-          "type": "Type",
           "isEnabled": "Is Enabled",
           "isTestPassed": "Is Test Passed",
           "testFailureCount": "Test Failure Count",
@@ -705,18 +703,10 @@
           "fields": {
             "testScriptId": "Test Script ID",
             "testScriptName": "Test Script Name",
-            "plugin": "Plugin",
-            "status": "Status",
-            "type": "Type",
-            "priority": "Priority",
-            "startTime": "Start Time",
-            "endTime": "End Time",
             "nodeCount": "Node Count",
             "reportInterval": "Report Interval",
             "ignoreAssertions": "Ignore Assertions",
             "updateTestResult": "Update Test Result",
-            "creator": "Creator",
-            "createTime": "Create Time"
           },
           "options": {
             "update": "Update",
@@ -826,18 +816,10 @@
             "execName": "Execution Name",
             "scriptName": "Script Name",
             "testScriptId": "Test Script ID",
-            "plugin": "Plugin",
-            "status": "Status",
-            "type": "Type",
-            "priority": "Priority",
-            "startTime": "Start Time",
-            "endTime": "End Time",
             "nodeCount": "Node Count",
             "samplingInterval": "Sampling Interval",
             "ignoreAssertions": "Ignore Assertions",
             "updateTestResult": "Update Test Result",
-            "creator": "Creator",
-            "createTime": "Create Time"
           },
           "options": {
             "ignore": "Ignore",
@@ -1598,7 +1580,6 @@
           "caseResultDetail": {
             "title": "Test Case Result Details",
             "fields": {
-              "type": "Type",
               "testPassed": "Test Passed",
               "testFailReason": "Test Failure Reason",
               "testCount": "Test Count",
@@ -1714,7 +1695,6 @@
           "passedCount": "Passed Count",
           "failedCount": "Failed Count",
           "disabledCount": "Disabled Count",
-          "type": "Type",
           "isEnabled": "Is Enabled",
           "isTestPassed": "Is Test Passed",
           "testFailureCount": "Test Failure Count",

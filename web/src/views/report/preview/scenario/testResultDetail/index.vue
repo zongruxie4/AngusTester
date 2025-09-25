@@ -126,7 +126,7 @@ const caseSummaryColumns = computed(() => [
 const caseColumns = computed(() => [
   [
     {
-      name: t('reportPreview.scenario.testResultDetail.fields.type'),
+      name: t('common.type'),
       dataIndex: 'caseType',
       customRender: (text) => {
         return text?.message;

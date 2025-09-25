@@ -213,18 +213,10 @@
     },
     "info": {
       "basic": {
-        "sprint": "Sprint",
-        "module": "Module",
         "parentTask": "Parent",
-        "type": "Type",
         "missingBug": "Escaped Bug",
-        "priority": "Priority",
-        "evalWorkloadMethod": "Estimate Method",
-        "evalWorkload": "Estimated",
-        "actualWorkload": "Actual",
         "processCount": "Processing Count",
         "processFailCount": "Failed Count",
-        "tags": "Tags",
         "oneTimePass": "One-time Pass",
         "softwareVersion": "Software Version",
         "unplannedTask": "Unplanned",
@@ -940,7 +932,6 @@
       "form": {
         "namePlaceholder": "Task name, maximum 200 characters",
         "nameRule": "Task name, maximum 200 characters",
-        "type": "Type",
         "typePlaceholder": "Please select task type",
         "priority": "Priority",
         "priorityPlaceholder": "Please select priority",
@@ -1339,7 +1330,6 @@
       "maxLengthExceeded": "Content exceeds length limit"
     },
     "meeting": {
-      "type": "Meeting Type",
       "date": "Meeting Date",
       "time": "Meeting Time",
       "location": "Location",
@@ -1430,9 +1420,6 @@
       "meetingTypeTip": "Specify meeting type for identification and management."
     },
     "form": {
-      "subject": "Subject",
-      "type": "Type",
-      "sprint": "Sprint",
       "date": "Date",
       "time": "Time",
       "location": "Location",

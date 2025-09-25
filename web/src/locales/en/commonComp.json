@@ -465,7 +465,6 @@
     "existingToken": "Existing Token",
     "generateToken": "Generate Token",
     "accessToken": "Access Token",
-    "type": "Type",
     "maxCharacters": "Maximum {maxLength} characters allowed",
     "clientAuthentication": "Client Authentication",
     "getToken": "Get Token",

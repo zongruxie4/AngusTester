@@ -379,7 +379,7 @@ onMounted(async () => {
       <div class="flex space-x-2">
         <FormItem
           required
-          :label="t('taskMeeting.form.type')"
+          :label="t('common.type')"
           name="type"
           class="flex-1 min-w-0">
           <div class="flex items-center space-x-1">

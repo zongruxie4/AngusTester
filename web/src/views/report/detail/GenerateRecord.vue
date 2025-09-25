@@ -52,7 +52,7 @@ const columns = [
   {
     key: 'category',
     dataIndex: 'category',
-    title: t('reportHome.reportDetail.generateRecord.type'),
+    title: t('common.type'),
     customRender: ({ text }) => {
       return text?.message;
     }

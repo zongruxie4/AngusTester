@@ -781,7 +781,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
         <template v-if="oauthKey === 2">
           <div class="text-3 space-y-3">
             <div class="flex items-center">
-              <span class="w-25">{{ t('xcan_apiAuthencation.type') }}</span>
+              <span class="w-25">{{ t('common.type') }}</span>
               <Select
                 v-model:value="authType"
                 class="w-100"

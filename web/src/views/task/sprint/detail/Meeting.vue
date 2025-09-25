@@ -62,7 +62,7 @@ watch(() => props.meetings, () => {
         <div class="space-y-4">
           <div class="flex items-start">
             <div class="w-24 flex items-center whitespace-nowrap flex-shrink-0 text-gray-900 font-medium text-3 text-right">
-              <span>{{ t('taskSprint.meeting.type') }}</span>
+              <span>{{ t('common.type') }}</span>
               <Colon class="w-1 mx-1" />
             </div>
 

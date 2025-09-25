@@ -21,7 +21,7 @@ export function useSort () {
     },
     {
       key: 'type',
-      name: t('fileSpace.sort.menuItems.type'),
+      name: t('common.type'),
       orderSort: 'ASC'
     }
   ];

@@ -47,7 +47,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: t('scriptHome.table.columns.type'),
+      title: t('common.type'),
       dataIndex: 'type',
       sorter: true,
       width: '7%',

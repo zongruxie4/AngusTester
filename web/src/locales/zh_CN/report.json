@@ -133,13 +133,9 @@
       },
       "generateRecord": {
         "reportName": "报告名称",
-        "type": "类型",
         "template": "模板",
-        "creator": "添加人",
         "generateTime": "生成时间",
         "deleteRecord": "删除报告记录",
-        "confirmDelete": "确认删除报告记录「{name}」吗？",
-        "deleteSuccess": "删除成功"
       }
     }
   },
@@ -653,7 +649,6 @@
           "passedCount": "通过数",
           "failedCount": "未通过数",
           "disabledCount": "未启用数",
-          "type": "类型",
           "isEnabled": "是否启用",
           "isTestPassed": "是否测试通过",
           "testFailureCount": "测试失败次数",
@@ -809,18 +804,10 @@
             "execName": "执行名称",
             "scriptName": "脚本名称",
             "testScriptId": "测试脚本ID",
-            "plugin": "插件",
-            "status": "状态",
-            "type": "类型",
-            "priority": "优先级",
-            "startTime": "开始时间",
-            "endTime": "结束时间",
             "nodeCount": "节点数",
             "samplingInterval": "采样间隔",
             "ignoreAssertions": "忽略断言",
             "updateTestResult": "更新测试结果",
-            "creator": "添加人",
-            "createTime": "添加时间"
           },
           "options": {
             "update": "更新",
@@ -1574,7 +1561,6 @@
           "caseResultDetail": {
             "title": "测试用例结果明细",
             "fields": {
-              "type": "类型",
               "testPassed": "是否测试通过",
               "testFailReason": "测试失败原因",
               "testCount": "测试次数",
@@ -1690,7 +1676,6 @@
           "passedCount": "通过数",
           "failedCount": "未通过数",
           "disabledCount": "未启用数",
-          "type": "类型",
           "isEnabled": "是否启用",
           "isTestPassed": "是否测试通过",
           "testFailureCount": "测试失败次数",

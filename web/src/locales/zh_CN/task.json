@@ -206,7 +206,6 @@
         "sprint": "所属迭代",
         "module": "所属模块",
         "parentTask": "父任务",
-        "type": "类型",
         "missingBug": "漏测",
         "priority": "优先级",
         "evalWorkloadMethod": "评估方法",
