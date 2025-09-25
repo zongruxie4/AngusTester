@@ -54,7 +54,7 @@ export function useTableColumns () {
     },
     {
       key: 'createdDate',
-      title: t('dataset.list.columns.createdDate'),
+      title: t('common.createdDate'),
       dataIndex: 'createdDate',
       ellipsis: true,
       width: '15%',
@@ -63,7 +63,7 @@ export function useTableColumns () {
     },
     {
       key: 'lastModifiedDate',
-      title: t('dataset.list.columns.lastModifiedDate'),
+      title: t('common.lastModifiedDate'),
       dataIndex: 'lastModifiedDate',
       ellipsis: true,
       width: '15%',

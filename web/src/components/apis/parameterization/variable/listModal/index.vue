@@ -319,7 +319,7 @@ const columns = [
     sort: true
   },
   {
-    title: t('commonComp.apis.parameterizationVariable.listModal.lastModifiedTime'),
+    title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
     width: '14%',

@@ -216,15 +216,11 @@
       },
       "date": {
         "title": "Date",
-        "addTime": "Add Time",
-        "deadline": "Deadline",
-        "startTime": "Start Time",
         "processTime": "Process Time",
         "confirmTime": "Confirm Time",
         "completeTime": "Complete Time",
         "cancelTime": "Cancel Time",
         "executeTime": "Execute Time",
-        "lastModifiedTime": "Last Modified Time",
         "messages": {
           "selectDeadline": "Please select deadline",
           "deadlineMustBeFuture": "Deadline must be a future time"
@@ -775,9 +771,6 @@
         "service": "Service",
         "failCount": "Fail Count",
         "processCount": "Processing Count",
-        "addTime": "Add Time",
-        "deadline": "Deadline Time",
-        "startTime": "Start Time",
         "processTime": "Process Time",
         "confirmTime": "Confirm Time",
         "completeTime": "Complete Time",
@@ -1090,7 +1083,6 @@
         "title": "Date",
         "fields": {
           "deadline": "Deadline Time",
-          "startTime": "Start Time",
           "processTime": "Process Time",
           "confirmTime": "Confirm Time",
           "completeTime": "Complete Time",
@@ -1169,7 +1161,6 @@
       "enhanceSatisfactionDesc": "Increase customer and team satisfaction through rapid delivery and feedback"
     },
     "columns": {
-      "timePlan": "Time Plan",
       "workloadAssessment": "Workload Assessment",
       "taskPrefix": "Task Prefix",
       "attachmentCount": "Attachment Count",
@@ -1189,7 +1180,6 @@
       "viewWorkCalendar": "View Work Calendar"
     },
     "form": {
-      "timePlan": "Time Plan",
       "taskPrefix": "Task Prefix",
       "workloadAssessment": "Workload Assessment",
       "uploadAttachment": "Upload",
@@ -1297,8 +1287,6 @@
       "selectModerator": "Select meeting moderator",
       "selectParticipants": "Select participants",
       "inputLocation": "Record meeting location or online meeting link",
-      "startTime": "Start time",
-      "endTime": "End time",
       "searchSubject": "Search meeting subject",
       "selectType": "Meeting type",
       "selectModeratorSearch": "Select moderator",

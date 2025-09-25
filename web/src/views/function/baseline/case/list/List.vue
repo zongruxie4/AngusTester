@@ -67,7 +67,7 @@ const tableColumns = [
     dataIndex: 'createdByName'
   },
   {
-    title: t('common.createTime'),
+    title: t('common.createdDate'),
     dataIndex: 'createdDate'
   },
   {

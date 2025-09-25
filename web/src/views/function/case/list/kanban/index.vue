@@ -1381,7 +1381,7 @@ const checkedCaseId = computed(() => {
                 <TaskPriority class="flex-shrink-0" :value="element.priority" />
               </div>
               <div class="flex items-center overflow-hidden">
-                <span class="flex-shrink-0">{{ t('functionCase.kanbanView.deadline') }}</span>
+                <span class="flex-shrink-0">{{ t('common.deadlineDate') }}</span>
                 <Colon class="mr-1.5" />
                 <span :title="element.deadlineDate" class="truncate">{{ element.deadlineDate }}</span>
               </div>
@@ -1522,7 +1522,7 @@ const checkedCaseId = computed(() => {
                       <TaskPriority class="flex-shrink-0" :value="element.priority" />
                     </div>
                     <div class="flex items-center overflow-hidden">
-                      <span class="flex-shrink-0">{{ t('functionCase.kanbanView.deadline') }}</span>
+                      <span class="flex-shrink-0">{{ t('common.deadlineDate') }}</span>
                       <Colon class="mr-1.5" />
                       <span :title="element.deadlineDate" class="truncate">{{ element.deadlineDate }}</span>
                     </div>

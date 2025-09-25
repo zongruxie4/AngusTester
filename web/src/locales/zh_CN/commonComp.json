@@ -1043,7 +1043,6 @@
     "assigneeName": "经办人",
     "confirmerName": "确认人",
     "createdByName": "创建人",
-    "createdDate": "创建时间",
     "average": "平均",
     "max": "最大"
   },
@@ -1172,7 +1171,6 @@
     "batchRows": "批量行数",
     "mockFileUrl": "生成文件",
     "actualStartDate": "开始时间",
-    "endDate": "结束时间",
     "updateTestResult": "更新测试结果",
     "ignoreAssertions": "忽略断言",
     "update": "更新",

@@ -196,7 +196,7 @@ const tableColumns = [
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('task.assocTask.columns.deadlineDate')
+    title: t('common.deadlineDate')
   },
   {
     key: 'action',

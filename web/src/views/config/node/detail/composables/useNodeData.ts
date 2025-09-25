@@ -71,7 +71,7 @@ export const infoItem = [
     dataIndex: 'createdByName'
   },
   {
-    label: t('node.nodeItem.interface.viewItem.addTime'),
+    label: t('common.createdDate'),
     dataIndex: 'createdDate'
   },
   {

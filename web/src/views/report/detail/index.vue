@@ -130,7 +130,7 @@ const activityType = ['REPORT'];
       </div>
 
       <Tabs size="small" class="mt-4 flex-1">
-        <TabPane key="createdDate" :tab="t('reportHome.reportDetail.tabs.createdDate')">
+        <TabPane key="createdDate" :tab="t('common.createdDate')">
           <GenerateTime :createTimeSetting="report.createTimeSetting" />
         </TabPane>
         <TabPane key="basic" :tab="t('reportHome.reportDetail.tabs.basic')">

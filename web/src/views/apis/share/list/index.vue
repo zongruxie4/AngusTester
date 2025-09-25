@@ -210,7 +210,7 @@ const columns = [
     customRender: ({ text }) => text?.message
   },
   {
-    title: t('apiShare.list.columns.expiredDate'),
+    title: t('common.expiredDate'),
     dataIndex: 'expiredDate',
     width: '9%',
     sorter: true,
@@ -244,7 +244,7 @@ const columns = [
     width: '8%'
   },
   {
-    title: t('apiShare.list.columns.lastModifiedTime'),
+    title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     groupName: 'lastModifiedByName',
     hide: true,

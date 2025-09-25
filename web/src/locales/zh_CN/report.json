@@ -94,7 +94,6 @@
     "reportDetail": {
       "title": "查看报告",
       "tabs": {
-        "createdDate": "添加时间",
         "basic": "基本信息",
         "content": "内容",
         "record": "报告记录",
@@ -139,7 +138,6 @@
       "descriptionPlaceholder": "报告描述，使用描述解释此报告的内容和目的，或添加其他资源的链接，最长200个字符"
     },
     "tabs": {
-      "createdDate": "生成时间",
       "basic": "基本信息",
       "content": "内容"
     },
@@ -1275,9 +1273,6 @@
       },
       "info": {
         "title": "项目信息",
-        "fields": {
-          "planTime": "计划时间"
-        }
       },
       "taskSummary": {
         "title": "研发任务",
@@ -1775,7 +1770,6 @@
         "title": "任务详情",
         "fields": {
           "completionTime": "完成时间",
-          "startTime": "开始时间",
           "confirmTask": "是否确认任务",
           "workloadEstimationMethod": "工作量评估方式",
           "estimatedWorkload": "评估工作量",
@@ -1911,8 +1905,6 @@
         "dateInfo": {
           "title": "日期信息",
           "fields": {
-            "deadline": "截止时间",
-            "startTime": "开始时间",
             "processTime": "处理时间",
             "confirmTime": "确认时间",
             "completionTime": "完成时间",

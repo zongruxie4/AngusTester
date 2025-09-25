@@ -60,7 +60,7 @@ export function useTableColumns () {
     {
       dataIndex: 'createdDate',
       key: 'createdDate',
-      title: t('fileSpace.columns.addTime'),
+      title: t('common.createdDate'),
       width: '13%',
       ellipsis: true
     },
@@ -102,7 +102,7 @@ export function useTableColumns () {
       width: 80
     },
     {
-      title: t('fileSpace.columns.lastModifiedDate'),
+      title: t('common.lastModifiedDate'),
       dataIndex: 'lastModifiedDate',
       ellipsis: true,
       width: 160

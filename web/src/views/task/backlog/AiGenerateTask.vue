@@ -530,7 +530,7 @@ onMounted(() => {
             :maxlength="80" />
 
           <Tooltip
-            :title="t('backlog.aiGenerateTask.tooltips.deadlineDate')"
+            :title="t('common.deadlineDate')"
             internal
             placement="right"
             destroyTooltipOnHide
@@ -541,7 +541,7 @@ onMounted(() => {
               :showNow="false"
               :disabledDate="disablePastDates"
               :showTime="{ hideDisabledOptions: true, format: 'HH:mm:ss' }"
-              :placeholder="t('backlog.aiGenerateTask.placeholders.deadline')"
+              :placeholder="t('common.deadlineDate')"
               type="date"
               size="small"
               showToday

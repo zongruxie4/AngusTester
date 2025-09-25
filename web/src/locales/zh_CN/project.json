@@ -109,9 +109,6 @@
       "addVersion": "添加版本",
       "versionName": "版本名称",
       "versionNamePlaceholder": "输入版本名称，最多可输入40字符，如：v1.0",
-      "startDate": "开始日期",
-      "releaseDate": "发布日期",
-      "description": "描述",
       "descriptionPlaceholder": "请输入版本描述，最多支持200字符"
     },
     "merge": {
@@ -120,9 +117,6 @@
       "mergeTo": "合并版本至"
     },
     "detail": {
-      "version": "版本",
-      "startDate": "开始日期：",
-      "releaseDate": "发布日期：",
       "noStartDate": "没有设置开始日期",
       "noReleaseDate": "没有设置发布日期",
       "chart": {

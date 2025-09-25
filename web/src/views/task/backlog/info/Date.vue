@@ -139,7 +139,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Created Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.date.addTime') }}</span>
+            <span>{{ t('common.createdDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ createdDate }}</span>
@@ -149,7 +149,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Deadline Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.date.deadline') }}</span>
+            <span>{{ t('common.deadlineDate') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isDeadlineEditing" class="info-value-content">
@@ -189,7 +189,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Start Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.date.startTime') }}</span>
+            <span>{{ t('common.startTime') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !startDate }">{{ startDate || '--' }}</span>
@@ -249,7 +249,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Last Modified Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.date.lastModifiedTime') }}</span>
+            <span>{{ t('common.lastModifiedDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !lastModifiedDate }">{{ lastModifiedDate || '--' }}</span>

@@ -717,7 +717,7 @@ onMounted(() => {
                 :rules="{required: true, validator: validateDate,trigger: 'change' }">
                 <template #label>
                   <span class="flex items-center">
-                    {{ t('functionCase.addCaseModal.deadline') }}
+                    {{ t('common.deadlineDate') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter

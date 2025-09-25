@@ -486,7 +486,7 @@ const handleTesterSelectionBlur = async () => {
         <!-- Last Modifier -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.personnel.fields.lastModifier') }}</span>
+            <span>{{ t('common.modifier') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ taskLastModifiedByName }}</span>

@@ -32,7 +32,7 @@ export const columns = [
     width: '10%'
   },
   {
-    title: t('fileSpace.columns.lastModifiedDate'),
+    title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
     width: '15%'

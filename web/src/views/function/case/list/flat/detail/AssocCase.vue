@@ -121,7 +121,7 @@ const columns = [
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('common.deadline')
+    title: t('common.deadlineDate')
   },
   {
     key: 'action',

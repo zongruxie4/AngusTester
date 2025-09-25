@@ -328,11 +328,11 @@ onBeforeUnmount(() => {
                 <span class="text-text-content"> {{ item?.id || "--" }}</span>
               </div>
               <div>
-                <span class="whitespace-nowrap">{{ t('execution.basic.startTime') }}:</span>
+                <span class="whitespace-nowrap">{{ t('common.startTime') }}:</span>
                 <span class="text-text-content  whitespace-nowrap">{{ item?.actualStartDate || "--" }}</span>
               </div>
               <div>
-                <span class="whitespace-nowrap">{{ t('execution.basic.endTime') }}:</span>
+                <span class="whitespace-nowrap">{{ t('common.endTime') }}:</span>
                 <span class="text-text-content whitespace-nowrap">{{ item?.endDate || "--" }}</span>
               </div>
             </div>

@@ -53,7 +53,7 @@ const statusColorConfig: StatusColorConfig = {
       </div>
       <div class="inline-flex items-center space-x-1">
         <template v-if="dataSource.releaseDate">
-          {{ t('version.detail.releaseDate') }} {{ dataSource.releaseDate }}
+          {{ t('common.releaseDate') }} {{ dataSource.releaseDate }}
         </template>
         <template v-else>
           <Icon icon="icon-riqi" /> <span>{{ t('version.detail.noReleaseDate') }}</span>

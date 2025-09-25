@@ -48,7 +48,6 @@
       "receiveChannel": "接收通道",
       "sender": "发送人",
       "executionId": "执行编号",
-      "addTime": "添加时间",
       "pushTime": "推送时间",
       "pushResult": "推送结果",
       "eventName": "事件名称",
@@ -56,7 +55,6 @@
       "eventId": "事件ID",
       "content": "内容",
       "receiver": "接收人",
-      "createdDate": "触发时间",
       "pushStatus": "推送状态"
     },
     "placeholder": {
@@ -70,8 +68,6 @@
     "searchLogPlaceholder": {
       "code": "查询事件描述或编码",
       "pushStatus": "选择推送状态",
-      "startDate": "开始时间",
-      "endDate": "结束时间"
     },
     "receiveConfig": {
       "title": "配置接收通道",
@@ -114,7 +110,6 @@
           "holder": "持有者",
           "licenseNo": "许可编号",
           "issuedDate": "许可发行日期",
-          "expiredDate": "许可过期日期",
           "signature": "许可证书MD5签名"
         },
         "remainingDays": "剩余{days}天"

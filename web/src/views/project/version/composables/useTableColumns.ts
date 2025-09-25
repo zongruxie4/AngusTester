@@ -31,7 +31,7 @@ export function useTableColumns () {
       width: 150
     },
     {
-      title: t('version.columns.releaseDate'),
+      title: t('common.releaseDate'),
       dataIndex: 'releaseDate',
       customRender: ({ text }: { text: string }) => text || '--',
       width: 150
@@ -42,7 +42,7 @@ export function useTableColumns () {
       width: 200
     },
     {
-      title: t('version.columns.lastModifier'),
+      title: t('common.modifier'),
       dataIndex: 'lastModifiedByName',
       groupName: 'person',
       width: 100
@@ -61,7 +61,7 @@ export function useTableColumns () {
       width: 100
     },
     {
-      title: t('version.columns.createTime'),
+      title: t('common.createdDate'),
       dataIndex: 'createdDate',
       groupName: 'date',
       hide: true,

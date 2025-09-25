@@ -50,7 +50,7 @@ export function usePermitInfo () {
       dataIndex: 'beginDate'
     },
     {
-      label: t('app.config.permitInfo.columns.expiredDate'),
+      label: t('common.expiredDate'),
       dataIndex: 'expiredDate'
     },
     {

@@ -232,7 +232,7 @@ const params = computed(() => {
         </div>
         <div class="flex justify-between mt-2">
           <div class="-mt-0.5 h-4 leading-4">
-            <span class="text-text-sub-content">{{ t('commonComp.shareModal.expiredDate') }}<Colon /></span>
+            <span class="text-text-sub-content">{{ t('common.expiredDate') }}<Colon /></span>
             <span class="ml-2 text-text-content">
               {{ item.expiredFlag ? item.expiredDate : t('commonComp.shareModal.expirationTimeOptions.permanent') }}
             </span>

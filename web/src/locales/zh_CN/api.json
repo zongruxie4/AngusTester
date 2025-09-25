@@ -1382,8 +1382,6 @@
         "apisNum": "接口数量",
         "apisCaseNum": "用例数量",
         "createdByName": "添加人",
-        "createdDate": "添加时间",
-        "lastModifiedDate": "更新时间",
         "securityTitle": "安全需求"
       },
       "placeholder": {
@@ -2400,7 +2398,6 @@
     "form": {
       "namePlaceholder": "输入分享名称，最多可输入100字符",
       "remarkPlaceholder": "请输入分享备注，会展示在分享信息中，最多支持400字符",
-      "expiredDate": "到期日期",
       "expiredDateHint": "不指定时永久有效。",
       "displayOptions": "展示选项",
       "includeServiceInfo": "展示服务说明",
@@ -2435,7 +2432,6 @@
       "columns": {
         "sharePerson": "分享人",
         "shareScope": "分享范围",
-        "expiredDate": "到期日期",
         "shareDate": "分享日期",
         "viewCount": "查看次数"
       }

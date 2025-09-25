@@ -259,7 +259,7 @@ const columns = [
     sort: true
   },
   {
-    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.lastModifiedDate'),
+    title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
     width: '15%',

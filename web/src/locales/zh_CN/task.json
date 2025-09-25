@@ -227,9 +227,6 @@
       },
       "date": {
         "title": "日期",
-        "addTime": "添加时间",
-        "deadline": "截止时间",
-        "startTime": "开始时间",
         "processTime": "处理时间",
         "confirmTime": "确认时间",
         "completeTime": "完成时间",
@@ -1080,7 +1077,6 @@
         "title": "日期",
         "fields": {
           "deadline": "截止时间",
-          "startTime": "开始时间",
           "processTime": "处理时间",
           "confirmTime": "确认时间",
           "completeTime": "完成时间",
@@ -1176,7 +1172,6 @@
       "enhanceSatisfactionDesc": "通过快速交付和反馈，提升客户和团队满意度"
     },
     "columns": {
-      "timePlan": "时间计划",
       "workloadAssessment": "评估方法",
       "taskPrefix": "任务前缀",
       "attachmentCount": "附件数",
@@ -1196,7 +1191,6 @@
       "viewWorkCalendar": "查看工作日历"
     },
     "form": {
-      "timePlan": "时间计划",
       "owner": "负责人",
       "taskPrefix": "任务前缀",
       "workloadAssessment": "评估方法",
@@ -1309,8 +1303,6 @@
       "selectModerator": "选择会议主持人",
       "selectParticipants": "选择参会人员",
       "inputLocation": "记录会议地点或在线会议的链接",
-      "startTime": "开始时间",
-      "endTime": "结束时间",
       "searchSubject": "查询会议主题",
       "selectType": "会议类型",
       "selectModeratorSearch": "选择主持人",

@@ -212,7 +212,7 @@ const change = async () => {
 
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('functionCase.kanbanView.infoPersonnel.lastModifier') }}</span>
+          <span>{{ t('common.modifier') }}</span>
           <Colon class="w-1" />
         </div>
 

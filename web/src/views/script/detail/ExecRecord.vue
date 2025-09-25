@@ -78,7 +78,7 @@ const params = {
 
         <div class="relative flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('scriptDetail.record.startTime') }}</span>
+            <span>{{ t('common.startTime') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -87,7 +87,7 @@ const params = {
 
         <div class="relative flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('scriptDetail.record.endTime') }}</span>
+            <span>{{ t('common.endTime') }}</span>
             <Colon class="w-1" />
           </div>
 

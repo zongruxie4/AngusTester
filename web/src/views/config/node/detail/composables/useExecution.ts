@@ -100,7 +100,7 @@ export function useExecution (nodeId: string) {
     {
       key: 'startTime',
       dataIndex: 'actualStartDate',
-      title: t('node.nodeDetail.execute.columns.startTime'),
+      title: t('common.startTime'),
       width: 180
     }
   ];

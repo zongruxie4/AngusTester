@@ -1076,7 +1076,7 @@ const getPopupContainer = () => {
 
           <div class="flex space-x-4">
             <FormItem
-              :label="t('backlog.editForm.labels.deadline')"
+              :label="t('common.deadlineDate')"
               name="deadlineDate"
               class="flex-1/2"
               :rules="{ required: true, validator: validateDeadlineDate }">

@@ -43,7 +43,7 @@ export function useAddedTableColumns (type: DataType) {
           dataIndex: 'createdByName'
         },
         {
-          title: t('dataHome.summaryTable.columns.createdDate'),
+          title: t('common.createdDate'),
           dataIndex: 'createdDate'
         }
       );
@@ -57,7 +57,7 @@ export function useAddedTableColumns (type: DataType) {
           ellipsis: true
         },
         {
-          title: t('dataHome.summaryTable.columns.lastModifiedDate'),
+          title: t('common.lastModifiedDate'),
           dataIndex: 'lastModifiedDate'
         }
       );

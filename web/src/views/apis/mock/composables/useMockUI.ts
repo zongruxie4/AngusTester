@@ -130,7 +130,7 @@ export function useMockUI () {
       ellipsis: true
     },
     {
-      title: t('mock.columns.createdDate'),
+      title: t('common.createdDate'),
       dataIndex: 'createdDate',
       width: '10%',
       sorter: true,
@@ -140,7 +140,7 @@ export function useMockUI () {
       }
     },
     {
-      title: t('mock.columns.lastModifiedDate'),
+      title: t('common.lastModifiedDate'),
       dataIndex: 'lastModifiedDate',
       width: '10%',
       sorter: true,

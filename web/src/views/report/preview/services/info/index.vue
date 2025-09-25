@@ -60,11 +60,11 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'createdDate',
-      name: t('reportPreview.services.info.fields.createTime')
+      name: t('common.createdDate')
     },
     {
       dataIndex: 'lastModifiedByName',
-      name: t('reportPreview.services.info.fields.lastModifier')
+      name: t('common.modifier')
     }
   ],
   [

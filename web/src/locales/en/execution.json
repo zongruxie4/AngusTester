@@ -4,8 +4,6 @@
       "scenario": "Script",
       "configure": "Configure",
       "concurrency": "Concurrency",
-      "startTime": "Start Time",
-      "endTime": "End Time",
       "executionTime": "Execution Time (seconds)",
       "iterations": "Iterations",
       "errorRate": "Error Rate",

@@ -534,7 +534,7 @@ onMounted(() => {
 
         <div class="w-42 space-x-0.5 head-item-container">
           <IconRequired />
-          <span>{{ t('common.deadline') }}</span>
+          <span>{{ t('common.deadlineDate') }}</span>
         </div>
 
         <div class="w-5 h-5"></div>
@@ -634,7 +634,7 @@ onMounted(() => {
               :showNow="false"
               :disabledDate="disablePastDates"
               :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
-              :placeholder="t('backlog.splitTask.placeholders.deadline')"
+              :placeholder="t('common.deadlineDate')"
               type="date"
               size="small"
               showToday

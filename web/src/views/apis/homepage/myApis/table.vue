@@ -242,7 +242,7 @@ const columns = computed(() => {
       width: '7%'
     },
     {
-      title: t('apis.myApis.columns.createdDate'),
+      title: t('common.createdDate'),
       dataIndex: 'createdDate',
       ellipsis: true,
       sorter: true,

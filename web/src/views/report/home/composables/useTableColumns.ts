@@ -107,7 +107,7 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'createdDate',
       dataIndex: 'createdDate',
-      title: t('reportHome.table.createTime'),
+      title: t('common.createdDate'),
       groupName: 'creat',
       hide: true,
       width: 160,
@@ -116,7 +116,7 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'lastModifiedBy',
       dataIndex: 'lastModifiedBy',
-      title: t('reportHome.table.lastModifier'),
+      title: t('common.modifier'),
       groupName: 'creat',
       hide: true,
       width: 130,

@@ -69,7 +69,7 @@ const {
 // Sort menu configuration
 const sortMenuItems = computed(() => [
   {
-    name: t('project.list.sortMenu.createdDate'),
+    name: t('common.createdDate'),
     key: 'createdDate' as OrderByKey,
     orderSort: PageQuery.OrderSort.Desc
   },

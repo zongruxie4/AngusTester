@@ -333,7 +333,7 @@ export function useEventData () {
         width: '12%'
       },
       {
-        title: t('event.columns.createdDate'),
+        title: t('common.createdDate'),
         key: 'createdDate',
         dataIndex: 'createdDate',
         width: '12%'

@@ -47,7 +47,6 @@
       "receiveChannel": "Receive Channel",
       "sender": "Sender",
       "executionId": "Execution ID",
-      "addTime": "Add Time",
       "pushTime": "Push Time",
       "pushResult": "Push Result",
       "eventName": "Event Name",
@@ -55,7 +54,6 @@
       "eventId": "Event ID",
       "content": "Content",
       "receiver": "Receiver",
-      "createdDate": "Trigger Time",
       "pushStatus": "Push Status"
     },
     "placeholder": {
@@ -69,8 +67,6 @@
     "searchLogPlaceholder": {
       "code": "Query event description or code",
       "pushStatus": "Select push status",
-      "startDate": "Start date",
-      "endDate": "End date"
     },
     "receiveConfig": {
       "title": "Configure Receive Channel",
@@ -113,7 +109,6 @@
           "holder": "Holder",
           "licenseNo": "License Number",
           "issuedDate": "License Issue Date",
-          "expiredDate": "License Expiry Date",
           "signature": "License Certificate MD5 Signature"
         },
         "remainingDays": "Remaining {days} days"
@@ -604,8 +599,6 @@
           "role": "Role: ",
           "specification": "Specification: ",
           "system": "System: ",
-          "addTime": "Add Time: ",
-          "expiredTime": "Expired Time: "
         },
         "nodeUseProgresses": {
           "cpu": "CPU",

@@ -67,13 +67,13 @@ const columns = computed(() => [
     },
     {
       dataIndex: 'createdDate',
-      name: t('reportPreview.apis.info.fields.createTime')
+      name: t('common.createdDate')
     }
   ],
   [
     {
       dataIndex: 'lastModifiedByName',
-      name: t('reportPreview.apis.info.fields.lastModifier')
+      name: t('common.modifier')
     },
     {
       dataIndex: 'lastModifiedDate',

@@ -738,7 +738,7 @@ function isWithin5Minutes (timeStr: string) {
               </template>
             </div>
             <div class="text-text-sub-content flex-none mr-2 mt-2.5">
-              {{ t('commonComp.shareModal.expiredDate') }}
+              {{ t('common.expiredDate') }}
               <Colon />
             </div>
             <div class="flex items-center h-7 -mt-0.5  px-2">

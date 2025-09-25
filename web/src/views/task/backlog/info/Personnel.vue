@@ -447,7 +447,7 @@ const testerDefaultOptions = computed(() => {
         <!-- Last Modifier -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.personnel.lastModifier') }}</span>
+            <span>{{ t('common.modifier') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ lastModifiedByName }}</span>

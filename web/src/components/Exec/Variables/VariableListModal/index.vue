@@ -304,14 +304,14 @@ const columns = [
     width: '10%'
   },
   {
-    title: t('xcan_exec.variable.lastModifier'),
+    title: t('common.modifier'),
     dataIndex: 'lastModifiedByName',
     ellipsis: true,
     width: '10%',
     sort: true
   },
   {
-    title: t('xcan_exec.variable.lastModifiedTime'),
+    title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
     width: '14%',

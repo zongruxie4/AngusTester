@@ -102,7 +102,6 @@
     "reportDetail": {
       "title": "View Report",
       "tabs": {
-        "createdDate": "Created Date",
         "basic": "Basic Info",
         "content": "Content",
         "record": "Report Record",
@@ -149,7 +148,6 @@
       "descriptionPlaceholder": "Report description, use description to explain the content and purpose of this report, or add links to other resources, maximum 200 characters"
     },
     "tabs": {
-      "createdDate": "Created Date",
       "basic": "Basic Info",
       "content": "Content"
     },
@@ -287,7 +285,6 @@
     "basic": {
       "options": {
         "user": "Report person",
-        "createdDate": "Report generation time",
         "version": "Report version",
         "reportContacts": "Report contacts",
         "description": "Report description",
@@ -1296,9 +1293,6 @@
       },
       "info": {
         "title": "Project Information",
-        "fields": {
-          "planTime": "Plan Time"
-        }
       },
       "taskSummary": {
         "title": "Development Tasks",
@@ -1795,7 +1789,6 @@
         "title": "Task Detail",
         "fields": {
           "completionTime": "Completion Time",
-          "startTime": "Start Time",
           "confirmTask": "Confirm Task",
           "totalProcessCount": "Total Process Count",
           "failedProcessCount": "Failed Process Count"
@@ -1928,8 +1921,6 @@
         "dateInfo": {
           "title": "Date Information",
           "fields": {
-            "deadline": "Deadline",
-            "startTime": "Start Time",
             "processTime": "Process Time",
             "confirmTime": "Confirm Time",
             "completionTime": "Completion Time",

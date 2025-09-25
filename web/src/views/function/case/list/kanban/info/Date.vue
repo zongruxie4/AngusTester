@@ -156,7 +156,7 @@ const change = async () => {
 
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('functionCase.kanbanView.infoDate.addTime') }}</span>
+          <span>{{ t('common.createdDate') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -165,7 +165,7 @@ const change = async () => {
 
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('functionCase.kanbanView.infoDate.deadline') }}</span>
+          <span>{{ t('common.deadlineDate') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -206,7 +206,7 @@ const change = async () => {
 
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('functionCase.kanbanView.infoDate.lastModifiedTime') }}</span>
+          <span>{{ t('common.lastModifiedDate') }}</span>
           <Colon class="w-1" />
         </div>
 

@@ -72,11 +72,11 @@ const infoConfig = [[
     dataIndex: 'createdBy'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.scriptInfo.createTime'),
+    label: t('common.createdDate'),
     dataIndex: 'createdDate'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.scriptInfo.lastModifier'),
+    label: t('common.modifier'),
     dataIndex: 'lastModifiedByName'
   },
   {

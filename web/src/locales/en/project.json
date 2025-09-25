@@ -117,8 +117,6 @@
     },
     "detail": {
       "version": "Version",
-      "startDate": "Start Date: ",
-      "releaseDate": "Release Date: ",
       "noStartDate": "No start date set",
       "noReleaseDate": "No release date set",
       "chart": {

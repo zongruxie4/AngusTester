@@ -66,7 +66,7 @@ export function useTableColumns () {
       customRender: ({ record }: { record: any }) => record.lastModifiedByName
     },
     {
-      title: t('dataVariable.list.columns.createdDate'),
+      title: t('common.createdDate'),
       dataIndex: 'createdDate',
       ellipsis: true,
       width: '12%',
@@ -74,7 +74,7 @@ export function useTableColumns () {
       groupName: 'date'
     },
     {
-      title: t('dataVariable.list.columns.lastModifiedDate'),
+      title: t('common.lastModifiedDate'),
       dataIndex: 'lastModifiedDate',
       ellipsis: true,
       width: '12%',

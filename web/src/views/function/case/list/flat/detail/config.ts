@@ -20,7 +20,7 @@ export const bigPeopleInfoColumns = [
       dataIndex: 'createdByName'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.lastModifier'),
+      label: t('common.modifier'),
       dataIndex: 'lastModifiedByName'
     }]
 ];
@@ -37,15 +37,15 @@ export const bigDateInfoColumns = [
       dataIndex: 'testResultHandleDate'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.addTime'),
+      label: t('common.createdDate'),
       dataIndex: 'createdDate'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.deadline'),
+      label: t('common.deadlineDate'),
       dataIndex: 'deadlineDate'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.lastModifiedTime'),
+      label: t('common.lastModifiedDate'),
       dataIndex: 'lastModifiedDate'
     }
   ]

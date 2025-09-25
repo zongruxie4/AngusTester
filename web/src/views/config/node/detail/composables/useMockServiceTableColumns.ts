@@ -48,7 +48,7 @@ export function useMockServiceTableColumns () {
     },
     {
       dataIndex: 'createdDate',
-      title: t('node.nodeDetail.mockService.columns.createTime'),
+      title: t('common.createdDate'),
       width: 150
     }
   ]);

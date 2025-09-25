@@ -269,7 +269,7 @@ const columns = [
     sorter: true
   },
   {
-    title: t('design.home.columns.createdDate'),
+    title: t('common.createdDate'),
     dataIndex: 'createdDate',
     width: '10%',
     sorter: true
@@ -282,7 +282,7 @@ const columns = [
     ellipsis: true
   },
   {
-    title: t('design.home.columns.lastModifiedDate'),
+    title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     groupName: 'lastModifiedByName',
     hide: true,

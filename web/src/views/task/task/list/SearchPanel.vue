@@ -1383,7 +1383,7 @@ const searchOptions = [
   {
     type: 'date-range' as const,
     valueKey: 'createdDate',
-    placeholder: t('task.searchPanel.searchOptions.createdDate').split(','),
+    placeholder: t('common.createdDate').split(','),
     showTime: true
   },
   {
@@ -1395,7 +1395,7 @@ const searchOptions = [
   {
     type: 'date-range' as const,
     valueKey: 'deadlineDate',
-    placeholder: t('task.searchPanel.searchOptions.deadlineDate').split(','),
+    placeholder: t('common.deadlineDate').split(','),
     showTime: true
   },
   {
@@ -1431,7 +1431,7 @@ const searchOptions = [
   {
     type: 'date-range' as const,
     valueKey: 'lastModifiedDate',
-    placeholder: t('task.searchPanel.searchOptions.lastModifiedDate').split(','),
+    placeholder: t('common.lastModifiedDate').split(','),
     showTime: true
   },
   {
@@ -1510,7 +1510,7 @@ const sortMenuItems = [
   },
   {
     key: 'deadlineDate',
-    name: t('task.searchPanel.sortOptions.deadlineDate'),
+    name: t('common.deadlineDate'),
     orderSort: PageQuery.OrderSort.Asc
   }];
 </script>

@@ -2392,7 +2392,6 @@
     "form": {
       "namePlaceholder": "Enter share name, maximum 100 characters",
       "remarkPlaceholder": "Please enter share remark, will be displayed in share information, maximum 400 characters",
-      "expiredDate": "Expiration Date",
       "expiredDateHint": "Permanently valid when not specified.",
       "displayOptions": "Display Options",
       "includeServiceInfo": "Show Service Description",
@@ -2426,7 +2425,6 @@
       "columns": {
         "sharePerson": "Share Person",
         "shareScope": "Share Scope",
-        "expiredDate": "Expiration Date",
         "shareDate": "Share Date",
         "viewCount": "View Count"
       }

@@ -37,7 +37,7 @@ const peopleInfoColumns = [
       dataIndex: 'createdByName'
     },
     {
-      label: t('caseReview.comp.member.lastModifier'),
+      label: t('common.modifier'),
       dataIndex: 'lastModifiedByName'
     }]
 ];

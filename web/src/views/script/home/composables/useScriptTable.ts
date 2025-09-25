@@ -114,7 +114,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       ellipsis: true
     },
     {
-      title: t('scriptHome.table.columns.addTime'),
+      title: t('common.createdDate'),
       dataIndex: 'createdDate',
       width: '10%',
       sorter: true,

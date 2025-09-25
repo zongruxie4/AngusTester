@@ -438,14 +438,14 @@ onMounted(async () => {
               v-model:value="meetingFormState.timeStart"
               mode="time"
               picker="time"
-              :placeholder="t('taskMeeting.placeholder.startTime')"
+              :placeholder="t('common.startTime')"
               class="flex-1" />
             <span>-</span>
             <DatePicker
               v-model:value="meetingFormState.timeEnd"
               mode="time"
               picker="time"
-              :placeholder="t('taskMeeting.placeholder.endTime')"
+              :placeholder="t('common.endTime')"
               class="flex-1" />
           </div>
         </FormItem>

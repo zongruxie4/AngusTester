@@ -43,7 +43,7 @@ const columns = [[
 ],
 [
   { label: t('common.createdBy'), dataIndex: 'createdByName' },
-  { label: t('service.mockApi.columns.createdDate'), dataIndex: 'createdDate' }
+  { label: t('common.createdDate'), dataIndex: 'createdDate' }
 ]];
 
 const summary = ref('');

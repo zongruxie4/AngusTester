@@ -138,7 +138,7 @@ const isDateDisabled = (current: Dayjs) => {
         <!-- Created Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.date.fields.createTime') }}</span>
+            <span>{{ t('common.createdDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ taskCreatedDate }}</span>
@@ -148,7 +148,7 @@ const isDateDisabled = (current: Dayjs) => {
         <!-- Deadline Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.date.fields.deadline') }}</span>
+            <span>{{ t('common.deadlineDate') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isDateEditing" class="info-value-content">
@@ -188,7 +188,7 @@ const isDateDisabled = (current: Dayjs) => {
         <!-- Start Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.date.fields.startTime') }}</span>
+            <span>{{ t('common.startTime') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !taskStartDate }">{{ taskStartDate || '--' }}</span>

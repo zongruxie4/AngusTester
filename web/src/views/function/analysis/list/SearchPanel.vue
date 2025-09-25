@@ -546,7 +546,7 @@ const sortMenuItems = [
   },
   {
     key: 'createdDate',
-    name: t('functionAnalysis.searchPanel.sortOptions.createdDate'),
+    name: t('common.createdDate'),
     orderSort: PageQuery.OrderSort.Asc
   }];
 </script>

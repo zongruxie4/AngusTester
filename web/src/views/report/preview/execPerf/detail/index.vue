@@ -128,14 +128,14 @@ const resultInfo = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execPerf.detail.basicInfo.fields.startTime') }}
+            {{ t('common.startTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
             {{ props.execInfo?.actualStartDate }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execPerf.detail.basicInfo.fields.endTime') }}
+            {{ t('common.endTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.endDate }}
@@ -186,7 +186,7 @@ const resultInfo = computed(() => {
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.execPerf.detail.basicInfo.fields.createTime') }}
+            {{ t('common.createdDate') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
             {{ props.execInfo?.createdDate }}

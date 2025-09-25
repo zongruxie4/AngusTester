@@ -16,7 +16,7 @@ export function useSort () {
   const sortMenuItems: SortMenuItem[] = [
     {
       key: 'lastModifiedDate',
-      name: t('fileSpace.sort.menuItems.lastModifiedDate'),
+      name: t('common.lastModifiedDate'),
       orderSort: 'ASC'
     },
     {

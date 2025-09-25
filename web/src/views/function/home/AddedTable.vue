@@ -290,7 +290,7 @@ const tableColumns = computed(() => {
         },
         {
           key: 'deadline',
-          title: t('common.deadline'),
+          title: t('common.deadlineDate'),
           dataIndex: 'deadlineDate',
           ellipsis: true,
           sorter: true,

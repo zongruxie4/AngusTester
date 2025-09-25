@@ -81,7 +81,7 @@ const columns = [
   },
   {
     dataIndex: 'createdDate',
-    title: t('service.case.columns.createdDate'),
+    title: t('common.createdDate'),
     groupName: 'create',
     hide: true
   },
@@ -92,7 +92,7 @@ const columns = [
   },
   {
     dataIndex: 'lastModifiedDate',
-    title: t('service.case.columns.lastModifiedDate'),
+    title: t('common.lastModifiedDate'),
     groupName: 'modify',
     hide: true
   },

@@ -38,7 +38,7 @@ export function useTableColumns (params: ScenarioQueryParams) {
       },
       {
         key: 'createdDate',
-        title: t('scenarioHome.myScenarios.table.columns.addTime'),
+        title: t('common.createdDate'),
         dataIndex: 'createdDate',
         ellipsis: true,
         width: '20%',

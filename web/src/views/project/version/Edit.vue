@@ -74,7 +74,7 @@ const handleOk = async () => {
           </div>
         </FormItem>
         <FormItem
-          :label="t('version.form.releaseDate')"
+          :label="t('common.releaseDate')"
           class="flex-1 min-w-0"
           name="time">
           <div class="w-full flex items-center space-x-1">
