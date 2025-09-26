@@ -824,7 +824,7 @@ onMounted(() => {
               v-model:value="formState.name"
               trim
               :maxlength="200"
-              :placeholder="t('task.editModal.form.namePlaceholder')" />
+              :placeholder="t('common.placeholders.searchKeyword')" />
           </FormItem>
 
           <div class="flex space-x-4">

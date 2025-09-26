@@ -90,7 +90,7 @@ const cancelTotal = computed((): number => {
             <span class="text-8 font-semibold text-text-title">{{ currentTotal }}</span>
             <div class="leading-3.5">
               <span>{{ t('version.taskTable.currentVersion') }}</span>
-              <div>{{ t('version.taskTable.units.tasks') }}</div>
+              <div>{{ t('common.task') }}</div>
             </div>
           </div>
         </template>

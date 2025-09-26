@@ -316,7 +316,7 @@ const handleRefreshClick = () => {
         <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
 
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>{{ t('functionBaseline.list.quickSearch') }}</span>
+          <span>{{ t('quickSearch.title') }}</span>
           <Colon />
         </div>
 

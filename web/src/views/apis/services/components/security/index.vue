@@ -213,7 +213,7 @@ defineExpose({ addSecurity: addSecurity });
               v-model:value="subItem.key"
               :disabled="props.disabled || !edit"
               :error="isValid && repeatedKeys[idx].includes(subItem.key)"
-              :placeholder="t('service.security.namePlaceholder')"
+              :placeholder="t('common.placeholders.searchKeyword')"
               size="small"
               class="w-full"
               @blur="blurKeys" />

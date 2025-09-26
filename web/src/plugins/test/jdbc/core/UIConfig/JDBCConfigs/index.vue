@@ -464,7 +464,7 @@ const inputProps = {
                 :title="name"
                 trim
                 class="jdbc-name-input"
-                :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 @change="nameChange" />
             </Tooltip>
             <Input

@@ -23,12 +23,12 @@ export function useDashboardConfig () {
     charts: [
       {
         type: ChartType.LINE,
-        title: t('projectActivity.name'),
+        title: t('activity.title'),
         field: 'opt_date'
       },
       {
         type: ChartType.PIE,
-        title: t('projectActivity.chart.resourceType'),
+        title: t('activity.chart.resourceType'),
         field: 'target_type',
         enumKey: resourceTypeEnums
       }
@@ -45,7 +45,7 @@ export function useDashboardConfig () {
   const dashboardConstants = {
     apiRouter: TESTER,
     resource: 'Activity',
-    barTitle: computed(() => t('projectActivity.name')),
+    barTitle: computed(() => t('activity.name')),
     dateType: DateRangeType.MONTH,
     showChartParam: true
   };

@@ -178,7 +178,7 @@ onMounted(() => {
             <FormItem name="name">
               <Input
                 v-model:value="formState.name"
-                :placeholder="t('service.mockService.form.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 :disabled="projectDetail?.mockServiceId"
                 :maxlength="100" />
             </FormItem>

@@ -117,7 +117,10 @@
     "enabledStatus": "Enabled Status",
     "actions": "Actions",
     "placeholders": {
-      "search": "Enter search keywords"
+      "searchKeyword": "Enter search keywords",
+      "selectCreator": "Select creator",
+      "selectOwner": "Select owner",
+      "selectProject": "Select project"
     },
     "rules": {},
     "hints": {
@@ -261,6 +264,7 @@
   "quickSearch": {
     "title": "Quick Search",
     "all": "All",
+    "filters": "Filters",
     "last1Day": "Last Day",
     "last3Days": "Last 3 Days",
     "last7Days": "Last 7 Days",
@@ -271,6 +275,9 @@
     "myResponsible": "Owned by me"
   },
   "page": {
+    "items": "Items"
+  },
+  "stats": {
     "items": "Items"
   },
   "views": {
@@ -288,6 +295,17 @@
       "selectUser": "--Select user--",
       "selectDept": "--Select department--",
       "selectGroup": "--Select group--"
+    }
+  },
+  "trash": {
+    "title": "Trash",
+    "messages": {
+      "adminHint": "Only administrators and deleters can restore or permanently delete data from trash.",
+      "emptyDescription": "No data in trash",
+      "emptyHint": "Deleted data will be displayed here, you can restore or permanently delete them",
+      "recoverAllSuccess": "All items restored successfully",
+      "deleteAllSuccess": "All items deleted successfully",
+      "recoverSuccess": "Restored successfully"
     }
   },
   "chart": {
@@ -328,13 +346,13 @@
   "http": {
   },
   "routes": {
-  "fileData": "File Data",
-  "generateData": "Generate Data",
-  "experienceExecution": "Experience Execution",
-  "modifyExecutionConfig": "Modify Execution Configuration",
-  "mock": "Mock",
-  "add": "Add",
-  "node": "Node",
-  "detail": "Detail"
-}
+    "fileData": "File Data",
+    "generateData": "Generate Data",
+    "experienceExecution": "Experience Execution",
+    "modifyExecutionConfig": "Modify Execution Configuration",
+    "mock": "Mock",
+    "add": "Add",
+    "node": "Node",
+    "detail": "Detail"
+  }
 }

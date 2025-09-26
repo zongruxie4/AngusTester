@@ -64,7 +64,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: t('dataset.listSearchPanel.searchOptions.namePlaceholder'),
+    placeholder: t('common.placeholders.searchKeyword'),
     allowClear: true,
     maxlength: 100
   },
@@ -72,7 +72,7 @@ const searchPanelOptions = [
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true,
-    placeholder: t('dataset.listSearchPanel.searchOptions.createdByPlaceholder'),
+    placeholder: t('dataset.listsearchPanelOptions.createdByPlaceholder'),
     maxlength: 100
   },
   {
@@ -368,7 +368,7 @@ onMounted(() => {
     <div class="flex items-center mb-3">
       <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 rounded-full"></div>
       <div class="whitespace-nowrap text-3 text-text-sub-content">
-        <span>{{ t('projectActivity.searchPanel.ui.quickQuery') }}</span>
+        <span>{{ t('activity.searchPanel.ui.quickQuery') }}</span>
         <Colon />
       </div>
       <div class="flex flex-wrap items-center ml-2 md-2">

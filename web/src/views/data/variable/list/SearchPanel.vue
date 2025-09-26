@@ -133,7 +133,7 @@ onMounted(() => {
     <div class="flex items-center mb-3">
       <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 rounded-full"></div>
       <div class="whitespace-nowrap text-3 text-text-sub-content">
-        <span>{{ t('dataVariable.list.searchPanel.quickSearch') }}</span>
+        <span>{{ t('quickSearch.title') }}</span>
         <Colon />
       </div>
       <div class="flex flex-wrap items-center ml-2">

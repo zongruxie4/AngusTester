@@ -272,7 +272,7 @@ defineExpose({
             :error="nameErrorSet.has(item)"
             style="width:calc((100% - 96px)/10*2);"
             excludes="{}"
-            :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.namePlaceholder')"
+            :placeholder="t('common.placeholders.searchKeyword')"
             size="small"
             tirmAll
             class="flex-shrink-0 has-suffix"

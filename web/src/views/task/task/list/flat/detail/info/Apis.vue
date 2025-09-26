@@ -450,7 +450,7 @@ const onePassStatusText = computed(() => {
                 :maxlength="200"
                 trim
                 class="left-component"
-                :placeholder="t('task.detailInfo.apis.columns.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 @blur="handleTaskNameBlur"
                 @pressEnter="handleTaskNameEnter" />
             </AsyncComponent>

@@ -329,7 +329,7 @@ watch([() => apiDebugRef.value], () => {
                 <div>
                   <Input
                     v-model:value="formState.name"
-                    :placeholder="t('service.case.addModal.namePlaceholder')"
+                    :placeholder="t('common.placeholders.searchKeyword')"
                     :maxlength="400" />
                 </div>
               </FormItem>

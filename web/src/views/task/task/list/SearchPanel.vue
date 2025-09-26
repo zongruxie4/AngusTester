@@ -1389,7 +1389,7 @@ const searchOptions = [
   {
     type: 'date-range' as const,
     valueKey: 'startDate',
-    placeholder: t('task.searchPanel.searchOptions.startDate').split(','),
+    placeholder: t('task.searchPanelOptions.startDate').split(','),
     showTime: true
   },
   {
@@ -1401,31 +1401,31 @@ const searchOptions = [
   {
     type: 'date-range' as const,
     valueKey: 'processedDate',
-    placeholder: t('task.searchPanel.searchOptions.processedDate').split(','),
+    placeholder: t('task.searchPanelOptions.processedDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'confirmedDate',
-    placeholder: t('task.searchPanel.searchOptions.confirmedDate').split(','),
+    placeholder: t('task.searchPanelOptions.confirmedDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'completedDate',
-    placeholder: t('task.searchPanel.searchOptions.completedDate').split(','),
+    placeholder: t('task.searchPanelOptions.completedDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'canceledDate',
-    placeholder: t('task.searchPanel.searchOptions.canceledDate').split(','),
+    placeholder: t('task.searchPanelOptions.canceledDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'execDate',
-    placeholder: t('task.searchPanel.searchOptions.execDate').split(','),
+    placeholder: t('task.searchPanelOptions.execDate').split(','),
     showTime: true
   },
   {
@@ -1520,7 +1520,7 @@ const sortMenuItems = [
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-1 mt-1.5 rounded-full"></div>
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>{{ t('task.searchPanel.quickSearch') }}</span>
+          <span>{{ t('quickSearch.title') }}</span>
           <Colon />
         </div>
         <div class="flex  flex-wrap ml-2">
@@ -1755,7 +1755,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('task.searchPanel.searchOptions.workloadPlaceholder')"
+            :placeholder="t('task.searchPanelOptions.workloadPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="handleWorkloadFilterChange">
             <template #prefix>
@@ -1774,7 +1774,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('task.searchPanel.searchOptions.failNumPlaceholder')"
+            :placeholder="t('task.searchPanelOptions.failNumPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="handleFailureCountFilterChange">
             <template #prefix>
@@ -1793,7 +1793,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('task.searchPanel.searchOptions.totalNumPlaceholder')"
+            :placeholder="t('task.searchPanelOptions.totalNumPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="handleTotalCountFilterChange">
             <template #prefix>

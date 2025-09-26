@@ -407,7 +407,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             v-if="apiBaseInfo?.serviceId"
             :id="apiBaseInfo?.serviceId"
             v-model:value="item.name"
-            :placeholder="t('service.apiRequestBody.form.namePlaceholder')"
+            :placeholder="t('common.placeholders.searchKeyword')"
             mode="pure"
             :type="['schemas']"
             :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
@@ -416,7 +416,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             @change="(_value, option) => selectModels(_value, option, index, item)" />
           <Input
             v-else
-            :placeholder="t('service.apiRequestBody.form.namePlaceholder')"
+            :placeholder="t('common.placeholders.searchKeyword')"
             :value="item.name"
             :allowClear="false"
             :disabled="!!props.useModel"

@@ -82,7 +82,7 @@ defineExpose({
                 excludes="{}"
                 includes="\!\$%\^&\*_\-+=\.\/"
                 dataType="mixin-en"
-                :placeholder="t('dataset.detail.staticDataset.parameterInput.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 size="small"
                 tirmAll
                 class="flex-1 has-suffix"

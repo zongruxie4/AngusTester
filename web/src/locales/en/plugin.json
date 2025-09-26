@@ -3,7 +3,7 @@
     "selectScriptModal": {
       "title": "Select Script",
       "selectScriptTip": "Please select a script",
-      "searchPlaceholder": "Search script name",
+      "searchPlaceholder": "Search script name"
     },
     "chartConfig": {
       "names": {
@@ -50,7 +50,7 @@
         "execLog": "Execution Log",
         "toggle": "Expand/Collapse",
         "screen": "Full Screen",
-        "duration": "Duration",
+        "duration": "Duration"
       },
       "drawer": {
         "indicator": "Test Indicators",
@@ -72,7 +72,7 @@
         "seconds": "s",
         "minutes": "min",
         "hours": "h"
-      },
+      }
     }
   },
   "httpPlugin": {
@@ -131,7 +131,7 @@
       "downloadFileName": "runner.log"
     },
     "exportScriptModal": {
-      "title": "Export Script",
+      "title": "Export Script"
     },
     "importScript": {
       "title": "Import Script"
@@ -1465,7 +1465,7 @@
         "attachment": "Attachment"
       },
       "metrics": {
-        "duration": "Duration",
+        "duration": "Duration"
       },
       "tabs": {
         "request": "Request",
@@ -1584,7 +1584,7 @@
       },
       "authenticationConfig": {
         "title": "Authentication Configuration",
-        "enableAuthentication": "Enable Authentication",
+        "enableAuthentication": "Enable Authentication"
       },
       "otherConfig": {
         "title": "Other Configuration",
@@ -1763,7 +1763,7 @@
       "input": {
         "placeholder": "Search interface name"
       },
-      "referenced": "(Referenced)",
+      "referenced": "(Referenced)"
     },
     "websocketConfigs": {
       "urlFormatError": "URL format error",

@@ -187,7 +187,7 @@ defineExpose({
           :error="nameError"
           trim
           class="point-name-input"
-          :placeholder="t('httpPlugin.uiConfig.throughput.namePlaceholder')"
+          :placeholder="t('common.placeholders.searchKeyword')"
           @change="nameChange" />
       </Tooltip>
       <div class="flex items-center space-x-2 text-theme-content">

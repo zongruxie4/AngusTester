@@ -370,7 +370,7 @@ defineExpose({ updateComp, getModelResolve, validate: validateContents });
               v-if="apiBaseInfo?.serviceId"
               :id="apiBaseInfo?.serviceId"
               v-model:value="item.name"
-              :placeholder="t('service.apiRequestHeader.form.namePlaceholder')"
+              :placeholder="t('common.placeholders.searchKeyword')"
               mode="pure"
               :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
               :params="{ ignoreModel: false, types: 'parameters'}"

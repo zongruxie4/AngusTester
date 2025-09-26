@@ -126,7 +126,7 @@
         "missingBug": "Escaped Bug",
         "parentTask": "Parent",
         "refTasks": "Related Tasks",
-        "refCases": "Related Cases",
+        "refCases": "Related Cases"
       },
       "placeholders": {
         "selectTaskType": "Please select task type",
@@ -538,7 +538,7 @@
           "stability": "Stability",
           "scenarioTest": "Scenario Test"
         }
-      },
+      }
     },
     "searchPanel": {
       "quickSearch": "Quick Search",
@@ -995,7 +995,7 @@
     "testing": {
       "title": "Testing",
       "execResult": {
-        "title": "Execution Information",
+        "title": "Execution Information"
       },
       "testResult": {
         "title": "Test Result"
@@ -1257,7 +1257,7 @@
       "participantUnit": "users",
       "content": "Content",
       "moderatorLabel": "Moderator",
-      "participantsCount": "{count} participants",
+      "participantsCount": "{count} participants"
     },
     "placeholder": {
       "inputSubject": "Maximum 200 characters",

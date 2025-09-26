@@ -68,7 +68,7 @@
           "hintText": "View the resource information used by the variable."
         },
         "staticParameter": {
-          "hintText": "Generate parameter values dynamically during sampling, each dataset can create up to 200 parameters, and the maximum number of rows supported is 100 billion.",
+          "hintText": "Generate parameter values dynamically during sampling, each dataset can create up to 200 parameters, and the maximum number of rows supported is 100 billion."
         }
       },
       "parameterizationVariable": {
@@ -203,7 +203,7 @@
         "expiredTimeTip": "Expiration time is less than 24 hours, please select a new date",
         "noShareApis": "No shareable APIs",
         "noSelectedApis": "Please select APIs",
-        "shareApis": "Share APIs",
+        "shareApis": "Share APIs"
       }
     },
     "createTaskTestModal": {
@@ -1266,7 +1266,7 @@
     "groupByCreator": "Group by Creator",
     "groupByRequestMethod": "Group by Request Method",
     "groupByOwner": "Group by Owner",
-    "groupByTag": "Group by Tag",
+    "groupByTag": "Group by Tag"
   },
   "xcan_selectUser": {
     "defaultPlaceholder": "Select or search user"
@@ -1407,7 +1407,7 @@
     "xpathMatch": "XPath Match",
     "jsonPathMatch": "JSONPath Match",
     "extractedValue": "Extracted Value",
-    "expectedValue": "Expected Value",
+    "expectedValue": "Expected Value"
   },
   "xcan_debugResponseBody": {
     "prettyFormat": "Pretty Format",
@@ -1673,6 +1673,6 @@
     "requestContent": "Request Content",
     "responseHeaders": "Response Headers",
     "responseBody": "Response Body",
-    "email": "Email {num}",
+    "email": "Email {num}"
   }
 }

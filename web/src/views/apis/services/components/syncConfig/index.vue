@@ -788,7 +788,7 @@ const handleSaveOk = () => {
             <span><IconRequired />{{ t('common.name') }}</span>
             <Input
               v-model:value="sync.name"
-              :placeholder="t('service.syncConfig.form.namePlaceholder')"
+              :placeholder="t('common.placeholders.searchKeyword')"
               size="small"
               class="mt-2 mb-5"
               :maxlength="100"
@@ -859,7 +859,7 @@ const handleSaveOk = () => {
                       :disabled="!sync.isEdit"
                       :error="auth.keyNameErr"
                       :maxlength="400"
-                      :placeholder="t('service.syncConfig.form.namePlaceholder')"
+                      :placeholder="t('common.placeholders.searchKeyword')"
                       size="small"
                       @change="(event)=>keyNameChange(event.target.value,auth)" />
                     <Select

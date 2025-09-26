@@ -66,7 +66,7 @@
     },
     "searchLogPlaceholder": {
       "code": "Query event description or code",
-      "pushStatus": "Select push status",
+      "pushStatus": "Select push status"
     },
     "receiveConfig": {
       "title": "Configure Receive Channel",
@@ -399,7 +399,7 @@
         "columns": {
           "serviceId": "Service ID",
           "accessUrl": "Access URL",
-          "accessPort": "Access Port",
+          "accessPort": "Access Port"
         }
       },
       "buttons": {
@@ -598,7 +598,7 @@
           "publicIP": "Public IP: ",
           "role": "Role: ",
           "specification": "Specification: ",
-          "system": "System: ",
+          "system": "System: "
         },
         "nodeUseProgresses": {
           "cpu": "CPU",

@@ -111,7 +111,7 @@ const {
         dataType="mixin-en"
         excludes="{}"
         includes="\!\$%\^&\*_\-+=\.\/"
-        :placeholder="t('dataVariable.detail.fileVariable.namePlaceholder')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         trimAll
         @change="nameChange"
         @blur="nameBlur" />

@@ -226,7 +226,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
         :disabled="dataMap[item].disabled"
         :maxLength="400"
         :error="nameErrorSet.has(item)"
-        :placeholder="t('httpPlugin.uiConfig.httpConfigs.parameterInput.namePlaceholder')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         size="small"
         tirmAll
         style="flex:0 0 calc((100% - 84px)*3.5/10);max-width: 400px;"

@@ -306,7 +306,7 @@ watch(() => props.visible, (newValue) => {
               <SelectUser
                 v-model:value="formData.ownerId"
                 size="small"
-                :placeholder="t('project.edit.form.ownerPlaceholder')"
+                :placeholder="t('common.placeholders.selectOwner')"
                 :allowClear="false"
                 class="enhanced-select" />
               <Popover placement="right" overlayClassName="form-tooltip">

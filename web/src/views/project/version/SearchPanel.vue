@@ -42,7 +42,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input' as const,
-    placeholder: t('version.searchPanel.searchOptions.namePlaceholder'),
+    placeholder: t('common.placeholders.searchKeyword'),
     allowClear: true,
     maxlength: 100
   },
@@ -50,7 +50,7 @@ const searchPanelOptions = [
     valueKey: 'createdBy',
     type: 'select-user' as const,
     allowClear: true,
-    placeholder: t('version.searchPanel.searchOptions.creatorPlaceholder')
+    placeholder: t('common.placeholders.selectCreator')
   },
   {
     type: 'date-range' as const,
@@ -289,7 +289,7 @@ onMounted(() => {
     <div class="flex items-center mb-3">
       <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 rounded-full"></div>
       <div class="whitespace-nowrap text-3 text-text-sub-content">
-        <span>{{ t('projectActivity.searchPanel.ui.quickQuery') }}</span>
+        <span>{{ t('activity.searchPanel.ui.quickQuery') }}</span>
         <Colon />
       </div>
       <div class="flex flex-wrap items-center ml-2">

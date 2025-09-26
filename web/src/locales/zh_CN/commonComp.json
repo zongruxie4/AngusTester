@@ -466,7 +466,7 @@
     "setAsVariable": "设为变量",
     "component": "组件",
     "searchComponentName": "查询组件名称",
-    "componentName": "组件名称",
+    "componentName": "组件名称"
   },
   "xcan_apiCookie": {
     "parameterName": "参数名称",
@@ -1148,7 +1148,7 @@
     "notNull": "不为null",
     "regexMatch": "正则匹配",
     "xpathMatch": "XPath匹配",
-    "jsonPathMatch": "JSONPath匹配",
+    "jsonPathMatch": "JSONPath匹配"
   },
   "xcan_responseTimeAnalysis": {
     "timeConsumingItems": "耗时项",
@@ -1556,6 +1556,6 @@
     "requestContent": "请求内容",
     "responseHeaders": "响应头",
     "responseBody": "响应体",
-    "email": "邮件{num}",
+    "email": "邮件{num}"
   }
 }

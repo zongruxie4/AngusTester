@@ -90,11 +90,7 @@ const moveTasksToSprint = async () => {
   closeModal();
 
   // Show success notification based on single or batch move
-  if (props.taskName) {
-    notification.success(t('actions.tips.moveSuccess'));
-  } else {
-    notification.success(t('task.moveModal.messages.batchMoveSuccess', { num: props.taskIds?.length }));
-  }
+  notification.success(t('actions.tips.moveSuccess'));
 };
 </script>
 <template>

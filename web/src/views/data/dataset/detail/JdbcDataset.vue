@@ -96,7 +96,7 @@ defineExpose({
     <Input
       v-model:value="dataSetName"
       :maxlength="100"
-      :placeholder="t('dataset.detail.jdbcDataset.form.namePlaceholder')"
+      :placeholder="t('common.placeholders.searchKeyword')"
       trimAll
       excludes="{}" />
   </div>

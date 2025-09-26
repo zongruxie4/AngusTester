@@ -514,20 +514,20 @@ const searchOptions = [
   {
     type: 'input',
     valueKey: 'name',
-    placeholder: t('functionAnalysis.searchPanel.searchOptions.namePlaceholder')
+    placeholder: t('common.placeholders.searchKeyword')
   },
   {
     type: 'select-user',
     valueKey: 'createdBy',
-    placeholder: t('functionAnalysis.searchPanel.searchOptions.createdByPlaceholder'),
+    placeholder: t('functionAnalysis.searchPanelOptions.createdByPlaceholder'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
     placeholder: [
-      t('functionAnalysis.searchPanel.searchOptions.createdDatePlaceholder[0]'),
-      t('functionAnalysis.searchPanel.searchOptions.createdDatePlaceholder[1]')
+      t('functionAnalysis.searchPanelOptions.createdDatePlaceholder[0]'),
+      t('functionAnalysis.searchPanelOptions.createdDatePlaceholder[1]')
     ],
     showTime: true
   }

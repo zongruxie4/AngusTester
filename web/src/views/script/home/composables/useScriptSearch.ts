@@ -371,7 +371,7 @@ export function useScriptSearch (projectId: string, userId: string) {
     {
       type: 'select-user',
       valueKey: 'createdBy',
-      placeholder: t('scriptHome.searchPanel.creatorPlaceholder')
+      placeholder: t('common.placeholders.selectCreator')
     },
     {
       type: 'select-user',

@@ -170,7 +170,7 @@ defineExpose({
                 :error="nameError"
                 trim
                 style="width: calc((100% - (144px))*2/5);"
-                :placeholder="t('httpPlugin.uiConfig.transStart.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 @change="nameChange" />
             </Tooltip>
           </div>

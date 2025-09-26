@@ -111,13 +111,13 @@ export function useSearchPanel (
   const searchOptions = computed<SearchOption[]>(() => [
     {
       valueKey: 'name',
-      placeholder: t('reportHome.searchPanel.searchOptions.namePlaceholder'),
+      placeholder: t('common.placeholders.searchKeyword'),
       type: 'input',
       maxlength: 100
     },
     {
       valueKey: 'targetType',
-      placeholder: t('reportHome.searchPanel.searchOptions.resourceTypePlaceholder'),
+      placeholder: t('reportHome.searchPanelOptions.resourceTypePlaceholder'),
       type: 'select-enum',
       enumKey: CombinedTargetType,
       excludes: (data: { message: string; value: string }) => {
@@ -132,18 +132,18 @@ export function useSearchPanel (
     {
       type: 'select',
       valueKey: 'targetId',
-      placeholder: t('reportHome.searchPanel.searchOptions.resourcePlaceholder'),
+      placeholder: t('reportHome.searchPanelOptions.resourcePlaceholder'),
       noDefaultSlot: true
     },
     {
       type: 'select-user',
       valueKey: 'createdBy',
-      placeholder: t('reportHome.searchPanel.searchOptions.creatorPlaceholder')
+      placeholder: t('common.placeholders.selectCreator')
     },
     {
       type: 'date-range',
       valueKey: 'createdDate',
-      placeholder: [t('reportHome.searchPanel.searchOptions.createTimeFrom'), t('reportHome.searchPanel.searchOptions.createTimeTo')],
+      placeholder: [t('reportHome.searchPanelOptions.createTimeFrom'), t('reportHome.searchPanelOptions.createTimeTo')],
       showTime: true
     }
   ]);

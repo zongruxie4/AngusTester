@@ -262,7 +262,7 @@ const modeContent = computed(() => {
           :disabled="props.modalType === 'view' || props.modalType === 'edit'"
           :maxlength="400"
           :error="compNameErr"
-          :placeholder="t('service.oas.addModal.namePlaceholder')"
+          :placeholder="t('common.placeholders.searchKeyword')"
           class="w-full"
           @change="compNameChange" />
         <template v-if="props.component?.isQuote">

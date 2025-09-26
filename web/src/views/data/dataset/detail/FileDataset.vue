@@ -126,7 +126,7 @@ const inputProps = {
     <Input
       v-model:value="dataSetName"
       :maxlength="100"
-      :placeholder="t('dataset.detail.fileDataset.form.namePlaceholder')"
+      :placeholder="t('common.placeholders.searchKeyword')"
       trimAll
       excludes="{}" />
   </div>

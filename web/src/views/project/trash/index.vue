@@ -85,7 +85,7 @@ onMounted(() => {
                 class="trash-count-badge">
                 <div class="px-3 py-1.5 bg-gray-100 rounded-md">
                   <span class="text-xs font-medium text-gray-700">
-                    {{ $t('projectTrash.stats.items') }}
+                    {{ $t('stats.items') }}
                   </span>
                 </div>
               </Badge>
@@ -103,7 +103,7 @@ onMounted(() => {
                   :allowClear="true"
                   :maxlength="200"
                   trim
-                  :placeholder="$t('projectTrash.ui.searchPlaceholder')"
+                  :placeholder="$t('common.placeholders.searchKeyword')"
                   class="search-input-enhanced"
                   size="small"
                   @change="inputChange">
@@ -115,7 +115,7 @@ onMounted(() => {
 
               <!-- Filter chips -->
               <div class="flex items-center space-x-2">
-                <span class="text-xs text-gray-500">{{ $t('projectTrash.filters.title') }}:</span>
+                <span class="text-xs text-gray-500">{{ $t('quickSearch.filters') }}:</span>
                 <div class="flex items-center space-x-1">
                   <span
                     class="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full cursor-pointer hover:bg-blue-200 transition-colors"

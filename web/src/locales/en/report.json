@@ -549,7 +549,7 @@
         "fields": {
           "apiUrl": "API URL",
           "requestMethod": "Request Method",
-          "operationId": "Operation ID",
+          "operationId": "Operation ID"
         }
       },
       "summary": {
@@ -666,7 +666,7 @@
             "nodeCount": "Node Count",
             "reportInterval": "Report Interval",
             "ignoreAssertions": "Ignore Assertions",
-            "updateTestResult": "Update Test Result",
+            "updateTestResult": "Update Test Result"
           },
           "options": {
             "update": "Update",
@@ -706,7 +706,7 @@
           "iteration": "Iteration {count}",
           "http": {
             "statusCode": "Status Code",
-            "duration": "Duration",
+            "duration": "Duration"
           },
           "throughput": {
             "requestsPerSecond": "Requests Per Second",
@@ -773,7 +773,7 @@
             "nodeCount": "Node Count",
             "samplingInterval": "Sampling Interval",
             "ignoreAssertions": "Ignore Assertions",
-            "updateTestResult": "Update Test Result",
+            "updateTestResult": "Update Test Result"
           },
           "options": {
             "ignore": "Ignore",
@@ -1017,7 +1017,7 @@
           }
         },
         "personnel": {
-          "title": "Personnel Information",
+          "title": "Personnel Information"
         },
         "date": {
           "title": "Date Information",
@@ -1279,7 +1279,7 @@
         }
       },
       "info": {
-        "title": "Project Information",
+        "title": "Project Information"
       },
       "taskSummary": {
         "title": "Development Tasks",
@@ -1462,7 +1462,7 @@
         }
       },
       "info": {
-        "title": "Scenario Information",
+        "title": "Scenario Information"
       },
       "testResult": {
         "title": "Scenario Test Summary Results",
@@ -1903,7 +1903,7 @@
           }
         },
         "personnelInfo": {
-          "title": "Personnel Information",
+          "title": "Personnel Information"
         },
         "dateInfo": {
           "title": "Date Information",
@@ -1996,7 +1996,7 @@
             "title": "Tested Cases",
             "fields": {
               "caseId": "Case ID",
-              "caseName": "Case Name",
+              "caseName": "Case Name"
             }
           }
         },

@@ -62,7 +62,7 @@ const title = computed(() => {
 });
 
 const placeholder = computed(() => {
-  return t('service.sidebar.addServiceModal.namePlaceholder');
+  return t('common.placeholders.searchKeyword');
 });
 
 const cancel = () => {

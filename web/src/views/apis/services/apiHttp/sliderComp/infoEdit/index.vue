@@ -299,7 +299,7 @@ onMounted(() => {
           :options="ownerOpt"
           :disabled="disabled"
           size="small"
-          :placeholder="t('service.apiSliderSave.form.ownerPlaceholder')"
+          :placeholder="t('common.placeholders.selectOwner')"
           :allowClear="false" />
       </FormItem>
       <FormItem :label="t('common.service')" name="serviceId">

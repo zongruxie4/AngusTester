@@ -129,7 +129,7 @@ defineExpose({ isValid, getData });
         :maxlength="200"
         :value="name"
         :error="nameError"
-        :placeholder="t('ftpPlugin.drawerMenu.saveForm.namePlaceholder')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         trim
         @change="nameChange" />
     </div>

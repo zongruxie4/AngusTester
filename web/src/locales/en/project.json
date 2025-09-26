@@ -24,20 +24,20 @@
         }
       }
     },
+    "actions": {
+      "addProject": "Add Project",
+      "editProject": "Edit Project",
+      "deleteProject": "Delete Project",
+      "configModule": "Configure Module",
+      "configVersion": "Configure Version",
+      "configTag": "Configure Tag"
+    },
     "list": {
       "addedProjects": "Added Projects",
       "permissionHint": "Only admin, creator, and owner can modify or delete projects.",
       "noJoinedProjects": "No projects added or joined",
       "projectNotExists": "Project does not exist or not joined",
       "projectNotFound": "Project not found",
-      "actions": {
-        "addProject": "Add Project",
-        "editProject": "Edit Project",
-        "deleteProject": "Delete Project",
-        "configModule": "Configure Module",
-        "configVersion": "Configure Version",
-        "configTag": "Configure Tag"
-      },
       "sortMenu": {
         "createdDate": "Sort by Created Time",
         "createdByName": "Sort by Creator"
@@ -70,7 +70,6 @@
         },
         "projectNamePlaceholder": "Enter a brief project name, maximum 100 characters",
         "planTimeDescription": "Time constraints help ensure projects are completed within agreed timeframes, which is crucial for meeting customer expectations and contractual obligations.",
-        "ownerPlaceholder": "Please select project owner",
         "ownerDescription": "By setting a project owner, responsibilities and authorities are clarified, better promoting project completion and progress control, such as: problem solving, progress advancement, team member collaboration, etc.",
         "importExampleDescription": "Import main business sample data for quickly familiarizing with AngusTester business and feature demonstration.",
         "membersDescription": "Define project participants. Project members will automatically be assigned data permissions under the project for convenient team collaboration.",
@@ -84,76 +83,9 @@
   },
   "version": {
     "title": "Version",
-    "placeholder": {
-      "searchKeyword": "Please enter search keyword"
-    },
-    "actions": {
-      "addVersion": "Add Version",
-      "merge": "Merge Versions"
-    },
-    "messages": {
-      "deleteConfirm": "Confirm deletion of version 「{name}」?",
-      "deleteSuccess": "Successfully deleted",
-      "editSuccess": "Successfully modified",
-      "mergeWarning": "Warning: Once versions are merged, they cannot be restored!",
-      "changeStatusConfirm": "Confirm to change version status to “{status}”?"
-    },
-    "status": {
-      "notReleased": "Not Released",
-      "released": "Released",
-      "archived": "Archived"
-    },
-    "form": {
-      "editVersion": "Edit Version",
-      "addVersion": "Add Version",
-      "versionName": "Version",
-      "versionNamePlaceholder": "Enter version name, maximum 40 characters, e.g.: v1.0",
-      "descriptionPlaceholder": "Please enter version description, maximum 200 characters"
-    },
-    "merge": {
-      "title": "Merge Version",
-      "mergeVersion": "Merge Version",
-      "mergeTo": "Merge To"
-    },
-    "detail": {
-      "version": "Version",
-      "noStartDate": "No start date set",
-      "noReleaseDate": "No release date set",
-      "chart": {
-        "subtext": "Task Completion Progress",
-        "workload": "Workload Completion Progress"
-      }
-    },
-    "list": {
-      "addedVersions": "Added Versions",
-      "noVersions": "You haven't added any versions yet, "
-    },
-    "taskTable": {
-      "currentVersion": "Current Version",
-      "units": {
-        "tasks": "tasks",
-        "task": "task"
-      }
-    },
-    "searchPanel": {
-      "quickSearch": "Quick Search",
-      "menuItems": {
-        "all": "All",
-        "notReleased": "Not Released",
-        "released": "Released",
-        "archived": "Archived"
-      },
-      "searchOptions": {
-        "namePlaceholder": "Search name, description",
-        "creatorPlaceholder": "Select creator"
-      },
-      "actions": {
-        "addVersion": "Add Version",
-        "mergeVersion": "Merge Version"
-      }
-    },
+    "currentVersion": "Current Version",
     "introduce": {
-      "title": "About Version",
+      "aboutVersion": "About Version",
       "description": "Version management helps teams precisely track task-to-software version relationships, supports flexible planning, and ensures focus on current version priorities. Visualize progress to quickly identify issues and treat versions as verifiable deliverables.",
       "features": {
         "versionTracking": {
@@ -173,97 +105,111 @@
           "description": "Manage versions as deliverables, ensuring each version is valuable and verifiable."
         }
       }
+    },
+    "searchPanelOptions": {
+      "notReleased": "Not Released",
+      "released": "Released",
+      "archived": "Archived"
+    },
+    "actions": {
+      "addVersion": "Add Version",
+      "editVersion": "Edit Version",
+      "mergeVersion": "Merge Version"
+    },
+    "status": {
+      "notReleased": "Not Released",
+      "released": "Released",
+      "archived": "Archived"
+    },
+    "messages": {
+      "mergeWarning": "Warning: Once versions are merged, they cannot be restored!",
+      "changeStatusConfirm": "Confirm to change version status to “{status}”?"
+    },
+    "list": {
+      "addedVersions": "Added Versions",
+      "noVersions": "You haven't added any versions yet, "
+    },
+    "edit": {
+      "versionName": "Version",
+      "versionNamePlaceholder": "Enter version name, maximum 40 characters, e.g.: v1.0",
+      "descriptionPlaceholder": "Please enter version description, maximum 200 characters"
+    },
+    "merge": {
+      "title": "Merge Version",
+      "mergeVersion": "Merge Version",
+      "mergeTo": "Merge To"
+    },
+    "detail": {
+      "noStartDate": "No start date set",
+      "noReleaseDate": "No release date set",
+      "chart": {
+        "countProgress": "Task Completion Progress",
+        "workloadProgress": "Workload Completion Progress"
+      }
     }
   },
   "module": {
     "title": "Module",
-    "about": "About Module",
-    "aboutDescription": "Software modules organize independent functional sets within systems, enabling task division and improved maintainability.",
-    "addedModules": "Added Modules",
-    "noModules": "No modules added yet. ",
-    "addModule": "Add Module",
-    "noModulesDescription": "You haven't added any modules yet.",
-    "moduleNamePlaceholder": "Please enter module name",
-    "addModuleHint": "Press Enter or lose focus to save. Double-click existing modules to edit.",
-    "newSubModule": "New Sub-module",
-    "moveModule": "Move Module",
-    "addModuleTitle": "Add Module",
-    "addSuccess": "Module added successfully",
-    "updateSuccess": "Updated successfully",
-    "deleteSuccess": "Module deleted successfully",
-    "moveSuccess": "Moved successfully",
-    "confirmDelete": "Are you sure you want to delete module 「{name}」?"
+    "introduce": {
+      "aboutModule": "About Module",
+      "description": "Software modules are used to define and organize relatively independent functional sets in software systems. Through modules, tasks and functional use cases can be divided, thereby improving maintainability."
+    },
+    "actions": {
+      "addModule": "Add Module",
+      "newSubModule": "New Sub Module",
+      "moveModule": "Move Module"
+    },
+    "messages": {
+      "addModuleTitle": "Add Module",
+      "addedModules": "Added Modules",
+      "addModuleHint": "Press Enter or lose focus to save added module, double-click existing module to enter edit mode",
+      "noModules": "You haven't added any modules yet, ",
+      "noModulesDescription": "You haven't added any modules.",
+      "moduleNamePlaceholder": "Please enter module name"
+    }
   },
   "tag": {
     "title": "Tag",
-    "about": "About Tag",
-    "aboutDescription": "Data tags categorize tasks and use cases, improving search efficiency and team collaboration. Examples: boundary testing, business process testing, error handling, input validation, security testing, compatibility testing.",
-    "addedTags": "Added Tags",
-    "addTagHint": "Press Enter or lose focus to save. Double-click existing tags to edit.",
-    "noTags": "No tags added yet. ",
-    "addTag": "Add Tag",
-    "noTagsDescription": "You haven't added any tags yet.",
-    "tagNamePlaceholder": "Please enter tag name",
-    "addTagTitle": "Add Tag",
-    "addSuccess": "Tag added successfully",
-    "updateSuccess": "Updated successfully",
-    "deleteSuccess": "Tag deleted successfully",
-    "confirmDelete": "Are you sure you want to delete tag 「{name}」?"
-  },
-  "projectActivity": {
-    "title": "Activity",
-    "table": {
-      "operator": "Operator",
-      "activityTime": "Activity Time",
-      "resourceType": "Resource Type",
-      "targetId": "Target ID",
-      "targetName": "Target Name",
-      "activityContent": "Activity Content"
+    "introduce": {
+      "aboutTag": "About Tag",
+      "description": "Data tags can facilitate classification of tasks, functional use cases, etc., improve search and management efficiency, and promote efficient team collaboration. Examples: boundary testing, business process testing, error handling, input validation, output validation, exception condition testing, security testing, compatibility testing, etc."
     },
-    "hints": {
-      "maxResourceActivities": "Each resource only saves the latest {maxResource} activities. Older entries are automatically removed."
+    "actions": {
+      "addTag": "Add Tag"
     },
-    "chart": {
-      "resourceType": "Total"
-    },
-    "searchPanel": {
-      "dropdownMenu": {
-        "fileExtractDataset": "File Extract Dataset",
-        "jdbcExtractDataset": "JDBC Extract Dataset"
-      },
-      "searchOptions": {
-        "queryActivityDetail": "Query Activity Details",
-        "selectActivityResource": "Select Activity Resource",
-        "selectProject": "Select Project",
-        "selectOperator": "Select Operator",
-        "activityTimeFrom": "Start Date",
-        "activityTimeTo": "End Date"
-      },
-      "ui": {
-        "quickQuery": "Quick Query",
-        "hideStatistics": "Hide Statistics",
-        "viewStatistics": "View Statistics"
-      }
+    "messages": {
+      "addTagTitle": "Add Tag",
+      "addedTags": "Added Tags",
+      "addTagHint": "Press Enter or lose focus to save added tag, double-click existing tag to enter edit mode.",
+      "noTags": "You haven't added any tags yet, ",
+      "noTagsDescription": "You haven't added any tags.",
+      "tagNamePlaceholder": "Please enter tag name"
     }
   },
-  "projectTrash": {
-    "title": "Trash",
+  "activity": {
+    "title": "Activity",
+    "chart": {
+      "resourceType": "Resource"
+    },
     "messages": {
-      "recoverAllSuccess": "All items recovered successfully",
-      "deleteAllSuccess": "All items deleted successfully",
-      "recoverSuccess": "Item recovered successfully",
-      "deleteSuccess": "Item deleted successfully"
+      "maxResourceActivityHint": "Only the latest {maxResource} activities are saved for each resource. Activities exceeding {maxResource} will be automatically deleted."
     },
-    "stats": {
-      "items": "Items"
+    "searchPanelOptions": {
+      "queryActivityDetail": "Query Activity Details",
+      "selectActivityResource": "Select Activity Resource",
+      "selectOperator": "Select Operator",
+      "activityTimeFrom": "Activity Time From",
+      "activityTimeTo": "Activity Time To"
     },
-    "empty": {
-      "description": "No projects in trash",
-      "hint": "Deleted projects will be displayed here, and you can recover or permanently delete them"
-    },
-    "ui": {
-      "searchPlaceholder": "Please enter search keywords",
-      "adminHint": "Only administrators and deleter can recover or permanently delete trash data."
+    "list": {
+      "columns": {
+        "operator": "Operator",
+        "activityTime": "Activity Time",
+        "resourceType": "Resource Type",
+        "targetId": "Target Resource ID",
+        "targetName": "Target Resource",
+        "activityContent": "Activity Content"
+      }
     }
   },
   "AI": {

@@ -383,7 +383,7 @@ const autoSize = {
                 :title="name"
                 trim
                 class="websocket-name-input"
-                :placeholder="t('websocketPlugin.uiConfig.websocketConfigs.form.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 @change="nameChange" />
             </Tooltip>
             <Input

@@ -549,7 +549,7 @@ defineExpose({
                 :title="name"
                 trim
                 class="smtp-name-input"
-                :placeholder="t('smtpPlugin.uiConfig.mailContent.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 @change="nameChange" />
             </Tooltip>
             <Input

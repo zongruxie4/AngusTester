@@ -57,7 +57,7 @@ defineExpose({ getFormData, validate });
         <Input
           v-model:value="formData.name"
           :maxlength="200"
-          :placeholder="t('scriptDetail.form.namePlaceholder')" />
+          :placeholder="t('common.placeholders.searchKeyword')" />
       </FormItem>
     </Form>
 

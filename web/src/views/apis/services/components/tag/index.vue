@@ -535,7 +535,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
               <div><IconRequired />{{ t('common.name') }}</div>
               <Input
                 v-model:value="tag.name"
-                :placeholder="t('service.tag.form.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 size="small"
                 class="mt-2 mb-5"
                 :maxlength="200"

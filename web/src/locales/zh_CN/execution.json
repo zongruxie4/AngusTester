@@ -6,7 +6,7 @@
       "concurrency": "并发数",
       "executionTime": "执行时长（秒）",
       "iterations": "迭代次数",
-      "errorRate": "错误率",
+      "errorRate": "错误率"
     },
     "actions": {
       "createExecution": "添加执行",

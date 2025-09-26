@@ -67,7 +67,7 @@ const {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>{{ $t('scenarioMonitor.searchPanel.quickSearch') }}</span>
+        <span>{{ $t('quickSearch.title') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">

@@ -143,7 +143,7 @@
     },
     "record": {
       "executionId": "执行ID",
-      "executionName": "执行名称",
+      "executionName": "执行名称"
     },
     "log": {
       "node": "节点",

@@ -642,7 +642,7 @@ function isWithin5Minutes (timeStr: string) {
                 v-model:value="formState.name"
                 :maxlength="100"
                 :error="nameErr"
-                :placeholder="t('commonComp.shareModal.form.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 @change="nameChange" />
             </template>
             <template v-else>

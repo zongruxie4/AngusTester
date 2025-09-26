@@ -1540,7 +1540,7 @@ provide('proxyOptObj', proxyOptObj);
                 :maxlength="400"
                 :value="summary"
                 :error="summaryError"
-                :placeholder="t('mock.detail.apis.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 trim
                 @change="summaryChange" />
             </div>
@@ -1616,7 +1616,7 @@ provide('proxyOptObj', proxyOptObj);
                           :maxlength="200"
                           :value="nameMap[item]"
                           :error="nameErrorSet.has(item)"
-                          :placeholder="t('mock.detail.apis.namePlaceholder')"
+                          :placeholder="t('common.placeholders.searchKeyword')"
                           trim
                           @change="nameChange($event, item)" />
                       </Validate>

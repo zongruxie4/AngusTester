@@ -129,13 +129,13 @@
       "smokeResult": {
         "title": "冒烟测试",
         "testName": "测试人",
-        "testDate": "测试时间",
+        "testDate": "测试时间"
       },
       "securityResult": {
         "title": "安全测试",
         "passed": "通过",
         "testName": "测试人",
-        "testerDate": "测试时间",
+        "testerDate": "测试时间"
       },
       "topAction": {
         "addService": "添加服务"
@@ -409,7 +409,7 @@
       },
       "toolbar": {
         "statusCode": "状态码:",
-        "duration": "耗时:",
+        "duration": "耗时:"
       },
       "errors": {
         "invalidUrl": "出错了！",
@@ -628,7 +628,7 @@
         "variableValue": "值",
         "variableValuePlaceholder": "变量值，最大支持400字符",
         "variableDescription": "描述",
-        "variableDescriptionPlaceholder": "变量描述，最大支持400字符",
+        "variableDescriptionPlaceholder": "变量描述，最大支持400字符"
       },
       "tips": {
         "maxVariables": "最多可添加50个变量",
@@ -870,7 +870,7 @@
       "columns": {
         "apiName": "接口名称",
         "mockServiceName": "模拟服务名称",
-        "mockServiceHostUrl": "服务地址",
+        "mockServiceHostUrl": "服务地址"
       },
       "actions": {
         "cancelAssociation": "取消关联",
@@ -1335,7 +1335,7 @@
       "columns": {
         "mockServiceId": "服务ID",
         "mockServiceName": "服务名称",
-        "mockServiceHostUrl": "服务地址",
+        "mockServiceHostUrl": "服务地址"
       },
       "messages": {
         "createSuccess": "生成Mock接口成功",
@@ -1639,7 +1639,7 @@
       },
       "labels": {
         "noVariables": "无变量",
-        "variables": "变量",
+        "variables": "变量"
       }
     }
   },
@@ -1742,7 +1742,7 @@
       "createdTime": "添加时间",
       "executionId": "执行编号",
       "executionStatus": "执行状态",
-      "dueTime": "到期时间",
+      "dueTime": "到期时间"
     },
     "myApis": {
       "title": "我的接口",
@@ -1757,7 +1757,7 @@
       "cancelFollowSuccess": "接口取消关注成功",
       "columns": {
         "summary": "名称",
-        "endpoint": "路径",
+        "endpoint": "路径"
       }
     }
   },
@@ -1867,7 +1867,7 @@
       "createdDatePlaceholder2": "添加时间到"
     },
     "columns": {
-      "node": "所在节点",
+      "node": "所在节点"
     },
     "actions": {
       "forceDelete": "强制删除",

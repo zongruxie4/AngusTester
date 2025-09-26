@@ -110,7 +110,7 @@ const {
         dataType="mixin-en"
         excludes="{}"
         includes="\!\$%\^&\*_\-+=\.\/"
-        :placeholder="t('dataVariable.detail.jdbcVariable.namePlaceholder')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         trimAll
         @change="nameChange"
         @blur="nameBlur" />

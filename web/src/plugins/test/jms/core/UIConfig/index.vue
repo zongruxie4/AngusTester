@@ -328,7 +328,7 @@ const selectOptions = [
                           :title="dataMap[id].name"
                           style="flex:1 1 40%;"
                           trim
-                          :placeholder="t('jmsPlugin.uiConfig.namePlaceholder')"
+                          :placeholder="t('common.placeholders.searchKeyword')"
                           @change="nameChange(id, $event)" />
                       </Tooltip>
                       <Input

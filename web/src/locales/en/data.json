@@ -73,7 +73,7 @@
       "isPassword": "Yes",
       "notPassword": "No",
       "columns": {
-        "dataSource": "Source",
+        "dataSource": "Source"
       },
       "dropdown": {
         "fileExtract": "File Extraction Variable",
@@ -395,7 +395,7 @@
         "jdbcExtractDataset": "Jdbc Extract Dataset"
       },
       "columns": {
-        "valueSource": "Source",
+        "valueSource": "Source"
       },
       "tableDropdown": {
         "previewData": "Preview Data"
@@ -679,12 +679,12 @@
     "form": {
       "labels": {
         "driverClassName": "Driver Class Name",
-        "jdbcUrl": "Jdbc URL",
+        "jdbcUrl": "Jdbc URL"
       },
       "placeholders": {
         "databaseType": "Database Type",
         "driverClassName": "Driver Class Name",
-        "jdbcUrl": "Jdbc URL",
+        "jdbcUrl": "Jdbc URL"
       },
       "rules": {
         "databaseType": "Please select database type",

@@ -242,7 +242,7 @@ const schemaStyleOpt = [
         <Input
           v-model:value="formState.name"
           :maxlength="100"
-          :placeholder="t('apiShare.form.namePlaceholder')" />
+          :placeholder="t('common.placeholders.searchKeyword')" />
       </FormItem>
       <FormItem
         :label="t('common.remark')"

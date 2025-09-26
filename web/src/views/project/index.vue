@@ -35,7 +35,7 @@ const menuItems = computed(() => {
     projectId.value && { icon: 'icon-banben1', name: t('version.title'), key: 'version' },
     projectId.value && { icon: 'icon-mokuai1', name: t('module.title'), key: 'module' },
     projectId.value && { icon: 'icon-biaoqian3', name: t('tag.title'), key: 'tags' },
-    { icon: 'icon-fabu', name: t('projectActivity.title'), key: 'activity' },
+    { icon: 'icon-fabu', name: t('activity.title'), key: 'activity' },
     { icon: 'icon-qingchu', name: t('projectTrash.title'), key: 'trash' }
   ].filter(Boolean) as { icon: string; name: string; key: string; }[];
 });

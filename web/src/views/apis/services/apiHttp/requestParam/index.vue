@@ -388,7 +388,7 @@ defineExpose({
               :id="apiBaseInfo?.serviceId"
               v-model:value="item.name"
               :disabled="item.$ref"
-              :placeholder="t('service.apiRequestParams.form.namePlaceholder')"
+              :placeholder="t('common.placeholders.searchKeyword')"
               mode="pure"
               :maxLength="globalConfigs.VITE_API_PARAMETER_NAME_LENGTH"
               :type="['parameters']"

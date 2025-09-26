@@ -118,7 +118,7 @@ defineExpose({
     <div class="flex items-center mb-3">
       <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 rounded-full"></div>
       <div class="whitespace-nowrap text-3 text-text-sub-content">
-        <span>{{ t('projectActivity.searchPanel.ui.quickQuery') }}</span>
+        <span>{{ t('activity.searchPanel.ui.quickQuery') }}</span>
         <Colon />
       </div>
       <div class="flex flex-wrap items-center ml-2">
@@ -130,7 +130,7 @@ defineExpose({
           @click="onMenuItemClick(item)">
           {{ item.name }}
         </div>
-        <Hints :text="t('projectActivity.hints.maxResourceActivities', { maxResource })" />
+        <Hints :text="t('activity.messages.maxResourceActivityHint', { maxResource })" />
       </div>
     </div>
 
@@ -148,7 +148,7 @@ defineExpose({
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="props.showCount ? t('projectActivity.searchPanel.ui.hideStatistics') : t('projectActivity.searchPanel.ui.viewStatistics')">
+          :title="props.showCount ? t('activity.searchPanel.ui.hideStatistics') : t('activity.searchPanel.ui.viewStatistics')">
           <IconCount
             :value="props.showCount"
             class="flex-none text-4.5"

@@ -67,7 +67,7 @@
     },
     "searchLogPlaceholder": {
       "code": "查询事件描述或编码",
-      "pushStatus": "选择推送状态",
+      "pushStatus": "选择推送状态"
     },
     "receiveConfig": {
       "title": "配置接收通道",
@@ -594,7 +594,7 @@
           "publicIP": "公网IP: ",
           "role": "角色: ",
           "specification": "规格: ",
-          "system": "系统: ",
+          "system": "系统: "
         },
         "nodeUseProgresses": {
           "cpu": "CPU",

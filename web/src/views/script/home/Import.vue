@@ -99,7 +99,7 @@ watch(() => props.visible, (newVisible) => {
           :maxlength="200"
           trim
           class="rounded-lg"
-          :placeholder="t('scriptHome.import.form.namePlaceholder')" />
+          :placeholder="t('common.placeholders.searchKeyword')" />
       </FormItem>
 
       <FormItem :label="t('scriptHome.import.form.file')" required>

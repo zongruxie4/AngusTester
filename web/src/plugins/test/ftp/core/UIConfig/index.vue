@@ -619,7 +619,7 @@ const selectProps = {
                           :title="dataMap[id].name"
                           style="flex:1 1 40%;"
                           trim
-                          :placeholder="t('ftpPlugin.uiConfig.form.namePlaceholder')"
+                          :placeholder="t('common.placeholders.searchKeyword')"
                           @change="nameChange" />
                       </Tooltip>
                       <Input

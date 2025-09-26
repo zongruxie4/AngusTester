@@ -118,7 +118,7 @@
         "reportName": "报告名称",
         "template": "模板",
         "generateTime": "生成时间",
-        "deleteRecord": "删除报告记录",
+        "deleteRecord": "删除报告记录"
       }
     }
   },
@@ -537,7 +537,7 @@
         "fields": {
           "apiUrl": "接口地址",
           "requestMethod": "请求方法",
-          "operationId": "操作ID",
+          "operationId": "操作ID"
         }
       },
       "summary": {
@@ -757,7 +757,7 @@
             "nodeCount": "节点数",
             "samplingInterval": "采样间隔",
             "ignoreAssertions": "忽略断言",
-            "updateTestResult": "更新测试结果",
+            "updateTestResult": "更新测试结果"
           },
           "options": {
             "update": "更新",
@@ -991,7 +991,7 @@
           }
         },
         "personnel": {
-          "title": "人员信息",
+          "title": "人员信息"
         },
         "date": {
           "title": "日期信息",
@@ -1257,7 +1257,7 @@
         }
       },
       "info": {
-        "title": "项目信息",
+        "title": "项目信息"
       },
       "taskSummary": {
         "title": "研发任务",
@@ -1508,7 +1508,7 @@
               "testCount": "测试次数",
               "failCount": "失败次数",
               "testScriptId": "测试脚本ID",
-              "testScriptName": "测试脚本名称",
+              "testScriptName": "测试脚本名称"
             }
           },
           "metrics": {
@@ -1885,7 +1885,7 @@
           }
         },
         "personnelInfo": {
-          "title": "人员信息",
+          "title": "人员信息"
         },
         "dateInfo": {
           "title": "日期信息",
@@ -1916,7 +1916,7 @@
             }
           },
           "execInfo": {
-            "title": "执行信息",
+            "title": "执行信息"
           },
           "testResult": {
             "title": "测试结果",
@@ -1975,7 +1975,7 @@
             "title": "已测试用例",
             "fields": {
               "caseId": "用例ID",
-              "caseName": "用例名称",
+              "caseName": "用例名称"
             }
           }
         },

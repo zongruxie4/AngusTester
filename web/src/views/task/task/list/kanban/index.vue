@@ -1634,7 +1634,7 @@ onMounted(() => {
                 <span>{{ Object.values(groupDataMap[_createdByName.value] || {}).reduce((prev, cur) => prev +
                   cur.length, 0)
                 }}</span>
-                <span>{{ t('task.kanbanView.group.tasks') }}</span>
+                <span>{{ t('common.task') }}</span>
               </div>
             </div>
             <div class="relative h-full flex items-start" style="width: calc(100% - 193px);">

@@ -962,7 +962,7 @@ const OAuth2AuthorizationTypeOptions = [
                 :disabled="!auth.isEdit || !auth.isAdd"
                 dataType="mixin-en"
                 includes="_.-"
-                :placeholder="t('service.securityModal.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 @change="(event)=>authKeyChange(event.target.value,auth)" />
               <div><IconRequired />{{ t('service.securityModal.typeLabel') }}</div>
               <RadioGroup

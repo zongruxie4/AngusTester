@@ -128,7 +128,7 @@
         "actualWorkload": "实际工作量",
         "softwareVersion": "软件版本",
         "refTasks": "关联任务",
-        "refCases": "关联用例",
+        "refCases": "关联用例"
       },
       "placeholders": {
         "selectTaskType": "请选择任务类型",
@@ -1273,7 +1273,7 @@
       "content": "会议内容",
       "sprint": "所属迭代",
       "moderatorLabel": "主持人",
-      "participantsCount": "共{count}个参与者",
+      "participantsCount": "共{count}个参与者"
     },
     "placeholder": {
       "inputSubject": "最多支持200个字符",
@@ -1364,7 +1364,7 @@
       "template": "模版",
       "object": "分析对象",
       "timeRange": "分析期间",
-      "dataSource": "数据展示",
+      "dataSource": "数据展示"
     },
     "placeholder": {
       "inputAnalysisName": "输入分析名称，最多可输入100字符",

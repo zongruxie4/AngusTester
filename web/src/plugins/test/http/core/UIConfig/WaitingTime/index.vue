@@ -258,7 +258,7 @@ const waitTypeoptions = computed(() => [
           :error="nameError"
           trim
           class="time-name-input"
-          :placeholder="t('httpPlugin.uiConfig.waitingTime.namePlaceholder')"
+          :placeholder="t('common.placeholders.searchKeyword')"
           @change="nameChange" />
       </Tooltip>
       <Select

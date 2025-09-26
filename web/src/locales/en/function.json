@@ -471,7 +471,7 @@
     },
     "infoView": {
       "totalGroups": "Total {total} groups",
-      "totalItems": "Total {total} items",
+      "totalItems": "Total {total} items"
     },
     "tableView": {
       "totalGroups": "Total {total} groups",
@@ -608,7 +608,7 @@
         "maxCharError": "Maximum 2000 characters, including URL address length after file upload"
       },
       "infoPersonnel": {
-        "title": "Personnel",
+        "title": "Personnel"
       },
       "infoPrecondition": {
         "title": "Precondition",
@@ -695,7 +695,7 @@
         "reviewOpinion": "Review Opinion",
         "testCount": "Test Count",
         "failCount": "Fail Count",
-        "resultRemark": "Result Remark",
+        "resultRemark": "Result Remark"
       }
     },
     "review": {
@@ -707,7 +707,7 @@
       "reviewFailedCase": "Review failed the case",
       "reviewVersion": "Review Version",
       "latestVersion": "Latest Version",
-      "testSteps": "Test Steps",
+      "testSteps": "Test Steps"
     },
     "case": {
       "baselineCases": "Baseline Cases",
@@ -934,7 +934,7 @@
         "actualWorkload": "Actual Workload"
       },
       "member": {
-        "title": "Member Info",
+        "title": "Member Info"
       },
       "precondition": {
         "title": "Precondition"
@@ -1005,7 +1005,7 @@
       "addBaselineCase": "Add Cases",
       "confirmDeleteCase": "Confirm delete 「{name}」?",
       "selectCase": "Select Case",
-      "queryNameCode": "Query name, code",
+      "queryNameCode": "Query name, code"
     },
     "case": {
       "baselineCases": "Baseline Cases",

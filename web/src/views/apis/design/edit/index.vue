@@ -147,7 +147,7 @@ const versionOpt = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].map(i => ({ val
         <Input
           v-model:value="formState.name"
           :maxlength="100"
-          :placeholder="t('design.editModal.namePlaceholder')" />
+          :placeholder="t('common.placeholders.searchKeyword')" />
       </FormItem>
       <FormItem
         :label="t('design.editModal.versionLabel')"

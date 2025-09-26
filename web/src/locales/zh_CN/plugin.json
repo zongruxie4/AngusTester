@@ -3,7 +3,7 @@
     "selectScriptModal": {
       "title": "选择脚本",
       "selectScriptTip": "请选择一个脚本",
-      "searchPlaceholder": "查询脚本名称",
+      "searchPlaceholder": "查询脚本名称"
     },
     "chartConfig": {
       "names": {
@@ -49,7 +49,7 @@
         "logs": "调度日志",
         "execLog": "执行日志",
         "toggle": "展开收起",
-        "screen": "全屏",
+        "screen": "全屏"
       },
       "drawer": {
         "indicator": "测试指标",
@@ -71,7 +71,7 @@
         "seconds": "秒",
         "minutes": "分",
         "hours": "小时"
-      },
+      }
     }
   },
   "httpPlugin": {
@@ -130,7 +130,7 @@
       "downloadFileName": "runner.log"
     },
     "exportScriptModal": {
-      "title": "导出脚本",
+      "title": "导出脚本"
     },
     "importScript": {
       "title": "导入脚本"
@@ -861,7 +861,7 @@
       "downloadFileName": "runner.log"
     },
     "exportScriptModal": {
-      "title": "导出脚本",
+      "title": "导出脚本"
     },
     "functionTestDetail": {
       "basicInfo": {
@@ -1571,7 +1571,7 @@
       },
       "authenticationConfig": {
         "title": "身份验证设置",
-        "enableAuthentication": "开启身份验证",
+        "enableAuthentication": "开启身份验证"
       },
       "otherConfig": {
         "title": "其他设置",
@@ -1749,7 +1749,7 @@
       "input": {
         "placeholder": "查询接口名称"
       },
-      "referenced": "（已引用）",
+      "referenced": "（已引用）"
     },
     "websocketConfigs": {
       "urlFormatError": "url格式错误",

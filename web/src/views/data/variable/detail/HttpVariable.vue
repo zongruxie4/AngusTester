@@ -107,7 +107,7 @@ const httpConfigsRef = ref();
         dataType="mixin-en"
         excludes="{}"
         includes="\!\$%\^&\*_\-+=\.\/"
-        :placeholder="t('dataVariable.detail.httpVariable.namePlaceholder')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         trimAll
         @change="nameChange"
         @blur="nameBlur" />

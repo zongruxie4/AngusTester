@@ -17,14 +17,14 @@ export function useTableColumns () {
   const columns = computed<TableColumn[]>(() => [
     {
       key: 'fullName',
-      title: t('projectActivity.table.operator'),
+      title: t('activity.list.columns.operator'),
       dataIndex: 'fullName',
       width: '10%',
       ellipsis: true
     },
     {
       key: 'optDate',
-      title: t('projectActivity.table.activityTime'),
+      title: t('activity.list.columns.activityTime'),
       dataIndex: 'optDate',
       sorter: true,
       width: '10%',
@@ -50,14 +50,14 @@ export function useTableColumns () {
     },
     {
       key: 'targetType',
-      title: t('projectActivity.table.resourceType'),
+      title: t('activity.list.columns.resourceType'),
       dataIndex: 'targetType',
       customRender: ({ text }) => text?.message,
       width: '8%'
     },
     {
       key: 'targetId',
-      title: t('projectActivity.table.targetId'),
+      title: t('activity.list.columns.targetId'),
       dataIndex: 'targetId',
       width: '17%',
       groupName: 'source',
@@ -68,7 +68,7 @@ export function useTableColumns () {
     },
     {
       key: 'targetName',
-      title: t('projectActivity.table.targetName'),
+      title: t('activity.list.columns.targetName'),
       dataIndex: 'targetName',
       width: '17%',
       ellipsis: true,
@@ -76,7 +76,7 @@ export function useTableColumns () {
     },
     {
       key: 'detail',
-      title: t('projectActivity.table.activityContent'),
+      title: t('activity.list.columns.activityContent'),
       width: '40%',
       dataIndex: 'detail'
     }

@@ -1173,7 +1173,7 @@ const overlayStyle = {
                 :title="name"
                 trim
                 class="http-name-input"
-                :placeholder="t('httpPlugin.uiConfig.httpConfigs.form.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 @change="nameChange" />
             </Tooltip>
             <SelectEnum

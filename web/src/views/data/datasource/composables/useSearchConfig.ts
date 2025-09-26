@@ -17,7 +17,7 @@ export function useSearchConfig () {
     {
       valueKey: 'name',
       type: 'input',
-      placeholder: t('datasource.searchOptions.namePlaceholder'),
+      placeholder: t('common.placeholders.searchKeyword'),
       allowClear: true,
       maxlength: 100
     },

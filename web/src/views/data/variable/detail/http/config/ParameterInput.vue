@@ -209,7 +209,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
           v-model:value="dataMap[item].name"
           :maxLength="400"
           :error="nameErrorSet.has(item)"
-          :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.parameterInput.namePlaceholder')"
+          :placeholder="t('common.placeholders.searchKeyword')"
           size="small"
           tirmAll
           style="flex:0 0 calc((100% - 84px)*3.5/10);max-width: 400px;"

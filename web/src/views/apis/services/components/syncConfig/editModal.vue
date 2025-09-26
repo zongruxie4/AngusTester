@@ -282,7 +282,7 @@ watch(() => props.visible, (newValue) => {
         <span><IconRequired />{{ t('common.name') }}</span>
         <Input
           v-model:value="sync.name"
-          :placeholder="t('service.syncConfig.form.namePlaceholder')"
+          :placeholder="t('common.placeholders.searchKeyword')"
           size="small"
           class="mt-2 mb-5"
           :maxlength="100"

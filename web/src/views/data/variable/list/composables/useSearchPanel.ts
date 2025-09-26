@@ -58,7 +58,7 @@ export function useSearchPanel () {
     {
       valueKey: 'name',
       type: 'input',
-      placeholder: t('dataVariable.list.searchPanel.searchOptions.namePlaceholder'),
+      placeholder: t('common.placeholders.searchKeyword'),
       allowClear: true,
       maxlength: 100
     },
@@ -66,7 +66,7 @@ export function useSearchPanel () {
       valueKey: 'createdBy',
       type: 'select-user',
       allowClear: true,
-      placeholder: t('dataVariable.list.searchPanel.searchOptions.createdByPlaceholder')
+      placeholder: t('dataVariable.list.searchPanelOptions.createdByPlaceholder')
     },
     {
       valueKey: 'createdDate',

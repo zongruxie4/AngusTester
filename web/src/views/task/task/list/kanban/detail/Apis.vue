@@ -626,7 +626,7 @@ onMounted(() => {
               :maxlength="200"
               trim
               class="edit-container"
-              :placeholder="t('task.detailInfo.apis.columns.namePlaceholder')"
+              :placeholder="t('common.placeholders.searchKeyword')"
               @blur="handleTaskNameBlur"
               @pressEnter="handleTaskNameEnterPress" />
           </AsyncComponent>

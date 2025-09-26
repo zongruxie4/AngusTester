@@ -20,7 +20,7 @@ export function useActivitySearch () {
     {
       valueKey: 'detail',
       type: 'input',
-      placeholder: t('projectActivity.searchPanel.searchOptions.queryActivityDetail'),
+      placeholder: t('activity.searchPanelOptions.queryActivityDetail'),
       allowClear: true,
       trim: true,
       maxlength: 100
@@ -29,13 +29,13 @@ export function useActivitySearch () {
       valueKey: 'targetType',
       type: 'select-enum',
       enumKey: CombinedTargetType,
-      placeholder: t('projectActivity.searchPanel.searchOptions.selectActivityResource'),
+      placeholder: t('activity.searchPanelOptions.selectActivityResource'),
       allowClear: true
     },
     {
       valueKey: 'projectId',
       type: 'select',
-      placeholder: t('projectActivity.searchPanel.searchOptions.selectProject'),
+      placeholder: t('common.placeholders.selectProject'),
       allowClear: true,
       action: `${TESTER}/project?fullTextSearch=true`,
       fieldNames: {
@@ -46,7 +46,7 @@ export function useActivitySearch () {
     {
       valueKey: 'userId',
       type: 'select-user',
-      placeholder: t('projectActivity.searchPanel.searchOptions.selectOperator'),
+      placeholder: t('activity.searchPanelOptions.selectOperator'),
       allowClear: true,
       maxlength: 100
     },
@@ -54,8 +54,8 @@ export function useActivitySearch () {
       valueKey: 'optDate',
       type: 'date-range',
       placeholder: [
-        t('projectActivity.searchPanel.searchOptions.activityTimeFrom'),
-        t('projectActivity.searchPanel.searchOptions.activityTimeTo')
+        t('activity.searchPanelOptions.activityTimeFrom'),
+        t('activity.searchPanelOptions.activityTimeTo')
       ],
       allowClear: true
     }

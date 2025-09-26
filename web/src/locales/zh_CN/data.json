@@ -685,12 +685,12 @@
     "form": {
       "labels": {
         "driverClassName": "驱动类名",
-        "jdbcUrl": "JBDC Url",
+        "jdbcUrl": "JBDC Url"
       },
       "placeholders": {
         "databaseType": "数据库类型",
         "driverClassName": "驱动类名",
-        "jdbcUrl": "JBDC Url",
+        "jdbcUrl": "JBDC Url"
       },
       "rules": {
         "databaseType": "请选择数据库类型",

@@ -128,13 +128,13 @@
       "smokeResult": {
         "title": "Smoke Test",
         "testName": "Test Name",
-        "testDate": "Test Date",
+        "testDate": "Test Date"
       },
       "securityResult": {
         "title": "Security Test",
         "passed": "Passed",
         "testName": "Test Name",
-        "testerDate": "Test Date",
+        "testerDate": "Test Date"
       },
       "topAction": {
         "addService": "Add Service"
@@ -405,7 +405,7 @@
       },
       "toolbar": {
         "statusCode": "Status Code:",
-        "duration": "Duration:",
+        "duration": "Duration:"
       },
       "errors": {
         "invalidUrl": "Error!",
@@ -625,7 +625,7 @@
         "variableValue": "Value",
         "variableValuePlaceholder": "Variable value, maximum 400 characters",
         "variableDescription": "Description",
-        "variableDescriptionPlaceholder": "Variable description, maximum 400 characters",
+        "variableDescriptionPlaceholder": "Variable description, maximum 400 characters"
       },
       "tips": {
         "maxVariables": "Maximum 50 variables can be added",
@@ -869,7 +869,7 @@
       "columns": {
         "apiName": "API Name",
         "mockServiceName": "Mock Service Name",
-        "mockServiceHostUrl": "Service Address",
+        "mockServiceHostUrl": "Service Address"
       },
       "actions": {
         "cancelAssociation": "Cancel Association",
@@ -1396,7 +1396,7 @@
       "columns": {
         "serviceDomainUrl": "Service URL",
         "servicePort": "Port",
-        "nodeName": "Node",
+        "nodeName": "Node"
       },
       "stats": {
         "apisNum": "API Count",
@@ -1633,7 +1633,7 @@
       },
       "labels": {
         "noVariables": "No Variables",
-        "variables": "Variables",
+        "variables": "Variables"
       }
     }
   },
@@ -1734,7 +1734,7 @@
       "createdTime": "Created Time",
       "executionId": "Execution ID",
       "executionStatus": "Execution Status",
-      "dueTime": "Due Time",
+      "dueTime": "Due Time"
     },
     "myApis": {
       "title": "My APIs",
@@ -1749,7 +1749,7 @@
       "cancelFollowSuccess": "API unfollowed successfully",
       "columns": {
         "summary": "Name",
-        "endpoint": "Path",
+        "endpoint": "Path"
       }
     }
   },
@@ -1858,7 +1858,7 @@
       "createdDatePlaceholder2": "Created date to"
     },
     "columns": {
-      "node": "Node",
+      "node": "Node"
     },
     "actions": {
       "forceDelete": "Force Delete",
@@ -2114,7 +2114,7 @@
             "parameterValuePlaceholder": "Parameter value, maximum 4096 characters",
             "regexExpression": "Regular Expression",
             "xpathExpression": "XPath Expression",
-            "jsonPathExpression": "JSONPath Expression",
+            "jsonPathExpression": "JSONPath Expression"
           },
           "agent": {
             "title": "AI Agent",

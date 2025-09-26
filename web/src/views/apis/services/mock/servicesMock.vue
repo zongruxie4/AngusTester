@@ -189,7 +189,7 @@ onMounted(async () => {
           <FormItem name="name">
             <Input
               v-model:value="formState.name"
-              :placeholder="t('service.mock.namePlaceholder')"
+              :placeholder="t('common.placeholders.searchKeyword')"
               :disabled="serviceInfo?.mockServiceId"
               :maxlength="100" />
           </FormItem>

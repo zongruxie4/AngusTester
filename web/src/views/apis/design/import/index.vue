@@ -89,7 +89,7 @@ const ok = async () => {
         <Input
           v-model:value="formState.name"
           :maxlength="100"
-          :placeholder="t('design.importDesignModal.namePlaceholder')" />
+          :placeholder="t('common.placeholders.searchKeyword')" />
       </FormItem>
       <FormItem
         name="content"

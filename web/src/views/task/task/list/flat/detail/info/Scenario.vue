@@ -444,7 +444,7 @@ const handleVersionBlur = async () => {
                 :maxlength="200"
                 trim
                 class="left-component"
-                :placeholder="t('task.detailInfo.scenario.columns.namePlaceholder')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 @blur="handleTaskNameBlur"
                 @pressEnter="handleTaskNameEnter" />
             </AsyncComponent>

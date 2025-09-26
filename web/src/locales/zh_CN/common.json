@@ -114,7 +114,10 @@
     "enabledStatus": "启用状态",
     "actions": "操作",
     "placeholders": {
-      "search": "输入查询关键词"
+      "searchKeyword": "输入查询关键词",
+      "selectCreator": "选择添加人",
+      "selectOwner": "选择负责人",
+      "selectProject": "选择项目"
     },
     "rules": {},
     "hints": {
@@ -258,6 +261,7 @@
   "quickSearch": {
     "title": "快速搜索",
     "all": "全部",
+    "filters": "过滤",
     "last1Day": "近1天",
     "last3Days": "近3天",
     "last7Days": "近7天",
@@ -269,6 +273,9 @@
   },
   "page": {
     "items": "条"
+  },
+  "stats": {
+    "items": "项"
   },
   "views": {
     "codeView": "代码视图",
@@ -285,6 +292,17 @@
       "selectUser": "--请选择用户--",
       "selectDept": "--请选择部门--",
       "selectGroup": "--请选择组--"
+    }
+  },
+  "trash": {
+    "title": "回收站",
+    "messages": {
+      "adminHint": "只允许管理员和删除人还原或彻底删除回收站数据。",
+      "emptyDescription": "回收站中没有数据",
+      "emptyHint": "删除的数据将显示在这里，您可以恢复或永久删除它们",
+      "recoverAllSuccess": "全部还原成功",
+      "deleteAllSuccess": "全部删除成功",
+      "recoverSuccess": "还原成功"
     }
   },
   "chart": {

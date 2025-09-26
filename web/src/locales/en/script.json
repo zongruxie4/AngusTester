@@ -124,7 +124,7 @@
     },
     "record": {
       "executionId": "Execution ID",
-      "executionName": "Execution Name",
+      "executionName": "Execution Name"
     },
     "log": {
       "node": "Node",

@@ -46,7 +46,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: t('apiShare.searchPanel.searchOptions.namePlaceholder'),
+    placeholder: t('common.placeholders.searchKeyword'),
     allowClear: true,
     maxlength: 100
   },
@@ -54,12 +54,12 @@ const searchPanelOptions = [
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true,
-    placeholder: t('apiShare.searchPanel.searchOptions.sharePersonPlaceholder')
+    placeholder: t('apiShare.searchPanelOptions.sharePersonPlaceholder')
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: t('apiShare.searchPanel.searchOptions.dateRangePlaceholder'),
+    placeholder: t('apiShare.searchPanelOptions.dateRangePlaceholder'),
     showTime: true
   }
 ];
