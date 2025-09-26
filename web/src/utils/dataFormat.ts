@@ -1,48 +1,72 @@
 import YAMl from 'yaml';
 
-const isJSON = (str: string): boolean => {
-  if (typeof str !== 'string') {
+// ----------------------------------------------------
+// Data format detection utilities
+// ----------------------------------------------------
+
+/**
+ * Check if a string is valid JSON format.
+ * @param inputString - String to validate
+ * @returns True if string is valid JSON, false otherwise
+ */
+const isJSON = (inputString: string): boolean => {
+  if (typeof inputString !== 'string') {
     return false;
   }
 
   try {
-    const obj = JSON.parse(str);
-    return typeof obj === 'object';
-  } catch (e) {
+    const parsedObject = JSON.parse(inputString);
+    return typeof parsedObject === 'object';
+  } catch (error) {
     return false;
   }
 };
 
-const isHtml = (str:string):boolean => {
-  if (typeof str !== 'string') {
+/**
+ * Check if a string contains valid HTML markup.
+ * @param inputString - String to validate
+ * @returns True if string contains HTML elements, false otherwise
+ */
+const isHtml = (inputString: string): boolean => {
+  if (typeof inputString !== 'string') {
     return false;
   }
 
-  const doc = new DOMParser().parseFromString(str, 'text/html');
-  return Array.from(doc.body.childNodes).some(node => node.nodeType === 1);
+  const document = new DOMParser().parseFromString(inputString, 'text/html');
+  return Array.from(document.body.childNodes).some(node => node.nodeType === 1);
 };
 
-const isXML = (str: string): boolean => {
-  if (typeof str !== 'string') {
+/**
+ * Check if a string is valid XML format.
+ * @param inputString - String to validate
+ * @returns True if string is valid XML, false otherwise
+ */
+const isXML = (inputString: string): boolean => {
+  if (typeof inputString !== 'string') {
     return false;
   }
 
   const parser = new DOMParser();
-  const doc = parser.parseFromString(str, 'text/xml');
-  const errors = doc.getElementsByTagName('parsererror');
+  const document = parser.parseFromString(inputString, 'text/xml');
+  const parseErrors = document.getElementsByTagName('parsererror');
 
-  return errors.length === 0;
+  return parseErrors.length === 0;
 };
 
-const isYAML = (str: string): boolean => {
-  if (typeof str !== 'string') {
+/**
+ * Check if a string is valid YAML format.
+ * @param inputString - String to validate
+ * @returns True if string is valid YAML, false otherwise
+ */
+const isYAML = (inputString: string): boolean => {
+  if (typeof inputString !== 'string') {
     return false;
   }
 
   try {
-    const obj = YAMl.parse(str);
-    return typeof obj === 'object';
-  } catch (e) {
+    const parsedObject = YAMl.parse(inputString);
+    return typeof parsedObject === 'object';
+  } catch (error) {
     return false;
   }
 };

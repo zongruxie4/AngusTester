@@ -4,7 +4,6 @@ const toUint8Array = (str: string): Uint8Array => {
   return tua(str);
 };
 
-// 解密
 const decode = (value: string, native = false): { name: string; value: string; } | string => {
   if (native) {
     return dt(value);
@@ -17,7 +16,6 @@ const decode = (value: string, native = false): { name: string; value: string; }
   };
 };
 
-// 加密
 const encode = (name = '', value = ''): string => {
   if (!value) {
     return et(name);

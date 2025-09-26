@@ -1,27 +1,56 @@
 import { Ref } from 'vue';
 
-// 处理表单校验方法
+// ----------------------------------------------------
+// Form validation utilities
+// ----------------------------------------------------
+
+/**
+ * Validate specific form fields and clear validation state on success.
+ * @param formRef - Vue form reference
+ * @param fields - Array of field names to validate
+ */
 export const validFields = (formRef: Ref, fields: string[]): void => {
   formRef.value.validateFields(fields).then(() => {
     formRef.value.clearValidate(fields);
   }, () => { /** */ });
 };
 
-// TODO 使用全局工具方法代替
+// ----------------------------------------------------
+// Size & bytes utilities
+// ----------------------------------------------------
+
+/**
+ * Format bytes to human-readable string with space separator.
+ * <p>
+ * TODO: Replace with global utility method
+ * </p>
+ * @param size - Size in bytes
+ * @param decimal - Number of decimal places (default 2)
+ * @returns Formatted string like "10.24 MB"
+ */
 export const formatBytes = (size = 0, decimal = 2): string => {
   if (size === 0) return '0 B';
-  const c = 1024;
-  const e = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  const f = Math.floor(Math.log(size) / Math.log(c));
-  return parseFloat((size / Math.pow(c, f)).toFixed(decimal)) + ' ' + e[f];
+  const base = 1024;
+  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const magnitudeIndex = Math.floor(Math.log(size) / Math.log(base));
+  return parseFloat((size / Math.pow(base, magnitudeIndex)).toFixed(decimal)) + ' ' + units[magnitudeIndex];
 };
+
+// ----------------------------------------------------
+// HTTP headers utilities
+// ----------------------------------------------------
 
 type HeadersType = {
   paramsType?: boolean,
   headers: { 'XC-Opt-Tenant-Id'?: string }
 }
 
-// 处理 headers 中的租户ID参数
+/**
+ * Create headers object with tenant ID for API requests.
+ * @param tenantId - Tenant identifier
+ * @param paramsType - Optional parameter type flag
+ * @returns Headers configuration object
+ */
 export const handleHeaders = (tenantId: string, paramsType?: boolean): HeadersType => {
   const headers: HeadersType = {
     headers: {}
@@ -35,32 +64,40 @@ export const handleHeaders = (tenantId: string, paramsType?: boolean): HeadersTy
   return headers;
 };
 
-/**
- * 根据秒数获取时、分、秒
- * @param num 总秒数
- * @param unit 想要获取的单位
- * @param isShow 是否是展示, 如果是, 则小于10需要补0
- * @returns number | string
- */
-export const getUnitTimeNumber = (num: number, unit: 'h' | 'm' | 's', isShow = false): number | string => {
-  if (unit === 'h') {
-    const h = Math.floor(num / 3600);
-    return isShow && h < 10 ? `0${h}` : h;
-  } else if (unit === 'm') {
-    const m = Math.floor(num % 3600 / 60);
-    return isShow && m < 10 ? `0${m}` : m;
-  } else if (unit === 's') {
-    const s = num % 3600 % 60;
-    return isShow && s < 10 ? `0${s}` : s;
-  }
-  return num;
-};
+// ----------------------------------------------------
+// Time utilities
+// ----------------------------------------------------
 
 /**
- * 获取随机数
- * @param min 最小值
- * @param max 最大值
- * @returns number
+ * Extract hours, minutes, or seconds from total seconds.
+ * @param totalSeconds - Total number of seconds
+ * @param unit - Time unit to extract ('h', 'm', 's')
+ * @param isShow - Whether to pad with leading zero for display
+ * @returns Extracted time value as number or zero-padded string
+ */
+export const getUnitTimeNumber = (totalSeconds: number, unit: 'h' | 'm' | 's', isShow = false): number | string => {
+  if (unit === 'h') {
+    const hours = Math.floor(totalSeconds / 3600);
+    return isShow && hours < 10 ? `0${hours}` : hours;
+  } else if (unit === 'm') {
+    const minutes = Math.floor(totalSeconds % 3600 / 60);
+    return isShow && minutes < 10 ? `0${minutes}` : minutes;
+  } else if (unit === 's') {
+    const seconds = totalSeconds % 3600 % 60;
+    return isShow && seconds < 10 ? `0${seconds}` : seconds;
+  }
+  return totalSeconds;
+};
+
+// ----------------------------------------------------
+// Random utilities
+// ----------------------------------------------------
+
+/**
+ * Generate a random integer within specified range.
+ * @param min - Minimum value (inclusive)
+ * @param max - Maximum value (inclusive)
+ * @returns Random integer between min and max
  */
 export const randomNum = (min: number, max: number): number => {
   if (min && !max) {
@@ -72,83 +109,101 @@ export const randomNum = (min: number, max: number): number => {
   return 0;
 };
 
-const letterMap = {
-  ms: '毫秒',
-  s: '秒',
-  min: '分钟',
-  h: '小时',
-  d: '天'
+// ----------------------------------------------------
+// Duration parsing utilities
+// ----------------------------------------------------
+
+const unitMap = {
+  ms: 'Millisecond',
+  s: 'Second',
+  min: 'Minute',
+  h: 'Hour',
+  d: 'Day'
 };
 
 /**
- * @param '10s'、'20min'、'5h'这样的字符串
- * @returns ['10','秒']拆分后并返回中文单位的数组
+ * Split duration string into numeric value and unit.
+ * <p>
+ * Parses strings like '10s', '20min', '5h' and returns
+ * the numeric part and corresponding English unit name.
+ * </p>
+ * @param durationString - Duration string to parse
+ * @returns Tuple of [numericValue, unitName]
  */
-export const splitTime = (str: string): [string, string] => {
-  const number = str.replace(/\D/g, '');
-  const unit = str.replace(/\d/g, '');
-  return [number, letterMap[unit]];
+export const splitTime = (durationString: string): [string, string] => {
+  const numericValue = durationString.replace(/\D/g, '');
+  const unitSuffix = durationString.replace(/\d/g, '');
+  return [numericValue, unitMap[unitSuffix]];
 };
 
 /**
- * @param _currentDurationStr 当前执行时长
- * @param _durationStr 执行时长
- * @returns 当前执行时长和执行时长统一单位后的时间，单位以执行时长的单位为准
- * @reamrk _currentDurationStr有值，_durationStr必须有值
+ * Convert current duration to match target duration unit.
+ * <p>
+ * Normalizes the current duration string to the same unit as the target duration.
+ * The target duration unit takes precedence for the final result.
+ * </p>
+ * @param currentDurationStr - Current duration string (e.g., '2h', '30min')
+ * @param targetDurationStr - Target duration string to match unit
+ * @returns Converted duration value or '--' if current duration is empty
+ * @remark If currentDurationStr has value, targetDurationStr must also have value
  */
-
-export const getCurrentDuration = (_currentDurationStr, _durationStr) => {
-  if (!_currentDurationStr) {
+export const getCurrentDuration = (currentDurationStr: string, targetDurationStr: string): string | number => {
+  if (!currentDurationStr) {
     return '--';
   }
 
-  const _durationUnit = _durationStr.replace(/\d/g, '');
-  const _currentDuration = +splitTime(_currentDurationStr)[0];
+  const targetUnit = targetDurationStr.replace(/\d/g, '');
+  const currentDurationValue = +splitTime(currentDurationStr)[0];
 
-  // 如果时长是秒
-  if (_durationUnit === 's') {
-    // 当前时长是小时
-    if (_currentDurationStr.includes('h')) {
-      return keepTwoDecimals(_currentDuration * 60 * 60);
+  // Convert to seconds
+  if (targetUnit === 's') {
+    // Current duration is in hours
+    if (currentDurationStr.includes('h')) {
+      return keepTwoDecimals(currentDurationValue * 60 * 60);
     }
 
-    // 当前时长是分钟
-    if (_currentDurationStr.includes('min')) {
-      return keepTwoDecimals(_currentDuration * 60);
+    // Current duration is in minutes
+    if (currentDurationStr.includes('min')) {
+      return keepTwoDecimals(currentDurationValue * 60);
     }
 
-    return _currentDuration;
+    return currentDurationValue;
   }
 
-  // 如果时长是分钟
-  if (_durationUnit === 'min') {
-    if (_currentDurationStr.includes('h')) {
-      return keepTwoDecimals(_currentDuration * 60);
+  // Convert to minutes
+  if (targetUnit === 'min') {
+    if (currentDurationStr.includes('h')) {
+      return keepTwoDecimals(currentDurationValue * 60);
     }
 
-    if (_currentDurationStr.includes('s')) {
-      return keepTwoDecimals(_currentDuration / 60);
+    if (currentDurationStr.includes('s')) {
+      return keepTwoDecimals(currentDurationValue / 60);
     }
 
-    return _currentDuration;
+    return currentDurationValue;
   }
 
-  // 如果时长是小时
-  if (_currentDurationStr.includes('s')) {
-    return keepTwoDecimals(_currentDuration / 60 / 60);
+  // Convert to hours
+  if (currentDurationStr.includes('s')) {
+    return keepTwoDecimals(currentDurationValue / 60 / 60);
   }
 
-  if (_currentDurationStr.includes('min')) {
-    return keepTwoDecimals(_currentDuration / 60);
+  if (currentDurationStr.includes('min')) {
+    return keepTwoDecimals(currentDurationValue / 60);
   }
 
-  return _currentDuration;
+  return currentDurationValue;
 };
 
-const keepTwoDecimals = (num) => {
-  if (num % 1 !== 0 && num.toString().split('.')[1].length > 2) {
-    return num.toFixed(2);
+/**
+ * Format number to keep at most two decimal places.
+ * @param value - Number to format
+ * @returns Formatted number with max 2 decimal places
+ */
+const keepTwoDecimals = (value: number): string | number => {
+  if (value % 1 !== 0 && value.toString().split('.')[1].length > 2) {
+    return value.toFixed(2);
   } else {
-    return num;
+    return value;
   }
 };

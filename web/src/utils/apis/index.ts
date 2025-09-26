@@ -13,6 +13,29 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(duration);
+
+const CONTENT_TYPE = [
+  'application/x-www-form-urlencoded',
+  'multipart/form-data',
+  'application/octet-stream',
+  'application/json',
+  'text/html',
+  'application/xml',
+  'application/javascript',
+  'text/plain',
+  '*/*'
+];
+
+// eslint-disable-next-line prefer-regex-literals
+const variableNameReg = new RegExp(/^[a-zA-Z0-9!@$%^&*()_\-+=./]+$/);
+
+// ----------------------------------------------------
+// Type definitions
+// ----------------------------------------------------
+
+/**
+ * Parameter item interface for API parameters.
+ */
 export interface ParamsItem {
   name?: string,
   in?: string,
@@ -20,11 +43,14 @@ export interface ParamsItem {
   description?: string,
   variabled?: boolean,
   enabled?: boolean,
-  allowableValues?: string[] | null, // 枚举值
+  allowableValues?: string[] | null, // Enum values
   valueType?: string | null,
   key?: symbol
 }
 
+/**
+ * Host item interface for API hosts.
+ */
 export interface HostItem {
   name?: string,
   host: string,
@@ -32,6 +58,15 @@ export interface HostItem {
   protocol: { value: string }
 }
 
+// ----------------------------------------------------
+// Default parameter utilities
+// ----------------------------------------------------
+
+/**
+ * Create default parameter item with standard configuration.
+ * @param config - Additional configuration to merge
+ * @returns Default parameter item
+ */
 const getDefaultParams = (config = {}): ParamsItem => {
   return {
     name: '',
@@ -45,6 +80,11 @@ const getDefaultParams = (config = {}): ParamsItem => {
   };
 };
 
+/**
+ * Create default body item with standard configuration.
+ * @param config - Additional configuration to merge
+ * @returns Default body item
+ */
 const getBodyDefaultItem = (config = {}) => {
   return {
     name: '',
@@ -58,25 +98,37 @@ const getBodyDefaultItem = (config = {}) => {
   };
 };
 
+// ----------------------------------------------------
+// API extension constants
+// ----------------------------------------------------
+
+/**
+ * API extension keys for custom properties.
+ */
 const API_EXTENSION_KEY = {
-  perfix: 'x-xc-', // 前缀
-  valueKey: 'x-xc-value', // 值
-  enabledKey: 'x-xc-enabled', // 启用/禁用
-  exportVariableKey: 'x-xc-exportVariable', // 是否设置成变量
-  requestSettingKey: 'x-xc-requestSetting', // 接口设置 例如超时时间等设置, object
-  serverNameKey: 'x-xc-serverName', // 服务器URL名称
-  serverSourceKey: 'x-xc-serverSource', // 服务器来源
-  securityApiKeyPerfix: 'x-xc-apiKey', // apiKey 类型扩展
-  securitySubTypeKey: 'sx-xc-securitySubType', // 安全方案子类型
-  fileNameKey: 'x-xc-fileName', // 文件名称
-  newTokenKey: 'x-xc-oauth2-newToken', // 是否使用生成认证令牌
-  oAuth2Key: 'x-xc-oauth2-authFlow', // 生成令牌授权类型
-  oAuth2Token: 'x-xc-oauth2-token', // 已有令牌 token
+  perfix: 'x-xc-', // Prefix
+  valueKey: 'x-xc-value', // Value
+  enabledKey: 'x-xc-enabled', // Enable/disable
+  exportVariableKey: 'x-xc-exportVariable', // Whether to set as variable
+  requestSettingKey: 'x-xc-requestSetting', // Request settings like timeout, object
+  serverNameKey: 'x-xc-serverName', // Server URL name
+  serverSourceKey: 'x-xc-serverSource', // Server source
+  securityApiKeyPerfix: 'x-xc-apiKey', // API key type extension
+  securitySubTypeKey: 'sx-xc-securitySubType', // Security scheme subtype
+  fileNameKey: 'x-xc-fileName', // File name
+  newTokenKey: 'x-xc-oauth2-newToken', // Whether to use generated auth token
+  oAuth2Key: 'x-xc-oauth2-authFlow', // Token generation authorization type
+  oAuth2Token: 'x-xc-oauth2-token', // Existing token
   formContentTypeKey: 'x-xc-contentType',
   basicAuthKey: 'x-xc-basicAuth',
   wsMessageKey: 'x-wsMessage'
 };
 
+/**
+ * Deconstruct schema by resolving $ref references.
+ * @param data - Data containing model and resolved reference models
+ * @returns Deconstructed schema with resolved references
+ */
 const deconstruct = (data: Record<string, any>) => {
   const handler = (schema: Record<string, any>) => {
     if (Object.prototype.hasOwnProperty.call(schema, '$ref')) {
@@ -112,6 +164,11 @@ const { valueKey, enabledKey } = API_EXTENSION_KEY;
 const ajv = new Ajv();
 addFormats(ajv);
 
+/**
+ * Convert URL string to URL object or return original if invalid.
+ * @param url - URL string to convert
+ * @returns URL object or original string if invalid
+ */
 const toUrl = (url: string): URL | string => {
   if (!/^https?:\/\//.test(url)) {
     return url;
@@ -124,7 +181,13 @@ const toUrl = (url: string): URL | string => {
   }
 };
 
-const getNewItem = (metaData:ParamsItem[], config?:ParamsItem):ParamsItem|undefined => {
+/**
+ * Get new item from metadata or create default body item.
+ * @param metaData - Array of parameter items
+ * @param config - Optional configuration for default item
+ * @returns New parameter item or undefined
+ */
+const getNewItem = (metaData: ParamsItem[], config?: ParamsItem): ParamsItem | undefined => {
   const emptyItem = metaData?.find((item) => !item.name);
   if (!emptyItem) {
     return getBodyDefaultItem(config);
@@ -133,50 +196,68 @@ const getNewItem = (metaData:ParamsItem[], config?:ParamsItem):ParamsItem|undefi
   return undefined;
 };
 
+/**
+ * Extract parameters from URI string.
+ * <p>
+ * Extracts both path parameters (wrapped in {}) and query parameters
+ * from the URI string.
+ * </p>
+ * @param uri - URI string to parse
+ * @returns Array of parameter items
+ */
 const getParamsByUri = (uri = ''): ParamsItem[] => {
-  // 获取path类型参数
-  const temp: ParamsItem[] = uri.match(/{[^{}]+}/gi)?.map((item): ParamsItem => {
+  // Extract path type parameters
+  const parameters: ParamsItem[] = uri.match(/{[^{}]+}/gi)?.map((item): ParamsItem => {
     return getDefaultParams({ name: item.replace(/{(\S*)}/gi, '$1'), in: 'path' });
   }) || [];
 
   if (/\?/.test(uri)) {
-    // 获取query类型参数
+    // Extract query type parameters
     new URLSearchParams(uri.replace(/\S+\?(\S*)/g, '$1')).forEach((value, key) => {
-      temp.push(getDefaultParams({ name: key, value: value as string, in: 'query' }));
+      parameters.push(getDefaultParams({ name: key, value: value as string, in: 'query' }));
     });
   }
-  return temp;
+  return parameters;
 };
 
+/**
+ * Build URI from parameters by replacing path placeholders.
+ * <p>
+ * Replaces path parameters with their values and handles
+ * parameter validation and formatting.
+ * </p>
+ * @param uri - Original URI string
+ * @param paths - Array of path parameters
+ * @returns Processed URI string
+ */
 const getUriByParams = (uri: string, paths: ParamsItem[]): string => {
   if (!uri) {
     return '';
   }
 
-  // const pathUri = uri.split('?')[0] || '/';
   const pathUri = uri;
 
-  // 正则变量
-  let rexVar = '';
-  // path类型参数替换为格式为：{name}的占位符
+  // Regular expression variables
+  let regexVariable = '';
+  // Replace path type parameters with {name} placeholders
   const originalPath = pathUri.replace(/(\S+)\?\S*/, '$1');
   let pathname: string;
   // eslint-disable-next-line prefer-regex-literals
   const pathReg = new RegExp(/\{([a-zA-Z0-9!@$%^&*()_\-+=./]+)\}/g);
   const preUrl = decodeURIComponent(originalPath);
-  const uriPath = preUrl.match(pathReg); // 拿到 uri 上所有 {} 部分
+  const uriPath = preUrl.match(pathReg); // Get all {} parts from URI
   if (paths?.length) {
     let tempPath = paths.reduce((prevValue, currentValue) => {
-      rexVar += '(?!' + currentValue.name + ')';
+      regexVariable += '(?!' + currentValue.name + ')';
       return prevValue;
     }, decodeURIComponent(originalPath));
     if (paths?.length > (uriPath?.length || 0)) {
       tempPath += `/{${paths?.[paths?.length - 1].name}}`;
     }
-    uriPath?.forEach((i, idx) => {
-      tempPath = tempPath.replace(i, paths[idx]?.name ? `{${paths[idx].name}}` : '');
+    uriPath?.forEach((item, idx) => {
+      tempPath = tempPath.replace(item, paths[idx]?.name ? `{${paths[idx].name}}` : '');
     });
-    const pattern = new RegExp('{\\b(' + rexVar + '\\w)+\\b}', 'gi');
+    const pattern = new RegExp('{\\b(' + regexVariable + '\\w)+\\b}', 'gi');
     pathname = tempPath.replace(pattern, '');
   } else {
     pathname = originalPath.replace(/{\S+}/g, '');
@@ -184,7 +265,7 @@ const getUriByParams = (uri: string, paths: ParamsItem[]): string => {
   pathname = pathname.replace(/\/{2,}/g, '/').replace(/\/$/, '');
   return pathname;
 
-  // query类型参数替换为name=value格式
+  // Query type parameters replaced with name=value format
   // const searchParams = querys?.reduce((prevValue, currentValue) => {
   //   const { name, value } = currentValue;
   //   if (name) {
@@ -196,8 +277,12 @@ const getUriByParams = (uri: string, paths: ParamsItem[]): string => {
   // return (pathname + '?' + searchParams?.toString()).replace(/\?$/, '');
 };
 
-// 校验 url 正确性
-const isValidUrl = (url):boolean => {
+/**
+ * Validate URL correctness.
+ * @param url - URL string to validate
+ * @returns True if URL is valid, false otherwise
+ */
+const isValidUrl = (url: string): boolean => {
   try {
     // eslint-disable-next-line no-new
     new URL(url);
@@ -207,25 +292,46 @@ const isValidUrl = (url):boolean => {
   }
 };
 
-const getQueryStrFromParameter = (data) => {
-  const queryParameters = data.filter(i => i[enabledKey] && (i.name || i[valueKey]));
-  const queryParameterObj = {};
+/**
+ * Convert parameter array to query string.
+ * @param data - Array of parameter objects
+ * @returns Query string representation
+ */
+const getQueryStrFromParameter = (data: ParamsItem[]) => {
+  const queryParameters = data.filter(item => item[enabledKey] && (item.name || item[valueKey]));
+  const queryParameterObj: Record<string, string> = {};
   queryParameters.forEach(item => {
     queryParameterObj[item.name || ''] = item[valueKey] || '';
   });
   return qs.stringify(queryParameterObj, { allowDots: true, encode: true });
 };
 
-const getAllFuncNames = async () => {
+/**
+ * Get all available function names from the server.
+ * @returns Array of function names or undefined if error
+ */
+const getAllFuncNames = async (): Promise<string[] | undefined> => {
   const [error, res] = await http.get(`${TESTER}/mock/functions`);
   if (error) {
     return;
   }
-  return (res.data || []).map(i => i.name);
+  return (res.data || []).map((item: { name: string }) => item.name);
 };
 
-// 函数、变量替换
-const replaceFuncValue = async (param:{parameter?: {name: string, [valueKey]: string}[][], str?: string[], variableStr?: string[] }, allFuncNames: string[] = [], apiId?: string, targetType: ('API'|'API_CASE'|'SCENARIO') = 'API', options: { ignoreErr: boolean } = { ignoreErr: true }):Promise<any[][] | boolean> => {
+/**
+ * Replace function calls and variables in parameters and strings.
+ * <p>
+ * Processes function calls (starting with @) and variable references (wrapped in {})
+ * by calling the appropriate APIs and replacing them with actual values.
+ * </p>
+ * @param param - Object containing parameters, strings, and variable strings
+ * @param allFuncNames - Array of available function names
+ * @param apiId - API identifier for variable resolution
+ * @param targetType - Target type for parameter resolution
+ * @param options - Options including error handling
+ * @returns Processed parameters and strings or false if error
+ */
+const replaceFuncValue = async (param: {parameter?: {name: string, [valueKey]: string}[][], str?: string[], variableStr?: string[] }, allFuncNames: string[] = [], apiId?: string, targetType: ('API'|'API_CASE'|'SCENARIO') = 'API', options: { ignoreErr: boolean } = { ignoreErr: true }): Promise<any[][] | boolean> => {
   // eslint-disable-next-line prefer-regex-literals
   const funcReg = new RegExp('@\\w+\\w*\\([^)]*\\)');
   // eslint-disable-next-line prefer-regex-literals
@@ -236,11 +342,11 @@ const replaceFuncValue = async (param:{parameter?: {name: string, [valueKey]: st
   // const variableReg = new RegExp(/\{([a-zA-Z0-9!@$%^&*()_\-+=./]+)\}/);
   // eslint-disable-next-line prefer-regex-literals
   const variableRegReplace = new RegExp(/\{([a-zA-Z0-9!$%^&*_\-+=./]+)\}/g);
-  const variableNames: string[] = []; // 记录所有变量名
-  const funcStrs: string[] = []; // 记录有函数的字符串数组
+  const variableNames: string[] = []; // Record all variable names
+  const funcStrs: string[] = []; // Record strings with functions
 
   if (!allFuncNames.length) {
-    allFuncNames = await getAllFuncNames();
+    allFuncNames = await getAllFuncNames() || [];
   }
 
   const parameter = param.parameter || [];
@@ -334,7 +440,7 @@ const replaceFuncValue = async (param:{parameter?: {name: string, [valueKey]: st
             //   }
             //   return target;
             // });
-            param[valueKey] = param[valueKey].replaceAll(variableRegReplace, (target) => {
+            param[valueKey] = param[valueKey].replace(variableRegReplace, (target) => {
               if (variableValues.hasOwnProperty(extractVar(target))) {
                 return variableValues[extractVar(target)];
               }
@@ -346,7 +452,7 @@ const replaceFuncValue = async (param:{parameter?: {name: string, [valueKey]: st
       });
       str = str.map(i => {
         if (i.match(variableRegReplace)) {
-          const result = i.replaceAll(variableRegReplace, (target) => {
+          const result = i.replace(variableRegReplace, (target) => {
             // const result = response.find(item => item.name === extractVar(target));
             // if (result) {
             //   return result.value;
@@ -379,8 +485,13 @@ const replaceFuncValue = async (param:{parameter?: {name: string, [valueKey]: st
   return [paramLists, str, Object.keys(variableValues).map(i => ({ name: i, value: variableValues[i] }))];
 };
 
-// 获取所有变量名称
-export const getAllVariables = (param:{name: string, [valueKey]: string}[][], strs: string[] = []): string[] => {
+/**
+ * Get all variable names from parameters and strings.
+ * @param param - Array of parameter arrays
+ * @param strs - Array of strings to check
+ * @returns Array of variable names
+ */
+export const getAllVariables = (param: {name: string, [valueKey]: string}[][], strs: string[] = []): string[] => {
   const result: string[] = [];
   // eslint-disable-next-line prefer-regex-literals
   const variableReg = new RegExp(/\$\{([^}]+)\}/g);
@@ -404,29 +515,24 @@ export const getAllVariables = (param:{name: string, [valueKey]: string}[][], st
   });
   return result;
 };
-// 去掉变量的{}
+
+/**
+ * Extract variable name from variable reference string.
+ * @param str - Variable reference string like "{variableName}"
+ * @returns Extracted variable name or original string if no match
+ */
 const extractVar = (str: string): string => {
   const regex = /{([^}]+)}/;
   const match = str.match(regex);
   return match ? match[1] : str;
 };
 
-const getPathParamsFromApi = (parameters): {name: string, [valueKey]: string}[] => {
-  // return parameters.filter(i => i[enabledKey] && i.in === 'path' && i.name).map(i => {
-  //   if (i.schema.type === 'object') {
-  //     return {
-  //       ...i,
-  //       [valueKey]: i[valueKey] ? Object.entries(i[valueKey]).map(([key, value]) => `${key}=${JSON.stringify(value)}`).join(',') : ''
-  //     };
-  //   }
-  //   if (i.schema.type === 'array') {
-  //     return {
-  //       ...i,
-  //       [valueKey]: i[valueKey] ? i[valueKey].map(JSON.stringify).join(',') : ''
-  //     };
-  //   }
-  //   return i;
-  // });
+/**
+ * Extract path parameters from API parameters.
+ * @param parameters - Array of API parameters
+ * @returns Array of path parameters with name and value
+ */
+const getPathParamsFromApi = (parameters: ParamsItem[]): {name: string, [valueKey]: string}[] => {
   const pathStr = getQueryStrFromParameter(parameters.filter(i => i.in === 'path'));
   return pathStr
     ? pathStr.split('&').map(keyValue => {
@@ -439,7 +545,12 @@ const getPathParamsFromApi = (parameters): {name: string, [valueKey]: string}[] 
     : [];
 };
 
-const getHeaderParamsFromApi = (parameters): {name: string, [valueKey]: string}[] => {
+/**
+ * Extract header parameters from API parameters.
+ * @param parameters - Array of API parameters
+ * @returns Array of header parameters with name and value
+ */
+const getHeaderParamsFromApi = (parameters: ParamsItem[]): {name: string, [valueKey]: string}[] => {
   const headerStr = getQueryStrFromParameter(parameters.filter(i => i[enabledKey] && i.in === 'header' && i.name));
   return headerStr
     ? headerStr.split('&').map(keyValue => {
@@ -452,7 +563,12 @@ const getHeaderParamsFromApi = (parameters): {name: string, [valueKey]: string}[
     : [];
 };
 
-const getQueryParamFromApi = (parameters): {name: string, [valueKey]: string}[] => {
+/**
+ * Extract query parameters from API parameters.
+ * @param parameters - Array of API parameters
+ * @returns Array of query parameters with name and value
+ */
+const getQueryParamFromApi = (parameters: ParamsItem[]): {name: string, [valueKey]: string}[] => {
   const queryStr = getQueryStrFromParameter(parameters.filter(i => i.in === 'query' && i[enabledKey] && (i.name || i[valueKey])));
   return queryStr
     ? queryStr.split('&').map(keyValue => {
@@ -465,9 +581,14 @@ const getQueryParamFromApi = (parameters): {name: string, [valueKey]: string}[] 
     : [];
 };
 
-const getFormDataFromApi = (formData): {name: string, [valueKey]: string}[] => {
+/**
+ * Extract form data parameters from API parameters.
+ * @param formData - Array of form data parameters
+ * @returns Array of form data parameters with name and value
+ */
+const getFormDataFromApi = (formData: ParamsItem[]): {name: string, [valueKey]: string}[] => {
   const formStr = getQueryStrFromParameter(formData.filter(i => i.format !== 'binary'));
-  return (formStr
+  const formParams = formStr
     ? formStr.split('&').map((str) => {
       const [key, value] = str.split('=');
       return {
@@ -475,7 +596,16 @@ const getFormDataFromApi = (formData): {name: string, [valueKey]: string}[] => {
         [valueKey]: value || ''
       };
     })
-    : []).concat(formData.filter(i => i.format === 'binary' && i[enabledKey]));
+    : [];
+
+  const binaryParams = formData
+    .filter(i => i.format === 'binary' && i[enabledKey])
+    .map(i => ({
+      name: i.name || '',
+      [valueKey]: i[valueKey] || ''
+    }));
+
+  return [...formParams, ...binaryParams];
 };
 
 const getNameValue = {
@@ -485,114 +615,167 @@ const getNameValue = {
   getFormDataFromApi
 };
 
-export const validateMaximum = (val, max) => {
+// ----------------------------------------------------
+// Validation utilities
+// ----------------------------------------------------
+
+/**
+ * Validate maximum value constraint.
+ * @param val - Value to validate
+ * @param max - Maximum allowed value
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateMaximum = (val: number, max: number): string | undefined => {
   if (val > max) {
     return `Value must be less than ${max}`;
   }
 };
 
-export const validateMinimum = (val, min) => {
+/**
+ * Validate minimum value constraint.
+ * @param val - Value to validate
+ * @param min - Minimum allowed value
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateMinimum = (val: number, min: number): string | undefined => {
   if (val < min) {
     return `Value must be greater than ${min}`;
   }
 };
 
-export const validateNumber = (val) => {
+/**
+ * Validate number format.
+ * @param val - Value to validate
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateNumber = (val: string): string | undefined => {
   if (!/^-?\d+(\.?\d+)?$/.test(val)) {
     return 'Value must be a number';
   }
 };
 
-export const validateInteger = (val) => {
+/**
+ * Validate integer format.
+ * @param val - Value to validate
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateInteger = (val: string): string | undefined => {
   if (!/^-?\d+$/.test(val)) {
     return 'Value must be an integer';
   }
 };
 
-// export const validateFile = (val) => {
-//   if (val && !(val instanceof win.File)) {
-//     return 'Value must be a file';
-//   }
-// };
-
-export const validateBoolean = (val) => {
+/**
+ * Validate boolean value.
+ * @param val - Value to validate
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateBoolean = (val: any): string | undefined => {
   if (!(val === 'true' || val === 'false' || val === true || val === false)) {
     return 'Value must be a boolean';
   }
 };
 
-export const validateString = (val) => {
+/**
+ * Validate string value.
+ * @param val - Value to validate
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateString = (val: any): string | undefined => {
   if (val && typeof val !== 'string') {
     return 'Value must be a string';
   }
 };
 
-export const validateDateTime = (val) => {
+/**
+ * Validate DateTime value.
+ * @param val - Value to validate
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateDateTime = (val: string): string | undefined => {
   if (isNaN(Date.parse(val))) {
     return 'Value must be a DateTime';
   }
 };
 
-export const validateGuid = (val) => {
-  val = val.toString().toLowerCase();
-  if (!/^[{(]?[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}[)}]?$/.test(val)) {
+/**
+ * Validate GUID value.
+ * @param val - Value to validate
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateGuid = (val: any): string | undefined => {
+  const guidString = val.toString().toLowerCase();
+  if (!/^[{(]?[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}[)}]?$/.test(guidString)) {
     return 'Value must be a Guid';
   }
 };
 
-export const validateMaxLength = (val, max) => {
+/**
+ * Validate maximum length constraint.
+ * @param val - Value to validate
+ * @param max - Maximum allowed length
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateMaxLength = (val: string, max: number): string | undefined => {
   if (val.length > max) {
     return `Value must be no longer than ${max} character${max !== 1 ? 's' : ''}`;
   }
 };
 
-// export const validateUniqueItems = (val, uniqueItems) => {
-//   if (!val) {
-//     return;
-//   }
-//   if (uniqueItems === 'true' || uniqueItems === true) {
-//     const list = fromJS(val);
-//     const set = list.toSet();
-//     const hasDuplicates = val.length > set.size;
-//     if (hasDuplicates) {
-//       let errorsPerIndex = Set();
-//       list.forEach((item, i) => {
-//         if (list.filter(v => isFunc(v.equals) ? v.equals(item) : v === item).size > 1) {
-//           errorsPerIndex = errorsPerIndex.add(i);
-//         }
-//       });
-//       if (errorsPerIndex.size !== 0) {
-//         return errorsPerIndex.map(i => ({ index: i, error: 'No duplicates allowed.' })).toArray();
-//       }
-//     }
-//   }
-// };
-
-export const validateMinItems = (val, min) => {
+/**
+ * Validate minimum items constraint.
+ * @param val - Array to validate
+ * @param min - Minimum required items
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateMinItems = (val: any[], min: number): string | undefined => {
   if ((!val && min >= 1) || (val && val.length < min)) {
     return `Array must contain at least ${min} item${min === 1 ? '' : 's'}`;
   }
 };
 
-export const validateMaxItems = (val, max) => {
+/**
+ * Validate maximum items constraint.
+ * @param val - Array to validate
+ * @param max - Maximum allowed items
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateMaxItems = (val: any[], max: number): string | undefined => {
   if (val && val.length > max) {
     return `Array must not contain more then ${max} item${max === 1 ? '' : 's'}`;
   }
 };
 
-export const validateMinLength = (val, min) => {
+/**
+ * Validate minimum length constraint.
+ * @param val - Value to validate
+ * @param min - Minimum required length
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validateMinLength = (val: string, min: number): string | undefined => {
   if (val.length < min) {
     return `Value must be at least ${min} character${min !== 1 ? 's' : ''}`;
   }
 };
 
-export const validatePattern = (val, rxPattern) => {
-  const patt = new RegExp(rxPattern);
-  if (!patt.test(val)) {
+/**
+ * Validate pattern constraint using regular expression.
+ * @param val - Value to validate
+ * @param rxPattern - Regular expression pattern
+ * @returns Error message if validation fails, undefined if valid
+ */
+export const validatePattern = (val: string, rxPattern: string): string | undefined => {
+  const pattern = new RegExp(rxPattern);
+  if (!pattern.test(val)) {
     return 'Value must follow pattern ' + rxPattern;
   }
 };
 
+/**
+ * Convert split data array to JSON object.
+ * @param data - Array of objects with name and value
+ * @returns Parsed JSON object
+ */
 const getJsonFromSplitData = (data: {name: string, [valueKey]: string}[]) => {
   const str = data.map((item) => {
     return `${item.name}=${item[valueKey]}`;
@@ -600,66 +783,79 @@ const getJsonFromSplitData = (data: {name: string, [valueKey]: string}[]) => {
   return qs.parse(str);
 };
 
-const validateType = (data, schema) => {
+/**
+ * Validate data against JSON schema.
+ * @param data - Data to validate
+ * @param schema - JSON schema to validate against
+ * @returns Array of validation errors or empty array if valid
+ */
+const validateType = (data: any, schema: any): any[] => {
   delete schema.exampleSet;
   const validate = ajv.compile(schema);
   const valid = validate(data);
   if (!valid) {
-    return validate.errors;
+    return validate.errors || [];
   }
   return [];
 };
 
-const deepDelAttrFromObj = (data = {}, keys: string[]) => {
-  keys = uniq([...keys, valueKey, 'types', 'exampleSet', 'jsonSchema']);
+/**
+ * Deep delete attributes from object recursively.
+ * @param data - Object to process
+ * @param keys - Array of keys to delete
+ * @returns Processed object with specified keys removed
+ */
+const deepDelAttrFromObj = (data: any = {}, keys: string[]): any => {
+  const keysToDelete = uniq([...keys, valueKey, 'types', 'exampleSet', 'jsonSchema']);
   if (typeof data !== 'object') {
     return data;
   }
 
-  const _data = JSON.parse(JSON.stringify(data));
+  const clonedData = JSON.parse(JSON.stringify(data));
 
-  if (Object.prototype.toString.call(_data) === '[object Object]') {
-    keys.forEach(key => delete _data[key]);
-    Object.keys(_data).forEach(name => {
+  if (Object.prototype.toString.call(clonedData) === '[object Object]') {
+    keysToDelete.forEach(key => delete clonedData[key]);
+    Object.keys(clonedData).forEach(name => {
       if (name === 'items') {
-        _data[name] = deepDelAttrFromObj(_data[name], keys);
+        clonedData[name] = deepDelAttrFromObj(clonedData[name], keysToDelete);
       }
       if (name === 'properties') {
-        Object.keys(_data[name]).forEach(key => {
-          _data[name][key] = deepDelAttrFromObj(_data[name][key], keys);
+        Object.keys(clonedData[name]).forEach(key => {
+          clonedData[name][key] = deepDelAttrFromObj(clonedData[name][key], keysToDelete);
         });
       }
     });
   }
-  return _data;
+  return clonedData;
 };
 
-const validateParameter = (data, schema) => {
-  // if (schema.type === 'object') {
-  //   const list = transJsonToList(data, -1, 1, [], schema.properties);
-  //   const json = transListToJson(list, 'object', -1);
-  //   const error = validateType(json, schema);
-  //   return error;
-  // }
-
-  // if (schema.type === 'array') {
-  //   const list = transJsonToList(data, -1, 1, [], schema.items);
-  //   const json = transListToJson(list, 'array', -1);
-  //   const error = validateType(json, schema);
-  //   return error;
-  // }
+/**
+ * Validate parameter data against schema.
+ * @param data - Data to validate
+ * @param schema - Schema to validate against
+ * @returns Array of validation errors
+ */
+const validateParameter = (data: any, schema: any): any[] => {
   const error = validateType(data, schema);
   return error;
 };
 
-const validateQueryParameter = (data) => {
+/**
+ * Validate query parameters against their schemas.
+ * @param data - Array of query parameter items
+ * @returns True if all parameters are valid, false otherwise
+ */
+const validateQueryParameter = (data: ParamsItem[]): boolean => {
   if (!data.length) {
     return true;
   }
   const errors: any[] = [];
   data.forEach(item => {
     const schemaObj = item;
-    errors.push(...validateParameter(item[valueKey], deepDelAttrFromObj(schemaObj.schema, [])));
+    const validationErrors = validateParameter(item[valueKey], deepDelAttrFromObj(schemaObj.schema, []));
+    if (validationErrors) {
+      errors.push(...validationErrors);
+    }
   });
   if (errors.length) {
     return false;
@@ -667,14 +863,22 @@ const validateQueryParameter = (data) => {
   return true;
 };
 
-const validateBodyForm = (data) => {
+/**
+ * Validate body form data against their schemas.
+ * @param data - Array of body form items
+ * @returns True if all form data is valid, false otherwise
+ */
+const validateBodyForm = (data: ParamsItem[]): boolean => {
   if (!data.length) {
     return true;
   }
   const errors: any[] = [];
   data.forEach(item => {
     const schemaObj = item;
-    errors.push(...validateParameter(item[valueKey], deepDelAttrFromObj(schemaObj, [valueKey, 'types', 'exampleSet', 'name', enabledKey, 'key'])));
+    const validationErrors = validateParameter(item[valueKey], deepDelAttrFromObj(schemaObj, [valueKey, 'types', 'exampleSet', 'name', enabledKey, 'key']));
+    if (validationErrors) {
+      errors.push(...validationErrors);
+    }
   });
   if (errors.length) {
     return false;
@@ -682,8 +886,12 @@ const validateBodyForm = (data) => {
   return true;
 };
 
-// 将x-xc-value 的 object 类型 stringify 为  String 类型
-const travelXcValueToString = (data) => {
+/**
+ * Convert object values to strings recursively for x-xc-value fields.
+ * @param data - Data object to process
+ * @returns Processed data with object values converted to strings
+ */
+const travelXcValueToString = (data: any): any => {
   if (Object.prototype.toString.call(data) === '[object Array]') {
     data.forEach(item => {
       if (typeof item === 'object') {
@@ -702,8 +910,12 @@ const travelXcValueToString = (data) => {
   return data;
 };
 
-// 将x-xc-value 的 空object  为  String 类型
-const travelEmptyObjToString = (data) => {
+/**
+ * Convert empty objects to empty strings recursively.
+ * @param data - Data object to process
+ * @returns Processed data with empty objects converted to empty strings
+ */
+const travelEmptyObjToString = (data: any): any => {
   if (typeof data === 'object') {
     if (JSON.stringify(data) === '{}') {
       data = '';
@@ -713,8 +925,8 @@ const travelEmptyObjToString = (data) => {
         data[key] = travelEmptyObjToString(data[key]);
       });
     } else if (Object.prototype.toString.call(data) === '[object Array]') {
-      data.forEach((i, idx) => {
-        data[idx] = travelEmptyObjToString(i);
+      data.forEach((item, idx) => {
+        data[idx] = travelEmptyObjToString(item);
       });
     }
   }
@@ -744,7 +956,12 @@ export const parameterIn = [
   'path'
 ].map(i => ({ value: i, label: i }));
 
-const getDataTypeFromFormat = (format: string) => {
+/**
+ * Get data type from format string.
+ * @param format - Format string
+ * @returns Data type string
+ */
+const getDataTypeFromFormat = (format: string): string => {
   switch (format) {
     case 'int32':
     case 'int64':
@@ -757,32 +974,28 @@ const getDataTypeFromFormat = (format: string) => {
   }
 };
 
-const fileToBuffer = (file) => {
-  const fr = new FileReader();
-  // const fileName = file.name;
-  fr.readAsArrayBuffer(file);
+/**
+ * Convert file to ArrayBuffer.
+ * @param file - File object to convert
+ * @returns Promise that resolves to ArrayBuffer
+ */
+const fileToBuffer = (file: File): Promise<ArrayBuffer | null> => {
+  const fileReader = new FileReader();
+  fileReader.readAsArrayBuffer(file);
   return new Promise((resolve) => {
-    fr.addEventListener('loadend', (e) => {
-      const buf = e.target?.result;
-      resolve(buf);
+    fileReader.addEventListener('loadend', (e) => {
+      const buffer = e.target?.result as ArrayBuffer | null;
+      resolve(buffer);
     });
   });
 };
 
-const CONTENT_TYPE = [
-  'application/x-www-form-urlencoded',
-  'multipart/form-data',
-  'application/octet-stream',
-  'application/json',
-  'text/html',
-  'application/xml',
-  'application/javascript',
-  'text/plain',
-  '*/*'
-];
-const variableNameReg = new RegExp(/^[a-zA-Z0-9!@$%^&*()_\-+=./]+$/);
-
-// 解密
+/**
+ * Decode base64 encoded value.
+ * @param value - Base64 encoded string
+ * @param native - Whether to return native decoded string
+ * @returns Decoded object with name and value or raw string if native
+ */
 const decode = (value: string, native = false): { name: string; value: string; } | string => {
   if (native) {
     return dt(value);
@@ -795,7 +1008,12 @@ const decode = (value: string, native = false): { name: string; value: string; }
   };
 };
 
-// 加密
+/**
+ * Encode name and value to base64 string.
+ * @param name - Name to encode
+ * @param value - Value to encode
+ * @returns Base64 encoded string
+ */
 const encode = (name = '', value = ''): string => {
   if (!value) {
     return et(name);
@@ -838,7 +1056,13 @@ export interface ResponseState {
 }
 
 const refModelsObj = {};
-const getModelDataByRef = async (serviceId, ref) => {
+/**
+ * Get model data by reference from service.
+ * @param serviceId - Service identifier
+ * @param ref - Model reference
+ * @returns Promise that resolves to model data
+ */
+const getModelDataByRef = async (serviceId: string, ref: string) => {
   if (refModelsObj[serviceId]?.[ref]) {
     return refModelsObj[serviceId]?.[ref];
   } else {
@@ -856,7 +1080,13 @@ const getModelDataByRef = async (serviceId, ref) => {
   }
 };
 
-const dataURLtoBlob = (dataurl, type?: string) => {
+/**
+ * Convert data URL to Blob object.
+ * @param dataurl - Data URL string
+ * @param type - Optional MIME type
+ * @returns Blob object or undefined if conversion fails
+ */
+const dataURLtoBlob = (dataurl: string, type?: string): Blob | undefined => {
   try {
     const arr = dataurl.split(',');
     const mime = type || arr[0].match(/:(.*?);/)?.[1];
@@ -879,6 +1109,11 @@ interface Server {
   variables?: Record<string, any>
 }
 const variableReg = /\{[a-zA-Z0-9_]+\}/g;
+/**
+ * Get server data with variables replaced.
+ * @param dataSource - Server configuration with URL and variables
+ * @returns URL with variables replaced
+ */
 const getServerData = (dataSource: Server): string => {
   const url = dataSource.url;
   const replaced = url.replace(variableReg, match => {
@@ -888,15 +1123,26 @@ const getServerData = (dataSource: Server): string => {
   return replaced;
 };
 
-const formatBytes = (size = 0, decimal = 2):string => {
+/**
+ * Format bytes to human-readable string.
+ * @param size - Size in bytes
+ * @param decimal - Number of decimal places
+ * @returns Formatted string with unit
+ */
+const formatBytes = (size = 0, decimal = 2): string => {
   if (size === 0) return '0 B';
-  const c = 1024;
-  const e = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  const f = Math.floor(Math.log(size) / Math.log(c));
-  return parseFloat((size / Math.pow(c, f)).toFixed(decimal)) + ' ' + e[f];
+  const base = 1024;
+  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const magnitudeIndex = Math.floor(Math.log(size) / Math.log(base));
+  return parseFloat((size / Math.pow(base, magnitudeIndex)).toFixed(decimal)) + ' ' + units[magnitudeIndex];
 };
 
-const getStatusColor = (status) => {
+/**
+ * Get CSS class for HTTP status code color.
+ * @param status - HTTP status code
+ * @returns CSS class name for status color
+ */
+const getStatusColor = (status: number | string): string => {
   const statusStr = status.toString();
   if (statusStr.startsWith('4') || statusStr.startsWith('5')) {
     return 'text-status-error';
@@ -904,53 +1150,35 @@ const getStatusColor = (status) => {
   return 'text-status-success';
 };
 
-// 解析openapi parameter
+/**
+ * Analyze OpenAPI parameters by resolving references.
+ * @param data - Parameter data with schema and $ref
+ * @param modelResolves - Model resolution mapping
+ * @returns Analyzed parameter data
+ */
 const analysisParameters = (data: {name: string; schema?: Record<string, any>, $ref?: string}, modelResolves: Record<string, string>) => {
-  // function analysisObject (obj:{$ref?: string} = {}) {
-  //   if (obj.$ref) {
-  //     if (modelResolves[obj.$ref]) {
-  //       const model = JSON.parse(modelResolves[obj.$ref]);
-  //       if (model) {
-  //         delete obj.$ref;
-  //         obj = {
-  //           ...obj,
-  //           ...model
-  //         };
-  //       }
-  //     }
-  //   } else {
-  //     Object.keys(obj).forEach(key => {
-  //       if (Object.prototype.toString.call(obj[key]) === '[object Object]') {
-  //         obj[key] = analysisObject(obj[key]);
-  //       }
-  //     });
-  //   }
-
-  //   return obj;
-  // }
-
   function analysisObject (obj: { $ref?: string } = {}) {
-    const stack: { $ref?: string }[] = [obj]; // 初始化栈，包含待处理的对象
+    const stack: { $ref?: string }[] = [obj]; // Initialize stack with objects to process
 
     while (stack.length > 0) {
-      const current = stack.pop(); // 从栈中取出当前对象
+      const current = stack.pop(); // Get current object from stack
 
-      // 处理 $ref 属性
+      // Process $ref property
       if (current && current.$ref) {
         if (modelResolves[current.$ref]) {
           const model = JSON.parse(modelResolves[current.$ref]);
           if (model) {
             delete current.$ref;
-            Object.assign(current, model); // 合并对象
+            Object.assign(current, model); // Merge objects
           }
         }
       }
 
-      // 遍历当前对象的属性
+      // Traverse current object properties
       if (current) {
         Object.keys(current).forEach(key => {
           if (Object.prototype.toString.call(current[key]) === '[object Object]') {
-            stack.push(current[key]); // 将子对象推入栈中
+            stack.push(current[key] as { $ref?: string }); // Push child objects to stack
           }
         });
       }
@@ -977,7 +1205,7 @@ const analysisParameters = (data: {name: string; schema?: Record<string, any>, $
 
   if (data.schema) {
     data.schema = analysisObject(data.schema);
-    if (typeof data[valueKey] === 'string' && ['array', 'object'].includes(data.schema.type)) {
+    if (typeof data[valueKey] === 'string' && data.schema && ['array', 'object'].includes(data.schema.type)) {
       try {
         data[valueKey] = JSON.parse(data[valueKey]);
       } catch {}
@@ -987,42 +1215,50 @@ const analysisParameters = (data: {name: string; schema?: Record<string, any>, $
   return data;
 };
 
+/**
+ * Analyze OpenAPI request body by resolving references.
+ * @param bodyObj - Body object with content and $ref
+ * @param modelResolves - Model resolution mapping
+ * @returns Analyzed body object
+ */
 const analysisBody = (bodyObj: Record<string, any>, modelResolves: Record<string, any>) => {
-  function analysisObject (obj = {}) {
-    const stack = [obj]; // 初始化栈，包含待处理的对象
+  function analysisObject (obj: any = {}) {
+    const stack: any[] = [obj]; // Initialize stack with objects to process
 
     while (stack.length > 0) {
-      const current = stack.pop(); // 从栈中取出当前对象
+      const current = stack.pop(); // Get current object from stack
 
-      // 处理 $ref 属性
-      if (current.$ref) {
+      // Process $ref property
+      if (current && current.$ref) {
         if (modelResolves[current.$ref]) {
           const model = JSON.parse(modelResolves[current.$ref]);
           if (model) {
             delete current.$ref;
-            Object.assign(current, model); // 合并对象
+            Object.assign(current, model); // Merge objects
           }
         }
       }
 
-      // 遍历当前对象的属性
-      Object.keys(current).forEach(key => {
-        if (Object.prototype.toString.call(current[key]) === '[object Object]') {
-          stack.push(current[key]); // 将子对象推入栈中
-        }
-
-        // 检查并解析值
-        if (key === valueKey &&
-                typeof current[key] === 'string' &&
-                ['array', 'object'].includes(current.schema?.type) &&
-                ['array', 'object'].includes(current?.type)) {
-          try {
-            current[key] = JSON.parse(current[key]);
-          } catch {
-            // 处理 JSON 解析错误
+      // Traverse current object properties
+      if (current) {
+        Object.keys(current).forEach(key => {
+          if (Object.prototype.toString.call(current[key]) === '[object Object]') {
+            stack.push(current[key]); // Push child objects to stack
           }
-        }
-      });
+
+          // Check and parse values
+          if (key === valueKey &&
+                typeof current[key] === 'string' &&
+                  current.schema && ['array', 'object'].includes(current.schema.type) &&
+                  current.type && ['array', 'object'].includes(current.type)) {
+            try {
+              current[key] = JSON.parse(current[key]);
+            } catch {
+              // Handle JSON parsing errors
+            }
+          }
+        });
+      }
     }
 
     return obj;
@@ -1044,7 +1280,7 @@ const analysisBody = (bodyObj: Record<string, any>, modelResolves: Record<string
   if (bodyObj?.content) {
     Object.keys(bodyObj.content).forEach(type => {
       bodyObj.content[type] = analysisObject(bodyObj.content[type]);
-      if (!bodyObj.content[type][valueKey]) {
+      if (!bodyObj.content[type][valueKey] && bodyObj.content[type].schema) {
         bodyObj.content[type][valueKey] = SwaggerUI.extension.sampleFromSchemaGeneric(bodyObj.content[type].schema, { useValue: true });
       }
     });
@@ -1053,6 +1289,11 @@ const analysisBody = (bodyObj: Record<string, any>, modelResolves: Record<string
   return bodyObj;
 };
 
+/**
+ * Split duration string into value and unit.
+ * @param duration - Duration string like "10s", "5min", "2h"
+ * @returns Array with [value, unit] or empty array if no match
+ */
 const splitDuration = (duration: string): string[] => {
   if (duration.includes('h')) {
     duration = duration.replace('h', '');
@@ -1073,7 +1314,12 @@ const splitDuration = (duration: string): string[] => {
   return [];
 };
 
-const qsJsonToParamList = (data: Record<string, any>|Array<any>) => {
+/**
+ * Convert JSON object to parameter list.
+ * @param data - JSON object or array to convert
+ * @returns Array of parameter objects with name, value, and type
+ */
+const qsJsonToParamList = (data: Record<string, any> | Array<any>) => {
   if (typeof data !== 'object') {
     return [];
   }
@@ -1088,7 +1334,12 @@ const qsJsonToParamList = (data: Record<string, any>|Array<any>) => {
   return [];
 };
 
-const getDataType = (data) => {
+/**
+ * Get data type of a value.
+ * @param data - Value to check
+ * @returns Type string ('string', 'number', 'boolean', 'array', 'object', etc.)
+ */
+const getDataType = (data: any): string => {
   const type = typeof data;
   if (type !== 'object') {
     return type;
@@ -1099,14 +1350,21 @@ const getDataType = (data) => {
   if (Object.prototype.toString.call(data) === '[object Object]') {
     return 'object';
   }
+  return type;
 };
 
 /**
- *transform JSON to list<key, value>[]
- *
+ * Transform JSON to list of key-value pairs.
+ * @param data - JSON data to transform
+ * @param pid - Parent ID
+ * @param level - Current level
+ * @param defaultData - Default data array
+ * @param schema - Schema object
+ * @param topSchema - Top-level schema
+ * @returns Array of transformed key-value pairs
  */
-const transJsonToList = (data: any [] | Record<string, any>, pid = -1, level = 1, defaultData: any[] = [], schema = {}, topSchema = {}): any[] => {
-  const transArr = (data, pid = -1, level = 1, schema) => {
+const transJsonToList = (data: any [] | Record<string, any>, pid: string | number = -1, level = 1, defaultData: any[] = [], schema = {}, topSchema = {}): any[] => {
+  const transArr = (data: any[], pid: string | number = -1, level = 1, schema: any) => {
     data.forEach(i => {
       let copySchema = JSON.parse(JSON.stringify((schema || {})));
       if (['object', 'array'].includes(copySchema.type) || getDataType(i) === 'object' || getDataType(i) === 'array') {
@@ -1126,7 +1384,7 @@ const transJsonToList = (data: any [] | Record<string, any>, pid = -1, level = 1
         level += 1;
         pid = id;
         copySchema = copySchema.items || {};
-        transJsonToList(i, pid, level, result, copySchema.items || {});
+        transJsonToList(i as any[], pid, level, result, copySchema.items || {});
       } else {
         const id = utils.uuid('api');
         const idLine = [...(result.find(item => item.id === pid)?.idLine || []), id];
@@ -1144,7 +1402,7 @@ const transJsonToList = (data: any [] | Record<string, any>, pid = -1, level = 1
       }
     });
   };
-  const transObjct = (data, pid = -1, level = 1, schema) => {
+  const transObjct = (data: Record<string, any>, pid: string | number = -1, level = 1, schema: any) => {
     Object.keys(data).forEach(key => {
       let value = data[key];
       let type = schema[key]?.type || getDataType(value);
@@ -1174,7 +1432,7 @@ const transJsonToList = (data: any [] | Record<string, any>, pid = -1, level = 1
               console.log(value + 'id not a json');
             }
           }
-          transArr(value, id, level + 1, schema.properties?.[key] || {});
+          transArr(value as any[], id, level + 1, schema.properties?.[key] || {});
         }
         if (type === 'object') {
           if (typeof value === 'string') {
@@ -1184,15 +1442,15 @@ const transJsonToList = (data: any [] | Record<string, any>, pid = -1, level = 1
               console.log(value + 'id not a json');
             }
           }
-          transObjct(value, id, level + 1, schema.properties?.[key] || {});
+          transObjct(value as Record<string, any>, id, level + 1, schema.properties?.[key] || {});
         }
       }
     });
   };
 
-  const transNormal = (data, pid = -1, level = 1, _schema) => {
+  const transNormal = (data: any, pid: string | number = -1, level = 1, _schema: any) => {
     const id = utils.uuid('api');
-    const pItem = result.find(item => item.id === pid) || { type: topSchema?.type };
+    const pItem = result.find(item => item.id === pid) || { type: (topSchema as any)?.type };
     const idLine = [...(pItem?.idLine || []), id];
     let type = _schema.type || getDataType(data);
     if (!_schema.type && _schema.format) {
@@ -1211,7 +1469,7 @@ const transJsonToList = (data: any [] | Record<string, any>, pid = -1, level = 1
     });
   };
   const result:any[] = defaultData;
-  const type = schema.type || getDataType(data);
+  const type = (schema as any).type || getDataType(data);
   if (type !== 'object' && type !== 'array') {
     transNormal(data, pid, level, schema || {});
   }
@@ -1223,28 +1481,42 @@ const transJsonToList = (data: any [] | Record<string, any>, pid = -1, level = 1
     }
   }
   if (type === 'array') {
-    transArr(data, pid, level, schema.items || {});
+    transArr(data as any[], pid, level, (schema as any).items || {});
   }
   if (type === 'object') {
-    transObjct(data, pid, level, schema || {});
+    transObjct(data as Record<string, any>, pid, level, schema || {});
   }
   return result;
 };
 
-// 是否符合 assci 编码范围
-function containsAllAscii (str) {
-  return /^[\000-\177]*$/.test(str);
+/**
+ * Check if string contains only ASCII characters.
+ * @param str - String to check
+ * @returns True if string contains only ASCII characters
+ */
+function containsAllAscii (str: string): boolean {
+  return /^[\x00-\x7f]*$/.test(str);
 }
 
-const gzipFileToBase64 = async (file: File) => {
+/**
+ * Compress file to gzip and convert to base64.
+ * @param file - File to compress
+ * @returns Promise that resolves to gzipped base64 string
+ */
+const gzipFileToBase64 = async (file: File): Promise<string> => {
   return await codeUtils.gzip(file);
 };
 
-const fileToBase64 = (file) => {
+/**
+ * Convert file to base64 string.
+ * @param file - File object to convert
+ * @returns Promise that resolves to base64 string
+ */
+const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const base64ct = (e.target.result as string || '').split('base64,')[1];
+      const base64ct = (e.target?.result as string || '').split('base64,')[1];
       resolve(base64ct);
     };
     reader.onerror = () => {
@@ -1254,8 +1526,14 @@ const fileToBase64 = (file) => {
   });
 };
 
-const maxDuration = (a, b) => { // example: 1min
-  function computedSec (value, unit) {
+/**
+ * Get the maximum duration between two duration strings.
+ * @param a - First duration string
+ * @param b - Second duration string
+ * @returns The longer duration string
+ */
+const maxDuration = (a: string, b: string): string => {
+  function computedSec (value: string, unit: string): number {
     if (unit === 'h') {
       return +value * 60 * 60;
     }
@@ -1265,6 +1543,7 @@ const maxDuration = (a, b) => { // example: 1min
     if (unit === 's') {
       return +value;
     }
+    return 0;
   }
   let [aValue, aUnit] = splitDuration(a);
   if (!aValue) {
@@ -1290,7 +1569,13 @@ const maxDuration = (a, b) => { // example: 1min
   return b;
 };
 
-const formatMillisecondToShortDuraiton = (value: number, format: 'h'|'min'|'s'|'day') => {
+/**
+ * Format milliseconds to short duration string.
+ * @param value - Duration in milliseconds
+ * @param format - Target format unit
+ * @returns Formatted duration string
+ */
+const formatMillisecondToShortDuraiton = (value: number, format: 'h' | 'min' | 's' | 'day'): string => {
   if (!value) {
     return '0';
   }
@@ -1306,6 +1591,7 @@ const formatMillisecondToShortDuraiton = (value: number, format: 'h'|'min'|'s'|'
   } else if (format === 'day') {
     return dayjs.duration(value).asDays().toFixed(2) + format;
   }
+  return value + 'ms';
 };
 
 export {

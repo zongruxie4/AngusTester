@@ -1,8 +1,15 @@
-// 引入 echarts 核心模块，核心模块提供了 echarts 使用必须要的接口。
+// ----------------------------------------------------
+// ECharts configuration and setup
+// ----------------------------------------------------
+
+// Import ECharts core module - provides essential interfaces for ECharts usage
 import * as echarts from 'echarts/core';
-/** 引入柱状图and折线图图表，图表后缀都为 chart  */
+
+// Import chart types - all chart types have 'Chart' suffix
 import { BarChart, GaugeChart, LineChart, PieChart } from 'echarts/charts';
-// 引入提示框，标题，直角坐标系，数据集，内置数据转换器组件，组件后缀都为 Component
+
+// Import components - all components have 'Component' suffix
+// Includes tooltip, title, grid, dataset, and data transformer components
 import {
   DatasetComponent,
   GridComponent,
@@ -12,26 +19,40 @@ import {
   TooltipComponent,
   TransformComponent
 } from 'echarts/components';
-// 标签自动布局，全局过渡动画等特性
+
+// Import features - label auto layout, global transition animations, etc.
 import { LabelLayout, UniversalTransition } from 'echarts/features';
-// 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
+
+// Import Canvas renderer - CanvasRenderer or SVGRenderer is required
 import { CanvasRenderer } from 'echarts/renderers';
-// 注册必须的组件
-echarts.use([
+
+// Register all required components and features
+// This enables the specific chart types and functionality we need
+const registeredECharts = echarts.use([
+  // Core components
   TitleComponent,
   TooltipComponent,
   GridComponent,
   DatasetComponent,
   TransformComponent,
+
+  // Chart types
   BarChart,
-  LabelLayout,
-  GaugeChart,
-  UniversalTransition,
-  CanvasRenderer,
   LineChart,
+  PieChart,
+  GaugeChart,
+
+  // Features
+  LabelLayout,
+  UniversalTransition,
+
+  // Renderer
+  CanvasRenderer,
+
+  // Additional components
   LegendComponent,
-  ToolboxComponent,
-  PieChart
+  ToolboxComponent
 ]);
-// 导出
-export default echarts;
+
+// Export the configured ECharts instance
+export default registeredECharts;
