@@ -310,7 +310,7 @@ defineExpose({
             size="small">
             <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
               <Icon icon="icon-fenzu" />
-              <span>{{ t('commonComp.apis.selectCaseModal.group') }}</span>
+              <span>{{ t('organization.group') }}</span>
             </div>
           </Button>
         </DropdownGroup>

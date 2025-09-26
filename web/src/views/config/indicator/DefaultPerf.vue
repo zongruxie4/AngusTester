@@ -32,7 +32,7 @@ defineExpose({
       <div class="text-3 flex items-center">
         <template v-if="editable">
           <span class="cursor-pointer" @click.stop="toggleEditMode">
-            <Icon icon="icon-zhongzhi2" class="mr-1" />{{ t('actions.cancel') }}
+            <Icon icon="icon-zhongzhi2" class="mr-1" />{{ t('common.cancel') }}
           </span>
           <Button
             type="text"
@@ -46,7 +46,7 @@ defineExpose({
           class="text-3 py-0 h-5"
           type="text"
           @click.stop="toggleEditMode">
-          <Icon icon="icon-shuxie" class="mr-1" />{{ t('actions.edit') }}
+          <Icon icon="icon-shuxie" class="mr-1" />{{ t('common.edit') }}
         </Button>
       </div>
     </template>

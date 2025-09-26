@@ -325,7 +325,7 @@ const columns = [
                     size="small"
                     @click="editVersion(record)">
                     <Icon icon="icon-bianji" class="mr-1" />
-                    {{ t('actions.edit') }}
+                    {{ t('common.edit') }}
                   </Button>
                   <Button
                     type="text"

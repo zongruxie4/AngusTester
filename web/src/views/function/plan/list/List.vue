@@ -275,7 +275,7 @@ const dropdownMenuItems = [
                 <div class="flex flex-col">
                   <span class="text-xs text-theme-sub-content">{{ t('common.members') }}</span>
                   <span class="text-sm font-medium text-theme-content">
-                    {{ item.members?.length || 0 }} {{ t('unit.user') }}
+                    {{ item.members?.length || 0 }} {{ t('organization.user') }}
                   </span>
                 </div>
 
@@ -435,7 +435,7 @@ const dropdownMenuItems = [
           <div class="flex items-center justify-between h-4 leading-5">
             <RouterLink class="flex items-center space-x-1" :to="`/function#plans?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
-              <span>{{ t('actions.edit') }}</span>
+              <span>{{ t('common.edit') }}</span>
             </RouterLink>
 
             <Button
@@ -456,7 +456,7 @@ const dropdownMenuItems = [
               class="px-0 flex items-center ml-2"
               @click="handleStartPlan(item, index)">
               <Icon icon="icon-kaishi" class="mr-0.5" />
-              <span>{{ item.status.value === FuncPlanStatus.COMPLETED ? t('actions.restart') : t('actions.start') }}</span>
+              <span>{{ item.status.value === FuncPlanStatus.COMPLETED ? t('common.restart') : t('actions.start') }}</span>
             </Button>
 
             <Button

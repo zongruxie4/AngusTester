@@ -229,7 +229,7 @@ onMounted(async () => {
 
         <Button size="small" @click="handleRefresh">
           <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-          <span>{{ t('actions.refresh') }}</span>
+          <span>{{ t('common.refresh') }}</span>
         </Button>
       </div>
     </div>

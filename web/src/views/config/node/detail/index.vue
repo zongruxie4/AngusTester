@@ -214,7 +214,7 @@ onMounted(() => {
                 :loading="enabled"
                 :disabled="!canPerformActions(state.infos?.tenantId, state.infos?.createdBy)"
                 @click="handleEnableNode">
-                <Icon icon="icon-qiyong" />{{ t('node.message.enable') }}
+                <Icon icon="icon-qiyong" />{{ t('common.enable') }}
               </Button>
               <Button
                 v-else
@@ -222,7 +222,7 @@ onMounted(() => {
                 :loading="enabled"
                 :disabled="!canPerformActions(state.infos?.tenantId, state.infos?.createdBy)"
                 @click="handleEnableNode">
-                <Icon icon="icon-jinyong" />{{ t('node.message.disable') }}
+                <Icon icon="icon-jinyong" />{{ t('common.disable') }}
               </Button>
 
               <!-- Delete Button -->
@@ -439,7 +439,7 @@ onMounted(() => {
                     <div v-if="item.valueKey !== 'network'" class="pl-5 w-35">
                       <span class="text-3">{{ item.label }}</span>
                       <div class="leading-5">
-                        <label class="inline-block w-12 text-text-content">{{ t('node.message.use') }}:</label>
+                        <label class="inline-block w-12 text-text-content">{{ t('common.use') }}:</label>
                         <span class="text-black-active ">{{ sourceUse[item.valueKey] }}{{ item.unit }}</span>
                       </div>
                       <div class="leading-5">

@@ -768,7 +768,7 @@ const selectProps = {
                         :name="id + 'uploadFile'"
                         @change="uploadDownloadChange(id)">
                         <Radio :value="true">{{ t('actions.upload') }}</Radio>
-                        <Radio :value="false">{{ t('actions.download') }}</Radio>
+                        <Radio :value="false">{{ t('common.download') }}</Radio>
                       </RadioGroup>
                     </div>
 

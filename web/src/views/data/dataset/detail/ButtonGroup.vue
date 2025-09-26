@@ -87,7 +87,7 @@ const emit = defineEmits<{
         @click="emit('click', 'refresh')">
         <Icon icon="icon-shuaxin" class="text-3.5" />
         <span>
-          {{ t('actions.refresh') }}
+          {{ t('common.refresh') }}
         </span>
       </Button>
     </template>

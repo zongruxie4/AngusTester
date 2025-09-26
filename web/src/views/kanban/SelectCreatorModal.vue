@@ -61,13 +61,13 @@ const confirmSelection = (): void => {
       size="small"
       @change="resetSelectionOnTypeChange">
       <RadioButton value="USER">
-        {{ t('kanban.user') }}
+        {{ t('organization.user') }}
       </RadioButton>
       <RadioButton value="DEPT">
-        {{ t('kanban.department') }}
+        {{ t('organization.dept') }}
       </RadioButton>
       <RadioButton value="GROUP">
-        {{ t('kanban.group') }}
+        {{ t('organization.group') }}
       </RadioButton>
     </RadioGroup>
     <div class="mt-3.5">

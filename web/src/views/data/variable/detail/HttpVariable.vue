@@ -141,7 +141,7 @@ const httpConfigsRef = ref();
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>{{ t('dataVariable.detail.httpVariable.extract') }}</span>
+          <span>{{ t('common.extract') }}</span>
         </div>
       </template>
 
@@ -451,7 +451,7 @@ const httpConfigsRef = ref();
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('dataVariable.detail.httpVariable.preview') }}</span>
+          <span>{{ t('common.preview') }}</span>
         </div>
       </template>
 
@@ -462,7 +462,7 @@ const httpConfigsRef = ref();
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('dataVariable.detail.httpVariable.use') }}</span>
+          <span>{{ t('common.use') }}</span>
         </div>
       </template>
 

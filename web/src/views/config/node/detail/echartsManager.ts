@@ -184,7 +184,7 @@ class ChartDataProcessor {
     const dataTypes = [
       t('node.nodeDetail.chartOptions.cpu.idle'),
       t('node.nodeDetail.chartOptions.cpu.sys'),
-      t('node.nodeDetail.chartOptions.cpu.user'),
+      t('organization.user'),
       t('node.nodeDetail.chartOptions.cpu.wait'),
       t('node.nodeDetail.chartOptions.cpu.other'),
       t('node.nodeDetail.chartOptions.cpu.total')

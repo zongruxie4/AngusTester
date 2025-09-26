@@ -327,7 +327,7 @@ const urlMap = computed(() => {
                         class="text-theme-text-hover cursor-pointer text-3.5"
                         @click="toUpdate(item)" />
                     </Tooltip>
-                    <Tooltip :title="t('actions.edit')" placement="top">
+                    <Tooltip :title="t('common.edit')" placement="top">
                       <Icon
                         icon="icon-shuxie"
                         class="text-theme-text-hover cursor-pointer text-3.5"

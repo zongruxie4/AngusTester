@@ -247,12 +247,12 @@ onMounted(() => {
         </div>
       </Form>
       <div class="flex justify-end space-x-5 mt-5">
-        <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
+        <Button size="small" @click="cancel">{{ t('common.cancel') }}</Button>
         <Button
           size="small"
           type="primary"
           @click="handleSave">
-          {{ t('actions.confirm') }}
+          {{ t('common.confirm') }}
         </Button>
       </div>
     </Spin>

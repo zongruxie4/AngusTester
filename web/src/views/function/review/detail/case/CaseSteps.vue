@@ -60,14 +60,14 @@ const confirm = async () => {
         </div>
         <div v-show="editable" class="flex justify-end">
             <Button size="small" type="link" @click="cancel">
-                {{ t('actions.cancel') }}
+                {{ t('common.cancel') }}
             </Button>
             <Button
                 :loading="saveLoading"
                 size="small"
                 type="link"
                 @click="confirm">
-                {{ t('actions.confirm') }}
+                {{ t('common.confirm') }}
             </Button>
         </div>
     </template>

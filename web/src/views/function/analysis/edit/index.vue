@@ -262,7 +262,7 @@ onMounted(async () => {
 
       <Button size="small" @click="handleCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5 mr-1" />
-        {{ t('actions.cancel') }}
+        {{ t('common.cancel') }}
       </Button>
     </div>
 
@@ -364,7 +364,7 @@ onMounted(async () => {
             v-model:value="formData.orgId"
             class="!w-50"
             :showSearch="true"
-            :placeholder="t('functionAnalysis.editForm.selectUser')"
+            :placeholder="t('organization.placeholders.selectUser')"
             :action="`${GM}/user?fullTextSearch=true`"
             :fieldNames="{ label: 'fullName', value: 'id' }">
           </Select>
@@ -373,7 +373,7 @@ onMounted(async () => {
             v-show="formData.orgType === AuthObjectType.DEPT"
             v-model:value="formData.orgId"
             class="!w-50"
-            :placeholder="t('functionAnalysis.editForm.selectDepartment')"
+            :placeholder="t('organization.placeholders.selectDepartment')"
             :showSearch="true"
             :action="`${GM}/dept?fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }">
@@ -383,7 +383,7 @@ onMounted(async () => {
             v-show="formData.orgType === AuthObjectType.GROUP"
             v-model:value="formData.orgId"
             class="!w-50"
-            :placeholder="t('functionAnalysis.editForm.selectGroup')"
+            :placeholder="t('organization.placeholders.selectGroup')"
             :showSearch="true"
             :action="`${GM}/group?fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }">

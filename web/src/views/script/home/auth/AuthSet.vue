@@ -174,7 +174,7 @@ onBeforeUnmount(() => {
                   && permissionsMap[item]?.permissions.length! < props.permissions.length)"
                 class="whitespace-nowrap"
                 @change="(event: { target: { checked: boolean } }) => checkAllChange(event, item)">
-                {{ t('scriptHome.globalAuth.authSet.all') }}
+                {{ t('common.all') }}
               </Checkbox>
               <CheckboxGroup
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"

@@ -183,7 +183,7 @@ export const nodeUseProgresses = [
     valueKey: 'network-up'
   },
   {
-    label: t('actions.download'),
+    label: t('common.download'),
     value: 29,
     valueKey: 'network-down'
   }

@@ -57,7 +57,7 @@ export function useButtonGroup () {
     {
       key: 'refresh',
       icon: 'icon-shuaxin',
-      text: t('actions.refresh'),
+      text: t('common.refresh'),
       type: 'default' as const,
       size: 'small' as const
     }

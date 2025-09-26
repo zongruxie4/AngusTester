@@ -266,7 +266,7 @@ const typeChange = () => {
           <IconRequired />{{ t('xcan_exec.name') }}
         </div>
         <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 34px;">{{ t('common.description') }}</div>
-        <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 20px;">{{ t('xcan_exec.define') }}/{{ t('xcan_exec.extract') }}</div>
+        <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 20px;">{{ t('common.extract') }}</div>
         <template v-if="variable.type">
           <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 24px;">{{ t('xcan_exec.extractionMethod') }}</div>
           <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_exec.extractionParameterName') }}</div>
@@ -302,7 +302,7 @@ const typeChange = () => {
           <RadioGroup v-model:value="variable.type" @change="typeChange">
             <Radio :value="false">{{ t('xcan_exec.define') }}</Radio>
             <Radio :value="true">
-              <span class="flex items-center">{{ t('xcan_exec.extract') }}
+              <span class="flex items-center">{{ t('common.extract') }}
                 <Tooltip
                   :title="t('xcan_exec.defineExtractVariableTip')"
                   placement="topLeft"

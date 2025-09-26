@@ -60,7 +60,7 @@ const descriptionText = t('common.description');
       v-model:activeKey="activeKey"
       size="small"
       style="height: calc(100% - 18px);">
-      <TabPane key="user" :tab="t('scenario.auth.tabs.user')">
+      <TabPane key="user" :tab="t('organization.user')">
         <GroupSet
           key="user"
           v-model:checkedId="checkedUserId"
@@ -78,7 +78,7 @@ const descriptionText = t('common.description');
           :projectId="props.projectId"
           class="flex-1" />
       </TabPane>
-      <TabPane key="dept" :tab="t('scenario.auth.tabs.dept')">
+      <TabPane key="dept" :tab="t('organization.dept')">
         <GroupSet
           key="dept"
           v-model:checkedId="checkedDeptId"
@@ -96,7 +96,7 @@ const descriptionText = t('common.description');
           :projectId="props.projectId"
           class="flex-1" />
       </TabPane>
-      <TabPane key="group" :tab="t('scenario.auth.tabs.group')">
+      <TabPane key="group" :tab="t('organization.group')">
         <GroupSet
           key="group"
           v-model:checkedId="checkedGroupId"

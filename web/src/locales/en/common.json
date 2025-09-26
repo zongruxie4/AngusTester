@@ -159,6 +159,7 @@
   },
   "actions": {
     "view": "View",
+    "detail": "Detail",
     "add": "Add",
     "edit": "Edit",
     "delete": "Delete",
@@ -168,6 +169,7 @@
     "saveAndContinue": "Save and Continue",
     "saveAndCopy": "Save and Copy",
     "saveAndAdd": "Save and Add Next",
+    "archiveToService": "Archive to Service",
     "modify": "Modify",
     "rename": "Rename",
     "cancel": "Cancel",
@@ -182,6 +184,7 @@
     "cancelSearch": "Cancel search",
     "moveUp": "Move Up",
     "moveDown": "Move Down",
+    "moveToUpperLevel": "Move to Upper Level",
     "remove": "Remove",
     "select": "Select",
     "import": "Import",
@@ -222,7 +225,7 @@
     "sort": "Sort",
     "group": "Group",
     "noGroup": "No Group",
-    "Previous Step": "Previous Step",
+    "previousStep": "Previous Step",
     "nextStep": "Next Step",
     "more": "More",
     "expand": "Expand",
@@ -265,8 +268,6 @@
     "myActivity": "My Activities",
     "createdByMe": "Created by Me",
     "modifiedByMe": "Modified by Me",
-    "addByMe": "Added by Me",
-    "tester": "Test for me",
     "myResponsible": "Owned by me"
   },
   "page": {

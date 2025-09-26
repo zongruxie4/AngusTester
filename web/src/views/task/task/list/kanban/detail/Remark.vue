@@ -134,7 +134,7 @@ const isContentTooLong = () => {
           size="small"
           type="primary"
           @click="handleSubmitRemark">
-          {{ t('task.editModal.actions.confirm') }}
+          {{ t('common.confirm') }}
         </Button>
       </div>
     </div>

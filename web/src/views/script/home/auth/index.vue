@@ -107,7 +107,7 @@ const bodyStyle = {
         size="small"
         style="height: calc(100% - 18px);">
         <!-- User tab -->
-        <TabPane key="user" :tab="t('scriptHome.globalAuth.tabs.user')">
+        <TabPane key="user" :tab="t('organization.user')">
           <GroupSet
             key="user"
             v-model:checkedId="checkedUserId"
@@ -127,7 +127,7 @@ const bodyStyle = {
         </TabPane>
 
         <!-- Department tab -->
-        <TabPane key="dept" :tab="t('scriptHome.globalAuth.tabs.dept')">
+        <TabPane key="dept" :tab="t('organization.dept')">
           <GroupSet
             key="dept"
             v-model:checkedId="checkedDeptId"
@@ -147,7 +147,7 @@ const bodyStyle = {
         </TabPane>
 
         <!-- Group tab -->
-        <TabPane key="group" :tab="t('scriptHome.globalAuth.tabs.group')">
+        <TabPane key="group" :tab="t('organization.group')">
           <GroupSet
             key="group"
             v-model:checkedId="checkedGroupId"

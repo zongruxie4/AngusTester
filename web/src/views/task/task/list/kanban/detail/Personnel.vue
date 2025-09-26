@@ -372,7 +372,7 @@ const handleTesterSelectionBlur = async () => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('assigneeId')">
-                {{ t('task.detailInfo.personnel.actions.assignToMe') }}
+                {{ t('common.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isAssigneeEditing">
@@ -422,7 +422,7 @@ const handleTesterSelectionBlur = async () => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('confirmerId')">
-                {{ t('task.detailInfo.personnel.actions.assignToMe') }}
+                {{ t('common.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isConfirmerEditing">
@@ -462,7 +462,7 @@ const handleTesterSelectionBlur = async () => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('testerId')">
-                {{ t('task.detailInfo.personnel.actions.assignToMe') }}
+                {{ t('common.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isTesterEditing">

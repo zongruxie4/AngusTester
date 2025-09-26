@@ -655,7 +655,7 @@ const handleSaveOk = () => {
           :disabled="props.disabled || syncList.length > 9 || addBtnDisabled"
           @click="addSyncInfo">
           <Icon icon="icon-jia" class="mr-1" />
-          {{ t('service.syncConfig.actions.add') }}
+          {{ t('common.add') }}
         </Button>
         <Button
           size="small"
@@ -723,7 +723,7 @@ const handleSaveOk = () => {
             {{ t('service.syncConfig.tips.lastSync') }}<Colon class="ml-0.5 mr-2" />{{ sync?.lastSyncDate || "--" }}
           </div>
           <div class="text-3 flex-none ml-2 -mt-1">
-            <Tooltip :title="t('actions.edit')" placement="top">
+            <Tooltip :title="t('common.edit')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-shuxie"
@@ -925,7 +925,7 @@ const handleSaveOk = () => {
                   class="px-0 mx-2"
                   :disabled="syncList.length === 1 && sync.isAdd"
                   @click="(e) => cancelEdit(e,sync)">
-                  {{ t('actions.cancel') }}
+                  {{ t('common.cancel') }}
                 </Button>
                 <Button
                   size="small"

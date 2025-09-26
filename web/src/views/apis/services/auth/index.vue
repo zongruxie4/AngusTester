@@ -44,7 +44,7 @@ onMounted(() => {
       v-model:activeKey="activeKey"
       size="small"
       style="height: calc(100% - 18px);">
-      <TabPane key="user" :tab="t('service.authSetting.tabs.user')">
+      <TabPane key="user" :tab="t('organization.user')">
         <GroupSet
           key="user"
           v-model:checkedId="checkedUserId"
@@ -61,7 +61,7 @@ onMounted(() => {
           type="USER"
           class="flex-1" />
       </TabPane>
-      <TabPane key="dept" :tab="t('service.authSetting.tabs.dept')">
+      <TabPane key="dept" :tab="t('organization.dept')">
         <GroupSet
           key="dept"
           v-model:checkedId="checkedDeptId"
@@ -78,7 +78,7 @@ onMounted(() => {
           :projectPermissions="servicesPermissions"
           class="flex-1" />
       </TabPane>
-      <TabPane key="group" :tab="t('service.authSetting.tabs.group')">
+      <TabPane key="group" :tab="t('organization.group')">
         <GroupSet
           key="group"
           v-model:checkedId="checkedGroupId"

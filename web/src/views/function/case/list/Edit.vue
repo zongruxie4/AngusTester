@@ -612,7 +612,7 @@ onMounted(() => {
                   size="small"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="setTesterForMe">
-                  {{ t('functionCase.addCaseModal.assignToMe') }}
+                  {{ t('common.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -926,7 +926,7 @@ onMounted(() => {
               size="small"
               class="ml-5 px-3"
               @click="close">
-              {{ t('actions.cancel') }}
+              {{ t('common.cancel') }}
             </Button>
           </div>
         </FormItem>

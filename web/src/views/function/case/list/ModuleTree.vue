@@ -271,7 +271,7 @@ const onMenuClick = (menu, record) => {
             size="small"
             class="px-0 py-0 mr-1"
             @click="cancelEdit">
-            {{ t('actions.cancel') }}
+            {{ t('common.cancel') }}
           </Button>
         </div>
 
@@ -299,7 +299,7 @@ const onMenuClick = (menu, record) => {
                 </MenuItem>
                 <MenuItem v-if="index > 0 || +pid > 0" key="up">
                   <Icon icon="icon-shangyi" />
-                  {{ index < 1 ? t('functionCase.moduleTree.moveToUpperLevel') : t('actions.moveUp') }}
+                  {{ index < 1 ? t('actions.moveToUpperLevel') : t('actions.moveUp') }}
                 </MenuItem>
                 <MenuItem v-if="!isLast" key="down">
                   <Icon icon="icon-xiayi" />
@@ -311,7 +311,7 @@ const onMenuClick = (menu, record) => {
                 </MenuItem>
                 <MenuItem key="edit">
                   <Icon icon="icon-bianji" />
-                  {{ t('actions.edit') }}
+                  {{ t('common.edit') }}
                 </MenuItem>
                 <MenuItem key="del">
                   <Icon icon="icon-qingchu" />

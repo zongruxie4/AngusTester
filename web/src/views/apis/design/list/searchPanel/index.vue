@@ -56,7 +56,7 @@ const searchPanelOptions = [
 const menuItems = computed(() => [
   {
     key: '',
-    name: t('quickSearch.all')
+    name: t('common.all')
   },
   {
     key: 'createdBy',

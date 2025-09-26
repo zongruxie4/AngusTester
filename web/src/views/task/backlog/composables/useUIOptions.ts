@@ -205,12 +205,12 @@ export function useUIOptions (
   const quickSearchFilters = computed(() => [
     {
       key: 'all',
-      label: t('backlog.quickSearch.all'),
+      label: t('common.all'),
       isActive: false
     },
     {
       key: 'createdByMe',
-      label: t('backlog.quickSearch.createdByMe'),
+      label: t('quickSearch.createdByMe'),
       isActive: false
     },
     {
@@ -220,7 +220,7 @@ export function useUIOptions (
     },
     {
       key: 'lastDay',
-      label: t('backlog.quickSearch.last1Day'),
+      label: t('quickSearch.last1Day'),
       isActive: false
     },
     {

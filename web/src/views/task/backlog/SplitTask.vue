@@ -491,7 +491,7 @@ onMounted(() => {
               type="default"
               size="small"
               @click="cancelAISplitMode">
-              {{ t('actions.cancel') }}
+              {{ t('common.cancel') }}
             </Button>
           </div>
         </template>

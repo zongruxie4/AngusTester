@@ -248,9 +248,9 @@ provide('serviceId', props.id);
         size="small"
         type="primary"
         @click="confirm">
-        {{ t('actions.confirm') }}
+        {{ t('common.confirm') }}
       </Button>
-      <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
+      <Button size="small" @click="cancel">{{ t('common.cancel') }}</Button>
     </div>
   </div>
 </template>

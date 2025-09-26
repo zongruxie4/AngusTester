@@ -260,7 +260,7 @@ onMounted(() => {
           size="small"
           class="mr-5"
           @click="closeModal">
-          {{ t('actions.cancel') }}
+          {{ t('common.cancel') }}
         </Button>
       </template>
       <Button
@@ -268,7 +268,7 @@ onMounted(() => {
         size="small"
         :loading="isLoading || progressing"
         @click="saveModalData">
-        {{ t('actions.confirm') }}
+        {{ t('common.confirm') }}
       </Button>
     </div>
   </div>

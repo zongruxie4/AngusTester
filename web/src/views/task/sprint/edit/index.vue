@@ -691,7 +691,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="startSprint">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>{{ t('actions.restart') }}</span>
+          <span>{{ t('common.restart') }}</span>
         </Button>
 
         <Button
@@ -771,7 +771,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="refreshSprintData">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span>{{ t('actions.refresh') }}</span>
+          <span>{{ t('common.refresh') }}</span>
         </Button>
       </template>
       <Button
@@ -780,7 +780,7 @@ onMounted(() => {
         class="flex items-center"
         @click="closeCurrentTab">
         <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
-        <span>{{ t('actions.cancel') }}</span>
+        <span>{{ t('common.cancel') }}</span>
       </Button>
     </div>
 

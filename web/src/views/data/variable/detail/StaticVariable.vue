@@ -179,7 +179,7 @@ const handleBlurValue = (targetText: string) => {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('dataVariable.detail.staticVariable.preview') }}</span>
+          <span>{{ t('common.preview') }}</span>
         </div>
       </template>
 
@@ -190,7 +190,7 @@ const handleBlurValue = (targetText: string) => {
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('dataVariable.detail.staticVariable.use') }}</span>
+          <span>{{ t('common.use') }}</span>
         </div>
       </template>
 

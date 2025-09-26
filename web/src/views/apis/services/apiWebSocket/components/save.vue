@@ -280,7 +280,7 @@ onMounted(async () => {
         class="rounded"
         size="small"
         @click="handleClose">
-        {{ t('actions.cancel') }}
+        {{ t('common.cancel') }}
       </Button>
       <p v-if="form.status === 'RELEASED'" class="text-3 text-status-orange mt-1">{{ t('service.webSocketSave.messages.releasedWarning') }}</p>
     </FormItem>

@@ -251,7 +251,7 @@ watch(() => props.id, newValue => {
         :loading="loading"
         @click="loadCaseData">
         <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-        <span>{{ t('actions.refresh') }}</span>
+        <span>{{ t('common.refresh') }}</span>
       </Button>
     </div>
     <Table
@@ -278,7 +278,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="handleSingleDebug(record)">
             <Icon icon="icon-tiaoshi" class="mr-1" />
-            <span>{{ t('actions.debug') }}</span>
+            <span>{{ t('common.debug') }}</span>
           </Button>
           <Button
             :loading="cloneLoadingMap[record.id]"
@@ -294,7 +294,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="enabled(record)">
             <Icon icon="icon-qiyong" class="mr-1 text-3.5" />
-            <span>{{ record.enabled ? t('actions.disable') : t('actions.enable') }}</span>
+            <span>{{ record.enabled ? t('common.enable') }}</span>
           </Button>
           <Button
             :loading="delLoadingMap[record.id]"

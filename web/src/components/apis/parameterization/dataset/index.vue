@@ -355,7 +355,7 @@ const hintTextMap = {
               </template>
 
               <template v-else>
-                <TabPane key="value" :tab="t('commonComp.apis.parameterizationDataset.extract')">
+                <TabPane key="value" :tab="t('common.extract')">
                   <ExtractParameters
                     :dataSource="item.parameters"
                     :columnIndex="+item.extraction.columnIndex"
@@ -364,11 +364,11 @@ const hintTextMap = {
                 </TabPane>
               </template>
 
-              <TabPane key="preview" :tab="t('commonComp.apis.parameterizationDataset.preview')">
+              <TabPane key="preview" :tab="t('common.preview')">
                 <PreviewData :dataSource="item" />
               </TabPane>
 
-              <TabPane key="use" :tab="t('commonComp.apis.parameterizationDataset.use')">
+              <TabPane key="use" :tab="t('common.use')">
                 <DataSetUseList :id="item.id" />
               </TabPane>
             </Tabs>

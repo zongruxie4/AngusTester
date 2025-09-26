@@ -8,7 +8,7 @@ export const contentTreeData = [
     key: 'basic'
   },
   {
-    title: t('reportAdd.taskContent.contentTree.user'),
+    title: t('organization.user'),
     key: 'user'
   },
   {

@@ -242,7 +242,7 @@ onMounted(() => {
           {{ t('actions.save') }}
         </Button>
         <Button size="small" @click="handleClose">
-          {{ t('actions.cancel') }}
+          {{ t('common.cancel') }}
         </Button>
         <Hints
           :text="t('service.apiSliderSave.tips.duplicateApi')"

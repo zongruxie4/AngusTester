@@ -17,9 +17,9 @@ export function useCreatorSelectConfig (currentType: { value: CreatorObjectType 
   });
 
   const placeholder = computed<string>(() => {
-    if (currentType.value === 'USER') return t('kanban.selectUser');
-    if (currentType.value === 'DEPT') return t('kanban.selectDepartment');
-    return t('kanban.selectGroup');
+    if (currentType.value === 'USER') return t('organization.placeholders.selectUser');
+    if (currentType.value === 'DEPT') return t('organization.placeholders.selectDepartment');
+    return t('organization.placeholders.selectGroup');
   });
 
   const fieldNames = computed<SelectFieldNames>(() => {

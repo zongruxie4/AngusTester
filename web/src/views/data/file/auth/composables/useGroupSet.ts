@@ -107,19 +107,19 @@ export function useGroupSet (
       case 'dept':
         nameKey.value = 'name';
         idKey.value = 'id';
-        placeholder.value = t('fileSpace.globalAuth.groupSet.placeholders.dept');
+        placeholder.value = t('organization.dept');
         apiPath.value = `${GM}/app/${props.appId}/auth/dept`;
         break;
       case 'group':
         nameKey.value = 'name';
         idKey.value = 'id';
-        placeholder.value = t('fileSpace.globalAuth.groupSet.placeholders.group');
+        placeholder.value = t('organization.group');
         apiPath.value = `${GM}/app/${props.appId}/auth/group`;
         break;
       case 'user':
         nameKey.value = 'fullName';
         idKey.value = 'id';
-        placeholder.value = t('fileSpace.globalAuth.groupSet.placeholders.user');
+        placeholder.value = t('organization.user');
         apiPath.value = `${GM}/app/${props.appId}/auth/user`;
         break;
     }

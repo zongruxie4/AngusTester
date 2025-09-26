@@ -247,7 +247,7 @@ onMounted(() => {
           class="flex items-center space-x-1 leading-6.5 px-1.75"
           :to="`/function#plans?id=${currentPlanId}&type=edit`">
           <Icon icon="icon-shuxie" class="text-3.5" />
-          <span>{{ t('actions.edit') }}</span>
+          <span>{{ t('common.edit') }}</span>
         </RouterLink>
       </Button>
 
@@ -285,7 +285,7 @@ onMounted(() => {
         class="flex items-center"
         @click="refreshPlanData">
         <Icon class="mr-1 flex-shrink-0" icon="icon-shuaxin" />
-        <span>{{ t('actions.refresh') }}</span>
+        <span>{{ t('common.refresh') }}</span>
       </Button>
     </div>
 

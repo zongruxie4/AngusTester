@@ -4,7 +4,7 @@ const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
 export const CollapseButtonGroup = [
   {
-    label: t('actions.edit'),
+    label: t('common.edit'),
     value: 'edit',
     auth: 'VIEW',
     icon: 'icon-bianji',
@@ -156,7 +156,7 @@ export const ButtonGroup = [
         tip: t('service.apis.buttonGroup.reTestTip')
       },
       {
-        name: t('service.apis.buttonGroup.reopen'),
+        name: t('common.reopen'),
         key: 'reopen',
         permission: 'TEST',
         disabled: false,

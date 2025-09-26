@@ -253,7 +253,7 @@ onMounted(() => {
             <template #default>
               <div class="flex items-center cursor-pointer text-gray-600 space-x-1 hover:text-gray-800 text-xs">
                 <Icon icon="icon-shuaxin" class="text-xs" />
-                <span>{{ t('actions.refresh') }}</span>
+                <span>{{ t('common.refresh') }}</span>
               </div>
             </template>
           </IconRefresh>
@@ -329,7 +329,7 @@ onMounted(() => {
                         size="small"
                         class="px-2 text-gray-500 hover:text-gray-700"
                         @click="cancelEdit">
-                        {{ t('module.cancel') }}
+                        {{ t('common.cancel') }}
                       </Button>
                     </div>
 
@@ -381,7 +381,7 @@ onMounted(() => {
                               </MenuItem>
                               <MenuItem key="edit" class="flex items-center space-x-2 py-2">
                                 <Icon icon="icon-bianji" class="text-blue-600 mr-1" />
-                                <span>{{ t('actions.edit') }}</span>
+                                <span>{{ t('common.edit') }}</span>
                               </MenuItem>
                               <MenuItem key="del" class="flex items-center space-x-2 py-2 text-red-600">
                                 <Icon icon="icon-qingchu" class="text-red-600 mr-1" />

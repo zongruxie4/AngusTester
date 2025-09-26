@@ -380,7 +380,7 @@ onBeforeUnmount(() => {
         @click="emit('loadInteface')">
         <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
           <Icon icon="icon-shuaxin" />
-          <span>{{ t('actions.refresh') }}</span>
+          <span>{{ t('common.refresh') }}</span>
         </div>
       </Button>
     </div>

@@ -1318,7 +1318,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       const menuItems: ActionMenuItem[] = [
         {
-          name: t('actions.edit'),
+          name: t('common.edit'),
           key: 'edit',
           icon: 'icon-shuxie',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
@@ -1382,7 +1382,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (status === TaskStatus.CANCELED || status === TaskStatus.COMPLETED) {
         menuItems.push({
-          name: t('actions.reopen'),
+          name: t('common.reopen'),
           key: 'reopen',
           icon: 'icon-zhongxindakaiceshirenwu',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isAssignee,
@@ -1391,7 +1391,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
 
         menuItems.push({
-          name: t('actions.restart'),
+          name: t('common.restart'),
           key: 'restart',
           icon: 'icon-zhongxinkaishiceshi',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.RESTART_TASK),
@@ -1402,7 +1402,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (status !== TaskStatus.CANCELED && status !== TaskStatus.COMPLETED) {
         menuItems.push({
-          name: t('actions.cancel'),
+          name: t('common.cancel'),
           key: 'cancel',
           icon: 'icon-zhongzhi2',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
@@ -1583,8 +1583,8 @@ onMounted(() => {
             class="w-50 flex-shrink-0 col-item border-r border-solid border-theme-text-box flex items-center px-2.5 py-1.5 space-x-1.5 head-container">
             <Tooltip trigger="hover">
               <template #title>
-                <span v-if="!isGroupExpanded">{{ t('task.kanbanView.group.expandAll') }}</span>
-                <span v-else>{{ t('task.kanbanView.group.collapseAll') }}</span>
+                <span v-if="!isGroupExpanded">{{ t('common.expandAll') }}</span>
+                <span v-else>{{ t('common.collapseAll') }}</span>
               </template>
               <Icon
                 v-if="!isGroupExpanded"

@@ -710,9 +710,9 @@ const currentUserId = computed(() => {
 
 const modalTitle = computed(() => {
   if (props.taskId) {
-    return t('actions.edit');
+    return t('common.edit');
   }
-  return t('actions.add');
+  return t('common.add');
 });
 
 const isTaskTypeReadonly = computed(() => {
@@ -1036,7 +1036,7 @@ const getPopupContainer = () => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToRole('assigneeId')">
-                  {{ t('backlog.editForm.buttons.assignToMe') }}
+                  {{ t('common.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1068,7 +1068,7 @@ const getPopupContainer = () => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToRole('confirmerId')">
-                  {{ t('backlog.editForm.buttons.assignToMe') }}
+                  {{ t('common.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1118,7 +1118,7 @@ const getPopupContainer = () => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToRole('testerId')">
-                  {{ t('backlog.editForm.buttons.assignToMe') }}
+                  {{ t('common.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1438,7 +1438,7 @@ const getPopupContainer = () => {
         class="text-3 leading-3"
         size="small"
         @click="cancelModal">
-        {{ t('actions.cancel') }}
+        {{ t('common.cancel') }}
       </Button>
       <Button
         v-if="shouldShowContinueButton"
@@ -1455,7 +1455,7 @@ const getPopupContainer = () => {
         size="small"
         :disabled="isLoading"
         @click="submitForm(false)">
-        {{ t('actions.confirm') }}
+        {{ t('common.confirm') }}
       </Button>
     </template>
   </Modal>

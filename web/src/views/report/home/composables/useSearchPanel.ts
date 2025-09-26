@@ -83,7 +83,7 @@ export function useSearchPanel (
   const menuItems: MenuItem[] = [
     {
       key: 'none',
-      name: t('reportHome.searchPanel.menuItems.all')
+      name: t('common.all')
     },
     {
       key: 'createdBy',
@@ -95,15 +95,15 @@ export function useSearchPanel (
     },
     {
       key: 'lastDay',
-      name: t('reportHome.searchPanel.menuItems.last1Day')
+      name: t('quickSearch.last1Day')
     },
     {
       key: 'lastThreeDays',
-      name: t('reportHome.searchPanel.menuItems.last3Days')
+      name: t('quickSearch.last3Days')
     },
     {
       key: 'lastWeek',
-      name: t('reportHome.searchPanel.menuItems.last7Days')
+      name: t('quickSearch.last7Days')
     }
   ];
 

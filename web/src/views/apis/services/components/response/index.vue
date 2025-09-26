@@ -178,7 +178,7 @@ const copyText = computed(() => {
           :class="{'res-tab-active':currentTabId==='preview'}"
           class="flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer bg-gray-light"
           @click="handleSelect('preview')">
-          {{ t('service.apis.response.preview') }}
+          {{ t('common.preview') }}
         </div>
       </div>
       <div

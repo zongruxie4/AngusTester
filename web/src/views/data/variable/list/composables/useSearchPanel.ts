@@ -81,19 +81,19 @@ export function useSearchPanel () {
   const menuItems = computed(() => [
     {
       key: '',
-      name: t('dataVariable.list.searchPanel.all')
+      name: t('common.all')
     },
     {
       key: 'createdBy',
-      name: t('dataVariable.list.searchPanel.createdByMe')
+      name: t('quickSearch.createdByMe')
     },
     {
       key: 'lastModifiedBy',
-      name: t('dataVariable.list.searchPanel.modifiedByMe')
+      name: t('quickSearch.modifiedByMe')
     },
     {
       key: 'lastDay',
-      name: t('dataVariable.list.searchPanel.lastDay')
+      name: t('quickSearch.last1Day')
     },
     {
       key: 'lastThreeDays',

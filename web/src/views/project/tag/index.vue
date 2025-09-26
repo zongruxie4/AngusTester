@@ -253,7 +253,7 @@ onMounted(() => {
                     <template #default>
                       <div class="flex items-center cursor-pointer text-gray-600 space-x-1 hover:text-gray-800 text-xs">
                         <Icon icon="icon-shuaxin" class="text-xs" />
-                        <span>{{ t('actions.refresh') }}</span>
+                        <span>{{ t('common.refresh') }}</span>
                       </div>
                     </template>
                   </IconRefresh>
@@ -285,7 +285,7 @@ onMounted(() => {
                       size="small"
                       class="px-0 py-0 text-xs"
                       @click="cancelEdit">
-                      {{ t('actions.cancel') }}
+                      {{ t('common.cancel') }}
                     </Button>
                   </div>
 

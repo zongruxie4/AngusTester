@@ -233,7 +233,7 @@ defineExpose({
                 <template #default>
                   <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                     <Icon icon="icon-shuaxin" />
-                    <span class="ml-1">{{ t('actions.refresh') }}</span>
+                    <span class="ml-1">{{ t('common.refresh') }}</span>
                   </div>
                 </template>
               </IconRefresh>
@@ -385,14 +385,14 @@ defineExpose({
               <div class="project-actions-section">
                 <div class="edit-action-row">
                   <Button
-                    :title="t('actions.edit')"
+                    :title="t('common.edit')"
                     size="small"
                     type="text"
                     :disabled="!canUserEditProject(item)"
                     class="action-button edit-action"
                     @click="handleEditProject(item)">
                     <Icon icon="icon-bianji" class="text-3.5 cursor-pointer text-theme-text-hover" />
-                    {{ t('actions.edit') }}
+                    {{ t('common.edit') }}
                   </Button>
                 </div>
 
@@ -416,7 +416,7 @@ defineExpose({
                       type="text"
                       class="action-button more-action">
                       <Icon icon="icon-gengduo" class="more-options-icon" />
-                      {{ t('actions.more') }}
+                      {{ t('common.more') }}
                     </Button>
                   </Dropdown>
                 </div>

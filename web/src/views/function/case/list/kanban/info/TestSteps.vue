@@ -121,12 +121,12 @@ onMounted(() => {
       :readonly="!editFlag" />
 
     <div v-show="editFlag" class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
-      <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
+      <Button size="small" @click="cancel">{{ t('common.cancel') }}</Button>
       <Button
         size="small"
         type="primary"
         @click="ok">
-        {{ t('actions.confirm') }}
+        {{ t('common.confirm') }}
       </Button>
     </div>
   </div>

@@ -684,7 +684,7 @@ defineExpose({
                         v-model:value="dataMap[id].testType"
                         :name="id + 'testType'"
                         @change="testTypeChange(id)">
-                        <Radio value="ADD">{{ t('actions.add') }}</Radio>
+                        <Radio value="ADD">{{ t('common.add') }}</Radio>
                         <Radio value="DELETE">{{ t('actions.delete') }}</Radio>
                         <Radio value="SEARCH">{{ t('actions.search') }}</Radio>
                         <Radio value="MODIFY">{{ t('actions.modify') }}</Radio>
@@ -905,7 +905,7 @@ defineExpose({
                         <div class="flex-1 rounded border border-solid px-3.5 py-2 border-theme-text-box break-all">
                           <div class="flex items-center mb-2.5"><span>{{ t('ldapPlugin.uiConfig.defaultTestTypeLogic') }}</span><Colon /></div>
                           <div class="space-y-1.5 text-theme-sub-content">
-                            <div>{{ t('actions.add') }}</div>
+                            <div>{{ t('common.add') }}</div>
                             <div>{{ t('actions.modify') }}</div>
                             <div>{{ t('actions.search') }}</div>
                             <div>{{ t('actions.delete') }}</div>

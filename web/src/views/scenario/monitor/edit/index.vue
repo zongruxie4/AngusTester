@@ -200,7 +200,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="handleCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5" />
-        <span>{{ t('actions.cancel') }}</span>
+        <span>{{ t('common.cancel') }}</span>
       </Button>
     </div>
 
@@ -340,9 +340,9 @@ onMounted(() => {
               <RadioGroup
                 v-model:value="noticeSetting.orgType"
                 @change="handleOrgTypeChangeWrapper">
-                <Radio :value="AuthObjectType.USER">{{ t('scenarioMonitor.edit.recipientOptions.user') }}</Radio>
-                <Radio :value="AuthObjectType.DEPT">{{ t('scenarioMonitor.edit.recipientOptions.dept') }}</Radio>
-                <Radio :value="AuthObjectType.GROUP">{{ t('scenarioMonitor.edit.recipientOptions.group') }}</Radio>
+                <Radio :value="AuthObjectType.USER">{{ t('organization.user') }}</Radio>
+                <Radio :value="AuthObjectType.DEPT">{{ t('organization.dept') }}</Radio>
+                <Radio :value="AuthObjectType.GROUP">{{ t('organization.group') }}</Radio>
               </RadioGroup>
 
               <!-- Organization selection -->
@@ -360,7 +360,7 @@ onMounted(() => {
                   mode="multiple"
                   allowClear
                   class="w-50"
-                  :placeholder="t('scenarioMonitor.edit.selectUser')"
+                  :placeholder="t('organization.placeholders.selectUser')"
                   :action="`${GM}/user?fullTextSearch=true`"
                   :fieldNames="{ label: 'fullName', value: 'id' }"
                   @change="handleOrgSelectionChangeWrapper">
@@ -371,7 +371,7 @@ onMounted(() => {
                   v-if="noticeSetting.orgType === AuthObjectType.DEPT"
                   v-model:value="orgSelectionValues"
                   defaultActiveFirstOption
-                  :placeholder="t('scenarioMonitor.edit.selectDept')"
+                  :placeholder="t('organization.placeholders.selectDept')"
                   class="w-50"
                   mode="multiple"
                   allowClear
@@ -387,7 +387,7 @@ onMounted(() => {
                   v-if="noticeSetting.orgType === AuthObjectType.GROUP"
                   v-model:value="orgSelectionValues"
                   defaultActiveFirstOption
-                  :placeholder="t('scenarioMonitor.edit.selectGroup')"
+                  :placeholder="t('organization.placeholders.selectGroup')"
                   class="w-50"
                   mode="multiple"
                   allowClear

@@ -118,9 +118,9 @@ const currentUserId = computed(() => {
  */
 const modalTitle = computed(() => {
   if (props.taskId) {
-    return t('actions.edit');
+    return t('common.edit');
   }
-  return t('actions.add');
+  return t('common.add');
 });
 
 /**
@@ -1079,7 +1079,7 @@ onMounted(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToField('confirmerId')">
-                  {{ t('actions.assignToMe') }}
+                  {{ t('common.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1129,7 +1129,7 @@ onMounted(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToField('testerId')">
-                  {{ t('actions.assignToMe') }}
+                  {{ t('common.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1450,7 +1450,7 @@ onMounted(() => {
         class="text-3 leading-3"
         size="small"
         @click="closeModal">
-        {{ t('actions.cancel') }}
+        {{ t('common.cancel') }}
       </Button>
       <Button
         v-if="showContinue"
@@ -1467,7 +1467,7 @@ onMounted(() => {
         size="small"
         :disabled="loading"
         @click="handleFormSubmit(false)">
-        {{ t('actions.confirm') }}
+        {{ t('common.confirm') }}
       </Button>
     </template>
   </Modal>

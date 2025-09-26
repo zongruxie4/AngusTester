@@ -156,6 +156,7 @@
   },
   "actions": {
     "view": "查看",
+    "detail": "详情",
     "add": "添加",
     "edit": "编辑",
     "delete": "删除",
@@ -165,6 +166,7 @@
     "saveAndContinue": "保存并继续添加",
     "saveAndCopy": "保存并复制",
     "saveAndAdd": "保存并添加下一条",
+    "archiveToService": "归档到服务",
     "modify": "修改",
     "rename": "重命名",
     "cancel": "取消",
@@ -178,6 +180,7 @@
     "cancelSearch": "取消搜索",
     "moveUp": "上移",
     "moveDown": "下移",
+    "moveToUpperLevel": "移到上级",
     "remove": "移除",
     "cancelBatch": "取消批量",
     "select": "选择",
@@ -253,17 +256,15 @@
     "allActivity": "所有活动"
   },
   "quickSearch": {
-    "title": "快速查询",
+    "title": "快速搜索",
     "all": "全部",
     "last1Day": "近1天",
     "last3Days": "近3天",
     "last7Days": "近7天",
     "last30Days": "近30天",
     "myActivity": "我的活动",
-    "createdByMe": "我创建的",
+    "createdByMe": "我添加的",
     "modifiedByMe": "我修改的",
-    "addByMe": "我添加的",
-    "tester": "待我测试",
     "myResponsible": "我负责的"
   },
   "page": {

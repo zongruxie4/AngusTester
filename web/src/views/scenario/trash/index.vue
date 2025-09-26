@@ -236,7 +236,7 @@ onMounted(() => {
                   <span
                     class="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full cursor-pointer hover:bg-blue-200 transition-colors"
                     @click="clearSearchAndRefresh">
-                    {{ $t('scenarioTrash.filters.all') }}
+                    {{ $t('common.all') }}
                   </span>
                 </div>
               </div>
@@ -273,7 +273,7 @@ onMounted(() => {
               </div>
 
               <!-- Refresh button -->
-              <Tooltip :title="t('actions.refresh')">
+              <Tooltip :title="t('common.refresh')">
                 <Button
                   :loading="loading"
                   :disabled="!!hasSearchValue"

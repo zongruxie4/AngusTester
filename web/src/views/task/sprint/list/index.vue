@@ -487,14 +487,14 @@ const getDropdownMenuItems = () => {
     {
       key: 'reopen',
       icon: 'icon-zhongxindakai',
-      name: t('actions.reopen'),
+      name: t('common.reopen'),
       noAuth: true,
       permission: 'modify'
     },
     {
       key: 'restart',
       icon: 'icon-zhongxinkaishi',
-      name: t('actions.restart'),
+      name: t('common.restart'),
       noAuth: true,
       permission: 'modify'
     },

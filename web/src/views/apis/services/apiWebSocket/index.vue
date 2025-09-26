@@ -182,7 +182,7 @@ const navs = computed(() => [
   },
   {
     icon: 'icon-baocun',
-    name: props.valueObj?.unarchived ? t('service.apiWebSocket.navigation.archiveToService') : t('actions.save'),
+    name: props.valueObj?.unarchived ? t('actions.archiveToService') : t('actions.save'),
     key: 'save'
   },
   !props.valueObj.unarchived && {

@@ -222,7 +222,7 @@ onBeforeUnmount(() => {
 
           <!-- Refresh button -->
           <FileIcon
-            :title="t('actions.refresh')"
+            :title="t('common.refresh')"
             icon="icon-shuaxin"
             @click="getList" />
         </div>
@@ -367,7 +367,7 @@ onBeforeUnmount(() => {
                 class="!h-6"
                 @click.stop="downConfirm([record.id])">
                 <Icon icon="icon-daochu" class="align-text-bottom mr-0.5" />
-                {{ t('fileSpace.fileManagement.fileActions.download') }}
+                {{ t('common.download') }}
               </Button>
 
               <!-- Share link action -->

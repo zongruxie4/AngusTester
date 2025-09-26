@@ -670,7 +670,7 @@ function isWithin5Minutes (timeStr: string) {
                     class="ml-3.5"
                     @click="clickCopyIcon(item)" />
                 </Tooltip>
-                <Tooltip :title="t('commonComp.shareModal.edit')" placement="top">
+                <Tooltip :title="t('common.edit')" placement="top">
                   <Icon
                     icon="icon-shuxie"
                     class="cursor-pointer ml-2"
@@ -732,7 +732,7 @@ function isWithin5Minutes (timeStr: string) {
                   <template #addonAfter>
                     <a class="text-3 text-text-sub-content" @click="resetPassword">
                       <Icon icon="icon-shuaxin" class="mr-1 -mt-0.5" />
-                      {{ t('commonComp.shareModal.refresh') }}</a>
+                      {{ t('common.refresh') }}</a>
                   </template>
                 </Input>
               </template>
@@ -840,7 +840,7 @@ function isWithin5Minutes (timeStr: string) {
                 size="small"
                 class="-mx-2"
                 @click="cancelEdit(item)">
-                {{ t('actions.cancel') }}
+                {{ t('common.cancel') }}
               </Button>
             </div>
           </template>

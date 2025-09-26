@@ -45,7 +45,7 @@ const dataType = ref(props.dateType);
       class="whitespace-nowrap"
       @change="dateTypeChange">
       <RadioButton :value="DateRangeType.DAY">{{ t('chart.today') }}</RadioButton>
-      <RadioButton :value="DateRangeType.WEEK">{{ t('chart.last7Days') }}</RadioButton>
+      <RadioButton :value="DateRangeType.WEEK">{{ t('quickSearch.last7Days') }}</RadioButton>
       <RadioButton :value="DateRangeType.MONTH">{{ t('chart.lastMonth') }}</RadioButton>
       <RadioButton :value="DateRangeType.YEAR">{{ t('chart.lastYear') }}</RadioButton>
     </RadioGroup>

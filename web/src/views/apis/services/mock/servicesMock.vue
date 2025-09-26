@@ -256,14 +256,14 @@ onMounted(async () => {
             </FormItem>
           </template>
           <FormItem>
-            <Button size="small" @click="handleCancel">{{ t('actions.confirm') }}</Button>
+            <Button size="small" @click="handleCancel">{{ t('common.confirm') }}</Button>
             <Button
               size="small"
               type="primary"
               class="ml-3"
               :loading="loading"
               @click="handleSave">
-              {{ t('actions.cancel') }}
+              {{ t('common.cancel') }}
             </Button>
           </FormItem>
         </div>

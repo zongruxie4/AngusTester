@@ -316,7 +316,7 @@ defineExpose({
                   class="flex items-center px-0"
                   @click="navigateToEdit(record)">
                   <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
-                  <span>{{ t('actions.edit') }}</span>
+                  <span>{{ t('common.edit') }}</span>
                 </Button>
 
                 <Button

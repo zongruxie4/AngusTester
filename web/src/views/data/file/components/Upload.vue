@@ -86,7 +86,7 @@ const onSuccess = (): void => {
     </div>
     <div class="absolute right-5 bottom-2 text-theme-special text-theme-text-hover:hove">
       <a @click="uploadAgain">{{ t('fileSpace.upload.continueUpload') }}</a>
-      <a class="ml-3" @click="close">{{ t('actions.cancel') }}</a>
+      <a class="ml-3" @click="close">{{ t('common.cancel') }}</a>
     </div>
   </div>
 </template>

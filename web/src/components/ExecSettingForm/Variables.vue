@@ -255,7 +255,7 @@ const request = [
             <div class="h-7 whitespace-nowrap mb-5">
               <IconRequired />{{ t('xcan_execSettingForm.variableName') }}
             </div>
-            <div class="h-7 whitespace-nowrap pl-1.75 mb-5">{{ t('xcan_execSettingForm.define') }}/{{ t('xcan_execSettingForm.extract') }}</div>
+            <div class="h-7 whitespace-nowrap pl-1.75 mb-5">{{ t('common.extract') }}</div>
             <template v-if="variable.type">
               <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('xcan_execSettingForm.extractionMethod') }}</div>
               <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_execSettingForm.parameterName') }}</div>
@@ -282,7 +282,7 @@ const request = [
             <div class="h-7 mb-5">
               <RadioGroup v-model:value="variable.type" @change="(value)=>typeChange(value,variable)">
                 <Radio :value="false">{{ t('xcan_execSettingForm.define') }}</Radio>
-                <Radio :value="true">{{ t('xcan_execSettingForm.extract') }}</Radio>
+                <Radio :value="true">{{ t('common.extract') }}</Radio>
               </RadioGroup>
             </div>
             <template v-if="!variable.type">

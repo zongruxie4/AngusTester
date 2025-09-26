@@ -526,15 +526,15 @@ export function useSearchPanel (props: SearchPanelProps) {
   const menuItems = computed(() => [
     {
       key: 'none',
-      name: t('execution.searchPanel.all')
+      name: t('common.all')
     },
     {
       key: 'createdBy',
-      name: t('execution.searchPanel.createdByMe')
+      name: t('quickSearch.createdByMe')
     },
     {
       key: 'lastModifiedBy',
-      name: t('execution.searchPanel.modifiedByMe')
+      name: t('quickSearch.modifiedByMe')
     },
     {
       key: 'execBy',
@@ -543,7 +543,7 @@ export function useSearchPanel (props: SearchPanelProps) {
     ...scriptTypeOpt.value,
     {
       key: 'lastDay',
-      name: t('execution.searchPanel.lastDay')
+      name: t('quickSearch.last1Day')
     },
     {
       key: 'lastThreeDays',

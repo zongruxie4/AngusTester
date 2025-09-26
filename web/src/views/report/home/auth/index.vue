@@ -83,7 +83,7 @@ const bodyStyle = {
         v-model:activeKey="activeKey"
         size="small"
         style="height: calc(100% - 18px);">
-        <TabPane key="user" :tab="t('reportHome.globalAuth.tabs.user')">
+        <TabPane key="user" :tab="t('organization.user')">
           <GroupSet
             key="user"
             v-model:checkedId="checkedUserId"
@@ -101,7 +101,7 @@ const bodyStyle = {
             :authObjectId="checkedUserId"
             :permissions="permissions" />
         </TabPane>
-        <TabPane key="dept" :tab="t('reportHome.globalAuth.tabs.dept')">
+        <TabPane key="dept" :tab="t('organization.dept')">
           <GroupSet
             key="dept"
             v-model:checkedId="checkedDeptId"
@@ -119,7 +119,7 @@ const bodyStyle = {
             :authObjectId="checkedDeptId"
             :permissions="permissions" />
         </TabPane>
-        <TabPane key="group" :tab="t('reportHome.globalAuth.tabs.group')">
+        <TabPane key="group" :tab="t('organization.group')">
           <GroupSet
             key="group"
             v-model:checkedId="checkedGroupId"

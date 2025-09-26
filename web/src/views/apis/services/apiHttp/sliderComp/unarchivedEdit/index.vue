@@ -178,7 +178,7 @@ const handleClose = () => {
           {{ t('actions.save') }}
         </Button>
         <Button size="small" @click="handleClose">
-          {{ t('actions.cancel') }}
+          {{ t('common.cancel') }}
         </Button>
       </FormItem>
     </Form>

@@ -144,7 +144,7 @@ const routes: Array<RouteRecordRaw> = [
               name: t('routes.mock'),
               path: '/apis#mock'
             },
-            { name: t('routes.add') }
+            { name: t('common.add') }
           ]
         }
       },
@@ -187,7 +187,7 @@ const routes: Array<RouteRecordRaw> = [
               name: t('routes.node'),
               path: '/config#node'
             },
-            { name: t('routes.detail') }
+            { name: t('common.detail') }
           ]
         }
       },

@@ -1147,7 +1147,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       const menuItems: ActionMenuItem[] = [
         {
-          name: t('actions.edit'),
+          name: t('common.edit'),
           key: 'edit',
           icon: 'icon-shuxie',
           disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.MODIFY_CASE),
@@ -1223,7 +1223,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
         if (testResult === CaseTestResult.PENDING || testResult === CaseTestResult.BLOCKED) {
           menuItems.push({
-            name: t('actions.cancel'),
+            name: t('common.cancel'),
             key: 'cancel',
             icon: 'icon-qingchu',
             disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
@@ -1397,8 +1397,8 @@ const checkedCaseId = computed(() => {
           class="w-50 flex-shrink-0 col-item border-r border-solid border-theme-text-box flex items-center px-2.5 py-1.5 space-x-1.5 head-container">
           <Tooltip trigger="hover">
             <template #title>
-              <span v-if="!openFlag">{{ t('functionCase.kanbanView.expandAll') }}</span>
-              <span v-else>{{ t('functionCase.kanbanView.collapseAll') }}</span>
+              <span v-if="!openFlag">{{ t('common.expandAll') }}</span>
+              <span v-else>{{ t('common.collapseAll') }}</span>
             </template>
             <Icon
               v-if="!openFlag"

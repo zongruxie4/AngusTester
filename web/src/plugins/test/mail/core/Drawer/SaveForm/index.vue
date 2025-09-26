@@ -171,13 +171,13 @@ defineExpose({ isValid, getData });
         size="small"
         :loading="props.loading"
         @click="save">
-        {{ t('ftpPlugin.drawerMenu.saveForm.confirm') }}
+        {{ t('common.confirm') }}
       </Button>
       <Button
         type="default"
         size="small"
         @click="cancel">
-        {{ t('ftpPlugin.drawerMenu.saveForm.cancel') }}
+        {{ t('common.cancel') }}
       </Button>
     </div>
   </div>

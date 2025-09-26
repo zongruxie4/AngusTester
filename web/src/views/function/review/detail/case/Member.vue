@@ -166,7 +166,7 @@ const handleDeveloper = () => {
               size="small"
               class="p-0 h-3.5 leading-3.5 ml-1"
               @click="handleSetTester">
-              {{ t('functionCase.detail.caseDetail.assignToMe') }}
+              {{ t('common.assignToMe') }}
             </Button>
           </div>
 
@@ -206,7 +206,7 @@ const handleDeveloper = () => {
               size="small"
               class="p-0 h-3.5 leading-3.5 ml-1"
               @click="handleDeveloper">
-              {{ t('functionCase.detail.caseDetail.assignToMe') }}
+              {{ t('common.assignToMe') }}
             </Button>
           </div>
         </template>

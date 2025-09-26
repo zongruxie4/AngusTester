@@ -163,7 +163,7 @@ const deleteScenarioHandler = (scenaridId: string):void => {
             @click="groupingHandler">
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-fenzu" />
-              <span>{{ t('actions.group') }}</span>
+              <span>{{ t('organization.group') }}</span>
             </div>
           </DropdownGroup>
 
@@ -171,7 +171,7 @@ const deleteScenarioHandler = (scenaridId: string):void => {
             class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover"
             @click="refreshHandler">
             <Icon icon="icon-shuaxin" />
-            <span>{{ t('actions.refresh') }}</span>
+            <span>{{ t('common.refresh') }}</span>
           </div>
         </div>
       </div>

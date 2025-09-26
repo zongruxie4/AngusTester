@@ -1267,7 +1267,7 @@ const menuItems = computed(():SearchPanelMenuItem[] => {
   return [
     {
       key: 'none',
-      name: t('task.searchPanel.menuItems.all')
+      name: t('common.all')
     },
     {
       key: 'createdBy',
@@ -1288,7 +1288,7 @@ const menuItems = computed(():SearchPanelMenuItem[] => {
     ...taskTypeOptions.value,
     {
       key: 'lastDay',
-      name: t('task.searchPanel.menuItems.lastDay')
+      name: t('quickSearch.last1Day')
     },
     {
       key: 'lastThreeDays',
@@ -1644,7 +1644,7 @@ const sortMenuItems = [
                 type="text"
                 class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                 <Icon icon="icon-fenzu" class="text-3.5" />
-                <span class="ml-1">{{ t('actions.group') }}</span>
+                <span class="ml-1">{{ t('organization.group') }}</span>
               </Button>
             </DropdownGroup>
           </template>
@@ -1864,7 +1864,7 @@ const sortMenuItems = [
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="t('actions.refresh')">
+          :title="t('common.refresh')">
           <IconRefresh class="text-4 flex-shrink-0" @click="refreshSearchResults" />
         </Tooltip>
       </div>

@@ -511,11 +511,11 @@ const saveSearchStateToDatabase = () => {
 const quickSearchMenuItems: MenuItem[] = [
   {
     key: 'none',
-    name: t('quickSearch.all')
+    name: t('common.all')
   },
   {
     key: 'createdBy',
-    name: t('quickSearch.addByMe')
+    name: t('quickSearch.createdByMe')
   },
   {
     key: 'lastModifiedBy',
@@ -638,7 +638,7 @@ const sortMenuItems = [
           size="small"
           @click="handleRefreshClick">
           <IconRefresh class="text-4 flex-shrink-0" />
-          {{ t('actions.refresh') }}
+          {{ t('common.refresh') }}
         </Button>
       </div>
     </div>

@@ -41,7 +41,7 @@ export function useMatchItemPopover () {
         },
         {
           dataIndex: 'result',
-          label: t('dataVariable.detail.matchItemPopover.regexp.columns.group')
+          label: t('organization.group')
         },
         {
           dataIndex: 'item',

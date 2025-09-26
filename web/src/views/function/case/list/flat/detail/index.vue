@@ -938,7 +938,7 @@ onBeforeUnmount(() => {
                   size="small"
                   class="p-0 h-3.5 leading-3.5 ml-1"
                   @click="handleSetTester">
-                  {{ t('functionCase.detail.caseDetail.assignToMe') }}
+                  {{ t('common.assignToMe') }}
                 </Button>
               </template>
             </template>
@@ -1038,7 +1038,7 @@ onBeforeUnmount(() => {
                 type="link"
                 size="small"
                 @click="cancelEditPrecondition">
-                {{ t('actions.cancel') }}
+                {{ t('common.cancel') }}
               </Button>
             </template>
             <Icon
@@ -1090,7 +1090,7 @@ onBeforeUnmount(() => {
                 type="link"
                 size="small"
                 @click="cancelEditSteps">
-                {{ t('actions.cancel') }}
+                {{ t('common.cancel') }}
               </Button>
             </template>
             <Icon
@@ -1138,7 +1138,7 @@ onBeforeUnmount(() => {
                 type="link"
                 size="small"
                 @click="cancelEditDescription">
-                {{ t('actions.cancel') }}
+                {{ t('common.cancel') }}
               </Button>
             </template>
             <Icon
@@ -1257,7 +1257,7 @@ onBeforeUnmount(() => {
                 size="small"
                 class="p-0 h-3.5 leading-3.5 ml-1"
                 @click="handleSetTester">
-                {{ t('functionCase.detail.caseDetail.assignToMe') }}
+                {{ t('common.assignToMe') }}
               </Button>
             </template>
           </template>

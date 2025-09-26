@@ -557,7 +557,7 @@ onMounted(() => {
         :disabled="props.disabled || variableList.length > 49 || addBtnDisabled || total > 49"
         @click="addVariable">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('xcan_variable.add') }}
+        {{ t('common.add') }}
       </Button>
     </template>
   </div>
@@ -688,7 +688,7 @@ onMounted(() => {
               size="small"
               class="w-8 mr-2"
               @change="variableSwitchChange(variable)" />
-            <Tooltip :title="t('xcan_variable.edit')" placement="top">
+            <Tooltip :title="t('common.edit')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-xiugai"
@@ -718,7 +718,7 @@ onMounted(() => {
             </Tooltip>
           </template>
           <template v-if="props.tabKey === 'GLOBAL' && variable.targetId === props.id">
-            <Tooltip :title="t('xcan_variable.edit')" placement="top">
+            <Tooltip :title="t('common.edit')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-xiugai"
@@ -787,7 +787,7 @@ onMounted(() => {
             @change="(value)=>typeChange(value,variable)">
             <Radio :value="false">{{ t('xcan_variable.define') }}</Radio>
             <Radio :value="true" :disabled="props.type !== 'API'">
-              {{ t('xcan_variable.extract') }}
+              {{ t('common.extract') }}
               <Tooltip placement="top" :title="t('xcan_variable.extractVariableNotSupportDependency')">
                 <Icon icon="icon-tishi1" class="text-tips cursor-pointer text-3.5 -mt-0.5" />
               </Tooltip>
@@ -924,7 +924,7 @@ onMounted(() => {
                 size="small"
                 class="p-0 ml-2"
                 @click="(e) => cancelEdit(e,variable)">
-                {{ t('actions.cancel') }}
+                {{ t('common.cancel') }}
               </Button>
             </template>
           </div>

@@ -64,7 +64,7 @@ const {
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
           @click="refresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span class="ml-1">{{ t('actions.refresh') }}</span>
+          <span class="ml-1">{{ t('common.refresh') }}</span>
         </Button>
       </div>
 

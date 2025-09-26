@@ -70,7 +70,7 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
   const menuItems = computed(() => [
     {
       key: '',
-      name: t('scenarioMonitor.searchPanel.filterOptions.all')
+      name: t('common.all')
     },
     {
       key: 'createdBy',
@@ -94,15 +94,15 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
     },
     {
       key: 'lastDay',
-      name: t('scenarioMonitor.searchPanel.timeRanges.last1Day')
+      name: t('quickSearch.last1Day')
     },
     {
       key: 'lastThreeDays',
-      name: t('scenarioMonitor.searchPanel.timeRanges.last3Days')
+      name: t('quickSearch.last3Days')
     },
     {
       key: 'lastWeek',
-      name: t('scenarioMonitor.searchPanel.timeRanges.last7Days')
+      name: t('quickSearch.last7Days')
     }
   ]);
 

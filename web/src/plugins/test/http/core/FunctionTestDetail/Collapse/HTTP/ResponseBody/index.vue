@@ -150,7 +150,7 @@ onMounted(() => {
             :class="{'res-tab-active':currentTabId==='preview'}"
             class="res-tab flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer"
             @click="handleSelect('preview')">
-            {{ t('httpPlugin.functionTestDetail.http.responseBody.preview') }}
+            {{ t('common.preview') }}
           </div>
         </div>
         <div class="res-tab flex flex-freeze-auto items-center h-7 px-3 ml-3 text-3 rounded text-theme-sub-content">

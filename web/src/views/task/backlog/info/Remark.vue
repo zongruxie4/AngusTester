@@ -184,7 +184,7 @@ const queryParams = computed(() => {
           size="small"
           type="primary"
           @click="submitRemark">
-          {{ t('task.editModal.actions.confirm') }}
+          {{ t('common.confirm') }}
         </Button>
       </div>
     </div>

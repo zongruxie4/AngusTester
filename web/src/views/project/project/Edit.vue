@@ -427,7 +427,7 @@ onMounted(async () => {
                 class="secondary-button"
                 @click="handleFormCancel">
                 <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
-                {{ t('actions.cancel') }}
+                {{ t('common.cancel') }}
               </Button>
             </div>
           </FormItem>
@@ -666,7 +666,7 @@ onMounted(async () => {
               class="secondary-button"
               @click="handleFormCancel">
               <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
-              {{ t('actions.cancel') }}
+              {{ t('common.cancel') }}
             </Button>
           </div>
         </FormItem>

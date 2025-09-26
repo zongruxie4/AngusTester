@@ -70,7 +70,7 @@ const bodyStyle = {
         size="small"
         style="height: calc(100% - 18px);">
         <!-- User Tab -->
-        <TabPane key="user" :tab="t('fileSpace.globalAuth.tabs.user')">
+        <TabPane key="user" :tab="t('organization.user')">
           <GroupSet
             key="user"
             v-model:checkedId="checkedUserId"
@@ -89,7 +89,7 @@ const bodyStyle = {
         </TabPane>
 
         <!-- Department Tab -->
-        <TabPane key="dept" :tab="t('fileSpace.globalAuth.tabs.dept')">
+        <TabPane key="dept" :tab="t('organization.dept')">
           <GroupSet
             key="dept"
             v-model:checkedId="checkedDeptId"
@@ -108,7 +108,7 @@ const bodyStyle = {
         </TabPane>
 
         <!-- Group Tab -->
-        <TabPane key="group" :tab="t('fileSpace.globalAuth.tabs.group')">
+        <TabPane key="group" :tab="t('organization.group')">
           <GroupSet
             key="group"
             v-model:checkedId="checkedGroupId"

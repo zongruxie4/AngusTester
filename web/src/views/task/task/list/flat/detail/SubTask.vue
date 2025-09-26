@@ -651,7 +651,7 @@ const subTaskTableColumns = [
               class="flex items-center px-0"
               @click="deleteSubTask(record)">
               <Icon icon="icon-qingchu" class="text-3.5 mr-1" />
-              <span>{{ t('actions.cancel') }}</span>
+              <span>{{ t('common.cancel') }}</span>
             </Button>
 
             <Button
@@ -660,7 +660,7 @@ const subTaskTableColumns = [
               class="flex items-center px-0"
               @click="editSubTask(record)">
               <Icon icon="icon-shuxie" class="text-3.5 mr-1" />
-              <span>{{ t('actions.edit') }}</span>
+              <span>{{ t('common.edit') }}</span>
             </Button>
 
             <Dropdown :menuItems="subTaskMenuItemsMap[record.id]" @click="handleDropdownMenuClick($event,record)">
@@ -718,7 +718,7 @@ const subTaskTableColumns = [
           type="primary"
           size="small"
           @click="saveNewSubTask">
-          {{ t('task.subTask.actions.add') }}
+          {{ t('common.add') }}
         </Button>
       </div>
     </div>

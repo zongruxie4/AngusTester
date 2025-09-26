@@ -381,12 +381,12 @@ onMounted(async () => {
                 :loading="isSubmitting"
                 @click="handleSubmit">
                 <Icon icon="icon-dangqianxuanzhong" class="mr-1" />
-                {{ t('actions.confirm') }}
+                {{ t('common.confirm') }}
               </Button>
               <RouterLink to="/apis#mock">
                 <Button size="small">
                   <Icon icon="icon-zhongzhi2" class="mr-1" />
-                  {{ t('actions.cancel') }}
+                  {{ t('common.cancel') }}
                 </Button>
               </RouterLink>
             </FormItem>

@@ -103,7 +103,7 @@ const sortMenuItems: {
 const quickSearchMenuItems = computed(() => [
   {
     key: '',
-    name: t('taskMeeting.quickSearch.all')
+    name: t('common.all')
   },
   {
     key: 'moderatorId',
@@ -119,7 +119,7 @@ const quickSearchMenuItems = computed(() => [
   },
   {
     key: 'lastDay',
-    name: t('taskMeeting.quickSearch.last1Day')
+    name: t('quickSearch.last1Day')
   },
   {
     key: 'lastThreeDays',
@@ -376,7 +376,7 @@ const handleRefresh = () => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{ t('actions.refresh') }}</span>
+              <span class="ml-1">{{ t('common.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

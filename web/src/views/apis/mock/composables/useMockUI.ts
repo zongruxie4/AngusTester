@@ -180,7 +180,7 @@ export function useMockUI () {
     {
       key: 'reset',
       icon: 'icon-shuaxin',
-      name: t('actions.refresh'),
+      name: t('common.refresh'),
       permission: MockServicePermission.VIEW
     }
   ];

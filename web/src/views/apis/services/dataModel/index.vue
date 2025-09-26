@@ -240,7 +240,7 @@ onMounted(() => {
                       size="small"
                       class="mt-1"
                       @click.stop="copyComp(item, key)">
-                      {{ t('actions.confirm') }}
+                      {{ t('common.confirm') }}
                     </Button>
                   </div>
                 </template>

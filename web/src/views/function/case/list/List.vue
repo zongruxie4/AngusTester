@@ -686,7 +686,7 @@ const tableAction = computed(() => {
       action.actionMenus[_case.id].push({
         key: 'updateTestResult_canceled',
         icon: 'icon-xiugaiceshijieguo',
-        name: t('actions.cancel'),
+        name: t('common.cancel'),
         permission: 'edit'
       });
 
@@ -1499,7 +1499,7 @@ const modeOptions = [
 const quickList = [
   {
     type: 'all',
-    name: t('functionCase.mainView.all'),
+    name: t('common.all'),
     selected: false,
     group: 'all'
   },
@@ -1517,7 +1517,7 @@ const quickList = [
   },
   {
     type: 'lastDay',
-    name: t('functionCase.mainView.lastDay'),
+    name: t('quickSearch.last1Day'),
     selected: false,
     group: 'time'
   },
@@ -1813,7 +1813,7 @@ defineExpose({
                   type="text"
                   class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                   <Icon icon="icon-fenzu" class="text-3.5" />
-                  <span class="ml-1">{{ t('functionCase.mainView.group') }}</span>
+                  <span class="ml-1">{{ t('organization.group') }}</span>
                 </Button>
               </DropdownGroup>
             </template>
@@ -1988,7 +1988,7 @@ defineExpose({
             <Tooltip
               arrowPointAtCenter
               placement="topLeft"
-              :title="t('actions.refresh')">
+              :title="t('common.refresh')">
               <IconRefresh class="text-4 mr-3.5" @click="toRefresh" />
             </Tooltip>
           </div>

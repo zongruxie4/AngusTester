@@ -123,11 +123,11 @@ onMounted(() => {
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
-            <span class="mr-2">{{ t('taskHome.last7Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
             <span class="text-3.5 font-semibold">{{ backlogByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
-            <span class="mr-2">{{ t('taskHome.last30Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
             <span class="text-3.5 font-semibold">{{ backlogByLastMonth }}</span>
           </div>
         </div>
@@ -142,11 +142,11 @@ onMounted(() => {
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
-            <span class="mr-2">{{ t('taskHome.last7Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
             <span class="text-3.5 font-semibold">{{ sprintByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
-            <span class="mr-2">{{ t('taskHome.last30Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
             <span class="text-3.5 font-semibold">{{ sprintByLastMonth }}</span>
           </div>
         </div>
@@ -161,11 +161,11 @@ onMounted(() => {
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
-            <span class="mr-2">{{ t('taskHome.last7Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
             <span class="text-3.5 font-semibold">{{ taskByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
-            <span class="mr-2">{{ t('taskHome.last30Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
             <span class="text-3.5 font-semibold">{{ taskByLastMonth }}</span>
           </div>
         </div>
@@ -180,11 +180,11 @@ onMounted(() => {
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
-            <span class="mr-2">{{ t('taskHome.last7Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
             <span class="text-3.5 font-semibold">{{ meetingByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
-            <span class="mr-2">{{ t('taskHome.last30Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
             <span class="text-3.5 font-semibold">{{ meetingByLastMonth }}</span>
           </div>
         </div>

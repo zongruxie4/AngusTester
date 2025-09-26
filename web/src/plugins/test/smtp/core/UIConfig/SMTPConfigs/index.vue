@@ -185,7 +185,7 @@ const attachmentFiles = ref<{value: string; fileName: string;}[]>([]);
 
 const certificateOpt = [
   {
-    label: t('smtpPlugin.uiConfig.certificateOpt.all'),
+    label: t('common.all'),
     value: true
   },
   {

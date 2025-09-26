@@ -214,7 +214,7 @@ const handleRefresh = () => {
                   <span
                     class="px-2 py-0.5 text-xs bg-green-100 text-green-700 rounded-full cursor-pointer hover:bg-green-200 transition-colors"
                     @click="clearSearchAndRefresh">
-                    {{ $t('apiTrash.filters.all') }}
+                    {{ $t('common.all') }}
                   </span>
                 </div>
               </div>
@@ -238,8 +238,8 @@ const handleRefresh = () => {
 
                 <Popconfirm
                   :title="t('actions.deleteAll')"
-                  :okText="t('actions.confirm')"
-                  :cancelText="t('actions.cancel')"
+                  :okText="t('common.confirm')"
+                  :cancelText="t('common.cancel')"
                   @confirm="handleDeleteAll">
                   <Tooltip :title="t('actions.deleteAll')">
                     <Button
@@ -256,7 +256,7 @@ const handleRefresh = () => {
               </div>
 
               <!-- Refresh button -->
-              <Tooltip :title="t('actions.refresh')">
+              <Tooltip :title="t('common.refresh')">
                 <Button
                   :loading="loading"
                   :disabled="!!hasSearchValue"

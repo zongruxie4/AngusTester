@@ -255,7 +255,7 @@ const tableColumns = [
             type="text"
             @click="handleTaskDisassociation(record)">
             <Icon icon="icon-qingchu" class="mr-1" />
-            {{ t('actions.cancel') }}
+            {{ t('common.cancel') }}
           </Button>
         </template>
 

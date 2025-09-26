@@ -387,7 +387,7 @@ const inputProps = {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('dataset.detail.fileDataset.tabs.preview') }}</span>
+          <span>{{ t('common.preview') }}</span>
         </div>
       </template>
 
@@ -397,7 +397,7 @@ const inputProps = {
     <TabPane v-if="dataSetId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('dataset.detail.fileDataset.tabs.use') }}</span>
+          <span>{{ t('common.use') }}</span>
         </div>
       </template>
 

@@ -320,7 +320,7 @@ const modalTitle = computed(() => {
                     </div>
                     <TypographyParagraph
                       class="break-all"
-                      :ellipsis="{ rows: 2, expandable: true, symbol: t('service.sidebar.execTest.more') }"
+                      :ellipsis="{ rows: 2, expandable: true, symbol: t('common.more') }"
                       :content="_variable.description" />
                   </div>
                 </div>

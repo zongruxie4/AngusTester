@@ -17,7 +17,7 @@ const types = ['SERVICE', 'API', 'API_CASE'];
 </script>
 <template>
   <Tabs size="small">
-    <TabPane key="all" :tab="t('apis.activity.all')">
+    <TabPane key="all" :tab="t('common.all')">
       <ActivityTimeline
         key="all"
         :types="types"

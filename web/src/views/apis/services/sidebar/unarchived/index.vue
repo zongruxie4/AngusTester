@@ -194,7 +194,7 @@ defineExpose({
         type="text"
         @click="refresh">
         <IconRefresh class="text-3.5 mr-1" />
-        <span>{{ t('actions.refresh') }}</span>
+        <span>{{ t('common.refresh') }}</span>
       </Button>
     </div>
   </div>

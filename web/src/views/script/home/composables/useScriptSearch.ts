@@ -403,7 +403,7 @@ export function useScriptSearch (projectId: string, userId: string) {
     return [
       {
         key: 'none',
-        name: t('scriptHome.searchPanel.quickSearchOptions.all')
+        name: t('common.all')
       },
       {
         key: 'createdBy',
@@ -416,15 +416,15 @@ export function useScriptSearch (projectId: string, userId: string) {
       ...scriptTypeOpt.value,
       {
         key: 'lastDay',
-        name: t('scriptHome.searchPanel.quickSearchOptions.last1Day')
+        name: t('quickSearch.last1Day')
       },
       {
         key: 'lastThreeDays',
-        name: t('scriptHome.searchPanel.quickSearchOptions.last3Days')
+        name: t('quickSearch.last3Days')
       },
       {
         key: 'lastWeek',
-        name: t('scriptHome.searchPanel.quickSearchOptions.last7Days')
+        name: t('quickSearch.last7Days')
       }
     ];
   });

@@ -1498,7 +1498,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="refreshInfo">
           <div class="flex items-center space-x-1">
             <IconRefresh />
-            <span>{{ t('actions.refresh') }}</span>
+            <span>{{ t('common.refresh') }}</span>
           </div>
         </Button>
         <Button
@@ -1731,8 +1731,8 @@ provide('proxyOptObj', proxyOptObj);
                         :checked="enablePushbackSet.has(item)"
                         size="small"
                         class="ml-1.5"
-                        :checkedChildren="t('mock.detail.apis.enable')"
-                        :unCheckedChildren="t('mock.detail.apis.disable')"
+                        :checkedChildren="t('common.enable')"
+                        :unCheckedChildren="t('common.disable')"
                         @change="enableChange($event, item)" />
                     </div>
                   </template>

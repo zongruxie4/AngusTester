@@ -145,7 +145,7 @@ const {
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>{{ t('dataVariable.detail.fileVariable.extract') }}</span>
+          <span>{{ t('common.extract') }}</span>
         </div>
       </template>
 
@@ -377,7 +377,7 @@ const {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('dataVariable.detail.fileVariable.preview') }}</span>
+          <span>{{ t('common.preview') }}</span>
         </div>
       </template>
 
@@ -388,7 +388,7 @@ const {
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('dataVariable.detail.fileVariable.use') }}</span>
+          <span>{{ t('common.use') }}</span>
         </div>
       </template>
 

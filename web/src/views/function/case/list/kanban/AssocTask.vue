@@ -167,13 +167,13 @@ const refTaskIds = computed(() => {
           type="default"
           size="small"
           @click="cancel">
-          {{ t('actions.cancel') }}
+          {{ t('common.cancel') }}
         </Button>
         <Button
           type="primary"
           size="small"
           @click="ok">
-          {{ t('actions.confirm') }}
+          {{ t('common.confirm') }}
         </Button>
       </div>
     </template>

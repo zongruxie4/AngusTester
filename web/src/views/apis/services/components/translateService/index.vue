@@ -151,7 +151,7 @@ onMounted(() => {
     <div class="text-center space-x-3 mt-8">
       <Button
         @click="cancel">
-        {{ t('actions.cancel') }}
+        {{ t('common.cancel') }}
       </Button>
       <Button
         type="primary"

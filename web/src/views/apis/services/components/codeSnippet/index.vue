@@ -413,7 +413,7 @@ watch(() => props.id, async () => {
           size="small"
           class="text-left  inline-block"
           @click="refresh">
-          {{ t('actions.refresh') }}
+          {{ t('common.refresh') }}
         </Button>
       </div>
     </div>

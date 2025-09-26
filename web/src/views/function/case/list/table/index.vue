@@ -262,7 +262,7 @@ defineExpose({
           class="flex items-center px-0 mr-2.5"
           @click="handleClick('edit',record)">
           <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
-          <span>{{ t('actions.edit') }}</span>
+          <span>{{ t('common.edit') }}</span>
         </Button>
 
         <Button

@@ -241,7 +241,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="navigateToEdit">
         <Icon icon="icon-shuxie" class="text-3.5" />
-        <span>{{ t('actions.edit') }}</span>
+        <span>{{ t('common.edit') }}</span>
       </Button>
 
       <Button
@@ -280,7 +280,7 @@ onMounted(() => {
         class="flex items-center"
         @click="refreshSprintData">
         <Icon class="mr-1 flex-shrink-0" icon="icon-shuaxin" />
-        <span>{{ t('actions.refresh') }}</span>
+        <span>{{ t('common.refresh') }}</span>
       </Button>
 
       <Button
@@ -289,7 +289,7 @@ onMounted(() => {
         class="flex items-center"
         @click="closeTabPane">
         <Icon class="mr-1 flex-shrink-0" icon="icon-zhongzhi2" />
-        <span>{{ t('actions.cancel') }}</span>
+        <span>{{ t('common.cancel') }}</span>
       </Button>
     </div>
 

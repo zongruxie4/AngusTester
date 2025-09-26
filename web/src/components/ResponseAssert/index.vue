@@ -307,7 +307,7 @@ const editorDataMap = computed(() => {
         :class="{ 'tab-selected': activeKey === 'all' }"
         class="flex justify-center items-center min-w-25 px-3 h-full"
         @click="change('all')">
-        <span>{{ t('xcan_responseAssert.all') }}</span>
+        <span>{{ t('common.all') }}</span>
         <span class="ml-1">({{ totalList.length }})</span>
       </div>
       <div

@@ -87,7 +87,7 @@ const searchPanelOptions = [
 const menuItems = computed(() => [
   {
     key: '',
-    name: t('dataset.listSearchPanel.menuItems.all')
+    name: t('common.all')
   },
   {
     key: 'createdBy',
@@ -99,7 +99,7 @@ const menuItems = computed(() => [
   },
   {
     key: 'lastDay',
-    name: t('dataset.listSearchPanel.menuItems.lastDay')
+    name: t('quickSearch.last1Day')
   },
   {
     key: 'lastThreeDays',

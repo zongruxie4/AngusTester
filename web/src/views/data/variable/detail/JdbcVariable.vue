@@ -144,7 +144,7 @@ const {
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>{{ t('dataVariable.detail.jdbcVariable.extract') }}</span>
+          <span>{{ t('common.extract') }}</span>
         </div>
       </template>
 
@@ -376,7 +376,7 @@ const {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('dataVariable.detail.jdbcVariable.preview') }}</span>
+          <span>{{ t('common.preview') }}</span>
         </div>
       </template>
 
@@ -387,7 +387,7 @@ const {
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('dataVariable.detail.jdbcVariable.use') }}</span>
+          <span>{{ t('common.use') }}</span>
         </div>
       </template>
 

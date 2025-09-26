@@ -225,13 +225,13 @@ watch(() => props.visible, (newValue) => {
             size="small"
             htmlType="submit"
             class="px-3">
-            {{ t('actions.confirm') }}
+            {{ t('common.confirm') }}
           </Button>
           <Button
             size="small"
             class="px-3"
             @click="close">
-            {{ t('actions.cancel') }}
+            {{ t('common.cancel') }}
           </Button>
         </div>
       </FormItem>

@@ -59,7 +59,7 @@ export const internetInfo = [
     unit: 'MB/s'
   },
   {
-    label: ' ' + t('actions.download') + ': ',
+    label: ' ' + t('common.download') + ': ',
     valueKey: 'rxBytesRate',
     unit: 'MB/s'
   },

@@ -125,7 +125,7 @@ const pageNo = route.query.pageNo;
               <Icon
                 icon="icon-jinyong"
                 class="mr-1 -mt-0.5 text-3" />
-              {{ t('actions.stop') }}
+              {{ t('common.stop') }}
             </Button>
           </template>
           <template v-if="detail?.hasOperationPermission">

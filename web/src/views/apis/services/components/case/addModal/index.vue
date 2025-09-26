@@ -284,7 +284,7 @@ watch([() => apiDebugRef.value], () => {
           class="px-3"
           :loading="loading"
           @click.prevent="onSubmit(true)">
-          {{ t('actions.confirm') }}
+          {{ t('common.confirm') }}
         </Button>
         <Button
           v-show="!props.caseId"
@@ -299,7 +299,7 @@ watch([() => apiDebugRef.value], () => {
           size="small"
           class="ml-5 px-3"
           @click="close">
-          {{ t('actions.cancel') }}
+          {{ t('common.cancel') }}
         </Button>
       </div>
     </template>
@@ -356,7 +356,7 @@ watch([() => apiDebugRef.value], () => {
                     class="w-20 px-0"
                     @click="stopDebugCase">
                     <LoadingOutlined />
-                    {{ t('actions.stop') }}
+                    {{ t('common.stop') }}
                   </Button>
                   <Button
                     v-else

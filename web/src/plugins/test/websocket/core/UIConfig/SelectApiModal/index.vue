@@ -152,7 +152,7 @@ const change = ({ ids }) => {
         type="default"
         size="small"
         @click="cancel">
-        {{ t('websocketPlugin.uiConfig.selectApiModal.buttons.cancel') }}
+        {{ t('common.cancel') }}
       </Button>
       <Button
         :loading="coping"

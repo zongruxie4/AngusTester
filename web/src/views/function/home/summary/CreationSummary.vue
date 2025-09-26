@@ -136,11 +136,11 @@ const resetSummaryValues = () => {
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
-            <span class="mr-2">{{ t('functionHome.myCreationSummary.last7Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
             <span class="text-3.5 font-semibold">{{ planByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
-            <span class="mr-2">{{ t('functionHome.myCreationSummary.last30Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
             <span class="text-3.5 font-semibold">{{ planByLastMonth }}</span>
           </div>
         </div>
@@ -154,11 +154,11 @@ const resetSummaryValues = () => {
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
-            <span class="mr-2">{{ t('functionHome.myCreationSummary.last7Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
             <span class="text-3.5 font-semibold">{{ caseByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
-            <span class="mr-2">{{ t('functionHome.myCreationSummary.last30Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
             <span class="text-3.5 font-semibold">{{ caseByLastMonth }}</span>
           </div>
         </div>
@@ -172,11 +172,11 @@ const resetSummaryValues = () => {
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
-            <span class="mr-2">{{ t('functionHome.myCreationSummary.last7Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
             <span class="text-3.5 font-semibold">{{ reviewByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
-            <span class="mr-2">{{ t('functionHome.myCreationSummary.last30Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
             <span class="text-3.5 font-semibold">{{ reviewByLastMonth }}</span>
           </div>
         </div>
@@ -190,11 +190,11 @@ const resetSummaryValues = () => {
         </div>
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
-            <span class="mr-2">{{ t('functionHome.myCreationSummary.last7Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
             <span class="text-3.5 font-semibold">{{ baselineByLastWeek }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
-            <span class="mr-2">{{ t('functionHome.myCreationSummary.last30Days') }}</span>
+            <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
             <span class="text-3.5 font-semibold">{{ baselineByLastMonth }}</span>
           </div>
         </div>

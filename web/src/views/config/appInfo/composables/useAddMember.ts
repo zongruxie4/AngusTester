@@ -40,11 +40,11 @@ export function useAddMember (type: AuthObjectType, appId: string) {
   const title = computed(() => {
     switch (type) {
       case AuthObjectType.USER:
-        return t('app.config.addMembers.title.user');
+        return t('organization.user');
       case AuthObjectType.DEPT:
-        return t('app.config.addMembers.title.dept');
+        return t('organization.dept');
       case AuthObjectType.GROUP:
-        return t('app.config.addMembers.title.group');
+        return t('organization.group');
       default:
         return '';
     }
@@ -127,11 +127,11 @@ export function useAddMember (type: AuthObjectType, appId: string) {
   const selectLabel = computed(() => {
     switch (type) {
       case AuthObjectType.USER:
-        return t('app.config.addMembers.labels.selectUser');
+        return t('organization.placeholders.selectUser');
       case AuthObjectType.DEPT:
-        return t('app.config.addMembers.labels.selectDept');
+        return t('organization.placeholders.selectDept');
       case AuthObjectType.GROUP:
-        return t('app.config.addMembers.labels.selectGroup');
+        return t('organization.placeholders.selectGroup');
       default:
         return '';
     }
@@ -143,11 +143,11 @@ export function useAddMember (type: AuthObjectType, appId: string) {
   const columnLabel = computed(() => {
     switch (type) {
       case AuthObjectType.USER:
-        return t('app.config.addMembers.columns.user');
+        return t('organization.user');
       case AuthObjectType.DEPT:
-        return t('app.config.addMembers.columns.dept');
+        return t('organization.dept');
       case AuthObjectType.GROUP:
-        return t('app.config.addMembers.columns.group');
+        return t('organization.group');
       default:
         return '';
     }

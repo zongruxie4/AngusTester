@@ -292,7 +292,7 @@ const columns = [
             class="flex items-center"
             @click="toRefresh">
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-            <span>{{ t('commonComp.apis.parameterizationDataset.listModal.refresh') }}</span>
+            <span>{{ t('common.refresh') }}</span>
           </Button>
         </div>
 

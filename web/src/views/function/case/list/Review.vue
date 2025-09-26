@@ -157,13 +157,13 @@ onMounted(() => {
             size="small"
             htmlType="submit"
             class="px-3">
-            {{ t('actions.confirm') }}
+            {{ t('common.confirm') }}
           </Button>
           <Button
             size="small"
             class="ml-5 px-3"
             @click="close">
-            {{ t('actions.cancel') }}
+            {{ t('common.cancel') }}
           </Button>
         </div>
       </FormItem>

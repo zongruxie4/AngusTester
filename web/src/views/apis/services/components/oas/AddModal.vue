@@ -217,13 +217,13 @@ onMounted(() => {
 const title = computed(() => {
   switch (props.modalType) {
     case 'view':
-      return t('service.oas.addModal.detail');
+      return t('common.view');
     case 'edit':
-      return t('service.oas.addModal.edit');
+      return t('common.edit');
     case 'add':
-      return t('service.oas.addModal.add');
+      return t('common.add');
     default:
-      return t('service.oas.addModal.detail');
+      return t('common.detail');
   }
 });
 
@@ -376,14 +376,14 @@ const modeContent = computed(() => {
       </div>
     </div>
     <template v-if="props.modalType !=='view'" #footer>
-      <Button size="small" @click="handleCancel">{{ t('actions.cancel') }}</Button>
+      <Button size="small" @click="handleCancel">{{ t('common.cancel') }}</Button>
       <Button
         :disabled="!openEdit && modalType === 'edit' && props.component.isQuote"
         type="primary"
         size="small"
         :loading="loading"
         @click="handleSave">
-        {{ t('actions.confirm') }}
+        {{ t('common.confirm') }}
       </Button>
     </template>
   </Modal>

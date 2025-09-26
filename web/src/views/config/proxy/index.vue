@@ -126,7 +126,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
       <!-- Labels column -->
       <div>
         <div class="h-12" style="line-height: 48px;">
-          {{ t('proxy.enable') }}
+          {{ t('common.enable') }}
         </div>
         <div class="h-12" style="line-height: 48px;">
           {{ t('proxy.proxyAddress') }}

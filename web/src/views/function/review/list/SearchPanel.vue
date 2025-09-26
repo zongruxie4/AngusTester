@@ -107,11 +107,11 @@ const sortMenuItems: {
 const quickMenuItems = computed(() => [
   {
     key: '',
-    name: t('caseReview.list.all')
+    name: t('common.all')
   },
   {
     key: 'ownerId',
-    name: t('caseReview.list.myResponsible')
+    name: t('quickSearch.myResponsible')
   },
   {
     key: 'createdBy',
@@ -124,7 +124,7 @@ const quickMenuItems = computed(() => [
   ...planStatusOptions.value,
   {
     key: 'lastDay',
-    name: t('caseReview.list.lastDay')
+    name: t('quickSearch.last1Day')
   },
   {
     key: 'lastThreeDays',
@@ -372,7 +372,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{ t('actions.refresh') }}</span>
+              <span class="ml-1">{{ t('common.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

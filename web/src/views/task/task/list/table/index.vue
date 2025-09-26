@@ -1096,7 +1096,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchCancel">
-        {{ t('actions.cancel') }}
+        {{ t('common.cancel') }}
       </Button>
 
       <Button
@@ -1208,7 +1208,7 @@ const EXEC_RESULT_COLOR = {
             class="flex items-center px-0 mr-1"
             @click="navigateToEdit(record.id)">
             <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
-            <span>{{ t('actions.edit') }}</span>
+            <span>{{ t('common.edit') }}</span>
           </Button>
 
           <Button

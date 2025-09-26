@@ -8,7 +8,7 @@ export const contentTreeData = [
     key: 'basic'
   },
   {
-    title: t('reportAdd.caseContent.contentTree.user'),
+    title: t('organization.user'),
     key: 'user'
   },
   {
@@ -28,7 +28,7 @@ export const contentTreeData = [
     key: 'description'
   },
   {
-    title: t('reportAdd.caseContent.contentTree.preview'),
+    title: t('common.preview'),
     key: 'preview'
   },
   {

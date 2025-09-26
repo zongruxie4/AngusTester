@@ -42,7 +42,7 @@ export const contentTreeData = [
             key: 'info'
           },
           {
-            title: t('reportAdd.apisContent.contentTree.detail'),
+            title: t('common.detail'),
             key: 'detail'
           },
           {
@@ -60,7 +60,7 @@ export const contentTreeData = [
             key: 'info'
           },
           {
-            title: t('reportAdd.apisContent.contentTree.detail'),
+            title: t('common.detail'),
             key: 'detail'
           },
           {

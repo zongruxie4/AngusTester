@@ -169,13 +169,13 @@ const searchPanelOptions = computed(() => [
 const quickSearchOptions = [
   {
     type: 'all',
-    name: t('quickSearch.all'),
+    name: t('common.all'),
     selected: false,
     group: 'all'
   },
   {
     type: 'createdBy',
-    name: t('quickSearch.addByMe'),
+    name: t('quickSearch.createdByMe'),
     selected: false,
     group: 'createdBy'
   },

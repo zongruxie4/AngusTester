@@ -318,7 +318,7 @@ onMounted(() => {
                             style="height:20px;padding:0;line-height:20px;">
                             <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}`">
                               <Icon icon="icon-shuxie" class="text-3.5" />
-                              <span>{{ t('actions.edit') }}</span>
+                              <span>{{ t('common.edit') }}</span>
                             </RouterLink>
                           </Button>
 
@@ -402,7 +402,7 @@ onMounted(() => {
                           class="px-0 h-5 leading-5 space-x-1 flex items-center"
                           @click.stop="openTaskEditModal(element.id, item.id)">
                           <Icon icon="icon-shuxie" class="text-3.5" />
-                          <span>{{ t('actions.edit') }}</span>
+                          <span>{{ t('common.edit') }}</span>
                         </Button>
 
                         <Button
@@ -523,7 +523,7 @@ onMounted(() => {
                         style="height:20px;padding:0;line-height:20px;"
                         @click.stop="refreshBacklogData">
                         <Icon class="text-3.5" icon="icon-shuaxin" />
-                        <span>{{ t('actions.refresh') }}</span>
+                        <span>{{ t('common.refresh') }}</span>
                       </Button>
                     </div>
                   </div>
@@ -621,7 +621,7 @@ onMounted(() => {
                           type="default"
                           size="small"
                           @click="cancelAddTask">
-                          {{ t('actions.cancel') }}
+                          {{ t('common.cancel') }}
                         </Button>
 
                         <Button
@@ -673,7 +673,7 @@ onMounted(() => {
                           size="small"
                           class="bg-white"
                           @click="cancelTaskNameEdit(element.id)">
-                          {{ t('actions.cancel') }}
+                          {{ t('common.cancel') }}
                         </Button>
                       </div>
 
@@ -694,7 +694,7 @@ onMounted(() => {
                         class="px-0 h-5 leading-5 space-x-1 flex items-center"
                         @click.stop="openTaskEditModal(element.id)">
                         <Icon icon="icon-shuxie" class="text-3.5" />
-                        <span>{{ t('actions.edit') }}</span>
+                        <span>{{ t('common.edit') }}</span>
                       </Button>
 
                       <Button

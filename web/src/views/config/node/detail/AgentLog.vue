@@ -63,7 +63,7 @@ const {
             class="action-button"
             size="small"
             @click="downloadLog">
-            {{ $t('actions.download') }}
+            {{ $t('common.download') }}
           </Button>
 
           <Button
@@ -71,7 +71,7 @@ const {
             size="small"
             :disabled="!logTextParams.logName"
             @click="loadLogContent">
-            {{ $t('actions.refresh') }}
+            {{ $t('common.refresh') }}
           </Button>
 
           <!-- Full Screen Toggle -->

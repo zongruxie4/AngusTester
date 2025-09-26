@@ -191,7 +191,7 @@ const noDataText = computed(() => {
           class="px-0 h-5 leading-5 border-0 text-theme-content text-theme-text-hover"
           @click="refresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span class="ml-1">{{ t('commonComp.apis.parameterizationDataset.previewData.refresh') }}</span>
+          <span class="ml-1">{{ t('common.refresh') }}</span>
         </Button>
       </div>
     </div>

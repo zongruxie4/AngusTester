@@ -243,7 +243,7 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
         <div class="flex space-x-3 items-center justify-between h-4 leading-5">
           <RouterLink class="flex items-center space-x-1" :to="`/task#meeting?id=${item.id}&type=edit`">
             <Icon icon="icon-shuxie" class="text-3.5" />
-            <span>{{ t('actions.edit') }}</span>
+            <span>{{ t('common.edit') }}</span>
           </RouterLink>
           <Button
             type="text"

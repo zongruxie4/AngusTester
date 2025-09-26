@@ -41,9 +41,9 @@ const MENUITEMS:readonly ButtonGroupMenuItem[] = [
   { name: t('actions.cancelFollow'), icon: 'icon-quxiaoguanzhu', key: 'cancelFollow' },
   { name: t('actions.favourite'), icon: 'icon-yishoucang', key: 'favourite' },
   { name: t('actions.cancelFavourite'), icon: 'icon-quxiaoshoucang', key: 'cancelFavourite' },
-  { name: t('actions.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
+  { name: t('common.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
   { name: t('actions.test'), icon: 'icon-tiaoshi', key: 'test' },
-  { name: t('actions.debug'), icon: 'icon-tiaoshi', key: 'debug' }
+  { name: t('common.debug'), icon: 'icon-tiaoshi', key: 'debug' }
 ];
 
 const SAVE_ITEM = { name: t('actions.save'), icon: 'icon-baocun', key: 'save' };

@@ -222,9 +222,9 @@ const params = computed(() => {
                     type="primary"
                     size="small"
                     @click="patchPassd(item,index)">
-                    {{ t('commonComp.shareModal.confirm') }}
+                    {{ t('common.confirm') }}
                   </Button>
-                  <Button size="small" @click="cancelPassd(item)">{{ t('commonComp.shareModal.cancel') }}</Button>
+                  <Button size="small" @click="cancelPassd(item)">{{ t('common.cancel') }}</Button>
                 </div>
               </template>
             </div>
@@ -244,7 +244,7 @@ const params = computed(() => {
               <IconCopy class="mr-2" @click="copy(item)" />
             </Tooltip>
             <Tooltip
-              :title="t('commonComp.shareModal.edit')"
+              :title="t('common.edit')"
               placement="top">
               <template v-if="props.disabled">
                 <Icon

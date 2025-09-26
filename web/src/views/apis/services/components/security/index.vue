@@ -250,7 +250,7 @@ defineExpose({ addSecurity: addSecurity });
         type="link"
         size="small"
         @click="cancelSecurity()">
-        {{ t('actions.cancel') }}
+        {{ t('common.cancel') }}
       </Button>
     </template>
   </div>

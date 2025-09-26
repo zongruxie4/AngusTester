@@ -114,11 +114,11 @@ const securityFormRef = ref();
             <template v-if="editName">
               <a
                 class="text-text-link text-3 leading-3"
-                @click="handleEdit('name','cancel','infoForm')">{{ t('actions.cancel') }}</a>
+                @click="handleEdit('common.cancel') }}</a>
               <Divider type="vertical" />
               <a
                 class="text-text-link text-3 leading-3"
-                @click="handleEdit('name','save','infoForm')">{{ t('actions.confirm') }}</a>
+                @click="handleEdit('common.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -151,9 +151,9 @@ const securityFormRef = ref();
           :disabled="!editServiceDomain">
           <template v-if="editionType !== EditionType.CLOUD_SERVICE && hasEditAuth" #suffix>
             <template v-if="editServiceDomain">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','cancel','infoForm')">{{ t('actions.cancel') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','save','infoForm')">{{ t('actions.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -252,9 +252,9 @@ const securityFormRef = ref();
           :disabled="!editWorkThreadNum">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editWorkThreadNum">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('workThreadNum','cancel','settingForm')">{{ t('actions.cancel') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('workThreadNum','save','settingForm')">{{ t('actions.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -365,9 +365,9 @@ const securityFormRef = ref();
           dataType="number">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editMaxContentLength">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxContentLength','cancel','settingForm')">{{ t('actions.cancel') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxContentLength','save','settingForm')">{{ t('actions.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -398,9 +398,9 @@ const securityFormRef = ref();
           dataType="number">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editWorkPushbackThreadNum">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('workPushbackThreadNum','cancel','settingForm')">{{ t('actions.cancel') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('workPushbackThreadNum','save','settingForm')">{{ t('actions.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -432,9 +432,9 @@ const securityFormRef = ref();
           includes="-">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editMaxPushbackConnectTimeout">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackConnectTimeout','cancel','settingForm')">{{ t('actions.cancel') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackConnectTimeout','save','settingForm')">{{ t('actions.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -466,9 +466,9 @@ const securityFormRef = ref();
           includes="-">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editMaxPushbackRequestTimeout">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackRequestTimeout','cancel','settingForm')">{{ t('actions.cancel') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackRequestTimeout','save','settingForm')">{{ t('actions.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -622,9 +622,9 @@ const securityFormRef = ref();
             :disabled="!editOrigin">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editOrigin">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','cancel','apisCorsForm')">{{ t('actions.cancel') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','save','apisCorsForm')">{{ t('actions.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -655,9 +655,9 @@ const securityFormRef = ref();
             :disabled="!editCredentials" />
           <div class="absolute right-2 top-0.75">
             <template v-if="editCredentials">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsCredentials','cancel','apisCorsForm')">{{ t('mock.detail.buttons.cancel') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsCredentials','save','apisCorsForm')">{{ t('mock.detail.buttons.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -687,9 +687,9 @@ const securityFormRef = ref();
             :class="editRequestMethods?'api-cors-allow-cors-request-methods-edit':'api-cors-allow-cors-request-methods'">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editRequestMethods">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestMethods','cancel','apisCorsForm')">{{ t('mock.detail.buttons.cancel') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestMethods','save','apisCorsForm')">{{ t('mock.detail.buttons.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -716,9 +716,9 @@ const securityFormRef = ref();
           <Input v-model:value="apisCors.allowCorsRequestHeaders" :disabled="!editRequestHeaders">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editRequestHeaders">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestHeaders','cancel','apisCorsForm')">{{ t('mock.detail.buttons.cancel') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestHeaders','save','apisCorsForm')">{{ t('mock.detail.buttons.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -745,9 +745,9 @@ const securityFormRef = ref();
           <Input v-model:value="apisCors.allowExposeHeaders" :disabled="!editExposeHeaders">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editExposeHeaders">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowExposeHeaders','cancel','apisCorsForm')">{{ t('mock.detail.buttons.cancel') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowExposeHeaders','save','apisCorsForm')">{{ t('mock.detail.buttons.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon

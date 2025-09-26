@@ -259,7 +259,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
-                  :title="t('actions.edit')">
+                  :title="t('common.edit')">
                   <RouterLink :to="record.editLinkUrl" class="w-full h-full flex items-center justify-center">
                     <Icon icon="icon-shuxie" class="text-3.5" />
                   </RouterLink>

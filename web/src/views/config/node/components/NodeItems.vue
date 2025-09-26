@@ -308,7 +308,7 @@ defineExpose({
             @click="saveNodeEnhanced">
             {{ t('actions.save') }}
           </Button>
-          <Button class="node-normal-btn" @click="cancel(state)">{{ t('actions.cancel') }}</Button>
+          <Button class="node-normal-btn" @click="cancel(state)">{{ t('common.cancel') }}</Button>
           <Button
             :disabled="testBtnDisable"
             class="node-normal-btn"
@@ -361,7 +361,7 @@ defineExpose({
                   size="small"
                   class="flex space-x-1">
                   <Icon icon="icon-shuxie" />
-                  {{ t('actions.edit') }}
+                  {{ t('common.edit') }}
                 </Button>
               </Tooltip>
               <Button
@@ -371,7 +371,7 @@ defineExpose({
                 class="flex space-x-1"
                 @click="changeEditableEnhanced(state)">
                 <Icon icon="icon-shuxie" />
-                {{ t('actions.edit') }}
+                {{ t('common.edit') }}
               </Button>
               <Button
                 type="text"
@@ -381,7 +381,7 @@ defineExpose({
                 class="flex space-x-1"
                 @click="enable(state)">
                 <Icon :icon="state.enabled?'icon-jinyong':'icon-qiyong'" />
-                {{ state.enabled ? t('node.nodeItem.buttons.disable') : t('node.nodeItem.buttons.enable') }}
+                {{ state.enabled ? t('common.enable') }}
               </Button>
               <Tooltip v-if="!canDeleteNode(state)" :title="getDeleteTip(state)">
                 <Button

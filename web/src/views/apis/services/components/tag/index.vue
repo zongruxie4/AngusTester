@@ -468,7 +468,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
         :disabled="props.disabled || tagList.length > 1999 || addBtnDisabled"
         @click="addSyncInfo">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('service.tag.actions.add') }}
+        {{ t('common.add') }}
       </Button>
     </div>
     <div
@@ -493,7 +493,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
               </div>
             </div>
             <div class="flex flex-none items-center mt-1.75 leading-5">
-              <Tooltip :title="t('actions.edit')" placement="top">
+              <Tooltip :title="t('common.edit')" placement="top">
                 <template v-if="props.disabled">
                   <Icon
                     icon="icon-shuxie"
@@ -630,7 +630,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                   class="mr-2 px-0"
                   :disabled="tagList.length === 1 && tag.isAdd"
                   @click="cancelEdit(tag)">
-                  {{ t('actions.cancel') }}
+                  {{ t('common.cancel') }}
                 </Button>
                 <Button
                   size="small"

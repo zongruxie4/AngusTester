@@ -66,7 +66,7 @@ const searchPanelOptions = [
 const menuItems = computed((): MenuItem[] => [
   {
     key: '',
-    name: t('version.searchPanel.menuItems.all')
+    name: t('common.all')
   },
   {
     key: 'NOT_RELEASED',
@@ -333,7 +333,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{ t('actions.refresh') }}</span>
+              <span class="ml-1">{{ t('common.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

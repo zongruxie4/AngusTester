@@ -140,13 +140,13 @@ const statusColorConfig = getStatusColorConfig();
           </div>
 
           <div class="text px-2 space-y-1 flex flex-col text-center">
-            <span class=" font-medium">{{ t('scenarioMonitor.detail.timeRanges.last7Days') }}</span>
+            <span class=" font-medium">{{ t('quickSearch.last7Days') }}</span>
             <span class="text-4 font-medium">{{ dataSource?.count?.last7DaySuccessRate }}%</span>
             <span class="text-text-sub-content">{{ `${dataSource?.count?.last7DaySuccessNum} / ${dataSource?.count?.last7DayNum}` }}</span>
           </div>
 
           <div class="text px-2 space-y-1 flex flex-col text-center">
-            <span class=" font-medium">{{ t('scenarioMonitor.detail.timeRanges.last30Days') }}</span>
+            <span class=" font-medium">{{ t('quickSearch.last30Days') }}</span>
             <span class="text-4 font-medium">{{ dataSource?.count?.last30DaySuccessRate }}%</span>
             <span class="text-text-sub-content">{{ `${dataSource?.count?.last30DaySuccessNum} / ${dataSource?.count?.last30DayNum}` }}</span>
           </div>

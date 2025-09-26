@@ -169,7 +169,7 @@ watch(() => category.value, () => {
                   :disabled="!record.currentAuths.includes(ReportPermission.MODIFY)"
                   @click="handleAddReport(record.id)">
                   <Icon icon="icon-xiugai" class="mr-1" />
-                  {{ t('actions.edit') }}
+                  {{ t('common.edit') }}
                 </Button>
                 <Button
                   type="text"

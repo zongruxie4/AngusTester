@@ -122,13 +122,13 @@ const addShare = () => {
                 size="small"
                 class="mx-2.5 text-3 leading-3"
                 @click="updatePassword(item)">
-                {{ t('fileSpace.share.shareList.confirm') }}
+                {{ t('common.confirm') }}
               </Button>
               <Button
                 size="small"
                 class="text-3 leading-3"
                 @click="cancelPasswordEdit(item)">
-                {{ t('fileSpace.share.shareList.cancel') }}
+                {{ t('common.cancel') }}
               </Button>
             </template>
           </div>
@@ -160,7 +160,7 @@ const addShare = () => {
       <NoData></NoData>
     </template>
     <div v-show="showMore" class="w-full text-center">
-      <Button type="link" @click="loadList(true)">{{ t('fileSpace.share.shareList.loadMore') }}</Button>
+      <Button type="link" @click="loadList(true)">{{ t('common.loadMore') }}</Button>
     </div>
     <AsyncComponent :visible="state.visible">
       <Share

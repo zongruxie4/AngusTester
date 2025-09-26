@@ -199,7 +199,7 @@ const refreshExecLog = (event) => {
               class="text-4 cursor-pointer hover:text-text-link-hover mr-2"
               @click="downloadLog('exec')" />
           </Tooltip>
-          <Tooltip :title="t('actions.refresh')" placement="top">
+          <Tooltip :title="t('common.refresh')" placement="top">
             <Icon
               icon="icon-shuaxin"
               class="text-4 cursor-pointer hover:text-text-link-hover mr-2"

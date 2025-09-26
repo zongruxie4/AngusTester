@@ -108,7 +108,7 @@ const saveSetting = async () => {
           {{ t('actions.save') }}
         </Button>
         <RouterLink to="/execution">
-          <Button size="small">{{ t('actions.cancel') }}</Button>
+          <Button size="small">{{ t('common.cancel') }}</Button>
         </RouterLink>
       </div>
     </div>

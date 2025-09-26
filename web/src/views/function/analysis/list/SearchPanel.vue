@@ -486,7 +486,7 @@ onMounted(async () => {
 const menuItems: MenuItem[] = [
   {
     key: 'none',
-    name: t('functionAnalysis.searchPanel.all')
+    name: t('common.all')
   },
   {
     key: 'createdBy',
@@ -498,7 +498,7 @@ const menuItems: MenuItem[] = [
   },
   {
     key: 'lastDay',
-    name: t('functionAnalysis.searchPanel.lastDay')
+    name: t('quickSearch.last1Day')
   },
   {
     key: 'lastThreeDays',
@@ -607,7 +607,7 @@ const sortMenuItems = [
           size="small"
           @click="handleRefresh">
           <IconRefresh class="text-4 flex-shrink-0" />
-          {{ t('actions.refresh') }}
+          {{ t('common.refresh') }}
         </Button>
       </div>
     </div>

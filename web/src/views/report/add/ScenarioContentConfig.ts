@@ -43,7 +43,7 @@ export const contentTreeData = [
             key: 'info'
           },
           {
-            title: t('reportAdd.scenarioContent.contentTree.detail'),
+            title: t('common.detail'),
             key: 'detail'
           },
           {
@@ -61,7 +61,7 @@ export const contentTreeData = [
             key: 'info'
           },
           {
-            title: t('reportAdd.scenarioContent.contentTree.detail'),
+            title: t('common.detail'),
             key: 'detail'
           },
           {

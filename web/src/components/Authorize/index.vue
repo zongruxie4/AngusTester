@@ -445,13 +445,13 @@ onMounted(() => {
         v-model:activeKey="activeKey"
         size="small"
         @change="tabChange">
-        <TabPane key="USER" :tab="t('xcan_authorize.user')">
+        <TabPane key="USER" :tab="t('organization.user')">
           <div class="flex justify-between -mt-1">
             <Select
               v-model:value="userId"
               :action="`${GM}/app/${props.appId}/auth/user`"
               :fieldNames="{ label: 'fullName', value: 'id' }"
-              :placeholder="t('xcan_authorize.selectUser')"
+              :placeholder="t('organization.placeholders.selectUser')"
               showSearch
               allowClear
               class="w-full mr-5"
@@ -465,7 +465,7 @@ onMounted(() => {
               <template #icon>
                 <Icon icon="icon-jia" class="mr-1" />
               </template>
-              {{ t('xcan_authorize.add') }}
+              {{ t('common.add') }}
             </Button>
           </div>
           <Table
@@ -492,7 +492,7 @@ onMounted(() => {
                   v-model:checked="record.checkedAll"
                   :disabled="record.creator"
                   @change="(e) => checkAllChange(e.target.checked, record)">
-                  {{ t('xcan_authorize.all') }}
+                  {{ t('common.all') }}
                 </Checkbox>
                 <Button
                   type="link"
@@ -506,13 +506,13 @@ onMounted(() => {
             </template>
           </Table>
         </TabPane>
-        <TabPane key="DEPT" :tab="t('xcan_authorize.department')">
+        <TabPane key="DEPT" :tab="t('organization.dept')">
           <div class="flex justify-between -mt-1">
             <Select
               v-model:value="deptId"
               :action="`${GM}/app/${props.appId}/auth/dept`"
               :fieldNames="{ label: 'name', value: 'id' }"
-              :placeholder="t('xcan_authorize.selectDepartment')"
+              :placeholder="t('organization.placeholders.selectDepartment')"
               showSearch
               allowClear
               class="w-full mr-5"
@@ -526,7 +526,7 @@ onMounted(() => {
               <template #icon>
                 <Icon icon="icon-jia" class="mr-1" />
               </template>
-              {{ t('xcan_authorize.add') }}
+              {{ t('common.add') }}
             </Button>
           </div>
           <Table
@@ -553,7 +553,7 @@ onMounted(() => {
                   v-model:checked="record.checkedAll"
                   :disabled="record.creator"
                   @change="(e) => checkAllChange(e.target.checked, record)">
-                  {{ t('xcan_authorize.all') }}
+                  {{ t('common.all') }}
                 </Checkbox>
                 <Button
                   type="link"
@@ -567,13 +567,13 @@ onMounted(() => {
             </template>
           </Table>
         </TabPane>
-        <TabPane key="GROUP" :tab="t('xcan_authorize.group')">
+        <TabPane key="GROUP" :tab="t('organization.group')">
           <div class="flex justify-between -mt-1">
             <Select
               v-model:value="groupId"
               :action="`${GM}/app/${props.appId}/auth/group`"
               :fieldNames="{ label: 'name', value: 'id' }"
-              :placeholder="t('xcan_authorize.selectGroup')"
+              :placeholder="t('organization.placeholders.selectGroup')"
               showSearch
               allowClear
               class="w-full mr-5"
@@ -587,7 +587,7 @@ onMounted(() => {
               <template #icon>
                 <Icon icon="icon-jia" class="mr-1" />
               </template>
-              {{ t('xcan_authorize.add') }}
+              {{ t('common.add') }}
             </Button>
           </div>
           <Table
@@ -614,7 +614,7 @@ onMounted(() => {
                   v-model:checked="record.checkedAll"
                   :disabled="record.creator"
                   @change="(e) => checkAllChange(e.target.checked, record)">
-                  {{ t('xcan_authorize.all') }}
+                  {{ t('common.all') }}
                 </Checkbox>
                 <Button
                   type="link"

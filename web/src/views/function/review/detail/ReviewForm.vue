@@ -160,7 +160,7 @@ onMounted(() => {
           <Button
             size="middle"
             @click="$emit('cancel')">
-            {{ t('actions.cancel') }}
+            {{ t('common.cancel') }}
           </Button>
           <Button
             :loading="loading"
@@ -169,7 +169,7 @@ onMounted(() => {
             htmlType="submit"
             class="px-6">
             <Icon icon="icon-tijiao" class="mr-2" />
-            {{ t('actions.confirm') }}
+            {{ t('common.confirm') }}
           </Button>
         </div>
       </FormItem>

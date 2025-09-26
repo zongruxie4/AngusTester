@@ -352,13 +352,13 @@ watch(() => props.visible, (newValue) => {
                   size="small"
                   class="enhanced-radio-group">
                   <RadioButton value="user">
-                    {{ t('project.edit.form.user') }}
+                    {{ t('organization.user') }}
                   </RadioButton>
                   <RadioButton value="dept">
-                    {{ t('project.edit.form.department') }}
+                    {{ t('organization.dept') }}
                   </RadioButton>
                   <RadioButton value="group">
-                    {{ t('project.edit.form.group') }}
+                    {{ t('organization.group') }}
                   </RadioButton>
                 </RadioGroup>
                 <Popover placement="right" overlayClassName="form-tooltip">
@@ -375,7 +375,7 @@ watch(() => props.visible, (newValue) => {
                   v-show="memberType === 'user'"
                   v-model:value="members.USER"
                   :showSearch="true"
-                  :placeholder="t('project.edit.form.selectUser')"
+                  :placeholder="t('organization.placeholders.selectUser')"
                   :action="`${GM}/user?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsUser"
                   mode="multiple"
@@ -385,7 +385,7 @@ watch(() => props.visible, (newValue) => {
                 <Select
                   v-show="memberType === 'dept'"
                   v-model:value="members.DEPT"
-                  :placeholder="t('project.edit.form.selectDepartment')"
+                  :placeholder="t('organization.placeholders.selectDepartment')"
                   :showSearch="true"
                   :action="`${GM}/dept?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsDept"
@@ -396,7 +396,7 @@ watch(() => props.visible, (newValue) => {
                 <Select
                   v-show="memberType === 'group'"
                   v-model:value="members.GROUP"
-                  :placeholder="t('project.edit.form.selectGroup')"
+                  :placeholder="t('organization.placeholders.selectGroup')"
                   :showSearch="true"
                   :action="`${GM}/group?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsGroup"

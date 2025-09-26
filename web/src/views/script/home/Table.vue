@@ -364,7 +364,7 @@ rowSelection.value.onChange = (keys: string[]) => {
               class="flex items-center px-0 mr-1"
               @click="() => handleEditClick(record)">
               <Icon icon="icon-shuxie" class="mr-1" />
-              <span>{{ t('actions.edit') }}</span>
+              <span>{{ t('common.edit') }}</span>
             </Button>
 
             <Dropdown

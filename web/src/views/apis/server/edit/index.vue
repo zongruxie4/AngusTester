@@ -320,7 +320,7 @@ const serviceId = computed(() => {
           @click="toRefresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
           <span>
-            {{ t('actions.refresh') }}
+            {{ t('common.refresh') }}
           </span>
         </Button>
       </template>

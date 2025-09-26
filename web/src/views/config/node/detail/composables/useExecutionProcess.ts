@@ -152,7 +152,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
     },
     {
       key: 'user',
-      title: t('node.nodeDetail.execPropulsion.columns.user'),
+      title: t('organization.user'),
       dataIndex: 'user',
       customCell: (_, index: number) => ({
         colSpan: index % 2 === 0 ? 1 : 0

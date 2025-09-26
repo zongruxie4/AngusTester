@@ -178,7 +178,7 @@ defineExpose({
     <FormItem :label="t('genDataPlugin.excuteConfig.onError')">
       <RadioGroup v-model:value="formState.onError">
         <Radio value="CONTINUE">{{ t('genDataPlugin.excuteConfig.errorActions.continue') }}</Radio>
-        <Radio value="STOP">{{ t('genDataPlugin.excuteConfig.errorActions.stop') }}</Radio>
+        <Radio value="STOP">{{ t('common.stop') }}</Radio>
         <Radio value="STOP_NOW">{{ t('genDataPlugin.excuteConfig.errorActions.stopNow') }}</Radio>
       </RadioGroup>
     </FormItem>

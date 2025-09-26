@@ -523,7 +523,7 @@ const selectOptions = [
                             v-model:value="dataMap[id].transmissionMode"
                             class="flex-shrink-0"
                             :name="id">
-                            <Radio value="SSL">{{ t('jmsPlugin.uiConfig.all') }}</Radio>
+                            <Radio value="SSL">{{ t('common.all') }}</Radio>
                             <Radio value="StartTLS">{{ t('jmsPlugin.uiConfig.otherOption') }}</Radio>
                           </RadioGroup>
 

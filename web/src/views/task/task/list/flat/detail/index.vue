@@ -782,7 +782,7 @@ const actionMenuItemsMap = computed(() => {
 
     const menuItems: ActionMenuItem[] = [
       {
-        name: t('actions.edit'),
+        name: t('common.edit'),
         key: 'edit',
         icon: 'icon-shuxie',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any) && sprintAuth,
@@ -845,7 +845,7 @@ const actionMenuItemsMap = computed(() => {
 
     if (status === TaskStatus.CANCELED || status === TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('actions.reopen'),
+        name: t('common.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.REOPEN_TASK as any) && !isAssignee,
@@ -854,7 +854,7 @@ const actionMenuItemsMap = computed(() => {
       });
 
       menuItems.push({
-        name: t('actions.restart'),
+        name: t('common.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any),
@@ -865,7 +865,7 @@ const actionMenuItemsMap = computed(() => {
 
     if (status !== TaskStatus.CANCELED && status !== TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('actions.cancel'),
+        name: t('common.cancel'),
         key: 'cancel',
         icon: 'icon-zhongzhi2',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any) && sprintAuth,
@@ -1022,7 +1022,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="reopenCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>{{ t('actions.reopen') }}</span>
+          <span>{{ t('common.reopen') }}</span>
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
@@ -1042,7 +1042,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="restartCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>{{ t('actions.restart') }}</span>
+          <span>{{ t('common.restart') }}</span>
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
@@ -1061,7 +1061,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="navigateToEdit">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuxie" />
-          <span>{{ t('actions.edit') }}</span>
+          <span>{{ t('common.edit') }}</span>
         </Button>
 
         <!-- Split Task Button -->
@@ -1083,7 +1083,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="cancelCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
-          <span>{{ t('actions.cancel') }}</span>
+          <span>{{ t('common.cancel') }}</span>
         </Button>
 
         <!-- Delete Task Button -->
@@ -1215,7 +1215,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center mr-4"
           @click="refreshAllContent">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-          <span>{{ t('tactions.refresh') }}</span>
+          <span>{{ t('common.refresh') }}</span>
         </Button>
       </template>
 

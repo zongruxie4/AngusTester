@@ -267,7 +267,7 @@ onBeforeUnmount(() => {
     <!-- Data Details Section -->
     <div class="mt-4">
       <div class="detail-title font-semibold pl-2 relative text-3.5 flex items-center">
-        <span>{{ t('functionAnalysis.detail.detail') }}</span>
+        <span>{{ t('common.detail') }}</span>
         <Button
           v-show="props.data?.id"
           type="link"

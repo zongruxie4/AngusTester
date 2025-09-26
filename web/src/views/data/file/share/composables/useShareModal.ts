@@ -323,7 +323,7 @@ export function useShareModal () {
    * Computed property for OK button text
    */
   const okButtonText = computed(() => {
-    return form.url ? t('actions.confirm') : t('fileSpace.share.buttons.generateLink');
+    return form.url ? t('common.confirm') : t('fileSpace.share.buttons.generateLink');
   });
 
   /**

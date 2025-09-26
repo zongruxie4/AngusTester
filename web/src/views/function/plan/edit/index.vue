@@ -738,7 +738,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="startPlan">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>{{ t('actions.restart') }}</span>
+          <span>{{ t('common.restart') }}</span>
         </Button>
 
         <Button
@@ -838,7 +838,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="refreshPlanData">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span>{{ t('actions.refresh') }}</span>
+          <span>{{ t('common.refresh') }}</span>
         </Button>
       </template>
 
@@ -848,7 +848,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="cancelEdit">
         <Icon icon="icon-zhongzhi2" class="text-3.5" />
-        <span>{{ t('actions.cancel') }}</span>
+        <span>{{ t('common.cancel') }}</span>
       </Button>
     </div>
 
@@ -961,11 +961,11 @@ onMounted(() => {
               <span class="mr-2">{{ t('functionPlan.editForm.form.reviewCloseConfirm') }}</span>
               <a
                 class="text-theme-special"
-                @click="confirmDisableReview">{{ t('actions.confirm') }}</a>
+                @click="confirmDisableReview">{{ t('common.confirm') }}</a>
               <Divider type="vertical" />
               <a
                 class="text-theme-special"
-                @click="cancelDisableReview">{{ t('actions.cancel') }}</a>
+                @click="cancelDisableReview">{{ t('common.cancel') }}</a>
             </div>
           </template>
           <Switch

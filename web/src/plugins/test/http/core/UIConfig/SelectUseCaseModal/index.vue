@@ -192,7 +192,7 @@ watch(() => props.visible, () => {
           type="default"
           size="small"
           @click="cancel">
-          <span>{{ t('actions.cancel') }}</span>
+          <span>{{ t('common.cancel') }}</span>
         </Button>
         <Button
           :loading="coping"

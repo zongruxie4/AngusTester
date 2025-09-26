@@ -333,7 +333,7 @@ const testerDefaultOptions = computed(() => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('assigneeId')">
-                {{ t('backlog.info.personnel.assignToMe') }}
+                {{ t('common.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isAssigneeEditing">
@@ -383,7 +383,7 @@ const testerDefaultOptions = computed(() => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('confirmerId')">
-                {{ t('backlog.info.personnel.assignToMe') }}
+                {{ t('common.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isConfirmerEditing">
@@ -423,7 +423,7 @@ const testerDefaultOptions = computed(() => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('testerId')">
-                {{ t('backlog.info.personnel.assignToMe') }}
+                {{ t('common.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isTesterEditing">

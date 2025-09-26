@@ -624,7 +624,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     const menuItems: ActionMenuItem[] = [
       {
-        name: t('actions.edit'),
+        name: t('common.edit'),
         key: 'edit',
         icon: 'icon-shuxie',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
@@ -686,7 +686,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (taskStatus === TaskStatus.CANCELED || taskStatus === TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('actions.reopen'),
+        name: t('common.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isCurrentUserAssignee,
@@ -695,7 +695,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
       });
 
       menuItems.push({
-        name: t('actions.restart'),
+        name: t('common.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.RESTART_TASK),
@@ -706,7 +706,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (taskStatus !== TaskStatus.CANCELED && taskStatus !== TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('actions.cancel'),
+        name: t('common.cancel'),
         key: 'cancel',
         icon: 'icon-zhongzhi2',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,

@@ -55,7 +55,7 @@ export function useGridColumns () {
       value: 'raw'
     },
     {
-      name: t('mock.detail.requestRecord.formatOptions.preview'),
+      name: t('common.preview'),
       value: 'preview'
     }
   ];

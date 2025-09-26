@@ -420,7 +420,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="refreshDoc">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-shuaxin" class="text-3.5" />
-                  <span>{{ t('actions.refresh') }}</span>
+                  <span>{{ t('common.refresh') }}</span>
                 </div>
               </Button>
             </div>

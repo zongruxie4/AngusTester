@@ -77,7 +77,7 @@ watch(() => props.visible, (newValue) => {
 
 <template>
   <Modal
-    :title="props.editData ? t('actions.edit') : t('actions.add')"
+    :title="props.editData ? t('common.add')"
     :confirmLoading="loading"
     :visible="visible"
     @cancel="handleClose"

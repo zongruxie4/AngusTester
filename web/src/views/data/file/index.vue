@@ -212,13 +212,13 @@ const drawerMenu = computed(() => {
               <template v-if="getSafeAuth(record).includes('MODIFY')">
                 <a class="whitespace-nowrap inline-flex items-center" @click.stop="editSpace(record.id)">
                   <Icon icon="icon-bianji" class="mr-0.5" />
-                  {{ t('actions.edit') }}
+                  {{ t('common.edit') }}
                 </a>
               </template>
               <template v-else>
                 <span class="text-text-disabled whitespace-nowrap inline-flex items-center">
                   <Icon icon="icon-bianji" class="mr-0.5" />
-                  {{ t('actions.edit') }}
+                  {{ t('common.edit') }}
                 </span>
               </template>
 

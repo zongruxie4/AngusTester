@@ -159,7 +159,7 @@ defineExpose({
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="t('actions.refresh')">
+          :title="t('common.refresh')">
           <IconRefresh
             :loading="loading"
             class="text-4.5 ml-2"

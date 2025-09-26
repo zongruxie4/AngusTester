@@ -67,14 +67,14 @@ const {
           class="py-0 h-5"
           size="small"
           @click="downloadLog">
-          {{ t('mock.detail.log.download') }}
+          {{ t('common.download') }}
         </Button>
         <Button
           class="py-0 h-5 ml-2"
           size="small"
           :disabled="!logTextParam.logName || loadingLog"
           @click="loadLogContent">
-          {{ t('actions.refresh') }}
+          {{ t('common.refresh') }}
         </Button>
         <Icon
           class="text-3.5 ml-2 cursor-pointer"

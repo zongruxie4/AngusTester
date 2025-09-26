@@ -206,13 +206,13 @@ onMounted(() => {
                 size="small"
                 class="mx-2.5 text-3 leading-3"
                 @click="patchPassd(item)">
-                {{ t('actions.confirm') }}
+                {{ t('common.confirm') }}
               </Button>
               <Button
                 size="small"
                 class="text-3 leading-3"
                 @click="cancelPassd(item)">
-                {{ t('actions.cancel') }}
+                {{ t('common.cancel') }}
               </Button>
             </template>
           </div>
@@ -245,7 +245,7 @@ onMounted(() => {
       <NoData></NoData>
     </template>
     <div v-show="showMore" class="w-full text-center">
-      <Button type="link" @click="loadList(true)">{{ t('service.shareModal.actions.loadMore') }}</Button>
+      <Button type="link" @click="loadList(true)">{{ t('common.loadMore') }}</Button>
     </div>
     <AsyncComponent :visible="state.visible">
       <Share

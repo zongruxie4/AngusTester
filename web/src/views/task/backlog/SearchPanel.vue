@@ -90,14 +90,14 @@ const handleToggleDateFilter = (value: string) => {
       :class="{ 'active-key': !!selectNone }"
       class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2 font-semibold"
       @click="handleClearAllFilters">
-      {{ t('backlog.quickSearch.all') }}
+      {{ t('common.all') }}
     </div>
 
     <div
       :class="{ 'active-key': search.createdBy === userId }"
       class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2 font-semibold"
       @click="handleToggleCreatedByMeFilter">
-      {{ t('backlog.quickSearch.createdByMe') }}
+      {{ t('quickSearch.createdByMe') }}
     </div>
 
     <div
@@ -111,7 +111,7 @@ const handleToggleDateFilter = (value: string) => {
       :class="{ 'active-key': search.quickDate === '1' }"
       class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2 font-semibold"
       @click="handleToggleDateFilter('1')">
-      {{ t('backlog.quickSearch.last1Day') }}
+      {{ t('quickSearch.last1Day') }}
     </div>
 
     <div
