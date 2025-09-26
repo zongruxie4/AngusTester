@@ -2,11 +2,12 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import { software } from '@/api/tester';
+import { PageQuery } from '@xcan-angus/infra';
+
 import type {
   VersionListProps,
   VersionInfo,
   PaginationConfig,
-  SearchParams,
   MenuItem,
   StatusColorConfig
 } from '../types';
@@ -26,7 +27,7 @@ export function useVersionList (props: VersionListProps) {
   const mergeVisible = ref(false);
 
   // Search and pagination state
-  const searchPanelParams = ref<SearchParams>({
+  const searchPanelParams = ref<PageQuery>({
     orderBy: undefined,
     orderSort: undefined,
     filters: []
@@ -57,7 +58,7 @@ export function useVersionList (props: VersionListProps) {
    * Updates search parameters and reloads data
    * @param data - New search parameters
    */
-  const searchChange = (data: SearchParams): void => {
+  const searchChange = (data: PageQuery): void => {
     pagination.value.current = 1;
     searchPanelParams.value = data;
     loadData();
@@ -93,11 +94,7 @@ export function useVersionList (props: VersionListProps) {
     loading.value = false;
 
     // Update search flag based on filters
-    if (params.filters?.length || params.orderBy) {
-      searchedFlag.value = true;
-    } else {
-      searchedFlag.value = false;
-    }
+    searchedFlag.value = !!(params.filters?.length || params.orderBy);
 
     if (error) {
       pagination.value.total = 0;

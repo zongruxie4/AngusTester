@@ -25,7 +25,7 @@ export function useTableColumns () {
       width: 200
     },
     {
-      title: t('version.columns.startDate'),
+      title: t('common.startDate'),
       dataIndex: 'startDate',
       customRender: ({ text }: { text: string }) => text || '--',
       width: 150
@@ -55,7 +55,7 @@ export function useTableColumns () {
       width: 100
     },
     {
-      title: t('version.columns.lastModifyTime'),
+      title: t('common.lastModifiedDate'),
       dataIndex: 'lastModifiedDate',
       groupName: 'date',
       width: 100

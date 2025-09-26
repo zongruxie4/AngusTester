@@ -1,20 +1,14 @@
+import { EnumMessage, Priority } from '@xcan-angus/infra';
+import { TaskType, TaskStatus, SoftwareVersionStatus } from '@/enums/enums';
+
 // Task information interface
 export interface TaskInfo {
   id: string;
   name: string;
   code: string;
-  taskType?: {
-    value: string;
-    message: string;
-  };
-  priority?: {
-    value: string;
-    message: string;
-  };
-  status?: {
-    value: string;
-    message: string;
-  };
+  taskType?: EnumMessage<TaskType>;
+  priority?: EnumMessage<Priority>;
+  status?: EnumMessage<TaskStatus>;
   assigneeName?: string;
   confirmerName?: string;
   deadlineDate?: string;
@@ -30,10 +24,7 @@ export interface VersionInfo {
   description?: string;
   startDate?: string;
   releaseDate?: string;
-  status?: {
-    value: 'NOT_RELEASED' | 'RELEASED' | 'ARCHIVED';
-    message: string;
-  };
+  status?: EnumMessage<SoftwareVersionStatus>;
   progress?: {
     completedNum: number;
     completedRate: number;
@@ -62,17 +53,6 @@ export interface ChartValue {
 export interface ChartProps {
   chart1Value: ChartValue;
   chart2Value: ChartValue;
-}
-
-// Component props interfaces
-export interface VersionDetailProps {
-  projectId: string;
-  userInfo: { id: string };
-  appInfo: { id: string };
-  data: {
-    _id: string;
-    id: string | undefined;
-  };
 }
 
 export interface VersionListProps {
@@ -106,25 +86,8 @@ export interface MyTaskTableProps {
   taskList: TaskInfo[];
 }
 
-export interface SearchPanelProps {
-  loading: boolean;
-}
-
 export interface IntroduceProps {
   showFunc: boolean;
-}
-
-// Search and filter interfaces
-export interface SearchFilters {
-  key: string;
-  op: string;
-  value: string | string[];
-}
-
-export interface SearchParams {
-  orderBy?: string;
-  orderSort?: 'ASC' | 'DESC';
-  filters: SearchFilters[];
 }
 
 // Pagination interface
@@ -161,4 +124,3 @@ export interface StatusColorConfig {
 
 // Order configuration
 export type OrderByKey = 'createdDate' | 'createdByName';
-export type OrderSortKey = 'ASC' | 'DESC';

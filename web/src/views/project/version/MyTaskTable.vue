@@ -27,7 +27,6 @@ const tableList = computed((): TaskInfo[] => {
       pageSize: 1,
       total: 1
     };
-
     return {
       ...item,
       linkUrl: '/task#task?' + http.getURLSearchParams(_params, true)
@@ -56,28 +55,28 @@ const columns = computed(() => {
       title: t('common.code'),
       dataIndex: 'code',
       ellipsis: true,
-      width: 100
+      width: 130
     },
     {
       key: 'name',
       title: t('common.name'),
       dataIndex: 'name',
       ellipsis: true,
-      width: '25%'
+      width: '65%'
     },
     {
       key: 'sprintName',
       title: t('common.sprint'),
       dataIndex: 'sprintName',
       ellipsis: true,
-      width: '25%'
+      width: '35%'
     },
     {
       key: 'priority',
       title: t('common.priority'),
       dataIndex: 'priority',
       ellipsis: true,
-      width: '9%'
+      width: 100
     },
     {
       key: 'assigneeName',
@@ -96,7 +95,7 @@ const columns = computed(() => {
       title: t('common.deadlineDate'),
       dataIndex: 'deadlineDate',
       ellipsis: true,
-      width: '17%'
+      width: 120
     }
   ];
 
@@ -116,7 +115,7 @@ const emptyTextStyle = {
 <template>
   <div>
     <template v-if="!props.taskList?.length">
-      <div class="flex-1 flex flex-col items-center justify-center">
+      <div class="flex-1 flex flex-col items-center justify-center mt-15">
         <img class="w-27.5" src="../../../assets/images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3 leading-5">
           {{ t('common.noData') }}
@@ -136,7 +135,6 @@ const emptyTextStyle = {
       <template #bodyCell="{ record, column }">
         <div v-if="column.dataIndex === 'name'" class="flex items-center">
           <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
-          <!--  TODO 点击跳转任务详情没反应        -->
           <RouterLink
             class="link truncate ml-1"
             :title="record.name"

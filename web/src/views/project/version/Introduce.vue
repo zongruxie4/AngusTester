@@ -50,10 +50,10 @@ onBeforeUnmount(() => {
   <div ref="wrapperRef" class="space-y-2 text-3.5">
     <div class="space-y-1">
       <div class="flex items-center space-x-2">
-        <span class="text-3.5 font-semibold mb-1.5">{{ t('version.introduce.title') }}</span>
+        <span class="text-3.5 font-semibold mb-1.5">{{ t('version.introduce.aboutVersion') }}</span>
       </div>
       <div class="mb-4">
-        {{ t('common.description') }}
+        {{ t('version.introduce.description') }}
       </div>
     </div>
 
@@ -67,7 +67,7 @@ onBeforeUnmount(() => {
                 {{ t('version.introduce.features.versionTracking.title') }}
               </h3>
               <p class="text-gray-600 leading-relaxed">
-                {{ t('common.description') }}
+                {{ t('version.introduce.features.versionTracking.description') }}
               </p>
             </div>
           </div>
@@ -81,7 +81,7 @@ onBeforeUnmount(() => {
                 {{ t('version.introduce.features.versionPlanning.title') }}
               </h3>
               <p class="text-gray-600 leading-relaxed">
-                {{ t('common.description') }}
+                {{ t('version.introduce.features.versionPlanning.description') }}
               </p>
             </div>
           </div>
@@ -95,7 +95,7 @@ onBeforeUnmount(() => {
                 {{ t('version.introduce.features.versionProgress.title') }}
               </h3>
               <p class="text-gray-600 leading-relaxed">
-                {{ t('common.description') }}
+                {{ t('version.introduce.features.versionProgress.description') }}
               </p>
             </div>
           </div>
@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
                 {{ t('version.introduce.features.verifiableDeliverables.title') }}
               </h3>
               <p class="text-gray-600 leading-relaxed">
-                {{ t('common.description') }}
+                {{ t('version.introduce.features.verifiableDeliverables.description') }}
               </p>
             </div>
           </div>

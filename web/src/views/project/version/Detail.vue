@@ -4,11 +4,12 @@ import { Icon, Spin } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { useVersionDetail } from './composables/useVersionDetail';
-import type { VersionDetailProps, StatusColorConfig } from './types';
+import type { StatusColorConfig } from './types';
 import Chart from './Chart.vue';
+import { BasicProps } from '@/types/types';
 
 // Component props with default values
-const props = withDefaults(defineProps<VersionDetailProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -45,7 +46,7 @@ const statusColorConfig: StatusColorConfig = {
     <div class="flex itesm-center space-x-5 mt-2">
       <div class="inline-flex items-center space-x-1">
         <template v-if="dataSource.startDate">
-          {{ t('version.detail.startDate') }} {{ dataSource.startDate }}
+          {{ t('common.startDate') }}: {{ dataSource.startDate }}
         </template>
         <template v-else>
           <Icon icon="icon-riqi" /> <span>{{ t('version.detail.noStartDate') }}</span>
@@ -53,7 +54,7 @@ const statusColorConfig: StatusColorConfig = {
       </div>
       <div class="inline-flex items-center space-x-1">
         <template v-if="dataSource.releaseDate">
-          {{ t('common.releaseDate') }} {{ dataSource.releaseDate }}
+          {{ t('common.releaseDate') }}: {{ dataSource.releaseDate }}
         </template>
         <template v-else>
           <Icon icon="icon-riqi" /> <span>{{ t('version.detail.noReleaseDate') }}</span>

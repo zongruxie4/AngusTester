@@ -1,8 +1,9 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { software } from '@/api/tester';
-import type { VersionDetailProps, VersionInfo, ChartValue } from '../types';
+import { BasicProps } from '@/types/types';
+import type { VersionInfo, ChartValue } from '../types';
 
-export function useVersionDetail (props: VersionDetailProps) {
+export function useVersionDetail (props: BasicProps) {
   // Reactive state
   const dataSource = ref<VersionInfo>({} as VersionInfo);
   const loading = ref(false);

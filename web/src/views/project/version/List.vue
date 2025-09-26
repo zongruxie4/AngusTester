@@ -105,7 +105,7 @@ const { columns } = useTableColumns();
                 </template>
                 <template v-if="column.dataIndex === 'description'">
                   <template v-if="record.description">{{ record.description }}</template>
-                  <span v-else class="text-text-sub-content">{{ t('common.noDescription') }}</span>
+                  <span v-else class="text-text-sub-content">--</span>
                 </template>
                 <template v-if="column.dataIndex === 'actions'">
                   <Button
@@ -113,7 +113,7 @@ const { columns } = useTableColumns();
                     size="small"
                     @click="editVersion(record)">
                     <Icon icon="icon-bianji" class="mr-1" />
-                    {{ t('common.edit') }}
+                    {{ t('actions.edit') }}
                   </Button>
                   <Button
                     type="text"

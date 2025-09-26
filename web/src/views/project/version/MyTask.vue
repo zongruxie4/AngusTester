@@ -89,8 +89,8 @@ const cancelTotal = computed((): number => {
           <div class="flex items-center space-x-1">
             <span class="text-8 font-semibold text-text-title">{{ currentTotal }}</span>
             <div class="leading-3.5">
-              <span>{{ t('version.taskTable.currentVersion') }}</span>
-              <div>{{ t('common.task') }}</div>
+              <span>{{ t('common.issue') }}</span>
+              <div>{{ t('common.total') }}</div>
             </div>
           </div>
         </template>
@@ -175,7 +175,7 @@ const cancelTotal = computed((): number => {
             <span class="text-8 font-semibold text-gray-3">{{ cancelTotal }}</span>
             <div class="leading-3.5">
               <span>{{ t('common.issue') }}</span>
-              <div>{{ t('status.canceled') }}</div>
+              <div>{{ t('status.cancelled') }}</div>
             </div>
           </div>
         </template>

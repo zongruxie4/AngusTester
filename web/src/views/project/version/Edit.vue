@@ -39,7 +39,7 @@ const handleOk = async () => {
 </script>
 <template>
   <Modal
-    :title="props.versionId ? t('version.form.editVersion') : t('version.form.addVersion')"
+    :title="props.versionId ? t('version.actions.editVersion') : t('version.actions.addVersion')"
     :visible="props.visible"
     :width="650"
     @cancel="handleCancel"
@@ -54,15 +54,15 @@ const handleOk = async () => {
       <FormItem
         required
         name="name"
-        :label="t('version.form.versionName')">
+        :label="t('common.name')">
         <Input
           v-model:value="formState.name"
           :maxlength="40"
-          :placeholder="t('version.form.versionNamePlaceholder')" />
+          :placeholder="t('version.edit.versionNamePlaceholder')" />
       </FormItem>
       <div class="flex space-x-2">
         <FormItem
-          :label="t('version.form.startDate')"
+          :label="t('common.startDate')"
           class="flex-1 min-w-0"
           name="date">
           <div class="flex items-center space-x-1">
@@ -92,7 +92,7 @@ const handleOk = async () => {
         <Textarea
           v-model:value="formState.description"
           :maxlength="200"
-          :placeholder="t('version.form.descriptionPlaceholder')">
+          :placeholder="t('version.edit.descriptionPlaceholder')">
           </Textarea>
       </FormItem>
     </Form>
