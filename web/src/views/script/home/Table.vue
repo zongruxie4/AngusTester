@@ -3,11 +3,11 @@ import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, notification, Table, Tooltip } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, PageQuery } from '@xcan-angus/infra';
 import { script } from '@/api/tester';
-import { useScriptTable } from './composables/useScriptTable';
 import { ScriptInfo, ScriptTableProps } from '@/views/script/types';
 import { ScriptPermission } from '@/enums/enums';
+import { useScriptTable } from './composables/useScriptTable';
 
 const props = withDefaults(defineProps<ScriptTableProps>(), {
   projectId: undefined,
@@ -27,7 +27,7 @@ const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
   (event: 'refresh'): void;
   (event: 'delete', value:string[]): void;
-  (event: 'tableChange', pagination: { current: number; pageSize: number }, sorter: { orderBy: string; orderSort: 'DESC' | 'ASC' }): void;
+  (event: 'tableChange', pagination: { current: number; pageSize: number }, sorter: { orderBy: string; orderSort: PageQuery.OrderSort }): void;
 }>();
 
 // Async components
@@ -84,7 +84,7 @@ const importExamples = async () => {
 const tableChange = (
   pagination: { current: number; pageSize: number; },
   _filters: { [key: string]: any }[],
-  sorter: { orderBy: string; orderSort: 'DESC' | 'ASC' }) => {
+  sorter: { orderBy: string; orderSort: PageQuery.OrderSort }) => {
   emit('tableChange', pagination, sorter);
 };
 
@@ -364,7 +364,7 @@ rowSelection.value.onChange = (keys: string[]) => {
               class="flex items-center px-0 mr-1"
               @click="() => handleEditClick(record)">
               <Icon icon="icon-shuxie" class="mr-1" />
-              <span>{{ t('common.edit') }}</span>
+              <span>{{ t('actions.edit') }}</span>
             </Button>
 
             <Dropdown

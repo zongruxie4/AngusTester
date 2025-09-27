@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { script, analysis } from '@/api/tester';
-import { ResourceCount } from '../types';
-import { utils, appContext } from '@xcan-angus/infra';
+import { ResourceCount } from '../../types';
+import { utils, appContext, ProjectPageQuery, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { ScriptInfo } from '@/views/script/types';
 
@@ -26,10 +26,10 @@ export function useScriptData () {
 
   // Sorting state
   const orderBy = ref<string>();
-  const orderSort = ref<'DESC' | 'ASC'>();
+  const orderSort = ref<PageQuery.OrderSort>();
 
   // Filter state
-  const filters = ref<{ key: string; op: string; value: boolean | string | string[]; }[]>([]);
+  const filters = ref<SearchCriteria[]>([]);
 
   // Resource count data
   const countData = ref<ResourceCount>({
@@ -58,14 +58,7 @@ export function useScriptData () {
    * Get parameters for API requests
    */
   const getParams = () => {
-    const params: {
-      projectId: string;
-      pageNo: number;
-      pageSize: number;
-      filters?: { key: string; op: string; value: boolean | string | string[]; }[];
-      orderBy?: string;
-      orderSort?: 'DESC' | 'ASC';
-    } = {
+    const params: ProjectPageQuery = {
       projectId: projectId.value,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize
@@ -79,7 +72,6 @@ export function useScriptData () {
       params.orderBy = orderBy.value;
       params.orderSort = orderSort.value;
     }
-
     return params;
   };
 
@@ -99,7 +91,9 @@ export function useScriptData () {
 
     // Check if search parameters have changed to reset selected items
     if (prevParams.value) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { pageNo: prevPageNo, ...prevParamsCopy } = prevParams.value;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { pageNo: currentPageNo, ...paramsCopy } = params;
       if (!isEqual(prevParamsCopy, paramsCopy)) {
         resetSelectedIdsNotify.value = utils.uuid();
@@ -221,7 +215,7 @@ export function useScriptData () {
    */
   const handleTableChange = (
     { current, pageSize }: { current: number; pageSize: number; },
-    sorter: { orderBy: string; orderSort: 'DESC' | 'ASC' }
+    sorter: { orderBy: string; orderSort: PageQuery.OrderSort }
   ) => {
     pagination.value.current = current;
     pagination.value.pageSize = pageSize;
@@ -237,7 +231,7 @@ export function useScriptData () {
    * Update search filters
    * @param newFilters - New search filters from search panel
    */
-  const updateFilters = (newFilters: { key: string; op: string; value: boolean | string | string[]; }[]) => {
+  const updateFilters = (newFilters: SearchCriteria[]) => {
     filters.value = newFilters;
   };
 

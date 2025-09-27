@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, Ref, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { AsyncComponent, Spin } from '@xcan-angus/vue-ui';
-import { appContext } from '@xcan-angus/infra';
+import { appContext, SearchCriteria } from '@xcan-angus/infra';
 import { ScriptPermission } from '@/enums/enums';
 
 import { useScriptData } from './composables/useScriptData';
@@ -82,7 +82,7 @@ const toAuth = () => {
  * Handle search panel changes
  * @param searchFilters - Search filters from the search panel
  */
-const searchPanelChange = (searchFilters: { key: string; op: string; value: boolean | string | string[]; }[]) => {
+const searchPanelChange = (searchFilters: SearchCriteria[]) => {
   const { pageNo, pageSize } = route.query;
   if (pageNo && pageSize) {
     pagination.value.current = +pageNo;

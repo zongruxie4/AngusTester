@@ -1,38 +1,36 @@
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ScriptType, enumUtils } from '@xcan-angus/infra';
-import dayjs, { Dayjs } from 'dayjs';
+import { ScriptType, enumUtils, SearchCriteria } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
-
+import { CombinedTargetType } from '@/enums/enums';
 import { MenuItem } from '@/views/script/types';
+import { formatDateString } from '@/utils/utils';
 
 /**
  * Composable for managing search functionality in script home
- * @param projectId - The ID of the current project
  * @param userId - The ID of the current user
  */
-export function useScriptSearch (projectId: string, userId: string) {
+export function useScriptSearch (userId: string) {
   const { t } = useI18n();
 
   // Search panel reference
   const searchPanelRef = ref();
 
   // Quick date selection map
-  const quickDateMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
+  const quickDateMap = ref<Map<'last1Day' | 'last3Days' | 'last7Days', string[]>>(new Map());
   const typeDataMap = ref<Map<string, string>>(new Map());
   const selectedMenuMap = ref(new Map<string, Omit<MenuItem, 'name'>>());
 
   // Filters
-  const filters = ref<{ key: string; op: string; value: string; }[]>([]);
-  const serviceIdFilter = ref<{ key: 'serviceId', op: 'EQUAL', value: string | undefined }>({
+  const filters = ref<SearchCriteria[]>([]);
+  const serviceIdFilter = ref<SearchCriteria>({
     key: 'serviceId',
-    op: 'EQUAL',
+    op: SearchCriteria.OpEnum.Equal,
     value: undefined
   });
-  const sourceIdFilter = ref<{ key: 'sourceId', op: 'EQUAL', value: string | undefined }>({
+  const sourceIdFilter = ref<SearchCriteria>({
     key: 'sourceId',
-    op: 'EQUAL',
+    op: SearchCriteria.OpEnum.Equal,
     value: undefined
   });
 
@@ -46,34 +44,6 @@ export function useScriptSearch (projectId: string, userId: string) {
     const data = enumUtils.enumToMessages(ScriptType);
     scriptTypeOpt.value = data.map(i => ({ name: i.message, key: i.value }))
       .filter(i => i.key !== ScriptType.MOCK_APIS);
-  };
-
-  /**
-   * Format date string for quick date selections
-   */
-  const formatDateString = (key: MenuItem['key']) => {
-    let startDate: Dayjs | undefined;
-    let endDate: Dayjs | undefined;
-
-    if (key === 'lastDay') {
-      startDate = dayjs().startOf('date');
-      endDate = dayjs();
-    }
-
-    if (key === 'lastThreeDays') {
-      startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-      endDate = dayjs();
-    }
-
-    if (key === 'lastWeek') {
-      startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-      endDate = dayjs();
-    }
-
-    return [
-      startDate ? startDate.format(DATE_TIME_FORMAT) : '',
-      endDate ? endDate.format(DATE_TIME_FORMAT) : ''
-    ];
   };
 
   /**
@@ -109,7 +79,7 @@ export function useScriptSearch (projectId: string, userId: string) {
         return;
       }
 
-      if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
+      if (['last1Day', 'last3Days', 'last7Days'].includes(key)) {
         quickDateMap.value.clear();
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([
@@ -128,7 +98,6 @@ export function useScriptSearch (projectId: string, userId: string) {
         }
         return;
       }
-
       return;
     }
 
@@ -147,7 +116,6 @@ export function useScriptSearch (projectId: string, userId: string) {
 
       // Clear sourceId
       sourceIdFilter.value.value = undefined;
-
       return;
     }
 
@@ -192,7 +160,7 @@ export function useScriptSearch (projectId: string, userId: string) {
       return;
     }
 
-    if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
+    if (['last1Day', 'last3Days', 'last7Days'].includes(key)) {
       // Toggle selection: if already selected, deselect it
       if (selectedMenuMap.value.has(key)) {
         selectedMenuMap.value.delete(key);
@@ -206,16 +174,16 @@ export function useScriptSearch (projectId: string, userId: string) {
       // Clear 'all' selection when selecting other conditions
       selectedMenuMap.value.delete('none');
       // Clear other date selections (mutual exclusion within date group)
-      selectedMenuMap.value.delete('lastDay');
-      selectedMenuMap.value.delete('lastThreeDays');
-      selectedMenuMap.value.delete('lastWeek');
+      selectedMenuMap.value.delete('last1Day');
+      selectedMenuMap.value.delete('last3Days');
+      selectedMenuMap.value.delete('last7Days');
 
       quickDateMap.value.clear();
-      quickDateMap.value.set(key as 'lastDay' | 'lastThreeDays' | 'lastWeek', formatDateString(key));
+      quickDateMap.value.set(key as 'last1Day' | 'last3Days' | 'last7Days', formatDateString(key));
       selectedMenuMap.value.set(key, { key });
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
         searchPanelRef.value.setConfigs([
-          { valueKey: 'createdDate', value: quickDateMap.value.get(key as 'lastDay' | 'lastThreeDays' | 'lastWeek') }
+          { valueKey: 'createdDate', value: quickDateMap.value.get(key as 'last1Day' | 'last3Days' | 'last7Days') }
         ]);
       }
       return;
@@ -254,11 +222,11 @@ export function useScriptSearch (projectId: string, userId: string) {
    * Handle search panel change events
    */
   const handleSearchPanelChange = (
-    data: { key: string; op: string; value: string }[],
+    _filters: SearchCriteria[],
     _headers?: { [key: string]: string },
     key?: string
   ) => {
-    filters.value = data;
+    filters.value = _filters;
 
     if (key === 'source') {
       // Reset service, API, scenario
@@ -268,9 +236,9 @@ export function useScriptSearch (projectId: string, userId: string) {
 
     // Selecting add time clears quick search selected time options
     if (key === 'createdDate') {
-      selectedMenuMap.value.delete('lastDay');
-      selectedMenuMap.value.delete('lastThreeDays');
-      selectedMenuMap.value.delete('lastWeek');
+      selectedMenuMap.value.delete('last1Day');
+      selectedMenuMap.value.delete('last3Days');
+      selectedMenuMap.value.delete('last7Days');
     }
   };
 
@@ -278,14 +246,14 @@ export function useScriptSearch (projectId: string, userId: string) {
    * Handle source ID change
    */
   const handleSourceIdChange = (value: string) => {
-    sourceIdFilter.value = { key: 'sourceId', op: 'EQUAL', value };
+    sourceIdFilter.value = { key: 'sourceId', op: SearchCriteria.OpEnum.Equal, value };
   };
 
   /**
    * Handle service ID change
    */
   const handleServiceIdChange = (value: string) => {
-    serviceIdFilter.value = { key: 'serviceId', op: 'EQUAL', value };
+    serviceIdFilter.value = { key: 'serviceId', op: SearchCriteria.OpEnum.Equal, value };
   };
 
   /**
@@ -293,15 +261,14 @@ export function useScriptSearch (projectId: string, userId: string) {
    */
   const getData = () => {
     // Package data
-    const _filters: { key: string; op: string; value: boolean | string | string[] }[] = cloneDeep(filters.value);
+    const _filters: SearchCriteria[] = cloneDeep(filters.value);
     if (serviceIdFilter.value.value) {
-      _filters.push({ ...(serviceIdFilter.value as { key: string; op: string; value: string; }) });
+      _filters.push({ ...(serviceIdFilter.value) });
     }
 
     if (sourceIdFilter.value.value) {
-      _filters.push({ ...(sourceIdFilter.value as { key: string; op: string; value: string; }) });
+      _filters.push({ ...(sourceIdFilter.value) });
     }
-
     return _filters;
   };
 
@@ -313,8 +280,8 @@ export function useScriptSearch (projectId: string, userId: string) {
     selectedMenuMap.value.clear();
     typeDataMap.value.clear();
     filters.value = [];
-    serviceIdFilter.value = { key: 'serviceId', op: 'EQUAL', value: undefined };
-    sourceIdFilter.value = { key: 'sourceId', op: 'EQUAL', value: undefined };
+    serviceIdFilter.value = { key: 'serviceId', op: SearchCriteria.OpEnum.Equal, value: undefined };
+    sourceIdFilter.value = { key: 'sourceId', op: SearchCriteria.OpEnum.Equal, value: undefined };
   };
 
   /**
@@ -346,15 +313,15 @@ export function useScriptSearch (projectId: string, userId: string) {
       placeholder: t('scriptHome.searchPanel.sourcePlaceholder'),
       type: 'select-enum',
       enumKey: 'ScriptSource',
-      excludes: (data: { value: string; message: string }) => {
-        return ['TASK'].includes(data.value);
+      excludes: (data: { value: CombinedTargetType; message: string }) => {
+        return [CombinedTargetType.TASK].includes(data.value);
       }
     },
     {
       valueKey: 'tag',
       placeholder: t('scriptHome.searchPanel.tagPlaceholder'),
       type: 'input',
-      op: 'EQUAL',
+      op: SearchCriteria.OpEnum.Equal,
       maxlength: 100
     },
     {
@@ -415,15 +382,15 @@ export function useScriptSearch (projectId: string, userId: string) {
       },
       ...scriptTypeOpt.value,
       {
-        key: 'lastDay',
+        key: 'last1Day',
         name: t('quickSearch.last1Day')
       },
       {
-        key: 'lastThreeDays',
+        key: 'last3Days',
         name: t('quickSearch.last3Days')
       },
       {
-        key: 'lastWeek',
+        key: 'last7Days',
         name: t('quickSearch.last7Days')
       }
     ];
@@ -434,11 +401,11 @@ export function useScriptSearch (projectId: string, userId: string) {
   });
 
   const isAPISource = computed(() => {
-    return source.value === 'API';
+    return source.value === CombinedTargetType.API;
   });
 
   const isScenarioSource = computed(() => {
-    return source.value === 'SCENARIO';
+    return source.value === CombinedTargetType.SCENARIO;
   });
 
   const apiParams = computed(() => {

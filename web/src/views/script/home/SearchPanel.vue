@@ -3,7 +3,7 @@ import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Colon, Icon, IconRefresh, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { useScriptSearch } from './composables/useScriptSearch';
 
 import { ScriptSearchProps } from '@/views/script/types';
@@ -23,7 +23,7 @@ const emit = defineEmits<{
   (e: 'delete'): void;
   (e: 'cancelDelete'): void;
   (e: 'auth'): void;
-  (e: 'change', value: { key: string; op: string; value: boolean | string | string[]; }[]): void;
+  (e: 'change', value: SearchCriteria[]): void;
 }>();
 
 // Use the search composable
@@ -46,7 +46,7 @@ const {
   isAPISource,
   isScenarioSource,
   apiParams
-} = useScriptSearch(props.projectId, props.userInfo?.id);
+} = useScriptSearch(props.userInfo?.id);
 
 /**
  * Handle import action
@@ -103,7 +103,7 @@ watch(
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1 rounded-full"></div>
         <div class="whitespace-nowrap text-3 mt-0.5 text-text-sub-content">
-          <span>{{ t('activity.searchPanel.ui.quickQuery') }}</span>
+          <span>{{ t('quickSearch.title') }}</span>
           <Colon />
         </div>
         <div class="flex flex-wrap ml-2">

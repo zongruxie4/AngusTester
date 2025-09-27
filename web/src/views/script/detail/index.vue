@@ -173,7 +173,7 @@ onMounted(() => {
         <template v-if="isEditFlag">
           <div class="flex items-center space-x-2.5">
             <Button size="small" @click="handleCancel(oldScriptValue, scriptValue, viewMode, pageNo, pageSize, router)">
-              {{ t('common.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
 
             <Button
@@ -201,7 +201,7 @@ onMounted(() => {
               :disabled="!permissionList.includes(ScriptPermission.MODIFY)"
               @click="() => handleEdit(drawerRef)">
               <Icon icon="icon-shuxie" class="mr-1" />
-              <span>{{ t('common.edit') }}</span>
+              <span>{{ t('actions.edit') }}</span>
             </Button>
             <Button
               size="small"
