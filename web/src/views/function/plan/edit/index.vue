@@ -838,7 +838,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="refreshPlanData">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span>{{ t('common.refresh') }}</span>
+          <span>{{ t('actions.refresh') }}</span>
         </Button>
       </template>
 
@@ -848,7 +848,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="cancelEdit">
         <Icon icon="icon-zhongzhi2" class="text-3.5" />
-        <span>{{ t('common.cancel') }}</span>
+        <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>
 
@@ -965,7 +965,7 @@ onMounted(() => {
               <Divider type="vertical" />
               <a
                 class="text-theme-special"
-                @click="cancelDisableReview">{{ t('common.cancel') }}</a>
+                @click="cancelDisableReview">{{ t('actions.cancel') }}</a>
             </div>
           </template>
           <Switch
