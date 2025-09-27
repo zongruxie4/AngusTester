@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
-import { Colon, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
+import { Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { appContext, enumUtils, PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { SoftwareVersionStatus } from '@/enums/enums';
 import { LoadingProps } from '@/types/types';
-
-import type { MenuItem } from './types';
-import { formatDateString } from '@/utils/utils';
+import { QuickSearchOptions, createEnumOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
 
 // Component props with default values
 const props = withDefaults(defineProps<LoadingProps>(), {
@@ -26,14 +24,8 @@ const emits = defineEmits<{
   (e: 'add'): void;
 }>();
 
-// User context
-const userInfo = ref(appContext.getUser());
-
 // Component references
 const searchPanelRef = ref();
-
-// State management
-const selectedMenuMap = ref<{ [key: string]: boolean }>({});
 
 /**
  * Search panel configuration options
@@ -61,27 +53,45 @@ const searchPanelOptions = [
 ];
 
 /**
- * Quick search menu items
+ * Quick search configuration for version search panel
  * Provides predefined filter options for common searches
  */
-const menuItems = computed((): MenuItem[] => [
-  {
-    key: '',
-    name: t('common.all')
-  },
-  {
-    key: SoftwareVersionStatus.NOT_RELEASED,
-    name: t('version.searchPanelOptions.notReleased')
-  },
-  {
-    key: SoftwareVersionStatus.RELEASED,
-    name: t('version.searchPanelOptions.released')
-  },
-  {
-    key: SoftwareVersionStatus.ARCHIVED,
-    name: t('version.searchPanelOptions.archived')
+const quickSearchConfig = computed<QuickSearchConfig>(() => ({
+  title: t('quickSearch.title'),
+  // Enum status options for version status
+  enumOptions: createEnumOptions([
+    {
+      key: SoftwareVersionStatus.NOT_RELEASED,
+      name: t('version.searchPanelOptions.notReleased'),
+      fieldKey: 'status',
+      fieldValue: SoftwareVersionStatus.NOT_RELEASED
+    },
+    {
+      key: SoftwareVersionStatus.RELEASED,
+      name: t('version.searchPanelOptions.released'),
+      fieldKey: 'status',
+      fieldValue: SoftwareVersionStatus.RELEASED
+    },
+    {
+      key: SoftwareVersionStatus.ARCHIVED,
+      name: t('version.searchPanelOptions.archived'),
+      fieldKey: 'status',
+      fieldValue: SoftwareVersionStatus.ARCHIVED
+    }
+  ]),
+  // Time options
+  timeOptions: createTimeOptions([
+    { key: 'last1Day', name: t('quickSearch.last1Day'), timeRange: 'last1Day' },
+    { key: 'last3Days', name: t('quickSearch.last3Days'), timeRange: 'last3Days' },
+    { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
+  ], 'createdDate'),
+  // External clear function
+  externalClearFunction: () => {
+    if (typeof searchPanelRef.value?.clear === 'function') {
+      searchPanelRef.value.clear();
+    }
   }
-]);
+}));
 
 // Search state
 const orderBy = ref<string>();
@@ -92,8 +102,6 @@ const assocFilters = ref<SearchCriteria[]>([]);
 
 // Configuration constants
 const assocKeys: string[] = [];
-const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
-const statusKeys = enumUtils.getEnumValues(SoftwareVersionStatus);
 
 /**
  * Get current search parameters
@@ -113,6 +121,17 @@ const getParams = (): PageQuery => {
 };
 
 /**
+ * Handle quick search changes
+ * Processes quick search filters and updates state
+ * @param selectedKeys - Array of selected option keys
+ * @param searchCriteria - Array of search criteria from quick search
+ */
+const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+  quickSearchFilters.value = searchCriteria;
+  emits('change', getParams());
+};
+
+/**
  * Handle search panel changes
  * Processes search filters and updates state
  * @param data - Array of search filter objects
@@ -120,107 +139,7 @@ const getParams = (): PageQuery => {
 const searchChange = (data: SearchCriteria[]): void => {
   searchFilters.value = data.filter(item => !assocKeys.includes(item.key as string));
   assocFilters.value = data.filter(item => assocKeys.includes(item.key as string));
-
-  // Clear associated menu selections if no filters
-  if (!assocFilters.value.length) {
-    assocKeys.forEach(i => {
-      if (i === 'createdDate') {
-        timeKeys.forEach(t => delete selectedMenuMap.value[t]);
-      } else {
-        delete selectedMenuMap.value[i];
-      }
-    });
-  } else {
-    // Validate and sync menu selections with filters
-    assocKeys.forEach(key => {
-      if (['createdBy'].includes(key)) {
-        const filterItem = assocFilters.value.find(i => i.key === key);
-        if (!filterItem || filterItem.value !== userInfo.value?.id) {
-          delete selectedMenuMap.value[key];
-        }
-      } else if (key === 'createdDate') {
-        const filterItem = assocFilters.value.filter(i => i.key === key);
-        const timeKey = timeKeys.find(t => selectedMenuMap.value[t]);
-        if (timeKey) {
-          const timeValue = formatDateString(timeKey);
-          if (timeValue[0] !== filterItem[0].value || timeValue[1] !== filterItem[1].value) {
-            delete selectedMenuMap.value[timeKey];
-          }
-        }
-      }
-    });
-  }
-
   emits('change', getParams());
-};
-
-/**
- * Handle menu item clicks for quick search
- * Manages quick filter selection and search panel state
- * @param data - Menu item data object
- */
-const menuItemClick = (data: MenuItem): void => {
-  const key = data.key;
-  let searchChangeFlag = false;
-
-  if (selectedMenuMap.value[key]) {
-    // Deselect item
-    delete selectedMenuMap.value[key];
-    if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'createdDate', value: undefined }
-      ]);
-      searchChangeFlag = true;
-    } else if (assocKeys.includes(key)) {
-      searchPanelRef.value.setConfigs([
-        { valueKey: key, value: undefined }
-      ]);
-      searchChangeFlag = true;
-    }
-  } else {
-    // Select item
-    if (key === '') {
-      selectedMenuMap.value = { '': true };
-      quickSearchFilters.value = [];
-      // Clear search panel
-      if (typeof searchPanelRef.value?.clear === 'function') {
-        searchPanelRef.value.clear();
-        searchChangeFlag = true;
-      }
-    } else {
-      delete selectedMenuMap.value[''];
-    }
-
-    if (statusKeys.includes(key)) {
-      // Handle status selection (mutually exclusive)
-      statusKeys.forEach(statusKey => delete selectedMenuMap.value[statusKey]);
-      selectedMenuMap.value[key] = true;
-    } else {
-      selectedMenuMap.value[key] = true;
-    }
-  }
-
-  // Update quick search filters
-  const assocFiltersInQuick: { valueKey: string; value: string | string[] }[] = [];
-  // eslint-disable-next-line array-callback-return
-  quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
-    if (key === '') {
-      return undefined;
-    } else if (statusKeys.includes(key)) {
-      return { key: 'status', op: SearchCriteria.OpEnum.Equal, value: key };
-    }
-  }).filter(Boolean) as SearchCriteria[];
-
-  if (assocFiltersInQuick.length) {
-    searchPanelRef.value.setConfigs([
-      ...assocFiltersInQuick
-    ]);
-    searchChangeFlag = true;
-  }
-
-  if (!searchChangeFlag) {
-    emits('change', getParams());
-  }
 };
 
 /**
@@ -253,23 +172,10 @@ onMounted(() => {
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex items-center mb-3">
-      <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 rounded-full"></div>
-      <div class="whitespace-nowrap text-3 text-text-sub-content">
-        <span>{{ t('quickSearch.title') }}</span>
-        <Colon />
-      </div>
-      <div class="flex flex-wrap items-center ml-2">
-        <div
-          v-for="item in menuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold"
-          @click="menuItemClick(item)">
-          {{ item.name }}
-        </div>
-      </div>
-    </div>
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
     <div class="flex items-start justify-between ">
       <SearchPanel
         ref="searchPanelRef"
@@ -309,8 +215,5 @@ onMounted(() => {
   </div>
 </template>
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 </style>

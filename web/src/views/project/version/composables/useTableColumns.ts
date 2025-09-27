@@ -28,13 +28,13 @@ export function useTableColumns () {
       title: t('common.startDate'),
       dataIndex: 'startDate',
       customRender: ({ text }: { text: string }) => text || '--',
-      width: 150
+      width: 130
     },
     {
       title: t('common.releaseDate'),
       dataIndex: 'releaseDate',
       customRender: ({ text }: { text: string }) => text || '--',
-      width: 150
+      width: 130
     },
     {
       title: t('common.description'),
@@ -58,19 +58,19 @@ export function useTableColumns () {
       title: t('common.lastModifiedDate'),
       dataIndex: 'lastModifiedDate',
       groupName: 'date',
-      width: 100
+      width: 130
     },
     {
       title: t('common.createdDate'),
       dataIndex: 'createdDate',
       groupName: 'date',
       hide: true,
-      width: 100
+      width: 130
     },
     {
       title: t('common.actions'),
       dataIndex: 'actions',
-      width: 150
+      width: 130
     }
   ]);
 
