@@ -186,19 +186,19 @@ const quickSearchOptions = [
     group: 'testerId'
   },
   {
-    type: 'lastDay',
+    type: 'last1Day',
     name: t('quickSearch.last1Day'),
     selected: false,
     group: 'time'
   },
   {
-    type: 'lastThreeDays',
+    type: 'last3Days',
     name: t('quickSearch.last3Days'),
     selected: false,
     group: 'time'
   },
   {
-    type: 'lastWeek',
+    type: 'last7Days',
     name: t('quickSearch.last7Days'),
     selected: false,
     group: 'time'
@@ -309,9 +309,9 @@ const updateQuickSearchTypes = () => {
   }
 
   if (createdDateItems.length && (
-    selectedQuickSearchTypes.value.includes('lastDay') ||
-    selectedQuickSearchTypes.value.includes('lastThreeDays') ||
-    selectedQuickSearchTypes.value.includes('lastWeek')
+    selectedQuickSearchTypes.value.includes('last1Day') ||
+    selectedQuickSearchTypes.value.includes('last3Days') ||
+    selectedQuickSearchTypes.value.includes('last7Days')
   )) {
     let hasMatchingDateTime = false;
     for (let i = 0; i < createdDateItems.length; i++) {
@@ -326,10 +326,10 @@ const updateQuickSearchTypes = () => {
     }
 
     if (!hasMatchingDateTime) {
-      selectedQuickSearchTypes.value = selectedQuickSearchTypes.value.filter(item => item !== 'lastDay' && item !== 'lastThreeDays' && item !== 'lastWeek');
+      selectedQuickSearchTypes.value = selectedQuickSearchTypes.value.filter(item => item !== 'last1Day' && item !== 'last3Days' && item !== 'last7Days');
     }
   } else {
-    selectedQuickSearchTypes.value = selectedQuickSearchTypes.value.filter(item => item !== 'lastDay' && item !== 'lastThreeDays' && item !== 'lastWeek');
+    selectedQuickSearchTypes.value = selectedQuickSearchTypes.value.filter(item => item !== 'last1Day' && item !== 'last3Days' && item !== 'last7Days');
   }
 };
 
@@ -342,17 +342,17 @@ const getQuickDateRange = (type) => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
 
-  if (type === 'lastDay') {
+  if (type === 'last1Day') {
     startDate = dayjs().startOf('date');
     endDate = dayjs().endOf('date');
   }
 
-  if (type === 'lastThreeDays') {
+  if (type === 'last3Days') {
     startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
     endDate = dayjs();
   }
 
-  if (type === 'lastWeek') {
+  if (type === 'last7Days') {
     startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
     endDate = dayjs();
   }
@@ -473,17 +473,17 @@ const handleQuickSearchTypeChange = (types: string[], isAllType: boolean) => {
     return;
   }
 
-  if (types.includes('lastDay') || types.includes('lastThreeDays') || types.includes('lastWeek')) {
-    if (types.includes('lastDay')) {
-      quickSelectDateRange.value = getQuickDateRange('lastDay');
+  if (types.includes('last1Day') || types.includes('last3Days') || types.includes('last7Days')) {
+    if (types.includes('last1Day')) {
+      quickSelectDateRange.value = getQuickDateRange('last1Day');
     }
 
-    if (types.includes('lastThreeDays')) {
-      quickSelectDateRange.value = getQuickDateRange('lastThreeDays');
+    if (types.includes('last3Days')) {
+      quickSelectDateRange.value = getQuickDateRange('last3Days');
     }
 
-    if (types.includes('lastWeek')) {
-      quickSelectDateRange.value = getQuickDateRange('lastWeek');
+    if (types.includes('last7Days')) {
+      quickSelectDateRange.value = getQuickDateRange('last7Days');
     }
   }
 
@@ -507,7 +507,7 @@ const handleQuickSearchTypeChange = (types: string[], isAllType: boolean) => {
     }
   }
 
-  if (types.includes('lastDay') || types.includes('lastThreeDays') || types.includes('lastWeek')) {
+  if (types.includes('last1Day') || types.includes('last3Days') || types.includes('last7Days')) {
     configItems.push({ valueKey: 'createdDate', value: quickSelectDateRange.value });
   } else {
     const hasMatchingDateTime = isCreatedDateMatchingQuickSelect(createdDateItems, quickSelectDateRange.value);
