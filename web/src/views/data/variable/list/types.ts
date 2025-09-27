@@ -1,54 +1,4 @@
-/**
- * Types for variable list page components
- */
-
 import { VariableItem } from '../types';
-
-/**
- * Search filter configuration
- */
-export interface SearchFilter {
-  /** Filter key */
-  key: string;
-  /** Filter operation */
-  op: string;
-  /** Filter value */
-  value: string | string[];
-}
-
-/**
- * Props for the main variable list component
- */
-export interface VariableListProps {
-  /** Project identifier */
-  projectId: string;
-  /** User information */
-  userInfo: { id: string };
-  /** Application information */
-  appInfo: { id: string };
-  /** Notification message */
-  notify: string;
-}
-
-/**
- * Props for the import modal component
- */
-export interface ImportModalProps {
-  /** Whether the modal is visible */
-  visible: boolean;
-  /** Project identifier */
-  projectId: string;
-}
-
-/**
- * Props for the search panel component
- */
-export interface SearchPanelProps {
-  /** Loading state */
-  loading: boolean;
-  /** Number of selected items */
-  selectedNum?: number;
-}
 
 /**
  * Table pagination configuration
@@ -60,18 +10,6 @@ export interface TablePagination {
   pageSize: number;
   /** Total number of items */
   total: number;
-}
-
-/**
- * Search panel parameters
- */
-export interface SearchPanelParams {
-  /** Field to order by */
-  orderBy?: string;
-  /** Sort direction */
-  orderSort?: 'ASC' | 'DESC';
-  /** Search filters */
-  filters: SearchFilter[];
 }
 
 /**
@@ -123,8 +61,3 @@ export interface DropdownMenuItem {
   /** Whether no auth required */
   noAuth?: boolean;
 }
-
-/**
- * Import strategy options
- */
-export type ImportStrategy = 'COVER' | 'IGNORE';

@@ -3,6 +3,7 @@ import { defineAsyncComponent, inject, onMounted } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, IconCopy, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { BasicProps } from '@/types/types';
 
 // Import composables
 import { useVariableList } from './composables/useVariableList';
@@ -11,16 +12,13 @@ import { useValuePreview } from './composables/useValuePreview';
 import { useTableColumns } from './composables/useTableColumns';
 import { useDropdownMenus } from './composables/useDropdownMenus';
 
-// Import types
-import type { VariableListProps } from './types';
-
 // Import components
 import SearchPanel from './SearchPanel.vue';
 
 const { t } = useI18n();
 
 // Component props
-const props = withDefaults(defineProps<VariableListProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -250,7 +248,7 @@ defineExpose({
               </div>
 
               <template v-if="column.dataIndex === 'description'">
-                <span v-if="!record.description" class="text-text-sub-content">{{ t('common.noDescription') }}</span>
+                <span v-if="!record.description" class="text-text-sub-content">--</span>
               </template>
 
               <!-- Value Column -->
@@ -278,7 +276,7 @@ defineExpose({
                     <Icon
                       icon="icon-biyan"
                       class="flex-shrink-0 ml-1.5 text-4 cursor-pointer text-theme-text-hover"
-                      @click="showVariableValue(record)" /> <!-- TODO 提取变量预览不生效，触发请求后提取值回显到页面，接口报错：错误message也需要回显 -->
+                      @click="showVariableValue(record)" />
                   </template>
                 </div>
 
@@ -316,7 +314,7 @@ defineExpose({
                   class="flex items-center px-0"
                   @click="navigateToEdit(record)">
                   <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
-                  <span>{{ t('common.edit') }}</span>
+                  <span>{{ t('actions.edit') }}</span>
                 </Button>
 
                 <Button

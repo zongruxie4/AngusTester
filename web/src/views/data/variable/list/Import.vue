@@ -1,30 +1,23 @@
 <script setup lang="ts">
-/**
- * Import Variables Modal Component
- *
- * <p>Modal component for importing variables from various file formats</p>
- * <p>Supports ZIP, RAR, 7Z, GZ, TAR, BZ2, XZ, LZMA, JSON, YAML, and YML files</p>
- */
-
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph, UploadDragger, UploadFile } from 'ant-design-vue';
 import { Icon, Modal, Spin } from '@xcan-angus/vue-ui';
 import { variable } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { StrategyWhenDuplicated } from '@/enums/enums';
 import { formatBytes } from '@/utils/common';
-
-// Import types
-import type { ImportModalProps, ImportStrategy } from './types';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
 // Component props
-const props = withDefaults(defineProps<ImportModalProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   visible: false,
   projectId: undefined
 });
 
 // Component emits
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'update:visible', value: boolean): void;
   (event: 'ok'): void;
@@ -36,7 +29,7 @@ const MAX_FILE_SIZE_MB = 20;
 // Reactive state
 const loading = ref(false);
 const originFile = ref<UploadFile>();
-const strategyWhenDuplicated = ref<ImportStrategy>('COVER');
+const strategyWhenDuplicated = ref<StrategyWhenDuplicated>(StrategyWhenDuplicated.COVER);
 const uploadErrorMsg = ref<string>();
 
 /**
@@ -103,7 +96,7 @@ const executeImport = async () => {
   loading.value = true;
 
   try {
-    const [error] = await variable.importVariables(formData, { silence: true });
+    const [error] = await variable.importVariables(formData);
 
     if (error) {
       uploadErrorMsg.value = error.message;
@@ -132,7 +125,7 @@ const resetFileState = () => {
  */
 const resetState = () => {
   resetFileState();
-  strategyWhenDuplicated.value = 'COVER';
+  strategyWhenDuplicated.value = StrategyWhenDuplicated.COVER;
 };
 
 // Computed properties

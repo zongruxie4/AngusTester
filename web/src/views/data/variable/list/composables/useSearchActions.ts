@@ -1,5 +1,5 @@
 import { useRouter } from 'vue-router';
-import type { SearchFilter } from '../types';
+import { SearchCriteria } from '@xcan-angus/infra';
 
 /**
  * Composable function for managing search panel actions
@@ -8,8 +8,7 @@ import type { SearchFilter } from '../types';
  * @param selectedMenuMap - Map of selected menu items
  * @param timeKeys - Array of time-based menu keys
  * @param assocKeys - Array of associated filter keys
- * @param formatDateString - Function to format date strings
- * @param updateQuickSearchFilters - Function to update quick search filters
+ * @param updateQuickSearchCriterias - Function to update quick search filters
  * @param emits - Component emit function
  * @returns Object containing action methods
  */
@@ -19,8 +18,7 @@ export function useSearchActions (
   timeKeys: string[],
   assocKeys: string[],
   establishedKeys: string[],
-  formatDateString: (key: string) => [string, string],
-  updateQuickSearchFilters: () => { quickSearchFilters: SearchFilter[]; assocFiltersInQuick: any[] },
+  updateQuickSearchCriterias: () => { quickSearchCriterias: SearchCriteria[]; assocFiltersInQuick: any[] },
   emits: any
 ) {
   const router = useRouter();
@@ -91,12 +89,12 @@ export function useSearchActions (
    *
    * @param data - Menu item data
    * @param userInfo - Current user information
-   * @param searchFilters - Current search filters
+   * @param SearchCriterias - Current search filters
    */
   const handleMenuItemClick = (
     data: { key: string },
     _userInfo: { id: string } | undefined,
-    searchFilters: SearchFilter[]
+    SearchCriterias: SearchCriteria[]
   ) => {
     const key = data.key;
     let searchChangeFlag = false;
@@ -148,13 +146,13 @@ export function useSearchActions (
     }
 
     // Update quick search filters
-    const { assocFiltersInQuick } = updateQuickSearchFilters();
+    const { assocFiltersInQuick } = updateQuickSearchCriterias();
 
     if (!searchChangeFlag && searchPanelRef.value) {
       if (assocFiltersInQuick.length) {
         searchPanelRef.value.setConfigs(assocFiltersInQuick);
       }
-      emits('change', { filters: searchFilters });
+      emits('change', { filters: SearchCriterias });
     }
   };
 
@@ -180,19 +178,22 @@ export function useSearchActions (
    *
    * @param data - Search panel data with filters
    * @param assocKeys - Array of associated filter keys
-   * @param searchFilters - Reference to search filters state
+   * @param SearchCriterias - Reference to search filters state
    * @param assocFilters - Reference to associated filters state
    * @param updateSelectedMenuMap - Function to update selected menu map
    */
   const handleSearchPanelChange = (
-    data: { filters: SearchFilter[] },
+    data: { filters: SearchCriteria[] },
     assocKeys: string[],
-    searchFilters: { value: SearchFilter[] },
-    assocFilters: { value: SearchFilter[] },
+    SearchCriterias: { value: SearchCriteria[] },
+    assocFilters: { value: SearchCriteria[] },
     updateSelectedMenuMap: () => void
   ) => {
-    searchFilters.value = data.filters.filter(item => !assocKeys.includes(item.key));
-    assocFilters.value = data.filters.filter(item => assocKeys.includes(item.key));
+    // Ensure filters array exists
+    const filters = data.filters || [];
+
+    SearchCriterias.value = filters.filter(item => !assocKeys.includes(item.key as string));
+    assocFilters.value = filters.filter(item => assocKeys.includes(item.key as string));
 
     // Update selected menu map based on filters
     updateSelectedMenuMap();

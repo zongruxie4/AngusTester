@@ -3,7 +3,7 @@ import qs from 'qs';
 import { Authentication, OASServer, RequestBody, RequestConfig } from './types';
 import { variable } from '@/api/tester';
 
-import angusUtils from '@/utils/ApiUtils/index';
+import angusUtils from '@/utils/apis/index';
 
 export const password = [
   'tokenUrl',

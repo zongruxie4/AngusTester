@@ -2,8 +2,9 @@ import { ref, computed, watch } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { variable } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { VariableItem } from '../../types';
-import type { TablePagination, SearchPanelParams, RowSelection, SearchFilter } from '../types';
+import type { TablePagination, RowSelection } from '../types';
 
 /**
  * Maximum number of items that can be deleted in batch
@@ -37,7 +38,7 @@ export function useVariableList (projectId: string, notify: string) {
   });
 
   // Search and filter state
-  const searchPanelParams = ref<SearchPanelParams>({
+  const searchPanelParams = ref<PageQuery>({
     orderBy: undefined,
     orderSort: undefined,
     filters: []
@@ -66,7 +67,7 @@ export function useVariableList (projectId: string, notify: string) {
     loading.value = false;
 
     // Update search flag based on whether filters are applied
-    searchedFlag.value = params.filters?.length > 0;
+    searchedFlag.value = (params.filters?.length ?? 0) > 0;
 
     if (error) {
       pagination.value.total = 0;
@@ -92,7 +93,7 @@ export function useVariableList (projectId: string, notify: string) {
   const handleTableChange = (
     current: number,
     pageSize: number,
-    sorter: { orderBy: string; orderSort: 'ASC' | 'DESC' }
+    sorter: { orderBy: string; orderSort: PageQuery.OrderSort }
   ) => {
     pagination.value.current = current;
     pagination.value.pageSize = pageSize;
@@ -106,7 +107,7 @@ export function useVariableList (projectId: string, notify: string) {
    *
    * @param data - Search panel data with filters
    */
-  const handleSearchPanelChange = (data: { filters: SearchFilter[] }) => {
+  const handleSearchPanelChange = (data: { filters: SearchCriteria[] }) => {
     pagination.value.current = 1;
     searchPanelParams.value.filters = data.filters;
     loadData();

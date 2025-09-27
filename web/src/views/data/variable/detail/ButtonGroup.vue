@@ -111,7 +111,7 @@ const handleClick = (action: ButtonGroupAction) => {
         @click="handleClick('refresh')">
         <Icon icon="icon-shuaxin" class="text-3.5" />
         <span>
-          {{ t('common.refresh') }}
+          {{ t('actions.refresh') }}
         </span>
       </Button>
     </template>

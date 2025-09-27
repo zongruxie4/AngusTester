@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { Colon, Dropdown, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
+import { Dropdown, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { Button, Tooltip } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
+import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { QuickSearchOptions } from '@/components/quickSearch';
 
 // Import composables
 import { useSearchPanel } from './composables/useSearchPanel';
 import { useSearchActions } from './composables/useSearchActions';
 
-// Import types
-import type { SearchPanelProps, SearchFilter } from './types';
-
 const { t } = useI18n();
 
 // Component props
-const props = withDefaults(defineProps<SearchPanelProps>(), {
-  loading: false
+export type LoadingProps = {
+  loading: boolean;
+}
+const props = withDefaults(defineProps<LoadingProps>(), {
+  loading: false,
+  selectedNum: 0
 });
 
 // Component emits
@@ -23,8 +26,8 @@ const props = withDefaults(defineProps<SearchPanelProps>(), {
 const emits = defineEmits<{
   (e: 'change', value: {
     orderBy?: string;
-    orderSort?: 'ASC' | 'DESC';
-    filters: SearchFilter[];
+    orderSort?: PageQuery.OrderSort;
+    filters: SearchCriteria[];
   }): void;
   (e: 'refresh'): void;
   (e: 'toBatchDelete'): void;
@@ -39,30 +42,25 @@ const searchPanelRef = ref();
 // Use composables
 const {
   // State
-  userInfo,
   selectedMenuMap,
-  searchFilters,
-  quickSearchFilters,
+  SearchCriterias: searchFilters,
+  quickSearchCriterias: quickSearchFilters,
   assocFilters,
 
   // Constants
   assocKeys,
-  timeKeys,
   establishedKeys,
-
-  // Computed
-  menuItems,
 
   // Configuration
   buttonDropdownMenuItems,
   searchPanelOptions,
+  quickSearchConfig,
 
   // Methods
-  formatDateString,
   getCurrentParams,
   updateSelectedMenuMap,
-  updateQuickSearchFilters
-} = useSearchPanel();
+  updateQuickSearchCriterias: updateQuickSearchFilters
+} = useSearchPanel(searchPanelRef);
 
 const {
   // Navigation methods
@@ -77,15 +75,13 @@ const {
   handleRefresh,
 
   // Menu and search methods
-  handleMenuItemClick,
   handleSearchPanelChange: handleSearchPanelChangeAction
 } = useSearchActions(
   searchPanelRef,
   selectedMenuMap,
-  timeKeys,
+  [],
   assocKeys,
   establishedKeys,
-  formatDateString,
   updateQuickSearchFilters,
   emits
 );
@@ -95,9 +91,14 @@ const {
  *
  * @param data - Search panel data with filters
  */
-const handleSearchPanelChangeWrapper = (data: { filters: SearchFilter[] }) => {
+const handleSearchPanelChangeWrapper = (data: { filters?: SearchCriteria[] }) => {
+  // Ensure data has the correct structure
+  const normalizedData = {
+    filters: data.filters || []
+  };
+
   handleSearchPanelChangeAction(
-    data,
+    normalizedData,
     assocKeys,
     searchFilters,
     assocFilters,
@@ -109,14 +110,14 @@ const handleSearchPanelChangeWrapper = (data: { filters: SearchFilter[] }) => {
 };
 
 /**
- * Handle menu item clicks for quick search
+ * Handle quick search changes
+ * Processes quick search filters and updates state
+ * @param selectedKeys - Array of selected option keys
+ * @param searchCriteria - Array of search criteria from quick search
  */
-const handleMenuItemClickWrapper = (data: { key: string }) => {
-  handleMenuItemClick(
-    data,
-    userInfo.value,
-    [...quickSearchFilters.value, ...searchFilters.value, ...assocFilters.value]
-  );
+const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+  // Update quick search filters
+  quickSearchFilters.value = searchCriteria;
 
   // Emit change event with current params
   emits('change', getCurrentParams());
@@ -129,31 +130,17 @@ onMounted(() => {
 
 <template>
   <div class="mt-2.5 mb-3.5">
-    <!-- Quick Search Section -->
-    <div class="flex items-center mb-3">
-      <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 rounded-full"></div>
-      <div class="whitespace-nowrap text-3 text-text-sub-content">
-        <span>{{ t('quickSearch.title') }}</span>
-        <Colon />
-      </div>
-      <div class="flex flex-wrap items-center ml-2">
-        <div
-          v-for="item in menuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold"
-          @click="handleMenuItemClickWrapper(item)">
-          {{ item.name }}
-        </div>
-      </div>
-    </div>
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
 
     <!-- Search Panel and Action Buttons -->
     <div class="flex items-start justify-between">
       <!-- Advanced Search Panel -->
       <SearchPanel
         ref="searchPanelRef"
-        :options="searchPanelOptions"
+        :options="searchPanelOptions as any"
         class="flex-1 mr-3.5"
         @change="handleSearchPanelChangeWrapper" />
 
@@ -253,8 +240,5 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 </style>
