@@ -2,8 +2,9 @@
 import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { Colon, Icon, IconRefresh, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
+import { Icon, IconRefresh, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import { TESTER, SearchCriteria } from '@xcan-angus/infra';
+import { QuickSearchOptions } from '@/components/quickSearch';
 import { useScriptSearch } from './composables/useScriptSearch';
 
 import { ScriptSearchProps } from '@/views/script/types';
@@ -32,21 +33,19 @@ const {
   filters,
   serviceIdFilter,
   sourceIdFilter,
-  selectedMenuMap,
-  loadEnum,
-  handleMenuItemClick,
+  quickSearchConfig,
+  handleQuickSearchChange,
   handleSearchPanelChange,
   handleSourceIdChange,
   handleServiceIdChange,
   getData,
   resetData,
   resetSearchPanel,
-  menuItems,
   searchOptions,
   isAPISource,
   isScenarioSource,
   apiParams
-} = useScriptSearch(props.userInfo?.id);
+} = useScriptSearch(props.userInfo?.id || '');
 
 /**
  * Handle import action
@@ -73,7 +72,6 @@ const toRefresh = () => {
  * Initialize component
  */
 const initialize = async () => {
-  loadEnum();
   // Additional initialization logic would go here
   resetData();
   resetSearchPanel();
@@ -83,47 +81,42 @@ onMounted(() => {
   initialize();
 });
 
+// Debounce timer for search
+let searchTimer: NodeJS.Timeout | null = null;
+
 // Watch for changes and emit to parent
 watch(
   [
     () => filters.value,
     () => serviceIdFilter.value,
-    () => sourceIdFilter.value,
-    () => selectedMenuMap.value
+    () => sourceIdFilter.value
   ],
   () => {
-    emit('change', getData());
+    // Clear existing timer
+    if (searchTimer) {
+      clearTimeout(searchTimer);
+    }
+
+    // Debounce search to avoid frequent requests
+    searchTimer = setTimeout(() => {
+      emit('change', getData());
+    }, 100);
   },
-  { immediate: false, deep: false }
+  { immediate: false, deep: true }
 );
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex items-center mb-3">
-      <div class="flex items-start transform-gpu translate-y-0.5">
-        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1 rounded-full"></div>
-        <div class="whitespace-nowrap text-3 mt-0.5 text-text-sub-content">
-          <span>{{ t('quickSearch.title') }}</span>
-          <Colon />
-        </div>
-        <div class="flex flex-wrap ml-2">
-          <div
-            v-for="item in menuItems"
-            :key="item.key"
-            :class="{ 'active-key': selectedMenuMap.has(item.key) }"
-            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
-            @click="handleMenuItemClick(item)">
-            {{ item.name }}
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
 
     <div class="flex items-start justify-between mb-1.5 space-x-5">
       <SearchPanel
         ref="searchPanelRef"
         class="flex-1 min-w-0"
-        :options="searchOptions"
+        :options="searchOptions as any"
         @change="handleSearchPanelChange">
         <template #serviceId>
           <Select
@@ -135,7 +128,7 @@ watch(
             :placeholder="t('scriptHome.searchPanel.servicePlaceholder')"
             class="w-72 ml-2"
             showSearch
-            @change="handleServiceIdChange">
+            @change="(value: any) => handleServiceIdChange(value)">
             <template #option="record">
               <div class="text-3 leading-3 flex items-center h-6.5">
                 <IconText
@@ -159,7 +152,7 @@ watch(
             :placeholder="t('scriptHome.searchPanel.apiPlaceholder')"
             class="w-72 ml-2"
             showSearch
-            @change="handleSourceIdChange">
+            @change="(value: any) => handleSourceIdChange(value)">
             <template #option="record">
               <div class="flex items-center">
                 <Icon
@@ -180,7 +173,7 @@ watch(
             :placeholder="t('scriptHome.searchPanel.scenarioPlaceholder')"
             class="w-72 ml-2"
             showSearch
-            @change="handleSourceIdChange">
+            @change="(value: any) => handleSourceIdChange(value)">
             <template #option="record">
               <div class="flex items-center">
                 <Icon icon="icon-changjing" class="text-4 flex-shrink-0" />
@@ -232,8 +225,5 @@ watch(
 </template>
 
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 </style>
