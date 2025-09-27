@@ -17,17 +17,17 @@ const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 const getChartData = (data) => {
   const res = {} as any;
 
-  const { lastMonth, lastWeek, today } = data;
+  const { lastMonth, last7Days, today } = data;
 
   res.chart0Value = {
-    yData0: [today.completedNum, lastWeek.completedNum, lastMonth.completedNum],
-    yData1: [today.overdueNum, lastWeek.overdueNum, lastMonth.overdueNum],
-    yData2: [today.totalNum, lastWeek.totalNum, lastMonth.totalNum]
+    yData0: [today.completedNum, last7Days.completedNum, lastMonth.completedNum],
+    yData1: [today.overdueNum, last7Days.overdueNum, lastMonth.overdueNum],
+    yData2: [today.totalNum, last7Days.totalNum, lastMonth.totalNum]
   };
   res.chart1Value = {
-    yData0: [today.completedWorkload, lastWeek.completedWorkload, lastMonth.completedWorkload],
-    yData1: [today.overdueWorkload, lastWeek.overdueWorkload, lastMonth.overdueWorkload],
-    yData2: [today.totalWorkload, lastWeek.totalWorkload, lastMonth.totalWorkload]
+    yData0: [today.completedWorkload, last7Days.completedWorkload, lastMonth.completedWorkload],
+    yData1: [today.overdueWorkload, last7Days.overdueWorkload, lastMonth.overdueWorkload],
+    yData2: [today.totalWorkload, last7Days.totalWorkload, lastMonth.totalWorkload]
   };
 
   return res;

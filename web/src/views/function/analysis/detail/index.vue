@@ -106,8 +106,8 @@ const todayDeliveryTableData = computed(() => {
 /**
  * Transforms last week's delivery data for table display
  */
-const lastWeekDeliveryTableData = computed(() => {
-  return transformMultiTableData(analysisData.value.data?.multiTableData?.lastWeek);
+const last7DaysDeliveryTableData = computed(() => {
+  return transformMultiTableData(analysisData.value.data?.multiTableData?.last7Days);
 });
 
 /**
@@ -294,16 +294,16 @@ onBeforeUnmount(() => {
           :columns="tableColumns"
           :dataSource="todayDeliveryTableData" />
         <div class="text-center">
-          {{ t('functionAnalysis.lastWeek') }}
+          {{ t('quickSearch.last7Days') }}
         </div>
         <Table
-          key="lastWeek"
+          key="last7Days"
           class="w-full mb-5 mt-2"
           size="small"
           :pagination="false"
           :scroll="{x: 1000, y: 300}"
           :columns="tableColumns"
-          :dataSource="lastWeekDeliveryTableData" />
+          :dataSource="last7DaysDeliveryTableData" />
         <div class="text-center">
           {{ t('functionAnalysis.lastMonth') }}
         </div>

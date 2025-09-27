@@ -262,7 +262,7 @@ onMounted(async () => {
 
       <Button size="small" @click="handleCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5 mr-1" />
-        {{ t('common.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
     </div>
 

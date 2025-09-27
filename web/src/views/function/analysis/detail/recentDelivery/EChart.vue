@@ -60,7 +60,7 @@ const deliveryEchartConfig = {
     type: 'category',
     data: [
       t('functionAnalysis.detail.recentDelivery.today'),
-      t('functionAnalysis.detail.recentDelivery.lastWeek'),
+      t('quickSearch.last7Days'),
       t('functionAnalysis.detail.recentDelivery.lastMonth')
     ],
     axisLabel: {
