@@ -2,18 +2,19 @@
 import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { Colon, DropdownSort, Icon, Input, SearchPanel, Select } from '@xcan-angus/vue-ui';
-import { TESTER, PageQuery } from '@xcan-angus/infra';
+import { DropdownSort, Icon, Input, SearchPanel, Select } from '@xcan-angus/vue-ui';
+import { TESTER, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { useSearchPanel } from './composables/useSearchPanel';
-import type { FilterItem, SearchPanelProps } from './types';
+import { BasicProps } from '@/types/types';
+import { QuickSearchOptions } from '@/components/quickSearch';
 
 type OrderByKey = 'createdDate' | 'createdByName';
 
 const { t } = useI18n();
 
 // Define component props
-const props = withDefaults(defineProps<SearchPanelProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: '',
   userInfo: () => ({ id: '' }),
   appInfo: () => ({ id: '' }),
@@ -24,7 +25,7 @@ const props = withDefaults(defineProps<SearchPanelProps>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'sort', value: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort; }): void;
-  (e: 'change', value: FilterItem[]): void;
+  (e: 'change', value: SearchCriteria[]): void;
 }>();
 
 // Use search panel composable
@@ -33,24 +34,23 @@ const {
   isPrivate,
   searchPanelRef,
   nodeQuota,
-  selectedMenuMap,
   scriptSourceIdFilter,
   priorityFilter,
   isServiceTargetType,
   isAPITargetType,
   isScenarioTargetType,
-  menuItems,
   searchOptions,
   sortMenus,
   loadScriptTypeEnum,
   loadNodeQuota,
-  menuItemClick,
   searchPanelChange,
   scriptSourceIdChange,
   priorityInputChange,
   prioritySelectChange,
   initialize,
-  toRefresh
+  toRefresh,
+  quickSearchConfig,
+  handleQuickSearchChange
 } = useSearchPanel(props);
 
 /**
@@ -65,13 +65,6 @@ const toSort = (data: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort; }):
  */
 const handleRefresh = (): void => {
   toRefresh(emit);
-};
-
-/**
- * Handle menu item click
- */
-const handleMenuItemClick = (data: any): void => {
-  menuItemClick(data, emit);
 };
 
 /**
@@ -90,31 +83,16 @@ onMounted(async () => {
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex items-center mb-3">
-      <div class="flex items-start transform-gpu translate-y-0.5">
-        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1 rounded-full"></div>
-        <div class="whitespace-nowrap text-3 mt-0.5 text-text-sub-content">
-          <span>{{ t('quickSearch.title') }}</span>
-          <Colon />
-        </div>
-        <div class="flex flex-wrap ml-2">
-          <div
-            v-for="item in menuItems"
-            :key="item.key"
-            :class="{ 'active-key': selectedMenuMap.has(item.key) }"
-            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
-            @click="handleMenuItemClick(item)">
-            {{ item.name }}
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
 
     <div class="flex items-start justify-between mb-1.5 space-x-5">
       <SearchPanel
         ref="searchPanelRef"
         class="flex-1 min-w-0"
-        :options="searchOptions"
+        :options="searchOptions as any"
         @change="handleSearchPanelChange">
         <template #priority>
           <Input
@@ -125,7 +103,7 @@ onMounted(async () => {
             :placeholder="t('common.priority')"
             class="!w-72 ml-2"
             :min="0"
-            @change="priorityInputChange">
+            @change="(e: any) => priorityInputChange(e)">
             <template #prefix>
               <SelectEnum
                 :value="priorityFilter.op"
@@ -134,7 +112,7 @@ onMounted(async () => {
                 :allowClear="false"
                 :bordered="false"
                 class="w-24"
-                @change="prioritySelectChange" />
+                @change="(value: any) => prioritySelectChange(value)" />
             </template>
           </Input>
         </template>
@@ -149,7 +127,7 @@ onMounted(async () => {
             :placeholder="t('execution.searchPanel.selectService')"
             class="w-72 ml-2"
             showSearch
-            @change="scriptSourceIdChange" />
+            @change="(value: any) => scriptSourceIdChange(value)" />
 
           <Select
             v-if="isAPITargetType"
@@ -160,7 +138,7 @@ onMounted(async () => {
             :placeholder="t('execution.searchPanel.selectApi')"
             class="w-72 ml-2"
             showSearch
-            @change="scriptSourceIdChange">
+            @change="(value: any) => scriptSourceIdChange(value)">
             <template #option="record">
               <div class="flex items-center">
                 <Icon
@@ -180,7 +158,7 @@ onMounted(async () => {
             :placeholder="t('execution.searchPanel.selectScenario')"
             class="w-72 ml-2"
             showSearch
-            @change="scriptSourceIdChange">
+            @change="(value: any) => scriptSourceIdChange(value)">
             <template #option="record">
               <div class="flex items-center">
                 <Icon
@@ -220,7 +198,7 @@ onMounted(async () => {
           </RouterLink>
         </Button>
 
-        <DropdownSort :menuItems="sortMenus" @click="toSort">
+        <DropdownSort :menuItems="sortMenus as any" @click="toSort">
           <Button size="small">
             <Icon icon="icon-biaotoupaixu" class="text-3.5 mr-1" />
             <span>{{ t('actions.sort') }}</span>
@@ -229,7 +207,7 @@ onMounted(async () => {
 
         <Button size="small" @click="handleRefresh">
           <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-          <span>{{ t('common.refresh') }}</span>
+          <span>{{ t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>
@@ -237,8 +215,5 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 </style>

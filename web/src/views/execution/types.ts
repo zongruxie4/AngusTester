@@ -2,7 +2,7 @@ import { EnumMessage, ScriptType, ScriptSource, StartMode } from '@xcan-angus/in
 import { ExecStatus } from '@/enums/enums';
 
 export type MenuItem = {
-  key: 'none' | 'createdBy' | 'lastModifiedBy' | 'execBy' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
+  key: 'none' | 'createdBy' | 'lastModifiedBy' | 'execBy' | 'last1Day' | 'last3Days' | 'last7Days' | 'scriptType';
   name: string;
 }
 
@@ -594,20 +594,6 @@ export type TestInfo = {
     writeBytes: string;
   };
 };
-
-// Search panel interfaces
-export interface SearchPanelProps {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
-export interface FilterItem {
-  key: string;
-  op: string;
-  value: boolean | string | string[];
-}
 
 // UI configuration interfaces
 export interface ScriptTypeConfig {

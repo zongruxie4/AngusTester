@@ -602,12 +602,12 @@ onBeforeUnmount(() => {
               </template>
               <template v-if="[ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status.value) && item?.hasOperationPermission">
                 <a class="flex items-center" @click="handleStopWithContext(item)">
-                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('common.stop') }}</span>
+                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('actions.stop') }}</span>
                 </a>
               </template>
               <template v-else>
                 <span class="flex items-center text-theme-disabled cursor-not-allowed">
-                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('common.stop') }}</span>
+                  <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('actions.stop') }}</span>
                 </span>
               </template>
               <div class="dropdown-row">
@@ -621,7 +621,7 @@ onBeforeUnmount(() => {
                     type="text"
                     class="action-button more-action">
                     <Icon icon="icon-gengduo" class="more-options-icon" />
-                    {{ t('common.more') }}
+                    {{ t('actions.more') }}
                   </Button>
                 </Dropdown>
                 <Dropdown
@@ -634,7 +634,7 @@ onBeforeUnmount(() => {
                     type="text"
                     class="action-button more-action">
                     <Icon icon="icon-gengduo" class="more-options-icon mr-1" />
-                    {{ t('common.more') }}
+                    {{ t('actions.more') }}
                   </Button>
                 </Dropdown>
               </div>

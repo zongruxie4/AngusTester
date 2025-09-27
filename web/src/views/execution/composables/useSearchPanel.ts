@@ -1,28 +1,21 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { cloneDeep } from 'lodash-es';
-import { duration, enumUtils, ScriptSource, ScriptType, TESTER, XCanDexie } from '@xcan-angus/infra';
+import { duration, enumUtils, ScriptSource, ScriptType, TESTER, XCanDexie, SearchCriteria } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { setting } from '@/api/gm';
 import { ExecStatus } from '@/enums/enums';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
-import type { MenuItem } from '../types';
+import { BasicProps } from '@/types/types';
+import { createAuditOptions, createTimeOptions, createEnumTypeConfig, type QuickSearchConfig } from '@/components/quickSearch';
 
 export type OrderByKey = 'createdDate' | 'createdByName';
-
-export interface SearchPanelProps {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
 
 /**
  * Composable for managing search panel functionality
  * Handles search filters, quick search, and data persistence
  */
-export function useSearchPanel (props: SearchPanelProps) {
+export function useSearchPanel (props: BasicProps) {
   const { t } = useI18n();
 
   // State management
@@ -35,26 +28,64 @@ export function useSearchPanel (props: SearchPanelProps) {
   let db: XCanDexie<{ id: string; data: any; }>;
 
   // Quick search state
-  const selectedMenuMap = ref(new Map<string, Omit<MenuItem, 'name'>>());
   let scriptTypeKeys: string[] = [];
 
   // Filter state
-  const scriptTypeOpt = ref<{ name: string; key: string }[]>([]);
-  const filters = ref<{ key: string; op: string; value: string; }[]>([]);
-  const scriptSourceIdFilter = ref<{ key: 'scriptSourceId', op: 'EQUAL', value: string | undefined }>({
+  const scriptTypeOpt = ref<SearchCriteria[]>([]);
+  const filters = ref<SearchCriteria[]>([]);
+  const scriptSourceIdFilter = ref<SearchCriteria>({
     key: 'scriptSourceId',
-    op: 'EQUAL',
+    op: SearchCriteria.OpEnum.Equal,
     value: undefined
   });
-  const priorityFilter = ref<{
+  const priorityFilter = ref<SearchCriteria>({
     key: 'priority',
-    op: 'EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL',
-    value: string | undefined
-  }>({
-    key: 'priority',
-    op: 'EQUAL',
+    op: SearchCriteria.OpEnum.Equal,
     value: undefined
   });
+
+  /**
+   * Quick search configuration for execution search panel
+   * Provides predefined filter options for common searches
+   */
+  const quickSearchConfig = computed<QuickSearchConfig>(() => ({
+    title: t('quickSearch.title'),
+    // Audit information options
+    auditOptions: createAuditOptions([
+      {
+        key: 'createdByMe',
+        name: t('quickSearch.createdByMe'),
+        fieldKey: 'createdBy'
+      },
+      {
+        key: 'modifiedByMe',
+        name: t('quickSearch.modifiedByMe'),
+        fieldKey: 'lastModifiedBy'
+      },
+      {
+        key: 'executedByMe',
+        name: t('execution.searchPanel.executedByMe'),
+        fieldKey: 'execBy'
+      }
+    ], String(userId.value || '')),
+    // Enum type configuration for script types
+    enumType: createEnumTypeConfig(ScriptType, 'scriptType', [ScriptType.MOCK_APIS]),
+    // Time options
+    timeOptions: createTimeOptions([
+      { key: 'last1Day', name: t('quickSearch.last1Day'), timeRange: 'last1Day' },
+      { key: 'last3Days', name: t('quickSearch.last3Days'), timeRange: 'last3Days' },
+      { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
+    ], 'createdDate'),
+    // External clear function
+    externalClearFunction: () => {
+      if (typeof searchPanelRef.value?.clear === 'function') {
+        searchPanelRef.value.clear();
+      }
+      scriptSourceIdFilter.value.value = undefined;
+      priorityFilter.value.value = undefined;
+      priorityFilter.value.op = SearchCriteria.OpEnum.Equal;
+    }
+  }));
 
   /**
    * Load script type enum options
@@ -62,7 +93,7 @@ export function useSearchPanel (props: SearchPanelProps) {
   const loadScriptTypeEnum = (): void => {
     const data = enumUtils.enumToMessages(ScriptType, [ScriptType.MOCK_APIS]);
     scriptTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value }));
-    scriptTypeKeys = scriptTypeOpt.value.map(i => i.key);
+    scriptTypeKeys = scriptTypeOpt.value.map(i => i.key).filter((key): key is string => key !== undefined);
   };
 
   /**
@@ -77,135 +108,31 @@ export function useSearchPanel (props: SearchPanelProps) {
   };
 
   /**
-   * Format date string for quick search
+   * Handle quick search changes
+   * Processes quick search filters and updates state
+   * @param selectedKeys - Array of selected option keys
+   * @param searchCriteria - Array of search criteria from quick search
    */
-  const formatDateString = (key: 'lastDay' | 'lastThreeDays' | 'lastWeek'): string[] => {
-    let startDate: Dayjs | undefined;
-    let endDate: Dayjs | undefined;
+  const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+    // Update filters with quick search criteria
+    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'execBy', 'scriptType', 'createdDate'];
+    const otherFilters = filters.value.filter(f => f.key && !quickSearchFields.includes(f.key as string));
+    const newFilters = [...otherFilters, ...searchCriteria];
 
-    if (key === 'lastDay') {
-      startDate = dayjs().startOf('date');
-      endDate = dayjs();
-    }
-
-    if (key === 'lastThreeDays') {
-      startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-      endDate = dayjs();
-    }
-
-    if (key === 'lastWeek') {
-      startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-      endDate = dayjs();
-    }
-
-    return [
-      startDate ? startDate.format(DATE_TIME_FORMAT) : '',
-      endDate ? endDate.format(DATE_TIME_FORMAT) : ''
-    ];
-  };
-
-  /**
-   * Handle menu item click for quick search
-   */
-  const menuItemClick = (data: MenuItem, emit: any): void => {
-    const key = data.key;
-
-    // Handle deselection
-    if (selectedMenuMap.value.has(key)) {
-      selectedMenuMap.value.delete(key);
-
-      if (key === 'none') {
-        return;
-      }
-
-      // Clear specific filters
-      if (['createdBy', 'lastModifiedBy', 'execBy'].includes(key)) {
-        if (typeof searchPanelRef.value?.setConfigs === 'function') {
-          searchPanelRef.value.setConfigs([{ valueKey: key, value: undefined }]);
-        }
-        emit('change', getData());
-        return;
-      }
-
-      if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-        if (typeof searchPanelRef.value?.setConfigs === 'function') {
-          searchPanelRef.value.setConfigs([{ valueKey: 'createdDate', value: undefined }]);
-        }
-        emit('change', getData());
-        return;
-      }
-
-      if (scriptTypeKeys.includes(key)) {
-        selectedMenuMap.value.delete(key);
-        if (typeof searchPanelRef.value?.setConfigs === 'function') {
-          searchPanelRef.value.setConfigs([{ valueKey: 'scriptType', value: undefined }]);
-        }
-        emit('change', getData());
-      }
-      return;
-    }
-
-    // Handle selection
-    if (key === 'none') {
-      selectedMenuMap.value.clear();
-      selectedMenuMap.value.set('none', { key: 'none' });
-
-      if (typeof searchPanelRef.value?.clear === 'function') {
-        searchPanelRef.value.clear();
-      }
-
-      scriptSourceIdFilter.value.value = undefined;
-
-      priorityFilter.value.value = undefined;
-      priorityFilter.value.op = 'EQUAL';
-      emit('change', getData());
-      return;
-    }
-
-    // Set specific filters
-    if (['createdBy', 'lastModifiedBy', 'execBy'].includes(key)) {
-      // Clear other user-related filters
-      ['createdBy', 'lastModifiedBy', 'execBy'].forEach(i => selectedMenuMap.value.delete(i));
-      selectedMenuMap.value.set(key, { key });
-      selectedMenuMap.value.delete('none');
-
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{ valueKey: key, value: userId.value }]);
-      }
-      emit('change', getData());
-      return;
-    }
-
-    if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-      // Clear other date filters
-      ['lastDay', 'lastThreeDays', 'lastWeek'].forEach(i => selectedMenuMap.value.delete(i));
-      selectedMenuMap.value.set(key, { key });
-      selectedMenuMap.value.delete('none');
-
-      const dateKey = key as 'lastDay' | 'lastThreeDays' | 'lastWeek';
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{ valueKey: 'createdDate', value: formatDateString(dateKey) }]);
-      }
-      emit('change', getData());
-      return;
-    }
-
-    if (scriptTypeKeys.includes(key)) {
-      scriptTypeKeys.forEach(i => selectedMenuMap.value.delete(i));
-      selectedMenuMap.value.set(key, { key });
-      selectedMenuMap.value.delete('none');
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{ valueKey: 'scriptType', value: key }]);
-      }
-      emit('change', getData());
-    }
+    // Update filters
+    filters.value = newFilters;
   };
 
   /**
    * Handle search panel changes
    */
-  const searchPanelChange = (data: { key: string; op: string; value: string }[]): void => {
-    filters.value = data;
+  const searchPanelChange = (data: SearchCriteria[]): void => {
+    // Merge search panel filters with quick search filters
+    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'execBy', 'scriptType', 'createdDate'];
+    const quickSearchFilters = filters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
+    const searchPanelFilters = data.filter(f => f.key && !quickSearchFields.includes(f.key as string));
+
+    filters.value = [...quickSearchFilters, ...searchPanelFilters];
 
     // Clear script source filter when script source changes
     if (data.some(item => item.key === 'scriptSource')) {
@@ -217,7 +144,7 @@ export function useSearchPanel (props: SearchPanelProps) {
    * Handle script source ID change
    */
   const scriptSourceIdChange = (value: string): void => {
-    scriptSourceIdFilter.value = { key: 'scriptSourceId', op: 'EQUAL', value };
+    scriptSourceIdFilter.value = { key: 'scriptSourceId', op: SearchCriteria.OpEnum.Equal, value };
   };
 
   /**
@@ -234,7 +161,7 @@ export function useSearchPanel (props: SearchPanelProps) {
   /**
    * Handle priority select change
    */
-  const prioritySelectChange = (value: 'EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL'): void => {
+  const prioritySelectChange = (value: SearchCriteria.OpEnum): void => {
     priorityFilter.value = {
       ...priorityFilter.value,
       op: value
@@ -244,17 +171,14 @@ export function useSearchPanel (props: SearchPanelProps) {
   /**
    * Get combined filter data
    */
-  const getData = (): { key: string; op: string; value: boolean | string | string[] }[] => {
-    const _filters: { key: string; op: string; value: boolean | string | string[] }[] = cloneDeep(filters.value);
-
+  const getFilters = (): SearchCriteria[] => {
+    const _filters: SearchCriteria[] = cloneDeep(filters.value);
     if (scriptSourceIdFilter.value.value) {
-      _filters.push({ ...(scriptSourceIdFilter.value as { key: string; op: string; value: string; }) });
+      _filters.push({ ...(scriptSourceIdFilter.value) });
     }
-
     if (priorityFilter.value.value) {
-      _filters.push({ ...(priorityFilter.value as { key: string; op: string; value: string; }) });
+      _filters.push({ ...(priorityFilter.value) });
     }
-
     return _filters;
   };
 
@@ -280,16 +204,16 @@ export function useSearchPanel (props: SearchPanelProps) {
         const dateTimeMap: { [key: string]: string[] } = {};
 
         filters.value.every(({ key, value }) => {
-          if (dateTimeKeys.includes(key)) {
+          if (key && dateTimeKeys.includes(key) && typeof value === 'string') {
             if (dateTimeMap[key]) {
               dateTimeMap[key].push(value);
             } else {
               dateTimeMap[key] = [value];
             }
-          } else if (scriptTypeKeys.includes(key)) {
-            scriptTypeMap[key] = value;
+          } else if (key && scriptTypeKeys.includes(key)) {
+            scriptTypeMap[key] = value as string;
             valueMap[key] = value;
-          } else {
+          } else if (key) {
             valueMap[key] = value;
           }
           return true;
@@ -318,23 +242,20 @@ export function useSearchPanel (props: SearchPanelProps) {
 
       // Set script source filter
       if (Object.prototype.hasOwnProperty.call(dbData, 'b')) {
-        scriptSourceIdFilter.value = dbData.b || { key: 'scriptSourceId', op: 'EQUAL', value: undefined };
+        scriptSourceIdFilter.value = dbData.b || { key: 'scriptSourceId', op: SearchCriteria.OpEnum.Equal, value: undefined };
       } else {
-        scriptSourceIdFilter.value = { key: 'scriptSourceId', op: 'EQUAL', value: undefined };
+        scriptSourceIdFilter.value = { key: 'scriptSourceId', op: SearchCriteria.OpEnum.Equal, value: undefined };
       }
 
       // Set priority filter
       if (Object.prototype.hasOwnProperty.call(dbData, 'c')) {
-        priorityFilter.value = dbData.c || { key: 'priority', op: 'EQUAL', value: undefined };
+        priorityFilter.value = dbData.c || { key: 'priority', op: SearchCriteria.OpEnum.Equal, value: undefined };
       } else {
-        priorityFilter.value = { key: 'priority', op: 'EQUAL', value: undefined };
+        priorityFilter.value = { key: 'priority', op: SearchCriteria.OpEnum.Equal, value: undefined };
       }
 
       const scriptValue = Object.keys(scriptTypeMap);
       if (scriptValue.length) {
-        scriptValue.forEach(i => {
-          selectedMenuMap.value.set(i, { key: i as MenuItem['key'] });
-        });
         if (!Object.keys(valueMap).length) {
           emit('change', filters.value);
         }
@@ -374,16 +295,15 @@ export function useSearchPanel (props: SearchPanelProps) {
    * Reset all data
    */
   const resetData = (): void => {
-    selectedMenuMap.value.clear();
     filters.value = [];
-    scriptSourceIdFilter.value = { key: 'scriptSourceId', op: 'EQUAL', value: undefined };
+    scriptSourceIdFilter.value = { key: 'scriptSourceId', op: SearchCriteria.OpEnum.Equal, value: undefined };
   };
 
   /**
    * Handle refresh
    */
   const toRefresh = (emit: any): void => {
-    emit('change', getData());
+    emit('change', getFilters());
   };
 
   // Computed properties
@@ -392,7 +312,7 @@ export function useSearchPanel (props: SearchPanelProps) {
   const dbBaseKey = computed(() => {
     let key = '';
     if (userId.value) {
-      key = userId.value;
+      key = String(userId.value);
     }
     if (props.projectId) {
       key += props.projectId;
@@ -425,90 +345,32 @@ export function useSearchPanel (props: SearchPanelProps) {
       [
         () => filters.value,
         () => scriptSourceIdFilter.value,
-        () => priorityFilter.value,
-        () => selectedMenuMap.value
+        () => priorityFilter.value
       ], () => {
         const _filters = filters.value;
         if (!(_filters.length || !!scriptSourceIdFilter.value.value)) {
-          selectedMenuMap.value.clear();
-          selectedMenuMap.value.set('none', { key: 'none' });
-
           emit('change', []);
         } else {
-          // 删除快速查询选中的【所有】选项
-          selectedMenuMap.value.delete('none');
-
-          // 设置快速搜索
-          const createdBy = _filters.find(item => item.key === 'createdBy')?.value;
-          if (createdBy && createdBy === userId.value) {
-            selectedMenuMap.value.set('createdBy', { key: 'createdBy' });
-          } else {
-            selectedMenuMap.value.delete('createdBy');
-          }
-
-          const lastModifiedBy = _filters.find(item => item.key === 'lastModifiedBy')?.value;
-          if (lastModifiedBy && lastModifiedBy === userId.value) {
-            selectedMenuMap.value.set('lastModifiedBy', { key: 'lastModifiedBy' });
-          } else {
-            selectedMenuMap.value.delete('lastModifiedBy');
-          }
-
-          const execBy = _filters.find(item => item.key === 'execBy')?.value;
-          if (execBy && execBy === userId.value) {
-            selectedMenuMap.value.set('execBy', { key: 'execBy' });
-          } else {
-            selectedMenuMap.value.delete('execBy');
-          }
-
-          const scriptType = _filters.find(item => item.key === 'scriptType')?.value;
-          if (!scriptType) {
-            selectedMenuMap.value.delete(scriptType as string);
-          } else {
-            selectedMenuMap.value.set(scriptType as string, { key: scriptType as string });
-          }
-
-          // if (quickDateMap.value.size > 0) {
-          //   selectedMenuMap.value.delete('lastDay');
-          //   selectedMenuMap.value.delete('lastThreeDays');
-          //   selectedMenuMap.value.delete('lastWeek');
-
-          //   const createdDateStart = _filters.find(item => item.key === 'createdDate' && item.op === 'GREATER_THAN_EQUAL')?.value;
-          //   const createdDateEnd = _filters.find(item => item.key === 'createdDate' && item.op === 'LESS_THAN_EQUAL')?.value;
-          //   const dateString = [createdDateStart, createdDateEnd];
-          //   const entries = quickDateMap.value.entries();
-          //   for (const [key, value] of entries) {
-          //     if (isEqual(value, dateString)) {
-          //       selectedMenuMap.value.set(key, { key });
-          //     }
-          //   }
-
-          //   quickDateMap.value.clear();
-          // }
-
-          emit('change', getData());
+          emit('change', getFilters());
         }
 
         // 保存到db
         if (db) {
           const dbData: {
-            a?: {
-              key: string;
-              op: string;
-              value: string;
-            }[];
-            b?: { key: 'scriptSourceId'; op: string; value: string | undefined; };
-            c?: { key: 'priority', op: 'EQUAL'|'GREATER_THAN'|'GREATER_THAN_EQUAL'|'LESS_THAN'|'LESS_THAN_EQUAL', value: string | undefined };
+            filters?: SearchCriteria[];
+            scriptSourceId?: SearchCriteria;
+            priority?: SearchCriteria;
           } = {};
           if (_filters.length) {
-            dbData.a = cloneDeep(_filters);
+            dbData.filters = cloneDeep(_filters);
           }
 
           if (scriptSourceIdFilter.value.value) {
-            dbData.b = cloneDeep(scriptSourceIdFilter.value);
+            dbData.scriptSourceId = cloneDeep(scriptSourceIdFilter.value);
           }
 
           if (priorityFilter.value.value) {
-            dbData.c = cloneDeep(priorityFilter.value);
+            dbData.priority = cloneDeep(priorityFilter.value);
           }
 
           if (Object.keys(dbData).length) {
@@ -522,38 +384,6 @@ export function useSearchPanel (props: SearchPanelProps) {
         }
       }, { immediate: false, deep: false });
   };
-
-  const menuItems = computed(() => [
-    {
-      key: 'none',
-      name: t('common.all')
-    },
-    {
-      key: 'createdBy',
-      name: t('quickSearch.createdByMe')
-    },
-    {
-      key: 'lastModifiedBy',
-      name: t('quickSearch.modifiedByMe')
-    },
-    {
-      key: 'execBy',
-      name: t('execution.searchPanel.executedByMe')
-    },
-    ...scriptTypeOpt.value,
-    {
-      key: 'lastDay',
-      name: t('quickSearch.last1Day')
-    },
-    {
-      key: 'lastThreeDays',
-      name: t('execution.searchPanel.lastThreeDays')
-    },
-    {
-      key: 'lastWeek',
-      name: t('execution.searchPanel.lastWeek')
-    }
-  ]);
 
   const searchOptions = computed(() => [
     {
@@ -657,7 +487,6 @@ export function useSearchPanel (props: SearchPanelProps) {
     isPrivate,
     searchPanelRef,
     nodeQuota,
-    selectedMenuMap,
     scriptTypeOpt,
     filters,
     scriptSourceIdFilter,
@@ -670,23 +499,22 @@ export function useSearchPanel (props: SearchPanelProps) {
     isServiceTargetType,
     isAPITargetType,
     isScenarioTargetType,
-    menuItems,
     searchOptions,
     sortMenus,
+    quickSearchConfig,
 
     // Methods
     loadScriptTypeEnum,
     loadNodeQuota,
-    formatDateString,
-    menuItemClick,
     searchPanelChange,
     scriptSourceIdChange,
     priorityInputChange,
     prioritySelectChange,
-    getData,
+    getData: getFilters,
     initialize,
     resetSearchPanel,
     resetData,
-    toRefresh
+    toRefresh,
+    handleQuickSearchChange
   };
 }
