@@ -241,7 +241,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
           <div class="flex items-center justify-between h-4 leading-5">
             <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
-              <span>{{ t('common.edit') }}</span>
+              <span>{{ t('actions.edit') }}</span>
             </RouterLink>
 
             <RouterLink
