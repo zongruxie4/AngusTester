@@ -1,23 +1,10 @@
 <script setup lang="ts">
-// Vue composition API imports
 import { defineAsyncComponent, onMounted, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// Custom UI components
 import { AsyncComponent, Hints, Icon, IconRefresh, Input, NoData, Spin } from '@xcan-angus/vue-ui';
-
-// Ant Design components
 import { Button } from 'ant-design-vue';
-
-// Composables and types
 import { useData, useActions, useManagement } from './composables';
 import type { TagProps } from './types';
-
-/**
- * Project Tag Management Component
- * Provides comprehensive tag management functionality including CRUD operations,
- * search, pagination, and inline editing capabilities
- */
 
 // Initialize internationalization
 const { t } = useI18n();
@@ -87,8 +74,6 @@ const {
   handleEditBlur,
   resetState
 } = useManagement(dataList, searchTags, handleTagUpdate);
-
-// Event handlers for component interactions
 
 /**
  * Handles the refresh button click
@@ -184,14 +169,14 @@ onMounted(() => {
       <div class="space-y-2">
         <div class="flex items-center space-x-2">
           <div class="w-1 h-4 bg-gradient-to-b from-green-500 to-green-600 rounded-full"></div>
-          <span class="text-3.5 font-semibold">{{ t('tag.about') }}</span>
+          <span class="text-3.5 font-semibold">{{ t('tag.introduce.aboutTag') }}</span>
         </div>
-        <div class="text-3.5 text-gray-700 ml-3">{{ t('tag.aboutDescription') }}</div>
+        <div class="text-3.5 text-gray-700 ml-3">{{ t('tag.introduce.description') }}</div>
       </div>
       <div class="space-y-2">
         <div class="flex items-center space-x-2">
           <div class="w-1 h-4 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
-          <span class="text-3.5 font-semibold">{{ t('tag.addedTags') }}</span>
+          <span class="text-3.5 font-semibold">{{ t('tag.messages.addedTags') }}</span>
         </div>
 
         <Spin
@@ -202,17 +187,17 @@ onMounted(() => {
             <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center py-16">
               <img src="../../../assets/images/nodata.png" class="w-32 h-32 mb-4">
               <div v-if="!props.disabled" class="flex items-center text-gray-500 text-xs">
-                <span>{{ t('tag.noTags') }}</span>
+                <span>{{ t('tag.messages.noTags') }}</span>
                 <Button
                   type="link"
                   size="small"
                   class="text-xs py-0 px-1 text-blue-600"
                   @click="openCreateModal">
-                  {{ t('tag.addTag') }}
+                  {{ t('tag.acctions.addTag') }}
                 </Button>
               </div>
               <div v-else class="text-gray-500 text-xs">
-                {{ t('tag.noTagsDescription') }}
+                {{ t('tag.messages.noTagsDescription') }}
               </div>
             </div>
 
@@ -222,7 +207,7 @@ onMounted(() => {
                 <div class="flex items-center">
                   <Input
                     v-model:value="searchValue"
-                    :placeholder="t('tag.tagNamePlaceholder')"
+                    :placeholder="t('tag.messages.tagNamePlaceholder')"
                     class="!w-60 mr-3"
                     trimAll
                     :allowClear="true"
@@ -234,7 +219,7 @@ onMounted(() => {
                   </Input>
                   <Hints
                     v-if="!props.disabled"
-                    :text="t('tag.addTagHint')"
+                    :text="t('tag.messages.addTagHint')"
                     class="text-xs text-gray-500" />
                 </div>
 
@@ -246,14 +231,14 @@ onMounted(() => {
                     class="flex items-center space-x-1 text-xs"
                     @click="openCreateModal">
                     <Icon icon="icon-jia" class="text-xs" />
-                    <span>{{ t('tag.addTag') }}</span>
+                    <span>{{ t('tag.actions.addTag') }}</span>
                   </Button>
 
                   <IconRefresh @click="handleRefresh">
                     <template #default>
                       <div class="flex items-center cursor-pointer text-gray-600 space-x-1 hover:text-gray-800 text-xs">
                         <Icon icon="icon-shuaxin" class="text-xs" />
-                        <span>{{ t('common.refresh') }}</span>
+                        <span>{{ t('actions.refresh') }}</span>
                       </div>
                     </template>
                   </IconRefresh>
@@ -285,7 +270,7 @@ onMounted(() => {
                       size="small"
                       class="px-0 py-0 text-xs"
                       @click="cancelEdit">
-                      {{ t('common.cancel') }}
+                      {{ t('actions.cancel') }}
                     </Button>
                   </div>
 

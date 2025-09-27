@@ -172,7 +172,7 @@ const validateTagName = (name: string): boolean => {
 <template>
   <!-- Modal for adding new tag -->
   <Modal
-    :title="t('tag.addTagTitle')"
+    :title="t('tag.messages.addTagTitle')"
     width="500px"
     :visible="props.visible"
     :okButtonProps="okButtonProps"
@@ -181,7 +181,7 @@ const validateTagName = (name: string): boolean => {
     <!-- Input field for tag name -->
     <Input
       v-model:value="inputValue"
-      :placeholder="t('tag.tagNamePlaceholder')"
+      :placeholder="t('tag.messages.tagNamePlaceholder')"
       trim
       :allowClear="true"
       :maxlength="50"
