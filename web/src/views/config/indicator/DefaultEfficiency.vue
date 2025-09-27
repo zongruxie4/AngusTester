@@ -21,7 +21,7 @@ const {
       <div class="text-3 flex items-center">
         <template v-if="editable">
           <span class="cursor-pointer" @click.stop="toggleEditMode">
-            <Icon icon="icon-zhongzhi2" class="mr-1" />{{ t('common.cancel') }}
+            <Icon icon="icon-zhongzhi2" class="mr-1" />{{ t('actions.cancel') }}
           </span>
           <Button
             type="text"

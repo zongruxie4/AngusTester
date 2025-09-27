@@ -92,7 +92,7 @@ let database: XCanDexie<{ id: string; data: any; }>;
 const searchPanelRef = ref();
 
 // Quick search date mapping for predefined time ranges
-const quickSearchDateMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
+const quickSearchDateMap = ref<Map<'last1Day' | 'last3Days' | 'last7Days', string[]>>(new Map());
 // Map to track selected menu items for quick search
 const selectedQuickSearchItems = ref(new Map<string, Omit<SearchPanelMenuItem, 'name'>>());
 // Overdue tasks filter flag
@@ -197,7 +197,7 @@ const handleQuickSearchMenuItemClick = (data: SearchPanelMenuItem) => {
       return;
     }
 
-    if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(itemKey)) {
+    if (['last1Day', 'last3Days', 'last7Days'].includes(itemKey)) {
       quickSearchDateMap.value.clear();
       updateSearchPanelConfigs([{ valueKey: 'createdDate', value: undefined }]);
       return;
@@ -240,10 +240,10 @@ const handleQuickSearchMenuItemClick = (data: SearchPanelMenuItem) => {
     return;
   }
 
-  if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(itemKey)) {
+  if (['last1Day', 'last3Days', 'last7Days'].includes(itemKey)) {
     quickSearchDateMap.value.clear();
-    const dateRange = formatDateRange(itemKey as 'lastDay' | 'lastThreeDays' | 'lastWeek');
-    quickSearchDateMap.value.set(itemKey as 'lastDay' | 'lastThreeDays' | 'lastWeek', dateRange);
+    const dateRange = formatDateRange(itemKey as 'last1Day' | 'last3Days' | 'last7Days');
+    quickSearchDateMap.value.set(itemKey as 'last1Day' | 'last3Days' | 'last7Days', dateRange);
     updateSearchPanelConfigs([{ valueKey: 'createdDate', value: dateRange }]);
   }
 
@@ -290,7 +290,7 @@ const updateSearchPanelConfigs = (configs: { valueKey: string; value: any }[]) =
 
 /**
  * Formats date range for quick search time periods
- * @param key - The time period key (lastDay, lastThreeDays, lastWeek)
+ * @param key - The time period key (last1Day, last3Days, last7Days)
  * @returns Array of formatted date strings [startDate, endDate]
  */
 const formatDateRange = (key: SearchPanelMenuItem['key']) => {
@@ -298,15 +298,15 @@ const formatDateRange = (key: SearchPanelMenuItem['key']) => {
   let endDate: Dayjs | undefined;
 
   switch (key) {
-    case 'lastDay':
+    case 'last1Day':
       startDate = dayjs().startOf('date');
       endDate = dayjs();
       break;
-    case 'lastThreeDays':
+    case 'last3Days':
       startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
       endDate = dayjs();
       break;
-    case 'lastWeek':
+    case 'last7Days':
       startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
       endDate = dayjs();
       break;
@@ -544,9 +544,9 @@ const handleSearchPanelChange = (
 
   // Clear quick search date selections when manual date selection is made
   if (key === 'createdDate') {
-    selectedQuickSearchItems.value.delete('lastDay');
-    selectedQuickSearchItems.value.delete('lastThreeDays');
-    selectedQuickSearchItems.value.delete('lastWeek');
+    selectedQuickSearchItems.value.delete('last1Day');
+    selectedQuickSearchItems.value.delete('last3Days');
+    selectedQuickSearchItems.value.delete('last7Days');
   }
 };
 
@@ -994,9 +994,9 @@ onMounted(async () => {
         }
 
         if (quickSearchDateMap.value.size > 0) {
-          selectedQuickSearchItems.value.delete('lastDay');
-          selectedQuickSearchItems.value.delete('lastThreeDays');
-          selectedQuickSearchItems.value.delete('lastWeek');
+          selectedQuickSearchItems.value.delete('last1Day');
+          selectedQuickSearchItems.value.delete('last3Days');
+          selectedQuickSearchItems.value.delete('last7Days');
 
           const createdDateStart = _filters.find(item => item.key === 'createdDate' &&
             item.op === SearchCriteria.OpEnum.GreaterThanEqual)?.value;
@@ -1287,16 +1287,16 @@ const menuItems = computed(():SearchPanelMenuItem[] => {
     },
     ...taskTypeOptions.value,
     {
-      key: 'lastDay',
+      key: 'last1Day',
       name: t('quickSearch.last1Day')
     },
     {
-      key: 'lastThreeDays',
-      name: t('task.searchPanel.menuItems.lastThreeDays')
+      key: 'last3Days',
+      name: t('quickSearch.last3Days')
     },
     {
-      key: 'lastWeek',
-      name: t('task.searchPanel.menuItems.lastWeek')
+      key: 'last7Days',
+      name: t('quickSearch.last7Days')
     }
   ];
 });
@@ -1389,7 +1389,7 @@ const searchOptions = [
   {
     type: 'date-range' as const,
     valueKey: 'startDate',
-    placeholder: t('task.searchPanelOptions.startDate').split(','),
+    placeholder: t('common.startDate').split(','),
     showTime: true
   },
   {
@@ -1864,7 +1864,7 @@ const sortMenuItems = [
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="t('common.refresh')">
+          :title="t('actions.refresh')">
           <IconRefresh class="text-4 flex-shrink-0" @click="refreshSearchResults" />
         </Tooltip>
       </div>

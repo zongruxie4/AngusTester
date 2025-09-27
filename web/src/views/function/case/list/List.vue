@@ -273,17 +273,17 @@ const getQuickDate = (type) => {
   let _startDate: Dayjs | undefined;
   let _endDate: Dayjs | undefined;
 
-  if (type === 'lastDay') {
+  if (type === 'last1Day') {
     _startDate = dayjs().startOf('date');
     _endDate = dayjs().endOf('date');
   }
 
-  if (type === 'lastThreeDays') {
+  if (type === 'last3Days') {
     _startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
     _endDate = dayjs();
   }
 
-  if (type === 'lastWeek') {
+  if (type === 'last7Days') {
     _startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
     _endDate = dayjs();
   }
@@ -362,19 +362,19 @@ const quickSearchChange = (types: string[], allType: boolean) => {
     return;
   }
 
-  if (types.includes('lastDay') || types.includes('lastThreeDays') || types.includes('lastWeek')) {
-    if (types.includes('lastDay')) {
-      const _date = getQuickDate('lastDay');
+  if (types.includes('last1Day') || types.includes('last3Days') || types.includes('last7Days')) {
+    if (types.includes('last1Day')) {
+      const _date = getQuickDate('last1Day');
       quickSelectDate.value = _date;
     }
 
-    if (types.includes('lastThreeDays')) {
-      const _date = getQuickDate('lastThreeDays');
+    if (types.includes('last3Days')) {
+      const _date = getQuickDate('last3Days');
       quickSelectDate.value = _date;
     }
 
-    if (types.includes('lastWeek')) {
-      const _date = getQuickDate('lastWeek');
+    if (types.includes('last7Days')) {
+      const _date = getQuickDate('last7Days');
       quickSelectDate.value = _date;
     }
   }
@@ -399,7 +399,7 @@ const quickSearchChange = (types: string[], allType: boolean) => {
     }
   }
 
-  if (types.includes('lastDay') || types.includes('lastThreeDays') || types.includes('lastWeek')) {
+  if (types.includes('last1Day') || types.includes('last3Days') || types.includes('last7Days')) {
     configItems.push({ valueKey: 'createdDate', value: quickSelectDate.value });
   } else {
     const hasUpDateTime = getCreatedDateIsQuickDate(createdDateItems, quickSelectDate.value);
@@ -686,7 +686,7 @@ const tableAction = computed(() => {
       action.actionMenus[_case.id].push({
         key: 'updateTestResult_canceled',
         icon: 'icon-xiugaiceshijieguo',
-        name: t('common.cancel'),
+        name: t('actions.cancel'),
         permission: 'edit'
       });
 
@@ -814,9 +814,9 @@ const setQuickType = () => {
     }
   }
 
-  if (createdDateItems.length && (selectedTypes.value.includes('lastDay') ||
-    selectedTypes.value.includes('lastThreeDays') ||
-    selectedTypes.value.includes('lastWeek'))) {
+  if (createdDateItems.length && (selectedTypes.value.includes('last1Day') ||
+    selectedTypes.value.includes('last3Days') ||
+    selectedTypes.value.includes('last7Days'))) {
     let hasUpDateTime = false;
     for (let i = 0; i < createdDateItems.length; i++) {
       const item = createdDateItems[i];
@@ -830,10 +830,10 @@ const setQuickType = () => {
     }
 
     if (!hasUpDateTime) {
-      selectedTypes.value = selectedTypes.value.filter(item => item !== 'lastDay' && item !== 'lastThreeDays' && item !== 'lastWeek');
+      selectedTypes.value = selectedTypes.value.filter(item => item !== 'last1Day' && item !== 'last3Days' && item !== 'last7Days');
     }
   } else {
-    selectedTypes.value = selectedTypes.value.filter(item => item !== 'lastDay' && item !== 'lastThreeDays' && item !== 'lastWeek');
+    selectedTypes.value = selectedTypes.value.filter(item => item !== 'last1Day' && item !== 'last3Days' && item !== 'last7Days');
   }
 };
 
@@ -1516,20 +1516,20 @@ const quickList = [
     group: 'testerId'
   },
   {
-    type: 'lastDay',
+    type: 'last1Day',
     name: t('quickSearch.last1Day'),
     selected: false,
     group: 'time'
   },
   {
-    type: 'lastThreeDays',
-    name: t('functionCase.mainView.lastThreeDays'),
+    type: 'last3Days',
+    name: t('quickSearch.last3Days'),
     selected: false,
     group: 'time'
   },
   {
-    type: 'lastWeek',
-    name: t('functionCase.mainView.lastWeek'),
+    type: 'last7Days',
+    name: t('quickSearch.last7Days'),
     selected: false,
     group: 'time'
   }
@@ -1988,7 +1988,7 @@ defineExpose({
             <Tooltip
               arrowPointAtCenter
               placement="topLeft"
-              :title="t('common.refresh')">
+              :title="t('actions.refresh')">
               <IconRefresh class="text-4 mr-3.5" @click="toRefresh" />
             </Tooltip>
           </div>

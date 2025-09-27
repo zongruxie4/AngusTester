@@ -1238,10 +1238,10 @@
     }
   },
   "taskMeeting": {
-    "title": "Meetings",
+    "title": "Meeting",
     "addMeeting": "Add Meeting",
     "editMeeting": "Edit Meeting",
-    "aboutMeeting": "About Meetings",
+    "aboutMeeting": "About Meeting",
     "aboutMeetingDesc": "Meetings play a key role in agile frameworks, helping teams continuously improve, increase work efficiency, and ensure projects can flexibly respond to changes through regular communication, feedback, and reflection.",
     "addedMeetings": "Added Meetings",
     "notAddedYet": "You haven't added any meetings yet, immediately",

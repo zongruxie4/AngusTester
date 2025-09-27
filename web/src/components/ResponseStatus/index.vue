@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, nextTick } from 'vue';
 import { EnumMessage, HttpStatus, enumUtils } from '@xcan-angus/infra';
-import { getStatusColor } from '@/utils/ApiUtils';
+import { getStatusColor } from 'src/utils/apis';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 

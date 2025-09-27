@@ -1,7 +1,7 @@
 import { codeUtils } from '@xcan-angus/infra';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 
-import apiUtils from '@/utils/ApiUtils/index';
+import apiUtils from '@/utils/apis/index';
 
 const { ungzip } = codeUtils;
 const loadAsync = async (base64Text, name) => {

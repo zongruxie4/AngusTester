@@ -117,7 +117,7 @@ const isContentLengthInvalid = () => {
             size="small"
             type="link"
             @click="cancelDescriptionEditing">
-            {{ t('common.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
           <Button
             size="small"

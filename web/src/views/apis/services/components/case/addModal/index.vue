@@ -299,7 +299,7 @@ watch([() => apiDebugRef.value], () => {
           size="small"
           class="ml-5 px-3"
           @click="close">
-          {{ t('common.cancel') }}
+          {{ t('actions.cancel') }}
         </Button>
       </div>
     </template>
@@ -356,7 +356,7 @@ watch([() => apiDebugRef.value], () => {
                     class="w-20 px-0"
                     @click="stopDebugCase">
                     <LoadingOutlined />
-                    {{ t('common.stop') }}
+                    {{ t('actions.stop') }}
                   </Button>
                   <Button
                     v-else

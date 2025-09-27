@@ -84,7 +84,7 @@ watch(() => props.data, newValue => {
         type="link"
         size="small"
         @click="cancel">
-        {{ t('common.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
     </template>
   </div>

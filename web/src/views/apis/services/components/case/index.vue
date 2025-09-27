@@ -240,7 +240,7 @@ watch(() => props.id, newValue => {
                   type="link"
                   class="px-1 py-0 text-3"
                   @click="handleCase({key: 'edit'}, item)">
-                  {{ t('common.edit') }}
+                  {{ t('actions.edit') }}
                 </Button>
                 <Button
                   type="link"

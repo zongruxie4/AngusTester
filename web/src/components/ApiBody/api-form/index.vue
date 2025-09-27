@@ -13,7 +13,7 @@ import JsonContent from '../../JsonContent/index.vue';
 // import { deepDelAttrFromObj, validateType } from '@/views/apis/components/api-item/utils';
 import SimpleEditableSelect from '../../SimpleEditableSelect/index.vue';
 
-import { ParamsItem, API_EXTENSION_KEY, deconstruct, deepDelAttrFromObj, validateType, getModelDataByRef } from '@/utils/ApiUtils/index';
+import { ParamsItem, API_EXTENSION_KEY, deconstruct, deepDelAttrFromObj, validateType, getModelDataByRef } from '@/utils/apis/index';
 const { t } = useI18n();
 
 export interface Props {

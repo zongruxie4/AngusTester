@@ -1038,7 +1038,7 @@ onBeforeUnmount(() => {
                 type="link"
                 size="small"
                 @click="cancelEditPrecondition">
-                {{ t('common.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
             </template>
             <Icon
@@ -1090,7 +1090,7 @@ onBeforeUnmount(() => {
                 type="link"
                 size="small"
                 @click="cancelEditSteps">
-                {{ t('common.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
             </template>
             <Icon
@@ -1138,7 +1138,7 @@ onBeforeUnmount(() => {
                 type="link"
                 size="small"
                 @click="cancelEditDescription">
-                {{ t('common.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
             </template>
             <Icon

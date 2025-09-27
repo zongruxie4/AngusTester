@@ -271,7 +271,7 @@ const onMenuClick = (menu, record) => {
             size="small"
             class="px-0 py-0 mr-1"
             @click="cancelEdit">
-            {{ t('common.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
         </div>
 
@@ -311,7 +311,7 @@ const onMenuClick = (menu, record) => {
                 </MenuItem>
                 <MenuItem key="edit">
                   <Icon icon="icon-bianji" />
-                  {{ t('common.edit') }}
+                  {{ t('actions.edit') }}
                 </MenuItem>
                 <MenuItem key="del">
                   <Icon icon="icon-qingchu" />

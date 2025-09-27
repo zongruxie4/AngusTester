@@ -15,13 +15,13 @@ export function useStatisticsData (_projectId: string, userId: string) {
   // User-specific statistics state
   const userStatistics = reactive<UserCreationStatistics>({
     allService: '0',
-    serviceByLastWeek: '0',
+    serviceByLast7Days: '0',
     serviceByLastMonth: '0',
     allApis: '0',
-    apisByLastWeek: '0',
+    apisByLast7Days: '0',
     apisByLastMonth: '0',
     allUnarchivedApis: '0',
-    unarchivedApisByLastWeek: '0',
+    unarchivedApisByLast7Days: '0',
     unarchivedApisByLastMonth: '0'
   });
 

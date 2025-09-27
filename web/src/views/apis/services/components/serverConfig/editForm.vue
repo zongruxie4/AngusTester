@@ -734,7 +734,7 @@ defineExpose({
         type="link"
         size="small"
         @click="cancel">
-        {{ t('common.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
       <Button
         class="p-0 leading-5 h-5"

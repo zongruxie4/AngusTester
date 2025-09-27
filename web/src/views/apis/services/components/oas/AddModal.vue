@@ -219,7 +219,7 @@ const title = computed(() => {
     case 'view':
       return t('common.view');
     case 'edit':
-      return t('common.edit');
+      return t('actions.edit');
     case 'add':
       return t('common.add');
     default:
@@ -376,7 +376,7 @@ const modeContent = computed(() => {
       </div>
     </div>
     <template v-if="props.modalType !=='view'" #footer>
-      <Button size="small" @click="handleCancel">{{ t('common.cancel') }}</Button>
+      <Button size="small" @click="handleCancel">{{ t('actions.cancel') }}</Button>
       <Button
         :disabled="!openEdit && modalType === 'edit' && props.component.isQuote"
         type="primary"

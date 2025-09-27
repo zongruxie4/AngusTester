@@ -260,7 +260,7 @@ onMounted(() => {
           size="small"
           class="mr-5"
           @click="closeModal">
-          {{ t('common.cancel') }}
+          {{ t('actions.cancel') }}
         </Button>
       </template>
       <Button

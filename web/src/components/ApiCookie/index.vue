@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n';
 
 import ParamsInput from '@/components/ParamInput/index.vue';
 import JsonContent from '@/components/JsonContent/index.vue';
-import { ParamsItem, getDefaultParams, API_EXTENSION_KEY, deconstruct, validateType, deepDelAttrFromObj, getModelDataByRef, variableNameReg } from '@/utils/ApiUtils';
+import { ParamsItem, getDefaultParams, API_EXTENSION_KEY, deconstruct, validateType, deepDelAttrFromObj, getModelDataByRef, variableNameReg } from 'src/utils/apis';
 
 import { itemTypes } from './interface';
 import variableApi from '../Variable/apis.ts';

@@ -47,14 +47,14 @@ const loadData = async (): Promise<void> => {
 const reset = () => {
   summaryData.value = {
     allSprint: '0',
-    sprintByLastWeek: '0',
+    sprintByLast7Days: '0',
     sprintByLastMonth: '0',
     allTask: '0',
-    taskByLastWeek: '0',
+    taskByLast7Days: '0',
     taskByLastMonth: '0',
     taskByOverdue: '0',
     allTag: '0',
-    tagByLastWeek: '0',
+    tagByLast7Days: '0',
     tagByLastMonth: '0',
     allBacklog: '0',
     backlogByType: {

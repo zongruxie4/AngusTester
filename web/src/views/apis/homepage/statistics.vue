@@ -30,13 +30,13 @@ const loading = ref(false);
 const state = reactive({
   statistic: {
     allService: '0',
-    serviceByLastWeek: '0',
+    serviceByLast7Days: '0',
     serviceByLastMonth: '0',
     allApis: '0',
-    apisByLastWeek: '0',
+    apisByLast7Days: '0',
     apisByLastMonth: '0',
     allUnarchivedApis: '0',
-    unarchivedApisByLastWeek: '0',
+    unarchivedApisByLast7Days: '0',
     unarchivedApisByLastMonth: '0'
   }
 });
@@ -150,7 +150,7 @@ const statisticConfig = [
     topClass: 'huang-top',
     bottomClass: 'huang-bottom',
     total: 'allService',
-    week: 'serviceByLastWeek',
+    week: 'serviceByLast7Days',
     month: 'serviceByLastMonth',
     name: t('common.service')
   },
@@ -158,7 +158,7 @@ const statisticConfig = [
     topClass: 'hong-top',
     bottomClass: 'hong-bottom',
     total: 'allApis',
-    week: 'apisByLastWeek',
+    week: 'apisByLast7Days',
     month: 'apisByLastMonth',
     name: t('common.api')
   },
@@ -166,7 +166,7 @@ const statisticConfig = [
     topClass: 'lan-top',
     bottomClass: 'lan-bottom',
     total: 'allUnarchivedApis',
-    week: 'unarchivedApisByLastWeek',
+    week: 'unarchivedApisByLast7Days',
     month: 'unarchivedApisByLastMonth',
     name: t('apis.statisticsCreated.unfiled')
   }

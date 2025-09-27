@@ -171,7 +171,7 @@ const deleteScenarioHandler = (scenaridId: string):void => {
             class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover"
             @click="refreshHandler">
             <Icon icon="icon-shuaxin" />
-            <span>{{ t('common.refresh') }}</span>
+            <span>{{ t('actions.refresh') }}</span>
           </div>
         </div>
       </div>

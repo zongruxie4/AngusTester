@@ -244,7 +244,7 @@ watch(
                 <Popconfirm
                   :title="t('actions.deleteAll')"
                   :okText="t('common.confirm')"
-                  :cancelText="t('common.cancel')"
+                  :cancelText="t('actions.cancel')"
                   @confirm="handleDeleteAll">
                   <Tooltip :title="t('actions.deleteAll')">
                     <Button
@@ -261,7 +261,7 @@ watch(
               </div>
 
               <!-- Refresh button -->
-              <Tooltip :title="t('common.refresh')">
+              <Tooltip :title="t('actions.refresh')">
                 <Button
                   :loading="loading"
                   :disabled="!!hasSearchValue"

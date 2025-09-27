@@ -771,7 +771,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="refreshSprintData">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span>{{ t('common.refresh') }}</span>
+          <span>{{ t('actions.refresh') }}</span>
         </Button>
       </template>
       <Button
@@ -780,7 +780,7 @@ onMounted(() => {
         class="flex items-center"
         @click="closeCurrentTab">
         <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
-        <span>{{ t('common.cancel') }}</span>
+        <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>
 

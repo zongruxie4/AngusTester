@@ -122,15 +122,14 @@
       "archived": "Archived"
     },
     "messages": {
-      "mergeWarning": "Warning: Once versions are merged, they cannot be restored!",
-      "changeStatusConfirm": "Confirm to change version status to “{status}”?"
+      "mergeWarning": "Warning: Once versions are merged, they cannot be restored !",
+      "changeStatusConfirm": "Confirm to change version status to “{status}” ?"
     },
     "list": {
       "addedVersions": "Added Versions",
       "noVersions": "You haven't added any versions yet, "
     },
     "edit": {
-      "versionName": "Version",
       "versionNamePlaceholder": "Enter version name, maximum 40 characters, e.g.: v1.0",
       "descriptionPlaceholder": "Please enter version description, maximum 200 characters"
     },
@@ -183,7 +182,7 @@
       "addTagHint": "Press Enter or lose focus to save added tag, double-click existing tag to enter edit mode.",
       "noTags": "You haven't added any tags yet, ",
       "noTagsDescription": "You haven't added any tags.",
-      "tagNamePlaceholder": "Please enter tag name"
+      "tagNamePlaceholder": "Enter tag name"
     }
   },
   "activity": {
@@ -195,11 +194,11 @@
       "maxResourceActivityHint": "Only the latest {maxResource} activities are saved for each resource. Activities exceeding {maxResource} will be automatically deleted."
     },
     "searchPanelOptions": {
-      "queryActivityDetail": "Query Activity Details",
-      "selectActivityResource": "Select Activity Resource",
-      "selectOperator": "Select Operator",
-      "activityTimeFrom": "Activity Time From",
-      "activityTimeTo": "Activity Time To"
+      "queryActivityDetail": "Query activity details",
+      "selectActivityResource": "Select activity resource",
+      "selectOperator": "Select operator",
+      "activityTimeFrom": "Activity time from",
+      "activityTimeTo": "Activity time to"
     },
     "list": {
       "columns": {

@@ -35,8 +35,8 @@ const recentDateOptions: RecentDateOption[] = [
     label: t('kanban.cto.recentDate.today')
   },
   {
-    value: 'lastWeek',
-    label: t('kanban.cto.recentDate.lastWeek')
+    value: 'last7Days',
+    label: t('quickSearch.last7Days')
   },
   {
     value: 'lastMonth',

@@ -4,7 +4,7 @@ import { Input, Select, IconRequired, Icon, SelectEnum, notification } from '@xc
 import { Button, RadioGroup } from 'ant-design-vue';
 import { http, utils, TESTER, PoolType } from '@xcan-angus/infra';
 import axios from 'axios';
-import ApiUtils from '@/utils/ApiUtils';
+import ApiUtils from 'src/utils/apis';
 import { useI18n } from 'vue-i18n';
 
 import { AuthItem, authTypeOptions as _authTypeOptions, flowAuthType, authLabels, flowAuthKeys, encryptionTypeOpt, inOpt, getAuthItem, getApiKeyData } from './interface';

@@ -549,7 +549,7 @@ provide('serviceId', props.id);
         <Button
           size="small"
           @click="closeCurrentTab">
-          {{ t('common.cancel') }}
+          {{ t('actions.cancel') }}
         </Button>
       </div>
       <AddAttrModal

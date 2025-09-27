@@ -1,4 +1,4 @@
-import { API_EXTENSION_KEY, encode } from '@/utils/ApiUtils/index';
+import { API_EXTENSION_KEY, encode } from '@/utils/apis/index';
 import { i18n } from '@xcan-angus/infra';
 const t = i18n.getI18n()?.global?.t || ((value: string) => value);
 

@@ -239,7 +239,7 @@ const handleRefresh = () => {
                 <Popconfirm
                   :title="t('actions.deleteAll')"
                   :okText="t('common.confirm')"
-                  :cancelText="t('common.cancel')"
+                  :cancelText="t('actions.cancel')"
                   @confirm="handleDeleteAll">
                   <Tooltip :title="t('actions.deleteAll')">
                     <Button
@@ -256,7 +256,7 @@ const handleRefresh = () => {
               </div>
 
               <!-- Refresh button -->
-              <Tooltip :title="t('common.refresh')">
+              <Tooltip :title="t('actions.refresh')">
                 <Button
                   :loading="loading"
                   :disabled="!!hasSearchValue"

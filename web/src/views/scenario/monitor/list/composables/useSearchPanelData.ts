@@ -93,15 +93,15 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
       name: t('status.failed')
     },
     {
-      key: 'lastDay',
+      key: 'last1Day',
       name: t('quickSearch.last1Day')
     },
     {
-      key: 'lastThreeDays',
+      key: 'last3Days',
       name: t('quickSearch.last3Days')
     },
     {
-      key: 'lastWeek',
+      key: 'last7Days',
       name: t('quickSearch.last7Days')
     }
   ]);

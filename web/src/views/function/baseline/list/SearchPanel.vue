@@ -46,12 +46,12 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   auditOptions: createAuditOptions([
     {
       key: 'myCreated',
-      name: t('functionBaseline.list.myCreated'),
+      name: t('quickSearch.createdByMe'),
       fieldKey: 'createdBy'
     },
     {
       key: 'myModified',
-      name: t('functionBaseline.list.myModified'),
+      name: t('quickSearch.modifiedByMe'),
       fieldKey: 'lastModifiedBy'
     }
   ], String(currentUserInfo.value?.id || '')),

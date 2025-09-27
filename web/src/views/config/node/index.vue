@@ -141,7 +141,7 @@ onMounted(async () => {
           :disabled="loading"
           @click="refreshNodeList">
           <IconRefresh class="text-3.5 mr-1" :loading="loading" />
-          <span>{{ $t('common.refresh') }}</span>
+          <span>{{ $t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>

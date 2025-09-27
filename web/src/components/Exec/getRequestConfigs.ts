@@ -1,6 +1,6 @@
 import { uniq } from 'lodash-es';
 import qs from 'qs';
-import angusUtils from '@/utils/ApiUtils/index';
+import angusUtils from '@/utils/apis/index';
 import { TESTER, http } from '@xcan-angus/infra';
 
 import { Authentication, AvailableServer, RequestConfig, RequestBody } from './PropsType';

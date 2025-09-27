@@ -308,7 +308,7 @@ defineExpose({
             @click="saveNodeEnhanced">
             {{ t('actions.save') }}
           </Button>
-          <Button class="node-normal-btn" @click="cancel(state)">{{ t('common.cancel') }}</Button>
+          <Button class="node-normal-btn" @click="cancel(state)">{{ t('actions.cancel') }}</Button>
           <Button
             :disabled="testBtnDisable"
             class="node-normal-btn"
@@ -361,7 +361,7 @@ defineExpose({
                   size="small"
                   class="flex space-x-1">
                   <Icon icon="icon-shuxie" />
-                  {{ t('common.edit') }}
+                  {{ t('actions.edit') }}
                 </Button>
               </Tooltip>
               <Button
@@ -371,7 +371,7 @@ defineExpose({
                 class="flex space-x-1"
                 @click="changeEditableEnhanced(state)">
                 <Icon icon="icon-shuxie" />
-                {{ t('common.edit') }}
+                {{ t('actions.edit') }}
               </Button>
               <Button
                 type="text"

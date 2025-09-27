@@ -7,7 +7,7 @@ import qs from 'qs';
 import { paramTarget } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import angusUtils from '@/utils/ApiUtils';
+import angusUtils from 'src/utils/apis';
 import { PipelineConfig, TargetKey } from './PropsType';
 import { HTTPConfig } from './HTTPConfigs/PropsType';
 import { WaitingTimeConfig } from './WaitingTime/PropsType';

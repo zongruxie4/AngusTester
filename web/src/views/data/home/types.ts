@@ -99,19 +99,19 @@ export interface UserCreationStatistics {
   /** Total number of services created by user */
   allService: string;
   /** Services created in last week */
-  serviceByLastWeek: string;
+  serviceByLast7Days: string;
   /** Services created in last month */
   serviceByLastMonth: string;
   /** Total number of APIs created by user */
   allApis: string;
   /** APIs created in last week */
-  apisByLastWeek: string;
+  apisByLast7Days: string;
   /** APIs created in last month */
   apisByLastMonth: string;
   /** Total number of unarchived APIs */
   allUnarchivedApis: string;
   /** Unarchived APIs created in last week */
-  unarchivedApisByLastWeek: string;
+  unarchivedApisByLast7Days: string;
   /** Unarchived APIs created in last month */
   unarchivedApisByLastMonth: string;
 }

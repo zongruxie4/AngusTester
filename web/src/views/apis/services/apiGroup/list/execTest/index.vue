@@ -276,7 +276,7 @@ const modalTitle = computed(() => {
               </div>
               <TypographyParagraph
                 class="break-all"
-                :ellipsis="{ rows: 2, expandable: true, symbol: t('common.more') }"
+                :ellipsis="{ rows: 2, expandable: true, symbol: t('actions.more') }"
                 :content="item.url" />
             </div>
 
@@ -288,7 +288,7 @@ const modalTitle = computed(() => {
               <TypographyParagraph
                 v-if="item.description"
                 class="break-all"
-                :ellipsis="{ rows: 2, expandable: true, symbol: t('common.more') }"
+                :ellipsis="{ rows: 2, expandable: true, symbol: t('actions.more') }"
                 :content="item.description" />
               <div v-else>{{ t('common.noDescription') }}</div>
             </div>
@@ -342,7 +342,7 @@ const modalTitle = computed(() => {
                     </div>
                     <TypographyParagraph
                       class="break-all"
-                      :ellipsis="{ rows: 2, expandable: true, symbol: t('common.more') }"
+                      :ellipsis="{ rows: 2, expandable: true, symbol: t('actions.more') }"
                       :content="_variable.description" />
                   </div>
                 </div>

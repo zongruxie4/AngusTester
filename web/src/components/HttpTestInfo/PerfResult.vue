@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
-import ApiUtils from '@/utils/ApiUtils';
+import ApiUtils from 'src/utils/apis';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();

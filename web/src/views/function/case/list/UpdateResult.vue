@@ -231,7 +231,7 @@ watch(() => props.visible, (newValue) => {
             size="small"
             class="px-3"
             @click="close">
-            {{ t('common.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
         </div>
       </FormItem>

@@ -1498,7 +1498,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="refreshInfo">
           <div class="flex items-center space-x-1">
             <IconRefresh />
-            <span>{{ t('common.refresh') }}</span>
+            <span>{{ t('actions.refresh') }}</span>
           </div>
         </Button>
         <Button

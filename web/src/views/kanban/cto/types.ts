@@ -31,7 +31,7 @@ export interface CtoProps {
  */
 export interface RecentDateOption {
   /** Option value */
-  value: 'today' | 'lastWeek' | 'lastMonth';
+  value: 'today' | 'last7Days' | 'lastMonth';
   /** Display label */
   label: string;
 }

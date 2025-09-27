@@ -58,7 +58,7 @@ const stepData = [
       {{ t('project.introduce.aboutProject') }}
     </div>
     <div class="mb-6 text-3.5">
-      <div>{{ t('common.description') }}</div>
+      <div>{{ t('project.introduce.description') }}</div>
     </div>
 
     <div class="flex items-center justify-center">

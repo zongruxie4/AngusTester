@@ -2,7 +2,7 @@
 import { watch, ref, onMounted, nextTick } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 
-import { ResponseState } from '@/utils/ApiUtils';
+import { ResponseState } from 'src/utils/apis';
 import { baseSource, getStatusText } from './interface';
 
 interface Props {

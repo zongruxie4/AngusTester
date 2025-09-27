@@ -1,6 +1,6 @@
 import { decode as dt, encode as et } from 'js-base64';
 
-import apiUtils from '@/utils/ApiUtils/index';
+import apiUtils from '@/utils/apis/index';
 
 export const { API_EXTENSION_KEY } = apiUtils;
 const { valueKey, enabledKey } = API_EXTENSION_KEY;

@@ -84,15 +84,15 @@ const sortMenuItems = computed(() => [
 const moreButton = computed(() => [
   {
     key: 'module',
-    name: t('project.list.actions.configModule')
+    name: t('project.actions.configModule')
   },
   {
     key: 'version',
-    name: t('project.list.actions.configVersion')
+    name: t('project.actions.configVersion')
   },
   {
     key: 'biaoqian',
-    name: t('project.list.actions.configTag')
+    name: t('project.actions.configTag')
   }
 ]);
 
@@ -201,7 +201,7 @@ defineExpose({
                 trim
                 :maxlength="100"
                 :allowClear="true"
-                :placeholder="t('common.placeholders.search')"
+                :placeholder="t('common.placeholders.searchKeyword')"
                 @change="handleKeywordChange" />
               <Hints :text="t('project.list.permissionHint')" class="ml-2" />
             </div>
@@ -212,7 +212,7 @@ defineExpose({
                 size="small"
                 @click="addProjectTab">
                 <Icon icon="icon-jia" />
-                <span class="ml-1">{{ t('project.list.actions.addProject') }}</span>
+                <span class="ml-1">{{ t('project.actions.addProject') }}</span>
               </Button>
 
               <DropdownSort
@@ -233,7 +233,7 @@ defineExpose({
                 <template #default>
                   <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                     <Icon icon="icon-shuaxin" />
-                    <span class="ml-1">{{ t('common.refresh') }}</span>
+                    <span class="ml-1">{{ t('actions.refresh') }}</span>
                   </div>
                 </template>
               </IconRefresh>
@@ -385,14 +385,14 @@ defineExpose({
               <div class="project-actions-section">
                 <div class="edit-action-row">
                   <Button
-                    :title="t('common.edit')"
+                    :title="t('actions.edit')"
                     size="small"
                     type="text"
                     :disabled="!canUserEditProject(item)"
                     class="action-button edit-action"
                     @click="handleEditProject(item)">
                     <Icon icon="icon-bianji" class="text-3.5 cursor-pointer text-theme-text-hover" />
-                    {{ t('common.edit') }}
+                    {{ t('actions.edit') }}
                   </Button>
                 </div>
 
@@ -416,7 +416,7 @@ defineExpose({
                       type="text"
                       class="action-button more-action">
                       <Icon icon="icon-gengduo" class="more-options-icon" />
-                      {{ t('common.more') }}
+                      {{ t('actions.more') }}
                     </Button>
                   </Dropdown>
                 </div>

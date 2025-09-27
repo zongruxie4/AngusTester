@@ -4,7 +4,7 @@ const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
 export const CollapseButtonGroup = [
   {
-    label: t('common.edit'),
+    label: t('actions.edit'),
     value: 'edit',
     auth: 'VIEW',
     icon: 'icon-bianji',

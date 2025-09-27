@@ -2,23 +2,19 @@
 import { computed, onMounted, ref } from 'vue';
 import { Colon, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
-import { appContext } from '@xcan-angus/infra';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { PageQuery, SearchCriteria, appContext } from '@xcan-angus/infra';
+import { LoadingProps } from '@/types/types';
+import { formatDateString } from '@/utils/utils';
 
-interface Props {
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false
 });
 
 const emits = defineEmits<{(e: 'change', value: {
   orderBy?: string;
-  orderSort?: 'ASC'|'DESC';
-  filters: {key: string; op: string; value: string|string[]}[];
+  orderSort?: PageQuery.OrderSort;
+  filters: SearchCriteria[];
 }):void,
  (e: 'refresh'):void;
  (e: 'add'):void;
@@ -48,7 +44,10 @@ const searchPanelOptions = [
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: [t('design.home.searchPanel.data_placeholder1'), t('design.home.searchPanel.data_placeholder2')],
+    placeholder: [
+      t('design.home.searchPanel.data_placeholder1'),
+      t('design.home.searchPanel.data_placeholder2')
+    ],
     showTime: true
   }
 ];
@@ -63,55 +62,26 @@ const menuItems = computed(() => [
     name: t('design.home.designByMe')
   },
   {
-    key: 'lastDay',
+    key: 'last1Day',
     name: t('quickSearch.last1Day')
   },
   {
-    key: 'lastThreeDays',
+    key: 'last3Days',
     name: t('quickSearch.last3Days')
   },
   {
-    key: 'lastWeek',
+    key: 'last7Days',
     name: t('quickSearch.last7Days')
   }
 ]);
 
 const orderBy = ref();
 const orderSort = ref();
-const searchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const quickSearchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
+const searchFilters = ref<SearchCriteria[]>([]);
+const quickSearchFilters = ref<SearchCriteria[]>([]);
+const assocFilters = ref<SearchCriteria[]>([]);
 const assocKeys = ['createdDate', 'createdBy'];
-const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
-
-// // 排序
-// const sort = (sorter: { orderBy: string, orderSort: string }) => {
-//   orderBy.value = sorter.orderBy;
-//   orderSort.value = sorter.orderSort;
-//   emits('change', getParams());
-// };
-
-const formatDateString = (key: string) => { // TODO 可以提到公共工具方法
-  let startDate: Dayjs | undefined;
-  let endDate: Dayjs | undefined;
-
-  if (key === 'lastDay') {
-    startDate = dayjs().startOf('date');
-    endDate = dayjs();
-  }
-
-  if (key === 'lastThreeDays') {
-    startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  if (key === 'lastWeek') {
-    startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
-};
+const timeKeys = ['last1Day', 'last3Days', 'last7Days'];
 
 const getParams = () => {
   return {
@@ -125,7 +95,7 @@ const getParams = () => {
   };
 };
 
-const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
+const searchChange = (data: SearchCriteria[]) => {
   searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
   assocFilters.value = data.filter(item => assocKeys.includes(item.key));
 
@@ -202,7 +172,7 @@ const menuItemClick = (data) => {
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
     if (key === '') {
       return undefined;
-    } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
+    } else if (['last1Day', 'last3Days', 'last7Days'].includes(key)) {
       assocFiltersInQuick.push({
         valueKey: 'createdDate',
         value: formatDateString(key)

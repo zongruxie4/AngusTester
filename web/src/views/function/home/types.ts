@@ -1,24 +1,24 @@
 export type SummaryInfo = {
   allPlan: string;
-  planByLastWeek: string;
+  planByLast7Days: string;
   planByLastMonth: string;
   allCase: string;
-  caseByLastWeek: string;
+  caseByLast7Days: string;
   caseByLastMonth: string;
   caseByOverdue: string;
   allTag: string;
-  tagByLastWeek: string;
+  tagByLast7Days: string;
   tagByLastMonth: string;
   allModule: string;
-  moduleByLastWeek: string;
+  moduleByLast7Days: string;
   moduleByLastMonth: string;
   // Optional review summary fields (backend may provide aggregated values)
   allReview?: string;
-  reviewByLastWeek?: string;
+  reviewByLast7Days?: string;
   reviewByLastMonth?: string;
   // Optional baseline summary fields (if backend supports baselines in function module)
   allBaseline?: string;
-  baselineByLastWeek?: string;
+  baselineByLast7Days?: string;
   baselineByLastMonth?: string;
   planByStatus: {
     PENDING: string;

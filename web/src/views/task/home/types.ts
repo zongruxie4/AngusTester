@@ -1,20 +1,20 @@
 export type SummaryInfo = {
   allSprint: string;
-  sprintByLastWeek: string;
+  sprintByLast7Days: string;
   sprintByLastMonth: string;
   allTask: string;
-  taskByLastWeek: string;
+  taskByLast7Days: string;
   taskByLastMonth: string;
   taskByOverdue: string;
   allTag: string;
-  tagByLastWeek: string;
+  tagByLast7Days: string;
   tagByLastMonth: string;
   // Optional backlog trend fields
-  backlogByLastWeek?: string;
+  backlogByLast7Days?: string;
   backlogByLastMonth?: string;
   // Optional meeting summary fields
   allMeeting?: string;
-  meetingByLastWeek?: string;
+  meetingByLast7Days?: string;
   meetingByLastMonth?: string;
   // Total backlog count across types
   allBacklog?: string;

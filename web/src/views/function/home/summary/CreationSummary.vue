@@ -18,27 +18,27 @@ const props = withDefaults(defineProps<BasicProps>(), {
 const isLoading = ref(false);
 
 const allPlan = ref('');
-const planByLastWeek = ref('');
+const planByLast7Days = ref('');
 const planByLastMonth = ref('');
 
 const allCase = ref('');
-const caseByLastWeek = ref('');
+const caseByLast7Days = ref('');
 const caseByLastMonth = ref('');
 
 const allTag = ref('');
-const tagByLastWeek = ref('');
+const tagByLast7Days = ref('');
 const tagByLastMonth = ref('');
 
 const allModule = ref('');
-const moduleByLastWeek = ref('');
+const moduleByLast7Days = ref('');
 const moduleByLastMonth = ref('');
 
-const reviewByLastWeek = ref('');
+const reviewByLast7Days = ref('');
 const allReview = ref('');
 const reviewByLastMonth = ref('');
 
 const allBaseline = ref('');
-const baselineByLastWeek = ref('');
+const baselineByLast7Days = ref('');
 const baselineByLastMonth = ref('');
 
 /**
@@ -62,27 +62,27 @@ const loadSummaryData = async (): Promise<void> => {
     const data = res.data as SummaryInfo;
 
     allPlan.value = data.allPlan;
-    planByLastWeek.value = data.planByLastWeek;
+    planByLast7Days.value = data.planByLast7Days;
     planByLastMonth.value = data.planByLastMonth;
 
     allCase.value = data.allCase;
-    caseByLastWeek.value = data.caseByLastWeek;
+    caseByLast7Days.value = data.caseByLast7Days;
     caseByLastMonth.value = data.caseByLastMonth;
 
     allTag.value = data.allTag;
-    tagByLastWeek.value = data.tagByLastWeek;
+    tagByLast7Days.value = data.tagByLast7Days;
     tagByLastMonth.value = data.tagByLastMonth;
 
     allModule.value = data.allModule;
-    moduleByLastWeek.value = data.moduleByLastWeek;
+    moduleByLast7Days.value = data.moduleByLast7Days;
     moduleByLastMonth.value = data.moduleByLastMonth;
 
     allReview.value = data.allReview || '';
-    reviewByLastWeek.value = data.reviewByLastWeek || '';
+    reviewByLast7Days.value = data.reviewByLast7Days || '';
     reviewByLastMonth.value = data.reviewByLastMonth || '';
 
     allBaseline.value = data.allBaseline || '';
-    baselineByLastWeek.value = data.baselineByLastWeek || '';
+    baselineByLast7Days.value = data.baselineByLast7Days || '';
     baselineByLastMonth.value = data.baselineByLastMonth || '';
   }
 };
@@ -109,19 +109,19 @@ onMounted(() => {
  */
 const resetSummaryValues = () => {
   allPlan.value = '';
-  planByLastWeek.value = '';
+  planByLast7Days.value = '';
   planByLastMonth.value = '';
 
   allCase.value = '';
-  caseByLastWeek.value = '';
+  caseByLast7Days.value = '';
   caseByLastMonth.value = '';
 
   allTag.value = '';
-  tagByLastWeek.value = '';
+  tagByLast7Days.value = '';
   tagByLastMonth.value = '';
 
   allModule.value = '';
-  moduleByLastWeek.value = '';
+  moduleByLast7Days.value = '';
   moduleByLastMonth.value = '';
 };
 </script>
@@ -137,7 +137,7 @@ const resetSummaryValues = () => {
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
-            <span class="text-3.5 font-semibold">{{ planByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ planByLast7Days }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
@@ -155,7 +155,7 @@ const resetSummaryValues = () => {
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
-            <span class="text-3.5 font-semibold">{{ caseByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ caseByLast7Days }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
@@ -173,7 +173,7 @@ const resetSummaryValues = () => {
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
-            <span class="text-3.5 font-semibold">{{ reviewByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ reviewByLast7Days }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
@@ -191,7 +191,7 @@ const resetSummaryValues = () => {
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
-            <span class="text-3.5 font-semibold">{{ baselineByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ baselineByLast7Days }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>

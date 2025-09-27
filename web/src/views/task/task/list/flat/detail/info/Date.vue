@@ -282,7 +282,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.date.fields.lastModifyTime') }}</span>
+              <span>{{ t('common.lastModifiedDate') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskLastModifiedDate }" class="info-text">

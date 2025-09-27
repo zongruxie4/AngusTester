@@ -17,7 +17,7 @@ import {
   utils
 } from '@xcan-angus/infra';
 
-import apiUtils from '@/utils/ApiUtils/index';
+import apiUtils from '@/utils/apis/index';
 import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
 import UrlForm from '@/views/apis/mock/detail/apis/components/UrlForm.vue';
 

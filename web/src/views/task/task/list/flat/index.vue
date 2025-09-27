@@ -693,7 +693,7 @@ onMounted(() => {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="executeBatchCancel">
-        {{ t('common.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
 
       <Button

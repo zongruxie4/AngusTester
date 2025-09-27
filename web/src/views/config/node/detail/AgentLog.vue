@@ -71,7 +71,7 @@ const {
             size="small"
             :disabled="!logTextParams.logName"
             @click="loadLogContent">
-            {{ $t('common.refresh') }}
+            {{ $t('actions.refresh') }}
           </Button>
 
           <!-- Full Screen Toggle -->

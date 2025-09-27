@@ -18,23 +18,23 @@ const { t } = useI18n();
 const loading = ref(false);
 // Reactive counters grouped by resource
 const allSprint = ref('');
-const sprintByLastWeek = ref('');
+const sprintByLast7Days = ref('');
 const sprintByLastMonth = ref('');
 
 const allTask = ref('');
-const taskByLastWeek = ref('');
+const taskByLast7Days = ref('');
 const taskByLastMonth = ref('');
 
 const allTag = ref('');
-const tagByLastWeek = ref('');
+const tagByLast7Days = ref('');
 const tagByLastMonth = ref('');
 
 const allBacklog = ref('');
-const backlogByLastWeek = ref('');
+const backlogByLast7Days = ref('');
 const backlogByLastMonth = ref('');
 
 const allMeeting = ref('');
-const meetingByLastWeek = ref('');
+const meetingByLast7Days = ref('');
 const meetingByLastMonth = ref('');
 
 const loadData = async (): Promise<void> => {
@@ -54,23 +54,23 @@ const loadData = async (): Promise<void> => {
     const data = res.data as SummaryInfo;
     // Map response data to local refs for display
     allSprint.value = data.allSprint;
-    sprintByLastWeek.value = data.sprintByLastWeek;
+    sprintByLast7Days.value = data.sprintByLast7Days;
     sprintByLastMonth.value = data.sprintByLastMonth;
 
     allTask.value = data.allTask;
-    taskByLastWeek.value = data.taskByLastWeek;
+    taskByLast7Days.value = data.taskByLast7Days;
     taskByLastMonth.value = data.taskByLastMonth;
 
     allTag.value = data.allTag;
-    tagByLastWeek.value = data.tagByLastWeek;
+    tagByLast7Days.value = data.tagByLast7Days;
     tagByLastMonth.value = data.tagByLastMonth;
 
     allBacklog.value = data.allBacklog ?? '0';
-    backlogByLastWeek.value = data.backlogByLastWeek ?? '0';
+    backlogByLast7Days.value = data.backlogByLast7Days ?? '0';
     backlogByLastMonth.value = data.backlogByLastMonth ?? '0';
 
     allMeeting.value = data.allMeeting ?? '0';
-    meetingByLastWeek.value = data.meetingByLastWeek ?? '0';
+    meetingByLast7Days.value = data.meetingByLast7Days ?? '0';
     meetingByLastMonth.value = data.meetingByLastMonth ?? '0';
   }
 };
@@ -78,21 +78,21 @@ const loadData = async (): Promise<void> => {
 const reset = () => {
   // Reset all counters when project or notify changes
   allSprint.value = '';
-  sprintByLastWeek.value = '';
+  sprintByLast7Days.value = '';
   sprintByLastMonth.value = '';
   allTask.value = '';
-  taskByLastWeek.value = '';
+  taskByLast7Days.value = '';
   taskByLastMonth.value = '';
   allTag.value = '';
-  tagByLastWeek.value = '';
+  tagByLast7Days.value = '';
   tagByLastMonth.value = '';
 
   allBacklog.value = '';
-  backlogByLastWeek.value = '';
+  backlogByLast7Days.value = '';
   backlogByLastMonth.value = '';
 
   allMeeting.value = '';
-  meetingByLastWeek.value = '';
+  meetingByLast7Days.value = '';
   meetingByLastMonth.value = '';
 };
 
@@ -124,7 +124,7 @@ onMounted(() => {
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
-            <span class="text-3.5 font-semibold">{{ backlogByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ backlogByLast7Days }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
@@ -143,7 +143,7 @@ onMounted(() => {
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
-            <span class="text-3.5 font-semibold">{{ sprintByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ sprintByLast7Days }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
@@ -162,7 +162,7 @@ onMounted(() => {
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
-            <span class="text-3.5 font-semibold">{{ taskByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ taskByLast7Days }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>
@@ -181,7 +181,7 @@ onMounted(() => {
         <div class="mt-6 flex items-center w-full">
           <div class="w-1/2 flex flex-wrap mr-2 flex-none">
             <span class="mr-2">{{ t('quickSearch.last7Days') }}</span>
-            <span class="text-3.5 font-semibold">{{ meetingByLastWeek }}</span>
+            <span class="text-3.5 font-semibold">{{ meetingByLast7Days }}</span>
           </div>
           <div class="w-1/2 flex-none flex flex-wrap">
             <span class="mr-2">{{ t('quickSearch.last30Days') }}</span>

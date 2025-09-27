@@ -38,7 +38,7 @@ const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({
     allSce: '0',
-    sceByLastWeek: '0',
+    sceByLast7Days: '0',
     sceByLastMonth: '0',
     sceByScriptType: {
       TEST_FUNCTIONALITY: '0',

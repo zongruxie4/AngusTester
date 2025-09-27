@@ -152,7 +152,7 @@ const change = ({ ids }) => {
         type="default"
         size="small"
         @click="cancel">
-        {{ t('common.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
       <Button
         :loading="coping"

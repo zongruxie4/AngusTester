@@ -212,7 +212,7 @@ onMounted(() => {
                 size="small"
                 class="text-3 leading-3"
                 @click="cancelPassd(item)">
-                {{ t('common.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
             </template>
           </div>

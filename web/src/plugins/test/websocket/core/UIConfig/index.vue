@@ -10,7 +10,7 @@ import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import { variable } from '@/api/tester';
 
-import angusUtils from '@/utils/ApiUtils';
+import angusUtils from 'src/utils/apis';
 import { ParameterConfig, PipelineConfig } from '../PropsType';
 import { ApiInfo } from './SelectApiModal/PropsType';
 

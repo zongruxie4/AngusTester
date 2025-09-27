@@ -425,7 +425,7 @@ defineExpose({
           size="small"
           @click="handleClick('updateTestResult_canceled')">
           <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-          {{ t('common.cancel') }}
+          {{ t('actions.cancel') }}
         </Button>
 
         <Button
@@ -444,7 +444,7 @@ defineExpose({
           :disabled="!actionAuth.includes('edit')"
           @click="handleClick('edit')">
           <Icon class="mr-1" icon="icon-bianji" />
-          <span>{{ t('common.edit') }}</span>
+          <span>{{ t('actions.edit') }}</span>
         </Button>
 
         <Button
@@ -534,7 +534,7 @@ defineExpose({
           <Icon
             icon="icon-shuaxin"
             class="mr-1" />
-          {{ t('common.refresh') }}
+          {{ t('actions.refresh') }}
         </Button>
       </template>
 

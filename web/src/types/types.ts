@@ -25,6 +25,7 @@ export type BasicProps = {
   appInfo?: { id: string; } | AppInfo;
   notify?: string;
   onShow?: boolean;
+  disabled?: false,
   refreshNotify?: string;
   data?: Record<string, string>;
 }

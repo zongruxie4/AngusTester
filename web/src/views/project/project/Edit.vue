@@ -274,8 +274,8 @@ onMounted(async () => {
                   </FormItem>
 
                   <FormItem
-                    :label="t('actions.importExamples')"
-                    class="form-field with-tooltip flex-1">
+                    :label="t('common.example')"
+                    class="form-field with-tooltip flex-1 ml-5">
                     <RadioGroup
                       v-model:value="projectDetail.importExample"
                       :options="[{ value: true, label: t('status.yes')}, { value: false, label: t('status.no') }]"
@@ -427,7 +427,7 @@ onMounted(async () => {
                 class="secondary-button"
                 @click="handleFormCancel">
                 <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
-                {{ t('common.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
             </div>
           </FormItem>
@@ -666,7 +666,7 @@ onMounted(async () => {
               class="secondary-button"
               @click="handleFormCancel">
               <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
-              {{ t('common.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
           </div>
         </FormItem>

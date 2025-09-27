@@ -624,7 +624,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     const menuItems: ActionMenuItem[] = [
       {
-        name: t('common.edit'),
+        name: t('actions.edit'),
         key: 'edit',
         icon: 'icon-shuxie',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
@@ -706,7 +706,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (taskStatus !== TaskStatus.CANCELED && taskStatus !== TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('common.cancel'),
+        name: t('actions.cancel'),
         key: 'cancel',
         icon: 'icon-zhongzhi2',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,

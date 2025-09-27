@@ -390,7 +390,7 @@ const moreButton = (record) => {
                     size="small"
                     @click="editDesign(record)">
                     <Icon icon="icon-bianji" />
-                    {{ t('common.edit') }}
+                    {{ t('actions.edit') }}
                   </Button>
                   <Button
                     type="text"

@@ -132,7 +132,6 @@
       "noVersions": "您尚未添加任何版本，立即"
     },
     "edit": {
-      "versionName": "版本名称",
       "versionNamePlaceholder": "输入版本名称，最多可输入40字符，如：v1.0",
       "descriptionPlaceholder": "请输入版本描述，最多支持200字符"
     },

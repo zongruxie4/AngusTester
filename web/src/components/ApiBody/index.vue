@@ -8,7 +8,7 @@ import jsBeautify from 'js-beautify';
 import { Button, RadioGroup, Radio, Upload, Tooltip } from 'ant-design-vue';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { debounce } from 'throttle-debounce';
-import { deconstruct, API_EXTENSION_KEY, getDataTypeFromFormat, CONTENT_TYPE, getNewItem, getBodyDefaultItem, ParamsItem, getModelDataByRef } from '@/utils/ApiUtils/index';
+import { deconstruct, API_EXTENSION_KEY, getDataTypeFromFormat, CONTENT_TYPE, getNewItem, getBodyDefaultItem, ParamsItem, getModelDataByRef } from '@/utils/apis/index';
 import { radioGroups, RequestBodyParam, StateItem, OptionItem, deepParseJson } from './interface';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();

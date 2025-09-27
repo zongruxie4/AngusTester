@@ -106,7 +106,7 @@ onMounted(() => {
         ref="moreRef"
         :class="{ hide: !dropdownMenuList?.length }"
         class="more-item">
-        <span>{{ t('common.more') }}</span>
+        <span>{{ t('actions.more') }}</span>
         <Icon icon="icon-xiala" class="ml-2 text-theme-sub-content" />
       </li>
       <template #overlay>

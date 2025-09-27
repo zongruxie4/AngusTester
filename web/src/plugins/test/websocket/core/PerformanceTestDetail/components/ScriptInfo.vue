@@ -80,7 +80,7 @@ const infoConfig = [[
     dataIndex: 'lastModifiedByName'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.scriptInfo.lastModifyTime'),
+    label: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate'
   },
   {

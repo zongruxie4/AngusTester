@@ -386,7 +386,7 @@ onMounted(async () => {
               <RouterLink to="/apis#mock">
                 <Button size="small">
                   <Icon icon="icon-zhongzhi2" class="mr-1" />
-                  {{ t('common.cancel') }}
+                  {{ t('actions.cancel') }}
                 </Button>
               </RouterLink>
             </FormItem>

@@ -7,7 +7,7 @@ import { CombinedTargetType, Priority } from '@xcan-angus/infra';
 import { TestType } from '@/enums/enums';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
-import apiUtils from '@/utils/ApiUtils/index';
+import apiUtils from '@/utils/apis/index';
 
 import { splitDuration } from '@/utils/utils';
 

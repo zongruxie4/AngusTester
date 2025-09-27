@@ -7,7 +7,7 @@ import { exec } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { useI18n } from 'vue-i18n';
 
-import apiUtils from '@/utils/ApiUtils/index';
+import apiUtils from '@/utils/apis/index';
 import { ListData, useExecCount } from './useExecCount';
 import { allCvsKeys, allResponseTimeColumns, allErrorsColumns, allErrorRateColumns, allRowsColumns } from './ChartConfig';
 

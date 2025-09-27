@@ -219,18 +219,18 @@ export function useUIOptions (
       isActive: false
     },
     {
-      key: 'lastDay',
+      key: 'last1Day',
       label: t('quickSearch.last1Day'),
       isActive: false
     },
     {
       key: 'last3Day',
-      label: t('backlog.quickSearch.last3Day'),
+      label: t('quickSearch.last3Days'),
       isActive: false
     },
     {
       key: 'last7Day',
-      label: t('backlog.quickSearch.last7Day'),
+      label: t('quickSearch.last7Days'),
       isActive: false
     }
   ]);

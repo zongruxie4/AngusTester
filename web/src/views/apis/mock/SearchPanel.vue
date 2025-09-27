@@ -79,7 +79,7 @@ const handleRefresh = () => {
         :disabled="props.loading"
         @click="handleRefresh">
         <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-        <span>{{ t('common.refresh') }}</span>
+        <span>{{ t('actions.refresh') }}</span>
       </Button>
     </div>
   </div>

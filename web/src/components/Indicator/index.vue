@@ -7,7 +7,7 @@ import { enumUtils, http, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import { indicator } from './apis';
-import { splitDuration, maxDuration } from '@/utils/ApiUtils';
+import { splitDuration, maxDuration } from 'src/utils/apis';
 
 const { t } = useI18n();
 
@@ -631,7 +631,7 @@ onMounted(() => {
           <Button
             class="mr-2 rounded text-3 leading-3 size-sm"
             @click="cancel">
-            {{ t('common.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
           <Button
             class="rounded text-3 leading-3 size-sm"
@@ -796,7 +796,7 @@ onMounted(() => {
           <Button
             class="mr-2 rounded text-3 leading-3 size-sm"
             @click="cancel">
-            {{ t('common.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
           <Button
             class="rounded text-3 leading-3 size-sm"
@@ -903,7 +903,7 @@ onMounted(() => {
             <Button
               class="mr-2 rounded text-3 leading-3 size-sm"
               @click="cancel">
-              {{ t('common.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
             <Button
               class="rounded text-3 leading-3 size-sm"

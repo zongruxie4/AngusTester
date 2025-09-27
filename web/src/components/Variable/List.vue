@@ -688,7 +688,7 @@ onMounted(() => {
               size="small"
               class="w-8 mr-2"
               @change="variableSwitchChange(variable)" />
-            <Tooltip :title="t('common.edit')" placement="top">
+            <Tooltip :title="t('actions.edit')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-xiugai"
@@ -718,7 +718,7 @@ onMounted(() => {
             </Tooltip>
           </template>
           <template v-if="props.tabKey === 'GLOBAL' && variable.targetId === props.id">
-            <Tooltip :title="t('common.edit')" placement="top">
+            <Tooltip :title="t('actions.edit')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-xiugai"
@@ -924,7 +924,7 @@ onMounted(() => {
                 size="small"
                 class="p-0 ml-2"
                 @click="(e) => cancelEdit(e,variable)">
-                {{ t('common.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
             </template>
           </div>

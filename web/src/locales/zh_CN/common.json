@@ -99,6 +99,7 @@
     "execCompletedDate": "执行完成时间",
     "owner": "负责人",
     "members": "成员",
+    "description": "描述",
     "unplanned": "计划外",
     "version": "版本",
     "softwareVersion": "软件版本",

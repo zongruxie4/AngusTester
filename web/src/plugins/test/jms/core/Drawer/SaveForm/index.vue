@@ -214,7 +214,7 @@ defineExpose({ isValid, getData });
         type="default"
         size="small"
         @click="cancel">
-        {{ t('common.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
     </div>
   </div>

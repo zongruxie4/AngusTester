@@ -62,7 +62,7 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
         semantic: 'countHighGood'
       },
       {
-        name: t('status.canceled'),
+        name: t('status.cancelled'),
         dataIndex: 'canceledNum',
         icon: 'icon-canceled',
         semantic: 'countLowGood'

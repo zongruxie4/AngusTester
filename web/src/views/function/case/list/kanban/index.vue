@@ -1147,7 +1147,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       const menuItems: ActionMenuItem[] = [
         {
-          name: t('common.edit'),
+          name: t('actions.edit'),
           key: 'edit',
           icon: 'icon-shuxie',
           disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.MODIFY_CASE),
@@ -1223,7 +1223,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
         if (testResult === CaseTestResult.PENDING || testResult === CaseTestResult.BLOCKED) {
           menuItems.push({
-            name: t('common.cancel'),
+            name: t('actions.cancel'),
             key: 'cancel',
             icon: 'icon-qingchu',
             disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),

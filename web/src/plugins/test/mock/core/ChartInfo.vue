@@ -5,7 +5,7 @@ import { RadioGroup, RadioButton, Slider } from 'ant-design-vue';
 import { Spin, NoData } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
-import apiUtils from '@/utils/ApiUtils';
+import apiUtils from 'src/utils/apis';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { ListData, useExecCount } from './useExecCount';

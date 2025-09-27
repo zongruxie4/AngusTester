@@ -228,7 +228,7 @@ const tableColumns = [
             type="text"
             @click="handleCaseDisassociation(record)">
             <Icon icon="icon-qingchu" class="mr-1" />
-            {{ t('common.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
         </template>
 

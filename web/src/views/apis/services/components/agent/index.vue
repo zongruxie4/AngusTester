@@ -174,7 +174,7 @@ onMounted(() => {
                 class="text-3 h-4 border-0 text-text-link hover:text-text-link"
                 :disabled="loading"
                 @click="cancelEdit(ag)">
-                {{ t('common.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
               <Button
                 type="text"

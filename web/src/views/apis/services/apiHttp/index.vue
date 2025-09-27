@@ -16,7 +16,7 @@ import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import assertUtils from '@/utils/assertutils';
-import apiUtils from '@/utils/ApiUtils/index';
+import apiUtils from '@/utils/apis/index';
 
 import { apis, services } from '@/api/tester';
 import { getStatusText } from '@/views/apis/services/components/request/interface';

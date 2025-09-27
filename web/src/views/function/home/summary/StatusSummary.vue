@@ -39,17 +39,17 @@ const loadData = async (): Promise<void> => {
 const reset = () => {
   dataSource.value = {
     allPlan: '0',
-    planByLastWeek: '0',
+    planByLast7Days: '0',
     planByLastMonth: '0',
     allCase: '0',
-    caseByLastWeek: '0',
+    caseByLast7Days: '0',
     caseByLastMonth: '0',
     caseByOverdue: '0',
     allTag: '0',
-    tagByLastWeek: '0',
+    tagByLast7Days: '0',
     tagByLastMonth: '0',
     allModule: '0',
-    moduleByLastWeek: '0',
+    moduleByLast7Days: '0',
     moduleByLastMonth: '0',
     reviewByStatus: {
       PENDING: '0',

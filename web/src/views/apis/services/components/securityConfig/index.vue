@@ -1268,7 +1268,7 @@ const OAuth2AuthorizationTypeOptions = [
                   type="link"
                   :disabled="authConfigList.length === 1 && auth.isAdd"
                   @click="handleCancel(auth)">
-                  {{ t('common.cancel') }}
+                  {{ t('actions.cancel') }}
                 </Button>
                 <Button
                   type="link"

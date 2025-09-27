@@ -263,7 +263,7 @@ onMounted(async () => {
               class="ml-3"
               :loading="loading"
               @click="handleSave">
-              {{ t('common.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
           </FormItem>
         </div>

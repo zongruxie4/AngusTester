@@ -6,7 +6,7 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { http, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-import { deconstruct, getParamsByUri, getUriByParams, validateType, deepDelAttrFromObj, API_EXTENSION_KEY, getModelDataByRef, itemTypes } from '@/utils/ApiUtils';
+import { deconstruct, getParamsByUri, getUriByParams, validateType, deepDelAttrFromObj, API_EXTENSION_KEY, getModelDataByRef, itemTypes } from 'src/utils/apis';
 import { ParamsItem, paramsTypeOpt, getDefaultParams } from './interface';
 import ParamInput from '@/components/ParamInput/index.vue';
 import JsonContent from '@/components/JsonContent/index.vue';

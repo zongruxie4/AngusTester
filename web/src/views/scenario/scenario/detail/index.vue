@@ -78,7 +78,7 @@ onMounted(() => {
       <RouterLink :to="`/scenario#scenario?id=${scenarioData?.id}&name=${scenarioData?.name}&plugin=${scenarioData?.plugin}`">
         <Button size="small" type="text">
           <Icon icon="icon-xiugai" class="mr-1" />
-          {{ t('common.edit') }}
+          {{ t('actions.edit') }}
         </Button>
       </RouterLink>
       <Button

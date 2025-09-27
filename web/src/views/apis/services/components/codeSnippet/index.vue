@@ -13,7 +13,7 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import JSONToSchema from 'json-to-schema';
 import { useI18n } from 'vue-i18n';
 
-import ApiUtils from '@/utils/ApiUtils/index';
+import ApiUtils from '@/utils/apis/index';
 
 import { apis } from '@/api/tester';
 import cIcon from './image/c.png';
@@ -413,7 +413,7 @@ watch(() => props.id, async () => {
           size="small"
           class="text-left  inline-block"
           @click="refresh">
-          {{ t('common.refresh') }}
+          {{ t('actions.refresh') }}
         </Button>
       </div>
     </div>

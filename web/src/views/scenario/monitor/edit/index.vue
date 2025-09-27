@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Hints, Icon, IconRequired, Input, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Textarea } from 'ant-design-vue';
 import { AuthObjectType, GM, TESTER } from '@xcan-angus/infra';
+import { BasicProps } from '@/types/types';
 
 // Import composables
 import { useFormData } from './composables/useFormData';
@@ -12,13 +13,10 @@ import { useServerConfig } from './composables/useServerConfig';
 import { useNotificationConfig } from './composables/useNotificationConfig';
 import { useFormValidation } from './composables/useFormValidation';
 
-// Import types
-import type { MonitorEditProps } from '../types';
-
 const { t } = useI18n();
 
 // Component props
-const props = defineProps<MonitorEditProps>();
+const props = defineProps<BasicProps>();
 
 // Async component
 const CreatedDate = defineAsyncComponent(() => import('@/views/scenario/monitor/edit/CreatedDate.vue'));
@@ -200,7 +198,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="handleCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5" />
-        <span>{{ t('common.cancel') }}</span>
+        <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>
 

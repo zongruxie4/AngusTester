@@ -9,7 +9,7 @@ import qs from 'qs';
 import elementResizeDetector from 'element-resize-detector';
 import useClipboard from 'vue-clipboard3';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import apiUtils from '@/utils/ApiUtils/index';
+import apiUtils from '@/utils/apis/index';
 
 import { apis } from '@/api/tester';
 import { API_AUTH_CODE } from '@/views/apis/PropsType';

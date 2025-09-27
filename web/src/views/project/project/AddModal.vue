@@ -320,9 +320,9 @@ watch(() => props.visible, (newValue) => {
             </FormItem>
 
             <!-- Import example -->
-            <FormItem class="form-field with-tooltip flex-1">
+            <FormItem class="form-field with-tooltip flex-1 ml-5">
               <template #label>
-                <span>{{ t('actions.importExamples') }}</span>
+                <span>{{ t('common.example') }}</span>
               </template>
               <RadioGroup
                 v-model:value="formData.importExample"

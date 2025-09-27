@@ -149,7 +149,7 @@ onMounted(() => {
         class="rounded"
         size="small"
         @click="handleClose">
-        {{ t('common.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
     </FormItem>
   </Form>

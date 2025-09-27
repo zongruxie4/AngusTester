@@ -782,7 +782,7 @@ const actionMenuItemsMap = computed(() => {
 
     const menuItems: ActionMenuItem[] = [
       {
-        name: t('common.edit'),
+        name: t('actions.edit'),
         key: 'edit',
         icon: 'icon-shuxie',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any) && sprintAuth,
@@ -865,7 +865,7 @@ const actionMenuItemsMap = computed(() => {
 
     if (status !== TaskStatus.CANCELED && status !== TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('common.cancel'),
+        name: t('actions.cancel'),
         key: 'cancel',
         icon: 'icon-zhongzhi2',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any) && sprintAuth,
@@ -1061,7 +1061,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="navigateToEdit">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuxie" />
-          <span>{{ t('common.edit') }}</span>
+          <span>{{ t('actions.edit') }}</span>
         </Button>
 
         <!-- Split Task Button -->
@@ -1083,7 +1083,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="cancelCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
-          <span>{{ t('common.cancel') }}</span>
+          <span>{{ t('actions.cancel') }}</span>
         </Button>
 
         <!-- Delete Task Button -->
@@ -1215,7 +1215,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center mr-4"
           @click="refreshAllContent">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-          <span>{{ t('common.refresh') }}</span>
+          <span>{{ t('actions.refresh') }}</span>
         </Button>
       </template>
 

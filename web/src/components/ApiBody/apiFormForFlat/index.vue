@@ -12,7 +12,7 @@ import { itemTypes, formDataTypes } from './interface';
 // import { deepDelAttrFromObj, validateType } from '@/views/apis/components/api-item/utils';
 import SimpleEditableSelect from '../../SimpleEditableSelect/index.vue';
 
-import { ParamsItem, API_EXTENSION_KEY, deepDelAttrFromObj, validateType } from '@/utils/ApiUtils/index';
+import { ParamsItem, API_EXTENSION_KEY, deepDelAttrFromObj, validateType } from '@/utils/apis/index';
 const { t } = useI18n();
 
 export interface Props {

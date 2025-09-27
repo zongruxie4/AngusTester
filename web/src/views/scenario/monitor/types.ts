@@ -1,10 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
-import {
-  AuthObjectType,
-  EnumMessage,
-  PageQuery,
-  SearchCriteria
-} from '@xcan-angus/infra';
+import { AuthObjectType, EnumMessage, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { ScenarioMonitorStatus } from '@/enums/enums';
 import { CreateTimeSetting } from '@/types/types';
 
@@ -79,23 +74,6 @@ export type MonitorInfo = {
   lastMonitorHistoryId?: string;
 }
 
-// Component props interface
-export interface MonitorEditProps {
-  projectId: string;
-  userInfo: {
-    id: string;
-    fullName: string;
-  };
-  appInfo: {
-    id: string;
-  };
-  _id: string;
-  data: {
-    _id: string;
-    id: string | undefined;
-  };
-}
-
 // Monitor parameters interface
 export interface MonitorParams {
   scenarioId: string | undefined;
@@ -158,7 +136,7 @@ export interface HistoryRecord {
   monitorId: string;
   projectId: string;
   responseDelay: string;
-  status: MonitorStatus;
+  status: ScenarioMonitorStatus;
 }
 
 export interface HistoryExecData {
@@ -175,7 +153,7 @@ export interface HistoryExecData {
   sampleContents?: any[];
   sampleLogContent?: string;
   schedulingResult?: any;
-  status: MonitorStatus;
+  status: ScenarioMonitorStatus;
 }
 
 // Component props types
@@ -298,7 +276,4 @@ export interface UseSearchPanelFiltersReturn {
   statusKeys: string[];
   assocKeys: string[];
   timeKeys: string[];
-
-  // Methods
-  formatDateString: (key: string) => [string, string];
 }

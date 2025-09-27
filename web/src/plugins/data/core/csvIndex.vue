@@ -203,7 +203,7 @@ watch(() => props.params, (newValue) => {
         @click="generatedata">
         {{ t('common.add') }}
       </Button>
-      <Button size="small" @click="cancel">{{ t('common.cancel') }}</Button>
+      <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
     </div>
     <viewScriptModal v-model:visible="viewDataVisible" :data="scriptData" />
   </div>

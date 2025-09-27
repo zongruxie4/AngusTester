@@ -128,7 +128,7 @@ const addShare = () => {
                 size="small"
                 class="text-3 leading-3"
                 @click="cancelPasswordEdit(item)">
-                {{ t('common.cancel') }}
+                {{ t('actions.cancel') }}
               </Button>
             </template>
           </div>

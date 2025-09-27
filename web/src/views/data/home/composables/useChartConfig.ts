@@ -105,7 +105,7 @@ export function useChartConfig () {
       topClass: 'huang-top',
       bottomClass: 'huang-bottom',
       total: 'allVariable',
-      week: 'variableByLastWeek',
+      week: 'variableByLast7Days',
       month: 'variableByLastMonth',
       name: t('common.variables')
     },
@@ -113,7 +113,7 @@ export function useChartConfig () {
       topClass: 'hong-top',
       bottomClass: 'hong-bottom',
       total: 'allDataset',
-      week: 'datasetByLastWeek',
+      week: 'datasetByLast7Days',
       month: 'datasetByLastMonth',
       name: t('dataHome.statistics.dataset')
     },
@@ -121,7 +121,7 @@ export function useChartConfig () {
       topClass: 'lan-top',
       bottomClass: 'lan-bottom',
       total: 'allFile',
-      week: 'fileByLastWeek',
+      week: 'fileByLast7Days',
       month: 'fileByLastMonth',
       name: t('dataHome.statistics.file')
     },
@@ -129,7 +129,7 @@ export function useChartConfig () {
       topClass: 'qin-top',
       bottomClass: 'qin-bottom',
       total: 'allDatasource',
-      week: 'datasourceByLastWeek',
+      week: 'datasourceByLast7Days',
       month: 'datasourceByLastMonth',
       name: t('dataHome.statistics.datasource')
     }

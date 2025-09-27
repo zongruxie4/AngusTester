@@ -273,7 +273,7 @@ onMounted(() => {
               </div>
 
               <!-- Refresh button -->
-              <Tooltip :title="t('common.refresh')">
+              <Tooltip :title="t('actions.refresh')">
                 <Button
                   :loading="loading"
                   :disabled="!!hasSearchValue"

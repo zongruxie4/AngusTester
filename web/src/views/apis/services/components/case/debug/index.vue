@@ -12,7 +12,7 @@ import { apis, services } from '@/api/tester';
 import { getShowAuthData } from '@/components/ApiAuthencation/interface';
 import assertUtils from '@/utils/assertutils';
 
-import apiUtils from '@/utils/ApiUtils/index';
+import apiUtils from '@/utils/apis/index';
 
 import {
   ApiInfo,

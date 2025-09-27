@@ -252,7 +252,7 @@ const searchOptions = [
                 class="flex items-center flex-shrink-0"
                 @click="refresh">
                 <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-                <span>{{ t('common.refresh') }}</span>
+                <span>{{ t('actions.refresh') }}</span>
               </Button>
             </div>
           </div>
@@ -300,7 +300,7 @@ const searchOptions = [
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
-                  :title="t('common.edit')">
+                  :title="t('actions.edit')">
                   <RouterLink :to="record.editLinkUrl" class="w-full h-full flex items-center justify-center">
                     <Icon icon="icon-shuxie" class="text-3.5" />
                   </RouterLink>

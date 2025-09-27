@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n';
 
 import { AuthItem, authTypeOptions as _authTypeOptions, flowAuthType, authLabels, flowAuthKeys, encryptionTypeOpt, inOpt, getAuthItem, getApiKeyData, getShowApiKeyData } from './interface';
 
-import ApiUtils from '@/utils/ApiUtils/index';
+import ApiUtils from '@/utils/apis/index';
 const { t } = useI18n();
 const { API_EXTENSION_KEY, encode, getModelDataByRef } = ApiUtils;
 

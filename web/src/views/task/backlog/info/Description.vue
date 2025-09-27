@@ -147,7 +147,7 @@ onMounted(() => {
 
           <div class="description-edit-actions">
             <Button size="small" @click="cancelDescriptionEditing">
-              {{ t('common.cancel') }}
+              {{ t('actions.cancel') }}
             </Button>
             <Button
               size="small"

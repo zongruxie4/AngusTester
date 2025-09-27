@@ -14,7 +14,7 @@ export type ResourceInfo = {
      * <p>Number of scenarios created in the last week.</p>
      * <p>Used for tracking recent activity and growth trends.</p>
      */
-    sceByLastWeek: string;
+    sceByLast7Days: string;
 
     /**
      * <p>Number of scenarios created in the last month.</p>

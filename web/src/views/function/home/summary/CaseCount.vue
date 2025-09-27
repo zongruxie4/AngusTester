@@ -88,7 +88,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-yiquxiao" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">{{ t('status.canceled') }}<span class="placeholder nth-6"></span></div>
+          <div class="text-theme-sub-content">{{ t('status.cancelled') }}<span class="placeholder nth-6"></span></div>
           <div class="text-4">{{ canceledTotal }}</div>
         </div>
       </div>

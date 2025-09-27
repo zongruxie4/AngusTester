@@ -710,7 +710,7 @@ const currentUserId = computed(() => {
 
 const modalTitle = computed(() => {
   if (props.taskId) {
-    return t('common.edit');
+    return t('actions.edit');
   }
   return t('common.add');
 });
@@ -1438,7 +1438,7 @@ const getPopupContainer = () => {
         class="text-3 leading-3"
         size="small"
         @click="cancelModal">
-        {{ t('common.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
       <Button
         v-if="shouldShowContinueButton"

@@ -70,7 +70,7 @@ const fetchScenarioResourceData = async (): Promise<void> => {
 const resetChartDataSource = (): void => {
   chartDataSource.value = {
     allSce: '0',
-    sceByLastWeek: '0',
+    sceByLast7Days: '0',
     sceByLastMonth: '0',
     sceByScriptType: {
       TEST_FUNCTIONALITY: '0',

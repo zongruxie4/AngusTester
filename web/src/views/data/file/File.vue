@@ -222,7 +222,7 @@ onBeforeUnmount(() => {
 
           <!-- Refresh button -->
           <FileIcon
-            :title="t('common.refresh')"
+            :title="t('actions.refresh')"
             icon="icon-shuaxin"
             @click="getList" />
         </div>

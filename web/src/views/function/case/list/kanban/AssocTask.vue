@@ -167,7 +167,7 @@ const refTaskIds = computed(() => {
           type="default"
           size="small"
           @click="cancel">
-          {{ t('common.cancel') }}
+          {{ t('actions.cancel') }}
         </Button>
         <Button
           type="primary"

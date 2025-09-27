@@ -224,7 +224,7 @@ const params = computed(() => {
                     @click="patchPassd(item,index)">
                     {{ t('common.confirm') }}
                   </Button>
-                  <Button size="small" @click="cancelPassd(item)">{{ t('common.cancel') }}</Button>
+                  <Button size="small" @click="cancelPassd(item)">{{ t('actions.cancel') }}</Button>
                 </div>
               </template>
             </div>
@@ -244,7 +244,7 @@ const params = computed(() => {
               <IconCopy class="mr-2" @click="copy(item)" />
             </Tooltip>
             <Tooltip
-              :title="t('common.edit')"
+              :title="t('actions.edit')"
               placement="top">
               <template v-if="props.disabled">
                 <Icon

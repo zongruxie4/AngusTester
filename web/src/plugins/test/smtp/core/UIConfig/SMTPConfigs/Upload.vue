@@ -6,7 +6,7 @@ import { Upload } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 // import { gzip, ungzip } from '@xcan-angus/infra';
 
-import apiUtils from '@/utils/ApiUtils';
+import apiUtils from 'src/utils/apis';
 const { t } = useI18n();
 
 interface File {
