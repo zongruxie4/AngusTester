@@ -56,7 +56,7 @@ const quickSearchConfig: QuickSearchConfig = {
   //   { key: 'stability', name: 'Stability Test', fieldKey: 'type', fieldValue: 'STABILITY' },
   //   { key: 'customization', name: 'Customization Test', fieldKey: 'type', fieldValue: 'CUSTOMIZATION' }
   // ]),
-  
+
   // Using enumType for automatic enum options generation
   // enumType: createEnumTypeConfig(ScriptType, 'type', [ScriptType.MOCK_APIS]),
 

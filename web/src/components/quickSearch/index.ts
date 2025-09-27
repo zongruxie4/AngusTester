@@ -10,10 +10,10 @@
  */
 
 export { default as QuickSearchOptions } from './QuickSearchOptions.vue';
-export { 
-  useQuickSearch, 
-  createAuditOptions, 
-  createEnumOptions, 
+export {
+  useQuickSearch,
+  createAuditOptions,
+  createEnumOptions,
   createTimeOptions,
   createEnumTypeConfig
 } from './composables/useQuickSearch';

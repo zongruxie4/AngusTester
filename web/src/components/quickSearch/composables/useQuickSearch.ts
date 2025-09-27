@@ -20,7 +20,7 @@ import type {
  */
 const getDateRange = (timeRange: TimeRangeValue): string[] => {
   const now = new Date();
-  
+
   let days = 1;
   switch (timeRange) {
     case 'last1Day':
@@ -36,10 +36,10 @@ const getDateRange = (timeRange: TimeRangeValue): string[] => {
       days = 30;
       break;
   }
-  
+
   const endDate = now;
   const startDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
-  
+
   // Format dates using DATE_TIME_FORMAT
   const formatDate = (date: Date) => {
     const year = date.getFullYear();
@@ -48,7 +48,7 @@ const getDateRange = (timeRange: TimeRangeValue): string[] => {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-    
+
     return DATE_TIME_FORMAT
       .replace('YYYY', year.toString())
       .replace('MM', month)
@@ -57,7 +57,7 @@ const getDateRange = (timeRange: TimeRangeValue): string[] => {
       .replace('mm', minutes)
       .replace('ss', seconds);
   };
-  
+
   return [formatDate(startDate), formatDate(endDate)];
 };
 
@@ -74,7 +74,32 @@ export function useQuickSearch (
 
   // Internal state
   const selectedMap = ref<Map<string, QuickSearchOption>>(new Map());
-  const isAllSelected = ref(false);
+  const isAllSelected = ref(true); // 默认选中"全部"选项
+
+  // Initialize with "all" selected and trigger initial callback
+  const initializeWithAllSelected = () => {
+    if (onChange) {
+      onChange(['all'], []);
+    }
+  };
+
+  // Generate enum options at setup time if enumType is provided
+  const generatedEnumOptions = ref<EnumStatusOption[]>([]);
+  if (config.enumType) {
+    try {
+      const data = enumUtils.enumToMessages(config.enumType.enum, config.enumType.excludes);
+      generatedEnumOptions.value = data.map(item => ({
+        key: item.value,
+        name: item.message,
+        type: 'enum' as const,
+        fieldKey: config.enumType!.fieldKey,
+        fieldValue: item.value
+      }));
+    } catch (error) {
+      console.warn('Failed to generate enum options:', error);
+      generatedEnumOptions.value = [];
+    }
+  }
 
   /**
    * Create "All" option
@@ -88,42 +113,28 @@ export function useQuickSearch (
   });
 
   /**
-   * Generate enum options from enum type configuration
-   */
-  const generateEnumOptionsFromType = (enumTypeConfig: EnumTypeConfig): EnumStatusOption[] => {
-    const data = enumUtils.enumToMessages(enumTypeConfig.enum, enumTypeConfig.excludes);
-    return data.map(item => ({
-      key: item.value,
-      name: item.message,
-      type: 'enum' as const,
-      fieldKey: enumTypeConfig.fieldKey,
-      fieldValue: item.value
-    }));
-  };
-
-  /**
    * Build all available menu items from configuration
    */
   const menuItems = computed((): QuickSearchOption[] => {
     const items: QuickSearchOption[] = [createAllOption()];
-    
+
     // Add audit options
     if (config.auditOptions?.length) {
       items.push(...config.auditOptions);
     }
-    
+
     // Add enum options (from enumOptions or generated from enumType)
     if (config.enumOptions?.length) {
       items.push(...config.enumOptions);
-    } else if (config.enumType) {
-      items.push(...generateEnumOptionsFromType(config.enumType));
+    } else if (generatedEnumOptions.value.length > 0) {
+      items.push(...generatedEnumOptions.value);
     }
-    
+
     // Add time options
     if (config.timeOptions?.length) {
       items.push(...config.timeOptions);
     }
-    
+
     return items;
   });
 
@@ -131,6 +142,9 @@ export function useQuickSearch (
    * Get currently selected option keys
    */
   const selectedOptions = computed((): string[] => {
+    if (isAllSelected.value) {
+      return ['all'];
+    }
     return Array.from(selectedMap.value.keys());
   });
 
@@ -140,8 +154,8 @@ export function useQuickSearch (
   const getSearchCriteria = (): SearchCriteria[] => {
     const criteria: SearchCriteria[] = [];
 
-    // If "all" is selected, return empty criteria
-    if (isAllSelected.value) {
+    // If "all" is selected or no options are selected, return empty criteria (query all data)
+    if (isAllSelected.value || selectedMap.value.size === 0) {
       return criteria;
     }
 
@@ -198,14 +212,26 @@ export function useQuickSearch (
     // Handle "All" option
     if (key === 'all') {
       if (isAllSelected.value) {
-        // Already selected, do nothing
-        return;
-      }
+        // Already selected, toggle off - clear all selections
+        selectedMap.value.clear();
+        isAllSelected.value = false;
+        clearExternalConditions();
 
-      // Select "All" and clear all other selections
-      selectedMap.value.clear();
-      isAllSelected.value = true;
-      clearExternalConditions();
+        // Manually trigger onChange since watch might not detect the change
+        if (onChange) {
+          onChange(selectedOptions.value, getSearchCriteria());
+        }
+      } else {
+        // Select "All" and clear all other selections
+        selectedMap.value.clear();
+        isAllSelected.value = true;
+        clearExternalConditions();
+
+        // Manually trigger onChange since watch might not detect the change
+        if (onChange) {
+          onChange(selectedOptions.value, getSearchCriteria());
+        }
+      }
     } else {
       // Handle other options
       if (selectedMap.value.has(key)) {
@@ -225,10 +251,9 @@ export function useQuickSearch (
                 selectedMap.value.delete(enumOpt.key);
               }
             });
-          } else if (config.enumType) {
-            // Clear dynamically generated enum options
-            const generatedOptions = generateEnumOptionsFromType(config.enumType);
-            generatedOptions.forEach(enumOpt => {
+          } else if (generatedEnumOptions.value.length > 0) {
+            // Clear pre-generated enum options
+            generatedEnumOptions.value.forEach(enumOpt => {
               if (enumOpt.key !== key) {
                 selectedMap.value.delete(enumOpt.key);
               }
@@ -245,11 +270,6 @@ export function useQuickSearch (
 
         selectedMap.value.set(key, option);
       }
-    }
-
-    // Trigger change callback
-    if (onChange) {
-      onChange(selectedOptions.value, getSearchCriteria());
     }
   };
 
@@ -276,13 +296,16 @@ export function useQuickSearch (
         onChange(selectedOptions.value, getSearchCriteria());
       }
     },
-    { deep: true }
+    { deep: true, immediate: false }
   );
 
+  // Initialize with "all" selected
+  initializeWithAllSelected();
+
   return {
-    menuItems: menuItems.value,
-    selectedOptions: selectedOptions.value,
-    isAllSelected: isAllSelected.value,
+    menuItems,
+    selectedOptions,
+    isAllSelected,
     handleOptionClick,
     resetSelections,
     getSearchCriteria,
@@ -346,7 +369,7 @@ export function createTimeOptions (
  * @param excludes - Values to exclude from the enum
  * @returns Enum type configuration
  */
-export function createEnumTypeConfig(
+export function createEnumTypeConfig (
   enumType: any,
   fieldKey: string,
   excludes?: any[]

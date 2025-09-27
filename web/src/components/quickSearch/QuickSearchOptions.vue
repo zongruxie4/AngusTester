@@ -11,23 +11,26 @@
           <Colon />
         </div>
 
-        <!-- Description slot -->
-        <div v-if="descriptionSlot || $slots.description" class="ml-2 text-3 text-text-sub-content">
-          <slot name="description">
-            <div v-html="descriptionSlot"></div>
-          </slot>
-        </div>
-
         <!-- Options container -->
         <div class="flex flex-wrap ml-2">
           <div
             v-for="item in menuItems"
             :key="item.key"
-            :class="{ 'active-key': isItemSelected(item.key) }"
-            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3 hover:bg-gray-200 transition-colors"
+            :class="[
+              'px-2.5 h-6 leading-6 mr-3 rounded cursor-pointer font-semibold text-3 transition-colors',
+              isItemSelected(item.key) ? 'active-key' : 'bg-gray-light hover:bg-gray-200'
+            ]"
+            :title="`${item.name} - Selected: ${isItemSelected(item.key)}`"
             @click="handleOptionClick(item)">
             {{ item.name }}
           </div>
+        </div>
+
+        <!-- Description slot -->
+        <div v-if="descriptionSlot || $slots.description" class="ml-2 text-3 text-text-sub-content">
+          <slot name="description">
+            <div v-html="descriptionSlot"></div>
+          </slot>
         </div>
       </div>
     </div>
@@ -49,6 +52,7 @@ const props = withDefaults(defineProps<QuickSearchOptionsProps>(), {
   descriptionSlot: ''
 });
 
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'change', selectedKeys: string[], searchCriteria: SearchCriteria[]): void;
 }>();
@@ -73,9 +77,9 @@ const {
  */
 const isItemSelected = (key: string): boolean => {
   if (key === 'all') {
-    return isAllSelected;
+    return isAllSelected.value;
   }
-  return selectedOptions.includes(key);
+  return selectedOptions.value.includes(key);
 };
 
 // Expose methods for parent components
@@ -88,16 +92,26 @@ defineExpose({
 
 <style scoped>
 .quick-search-options {
-  margin-top: 0.625rem;
-  margin-bottom: 0.875rem;
+  margin-bottom: 0.275rem;
 }
 
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
+/* Active state styles with higher specificity */
+.quick-search-options .active-key {
+  background-color: #1890ff !important;
+  color: #ffffff !important;
+  border: 1px solid #1890ff !important;
+  box-shadow: 0 2px 4px rgba(24, 144, 255, 0.2) !important;
 }
 
-.active-key:hover {
-  background-color: #3b82f6;
+.quick-search-options .active-key:hover {
+  background-color: #40a9ff !important;
+  color: #ffffff !important;
+  border-color: #40a9ff !important;
+}
+
+/* Override any conflicting styles */
+.quick-search-options div[class*="active-key"] {
+  background-color: #1890ff !important;
+  color: #ffffff !important;
 }
 </style>

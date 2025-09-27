@@ -1,4 +1,5 @@
 import { SearchCriteria } from '@xcan-angus/infra';
+import type { Ref, ComputedRef } from 'vue';
 
 /**
  * Base option interface for all quick search items
@@ -39,6 +40,11 @@ export interface EnumStatusOption extends BaseQuickSearchOption {
 }
 
 /**
+ * Supported time range values
+ */
+export type TimeRangeValue = 'last1Day' | 'last3Days' | 'last7Days' | 'last30Days';
+
+/**
  * Time range option for predefined time periods
  */
 export interface TimeRangeOption extends BaseQuickSearchOption {
@@ -51,11 +57,6 @@ export interface TimeRangeOption extends BaseQuickSearchOption {
   /** Function to calculate date range based on time range */
   getDateRange: (timeRange: TimeRangeValue) => string[];
 }
-
-/**
- * Supported time range values
- */
-export type TimeRangeValue = 'last1Day' | 'last3Days' | 'last7Days' | 'last30Days';
 
 /**
  * Union type for all quick search options
@@ -121,11 +122,11 @@ export interface QuickSearchState {
  */
 export interface UseQuickSearchReturn {
   /** All available menu items */
-  menuItems: QuickSearchOption[];
+  menuItems: ComputedRef<QuickSearchOption[]>;
   /** Currently selected options */
-  selectedOptions: string[];
+  selectedOptions: ComputedRef<string[]>;
   /** Whether "all" option is selected */
-  isAllSelected: boolean;
+  isAllSelected: Ref<boolean>;
   /** Handle option click */
   handleOptionClick: (option: QuickSearchOption) => void;
   /** Reset all selections */
