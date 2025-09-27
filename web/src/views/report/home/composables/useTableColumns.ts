@@ -126,7 +126,7 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'lastModifiedDate',
       dataIndex: 'lastModifiedDate',
-      title: t('reportHome.table.lastModifyTime'),
+      title: t('common.lastModifiedDate'),
       groupName: 'creat',
       hide: true,
       width: 160,

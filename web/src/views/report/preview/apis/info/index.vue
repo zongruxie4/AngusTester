@@ -77,7 +77,7 @@ const columns = computed(() => [
     },
     {
       dataIndex: 'lastModifiedDate',
-      name: t('reportPreview.apis.info.fields.lastModifyTime')
+      name: t('common.lastModifiedDate')
     }
   ]
 ]);

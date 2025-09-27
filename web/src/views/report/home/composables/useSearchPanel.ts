@@ -1,18 +1,15 @@
 import { computed, inject, onMounted, Ref, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import dayjs, { Dayjs } from 'dayjs';
-import { cloneDeep, isEqual } from 'lodash-es';
+import dayjs from 'dayjs';
+import { cloneDeep } from 'lodash-es';
 import { PageQuery, SearchCriteria, CombinedTargetType, XCanDexie } from '@xcan-angus/infra';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { BasicProps } from '@/types/types';
+import { createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
 
 import type {
-  MenuItem,
-  MenuItemKey,
   OrderByKey,
   SearchOption,
   SearchPanelEmits,
-  SearchPanelProps,
-  TargetIdFilter,
   UseSearchPanelReturn
 } from '../types';
 
@@ -21,7 +18,7 @@ import type {
  * Handles search filters, quick queries, and data persistence
  */
 export function useSearchPanel (
-  props: SearchPanelProps,
+  props: BasicProps,
   emit: SearchPanelEmits
 ): UseSearchPanelReturn {
   const { t } = useI18n();
@@ -37,12 +34,10 @@ export function useSearchPanel (
 
   // Reactive state
   const searchPanelRef = ref();
-  const quickDateMap = ref<Map<MenuItemKey, string[]>>(new Map());
-  const selectedMenuMap = ref(new Map<string, Omit<MenuItem, 'name'>>());
   const filters = ref<SearchCriteria[]>([]);
-  const targetIdFilter = ref<TargetIdFilter>({
+  const targetIdFilter = ref<SearchCriteria>({
     key: 'targetId',
-    op: 'EQUAL',
+    op: SearchCriteria.OpEnum.Equal,
     value: undefined
   });
 
@@ -52,7 +47,7 @@ export function useSearchPanel (
   const dbBaseKey = computed(() => {
     let key = '';
     if (userId.value) {
-      key = userId.value;
+      key = String(userId.value);
     }
     if (props.projectId) {
       key += props.projectId;
@@ -79,33 +74,39 @@ export function useSearchPanel (
   const isExecutionTargetType = computed(() => targetType.value === CombinedTargetType.EXECUTION);
   const isScenarioTargetType = computed(() => targetType.value === CombinedTargetType.SCENARIO);
 
-  // Menu items configuration
-  const menuItems: MenuItem[] = [
-    {
-      key: 'none',
-      name: t('common.all')
-    },
-    {
-      key: 'createdBy',
-      name: t('reportHome.searchPanel.menuItems.myAdded')
-    },
-    {
-      key: 'lastModifiedBy',
-      name: t('reportHome.searchPanel.menuItems.myModified')
-    },
-    {
-      key: 'lastDay',
-      name: t('quickSearch.last1Day')
-    },
-    {
-      key: 'lastThreeDays',
-      name: t('quickSearch.last3Days')
-    },
-    {
-      key: 'lastWeek',
-      name: t('quickSearch.last7Days')
+  /**
+   * Quick search configuration for report search panel
+   * Provides predefined filter options for common searches
+   */
+  const quickSearchConfig = computed<QuickSearchConfig>(() => ({
+    title: t('quickSearch.title'),
+    // Audit information options
+    auditOptions: createAuditOptions([
+      {
+        key: 'myAdded',
+        name: t('reportHome.searchPanel.menuItems.myAdded'),
+        fieldKey: 'createdBy'
+      },
+      {
+        key: 'myModified',
+        name: t('reportHome.searchPanel.menuItems.myModified'),
+        fieldKey: 'lastModifiedBy'
+      }
+    ], String(userId.value || '')),
+    // Time options
+    timeOptions: createTimeOptions([
+      { key: 'last1Day', name: t('quickSearch.last1Day'), timeRange: 'last1Day' },
+      { key: 'last3Days', name: t('quickSearch.last3Days'), timeRange: 'last3Days' },
+      { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
+    ], 'createdDate'),
+    // External clear function
+    externalClearFunction: () => {
+      if (typeof searchPanelRef.value?.clear === 'function') {
+        searchPanelRef.value.clear();
+      }
+      targetIdFilter.value.value = undefined;
     }
-  ];
+  }));
 
   // Search options configuration
   const searchOptions = computed<SearchOption[]>(() => [
@@ -119,8 +120,8 @@ export function useSearchPanel (
       valueKey: 'targetType',
       placeholder: t('reportHome.searchPanelOptions.resourceTypePlaceholder'),
       type: 'select-enum',
-      enumKey: CombinedTargetType,
-      excludes: (data: { message: string; value: string }) => {
+      enumKey: CombinedTargetType as any,
+      excludes: (data: { message: string; value: CombinedTargetType }) => {
         return !([
           CombinedTargetType.PROJECT, CombinedTargetType.SERVICE, CombinedTargetType.API,
           proTypeShowMap.value.showTask && CombinedTargetType.TASK,
@@ -143,7 +144,10 @@ export function useSearchPanel (
     {
       type: 'date-range',
       valueKey: 'createdDate',
-      placeholder: [t('reportHome.searchPanelOptions.createTimeFrom'), t('reportHome.searchPanelOptions.createTimeTo')],
+      placeholder: [
+        t('reportHome.searchPanelOptions.createTimeFrom'),
+        t('reportHome.searchPanelOptions.createTimeTo')
+      ],
       showTime: true
     }
   ]);
@@ -153,129 +157,48 @@ export function useSearchPanel (
     {
       name: t('reportHome.searchPanel.sortMenus.byCreateTime'),
       key: 'createdDate' as OrderByKey,
-      orderSort: 'DESC' as PageQuery.OrderSort
+      orderSort: PageQuery.OrderSort.Desc
     },
     {
       name: t('reportHome.searchPanel.sortMenus.byCreator'),
       key: 'createdByName' as OrderByKey,
-      orderSort: 'DESC' as PageQuery.OrderSort
+      orderSort: PageQuery.OrderSort.Desc
     }
   ];
 
   /**
-   * Format date string for quick date filters
+   * Handle quick search changes
+   * Processes quick search filters and updates state
+   * @param selectedKeys - Array of selected option keys
+   * @param searchCriteria - Array of search criteria from quick search
    */
-  const formatDateString = (key: MenuItemKey): string[] => {
-    let startDate: Dayjs | undefined;
-    let endDate: Dayjs | undefined;
+  const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+    // Update filters with quick search criteria
+    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'createdDate'];
+    const otherFilters = filters.value.filter(f => f.key && !quickSearchFields.includes(f.key as string));
+    const newFilters = [...otherFilters, ...searchCriteria];
 
-    if (key === 'lastDay') {
-      startDate = dayjs().startOf('date');
-      endDate = dayjs();
-    }
-
-    if (key === 'lastThreeDays') {
-      startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-      endDate = dayjs();
-    }
-
-    if (key === 'lastWeek') {
-      startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-      endDate = dayjs();
-    }
-
-    return [
-      startDate ? startDate.format(DATE_TIME_FORMAT) : '',
-      endDate ? endDate.format(DATE_TIME_FORMAT) : ''
-    ];
-  };
-
-  /**
-   * Handle menu item click for quick filters
-   */
-  const menuItemClick = (data: MenuItem) => {
-    const key = data.key;
-
-    // Handle deselection
-    if (selectedMenuMap.value.has(key)) {
-      if (key === 'none') {
-        return;
-      }
-
-      selectedMenuMap.value.delete(key);
-
-      if (key === 'createdBy') {
-        if (typeof searchPanelRef.value?.setConfigs === 'function') {
-          searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', value: undefined }]);
-        }
-        return;
-      }
-
-      if (key === 'lastModifiedBy') {
-        if (typeof searchPanelRef.value?.setConfigs === 'function') {
-          searchPanelRef.value.setConfigs([{ valueKey: 'lastModifiedBy', value: undefined }]);
-        }
-        return;
-      }
-
-      if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-        quickDateMap.value.clear();
-        if (typeof searchPanelRef.value?.setConfigs === 'function') {
-          searchPanelRef.value.setConfigs([{ valueKey: 'createdDate', value: undefined }]);
-        }
-      }
-      return;
-    }
-
-    // Handle selection
-    if (key === 'none') {
-      selectedMenuMap.value.clear();
-      selectedMenuMap.value.set('none', { key: 'none' });
-
-      if (typeof searchPanelRef.value?.clear === 'function') {
-        searchPanelRef.value.clear();
-      }
-      targetIdFilter.value.value = undefined;
-      return;
-    }
-
-    if (key === 'createdBy') {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', value: userId.value }]);
-      }
-      return;
-    }
-
-    if (key === 'lastModifiedBy') {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{ valueKey: 'lastModifiedBy', value: userId.value }]);
-      }
-      return;
-    }
-
-    if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-      quickDateMap.value.clear();
-      quickDateMap.value.set(key, formatDateString(key));
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{ valueKey: 'createdDate', value: quickDateMap.value.get(key) }]);
-      }
-    }
+    // Update filters
+    filters.value = newFilters;
   };
 
   /**
    * Handle search panel change
    */
-  const searchPanelChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, key?: string) => {
-    filters.value = data;
+  const searchPanelChange = (
+    data: SearchCriteria[],
+    _headers?: { [key: string]: string },
+    key?: string
+  ) => {
+    // Merge search panel filters with quick search filters
+    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'createdDate'];
+    const quickSearchFilters = filters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
+    const searchPanelFilters = data.filter(f => f.key && !quickSearchFields.includes(f.key as string));
+
+    filters.value = [...quickSearchFilters, ...searchPanelFilters];
 
     if (key === 'targetType') {
       targetIdFilter.value.value = undefined;
-    }
-
-    if (key === 'createdDate') {
-      selectedMenuMap.value.delete('lastDay');
-      selectedMenuMap.value.delete('lastThreeDays');
-      selectedMenuMap.value.delete('lastWeek');
     }
   };
 
@@ -283,7 +206,7 @@ export function useSearchPanel (
    * Handle target ID change
    */
   const targetIdChange = (value: string) => {
-    targetIdFilter.value = { key: 'targetId', op: 'EQUAL', value };
+    targetIdFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value };
   };
 
   /**
@@ -338,14 +261,18 @@ export function useSearchPanel (
         const dateTimeMap: { [key: string]: string[] } = {};
 
         filters.value.every(({ key, value }) => {
-          if (dateTimeKeys.includes(key)) {
-            if (dateTimeMap[key]) {
-              dateTimeMap[key].push(value as string);
-            } else {
-              dateTimeMap[key] = [value as string];
+          if (key && dateTimeKeys.includes(key)) {
+            if (value) {
+              if (dateTimeMap[key]) {
+                dateTimeMap[key].push(value as string);
+              } else {
+                dateTimeMap[key] = [value as string];
+              }
             }
-          } else {
-            valueMap[key] = value as string;
+          } else if (key) {
+            if (value) {
+              valueMap[key] = value as string;
+            }
           }
           return true;
         });
@@ -372,9 +299,9 @@ export function useSearchPanel (
       }
 
       if (Object.prototype.hasOwnProperty.call(dbData, 'b')) {
-        targetIdFilter.value = dbData.b || { key: 'targetId', op: 'EQUAL', value: undefined };
+        targetIdFilter.value = dbData.b || { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
       } else {
-        targetIdFilter.value = { key: 'targetId', op: 'EQUAL', value: undefined };
+        targetIdFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
       }
 
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
@@ -410,10 +337,8 @@ export function useSearchPanel (
    * Reset all data
    */
   const resetData = () => {
-    quickDateMap.value.clear();
-    selectedMenuMap.value.clear();
     filters.value = [];
-    targetIdFilter.value = { key: 'targetId', op: 'EQUAL', value: undefined };
+    targetIdFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
   };
 
   // Lifecycle hooks
@@ -426,47 +351,12 @@ export function useSearchPanel (
     }, { immediate: true });
 
     watch(
-      [() => filters.value, () => targetIdFilter.value, () => selectedMenuMap.value],
+      [() => filters.value, () => targetIdFilter.value],
       () => {
         const _filters = filters.value;
         if (!(_filters.length || !!targetIdFilter.value.value)) {
-          selectedMenuMap.value.clear();
-          selectedMenuMap.value.set('none', { key: 'none' });
           emit('change', []);
         } else {
-          selectedMenuMap.value.delete('none');
-
-          const createdBy = _filters.find(item => item.key === 'createdBy')?.value;
-          if (createdBy && createdBy === userId.value) {
-            selectedMenuMap.value.set('createdBy', { key: 'createdBy' });
-          } else {
-            selectedMenuMap.value.delete('createdBy');
-          }
-
-          const lastModifiedBy = _filters.find(item => item.key === 'lastModifiedBy')?.value;
-          if (lastModifiedBy && lastModifiedBy === userId.value) {
-            selectedMenuMap.value.set('lastModifiedBy', { key: 'lastModifiedBy' });
-          } else {
-            selectedMenuMap.value.delete('lastModifiedBy');
-          }
-
-          if (quickDateMap.value.size > 0) {
-            selectedMenuMap.value.delete('lastDay');
-            selectedMenuMap.value.delete('lastThreeDays');
-            selectedMenuMap.value.delete('lastWeek');
-
-            const createdDateStart = _filters.find(item => item.key === 'createdDate' && item.op === 'GREATER_THAN_EQUAL')?.value;
-            const createdDateEnd = _filters.find(item => item.key === 'createdDate' && item.op === 'LESS_THAN_EQUAL')?.value;
-            const dateString = [createdDateStart, createdDateEnd];
-            const entries = quickDateMap.value.entries();
-            for (const [key, value] of entries) {
-              if (isEqual(value, dateString)) {
-                selectedMenuMap.value.set(key, { key });
-              }
-            }
-            quickDateMap.value.clear();
-          }
-
           emit('change', getData());
         }
 
@@ -474,7 +364,7 @@ export function useSearchPanel (
         if (db) {
           const dbData: {
             a?: SearchCriteria[];
-            b?: TargetIdFilter;
+            b?: SearchCriteria;
           } = {};
           if (_filters.length) {
             dbData.a = cloneDeep(_filters);
@@ -498,13 +388,9 @@ export function useSearchPanel (
 
   return {
     searchOptions,
-    menuItems,
     sortMenus,
-    selectedMenuMap,
-    quickDateMap,
     filters,
     targetIdFilter,
-    menuItemClick,
     searchPanelChange,
     targetIdChange,
     toSort,
@@ -520,6 +406,8 @@ export function useSearchPanel (
     isPlanTargetType,
     isCaseTargetType,
     isExecutionTargetType,
-    isScenarioTargetType
+    isScenarioTargetType,
+    quickSearchConfig,
+    handleQuickSearchChange
   };
 }

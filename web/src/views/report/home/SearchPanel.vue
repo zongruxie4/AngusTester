@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { Button } from 'ant-design-vue';
-import { Colon, Icon, SearchPanel, Select } from '@xcan-angus/vue-ui';
+import { Icon, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useSearchPanel } from './composables/useSearchPanel';
-import type { SearchPanelEmits, SearchPanelProps } from './types';
+import type { SearchPanelEmits } from './types';
+import { BasicProps } from '@/types/types';
+import { QuickSearchOptions } from '@/components/quickSearch';
 
 // Props and emits definition
-const props = withDefaults(defineProps<SearchPanelProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -18,10 +20,7 @@ const emit = defineEmits<SearchPanelEmits>();
 // Use search panel composable
 const {
   searchOptions,
-  menuItems,
-  selectedMenuMap,
   targetIdFilter,
-  menuItemClick,
   searchPanelChange,
   targetIdChange,
   toRefresh,
@@ -35,32 +34,19 @@ const {
   isPlanTargetType,
   isCaseTargetType,
   isExecutionTargetType,
-  isScenarioTargetType
+  isScenarioTargetType,
+  quickSearchConfig,
+  handleQuickSearchChange
 } = useSearchPanel(props, emit);
 
 </script>
 
 <template>
   <div class="text-3 leading-5">
-    <!-- Quick Query Section -->
-    <div class="flex items-start justify-between mb-1.5">
-      <div class="flex items-start transform-gpu translate-y-0.5">
-        <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>{{ $t('reportHome.searchPanel.quickQuery') }}</span>
-          <Colon />
-        </div>
-        <div class="flex flex-wrap ml-2">
-          <div
-            v-for="item in menuItems"
-            :key="item.key"
-            :class="{ 'active-key': selectedMenuMap.has(item.key) }"
-            class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-            @click="menuItemClick(item)">
-            {{ item.name }}
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
 
     <!-- Search Panel Section -->
     <div class="flex items-start justify-between space-x-5">
@@ -208,7 +194,7 @@ const {
 
         <Button size="small" @click="toRefresh">
           <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-          <span>{{ $t('common.refresh') }}</span>
+          <span>{{ $t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>
@@ -216,8 +202,5 @@ const {
 </template>
 
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 </style>

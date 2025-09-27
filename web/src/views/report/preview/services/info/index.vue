@@ -70,7 +70,7 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'lastModifiedDate',
-      name: t('reportPreview.services.info.fields.lastModifyTime')
+      name: t('common.lastModifiedDate')
     },
     {
       dataIndex: '',

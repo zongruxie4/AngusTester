@@ -3,7 +3,7 @@ import { computed } from 'vue';
 // import { NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
-import apiUtils from '@/utils/ApiUtils/index';
+import apiUtils from '@/utils/apis/index';
 
 import deletePng from './Image/delete.png';
 import shanghongPng from './Image/shanghong.png';

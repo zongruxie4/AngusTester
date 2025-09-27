@@ -29,14 +29,8 @@ export interface Report {
   lastModifiedDate?: string;
 }
 
-export interface TargetIdFilter {
-  key: 'targetId';
-  op: 'EQUAL';
-  value: string | undefined;
-}
-
 // Menu item types
-export type MenuItemKey = 'none' | 'createdBy' | 'lastModifiedBy' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
+export type MenuItemKey = 'none' | 'createdBy' | 'lastModifiedBy' | 'last1Day' | 'last3Days' | 'last7Days';
 
 export interface MenuItem {
   key: MenuItemKey;
@@ -113,17 +107,6 @@ export interface CategorySelectProps {
   category: string;
 }
 
-export interface SearchPanelProps {
-  projectId: string;
-  userInfo: UserInfo;
-  appInfo: AppInfo;
-  notify: string;
-}
-
-export interface PieChartProps {
-  projectId: string;
-}
-
 // Emit types
 export interface CategorySelectEmits {
   (e: 'update:category', value: string): void;
@@ -169,16 +152,13 @@ export interface UseTableColumnsReturn {
 
 export interface UseSearchPanelReturn {
   searchOptions: Ref<SearchOption[]>;
-  menuItems: MenuItem[];
   sortMenus: Array<{
     name: string;
     key: OrderByKey;
     orderSort: PageQuery.OrderSort;
   }>;
-  selectedMenuMap: Ref<Map<string, Omit<MenuItem, 'name'>>>;
-  quickDateMap: Ref<Map<MenuItemKey, string[]>>;
   filters: Ref<SearchCriteria[]>;
-  targetIdFilter: Ref<TargetIdFilter>;
+  targetIdFilter: Ref<SearchCriteria>;
   searchPanelRef: Ref<any>;
   isProjectTargetType: Ref<boolean>;
   isServiceTargetType: Ref<boolean>;
@@ -189,13 +169,14 @@ export interface UseSearchPanelReturn {
   isCaseTargetType: Ref<boolean>;
   isExecutionTargetType: Ref<boolean>;
   isScenarioTargetType: Ref<boolean>;
-  menuItemClick: (data: MenuItem) => void;
   searchPanelChange: (data: SearchCriteria[], headers?: { [key: string]: string }, key?: string) => void;
   targetIdChange: (value: string) => void;
   toSort: (data: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort }) => void;
   toRefresh: () => void;
   toAuth: () => void;
   getData: () => SearchCriteria[];
+  quickSearchConfig: Ref<any>;
+  handleQuickSearchChange: (selectedKeys: string[], searchCriteria: SearchCriteria[]) => void;
 }
 
 export interface UseCategorySelectReturn {
