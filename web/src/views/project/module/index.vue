@@ -1,23 +1,19 @@
 <script setup lang="ts">
-// Vue composition API imports
 import { defineAsyncComponent, onMounted, toRef, watch, ref, computed, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// Custom UI components
-import { AsyncComponent, Icon, IconRefresh, Input, NoData, Spin } from '@xcan-angus/vue-ui';
-
-// Ant Design components
+import { AsyncComponent, Icon, IconRefresh, Input, Spin } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
+import { BasicProps } from '@/types/types';
 
 // Composables and types
 import { useData, useActions, useTree } from './composables';
-import type { ModuleItem, ModuleProps } from './types';
+import type { ModuleItem } from './types';
 
 // Initialize i18n
 const { t } = useI18n();
 
 // Props definition with proper TypeScript support
-const props = withDefaults(defineProps<ModuleProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: '',
   userInfo: () => ({ id: '' }),
   appInfo: () => ({ id: '' }),
@@ -212,8 +208,8 @@ onMounted(() => {
             <Icon icon="icon-mokuai" class="text-blue-600 text-lg" />
           </div>
           <div>
-            <h2 class="text-sm font-semibold text-gray-900">{{ t('module.addedModules') }}</h2>
-            <p class="text-xs text-gray-600">{{ t('module.aboutDescription') }}</p>
+            <h2 class="text-3.5 font-semibold text-gray-900">{{ t('module.introduce.aboutModule') }}</h2>
+            <p class="text-3.5 text-gray-600 mt-1">{{ t('module.introduce.description') }}</p>
           </div>
         </div>
       </div>
@@ -226,7 +222,7 @@ onMounted(() => {
         <div class="flex-1 max-w-md">
           <Input
             v-model:value="searchValue"
-            :placeholder="t('module.moduleNamePlaceholder')"
+            :placeholder="t('module.messages.moduleNamePlaceholder')"
             class="w-full"
             size="small"
             trimAll
@@ -246,14 +242,14 @@ onMounted(() => {
             class="flex items-center space-x-1 text-xs"
             @click="openCreateModal()">
             <Icon icon="icon-jia" class="text-xs" />
-            <span>{{ t('module.addModule') }}</span>
+            <span>{{ t('module.actions.addModule') }}</span>
           </Button>
 
           <IconRefresh @click="handleRefresh">
             <template #default>
               <div class="flex items-center cursor-pointer text-gray-600 space-x-1 hover:text-gray-800 text-xs">
                 <Icon icon="icon-shuaxin" class="text-xs" />
-                <span>{{ t('common.refresh') }}</span>
+                <span>{{ t('actions.refresh') }}</span>
               </div>
             </template>
           </IconRefresh>
@@ -269,9 +265,9 @@ onMounted(() => {
               <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                 <Icon icon="icon-mokuai" class="text-4xl text-gray-400" />
               </div>
-              <h3 class="text-sm font-medium text-gray-900 mb-2">{{ t('module.noModules') }}</h3>
+              <h3 class="text-sm font-medium text-gray-900 mb-2">{{ t('module.messages.noModules') }}</h3>
               <p class="text-gray-500 text-xs mb-4 text-center max-w-md">
-                {{ props.disabled ? t('module.noModulesDescription') : t('module.noModulesHint') }}
+                {{ props.disabled ? t('module.messages.noModulesDescription') : t('module.messages.noModulesHint') }}
               </p>
               <Button
                 v-if="!props.disabled"
@@ -280,7 +276,7 @@ onMounted(() => {
                 class="flex items-center space-x-2"
                 @click="openCreateModal()">
                 <Icon icon="icon-jia" class="text-base" />
-                <span>{{ t('module.addModule') }}</span>
+                <span>{{ t('module.actions.addModule') }}</span>
               </Button>
             </div>
 
@@ -291,8 +287,8 @@ onMounted(() => {
                 <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                   <Icon icon="icon-sousuo" class="text-2xl text-gray-400" />
                 </div>
-                <h3 class="text-sm font-medium text-gray-900 mb-2">{{ t('module.noSearchResults') }}</h3>
-                <p class="text-gray-500 text-xs">{{ t('module.tryDifferentKeywords') }}</p>
+                <h3 class="text-sm font-medium text-gray-900 mb-2">{{ t('module.messages.noSearchResults') }}</h3>
+                <p class="text-gray-500 text-xs">{{ t('module.messages.tryDifferentKeywords') }}</p>
               </div>
 
               <!-- Module tree display -->
@@ -315,7 +311,7 @@ onMounted(() => {
                     <div v-if="editId === id" class="flex items-center space-x-2 p-1.5 bg-white rounded border">
                       <Input
                         ref="nameInputRef"
-                        :placeholder="t('module.moduleNamePlaceholder')"
+                        :placeholder="t('module.messages.moduleNamePlaceholder')"
                         class="flex-1"
                         size="small"
                         trim
@@ -329,7 +325,7 @@ onMounted(() => {
                         size="small"
                         class="px-2 text-gray-500 hover:text-gray-700"
                         @click="cancelEdit">
-                        {{ t('common.cancel') }}
+                        {{ t('actions.cancel') }}
                       </Button>
                     </div>
 
@@ -359,29 +355,29 @@ onMounted(() => {
                                 key="add"
                                 class="flex items-center space-x-2 py-2">
                                 <Icon icon="icon-jia" class="text-blue-600 mr-1" />
-                                <span>{{ t('module.newSubModule') }}</span>
+                                <span>{{ t('module.actions.newSubModule') }}</span>
                               </MenuItem>
                               <MenuItem
                                 v-if="canMoveUp({id, name, index, pid})"
                                 key="up"
                                 class="flex items-center space-x-2 py-2">
                                 <Icon icon="icon-shangyi" class="text-green-600 mr-1" />
-                                <span>{{ index < 1 ? t('module.moveUp') : t('module.moveUpOne') }}</span>
+                                <span>{{ index < 1 ? t('actions.moveUp') : t('actions.moveToUpperLevel') }}</span>
                               </MenuItem>
                               <MenuItem
                                 v-if="canMoveDown({id, name, isLast})"
                                 key="down"
                                 class="flex items-center space-x-2 py-2">
                                 <Icon icon="icon-xiayi" class="text-green-600 mr-1" />
-                                <span>{{ t('module.moveDown') }}</span>
+                                <span>{{ t('actions.moveDown') }}</span>
                               </MenuItem>
                               <MenuItem key="move" class="flex items-center space-x-2 py-2">
                                 <Icon icon="icon-yidong" class="text-orange-600 mr-1" />
-                                <span>{{ t('module.move') }}</span>
+                                <span>{{ t('actions.move') }}</span>
                               </MenuItem>
                               <MenuItem key="edit" class="flex items-center space-x-2 py-2">
                                 <Icon icon="icon-bianji" class="text-blue-600 mr-1" />
-                                <span>{{ t('common.edit') }}</span>
+                                <span>{{ t('actions.edit') }}</span>
                               </MenuItem>
                               <MenuItem key="del" class="flex items-center space-x-2 py-2 text-red-600">
                                 <Icon icon="icon-qingchu" class="text-red-600 mr-1" />

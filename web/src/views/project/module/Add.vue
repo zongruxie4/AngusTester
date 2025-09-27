@@ -161,7 +161,7 @@ const combinedOkButtonProps = computed<ButtonProps>(() => ({
 <template>
   <!-- Modal for adding new module -->
   <Modal
-    :title="t('module.addModuleTitle')"
+    :title="t('module.messages.addModuleTitle')"
     width="500px"
     :visible="props.visible"
     :okButtonProps="combinedOkButtonProps"
@@ -170,7 +170,7 @@ const combinedOkButtonProps = computed<ButtonProps>(() => ({
     <!-- Input field for module name -->
     <Input
       v-model:value="inputValue"
-      :placeholder="t('module.moduleNamePlaceholder')"
+      :placeholder="t('module.messages.moduleNamePlaceholder')"
       trim
       :allowClear="true"
       :maxlength="50"

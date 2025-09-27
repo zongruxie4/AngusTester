@@ -12,7 +12,7 @@ import { Icon, Modal } from '@xcan-angus/vue-ui';
 // Utilities and API
 import { modules } from '@/api/tester';
 import type { MoveModuleProps, ModuleItem } from './types';
-import {travelTreeData} from "@/utils/utils";
+import { travelTreeData } from '@/utils/utils';
 
 /**
  * Component for moving modules to different parent locations
@@ -210,7 +210,7 @@ onMounted(() => {
 <template>
   <!-- Modal for moving module to different parent -->
   <Modal
-    :title="t('module.moveModule')"
+    :title="t('module.actions.moveModule')"
     :okButtonProps="okButtonConfig"
     :visible="props.visible"
     @cancel="handleCancel"
@@ -252,7 +252,7 @@ onMounted(() => {
     </Tree>
 
     <div v-else class="text-center text-gray-500 py-8">
-      {{ t('module.noModulesAvailable') }}
+      {{ t('module.messages.noModulesAvailable') }}
     </div>
   </Modal>
 </template>
