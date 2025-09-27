@@ -41,9 +41,8 @@ export function useScriptSearch (userId: string) {
    * Load script type enum options
    */
   const loadEnum = () => {
-    const data = enumUtils.enumToMessages(ScriptType);
-    scriptTypeOpt.value = data.map(i => ({ name: i.message, key: i.value }))
-      .filter(i => i.key !== ScriptType.MOCK_APIS);
+    const data = enumUtils.enumToMessages(ScriptType, [ScriptType.MOCK_APIS]);
+    scriptTypeOpt.value = data.map(i => ({ name: i.message, key: i.value }));
   };
 
   /**
