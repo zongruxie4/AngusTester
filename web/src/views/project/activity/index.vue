@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Image, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/infra';
+import { duration, PageQuery } from '@xcan-angus/infra';
 
 import SearchPanel from '@/views/project/activity/SearchPanel.vue';
 import Dashboard from '@/components/dashboard/Dashboard.vue';
@@ -11,7 +11,6 @@ import Dashboard from '@/components/dashboard/Dashboard.vue';
 import { useActivityData } from './composables/useActivityData';
 import { useTableColumns } from './composables/useTableColumns';
 import { useDashboardConfig } from './composables/useDashboardConfig';
-import type { SearchPanelChangeData } from './types';
 
 // Internationalization
 const { t } = useI18n();
@@ -47,7 +46,7 @@ const toggleCount = () => {
  *
  * @param data - Search panel change data
  */
-const handleSearchChange = (data: SearchPanelChangeData) => {
+const handleSearchChange = (data: PageQuery) => {
   updateSearchParams(data);
 };
 

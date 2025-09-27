@@ -13,9 +13,6 @@ export { useDashboardConfig } from './useDashboardConfig';
 // Re-export types for convenience
 export type {
   Activity,
-  ActivityApiParams,
   ActivityListResponse,
-  SearchFilter,
-  SearchPanelChangeData,
   QuickSearchItem
 } from '../types';

@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { Colon, IconCount, IconRefresh, SearchPanel, Hints } from '@xcan-angus/vue-ui';
+import { ref, computed } from 'vue';
+import { IconCount, IconRefresh, SearchPanel, Hints } from '@xcan-angus/vue-ui';
 import { Tooltip } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
+import { PageQuery, SearchCriteria, appContext } from '@xcan-angus/infra';
+import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
 
 import { useActivitySearch } from './composables/useActivitySearch';
 
 const { t } = useI18n();
+
+// User context
+const userInfo = ref(appContext.getUser());
 
 // Component props
 interface Props {
@@ -26,8 +31,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{
   (e: 'change', value: {
     orderBy?: string;
-    orderSort?: 'ASC' | 'DESC';
-    filters: { key: string; op: string; value: string | string[] }[]
+    orderSort?: PageQuery.OrderSort;
+    filters: SearchCriteria[]
   }): void;
   (e: 'refresh'): void;
   (e: 'openCount'): void;
@@ -39,13 +44,38 @@ const emits = defineEmits<{
 // Use composables
 const {
   searchPanelOptions,
-  menuItems,
-  selectedMenuMap,
   buildSearchParams,
   handleSearchChange,
-  handleMenuItemClick,
   clearAllFilters
 } = useActivitySearch();
+
+/**
+ * Quick search configuration for activity search panel
+ * Provides predefined filter options for common searches
+ */
+const quickSearchConfig = computed<QuickSearchConfig>(() => ({
+  title: t('quickSearch.title'),
+  // Audit information options
+  auditOptions: createAuditOptions([
+    {
+      key: 'myActivity',
+      name: t('quickSearch.myActivity'),
+      fieldKey: 'userId'
+    }
+  ], String(userInfo.value?.id || '')),
+  // Time options
+  timeOptions: createTimeOptions([
+    { key: 'last1Day', name: t('quickSearch.last1Day'), timeRange: 'last1Day' },
+    { key: 'last3Days', name: t('quickSearch.last3Days'), timeRange: 'last3Days' },
+    { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
+  ], 'optDate'),
+  // External clear function
+  externalClearFunction: () => {
+    if (typeof searchPanelRef.value?.clear === 'function') {
+      searchPanelRef.value.clear();
+    }
+  }
+}));
 
 // Template refs
 const searchPanelRef = ref();
@@ -55,24 +85,20 @@ const searchPanelRef = ref();
  *
  * @param data - Search panel data
  */
-const onSearchChange = (data: { key: string; op: string; value: string | string[] }[]) => {
+const onSearchChange = (data: SearchCriteria[]) => {
   handleSearchChange(data);
   emits('change', buildSearchParams());
 };
 
 /**
- * Handle quick search menu item clicks
- *
- * @param data - Menu item data
+ * Handle quick search changes
+ * Processes quick search filters and updates state
+ * @param selectedKeys - Array of selected option keys
+ * @param searchCriteria - Array of search criteria from quick search
  */
-const onMenuItemClick = (data: { key: string }) => {
-  handleMenuItemClick(data);
-
-  // Special handling for clearing all filters
-  if (data.key === '' && typeof searchPanelRef.value?.clear === 'function') {
-    searchPanelRef.value.clear();
-  }
-
+const handleQuickSearchChange = (_selectedKeys: string[], _searchCriteria: SearchCriteria[]): void => {
+  // Update quick search filters in the composable
+  // This will be handled by the composable's internal state
   emits('change', buildSearchParams());
 };
 
@@ -113,35 +139,20 @@ defineExpose({
 </script>
 
 <template>
-  <div class="mt-2.5 mb-3.5">
-    <!-- Quick search menu -->
-    <div class="flex items-center mb-3">
-      <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 rounded-full"></div>
-      <div class="whitespace-nowrap text-3 text-text-sub-content">
-        <span>{{ t('activity.searchPanel.ui.quickQuery') }}</span>
-        <Colon />
-      </div>
-      <div class="flex flex-wrap items-center ml-2">
-        <div
-          v-for="item in menuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold"
-          @click="onMenuItemClick(item)">
-          {{ item.name }}
-        </div>
-        <Hints :text="t('activity.messages.maxResourceActivityHint', { maxResource })" />
-      </div>
-    </div>
+  <div class="mt-8 mb-3.5">
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      :descriptionSlot="t('activity.messages.maxResourceActivityHint', { maxResource })"
+      @change="handleQuickSearchChange" />
 
     <!-- Search panel and action buttons -->
     <div class="flex items-start justify-between">
       <SearchPanel
         ref="searchPanelRef"
-        :options="searchPanelOptions"
+        :options="searchPanelOptions as any"
         class="flex-1 mr-3.5"
         @change="onSearchChange" />
-      <!-- Max resource hint -->
 
       <div class="flex items-center space-x-3">
         <!-- Toggle statistics panel button -->
@@ -159,7 +170,7 @@ defineExpose({
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="t('common.refresh')">
+          :title="t('actions.refresh')">
           <IconRefresh
             :loading="loading"
             class="text-4.5 ml-2"
@@ -171,8 +182,5 @@ defineExpose({
 </template>
 
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 </style>

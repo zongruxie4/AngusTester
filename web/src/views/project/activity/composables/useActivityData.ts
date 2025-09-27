@@ -3,7 +3,8 @@ import { activity } from '@/api/tester';
 import { setting } from '@/api/gm';
 import { SETTING_KEYS } from '@/utils/constant';
 import DOMPurify from 'dompurify';
-import type { Activity, ActivityApiParams, ActivityListResponse } from '../types';
+import { PageQuery } from '@xcan-angus/infra';
+import type { Activity, ActivityListResponse } from '../types';
 
 /**
  * Composable for managing activity data operations
@@ -20,7 +21,7 @@ export function useActivityData () {
   const maxResource = ref('0');
 
   // Pagination state
-  const params = ref<ActivityApiParams>({
+  const params = ref<PageQuery>({
     pageNo: 1,
     pageSize: 10,
     filters: []
@@ -94,7 +95,7 @@ export function useActivityData () {
   const handleTableChange = (
     paginationInfo: { current?: number; pageSize?: number },
     _filters: any,
-    sorter: { orderBy?: string; orderSort?: 'ASC' | 'DESC' }
+    sorter: { orderBy?: string; orderSort?: PageQuery.OrderSort }
   ): void => {
     params.value.pageNo = paginationInfo.current || 1;
     params.value.pageSize = paginationInfo.pageSize || 10;
@@ -117,11 +118,7 @@ export function useActivityData () {
    *
    * @param searchParams - New search parameters
    */
-  const updateSearchParams = (searchParams: {
-    orderBy?: string;
-    orderSort?: 'ASC' | 'DESC';
-    filters: Array<{key: string; op: string; value: string|string[]}>
-  }): void => {
+  const updateSearchParams = (searchParams: PageQuery): void => {
     params.value.pageNo = 1;
     params.value.filters = searchParams.filters;
     params.value.orderBy = searchParams.orderBy;

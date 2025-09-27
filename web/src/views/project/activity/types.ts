@@ -30,26 +30,6 @@ export interface Activity {
 }
 
 /**
- * API parameters for activity operations
- */
-export interface ActivityApiParams {
-  /** Page number for pagination */
-  pageNo: number
-  /** Number of items per page */
-  pageSize: number
-  /** Optional search filters */
-  filters?: Array<{
-    key: string
-    op: string
-    value: string | string[]
-  }>
-  /** Field to order by */
-  orderBy?: string
-  /** Sort order (ASC or DESC) */
-  orderSort?: 'ASC' | 'DESC'
-}
-
-/**
  * Response structure for activity list
  */
 export interface ActivityListResponse {
@@ -60,37 +40,13 @@ export interface ActivityListResponse {
 }
 
 /**
- * Search panel filter item
- */
-export interface SearchFilter {
-  /** Filter key */
-  key: string
-  /** Filter operation */
-  op: string
-  /** Filter value */
-  value: string | string[]
-}
-
-/**
- * Search panel change event data
- */
-export interface SearchPanelChangeData {
-  /** Field to order by */
-  orderBy?: string
-  /** Sort order */
-  orderSort?: 'ASC' | 'DESC'
-  /** Array of filters */
-  filters: SearchFilter[]
-}
-
-/**
  * Quick search menu item
  */
 export interface QuickSearchItem {
   /** Unique key for the menu item */
   key: string
   /** Display name */
-  name: string
+  name?: string
 }
 
 /**
