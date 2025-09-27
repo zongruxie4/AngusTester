@@ -69,11 +69,10 @@ const loadTimeRangeOptions = () => {
   timeRangeOptions.value = enumData.map(item => ({ ...item, label: item.message }));
 };
 
-
 /**
  * Load Data source options for analysis configuration.
  */
- const loadAnalysisDataSourceOptions = () => {
+const loadAnalysisDataSourceOptions = () => {
   dataSourceOptions.value = enumOptionUtils.loadEnumAsOptions(AnalysisDataSource);
 };
 
@@ -282,7 +281,7 @@ onMounted(async () => {
       </Button>
       <Button size="small" @click="handleCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5 mr-1" />
-        {{ t('common.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
     </div>
 

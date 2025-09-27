@@ -2,13 +2,11 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
-import dayjs, { Dayjs } from 'dayjs';
-import { cloneDeep, isEqual } from 'lodash-es';
+import { DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
+import { cloneDeep } from 'lodash-es';
 import { PageQuery, SearchCriteria, XCanDexie } from '@xcan-angus/infra';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
-
-import { MenuItem } from '@/views/task/analysis/list/types';
+import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import dayjs from 'dayjs';
 
 // Type Definitions
 type Props = {
@@ -60,19 +58,42 @@ let searchParametersDatabase: XCanDexie<{ id: string; data: any; }>;
 const searchPanelComponentRef = ref();
 
 /**
- * Map storing quick date search converted time ranges
- */
-const quickDateSearchMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
-
-/**
- * Map storing selected menu items for quick search
- */
-const selectedQuickSearchItems = ref(new Map<string, Omit<MenuItem, 'name'>>());
-
-/**
  * Current search filter criteria
  */
 const currentSearchFilters = ref<SearchCriteria[]>([]);
+
+/**
+ * Quick search configuration for task analysis search panel
+ * Provides predefined filter options for common searches
+ */
+const quickSearchConfig = computed<QuickSearchConfig>(() => ({
+  title: t('quickSearch.title'),
+  // Audit information options
+  auditOptions: createAuditOptions([
+    {
+      key: 'createdBy',
+      name: t('quickSearch.createdByMe'),
+      fieldKey: 'createdBy'
+    },
+    {
+      key: 'lastModifiedBy',
+      name: t('quickSearch.modifiedByMe'),
+      fieldKey: 'lastModifiedBy'
+    }
+  ], String(props.userInfo?.id || '')),
+  // Time options
+  timeOptions: createTimeOptions([
+    { key: 'last1Day', name: t('quickSearch.last1Day'), timeRange: 'last1Day' },
+    { key: 'last3Days', name: t('quickSearch.last3Days'), timeRange: 'last3Days' },
+    { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
+  ], 'createdDate'),
+  // External clear function
+  externalClearFunction: () => {
+    if (typeof searchPanelComponentRef.value?.clear === 'function') {
+      searchPanelComponentRef.value.clear();
+    }
+  }
+}));
 
 /**
  * Handle sorting configuration changes
@@ -81,98 +102,6 @@ const currentSearchFilters = ref<SearchCriteria[]>([]);
 const handleSortingChange = (data: { orderBy: 'createdByName' | 'lastModifiedByName' ; orderSort: PageQuery.OrderSort; }) => {
   emit('update:orderBy', data.orderBy);
   emit('update:orderSort', data.orderSort);
-};
-
-/**
- * Handle quick search menu item click events
- * @param {MenuItem} menuItem - The clicked menu item
- */
-const handleQuickSearchMenuItemClick = (menuItem: MenuItem) => {
-  const itemKey = menuItem.key;
-
-  // Handle deselection if item is already selected
-  if (selectedQuickSearchItems.value.has(itemKey)) {
-    // Do nothing if "All" button is clicked again
-    if (itemKey === 'none') {
-      return;
-    }
-
-    // Remove the selected item
-    selectedQuickSearchItems.value.delete(itemKey);
-
-    // Clear corresponding search panel configurations
-    if (itemKey === 'createdBy') {
-      clearSearchPanelConfig(['createdBy']);
-      return;
-    }
-
-    if (itemKey === 'lastModifiedBy') {
-      clearSearchPanelConfig(['lastModifiedBy']);
-      return;
-    }
-
-    if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(itemKey)) {
-      quickDateSearchMap.value.clear();
-      clearSearchPanelConfig(['createdDate']);
-    }
-    return;
-  }
-
-  // Handle "All" selection - clear all other selections
-  if (itemKey === 'none') {
-    selectedQuickSearchItems.value.clear();
-    selectedQuickSearchItems.value.set('none', { key: 'none' });
-
-    // Clear search panel
-    if (typeof searchPanelComponentRef.value?.clear === 'function') {
-      searchPanelComponentRef.value.clear();
-    }
-    return;
-  }
-
-  // Handle other menu item selections
-  if (itemKey === 'createdBy') {
-    setSearchPanelConfig([{ valueKey: 'createdBy', value: currentUserId.value }]);
-    return;
-  }
-
-  if (itemKey === 'lastModifiedBy') {
-    setSearchPanelConfig([{ valueKey: 'lastModifiedBy', value: currentUserId.value }]);
-    return;
-  }
-
-  if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(itemKey)) {
-    quickDateSearchMap.value.clear();
-    quickDateSearchMap.value.set(itemKey, formatDateRange(itemKey));
-    setSearchPanelConfig([{ valueKey: 'createdDate', value: quickDateSearchMap.value.get(itemKey) }]);
-  }
-};
-
-/**
- * Format date range based on quick search key
- * @param {string} key - The quick search key
- * @returns {string[]} Formatted date range array
- */
-const formatDateRange = (key: MenuItem['key']) => {
-  let startDate: Dayjs | undefined;
-  let endDate: Dayjs | undefined;
-
-  if (key === 'lastDay') {
-    startDate = dayjs().startOf('date');
-    endDate = dayjs();
-  }
-
-  if (key === 'lastThreeDays') {
-    startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  if (key === 'lastWeek') {
-    startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
 };
 
 /**
@@ -198,16 +127,23 @@ const handleRefreshClick = () => {
 const handleSearchPanelChange = (
   data: SearchCriteria[],
   _headers?: { [key: string]: string },
-  key?: string
+  _key?: string
 ) => {
   currentSearchFilters.value = data;
+};
 
-  // Clear quick date search selections when manual date selection is made
-  if (key === 'createdDate') {
-    selectedQuickSearchItems.value.delete('lastDay');
-    selectedQuickSearchItems.value.delete('lastThreeDays');
-    selectedQuickSearchItems.value.delete('lastWeek');
-  }
+/**
+ * Handle quick search changes
+ * Processes quick search filters and updates state
+ * @param selectedKeys - Array of selected option keys
+ * @param searchCriteria - Array of search criteria from quick search
+ */
+const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+  // Update current search filters with quick search criteria
+  currentSearchFilters.value = searchCriteria;
+
+  // Emit change event with current filters
+  emit('change', buildSearchCriteria());
 };
 
 /**
@@ -233,12 +169,10 @@ const initializeSearchPanel = async () => {
 
   if (databaseData) {
     const searchPanelValueMap: { [key: string]: string | string[] } = {};
-    const nonSearchPanelValueMap: { [key: string]: string | string[] } = {};
 
     // Process saved filters
     if (Object.prototype.hasOwnProperty.call(databaseData, 'filters')) {
       currentSearchFilters.value = databaseData.filters || [];
-      const nonSearchPanelKeys = ['lastModifiedBy'];
       const dateTimeKeys = ['createdDate'];
       const dateTimeValueMap: { [key: string]: string[] } = {};
 
@@ -249,8 +183,6 @@ const initializeSearchPanel = async () => {
           } else {
             dateTimeValueMap[key] = [value as string];
           }
-        } else if (key && nonSearchPanelKeys.includes(key)) {
-          nonSearchPanelValueMap[key] = value;
         } else if (key) {
           searchPanelValueMap[key] = value;
         }
@@ -276,17 +208,6 @@ const initializeSearchPanel = async () => {
       });
     } else {
       currentSearchFilters.value = [];
-    }
-
-    // Set up non-search panel quick filters
-    const nonSearchPanelKeys = Object.keys(nonSearchPanelValueMap);
-    if (nonSearchPanelKeys.length) {
-      nonSearchPanelKeys.forEach(key => {
-        selectedQuickSearchItems.value.set(key as any, { key: key as any });
-      });
-      if (!Object.keys(searchPanelValueMap).length) {
-        emit('change', currentSearchFilters.value);
-      }
     }
 
     // Configure search panel with saved values
@@ -317,27 +238,6 @@ const configureSearchPanelWithValues = (valueMap: { [key: string]: string | stri
 };
 
 /**
- * Clear search panel configuration for specified keys
- * @param {string[]} keys - Keys to clear
- */
-const clearSearchPanelConfig = (keys: string[]) => {
-  if (typeof searchPanelComponentRef.value?.setConfigs === 'function') {
-    const configs = keys.map(key => ({ valueKey: key, value: undefined }));
-    searchPanelComponentRef.value.setConfigs(configs);
-  }
-};
-
-/**
- * Set search panel configuration
- * @param {object[]} configs - Configuration objects
- */
-const setSearchPanelConfig = (configs: { valueKey: string; value: any }[]) => {
-  if (typeof searchPanelComponentRef.value?.setConfigs === 'function') {
-    searchPanelComponentRef.value.setConfigs(configs);
-  }
-};
-
-/**
  * Reset search panel configuration to default state
  */
 const resetSearchPanelConfiguration = () => {
@@ -354,8 +254,6 @@ const resetSearchPanelConfiguration = () => {
  * Reset all search states to default values
  */
 const resetAllSearchStates = () => {
-  quickDateSearchMap.value.clear();
-  selectedQuickSearchItems.value.clear();
   currentSearchFilters.value = [];
 };
 
@@ -365,8 +263,8 @@ onMounted(async () => {
   watch([
     () => databaseParamsKey.value,
     () => databaseCountKey.value
-  ], ([key1, key2, key3]) => {
-    if (!key1 || !key2 || !key3) {
+  ], ([key1, key2]) => {
+    if (!key1 || !key2) {
       return;
     }
     initializeSearchPanel();
@@ -374,26 +272,9 @@ onMounted(async () => {
 
   // Watch for search criteria changes and update UI accordingly
   watch(
-    [
-      () => currentSearchFilters.value,
-      () => selectedQuickSearchItems.value
-    ], () => {
-      const currentFilters = currentSearchFilters.value;
-
-      // Check if any filters are active
-      const hasActiveFilters = currentFilters.length;
-
-      if (!hasActiveFilters) {
-        // No active filters, show "All" option
-        selectedQuickSearchItems.value.clear();
-        selectedQuickSearchItems.value.set('none', { key: 'none' });
-        emit('change', buildSearchCriteria());
-      } else {
-        // Active filters, update quick search selections
-        updateQuickSearchSelections(currentFilters);
-        emit('change', buildSearchCriteria());
-      }
-
+    () => currentSearchFilters.value,
+    () => {
+      emit('change', buildSearchCriteria());
       // Save current state to database
       saveSearchStateToDatabase();
     }, { immediate: false, deep: false });
@@ -436,52 +317,6 @@ const databaseCountKey = computed(() => {
 });
 
 /**
- * Update quick search selections based on current filters
- * @param {SearchCriteria[]} filters - Current search filters
- */
-const updateQuickSearchSelections = (filters: SearchCriteria[]) => {
-  // Remove "All" option when filters are active
-  selectedQuickSearchItems.value.delete('none');
-
-  // Update created by selection
-  const createdBy = filters.find(item => item.key === 'createdBy')?.value;
-  if (createdBy && createdBy === currentUserId.value) {
-    selectedQuickSearchItems.value.set('createdBy', { key: 'createdBy' });
-  } else {
-    selectedQuickSearchItems.value.delete('createdBy');
-  }
-
-  // Update last modified by selection
-  const lastModifiedBy = filters.find(item => item.key === 'lastModifiedBy')?.value;
-  if (lastModifiedBy && lastModifiedBy === currentUserId.value) {
-    selectedQuickSearchItems.value.set('lastModifiedBy', { key: 'lastModifiedBy' });
-  } else {
-    selectedQuickSearchItems.value.delete('lastModifiedBy');
-  }
-
-  // Update date range selections
-  if (quickDateSearchMap.value.size > 0) {
-    selectedQuickSearchItems.value.delete('lastDay');
-    selectedQuickSearchItems.value.delete('lastThreeDays');
-    selectedQuickSearchItems.value.delete('lastWeek');
-
-    const createdDateStart = filters.find(
-      item => item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.GreaterThanEqual)?.value;
-    const createdDateEnd = filters.find(
-      item => item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.LessThanEqual)?.value;
-    const dateString = [createdDateStart, createdDateEnd];
-
-    const entries = quickDateSearchMap.value.entries();
-    for (const [key, value] of entries) {
-      if (isEqual(value, dateString)) {
-        selectedQuickSearchItems.value.set(key, { key });
-      }
-    }
-    quickDateSearchMap.value.clear();
-  }
-};
-
-/**
  * Save current search state to database
  */
 const saveSearchStateToDatabase = () => {
@@ -504,36 +339,6 @@ const saveSearchStateToDatabase = () => {
     }
   }
 };
-
-/**
- * Quick search menu items configuration
- */
-const quickSearchMenuItems: MenuItem[] = [
-  {
-    key: 'none',
-    name: t('common.all')
-  },
-  {
-    key: 'createdBy',
-    name: t('quickSearch.createdByMe')
-  },
-  {
-    key: 'lastModifiedBy',
-    name: t('quickSearch.modifiedByMe')
-  },
-  {
-    key: 'lastDay',
-    name: t('quickSearch.last1Day')
-  },
-  {
-    key: 'lastThreeDays',
-    name: t('quickSearch.last3Days')
-  },
-  {
-    key: 'lastWeek',
-    name: t('quickSearch.last7Days')
-  }
-];
 
 /**
  * Search panel options configuration
@@ -581,25 +386,10 @@ const sortMenuItems = [
 </script>
 <template>
   <div class="text-3 leading-5">
-    <div class="flex items-start justify-between mb-1.5">
-      <div class="flex items-start transform-gpu translate-y-0.5">
-        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
-        <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>{{ t('quickSearch.title') }}</span>
-          <Colon />
-        </div>
-        <div class="flex  flex-wrap ml-2">
-          <div
-            v-for="item in quickSearchMenuItems"
-            :key="item.key"
-            :class="{ 'active-key': selectedQuickSearchItems.has(item.key) }"
-            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
-            @click="handleQuickSearchMenuItemClick(item)">
-            {{ item.name }}
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
 
     <div class="flex justify-between mt-3">
       <SearchPanel
@@ -638,7 +428,7 @@ const sortMenuItems = [
           size="small"
           @click="handleRefreshClick">
           <IconRefresh class="text-4 flex-shrink-0" />
-          {{ t('common.refresh') }}
+          {{ t('actions.refresh') }}
         </Button>
       </div>
     </div>
@@ -646,10 +436,7 @@ const sortMenuItems = [
 </template>
 
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 
 .ant-tag {
   background-color: #fff;
