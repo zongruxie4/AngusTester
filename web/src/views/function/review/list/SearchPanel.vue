@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
-import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
-import { EnumMessage, PageQuery, SearchCriteria, enumUtils, appContext } from '@xcan-angus/infra';
+import { DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
+import { PageQuery, SearchCriteria, enumUtils, appContext } from '@xcan-angus/infra';
 import { FuncPlanStatus } from '@/enums/enums';
-import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { LoadingProps } from '@/types/types';
+import { QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig } from '@/components/quickSearch';
 
 // Props and Component Setup
 const props = withDefaults(defineProps<LoadingProps>(), {
@@ -28,8 +27,7 @@ const emits = defineEmits<{
 // State Management
 const currentUser = ref(appContext.getUser());
 const searchPanelRef = ref();
-const selectedMenuMap = ref<{[key: string]: boolean}>({});
-const planStatusOptions = ref<EnumMessage<FuncPlanStatus>[]>([]);
+const planStatusOptions = ref<{name: string; key: string}[]>([]);
 
 // Search State
 const searchFilters = ref<SearchCriteria[]>([]);
@@ -38,7 +36,53 @@ const associatedFilters = ref<SearchCriteria[]>([]);
 const currentOrderBy = ref();
 const currentOrderSort = ref();
 const associatedKeys = ['ownerId'];
-const timeRangeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
+
+/**
+ * Quick search configuration for review search panel
+ * Provides predefined filter options for common searches
+ */
+const quickSearchConfig = computed<QuickSearchConfig>(() => ({
+  title: t('quickSearch.title'),
+  // Audit information options
+  auditOptions: createAuditOptions([
+    {
+      key: 'myResponsible',
+      name: t('quickSearch.myResponsible'),
+      fieldKey: 'ownerId'
+    },
+    {
+      key: 'myCreated',
+      name: t('quickSearch.createdByMe'),
+      fieldKey: 'createdBy'
+    },
+    {
+      key: 'myModified',
+      name: t('quickSearch.modifiedByMe'),
+      fieldKey: 'lastModifiedBy'
+    }
+  ], String(currentUser.value?.id || '')),
+  // Enum status options for plan status
+  enumOptions: createEnumOptions(
+    planStatusOptions.value.map(option => ({
+      key: option.key,
+      name: option.name,
+      fieldKey: 'status',
+      fieldValue: option.key
+    }))
+  ),
+  // Time options
+  timeOptions: createTimeOptions([
+    { key: 'last1Day', name: t('quickSearch.last1Day'), timeRange: 'last1Day' },
+    { key: 'last3Days', name: t('quickSearch.last3Days'), timeRange: 'last3Days' },
+    { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
+  ], 'createdDate'),
+  // External clear function
+  externalClearFunction: () => {
+    if (typeof searchPanelRef.value?.clear === 'function') {
+      searchPanelRef.value.clear();
+    }
+  }
+}));
 
 /**
  * Loads the plan status enum options for filtering
@@ -103,72 +147,6 @@ const sortMenuItems: {
   }
 ];
 
-// Computed Properties
-const quickMenuItems = computed(() => [
-  {
-    key: '',
-    name: t('common.all')
-  },
-  {
-    key: 'ownerId',
-    name: t('quickSearch.myResponsible')
-  },
-  {
-    key: 'createdBy',
-    name: t('caseReview.list.myCreated')
-  },
-  {
-    key: 'lastModifiedBy',
-    name: t('caseReview.list.myModified')
-  },
-  ...planStatusOptions.value,
-  {
-    key: 'lastDay',
-    name: t('quickSearch.last1Day')
-  },
-  {
-    key: 'lastThreeDays',
-    name: t('caseReview.list.lastThreeDays')
-  },
-  {
-    key: 'lastWeek',
-    name: t('caseReview.list.lastWeek')
-  }
-]);
-
-/**
- * Formats date range strings for time-based filtering
- * @param timeRangeKey - The time range key to format
- * @returns Array of search criteria for date filtering
- */
-const formatDateRange = (timeRangeKey: string) => {
-  let startDate: Dayjs | undefined;
-  let endDate: Dayjs | undefined;
-
-  if (timeRangeKey === 'lastDay') {
-    startDate = dayjs().startOf('date');
-    endDate = dayjs();
-  }
-
-  if (timeRangeKey === 'lastThreeDays') {
-    startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  if (timeRangeKey === 'lastWeek') {
-    startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  return [
-    startDate
-      ? { value: startDate.format(DATE_TIME_FORMAT), op: SearchCriteria.OpEnum.GreaterThanEqual, key: 'createdDate' }
-      : '',
-    endDate
-      ? { value: endDate.format(DATE_TIME_FORMAT), op: SearchCriteria.OpEnum.LessThanEqual, key: 'createdDate' }
-      : ''].filter(Boolean);
-};
-
 /**
  * Gets the current search parameters
  * @returns Object containing all search parameters
@@ -190,22 +168,28 @@ const getSearchParameters = () => {
  * @param searchCriteria - The new search criteria
  */
 const handleSearchChange = (searchCriteria: SearchCriteria[]) => {
-  searchFilters.value = searchCriteria.filter(item => !associatedKeys.includes(item.key));
+  // Merge search panel filters with quick search filters
+  const quickSearchFields = ['ownerId', 'createdBy', 'lastModifiedBy', 'status', 'createdDate'];
+  const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
+  const searchPanelFilters = searchCriteria.filter(f => f.key && !quickSearchFields.includes(f.key as string));
+
+  searchFilters.value = [...currentQuickSearchFilters, ...searchPanelFilters];
   associatedFilters.value = searchCriteria.filter(item => associatedKeys.includes(item.key));
 
-  if (!associatedFilters.value.length) {
-    associatedKeys.forEach(key => delete selectedMenuMap.value[key]);
-  } else {
-    associatedKeys.forEach(key => {
-      if (key === 'ownerId') {
-        const filterItem = associatedFilters.value.find(item => item.key === key);
-        if (!filterItem || filterItem.value !== currentUser.value?.id) {
-          delete selectedMenuMap.value[key];
-        }
-      }
-    });
-  }
+  emits('change', getSearchParameters());
+};
 
+/**
+ * Handle quick search changes
+ * Processes quick search filters and updates state
+ * @param selectedKeys - Array of selected option keys
+ * @param searchCriteria - Array of search criteria from quick search
+ */
+const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+  // Update quick search filters
+  quickSearchFilters.value = searchCriteria;
+
+  // Emit change event with current params
   emits('change', getSearchParameters());
 };
 
@@ -217,87 +201,6 @@ const handleSortChange = (sortData) => {
   currentOrderBy.value = sortData.orderBy;
   currentOrderSort.value = sortData.orderSort;
   emits('change', getSearchParameters());
-};
-
-/**
- * Handles quick menu item clicks for filtering
- * @param menuItem - The clicked menu item data
- */
-const handleQuickMenuItemClick = (menuItem) => {
-  const itemKey = menuItem.key;
-  const statusTypeKeys = planStatusOptions.value.map(option => option.key);
-  let shouldTriggerSearchChange = false;
-
-  if (selectedMenuMap.value[itemKey]) {
-    delete selectedMenuMap.value[itemKey];
-    if (timeRangeKeys.includes(itemKey) && associatedKeys.includes('createdDate')) {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'createdDate', value: undefined }
-      ]);
-      shouldTriggerSearchChange = true;
-    } else if (associatedKeys.includes(itemKey)) {
-      searchPanelRef.value.setConfigs([
-        { valueKey: itemKey, value: undefined }
-      ]);
-      shouldTriggerSearchChange = true;
-    }
-  } else {
-    if (itemKey === '') {
-      selectedMenuMap.value = { '': true };
-      quickSearchFilters.value = [];
-      if (typeof searchPanelRef.value?.clear === 'function') {
-        searchPanelRef.value.clear();
-        shouldTriggerSearchChange = true;
-      }
-    } else {
-      delete selectedMenuMap.value[''];
-    }
-
-    if (timeRangeKeys.includes(itemKey)) {
-      timeRangeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
-      selectedMenuMap.value[itemKey] = true;
-    } else if (statusTypeKeys.includes(itemKey)) {
-      statusTypeKeys.forEach(statusKey => delete selectedMenuMap.value[statusKey]);
-      selectedMenuMap.value[itemKey] = true;
-    } else {
-      selectedMenuMap.value[itemKey] = true;
-    }
-  }
-
-  const currentUserId = currentUser.value?.id;
-  let timeRangeFilters: {key: string; op: string; value: string}[] = [];
-  const associatedFiltersInQuick = [];
-
-  quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
-    if (key === '') {
-      return undefined;
-    } else if (statusTypeKeys.includes(key)) {
-      return { key: 'status', op: SearchCriteria.OpEnum.Equal, value: key };
-    } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-      timeRangeFilters = formatDateRange(key);
-      return undefined;
-    } else if (associatedKeys.includes(key)) {
-      if (key === 'ownerId') {
-        associatedFiltersInQuick.push({ valueKey: key, value: currentUserId });
-      }
-      return undefined;
-    } else {
-      return { key, op: SearchCriteria.OpEnum.Equal, value: currentUserId };
-    }
-  }).filter(Boolean);
-
-  quickSearchFilters.value.push(...timeRangeFilters);
-
-  if (associatedFiltersInQuick.length) {
-    searchPanelRef.value.setConfigs([
-      ...associatedFiltersInQuick
-    ]);
-    shouldTriggerSearchChange = true;
-  }
-
-  if (!shouldTriggerSearchChange) {
-    emits('change', getSearchParameters());
-  }
 };
 
 /**
@@ -314,32 +217,15 @@ onMounted(() => {
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex items-center mb-3">
-      <div class="flex items-start transform-gpu translate-y-0.5">
-        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
-
-        <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>{{ t('caseReview.list.quickQuery') }}</span>
-          <Colon />
-        </div>
-
-        <div class="flex  flex-wrap ml-2">
-          <div
-            v-for="item in quickMenuItems"
-            :key="item.key"
-            :class="{ 'active-key': selectedMenuMap[item.key] }"
-            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
-            @click="handleQuickMenuItemClick(item)">
-            {{ item.name }}
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
 
     <div class="flex items-start justify-between ">
       <SearchPanel
         ref="searchPanelRef"
-        :options="searchPanelOptions"
+        :options="searchPanelOptions as any"
         class="flex-1 mr-3.5"
         @change="handleSearchChange" />
 
@@ -372,7 +258,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{ t('common.refresh') }}</span>
+              <span class="ml-1">{{ t('actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>
@@ -381,8 +267,5 @@ onMounted(() => {
   </div>
 </template>
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 </style>

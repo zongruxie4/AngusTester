@@ -160,7 +160,7 @@ onMounted(() => {
           <Button
             size="middle"
             @click="$emit('cancel')">
-            {{ t('common.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
           <Button
             :loading="loading"

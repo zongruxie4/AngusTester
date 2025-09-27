@@ -106,7 +106,7 @@ const caseId = computed(() => {
         <Button
           size="small"
           type="link"
-          @click="cancel">{{ t('common.cancel') }}</Button>
+          @click="cancel">{{ t('actions.cancel') }}</Button>
         <Button
           size="small"
           type="link"

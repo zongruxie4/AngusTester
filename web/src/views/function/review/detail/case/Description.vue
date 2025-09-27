@@ -75,7 +75,7 @@ const confirm = async () => {
       </div>
       <div v-show="isEditDescription" class="flex justify-end">
           <Button size="small" type="link" @click="cancel">
-              {{ t('common.cancel') }}
+              {{ t('actions.cancel') }}
           </Button>
           <Button
               :loading="saveLoading"

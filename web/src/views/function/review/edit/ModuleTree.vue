@@ -217,7 +217,7 @@ defineExpose({
             size="small"
             class="px-0 py-0 mr-1"
             @click="cancelModuleEditing">
-            {{ t('common.cancel') }}
+            {{ t('actions.cancel') }}
           </Button>
         </div>
 

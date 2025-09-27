@@ -719,7 +719,7 @@ onUnmounted(() => {
                         :disabled="!permissions.includes(FuncPlanPermission.REVIEW)"
                         @click.stop="delCase(record)">
                         <Icon icon="icon-qingchu" class="mr-1" />
-                        {{ t('common.cancel') }}
+                        {{ t('actions.cancel') }}
                       </Button>
 
                       <Button
