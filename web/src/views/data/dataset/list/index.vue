@@ -243,7 +243,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
                   class="flex items-center px-0"
                   @click="() => toEditDataset(record.id)">
                   <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
-                  <span>{{ t('common.edit') }}</span>
+                  <span>{{ t('actions.edit') }}</span>
                 </Button>
 
                 <Button

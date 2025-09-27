@@ -1,25 +1,18 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
-import { Colon, Dropdown, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dropdown, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { useRouter } from 'vue-router';
 import { Button, Tooltip } from 'ant-design-vue';
-import { appContext } from '@xcan-angus/infra';
+import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { LoadingProps } from '@/types/types';
+import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
 
 const { t } = useI18n();
 
-// Component props
-interface Props {
-  /** Loading state */
-  loading: boolean;
-  /** Number of selected items in batch mode */
-  selectedNum?: number;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  loading: false
+const props = withDefaults(defineProps<LoadingProps & { selectedNum?: number }>(), {
+  loading: false,
+  selectedNum: 0
 });
 
 const router = useRouter();
@@ -29,8 +22,8 @@ const router = useRouter();
 const emits = defineEmits<{
   (e: 'change', value: {
     orderBy?: string;
-    orderSort?: 'ASC'|'DESC';
-    filters: {key: string; op: string; value: string|string[]}[];
+    orderSort?: PageQuery.OrderSort;
+    filters: SearchCriteria[];
   }): void;
   (e: 'refresh'): void;
   (e: 'toBatchDelete'): void;
@@ -43,7 +36,6 @@ const emits = defineEmits<{
 // Reactive state
 const userInfo = ref(appContext.getUser());
 const searchPanelRef = ref();
-const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
 // Dropdown menu items
 const buttonDropdownMenuItems = [
@@ -83,71 +75,46 @@ const searchPanelOptions = [
   }
 ];
 
-// Menu items
-const menuItems = computed(() => [
-  {
-    key: '',
-    name: t('common.all')
-  },
-  {
-    key: 'createdBy',
-    name: t('dataset.listSearchPanel.menuItems.myCreated')
-  },
-  {
-    key: 'lastModifiedBy',
-    name: t('dataset.listSearchPanel.menuItems.myModified')
-  },
-  {
-    key: 'lastDay',
-    name: t('quickSearch.last1Day')
-  },
-  {
-    key: 'lastThreeDays',
-    name: t('dataset.listSearchPanel.menuItems.lastThreeDays')
-  },
-  {
-    key: 'lastWeek',
-    name: t('dataset.listSearchPanel.menuItems.lastWeek')
+/**
+ * Quick search configuration for dataset search panel
+ * Provides predefined filter options for common searches
+ */
+const quickSearchConfig = computed<QuickSearchConfig>(() => ({
+  title: t('quickSearch.title'),
+  // Audit information options
+  auditOptions: createAuditOptions([
+    {
+      key: 'myCreated',
+      name: t('dataset.listSearchPanel.menuItems.myCreated'),
+      fieldKey: 'createdBy'
+    },
+    {
+      key: 'myModified',
+      name: t('dataset.listSearchPanel.menuItems.myModified'),
+      fieldKey: 'lastModifiedBy'
+    }
+  ], String(userInfo.value?.id || '')),
+  // Time options
+  timeOptions: createTimeOptions([
+    { key: 'last1Day', name: t('quickSearch.last1Day'), timeRange: 'last1Day' },
+    { key: 'last3Days', name: t('quickSearch.last3Days'), timeRange: 'last3Days' },
+    { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
+  ], 'createdDate'),
+  // External clear function
+  externalClearFunction: () => {
+    if (typeof searchPanelRef.value?.clear === 'function') {
+      searchPanelRef.value.clear();
+    }
   }
-]);
+}));
 
 // Reactive state for search parameters
 const orderBy = ref();
 const orderSort = ref();
-const searchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const quickSearchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocKeys = ['createdBy', 'createdDate'];
-const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
-
-/**
- * Format date string for time-based filters
- * Converts relative time periods to absolute date ranges
- *
- * @param key - Time period key
- * @returns Array of start and end date strings
- */
-const formatDateString = (key: string) => {
-  let startDate: Dayjs | undefined;
-  let endDate: Dayjs | undefined;
-
-  if (key === 'lastDay') {
-    startDate = dayjs().startOf('date');
-    endDate = dayjs();
-  }
-
-  if (key === 'lastThreeDays') {
-    startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  if (key === 'lastWeek') {
-    startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
-};
+const searchFilters = ref<SearchCriteria[]>([]);
+const quickSearchFilters = ref<SearchCriteria[]>([]);
+const assocFilters = ref<SearchCriteria[]>([]);
+const assocKeys = ['createdBy', 'lastModifiedBy', 'createdDate'];
 
 /**
  * Get search parameters
@@ -173,116 +140,24 @@ const getParams = () => {
  *
  * @param data - Search filter data
  */
-const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
-  searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
-  assocFilters.value = data.filter(item => assocKeys.includes(item.key));
-
-  if (!assocFilters.value.length) {
-    assocKeys.forEach(i => {
-      if (i === 'createdDate') {
-        timeKeys.forEach(t => delete selectedMenuMap.value[t]);
-      } else {
-        delete selectedMenuMap.value[i];
-      }
-    });
-  } else {
-    assocKeys.forEach(key => {
-      if (key === 'createdBy' || key === 'lastModifiedBy') {
-        const filterItem = assocFilters.value.find(i => i.key === key);
-        if (!filterItem || filterItem.value !== userInfo.value?.id) {
-          delete selectedMenuMap.value[key];
-        }
-      }
-      if (key === 'createdDate') {
-        const filterItem = assocFilters.value.filter(i => i.key === key);
-        const timeKey = timeKeys.find(t => selectedMenuMap.value[t]);
-        if (timeKey) {
-          const timeValue = formatDateString(timeKey);
-          if (timeValue[0] !== filterItem[0].value || timeValue[1] !== filterItem[1].value) {
-            delete selectedMenuMap.value[timeKey];
-          }
-        }
-      }
-    });
-  }
-
+const searchChange = (data: SearchCriteria[]) => {
+  searchFilters.value = data.filter(item => !assocKeys.includes(item.key as string));
+  assocFilters.value = data.filter(item => assocKeys.includes(item.key as string));
   emits('change', getParams());
 };
 
 /**
- * Handle menu item clicks
- * Updates quick search filters based on selected menu items
- *
- * @param data - Menu item data
+ * Handle quick search changes
+ * Processes quick search filters and updates state
+ * @param selectedKeys - Array of selected option keys
+ * @param searchCriteria - Array of search criteria from quick search
  */
-const menuItemClick = (data) => {
-  const key = data.key;
-  // const statusTypeKeys = planStatusTypeOpt.value.map(i => i.key);
-  let searchChangeFlag = false;
-  if (selectedMenuMap.value[key]) {
-    delete selectedMenuMap.value[key];
-    if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'createdDate', value: undefined }
-      ]);
-      searchChangeFlag = true;
-    } else if (assocKeys.includes(key)) {
-      searchPanelRef.value.setConfigs([
-        { valueKey: key, value: undefined }
-      ]);
-      searchChangeFlag = true;
-    }
-  } else {
-    if (key === '') {
-      selectedMenuMap.value = { '': true };
-      quickSearchFilters.value = [];
-      // 清空搜索面板
-      if (typeof searchPanelRef.value?.clear === 'function') {
-        searchPanelRef.value.clear();
-        searchChangeFlag = true;
-      }
-    } else {
-      delete selectedMenuMap.value[''];
-    }
-    if (timeKeys.includes(key)) {
-      timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
-      selectedMenuMap.value[key] = true;
-    } else {
-      selectedMenuMap.value[key] = true;
-    }
-  }
-  const userId = userInfo.value?.id;
-  const timeFilters: {key: string; op: string; value: string}[] = [];
-  const assocFiltersInQuick = [];
-  quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
-    if (key === '') {
-      return undefined;
-    } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-      assocFiltersInQuick.push({ valueKey: 'createdDate', value: formatDateString(key) });
-      return undefined;
-    } else if (assocKeys.includes(key)) {
-      if (key === 'createdBy') {
-        assocFiltersInQuick.push({ valueKey: key, value: userId });
-      }
-      return undefined;
-    } else {
-      return {
-        key,
-        op: 'EQUAL',
-        value: userId
-      };
-    }
-  }).filter(Boolean);
-  quickSearchFilters.value.push(...timeFilters);
-  if (assocFiltersInQuick.length) {
-    searchPanelRef.value.setConfigs([
-      ...assocFiltersInQuick
-    ]);
-    searchChangeFlag = true;
-  }
-  if (!searchChangeFlag) {
-    emits('change', getParams());
-  }
+const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+  // Update quick search filters
+  quickSearchFilters.value = searchCriteria;
+
+  // Emit change event with current params
+  emits('change', getParams());
 };
 
 /**
@@ -364,38 +239,24 @@ onMounted(() => {
 
 <template>
   <div class="mt-2.5 mb-3.5">
-    <!-- Quick Search Section -->
-    <div class="flex items-center mb-3">
-      <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 rounded-full"></div>
-      <div class="whitespace-nowrap text-3 text-text-sub-content">
-        <span>{{ t('activity.searchPanel.ui.quickQuery') }}</span>
-        <Colon />
-      </div>
-      <div class="flex flex-wrap items-center ml-2 md-2">
-        <div
-          v-for="item in menuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold"
-          @click="menuItemClick(item)">
-          {{ item.name }}
-        </div>
-      </div>
-    </div>
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
 
     <!-- Search Panel and Action Buttons -->
     <div class="flex items-start justify-between">
       <!-- Advanced Search Panel -->
       <SearchPanel
         ref="searchPanelRef"
-        :options="searchPanelOptions"
+        :options="searchPanelOptions as any"
         class="flex-1 mr-3.5"
         @change="searchChange" />
 
       <!-- Action Buttons -->
       <div class="flex items-center space-x-3">
         <!-- Batch Delete Actions (when items are selected) -->
-        <template v-if="props.selectedNum && typeof props.selectedNum === 'number' && props.selectedNum > 0">
+        <template v-if="(props as any).selectedNum && typeof (props as any).selectedNum === 'number' && (props as any).selectedNum > 0">
           <Button
             danger
             size="small"
@@ -404,7 +265,7 @@ onMounted(() => {
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
             <div class="flex items-center">
               <span class="mr-0.5">{{ t('dataset.listSearchPanel.buttons.deleteSelected') }}</span>
-              <span>({{ props.selectedNum }})</span>
+              <span>({{ (props as any).selectedNum }})</span>
             </div>
           </Button>
 
@@ -488,8 +349,5 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 </style>
