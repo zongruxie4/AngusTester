@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
-import dayjs, { Dayjs } from 'dayjs';
+import { DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { TaskMeetingType } from '@/enums/enums';
 import { LoadingProps } from '@/types/types';
+import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
 
 // TYPES & INTERFACES
 type OrderByKey = string;
@@ -29,7 +28,6 @@ const currentUser = ref(appContext.getUser());
 
 // REACTIVE STATE
 const searchPanelRef = ref();
-const selectedQuickSearchItems = ref<{ [key: string]: boolean }>({});
 
 const currentOrderBy = ref();
 const currentOrderSort = ref();
@@ -39,7 +37,44 @@ const associatedFilters = ref<SearchCriteria[]>([]);
 
 // CONSTANTS
 const ASSOCIATED_FILTER_KEYS = ['createdDate', 'moderatorId', 'createdBy'];
-const TIME_RANGE_KEYS = ['lastDay', 'lastThreeDays', 'lastWeek'];
+
+/**
+ * Quick search configuration for meeting search panel
+ * Provides predefined filter options for common searches
+ */
+const quickSearchConfig = computed<QuickSearchConfig>(() => ({
+  title: t('quickSearch.title'),
+  // Audit information options
+  auditOptions: createAuditOptions([
+    {
+      key: 'myModerated',
+      name: t('taskMeeting.quickSearch.myModerated'),
+      fieldKey: 'moderatorId'
+    },
+    {
+      key: 'myCreated',
+      name: t('taskMeeting.quickSearch.myCreated'),
+      fieldKey: 'createdBy'
+    },
+    {
+      key: 'myModified',
+      name: t('taskMeeting.quickSearch.myModified'),
+      fieldKey: 'lastModifiedBy'
+    }
+  ], String(currentUser.value?.id || '')),
+  // Time options
+  timeOptions: createTimeOptions([
+    { key: 'last1Day', name: t('quickSearch.last1Day'), timeRange: 'last1Day' },
+    { key: 'last3Days', name: t('quickSearch.last3Days'), timeRange: 'last3Days' },
+    { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
+  ], 'createdDate'),
+  // External clear function
+  externalClearFunction: () => {
+    if (typeof searchPanelRef.value?.clear === 'function') {
+      searchPanelRef.value.clear();
+    }
+  }
+}));
 
 // SEARCH PANEL CONFIGURATION
 const searchPanelOptions = [
@@ -99,68 +134,6 @@ const sortMenuItems: {
   }
 ];
 
-// COMPUTED PROPERTIES
-const quickSearchMenuItems = computed(() => [
-  {
-    key: '',
-    name: t('common.all')
-  },
-  {
-    key: 'moderatorId',
-    name: t('taskMeeting.quickSearch.myModerated')
-  },
-  {
-    key: 'createdBy',
-    name: t('taskMeeting.quickSearch.myCreated')
-  },
-  {
-    key: 'lastModifiedBy',
-    name: t('taskMeeting.quickSearch.myModified')
-  },
-  {
-    key: 'lastDay',
-    name: t('quickSearch.last1Day')
-  },
-  {
-    key: 'lastThreeDays',
-    name: t('taskMeeting.quickSearch.lastThreeDays')
-  },
-  {
-    key: 'lastWeek',
-    name: t('taskMeeting.quickSearch.lastWeek')
-  }
-]);
-
-/**
- * Formats date range based on time key selection
- * @param timeKey - Time range key (lastDay, lastThreeDays, lastWeek)
- * @returns Array containing start and end date strings
- */
-const formatDateRange = (timeKey: string): [string, string] => {
-  let startDate: Dayjs | undefined;
-  let endDate: Dayjs | undefined;
-
-  switch (timeKey) {
-    case 'lastDay':
-      startDate = dayjs().startOf('date');
-      endDate = dayjs();
-      break;
-    case 'lastThreeDays':
-      startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-      endDate = dayjs();
-      break;
-    case 'lastWeek':
-      startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-      endDate = dayjs();
-      break;
-  }
-
-  return [
-    startDate ? startDate.format(DATE_TIME_FORMAT) : '',
-    endDate ? endDate.format(DATE_TIME_FORMAT) : ''
-  ];
-};
-
 /**
  * Combines all search parameters into a single object
  * @returns Combined search parameters
@@ -182,39 +155,28 @@ const buildSearchParameters = (): PageQuery => {
  * @param filterData - Array of filter objects from search panel
  */
 const handleSearchFilterChange = (filterData: SearchCriteria[]) => {
-  searchFilters.value = filterData.filter(item => !ASSOCIATED_FILTER_KEYS.includes(item.key));
-  associatedFilters.value = filterData.filter(item => ASSOCIATED_FILTER_KEYS.includes(item.key));
+  // Merge search panel filters with quick search filters
+  const quickSearchFields = ['moderatorId', 'createdBy', 'lastModifiedBy', 'createdDate'];
+  const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
+  const searchPanelFilters = filterData.filter(f => f.key && !quickSearchFields.includes(f.key as string));
 
-  // Clear quick search selections if no associated filters
-  if (!associatedFilters.value.length) {
-    ASSOCIATED_FILTER_KEYS.forEach(key => {
-      if (key === 'createdDate') {
-        TIME_RANGE_KEYS.forEach(timeKey => delete selectedQuickSearchItems.value[timeKey]);
-      } else {
-        delete selectedQuickSearchItems.value[key];
-      }
-    });
-  } else {
-    // Update quick search selections based on associated filters
-    ASSOCIATED_FILTER_KEYS.forEach(key => {
-      if (['createdBy', 'moderatorId'].includes(key)) {
-        const filterItem = associatedFilters.value.find(item => item.key === key);
-        if (!filterItem || filterItem.value !== currentUser.value?.id?.toString()) {
-          delete selectedQuickSearchItems.value[key];
-        }
-      } else if (key === 'createdDate') {
-        const filterItems = associatedFilters.value.filter(item => item.key === key);
-        const selectedTimeKey = TIME_RANGE_KEYS.find(timeKey => selectedQuickSearchItems.value[timeKey]);
-        if (selectedTimeKey) {
-          const timeRange = formatDateRange(selectedTimeKey);
-          if (timeRange[0] !== filterItems[0].value || timeRange[1] !== filterItems[1].value) {
-            delete selectedQuickSearchItems.value[selectedTimeKey];
-          }
-        }
-      }
-    });
-  }
+  searchFilters.value = [...currentQuickSearchFilters, ...searchPanelFilters];
+  associatedFilters.value = filterData.filter(item => item.key && ASSOCIATED_FILTER_KEYS.includes(item.key as string));
 
+  emits('change', buildSearchParameters());
+};
+
+/**
+ * Handle quick search changes
+ * Processes quick search filters and updates state
+ * @param selectedKeys - Array of selected option keys
+ * @param searchCriteria - Array of search criteria from quick search
+ */
+const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+  // Update quick search filters
+  quickSearchFilters.value = searchCriteria;
+
+  // Emit change event with current params
   emits('change', buildSearchParameters());
 };
 
@@ -229,90 +191,6 @@ const handleSortChange = (sortData: { orderBy: string; orderSort: string }) => {
 };
 
 /**
- * Handles quick search menu item clicks
- * @param menuItem - Clicked menu item data
- */
-const handleQuickSearchItemClick = (menuItem: { key: string; name: string }) => {
-  const itemKey = menuItem.key;
-  let shouldTriggerSearchChange = false;
-
-  if (selectedQuickSearchItems.value[itemKey]) {
-    // Deselect item
-    delete selectedQuickSearchItems.value[itemKey];
-
-    if (TIME_RANGE_KEYS.includes(itemKey) && ASSOCIATED_FILTER_KEYS.includes('createdDate')) {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'createdDate', value: undefined }
-      ]);
-      shouldTriggerSearchChange = true;
-    } else if (ASSOCIATED_FILTER_KEYS.includes(itemKey)) {
-      searchPanelRef.value.setConfigs([
-        { valueKey: itemKey, value: undefined }
-      ]);
-      shouldTriggerSearchChange = true;
-    }
-  } else {
-    // Select item
-    if (itemKey === '') {
-      // Select "All" - clear all other selections
-      selectedQuickSearchItems.value = { '': true };
-      quickSearchFilters.value = [];
-      if (typeof searchPanelRef.value?.clear === 'function') {
-        searchPanelRef.value.clear();
-        shouldTriggerSearchChange = true;
-      }
-    } else {
-      // Deselect "All" when selecting specific items
-      delete selectedQuickSearchItems.value[''];
-    }
-
-    if (TIME_RANGE_KEYS.includes(itemKey)) {
-      // Clear other time range selections
-      TIME_RANGE_KEYS.forEach(timeKey => delete selectedQuickSearchItems.value[timeKey]);
-      selectedQuickSearchItems.value[itemKey] = true;
-    } else {
-      selectedQuickSearchItems.value[itemKey] = true;
-    }
-  }
-
-  // Build quick search filters
-  const userId = currentUser.value?.id?.toString();
-  const associatedFiltersInQuick: { valueKey: string; value: string | string[] }[] = [];
-
-  quickSearchFilters.value = Object.keys(selectedQuickSearchItems.value).map(key => {
-    if (key === '') {
-      return undefined;
-    } else if (TIME_RANGE_KEYS.includes(key)) {
-      associatedFiltersInQuick.push({
-        valueKey: 'createdDate',
-        value: formatDateRange(key)
-      });
-      return undefined;
-    } else if (ASSOCIATED_FILTER_KEYS.includes(key)) {
-      if (['moderatorId', 'createdBy'].includes(key)) {
-        associatedFiltersInQuick.push({ valueKey: key, value: userId || '' });
-      }
-      return undefined;
-    } else {
-      return {
-        key,
-        op: SearchCriteria.OpEnum.Equal,
-        value: userId || ''
-      };
-    }
-  }).filter(Boolean) as SearchCriteria[];
-
-  if (associatedFiltersInQuick.length) {
-    searchPanelRef.value.setConfigs([...associatedFiltersInQuick]);
-    shouldTriggerSearchChange = true;
-  }
-
-  if (!shouldTriggerSearchChange) {
-    emits('change', buildSearchParameters());
-  }
-};
-
-/**
  * Handles refresh action
  */
 const handleRefresh = () => {
@@ -321,25 +199,10 @@ const handleRefresh = () => {
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex items-center mb-3">
-      <div class="flex items-start transform-gpu translate-y-0.5">
-        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
-        <div class="whitespace-nowrap text-3 mt-0.5 text-text-sub-content">
-          <span>{{ t('quickSearch.title') }}</span>
-          <Colon />
-        </div>
-        <div class="flex flex-wrap ml-2">
-          <div
-            v-for="menuItem in quickSearchMenuItems"
-            :key="menuItem.key"
-            :class="{ 'active-key': selectedQuickSearchItems[menuItem.key] }"
-            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
-            @click="handleQuickSearchItemClick(menuItem)">
-            {{ menuItem.name }}
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
     <div class="flex items-start justify-between ">
       <SearchPanel
         ref="searchPanelRef"
@@ -376,7 +239,7 @@ const handleRefresh = () => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{ t('common.refresh') }}</span>
+              <span class="ml-1">{{ t('actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>
@@ -385,8 +248,5 @@ const handleRefresh = () => {
   </div>
 </template>
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 </style>
