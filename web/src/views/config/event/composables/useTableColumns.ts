@@ -34,12 +34,12 @@ export function useTableColumns () {
       title: t('event.columns.eventId'),
       dataIndex: 'id',
       key: 'id',
-      width: '12%'
+      width: '10%'
     },
     {
       title: t('event.columns.eventName'),
       dataIndex: 'name',
-      width: '12%',
+      width: '15%',
       ellipsis: true
     },
     {
@@ -62,7 +62,7 @@ export function useTableColumns () {
       title: t('event.columns.pushStatus'),
       dataIndex: 'pushStatus',
       key: 'pushStatus',
-      width: '12%'
+      width: '10%'
     }
   ]);
 

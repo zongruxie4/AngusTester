@@ -53,7 +53,7 @@ onMountedInit();
 
 <template>
   <div class="py-3.5 px-5">
-    <Hints :text="t('event.hints')" class="!leading-4.5" />
+    <Hints :text="t('event.hints')" class="!leading-5.5 text-3.5 font-semibold" />
     <div class="flex space-x-2 w-250 mt-2">
       <InfoCard
         :name="t('common.total')"
