@@ -1,3 +1,5 @@
+import { enumUtils, ReviewStatus } from '@xcan-angus/infra';
+import { TaskType, TaskStatus, CaseTestResult } from '@/enums/enums';
 import { useI18n } from 'vue-i18n';
 import { ChartConfig } from '../types';
 import noData from '../Image/nodata.png';
@@ -59,42 +61,42 @@ export const createTaskTypeConfig = (): ChartConfig => {
         },
         data: [
           {
-            name: t('kanban.effectiveness.taskType.story'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.STORY),
             value: 0,
             itemStyle: {
               color: 'rgba(136, 185, 242, 1)'
             }
           },
           {
-            name: t('kanban.effectiveness.taskType.requirement'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.REQUIREMENT),
             value: 0,
             itemStyle: {
               color: 'rgba(201, 119, 255, 1)'
             }
           },
           {
-            name: t('common.issue'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.TASK),
             value: 0,
             itemStyle: {
               color: 'rgba(45, 142, 255, 1)'
             }
           },
           {
-            name: t('kanban.effectiveness.taskType.bug'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.BUG),
             value: 0,
             itemStyle: {
               color: 'rgb(236,17,93)'
             }
           },
           {
-            name: t('kanban.effectiveness.taskType.apiTest'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.API_TEST),
             value: 0,
             itemStyle: {
               color: 'rgba(82, 196, 26, 1)'
             }
           },
           {
-            name: t('kanban.effectiveness.taskType.scenarioTest'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.SCENARIO_TEST),
             value: 0,
             itemStyle: {
               color: 'rgba(0,119,255,1)'

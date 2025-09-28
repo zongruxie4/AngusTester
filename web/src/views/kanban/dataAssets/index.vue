@@ -58,7 +58,6 @@ const {
 // Initialize chart configuration composable
 const {
   chartSeriesColorConfig,
-  methodColorConfig,
   targetDataCategory,
   rankIconConfig,
   createGrowthTrendConfig,
@@ -586,7 +585,7 @@ defineExpose({
             </div>
           </div>
           <div class="flex-1 rounded border p-2 flex flex-col">
-            <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
+            <div class="px-2 font-semibold">{{ t('common.data') }}</div>
             <div class=" flex-1 flex justify-around items-center space-x-2">
               <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/variable.png" class="w-1/2 absolute top-0 right-0" />
@@ -596,17 +595,17 @@ defineExpose({
               <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="String(dataData.allDataset)" class="text-5 truncate">{{ dataData.allDataset }}</div>
-                <div>{{ t('kanban.dataAssets.categories.dataset') }}</div>
+                <div>{{ t('common.dataset') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/file.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="String(dataData.allFile)" class="text-5 truncate">{{ dataData.allFile }}</div>
-                <div>{{ t('kanban.dataAssets.categories.file') }}</div>
+                <div>{{ t('common.file') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="String(dataData.allDatasource)" class="text-5 truncate">{{ dataData.allDatasource }}</div>
-                <div>{{ t('kanban.dataAssets.categories.datasource') }}</div>
+                <div>{{ t('common.datasource') }}</div>
               </div>
             </div>
           </div>
@@ -648,7 +647,7 @@ defineExpose({
             </div>
           </div>
           <div class="flex-1 rounded border p-2 flex flex-col">
-            <div class="px-2 text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
+            <div class="px-2 text-3.5 font-semibold">{{ t('common.data') }}</div>
             <div class=" flex-1 flex flex-col justify-around space-y-2">
               <div class="flex flex-1  space-x-2">
                 <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
@@ -659,19 +658,19 @@ defineExpose({
                 <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(dataData.allDataset)" class="text-5 truncate">{{ dataData.allDataset }}</div>
-                  <div>{{ t('kanban.dataAssets.categories.dataset') }}</div>
+                  <div>{{ t('common.dataset') }}</div>
                 </div>
               </div>
               <div class="flex flex-1 space-x-2">
                 <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/file.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(dataData.allFile)" class="text-5 truncate">{{ dataData.allFile }}</div>
-                  <div>{{ t('kanban.dataAssets.categories.file') }}</div>
+                  <div>{{ t('common.file') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(dataData.allDatasource)" class="text-5 truncate">{{ dataData.allDatasource }}</div>
-                  <div>{{ t('kanban.dataAssets.categories.datasource') }}</div>
+                  <div>{{ t('common.datasource') }}</div>
                 </div>
               </div>
             </div>
@@ -746,7 +745,7 @@ defineExpose({
               </div>
             </div>
             <div class="flex-1 rounded border p-2 flex flex-col">
-              <div class="px-2 text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
+              <div class="px-2 text-3.5 font-semibold">{{ t('common.data') }}</div>
               <div class=" flex-1 flex justify-around items-center space-x-2">
                 <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/variable.png" class="w-1/2 absolute top-0 right-0" />
@@ -756,17 +755,17 @@ defineExpose({
                 <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(dataData.allDataset)" class="text-5 truncate">{{ dataData.allDataset }}</div>
-                  <div>{{ t('kanban.dataAssets.categories.dataset') }}</div>
+                  <div>{{ t('common.dataset') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/file.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(dataData.allFile)" class="text-5 truncate">{{ dataData.allFile }}</div>
-                  <div>{{ t('kanban.dataAssets.categories.file') }}</div>
+                  <div>{{ t('common.file') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(dataData.allDatasource)" class="text-5 truncate">{{ dataData.allDatasource }}</div>
-                  <div>{{ t('kanban.dataAssets.categories.datasource') }}</div>
+                  <div>{{ t('common.datasource') }}</div>
                 </div>
               </div>
             </div>
@@ -805,7 +804,7 @@ defineExpose({
               </div>
             </div>
             <div class="flex-1 rounded border p-2 flex flex-col">
-              <div class="px-2 text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
+              <div class="px-2 text-3.5 font-semibold">{{ t('common.data') }}</div>
               <div class=" flex-1 flex flex-col justify-around space-y-2">
                 <div class="flex flex-1  space-x-2">
                   <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
@@ -816,19 +815,19 @@ defineExpose({
                   <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="String(dataData.allDataset)" class="text-5 truncate">{{ dataData.allDataset }}</div>
-                    <div>{{ t('kanban.dataAssets.categories.dataset') }}</div>
+                    <div>{{ t('common.dataset') }}</div>
                   </div>
                 </div>
                 <div class="flex flex-1 space-x-2">
                   <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/file.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="String(dataData.allFile)" class="text-5 truncate">{{ dataData.allFile }}</div>
-                    <div>{{ t('kanban.dataAssets.categories.file') }}</div>
+                    <div>{{ t('common.file') }}</div>
                   </div>
                   <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="String(dataData.allDatasource)" class="text-5 truncate">{{ dataData.allDatasource }}</div>
-                    <div>{{ t('kanban.dataAssets.categories.datasource') }}</div>
+                    <div>{{ t('common.datasource') }}</div>
                   </div>
                 </div>
               </div>
