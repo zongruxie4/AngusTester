@@ -19,7 +19,7 @@ export function useTableColumns () {
       key: 'fullName',
       title: t('activity.list.columns.operator'),
       dataIndex: 'fullName',
-      width: '10%',
+      width: '12%',
       ellipsis: true
     },
     {
@@ -27,7 +27,7 @@ export function useTableColumns () {
       title: t('activity.list.columns.activityTime'),
       dataIndex: 'optDate',
       sorter: true,
-      width: '10%',
+      width: '12%',
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }
@@ -37,7 +37,7 @@ export function useTableColumns () {
       title: t('common.projectName'),
       dataIndex: 'projectName',
       groupName: 'project',
-      width: '15%',
+      width: '18%',
       ellipsis: true
     },
     {
@@ -46,20 +46,20 @@ export function useTableColumns () {
       dataIndex: 'projectId',
       groupName: 'project',
       hide: true,
-      width: '15%'
+      width: '18%'
     },
     {
       key: 'targetType',
       title: t('activity.list.columns.resourceType'),
       dataIndex: 'targetType',
       customRender: ({ text }) => text?.message,
-      width: '8%'
+      width: '10%'
     },
     {
       key: 'targetId',
       title: t('activity.list.columns.targetId'),
       dataIndex: 'targetId',
-      width: '17%',
+      width: '18%',
       groupName: 'source',
       hide: true,
       customCell: () => {
@@ -70,14 +70,14 @@ export function useTableColumns () {
       key: 'targetName',
       title: t('activity.list.columns.targetName'),
       dataIndex: 'targetName',
-      width: '17%',
+      width: '18%',
       ellipsis: true,
       groupName: 'source'
     },
     {
       key: 'detail',
       title: t('activity.list.columns.activityContent'),
-      width: '40%',
+      width: '30%',
       dataIndex: 'detail'
     }
   ]);
