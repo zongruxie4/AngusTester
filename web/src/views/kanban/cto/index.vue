@@ -449,7 +449,7 @@ defineExpose({
       <div class="h-full flex-5/8 space-x-2 flex">
         <!-- Task Type or Test Status (2.5/7 width) -->
         <div class="flex-1/2 border rounded p-2 flex flex-col space-y-2">
-          <div class="section-title">{{ props.countType === 'task' ? t('common.taskType') : t('kanban.cto.testStatusLable') }}</div>
+          <div class="section-title">{{ props.countType === 'task' ? t('common.taskType') : t('kanban.cto.testStatusLabel') }}</div>
           <div
             v-show="props.countType === 'task'"
             ref="taskTypeRef"
@@ -461,7 +461,7 @@ defineExpose({
         </div>
         <!-- Task Status or Review Status (2.5/7 width) -->
         <div class="flex-1/2 border rounded p-2 flex flex-col space-y-2">
-          <div class="section-title">{{ props.countType === 'task' ? t('kanban.cto.taskStatusName') : t('kanban.cto.reviewStatusLable') }}</div>
+          <div class="section-title">{{ props.countType === 'task' ? t('kanban.cto.taskStatusName') : t('kanban.cto.reviewStatusLabel') }}</div>
           <div
             v-show="props.countType === 'task'"
             ref="taskStatusRef"

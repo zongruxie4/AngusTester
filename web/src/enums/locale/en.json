@@ -37,7 +37,7 @@
         "UNKNOWN": "Unknown",
         "IN_DESIGN": "In Design",
         "IN_DEV": "In Development",
-        "DEV_COMPLETED": "Development Completed",
+        "DEV_COMPLETED": "Completed",
         "RELEASED": "Released"
       },
       "ActionWhenDuplicate": {
@@ -67,7 +67,7 @@
       "TaskStatus": {
         "PENDING": "Pending",
         "IN_PROGRESS": "In Progress",
-        "CONFIRMING": "Awaiting Confirmation",
+        "CONFIRMING": "Confirming",
         "COMPLETED": "Completed",
         "CANCELED": "Canceled"
       },

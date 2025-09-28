@@ -385,7 +385,7 @@ watch(() => props.visible, (newValue) => {
                 <Select
                   v-show="memberType === 'dept'"
                   v-model:value="members.DEPT"
-                  :placeholder="t('organization.placeholders.selectDepartment')"
+                  :placeholder="t('organization.placeholders.selectDept')"
                   :showSearch="true"
                   :action="`${GM}/dept?fullTextSearch=true`"
                   :defaultOptions="defaultOptionsDept"

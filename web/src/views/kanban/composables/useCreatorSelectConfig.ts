@@ -18,7 +18,7 @@ export function useCreatorSelectConfig (currentType: { value: CreatorObjectType 
 
   const placeholder = computed<string>(() => {
     if (currentType.value === 'USER') return t('organization.placeholders.selectUser');
-    if (currentType.value === 'DEPT') return t('organization.placeholders.selectDepartment');
+    if (currentType.value === 'DEPT') return t('organization.placeholders.selectDept');
     return t('organization.placeholders.selectGroup');
   });
 

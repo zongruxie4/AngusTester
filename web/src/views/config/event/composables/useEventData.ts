@@ -377,8 +377,7 @@ export function useEventData () {
     },
     {
       type: 'date-range',
-      valueKey: 'createdDate',
-      placeholder: [t('event.searchLogPlaceholder.startDate'), t('event.searchLogPlaceholder.endDate')]
+      valueKey: 'createdDate'
     }
   ]);
 

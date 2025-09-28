@@ -1,11 +1,10 @@
-import { i18n } from '@xcan-angus/infra';
+import { i18n, enumUtils, ReviewStatus, ScriptType } from '@xcan-angus/infra';
+import { TaskType, TaskStatus, TaskSprintStatus, FuncPlanStatus, CaseTestResult, ApiStatus } from '@/enums/enums';
 
 import { ChartConfig, ChartSeriesColorConfig, MethodColorConfig, RankIconConfig, TargetDataCategory } from '../types';
 
 const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string): string => value);
-
-// const { t } = useI18n();
 
 /**
  * Chart configuration management composable for data assets dashboard
@@ -40,27 +39,27 @@ export function useChartConfigs () {
 
   /** Target data category mapping */
   const targetDataCategory: TargetDataCategory = {
-    TEST_CUSTOMIZATION: t('kanban.dataAssets.categories.testCustomization'),
-    TEST_FUNCTIONALITY: t('kanban.dataAssets.categories.testFunctionality'),
-    TEST_PERFORMANCE: t('kanban.dataAssets.categories.testPerformance'),
-    TEST_STABILITY: t('kanban.dataAssets.categories.testStability'),
-    SERVICES: t('kanban.dataAssets.categories.services'),
+    TEST_CUSTOMIZATION: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_CUSTOMIZATION),
+    TEST_FUNCTIONALITY: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_FUNCTIONALITY),
+    TEST_PERFORMANCE: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_PERFORMANCE),
+    TEST_STABILITY: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_STABILITY),
+    SERVICES: t('common.service'),
     APIS: t('common.api'),
     CASES: t('common.useCase'),
     PLAN: t('common.plan'),
     SPRINT: t('common.sprint'),
-    TASK_SPRINT: t('kanban.dataAssets.categories.taskSprint'),
+    TASK_SPRINT: t('common.sprint'),
     TASK: t('common.issue'),
-    MOCK_APIS: t('kanban.dataAssets.categories.mockApis'),
-    MOCK_PUSHBACK: t('kanban.dataAssets.categories.mockPushback'),
-    MOCK_RESPONSE: t('kanban.dataAssets.categories.mockResponse'),
-    MOCK_SERVICE: t('kanban.dataAssets.categories.mockService'),
-    DATA_DATASET: t('kanban.dataAssets.categories.dataDataset'),
-    DATA_DATASOURCE: t('kanban.dataAssets.categories.dataDatasource'),
-    DATA_VARIABLE: t('kanban.dataAssets.categories.dataVariable'),
-    TOTAL: t('chart.total'),
-    REPORT: t('kanban.dataAssets.categories.report'),
-    REPORT_RECORD: t('kanban.dataAssets.categories.reportRecord')
+    MOCK_APIS: t('common.mockApis'),
+    MOCK_PUSHBACK: t('kanban.dataAssets.categories.pushback'),
+    MOCK_RESPONSE: t('kanban.dataAssets.categories.response'),
+    MOCK_SERVICE: t('common.mockService'),
+    DATA_DATASET: t('common.dataset'),
+    DATA_DATASOURCE: t('common.datasource'),
+    DATA_VARIABLE: t('common.variable'),
+    TOTAL: t('common.total'),
+    REPORT: t('common.report'),
+    REPORT_RECORD: t('common.reportRecord')
   };
 
   /** Rank icon configuration */
@@ -147,11 +146,11 @@ export function useChartConfigs () {
       splitLine: { show: false },
       axisLine: { show: false },
       data: [
-        t('status.cancelled'),
-        t('status.blocked'),
-        t('kanban.dataAssets.status.testFailed'),
-        t('kanban.dataAssets.status.testPassed'),
-        t('kanban.dataAssets.status.pendingTest')
+        enumUtils.getEnumDescription(CaseTestResult, CaseTestResult.CANCELED),
+        enumUtils.getEnumDescription(CaseTestResult, CaseTestResult.BLOCKED),
+        enumUtils.getEnumDescription(CaseTestResult, CaseTestResult.NOT_PASSED),
+        enumUtils.getEnumDescription(CaseTestResult, CaseTestResult.PASSED),
+        enumUtils.getEnumDescription(CaseTestResult, CaseTestResult.PENDING)
       ]
     },
     series: [
@@ -240,17 +239,17 @@ export function useChartConfigs () {
         },
         data: [
           {
-            name: t('kanban.dataAssets.reviewStatus.pendingReview'),
+            name: enumUtils.getEnumDescription(ReviewStatus, ReviewStatus.PENDING),
             value: 0,
             itemStyle: { color: 'rgba(201, 119, 255, 1)' }
           },
           {
-            name: t('kanban.dataAssets.reviewStatus.reviewPassed'),
+            name: enumUtils.getEnumDescription(ReviewStatus, ReviewStatus.PASSED),
             value: 0,
             itemStyle: { color: 'rgba(82, 196, 26, 1)' }
           },
           {
-            name: t('kanban.dataAssets.reviewStatus.reviewFailed'),
+            name: enumUtils.getEnumDescription(ReviewStatus, ReviewStatus.FAILED),
             value: 0,
             itemStyle: { color: 'rgba(245, 34, 45, 1)' }
           }
@@ -293,11 +292,11 @@ export function useChartConfigs () {
       splitLine: { show: false },
       axisLine: { show: false },
       data: [
-        t('kanban.dataAssets.status.unknown'),
-        t('kanban.dataAssets.status.designing'),
-        t('kanban.dataAssets.status.developing'),
-        t('kanban.dataAssets.status.developmentCompleted'),
-        t('kanban.dataAssets.status.published')
+        enumUtils.getEnumDescription(ApiStatus, ApiStatus.UNKNOWN),
+        enumUtils.getEnumDescription(ApiStatus, ApiStatus.IN_DESIGN),
+        enumUtils.getEnumDescription(ApiStatus, ApiStatus.IN_DEV),
+        enumUtils.getEnumDescription(ApiStatus, ApiStatus.DEV_COMPLETED),
+        enumUtils.getEnumDescription(ApiStatus, ApiStatus.RELEASED)
       ]
     },
     series: [
@@ -466,11 +465,11 @@ export function useChartConfigs () {
       splitLine: { show: false },
       axisLine: { show: false },
       data: [
-        t('status.cancelled'),
-        t('status.completed'),
-        t('status.pendingConfirmation'),
-        t('status.inProgress'),
-        t('status.pending')
+        enumUtils.getEnumDescription(TaskStatus, TaskStatus.CANCELED),
+        enumUtils.getEnumDescription(TaskStatus, TaskStatus.COMPLETED),
+        enumUtils.getEnumDescription(TaskStatus, TaskStatus.CONFIRMING),
+        enumUtils.getEnumDescription(TaskStatus, TaskStatus.IN_PROGRESS),
+        enumUtils.getEnumDescription(TaskStatus, TaskStatus.PENDING)
       ]
     },
     series: [
@@ -561,32 +560,32 @@ export function useChartConfigs () {
         },
         data: [
           {
-            name: t('kanban.dataAssets.taskTypes.story'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.STORY),
             value: 0,
             itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
-            name: t('kanban.dataAssets.taskTypes.requirement'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.REQUIREMENT),
             value: 0,
             itemStyle: { color: 'rgba(201, 119, 255, 1)' }
           },
           {
-            name: t('common.issue'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.TASK),
             value: 0,
             itemStyle: { color: 'rgba(255, 165, 43, 1)' }
           },
           {
-            name: t('kanban.dataAssets.taskTypes.bug'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.BUG),
             value: 0,
             itemStyle: { color: 'rgba(245, 34, 45, 1)' }
           },
           {
-            name: t('kanban.dataAssets.taskTypes.apiTest'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.API_TEST),
             value: 0,
             itemStyle: { color: 'rgba(82, 196, 26, 1)' }
           },
           {
-            name: t('kanban.dataAssets.taskTypes.scenarioTest'),
+            name: enumUtils.getEnumDescription(TaskType, TaskType.SCENARIO_TEST),
             value: 0,
             itemStyle: { color: 'rgb(77,106,204)' }
           }
@@ -652,22 +651,22 @@ export function useChartConfigs () {
         },
         data: [
           {
-            name: t('status.pending'),
+            name: enumUtils.getEnumDescription(FuncPlanStatus, FuncPlanStatus.PENDING),
             value: 0,
             itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
-            name: t('status.inProgress'),
+            name: enumUtils.getEnumDescription(FuncPlanStatus, FuncPlanStatus.IN_PROGRESS),
             value: 0,
             itemStyle: { color: 'rgba(103, 215, 255, 1)' }
           },
           {
-            name: t('status.completed'),
+            name: enumUtils.getEnumDescription(FuncPlanStatus, FuncPlanStatus.COMPLETED),
             value: 0,
             itemStyle: { color: 'rgba(82, 196, 26, 1)' }
           },
           {
-            name: t('status.blocked'),
+            name: enumUtils.getEnumDescription(FuncPlanStatus, FuncPlanStatus.BLOCKED),
             value: 0,
             itemStyle: { color: 'rgba(245, 34, 45, 1)' }
           }
@@ -733,22 +732,22 @@ export function useChartConfigs () {
         },
         data: [
           {
-            name: t('status.pending'),
+            name: enumUtils.getEnumDescription(TaskSprintStatus, TaskSprintStatus.PENDING),
             value: 0,
             itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
-            name: t('status.inProgress'),
+            name: enumUtils.getEnumDescription(TaskSprintStatus, TaskSprintStatus.IN_PROGRESS),
             value: 0,
             itemStyle: { color: 'rgba(103, 215, 255, 1)' }
           },
           {
-            name: t('status.completed'),
+            name: enumUtils.getEnumDescription(TaskSprintStatus, TaskSprintStatus.COMPLETED),
             value: 0,
             itemStyle: { color: 'rgba(82, 196, 26, 1)' }
           },
           {
-            name: t('status.blocked'),
+            name: enumUtils.getEnumDescription(TaskSprintStatus, TaskSprintStatus.BLOCKED),
             value: 0,
             itemStyle: { color: 'rgba(245, 34, 45, 1)' }
           }
@@ -814,22 +813,22 @@ export function useChartConfigs () {
         },
         data: [
           {
-            name: t('kanban.dataAssets.categories.testPerformance'),
+            name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_PERFORMANCE),
             value: 0,
             itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
-            name: t('kanban.dataAssets.categories.testStability'),
+            name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_STABILITY),
             value: 0,
             itemStyle: { color: 'rgba(201, 119, 255, 1)' }
           },
           {
-            name: t('kanban.dataAssets.categories.testFunctionality'),
+            name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_FUNCTIONALITY),
             value: 0,
             itemStyle: { color: 'rgba(255, 102, 0, 1)' }
           },
           {
-            name: t('kanban.dataAssets.categories.testCustomization'),
+            name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_CUSTOMIZATION),
             value: 0,
             itemStyle: { color: 'rgba(82, 196, 26, 1)' }
           }
@@ -895,7 +894,7 @@ export function useChartConfigs () {
       data: [
         t('common.api'),
         t('common.useCase'),
-        t('kanban.dataAssets.categories.project'),
+        t('common.project'),
         t('common.scenario'),
         t('common.issue'),
         t('common.execution')

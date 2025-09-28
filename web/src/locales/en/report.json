@@ -1401,8 +1401,8 @@
           "byRequestMethod": "By Request Method",
           "status": {
             "published": "Published",
-            "devCompleted": "Development Completed",
-            "devInProgress": "Development In Progress",
+            "devCompleted": "Completed",
+            "devInProgress": "In Development",
             "designing": "Designing",
             "unknown": "Unknown"
           }
@@ -1666,8 +1666,8 @@
           "status": {
             "unknown": "Unknown",
             "designing": "Designing",
-            "devInProgress": "Development In Progress",
-            "devCompleted": "Development Completed",
+            "devCompleted": "Completed",
+            "devInProgress": "In Development",
             "published": "Published"
           }
         },
