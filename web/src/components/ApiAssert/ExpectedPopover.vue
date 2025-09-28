@@ -1,12 +1,23 @@
 <script setup lang="ts">
+// Vue composition API imports
+import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Popover } from 'ant-design-vue';
 import { Icon, Hints, Grid } from '@xcan-angus/vue-ui';
+
+// Third-party utility imports
 import beautify from 'js-beautify';
-import { useI18n } from 'vue-i18n';
+
 const { t } = useI18n();
 
-const prettyXml = (data: string) => {
-  return beautify.html(data, {
+/**
+ * Format XML string with proper indentation for better readability
+ * @param rawXmlString - Raw XML string to format
+ * @returns Formatted XML string with proper indentation
+ */
+const formatXmlWithIndentation = (rawXmlString: string): string => {
+  return beautify.html(rawXmlString, {
     unformatted: ['code', 'pre', 'em', 'strong', 'span'],
     indent_inner_html: true,
     indent_char: ' ',
@@ -14,7 +25,8 @@ const prettyXml = (data: string) => {
   });
 };
 
-const matchItemList = [
+// Configuration for expression matching examples
+const expressionMatchingExamplesConfig = [
   {
     key: 'regexp',
     name: t('xcan_apiAssert.regexExpressionMatch'),
@@ -93,7 +105,7 @@ const matchItemList = [
       }
     ]],
     data: {
-      data: prettyXml('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><persons><person><age>30</age><interests>coding</interests>' +
+      data: formatXmlWithIndentation('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><persons><person><age>30</age><interests>coding</interests>' +
                 '<interests>basketball</interests><name>Angus1</name></person><person><age>32</age><interests>coding</interests><name>Angus2</name></person></persons>'),
       expression: '/persons/person[age >= 30]',
       result: '["30codingbasketballAngus1", "32codingAngus2"]',
@@ -134,18 +146,18 @@ const matchItemList = [
           </div>
           <ol class="pl-4 space-y-3">
             <li
-              v-for="item in matchItemList"
-              :key="item.key"
+              v-for="example in expressionMatchingExamplesConfig"
+              :key="example.key"
               style="list-style-type: circle;"
               class="space-y-2">
-              <div class="font-semibold">{{ item.name }}</div>
+              <div class="font-semibold">{{ example.name }}</div>
               <Grid
                 labelStyle="color: var(--content-text-sub-content);"
                 valueStyle="color: var(--content-text-sub-content);"
                 labelSpacing="4px"
                 :marginBottom="8"
-                :columns="item.columns"
-                :dataSource="item.data">
+                :columns="example.columns"
+                :dataSource="example.data">
                 <template #data="{ text }">
                   <pre><code>{{ text }}</code></pre>
                 </template>
