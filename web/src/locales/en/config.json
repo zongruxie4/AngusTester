@@ -586,29 +586,49 @@
   },
   "proxy": {
     "title": "Proxy",
-    "description": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data. You can choose a suitable proxy service according to your network environment.",
-    "noProxy": "No Proxy",
-    "noProxyDescription": "Request interfaces directly through browser, cross-origin restrictions need to be removed to access non-same-origin server interfaces.",
-    "clientProxy": "Client Proxy",
-    "clientProxyDescription": "Need to install \"proxy program\" on the computer where the browser is located, after configuration, client proxy will be used to send requests.",
-    "serverProxy": "Server Proxy",
-    "serverProxyDescription": "Need to install \"proxy program\" on a server host in a shared network, using server proxy does not require users to install proxy programs on their respective computers.",
-    "cloudProxy": "Cloud Proxy",
-    "cloudProxyDescription": "Request interfaces through AngusTester cloud server nodes. Note: Cannot access customer intranet service addresses.",
-    "downloadProxy": "Download Proxy Program",
-    "windowsDesktopProxy": "Windows Desktop Proxy",
-    "macDesktopProxy": "Mac Desktop Proxy",
-    "linuxProxy": "Linux Proxy",
-    "manualInstallPackage": "Manual Install Package",
-    "serverRequestProxyConfig": "Server Client Proxy Configuration",
-    "enable": "Enable:",
-    "proxyAddress": "Proxy Address:",
-    "connected": "Connected",
-    "notConnected": "Not Connected",
-    "inputHost": "Please enter host",
-    "inputPort": "Please enter port number, range 1~65535",
-    "proxyConfigModifiedSuccess": "Proxy configuration modified successfully",
-    "connectionSuccess": "Connection successful",
-    "connectionFailed": "Connection failed"
+    "hints": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data. You can choose a suitable proxy service according to your network environment.",
+    "types": {
+      "noProxy": "No Proxy",
+      "noProxyDescription": "Request interfaces directly through browser, cross-origin restrictions need to be removed to access non-same-origin server interfaces.",
+      "clientProxy": "Client Proxy",
+      "clientProxyDescription": "Need to install \"proxy program\" on the computer where the browser is located, after configuration, client proxy will be used to send requests.",
+      "serverProxy": "Server Proxy",
+      "serverProxyDescription": "Need to install \"proxy program\" on a server host in a shared network, using server proxy does not require users to install proxy programs on their respective computers.",
+      "cloudProxy": "Cloud Proxy",
+      "cloudProxyDescription": "Request interfaces through AngusTester cloud server nodes. Note: Cannot access customer intranet service addresses."
+    },
+    "download": {
+      "title": "Download Proxy Program",
+      "options": {
+        "windowsDesktopProxy": "Windows Desktop Proxy",
+        "macDesktopProxy": "Mac Desktop Proxy",
+        "linuxProxy": "Linux Proxy",
+        "manualInstallPackage": "Manual Install Package"
+      }
+    },
+    "config": {
+      "title": "Server Request Proxy Configuration",
+      "labels": {
+        "enable": "Enable Proxy",
+        "proxyAddress": "Proxy Address"
+      },
+      "placeholders": {
+        "inputProxyAddress": "Please enter proxy address"
+      },
+      "validation": {
+        "addressTip": "Please enter a valid proxy address",
+        "inputHost": "Please enter host",
+        "inputPort": "Please enter port number, range 1~65535"
+      }
+    },
+    "status": {
+      "connected": "Connected",
+      "notConnected": "Not Connected",
+      "connectionSuccess": "Connection successful",
+      "connectionFailed": "Connection failed"
+    },
+    "messages": {
+      "proxyConfigModifiedSuccess": "Proxy configuration modified successfully"
+    }
   }
 }

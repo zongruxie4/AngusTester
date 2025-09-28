@@ -40,7 +40,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
       <div class="text-3 leading-3 flex">
         <Icon class="text-tips text-3.5 mt-0.5" icon="icon-tishi1" />
         <p class="font-semibold text-3.5 font-serif ml-1.5 leading-5 whitespace-pre-wrap">
-          {{ t('common.description') }}
+          {{ t('proxy.hints') }}
         </p>
       </div>
 
@@ -50,10 +50,10 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
         <div class="flex-1">
           <div class="text-theme-title font-semibold">
             <Icon class="mr-1.5 -mt-0.5" icon="icon-wudaili" />
-            {{ t('proxy.noProxy') }}
+            {{ t('proxy.types.noProxy') }}
           </div>
           <div class="text-theme-sub-content mt-2 leading-5">
-            {{ t('proxy.noProxyDescription') }}
+            {{ t('proxy.types.noProxyDescription') }}
           </div>
         </div>
 
@@ -61,10 +61,10 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
         <div class="flex-1">
           <div class="text-theme-title font-semibold">
             <Icon class="mr-1.5 -mt-0.5" icon="icon-jiekoudaili" />
-            {{ t('proxy.clientProxy') }}
+            {{ t('proxy.types.clientProxy') }}
           </div>
           <div class="text-theme-sub-content mt-2 leading-5">
-            {{ t('proxy.clientProxyDescription') }}
+            {{ t('proxy.types.clientProxyDescription') }}
           </div>
         </div>
 
@@ -72,10 +72,10 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
         <div class="flex-1">
           <div class="text-theme-title font-semibold">
             <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />
-            {{ t('proxy.serverProxy') }}
+            {{ t('proxy.types.serverProxy') }}
           </div>
           <div class="text-theme-sub-content mt-2 leading-5">
-            {{ t('proxy.serverProxyDescription') }}
+            {{ t('proxy.types.serverProxyDescription') }}
           </div>
         </div>
 
@@ -83,10 +83,10 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
         <div class="flex-1">
           <div class="text-theme-title font-semibold">
             <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />
-            {{ t('proxy.cloudProxy') }}
+            {{ t('proxy.types.cloudProxy') }}
           </div>
           <div class="text-theme-sub-content mt-2 leading-5">
-            {{ t('proxy.cloudProxyDescription') }}
+            {{ t('proxy.types.cloudProxyDescription') }}
           </div>
         </div>
       </div>
@@ -95,41 +95,41 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
     <!-- Download proxy section (currently hidden) -->
     <template v-if="false">
       <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mx-5 mt-10">
-        {{ t('proxy.downloadProxy') }}
+        {{ t('proxy.download.title') }}
       </div>
       <div class="flex 2xl:space-x-2 m-2 5xl:space-x-7.5 text-3 leading-3">
         <div class="px-7.5 py-3.75 w-1/4 flex items-center text-theme-text-hover cursor-pointer">
           <img :src="windows" class="w-7.5 mr-5" />
-          <span>{{ t('proxy.windowsDesktopProxy') }}</span>
+          <span>{{ t('proxy.download.options.windowsDesktopProxy') }}</span>
         </div>
         <div class="px-7.5 py-3.75 w-1/4 flex items-center text-theme-text-hover cursor-pointer">
           <img :src="apple" class="w-7.5 mr-5" />
-          <span>{{ t('proxy.macDesktopProxy') }}</span>
+          <span>{{ t('proxy.download.options.macDesktopProxy') }}</span>
         </div>
         <div class="px-7.5 py-3.75 w-1/4 flex items-center text-theme-text-hover cursor-pointer">
           <img :src="linux" class="w-7.5 mr-5" />
-          <span>{{ t('proxy.linuxProxy') }}</span>
+          <span>{{ t('proxy.download.options.linuxProxy') }}</span>
         </div>
         <div class="px-7.5 py-3.75 w-1/4 flex items-center text-theme-text-hover cursor-pointer">
           <img :src="sd" class="w-7.5 mr-5" />
-          <span>{{ t('proxy.manualInstallPackage') }}</span>
+          <span>{{ t('proxy.download.options.manualInstallPackage') }}</span>
         </div>
       </div>
     </template>
 
     <!-- Server request proxy configuration -->
     <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mt-10">
-      {{ t('proxy.serverRequestProxyConfig') }}
+      {{ t('proxy.config.title') }}
     </div>
 
     <div class="flex space-x-5 text-theme-sub-content text-3 leading-3">
       <!-- Labels column -->
       <div>
         <div class="h-12" style="line-height: 48px;">
-          {{ t('common.enable') }}
+          {{ t('proxy.config.labels.enable') }}
         </div>
         <div class="h-12" style="line-height: 48px;">
-          {{ t('proxy.proxyAddress') }}
+          {{ t('proxy.config.labels.proxyAddress') }}
         </div>
       </div>
 
@@ -152,7 +152,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
               v-model:value="proxyConfig.url"
               :disabled="isEditMode"
               class="w-100 h-8"
-              :placeholder="t('proxy.inputProxyAddress')"
+              :placeholder="t('proxy.config.placeholders.inputProxyAddress')"
               @change="validateProxyAddress">
               <template #suffix>
                 <template v-if="proxyConfig.enabled">
@@ -173,7 +173,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
             <div
               v-if="addressValidationError"
               class="absolute top-12 text-3 leading-3 text-status-error">
-              {{ t('proxy.addressTip') }}
+              {{ t('proxy.config.validation.addressTip') }}
             </div>
           </div>
 
@@ -184,8 +184,8 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
                 <img :src="ylj" class="w-4 mr-2" />
                 <span>
                   {{ connectionStatus.isNewConnection ?
-                    t('proxy.connectionSuccess') :
-                    t('proxy.connected') }}
+                    t('proxy.status.connectionSuccess') :
+                    t('proxy.status.connected') }}
                 </span>
               </div>
             </template>
@@ -194,8 +194,8 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
                 <img :src="wlj" class="w-4 mr-2" />
                 <span>
                   {{ connectionStatus.isNewConnection ?
-                    t('proxy.connectionFailed') :
-                    t('proxy.notConnected') }}
+                    t('proxy.status.connectionFailed') :
+                    t('proxy.status.notConnected') }}
                 </span>
               </div>
             </template>

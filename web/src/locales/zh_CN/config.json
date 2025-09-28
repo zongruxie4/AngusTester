@@ -582,29 +582,48 @@
   "proxy": {
     "title": "代理",
     "hints": "通过设置请求代理，可以绕过跨域限制，使得请求能够成功发送到目标服务器。使用代理可以轻松捕获和查看发送和接收的请求和响应。这对于调试 API 调用、检查请求头、请求体和响应数据非常有用。您可根据自身的网络环境选择适合的代理服务。",
-    "noProxy": "无代理",
-    "noProxyDescription": "通过浏览器直接请求接口，需要取消跨域限制才能访问非同源服务器接口。",
-    "clientProxy": "客户端代理",
-    "clientProxyDescription": "需要在浏览器所在电脑安装\"代理程序\"，配置后将使用客户端代理发送请求。",
-    "serverProxy": "服务端代理",
-    "serverProxyDescription": "需要将\"代理程序\"安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑安装代理程序。",
-    "cloudProxy": "云代理",
-    "cloudProxyDescription": "通过AngusTester云服务器节点请求接口，注意：无法访问客户内网服务地址。",
-    "downloadProxy": "下载代理程序",
-    "windowsDesktopProxy": "Windows桌面代理",
-    "macDesktopProxy": "Mac桌面代理",
-    "linuxProxy": "Linux代理",
-    "manualInstallPackage": "手动安装包",
-    "serverRequestProxyConfig": "服务端请求代理配置",
-    "enable": "是否开启：",
-    "proxyAddress": "代理地址：",
-    "addressTip": "请输入正确的代理地址",
-    "connected": "已连接",
-    "notConnected": "未链接",
-    "inputHost": "请输入host",
-    "inputPort": "请输入端口号,范围1~65535",
-    "proxyConfigModifiedSuccess": "代理配置修改成功",
-    "connectionSuccess": "连接成功",
-    "connectionFailed": "连接失败"
+    "types": {
+      "noProxy": "无代理",
+      "noProxyDescription": "通过浏览器直接请求接口，需要取消跨域限制才能访问非同源服务器接口。",
+      "clientProxy": "客户端代理",
+      "clientProxyDescription": "需要在浏览器所在电脑安装\"代理程序\"，配置后将使用客户端代理发送请求。",
+      "serverProxy": "服务端代理",
+      "serverProxyDescription": "需要将\"代理程序\"安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑安装代理程序。",
+      "cloudProxy": "云代理",
+      "cloudProxyDescription": "通过AngusTester云服务器节点请求接口，注意：无法访问客户内网服务地址。"
+    },
+    "download": {
+      "title": "下载代理程序",
+      "options": {
+        "windowsDesktopProxy": "Windows桌面代理",
+        "macDesktopProxy": "Mac桌面代理",
+        "linuxProxy": "Linux代理",
+        "manualInstallPackage": "手动安装包"
+      }
+    },
+    "config": {
+      "title": "服务端请求代理配置",
+      "labels": {
+        "enable": "启用代理",
+        "proxyAddress": "代理地址"
+      },
+      "placeholders": {
+        "inputProxyAddress": "请输入代理地址"
+      },
+      "validation": {
+        "addressTip": "请输入正确的代理地址",
+        "inputHost": "请输入host",
+        "inputPort": "请输入端口号,范围1~65535"
+      }
+    },
+    "status": {
+      "connected": "已连接",
+      "notConnected": "未连接",
+      "connectionSuccess": "连接成功",
+      "connectionFailed": "连接失败"
+    },
+    "messages": {
+      "proxyConfigModifiedSuccess": "代理配置修改成功"
+    }
   }
 }
