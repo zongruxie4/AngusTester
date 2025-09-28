@@ -1,45 +1,74 @@
 <script setup lang="ts">
+// Vue core imports
 import { watch, inject, ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Modal, Spin, NoData } from '@xcan-angus/vue-ui';
 import { Checkbox, Input } from 'ant-design-vue';
-import { useI18n } from 'vue-i18n';
-import { deconstruct } from '@/utils/apis/index';
+
+// Infrastructure imports
 import { http, TESTER } from '@xcan-angus/infra';
+
+// Utility imports
+import { deconstruct } from '@/utils/apis/index';
+
 const { t } = useI18n();
 
+// Component props interface
 interface Props {
   visible: boolean;
   getRefInfo: (serviceId: string, ref: string) => Promise<any>;
   getCompData: (serviceId: string, type: string[]) => Promise<any>;
 }
+
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   visible: false
 });
-const loading = ref(false);
-const keywords = ref();
-const apiBaseInfo = inject('apiBaseInfo', ref());
-const emit = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'confirm', value?: Record<string, any>):void}>();
 
-const toggleOpenModel = () => {
+// Component state management
+const isLoading = ref(false);
+const searchKeywords = ref();
+const apiBaseInfo = inject('apiBaseInfo', ref());
+
+// Component events
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean): void;
+  (e: 'confirm', value?: Record<string, any>): void;
+}>();
+
+/**
+ * Close the model modal
+ */
+const closeModelModal = () => {
   emit('update:visible', false);
 };
 
-const handleImportModel = async () => {
-  if (!targetModel.value) {
-    toggleOpenModel();
+/**
+ * Handle model import confirmation
+ */
+const handleModelImportConfirmation = async () => {
+  if (!selectedModel.value) {
+    closeModelModal();
   }
-  const [error, resp] = await http.get(`${TESTER}/services/${apiBaseInfo.value.serviceId}/comp/ref`, { ref: $ref.value });
+  const [error, response] = await http.get(`${TESTER}/services/${apiBaseInfo.value.serviceId}/comp/ref`, { ref: modelReference.value });
   if (error) {
     return;
   }
-  const result = deconstruct(resp.data);
-  emit('confirm', { schema: result || JSON.parse(resp.data.model), ref: $ref.value });
-  toggleOpenModel();
+  const deconstructedResult = deconstruct(response.data);
+  emit('confirm', { schema: deconstructedResult || JSON.parse(response.data.model), ref: modelReference.value });
+  closeModelModal();
 };
 
-const options = ref<any[]>([]);
-const loadOpt = async () => {
-  const [error, resp] = await http.get(`${TESTER}/services/${apiBaseInfo.value.serviceId}/comp/type`, {
+// Component data state
+const componentOptions = ref<any[]>([]);
+
+/**
+ * Load component options from API
+ */
+const loadComponentOptions = async () => {
+  const [error, response] = await http.get(`${TESTER}/services/${apiBaseInfo.value.serviceId}/comp/type`, {
     types: ['requestBodies'],
     keys: [],
     ignoreModel: true
@@ -47,41 +76,50 @@ const loadOpt = async () => {
   if (error) {
     return;
   }
-  options.value = (resp.data || []).map(i => {
+  componentOptions.value = (response.data || []).map(option => {
     return {
-      ...i,
-      label: i.ref,
-      value: i.id
+      ...option,
+      label: option.ref,
+      value: option.id
     };
   });
 };
 
-const modelValue = ref();
-const $ref = ref();
-const resolvedRefModels = ref();
+// Model selection state
+const selectedModelValue = ref();
+const modelReference = ref();
+const resolvedReferenceModels = ref();
+const selectedModel = ref();
 
-const targetModel = ref();
-const handleChangeModel = (value) => {
-  targetModel.value = value;
-  const modelObj = options.value.find(i => i.value === value);
-  let model = modelObj.model;
-  $ref.value = modelObj.ref;
-  model = JSON.parse(model);
-  modelValue.value = model;
-  resolvedRefModels.value = modelObj.resolvedRefModels;
+/**
+ * Handle model selection change
+ * @param value - Selected model value
+ */
+const handleModelSelectionChange = (value: any) => {
+  selectedModel.value = value;
+  const modelObject = componentOptions.value.find(option => option.value === value);
+  let modelData = modelObject.model;
+  modelReference.value = modelObject.ref;
+  modelData = JSON.parse(modelData);
+  selectedModelValue.value = modelData;
+  resolvedReferenceModels.value = modelObject.resolvedRefModels;
 };
 
-const showOptions = computed(() => {
-  if (keywords.value) {
-    return options.value.filter(i => i.key.includes(keywords.value));
+/**
+ * Computed property for filtered component options based on search keywords
+ */
+const filteredComponentOptions = computed(() => {
+  if (searchKeywords.value) {
+    return componentOptions.value.filter(option => option.key.includes(searchKeywords.value));
   } else {
-    return options.value;
+    return componentOptions.value;
   }
 });
 
-watch(() => props.visible, newValue => {
-  if (newValue && !options.value.length) {
-    loadOpt();
+// Watch for modal visibility changes and load options
+watch(() => props.visible, (isVisible) => {
+  if (isVisible && !componentOptions.value.length) {
+    loadComponentOptions();
   }
 });
 </script>
@@ -89,15 +127,10 @@ watch(() => props.visible, newValue => {
   <Modal
     :visible="props.visible"
     :title="t('xcan_apiBody.component')"
-    @cancel="toggleOpenModel"
-    @ok="handleImportModel">
-    <!-- <Divider /> -->
-    <!-- <RadioGroup
-      v-model:value="targetModel"
-      :options="options"
-      @change="handleChangeModel" /> -->
+    @cancel="closeModelModal"
+    @ok="handleModelImportConfirmation">
     <Input
-      v-model:value="keywords"
+      v-model:value="searchKeywords"
       class="w-50 mb-2"
       :placeholder="t('xcan_apiBody.searchComponentName')"
       size="small" />
@@ -107,21 +140,21 @@ watch(() => props.visible, newValue => {
         <div class="flex-1/3">{{ t('common.modifier') }}</div>
         <div class="flex-1/3">{{ t('xcan_apiBody.modifyTime') }}</div>
       </div>
-      <Spin :spinning="loading">
-        <template v-if="!loading&&!showOptions?.length">
+      <Spin :spinning="isLoading">
+        <template v-if="!isLoading && !filteredComponentOptions?.length">
           <NoData class="flex items-center min-h-26" />
         </template>
         <template v-else>
           <div style="min-height: 104px;max-height: 328px;" class="px-3 pt-2 overflow-y-auto">
             <div
-              v-for="item in showOptions"
-              :key="item.id"
+              v-for="option in filteredComponentOptions"
+              :key="option.id"
               class="flex items-center">
               <div class="flex-1/3 flex items-center">
-                <Checkbox :checked="targetModel === item.value" @change="handleChangeModel(item.value)">{{ item.key }}</Checkbox>
+                <Checkbox :checked="selectedModel === option.value" @change="handleModelSelectionChange(option.value)">{{ option.key }}</Checkbox>
               </div>
-              <div class="flex-1/3">{{ item.lastModifiedByName }}</div>
-              <div class="flex-1/3">{{ item.lastModifiedDate }}</div>
+              <div class="flex-1/3">{{ option.lastModifiedByName }}</div>
+              <div class="flex-1/3">{{ option.lastModifiedDate }}</div>
             </div>
           </div>
         </template>
