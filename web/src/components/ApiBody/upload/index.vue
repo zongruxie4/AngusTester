@@ -1,122 +1,163 @@
 <script setup lang="ts">
+// Vue core imports
 import { ref, watch, computed, onMounted, nextTick } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import type { UploadProps } from 'ant-design-vue';
 import { Upload } from 'ant-design-vue';
 import { Icon, notification } from '@xcan-angus/vue-ui';
-import { useI18n } from 'vue-i18n';
-import { API_EXTENSION_KEY } from '@/utils/apis/index';
+
+// Infrastructure imports
 import { codeUtils } from '@xcan-angus/infra';
+
+// Utility imports
+import { API_EXTENSION_KEY } from '@/utils/apis/index';
+
 const { t } = useI18n();
 
+// API extension key constants
 const { valueKey, fileNameKey, formContentTypeKey } = API_EXTENSION_KEY;
 const { gzip, ungzip } = codeUtils;
-interface File {
+
+/**
+ * File interface for upload component
+ */
+interface UploadFile {
   [formContentTypeKey]: string;
   'x-xc-contentEncoding': 'gzip_base64';
   [fileNameKey]: string;
   [valueKey]: string;
 }
 
+// Legacy export alias for backward compatibility
+export type File = UploadFile;
+
+/**
+ * Component props interface
+ */
 interface Props {
-  value?:File|File[];
+  value?: UploadFile | UploadFile[];
   sizes: number[];
-  type: 'file'|'file(array)';
+  type: 'file' | 'file(array)';
   maxFileSize: number;
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   maxFileSize: 0
 });
 
-let totalSize = 0;
+// File size tracking
+let totalFileSize = 0;
 
-// eslint-disable-next-line func-call-spacing
+// Component events
 const emit = defineEmits<{
-  (e: 'change', value?: File|File[]): void
+  (e: 'change', value?: UploadFile | UploadFile[]): void;
 }>();
 
-const fileList = ref<any[]>([]);
+// Upload file list state
+const uploadFileList = ref<any[]>([]);
 
-const beforeUpload: UploadProps['beforeUpload'] = async (file) => {
-  if (totalSize + file.size > props.maxFileSize) {
+/**
+ * Handle file upload validation before upload
+ * @param file - File to be uploaded
+ * @returns False to prevent automatic upload
+ */
+const handleFileUploadValidation: UploadProps['beforeUpload'] = async (file) => {
+  if (totalFileSize + file.size > props.maxFileSize) {
     notification.warning(t('xcan_apiBody.totalFileSizeExceeded'));
   }
   return false;
 };
 
-const loadAsync = async (base64Text, name) => {
-  const buf = await ungzip(base64Text);
-  return await new File([buf], name);
+/**
+ * Load file asynchronously from base64 encoded data
+ * @param base64Text - Base64 encoded file data
+ * @param name - File name
+ * @returns File object
+ */
+const loadFileFromBase64 = async (base64Text: string, name: string) => {
+  const buffer = await ungzip(base64Text);
+  return await new File([buffer], name);
 };
 
-const showSelectFile = computed(() => {
-  return props.type === 'file(array)' || !fileList.value.length;
+/**
+ * Computed property to determine if file selection should be shown
+ */
+const shouldShowFileSelection = computed(() => {
+  return props.type === 'file(array)' || !uploadFileList.value.length;
 });
 
+/**
+ * Initialize upload component with existing files
+ */
 onMounted(async () => {
   if (props.value?.length || props.value?.[valueKey]) {
-    const files = Array.isArray(props.value) ? props.value : [props.value];
-    if (!fileList.value?.length) {
-      fileList.value = [];
-      for (const i of files) {
-        const originFileObj = i.originFileObj ? i.originFileObj : await loadAsync(i[valueKey], i[fileNameKey]);
-        if (!i[formContentTypeKey]) {
-          i[formContentTypeKey] = originFileObj.type;
+    const existingFiles = Array.isArray(props.value) ? props.value : [props.value];
+    if (!uploadFileList.value?.length) {
+      uploadFileList.value = [];
+      for (const fileItem of existingFiles) {
+        const originFileObject = fileItem.originFileObj ? fileItem.originFileObj : await loadFileFromBase64(fileItem[valueKey], fileItem[fileNameKey]);
+        if (!fileItem[formContentTypeKey]) {
+          fileItem[formContentTypeKey] = (originFileObject as any).type;
         }
-        fileList.value.push({
-          name: i[fileNameKey],
+        uploadFileList.value.push({
+          name: fileItem[fileNameKey],
           status: 'done',
-          ...i,
-          originFileObj
+          ...fileItem,
+          originFileObj: originFileObject
         });
       }
     }
   } else {
-    fileList.value = [];
+    uploadFileList.value = [];
   }
 });
 
+// Watch for upload type changes and reset file list
 watch(() => props.type, () => {
-  fileList.value = [];
+  uploadFileList.value = [];
 });
 
-watch(() => fileList.value, async () => {
+// Watch for file list changes and process files
+watch(() => uploadFileList.value, async () => {
   nextTick(async () => {
-    const data:File[] = [];
-    totalSize = 0;
-    fileList.value.forEach(item => {
-      totalSize += (item.size || item.file.size);
+    const processedFiles: UploadFile[] = [];
+    totalFileSize = 0;
+    uploadFileList.value.forEach(fileItem => {
+      totalFileSize += (fileItem.size || fileItem.file.size);
     });
-    if (totalSize > props.maxFileSize) {
-      fileList.value?.splice(-1);
+    if (totalFileSize > props.maxFileSize) {
+      uploadFileList.value?.splice(-1);
       return;
     }
-    for (const file of fileList.value) {
-      if (!file[valueKey]) {
-        if (file.originFileObj) {
-          const fileBase = await gzip(file.originFileObj);
-          file[valueKey] = fileBase;
+    for (const fileItem of uploadFileList.value) {
+      if (!fileItem[valueKey]) {
+        if (fileItem.originFileObj) {
+          const compressedFileData = await gzip(fileItem.originFileObj);
+          fileItem[valueKey] = compressedFileData;
         }
       }
-      data.push({
-        [formContentTypeKey]: file.type,
+      processedFiles.push({
+        [formContentTypeKey]: fileItem.type,
         'x-xc-contentEncoding': 'gzip_base64',
-        [fileNameKey]: file.name,
-        [valueKey]: file[valueKey],
-        file: file.originFileObj || undefined
+        [fileNameKey]: fileItem.name,
+        [valueKey]: fileItem[valueKey],
+        file: fileItem.originFileObj || undefined
       });
     }
-    if (data.length === 0) {
-      emit('change', { file: props.type === 'file(array)' ? [] : undefined, size: 0 });
+    if (processedFiles.length === 0) {
+      emit('change', props.type === 'file(array)' ? [] : undefined);
       return;
     }
     if (props.type === 'file') {
-      emit('change', { file: data[0], size: totalSize });
+      emit('change', processedFiles[0]);
       return;
     }
     if (props.type === 'file(array)') {
-      emit('change', { file: data, size: totalSize });
+      emit('change', processedFiles);
     }
   });
 }, {
@@ -125,11 +166,11 @@ watch(() => fileList.value, async () => {
 </script>
 <template>
   <Upload
-    v-model:fileList="fileList"
+    v-model:fileList="uploadFileList"
     :multiple="props.type === 'file(array)'"
-    :beforeUpload="beforeUpload"
+    :beforeUpload="handleFileUploadValidation"
     class="flex items-center flex-wrap">
-    <template v-if="showSelectFile">
+    <template v-if="shouldShowFileSelection">
       <div class="flex items-center h-5 px-1.5 ml-1 my-0.5 select-none rounded text-3 border-none text-theme-content bg-gray-bg">
         <Icon icon="icon-xuanze" class="mr-1 text-theme-sub-content" />
         {{ t('xcan_apiBody.selectFile') }}

@@ -1,22 +1,31 @@
 <script setup lang="ts">
+// Vue core imports
 import { watch, ref, inject } from 'vue';
-import { Button, Checkbox } from 'ant-design-vue';
-import { Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { http, TESTER } from '@xcan-angus/infra';
-import { qsJsonToParamList } from '../../ApiUtils';
+// UI component imports
+import { Button, Checkbox } from 'ant-design-vue';
+import { Icon, Input, Select } from '@xcan-angus/vue-ui';
 
+// Infrastructure imports
+import { http, TESTER } from '@xcan-angus/infra';
+
+// Local component imports
 import ApiUpload from '../upload/index.vue';
-import { itemTypes, formDataTypes } from './interface';
-// import { deepDelAttrFromObj, validateType } from '@/views/apis/components/api-item/utils';
 import SimpleEditableSelect from '../../SimpleEditableSelect/index.vue';
 
+// Local imports
+import { basicFlatParameterItemTypes, flatFormDataParameterTypes } from './interface';
+import { qsJsonToParamList } from '../../ApiUtils';
+
+// Utility imports
 import { ParamsItem, API_EXTENSION_KEY, deepDelAttrFromObj, validateType } from '@/utils/apis/index';
+
 const { t } = useI18n();
 
+// Component props interface
 export interface Props {
-  value: ParamsItem[],
+  value: ParamsItem[];
   useModel: boolean;
   hasFileType?: boolean;
   formFileSize: number;
@@ -24,68 +33,80 @@ export interface Props {
   hideImportBtn: boolean;
   disabled: boolean;
   viewType?: boolean;
-  fieldNames?: { valueKey: string; enabledKey: string, fileNameKey: string };
+  fieldNames?: { valueKey: string; enabledKey: string; fileNameKey: string };
 }
 
-// const { valueKey, enabledKey } = API_EXTENSION_KEY;
+// Injected dependencies
 const apiBaseInfo = inject('apiBaseInfo', ref());
-// const archivedId = inject('archivedId', ref());
-const jsContentRef = ref<any[]>([]);
 
+// Component refs
+const jsonContentRefs = ref<any[]>([]);
+
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   useModel: false,
   hasFileType: false,
   hideImportBtn: false,
   disabled: false,
   viewType: false,
-  fieldNames: () => ({ valueKey: API_EXTENSION_KEY.valueKey, enabledKey: API_EXTENSION_KEY.enabledKey, fileNameKey: API_EXTENSION_KEY.fileNameKey })
+  fieldNames: () => ({ 
+    valueKey: API_EXTENSION_KEY.valueKey, 
+    enabledKey: API_EXTENSION_KEY.enabledKey, 
+    fileNameKey: API_EXTENSION_KEY.fileNameKey 
+  })
 });
 
-// eslint-disable-next-line vue/no-setup-props-destructure
+// Field name constants
 const valueKey = props.fieldNames.valueKey;
-// eslint-disable-next-line vue/no-setup-props-destructure
 const enabledKey = props.fieldNames.enabledKey;
 
-// eslint-disable-next-line func-call-spacing
+// Component events
 const emit = defineEmits<{
-  (e: 'change', index:number, data:ParamsItem): void,
-  (e: 'del', index:number): void,
-  (e: 'update:formFileSize', value:number):void
+  (e: 'change', index: number, data: ParamsItem): void;
+  (e: 'del', index: number): void;
+  (e: 'update:formFileSize', value: number): void;
 }>();
 
-// const state = reactive<State>({
-//   formData: []
-// });
+// Form data state management
+const flatFormDataParameters = ref<ParamsItem[]>([]);
 
-const formData = ref<ParamsItem[]>([]);
-
-// const getText = (flag: boolean | undefined): string => {
-//   return flag ? '取消变量' : '设为变量';
-// };
-
-const getKey = (index?:number):symbol => {
+/**
+ * Generate unique key for flat form items
+ * @param index - Optional index for the key
+ * @returns Unique symbol key
+ */
+const generateFlatFormItemKey = (index?: number): symbol => {
   return Symbol(index);
 };
 
-const enterHandle = (e): void => {
-  if (e.key !== 'Enter') {
+/**
+ * Handle enter key press in input fields
+ * @param event - Keyboard event
+ */
+const handleEnterKeyPress = (event: KeyboardEvent): void => {
+  if (event.key !== 'Enter') {
     return;
   }
-
-  e.target.blur();
+  (event.target as HTMLElement).blur();
 };
 
-const handleValueBlur = (target: HTMLElement, index:number, data:ParamsItem):void => {
-  let value = target?.innerText || target?.target?.value;
+/**
+ * Handle value blur event for flat form parameters
+ * @param target - HTML element that lost focus
+ * @param index - Index of the parameter
+ * @param data - Parameter data object
+ */
+const handleFlatParameterValueBlur = (target: HTMLElement, index: number, data: ParamsItem): void => {
+  let value = target?.innerText || (target as any)?.target?.value;
   if (['integer', 'number', 'boolean'].includes(data?.type)) {
     try {
-      if (value <= 9007199254740992) {
+      if (typeof value === 'string' && parseFloat(value) <= 9007199254740992) {
         value = JSON.parse(value);
       }
     } catch {}
   }
-  const temp = { ...data, [valueKey]: value } as ParamsItem;
-  changeEmit(index, temp);
+  const updatedParameter = { ...data, [valueKey]: value } as ParamsItem;
+  emitParameterChange(index, updatedParameter);
 };
 
 // const handleValueChange = (value: string, index:number, data: ParamsItem):void => {
@@ -93,79 +114,102 @@ const handleValueBlur = (target: HTMLElement, index:number, data:ParamsItem):voi
 //   changeEmit(index, temp);
 // };
 
-const handleBlur = (e, index:number, data:ParamsItem, key:string):void => {
-  const value = e.target.value?.trim();
+/**
+ * Handle input blur event for flat form parameters
+ * @param event - Blur event
+ * @param index - Index of the parameter
+ * @param data - Parameter data object
+ * @param key - Field key being updated
+ */
+const handleFlatParameterFieldBlur = (event: Event, index: number, data: ParamsItem, key: string): void => {
+  const value = (event.target as HTMLInputElement).value?.trim();
   if (value === data[key]) {
     return;
   }
 
-  const temp = { ...data, [key]: value } as ParamsItem;
-  changeEmit(index, temp);
+  const updatedParameter = { ...data, [key]: value } as ParamsItem;
+  emitParameterChange(index, updatedParameter);
 };
 
-const sizes = ref<number[]>([]);
-const uploadChange = ({ file, size }, index:number, data:ParamsItem):void => {
-  sizes.value[index] = size;
+// File upload size tracking
+const fileUploadSizes = ref<number[]>([]);
+
+/**
+ * Handle file upload change event for flat forms
+ * @param uploadData - Upload data containing file and size
+ * @param index - Index of the parameter
+ * @param data - Parameter data object
+ */
+const handleFlatFileUploadChange = (uploadData: { file: any; size: number }, index: number, data: ParamsItem): void => {
+  const { file, size } = uploadData;
+  fileUploadSizes.value[index] = size;
   if (file) {
-    const type = Array.isArray(file) ? 'array' : 'string';
-    const temp = {
+    const fileType = Array.isArray(file) ? 'array' : 'string';
+    const updatedParameter = {
       ...data,
       [valueKey]: file,
       format: 'binary',
-      type
+      type: fileType
     };
-    if (type === 'array') {
-      temp.items = {
+    if (fileType === 'array') {
+      updatedParameter.items = {
         type: 'string',
         format: 'binary'
       };
-      // temp[formContentTypeKey] = file.map(i => i[formContentTypeKey]).join(';');
     } else {
-      delete temp.items;
-      // temp[formContentTypeKey] = file[formContentTypeKey];
+      delete updatedParameter.items;
     }
-    changeEmit(index, temp);
+    emitParameterChange(index, updatedParameter);
   } else {
-    const temp = {
+    const updatedParameter = {
       ...data,
       [valueKey]: undefined,
       format: 'binary',
       type: 'string'
     };
-    delete temp.items;
-    // temp[formContentTypeKey] = undefined;
-    changeEmit(index, temp);
+    delete updatedParameter.items;
+    emitParameterChange(index, updatedParameter);
   }
 };
 
-// 启用禁用
-const handleChecked = (e, index: number, data:ParamsItem) => {
-  const checked = e.target.checked;
-  const temp = { ...data, [enabledKey]: checked } as ParamsItem;
-  changeEmit(index, temp);
-  if (!checked && validated.value) {
-    jsContentRef.value[index] && jsContentRef.value[index].validate(false);
+/**
+ * Handle parameter enable/disable checkbox change for flat forms
+ * @param event - Checkbox change event
+ * @param index - Index of the parameter
+ * @param data - Parameter data object
+ */
+const handleFlatParameterEnabledChange = (event: any, index: number, data: ParamsItem) => {
+  const isEnabled = event.target.checked;
+  const updatedParameter = { ...data, [enabledKey]: isEnabled } as ParamsItem;
+  emitParameterChange(index, updatedParameter);
+  if (!isEnabled && isValidationEnabled.value) {
+    jsonContentRefs.value[index] && jsonContentRefs.value[index].validate(false);
   }
 };
 
-// 数据类型变更
-const typeChange = (type: string, index: number, data:ParamsItem) => {
-  let value;
-  sizes.value[index] = 0;
-  if (type !== 'file' && type !== 'file(array)') {
+/**
+ * Handle parameter type change for flat forms
+ * @param newType - New parameter type
+ * @param index - Index of the parameter
+ * @param data - Parameter data object
+ */
+const handleFlatParameterTypeChange = (newType: string, index: number, data: ParamsItem) => {
+  let defaultValue;
+  fileUploadSizes.value[index] = 0;
+  if (newType !== 'file' && newType !== 'file(array)') {
     delete data.format;
   } else {
     data.format = 'binary';
-    if (type === 'file(array)') {
-      type = 'array';
-      value = [];
+    if (newType === 'file(array)') {
+      newType = 'array';
+      defaultValue = [];
     } else {
-      type = 'string';
-      value = {};
+      newType = 'string';
+      defaultValue = {};
     }
   }
-  const temp = { ...data, [valueKey]: value, type };
-  changeEmit(index, temp);
+  const updatedParameter = { ...data, [valueKey]: defaultValue, type: newType };
+  emitParameterChange(index, updatedParameter);
 };
 
 // const setVariableLoading = reactive({});
@@ -187,12 +231,21 @@ const typeChange = (type: string, index: number, data:ParamsItem) => {
 //   setVariableLoading[data.name as string] = false;
 // };
 
-const handleDel = (index:number):void => {
-  sizes.value.splice(index, 1);
+/**
+ * Handle parameter deletion for flat forms
+ * @param index - Index of the parameter to delete
+ */
+const handleFlatParameterDeletion = (index: number): void => {
+  fileUploadSizes.value.splice(index, 1);
   emit('del', index);
 };
 
-const changeEmit = (index:number, data:ParamsItem):void => {
+/**
+ * Emit parameter change event with proper type handling for flat forms
+ * @param index - Index of the parameter
+ * @param data - Updated parameter data
+ */
+const emitParameterChange = (index: number, data: ParamsItem): void => {
   if (props.hasFileType) {
     if (data.format === 'binary') {
       if (data.type === 'file') {
@@ -223,126 +276,155 @@ const changeEmit = (index:number, data:ParamsItem):void => {
   emit('change', index, data);
 };
 
+// Watch for prop value changes and update flat form data
 watch(() => props.value, (newValue) => {
-  formData.value = [];
-  newValue.forEach((i, idx) => {
-    let type = i.type;
-    if (i.format === 'binary') {
-      type = 'file';
-      if (i.type === 'array') {
-        type = 'file(array)';
+  flatFormDataParameters.value = [];
+  newValue.forEach((item, index) => {
+    let parameterType = item.type;
+    if (item.format === 'binary') {
+      parameterType = 'file';
+      if (item.type === 'array') {
+        parameterType = 'file(array)';
       }
-      formData.value.push({ ...i, key: i.key || getKey(idx), type });
+      flatFormDataParameters.value.push({ ...item, key: item.key || generateFlatFormItemKey(index), type: parameterType });
       return;
     }
     if (props.hasFileType) {
-      if (type === 'object') {
+      if (parameterType === 'object') {
         const jsonSchema = {
-          [i.name as string]: i[valueKey]
+          [item.name as string]: item[valueKey]
         };
-        if (typeof i[valueKey] === 'object' && JSON.stringify(i[valueKey]) !== '{}') {
-          formData.value.push(...qsJsonToParamList(jsonSchema).map(item => ({ ...item, [enabledKey]: i[enabledKey] })));
+        if (typeof item[valueKey] === 'object' && JSON.stringify(item[valueKey]) !== '{}') {
+          flatFormDataParameters.value.push(...qsJsonToParamList(jsonSchema).map(flatItem => ({ ...flatItem, [enabledKey]: item[enabledKey] })));
         } else {
-          formData.value.push({ ...i, key: i.key || getKey(idx), type: 'string' });
+          flatFormDataParameters.value.push({ ...item, key: item.key || generateFlatFormItemKey(index), type: 'string' });
         }
         return;
       }
-      if (type === 'array' && i.format !== 'binary') {
-        if (i[valueKey].length) {
+      if (parameterType === 'array' && item.format !== 'binary') {
+        if (item[valueKey].length) {
           const jsonSchema = {
-            [i.name as string]: i[valueKey]
+            [item.name as string]: item[valueKey]
           };
-          formData.value.push(...qsJsonToParamList(jsonSchema).map(item => ({ ...item, [enabledKey]: i[enabledKey] })));
+          flatFormDataParameters.value.push(...qsJsonToParamList(jsonSchema).map(flatItem => ({ ...flatItem, [enabledKey]: item[enabledKey] })));
         } else {
-          formData.value.push({ ...i, key: i.key || getKey(idx), type: 'string' });
+          flatFormDataParameters.value.push({ ...item, key: item.key || generateFlatFormItemKey(index), type: 'string' });
         }
         return;
       }
     }
-    if (!i.type) {
-      if (i.properties) {
-        type = 'object(json)';
-      } else if (i.items) {
-        type = 'array(json)';
+    if (!item.type) {
+      if (item.properties) {
+        parameterType = 'object(json)';
+      } else if (item.items) {
+        parameterType = 'array(json)';
       } else {
-        type = 'string';
+        parameterType = 'string';
       }
     }
-    formData.value.push({ ...i, key: i.key || getKey(idx), type });
-    // return { ...i, key: i.key || getKey(idx), type };
+    flatFormDataParameters.value.push({ ...item, key: item.key || generateFlatFormItemKey(index), type: parameterType });
   });
 }, {
   deep: true,
   immediate: true
 });
 
-const getItemMaxFileSize = (index) => {
-  const currenSize = sizes.value[index] || 0;
-  return props.maxFileSize - (props.formFileSize - currenSize);
+/**
+ * Get maximum file size for a specific flat form parameter
+ * @param index - Index of the parameter
+ * @returns Maximum file size allowed
+ */
+const getFlatParameterMaxFileSize = (index: number) => {
+  const currentSize = fileUploadSizes.value[index] || 0;
+  return props.maxFileSize - (props.formFileSize - currentSize);
 };
 
-watch(() => sizes.value, () => {
+// Watch for file size changes and update form file size
+watch(() => fileUploadSizes.value, () => {
   if (!props.hasFileType) {
     return;
   }
-  const result = sizes.value.reduce((pre, current) => {
-    return pre + current;
+  const totalSize = fileUploadSizes.value.reduce((previous, current) => {
+    return previous + current;
   }, 0);
-  emit('update:formFileSize', result);
+  emit('update:formFileSize', totalSize);
 }, {
   deep: true
 });
 
-const validated = ref(false);
-const validateContents = async (val = true) => {
-  validated.value = val;
-  for (const idx in jsContentRef.value) {
-    if (formData.value[idx][enabledKey]) {
-      jsContentRef.value[idx].validate(val);
+// Validation state management
+const isValidationEnabled = ref(false);
+
+/**
+ * Validate flat form contents
+ * @param shouldValidate - Whether to enable validation
+ */
+const validateFlatFormContents = async (shouldValidate = true) => {
+  isValidationEnabled.value = shouldValidate;
+  for (const index in jsonContentRefs.value) {
+    if (flatFormDataParameters.value[index][enabledKey]) {
+      jsonContentRefs.value[index].validate(shouldValidate);
     }
   }
 };
 
-const getErrValue = (item) => {
-  if (!validated.value || !item.name || !item[enabledKey]) {
+/**
+ * Get error state for a flat form parameter item
+ * @param item - Parameter item to check
+ * @returns True if item has validation errors
+ */
+const getFlatParameterErrorState = (item: ParamsItem) => {
+  if (!isValidationEnabled.value || !item.name || !item[enabledKey]) {
     return false;
   }
-  let type = item.type;
-  if (type.includes('(')) {
-    type = type.split('(')[0];
+  let parameterType = item.type;
+  if (parameterType.includes('(')) {
+    parameterType = parameterType.split('(')[0];
   }
-  const errors = validateType(item[valueKey], deepDelAttrFromObj({ ...item, type }, ['name', enabledKey, 'key']));
-  return !!errors?.length;
+  const validationErrors = validateType(item[valueKey], deepDelAttrFromObj({ ...item, type: parameterType }, ['name', enabledKey, 'key']));
+  return !!validationErrors?.length;
 };
 
-const getModelResolve = (models) => {
-  formData.value.forEach((i, index) => {
-    if (i.$ref) {
-      models[i.$ref] = JSON.parse(JSON.stringify(i.schema));
-      delete models[i.$ref].schema.$ref;
+/**
+ * Get model resolution for flat form parameters
+ * @param models - Models object to populate
+ */
+const getFlatModelResolution = (models: any) => {
+  flatFormDataParameters.value.forEach((item, index) => {
+    if (item.$ref) {
+      models[item.$ref] = JSON.parse(JSON.stringify(item.schema));
+      delete models[item.$ref].schema.$ref;
     }
-    jsContentRef.value[index] && jsContentRef.value[index].getModelResolve(models);
+    jsonContentRefs.value[index] && jsonContentRefs.value[index].getModelResolve(models);
   });
 };
 
-const updateComp = async () => {
-  for (let i = 0; i < formData.value.length; i++) {
-    if (formData.value[i].$ref) {
-      await http.put(`${TESTER}/services/${apiBaseInfo.value.serviceId}/comp/schema/${formData.value[i].name}`, formData.value[i].schema);
+/**
+ * Update flat form component data
+ */
+const updateFlatComponentData = async () => {
+  for (let i = 0; i < flatFormDataParameters.value.length; i++) {
+    if (flatFormDataParameters.value[i].$ref) {
+      await http.put(`${TESTER}/services/${apiBaseInfo.value.serviceId}/comp/schema/${flatFormDataParameters.value[i].name}`, flatFormDataParameters.value[i].schema);
     }
-    if (jsContentRef.value[i]) {
-      await jsContentRef.value[i].updateComp();
+    if (jsonContentRefs.value[i]) {
+      await jsonContentRefs.value[i].updateComp();
     }
   }
 };
 
-defineExpose({ getModelResolve, updateComp, validate: validateContents });
+// Expose component methods
+defineExpose({ 
+  getModelResolve: getFlatModelResolution, 
+  updateComp: updateFlatComponentData, 
+  validate: validateFlatFormContents 
+});
 
 </script>
 <template>
   <div class="space-y-3 relative" :class="{'pre-sign': props.useModel, 'not-button': props.viewType}">
     <div
-      v-for="(item,index) in formData"
+      v-for="(item,index) in flatFormDataParameters"
       :key="item.key"
       class="space-y-3"
       :class="{'opacity-50': !item[enabledKey]}">
@@ -350,7 +432,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
         <Checkbox
           :disabled="(!item.name && !item.value) || !!props.useModel"
           :checked="item[enabledKey] && (!!item.name || !!item.value)"
-          @change="handleChecked($event, index, item)" />
+          @change="handleFlatParameterEnabledChange($event, index, item)" />
         <div class="max-w-100 flex flex-col flex-1">
           <Input
             :placeholder="t('xcan_apiBody.enterParameterName')"
@@ -358,8 +440,8 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             :allowClear="false"
             :readonly="!!props.useModel || props.disabled"
             size="small"
-            @blur="handleBlur($event,index,item,'name')"
-            @keypress="enterHandle" />
+            @blur="handleFlatParameterFieldBlur($event,index,item,'name')"
+            @keypress="handleEnterKeyPress" />
         </div>
         <div class="flex flex-col w-25">
           <Select
@@ -368,9 +450,9 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             dropdownClassName="api-select-dropdown"
             :placeholder="t('xcan_apiBody.selectParameterType')"
             :readonly="!!item.$ref || !!props.useModel || props.disabled"
-            :options="props.hasFileType ? formDataTypes : itemTypes"
+            :options="props.hasFileType ? flatFormDataParameterTypes : basicFlatParameterItemTypes"
             :allowClear="false"
-            @change="typeChange($event, index, item)" />
+            @change="handleFlatParameterTypeChange($event, index, item)" />
         </div>
         <div v-if="['file(array)', 'file'].includes(item.type)" class="flex flex-col flex-1 min-w-50">
           <!-- <span v-if="index === 0" class="mb-3 text-3 leading-3 text-theme-sub-content select-none">参数值</span> -->
@@ -378,10 +460,10 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             <ApiUpload
               :key="item.name"
               :value="item[valueKey]"
-              :maxFileSize="getItemMaxFileSize(index)"
+              :maxFileSize="getFlatParameterMaxFileSize(index)"
               :type="item.type"
-              :sizes="sizes"
-              @change="uploadChange($event,index,item)" />
+              :sizes="fileUploadSizes"
+              @change="handleFlatFileUploadChange($event,index,item)" />
           </div>
         </div>
         <div v-else class="flex flex-col flex-1">
@@ -390,21 +472,21 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             :placeholder="t('xcan_apiBody.enterParameterValue')"
             :options="item.enum"
             :value="item[valueKey] || item.schema?.[valueKey]"
-            @blur="handleValueBlur($event,index,item )"
-            @select="changeEmit(index, { ...item, [valueKey]: $event })" />
+            @blur="handleFlatParameterValueBlur($event,index,item )"
+            @select="emitParameterChange(index, { ...item, [valueKey]: $event })" />
           <!-- <param-input
             v-else-if="!['array(json)', 'array(xml)', 'object(xml)', 'object(json)', 'array', 'object', 'file', 'file(array)'].includes(item.type)"
             placeholder="请输入调试值"
             :value="item[valueKey]"
-            :error="getErrValue(item)"
-            @blur="handleValueBlur($event,index,item )" /> -->
+            :error="getFlatParameterErrorState(item)"
+            @blur="handleFlatParameterValueBlur($event,index,item )" /> -->
           <Input
             v-else
             v-model:value="item[valueKey]"
             :placeholder="t('xcan_apiBody.enterParameterValue')"
             :maxlength="4096"
-            :error="getErrValue(item)"
-            @blur="handleValueBlur($event,index,item )" />
+            :error="getFlatParameterErrorState(item)"
+            @blur="handleFlatParameterValueBlur($event,index,item )" />
         </div>
         <!-- <Button
           v-if="archivedId"
@@ -420,7 +502,7 @@ defineExpose({ getModelResolve, updateComp, validate: validateContents });
             class="w-7 p-0"
             type="default"
             :disabled="!!props.useModel || (!item[valueKey] && !item.name)"
-            @click="handleDel(index)">
+            @click="handleFlatParameterDeletion(index)">
             <Icon icon="icon-shanchuguanbi" />
           </Button>
         </template>
