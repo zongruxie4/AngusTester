@@ -210,7 +210,7 @@ onMounted(() => {
 
         <!-- Enhanced action buttons cell -->
         <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-1">
-          <Tooltip :title="t('taskTrash.actions.recover')">
+          <Tooltip :title="t('actions.recover')">
             <Button
               :disabled="record.disabled"
               type="text"
@@ -260,10 +260,10 @@ onMounted(() => {
             <Icon icon="icon-qingchu" class="text-2xl text-gray-400" />
           </div>
           <h3 class="text-sm font-medium text-gray-900 mb-1">
-            {{ $t('common.description') }}
+            {{ $t('trash.messages.emptyDescription') }}
           </h3>
           <p class="text-xs text-gray-500 max-w-sm mx-auto">
-            {{ $t('taskTrash.empty.hint') }}
+            {{ $t('trash.messages.emptyHint') }}
           </p>
         </div>
       </template>

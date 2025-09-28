@@ -2,7 +2,7 @@ import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { appContext, duration } from '@xcan-angus/infra';
+import { appContext, duration, PageQuery, ProjectPageQuery } from '@xcan-angus/infra';
 import { project } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 import { TrashItem } from '../types';
@@ -22,7 +22,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
   // Search and filter state
   const inputValue = ref<string>();
   const orderBy = ref<string>();
-  const orderSort = ref<'ASC' | 'DESC'>();
+  const orderSort = ref<PageQuery.OrderSort>();
 
   // Pagination state
   const pagination = ref<{ total: number; current: number; pageSize: number; }>({
@@ -48,7 +48,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
       return;
     }
 
-    notification.success(t('projectTrash.messages.recoverSuccess'));
+    notification.success(t('actions.tips.recoverSuccess'));
     pagination.value.current = getCurrentPage(
       pagination.value.current,
       pagination.value.pageSize,
@@ -92,7 +92,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
       loading.value = false;
       return;
     }
-    notification.success(t('projectTrash.messages.recoverAllSuccess'));
+    notification.success(t('actions.tips.recoverAllSuccess'));
     pagination.value.current = 1;
     await getList();
   };
@@ -110,7 +110,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
       return;
     }
 
-    notification.success(t('projectTrash.messages.deleteAllSuccess'));
+    notification.success(t('actions.tips.deleteAllSuccess'));
     pagination.value.current = 1;
     await getList();
   };
@@ -121,14 +121,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
    */
   const getList = async () => {
     loading.value = true;
-    const params: {
-      projectId: string;
-      pageNo: number;
-      pageSize: number;
-      filters?: {value: string, key: string, op: string}[];
-      orderBy?: string;
-      orderSort?: string;
-    } = {
+    const params: ProjectPageQuery = {
       projectId,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize
@@ -195,7 +188,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
   const tableChange = (
     { current = 1, pageSize = 10 },
     _filters,
-    sorter: { orderBy: string; orderSort: 'ASC' | 'DESC'; }
+    sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }
   ) => {
     orderBy.value = sorter.orderBy;
     orderSort.value = sorter.orderSort;

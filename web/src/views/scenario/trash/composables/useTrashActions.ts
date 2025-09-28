@@ -27,7 +27,7 @@ export function useTrashActions (projectId: string | Ref<string>) {
       return false;
     }
 
-    notification.success(t('scenarioTrash.messages.restoreSuccess'));
+    notification.success(t('actions.tips.recoverSuccess'));
     return true;
   };
 
@@ -65,7 +65,7 @@ export function useTrashActions (projectId: string | Ref<string>) {
       return false;
     }
 
-    notification.success(t('scenarioTrash.messages.restoreAllSuccess'));
+    notification.success(t('actions.tips.recoverAllSuccess'));
     return true;
   };
 
@@ -85,7 +85,7 @@ export function useTrashActions (projectId: string | Ref<string>) {
       return false;
     }
 
-    notification.success(t('scenarioTrash.messages.deleteAllSuccess'));
+    notification.success(t('actions.tips.deleteAllSuccess'));
     return true;
   };
 

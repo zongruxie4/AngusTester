@@ -26,7 +26,7 @@ export function useAddedTableColumns (type: DataType) {
         dataIndex: 'id'
       },
       {
-        title: t('dataHome.summaryTable.columns.name'),
+        title: t('common.name'),
         dataIndex: 'name',
         ellipsis: true,
         sorter: true

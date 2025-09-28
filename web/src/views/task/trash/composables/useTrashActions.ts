@@ -28,7 +28,7 @@ export function useTrashActions (projectId: string) {
       if (error) {
         throw error;
       }
-      notification.success(t('taskTrash.messages.recoverSuccess'));
+      notification.success(t('actions.tips.recoverSuccess'));
       triggerRefresh();
       return true;
     } catch (error) {
@@ -74,7 +74,7 @@ export function useTrashActions (projectId: string) {
       if (error) {
         throw error;
       }
-      notification.success(t('taskTrash.messages.recoverAllSuccess'));
+      notification.success(t('actions.tips.recoverAllSuccess'));
       triggerRefresh();
       return true;
     } catch (error) {
@@ -97,7 +97,7 @@ export function useTrashActions (projectId: string) {
       if (error) {
         throw error;
       }
-      notification.success(t('taskTrash.messages.deleteAllSuccess'));
+      notification.success(t('actions.tips.deleteAllSuccess'));
       triggerRefresh();
       return true;
     } catch (error) {

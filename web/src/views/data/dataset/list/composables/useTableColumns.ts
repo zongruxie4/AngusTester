@@ -10,7 +10,7 @@ export function useTableColumns () {
   const columns = [
     {
       key: 'name',
-      title: t('dataset.list.columns.name'),
+      title: t('common.name'),
       dataIndex: 'name',
       ellipsis: true,
       width: '30%',

@@ -14,7 +14,7 @@ export function useTableColumns () {
    */
   const columns = computed<TaskTableColumn[]>(() => [
     {
-      title: t('taskTrash.columns.name'),
+      title: t('common.name'),
       dataIndex: 'targetName',
       key: 'targetName',
       width: '35%',
@@ -29,14 +29,14 @@ export function useTableColumns () {
       sorter: false
     },
     {
-      title: t('taskTrash.columns.deleter'),
+      title: t('common.deletedBy'),
       dataIndex: 'deletedByName',
       key: 'deletedByName',
       ellipsis: true,
       sorter: false
     },
     {
-      title: t('taskTrash.columns.deleteTime'),
+      title: t('common.deletedDate'),
       dataIndex: 'deletedDate',
       key: 'deletedDate',
       ellipsis: true,

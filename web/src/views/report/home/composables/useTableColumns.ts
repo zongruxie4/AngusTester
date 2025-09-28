@@ -36,7 +36,7 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'name',
       dataIndex: 'name',
-      title: t('reportHome.table.name'),
+      title: t('common.name'),
       sorter: true
     },
     {

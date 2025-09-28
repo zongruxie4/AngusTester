@@ -183,12 +183,12 @@ onMounted(() => {
               <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <Icon icon="icon-qingchu" class="text-2xl text-blue-500" />
               </div>
-              <div class="mt-3">
+              <div>
                 <h1 class="text-base font-bold text-gray-900">
-                  {{ $t('scenarioTrash.name') }}
+                  {{ $t('trash.title') }}
                 </h1>
                 <p class="text-xs text-gray-500 mt-0.5">
-                  {{ $t('scenarioTrash.tips.adminOnly') }}
+                  {{ $t('trash.messages.adminHint') }}
                 </p>
               </div>
             </div>
@@ -246,7 +246,7 @@ onMounted(() => {
             <div class="flex items-center space-x-2">
               <!-- Bulk actions -->
               <div v-if="hasItems" class="flex items-center space-x-2">
-                <Tooltip :title="t('scenarioTrash.actions.restoreAll')">
+                <Tooltip :title="t('actions.recoverAll')">
                   <Button
                     :disabled="!canPerformActions"
                     type="primary"
@@ -254,7 +254,7 @@ onMounted(() => {
                     class="action-button-primary"
                     @click="handleRestoreAll">
                     <Icon icon="icon-zhongzhi" class="mr-1 text-sm" />
-                    {{ $t('scenarioTrash.actions.restoreAll') }}
+                    {{ $t('actions.recoverAll') }}
                   </Button>
                 </Tooltip>
 
@@ -341,7 +341,7 @@ onMounted(() => {
 
               <!-- Enhanced action buttons cell -->
               <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-1">
-                <Tooltip :title="t('scenarioTrash.actions.restore')">
+                <Tooltip :title="t('actions.recover')">
                   <Button
                     :disabled="!canUserPerformActions(record)"
                     type="text"
@@ -391,10 +391,10 @@ onMounted(() => {
                   <Icon icon="icon-qingchu" class="text-2xl text-blue-400" />
                 </div>
                 <h3 class="text-sm font-medium text-gray-900 mb-1">
-                  {{ $t('common.description') }}
+                  {{ $t('trash.messages.emptyDescription') }}
                 </h3>
                 <p class="text-xs text-gray-500 max-w-sm mx-auto">
-                  {{ $t('scenarioTrash.empty.hint') }}
+                  {{ $t('trash.messages.emptyHint') }}
                 </p>
               </div>
             </template>

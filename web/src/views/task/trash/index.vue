@@ -178,12 +178,12 @@ onMounted(() => {
               <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <Icon icon="icon-qingchu" class="text-2xl text-blue-500" />
               </div>
-              <div class="mt-3">
+              <div>
                 <h1 class="text-base font-bold text-gray-900">
-                  {{ $t('taskTrash.title') }}
+                  {{ $t('trash.title') }}
                 </h1>
                 <p class="text-xs text-gray-500 mt-0.5">
-                  {{ $t('taskTrash.tips.adminOnly') }}
+                  {{ $t('trash.messages.adminHint') }}
                 </p>
               </div>
             </div>
@@ -241,7 +241,7 @@ onMounted(() => {
             <div class="flex items-center space-x-2">
               <!-- Bulk actions -->
               <div v-if="hasItems" class="flex items-center space-x-2">
-                <Tooltip :title="t('taskTrash.actions.recoverAll')">
+                <Tooltip :title="t('actions.recoverAll')">
                   <Button
                     :disabled="!canPerformActions"
                     type="primary"
@@ -249,7 +249,7 @@ onMounted(() => {
                     class="action-button-primary"
                     @click="handleRecoverAll">
                     <Icon icon="icon-zhongzhi" class="mr-1 text-sm" />
-                    {{ $t('taskTrash.actions.recoverAll') }}
+                    {{ $t('actions.recoverAll') }}
                   </Button>
                 </Tooltip>
 

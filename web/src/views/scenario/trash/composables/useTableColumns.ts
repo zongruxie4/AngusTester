@@ -14,7 +14,7 @@ export function useTableColumns () {
    */
   const columns = computed<TableColumn[]>(() => [
     {
-      title: t('scenarioTrash.table.columns.name'),
+      title: t('common.name'),
       dataIndex: 'targetName',
       key: 'targetName',
       width: '35%',
@@ -29,14 +29,14 @@ export function useTableColumns () {
       sorter: false
     },
     {
-      title: t('scenarioTrash.table.columns.deleter'),
+      title: t('common.deletedBy'),
       dataIndex: 'deletedByName',
       key: 'deletedByName',
       ellipsis: true,
       sorter: false
     },
     {
-      title: t('scenarioTrash.table.columns.deleteTime'),
+      title: t('common.deletedDate'),
       dataIndex: 'deletedDate',
       key: 'deletedDate',
       ellipsis: true,
@@ -46,7 +46,7 @@ export function useTableColumns () {
       title: t('common.actions'),
       dataIndex: 'action',
       key: 'action',
-      width: 70,
+      width: 100,
       fixed: 'right'
     }
   ]);

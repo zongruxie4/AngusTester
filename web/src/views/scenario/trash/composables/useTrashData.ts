@@ -1,7 +1,7 @@
 import type { Ref } from 'vue';
 import { computed, ref, unref } from 'vue';
 import { scenario } from '@/api/tester';
-import { PageQuery } from '@xcan-angus/infra';
+import { PageQuery, ProjectPageQuery } from '@xcan-angus/infra';
 import { getCurrentPage } from '@/utils/utils';
 import type { TrashItem, TrashParams } from '../types';
 
@@ -40,14 +40,7 @@ export function useTrashData (projectId: string | Ref<string>, userInfo: { id: s
 
     loading.value = true;
 
-    const requestParams: {
-      projectId: string;
-      pageNo: number;
-      pageSize: number;
-      filters?: {value: string, op: string, key: string}[],
-      orderBy?: string;
-      orderSort?: string;
-    } = {
+    const requestParams: ProjectPageQuery = {
       projectId: currentProjectId,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize

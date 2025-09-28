@@ -14,7 +14,7 @@ export function useTableColumns () {
    */
   const columns = computed<TableColumn[]>(() => [
     {
-      title: t('apiTrash.table.columns.name'),
+      title: t('common.name'),
       dataIndex: 'targetName',
       key: 'targetName',
       width: '35%',
@@ -29,14 +29,14 @@ export function useTableColumns () {
       sorter: false
     },
     {
-      title: t('apiTrash.table.columns.deletedBy'),
+      title: t('common.deletedBy'),
       dataIndex: 'deletedByName',
       key: 'deletedByName',
       ellipsis: true,
       sorter: false
     },
     {
-      title: t('apiTrash.table.columns.deletedDate'),
+      title: t('common.deletedDate'),
       dataIndex: 'deletedDate',
       key: 'deletedDate',
       ellipsis: true,

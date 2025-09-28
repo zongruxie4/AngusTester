@@ -98,7 +98,7 @@ const menuItems = [
   { name: t('design.title'), icon: 'icon-sheji', key: 'design' },
   { name: t('apiShare.title'), icon: 'icon-fenxiang', key: 'share' },
   { name: t('server.title'), icon: 'icon-host', key: 'server' },
-  { name: t('apiTrash.title'), icon: 'icon-qingchu', key: 'trash' }
+  { name: t('trash.title'), icon: 'icon-qingchu', key: 'trash' }
 ];
 </script>
 

@@ -70,7 +70,7 @@ export const timeOpt = [
 // Chart data columns configuration
 export const columns = [
   {
-    title: t('node.nodeDetail.chartOptions.columns.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     key: 'name'
   },

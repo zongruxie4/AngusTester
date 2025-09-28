@@ -27,7 +27,7 @@ const menuItems: {
   { icon: 'icon-zhuye', name: t('home.title'), key: 'homepage' },
   { icon: 'icon-changjingguanli', name: t('scenario.title'), key: 'scenario' },
   { icon: 'icon-jiankong2', name: t('scenarioMonitor.title'), key: 'monitor' },
-  { icon: 'icon-qingchu', name: t('scenarioTrash.title'), key: 'trash' }
+  { icon: 'icon-qingchu', name: t('trash.title'), key: 'trash' }
 ];
 
 const homeRefreshNotify = ref<string>('');

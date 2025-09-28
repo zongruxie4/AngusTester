@@ -8,7 +8,7 @@ const t = i18n.getI18n()?.global?.t || ((value: string) => value);
  */
 export const columns = [
   {
-    title: t('fileSpace.columns.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     width: '25%',
     ellipsis: true

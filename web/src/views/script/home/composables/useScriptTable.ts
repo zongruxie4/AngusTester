@@ -29,7 +29,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: t('scriptHome.table.columns.name'),
+      title: t('common.name'),
       dataIndex: 'name',
       ellipsis: true,
       sorter: true,

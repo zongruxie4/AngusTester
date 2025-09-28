@@ -198,7 +198,7 @@ onMounted(() => {
 
         <!-- Enhanced action buttons cell -->
         <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-1">
-          <Tooltip :title="t('apiTrash.table.actions.recover')">
+          <Tooltip :title="t('actions.recover')">
             <Button
               :disabled="record.disabled"
               type="text"

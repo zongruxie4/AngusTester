@@ -81,7 +81,7 @@ const deleteAll = async () => {
   }
 
   emit('deleteAll');
-  notification.success(t('service.sidebar.deleteAllSuccess'));
+  notification.success(t('actions.tips.deleteAllSuccess'));
 };
 
 const refresh = () => {

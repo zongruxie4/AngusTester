@@ -464,7 +464,7 @@ onMounted(() => {
     :style="style"
     class="relative max-w-full"
     @cancel="close">
-    <Tooltip :title="isZoom ? t('functionCase.addCaseModal.restore') : t('functionCase.addCaseModal.fullscreen')">
+    <Tooltip :title="isZoom ? t('actions.recover') : t('actions.fullscreen')">
       <Icon
         :icon="isZoom?'icon-tuichuzuida':'icon-zuidahua'"
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"

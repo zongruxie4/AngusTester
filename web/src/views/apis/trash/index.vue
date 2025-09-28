@@ -163,10 +163,10 @@ const handleRefresh = () => {
               </div>
               <div class="mt-3">
                 <h1 class="text-base font-bold text-gray-900">
-                  {{ $t('apiTrash.title') }}
+                  {{ $t('trash.title') }}
                 </h1>
                 <p class="text-xs text-gray-500 mt-0.5">
-                  {{ $t('apiTrash.tips.adminOnly') }}
+                  {{ $t('trash.messages.adminHint') }}
                 </p>
               </div>
             </div>
@@ -224,7 +224,7 @@ const handleRefresh = () => {
             <div class="flex items-center space-x-2">
               <!-- Bulk actions -->
               <div v-if="hasItems" class="flex items-center space-x-2">
-                <Tooltip :title="t('apiTrash.actions.recoverAll')">
+                <Tooltip :title="t('actions.recoverAll')">
                   <Button
                     :disabled="!canPerformActions"
                     type="primary"
@@ -232,7 +232,7 @@ const handleRefresh = () => {
                     class="action-button-primary"
                     @click="handleRecoverAll">
                     <Icon icon="icon-zhongzhi" class="mr-1 text-sm" />
-                    {{ $t('apiTrash.actions.recoverAll') }}
+                    {{ $t('actions.recoverAll') }}
                   </Button>
                 </Tooltip>
 

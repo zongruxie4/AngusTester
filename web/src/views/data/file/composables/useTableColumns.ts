@@ -78,7 +78,7 @@ export function useTableColumns () {
    */
   const fileColumns = computed(() => [
     {
-      title: t('fileSpace.columns.name'),
+      title: t('common.name'),
       dataIndex: 'name',
       width: '30%',
       ellipsis: true

@@ -21,7 +21,7 @@ export function useTableColumns () {
     },
     {
       key: 'targetName',
-      title: t('projectTrash.table.name'),
+      title: t('common.name'),
       dataIndex: 'targetName',
       width: '35%',
       ellipsis: true,
@@ -36,14 +36,14 @@ export function useTableColumns () {
     },
     {
       key: 'deletedByName',
-      title: t('projectTrash.table.deleter'),
+      title: t('common.deletedBy'),
       dataIndex: 'deletedByName',
       ellipsis: true,
       sorter: false
     },
     {
       key: 'deletedDate',
-      title: t('projectTrash.table.deleteTime'),
+      title: t('common.deletedDate'),
       dataIndex: 'deletedDate',
       ellipsis: true,
       sorter: true

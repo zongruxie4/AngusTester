@@ -100,7 +100,7 @@ const menuItems = computed(() => {
         }
       : null,
     {
-      name: t('taskTrash.title'),
+      name: t('trash.title'),
       icon: 'icon-qingchu',
       key: 'trash'
     }

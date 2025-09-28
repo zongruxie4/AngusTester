@@ -14,7 +14,7 @@ export function useTableColumns () {
    */
   const columns: TableColumn[] = [
     {
-      title: t('dataVariable.list.columns.name'),
+      title: t('common.name'),
       dataIndex: 'name',
       ellipsis: true,
       width: '16%',

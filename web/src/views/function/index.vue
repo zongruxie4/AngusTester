@@ -219,7 +219,7 @@ const menuItems = computed(() => {
         }
       : null,
     {
-      name: t('functionTrash.title'),
+      name: t('trash.title'),
       key: 'trash',
       icon: 'icon-qingchu'
     }

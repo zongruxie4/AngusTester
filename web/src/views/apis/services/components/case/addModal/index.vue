@@ -303,7 +303,7 @@ watch([() => apiDebugRef.value], () => {
         </Button>
       </div>
     </template>
-    <Tooltip :title="isZoom?t('service.case.addModal.restore'):t('service.case.addModal.fullScreen')">
+    <Tooltip :title="isZoom?t('actions.recover'):t('actions.fullScreen')">
       <Icon
         :icon="isZoom?'icon-tuichuzuida':'icon-zuidahua'"
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"

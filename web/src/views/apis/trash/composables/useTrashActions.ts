@@ -30,7 +30,7 @@ export function useTrashActions (projectId: string | Ref<string>) {
         throw error;
       }
 
-      notification.success(t('apiTrash.messages.recoverSuccess'));
+      notification.success(t('actions.tips.recoverSuccess'));
       triggerRefresh();
       return true;
     } catch (error) {
@@ -90,7 +90,7 @@ export function useTrashActions (projectId: string | Ref<string>) {
         throw error;
       }
 
-      notification.success(t('apiTrash.messages.recoverAllSuccess'));
+      notification.success(t('actions.tips.recoverAllSuccess'));
       triggerRefresh();
       return true;
     } catch (error) {
@@ -124,7 +124,7 @@ export function useTrashActions (projectId: string | Ref<string>) {
         throw error;
       }
 
-      notification.success(t('apiTrash.messages.deleteAllSuccess'));
+      notification.success(t('actions.tips.deleteAllSuccess'));
       triggerRefresh();
       return true;
     } catch (error) {

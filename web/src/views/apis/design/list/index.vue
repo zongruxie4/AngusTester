@@ -232,7 +232,7 @@ const handleImportOk = () => {
 
 const columns = [
   {
-    title: t('design.home.columns.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true,
     sorter: true,

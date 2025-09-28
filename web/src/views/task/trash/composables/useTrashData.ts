@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue';
-import { appContext } from '@xcan-angus/infra';
+import { appContext, PageQuery, ProjectPageQuery } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import type { TaskTrashItem, TaskTrashPagination, TaskTrashParams } from '../types';
 
@@ -18,7 +18,7 @@ export function useTrashData (
   const loading = ref(false);
   const loaded = ref(false);
   const orderBy = ref<string>();
-  const orderSort = ref<'ASC' | 'DESC'>();
+  const orderSort = ref<PageQuery.OrderSort>();
   const pagination = ref<TaskTrashPagination>({
     total: 0,
     current: 1,
@@ -35,7 +35,7 @@ export function useTrashData (
   const loadData = async (params: TaskTrashParams) => {
     loading.value = true;
 
-    const requestParams: any = {
+    const requestParams: ProjectPageQuery = {
       projectId,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize,
@@ -79,7 +79,7 @@ export function useTrashData (
   const handleTableChange = (
     paginationInfo: { current?: number; pageSize?: number },
     _filters: any,
-    sorter: { orderBy?: string; orderSort?: 'ASC' | 'DESC' }
+    sorter: { orderBy?: string; orderSort?: PageQuery.OrderSort }
   ) => {
     const { current = 1, pageSize = 10 } = paginationInfo;
 

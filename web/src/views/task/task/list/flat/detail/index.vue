@@ -1170,12 +1170,12 @@ const getReferencedTaskCount = (type = 'TASK') => {
           @click="toggleFullScreenMode">
           <template v-if="isFullScreen">
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-tuichuzuida" />
-            <span>{{ t('task.detail.actions.exitFullScreen') }}</span>
+            <span>{{ t('actions.exitFullScreen') }}</span>
           </template>
 
           <template v-else>
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zuidahua" />
-            <span>{{ t('task.detail.actions.fullScreen') }}</span>
+            <span>{{ t('actions.fullScreen') }}</span>
           </template>
         </Button>
       </div>

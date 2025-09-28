@@ -23,7 +23,7 @@ export function useMockServiceTableColumns () {
     },
     {
       dataIndex: 'name',
-      title: t('node.nodeDetail.mockService.columns.name'),
+      title: t('common.name'),
       width: 150
     },
     {

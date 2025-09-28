@@ -112,6 +112,8 @@
     "createdDate": "创建时间",
     "lastModifiedBy": "修改人",
     "lastModifiedDate": "修改时间",
+    "deletedBy": "删除人",
+    "deletedDate": "删除时间",
     "enabledStatus": "启用状态",
     "actions": "操作",
     "placeholders": {
@@ -182,6 +184,8 @@
     "move": "移动",
     "search": "搜索",
     "cancelSearch": "取消搜索",
+    "fullScreen": "全屏",
+    "exitFullScreen": "退出全屏",
     "moveUp": "上移",
     "moveDown": "下移",
     "moveToUpperLevel": "移到上级",
@@ -223,6 +227,8 @@
     "start": "开始",
     "stop": "停止",
     "copyLink": "复制链接",
+    "recover": "恢复",
+    "recoverAll": "恢复全部",
     "sort": "排序",
     "group": "分组",
     "noGroup": "不分组",
@@ -251,7 +257,10 @@
       "copySuccess": "复制成功",
       "copyLinkSuccess": "复制链接成功",
       "shareSuccess": "分享成功",
-      "copyFailed": "复制失败"
+      "copyFailed": "复制失败",
+      "recoverAllSuccess": "全部还原成功",
+      "deleteAllSuccess": "全部删除成功",
+      "recoverSuccess": "还原成功"
     }
   },
   "home": {
@@ -298,12 +307,9 @@
   "trash": {
     "title": "回收站",
     "messages": {
-      "adminHint": "只允许管理员和删除人还原或彻底删除回收站数据。",
+      "adminHint": "只允许管理员、创建人和删除人还原或彻底删除回收站数据。",
       "emptyDescription": "回收站中没有数据",
-      "emptyHint": "删除的数据将显示在这里，您可以恢复或永久删除它们",
-      "recoverAllSuccess": "全部还原成功",
-      "deleteAllSuccess": "全部删除成功",
-      "recoverSuccess": "还原成功"
+      "emptyHint": "删除的数据将显示在这里，您可以恢复或永久删除它们"
     }
   },
   "chart": {

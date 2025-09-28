@@ -16,7 +16,7 @@ export function useTableColumns (params: ScenarioQueryParams) {
     const baseColumns: TableColumn[] = [
       {
         key: 'name',
-        title: t('scenarioHome.myScenarios.table.columns.name'),
+        title: t('common.name'),
         dataIndex: 'name',
         ellipsis: true,
         sorter: true,

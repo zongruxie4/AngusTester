@@ -112,6 +112,8 @@
     "createdDate": "Created Date",
     "lastModifiedBy": "Modified By",
     "lastModifiedDate": "Modified Date",
+    "deletedBy": "Deleter",
+    "deletedDate": "Deleted Date",
     "progress": "Progress",
     "workload": "Workload",
     "enabledStatus": "Enabled Status",
@@ -185,6 +187,8 @@
     "cancelBatch": "Cancel Batch",
     "search": "Search",
     "cancelSearch": "Cancel search",
+    "fullScreen": "Full Screen",
+    "exitFullScreen": "Exit Full Screen",
     "moveUp": "Move Up",
     "moveDown": "Move Down",
     "moveToUpperLevel": "Move to Upper Level",
@@ -225,6 +229,8 @@
     "start": "Start",
     "stop": "Stop",
     "copyLink": "Copy Link",
+    "recover": "Recover",
+    "recoverAll": "Recover All",
     "sort": "Sort",
     "group": "Group",
     "noGroup": "No Group",
@@ -253,7 +259,10 @@
       "copySuccess": "Copy successful",
       "copyLinkSuccess": "Copy link successful",
       "shareSuccess": "Share successful",
-      "copyFailed": "Copy failed"
+      "copyFailed": "Copy failed",
+      "recoverAllSuccess": "All items restored successfully",
+      "deleteAllSuccess": "All items deleted successfully",
+      "recoverSuccess": "Restored successfully"
     }
   },
   "home": {
@@ -300,12 +309,9 @@
   "trash": {
     "title": "Trash",
     "messages": {
-      "adminHint": "Only administrators and deleters can restore or permanently delete data from trash.",
+      "adminHint": "Only administrators, creator and deleter can restore or permanently delete data from trash.",
       "emptyDescription": "No data in trash",
-      "emptyHint": "Deleted data will be displayed here, you can restore or permanently delete them",
-      "recoverAllSuccess": "All items restored successfully",
-      "deleteAllSuccess": "All items deleted successfully",
-      "recoverSuccess": "Restored successfully"
+      "emptyHint": "Deleted data will be displayed here, you can restore or permanently delete them"
     }
   },
   "chart": {
