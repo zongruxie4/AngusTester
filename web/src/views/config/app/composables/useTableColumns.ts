@@ -15,23 +15,23 @@ export function useTableColumns (activeKey: AuthObjectType) {
   const columns = computed(() => {
     const baseColumns = [
       {
-        title: t('app.config.memberList.table.columns.policyId'),
+        title: t('app.config.members.list.table.columns.policyId'),
         dataIndex: 'id',
-        width: '10%'
+        width: 120
       },
       {
-        title: t('app.config.memberList.table.columns.policyName'),
+        title: t('app.config.members.list.table.columns.policyName'),
         dataIndex: 'name',
         ellipsis: true,
-        width: '12%'
+        width: 150
       },
       {
-        title: t('app.config.memberList.table.columns.policyCode'),
+        title: t('app.config.members.list.table.columns.policyCode'),
         dataIndex: 'code',
-        width: '15%'
+        width: 180
       },
       {
-        title: t('app.config.memberList.table.columns.policyDescription'),
+        title: t('app.config.members.list.table.columns.policyDescription'),
         dataIndex: 'description'
       }
     ];
@@ -39,23 +39,23 @@ export function useTableColumns (activeKey: AuthObjectType) {
     // Only show source column for users
     if (activeKey === AuthObjectType.USER) {
       baseColumns.push({
-        title: t('app.config.memberList.table.columns.policySource'),
+        title: t('app.config.members.list.table.columns.authSource'),
         dataIndex: 'source',
-        width: '15%'
+        width: 130
       });
     }
 
     baseColumns.push(
       {
-        title: t('app.config.memberList.table.columns.joinTime'),
+        title: t('app.config.members.list.table.columns.authTime'),
         dataIndex: 'createdDate',
-        width: 140
+        width: 180
       },
       {
         title: t('common.actions'),
         dataIndex: 'action',
         align: 'center',
-        width: 100
+        width: 120
       }
     );
 

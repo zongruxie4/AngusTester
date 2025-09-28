@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, ref, computed } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { AsyncComponent, Hints, Icon, Image, Input, Scroll, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 
@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 const isAdmin = appContext.isAdmin();
 const { t } = useI18n();
 const AddMembers = defineAsyncComponent(() => import('./AddMember.vue'));
-const PolicyModal = defineAsyncComponent(() => import('@/views/config/appInfo/PolicyModal.vue'));
+const PolicyModal = defineAsyncComponent(() => import('@/views/config/app/PolicyModal.vue'));
 
 // Use composables for data and logic management
 const {
@@ -150,7 +150,7 @@ const {
       <div v-show="!!selectId" class="flex flex-col -mt-7">
         <div class="flex justify-between items-center mb-2">
           <div class="flex-1 min-w-0 truncate">
-            <Hints :text="t('app.config.memberList.hints')" />
+            <Hints :text="t('app.config.members.list.hints')" />
           </div>
         </div>
         <div class="flex justify-between items-center gap-2">
@@ -158,7 +158,7 @@ const {
             <Input
               v-model:value="policyKeyword"
               :allowClear="true"
-              :placeholder="t('app.config.memberList.placeholders.searchPolicy')" />
+              :placeholder="t('organization.placeholders.searchPolicy')" />
           </div>
           <Button
             :disabled="!isAdmin"
@@ -167,7 +167,7 @@ const {
             class="flex items-center flex-none"
             @click="handleAuthorize">
             <Icon icon="icon-jia" class="mr-1" />
-            {{ t('app.config.memberList.buttons.authorizePolicy') }}
+            {{ t('app.config.members.actions.authorizePolicy') }}
           </Button>
         </div>
       </div>
@@ -185,7 +185,7 @@ const {
               class="flex items-center"
               :disabled="props.activeKey === AuthObjectType.USER && record.orgType.value !== AuthObjectType.USER || !isAdmin"
               @click="handleCancel(record.id)">
-              <Icon icon="icon-zhongzhi2" class="mr-1" />{{ t('app.config.memberList.table.actions.cancelAuth') }}
+              <Icon icon="icon-zhongzhi2" class="mr-1" />{{ t('app.config.members.actions.cancelAuth') }}
             </Button>
           </template>
           <template v-if="column.dataIndex === 'source'">

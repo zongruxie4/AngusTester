@@ -6,7 +6,7 @@ import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
 const { t } = useI18n();
 
-const AppInfo = defineAsyncComponent(() => import('@/views/config/appInfo/index.vue'));
+const AppInfo = defineAsyncComponent(() => import('@/views/config/app/index.vue'));
 const Indicator = defineAsyncComponent(() => import('@/views/config/indicator/index.vue'));
 const Event = defineAsyncComponent(() => import('@/views/config/event/index.vue'));
 const Proxy = defineAsyncComponent(() => import('@/views/config/proxy/index.vue'));

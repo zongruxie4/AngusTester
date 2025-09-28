@@ -227,6 +227,7 @@
     "start": "开始",
     "stop": "停止",
     "copyLink": "复制链接",
+    "selectAll": "全选",
     "recover": "恢复",
     "recoverAll": "恢复全部",
     "sort": "排序",
@@ -297,11 +298,17 @@
     "user": "用户",
     "dept": "部门",
     "group": "组",
+    "policy": "策略",
     "placeholders": {
       "selectTenant": "--请选择租户--",
       "selectUser": "--请选择用户--",
       "selectDept": "--请选择部门--",
-      "selectGroup": "--请选择组--"
+      "selectGroup": "--请选择组--",
+      "selectPolicy": "--请选择策略--",
+      "searchUser": "搜索用户",
+      "searchDept": "搜索部门",
+      "searchGroup": "搜索组",
+      "searchPolicy": "搜索策略"
     }
   },
   "trash": {

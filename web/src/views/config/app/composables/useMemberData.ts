@@ -42,11 +42,11 @@ export function useMemberData (activeKey: AuthObjectType, appId: string) {
   const btnName = computed(() => {
     switch (activeKey) {
       case AuthObjectType.USER:
-        return t('app.config.memberList.buttons.addMember');
+        return t('app.config.members.actions.addUser');
       case AuthObjectType.DEPT:
-        return t('app.config.memberList.buttons.addDept');
+        return t('app.config.members.actions.addDept');
       case AuthObjectType.GROUP:
-        return t('app.config.memberList.buttons.addGroup');
+        return t('app.config.members.actions.addGroup');
       default:
         return '';
     }
@@ -58,11 +58,11 @@ export function useMemberData (activeKey: AuthObjectType, appId: string) {
   const placeholder = computed(() => {
     switch (activeKey) {
       case AuthObjectType.USER:
-        return t('app.config.memberList.placeholders.searchMember');
+        return t('organization.placeholders.searchUser');
       case AuthObjectType.DEPT:
-        return t('app.config.memberList.placeholders.searchDept');
+        return t('organization.placeholders.searchDept');
       case AuthObjectType.GROUP:
-        return t('app.config.memberList.placeholders.searchGroup');
+        return t('organization.placeholders.searchGroup');
       default:
         return '';
     }
@@ -134,10 +134,10 @@ export function useMemberData (activeKey: AuthObjectType, appId: string) {
   const getTenantTypeName = (record: any) => {
     const result: string[] = [];
     if (record?.currentDefault) {
-      result.push(t('app.config.memberList.table.sources.appDefault'));
+      result.push(t('app.config.members.list.table.sources.appDefault'));
     }
     if (record?.openAuth) {
-      result.push(t('app.config.memberList.table.sources.openAuth'));
+      result.push(t('app.config.members.list.table.sources.openAuth'));
     }
     return result.join(',');
   };

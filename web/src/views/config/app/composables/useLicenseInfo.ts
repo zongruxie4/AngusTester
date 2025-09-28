@@ -6,7 +6,7 @@ import { edition } from '@/api/store';
 /**
  * Composable for managing permit information display
  */
-export function usePermitInfo () {
+export function useLicenseInfo () {
   const { t } = useI18n();
 
   // Edition type and data source
@@ -18,35 +18,35 @@ export function usePermitInfo () {
    */
   const privateColumns = [[
     {
-      label: t('app.config.permitInfo.columns.editionType'),
+      label: t('app.config.license.columns.editionType'),
       dataIndex: 'editionType'
     },
     {
-      label: t('app.config.permitInfo.columns.goodsCode'),
+      label: t('app.config.license.columns.goodsCode'),
       dataIndex: 'goodsCode'
     },
     {
-      label: t('app.config.permitInfo.columns.goodsVersion'),
+      label: t('app.config.license.columns.goodsVersion'),
       dataIndex: 'goodsVersion'
     },
     {
-      label: t('app.config.permitInfo.columns.provider'),
+      label: t('app.config.license.columns.provider'),
       dataIndex: 'provider'
     },
     {
-      label: t('app.config.permitInfo.columns.issuer'),
+      label: t('app.config.license.columns.issuer'),
       dataIndex: 'issuer'
     },
     {
-      label: t('app.config.permitInfo.columns.holder'),
+      label: t('app.config.license.columns.holder'),
       dataIndex: 'holder'
     },
     {
-      label: t('app.config.permitInfo.columns.licenseNo'),
+      label: t('app.config.license.columns.licenseNo'),
       dataIndex: 'licenseNo'
     },
     {
-      label: t('app.config.permitInfo.columns.issuedDate'),
+      label: t('app.config.license.columns.issuedDate'),
       dataIndex: 'beginDate'
     },
     {
@@ -54,7 +54,7 @@ export function usePermitInfo () {
       dataIndex: 'expiredDate'
     },
     {
-      label: t('app.config.permitInfo.columns.signature'),
+      label: t('app.config.license.columns.signature'),
       dataIndex: 'signature'
     }
   ]];
@@ -64,27 +64,27 @@ export function usePermitInfo () {
    */
   const cloudServiceColumns = [[
     {
-      label: t('app.config.permitInfo.columns.editionType'),
+      label: t('app.config.license.columns.editionType'),
       dataIndex: 'editionType'
     },
     {
-      label: t('app.config.permitInfo.columns.goodsCode'),
+      label: t('app.config.license.columns.goodsCode'),
       dataIndex: 'goodsCode'
     },
     {
-      label: t('app.config.permitInfo.columns.goodsVersion'),
+      label: t('app.config.license.columns.goodsVersion'),
       dataIndex: 'goodsVersion'
     },
     {
-      label: t('app.config.permitInfo.columns.provider'),
+      label: t('app.config.license.columns.provider'),
       dataIndex: 'provider'
     },
     {
-      label: t('app.config.permitInfo.columns.issuer'),
+      label: t('app.config.license.columns.issuer'),
       dataIndex: 'issuer'
     },
     {
-      label: t('app.config.permitInfo.columns.holder'),
+      label: t('app.config.license.columns.holder'),
       dataIndex: 'holder'
     }
   ]];
@@ -107,13 +107,13 @@ export function usePermitInfo () {
    */
   const getVersionTypeIcon = (key: string) => {
     switch (key) {
-      case 'DATACENTER':
+      case EditionType.DATACENTER:
         return 'icon-shujuzhongxin';
-      case 'CLOUD_SERVICE':
+      case EditionType.CLOUD_SERVICE:
         return 'icon-yunfuwu';
-      case 'ENTERPRISE':
+      case EditionType.ENTERPRISE:
         return 'icon-qiye';
-      case 'COMMUNITY':
+      case EditionType.COMMUNITY:
         return 'icon-shequ';
       default:
         return '';

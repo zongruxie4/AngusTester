@@ -111,7 +111,7 @@ watch(() => props.visible, newValue => {
 </script>
 <template>
   <Modal
-    :title="t('app.config.policyModal.title')"
+    :title="t('app.config.members.modal.grantPolicy')"
     :visible="props.visible"
     :centered="true"
     :keyboard="true"
@@ -122,7 +122,7 @@ watch(() => props.visible, newValue => {
     <div class="-mt-3">
       <div class="mb-2 flex space-x-2">
         <Input
-          :placeholder="t('app.config.policyModal.placeholders.searchPolicy')"
+          :placeholder="t('organization.placeholders.searchPolicy')"
           size="small"
           class="w-1/2"
           allowClear

@@ -83,7 +83,7 @@ const getPopupContainer = (el: HTMLElement): HTMLElement => {
 </script>
 <template>
   <Modal
-    :title="title"
+    :title="t('app.config.members.modal.addMember')"
     :visible="props.visible"
     :centered="true"
     :keyboard="true"
@@ -95,8 +95,8 @@ const getPopupContainer = (el: HTMLElement): HTMLElement => {
       <div class="form-tips">
         <div class="tips-icon">💡</div>
         <div class="tips-content">
-          <p class="tips-title">{{ t('app.config.addMembers.tips.title') }}</p>
-          <p class="tips-text">{{ t('common.description') }}</p>
+          <p class="tips-title">{{ t('app.config.members.tips.title') }}</p>
+          <p class="tips-text">{{ t('app.config.members.tips.description', {type: title}) }}</p>
         </div>
       </div>
 
@@ -126,10 +126,10 @@ const getPopupContainer = (el: HTMLElement): HTMLElement => {
       </div>
 
       <div class="form-section mt-4">
-        <div class="form-label">{{ t('app.config.addMembers.columns.policy') }}</div>
+        <div class="form-label">{{ t('organization.policy') }}</div>
         <Select
           v-model:value="selectedPolicyIds"
-          :placeholder="t('app.config.addMembers.placeholders.selectPolicy')"
+          :placeholder="t('organization.placeholders.selectPolicy')"
           class="w-full"
           mode="multiple"
           :error="policyError"

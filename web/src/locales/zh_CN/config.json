@@ -1,176 +1,51 @@
 {
-  "proxy": {
-    "title": "代理",
-    "hints": "通过设置请求代理，可以绕过跨域限制，使得请求能够成功发送到目标服务器。使用代理可以轻松捕获和查看发送和接收的请求和响应。这对于调试 API 调用、检查请求头、请求体和响应数据非常有用。您可根据自身的网络环境选择适合的代理服务。",
-    "noProxy": "无代理",
-    "noProxyDescription": "通过浏览器直接请求接口，需要取消跨域限制才能访问非同源服务器接口。",
-    "clientProxy": "客户端代理",
-    "clientProxyDescription": "需要在浏览器所在电脑安装\"代理程序\"，配置后将使用客户端代理发送请求。",
-    "serverProxy": "服务端代理",
-    "serverProxyDescription": "需要将\"代理程序\"安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑安装代理程序。",
-    "cloudProxy": "云代理",
-    "cloudProxyDescription": "通过AngusTester云服务器节点请求接口，注意：无法访问客户内网服务地址。",
-    "downloadProxy": "下载代理程序",
-    "windowsDesktopProxy": "Windows桌面代理",
-    "macDesktopProxy": "Mac桌面代理",
-    "linuxProxy": "Linux代理",
-    "manualInstallPackage": "手动安装包",
-    "serverRequestProxyConfig": "服务端请求代理配置",
-    "enable": "是否开启：",
-    "proxyAddress": "代理地址：",
-    "addressTip": "请输入正确的代理地址",
-    "connected": "已连接",
-    "notConnected": "未链接",
-    "inputHost": "请输入host",
-    "inputPort": "请输入端口号,范围1~65535",
-    "proxyConfigModifiedSuccess": "代理配置修改成功",
-    "connectionSuccess": "连接成功",
-    "connectionFailed": "连接失败"
-  },
-  "event": {
-    "title": "事件",
-    "hints": "AngusTester 事件配置，为用户提供了即时的信息更新和状态反馈，帮助团队快速响应和处理潜在的问题。",
-    "errMsg": "错误信息",
-    "config": {
-      "pushConfig": "推送配置",
-      "push_config_tip": "配置通知方式可以确保相关人员在事件发生时及时收到信息，提高反应速度。",
-      "pushRecords": "推送记录",
-      "configReceiveChannel": "配置接收通道",
-      "configReceiver": "配置接收人",
-      "selectReceiveMethod": "选择接收方式",
-      "selectReceiver": "选择接收人",
-      "receiver": "接收人",
-      "selectOtherUsers": "选择其他用户",
-      "event_record": "事件记录"
-    },
-    "columns": {
-      "notificationStatus": "通知状态",
-      "receiveChannel": "接收通道",
-      "sender": "发送人",
-      "executionId": "执行编号",
-      "pushTime": "推送时间",
-      "pushResult": "推送结果",
-      "eventName": "事件名称",
-      "noticeType": "通知类型",
-      "eventId": "事件ID",
-      "content": "内容",
-      "receiver": "接收人",
-      "pushStatus": "推送状态"
-    },
-    "placeholder": {
-      "queryExecutionId": "查询执行编号",
-      "selectNotificationStatus": "选择通知状态",
-      "selectHttpAddress": "选择HTTP(S)地址",
-      "selectEmail": "选择邮箱",
-      "selectDingTalkBot": "选择钉钉机器人",
-      "selectWeChatBot": "选择企业微信机器人"
-    },
-    "searchLogPlaceholder": {
-      "code": "查询事件描述或编码",
-      "pushStatus": "选择推送状态"
-    },
-    "receiveConfig": {
-      "title": "配置接收通道",
-      "receiveChannel": "接收通道",
-      "selectWebhookAddress": "选择 Webhook 地址",
-      "selectEmail": "选择邮箱",
-      "selectDingTalkBot": "选择钉钉机器人",
-      "selectWeChatBot": "选择企业微信机器人",
-      "configSuccess": "配置成功"
-    },
-    "receiver": {
-      "title": "配置接收人",
-      "receiveMethod": "接收方式",
-      "selectReceiver": "选择接收人",
-      "notificationMethod": "通知方式",
-      "configSuccess": "配置成功"
-    }
-  },
   "app": {
-    "title": "应用设置",
+    "title": "应用",
     "config": {
-      "title": "应用配置",
       "labels": {
         "domain": "域名"
       },
       "tabs": {
-        "member": "应用成员",
-        "quota": "应用配额",
-        "license": "许可信息"
+        "member": "成员",
+        "quota": "配额",
+        "license": "许可"
       },
-      "permitInfo": {
-        "title": "许可信息",
-        "description": "查看和管理您的应用许可信息，包括版本类型、产品编码、发行者等详细信息。",
-        "columns": {
-          "editionType": "版本类型",
-          "goodsCode": "产品编码",
-          "goodsVersion": "产品版本",
-          "provider": "提供者",
-          "issuer": "发行者",
-          "holder": "持有者",
-          "licenseNo": "许可编号",
-          "issuedDate": "许可发行日期",
-          "signature": "许可证书MD5签名"
-        },
-        "remainingDays": "剩余{days}天"
-      },
-      "addMembers": {
-        "title": {
-          "user": "加入用户",
-          "dept": "加入部门",
-          "group": "加入组"
-        },
-        "columns": {
-          "user": "授权用户",
-          "dept": "授权部门",
-          "group": "授权组",
-          "policy": "授权策略"
-        },
+      "members": {
         "tips": {
           "title": "添加说明",
-          "description": "选择用户和对应的策略，系统将为选中的用户分配相应的权限。"
+          "description": "选择「{type}」和对应的策略，系统将自动为选中的「{type}」分配相应的权限。"
         },
-        "labels": {
-          "selectUser": "选择用户",
-          "selectDept": "选择部门",
-          "selectGroup": "选择组",
-          "selectPolicy": "选择策略"
+        "actions": {
+          "addMember": "添加用户",
+          "addDept": "添加部门",
+          "addGroup": "添加组",
+          "authorizePolicy": "授权策略",
+          "cancelAuth": "取消授权"
         },
-        "placeholders": {
-          "selectPolicy": "选择策略"
+        "list": {
+          "hints": "为项目成员分配特定的功能菜单权限，可以明确每个成员在项目中的职责范围。只允许系统管理员和应用管理员添加应用成员和授权权限策略操作。",
+          "table": {
+            "columns": {
+              "policyId": "策略ID",
+              "policyName": "策略名称",
+              "policyCode": "策略编码",
+              "policyDescription": "策略描述",
+              "authSource": "授权来源",
+              "authTime": "授权时间"
+            },
+            "sources": {
+              "appDefault": "默认",
+              "openAuth": "开通"
+            }
+          }
+        },
+        "modal": {
+          "addMember": "添加成员",
+          "grantPolicy": "授权策略"
         },
         "errors": {
           "userRequired": "请选择用户",
           "policyRequired": "请选择策略"
-        }
-      },
-      "memberList": {
-        "buttons": {
-          "addMember": "添加成员",
-          "addDept": "添加部门",
-          "addGroup": "添加组",
-          "authorizePolicy": "授权策略"
-        },
-        "placeholders": {
-          "searchMember": "搜索成员",
-          "searchDept": "搜索部门",
-          "searchGroup": "搜索组",
-          "searchPolicy": "查询策略名称"
-        },
-        "hints": "为项目成员分配特定的功能菜单权限，可以明确每个成员在项目中的职责范围。只允许系统管理员和应用管理员添加应用成员和授权权限策略操作。",
-        "table": {
-          "columns": {
-            "policyId": "策略ID",
-            "policyName": "策略名称",
-            "policyCode": "策略编码",
-            "policyDescription": "策略描述",
-            "policySource": "策略来源",
-            "joinTime": "加入时间"
-          },
-          "sources": {
-            "appDefault": "应用默认授权",
-            "openAuth": "开通授权"
-          }
         }
       },
       "quota": {
@@ -185,21 +60,23 @@
           }
         }
       },
-      "policyModal": {
-        "title": "授权策略",
-        "placeholders": {
-          "searchPolicy": "查询策略名称"
-        }
+      "license": {
+        "title": "许可信息",
+        "description": "查看和管理您的应用许可信息，包括版本类型、产品编码、发行者等详细信息。",
+        "columns": {
+          "editionType": "版本类型",
+          "goodsCode": "产品编码",
+          "goodsVersion": "产品版本",
+          "provider": "提供者",
+          "issuer": "发行者",
+          "holder": "持有者",
+          "licenseNo": "许可编号",
+          "issuedDate": "许可发行日期",
+          "signature": "许可证书MD5签名"
+        },
+        "remainingDays": "剩余{days}天"
       }
     }
-  },
-  "script": {
-    "title": "脚本设置",
-    "description": "配置脚本执行的相关参数和选项"
-  },
-  "permission": {
-    "title": "权限设置",
-    "description": "配置用户权限和访问控制"
   },
   "indicator": {
     "title": "指标",
@@ -286,8 +163,67 @@
       }
     }
   },
+  "event": {
+    "title": "事件",
+    "hints": "AngusTester 事件配置，为用户提供了即时的信息更新和状态反馈，帮助团队快速响应和处理潜在的问题。",
+    "errMsg": "错误信息",
+    "config": {
+      "pushConfig": "推送配置",
+      "push_config_tip": "配置通知方式可以确保相关人员在事件发生时及时收到信息，提高反应速度。",
+      "pushRecords": "推送记录",
+      "configReceiveChannel": "配置接收通道",
+      "configReceiver": "配置接收人",
+      "selectReceiveMethod": "选择接收方式",
+      "selectReceiver": "选择接收人",
+      "receiver": "接收人",
+      "selectOtherUsers": "选择其他用户",
+      "event_record": "事件记录"
+    },
+    "columns": {
+      "notificationStatus": "通知状态",
+      "receiveChannel": "接收通道",
+      "sender": "发送人",
+      "executionId": "执行编号",
+      "pushTime": "推送时间",
+      "pushResult": "推送结果",
+      "eventName": "事件名称",
+      "noticeType": "通知类型",
+      "eventId": "事件ID",
+      "content": "内容",
+      "receiver": "接收人",
+      "pushStatus": "推送状态"
+    },
+    "placeholder": {
+      "queryExecutionId": "查询执行编号",
+      "selectNotificationStatus": "选择通知状态",
+      "selectHttpAddress": "选择HTTP(S)地址",
+      "selectEmail": "选择邮箱",
+      "selectDingTalkBot": "选择钉钉机器人",
+      "selectWeChatBot": "选择企业微信机器人"
+    },
+    "searchLogPlaceholder": {
+      "code": "查询事件描述或编码",
+      "pushStatus": "选择推送状态"
+    },
+    "receiveConfig": {
+      "title": "配置接收通道",
+      "receiveChannel": "接收通道",
+      "selectWebhookAddress": "选择 Webhook 地址",
+      "selectEmail": "选择邮箱",
+      "selectDingTalkBot": "选择钉钉机器人",
+      "selectWeChatBot": "选择企业微信机器人",
+      "configSuccess": "配置成功"
+    },
+    "receiver": {
+      "title": "配置接收人",
+      "receiveMethod": "接收方式",
+      "selectReceiver": "选择接收人",
+      "notificationMethod": "通知方式",
+      "configSuccess": "配置成功"
+    }
+  },
   "node": {
-    "title": "节点管理",
+    "title": "节点",
     "message": {
       "onlineInstallAgent": "在线安装代理",
       "manualInstallAgent": "手动安装代理",
@@ -642,5 +578,33 @@
         }
       }
     }
+  },
+  "proxy": {
+    "title": "代理",
+    "hints": "通过设置请求代理，可以绕过跨域限制，使得请求能够成功发送到目标服务器。使用代理可以轻松捕获和查看发送和接收的请求和响应。这对于调试 API 调用、检查请求头、请求体和响应数据非常有用。您可根据自身的网络环境选择适合的代理服务。",
+    "noProxy": "无代理",
+    "noProxyDescription": "通过浏览器直接请求接口，需要取消跨域限制才能访问非同源服务器接口。",
+    "clientProxy": "客户端代理",
+    "clientProxyDescription": "需要在浏览器所在电脑安装\"代理程序\"，配置后将使用客户端代理发送请求。",
+    "serverProxy": "服务端代理",
+    "serverProxyDescription": "需要将\"代理程序\"安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑安装代理程序。",
+    "cloudProxy": "云代理",
+    "cloudProxyDescription": "通过AngusTester云服务器节点请求接口，注意：无法访问客户内网服务地址。",
+    "downloadProxy": "下载代理程序",
+    "windowsDesktopProxy": "Windows桌面代理",
+    "macDesktopProxy": "Mac桌面代理",
+    "linuxProxy": "Linux代理",
+    "manualInstallPackage": "手动安装包",
+    "serverRequestProxyConfig": "服务端请求代理配置",
+    "enable": "是否开启：",
+    "proxyAddress": "代理地址：",
+    "addressTip": "请输入正确的代理地址",
+    "connected": "已连接",
+    "notConnected": "未链接",
+    "inputHost": "请输入host",
+    "inputPort": "请输入端口号,范围1~65535",
+    "proxyConfigModifiedSuccess": "代理配置修改成功",
+    "connectionSuccess": "连接成功",
+    "connectionFailed": "连接失败"
   }
 }

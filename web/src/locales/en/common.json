@@ -228,6 +228,7 @@
     "debug": "Debug",
     "start": "Start",
     "stop": "Stop",
+    "selectAll": "Select All",
     "copyLink": "Copy Link",
     "recover": "Recover",
     "recoverAll": "Recover All",
@@ -299,11 +300,17 @@
     "user": "User",
     "dept": "Department",
     "group": "Group",
+    "policy": "Policy",
     "placeholders": {
       "selectTenant": "--Select tenant-- ",
       "selectUser": "--Select user--",
       "selectDept": "--Select department--",
-      "selectGroup": "--Select group--"
+      "selectGroup": "--Select group--",
+      "selectPolicy": "--Select policy--",
+      "searchUser": "Search user",
+      "searchDept": "Search department",
+      "searchGroup": "Search group",
+      "searchPolicy": "Search policy"
     }
   },
   "trash": {

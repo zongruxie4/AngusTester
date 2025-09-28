@@ -8,7 +8,7 @@ import { TabPane, Tabs } from 'ant-design-vue';
 // Async component imports
 const MemberTab = defineAsyncComponent(() => import('./MemberTab.vue'));
 const Quota = defineAsyncComponent(() => import('./Quota.vue'));
-const LicenseInfo = defineAsyncComponent(() => import('./LicenseInfo.vue'));
+const LicenseInfo = defineAsyncComponent(() => import('./license.vue'));
 
 // Reactive data for application information
 const appInfo = ref(appContext.getAccessApp());
@@ -70,15 +70,19 @@ watch(() => appInfo.value, (newValue) => {
         v-model:activeKey="activeTab"
         size="small"
         class="mt-5">
-        <TabPane key="member" :tab="t('app.config.tabs.member')">
+        <TabPane
+          key="member"
+          :tab="t('app.config.tabs.member')">
           <MemberTab :appId="appId" />
         </TabPane>
-        <TabPane key="quota" :tab="t('app.config.tabs.quota')">
+        <TabPane
+          key="quota"
+          :tab="t('app.config.tabs.quota')">
           <Quota />
         </TabPane>
         <TabPane
-          key="permission"
-          :tab="t('actions.permission')">
+          key="license"
+          :tab="t('app.config.tabs.license')">
           <LicenseInfo />
         </TabPane>
       </Tabs>

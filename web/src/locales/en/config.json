@@ -1,175 +1,51 @@
 {
-  "proxy": {
-    "title": "Proxy",
-    "description": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data. You can choose a suitable proxy service according to your network environment.",
-    "noProxy": "No Proxy",
-    "noProxyDescription": "Request interfaces directly through browser, cross-origin restrictions need to be removed to access non-same-origin server interfaces.",
-    "clientProxy": "Client Proxy",
-    "clientProxyDescription": "Need to install \"proxy program\" on the computer where the browser is located, after configuration, client proxy will be used to send requests.",
-    "serverProxy": "Server Proxy",
-    "serverProxyDescription": "Need to install \"proxy program\" on a server host in a shared network, using server proxy does not require users to install proxy programs on their respective computers.",
-    "cloudProxy": "Cloud Proxy",
-    "cloudProxyDescription": "Request interfaces through AngusTester cloud server nodes. Note: Cannot access customer intranet service addresses.",
-    "downloadProxy": "Download Proxy Program",
-    "windowsDesktopProxy": "Windows Desktop Proxy",
-    "macDesktopProxy": "Mac Desktop Proxy",
-    "linuxProxy": "Linux Proxy",
-    "manualInstallPackage": "Manual Install Package",
-    "serverRequestProxyConfig": "Server Client Proxy Configuration",
-    "enable": "Enable:",
-    "proxyAddress": "Proxy Address:",
-    "connected": "Connected",
-    "notConnected": "Not Connected",
-    "inputHost": "Please enter host",
-    "inputPort": "Please enter port number, range 1~65535",
-    "proxyConfigModifiedSuccess": "Proxy configuration modified successfully",
-    "connectionSuccess": "Connection successful",
-    "connectionFailed": "Connection failed"
-  },
-  "event": {
-    "title": "Event",
-    "hints": "AngusTester event configuration provides real-time information updates and status feedback to help teams quickly respond and address potential issues.",
-    "errMsg": "Error Message",
-    "config": {
-      "pushConfig": "Push Configuration",
-      "push_config_tip": "Configuring notification methods ensures that relevant personnel receive information promptly when events occur, improving response speed.",
-      "pushRecords": "Push Records",
-      "configReceiveChannel": "Configure Receive Channel",
-      "configReceiver": "Configure Receiver",
-      "selectReceiveMethod": "Select Receive Method",
-      "selectReceiver": "Select Receiver",
-      "receiver": "Receiver",
-      "selectOtherUsers": "Select Other Users",
-      "event_record": "Event Records"
-    },
-    "columns": {
-      "notificationStatus": "Notification Status",
-      "receiveChannel": "Receive Channel",
-      "sender": "Sender",
-      "executionId": "Execution ID",
-      "pushTime": "Push Time",
-      "pushResult": "Push Result",
-      "eventName": "Event Name",
-      "noticeType": "Notice Type",
-      "eventId": "Event ID",
-      "content": "Content",
-      "receiver": "Receiver",
-      "pushStatus": "Push Status"
-    },
-    "placeholder": {
-      "queryExecutionId": "Query execution ID",
-      "selectNotificationStatus": "Select notification status",
-      "selectHttpAddress": "Select HTTP(S) address",
-      "selectEmail": "Select email",
-      "selectDingTalkBot": "Select DingTalk bot",
-      "selectWeChatBot": "Select WeChat bot"
-    },
-    "searchLogPlaceholder": {
-      "code": "Query event description or code",
-      "pushStatus": "Select push status"
-    },
-    "receiveConfig": {
-      "title": "Configure Receive Channel",
-      "receiveChannel": "Receive Channel",
-      "selectWebhookAddress": "Select Webhook Address",
-      "selectEmail": "Select Email",
-      "selectDingTalkBot": "Select DingTalk Bot",
-      "selectWeChatBot": "Select WeChat Bot",
-      "configSuccess": "Configuration Successful"
-    },
-    "receiver": {
-      "title": "Configure Receiver",
-      "receiveMethod": "Receive Method",
-      "selectReceiver": "Select Receiver",
-      "notificationMethod": "Notification Method",
-      "configSuccess": "Configuration Successful"
-    }
-  },
   "app": {
     "title": "App",
     "config": {
-      "title": "Application Configuration",
       "labels": {
         "domain": "Domain"
       },
       "tabs": {
-        "member": "Application Members",
-        "quota": "Application Quota",
-        "license": "License Information"
+        "member": "Members",
+        "quota": "Quota",
+        "license": "License"
       },
-      "permitInfo": {
-        "title": "License Information",
-        "description": "View and manage your application license information, including edition type, product code, issuer and other details.",
-        "columns": {
-          "editionType": "Edition Type",
-          "goodsCode": "Product Code",
-          "goodsVersion": "Product Version",
-          "provider": "Provider",
-          "issuer": "Issuer",
-          "holder": "Holder",
-          "licenseNo": "License Number",
-          "issuedDate": "License Issue Date",
-          "signature": "License Certificate MD5 Signature"
-        },
-        "remainingDays": "Remaining {days} days"
-      },
-      "addMembers": {
-        "title": {
-          "user": "Add User",
-          "dept": "Add Department",
-          "group": "Add Group"
-        },
-        "columns": {
-          "user": "Authorize User",
-          "dept": "Authorize Department",
-          "group": "Authorize Group",
-          "policy": "Authorize Policy"
-        },
+      "members": {
         "tips": {
           "title": "Instructions",
-          "description": "Select users and corresponding policies. The system will assign appropriate permissions to the selected users."
+          "description": "Select「{type}」and corresponding policies. The system will assign appropriate permissions to the selected「{type}」."
         },
-        "labels": {
-          "selectUser": "Select User",
-          "selectDept": "Select Department",
-          "selectGroup": "Select Group",
-          "selectPolicy": "Select Policy"
+        "actions": {
+          "addUser": "Add User",
+          "addDept": "Add Department",
+          "addGroup": "Add Group",
+          "authorizePolicy": "Authorize Policy",
+          "cancelAuth": "Cancel"
         },
-        "placeholders": {
-          "selectPolicy": "Select Policy"
+        "list": {
+          "hints": "Assign specific functional menu permissions to project members to clearly define each member's scope of responsibility within the project. Only system administrators and application administrators can add application members and perform permission policy authorization operations.",
+          "table": {
+            "columns": {
+              "policyId": "Policy ID",
+              "policyName": "Policy Name",
+              "policyCode": "Policy Code",
+              "policyDescription": "Policy Description",
+              "authSource": "Authorize Source",
+              "authTime": "Authorize Time"
+            },
+            "sources": {
+              "appDefault": "Default",
+              "openAuth": "Activate"
+            }
+          }
+        },
+        "modal": {
+          "addMember": "Add Member",
+          "grantPolicy": "Authorize Policy"
         },
         "errors": {
           "userRequired": "Please select users",
           "policyRequired": "Please select policies"
-        }
-      },
-      "memberList": {
-        "buttons": {
-          "addMember": "Add Member",
-          "addDept": "Add Department",
-          "addGroup": "Add Group",
-          "authorizePolicy": "Authorize Policy"
-        },
-        "placeholders": {
-          "searchMember": "Search Member",
-          "searchDept": "Search Department",
-          "searchGroup": "Search Group",
-          "searchPolicy": "Search Policy Name"
-        },
-        "hints": "Assign specific functional menu permissions to project members to clearly define each member's scope of responsibility within the project. Only system administrators and application administrators can add application members and perform permission policy authorization operations.",
-        "table": {
-          "columns": {
-            "policyId": "Policy ID",
-            "policyName": "Policy Name",
-            "policyCode": "Policy Code",
-            "policyDescription": "Policy Description",
-            "policySource": "Policy Source",
-            "joinTime": "Join Time"
-          },
-          "sources": {
-            "appDefault": "Application Default Authorization",
-            "openAuth": "Open Authorization"
-          }
         }
       },
       "quota": {
@@ -184,21 +60,23 @@
           }
         }
       },
-      "policyModal": {
-        "title": "Authorize Policy",
-        "placeholders": {
-          "searchPolicy": "Search Policy Name"
-        }
+      "license": {
+        "title": "License Information",
+        "description": "View and manage your application license information, including edition type, product code, issuer and other details.",
+        "columns": {
+          "editionType": "Edition Type",
+          "goodsCode": "Product Code",
+          "goodsVersion": "Product Version",
+          "provider": "Provider",
+          "issuer": "Issuer",
+          "holder": "Holder",
+          "licenseNo": "License Number",
+          "issuedDate": "License Issue Date",
+          "signature": "License Certificate MD5 Signature"
+        },
+        "remainingDays": "Remaining {days} days"
       }
     }
-  },
-  "script": {
-    "title": "Script Settings",
-    "description": "Configure script execution related parameters and options"
-  },
-  "permission": {
-    "title": "Permission Settings",
-    "description": "Configure user permissions and access control"
   },
   "indicator": {
     "title": "Indicator",
@@ -283,6 +161,65 @@
         "diskUsageMustBeLessThan100": "Disk usage must be less than 100%",
         "networkUsageMustBeLessThan10000MB": "Network usage must be less than 10000MB"
       }
+    }
+  },
+  "event": {
+    "title": "Event",
+    "hints": "AngusTester event configuration provides real-time information updates and status feedback to help teams quickly respond and address potential issues.",
+    "errMsg": "Error Message",
+    "config": {
+      "pushConfig": "Push Configuration",
+      "push_config_tip": "Configuring notification methods ensures that relevant personnel receive information promptly when events occur, improving response speed.",
+      "pushRecords": "Push Records",
+      "configReceiveChannel": "Configure Receive Channel",
+      "configReceiver": "Configure Receiver",
+      "selectReceiveMethod": "Select Receive Method",
+      "selectReceiver": "Select Receiver",
+      "receiver": "Receiver",
+      "selectOtherUsers": "Select Other Users",
+      "event_record": "Event Records"
+    },
+    "columns": {
+      "notificationStatus": "Notification Status",
+      "receiveChannel": "Receive Channel",
+      "sender": "Sender",
+      "executionId": "Execution ID",
+      "pushTime": "Push Time",
+      "pushResult": "Push Result",
+      "eventName": "Event Name",
+      "noticeType": "Notice Type",
+      "eventId": "Event ID",
+      "content": "Content",
+      "receiver": "Receiver",
+      "pushStatus": "Push Status"
+    },
+    "placeholder": {
+      "queryExecutionId": "Query execution ID",
+      "selectNotificationStatus": "Select notification status",
+      "selectHttpAddress": "Select HTTP(S) address",
+      "selectEmail": "Select email",
+      "selectDingTalkBot": "Select DingTalk bot",
+      "selectWeChatBot": "Select WeChat bot"
+    },
+    "searchLogPlaceholder": {
+      "code": "Query event description or code",
+      "pushStatus": "Select push status"
+    },
+    "receiveConfig": {
+      "title": "Configure Receive Channel",
+      "receiveChannel": "Receive Channel",
+      "selectWebhookAddress": "Select Webhook Address",
+      "selectEmail": "Select Email",
+      "selectDingTalkBot": "Select DingTalk Bot",
+      "selectWeChatBot": "Select WeChat Bot",
+      "configSuccess": "Configuration Successful"
+    },
+    "receiver": {
+      "title": "Configure Receiver",
+      "receiveMethod": "Receive Method",
+      "selectReceiver": "Select Receiver",
+      "notificationMethod": "Notification Method",
+      "configSuccess": "Configuration Successful"
     }
   },
   "node": {
@@ -646,5 +583,32 @@
         }
       }
     }
+  },
+  "proxy": {
+    "title": "Proxy",
+    "description": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data. You can choose a suitable proxy service according to your network environment.",
+    "noProxy": "No Proxy",
+    "noProxyDescription": "Request interfaces directly through browser, cross-origin restrictions need to be removed to access non-same-origin server interfaces.",
+    "clientProxy": "Client Proxy",
+    "clientProxyDescription": "Need to install \"proxy program\" on the computer where the browser is located, after configuration, client proxy will be used to send requests.",
+    "serverProxy": "Server Proxy",
+    "serverProxyDescription": "Need to install \"proxy program\" on a server host in a shared network, using server proxy does not require users to install proxy programs on their respective computers.",
+    "cloudProxy": "Cloud Proxy",
+    "cloudProxyDescription": "Request interfaces through AngusTester cloud server nodes. Note: Cannot access customer intranet service addresses.",
+    "downloadProxy": "Download Proxy Program",
+    "windowsDesktopProxy": "Windows Desktop Proxy",
+    "macDesktopProxy": "Mac Desktop Proxy",
+    "linuxProxy": "Linux Proxy",
+    "manualInstallPackage": "Manual Install Package",
+    "serverRequestProxyConfig": "Server Client Proxy Configuration",
+    "enable": "Enable:",
+    "proxyAddress": "Proxy Address:",
+    "connected": "Connected",
+    "notConnected": "Not Connected",
+    "inputHost": "Please enter host",
+    "inputPort": "Please enter port number, range 1~65535",
+    "proxyConfigModifiedSuccess": "Proxy configuration modified successfully",
+    "connectionSuccess": "Connection successful",
+    "connectionFailed": "Connection failed"
   }
 }

@@ -2,7 +2,7 @@
 import { Grid, Icon } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { useI18n } from 'vue-i18n';
-import { usePermitInfo } from './composables/usePermitInfo';
+import { useLicenseInfo } from './composables/useLicenseInfo';
 
 const { t } = useI18n();
 
@@ -10,14 +10,12 @@ const { t } = useI18n();
 const {
   // Reactive data
   dataSource,
-
   // Computed properties
   columns,
-
   // Methods
   getVersionTypeIcon,
   init
-} = usePermitInfo();
+} = useLicenseInfo();
 
 // Initialize data on component mount
 init();
@@ -26,7 +24,7 @@ init();
 <template>
   <div class="license-info-container">
     <div class="page-header">
-      <h2 class="page-title">{{ t('app.config.permitInfo.title') }}</h2>
+      <h2 class="page-title">{{ t('app.config.license.title') }}</h2>
       <p class="page-subtitle">{{ t('common.description') }}</p>
     </div>
 
@@ -48,7 +46,7 @@ init();
         <template #expiredDate="{text}">
           <div class="expired-date-cell">
             <span>{{ text }}</span>
-            <span class="remaining-days">({{ t('app.config.permitInfo.remainingDays', { days: dayjs(text).diff(dayjs().format(),'day') > 0 ? dayjs(text).diff(dayjs().format(),'day') : 0 }) }})</span>
+            <span class="remaining-days">({{ t('app.config.license.remainingDays', { days: dayjs(text).diff(dayjs().format(),'day') > 0 ? dayjs(text).diff(dayjs().format(),'day') : 0 }) }})</span>
           </div>
         </template>
       </Grid>

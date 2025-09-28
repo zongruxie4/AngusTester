@@ -56,11 +56,11 @@ export function useAddMember (type: AuthObjectType, appId: string) {
   const placeholder = computed(() => {
     switch (type) {
       case AuthObjectType.USER:
-        return t('app.config.memberList.placeholders.searchMember');
+        return t('organization.placeholders.searchUser');
       case AuthObjectType.DEPT:
-        return t('app.config.memberList.placeholders.searchDept');
+        return t('organization.placeholders.searchDept');
       case AuthObjectType.GROUP:
-        return t('app.config.memberList.placeholders.searchGroup');
+        return t('organization.placeholders.searchGroup');
       default:
         return '';
     }
