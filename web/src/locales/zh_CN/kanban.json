@@ -8,12 +8,6 @@
     "pleaseSelectSprint": "请选择迭代",
     "pleaseSelectPlan": "请选择计划",
     "selectOrganizationPersonnel": "选择组织人员",
-    "user": "用户",
-    "department": "部门",
-    "group": "组",
-    "selectUser": "选择用户",
-    "selectDepartment": "选择部门",
-    "selectGroup": "选择组",
     "viewType": {
       "cto": "CTO",
       "effectiveness": "效能统计",
@@ -112,19 +106,6 @@
         "developmentCompleted": "开发完成",
         "published": "已发布"
       },
-      "reviewStatus": {
-        "pendingReview": "待评审",
-        "reviewPassed": "评审通过",
-        "reviewFailed": "评审未通过"
-      },
-      "taskTypes": {
-        "story": "故事",
-        "requirement": "需求",
-        "task": "任务",
-        "bug": "缺陷",
-        "apiTest": "接口测试",
-        "scenarioTest": "场景测试"
-      },
       "reportCategories": {
         "api": "接口",
         "functionalCase": "功能用例",
@@ -201,20 +182,9 @@
         "nonUnplannedAmount": "非计划外量",
         "estimatedTime": "预计耗时"
       },
-      "taskTypes": {
-        "story": "故事",
-        "requirement": "需求",
-        "task": "任务",
-        "bug": "缺陷",
-        "apiTest": "接口测试",
-        "scenarioTest": "场景测试"
-      },
       "deliveryCycle": {
         "deliveryCycle": "交付周期",
         "leadTime": "时长",
-        "average": "平均",
-        "minimum": "最小",
-        "maximum": "最大",
         "participantCount": "参与人数",
         "totalDuration": "总时长",
         "averageDuration": "平均时长",
@@ -258,19 +228,9 @@
         "nonMinorFailureRatio": "非一般",
         "nonTrivialFailureRatio": "非轻微"
       },
-      "testStatusLable": "测试状态",
+      "testStatusLabel": "测试状态",
       "taskStatusName": "任务状态",
-      "reviewStatusLable": "评审状态",
-      "testStatus": {
-        "pendingTest": "待测试",
-        "testPassed": "测试通过",
-        "testFailed": "测试未通过"
-      },
-      "reviewStatus": {
-        "pendingReview": "待评审",
-        "reviewPassed": "评审通过",
-        "reviewFailed": "评审未通过"
-      }
+      "reviewStatusLabel": "评审状态"
     }
   }
 }

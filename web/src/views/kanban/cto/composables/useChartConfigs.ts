@@ -1,4 +1,5 @@
-import { i18n } from '@xcan-angus/infra';
+import { i18n, enumUtils, ReviewStatus } from '@xcan-angus/infra';
+import { TaskType, TaskStatus, CaseTestResult } from '@/enums/enums';
 import { ChartConfig } from '../types';
 
 const I18nInstance = i18n.getI18n();
@@ -380,32 +381,32 @@ export const createTaskTypeConfig = (): ChartConfig => ({
       },
       data: [
         {
-          name: t('kanban.cto.taskTypes.story'),
+          name: enumUtils.getEnumDescription(TaskType, TaskType.STORY),
           value: 0,
           itemStyle: { color: '#8b5cf6' } // violet-500
         },
         {
-          name: t('kanban.cto.taskTypes.requirement'),
+          name: enumUtils.getEnumDescription(TaskType, TaskType.REQUIREMENT),
           value: 0,
           itemStyle: { color: '#a855f7' } // purple-500
         },
         {
-          name: t('common.issue'),
+          name: enumUtils.getEnumDescription(TaskType, TaskType.TASK),
           value: 0,
           itemStyle: { color: '#3b82f6' } // blue-500
         },
         {
-          name: t('kanban.cto.taskTypes.bug'),
+          name: enumUtils.getEnumDescription(TaskType, TaskType.BUG),
           value: 0,
           itemStyle: { color: '#dc2626' } // red-600
         },
         {
-          name: t('kanban.cto.taskTypes.apiTest'),
+          name: enumUtils.getEnumDescription(TaskType, TaskType.API_TEST),
           value: 0,
           itemStyle: { color: '#f59e0b' } // amber-500
         },
         {
-          name: t('kanban.cto.taskTypes.scenarioTest'),
+          name: enumUtils.getEnumDescription(TaskType, TaskType.SCENARIO_TEST),
           value: 0,
           itemStyle: { color: '#06b6d4' } // cyan-500
         }
@@ -460,27 +461,27 @@ export const createTaskStatusConfig = (): ChartConfig => ({
       },
       data: [
         {
-          name: t('status.pendingConfirmation'),
+          name: enumUtils.getEnumDescription(TaskStatus, TaskStatus.CONFIRMING),
           value: 0,
           itemStyle: { color: '#6366f1' } // indigo-500
         },
         {
-          name: t('status.inProgress'),
+          name: enumUtils.getEnumDescription(TaskStatus, TaskStatus.IN_PROGRESS),
           value: 0,
           itemStyle: { color: '#f59e0b' } // amber-500
         },
         {
-          name: t('status.pending'),
+          name: enumUtils.getEnumDescription(TaskStatus, TaskStatus.PENDING),
           value: 0,
           itemStyle: { color: '#eab308' } // yellow-500
         },
         {
-          name: t('status.completed'),
+          name: enumUtils.getEnumDescription(TaskStatus, TaskStatus.COMPLETED),
           value: 0,
           itemStyle: { color: '#10b981' } // emerald-500
         },
         {
-          name: t('status.cancelled'),
+          name: enumUtils.getEnumDescription(TaskStatus, TaskStatus.CANCELED),
           value: 0,
           itemStyle: { color: '#9ca3af' } // gray-400
         }
@@ -514,10 +515,13 @@ export const createLeadTimeConfig = (): ChartConfig => ({
   xAxis: {
     type: 'category',
     data: [
-      t('kanban.cto.deliveryCycle.average'),
-      t('kanban.cto.deliveryCycle.minimum'),
-      t('kanban.cto.deliveryCycle.maximum'),
-      'P50', 'P75', 'P90', 'P95'
+      t('chart.average'),
+      t('chart.minimum'),
+      t('chart.maximum'),
+      t('chart.p50'),
+      t('chart.p75'),
+      t('chart.p90'),
+      t('chart.p95')
     ],
     axisLabel: {
       interval: 0,
@@ -638,27 +642,27 @@ export const createTestStatusConfig = (): ChartConfig => ({
       },
       data: [
         {
-          name: t('kanban.cto.testStatus.pendingTest'),
+          name: enumUtils.getEnumDescription(CaseTestResult, CaseTestResult.PENDING),
           value: 0,
           itemStyle: { color: '#3b82f6' } // blue-500
         },
         {
-          name: t('kanban.cto.testStatus.testPassed'),
+          name: enumUtils.getEnumDescription(CaseTestResult, CaseTestResult.PASSED),
           value: 0,
           itemStyle: { color: '#10b981' } // emerald-500
         },
         {
-          name: t('kanban.cto.testStatus.testFailed'),
+          name: enumUtils.getEnumDescription(CaseTestResult, CaseTestResult.NOT_PASSED),
           value: 0,
           itemStyle: { color: '#dc2626' } // red-600
         },
         {
-          name: t('status.blocked'),
+          name: enumUtils.getEnumDescription(CaseTestResult, CaseTestResult.BLOCKED),
           value: 0,
           itemStyle: { color: '#f59e0b' } // amber-500
         },
         {
-          name: t('status.cancelled'),
+          name: enumUtils.getEnumDescription(CaseTestResult, CaseTestResult.CANCELED),
           value: 0,
           itemStyle: { color: '#9ca3af' } // gray-400
         }
@@ -713,17 +717,17 @@ export const createReviewStatusConfig = (): ChartConfig => ({
       },
       data: [
         {
-          name: t('kanban.cto.reviewStatus.pendingReview'),
+          name: enumUtils.getEnumDescription(ReviewStatus, ReviewStatus.PENDING),
           value: 0,
           itemStyle: { color: '#a855f7' } // purple-500
         },
         {
-          name: t('kanban.cto.reviewStatus.reviewPassed'),
+          name: enumUtils.getEnumDescription(ReviewStatus, ReviewStatus.PASSED),
           value: 0,
           itemStyle: { color: '#10b981' } // emerald-500
         },
         {
-          name: t('kanban.cto.reviewStatus.reviewFailed'),
+          name: enumUtils.getEnumDescription(ReviewStatus, ReviewStatus.FAILED),
           value: 0,
           itemStyle: { color: '#dc2626' } // red-600
         }

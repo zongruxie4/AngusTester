@@ -7,13 +7,7 @@
     "time": "Time",
     "pleaseSelectSprint": "Please select sprint",
     "pleaseSelectPlan": "Please select plan",
-    "selectOrganizationPersonnel": "Select Organization Personnel",
-    "user": "User",
-    "department": "Department",
-    "group": "Group",
-    "selectUser": "Select user",
-    "selectDepartment": "Select department",
-    "selectGroup": "Select group",
+    "selectOrganizationPersonnel": "Select organization",
     "viewType": {
       "cto": "CTO",
       "effectiveness": "Effectiveness",
@@ -69,7 +63,7 @@
     },
     "dataAssets": {
       "growthTrend": "Growth Trend",
-      "contributionRanking": "Contribution Ranking",
+      "contributionRanking": "Ranking",
       "rankingDescription": "Use cases, interfaces, tasks, scenarios, scripts, parameter data, reports and Mock interface summary ranking.",
       "categories": {
         "testCustomization": "Custom Test",
@@ -107,21 +101,8 @@
         "unknown": "Unknown",
         "designing": "Designing",
         "developing": "Developing",
-        "developmentCompleted": "Development Completed",
+        "developmentCompleted": "Completed",
         "published": "Published"
-      },
-      "reviewStatus": {
-        "pendingReview": "Pending Review",
-        "reviewPassed": "Review Passed",
-        "reviewFailed": "Review Failed"
-      },
-      "taskTypes": {
-        "story": "Story",
-        "requirement": "Requirement",
-        "task": "Task",
-        "bug": "Bug",
-        "apiTest": "API Test",
-        "scenarioTest": "Scenario Test"
       },
       "reportCategories": {
         "functionalCase": "Functional Case"
@@ -138,7 +119,7 @@
         "totalCount": "Total",
         "totalUseCaseCount": "Total",
         "totalWorkload": "Workload",
-        "teamMember": "Team Member"
+        "teamMember": "Team Members"
       },
       "recentDelivery": {
         "recentDeliveryTitle": "Recent Delivery (Delivery/Total)",
@@ -194,20 +175,9 @@
         "nonUnplannedAmount": "Non-Unplanned",
         "estimatedTime": "Estimated Time"
       },
-      "taskTypes": {
-        "story": "Story",
-        "requirement": "Requirement",
-        "task": "Task",
-        "bug": "Bug",
-        "apiTest": "API Test",
-        "scenarioTest": "Scenario Test"
-      },
       "deliveryCycle": {
         "deliveryCycle": "Delivery Cycle",
         "leadTime": "Lead Time",
-        "average": "Average",
-        "minimum": "Minimum",
-        "maximum": "Maximum",
         "participantCount": "Participants",
         "totalDuration": "Total Duration",
         "averageDuration": "Avg Duration",
@@ -251,19 +221,9 @@
         "nonMinorFailureRatio": "Non-Minor",
         "nonTrivialFailureRatio": "Non-Trivial"
       },
-      "testStatusLable": "Test Status",
+      "testStatusLabel": "Test Status",
       "taskStatusName": "Task Status",
-      "reviewStatusLable": "Review Status",
-      "testStatus": {
-        "pendingTest": "Pending Test",
-        "testPassed": "Test Passed",
-        "testFailed": "Test Failed"
-      },
-      "reviewStatus": {
-        "pendingReview": "Pending Review",
-        "reviewPassed": "Review Passed",
-        "reviewFailed": "Review Failed"
-      }
+      "reviewStatusLabel": "Review Status"
     }
   }
 }

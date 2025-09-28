@@ -373,7 +373,7 @@ onMounted(async () => {
             v-show="formData.orgType === AuthObjectType.DEPT"
             v-model:value="formData.orgId"
             class="!w-50"
-            :placeholder="t('organization.placeholders.selectDepartment')"
+            :placeholder="t('organization.placeholders.selectDept')"
             :showSearch="true"
             :action="`${GM}/dept?fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }">

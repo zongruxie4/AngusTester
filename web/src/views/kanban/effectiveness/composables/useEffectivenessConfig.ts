@@ -29,7 +29,7 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
         semantic: 'countHighGood'
       },
       {
-        name: t('status.progress'),
+        name: t('common.progress'),
         dataIndex: 'progress',
         icon: 'icon-progress',
         unit: '%',

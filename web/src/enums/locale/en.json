@@ -67,7 +67,7 @@
       "TaskStatus": {
         "PENDING": "Pending",
         "IN_PROGRESS": "In Progress",
-        "CONFIRMING": "Awaiting Confirmation",
+        "CONFIRMING": "Confirming",
         "COMPLETED": "Completed",
         "CANCELED": "Canceled"
       },

@@ -512,7 +512,7 @@ onMounted(() => {
               v-model:value="deptId"
               :action="`${GM}/app/${props.appId}/auth/dept`"
               :fieldNames="{ label: 'name', value: 'id' }"
-              :placeholder="t('organization.placeholders.selectDepartment')"
+              :placeholder="t('organization.placeholders.selectDept')"
               showSearch
               allowClear
               class="w-full mr-5"
