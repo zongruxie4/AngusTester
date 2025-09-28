@@ -140,7 +140,7 @@ const countCard = computed(() => {
     },
     {
       key: 'export',
-      name: t('common.download'),
+      name: t('actions.download'),
       icon: 'icon-xiazaida',
       color: '111, 198, 191'
     },

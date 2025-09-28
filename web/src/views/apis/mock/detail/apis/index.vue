@@ -1731,8 +1731,8 @@ provide('proxyOptObj', proxyOptObj);
                         :checked="enablePushbackSet.has(item)"
                         size="small"
                         class="ml-1.5"
-                        :checkedChildren="t('common.enable')"
-                        :unCheckedChildren="t('common.disable')"
+                        :checkedChildren="t('actions.enable')"
+                        :unCheckedChildren="t('actions.disable')"
                         @change="enableChange($event, item)" />
                     </div>
                   </template>

@@ -11,7 +11,7 @@ const t = I18nInstance?.global?.t || ((value: string): string => value);
 // Resource usage progress configuration for monitoring display
 export const nodeUseProgresses = [
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.cpu'),
+    label: t('node.list.interface.nodeUseProgresses.cpu'),
     value: 90,
     valueKey: 'cpu',
     totalKey: 'cpuTotal',
@@ -19,7 +19,7 @@ export const nodeUseProgresses = [
     unit: '%'
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.memory'),
+    label: t('node.list.interface.nodeUseProgresses.memory'),
     value: 60,
     valueKey: 'memory',
     totalKey: 'memoryTotal',
@@ -27,7 +27,7 @@ export const nodeUseProgresses = [
     unit: ''
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.fileSystem'),
+    label: t('node.list.interface.nodeUseProgresses.fileSystem'),
     value: 45,
     valueKey: 'disk',
     totalKey: 'diskTotal',
@@ -35,7 +35,7 @@ export const nodeUseProgresses = [
     unit: ''
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.swapArea'),
+    label: t('node.list.interface.nodeUseProgresses.swapArea'),
     value: 45,
     valueKey: 'swap',
     totalKey: 'swapTotal',
@@ -43,7 +43,7 @@ export const nodeUseProgresses = [
     unit: ''
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.network'),
+    label: t('node.list.interface.nodeUseProgresses.network'),
     value: 29,
     valueKey: 'network',
     totalKey: 'network',
@@ -59,17 +59,17 @@ export const internetInfo = [
     unit: 'MB/s'
   },
   {
-    label: ' ' + t('common.download') + ': ',
+    label: ' ' + t('actions.download') + ': ',
     valueKey: 'rxBytesRate',
     unit: 'MB/s'
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.totalUpload') + ': ',
+    label: t('node.list.interface.nodeUseProgresses.totalUpload') + ': ',
     valueKey: 'txBytes',
     unit: ''
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.totalDownload') + ': ',
+    label: t('node.list.interface.nodeUseProgresses.totalDownload') + ': ',
     valueKey: 'rxBytes',
     unit: ''
   }

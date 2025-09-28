@@ -367,7 +367,7 @@ onBeforeUnmount(() => {
                 class="!h-6"
                 @click.stop="downConfirm([record.id])">
                 <Icon icon="icon-daochu" class="align-text-bottom mr-0.5" />
-                {{ t('common.download') }}
+                {{ t('actions.download') }}
               </Button>
 
               <!-- Share link action -->

@@ -40,7 +40,7 @@ const {
     <!-- Log Controls -->
     <div class="log-controls">
       <div class="control-row">
-        <span class="control-label">{{ $t('node.nodeDetail.log.title') }}:</span>
+        <span class="control-label">{{ $t('node.detail.agent.log.title') }}:</span>
         <Select
           v-model:value="logTextParams.logName"
           class="log-file-select"
@@ -54,7 +54,7 @@ const {
 
         <!-- Error Display -->
         <div v-show="showError" class="error-display">
-          {{ errorText || $t('node.nodeDetail.log.errorText', { ip: props.ip, port: props.port }) }}
+          {{ errorText || $t('node.detail.agent.log.errorText', { ip: props.ip, port: props.port }) }}
         </div>
 
         <!-- Action Buttons -->
@@ -63,7 +63,7 @@ const {
             class="action-button"
             size="small"
             @click="downloadLog">
-            {{ $t('common.download') }}
+            {{ $t('actions.download') }}
           </Button>
 
           <Button
@@ -159,7 +159,7 @@ const {
 }
 
 .log-content {
-  background: white;
+  background: #f4f0f0;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   min-height: 200px;

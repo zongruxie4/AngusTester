@@ -38,10 +38,10 @@ export function useNodeOperations (emits: NodeItemsEmits) {
    */
   const getOnlineInstallTip = (node: NodeData): string | undefined => {
     if (node.geAgentInstallationCmd) {
-      return t('node.nodeItem.tips.alreadyInstalled');
+      return t('node.list.tips.alreadyInstalled');
     }
     if (!node.free) {
-      return t('node.nodeItem.tips.installPermission');
+      return t('node.list.tips.installPermission');
     }
     return undefined;
   };
@@ -86,7 +86,7 @@ export function useNodeOperations (emits: NodeItemsEmits) {
 
       // Success - reload list and show notification
       emits('loadList');
-      notification.success(t('node.nodeItem.labels.installSuccess'));
+      notification.success(t('node.list.labels.installSuccess'));
     } catch (error) {
       console.error('Failed to install agent:', error);
     } finally {

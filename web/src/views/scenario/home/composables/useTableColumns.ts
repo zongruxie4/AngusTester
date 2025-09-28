@@ -31,7 +31,7 @@ export function useTableColumns (params: ScenarioQueryParams) {
       },
       {
         key: 'scriptType',
-        title: t('scenarioHome.myScenarios.table.columns.testType'),
+        title: t('common.scriptType'),
         dataIndex: 'scriptType',
         width: '20%',
         ellipsis: true

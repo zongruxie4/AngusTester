@@ -18,7 +18,7 @@ export function useMockServiceTableColumns () {
   const columns = computed<TableColumn[]>(() => [
     {
       dataIndex: 'id',
-      title: t('node.nodeDetail.mockService.columns.serviceId'),
+      title: t('node.detail.mockService.columns.serviceId'),
       width: 120
     },
     {
@@ -33,12 +33,12 @@ export function useMockServiceTableColumns () {
     },
     {
       dataIndex: 'serviceHostUrl',
-      title: t('node.nodeDetail.mockService.columns.accessUrl'),
+      title: t('node.detail.mockService.columns.accessUrl'),
       width: 200
     },
     {
       dataIndex: 'servicePort',
-      title: t('node.nodeDetail.mockService.columns.accessPort'),
+      title: t('node.detail.mockService.columns.accessPort'),
       width: 100
     },
     {

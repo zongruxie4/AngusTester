@@ -5,36 +5,36 @@ const t = I18nInstance?.global?.t || ((value: string):string => value);
 
 export const formItems = [
   {
-    label: t('node.nodeItem.interface.formItems.nodeName'),
+    label: t('node.list.interface.formItems.nodeName'),
     inputType: 'text',
-    placeholder: t('node.nodeItem.interface.formItems.inputLimit200'),
+    placeholder: t('node.list.interface.formItems.inputLimit200'),
     valueKey: 'name',
     required: true,
     maxlength: 200,
     width: '18%'
   },
   {
-    label: t('node.nodeItem.interface.formItems.intranetIP'),
+    label: t('node.list.interface.formItems.intranetIP'),
     inputType: 'text',
-    placeholder: t('node.nodeItem.interface.formItems.inputNodeIP'),
+    placeholder: t('node.list.interface.formItems.inputNodeIP'),
     valueKey: 'ip',
     required: true,
     maxlength: 15,
     width: '18%'
   },
   {
-    label: t('node.nodeItem.interface.formItems.publicIP'),
+    label: t('node.list.interface.formItems.publicIP'),
     inputType: 'text',
-    placeholder: t('node.nodeItem.interface.formItems.inputNodeIP'),
+    placeholder: t('node.list.interface.formItems.inputNodeIP'),
     valueKey: 'publicIp',
     required: false,
     maxlength: 15,
     width: '18%'
   },
   {
-    label: t('node.nodeItem.interface.formItems.domain'),
+    label: t('node.list.interface.formItems.domain'),
     inputType: 'text',
-    placeholder: t('node.nodeItem.interface.formItems.inputNodeDomain'),
+    placeholder: t('node.list.interface.formItems.inputNodeDomain'),
     valueKey: 'domain',
     maxlength: 200,
     width: '33.3%'
@@ -42,7 +42,7 @@ export const formItems = [
   {
     label: t('common.username'),
     inputType: 'text',
-    placeholder: t('node.nodeItem.interface.formItems.inputUsername'),
+    placeholder: t('node.list.interface.formItems.inputUsername'),
     valueKey: 'username',
     maxlength: 200,
     width: '18%'
@@ -51,15 +51,15 @@ export const formItems = [
     label: t('common.password'),
     inputType: 'text',
     type: 'password',
-    placeholder: t('node.nodeItem.interface.formItems.inputPassword'),
+    placeholder: t('node.list.interface.formItems.inputPassword'),
     valueKey: 'password',
     maxlength: 800,
     width: '18%'
   },
   {
-    label: t('node.nodeItem.interface.formItems.sshPort'),
+    label: t('node.list.interface.formItems.sshPort'),
     inputType: 'number',
-    placeholder: t('node.nodeItem.interface.formItems.inputSSHPort'),
+    placeholder: t('node.list.interface.formItems.inputSSHPort'),
     valueKey: 'sshPort',
     width: '18%'
   }
@@ -67,19 +67,19 @@ export const formItems = [
 
 export const roleOptions = [
   {
-    label: t('node.nodeItem.interface.roleOptions.managementNode'),
+    label: t('node.list.interface.roleOptions.managementNode'),
     value: 'manage'
   },
   {
-    label: t('node.nodeItem.interface.roleOptions.pressureTestNode'),
+    label: t('node.list.interface.roleOptions.pressureTestNode'),
     value: 'test'
   },
   {
-    label: t('node.nodeItem.interface.roleOptions.mockNode'),
+    label: t('node.list.interface.roleOptions.mockNode'),
     value: 'mock'
   },
   {
-    label: t('node.nodeItem.interface.roleOptions.applicationNode'),
+    label: t('node.list.interface.roleOptions.applicationNode'),
     value: 'application'
   }
 ];
@@ -98,11 +98,11 @@ export const nodeStatus = [
     valueKey: 'enabled'
   },
   {
-    label: t('node.nodeItem.interface.nodeStatus.agentInstallStatus'),
+    label: t('node.list.interface.nodeStatus.agentInstallStatus'),
     valueKey: 'installAgent',
     valueName: {
-      true: t('node.nodeItem.interface.nodeStatus.installed'),
-      false: t('node.nodeItem.interface.nodeStatus.notInstalled')
+      true: t('node.list.interface.nodeStatus.installed'),
+      false: t('node.list.interface.nodeStatus.notInstalled')
     },
     status: {
       true: 'success',
@@ -110,11 +110,11 @@ export const nodeStatus = [
     }
   },
   {
-    label: t('node.nodeItem.interface.nodeStatus.connectionStatus'),
+    label: t('node.list.interface.nodeStatus.connectionStatus'),
     valueKey: 'online',
     valueName: {
-      true: t('node.nodeItem.interface.nodeStatus.connected'),
-      false: t('node.nodeItem.interface.nodeStatus.notConnected')
+      true: t('node.list.interface.nodeStatus.connected'),
+      false: t('node.list.interface.nodeStatus.notConnected')
     },
     status: {
       true: 'success',
@@ -129,11 +129,11 @@ export const viewItem = [
     valueKey: 'id'
   },
   {
-    label: t('node.nodeItem.interface.viewItem.intranetIP'),
+    label: t('node.list.interface.viewItem.intranetIP'),
     valueKey: 'ip'
   },
   {
-    label: t('node.nodeItem.interface.viewItem.publicIP'),
+    label: t('node.list.interface.viewItem.publicIP'),
     valueKey: 'publicIp'
   },
   {
@@ -141,16 +141,16 @@ export const viewItem = [
     valueKey: 'sourceName'
   },
   {
-    label: t('node.nodeItem.interface.viewItem.role'),
+    label: t('node.list.interface.viewItem.role'),
     valueKey: 'roles',
     type: 'tag'
   },
   {
-    label: t('node.nodeItem.interface.viewItem.specification'),
+    label: t('node.list.interface.viewItem.specification'),
     valueKey: 'standard'
   },
   {
-    label: t('node.nodeItem.interface.viewItem.system'),
+    label: t('node.list.interface.viewItem.system'),
     valueKey: 'os',
     type: 'tag'
   }
@@ -158,22 +158,22 @@ export const viewItem = [
 
 export const nodeUseProgresses = [
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.cpu'),
+    label: t('node.list.interface.nodeUseProgresses.cpu'),
     value: 90,
     valueKey: 'cpu'
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.memory'),
+    label: t('node.list.interface.nodeUseProgresses.memory'),
     value: 60,
     valueKey: 'memory'
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.fileSystem'),
+    label: t('node.list.interface.nodeUseProgresses.fileSystem'),
     value: 45,
     valueKey: 'disk'
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.swapArea'),
+    label: t('node.list.interface.nodeUseProgresses.swapArea'),
     value: 0,
     valueKey: 'swap'
   },
@@ -183,7 +183,7 @@ export const nodeUseProgresses = [
     valueKey: 'network-up'
   },
   {
-    label: t('common.download'),
+    label: t('actions.download'),
     value: 29,
     valueKey: 'network-down'
   }

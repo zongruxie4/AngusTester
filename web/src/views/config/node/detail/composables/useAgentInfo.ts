@@ -49,27 +49,27 @@ export function useAgentInfo (props: AgentInfoProps) {
       },
       {
         dataIndex: 'home',
-        label: t('node.nodeDetail.agentInfo.columns.home')
+        label: t('node.detail.agent.columns.home')
       }
     ],
     [
       {
         dataIndex: 'uptime',
-        label: t('node.nodeDetail.agentInfo.columns.uptime')
+        label: t('node.detail.agent.columns.uptime')
       },
       {
         dataIndex: 'diskSpace',
-        label: t('node.nodeDetail.agentInfo.columns.diskSpace')
+        label: t('node.detail.agent.columns.diskSpace')
       }
     ],
     [
       {
         dataIndex: 'port',
-        label: t('node.nodeDetail.agentInfo.columns.port')
+        label: t('node.detail.agent.columns.port')
       },
       {
         dataIndex: 'health',
-        label: t('node.nodeDetail.agentInfo.columns.health')
+        label: t('node.detail.agent.columns.health')
       }
     ]
   ];
@@ -97,13 +97,13 @@ export function useAgentInfo (props: AgentInfoProps) {
 
     let result = '';
     if (hours) {
-      result += `${hours}${t('node.nodeDetail.agentInfo.timeUnits.hour')}`;
+      result += `${hours}${t('unit.hour')}`;
     }
     if (minutes) {
-      result += `${minutes}${t('node.nodeDetail.agentInfo.timeUnits.minute')}`;
+      result += `${minutes}${t('unit.minute')}`;
     }
     if (seconds) {
-      result += `${seconds}${t('node.nodeDetail.agentInfo.timeUnits.second')}`;
+      result += `${seconds}${t('unit.second')}`;
     }
 
     return result;

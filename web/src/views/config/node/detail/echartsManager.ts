@@ -182,12 +182,12 @@ class ChartDataProcessor {
     tableData: TableDataItem[];
   } {
     const dataTypes = [
-      t('node.nodeDetail.chartOptions.cpu.idle'),
-      t('node.nodeDetail.chartOptions.cpu.sys'),
-      t('organization.user'),
-      t('node.nodeDetail.chartOptions.cpu.wait'),
-      t('node.nodeDetail.chartOptions.cpu.other'),
-      t('node.nodeDetail.chartOptions.cpu.total')
+      t('node.detail.chartOptions.cpu.idle'),
+      t('node.detail.chartOptions.cpu.sys'),
+      t('node.detail.chartOptions.cpu.user'),
+      t('node.detail.chartOptions.cpu.wait'),
+      t('node.detail.chartOptions.cpu.other'),
+      t('node.detail.chartOptions.cpu.total')
     ];
 
     const seriesData = dataTypes.map(name => createSeriesData(name));
@@ -254,16 +254,16 @@ class ChartDataProcessor {
     percentTableData: TableDataItem[];
   } {
     const dataTypes = [
-      t('node.nodeDetail.chartOptions.memory.free'),
-      t('node.nodeDetail.chartOptions.memory.used'),
-      t('node.nodeDetail.chartOptions.memory.freePercent'),
-      t('node.nodeDetail.chartOptions.memory.usedPercent'),
-      t('node.nodeDetail.chartOptions.memory.actualFree'),
-      t('node.nodeDetail.chartOptions.memory.actualUsed'),
-      t('node.nodeDetail.chartOptions.memory.actualFreePercent'),
-      t('node.nodeDetail.chartOptions.memory.actualUsedPercent'),
-      t('node.nodeDetail.chartOptions.memory.swapFree'),
-      t('node.nodeDetail.chartOptions.memory.swapUsed')
+      t('node.detail.chartOptions.memory.free'),
+      t('node.detail.chartOptions.memory.used'),
+      t('node.detail.chartOptions.memory.freePercent'),
+      t('node.detail.chartOptions.memory.usedPercent'),
+      t('node.detail.chartOptions.memory.actualFree'),
+      t('node.detail.chartOptions.memory.actualUsed'),
+      t('node.detail.chartOptions.memory.actualFreePercent'),
+      t('node.detail.chartOptions.memory.actualUsedPercent'),
+      t('node.detail.chartOptions.memory.swapFree'),
+      t('node.detail.chartOptions.memory.swapUsed')
     ];
 
     const dataTypeKeys = [
@@ -365,15 +365,15 @@ class ChartDataProcessor {
     chartOptions: Record<string, ChartOption>;
   } {
     const dataTypes = [
-      t('node.nodeDetail.chartOptions.disk.total'),
-      t('node.nodeDetail.chartOptions.disk.free'),
-      t('node.nodeDetail.chartOptions.disk.used'),
-      t('node.nodeDetail.chartOptions.disk.avail'),
-      t('node.nodeDetail.chartOptions.disk.usePercent'),
-      t('node.nodeDetail.chartOptions.disk.readsRate'),
-      t('node.nodeDetail.chartOptions.disk.writesRate'),
-      t('node.nodeDetail.chartOptions.disk.readBytesRate'),
-      t('node.nodeDetail.chartOptions.disk.writeBytesRate')
+      t('node.detail.chartOptions.disk.total'),
+      t('node.detail.chartOptions.disk.free'),
+      t('node.detail.chartOptions.disk.used'),
+      t('node.detail.chartOptions.disk.avail'),
+      t('node.detail.chartOptions.disk.usePercent'),
+      t('node.detail.chartOptions.disk.readsRate'),
+      t('node.detail.chartOptions.disk.writesRate'),
+      t('node.detail.chartOptions.disk.readBytesRate'),
+      t('node.detail.chartOptions.disk.writeBytesRate')
     ];
 
     const dataTypeKeys = [
@@ -533,11 +533,11 @@ class ChartDataProcessor {
   } {
     const dataTypeKeys = ['rxBytes', 'rxBytesRate', 'rxErrors', 'txBytes', 'txBytesRate'];
     const dataTypes = [
-      t('node.nodeDetail.chartOptions.network.rxBytes'),
-      t('node.nodeDetail.chartOptions.network.rxBytesRate'),
-      t('node.nodeDetail.chartOptions.network.rxErrors'),
-      t('node.nodeDetail.chartOptions.network.txBytes'),
-      t('node.nodeDetail.chartOptions.network.txBytesRate')
+      t('node.detail.chartOptions.network.rxBytes'),
+      t('node.detail.chartOptions.network.rxBytesRate'),
+      t('node.detail.chartOptions.network.rxErrors'),
+      t('node.detail.chartOptions.network.txBytes'),
+      t('node.detail.chartOptions.network.txBytesRate')
     ];
 
     const seriesData = dataTypes.map(name => createSeriesData(name));

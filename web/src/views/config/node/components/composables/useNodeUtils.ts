@@ -140,37 +140,37 @@ export function useNodeUtils (props: NodeItemsProps) {
     switch (action) {
       case 'edit':
         if (node.source?.value !== 'OWN_NODE') {
-          return t('node.nodeItem.tips.editOwnNode');
+          return t('node.list.tips.editOwnNode');
         }
         if (!props.isAdmin) {
-          return t('node.nodeItem.tips.editPermission');
+          return t('node.list.tips.editPermission');
         }
         break;
 
       case 'delete':
         if (node.enabled) {
-          return t('node.nodeItem.tips.disableDelete');
+          return t('node.list.tips.disableDelete');
         }
         if (!props.isAdmin) {
-          return t('node.nodeItem.tips.deletePermission');
+          return t('node.list.tips.deletePermission');
         }
         if (node.source?.value !== 'OWN_NODE') {
-          return t('node.nodeItem.tips.deleteOwnNode');
+          return t('node.list.tips.deleteOwnNode');
         }
         break;
 
       case 'install':
         if (node.geAgentInstallationCmd) {
-          return t('node.nodeItem.tips.alreadyInstalled');
+          return t('node.list.tips.alreadyInstalled');
         }
         if (!props.isAdmin) {
-          return t('node.nodeItem.tips.installPermission');
+          return t('node.list.tips.installPermission');
         }
         break;
 
       case 'manualInstall':
         if (!props.isAdmin) {
-          return t('node.nodeItem.tips.manualInstallPermission');
+          return t('node.list.tips.manualInstallPermission');
         }
         break;
     }

@@ -26,7 +26,7 @@ export function useNodeData () {
   const pagination = reactive<PaginationConfig>({
     current: 1,
     pageSize: 5,
-    showTotal: (total: number) => t('node.labels.totalCount', { total }),
+    showTotal: (total: number) => t('node.messages.totalCount', { total }),
     showSizeChanger: true,
     total: 0
   });

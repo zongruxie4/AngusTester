@@ -68,15 +68,15 @@ export function useAgentLog (props: AgentLogProps) {
   const lineCountOptions = computed<LogFileOption[]>(() => [
     {
       value: '500',
-      label: t('node.nodeDetail.log.options.500')
+      message: t('node.detail.agent.log.options.500')
     },
     {
       value: '1000',
-      label: t('node.nodeDetail.log.options.1000')
+      message: t('node.detail.agent.log.options.1000')
     },
     {
       value: '10000',
-      label: t('node.nodeDetail.log.options.10000')
+      message: t('node.detail.agent.log.options.10000')
     }
   ]);
 
@@ -184,7 +184,7 @@ export function useAgentLog (props: AgentLogProps) {
    */
   const downloadLog = (): void => {
     if (!logContent.value) {
-      notification.warning(t('node.nodeDetail.log.noDownloadContent'));
+      notification.warning(t('node.detail.agent.log.noDownloadContent'));
       return;
     }
 

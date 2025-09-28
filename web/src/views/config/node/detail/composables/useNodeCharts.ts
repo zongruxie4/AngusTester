@@ -11,7 +11,7 @@ const t = I18nInstance?.global?.t || ((value: string): string => value);
 // Chart tabs configuration for resource monitoring
 export const nodeEchartsTabs = [
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.cpu'),
+    label: t('node.list.interface.nodeUseProgresses.cpu'),
     value: 90,
     valueKey: 'cpu',
     totalKey: 'cpuTotal',
@@ -19,7 +19,7 @@ export const nodeEchartsTabs = [
     unit: '%'
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.memory'),
+    label: t('node.list.interface.nodeUseProgresses.memory'),
     value: 60,
     valueKey: 'memory',
     totalKey: 'memoryTotal',
@@ -27,7 +27,7 @@ export const nodeEchartsTabs = [
     unit: ''
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.fileSystem'),
+    label: t('node.list.interface.nodeUseProgresses.fileSystem'),
     value: 45,
     valueKey: 'disk',
     totalKey: 'diskTotal',
@@ -35,7 +35,7 @@ export const nodeEchartsTabs = [
     unit: ''
   },
   {
-    label: t('node.nodeItem.interface.nodeUseProgresses.network'),
+    label: t('node.list.interface.nodeUseProgresses.network'),
     value: 29,
     valueKey: 'network',
     totalKey: 'network',
@@ -47,23 +47,23 @@ export const nodeEchartsTabs = [
 export const timeOpt = [
   {
     value: '3-minute',
-    label: t('node.nodeDetail.chartOptions.timeOptions.threeMinutes')
+    label: t('node.detail.chartOptions.timeOptions.threeMinutes')
   },
   {
     value: '5-minute',
-    label: t('node.nodeDetail.chartOptions.timeOptions.fiveMinutes')
+    label: t('node.detail.chartOptions.timeOptions.fiveMinutes')
   },
   {
     value: '10-minute',
-    label: t('node.nodeDetail.chartOptions.timeOptions.tenMinutes')
+    label: t('node.detail.chartOptions.timeOptions.tenMinutes')
   },
   {
     value: '1-hour',
-    label: t('node.nodeDetail.chartOptions.timeOptions.oneHour')
+    label: t('node.detail.chartOptions.timeOptions.oneHour')
   },
   {
     value: '3-hour',
-    label: t('node.nodeDetail.chartOptions.timeOptions.threeHours')
+    label: t('node.detail.chartOptions.timeOptions.threeHours')
   }
 ];
 
@@ -75,22 +75,22 @@ export const columns = [
     key: 'name'
   },
   {
-    title: t('node.nodeDetail.chartOptions.columns.average'),
+    title: t('node.detail.chartOptions.columns.average'),
     dataIndex: 'average',
     key: 'average'
   },
   {
-    title: t('node.nodeDetail.chartOptions.columns.highest'),
+    title: t('node.detail.chartOptions.columns.highest'),
     dataIndex: 'high',
     key: 'high'
   },
   {
-    title: t('node.nodeDetail.chartOptions.columns.lowest'),
+    title: t('node.detail.chartOptions.columns.lowest'),
     dataIndex: 'low',
     key: 'low'
   },
   {
-    title: t('node.nodeDetail.chartOptions.columns.latest'),
+    title: t('node.detail.chartOptions.columns.latest'),
     dataIndex: 'latest',
     key: 'latest'
   }
@@ -116,19 +116,19 @@ export function useNodeCharts (nodeId: string, echartsManager: EChartsManager) {
 
   // Chart data options
   const memoryDataOptions: ChartDataOption[] = [
-    { label: t('node.nodeDetail.chartOptions.memory.usage'), value: false },
-    { label: t('node.nodeDetail.chartOptions.memory.usageRate'), value: true }
+    { label: t('node.detail.chartOptions.memory.usage'), value: false },
+    { label: t('node.detail.chartOptions.memory.usageRate'), value: true }
   ];
 
   const diskDataOptions: ChartDataOption[] = [
-    { label: t('node.nodeDetail.chartOptions.disk.iops'), value: 'rate' },
-    { label: t('node.nodeDetail.chartOptions.disk.mbPerSecond'), value: 'bytesRate' }
+    { label: t('node.detail.chartOptions.disk.iops'), value: 'rate' },
+    { label: t('node.detail.chartOptions.disk.mbPerSecond'), value: 'bytesRate' }
   ];
 
   const networkDataOptions: ChartDataOption[] = [
-    { label: t('node.nodeDetail.chartOptions.network.mbPerSecond'), value: 'network' },
-    { label: t('node.nodeDetail.chartOptions.network.bytes'), value: 'bytes' },
-    { label: t('node.nodeDetail.chartOptions.network.errorPackets'), value: 'packet' }
+    { label: t('node.detail.chartOptions.network.mbPerSecond'), value: 'network' },
+    { label: t('node.detail.chartOptions.network.bytes'), value: 'bytes' },
+    { label: t('node.detail.chartOptions.network.errorPackets'), value: 'packet' }
   ];
 
   // Chart display options

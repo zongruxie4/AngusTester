@@ -6,19 +6,19 @@ export const installConfigColumns = [
   [
     {
       dataIndex: 'tenantId',
-      label: t('node.nodeItem.interface.installConfigColumns.tenantId')
+      label: t('node.list.interface.installConfigColumns.tenantId')
     },
     {
       dataIndex: 'deviceId',
-      label: t('node.nodeItem.interface.installConfigColumns.deviceId')
+      label: t('node.list.interface.installConfigColumns.deviceId')
     },
     {
       dataIndex: 'serverCtrlUrlPrefix',
-      label: t('node.nodeItem.interface.installConfigColumns.serverCtrlUrlPrefix')
+      label: t('node.list.interface.installConfigColumns.serverCtrlUrlPrefix')
     },
     {
       dataIndex: 'ctrlAccessToken',
-      label: t('node.nodeItem.interface.installConfigColumns.ctrlAccessToken')
+      label: t('node.list.interface.installConfigColumns.ctrlAccessToken')
     }
   ]
 ];

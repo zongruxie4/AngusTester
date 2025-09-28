@@ -224,12 +224,32 @@
   },
   "node": {
     "title": "Node",
+    "introduce": {
+      "description": "Supported operating systems include Linux (recommended), macOS, and Windows. Before executing tasks, add nodes and install agents - if auto-installation fails due to network/account issues, follow manual installation prompts and verify agent connectivity (start if inactive). While nodes support multiple roles, configure stress test nodes with a single \"Execution\" role for accurate performance measurement. Choose public-network nodes to simulate real-user conditions (with latency) or same-intranet nodes to test application limits without network interference. Note: Node management is restricted to system and application administrators by default.",
+      "steps": {
+        "managementNode": {
+          "title": "Management Node",
+          "content": "Used for deploying and running Web UI applications."
+        },
+        "controllerNode": {
+          "title": "Controller Node",
+          "content": "Used for scheduling, managing, monitoring execution and agent services."
+        },
+        "executionNode": {
+          "title": "Execution Node",
+          "content": "Used for executing functional tests, performance tests, data generation, etc."
+        },
+        "mockNode": {
+          "title": "Mock Node",
+          "content": "Runs Mock services and Mock interfaces."
+        },
+        "applicationNode": {
+          "title": "Application Node",
+          "content": "Hosts the testing application and monitors target node load during stress tests for performance diagnostics."
+        }
+      }
+    },
     "message": {
-      "enable": "Enable",
-      "disable": "Disable",
-      "delete": "Delete",
-      "onlineInstallAgent": "Online Install Agent",
-      "manualInstallAgent": "Manual Install Agent",
       "estimatedTime": "Estimated to take several minutes",
       "installAgentPermission": "Installing agent requires system administrator or application administrator permissions",
       "manualInstallSteps": "Please follow the steps below to manually install the agent:",
@@ -239,8 +259,6 @@
       "copyScriptToServer": "Copy script to target server:",
       "runInstallCommand": "Execute installation command:",
       "configInfo": "Configuration Information",
-      "use": "Used",
-      "idle": "Idle",
       "resourceMonitoring": "Resource Monitoring",
       "agentService": "Agent Service",
       "executingTasks": "Executing Tasks",
@@ -249,15 +267,12 @@
       "processMonitoring": "Process Monitoring",
       "noExecutionRecords": "No execution records found for this node",
       "noProcessData": "No process data available for this node",
-      "noMockServices": "No mock services found for this node"
+      "noMockServices": "No mock services found for this node",
+      "totalCount": "Total {total} items"
     },
-    "buttons": {
+    "actions": {
       "addNode": "Add Node",
       "buyNode": "Buy Node"
-    },
-    "labels": {
-      "autoRefresh": "Auto Refresh",
-      "totalCount": "Total {total} items"
     },
     "searchOptions": {
       "node": {
@@ -281,168 +296,7 @@
         "placeholder": "Select source"
       }
     },
-    "nodeDetail": {
-      "agentInfo": {
-        "columns": {
-          "version": "Version",
-          "home": "Installation Path",
-          "uptime": "Uptime",
-          "diskSpace": "Disk Space",
-          "port": "Occupied Port",
-          "health": "Health Status"
-        },
-        "timeUnits": {
-          "hour": "hour",
-          "minute": "minute",
-          "second": "second"
-        },
-        "title": "Agent Information",
-        "health": {
-          "normal": "Normal",
-          "abnormal": "Abnormal"
-        }
-      },
-      "execPropulsion": {
-        "columns": {
-          "processId": "Process ID",
-          "runTime": "Run Time",
-          "user": "User",
-          "virtualMemory": "Available Virtual Memory",
-          "threadCount": "Thread Count",
-          "openFiles": "Open Files",
-          "writeDisk": "Write Disk",
-          "readDisk": "Read Disk"
-        },
-        "confirmKillProcess": "Confirm to force exit process 「{processId}」?",
-        "processExitSuccess": "Process exit successfully",
-        "processCount": "Process Count",
-        "threadCount": "Thread Count",
-        "openFiles": "Open Files",
-        "writeDisk": "Write Disk",
-        "readDisk": "Read Disk",
-        "killProcess": "Force Exit (kill)"
-      },
-      "log": {
-        "options": {
-          "500": "Last 500 lines",
-          "1000": "Last 1000 lines",
-          "10000": "Last 10000 lines"
-        },
-        "title": "View Log",
-        "errorText": "No access to proxy information, connection failed address: http://{ip}:{port}",
-        "noDownloadContent": "No downloadable content"
-      },
-      "mockService": {
-        "columns": {
-          "serviceId": "Service ID",
-          "accessUrl": "Access URL",
-          "accessPort": "Access Port"
-        }
-      },
-      "buttons": {
-        "onlineInstallAgent": "Online Install Agent",
-        "manualInstallAgent": "Manual Install Agent"
-      },
-      "labels": {
-        "resourceMonitoring": "Resource Monitoring",
-        "agentService": "Agent Service",
-        "executingTasks": "Executing Tasks",
-        "executorProcess": "Executor Process",
-        "mockServiceInstance": "Mock Service Instance",
-        "used": "Used",
-        "idle": "Idle",
-        "estimatedTime": "Estimated to take one minute",
-        "disableDelete": "Node must be disabled before deletion",
-        "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
-        "onlyOwnNode": "Only own node can be deleted",
-        "copySuccess": "Copied to clipboard"
-      },
-      "installSteps": {
-        "linuxTitle": "Linux or Mac System Automatic Installation Steps",
-        "configTitle": "Installation Configuration Information",
-        "description": "Script must be executed as root user, installation directory is the directory where the script is located",
-        "method1": "Installation Method 1:",
-        "method2": "Installation Method 2:",
-        "downloadScript": "1). Download automatic installation script:",
-        "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:"
-      },
-      "status": {
-        "installed": "Installed",
-        "notInstalled": "Not Installed",
-        "connected": "Connected",
-        "notConnected": "Not Connected"
-      },
-      "agentOpt": {
-        "agentInfo": "Agent Information",
-        "log": "Log",
-        "installAgentTip": "Install agent requires system administrator or application administrator permissions",
-        "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
-        "onlyOwnNode": "Only own node can be deleted"
-      },
-      "chartOptions": {
-        "timeOptions": {
-          "threeMinutes": "Last 3 minutes",
-          "fiveMinutes": "Last 5 minutes",
-          "tenMinutes": "Last 10 minutes",
-          "oneHour": "Last 1 hour",
-          "threeHours": "Last 3 hours"
-        },
-        "columns": {
-          "average": "Average",
-          "highest": "Highest",
-          "lowest": "Lowest",
-          "latest": "Latest"
-        },
-        "cpu": {
-          "idle": "CPU Idle Percentage",
-          "sys": "System Space Occupied CPU Percentage",
-          "user": "User Space Occupied CPU Percentage",
-          "wait": "Waiting IO Operation CPU Percentage",
-          "other": "Other Occupied CPU Percentage",
-          "total": "Total Occupied CPU Percentage"
-        },
-        "memory": {
-          "usage": "Usage",
-          "usageRate": "Usage Rate",
-          "free": "Physical Memory Remaining (GB)",
-          "used": "Physical Memory Used (GB)",
-          "freePercent": "Actual Free Physical Memory Percentage (%)",
-          "usedPercent": "Actual Used Physical Memory Percentage (%)",
-          "actualFree": "Actual Free Memory (GB)",
-          "actualUsed": "Actual Used Memory (GB)",
-          "swapFree": "Swap Free (GB)",
-          "swapUsed": "Swap Used (GB)"
-        },
-        "disk": {
-          "iops": "IOPS",
-          "mbPerSecond": "MB per Second",
-          "total": "Total Disk Size (GB)",
-          "free": "Free Disk Space (GB)",
-          "used": "Used Disk Space (GB)",
-          "avail": "Available Disk Space (GB)",
-          "usePercent": "Disk Usage Percentage (%)",
-          "readsRate": "Reads per Second (IO/s)",
-          "writesRate": "Writes per Second (IO/s)"
-        },
-        "network": {
-          "mbPerSecond": "MB per Second",
-          "bytes": "Bytes",
-          "errorPackets": "Error Packets",
-          "rxBytes": "Received Total Bytes (GB)",
-          "rxBytesRate": "Received MB per Second (MB/s)",
-          "rxErrors": "Received Error Packets (packets)",
-          "txBytes": "Sent Total Bytes (GB)",
-          "txBytesRate": "Sent MB per Second (MB/s)"
-        }
-      }
-    },
-    "nodeItem": {
-      "buttons": {
-        "testConnection": "Test Connection",
-        "onlineInstall": "Online Install",
-        "manualInstall": "Manual Install",
-        "restartAgent": "Restart Agent"
-      },
+    "list": {
       "labels": {
         "role": "Role",
         "portRangeTip": "Please enter port number range between 1 ~ 65535",
@@ -454,7 +308,6 @@
         "updateNodeSuccess": "Update node successful",
         "addNodeSuccess": "Add node successful",
         "modifyNodeNameSuccess": "Modify node name successful",
-        "addNode": "Add Node",
         "inputLimit200": "Input limit 200 characters",
         "installAgentTip": "Detect that the node has not installed the agent, please install the agent first and then use it",
         "freeNode": "Free Node",
@@ -472,6 +325,12 @@
         "appNodeDesc": "Hosts the testing application and monitors target node load during stress tests for performance diagnostics.",
         "copySuccess": "Copied to clipboard"
       },
+      "actions": {
+        "testConnection": "Test Connection",
+        "onlineInstall": "Online Install",
+        "manualInstall": "Manual Install",
+        "restartAgent": "Restart Agent"
+      },
       "tips": {
         "editOwnNode": "Only own node can be deleted",
         "editPermission": "Edit node requires system administrator or application administrator permissions",
@@ -482,7 +341,6 @@
         "installPermission": "Online install agent requires system administrator or application administrator permissions",
         "manualInstallPermission": "Manual install agent requires system administrator or application administrator permissions",
         "roleDescription": "You can check the corresponding role of the node according to your actual needs",
-        "roleHint": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
         "managementNode": "Management Node: Deploy and run Web UI applications",
         "controllerNode": "Controller Node: Used for scheduling, managing, monitoring execution and agent services.",
         "executionNode": "Execution Node: Used for executing functional tests, performance tests, data generation, etc.",
@@ -495,7 +353,7 @@
       "installSteps": {
         "linuxTitle": "Linux or Mac System Automatic Installation Steps",
         "configTitle": "Installation Configuration Information",
-        "description": "Script must be executed as root user, installation directory is the directory where the script is located",
+        "description": "Script must be executed as root user, installation directory is the directory where the script is located.",
         "method1": "Installation Method 1:",
         "method2": "Installation Method 2:",
         "downloadScript": "1). Download automatic installation script:",
@@ -556,30 +414,141 @@
           "serverCtrlUrlPrefix": "Controller Address",
           "ctrlAccessToken": "Device Access Token"
         }
+      }
+    },
+    "detail": {
+      "labels": {
+        "resourceMonitoring": "Resource Monitoring",
+        "agentService": "Agent Service",
+        "executingTasks": "Executing Tasks",
+        "executorProcess": "Executor Process",
+        "mockServiceInstance": "Mock Service Instance",
+        "estimatedTime": "Estimated to take one minute",
+        "disableDelete": "Node must be disabled before deletion",
+        "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
+        "onlyOwnNode": "Only own node can be deleted",
+        "copySuccess": "Copied to clipboard",
+        "installAgentTip": "Install agent requires system administrator or application administrator permissions"
       },
-      "nodeTip": {
-        "title": "Tips: Supported operating systems include Linux (recommended), macOS, and Windows. Before executing tasks, add nodes and install agents - if auto-installation fails due to network/account issues, follow manual installation prompts and verify agent connectivity (start if inactive). While nodes support multiple roles, configure stress test nodes with a single \"Execution\" role for accurate performance measurement. Choose public-network nodes to simulate real-user conditions (with latency) or same-intranet nodes to test application limits without network interference. Note: Node management is restricted to system and application administrators by default.",
-        "steps": {
-          "managementNode": {
-            "title": "Management Node",
-            "content": "Used for deploying and running Web UI applications."
+      "actions": {
+        "onlineInstallAgent": "Online Install Agent",
+        "manualInstallAgent": "Manual Install Agent"
+      },
+      "agent": {
+        "title": "Agent Information",
+        "tabs": {
+          "agentInfo": "Agent Information",
+          "viewLog": "View Log"
+        },
+        "columns": {
+          "version": "Version",
+          "home": "Installation Path",
+          "uptime": "Uptime",
+          "diskSpace": "Disk Space",
+          "port": "Occupied Port",
+          "health": "Health Status"
+        },
+        "health": {
+          "normal": "Normal",
+          "abnormal": "Abnormal"
+        },
+        "log": {
+          "options": {
+            "500": "Last 500 lines",
+            "1000": "Last 1000 lines",
+            "10000": "Last 10000 lines"
           },
-          "controllerNode": {
-            "title": "Controller Node",
-            "content": "Used for scheduling, managing, monitoring execution and agent services."
-          },
-          "executionNode": {
-            "title": "Execution Node",
-            "content": "Used for executing functional tests, performance tests, data generation, etc."
-          },
-          "mockNode": {
-            "title": "Mock Node",
-            "content": "Runs Mock services and Mock interfaces."
-          },
-          "applicationNode": {
-            "title": "Application Node",
-            "content": "Hosts the testing application and monitors target node load during stress tests for performance diagnostics."
-          }
+          "errorText": "No access to proxy information, connection failed address: http://{ip}:{port}",
+          "noDownloadContent": "No downloadable content"
+        }
+      },
+      "executor": {
+        "columns": {
+          "processId": "Process ID",
+          "runTime": "Run Time",
+          "user": "User",
+          "virtualMemory": "Available Virtual Memory",
+          "threadCount": "Thread Count",
+          "openFiles": "Open Files",
+          "writeDisk": "Write Disk",
+          "readDisk": "Read Disk"
+        },
+        "confirmKillProcess": "Confirm to force exit process 「{processId}」?",
+        "processExitSuccess": "Process exit successfully",
+        "processCount": "Process Count",
+        "threadCount": "Thread Count",
+        "openFiles": "Open Files",
+        "writeDisk": "Write Disk",
+        "readDisk": "Read Disk",
+        "killProcess": "Force Exit (kill)"
+      },
+      "mockService": {
+        "columns": {
+          "serviceId": "Service ID",
+          "accessUrl": "Access URL",
+          "accessPort": "Access Port"
+        }
+      },
+      "status": {
+        "installed": "Installed",
+        "notInstalled": "Not Installed",
+        "connected": "Connected",
+        "notConnected": "Not Connected"
+      },
+      "chartOptions": {
+        "timeOptions": {
+          "threeMinutes": "Last 3 minutes",
+          "fiveMinutes": "Last 5 minutes",
+          "tenMinutes": "Last 10 minutes",
+          "oneHour": "Last 1 hour",
+          "threeHours": "Last 3 hours"
+        },
+        "columns": {
+          "average": "Average",
+          "highest": "Highest",
+          "lowest": "Lowest",
+          "latest": "Latest"
+        },
+        "cpu": {
+          "idle": "CPU Idle Percentage",
+          "sys": "System Space Occupied CPU Percentage",
+          "user": "User Space Occupied CPU Percentage",
+          "wait": "Waiting IO Operation CPU Percentage",
+          "other": "Other Occupied CPU Percentage",
+          "total": "Total Occupied CPU Percentage"
+        },
+        "memory": {
+          "usage": "Usage",
+          "usageRate": "Usage Rate",
+          "free": "Physical Memory Remaining (GB)",
+          "used": "Physical Memory Used (GB)",
+          "freePercent": "Actual Free Physical Memory Percentage (%)",
+          "usedPercent": "Actual Used Physical Memory Percentage (%)",
+          "actualFree": "Actual Free Memory (GB)",
+          "actualUsed": "Actual Used Memory (GB)",
+          "swapFree": "Swap Free (GB)",
+          "swapUsed": "Swap Used (GB)"
+        },
+        "disk": {
+          "iops": "IOPS",
+          "mbPerSecond": "MB per Second",
+          "total": "Total Disk Size (GB)",
+          "free": "Free Disk Space (GB)",
+          "used": "Used Disk Space (GB)",
+          "avail": "Available Disk Space (GB)",
+          "usePercent": "Disk Usage Percentage (%)",
+          "readsRate": "Reads per Second (IO/s)",
+          "writesRate": "Writes per Second (IO/s)"
+        },
+        "network": {
+          "mbPerSecond": "MB per Second",
+          "bytes": "Bytes",
+          "errorPackets": "Error Packets",
+          "rxBytes": "Received Total Bytes (GB)",
+          "rxBytesRate": "Received MB per Second (MB/s)",
+          "rxErrors": "Received Error Packets (packets)",
+          "txBytes": "Sent Total Bytes (GB)",
+          "txBytesRate": "Sent MB per Second (MB/s)"
         }
       }
     }

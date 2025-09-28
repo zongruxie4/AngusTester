@@ -164,8 +164,8 @@ export function useNodeData (
 
       // Show success message
       const messageKey = nodeParams.id
-        ? 'node.nodeItem.labels.updateNodeSuccess'
-        : 'node.nodeItem.labels.addNodeSuccess';
+        ? 'node.list.labels.updateNodeSuccess'
+        : 'node.list.labels.addNodeSuccess';
       notification.success(t(messageKey));
 
       // Reload node list
@@ -183,7 +183,7 @@ export function useNodeData (
   const deleteNode = (state: NodeData) => {
     // Show confirmation dialog
     modal.confirm({
-      content: t('node.nodeItem.confirm.deleteNode', { name: state.name }),
+      content: t('node.list.confirm.deleteNode', { name: state.name }),
       onOk: async () => {
         try {
           const [error] = await node.deleteNode({ ids: state.id });
@@ -206,10 +206,10 @@ export function useNodeData (
    */
   const getEditTip = (node: NodeData): string | undefined => {
     if (node.source?.value !== 'OWN_NODE') {
-      return t('node.nodeItem.tips.editOwnNode');
+      return t('node.list.tips.editOwnNode');
     }
     if (!props.isAdmin) {
-      return t('node.nodeItem.tips.editPermission');
+      return t('node.list.tips.editPermission');
     }
     return undefined;
   };
@@ -222,13 +222,13 @@ export function useNodeData (
    */
   const getDeleteTip = (node: NodeData): string | undefined => {
     if (node.enabled) {
-      return t('node.nodeItem.tips.disableDelete');
+      return t('node.list.tips.disableDelete');
     }
     if (!props.isAdmin) {
-      return t('node.nodeItem.tips.deletePermission');
+      return t('node.list.tips.deletePermission');
     }
     if (node.source?.value !== 'OWN_NODE') {
-      return t('node.nodeItem.tips.deleteOwnNode');
+      return t('node.list.tips.deleteOwnNode');
     }
     return undefined;
   };

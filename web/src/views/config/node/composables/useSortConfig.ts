@@ -15,12 +15,12 @@ export function useSortConfig () {
    */
   const sortOptions: SortOption[] = [
     {
-      name: t('node.nodeItem.interface.sortOptions.byAddTime'),
+      name: t('node.list.interface.sortOptions.byAddTime'),
       key: 'createdDate',
       orderSort: 'DESC'
     },
     {
-      name: t('node.nodeItem.interface.sortOptions.byName'),
+      name: t('node.list.interface.sortOptions.byName'),
       key: 'name',
       orderSort: 'ASC'
     }

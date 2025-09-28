@@ -1,21 +1,9 @@
 <script setup lang="ts">
-/**
- * Node Detail Page Component
- * <p>
- * This component displays detailed information about a specific node including
- * basic information, resource monitoring, agent service status, and execution tasks.
- * The component uses composables to separate business logic from UI presentation.
- * </p>
- */
-
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { Button, Progress, RadioButton, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { Grid, Hints, Icon, IntervalTimestamp, NoData, Select, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-// Import interfaces and utilities
-// Import composables
 import { infoItem, installConfigColumns, useNodeData } from './composables/useNodeData';
 import { getStrokeColor, internetInfo, nodeUseProgresses, useNodeMetrics } from './composables/useNodeMetrics';
 import { nodeEchartsTabs, useNodeCharts } from './composables/useNodeCharts';
@@ -113,11 +101,11 @@ const agentActiveKey = ref<'agent' | 'log'>('agent');
 // Agent options
 const AgentOpt = [
   {
-    label: t('node.nodeDetail.agentOpt.agentInfo'),
+    label: t('node.detail.agent.tabs.agentInfo'),
     value: 'agent'
   },
   {
-    label: t('node.nodeDetail.log.title'),
+    label: t('node.detail.agent.tabs.viewLog'),
     value: 'log'
   }
 ];
@@ -214,7 +202,7 @@ onMounted(() => {
                 :loading="enabled"
                 :disabled="!canPerformActions(state.infos?.tenantId, state.infos?.createdBy)"
                 @click="handleEnableNode">
-                <Icon icon="icon-qiyong" />{{ t('common.enable') }}
+                <Icon icon="icon-qiyong" />{{ t('actions.enable') }}
               </Button>
               <Button
                 v-else
@@ -222,7 +210,7 @@ onMounted(() => {
                 :loading="enabled"
                 :disabled="!canPerformActions(state.infos?.tenantId, state.infos?.createdBy)"
                 @click="handleEnableNode">
-                <Icon icon="icon-jinyong" />{{ t('common.disable') }}
+                <Icon icon="icon-jinyong" />{{ t('actions.disable') }}
               </Button>
 
               <!-- Delete Button -->
@@ -248,7 +236,7 @@ onMounted(() => {
                   class="node-action-btn"
                   @click="handleInstallAgent">
                   <Icon icon="icon-anzhuangdaili" />
-                  {{ t('node.message.onlineInstallAgent') }}
+                  {{ t('node.detail.actions.onlineInstallAgent') }}
                 </Button>
               </Tooltip>
               <Button
@@ -257,7 +245,7 @@ onMounted(() => {
                 :loading="installing"
                 class="node-action-btn"
                 @click="handleInstallAgent">
-                <Icon icon="icon-anzhuangdaili" />{{ t('node.message.onlineInstallAgent') }}
+                <Icon icon="icon-anzhuangdaili" />{{ t('node.detail.actions.onlineInstallAgent') }}
                 <Hints
                   v-if="installing"
                   class="absolute left-5 -bottom-3"
@@ -270,7 +258,7 @@ onMounted(() => {
                   :disabled="true"
                   class="node-action-btn"
                   @click="handleGetInstallStep">
-                  <Icon icon="icon-anzhuangdaili" />{{ t('node.message.manualInstallAgent') }}
+                  <Icon icon="icon-anzhuangdaili" />{{ t('node.detail.actions.manualInstallAgent') }}
                 </Button>
               </Tooltip>
               <Button
@@ -278,7 +266,7 @@ onMounted(() => {
                 :disabled="!canInstallAgent()"
                 class="node-action-btn"
                 @click="handleGetInstallStep">
-                <Icon icon="icon-anzhuangdaili" />{{ t('node.message.manualInstallAgent') }}
+                <Icon icon="icon-anzhuangdaili" />{{ t('node.detail.actions.manualInstallAgent') }}
               </Button>
 
               <!-- Back Button -->
@@ -401,12 +389,12 @@ onMounted(() => {
             </template>
             <template #installAgent="{text}">
               <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
-                {{ text ? t('node.nodeItem.interface.nodeStatus.installed') : t('node.nodeItem.interface.nodeStatus.notInstalled') }}
+                {{ text ? t('node.list.interface.nodeStatus.installed') : t('node.list.interface.nodeStatus.notInstalled') }}
               </span>
             </template>
             <template #online="{text}">
               <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
-                {{ text ? t('node.nodeItem.interface.nodeStatus.connected') : t('node.nodeItem.interface.nodeStatus.notConnected') }}
+                {{ text ? t('node.list.interface.nodeStatus.connected') : t('node.list.interface.nodeStatus.notConnected') }}
               </span>
             </template>
           </Grid>
@@ -439,11 +427,11 @@ onMounted(() => {
                     <div v-if="item.valueKey !== 'network'" class="pl-5 w-35">
                       <span class="text-3">{{ item.label }}</span>
                       <div class="leading-5">
-                        <label class="inline-block w-12 text-text-content">{{ t('common.use') }}:</label>
+                        <label class="inline-block w-12 text-text-content">{{ t('status.used') }}:</label>
                         <span class="text-black-active ">{{ sourceUse[item.valueKey] }}{{ item.unit }}</span>
                       </div>
                       <div class="leading-5">
-                        <label class="inline-block w-12 text-text-content">{{ item.valueKey === 'cpu' ? t('node.message.idle') : t('node.message.total') }}:</label>
+                        <label class="inline-block w-12 text-text-content">{{ item.valueKey === 'cpu' ? t('status.idle') : t('status.total') }}:</label>
                         <span class="text-black-active ">{{ sourceUse[item.totalKey] }}{{ item.unit }}</span>
                       </div>
                     </div>
@@ -570,7 +558,7 @@ onMounted(() => {
                 <template #tab><span class="font-semibold">{{ t('node.message.executingTasks') }}</span></template>
                 <Execution :id="id" />
               </TabPane>
-              <TabPane key="execPropulsion">
+              <TabPane key=.executor.>
                 <template #tab><span class="font-semibold">{{ t('node.message.executorProcess') }}</span></template>
                 <ExecutionPropulsion :nodeId="id" :tenantId="state.infos?.tenantId" />
               </TabPane>

@@ -13,7 +13,7 @@ const t = I18nInstance?.global?.t || ((value: string): string => value);
 // Grid column configuration for node information display
 export const infoItem = [
   [{
-    label: t('node.nodeItem.interface.formItems.nodeName'),
+    label: t('node.list.interface.formItems.nodeName'),
     dataIndex: 'name'
   },
   {
@@ -25,7 +25,7 @@ export const infoItem = [
     dataIndex: 'sourceName'
   },
   {
-    label: t('node.nodeItem.interface.formItems.domain'),
+    label: t('node.list.interface.formItems.domain'),
     dataIndex: 'domain'
   }],
   [{
@@ -33,7 +33,7 @@ export const infoItem = [
     dataIndex: 'enabled'
   },
   {
-    label: t('node.nodeItem.interface.formItems.intranetIP'),
+    label: t('node.list.interface.formItems.intranetIP'),
     dataIndex: 'ip'
   },
   {
@@ -41,29 +41,29 @@ export const infoItem = [
     dataIndex: 'password'
   },
   {
-    label: t('node.nodeItem.interface.formItems.role'),
+    label: t('node.list.interface.formItems.role'),
     dataIndex: 'roles'
   }
   ],
   [{
-    label: t('node.nodeItem.interface.nodeStatus.agentInstallStatus'),
+    label: t('node.list.interface.nodeStatus.agentInstallStatus'),
     dataIndex: 'installAgent'
   },
   {
-    label: t('node.nodeItem.interface.formItems.publicIP'),
+    label: t('node.list.interface.formItems.publicIP'),
     dataIndex: 'publicIp'
   },
   {
-    label: t('node.nodeItem.interface.viewItem.specification'),
+    label: t('node.list.interface.viewItem.specification'),
     dataIndex: 'spec'
   },
   {
-    label: t('node.nodeItem.interface.formItems.sshPort'),
+    label: t('node.list.interface.formItems.sshPort'),
     dataIndex: 'sshPort'
   }
   ],
   [{
-    label: t('node.nodeItem.interface.nodeStatus.connectionStatus'),
+    label: t('node.list.interface.nodeStatus.connectionStatus'),
     dataIndex: 'online'
   },
   {
@@ -75,7 +75,7 @@ export const infoItem = [
     dataIndex: 'createdDate'
   },
   {
-    label: t('node.nodeItem.interface.viewItem.expiredTime'),
+    label: t('common.expiredDate'),
     dataIndex: 'instanceExpiredDate'
   }]
 ];
@@ -85,19 +85,19 @@ export const installConfigColumns = [
   [
     {
       dataIndex: 'tenantId',
-      label: t('node.nodeItem.interface.installConfigColumns.tenantId')
+      label: t('node.list.interface.installConfigColumns.tenantId')
     },
     {
       dataIndex: 'deviceId',
-      label: t('node.nodeItem.interface.installConfigColumns.deviceId')
+      label: t('node.list.interface.installConfigColumns.deviceId')
     },
     {
       dataIndex: 'serverCtrlUrlPrefix',
-      label: t('node.nodeItem.interface.installConfigColumns.serverCtrlUrlPrefix')
+      label: t('node.list.interface.installConfigColumns.serverCtrlUrlPrefix')
     },
     {
       dataIndex: 'ctrlAccessToken',
-      label: t('node.nodeItem.interface.installConfigColumns.ctrlAccessToken')
+      label: t('node.list.interface.installConfigColumns.ctrlAccessToken')
     }
   ]
 ];
@@ -287,7 +287,7 @@ export function useNodeData () {
    */
   const deleteNode = (nodeId: string, nodeName: string) => {
     modal.confirm({
-      content: t('node.nodeDetail.confirm.deleteNode', { name: nodeName }),
+      content: t('node.detail.confirm.deleteNode', { name: nodeName }),
       onOk: async () => {
         try {
           const [error] = await node.deleteNode({ ids: [nodeId] });
@@ -320,10 +320,10 @@ export function useNodeData () {
    */
   const getOnlineInstallTip = (node: any, isAdmin: boolean) => {
     if (node.infos.geAgentInstallationCmd) {
-      return t('node.nodeDetail.labels.installed');
+      return t('node.detail.labels.installed');
     }
     if (!isAdmin) {
-      return t('node.nodeDetail.labels.installAgentTip');
+      return t('node.detail.labels.installAgentTip');
     }
     return '';
   };
@@ -336,13 +336,13 @@ export function useNodeData () {
    */
   const getDeleteTip = (node: any, isAdmin: boolean, tenantInfo: any, userInfo: any) => {
     if (node.enabled) {
-      return t('node.nodeDetail.labels.disableDelete');
+      return t('node.detail.labels.disableDelete');
     }
     if (!isAdmin) {
-      return t('node.nodeDetail.labels.deleteNodeTip');
+      return t('node.detail.labels.deleteNodeTip');
     }
     if (node.source?.value !== 'OWN_NODE') {
-      return t('node.nodeDetail.labels.onlyOwnNode');
+      return t('node.detail.labels.onlyOwnNode');
     }
     return '';
   };

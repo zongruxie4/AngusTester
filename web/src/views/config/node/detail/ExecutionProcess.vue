@@ -33,23 +33,23 @@ const {
     <div class="process-summary">
       <div class="summary-item">
         <div class="summary-value">{{ processSummary.processCount || '--' }}</div>
-        <div class="summary-label">{{ $t('node.nodeDetail.execPropulsion.processCount') }}</div>
+        <div class="summary-label">{{ $t('node.detail.executor.processCount') }}</div>
       </div>
       <div class="summary-item">
         <div class="summary-value">{{ processSummary.threadCount || '--' }}</div>
-        <div class="summary-label">{{ $t('node.nodeDetail.execPropulsion.threadCount') }}</div>
+        <div class="summary-label">{{ $t('node.detail.executor.threadCount') }}</div>
       </div>
       <div class="summary-item">
         <div class="summary-value">{{ processSummary.openFiles || '--' }}</div>
-        <div class="summary-label">{{ $t('node.nodeDetail.execPropulsion.openFiles') }}</div>
+        <div class="summary-label">{{ $t('node.detail.executor.openFiles') }}</div>
       </div>
       <div class="summary-item">
         <div class="summary-value">{{ processSummary.bytesWritten || '--' }}</div>
-        <div class="summary-label">{{ $t('node.nodeDetail.execPropulsion.writeDisk') }}</div>
+        <div class="summary-label">{{ $t('node.detail.executor.writeDisk') }}</div>
       </div>
       <div class="summary-item">
         <div class="summary-value">{{ processSummary.bytesRead || '--' }}</div>
-        <div class="summary-label">{{ $t('node.nodeDetail.execPropulsion.readDisk') }}</div>
+        <div class="summary-label">{{ $t('node.detail.executor.readDisk') }}</div>
       </div>
     </div>
 
@@ -71,7 +71,7 @@ const {
             type="link"
             size="small"
             @click="killProcess(record)">
-            {{ $t('node.nodeDetail.execPropulsion.killProcess') }}
+            {{ $t('node.detail.executor.killProcess') }}
           </Button>
         </template>
       </template>

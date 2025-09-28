@@ -69,7 +69,7 @@ export function useNodeNameEdit () {
       // the parent component manages the node list
 
       // Show success notification
-      notification.success(t('node.nodeItem.labels.modifyNodeNameSuccess'));
+      notification.success(t('node.list.labels.modifyNodeNameSuccess'));
     } catch (error) {
       console.error('Failed to update node name:', error);
     }

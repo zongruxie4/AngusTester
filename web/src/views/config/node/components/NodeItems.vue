@@ -200,7 +200,7 @@ defineExpose({
     :class="{'border-blue-text-active': state.editable}">
     <div class="py-2 px-4 font-semibold bg-gray-2 flex justify-between border-b text-3">
       <div class="flex items-center">
-        <span v-if="!state.id">{{ t('node.buttons.addNode') }}</span>
+        <span v-if="!state.id">{{ t('node.actions.addNode') }}</span>
         <template v-else>
           <template v-if="!isEditingName(state.id)">
             <RouterLink :to="`/node/detail/${state.id}`"><span class="text-3.5">{{ state.name }}</span></RouterLink>
@@ -214,7 +214,7 @@ defineExpose({
             <Input
               ref="editNameInputRef"
               v-model:value="editNameValue"
-              :placeholder="t('node.nodeItem.labels.inputLimit200')"
+              :placeholder="t('node.list.labels.inputLimit200')"
               trim
               :maxlength="200"
               @blur="nodeNameBlur(state.name, state.id)" />
@@ -224,7 +224,7 @@ defineExpose({
           color="#fff"
           overlayClassName="agent-uninstall"
           placement="right">
-          <template #title><div class="text-3">{{ t('node.nodeItem.labels.installAgentTip') }}</div></template>
+          <template #title><div class="text-3">{{ t('node.list.labels.installAgentTip') }}</div></template>
           <p v-show="!state.installAgent && !!state.id" class="text-http-put ml-6 cursor-pointer"><Icon icon="icon-tishi1" class="text-3.5" /></p>
         </Tooltip>
       </div>
@@ -233,7 +233,7 @@ defineExpose({
           v-if="state.free"
           color="success"
           class="h-5 leading-5 mr-4">
-          {{ t('node.nodeItem.labels.freeNode') }}
+          {{ t('node.list.labels.freeNode') }}
         </Tag>
         <div
           v-for="item in nodeStatus"
@@ -245,7 +245,7 @@ defineExpose({
       </div>
     </div>
     <div class="px-4">
-      <!-- 编辑状态 -->
+      <!-- Edit State -->
       <div v-if="state.editable" class="text-3">
         <div class="flex flex-wrap justify-between text-text-content text-3 leading-3">
           <div
@@ -268,22 +268,22 @@ defineExpose({
             <span
               v-if="item.valueKey === 'sshPort'"
               class="text-status-error absolute left-0 -bottom-1.5"
-              :class="[showPortTip ? 'inline' : 'hidden']">{{ t('node.nodeItem.labels.portRangeTip') }}</span>
+              :class="[showPortTip ? 'inline' : 'hidden']">{{ t('node.list.labels.portRangeTip') }}</span>
           </div>
           <div class="mt-4 w-1/3">
-            {{ t('node.nodeItem.labels.role') }} <span class="text-status-error">*</span>
+            {{ t('node.list.labels.role') }} <span class="text-status-error">*</span>
             <Popover
-              :title="t('node.nodeItem.tips.roleDescription')"
+              :title="t('node.list.tips.roleDescription')"
               placement="bottomLeft"
               class="text-3">
               <template #content>
                 <div class="max-w-200 text-3">
-                  <p>{{ t('node.nodeItem.labels.nodeTip') }}</p>
-                  <p class="pl-3"><span>-{{ t('node.nodeItem.labels.managerNode') }}</span>{{ t('node.nodeItem.desc.managerNodeDesc') }}</p>
-                  <p class="pl-3"><span>-{{ t('node.nodeItem.labels.controllerNode') }}</span>{{ t('node.nodeItem.desc.controllerNodeDesc') }}</p>
-                  <p class="pl-3"><span>-{{ t('node.nodeItem.labels.execNode') }}</span>{{ t('node.nodeItem.desc.execNodeDesc') }}</p>
-                  <p class="pl-3"><span>-{{ t('node.nodeItem.labels.mockNode') }}</span>{{ t('node.nodeItem.desc.mockNodeDesc') }}</p>
-                  <p class="pl-3"><span>-{{ t('node.nodeItem.labels.appNode') }}</span>{{ t('node.nodeItem.desc.appNodeDesc') }}</p>
+                  <p>{{ t('node.list.labels.nodeTip') }}</p>
+                  <p class="pl-3"><span>-{{ t('node.list.labels.managerNode') }}</span>{{ t('node.list.desc.managerNodeDesc') }}</p>
+                  <p class="pl-3"><span>-{{ t('node.list.labels.controllerNode') }}</span>{{ t('node.list.desc.controllerNodeDesc') }}</p>
+                  <p class="pl-3"><span>-{{ t('node.list.labels.execNode') }}</span>{{ t('node.list.desc.execNodeDesc') }}</p>
+                  <p class="pl-3"><span>-{{ t('node.list.labels.mockNode') }}</span>{{ t('node.list.desc.mockNodeDesc') }}</p>
+                  <p class="pl-3"><span>-{{ t('node.list.labels.appNode') }}</span>{{ t('node.list.desc.appNodeDesc') }}</p>
                 </div>
               </template>
               <Icon icon="icon-shuoming" class="text-blue-light text-3.5 leading-3 ml-1.5" />
@@ -296,7 +296,7 @@ defineExpose({
               </CheckboxGroup>
               <span
                 class="text-status-error"
-                :class="[validated && nodeParams.roles.length < 1 ? 'block' : 'hidden']">{{ t('node.nodeItem.labels.selectRole') }}</span>
+                :class="[validated && nodeParams.roles.length < 1 ? 'block' : 'hidden']">{{ t('node.list.labels.selectRole') }}</span>
             </div>
           </div>
         </div>
@@ -313,15 +313,15 @@ defineExpose({
             :disabled="testBtnDisable"
             class="node-normal-btn"
             @click="test">
-            {{ t('node.nodeItem.buttons.testConnection') }}
+            {{ t('node.list.actions.testConnection') }}
           </Button>
           <p v-show="showTested && testSuccess" class="text-text-content font-medium">
             <Icon icon="icon-duihao" class="text-status-success mr-1.5 icon-text-3 leading-3" />
-            {{ t('node.nodeItem.labels.connectionSuccess') }}
+            {{ t('node.list.labels.connectionSuccess') }}
           </p>
           <p v-show="showTested && !testSuccess" class="text-text-content font-medium">
             <Icon icon="icon-chahao" class="text-status-error mr-1.5 icon-text-3 leading-3" />
-            {{ t('node.nodeItem.labels.connectionFailed') }}, {{ testFailContent }}
+            {{ t('node.list.labels.connectionFailed') }}, {{ testFailContent }}
           </p>
         </div>
       </div>
@@ -353,7 +353,6 @@ defineExpose({
               </div>
             </div>
             <div class="pb-2 flex justify-between max-w-180">
-              <!-- 权限控制：（1、只允许管理员修改 || 2、自己添加的节点允许修改）&& 3、不允许修改租户1共享的节点。 -->
               <Tooltip v-if="!canEditNode(state)" :title="getEditTip(state)">
                 <Button
                   type="text"
@@ -381,7 +380,7 @@ defineExpose({
                 class="flex space-x-1"
                 @click="enable(state)">
                 <Icon :icon="state.enabled?'icon-jinyong':'icon-qiyong'" />
-                {{ state.enabled ? t('common.enable') }}
+                {{ state.enabled ? t('status.enabled') : t('status.disabled') }}
               </Button>
               <Tooltip v-if="!canDeleteNode(state)" :title="getDeleteTip(state)">
                 <Button
@@ -409,7 +408,7 @@ defineExpose({
                   size="small"
                   class="flex space-x-1">
                   <Icon icon="icon-anzhuangdaili" />
-                  {{ t('node.nodeItem.buttons.onlineInstall') }}
+                  {{ t('node.list.actions.onlineInstall') }}
                 </Button>
               </Tooltip>
               <Button
@@ -419,11 +418,11 @@ defineExpose({
                 :loading="loadingStates.installingMap[state.id]"
                 @click="installAgent(state)">
                 <Icon icon="icon-anzhuangdaili" class="mr-1" />
-                <span> {{ t('node.nodeItem.buttons.onlineInstall') }} </span>
+                <span> {{ t('node.list.actions.onlineInstall') }} </span>
                 <Hints
                   v-if="loadingStates.installingMap[state.id]"
                   class="ml-1"
-                  :text="t('node.nodeItem.labels.estimatedTime')" />
+                  :text="t('node.list.labels.estimatedTime')" />
               </Button>
               <Tooltip v-if="state.free" :title="getDisabledButtonTooltip(state, 'manualInstall')">
                 <Button
@@ -432,7 +431,7 @@ defineExpose({
                   size="small"
                   class="flex space-x-1">
                   <Icon icon="icon-anzhuangdaili" />
-                  {{ t('node.nodeItem.buttons.manualInstall') }}
+                  {{ t('node.list.actions.manualInstall') }}
                 </Button>
               </Tooltip>
               <Button
@@ -442,7 +441,7 @@ defineExpose({
                 class="flex space-x-1"
                 @click="showInstallStep(state)">
                 <Icon icon="icon-anzhuangdaili" />
-                {{ t('node.nodeItem.buttons.manualInstall') }}
+                {{ t('node.list.actions.manualInstall') }}
               </Button>
               <Button
                 type="text"
@@ -452,7 +451,7 @@ defineExpose({
                 :disabled="!canRestartAgent(state)"
                 @click="restartAgent(state)">
                 <Icon icon="icon-zhongxinkaishi" />
-                {{ t('node.nodeItem.buttons.restartAgent') }}
+                {{ t('node.list.actions.restartAgent') }}
               </Button>
             </div>
           </div>
@@ -482,25 +481,25 @@ defineExpose({
         </div>
         <div v-show="state.showInstallAgent" class="border-t pt-4 pb-4 relative">
           <Tabs size="small">
-            <TabPane key="linux" :tab="t('node.nodeItem.installSteps.linuxTitle')">
-              <div class="text-3">{{ t('common.description') }}</div>
-              <div class="text-3">
-                {{ t('node.nodeItem.installSteps.method1') }}<Icon
+            <TabPane key="linux" :tab="t('node.list.installSteps.linuxTitle')">
+              <div class="text-3 font-semibold">{{ t('node.list.installSteps.description') }}</div>
+              <div class="text-3 mt-2">
+                {{ t('node.list.installSteps.method1') }}<Icon
                   icon="icon-fuzhi"
                   class="cursor-pointer text-3.5 text-blue-1"
                   @click="copyContent(state.linuxOfflineInstallSteps?.onlineInstallCmd)" />
                 <p class="install-step whitespace-pre-line">
                   {{ state.linuxOfflineInstallSteps?.onlineInstallCmd }}
                 </p>
-                {{ t('node.nodeItem.installSteps.method2') }}
+                {{ t('node.list.installSteps.method2') }}
                 <p class="install-step whitespace-pre-line">
-                  {{ t('node.nodeItem.installSteps.downloadScript') }}<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
-                  {{ t('node.nodeItem.installSteps.copyScript', { scriptName: state.linuxOfflineInstallSteps?.installScriptName }) }}<br />
+                  {{ t('node.list.installSteps.downloadScript') }}<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
+                  {{ t('node.list.installSteps.copyScript', { scriptName: state.linuxOfflineInstallSteps?.installScriptName }) }}<br />
                   {{ state.linuxOfflineInstallSteps?.runInstallCmd }}
                 </p>
               </div>
             </TabPane>
-            <TabPane key="config" :tab="t('node.nodeItem.installSteps.configTitle')">
+            <TabPane key="config" :tab="t('node.list.installSteps.configTitle')">
               <Grid
                 :dataSource="state.installConfig"
                 :columns="installConfigColumns">

@@ -294,7 +294,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="enabled(record)">
             <Icon icon="icon-qiyong" class="mr-1 text-3.5" />
-            <span>{{ record.enabled ? t('common.enable') }}</span>
+            <span>{{ record.enabled ? t('status.enabled') : t('status.disabled') }}</span>
           </Button>
           <Button
             :loading="delLoadingMap[record.id]"

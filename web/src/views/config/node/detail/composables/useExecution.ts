@@ -82,7 +82,7 @@ export function useExecution (nodeId: string) {
     {
       key: 'testType',
       dataIndex: 'scriptType',
-      title: t('node.nodeDetail.execute.columns.testType'),
+      title: t('common.scriptType'),
       width: 120
     },
     {

@@ -100,7 +100,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
    */
   const killProcess = (process: ProcessInfo): void => {
     modal.confirm({
-      content: t('node.nodeDetail.execPropulsion.confirmKillProcess', { processId: process.processID }),
+      content: t('node.detail.executor.confirmKillProcess', { processId: process.processID }),
       async onOk () {
         try {
           const [error] = await node.killRunnerProcess({
@@ -113,7 +113,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
             return;
           }
 
-          notification.success(t('node.nodeDetail.execPropulsion.processExitSuccess'));
+          notification.success(t('node.detail.executor.processExitSuccess'));
           await loadNodeProcess();
         } catch (err) {
           console.error('Error killing process:', err);
@@ -129,7 +129,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
   const tableColumns: ExecutionPropulsionColumn[] = [
     {
       key: 'processId',
-      title: t('node.nodeDetail.execPropulsion.columns.processId'),
+      title: t('node.detail.executor.columns.processId'),
       dataIndex: 'processID',
       customCell: (_, index: number) => ({
         rowSpan: index % 2 === 0 ? 2 : 0
@@ -137,7 +137,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
     },
     {
       key: 'runTime',
-      title: t('node.nodeDetail.execPropulsion.columns.runTime'),
+      title: t('node.detail.executor.columns.runTime'),
       dataIndex: 'upTime',
       customCell: (_, index: number) => ({
         colSpan: index % 2 === 0 ? 1 : 7
@@ -160,7 +160,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
     },
     {
       key: 'virtualMemory',
-      title: t('node.nodeDetail.execPropulsion.columns.virtualMemory'),
+      title: t('node.detail.executor.columns.virtualMemory'),
       dataIndex: 'virtualSize',
       customCell: (_, index: number) => ({
         colSpan: index % 2 === 0 ? 1 : 0
@@ -168,7 +168,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
     },
     {
       key: 'threadCount',
-      title: t('node.nodeDetail.execPropulsion.columns.threadCount'),
+      title: t('node.detail.executor.columns.threadCount'),
       dataIndex: 'threadCount',
       customCell: (_, index: number) => ({
         colSpan: index % 2 === 0 ? 1 : 0
@@ -176,7 +176,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
     },
     {
       key: 'openFiles',
-      title: t('node.nodeDetail.execPropulsion.columns.openFiles'),
+      title: t('node.detail.executor.columns.openFiles'),
       dataIndex: 'openFiles',
       customCell: (_, index: number) => ({
         colSpan: index % 2 === 0 ? 1 : 0
@@ -184,7 +184,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
     },
     {
       key: 'writeDisk',
-      title: t('node.nodeDetail.execPropulsion.columns.writeDisk'),
+      title: t('node.detail.executor.columns.writeDisk'),
       dataIndex: 'bytesWritten',
       customCell: (_, index: number) => ({
         colSpan: index % 2 === 0 ? 1 : 0
@@ -192,7 +192,7 @@ export function useExecutionProcess (nodeId: string, tenantId?: string) {
     },
     {
       key: 'readDisk',
-      title: t('node.nodeDetail.execPropulsion.columns.readDisk'),
+      title: t('node.detail.executor.columns.readDisk'),
       dataIndex: 'bytesRead',
       customCell: (_, index: number) => ({
         colSpan: index % 2 === 0 ? 1 : 0

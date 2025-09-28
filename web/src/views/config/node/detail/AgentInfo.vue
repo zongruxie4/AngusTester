@@ -35,7 +35,7 @@ const {
     <div v-if="showError" class="error-banner">
       <Icon icon="icon-tishi1" class="error-icon" />
       <span class="error-text">
-        {{ errorInfo || $t('node.nodeDetail.log.errorText', { ip: props.ip, port: props.port }) }}
+        {{ errorInfo || $t('node.detail.agent.log.errorText', { ip: props.ip, port: props.port }) }}
       </span>
       <Icon
         icon="icon-cuowu"
@@ -45,7 +45,7 @@ const {
 
     <!-- Agent Info Title -->
     <div class="info-title">
-      {{ $t('node.nodeDetail.agentInfo.title') }}
+      {{ $t('node.detail.agent.title') }}
     </div>
 
     <!-- Agent Information Grid -->
@@ -56,13 +56,13 @@ const {
       <!-- Custom cell rendering for health status -->
       <template #health="text">
         <template v-if="text.text && text.text === 'UP'">
-          {{ $t('node.nodeDetail.agentInfo.health.normal') }}
+          {{ $t('node.detail.agent.health.normal') }}
         </template>
         <template v-else-if="text.text">
           <Tooltip>
             <template #title>{{ agentInfoData.errorTip }}</template>
             <span class="health-warning">
-              {{ $t('node.nodeDetail.agentInfo.health.abnormal') }}
+              {{ $t('node.detail.agent.health.abnormal') }}
               <Icon class="warning-icon" icon="icon-jinggao" />
             </span>
           </Tooltip>
@@ -124,10 +124,10 @@ const {
 }
 
 .info-title {
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 14px;
   color: var(--text-primary);
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .info-grid {

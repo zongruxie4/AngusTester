@@ -67,7 +67,7 @@ const {
           class="py-0 h-5"
           size="small"
           @click="downloadLog">
-          {{ t('common.download') }}
+          {{ t('actions.download') }}
         </Button>
         <Button
           class="py-0 h-5 ml-2"

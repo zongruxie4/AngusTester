@@ -99,10 +99,10 @@ const {
 }
 
 .chart-title {
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 14px;
   color: var(--text-primary);
-  margin: 0;
+  margin: 10px;
 }
 
 .time-selector {

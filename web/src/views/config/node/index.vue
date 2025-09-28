@@ -112,7 +112,7 @@ onMounted(async () => {
           class="flex space-x-1"
           @click="handleAddNode">
           <Icon icon="icon-jia" />
-          {{ $t('node.buttons.addNode') }}
+          {{ $t('node.actions.addNode') }}
         </Button>
         <Button
           v-if="editionType === EditionType.CLOUD_SERVICE"
@@ -120,10 +120,10 @@ onMounted(async () => {
           class="flex space-x-1"
           @click="handleBuyNode">
           <Icon icon="icon-zaixiangoumai" />
-          {{ $t('node.buttons.buyNode') }}
+          {{ $t('node.actions.buyNode') }}
         </Button>
         <div>
-          <span class="text-3 mr-1">{{ $t('node.labels.autoRefresh') }}</span>
+          <span class="text-3 mr-1">{{ $t('actions.autoRefresh') }}</span>
           <Switch v-model:checked="autoRefresh" size="small" />
         </div>
         <DropdownSort

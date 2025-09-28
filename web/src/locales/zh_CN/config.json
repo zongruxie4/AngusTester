@@ -224,9 +224,32 @@
   },
   "node": {
     "title": "节点",
+    "introduce": {
+      "description": "本系统支持 Linux（推荐）、macOS 和 Windows 操作系统。在执行任务前，请先添加节点并安装代理程序——若因网络或账户问题导致自动安装失败，请按提示手动安装并检查代理连接状态（若未运行需手动启动）。虽然节点支持多角色配置，但进行压力测试时建议仅分配\"执行(Execution)\"角色以确保性能测试准确性。根据测试需求选择节点类型：使用公网节点可模拟真实用户环境（包含网络延迟），而选用同内网节点则能排除网络干扰、测试应用极限性能。注意：默认情况下，仅系统管理员和应用管理员具有节点管理权限。",
+      "steps": {
+        "managementNode": {
+          "title": "管理节点",
+          "content": "用于部署和运行Web UI应用"
+        },
+        "controllerNode": {
+          "title": "控制器节点",
+          "content": "用于调度、管理、监控执行和代理服务"
+        },
+        "executionNode": {
+          "title": "执行节点",
+          "content": "用于执行功能测试、性能测试、生成数据等"
+        },
+        "mockNode": {
+          "title": "Mock节点",
+          "content": "运行Mock服务和Mock接口"
+        },
+        "applicationNode": {
+          "title": "应用节点",
+          "content": "应用所在节点，用于压测时观察被压测应用节点系统负载，定位分析性能问题"
+        }
+      }
+    },
     "message": {
-      "onlineInstallAgent": "在线安装代理",
-      "manualInstallAgent": "手动安装代理",
       "estimatedTime": "预计需要几分钟时间",
       "installAgentPermission": "安装代理需要系统管理员或应用管理员权限",
       "manualInstallSteps": "请按照以下步骤手动安装代理：",
@@ -236,8 +259,6 @@
       "copyScriptToServer": "复制脚本到目标服务器：",
       "runInstallCommand": "执行安装命令：",
       "configInfo": "配置信息",
-      "use": "使用",
-      "idle": "空闲",
       "resourceMonitoring": "资源监控",
       "agentService": "代理服务",
       "executingTasks": "执行任务",
@@ -246,15 +267,12 @@
       "processMonitoring": "进程监控",
       "noExecutionRecords": "未找到该节点的执行记录",
       "noProcessData": "该节点暂无进程数据",
-      "noMockServices": "未找到该节点的模拟服务"
+      "noMockServices": "未找到该节点的模拟服务",
+      "totalCount": "共{total}条"
     },
-    "buttons": {
+    "actions": {
       "addNode": "添加节点",
       "buyNode": "购买节点"
-    },
-    "labels": {
-      "autoRefresh": "自动刷新",
-      "totalCount": "共{total}条"
     },
     "searchOptions": {
       "node": {
@@ -278,8 +296,148 @@
         "placeholder": "选择来源"
       }
     },
-    "nodeDetail": {
-      "agentInfo": {
+    "list": {
+      "labels": {
+        "role": "角色",
+        "portRangeTip": "请填写端口号范围在1 ~ 65535之间",
+        "selectRole": "请选择角色",
+        "connectionSuccess": "连接成功",
+        "connectionFailed": "连接失败，请检查并重新填写节点信息后再次测试连接",
+        "estimatedTime": "预计需要一分钟",
+        "installSuccess": "安装成功",
+        "updateNodeSuccess": "更新节点成功",
+        "addNodeSuccess": "添加节点成功",
+        "modifyNodeNameSuccess": "修改节点名称成功",
+        "inputLimit200": "输入限制200字符以内",
+        "installAgentTip": "检测到该节点还未安装代理，请先安装代理后在进行使用",
+        "freeNode": "免费节点",
+        "managerNode": "管理节点：",
+        "controllerNode": "控制器节点：",
+        "execNode": "执行节点：",
+        "mockNode": "Mock节点：",
+        "appNode": "应用节点：",
+        "managerNodeDesc": "部署和运行Web UI应用",
+        "controllerNodeDesc": "用于调度、管理、监控执行和代理服务。",
+        "execNodeDesc": "用于执行功能测试、性能测试、生成数据等。",
+        "mockNodeDesc": "运行Mock服务和Mock接口。",
+        "appNodeDesc": "应用所在节点，用于压测时观察被压测应用节点系统负载，定位分析性能问题。",
+        "copySuccess": "已复制到剪贴板"
+      },
+      "actions": {
+        "testConnection": "测试链接",
+        "onlineInstall": "在线安装",
+        "manualInstall": "手动安装",
+        "restartAgent": "重启代理"
+      },
+      "tips": {
+        "editOwnNode": "只允许删除自有节点",
+        "editPermission": "编辑节点需要系统管理员或应用管理员权限",
+        "disableDelete": "节点禁用后才能删除",
+        "deletePermission": "删除节点需要系统管理员或应用管理员权限",
+        "deleteOwnNode": "只能删除自有节点",
+        "alreadyInstalled": "已安装",
+        "installPermission": "在线安装代理需要系统管理员或应用管理员权限",
+        "manualInstallPermission": "手动安装代理需要系统管理员或应用管理员权限",
+        "roleDescription": "可根据您的实际需求，勾选节点对应的角色",
+        "managementNode": "管理节点: 部署和运行Web UI应用",
+        "controllerNode": "控制器节点: 用于调度、管理、监控执行和代理服务。",
+        "executionNode": "执行节点: 用于执行功能测试、性能测试、生成数据等。",
+        "mockNode": "Mock节点: 运行Mock服务和Mock接口。",
+        "applicationNode": "应用节点: 应用所在节点，用于压测时观察被压测应用节点系统负载，定位分析性能问题。"
+      },
+      "confirm": {
+        "deleteNode": "确定删除节点「{name}」吗?"
+      },
+      "installSteps": {
+        "linuxTitle": "Linux或者Mac系统自动安装步骤",
+        "configTitle": "安装配置信息",
+        "description": "必须以root用户执行脚本, 安装目录为脚本所在目录。",
+        "method1": "安装方式1：",
+        "method2": "安装方式2：",
+        "downloadScript": "1).下载自动安装脚本：",
+        "copyScript": "2).将{scriptName}复制到自定义的安装目录，运行脚本安装："
+      },
+      "interface": {
+        "formItems": {
+          "nodeName": "节点名称",
+          "intranetIP": "内网IP",
+          "publicIP": "公网IP",
+          "domain": "域名",
+          "sshPort": "SSH端口",
+          "role": "角色",
+          "inputLimit200": "输入限制200字符以内",
+          "inputNodeIP": "输入节点IP地址",
+          "inputNodeDomain": "输入节点域名",
+          "inputUsername": "输入用户名",
+          "inputPassword": "输入密码",
+          "inputSSHPort": "输入SSH端口"
+        },
+        "roleOptions": {
+          "managementNode": "管理节点",
+          "pressureTestNode": "压测节点",
+          "mockNode": "Mock节点",
+          "applicationNode": "应用节点"
+        },
+        "nodeStatus": {
+          "agentInstallStatus": "代理状态",
+          "connectionStatus": "连接状态",
+          "installed": "已安装",
+          "notInstalled": "未安装",
+          "connected": "已连接",
+          "notConnected": "未连接"
+        },
+        "viewItem": {
+          "intranetIP": "内网IP: ",
+          "publicIP": "公网IP: ",
+          "role": "角色: ",
+          "specification": "规格: ",
+          "system": "系统: "
+        },
+        "nodeUseProgresses": {
+          "cpu": "CPU",
+          "memory": "内存",
+          "fileSystem": "文件系统",
+          "swapArea": "交换区",
+          "network": "网络",
+          "totalUpload": "总上传",
+          "totalDownload": "总下载"
+        },
+        "sortOptions": {
+          "byAddTime": "按添加时间",
+          "byName": "按名称"
+        },
+        "installConfigColumns": {
+          "tenantId": "租户ID",
+          "deviceId": "设备ID",
+          "serverCtrlUrlPrefix": "控制器地址",
+          "ctrlAccessToken": "设备访问令牌"
+        }
+      }
+    },
+    "detail": {
+      "labels": {
+        "resourceMonitoring": "资源监控",
+        "agentService": "代理服务",
+        "executingTasks": "执行中任务",
+        "executorProcess": "执行器进程",
+        "mockServiceInstance": "Mock服务实例",
+        "estimatedTime": "预计需要一分钟",
+        "disableDelete": "节点禁用后才能删除",
+        "deleteNodeTip": "删除节点需要系统管理员或应用管理员权限",
+        "onlyOwnNode": "只能删除自有节点",
+        "copySuccess": "已复制到剪贴板",
+        "installAgentTip": "安装代理需要系统管理员或应用管理员权限"
+      },
+      "actions": {
+        "onlineInstallAgent": "在线安装代理",
+        "manualInstallAgent": "手动安装代理"
+      },
+      "agent": {
+        "title": "代理信息",
+        "tabs": {
+          "agentInfo": "代理信息",
+          "viewLog": "查看日志"
+        },
         "columns": {
           "version": "版本",
           "home": "安装路径",
@@ -288,18 +446,22 @@
           "port": "占用端口",
           "health": "健康状态"
         },
-        "timeUnits": {
-          "hour": "小时",
-          "minute": "分钟",
-          "second": "秒"
-        },
-        "title": "代理信息",
         "health": {
           "normal": "正常",
           "abnormal": "异常"
+        },
+        "log": {
+          "title": "浏览日志",
+          "options": {
+            "500": "末尾500行",
+            "1000": "末尾1000行",
+            "10000": "末尾10000行"
+          },
+          "errorText": "无访问代理信息，连接失败地址：http://{ip}:{port}",
+          "noDownloadContent": "无可下载内容"
         }
       },
-      "execPropulsion": {
+      "executor": {
         "columns": {
           "processId": "进程ID",
           "runTime": "运行时间",
@@ -319,16 +481,6 @@
         "readDisk": "读磁盘",
         "killProcess": "强制退出(kill)"
       },
-      "log": {
-        "options": {
-          "500": "末尾500行",
-          "1000": "末尾1000行",
-          "10000": "末尾10000行"
-        },
-        "title": "浏览日志",
-        "errorText": "无访问代理信息，连接失败地址：http://{ip}:{port}",
-        "noDownloadContent": "无可下载内容"
-      },
       "mockService": {
         "columns": {
           "serviceId": "服务ID",
@@ -336,43 +488,11 @@
           "accessPort": "访问端口"
         }
       },
-      "buttons": {
-        "onlineInstallAgent": "在线安装代理",
-        "manualInstallAgent": "手动安装代理"
-      },
-      "labels": {
-        "resourceMonitoring": "资源监控",
-        "agentService": "代理服务",
-        "executingTasks": "执行中任务",
-        "executorProcess": "执行器进程",
-        "mockServiceInstance": "Mock服务实例",
-        "used": "已使用",
-        "idle": "空闲",
-        "estimatedTime": "预计需要一分钟",
-        "disableDelete": "节点禁用后才能删除",
-        "deleteNodeTip": "删除节点需要系统管理员或应用管理员权限",
-        "onlyOwnNode": "只能删除自有节点",
-        "copySuccess": "已复制到剪贴板"
-      },
-      "installSteps": {
-        "linuxTitle": "Linux或者Mac系统自动安装步骤",
-        "configTitle": "安装配置信息",
-        "description": "必须以root用户执行脚本, 安装目录为脚本所在目录",
-        "method1": "安装方式1：",
-        "method2": "安装方式2：",
-        "downloadScript": "1).下载自动安装脚本：",
-        "copyScript": "2).将{scriptName}复制到自定义的安装目录，运行脚本安装："
-      },
       "status": {
         "installed": "已安装",
         "notInstalled": "未安装",
         "connected": "已连接",
         "notConnected": "未连接"
-      },
-      "agentOpt": {
-        "agentInfo": "代理信息",
-        "log": "日志",
-        "installAgentTip": "安装代理需要系统管理员或应用管理员权限"
       },
       "chartOptions": {
         "timeOptions": {
@@ -428,153 +548,6 @@
           "rxErrors": "接收到的错误包数(packets)",
           "txBytes": "发送的总字节(GB)",
           "txBytesRate": "每秒发送的 MB 数(MB/s)"
-        }
-      }
-    },
-    "nodeItem": {
-      "buttons": {
-        "testConnection": "测试链接",
-        "onlineInstall": "在线安装",
-        "manualInstall": "手动安装",
-        "restartAgent": "重启代理"
-      },
-      "labels": {
-        "role": "角色",
-        "portRangeTip": "请填写端口号范围在1 ~ 65535之间",
-        "selectRole": "请选择角色",
-        "connectionSuccess": "连接成功",
-        "connectionFailed": "连接失败，请检查并重新填写节点信息后再次测试连接",
-        "estimatedTime": "预计需要一分钟",
-        "installSuccess": "安装成功",
-        "updateNodeSuccess": "更新节点成功",
-        "addNodeSuccess": "添加节点成功",
-        "modifyNodeNameSuccess": "修改节点名称成功",
-        "addNode": "添加节点",
-        "inputLimit200": "输入限制200字符以内",
-        "installAgentTip": "检测到该节点还未安装代理，请先安装代理后在进行使用",
-        "freeNode": "免费节点",
-        "nodeTip": "提示：节点必须是 Linux（推荐）、Mac、Windows 系统；执行任务前您需要添加节点到节点列表中并安装代理，如果因为网络或服务器root账户问题无法自动“安装代理”，您需要按照“手动安装”方式安装代理，确保执行任务前代理处于连接状态（未启动时需要先启动代理）；一个节点可以同时承担多个角色，为了保证测试结果更加准确请为压测节点使用单一“执行节点”角色；压测中您想尽量还原用户真实访问环境及体验请使用公网节点，如果想排除网络等外界因素的干扰来测试应用服务的极限，需要添加您的自有内网机器到节点中。",
-        "nodeTip2": "提示：节点必须是 Linux（推荐）、Mac、Windows 系统；执行任务前您需要添加节点到节点列表中并安装代理，如果因为网络或服务器root账户问题无法自动“安装代理”，您需要按照“手动安装”方式安装代理，确保执行任务前代理处于连接状态（未启动时需要先启动代理）；一个节点可以同时承担多个角色，为了保证测试结果更加准确请为压测节点使用单一“执行节点”角色；压测中您想尽量还原用户真实访问环境及体验请使用公网节点，如果想排除网络等外界因素的干扰来测试应用服务的极限，需要添加您的自有内网机器到节点中。",
-        "managerNode": "管理节点：",
-        "controllerNode": "控制器节点：",
-        "execNode": "执行节点：",
-        "mockNode": "Mock节点：",
-        "appNode": "应用节点：",
-        "managerNodeDesc": "部署和运行Web UI应用",
-        "controllerNodeDesc": "用于调度、管理、监控执行和代理服务。",
-        "execNodeDesc": "用于执行功能测试、性能测试、生成数据等。",
-        "mockNodeDesc": "运行Mock服务和Mock接口。",
-        "appNodeDesc": "应用所在节点，用于压测时观察被压测应用节点系统负载，定位分析性能问题。",
-        "copySuccess": "已复制到剪贴板"
-      },
-      "tips": {
-        "editOwnNode": "只允许删除自有节点",
-        "editPermission": "编辑节点需要系统管理员或应用管理员权限",
-        "disableDelete": "节点禁用后才能删除",
-        "deletePermission": "删除节点需要系统管理员或应用管理员权限",
-        "deleteOwnNode": "只能删除自有节点",
-        "alreadyInstalled": "已安装",
-        "installPermission": "在线安装代理需要系统管理员或应用管理员权限",
-        "manualInstallPermission": "手动安装代理需要系统管理员或应用管理员权限",
-        "roleDescription": "可根据您的实际需求，勾选节点对应的角色",
-        "roleHint": "提示：节点必须是 Linux（推荐）、Mac、Windows 系统；执行任务前您需要添加节点到节点列表中并安装代理，如果因为网络或服务器root账户问题无法自动\"安装代理\"，您需要按照\"手动安装\"方式安装代理，确保执行任务前代理处于连接状态（未启动时需要先启动代理）；一个节点可以同时承担多个角色，为了保证测试结果更加准确请为压测节点使用单一\"执行节点\"角色；压测中您想尽量还原用户真实访问环境及体验请使用公网节点，如果想排除网络等外界因素的干扰来测试应用服务的极限，需要添加您的自有内网机器到节点中。",
-        "managementNode": "管理节点: 部署和运行Web UI应用",
-        "controllerNode": "控制器节点: 用于调度、管理、监控执行和代理服务。",
-        "executionNode": "执行节点: 用于执行功能测试、性能测试、生成数据等。",
-        "mockNode": "Mock节点: 运行Mock服务和Mock接口。",
-        "applicationNode": "应用节点: 应用所在节点，用于压测时观察被压测应用节点系统负载，定位分析性能问题。"
-      },
-      "confirm": {
-        "deleteNode": "确定删除节点「{name}」吗?"
-      },
-      "installSteps": {
-        "linuxTitle": "Linux或者Mac系统自动安装步骤",
-        "configTitle": "安装配置信息",
-        "description": "必须以root用户执行脚本, 安装目录为脚本所在目录",
-        "method1": "安装方式1：",
-        "method2": "安装方式2：",
-        "downloadScript": "1).下载自动安装脚本：",
-        "copyScript": "2).将{scriptName}复制到自定义的安装目录，运行脚本安装："
-      },
-      "interface": {
-        "formItems": {
-          "nodeName": "节点名称",
-          "intranetIP": "内网IP",
-          "publicIP": "公网IP",
-          "domain": "域名",
-          "sshPort": "SSH端口",
-          "role": "角色",
-          "inputLimit200": "输入限制200字符以内",
-          "inputNodeIP": "输入节点IP地址",
-          "inputNodeDomain": "输入节点域名",
-          "inputUsername": "输入用户名",
-          "inputPassword": "输入密码",
-          "inputSSHPort": "输入SSH端口"
-        },
-        "roleOptions": {
-          "managementNode": "管理节点",
-          "pressureTestNode": "压测节点",
-          "mockNode": "Mock节点",
-          "applicationNode": "应用节点"
-        },
-        "nodeStatus": {
-          "agentInstallStatus": "代理安装状态",
-          "connectionStatus": "连接状态",
-          "installed": "已安装",
-          "notInstalled": "未安装",
-          "connected": "已连接",
-          "notConnected": "未连接"
-        },
-        "viewItem": {
-          "intranetIP": "内网IP: ",
-          "publicIP": "公网IP: ",
-          "role": "角色: ",
-          "specification": "规格: ",
-          "system": "系统: "
-        },
-        "nodeUseProgresses": {
-          "cpu": "CPU",
-          "memory": "内存",
-          "fileSystem": "文件系统",
-          "swapArea": "交换区",
-          "network": "网络",
-          "totalUpload": "总上传",
-          "totalDownload": "总下载"
-        },
-        "sortOptions": {
-          "byAddTime": "按添加时间",
-          "byName": "按名称"
-        },
-        "installConfigColumns": {
-          "tenantId": "租户ID",
-          "deviceId": "设备ID",
-          "serverCtrlUrlPrefix": "控制器地址",
-          "ctrlAccessToken": "设备访问令牌"
-        }
-      },
-      "nodeTip": {
-        "title": "提示：本系统支持 Linux（推荐）、macOS 和 Windows 操作系统。在执行任务前，请先添加节点并安装代理程序——若因网络或账户问题导致自动安装失败，请按提示手动安装并检查代理连接状态（若未运行需手动启动）。虽然节点支持多角色配置，但进行压力测试时建议仅分配\"执行(Execution)\"角色以确保性能测试准确性。根据测试需求选择节点类型：使用公网节点可模拟真实用户环境（包含网络延迟），而选用同内网节点则能排除网络干扰、测试应用极限性能。注意：默认情况下，仅系统管理员和应用管理员具有节点管理权限。",
-        "steps": {
-          "managementNode": {
-            "title": "管理节点",
-            "content": "用于部署和运行Web UI应用"
-          },
-          "controllerNode": {
-            "title": "控制器节点",
-            "content": "用于调度、管理、监控执行和代理服务"
-          },
-          "executionNode": {
-            "title": "执行节点",
-            "content": "用于执行功能测试、性能测试、生成数据等"
-          },
-          "mockNode": {
-            "title": "Mock节点",
-            "content": "运行Mock服务和Mock接口"
-          },
-          "applicationNode": {
-            "title": "应用节点",
-            "content": "应用所在节点，用于压测时观察被压测应用节点系统负载，定位分析性能问题"
-          }
         }
       }
     }

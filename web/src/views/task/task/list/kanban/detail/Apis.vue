@@ -646,7 +646,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.testType') }}</span>
+            <span>{{ t('common.testType') }}</span>
             <Colon class="w-1" />
           </div>
 
