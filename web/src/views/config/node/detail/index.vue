@@ -279,7 +279,7 @@ onMounted(() => {
           <!-- Manual Installation Steps -->
           <div v-show="showInstallStep" class="pt-4 mb-4 relative">
             <Tabs size="small">
-              <TabPane key="linux" tab="Linux">
+              <TabPane key="linux" :tab="t('node.list.installSteps.linuxTitle')">
                 <div class="text-3">{{ t('node.message.manualInstallSteps') }}</div>
                 <div class="text-3">
                   {{ t('node.message.method1') }}
@@ -298,7 +298,7 @@ onMounted(() => {
                   </p>
                 </div>
               </TabPane>
-              <TabPane key="config" :tab="t('node.message.configInfo')">
+              <TabPane key="config" :tab="t('node.list.installSteps.configTitle')">
                 <Grid
                   :dataSource="state.installConfig"
                   :columns="installConfigColumns">

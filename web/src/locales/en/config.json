@@ -258,7 +258,6 @@
       "downloadScript": "Download script:",
       "copyScriptToServer": "Copy script to target server:",
       "runInstallCommand": "Execute installation command:",
-      "configInfo": "Configuration Information",
       "resourceMonitoring": "Resource Monitoring",
       "agentService": "Agent Service",
       "executingTasks": "Executing Tasks",

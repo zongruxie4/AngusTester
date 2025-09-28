@@ -258,7 +258,6 @@
       "downloadScript": "下载脚本：",
       "copyScriptToServer": "复制脚本到目标服务器：",
       "runInstallCommand": "执行安装命令：",
-      "configInfo": "配置信息",
       "resourceMonitoring": "资源监控",
       "agentService": "代理服务",
       "executingTasks": "执行任务",
