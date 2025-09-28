@@ -231,22 +231,8 @@ export const createBacklogWorkloadConfig = (): ChartConfig => {
  */
 export const createOverdueAssessmentConfig = (): ChartConfig => {
   const config = createBasePieConfig();
-  config.graphic = {
-    type: 'text',
-    left: 'center',
-    bottom: 0,
-    z: 0,
-    font: '14px Arial',
-    silent: true,
-    invisible: false,
-    style: {
-      text: t('kanban.cto.overdue.overdueTaskRatio'),
-      fill: 'rgb(100 116 139)',
-      font: '14px "Microsoft YaHei", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif',
-      textAlign: 'center'
-    }
+  config.title.subtext = t('kanban.cto.overdue.overdueTaskRatio');
 
-  };
   config.title.left = '35%';
   config.title.top = '40%';
   config.title.itemGap = 40;

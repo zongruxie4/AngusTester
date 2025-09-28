@@ -1,30 +1,46 @@
 <script setup lang="ts">
+// Vue core imports
 import { computed, defineAsyncComponent, reactive, ref, watch, inject, onMounted, nextTick } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Icon, notification, Select, AsyncComponent } from '@xcan-angus/vue-ui';
+import { Button, RadioGroup, Radio, Upload, Tooltip } from 'ant-design-vue';
+
+// Infrastructure imports
 import { http, duration, TESTER, codeUtils } from '@xcan-angus/infra';
+import SwaggerUI from '@xcan-angus/swagger-ui';
+
+// Third-party library imports
 import XML from 'xml';
 import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
-import { Button, RadioGroup, Radio, Upload, Tooltip } from 'ant-design-vue';
-import SwaggerUI from '@xcan-angus/swagger-ui';
 import { debounce } from 'throttle-debounce';
+
+// Utility imports
 import { deconstruct, API_EXTENSION_KEY, getDataTypeFromFormat, CONTENT_TYPE, getNewItem, getBodyDefaultItem, ParamsItem, getModelDataByRef } from '@/utils/apis/index';
 import { radioGroups, RequestBodyParam, StateItem, OptionItem, deepParseJson } from './interface';
-import { useI18n } from 'vue-i18n';
+
 const { t } = useI18n();
 
+// Code utilities
 const { gzip, ungzip } = codeUtils;
+
+/**
+ * Component props interface for API body configuration
+ */
 export interface Props {
-  defaultValue:RequestBodyParam,
+  defaultValue: RequestBodyParam;
   binaryFile?: any;
-  contentType: string|null;
+  contentType: string | null;
   pluginsJSON: Record<string, any>;
   hideImportBtn: boolean;
   viewType: boolean;
-  fieldNames?: { valueKey: string; enabledKey: string, fileNameKey: string };
+  fieldNames?: { valueKey: string; enabledKey: string; fileNameKey: string };
   useFlatForm: boolean;
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   defaultValue: undefined,
   binaryFile: undefined,
@@ -33,22 +49,29 @@ const props = withDefaults(defineProps<Props>(), {
   hideImportBtn: false,
   viewType: false,
   useFlatForm: false,
-  fieldNames: () => ({ valueKey: API_EXTENSION_KEY.valueKey, enabledKey: API_EXTENSION_KEY.enabledKey, fileNameKey: API_EXTENSION_KEY.fileNameKey, formContentTypeKey: API_EXTENSION_KEY.formContentTypeKey })
+  fieldNames: () => ({ 
+    valueKey: API_EXTENSION_KEY.valueKey, 
+    enabledKey: API_EXTENSION_KEY.enabledKey, 
+    fileNameKey: API_EXTENSION_KEY.fileNameKey, 
+    formContentTypeKey: API_EXTENSION_KEY.formContentTypeKey 
+  })
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component events
 const emit = defineEmits<{
   (e: 'change', value: RequestBodyParam): void;
-  (e: 'update:binaryFile', value: any):void;
+  (e: 'update:binaryFile', value: any): void;
   (e: 'update:contentType', value: string): void;
   (e: 'rendered', value: true);
 }>();
 
+// Async component definitions
 const ApiForm = defineAsyncComponent(() => import('./api-form/index.vue'));
 const ApiFormForFlat = defineAsyncComponent(() => import('./apiFormForFlat/index.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('../MonacoEditor/index.vue'));
 const ModelModal = defineAsyncComponent(() => import('./modelModal.vue'));
 
+// Field name configuration
 // eslint-disable-next-line vue/no-setup-props-destructure
 const valueKey = props.fieldNames.valueKey || API_EXTENSION_KEY.valueKey;
 // eslint-disable-next-line vue/no-setup-props-destructure
@@ -56,11 +79,19 @@ const enabledKey = props.fieldNames.enabledKey || API_EXTENSION_KEY.enabledKey;
 // eslint-disable-next-line vue/no-setup-props-destructure
 const fileNameKey = props.fieldNames.fileNameKey || API_EXTENSION_KEY.fileNameKey;
 
+// Plugin configuration
 const plugins = ref(props.pluginsJSON);
 
+// Injected API base information
 const apiBaseInfo = inject('apiBaseInfo', ref());
 
-const getRefData = async (ref, serviceId) => {
+/**
+ * Get reference data by service ID and reference path
+ * @param ref - Reference path
+ * @param serviceId - Service identifier
+ * @returns Deconstructed reference data or empty string on error
+ */
+const getReferenceData = async (ref: string, serviceId: string) => {
   const [error, resp] = await getModelDataByRef(serviceId, ref);
   if (error) {
     return '';
@@ -68,46 +99,60 @@ const getRefData = async (ref, serviceId) => {
   return deconstruct(resp.data || {});
 };
 
-const transRefJsonToDataJson = async (schema = {}, serviceId) => {
-  // const keys = Object.keys(schema);
+/**
+ * Transform reference JSON to data JSON by resolving all references
+ * @param schema - Schema object to transform
+ * @param serviceId - Service identifier
+ * @returns Transformed schema with resolved references
+ */
+const transformReferenceJsonToDataJson = async (schema: any = {}, serviceId: string) => {
   if (!serviceId) {
     return schema;
   }
   for (const key in schema) {
     if (key === '$ref') {
-      const refData = await getRefData(schema.$ref, serviceId);
-      schema = { ...schema, ...refData };
+      const referenceData = await getReferenceData(schema.$ref, serviceId);
+      schema = { ...schema, ...referenceData };
       delete schema.$ref;
     }
     if (Object.prototype.toString.call(schema[key]) === '[object Object]') {
-      schema[key] = await transRefJsonToDataJson(schema[key], serviceId);
+      schema[key] = await transformReferenceJsonToDataJson(schema[key], serviceId);
     }
   }
   return schema;
 };
 
-const clearRawContent = ref(0);
-const _contentType = ref<string>();
-const binaryCt = ref(); // 文件 base64 内容
-const contentMediaType = ref(); // 文件媒体类型
+// Content management state
+const clearRawContentTrigger = ref(0);
+const currentContentType = ref<string>();
+const binaryContentBase64 = ref(); // Binary file base64 content
+const fileContentMediaType = ref(); // File media type
 
-// raw 选中效果
-const checkeRaw = computed(() => {
-  return !!state.rawSelectOptions.find(i => i.value === _contentType.value);
+/**
+ * Computed property to check if raw content type is selected
+ */
+const isRawContentTypeSelected = computed(() => {
+  return !!state.rawSelectOptions.find(option => option.value === currentContentType.value);
 });
 
+// Main component state
 const state = reactive<StateItem>({
-  encodeedList: [], // encodeed form params
-  formDataList: [], // formData form params
+  encodeedList: [], // URL encoded form parameters
+  formDataList: [], // Form data parameters
   rawContent: '',
   radioOptions: [],
   rawSelectOptions: []
 });
 
+// Available content types
 const allContentTypes = ref<string[]>(CONTENT_TYPE);
 
-const packageParams = () => {
-  if (!_contentType.value) {
+/**
+ * Package request body parameters based on content type
+ * @returns Packaged request body parameters
+ */
+const packageRequestBodyParameters = () => {
+  if (!currentContentType.value) {
     return {
       ...props.defaultValue,
       content: null
@@ -117,187 +162,237 @@ const packageParams = () => {
   const content = {
     ...props.defaultValue.content
   };
-  if (!content[_contentType.value]) {
-    content[_contentType.value] = {
+  if (!content[currentContentType.value]) {
+    content[currentContentType.value] = {
       schema: {}
     };
   }
-  if (_contentType.value === 'application/x-www-form-urlencoded') {
-    content[_contentType.value as string].schema.properties = {};
+  if (currentContentType.value === 'application/x-www-form-urlencoded') {
+    content[currentContentType.value as string].schema.properties = {};
     state.encodeedList.forEach(({ name, ...item }) => {
       if (!name) {
         return;
       }
-      if (!content[_contentType.value as string].schema.properties) {
-        content[_contentType.value as string].schema.properties = {};
+      if (!content[currentContentType.value as string].schema.properties) {
+        content[currentContentType.value as string].schema.properties = {};
       }
-      content[_contentType.value as string].schema.properties[name as string] = {
+      content[currentContentType.value as string].schema.properties[name as string] = {
         ...item
       };
     });
     if (!urlencodedUseRef.value) {
-      delete content[_contentType.value as string].schema.$ref;
+      delete content[currentContentType.value as string].schema.$ref;
     }
-  } else if (_contentType.value === 'multipart/form-data') {
-    content[_contentType.value as string].schema.properties = {};
+  } else if (currentContentType.value === 'multipart/form-data') {
+    content[currentContentType.value as string].schema.properties = {};
     state.formDataList.forEach(({ name, ...item }) => {
       if (!name) {
         return;
       }
-      if (!content[_contentType.value as string].schema.properties) {
-        content[_contentType.value as string].schema.properties = {};
+      if (!content[currentContentType.value as string].schema.properties) {
+        content[currentContentType.value as string].schema.properties = {};
       }
-      content[_contentType.value as string].schema.properties[name as string] = {
+      content[currentContentType.value as string].schema.properties[name as string] = {
         ...item
       };
     });
     if (!formDataUseRef.value) {
-      delete content[_contentType.value as string].schema.$ref;
+      delete content[currentContentType.value as string].schema.$ref;
     }
-  } else if (_contentType.value === 'application/octet-stream') {
-    const _type_ = contentMediaType.value || 'application/octet-stream';
-    if (!content[_type_]) {
-      content[_type_] = {
+  } else if (currentContentType.value === 'application/octet-stream') {
+    const binaryContentType = fileContentMediaType.value || 'application/octet-stream';
+    if (!content[binaryContentType]) {
+      content[binaryContentType] = {
         schema: {}
       };
     }
-    if (!content[_type_].schema) {
-      content[_type_].schema = {};
+    if (!content[binaryContentType].schema) {
+      content[binaryContentType].schema = {};
     }
-    content[_type_].schema.type = 'string';
-    content[_type_].schema.format = 'binary';
-    content[_type_].schema['x-xc-contentEncoding'] = 'gzip-base64';
-    content[_type_].schema[valueKey] = binaryCt.value;
-    content[_type_].schema[fileNameKey] = filename.value;
-    if (_type_ !== 'application/octet-stream') {
+    content[binaryContentType].schema.type = 'string';
+    content[binaryContentType].schema.format = 'binary';
+    content[binaryContentType].schema['x-xc-contentEncoding'] = 'gzip-base64';
+    content[binaryContentType].schema[valueKey] = binaryContentBase64.value;
+    content[binaryContentType].schema[fileNameKey] = uploadedFileName.value;
+    if (binaryContentType !== 'application/octet-stream') {
       delete content['application/octet-stream'];
     }
     Object.keys(content).forEach(key => {
-      if (key !== _type_ && content[key]?.schema?.format === 'binary') {
+      if (key !== binaryContentType && content[key]?.schema?.format === 'binary') {
         delete content[key];
       }
     });
   } else {
-    if (!content[_contentType.value].schema) {
-      content[_contentType.value].schema = {};
+    if (!content[currentContentType.value].schema) {
+      content[currentContentType.value].schema = {};
     }
-    content[_contentType.value][valueKey] = state.rawContent;
+    content[currentContentType.value][valueKey] = state.rawContent;
   }
   const data = {
     ...props.defaultValue,
     content,
-    $ref: $ref.value
+    $ref: componentReference.value
   };
   return data;
 };
 
-const handleRadioChange = (e):void => {
+/**
+ * Handle radio button change for content type selection
+ * @param e - Radio change event
+ */
+const handleContentTypeRadioChange = (e: any): void => {
   const value = e.target.value;
-  _contentType.value = value;
-  emit('update:contentType', _contentType.value);
+  currentContentType.value = value;
+  emit('update:contentType', currentContentType.value);
 };
 
-const clickRawRadio = (RadioEvent) => {
+/**
+ * Handle raw content type radio button click
+ * @param RadioEvent - Radio button event
+ */
+const handleRawContentTypeRadioClick = (RadioEvent: any) => {
   const checked = RadioEvent.target.checked;
   if (checked) {
-    _contentType.value = state.rawSelectOptions[0]?.value;
+    currentContentType.value = state.rawSelectOptions[0]?.value;
   }
-  emit('update:contentType', _contentType.value);
-  getPropsRawContent();
+  emit('update:contentType', currentContentType.value);
+  loadPropsRawContent();
 };
 
-const handleSelectChange = ():void => {
-  // emitHandle();
-  emit('update:contentType', _contentType.value);
-  getPropsRawContent();
+/**
+ * Handle content type select dropdown change
+ */
+const handleContentTypeSelectChange = (): void => {
+  emit('update:contentType', currentContentType.value);
+  loadPropsRawContent();
 };
 
-// 编辑内容 application/x-www-form-urlencoded
+// URL encoded form data management
 const urlencodedUseRef = ref();
-const changeEncodeedList = (index:number, data:ParamsItem):void => {
+/**
+ * Handle URL encoded form data list change
+ * @param index - Index of the changed item
+ * @param data - New parameter data
+ */
+const handleUrlEncodedListChange = (index: number, data: ParamsItem): void => {
   state.encodeedList[index] = data;
-  emitHandle();
+  emitParameterChange();
   if (urlencodedUseRef.value) {
     return;
   }
-  // 没有name为空的元素则添加新的空元素
+  // Add new empty item if no empty name elements exist
   const newItem = getNewItem(state.encodeedList);
   if (newItem && !props.viewType) {
     state.encodeedList.push(newItem);
   }
 };
-// 取消 urlencodedUseRef 引用
-const cancelUrlEncodedRef = () => {
+
+/**
+ * Cancel URL encoded reference usage
+ */
+const cancelUrlEncodedReference = () => {
   urlencodedUseRef.value = false;
-  emitHandle();
+  emitParameterChange();
   const newItem = getNewItem(state.encodeedList);
   if (newItem && !props.viewType) {
     state.encodeedList.push(newItem);
   }
 };
 
-const delEncodeedList = (index:number):void => {
+/**
+ * Delete URL encoded form data item
+ * @param index - Index of item to delete
+ */
+const deleteUrlEncodedListItem = (index: number): void => {
   state.encodeedList.splice(index, 1);
-  emitHandle();
-  // 没有name为空的元素则添加新的空元素
+  emitParameterChange();
+  // Add new empty item if no empty name elements exist
   const newItem = getNewItem(state.encodeedList);
   if (newItem && !props.viewType) {
     state.encodeedList.push(newItem);
   }
 };
 
+// Form data management
 const formDataUseRef = ref();
-const changeFormDataList = (index:number, data:ParamsItem) => {
+/**
+ * Handle form data list change
+ * @param index - Index of the changed item
+ * @param data - New parameter data
+ */
+const handleFormDataListChange = (index: number, data: ParamsItem) => {
   state.formDataList[index] = data;
-  emitHandle();
+  emitParameterChange();
   if (formDataUseRef.value) {
     return;
   }
-  // 没有name为空的元素则添加新的空元素
+  // Add new empty item if no empty name elements exist
   const newItem = getNewItem(state.formDataList);
   if (newItem && !props.viewType) {
     state.formDataList.push(newItem);
   }
 };
 
-const delFormDataList = (index:number) => {
+/**
+ * Delete form data item
+ * @param index - Index of item to delete
+ */
+const deleteFormDataListItem = (index: number) => {
   state.formDataList.splice(index, 1);
-  // 没有name为空的元素则添加新的空元素
+  // Add new empty item if no empty name elements exist
   const newItem = getNewItem(state.formDataList);
   if (newItem && !props.viewType) {
     state.formDataList.push(newItem);
   }
-  emitHandle();
+  emitParameterChange();
 };
-// 取消 formDataUseRef 引用
-const cancelformDataRef = () => {
+
+/**
+ * Cancel form data reference usage
+ */
+const cancelFormDataReference = () => {
   formDataUseRef.value = false;
-  emitHandle();
+  emitParameterChange();
   const newItem = getNewItem(state.formDataList);
   if (newItem && !props.viewType) {
     state.formDataList.push(newItem);
   }
 };
 
-const emitHandle = ():void => {
-  const params = packageParams();
+/**
+ * Emit parameter change event
+ */
+const emitParameterChange = (): void => {
+  const params = packageRequestBodyParameters();
   emit('change', params);
 };
 
-const isRaw = computed(() => {
-  return ['application/json', 'text/html', 'application/javascript', 'application/xml', '*/*', 'text/plain'].includes(_contentType.value);
+/**
+ * Computed property to check if content type is raw
+ */
+const isRawContentType = computed(() => {
+  return ['application/json', 'text/html', 'application/javascript', 'application/xml', '*/*', 'text/plain'].includes(currentContentType.value);
 });
 
-const showEncodeedForm = computed(() => {
-  return _contentType.value === 'application/x-www-form-urlencoded';
+/**
+ * Computed property to show URL encoded form
+ */
+const shouldShowUrlEncodedForm = computed(() => {
+  return currentContentType.value === 'application/x-www-form-urlencoded';
 });
 
-const showFormDataForm = computed(() => {
-  return _contentType.value === 'multipart/form-data';
+/**
+ * Computed property to show form data form
+ */
+const shouldShowFormDataForm = computed(() => {
+  return currentContentType.value === 'multipart/form-data';
 });
 
-const language = computed(() => {
-  switch (_contentType.value) {
+/**
+ * Computed property to get Monaco editor language based on content type
+ */
+const monacoEditorLanguage = computed(() => {
+  switch (currentContentType.value) {
     case 'application/json':
       return 'json';
     case 'text/html':
@@ -311,12 +406,17 @@ const language = computed(() => {
       return 'text';
   }
 });
-// 上传流文件
-const filename = ref(); // 文件名称
-const binaryFile = ref(); // 上传文件的 blob 形式
-const binaryBase64 = ref(); // 上传文件的 base64 形式
+// File upload management
+const uploadedFileName = ref(); // Uploaded file name
+const uploadedBinaryFile = ref(); // Uploaded file blob object
+const uploadedBinaryBase64 = ref(); // Uploaded file base64 content
 
-const getModelData = async (ref) => {
+/**
+ * Get model data by reference
+ * @param ref - Reference path
+ * @returns Model data or empty object on error
+ */
+const getModelDataByReference = async (ref: string) => {
   const [error, { data }] = await getModelDataByRef(apiBaseInfo.value.serviceId, ref);
   if (error) {
     return {};
@@ -324,17 +424,20 @@ const getModelData = async (ref) => {
   return deconstruct(data || {});
 };
 
-const $ref = ref();
-const getPropsRawContent = async () => {
+// Component reference
+const componentReference = ref();
+/**
+ * Load raw content from props based on content type
+ */
+const loadPropsRawContent = async () => {
   const { content } = props.defaultValue;
-  const type = _contentType.value;
-  if (!type || !content) {
+  const contentType = currentContentType.value;
+  if (!contentType || !content) {
     return;
   }
-  if (content[type]?.schema?.$ref && !content[type]?.schema?.type && !content[type]?.schema?.properties && !content[type]?.schema?.items) {
-    const [error, res] = await getModelDataByRef(apiBaseInfo.value.serviceId, content[type]?.schema.$ref);
+  if (content[contentType]?.schema?.$ref && !content[contentType]?.schema?.type && !content[contentType]?.schema?.properties && !content[contentType]?.schema?.items) {
+    const [error, res] = await getModelDataByRef(apiBaseInfo.value.serviceId, content[contentType]?.schema.$ref);
     if (error) {
-      // emit('change', { ...props.defaultValue, content: { ...props.defaultValue.content, [type]: {...content[type], schema: { ...content[type]?.schema,}}} });
       return;
     }
     const model = JSON.parse(res.data.model);
@@ -347,17 +450,17 @@ const getPropsRawContent = async () => {
         model.type = 'string';
       }
     }
-    emit('change', { ...props.defaultValue, content: { ...props.defaultValue.content, [type]: { ...content[type], schema: { ...content[type]?.schema, ...model } } } });
-    getPropsRawContent();
+    emit('change', { ...props.defaultValue, content: { ...props.defaultValue.content, [contentType]: { ...content[contentType], schema: { ...content[contentType]?.schema, ...model } } } });
+    loadPropsRawContent();
   }
-  if (type === 'application/json') {
-    if (content?.[type]?.schema?.format === 'binary') {
+  if (contentType === 'application/json') {
+    if (content?.[contentType]?.schema?.format === 'binary') {
       state.rawContent = '';
       return;
     }
-    const typeBodyContent = JSON.parse(JSON.stringify(content[type] || content['*/*'] || {}));
+    const typeBodyContent = JSON.parse(JSON.stringify(content[contentType] || content['*/*'] || {}));
     if (typeBodyContent.schema && !typeBodyContent?.[valueKey]) {
-      typeBodyContent.schema = await transRefJsonToDataJson(typeBodyContent.schema, apiBaseInfo.value?.serviceId);
+      typeBodyContent.schema = await transformReferenceJsonToDataJson(typeBodyContent.schema, apiBaseInfo.value?.serviceId);
       if (!typeBodyContent[valueKey]) {
         typeBodyContent[valueKey] = typeBodyContent.schema[valueKey];
       }
@@ -376,14 +479,14 @@ const getPropsRawContent = async () => {
     // state.rawContent = "{\n    \"groupId\": 13639619,\n    \"orgCode\": \"qui sunt ad nostrud\"\n}"
     return;
   }
-  if (type === 'application/xml') {
-    if (content?.[type]?.schema?.format === 'binary') {
+  if (contentType === 'application/xml') {
+    if (content?.[contentType]?.schema?.format === 'binary') {
       state.rawContent = '';
       return;
     }
-    const typeBodyContent = JSON.parse(JSON.stringify(content[type] || content['*/*'] || {}));
+    const typeBodyContent = JSON.parse(JSON.stringify(content[contentType] || content['*/*'] || {}));
     if (typeBodyContent.schema) {
-      typeBodyContent.schema = await transRefJsonToDataJson(typeBodyContent.schema, apiBaseInfo.value?.serviceId);
+      typeBodyContent.schema = await transformReferenceJsonToDataJson(typeBodyContent.schema, apiBaseInfo.value?.serviceId);
       if (!typeBodyContent[valueKey]) {
         typeBodyContent[valueKey] = typeBodyContent.schema[valueKey];
       }
@@ -395,15 +498,15 @@ const getPropsRawContent = async () => {
     if (state.rawContent) {
       return;
     }
-    const xmlObj = SwaggerUI.extension.sampleFromSchemaGeneric(typeBodyContent?.schema, { useValue: true }, (typeBodyContent?.[valueKey] !== undefined ? typeBodyContent?.[valueKey] : undefined), true);
-    if (typeof xmlObj === 'object' && (!xmlObj || typeof xmlObj.notagname !== 'string')) {
-      state.rawContent = XML(xmlObj, { declaration: true, indent: '\t' });
+    const xmlObject = SwaggerUI.extension.sampleFromSchemaGeneric(typeBodyContent?.schema, { useValue: true }, (typeBodyContent?.[valueKey] !== undefined ? typeBodyContent?.[valueKey] : undefined), true);
+    if (typeof xmlObject === 'object' && (!xmlObject || typeof xmlObject.notagname !== 'string')) {
+      state.rawContent = XML(xmlObject, { declaration: true, indent: '\t' });
     }
     return;
   }
-  const typeBodyContent = JSON.parse(JSON.stringify(content[type] || content['*/*'] || {}));
+  const typeBodyContent = JSON.parse(JSON.stringify(content[contentType] || content['*/*'] || {}));
   if (typeBodyContent.schema) {
-    typeBodyContent.schema = await transRefJsonToDataJson(typeBodyContent.schema, apiBaseInfo.value?.serviceId);
+    typeBodyContent.schema = await transformReferenceJsonToDataJson(typeBodyContent.schema, apiBaseInfo.value?.serviceId);
     if (!typeBodyContent[valueKey]) {
       typeBodyContent[valueKey] = typeBodyContent.schema[valueKey];
     }
@@ -417,13 +520,11 @@ const getPropsRawContent = async () => {
   }
   state.rawContent = SwaggerUI.extension.sampleFromSchemaGeneric(typeBodyContent?.schema, { useValue: true }, (typeBodyContent?.[valueKey] !== undefined ? typeBodyContent?.[valueKey] : undefined));
 };
+// Watch for default value changes
 watch(() => props.defaultValue, async (newValue) => {
   const { content } = newValue;
-  // if (!allContentTypes.value.length) {
-  //   await loadSelectOpt();
-  // }
   if (newValue.$ref) {
-    $ref.value = newValue.$ref;
+    componentReference.value = newValue.$ref;
     if (!content) {
       const [error, res] = await getModelDataByRef(apiBaseInfo.value.serviceId, newValue.$ref);
       if (error) {
@@ -440,17 +541,17 @@ watch(() => props.defaultValue, async (newValue) => {
     }
   }
 
-  _contentType.value = props.contentType;
+  currentContentType.value = props.contentType;
 
-  if (!_contentType.value) {
-    _contentType.value = null;
+  if (!currentContentType.value) {
+    currentContentType.value = null;
   }
-  for (const type in (content || {})) {
-    if (type === 'application/x-www-form-urlencoded') {
-      if ((state.encodeedList.filter(i => i.name || i[valueKey] || i.type !== 'string')).length < 1) {
-        const use$ref = !content['application/x-www-form-urlencoded']?.schema?.properties && content['application/x-www-form-urlencoded']?.schema?.$ref;
-        if (use$ref) {
-          const model = await getModelData(use$ref);
+  for (const contentType in (content || {})) {
+    if (contentType === 'application/x-www-form-urlencoded') {
+      if ((state.encodeedList.filter(item => item.name || item[valueKey] || item.type !== 'string')).length < 1) {
+        const useReference = !content['application/x-www-form-urlencoded']?.schema?.properties && content['application/x-www-form-urlencoded']?.schema?.$ref;
+        if (useReference) {
+          const model = await getModelDataByReference(useReference);
           if (model) {
             if (!model.type) {
               if (model.properties) {
@@ -462,10 +563,10 @@ watch(() => props.defaultValue, async (newValue) => {
               }
             }
             content['application/x-www-form-urlencoded'].schema = {
-              $ref: use$ref,
+              $ref: useReference,
               ...model
             };
-            urlencodedUseRef.value = use$ref;
+            urlencodedUseRef.value = useReference;
           }
         }
         state.encodeedList = Object.keys(content['application/x-www-form-urlencoded']?.schema?.properties || {}).map(key => {
@@ -541,9 +642,9 @@ watch(() => props.defaultValue, async (newValue) => {
         }
       }
     } else if ((type && !allContentTypes.value.includes(type)) || type === 'application/octet-stream') {
-      binaryCt.value = content[type].schema?.[valueKey] || '';
-      filename.value = content[type].schema?.[fileNameKey] || '';
-      contentMediaType.value = type || '';
+      binaryContentBase64.value = content[type].schema?.[valueKey] || '';
+      uploadedFileName.value = content[type].schema?.[fileNameKey] || '';
+      fileContentMediaType.value = type || '';
     }
   }
   if (state.formDataList.every(i => !!i.name) && !formDataUseRef.value && !props.viewType) {
@@ -552,207 +653,239 @@ watch(() => props.defaultValue, async (newValue) => {
   if (state.encodeedList.every(i => !!i.name) && !urlencodedUseRef.value && !props.viewType) {
     state.encodeedList.push(getBodyDefaultItem({ type: 'string' }));
   }
-  if (_contentType.value === 'application/json') {
-    if (content?.[_contentType.value]?.schema?.format === 'binary') {
-      binaryCt.value = content[_contentType.value].schema?.[valueKey] || '';
-      filename.value = content[_contentType.value].schema?.[fileNameKey] || '';
-      contentMediaType.value = 'application/json';
-      _contentType.value = 'application/octet-stream';
+  if (currentContentType.value === 'application/json') {
+    if (content?.[currentContentType.value]?.schema?.format === 'binary') {
+      binaryContentBase64.value = content[currentContentType.value].schema?.[valueKey] || '';
+      uploadedFileName.value = content[currentContentType.value].schema?.[fileNameKey] || '';
+      fileContentMediaType.value = 'application/json';
+      currentContentType.value = 'application/octet-stream';
     } else {
-      await getPropsRawContent();
+      await loadPropsRawContent();
     }
     return;
   }
-  if (_contentType.value === 'text/html') {
-    if (content?.[_contentType.value]?.schema?.format === 'binary') {
-      binaryCt.value = content[_contentType.value].schema?.[valueKey] || '';
-      filename.value = content[_contentType.value].schema?.[fileNameKey] || '';
-      contentMediaType.value = 'text/html';
-      _contentType.value = 'application/octet-stream';
+  if (currentContentType.value === 'text/html') {
+    if (content?.[currentContentType.value]?.schema?.format === 'binary') {
+      binaryContentBase64.value = content[currentContentType.value].schema?.[valueKey] || '';
+      uploadedFileName.value = content[currentContentType.value].schema?.[fileNameKey] || '';
+      fileContentMediaType.value = 'text/html';
+      currentContentType.value = 'application/octet-stream';
     } else {
-      await getPropsRawContent();
+      await loadPropsRawContent();
     }
     return;
   }
-  if (_contentType.value === 'application/javascript') {
-    if (content[_contentType.value]?.schema?.format === 'binary') {
-      binaryCt.value = content[_contentType.value].schema?.[valueKey] || '';
-      filename.value = content[_contentType.value].schema?.[fileNameKey] || '';
-      contentMediaType.value = 'application/javascript';
-      _contentType.value = 'application/octet-stream';
+  if (currentContentType.value === 'application/javascript') {
+    if (content[currentContentType.value]?.schema?.format === 'binary') {
+      binaryContentBase64.value = content[currentContentType.value].schema?.[valueKey] || '';
+      uploadedFileName.value = content[currentContentType.value].schema?.[fileNameKey] || '';
+      fileContentMediaType.value = 'application/javascript';
+      currentContentType.value = 'application/octet-stream';
     } else {
-      await getPropsRawContent();
+      await loadPropsRawContent();
     }
     return;
   }
-  if (_contentType.value === 'application/xml') {
-    if (content[_contentType.value]?.schema?.format === 'binary') {
-      binaryCt.value = content[_contentType.value].schema?.[valueKey] || '';
-      filename.value = content[_contentType.value].schema?.[fileNameKey] || '';
-      contentMediaType.value = 'application/xml';
-      _contentType.value = 'application/octet-stream';
+  if (currentContentType.value === 'application/xml') {
+    if (content[currentContentType.value]?.schema?.format === 'binary') {
+      binaryContentBase64.value = content[currentContentType.value].schema?.[valueKey] || '';
+      uploadedFileName.value = content[currentContentType.value].schema?.[fileNameKey] || '';
+      fileContentMediaType.value = 'application/xml';
+      currentContentType.value = 'application/octet-stream';
     } else {
-      await getPropsRawContent();
+      await loadPropsRawContent();
     }
     return;
   }
-  if (_contentType.value === 'text/plain') {
-    if (content[_contentType.value]?.schema?.format === 'binary') {
-      binaryCt.value = content[_contentType.value].schema?.[valueKey] || '';
-      filename.value = content[_contentType.value].schema?.[fileNameKey] || '';
-      contentMediaType.value = 'text/plain';
-      _contentType.value = 'application/octet-stream';
+  if (currentContentType.value === 'text/plain') {
+    if (content[currentContentType.value]?.schema?.format === 'binary') {
+      binaryContentBase64.value = content[currentContentType.value].schema?.[valueKey] || '';
+      uploadedFileName.value = content[currentContentType.value].schema?.[fileNameKey] || '';
+      fileContentMediaType.value = 'text/plain';
+      currentContentType.value = 'application/octet-stream';
     } else {
-      await getPropsRawContent();
+      await loadPropsRawContent();
     }
     return;
   }
 
-  if ((_contentType.value && !allContentTypes.value.includes(_contentType.value)) || _contentType.value === 'application/octet-stream') {
-    binaryCt.value = content[_contentType.value]?.schema?.[valueKey] || '';
-    filename.value = content[_contentType.value]?.schema?.[fileNameKey] || '';
-    contentMediaType.value = _contentType.value || '';
-    _contentType.value = 'application/octet-stream';
+  if ((currentContentType.value && !allContentTypes.value.includes(currentContentType.value)) || currentContentType.value === 'application/octet-stream') {
+    binaryContentBase64.value = content[currentContentType.value]?.schema?.[valueKey] || '';
+    uploadedFileName.value = content[currentContentType.value]?.schema?.[fileNameKey] || '';
+    fileContentMediaType.value = currentContentType.value || '';
+    currentContentType.value = 'application/octet-stream';
   }
 }, {
   immediate: true,
   deep: true
 });
 
-// 格式化文本
+/**
+ * Format raw content based on content type
+ */
 const formatRawContent = () => {
-  if (_contentType.value === 'application/json') {
+  if (currentContentType.value === 'application/json') {
     try {
       const json = JSON.parse(state.rawContent);
       state.rawContent = JSON.stringify(json, undefined, 2);
     } catch {}
   }
-  if (_contentType.value === 'application/xml') {
+  if (currentContentType.value === 'application/xml') {
     try {
       state.rawContent = state.rawContent.replace(/(>)(<)(\/*)/g, '$1\n$2$3');
     } catch {}
   }
-  if (_contentType.value === 'text/html') {
+  if (currentContentType.value === 'text/html') {
     state.rawContent = pretty(state.rawContent, { indent_size: 2 });
   }
 
-  if (_contentType.value === 'application/javascript') {
+  if (currentContentType.value === 'application/javascript') {
     state.rawContent = jsBeautify(state.rawContent, { indent_size: 2, space_in_empty_paren: true });
   }
 };
 
-// 压缩文本
+/**
+ * Compress raw content by removing formatting
+ */
 const compressRawContent = () => {
-  if (_contentType.value === 'application/json') {
+  if (currentContentType.value === 'application/json') {
     try {
       const json = JSON.parse(state.rawContent);
       state.rawContent = JSON.stringify(json, undefined, 0);
     } catch {}
     return;
   }
-  if (_contentType.value === 'application/xml') {
+  if (currentContentType.value === 'application/xml') {
     try {
       state.rawContent = state.rawContent.replace(/(>)(\n)(<)(\/*)/g, '$1$3$4');
     } catch {}
     return;
   }
-  if (_contentType.value === 'text/html') {
+  if (currentContentType.value === 'text/html') {
     state.rawContent = pretty(state.rawContent, { indent_size: 0 });
     return;
   }
-  if (_contentType.value === 'application/javascript') {
+  if (currentContentType.value === 'application/javascript') {
     state.rawContent = jsBeautify(state.rawContent, { indent_size: 0, space_in_empty_paren: true });
     return;
   }
   state.rawContent = state.rawContent.replace(/\n|\t|\r|\n\r/g, '');
 };
 
+// File size management
 const formFileSize = ref(0);
+const isGzipping = ref(false);
+const uploadedFileSize = ref(0);
 
-const gziping = ref(false);
-const fileSize = ref(0);
-const handleFile = async ({ file }) => {
+/**
+ * Handle file upload
+ * @param fileData - File upload data
+ */
+const handleFileUpload = async ({ file }: { file: File }) => {
   if (file.size > (plugins.value.maxFileSize - formFileSize.value)) {
     notification.error(t('xcan_apiBody.requestBodyFileSizeExceeded'));
     return;
   }
-  fileSize.value = file.size;
-  contentMediaType.value = file.type;
-  emit('update:contentType', contentMediaType.value || 'application/octet-stream');
+  uploadedFileSize.value = file.size;
+  fileContentMediaType.value = file.type;
+  emit('update:contentType', fileContentMediaType.value || 'application/octet-stream');
 
-  gziping.value = true;
+  isGzipping.value = true;
   setTimeout(async () => {
-    const fileBase = await gzip(file);
-    gziping.value = false;
-    binaryCt.value = fileBase;
-    binaryFile.value = file;
-    filename.value = file.name;
-    emitHandle();
+    const compressedFileData = await gzip(file);
+    isGzipping.value = false;
+    binaryContentBase64.value = compressedFileData;
+    uploadedBinaryFile.value = file;
+    uploadedFileName.value = file.name;
+    emitParameterChange();
   }, 100);
 };
 
-const handleRemove = () => {
-  filename.value = undefined;
-  binaryBase64.value = undefined;
-  binaryFile.value = undefined;
-  contentMediaType.value = undefined;
-  binaryCt.value = undefined;
-  fileSize.value = 0;
+/**
+ * Handle file removal
+ */
+const handleFileRemoval = () => {
+  uploadedFileName.value = undefined;
+  uploadedBinaryBase64.value = undefined;
+  uploadedBinaryFile.value = undefined;
+  fileContentMediaType.value = undefined;
+  binaryContentBase64.value = undefined;
+  uploadedFileSize.value = 0;
   emit('update:contentType', 'application/octet-stream');
-  emitHandle();
+  emitParameterChange();
 };
 // const formMaxFileSize
 
+// Watch for raw content changes with debounce
 watch(() => state.rawContent, debounce(duration.search, () => {
-  emitHandle();
+  emitParameterChange();
 }));
 
-// 暴露给父级 返回binaryFile
+/**
+ * Get binary file for parent component
+ * @returns Binary file object
+ */
 const getBinaryFile = async () => {
-  if (binaryFile.value) {
-    return binaryFile.value;
-  } else if (binaryCt.value) {
-    const buf = await ungzip(binaryCt.value);
-    const file = await new File([buf], filename.value);
-    fileSize.value = file.size;
-    binaryFile.value = file;
+  if (uploadedBinaryFile.value) {
+    return uploadedBinaryFile.value;
+  } else if (binaryContentBase64.value) {
+    const buffer = await ungzip(binaryContentBase64.value);
+    const file = await new File([buffer], uploadedFileName.value);
+    uploadedFileSize.value = file.size;
+    uploadedBinaryFile.value = file;
     return file;
   }
 };
-// 暴露给父级 更新binaryBase64
+
+/**
+ * Get binary base64 content for parent component
+ * @returns Binary base64 content
+ */
 const getBinaryBase64 = () => {
-  return binaryBase64.value;
+  return uploadedBinaryBase64.value;
 };
 
-const visible = ref(false);
-const useCompRef = ref(false);
-const toggleOpenModel = (useRef = false) => {
-  useCompRef.value = useRef;
-  visible.value = !visible.value;
+// Modal management
+const isModalVisible = ref(false);
+const shouldUseComponentReference = ref(false);
+
+/**
+ * Toggle model modal visibility
+ * @param useRef - Whether to use component reference
+ */
+const toggleModelModal = (useRef = false) => {
+  shouldUseComponentReference.value = useRef;
+  isModalVisible.value = !isModalVisible.value;
 };
 
-const importModel = (data) => {
-  if (useCompRef.value) {
-    $ref.value = data.ref;
+/**
+ * Import model data
+ * @param data - Model data to import
+ */
+const importModelData = (data: any) => {
+  if (shouldUseComponentReference.value) {
+    componentReference.value = data.ref;
   } else {
-    $ref.value = undefined;
+    componentReference.value = undefined;
   }
-  emit('change', { ...data.schema, $ref: $ref.value || undefined });
+  emit('change', { ...data.schema, $ref: componentReference.value || undefined });
 };
 
-watch(() => binaryCt.value, newValue => {
-  if (!fileSize.value && newValue) {
+// Watch for binary content changes
+watch(() => binaryContentBase64.value, newValue => {
+  if (!uploadedFileSize.value && newValue) {
     getBinaryFile();
   }
 }, {
   immediate: true
 });
 
+// Watch for content types changes
 watch(() => allContentTypes.value, (newValue) => {
   if (!newValue) {
     return;
   }
-  const radioOptions:OptionItem[] = [{ value: null, label: 'none' }];
+  const radioOptions: OptionItem[] = [{ value: null, label: 'none' }];
   radioOptions.push(...newValue?.filter(item => radioGroups.includes(item)).map(item => ({ label: item, value: item })));
   state.radioOptions = radioOptions;
   state.rawSelectOptions = newValue?.filter(item => !radioGroups.includes(item)).map(item => ({ label: item, value: item }));
@@ -760,8 +893,13 @@ watch(() => allContentTypes.value, (newValue) => {
   immediate: true
 });
 
-// 组装用于前端发送请求的body数据结构
-const getBodyData = async (dataSource, contentType) => {
+/**
+ * Assemble request body data structure for frontend requests
+ * @param dataSource - Data source object
+ * @param contentType - Content type
+ * @returns Request body data
+ */
+const getRequestBodyData = async (dataSource: any, contentType: string) => {
   const { content } = dataSource;
   if (!content) {
     return undefined;
@@ -769,55 +907,30 @@ const getBodyData = async (dataSource, contentType) => {
   if (!contentType) {
     return undefined;
   }
-  // const contents = content[contentType];
   if (contentType === 'application/x-www-form-urlencoded') {
-    // state.encodeedList = contents;
-    // let data:any[] = [];
-    // data = SwaggerUI.extension.sampleFromSchemaGeneric(content[contentType]?.schema || {}, { useValue: true });
-    // data = Object.keys(data).map(key => {
-    //   return {
-    //     name: key,
-    //     ...data[key]
-    //     // ...content['application/x-www-form-urlencoded']?.schema?.properties?.[key].extensions
-    //   };
-    // });
-    return state.encodeedList.filter(i => i[enabledKey] && !!i.name);
+    return state.encodeedList.filter(item => item[enabledKey] && !!item.name);
   } else if (contentType === 'multipart/form-data') {
-    // const data: any[] = [];
-    // const contentValue = SwaggerUI.extension.sampleFromSchemaGeneric(content[contentType]?.schema || {}, { useValue: true });
-    // Object.keys(contentValue).forEach((key) => {
-    //   data.push({
-    //     name: key,
-    //     ...contentValue?.[key]
-    //   });
-    // });
-    return state.formDataList.filter(i => i[enabledKey] && !!i.name);
-  } else if (_contentType.value === 'application/octet-stream') {
+    return state.formDataList.filter(item => item[enabledKey] && !!item.name);
+  } else if (currentContentType.value === 'application/octet-stream') {
     return await getBinaryFile();
   } else {
-    // let data = '';
-    // if (contentType === 'application/json') {
-    //   data = SwaggerUI.extension.sampleFromSchemaGeneric(content[contentType]?.schema, { useValue: true }, content[contentType]?.[valueKey] || undefined);
-    //   if (typeof data === 'object') {
-    //     data = JSON.stringify(data, undefined, 2);
-    //   }
-    // }
-    // } else if (contentType === 'application/xml') {
-    //   data = SwaggerUI.extension.sampleFromSchemaGeneric(content[contentType]?.schema, { useValue: true }, content[contentType]?.[valueKey] || undefined);
-    // } else {
-    //   data = SwaggerUI.extension.sampleFromSchemaGeneric(content[contentType]?.schema, { useValue: true }, content[contentType]?.[valueKey] || undefined);
-    // }
     return state.rawContent;
   }
 };
 
-// 用于保存的body数据
+/**
+ * Get data for saving body configuration
+ * @returns Packaged body parameters
+ */
 const getData = () => {
-  const param = packageParams();
+  const param = packageRequestBodyParameters();
   return param;
 };
 
-const updateComp = async () => {
+/**
+ * Update component data
+ */
+const updateComponentData = async () => {
   if (state.encodeedList && urlencodeFormRef.value) {
     await urlencodeFormRef.value.updateComp();
   }
@@ -825,50 +938,54 @@ const updateComp = async () => {
   if (state.formDataList && formDataFormRef.value) {
     await formDataFormRef.value.updateComp();
   }
-  const body = packageParams();
-  if ($ref.value) {
-    const paths = $ref.value.split('/');
+  const body = packageRequestBodyParameters();
+  if (componentReference.value) {
+    const paths = componentReference.value.split('/');
     const name = paths[paths.length - 1];
     await http.put(`${TESTER}/services/${apiBaseInfo.value.serviceId}/comp/requestBodies/${name}`, body);
   }
-
-  // for (const type in (body.content || {})) {
-  //   if (body.content[type].$ref) {
-  //     const paths = body.content[type].$re.split('/');
-  //     const name = paths[paths.length - 1];
-  //     await project.addComponent(apiBaseInfo.value.projectId, 'schemas', name, body.content[type]);
-  //   }
-  // }
 };
 
-// 重置body 数据
-const resetBodyData = () => {
+/**
+ * Reset body data to initial state
+ */
+const resetRequestBodyData = () => {
   state.formDataList = [];
   state.encodeedList = [];
   state.rawContent = '';
-  filename.value = undefined;
-  binaryBase64.value = undefined;
-  binaryFile.value = undefined;
-  contentMediaType.value = undefined;
-  binaryCt.value = undefined;
-  fileSize.value = 0;
+  uploadedFileName.value = undefined;
+  uploadedBinaryBase64.value = undefined;
+  uploadedBinaryFile.value = undefined;
+  fileContentMediaType.value = undefined;
+  binaryContentBase64.value = undefined;
+  uploadedFileSize.value = 0;
 };
 
+// Form references
 const formDataFormRef = ref();
 const urlencodeFormRef = ref();
-const validate = (val = true) => {
-  if (_contentType.value === 'application/x-www-form-urlencoded') {
+
+/**
+ * Validate form data
+ * @param val - Validation flag
+ */
+const validateFormData = (val = true) => {
+  if (currentContentType.value === 'application/x-www-form-urlencoded') {
     urlencodeFormRef.value.validate(val);
   }
-  if (_contentType.value === 'multipart/form-data') {
+  if (currentContentType.value === 'multipart/form-data') {
     formDataFormRef.value.validate(val);
   }
 };
 
-const getModelResolve = () => {
+/**
+ * Get model resolution data
+ * @returns Model resolution object
+ */
+const getModelResolution = () => {
   const models = {};
-  if ($ref.value) {
-    models[$ref.value] = props.defaultValue;
+  if (componentReference.value) {
+    models[componentReference.value] = props.defaultValue;
   }
   if (urlencodedUseRef.value) {
     models[urlencodedUseRef.value] = props.defaultValue.content['application/x-www-form-urlencoded'];
@@ -878,12 +995,12 @@ const getModelResolve = () => {
     models[formDataUseRef.value] = props.defaultValue.content['multipart/form-data'];
     delete models[formDataUseRef.value]?.schema?.$ref;
   }
-  if (showEncodeedForm.value) {
+  if (shouldShowUrlEncodedForm.value) {
     urlencodeFormRef.value.getModelResolve(models);
   } else if (formDataFormRef.value) {
     formDataFormRef.value.getModelResolve(models);
-  } else if (_contentType.value && props.defaultValue.content?.[_contentType.value]) {
-    const contents = props.defaultValue.content?.[_contentType.value];
+  } else if (currentContentType.value && props.defaultValue.content?.[currentContentType.value]) {
+    const contents = props.defaultValue.content?.[currentContentType.value];
     if (contents.schema.$ref) {
       models[contents.schema.$ref] = contents.schema;
     }
@@ -891,13 +1008,27 @@ const getModelResolve = () => {
   return models;
 };
 
+/**
+ * Component mounted lifecycle hook
+ */
 onMounted(() => {
   nextTick(() => {
     emit('rendered', true);
   });
 });
 
-defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, getData, updateComp, validate, getModelResolve, resetBodyData });
+// Expose component methods
+defineExpose({ 
+  getBinaryFile, 
+  getBinaryBase64, 
+  getRequestBodyData, 
+  getBodyData: getRequestBodyData, 
+  getData,
+  updateComponentData, 
+  validateFormData, 
+  getModelResolution, 
+  resetRequestBodyData 
+});
 </script>
 <template>
   <div>
@@ -906,11 +1037,11 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, getData, updateComp,
         <span class="mr-0.25">Content-Type</span>:
       </label>
       <RadioGroup
-        v-model:value="_contentType"
+        v-model:value="currentContentType"
         class="select-none mr-2"
         name="radioGroup"
         :disabled="props.viewType"
-        @change="handleRadioChange">
+        @change="handleContentTypeRadioChange">
         <Radio
           v-for="item in state.radioOptions"
           :key="item.value"
@@ -919,36 +1050,36 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, getData, updateComp,
         </Radio>
       </RadioGroup>
       <Radio
-        :checked="checkeRaw"
+        :checked="isRawContentTypeSelected"
         :disabled="props.viewType"
-        @change="clickRawRadio">
+        @change="handleRawContentTypeRadioClick">
         raw
       </Radio>
       <Select
-        v-show="isRaw"
-        v-model:value="_contentType"
+        v-show="isRawContentType"
+        v-model:value="currentContentType"
         class="w-40"
         dropdownClassName="response-body-select"
         :disabled="props.viewType"
         :allowClear="false"
         :options="state.rawSelectOptions"
-        @change="handleSelectChange" />
-      <template v-if="!!_contentType && apiBaseInfo?.serviceId && !props.viewType">
+        @change="handleContentTypeSelectChange" />
+      <template v-if="!!currentContentType && apiBaseInfo?.serviceId && !props.viewType">
         <Button
           v-if="!props.hideImportBtn"
           type="link"
           size="small"
-          @click="toggleOpenModel(true)">
+          @click="toggleModelModal(true)">
           {{ t('xcan_apiBody.importComponent') }}
         </Button>
         <Button
           type="link"
           size="small"
-          @click="toggleOpenModel(false)">
+          @click="toggleModelModal(false)">
           {{ t('xcan_apiBody.copyComponent') }}
         </Button>
       </template>
-      <template v-if="isRaw && state.rawContent && !props.viewType">
+      <template v-if="isRawContentType && state.rawContent && !props.viewType">
         <Button
           type="link"
           size="small"
@@ -965,7 +1096,7 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, getData, updateComp,
     </div>
     <Tooltip v-if="!props.useFlatForm" placement="topLeft">
       <ApiForm
-        v-show="showEncodeedForm"
+        v-show="shouldShowUrlEncodedForm"
         key="encodeedList"
         ref="urlencodeFormRef"
         class="mt-5"
@@ -976,22 +1107,22 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, getData, updateComp,
         :value="state.encodeedList"
         :hideImportBtn="props.hideImportBtn"
         :fieldNames="props.fieldNames"
-        @change="changeEncodeedList"
-        @del="delEncodeedList" />
+        @change="handleUrlEncodedListChange"
+        @del="deleteUrlEncodedListItem" />
       <template v-if="urlencodedUseRef" #title>
         {{ t('xcan_apiBody.componentReference', { ref: urlencodedUseRef }) }}
         <Button
           :disabled="props.viewType"
           size="small"
           type="link"
-          @click="cancelUrlEncodedRef">
+          @click="cancelUrlEncodedReference">
           {{ t('xcan_apiBody.cancelReference') }}
         </Button>
       </template>
     </Tooltip>
     <ApiFormForFlat
       v-else
-      v-show="showEncodeedForm"
+      v-show="shouldShowUrlEncodedForm"
       key="encodeedList"
       ref="urlencodeFormRef"
       class="mt-5"
@@ -1002,54 +1133,54 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, getData, updateComp,
       :value="state.encodeedList"
       :hideImportBtn="props.hideImportBtn"
       :fieldNames="props.fieldNames"
-      @change="changeEncodeedList"
-      @del="delEncodeedList" />
+      @change="handleUrlEncodedListChange"
+      @del="deleteUrlEncodedListItem" />
     <Tooltip v-if="!props.useFlatForm" placement="topLeft">
       <ApiForm
-        v-show="showFormDataForm"
+        v-show="shouldShowFormDataForm"
         ref="formDataFormRef"
         key="formDataList"
         v-model:formFileSize="formFileSize"
         :viewType="props.viewType"
-        :maxFileSize="plugins.maxFileSize - fileSize"
+        :maxFileSize="plugins.maxFileSize - uploadedFileSize"
         class="mt-5"
         :value="state.formDataList"
         :useModel="!!formDataUseRef"
         :hideImportBtn="props.hideImportBtn"
         :fieldNames="props.fieldNames"
         hasFileType
-        @change="changeFormDataList"
-        @del="delFormDataList" />
+        @change="handleFormDataListChange"
+        @del="deleteFormDataListItem" />
       <template v-if="formDataUseRef" #title>
         {{ t('xcan_apiBody.componentReference', { ref: formDataUseRef }) }}
         <Button
           :disabled="props.viewType"
           size="small"
           type="link"
-          @click="cancelformDataRef">
+          @click="cancelFormDataReference">
           {{ t('xcan_apiBody.cancelReference') }}
         </Button>
       </template>
     </Tooltip>
     <ApiFormForFlat
       v-else
-      v-show="showFormDataForm"
+      v-show="shouldShowFormDataForm"
       ref="formDataFormRef"
       key="formDataList"
       v-model:formFileSize="formFileSize"
       :viewType="props.viewType"
-      :maxFileSize="plugins.maxFileSize - fileSize"
+      :maxFileSize="plugins.maxFileSize - uploadedFileSize"
       class="mt-5"
       :value="state.formDataList"
       :useModel="!!formDataUseRef"
       :hideImportBtn="props.hideImportBtn"
       :fieldNames="props.fieldNames"
       hasFileType
-      @change="changeFormDataList"
-      @del="delFormDataList" />
-    <AsyncComponent :visible="isRaw">
+      @change="handleFormDataListChange"
+      @del="deleteFormDataListItem" />
+    <AsyncComponent :visible="isRawContentType">
       <div
-        v-show="isRaw"
+        v-show="isRawContentType"
         style="height: 220px;"
         class="w-full mt-2 py-2 border border-solid border-theme-divider rounded bg-white">
         <MonacoEditor
@@ -1057,34 +1188,34 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, getData, updateComp,
           theme="vs"
           :readOnly="props.viewType"
           :isFormat="false"
-          :notifyClear="clearRawContent"
-          :language="language" />
+          :notifyClear="clearRawContentTrigger"
+          :language="monacoEditorLanguage" />
       </div>
     </AsyncComponent>
-    <div v-show="_contentType === 'application/octet-stream'" class="mt-2 flex items-center">
+    <div v-show="currentContentType === 'application/octet-stream'" class="mt-2 flex items-center">
       <Upload
-        :disabled="gziping || !!binaryCt || props.viewType"
+        :disabled="isGzipping || !!binaryContentBase64 || props.viewType"
         :showUploadList="false"
-        :customRequest="handleFile"
+        :customRequest="handleFileUpload"
         :multiple="false"
         :fieldName="props.fieldNames">
         <Button
-          :loading="gziping"
-          :disabled="filename || !!binaryCt || props.viewType"
+          :loading="isGzipping"
+          :disabled="uploadedFileName || !!binaryContentBase64 || props.viewType"
           size="small">
           <Icon icon="icon-tuisongtongzhi" class="mr-1" />
           <span>{{ t('xcan_apiBody.uploadFile') }}</span>
         </Button>
       </Upload>
-      <div v-show="filename || binaryCt" class="flex items-center h-5 leading-5 px-1.5 ml-1 select-none rounded text-3 border-none text-theme-content">
-        <span>{{ filename || binaryCt }}</span>
+      <div v-show="uploadedFileName || binaryContentBase64" class="flex items-center h-5 leading-5 px-1.5 ml-1 select-none rounded text-3 border-none text-theme-content">
+        <span>{{ uploadedFileName || binaryContentBase64 }}</span>
         <Icon
           icon="icon-shanchuguanbi"
           class="ml-1 text-gray-line cursor-pointer text-theme-text-hover"
-          @click="handleRemove" />
+          @click="handleFileRemoval" />
       </div>
     </div>
-    <ModelModal v-model:visible="visible" @confirm="importModel" />
+    <ModelModal v-model:visible="isModalVisible" @confirm="importModelData" />
   </div>
 </template>
 <style>
