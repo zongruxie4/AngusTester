@@ -1,9 +1,10 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { PageQuery, TESTER } from '@xcan-angus/infra';
+import { PageQuery, TESTER, appContext } from '@xcan-angus/infra';
+import { createAuditOptions, createTimeOptions, createEnumTypeConfig, type QuickSearchConfig } from '@/components/quickSearch';
+import { ScenarioMonitorStatus } from '@/enums/enums';
 import type {
   FilterItem,
-  MenuItem,
   OrderByKey,
   SearchPanelOption,
   SearchPanelParams,
@@ -49,62 +50,44 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
     {
       name: t('scenarioMonitor.searchPanel.sortOptions.byAddTime'),
       key: 'createdDate',
-      orderSort: 'DESC'
+      orderSort: PageQuery.OrderSort.Desc
     },
     {
       name: t('scenarioMonitor.searchPanel.sortOptions.byCreator'),
       key: 'createdByName',
-      orderSort: 'ASC'
+      orderSort: PageQuery.OrderSort.Asc
     }
   ];
 
   // Data state
-  const selectedMenuMap = ref<{[key: string]: boolean}>({});
   const orderBy = ref<OrderByKey>();
   const orderSort = ref<PageQuery.OrderSort>();
   const searchFilters = ref<FilterItem[]>([]);
   const quickSearchFilters = ref<FilterItem[]>([]);
   const assocFilters = ref<FilterItem[]>([]);
 
-  // Menu items for quick search
-  const menuItems = computed(() => [
-    {
-      key: '',
-      name: t('common.all')
-    },
-    {
-      key: 'createdBy',
-      name: t('scenarioMonitor.searchPanel.filterOptions.myCreated')
-    },
-    {
-      key: 'lastModifiedBy',
-      name: t('scenarioMonitor.searchPanel.filterOptions.myModified')
-    },
-    {
-      key: 'PENDING',
-      name: t('status.pending')
-    },
-    {
-      key: 'SUCCESS',
-      name: t('status.success')
-    },
-    {
-      key: 'FAILURE',
-      name: t('status.failed')
-    },
-    {
-      key: 'last1Day',
-      name: t('quickSearch.last1Day')
-    },
-    {
-      key: 'last3Days',
-      name: t('quickSearch.last3Days')
-    },
-    {
-      key: 'last7Days',
-      name: t('quickSearch.last7Days')
+  // Get current user ID
+  const userId = computed(() => String(appContext.getUser()?.id || ''));
+
+  // Quick search configuration
+  const quickSearchConfig = computed<QuickSearchConfig>(() => ({
+    title: t('quickSearch.title'),
+    // Audit information options
+    auditOptions: createAuditOptions([
+      { key: 'createdBy', name: t('quickSearch.createdByMe'), fieldKey: 'createdBy' },
+      { key: 'lastModifiedBy', name: t('quickSearch.modifiedByMe'), fieldKey: 'lastModifiedBy' }
+    ], userId.value),
+    enumType: createEnumTypeConfig(ScenarioMonitorStatus, 'status'),
+    timeOptions: createTimeOptions([
+      { key: 'last1Day', name: t('quickSearch.last1Day'), timeRange: 'last1Day' },
+      { key: 'last3Days', name: t('quickSearch.last3Days'), timeRange: 'last3Days' },
+      { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
+    ], 'createdDate'),
+    // External clear function
+    externalClearFunction: () => {
+      // This will be set by the parent component
     }
-  ]);
+  }));
 
   /**
    * Get current search parameters
@@ -127,8 +110,8 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
    * @param data - Filter items from search panel
    */
   const searchChange = (data: FilterItem[]): void => {
-    searchFilters.value = data.filter(item => !['createdDate', 'createdBy'].includes(item.key));
-    assocFilters.value = data.filter(item => ['createdDate', 'createdBy'].includes(item.key));
+    searchFilters.value = data.filter(item => item.key && !['createdDate', 'createdBy'].includes(item.key));
+    assocFilters.value = data.filter(item => item.key && ['createdDate', 'createdBy'].includes(item.key));
   };
 
   /**
@@ -141,15 +124,6 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
   };
 
   /**
-   * Handle menu item click for quick search
-   * @param data - Menu item data
-   */
-  const menuItemClick = (data: MenuItem): void => {
-    // This will be implemented in the main component
-    // as it requires access to other composables
-  };
-
-  /**
    * Refresh search panel
    */
   const refresh = (): void => {
@@ -159,8 +133,7 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
   return {
     searchPanelOptions,
     sortMenuItems,
-    menuItems,
-    selectedMenuMap,
+    quickSearchConfig,
     orderBy,
     orderSort,
     searchFilters,
@@ -169,7 +142,6 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
     getParams,
     searchChange,
     toSort,
-    menuItemClick,
     refresh
   };
 }

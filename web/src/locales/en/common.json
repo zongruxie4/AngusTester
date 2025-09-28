@@ -91,6 +91,7 @@
     "mockApi": "Mock Api",
     "report": "Report",
     "reportRecord": "Report Record",
+    "activity": "Activity",
     "doc": "Document",
     "authControl": "Auth",
     "planTime": "Plan Time",
@@ -132,7 +133,9 @@
       "searchKeyword": "Enter search keyword",
       "selectCreator": "Select creator",
       "selectOwner": "Select owner",
-      "selectProject": "Select project"
+      "selectProject": "Select project",
+      "selectPluginType": "Select plugin type",
+      "selectScriptType": "Select script type"
     },
     "rules": {},
     "hints": {
@@ -278,7 +281,11 @@
       "copyFailed": "Copy failed",
       "recoverAllSuccess": "All items restored successfully",
       "deleteAllSuccess": "All items deleted successfully",
-      "recoverSuccess": "Restored successfully"
+      "recoverSuccess": "Restored successfully",
+      "favouriteSuccess": "Favourite successfully",
+      "followSuccess": "Follow successfully",
+      "cancelFavouriteSuccess": "Cancel favourite successfully",
+      "cancelFollowSuccess": "Cancel follow successfully"
     }
   },
   "home": {
@@ -344,8 +351,8 @@
     "lastMonth": "Last Month",
     "lastYear": "Last Year",
     "average": "Average",
-    "minimum": "Minimum",
-    "maximum": "Maximum",
+    "min": "Min",
+    "max": "Max",
     "p50": "P50",
     "p75": "P75",
     "p90": "P90",

@@ -11,7 +11,7 @@ export function useDrawer (t: (key: string) => string) {
   const menuItems = computed(() => [
     {
       icon: 'icon-lishijilu',
-      name: t('scenario.list.drawer.menuItems.activity'),
+      name: t('common.activity'),
       key: 'activity'
     }
   ]);

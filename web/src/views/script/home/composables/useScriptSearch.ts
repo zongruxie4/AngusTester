@@ -37,8 +37,8 @@ export function useScriptSearch (userId: string) {
   const quickSearchConfig = computed<QuickSearchConfig>(() => ({
     title: t('quickSearch.title'),
     auditOptions: createAuditOptions([
-      { key: 'createdBy', name: t('scriptHome.searchPanel.quickSearchOptions.myAdded'), fieldKey: 'createdBy' },
-      { key: 'lastModifiedBy', name: t('scriptHome.searchPanel.quickSearchOptions.myModified'), fieldKey: 'lastModifiedBy' }
+      { key: 'createdBy', name: t('quickSearch.createdByMe'), fieldKey: 'createdBy' },
+      { key: 'lastModifiedBy', name: t('quickSearch.modifiedByMe'), fieldKey: 'lastModifiedBy' }
     ], userId),
     enumType: createEnumTypeConfig(ScriptType, 'type', [ScriptType.MOCK_APIS]),
     timeOptions: createTimeOptions([

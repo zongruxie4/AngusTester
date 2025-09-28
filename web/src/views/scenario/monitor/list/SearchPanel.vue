@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
+import { DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { PageQuery } from '@xcan-angus/infra';
+import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { QuickSearchOptions } from '@/components/quickSearch';
 
 // Import types and composables
 import { useSearchPanelData } from './composables/useSearchPanelData';
@@ -26,12 +27,14 @@ const emits = defineEmits<{
   (e: 'refresh'): void;
 }>();
 
+// Search panel ref
+const searchPanelRef = ref();
+
 // Use composables
 const {
   searchPanelOptions,
   sortMenuItems,
-  menuItems,
-  selectedMenuMap,
+  quickSearchConfig,
   orderBy,
   orderSort,
   searchFilters,
@@ -40,18 +43,21 @@ const {
   getParams
 } = useSearchPanelData(props.projectId);
 
-// Search panel ref
-const searchPanelRef = ref();
+// Update external clear function with search panel ref
+quickSearchConfig.value.externalClearFunction = () => {
+  if (typeof searchPanelRef.value?.clear === 'function') {
+    searchPanelRef.value.clear();
+  }
+};
 
 // Use logic composable
 const {
   searchChange,
   toSort,
-  menuItemClick,
   refresh
 } = useSearchPanelAction(
   searchPanelRef,
-  selectedMenuMap,
+  ref({}),
   searchFilters,
   assocFilters,
   quickSearchFilters,
@@ -61,26 +67,29 @@ const {
   (value: PageQuery) => emits('change', value),
   () => emits('refresh')
 );
+
+/**
+ * Handle quick search changes
+ * Processes quick search filters and updates state
+ * @param selectedKeys - Array of selected option keys
+ * @param searchCriteria - Array of search criteria from quick search
+ */
+const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+  // Update quick search filters
+  quickSearchFilters.value = searchCriteria;
+
+  // Emit change event with current params
+  emits('change', getParams());
+};
 </script>
 
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex">
-      <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>{{ $t('quickSearch.title') }}</span>
-        <Colon />
-      </div>
-      <div class="flex  flex-wrap ml-2">
-        <div
-          v-for="item in menuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="menuItemClick(item)">
-          {{ item.name }}
-        </div>
-      </div>
-    </div>
+    <!-- Quick Search Options Component -->
+    <QuickSearchOptions
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
+
     <div class="flex items-start justify-between ">
       <SearchPanel
         ref="searchPanelRef"
@@ -127,8 +136,5 @@ const {
 </template>
 
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
+/* Styles are now handled by QuickSearchOptions component */
 </style>

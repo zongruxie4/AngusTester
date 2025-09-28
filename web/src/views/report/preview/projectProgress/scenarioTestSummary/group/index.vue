@@ -45,7 +45,7 @@ const taskStatusOption = {
   }],
   yAxis: [{ type: 'value' }],
   series: [{
-    name: t('reportPreview.projectProgress.scenarioTestSummary.groupStats.quantity'),
+    name: t('common.count'),
     type: 'bar',
     barWidth: '20px',
     data: [],

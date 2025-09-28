@@ -23,6 +23,7 @@ import ScenarioLdapDebugResult from '@/components/ScenarioLdapDebugResult/index.
 import ScenarioMailDebugResult from '@/components/ScenarioMailDebugResult/index.vue';
 import ScenarioTcpDebugResult from '@/components/ScenarioTcpDebugResult/index.vue';
 import ScearioSmtpDebugResult from '@/components/ScearioSmtpDebugResult/index.vue';
+import { ScenarioMonitorStatus } from '@/enums/enums';
 
 const { t } = useI18n();
 
@@ -158,17 +159,17 @@ const statusColorConfig = getStatusColorConfig();
         <div class="flex  py-5 space-x-6 items-center">
           <div class="text px-2 space-y-1 flex flex-col text-center">
             <span class="text-4 font-medium">{{ dataSource?.count?.avgDelayTime }}</span>
-            <span class=" font-medium">{{ t('scenarioMonitor.detail.metrics.average') }}</span>
+            <span class=" font-medium">{{ t('chart.average') }}</span>
           </div>
 
           <div class="text px-2 space-y-1 flex flex-col text-center">
             <span class="text-4 font-medium">{{ dataSource?.count?.minDelayTime }}</span>
-            <span class=" font-medium">{{ t('scenarioMonitor.detail.metrics.min') }}</span>
+            <span class=" font-medium">{{ t('chart.min') }}</span>
           </div>
 
           <div class="text px-2 space-y-1 flex flex-col text-center">
             <span class="text-4 font-medium">{{ dataSource?.count?.maxDelayTime }}</span>
-            <span class=" font-medium">{{ t('scenarioMonitor.detail.metrics.max') }}</span>
+            <span class=" font-medium">{{ t('chart.max') }}</span>
           </div>
 
           <div class="text px-2 space-y-1 flex flex-col text-center">
@@ -215,10 +216,11 @@ const statusColorConfig = getStatusColorConfig();
       </div>
 
       <div class="text-text-title font-medium">
-        <template v-if="historyExecData?.status?.value === 'SUCCESS'">
+        <template v-if="historyExecData?.status?.value === ScenarioMonitorStatus.SUCCESS">
           {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('status.success') }}
         </template>
-        <template v-if="historyExecData?.status?.value === 'FAILURE'">
+
+        <template v-if="historyExecData?.status?.value === ScenarioMonitorStatus.FAILURE">
           {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('status.failed') }}，{{ t('scenarioMonitor.detail.executionStatus.reason') }}：{{ historyExecData?.failureMessage || '--' }}
         </template>
       </div>
@@ -232,6 +234,7 @@ const statusColorConfig = getStatusColorConfig();
               size="small"
               class="mt-10" />
           </template>
+
           <template v-if="scenarioPlugin === 'Jdbc'">
             <ScenarioJdbcDebugResult v-if="historyExecData?.sampleContents" :content="historyExecData?.sampleContents || []" />
             <NoData
@@ -291,6 +294,7 @@ const statusColorConfig = getStatusColorConfig();
               size="small"
               class="mt-10" />
           </template>
+
           <template v-if="scenarioPlugin === 'Smtp'">
             <ScearioSmtpDebugResult
               v-if="historyExecData?.sampleContents"
@@ -302,6 +306,7 @@ const statusColorConfig = getStatusColorConfig();
               class="mt-10" />
           </template>
         </TabPane>
+
         <TabPane key="debuglog" :tab="t('scenarioMonitor.detail.tabs.scheduleLog')">
           <DebugLog v-if="historyExecData?.schedulingResult" :value="historyExecData?.schedulingResult" />
           <NoData
@@ -309,6 +314,7 @@ const statusColorConfig = getStatusColorConfig();
             size="small"
             class="mt-10" />
         </TabPane>
+
         <TabPane key="execlog" :tab="t('scenarioMonitor.detail.tabs.execLog')">
           <ExecLog
             v-if="historyExecData?.schedulingResult"

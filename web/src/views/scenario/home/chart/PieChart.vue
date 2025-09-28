@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { utils } from '@xcan-angus/infra';
+import { utils, ScriptType, enumUtils } from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
 import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipComponentOption } from 'echarts/components';
 import { PieChart, PieSeriesOption } from 'echarts/charts';
@@ -205,10 +205,10 @@ const handleChartResize = (): void => {
 const processTestTypeData = (dataSource: ResourceInfo): void => {
   // Initialize chart data with default test types
   chartConfiguration.series![0].data = [
-    { name: t('scenarioHome.chart.testTypes.perfTest'), value: 0 },
-    { name: t('scenarioHome.chart.testTypes.stabilityTest'), value: 0 },
-    { name: t('scenarioHome.chart.testTypes.funcTest'), value: 0 },
-    { name: t('scenarioHome.chart.testTypes.customTest'), value: 0 }
+    { name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_PERFORMANCE), value: 0 },
+    { name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_STABILITY), value: 0 },
+    { name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_FUNCTIONALITY), value: 0 },
+    { name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_CUSTOMIZATION), value: 0 }
   ];
 
   if (dataSource?.sceByScriptType) {
@@ -252,7 +252,7 @@ onMounted(() => {
 
 <template>
   <div ref="chartContainerRef" class="rounded border border-solid border-theme-text-box px-4 py-3.5">
-    <div class="font-semibold">{{ t('scenarioHome.chart.testType') }}</div>
+    <div class="font-semibold">{{ t('common.testType') }}</div>
     <div class="relative">
       <div :id="chartDomId" class="w-full h-50"></div>
       <div :style="centerMarkStyle" class="absolute mark-container">

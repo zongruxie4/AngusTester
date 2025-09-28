@@ -88,7 +88,7 @@ const chartConfiguration: EChartsOption = {
   }],
   yAxis: [{ type: 'value' }],
   series: [{
-    name: t('scenarioHome.chart.quantity'),
+    name: t('common.count'),
     type: 'bar',
     barWidth: '20px',
     data: [],

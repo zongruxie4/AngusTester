@@ -72,7 +72,7 @@ export function useScenarioActions (
    * Add scenario authorization
    */
   const addScenarioAuthorize = () => {
-    addTabPane({ name: t('scenario.list.actions.scenarioAuth'), _id: utils.uuid(), value: 'authorization' });
+    addTabPane({ name: t('actions.permission'), _id: utils.uuid(), value: 'authorization' });
   };
 
   /**
@@ -93,7 +93,7 @@ export function useScenarioActions (
   const deleteScenario = async (name: string, id: string, emit: (e: 'delete', value: string) => void) => {
     modal.confirm({
       centered: true,
-      content: t('actions.tips.confirmDelete', { name }),
+      content: t('scenario.list.messages.deleteConfirm', { name }),
       async onOk () {
         const [error] = await scenario.deleteScenario(id);
         if (error) {
@@ -120,7 +120,7 @@ export function useScenarioActions (
       const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'cancelFavourite');
       const data = dropdownMenuItems.value.find(item => item.key === 'addFavourite');
       dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-      notification.success(t('scenario.list.messages.cancelFavouriteSuccess'));
+      notification.success(t('actions.tips.cancelFavouriteSuccess'));
     } else {
       const [error] = await scenario.addScenarioFavorite(id);
       if (error) {
@@ -130,7 +130,7 @@ export function useScenarioActions (
       const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'addFavourite');
       const data = dropdownMenuItems.value.find(item => item.key === 'cancelFavourite');
       dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-      notification.success(t('scenario.list.messages.favouriteSuccess'));
+      notification.success(t('actions.tips.favouriteSuccess'));
     }
   };
 
@@ -147,7 +147,7 @@ export function useScenarioActions (
       const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'cancelFollow');
       const data = dropdownMenuItems.value.find(item => item.key === 'addFollow');
       dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-      notification.success(t('scenario.list.messages.cancelFollowSuccess'));
+      notification.success(t('actions.tips.cancelFollowSuccess'));
     } else {
       const [error] = await scenario.addScenarioFollow(id);
       if (error) {
@@ -157,7 +157,7 @@ export function useScenarioActions (
       const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'addFollow');
       const data = dropdownMenuItems.value.find(item => item.key === 'cancelFollow');
       dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-      notification.success(t('scenario.list.messages.followSuccess'));
+      notification.success(t('actions.tips.followSuccess'));
     }
   };
 

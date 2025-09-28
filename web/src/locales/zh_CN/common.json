@@ -91,6 +91,7 @@
     "mockApi": "Mock接口",
     "report": "报告",
     "reportRecord": "报告记录",
+    "activity": "活动",
     "doc": "文档",
     "authControl": "授权控制",
     "planTime": "计划时间",
@@ -132,7 +133,9 @@
       "searchKeyword": "输入查询关键词",
       "selectCreator": "选择添加人",
       "selectOwner": "选择负责人",
-      "selectProject": "选择项目"
+      "selectProject": "选择项目",
+      "selectPluginType": "选择插件类型",
+      "selectScriptType": "选择脚本类型"
     },
     "rules": {},
     "hints": {
@@ -278,7 +281,11 @@
       "copyFailed": "复制失败",
       "recoverAllSuccess": "全部还原成功",
       "deleteAllSuccess": "全部删除成功",
-      "recoverSuccess": "还原成功"
+      "recoverSuccess": "还原成功",
+      "favouriteSuccess": "收藏成功",
+      "followSuccess": "关注成功",
+      "cancelFavouriteSuccess": "取消收藏成功",
+      "cancelFollowSuccess": "取消关注成功"
     }
   },
   "home": {
@@ -344,8 +351,8 @@
     "lastMonth": "近1月",
     "lastYear": "近1年",
     "average": "平均",
-    "minimum": "最小",
-    "maximum": "最大",
+    "min": "最小",
+    "max": "最大",
     "p50": "P50",
     "p75": "P75",
     "p90": "P90",

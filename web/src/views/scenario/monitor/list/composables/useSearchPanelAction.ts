@@ -1,16 +1,13 @@
-import { ref } from 'vue';
-import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
-import { ScenarioMonitorStatus } from '@/enums/enums';
+import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
 
-import type { MenuItem, OrderByKey } from '../../types';
-import { formatDateString } from '@/utils/utils';
+import type { OrderByKey } from '../../types';
 
 type FilterItem = SearchCriteria;
 type SearchPanelParams = PageQuery;
 
 export function useSearchPanelAction (
   searchPanelRef: any,
-  selectedMenuMap: any,
+  _selectedMenuMap: any,
   searchFilters: any,
   assocFilters: any,
   quickSearchFilters: any,
@@ -20,47 +17,21 @@ export function useSearchPanelAction (
   emit: (value: SearchPanelParams) => void,
   emitRefresh: () => void
 ) {
-  const userInfo = ref(appContext.getUser());
-
   // Filter configuration
   const assocKeys = ['createdDate', 'createdBy'];
-  const timeKeys = ['last1Day', 'last3Days', 'last7Days'];
 
   /**
    * Handle search panel change event
    * @param data - Filter items from search panel
    */
   const searchChange = (data: FilterItem[]): void => {
-    searchFilters.value = data.filter(item => item.key && !assocKeys.includes(item.key));
-    assocFilters.value = data.filter(item => item.key && assocKeys.includes(item.key));
+    // Merge search panel filters with quick search filters
+    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'createdDate', 'status'];
+    const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
+    const searchPanelFilters = data.filter(f => f.key && !quickSearchFields.includes(f.key as string));
 
-    if (!assocFilters.value.length) {
-      assocKeys.forEach(i => {
-        if (i === 'createdDate') {
-          timeKeys.forEach(t => delete selectedMenuMap.value[t]);
-        } else {
-          delete selectedMenuMap.value[i];
-        }
-      });
-    } else {
-      assocKeys.forEach(key => {
-        if (['createdBy'].includes(key)) {
-          const filterItem = assocFilters.value.find(i => i.key === key);
-          if (!filterItem || filterItem.value !== String(userInfo.value?.id)) {
-            delete selectedMenuMap.value[key];
-          }
-        } else if (key === 'createdDate') {
-          const filterItem = assocFilters.value.filter(i => i.key === key);
-          const timeKey = timeKeys.find(t => selectedMenuMap.value[t]);
-          if (timeKey) {
-            const timeValue = formatDateString(timeKey);
-            if (timeValue[0] !== filterItem[0].value || timeValue[1] !== filterItem[1].value) {
-              delete selectedMenuMap.value[timeKey];
-            }
-          }
-        }
-      });
-    }
+    searchFilters.value = [...currentQuickSearchFilters, ...searchPanelFilters];
+    assocFilters.value = data.filter(item => item.key && assocKeys.includes(item.key));
 
     emit(getParams());
   };
@@ -76,99 +47,6 @@ export function useSearchPanelAction (
   };
 
   /**
-   * Handle menu item click for quick search
-   * @param data - Menu item data
-   */
-  const menuItemClick = (data: MenuItem): void => {
-    const key = data.key;
-    let searchChangeFlag = false;
-
-    if (selectedMenuMap.value[key]) {
-      delete selectedMenuMap.value[key];
-      if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
-        searchPanelRef.value.setConfigs([
-          { valueKey: 'createdDate', value: undefined }
-        ]);
-        searchChangeFlag = true;
-      } else if (assocKeys.includes(key)) {
-        searchPanelRef.value.setConfigs([
-          { valueKey: key, value: undefined }
-        ]);
-        searchChangeFlag = true;
-      }
-    } else {
-      if (key === '') {
-        selectedMenuMap.value = { '': true };
-        quickSearchFilters.value = [];
-        // Clear search panel
-        if (typeof searchPanelRef.value?.clear === 'function') {
-          searchPanelRef.value.clear();
-          searchChangeFlag = true;
-        }
-      } else {
-        delete selectedMenuMap.value[''];
-      }
-
-      if (timeKeys.includes(key)) {
-        timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
-        selectedMenuMap.value[key] = true;
-      } else {
-        selectedMenuMap.value[key] = true;
-      }
-
-      if (Object.values(ScenarioMonitorStatus).includes(key as ScenarioMonitorStatus)) {
-        Object.values(ScenarioMonitorStatus).forEach(timeKey => delete selectedMenuMap.value[timeKey]);
-        selectedMenuMap.value[key] = true;
-      } else {
-        selectedMenuMap.value[key] = true;
-      }
-    }
-
-    const userId = userInfo.value?.id;
-    const assocFiltersInQuick: {valueKey: string, value: string|string[]}[] = [];
-
-    quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
-      if (key === '') {
-        return undefined;
-      } else if (['last1Day', 'last3Days', 'last7Days'].includes(key)) {
-        assocFiltersInQuick.push({
-          valueKey: 'createdDate',
-          value: formatDateString(key)
-        });
-        return undefined;
-      } else if (assocKeys.includes(key)) {
-        if (['createdBy'].includes(key)) {
-          assocFiltersInQuick.push({ valueKey: key, value: String(userId) });
-        }
-        return undefined;
-      } else if (Object.values(ScenarioMonitorStatus).includes(key as ScenarioMonitorStatus)) {
-        return {
-          key: 'status',
-          op: SearchCriteria.OpEnum.Equal,
-          value: key
-        };
-      } else {
-        return {
-          key,
-          op: SearchCriteria.OpEnum.Equal,
-          value: String(userId)
-        };
-      }
-    }).filter(Boolean) as FilterItem[];
-
-    if (assocFiltersInQuick.length) {
-      searchPanelRef.value.setConfigs([
-        ...assocFiltersInQuick
-      ]);
-      searchChangeFlag = true;
-    }
-
-    if (!searchChangeFlag) {
-      emit(getParams());
-    }
-  };
-
-  /**
    * Refresh search panel
    */
   const refresh = (): void => {
@@ -178,7 +56,6 @@ export function useSearchPanelAction (
   return {
     searchChange,
     toSort,
-    menuItemClick,
     refresh
   };
 }

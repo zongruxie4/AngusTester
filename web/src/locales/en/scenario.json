@@ -1,47 +1,34 @@
 {
   "scenarioHome": {
-    "chart": {
-      "resourceStats": "Resource Statistics",
-      "testType": "Test Type",
-      "quantity": "Quantity",
-      "totalScenarios": "Total Scenarios",
-      "testTypes": {
-        "perfTest": "Performance Test",
-        "stabilityTest": "Stability Test",
-        "funcTest": "Functional Test",
-        "customTest": "Custom Test"
-      }
-    },
-    "myScenarios": {
-      "title": "My Scenarios",
-      "table": {
-        "messages": {
-          "noAddedScenarios": "You haven't added any scenarios yet, ",
-          "addScenario": "Add Scenario",
-          "noFavoritedScenarios": "You don't have any favorited scenarios",
-          "noFollowedScenarios": "You don't have any followed scenarios",
-          "deleteConfirm": "Are you sure you want to delete scenario 「{name}」?",
-          "deleteSuccess": "Scenario deleted successfully",
-          "unfavoriteSuccess": "Scenario unfavorited successfully",
-          "unfollowSuccess": "Scenario unfollowed successfully",
-          "pageInfo": "Page {current}/{total}"
-        }
-      }
-    },
     "introduce": {
-      "welcome": "About AngusTester Scenarios",
+      "about": "About AngusTester Scenarios",
       "description": "Scenarios are core tools for API and UI automation testing, enabling orchestration of complex business processes and user stories. Compared to single test cases, scenarios support multi-step, multi-process complete testing workflows.",
       "capability1": "Online editing and debugging scenarios",
       "capability2": "Manage scenario-related resources",
       "capability3": "Quickly generate test scripts and tasks"
+    },
+    "chart": {
+      "resourceStats": "Resource Statistics",
+      "totalScenarios": "Total Scenarios"
+    },
+    "myScenarios": {
+      "title": "My Scenarios",
+      "actions": {
+        "addScenario": "Add Scenario"
+      },
+      "table": {
+        "messages": {
+          "noAddedScenarios": "You haven't added any scenarios yet, ",
+          "noFavoritedScenarios": "You don't have any favorited scenarios",
+          "noFollowedScenarios": "You don't have any followed scenarios",
+          "pageInfo": "Page {current}/{total}"
+        }
+      }
     }
   },
   "scenario": {
     "title": "Scenario",
     "list": {
-      "searchPlaceholder": "Search scenario ID, name, description",
-      "pluginTypePlaceholder": "Plugin type",
-      "scriptTypePlaceholder": "Select script type",
       "pluginTypes": {
         "jdbc": "Jdbc Scenario",
         "webSocket": "WebSocket Scenario",
@@ -83,13 +70,7 @@
         "noExecute": "Not Tested"
       },
       "messages": {
-        "cancelFavouriteSuccess": "Cancel favourite successfully",
-        "cancelFollowSuccess": "Cancel follow successfully",
-        "cloneSuccess": "Clone successfully",
         "deleteConfirm": "Deleting the scenario will synchronously delete associated follows, favourites, metrics, variables and other information. Please confirm whether to delete 「{name}」?",
-        "deleteSuccess": "Delete successfully, you can view the deleted scenario in the trash.",
-        "favouriteSuccess": "Favourite successfully",
-        "followSuccess": "Follow successfully",
         "reopenConfirm": "Reset all completed task statuses under the scenario to \"Pending Test\", preserving historical statistical data and status records. Confirm to reopen test task 「{name}」?",
         "restartConfirm": "Reset all completed task statuses under the scenario to \"Pending Test\", clearing all statistical counts and status records. Confirm to restart test 「{name}」?"
       },
@@ -112,32 +93,19 @@
         "messages": {
           "updateSuccess": "Successfully updated to associated interfaces"
         }
-      },
-      "drawer": {
-        "menuItems": {
-          "activity": "Activity"
-        }
       }
     },
     "permission": {
       "description": "Configure data operation permissions for scenarios for specified users. By configuring permissions, you can more efficiently complete debugging, management, testing and other interface work in team collaboration."
     },
     "detail": {
-      "messages": {
-        "deleteConfirm": "Deleting the scenario will synchronously delete associated follows, favourites, metrics, variables and other information. Please confirm whether to delete 「{name}」?",
-        "deleteSuccess": "Delete successfully, you can view the deleted scenario in the trash.",
-        "cancelFollowSuccess": "Cancel follow",
-        "followSuccess": "Follow successfully",
-        "cancelFavouriteSuccess": "Cancel favourite",
-        "favouriteSuccess": "Favourite successfully"
-      },
       "tabs": {
         "func": "Functional Test",
         "perf": "Performance Test",
         "stability": "Stability Test",
         "custom": "Custom Test",
         "task": "Test Tasks",
-        "activity": "Activity Records",
+        "activity": "Activities",
         "comment": "Comments"
       },
       "tips": {
@@ -191,16 +159,7 @@
         "noNotify": "No Notify"
       },
       "notificationHint": "After enabling notifications, messages will be automatically sent to recipients when monitoring runs fail.",
-      "recipient": "Recipient",
-      "recipientOptions": {
-        "user": "User",
-        "dept": "Department",
-        "group": "Group"
-      },
-      "selectUser": "Select User",
-      "selectDept": "Select Department",
-      "selectGroup": "Select Group",
-      "selectOrgsRule": "Please select"
+      "recipient": "Recipient"
     },
     "detail": {
       "totalExecutions": "Total",
@@ -214,11 +173,6 @@
         "last24Hours": "Last 24 Hours",
         "last7Days": "Last 7 Days",
         "last30Days": "Last 30 Days"
-      },
-      "metrics": {
-        "average": "Average",
-        "min": "Min",
-        "max": "Max"
       },
       "executionStatus": {
         "reason": "Reason"

@@ -147,7 +147,7 @@ const getActionIcon = (actionKey: string | undefined) => {
             <template v-if="!!props.params?.createdBy">
               <span>{{ t('scenarioHome.myScenarios.table.messages.noAddedScenarios') }}</span>
               <RouterLink to="/scenario#scenario" class="ml-1 link">
-                {{ t('scenarioHome.myScenarios.table.messages.addScenario') }}
+                {{ t('scenarioHome.myScenarios.actions.addScenario') }}
               </RouterLink>
             </template>
 

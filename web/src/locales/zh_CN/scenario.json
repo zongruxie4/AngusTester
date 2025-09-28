@@ -1,47 +1,34 @@
 {
   "scenarioHome": {
-    "chart": {
-      "resourceStats": "资源统计",
-      "testType": "测试类型",
-      "quantity": "数量",
-      "totalScenarios": "总场景",
-      "testTypes": {
-        "perfTest": "性能测试",
-        "stabilityTest": "稳定性测试",
-        "funcTest": "功能测试",
-        "customTest": "自定义测试"
-      }
-    },
-    "myScenarios": {
-      "title": "我的场景",
-      "table": {
-        "messages": {
-          "noAddedScenarios": "您尚未添加任何场景，立即",
-          "addScenario": "添加场景",
-          "noFavoritedScenarios": "您没有收藏的场景",
-          "noFollowedScenarios": "您没有关注的场景",
-          "deleteConfirm": "确定删除场景「{name}」吗？",
-          "deleteSuccess": "删除场景成功",
-          "unfavoriteSuccess": "场景取消收藏成功",
-          "unfollowSuccess": "场景取消关注成功",
-          "pageInfo": "第{current}/{total}页"
-        }
-      }
-    },
     "introduce": {
-      "welcome": "关于AngusTester场景",
+      "about": "关于AngusTester场景",
       "description": "场景是API和UI自动化测试的核心工具，能够编排复杂的业务流程和用户故事。相比单一测试用例，场景支持多步骤、多流程的完整测试链路。",
       "capability1": "在线编辑和调试场景",
       "capability2": "管理场景相关资源",
       "capability3": "快速生成测试脚本和任务"
+    },
+    "chart": {
+      "resourceStats": "资源统计",
+      "totalScenarios": "总场景"
+    },
+    "myScenarios": {
+      "title": "我的场景",
+      "actions": {
+        "addScenario": "添加场景"
+      },
+      "table": {
+        "messages": {
+          "noAddedScenarios": "您尚未添加任何场景，立即",
+          "noFavoritedScenarios": "您没有收藏的场景",
+          "noFollowedScenarios": "您没有关注的场景",
+          "pageInfo": "第{current}/{total}页"
+        }
+      }
     }
   },
   "scenario": {
     "title": "场景",
     "list": {
-      "searchPlaceholder": "查询场景ID、名称、描述",
-      "pluginTypePlaceholder": "插件类型",
-      "scriptTypePlaceholder": "选择脚本类型",
       "pluginTypes": {
         "jdbc": "Jdbc场景",
         "webSocket": "WebSocket场景",
@@ -63,7 +50,6 @@
       },
       "actions": {
         "addHttpScenario": "添加Http场景",
-        "scenarioAuth": "场景权限",
         "createTestTask": "生成测试任务",
         "restartTestTask": "重新开始测试任务",
         "reopenTestTask": "重新打开测试任务",
@@ -82,13 +68,7 @@
         "noExecute": "未执行"
       },
       "messages": {
-        "cancelFavouriteSuccess": "取消收藏成功",
-        "cancelFollowSuccess": "取消关注成功",
-        "cloneSuccess": "克隆成功",
         "deleteConfirm": "删除场景将同步删除关联的关注、收藏、指标、变量等信息，请确认是否删除「{name}」？",
-        "deleteSuccess": "删除成功，您可以在回收站查看删除后的场景。",
-        "favouriteSuccess": "收藏成功",
-        "followSuccess": "关注成功",
         "reopenConfirm": "将场景下所有已完成的任务状态重置为\"待测试\"，保留历史统计数据和状态记录。确认重新打开测试任务「{name}」吗？",
         "restartConfirm": "将场景下所有已完成的任务状态重置为\"待测试\"，清除所有统计计数和状态记录。确认重新开始测试「{name}」吗？"
       },
@@ -111,25 +91,12 @@
         "messages": {
           "updateSuccess": "更新到已关联接口成功"
         }
-      },
-      "drawer": {
-        "menuItems": {
-          "activity": "活动"
-        }
       }
     },
     "permission": {
       "description": "对指定的用户配置场景的数据操作权限。通过配置权限可以更加高效的在团队协作间完成调试、管理、测试等接口工作。"
     },
     "detail": {
-      "messages": {
-        "deleteConfirm": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除「{name}」？",
-        "deleteSuccess": "删除成功，您可以在回收站查看删除后的场景。",
-        "cancelFollowSuccess": "取消关注",
-        "followSuccess": "关注成功",
-        "cancelFavouriteSuccess": "取消收藏",
-        "favouriteSuccess": "收藏成功"
-      },
       "tabs": {
         "func": "功能测试",
         "perf": "性能测试",
@@ -189,16 +156,7 @@
         "noNotify": "不通知"
       },
       "notificationHint": "开启通知后，将在监控运行失败后自动发送消息给接收对象。",
-      "recipient": "接收对象",
-      "recipientOptions": {
-        "user": "接收人",
-        "dept": "接收部门",
-        "group": "接收组"
-      },
-      "selectUser": "选择用户",
-      "selectDept": "选择部门",
-      "selectGroup": "选择组",
-      "selectOrgsRule": "请选择"
+      "recipient": "接收对象"
     },
     "detail": {
       "totalExecutions": "总执行数",

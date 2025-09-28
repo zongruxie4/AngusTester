@@ -31,7 +31,7 @@ export function useScenarioActions (
 
     modal.confirm({
       centered: true,
-      content: t('actions.tips.confirmDelete', { name: scenarioName }),
+      content: t('scenario.list.messages.deleteConfirm', { name: scenarioName }),
       async onOk () {
         const [error] = await scenario.deleteScenario(scenarioId);
         if (error) {
@@ -76,9 +76,9 @@ export function useScenarioActions (
     }
 
     if (currentFollowFlag) {
-      notification.success(t('scenario.detail.messages.cancelFollowSuccess'));
+      notification.success(t('actions.tips.cancelFollowSuccess'));
     } else {
-      notification.success(t('scenario.detail.messages.followSuccess'));
+      notification.success(t('actions.tips.followSuccess'));
     }
     scenarioData.value.follow = !currentFollowFlag;
   };
@@ -102,9 +102,9 @@ export function useScenarioActions (
     }
 
     if (currentFavouriteFlag) {
-      notification.success(t('scenario.detail.messages.cancelFavouriteSuccess'));
+      notification.success(t('actions.tips.cancelFavouriteSuccess'));
     } else {
-      notification.success(t('scenario.detail.messages.favouriteSuccess'));
+      notification.success(t('actions.tips.favouriteSuccess'));
     }
     scenarioData.value.favourite = !currentFavouriteFlag;
   };

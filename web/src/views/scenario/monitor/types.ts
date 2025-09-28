@@ -2,8 +2,13 @@ import { ComputedRef, Ref } from 'vue';
 import { AuthObjectType, EnumMessage, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { ScenarioMonitorStatus } from '@/enums/enums';
 import { CreateTimeSetting } from '@/types/types';
+import { QuickSearchConfig } from '@/components/quickSearch';
 
 export type OrderByKey = 'createdDate' | 'createdByName';
+
+// Type aliases for compatibility
+export type FilterItem = SearchCriteria;
+export type SearchPanelParams = PageQuery;
 
 export interface MonitorListParams extends PageQuery{
   projectId: string;
@@ -136,7 +141,7 @@ export interface HistoryRecord {
   monitorId: string;
   projectId: string;
   responseDelay: string;
-  status: ScenarioMonitorStatus;
+  status: EnumMessage<ScenarioMonitorStatus>;
 }
 
 export interface HistoryExecData {
@@ -153,7 +158,7 @@ export interface HistoryExecData {
   sampleContents?: any[];
   sampleLogContent?: string;
   schedulingResult?: any;
-  status: ScenarioMonitorStatus;
+  status: EnumMessage<ScenarioMonitorStatus>;
 }
 
 // Component props types
@@ -254,8 +259,7 @@ export interface UseSearchPanelDataReturn {
   // Data state
   searchPanelOptions: SearchPanelOption[];
   sortMenuItems: SortMenuItem[];
-  menuItems: ComputedRef<MenuItem[]>;
-  selectedMenuMap: Ref<{[key: string]: boolean}>;
+  quickSearchConfig: ComputedRef<QuickSearchConfig>;
   orderBy: Ref<OrderByKey | undefined>;
   orderSort: Ref<PageQuery.OrderSort | undefined>;
   searchFilters: Ref<SearchCriteria[]>;
@@ -266,7 +270,6 @@ export interface UseSearchPanelDataReturn {
   getParams: () => PageQuery;
   searchChange: (data: SearchCriteria[]) => void;
   toSort: (sortData: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort }) => void;
-  menuItemClick: (data: MenuItem) => void;
   refresh: () => void;
 }
 

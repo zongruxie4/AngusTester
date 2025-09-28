@@ -184,9 +184,9 @@ const texts = computed(() => [
 ]);
 
 const timeTexts = computed(() => [
-  t('chart.minimum'),
+  t('chart.min'),
   t('chart.average'),
-  t('chart.maximum')
+  t('chart.max')
 ]);
 </script>
 <template>

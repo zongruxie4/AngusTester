@@ -20,7 +20,7 @@ export function useScenarioSearch () {
   const searchOptions = computed(() => [
     {
       type: 'input' as const,
-      placeholder: t('scenario.list.searchPlaceholder'),
+      placeholder: t('common.placeholders.searchKeyword'),
       valueKey: 'name',
       allowClear: true,
       maxlength: 100,
@@ -28,7 +28,7 @@ export function useScenarioSearch () {
     },
     {
       type: 'input' as const,
-      placeholder: t('scenario.list.pluginTypePlaceholder'),
+      placeholder: t('common.placeholders.selectPluginType'),
       valueKey: 'plugin',
       allowClear: true,
       trim: true,
@@ -38,7 +38,7 @@ export function useScenarioSearch () {
     },
     {
       type: 'select-enum' as const,
-      placeholder: t('scenario.list.scriptTypePlaceholder'),
+      placeholder: t('common.placeholders.selectScriptType'),
       valueKey: 'scriptType',
       allowClear: true,
       enumKey: ScriptType,

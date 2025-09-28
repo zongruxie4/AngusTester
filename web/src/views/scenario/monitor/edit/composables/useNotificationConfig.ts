@@ -25,7 +25,7 @@ export function useNotificationConfig () {
    */
   const validateOrgs = (): Promise<void> => {
     if (!notificationOrgs.value.length) {
-      return Promise.reject(t('scenarioMonitor.edit.selectOrgsRule'));
+      return Promise.reject(t('organization.placeholder.selectUser'));
     }
     return Promise.resolve();
   };

@@ -516,8 +516,8 @@ export const createLeadTimeConfig = (): ChartConfig => ({
     type: 'category',
     data: [
       t('chart.average'),
-      t('chart.minimum'),
-      t('chart.maximum'),
+      t('chart.min'),
+      t('chart.max'),
       t('chart.p50'),
       t('chart.p75'),
       t('chart.p90'),

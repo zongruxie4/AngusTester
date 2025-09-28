@@ -143,7 +143,7 @@ const deleteScenarioHandler = (scenaridId: string):void => {
             class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover"
             @click="addScenarioAuthorize">
             <Icon icon="icon-quanxian1" />
-            <span>{{ t('scenario.list.actions.scenarioAuth') }}</span>
+            <span>{{ t('actions.permission') }}</span>
           </div>
 
           <DropdownSort

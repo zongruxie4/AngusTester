@@ -313,7 +313,7 @@
         "BLOCKED": "Blocked"
       },
       "ScenarioMonitorStatus": {
-        "PENDING": "Pending Execution",
+        "PENDING": "Pending",
         "SUCCESS": "Success",
         "FAILURE": "Failure"
       },

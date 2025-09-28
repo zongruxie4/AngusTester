@@ -26,7 +26,7 @@ export function useTableActions (
    */
   const handleDelete = (data: ScenarioItem): void => {
     modal.confirm({
-      content: t('actions.tips.confirmDelete', { name: data.name }),
+      content: t('scenario.list.messages.deleteConfirm', { name: data.name }),
       async onOk () {
         try {
           const [error] = await scenario.deleteScenario(data.id);
@@ -62,7 +62,7 @@ export function useTableActions (
         return;
       }
 
-      notification.success(t('scenarioHome.myScenarios.table.messages.unfavoriteSuccess'));
+      notification.success(t('actions.tips.cancelFavouriteSuccess'));
       await loadData();
 
       // Trigger refresh notification if available
@@ -89,7 +89,7 @@ export function useTableActions (
         return;
       }
 
-      notification.success(t('scenarioHome.myScenarios.table.messages.unfollowSuccess'));
+      notification.success(t('actions.tips.cancelFollowSuccess'));
       await loadData();
 
       // Trigger refresh notification if available

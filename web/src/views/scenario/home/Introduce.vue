@@ -12,7 +12,7 @@ const { t } = useI18n();
   <div class="bg-white rounded px-5 pt-0 pb-0 text-3.5">
     <!-- Welcome title -->
     <div class="text-3.5 font-semibold mb-2.5">
-      {{ t('scenarioHome.introduce.welcome') }}
+      {{ t('scenarioHome.introduce.about') }}
     </div>
 
     <!-- Introduction content with image and description -->
