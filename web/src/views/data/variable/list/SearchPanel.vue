@@ -15,6 +15,7 @@ const { t } = useI18n();
 // Component props
 export type LoadingProps = {
   loading: boolean;
+  selectedNum: 0;
 }
 const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false,
@@ -115,7 +116,10 @@ const handleSearchPanelChangeWrapper = (data: { filters?: SearchCriteria[] }) =>
  * @param selectedKeys - Array of selected option keys
  * @param searchCriteria - Array of search criteria from quick search
  */
-const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+const handleQuickSearchChange = (
+  _selectedKeys: string[],
+  searchCriteria: SearchCriteria[]
+): void => {
   // Update quick search filters
   quickSearchFilters.value = searchCriteria;
 
@@ -142,12 +146,13 @@ onMounted(() => {
         ref="searchPanelRef"
         :options="searchPanelOptions as any"
         class="flex-1 mr-3.5"
+        width="260"
         @change="handleSearchPanelChangeWrapper" />
 
       <!-- Action Buttons -->
       <div class="flex items-center space-x-3">
         <!-- Batch Delete Actions (when items are selected) -->
-        <template v-if="props.selectedNum && typeof props.selectedNum === 'number' && props.selectedNum > 0">
+        <template v-if="props.selectedNum && false && props.selectedNum > 0">
           <Button
             danger
             size="small"
@@ -155,7 +160,7 @@ onMounted(() => {
             @click="handleBatchDelete">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
             <div class="flex items-center">
-              <span class="mr-0.5">{{ t('dataVariable.list.searchPanel.buttons.deleteSelected') }}</span>
+              <span class="mr-0.5">{{ t('dataCommon.searchPanel.batchActions.deleteSelected') }}</span>
               <span>({{ props.selectedNum }})</span>
             </div>
           </Button>
@@ -165,7 +170,7 @@ onMounted(() => {
             class="flex items-center flex-shrink-0"
             @click="handleCancelBatchDelete">
             <Icon icon="icon-fanhui" class="mr-1" />
-            <span>{{ t('dataVariable.list.searchPanel.buttons.cancelDelete') }}</span>
+            <span>{{ t('dataCommon.searchPanel.batchActions.cancelDelete') }}</span>
           </Button>
         </template>
 
@@ -179,7 +184,7 @@ onMounted(() => {
             @click="navigateToCreateStaticVariable">
             <div class="flex items-center">
               <Icon icon="icon-jia" class="text-3.5" />
-              <span class="ml-1">{{ t('dataVariable.list.searchPanel.buttons.addStaticVariable') }}</span>
+              <span class="ml-1">{{ t('dataVariable.actions.static') }}</span>
             </div>
             <Dropdown
               :menuItems="buttonDropdownMenuItems"
@@ -197,7 +202,7 @@ onMounted(() => {
             class="flex items-center flex-shrink-0"
             @click="handleBatchDelete">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <span>{{ t('dataVariable.list.searchPanel.buttons.batchDelete') }}</span>
+            <span>{{ t('dataCommon.searchPanel.batchActions.batchDelete') }}</span>
           </Button>
 
           <!-- Refresh Button -->
@@ -216,7 +221,7 @@ onMounted(() => {
           <Tooltip
             arrowPointAtCenter
             placement="topLeft"
-            :title="t('dataVariable.list.searchPanel.tooltips.uploadVariable')">
+            :title="t('dataVariable.actions.uploadVariable')">
             <Icon
               icon="icon-shangchuan"
               class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
@@ -227,7 +232,7 @@ onMounted(() => {
           <Tooltip
             arrowPointAtCenter
             placement="topLeft"
-            :title="t('dataVariable.list.searchPanel.tooltips.downloadVariable')">
+            :title="t('dataVariable.actions.downloadVariable')">
             <Icon
               icon="icon-daochu1"
               class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"

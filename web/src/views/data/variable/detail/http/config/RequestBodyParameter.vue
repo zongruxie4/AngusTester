@@ -406,7 +406,7 @@ const selectOptions = computed(() => {
         @change="checkboxChange($event, index, item)" />
       <Input
         v-model:value="dataMap[item].name"
-        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.parameterNamePlaceholder')"
+        :placeholder="t('dataCommon.common.parameterNamePlaceholder')"
         trim
         class="max-w-100 flex-1"
         :error="nameErrorSet.has(item)"

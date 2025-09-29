@@ -45,7 +45,7 @@ const {
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
           @click="startBatchDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span class="ml-1">{{ t('dataset.detail.useList.buttons.batchDelete') }}</span>
+          <span class="ml-1">{{ t('dataCommon.searchPanel.batchActions.batchDelete') }}</span>
         </Button>
 
         <Button
@@ -68,7 +68,7 @@ const {
           @click="startBatchDelete">
           <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
           <div class="flex items-center">
-            <span class="mr-0.5">{{ t('dataset.detail.useList.buttons.deleteSelected') }}</span>
+            <span class="mr-0.5">{{ t('dataCommon.searchPanel.batchActions.deleteSelected') }}</span>
             <span>({{ selectedNum }})</span>
           </div>
         </Button>
@@ -79,7 +79,7 @@ const {
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
           @click="cancelBatchDelete">
           <Icon icon="icon-fanhui" class="mr-1" />
-          <span>{{ t('dataset.detail.useList.buttons.cancelDelete') }}</span>
+          <span>{{ t('dataCommon.searchPanel.batchActions.cancelDelete') }}</span>
         </Button>
       </div>
     </div>

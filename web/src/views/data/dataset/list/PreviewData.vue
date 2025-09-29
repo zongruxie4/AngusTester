@@ -32,7 +32,7 @@ const cancel = () => {
 
 <template>
   <Modal
-    :title="t('dataset.list.tableDropdown.previewData')"
+    :title="t('commonData.previewData.title')"
     :visible="props.visible"
     :width="900"
     destroyOnClose

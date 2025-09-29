@@ -251,6 +251,7 @@ onMounted(() => {
         ref="searchPanelRef"
         :options="searchPanelOptions as any"
         class="flex-1 mr-3.5"
+        width="260"
         @change="searchChange" />
 
       <!-- Action Buttons -->
@@ -264,7 +265,7 @@ onMounted(() => {
             @click="toExecuteBatchDelete">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
             <div class="flex items-center">
-              <span class="mr-0.5">{{ t('dataset.searchPanel.buttons.deleteSelected') }}</span>
+              <span class="mr-0.5">{{ t('dataCommon.searchPanel.batchActions.deleteSelected') }}</span>
               <span>({{ (props as any).selectedNum }})</span>
             </div>
           </Button>
@@ -274,7 +275,7 @@ onMounted(() => {
             class="flex items-center flex-shrink-0"
             @click="toCancelBatchDelete">
             <Icon icon="icon-fanhui" class="mr-1" />
-            <span>{{ t('dataset.searchPanel.buttons.cancelDelete') }}</span>
+            <span>{{ t('dataCommon.searchPanel.batchActions.cancelDelete') }}</span>
           </Button>
         </template>
 
@@ -306,7 +307,7 @@ onMounted(() => {
             class="flex items-center flex-shrink-0"
             @click="toBatchDelete">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <span>{{ t('dataset.searchPanel.buttons.batchDelete') }}</span>
+            <span>{{ t('dataCommon.searchPanel.batchActions.batchDelete') }}</span>
           </Button>
 
           <!-- Refresh Button -->

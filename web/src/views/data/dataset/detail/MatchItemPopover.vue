@@ -17,10 +17,14 @@ const { matchItemList } = useMatchItemData();
     </div>
     <template #content>
       <div class="w-196 space-y-2 text-3 text-theme-content">
-        <Hints :text="t('dataset.detail.matchItemPopover.title')" class="!font-semibold !text-theme-content" />
+        <Hints
+          :text="t('dataCommon.matchItemPopover.title')"
+          class="!font-semibold !text-theme-content" />
+
         <div>
           {{ t('common.description') }}
         </div>
+
         <ol class="pl-4 space-y-2">
           <li
             v-for="item in matchItemList"

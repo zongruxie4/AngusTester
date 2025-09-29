@@ -3,14 +3,16 @@ import { defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Icon, IconRequired, Input, SelectInput, Toggle, Tooltip, Validate } from '@xcan-angus/vue-ui';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { useFileVariable } from './composables/useFileVariable';
 import { VariableItem } from '../types';
-import { VariableDataProps } from '@/views/data/variable/detail/types';
+import { BasicDataSourceProps } from '@/types/types';
+
+import { useFileVariable } from './composables/useFileVariable';
+
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<VariableDataProps>(), {
+const props = withDefaults(defineProps<BasicDataSourceProps<VariableItem>>(), {
   projectId: undefined,
   userInfo: undefined,
   dataSource: undefined
@@ -97,11 +99,11 @@ const {
   <div class="flex items-start mb-3.5">
     <div class="flex justify-end items-center flex-shrink-0 mr-2.5  w-18 font-semibold leading-7">
       <IconRequired />
-      <span>{{ t('dataVariable.detail.fileVariable.name') }}</span>
+      <span>{{ t('common.name') }}</span>
     </div>
     <Validate
       class="flex-1"
-      :text="t('dataVariable.detail.fileVariable.nameSupport')"
+      :text="t('dataCommon.common.nameSupportPlaceholder')"
       mode="error"
       :error="variableNameError">
       <Input
@@ -131,7 +133,7 @@ const {
       showCount
       type="textarea"
       class="flex-1"
-      :placeholder="t('dataVariable.detail.fileVariable.descriptionPlaceholder')"
+      :placeholder="t('common.placeholders.inputDescription')"
       trim />
   </div>
 
@@ -145,16 +147,16 @@ const {
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>{{ t('common.extract') }}</span>
+          <span>{{ t('actions.extract') }}</span>
         </div>
       </template>
 
       <div>
         <!-- Configuration hints -->
-        <Hints class="mb-2.5" :text="t('dataVariable.detail.fileVariable.extractHint')" />
+        <Hints class="mb-2.5" :text="t('dataVariable.detail.fileVariable.hints')" />
 
         <!-- File reading configuration -->
-        <Toggle :title="t('dataVariable.detail.fileVariable.readConfig')" class="text-3 leading-5 mb-3.5">
+        <Toggle :title="t('dataCommon.common.readConfig')" class="text-3 leading-5 mb-3.5">
           <!-- File path input -->
           <div class="flex items-center mb-3.5">
             <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
@@ -200,13 +202,13 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.fileVariable.readStartRow') }}</span>
+                <span>{{ t('dataCommon.common.readStartRow') }}</span>
               </div>
               <Input
                 v-model:value="rowIndex"
                 :maxlength="4"
                 dataType="number"
-                :placeholder="t('dataVariable.detail.fileVariable.readStartRowPlaceholder')"
+                :placeholder="t('dataCommon.common.readStartRowPlaceholder')"
                 trimAll />
               <Tooltip :title="t('dataVariable.detail.fileVariable.readStartRowTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
@@ -216,15 +218,15 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.fileVariable.readStartColumn') }}</span>
+                <span>{{ t('dataCommon.common.readStartColumn') }}</span>
               </div>
               <Input
                 v-model:value="columnIndex"
                 :maxlength="4"
                 dataType="number"
-                :placeholder="t('dataVariable.detail.fileVariable.readStartColumnPlaceholder')"
+                :placeholder="t('dataCommon.common.readStartColumnPlaceholder')"
                 trimAll />
-              <Tooltip :title="t('dataVariable.detail.fileVariable.readStartColumnTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
+              <Tooltip :title="t('dataCommon.common.readStartColumnTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -279,19 +281,19 @@ const {
         </Toggle>
 
         <!-- Extraction configuration -->
-        <Toggle :title="t('dataVariable.detail.fileVariable.extractConfig')" class="text-3 leading-5">
+        <Toggle :title="t('dataCommon.common.extractConfig')" class="text-3 leading-5">
           <!-- Exact value extraction method -->
           <template v-if="method === 'EXACT_VALUE'">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataVariable.detail.fileVariable.extractMethod') }}</span>
+                  <span>{{ t('dataCommon.common.extractMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('dataVariable.detail.fileVariable.extractMethodPlaceholder')"
+                  :placeholder="t('dataCommon.common.extractMethodPlaceholder')"
                   class="w-full-20.5 " />
               </div>
 
@@ -302,7 +304,7 @@ const {
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  :placeholder="t('dataVariable.detail.fileVariable.defaultValuePlaceholder')"
+                  :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                   class="w-full-20.5 "
                   trim
                   :maxlength="4096" />
@@ -316,23 +318,23 @@ const {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataVariable.detail.fileVariable.extractMethod') }}</span>
+                  <span>{{ t('dataCommon.common.extractMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('dataVariable.detail.fileVariable.extractMethodPlaceholder')"
+                  :placeholder="t('dataCommon.common.extractMethodPlaceholder')"
                   class="w-full-20.5 " />
               </div>
 
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataVariable.detail.fileVariable.expression') }}</span>
+                  <span>{{ t('dataCommon.common.expression') }}</span>
                 </div>
                 <Input
                   v-model:value="expression"
-                  :placeholder="t('dataVariable.detail.fileVariable.expressionPlaceholder')"
+                  :placeholder="t('dataCommon.common.expressionPlaceholder')"
                   class="w-full-20.5 "
                   trimAll />
               </div>
@@ -342,11 +344,11 @@ const {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired class="invisible" />
-                  <span>{{ t('dataVariable.detail.fileVariable.matchItem') }}</span>
+                  <span>{{ t('dataCommon.common.matchItem') }}</span>
                 </div>
                 <Input
                   v-model:value="matchItem"
-                  :placeholder="t('dataVariable.detail.fileVariable.matchItemPlaceholder')"
+                  :placeholder="t('dataCommon.common.matchItemPlaceholder')"
                   class="w-full-20.5 "
                   dataType="number"
                   trimAll
@@ -362,7 +364,7 @@ const {
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  :placeholder="t('dataVariable.detail.fileVariable.defaultValuePlaceholder')"
+                  :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                   class="w-full-20.5 "
                   trim
                   :maxlength="4096" />
@@ -377,7 +379,7 @@ const {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.preview') }}</span>
+          <span>{{ t('actions.preview') }}</span>
         </div>
       </template>
 
@@ -388,7 +390,7 @@ const {
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.use') }}</span>
+          <span>{{ t('actions.use') }}</span>
         </div>
       </template>
 

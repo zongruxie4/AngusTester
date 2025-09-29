@@ -121,7 +121,7 @@ const inputProps = {
   <div class="flex items-center mb-3.5">
     <div class="mr-2.5 flex-shrink-0 font-semibold w-18 text-3 text-right">
       <IconRequired />
-      <span>{{ t('dataset.detail.fileDataset.form.name') }}</span>
+      <span>{{ t('common.name') }}</span>
     </div>
     <Input
       v-model:value="dataSetName"
@@ -143,7 +143,7 @@ const inputProps = {
       showCount
       type="textarea"
       class="flex-1"
-      :placeholder="t('dataset.detail.fileDataset.form.descriptionPlaceholder')"
+      :placeholder="t('common.placeholders.inputDescription')"
       trim />
   </div>
 
@@ -162,7 +162,7 @@ const inputProps = {
       <div>
         <Hints class="mb-2.5" :text="t('dataset.detail.fileDataset.form.hints')" />
 
-        <Toggle :title="t('dataset.detail.fileDataset.form.parameterName')" class="text-3 leading-5 mb-3.5 params-container">
+        <Toggle :title="t('dataCommon.common.parameterName')" class="text-3 leading-5 mb-3.5 params-container">
           <ParameterNameInput
             ref="parametersRef"
             :columnIndex="columnIndex"
@@ -172,7 +172,7 @@ const inputProps = {
 
         <p />
 
-        <Toggle :title="t('dataset.detail.fileDataset.form.readConfig')" class="text-3 leading-5 mb-3.5">
+        <Toggle :title="t('dataCommon.common.readConfig')" class="text-3 leading-5 mb-3.5">
           <div class="flex items-center mb-3.5">
             <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
               <IconRequired />
@@ -215,13 +215,13 @@ const inputProps = {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataset.detail.fileDataset.form.readStartRow') }}</span>
+                <span>{{ t('dataCommon.common.readStartRow') }}</span>
               </div>
               <Input
                 v-model:value="rowIndex"
                 :maxlength="4"
                 dataType="number"
-                :placeholder="t('dataset.detail.fileDataset.form.readStartRowPlaceholder')"
+                :placeholder="t('dataCommon.common.readStartRowPlaceholder')"
                 trimAll />
               <Tooltip :title="t('dataset.detail.fileDataset.form.readStartRowTooltip')">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
@@ -231,15 +231,15 @@ const inputProps = {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataset.detail.fileDataset.form.readStartColumn') }}</span>
+                <span>{{ t('dataCommon.common.readStartColumn') }}</span>
               </div>
               <Input
                 v-model:value="columnIndex"
                 :maxlength="4"
                 dataType="number"
-                :placeholder="t('dataset.detail.fileDataset.form.readStartColumnPlaceholder')"
+                :placeholder="t('dataCommon.common.readStartColumnPlaceholder')"
                 trimAll />
-              <Tooltip :title="t('dataset.detail.fileDataset.form.readStartColumnTooltip')">
+              <Tooltip :title="t('dataCommon.common.readStartColumnTooltip')">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -298,12 +298,12 @@ const inputProps = {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataset.detail.fileDataset.form.extractionMethod') }}</span>
+                  <span>{{ t('dataCommon.common.extractionMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('dataset.detail.fileDataset.form.extractionMethodPlaceholder')"
+                  :placeholder="t('dataCommon.common.extractionMethodPlaceholder')"
                   class="w-full-20.5" />
               </div>
 
@@ -314,7 +314,7 @@ const inputProps = {
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  :placeholder="t('dataset.detail.fileDataset.form.defaultValuePlaceholder')"
+                  :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                   class="w-full-20.5"
                   trim
                   :maxlength="4096" />
@@ -327,23 +327,23 @@ const inputProps = {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataset.detail.fileDataset.form.extractionMethod') }}</span>
+                  <span>{{ t('dataCommon.common.extractionMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('dataset.detail.fileDataset.form.extractionMethodPlaceholder')"
+                  :placeholder="t('dataCommon.common.extractionMethodPlaceholder')"
                   class="w-full-20.5" />
               </div>
 
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataset.detail.fileDataset.form.expression') }}</span>
+                  <span>{{ t('dataCommon.common.expression') }}</span>
                 </div>
                 <Input
                   v-model:value="expression"
-                  :placeholder="t('dataset.detail.fileDataset.form.expressionPlaceholder')"
+                  :placeholder="t('dataCommon.common.expressionPlaceholder')"
                   class="w-full-20.5"
                   trimAll />
               </div>
@@ -353,11 +353,11 @@ const inputProps = {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired class="invisible" />
-                  <span>{{ t('dataset.detail.fileDataset.form.matchItem') }}</span>
+                  <span>{{ t('dataCommon.common.matchItem') }}</span>
                 </div>
                 <Input
                   v-model:value="matchItem"
-                  :placeholder="t('dataset.detail.fileDataset.form.matchItemPlaceholder')"
+                  :placeholder="t('dataCommon.common.matchItemPlaceholder')"
                   class="w-full-20.5"
                   dataType="number"
                   trimAll
@@ -373,7 +373,7 @@ const inputProps = {
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  :placeholder="t('dataset.detail.fileDataset.form.defaultValuePlaceholder')"
+                  :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                   class="w-full-20.5"
                   trim
                   :maxlength="4096" />
@@ -387,7 +387,7 @@ const inputProps = {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.preview') }}</span>
+          <span>{{ t('actions.preview') }}</span>
         </div>
       </template>
 
@@ -397,7 +397,7 @@ const inputProps = {
     <TabPane v-if="dataSetId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.use') }}</span>
+          <span>{{ t('actions.use') }}</span>
         </div>
       </template>
 

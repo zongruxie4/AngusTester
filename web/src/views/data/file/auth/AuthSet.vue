@@ -77,7 +77,7 @@ onBeforeUnmount(() => {
       v-if="props.authObjectId"
       class="flex items-center h-11 pr-1.75 rounded bg-gray-light">
       <div class="flex-1 px-2 truncate">
-        {{ t('fileSpace.globalAuth.authSet.headers.name') }}
+        {{ t('common.name') }}
       </div>
       <div style="width:70px;" class="flex-shrink-0 px-2">
         {{ t('fileSpace.globalAuth.authSet.headers.permissionControl') }}

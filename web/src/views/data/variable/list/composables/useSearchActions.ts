@@ -1,5 +1,5 @@
 import { useRouter } from 'vue-router';
-import { SearchCriteria } from '@xcan-angus/infra';
+import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
 
 /**
  * Composable function for managing search panel actions
@@ -164,9 +164,9 @@ export function useSearchActions (
    * @param orderSort - Reference to orderSort state
    */
   const handleSortChange = (
-    sortData: { orderBy: string; orderSort: 'ASC' | 'DESC' },
+    sortData: { orderBy: string; orderSort: PageQuery.OrderSort },
     orderBy: { value: string | undefined },
-    orderSort: { value: 'ASC' | 'DESC' | undefined }
+    orderSort: { value: PageQuery.OrderSort }
   ) => {
     orderBy.value = sortData.orderBy;
     orderSort.value = sortData.orderSort;

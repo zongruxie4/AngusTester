@@ -1,16 +1,19 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Icon, IconRequired, Input, Toggle, Tooltip, Validate } from '@xcan-angus/vue-ui';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { useJdbcVariable } from './composables/useJdbcVariable';
+import { ExtractionMethod } from '@xcan-angus/infra';
 import { VariableItem } from '../types';
-import { VariableDataProps } from '@/views/data/variable/detail/types';
+import { BasicDataSourceProps } from '@/types/types';
+
+import { useJdbcVariable } from './composables/useJdbcVariable';
+
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<VariableDataProps>(), {
+const props = withDefaults(defineProps<BasicDataSourceProps<VariableItem>>(), {
   projectId: undefined,
   userInfo: undefined,
   dataSource: undefined
@@ -96,11 +99,11 @@ const {
   <div class="flex items-start mb-3.5">
     <div class="flex justify-end items-center flex-shrink-0 mr-2.5 w-18 font-semibold leading-7">
       <IconRequired />
-      <span>{{ t('dataVariable.detail.jdbcVariable.name') }}</span>
+      <span>{{ t('common.name') }}</span>
     </div>
     <Validate
       class="flex-1"
-      :text="t('dataVariable.detail.jdbcVariable.nameSupport')"
+      :text="t('commonData.common.nameSupportPlaceholder')"
       mode="error"
       :error="variableNameError">
       <Input
@@ -130,7 +133,7 @@ const {
       showCount
       type="textarea"
       class="flex-1"
-      :placeholder="t('dataVariable.detail.jdbcVariable.descriptionPlaceholder')"
+      :placeholder="t('common.placeholders.inputDescription')"
       trim />
   </div>
 
@@ -144,7 +147,7 @@ const {
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>{{ t('common.extract') }}</span>
+          <span>{{ t('actions.extract') }}</span>
         </div>
       </template>
 
@@ -153,7 +156,7 @@ const {
         <Hints class="mb-2.5" :text="t('dataVariable.detail.jdbcVariable.hints')" />
 
         <!-- Database connection configuration -->
-        <Toggle :title="t('dataVariable.detail.jdbcVariable.readConfig')" class="text-3 leading-5 mb-3.5">
+        <Toggle :title="t('dataCommon.common.readConfig')" class="text-3 leading-5 mb-3.5">
           <!-- Data source selection button -->
           <div class="flex items-center justify-start mb-3.5">
             <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
@@ -246,13 +249,13 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.jdbcVariable.readStartRow') }}</span>
+                <span>{{ t('dataCommon.common.readStartRow') }}</span>
               </div>
               <Input
                 v-model:value="rowIndex"
                 :maxlength="4"
                 dataType="number"
-                :placeholder="t('dataVariable.detail.jdbcVariable.readStartRowPlaceholder')"
+                :placeholder="t('dataCommon.common.readStartRowPlaceholder')"
                 trimAll />
               <Tooltip :title="t('dataVariable.detail.jdbcVariable.readStartRowTooltip')">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
@@ -262,15 +265,15 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-25 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.jdbcVariable.readStartColumn') }}</span>
+                <span>{{ t('dataCommon.common.readStartColumn') }}</span>
               </div>
               <Input
                 v-model:value="columnIndex"
                 :maxlength="4"
                 dataType="number"
-                :placeholder="t('dataVariable.detail.jdbcVariable.readStartColumnPlaceholder')"
+                :placeholder="t('dataCommon.common.readStartColumnPlaceholder')"
                 trimAll />
-              <Tooltip :title="t('dataVariable.detail.jdbcVariable.readStartColumnTooltip')">
+              <Tooltip :title="t('dataCommon.common.readStartColumnTooltip')">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -278,19 +281,19 @@ const {
         </Toggle>
 
         <!-- Extraction configuration -->
-        <Toggle :title="t('dataVariable.detail.jdbcVariable.extractConfig')" class="text-3 leading-5">
+        <Toggle :title="t('dataCommon.common.extractConfig')" class="text-3 leading-5">
           <!-- Exact value extraction method -->
-          <template v-if="method === 'EXACT_VALUE'">
+          <template v-if="method === ExtractionMethod.EXACT_VALUE">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataVariable.detail.jdbcVariable.extractMethod') }}</span>
+                  <span>{{ t('dataCommon.common.extractMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('dataVariable.detail.jdbcVariable.extractMethodPlaceholder')"
+                  :placeholder="t('dataCommon.common.extractMethodPlaceholder')"
                   class="w-full-24 " />
               </div>
 
@@ -301,7 +304,7 @@ const {
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  :placeholder="t('dataVariable.detail.jdbcVariable.defaultValuePlaceholder')"
+                  :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                   class="w-full-20.5"
                   trim
                   :maxlength="4096" />
@@ -315,23 +318,23 @@ const {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataVariable.detail.jdbcVariable.extractMethod') }}</span>
+                  <span>{{ t('dataCommon.common.extractMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('dataVariable.detail.jdbcVariable.extractMethodPlaceholder')"
+                  :placeholder="t('dataCommon.common.extractMethodPlaceholder')"
                   class="w-full-24" />
               </div>
 
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataVariable.detail.jdbcVariable.expression') }}</span>
+                  <span>{{ t('dataCommon.common.expression') }}</span>
                 </div>
                 <Input
                   v-model:value="expression"
-                  :placeholder="t('dataVariable.detail.jdbcVariable.expressionPlaceholder')"
+                  :placeholder="t('dataCommon.common.expressionPlaceholder')"
                   class="w-full-20.5 "
                   trimAll />
               </div>
@@ -341,11 +344,11 @@ const {
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired class="invisible" />
-                  <span>{{ t('dataVariable.detail.jdbcVariable.matchItem') }}</span>
+                  <span>{{ t('dataCommon.common.matchItem') }}</span>
                 </div>
                 <Input
                   v-model:value="matchItem"
-                  :placeholder="t('dataVariable.detail.jdbcVariable.matchItemPlaceholder')"
+                  :placeholder="t('dataCommon.common.matchItemPlaceholder')"
                   class="w-full-24"
                   dataType="number"
                   trimAll
@@ -361,7 +364,7 @@ const {
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  :placeholder="t('dataVariable.detail.jdbcVariable.defaultValuePlaceholder')"
+                  :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                   class="w-full-20.5 "
                   trim
                   :maxlength="4096" />
@@ -376,7 +379,7 @@ const {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.preview') }}</span>
+          <span>{{ t('actions.preview') }}</span>
         </div>
       </template>
 
@@ -387,7 +390,7 @@ const {
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.use') }}</span>
+          <span>{{ t('actions.use') }}</span>
         </div>
       </template>
 

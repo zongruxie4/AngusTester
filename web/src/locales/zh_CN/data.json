@@ -91,10 +91,7 @@
       "uploadVariable": "上传变量",
       "or": "或",
       "isPassword": "是",
-      "notPassword": "否",
-      "columns": {
-        "dataSource": "值来源"
-      }
+      "notPassword": "否"
     },
     "detail": {
       "staticVariable": {
@@ -520,7 +517,7 @@
   },
   "dataCommon": {
     "common": {
-      "nameSupportPlaceholder": "输入参数名，支持数字、字母和!$%^&*_-+=./",
+      "nameSupportPlaceholder": "输入名称，支持数字、字母和!$%^&*_-+=./",
       "readConfig": "读取配置",
       "extractConfig": "提取配置",
       "extractPosition": "提取位置",
@@ -581,12 +578,7 @@
       }
     },
     "useList": {
-      "title": "使用列表",
-      "columns": {
-        "targetType": "资源类型",
-        "targetId": "资源ID",
-        "targetName": "资源名称"
-      }
+      "title": "使用列表"
     },
     "previewData": {
       "title": "预览数据",

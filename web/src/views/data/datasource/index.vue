@@ -63,7 +63,7 @@ const {
     <div class="flex pr-5">
       <SearchPanel
         :options="searchOptions"
-        :width="284"
+        width="260"
         class="flex-1"
         @change="handleSearchChange" />
       <div class="flex space-x-2.5">

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, watch } from 'vue';
 import { AsyncComponent, Spin } from '@xcan-angus/vue-ui';
+import { BasicProps } from '@/types/types';
 import { useVariableDetail } from './composables/useVariableDetail';
-import { VariableProps } from '@/views/data/variable/detail/types';
 
-const props = withDefaults(defineProps<VariableProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   visible: false,
@@ -46,20 +46,6 @@ const {
   refreshList
 });
 
-onMounted(() => {
-  watch(() => props.data, (newValue, oldValue) => {
-    const id = newValue?.id;
-    if (!id) {
-      return;
-    }
-    const oldId = oldValue?.id;
-    if (id === oldId) {
-      return;
-    }
-    loadData(id);
-  }, { immediate: true });
-});
-
 const source = computed(() => {
   const data = props.data;
   if (!data) {
@@ -82,6 +68,20 @@ const source = computed(() => {
     return undefined;
   }
   return source;
+});
+
+onMounted(() => {
+  watch(() => props.data, (newValue, oldValue) => {
+    const id = newValue?.id;
+    if (!id) {
+      return;
+    }
+    const oldId = oldValue?.id;
+    if (id === oldId) {
+      return;
+    }
+    loadData(id);
+  }, { immediate: true });
 });
 </script>
 

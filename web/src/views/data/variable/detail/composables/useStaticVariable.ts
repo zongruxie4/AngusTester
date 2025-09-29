@@ -3,7 +3,8 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { isEqual } from 'lodash-es';
 import { variable } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
-import { StaticVariableFormState, VariableItem, DetailTabKey, ButtonGroupAction } from '../types';
+import { StaticVariableFormState, DetailTabKey, ButtonGroupAction } from '../types';
+import { VariableItem } from '../../types';
 
 /**
  * Composable for managing static variable logic in variable detail components

@@ -45,7 +45,7 @@ const handleUploadChange = async ({ file }: { file: UploadFile }) => {
 
   // Validate file size
   if (file?.size && file.size > maxFileSize.value) {
-    uploadErrorMsg.value = t('dataVariable.importModal.fileSizeError', { maxSize: MAX_FILE_SIZE_MB });
+    uploadErrorMsg.value = t('dataVariable.actions.importModal.fileSizeError', { maxSize: MAX_FILE_SIZE_MB });
     originFile.value = undefined;
     return;
   }
@@ -97,7 +97,6 @@ const executeImport = async () => {
 
   try {
     const [error] = await variable.importVariables(formData);
-
     if (error) {
       uploadErrorMsg.value = error.message;
       return;
@@ -153,7 +152,7 @@ const acceptedFileTypes = '.zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.ym
     :width="600"
     :okButtonProps="okButtonProps"
     :confirmLoading="loading"
-    :title="t('dataVariable.importModal.title')"
+    :title="t('dataVariable.actions.importModal.title')"
     @cancel="cancelImport"
     @ok="executeImport">
     <Spin :spinning="loading" class="mb-5">
@@ -169,10 +168,10 @@ const acceptedFileTypes = '.zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.ym
         <div class="flex flex-col items-center justify-center text-3 leading-5">
           <Icon icon="icon-shangchuan" class="text-5 text-text-link" />
           <div class="mt-1 mb-1.5 text-text-link">
-            {{ t('dataVariable.importModal.uploadArea.selectFile') }}
+            {{ t('dataVariable.actions.importModal.uploadArea.selectFile') }}
           </div>
           <div class="text-theme-sub-content">
-            {{ t('dataVariable.importModal.uploadArea.description', { maxSize: MAX_FILE_SIZE_MB }) }}
+            {{ t('dataVariable.actions.importModal.uploadArea.description', { maxSize: MAX_FILE_SIZE_MB }) }}
           </div>
         </div>
       </UploadDragger>
@@ -207,7 +206,7 @@ const acceptedFileTypes = '.zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.ym
 
     <!-- Duplicate Strategy Selection -->
     <div class="space-y-0.5 leading-5 text-3">
-      <div>{{ t('dataVariable.importModal.duplicateStrategy.title') }}</div>
+      <div>{{ t('dataVariable.actions.importModal.duplicateStrategy.title') }}</div>
       <RadioGroup v-model:value="strategyWhenDuplicated">
         <Radio value="COVER">
           {{ t('actions.cover') }}
