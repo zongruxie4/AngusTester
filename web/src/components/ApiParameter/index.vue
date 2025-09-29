@@ -1,18 +1,36 @@
 <script setup lang="ts">
+// Vue core imports
 import { reactive, watch, ref, inject, onMounted, nextTick } from 'vue';
-import { Button, Checkbox, Tooltip } from 'ant-design-vue';
-import { Icon, Input, Select, SelectSchema } from '@xcan-angus/vue-ui';
-import SwaggerUI from '@xcan-angus/swagger-ui';
-import { http, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-import { deconstruct, getParamsByUri, getUriByParams, validateType, deepDelAttrFromObj, API_EXTENSION_KEY, getModelDataByRef, itemTypes } from 'src/utils/apis';
-import { ParamsItem, paramsTypeOpt, getDefaultParams } from './interface';
+// UI component imports
+import { Button, Checkbox, Tooltip } from 'ant-design-vue';
+import { Icon, Input, Select, SelectSchema } from '@xcan-angus/vue-ui';
+
+// Infrastructure imports
+import SwaggerUI from '@xcan-angus/swagger-ui';
+import { http, TESTER } from '@xcan-angus/infra';
+
+// Local component imports
 import ParamInput from '@/components/ParamInput/index.vue';
 import JsonContent from '@/components/JsonContent/index.vue';
 import SimpleEditableSelect from '@/components/SimpleEditableSelect/index.vue';
 
+// Utility imports
+import { deconstruct, getParamsByUri, getUriByParams, API_EXTENSION_KEY, getModelDataByRef, itemTypes, validateType, deepDelAttrFromObj } from 'src/utils/apis';
+
+// Local imports
+import { ParamsItem, paramsTypeOpt, getDefaultParams } from './interface';
+
 const { t } = useI18n();
+
+// API extension key constants
+const valueKey = API_EXTENSION_KEY.valueKey;
+const enabledKey = API_EXTENSION_KEY.enabledKey;
+
+/**
+ * Component props interface for API parameter management
+ */
 export interface Props {
   value: ParamsItem[];
   apiUri?: string;
@@ -21,6 +39,7 @@ export interface Props {
   viewType: boolean;
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   apiUri: '',
   value: () => ([]),
@@ -28,56 +47,81 @@ const props = withDefaults(defineProps<Props>(), {
   viewType: false
 });
 
-const valueKey = API_EXTENSION_KEY.valueKey;
-const enabledKey = API_EXTENSION_KEY.enabledKey;
-
-const apiBaseInfo = inject('apiBaseInfo', ref());
-
-// eslint-disable-next-line func-call-spacing
+// Component events
 const emit = defineEmits<{
   (e: 'change', value: ParamsItem[]): void;
-  (e: 'update:apiUri', value: string);
-  (e: 'rendered', value: true);
+  (e: 'update:apiUri', value: string): void;
+  (e: 'rendered', value: true): void;
 }>();
 
+// Injected dependencies
+const apiBaseInfo = inject('apiBaseInfo', ref());
+
+// Component state
 const state = reactive<{
-  formData:ParamsItem[]
+  formData: ParamsItem[]
 }>({
   formData: []
 });
-const jsContentRef = ref([]);
-const validated = ref(false);
 
-const getKey = (index?: number): symbol => {
+// JSON content component references
+const jsonContentRefs = ref<any[]>([]);
+
+// Validation state
+const isValidationEnabled = ref(false);
+
+/**
+ * Generate unique key for form items
+ * @param index - Optional index for the key
+ * @returns Unique symbol key
+ */
+const generateFormItemKey = (index?: number): symbol => {
   return Symbol(index);
 };
 
-const emitChange = () => {
+/**
+ * Emit change event to parent component
+ */
+const emitChangeToParent = () => {
   emit('change', state.formData);
 };
 
-const enterHandle = (e): void => {
+/**
+ * Handle enter key press in input fields
+ * @param e - Keyboard event
+ */
+const handleEnterKeyPress = (e: KeyboardEvent): void => {
   if (e.key !== 'Enter') {
     return;
   }
-
-  e.target.blur();
+  (e.target as HTMLElement).blur();
 };
 
-const handleValueBlur = (target:HTMLElement, index: number, data: ParamsItem):void => {
+/**
+ * Handle parameter value blur event with type conversion
+ * @param target - Target HTML element
+ * @param index - Parameter index
+ * @param data - Parameter data
+ */
+const handleParameterValueBlur = (target: HTMLElement, index: number, data: ParamsItem): void => {
   let value = target?.innerText?.trim();
   if (['integer', 'number', 'boolean'].includes(data.schema?.type)) {
     try {
-      if (value <= 9007199254740992) {
+      if (typeof value === 'string' && parseFloat(value) <= 9007199254740992) {
         value = JSON.parse(value);
       }
     } catch {}
   }
-  const temp = { ...data, [valueKey]: value } as ParamsItem;
-  changeEmit(index, temp);
+  const updatedParameter = { ...data, [valueKey]: value } as ParamsItem;
+  emitParameterChange(index, updatedParameter);
 };
 
-const getModelData = async (ref) => {
+/**
+ * Get model data by reference
+ * @param ref - Reference path
+ * @returns Model data or empty object on error
+ */
+const getModelDataByReference = async (ref: string) => {
   const [error, { data }] = await getModelDataByRef(apiBaseInfo.value.serviceId, ref);
   if (error) {
     return {};
@@ -85,10 +129,15 @@ const getModelData = async (ref) => {
   return deconstruct(data || {});
 };
 
-const selectModels = async (_value, option, index) => {
+/**
+ * Handle model selection for parameters
+ * @param _value - Selected value
+ * @param option - Selected option
+ * @param index - Parameter index
+ */
+const handleModelSelection = async (_value: any, option: any, index: number) => {
   if (option) {
-    // const model = JSON.parse(option.model);
-    const model = await getModelData(option.ref);
+    const model = await getModelDataByReference(option.ref);
     const schema = model.schema || {};
     const value = SwaggerUI.extension.sampleFromSchemaGeneric(schema, { useValue: true });
     if (!schema.type) {
@@ -103,32 +152,35 @@ const selectModels = async (_value, option, index) => {
     if (option.readonly) {
       model.$ref = option.ref;
     }
-    const temp = { ...model, schema, [enabledKey]: true, [valueKey]: value };
-    changeEmit(index, temp);
+    const updatedParameter = { ...model, schema, [enabledKey]: true, [valueKey]: value };
+    emitParameterChange(index, updatedParameter);
   }
 };
 
-const changeDataType = (value, index, item) => {
+/**
+ * Handle data type change for parameters
+ * @param value - New data type
+ * @param index - Parameter index
+ * @param item - Parameter item
+ */
+const handleDataTypeChange = (value: string, index: number, item: ParamsItem) => {
   const schema = item.schema || {};
-  const temp = { ...item, schema: { ...schema, type: value } };
+  const updatedParameter = { ...item, schema: { ...schema, type: value } };
   if (value === 'object') {
-    temp.deepObject = true;
-    temp[valueKey] = { '': '' };
+    (updatedParameter as any).deepObject = true;
+    updatedParameter[valueKey] = { '': '' };
   } else {
-    temp[valueKey] = undefined;
+    updatedParameter[valueKey] = undefined;
     if (value === 'array') {
-      temp[valueKey] = [''];
-      temp.schema.item = {
+      updatedParameter[valueKey] = [''];
+      updatedParameter.schema.item = {
         type: 'string'
       };
     }
-    delete temp.deepObject;
-    delete temp.explode;
+    delete (updatedParameter as any).deepObject;
+    delete (updatedParameter as any).explode;
   }
-  // if (!temp.name && !!temp.name[valueKey]) {
-  //   return;
-  // }
-  changeEmit(index, temp);
+  emitParameterChange(index, updatedParameter);
 };
 
 // const addValueItem = (item, index) => {
@@ -145,30 +197,55 @@ const changeDataType = (value, index, item) => {
 //   changeEmit(index, temp);
 // };
 
-const handleBlur = (e, index: number, data: ParamsItem, key: string): void => {
-  const value = e.target.value.trim();
-  const temp = { ...data, [key]: value } as ParamsItem;
-  changeEmit(index, temp);
+/**
+ * Handle input blur event for parameter fields
+ * @param e - Blur event
+ * @param index - Parameter index
+ * @param data - Parameter data
+ * @param key - Field key to update
+ */
+const handleParameterFieldBlur = (e: Event, index: number, data: ParamsItem, key: string): void => {
+  const value = (e.target as HTMLInputElement).value.trim();
+  const updatedParameter = { ...data, [key]: value } as ParamsItem;
+  emitParameterChange(index, updatedParameter);
 };
 
-// 启用禁用
-const changeChecke = (e, index:number, data: ParamsItem) => {
+/**
+ * Handle parameter enabled/disabled checkbox change
+ * @param e - Checkbox change event
+ * @param index - Parameter index
+ * @param data - Parameter data
+ */
+const handleParameterEnabledChange = (e: any, index: number, data: ParamsItem) => {
   const checked = e?.target?.checked;
-  const temp = { ...data, [enabledKey]: checked } as ParamsItem;
-  changeEmit(index, temp);
-  if (!checked && validated.value) {
-    jsContentRef.value[index] && jsContentRef.value[index].validate(false);
+  const updatedParameter = { ...data, [enabledKey]: checked } as ParamsItem;
+  emitParameterChange(index, updatedParameter);
+  if (!checked && isValidationEnabled.value) {
+    jsonContentRefs.value[index] && jsonContentRefs.value[index].validate(false);
   }
 };
 
-const selectChange = (value: string, index: number, data: ParamsItem, key: string): void => {
-  const temp = { ...data, [key]: value } as ParamsItem;
-  changeEmit(index, temp);
+/**
+ * Handle select change for parameter fields
+ * @param value - Selected value
+ * @param index - Parameter index
+ * @param data - Parameter data
+ * @param key - Field key to update
+ */
+const handleSelectChange = (value: string, index: number, data: ParamsItem, key: string): void => {
+  const updatedParameter = { ...data, [key]: value } as ParamsItem;
+  emitParameterChange(index, updatedParameter);
 };
 
-const changeSchema = (schema, item, index) => {
-  const temp = { ...item, schema };
-  changeEmit(index, temp);
+/**
+ * Handle schema change for parameters
+ * @param schema - New schema
+ * @param item - Parameter item
+ * @param index - Parameter index
+ */
+const handleSchemaChange = (schema: any, item: ParamsItem, index: number) => {
+  const updatedParameter = { ...item, schema };
+  emitParameterChange(index, updatedParameter);
 };
 
 // 记录当前变量 loading 数据；
@@ -188,135 +265,173 @@ const changeSchema = (schema, item, index) => {
 //   setVariableLoading[data.name] = false;
 // };
 
-// 删除
-const handleDel = (index: number, data: ParamsItem): void => {
-  const emptyList = state.formData.filter(item => !item.name);
-  // 最少要有一条空数据
-  if (!data.name && emptyList.length <= 1) {
+/**
+ * Handle parameter deletion
+ * @param index - Parameter index to delete
+ * @param data - Parameter data
+ */
+const handleParameterDeletion = (index: number, data: ParamsItem): void => {
+  const emptyParameters = state.formData.filter(item => !item.name);
+  // Keep at least one empty parameter
+  if (!data.name && emptyParameters.length <= 1) {
     return;
   }
   state.formData.splice(index, 1);
-  emitChange();
+  emitChangeToParent();
   if (data.in === 'path') {
-    changeApiUriByparams();
+    updateApiUriFromParameters();
   }
 };
 
-const changeEmit = (index: number, data: ParamsItem): void => {
+/**
+ * Emit parameter change and update API URI
+ * @param index - Parameter index
+ * @param data - Updated parameter data
+ */
+const emitParameterChange = (index: number, data: ParamsItem): void => {
   state.formData[index] = data;
-  emitChange();
-  changeApiUriByparams();
+  emitChangeToParent();
+  updateApiUriFromParameters();
 };
 
-const addChild = (pItem, idx) => {
-  jsContentRef.value[idx].addItem({ type: pItem.schema.type, id: -1, idLine: [-1], level: 0 });
+/**
+ * Add child item to JSON content
+ * @param parentItem - Parent parameter item
+ * @param index - Parameter index
+ */
+const addChildParameter = (parentItem: ParamsItem, index: number) => {
+  jsonContentRefs.value[index].addItem({ type: parentItem.schema.type, id: -1, idLine: [-1], level: 0 });
 };
 
-// param 变更, 改变 apiUri
-const changeApiUriByparams = () => {
-  const pathList = state.formData.filter(item => item?.[enabledKey] && item.name && item.in === 'path');
+/**
+ * Update API URI based on current parameters
+ */
+const updateApiUriFromParameters = () => {
+  const pathParameters = state.formData.filter(item => item?.[enabledKey] && item.name && item.in === 'path');
   let apiUri = props.apiUri;
-  if (pathList.length) {
+  if (pathParameters.length) {
     if (!apiUri) {
       apiUri = '/';
     }
   }
-  apiUri = getUriByParams(apiUri || '', pathList);
+  apiUri = getUriByParams(apiUri || '', pathParameters);
   emit('update:apiUri', apiUri);
 };
 
-const setParamList = ():void => {
-  const paramsList = getParamsByUri(props.apiUri || ''); // 已经存在的params直接取其值
-  const tempIdx: number[] = []; // 存储需要删除的formData下标
+/**
+ * Synchronize parameter list with URI parameters
+ */
+const synchronizeParameterList = (): void => {
+  const uriParameters = getParamsByUri(props.apiUri || '');
+  const indicesToRemove: number[] = [];
 
-  // 从 url拿到所有 path 的 list;
-  const pathList = paramsList.filter(i => i.in === 'path');
+  // Get all path parameters from URI
+  const pathParameters = uriParameters.filter(param => param.in === 'path');
 
-  // let formValue = props.value.map(toRaw);
-
-  // 正向对比, 找到 formData 中缺少的填入
-  pathList?.forEach((current) => {
-    const item = state.formData.find(ele => ele.name === current.name);
-    if (!item) {
+  // Forward comparison: find missing parameters in formData and add them
+  pathParameters?.forEach((currentParam) => {
+    const existingItem = state.formData.find(item => item.name === currentParam.name);
+    if (!existingItem) {
       state.formData.splice(-1, 0, {
-        ...current,
+        ...currentParam,
         [enabledKey]: true
-      });
+      } as ParamsItem);
     } else {
-      item[enabledKey] = true;
+      existingItem[enabledKey] = true;
     }
   });
-  // 反向对比, 找到 formData 中多余的删除
-  state.formData?.forEach((current, index) => {
-    if (current.in === 'path') {
-      const item = pathList.find(ele => ele.name === current.name);
-      if (!item && current[enabledKey]) {
-        tempIdx.push(index);
+  
+  // Reverse comparison: find extra parameters in formData and mark for removal
+  state.formData?.forEach((currentParam, index) => {
+    if (currentParam.in === 'path') {
+      const uriItem = pathParameters.find(param => param.name === currentParam.name);
+      if (!uriItem && currentParam[enabledKey]) {
+        indicesToRemove.push(index);
       }
     }
   });
 
-  state.formData = state.formData.filter((_i, index) => !tempIdx.includes(index));
-  emitChange();
+  state.formData = state.formData.filter((_item, index) => !indicesToRemove.includes(index));
+  emitChangeToParent();
 };
 
+// Watch for props value changes
 watch(() => props.value, (newValue) => {
-  // if (state.formData.filter(i => !!i.name || i[valueKey] || i.schema?.type !== 'string' || i.in !== 'query').length > 0) {
-  //   return;
-  // }
-  state.formData = newValue.map((i) => {
-    return { ...i, key: i.key || getKey() };
+  state.formData = newValue.map((item) => {
+    return { ...item, key: item.key || generateFormItemKey() };
   });
 }, {
   deep: true,
   immediate: true
 });
 
+// Watch for form data changes
 watch(() => state.formData, () => {
-  if (state.formData.every(i => !!i.name || !!i[valueKey]) && !props.viewType) {
-    state.formData.push(getDefaultParams({ in: 'query', key: getKey() }) as ParamsItem);
+  if (state.formData.every(item => !!item.name || !!item[valueKey]) && !props.viewType) {
+    state.formData.push(getDefaultParams({ in: 'query', key: generateFormItemKey() }) as ParamsItem);
   }
 }, {
   deep: true,
   immediate: true
 });
 
-// 监听 apiUri 变更, 同步params
+// Watch for API URI changes and synchronize parameters
 watch(() => props.apiUri, () => {
   setTimeout(() => {
-    setParamList();
+    synchronizeParameterList();
   });
 });
 
+/**
+ * Component mounted lifecycle hook
+ */
 onMounted(() => {
   nextTick(() => {
     emit('rendered', true);
   });
 });
 
-const validateContents = async (val = true) => {
-  validated.value = val;
-  for (const idx in jsContentRef.value) {
+/**
+ * Validate all parameter contents
+ * @param val - Validation flag
+ */
+const validateParameterContents = async (val = true) => {
+  isValidationEnabled.value = val;
+  for (const idx in jsonContentRefs.value) {
     if (state.formData[idx][enabledKey]) {
-      jsContentRef.value[idx].validate(val);
+      jsonContentRefs.value[idx].validate(val);
     }
   }
 };
 
-const getErrValue = (item) => {
-  if (!validated.value || !item.name || !item[enabledKey]) {
+/**
+ * Get error state for parameter item
+ * @param item - Parameter item
+ * @returns True if item has validation errors
+ */
+const getParameterErrorState = (item: ParamsItem) => {
+  if (!isValidationEnabled.value || !item.name || !item[enabledKey]) {
     return false;
   }
-  const errors = validateType(item[valueKey], deepDelAttrFromObj(item.schema));
+  const errors = validateType(item[valueKey], deepDelAttrFromObj(item.schema, []));
   return !!errors.length;
+  // return false; // Simplified validation for now
 };
 
-const filterDataModel = (opt) => {
-  const model = JSON.parse(opt.model);
+/**
+ * Filter data models for parameters
+ * @param option - Model option
+ * @returns True if model should be filtered out
+ */
+const filterParameterModels = (option: any) => {
+  const model = JSON.parse(option.model);
   return !(['query', 'path'].includes(model.in));
 };
 
-const updateComp = async () => {
+/**
+ * Update component data
+ */
+const updateComponentData = async () => {
   if (!apiBaseInfo.value.serviceId) {
     return;
   }
@@ -324,38 +439,51 @@ const updateComp = async () => {
     if (state.formData[i].$ref) {
       await http.put(`${TESTER}/services/${apiBaseInfo.value.serviceId}/comp/parameters/${state.formData[i].name}`, state.formData[i]);
     }
-    if (jsContentRef.value[i]) {
-      await jsContentRef.value[i].updateComp();
+    if (jsonContentRefs.value[i]) {
+      await jsonContentRefs.value[i].updateComp();
     }
   }
 };
 
-const addParam = (data) => {
+/**
+ * Add parameters to the form data
+ * @param data - Parameters to add
+ */
+const addParameters = (data: ParamsItem[]) => {
   state.formData.splice(-1, 0, ...data);
 };
 
-const getModelResolve = () => {
+/**
+ * Get model resolution data
+ * @returns Model resolution object
+ */
+const getModelResolution = () => {
   const models = {};
-  state.formData.forEach((i, index) => {
-    if (i.$ref) {
-      models[i.$ref] = JSON.parse(JSON.stringify(i));
-      delete models[i.$ref].schema.$ref;
-      jsContentRef.value[index] && jsContentRef.value[index].getModelResolve(models);
+  state.formData.forEach((item, index) => {
+    if (item.$ref) {
+      models[item.$ref] = JSON.parse(JSON.stringify(item));
+      delete models[item.$ref].schema.$ref;
+      jsonContentRefs.value[index] && jsonContentRefs.value[index].getModelResolve(models);
     }
   });
   return models;
 };
 
-const getData = () => {
-  return state.formData.filter(i => i.name || i[valueKey]);
+/**
+ * Get processed parameter data
+ * @returns Filtered parameter data
+ */
+const getProcessedParameterData = () => {
+  return state.formData.filter(item => item.name || item[valueKey]);
 };
 
+// Expose component methods
 defineExpose({
-  validate: validateContents,
-  updateComp,
-  getModelResolve,
-  addParam,
-  getData
+  validate: validateParameterContents,
+  updateComp: updateComponentData,
+  getModelResolve: getModelResolution,
+  addParam: addParameters,
+  getData: getProcessedParameterData
 });
 </script>
 <template>
@@ -370,7 +498,7 @@ defineExpose({
         <Checkbox
           :disabled="!item.name && !item[valueKey] || props.viewType"
           :checked="item[enabledKey] && (!!item.name || !!item[valueKey]) "
-          @change="changeChecke($event, index, item)" />
+          @change="handleParameterEnabledChange($event, index, item)" />
         <Tooltip placement="topLeft">
           <div class="flex flex-col max-w-100 flex-1">
             <SelectSchema
@@ -385,9 +513,9 @@ defineExpose({
               :hideImportBtn="props.hideImportBtn"
               :type="['parameters']"
               :params="{types: 'parameters', ignoreModel: false}"
-              :excludes="opt => filterDataModel(opt)"
-              @blur="handleBlur($event, index, item, 'name')"
-              @change="(_value, option) => selectModels(_value, option, index)" />
+              :excludes="opt => filterParameterModels(opt)"
+              @blur="handleParameterFieldBlur($event, index, item, 'name')"
+              @change="(_value, option) => handleModelSelection(_value, option, index)" />
             <Input
               v-else
               v-model:value="item.name"
@@ -395,8 +523,8 @@ defineExpose({
               :maxLength="400"
               :readonly="item.$ref || props.viewType"
               :allowClear="false"
-              @blur="handleBlur($event, index, item, 'name')"
-              @keypress="enterHandle" />
+              @blur="handleParameterFieldBlur($event, index, item, 'name')"
+              @keypress="handleEnterKeyPress" />
           </div>
           <template v-if="item.$ref" #title>
             {{ t('xcan_apiParameter.componentReference', { ref: item.$ref }) }}
@@ -410,13 +538,13 @@ defineExpose({
           :allowClear="false"
           :options="paramsTypeOpt"
           class="w-25"
-          @change="selectChange($event, index, item, 'in')" />
+          @change="handleSelectChange($event, index, item, 'in')" />
         <Select
           v-model:value="item.schema.type"
           class="w-25"
           :readonly="item.$ref || props.viewType"
           :options="itemTypes"
-          @change="changeDataType($event, index, item)" />
+          @change="handleDataTypeChange($event, index, item)" />
         <div class="flex flex-col flex-1 ml-3 space-y-0.5">
           <SimpleEditableSelect
             v-if="item.schema?.enum"
@@ -424,15 +552,16 @@ defineExpose({
             :options="item.schema.enum"
             :readonly="props.viewType"
             :value="item[valueKey] || item.schema?.[valueKey]"
-            @blur="handleValueBlur($event,index,item)"
-            @select="changeEmit(index, { ...item, [valueKey]: $event })" />
+            @blur="handleParameterValueBlur($event,index,item)"
+            @select="emitParameterChange(index, { ...item, [valueKey]: $event })" />
           <param-input
             v-else-if="item.schema?.type !== 'array' && item.schema?.type !== 'object'"
             :placeholder="t('xcan_apiParameter.enterDebugValue')"
             :value="item[valueKey]"
             :disabled="props.viewType"
-            :error="getErrValue(item)"
-            @blur="handleValueBlur($event, index, item)" />
+            :error="getParameterErrorState(item)"
+            :maxLength="2000 as any"
+            @blur="handleParameterValueBlur($event, index, item)" />
           <Input v-else disabled />
         </div>
         <template v-if="!props.viewType">
@@ -440,21 +569,21 @@ defineExpose({
             size="small"
             class="ml-2"
             :disabled="!['array', 'object'].includes(item.schema?.type) || (item.schema?.type === 'object' && item.$ref)"
-            @click="addChild(item, index)">
+            @click="addChildParameter(item, index)">
             <Icon icon="icon-jia" />
           </Button>
           <Button
             size="small"
             class="ml-2"
             :disabled="!item.name && !item[valueKey] || props.viewType"
-            @click="handleDel(index, item)">
+            @click="handleParameterDeletion(index, item)">
             <Icon icon="icon-shanchuguanbi" />
           </Button>
         </template>
       </div>
       <JsonContent
         v-if="item.schema?.type === 'array' || item.schema?.type === 'object'"
-        :ref="dom => jsContentRef[index] = dom"
+        :ref="dom => jsonContentRefs[index] = dom"
         v-model:data="item[valueKey]"
         :schema="item.schema || {}"
         :disabled="!!item.$ref"
@@ -462,7 +591,7 @@ defineExpose({
         :paramInType="item.in"
         :hideImportBtn="props.hideImportBtn"
         :viewType="props.viewType"
-        @change="changeSchema($event, item, index)" />
+        @change="handleSchemaChange($event, item, index)" />
     </div>
   </div>
 </template>
