@@ -190,7 +190,7 @@ export function useFileManagement () {
           subFileNum: 0
         },
         type: {
-          message: t('fileSpace.type.directory'),
+          message: t('file.type.directory'),
           value: 'DIRECTORY'
         },
         lastModifiedDate: '--'
@@ -253,7 +253,7 @@ export function useFileManagement () {
       return;
     }
 
-    notification.success(t('fileSpace.fileManagement.messages.addDirectorySuccess'));
+    notification.success(t('file.fileManagement.messages.addDirectorySuccess'));
     await getList();
   };
 
@@ -326,7 +326,7 @@ export function useFileManagement () {
 
       setTimeout(async () => {
         await toClipboard(data);
-        notification.success(t('fileSpace.fileManagement.messages.copyLinkSuccess'));
+        notification.success(t('file.fileManagement.messages.copyLinkSuccess'));
       });
     }
   };

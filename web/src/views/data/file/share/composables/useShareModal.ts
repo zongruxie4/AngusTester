@@ -41,13 +41,13 @@ export function useShareModal () {
   // Component state
   const state = reactive<ShareModalState>({
     enums: [
-      { label: t('fileSpace.share.permissionOptions.public'), value: true },
-      { label: t('fileSpace.share.permissionOptions.private'), value: false }
+      { label: t('file.share.permissionOptions.public'), value: true },
+      { label: t('file.share.permissionOptions.private'), value: false }
     ],
     unitEnum: [],
     expiredEnums: [
-      { label: t('fileSpace.share.validityOptions.setValidity'), value: true },
-      { label: t('fileSpace.share.validityOptions.permanent'), value: false }
+      { label: t('file.share.validityOptions.setValidity'), value: true },
+      { label: t('file.share.validityOptions.permanent'), value: false }
     ]
   });
 
@@ -226,9 +226,9 @@ export function useShareModal () {
   const copyToClipboard = (): void => {
     let message;
     if (form.public0) {
-      message = t('fileSpace.share.messages.link', { url: form.url });
+      message = t('file.share.messages.link', { url: form.url });
     } else {
-      message = t('fileSpace.share.messages.linkAndPassword', {
+      message = t('file.share.messages.linkAndPassword', {
         url: form.url,
         password: form.password || ''
       });
@@ -268,7 +268,7 @@ export function useShareModal () {
     }
 
     emits('ok');
-    notification.success(t('fileSpace.share.messages.generateShareLink'));
+    notification.success(t('file.share.messages.generateShareLink'));
     form.url = res.data.url;
     form.id = res.data.id;
     initParams = {
@@ -323,7 +323,7 @@ export function useShareModal () {
    * Computed property for OK button text
    */
   const okButtonText = computed(() => {
-    return form.url ? t('common.confirm') : t('fileSpace.share.buttons.generateLink');
+    return form.url ? t('common.confirm') : t('file.share.buttons.generateLink');
   });
 
   /**
@@ -340,7 +340,7 @@ export function useShareModal () {
    * Duration input props
    */
   const durationInputProps = {
-    placeholder: t('fileSpace.share.placeholders.validityPeriod')
+    placeholder: t('file.share.placeholders.validityPeriod')
   };
 
   /**

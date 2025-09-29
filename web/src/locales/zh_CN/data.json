@@ -343,7 +343,7 @@
       }
     }
   },
-  "fileSpace": {
+  "file": {
     "title": "文件",
     "addedTitle": "已添加空间",
     "type": {

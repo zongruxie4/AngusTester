@@ -68,7 +68,7 @@ onBeforeUnmount(() => {
     <Input
       :value="searchInputValue"
       :allowClear="true"
-      :placeholder="t('fileSpace.globalAuth.authSet.searchPlaceholder')"
+      :placeholder="t('file.globalAuth.authSet.searchPlaceholder')"
       class="mb-2"
       @change="searchInputChange" />
 
@@ -80,10 +80,10 @@ onBeforeUnmount(() => {
         {{ t('common.name') }}
       </div>
       <div style="width:70px;" class="flex-shrink-0 px-2">
-        {{ t('fileSpace.globalAuth.authSet.headers.permissionControl') }}
+        {{ t('file.globalAuth.authSet.headers.permissionControl') }}
       </div>
       <div style="width:52%">
-        {{ t('fileSpace.globalAuth.authSet.headers.permissions') }}
+        {{ t('file.globalAuth.authSet.headers.permissions') }}
       </div>
     </div>
 
@@ -98,7 +98,7 @@ onBeforeUnmount(() => {
       v-show="loading || !!idList?.length"
       :mask="false"
       :spinning="loading"
-      :tip="t('fileSpace.globalAuth.authSet.loadingTip')"
+      :tip="t('file.globalAuth.authSet.loadingTip')"
       style="height: calc(100% - 76px);">
       <div
         ref="containerRef"
@@ -133,7 +133,7 @@ onBeforeUnmount(() => {
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < props.permissions.length)"
                 class="whitespace-nowrap"
                 @change="(event) => checkAllChange(event, item)">
-                {{ t('fileSpace.globalAuth.authSet.allPermissions') }}
+                {{ t('file.globalAuth.authSet.allPermissions') }}
               </Checkbox>
 
               <!-- Individual Permissions -->

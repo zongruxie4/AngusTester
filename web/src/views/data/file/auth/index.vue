@@ -53,7 +53,7 @@ const bodyStyle = {
 
 <template>
   <Modal
-    :title="t('fileSpace.globalAuth.title')"
+    :title="t('file.globalAuth.title')"
     :footer="false"
     :visible="props.visible"
     :bodyStyle="bodyStyle"

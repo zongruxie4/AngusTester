@@ -69,6 +69,14 @@ const {
 } = useDrawerMenu();
 
 /**
+ * <p>Computed drawer menu items based on selected row data.</p>
+ * <p>Dynamically shows relevant menu items based on available information.</p>
+ */
+const drawerMenu = computed(() => {
+  return dynamicDrawerMenu.value(selectedRow.value, selectedRowKey.value);
+});
+
+/**
  * <p>Watch for project ID changes and reload data when project changes.</p>
  * <p>This ensures the space list is updated when switching between projects.</p>
  */
@@ -88,14 +96,6 @@ watch(() => projectId.value, (newValue) => {
 onMounted(async () => {
   isPrivate.value = appContext.isPrivateEdition();
 });
-
-/**
- * <p>Computed drawer menu items based on selected row data.</p>
- * <p>Dynamically shows relevant menu items based on available information.</p>
- */
-const drawerMenu = computed(() => {
-  return dynamicDrawerMenu.value(selectedRow.value, selectedRowKey.value);
-});
 </script>
 
 <template>
@@ -103,14 +103,11 @@ const drawerMenu = computed(() => {
     <!-- Main content area -->
     <div class="p-5 flex-1 overflow-y-auto">
       <!-- Page title and introduction -->
-      <div class="text-3.5 font-semibold mb-2.5">
-        {{ t('fileSpace.title') }}
-      </div>
       <Introduce />
 
       <!-- Added spaces section -->
       <div class="text-3.5 font-semibold mb-2.5 mt-4">
-        {{ t('fileSpace.addedTitle') }}
+        {{ t('file.addedTitle') }}
       </div>
 
       <!-- Search and action bar -->
@@ -121,7 +118,7 @@ const drawerMenu = computed(() => {
             v-model:value="keyword"
             :maxlength="100"
             allowClear
-            :placeholder="t('fileSpace.searchPlaceholder')">
+            :placeholder="t('common.placeholders.searchKeyword')">
             <template #suffix>
               <Icon icon="icon-sousuo" class="text-theme-placeholder" />
             </template>
@@ -137,7 +134,7 @@ const drawerMenu = computed(() => {
             href="/data/generate"
             class="flex space-x-1">
             <Icon icon="icon-shengchengshuju" />
-            {{ t('fileSpace.buttons.generateData') }}
+            {{ t('file.actions.generateData') }}
           </Button>
 
           <!-- Add space button -->
@@ -147,7 +144,7 @@ const drawerMenu = computed(() => {
             class="flex space-x-1"
             @click="createSpace">
             <Icon icon="icon-create-script" />
-            {{ t('fileSpace.buttons.addSpace') }}
+            {{ t('file.actions.addSpace') }}
           </Button>
 
           <!-- Space permission button -->
@@ -157,7 +154,7 @@ const drawerMenu = computed(() => {
             type="default"
             @click="openAuthorizeModal">
             <Icon icon="icon-quanxian1" class="mr-1" />
-            <span>{{ t('fileSpace.buttons.spacePermission') }}</span>
+            <span>{{ t('actions.permission') }}</span>
           </Button>
 
           <!-- Refresh button -->
@@ -304,9 +301,9 @@ const drawerMenu = computed(() => {
         :updateUrl="`${STORAGE}/space/auth`"
         :enabledUrl="`${STORAGE}/space/${selectId}/auth/enabled`"
         :initStatusUrl="`${STORAGE}/space/${selectId}/auth/status`"
-        :onTips="t('fileSpace.permissionModal.onTips')"
-        :offTips="t('fileSpace.permissionModal.offTips')"
-        :title="t('fileSpace.permissionModal.title')"
+        :onTips="t('file.permissionModal.onTips')"
+        :offTips="t('file.permissionModal.offTips')"
+        :title="t('file.permissionModal.title')"
         @change="(authData) => authFlagChange(authData, dataList)" />
     </AsyncComponent>
 

@@ -27,7 +27,7 @@ export function useDrawerMenu () {
       },
       {
         icon: 'icon-rongliang',
-        name: t('fileSpace.drawer.spaceCapacity'),
+        name: t('file.drawer.spaceCapacity'),
         key: 'size'
       }
     ];
@@ -66,8 +66,8 @@ export function useDrawerMenu () {
         selectedRowKey && {
           icon: 'icon-rongliang',
           name: selectedRowKey
-            ? t('fileSpace.drawer.spaceCapacity') + (quotaSize?.value ? quotaSize.value + quotaSize.unit?.message : '')
-            : t('fileSpace.drawer.accountStorageCapacity'),
+            ? t('file.drawer.spaceCapacity') + (quotaSize?.value ? quotaSize.value + quotaSize.unit?.message : '')
+            : t('file.drawer.accountStorageCapacity'),
           key: 'size'
         }
       ].filter(Boolean);

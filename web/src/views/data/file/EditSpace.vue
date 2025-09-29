@@ -158,7 +158,7 @@ const excludes = ({ value }: { value: string }): boolean => {
 
 <template>
   <Modal
-    :title="t('fileSpace.spaceForm.title')"
+    :title="t('file.spaceForm.title')"
     :visible="visible"
     @cancel="closeModal"
     @ok="confirm">
@@ -170,12 +170,12 @@ const excludes = ({ value }: { value: string }): boolean => {
       layout="vertical">
       <!-- Space name field -->
       <FormItem
-        :label="t('fileSpace.spaceForm.form.spaceName')"
+        :label="t('file.spaceForm.form.spaceName')"
         name="name"
-        :rules="[{required: true, message: t('fileSpace.spaceForm.rules.spaceName')}]">
+        :rules="[{required: true, message: t('file.spaceForm.rules.spaceName')}]">
         <Input
           v-model:value="form.name"
-          :placeholder="t('fileSpace.spaceForm.placeholders.spaceName')"
+          :placeholder="t('file.spaceForm.placeholders.spaceName')"
           size="small"
           :maxlength="100" />
       </FormItem>
@@ -184,9 +184,9 @@ const excludes = ({ value }: { value: string }): boolean => {
       <FormItem name="quotaSize">
         <template #label>
           <div class="flex items-end">
-            <span>{{ t('fileSpace.spaceForm.form.spaceQuota') }} </span>
+            <span>{{ t('file.spaceForm.form.spaceQuota') }} </span>
             <span class="text-gray-text-light text-3">
-              {{ t('fileSpace.spaceForm.quotaDescription') }}
+              {{ t('file.spaceForm.quotaDescription') }}
             </span>
           </div>
         </template>
@@ -196,7 +196,7 @@ const excludes = ({ value }: { value: string }): boolean => {
           :max="2000"
           :min="0"
           :decimalPoint="4"
-          :placeholder="t('fileSpace.spaceForm.placeholders.spaceQuota')"
+          :placeholder="t('file.spaceForm.placeholders.spaceQuota')"
           dataType="float"
           size="small"
           @blur="onSizeBlur">

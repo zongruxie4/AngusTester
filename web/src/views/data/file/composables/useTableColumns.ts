@@ -18,42 +18,42 @@ export function useTableColumns () {
     {
       dataIndex: 'name',
       key: 'name',
-      title: t('fileSpace.columns.spaceName'),
+      title: t('file.columns.spaceName'),
       width: '20%',
       ellipsis: true
     },
     {
       dataIndex: 'subDirectoryNum',
       key: 'subDirectoryNum',
-      title: t('fileSpace.columns.folderCount'),
+      title: t('file.columns.folderCount'),
       width: '10%',
       ellipsis: true
     },
     {
       dataIndex: 'subFileNum',
       key: 'subFileNum',
-      title: t('fileSpace.columns.fileCount'),
+      title: t('file.columns.fileCount'),
       width: '10%',
       ellipsis: true
     },
     {
       dataIndex: 'size',
       key: 'size',
-      title: t('fileSpace.columns.used'),
+      title: t('file.columns.used'),
       width: '10%',
       ellipsis: true
     },
     {
       dataIndex: 'quotaSize',
       key: 'quotaSize',
-      title: t('fileSpace.columns.quota'),
+      title: t('file.columns.quota'),
       width: '10%',
       ellipsis: true
     },
     {
       dataIndex: 'createdByName',
       key: 'createdByName',
-      title: t('fileSpace.columns.addBy'),
+      title: t('common.createdBy'),
       width: '13%',
       ellipsis: true
     },
@@ -68,7 +68,7 @@ export function useTableColumns () {
       dataIndex: 'action',
       key: 'action',
       title: t('common.actions'),
-      width: 160
+      width: 130
     }
   ]);
 
@@ -84,19 +84,19 @@ export function useTableColumns () {
       ellipsis: true
     },
     {
-      title: t('fileSpace.columns.fileCount'),
+      title: t('file.columns.fileCount'),
       dataIndex: 'fileNum',
       width: 60,
       ellipsis: true
     },
     {
-      title: t('fileSpace.columns.folderCount'),
+      title: t('file.columns.folderCount'),
       dataIndex: 'subDirectoryNum',
       width: 80,
       ellipsis: true
     },
     {
-      title: t('fileSpace.columns.actualSize'),
+      title: t('file.columns.actualSize'),
       dataIndex: 'size',
       ellipsis: true,
       width: 80
@@ -122,7 +122,7 @@ export function useTableColumns () {
   const fileColumnsWithMetadata = computed(() => [
     ...fileColumns.value.slice(0, -1), // All columns except action
     {
-      title: t('fileSpace.columns.subDirectoryCount'),
+      title: t('file.columns.subDirectoryCount'),
       dataIndex: 'subDirectoryNum',
       width: 80,
       ellipsis: true

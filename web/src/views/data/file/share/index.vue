@@ -60,7 +60,7 @@ const cancel = () => {
 </script>
 <template>
   <Modal
-    :title="t('fileSpace.share.title')"
+    :title="t('file.share.title')"
     :visible="visible"
     :reverse="true"
     :okButtonProps="{loading: isLoading}"
@@ -94,7 +94,7 @@ const cancel = () => {
       </template>
     </Tree>
     <Form layout="vertical" size="small">
-      <FormItem :label="t('fileSpace.share.form.viewPermission')">
+      <FormItem :label="t('file.share.form.viewPermission')">
         <div class="">
           <RadioGroup
             v-model:value="form.public0"
@@ -115,16 +115,16 @@ const cancel = () => {
           class="w-50 rounded mt-1"
           :class="{'!border-status-error': !form.password}" />
       </FormItem>
-      <FormItem v-if="form.url" :label="t('fileSpace.share.form.viewLink')">
+      <FormItem v-if="form.url" :label="t('file.share.form.viewLink')">
         <Input
           v-model:value="form.url"
           size="small"
           :disabled="true" />
         <div class="mt-3">
-          <Button size="small" @click="copyToClipboard"><Icon icon="icon-fuzhi" class="mr-1.5" />{{ t('fileSpace.share.buttons.copyLinkAndPassword') }}</Button>
+          <Button size="small" @click="copyToClipboard"><Icon icon="icon-fuzhi" class="mr-1.5" />{{ t('file.share.buttons.copyLinkAndPassword') }}</Button>
         </div>
       </FormItem>
-      <FormItem :label="t('fileSpace.share.form.validityPeriod')">
+      <FormItem :label="t('file.share.form.validityPeriod')">
         <div class="flex w-full justify-between items-center">
           <RadioGroup
             v-model:value="form.expiredFlag"

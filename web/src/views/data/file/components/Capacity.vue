@@ -44,7 +44,7 @@ watch(() => props.id, newValue => {
         :width="100"
         strokeColor="#52C41A">
         <template #format>
-          <p class="text-3 text-theme-sub-content">{{ t('fileSpace.capacity.used') }}</p>
+          <p class="text-3 text-theme-sub-content">{{ t('file.capacity.used') }}</p>
           <p class="text-6 my-4 text-theme-title font-semibold">{{ percent }}%</p>
         </template>
       </Progress>
@@ -62,7 +62,7 @@ watch(() => props.id, newValue => {
           type="link"
           size="small"
           target="_blank">
-          <Icon icon="icon-shangchuan" class="mr-2" />{{ t('fileSpace.capacity.upgradeCapacity') }}
+          <Icon icon="icon-shangchuan" class="mr-2" />{{ t('file.capacity.upgradeCapacity') }}
         </Button>
       </div>
     </Spin>

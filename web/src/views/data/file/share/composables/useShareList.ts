@@ -100,9 +100,9 @@ export function useShareList () {
   const copyToClipboard = (item: ShareListItem): void => {
     let message;
     if (!item.public0) {
-      message = t('fileSpace.share.messages.linkAndPassword', { url: item.url, password: item.password || '' });
+      message = t('file.share.messages.linkAndPassword', { url: item.url, password: item.password || '' });
     } else {
-      message = t('fileSpace.share.messages.link', { url: item.url });
+      message = t('file.share.messages.link', { url: item.url });
     }
 
     toClipboard(message).then(() => {
@@ -127,7 +127,7 @@ export function useShareList () {
    */
   const updatePassword = async (item: ShareListItem): Promise<void> => {
     if (!item.tempPass) {
-      notification.error(t('fileSpace.share.shareList.notifications.passwordEmpty'));
+      notification.error(t('file.share.shareList.notifications.passwordEmpty'));
       return;
     }
 
@@ -148,7 +148,7 @@ export function useShareList () {
 
     item.password = item.tempPass as string;
     item.editPassd = false;
-    notification.success(t('fileSpace.share.shareList.notifications.modifyPasswordSuccess'));
+    notification.success(t('file.share.shareList.notifications.modifyPasswordSuccess'));
   };
 
   /**

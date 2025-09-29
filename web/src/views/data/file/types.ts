@@ -14,19 +14,19 @@ export const columns = [
     ellipsis: true
   },
   {
-    title: t('fileSpace.columns.fileCount'),
+    title: t('file.columns.fileCount'),
     dataIndex: 'fileNum',
     width: '10%',
     ellipsis: true
   },
   {
-    title: t('fileSpace.columns.folderCount'),
+    title: t('file.columns.folderCount'),
     dataIndex: 'subDirectoryNum',
     width: '10%',
     ellipsis: true
   },
   {
-    title: t('fileSpace.columns.actualSize'),
+    title: t('file.columns.actualSize'),
     dataIndex: 'size',
     ellipsis: true,
     width: '10%'

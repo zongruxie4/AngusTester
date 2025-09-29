@@ -32,24 +32,24 @@ export function useSpaceInfo (props: Props) {
       { dataIndex: 'id', label: t('common.id') },
       props.type !== 'space' && {
         dataIndex: 'summary',
-        label: t('fileSpace.spaceDetail.columns.actualSize'),
+        label: t('file.spaceDetail.columns.actualSize'),
         customRender: ({ text }: { text: any }) => text?.usedSize
       },
       props.type === 'space' && {
         dataIndex: 'quotaSize',
-        label: t('fileSpace.spaceDetail.columns.quota'),
+        label: t('file.spaceDetail.columns.quota'),
         customRender: ({ text }: { text: any }) => text ? text?.value + text?.unit?.message : '--'
       },
       {
         dataIndex: 'type',
-        label: t('fileSpace.spaceDetail.columns.format'),
-        customRender: ({ text }: { text: any }) => text?.message || t('fileSpace.type.space')
+        label: t('common.format'),
+        customRender: ({ text }: { text: any }) => text?.message || t('file.type.space')
       },
       { dataIndex: 'createdByName', label: t('common.createdBy') },
       { dataIndex: 'createdDate', label: t('common.createdDate') },
       { dataIndex: 'lastModifiedDate', label: t('common.lastModifiedDate') },
       props.type === 'space' && { dataIndex: 'remark', label: t('common.remark') },
-      props.type === 'file' && { dataIndex: 'mockFunc', label: t('fileSpace.spaceDetail.columns.mockFunc') }
+      props.type === 'file' && { dataIndex: 'mockFunc', label: t('file.spaceDetail.columns.mockFunc') }
     ].filter(Boolean) as SpaceInfoColumnType[]
   ]);
 

@@ -59,7 +59,7 @@ export function useFileRename () {
       return;
     }
 
-    notification.success(t('fileSpace.fileManagement.messages.renameSuccess'));
+    notification.success(t('file.fileManagement.messages.renameSuccess'));
     record.renameFlag = false;
   };
 

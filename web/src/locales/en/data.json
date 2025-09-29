@@ -340,7 +340,7 @@
       }
     }
   },
-  "fileSpace": {
+  "file": {
     "title": "File",
     "addedTitle": "Added Spaces",
     "type": {
