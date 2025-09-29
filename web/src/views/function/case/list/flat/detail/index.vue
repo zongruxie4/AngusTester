@@ -131,7 +131,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
     }
   ],
   [
-    { label: t('common.tags'), dataIndex: 'tags' },
+    { label: t('common.tag'), dataIndex: 'tags' },
     { label: t('common.plan'), dataIndex: 'planName' },
     { label: t('common.module'), dataIndex: 'moduleName' },
     {
@@ -709,7 +709,7 @@ onBeforeUnmount(() => {
                   :defaultOptions="defaultTags"
                   :fieldNames="{ label: 'name', value: 'id' }"
                   :maxTags="5"
-                  :placeholder="t('common.tags')"
+                  :placeholder="t('common.tag')"
                   :class="{'border-error':tagsIds && tagsIds.length > 5 }"
                   :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
                   mode="multiple"

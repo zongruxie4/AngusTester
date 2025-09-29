@@ -216,7 +216,7 @@ const statusColorConfig = getStatusColorConfig();
     <div class="mt-5">
       <div class="title-backend relative pl-2 flex items-center">
         <span class="text-text-title font-semibold text-3.5 mr-2">
-          {{ t('scenarioMonitor.detail.executionRecords') }}
+          {{ t('common.executionRecord') }}
         </span>
 
         <Hints :text="t('scenarioMonitor.detail.executionRecordsHint')" />

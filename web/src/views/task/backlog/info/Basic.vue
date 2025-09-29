@@ -1008,7 +1008,7 @@ onMounted(() => {
         <!-- Tags -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.tags') }}</span>
+            <span>{{ t('common.tag') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isTagEditing" class="info-value-content">

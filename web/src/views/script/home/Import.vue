@@ -87,22 +87,28 @@ watch(() => props.visible, (newVisible) => {
     :title="t('scriptHome.import.title')"
     @cancel="handleCancelClick"
     @ok="handleOk">
+    <!--  Script name  -->
     <Form
       ref="formRef"
-      class="space-y-6"
+      class="space-y-6 font-semibold"
       :labelCol="{ style: { width: '80px' } }"
       :model="formState"
       :rules="rules">
-      <FormItem name="name" :label="t('scriptHome.import.form.name')">
+      <FormItem
+        name="name"
+        :label="t('common.name')">
         <Input
           v-model:value="formState.name"
           :maxlength="200"
           trim
           class="rounded-lg"
-          :placeholder="t('common.placeholders.searchKeyword')" />
+          :placeholder="t('scriptHome.messages.namePlaceholder')" />
       </FormItem>
 
-      <FormItem :label="t('scriptHome.import.form.file')" required>
+      <!--  Script file  -->
+      <FormItem
+        :label="t('scriptHome.import.form.file')"
+        required>
         <div
           class="text-3 leading-5 border-2 rounded-lg border-dashed border-border-divider upload-container transition-all duration-300 hover:border-blue-300 hover:bg-blue-50/30"
           :error="errorFlag">
@@ -172,14 +178,17 @@ watch(() => props.visible, (newVisible) => {
         </div>
       </FormItem>
 
-      <FormItem :label="t('common.description')" name="description">
+      <!--  Script description  -->
+      <FormItem
+        :label="t('common.description')"
+        name="description">
         <Input
           v-model:value="formState.description"
           :autosize="{ minRows: 6, maxRows: 8 }"
           :maxlength="800"
           trim
           class="rounded-lg"
-          :placeholder="t('scriptHome.import.form.descriptionPlaceholder')"
+          :placeholder="t('scriptHome.messages.descriptionPlaceholder')"
           type="textarea" />
       </FormItem>
     </Form>

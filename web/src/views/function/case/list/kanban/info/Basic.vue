@@ -241,7 +241,7 @@ const infoColumns = [
       dataIndex: 'priority'
     },
     {
-      label: t('common.tags'),
+      label: t('common.tag'),
       dataIndex: 'tags'
     },
     {

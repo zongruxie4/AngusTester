@@ -807,7 +807,7 @@ const actionMenuItemsMap = computed(() => {
     // Add status-specific menu items
     if (status === TaskStatus.PENDING) {
       menuItems.push({
-        name: t(actions.start'),
+        name: t('actions.start'),
         key: 'start',
         icon: 'icon-kaishi',
         disabled: !isAdmin && !isAssignee,

@@ -1617,7 +1617,7 @@ const sortMenuItems = [
             size="small"
             @click="showTagSelector">
             <Icon icon="icon-jia" class="text-3 mr-1" />
-            <span>{{ t('common.tags') }}</span>
+            <span>{{ t('common.tag') }}</span>
           </Button>
 
           <template v-if="props.viewMode === TaskViewMode.kanban">

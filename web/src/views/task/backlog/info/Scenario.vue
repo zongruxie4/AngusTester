@@ -893,7 +893,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('common.tags') }}</span>
+            <span>{{ t('common.tag') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -927,7 +927,7 @@ onMounted(() => {
               :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
               allowClear
               showSearch
-              :placeholder="t('common.tags')"
+              :placeholder="t('common.tag')"
               mode="multiple"
               class="edit-container"
               :notFoundContent="t('backlog.info.scenario.placeholders.notFoundTagContent')"

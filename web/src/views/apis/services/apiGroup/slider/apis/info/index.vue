@@ -87,7 +87,7 @@ const columns = computed(() => {
       // !state.info.protocol?.value?.includes('ws') && { label: '用例数量', dataIndex: 'apiCaseNum' },
       { label: t('common.createdBy'), dataIndex: 'createdByName' },
       { label: t('service.groupApiDetail.columns.ownerName'), dataIndex: 'ownerName' },
-      { label: t('common.tags'), dataIndex: 'tags' },
+      { label: t('common.tag'), dataIndex: 'tags' },
       { label: t('common.createdDate'), dataIndex: 'createdDate' },
       { label: t('common.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
       { label: t('common.description'), dataIndex: 'description' },

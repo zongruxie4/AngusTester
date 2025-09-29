@@ -65,9 +65,12 @@
     "reporter": "Reporter",
     "project": "Project",
     "projectType": "Project Type",
-    "projectId": "Project Id",
+    "projectId": "Project ID",
     "projectName": "Project Name",
     "projectMembers": "Project Members",
+    "resourceType": "Resource Type",
+    "resourceId": "Resource ID",
+    "resourceName": "Resource Name",
     "module": "Module",
     "sprint": "Sprint",
     "plan": "Plan",
@@ -81,7 +84,9 @@
     "scenario": "Scenario",
     "useCase": "Use Case",
     "execution": "Execution",
+    "executionRecord": "Execution Records",
     "analysis": "Analysis",
+    "node": "Node",
     "data": "Data",
     "variables": "Variable",
     "dataset": "Dataset",
@@ -90,7 +95,7 @@
     "mockService": "Mock Service",
     "mockApi": "Mock Api",
     "report": "Report",
-    "reportRecord": "Report Record",
+    "reportRecord": "Report Records",
     "activity": "Activity",
     "doc": "Document",
     "authControl": "Auth",
@@ -115,7 +120,7 @@
     "version": "Version",
     "softwareVersion": "Software Version",
     "remark": "Remark",
-    "tags": "Tags",
+    "tag": "Tags",
     "attachments": "Attachments",
     "comments": "Comments",
     "activities": "Activities",
@@ -131,11 +136,30 @@
     "actions": "Actions",
     "placeholders": {
       "searchKeyword": "Enter search keyword",
-      "selectCreator": "Select creator",
+      "selectCreator": "Select Creator",
+      "selectModifier": "Select Modifier",
       "selectOwner": "Select owner",
-      "selectProject": "Select project",
+      "selectSource": "Select source",
       "selectPluginType": "Select plugin type",
-      "selectScriptType": "Select script type"
+      "selectScriptType": "Select script type",
+      "selectProject": "Select project",
+      "selectService": "Select service",
+      "selectApi": "Select api",
+      "scenarioPlaceholder": "Select scenario",
+      "selectTag": "Select tag",
+      "searchTag": "Search tag",
+      "selectDate": [
+        "Date from",
+        "Date to"
+      ],
+      "selectCreatedDate": [
+        "Created date from",
+        "Created date to"
+      ],
+      "selectModifiedDate": [
+        "Modified date from",
+        "Modified date to"
+      ]
     },
     "rules": {},
     "hints": {

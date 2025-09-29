@@ -329,7 +329,7 @@ onMounted(() => {
       <FormItem name="tags">
         <template #label>
           <div>
-            <span>{{ t('common.tags') }}</span>
+            <span>{{ t('common.tag') }}</span>
             <Tooltip placement="left">
               <Icon icon="icon-tishi1" class="text-blue-tips ml-0.5 text-3.5" />
               <template #title>{{ t('service.apiSliderSave.tips.tagsDescription') }}</template>

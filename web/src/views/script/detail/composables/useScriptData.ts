@@ -133,7 +133,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
     }
 
     scriptId.value = res?.data?.id;
-    notification.success(t('scriptDetail.notification.addScriptSuccess'));
+    notification.success(t('scriptDetail.messages.addScriptSuccess'));
     router.push('/script');
   };
 
@@ -210,7 +210,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
     if (error) {
       return;
     }
-    notification.success(t('scriptDetail.notification.addExecutionSuccess'));
+    notification.success(t('scriptDetail.messages.addExecutionSuccess'));
   };
 
   return {

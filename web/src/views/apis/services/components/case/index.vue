@@ -246,7 +246,7 @@ watch(() => props.id, newValue => {
                   type="link"
                   class="px-1 py-0 text-3"
                   @click="handleSingleDebug(item)">
-                  {{ t('common.debug') }}
+                  {{ t('actions.debug') }}
                 </Button>
               </div>
             </div>

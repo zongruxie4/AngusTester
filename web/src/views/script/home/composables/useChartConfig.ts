@@ -1,4 +1,5 @@
 import { useI18n } from 'vue-i18n';
+import { ScriptType, enumUtils } from '@xcan-angus/infra';
 
 import { ChartDataItem, PieChartOption } from '@/views/script/types';
 
@@ -87,13 +88,27 @@ export function useChartConfig () {
     if (!resourceInfo) return [];
 
     const chartData = [
-      { name: t('scriptHome.pieChart.chartData.functionalTest'), value: +resourceInfo.functionalScriptNum },
-      { name: t('scriptHome.pieChart.chartData.performanceTest'), value: +resourceInfo.perfScriptNum },
-      { name: t('scriptHome.pieChart.chartData.stabilityTest'), value: +resourceInfo.stabilityScriptNum },
-      { name: t('scriptHome.pieChart.chartData.customTest'), value: +resourceInfo.customizationScriptNum },
-      { name: t('scriptHome.pieChart.chartData.mockData'), value: +resourceInfo.mockDataScriptNum }
+      {
+        name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_FUNCTIONALITY),
+        value: +resourceInfo.functionalScriptNum
+      },
+      {
+        name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_PERFORMANCE),
+        value: +resourceInfo.perfScriptNum
+      },
+      {
+        name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_STABILITY),
+        value: +resourceInfo.stabilityScriptNum
+      },
+      {
+        name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_CUSTOMIZATION),
+        value: +resourceInfo.customizationScriptNum
+      },
+      {
+        name: enumUtils.getEnumDescription(ScriptType, ScriptType.MOCK_DATA),
+        value: +resourceInfo.mockDataScriptNum
+      }
     ];
-
     return chartData;
   };
 

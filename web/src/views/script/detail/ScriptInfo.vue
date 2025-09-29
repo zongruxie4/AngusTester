@@ -90,7 +90,7 @@ const {
     <!-- Resource ID -->
     <div class="relative flex items-start group">
       <div class="w-21.75 flex items-center flex-shrink-0">
-        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.resourceId') }}</span>
+        <span class="text-theme-sub-content font-medium">{{ t('common.resourceId') }}</span>
         <Colon class="w-1 text-theme-sub-content" />
       </div>
       <div class="whitespace-pre-wrap break-words break-all text-theme-title font-mono bg-gray-50 px-2 py-1 rounded text-2.5">
@@ -101,7 +101,7 @@ const {
     <!-- Resource Name -->
     <div class="relative flex items-start group">
       <div class="w-21.75 flex items-center flex-shrink-0">
-        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.resourceName') }}</span>
+        <span class="text-theme-sub-content font-medium">{{ t('common.resourceName') }}</span>
         <Colon class="w-1 text-theme-sub-content" />
       </div>
       <div v-if="!sourceNameLinkUrl" class="whitespace-pre-wrap break-words break-all text-theme-title">
@@ -119,7 +119,7 @@ const {
     <!-- Tags Information -->
     <div class="relative flex items-start group">
       <div class="w-21.75 flex items-center flex-shrink-0">
-        <span class="text-theme-sub-content font-medium">{{ t('common.tags') }}</span>
+        <span class="text-theme-sub-content font-medium">{{ t('common.tag') }}</span>
         <Colon class="w-1 text-theme-sub-content" />
       </div>
       <div v-if="tags.length" class="flex items-start flex-wrap gap-1.5">
@@ -152,10 +152,21 @@ const {
       </div>
     </div>
 
+    <!-- Created Time -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('common.createdDate') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
+      </div>
+      <div class="whitespace-pre-wrap break-words break-all text-theme-title">
+        {{ dataSource.createdDate }}
+      </div>
+    </div>
+
     <!-- Last Updater -->
     <div class="relative flex items-start group">
       <div class="w-21.75 flex items-center flex-shrink-0">
-        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.lastUpdater') }}</span>
+        <span class="text-theme-sub-content font-medium">{{ t('common.lastModifiedBy') }}</span>
         <Colon class="w-1 text-theme-sub-content" />
       </div>
       <div class="whitespace-pre-wrap break-words break-all text-theme-title">

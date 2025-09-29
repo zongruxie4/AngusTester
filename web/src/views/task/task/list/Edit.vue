@@ -1302,7 +1302,7 @@ onMounted(() => {
             name="tagIds"
             class="relative">
             <template #label>
-              {{ t('common.tags') }}
+              {{ t('common.tag') }}
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">

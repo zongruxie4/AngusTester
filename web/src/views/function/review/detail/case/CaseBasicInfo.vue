@@ -51,7 +51,7 @@ const infoColumns = computed(() => [
       dataIndex: 'priority'
     },
     {
-      label: t('common.tags'),
+      label: t('common.tag'),
       dataIndex: 'tags'
     },
     {
@@ -97,7 +97,7 @@ const saveName = async (text) => {
   emits('change');
 };
 
-// edit tag 
+// edit tag
 const isEditTag = ref(false);
 const tagsIds = ref([]);
 const tagsSelectRef = ref();

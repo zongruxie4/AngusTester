@@ -1683,7 +1683,7 @@ provide('selectHandle', closeDrawer);
             v-model:value="activeTabKey"
             buttonStyle="solid"
             size="small">
-            <RadioButton value="debug">{{ t('common.debug') }}</RadioButton>
+            <RadioButton value="debug">{{ t('actions.debug') }}</RadioButton>
             <RadioButton value="case">{{ t('common.useCase') }}</RadioButton>
             <RadioButton value="test">{{ t('service.apis.tabs.test') }}</RadioButton>
             <RadioButton value="mock">{{ t('service.apis.tabs.mock') }}</RadioButton>

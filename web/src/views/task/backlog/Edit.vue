@@ -1285,10 +1285,10 @@ const getPopupContainer = () => {
             name="tagIds"
             class="relative">
             <template #label>
-              {{ t('common.tags') }}<Popover placement="rightTop">
+              {{ t('common.tag') }}<Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ t('common.tags') }}
+                    {{ t('common.tag') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />

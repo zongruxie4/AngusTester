@@ -869,7 +869,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('common.tags') }}</span>
+            <span>{{ t('common.tag') }}</span>
             <Colon class="w-1" />
           </div>
 

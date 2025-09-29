@@ -116,7 +116,7 @@ onBeforeUnmount(() => {
     <Input
       :value="searchInputValue"
       :allowClear="true"
-      :placeholder="t('scriptHome.globalAuth.authSet.searchPlaceholder')"
+      :placeholder="t('common.placeholders.searchKeyword')"
       class="mb-2"
       @change="(e) => searchInputChange(e)" />
 
