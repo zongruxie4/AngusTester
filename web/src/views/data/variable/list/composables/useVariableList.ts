@@ -3,7 +3,7 @@ import { notification } from '@xcan-angus/vue-ui';
 import { variable } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
-import { VariableItem } from '../../types';
+import { VariableDetail } from '../../types';
 import type { TablePagination, RowSelection } from '../types';
 
 /**
@@ -30,7 +30,7 @@ export function useVariableList (projectId: string, notify: string) {
   const loaded = ref(false);
   const loading = ref(false);
   const searchedFlag = ref(false);
-  const tableData = ref<VariableItem[]>([]);
+  const tableData = ref<VariableDetail[]>([]);
   const pagination = ref<TablePagination>({
     current: 1,
     pageSize: DEFAULT_PAGE_SIZE,
@@ -78,7 +78,7 @@ export function useVariableList (projectId: string, notify: string) {
     const data = res?.data || { total: 0, list: [] };
     if (data) {
       pagination.value.total = +data.total;
-      const list = data.list as VariableItem[];
+      const list = data.list as VariableDetail[];
       tableData.value = list;
     }
   };

@@ -1,5 +1,5 @@
 import { ref, Ref, computed } from 'vue';
-import { DataSetItem } from '../../types';
+import { DataSetDetail } from '../../types';
 import { dataSet } from '@/api/tester';
 import { modal, notification } from '@xcan-angus/vue-ui';
 
@@ -8,7 +8,7 @@ import { modal, notification } from '@xcan-angus/vue-ui';
  * Handles batch selection, deletion and other multi-item operations
  */
 export function useActions (
-  tableData: Ref<DataSetItem[]>,
+  tableData: Ref<DataSetDetail[]>,
   pagination: Ref<{ current: number; pageSize: number; total: number; }>,
   loadData: () => Promise<void>,
   deleteTabPane: (keys: string[]) => void,
@@ -20,7 +20,7 @@ export function useActions (
   // Row selection configuration for the table
   const rowSelection = ref<{
     onChange:(key: string[]) => void;
-    getCheckboxProps: (data: DataSetItem) => ({ disabled: boolean; });
+    getCheckboxProps: (data: DataSetDetail) => ({ disabled: boolean; });
     selectedRowKeys: string[];
   } | undefined>();
 

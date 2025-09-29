@@ -11,7 +11,7 @@ const { t } = useI18n();
         <span class="text-3.5 font-semibold mb-1.5">{{ t('dataset.introduce.title') }}</span>
       </div>
       <div class="mb-4">
-        {{ t('common.description') }}
+        {{ t('dataset.introduce.description') }}
       </div>
     </div>
 
@@ -24,7 +24,7 @@ const { t } = useI18n();
               {{ t('dataset.introduce.types.staticDataset.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('common.description') }}
+              {{ t('dataset.introduce.types.staticDataset.description') }}
             </p>
           </div>
         </div>
@@ -38,7 +38,7 @@ const { t } = useI18n();
               {{ t('dataset.introduce.types.fileExtract.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('common.description') }}
+              {{ t('dataset.introduce.types.fileExtract.description') }}
             </p>
           </div>
         </div>
@@ -52,7 +52,7 @@ const { t } = useI18n();
               {{ t('dataset.introduce.types.jdbcExtract.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('common.description') }}
+              {{ t('dataset.introduce.types.jdbcExtract.description') }}
             </p>
           </div>
         </div>

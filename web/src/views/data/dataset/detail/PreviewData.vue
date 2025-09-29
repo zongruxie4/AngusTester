@@ -2,17 +2,15 @@
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, Input, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { DataSetDetail } from '../types';
+import { DataSourceProps } from '@/types/types';
+
 import { usePreviewData } from './composables/usePreviewData';
-import { PreviewDataSource } from '../types';
 
 const { t } = useI18n();
 
 // Define component props with explicit typing
-interface Props {
-  dataSource?: PreviewDataSource;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DataSourceProps<DataSetDetail>>(), {
   dataSource: undefined
 });
 

@@ -2,17 +2,12 @@
 import { defineAsyncComponent } from 'vue';
 import { Modal } from '@xcan-angus/vue-ui';
 
-import { DataSetItem } from '../types';
+import { DataSetDetail } from '../types';
 import { useI18n } from 'vue-i18n';
+import { BasicDataSourceProps } from '@/types/types';
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  visible: boolean;
-  dataSource?: DataSetItem;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicDataSourceProps<DataSetDetail>>(), {
   projectId: undefined,
   visible: false,
   dataSource: undefined

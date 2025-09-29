@@ -225,7 +225,7 @@
       }
     },
     "list": {
-      "title": "Added Datasets",
+      "addedTitle": "Added Datasets",
       "noDataText": "You haven't added any datasets yet, immediately",
       "or": "or",
       "tableDropdown": {
@@ -300,7 +300,7 @@
       }
     },
     "preview": {
-      "hints": "A maximum of 10,000 data records can be previewed at a time. Mock function actual parameter values are generated during execution sampling.",
+      "hints": "Preview limited to 10k records. Mock parameters generate during sampling.",
       "previewRows": "Preview Rows",
       "placeholder": "1 ~ 10000"
     }

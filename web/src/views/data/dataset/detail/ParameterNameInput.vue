@@ -114,6 +114,7 @@ defineExpose({
           <Input
             :value="valueMap[item]"
             readonly
+            disabled
             class="w-1/2"
             trimAll
             dataType="integer" />

@@ -1,4 +1,4 @@
-import { VariableItem } from '../types';
+import { VariableDetail } from '../types';
 
 /**
  * Table pagination configuration
@@ -19,7 +19,7 @@ export interface RowSelection {
   /** Callback when selection changes */
   onChange: (key: string[]) => void;
   /** Get checkbox properties for a row */
-  getCheckboxProps: (data: VariableItem) => { disabled: boolean };
+  getCheckboxProps: (data: VariableDetail) => { disabled: boolean };
   /** Selected row keys */
   selectedRowKeys: string[];
 }
@@ -43,9 +43,9 @@ export interface TableColumn {
   /** Whether column is hidden */
   hide?: boolean;
   /** Custom render function (deprecated) */
-  customRender?: (params: { text: any; record: VariableItem }) => any;
+  customRender?: (params: { text: any; record: VariableDetail }) => any;
   /** Custom cell function */
-  customCell?: (record: VariableItem) => any;
+  customCell?: (record: VariableDetail) => any;
 }
 
 /**

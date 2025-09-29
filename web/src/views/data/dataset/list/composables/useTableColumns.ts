@@ -25,7 +25,7 @@ export function useTableColumns () {
     },
     {
       key: 'dataSource',
-      title: t('dataset.list.columns.valueSource'),
+      title: t('common.source'),
       dataIndex: 'dataSource',
       ellipsis: true,
       width: '14%',

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Icon, IconRequired, Input, Toggle, Tooltip, Validate } from '@xcan-angus/vue-ui';
 import { ExtractionMethod } from '@xcan-angus/infra';
-import { VariableItem } from '../types';
+import { VariableDetail } from '../types';
 import { BasicDataSourceProps } from '@/types/types';
 
 import { useJdbcVariable } from './composables/useJdbcVariable';
@@ -13,7 +13,7 @@ import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<BasicDataSourceProps<VariableItem>>(), {
+const props = withDefaults(defineProps<BasicDataSourceProps<VariableDetail>>(), {
   projectId: undefined,
   userInfo: undefined,
   dataSource: undefined
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<BasicDataSourceProps<VariableItem>>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   /** Emit when form is submitted successfully */
-  (e: 'ok', data: VariableItem, isEdit: boolean): void;
+  (e: 'ok', data: VariableDetail, isEdit: boolean): void;
 
   /** Emit when delete action is requested */
   (e: 'delete', value: string): void;

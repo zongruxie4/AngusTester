@@ -3,7 +3,7 @@ import { computed, ref, watch, onMounted } from 'vue';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { dataSet } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
-import { StaticDataSetFormState, DataSetItem } from '../../types';
+import { StaticDataSetFormState, DataSetDetail } from '../../types';
 
 /**
  * Composable for managing static dataset logic in dataset detail components
@@ -12,7 +12,7 @@ import { StaticDataSetFormState, DataSetItem } from '../../types';
 export function useStaticDataset (
   props: {
     projectId: string;
-    dataSource?: DataSetItem;
+    dataSource?: DataSetDetail;
   },
   emit: (event: string, ...args: any[]) => void
 ) {

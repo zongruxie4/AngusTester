@@ -5,7 +5,7 @@ import { variable } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
 import { ExtractionMethod, ExtractionSource, Encoding, ExtractionFileType } from '@xcan-angus/infra';
 import { FileVariableFormState, DetailTabKey, ButtonGroupAction } from '../types';
-import { VariableItem } from '../../types';
+import { VariableDetail } from '../../types';
 
 /**
  * Composable for managing file variable logic in variable detail components
@@ -14,7 +14,7 @@ import { VariableItem } from '../../types';
 export function useFileVariable (
   props: {
     projectId: string;
-    dataSource?: VariableItem;
+    dataSource?: VariableDetail;
   },
   emit: (event: string, ...args: any[]) => void
 ) {

@@ -4,14 +4,14 @@ import { defineAsyncComponent } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, IconRequired, Input } from '@xcan-angus/vue-ui';
 import { useStaticDataset } from './composables/useStaticDataset';
-import { DataSetItem } from '../types';
+import { DataSetDetail } from '../types';
 
 const { t } = useI18n();
 
 // Define async components
+const ParameterInput = defineAsyncComponent(() => import('@/views/data/dataset/detail/ParameterInput.vue'));
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/dataset/detail/ButtonGroup.vue'));
-const ParameterInput = defineAsyncComponent(() => import('./ParameterInput.vue'));
-const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/detail/PreviewData.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/detail/UseList.vue'));
 
 // Define component props
@@ -19,7 +19,7 @@ type Props = {
   projectId: string;
   userInfo: { id: string; };
   visible: boolean;
-  dataSource?: DataSetItem;
+  dataSource?: DataSetDetail;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 // Define component emits
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
-  (e: 'ok', data: DataSetItem, isEdit: boolean): void;
+  (e: 'ok', data: DataSetDetail, isEdit: boolean): void;
   (e: 'delete', value: string): void;
   (e: 'export', value: string): void;
   (e: 'clone', value: string): void;
@@ -113,7 +113,7 @@ defineExpose({
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>{{ t('dataset.detail.staticDataset.parameters') }}</span>
+          <span>{{ t('common.parameters') }}</span>
         </div>
       </template>
 

@@ -225,7 +225,7 @@
       }
     },
     "list": {
-      "title": "已添加数据集",
+      "addedTitle": "已添加数据集",
       "noDataText": "您尚未添加任何数据集，立即",
       "or": "或",
       "columns": {

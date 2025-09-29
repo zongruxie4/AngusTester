@@ -1,6 +1,6 @@
 import { EnumMessage, ExtractionMethod, ExtractionSource, ExtractionFileType, DatabaseType, Encoding } from '@xcan-angus/infra';
 
-export type VariableItem = {
+export type VariableDetail = {
   id: string;
   name: string;
   passwordValue: true;

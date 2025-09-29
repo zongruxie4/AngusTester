@@ -2,18 +2,13 @@
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
-import { utils, IPane } from '@xcan-angus/infra';
+import { utils, IPane, ExtractionSource } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
@@ -88,11 +83,11 @@ const hashChange = (hash:string) => {
     });
   } else if (source) {
     browserTabRef.value.add(() => {
-      let name = t('dataset.addStaticDataset');
-      if (source === 'FILE') {
-        name = t('dataset.addFileDataset');
-      } else if (source === 'JDBC') {
-        name = t('dataset.addJdbcDataset');
+      let name = t('dataset.actions.addStaticDataset');
+      if (source === ExtractionSource.FILE) {
+        name = t('dataset.actions.addFileDataset');
+      } else if (source === ExtractionSource.JDBC) {
+        name = t('dataset.actions.addJdbcDataset');
       }
 
       const uid = utils.uuid();
@@ -112,6 +107,13 @@ const storageKeyChange = () => {
   initialize();
 };
 
+const storageKey = computed(() => {
+  if (!props.projectId) {
+    return undefined;
+  }
+  return `dataSet${props.projectId}`;
+});
+
 onMounted(() => {
   watch(() => route.hash, () => {
     if (!route.hash.startsWith('#dataSet')) {
@@ -119,13 +121,6 @@ onMounted(() => {
     }
     hashChange(route.hash);
   });
-});
-
-const storageKey = computed(() => {
-  if (!props.projectId) {
-    return undefined;
-  }
-  return `dataSet${props.projectId}`;
 });
 
 provide('addTabPane', addTabPane);

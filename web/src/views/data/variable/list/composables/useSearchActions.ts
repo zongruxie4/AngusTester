@@ -46,7 +46,7 @@ export function useSearchActions (
    * Navigate to create static variable page
    */
   const navigateToCreateStaticVariable = () => {
-    router.push('/data#variables?source=STATIC');
+    router.push('/data#variables?source=VALUE');
   };
 
   /**

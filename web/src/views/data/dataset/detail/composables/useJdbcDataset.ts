@@ -4,7 +4,7 @@ import { cloneDeep, isEqual } from 'lodash-es';
 import { dataSet } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
 import { ExtractionMethod, ExtractionSource } from '@xcan-angus/infra';
-import { JdbcDatasetFormState, DataSetItem } from '../../types';
+import { JdbcDatasetFormState, DataSetDetail } from '../../types';
 
 /**
  * Composable for managing JDBC dataset logic in dataset detail components
@@ -13,7 +13,7 @@ import { JdbcDatasetFormState, DataSetItem } from '../../types';
 export function useJdbcDataset (
   props: {
     projectId: string;
-    dataSource?: DataSetItem;
+    dataSource?: DataSetDetail;
   },
   emit: (event: string, ...args: any[]) => void
 ) {

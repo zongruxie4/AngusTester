@@ -2,6 +2,8 @@
 import { computed, defineAsyncComponent, inject, onMounted, watch } from 'vue';
 import { AsyncComponent, Spin } from '@xcan-angus/vue-ui';
 import { BasicProps } from '@/types/types';
+import { ExtractionSource } from '@xcan-angus/infra';
+
 import { useVariableDetail } from './composables/useVariableDetail';
 
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -59,7 +61,7 @@ const source = computed(() => {
       if (data) {
         const extraction = data.extraction;
         if (!extraction) {
-          return 'STATIC';
+          return ExtractionSource.VALUE;
         }
         return extraction.source;
       }
@@ -88,7 +90,7 @@ onMounted(() => {
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="max-w-242.5">
-      <AsyncComponent :visible="source === 'STATIC'">
+      <AsyncComponent :visible="source === ExtractionSource.VALUE">
         <StaticVariable
           :projectId="props.projectId"
           :dataSource="dataSource"
@@ -100,7 +102,7 @@ onMounted(() => {
           @refresh="handleRefresh" />
       </AsyncComponent>
 
-      <AsyncComponent :visible="source === 'FILE'">
+      <AsyncComponent :visible="source === ExtractionSource.FILE">
         <FileVariable
           :projectId="props.projectId"
           :dataSource="dataSource"
@@ -112,7 +114,7 @@ onMounted(() => {
           @refresh="handleRefresh" />
       </AsyncComponent>
 
-      <AsyncComponent :visible="source === 'HTTP'">
+      <AsyncComponent :visible="source === ExtractionSource.HTTP">
         <HttpVariable
           :projectId="props.projectId"
           :dataSource="dataSource"
@@ -124,7 +126,7 @@ onMounted(() => {
           @refresh="handleRefresh" />
       </AsyncComponent>
 
-      <AsyncComponent :visible="source === 'JDBC'">
+      <AsyncComponent :visible="source === ExtractionSource.JDBC">
         <JdbcVariable
           :projectId="props.projectId"
           :dataSource="dataSource"

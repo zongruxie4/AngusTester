@@ -2,25 +2,15 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { toClipboard, utils } from '@xcan-angus/infra';
+import { toClipboard, utils, ExtractionSource } from '@xcan-angus/infra';
 import { dataSet } from '@/api/tester';
+import { BasicProps } from '@/types/types';
 
-import { DataSetItem } from '../types';
+import { DataSetDetail } from '../types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  visible: boolean;
-  data: {
-    _id: string;
-    id: string | undefined;
-    source: 'STATIC' | 'FILE' | 'JDBC' | undefined;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   visible: false,
@@ -38,12 +28,12 @@ const ExportDataSetModal = defineAsyncComponent(() => import('@/views/data/datas
 
 const loading = ref(false);
 const loaded = ref(false);
-const dataSource = ref<DataSetItem>();
+const dataSource = ref<DataSetDetail>();
 
 const exportDataSetModalVisible = ref(false);
 const exportDataSetId = ref<string>();
 
-const ok = (data: DataSetItem, isEdit = false) => {
+const ok = (data: DataSetDetail, isEdit = false) => {
   const { id, name } = data;
   if (!isEdit) {
     const _id = props.data?._id;
@@ -135,7 +125,7 @@ const loadData = async (id: string) => {
     return;
   }
 
-  const data = res?.data as DataSetItem;
+  const data = res?.data as DataSetDetail;
   if (!data) {
     return;
   }
@@ -146,20 +136,6 @@ const loadData = async (id: string) => {
     updateTabPane({ name, _id: id });
   }
 };
-
-onMounted(() => {
-  watch(() => props.data, (newValue, oldValue) => {
-    const id = newValue?.id;
-    if (!id) {
-      return;
-    }
-    const oldId = oldValue?.id;
-    if (id === oldId) {
-      return;
-    }
-    loadData(id);
-  }, { immediate: true });
-});
 
 const source = computed(() => {
   const data = props.data;
@@ -174,7 +150,7 @@ const source = computed(() => {
       if (data) {
         const extraction = data.extraction;
         if (!extraction) {
-          return 'STATIC';
+          return ExtractionSource.VALUE;
         }
         return extraction.source;
       }
@@ -184,12 +160,26 @@ const source = computed(() => {
   }
   return source;
 });
+
+onMounted(() => {
+  watch(() => props.data, (newValue, oldValue) => {
+    const id = newValue?.id;
+    if (!id) {
+      return;
+    }
+    const oldId = oldValue?.id;
+    if (id === oldId) {
+      return;
+    }
+    loadData(id);
+  }, { immediate: true });
+});
 </script>
 
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="max-w-242.5">
-      <AsyncComponent :visible="source === 'STATIC'">
+      <AsyncComponent :visible="source === ExtractionSource.VALUE">
         <StaticDataSet
           :projectId="props.projectId"
           :dataSource="dataSource"
@@ -201,7 +191,7 @@ const source = computed(() => {
           @refresh="toRefresh" />
       </AsyncComponent>
 
-      <AsyncComponent :visible="source === 'FILE'">
+      <AsyncComponent :visible="source === ExtractionSource.FILE">
         <FileDataSet
           :projectId="props.projectId"
           :dataSource="dataSource"
@@ -213,7 +203,7 @@ const source = computed(() => {
           @refresh="toRefresh" />
       </AsyncComponent>
 
-      <AsyncComponent :visible="source === 'JDBC'">
+      <AsyncComponent :visible="source === ExtractionSource.JDBC">
         <JdbcDataSet
           :projectId="props.projectId"
           :dataSource="dataSource"

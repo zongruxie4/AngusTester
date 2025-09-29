@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import type { VariableItem } from '../../types';
+import type { VariableDetail } from '../../types';
 import { variable } from '@/api/tester';
 
 /**
@@ -28,7 +28,7 @@ export function useValuePreview () {
    * @param data - Variable item to check
    * @returns True if variable can be previewed
    */
-  const isPreviewable = (data: VariableItem): boolean => {
+  const isPreviewable = (data: VariableDetail): boolean => {
     // Password variables are always previewable
     if (data.passwordValue) {
       return true;
@@ -51,7 +51,7 @@ export function useValuePreview () {
    *
    * @param data - Variable item to preview
    */
-  const loadVariableValue = async (data: VariableItem) => {
+  const loadVariableValue = async (data: VariableDetail) => {
     const id = data.id;
 
     try {
@@ -80,7 +80,7 @@ export function useValuePreview () {
    *
    * @param data - Variable item to show
    */
-  const showVariableValue = (data: VariableItem) => {
+  const showVariableValue = (data: VariableDetail) => {
     const { id } = data;
 
     // For password variables, always show
@@ -103,7 +103,7 @@ export function useValuePreview () {
    *
    * @param data - Variable item to hide
    */
-  const hideVariableValue = (data: VariableItem) => {
+  const hideVariableValue = (data: VariableDetail) => {
     visibilityIdSet.value.delete(data.id);
   };
 

@@ -4,7 +4,7 @@ import { modal, notification } from '@xcan-angus/vue-ui';
 import { variable } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { getCurrentPage } from '@/utils/utils';
-import type { VariableItem } from '../../types';
+import type { VariableDetail } from '../../types';
 
 /**
  * Maximum number of items that can be deleted in batch
@@ -44,7 +44,7 @@ export function useActions (
    * Navigate to create static variable page
    */
   const navigateToCreateStaticVariable = () => {
-    router.push('/data#variables?source=STATIC');
+    router.push('/data#variables?source=VALUE');
   };
 
   /**
@@ -117,7 +117,7 @@ export function useActions (
    *
    * @param data - Variable item to edit
    */
-  const navigateToEdit = (data: VariableItem) => {
+  const navigateToEdit = (data: VariableDetail) => {
     router.push(`/data#variables?id=${data.id}`);
   };
 
@@ -126,7 +126,7 @@ export function useActions (
    *
    * @param data - Variable item to delete
    */
-  const deleteVariable = (data: VariableItem) => {
+  const deleteVariable = (data: VariableDetail) => {
     modal.confirm({
       content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
@@ -156,7 +156,7 @@ export function useActions (
    *
    * @param data - Variable item to clone
    */
-  const cloneVariable = async (data: VariableItem) => {
+  const cloneVariable = async (data: VariableDetail) => {
     const [error] = await variable.cloneVariable([data.id]);
     if (error) return;
 
@@ -172,7 +172,7 @@ export function useActions (
    */
   const handleTableDropdownClick = (
     menuItem: { name: string; key: 'export' | 'clone'; icon: string },
-    data: VariableItem
+    data: VariableDetail
   ) => {
     switch (menuItem.key) {
       case 'export':

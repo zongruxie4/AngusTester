@@ -4,8 +4,8 @@ import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, IconCopy, modal, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { DataSetItem } from '../types';
-import SearchPanel from '@/views/data/dataset/list/SearchPanel.vue';
+import { DataSetDetail } from '../types';
+import { BasicProps } from '@/types/types';
 
 // Import composables
 import { useDatasetList } from './composables/useDatasetList';
@@ -15,13 +15,12 @@ import { useModals } from './composables/useModals';
 import { useNavigation } from './composables/useNavigation';
 import { useDropdownMenus } from './composables/useDropdownMenus';
 
-// Import types
-import type { DatasetListProps } from '../types';
+import SearchPanel from '@/views/data/dataset/list/SearchPanel.vue';
 
 // Internationalization
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<DatasetListProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -35,7 +34,7 @@ const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({
 const Introduce = defineAsyncComponent(() => import('@/views/data/dataset/list/Introduce.vue'));
 const ImportModal = defineAsyncComponent(() => import('@/views/data/dataset/list/Import.vue'));
 const ExportModal = defineAsyncComponent(() => import('@/views/data/dataset/export/index.vue'));
-const PreviewModal = defineAsyncComponent(() => import('@/views/data/dataset/list/PreviewData.vue'));
+const PreviewDataModal = defineAsyncComponent(() => import('@/views/data/dataset/list/PreviewDataModal.vue'));
 
 // Composables usage
 const {
@@ -93,7 +92,7 @@ const {
  *
  * @param data - Dataset item to delete
  */
-const toDelete = (data: DataSetItem) => {
+const toDelete = (data: DataSetDetail) => {
   modal.confirm({
     content: t('actions.tips.confirmDelete', { name: data.name }),
     async onOk () {
@@ -108,7 +107,7 @@ const toDelete = (data: DataSetItem) => {
  *
  * @param data - Dataset item to clone
  */
-const toClone = async (data: DataSetItem) => {
+const toClone = async (data: DataSetDetail) => {
   await cloneDataset(data, t);
 };
 
@@ -151,7 +150,7 @@ const importOk = () => {
  * @param menuItem - Selected menu item
  * @param data - Dataset item associated with the action
  */
-const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, data: DataSetItem) => {
+const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, data: DataSetDetail) => {
   handleTableDropdownClick(menuItem, data, openPreviewModal, openExportModal, toClone);
 };
 </script>
@@ -160,7 +159,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <Introduce class="mb-7" />
 
-    <div class="text-3.5 font-semibold mb-1">{{ t('dataset.list.title') }}</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('dataset.list.addedTitle') }}</div>
 
     <Spin
       :spinning="loading"
@@ -182,7 +181,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
                 size="small"
                 class="text-3.5 py-0 px-0 mx-1"
                 @click="toCreateStaticDataSet">
-                <span>{{ t('dataset.addStaticDataset') }}</span>
+                <span>{{ t('dataset.actions.addStaticDataset') }}</span>
               </Button>
             </Dropdown>
 
@@ -193,7 +192,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
               size="small"
               class="text-3.5 py-0 px-0 mx-1"
               @click="openImportModal">
-              <span>{{ t('dataset.list.uploadDataset') }}</span>
+              <span>{{ t('dataset.actions.uploadDataset') }}</span>
             </Button>
           </div>
         </div>
@@ -241,7 +240,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
                 <Button
                   type="text"
                   size="small"
-                  class="flex items-center px-0"
+                  class="flex items-center px-0 mr-2"
                   @click="() => toEditDataset(record.id)">
                   <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
                   <span>{{ t('actions.edit') }}</span>
@@ -250,7 +249,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
                 <Button
                   type="text"
                   size="small"
-                  class="flex items-center px-0"
+                  class="flex items-center px-0 mr-2"
                   @click="() => toDelete(record)">
                   <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
                   <span>{{ t('actions.delete') }}</span>
@@ -272,7 +271,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
     </Spin>
 
     <AsyncComponent :visible="previewDataSetModalVisible">
-      <PreviewModal
+      <PreviewDataModal
         v-model:visible="previewDataSetModalVisible"
         :projectId="props.projectId"
         :dataSource="selectedData || undefined" />
