@@ -22,22 +22,22 @@ export function useAddedEmptyState (type: DataType) {
   const emptyStateConfig = computed(() => {
     const configs = {
       variable: {
-        message: t('dataHome.summaryTable.emptyData.noVariable'),
-        actionText: t('dataHome.summaryTable.emptyData.addVariable'),
+        message: t('dataHome.emptyData.noVariable'),
+        actionText: t('dataHome.emptyData.addVariable'),
         actionKey: 'variable'
       },
       dataSet: {
-        message: t('dataHome.summaryTable.emptyData.noDataset'),
-        actionText: t('dataHome.summaryTable.emptyData.addDataset'),
+        message: t('dataHome.emptyData.noDataset'),
+        actionText: t('dataHome.emptyData.addDataset'),
         actionKey: 'dataSet'
       },
       space: {
-        message: t('dataHome.summaryTable.emptyData.noSpace'),
+        message: t('dataHome.emptyData.noSpace'),
         actionText: '',
         actionKey: null
       },
       dataSource: {
-        message: t('dataHome.summaryTable.emptyData.noDataSource'),
+        message: t('dataHome.emptyData.noDataSource'),
         actionText: '',
         actionKey: null
       }

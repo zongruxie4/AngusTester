@@ -1314,7 +1314,7 @@
       "lastWeek": "Last Week"
     },
     "sort": {
-      "byCreateTime": "By Create Time",
+      "byCreateDate": "By Create Time",
       "byCreator": "By Creator",
       "bySubject": "Subject"
     }

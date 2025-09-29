@@ -40,7 +40,7 @@ const projectId = computed(() => {
 });
 
 const menuItems = [
-  { name: t('dataHome.title'), icon: 'icon-zhuye', key: 'homepage' },
+  { name: t('home.title'), icon: 'icon-zhuye', key: 'homepage' },
   { name: t('dataVariable.title'), icon: 'icon-bianliang1', key: 'variables' },
   { name: t('dataset.title'), icon: 'icon-shujuji', key: 'dataSet' },
   { name: t('fileSpace.title'), icon: 'icon-wenjian1', key: 'file' },

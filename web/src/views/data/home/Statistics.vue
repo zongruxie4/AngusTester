@@ -2,7 +2,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 import { onMounted, watch } from 'vue';
-import { StatisticsProps } from './types';
+import { BasicProps } from '@/types/types';
 import { useStatistics } from './composables/useStatistics';
 
 const { t } = useI18n();
@@ -11,7 +11,7 @@ const { t } = useI18n();
  * <p>Component props definition</p>
  * <p>Defines the interface for component properties</p>
  */
-const props = withDefaults(defineProps<StatisticsProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

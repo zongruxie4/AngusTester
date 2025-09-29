@@ -3,16 +3,16 @@ import { defineAsyncComponent, ref } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-import { AddedProps } from '@/views/data/home/types';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
 /**
  * Component props with default values
  */
-const props = withDefaults(defineProps<AddedProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
-  userInfo: {} as any,
+  userInfo: {},
   notify: undefined
 });
 

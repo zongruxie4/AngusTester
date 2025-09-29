@@ -1,27 +1,12 @@
 import { AppInfo, User } from '@xcan-angus/infra';
 
 /**
- * <p>
  * Data type enumeration for different item types
- * </p>
  */
 export type DataType = 'dataSet' | 'space' | 'dataSource' | 'variable';
 
 /**
- * <p>
- * Props interface for the main Added component
- * </p>
- */
-export type AddedProps = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-}
-
-/**
- * <p>
  * Props interface for the Table component
- * </p>
  */
 export type AddedTableProps = {
   projectId: string;
@@ -63,32 +48,6 @@ export interface HomepageProps {
   appInfo: AppInfo;
   /** Refresh notification string for triggering updates */
   refreshNotify: string;
-}
-
-/**
- * <p>Component props interface for Statistics component</p>
- * <p>Defines the properties passed to the statistics component</p>
- */
-export interface StatisticsProps {
-  /** Project identifier for statistics data */
-  projectId: string;
-  /** User information object */
-  userInfo: { id: string };
-  /** Application information object */
-  appInfo: { id: string };
-  /** Notification string for triggering refresh */
-  notify: string;
-}
-
-/**
- * <p>Component props interface for ActivityTimeline component</p>
- * <p>Defines the properties passed to the activity timeline component</p>
- */
-export interface ActivityTimelineProps {
-  /** Project identifier for activity data */
-  projectId: string;
-  /** User information object */
-  userInfo: { id: string };
 }
 
 /**

@@ -9,6 +9,7 @@
     "notSet": "Not set",
     "loading": "loading...",
     "ellipsis": "...",
+    "result": "Result",
     "detail": "Detail",
     "total": "Total",
     "count": "Count",
@@ -91,6 +92,8 @@
     "variables": "Variable",
     "dataset": "Dataset",
     "file": "File",
+    "space": "Space",
+    "directory": "Directory",
     "datasource": "Datasource",
     "mockService": "Mock Service",
     "mockApi": "Mock Api",
@@ -98,6 +101,7 @@
     "reportRecord": "Report Records",
     "activity": "Activity",
     "doc": "Document",
+    "parameters": "Parameters",
     "authControl": "Auth",
     "planTime": "Plan Time",
     "startTime": "Start Time",
@@ -132,10 +136,14 @@
     "deletedDate": "Deleted Date",
     "progress": "Progress",
     "workload": "Workload",
-    "enabledStatus": "Enabled Status",
+    "enabledStatus": "Enabled",
     "actions": "Actions",
     "placeholders": {
       "searchKeyword": "Enter search keyword",
+      "inputName": "Enter parameter name, max 100 characters",
+      "inputDescription": "Enter description, max 200 characters",
+      "inputValue": "Enter value, max 4096 characters",
+      "inputMockValue": "Enter value, mock functions supported, max 4096 characters",
       "selectCreator": "Select Creator",
       "selectModifier": "Select Modifier",
       "selectOwner": "Select owner",
@@ -285,7 +293,7 @@
     "expandAll": "Expand All",
     "collapseAll": "Collapse All",
     "tips": {
-      "confirmDelete": "Are you sure you want to delete project 「{name}」?",
+      "confirmDelete": "Are you sure you want to delete 「{name}」?",
       "createSuccess": "Create successful",
       "saveSuccess": "Save successful",
       "deleteSuccess": "Delete successful",
@@ -300,9 +308,10 @@
       "importSuccess": "Import successful",
       "moveSuccess": "Move successful",
       "copySuccess": "Copy successful",
-      "copyLinkSuccess": "Copy link successful",
-      "shareSuccess": "Share successful",
       "copyFailed": "Copy failed",
+      "copyLinkSuccess": "Copy link successful",
+      "copyLinkFail": "Copy link failed",
+      "shareSuccess": "Share successful",
       "recoverAllSuccess": "All items restored successfully",
       "deleteAllSuccess": "All items deleted successfully",
       "recoverSuccess": "Restored successfully",
@@ -330,8 +339,9 @@
     "modifiedByMe": "Modified by Me",
     "myResponsible": "Owned by Me"
   },
-  "page": {
-    "items": "Items"
+  "pagination": {
+    "items": "Items",
+    "pageInfo": "Page {current}/{totalPage}"
   },
   "stats": {
     "items": "Items"

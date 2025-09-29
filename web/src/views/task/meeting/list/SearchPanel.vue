@@ -118,7 +118,7 @@ const sortMenuItems: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('taskMeeting.sort.byCreateTime'),
+    name: t('taskMeeting.sort.byCreateDate'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Desc
   },

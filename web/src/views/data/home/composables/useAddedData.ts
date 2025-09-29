@@ -1,7 +1,7 @@
 import { computed, inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { modal, notification } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { utils, PageQuery, ProjectPageQuery } from '@xcan-angus/infra';
 import { dataSource, dataSet, variable } from '@/api/tester';
 import { space } from '@/api/storage';
 import { useI18n } from 'vue-i18n';
@@ -9,9 +9,7 @@ import { useI18n } from 'vue-i18n';
 import { AddedItem, DataType } from '@/views/data/home/types';
 
 /**
- * <p>
  * Data management composable for handling CRUD operations on different data types
- * </p>
  * <p>
  * Provides functionality for loading, deleting, and paginating data with proper error handling
  * </p>
@@ -41,7 +39,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
   const loading = ref(false);
   const loaded = ref(false);
   const orderBy = ref<string>();
-  const orderSort = ref<'ASC' | 'DESC'>();
+  const orderSort = ref<PageQuery.OrderSort>();
 
   // Pagination configuration
   const pagination = ref({
@@ -52,7 +50,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
     size: 'small' as const,
     showTotal: (total: number) => {
       const totalPage = Math.ceil(total / pagination.value.pageSize);
-      return t('dataHome.summaryTable.pagination.pageInfo', {
+      return t('pagination.pageInfo', {
         current: pagination.value.current,
         totalPage
       });
@@ -63,21 +61,14 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
   const updateRefreshNotify = inject<(value: string) => void>('updateRefreshNotify');
 
   /**
-   * <p>
    * Load data from API based on current pagination and sorting parameters
-   * </p>
    */
   const loadData = async () => {
     loading.value = true;
     const { current, pageSize } = pagination.value;
 
-    const params: {
-      projectId: string;
-      pageNo: number;
-      pageSize: number;
+    const params: ProjectPageQuery & {
       createdBy?: string;
-      orderBy?: string;
-      orderSort?: string;
       appCode?: string;
     } = {
       projectId: projectId.value,
@@ -104,14 +95,12 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
   };
 
   /**
-   * <p>
    * Handle table change events including pagination and sorting
-   * </p>
    */
   const handleTableChange = ({
     current = 1,
     pageSize = 5
-  }, _filters, sorter: { orderBy: string; orderSort: 'ASC' | 'DESC'; }) => {
+  }, _filters, sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }) => {
     orderBy.value = sorter.orderBy;
     orderSort.value = sorter.orderSort;
     pagination.value.current = current;
@@ -120,9 +109,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
   };
 
   /**
-   * <p>
    * Delete item with confirmation modal
-   * </p>
    */
   const deleteItem = (data: AddedItem) => {
     modal.confirm({
@@ -149,9 +136,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
   };
 
   /**
-   * <p>
    * Navigation functions for creating new items
-   * </p>
    */
   const navigateToCreate = {
     variable: () => router.push('/data#variables'),

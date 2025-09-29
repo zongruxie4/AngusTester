@@ -380,7 +380,7 @@
           "applicationNode": "Application Node"
         },
         "nodeStatus": {
-          "agentInstallStatus": "Agent Status",
+          "agentInstallStatus": "Agent",
           "connectionStatus": "Connected",
           "installed": "Installed",
           "notInstalled": "Not Installed",

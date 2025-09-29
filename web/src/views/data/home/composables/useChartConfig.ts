@@ -115,7 +115,7 @@ export function useChartConfig () {
       total: 'allDataset',
       week: 'datasetByLast7Days',
       month: 'datasetByLastMonth',
-      name: t('dataHome.statistics.dataset')
+      name: t('common.dataset')
     },
     {
       topClass: 'lan-top',
@@ -123,7 +123,7 @@ export function useChartConfig () {
       total: 'allFile',
       week: 'fileByLast7Days',
       month: 'fileByLastMonth',
-      name: t('dataHome.statistics.file')
+      name: t('common.file')
     },
     {
       topClass: 'qin-top',
@@ -131,7 +131,7 @@ export function useChartConfig () {
       total: 'allDatasource',
       week: 'datasourceByLast7Days',
       month: 'datasourceByLastMonth',
-      name: t('dataHome.statistics.datasource')
+      name: t('common.datasource')
     }
   ];
 
@@ -244,21 +244,21 @@ export function useChartConfig () {
     const option = createBaseChartOption();
     option.series[0].data = [
       {
-        name: t('dataHome.statistics.space'),
+        name: t('common.space'),
         value: 0,
         itemStyle: {
           color: 'rgba(24, 144, 255, 1)'
         }
       },
       {
-        name: t('dataHome.statistics.directory'),
+        name: t('common.directory'),
         value: 0,
         itemStyle: {
           color: 'rgba(250, 173, 20, 1)'
         }
       },
       {
-        name: t('dataHome.statistics.file'),
+        name: t('common.file'),
         value: 0,
         itemStyle: {
           color: 'rgba(114, 46, 209, 1)'
@@ -274,10 +274,7 @@ export function useChartConfig () {
    */
   const createDatasourceChartOption = (): ChartOption => {
     const option = createBaseChartOption();
-
-    // 为数据源图表调整特殊配置
     if (isSmallScreen()) {
-      // 小屏幕：图例在底部，水平布局
       option.legend = {
         bottom: '0%',
         left: 'center',
@@ -299,7 +296,6 @@ export function useChartConfig () {
       option.series[0].radius = ['15%', '30%'];
       option.series[0].center = ['50%', '30%'];
     } else {
-      // 大屏幕：图例在右侧，垂直布局
       option.legend = {
         top: '5%',
         right: '5%',

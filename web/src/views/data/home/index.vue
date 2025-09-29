@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
-import { HomepageProps } from './types';
+import { BasicProps } from '@/types/types';
 
 /**
  * <p>Component props definition</p>
  * <p>Defines the interface for component properties</p>
  */
-const props = withDefaults(defineProps<HomepageProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -14,10 +14,10 @@ const props = withDefaults(defineProps<HomepageProps>(), {
 });
 
 // Async component imports for better performance
+const Introduce = defineAsyncComponent(() => import('@/views/data/home/Introduce.vue'));
 const Added = defineAsyncComponent(() => import('@/views/data/home/Added.vue'));
 const Statistics = defineAsyncComponent(() => import('./Statistics.vue'));
 const ActivityTimeline = defineAsyncComponent(() => import('./ActivityTimeline.vue'));
-const Introduce = defineAsyncComponent(() => import('@/views/data/home/Introduce.vue'));
 
 // Component state
 const notify = ref<string>();
