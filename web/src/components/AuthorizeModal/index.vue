@@ -1,27 +1,34 @@
 <script setup lang="ts">
+// UI component imports
 import { Modal } from '@xcan-angus/vue-ui';
+
+// Local component imports
 import Authorize from '@/components/Authorize/index.vue';
 
+/**
+ * Component props interface for authorization modal
+ */
 interface Props {
-  auth:boolean;
-  appId:string;
+  auth: boolean;
+  appId: string;
   visible: boolean;
-  title:string;
-  enumKey:string;
-  listUrl:string;
-  delUrl:string;
-  addUrl:string;
-  updateUrl:string;
-  enabledUrl:string;
-  initStatusUrl:string;
-  onTips:string;
-  offTips:string;
+  title: string;
+  enumKey: string;
+  listUrl: string;
+  delUrl: string;
+  addUrl: string;
+  updateUrl: string;
+  enabledUrl: string;
+  initStatusUrl: string;
+  onTips: string;
+  offTips: string;
 
-  style?:string|{[key:string]:string};
-  class?:string;
-  width?:number;
+  style?: string | { [key: string]: string };
+  class?: string;
+  width?: number;
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   auth: false,
   appId: undefined,
@@ -44,21 +51,26 @@ const props = withDefaults(defineProps<Props>(), {
   class: undefined,
 
   width: 1100
-
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component events
 const emits = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'change', value: { auth: boolean }): void;
   (e: 'cancel'): void;
 }>();
 
-const change = (value:{auth: boolean}) => {
+/**
+ * Handle authorization change event
+ */
+const handleAuthorizationChange = (value: { auth: boolean }) => {
   emits('change', value);
 };
 
-const cancel = () => {
+/**
+ * Handle modal cancel event
+ */
+const handleModalCancel = () => {
   emits('update:visible', false);
   emits('cancel');
 };
@@ -70,8 +82,8 @@ const cancel = () => {
     :centered="true"
     :width="props.width"
     :footer="false"
-    @cancel="cancel">
-    <template v-if="visible">
+    @cancel="handleModalCancel">
+    <template v-if="props.visible">
       <Authorize
         :appId="props.appId"
         :enumKey="props.enumKey"
@@ -89,7 +101,7 @@ const cancel = () => {
         :emptyTextStyle="{margin:'50px 0'}"
         noDataSize="small"
         style="overflow-y: auto;"
-        @change="change" />
+        @change="handleAuthorizationChange" />
     </template>
   </Modal>
 </template>
