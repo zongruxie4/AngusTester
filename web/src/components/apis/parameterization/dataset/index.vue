@@ -1,15 +1,26 @@
 <script setup lang="ts">
+// Vue core imports
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Arrow, AsyncComponent, Colon, Icon, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { Button, Collapse, CollapsePanel, Popconfirm, Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
+
+// Infrastructure imports
 import { EnumMessage, ActionOnEOF, SharingMode, enumUtils, TESTER, http } from '@xcan-angus/infra';
+
+// API imports
 import { paramTarget } from '@/api/tester';
 
+// Local imports
 import { DataSetItem } from './PropsType';
 
 const { t } = useI18n();
 
+/**
+ * Component props interface for dataset parameterization
+ */
 type Props = {
   projectId: string;
   targetId: string;
@@ -18,6 +29,7 @@ type Props = {
   datasetSharingMode: SharingMode;
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   targetId: undefined,
@@ -26,31 +38,39 @@ const props = withDefaults(defineProps<Props>(), {
   datasetSharingMode: SharingMode.ALL_THREAD
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component events
 const emit = defineEmits<{
   (e: 'targetInfoChange', value: { id: string; datasetActionOnEOF: ActionOnEOF; datasetSharingMode: SharingMode; }): void;
 }>();
 
+// Async component imports
 const DataSetModal = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/listModal/index.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/useList/index.vue'));
 const PreviewData = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/previewData/index.vue'));
 const StaticParameters = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/staticParameter/index.vue'));
 const ExtractParameters = defineAsyncComponent(() => import('@/components/apis/parameterization/dataset/extractParameter/index.vue'));
 
-const loaded = ref(false);
-const loading = ref(false);
-const tableData = ref<DataSetItem[]>([]);
-const modalVisible = ref(false);
+// Component state
+const isDataLoaded = ref(false);
+const isLoading = ref(false);
+const datasetTableData = ref<DataSetItem[]>([]);
+const isModalVisible = ref(false);
 
+// Collapse state
 const collapseActiveKeys = ref<string[]>([]);
 
+// Action on EOF configuration
 const actionOnEOF = ref<ActionOnEOF>(ActionOnEOF.RECYCLE);
 const eofEnums = ref<EnumMessage<ActionOnEOF>[]>([]);
 
+// Sharing mode configuration
 const sharingMode = ref<SharingMode>(SharingMode.ALL_THREAD);
 const sharingModeEnums = ref<EnumMessage<SharingMode>[]>([]);
 
-const arrowChange = (open: boolean, id: string) => {
+/**
+ * Handle collapse arrow change
+ */
+const handleCollapseArrowChange = (open: boolean, id: string) => {
   if (!open) {
     collapseActiveKeys.value = collapseActiveKeys.value.filter(item => item !== id);
     return;
@@ -59,18 +79,24 @@ const arrowChange = (open: boolean, id: string) => {
   collapseActiveKeys.value.push(id);
 };
 
-const toUse = () => {
-  modalVisible.value = true;
+/**
+ * Handle open dataset modal
+ */
+const handleOpenDatasetModal = () => {
+  isModalVisible.value = true;
 };
 
-const datasetActionOnEOFChange = async (event: { target: { value: ActionOnEOF } }) => {
+/**
+ * Handle dataset action on EOF change
+ */
+const handleDatasetActionOnEOFChange = async (event: any) => {
   const value = event.target.value;
   const params = {
     id: props.targetId,
     datasetActionOnEOF: value,
     datasetSharingMode: sharingMode.value
   };
-  const [error] = await patchTargetInfo(params);
+  const [error] = await updateTargetInfo(params);
   if (error) {
     return;
   }
@@ -78,14 +104,17 @@ const datasetActionOnEOFChange = async (event: { target: { value: ActionOnEOF } 
   actionOnEOF.value = value;
 };
 
-const datasetSharingModeChange = async (event: { target: { value: SharingMode } }) => {
+/**
+ * Handle dataset sharing mode change
+ */
+const handleDatasetSharingModeChange = async (event: any) => {
   const value = event.target.value;
   const params = {
     id: props.targetId,
     datasetActionOnEOF: actionOnEOF.value,
     datasetSharingMode: value
   };
-  const [error] = await patchTargetInfo(params);
+  const [error] = await updateTargetInfo(params);
   if (error) {
     return;
   }
@@ -93,7 +122,10 @@ const datasetSharingModeChange = async (event: { target: { value: SharingMode } 
   sharingMode.value = value;
 };
 
-const patchTargetInfo = async (params: { id: string; datasetActionOnEOF: ActionOnEOF; datasetSharingMode: SharingMode; }) => {
+/**
+ * Update target information via API
+ */
+const updateTargetInfo = async (params: { id: string; datasetActionOnEOF: ActionOnEOF; datasetSharingMode: SharingMode; }) => {
   let url = '';
   if (props.targetType === 'API') {
     url = `${TESTER}/apis`;
@@ -101,75 +133,94 @@ const patchTargetInfo = async (params: { id: string; datasetActionOnEOF: ActionO
     url = `${TESTER}/apis/case`;
   }
 
-  loading.value = true;
-  const [error, res] = await http.patch(url, [params]);
-  loading.value = false;
+  isLoading.value = true;
+  const [error, response] = await http.patch(url, [params]);
+  isLoading.value = false;
   if (error) {
     return [error];
   }
 
-  // 同步外部信息
+  // Sync external information
   emit('targetInfoChange', params);
 
-  return [error, res];
+  return [error, response];
 };
 
-const selectedVariablesOk = async (data: DataSetItem[]) => {
+/**
+ * Handle selected datasets confirmation
+ */
+const handleSelectedDatasetsConfirmation = async (data: DataSetItem[]) => {
   if (!data?.length) {
     return;
   }
 
-  const ids = data.map((item) => item.id);
-  loading.value = true;
-  const [error] = await paramTarget.addDataSet(props.targetId, props.targetType, ids);
-  loading.value = false;
+  const datasetIds = data.map((item) => item.id);
+  isLoading.value = true;
+  const [error] = await paramTarget.addDataSet(props.targetId, props.targetType, datasetIds);
+  isLoading.value = false;
   if (error) {
     return;
   }
 
-  tableData.value.unshift(...data);
+  datasetTableData.value.unshift(...data);
 };
 
-const toDelete = async (data: DataSetItem) => {
-  const id = data.id;
-  loading.value = true; // TODO 提到api
-  const [error] = await paramTarget.deleteDataSet(`${TESTER}/target/${props.targetId}/${props.targetType}/dataset`, [id], { dataType: true });
-  loading.value = false;
+/**
+ * Handle dataset deletion
+ */
+const handleDatasetDeletion = async (data: DataSetItem) => {
+  const datasetId = data.id;
+  isLoading.value = true;
+  const [error] = await paramTarget.deleteDataSet(`${TESTER}/target/${props.targetId}/${props.targetType}/dataset`, datasetId, { dataType: true } as any);
+  isLoading.value = false;
   if (error) {
     return;
   }
 
-  tableData.value = tableData.value.filter((item) => item.id !== id);
+  datasetTableData.value = datasetTableData.value.filter((item) => item.id !== datasetId);
 };
 
-const loadData = async () => {
-  loading.value = true;
-  const [error, res] = await paramTarget.getDataSet(props.targetId, props.targetType);
-  loading.value = false;
-  loaded.value = true;
+/**
+ * Load dataset data from API
+ */
+const loadDatasetData = async () => {
+  isLoading.value = true;
+  const [error, response] = await paramTarget.getDataSet(props.targetId, props.targetType);
+  isLoading.value = false;
+  isDataLoaded.value = true;
   if (error) {
     return;
   }
 
-  tableData.value = res?.data || [];
+  datasetTableData.value = response?.data || [];
 };
 
+/**
+ * Load action on EOF enums
+ */
 const loadActionOnEOFEnums = () => {
   eofEnums.value = enumUtils.enumToMessages(ActionOnEOF);
 };
 
+/**
+ * Load sharing mode enums
+ */
 const loadSharingModeEnums = () => {
   sharingModeEnums.value = enumUtils.enumToMessages(SharingMode);
 };
 
-const reset = () => {
-  loaded.value = false;
-  loading.value = false;
-  tableData.value = [];
-  modalVisible.value = false;
+/**
+ * Reset component state
+ */
+const resetComponentState = () => {
+  isDataLoaded.value = false;
+  isLoading.value = false;
+  datasetTableData.value = [];
+  isModalVisible.value = false;
   collapseActiveKeys.value = [];
 };
 
+// Component initialization and watchers
 onMounted(() => {
   loadActionOnEOFEnums();
   loadSharingModeEnums();
@@ -183,20 +234,22 @@ onMounted(() => {
   }, { immediate: true });
 
   watch(() => props.targetId, (newValue) => {
-    reset();
+    resetComponentState();
 
     if (!newValue) {
       return;
     }
 
-    loadData();
+    loadDatasetData();
   }, { immediate: true });
 });
 
-const selectedNames = computed(() => {
-  return tableData.value?.map(item => item.name);
+// Computed properties
+const selectedDatasetNames = computed(() => {
+  return datasetTableData.value?.map(item => item.name);
 });
 
+// Hint text mapping
 const hintTextMap = {
   FILE: t('commonComp.apis.parameterizationDataset.fileHint'),
   JDBC: t('commonComp.apis.parameterizationDataset.jdbcHint')
@@ -204,7 +257,7 @@ const hintTextMap = {
 </script>
 
 <template>
-  <Spin :spinning="loading" class="text-3 leading-5">
+  <Spin :spinning="isLoading" class="text-3 leading-5">
     <div class="flex items-center flex-nowrap mb-2.5">
       <div class="flex-shrink-0 w-1 h-3.5 rounded bg-blue-400 mr-1.5"></div>
       <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('commonComp.apis.parameterizationDataset.title') }}</div>
@@ -223,7 +276,7 @@ const hintTextMap = {
         <RadioGroup
           :value="actionOnEOF"
           name="action"
-          @change="datasetActionOnEOFChange">
+          @change="handleDatasetActionOnEOFChange">
           <Radio
             v-for="item in eofEnums"
             :key="item.value"
@@ -249,7 +302,7 @@ const hintTextMap = {
         <RadioGroup
           :value="sharingMode"
           name="share"
-          @change="datasetSharingModeChange">
+          @change="handleDatasetSharingModeChange">
           <Radio
             v-for="item in sharingModeEnums"
             :key="item.value"
@@ -273,14 +326,14 @@ const hintTextMap = {
         type="link"
         size="small"
         class="flex items-center h-5 leading-5 p-0 space-x-1"
-        @click="toUse">
+        @click="handleOpenDatasetModal">
         <Icon icon="icon-jia" class="text-3.5" />
         <span>{{ t('commonComp.apis.parameterizationDataset.addDataset') }}</span>
       </Button>
     </div>
 
-    <template v-if="loaded">
-      <div v-if=" tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
+    <template v-if="isDataLoaded">
+      <div v-if="datasetTableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
         <img style="width:100px;" src="../../../../assets/images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3">
           <span>{{ t('commonComp.apis.parameterizationDataset.noDataMessage') }}</span>
@@ -296,7 +349,7 @@ const hintTextMap = {
 
         <Collapse v-model:activeKey="collapseActiveKeys" collapsible="disabled">
           <CollapsePanel
-            v-for="item in tableData"
+            v-for="item in datasetTableData"
             :key="item.id"
             :showArrow="false">
             <template #header>
@@ -307,19 +360,19 @@ const hintTextMap = {
                     type="dashed"
                     style="font-size:12px;"
                     class="mr-1"
-                    @change="arrowChange($event, item.id)" />
+                    @change="handleCollapseArrowChange($event, item.id)" />
                   <div class="flex-1 truncate">
                     <span
                       :title="item.name"
                       class="truncate cursor-pointer"
-                      @click="arrowChange(!collapseActiveKeys.includes(item.id), item.id)">{{ item.name }}</span>
+                      @click="handleCollapseArrowChange(!collapseActiveKeys.includes(item.id), item.id)">{{ item.name }}</span>
                   </div>
                 </div>
                 <div class="table-tbody-td" :title="item.createdByName">
                   <div class="flex-1 truncate">{{ item.createdByName }}</div>
                 </div>
                 <div class="table-tbody-td flex items-center space-x-2.5">
-                  <Popconfirm :title="t('commonComp.apis.parameterizationDataset.cancelReferenceConfirm', { name: item.name })" @confirm="toDelete(item)">
+                  <Popconfirm :title="t('commonComp.apis.parameterizationDataset.cancelReferenceConfirm', { name: item.name })" @confirm="handleDatasetDeletion(item)">
                     <Button
                       :title="t('commonComp.apis.parameterizationDataset.cancelReference')"
                       type="text"
@@ -365,7 +418,7 @@ const hintTextMap = {
               </template>
 
               <TabPane key="preview" :tab="t('common.preview')">
-                <PreviewData :dataSource="item" />
+                <PreviewData :dataSource="item as any" />
               </TabPane>
 
               <TabPane key="use" :tab="t('common.use')">
@@ -377,12 +430,12 @@ const hintTextMap = {
       </div>
     </template>
 
-    <AsyncComponent :visible="modalVisible">
+    <AsyncComponent :visible="isModalVisible">
       <DataSetModal
-        v-model:visible="modalVisible"
+        v-model:visible="isModalVisible"
         :projectId="props.projectId"
-        :selectedNames="selectedNames"
-        @ok="selectedVariablesOk" />
+        :selectedNames="selectedDatasetNames"
+        @ok="handleSelectedDatasetsConfirmation" />
     </AsyncComponent>
   </Spin>
 </template>

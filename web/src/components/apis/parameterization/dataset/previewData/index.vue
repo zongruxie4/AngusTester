@@ -1,25 +1,38 @@
 <script setup lang="ts">
+// Vue core imports
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, Input, NoData, Spin, Table } from '@xcan-angus/vue-ui';
+
+// Infrastructure imports
 import { utils, duration, ExtractionSource, ExtractionMethod, ExtractionFileType, Encoding } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+
+// API imports
 import { dataSet } from '@/api/tester';
-import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
+/**
+ * Table data interface for preview
+ */
 type TableData = {
   [key: string]: string;
 } & { id: string; }
 
+/**
+ * Component props interface for preview data
+ */
 type Props = {
   dataSource: {
     id: string;
     projectId: string;
     extracted: boolean;
     name: string;
-    extraction: { // TODO extraction可以复用的
+    extraction: {
       defaultValue: string;
       expression: string;
       failureMessage: string;
@@ -53,56 +66,66 @@ type Props = {
   };
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const rowNum = ref<string>('20');
-
-const pagination = ref<{ current: number; pageSize: number; total: number; showSizeChanger: false; }>({ current: 1, pageSize: 10, total: 0, showSizeChanger: false });
-
-const loading = ref(false);
-const loaded = ref(false);
+// Component state
+const previewRowCount = ref<string>('20');
+const paginationConfig = ref<{ current: number; pageSize: number; total: number; showSizeChanger: false; }>({ current: 1, pageSize: 10, total: 0, showSizeChanger: false });
+const isLoading = ref(false);
+const isDataLoaded = ref(false);
 const errorMessage = ref<string>();
-const columns = ref<{
+const tableColumns = ref<{
   title: string;
   dataIndex: string;
   ellipsis: true
 }[]>([]);
-const dataList = ref<TableData[]>([]);
+const previewDataList = ref<TableData[]>([]);
 
-const inputChange = debounce(duration.search, (event: { target: { value: string; } }) => {
+/**
+ * Handle row count input change with debounce
+ * @param event - Input change event
+ */
+const handleRowCountInputChange = debounce(duration.search, (event: any) => {
   const value = event.target.value;
-  rowNum.value = value || '20';
+  previewRowCount.value = value || '20';
 
-  loadData();
+  loadPreviewData();
 });
 
-const refresh = () => {
-  if (loading.value) {
+/**
+ * Handle refresh button click
+ */
+const handleRefresh = () => {
+  if (isLoading.value) {
     return;
   }
 
-  loadData();
+  loadPreviewData();
 };
 
-const loadData = async () => {
-  if (!props.dataSource || loading.value) {
+/**
+ * Load preview data from API
+ */
+const loadPreviewData = async () => {
+  if (!props.dataSource || isLoading.value) {
     return;
   }
 
-  const params = {
+  const requestParams = {
     ...props.dataSource,
-    rowNum: rowNum.value
+    rowNum: previewRowCount.value
   };
 
-  loading.value = true;
-  const [error, res] = await dataSet.previewDataSetValue(params, { silence: true });
-  loading.value = false;
-  loaded.value = true;
-  columns.value = [];
-  dataList.value = [];
-  pagination.value.total = 0;
+  isLoading.value = true;
+  const [error, response] = await dataSet.previewDataSetValue(requestParams, { silence: true });
+  isLoading.value = false;
+  isDataLoaded.value = true;
+  tableColumns.value = [];
+  previewDataList.value = [];
+  paginationConfig.value.total = 0;
 
   if (error) {
     errorMessage.value = error.message;
@@ -111,18 +134,18 @@ const loadData = async () => {
 
   errorMessage.value = undefined;
 
-  const data = res?.data;
-  if (data) {
-    const entries = Object.entries(data);
-    entries.every(([key, value]) => {
-      columns.value.push({ dataIndex: key, title: key, ellipsis: true });
+  const responseData = response?.data;
+  if (responseData) {
+    const dataEntries = Object.entries(responseData);
+    dataEntries.every(([key, value]) => {
+      tableColumns.value.push({ dataIndex: key, title: key, ellipsis: true });
       if (Array.isArray(value)) {
-        const newValue = value as string[];
-        newValue.every((item, index) => {
-          if (dataList.value[index]) {
-            dataList.value[index][key] = item;
+        const arrayValue = value as string[];
+        arrayValue.every((item, index) => {
+          if (previewDataList.value[index]) {
+            previewDataList.value[index][key] = item;
           } else {
-            dataList.value[index] = {
+            previewDataList.value[index] = {
               id: utils.uuid(),
               [key]: item
             };
@@ -134,39 +157,44 @@ const loadData = async () => {
       return true;
     });
 
-    pagination.value.total = dataList.value.length;
+    paginationConfig.value.total = previewDataList.value.length;
   }
 };
 
-const reset = () => {
-  rowNum.value = '20';
-  pagination.value.total = 0;
-  loading.value = false;
-  loaded.value = false;
+/**
+ * Reset component state
+ */
+const resetComponentState = () => {
+  previewRowCount.value = '20';
+  paginationConfig.value.total = 0;
+  isLoading.value = false;
+  isDataLoaded.value = false;
   errorMessage.value = undefined;
-  columns.value = [];
-  dataList.value = [];
+  tableColumns.value = [];
+  previewDataList.value = [];
 };
 
+// Component initialization and watchers
 onMounted(() => {
   watch(() => props.dataSource, (newValue) => {
-    reset();
+    resetComponentState();
 
     if (!newValue) {
       return;
     }
 
-    loadData();
+    loadPreviewData();
   }, { immediate: true });
 });
 
+// Computed properties
 const noDataText = computed(() => {
   return errorMessage.value ? errorMessage.value : t('common.noData');
 });
 </script>
 
 <template>
-  <Spin :spinning="loading" class="text-3 leading-5">
+  <Spin :spinning="isLoading" class="text-3 leading-5">
     <div class="flex items-center justify-between transform-gpu -translate-y-1">
       <Hints :text="t('commonComp.apis.parameterizationDataset.previewData.hintText')" />
 
@@ -174,31 +202,31 @@ const noDataText = computed(() => {
         <div class="flex items-center">
           <div class="flex-shrink-0 mr-2">{{ t('commonComp.apis.parameterizationDataset.previewData.rowNum') }}</div>
           <Input
-            v-model:value="rowNum"
+            v-model:value="previewRowCount"
             placeholder="1 ~ 10000"
             :maxlength="5"
             :min="1"
             :max="10000"
             dataType="integer"
             class="w-25"
-            @change="inputChange" />
+            @change="handleRowCountInputChange" />
         </div>
 
         <Button
-          :disabled="loading"
+          :disabled="isLoading"
           size="small"
           type="link"
           class="px-0 h-5 leading-5 border-0 text-theme-content text-theme-text-hover"
-          @click="refresh">
+          @click="handleRefresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
           <span class="ml-1">{{ t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>
 
-    <template v-if="loaded">
+    <template v-if="isDataLoaded">
       <NoData
-        v-if="!dataList.length"
+        v-if="!previewDataList.length"
         size="small"
         class="mt-5 mb-10"
         :class="{ 'no-data-error-text': !!errorMessage }"
@@ -206,9 +234,11 @@ const noDataText = computed(() => {
 
       <Table
         v-else
-        :dataSource="dataList"
-        :columns="columns"
-        :pagination="pagination"
+        :dataSource="previewDataList"
+        :columns="tableColumns"
+        :pagination="paginationConfig"
+        :noDataSize="'small'"
+        :noDataText="t('common.noData')"
         rowKey="id"
         class="flex-1 mb-3.5" />
     </template>

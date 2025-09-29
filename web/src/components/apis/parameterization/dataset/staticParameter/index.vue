@@ -1,16 +1,27 @@
 <script lang="ts" setup>
+// Vue core imports
 import { computed } from 'vue';
-import { Hints, IconCopy, Input } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
+import { Hints, IconCopy, Input } from '@xcan-angus/vue-ui';
+
+// Infrastructure imports
+import { utils } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
+/**
+ * Option interface for static parameter
+ */
 export interface Option {
     name: string;
     value: string;
 }
 
+/**
+ * Component props interface for static parameter
+ */
 export interface Props {
     dataSource: {
         name: string;
@@ -18,11 +29,13 @@ export interface Props {
     }[];
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => []
 });
 
-const dataList = computed(() => {
+// Computed properties
+const processedDataSource = computed(() => {
   return props.dataSource?.map(item => {
     return {
       ...item,
@@ -46,7 +59,7 @@ const dataList = computed(() => {
 
     <div class="space-y-2.5">
       <div
-        v-for="item in dataList"
+        v-for="item in processedDataSource"
         :key="item.id"
         class="flex items-center space-x-2">
         <div class="flex items-center flex-1 space-x-2">

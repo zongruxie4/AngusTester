@@ -1,121 +1,164 @@
 <script lang="ts" setup>
+// Vue core imports
 import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { DropdownGroup, HttpMethodText, Icon, IconText, Input, Select, Table } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
+
+// Infrastructure imports
 import { TESTER } from '@xcan-angus/infra';
+
+// Utility imports
 import { debounce } from 'throttle-debounce';
+
+// API imports
 import { services, apis } from '@/api/tester';
 
 const { t } = useI18n();
 
+/**
+ * Component props interface for select case component
+ */
 interface Props {
   visible: boolean;
   projectId: string;
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   visible: true,
   projectId: undefined
 });
-const emits = defineEmits<{(e: 'change', ids: string[], rows: any[]):void}>();
 
-const apisKeywords = ref();
-const caseKeywords = ref();
+// Component events
+const emits = defineEmits<{(e: 'change', ids: string[], rows: any[]): void}>();
 
-// 根据关键词分组
-const group = (data:Array<Record<string, any>>, key: string) => {
-  const res:Record<string, Array<any>> = {};
+// Component state
+const apiSearchKeywords = ref<string>();
+const caseSearchKeywords = ref<string>();
+
+/**
+ * Group data by specified key
+ * @param data - Array of data to group
+ * @param key - Key to group by
+ * @returns Grouped data object
+ */
+const groupDataByKey = (data: Array<Record<string, any>>, key: string) => {
+  const groupedResult: Record<string, Array<any>> = {};
   data.forEach((item) => {
     const keyValue = item[key];
-    if (!res[keyValue]) {
-      res[keyValue] = [item];
+    if (!groupedResult[keyValue]) {
+      groupedResult[keyValue] = [item];
     } else {
-      res[keyValue].push(item);
+      groupedResult[keyValue].push(item);
     }
   });
-  return res;
+  return groupedResult;
 };
 
-const ok = () => {
-  if (groupedKey.value !== '') {
-    const groupIds = apisList.value.map(item => item.id);
-    const ids = rowSelection.value.selectedRowKeys.filter(id => !groupIds.includes(id));
-    const rows = allApis.filter(row => ids.includes(row.id));
-    emits('change', ids, rows);
+/**
+ * Emit selected case data to parent
+ */
+const emitSelectedCaseData = () => {
+  if (currentGroupingKey.value !== '') {
+    const groupIds = apiListData.value.map(item => item.id);
+    const selectedIds = tableRowSelection.value.selectedRowKeys.filter(id => !groupIds.includes(id));
+    const selectedRows = allApiData.filter(row => selectedIds.includes(row.id));
+    emits('change', selectedIds, selectedRows);
   } else {
-    const rows = allApis.filter(row => rowSelection.value.selectedRowKeys.includes(row.id));
-    emits('change', rowSelection.value.selectedRowKeys, rows);
+    const selectedRows = allApiData.filter(row => tableRowSelection.value.selectedRowKeys.includes(row.id));
+    emits('change', tableRowSelection.value.selectedRowKeys, selectedRows);
   }
 };
-const serviceId = ref();
-const selectService = (id: string) => {
-  serviceId.value = id;
-  apisList.value = [];
-  allApis = [];
-  currentApiId.value = [];
-  rowSelection.value.selectedRowKeys = [];
-  ok();
-  getApiList();
+
+// Service selection state
+const selectedServiceId = ref<string>();
+
+/**
+ * Handle service selection
+ * @param serviceId - Selected service ID
+ */
+const handleServiceSelection = (serviceId: string) => {
+  selectedServiceId.value = serviceId;
+  apiListData.value = [];
+  allApiData = [];
+  currentSelectedApiId.value = [];
+  tableRowSelection.value.selectedRowKeys = [];
+  emitSelectedCaseData();
+  loadApiList();
 };
 
-let allApis = [];
-const currentApiId = ref<string[]>([]);
-const getApiList = async () => {
-  const [error, { data = {} }] = await services.loadApisByServicesId(serviceId.value, {
+// API data storage
+let allApiData: any[] = [];
+const currentSelectedApiId = ref<string[]>([]);
+
+/**
+ * Load API list from service
+ */
+const loadApiList = async () => {
+  const [error, { data = {} }] = await services.loadApisByServicesId(selectedServiceId.value, {
     pageNo: 1,
     pageSize: 2000,
     projectId: props.projectId,
-    filters: apisKeywords.value ? [{ value: apisKeywords.value, op: 'MATCH', key: 'summary' }] : []
+    filters: apiSearchKeywords.value ? [{ value: apiSearchKeywords.value, op: 'MATCH', key: 'summary' }] : []
   });
   if (error) {
-    allApis = [];
-    apisList.value = [];
-    allApiCases.value = [];
-    currentApiId.value = [];
-    ok();
+    allApiData = [];
+    apiListData.value = [];
+    allApiCaseData.value = [];
+    currentSelectedApiId.value = [];
+    emitSelectedCaseData();
     return;
   }
 
-  allApis = data?.list || [];
-  grouped(allApis);
-  if (apisList.value.length && !currentApiId.value.length) {
-    if (groupedKey.value !== '') {
-      currentApiId.value = apisList.value?.[0]?.children?.[0]?.id ? [apisList.value?.[0]?.children?.[0]?.id] : [];
+  allApiData = data?.list || [];
+  processGroupedData(allApiData);
+  if (apiListData.value.length && !currentSelectedApiId.value.length) {
+    if (currentGroupingKey.value !== '') {
+      currentSelectedApiId.value = apiListData.value?.[0]?.children?.[0]?.id ? [apiListData.value?.[0]?.children?.[0]?.id] : [];
     } else {
-      currentApiId.value = apisList.value?.[0]?.id ? [apisList.value?.[0]?.id] : [];
+      currentSelectedApiId.value = apiListData.value?.[0]?.id ? [apiListData.value?.[0]?.id] : [];
     }
   } else {
-    currentApiId.value = [];
+    currentSelectedApiId.value = [];
   }
 };
 
-const tableLoading = ref(false);
-const allApiCases = ref([]);
-const apiListSelect = async (apisId) => {
-  allApiCases.value = [];
-  if (!apisId) {
+// Table loading state
+const isTableLoading = ref(false);
+const allApiCaseData = ref<any[]>([]);
+
+/**
+ * Load API cases for selected API
+ * @param apiId - API ID to load cases for
+ */
+const loadApiCases = async (apiId: string) => {
+  allApiCaseData.value = [];
+  if (!apiId) {
     return;
   }
-  tableLoading.value = true;
+  isTableLoading.value = true;
   const [error, { data }] = await apis.loadApiCases({
     pageNo: 1,
     pageSize: 2000,
-    apisId,
-    filters: caseKeywords.value ? [{ value: caseKeywords.value, op: 'MATCH', key: 'name' }] : []
+    apisId: apiId,
+    filters: caseSearchKeywords.value ? [{ value: caseSearchKeywords.value, op: 'MATCH', key: 'name' }] : []
   });
-  tableLoading.value = false;
-  rowSelection.value.selectedRowKeys = [];
-  ok();
+  isTableLoading.value = false;
+  tableRowSelection.value.selectedRowKeys = [];
+  emitSelectedCaseData();
   if (error) {
     return;
   }
-  allApiCases.value = data?.list || [];
+  allApiCaseData.value = data?.list || [];
 };
 
-const groupedKey = ref('');
+// Grouping configuration
+const currentGroupingKey = ref('');
 
-const groups = [
+const groupingOptions = [
   {
     key: '',
     name: t('actions.noGroup')
@@ -138,7 +181,8 @@ const groups = [
   }
 ];
 
-const cloumns = [
+// Table column configuration
+const tableColumns = [
   {
     title: t('commonComp.apis.selectCaseModal.caseName'),
     dataIndex: 'name'
@@ -161,58 +205,65 @@ const cloumns = [
   }
 ];
 
-const apisList = ref<{id: string; type?: string; children?: Record<string, any>[], name: string, key?: string}[]>([]);
-const rowSelection = ref({
-  selectedRowKeys: [],
+// API list data
+const apiListData = ref<{id: string; type?: string; children?: Record<string, any>[], name: string, key?: string}[]>([]);
+
+// Table row selection configuration
+const tableRowSelection = ref({
+  selectedRowKeys: [] as string[],
   checkStrictly: false,
-  onChange: (selectedRowKeys) => {
-    rowSelection.value.selectedRowKeys = selectedRowKeys;
-    ok();
+  onChange: (selectedRowKeys: string[]) => {
+    tableRowSelection.value.selectedRowKeys = selectedRowKeys;
+    emitSelectedCaseData();
   }
 });
 
-const grouped = (datalist = []) => {
-  apisList.value = [];
-  if (groupedKey.value !== '') {
-    if (groupedKey.value !== 'tag') {
-      const objData = group(datalist, groupedKey.value);
-      Object.keys(objData).forEach(key => {
-        apisList.value.push({
+/**
+ * Process and group API data based on current grouping key
+ * @param dataList - List of API data to process
+ */
+const processGroupedData = (dataList: any[] = []) => {
+  apiListData.value = [];
+  if (currentGroupingKey.value !== '') {
+    if (currentGroupingKey.value !== 'tag') {
+      const groupedData = groupDataByKey(dataList, currentGroupingKey.value);
+      Object.keys(groupedData).forEach(key => {
+        apiListData.value.push({
           type: 'group',
-          summary: groupedKey.value === 'createdBy'
-            ? objData[key][0].createdByName
-            : groupedKey.value === 'method'
-              ? objData[key][0].method
-              : groupedKey.value === 'ownerId'
-                ? objData[key][0].ownerName
+          summary: currentGroupingKey.value === 'createdBy'
+            ? groupedData[key][0].createdByName
+            : currentGroupingKey.value === 'method'
+              ? groupedData[key][0].method
+              : currentGroupingKey.value === 'ownerId'
+                ? groupedData[key][0].ownerName
                 : key,
           id: key,
           key,
           selectable: false,
-          children: [...objData[key]]
+          children: [...groupedData[key]]
         });
       });
     } else {
-      const resultObj: Record<string, any[]> = {};
-      datalist.forEach((item) => {
+      const tagGroupedResult: Record<string, any[]> = {};
+      dataList.forEach((item) => {
         if (item.tags && item.tags.length) {
           item.tags.forEach(tag => {
-            if (!resultObj[tag]) {
-              resultObj[tag] = [item];
+            if (!tagGroupedResult[tag]) {
+              tagGroupedResult[tag] = [item];
             } else {
-              resultObj[tag].push(item);
+              tagGroupedResult[tag].push(item);
             }
           });
         } else {
-          if (!resultObj.null_tag) {
-            resultObj.null_tag = [item];
+          if (!tagGroupedResult.null_tag) {
+            tagGroupedResult.null_tag = [item];
           } else {
-            resultObj.null_tag.push(item);
+            tagGroupedResult.null_tag.push(item);
           }
         }
       });
-      Object.entries(resultObj).forEach(([key, list]) => {
-        apisList.value.push({
+      Object.entries(tagGroupedResult).forEach(([key, list]) => {
+        apiListData.value.push({
           type: 'group',
           summary: key,
           id: key,
@@ -223,49 +274,61 @@ const grouped = (datalist = []) => {
       });
     }
   } else {
-    apisList.value = datalist;
+    apiListData.value = dataList;
   }
 };
 
-const setGroupKey = (key) => {
-  groupedKey.value = key;
-  rowSelection.value.selectedRowKeys = [];
-  ok();
-  grouped(allApis);
-  if (apisList.value.length && !currentApiId.value) {
-    if (groupedKey.value !== '') {
-      currentApiId.value = apisList.value?.[0]?.children?.[0]?.id ? [apisList.value?.[0]?.children?.[0]?.id] : [];
+/**
+ * Handle grouping key change
+ * @param key - New grouping key
+ */
+const handleGroupingKeyChange = (key: string) => {
+  currentGroupingKey.value = key;
+  tableRowSelection.value.selectedRowKeys = [];
+  emitSelectedCaseData();
+  processGroupedData(allApiData);
+  if (apiListData.value.length && !currentSelectedApiId.value) {
+    if (currentGroupingKey.value !== '') {
+      currentSelectedApiId.value = apiListData.value?.[0]?.children?.[0]?.id ? [apiListData.value?.[0]?.children?.[0]?.id] : [];
     } else {
-      currentApiId.value = apisList.value?.[0]?.id ? [apisList.value?.[0]?.id] : [];
+      currentSelectedApiId.value = apiListData.value?.[0]?.id ? [apiListData.value?.[0]?.id] : [];
     }
   } else {
-    currentApiId.value = [];
+    currentSelectedApiId.value = [];
   }
 };
 
-const handleApisKeywordsChange = debounce(300, () => {
-  getApiList();
+/**
+ * Handle API keywords search change with debounce
+ */
+const handleApiKeywordsSearchChange = debounce(300, () => {
+  loadApiList();
 });
 
-const handleChangeCaseKeywordChange = debounce(300, () => {
-  apiListSelect(currentApiId.value[0]);
+/**
+ * Handle case keywords search change with debounce
+ */
+const handleCaseKeywordsSearchChange = debounce(300, () => {
+  loadApiCases(currentSelectedApiId.value[0]);
 });
 
+// Watch for API selection changes
 onMounted(() => {
-  watch(() => currentApiId.value, newValue => {
-    apiListSelect(newValue[0]);
+  watch(() => currentSelectedApiId.value, (newValue: string[]) => {
+    loadApiCases(newValue[0]);
   });
 });
 
+// Expose component methods
 defineExpose({
   reset: () => {
-    apisList.value = [];
-    allApis = [];
-    allApiCases.value = [];
-    rowSelection.value.selectedRowKeys = [];
-    ok();
-    if (serviceId.value) {
-      selectService(serviceId.value);
+    apiListData.value = [];
+    allApiData = [];
+    allApiCaseData.value = [];
+    tableRowSelection.value.selectedRowKeys = [];
+    emitSelectedCaseData();
+    if (selectedServiceId.value) {
+      handleServiceSelection(selectedServiceId.value);
     }
   }
 });
@@ -297,15 +360,15 @@ defineExpose({
           </template>
         </Select>
         <Input
-          v-model:value="apisKeywords"
+          v-model:value="apiSearchKeywords"
           class="flex-1/3"
           allowClear
           :placeholder="t('commonComp.apis.selectCaseModal.searchApi')"
-          @change="handleApisKeywordsChange" />
+          @change="handleApiKeywordsSearchChange" />
         <DropdownGroup
-          v-model:activeKey="groupedKey"
-          :menuItems="groups"
-          @click="setGroupKey">
+          v-model:activeKey="currentGroupingKey"
+          :menuItems="groupingOptions"
+          @click="handleGroupingKeyChange">
           <Button
             size="small">
             <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
@@ -317,11 +380,11 @@ defineExpose({
       </div>
       <div class="h-100">
         <Tree
-          v-model:selectedKeys="currentApiId"
+          v-model:selectedKeys="currentSelectedApiId"
           defaultExpandAll
-          :treeData="apisList"
+          :treeData="apiListData"
           blockNode
-          :showIcon="groupedKey!==''"
+          :showIcon="currentGroupingKey!==''"
           :height="400"
           :fieldNames="{children:'children', title:'title', key:'id'}"
           class="text-3 select-case-tree w-full">
@@ -346,17 +409,17 @@ defineExpose({
     <div class="flex-1 min-w-50">
       <div class="flex mb-1 justify-between">
         <Input
-          v-model:value="caseKeywords"
+          v-model:value="caseSearchKeywords"
           :placeholder="t('actions.search')"
           allowClear
           class="w-50"
-          @change="handleChangeCaseKeywordChange" />
+          @change="handleCaseKeywordsSearchChange" />
       </div>
       <Table
-        :loading="tableLoading"
-        :rowSelection="rowSelection"
-        :dataSource="allApiCases"
-        :columns="cloumns"
+        :loading="isTableLoading"
+        :rowSelection="tableRowSelection"
+        :dataSource="allApiCaseData"
+        :columns="tableColumns"
         :scroll="{y: 400}"
         noDataSize="small"
         rowKey="id"

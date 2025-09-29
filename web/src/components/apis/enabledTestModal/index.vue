@@ -1,27 +1,40 @@
 <script lang="ts" setup>
+// Vue core imports
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Hints, notification } from '@xcan-angus/vue-ui';
 import { Checkbox, Modal, Switch } from 'ant-design-vue';
+
+// API imports
 import { services } from '@/api/tester';
 
 const { t } = useI18n();
 
+/**
+ * Component props interface for enabled test modal
+ */
 interface Props {
   visible: boolean;
   id?: string; // serviceId
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   id: ''
 });
 
-const emits = defineEmits<{(e: 'update:visible', value: boolean)}>();
+// Component events
+const emits = defineEmits<{(e: 'update:visible', value: boolean): void}>();
 
-const checked = ref(['PERFORMANCE', 'STABILITY', 'FUNCTIONAL']);
-const showOpt = ref(['PERFORMANCE', 'STABILITY', 'FUNCTIONAL']);
-const validated = ref(false);
-const testTypes = [
+// Component state
+const enabledTestTypes = ref(['PERFORMANCE', 'STABILITY', 'FUNCTIONAL']);
+const visibleTestTypes = ref(['PERFORMANCE', 'STABILITY', 'FUNCTIONAL']);
+const isValidationEnabled = ref(false);
+
+// Test type configuration
+const testTypeOptions = [
   {
     label: t('commonComp.apis.enabledTestModal.functionalTest'),
     value: 'FUNCTIONAL'
@@ -36,33 +49,49 @@ const testTypes = [
   }
 ];
 
-const changeChecked = (value, checkedKey) => {
-  if (value) {
-    checked.value.push(checkedKey);
+/**
+ * Handle test type enable/disable toggle
+ * @param isEnabled - Whether the test type is enabled
+ * @param testType - Test type to toggle
+ */
+const handleTestTypeToggle = (isEnabled: boolean, testType: string) => {
+  if (isEnabled) {
+    enabledTestTypes.value.push(testType);
   } else {
-    checked.value = checked.value.filter(i => i !== checkedKey);
+    enabledTestTypes.value = enabledTestTypes.value.filter(type => type !== testType);
   }
 };
 
-const changeShow = (event, checkedKey) => {
+/**
+ * Handle test type visibility toggle
+ * @param event - Checkbox change event
+ * @param testType - Test type to toggle visibility
+ */
+const handleTestTypeVisibilityToggle = (event: any, testType: string) => {
   if (event.target.checked) {
-    showOpt.value.push(checkedKey);
+    visibleTestTypes.value.push(testType);
   } else {
-    showOpt.value = showOpt.value.filter(i => i !== checkedKey);
+    visibleTestTypes.value = visibleTestTypes.value.filter(type => type !== testType);
   }
 };
 
-const loading = ref(false);
-const handleOk = async () => {
-  loading.value = true;
-  if (!showOpt.value.length) {
-    handleClose();
-    loading.value = false;
+// Loading state
+const isLoading = ref(false);
+
+/**
+ * Handle modal confirmation and save test type settings
+ */
+const handleModalConfirmation = async () => {
+  isLoading.value = true;
+  if (!visibleTestTypes.value.length) {
+    handleModalClose();
+    isLoading.value = false;
     return;
   }
-  const enabled = showOpt.value.filter(i => checked.value.includes(i));
-  if (enabled.length) {
-    const [error] = await services.toggleTestEnabled(props.id, true, { testTypes: enabled }, {
+  
+  const enabledTypes = visibleTestTypes.value.filter(type => enabledTestTypes.value.includes(type));
+  if (enabledTypes.length) {
+    const [error] = await services.toggleTestEnabled(props.id, true, { testTypes: enabledTypes }, {
       paramsType: true
     });
     if (error) {
@@ -70,39 +99,33 @@ const handleOk = async () => {
     }
   }
 
-  const disabled = showOpt.value.filter(i => !enabled.includes(i));
-  if (disabled.length) {
-    const [error] = await services.toggleTestEnabled(props.id, false, { testTypes: disabled }, {
+  const disabledTypes = visibleTestTypes.value.filter(type => !enabledTypes.includes(type));
+  if (disabledTypes.length) {
+    const [error] = await services.toggleTestEnabled(props.id, false, { testTypes: disabledTypes }, {
       paramsType: true
     });
     if (error) {
       return;
     }
   }
-  // let successMsg = '成功';
-  // if (enabled.length) {
-  //   const enabeldName = testTypes.filter(i => enabled.includes(i.value)).map(i => i.label).join('、');
-  //   successMsg += `启用${enabeldName}`;
-  // }
 
-  // if (disabled.length) {
-  //   const disabledName = testTypes.filter(i => disabled.includes(i.value)).map(i => i.label).join('、');
-  //   successMsg += `${enabled.length ? '，' : ''}禁用${disabledName}`;
-  // }
-
-  loading.value = false;
+  isLoading.value = false;
   notification.success(t('commonComp.apis.enabledTestModal.successMessage'));
   emits('update:visible', false);
 };
 
-const handleClose = () => {
+/**
+ * Handle modal close
+ */
+const handleModalClose = () => {
   emits('update:visible', false);
 };
 
+// Watch for modal visibility changes
 watch(() => props.visible, () => {
-  checked.value = ['PERFORMANCE', 'STABILITY', 'FUNCTIONAL'];
-  showOpt.value = ['PERFORMANCE', 'STABILITY', 'FUNCTIONAL'];
-  validated.value = false;
+  enabledTestTypes.value = ['PERFORMANCE', 'STABILITY', 'FUNCTIONAL'];
+  visibleTestTypes.value = ['PERFORMANCE', 'STABILITY', 'FUNCTIONAL'];
+  isValidationEnabled.value = false;
 }, {
   immediate: true
 });
@@ -111,32 +134,27 @@ watch(() => props.visible, () => {
 <template>
   <Modal
     :title="t('commonComp.apis.enabledTestModal.title')"
-    :confirmLoading="loading"
+    :confirmLoading="isLoading"
     :visible="props.visible"
     :width="350"
-    @cancel="handleClose"
-    @ok="handleOk">
-    <!-- <CheckboxGroup
-      v-model:value="showOpt"
-      :options="testTypes"
-      class="ml-2">
-    </CheckboxGroup> -->
+    @cancel="handleModalClose"
+    @ok="handleModalConfirmation">
     <Hints :text="t('commonComp.apis.enabledTestModal.hint')" />
     <div class="mt-2">
       <div
-        v-for="opt in testTypes"
-        :key="opt.value"
+        v-for="testType in testTypeOptions"
+        :key="testType.value"
         class="flex items-center mb-2 flex-1">
-        <Checkbox :checked="showOpt.includes(opt.value)" @change="changeShow($event, opt.value)" />
-        <span class="w-20 ml-2">{{ opt.label }}</span>
+        <Checkbox :checked="visibleTestTypes.includes(testType.value)" @change="handleTestTypeVisibilityToggle($event, testType.value)" />
+        <span class="w-20 ml-2">{{ testType.label }}</span>
         <div>
           <Switch
-            v-show="showOpt.includes(opt.value)"
-            :checked="checked.includes(opt.value)"
+            v-show="visibleTestTypes.includes(testType.value)"
+            :checked="enabledTestTypes.includes(testType.value)"
             :checkedChildren="t('status.enabled')"
             :unCheckedChildren="t('status.disabled')"
             size="small"
-            @click="changeChecked($event, opt.value)" />
+            @click="handleTestTypeToggle($event, testType.value)" />
         </div>
       </div>
     </div>

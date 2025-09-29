@@ -1,16 +1,27 @@
 <script lang="ts" setup>
+// Vue core imports
 import { computed } from 'vue';
-import { Hints, IconCopy, Input } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
+import { Hints, IconCopy, Input } from '@xcan-angus/vue-ui';
+
+// Infrastructure imports
+import { utils } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
+/**
+ * Option interface for parameter extraction
+ */
 export interface Option {
   name: string;
   value: string;
 }
 
+/**
+ * Component props interface for extract parameter
+ */
 export interface Props {
   columnIndex: number;
   dataSource: {
@@ -20,13 +31,15 @@ export interface Props {
   hintText: string;
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   columnIndex: 0,
   dataSource: () => [],
   hintText: undefined
 });
 
-const dataList = computed(() => {
+// Computed properties
+const processedDataSource = computed(() => {
   return props.dataSource?.map(item => {
     return {
       ...item,
@@ -35,7 +48,7 @@ const dataList = computed(() => {
   }) || [];
 });
 
-const _columnIndex = computed(() => {
+const currentColumnIndex = computed(() => {
   return +(props.columnIndex || 0);
 });
 </script>
@@ -54,7 +67,7 @@ const _columnIndex = computed(() => {
 
     <div class="space-y-2.5">
       <div
-        v-for="(item,index) in dataList"
+        v-for="(item,index) in processedDataSource"
         :key="item.id"
         class="flex items-center space-x-2">
         <div class="flex items-center flex-1 space-x-2">
@@ -77,7 +90,7 @@ const _columnIndex = computed(() => {
             </Input>
           </div>
           <Input
-            :value="_columnIndex+index+1"
+            :value="currentColumnIndex+index+1"
             class="flex-1"
             readonly />
         </div>
