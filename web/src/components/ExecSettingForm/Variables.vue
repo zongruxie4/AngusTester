@@ -1,50 +1,66 @@
 <script setup lang='ts'>
+// Vue core imports
 import { ref, watch, onMounted, computed, defineAsyncComponent, inject } from 'vue';
-import { Button, Collapse, CollapsePanel, RadioGroup, Radio, TabPane, Tabs, Textarea, Switch, InputGroup } from 'ant-design-vue';
-import { EnumMessage, ExtractionMethod, utils, enumUtils, HttpExtractionLocation } from '@xcan-angus/infra';
-import { RadioChangeEvent } from 'ant-design-vue/es/radio/interface';
-import { Hints, Input, Icon, SelectEnum, IconRequired, Arrow } from '@xcan-angus/vue-ui';
-
 import { useI18n } from 'vue-i18n';
 
+// UI component imports
+import { Button, Collapse, CollapsePanel, RadioGroup, Radio, TabPane, Tabs, Textarea, Switch, InputGroup } from 'ant-design-vue';
+import { Hints, Input, Icon, SelectEnum, IconRequired, Arrow } from '@xcan-angus/vue-ui';
+
+// Infrastructure imports
+import { EnumMessage, ExtractionMethod, utils, enumUtils, HttpExtractionLocation } from '@xcan-angus/infra';
+import { RadioChangeEvent } from 'ant-design-vue/es/radio/interface';
+
+// Local imports
 import { VariableObj } from './PropsType';
+
 const { t } = useI18n();
+// Injected dependencies
 const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
+const currentProjectId = computed(() => {
   return projectInfo.value?.id;
 });
 
+/**
+ * Component props interface
+ */
 interface Props {
   variables: VariableObj[];
 }
 
+// Async component imports
 const VariableListModal = defineAsyncComponent(() => import('../Exec/Variables/VariableListModal/index.vue'));
+
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   variables: () => []
 });
 
-const keywords = ref();
-const oldTableData = ref<VariableObj[]>([]);
-// const tableData = ref<VariableObj[]>([]);
-const tableData = computed(() => {
-  if (keywords.value) {
-    return oldTableData.value.filter(item => item.name.includes(keywords.value));
+// Component state
+const searchKeywords = ref();
+const variableTableData = ref<VariableObj[]>([]);
+
+// Computed properties
+const filteredVariableData = computed(() => {
+  if (searchKeywords.value) {
+    return variableTableData.value.filter(item => item.name.includes(searchKeywords.value));
   }
-  return oldTableData.value;
+  return variableTableData.value;
 });
 
-const selectedNames = computed(() => {
-  return oldTableData.value.map(i => i.name);
+const selectedVariableNames = computed(() => {
+  return variableTableData.value.map(i => i.name);
 });
 
-watch(() => props.variables, (newValue) => {
-  if (newValue?.length) {
-    const list = JSON.parse(JSON.stringify(newValue));
-    oldTableData.value = list.map(item => ({
+// Watchers
+watch(() => props.variables, (newVariableList) => {
+  if (newVariableList?.length) {
+    const variableList = JSON.parse(JSON.stringify(newVariableList));
+    variableTableData.value = variableList.map(variableItem => ({
       id: utils.uuid('variable'),
       enabled: true,
-      ...item,
-      description: item.description || undefined,
+      ...variableItem,
+      description: variableItem.description || undefined,
       isEdit: false,
       isAdd: false,
       isExpand: false,
@@ -53,55 +69,81 @@ watch(() => props.variables, (newValue) => {
       nameErr: false,
       valueErr: false,
       enableLoading: false,
-      type: !!(item?.extraction && Object.keys(item.extraction)?.length)
+      type: !!(variableItem?.extraction && Object.keys(variableItem.extraction)?.length)
     }));
-    // oldTableData.value = JSON.parse(JSON.stringify(tableData.value));
   }
 }, {
   deep: true,
   immediate: true
 });
 
-const methodOptions = ref<EnumMessage<ExtractionMethod>[]>();
-const getMethodOptions = async () => {
-  methodOptions.value = enumUtils.enumToMessages(ExtractionMethod);
+// Method options state
+const extractionMethodOptions = ref<EnumMessage<ExtractionMethod>[]>();
+
+/**
+ * Load extraction method options
+ */
+const loadExtractionMethodOptions = async () => {
+  extractionMethodOptions.value = enumUtils.enumToMessages(ExtractionMethod);
 };
 
-const parameterNameChange = (value:string, variable:VariableObj) => {
-  if (['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(variable.extraction.location)) {
-    variable.extraction.parameterNameErr = false;
+/**
+ * Handle parameter name change and validation
+ */
+const handleParameterNameChange = (parameterNameValue: string, targetVariable: VariableObj) => {
+  if (['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(targetVariable.extraction.location)) {
+    targetVariable.extraction.parameterNameErr = false;
     return;
   }
 
-  variable.extraction.parameterNameErr = !value;
+  targetVariable.extraction.parameterNameErr = !parameterNameValue;
 };
 
-const locationChange = (value:string, variable:VariableObj) => {
-  if (['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(value)) {
-    variable.extraction.parameterNameErr = false;
+/**
+ * Handle extraction location change
+ */
+const handleExtractionLocationChange = (locationValue: string, targetVariable: VariableObj) => {
+  if (['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(locationValue)) {
+    targetVariable.extraction.parameterNameErr = false;
   }
 };
-const expressionChange = (value:string, variable:VariableObj) => {
-  variable.extraction.expressionErr = !value;
-};
-const methodChange = (value, variable:VariableObj) => {
-  variable.extraction.method.value = value;
-  variable.extraction.parameterNameErr = false;
-  variable.extraction.expressionErr = false;
+
+/**
+ * Handle extraction expression change and validation
+ */
+const handleExtractionExpressionChange = (expressionValue: string, targetVariable: VariableObj) => {
+  targetVariable.extraction.expressionErr = !expressionValue;
 };
 
-// 变量名称校验
-const variableNameChange = (value:string, variable:VariableObj):void => {
-  variable.nameErr = !value;
-};
-// 变量值校验
-const variableValueChange = (value:string, variable:VariableObj):void => {
-  variable.valueErr = !value;
+/**
+ * Handle extraction method change
+ */
+const handleExtractionMethodChange = (methodValue, targetVariable: VariableObj) => {
+  targetVariable.extraction.method.value = methodValue;
+  targetVariable.extraction.parameterNameErr = false;
+  targetVariable.extraction.expressionErr = false;
 };
 
-const typeChange = (value:RadioChangeEvent, variable:VariableObj) => {
-  if (value && !variable?.extraction) {
-    variable.extraction = {
+/**
+ * Handle variable name change and validation
+ */
+const handleVariableNameChange = (variableNameValue: string, targetVariable: VariableObj): void => {
+  targetVariable.nameErr = !variableNameValue;
+};
+
+/**
+ * Handle variable value change and validation
+ */
+const handleVariableValueChange = (variableValueValue: string, targetVariable: VariableObj): void => {
+  targetVariable.valueErr = !variableValueValue;
+};
+
+/**
+ * Handle variable type change
+ */
+const handleVariableTypeChange = (typeChangeEvent: RadioChangeEvent, targetVariable: VariableObj) => {
+  if (typeChangeEvent && !targetVariable?.extraction) {
+    targetVariable.extraction = {
       defaultValue: '',
       expression: '',
       failureMessage: '',
@@ -116,39 +158,55 @@ const typeChange = (value:RadioChangeEvent, variable:VariableObj) => {
     };
   }
 
-  variable.valueErr = false;
-  variable.extraction.parameterNameErr = false;
-  variable.extraction.expressionErr = false;
+  targetVariable.valueErr = false;
+  targetVariable.extraction.parameterNameErr = false;
+  targetVariable.extraction.expressionErr = false;
 };
 
+// Component lifecycle
 onMounted(() => {
-  getMethodOptions();
+  loadExtractionMethodOptions();
 });
 
-const activeKey = ref([]);
+// Collapse state
+const expandedCollapseKeys = ref([]);
 
-const collapseChange = (keys:string[]) => {
-  activeKey.value = keys;
+/**
+ * Handle collapse panel change
+ */
+const handleCollapsePanelChange = (collapseKeys: string[]) => {
+  expandedCollapseKeys.value = collapseKeys;
 };
 
-const arrowChange = (id:string) => {
-  if (activeKey.value.includes(id)) {
-    activeKey.value = activeKey.value.filter(item => item !== id);
+/**
+ * Handle collapse arrow click
+ */
+const handleCollapseArrowClick = (collapseId: string) => {
+  if (expandedCollapseKeys.value.includes(collapseId)) {
+    expandedCollapseKeys.value = expandedCollapseKeys.value.filter(key => key !== collapseId);
   } else {
-    activeKey.value.push(id);
+    expandedCollapseKeys.value.push(collapseId);
   }
 };
 
-const variableVisible = ref(false);
-const handleAdd = () => {
-  variableVisible.value = true;
+// Modal state
+const isVariableModalVisible = ref(false);
+
+/**
+ * Handle add variable button click
+ */
+const handleAddVariableClick = () => {
+  isVariableModalVisible.value = true;
 };
 
-const handleAddVariable = (data: VariableObj[]) => {
-  oldTableData.value.push(...data.map(i => {
+/**
+ * Handle adding new variables
+ */
+const handleAddNewVariables = (newVariableData: VariableObj[]) => {
+  variableTableData.value.push(...newVariableData.map(variableItem => {
     return {
       enabled: true,
-      ...i,
+      ...variableItem,
       id: utils.uuid('variable'),
       isEdit: false,
       isAdd: true,
@@ -160,20 +218,25 @@ const handleAddVariable = (data: VariableObj[]) => {
       enableLoading: false
     };
   }));
-  if (oldTableData.value.length > 200) {
-    oldTableData.value = oldTableData.value.slice(200);
+  if (variableTableData.value.length > 200) {
+    variableTableData.value = variableTableData.value.slice(200);
   }
 };
 
-const delVariable = (id:string) => {
-  oldTableData.value = oldTableData.value.filter(item => item.id !== id);
+/**
+ * Handle variable deletion
+ */
+const handleVariableDeletion = (variableId: string) => {
+  variableTableData.value = variableTableData.value.filter(item => item.id !== variableId);
 };
 
+// Component exposure
 defineExpose({
-  tableData: oldTableData.value
+  tableData: variableTableData.value
 });
 
-const request = [
+// Request location options
+const requestLocationOptions = [
   {
     value: '1',
     message: t('xcan_execSettingForm.requestParameters')
@@ -202,15 +265,15 @@ const request = [
       <Hints :text="t('xcan_execSettingForm.variableManagement')" />
       <div class="flex flex-1 items-center justify-between mt-2">
         <Input
-          v-model:value="keywords"
+          v-model:value="searchKeywords"
           class="w-60 mr-2"
           allowClear
           :placeholder="t('xcan_execSettingForm.searchVariables')" />
         <Button
           size="small"
           type="primary"
-          :disabled="oldTableData.length >= 200"
-          @click="handleAdd">
+          :disabled="variableTableData.length >= 200"
+          @click="handleAddVariableClick">
           <Icon
             icon="icon-jia"
             class="mr-1 -mt-0.5 text-3 leading-3" />
@@ -219,11 +282,11 @@ const request = [
       </div>
     </div>
     <Collapse
-      :activeKey="activeKey"
+      :activeKey="expandedCollapseKeys"
       class="!bg-transparent"
-      @change="collapseChange">
+      @change="handleCollapsePanelChange">
       <CollapsePanel
-        v-for="variable in tableData"
+        v-for="variable in filteredVariableData"
         :key="variable.id"
         :showArrow="false"
         class="text-3"
@@ -234,8 +297,8 @@ const request = [
               <div class="py-0.5 px-2 ml-2.5 truncate mr-3.5" :title="variable.name">{{ variable.name }}</div>
               <Arrow
                 class="mr-10"
-                :open="activeKey.includes(variable.id)"
-                @click="arrowChange(variable.id)" />
+                :open="expandedCollapseKeys.includes(variable.id)"
+                @click="handleCollapseArrowClick(variable.id)" />
               <Switch
                 v-model:checked="variable.enabled"
                 :checkedChildren="t('status.enabled')"
@@ -246,7 +309,7 @@ const request = [
               <Icon
                 icon="icon-qingchu"
                 class="text-4"
-                @click.stop="delVariable(variable.id)" />
+                @click.stop="handleVariableDeletion(variable.id)" />
             </div>
           </div>
         </template>
@@ -278,9 +341,9 @@ const request = [
               :placeholder="t('xcan_execSettingForm.enterVariableName')"
               size="small"
               class="mb-5"
-              @change="(event)=>variableNameChange(event.target.value,variable)" />
+              @change="(event)=>handleVariableNameChange(event.target.value,variable)" />
             <div class="h-7 mb-5">
-              <RadioGroup v-model:value="variable.type" @change="(value)=>typeChange(value,variable)">
+              <RadioGroup v-model:value="variable.type" @change="(value)=>handleVariableTypeChange(value,variable)">
                 <Radio :value="false">{{ t('xcan_execSettingForm.define') }}</Radio>
                 <Radio :value="true">{{ t('common.extract') }}</Radio>
               </RadioGroup>
@@ -293,13 +356,13 @@ const request = [
                 :placeholder="t('xcan_execSettingForm.enterVariableValue')"
                 size="small"
                 class="mb-5"
-                @change="(event)=>variableValueChange(event.target.value,variable)" />
+                @change="(event)=>handleVariableValueChange(event.target.value,variable)" />
             </template>
             <template v-else>
               <div class="h-7 mb-5">
-                <RadioGroup v-model:value="variable.extraction.method.value" @change="methodChange($event,variable)">
+                <RadioGroup v-model:value="variable.extraction.method.value" @change="handleExtractionMethodChange($event,variable)">
                   <Radio
-                    v-for="tab in methodOptions"
+                    v-for="tab in extractionMethodOptions"
                     :key="tab.value"
                     :value="tab.value">
                     {{ tab.message }}
@@ -311,7 +374,7 @@ const request = [
                   v-model:value="variable.extraction.location"
                   style="width: 40%;"
                   :enumKey="HttpExtractionLocation"
-                  @change="(value)=>locationChange(value,variable)" />
+                  @change="(value)=>handleExtractionLocationChange(value,variable)" />
                 <Input
                   v-model:value="variable.extraction.parameterName"
                   :disabled="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(variable.extraction.location)"
@@ -319,7 +382,7 @@ const request = [
                   :maxlength="400"
                   style="width: 60%;"
                   :placeholder="t('xcan_execSettingForm.enterParameterName')"
-                  @change="(event)=>parameterNameChange(event.target.value,variable)" />
+                  @change="(event)=>handleParameterNameChange(event.target.value,variable)" />
               </InputGroup>
               <template v-if="variable.extraction?.method?.value ==='REGEX'">
                 <Input
@@ -329,7 +392,7 @@ const request = [
                   :placeholder="t('xcan_execSettingForm.enterExpression')"
                   size="small"
                   class="mb-5"
-                  @change="(event)=>expressionChange(event.target.value,variable)" />
+                  @change="(event)=>handleExtractionExpressionChange(event.target.value,variable)" />
               </template>
               <template v-else-if="variable.extraction?.method?.value ==='EXACT_VALUE'">
                 <Input
@@ -348,7 +411,7 @@ const request = [
                   :placeholder="t('xcan_execSettingForm.enterExpression')"
                   class="mb-5"
                   size="small"
-                  @change="(event)=>expressionChange(event.target.value,variable)" />
+                  @change="(event)=>handleExtractionExpressionChange(event.target.value,variable)" />
               </template>
               <Input
                 v-model:value="variable.extraction.defaultValue"
@@ -367,9 +430,9 @@ const request = [
               v-model:value="variable.extraction.method.value"
               class="variable-method-tab"
               size="small"
-              @change="methodChange($event,variable)">
+              @change="handleExtractionMethodChange($event,variable)">
               <TabPane
-                v-for="tab in request"
+                v-for="tab in requestLocationOptions"
                 :key="tab.value"
                 :tab="tab.message" />
             </Tabs>
@@ -378,10 +441,10 @@ const request = [
       </CollapsePanel>
     </Collapse>
     <VariableListModal
-      v-model:visible="variableVisible"
-      :projectId="projectId"
-      :selectedNames="selectedNames"
-      @ok="handleAddVariable"></VariableListModal>
+      v-model:visible="isVariableModalVisible"
+      :projectId="currentProjectId"
+      :selectedNames="selectedVariableNames"
+      @ok="handleAddNewVariables"></VariableListModal>
   </div>
 </template>
 <style scoped>

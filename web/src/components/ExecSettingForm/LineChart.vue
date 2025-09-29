@@ -1,21 +1,28 @@
 <script setup lang="ts">
+// Vue core imports
 import { ref, onMounted, watch, onBeforeUnmount } from 'vue';
-import * as echarts from 'echarts/core';
 import { useI18n } from 'vue-i18n';
 
+// ECharts imports
+import * as echarts from 'echarts/core';
 import { GridComponent, TooltipComponent } from 'echarts/components';
 import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+
 const { t } = useI18n();
 
+/**
+ * Component props interface for line chart
+ */
 export interface Props {
-  unit:string;
-  xData:string[];
-  yData:number[];
+  unit: string;
+  xData: string[];
+  yData: number[];
   maxThreads: number;
   maxThreadsTime: number;
 }
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   unit: '',
   xData: () => [],
@@ -25,23 +32,29 @@ const props = withDefaults(defineProps<Props>(), {
   maxThreadsTime: 0
 });
 
+// ECharts configuration
 echarts.use([GridComponent, TooltipComponent, LineChart, CanvasRenderer, UniversalTransition]);
 
-const chartsRef = ref();
-let myChart: echarts.ECharts;
+// Component refs and state
+const chartContainerRef = ref();
+let chartInstance: echarts.ECharts;
 
-const initCharts = () => {
-  if (!chartsRef.value) {
+/**
+ * Initialize the line chart with configuration
+ */
+const initializeLineChart = () => {
+  if (!chartContainerRef.value) {
     return;
   }
-  myChart = echarts.init(chartsRef.value);
-  myChart.setOption(chartsOption);
+  chartInstance = echarts.init(chartContainerRef.value);
+  chartInstance.setOption(chartConfiguration);
   window.addEventListener('resize', () => {
-    myChart.resize();
+    chartInstance.resize();
   });
 };
 
-const chartsOption = {
+// Chart configuration
+const chartConfiguration = {
 
   grid: {
     top: 20,
@@ -64,11 +77,11 @@ const chartsOption = {
     textStyle: {
       fontSize: 12
     },
-    formatter: (params) => {
-      const data = params[0];
-      const color = data.color;
-      const value = data.value;
-      return `<div class="flex items-center text-3 text-text-centent"><div class="h-3 w-3 rounded-full mr-3.5" style="background-color:${color}"></div><span class="mr-3.5">${t('xcan_execSettingForm.executionConcurrency')}</span>${value}</div>`;
+    formatter: (tooltipParams) => {
+      const dataPoint = tooltipParams[0];
+      const dataColor = dataPoint.color;
+      const dataValue = dataPoint.value;
+      return `<div class="flex items-center text-3 text-text-centent"><div class="h-3 w-3 rounded-full mr-3.5" style="background-color:${dataColor}"></div><span class="mr-3.5">${t('xcan_execSettingForm.executionConcurrency')}</span>${dataValue}</div>`;
     }
   },
   xAxis: {
@@ -78,11 +91,11 @@ const chartsOption = {
     type: 'category',
     boundaryGap: false,
     axisLabel: {
-      showMaxLabel: true // 设置为true来显示最大值
+      showMaxLabel: true // Show maximum value label
     },
     data: props.xData,
     axisTick: {
-      show: false // 隐藏X轴刻度线
+      show: false // Hide X-axis tick marks
     }
   },
   yAxis: [
@@ -94,7 +107,7 @@ const chartsOption = {
       splitLine: {
         show: true,
         lineStyle: {
-          type: 'dashed' // 设置为虚线
+          type: 'dashed' // Set as dashed line
         }
       },
       type: 'value'
@@ -117,10 +130,10 @@ const chartsOption = {
           y2: 1,
           colorStops: [{
             offset: 0,
-            color: 'rgba(0, 119, 255, 0.3)' // 渐变起始颜色
+            color: 'rgba(0, 119, 255, 0.3)' // Gradient start color
           }, {
             offset: 1,
-            color: 'rgba(0, 119, 255, 0.10)' // 渐变结束颜色
+            color: 'rgba(0, 119, 255, 0.10)' // Gradient end color
           }]
         }
       }
@@ -128,17 +141,16 @@ const chartsOption = {
   ]
 };
 
-// Enable data zoom when user click bar.
-
+// Watchers
 watch(() => props.xData, () => {
-  chartsOption.xAxis.data = props.xData;
-  chartsOption.series[0].data = props.yData;
-  myChart?.setOption(chartsOption, true);
+  chartConfiguration.xAxis.data = props.xData;
+  chartConfiguration.series[0].data = props.yData;
+  chartInstance?.setOption(chartConfiguration, true);
 }, { deep: true });
 
-watch(() => props.unit, (newValue) => {
-  chartsOption.xAxis.name = t('xcan_execSettingForm.executionTimeUnit', { unit: newValue });
-  myChart?.setOption(chartsOption, true);
+watch(() => props.unit, (newUnitValue) => {
+  chartConfiguration.xAxis.name = t('xcan_execSettingForm.executionTimeUnit', { unit: newUnitValue });
+  chartInstance?.setOption(chartConfiguration, true);
 });
 
 // watch(() => props.maxYData, (newValue) => {
@@ -148,20 +160,21 @@ watch(() => props.unit, (newValue) => {
 //   }
 // });
 
+// Component lifecycle
 onBeforeUnmount(() => {
   window.removeEventListener('resize', () => {
-    myChart.resize();
+    chartInstance.resize();
   });
 });
 
 onMounted(() => {
-  initCharts();
+  initializeLineChart();
 });
 
 </script>
 <template>
   <div
-    ref="chartsRef"
+    ref="chartContainerRef"
     class="h-50 w-full"
     style="max-width:500px">
   </div>

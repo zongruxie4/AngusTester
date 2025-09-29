@@ -49,6 +49,9 @@ const oauthKey = ref(1);
 const tokenJson = ref({});
 const token = ref();
 
+/**
+ * Reset authentication data to default values
+ */
 const resetData = () => {
   type.value = null;
   authType.value = 'clientCredentials';
@@ -64,6 +67,9 @@ const flowauthLabel = computed(() => {
 });
 
 // 父级的安全认证
+/**
+ * Load project security configurations
+ */
 const loadProjectSecurity = async () => {
   const [error, resp] = await http.get(`${TESTER}/services/${apiBaseInfo.value?.serviceId}/comp/type`, {
     types: ['securitySchemes'],

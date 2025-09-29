@@ -1,43 +1,62 @@
 <script setup lang="ts">
+// Vue core imports
 import { ref, defineAsyncComponent, reactive, onMounted, nextTick, onBeforeUnmount, computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Form, FormItem, Switch, Collapse, CollapsePanel, Checkbox, CheckboxGroup, Badge } from 'ant-design-vue';
+import { Input, Select, SelectEnum, DatePicker, Icon, IconRequired, Arrow, RadioGroup, Tooltip, ShortDuration, Colon } from '@xcan-angus/vue-ui';
+
+// Infrastructure imports
 import { TESTER, SupportedLanguage, DatabaseType, TransactionIsolation, PoolType, StartMode, ActionWhenError } from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 import elementResizeDetector from 'element-resize-detector';
-import { Input, Select, SelectEnum, DatePicker, Icon, IconRequired, Arrow, RadioGroup, Tooltip, ShortDuration, Colon } from '@xcan-angus/vue-ui';
 
-import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
+/**
+ * Component props interface for execution setting form
+ */
 export interface Props {
   scriptType: string;
   scriptInfo?: Record<string, any>;
-  addType?:'expr'; // expr 体验执行
+  addType?: 'expr'; // Experience execution type
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   scriptInfo: undefined,
   addType: undefined
 });
+
+// Async component imports
 const LineChart = defineAsyncComponent(() => import('./LineChart.vue'));
 const Variables = defineAsyncComponent(() => import('./Variables.vue'));
 
+/**
+ * Split time string into number and unit parts
+ */
 const splitTime = (str: string): [string, string] => {
   const number = str.replace(/\D/g, '');
   const unit = str.replace(/\d/g, '');
   return [number, unit];
 };
 
+// Chart data state
 const chartData = reactive({
   xData: [],
   yData: []
 });
+
+// Configuration state
 const configurationtends = ref();
 const pluginType = ref();
 const pluginSettingExtends = ref();
 const configVariables = ref([]);
 
-// 变更图表数据
+/**
+ * Update chart data based on execution parameters
+ */
 const setEchartsData = () => {
   const { duration, thread } = executParams.value; // durationUnit
   // const durationOfSec = durationUnit.value === 's'
@@ -208,6 +227,9 @@ const setEchartsData = () => {
   }
 };
 
+/**
+ * Initialize execution parameters from script info
+ */
 const initParams = () => {
   if (!props.scriptInfo) {
     return;
@@ -518,11 +540,13 @@ const initParams = () => {
   }
 };
 
+// Component lifecycle and watchers
 watch(() => props.scriptType, () => {
   resetParam();
   initParams();
 });
 
+// Execution parameters state
 const executFormRef = ref();
 const executParams = ref({
   iterations: '', // 迭代次数
@@ -537,6 +561,9 @@ const executParams = ref({
   }
 });
 
+/**
+ * Handle threads input blur event
+ */
 const threadsBlur = (e) => {
   executParams.value.thread.threads = e.target.value;
   if (+executParams.value.thread.rampUpThreads > e.target.value) {
@@ -548,29 +575,47 @@ const threadsBlur = (e) => {
   setExecParamErrNum();
 };
 
+/**
+ * Handle iterations input blur event
+ */
 const iterationsBlur = (e) => {
   executParams.value.iterations = e.target.value;
   setExecParamErrNum();
 };
 
+/**
+ * Handle ramp up interval input blur event
+ */
 const rampUpIntervalBlur = (e) => {
   executParams.value.thread.rampUpInterval = e.target.value;
   setExecParamErrNum();
 };
+/**
+ * Handle ramp up threads input blur event
+ */
 const rampUpThreadsBlur = (e) => {
   executParams.value.thread.rampUpThreads = e.target.value;
   setExecParamErrNum();
 };
+/**
+ * Handle ramp down interval input blur event
+ */
 const rampDownIntervalBlur = (e) => {
   executParams.value.thread.rampDownInterval = e.target.value;
   setExecParamErrNum();
 };
+/**
+ * Handle ramp down threads input blur event
+ */
 const rampDownThreadsBlur = (e) => {
   executParams.value.thread.rampDownThreads = e.target.value;
   setExecParamErrNum();
 };
 
 const durationUnit = ref('s');
+/**
+ * Handle duration input blur event
+ */
 const durationBlur = (value) => {
   const strs = splitTime(value);
   executParams.value.duration = strs[0];
@@ -583,11 +628,15 @@ const durationBlur = (value) => {
   setExecParamErrNum();
 };
 
+/**
+ * Handle duration change event
+ */
 const durationChange = (value) => {
   const strs = splitTime(value);
   durationUnit.value = strs[1];
 };
 
+// Computed properties
 const timeUnitMessage = computed(() => {
   switch (durationUnit.value) {
     case 'ms':
@@ -605,9 +654,13 @@ const timeUnitMessage = computed(() => {
   }
 });
 
-const supercharged = ref(false); // 开始 默认直压
-const stressReliever = ref(false); // 结束 默认直压
+// Ramp up and ramp down state
+const supercharged = ref(false); // Start with direct pressure by default
+const stressReliever = ref(false); // End with direct pressure by default
 
+/**
+ * Handle ramp up enabled change
+ */
 const superchargedChange = (value) => {
   supercharged.value = value;
   if (!supercharged.value) {
@@ -616,6 +669,9 @@ const superchargedChange = (value) => {
   }
 };
 
+/**
+ * Handle ramp down enabled change
+ */
 const stressRelieverChange = (value) => {
   stressReliever.value = value;
   if (!stressReliever.value) {
@@ -624,6 +680,7 @@ const stressRelieverChange = (value) => {
   }
 };
 
+// Global settings state
 const globalFormRef = ref();
 const globalParams = ref({
   startMode: '',
@@ -687,6 +744,7 @@ const runnerSetupTimeoutChange = (value) => {
   runnerSetupTimeoutUnit.value = strs[1];
 };
 
+// HTTP settings state
 const httpParamsFormRef = ref();
 const httpArgumentsParams = ref({
   ignoreAssertions: true,
@@ -716,6 +774,7 @@ const extendParams = ref({
   extend: [{ key: '', value: '' }]
 });
 
+// WebSocket settings state
 const webSocketParamsFormRef = ref();
 const webSocketArgumentsParams = ref({
   ignoreAssertions: true,
@@ -747,6 +806,7 @@ const webSocletReconnectionIntervalChange = (value) => {
   reconnectionIntervalUnit.value = strs[1];
 };
 
+// JDBC settings state
 const jdbcParamsFormRef = ref();
 const jdbcArgumentsParams = ref({
   ignoreAssertions: true,
@@ -973,6 +1033,9 @@ const isValid = async () => {
 };
 
 const variablesRef = ref();
+/**
+ * Get form data for submission
+ */
 const getData = () => {
   const _variables = variablesRef.value
     ? variablesRef.value.tableData.map(item => {
@@ -1572,6 +1635,9 @@ watch(() => props.scriptInfo, () => {
   immediate: true
 });
 
+/**
+ * Reset all form parameters to default values
+ */
 const resetParam = () => {
   executParams.value = {
     iterations: '',
@@ -1682,12 +1748,18 @@ const setActiveKey = (key:string) => {
   }
 };
 
+/**
+ * Open execution parameters section
+ */
 const openExecutParames = () => {
   if (!activeKey.value.includes('exec')) {
     setActiveKey('exec');
   }
 };
 
+/**
+ * Open global parameters section
+ */
 const openGlobalParames = () => {
   if (!activeKey.value.includes('advanced')) {
     setActiveKey('advanced');
@@ -1698,6 +1770,9 @@ const openGlobalParames = () => {
   }
 };
 
+/**
+ * Open plugin parameters section
+ */
 const openPulginParames = () => {
   if (!activeKey.value.includes('plugin')) {
     setActiveKey('plugin');
@@ -1775,8 +1850,12 @@ const updateRsetAfterRamp = (_value:boolean[]) => {
   }
 };
 
+// Form validation state
 const execParamErrNum = ref(0);
 
+/**
+ * Set execution parameter error numbers for validation
+ */
 const setExecParamErrNum = () => {
   executFormRef.value.validate().then(() => {
     execParamErrNum.value = 0;
@@ -1787,6 +1866,9 @@ const setExecParamErrNum = () => {
 };
 
 const globalParamErrNum = ref(0);
+/**
+ * Set global parameter error numbers for validation
+ */
 const setGlobalParamErrNum = () => {
   globalFormRef.value.validate().then(
     () => {
@@ -1803,6 +1885,9 @@ const startAtDateChange = (value) => {
 };
 
 const jdbcParamErrNum = ref(0);
+/**
+ * Set plugin parameter error numbers for validation
+ */
 const setPluginParamErrNum = () => {
   jdbcParamsFormRef.value.validate().then(
     () => {
@@ -1817,6 +1902,7 @@ const errTotal = computed(() => {
   return execParamErrNum.value + globalParamErrNum.value + jdbcParamErrNum.value;
 });
 
+// Component exposure
 defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulginParames, errTotal });
 </script>
 <template>

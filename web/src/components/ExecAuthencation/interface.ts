@@ -1,9 +1,12 @@
 
-// import { useI18n } from 'vue-i18n';
-// const { t } = useI18n();
+// Infrastructure imports
 import { i18n } from '@xcan-angus/infra';
+
 const t = i18n.getI18n()?.global?.t || ((value: string) => value);
 
+/**
+ * Authentication item interface for execution authentication
+ */
 export interface AuthItem {
   name?: string;
   type: 'http'|'apiKey'|'oauth2'|'extends'|null;
@@ -14,9 +17,9 @@ export interface AuthItem {
   value?: string;
   apiKeys?: {name: string; in: string; value: string}[];
   oauth2?: {clientCredentials?: Record<string, string|string[]>, password?: Record<string, string|string[]>, newToken?: boolean };
-
 }
 
+// Authentication input location options
 export const inOpt = [
   {
     value: 'query',
@@ -32,6 +35,9 @@ export const inOpt = [
   // }
 ];
 
+/**
+ * Get default authentication item structure
+ */
 export const getAuthItem = () => {
   return {
     name: '',
@@ -40,6 +46,7 @@ export const getAuthItem = () => {
   };
 };
 
+// Authentication type options for execution
 export const authTypeOptions = [
   {
     label: t('xcan_execAuthencation.noAuth'),
@@ -71,6 +78,7 @@ export const authTypeOptions = [
   }
 ];
 
+// Authentication input method options
 export const authInOpt = [
   {
     label: t('xcan_execAuthencation.sendViaBasicAuthHeader'),
@@ -82,6 +90,7 @@ export const authInOpt = [
   }
 ];
 
+// OAuth2 flow authentication types
 export const flowAuthType = [
   // {
   //   value: 'authorizationCode',
@@ -105,17 +114,7 @@ export const flowAuthType = [
   // }
 ];
 
-// authorizationUrl 授权URL
-// tokenUrl 访问令牌URL
-// refreshUrl 刷新令牌URL
-// scopes 访问范围
-
-// x-xc-oauth2-clientId
-// x-xc-oauth2-clientSecret
-// x-xc-oauth2-callbackUrl
-// x-xc-oauth2-username
-// x-xc-oauth2-password
-
+// OAuth2 configuration labels and validation rules
 export const authLabels = [
   {
     valueKey: 'authorizationUrl',
@@ -183,6 +182,7 @@ export const authLabels = [
   // }
 ];
 
+// Encryption type options for OAuth2
 export const encryptionTypeOpt = [
   {
     value: 'SHA-256',
@@ -194,6 +194,7 @@ export const encryptionTypeOpt = [
   }
 ];
 
+// OAuth2 flow field configurations
 export const authorizationCode = [
   'authorizationUrl',
   'callbackUrl',
@@ -203,6 +204,7 @@ export const authorizationCode = [
   'clientSecret',
   'scopes'
 ];
+
 export const password = [
   'tokenUrl',
   'refreshUrl',
@@ -212,6 +214,7 @@ export const password = [
   'password',
   'scopes'
 ];
+
 export const implicit = [
   'authorizationUrl',
   'callbackUrl',
@@ -221,6 +224,7 @@ export const implicit = [
   'clientSecret',
   'scopes'
 ];
+
 export const clientCredentials = [
   'tokenUrl',
   'refreshUrl',
@@ -228,6 +232,7 @@ export const clientCredentials = [
   'clientSecret',
   'scopes'
 ];
+
 export const authorizationCodePKCE = [
   'authorizationUrl',
   'callbackUrl',
@@ -240,6 +245,7 @@ export const authorizationCodePKCE = [
   'scopes'
 ];
 
+// OAuth2 flow authentication field mappings
 export const flowAuthKeys = {
   authorizationCode,
   password,
@@ -248,6 +254,9 @@ export const flowAuthKeys = {
   authorizationCodePKCE
 };
 
+/**
+ * Process API key data for authentication
+ */
 const getApiKeyData = (dataSource) => {
   // const { extensions } = dataSource;
   // const first = { name: dataSource.name, in: dataSource.in, [valueKey]: dataSource[valueKey] };
@@ -265,6 +274,9 @@ const getApiKeyData = (dataSource) => {
   return [headerAuth, queryAuth];
 };
 
+/**
+ * Process API key data for display purposes
+ */
 const getShowApiKeyData = (dataSource) => {
   const queryAuth = {};
   const queryList = [dataSource.apiKeys || []].filter(item => item.in === 'query');
@@ -279,6 +291,9 @@ const getShowApiKeyData = (dataSource) => {
   return [headerAuth, queryAuth];
 };
 
+/**
+ * Get execution authentication data based on authentication type
+ */
 const getExecShowAuthData = async (dataSource) => {
   switch (dataSource.type) {
     case 'http':
