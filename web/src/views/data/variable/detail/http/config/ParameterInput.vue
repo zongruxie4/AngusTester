@@ -226,7 +226,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
           :maxlength="4096"
           class="flex-1"
           trim
-          :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.parameterInput.valuePlaceholder')"
+          :placeholder="t('common.placeholders.inputMockValue')"
           @change="valueChange" />
       </div>
       <Button

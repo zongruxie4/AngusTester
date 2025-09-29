@@ -79,7 +79,7 @@ defineExpose({
   <div class="flex items-center mb-3.5">
     <div class="flex items-center flex-shrink-0 mr-2.5 w-18 font-semibold text-right justify-end">
       <IconRequired />
-      <span>{{ t('dataset.detail.staticDataset.name') }}</span>
+      <span>{{ t('common.name') }}</span>
     </div>
     <Input
       v-model:value="dataSetName"
@@ -101,7 +101,7 @@ defineExpose({
       showCount
       type="textarea"
       class="flex-1"
-      :placeholder="t('dataset.detail.staticDataset.descriptionPlaceholder')"
+      :placeholder="t('common.placeholders.inputDescription')"
       trim />
   </div>
 
@@ -129,7 +129,7 @@ defineExpose({
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.preview') }}</span>
+          <span>{{ t('actions.preview') }}</span>
         </div>
       </template>
 
@@ -139,7 +139,7 @@ defineExpose({
     <TabPane v-if="dataSetId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.use') }}</span>
+          <span>{{ t('actions.use') }}</span>
         </div>
       </template>
 

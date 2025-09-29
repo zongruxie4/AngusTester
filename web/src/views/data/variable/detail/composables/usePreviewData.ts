@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n';
 import { onMounted, ref, watch } from 'vue';
 import { variable } from '@/api/tester';
-import { VariableItem } from '../types';
+import { VariableItem } from '../../types';
 
 /**
  * Composable for managing variable preview data logic
@@ -24,7 +24,6 @@ export function usePreviewData (props: {
     if (loading.value) {
       return;
     }
-
     loadData();
   };
 

@@ -35,7 +35,7 @@ export function useValuePreview () {
     }
 
     // Check if variable has preview flag
-    if (!data.previewFlag) {
+    if (!data.preview) {
       return false;
     }
 
@@ -43,7 +43,6 @@ export function useValuePreview () {
     if (!data.extracted && !hasMockFunctions(data.value)) {
       return false;
     }
-
     return true;
   };
 

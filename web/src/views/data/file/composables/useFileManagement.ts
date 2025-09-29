@@ -359,7 +359,7 @@ export function useFileManagement () {
   const compressFile = async (ids: string[]) => {
     fileApi.compressFile({
       ids,
-      name: t('fileSpace.compressFile.name'),
+      name: t('common.name'),
       parentDirectoryId: +parentDirectoryId.value > -1 ? parentDirectoryId.value : undefined
     });
   };

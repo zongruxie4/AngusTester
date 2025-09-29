@@ -3,11 +3,9 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { isEqual } from 'lodash-es';
 import { variable, apis } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
-import {
-  ExtractionMethod,
-  HttpExtractionLocation
-} from '@xcan-angus/infra';
-import { HttpVariableFormState, VariableItem, DetailTabKey, ButtonGroupAction } from '../types';
+import { ExtractionMethod, ExtractionSource, HttpExtractionLocation } from '@xcan-angus/infra';
+import { HttpVariableFormState, DetailTabKey, ButtonGroupAction } from '../types';
+import { VariableItem } from '../../types';
 
 /**
  * Composable for managing HTTP variable logic in variable detail components
@@ -49,7 +47,7 @@ export function useHttpVariable (
   const previewData = ref<{
     name: string;
     extraction: {
-      source: 'HTTP';
+      source: ExtractionSource;
       method: ExtractionMethod;
       expression: string;
       defaultValue: string;
@@ -254,7 +252,7 @@ export function useHttpVariable (
       description: description.value,
       passwordValue: false,
       extraction: {
-        source: 'HTTP',
+        source: ExtractionSource.HTTP,
         method: method.value,
         expression: expression.value,
         defaultValue: defaultValue.value,
@@ -304,7 +302,7 @@ export function useHttpVariable (
     const newData = {
       name: variableName.value,
       extraction: {
-        source: 'HTTP' as const,
+        source: ExtractionSource.HTTP,
         method: method.value,
         expression: expression.value,
         defaultValue: defaultValue.value,

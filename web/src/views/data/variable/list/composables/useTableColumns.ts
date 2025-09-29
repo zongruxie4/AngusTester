@@ -40,7 +40,7 @@ export function useTableColumns () {
       customRender: ({ text }: { text: any }) => text ? t('dataVariable.list.isPassword') : t('dataVariable.list.notPassword')
     },
     {
-      title: t('dataVariable.list.columns.dataSource'),
+      title: t('common.source'),
       dataIndex: 'dataSource',
       ellipsis: true,
       width: '12%',

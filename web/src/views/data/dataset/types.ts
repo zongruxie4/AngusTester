@@ -220,7 +220,7 @@ export type DataSetItem = {
   /** Source type */
   source?: string;
   /** Whether preview is enabled */
-  previewFlag?: boolean;
+  preview?: boolean;
 }
 
 /**

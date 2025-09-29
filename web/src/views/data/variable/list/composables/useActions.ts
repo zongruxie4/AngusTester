@@ -212,7 +212,7 @@ export function useActions (
 
     if (num > MAX_BATCH_DELETE_NUM) {
       notification.error(
-        t('dataVariable.list.messages.maxBatchDeleteError', {
+        t('dataCommon.searchPanel.messages.maxBatchDeleteError', {
           maxNum: MAX_BATCH_DELETE_NUM,
           num
         })
@@ -221,12 +221,12 @@ export function useActions (
     }
 
     modal.confirm({
-      content: t('dataVariable.list.messages.batchDeleteConfirm', { num }),
+      content: t('dataCommon.searchPanel.messages.batchDeleteConfirm', { num }),
       async onOk () {
         const [error] = await variable.deleteVariables(selectedRowKeys);
         if (error) return;
 
-        notification.success(t('dataVariable.list.messages.batchDeleteSuccess'));
+        notification.success(t('dataCommon.searchPanel.messages.batchDeleteSuccess'));
 
         // Clean up state
         selectedRowKeys.forEach(id => {

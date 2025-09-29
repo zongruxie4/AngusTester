@@ -29,15 +29,15 @@ export function useMatchItemPopover () {
   const matchItemList = [
     {
       key: 'regexp',
-      name: t('dataVariable.detail.matchItemPopover.regexp.title'),
+      name: t('dataCommon.matchItemPopover.regexp.title'),
       columns: [[
         {
           dataIndex: 'data',
-          label: t('dataVariable.detail.matchItemPopover.regexp.columns.data')
+          label: t('common.data')
         },
         {
           dataIndex: 'expression',
-          label: t('dataVariable.detail.matchItemPopover.regexp.columns.regexp')
+          label: t('dataCommon.matchItemPopover.regexp.regexp')
         },
         {
           dataIndex: 'result',
@@ -45,63 +45,63 @@ export function useMatchItemPopover () {
         },
         {
           dataIndex: 'item',
-          label: t('dataVariable.detail.matchItemPopover.regexp.item')
+          label: t('common.item')
         }
       ]],
       data: {
         data: 'hello, RegexExtraction! my phone number is 18888888888 and 13999999999.',
         expression: '(1\\d{10})',
         result: '["18888888888","13999999999"]',
-        item: t('dataVariable.detail.matchItemPopover.regexp.item')
+        item: t('dataCommon.matchItemPopover.regexp.item')
       }
     },
     {
       key: 'jsonpath',
-      name: t('dataVariable.detail.matchItemPopover.jsonpath.title'),
+      name: t('dataCommon.matchItemPopover.jsonpath.title'),
       columns: [[
         {
           dataIndex: 'data',
-          label: t('dataVariable.detail.matchItemPopover.jsonpath.columns.data')
+          label: t('common.data')
         },
         {
           dataIndex: 'expression',
-          label: t('dataVariable.detail.matchItemPopover.jsonpath.columns.jsonpath')
+          label: t('dataCommon.matchItemPopover.jsonpath.jsonpath')
         },
         {
           dataIndex: 'result',
-          label: t('dataVariable.detail.matchItemPopover.jsonpath.columns.result')
+          label: t('common.result')
         },
         {
           dataIndex: 'item',
-          label: t('dataVariable.detail.matchItemPopover.jsonpath.item')
+          label: t('common.item')
         }
       ]],
       data: {
         data: { store: { book: [{ title: 'Sayings of the Century', price: 100 }, { title: 'Confucianism', price: 200 }] } },
         expression: '$.store.book[*]',
         result: '[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]',
-        item: t('dataVariable.detail.matchItemPopover.jsonpath.title')
+        item: t('dataCommon.matchItemPopover.jsonpath.item')
       }
     },
     {
       key: 'xpath',
-      name: t('dataVariable.detail.matchItemPopover.xpath.title'),
+      name: t('dataCommon.matchItemPopover.xpath.title'),
       columns: [[
         {
           dataIndex: 'data',
-          label: t('dataVariable.detail.matchItemPopover.xpath.columns.data')
+          label: t('common.data')
         },
         {
           dataIndex: 'expression',
-          label: t('dataVariable.detail.matchItemPopover.xpath.columns.xpath')
+          label: t('dataCommon.matchItemPopover.xpath.xpath')
         },
         {
           dataIndex: 'result',
-          label: t('dataVariable.detail.matchItemPopover.xpath.columns.result')
+          label: t('common.result')
         },
         {
           dataIndex: 'item',
-          label: t('dataVariable.detail.matchItemPopover.xpath.item')
+          label: t('common.item')
         }
       ]],
       data: {
@@ -109,7 +109,7 @@ export function useMatchItemPopover () {
           '<interests>basketball</interests><name>Angus1</name></person><person><age>32</age><interests>coding</interests><name>Angus2</name></person></persons>'),
         expression: '/persons/person[age >= 30]',
         result: '["30codingbasketballAngus1", "32codingAngus2"]',
-        item: t('dataVariable.detail.matchItemPopover.xpath.item')
+        item: t('dataCommon.matchItemPopover.xpath.item')
       }
     }
   ];

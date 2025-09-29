@@ -19,64 +19,6 @@ export type ButtonGroupAction = 'ok' | 'delete' | 'export' | 'clone' | 'copyLink
 export type DetailTabKey = 'value' | 'preview' | 'use';
 
 /**
- * Variable item
- * Represents a variable item from the API
- */
-export type VariableItem = {
-  id: string;
-  name: string;
-  passwordValue: boolean;
-  projectId: string;
-  value: string;
-  description: string;
-  source?: string;
-  extracted: boolean;
-  extraction: {
-    defaultValue: string;
-    expression: string;
-    failureMessage: string;
-    finalValue: string;
-    matchItem: string;
-    method: {
-      value: ExtractionMethod;
-      message: string;
-    };
-    name: string;
-    source: ExtractionSource;
-    value: string;
-    fileType: {
-      value: ExtractionFileType;
-      message: string;
-    };
-    path: string;
-    encoding: Encoding;
-    quoteChar: string;
-    escapeChar: string;
-    separatorChar: string;
-    rowIndex: string;
-    columnIndex: string;
-    select: string;
-    parameterName: string;
-    request: {
-      url: string;
-    };
-    datasource: {
-      type: { value: string; message: string; };
-      username: string;
-      password: string;
-      jdbcUrl: string;
-    }
-  };
-  createdBy: string;
-  createdByName: string;
-  createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedByName: string;
-  lastModifiedDate: string;
-  previewFlag?: boolean;
-}
-
-/**
  * Component props definition
  * Defines the interface for props passed to this component
  */
@@ -92,31 +34,6 @@ export interface ButtonGroupProps {
    * Typically disabled when required fields are missing
    */
   okButtonDisabled: boolean;
-}
-
-export type VariableProps = {
-  projectId: string;
-  userInfo: { id: string; };
-  visible: boolean;
-  data: {
-    _id: string;
-    id: string | undefined;
-    source: 'STATIC' | 'FILE' | 'HTTP' | 'JDBC' | undefined;
-  }
-}
-
-/**
- * Component props definition
- */
-export type VariableDataProps = {
-  /** Project ID for the variable */
-  projectId: string;
-
-  /** User information */
-  userInfo: { id: string; };
-
-  /** Data source for editing existing variables */
-  dataSource?: VariableItem;
 }
 
 /**

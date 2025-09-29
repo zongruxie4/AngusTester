@@ -91,10 +91,7 @@
       "uploadVariable": "Upload Variable",
       "or": "or",
       "isPassword": "Yes",
-      "notPassword": "No",
-      "columns": {
-        "dataSource": "Source"
-      }
+      "notPassword": "No"
     },
     "detail": {
       "staticVariable": {
@@ -231,9 +228,6 @@
       "title": "Added Datasets",
       "noDataText": "You haven't added any datasets yet, immediately",
       "or": "or",
-      "columns": {
-        "valueSource": "Source"
-      },
       "tableDropdown": {
         "previewData": "Preview Data"
       },
@@ -520,7 +514,7 @@
   },
   "dataCommon": {
     "common": {
-      "nameSupportPlaceholder": "Parameter name, which supports numbers, letters, and !$%^&*_-+=./",
+      "nameSupportPlaceholder": "Enter name, which supports numbers, letters, and !$%^&*_-+=./",
       "readConfig": "Read Configuration",
       "extractConfig": "Extract Configuration",
       "extractPosition": "Extract Position",
@@ -581,12 +575,7 @@
       }
     },
     "useList": {
-      "title": "Used List",
-      "columns": {
-        "targetType": "Resource Type",
-        "targetId": "Resource ID",
-        "targetName": "Resource Name"
-      }
+      "title": "Used List"
     },
     "previewData": {
       "title": "Preview Data",

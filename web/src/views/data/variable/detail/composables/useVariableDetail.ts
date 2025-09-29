@@ -3,23 +3,15 @@ import { ref } from 'vue';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { variable } from '@/api/tester';
-import { VariableItem } from '../types';
+import { VariableItem } from '../../types';
+import { BasicProps } from '@/types/types';
 
 /**
  * Composable for managing variable detail page logic
  * Provides data loading, CRUD operations, and tab management for variable details
  */
 export function useVariableDetail (
-  props: {
-    projectId: string;
-    userInfo: { id: string; };
-    visible: boolean;
-    data: {
-      _id: string;
-      id: string | undefined;
-      source: 'STATIC' | 'FILE' | 'HTTP' | 'JDBC' | undefined;
-    }
-  },
+  props: BasicProps,
   tabActions: {
     updateTabPane: (data: { [key: string]: any }) => void;
     deleteTabPane: (keys: string[]) => void;
@@ -169,9 +161,9 @@ export function useVariableDetail (
    */
   const handleCopyLink = (id: string) => {
     toClipboard(window.location.origin + `/data#variables?id=${id}`).then(() => {
-      notification.success(t('dataVariable.detail.notifications.copyLinkSuccess'));
+      notification.success(t('actions.tips.copyLinkSuccess'));
     }).catch(() => {
-      notification.error(t('dataVariable.detail.notifications.copyLinkFail'));
+      notification.error(t('actions.tips.copyLinkFail'));
     });
   };
 

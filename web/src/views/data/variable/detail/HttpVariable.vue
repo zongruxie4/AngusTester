@@ -2,15 +2,20 @@
 import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { AsyncComponent, Hints, Icon, IconRequired, Input, Toggle, Validate, SelectApisByServiceModal } from '@xcan-angus/vue-ui';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { useHttpVariable } from './composables/useHttpVariable.ts';
+import {
+  AsyncComponent, Hints, Icon, IconRequired, Input, SelectApisByServiceModal, Toggle, Validate
+} from '@xcan-angus/vue-ui';
+import { ExtractionMethod, HttpExtractionLocation } from '@xcan-angus/infra';
 import { VariableItem } from '../types';
-import { VariableDataProps } from '@/views/data/variable/detail/types.ts';
+import { BasicDataSourceProps } from '@/types/types';
+
+import { useHttpVariable } from './composables/useHttpVariable.ts';
+
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<VariableDataProps>(), {
+const props = withDefaults(defineProps<BasicDataSourceProps<VariableItem>>(), {
   projectId: undefined,
   userInfo: undefined,
   dataSource: undefined
@@ -93,11 +98,11 @@ const httpConfigsRef = ref();
   <div class="flex items-start mb-3.5">
     <div class="flex justify-end items-center flex-shrink-0 mr-2.5 w-18 font-semibold leading-7">
       <IconRequired />
-      <span>{{ t('dataVariable.detail.httpVariable.name') }}</span>
+      <span>{{ t('common.name') }}</span>
     </div>
     <Validate
       class="flex-1"
-      :text="t('dataVariable.detail.httpVariable.nameSupport')"
+      :text="t('commonData.common.nameSupportPlaceholder')"
       mode="error"
       :error="variableNameError">
       <Input
@@ -127,7 +132,7 @@ const httpConfigsRef = ref();
       showCount
       type="textarea"
       class="flex-1"
-      :placeholder="t('dataVariable.detail.httpVariable.descriptionPlaceholder')"
+      :placeholder="t('common.placeholders.inputDescription')"
       trim />
   </div>
 
@@ -141,7 +146,7 @@ const httpConfigsRef = ref();
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>{{ t('common.extract') }}</span>
+          <span>{{ t('actions.extract') }}</span>
         </div>
       </template>
 
@@ -150,7 +155,7 @@ const httpConfigsRef = ref();
         <Hints class="mb-2.5" :text="t('dataVariable.detail.httpVariable.hints')" />
 
         <!-- HTTP request configuration -->
-        <Toggle :title="t('dataVariable.detail.httpVariable.readConfig')" class="leading-5 mb-3.5">
+        <Toggle :title="t('dataCommon.common.readConfig')" class="leading-5 mb-3.5">
           <!-- API selection button -->
           <div class="flex items-center justify-start mb-3.5">
             <Button
@@ -159,7 +164,7 @@ const httpConfigsRef = ref();
               class="flex items-center p-0 border-none h-3.5 leading-3.5 space-x-1"
               @click="toSelectApi">
               <Icon icon="icon-xuanze" class="text-3.5" />
-              <span>{{ t('dataVariable.detail.httpVariable.selectApi') }}</span>
+              <span>{{ t('dataVariable.detail.httpVariable.httpConfigs.selectApi') }}</span>
             </Button>
           </div>
 
@@ -177,28 +182,28 @@ const httpConfigsRef = ref();
         </Toggle>
 
         <!-- Extraction configuration -->
-        <Toggle :title="t('dataVariable.detail.httpVariable.extractConfig')" class="text-3 leading-5">
+        <Toggle :title="t('dataCommon.common.extractConfig')" class="text-3 leading-5">
           <!-- Exact value extraction method -->
-          <template v-if="method === 'EXACT_VALUE'">
+          <template v-if="method === ExtractionMethod.EXACT_VALUE">
             <!-- Configuration for request/response body -->
-            <template v-if="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location)">
+            <template v-if="[HttpExtractionLocation.REQUEST_RAW_BODY, HttpExtractionLocation.RESPONSE_BODY].includes(location)">
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
+                    <span>{{ t('dataCommon.common.extractMethod') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="method"
                     enumKey="ExtractionMethod"
-                    :placeholder="t('dataVariable.detail.httpVariable.extractMethodPlaceholder')"
+                    :placeholder="t('dataCommon.common.extractMethodPlaceholder')"
                     class="w-full-16" />
                 </div>
 
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
+                    <span>{{ t('dataCommon.common.extractPosition') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="location"
@@ -215,7 +220,7 @@ const httpConfigsRef = ref();
                   </div>
                   <Input
                     v-model:value="defaultValue"
-                    :placeholder="t('dataVariable.detail.httpVariable.defaultValuePlaceholder')"
+                    :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="4096" />
@@ -229,19 +234,19 @@ const httpConfigsRef = ref();
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
+                    <span>{{ t('dataCommon.common.extractMethod') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="method"
                     enumKey="ExtractionMethod"
-                    :placeholder="t('dataVariable.detail.httpVariable.extractMethodPlaceholder')"
+                    :placeholder="t('dataCommon.common.extractMethodPlaceholder')"
                     class="w-full-16" />
                 </div>
 
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
+                    <span>{{ t('dataCommon.common.extractPosition') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="location"
@@ -254,11 +259,11 @@ const httpConfigsRef = ref();
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.expression') }}</span>
+                    <span>{{ t('dataCommon.common.expression') }}</span>
                   </div>
                   <Input
                     v-model:value="parameterName"
-                    :placeholder="t('dataVariable.detail.httpVariable.parameterNamePlaceholder')"
+                    :placeholder="t('dataCommon.common.expressionPlaceholder')"
                     class="w-full-16"
                     trimAll
                     :maxlength="400" />
@@ -271,7 +276,7 @@ const httpConfigsRef = ref();
                   </div>
                   <Input
                     v-model:value="defaultValue"
-                    :placeholder="t('dataVariable.detail.httpVariable.defaultValuePlaceholder')"
+                    :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="4096" />
@@ -283,24 +288,24 @@ const httpConfigsRef = ref();
           <!-- Pattern-based extraction methods (JSON_PATH, REGEX, X_PATH) -->
           <template v-else>
             <!-- Configuration for request/response body -->
-            <template v-if="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location)">
+            <template v-if="[HttpExtractionLocation.REQUEST_RAW_BODY, HttpExtractionLocation.RESPONSE_BODY].includes(location)">
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
+                    <span>{{ t('dataCommon.common.extractMethod') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="method"
                     enumKey="ExtractionMethod"
-                    :placeholder="t('dataVariable.detail.httpVariable.extractMethodPlaceholder')"
+                    :placeholder="t('dataCommon.common.extractMethodPlaceholder')"
                     class="w-full-20.5" />
                 </div>
 
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
+                    <span>{{ t('dataCommon.common.extractPosition') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="location"
@@ -313,11 +318,11 @@ const httpConfigsRef = ref();
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.expression') }}</span>
+                    <span>{{ t('dataCommon.common.expression') }}</span>
                   </div>
                   <Input
                     v-model:value="expression"
-                    :placeholder="t('dataVariable.detail.httpVariable.expressionPlaceholder')"
+                    :placeholder="t('dataCommon.common.expressionPlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="1024" />
@@ -326,11 +331,11 @@ const httpConfigsRef = ref();
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired class="invisible" />
-                    <span>{{ t('dataVariable.detail.httpVariable.matchItem') }}</span>
+                    <span>{{ t('dataCommon.common.matchItem') }}</span>
                   </div>
                   <Input
                     v-model:value="matchItem"
-                    :placeholder="t('dataVariable.detail.httpVariable.matchItemPlaceholder')"
+                    :placeholder="t('dataCommon.common.matchItemPlaceholder')"
                     class="w-full-20.5"
                     dataType="number"
                     trimAll
@@ -348,7 +353,7 @@ const httpConfigsRef = ref();
                   </div>
                   <Input
                     v-model:value="defaultValue"
-                    :placeholder="t('dataVariable.detail.httpVariable.defaultValuePlaceholder')"
+                    :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="4096" />
@@ -362,19 +367,19 @@ const httpConfigsRef = ref();
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
+                    <span>{{ t('dataCommon.common.extractMethod') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="method"
                     enumKey="ExtractionMethod"
-                    :placeholder="t('dataVariable.detail.httpVariable.extractMethodPlaceholder')"
+                    :placeholder="t('dataCommon.common.extractMethodPlaceholder')"
                     class="w-full-20.5" />
                 </div>
 
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
+                    <span>{{ t('dataCommon.common.extractPosition') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="location"
@@ -386,12 +391,12 @@ const httpConfigsRef = ref();
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 font-semibold flex justify-end items-center mr-2.5">
-                    <IconRequired :class="{ invisible: ['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location) }" />
-                    <span>{{ t('dataVariable.detail.httpVariable.parameterName') }}</span>
+                    <IconRequired :class="{ invisible: [HttpExtractionLocation.REQUEST_RAW_BODY, HttpExtractionLocation.RESPONSE_BODY].includes(location) }" />
+                    <span>{{ t('dataCommon.common.parameterName') }}</span>
                   </div>
                   <Input
                     v-model:value="parameterName"
-                    :placeholder="t('dataVariable.detail.httpVariable.parameterNamePlaceholder')"
+                    :placeholder="t('dataCommon.common.parameterNamePlaceholder')"
                     class="w-full-20.5"
                     trimAll
                     :maxlength="400" />
@@ -400,7 +405,7 @@ const httpConfigsRef = ref();
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired />
-                    <span>{{ t('dataVariable.detail.httpVariable.expression') }}</span>
+                    <span>{{ t('dataCommon.common.expression') }}</span>
                   </div>
                   <Input
                     v-model:value="expression"
@@ -415,11 +420,11 @@ const httpConfigsRef = ref();
                 <div class="w-1/2 flex items-center">
                   <div class="w-26 flex-shrink-0 font-semibold flex justify-end items-center mr-2.5">
                     <IconRequired class="invisible" />
-                    <span>{{ t('dataVariable.detail.httpVariable.matchItem') }}</span>
+                    <span>{{ t('dataCommon.common.matchItem') }}</span>
                   </div>
                   <Input
                     v-model:value="matchItem"
-                    :placeholder="t('dataVariable.detail.httpVariable.matchItemPlaceholder')"
+                    :placeholder="t('dataCommon.common.matchItemPlaceholder')"
                     class="w-full-20.5"
                     dataType="number"
                     trimAll
@@ -435,7 +440,7 @@ const httpConfigsRef = ref();
                   </div>
                   <Input
                     v-model:value="defaultValue"
-                    :placeholder="t('dataVariable.detail.httpVariable.defaultValuePlaceholder')"
+                    :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="4096" />
@@ -451,7 +456,7 @@ const httpConfigsRef = ref();
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.preview') }}</span>
+          <span>{{ t('actions.preview') }}</span>
         </div>
       </template>
 
@@ -462,7 +467,7 @@ const httpConfigsRef = ref();
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.use') }}</span>
+          <span>{{ t('actions.use') }}</span>
         </div>
       </template>
 

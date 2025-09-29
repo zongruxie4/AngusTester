@@ -3,10 +3,9 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { isEqual } from 'lodash-es';
 import { variable } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
-import {
-  ExtractionMethod
-} from '@xcan-angus/infra';
-import { JdbcVariableFormState, VariableItem, DetailTabKey, ButtonGroupAction } from '../types';
+import { ExtractionMethod, ExtractionSource } from '@xcan-angus/infra';
+import { JdbcVariableFormState, DetailTabKey, ButtonGroupAction } from '../types';
+import { VariableItem } from '../../types';
 
 /**
  * Composable for managing JDBC variable logic in variable detail components
@@ -50,7 +49,7 @@ export function useJdbcVariable (
   const previewData = ref<{
     name: string;
     extraction: {
-      source: 'JDBC';
+      source: ExtractionSource;
       method: ExtractionMethod;
       expression: string;
       defaultValue: string;
@@ -253,7 +252,7 @@ export function useJdbcVariable (
       description: description.value,
       passwordValue: false,
       extraction: {
-        source: 'JDBC',
+        source: ExtractionSource.JDBC,
         method: method.value,
         defaultValue: defaultValue.value,
         expression: expression.value,
@@ -313,7 +312,7 @@ export function useJdbcVariable (
     const newData = {
       name: variableName.value,
       extraction: {
-        source: 'JDBC' as const,
+        source: ExtractionSource.JDBC,
         method: method.value,
         expression: expression.value,
         defaultValue: defaultValue.value,

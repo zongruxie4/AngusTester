@@ -201,6 +201,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
         <template v-else>
           <SearchPanel
             :selectedNum="selectedNum"
+            width="260"
             @change="handleSearchPanelChange"
             @to-import="openImportModal"
             @to-export="openExportModal()"
@@ -233,7 +234,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
               </div>
 
               <template v-if="column.dataIndex === 'description'">
-                <span v-if="!record.description" class="text-text-sub-content">{{ t('common.noDescription') }}</span>
+                <span v-if="!record.description" class="text-text-sub-content">--</span>
               </template>
 
               <div v-else-if="column.dataIndex === 'action'" class="flex items-center">

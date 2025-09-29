@@ -121,11 +121,11 @@ watch(() => props.visible, (newValue) => {
         </FormItem>
 
         <!-- Data Source Name -->
-        <FormItem name="name" :rules="{required:true,message:t('datasource.form.rules.name')}">
+        <FormItem name="name" :rules="{required:true,message:t('common.name')}">
           <Input
             v-model:value="formState.name"
             :maxlength="100"
-            :placeholder="t('datasource.form.placeholders.name')" />
+            :placeholder="t('common.name')" />
         </FormItem>
 
         <!-- Driver Class Name -->

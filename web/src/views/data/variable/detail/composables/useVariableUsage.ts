@@ -41,19 +41,19 @@ export function useVariableUsage (props: { id: string }) {
   // Table columns definition
   const columns = [
     {
-      title: t('dataVariable.detail.useList.columns.targetType'),
+      title: t('common.resourceType'),
       dataIndex: 'targetType',
       width: '10%',
       ellipsis: true
     },
     {
-      title: t('dataVariable.detail.useList.columns.targetId'),
+      title: t('common.resourceId'),
       dataIndex: 'targetId',
       width: '20%',
       ellipsis: true
     },
     {
-      title: t('dataVariable.detail.useList.columns.targetName'),
+      title: t('common.resourceName'),
       dataIndex: 'targetName',
       ellipsis: true
     },

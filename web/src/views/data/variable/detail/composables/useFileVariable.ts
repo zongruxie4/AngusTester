@@ -3,12 +3,9 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { isEqual } from 'lodash-es';
 import { variable } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
-import {
-  ExtractionMethod,
-  Encoding,
-  ExtractionFileType
-} from '@xcan-angus/infra';
-import { FileVariableFormState, VariableItem, DetailTabKey, ButtonGroupAction } from '../types';
+import { ExtractionMethod, ExtractionSource, Encoding, ExtractionFileType } from '@xcan-angus/infra';
+import { FileVariableFormState, DetailTabKey, ButtonGroupAction } from '../types';
+import { VariableItem } from '../../types';
 
 /**
  * Composable for managing file variable logic in variable detail components
@@ -50,7 +47,7 @@ export function useFileVariable (
   const previewData = ref<{
     name: string;
     extraction: {
-      source: 'FILE';
+      source: ExtractionSource;
       fileType: ExtractionFileType;
       path: string;
       encoding: string;
@@ -257,7 +254,7 @@ export function useFileVariable (
         quoteChar: quoteChar.value,
         rowIndex: rowIndex.value,
         separatorChar: separatorChar.value,
-        source: 'FILE',
+        source: ExtractionSource.FILE,
         method: method.value,
         defaultValue: defaultValue.value,
         expression: expression.value,
@@ -309,7 +306,7 @@ export function useFileVariable (
     const newData = {
       name: variableName.value,
       extraction: {
-        source: 'FILE' as const,
+        source: ExtractionSource.FILE,
         fileType: fileType.value,
         path: filePath.value,
         encoding: encoding.value,

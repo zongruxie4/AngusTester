@@ -4,16 +4,11 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
@@ -90,13 +85,13 @@ const hashChange = (hash:string) => {
     });
   } else if (source) {
     browserTabRef.value.add(() => {
-      let name = t('dataVariable.addVariable.static');
+      let name = t('dataVariable.actions.static');
       if (source === 'FILE') {
-        name = t('dataVariable.addVariable.file');
+        name = t('dataVariable.actions.file');
       } else if (source === 'HTTP') {
-        name = t('dataVariable.addVariable.http');
+        name = t('dataVariable.actions.http');
       } else if (source === 'JDBC') {
-        name = t('dataVariable.addVariable.jdbc');
+        name = t('dataVariable.actions.jdbc');
       }
 
       const uid = utils.uuid();
@@ -121,6 +116,13 @@ const refreshList = () => {
   variableListRef.value && variableListRef.value.loadData();
 };
 
+const storageKey = computed(() => {
+  if (!props.projectId) {
+    return undefined;
+  }
+  return `variable${props.projectId}`;
+});
+
 onMounted(() => {
   watch(() => route.hash, () => {
     if (!route.hash.startsWith('#variables')) {
@@ -128,13 +130,6 @@ onMounted(() => {
     }
     hashChange(route.hash);
   });
-});
-
-const storageKey = computed(() => {
-  if (!props.projectId) {
-    return undefined;
-  }
-  return `variable${props.projectId}`;
 });
 
 provide('addTabPane', addTabPane);

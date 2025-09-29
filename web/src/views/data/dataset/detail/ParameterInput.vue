@@ -53,7 +53,7 @@ defineExpose({
     <div class="flex items-center space-x-2 mb-1">
       <div class="w-100 flex items-center">
         <IconRequired />
-        <span>{{ t('dataset.detail.staticDataset.parameterInput.name') }}</span>
+        <span>{{ t('common.name') }}</span>
       </div>
       <div class="flex-1 flex items-center">
         <IconRequired />
@@ -107,7 +107,7 @@ defineExpose({
             :error="valueErrorSet.has(item)"
             class="flex-1"
             trim
-            :placeholder="t('dataset.detail.staticDataset.parameterInput.valuePlaceholder')"
+            :placeholder="t('common.placeholders.inputMockValue')"
             @change="valueChange($event, item)" />
         </div>
         <Button

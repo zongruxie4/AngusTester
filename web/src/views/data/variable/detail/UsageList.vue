@@ -2,19 +2,13 @@
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, NoData, Spin, Table } from '@xcan-angus/vue-ui';
+import { BaseProps } from '@/types/types';
+
 import { useVariableUsage } from './composables/useVariableUsage';
 
 const { t } = useI18n();
 
-/**
- * Component props definition
- */
-interface Props {
-  /** Variable ID to show usage for */
-  id: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BaseProps>(), {
   id: undefined
 });
 
@@ -54,7 +48,7 @@ const {
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
           @click="toBatchDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span class="ml-1">{{ t('dataVariable.detail.useList.buttons.batchDelete') }}</span>
+          <span class="ml-1">{{ t('dataCommon.searchPanel.batchActions.batchDelete') }}</span>
         </Button>
 
         <Button
@@ -78,7 +72,7 @@ const {
           @click="toBatchDelete">
           <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
           <div class="flex items-center">
-            <span class="mr-0.5">{{ t('dataVariable.detail.useList.buttons.deleteSelected') }}</span>
+            <span class="mr-0.5">{{ t('dataCommon.searchPanel.batchActions.deleteSelected') }}</span>
             <span>({{ selectedNum }})</span>
           </div>
         </Button>
@@ -89,7 +83,7 @@ const {
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
           @click="toCancelBatchDelete">
           <Icon icon="icon-fanhui" class="mr-1" />
-          <span>{{ t('dataVariable.detail.useList.buttons.cancelDelete') }}</span>
+          <span>{{ t('dataCommon.searchPanel.batchActions.cancelDelete') }}</span>
         </Button>
       </div>
     </div>

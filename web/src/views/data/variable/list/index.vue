@@ -161,13 +161,13 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
+  <div class="flex flex-col h-full overflow-auto px-5 leading-5 text-3">
     <!-- Introduction Section -->
     <Introduce class="mb-7" />
 
     <!-- Page Title -->
     <div class="text-3.5 font-semibold mb-1">
-      {{ t('dataVariable.list.title') }}
+      {{ t('dataVariable.list.addedTitle') }}
     </div>
 
     <!-- Main Content -->
@@ -192,7 +192,7 @@ defineExpose({
                 size="small"
                 class="text-3.5 py-0 px-0 mx-1"
                 @click="navigateToCreateStaticVariable">
-                <span>{{ t('dataVariable.list.addStaticVariable') }}</span>
+                <span>{{ t('dataVariable.actions.static') }}</span>
               </Button>
             </Dropdown>
 
@@ -203,7 +203,7 @@ defineExpose({
               size="small"
               class="text-3.5 py-0 px-0 mx-1"
               @click="showImportModal">
-              <span>{{ t('dataVariable.list.uploadVariable') }}</span>
+              <span>{{ t('dataVariable.actions.uploadVariable') }}</span>
             </Button>
           </div>
         </div>
@@ -212,6 +212,7 @@ defineExpose({
         <template v-else>
           <!-- Search Panel -->
           <SearchPanel
+            width="260"
             :selectedNum="selectedCount"
             @to-import="showImportModal"
             @to-export="handleExport()"
@@ -311,7 +312,7 @@ defineExpose({
                 <Button
                   type="text"
                   size="small"
-                  class="flex items-center px-0"
+                  class="flex items-center px-0 mr-2"
                   @click="navigateToEdit(record)">
                   <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
                   <span>{{ t('actions.edit') }}</span>
@@ -320,7 +321,7 @@ defineExpose({
                 <Button
                   type="text"
                   size="small"
-                  class="flex items-center px-0"
+                  class="flex items-center px-0 mr-2"
                   @click="deleteVariable(record)">
                   <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
                   <span>{{ t('actions.delete') }}</span>

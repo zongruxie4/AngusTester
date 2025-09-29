@@ -2,25 +2,13 @@
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { usePreviewData } from './composables/usePreviewData';
+import { DataSourceProps } from '@/types/types';
 
-/**
- * Component props definition
- */
-interface Props {
-  /** Data source for the preview */
-  dataSource: {
-    name: string;
-    value: string;
-    id: string;
-    projectId: string;
-    extraction: any;
-  };
-}
+import { usePreviewData } from './composables/usePreviewData';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DataSourceProps>(), {
   dataSource: undefined
 });
 
@@ -40,7 +28,7 @@ const {
   <Spin :spinning="loading" class="text-3 leading-5">
     <!-- Header with title and refresh button -->
     <div class="flex items-center justify-between mb-2.5">
-      <Hints :text="t('dataVariable.detail.previewData.tip')" />
+      <Hints :text="t('dataCommon.previewData.tip')" />
       <Button
         :disabled="loading"
         size="small"

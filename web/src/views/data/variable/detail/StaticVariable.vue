@@ -3,13 +3,14 @@ import { defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { FunctionsButton, Hints, IconRequired, Input, Validate } from '@xcan-angus/vue-ui';
-import { useStaticVariable } from './composables/useStaticVariable';
 import { VariableItem } from '../types';
-import { VariableDataProps } from '@/views/data/variable/detail/types';
+import { BasicDataSourceProps } from '@/types/types';
+
+import { useStaticVariable } from './composables/useStaticVariable';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<VariableDataProps>(), {
+const props = withDefaults(defineProps<BasicDataSourceProps<VariableItem>>(), {
   projectId: undefined,
   userInfo: undefined,
   dataSource: undefined
@@ -92,11 +93,11 @@ const handleBlurValue = (targetText: string) => {
   <div class="flex items-start mb-3.5">
     <div class="flex justify-end items-center flex-shrink-0 mr-2.5 w-18 font-semibold leading-7">
       <IconRequired />
-      <span>{{ t('dataVariable.detail.staticVariable.name') }}</span>
+      <span>{{ t('common.name') }}</span>
     </div>
     <Validate
       class="flex-1"
-      :text="t('dataVariable.detail.staticVariable.nameSupport')"
+      :text="t('commonData.common.nameSupportPlaceholder')"
       mode="error"
       :error="variableNameError">
       <Input
@@ -106,7 +107,7 @@ const handleBlurValue = (targetText: string) => {
         dataType="mixin-en"
         excludes="{}"
         includes="\!\$%\^&\*_\-+=\.\/"
-        :placeholder="t('common.placeholders.searchKeyword')"
+        :placeholder="t('dataCommon.common.nameSupportPlaceholder')"
         trimAll
         @change="nameChange"
         @blur="nameBlur" />
@@ -145,7 +146,7 @@ const handleBlurValue = (targetText: string) => {
       showCount
       type="textarea"
       class="flex-1"
-      :placeholder="t('dataVariable.detail.staticVariable.descriptionPlaceholder')"
+      :placeholder="t('common.placeholders.inputDescription')"
       trim />
   </div>
 
@@ -171,7 +172,7 @@ const handleBlurValue = (targetText: string) => {
         :value="variableValue"
         :maxLength="4096"
         :height="60"
-        :placeholder="t('dataVariable.detail.staticVariable.valuePlaceholder')"
+        :placeholder="t('common.placeholders.inputMockValue')"
         @blur="handleBlurValue" />
     </TabPane>
 
@@ -179,7 +180,7 @@ const handleBlurValue = (targetText: string) => {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.preview') }}</span>
+          <span>{{ t('actions.preview') }}</span>
         </div>
       </template>
 
@@ -190,7 +191,7 @@ const handleBlurValue = (targetText: string) => {
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.use') }}</span>
+          <span>{{ t('actions.use') }}</span>
         </div>
       </template>
 

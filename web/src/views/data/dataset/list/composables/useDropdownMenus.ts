@@ -30,7 +30,7 @@ export function useDropdownMenus () {
    */
   const tableDropdownMenuItems = [
     {
-      name: t('dataset.list.tableDropdown.previewData'),
+      name: t('actions.preview'),
       key: 'preview',
       icon: 'icon-zhengyan'
     },

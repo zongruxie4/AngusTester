@@ -91,7 +91,7 @@ defineExpose({
   <div class="flex items-center mb-3.5">
     <div class="mr-2.5 flex-shrink-0 font-semibold w-18 text-3 text-right">
       <IconRequired />
-      <span>{{ t('dataset.detail.jdbcDataset.form.name') }}</span>
+      <span>{{ t('common.name') }}</span>
     </div>
     <Input
       v-model:value="dataSetName"
@@ -113,7 +113,7 @@ defineExpose({
       showCount
       type="textarea"
       class="flex-1"
-      :placeholder="t('dataset.detail.jdbcDataset.form.descriptionPlaceholder')"
+      :placeholder="t('common.placeholders.inputDescription')"
       trim />
   </div>
 
@@ -142,7 +142,7 @@ defineExpose({
 
         <p />
 
-        <Toggle :title="t('dataset.detail.jdbcDataset.form.readConfig')" class="text-3 leading-5 mb-3.5">
+        <Toggle :title="t('dataCommon.common.readConfig')" class="text-3 leading-5 mb-3.5">
           <div class="flex items-center justify-start mb-3.5">
             <div class="w-28 flex-shrink-0 font-semibold text-3 text-right">
             </div>
@@ -230,13 +230,13 @@ defineExpose({
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataset.detail.jdbcDataset.form.readStartRow') }}</span>
+                <span>{{ t('dataCommon.common.readStartRow') }}</span>
               </div>
               <Input
                 v-model:value="rowIndex"
                 :maxlength="4"
                 dataType="number"
-                :placeholder="t('dataset.detail.jdbcDataset.form.readStartRowPlaceholder')"
+                :placeholder="t('dataCommon.common.readStartRowPlaceholder')"
                 trimAll />
               <Tooltip :title="t('dataset.detail.jdbcDataset.form.readStartRowTooltip')">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
@@ -246,15 +246,15 @@ defineExpose({
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataset.detail.jdbcDataset.form.readStartColumn') }}</span>
+                <span>{{ t('dataCommon.common.readStartColumn') }}</span>
               </div>
               <Input
                 v-model:value="columnIndex"
                 :maxlength="4"
                 dataType="number"
-                :placeholder="t('dataset.detail.jdbcDataset.form.readStartColumnPlaceholder')"
+                :placeholder="t('dataCommon.common.readStartColumnPlaceholder')"
                 trimAll />
-              <Tooltip :title="t('dataset.detail.jdbcDataset.form.readStartColumnTooltip')">
+              <Tooltip :title="t('dataCommon.common.readStartColumnTooltip')">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -267,12 +267,12 @@ defineExpose({
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataset.detail.jdbcDataset.form.extractionMethod') }}</span>
+                  <span>{{ t('dataCommon.common.extractionMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('dataset.detail.jdbcDataset.form.extractionMethodPlaceholder')"
+                  :placeholder="t('dataCommon.common.extractionMethodPlaceholder')"
                   class="w-full-24" />
               </div>
 
@@ -283,7 +283,7 @@ defineExpose({
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  :placeholder="t('dataset.detail.jdbcDataset.form.defaultValuePlaceholder')"
+                  :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                   class="w-full-20.5"
                   trim
                   :maxlength="4096" />
@@ -296,23 +296,23 @@ defineExpose({
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataset.detail.jdbcDataset.form.extractionMethod') }}</span>
+                  <span>{{ t('dataCommon.common.extractionMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('dataset.detail.jdbcDataset.form.extractionMethodPlaceholder')"
+                  :placeholder="t('dataCommon.common.extractionMethodPlaceholder')"
                   class="w-full-24" />
               </div>
 
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataset.detail.jdbcDataset.form.expression') }}</span>
+                  <span>{{ t('dataCommon.common.expression') }}</span>
                 </div>
                 <Input
                   v-model:value="expression"
-                  :placeholder="t('dataset.detail.jdbcDataset.form.expressionPlaceholder')"
+                  :placeholder="t('dataCommon.common.expressionPlaceholder')"
                   class="w-full-20.5"
                   trim
                   :maxlength="1024" />
@@ -323,11 +323,11 @@ defineExpose({
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired class="invisible" />
-                  <span>{{ t('dataset.detail.jdbcDataset.form.matchItem') }}</span>
+                  <span>{{ t('dataCommon.common.matchItem') }}</span>
                 </div>
                 <Input
                   v-model:value="matchItem"
-                  :placeholder="t('dataset.detail.jdbcDataset.form.matchItemPlaceholder')"
+                  :placeholder="t('dataCommon.common.matchItemPlaceholder')"
                   class="w-full-24"
                   dataType="number"
                   trimAll
@@ -343,7 +343,7 @@ defineExpose({
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  :placeholder="t('dataset.detail.jdbcDataset.form.defaultValuePlaceholder')"
+                  :placeholder="t('dataCommon.common.defaultValuePlaceholder')"
                   class="w-full-20.5"
                   trim
                   :maxlength="4096" />
@@ -357,7 +357,7 @@ defineExpose({
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.preview') }}</span>
+          <span>{{ t('actions.preview') }}</span>
         </div>
       </template>
 
@@ -367,7 +367,7 @@ defineExpose({
     <TabPane v-if="dataSetId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>{{ t('common.use') }}</span>
+          <span>{{ t('actions.use') }}</span>
         </div>
       </template>
 

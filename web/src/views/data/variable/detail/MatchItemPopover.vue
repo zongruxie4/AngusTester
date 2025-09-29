@@ -24,7 +24,9 @@ const {
     <template #content>
       <div class="w-196 space-y-2 text-3 text-theme-content">
         <!-- Title -->
-        <Hints :text="t('dataVariable.detail.matchItemPopover.title')" class="!font-semibold !text-theme-content" />
+        <Hints
+          :text="t('dataCommon.matchItemPopover.title')"
+          class="!font-semibold !text-theme-content" />
 
         <!-- Description -->
         <div>

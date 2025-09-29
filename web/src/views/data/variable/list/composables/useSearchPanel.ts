@@ -29,17 +29,17 @@ export function useSearchPanel (searchPanelRef?: any) {
    */
   const buttonDropdownMenuItems = [
     {
-      name: t('dataVariable.list.searchPanel.dropdown.fileExtract'),
+      name: t('dataVariable.actions.file'),
       key: 'file',
       noAuth: true
     },
     {
-      name: t('dataVariable.list.searchPanel.dropdown.httpExtract'),
+      name: t('dataVariable.actions.http'),
       key: 'http',
       noAuth: true
     },
     {
-      name: t('dataVariable.list.searchPanel.dropdown.jdbcExtract'),
+      name: t('dataVariable.actions.jdbc'),
       key: 'jdbc',
       noAuth: true
     }
@@ -60,12 +60,16 @@ export function useSearchPanel (searchPanelRef?: any) {
       valueKey: 'createdBy',
       type: 'select-user',
       allowClear: true,
-      placeholder: t('dataVariable.list.searchPanelOptions.createdByPlaceholder')
+      placeholder: t('common.placeholders.selectCreator')
     },
     {
       valueKey: 'createdDate',
       type: 'date-range',
-      allowClear: true
+      allowClear: true,
+      placeholder: [
+        t('common.placeholders.selectCreatedDate.0'),
+        t('common.placeholders.selectCreatedDate.1')
+      ]
     }
   ];
 
