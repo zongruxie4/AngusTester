@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { notification, modal } from '@xcan-angus/vue-ui';
 import { script, exec } from '@/api/tester';
+import { ScriptPermission } from '@/enums/enums';
 
 import { ScriptInfo } from '@/views/script/types';
 
@@ -67,7 +68,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: t('scriptHome.table.columns.resourceId'),
+      title: t('common.resourceId'),
       dataIndex: 'sourceId',
       width: '18%',
       groupName: 'source',
@@ -78,7 +79,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: t('scriptHome.table.columns.resourceName'),
+      title: t('common.resourceName'),
       dataIndex: 'sourceName',
       width: '18%',
       groupName: 'source',
@@ -89,7 +90,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: t('common.tags'),
+      title: t('common.tag'),
       dataIndex: 'tags',
       key: 'tags',
       width: '14%'
@@ -125,7 +126,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: t('scriptHome.table.columns.modifyTime'),
+      title: t('common.lastModifiedDate'),
       dataIndex: 'lastModifiedDate',
       width: '10%',
       sorter: true,
@@ -139,7 +140,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
     {
       title: t('common.actions'),
       dataIndex: 'action',
-      width: 180,
+      width: 170,
       key: 'action'
     }
   ];
@@ -190,6 +191,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
     onChange:(key: string[]) => void;
     selectedRowKeys: string[];
       }>({
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         onChange: () => {},
         selectedRowKeys: []
       });
@@ -264,7 +266,10 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
   /**
    * Handle batch delete
    */
-  const handleBatchDelete = async (loadingSetter: (loading: boolean) => void, deleteCallback: (ids: string[]) => void) => {
+  const handleBatchDelete = async (
+    loadingSetter: (loading: boolean) => void,
+    deleteCallback: (ids: string[]) => void
+  ) => {
     const num = rowSelection.value.selectedRowKeys.length;
     if (!num) {
       return;
@@ -273,9 +278,10 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       notification.error(t('scriptHome.table.messages.maxDeleteLimit', { maxNum: MAX_NUM, num }));
       return;
     }
+
     modal.confirm({
       title: t('actions.delete'),
-      content: t('actions.tips.confirmDelete', { num }),
+      content: t('scriptHome.table.messages.deleteConfirm', { num }),
       onOk: async () => {
         // Confirmation would be handled in the parent component
         loadingSetter(true);
@@ -286,7 +292,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
         if (error) {
           return;
         }
-        notification.success(t('actions.tips.deleteSuccess', { num }));
+        notification.success(t('actions.tips.deleteSuccess'));
         deleteCallback(ids);
         rowSelection.value.selectedRowKeys = [];
         selectedDataMap.value = {};
@@ -304,7 +310,10 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
   /**
    * Handle single script execution
    */
-  const handleSingleExec = async (data: ScriptInfo, loadingSetter: (loading: boolean) => void) => {
+  const handleSingleExec = async (
+    data: ScriptInfo,
+    loadingSetter: (loading: boolean) => void
+  ) => {
     modal.confirm({
       title: t('actions.execute'),
       content: t('scriptHome.table.messages.executeScriptConfirmSimple', { name: data.name }),
@@ -324,13 +333,17 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
    * Handle skip to editor
    */
   const handleToEditor = async (data: ScriptInfo, pagination) => {
-    router.push(`/script/edit/${data.id}?type=edit&pageNo=${pagination?.current || 1}&pageSize=${pagination?.pageSize || 10}`);
+    await router.push(`/script/edit/${data.id}?type=edit&pageNo=${pagination?.current || 1}&pageSize=${pagination?.pageSize || 10}`);
   };
 
   /**
    * Handle script clone
    */
-  const handleClone = async (data: ScriptInfo, loadingSetter: (loading: boolean) => void, refreshCallback: () => void) => {
+  const handleClone = async (
+    data: ScriptInfo,
+    loadingSetter: (loading: boolean) => void,
+    refreshCallback: () => void
+  ) => {
     loadingSetter(true);
     const [error] = await script.cloneScript(data.id);
     loadingSetter(false);
@@ -344,7 +357,11 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
   /**
    * Handle script delete
    */
-  const handleDelete = async (data: ScriptInfo, loadingSetter: (loading: boolean) => void, deleteCallback: (ids: string[]) => void) => {
+  const handleDelete = async (
+    data: ScriptInfo,
+    loadingSetter: (loading: boolean) => void,
+    deleteCallback: (ids: string[]) => void
+  ) => {
     // Confirmation would be handled in the parent component
     modal.confirm({
       title: t('actions.delete'),
@@ -367,7 +384,10 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
   /**
    * Handle script export
    */
-  const handleExport = (data: ScriptInfo, exportSetter: (ids: string[], visible: boolean) => void) => {
+  const handleExport = (
+    data: ScriptInfo,
+    exportSetter: (ids: string[], visible: boolean) => void
+  ) => {
     exportSetter([data.id], true);
   };
 
@@ -421,15 +441,15 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       const { id } = values[i];
       const permissions = _permissionsMap[id];
       if (permissions) {
-        if (!permissions.includes('TEST')) {
+        if (!permissions.includes(ScriptPermission.TEST)) {
           batchExecDisabled.value = true;
         }
 
-        if (!permissions.includes('DELETE')) {
+        if (!permissions.includes(ScriptPermission.DELETE)) {
           batchDeleteDisabled.value = true;
         }
 
-        if (!permissions.includes('EXPORT')) {
+        if (!permissions.includes(ScriptPermission.EXPORT)) {
           batchExportDisabled.value = true;
         }
       }

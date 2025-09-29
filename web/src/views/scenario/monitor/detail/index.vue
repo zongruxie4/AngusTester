@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {
-  Hints,
-  Icon,
-  NoData,
-  Spin
-} from '@xcan-angus/vue-ui';
+import { Hints, Icon, NoData, Spin } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
-import Chart from '@/views/scenario/monitor/detail/Chart.vue';
-import type { MonitorDetailProps } from '../types';
+import { BasicProps } from '@/types/types';
+
 import { useMonitorData } from './composables/useMonitorData';
 import { useHistoryData } from './composables/useHistoryData';
 import { useMonitorActions } from './composables/useMonitorActions';
+
+import Chart from '@/views/scenario/monitor/detail/Chart.vue';
 import DebugLog from '@/components/DebugLog/index.vue';
 import ExecLog from '@/components/ExecLog/index.vue';
+
 import ScenarioHttpDebugResult from '@/components/ScenarioHttpDebugResult/index.vue';
 import ScenarioJdbcDebugResult from '@/components/ScenarioJdbcDebugResult/index.vue';
 import ScenarioFtpDebugResult from '@/components/ScenarioFtpDebugResult/index.vue';
@@ -22,13 +20,14 @@ import ScenarioWebsocketDebugResult from '@/components/ScenarioWebsocketDebugRes
 import ScenarioLdapDebugResult from '@/components/ScenarioLdapDebugResult/index.vue';
 import ScenarioMailDebugResult from '@/components/ScenarioMailDebugResult/index.vue';
 import ScenarioTcpDebugResult from '@/components/ScenarioTcpDebugResult/index.vue';
-import ScearioSmtpDebugResult from '@/components/ScearioSmtpDebugResult/index.vue';
+import ScenarioSmtpDebugResult from '@/components/ScenarioSmtpDebugResult/index.vue';
+
 import { ScenarioMonitorStatus } from '@/enums/enums';
 
 const { t } = useI18n();
 
 // Component props with proper typing
-const props = withDefaults(defineProps<MonitorDetailProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -96,15 +95,24 @@ const statusColorConfig = getStatusColorConfig();
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="bg-gray-light py-2 px-4 flex space-x-4 items-center rounded">
-      <div class="text-center">
-        <div class="font-semibold text-8 text-text-sub-content mb-2">{{ dataSource?.count?.totalNum }}</div>
-        {{ t('scenarioMonitor.detail.totalExecutions') }}
+      <div class="text-center ml-3 mr-5">
+        <div class="font-semibold text-8 text-text-sub-content mb-2">
+          {{ dataSource?.count?.totalNum }}
+        </div>
+        {{ t('common.total') }}
       </div>
 
-      <div class="flex-1 min-w-0 space-y-2">
-        <div class="space-x-2">
-          <span class="text-text-title font-semibold text-4">{{ dataSource?.name }}</span>
-          <Tag v-if="dataSource?.status?.value" :color="statusColorConfig[dataSource?.status?.value]">{{ dataSource?.status?.message }}</Tag>
+      <div class="flex-1 min-w-0">
+        <div class="space-x-2 space-y-5">
+          <span class="text-text-title font-semibold text-4">
+            {{ dataSource?.name }}
+          </span>
+
+          <Tag
+            v-if="dataSource?.status?.value"
+            :color="statusColorConfig[dataSource?.status?.value]">
+            {{ dataSource?.status?.message }}
+          </Tag>
         </div>
 
         <div>
@@ -113,14 +121,22 @@ const statusColorConfig = getStatusColorConfig();
         </div>
 
         <div class="flex items-center">
-          <span class="font-semibold">{{ dataSource?.lastModifiedByName }}</span><span class="ml-1">{{ t('scenarioMonitor.detail.lastModified') }} {{ dataSource?.lastModifiedDate }}</span>
+          <span class="font-semibold">{{ dataSource?.lastModifiedByName }}</span>
+          <span class="ml-1">{{ t('scenarioMonitor.detail.lastModified') }} {{ dataSource?.lastModifiedDate }}</span>
+
           <div class="ml-10">
-            <Button size="small" type="text">
-              <Icon icon="icon-zhihang" @click="handleRunMonitor(dataSource)" />
-            </Button>
             <Button
               size="small"
               type="text"
+              :title="t('actions.execute')"
+              @click="handleRunMonitor(dataSource)">
+              <Icon icon="icon-zhihang" />
+            </Button>
+
+            <Button
+              size="small"
+              type="text"
+              :title="t('actions.edit')"
               @click="editMonitor(dataSource as any)">
               <Icon icon="icon-xiugai" />
             </Button>
@@ -129,11 +145,15 @@ const statusColorConfig = getStatusColorConfig();
       </div>
     </div>
 
-    <div class="flex mt-4">
+    <div class="flex mt-5">
       <div class="flex-1">
-        <div class="title-backend relative pl-2 text-text-title font-semibold text-3.5">{{ t('scenarioMonitor.detail.successRate') }}</div>
+        <div class="title-backend relative pl-2 text-text-title font-semibold text-3.5">
+          {{ t('scenarioMonitor.detail.successRate') }}
+        </div>
+
         <div class="flex py-2 space-x-6 items-center">
           <Chart class="w-80" :count="dataSource?.count" />
+
           <div class="text px-2 space-y-1 flex flex-col text-center">
             <span class=" font-medium">{{ t('scenarioMonitor.detail.timeRanges.last24Hours') }}</span>
             <span class="text-4 font-medium">{{ dataSource?.count?.last24HoursSuccessRate }}%</span>
@@ -155,7 +175,10 @@ const statusColorConfig = getStatusColorConfig();
       </div>
 
       <div class="flex-1">
-        <div class="title-backend relative pl-2 text-text-title font-semibold text-3.5">{{ t('scenarioMonitor.detail.responseDelay') }}</div>
+        <div class="title-backend relative pl-2 text-text-title font-semibold text-3.5">
+          {{ t('scenarioMonitor.detail.responseDelay') }}
+        </div>
+
         <div class="flex  py-5 space-x-6 items-center">
           <div class="text px-2 space-y-1 flex flex-col text-center">
             <span class="text-4 font-medium">{{ dataSource?.count?.avgDelayTime }}</span>
@@ -190,9 +213,12 @@ const statusColorConfig = getStatusColorConfig();
       </div>
     </div>
 
-    <div class="mt-4">
+    <div class="mt-5">
       <div class="title-backend relative pl-2 flex items-center">
-        <span class="text-text-title font-semibold text-3.5 mr-2">{{ t('scenarioMonitor.detail.executionRecords') }}</span>
+        <span class="text-text-title font-semibold text-3.5 mr-2">
+          {{ t('common.executionRecord') }}
+        </span>
+
         <Hints :text="t('scenarioMonitor.detail.executionRecordsHint')" />
       </div>
 
@@ -201,13 +227,16 @@ const statusColorConfig = getStatusColorConfig();
           v-for="history in historyList"
           :key="history.id"
           class="w-4 h-6 border mb-2  text-center mr-2"
-          :class="[history.status.value, currentHistoryId === history.id ? 'border-blue-1 shadow-lg' : 'border-transparent', loadHistoryContent ? 'cursor-not-allowed' : 'cursor-pointer' ]"
+          :class="[history.status.value, currentHistoryId === history.id
+            ? 'border-blue-1 shadow-lg' : 'border-transparent', loadHistoryContent
+            ? 'cursor-not-allowed' : 'cursor-pointer' ]"
           @click="changeHistory(history)">
           <Icon
             v-show="currentHistoryId === history.id"
             icon="icon-dangqianxuanzhong"
             class="text-3.5 text-status-pending" />
         </div>
+
         <div
           v-for="(_, idx) in waitingHistory"
           :key="idx"
@@ -221,14 +250,17 @@ const statusColorConfig = getStatusColorConfig();
         </template>
 
         <template v-if="historyExecData?.status?.value === ScenarioMonitorStatus.FAILURE">
-          {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('status.failed') }}，{{ t('scenarioMonitor.detail.executionStatus.reason') }}：{{ historyExecData?.failureMessage || '--' }}
+          {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('status.failed') }}，
+          {{ t('scenarioMonitor.detail.executionStatus.reason') }}：{{ historyExecData?.failureMessage || '--' }}
         </template>
       </div>
 
-      <Tabs size="small">
+      <Tabs size="small" class="mt-5">
         <TabPane key="result" :tab="t('scenarioMonitor.detail.tabs.debugResult')">
           <template v-if="scenarioPlugin === 'Http'">
-            <ScenarioHttpDebugResult v-if="historyExecData?.sampleContents" :content="historyExecData?.sampleContents || []" />
+            <ScenarioHttpDebugResult
+              v-if="historyExecData?.sampleContents"
+              :content="historyExecData?.sampleContents || []" />
             <NoData
               v-else
               size="small"
@@ -236,7 +268,9 @@ const statusColorConfig = getStatusColorConfig();
           </template>
 
           <template v-if="scenarioPlugin === 'Jdbc'">
-            <ScenarioJdbcDebugResult v-if="historyExecData?.sampleContents" :content="historyExecData?.sampleContents || []" />
+            <ScenarioJdbcDebugResult
+              v-if="historyExecData?.sampleContents"
+              :content="historyExecData?.sampleContents || []" />
             <NoData
               v-else
               size="small"
@@ -244,7 +278,9 @@ const statusColorConfig = getStatusColorConfig();
           </template>
 
           <template v-if="scenarioPlugin === 'Ftp'">
-            <ScenarioFtpDebugResult v-if="historyExecData?.sampleContents" :content="historyExecData?.sampleContents || []" />
+            <ScenarioFtpDebugResult
+              v-if="historyExecData?.sampleContents"
+              :content="historyExecData?.sampleContents || []" />
             <NoData
               v-else
               size="small"
@@ -296,7 +332,7 @@ const statusColorConfig = getStatusColorConfig();
           </template>
 
           <template v-if="scenarioPlugin === 'Smtp'">
-            <ScearioSmtpDebugResult
+            <ScenarioSmtpDebugResult
               v-if="historyExecData?.sampleContents"
               :value="scenarioData"
               :content="historyExecData?.sampleContents || []" />
@@ -308,7 +344,9 @@ const statusColorConfig = getStatusColorConfig();
         </TabPane>
 
         <TabPane key="debuglog" :tab="t('scenarioMonitor.detail.tabs.scheduleLog')">
-          <DebugLog v-if="historyExecData?.schedulingResult" :value="historyExecData?.schedulingResult" />
+          <DebugLog
+            v-if="historyExecData?.schedulingResult"
+            :value="historyExecData?.schedulingResult" />
           <NoData
             v-else
             size="small"

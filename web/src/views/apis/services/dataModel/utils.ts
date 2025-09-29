@@ -83,7 +83,7 @@ export const serviceNavItem: NavItem[] = [
   },
   {
     icon: 'icon-biaoqian',
-    name: t('common.tags'),
+    name: t('common.tag'),
     value: 'tag', // 9
     auth: 'MODIFY',
     disabled: true

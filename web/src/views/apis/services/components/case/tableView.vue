@@ -76,7 +76,7 @@ const columns = [
   },
   {
     dataIndex: 'createdByName',
-    title: t('service.case.columns.createdByName'),
+    title: t('common.createdBy'),
     groupName: 'create'
   },
   {
@@ -87,7 +87,7 @@ const columns = [
   },
   {
     dataIndex: 'lastModifiedByName',
-    title: t('service.case.columns.lastModifiedByName'),
+    title: t('actions.astModifiedBy'),
     groupName: 'modify'
   },
   {
@@ -278,7 +278,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="handleSingleDebug(record)">
             <Icon icon="icon-tiaoshi" class="mr-1" />
-            <span>{{ t('common.debug') }}</span>
+            <span>{{ t('actions.debug') }}</span>
           </Button>
           <Button
             :loading="cloneLoadingMap[record.id]"

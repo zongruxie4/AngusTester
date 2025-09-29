@@ -2,18 +2,16 @@
 import { useI18n } from 'vue-i18n';
 import { Input } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
+import { DataSourceProps } from '@/types/types';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { ScriptInfo } from '../types';
 import { useScriptForm } from './composables/useScriptForm';
 
+import SelectEnum from '@/components/enum/SelectEnum.vue';
+
 const { t } = useI18n();
 
-type Props = {
-  dataSource: ScriptInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DataSourceProps<ScriptInfo>>(), {
   dataSource: undefined
 });
 
@@ -31,7 +29,7 @@ const {
 defineExpose({ getFormData, validate });
 </script>
 <template>
-  <div class="overflow-auto">
+  <div class="overflow-auto font-semibold">
     <Form
       ref="formRef"
       :model="formData"
@@ -40,12 +38,12 @@ defineExpose({ getFormData, validate });
       <FormItem
         :label="t('common.scriptType')"
         name="type"
-        :rules="[{ required: true, message: t('scriptDetail.form.selectScriptType') }]">
+        :rules="[{ required: true, message: t('common.placeholders.selectScriptType') }]">
         <SelectEnum
           v-model:value="formData.type"
           :excludes="excludes"
           enumKey="ScriptType"
-          :placeholder="t('scriptDetail.form.selectScriptType')"
+          :placeholder="t('common.placeholders.selectScriptType')"
           @change="handleTypeChange" />
       </FormItem>
 
@@ -53,11 +51,11 @@ defineExpose({ getFormData, validate });
         :label="t('common.scriptName')"
         name="name"
         size="small"
-        :rules="[{ required: true, message: t('scriptDetail.form.enterScriptName') }]">
+        :rules="[{ required: true, message: t('scriptHome.messages.namePlaceholder') }]">
         <Input
           v-model:value="formData.name"
           :maxlength="200"
-          :placeholder="t('common.placeholders.searchKeyword')" />
+          :placeholder="t('scriptHome.messages.namePlaceholder')" />
       </FormItem>
     </Form>
 
@@ -65,9 +63,9 @@ defineExpose({ getFormData, validate });
       <div class="mb-0.5">{{ t('common.description') }}</div>
       <Input
         v-model:value="formData.description"
-        :placeholder="t('scriptDetail.form.descriptionPlaceholder')"
+        :placeholder="t('scriptHome.messages.descriptionPlaceholder')"
         type="textarea"
-        :autosize="{ minRows: 4, maxRows: 6 }"
+        :autosize="{ minRows: 6, maxRows: 10 }"
         :maxlength="800" />
     </div>
   </div>

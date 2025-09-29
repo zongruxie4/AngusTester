@@ -743,7 +743,7 @@ onMounted(() => {
               <FormItem
                 name="tagIds">
                 <template #label>
-                  <span>{{ t('common.tags') }}
+                  <span>{{ t('common.tag') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter

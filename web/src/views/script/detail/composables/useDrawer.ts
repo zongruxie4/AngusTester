@@ -34,14 +34,14 @@ export function useDrawer (pageType: any, viewMode: any) {
       },
       {
         key: 'execRecord',
-        name: t('scriptDetail.tabs.executionRecord'),
+        name: t('common.executionRecord'),
         icon: 'icon-zhihangceshi',
         noAuth: true
       },
       {
         key: 'activity',
         icon: 'icon-lishijilu',
-        name: t('scriptDetail.tabs.activity'),
+        name: t('common.activity'),
         noAuth: true
       }
     ];

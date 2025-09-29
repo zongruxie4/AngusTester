@@ -68,6 +68,9 @@
     "projectId": "项目Id",
     "projectName": "项目名称",
     "projectMembers": "项目成员",
+    "resourceType": "资源类型",
+    "resourceId": "资源ID",
+    "resourceName": "资源名称",
     "module": "模块",
     "sprint": "迭代",
     "plan": "计划",
@@ -81,7 +84,9 @@
     "scenario": "场景",
     "useCase": "用例",
     "execution": "执行",
+    "executionRecord": "执行记录",
     "analysis": "分析",
+    "node": "节点",
     "data": "数据",
     "variables": "变量",
     "dataset": "数据集",
@@ -115,7 +120,7 @@
     "version": "版本",
     "softwareVersion": "软件版本",
     "remark": "备注",
-    "tags": "标签",
+    "tag": "标签",
     "attachments": "附件",
     "comments": "评论",
     "activities": "活动",
@@ -132,10 +137,29 @@
     "placeholders": {
       "searchKeyword": "输入查询关键词",
       "selectCreator": "选择添加人",
+      "selectModifier": "选择修改人",
       "selectOwner": "选择负责人",
-      "selectProject": "选择项目",
+      "selectSource": "选择来源",
       "selectPluginType": "选择插件类型",
-      "selectScriptType": "选择脚本类型"
+      "selectScriptType": "选择脚本类型",
+      "selectProject": "选择项目",
+      "selectService": "选择服务",
+      "selectApi": "选择接口",
+      "scenarioPlaceholder": "选择场景",
+      "selectTag": "选择标签",
+      "searchTag": "搜索标签",
+      "selectDate": [
+        "时间从",
+        "时间到"
+      ],
+      "selectCreatedDate": [
+        "创建时间从",
+        "创建时间到"
+      ],
+      "selectModifiedDate": [
+        "修改时间从",
+        "修改时间到"
+      ]
     },
     "rules": {},
     "hints": {

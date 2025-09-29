@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { DataSourceProps } from '@/types/types';
 
 import { ResourceCount } from '../types';
 import { usePieChart } from './composables/usePieChart';
@@ -10,12 +11,7 @@ const { t } = useI18n();
 /**
  * Component props interface
  */
-type Props = {
-  /** Resource information containing script statistics */
-  dataSource: ResourceCount;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DataSourceProps<ResourceCount>>(), {
   dataSource: undefined
 });
 
@@ -46,12 +42,12 @@ onMounted(() => {
     <div
       :id="domId"
       ref="containerRef"
-      class="w-80 h-34">
+      class="w-90 h-34">
     </div>
 
     <!-- Center overlay with total count -->
     <div class="mark-container">
-      <div class="text-center">{{ t('scriptHome.pieChart.title') }}</div>
+      <div class="text-center">{{ t('common.scriptType') }}</div>
       <div class="text-3.5 text-center font-semibold">{{ props.dataSource?.totalScriptNum }}</div>
     </div>
   </div>

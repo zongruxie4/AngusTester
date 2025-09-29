@@ -26,7 +26,7 @@ init();
  */
 const columns = [
   {
-    title: t('app.config.quota.table.columns.resourceName'),
+    title: t('common.resourceName'),
     dataIndex: 'name'
   },
   {

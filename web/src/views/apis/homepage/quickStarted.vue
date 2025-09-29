@@ -35,12 +35,6 @@ const toImport = () => {
         </div>
 
         <div class="flex items-start">
-          <!-- <ButtonAuth
-            code="ApisDebug"
-            type="link"
-            icon="icon-tiaoshi"
-            iconStyle="font-size:14px;"
-            @click="toDebug" /> -->
           <Button
             type="link"
             size="small"

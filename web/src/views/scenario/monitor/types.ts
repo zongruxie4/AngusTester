@@ -161,17 +161,6 @@ export interface HistoryExecData {
   status: EnumMessage<ScenarioMonitorStatus>;
 }
 
-// Component props types
-export interface MonitorDetailProps {
-  projectId: string;
-  userInfo: { id: string };
-  appInfo: { id: string };
-  data: {
-    _id: string;
-    id: string | undefined;
-  };
-}
-
 // Chart component props
 export interface ChartProps {
   count?: {

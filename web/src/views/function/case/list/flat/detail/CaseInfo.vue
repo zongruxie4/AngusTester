@@ -26,7 +26,7 @@ const infoColumns = computed(() => [
       dataIndex: 'reviewStatus'
     },
     { label: t('common.priority'), dataIndex: 'priority' },
-    { label: t('common.tags'), dataIndex: 'tags' },
+    { label: t('common.tag'), dataIndex: 'tags' },
     {
       label: t('common.testResult'),
       dataIndex: 'testResult'

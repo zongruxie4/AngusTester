@@ -180,7 +180,6 @@ onMounted(() => {
   });
 });
 </script>
-<!-- TODO 从详情页面进入后，点击页面编辑，编辑成功后详情页面没有刷新 -->
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <!-- Action buttons -->
@@ -207,7 +206,7 @@ onMounted(() => {
       ref="formRef"
       :model="formState"
       size="small"
-      class="max-w-242.5"
+      class="max-w-242.5 font-semibold"
       layout="vertical">
       <!-- Scenario selection -->
       <FormItem

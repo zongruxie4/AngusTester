@@ -49,19 +49,19 @@ export function useDatasetUsage (props: { id: string }) {
    */
   const columns = [
     {
-      title: t('dataset.detail.useList.table.resourceType'),
+      title: t('common.resourceType'),
       dataIndex: 'targetType',
       width: '10%',
       ellipsis: true
     },
     {
-      title: t('dataset.detail.useList.table.resourceId'),
+      title: t('common.resourceId'),
       dataIndex: 'targetId',
       width: '20%',
       ellipsis: true
     },
     {
-      title: t('dataset.detail.useList.table.resourceName'),
+      title: t('common.resourceName'),
       dataIndex: 'targetName',
       ellipsis: true
     },

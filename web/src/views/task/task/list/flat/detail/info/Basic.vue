@@ -615,7 +615,7 @@ const handleVersionBlur = async () => {
         <div class="info-row">
           <div class="info-item info-item-full">
             <div class="info-label">
-              <span>{{ t('common.tags') }}</span>
+              <span>{{ t('common.tag') }}</span>
             </div>
             <div class="info-value">
               <div v-show="!isTagEditing" class="info-value-content">

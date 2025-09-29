@@ -5,6 +5,7 @@ import { AsyncComponent, Dropdown, GridList, Icon, Image, ScriptTypeTag } from '
 import { CombinedTargetType, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { ScenarioPermission, ExecStatus } from '@/enums/enums';
+import { BasicDataSourceProps } from '@/types/types';
 
 // Import composables
 import { useScenarioModals, useScenarioPermissions, useScenarioActions, useScenarioMenuItems } from './composables';
@@ -13,15 +14,7 @@ import { MenuItem, MenuItemKey, ScenarioInfo } from './types';
 
 const { t } = useI18n();
 
-type Props = {
-  dataSource: ScenarioInfo[];
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicDataSourceProps<ScenarioInfo[]>>(), {
   dataSource: undefined,
   projectId: undefined,
   userInfo: undefined,

@@ -154,16 +154,6 @@ const handleDropdownActionClick = (e: any, record: ScriptInfo) => {
   );
 };
 
-// Watch for reset notifications
-watch(() => props.resetSelectedIdsNotify, (newValue) => {
-  if (!newValue) {
-    return;
-  }
-
-  rowSelection.value.selectedRowKeys = [];
-  selectedDataMap.value = {};
-}, { immediate: true });
-
 // Update rowSelection onChange handler
 rowSelection.value.onChange = (keys: string[]) => {
   // Handle table select directly since we can't import the function
@@ -197,6 +187,16 @@ rowSelection.value.onChange = (keys: string[]) => {
 
   rowSelection.value.selectedRowKeys = selectedRowKeys;
 };
+
+// Watch for reset notifications
+watch(() => props.resetSelectedIdsNotify, (newValue) => {
+  if (!newValue) {
+    return;
+  }
+
+  rowSelection.value.selectedRowKeys = [];
+  selectedDataMap.value = {};
+}, { immediate: true });
 </script>
 
 <template>
@@ -351,7 +351,7 @@ rowSelection.value.onChange = (keys: string[]) => {
               :disabled="!props.permissionsMap[record.id]?.includes(ScriptPermission.TEST)"
               type="text"
               size="small"
-              class="flex items-center px-0 mr-1"
+              class="flex items-center px-0 mr-2"
               @click="() => handleSingleExecClick(record)">
               <Icon icon="icon-zhihangjiaoben" class="mr-1" />
               <span>{{ t('actions.execute') }}</span>
@@ -361,7 +361,7 @@ rowSelection.value.onChange = (keys: string[]) => {
               :disabled="!props.permissionsMap[record.id]?.includes(ScriptPermission.MODIFY)"
               type="text"
               size="small"
-              class="flex items-center px-0 mr-1"
+              class="flex items-center px-0 mr-2"
               @click="() => handleEditClick(record)">
               <Icon icon="icon-shuxie" class="mr-1" />
               <span>{{ t('actions.edit') }}</span>

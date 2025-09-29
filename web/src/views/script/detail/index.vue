@@ -125,7 +125,7 @@ const handleSave = () => {
 const handleDelete = async () => {
   modal.confirm({
     centered: true,
-    content: t('scriptDetail.messages.confirmDelete'),
+    content: t('scriptHome.table.messages.deleteScriptConfirmSimple', { name: scriptInfo.value?.name }),
     async onOk () {
       await deleteScript();
     }
@@ -189,7 +189,7 @@ onMounted(() => {
               size="small"
               type="primary"
               @click="handleSave">
-              {{ t('scriptDetail.actions.saveScript') }}
+              {{ t('actions.save') }}
             </Button>
           </div>
         </template>
@@ -229,7 +229,7 @@ onMounted(() => {
               :disabled="!permissionList.includes(ScriptPermission.TEST)"
               @click="startDebug">
               <Icon icon="icon-tiaoshi" class="mr-1" />
-              <span>{{ t('common.debug') }}</span>
+              <span>{{ t('actions.debug') }}</span>
             </Button>
             <Button
               size="small"

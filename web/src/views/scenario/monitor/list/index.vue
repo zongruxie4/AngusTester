@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button, Popover } from 'ant-design-vue';
 import { Icon, NoData, Spin } from '@xcan-angus/vue-ui';
 import { ScenarioMonitorStatus } from '@/enums/enums';
+import { BasicProps } from '@/types/types';
 
 // Import types and composables
 import type { TabPaneInjection } from '../types';
@@ -16,15 +17,8 @@ import SearchPanel from '@/views/scenario/monitor/list/SearchPanel.vue';
 // Component setup
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
 // Props definition
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -85,7 +79,7 @@ const {
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('scenarioMonitor.list.noMonitors') }}</span>
             <RouterLink class="router-link flex-1 truncate" :to="`/scenario#monitor?type=ADD`">
-              {{ t('scenarioMonitor.list.addMonitor') }}
+              {{ t('scenarioMonitor.actions.addMonitor') }}
             </RouterLink>
           </div>
         </div>
@@ -110,11 +104,17 @@ const {
                 :key="item.id"
                 style="width:calc(25% - 8px); margin-right: 8px;"
                 class="border rounded py-2 px-4 flex-grow-0 h-37.5 mb-3">
-                <div class="text-theme-special text-3.5 font-medium cursor-pointer" @click="handleDetail(item)">{{ item.name }}</div>
+                <div
+                  class="text-theme-special text-3.5 font-medium cursor-pointer"
+                  @click="handleDetail(item)">
+                  {{ item.name }}
+                </div>
 
                 <div class="flex mt-2 justify-between items-center">
                   <div class="inline-flex items-center">
-                    <span class="text-6 font-semibold" :class="item.status?.value">{{ item.status?.message }}</span>
+                    <span
+                      class="text-6 font-semibold"
+                      :class="item.status?.value">{{ item.status?.message }}</span>
                     <Popover>
                       <template #content>
                         <div class="max-w-80">{{ item.failureMessage }}</div>
@@ -127,32 +127,36 @@ const {
                   </div>
 
                   <div class="text-center">
-                    <span class="font-semibold text-3.5">{{ item.count?.successRate ? item.count?.successRate + '%' : '--' }}</span>
+                    <span
+                      class="font-semibold text-3.5">{{ item.count?.successRate ? item.count?.successRate + '%' : '--' }}</span>
                     <div>{{ t('scenarioMonitor.list.successRate') }}</div>
                   </div>
+
                   <div class="text-center">
                     <span class="font-semibold text-3.5">{{ item.count?.avgDelayTime || '--' }}</span>
                     <div>{{ t('scenarioMonitor.list.averageDelay') }}</div>
                   </div>
                 </div>
+
                 <div class="mt-2 inline-flex max-w-full">
                   <template v-if="item.status?.value === ScenarioMonitorStatus.PENDING">
-                    <span>{{ t('scenarioMonitor.list.willRun') }}“</span>
+                    <span>{{ t('scenarioMonitor.list.willRun') }}「</span>
                     <a
-                      class="text-blue-1 truncate min-w-0 flex-1"
+                      class="text-blue-1 truncate min-w-0 flex-1 ml-1 mr-1"
                       :title="item.scenarioName"
                       @click="getScenarioDetail(item.scenarioId)">{{ item.scenarioName || '--' }}
                     </a>
-                    <span>”{{ t('scenarioMonitor.list.in') }} {{ item.nextExecDate }}</span>
+                    <span>」{{ t('scenarioMonitor.list.in') }} {{ item.nextExecDate }}</span>
                   </template>
+
                   <template v-else>
-                    <span>{{ t('scenarioMonitor.list.lastRun') }}“</span>
+                    <span>{{ t('scenarioMonitor.list.lastRun') }}「</span>
                     <a
-                      class="text-blue-1 truncate min-w-0 flex-1"
+                      class="text-blue-1 truncate min-w-0 flex-1 ml-1 mr-1"
                       :title="item.scenarioName"
                       @click="getScenarioDetail(item.scenarioId)">{{ item.scenarioName || '--' }}
                     </a>
-                    <span>”{{ t('scenarioMonitor.list.in') }} {{ item.lastMonitorDate }}</span>
+                    <span>」{{ t('scenarioMonitor.list.in') }} {{ item.lastMonitorDate }}</span>
                   </template>
                 </div>
 
@@ -162,6 +166,7 @@ const {
                     :title="`${item.createdByName} ${t('common.createdBy')} ${ item.createdDate }`">
                     {{ item.createdByName }} {{ t('common.createdBy') }} {{ item.createdDate }}
                   </span>
+
                   <div>
                     <Popover>
                       <template #content>
@@ -174,12 +179,14 @@ const {
                     <Button
                       size="small"
                       type="text"
+                      :title="t('actions.edit')"
                       @click="editMonitor(item)">
                       <Icon icon="icon-xiugai" />
                     </Button>
                     <Button
                       size="small"
                       type="text"
+                      :title="t('actions.delete')"
                       @click="toDelete(item)">
                       <Icon icon="icon-qingchu" />
                     </Button>

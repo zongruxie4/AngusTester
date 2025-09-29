@@ -53,7 +53,7 @@ const columns = [
       dataIndex: 'confirmerName',
       label: t('xcan_httpTestInfo.confirmerName')
     },
-    { dataIndex: 'createdByName', label: t('xcan_httpTestInfo.createdByName') },
+    { dataIndex: 'createdByName', label: t('common.createdBy') },
     { dataIndex: 'createdDate', label: t('common.createdDate') }
   ]
 ];

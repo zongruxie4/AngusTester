@@ -87,7 +87,7 @@ onMounted(() => {
         :disabled="auth && !authPermissions.includes(ScenarioPermission.DELETE)"
         @click="deleteScenario">
         <Icon icon="icon-qingchu" class="mr-1" />
-        {{ t('scenario.detail.actions.delete') }}
+        {{ t('actions.delete') }}
       </Button>
       <Button
         size="small"

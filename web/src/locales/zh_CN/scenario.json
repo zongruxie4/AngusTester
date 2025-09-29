@@ -140,7 +140,40 @@
   },
   "scenarioMonitor": {
     "title": "监控",
-    "addMonitor": "添加监控",
+    "introduce": {
+      "aboutMonitor": "关于监控",
+      "description": "场景监控帮助您实时掌握系统状态，快速发现并解决问题，提升系统可靠性和用户体验。主要应用场景：",
+      "scenarios": {
+        "apiDelay": {
+          "title": "API延迟监控",
+          "description": "监控API响应时间，确保良好的访问体验。如：监控支付API响应时间不超过500ms。"
+        },
+        "healthCheck": {
+          "title": "系统健康检查",
+          "description": "快速检测系统运行状态。如：检查健康检查端点(/health)的组件状态。"
+        },
+        "apiFunctionality": {
+          "title": "API功能验证",
+          "description": "定期测试API功能正确性。如：自动验证用户注册API的账户创建流程。"
+        },
+        "businessProcess": {
+          "title": "业务流程监控",
+          "description": "监控核心业务流程的完整性。如：验证支付订单与金额的一致性。"
+        }
+      }
+    },
+    "searchPanel": {
+      "searchNamePlaceholder": "查询名称，描述",
+      "selectScenarioPlaceholder": "选择场景名称",
+      "selectCreatorPlaceholder": "选择创建人",
+      "sortOptions": {
+        "byAddTime": "按添加时间",
+        "byCreator": "按添加人"
+      }
+    },
+    "actions": {
+      "addMonitor": "添加监控"
+    },
     "edit": {
       "monitorScenario": "监控场景",
       "selectScenario": "选择场景",
@@ -159,7 +192,6 @@
       "recipient": "接收对象"
     },
     "detail": {
-      "totalExecutions": "总执行数",
       "successRate": "成功率",
       "responseDelay": "响应延迟",
       "executionRecords": "执行记录",
@@ -198,49 +230,6 @@
       "executeNow": "立即执行",
       "deleteConfirm": "确定删除监控「{name}」吗？",
       "executeConfirm": "立即执行监控「{name}」"
-    },
-    "searchPanel": {
-      "searchNamePlaceholder": "查询名称，描述",
-      "selectScenarioPlaceholder": "选择场景名称",
-      "selectCreatorPlaceholder": "选择创建人",
-      "sortOptions": {
-        "byAddTime": "按添加时间",
-        "byCreator": "按添加人"
-      },
-      "filterOptions": {
-        "all": "全部",
-        "myCreated": "我创建的",
-        "myModified": "我修改的"
-      },
-      "timeRanges": {
-        "last1Day": "近1天",
-        "last3Days": "近3天",
-        "last7Days": "近7天"
-      },
-      "quickSearch": "快速查询",
-      "addMonitor": "添加监控"
-    },
-    "introduce": {
-      "aboutMonitor": "关于监控",
-      "description": "场景监控帮助您实时掌握系统状态，快速发现并解决问题，提升系统可靠性和用户体验。主要应用场景：",
-      "scenarios": {
-        "apiDelay": {
-          "title": "API延迟监控",
-          "description": "监控API响应时间，确保良好的访问体验。如：监控支付API响应时间不超过500ms。"
-        },
-        "healthCheck": {
-          "title": "系统健康检查",
-          "description": "快速检测系统运行状态。如：检查健康检查端点(/health)的组件状态。"
-        },
-        "apiFunctionality": {
-          "title": "API功能验证",
-          "description": "定期测试API功能正确性。如：自动验证用户注册API的账户创建流程。"
-        },
-        "businessProcess": {
-          "title": "业务流程监控",
-          "description": "监控核心业务流程的完整性。如：验证支付订单与金额的一致性。"
-        }
-      }
     },
     "chart": {
       "successCount": "成功数",

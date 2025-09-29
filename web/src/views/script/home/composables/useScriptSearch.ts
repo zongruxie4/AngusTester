@@ -167,13 +167,13 @@ export function useScriptSearch (userId: string) {
   const searchOptions = [
     {
       valueKey: 'name',
-      placeholder: t('scriptHome.searchPanel.searchPlaceholder'),
+      placeholder: t('common.placeholders.searchKeyword'),
       type: 'input',
       maxlength: 100
     },
     {
       valueKey: 'source',
-      placeholder: t('scriptHome.searchPanel.sourcePlaceholder'),
+      placeholder: t('common.placeholders.selectSource'),
       type: 'select-enum',
       enumKey: 'ScriptSource',
       excludes: (data: { value: CombinedTargetType; message: string }) => {
@@ -182,7 +182,7 @@ export function useScriptSearch (userId: string) {
     },
     {
       valueKey: 'tag',
-      placeholder: t('scriptHome.searchPanel.tagPlaceholder'),
+      placeholder: t('common.placeholders.searchTag'),
       type: 'input',
       op: SearchCriteria.OpEnum.Equal,
       maxlength: 100
@@ -190,7 +190,7 @@ export function useScriptSearch (userId: string) {
     {
       type: 'select',
       valueKey: 'serviceId',
-      placeholder: t('scriptHome.searchPanel.servicePlaceholder'),
+      placeholder: t('common.placeholders.selectService'),
       noDefaultSlot: true
     },
     {
@@ -206,14 +206,14 @@ export function useScriptSearch (userId: string) {
     {
       type: 'select-user',
       valueKey: 'lastModifiedBy',
-      placeholder: t('scriptHome.searchPanel.modifierPlaceholder')
+      placeholder: t('common.placeholders.selectModifier')
     },
     {
       type: 'date-range',
       valueKey: 'createdDate',
       placeholder: [
-        t('scriptHome.searchPanel.addTimePlaceholder.0'),
-        t('scriptHome.searchPanel.addTimePlaceholder.1')
+        t('common.placeholders.selectCreatedDate.0'),
+        t('common.placeholders.selectCreatedDate.1')
       ],
       showTime: true
     },
@@ -221,8 +221,8 @@ export function useScriptSearch (userId: string) {
       type: 'date-range',
       valueKey: 'lastModifiedDate',
       placeholder: [
-        t('scriptHome.searchPanel.modifyTimePlaceholder.0'),
-        t('scriptHome.searchPanel.modifyTimePlaceholder.1')
+        t('common.placeholders.selectModifiedDate.0'),
+        t('common.placeholders.selectModifiedDate.1')
       ],
       showTime: true
     }

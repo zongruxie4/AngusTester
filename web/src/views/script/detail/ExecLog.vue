@@ -43,7 +43,7 @@ const {
     <div v-if="!!props.execNode?.id" class="h-full px-5 py-3 text-3">
       <div class="flex items-center leading-5 mb-2.5">
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('scriptDetail.log.node') }}</span>
+          <span class="text-theme-sub-content">{{ t('common.node') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.execNode.name }}({{ props.execNode.publicIp || props.execNode.ip }})</span>
         </div>
@@ -52,11 +52,11 @@ const {
           <Colon class="mr-2" />
           <template v-if="props.schedulingResult?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
-            <span>{{ t('scriptDetail.log.success') }}</span>
+            <span>{{ t('status.success') }}</span>
           </template>
           <template v-else>
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-error"></span>
-            <span>{{ t('scriptDetail.log.fail') }}</span>
+            <span>{{ t('status.failed') }}</span>
           </template>
         </div>
         <div class="flex items-center mr-15">

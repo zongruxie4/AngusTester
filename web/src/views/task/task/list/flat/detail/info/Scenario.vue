@@ -742,7 +742,7 @@ const handleVersionBlur = async () => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('common.tags') }}</span>
+              <span>{{ t('common.tag') }}</span>
               <Colon class="w-1" />
             </div>
 

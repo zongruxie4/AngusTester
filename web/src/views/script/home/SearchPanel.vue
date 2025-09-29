@@ -183,6 +183,7 @@ watch(
           </Select>
         </template>
       </SearchPanel>
+
       <div class="flex-shrink-0 flex items-center space-x-2.5">
         <Button
           type="primary"
@@ -192,7 +193,7 @@ watch(
             class="h-6.5 leading-6.5 flex items-center space-x-1"
             to="/script/edit?type=edit">
             <Icon icon="icon-jia" />
-            <span>{{ t('scriptHome.searchPanel.addScript') }}</span>
+            <span>{{ t('scriptHome.actions.addScript') }}</span>
           </RouterLink>
         </Button>
 
@@ -202,12 +203,12 @@ watch(
           class="flex space-x-1"
           @click="toImport">
           <Icon icon="icon-shangchuan" class="text-3.5" />
-          <span>{{ t('scriptHome.searchPanel.importScript') }}</span>
+          <span>{{ t('scriptHome.actions.importScript') }}</span>
         </Button>
 
         <Button size="small" @click="toAuth">
           <Icon icon="icon-quanxian1" class="mr-1 text-3.5" />
-          <span>{{ t('scriptHome.searchPanel.scriptAuth') }}</span>
+          <span>{{ t('actions.permission') }}</span>
         </Button>
 
         <!-- Refresh Button -->

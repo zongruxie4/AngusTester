@@ -67,14 +67,14 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'targetName',
       dataIndex: 'targetName',
-      title: t('reportHome.table.resourceName'),
+      title: t('common.resourceName'),
       groupName: 'resource',
       hide: false
     },
     {
       key: 'targetType',
       dataIndex: 'targetType',
-      title: t('reportHome.table.resourceType'),
+      title: t('common.resourceType'),
       groupName: 'resource',
       hide: true,
       customRender: ({ text }) => {
@@ -84,7 +84,7 @@ export function useTableColumns (): UseTableColumnsReturn {
     {
       key: 'targetId',
       dataIndex: 'targetId',
-      title: t('reportHome.table.resourceId'),
+      title: t('common.resourceId'),
       groupName: 'resource',
       hide: true
     },
