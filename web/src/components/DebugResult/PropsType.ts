@@ -1,6 +1,16 @@
+/**
+ * HTTP method types
+ */
 export type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE';
-export type AssertionCondition = 'CONTAIN' | 'EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'IS_EMPTY' | 'IS_NULL' | 'JSON_PATH_MATCH' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'NOT_CONTAIN' | 'NOT_EMPTY' | 'NOT_EQUAL' | 'NOT_NULL' | 'REG_MATCH' | 'XPATH_MATCH'
 
+/**
+ * Assertion condition types for test validation
+ */
+export type AssertionCondition = 'CONTAIN' | 'EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'IS_EMPTY' | 'IS_NULL' | 'JSON_PATH_MATCH' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'NOT_CONTAIN' | 'NOT_EMPTY' | 'NOT_EQUAL' | 'NOT_NULL' | 'REG_MATCH' | 'XPATH_MATCH';
+
+/**
+ * HTTP configuration interface for test pipelines
+ */
 export type HTTPConfig = {
     target: 'HTTP';
     name: string;
@@ -154,6 +164,9 @@ export type HTTPConfig = {
     id: string;// 前端自动生成，用于给每条记录添加id
 }
 
+/**
+ * HTTP information interface with enhanced type definitions
+ */
 export type HTTPInfo = {
     target: 'HTTP';
     name: string;
@@ -327,6 +340,9 @@ export type HTTPInfo = {
     id: string;// 前端自动生成，用于给每条记录添加id
 }
 
+/**
+ * Rendezvous configuration interface for test synchronization
+ */
 export type RendezvousConfig = {
   id: string; // 前端自动生成，用于给每条记录添加id
   target: 'RENDEZVOUS';
@@ -341,6 +357,9 @@ export type RendezvousConfig = {
 
 // import { HttpMethod, AssertionCondition } from '../HTTPConfigs/PropsType';
 
+/**
+ * API information interface for test configuration
+ */
 export type ApiInfo = {
     projectId: string;
     caseId: string;
@@ -416,6 +435,9 @@ export type ApiInfo = {
 
 // import { HTTPInfo, HttpMethod } from '../HTTPConfigs/PropsType';
 
+/**
+ * Use case information interface for test scenarios
+ */
 export type UseCaseInfo = {
     id: string;
     caseType: {
@@ -577,6 +599,9 @@ export type UseCaseInfo = {
     }[];
 }
 
+/**
+ * Throughput configuration interface for performance testing
+ */
 export type ThroughputConfig = {
   id:string;// 前端自动生成，用于给每条记录添加id
   target: 'THROUGHPUT';
@@ -589,6 +614,9 @@ export type ThroughputConfig = {
   timeoutInMs: string;
 }
 
+/**
+ * Transaction end configuration interface
+ */
 export type TransEndConfig = {
   id: string;
   target: 'TRANS_END';
@@ -599,6 +627,9 @@ export type TransEndConfig = {
   enabled: boolean;
 }
 
+/**
+ * Waiting time configuration interface for test delays
+ */
 export type WaitingTimeConfig = {
   id: string; // 前端自动生成，用于给每条记录添加id
   beforeName:string;
@@ -611,6 +642,9 @@ export type WaitingTimeConfig = {
   minWaitTimeInMs?: string;// 固定等待时间不用传
 }
 
+/**
+ * Transaction start configuration interface
+ */
 export type TransStartConfig = {
   id: string; // 前端自动生成，用于给每条记录添加id
   target: 'TRANS_START';
@@ -621,6 +655,17 @@ export type TransStartConfig = {
   transactionName: string;
 }
 
+/**
+ * Target key types for pipeline components
+ */
 export type TargetKey = 'HTTP' | 'TRANS_START' | 'TRANS_END' | 'RENDEZVOUS' | 'WAITING_TIME' | 'THROUGHPUT' | 'TRANS_END';
+
+/**
+ * Pipeline configuration union type
+ */
 export type PipelineConfig = HTTPConfig | WaitingTimeConfig | RendezvousConfig | TransStartConfig | TransEndConfig | ThroughputConfig;
+
+/**
+ * Pipeline information union type
+ */
 export type PipelineInfo = HTTPInfo | WaitingTimeConfig | RendezvousConfig | TransStartConfig | TransEndConfig;
