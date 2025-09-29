@@ -1484,7 +1484,7 @@ const groupMenuItems = [
   },
   {
     key: 'lastModifiedByName',
-    name: t('task.searchPanel.groupOptions.lastModifiedByName')
+    name: t('actions.astModifiedBy')
   },
   {
     key: 'taskType',
@@ -1495,7 +1495,7 @@ const groupMenuItems = [
 const sortMenuItems = [
   {
     key: 'createdByName',
-    name: t('task.searchPanel.sortOptions.createdByName'),
+    name: t('common.createdBy'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {

@@ -374,7 +374,7 @@ const sortMenuItems = [
   },
   {
     key: 'createdByName',
-    name: t('common.createdByName'),
+    name: t('common.createdBy'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {

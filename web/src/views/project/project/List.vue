@@ -74,7 +74,7 @@ const sortMenuItems = computed(() => [
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('project.list.createdByName'),
+    name: t('common.createdBy'),
     key: 'createdByName' as OrderByKey,
     orderSort: PageQuery.OrderSort.Asc
   }

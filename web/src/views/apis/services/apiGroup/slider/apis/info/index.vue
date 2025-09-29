@@ -85,7 +85,7 @@ const columns = computed(() => {
       { label: t('service.groupApiDetail.columns.auth'), dataIndex: 'auth' },
       { label: t('service.groupApiDetail.columns.deprecated'), dataIndex: 'deprecated' },
       // !state.info.protocol?.value?.includes('ws') && { label: '用例数量', dataIndex: 'apiCaseNum' },
-      { label: t('service.groupApiDetail.columns.createdByName'), dataIndex: 'createdByName' },
+      { label: t('common.createdBy'), dataIndex: 'createdByName' },
       { label: t('service.groupApiDetail.columns.ownerName'), dataIndex: 'ownerName' },
       { label: t('common.tags'), dataIndex: 'tags' },
       { label: t('common.createdDate'), dataIndex: 'createdDate' },

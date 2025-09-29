@@ -36,7 +36,7 @@ const columns = [[
   { label: t('service.mockService.columns.nodeName'), dataIndex: 'nodeName' },
   { label: t('common.status'), dataIndex: 'status' },
   { label: t('common.authControl'), dataIndex: 'auth' },
-  { label: t('common.createdByName'), dataIndex: 'createdByName' },
+  { label: t('common.createdBy'), dataIndex: 'createdByName' },
   { label: t('common.createdDate'), dataIndex: 'createdDate' }
 ]];
 

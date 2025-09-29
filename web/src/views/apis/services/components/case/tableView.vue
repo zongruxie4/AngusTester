@@ -76,7 +76,7 @@ const columns = [
   },
   {
     dataIndex: 'createdByName',
-    title: t('service.case.columns.createdByName'),
+    title: t('common.createdBy'),
     groupName: 'create'
   },
   {
@@ -87,7 +87,7 @@ const columns = [
   },
   {
     dataIndex: 'lastModifiedByName',
-    title: t('service.case.columns.lastModifiedByName'),
+    title: t('actions.astModifiedBy'),
     groupName: 'modify'
   },
   {

@@ -330,7 +330,7 @@ const sortMenuItems = [
   },
   {
     key: 'createdByName',
-    name: t('functionAnalysis.searchPanel.sortOptions.createdByName'),
+    name: t('common.createdBy'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
