@@ -3,25 +3,27 @@ import { API_EXTENSION_KEY } from '@/utils/apis/index';
 
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
-// 请求参数的字段
+
+/**
+ * API parameter item interface
+ */
 export interface ParamsItem {
-  // 参数名称
+  /** Parameter name */
   name: string;
-
-  // 参数类型
+  /** Parameter location type */
   in: 'path'|'query';
-  // 参数描述
+  /** Parameter description */
   description: string;
-
-  // 设为变量
-
-  key?:symbol;
-
-  // 参数值 设为变量
+  /** Unique key for form items */
+  key?: symbol;
+  /** Parameter value and other properties */
   [key: string]: any;
 }
 
-const paramsTypeOpt = [
+/**
+ * Parameter type options for select components
+ */
+const parameterTypeOptions = [
   {
     value: 'query',
     label: 'query'
@@ -32,12 +34,19 @@ const paramsTypeOpt = [
   }
 ];
 
-// select options 的字段
+/**
+ * Select option item interface
+ */
 export interface OptionItem {
-  label: string,
-  value: string
+  label: string;
+  value: string;
 }
 
+/**
+ * Create default parameter item with optional configuration
+ * @param config - Optional configuration to override defaults
+ * @returns Default parameter item
+ */
 export const getDefaultParams = (config = {}): ParamsItem => {
   return {
     name: '',
@@ -52,65 +61,70 @@ export const getDefaultParams = (config = {}): ParamsItem => {
   };
 };
 
-const getUriByParams = (uri: string, paths: ParamsItem[], querys?:ParamsItem[]): string => {
+/**
+ * Generate URI from parameters
+ * @param uri - Base URI
+ * @param paths - Path parameters
+ * @param querys - Query parameters
+ * @returns Generated URI with parameters
+ */
+const generateUriFromParameters = (uri: string, paths: ParamsItem[], querys?: ParamsItem[]): string => {
   if (!uri) {
     return '';
   }
 
   const pathUri = uri.split('?')[0] || '/';
-
-  // 正则变量
-  // const rexVar = '';
-  // path类型参数替换为格式为：{name}的占位符
   const originalPath = pathUri.replace(/(\S+)\?\S*/, '$1');
   let pathname = '';
-  // eslint-disable-next-line prefer-regex-literals
-  const pathReg = new RegExp(/{((?!{).)*}/g); // 匹配不包含 { 的任意字符串
-  const preUrl = decodeURIComponent(originalPath);
-  const uriPath = preUrl.match(pathReg); // 拿到 uri 上所有 {} 部分
+  
+  // Regular expression to match path parameters in format {name}
+  const pathParameterRegex = new RegExp(/{((?!{).)*}/g);
+  const decodedUrl = decodeURIComponent(originalPath);
+  const uriPathParameters = decodedUrl.match(pathParameterRegex);
+  
   if (paths?.length) {
-    let tempPath = preUrl;
-    // let tempPath = paths.reduce((prevValue, currentValue) => {
-    //   rexVar += '(?!' + currentValue.name + ')';
-    //   return prevValue;
-    // }, decodeURIComponent(originalPath));
-    if (paths?.length > (uriPath?.length || 0)) {
+    let tempPath = decodedUrl;
+    if (paths?.length > (uriPathParameters?.length || 0)) {
       tempPath += `/{${paths?.[paths?.length - 1].name}}`;
     }
-    uriPath?.forEach((i, idx) => {
-      tempPath = tempPath.replace(i, paths[idx]?.name ? `{${paths[idx].name}}` : '');
+    uriPathParameters?.forEach((param, idx) => {
+      tempPath = tempPath.replace(param, paths[idx]?.name ? `{${paths[idx].name}}` : '');
     });
-    // const pattern = new RegExp('{\\b(' + rexVar + '\\w)+\\b}', 'gi');
     pathname = tempPath;
   } else {
     pathname = originalPath.replace(/{\S+}/g, '');
   }
   pathname = pathname.replace(/\/{2,}/g, '/').replace(/\/$/, '');
 
-  // query类型参数替换为name=value格式
-  const queryObj = {};
-
-  (querys || []).forEach(i => {
-    queryObj[i.name] = i[valueKey];
+  // Convert query parameters to name=value format
+  const queryObject = {};
+  (querys || []).forEach(param => {
+    queryObject[param.name] = param[valueKey];
   });
-  const searchParams = qs.stringify(queryObj);
+  const searchParams = qs.stringify(queryObject);
 
   return (pathname + '?' + searchParams?.toString()).replace(/\?$/, '');
 };
 
-const getParamsByUri = (uri = ''): ParamsItem[] => {
-  // 获取path类型参数
-  const temp: ParamsItem[] = uri.match(/{[^{}]+}/gi)?.map((item): ParamsItem => {
+/**
+ * Extract parameters from URI
+ * @param uri - URI to extract parameters from
+ * @returns Array of parameter items
+ */
+const extractParametersFromUri = (uri = ''): ParamsItem[] => {
+  // Extract path parameters
+  const parameters: ParamsItem[] = uri.match(/{[^{}]+}/gi)?.map((item): ParamsItem => {
     return getDefaultParams({ name: item.replace(/{(\S*)}/gi, '$1'), in: 'path' });
   }) || [];
 
   if (/\?/.test(uri)) {
-    // 获取query类型参数
+    // Extract query parameters
     new URLSearchParams(uri.replace(/\S+\?(\S*)/g, '$1')).forEach((value, key) => {
-      temp.push(getDefaultParams({ name: key, [valueKey]: value, [enabledKey]: true, in: 'query', schema: { type: 'string' } }));
+      parameters.push(getDefaultParams({ name: key, [valueKey]: value, [enabledKey]: true, in: 'query', schema: { type: 'string' } }));
     });
   }
-  return temp;
+  return parameters;
 };
 
-export { getUriByParams, getParamsByUri, paramsTypeOpt };
+// Legacy export aliases for backward compatibility
+export { generateUriFromParameters as getUriByParams, extractParametersFromUri as getParamsByUri, parameterTypeOptions as paramsTypeOpt };
