@@ -1,23 +1,5 @@
 {
   "dataHome": {
-    "statistics": {
-      "resourceStatistics": "Total Resources",
-      "variable": "Variable",
-      "dataset": "Dataset",
-      "file": "File",
-      "space": "Space",
-      "directory": "Directory",
-      "datasource": "Datasource",
-      "usedCount": "Used Count",
-      "unusedCount": "Unused Count"
-    },
-    "myCreationSummary": {
-      "title": "My Parameterization",
-      "addedVariables": "Added Variables",
-      "addedDataSets": "Added Datasets",
-      "addedSpaces": "Added Spaces",
-      "addedDataSources": "Added Datasource"
-    },
     "introduce": {
       "title": "AngusTester Parameterization Methods",
       "description": "Define reusable variables, dynamic data, mock functions, and parameter extraction mechanisms to automate testing workflows.",
@@ -38,93 +20,29 @@
         "content": "Extract values from previous response as parameters for subsequent sampling, re-extracting on each iteration."
       }
     },
-    "summaryTable": {
-      "pagination": {
-        "pageInfo": "Page {current}/{totalPage}"
-      },
-      "messages": {
-        "deleteConfirm": "Are you sure to delete 「{name}」?",
-        "deleteSuccess": "Delete successful"
-      },
-      "emptyData": {
-        "noVariable": "You haven't added any variables yet, ",
-        "addVariable": "Add Variable",
-        "noDataset": "You haven't added any datasets yet, ",
-        "addDataset": "Add Dataset",
-        "noSpace": "You haven't added any spaces",
-        "noDataSource": "You haven't added any data sources"
-      }
+    "statistics": {
+      "resourceStatistics": "Total Resources",
+      "usedCount": "Used",
+      "unusedCount": "Unused"
+    },
+    "myCreationSummary": {
+      "title": "My Parameterization",
+      "addedVariables": "Added Variables",
+      "addedDataSets": "Added Datasets",
+      "addedSpaces": "Added Spaces",
+      "addedDataSources": "Added Datasource"
+    },
+    "emptyData": {
+      "noVariable": "You haven't added any variables yet, ",
+      "addVariable": "Add Variable",
+      "noDataset": "You haven't added any datasets yet, ",
+      "addDataset": "Add Dataset",
+      "noSpace": "You haven't added any spaces",
+      "noDataSource": "You haven't added any data sources"
     }
   },
   "dataVariable": {
     "title": "Variable",
-    "addVariable": {
-      "static": "Add Static Variable",
-      "file": "Add File Extraction Variable",
-      "http": "Add Http Extraction Variable",
-      "jdbc": "Add Jdbc Extraction Variable"
-    },
-    "list": {
-      "title": "Added Variables",
-      "noVariableData": "You haven't added any variables yet, ",
-      "addStaticVariable": "Add Static Variable",
-      "uploadVariable": "Upload Variable",
-      "or": "or",
-      "isPassword": "Yes",
-      "notPassword": "No",
-      "columns": {
-        "dataSource": "Source"
-      },
-      "dropdown": {
-        "fileExtract": "File Extraction Variable",
-        "httpExtract": "Http Extraction Variable",
-        "jdbcExtract": "Jdbc Extraction Variable"
-      },
-      "messages": {
-        "deleteConfirm": "Are you sure to delete variable 「{name}」?",
-        "deleteSuccess": "Variable deleted successfully",
-        "cloneSuccess": "Variable cloned successfully",
-        "batchDeleteConfirm": "Are you sure to delete the selected {num} variables?",
-        "batchDeleteSuccess": "All selected variables deleted successfully",
-        "maxBatchDelete": "Maximum {maxNum} variables can be batch deleted, currently {num} variables are selected.",
-        "maxBatchDeleteError": "Maximum {maxNum} variables can be batch deleted, currently {num} variables are selected."
-      },
-      "searchPanel": {
-        "quickSearch": "Quick Search",
-        "all": "All",
-        "createdByMe": "Created by Me",
-        "modifiedByMe": "Modified by Me",
-        "lastDay": "Last Day",
-        "lastThreeDays": "Last 3 Days",
-        "lastWeek": "Last 7 Days",
-        "searchOptions": {
-          "namePlaceholder": "Search name, description",
-          "createdByPlaceholder": "Select creator"
-        },
-        "sortOptions": {
-          "byName": "By Name",
-          "byCreator": "By Creator",
-          "byCreateTime": "By Create Time",
-          "byLastModifier": "By Last Modifier",
-          "byLastModifyTime": "By Last Modify Time"
-        },
-        "buttons": {
-          "deleteSelected": "Delete Selected",
-          "cancelDelete": "Cancel Delete",
-          "addStaticVariable": "Add Static Variable",
-          "batchDelete": "Batch Delete"
-        },
-        "tooltips": {
-          "uploadVariable": "Upload Variable",
-          "downloadVariable": "Download Variable"
-        },
-        "dropdown": {
-          "fileExtract": "File Extract Variable",
-          "httpExtract": "Http Extract Variable",
-          "jdbcExtract": "Jdbc Extract Variable"
-        }
-      }
-    },
     "introduce": {
       "title": "About Variable",
       "description": "Define reusable values. Use {variableName} placeholder to reference variables, making testing more efficient and flexible. Note: Placeholders will be replaced with actual values before execution, and values remain unchanged during execution.",
@@ -143,99 +61,49 @@
         }
       }
     },
-    "importModal": {
-      "title": "Upload Variable",
-      "uploadArea": {
-        "selectFile": "Select File",
-        "description": "You can drag files directly into this area for upload. File size should not exceed {maxSize}M. Supports .json, .yaml, .yml file types."
+    "actions": {
+      "static": "Add Static Variable",
+      "file": "Add File Variable",
+      "http": "Add Http Variable",
+      "jdbc": "Add Jdbc Variable",
+      "uploadVariable": "Upload Variable",
+      "downloadVariable": "Download Variable",
+      "importModal": {
+        "title": "Upload Variable",
+        "uploadArea": {
+          "selectFile": "Select File",
+          "description": "You can drag files directly into this area for upload. File size should not exceed {maxSize}M. Supports .json, .yaml, .yml file types."
+        },
+        "fileSizeError": "File size cannot exceed {maxSize}M",
+        "duplicateStrategy": {
+          "title": "Processing strategy when encountering duplicates"
+        }
       },
-      "fileSizeError": "File size cannot exceed {maxSize}M",
-      "duplicateStrategy": {
-        "title": "Processing strategy when encountering duplicates"
+      "exportModal": {
+        "title": "Download Variable",
+        "format": "Format"
       }
     },
-    "exportModal": {
-      "title": "Download Variable",
-      "format": "Format"
+    "list": {
+      "addedTitle": "Added Variables",
+      "noVariableData": "You haven't added any variables yet, ",
+      "addStaticVariable": "Add Static Variable",
+      "uploadVariable": "Upload Variable",
+      "or": "or",
+      "isPassword": "Yes",
+      "notPassword": "No",
+      "columns": {
+        "dataSource": "Source"
+      }
     },
     "detail": {
-      "notifications": {
-        "deleteConfirm": "Are you sure to delete variable 「{name}」?",
-        "deleteSuccess": "Variable deleted successfully",
-        "cloneSuccess": "Variable cloned successfully",
-        "copyLinkSuccess": "Link copied successfully",
-        "copyLinkFail": "Link copied failed"
-      },
-      "matchItemPopover": {
-        "title": "Match Item Description",
-        "description": "Match item is used to extract data from the response, supports multiple matching methods:",
-        "regexp": {
-          "title": "Regular Expression",
-          "columns": {
-            "data": "Data",
-            "regexp": "Regular Expression",
-            "group": "Group"
-          },
-          "item": "Use regular expression to extract data from the response, support group capture."
-        },
-        "jsonpath": {
-          "title": "JSONPath",
-          "columns": {
-            "data": "Data",
-            "jsonpath": "JSONPath Expression",
-            "result": "Result"
-          },
-          "item": "Use JSONPath expression to extract data from the JSON response."
-        },
-        "xpath": {
-          "title": "XPath",
-          "columns": {
-            "data": "Data",
-            "xpath": "XPath Expression",
-            "result": "Result"
-          },
-          "item": "Use XPath expression to extract data from the XML response."
-        }
-      },
-      "useList": {
-        "title": "Use List",
-        "columns": {
-          "targetType": "Resource Type",
-          "targetId": "Resource ID",
-          "targetName": "Resource Name"
-        }
-      },
-      "previewData": {
-        "title": "Preview Data",
-        "tip": "Variable values resolve before sampling and persist unchanged throughout execution."
-      },
       "staticVariable": {
-        "password": "Password",
-        "namePlaceholder": "Enter parameter name, maximum 100 characters",
-        "descriptionPlaceholder": "Variable description, maximum 200 characters",
-        "valuePlaceholder": "Variable value, support Mock function, maximum 4096 characters",
         "passwordHint": "If the variable is a password type, the variable value is invisible to the user on the interface.",
         "hints": "If a variable contains mock functions, it auto-refreshes before each iteration (the value persists for all requests within that iteration)."
       },
       "httpVariable": {
-        "nameSupport": "Enter parameter name",
-        "namePlaceholder": "Enter parameter name, maximum 100 characters",
-        "descriptionPlaceholder": "Variable description, maximum 200 characters",
         "hints": "Extract a value from Http before each test execution, commonly used to obtain a user access token, avoiding manual updates each time.",
-        "readConfig": "Read Configuration",
-        "extractConfig": "Extract Configuration",
-        "selectApi": "Select Api",
         "interfaceConfig": "Configuration",
-        "extractMethod": "Extract Method",
-        "extractMethodPlaceholder": "Extract Method",
-        "extractPosition": "Extract Position",
-        "parameterName": "Parameter Name",
-        "parameterNamePlaceholder": "Parameter name, maximum 400 characters ",
-        "expression": "Expression",
-        "expressionPlaceholder": "Expression, maximum 1024 characters",
-        "matchItem": "Match Item",
-        "matchItemPlaceholder": "Match Item, range 0-2000 (optional)",
-        "defaultValuePlaceholder": "Default Value, maximum 4096 characters",
         "httpConfigs": {
           "title": "HTTP Configuration",
           "requestMethod": "Method",
@@ -257,7 +125,7 @@
           "testRequest": "Test Request",
           "testResponse": "Test Response",
           "selectApi": "Select Api",
-          "selectApiPlaceholder": "Please select the interface",
+          "selectApiPlaceholder": "Please select the api",
           "serverConfig": "Server Configuration",
           "serverPlaceholder": "Server address or URL prefix",
           "serverConfigPlaceholder": "Please select the server configuration",
@@ -266,9 +134,6 @@
           "compressRawContent": "Compress",
           "uploadFile": "Upload File",
           "parameterInput": {
-            "value": "Parameter Value",
-            "namePlaceholder": "Please enter the parameter name",
-            "valuePlaceholder": "Please enter the parameter value",
             "errors": {
               "duplicate": "Parameter Name Duplicate",
               "invalid": "Parameter Name Invalid"
@@ -286,26 +151,10 @@
             "selectFile": "Select File",
             "summaryFileSize": "The total uploaded file size cannot exceed {maxSize}"
           }
-        },
-        "selectApiModal": {
-          "title": "Select Api",
-          "searchPlaceholder": "Search Api Name"
         }
       },
       "jdbcVariable": {
-        "notifications": {
-          "editSuccess": "Edit Success",
-          "addSuccess": "Add Success"
-        },
-        "nameSupport": "Enter parameter name",
-        "extract": "Extract",
-        "preview": "Preview",
-        "use": "Use",
-        "namePlaceholder": "Enter parameter name, maximum 100 characters",
-        "descriptionPlaceholder": "Variable description, maximum 200 characters",
         "hints": "Extract a value from the database query result before each test execution.",
-        "readConfig": "Read Configuration",
-        "extractConfig": "Extract Configuration",
         "selectDataSource": "Select Datasource",
         "databaseType": "Database Type",
         "databaseTypePlaceholder": "Database Type",
@@ -315,137 +164,28 @@
         "passwordPlaceholder": "Password, maximum 800 characters",
         "selectStatement": "Select SQL",
         "selectStatementPlaceholder": "Query Table Data Select Statement, maximum 1024 characters",
-        "readStartRow": "Start Row",
-        "readStartRowPlaceholder": "Read Row Index, default from 0",
-        "readStartRowTooltip": "Read Parameter Value Start Row, default index based on 0, i.e. read the first row.",
-        "readStartColumn": "Start Column",
-        "readStartColumnPlaceholder": "Read Column Index, default from 0",
-        "readStartColumnTooltip": "Read Parameter Start Column, default index based on 0, i.e. read the first column.",
-        "extractMethod": "Extract Method",
-        "extractMethodPlaceholder": "Extract Method",
-        "expression": "Expression",
-        "expressionPlaceholder": "Expression, maximum 1024 characters",
-        "matchItem": "Match Item",
-        "matchItemPlaceholder": "Match Item, range 0-2000 (optional)",
-        "defaultValue": "Default Value",
-        "defaultValuePlaceholder": "Default Value, maximum 4096 characters",
         "selectDatasource": {
           "title": "Select Datasource",
           "searchPlaceholder": "Search Datasource Name"
         }
       },
       "fileVariable": {
-        "notifications": {
-          "editSuccess": "Edit Success",
-          "addSuccess": "Add Success"
-        },
-        "nameSupport": "Enter parameter name",
-        "extract": "Extract",
-        "preview": "Preview",
-        "use": "Use",
-        "namePlaceholder": "Enter parameter name, maximum 100 characters",
-        "descriptionPlaceholder": "Variable description, maximum 200 characters",
         "hints": "Extract a value from the file before each test execution.",
-        "extractHint": "Extract a value from the file before each test execution.",
-        "readConfig": "Read Configuration",
-        "extractConfig": "Extract Configuration",
         "filePath": "File Path",
         "filePathPlaceholder": "File Local Path or File URL, maximum 800 characters",
         "fileType": "File Type",
         "fileEncoding": "File Encoding",
-        "readStartRow": "Start Row",
-        "readStartRowPlaceholder": "Read Row Index, default from 0",
-        "readStartRowTooltip": "Read Parameter Value Start Row, default index based on 0, i.e. read the first row. Note: When the first row is the parameter name title row, usually data needs to be read from the second row starting from the index 1.",
-        "readStartColumn": "Start Column",
-        "readStartColumnPlaceholder": "Read Column Index, default from 0",
-        "readStartColumnTooltip": "Read Parameter Start Column, default index based on 0, i.e. read the first column.",
         "separator": "Separator",
         "separatorTooltip": "Csv type file parameter. Used to separate different fields or data columns in the CSV file, the default value is \",\".",
         "escapeChar": "Escape Char",
         "escapeCharTooltip": "Csv type file parameter, used to escape special characters in the field, especially when the quote character itself is included as a text character, the default is \"\\\\\".",
         "quoteChar": "Quote Char",
-        "quoteCharTooltip": "Csv type file parameter. Used to represent the start and end of the field in the CSV file, especially when the field contains special characters such as delimiters (such as commas) or line breaks, the default is \"\\\\\".",
-        "extractMethod": "Extract Method",
-        "extractMethodPlaceholder": "Extract Method",
-        "expression": "表达式",
-        "expressionPlaceholder": "Expression, maximum 1024 characters",
-        "matchItem": "Match Item",
-        "matchItemPlaceholder": "Match Item, range 0 ~ 2000",
-        "defaultValuePlaceholder": "Default Value, maximum 4096 characters"
+        "quoteCharTooltip": "Csv type file parameter. Used to represent the start and end of the field in the CSV file, especially when the field contains special characters such as delimiters (such as commas) or line breaks, the default is \"\\\\\"."
       }
     }
   },
   "dataset": {
     "title": "Dataset",
-    "addStaticDataset": "Add Static Dataset",
-    "addFileDataset": "Add File Dataset",
-    "addJdbcDataset": "Add Jdbc Dataset",
-    "preview": {
-      "hints": "A maximum of 10,000 data records can be previewed at a time. Mock function actual parameter values are generated during execution sampling.",
-      "previewRows": "Preview Rows",
-      "placeholder": "1 ~ 10000"
-    },
-    "list": {
-      "title": "Added Datasets",
-      "noDataText": "You haven't added any datasets yet, immediately",
-      "or": "or",
-      "uploadDataset": "Upload Dataset",
-      "buttonDropdown": {
-        "fileExtractDataset": "File Extract Dataset",
-        "jdbcExtractDataset": "Jdbc Extract Dataset"
-      },
-      "columns": {
-        "valueSource": "Source"
-      },
-      "tableDropdown": {
-        "previewData": "Preview Data"
-      },
-      "messages": {
-        "deleteConfirm": "Are you sure to delete dataset 「{name}」?",
-        "deleteSuccess": "Dataset deleted successfully",
-        "cloneSuccess": "Dataset cloned successfully",
-        "batchDeleteMaxError": "Maximum {maxNum} datasets can be batch deleted, currently {num} datasets are selected.",
-        "batchDeleteConfirm": "Are you sure to delete the selected {num} datasets?",
-        "batchDeleteSuccess": "All selected datasets deleted successfully",
-        "batchDeleteMaxInfo": "Maximum {maxNum} datasets can be batch deleted, currently {num} datasets are selected."
-      }
-    },
-    "listSearchPanel": {
-      "quickQuery": "Quick Query",
-      "menuItems": {
-        "all": "All",
-        "myCreated": "My Created",
-        "myModified": "My Modified",
-        "lastDay": "Last Day",
-        "lastThreeDays": "Last 3 Days",
-        "lastWeek": "Last 7 Days"
-      },
-      "searchOptions": {
-        "namePlaceholder": "Search name, description",
-        "createdByPlaceholder": "Select creator"
-      },
-      "sortMenuItems": {
-        "byName": "By Name",
-        "byCreator": "By Creator",
-        "byCreateTime": "By Create Time",
-        "byLastModifier": "By Last Modifier",
-        "byLastModifyTime": "By Last Modify Time"
-      },
-      "buttons": {
-        "deleteSelected": "Delete Selected",
-        "cancelDelete": "Cancel Delete",
-        "addStaticDataset": "Add Static Dataset",
-        "batchDelete": "Batch Delete"
-      },
-      "tooltips": {
-        "uploadDataset": "Upload Dataset",
-        "downloadDataset": "Download Dataset"
-      },
-      "buttonDropdown": {
-        "fileExtractDataset": "File Extract Dataset",
-        "jdbcExtractDataset": "Jdbc Extract Dataset"
-      }
-    },
     "introduce": {
       "title": "About Dataset",
       "description": "Used to define a set of related data parameter values, usually actual test data, such as: user data, order data, account data, etc. After defining a dataset, you can use parameter name placeholders {parameterName} to reference dataset parameters.",
@@ -465,84 +205,64 @@
         }
       }
     },
-    "importDataset": {
-      "title": "Upload Dataset",
-      "uploadArea": {
-        "selectFile": "Select File",
-        "description": "You can drag files directly into this area for upload. File size should not exceed {maxSize}M. Supports .json, .yaml, .yml file types."
+    "actions": {
+      "addStaticDataset": "Add Static Dataset",
+      "addFileDataset": "Add File Dataset",
+      "addJdbcDataset": "Add Jdbc Dataset",
+      "uploadDataset": "Upload Dataset",
+      "downloadDataset": "Download Dataset",
+      "importDataset": {
+        "title": "Upload Dataset",
+        "uploadArea": {
+          "selectFile": "Select File",
+          "description": "You can drag files directly into this area for upload. File size should not exceed {maxSize}M. Supports .json, .yaml, .yml file types."
+        },
+        "fileSizeError": "File size cannot exceed {maxSize}M",
+        "duplicateStrategy": {
+          "title": "Processing strategy when encountering duplicates"
+        }
       },
-      "fileSizeError": "File size cannot exceed {maxSize}M",
-      "duplicateStrategy": {
-        "title": "Processing strategy when encountering duplicates"
+      "exportModal": {
+        "title": "Download Dataset",
+        "format": "Format"
       }
     },
-    "exportModal": {
-      "title": "Download Dataset",
-      "format": "Format"
+    "list": {
+      "title": "Added Datasets",
+      "noDataText": "You haven't added any datasets yet, immediately",
+      "or": "or",
+      "columns": {
+        "valueSource": "Source"
+      },
+      "tableDropdown": {
+        "previewData": "Preview Data"
+      },
+      "messages": {
+        "batchDeleteMaxError": "Maximum {maxNum} datasets can be batch deleted, currently {num} datasets are selected.",
+        "batchDeleteConfirm": "Are you sure to delete the selected {num} datasets?",
+        "batchDeleteSuccess": "All selected datasets deleted successfully",
+        "batchDeleteMaxInfo": "Maximum {maxNum} datasets can be batch deleted, currently {num} datasets are selected."
+      }
     },
     "detail": {
-      "notifications": {
-        "deleteConfirm": "Are you sure to delete dataset 「{name}」?",
-        "deleteSuccess": "Dataset deleted successfully",
-        "cloneSuccess": "Dataset cloned successfully",
-        "copyLinkSuccess": "Copy link successfully",
-        "copyLinkFail": "Copy link failed"
-      },
       "fileDataset": {
-        "notifications": {
-          "updateSuccess": "Dataset modified successfully",
-          "addSuccess": "Dataset added successfully"
-        },
         "form": {
-          "namePlaceholder": "Dataset name, maximum 100 characters",
-          "descriptionPlaceholder": "Dataset description, maximum 200 characters",
-          "extraction": "Extraction",
           "hints": "Read dataset from file, each dataset allows a maximum of 200 parameters, each parameter file cannot exceed 500MB, and the total number of rows cannot exceed 1000000.",
-          "parameterName": "Parameters",
-          "readConfig": "Read Configuration",
           "filePath": "File Path",
           "filePathPlaceholder": "File local path or file URL, maximum 800 characters",
           "fileType": "File Type",
           "fileEncoding": "File Encoding",
-          "readStartRow": "Start Row",
-          "readStartRowPlaceholder": "Read row index, default from 0",
-          "readStartRowTooltip": "Read parameter value start row, default index based on 0, that is, read the first row. Note: When the first row is the parameter name title row, usually need to read data from index 1, that is, the second row.",
-          "readStartColumn": "Start Column",
-          "readStartColumnPlaceholder": "Read column index, default from 0",
-          "readStartColumnTooltip": "Read parameter start column, default index based on 0, that is, read the first column.",
           "separator": "Separator",
           "separatorTooltip": "Csv type file parameter. Used to separate different fields or data columns in CSV files, the default value is \",\".",
           "escapeChar": "Escape Char",
           "escapeCharTooltip": "Csv type file parameter, used to escape special characters in fields, especially when the quote character itself is included as a text character, the default is \"\\\".",
           "quoteChar": "Quote Char",
-          "quoteCharTooltip": "Csv type file parameter. Used to represent the start and end of fields in CSV files, especially when fields contain special characters such as separators (such as commas) or line breaks, the default is \"\\\".",
-          "extractionConfig": "Extraction Configuration",
-          "extractionMethod": "Method",
-          "extractionMethodPlaceholder": "Extraction Method",
-          "defaultValue": "Default Value",
-          "defaultValuePlaceholder": "Default value, maximum 4096 characters",
-          "expression": "Expression",
-          "expressionPlaceholder": "Expression, maximum 1024 characters",
-          "matchItem": "Match Item",
-          "matchItemPlaceholder": "Match item, range 0 ~ 2000"
-        },
-        "tabs": {
-          "preview": "Preview",
-          "use": "Use"
+          "quoteCharTooltip": "Csv type file parameter. Used to represent the start and end of fields in CSV files, especially when fields contain special characters such as separators (such as commas) or line breaks, the default is \"\\\"."
         }
       },
       "jdbcDataset": {
-        "notifications": {
-          "updateSuccess": "Dataset modified successfully",
-          "addSuccess": "Dataset added successfully"
-        },
         "form": {
-          "namePlaceholder": "Dataset name, maximum 100 characters",
-          "descriptionPlaceholder": "Dataset description, maximum 200 characters",
-          "extraction": "Extraction",
           "hints": "Extract a value from the database query result before each test execution as a dataset value.",
-          "parameter": "Parameters",
-          "readConfig": "Read Configuration",
           "dataSource": "Datasource",
           "selectDataSource": "Select Datasource",
           "databaseType": "Database Type",
@@ -552,31 +272,11 @@
           "usernamePlaceholder": "Username, maximum 200 characters",
           "passwordPlaceholder": "Password, maximum 800 characters",
           "selectStatement": "Select SQL",
-          "selectStatementPlaceholder": "Select statement to query table data, no need to specify paging parameters, default fetch 5000 rows each time, maximum 1024 characters",
-          "readStartRow": "Start Row",
-          "readStartRowPlaceholder": "Read row index, default from 0",
-          "readStartRowTooltip": "Read parameter value start row, default index based on 0, that is, read the first row.",
-          "readStartColumn": "Start Column",
-          "readStartColumnPlaceholder": "Read column index, default from 0",
-          "readStartColumnTooltip": "Read parameter start column, default index based on 0, that is, read the first column.",
-          "extractionConfig": "Extraction Configuration",
-          "extractionMethod": "Method",
-          "extractionMethodPlaceholder": "Extraction Method",
-          "defaultValuePlaceholder": "Default value, maximum 4096 characters",
-          "expression": "Expression",
-          "expressionPlaceholder": "Expression, maximum 1024 characters",
-          "matchItem": "Match Item",
-          "matchItemPlaceholder": "Match item, range 0-2000 (optional)"
-        },
-        "tabs": {
-          "preview": "Preview",
-          "use": "Use"
+          "selectStatementPlaceholder": "Select statement to query table data, no need to specify paging parameters, default fetch 5000 rows each time, maximum 1024 characters"
         }
       },
       "useList": {
         "notifications": {
-          "deleteConfirm": "Confirm to delete resource 「{name}」?",
-          "deleteSuccess": "Delete resource successfully",
           "batchDeleteLimit": "Maximum support batch deletion of {max} resources, currently {current} resources are selected.",
           "batchDeleteConfirm": "Confirm to delete the selected {num} resources?",
           "batchDeleteAllSuccess": "The selected {num} resources were all deleted successfully",
@@ -584,46 +284,7 @@
           "batchDeletePartialSuccess": "The selected {success} resources were deleted successfully, {fail} resources were deleted failed",
           "batchDeleteLimitInfo": "Maximum support batch deletion of {max} resources, currently {current} resources are selected."
         },
-        "table": {
-          "resourceType": "Resource Type",
-          "resourceId": "Resource ID",
-          "resourceName": "Resource Name"
-        },
         "hints": "View resource information using datasets."
-      },
-      "matchItemPopover": {
-        "title": "Match Item",
-        "description": "When the expression matches multiple values or the result is an array, specify the value as the expected value of the expression, support position from 0 to maximum value 2000, return null when the specified position data does not exist, and merge multiple values into a value when not specified.",
-        "regexp": {
-          "title": "Regexp Match",
-          "columns": {
-            "data": "Match Value",
-            "expression": "Expression",
-            "result": "Match Result",
-            "item": "Match Item"
-          },
-          "item": "Default to merge match values when not specified position: \"1888888888813999999999\", specified position 0 to get value: \"18888888888\", specified position 1 to get value: \"13999999999\"."
-        },
-        "jsonpath": {
-          "title": "JSONPath Match",
-          "columns": {
-            "data": "Match Value",
-            "expression": "Expression",
-            "result": "Match Result",
-            "item": "Match Item"
-          },
-          "item": "Default to merge match values when not specified position: 「{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}」, specified position 0 to get value: {\"title\":\"Sayings of the Century\",\"price\":100}, specified position 1 to get value: {\"title\":\"confucianism\",\"price\":200}."
-        },
-        "xpath": {
-          "title": "XPath Match",
-          "columns": {
-            "data": "Match Value",
-            "expression": "Expression",
-            "result": "Match Result",
-            "item": "Match Item"
-          },
-          "item": "Default to merge match values when not specified position: \"30codingbasketballAngus132codingAngus2\", specified position 0 to get value: \"30codingbasketballAngus1\", specified position 1 to get value: \"32codingAngus2\"."
-        }
       },
       "parameterNameInput": {
         "readColumn": "Read Column",
@@ -635,46 +296,37 @@
         }
       },
       "staticDataset": {
-        "notifications": {
-          "editSuccess": "Dataset modified successfully",
-          "addSuccess": "Dataset added successfully"
-        },
-        "parameters": "Parameters",
-        "namePlaceholder": "Dataset name, maximum 100 characters",
-        "descriptionPlaceholder": "Dataset description, maximum 200 characters",
         "hints": "Generate parameter values dynamically using Mock data functions. Each dataset supports up to 200 parameters and can generate up to 100 billion rows of data.",
         "parameterInput": {
-          "namePlaceholder": "Enter parameter name, maximum 100 characters",
-          "valuePlaceholder": "Parameter value, value can be constant or Mock function, maximum 4096 characters",
           "errors": {
             "duplicate": "Name duplicate",
             "invalid": "Name Enter parameter name"
           }
         }
       }
+    },
+    "preview": {
+      "hints": "A maximum of 10,000 data records can be previewed at a time. Mock function actual parameter values are generated during execution sampling.",
+      "previewRows": "Preview Rows",
+      "placeholder": "1 ~ 10000"
     }
   },
   "datasource": {
     "title": "Data Source",
-    "titleTip": "About Datasource",
+    "titleAbout": "About Datasource",
     "description": "Supports managing and connecting multiple datasource. After configuring datasource information, you can quickly generate test data, project demonstration scenarios, and quickly reference data source configuration information in JDBC tests, parameterized variables, and datasets.",
-    "addedTitle": "Added Datasource",
-    "addDataSource": "Add Datasource",
+    "actions": {
+      "addedTitle": "Added Datasource",
+      "addDataSource": "Add Datasource"
+    },
     "searchOptions": {
       "namePlaceholder": "Search Datasource name",
-      "databasePlaceholder": "Select database type",
-      "createdByPlaceholder": "Select creator"
+      "databasePlaceholder": "Select database type"
     },
     "testConnection": {
       "testing": "Testing...",
       "retest": "Retest",
       "testConnection": "Test Connection"
-    },
-    "messages": {
-      "deleteConfirm": "Are you sure to delete 「{name}」?",
-      "deleteSuccess": "Deleted successfully",
-      "addSuccess": "Added successfully",
-      "editSuccess": "Modified successfully"
     },
     "form": {
       "labels": {
@@ -694,18 +346,38 @@
   },
   "fileSpace": {
     "title": "File",
-    "titleTip": "About Files",
     "addedTitle": "Added Spaces",
-    "searchPlaceholder": "Search space name",
     "type": {
       "directory": "Directory",
       "file": "File",
       "space": "Space"
     },
-    "compressFile": "Compress File",
-    "buttons": {
+    "introduce": {
+      "title": "About File",
+      "description": "Provides online generation and storage functions for test data and business data files, with support for multi-person collaborative management and sharing.",
+      "features": {
+        "generateData": {
+          "title": "Data Generation",
+          "content": "Generate data files in multiple formats such as CSV, Excel, SQL, JSON, and XML for testing and business use."
+        },
+        "storageAndBackup": {
+          "title": "Storage and Backup",
+          "content": "Upload files to network disk for data backup and secure storage, preventing data loss and sharing issues."
+        },
+        "securityAndProtection": {
+          "title": "Security Protection",
+          "content": "Ensure data security and privacy through data-level permissions and encryption protection for uploaded files."
+        },
+        "spaceManagement": {
+          "title": "Space Management",
+          "content": "Provide storage space quota management with scalable capacity to meet storage needs of different scales."
+        }
+      }
+    },
+    "actions": {
       "generateData": "Generate Data",
-      "addSpace": "Add Space"
+      "addSpace": "Add Space",
+      "compressFile": "Compress File"
     },
     "columns": {
       "spaceName": "Space Name",
@@ -713,24 +385,13 @@
       "fileCount": "File Count",
       "used": "Used",
       "quota": "Quota",
-      "actualSize": "Actual Size",
-      "lastModifiedDate": "Last Modified Date"
-    },
-    "messages": {
-      "deleteConfirm": "Confirm delete 「{name}」?",
-      "deleteSuccess": "Deleted successfully"
+      "actualSize": "Actual Size"
     },
     "drawer": {
       "spaceCapacity": "Space Capacity: ",
       "accountStorageCapacity": "Account Storage Capacity: "
     },
-    "permissionModal": {
-      "title": "Space Permission",
-      "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
-      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
-    },
     "fileManagement": {
-      "directory": "Directory",
       "createDirectory": "Enter directory name, limited to 50 characters",
       "fileActions": {
         "details": "Details",
@@ -738,10 +399,7 @@
       },
       "messages": {
         "renameSuccess": "File renamed successfully",
-        "addDirectorySuccess": "Directory added successfully",
-        "deleteConfirm": "Confirm delete file/folder?",
-        "deleteSuccess": "File deleted successfully",
-        "copyLinkSuccess": "Link copied successfully"
+        "addDirectorySuccess": "Directory added successfully"
       }
     },
     "share": {
@@ -789,26 +447,10 @@
         }
       }
     },
-    "introduce": {
-      "description": "Provides online generation and storage functions for test data and business data files, with support for multi-person collaborative management and sharing.",
-      "features": {
-        "generateData": {
-          "title": "Data Generation",
-          "content": "Generate data files in multiple formats such as CSV, Excel, SQL, JSON, and XML for testing and business use."
-        },
-        "storageAndBackup": {
-          "title": "Storage and Backup",
-          "content": "Upload files to network disk for data backup and secure storage, preventing data loss and sharing issues."
-        },
-        "securityAndProtection": {
-          "title": "Security Protection",
-          "content": "Ensure data security and privacy through data-level permissions and encryption protection for uploaded files."
-        },
-        "spaceManagement": {
-          "title": "Space Management",
-          "content": "Provide storage space quota management with scalable capacity to meet storage needs of different scales."
-        }
-      }
+    "permissionModal": {
+      "title": "Space Permission",
+      "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
+      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
     },
     "globalAuth": {
       "title": "Space Permission",
@@ -874,6 +516,81 @@
         "quota": "Quota",
         "mockFunc": "Mock Function"
       }
+    }
+  },
+  "dataCommon": {
+    "common": {
+      "nameSupportPlaceholder": "Parameter name, which supports numbers, letters, and !$%^&*_-+=./",
+      "readConfig": "Read Configuration",
+      "extractConfig": "Extract Configuration",
+      "extractPosition": "Extract Position",
+      "parameterName": "Parameter Name",
+      "parameterNamePlaceholder": "Parameter name, maximum 400 characters ",
+      "readStartRow": "Start Row",
+      "readStartRowPlaceholder": "Read Row Index, default from 0",
+      "readStartRowTooltip": "Read Parameter Value Start Row, default index based on 0, i.e. read the first row.",
+      "readStartColumn": "Start Column",
+      "readStartColumnPlaceholder": "Read Column Index, default from 0",
+      "readStartColumnTooltip": "Read Parameter Start Column, default index based on 0, i.e. read the first column.",
+      "extraction": "Extraction",
+      "extractMethod": "Extract Method",
+      "extractMethodPlaceholder": "Select extract method",
+      "expression": "Expression",
+      "expressionPlaceholder": "Expression, maximum 1024 characters",
+      "matchItem": "Match Item",
+      "matchItemPlaceholder": "Match Item, range 0-2000 (optional)",
+      "defaultValuePlaceholder": "Default Value, maximum 4096 characters"
+    },
+    "searchPanel": {
+      "sortOptions": {
+        "byName": "By Name",
+        "byCreator": "By Creator",
+        "byCreateDate": "By Create Time",
+        "byLastModifier": "By Last Modifier",
+        "byLastModifyDate": "By Last Modify Time"
+      },
+      "batchActions": {
+        "deleteSelected": "Delete Selected",
+        "cancelDelete": "Cancel Delete",
+        "batchDelete": "Batch Delete"
+      },
+      "messages": {
+        "batchDeleteConfirm": "Are you sure to delete the selected {num} items?",
+        "batchDeleteSuccess": "All selected items deleted successfully",
+        "maxBatchDelete": "Maximum {maxNum} variables can be batch deleted, currently {num} items are selected.",
+        "maxBatchDeleteError": "Maximum {maxNum} items can be batch deleted, currently {num} items are selected."
+      }
+    },
+    "matchItemPopover": {
+      "title": "Match Item Description",
+      "description": "Match item is used to extract data from the response, supports multiple matching methods:",
+      "regexp": {
+        "title": "Regular Expression",
+        "regexp": "Regular Expression",
+        "item": "Use regular expression to extract data from the response, support group capture."
+      },
+      "jsonpath": {
+        "title": "JSONPath",
+        "jsonpath": "JSONPath Expression",
+        "item": "Use JSONPath expression to extract data from the JSON response."
+      },
+      "xpath": {
+        "title": "XPath",
+        "xpath": "XPath Expression",
+        "item": "Use XPath expression to extract data from the XML response."
+      }
+    },
+    "useList": {
+      "title": "Used List",
+      "columns": {
+        "targetType": "Resource Type",
+        "targetId": "Resource ID",
+        "targetName": "Resource Name"
+      }
+    },
+    "previewData": {
+      "title": "Preview Data",
+      "tip": "Variable values resolve before sampling and persist unchanged throughout execution."
     }
   }
 }

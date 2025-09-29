@@ -23,7 +23,8 @@ export function useAddedTableColumns (type: DataType) {
     const baseColumns = [
       {
         title: t('common.id'),
-        dataIndex: 'id'
+        dataIndex: 'id',
+        width: 200
       },
       {
         title: t('common.name'),
@@ -40,11 +41,13 @@ export function useAddedTableColumns (type: DataType) {
       typeSpecificColumns.push(
         {
           title: t('common.createdBy'),
-          dataIndex: 'createdByName'
+          dataIndex: 'createdByName',
+          width: 200
         },
         {
           title: t('common.createdDate'),
-          dataIndex: 'createdDate'
+          dataIndex: 'createdDate',
+          width: 200
         }
       );
     }
@@ -54,11 +57,13 @@ export function useAddedTableColumns (type: DataType) {
         {
           title: t('common.lastModifiedBy'),
           dataIndex: 'lastModifiedByName',
-          ellipsis: true
+          ellipsis: true,
+          width: 200
         },
         {
           title: t('common.lastModifiedDate'),
-          dataIndex: 'lastModifiedDate'
+          dataIndex: 'lastModifiedDate',
+          width: 200
         }
       );
     }
@@ -67,7 +72,7 @@ export function useAddedTableColumns (type: DataType) {
     const actionColumn = {
       title: t('common.actions'),
       dataIndex: 'action',
-      width: 50
+      width: 80
     };
 
     return [...baseColumns, ...typeSpecificColumns, actionColumn];

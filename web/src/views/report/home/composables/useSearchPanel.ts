@@ -155,7 +155,7 @@ export function useSearchPanel (
   // Sort menus configuration
   const sortMenus = [
     {
-      name: t('reportHome.searchPanel.sortMenus.byCreateTime'),
+      name: t('reportHome.searchPanel.sortMenus.byCreateDate'),
       key: 'createdDate' as OrderByKey,
       orderSort: PageQuery.OrderSort.Desc
     },

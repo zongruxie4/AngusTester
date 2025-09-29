@@ -1332,7 +1332,7 @@
       "lastWeek": "近7天"
     },
     "sort": {
-      "byCreateTime": "按添加时间",
+      "byCreateDate": "按添加时间",
       "byCreator": "按添加人",
       "bySubject": "主题"
     }

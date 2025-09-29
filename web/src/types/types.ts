@@ -23,6 +23,8 @@ export type BasicProps = {
   projectName?: string;
   userInfo?: { id: string; fullName?: string } | User;
   appInfo?: { id: string; } | AppInfo;
+  total?: 0,
+  userId?: '',
   notify?: string;
   onShow?: boolean;
   disabled?: false,

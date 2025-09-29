@@ -9,6 +9,7 @@
     "noRemark": "无备注~",
     "loading": "加载中...",
     "ellipsis": "...",
+    "result": "结果",
     "detail": "详情",
     "total": "总数",
     "count": "数量",
@@ -91,6 +92,8 @@
     "variables": "变量",
     "dataset": "数据集",
     "file": "文件",
+    "space": "空间",
+    "directory": "目录",
     "datasource": "数据源",
     "mockService": "Mock服务",
     "mockApi": "Mock接口",
@@ -98,6 +101,7 @@
     "reportRecord": "报告记录",
     "activity": "活动",
     "doc": "文档",
+    "parameters": "参数",
     "authControl": "授权控制",
     "planTime": "计划时间",
     "startTime": "开始时间",
@@ -136,6 +140,10 @@
     "actions": "操作",
     "placeholders": {
       "searchKeyword": "输入查询关键词",
+      "inputName": "输入参数名，最长100个字符",
+      "inputDescription": "输入描述，最大支持200个字符",
+      "inputValue": "输入值，最大支持4096个字符",
+      "inputMockValue": "输入值，支持Mock函数，最大支持4096个字符",
       "selectCreator": "选择添加人",
       "selectModifier": "选择修改人",
       "selectOwner": "选择负责人",
@@ -145,7 +153,7 @@
       "selectProject": "选择项目",
       "selectService": "选择服务",
       "selectApi": "选择接口",
-      "scenarioPlaceholder": "选择场景",
+      "selectScenario": "选择场景",
       "selectTag": "选择标签",
       "searchTag": "搜索标签",
       "selectDate": [
@@ -300,9 +308,10 @@
       "importSuccess": "导入成功",
       "moveSuccess": "移动成功",
       "copySuccess": "复制成功",
-      "copyLinkSuccess": "复制链接成功",
-      "shareSuccess": "分享成功",
       "copyFailed": "复制失败",
+      "copyLinkSuccess": "复制链接成功",
+      "copyLinkFail": "复制链接失败",
+      "shareSuccess": "分享成功",
       "recoverAllSuccess": "全部还原成功",
       "deleteAllSuccess": "全部删除成功",
       "recoverSuccess": "还原成功",
@@ -330,8 +339,9 @@
     "modifiedByMe": "我修改的",
     "myResponsible": "我负责的"
   },
-  "page": {
-    "items": "条"
+  "pagination": {
+    "items": "条",
+    "pageInfo": "页数 {current}/{totalPage}"
   },
   "stats": {
     "items": "项"

@@ -80,7 +80,7 @@
         "scenario": "Select scenario"
       },
       "sortMenus": {
-        "byCreateTime": "By create time",
+        "byCreateDate": "By create time",
         "byCreator": "By creator"
       },
       "actions": {

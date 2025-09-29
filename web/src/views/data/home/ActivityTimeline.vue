@@ -2,8 +2,8 @@
 import { TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { ActivityTimelineProps } from './types';
 import { CombinedTargetType } from '@xcan-angus/infra';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
@@ -11,7 +11,7 @@ const { t } = useI18n();
  * <p>Component props definition</p>
  * <p>Defines the interface for component properties</p>
  */
-const props = withDefaults(defineProps<ActivityTimelineProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined
 });
@@ -49,7 +49,7 @@ const activityTypes = [CombinedTargetType.VARIABLE, CombinedTargetType.DATASET];
 
 <style scoped>
 .ant-tabs-small>:deep(.ant-tabs-nav) .ant-tabs-tab {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .ant-tabs {

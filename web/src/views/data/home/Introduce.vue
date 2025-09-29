@@ -43,7 +43,7 @@ const introductionTips: IntroductionTip[] = [
         src="../../../assets/images/home/data.png"
         alt="Introduction illustration" />
       <div class="text-text-content">
-        {{ t('common.description') }}
+        {{ t('dataHome.introduce.description') }}
       </div>
     </div>
 

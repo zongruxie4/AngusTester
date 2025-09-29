@@ -72,7 +72,7 @@
         "scenario": "选择场景"
       },
       "sortMenus": {
-        "byCreateTime": "按添加时间",
+        "byCreateDate": "按添加时间",
         "byCreator": "按添加人"
       },
       "actions": {

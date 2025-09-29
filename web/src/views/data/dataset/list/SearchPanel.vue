@@ -40,12 +40,12 @@ const searchPanelRef = ref();
 // Dropdown menu items
 const buttonDropdownMenuItems = [
   {
-    name: t('dataset.listSearchPanel.buttonDropdown.fileExtractDataset'),
+    name: t('dataset.searchPanel.buttonDropdown.fileExtractDataset'),
     key: 'file',
     noAuth: true
   },
   {
-    name: t('dataset.listSearchPanel.buttonDropdown.jdbcExtractDataset'),
+    name: t('dataset.searchPanel.buttonDropdown.jdbcExtractDataset'),
     key: 'jdbc',
     noAuth: true
   }
@@ -85,12 +85,12 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   auditOptions: createAuditOptions([
     {
       key: 'myCreated',
-      name: t('dataset.listSearchPanel.menuItems.myCreated'),
+      name: t('dataset.searchPanel.menuItems.myCreated'),
       fieldKey: 'createdBy'
     },
     {
       key: 'myModified',
-      name: t('dataset.listSearchPanel.menuItems.myModified'),
+      name: t('dataset.searchPanel.menuItems.myModified'),
       fieldKey: 'lastModifiedBy'
     }
   ], String(userInfo.value?.id || '')),
@@ -264,7 +264,7 @@ onMounted(() => {
             @click="toExecuteBatchDelete">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
             <div class="flex items-center">
-              <span class="mr-0.5">{{ t('dataset.listSearchPanel.buttons.deleteSelected') }}</span>
+              <span class="mr-0.5">{{ t('dataset.searchPanel.buttons.deleteSelected') }}</span>
               <span>({{ (props as any).selectedNum }})</span>
             </div>
           </Button>
@@ -274,7 +274,7 @@ onMounted(() => {
             class="flex items-center flex-shrink-0"
             @click="toCancelBatchDelete">
             <Icon icon="icon-fanhui" class="mr-1" />
-            <span>{{ t('dataset.listSearchPanel.buttons.cancelDelete') }}</span>
+            <span>{{ t('dataset.searchPanel.buttons.cancelDelete') }}</span>
           </Button>
         </template>
 
@@ -288,7 +288,7 @@ onMounted(() => {
             @click="toCreateStaticDataSet">
             <div class="flex items-center">
               <Icon icon="icon-jia" class="text-3.5" />
-              <span class="ml-1">{{ t('dataset.listSearchPanel.buttons.addStaticDataset') }}</span>
+              <span class="ml-1">{{ t('dataset.searchPanel.buttons.addStaticDataset') }}</span>
             </div>
             <Dropdown
               :menuItems="buttonDropdownMenuItems"
@@ -306,7 +306,7 @@ onMounted(() => {
             class="flex items-center flex-shrink-0"
             @click="toBatchDelete">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <span>{{ t('dataset.listSearchPanel.buttons.batchDelete') }}</span>
+            <span>{{ t('dataset.searchPanel.buttons.batchDelete') }}</span>
           </Button>
 
           <!-- Refresh Button -->
