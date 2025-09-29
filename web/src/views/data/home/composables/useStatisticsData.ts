@@ -41,9 +41,7 @@ export function useStatisticsData (_projectId: string, userId: string) {
       FILE: 0
     },
     datasourceByDb: {
-      H2: 0,
-      HSQLDB: 0,
-      SQLITE: 0,
+      DB2: 0,
       POSTGRES: 0,
       MARIADB: 0,
       MYSQL: 0,
@@ -118,13 +116,10 @@ export function useStatisticsData (_projectId: string, userId: string) {
 
       // Update datasource database type statistics
       const {
-        H2 = 0, HSQLDB = 0, SQLITE = 0, POSTGRES = 0,
-        MARIADB = 0, MYSQL = 0, ORACLE = 0, SQLSERVER = 0
+        DB2 = 0, POSTGRES = 0, MARIADB = 0, MYSQL = 0, ORACLE = 0, SQLSERVER = 0
       } = data.datasourceByDb;
 
-      projectStatistics.datasourceByDb.H2 = H2;
-      projectStatistics.datasourceByDb.HSQLDB = HSQLDB;
-      projectStatistics.datasourceByDb.SQLITE = SQLITE;
+      projectStatistics.datasourceByDb.DB2 = DB2;
       projectStatistics.datasourceByDb.POSTGRES = POSTGRES;
       projectStatistics.datasourceByDb.MARIADB = MARIADB;
       projectStatistics.datasourceByDb.MYSQL = MYSQL;

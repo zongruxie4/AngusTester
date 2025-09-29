@@ -310,10 +310,12 @@
   },
   "datasource": {
     "title": "数据源",
-    "titleAbout": "关于数据源",
-    "hits": "支持管理和连接多种数据源，配置数据源信息后，可以快速生成测试、项目演示等场景数据，以及在JDBC测试、参数化变量、数据集中快速引用数据源配置信息。",
+    "addedTitle": "已添加数据源",
+    "introduce": {
+      "title": "关于数据源",
+      "description": "支持管理和连接多种数据源，配置数据源信息后，可以快速生成测试、项目演示等场景数据，以及在JDBC测试、参数化变量、数据集中快速引用数据源配置信息。"
+    },
     "actions": {
-      "addedTitle": "已添加数据源",
       "addDataSource": "添加数据源"
     },
     "searchOptions": {

@@ -31,14 +31,17 @@ export function useSearchConfig () {
     {
       valueKey: 'createdBy',
       type: 'select-user',
-      placeholder: t('datasource.searchOptions.createdByPlaceholder'),
-      maxlength: 100
+      allowClear: true,
+      placeholder: t('common.placeholders.selectCreator')
     },
     {
       valueKey: 'createdDate',
       type: 'date-range',
       allowClear: true,
-      showTime: true
+      placeholder: [
+        t('common.placeholders.selectCreatedDate.0'),
+        t('common.placeholders.selectCreatedDate.1')
+      ]
     }
   ];
 

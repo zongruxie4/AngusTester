@@ -95,9 +95,7 @@ export function useECharts () {
     if (dataSourceChart) {
       const dataSourceOption = dataSourceChart.getOption() as unknown as ChartOption;
       const dataSourceData = [
-        projectStatistics.datasourceByDb.H2,
-        projectStatistics.datasourceByDb.HSQLDB,
-        projectStatistics.datasourceByDb.SQLITE,
+        projectStatistics.datasourceByDb.DB2,
         projectStatistics.datasourceByDb.POSTGRES,
         projectStatistics.datasourceByDb.MARIADB,
         projectStatistics.datasourceByDb.MYSQL,

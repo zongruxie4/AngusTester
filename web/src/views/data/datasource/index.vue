@@ -2,6 +2,7 @@
 import { Ref, defineAsyncComponent, inject, ref } from 'vue';
 import { Button, Pagination } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
+import { DatabaseType } from '@xcan-angus/infra';
 import { AsyncComponent, GridList, Icon, IconRefresh, Image, NoData, SearchPanel, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { useDataSource } from './composables/useDataSource';
 
@@ -51,9 +52,9 @@ const {
     :spinning="loading"
     class="pl-5 py-5 w-full h-full flex flex-col">
     <!-- Page Header -->
-    <div class="text-3.5 font-semibold mb-2.5">{{ t('datasource.title') }}</div>
+    <div class="text-3.5 font-semibold mb-2.5">{{ t('datasource.introduce.title') }}</div>
     <div class="mb-6 text-3.5">
-      <div>{{ t('common.description') }}</div>
+      <div>{{ t('datasource.introduce.description') }}</div>
     </div>
 
     <!-- Added Data Sources Section -->
@@ -73,7 +74,7 @@ const {
           class="flex space-x-1"
           @click="handleAdd">
           <Icon icon="icon-jia" />
-          {{ t('datasource.addDataSource') }}
+          {{ t('datasource.actions.addDataSource') }}
         </Button>
         <Button
           class="flex items-center"
@@ -100,31 +101,22 @@ const {
                 <div class="flex items-center w-full mb-4">
                   <!-- Database Icon -->
                   <div style="background-color: #F7F8FB;" class="w-15 h-15 flex-none p-1.25 rounded mr-2.5">
-                    <template v-if="record.database === 'H2'">
-                      <img src="../../../assets/images/database/H2.png" class="w-full h-full" />
-                    </template>
-                    <template v-if="record.database === 'HSQLDB'">
-                      <img src="../../../assets/images/database/HSQLDB.png" class="w-full h-full" />
-                    </template>
-                    <template v-if="record.database === 'SQLITE'">
-                      <img src="../../../assets/images/database/SQLITE.png" class="w-full h-full" />
-                    </template>
-                    <template v-if="record.database === 'POSTGRES'">
+                    <template v-if="record.database === DatabaseType.POSTGRES">
                       <img src="../../../assets/images/database/POSTGRES.png" class="w-full h-full" />
                     </template>
-                    <template v-if="record.database === 'MARIADB'">
+                    <template v-if="record.database === DatabaseType.MARIADB">
                       <img src="../../../assets/images/database/MARIADB.png" class="w-full h-full" />
                     </template>
-                    <template v-if="record.database === 'MYSQL'">
+                    <template v-if="record.database === DatabaseType.MYSQL">
                       <img src="../../../assets/images/database/MYSQL.png" class="w-full h-full" />
                     </template>
-                    <template v-if="record.database === 'ORACLE'">
+                    <template v-if="record.database === DatabaseType.ORACLE">
                       <img src="../../../assets/images/database/ORACLE.png" class="w-full h-full" />
                     </template>
-                    <template v-if="record.database === 'SQLSERVER'">
+                    <template v-if="record.database === DatabaseType.SQLSERVER">
                       <img src="../../../assets/images/database/SQLSERVER.png" class="w-full h-full" />
                     </template>
-                    <template v-if="record.database === 'DB2'">
+                    <template v-if="record.database === DatabaseType.DB2">
                       <img src="../../../assets/images/database/DB2.png" class="w-full h-full" />
                     </template>
                   </div>

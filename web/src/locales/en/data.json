@@ -307,10 +307,12 @@
   },
   "datasource": {
     "title": "Data Source",
-    "titleAbout": "About Datasource",
-    "description": "Supports managing and connecting multiple datasource. After configuring datasource information, you can quickly generate test data, project demonstration scenarios, and quickly reference data source configuration information in JDBC tests, parameterized variables, and datasets.",
+    "addedTitle": "Added Datasource",
+    "introduce": {
+      "title": "About Datasource",
+      "description": "Supports managing and connecting multiple datasource. After configuring datasource information, you can quickly generate test data, project demonstration scenarios, and quickly reference data source configuration information in JDBC tests, parameterized variables, and datasets."
+    },
     "actions": {
-      "addedTitle": "Added Datasource",
       "addDataSource": "Add Datasource"
     },
     "searchOptions": {

@@ -323,24 +323,10 @@ export function useChartConfig () {
 
     option.series[0].data = [
       {
-        name: 'H2',
+        name: 'DB2',
         value: 0,
         itemStyle: {
-          color: 'rgba(82, 196, 26, 1)'
-        }
-      },
-      {
-        name: 'HSQLDB',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(24, 144, 255, 1)'
-        }
-      },
-      {
-        name: 'SQLITE',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(250, 173, 20, 1)'
+          color: 'rgb(102,108,209)'
         }
       },
       {
