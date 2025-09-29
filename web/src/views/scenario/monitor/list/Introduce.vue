@@ -29,10 +29,12 @@ onBeforeUnmount(() => {
   <div ref="wrapperRef" class="space-y-2 text-3.5">
     <div class="space-y-1">
       <div class="flex items-center space-x-2">
-        <span class="text-3.5 font-semibold mb-1.5">{{ t('scenarioMonitor.introduce.aboutMonitor') }}</span>
+        <span class="text-3.5 font-semibold mb-1.5">
+          {{ t('scenarioMonitor.introduce.aboutMonitor') }}
+        </span>
       </div>
       <div class="mb-4">
-        {{ t('common.description') }}
+        {{ t('scenarioMonitor.introduce.description') }}
       </div>
     </div>
 
@@ -48,7 +50,7 @@ onBeforeUnmount(() => {
               {{ t('scenarioMonitor.introduce.scenarios.apiDelay.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('common.description') }}
+              {{ t('scenarioMonitor.introduce.scenarios.apiDelay.description') }}
             </p>
           </div>
         </div>
@@ -65,7 +67,7 @@ onBeforeUnmount(() => {
               {{ t('scenarioMonitor.introduce.scenarios.healthCheck.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('common.description') }}
+              {{ t('scenarioMonitor.introduce.scenarios.healthCheck.description') }}
             </p>
           </div>
         </div>
@@ -82,7 +84,7 @@ onBeforeUnmount(() => {
               {{ t('scenarioMonitor.introduce.scenarios.apiFunctionality.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('common.description') }}
+              {{ t('scenarioMonitor.introduce.scenarios.apiFunctionality.description') }}
             </p>
           </div>
         </div>
@@ -99,7 +101,7 @@ onBeforeUnmount(() => {
               {{ t('scenarioMonitor.introduce.scenarios.businessProcess.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('common.description') }}
+              {{ t('scenarioMonitor.introduce.scenarios.businessProcess.description') }}
             </p>
           </div>
         </div>

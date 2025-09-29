@@ -4,16 +4,11 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-}
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
@@ -178,7 +173,7 @@ const createTabForNewMonitor = () => {
     const newMonitorId = utils.uuid();
     return {
       _id: newMonitorId,
-      name: t('scenarioMonitor.addMonitor'),
+      name: t('scenarioMonitor.actions.addMonitor'),
       value: 'monitorEdit',
       noCache: true,
       data: { _id: newMonitorId }

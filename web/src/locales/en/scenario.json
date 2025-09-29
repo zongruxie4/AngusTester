@@ -143,7 +143,40 @@
   "scenarioMonitor": {
     "title": "Monitor",
     "monitor": "Monitor",
-    "addMonitor": "Add Monitor",
+    "introduce": {
+      "aboutMonitor": "About Monitor",
+      "description": "Scenario monitoring helps you track system status in real-time, quickly identify and resolve issues, improving system reliability and user experience. Main application scenarios:",
+      "scenarios": {
+        "apiDelay": {
+          "title": "API Delay Monitoring",
+          "description": "Monitor API response times to ensure good user experience. E.g.: Monitor payment API response time under 500ms."
+        },
+        "healthCheck": {
+          "title": "System Health Check",
+          "description": "Quickly detect system running status. E.g.: Check component status in health check endpoints (/health)."
+        },
+        "apiFunctionality": {
+          "title": "API Function Validation",
+          "description": "Regularly test API functionality correctness. E.g.: Automatically verify user registration API account creation process."
+        },
+        "businessProcess": {
+          "title": "Business Process Monitoring",
+          "description": "Monitor core business process integrity. E.g.: Verify consistency between payment orders and amounts."
+        }
+      }
+    },
+    "searchPanel": {
+      "searchNamePlaceholder": "Search name, description",
+      "selectScenarioPlaceholder": "Select scenario name",
+      "selectCreatorPlaceholder": "Select creator",
+      "sortOptions": {
+        "byAddTime": "By Add Time",
+        "byCreator": "By Creator"
+      }
+    },
+    "actions": {
+      "addMonitor": "Add Monitor"
+    },
     "edit": {
       "monitorScenario": "Monitor Scenario",
       "selectScenario": "Select Scenario",
@@ -162,7 +195,6 @@
       "recipient": "Recipient"
     },
     "detail": {
-      "totalExecutions": "Total",
       "successRate": "Success Rate",
       "responseDelay": "Response Delay",
       "executionRecords": "Execution Records",
@@ -196,49 +228,6 @@
       "executeNow": "Execute Now",
       "deleteConfirm": "Are you sure you want to delete monitor 「{name}」?",
       "executeConfirm": "Execute monitor 「{name}」 immediately"
-    },
-    "searchPanel": {
-      "searchNamePlaceholder": "Search name, description",
-      "selectScenarioPlaceholder": "Select scenario name",
-      "selectCreatorPlaceholder": "Select creator",
-      "sortOptions": {
-        "byAddTime": "By Add Time",
-        "byCreator": "By Creator"
-      },
-      "filterOptions": {
-        "all": "All",
-        "myCreated": "My Created",
-        "myModified": "My Modified"
-      },
-      "timeRanges": {
-        "last1Day": "Last Day",
-        "last3Days": "Last 3 Days",
-        "last7Days": "Last 7 Days"
-      },
-      "quickSearch": "Quick Search",
-      "addMonitor": "Add Monitor"
-    },
-    "introduce": {
-      "aboutMonitor": "About Monitor",
-      "description": "Scenario monitoring helps you track system status in real-time, quickly identify and resolve issues, improving system reliability and user experience. Main application scenarios:",
-      "scenarios": {
-        "apiDelay": {
-          "title": "API Delay Monitoring",
-          "description": "Monitor API response times to ensure good user experience. E.g.: Monitor payment API response time under 500ms."
-        },
-        "healthCheck": {
-          "title": "System Health Check",
-          "description": "Quickly detect system running status. E.g.: Check component status in health check endpoints (/health)."
-        },
-        "apiFunctionality": {
-          "title": "API Function Validation",
-          "description": "Regularly test API functionality correctness. E.g.: Automatically verify user registration API account creation process."
-        },
-        "businessProcess": {
-          "title": "Business Process Monitoring",
-          "description": "Monitor core business process integrity. E.g.: Verify consistency between payment orders and amounts."
-        }
-      }
     },
     "chart": {
       "successCount": "Success",

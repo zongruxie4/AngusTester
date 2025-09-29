@@ -30,6 +30,18 @@ export type BasicProps = {
   data?: Record<string, string>;
 }
 
+export type BasicDataSourceProps<T> = {
+  projectId: string;
+  projectName?: string;
+  userInfo?: { id: string; fullName?: string } | User;
+  appInfo?: { id: string; } | AppInfo;
+  notify?: string;
+  onShow?: boolean;
+  disabled?: false,
+  refreshNotify?: string;
+  dataSource: T;
+}
+
 export type UserInfo = {
   id: string;
   username: string;

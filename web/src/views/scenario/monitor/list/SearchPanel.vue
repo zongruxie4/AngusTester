@@ -104,7 +104,7 @@ const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: Search
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/scenario#monitor?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ $t('scenarioMonitor.searchPanel.addMonitor') }}</span>
+            <span>{{ $t('scenarioMonitor.actions.addMonitor') }}</span>
           </RouterLink>
         </Button>
 
