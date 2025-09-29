@@ -1,53 +1,72 @@
 <script setup lang="ts">
+// Vue core imports
 import { computed } from 'vue';
-import { Colon, NoData, IconDownload } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
+import { Colon, NoData, IconDownload } from '@xcan-angus/vue-ui';
+
+// Infrastructure imports
+import { utils } from '@xcan-angus/infra';
+
 const { t } = useI18n();
 
-interface Props {
-  value:{
-    success:boolean;
-    exitCode:string;
-    console:string[];
-  };
+/**
+ * Debug log data interface
+ */
+interface DebugLogData {
+  success: boolean;
+  exitCode: string;
+  console: string[];
 }
 
+/**
+ * Component props interface for debug log
+ */
+interface Props {
+  value: DebugLogData;
+}
+
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
 
-const showConsole = computed(() => {
+// Computed properties
+const processedConsoleLogs = computed(() => {
   if (!props.value?.console?.length) {
     return [];
   }
 
-  return props.value.console.map(item => {
+  return props.value.console.map(logItem => {
     return {
       id: utils.uuid(),
-      log: item
+      log: logItem
     };
   });
 });
 
-const downloadLog = () => {
-  const content = props.value?.console?.join('\n');
-  if (!content) {
+/**
+ * Handle download log file
+ */
+const handleDownloadLog = () => {
+  const logContent = props.value?.console?.join('\n');
+  if (!logContent) {
     return;
   }
 
-  const file = new File([content], 'scheduling.log', {
+  const logFile = new File([logContent], 'scheduling.log', {
     type: 'text/plain'
   });
-  const url = URL.createObjectURL(file);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = 'scheduling.log';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  window.URL.revokeObjectURL(url);
+  const downloadUrl = URL.createObjectURL(logFile);
+  const downloadLink = document.createElement('a');
+  downloadLink.style.display = 'none';
+  downloadLink.href = downloadUrl;
+  downloadLink.download = 'scheduling.log';
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+  window.URL.revokeObjectURL(downloadUrl);
 };
 </script>
 
@@ -72,14 +91,14 @@ const downloadLog = () => {
           <Colon class="mr-2" />
           <span>{{ props.value?.exitCode }}</span>
         </div>
-        <IconDownload class="text-4" @click="downloadLog" />
+        <IconDownload class="text-4" @click="handleDownloadLog" />
       </div>
       <div style="height:calc(100% - 30px);" class="px-3.5 py-2.5 space-y-1 rounded border border-solid border-theme-text-box overflow-auto">
         <div
-          v-for="item in showConsole"
-          :key="item.id"
+          v-for="logItem in processedConsoleLogs"
+          :key="logItem.id"
           class="log-item">
-          {{ item.log }}
+          {{ logItem.log }}
         </div>
       </div>
     </template>

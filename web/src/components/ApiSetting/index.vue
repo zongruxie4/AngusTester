@@ -1,11 +1,18 @@
 <script setup lang="ts">
+// Vue core imports
 import { nextTick, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Switch } from 'ant-design-vue';
 import { Input } from '@xcan-angus/vue-ui';
-import { useI18n } from 'vue-i18n';
+
 const { t } = useI18n();
 
-interface Setting {
+/**
+ * API setting configuration interface
+ */
+interface ApiSettingConfig {
   enableParamValidation: boolean;
   connectTimeout: number;
   readTimeout: number;
@@ -13,34 +20,45 @@ interface Setting {
   retryNum: number;
 }
 
+/**
+ * Component props interface for API setting
+ */
 interface Props {
-  value: Setting;
+  value: ApiSettingConfig;
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({ enableParamValidation: false, connectTimeout: 6000, readTimeout: 60000, retryNum: 0, maxRedirects: 1 })
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component events
 const emit = defineEmits<{
   (e: 'change', value: Props['value']): void;
   (e: 'rendered', value: true);
 }>();
 
-const change = (event, key: keyof Setting) => {
-  let value = event.target.value;
-  if (!value && ['connectTimeout', 'retryNum', 'readTimeout'].includes(key)) {
-    value = 0;
+/**
+ * Handle setting value change
+ */
+const handleSettingChange = (event: any, key: keyof ApiSettingConfig) => {
+  let newValue = event.target.value;
+  if (!newValue && ['connectTimeout', 'retryNum', 'readTimeout'].includes(key)) {
+    newValue = 0;
   }
-  emit('change', { ...props.value, [key]: value });
+  emit('change', { ...props.value, [key]: newValue });
 };
 
-const onBlur = (key) => {
+/**
+ * Handle input blur event
+ */
+const handleInputBlur = (key: keyof ApiSettingConfig) => {
   if (!props.value[key]) {
     emit('change', { ...props.value, [key]: 0 });
   }
 };
 
+// Component initialization
 onMounted(() => {
   nextTick(() => {
     emit('rendered', true);
@@ -59,7 +77,7 @@ onMounted(() => {
           :checked="props.value.enableParamValidation"
           class="w-8.5"
           size="small"
-          @change="change({target: {value: $event}}, 'enableParamValidation')" />
+          @change="handleSettingChange({target: {value: $event}}, 'enableParamValidation')" />
       </div>
     </div>
     <!-- <div class="flex items-start">
@@ -91,11 +109,11 @@ onMounted(() => {
           :maxlength="16"
           :min="0"
           :max="9007199254740991"
-          :value="props.value.connectTimeout"
+          :value="String(props.value.connectTimeout)"
           placeholder="0 ~ 9007199254740991"
           dataType="number"
-          @blur="onBlur('connectTimeout')"
-          @change="change($event, 'connectTimeout')" /><span
+          @blur="handleInputBlur('connectTimeout')"
+          @change="handleSettingChange($event, 'connectTimeout')" /><span
             class="ml-2">ms</span>
       </div>
     </div>
@@ -110,11 +128,11 @@ onMounted(() => {
           :maxlength="16"
           :min="0"
           :max="9007199254740991"
-          :value="props.value.readTimeout"
+          :value="String(props.value.readTimeout)"
           placeholder="0 ~ 9007199254740991"
           dataType="number"
-          @blur="onBlur('readTimeout')"
-          @change="change($event, 'readTimeout')" /><span
+          @blur="handleInputBlur('readTimeout')"
+          @change="handleSettingChange($event, 'readTimeout')" /><span
             class="ml-2">ms</span>
       </div>
     </div>
@@ -129,11 +147,11 @@ onMounted(() => {
           :maxlength="1"
           :min="0"
           :max="6"
-          :value="props.value.retryNum"
+          :value="String(props.value.retryNum)"
           placeholder="0 ~ 6"
           dataType="number"
-          @blur="onBlur('retryNum')"
-          @change="change($event, 'retryNum')" /><span class="ml-2">{{ t('xcan_apiSetting.times') }}</span>
+          @blur="handleInputBlur('retryNum')"
+          @change="handleSettingChange($event, 'retryNum')" /><span class="ml-2">{{ t('xcan_apiSetting.times') }}</span>
       </div>
     </div>
     <!-- <div class="flex items-start">
@@ -165,11 +183,11 @@ onMounted(() => {
           :maxlength="2"
           :min="0"
           :max="10"
-          :value="props.value.maxRedirects"
+          :value="String(props.value.maxRedirects)"
           placeholder="0 ~ 10"
           dataType="number"
-          @blur="onBlur('maxRedirects')"
-          @change="change($event, 'maxRedirects')" /><span class="ml-2">{{ t('xcan_apiSetting.times') }}</span>
+          @blur="handleInputBlur('maxRedirects')"
+          @change="handleSettingChange($event, 'maxRedirects')" /><span class="ml-2">{{ t('xcan_apiSetting.times') }}</span>
       </div>
     </div>
   </div>

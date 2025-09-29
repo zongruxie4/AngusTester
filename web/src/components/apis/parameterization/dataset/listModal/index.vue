@@ -1,64 +1,88 @@
 <script setup lang="ts">
+// Vue core imports
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Icon, Input, Modal, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
+
+// Infrastructure imports
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+
+// API imports
 import { dataSet } from '@/api/tester';
 
+// Local imports
 import { DataSetItem } from './PropsType';
 
 const { t } = useI18n();
 
+// Type definitions
 type OrderByKey = 'lastModifiedDate' | 'lastModifiedByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
+/**
+ * Component props interface for dataset list modal
+ */
 type Props = {
     projectId: string;
     visible: boolean;
     selectedNames: string[];
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   visible: false,
   selectedNames: () => []
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component events
 const emit = defineEmits<{
     (e: 'update:visible', value: boolean): void;
     (e: 'ok', value: DataSetItem[]): void;
 }>();
 
-const loaded = ref(false);
-const loading = ref(false);
-const searchValue = ref<string>();
-const orderBy = ref<OrderByKey>();
-const orderSort = ref<OrderSortKey>();
-const pagination = ref<{ current: number; pageSize: number; total: number; showSizeChanger:boolean;}>({ current: 1, pageSize: 10, total: 0, showSizeChanger: false });
-const rowSelection = ref<{
+// Component state
+const isDataLoaded = ref(false);
+const isLoading = ref(false);
+const searchKeyword = ref<string>();
+const sortOrderBy = ref<OrderByKey>();
+const sortOrderDirection = ref<OrderSortKey>();
+const paginationConfig = ref<{ current: number; pageSize: number; total: number; showSizeChanger:boolean;}>({ current: 1, pageSize: 10, total: 0, showSizeChanger: false });
+const tableRowSelection = ref<{
     onChange:(key: string[]) => void;
     getCheckboxProps: (data: DataSetItem) => ({ disabled: boolean; });
     selectedRowKeys: string[];
 }>();
-const selectedDataMap = ref<Map<string, DataSetItem>>(new Map());
-const tableData = ref<DataSetItem[]>([]);
+const selectedDatasetDataMap = ref<Map<string, DataSetItem>>(new Map());
+const datasetTableData = ref<DataSetItem[]>([]);
 
-const searchInputChange = debounce(duration.search, (event: { target: { value: string; } }) => {
-  searchValue.value = event.target.value;
-  pagination.value.current = 1;
-  loadData();
+/**
+ * Handle search input change with debounce
+ * @param event - Input change event
+ */
+const handleSearchInputChange = debounce(duration.search, (event: any) => {
+  searchKeyword.value = event.target.value;
+  paginationConfig.value.current = 1;
+  loadDatasetData();
 });
 
-const toRefresh = () => {
-  pagination.value.current = 1;
-  loadData();
+/**
+ * Handle refresh button click
+ */
+const handleRefresh = () => {
+  paginationConfig.value.current = 1;
+  loadDatasetData();
 };
 
-const loadData = async () => {
-  const params: {
+/**
+ * Load dataset data from API
+ */
+const loadDatasetData = async () => {
+  const requestParams: {
     projectId: string;
     pageNo: number;
     pageSize: number;
@@ -67,38 +91,38 @@ const loadData = async () => {
     orderSort?: OrderSortKey;
   } = {
     projectId: props.projectId,
-    pageNo: pagination.value.current,
-    pageSize: pagination.value.pageSize
+    pageNo: paginationConfig.value.current,
+    pageSize: paginationConfig.value.pageSize
   };
 
-  if (orderSort.value) {
-    params.orderBy = orderBy.value;
-    params.orderSort = orderSort.value;
+  if (sortOrderDirection.value) {
+    requestParams.orderBy = sortOrderBy.value;
+    requestParams.orderSort = sortOrderDirection.value;
   }
 
-  if (searchValue.value?.length) {
-    params.name = searchValue.value;
+  if (searchKeyword.value?.length) {
+    requestParams.name = searchKeyword.value;
   }
 
-  loading.value = true;
-  const [error, res] = await dataSet.getDataSetList(params);
-  loaded.value = true;
-  loading.value = false;
+  isLoading.value = true;
+  const [error, response] = await dataSet.getDataSetList(requestParams);
+  isDataLoaded.value = true;
+  isLoading.value = false;
 
   if (error) {
-    pagination.value.total = 0;
-    tableData.value = [];
+    paginationConfig.value.total = 0;
+    datasetTableData.value = [];
     return;
   }
 
-  const data = res?.data || { total: 0, list: [] };
-  if (data) {
-    pagination.value.total = +data.total;
-    const _list = data.list as DataSetItem[];
-    tableData.value = [];
+  const responseData = response?.data || { total: 0, list: [] };
+  if (responseData) {
+    paginationConfig.value.total = +responseData.total;
+    const datasetList = responseData.list as DataSetItem[];
+    datasetTableData.value = [];
 
-    const names = props.selectedNames;
-    _list.every((item) => {
+    const selectedDatasetNames = props.selectedNames;
+    datasetList.every((item) => {
       const { extracted, extraction, name } = item;
       if (!extraction || !['FILE', 'http', 'JDBC'].includes(extraction.source)) {
         item.source = t('commonComp.apis.parameterizationDataset.listModal.staticValue');
@@ -123,11 +147,11 @@ const loadData = async () => {
         }
       }
 
-      tableData.value.push(item);
+      datasetTableData.value.push(item);
 
-      if (rowSelection.value) {
-        if (names.includes(name) && !rowSelection.value.selectedRowKeys.includes(name)) {
-          rowSelection.value.selectedRowKeys.push(item.id);
+      if (tableRowSelection.value) {
+        if (selectedDatasetNames.includes(name) && !tableRowSelection.value.selectedRowKeys.includes(name)) {
+          tableRowSelection.value.selectedRowKeys.push(item.id);
         }
       }
 
@@ -136,69 +160,86 @@ const loadData = async () => {
   }
 };
 
-const tableChange = ({ current, pageSize }: { current: number; pageSize: number; }, _filters: { [key: string]: any }[], sorter: { orderBy: OrderByKey; orderSort: OrderSortKey }) => {
-  pagination.value.current = current;
-  pagination.value.pageSize = pageSize;
+/**
+ * Handle table change events (pagination, sorting)
+ * @param paginationInfo - Pagination information
+ * @param _filters - Table filters (unused)
+ * @param sorter - Sorting information
+ */
+const handleTableChange = ({ current, pageSize }: { current: number; pageSize: number; }, _filters: { [key: string]: any }[], sorter: { orderBy: OrderByKey; orderSort: OrderSortKey }) => {
+  paginationConfig.value.current = current;
+  paginationConfig.value.pageSize = pageSize;
 
-  orderBy.value = sorter.orderBy;
-  orderSort.value = sorter.orderSort;
+  sortOrderBy.value = sorter.orderBy;
+  sortOrderDirection.value = sorter.orderSort;
 
-  loadData();
+  loadDatasetData();
 };
 
-const tableSelect = (keys: string[]) => {
-  if (!rowSelection.value) {
+/**
+ * Handle table row selection change
+ * @param selectedKeys - Selected row keys
+ */
+const handleTableRowSelection = (selectedKeys: string[]) => {
+  if (!tableRowSelection.value) {
     return;
   }
 
-  const currentIds = tableData.value.map(item => item.id);
-  const deleteIds = currentIds.reduce((prev, cur) => {
-    if (!keys.includes(cur)) {
+  const currentDatasetIds = datasetTableData.value.map(item => item.id);
+  const deselectedIds = currentDatasetIds.reduce((prev, cur) => {
+    if (!selectedKeys.includes(cur)) {
       prev.push(cur);
     }
 
     return prev;
   }, [] as string[]);
 
-  // 删除反选的变量
-  for (let i = 0, len = deleteIds.length; i < len; i++) {
-    const id = deleteIds[i];
-    selectedDataMap.value.delete(id);
+  // Remove deselected datasets
+  for (let i = 0, len = deselectedIds.length; i < len; i++) {
+    const id = deselectedIds[i];
+    selectedDatasetDataMap.value.delete(id);
   }
 
-  // 删除反选的变量ID
-  const selectedRowKeys = rowSelection.value.selectedRowKeys.filter(item => !deleteIds.includes(item));
+  // Remove deselected dataset IDs
+  const updatedSelectedRowKeys = tableRowSelection.value.selectedRowKeys.filter(item => !deselectedIds.includes(item));
 
-  // 添加新选中的变量
-  for (let i = 0, len = keys.length; i < len; i++) {
-    const id = keys[i];
-    if (!selectedRowKeys.includes(id)) {
-      selectedRowKeys.push(id);
+  // Add newly selected datasets
+  for (let i = 0, len = selectedKeys.length; i < len; i++) {
+    const id = selectedKeys[i];
+    if (!updatedSelectedRowKeys.includes(id)) {
+      updatedSelectedRowKeys.push(id);
 
-      const data = tableData.value.find(item => item.id === id);
-      if (data) {
-        selectedDataMap.value.set(id, data);
+      const datasetData = datasetTableData.value.find(item => item.id === id);
+      if (datasetData) {
+        selectedDatasetDataMap.value.set(id, datasetData);
       }
     }
   }
 
-  rowSelection.value.selectedRowKeys = selectedRowKeys;
+  tableRowSelection.value.selectedRowKeys = updatedSelectedRowKeys;
 };
 
-const cancel = () => {
+/**
+ * Handle modal cancel
+ */
+const handleModalCancel = () => {
   emit('update:visible', false);
 };
 
-const ok = () => {
-  const list = Array.from(selectedDataMap.value.values());
-  emit('ok', list);
+/**
+ * Handle modal confirmation
+ */
+const handleModalConfirmation = () => {
+  const selectedDatasetList = Array.from(selectedDatasetDataMap.value.values());
+  emit('ok', selectedDatasetList);
 
-  cancel();
+  handleModalCancel();
 };
 
+// Component initialization and watchers
 onMounted(() => {
-  rowSelection.value = {
-    onChange: tableSelect,
+  tableRowSelection.value = {
+    onChange: handleTableRowSelection,
     getCheckboxProps: ({ name }) => {
       return {
         disabled: props.selectedNames.includes(name)
@@ -209,48 +250,54 @@ onMounted(() => {
 
   watch(() => props.visible, (newValue) => {
     if (!newValue) {
-      loaded.value = false;
-      searchValue.value = undefined;
-      pagination.value.current = 1;
-      pagination.value.total = 0;
-      selectedDataMap.value.clear();
-      tableData.value = [];
+      isDataLoaded.value = false;
+      searchKeyword.value = undefined;
+      paginationConfig.value.current = 1;
+      paginationConfig.value.total = 0;
+      selectedDatasetDataMap.value.clear();
+      datasetTableData.value = [];
 
-      if (rowSelection.value) {
-        rowSelection.value.selectedRowKeys = [];
+      if (tableRowSelection.value) {
+        tableRowSelection.value.selectedRowKeys = [];
       }
 
       return;
     }
 
-    loadData();
+    loadDatasetData();
   }, { immediate: true });
 });
 
+// Computed properties
 const okButtonProps = computed(() => {
   return {
-    disabled: !rowSelection.value?.selectedRowKeys?.length
+    disabled: !tableRowSelection.value?.selectedRowKeys?.length
   };
 });
 
-const columns = [
+// Table column configuration
+const tableColumns = [
   {
+    key: 'name',
     title: t('commonComp.apis.parameterizationDataset.listModal.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
+    key: 'description',
     title: t('common.description'),
     dataIndex: 'description',
     ellipsis: true
   },
   {
+    key: 'source',
     title: t('commonComp.apis.parameterizationDataset.listModal.valueSource'),
     dataIndex: 'source',
     ellipsis: true,
     width: '10%'
   },
   {
+    key: 'lastModifiedByName',
     title: t('common.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     ellipsis: true,
@@ -258,6 +305,7 @@ const columns = [
     sort: true
   },
   {
+    key: 'lastModifiedDate',
     title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
@@ -274,10 +322,10 @@ const columns = [
     :width="1100"
     :okButtonProps="okButtonProps"
     wrapClassName="table-pagination-mini"
-    @cancel="cancel"
-    @ok="ok">
-    <Spin :spinning="loading" class="h-full">
-      <template v-if="loaded">
+    @cancel="handleModalCancel"
+    @ok="handleModalConfirmation">
+    <Spin :spinning="isLoading" class="h-full">
+      <template v-if="isDataLoaded">
         <div class="flex items-center justify-between mb-3.5 space-x-5">
           <Input
             :maxlength="150"
@@ -285,28 +333,30 @@ const columns = [
             trim
             class="w-75 flex-grow-0 flex-shrink"
             :placeholder="t('commonComp.apis.parameterizationDataset.listModal.searchPlaceholder')"
-            @change="searchInputChange" />
+            @change="handleSearchInputChange" />
           <Button
             type="default"
             size="small"
             class="flex items-center"
-            @click="toRefresh">
+            @click="handleRefresh">
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
             <span>{{ t('actions.refresh') }}</span>
           </Button>
         </div>
 
-        <NoData v-if="tableData.length === 0" class="flex-1" />
+        <NoData v-if="datasetTableData.length === 0" class="flex-1" />
 
         <Table
           v-else
-          :dataSource="tableData"
-          :columns="columns"
-          :pagination="pagination"
-          :rowSelection="rowSelection"
+          :dataSource="datasetTableData"
+          :columns="tableColumns"
+          :pagination="paginationConfig"
+          :rowSelection="tableRowSelection"
+          :noDataSize="'small'"
+          :noDataText="t('common.noData')"
           rowKey="id"
           class="flex-1"
-          @change="tableChange" />
+          @change="handleTableChange" />
       </template>
     </Spin>
   </Modal>

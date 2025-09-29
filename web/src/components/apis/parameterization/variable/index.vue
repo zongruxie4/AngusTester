@@ -1,14 +1,23 @@
 <script setup lang="ts">
+// Vue core imports
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Button, Popconfirm } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconCopy, Spin, Table } from '@xcan-angus/vue-ui';
+
+// API imports
 import { paramTarget, variable } from '@/api/tester';
 
+// Local imports
 import { VariableItem } from './PropsType';
 
 const { t } = useI18n();
 
+/**
+ * Component props interface for variable parameterization
+ */
 type Props = {
   projectId: string;
   targetId: string;
@@ -25,6 +34,7 @@ type Props = {
   }[];
 }
 
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   targetId: undefined,
@@ -32,106 +42,134 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: () => []
 });
 
+// Async component imports
 const VariableListModal = defineAsyncComponent(() => import('@/components/apis/parameterization/variable/listModal/index.vue'));
 
-const loaded = ref(false);
-const loading = ref(false);
-const tableData = ref<VariableItem[]>([]);
-const modalVisible = ref(false);
-const visibilityIdSet = ref<Set<string>>(new Set());
-const errorMessageMap = ref<Map<string, string>>(new Map());
+// Component state
+const isDataLoaded = ref(false);
+const isLoading = ref(false);
+const variableTableData = ref<VariableItem[]>([]);
+const isModalVisible = ref(false);
+const visibleVariableIdSet = ref<Set<string>>(new Set());
+const variableErrorMessageMap = ref<Map<string, string>>(new Map());
 
-const toUse = () => {
-  modalVisible.value = true;
+/**
+ * Handle opening variable selection modal
+ */
+const handleOpenVariableModal = () => {
+  isModalVisible.value = true;
 };
 
-const selectedVariablesOk = async (data: VariableItem[]) => {
+/**
+ * Handle selected variables confirmation
+ * @param data - Selected variable items
+ */
+const handleSelectedVariablesConfirmation = async (data: VariableItem[]) => {
   if (!data?.length) {
     return;
   }
 
-  const ids = data.map((item) => item.id);
-  loading.value = true;
-  const [error] = await paramTarget.addVariable(props.targetId, props.targetType, ids);
-  loading.value = false;
+  const variableIds = data.map((item) => item.id);
+  isLoading.value = true;
+  const [error] = await paramTarget.addVariable(props.targetId, props.targetType, variableIds);
+  isLoading.value = false;
   if (error) {
     return;
   }
 
-  tableData.value.unshift(...data);
+  variableTableData.value.unshift(...data);
 };
 
-const toHide = (data: VariableItem) => {
-  visibilityIdSet.value.delete(data.id);
+/**
+ * Handle hiding variable value
+ * @param data - Variable item to hide
+ */
+const handleHideVariableValue = (data: VariableItem) => {
+  visibleVariableIdSet.value.delete(data.id);
 };
 
-const toVisibility = (data: VariableItem) => {
+/**
+ * Handle showing variable value
+ * @param data - Variable item to show
+ */
+const handleShowVariableValue = (data: VariableItem) => {
   const { id, value, extracted } = data;
-  visibilityIdSet.value.add(id);
+  visibleVariableIdSet.value.add(id);
 
-  // 如果是静态变量，且包含mock函数，则调用接口查询值
+  // If it's a static variable and contains mock function, call API to get value
   if (!extracted && !/@\w+\w*\([^)]*\)/.test(value)) {
     return;
   }
 
-  loadValue(data);
+  loadVariableValue(data);
 };
 
-const loadValue = async (data: VariableItem) => {
-  const id = data.id;
-  const params = {
+/**
+ * Load variable value from API
+ * @param data - Variable item to load value for
+ */
+const loadVariableValue = async (data: VariableItem) => {
+  const variableId = data.id;
+  const requestParams = {
     name: data.name,
     value: data.value,
     extraction: data.extraction
   };
 
-  if (params.extraction?.method) {
-    params.extraction.method = params.extraction.method?.value || params.extraction.method;
+  if (requestParams.extraction?.method) {
+    requestParams.extraction.method = requestParams.extraction.method?.value || (requestParams.extraction.method as any);
   }
 
-  loading.value = true;
-  const [error, res] = await variable.previewVariableValue(params, { silence: true });
-  loading.value = false;
+  isLoading.value = true;
+  const [error, response] = await variable.previewVariableValue(requestParams, { silence: true });
+  isLoading.value = false;
   if (error) {
-    errorMessageMap.value.set(id, error.message);
+    variableErrorMessageMap.value.set(variableId, error.message);
     return;
   }
 
-  errorMessageMap.value.delete(id);
-  if (res?.data) {
-    data.showValue = res.data;
+  variableErrorMessageMap.value.delete(variableId);
+  if (response?.data) {
+    data.showValue = response.data;
   }
 };
 
-const toDelete = async (data: VariableItem) => {
-  const id = data.id;
-  loading.value = true;
-  const [error] = await paramTarget.deleteVariable(props.targetId, props.targetType, [id], { dataType: true });
-  loading.value = false;
+/**
+ * Handle variable deletion
+ * @param data - Variable item to delete
+ */
+const handleVariableDeletion = async (data: VariableItem) => {
+  const variableId = data.id;
+  isLoading.value = true;
+  const [error] = await paramTarget.deleteVariable(props.targetId, props.targetType, [variableId], { dataType: true });
+  isLoading.value = false;
   if (error) {
     return;
   }
 
-  tableData.value = tableData.value.filter((item) => item.id !== id);
-  visibilityIdSet.value.delete(id);
-  errorMessageMap.value.delete(id);
+  variableTableData.value = variableTableData.value.filter((item) => item.id !== variableId);
+  visibleVariableIdSet.value.delete(variableId);
+  variableErrorMessageMap.value.delete(variableId);
 };
 
-const loadData = async () => {
-  loading.value = true;
-  const [error, res] = await paramTarget.getVariable(props.targetId, props.targetType);
-  loading.value = false;
-  loaded.value = true;
+/**
+ * Load variable data from API
+ */
+const loadVariableData = async () => {
+  isLoading.value = true;
+  const [error, response] = await paramTarget.getVariable(props.targetId, props.targetType);
+  isLoading.value = false;
+  isDataLoaded.value = true;
   if (error) {
     return;
   }
 
-  const list = res?.data || [];
-  if (!list.length) {
+  const variableList = response?.data || [];
+  if (!variableList.length) {
     return;
   }
 
-  tableData.value = list.map(item => {
+  variableTableData.value = variableList.map(item => {
     const { extraction, id } = item;
     if (!extraction || !['FILE', 'http', 'JDBC'].includes(extraction.source)) {
       if (/@\w+\w*\([^)]*\)/.test(item.value)) {
@@ -142,66 +180,78 @@ const loadData = async () => {
     }
 
     if (!item.passwordValue) {
-      visibilityIdSet.value.add(id);
+      visibleVariableIdSet.value.add(id);
     }
 
     return item;
   });
 };
 
-const reset = () => {
-  loaded.value = false;
-  loading.value = false;
-  tableData.value = [];
-  modalVisible.value = false;
-  visibilityIdSet.value.clear();
-  errorMessageMap.value.clear();
+/**
+ * Reset component state
+ */
+const resetComponentState = () => {
+  isDataLoaded.value = false;
+  isLoading.value = false;
+  variableTableData.value = [];
+  isModalVisible.value = false;
+  visibleVariableIdSet.value.clear();
+  variableErrorMessageMap.value.clear();
 };
 
+// Watch for target ID changes
 onMounted(() => {
   watch(() => props.targetId, (newValue) => {
-    reset();
+    resetComponentState();
 
     if (!newValue) {
       return;
     }
 
-    loadData();
+    loadVariableData();
   }, { immediate: true });
 });
 
-const selectedNames = computed(() => {
-  return tableData.value?.map(item => item.name);
+// Computed properties
+const selectedVariableNames = computed(() => {
+  return variableTableData.value?.map(item => item.name);
 });
 
-const columns = [
+// Table column configuration
+const tableColumns = [
   {
+    key: 'name',
     title: t('commonComp.apis.parameterizationVariable.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
+    key: 'value',
     title: t('common.value'),
     dataIndex: 'value',
     ellipsis: true
   },
   {
+    key: 'description',
     title: t('common.description'),
     dataIndex: 'description',
     ellipsis: true
   },
   {
+    key: 'linkName',
     title: t('commonComp.apis.parameterizationVariable.reference'),
     dataIndex: 'linkName',
     ellipsis: true
   },
   {
+    key: 'createdByName',
     title: t('common.creator'),
     dataIndex: 'createdByName',
     ellipsis: true,
     width: '8%'
   },
   {
+    key: 'action',
     title: t('common.actions'),
     dataIndex: 'action',
     width: 170
@@ -210,7 +260,7 @@ const columns = [
 </script>
 
 <template>
-  <Spin :spinning="loading" class="text-3 leading-5">
+  <Spin :spinning="isLoading" class="text-3 leading-5">
     <div class="flex items-center flex-nowrap mb-1.5">
       <div class="flex-shrink-0 w-1 h-3.5 rounded bg-blue-400 mr-1.5"></div>
       <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('commonComp.apis.parameterizationVariable.title') }}</div>
@@ -222,14 +272,14 @@ const columns = [
         type="link"
         size="small"
         class="flex items-center h-5 leading-5 p-0 space-x-1"
-        @click="toUse">
+        @click="handleOpenVariableModal">
         <Icon icon="icon-jia" class="text-3.5" />
         <span class="ml-1">{{ t('commonComp.apis.parameterizationVariable.addVariable') }}</span>
       </Button>
     </div>
 
-    <template v-if="loaded">
-      <div v-if=" tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
+    <template v-if="isDataLoaded">
+      <div v-if=" variableTableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
         <img style="width:100px;" src="../../../../assets/images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3">
           <span>{{ t('commonComp.apis.parameterizationVariable.noDataMessage') }}</span>
@@ -238,35 +288,36 @@ const columns = [
 
       <Table
         v-else
-        :dataSource="tableData"
-        :columns="columns"
+        :dataSource="variableTableData"
+        :columns="tableColumns"
         :pagination="false"
+        :noDataSize="'small'"
         rowKey="id">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'value'">
             <div v-if="record.passwordValue" class="flex items-center">
-              <template v-if="visibilityIdSet.has(record.id)">
+              <template v-if="visibleVariableIdSet.has(record.id)">
                 <div :title="record.showValue" class="flex-1 truncate">{{ record.showValue }}</div>
                 <Icon
                   icon="icon-zhengyan"
                   class="flex-shrink-0 ml-1.5 text-4 cursor-pointer text-theme-text-hover"
-                  @click="toHide(record)" />
+                  @click="handleHideVariableValue(record)" />
               </template>
               <template v-else>
                 <div class="flex-1 truncate">******</div>
                 <Icon
                   icon="icon-biyan"
                   class="flex-shrink-0 ml-1.5 text-4 cursor-pointer text-theme-text-hover"
-                  @click="toVisibility(record)" />
+                  @click="handleShowVariableValue(record)" />
               </template>
             </div>
 
             <div v-else class="flex items-center">
               <div
-                v-if="errorMessageMap.has(record.id)"
-                :title="errorMessageMap.get(record.id)"
+                v-if="variableErrorMessageMap.has(record.id)"
+                :title="variableErrorMessageMap.get(record.id)"
                 class="flex-1 truncate text-status-error">
-                {{ errorMessageMap.get(record.id) }}
+                {{ variableErrorMessageMap.get(record.id) }}
               </div>
 
               <div
@@ -280,7 +331,7 @@ const columns = [
                 v-if="record.previewFlag"
                 icon="icon-zhengyan"
                 class="flex-shrink-0 ml-1.5 text-4 cursor-pointer text-theme-text-hover"
-                @click="toVisibility(record)" />
+                @click="handleShowVariableValue(record)" />
             </div>
           </template>
 
@@ -290,7 +341,7 @@ const columns = [
           </div>
 
           <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-2.5">
-            <Popconfirm :title="t('commonComp.apis.parameterizationVariable.cancelReferenceConfirm', { name: record.name })" @confirm="toDelete(record)">
+            <Popconfirm :title="t('commonComp.apis.parameterizationVariable.cancelReferenceConfirm', { name: record.name })" @confirm="handleVariableDeletion(record)">
               <Button
                 :title="t('commonComp.apis.parameterizationVariable.cancelReference')"
                 type="text"
@@ -317,12 +368,12 @@ const columns = [
       </Table>
     </template>
 
-    <AsyncComponent :visible="modalVisible">
+    <AsyncComponent :visible="isModalVisible">
       <VariableListModal
-        v-model:visible="modalVisible"
-        :selectedNames="selectedNames"
+        v-model:visible="isModalVisible"
+        :selectedNames="selectedVariableNames"
         :projectId="props.projectId"
-        @ok="selectedVariablesOk" />
+        @ok="handleSelectedVariablesConfirmation" />
     </AsyncComponent>
   </Spin>
 </template>

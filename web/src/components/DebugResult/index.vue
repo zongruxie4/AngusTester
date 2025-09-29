@@ -1,45 +1,72 @@
 <script setup lang="ts">
+// Vue core imports
 import { computed, defineAsyncComponent } from 'vue';
-import { NoData, Colon } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
-import { Badge } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
+// UI component imports
+import { NoData, Colon } from '@xcan-angus/vue-ui';
+import { Badge } from 'ant-design-vue';
+
+// Infrastructure imports
+import { utils } from '@xcan-angus/infra';
+
+// Local imports
 import { PipelineConfig } from './PropsType';
 import { ExecContent } from '@/components/FunctionTestDetail/PropsType';
+
 const { t } = useI18n();
 
-interface Props {
-  httpError?:{
-      exitCode:string;
-      message:string;
-    };
-  value:{
-    sampleContents:ExecContent[];
-    task:{
-      arguments:{
-        ignoreAssertions:boolean;
-      };
-      pipelines:PipelineConfig[];
-    };
-    meterMessage?:string;
-    meterStatus?:string;
-    schedulingResult?:{
-      success: boolean;
-      message: string;
-      execId: string;
-      console: string[];
-      exitCode: string;
-      deviceId: string;
-    };
-  };
+/**
+ * HTTP error interface
+ */
+interface HttpError {
+  exitCode: string;
+  message: string;
 }
 
+/**
+ * Scheduling result interface
+ */
+interface SchedulingResult {
+  success: boolean;
+  message: string;
+  execId: string;
+  console: string[];
+  exitCode: string;
+  deviceId: string;
+}
+
+/**
+ * Debug result value interface
+ */
+interface DebugResultValue {
+  sampleContents: ExecContent[];
+  task: {
+    arguments: {
+      ignoreAssertions: boolean;
+    };
+    pipelines: PipelineConfig[];
+  };
+  meterMessage?: string;
+  meterStatus?: string;
+  schedulingResult?: SchedulingResult;
+}
+
+/**
+ * Component props interface for debug result
+ */
+interface Props {
+  httpError?: HttpError;
+  value: DebugResultValue;
+}
+
+// Component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   httpError: undefined
 });
 
+// Async component imports
 const TransStartTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/TransStart/index.vue'));
 const WaitingTimeTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/WaitingTime/index.vue'));
 const ThroughputTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/Throughput/index.vue'));
@@ -47,33 +74,34 @@ const RendezvousTestDetail = defineAsyncComponent(() => import('../FunctionTestD
 const HTTPTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/HTTP/index.vue'));
 const TransEndTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/TransEnd/index.vue'));
 
-const pipelines = computed(() => {
+// Computed properties
+const processedPipelines = computed(() => {
   if (!props?.value?.task?.pipelines?.length) {
     return [];
   }
 
-  const list = props.value.task.pipelines;
-  const httpNum = list.filter(item => item.target === 'HTTP').length;
-  return list.reduce((prev, cur) => {
-    const _cur = { ...cur, linkName: cur.name, id: utils.uuid() };
-    if (httpNum === 1 && _cur.target === 'HTTP') {
-      _cur.linkName = 'Total';
+  const pipelineList = props.value.task.pipelines;
+  const httpPipelineCount = pipelineList.filter(item => item.target === 'HTTP').length;
+  return pipelineList.reduce((previousPipelines, currentPipeline) => {
+    const processedPipeline = { ...currentPipeline, linkName: currentPipeline.name, id: utils.uuid() } as any;
+    if (httpPipelineCount === 1 && processedPipeline.target === 'HTTP') {
+      processedPipeline.linkName = 'Total';
     }
-    if (_cur.transactionName) {
-      if (!prev[prev.length - 1].children?.length) {
-        prev[prev.length - 1].children = [_cur];
+    if (processedPipeline.transactionName) {
+      if (!previousPipelines[previousPipelines.length - 1].children?.length) {
+        previousPipelines[previousPipelines.length - 1].children = [processedPipeline];
       } else {
-        prev[prev.length - 1].children.push(_cur);
+        previousPipelines[previousPipelines.length - 1].children.push(processedPipeline);
       }
     } else {
-      prev.push(_cur);
+      previousPipelines.push(processedPipeline);
     }
 
-    return prev;
-  }, [] as PipelineConfig[]);
+    return previousPipelines;
+  }, [] as any[]);
 });
 
-const ignoreAssertions = computed(() => {
+const shouldIgnoreAssertions = computed(() => {
   return !!props.value?.task?.arguments?.ignoreAssertions;
 });
 
@@ -81,23 +109,23 @@ const sampleContents = computed(() => {
   return props.value?.sampleContents || [];
 });
 
-const isEmpty = computed(() => {
+const hasNoData = computed(() => {
   return !props.httpError && !props.value;
 });
 
-const schedulingErrorResult = computed(() => {
-  const item = props.value?.schedulingResult;
-  if (!item || item.success === true) {
+const schedulingErrorInfo = computed(() => {
+  const schedulingResult = props.value?.schedulingResult;
+  if (!schedulingResult || schedulingResult.success === true) {
     return undefined;
   }
 
   return {
-    exitCode: item.exitCode,
-    message: item.message
+    exitCode: schedulingResult.exitCode,
+    message: schedulingResult.message
   };
 });
 
-const meterErrorResult = computed(() => {
+const meterErrorInfo = computed(() => {
   if (!props.value?.meterMessage) {
     return undefined;
   }
@@ -108,15 +136,15 @@ const meterErrorResult = computed(() => {
   };
 });
 
-const isError = computed(() => {
-  return !!props.httpError || !!schedulingErrorResult.value || !!meterErrorResult.value;
+const hasErrors = computed(() => {
+  return !!props.httpError || !!schedulingErrorInfo.value || !!meterErrorInfo.value;
 });
 </script>
 
 <template>
   <div class="h-full leading-5 space-y-3 px-5 py-3 text-3 overflow-auto">
-    <template v-if="!isEmpty">
-      <div v-if="isError" class="space-y-2">
+    <template v-if="!hasNoData">
+      <div v-if="hasErrors" class="space-y-2">
         <div class="flex items-start">
           <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.debugResult') }}<Colon /></div>
           <Badge status="error" :text="t('status.failed')" />
@@ -131,77 +159,77 @@ const isError = computed(() => {
             <div class="max-w-200 break-all whitespace-pre-wrap">{{ props.httpError.message }}</div>
           </div>
         </template>
-        <template v-else-if="schedulingErrorResult">
+        <template v-else-if="schedulingErrorInfo">
           <div class="flex items-start">
             <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.exitCode') }}<Colon /></div>
-            <div>{{ schedulingErrorResult.exitCode }}</div>
+            <div>{{ schedulingErrorInfo.exitCode }}</div>
           </div>
           <div class="flex items-start">
             <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.failureReason') }}<Colon /></div>
-            <div class="max-w-200 break-all whitespace-pre-wrap">{{ schedulingErrorResult.message }}</div>
+            <div class="max-w-200 break-all whitespace-pre-wrap">{{ schedulingErrorInfo.message }}</div>
           </div>
         </template>
-        <template v-else-if="meterErrorResult">
+        <template v-else-if="meterErrorInfo">
           <div class="flex items-start">
             <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.samplingStatus') }}<Colon /></div>
-            <div>{{ meterErrorResult.exitCode }}</div>
+            <div>{{ meterErrorInfo.exitCode }}</div>
           </div>
           <div class="flex items-start">
             <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.failureReason') }}<Colon /></div>
-            <div class="max-w-200 break-all whitespace-pre-wrap">{{ meterErrorResult.message }}</div>
+            <div class="max-w-200 break-all whitespace-pre-wrap">{{ meterErrorInfo.message }}</div>
           </div>
         </template>
       </div>
       <template v-else>
-        <template v-for="item in pipelines" :key="item.id">
+        <template v-for="pipelineItem in processedPipelines" :key="pipelineItem.id">
           <TransStartTestDetail
-            v-if="item.target==='TRANS_START'"
-            :value="item"
+            v-if="pipelineItem.target==='TRANS_START'"
+            :value="pipelineItem"
             :content="sampleContents">
-            <template v-if="item.children?.length">
-              <template v-for="_item in item.children" :key="_item.id">
+            <template v-if="(pipelineItem as any).children?.length">
+              <template v-for="childItem in (pipelineItem as any).children" :key="childItem.id">
                 <WaitingTimeTestDetail
-                  v-if="_item.target==='WAITING_TIME'"
-                  :value="_item"
+                  v-if="childItem.target==='WAITING_TIME'"
+                  :value="childItem"
                   class="embed" />
                 <ThroughputTestDetail
-                  v-else-if="_item.target==='THROUGHPUT'"
-                  :value="_item"
+                  v-else-if="childItem.target==='THROUGHPUT'"
+                  :value="childItem"
                   class="embed" />
                 <RendezvousTestDetail
-                  v-else-if="_item.target==='RENDEZVOUS'"
-                  :value="_item"
+                  v-else-if="childItem.target==='RENDEZVOUS'"
+                  :value="childItem"
                   class="embed" />
                 <HTTPTestDetail
-                  v-else-if="_item.target==='HTTP'"
-                  :value="_item"
+                  v-else-if="childItem.target==='HTTP'"
+                  :value="childItem"
                   :content="sampleContents"
-                  :ignoreAssertions="ignoreAssertions"
+                  :ignoreAssertions="shouldIgnoreAssertions"
                   class="embed" />
                 <TransEndTestDetail
-                  v-else-if="_item.target==='TRANS_END'"
-                  :value="_item" />
+                  v-else-if="childItem.target==='TRANS_END'"
+                  :value="childItem" />
               </template>
             </template>
           </TransStartTestDetail>
-          <template v-if="!item.transactionName">
+          <template v-if="!(pipelineItem as any).transactionName">
             <WaitingTimeTestDetail
-              v-if="item.target==='WAITING_TIME'"
-              :value="item" />
+              v-if="pipelineItem.target==='WAITING_TIME'"
+              :value="pipelineItem" />
             <ThroughputTestDetail
-              v-else-if="item.target==='THROUGHPUT'"
-              :value="item" />
+              v-else-if="pipelineItem.target==='THROUGHPUT'"
+              :value="pipelineItem" />
             <RendezvousTestDetail
-              v-else-if="item.target==='RENDEZVOUS'"
-              :value="item" />
+              v-else-if="pipelineItem.target==='RENDEZVOUS'"
+              :value="pipelineItem" />
             <HTTPTestDetail
-              v-else-if="item.target==='HTTP'"
-              :value="item"
+              v-else-if="pipelineItem.target==='HTTP'"
+              :value="pipelineItem"
               :content="sampleContents"
-              :ignoreAssertions="ignoreAssertions" />
+              :ignoreAssertions="shouldIgnoreAssertions" />
             <TransEndTestDetail
-              v-else-if="item.target==='TRANS_END'"
-              :value="item" />
+              v-else-if="pipelineItem.target==='TRANS_END'"
+              :value="pipelineItem" />
           </template>
         </template>
       </template>
