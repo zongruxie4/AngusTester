@@ -101,17 +101,12 @@
       "exitCode": "Exit Code",
       "failureReason": "Failure Reason",
       "samplingStatus": "Sampling Status",
-      "modifySuccess": "Modified successfully",
-      "startSuccess": "Started successfully",
-      "stopSuccess": "Stopped successfully",
-      "deleteConfirm": "Are you sure to delete 「{name}」?",
       "totalRecords": "Total {total} records, page {current} / {totalPage}",
       "executionDuration": "Duration",
       "reportInterval": "Report Interval",
       "ignoreAssertions": "Ignore Assertions",
       "updateTestResult": "Update Result",
-      "trial": "Trial",
-      "modifiedBy": "Modified by"
+      "trial": "Trial"
     },
     "units": {
       "millisecond": "millisecond",

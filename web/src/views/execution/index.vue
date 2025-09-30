@@ -492,7 +492,7 @@ onBeforeUnmount(() => {
                       {{ t('common.scriptName') }}:
                     </div>
                     <div class="whitespace-nowrap h-7 text-right">
-                      {{ t('execution.messages.modifiedBy') }}:
+                      {{ t('common.lastModifiedBy') }}:
                     </div>
                   </div>
 

@@ -333,7 +333,7 @@ onMounted(() => {
 <template>
   <Modal
     :visible="props.visible"
-    :title="reportId ? t('common.add')"
+    :title="reportId ? t('actions.edit') : t('actions.add')"
     :width="1200"
     :okButtonProps="{
       loading: loading
