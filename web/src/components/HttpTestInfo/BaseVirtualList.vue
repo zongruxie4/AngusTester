@@ -1,19 +1,24 @@
 
 <script lang="ts" setup>
+// Vue core imports
 import { ref, computed, reactive, onUpdated, watchEffect } from 'vue';
 
+/**
+ * Component props interface for virtual list functionality
+ */
 interface Props {
   cache: number;
   data: any[];
-  style?: string|Record<string, string>;
+  style?: string | Record<string, string>;
   showNum?: number;
-  width?: number|string;
+  width?: number | string;
   height?: number;
   dynamic?: boolean;
   itemHeight?: number;
   className?: string;
 }
 
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   cache: 2,
   data: () => ([]),
@@ -26,92 +31,117 @@ const props = withDefaults(defineProps<Props>(), {
   className: undefined
 });
 
-const state = reactive<any>({
+// Component state management
+const virtualListState = reactive<any>({
   start: 0,
   end: props.showNum || 20,
   scrollOffset: 0,
   cacheData: []
 });
 
-const virtualListRef = ref();
+// Component references
+const virtualListContainerRef = ref();
 
-const getWrapperStyle = computed(() => {
+/**
+ * Computed property for wrapper container styles
+ */
+const wrapperContainerStyle = computed(() => {
   const { style, height, width } = props;
-  const styleObj = typeof style === 'string' ? JSON.parse(style) : { ...style };
+  const styleObject = typeof style === 'string' ? JSON.parse(style) : { ...style };
   return {
     height: `${height}px`,
     width: typeof width === 'number' ? `${width}px` : width,
-    ...styleObj
+    ...styleObject
   };
 });
 
-const getInnerStyle = computed(() => {
+/**
+ * Computed property for inner container styles
+ */
+const innerContainerStyle = computed(() => {
   return {
-    height: `${getTotalHeight.value}px`,
+    height: `${totalContainerHeight.value}px`,
     width: '100%'
   };
 });
 
-const getListStyle = computed(() => {
+/**
+ * Computed property for virtual list styles
+ */
+const virtualListStyle = computed(() => {
   return {
     willChange: 'transform',
-    transform: `translateY(${state.scrollOffset}px)`
+    transform: `translateY(${virtualListState.scrollOffset}px)`
   };
 });
 
-// 数据数量
-const total = computed(() => {
+// Data and height calculations
+const totalDataCount = computed(() => {
   return props.data.length;
 });
 
-// 总体高度
-const getTotalHeight = computed(() => {
-  if (!props.dynamic) return total.value * props.itemHeight;
-  return getCurrentTop(total.value);
+/**
+ * Computed property for total container height
+ */
+const totalContainerHeight = computed(() => {
+  if (!props.dynamic) return totalDataCount.value * props.itemHeight;
+  return calculateCurrentItemTop(totalDataCount.value);
 });
 
-// 当前屏幕显示的数量
-const clientCount = computed(() => {
-  return Math.ceil(props.height / props.itemHeight);
+/**
+ * Computed property for visible items count in viewport
+ */
+const visibleItemsCount = computed(() => {
+  return Math.ceil((props.height || 0) / props.itemHeight);
 });
 
-// 当前屏幕显示的数据
-const clientData = computed(() => {
-  return props.data.slice(state.start, state.end);
+/**
+ * Computed property for currently visible data items
+ */
+const visibleDataItems = computed(() => {
+  return props.data.slice(virtualListState.start, virtualListState.end);
 });
 
-const onScroll = (e: any) => {
-  const { scrollTop } = e.target;
-  if (state.scrollOffset === scrollTop) return;
+/**
+ * Handle scroll events and update virtual list state
+ * @param event - Scroll event object
+ */
+const handleScrollEvent = (event: any) => {
+  const { scrollTop } = event.target;
+  if (virtualListState.scrollOffset === scrollTop) return;
   const { cache, dynamic, itemHeight } = props;
   const cacheCount = Math.max(1, cache);
 
-  let startIndex = dynamic ? getStartIndex(scrollTop) : Math.floor(scrollTop / itemHeight);
+  let startIndex = dynamic ? findStartIndexByScrollPosition(scrollTop) : Math.floor(scrollTop / itemHeight);
 
-  const endIndex = Math.max(0, Math.min(total.value, startIndex + clientCount.value + cacheCount));
+  const endIndex = Math.max(0, Math.min(totalDataCount.value, startIndex + visibleItemsCount.value + cacheCount));
 
   if (startIndex > cacheCount) {
     startIndex = startIndex - cacheCount;
   }
 
-  // 偏移量
-  const offset = dynamic ? getCurrentTop(startIndex) : scrollTop - (scrollTop % itemHeight);
+  // Calculate scroll offset
+  const scrollOffset = dynamic ? calculateCurrentItemTop(startIndex) : scrollTop - (scrollTop % itemHeight);
 
-  Object.assign(state, {
+  Object.assign(virtualListState, {
     start: Math.max(0, startIndex),
     end: endIndex,
-    scrollOffset: offset
+    scrollOffset: scrollOffset
   });
 };
 
-// 二分法去查找对应的index
-const getStartIndex = (scrollTop = 0): number => {
+/**
+ * Find start index using binary search algorithm for dynamic height items
+ * @param scrollTop - Current scroll position
+ * @returns Start index for visible items
+ */
+const findStartIndexByScrollPosition = (scrollTop = 0): number => {
   let low = 0;
-  let high = state.cacheData.length - 1;
+  let high = virtualListState.cacheData.length - 1;
   while (low <= high) {
     const middle = low + Math.floor((high - low) / 2);
-    const middleTopValue = getCurrentTop(middle);
-    const middleBottomValue = getCurrentTop(middle + 1);
+    const middleTopValue = calculateCurrentItemTop(middle);
+    const middleBottomValue = calculateCurrentItemTop(middle + 1);
 
     if (middleTopValue <= scrollTop && scrollTop <= middleBottomValue) {
       return middle;
@@ -121,42 +151,53 @@ const getStartIndex = (scrollTop = 0): number => {
       high = middle - 1;
     }
   }
-  return Math.min(total.value - clientCount.value, Math.floor(scrollTop / props.itemHeight));
+  return Math.min(totalDataCount.value - visibleItemsCount.value, Math.floor(scrollTop / props.itemHeight));
 };
 
-const getCurrentTop = (index: number) => {
-  const lastIndex = state.cacheData.length - 1;
+/**
+ * Calculate the top position of an item at the given index
+ * @param index - Item index
+ * @returns Top position in pixels
+ */
+const calculateCurrentItemTop = (index: number) => {
+  const lastIndex = virtualListState.cacheData.length - 1;
 
-  if (index in state.cacheData) {
-    return state.cacheData[index].top;
-  } else if ((index - 1) in state.cacheData) {
-    return state.cacheData[index - 1].bottom;
+  if (index in virtualListState.cacheData) {
+    return virtualListState.cacheData[index].top;
+  } else if ((index - 1) in virtualListState.cacheData) {
+    return virtualListState.cacheData[index - 1].bottom;
   } else if (index > lastIndex) {
-    return state.cacheData[lastIndex].bottom + Math.max(0, index - state.cacheData[lastIndex].index) * props.itemHeight;
+    return virtualListState.cacheData[lastIndex].bottom + Math.max(0, index - virtualListState.cacheData[lastIndex].index) * props.itemHeight;
   } else {
     return index * props.itemHeight;
   }
 };
 
+/**
+ * Update dynamic item heights after component updates
+ */
 onUpdated(() => {
   if (!props.dynamic) return;
-  const childrenList = virtualListRef.value.children || [];
+  const childrenList = virtualListContainerRef.value.children || [];
   [...childrenList].forEach((node: any, index: number) => {
     const height = node.getBoundingClientRect().height;
-    const currentIndex = state.start + index;
-    if (state.cacheData[currentIndex].height === height) return;
+    const currentIndex = virtualListState.start + index;
+    if (virtualListState.cacheData[currentIndex].height === height) return;
 
-    state.cacheData[currentIndex].height = height;
-    state.cacheData[currentIndex].top = getCurrentTop(currentIndex);
-    state.cacheData[currentIndex].bottom = state.cacheData[currentIndex].top + state.cacheData[currentIndex].height;
+    virtualListState.cacheData[currentIndex].height = height;
+    virtualListState.cacheData[currentIndex].top = calculateCurrentItemTop(currentIndex);
+    virtualListState.cacheData[currentIndex].bottom = virtualListState.cacheData[currentIndex].top + virtualListState.cacheData[currentIndex].height;
   });
 });
 
+/**
+ * Initialize cache data for visible items
+ */
 watchEffect(() => {
-  clientData.value.forEach((_, index) => {
-    const currentIndex = state.start + index;
-    if (currentIndex in state.cacheData) return;
-    state.cacheData[currentIndex] = {
+  visibleDataItems.value.forEach((_, index) => {
+    const currentIndex = virtualListState.start + index;
+    if (currentIndex in virtualListState.cacheData) return;
+    virtualListState.cacheData[currentIndex] = {
       top: currentIndex * props.itemHeight,
       height: props.itemHeight,
       bottom: (currentIndex + 1) * props.itemHeight,
@@ -170,22 +211,22 @@ watchEffect(() => {
   <div
     ref="wrapperRef"
     :class="['base-virtual-wrapper', className]"
-    :style="getWrapperStyle"
-    @scroll="onScroll">
+    :style="wrapperContainerStyle"
+    @scroll="handleScrollEvent">
     <div
       ref="innerRef"
       class="base-virtual-inner"
-      :style="getInnerStyle">
+      :style="innerContainerStyle">
       <div
-        ref="virtualListRef"
+        ref="virtualListContainerRef"
         class="base-virtual-list"
-        :style="getListStyle">
+        :style="virtualListStyle">
         <slot
-          v-for="(item, index) in clientData"
-          :key="index + state.start"
+          v-for="(item, index) in visibleDataItems"
+          :key="index + virtualListState.start"
           name="default"
           :item="item"
-          :index="state.start + index">
+          :index="virtualListState.start + index">
         </slot>
       </div>
     </div>

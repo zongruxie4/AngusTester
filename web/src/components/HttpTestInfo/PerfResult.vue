@@ -1,39 +1,58 @@
 <script lang="ts" setup>
+// Vue core imports
 import { computed } from 'vue';
-import { Icon } from '@xcan-angus/vue-ui';
-import ApiUtils from 'src/utils/apis';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
+import { Icon } from '@xcan-angus/vue-ui';
+
+// Utility imports
+import ApiUtils from 'src/utils/apis';
 
 const { t } = useI18n();
 const { splitDuration, formatMillisecondToShortDuraiton } = ApiUtils;
 
-interface Props {
-  indicatorPerf: {
-    duration: string;
-    errorRate: string;
-    tps: string;
-    threads: string;
-    percentile: {value: string}; // [ ALL, P50, P75, P90, P95, P99, P999 ]
-    rampUpInterval: string;
-    rampUpThreads: string;
-    art: string;
-  },
-  result: {
-    tranMax: string;
-    tranP50: string;
-    tranP75: string;
-    tranP90: string;
-    tranP95: string;
-    tranP99: string;
-    tranP999: string;
-    tps: string;
-    art: string;
-    errorRate: string;
-    rampUpInterval: string;
-    rampUpThreads: string;
-  }
+/**
+ * Performance indicator configuration interface
+ */
+interface PerformanceIndicatorConfig {
+  duration: string;
+  errorRate: string;
+  tps: string;
+  threads: string;
+  percentile: { value: string }; // [ ALL, P50, P75, P90, P95, P99, P999 ]
+  rampUpInterval: string;
+  rampUpThreads: string;
+  art: string;
 }
 
+/**
+ * Performance test result data interface
+ */
+interface PerformanceTestResult {
+  tranMax: string;
+  tranP50: string;
+  tranP75: string;
+  tranP90: string;
+  tranP95: string;
+  tranP99: string;
+  tranP999: string;
+  tps: string;
+  art: string;
+  errorRate: string;
+  rampUpInterval: string;
+  rampUpThreads: string;
+}
+
+/**
+ * Component props interface for performance result display
+ */
+interface Props {
+  indicatorPerf: PerformanceIndicatorConfig;
+  result: PerformanceTestResult;
+}
+
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   indicatorPerf: () => ({
     duration: '',
@@ -44,7 +63,6 @@ const props = withDefaults(defineProps<Props>(), {
     art: '',
     rampUpInterval: '',
     rampUpThreads: ''
-
   }),
   result: () => ({
     tranMax: '',
@@ -62,33 +80,36 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
-const indicatorItem = computed(() => {
+/**
+ * Computed property for performance indicator configuration
+ */
+const performanceIndicatorConfig = computed(() => {
   const percentile = props.indicatorPerf.percentile.value;
-  let percentitleKey;
+  let percentileKey;
   switch (percentile) {
     case 'ALL':
-      percentitleKey = 'tranMax';
+      percentileKey = 'tranMax';
       break;
     case 'P50':
-      percentitleKey = 'tranP50';
+      percentileKey = 'tranP50';
       break;
     case 'P75':
-      percentitleKey = 'tranP75';
+      percentileKey = 'tranP75';
       break;
     case 'P90':
-      percentitleKey = 'tranP90';
+      percentileKey = 'tranP90';
       break;
     case 'P95':
-      percentitleKey = 'tranP95';
+      percentileKey = 'tranP95';
       break;
     case 'P99':
-      percentitleKey = 'tranP99';
+      percentileKey = 'tranP99';
       break;
     case 'P999':
-      percentitleKey = 'tranP999';
+      percentileKey = 'tranP999';
       break;
     default:
-      percentitleKey = '';
+      percentileKey = '';
   }
   return [
     {
@@ -109,7 +130,7 @@ const indicatorItem = computed(() => {
     },
     {
       label: `${t('xcan_httpTestInfo.responseTime')}(${percentile})`,
-      dataIndex: percentitleKey || '--'
+      dataIndex: percentileKey || '--'
     },
     {
       label: t('xcan_httpTestInfo.transactionsPerSecond'),
@@ -123,7 +144,12 @@ const indicatorItem = computed(() => {
   ];
 });
 
-const getIcon = (valueKey) => {
+/**
+ * Get status icon based on performance indicator comparison
+ * @param valueKey - The data key to check
+ * @returns Icon configuration object with class and icon name
+ */
+const getPerformanceStatusIcon = (valueKey: string) => {
   if (valueKey.includes('tran')) {
     if (!props.result[valueKey] && props.indicatorPerf.art) {
       return {
@@ -182,30 +208,34 @@ const getIcon = (valueKey) => {
   return {};
 };
 
-const getDuration = (mseconds) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [value, unit] = splitDuration(props.indicatorPerf.duration);
-  if (!mseconds) {
+/**
+ * Format duration from milliseconds to readable format
+ * @param milliseconds - Duration in milliseconds
+ * @returns Formatted duration string
+ */
+const formatDurationFromMilliseconds = (milliseconds: string) => {
+  const [, unit] = splitDuration(props.indicatorPerf.duration);
+  if (!milliseconds) {
     return '--';
   }
-  return formatMillisecondToShortDuraiton(+mseconds, unit);
+  return formatMillisecondToShortDuraiton(+milliseconds, unit as 's' | 'h' | 'min' | 'day');
 };
 
 </script>
 <template>
   <div class="flex border rounded text-3">
     <div class="flex-1 bg-status-warn flex flex-col p-2">
-      <span v-for="item in indicatorItem" :key="item.dataIndex">
-        {{ item.label }}
+      <span v-for="indicatorItem in performanceIndicatorConfig" :key="indicatorItem.dataIndex">
+        {{ indicatorItem.label }}
       </span>
     </div>
     <div class="flex-1 flex flex-col p-2">
       <div
-        v-for="item in indicatorItem"
-        :key="item.dataIndex"
+        v-for="indicatorItem in performanceIndicatorConfig"
+        :key="indicatorItem.dataIndex"
         class="flex items-center space-x-2">
-        <span>{{ props.result[item.dataIndex] ? `${item.dataIndex ==='duration' ? getDuration(props.result[item.dataIndex]) : props.result[item.dataIndex]}${item.unit || ''}` : '--' }}</span>
-        <Icon v-bind="getIcon(item.dataIndex)" />
+        <span>{{ props.result[indicatorItem.dataIndex] ? `${indicatorItem.dataIndex ==='duration' ? formatDurationFromMilliseconds(props.result[indicatorItem.dataIndex]) : props.result[indicatorItem.dataIndex]}${indicatorItem.unit || ''}` : '--' }}</span>
+        <Icon v-bind="getPerformanceStatusIcon(indicatorItem.dataIndex)" />
       </div>
     </div>
   </div>

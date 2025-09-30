@@ -1,17 +1,23 @@
 <script lang="ts" setup>
+// Vue core imports
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
+/**
+ * Component props interface for stability indicator data
+ */
 interface Props {
-  dataSource: {[key: string]: string}
+  dataSource: { [key: string]: string };
 }
 
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({})
 });
 
-const indicatorItem = [
+// Stability indicator configuration
+const stabilityIndicatorConfig = [
   {
     label: t('xcan_httpTestInfo.concurrency'),
     dataIndex: 'threads'
@@ -27,7 +33,7 @@ const indicatorItem = [
   {
     label: t('xcan_httpTestInfo.transactionsPerSecond'),
     dataIndex: 'tps',
-    compareOprate: '>='
+    compareOperator: '>='
   },
   {
     label: t('xcan_httpTestInfo.errorRate'),
@@ -39,7 +45,8 @@ const indicatorItem = [
   }
 ];
 
-const sysItems = [
+// System resource usage configuration
+const systemResourceUsageConfig = [
   {
     label: t('xcan_httpTestInfo.cpuUsage'),
     dataIndex: 'cpu',
@@ -66,27 +73,27 @@ const sysItems = [
 <template>
   <div class="flex border rounded text-3">
     <div class="flex-1 bg-gray-light flex flex-col p-2">
-      <span v-for="item in indicatorItem" :key="item.dataIndex">
-        {{ item.label }}
+      <span v-for="indicatorItem in stabilityIndicatorConfig" :key="indicatorItem.dataIndex">
+        {{ indicatorItem.label }}
       </span>
     </div>
     <div class="flex-1 flex flex-col p-2">
       <div
-        v-for="item in indicatorItem"
-        :key="item.dataIndex"
+        v-for="indicatorItem in stabilityIndicatorConfig"
+        :key="indicatorItem.dataIndex"
         class="flex items-center space-x-2">
-        <span v-if="item.dataIndex === 'art'">{{ props.dataSource.percentile?.value ? `${props.dataSource.percentile.value} <= ${props.dataSource.art || ''}` : '--' }}</span>
+        <span v-if="indicatorItem.dataIndex === 'art'">{{ (props.dataSource.percentile as any)?.value ? `${(props.dataSource.percentile as any).value} <= ${props.dataSource.art || ''}` : '--' }}</span>
         <div
-          v-else-if="item.dataIndex === 'sys'"
+          v-else-if="indicatorItem.dataIndex === 'sys'"
           class="flex flex-col">
-          <span v-for="sysItem in sysItems" :key="sysItem.dataIndex">
-            {{ sysItem.label }} &lt;= {{ props.dataSource[sysItem.dataIndex] ? `${props.dataSource[sysItem.dataIndex]}${sysItem.unit}` : '--' }}
+          <span v-for="systemResourceItem in systemResourceUsageConfig" :key="systemResourceItem.dataIndex">
+            {{ systemResourceItem.label }} &lt;= {{ props.dataSource[systemResourceItem.dataIndex] ? `${props.dataSource[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : '--' }}
           </span>
         </div>
-        <div v-else-if="item.dataIndex === 'errorRate'">
-          &lt;= {{ props.dataSource[item.dataIndex] }} %
+        <div v-else-if="indicatorItem.dataIndex === 'errorRate'">
+          &lt;= {{ props.dataSource[indicatorItem.dataIndex] }} %
         </div>
-        <span v-else>{{ (item.compareOprate || '') + (props.dataSource[item.dataIndex] || '') || '--' }}</span>
+        <span v-else>{{ (indicatorItem.compareOperator || '') + (props.dataSource[indicatorItem.dataIndex] || '') || '--' }}</span>
       </div>
     </div>
   </div>

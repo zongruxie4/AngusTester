@@ -1,22 +1,34 @@
 <script setup lang="ts">
+// Vue core imports
 import { computed, watch, ref, inject } from 'vue';
-import { Grid, Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
+import { Grid, Icon } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
 
+/**
+ * Component props interface for test configuration information display
+ */
 interface Props {
   value: Record<string, any>;
   enabled?: boolean;
 }
 
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({}),
   enabled: undefined
 });
 
+// Injected project information
 const projectInfo = inject('projectInfo', ref({ id: '' }));
-const columns = computed(() => {
+
+/**
+ * Computed property for test configuration table columns
+ */
+const testConfigTableColumns = computed(() => {
   return [[
     {
       label: t('xcan_httpTestInfo.testResult'),
@@ -63,23 +75,28 @@ const columns = computed(() => {
   ]];
 });
 
-const dataSource = ref<Record<string, any>>({});
+// Test configuration data source
+const testConfigDataSource = ref<Record<string, any>>({});
+
+/**
+ * Watch for changes in props value and update data source
+ */
 watch(() => props.value, newValue => {
-  dataSource.value = newValue;
+  testConfigDataSource.value = newValue;
 }, {
   immediate: true
 });
 </script>
 <template>
   <Grid
-    :columns="columns"
-    :dataSource="dataSource">
+    :columns="testConfigTableColumns"
+    :dataSource="testConfigDataSource">
     <template #passed="{text}">
       <div class="flex items-center">
-        <template v-if="!dataSource.id">
+        <template v-if="!testConfigDataSource.id">
           {{ t('xcan_httpTestInfo.untested') }}
         </template>
-        <template v-else-if="props.enabled === false && !dataSource.id">
+        <template v-else-if="props.enabled === false && !testConfigDataSource.id">
           {{ t('status.disabled') }}
         </template>
         <template v-else-if="text">
@@ -97,7 +114,7 @@ watch(() => props.value, newValue => {
         v-if="text"
         :title="text"
         class="text-theme-special"
-        :href="`/execution/info/${dataSource.execId}?projectId=${projectInfo.id}`"
+        :href="`/execution/info/${testConfigDataSource.execId}?projectId=${projectInfo.id}`"
         target="_blank">{{ text }}</a>
       <template v-else>--</template>
     </template>
@@ -106,7 +123,7 @@ watch(() => props.value, newValue => {
         v-if="text"
         :title="text"
         class="text-theme-special truncate"
-        :href="`/scripts/detail/${dataSource.scriptId}?projectId=${projectInfo.id}&type=view`"
+        :href="`/scripts/detail/${testConfigDataSource.scriptId}?projectId=${projectInfo.id}&type=view`"
         target="_blank">{{ text }}</a>
       <template v-else>--</template>
     </template>

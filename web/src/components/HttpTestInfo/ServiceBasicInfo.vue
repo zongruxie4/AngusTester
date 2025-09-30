@@ -1,18 +1,26 @@
 <script lang="ts" setup>
-import { Icon } from '@xcan-angus/vue-ui';
+// Vue core imports
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
+import { Icon } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
 
+/**
+ * Component props interface for service basic information data
+ */
 interface Props {
-  value: Record<string, any>
+  value: Record<string, any>;
 }
 
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({})
 });
 
-const InfoConfig = [
+// Service basic information display configuration
+const serviceBasicInfoConfig = [
   {
     dataIndex: 'total',
     title: t('xcan_httpTestInfo.totalInterfaces'),
@@ -30,13 +38,13 @@ const InfoConfig = [
 <template>
   <div class="flex justify-around space-x-2">
     <div
-      v-for="item in InfoConfig"
-      :key="item.dataIndex"
+      v-for="infoItem in serviceBasicInfoConfig"
+      :key="infoItem.dataIndex"
       class="text-center py-1 flex-1 bg-blue-bg3 rounded flex justify-center items-center space-x-4 pr-4">
-      <Icon :icon="item.icon" class="text-10" />
+      <Icon :icon="infoItem.icon" class="text-10" />
       <div>
-        <div class="text-4 font-semibold">{{ props.value[item.dataIndex] || '--' }}{{ item.dataIndex === 'completedRate' ? '%' : '' }}</div>
-        <div>{{ item.title }}</div>
+        <div class="text-4 font-semibold">{{ props.value[infoItem.dataIndex] || '--' }}{{ infoItem.dataIndex === 'completedRate' ? '%' : '' }}</div>
+        <div>{{ infoItem.title }}</div>
       </div>
     </div>
   </div>

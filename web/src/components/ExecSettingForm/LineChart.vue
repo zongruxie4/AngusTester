@@ -3,8 +3,10 @@
 import { ref, onMounted, watch, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-// ECharts imports
+// ECharts core imports
 import * as echarts from 'echarts/core';
+
+// ECharts component imports
 import { GridComponent, TooltipComponent } from 'echarts/components';
 import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
@@ -13,7 +15,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 const { t } = useI18n();
 
 /**
- * Component props interface for line chart
+ * Component props interface for execution concurrency line chart
  */
 export interface Props {
   unit: string;
@@ -22,40 +24,44 @@ export interface Props {
   maxThreads: number;
   maxThreadsTime: number;
 }
-// Component props with defaults
+
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   unit: '',
   xData: () => [],
   yData: () => [],
-  maxYData: 0,
   maxThreads: 0,
   maxThreadsTime: 0
 });
 
-// ECharts configuration
+// ECharts component registration
 echarts.use([GridComponent, TooltipComponent, LineChart, CanvasRenderer, UniversalTransition]);
 
-// Component refs and state
+// Component state and references
 const chartContainerRef = ref();
 let chartInstance: echarts.ECharts;
 
 /**
- * Initialize the line chart with configuration
+ * Initialize the execution concurrency line chart with configuration
  */
-const initializeLineChart = () => {
+const initializeExecutionConcurrencyChart = () => {
   if (!chartContainerRef.value) {
     return;
   }
   chartInstance = echarts.init(chartContainerRef.value);
   chartInstance.setOption(chartConfiguration);
-  window.addEventListener('resize', () => {
-    chartInstance.resize();
-  });
+  window.addEventListener('resize', handleChartResize);
 };
 
-// Chart configuration
-const chartConfiguration = {
+/**
+ * Handle chart resize on window resize
+ */
+const handleChartResize = () => {
+  chartInstance.resize();
+};
 
+// Chart configuration options
+const chartConfiguration = {
   grid: {
     top: 20,
     right: 40,
@@ -77,7 +83,7 @@ const chartConfiguration = {
     textStyle: {
       fontSize: 12
     },
-    formatter: (tooltipParams) => {
+    formatter: (tooltipParams: any[]) => {
       const dataPoint = tooltipParams[0];
       const dataColor = dataPoint.color;
       const dataValue = dataPoint.value;
@@ -141,34 +147,25 @@ const chartConfiguration = {
   ]
 };
 
-// Watchers
+// Component watchers
 watch(() => props.xData, () => {
   chartConfiguration.xAxis.data = props.xData;
   chartConfiguration.series[0].data = props.yData;
   chartInstance?.setOption(chartConfiguration, true);
 }, { deep: true });
 
-watch(() => props.unit, (newUnitValue) => {
+watch(() => props.unit, (newUnitValue: string) => {
   chartConfiguration.xAxis.name = t('xcan_execSettingForm.executionTimeUnit', { unit: newUnitValue });
   chartInstance?.setOption(chartConfiguration, true);
 });
 
-// watch(() => props.maxYData, (newValue) => {
-//   if (newValue) {
-//     chartsOption.yAxis[0].max = newValue;
-//     myChart?.setOption(chartsOption, true);
-//   }
-// });
-
-// Component lifecycle
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', () => {
-    chartInstance.resize();
-  });
+// Component lifecycle hooks
+onMounted(() => {
+  initializeExecutionConcurrencyChart();
 });
 
-onMounted(() => {
-  initializeLineChart();
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleChartResize);
 });
 
 </script>

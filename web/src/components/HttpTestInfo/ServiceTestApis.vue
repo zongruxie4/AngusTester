@@ -1,35 +1,67 @@
 <script lang="ts" setup>
+// Vue core imports
 import { watch, ref, onMounted, onBeforeUnmount } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// UI component imports
 import { Icon, Tooltip, Grid, Input, Select, NoData } from '@xcan-angus/vue-ui';
+
+// Local component imports
 import BaseVirtualList from './BaseVirtualList.vue';
+
+// Third-party library imports
 import { debounce } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
-import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-interface API {
+/**
+ * API test item interface for service test APIs
+ */
+interface ApiTestItem {
   apisName: string;
   caseId: string;
-  passed: boolean; // 是否通过测试
+  passed: boolean; // Whether the test passed
   enabled?: boolean;
   caseName?: string;
   caseType?: {
-    value: string
-  }
+    value: string;
+  };
+  summary?: string;
+  tested?: boolean;
+  failed?: boolean;
+  enabledTest?: boolean;
+  id?: string;
+  funcTestPassed?: boolean;
+  perfTestPassed?: boolean;
+  stabilityTestPassed?: boolean;
+  funcTestFailureMessage?: string;
+  perfTestFailureMessage?: string;
+  stabilityTestFailureMessage?: string;
+  result?: any;
 }
 
+/**
+ * Enabled test API IDs configuration interface
+ */
+interface EnabledTestApiIds {
+  FUNCTIONAL: string[];
+  PERFORMANCE: string[];
+  STABILITY: string[];
+}
+
+/**
+ * Component props interface for service test APIs
+ */
 interface Props {
-  dataSource: API[];
-  enabledTestApiIds: {
-    FUNCTIONAL: string[];
-    PERFORMANCE: string[];
-    STABILITY: string[];
-  }
+  dataSource: ApiTestItem[];
+  enabledTestApiIds: EnabledTestApiIds;
 }
-const erd = elementResizeDetector({ strategy: 'scroll' });
+// Element resize detector for responsive list
+const elementResizeDetectorInstance = elementResizeDetector({ strategy: 'scroll' });
 
-const columns = [
+// Test result tooltip table configuration
+const testResultTooltipTableColumns = [
   [
     { dataIndex: 'funcTestPassed', label: t('xcan_httpTestInfo.functionalTest') },
     { dataIndex: 'perfTestPassed', label: t('xcan_httpTestInfo.performanceTest') },
@@ -37,7 +69,8 @@ const columns = [
   ]
 ];
 
-const statusOptions = [
+// Test status filter options
+const testStatusFilterOptions = [
   {
     label: t('xcan_httpTestInfo.passed'),
     value: 'passed'
@@ -52,10 +85,9 @@ const statusOptions = [
   }
 ];
 
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
-  dataSource: () => ([
-    // { apisName: '12432342354235asdf阿萨德', caseId: '1123', passed: false }
-  ]),
+  dataSource: () => ([]),
   enabledTestApiIds: () => ({
     FUNCTIONAL: [],
     PERFORMANCE: [],
@@ -63,54 +95,77 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
-const CaseTypeIconConfig = {
+// Case type icon configuration mapping
+const caseTypeIconMapping = {
   SMOKE: 'icon-maoyanceshi',
   SECURITY: 'icon-anquanceshi',
   USER_DEFINED: 'icon-zidingyiceshi'
 };
 
-const showData = ref([]);
-const keywords = ref();
-const statusCode = ref();
-const listWrapRef = ref();
-const listHeight = ref(100);
+// Component state management
+const filteredApiTestData = ref<ApiTestItem[]>([]);
+const searchKeywords = ref<string>();
+const selectedTestStatus = ref<string>();
+const virtualListContainerRef = ref();
+const virtualListHeight = ref(100);
 
-const resizeHeight = () => {
-  listHeight.value = listWrapRef.value.clientHeight;
-  console.log(listHeight.value);
+/**
+ * Update virtual list height when container size changes
+ */
+const handleListHeightResize = () => {
+  virtualListHeight.value = virtualListContainerRef.value.clientHeight;
+  console.log(virtualListHeight.value);
 };
 
-const keywordsChange = debounce(500, () => {
-  getShowData();
+/**
+ * Debounced search handler for keyword changes
+ */
+const handleSearchKeywordsChange = debounce(500, () => {
+  applyDataFilters();
 });
 
-const getShowData = () => {
-  showData.value = props.dataSource;
-  if (keywords.value) {
-    showData.value = showData.value.filter(i => i.summary.includes(keywords.value));
+/**
+ * Apply search and status filters to the data source
+ */
+const applyDataFilters = () => {
+  filteredApiTestData.value = props.dataSource;
+  
+  if (searchKeywords.value) {
+    filteredApiTestData.value = filteredApiTestData.value.filter(item => 
+      item.summary?.includes(searchKeywords.value!)
+    );
   }
-  if (statusCode.value) {
-    if (statusCode.value === 'passed') {
-      showData.value = showData.value.filter(i => i.passed === true);
-    } else if (statusCode.value === 'unpassed') {
-      showData.value = showData.value.filter(i => i.tested === true && i.failed === true);
+  
+  if (selectedTestStatus.value) {
+    if (selectedTestStatus.value === 'passed') {
+      filteredApiTestData.value = filteredApiTestData.value.filter(item => item.passed === true);
+    } else if (selectedTestStatus.value === 'unpassed') {
+      filteredApiTestData.value = filteredApiTestData.value.filter(item => 
+        item.tested === true && item.failed === true
+      );
     } else {
-      showData.value = showData.value.filter(i => i.tested === false);
+      filteredApiTestData.value = filteredApiTestData.value.filter(item => item.tested === false);
     }
   }
 };
 
+/**
+ * Initialize component and set up watchers and resize listeners
+ */
 onMounted(() => {
   watch(() => props.dataSource, () => {
-    getShowData();
+    applyDataFilters();
   }, {
     immediate: true
   });
-  erd.listenTo(listWrapRef.value, resizeHeight);
+  elementResizeDetectorInstance.listenTo(virtualListContainerRef.value, handleListHeightResize);
 });
 
+/**
+ * Clean up resize listeners when component unmounts
+ */
 onBeforeUnmount(() => {
-  erd.removeListener(listWrapRef.value, resizeHeight);
+  elementResizeDetectorInstance.removeListener(virtualListContainerRef.value, handleListHeightResize);
 });
 
 </script>
@@ -118,24 +173,24 @@ onBeforeUnmount(() => {
   <div class="text-3 space-y-1 min-h-0 flex flex-col">
     <div class="flex space-x-2">
       <Input
-        v-model:value="keywords"
+        v-model:value="searchKeywords"
         class="w-1/2"
         :allowClear="true"
         :placeholder="t('xcan_httpTestInfo.searchName')"
-        @change="keywordsChange" />
+        @change="handleSearchKeywordsChange" />
       <Select
-        v-model:value="statusCode"
+        v-model:value="selectedTestStatus"
         class="w-1/2"
         :placeholder="t('xcan_httpTestInfo.selectStatus')"
         :allowClear="true"
-        :options="statusOptions"
-        @change="getShowData" />
+        :options="testStatusFilterOptions"
+        @change="applyDataFilters" />
     </div>
-    <div ref="listWrapRef" class="flex-1 min-h-50">
+    <div ref="virtualListContainerRef" class="flex-1 min-h-50">
       <BaseVirtualList
-        v-show="showData.length"
-        :data="showData"
-        :height="listHeight"
+        v-show="filteredApiTestData.length"
+        :data="filteredApiTestData"
+        :height="virtualListHeight"
         :itemHeight="32"
         :showNum="30"
         :cache="10">
@@ -148,7 +203,7 @@ onBeforeUnmount(() => {
                 <div class="max-h-100 overflow-y-auto">
                   <Grid
                     :dataSource="item.result || item"
-                    :columns="columns">
+                    :columns="testResultTooltipTableColumns">
                     <template #funcTestPassed>
                       <template v-if="item.funcTestPassed === true">
                         <span class="text-status-success">{{ t('status.passed') }}</span>
@@ -186,7 +241,7 @@ onBeforeUnmount(() => {
                 </div>
               </template>
               <div class="px-1 flex h-6 items-center">
-                <Icon :icon="CaseTypeIconConfig[item.caseType?.value] || 'icon-jiekouyongli2'" class="mr-1 text-4" />
+                <Icon :icon="caseTypeIconMapping[item.caseType?.value] || 'icon-jiekouyongli2'" class="mr-1 text-4" />
                 <span class="min-w-0 truncate flex-1" :title="item.apisName || item.caseName || item.summary">{{ item.apisName || item.caseName || item.summary }}</span>
                 <span
                   v-if="!item.enabledTest"
@@ -212,7 +267,7 @@ onBeforeUnmount(() => {
           </div>
         </template>
       </BaseVirtualList>
-      <NoData v-show="!showData.length" size="small" />
+      <NoData v-show="!filteredApiTestData.length" size="small" />
     </div>
   </div>
 </template>

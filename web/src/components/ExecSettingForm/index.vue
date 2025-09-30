@@ -49,7 +49,7 @@ const chartData = reactive({
 });
 
 // Configuration state
-const configurationtends = ref();
+const configurationTends = ref();
 const pluginType = ref();
 const pluginSettingExtends = ref();
 const configVariables = ref([]);
@@ -57,8 +57,8 @@ const configVariables = ref([]);
 /**
  * Update chart data based on execution parameters
  */
-const setEchartsData = () => {
-  const { duration, thread } = executParams.value; // durationUnit
+const updateChartData = () => {
+  const { duration, thread } = executionParams.value; // durationUnit
   // const durationOfSec = durationUnit.value === 's'
   //   ? +duration
   //   : durationUnit.value === 'min'
@@ -70,7 +70,7 @@ const setEchartsData = () => {
   if (!duration || !thread) {
     return;
   }
-  if (supercharged.value && stressReliever.value) {
+  if (isRampUpEnabled.value && isRampDownEnabled.value) {
     const { threads, rampUpInterval, rampUpThreads, rampDownInterval, rampDownThreads } = thread;
     if (!rampUpInterval || !rampUpThreads || !rampDownInterval || !rampDownThreads) {
       return;
@@ -146,7 +146,7 @@ const setEchartsData = () => {
     }
   }
 
-  if (supercharged.value && !stressReliever.value) {
+  if (isRampUpEnabled.value && !isRampDownEnabled.value) {
     const { threads, rampUpInterval, rampUpThreads } = thread;
     if (!rampUpInterval || !rampUpThreads) {
       return;
@@ -176,7 +176,7 @@ const setEchartsData = () => {
     chartData.yData = yData;
   }
 
-  if (!supercharged.value && stressReliever.value) {
+  if (!isRampUpEnabled.value && isRampDownEnabled.value) {
     const { threads, rampDownInterval, rampDownThreads } = thread;
     if (!rampDownInterval || !rampDownThreads) {
       return;
@@ -214,7 +214,7 @@ const setEchartsData = () => {
     chartData.xData = xData;
     chartData.yData = yData;
   }
-  if (!supercharged.value && !stressReliever.value) {
+  if (!isRampUpEnabled.value && !isRampDownEnabled.value) {
     const { threads } = thread;
     const startTime = 0;
     const endTime = durationOfSec;
@@ -230,135 +230,135 @@ const setEchartsData = () => {
 /**
  * Initialize execution parameters from script info
  */
-const initParams = () => {
+const initializeExecutionParameters = () => {
   if (!props.scriptInfo) {
     return;
   }
 
-  configurationtends.value = {};
+  configurationTends.value = {};
   pluginSettingExtends.value = undefined;
   const { configuration, plugin, task, type } = props.scriptInfo;
   pluginType.value = plugin;
   if (configuration) {
     const { duration, thread, iterations, startMode, startAtDate, priority, reportInterval, lang, startupTimeout, runnerSetupTimeout, shutdownTimeout, onError, nodeSelectors, variables, ...configOhters } = configuration;
     if (configOhters) {
-      configurationtends.value = configOhters;
+      configurationTends.value = configOhters;
     }
 
     if (props.scriptType === type) {
       if (duration) {
         const strs = splitTime(duration);
-        executParams.value.duration = strs[0];
+        executionParams.value.duration = strs[0];
         durationUnit.value = strs[1];
       }
 
       if (iterations) {
-        executParams.value.iterations = iterations || '';
+        executionParams.value.iterations = iterations || '';
       }
 
       if (thread) {
         const { threads, rampUpInterval, rampUpThreads, rampDownInterval, rampDownThreads, resetAfterRamp } = thread;
         if (threads) {
-          executParams.value.thread.threads = threads;
+          executionParams.value.thread.threads = threads;
         }
 
         if (rampUpInterval && rampUpThreads) {
-          supercharged.value = true;
-          executParams.value.thread.rampUpInterval = rampUpInterval.match(/\d+/)[0];
-          executParams.value.thread.rampUpThreads = rampUpThreads;
+          isRampUpEnabled.value = true;
+          executionParams.value.thread.rampUpInterval = rampUpInterval.match(/\d+/)[0];
+          executionParams.value.thread.rampUpThreads = rampUpThreads;
         } else {
-          supercharged.value = false;
+          isRampUpEnabled.value = false;
         }
 
         if (rampDownInterval && rampDownThreads) {
-          stressReliever.value = true;
-          executParams.value.thread.rampDownInterval = rampDownInterval.match(/\d+/)[0];
-          executParams.value.thread.rampDownThreads = rampDownThreads;
+          isRampDownEnabled.value = true;
+          executionParams.value.thread.rampDownInterval = rampDownInterval.match(/\d+/)[0];
+          executionParams.value.thread.rampDownThreads = rampDownThreads;
         } else {
-          stressReliever.value = false;
+          isRampDownEnabled.value = false;
         }
 
-        executParams.value.thread.resetAfterRamp = typeof resetAfterRamp === 'boolean' ? [resetAfterRamp] : [];
+        executionParams.value.thread.resetAfterRamp = typeof resetAfterRamp === 'boolean' ? [resetAfterRamp] : [];
       }
     } else {
       if (props.scriptType !== type && props.scriptType === 'TEST_FUNCTIONALITY') {
-        executParams.value.thread.threads = '1';
-        executParams.value.iterations = '1';
+        executionParams.value.thread.threads = '1';
+        executionParams.value.iterations = '1';
       }
 
       if (props.scriptType !== type && props.scriptType === 'TEST_PERFORMANCE') {
-        executParams.value.thread.threads = '5000';
-        executParams.value.thread.rampUpInterval = '1';
-        executParams.value.thread.rampUpThreads = '100';
-        executParams.value.thread.resetAfterRamp = [];
-        executParams.value.duration = '50';
+        executionParams.value.thread.threads = '5000';
+        executionParams.value.thread.rampUpInterval = '1';
+        executionParams.value.thread.rampUpThreads = '100';
+        executionParams.value.thread.resetAfterRamp = [];
+        executionParams.value.duration = '50';
         durationUnit.value = 'min';
-        supercharged.value = true;
+        isRampUpEnabled.value = true;
       }
 
       if (props.scriptType !== type && props.scriptType === 'TEST_STABILITY') {
-        executParams.value.thread.threads = '200';
-        executParams.value.duration = '30';
+        executionParams.value.thread.threads = '200';
+        executionParams.value.duration = '30';
         durationUnit.value = 'min';
       }
     }
 
-    globalParams.value.startMode = startMode?.value || undefined;
-    globalParams.value.startAtDate = startAtDate || undefined;
-    globalParams.value.priority = priority || '';
+    globalSettingsParams.value.startMode = startMode?.value || undefined;
+    globalSettingsParams.value.startAtDate = startAtDate || undefined;
+    globalSettingsParams.value.priority = priority || '';
     if (reportInterval) {
       const strs = splitTime(reportInterval);
-      globalParams.value.reportInterval = strs[0];
+      globalSettingsParams.value.reportInterval = strs[0];
       reportIntervalUnit.value = strs[1];
     }
-    globalParams.value.lang = lang || undefined;
+    globalSettingsParams.value.lang = lang || undefined;
     if (shutdownTimeout) {
       const strs = splitTime(shutdownTimeout);
-      globalParams.value.shutdownTimeout = strs[0];
+      globalSettingsParams.value.shutdownTimeout = strs[0];
       shutdownTimeoutUnit.value = strs[1];
     }
 
     if (startupTimeout) {
       const strs = splitTime(startupTimeout);
-      globalParams.value.startupTimeout = strs[0];
+      globalSettingsParams.value.startupTimeout = strs[0];
       startupTimeoutUnit.value = strs[1];
     }
 
     if (runnerSetupTimeout) {
       const strs = splitTime(runnerSetupTimeout);
-      globalParams.value.runnerSetupTimeout = strs[0];
+      globalSettingsParams.value.runnerSetupTimeout = strs[0];
       runnerSetupTimeoutUnit.value = strs[1];
     }
 
     if (onError) {
       const { action, sampleError, sampleErrorNum } = onError;
-      globalParams.value.onError.action = action?.value || undefined;
-      globalParams.value.onError.sampleError = typeof sampleError === 'boolean' ? sampleError : true;
-      globalParams.value.onError.sampleErrorNum = globalParams.value.onError.sampleError ? sampleErrorNum || '20' : '';
+      globalSettingsParams.value.onError.action = action?.value || undefined;
+      globalSettingsParams.value.onError.sampleError = typeof sampleError === 'boolean' ? sampleError : true;
+      globalSettingsParams.value.onError.sampleErrorNum = globalSettingsParams.value.onError.sampleError ? sampleErrorNum || '20' : '';
     }
 
     if (nodeSelectors) {
       const { num, strategy, availableNodeIds, appNodeIds } = nodeSelectors;
-      globalParams.value.nodeSelectors.num = num || '';
-      globalParams.value.nodeSelectors.availableNodeIds = availableNodeIds?.length ? availableNodeIds : [];
-      globalParams.value.nodeSelectors.appNodeIds = appNodeIds?.length ? appNodeIds : [];
+      globalSettingsParams.value.nodeSelectors.num = num || '';
+      globalSettingsParams.value.nodeSelectors.availableNodeIds = availableNodeIds?.length ? availableNodeIds : [];
+      globalSettingsParams.value.nodeSelectors.appNodeIds = appNodeIds?.length ? appNodeIds : [];
       if (strategy) {
         const { enabled, maxTaskNum, lastExecuted, specEnabled, cpuSpec, memorySpec, diskSpec, idleRateEnabled, cpuIdleRate, memoryIdleRate, diskIdleRate } = strategy;
-        globalParams.value.nodeSelectors.enabled = !!enabled;
+        globalSettingsParams.value.nodeSelectors.enabled = !!enabled;
         if (enabled) {
-          globalParams.value.nodeSelectors.maxTaskNum = maxTaskNum || '';
-          globalParams.value.nodeSelectors.lastExecuted = !!lastExecuted;
-          globalParams.value.nodeSelectors.idleRateEnabled = !!idleRateEnabled;
-          globalParams.value.nodeSelectors.specEnabled = !!specEnabled;
+          globalSettingsParams.value.nodeSelectors.maxTaskNum = maxTaskNum || '';
+          globalSettingsParams.value.nodeSelectors.lastExecuted = !!lastExecuted;
+          globalSettingsParams.value.nodeSelectors.idleRateEnabled = !!idleRateEnabled;
+          globalSettingsParams.value.nodeSelectors.specEnabled = !!specEnabled;
           if (specEnabled) {
-            globalParams.value.nodeSelectors.cpuSpec = cpuSpec || '';
-            globalParams.value.nodeSelectors.memorySpec = memorySpec ? memorySpec.replace(/GB/g, '') : '';
-            globalParams.value.nodeSelectors.diskSpec = diskSpec ? diskSpec.replace(/GB/g, '') : '';
+            globalSettingsParams.value.nodeSelectors.cpuSpec = cpuSpec || '';
+            globalSettingsParams.value.nodeSelectors.memorySpec = memorySpec ? memorySpec.replace(/GB/g, '') : '';
+            globalSettingsParams.value.nodeSelectors.diskSpec = diskSpec ? diskSpec.replace(/GB/g, '') : '';
           }
           if (idleRateEnabled) {
-            globalParams.value.nodeSelectors.cpuIdleRate = cpuIdleRate ? cpuIdleRate.replace(/%/g, '') : '';
-            globalParams.value.nodeSelectors.memoryIdleRate = memoryIdleRate ? memoryIdleRate.replace(/%/g, '') : '';
-            globalParams.value.nodeSelectors.diskIdleRate = diskIdleRate ? diskIdleRate.replace(/%/g, '') : '';
+            globalSettingsParams.value.nodeSelectors.cpuIdleRate = cpuIdleRate ? cpuIdleRate.replace(/%/g, '') : '';
+            globalSettingsParams.value.nodeSelectors.memoryIdleRate = memoryIdleRate ? memoryIdleRate.replace(/%/g, '') : '';
+            globalSettingsParams.value.nodeSelectors.diskIdleRate = diskIdleRate ? diskIdleRate.replace(/%/g, '') : '';
           }
         }
       }
@@ -369,25 +369,25 @@ const initParams = () => {
     }
   } else {
     if (props.scriptType !== type && props.scriptType === 'TEST_FUNCTIONALITY') {
-      executParams.value.thread.threads = '1';
-      executParams.value.iterations = '1';
+      executionParams.value.thread.threads = '1';
+      executionParams.value.iterations = '1';
     } else {
-      executParams.value.iterations = '';
+      executionParams.value.iterations = '';
     }
 
     if (props.scriptType !== type && props.scriptType === 'TEST_PERFORMANCE') {
-      executParams.value.thread.threads = '5000';
-      executParams.value.thread.rampUpInterval = '1';
-      executParams.value.thread.rampUpThreads = '100';
-      executParams.value.thread.resetAfterRamp = [];
-      executParams.value.duration = '50';
+      executionParams.value.thread.threads = '5000';
+      executionParams.value.thread.rampUpInterval = '1';
+      executionParams.value.thread.rampUpThreads = '100';
+      executionParams.value.thread.resetAfterRamp = [];
+      executionParams.value.duration = '50';
       durationUnit.value = 'min';
-      supercharged.value = true;
+      isRampUpEnabled.value = true;
     }
 
     if (props.scriptType !== type && props.scriptType === 'TEST_STABILITY') {
-      executParams.value.thread.threads = '200';
-      executParams.value.duration = '30';
+      executionParams.value.thread.threads = '200';
+      executionParams.value.duration = '30';
       durationUnit.value = 'min';
     }
   }
@@ -397,25 +397,25 @@ const initParams = () => {
       const { arguments: ar } = task;
       if (ar) {
         const { httpSetting, ignoreAssertions, updateTestResult, ...others } = ar;
-        httpArgumentsParams.value.ignoreAssertions = typeof ignoreAssertions === 'boolean' ? ignoreAssertions : props.scriptType !== 'TEST_FUNCTIONALITY';
-        httpArgumentsParams.value.updateTestResult = !!updateTestResult;
+        httpSettingsParams.value.ignoreAssertions = typeof ignoreAssertions === 'boolean' ? ignoreAssertions : props.scriptType !== 'TEST_FUNCTIONALITY';
+        httpSettingsParams.value.updateTestResult = !!updateTestResult;
 
         if (httpSetting) {
           const { connectTimeout, readTimeout, retryNum, maxRedirects, ...settingOthers } = httpSetting;
           if (connectTimeout) {
             const strs = splitTime(connectTimeout);
-            httpArgumentsParams.value.httpSetting.connectTimeout = strs[0];
+            httpSettingsParams.value.httpSetting.connectTimeout = strs[0];
             httpSettingReadTimeoutUnit.value = strs[1];
           }
 
           if (readTimeout) {
             const strs = splitTime(readTimeout);
-            httpArgumentsParams.value.httpSetting.readTimeout = strs[0];
+            httpSettingsParams.value.httpSetting.readTimeout = strs[0];
             httpSettingReadTimeoutUnit.value = strs[1];
           }
 
-          httpArgumentsParams.value.httpSetting.retryNum = retryNum || '';
-          httpArgumentsParams.value.httpSetting.maxRedirects = maxRedirects || '';
+          httpSettingsParams.value.httpSetting.retryNum = retryNum || '';
+          httpSettingsParams.value.httpSetting.maxRedirects = maxRedirects || '';
           // 保存setting的扩展属性 保存需要带回去
           pluginSettingExtends.value = settingOthers;
         }
@@ -443,30 +443,30 @@ const initParams = () => {
       const { arguments: ar } = task;
       if (ar) {
         const { webSocketSetting, ignoreAssertions, updateTestResult, ...others } = ar;
-        webSocketArgumentsParams.value.ignoreAssertions = typeof ignoreAssertions === 'boolean' ? ignoreAssertions : props.scriptType !== 'TEST_FUNCTIONALITY';
-        webSocketArgumentsParams.value.updateTestResult = !!updateTestResult;
+        webSocketSettingsParams.value.ignoreAssertions = typeof ignoreAssertions === 'boolean' ? ignoreAssertions : props.scriptType !== 'TEST_FUNCTIONALITY';
+        webSocketSettingsParams.value.updateTestResult = !!updateTestResult;
 
         if (webSocketSetting) {
           const { connectTimeout, responseTimeout, reconnectionInterval, maxReconnections, ...settingOthers } = webSocketSetting;
           if (connectTimeout) {
             const strs = splitTime(connectTimeout);
-            webSocketArgumentsParams.value.webSocketSetting.connectTimeout = strs[0];
+            webSocketSettingsParams.value.webSocketSetting.connectTimeout = strs[0];
             webSocketSettingConnectTimeoutUnit.value = strs[1];
           }
 
           if (responseTimeout) {
             const strs = splitTime(responseTimeout);
-            webSocketArgumentsParams.value.webSocketSetting.responseTimeout = strs[0];
+            webSocketSettingsParams.value.webSocketSetting.responseTimeout = strs[0];
             webSocketSettingResponseTimeoutUnit.value = strs[1];
           }
 
           if (reconnectionInterval) {
             const strs = splitTime(reconnectionInterval);
-            webSocketArgumentsParams.value.webSocketSetting.reconnectionInterval = strs[0];
+            webSocketSettingsParams.value.webSocketSetting.reconnectionInterval = strs[0];
             reconnectionIntervalUnit.value = strs[1];
           }
 
-          webSocketArgumentsParams.value.webSocketSetting.maxReconnections = maxReconnections || '';
+          webSocketSettingsParams.value.webSocketSetting.maxReconnections = maxReconnections || '';
 
           // 保存setting的扩展属性 保存需要带回去
           pluginSettingExtends.value = settingOthers;
@@ -495,25 +495,25 @@ const initParams = () => {
       const { arguments: ar } = task;
       if (ar) {
         const { jdbcSetting, ignoreAssertions, updateTestResult, ...others } = ar;
-        jdbcArgumentsParams.value.ignoreAssertions = typeof ignoreAssertions === 'boolean' ? ignoreAssertions : props.scriptType !== 'TEST_FUNCTIONALITY';
-        jdbcArgumentsParams.value.updateTestResult = !!updateTestResult;
+        jdbcSettingsParams.value.ignoreAssertions = typeof ignoreAssertions === 'boolean' ? ignoreAssertions : props.scriptType !== 'TEST_FUNCTIONALITY';
+        jdbcSettingsParams.value.updateTestResult = !!updateTestResult;
 
         if (jdbcSetting) {
           const { type, driverClassName, isolation, jdbcUrl, username, password, pool, ...settingOthers } = jdbcSetting;
 
-          jdbcArgumentsParams.value.jdbcSetting.type = type;
-          jdbcArgumentsParams.value.jdbcSetting.driverClassName = driverClassName || '';
-          jdbcArgumentsParams.value.jdbcSetting.jdbcUrl = jdbcUrl || '';
-          jdbcArgumentsParams.value.jdbcSetting.isolation = isolation;
-          jdbcArgumentsParams.value.jdbcSetting.username = username || '';
-          jdbcArgumentsParams.value.jdbcSetting.password = password || '';
+          jdbcSettingsParams.value.jdbcSetting.type = type;
+          jdbcSettingsParams.value.jdbcSetting.driverClassName = driverClassName || '';
+          jdbcSettingsParams.value.jdbcSetting.jdbcUrl = jdbcUrl || '';
+          jdbcSettingsParams.value.jdbcSetting.isolation = isolation;
+          jdbcSettingsParams.value.jdbcSetting.username = username || '';
+          jdbcSettingsParams.value.jdbcSetting.password = password || '';
           if (pool) {
             isOpenPool.value = true;
             const { name, maximumPoolSize, minimumIdle, maxWaitTimeoutMillis } = pool;
-            jdbcArgumentsParams.value.pool.name = name;
-            jdbcArgumentsParams.value.pool.maximumPoolSize = maximumPoolSize || '';
-            jdbcArgumentsParams.value.pool.maxWaitTimeoutMillis = maxWaitTimeoutMillis || '';
-            jdbcArgumentsParams.value.pool.minimumIdle = minimumIdle || '';
+            jdbcSettingsParams.value.pool.name = name;
+            jdbcSettingsParams.value.pool.maximumPoolSize = maximumPoolSize || '';
+            jdbcSettingsParams.value.pool.maxWaitTimeoutMillis = maxWaitTimeoutMillis || '';
+            jdbcSettingsParams.value.pool.minimumIdle = minimumIdle || '';
           } else {
             isOpenPool.value = false;
           }
@@ -543,12 +543,12 @@ const initParams = () => {
 // Component lifecycle and watchers
 watch(() => props.scriptType, () => {
   resetParam();
-  initParams();
+  initializeExecutionParameters();
 });
 
 // Execution parameters state
-const executFormRef = ref();
-const executParams = ref({
+const executionFormRef = ref();
+const executionParams = ref({
   iterations: '', // 迭代次数
   duration: '', // 执行时长
   thread: {
@@ -564,13 +564,13 @@ const executParams = ref({
 /**
  * Handle threads input blur event
  */
-const threadsBlur = (e) => {
-  executParams.value.thread.threads = e.target.value;
-  if (+executParams.value.thread.rampUpThreads > e.target.value) {
-    executParams.value.thread.rampUpThreads = '';
+const handleThreadsInputBlur = (e) => {
+  executionParams.value.thread.threads = e.target.value;
+  if (+executionParams.value.thread.rampUpThreads > e.target.value) {
+    executionParams.value.thread.rampUpThreads = '';
   }
-  if (+executParams.value.thread.rampUpThreads > e.target.value) {
-    executParams.value.thread.rampUpThreads = '';
+  if (+executionParams.value.thread.rampUpThreads > e.target.value) {
+    executionParams.value.thread.rampUpThreads = '';
   }
   setExecParamErrNum();
 };
@@ -578,37 +578,37 @@ const threadsBlur = (e) => {
 /**
  * Handle iterations input blur event
  */
-const iterationsBlur = (e) => {
-  executParams.value.iterations = e.target.value;
+const handleIterationsInputBlur = (e) => {
+  executionParams.value.iterations = e.target.value;
   setExecParamErrNum();
 };
 
 /**
  * Handle ramp up interval input blur event
  */
-const rampUpIntervalBlur = (e) => {
-  executParams.value.thread.rampUpInterval = e.target.value;
+const handleRampUpIntervalInputBlur = (e) => {
+  executionParams.value.thread.rampUpInterval = e.target.value;
   setExecParamErrNum();
 };
 /**
  * Handle ramp up threads input blur event
  */
-const rampUpThreadsBlur = (e) => {
-  executParams.value.thread.rampUpThreads = e.target.value;
+const handleRampUpThreadsInputBlur = (e) => {
+  executionParams.value.thread.rampUpThreads = e.target.value;
   setExecParamErrNum();
 };
 /**
  * Handle ramp down interval input blur event
  */
-const rampDownIntervalBlur = (e) => {
-  executParams.value.thread.rampDownInterval = e.target.value;
+const handleRampDownIntervalInputBlur = (e) => {
+  executionParams.value.thread.rampDownInterval = e.target.value;
   setExecParamErrNum();
 };
 /**
  * Handle ramp down threads input blur event
  */
-const rampDownThreadsBlur = (e) => {
-  executParams.value.thread.rampDownThreads = e.target.value;
+const handleRampDownThreadsInputBlur = (e) => {
+  executionParams.value.thread.rampDownThreads = e.target.value;
   setExecParamErrNum();
 };
 
@@ -616,14 +616,14 @@ const durationUnit = ref('s');
 /**
  * Handle duration input blur event
  */
-const durationBlur = (value) => {
+const handleDurationInputBlur = (value) => {
   const strs = splitTime(value);
-  executParams.value.duration = strs[0];
-  if (+executParams.value.thread.rampUpInterval > +strs[0]) {
-    executParams.value.thread.rampUpInterval = '';
+  executionParams.value.duration = strs[0];
+  if (+executionParams.value.thread.rampUpInterval > +strs[0]) {
+    executionParams.value.thread.rampUpInterval = '';
   }
-  if (+executParams.value.thread.rampDownInterval > +strs[0]) {
-    executParams.value.thread.rampDownInterval = '';
+  if (+executionParams.value.thread.rampDownInterval > +strs[0]) {
+    executionParams.value.thread.rampDownInterval = '';
   }
   setExecParamErrNum();
 };
@@ -631,7 +631,7 @@ const durationBlur = (value) => {
 /**
  * Handle duration change event
  */
-const durationChange = (value) => {
+const handleDurationChange = (value) => {
   const strs = splitTime(value);
   durationUnit.value = strs[1];
 };
@@ -655,34 +655,34 @@ const timeUnitMessage = computed(() => {
 });
 
 // Ramp up and ramp down state
-const supercharged = ref(false); // Start with direct pressure by default
-const stressReliever = ref(false); // End with direct pressure by default
+const isRampUpEnabled = ref(false); // Start with direct pressure by default
+const isRampDownEnabled = ref(false); // End with direct pressure by default
 
 /**
  * Handle ramp up enabled change
  */
-const superchargedChange = (value) => {
-  supercharged.value = value;
-  if (!supercharged.value) {
-    executParams.value.thread.rampUpInterval = '';
-    executParams.value.thread.rampUpThreads = '';
+const handleRampUpEnabledChange = (value) => {
+  isRampUpEnabled.value = value;
+  if (!isRampUpEnabled.value) {
+    executionParams.value.thread.rampUpInterval = '';
+    executionParams.value.thread.rampUpThreads = '';
   }
 };
 
 /**
  * Handle ramp down enabled change
  */
-const stressRelieverChange = (value) => {
-  stressReliever.value = value;
-  if (!stressReliever.value) {
-    executParams.value.thread.rampDownInterval = '';
-    executParams.value.thread.rampDownThreads = '';
+const handleRampDownEnabledChange = (value) => {
+  isRampDownEnabled.value = value;
+  if (!isRampDownEnabled.value) {
+    executionParams.value.thread.rampDownInterval = '';
+    executionParams.value.thread.rampDownThreads = '';
   }
 };
 
 // Global settings state
-const globalFormRef = ref();
-const globalParams = ref({
+const globalSettingsFormRef = ref();
+const globalSettingsParams = ref({
   startMode: '',
   startAtDate: '', // 定时执行时间，当 startMode=TIMING时必须
   startupTimeout: '', // 代理启动Runner程序的超时时间，默认为1分钟（1s~7200s）
@@ -719,34 +719,34 @@ const globalParams = ref({
 const shutdownTimeoutUnit = ref('s');
 const shutdownTimeoutChange = (value) => {
   const strs = splitTime(value);
-  globalParams.value.shutdownTimeout = strs[0];
+  globalSettingsParams.value.shutdownTimeout = strs[0];
   shutdownTimeoutUnit.value = strs[1];
 };
 
 const reportIntervalUnit = ref('s');
 const reportIntervalChange = (value) => {
   const strs = splitTime(value);
-  globalParams.value.reportInterval = strs[0];
+  globalSettingsParams.value.reportInterval = strs[0];
   reportIntervalUnit.value = strs[1];
 };
 
 const startupTimeoutUnit = ref('s');
 const startupTimeoutChange = (value) => {
   const strs = splitTime(value);
-  globalParams.value.startupTimeout = strs[0];
+  globalSettingsParams.value.startupTimeout = strs[0];
   startupTimeoutUnit.value = strs[1];
 };
 
 const runnerSetupTimeoutUnit = ref('s');
 const runnerSetupTimeoutChange = (value) => {
   const strs = splitTime(value);
-  globalParams.value.runnerSetupTimeout = strs[0];
+  globalSettingsParams.value.runnerSetupTimeout = strs[0];
   runnerSetupTimeoutUnit.value = strs[1];
 };
 
 // HTTP settings state
-const httpParamsFormRef = ref();
-const httpArgumentsParams = ref({
+const httpSettingsFormRef = ref();
+const httpSettingsParams = ref({
   ignoreAssertions: true,
   updateTestResult: false,
   httpSetting: {
@@ -761,12 +761,12 @@ const httpSettingConnectTimeoutUnit = ref('s');
 const httpSettingReadTimeoutUnit = ref('s');
 const httpConnectTimeoutChange = (value) => {
   const strs = splitTime(value);
-  httpArgumentsParams.value.httpSetting.connectTimeout = strs[0];
+  httpSettingsParams.value.httpSetting.connectTimeout = strs[0];
   httpSettingConnectTimeoutUnit.value = strs[1];
 };
 const httpReadTimeoutChange = (value) => {
   const strs = splitTime(value);
-  httpArgumentsParams.value.httpSetting.readTimeout = strs[0];
+  httpSettingsParams.value.httpSetting.readTimeout = strs[0];
   httpSettingReadTimeoutUnit.value = strs[1];
 };
 
@@ -775,8 +775,8 @@ const extendParams = ref({
 });
 
 // WebSocket settings state
-const webSocketParamsFormRef = ref();
-const webSocketArgumentsParams = ref({
+const webSocketSettingsFormRef = ref();
+const webSocketSettingsParams = ref({
   ignoreAssertions: true,
   updateTestResult: false,
   webSocketSetting: {
@@ -792,23 +792,23 @@ const reconnectionIntervalUnit = ref('ms');
 
 const webSocletConnectTimeoutChange = (value) => {
   const strs = splitTime(value);
-  webSocketArgumentsParams.value.webSocketSetting.connectTimeout = strs[0];
+  webSocketSettingsParams.value.webSocketSetting.connectTimeout = strs[0];
   webSocketSettingConnectTimeoutUnit.value = strs[1];
 };
 const webSocletResponseTimeoutChange = (value) => {
   const strs = splitTime(value);
-  webSocketArgumentsParams.value.webSocketSetting.responseTimeout = strs[0];
+  webSocketSettingsParams.value.webSocketSetting.responseTimeout = strs[0];
   webSocketSettingResponseTimeoutUnit.value = strs[1];
 };
 const webSocletReconnectionIntervalChange = (value) => {
   const strs = splitTime(value);
-  webSocketArgumentsParams.value.webSocketSetting.reconnectionInterval = strs[0];
+  webSocketSettingsParams.value.webSocketSetting.reconnectionInterval = strs[0];
   reconnectionIntervalUnit.value = strs[1];
 };
 
 // JDBC settings state
-const jdbcParamsFormRef = ref();
-const jdbcArgumentsParams = ref({
+const jdbcSettingsFormRef = ref();
+const jdbcSettingsParams = ref({
   ignoreAssertions: true,
   updateTestResult: false,
   jdbcSetting: {
@@ -830,7 +830,7 @@ const jdbcArgumentsParams = ref({
 const maxWaitTimeoutMillisUnit = ref('ms');
 const jdbcMaxWaitTimeoutMillisChange = (value) => {
   const strs = splitTime(value);
-  jdbcArgumentsParams.value.pool.maxWaitTimeoutMillis = strs[0];
+  jdbcSettingsParams.value.pool.maxWaitTimeoutMillis = strs[0];
   maxWaitTimeoutMillisUnit.value = strs[1];
 };
 
@@ -867,13 +867,13 @@ const iterationsValidator = async (_rule: Rule, value: string) => {
       return Promise.resolve();
     }
 
-    if (!executParams.value.duration) {
+    if (!executionParams.value.duration) {
       return Promise.reject(new Error(t('xcan_execSettingForm.enterIterationsOrDuration')));
     } else {
       return Promise.resolve();
     }
   } else {
-    executFormRef.value.clearValidate('duration');
+    executionFormRef.value.clearValidate('duration');
     if (['TEST_FUNCTIONALITY'].includes(props.scriptType)) {
       if (+value < 1 || +value > 10) {
         return Promise.reject(new Error(t('xcan_execSettingForm.functionalTestIterationsRange')));
@@ -933,7 +933,7 @@ const threadsMax = computed(() => {
 
 const durationValidator = async (_rule: Rule, value: string) => {
   if (!value) {
-    if (!executParams.value.iterations) {
+    if (!executionParams.value.iterations) {
       return Promise.reject(new Error(t('xcan_execSettingForm.enterDurationOrIterations')));
     } else {
       return Promise.resolve();
@@ -947,7 +947,7 @@ const durationValidator = async (_rule: Rule, value: string) => {
         return Promise.reject(new Error(t('xcan_execSettingForm.experienceExecutionMaxDuration')));
       }
     }
-    executFormRef.value.clearValidate('iterations');
+    executionFormRef.value.clearValidate('iterations');
     return Promise.resolve();
   }
 };
@@ -983,7 +983,7 @@ const isValid = async () => {
     'websocket-form': {},
     'jdbc-form': {}
   };
-  await executFormRef.value.validate().then(
+  await executionFormRef.value.validate().then(
     () => {
       execParamErrNum.value = 0;
     }
@@ -993,7 +993,7 @@ const isValid = async () => {
       errors['execut-form'] = error;
       valid = false;
     });
-  await globalFormRef.value.validate().then(
+  await globalSettingsFormRef.value.validate().then(
     () => {
       globalParamErrNum.value = 0;
     }
@@ -1004,21 +1004,21 @@ const isValid = async () => {
       valid = false;
     });
   if (pluginType.value === 'Http') {
-    await httpParamsFormRef.value.validate().then().catch(
+    await httpSettingsFormRef.value.validate().then().catch(
       (error) => {
         errors['http-form'] = error;
         valid = false;
       });
   }
   if (pluginType.value === 'WebSocket') {
-    await webSocketParamsFormRef.value.validate().then().catch(
+    await webSocketSettingsFormRef.value.validate().then().catch(
       (error) => {
         errors['websocket-form'] = error;
         valid = false;
       });
   }
   if (pluginType.value === 'Jdbc') {
-    await jdbcParamsFormRef.value.validate(
+    await jdbcSettingsFormRef.value.validate(
       () => {
         jdbcParamErrNum.value = 0;
       }
@@ -1056,29 +1056,29 @@ const getData = () => {
     : [];
 
   let _thread:any = {
-    threads: executParams.value.thread.threads
+    threads: executionParams.value.thread.threads
   };
 
   if (props.scriptType !== 'TEST_FUNCTIONALITY') {
-    if (+executParams.value.thread.rampUpInterval > 0 && executParams.value.thread.rampUpThreads) {
+    if (+executionParams.value.thread.rampUpInterval > 0 && executionParams.value.thread.rampUpThreads) {
       _thread = {
         ..._thread,
-        rampUpInterval: executParams.value.thread.rampUpInterval + durationUnit.value,
-        rampUpThreads: executParams.value.thread.rampUpThreads
+        rampUpInterval: executionParams.value.thread.rampUpInterval + durationUnit.value,
+        rampUpThreads: executionParams.value.thread.rampUpThreads
       };
     }
-    if (+executParams.value.thread.rampDownInterval > 0 && executParams.value.thread.rampDownThreads) {
+    if (+executionParams.value.thread.rampDownInterval > 0 && executionParams.value.thread.rampDownThreads) {
       _thread = {
         ..._thread,
-        rampDownInterval: executParams.value.thread.rampDownInterval + durationUnit.value,
-        rampDownThreads: executParams.value.thread.rampDownThreads
+        rampDownInterval: executionParams.value.thread.rampDownInterval + durationUnit.value,
+        rampDownThreads: executionParams.value.thread.rampDownThreads
       };
     }
 
-    if ((_thread?.rampUpThreads || _thread?.rampDownThreads) && executParams.value.thread.resetAfterRamp?.length) {
+    if ((_thread?.rampUpThreads || _thread?.rampDownThreads) && executionParams.value.thread.resetAfterRamp?.length) {
       _thread = {
         ..._thread,
-        resetAfterRamp: executParams.value.thread.resetAfterRamp[0]
+        resetAfterRamp: executionParams.value.thread.resetAfterRamp[0]
       };
     }
   }
@@ -1090,208 +1090,208 @@ const getData = () => {
     }
   };
 
-  if (+executParams.value.duration > 0 && props.scriptType !== 'TEST_FUNCTIONALITY' && props.scriptType !== 'MOCK_DATA') {
+  if (+executionParams.value.duration > 0 && props.scriptType !== 'TEST_FUNCTIONALITY' && props.scriptType !== 'MOCK_DATA') {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
-        duration: executParams.value.duration + durationUnit.value
+        duration: executionParams.value.duration + durationUnit.value
       }
     };
   }
 
-  if (executParams.value.iterations) {
+  if (executionParams.value.iterations) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
-        iterations: executParams.value.iterations
+        iterations: executionParams.value.iterations
       }
     };
   }
 
-  if (globalParams.value.nodeSelectors.num) {
+  if (globalSettingsParams.value.nodeSelectors.num) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
-        lang: globalParams.value.lang
+        lang: globalSettingsParams.value.lang
       }
     };
   }
 
-  if (globalParams.value.startMode) {
+  if (globalSettingsParams.value.startMode) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
-        startMode: globalParams.value.startMode
+        startMode: globalSettingsParams.value.startMode
       }
     };
 
-    if (globalParams.value.startMode === 'TIMING') {
+    if (globalSettingsParams.value.startMode === 'TIMING') {
       params = {
         ...params,
         configuration: {
           ...params.configuration,
-          startAtDate: globalParams.value.startAtDate
+          startAtDate: globalSettingsParams.value.startAtDate
         }
       };
     }
   }
 
-  if (globalParams.value.lang) {
+  if (globalSettingsParams.value.lang) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
-        lang: globalParams.value.lang
+        lang: globalSettingsParams.value.lang
       }
     };
   }
 
-  if (globalParams.value.priority) {
+  if (globalSettingsParams.value.priority) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
-        priority: globalParams.value.priority
+        priority: globalSettingsParams.value.priority
       }
     };
   }
 
-  if (+globalParams.value.reportInterval > 0) {
+  if (+globalSettingsParams.value.reportInterval > 0) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
-        reportInterval: globalParams.value.reportInterval + reportIntervalUnit.value
+        reportInterval: globalSettingsParams.value.reportInterval + reportIntervalUnit.value
       }
     };
   }
-  if (+globalParams.value.shutdownTimeout > 0) {
+  if (+globalSettingsParams.value.shutdownTimeout > 0) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
-        shutdownTimeout: globalParams.value.shutdownTimeout + shutdownTimeoutUnit.value
+        shutdownTimeout: globalSettingsParams.value.shutdownTimeout + shutdownTimeoutUnit.value
       }
     };
   }
-  if (+globalParams.value.startupTimeout > 0) {
+  if (+globalSettingsParams.value.startupTimeout > 0) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
-        startupTimeout: globalParams.value.startupTimeout + startupTimeoutUnit.value
+        startupTimeout: globalSettingsParams.value.startupTimeout + startupTimeoutUnit.value
       }
     };
   }
-  if (+globalParams.value.runnerSetupTimeout > 0) {
+  if (+globalSettingsParams.value.runnerSetupTimeout > 0) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
-        runnerSetupTimeout: globalParams.value.runnerSetupTimeout + runnerSetupTimeoutUnit.value
+        runnerSetupTimeout: globalSettingsParams.value.runnerSetupTimeout + runnerSetupTimeoutUnit.value
       }
     };
   }
 
-  if (globalParams.value.nodeSelectors.num) {
+  if (globalSettingsParams.value.nodeSelectors.num) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
         nodeSelectors: {
           ...params.configuration.nodeSelectors,
-          num: globalParams.value.nodeSelectors.num
+          num: globalSettingsParams.value.nodeSelectors.num
         }
       }
     };
   }
 
-  if (globalParams.value.nodeSelectors.availableNodeIds?.length) {
+  if (globalSettingsParams.value.nodeSelectors.availableNodeIds?.length) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
         nodeSelectors: {
           ...params.configuration.nodeSelectors,
-          availableNodeIds: globalParams.value.nodeSelectors.availableNodeIds
+          availableNodeIds: globalSettingsParams.value.nodeSelectors.availableNodeIds
         }
       }
     };
   }
 
-  if (globalParams.value.nodeSelectors.appNodeIds?.length) {
+  if (globalSettingsParams.value.nodeSelectors.appNodeIds?.length) {
     params = {
       ...params,
       configuration: {
         ...params.configuration,
         nodeSelectors: {
           ...params.configuration.nodeSelectors,
-          appNodeIds: globalParams.value.nodeSelectors.appNodeIds
+          appNodeIds: globalSettingsParams.value.nodeSelectors.appNodeIds
         }
       }
     };
   }
 
-  const _enabled = globalParams.value.nodeSelectors.enabled;
+  const _enabled = globalSettingsParams.value.nodeSelectors.enabled;
   let _strategy:any = null;
 
   if (_enabled) {
     _strategy = {
       ..._strategy,
-      idleRateEnabled: globalParams.value.nodeSelectors.idleRateEnabled,
-      lastExecuted: globalParams.value.nodeSelectors.lastExecuted,
-      specEnabled: globalParams.value.nodeSelectors.specEnabled
+      idleRateEnabled: globalSettingsParams.value.nodeSelectors.idleRateEnabled,
+      lastExecuted: globalSettingsParams.value.nodeSelectors.lastExecuted,
+      specEnabled: globalSettingsParams.value.nodeSelectors.specEnabled
     };
 
-    if (globalParams.value.nodeSelectors.maxTaskNum) {
+    if (globalSettingsParams.value.nodeSelectors.maxTaskNum) {
       _strategy = {
         ..._strategy,
-        maxTaskNum: globalParams.value.nodeSelectors.maxTaskNum
+        maxTaskNum: globalSettingsParams.value.nodeSelectors.maxTaskNum
       };
     }
 
     if (_strategy.idleRateEnabled) {
-      if (globalParams.value.nodeSelectors.cpuIdleRate) {
+      if (globalSettingsParams.value.nodeSelectors.cpuIdleRate) {
         _strategy = {
           ..._strategy,
-          cpuIdleRate: globalParams.value.nodeSelectors.cpuIdleRate
+          cpuIdleRate: globalSettingsParams.value.nodeSelectors.cpuIdleRate
         };
       }
-      if (globalParams.value.nodeSelectors.diskIdleRate) {
+      if (globalSettingsParams.value.nodeSelectors.diskIdleRate) {
         _strategy = {
           ..._strategy,
-          diskIdleRate: globalParams.value.nodeSelectors.diskIdleRate
+          diskIdleRate: globalSettingsParams.value.nodeSelectors.diskIdleRate
         };
       }
-      if (globalParams.value.nodeSelectors.memoryIdleRate) {
+      if (globalSettingsParams.value.nodeSelectors.memoryIdleRate) {
         _strategy = {
           ..._strategy,
-          memoryIdleRate: globalParams.value.nodeSelectors.memoryIdleRate
+          memoryIdleRate: globalSettingsParams.value.nodeSelectors.memoryIdleRate
         };
       }
     }
 
     if (_strategy.specEnabled) {
-      if (globalParams.value.nodeSelectors.cpuSpec) {
+      if (globalSettingsParams.value.nodeSelectors.cpuSpec) {
         _strategy = {
           ..._strategy,
-          cpuSpec: globalParams.value.nodeSelectors.cpuSpec
+          cpuSpec: globalSettingsParams.value.nodeSelectors.cpuSpec
         };
       }
-      if (globalParams.value.nodeSelectors.diskSpec) {
+      if (globalSettingsParams.value.nodeSelectors.diskSpec) {
         _strategy = {
           ..._strategy,
-          diskSpec: globalParams.value.nodeSelectors.diskSpec
+          diskSpec: globalSettingsParams.value.nodeSelectors.diskSpec
         };
       }
-      if (globalParams.value.nodeSelectors.memorySpec) {
+      if (globalSettingsParams.value.nodeSelectors.memorySpec) {
         _strategy = {
           ..._strategy,
-          memorySpec: globalParams.value.nodeSelectors.memorySpec
+          memorySpec: globalSettingsParams.value.nodeSelectors.memorySpec
         };
       }
     }
@@ -1311,22 +1311,22 @@ const getData = () => {
   }
 
   let _onError:any = {};
-  if (globalParams.value.onError.action) {
+  if (globalSettingsParams.value.onError.action) {
     _onError = {
-      action: globalParams.value.onError.action
+      action: globalSettingsParams.value.onError.action
     };
   }
 
-  if (globalParams.value.onError.sampleError) {
+  if (globalSettingsParams.value.onError.sampleError) {
     _onError = {
       ..._onError,
-      sampleError: globalParams.value.onError.sampleError,
-      sampleErrorNum: globalParams.value.onError.sampleErrorNum
+      sampleError: globalSettingsParams.value.onError.sampleError,
+      sampleErrorNum: globalSettingsParams.value.onError.sampleErrorNum
     };
   } else {
     _onError = {
       ..._onError,
-      sampleError: globalParams.value.onError.sampleError
+      sampleError: globalSettingsParams.value.onError.sampleError
     };
   }
 
@@ -1362,32 +1362,32 @@ const getData = () => {
     }
     _arguments = {
       ..._arguments,
-      ignoreAssertions: httpArgumentsParams.value.ignoreAssertions,
-      updateTestResult: httpArgumentsParams.value.updateTestResult
+      ignoreAssertions: httpSettingsParams.value.ignoreAssertions,
+      updateTestResult: httpSettingsParams.value.updateTestResult
     };
 
-    if (+httpArgumentsParams.value.httpSetting.connectTimeout > 0) {
+    if (+httpSettingsParams.value.httpSetting.connectTimeout > 0) {
       _setting = {
         ..._setting,
-        connectTimeout: httpArgumentsParams.value.httpSetting.connectTimeout + httpSettingConnectTimeoutUnit.value
+        connectTimeout: httpSettingsParams.value.httpSetting.connectTimeout + httpSettingConnectTimeoutUnit.value
       };
     }
-    if (+httpArgumentsParams.value.httpSetting.readTimeout > 0) {
+    if (+httpSettingsParams.value.httpSetting.readTimeout > 0) {
       _setting = {
         ..._setting,
-        readTimeout: httpArgumentsParams.value.httpSetting.readTimeout + httpSettingReadTimeoutUnit.value
+        readTimeout: httpSettingsParams.value.httpSetting.readTimeout + httpSettingReadTimeoutUnit.value
       };
     }
-    if (httpArgumentsParams.value.httpSetting.retryNum) {
+    if (httpSettingsParams.value.httpSetting.retryNum) {
       _setting = {
         ..._setting,
-        retryNum: httpArgumentsParams.value.httpSetting.retryNum
+        retryNum: httpSettingsParams.value.httpSetting.retryNum
       };
     }
-    if (httpArgumentsParams.value.httpSetting.maxRedirects) {
+    if (httpSettingsParams.value.httpSetting.maxRedirects) {
       _setting = {
         ..._setting,
-        maxRedirects: httpArgumentsParams.value.httpSetting.maxRedirects
+        maxRedirects: httpSettingsParams.value.httpSetting.maxRedirects
       };
     }
 
@@ -1411,33 +1411,33 @@ const getData = () => {
 
     _arguments = {
       ..._arguments,
-      ignoreAssertions: webSocketArgumentsParams.value.ignoreAssertions,
-      updateTestResult: webSocketArgumentsParams.value.updateTestResult
+      ignoreAssertions: webSocketSettingsParams.value.ignoreAssertions,
+      updateTestResult: webSocketSettingsParams.value.updateTestResult
     };
 
-    if (+webSocketArgumentsParams.value.webSocketSetting.maxReconnections) {
+    if (+webSocketSettingsParams.value.webSocketSetting.maxReconnections) {
       _setting = {
         ..._setting,
-        maxReconnections: webSocketArgumentsParams.value.webSocketSetting.maxReconnections
+        maxReconnections: webSocketSettingsParams.value.webSocketSetting.maxReconnections
       };
     }
 
-    if (+webSocketArgumentsParams.value.webSocketSetting.connectTimeout > 0) {
+    if (+webSocketSettingsParams.value.webSocketSetting.connectTimeout > 0) {
       _setting = {
         ..._setting,
-        connectTimeout: webSocketArgumentsParams.value.webSocketSetting.connectTimeout + webSocketSettingConnectTimeoutUnit.value
+        connectTimeout: webSocketSettingsParams.value.webSocketSetting.connectTimeout + webSocketSettingConnectTimeoutUnit.value
       };
     }
-    if (+webSocketArgumentsParams.value.webSocketSetting.responseTimeout > 0) {
+    if (+webSocketSettingsParams.value.webSocketSetting.responseTimeout > 0) {
       _setting = {
         ..._setting,
-        responseTimeout: webSocketArgumentsParams.value.webSocketSetting.responseTimeout + webSocketSettingResponseTimeoutUnit.value
+        responseTimeout: webSocketSettingsParams.value.webSocketSetting.responseTimeout + webSocketSettingResponseTimeoutUnit.value
       };
     }
-    if (+webSocketArgumentsParams.value.webSocketSetting.reconnectionInterval > 0) {
+    if (+webSocketSettingsParams.value.webSocketSetting.reconnectionInterval > 0) {
       _setting = {
         ..._setting,
-        reconnectionInterval: webSocketArgumentsParams.value.webSocketSetting.reconnectionInterval + reconnectionIntervalUnit.value
+        reconnectionInterval: webSocketSettingsParams.value.webSocketSetting.reconnectionInterval + reconnectionIntervalUnit.value
       };
     }
 
@@ -1458,7 +1458,7 @@ const getData = () => {
       });
     }
 
-    const { ignoreAssertions, updateTestResult, jdbcSetting, pool } = jdbcArgumentsParams.value;
+    const { ignoreAssertions, updateTestResult, jdbcSetting, pool } = jdbcSettingsParams.value;
     const { type, driverClassName, jdbcUrl, username, password, isolation } = jdbcSetting;
     const { name, maximumPoolSize, minimumIdle, maxWaitTimeoutMillis } = pool;
     _arguments = {
@@ -1630,7 +1630,7 @@ watch(() => props.scriptInfo, () => {
     isFirstLoad = false;
   }
 
-  initParams();
+  initializeExecutionParameters();
 }, {
   immediate: true
 });
@@ -1639,7 +1639,7 @@ watch(() => props.scriptInfo, () => {
  * Reset all form parameters to default values
  */
 const resetParam = () => {
-  executParams.value = {
+  executionParams.value = {
     iterations: '',
     duration: '',
     thread: {
@@ -1651,7 +1651,7 @@ const resetParam = () => {
       resetAfterRamp: null
     }
   };
-  globalParams.value = {
+  globalSettingsParams.value = {
     startMode: '',
     startAtDate: '',
     priority: '',
@@ -1682,7 +1682,7 @@ const resetParam = () => {
     runnerSetupTimeout: '',
     startupTimeout: ''
   };
-  httpArgumentsParams.value = {
+  httpSettingsParams.value = {
     ignoreAssertions: undefined,
     updateTestResult: false,
     httpSetting: {
@@ -1692,7 +1692,7 @@ const resetParam = () => {
       maxRedirects: ''
     }
   };
-  webSocketArgumentsParams.value = {
+  webSocketSettingsParams.value = {
     ignoreAssertions: undefined,
     updateTestResult: false,
     webSocketSetting: {
@@ -1702,7 +1702,7 @@ const resetParam = () => {
       reconnectionInterval: ''
     }
   };
-  jdbcArgumentsParams.value = {
+  jdbcSettingsParams.value = {
     ignoreAssertions: undefined,
     updateTestResult: false,
     jdbcSetting: {
@@ -1729,12 +1729,12 @@ const resetParam = () => {
   webSocketSettingResponseTimeoutUnit.value = 's';
   maxWaitTimeoutMillisUnit.value = 'ms';
   reconnectionIntervalUnit.value = 'ms';
-  supercharged.value = false;
-  stressReliever.value = false;
+        isRampUpEnabled.value = false;
+  isRampDownEnabled.value = false;
 };
 
-watch(() => executParams.value, () => {
-  setEchartsData();
+watch(() => executionParams.value, () => {
+  updateChartData();
 }, {
   deep: true
 });
@@ -1788,8 +1788,8 @@ let erd = elementResizeDetector({ strategy: 'scroll' });
 const superchargedRefHeight = ref(20);
 const stressRelieverRefHeight = ref(20);
 
-watch(() => supercharged.value, (newValue) => {
-  setEchartsData();
+watch(() => isRampUpEnabled.value, (newValue) => {
+  updateChartData();
   if (!newValue) {
     superchargedRefHeight.value = 20;
     return;
@@ -1804,8 +1804,8 @@ watch(() => supercharged.value, (newValue) => {
   immediate: true
 });
 
-watch(() => stressReliever.value, (newValue) => {
-  setEchartsData();
+watch(() => isRampDownEnabled.value, (newValue) => {
+  updateChartData();
   if (!newValue) {
     stressRelieverRefHeight.value = 20;
     return;
@@ -1833,20 +1833,20 @@ onBeforeUnmount(() => {
 });
 
 onMounted(() => {
-  setEchartsData();
+  updateChartData();
 });
 
 const updateRsetAfterRamp = (_value:boolean[]) => {
   const value = _value.length === 1 ? _value[0] : _value[1];
-  const _resetAfterRamp = executParams.value.thread.resetAfterRamp;
+  const _resetAfterRamp = executionParams.value.thread.resetAfterRamp;
   if (_resetAfterRamp?.length) {
     if (_resetAfterRamp[0] === value) {
-      executParams.value.thread.resetAfterRamp = [];
+      executionParams.value.thread.resetAfterRamp = [];
     } else {
-      executParams.value.thread.resetAfterRamp = [value];
+      executionParams.value.thread.resetAfterRamp = [value];
     }
   } else {
-    executParams.value.thread.resetAfterRamp = [value];
+    executionParams.value.thread.resetAfterRamp = [value];
   }
 };
 
@@ -1857,7 +1857,7 @@ const execParamErrNum = ref(0);
  * Set execution parameter error numbers for validation
  */
 const setExecParamErrNum = () => {
-  executFormRef.value.validate().then(() => {
+  executionFormRef.value.validate().then(() => {
     execParamErrNum.value = 0;
   }).catch(
     (error) => {
@@ -1870,7 +1870,7 @@ const globalParamErrNum = ref(0);
  * Set global parameter error numbers for validation
  */
 const setGlobalParamErrNum = () => {
-  globalFormRef.value.validate().then(
+  globalSettingsFormRef.value.validate().then(
     () => {
       globalParamErrNum.value = 0;
     }).catch(
@@ -1880,7 +1880,7 @@ const setGlobalParamErrNum = () => {
 };
 
 const startAtDateChange = (value) => {
-  globalParams.value.startAtDate = value;
+  globalSettingsParams.value.startAtDate = value;
   setGlobalParamErrNum();
 };
 
@@ -1889,7 +1889,7 @@ const jdbcParamErrNum = ref(0);
  * Set plugin parameter error numbers for validation
  */
 const setPluginParamErrNum = () => {
-  jdbcParamsFormRef.value.validate().then(
+  jdbcSettingsFormRef.value.validate().then(
     () => {
       jdbcParamErrNum.value = 0;
     }).catch(
@@ -1942,7 +1942,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               <div class="h-7 whitespace-nowrap thread-rampDownInterval thread-rampDownThreads pl-1.75" :style="{ 'margin-bottom': stressRelieverRefHeight + 'px' }">
                 {{ t('xcan_execSettingForm.finalRampDown') }}
               </div>
-              <template v-if="supercharged || stressReliever">
+              <template v-if="isRampUpEnabled || isRampDownEnabled">
                 <div class="h-7 whitespace-nowrap thread-rampDownInterval pl-1.75">
                   {{ t('xcan_execSettingForm.resetSamplingResults') }}
                 </div>
@@ -1950,7 +1950,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             </template>
           </div>
           <Form
-            ref="executFormRef"
+            ref="executionFormRef"
             class="flex-1"
             :model="executParams"
             :colon="false"
@@ -1960,13 +1960,13 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               :name="['thread', 'threads']"
               :rules="{ required: true, validator: threadsValidator, trigger: ['change', 'blur'] }">
               <Input
-                :value="executParams.thread.threads"
+                :value="executionParams.thread.threads"
                 dataType="number"
                 :min="1"
                 :max="threadsMax"
                 :disabled="props.scriptType ==='TEST_FUNCTIONALITY'"
                 :placeholder="t('xcan_execSettingForm.maxThreads')"
-                @blur="threadsBlur" />
+                @blur="handleThreadsInputBlur" />
               <Tooltip
                 :title="t('xcan_execSettingForm.maxThreadsTooltip')"
                 placement="topLeft"
@@ -1981,13 +1981,13 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                 name="iterations"
                 :rules="{ required: false, validator: iterationsValidator, trigger: ['change', 'blur'] }">
                 <Input
-                  :value="executParams.iterations"
+                  :value="executionParams.iterations"
                   dataType="number"
                   :min="1"
                   :max="props.addType === 'expr' ? 100000 : 100000000000"
                   size="small"
                   :placeholder="t('xcan_execSettingForm.iterations')"
-                  @blur="iterationsBlur" />
+                  @blur="handleIterationsInputBlur" />
                 <Tooltip
                   :title="t('xcan_execSettingForm.iterationsTooltip')"
                   placement="topLeft"
@@ -2003,14 +2003,14 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                 name="duration"
                 :rules="{ required: false, validator: durationValidator, trigger: ['change', 'blur'] }">
                 <ShortDuration
-                  :value="executParams.duration + durationUnit"
+                  :value="executionParams.duration + durationUnit"
                   size="small"
                   class="w-full"
                   :max="durationMax"
                   :inputProps="{placeholder: t('xcan_execSettingForm.executionDuration')}"
                   :selectProps="durationSelectProps"
-                  @blur="durationBlur"
-                  @change="durationChange" />
+                  @blur="handleDurationInputBlur"
+                  @change="handleDurationChange" />
                 <Tooltip
                   :title="t('xcan_execSettingForm.executionDurationTooltip')"
                   placement="topLeft"
@@ -2021,29 +2021,29 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </FormItem>
               <FormItem class="h-7 leading-7">
                 <RadioGroup
-                  :value="supercharged"
+                  :value="isRampUpEnabled"
                   class="space-x-6 -ml-5 mt-0.5"
-                  :disabled="executParams.duration === '0'"
+                  :disabled="executionParams.duration === '0'"
                   :options="[{ value: false, message: t('xcan_execSettingForm.directPressure') }, { value: true, message: t('xcan_execSettingForm.gradualPressure') }]"
-                  @change="superchargedChange">
+                  @change="handleRampUpEnabledChange">
                 </RadioGroup>
               </FormItem>
-              <template v-if="supercharged">
+              <template v-if="isRampUpEnabled">
                 <div ref="superchargedRef" class="flex  flex-wrap -mt-3 supercharged">
                   <div class="flex text-3 space-x-1 mr-2">
                     <div class="h-7 leading-7">{{ t('xcan_execSettingForm.every') }}</div>
                     <FormItem
                       class="flex-1"
                       :name="['thread', 'rampUpInterval']"
-                      :rules="{ required: supercharged, message: t('xcan_execSettingForm.pleaseEnterRampUpInterval'), trigger: ['change', 'blur'] }">
+                      :rules="{ required: isRampUpEnabled, message: t('xcan_execSettingForm.pleaseEnterRampUpInterval'), trigger: ['change', 'blur'] }">
                       <Input
-                        v-model:value="executParams.thread.rampUpInterval"
+                        v-model:value="executionParams.thread.rampUpInterval"
                         class="w-24"
                         :min="0"
-                        :max="+executParams.duration"
+                        :max="+executionParams.duration"
                         dataType="number"
                         :placeholder="t('xcan_execSettingForm.rampUpInterval')"
-                        @blur="rampUpIntervalBlur" />
+                        @blur="handleRampUpIntervalInputBlur" />
                     </FormItem>
                     <div class="h-7 leading-7">{{ timeUnitMessage }}</div>
                   </div>
@@ -2052,16 +2052,16 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                     <FormItem
                       class="flex-1"
                       :name="['thread', 'rampUpThreads']"
-                      :rules="{ required: supercharged, message: t('xcan_execSettingForm.pleaseEnterRampUpThreads'), trigger: ['change', 'blur'] }">
+                      :rules="{ required: isRampUpEnabled, message: t('xcan_execSettingForm.pleaseEnterRampUpThreads'), trigger: ['change', 'blur'] }">
                       <Input
-                        :value="executParams.thread.rampUpThreads"
+                        :value="executionParams.thread.rampUpThreads"
                         dataType="number"
                         class="w-24"
                         :min="0"
-                        :max="+executParams.thread.threads"
+                        :max="+executionParams.thread.threads"
                         size="small"
                         :placeholder="t('xcan_execSettingForm.rampUpThreads')"
-                        @blur="rampUpThreadsBlur" />
+                        @blur="handleRampUpThreadsInputBlur" />
                     </FormItem>
                     <div class="h-7 leading-7 flex items-center">
                       {{ t('xcan_execSettingForm.concurrency') }}
@@ -2089,14 +2089,14 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </template>
               <FormItem class="h-7 leading-7">
                 <RadioGroup
-                  :value="stressReliever"
+                  :value="isRampDownEnabled"
                   class="space-x-6 -ml-5 mt-0.5"
-                  :disabled="executParams.duration === '0'"
+                  :disabled="executionParams.duration === '0'"
                   :options="[{ value: false, message: t('xcan_execSettingForm.directReduction') }, { value: true, message: t('xcan_execSettingForm.gradualReduction') }]"
-                  @change="stressRelieverChange">
+                  @change="handleRampDownEnabledChange">
                 </RadioGroup>
               </FormItem>
-              <template v-if="stressReliever">
+              <template v-if="isRampDownEnabled">
                 <div ref="stressRelieverRef" class="flex  flex-wrap -mt-3 stress-reliever">
                   <div class="flex text-3 space-x-1 mr-2">
                     <div class="h-7 leading-7">{{ t('xcan_execSettingForm.every') }}</div>
@@ -2105,13 +2105,13 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['thread', 'rampDownInterval']"
                       :rules="{ required: stressReliever, message: t('xcan_execSettingForm.pleaseEnterRampDownInterval'), trigger: ['change', 'blur'] }">
                       <Input
-                        :value="executParams.thread.rampDownInterval"
+                        :value="executionParams.thread.rampDownInterval"
                         class="w-24"
                         :min="0"
-                        :max="+executParams.duration"
+                        :max="+executionParams.duration"
                         dataType="number"
                         :placeholder="t('xcan_execSettingForm.rampDownInterval')"
-                        @blur="rampDownIntervalBlur" />
+                        @blur="handleRampDownIntervalInputBlur" />
                     </FormItem>
                     <div class="h-7 leading-7">{{ timeUnitMessage }}</div>
                   </div>
@@ -2122,14 +2122,14 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['thread', 'rampDownThreads']"
                       :rules="{ required: stressReliever, message: t('xcan_execSettingForm.pleaseEnterRampDownThreads'), trigger: ['change', 'blur'] }">
                       <Input
-                        :value="executParams.thread.rampDownThreads"
+                        :value="executionParams.thread.rampDownThreads"
                         dataType="number"
                         class="w-24"
                         :min="0"
-                        :max="+executParams.thread.threads"
+                        :max="+executionParams.thread.threads"
                         size="small"
                         :placeholder="t('xcan_execSettingForm.rampDownThreads')"
-                        @blur="rampDownThreadsBlur" />
+                        @blur="handleRampDownThreadsInputBlur" />
                     </FormItem>
                     <div class="h-7 leading-7 flex items-center">
                       {{ t('xcan_execSettingForm.concurrency') }}
@@ -2155,9 +2155,9 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                   </div>
                 </div>
               </template>
-              <template v-if="supercharged || stressReliever">
+              <template v-if="isRampUpEnabled || isRampDownEnabled">
                 <FormItem class="h-7 leading-7 pr-5 relative" :name="['thread', 'resetAfterRamp']">
-                  <CheckboxGroup :value="executParams.thread.resetAfterRamp" @change="updateRsetAfterRamp($event)">
+                  <CheckboxGroup :value="executionParams.thread.resetAfterRamp" @change="updateRsetAfterRamp($event)">
                     <Checkbox :value="true">{{ t('status.yes') }}</Checkbox>
                     <Checkbox :value="false">{{ t('status.no') }}</Checkbox>
                   </CheckboxGroup>
@@ -2173,7 +2173,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             </template>
           </Form>
         </div>
-        <template v-if="!['MOCK_DATA', 'TEST_FUNCTIONALITY'].includes(props.scriptType) && (supercharged || stressReliever) ">
+        <template v-if="!['MOCK_DATA', 'TEST_FUNCTIONALITY'].includes(props.scriptType) && (isRampUpEnabled || isRampDownEnabled) ">
           <LineChart
             v-if="+chartData.yData?.[1] > 0 && +chartData.yData?.[1] <= 10000"
             class="mt-12 flex-1"
@@ -2203,7 +2203,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
           <div class="h-7 whitespace-nowrap mb-5 startMode pl-1.75">
             {{ t('xcan_execSettingForm.startupMode') }}
           </div>
-          <div v-if="globalParams.startMode === 'TIMING'" class="h-7 whitespace-nowrap mb-5 -mt-3 startAtDate"></div>
+          <div v-if="globalSettingsParams.startMode === 'TIMING'" class="h-7 whitespace-nowrap mb-5 -mt-3 startAtDate"></div>
           <div class="h-7 whitespace-nowrap mb-5 priority pl-1.75">
             {{ t('common.priority') }}
           </div>
@@ -2223,20 +2223,20 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-appNodeIds">{{ t('xcan_execSettingForm.applicationNodes') }}</div>
             <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-enabled">{{ t('xcan_execSettingForm.nodeSelectionStrategy') }}</div>
             <div
-              :class="globalParams.nodeSelectors.enabled ? 'open-params' : 'stop-params'"
+              :class="globalSettingsParams.nodeSelectors.enabled ? 'open-params' : 'stop-params'"
               class="overflow-hidden transition-all"
               style="transition-duration: 400ms;">
               <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-maxTaskNum">{{ t('xcan_execSettingForm.maxTaskCount') }}</div>
               <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-lastExecuted">{{ t('xcan_execSettingForm.lastExecutedNode') }}</div>
               <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25">{{ t('xcan_execSettingForm.minimumSpecificationNodes') }}</div>
               <div
-                v-if="globalParams.nodeSelectors.specEnabled"
+                v-if="globalSettingsParams.nodeSelectors.specEnabled"
                 class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-specEnabled">
                 {{ t('xcan_execSettingForm.minimumSpecification') }}
               </div>
               <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25">{{ t('xcan_execSettingForm.lowestIdleRateNodes') }}</div>
               <div
-                v-if="globalParams.nodeSelectors.idleRateEnabled"
+                v-if="globalSettingsParams.nodeSelectors.idleRateEnabled"
                 class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-idleRateEnabled">
                 {{ t('xcan_execSettingForm.lowestIdleRate') }}
               </div>
@@ -2258,7 +2258,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             </div>
             <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 onError-sampleError">{{ t('xcan_execSettingForm.sampleErrorContent') }}</div>
             <div
-              :class="globalParams.onError.sampleError ? 'open-params' : 'stop-params'"
+              :class="globalSettingsParams.onError.sampleError ? 'open-params' : 'stop-params'"
               class="overflow-hidden transition-all"
               style="transition-duration: 400ms;">
               <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 onError-sampleErrorNum">{{ t('xcan_execSettingForm.sampleErrorContentCount') }}</div>
@@ -2307,16 +2307,16 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
           </div>
         </div>
         <Form
-          ref="globalFormRef"
+          ref="globalSettingsFormRef"
           class="flex-1"
-          :model="globalParams"
+          :model="globalSettingsParams"
           :colon="false"
           layout="horizontal">
           <FormItem
             class="pr-5 relative"
             name="startMode">
             <RadioGroup
-              v-model:value="globalParams.startMode"
+              v-model:value="globalSettingsParams.startMode"
               class="space-x-6 -ml-5 h-7 pt-1"
               :enumKey="StartMode">
             </RadioGroup>
@@ -2329,12 +2329,12 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             </Tooltip>
           </FormItem>
           <FormItem
-            v-if="globalParams.startMode === 'TIMING'"
+            v-if="globalSettingsParams.startMode === 'TIMING'"
             name="startAtDate"
             class="-mt-3 pr-5 relative"
-            :rules="{ required: globalParams.startMode === 'TIMING', message: t('xcan_execSettingForm.startAtDateRule'), trigger: ['change', 'blur'] }">
+            :rules="{ required: globalSettingsParams.startMode === 'TIMING', message: t('xcan_execSettingForm.startAtDateRule'), trigger: ['change', 'blur'] }">
             <DatePicker
-              :value="globalParams.startAtDate"
+              :value="globalSettingsParams.startAtDate"
               showTime
               class="w-full"
               :placeholder="t('xcan_execSettingForm.scheduledExecutionTime')"
@@ -2351,7 +2351,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             name="priority"
             class="pr-5 relative">
             <Input
-              v-model:value="globalParams.priority"
+              v-model:value="globalSettingsParams.priority"
               dataType="number"
               :min="1"
               :max="2147483647"
@@ -2373,7 +2373,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               class="pr-5 relative"
               :name="['nodeSelectors', 'num']">
               <Input
-                v-model:value="globalParams.nodeSelectors.num"
+                v-model:value="globalSettingsParams.nodeSelectors.num"
                 :min="1"
                 :max="props.addType === 'expr' ? 1 : 200"
                 :placeholder="t('xcan_execSettingForm.executionNodeCount')"
@@ -2388,7 +2388,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             </FormItem>
             <FormItem class="pr-5 relative" :name="['nodeSelectors', 'availableNodeIds']">
               <Select
-                v-model:value="globalParams.nodeSelectors.availableNodeIds"
+                v-model:value="globalSettingsParams.nodeSelectors.availableNodeIds"
                 :action="`${TESTER}/node?role=EXECUTION&fullTextSearch=true`"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 mode="multiple"
@@ -2403,7 +2403,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             </FormItem>
             <FormItem class="pr-5 relative" :name="['nodeSelectors', 'appNodeIds']">
               <Select
-                v-model:value="globalParams.nodeSelectors.appNodeIds"
+                v-model:value="globalSettingsParams.nodeSelectors.appNodeIds"
                 :action="`${TESTER}/node?role=APPLICATION&fullTextSearch=true`"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 mode="multiple"
@@ -2418,7 +2418,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             </FormItem>
             <FormItem class="h-7 leading-7 pr-5" :name="['nodeSelectors', 'enabled']">
               <Switch
-                v-model:checked="globalParams.nodeSelectors.enabled"
+                v-model:checked="globalSettingsParams.nodeSelectors.enabled"
                 size="small"
                 class="w-8" />
               <Tooltip
@@ -2430,12 +2430,12 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </Tooltip>
             </FormItem>
             <div
-              :class="globalParams.nodeSelectors.enabled ? 'open-params' : 'stop-params'"
+              :class="globalSettingsParams.nodeSelectors.enabled ? 'open-params' : 'stop-params'"
               class="overflow-hidden transition-all"
               style="transition-duration: 400ms;">
               <FormItem class="pr-5 relative" :name="['nodeSelectors', 'maxTaskNum']">
                 <Input
-                  v-model:value="globalParams.nodeSelectors.maxTaskNum"
+                  v-model:value="globalSettingsParams.nodeSelectors.maxTaskNum"
                   :min="0"
                   :max="1000"
                   :placeholder="t('xcan_execSettingForm.maxTaskCount')" />
@@ -2449,7 +2449,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </FormItem>
               <FormItem class="h-7 leading-7 pr-5 relative" :name="['nodeSelectors', 'lastExecuted']">
                 <Switch
-                  v-model:checked="globalParams.nodeSelectors.lastExecuted"
+                  v-model:checked="globalSettingsParams.nodeSelectors.lastExecuted"
                   size="small"
                   class="w-8" />
                 <Tooltip
@@ -2462,7 +2462,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </FormItem>
               <FormItem class="h-7 leading-7 relative pr-5" :name="['nodeSelectors', 'specEnabled']">
                 <Switch
-                  v-model:checked="globalParams.nodeSelectors.specEnabled"
+                  v-model:checked="globalSettingsParams.nodeSelectors.specEnabled"
                   size="small"
                   class="w-8" />
                 <Tooltip
@@ -2473,11 +2473,11 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer ml-1 absolute left-10 top-2" />
                 </Tooltip>
               </FormItem>
-              <div v-if="globalParams.nodeSelectors.specEnabled" class="flex pr-1">
+              <div v-if="globalSettingsParams.nodeSelectors.specEnabled" class="flex pr-1">
                 <FormItem label="CPU" class="h-7 leading-7" />
                 <FormItem class="h-7" :name="['nodeSelectors', 'cpuSpec']">
                   <Input
-                    v-model:value="globalParams.nodeSelectors.cpuSpec"
+                    v-model:value="globalSettingsParams.nodeSelectors.cpuSpec"
                     :min="1"
                     :max="16" />
                 </FormItem>
@@ -2485,7 +2485,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                 <FormItem :label="t('xcan_execSettingForm.memory')" class="h-7 leading-7" />
                 <FormItem class="h-7" :name="['nodeSelectors', 'memorySpec']">
                   <Input
-                    v-model:value="globalParams.nodeSelectors.memorySpec"
+                    v-model:value="globalSettingsParams.nodeSelectors.memorySpec"
                     :min="1"
                     :max="512" />
                 </FormItem>
@@ -2493,7 +2493,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                 <FormItem :label="t('xcan_execSettingForm.disk')" class="h-7 leading-7" />
                 <FormItem class="h-7" :name="['nodeSelectors', 'diskSpec']">
                   <Input
-                    v-model:value="globalParams.nodeSelectors.diskSpec"
+                    v-model:value="globalSettingsParams.nodeSelectors.diskSpec"
                     :min="1"
                     :max="2000" />
                 </FormItem>
@@ -2515,9 +2515,9 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               <FormItem
                 class="leading-7 relative pr-5"
                 :name="['nodeSelectors', 'idleRateEnabled']"
-                :class="globalParams.nodeSelectors.idleRateEnabled?'h-7':'h-12'">
+                :class="globalSettingsParams.nodeSelectors.idleRateEnabled?'h-7':'h-12'">
                 <Switch
-                  v-model:checked="globalParams.nodeSelectors.idleRateEnabled"
+                  v-model:checked="globalSettingsParams.nodeSelectors.idleRateEnabled"
                   size="small"
                   class="w-8" />
                 <Tooltip
@@ -2528,11 +2528,11 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer ml-1 absolute left-10 top-2" />
                 </Tooltip>
               </FormItem>
-              <div v-if="globalParams.nodeSelectors.idleRateEnabled" class="flex pr-1">
+              <div v-if="globalSettingsParams.nodeSelectors.idleRateEnabled" class="flex pr-1">
                 <FormItem label="CPU" class="h-7 leading-7" />
                 <FormItem class="h-7 leading-7" :name="['nodeSelectors', 'cpuIdleRate']">
                   <Input
-                    v-model:value="globalParams.nodeSelectors.cpuIdleRate"
+                    v-model:value="globalSettingsParams.nodeSelectors.cpuIdleRate"
                     :min="1"
                     :max="100" />
                 </FormItem>
@@ -2540,7 +2540,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                 <FormItem :label="t('xcan_execSettingForm.memory')" class="h-7 leading-7" />
                 <FormItem class="h-7 leading-7" :name="['nodeSelectors', 'memoryIdleRate']">
                   <Input
-                    v-model:value="globalParams.nodeSelectors.memoryIdleRate"
+                    v-model:value="globalSettingsParams.nodeSelectors.memoryIdleRate"
                     :min="1"
                     :max="100" />
                 </FormItem>
@@ -2548,7 +2548,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                 <FormItem :label="t('xcan_execSettingForm.disk')" class="h-7 leading-7" />
                 <FormItem class="h-7 leading-7" :name="['nodeSelectors', 'diskIdleRate']">
                   <Input
-                    v-model:value="globalParams.nodeSelectors.diskIdleRate"
+                    v-model:value="globalSettingsParams.nodeSelectors.diskIdleRate"
                     :min="1"
                     :max="100" />
                 </FormItem>
@@ -2578,7 +2578,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               class="pr-5 relative"
               :name="['onError', 'action']">
               <RadioGroup
-                v-model:value="globalParams.onError.action"
+                v-model:value="globalSettingsParams.onError.action"
                 class="space-x-6 -ml-5  h-7 pt-1"
                 :enumKey="ActionWhenError">
               </RadioGroup>
@@ -2592,7 +2592,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             </FormItem>
             <FormItem class="h-7 leading-7 pr-5 relative" :name="['onError', 'sampleError']">
               <Switch
-                v-model:checked="globalParams.onError.sampleError"
+                v-model:checked="globalSettingsParams.onError.sampleError"
                 size="small"
                 class="w-8" />
               <Tooltip
@@ -2604,14 +2604,14 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </Tooltip>
             </FormItem>
             <div
-              :class="globalParams.onError.sampleError ? 'open-params' : 'stop-params'"
+              :class="globalSettingsParams.onError.sampleError ? 'open-params' : 'stop-params'"
               class="overflow-hidden transition-all"
               style="transition-duration: 400ms;">
               <FormItem
                 class="pr-5 h-12 relative"
                 :name="['onError', 'sampleErrorNum']">
                 <Input
-                  v-model:value="globalParams.onError.sampleErrorNum"
+                  v-model:value="globalSettingsParams.onError.sampleErrorNum"
                   dataType="number"
                   :min="0"
                   :max="200"
@@ -2636,7 +2636,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               class="relative pr-5"
               name="reportInterval">
               <ShortDuration
-                :value="globalParams.reportInterval + reportIntervalUnit"
+                :value="globalSettingsParams.reportInterval + reportIntervalUnit"
                 size="small"
                 :inputProps="{placeholder:t('xcan_execSettingForm.samplingInterval')}"
                 :selectProps="reportIntervalSelectProps"
@@ -2651,7 +2651,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             </FormItem>
             <FormItem name="lang" class="pr-5 relative h-12">
               <SelectEnum
-                v-model:value="globalParams.lang"
+                v-model:value="globalSettingsParams.lang"
                 :enumKey="SupportedLanguage"
                 placeholder="t('xcan_execSettingForm.langPlaceholder')" />
               <Tooltip
@@ -2672,7 +2672,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               class="relative pr-5"
               name="startupTimeout">
               <ShortDuration
-                :value="globalParams.startupTimeout + startupTimeoutUnit"
+                :value="globalSettingsParams.startupTimeout + startupTimeoutUnit"
                 size="small"
                 :max="2 * 60 * 60"
                 :inputProps="{placeholder:t('xcan_execSettingForm.startupRunnerTimeout')}"
@@ -2688,7 +2688,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             </FormItem>
             <FormItem name="lang" class="pr-5 relative h-12">
               <ShortDuration
-                :value="globalParams.runnerSetupTimeout+runnerSetupTimeoutUnit"
+                :value="globalSettingsParams.runnerSetupTimeout+runnerSetupTimeoutUnit"
                 size="small"
                 :max="2 * 60 * 60"
                 :inputProps="{placeholder:t('xcan_execSettingForm.samplingInitializationTimeout')}"
@@ -2712,7 +2712,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               class="relative pr-5"
               name="shutdownTimeout">
               <ShortDuration
-                :value="globalParams.shutdownTimeout + shutdownTimeoutUnit"
+                :value="globalSettingsParams.shutdownTimeout + shutdownTimeoutUnit"
                 size="small"
                 class="w-full"
                 :max="2 * 60 * 60"
@@ -2795,13 +2795,13 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </div>
               <div class="flex-1">
                 <Form
-                  ref="httpParamsFormRef"
-                  :model="httpArgumentsParams"
+                  ref="httpSettingsFormRef"
+                  :model="httpSettingsParams"
                   :colon="false"
                   layout="horizontal">
                   <FormItem class="h-7 leading-7 pr-5 relative" name="ignoreAssertions">
                     <Switch
-                      v-model:checked="httpArgumentsParams.ignoreAssertions"
+                      v-model:checked="httpSettingsParams.ignoreAssertions"
                       size="small"
                       class="w-8" />
                     <Tooltip
@@ -2814,7 +2814,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                   </FormItem>
                   <FormItem class="h-7 leading-7 pr-5 relative" name="updateTestResult">
                     <Switch
-                      v-model:checked="httpArgumentsParams.updateTestResult"
+                      v-model:checked="httpSettingsParams.updateTestResult"
                       size="small"
                       class="w-8" />
                     <Tooltip
@@ -2834,7 +2834,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       class="relative pr-5"
                       :name="['httpSetting', 'connectTimeout']">
                       <ShortDuration
-                        :value="httpArgumentsParams.httpSetting.connectTimeout + httpSettingConnectTimeoutUnit"
+                        :value="httpSettingsParams.httpSetting.connectTimeout + httpSettingConnectTimeoutUnit"
                         size="small"
                         class="w-full"
                         placeholder="t('xcan_execSettingForm.connectionTimeoutTime')"
@@ -2853,7 +2853,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       class="relative pr-5"
                       :name="['httpSetting', 'readTimeout']">
                       <ShortDuration
-                        :value="httpArgumentsParams.httpSetting.readTimeout + httpSettingReadTimeoutUnit"
+                        :value="httpSettingsParams.httpSetting.readTimeout + httpSettingReadTimeoutUnit"
                         size="small"
                         class="w-full"
                         placeholder="t('xcan_execSettingForm.readTimeoutTime')"
@@ -2872,7 +2872,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['httpSetting', 'retryNum']"
                       class="pr-5 relative">
                       <Input
-                        v-model:value="httpArgumentsParams.httpSetting.retryNum"
+                        v-model:value="httpSettingsParams.httpSetting.retryNum"
                         dataType="number"
                         :min="0"
                         :max="6"
@@ -2889,7 +2889,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['httpSetting', 'maxRedirects']"
                       class="pr-5 relative h-12">
                       <Input
-                        v-model:value="httpArgumentsParams.httpSetting.maxRedirects"
+                        v-model:value="httpSettingsParams.httpSetting.maxRedirects"
                         dataType="number"
                         :min="1"
                         :max="10"
@@ -2999,13 +2999,13 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </div>
               <div class="flex-1">
                 <Form
-                  ref="webSocketParamsFormRef"
-                  :model="webSocketArgumentsParams"
+                  ref="webSocketSettingsFormRef"
+                  :model="webSocketSettingsParams"
                   :colon="false"
                   layout="horizontal">
                   <FormItem class="h-7 leading-7 pr-5 relative" name="ignoreAssertions">
                     <Switch
-                      v-model:checked="webSocketArgumentsParams.ignoreAssertions"
+                      v-model:checked="webSocketSettingsParams.ignoreAssertions"
                       size="small"
                       class="w-8" />
                     <Tooltip
@@ -3018,7 +3018,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                   </FormItem>
                   <FormItem class="h-7 leading-7 pr-5 relative" name="updateTestResult">
                     <Switch
-                      v-model:checked="webSocketArgumentsParams.updateTestResult"
+                      v-model:checked="webSocketSettingsParams.updateTestResult"
                       size="small"
                       class="w-8" />
                     <Tooltip
@@ -3038,7 +3038,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       class="relative pr-5"
                       :name="['webSocketSetting', 'connectTimeout']">
                       <ShortDuration
-                        :value="webSocketArgumentsParams.webSocketSetting.connectTimeout + webSocketSettingConnectTimeoutUnit"
+                        :value="webSocketSettingsParams.webSocketSetting.connectTimeout + webSocketSettingConnectTimeoutUnit"
                         size="small"
                         class="w-full"
                         :placeholder="t('xcan_execSettingForm.connectionTimeoutTime')"
@@ -3057,7 +3057,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       class="relative pr-5"
                       :name="['webSocketSetting', 'responseTimeout']">
                       <ShortDuration
-                        :value="webSocketArgumentsParams.webSocketSetting.responseTimeout + webSocketSettingResponseTimeoutUnit"
+                        :value="webSocketSettingsParams.webSocketSetting.responseTimeout + webSocketSettingResponseTimeoutUnit"
                         size="small"
                         class="w-full"
                         :placeholder="t('xcan_execSettingForm.readTimeoutTime')"
@@ -3076,7 +3076,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['webSocketSetting', 'maxReconnections']"
                       class="pr-5 relative">
                       <Input
-                        v-model:value="webSocketArgumentsParams.webSocketSetting.maxReconnections"
+                        v-model:value="webSocketSettingsParams.webSocketSetting.maxReconnections"
                         dataType="number"
                         :min="0"
                         :max="100"
@@ -3093,7 +3093,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       class="relative pr-5  h-12"
                       :name="['webSocketSetting', 'reconnectionInterval']">
                       <ShortDuration
-                        :value="webSocketArgumentsParams.webSocketSetting.reconnectionInterval + reconnectionIntervalUnit"
+                        :value="webSocketSettingsParams.webSocketSetting.reconnectionInterval + reconnectionIntervalUnit"
                         size="small"
                         class="w-full"
                         :placeholder="t('xcan_execSettingForm.reconnectionInterval')"
@@ -3242,13 +3242,13 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               </div>
               <div class="flex-1">
                 <Form
-                  ref="jdbcParamsFormRef"
-                  :model="jdbcArgumentsParams"
+                  ref="jdbcSettingsFormRef"
+                  :model="jdbcSettingsParams"
                   :colon="false"
                   layout="horizontal">
                   <FormItem class="h-7 leading-7 pr-5 relative" name="ignoreAssertions">
                     <Switch
-                      v-model:checked="jdbcArgumentsParams.ignoreAssertions"
+                      v-model:checked="jdbcSettingsParams.ignoreAssertions"
                       size="small"
                       class="w-8" />
                     <Tooltip
@@ -3261,7 +3261,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                   </FormItem>
                   <FormItem class="h-7 leading-7 pr-5 relative" name="updateTestResult">
                     <Switch
-                      v-model:checked="jdbcArgumentsParams.updateTestResult"
+                      v-model:checked="jdbcSettingsParams.updateTestResult"
                       size="small"
                       class="w-8" />
                     <Tooltip
@@ -3282,7 +3282,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['jdbcSetting', 'type']"
                       :rules="{ required: true, message: t('xcan_execSettingForm.pleaseSelectDatabaseType'), trigger: ['change', 'blur'] }">
                       <SelectEnum
-                        v-model:value="jdbcArgumentsParams.jdbcSetting.type"
+                        v-model:value="jdbcSettingsParams.jdbcSetting.type"
                         :enumKey="DatabaseType"
                         :placeholder="t('xcan_execSettingForm.databaseType')"
                         @change="setPluginParamErrNum" />
@@ -3299,7 +3299,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['jdbcSetting', 'driverClassName']"
                       :rules="{ required: true, message: t('xcan_execSettingForm.databaseDriverClassNamePlaceholder'), trigger: ['change', 'blur'] }">
                       <Input
-                        v-model:value="jdbcArgumentsParams.jdbcSetting.driverClassName"
+                        v-model:value="jdbcSettingsParams.jdbcSetting.driverClassName"
                         :maxlength="200"
                         :placeholder="t('xcan_execSettingForm.databaseDriverClassName')"
                         @change="setPluginParamErrNum" />
@@ -3316,7 +3316,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['jdbcSetting', 'jdbcUrl']"
                       :rules="{ required: true, message: t('xcan_execSettingForm.pleaseEnterDatabaseConnectionURL'), trigger: ['change', 'blur'] }">
                       <Input
-                        v-model:value="jdbcArgumentsParams.jdbcSetting.jdbcUrl"
+                        v-model:value="jdbcSettingsParams.jdbcSetting.jdbcUrl"
                         :maxlength="2048"
                         :placeholder="t('xcan_execSettingForm.jdbcUrl')"
                         @change="setPluginParamErrNum" />
@@ -3333,7 +3333,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       :name="['jdbcSetting', 'username']"
                       :rules="{ required: true, message: t('xcan_execSettingForm.databaseUsernamePlaceholder'), trigger: ['change', 'blur'] }">
                       <Input
-                        v-model:value="jdbcArgumentsParams.jdbcSetting.username"
+                        v-model:value="jdbcSettingsParams.jdbcSetting.username"
                         :maxlength="200"
                         :placeholder="t('xcan_execSettingForm.databaseUsernameTooltip')"
                         @change="setPluginParamErrNum" />
@@ -3342,7 +3342,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       class="pr-5"
                       :name="['jdbcSetting', 'password']">
                       <Input
-                        v-model:value="jdbcArgumentsParams.jdbcSetting.password"
+                        v-model:value="jdbcSettingsParams.jdbcSetting.password"
                         type="password"
                         :maxlength="1024"
                         :placeholder="t('xcan_execSettingForm.databasePasswordPlaceholder')" />
@@ -3351,7 +3351,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                       class="pr-5 relative h-12"
                       :name="['jdbcSetting', 'isolation']">
                       <SelectEnum
-                        v-model:value="jdbcArgumentsParams.jdbcSetting.isolation"
+                        v-model:value="jdbcSettingsParams.jdbcSetting.isolation"
                         :enumKey="TransactionIsolation"
                         :placeholder="t('xcan_execSettingForm.transactionIsolation')" />
                       <Tooltip
@@ -3390,7 +3390,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                         :name="['pool', 'name']"
                         :rules="{ required: isOpenPool, message: t('xcan_execSettingForm.poolTypePlaceholder'), trigger: ['change', 'blur'] }">
                         <SelectEnum
-                          v-model:value="jdbcArgumentsParams.pool.name"
+                          v-model:value="jdbcSettingsParams.pool.name"
                           :enumKey="PoolType"
                           :placeholder="t('xcan_execSettingForm.connectionPoolType')"
                           @change="setPluginParamErrNum" />
@@ -3407,7 +3407,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                         :name="['pool', 'maximumPoolSize']"
                         :rules="{ required: isOpenPool, message: t('xcan_execSettingForm.poolSizeRule'), trigger: ['change', 'blur'] }">
                         <Input
-                          v-model:value="jdbcArgumentsParams.pool.maximumPoolSize"
+                          v-model:value="jdbcSettingsParams.pool.maximumPoolSize"
                           :min="1"
                           :max="10000"
                           dataType="number"
@@ -3426,7 +3426,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                         :name="['pool', 'minimumIdle']"
                         :rules="{ required: isOpenPool, message: t('xcan_execSettingForm.minimumIdleRule'), trigger: ['change', 'blur'] }">
                         <Input
-                          v-model:value="jdbcArgumentsParams.pool.minimumIdle"
+                          v-model:value="jdbcSettingsParams.pool.minimumIdle"
                           dataType="number"
                           :placeholder="t('xcan_execSettingForm.minimumIdleConnections')"
                           @change="setPluginParamErrNum" />
@@ -3442,7 +3442,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                         class="relative pr-5 h-12"
                         :name="['pool', 'maxWaitTimeoutMillis']">
                         <ShortDuration
-                          :value="jdbcArgumentsParams.pool.maxWaitTimeoutMillis + maxWaitTimeoutMillisUnit"
+                          :value="jdbcSettingsParams.pool.maxWaitTimeoutMillis + maxWaitTimeoutMillisUnit"
                           size="small"
                           class="w-full"
                           :inputProps="{placeholder:t('xcan_execSettingForm.connectionTimeoutTime')}"

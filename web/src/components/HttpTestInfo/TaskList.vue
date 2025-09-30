@@ -1,28 +1,42 @@
 <script lang="ts" setup>
+// Vue core imports
 import { inject, ref } from 'vue';
-import { Icon, Tooltip, Grid } from '@xcan-angus/vue-ui';
-// import { Tooltip } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
+import { Icon, Tooltip, Grid } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
 
-interface API {
+/**
+ * Task item interface for task list display
+ */
+interface TaskItem {
   name: string;
   id: string;
   code: string;
   serviceId: string;
   serviceName: string;
-  taskType: 'API_TEST'| 'BUG'| 'SCENARIO_TEST'| 'STORY'| 'TASK';
+  taskType: 'API_TEST' | 'BUG' | 'SCENARIO_TEST' | 'STORY' | 'TASK';
   targetId: string;
 }
 
+/**
+ * Component props interface for task list display
+ */
 interface Props {
-  dataSource: API[]
+  dataSource: TaskItem[];
 }
 
+// Injected project information
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 
-const getTaskIcon = (taskType: string) => {
+/**
+ * Get task type icon based on task type
+ * @param taskType - The type of task
+ * @returns Icon name for the task type
+ */
+const getTaskTypeIcon = (taskType: string) => {
   switch (taskType) {
     case 'API_TEST':
       return 'icon-jiekouceshi';
@@ -39,7 +53,8 @@ const getTaskIcon = (taskType: string) => {
   }
 };
 
-const columns = [
+// Task tooltip table columns configuration
+const taskTooltipTableColumns = [
   [
     {
       dataIndex: 'sprintName',
@@ -66,20 +81,20 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
   <div class="text-3">
     <div
-      v-for="item in props.dataSource"
-      :key="item.id"
+      v-for="taskItem in props.dataSource"
+      :key="taskItem.id"
       class="border border-gray-light rounded bg-gray-light">
       <Tooltip placement="rightTop">
         <template #title>
           <div class="max-h-100 overflow-y-auto">
             <Grid
-              :dataSource="item || {}"
-              :columns="columns" />
+              :dataSource="taskItem || {}"
+              :columns="taskTooltipTableColumns" />
           </div>
         </template>
         <div class="px-1 flex h-6 items-center">
-          <Icon :icon="getTaskIcon(item.taskType)" />
-          <span class="min-w-0 truncate flex-1" :title="item.name"><a target="_blank" :href="`/tasks#tasks?projectId=${projectInfo.id}&taskId=${item.targetId}&taskName=${item.name}`">{{ item.name }}</a></span>
+          <Icon :icon="getTaskTypeIcon(taskItem.taskType)" />
+          <span class="min-w-0 truncate flex-1" :title="taskItem.name"><a target="_blank" :href="`/tasks#tasks?projectId=${projectInfo.id}&taskId=${taskItem.targetId}&taskName=${taskItem.name}`">{{ taskItem.name }}</a></span>
         </div>
       </Tooltip>
     </div>
