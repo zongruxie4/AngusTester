@@ -1736,7 +1736,7 @@ const sortMenuItems = [
             :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="t('task.list.search.scenarioPlaceholder')"
+            :placeholder="t('common.placeholders.selectScenario')"
             class="w-72 ml-2"
             showSearch
             @change="handleTargetIdChange">

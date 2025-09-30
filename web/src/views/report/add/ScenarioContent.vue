@@ -97,7 +97,7 @@ defineExpose({
       <Colon />
       <Select
         v-model:value="scenarioId"
-        :placeholder="t('reportAdd.scenarioContent.scenarioPlaceholder')"
+        :placeholder="t('common.placeholders.selectScenario')"
         :showSearch="true"
         :error="valid && !scenarioId"
         :disabled="!props.projectId || props.disabled"

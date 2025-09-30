@@ -933,7 +933,7 @@ onMounted(() => {
                 v-model:value="formState.targetId"
                 showSearch
                 internal
-                :placeholder="t('task.editModal.form.scenarioPlaceholder')"
+                :placeholder="t('common.placeholders.selectScenario')"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
                 :readonly="!!props.taskId" />

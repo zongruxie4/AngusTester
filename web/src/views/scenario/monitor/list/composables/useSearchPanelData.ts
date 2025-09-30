@@ -20,7 +20,7 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
     {
       valueKey: 'name',
       type: 'input',
-      placeholder: t('scenarioMonitor.searchPanel.searchNamePlaceholder'),
+      placeholder: t('common.placeholders.searchKeyword'),
       allowClear: true,
       maxlength: 100
     },
@@ -28,7 +28,7 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
       valueKey: 'scenarioId',
       type: 'select',
       allowClear: true,
-      placeholder: t('scenarioMonitor.searchPanel.selectScenarioPlaceholder'),
+      placeholder: t('common.placeholders.selectScenario'),
       action: `${TESTER}/scenario?projectId=${projectId}&fullTextSearch=true`,
       fieldNames: { value: 'id', label: 'name' }
     },
@@ -36,12 +36,16 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
       valueKey: 'createdBy',
       type: 'select-user',
       allowClear: true,
-      placeholder: t('scenarioMonitor.searchPanel.selectCreatorPlaceholder')
+      placeholder: t('common.placeholders.selectCreator')
     },
     {
       type: 'date-range',
       valueKey: 'createdDate',
-      showTime: true
+      showTime: true,
+      placeholder: [
+        t('common.placeholders.selectCreatedDate.0'),
+        t('common.placeholders.selectCreatedDate.1')
+      ]
     }
   ];
 

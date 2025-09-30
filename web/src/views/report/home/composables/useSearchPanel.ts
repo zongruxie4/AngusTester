@@ -83,13 +83,13 @@ export function useSearchPanel (
     // Audit information options
     auditOptions: createAuditOptions([
       {
-        key: 'myAdded',
-        name: t('reportHome.searchPanel.menuItems.myAdded'),
+        key: 'createdBy',
+        name: t('quickSearch.createdByMe'),
         fieldKey: 'createdBy'
       },
       {
-        key: 'myModified',
-        name: t('reportHome.searchPanel.menuItems.myModified'),
+        key: 'lastModifiedBy',
+        name: t('quickSearch.modifiedByMe'),
         fieldKey: 'lastModifiedBy'
       }
     ], String(userId.value || '')),
@@ -127,7 +127,8 @@ export function useSearchPanel (
           proTypeShowMap.value.showTask && CombinedTargetType.TASK,
           proTypeShowMap.value.showSprint && CombinedTargetType.TASK_SPRINT,
           CombinedTargetType.FUNC_PLAN, CombinedTargetType.FUNC_CASE,
-          CombinedTargetType.EXECUTION, CombinedTargetType.SCENARIO].filter(Boolean)).includes(data.value);
+          CombinedTargetType.EXECUTION, CombinedTargetType.SCENARIO]
+          .filter(Boolean)).includes(data.value);
       }
     },
     {

@@ -187,9 +187,6 @@
   },
   "activity": {
     "title": "Activity",
-    "chart": {
-      "resourceType": "Resource"
-    },
     "messages": {
       "maxResourceActivityHint": "Only the latest {maxResource} activities are saved for each resource. Activities exceeding {maxResource} will be automatically deleted."
     },
@@ -204,7 +201,6 @@
       "columns": {
         "operator": "Operator",
         "activityTime": "Activity Time",
-        "resourceType": "Resource Type",
         "targetId": "Target Resource ID",
         "targetName": "Target Resource",
         "activityContent": "Activity Content"

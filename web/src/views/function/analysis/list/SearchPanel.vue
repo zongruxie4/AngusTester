@@ -62,12 +62,12 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   // Audit information options
   auditOptions: createAuditOptions([
     {
-      key: 'myAdded',
+      key: 'createdBy',
       name: t('quickSearch.createdByMe'),
       fieldKey: 'createdBy'
     },
     {
-      key: 'myModified',
+      key: 'lastModifiedBy',
       name: t('quickSearch.modifiedByMe'),
       fieldKey: 'lastModifiedBy'
     }

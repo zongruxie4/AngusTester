@@ -50,7 +50,7 @@ export function useTableColumns () {
     },
     {
       key: 'targetType',
-      title: t('activity.list.columns.resourceType'),
+      title: t('common.resourceType'),
       dataIndex: 'targetType',
       customRender: ({ text }) => text?.message,
       width: '10%'

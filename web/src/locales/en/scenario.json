@@ -165,15 +165,6 @@
         }
       }
     },
-    "searchPanel": {
-      "searchNamePlaceholder": "Search name, description",
-      "selectScenarioPlaceholder": "Select scenario name",
-      "selectCreatorPlaceholder": "Select creator",
-      "sortOptions": {
-        "byAddTime": "By Add Time",
-        "byCreator": "By Creator"
-      }
-    },
     "actions": {
       "addMonitor": "Add Monitor"
     },

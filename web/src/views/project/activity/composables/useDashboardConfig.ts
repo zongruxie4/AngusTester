@@ -28,7 +28,7 @@ export function useDashboardConfig () {
       },
       {
         type: ChartType.PIE,
-        title: t('activity.chart.resourceType'),
+        title: t('common.resourceType'),
         field: 'target_type',
         enumKey: resourceTypeEnums
       }

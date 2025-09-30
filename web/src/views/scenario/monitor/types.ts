@@ -218,7 +218,7 @@ export interface UseMonitorUIReturn {
 export interface SearchPanelOption {
   valueKey: string;
   type: 'input' | 'select' | 'select-user' | 'date-range';
-  placeholder: string;
+  placeholder: string | string[];
   allowClear?: boolean;
   maxlength?: number;
   action?: string;
@@ -260,12 +260,4 @@ export interface UseSearchPanelDataReturn {
   searchChange: (data: SearchCriteria[]) => void;
   toSort: (sortData: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort }) => void;
   refresh: () => void;
-}
-
-export interface UseSearchPanelFiltersReturn {
-  // Data state
-  statusOpt: MenuItem[];
-  statusKeys: string[];
-  assocKeys: string[];
-  timeKeys: string[];
 }

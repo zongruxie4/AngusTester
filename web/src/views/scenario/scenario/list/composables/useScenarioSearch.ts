@@ -28,7 +28,7 @@ export function useScenarioSearch () {
     },
     {
       type: 'input' as const,
-      placeholder: t('common.placeholders.selectPluginType'),
+      placeholder: t('common.placeholders.searchPluginType'),
       valueKey: 'plugin',
       allowClear: true,
       trim: true,
@@ -49,7 +49,11 @@ export function useScenarioSearch () {
       showTime: true,
       valueKey: 'createdDate',
       valueType: 'multiple',
-      allowClear: true
+      allowClear: true,
+      placeholder: [
+        t('common.placeholders.selectCreatedDate.0'),
+        t('common.placeholders.selectCreatedDate.1')
+      ]
     }
   ]);
 

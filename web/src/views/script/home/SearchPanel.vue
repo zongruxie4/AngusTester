@@ -170,7 +170,7 @@ watch(
             :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="t('scriptHome.searchPanel.scenarioPlaceholder')"
+            :placeholder="t('common.placeholders.selectScenario')"
             class="w-72 ml-2"
             showSearch
             @change="(value: any) => handleSourceIdChange(value)">

@@ -162,15 +162,6 @@
         }
       }
     },
-    "searchPanel": {
-      "searchNamePlaceholder": "查询名称，描述",
-      "selectScenarioPlaceholder": "选择场景名称",
-      "selectCreatorPlaceholder": "选择创建人",
-      "sortOptions": {
-        "byAddTime": "按添加时间",
-        "byCreator": "按添加人"
-      }
-    },
     "actions": {
       "addMonitor": "添加监控"
     },
