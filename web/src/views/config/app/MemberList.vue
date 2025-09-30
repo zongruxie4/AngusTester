@@ -149,8 +149,8 @@ const {
     <div class="flex-1 pl-2">
       <div v-show="!!selectId" class="flex flex-col -mt-7">
         <div class="flex justify-between items-center mb-2">
-          <div class="flex-1 min-w-0 truncate">
-            <Hints :text="t('app.config.members.list.hints')" />
+          <div class="flex-1 min-w-0 text-3.5 truncate">
+            <Hints class="text-3.5" :text="t('app.config.members.list.hints')" />
           </div>
         </div>
         <div class="flex justify-between items-center gap-2">
