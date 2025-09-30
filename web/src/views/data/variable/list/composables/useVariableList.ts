@@ -162,7 +162,6 @@ export function useVariableList (projectId: string, notify: string) {
       }
     });
 
-    debugger;
 
 
     // Check if selection exceeds maximum limit

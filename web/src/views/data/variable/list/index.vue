@@ -101,7 +101,7 @@ const {
  */
 const handleBatchDelete = () => {
   initializeRowSelection();
-  executeBatchDelete();
+  executeBatchDelete(rowSelection.value);
 };
 
 /**
@@ -210,7 +210,6 @@ defineExpose({
 
         <!-- Data Table State -->
         <template v-else>
-          {{ selectedCount }}
           <!-- Search Panel -->
           <SearchPanel
             width="260"
