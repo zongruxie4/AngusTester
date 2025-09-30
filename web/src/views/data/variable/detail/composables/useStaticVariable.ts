@@ -97,6 +97,11 @@ export function useStaticVariable (
       return;
     }
 
+    if (key === 'cancel') {
+      emit('cancel');
+      return;
+    }
+
     if (key === 'delete') {
       emit('delete', variableId.value);
       return;

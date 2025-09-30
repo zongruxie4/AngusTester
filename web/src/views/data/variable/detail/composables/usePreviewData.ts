@@ -61,7 +61,7 @@ export function usePreviewData (props: {
     watch(() => props.dataSource, (newValue) => {
       reset();
 
-      if (!newValue) {
+      if (!newValue?.value) {
         return;
       }
 

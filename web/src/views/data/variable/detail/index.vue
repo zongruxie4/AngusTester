@@ -38,7 +38,8 @@ const {
   handleExport,
   handleClone,
   handleCopyLink,
-  handleRefresh
+  handleRefresh,
+  handleCancel
 } = useVariableDetail(props, {
   updateTabPane,
   deleteTabPane,
@@ -93,6 +94,7 @@ onMounted(() => {
           :projectId="props.projectId"
           :dataSource="dataSource"
           @ok="handleOk"
+          @cancel="handleCancel"
           @delete="handleDelete"
           @export="handleExport"
           @clone="handleClone"
@@ -105,6 +107,7 @@ onMounted(() => {
           :projectId="props.projectId"
           :dataSource="dataSource"
           @ok="handleOk"
+          @cancel="handleCancel"
           @delete="handleDelete"
           @export="handleExport"
           @clone="handleClone"
@@ -117,6 +120,7 @@ onMounted(() => {
           :projectId="props.projectId"
           :dataSource="dataSource"
           @ok="handleOk"
+          @cancel="handleCancel"
           @delete="handleDelete"
           @export="handleExport"
           @clone="handleClone"
@@ -129,6 +133,7 @@ onMounted(() => {
           :projectId="props.projectId"
           :dataSource="dataSource"
           @ok="handleOk"
+          @cancel="handleCancel"
           @delete="handleDelete"
           @export="handleExport"
           @clone="handleClone"

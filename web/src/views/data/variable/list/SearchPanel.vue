@@ -152,7 +152,7 @@ onMounted(() => {
       <!-- Action Buttons -->
       <div class="flex items-center space-x-3">
         <!-- Batch Delete Actions (when items are selected) -->
-        <template v-if="props.selectedNum && false && props.selectedNum > 0">
+        <template v-if="props.selectedNum && props.selectedNum > 0">
           <Button
             danger
             size="small"

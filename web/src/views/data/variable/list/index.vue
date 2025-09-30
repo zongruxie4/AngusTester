@@ -210,6 +210,7 @@ defineExpose({
 
         <!-- Data Table State -->
         <template v-else>
+          {{ selectedCount }}
           <!-- Search Panel -->
           <SearchPanel
             width="260"
