@@ -118,7 +118,7 @@ export function useSearchPanel (
     },
     {
       valueKey: 'targetType',
-      placeholder: t('reportHome.searchPanelOptions.resourceTypePlaceholder'),
+      placeholder: t('common.placeholders.selectResourceType'),
       type: 'select-enum',
       enumKey: CombinedTargetType as any,
       excludes: (data: { message: string; value: CombinedTargetType }) => {
@@ -134,7 +134,7 @@ export function useSearchPanel (
     {
       type: 'select',
       valueKey: 'targetId',
-      placeholder: t('reportHome.searchPanelOptions.resourcePlaceholder'),
+      placeholder: t('common.placeholders.selectResource'),
       noDefaultSlot: true
     },
     {
@@ -146,8 +146,8 @@ export function useSearchPanel (
       type: 'date-range',
       valueKey: 'createdDate',
       placeholder: [
-        t('reportHome.searchPanelOptions.createTimeFrom'),
-        t('reportHome.searchPanelOptions.createTimeTo')
+        t('common.placeholders.selectCreatedDate.0'),
+        t('common.placeholders.selectCreatedDate.1')
       ],
       showTime: true
     }
@@ -364,14 +364,14 @@ export function useSearchPanel (
         // Save to database
         if (db) {
           const dbData: {
-            a?: SearchCriteria[];
-            b?: SearchCriteria;
+            filters_?: SearchCriteria[];
+            targetIdFilter_?: SearchCriteria;
           } = {};
           if (_filters.length) {
-            dbData.a = cloneDeep(_filters);
+            dbData.filters_ = cloneDeep(_filters);
           }
           if (targetIdFilter.value.value) {
-            dbData.b = cloneDeep(targetIdFilter.value);
+            dbData.targetIdFilter_ = cloneDeep(targetIdFilter.value);
           }
           if (Object.keys(dbData).length) {
             db.add({

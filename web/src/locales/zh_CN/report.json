@@ -1,32 +1,13 @@
 {
   "reportHome": {
     "introduce": {
-      "description": "通过\"报告\"帮助团队可以全面总结研发活动的各个方面，包括进度、效能、质量、执行情况、结果分析等，这有助于提高透明度和沟通，为项目的成功交付提供有力支持。",
+      "description": "通过报告帮助团队可以全面总结研发活动的各个方面，包括进度、效能、质量、执行情况、结果分析等，这有助于提高透明度和沟通，为项目的成功交付提供有力支持。",
       "features": {
         "generateReport": "根据报告模版在指定时间生成报告，并通过事件通知到相关人。",
         "viewReport": "查看我添加的或者授权给我的报告及内容。"
       }
     },
     "searchPanel": {
-      "searchOptions": {
-        "namePlaceholder": "查询名称、描述",
-        "resourceTypePlaceholder": "选择资源类型",
-        "resourcePlaceholder": "选择资源",
-        "creatorPlaceholder": "添加人",
-        "createTimeFrom": "添加时间从",
-        "createTimeTo": "添加时间到"
-      },
-      "resourceSelect": {
-        "project": "选择项目",
-        "service": "选择服务",
-        "api": "选择接口",
-        "task": "选择任务",
-        "sprint": "选择迭代",
-        "plan": "选择计划",
-        "case": "选择用例",
-        "execution": "选择执行",
-        "scenario": "选择场景"
-      },
       "sortMenus": {
         "byCreateDate": "按添加时间",
         "byCreator": "按添加人"
@@ -40,11 +21,6 @@
       "getTokenFailed": "获取token失败",
       "shareLinkCopied": "已复制分享链接到剪贴板",
       "generatingReport": "正在生成报告"
-    },
-    "modal": {
-      "deleteReport": "删除报告",
-      "confirmDelete": "确认删除报告「{name}」吗？",
-      "reportPermission": "报告权限"
     },
     "actions": {
       "generateNow": "立即生成"
@@ -276,10 +252,6 @@
     "sprintContent": {
       "filter": "过滤",
       "sprintPlaceholder": "选择迭代",
-      "organization": "组织人员",
-      "userPlaceholder": "选择用户",
-      "deptPlaceholder": "选择部门",
-      "groupPlaceholder": "选择组",
       "organizationHints": "用于输出指定组织或人员项目报告。",
       "time": "时间",
       "timeHints": "用于输出指定时间范围项目报告。",
@@ -293,7 +265,7 @@
         "others": "其他说明",
         "task": "研发任务",
         "taskTotal": "任务汇总结果",
-        "taskburndown": "燃尽图",
+        "taskBurndown": "燃尽图",
         "groupedTotal": "分组统计",
         "assigneeId": "经办人汇总结果",
         "assigneeId_taskTotal": "任务汇总结果",
@@ -337,10 +309,6 @@
     },
     "projectProcessContent": {
       "filter": "过滤",
-      "organization": "组织人员",
-      "userPlaceholder": "选择用户",
-      "deptPlaceholder": "选择部门",
-      "groupPlaceholder": "选择组",
       "organizationHints": "用于输出指定组织或人员项目报告。",
       "time": "时间",
       "timeHints": "用于输出指定时间范围项目报告。",
@@ -350,29 +318,25 @@
         "projectInfo": "项目信息",
         "task": "研发任务",
         "taskTotal": "任务汇总结果",
-        "taskburndown": "任务燃尽图",
-        "taskgroup": "任务分组统计",
+        "taskBurndown": "任务燃尽图",
+        "taskGroup": "任务分组统计",
         "func": "功能测试",
         "funcTotal": "用例测试汇总结果",
         "funcReviewTotal": "用例评审汇总结果",
-        "caseburndown": "用例燃尽图",
-        "casegroup": "用例分组统计",
+        "caseBurndown": "用例燃尽图",
+        "caseGroup": "用例分组统计",
         "apis": "接口测试",
         "apisTotal": "接口测试汇总结果",
-        "apisgroup": "接口分组统计",
+        "apisGroup": "接口分组统计",
         "scenario": "场景测试",
         "scenarioTotal": "场景测试汇总结果",
-        "scenariogroup": "场景分组统计"
+        "scenarioGroup": "场景分组统计"
       }
     },
     "planContent": {
       "filter": "过滤",
       "testPlan": "测试计划",
       "testPlanPlaceholder": "选择计划",
-      "organization": "组织人员",
-      "userPlaceholder": "选择用户",
-      "deptPlaceholder": "选择部门",
-      "groupPlaceholder": "选择组",
       "organizationHints": "用于输出指定组织或人员项目报告。",
       "time": "时间",
       "timeHints": "用于输出指定时间范围项目报告。",
@@ -389,9 +353,9 @@
         "caseTotal": "用例汇总结果",
         "casesTotal": "测试汇总结果",
         "casesReviewTotal": "评审汇总结果",
-        "hurndowm": "燃尽图",
+        "burndown": "燃尽图",
         "grouped": "分组统计",
-        "resultkDetail": "测试人汇总结果",
+        "resultDetail": "测试人汇总结果",
         "testTotal": "测试汇总结果",
         "reviewTotal": "评审汇总结果",
         "groupedTotal": "分组统计"

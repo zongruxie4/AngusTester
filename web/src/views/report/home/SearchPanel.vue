@@ -63,7 +63,7 @@ const {
             :action="`${TESTER}/project?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="$t('reportHome.searchPanel.resourceSelect.project')"
+            :placeholder="$t('common.placeholders.selectProject')"
             class="w-72 ml-2"
             showSearch
             @change="(value: any) => targetIdChange(String(value || ''))" />
@@ -189,7 +189,7 @@ const {
 
         <Button size="small" @click="toAuth">
           <Icon icon="icon-quanxian1" class="mr-1 text-3.5" />
-          <span>{{ $t('reportHome.searchPanel.actions.reportPermission') }}</span>
+          <span>{{ $t('actions.permission') }}</span>
         </Button>
 
         <Button size="small" @click="toRefresh">

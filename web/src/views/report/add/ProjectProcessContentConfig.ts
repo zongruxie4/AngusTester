@@ -17,11 +17,11 @@ export const contentTreeData = [
       },
       {
         title: t('chart.burndown.countBurndown'),
-        key: 'taskburndown'
+        key: 'taskBurndown'
       },
       {
-        title: t('reportAdd.projectProcessContent.contentTree.taskgroup'),
-        key: 'taskgroup'
+        title: t('reportAdd.projectProcessContent.contentTree.taskGroup'),
+        key: 'taskGroup'
       }
     ]
   },
@@ -39,11 +39,11 @@ export const contentTreeData = [
       },
       {
         title: t('chart.burndown.countBurndown'),
-        key: 'caseburndown'
+        key: 'caseBurndown'
       },
       {
-        title: t('reportAdd.projectProcessContent.contentTree.casegroup'),
-        key: 'casegroup'
+        title: t('reportAdd.projectProcessContent.contentTree.caseGroup'),
+        key: 'caseGroup'
       }
     ]
   },
@@ -56,8 +56,8 @@ export const contentTreeData = [
         key: 'apisTotal'
       },
       {
-        title: t('reportAdd.projectProcessContent.contentTree.apisgroup'),
-        key: 'apisgroup'
+        title: t('reportAdd.projectProcessContent.contentTree.apisGroup'),
+        key: 'apisGroup'
       }
     ]
   },
@@ -70,8 +70,8 @@ export const contentTreeData = [
         key: 'scenarioTotal'
       },
       {
-        title: t('reportAdd.projectProcessContent.contentTree.scenariogroup'),
-        key: 'scenariogroup'
+        title: t('reportAdd.projectProcessContent.contentTree.scenarioGroup'),
+        key: 'scenarioGroup'
       }
     ]
   }

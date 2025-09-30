@@ -123,6 +123,7 @@ defineExpose({
     <span class="h-4 w-1.5 bg-blue-border1"></span>
     <span>{{ t('reportAdd.sprintContent.filter') }}</span>
   </div>
+
   <div class="mt-2  pl-2 space-y-2">
     <div class="flex flex-1 items-center space-x-2">
       <div class="w-12 text-right">
@@ -144,20 +145,22 @@ defineExpose({
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
     </div>
+
     <div class="flex flex-1 items-center space-x-2">
-      <span class="w-12 text-right">{{ t('reportAdd.sprintContent.organization') }}</span><Colon />
+      <span class="w-12 text-right">{{ t('common.organization') }}</span><Colon />
       <Select
         v-model:value="creatorObjectType"
         :options="authObjectTypeOpt"
         class="w-20"
         @change="handleTypeChange" />
+
       <Select
         v-if="creatorObjectType === 'USER'"
         v-model:value="creatorObjectId"
         :showSearch="true"
         allowClear
         class="w-50"
-        :placeholder="t('reportAdd.sprintContent.userPlaceholder')"
+        :placeholder="t('organization.placeholders.selectUser')"
         :action="`${GM}/user?fullTextSearch=true`"
         :fieldNames="{ label: 'fullName', value: 'id' }">
       </Select>
@@ -165,7 +168,7 @@ defineExpose({
       <Select
         v-if="creatorObjectType === 'DEPT'"
         v-model:value="creatorObjectId"
-        :placeholder="t('reportAdd.sprintContent.deptPlaceholder')"
+        :placeholder="t('organization.placeholders.selectDept')"
         class="w-50"
         allowClear
         :showSearch="true"
@@ -176,7 +179,7 @@ defineExpose({
       <Select
         v-if="creatorObjectType === 'GROUP'"
         v-model:value="creatorObjectId"
-        :placeholder="t('reportAdd.sprintContent.groupPlaceholder')"
+        :placeholder="t('organization.placeholders.selectGroup')"
         class="w-50"
         allowClear
         :showSearch="true"
@@ -185,6 +188,7 @@ defineExpose({
       </Select>
       <Hints :text="t('reportAdd.sprintContent.organizationHints')" />
     </div>
+
     <div class="flex flex-1 items-center space-x-2">
       <span class="w-12 text-right">{{ t('reportAdd.sprintContent.time') }}</span><Colon />
       <DatePicker
@@ -195,13 +199,13 @@ defineExpose({
       <Hints :text="t('reportAdd.sprintContent.timeHints')" />
     </div>
   </div>
-  <div class="flex items-center space-x-2">
-  </div>
+
   <div class="flex items-center space-x-1 mt-4">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
     <span>{{ t('reportAdd.sprintContent.content') }}</span>
     <Hints :text="t('reportAdd.sprintContent.contentHints')" />
   </div>
+
   <Tree
     v-model:checkedKeys="checked"
     class="mt-2 text-3"

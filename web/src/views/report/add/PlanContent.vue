@@ -143,7 +143,7 @@ defineExpose({
       </Select>
     </div>
     <div class="flex flex-1 items-center space-x-2">
-      <span class="w-16 text-right">{{ t('reportAdd.planContent.organization') }}</span><Colon />
+      <span class="w-16 text-right">{{ t('common.organization') }}</span><Colon />
       <Select
         v-model:value="creatorObjectType"
         :options="authObjectTypeOpt"
@@ -155,7 +155,7 @@ defineExpose({
         :showSearch="true"
         allowClear
         class="w-50"
-        :placeholder="t('reportAdd.planContent.userPlaceholder')"
+        :placeholder="t('organization.placeholders.selectUser')"
         :action="`${GM}/user?fullTextSearch=true`"
         :fieldNames="{ label: 'fullName', value: 'id' }">
       </Select>
@@ -163,7 +163,7 @@ defineExpose({
       <Select
         v-if="creatorObjectType === 'DEPT'"
         v-model:value="creatorObjectId"
-        :placeholder="t('reportAdd.planContent.deptPlaceholder')"
+        :placeholder="t('organization.placeholders.selectDept')"
         class="w-50"
         allowClear
         :showSearch="true"
@@ -174,7 +174,7 @@ defineExpose({
       <Select
         v-if="creatorObjectType === 'GROUP'"
         v-model:value="creatorObjectId"
-        :placeholder="t('reportAdd.planContent.groupPlaceholder')"
+        :placeholder="t('organization.placeholders.selectGroup')"
         class="w-50"
         allowClear
         :showSearch="true"

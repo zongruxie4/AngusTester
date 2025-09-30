@@ -35,7 +35,7 @@ export const contentTreeData = [
       },
       {
         title: t('chart.burndown.countBurndown'),
-        key: 'taskburndown'
+        key: 'taskBurndown'
       },
       {
         title: t('reportAdd.sprintContent.contentTree.groupedTotal'),

@@ -46,8 +46,8 @@ export const contentTreeData = [
         key: 'casesReviewTotal'
       },
       {
-        title: t('reportAdd.planContent.contentTree.hurndowm'),
-        key: 'hurndowm'
+        title: t('reportAdd.planContent.contentTree.burndown'),
+        key: 'burndown'
       },
       {
         title: t('reportAdd.planContent.contentTree.grouped'),
@@ -56,8 +56,8 @@ export const contentTreeData = [
     ]
   },
   {
-    title: t('reportAdd.planContent.contentTree.resultkDetail'),
-    key: 'resultkDetail',
+    title: t('reportAdd.planContent.contentTree.resultDetail'),
+    key: 'resultDetail',
     children: [
       {
         title: t('reportAdd.planContent.contentTree.testTotal'),

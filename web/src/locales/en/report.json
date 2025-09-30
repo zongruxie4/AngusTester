@@ -1,50 +1,25 @@
 {
   "reportHome": {
     "introduce": {
-      "description": "Through 'reports', teams can comprehensively summarize all aspects of development activities, including progress, efficiency, quality, execution status, result analysis, etc. This helps improve transparency and communication, providing strong support for successful project delivery.",
+      "description": "Through reports, teams can comprehensively summarize all aspects of development activities, including progress, efficiency, quality, execution status, result analysis, etc. This helps improve transparency and communication, providing strong support for successful project delivery.",
       "features": {
         "generateReport": "Generate reports based on report templates at specified times and notify relevant personnel through events.",
         "viewReport": "View reports I added or reports authorized to me and their content."
       }
     },
     "searchPanel": {
-      "searchOptions": {
-        "namePlaceholder": "Search name, description",
-        "resourceTypePlaceholder": "Select resource type",
-        "resourcePlaceholder": "Select resource",
-        "creatorPlaceholder": "Creator",
-        "createTimeFrom": "Create time from",
-        "createTimeTo": "Create time to"
-      },
-      "resourceSelect": {
-        "project": "Select project",
-        "service": "Select service",
-        "api": "Select API",
-        "task": "Select task",
-        "sprint": "Select sprint",
-        "plan": "Select plan",
-        "case": "Select case",
-        "execution": "Select execution",
-        "scenario": "Select scenario"
-      },
       "sortMenus": {
         "byCreateDate": "By create time",
         "byCreator": "By creator"
       },
       "actions": {
-        "addReport": "Add Report",
-        "reportPermission": "Report Permission"
+        "addReport": "Add Report"
       }
     },
     "messages": {
-      "deleteSuccess": "Delete successful",
       "getTokenFailed": "Failed to get token",
       "shareLinkCopied": "Share link copied to clipboard",
       "generatingReport": "Generating report"
-    },
-    "modal": {
-      "confirmDelete": "Are you sure you want to delete report 「{name}」?",
-      "reportPermission": "Report Permission"
     },
     "actions": {
       "generateNow": "Generate Now"
@@ -88,9 +63,7 @@
         "reportName": "Report Name",
         "template": "Template",
         "generateTime": "Generate Time",
-        "deleteRecord": "Delete Report Record",
-        "confirmDelete": "Confirm delete report record「{name}」?",
-        "deleteSuccess": "Delete successful"
+        "deleteRecord": "Delete Report Record"
       }
     }
   },
@@ -279,10 +252,6 @@
     "sprintContent": {
       "filter": "Filter",
       "sprintPlaceholder": "Select sprint",
-      "organization": "Organization",
-      "userPlaceholder": "Select user",
-      "deptPlaceholder": "Select department",
-      "groupPlaceholder": "Select group",
       "organizationHints": "Used to output project reports for specified organizations or personnel.",
       "time": "Time",
       "timeHints": "Used to output project reports for specified time ranges.",
@@ -296,7 +265,7 @@
         "others": "Other information",
         "task": "Development task",
         "taskTotal": "Task summary results",
-        "taskburndown": "Burn-down chart",
+        "taskBurndown": "Burn-down chart",
         "groupedTotal": "Grouped statistics",
         "assigneeId": "Assignee summary results",
         "assigneeId_taskTotal": "Task summary results",
@@ -340,10 +309,6 @@
     },
     "projectProcessContent": {
       "filter": "Filter",
-      "organization": "Organization personnel",
-      "userPlaceholder": "Select user",
-      "deptPlaceholder": "Select department",
-      "groupPlaceholder": "Select group",
       "organizationHints": "Used to output project reports for specified organizations or personnel.",
       "time": "Time",
       "timeHints": "Used to output project reports for specified time ranges.",
@@ -353,29 +318,25 @@
         "projectInfo": "Project information",
         "task": "Development task",
         "taskTotal": "Task summary results",
-        "taskburndown": "Task burn-down chart",
-        "taskgroup": "Task grouped statistics",
+        "taskBurndown": "Task burn-down chart",
+        "taskGroup": "Task grouped statistics",
         "func": "Functional test",
         "funcTotal": "Test case summary results",
         "funcReviewTotal": "Test case review summary results",
-        "caseburndown": "Test case burn-down chart",
-        "casegroup": "Test case grouped statistics",
+        "caseBurndown": "Test case burn-down chart",
+        "caseGroup": "Test case grouped statistics",
         "apis": "API test",
         "apisTotal": "API test summary results",
-        "apisgroup": "API grouped statistics",
+        "apisGroup": "API grouped statistics",
         "scenario": "Scenario test",
         "scenarioTotal": "Scenario test summary results",
-        "scenariogroup": "Scenario grouped statistics"
+        "scenarioGroup": "Scenario grouped statistics"
       }
     },
     "planContent": {
       "filter": "Filter",
       "testPlan": "Test plan",
       "testPlanPlaceholder": "Select plan",
-      "organization": "Organization personnel",
-      "userPlaceholder": "Select user",
-      "deptPlaceholder": "Select department",
-      "groupPlaceholder": "Select group",
       "organizationHints": "Used to output project reports for specified organizations or personnel.",
       "time": "Time",
       "timeHints": "Used to output project reports for specified time ranges.",
@@ -392,9 +353,9 @@
         "caseTotal": "Test case summary results",
         "casesTotal": "Test summary results",
         "casesReviewTotal": "Review summary results",
-        "hurndowm": "Burn-down chart",
+        "burndown": "Burn-down chart",
         "grouped": "Grouped statistics",
-        "resultkDetail": "Test person summary results",
+        "resultDetail": "Test person summary results",
         "testTotal": "Test summary results",
         "reviewTotal": "Review summary results",
         "groupedTotal": "Grouped statistics"
