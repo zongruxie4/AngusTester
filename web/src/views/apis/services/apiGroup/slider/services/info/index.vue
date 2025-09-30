@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Grid, Hints, Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { TESTER, appContext, enumUtils } from '@xcan-angus/infra';
-import { ApiStatus } from '@/enums/enums';
+import { ApiStatus, ServicesPermission } from '@/enums/enums';
 
 import { services } from '@/api/tester';
 import { IInfomation, Status } from './PropsType';
@@ -286,7 +286,7 @@ onMounted(() => {
   <AsyncComponent :visible="visible">
     <AuthorizeModal
       v-model:visible="visible"
-      enumKey="ServicesPermission"
+      :enumKey="ServicesPermission"
       :appId="appInfo?.id"
       :listUrl="`${TESTER}/services/auth?serviceId=${props.id}`"
       :delUrl="`${TESTER}/services/auth`"

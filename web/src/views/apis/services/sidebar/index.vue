@@ -6,6 +6,7 @@ import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
+import { ServicesPermission } from '@/enums/enums';
 import { services, apis } from '@/api/tester';
 import { actions, ModalsConfig, ServiceProject } from './PropsType';
 
@@ -1000,7 +1001,7 @@ const importSamples = async () => {
   <AsyncComponent :visible="modalsConfig.authModalVisible">
     <AuthorizeModal
       v-model:visible="modalsConfig.authModalVisible"
-      enumKey="ServicesPermission"
+      :enumKey="ServicesPermission"
       :appId="appInfo?.id"
       :listUrl="`${TESTER}/services/auth?serviceId=${modalsConfig.activeId}`"
       :delUrl="`${TESTER}/services/auth`"

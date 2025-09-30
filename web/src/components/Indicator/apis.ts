@@ -1,55 +1,116 @@
+// Infrastructure imports
 import { TESTER, http } from '@xcan-angus/infra';
 
 let baseUrl = '';
-class API {
+
+/**
+ * API class for indicator management operations
+ */
+class IndicatorAPI {
   constructor () {
     baseUrl = TESTER + '/indicator';
   }
 
-  // 修改性能指标
-  modifyPerf (params: {targetId: string; targetType: string; threads: string; tps: string; errorRate: string; duration: {value: string; unit: string}}): Promise<[Error | null, any]> {
+  /**
+   * Update performance indicator configuration
+   * @param params - Performance indicator parameters
+   * @returns Promise with error and response data
+   */
+  updatePerformanceIndicator (params: {targetId: string; targetType: string; threads: string; tps: string; errorRate: string; duration: {value: string; unit: string}}): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/perf`, params);
   }
 
-  // 修改稳定性指标
-  modifyStability (params: {targetId: string; targetType: string; threads: string; tps: string; errorRate: string; duration: {value: string; unit: string}}): Promise<[Error | null, any]> {
+  /**
+   * Update stability indicator configuration
+   * @param params - Stability indicator parameters
+   * @returns Promise with error and response data
+   */
+  updateStabilityIndicator (params: {targetId: string; targetType: string; threads: string; tps: string; errorRate: string; duration: {value: string; unit: string}}): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/stability`, params);
   }
 
-  // 修改功能指标
-  modifyFunc (params: {targetId: string; targetType: string; }): Promise<[Error | null, any]> {
+  /**
+   * Update functionality indicator configuration
+   * @param params - Functionality indicator parameters
+   * @returns Promise with error and response data
+   */
+  updateFunctionalityIndicator (params: {targetId: string; targetType: string; }): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/func`, params);
   }
 
-  // 获取性能指标
-  loadPerf (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+  /**
+   * Load performance indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  loadPerformanceIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${targetType}/${targetId}/perf/detailOrDefault`);
   }
 
-  // 获取稳定性指标
-  loadStaibility (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+  /**
+   * Load stability indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  loadStabilityIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${targetType}/${targetId}/stability/detailOrDefault`);
   }
 
-  // 获取功能能指标
-  loadFunc (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+  /**
+   * Load functionality indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  loadFunctionalityIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${targetType}/${targetId}/func/detailOrDefault`);
   }
 
-  // 删除性能指标
-  delPerf (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+  /**
+   * Delete performance indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  deletePerformanceIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${targetType}/${targetId}/perf`);
   }
 
-  // 删除稳定性指标
-  delStaibility (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+  /**
+   * Delete stability indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  deleteStabilityIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${targetType}/${targetId}/stability`);
   }
 
-  // 删除功能指标
-  delFunc (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
+  /**
+   * Delete functionality indicator configuration
+   * @param targetType - Type of target (API, SERVICE, SCENARIO)
+   * @param targetId - ID of the target
+   * @returns Promise with error and response data
+   */
+  deleteFunctionalityIndicator (targetType: 'API'|'SERVICE'|'SCENARIO', targetId: string) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${targetType}/${targetId}/func`);
   }
 }
 
-export const indicator = new API();
+// Export indicator API instance with legacy aliases for backward compatibility
+export const indicator = new IndicatorAPI();
+
+// Legacy method aliases for backward compatibility
+export const indicatorLegacy = {
+  modifyPerf: indicator.updatePerformanceIndicator,
+  modifyStability: indicator.updateStabilityIndicator,
+  modifyFunc: indicator.updateFunctionalityIndicator,
+  loadPerf: indicator.loadPerformanceIndicator,
+  loadStaibility: indicator.loadStabilityIndicator,
+  loadFunc: indicator.loadFunctionalityIndicator,
+  delPerf: indicator.deletePerformanceIndicator,
+  delStaibility: indicator.deleteStabilityIndicator,
+  delFunc: indicator.deleteFunctionalityIndicator
+};

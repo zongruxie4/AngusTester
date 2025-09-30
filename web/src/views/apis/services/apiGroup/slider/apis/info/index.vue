@@ -14,6 +14,7 @@ import { Button, Tag, TypographyParagraph } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
+import { ApiPermission } from '@/enums/enums';
 import { apis } from '@/api/tester';
 import DescriptionModal from '@/views/apis/services/components/markdownDescModal/index.vue';
 
@@ -471,7 +472,7 @@ const openInterfaceAuthDialog = () => {
     <AsyncComponent :visible="state.interfaceAuthVisible">
       <AuthorizeModal
         v-model:visible="state.interfaceAuthVisible"
-        enumKey="ApiPermission"
+        :enumKey="ApiPermission"
         :appId="appInfo?.id"
         :listUrl="`${TESTER}/apis/auth?apisId=${props.id}`"
         :delUrl="`${TESTER}/apis/auth`"

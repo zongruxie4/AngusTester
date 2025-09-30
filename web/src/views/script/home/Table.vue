@@ -388,7 +388,7 @@ watch(() => props.resetSelectedIdsNotify, (newValue) => {
   <AsyncComponent :visible="authModalVisible">
     <AuthorizeModal
       v-model:visible="authModalVisible"
-      enumKey="ScriptPermission"
+      :enumKey="ScriptPermission"
       :appId="props.appId"
       :listUrl="`${TESTER}/script/auth?scriptId=${selectedData?.id}`"
       :delUrl="`${TESTER}/script/auth`"

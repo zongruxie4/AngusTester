@@ -10,6 +10,7 @@ import { useSpaceData } from './composables/useSpaceData';
 import { useTableColumns } from './composables/useTableColumns';
 import { useSpaceManagement } from './composables/useSpaceManagement';
 import { useDrawerMenu } from './composables/useDrawerMenu';
+import { SpacePermission } from '@/enums/enums';
 
 const { t } = useI18n();
 
@@ -293,7 +294,7 @@ onMounted(async () => {
     <AsyncComponent :visible="authModalVisible">
       <AuthorizeModal
         v-model:visible="authModalVisible"
-        enumKey="SpacePermission"
+        :enumKey="SpacePermission"
         :appId="appInfo?.id"
         :listUrl="`${STORAGE}/space/auth?spaceId=${selectId}`"
         :delUrl="`${STORAGE}/space/auth`"

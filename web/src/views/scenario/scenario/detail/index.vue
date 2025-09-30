@@ -202,7 +202,7 @@ onMounted(() => {
     <AsyncComponent :visible="toAuthVisible">
       <AuthorizeModal
         v-model:visible="toAuthVisible"
-        enumKey="ScenarioPermission"
+        :enumKey="ScenarioPermission"
         :appId="props.appInfo?.id"
         :listUrl="`${TESTER}/scenario/auth?scenarioId=${props.data?.scenarioId}`"
         :delUrl="`${TESTER}/scenario/auth`"
