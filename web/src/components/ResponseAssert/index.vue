@@ -37,7 +37,7 @@ const emit = defineEmits<{
   (e: 'rendered', value: true);
 }>();
 
-const MonacoEditor = defineAsyncComponent(() => import('../MonacoEditor/index.vue'));
+const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEditor/index.vue'));
 
 const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 

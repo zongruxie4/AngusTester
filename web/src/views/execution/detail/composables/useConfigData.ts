@@ -11,11 +11,11 @@ import { useI18n } from 'vue-i18n';
  * @param execId - The execution ID for saving configuration
  * @param execName - The execution name
  * @param scriptInfo - Script information object
- * @param loading - Loading state getter function
+ * @param _loading - Loading state getter function
  * @param emit - Vue emit function for component events
  * @returns Configuration data management functions and reactive state
  */
-export const useConfigData = (execId: string, execName: string, scriptInfo: any, loading: any, emit: any) => {
+export const useConfigData = (execId: string, execName: string, scriptInfo: any, _loading: any, emit: any) => {
   const { t } = useI18n();
   // Reference to the execution setting form component
   const execSettingFormRef = ref();

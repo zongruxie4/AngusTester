@@ -3,11 +3,22 @@ import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Arrow, HttpMethodTag } from '@xcan-angus/vue-ui';
 import { Badge } from 'ant-design-vue';
+import { ScriptType } from '@xcan-angus/infra';
 
 // Define component props
 interface Props {
-  dataSource: { apisName: string; method: string; uri: string, passed: boolean; apisId: string, open: boolean }[];
-  scriptType: 'TEST_PERFORMANCE'|'TEST_STABILITY'
+  dataSource: {
+    apisName: string;
+    method: string;
+    uri: string;
+    passed: boolean;
+    apisId: string;
+    open: boolean;
+    indicatorPerf: any;
+    indicatorStability: any;
+    sampleSummary: any
+  }[];
+  scriptType: ScriptType
 }
 
 // Import result components asynchronously
@@ -17,7 +28,7 @@ const StabilityResult = defineAsyncComponent(() => import('./StabilityResult.vue
 const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ([
-    { apisName: 'string', method: 'string', uri: 'string', passed: false, apisId: 'string', open: false }
+    { apisName: 'string', method: 'string', uri: 'string', passed: false, apisId: 'string', open: false, indicatorPerf: {}, indicatorStability: {}, sampleSummary: {} }
   ])
 });
 
@@ -59,7 +70,7 @@ const toggleOpen = (apisId) => {
 
       <!-- Performance test results -->
       <PerfResult
-        v-if="props.scriptType === 'TEST_PERFORMANCE'"
+        v-if="props.scriptType === ScriptType.TEST_PERFORMANCE"
         v-show="openMap[api.apisId]"
         class="bg-white"
         :indicatorPerf="api.indicatorPerf"
@@ -68,7 +79,7 @@ const toggleOpen = (apisId) => {
 
       <!-- Stability test results -->
       <StabilityResult
-        v-if="props.scriptType === 'TEST_STABILITY'"
+        v-if="props.scriptType === ScriptType.TEST_STABILITY"
         v-show="openMap[api.apisId]"
         class="bg-white"
         :indicatorStability="api.indicatorStability"

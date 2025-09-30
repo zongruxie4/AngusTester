@@ -214,6 +214,7 @@ onBeforeUnmount(() => {
               :class="scriptTypes[item?.scriptType?.value]?.color">
               {{ scriptTypes[item?.scriptType?.value]?.text }}
             </div>
+
             <div class="flex-none flex space-x-2" style="width: calc(100% - 562px)">
               <div class="flex items-center h-7 justify-between pr-4" style="width:30%">
                 <div class="flex items-center mr-2" style="width:calc(100% - 32px)">
@@ -241,6 +242,7 @@ onBeforeUnmount(() => {
                       @blur="editName($event.target.value, item)" />
                   </template>
                 </div>
+
                 <div style="width:42px" class="flex-none">
                   <tmeplate v-if="item?.trial">
                     <div
@@ -250,6 +252,7 @@ onBeforeUnmount(() => {
                   </tmeplate>
                 </div>
               </div>
+
               <div class="flex items-center" style="width:13%;max-width:90px;">
                 <span
                   class="px-3 py-0.25 rounded-2xl text-center truncate cursor-pointer"
@@ -258,9 +261,11 @@ onBeforeUnmount(() => {
                   {{ item?.plugin }}
                 </span>
               </div>
+
               <div class="flex items-center" style="width:13%">
                 <ScriptTypeTag :value="item?.scriptType" class="transform-gpu -translate-y-0.25" />
               </div>
+
               <div class="flex items-center whitespace-nowrap" style="width:13%">
                 <div class="w-1.5 h-1.5 mr-1 rounded" :class="resBgColorMap[item.status?.value]"></div>
                 <span>{{ item?.status?.message }}</span>
@@ -291,6 +296,7 @@ onBeforeUnmount(() => {
                   </Tooltip>
                 </template>
               </div>
+
               <div class="flex items-center" style="width:20%">
                 <span class="whitespace-nowrap">{{ t('execution.basic.concurrency') }}
                   <Colon class="mr-1.5" />
@@ -322,6 +328,7 @@ onBeforeUnmount(() => {
                 </div>
               </div>
             </div>
+
             <div class="flex items-center text-text-sub-content font-medium flex-none space-x-2 justify-end">
               <div>
                 <span>{{ t('common.id') }}:</span>
@@ -337,6 +344,7 @@ onBeforeUnmount(() => {
               </div>
             </div>
           </div>
+
           <div class="py-0.5 px-5 text-text-content flex items-center space-x-3.5">
             <div class="flex space-x-3.5 justify-between items-center" style="width: calc(100% - 68px)">
               <div class="flex flex-col justify-center flex-none" style="width:20%">
@@ -371,6 +379,7 @@ onBeforeUnmount(() => {
                       </template>
                     </div>
                   </div>
+
                   <Progress
                     :showInfo="false"
                     :width="90"
@@ -379,6 +388,7 @@ onBeforeUnmount(() => {
                     :percent="item?.currentDurationProgress ? +item.currentDurationProgress : 0">
                   </Progress>
                 </div>
+
                 <div v-if="item?.iterationsProgress" style="max-width:260px;">
                   <div class="flex justify-center items-center -mb-1">
                     <div>{{ +item?.currentIterations || "0" }}</div>
@@ -407,6 +417,7 @@ onBeforeUnmount(() => {
                       </template>
                     </div>
                   </div>
+
                   <Progress
                     :showInfo="false"
                     :width="90"
@@ -416,6 +427,7 @@ onBeforeUnmount(() => {
                   </Progress>
                 </div>
               </div>
+
               <div style="width:38%" class="flex-none">
                 <div class="flex items-center space-x-5 justify-between text-3" style="max-width:438px;">
                   <div class="rounded">
@@ -429,6 +441,7 @@ onBeforeUnmount(() => {
                         {{ getNumFixed(item?.sampleSummaryInfo?.ops || '0') }}
                       </div>
                     </div>
+
                     <div class="flex items-center border border-border-divider rounded mt-2">
                       <div
                         class="px-2.25 py-1.5 rounded-l text-text-sub-content flex items-center"
@@ -441,6 +454,7 @@ onBeforeUnmount(() => {
                       </div>
                     </div>
                   </div>
+
                   <div>
                     <div class="flex items-center border border-border-divider rounded">
                       <div
@@ -452,6 +466,7 @@ onBeforeUnmount(() => {
                         {{ getNumFixed(item?.sampleSummaryInfo?.tps || '0') }}
                       </div>
                     </div>
+
                     <div class="flex items-center border border-border-divider rounded mt-2">
                       <div
                         class="px-2.25 py-1.5 rounded-l text-text-sub-content flex items-center"
@@ -466,6 +481,7 @@ onBeforeUnmount(() => {
                   </div>
                 </div>
               </div>
+
               <div class="flex leading-7 justify-center mx-3 flex-none" style="width:40%">
                 <div class="flex w-1/2">
                   <div class="text-text-sub-content space-y-1 flex-none w-20">
@@ -479,6 +495,7 @@ onBeforeUnmount(() => {
                       {{ t('execution.messages.modifiedBy') }}:
                     </div>
                   </div>
+
                   <div class="ml-2 space-y-1" style="width: calc(100% - 68px);min-width:160px">
                     <div class="flex items-center relative z-0 h-7" :class="item?.editPriority ? 'w-30' : ''">
                       <template v-if="!item?.editPriority">
@@ -503,6 +520,7 @@ onBeforeUnmount(() => {
                           @blur="editPriority($event.target.value, item)" />
                       </template>
                     </div>
+
                     <div class="truncate h-7" :title="item?.scriptName">
                       <template v-if="item?.scriptName">
                         <RouterLink
@@ -513,14 +531,15 @@ onBeforeUnmount(() => {
                       </template>
                       <template v-else>--</template>
                     </div>
+
                     <div class="h-7 flex items-center">
                       <div class="truncate cursor-pointer" :title="item?.lastModifiedByName">
                         {{ item?.lastModifiedByName || "--" }}
                       </div>
-                      <!--  <span class="ml-2 flex-none">{{ item?.lastModifiedDate || "&#45;&#45;" }}</span>-->
                     </div>
                   </div>
                 </div>
+
                 <div class="flex ml-3 flex-1 ">
                   <div class="text-text-sub-content leading-7 space-y-1">
                     <div class="whitespace-nowrap h-7 text-right">
@@ -533,6 +552,7 @@ onBeforeUnmount(() => {
                       {{ t('execution.messages.updateTestResult') }}:
                     </div>
                   </div>
+
                   <div class="ml-2 space-y-1 2xl:min-w-35">
                     <div
                       class="truncate flex items-center relative z-0 h-7"
@@ -563,6 +583,7 @@ onBeforeUnmount(() => {
                           @blur="editReportInterval($event, item)" />
                       </template>
                     </div>
+
                     <div
                       class="truncate flex items-center relative z-0 h-7"
                       :class="item?.editReportInterval ? 'w-25' : ''">
@@ -573,6 +594,7 @@ onBeforeUnmount(() => {
                         class="w-8"
                         @change="handleIgnoreAssertions(!!$event, item)" />
                     </div>
+
                     <div
                       class="truncate flex items-center relative z-0 h-7"
                       :class="item?.editReportInterval ? 'w-25' : ''">
@@ -587,6 +609,7 @@ onBeforeUnmount(() => {
                 </div>
               </div>
             </div>
+
             <div class="w-15 flex-none flex flex-col items-center justify-center space-y-2">
               <template
                 v-if="[ExecStatus.CREATED, ExecStatus.STOPPED, ExecStatus.FAILED, ExecStatus.COMPLETED, ExecStatus.TIMEOUT].includes(item?.status.value)
@@ -600,16 +623,19 @@ onBeforeUnmount(() => {
                   <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('actions.start') }}</span>
                 </span>
               </template>
+
               <template v-if="[ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status.value) && item?.hasOperationPermission">
                 <a class="flex items-center" @click="handleStopWithContext(item)">
                   <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('actions.stop') }}</span>
                 </a>
               </template>
+
               <template v-else>
                 <span class="flex items-center text-theme-disabled cursor-not-allowed">
                   <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('actions.stop') }}</span>
                 </span>
               </template>
+
               <div class="dropdown-row">
                 <Dropdown
                   v-if="item.scriptType?.value === ScriptType.MOCK_APIS"
@@ -624,6 +650,7 @@ onBeforeUnmount(() => {
                     {{ t('actions.more') }}
                   </Button>
                 </Dropdown>
+
                 <Dropdown
                   v-else
                   :menuItems="dropdownMenuItems"
@@ -641,6 +668,7 @@ onBeforeUnmount(() => {
             </div>
           </div>
         </div>
+
         <Pagination
           v-if="total > 5"
           :current="pagination.current"

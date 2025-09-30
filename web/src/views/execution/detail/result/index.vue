@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { ScriptSource } from '@xcan-angus/infra';
 import { exec } from 'src/api/ctrl';
 
 // Define component props
@@ -43,11 +44,11 @@ const loadScenarioTestResult = async () => {
 // Load test results on component mount
 onMounted(() => {
   const { scriptSource } = props.execInfo;
-  if (scriptSource?.value === 'API') {
+  if (scriptSource?.value === ScriptSource.API) {
     loadApiTestResult();
     return;
   }
-  if (scriptSource?.value === 'SCENARIO') {
+  if (scriptSource?.value === ScriptSource.SCENARIO) {
     loadScenarioTestResult();
   }
 });
@@ -56,12 +57,12 @@ onMounted(() => {
 <template>
   <div>
     <!-- Display API test results -->
-    <template v-if="props.execInfo?.scriptSource?.value === 'API'">
+    <template v-if="props.execInfo?.scriptSource?.value === ScriptSource.API">
       <ApiTestResult :value="testResult" />
     </template>
 
     <!-- Display scenario test results -->
-    <template v-if="props.execInfo?.scriptSource?.value === 'SCENARIO'">
+    <template v-if="props.execInfo?.scriptSource?.value === ScriptSource.SCENARIO">
       <ScenarioResult :value="testResult" />
     </template>
   </div>

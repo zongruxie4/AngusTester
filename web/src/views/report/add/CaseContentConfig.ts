@@ -28,7 +28,7 @@ export const contentTreeData = [
     key: 'description'
   },
   {
-    title: t('common.preview'),
+    title: t('actions.preview'),
     key: 'preview'
   },
   {

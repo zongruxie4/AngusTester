@@ -49,11 +49,11 @@ const props = withDefaults(defineProps<Props>(), {
   hideImportBtn: false,
   viewType: false,
   useFlatForm: false,
-  fieldNames: () => ({ 
-    valueKey: API_EXTENSION_KEY.valueKey, 
-    enabledKey: API_EXTENSION_KEY.enabledKey, 
-    fileNameKey: API_EXTENSION_KEY.fileNameKey, 
-    formContentTypeKey: API_EXTENSION_KEY.formContentTypeKey 
+  fieldNames: () => ({
+    valueKey: API_EXTENSION_KEY.valueKey,
+    enabledKey: API_EXTENSION_KEY.enabledKey,
+    fileNameKey: API_EXTENSION_KEY.fileNameKey,
+    formContentTypeKey: API_EXTENSION_KEY.formContentTypeKey
   })
 });
 
@@ -68,7 +68,7 @@ const emit = defineEmits<{
 // Async component definitions
 const ApiForm = defineAsyncComponent(() => import('./api-form/index.vue'));
 const ApiFormForFlat = defineAsyncComponent(() => import('./apiFormForFlat/index.vue'));
-const MonacoEditor = defineAsyncComponent(() => import('../MonacoEditor/index.vue'));
+const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEditor/index.vue'));
 const ModelModal = defineAsyncComponent(() => import('./modelModal.vue'));
 
 // Field name configuration
@@ -1018,16 +1018,16 @@ onMounted(() => {
 });
 
 // Expose component methods
-defineExpose({ 
-  getBinaryFile, 
-  getBinaryBase64, 
-  getRequestBodyData, 
-  getBodyData: getRequestBodyData, 
+defineExpose({
+  getBinaryFile,
+  getBinaryBase64,
+  getRequestBodyData,
+  getBodyData: getRequestBodyData,
   getData,
-  updateComponentData, 
-  validateFormData, 
-  getModelResolution, 
-  resetRequestBodyData 
+  updateComponentData,
+  validateFormData,
+  getModelResolution,
+  resetRequestBodyData
 });
 </script>
 <template>

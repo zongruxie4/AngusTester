@@ -106,7 +106,10 @@ const {
               @click="handleDoubleClick('scheduling')">
               <div class="flex items-center space-x-2">
                 <div class="h-3 bg-text-link-hover w-1"></div>
-                <span class="text-text-title font-medium text-3 leading-3" @click.stop="openSchedulingLog">{{ t('execution.infoLog.schedulingLog') }}</span>
+                <span
+                  class="text-text-title font-medium text-3 leading-3"
+                  @click.stop="openSchedulingLog">
+                  {{ t('execution.infoLog.schedulingLog') }}</span>
                 <Arrow :open="showSchedulingLog === '1'" @click.stop="openSchedulingLog" />
                 <div class="!ml-20">{{ t('execution.infoLog.schedulingResult') }}<Colon /></div>
                 <template v-if="props.execNodes?.length">
@@ -158,7 +161,10 @@ const {
               <div class="flex flex-1 items-center space-x-20">
                 <div class="flex items-center space-x-2">
                   <div class="h-3 bg-text-link-hover w-1"></div>
-                  <span class="text-text-title font-medium text-3 leading-3" @click.stop="openExecLog">{{ t('execution.infoLog.executionLog') }}</span>
+                  <span
+                    class="text-text-title font-medium text-3 leading-3"
+                    @click.stop="openExecLog">
+                    {{ t('execution.infoLog.executionLog') }}</span>
                   <Arrow :open="showExecLog === '1'" @click.stop="openExecLog" />
                 </div>
                 <template v-if="!execLogErr && execLogPath">
@@ -168,7 +174,9 @@ const {
                   </div>
                 </template>
                 <template v-else-if="execLogErr">
-                  <span v-if="!loading" class="text-rule">{{ errorText || t('execution.infoLog.noAccessProxyInfo') + `http://${nodeIp}:6807/actuator/runner/log/${props.execId}` }}</span>
+                  <span v-if="!loading" class="text-rule">
+                    {{ errorText || t('execution.infoLog.noAccessProxyInfo') + `http://${nodeIp}:6807/actuator/runner/log/${props.execId}` }}
+                  </span>
                 </template>
               </div>
               <div>

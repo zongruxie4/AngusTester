@@ -48,8 +48,8 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   // Audit information options
   auditOptions: createAuditOptions([
     {
-      key: 'myResponsible',
-      name: t('quickSearch.myResponsible'),
+      key: 'ownedByMe',
+      name: t('quickSearch.ownedByMe'),
       fieldKey: 'ownerId'
     },
     {

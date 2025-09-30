@@ -1,9 +1,11 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import YAML from 'yaml';
 import { exec } from 'src/api/ctrl';
 import { Exception, ExecutionInfo } from '@/views/execution/types';
+import { ScriptType, enumUtils } from '@xcan-angus/infra';
 
 /**
  * Composable for managing execution detail data
@@ -17,6 +19,7 @@ export const useExecutionDetail = (props: any, emit: any) => {
   // Vue router hooks
   const route = useRoute();
   const router = useRouter();
+  const { t } = useI18n();
 
   // Component references
   const performanceRef = ref();
@@ -37,7 +40,7 @@ export const useExecutionDetail = (props: any, emit: any) => {
    * Load script content for execution
    * Fetches script content from API and updates scriptYamlStr
    */
-  const loadscriptContent = async () => {
+  const loadScriptContent = async () => {
     // Fetch script content from API
     const [error, { data }] = await exec.getScriptByExecId(id);
     if (error) {
@@ -69,7 +72,7 @@ export const useExecutionDetail = (props: any, emit: any) => {
     detail.value = data;
 
     // Special handling for MOCK_DATA script type
-    if (detail.value?.scriptType.value === 'MOCK_DATA') {
+    if (detail.value?.scriptType.value === ScriptType.MOCK_DATA) {
       detail.value.batchRows = detail.value.task?.mockData?.settings.batchRows || '1';
     }
 
@@ -118,12 +121,13 @@ export const useExecutionDetail = (props: any, emit: any) => {
    */
   const handleRestart = async (item: ExecutionInfo) => {
     // Reset performance data if needed
-    if (['TEST_PERFORMANCE', 'TEST_STABILITY'].includes(detail.value?.scriptType.value || '') && performanceRef.value) {
+    if ([ScriptType.TEST_PERFORMANCE, ScriptType.TEST_STABILITY]
+      .includes(detail.value?.scriptType.value as ScriptType) && performanceRef.value) {
       performanceRef.value.resetData();
     }
 
     // Restart mock data if needed
-    if (detail.value?.scriptType.value === 'MOCK_DATA') {
+    if (detail.value?.scriptType.value === ScriptType.MOCK_DATA) {
       performanceRef.value.restartMock();
     }
 
@@ -160,7 +164,7 @@ export const useExecutionDetail = (props: any, emit: any) => {
       const successFalseItem = currItemDataList.find((f: any) => f.success);
       if (successFalseItem) {
         // Show success notification
-        notification.success('Start Success');
+        notification.success(t('actions.tips.startSuccess'));
         exception.value = undefined;
       } else {
         // Show error notification
@@ -219,7 +223,7 @@ export const useExecutionDetail = (props: any, emit: any) => {
       const successFalseItem = currItemDataList.find((f: any) => f.success);
       if (successFalseItem) {
         // Show success notification
-        notification.success('Stop Success');
+        notification.success(t('actions.tips.stopSuccess'));
         exception.value = undefined;
       } else {
         // Show error notification
@@ -257,7 +261,7 @@ export const useExecutionDetail = (props: any, emit: any) => {
           return;
         }
         // Show success notification
-        notification.success('Delete Success');
+        notification.success(t('actions.tips.deleteSuccess'));
 
         // Navigate based on props
         if (props.showBackBtn) {
@@ -278,7 +282,7 @@ export const useExecutionDetail = (props: any, emit: any) => {
   const topTabsChange = (value: string) => {
     // Load script content when script tab (key '3') is activated
     if (value === '3' && !scriptYamlStr.value) {
-      loadscriptContent();
+      loadScriptContent();
     }
   };
 
@@ -352,19 +356,12 @@ export const useExecutionDetail = (props: any, emit: any) => {
   onMounted(async () => {
     // Handle case when no execution ID is provided
     if (!id) {
-      const scriptTypeMsgConfig = {
-        TEST_PERFORMANCE: 'Performance Test',
-        TEST_STABILITY: 'Stability Test',
-        TEST_FUNCTIONALITY: 'Functionality Test',
-        TEST_CUSTOMIZATION: 'Customization Test'
-      };
-
       // Set initial detail state based on props
       if (props.scriptType) {
         detail.value = {
           scriptType: {
             value: props.scriptType,
-            message: scriptTypeMsgConfig[props.scriptType as keyof typeof scriptTypeMsgConfig] || ''
+            message: enumUtils.getEnumDescription(ScriptType, props.scriptType)
           }
         } as ExecutionInfo;
 
@@ -391,7 +388,7 @@ export const useExecutionDetail = (props: any, emit: any) => {
     exception,
     performanceRef,
     funcRef,
-    loadscriptContent,
+    loadScriptContent,
     getDetail,
     getInfo,
     handleRestart,

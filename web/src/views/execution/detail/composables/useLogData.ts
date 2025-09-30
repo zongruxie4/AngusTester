@@ -6,7 +6,7 @@ import { getDataByProxy } from '@/api/proxy';
  * Handles loading, displaying, and downloading execution logs
  *
  * @param execId - The execution ID to load logs for
- * @param loading - Loading state getter function
+ * @param _loading - Loading state getter function
  * @param execNodes - Execution nodes array
  * @param lastSchedulingResult - Last scheduling result data
  * @param emit - Vue emit function for component events
@@ -14,7 +14,7 @@ import { getDataByProxy } from '@/api/proxy';
  */
 export const useLogData = (
   execId: string,
-  loading: any,
+  _loading: any,
   execNodes: any[],
   lastSchedulingResult: any[],
   emit: any
@@ -105,27 +105,6 @@ export const useLogData = (
   };
 
   /**
-   * Watch for execId changes to load logs
-   * Automatically loads logs when execId changes
-   */
-  watch(() => execId, (newValue) => {
-    if (newValue && execNodes?.length) {
-      // Set initial node information
-      nodeId.value = execNodes[0]?.id;
-      nodeIp.value = execNodes[0]?.publicIp || execNodes[0]?.ip;
-      nodePort.value = execNodes[0]?.agentPort || '6807';
-
-      // Load logs if node ID is available
-      if (!nodeId.value) {
-        return;
-      }
-      loadExecLog();
-    }
-  }, {
-    immediate: true
-  });
-
-  /**
    * Handle double click on log sections
    * Toggles visibility of log sections on double click
    *
@@ -198,6 +177,27 @@ export const useLogData = (
     // Reload execution log
     loadExecLog();
   };
+
+  /**
+   * Watch for execId changes to load logs
+   * Automatically loads logs when execId changes
+   */
+  watch(() => execId, (newValue) => {
+    if (newValue && execNodes?.length) {
+      // Set initial node information
+      nodeId.value = execNodes[0]?.id;
+      nodeIp.value = execNodes[0]?.publicIp || execNodes[0]?.ip;
+      nodePort.value = execNodes[0]?.agentPort || '6807';
+
+      // Load logs if node ID is available
+      if (!nodeId.value) {
+        return;
+      }
+      loadExecLog();
+    }
+  }, {
+    immediate: true
+  });
 
   // Return reactive references directly, not their .value properties
   return {

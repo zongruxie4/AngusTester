@@ -1,6 +1,8 @@
 import { EnumMessage } from '@xcan-angus/infra';
 import { ExecStatus } from '@/enums/enums';
 
+export const allCvsKeys = ['duration', 'errors', 'iterations', 'n', 'operations', 'transactions', 'readBytes', 'writeBytes', 'ops', 'tps', 'brps', 'bwps', 'tranMean', 'tranMin', 'tranMax', 'tranP50', 'tranP75', 'tranP90', 'tranP95', 'tranP99', 'tranP999', 'errorRate', 'threadPoolSize', 'threadPoolActiveSize', 'threadMaxPoolSize'];
+
 export interface ServerVariable {
   enum: string[];
   default: string;
@@ -10,12 +12,6 @@ export interface ServerObject {
   url: string;
   description: string;
   variables: Record<string, ServerVariable>;
-}
-
-export interface UseServerData {
-  serverList: ServerObject[];
-  loadServers: () => Promise<void>;
-  hasVariable: (variables?: Record<string, ServerVariable>) => boolean;
 }
 
 export interface UseConfigData {

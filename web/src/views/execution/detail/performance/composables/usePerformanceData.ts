@@ -1,8 +1,9 @@
 import { ref, computed, Ref } from 'vue';
 import dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { allCvsKeys } from '@/views/execution/detail/types';
+
 import { ListData } from '../../composables/useExecCount';
-import { allCvsKeys } from '../../ChartConfig';
 import {
   ApiDimensionData,
   IndexDimensionData,
@@ -22,8 +23,6 @@ import {
  * including API dimensions, index dimensions, error counts, and status codes.
  */
 export function usePerformanceData () {
-  // ==================== State Management ====================
-
   /**
    * API dimension data organized by API name
    * <p>
@@ -116,16 +115,14 @@ export function usePerformanceData () {
     threadMaxPoolSize: { Total: [] }
   });
 
-  // ==================== Basic Data Arrays ====================
-
+  // Basic Data Arrays
   const apiNames = ref<string[]>([]);
   const timestampData = ref<string[]>([]);
   const newList = ref<ListData[]>([]);
   const allList = ref<ListData[]>([]);
   const perfListData = ref<ListData[]>([]);
 
-  // ==================== Performance List Management ====================
-
+  // Performance List Management
   const perfListParams = ref<PerformanceListParams>({
     pageNo: 1,
     pageSize: 500,
@@ -134,8 +131,7 @@ export function usePerformanceData () {
   const perfListTotal = ref(0);
   const perfListLastTimestamp = ref('');
 
-  // ==================== Error Management ====================
-
+  // Error Management
   const errCountList = ref<ErrorCountListItem[]>([]);
   const sampleList = ref<SampleErrorContent[]>([]);
   const errParams = ref<PerformanceListParams>({
@@ -146,17 +142,14 @@ export function usePerformanceData () {
   const errTotal = ref(0);
   const errTimestamp = ref('');
 
-  // ==================== Status Code Management ====================
-
+  // Status Code Management
   const statusCodeData = ref<StatusCodeData>({});
 
-  // ==================== Aggregate Values ====================
-
+  // Aggregate Values
   const infoMaxQps = ref<string | number>('');
   const infoMaxTps = ref<string | number>('');
 
-  // ==================== Data Rate Units ====================
-
+  // Data Rate Units
   const brpsUnit = ref<DataRateUnit>('KB');
   const minBrpsUnit = ref<DataRateUnit>('KB');
   const maxBrpsUnit = ref<DataRateUnit>('KB');
@@ -166,11 +159,8 @@ export function usePerformanceData () {
   const maxBwpsUnit = ref<DataRateUnit>('KB');
   const meanBwpsUnit = ref<DataRateUnit>('KB');
 
-  // ==================== Exception Management ====================
-
+  // Exception Management
   const exception = ref<ExceptionInfo | undefined>();
-
-  // ==================== Computed Properties ====================
 
   /**
    * Pipeline keys computed from detail configuration
@@ -181,8 +171,6 @@ export function usePerformanceData () {
     // This will be set by the parent component
     return [];
   });
-
-  // ==================== Data Processing Methods ====================
 
   /**
    * Normalize and push incoming list data into chart-ready structures

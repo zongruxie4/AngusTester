@@ -29,11 +29,7 @@ interface Props {
     percentile: string;
     memory: string;
     network: string;
-  },
-  // passedInfo: {
-  //   passed: boolean;
-  //   failureMessage?: string;
-  // }
+  }
 }
 
 const { t } = useI18n();
@@ -236,7 +232,6 @@ const getDuration = (mseconds) => {
   }
   return apiUtils.formatMillisecondToShortDuraiton(+mseconds, unit);
 };
-
 </script>
 
 <template>

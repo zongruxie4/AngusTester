@@ -1,5 +1,10 @@
 {
   "execution": {
+    "introduce": {
+      "title": "You can run test or mock data, and update test results to related resources. Only executors, creators, and admins can modify or run, while other users can only view.",
+      "capability1": "Launch tests by running test script or generate test data using mock script.",
+      "capability2": "Monitor execution metrics in real-time and analyze test result."
+    },
     "basic": {
       "scenario": "Script",
       "configure": "Configure",
@@ -48,14 +53,6 @@
     "priorityRange": "Higher priority is executed first, value range: 0~2147483647, higher value means higher priority",
     "concurrencyNodes": "1 test node required for every 10,000 concurrency",
     "searchPanel": {
-      "quickSearch": "Quick Search",
-      "all": "All",
-      "createdByMe": "My Created",
-      "modifiedByMe": "My Modified",
-      "executedByMe": "My Executed",
-      "lastDay": "Last Day",
-      "lastThreeDays": "Last 3 Days",
-      "lastWeek": "Last 7 Days",
       "searchNameDesc": "Search name, description",
       "selectStatus": "Select status",
       "selectScript": "Select script",
@@ -180,18 +177,10 @@
       "scriptNameRequired": "Please enter script name",
       "enterScriptDescription": "Please enter script description, max 800 characters"
     },
-    "header": {
-      "title": "You can run test or mock data, and update test results to related resources; execution configuration priority over script configuration; only executors, creators, and admins can modify or run, while other users can only view.",
-      "contentList1": "Launch tests by running test script or generate test data using mock script.",
-      "contentList2": "Monitor execution metrics in real-time and analyze test result."
-    },
     "count": {
-      "byInterface": "By Interface",
+      "byInterface": "By Api",
       "byMetric": "By Metric",
       "overlayAnalysis": "Overlay Analysis"
-    },
-    "chartInfo": {
-      "executionStatus": "Exec Status"
     },
     "add": {
       "script": "Script",

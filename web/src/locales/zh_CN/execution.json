@@ -1,5 +1,10 @@
 {
   "execution": {
+    "introduce": {
+      "title": "您可以直接运行测试脚本或Mock数据脚本，并选择是否更新测试结果至相关资源。仅执行人、脚本添加人、管理员修改或运行，其他用户仅可查看。",
+      "capability1": "运行测试脚本发起测试，或执行Mock脚本生成测试数据。",
+      "capability2": "实时查看执行指标并分析测试结果。"
+    },
     "basic": {
       "scenario": "脚本",
       "configure": "配置",
@@ -48,14 +53,6 @@
     "priorityRange": "优先级高的最先被执行，值范围：0~2147483647，值越大优先级越高",
     "concurrencyNodes": "每1万并发需要1个测试节点",
     "searchPanel": {
-      "quickSearch": "快速查询",
-      "all": "所有",
-      "createdByMe": "我添加的",
-      "modifiedByMe": "我修改的",
-      "executedByMe": "我执行的",
-      "lastDay": "近1天",
-      "lastThreeDays": "近3天",
-      "lastWeek": "近7天",
       "searchNameDesc": "查询名称、描述",
       "selectStatus": "选择状态",
       "selectScript": "选择脚本",
@@ -172,18 +169,10 @@
       "scriptNameRequired": "请填写脚本名称",
       "enterScriptDescription": "请输入脚本描述，最多800字符"
     },
-    "header": {
-      "title": "您可以直接运行测试脚本或Mock数据脚本，并选择是否更新测试结果至相关资源；执行配置优先级高于脚本配置；仅执行人、脚本添加人、管理员修改或运行，其他用户仅可查看。",
-      "contentList1": "运行测试脚本发起测试，或执行Mock脚本生成测试数据。",
-      "contentList2": "实时查看执行指标并分析测试结果。"
-    },
     "count": {
       "byInterface": "按接口",
       "byMetric": "按指标",
       "overlayAnalysis": "叠加分析"
-    },
-    "chartInfo": {
-      "executionStatus": "执行状态"
     },
     "add": {
       "script": "脚本",

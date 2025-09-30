@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { exec } from '@/api/tester';
-import type { ServerObject, ServerVariable, UseServerData } from '../types';
+import type { ServerObject, ServerVariable } from '../types';
 
 /**
  * Composable for managing server data in execution detail
@@ -46,5 +46,5 @@ export const useServerData = (execId: string) => {
     serverList,
     loadServers,
     hasVariable
-  } as UseServerData;
+  };
 };

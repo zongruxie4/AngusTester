@@ -190,6 +190,8 @@
     "blocked": "已阻塞",
     "ignored": "已忽略",
     "notIgnored": "未忽略",
+    "passed": "已通过",
+    "notPassed": "未通过",
     "overdue": "已逾期",
     "reopened": "重新打开的",
     "new": "新的",
@@ -305,6 +307,8 @@
       "disableSuccess": "禁用成功",
       "enableSuccess": "启用成功",
       "execSuccess": "执行成功",
+      "startSuccess": "启动成功",
+      "stopSuccess": "停止成功",
       "importSuccess": "导入成功",
       "moveSuccess": "移动成功",
       "copySuccess": "复制成功",
@@ -337,7 +341,8 @@
     "myActivity": "我的活动",
     "createdByMe": "我添加的",
     "modifiedByMe": "我修改的",
-    "myResponsible": "我负责的"
+    "executedByMe": "我执行的",
+    "ownedByMe": "我负责的"
   },
   "pagination": {
     "items": "条",

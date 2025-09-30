@@ -17,7 +17,7 @@ const { t } = useI18n();
 
     <!-- Introduction content with image and description -->
     <div class="flex items-center justify-between space-x-2.5">
-      <div>{{ t('common.description') }}</div>
+      <div>{{ t('scenarioHome.introduce.description') }}</div>
     </div>
 
     <!-- Product capabilities list -->
