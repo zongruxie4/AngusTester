@@ -1,28 +1,38 @@
 <script lang="ts" setup>
-import { watch, ref } from 'vue';
-import { Icon, Tooltip, Grid } from '@xcan-angus/vue-ui';
-// import { Tooltip } from 'ant-design-vue';
-import BaseVirtualList from './BaseVirtualList.vue';
+// Vue core imports
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
+import { Icon, Tooltip, Grid } from '@xcan-angus/vue-ui';
+
+// Local component imports
+import BaseVirtualList from './BaseVirtualList.vue';
 
 const { t } = useI18n();
 
-interface API {
+/**
+ * Interface for API or case item data structure
+ */
+interface ApiOrCaseItem {
   apisName: string;
   caseId: string;
-  passed: boolean; // 是否通过测试
+  passed: boolean; // Whether the test passed
   enabled?: boolean;
   caseName?: string;
   caseType?: {
-    value: string
-  }
+    value: string;
+  };
 }
 
+/**
+ * Component props interface for API or case list
+ */
 interface Props {
-  dataSource: API[]
+  dataSource: ApiOrCaseItem[];
 }
 
-const columns = [
+// Table configuration for tooltip display
+const tooltipTableColumns = [
   [
     { dataIndex: 'testNum', label: t('xcan_httpTestInfo.testCount') },
     { dataIndex: 'testFailureNum', label: t('xcan_httpTestInfo.failureCount') },
@@ -34,27 +44,17 @@ const columns = [
   ]
 ];
 
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ([])
 });
 
-const CaseTypeIconConfig = {
+// Case type icon configuration mapping
+const caseTypeIconMapping = {
   SMOKE: 'icon-maoyanceshi',
   SECURITY: 'icon-anquanceshi',
   USER_DEFINED: 'icon-zidingyiceshi'
 };
-
-// const showData = ref([]);
-
-// watch(() => props.dataSource, () => {
-//   if (props.dataSource.length > 5) {
-//     showData.value = props.dataSource.slice(0,5);
-//   } else {
-//     showData.value = props.dataSource
-//   }
-// }, {
-//   immediate: true
-// })
 
 </script>
 <template>
@@ -74,11 +74,11 @@ const CaseTypeIconConfig = {
               <div class="max-h-100 overflow-y-auto">
                 <Grid
                   :dataSource="item.result || item"
-                  :columns="columns" />
+                  :columns="tooltipTableColumns" />
               </div>
             </template>
             <div class="px-1 flex h-6 items-center">
-              <Icon :icon="CaseTypeIconConfig[item.caseType?.value] || 'icon-jiekouyongli2'" class="mr-1 text-4" />
+              <Icon :icon="caseTypeIconMapping[item.caseType?.value] || 'icon-jiekouyongli2'" class="mr-1 text-4" />
               <span class="min-w-0 truncate flex-1" :title="item.apisName || item.caseName || item.summary">{{ item.apisName || item.caseName || item.summary }}</span>
               <span
                 v-if="!item.enabled"

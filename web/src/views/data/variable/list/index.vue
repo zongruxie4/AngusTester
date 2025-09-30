@@ -101,7 +101,7 @@ const {
  */
 const handleBatchDelete = () => {
   initializeRowSelection();
-  executeBatchDelete();
+  executeBatchDelete(rowSelection.value);
 };
 
 /**

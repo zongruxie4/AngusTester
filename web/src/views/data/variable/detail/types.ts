@@ -10,7 +10,7 @@ import {
  * Button group action types
  * Represents the different actions that can be triggered from the button group
  */
-export type ButtonGroupAction = 'ok' | 'delete' | 'export' | 'clone' | 'copyLink' | 'refresh';
+export type ButtonGroupAction = 'ok' | 'delete' | 'export' | 'clone' | 'copyLink' | 'refresh' | 'cancel';
 
 /**
  * Detail tab keys

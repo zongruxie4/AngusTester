@@ -1,39 +1,58 @@
 <script setup lang="ts">
+// Vue core imports
 import { computed } from 'vue';
-import { Icon } from '@xcan-angus/vue-ui';
-import ApiUtils from 'src/utils/apis';
 import { useI18n } from 'vue-i18n';
+
+// UI component imports
+import { Icon } from '@xcan-angus/vue-ui';
+
+// Utility imports
+import ApiUtils from 'src/utils/apis';
 
 const { t } = useI18n();
 const { formatMillisecondToShortDuraiton, splitDuration } = ApiUtils;
 
-interface Props {
-  indicatorStability: {
-    duration: string;
-    errorRate: string;
-    threads: string;
-    tps: string;
-    percentile: {value: string};
-    art: string;
-    cpu: string;
-    disk: string;
-    memory: string;
-    network: string;
-  },
-  result: {
-    art: string;
-    cpu: string;
-    disk: string;
-    duration: string;
-    errorRate: string;
-    threads: string;
-    tps: string;
-    percentile: string;
-    memory: string;
-    network: string;
-  }
+/**
+ * Stability indicator configuration interface
+ */
+interface StabilityIndicatorConfig {
+  duration: string;
+  errorRate: string;
+  threads: string;
+  tps: string;
+  percentile: { value: string };
+  art: string;
+  cpu: string;
+  disk: string;
+  memory: string;
+  network: string;
 }
 
+/**
+ * Stability test result data interface
+ */
+interface StabilityTestResult {
+  art: string;
+  cpu: string;
+  disk: string;
+  duration: string;
+  errorRate: string;
+  threads: string;
+  tps: string;
+  percentile: string;
+  memory: string;
+  network: string;
+}
+
+/**
+ * Component props interface for stability result display
+ */
+interface Props {
+  indicatorStability: StabilityIndicatorConfig;
+  result: StabilityTestResult;
+}
+
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   indicatorStability: () => ({
     percentile: { value: '' },
@@ -61,33 +80,36 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
-const indicatorItem = computed(() => {
+/**
+ * Computed property for stability indicator configuration
+ */
+const stabilityIndicatorConfig = computed(() => {
   const percentile = props.indicatorStability.percentile.value;
-  let percentitleKey;
+  let percentileKey;
   switch (percentile) {
     case 'ALL':
-      percentitleKey = 'tranMax';
+      percentileKey = 'tranMax';
       break;
     case 'P50':
-      percentitleKey = 'tranP50';
+      percentileKey = 'tranP50';
       break;
     case 'P75':
-      percentitleKey = 'tranP75';
+      percentileKey = 'tranP75';
       break;
     case 'P90':
-      percentitleKey = 'tranP90';
+      percentileKey = 'tranP90';
       break;
     case 'P95':
-      percentitleKey = 'tranP95';
+      percentileKey = 'tranP95';
       break;
     case 'P99':
-      percentitleKey = 'tranP99';
+      percentileKey = 'tranP99';
       break;
     case 'P999':
-      percentitleKey = 'tranP999';
+      percentileKey = 'tranP999';
       break;
     default:
-      percentitleKey = '';
+      percentileKey = '';
   }
   return [
     {
@@ -100,7 +122,7 @@ const indicatorItem = computed(() => {
     },
     {
       label: `${t('xcan_httpTestInfo.responseTime')}(${percentile})`,
-      dataIndex: percentitleKey || '--'
+      dataIndex: percentileKey || '--'
     },
     {
       label: t('xcan_httpTestInfo.transactionsPerSecond'),
@@ -113,7 +135,8 @@ const indicatorItem = computed(() => {
   ];
 });
 
-const sysIndicatorItem = [
+// System resource average usage configuration
+const systemResourceAverageConfig = [
   {
     label: t('xcan_httpTestInfo.cpuUsage'),
     dataIndex: 'meanCpu',
@@ -136,7 +159,8 @@ const sysIndicatorItem = [
   }
 ];
 
-const sysMaxIndicatorItem = [
+// System resource maximum usage configuration
+const systemResourceMaximumConfig = [
   {
     label: t('xcan_httpTestInfo.averageCpu'),
     dataIndex: 'maxCpu',
@@ -159,7 +183,12 @@ const sysMaxIndicatorItem = [
   }
 ];
 
-const getIcon = (valueKey) => {
+/**
+ * Get status icon based on stability indicator comparison
+ * @param valueKey - The data key to check
+ * @returns Icon configuration object with icon name
+ */
+const getStabilityStatusIcon = (valueKey: string) => {
   if (valueKey.includes('tran')) {
     if (!props.result[valueKey] && props.indicatorStability.art) {
       return {
@@ -231,62 +260,66 @@ const getIcon = (valueKey) => {
   return {};
 };
 
-const getDuration = (mseconds) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [value, unit] = splitDuration(props.indicatorStability.duration);
-  if (!mseconds) {
+/**
+ * Format duration from milliseconds to readable format
+ * @param milliseconds - Duration in milliseconds
+ * @returns Formatted duration string
+ */
+const formatDurationFromMilliseconds = (milliseconds: string) => {
+  const [, unit] = splitDuration(props.indicatorStability.duration);
+  if (!milliseconds) {
     return '--';
   }
-  return formatMillisecondToShortDuraiton(+mseconds, unit);
+  return formatMillisecondToShortDuraiton(+milliseconds, unit as 's' | 'h' | 'min' | 'day');
 };
 
 </script>
 <template>
   <div class="flex border rounded text-3">
     <div class="flex-1 bg-status-warn flex flex-col p-2">
-      <span v-for="item in indicatorItem" :key="item.dataIndex">
-        {{ item.label }}
+      <span v-for="indicatorItem in stabilityIndicatorConfig" :key="indicatorItem.dataIndex">
+        {{ indicatorItem.label }}
       </span>
     </div>
     <div class="flex-1 flex flex-col p-2">
       <div
-        v-for="item in indicatorItem"
-        :key="item.dataIndex"
+        v-for="indicatorItem in stabilityIndicatorConfig"
+        :key="indicatorItem.dataIndex"
         class="flex items-center space-x-2">
-        <span>{{ item.dataIndex === 'duration' ? getDuration(props.result[item.dataIndex]) : props.result[item.dataIndex] || '--' }}</span>
-        <Icon v-bind="getIcon(item.dataIndex)" />
+        <span>{{ indicatorItem.dataIndex === 'duration' ? formatDurationFromMilliseconds(props.result[indicatorItem.dataIndex]) : props.result[indicatorItem.dataIndex] || '--' }}</span>
+        <Icon v-bind="getStabilityStatusIcon(indicatorItem.dataIndex)" />
       </div>
     </div>
   </div>
   <div class="flex border rounded text-3 mt-2">
     <div class="flex-1 bg-status-warn flex flex-col p-2">
-      <span v-for="item in sysIndicatorItem" :key="item.dataIndex">
-        {{ item.label }}
+      <span v-for="systemResourceItem in systemResourceAverageConfig" :key="systemResourceItem.dataIndex">
+        {{ systemResourceItem.label }}
       </span>
     </div>
     <div class="flex-1 flex p-2 max-w-2/3">
       <div class="flex flex-col flex-1 min-w-0">
         <div
-          v-for="item in sysIndicatorItem"
-          :key="item.dataIndex"
+          v-for="systemResourceItem in systemResourceAverageConfig"
+          :key="systemResourceItem.dataIndex"
           class="flex items-center space-x-2">
           <span
             class="truncate"
-            :title="props.result[item.dataIndex] ? `${props.result[item.dataIndex]}${item.unit}` : ''">
-            {{ t('xcan_httpTestInfo.average') }} {{ props.result[item.dataIndex] ? `${props.result[item.dataIndex]}${item.unit}` : '--' }}
+            :title="props.result[systemResourceItem.dataIndex] ? `${props.result[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : ''">
+            {{ t('xcan_httpTestInfo.average') }} {{ props.result[systemResourceItem.dataIndex] ? `${props.result[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : '--' }}
           </span>
-          <Icon style="min-width: 12px;" v-bind="getIcon(item.dataIndex)" />
+          <Icon style="min-width: 12px;" v-bind="getStabilityStatusIcon(systemResourceItem.dataIndex)" />
         </div>
       </div>
       <div class="text-text-sub-content flex flex-col flex-1 min-w-0">
         <div
-          v-for="item in sysMaxIndicatorItem"
-          :key="item.dataIndex"
+          v-for="systemResourceItem in systemResourceMaximumConfig"
+          :key="systemResourceItem.dataIndex"
           class="flex items-center space-x-2">
           <span
             class="flex-1 truncate"
-            :title="props.result[item.dataIndex] ? `${props.result[item.dataIndex]}${item.unit}` : ''">
-            {{ t('xcan_httpTestInfo.max') }} {{ props.result[item.dataIndex] ? `${props.result[item.dataIndex]}${item.unit}` : '--' }}
+            :title="props.result[systemResourceItem.dataIndex] ? `${props.result[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : ''">
+            {{ t('xcan_httpTestInfo.max') }} {{ props.result[systemResourceItem.dataIndex] ? `${props.result[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : '--' }}
           </span>
         </div>
       </div>

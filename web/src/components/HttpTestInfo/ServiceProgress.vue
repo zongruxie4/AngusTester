@@ -1,26 +1,36 @@
 <script lang="ts" setup>
+// Vue core imports
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// Third-party library imports
 import * as echarts from 'echarts';
 import elementResizeDetector from 'element-resize-detector';
-import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const erd = elementResizeDetector({ strategy: 'scroll' });
-const testProgressRef = ref();
-const passwordProgressRef = ref();
-const warpRef = ref();
+// Element resize detector for responsive charts
+const elementResizeDetectorInstance = elementResizeDetector({ strategy: 'scroll' });
 
+// Component references
+const testProgressChartRef = ref();
+const testResultChartRef = ref();
+const chartContainerRef = ref();
+
+/**
+ * Component props interface for service progress data
+ */
 interface Props {
-    value: Record<string, any>
+  value: Record<string, any>;
 }
 
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
-  value: () => ({
-  })
+  value: () => ({})
 });
 
-const echartsConfigOption = {
+// ECharts pie chart configuration template
+const pieChartConfigurationTemplate = {
   title: {
     text: '',
     textStyle: {
@@ -62,18 +72,25 @@ const echartsConfigOption = {
   ]
 };
 
-let testEchart;
-let passwordEchart;
+// Chart instances
+let testProgressChartInstance;
+let testResultChartInstance;
 
-const resizeEcharts = () => {
-  testEchart.resize();
-  passwordEchart.resize();
+/**
+ * Resize both chart instances when container size changes
+ */
+const handleChartResize = () => {
+  testProgressChartInstance.resize();
+  testResultChartInstance.resize();
 };
 
+/**
+ * Initialize and update charts when component mounts
+ */
 onMounted(() => {
   watch(() => props.value, newValue => {
-    const testConfig = JSON.parse(JSON.stringify(echartsConfigOption));
-    testConfig.series[0].data = [
+    const testProgressConfig = JSON.parse(JSON.stringify(pieChartConfigurationTemplate));
+    testProgressConfig.series[0].data = [
       {
         name: t('xcan_httpTestInfo.tested'),
         value: newValue.testedNum || 0,
@@ -88,12 +105,10 @@ onMounted(() => {
           color: 'rgba(200, 202, 208, 1)'
         }
       }
-
     ];
 
-    const passwordConfig = JSON.parse(JSON.stringify(echartsConfigOption));
-
-    passwordConfig.series[0].data = [
+    const testResultConfig = JSON.parse(JSON.stringify(pieChartConfigurationTemplate));
+    testResultConfig.series[0].data = [
       {
         name: t('xcan_httpTestInfo.passed'),
         value: newValue.testPassedNum || 0,
@@ -108,29 +123,32 @@ onMounted(() => {
           color: 'rgba(200, 202, 208, 1)'
         }
       }
-
     ];
-    testEchart = echarts.init(testProgressRef.value);
-    passwordEchart = echarts.init(passwordProgressRef.value);
-    testEchart.setOption(testConfig);
-    passwordEchart.setOption(passwordConfig);
+    
+    testProgressChartInstance = echarts.init(testProgressChartRef.value);
+    testResultChartInstance = echarts.init(testResultChartRef.value);
+    testProgressChartInstance.setOption(testProgressConfig);
+    testResultChartInstance.setOption(testResultConfig);
   }, {
     immediate: true
   });
 
-  erd.listenTo(warpRef.value, resizeEcharts);
+  elementResizeDetectorInstance.listenTo(chartContainerRef.value, handleChartResize);
 });
 
+/**
+ * Clean up chart instances and resize listeners when component unmounts
+ */
 onBeforeUnmount(() => {
-  erd.removeListener(warpRef.value, resizeEcharts);
+  elementResizeDetectorInstance.removeListener(chartContainerRef.value, handleChartResize);
 });
 
 </script>
 <template>
-  <div ref="warpRef" class="flex">
-    <div ref="testProgressRef" class="flex-1 h-30">
+  <div ref="chartContainerRef" class="flex">
+    <div ref="testProgressChartRef" class="flex-1 h-30">
     </div>
-    <div ref="passwordProgressRef" class="flex-1 h-30">
+    <div ref="testResultChartRef" class="flex-1 h-30">
     </div>
   </div>
 </template>

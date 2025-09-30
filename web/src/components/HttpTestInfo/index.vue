@@ -1,41 +1,58 @@
 <script lang="ts" setup>
+// Vue core imports
 import { defineAsyncComponent, reactive, computed, watch, ref, onMounted, nextTick } from 'vue';
-import { RadioGroup, RadioButton, Tabs, TabPane } from 'ant-design-vue';
-import { Spin } from '@xcan-angus/vue-ui';
-import { TESTER, http } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
+// UI component imports
+import { RadioGroup, RadioButton, Tabs, TabPane } from 'ant-design-vue';
+import { Spin } from '@xcan-angus/vue-ui';
+
+// Infrastructure imports
+import { TESTER, http } from '@xcan-angus/infra';
+
 const { t } = useI18n();
+
+// Async component definitions
 const ServiceTestCase = defineAsyncComponent(() => import('./ServiceTestCase.vue'));
 const ServiceBasicInfo = defineAsyncComponent(() => import('./ServiceBasicInfo.vue'));
 const ServiceProgress = defineAsyncComponent(() => import('./ServiceProgress.vue'));
 const ServiceTestApis = defineAsyncComponent(() => import('./ServiceTestApis.vue'));
-
 const ApiOrScenairoResult = defineAsyncComponent(() => import('./ApiOrScenairoResult.vue'));
 
-type Type = 'API'|'SERVICE'|'SCENARIO';
+// Type definitions
+type TestType = 'API' | 'SERVICE' | 'SCENARIO';
 
+/**
+ * Component props interface for HTTP test information
+ */
 interface Props {
-  id: string,
-  type: Type
+  id: string;
+  type: TestType;
 }
 
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
-  id: '', // 235929348207544484
-  type: 'API' // SERVICE
+  id: '',
+  type: 'API'
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component events
 const emit = defineEmits<{
   (e: 'rendered', value: true);
 }>();
 
-interface StateType {
+/**
+ * Component state interface for test type selection
+ */
+interface ComponentState {
   checked: 'TEST_FUNCTIONALITY' | 'TEST_PERFORMANCE' | 'TEST_STABILITY';
-  info:Record<string, any>
+  info: Record<string, any>;
 }
 
-const enums = computed(() => {
+/**
+ * Computed property for test type options
+ */
+const testTypeOptions = computed(() => {
   return [
     { value: 'TEST_FUNCTIONALITY', message: t('xcan_httpTestInfo.functionalTest') },
     { value: 'TEST_PERFORMANCE', message: t('xcan_httpTestInfo.performanceTest') },
@@ -43,75 +60,81 @@ const enums = computed(() => {
   ].filter(Boolean);
 });
 
-const state:StateType = reactive({
+// Component state management
+const componentState: ComponentState = reactive({
   checked: 'TEST_FUNCTIONALITY',
   info: {}
 });
 
-const loading = ref(false);
+// Loading and data state
+const isLoading = ref(false);
+const apiOrScenarioTestData = ref<any>({});
 
-const apiOrScenairoData = ref({});
-
-// 接口测试信息
-const loadApiTestInfo = async () => {
-  loading.value = true;
-  const [error, resp] = await http.get(`${TESTER}/apis/${props.id}/test/result/detail`);
-  loading.value = false;
-  // resetData();
+/**
+ * Load API test information from server
+ */
+const loadApiTestInformation = async () => {
+  isLoading.value = true;
+  const [error, response] = await http.get(`${TESTER}/apis/${props.id}/test/result/detail`);
+  isLoading.value = false;
   if (error) {
-    apiOrScenairoData.value = {};
-    // showEmpty.value = true;
+    apiOrScenarioTestData.value = {};
     return;
   }
-  apiOrScenairoData.value = resp.data || {};
+  apiOrScenarioTestData.value = response.data || {};
 };
 
-// 场景测试信息
-const loadScenarioTestInfo = async () => {
-  loading.value = true;
-  const [error, resp] = await http.get(`${TESTER}/scenario/${props.id}/test/result`);
-  // resetData();
-  loading.value = false;
+/**
+ * Load scenario test information from server
+ */
+const loadScenarioTestInformation = async () => {
+  isLoading.value = true;
+  const [error, response] = await http.get(`${TESTER}/scenario/${props.id}/test/result`);
+  isLoading.value = false;
   if (error) {
-    apiOrScenairoData.value = {};
+    apiOrScenarioTestData.value = {};
     return;
   }
-  apiOrScenairoData.value = resp.data || {};
+  apiOrScenarioTestData.value = response.data || {};
 };
 
-const projectTestResult = ref({});
-const loadProjectTestInfo = async () => {
-  loading.value = true;
-  const [error, resp] = await http.get(`${TESTER}/services/${props.id}/test/result`);
-  loading.value = false;
-  // resetData();
+// Project test result data
+const projectTestResultData = ref<any>({});
 
+/**
+ * Load project test information from server
+ */
+const loadProjectTestInformation = async () => {
+  isLoading.value = true;
+  const [error, response] = await http.get(`${TESTER}/services/${props.id}/test/result`);
+  isLoading.value = false;
   if (error) {
-    projectTestResult.value = {};
+    projectTestResultData.value = {};
     return;
   }
-  projectTestResult.value = resp.data || {};
+  projectTestResultData.value = response.data || {};
 };
 
-watch(() => props.id, newValue => {
-  // resetData();
-  if (newValue) {
+// Component watchers
+watch(() => props.id, (newId: string) => {
+  if (newId) {
     if (props.type === 'API') {
-      loadApiTestInfo();
+      loadApiTestInformation();
       return;
     }
     if (props.type === 'SCENARIO') {
-      loadScenarioTestInfo();
+      loadScenarioTestInformation();
       return;
     }
     if (props.type === 'SERVICE') {
-      loadProjectTestInfo();
+      loadProjectTestInformation();
     }
   }
 }, {
   immediate: true
 });
 
+// Component lifecycle hooks
 onMounted(() => {
   nextTick(() => {
     emit('rendered', true);
@@ -121,17 +144,17 @@ onMounted(() => {
 
 <template>
   <Spin
-    :spinning="loading"
+    :spinning="isLoading"
     class="h-full">
     <div class="pb-3" :class="{'flex flex-col h-full': props.type === 'SERVICE'}">
       <RadioGroup
         v-show="props.type !== 'SERVICE'"
-        v-model:value="state.checked"
+        v-model:value="componentState.checked"
         size="small"
         class="test-group w-full"
         buttonStyle="solid">
         <RadioButton
-          v-for="item in enums"
+          v-for="item in testTypeOptions"
           :key="item.value"
           class="border-none text-3 text-center"
           :value="item.value">
@@ -140,35 +163,35 @@ onMounted(() => {
       </RadioGroup>
       <Tabs
         v-if="['API', 'SCENARIO'].includes(props.type)"
-        :activeKey="state.checked"
+        :activeKey="componentState.checked"
         class="h-full flex-1 ghost-tab">
         <TabPane
-          v-for="item in enums"
+          v-for="item in testTypeOptions"
           :key="item.value"
           :tab="item.message">
           <ApiOrScenairoResult
-            :type="props.type"
-            :testType="item.value"
-            :dataSource="apiOrScenairoData" />
+            :type="props.type as 'API' | 'SCENARIO'"
+            :testType="item.value as 'TEST_FUNCTIONALITY' | 'TEST_PERFORMANCE' | 'TEST_STABILITY'"
+            :dataSource="apiOrScenarioTestData" />
         </TabPane>
       </Tabs>
       <template v-if="['SERVICE'].includes(props.type)">
-        <ServiceBasicInfo :value="projectTestResult.progress" />
+        <ServiceBasicInfo :value="projectTestResultData?.progress" />
         <div class="text-3 mt-4 mb-1 font-semibold">
           {{ t('xcan_httpTestInfo.testInterface') }}
         </div>
-        <ServiceTestCase :dataSource="projectTestResult.testApis" />
+        <ServiceTestCase :dataSource="projectTestResultData?.testApis" />
         <div class="text-3 mt-4 mb-1 font-semibold">
           {{ t('xcan_httpTestInfo.testStatistics') }}
         </div>
-        <ServiceProgress :value="projectTestResult.testResultCount" />
+        <ServiceProgress :value="projectTestResultData?.testResultCount" />
         <div class="text-3 mt-4 mb-1 font-semibold">
           {{ t('xcan_httpTestInfo.serviceInterface') }}
         </div>
         <ServiceTestApis
           class="flex-1"
-          :dataSource="projectTestResult?.testResultInfos"
-          :enabledTestApiIds="projectTestResult?.testApis?.enabledTestApiIds" />
+          :dataSource="projectTestResultData?.testResultInfos"
+          :enabledTestApiIds="projectTestResultData?.testApis?.enabledTestApiIds" />
       </template>
     </div>
   </Spin>

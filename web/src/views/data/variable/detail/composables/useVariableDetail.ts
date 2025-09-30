@@ -89,6 +89,19 @@ export function useVariableDetail (
   };
 
   /**
+   * Handle cancel action
+   *
+   * @param data - Variable data
+   */
+  const handleCancel = () => {
+    const id = props?.data?._id;
+    if (!id) {
+      return;
+    }
+    tabActions.deleteTabPane([id]);
+  };
+
+  /**
    * Handle delete action
    * Shows confirmation dialog and deletes variable
    */
@@ -188,6 +201,7 @@ export function useVariableDetail (
     // Methods
     loadData,
     handleOk,
+    handleCancel,
     handleDelete,
     handleExport,
     handleClone,

@@ -162,6 +162,8 @@ export function useVariableList (projectId: string, notify: string) {
       }
     });
 
+
+
     // Check if selection exceeds maximum limit
     const num = selectedRowKeys.length;
     if (num > MAX_BATCH_DELETE_NUM) {
@@ -174,6 +176,7 @@ export function useVariableList (projectId: string, notify: string) {
     }
 
     rowSelection.value.selectedRowKeys = selectedRowKeys;
+
   };
 
   /**

@@ -41,6 +41,9 @@ const emit = defineEmits<{
 
   /** Emit when refresh action is requested */
   (e: 'refresh', value: string): void;
+
+  /** Emit when cancel action is requested */
+  (e: 'cancel'): void;
 }>();
 
 // Async components for better code splitting and performance

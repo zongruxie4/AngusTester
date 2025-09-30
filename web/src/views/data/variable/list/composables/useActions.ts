@@ -187,7 +187,7 @@ export function useActions (
   /**
    * Execute batch delete operation
    */
-  const executeBatchDelete = () => {
+  const executeBatchDelete = (rowSelection: { selectedRowKeys: string[] } | undefined) => {
     // Check if rowSelection is defined
     if (!rowSelection) {
       return;
