@@ -32,8 +32,8 @@ const menuItems = computed(() => {
   return [
     { icon: 'icon-xiangmu', name: t('project.title'), key: 'project' },
     aiEnabled.value && { icon: 'icon-AIzhushou', name: t('AI.title'), key: 'AI' },
-    projectId.value && { icon: 'icon-banben1', name: t('version.title'), key: 'version' },
     projectId.value && { icon: 'icon-mokuai1', name: t('module.title'), key: 'module' },
+    projectId.value && { icon: 'icon-banben1', name: t('version.title'), key: 'version' },
     projectId.value && { icon: 'icon-biaoqian3', name: t('tag.title'), key: 'tags' },
     { icon: 'icon-fabu', name: t('activity.title'), key: 'activity' },
     { icon: 'icon-qingchu', name: t('trash.title'), key: 'trash' }

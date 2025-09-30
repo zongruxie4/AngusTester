@@ -81,6 +81,26 @@
       }
     }
   },
+  "module": {
+    "title": "Module",
+    "introduce": {
+      "aboutModule": "About Module",
+      "description": "Modules are used to define and organize relatively independent functional sets in software systems. Through modules, tasks and functional use cases can be divided, thereby improving maintainability."
+    },
+    "actions": {
+      "addModule": "Add Module",
+      "newSubModule": "New Sub Module",
+      "moveModule": "Move Module"
+    },
+    "messages": {
+      "addModuleTitle": "Add Module",
+      "addedModules": "Added Modules",
+      "addModuleHint": "Press Enter or lose focus to save added module, double-click existing module to enter edit mode",
+      "noModules": "You haven't added any modules yet, ",
+      "noModulesDescription": "You haven't added any modules.",
+      "moduleNamePlaceholder": "Please enter module name"
+    }
+  },
   "version": {
     "title": "Version",
     "currentVersion": "Current Version",
@@ -145,26 +165,6 @@
         "countProgress": "Task Completion Progress",
         "workloadProgress": "Workload Completion Progress"
       }
-    }
-  },
-  "module": {
-    "title": "Module",
-    "introduce": {
-      "aboutModule": "About Module",
-      "description": "Software modules are used to define and organize relatively independent functional sets in software systems. Through modules, tasks and functional use cases can be divided, thereby improving maintainability."
-    },
-    "actions": {
-      "addModule": "Add Module",
-      "newSubModule": "New Sub Module",
-      "moveModule": "Move Module"
-    },
-    "messages": {
-      "addModuleTitle": "Add Module",
-      "addedModules": "Added Modules",
-      "addModuleHint": "Press Enter or lose focus to save added module, double-click existing module to enter edit mode",
-      "noModules": "You haven't added any modules yet, ",
-      "noModulesDescription": "You haven't added any modules.",
-      "moduleNamePlaceholder": "Please enter module name"
     }
   },
   "tag": {

@@ -83,6 +83,26 @@
       }
     }
   },
+  "module": {
+    "title": "模块",
+    "introduce": {
+      "aboutModule": "关于模块",
+      "description": "模块用于定义和组织软件系统中相对独立的功能集，通过模块可以划分任务和功能用例，从而提高可维护性。"
+    },
+    "actions": {
+      "addModule": "添加模块",
+      "newSubModule": "新建子模块",
+      "moveModule": "移动模块"
+    },
+    "messages": {
+      "addModuleTitle": "添加模块",
+      "addedModules": "已添加模块",
+      "addModuleHint": "回车或鼠标失焦时保存添加模块，双击已存在模块可进入编辑状态",
+      "noModules": "您尚未添加任何模块，立即",
+      "noModulesDescription": "您尚未添加任何模块。",
+      "moduleNamePlaceholder": "请输入模块名称"
+    }
+  },
   "version": {
     "title": "版本",
     "currentVersion": "当前版本",
@@ -147,26 +167,6 @@
         "countProgress": "完成任务进度",
         "workloadProgress": "完成工作量进度"
       }
-    }
-  },
-  "module": {
-    "title": "模块",
-    "introduce": {
-      "aboutModule": "关于模块",
-      "description": "软件模块用于定义和组织软件系统中相对独立的功能集，通过模块可以划分任务和功能用例，从而提高可维护性。"
-    },
-    "actions": {
-      "addModule": "添加模块",
-      "newSubModule": "新建子模块",
-      "moveModule": "移动模块"
-    },
-    "messages": {
-      "addModuleTitle": "添加模块",
-      "addedModules": "已添加模块",
-      "addModuleHint": "回车或鼠标失焦时保存添加模块，双击已存在模块可进入编辑状态",
-      "noModules": "您尚未添加任何模块，立即",
-      "noModulesDescription": "您尚未添加任何模块。",
-      "moduleNamePlaceholder": "请输入模块名称"
     }
   },
   "tag": {
