@@ -37,6 +37,12 @@ const ExportScriptModal = defineAsyncComponent(() => import('@/components/script
 // I18n
 const { t } = useI18n();
 
+// Export state
+const exportIds = ref<string[]>([]);
+
+// const authModalVisible = ref<boolean>(false);
+const exportVisible = ref<boolean>(false);
+
 // Composable
 const {
   columns,
@@ -46,6 +52,8 @@ const {
   batchDeleteDisabled,
   batchExportDisabled,
   rowSelection,
+  authModalVisible,
+  selectedData,
   cancelBatchOperation,
   handleBatchExec,
   handleBatchDelete,
@@ -56,11 +64,7 @@ const {
   selectedIds
 } = useScriptTable(props.permissionsMap);
 
-// Export state
-const exportIds = ref<string[]>([]);
-const selectedData = ref<ScriptInfo>();
-const authModalVisible = ref<boolean>(false);
-const exportVisible = ref<boolean>(false);
+
 
 /**
  * Import demo scripts

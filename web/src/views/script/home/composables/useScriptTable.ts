@@ -185,6 +185,8 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
   const batchExecDisabled = ref(false);
   const batchDeleteDisabled = ref(false);
   const batchExportDisabled = ref(false);
+  const authModalVisible = ref<boolean>(false);
+  const selectedData = ref<ScriptInfo>();
 
   // Row selection configuration
   const rowSelection = ref<{
@@ -355,6 +357,14 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
   };
 
   /**
+   * handle script auth
+   */
+  const handleAuth = async (data: ScriptInfo) => {
+    selectedData.value = data;
+    authModalVisible.value = true;
+  };
+
+  /**
    * Handle script delete
    */
   const handleDelete = async (
@@ -410,6 +420,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
         handleToEditor(data);
         break;
       case 'auth':
+        handleAuth(data);
         // Auth handling would be done in the parent component
         break;
       case 'clone':
@@ -472,6 +483,8 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
     batchDeleteDisabled,
     batchExportDisabled,
     rowSelection,
+    authModalVisible,
+    selectedData,
 
     // Methods
     cancelBatchOperation,
