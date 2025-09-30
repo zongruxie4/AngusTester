@@ -443,32 +443,6 @@
         }
       }
     },
-    "permissionModal": {
-      "title": "Space Permission",
-      "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
-      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
-    },
-    "globalAuth": {
-      "title": "Space Permission",
-      "description": "Grant specified \"function\" operation permissions to users, departments, and groups. When granting permissions, \"VIEW\" permission is required. Users can only authorize functions for which they have authorization permissions.",
-      "tabs": {
-        "user": "User",
-        "dept": "Department",
-        "group": "Group"
-      },
-      "groupSet": {
-        "placeholders": {
-          "user": "Search user",
-          "dept": "Search department",
-          "group": "Search group"
-        }
-      },
-      "authSet": {
-        "searchPlaceholder": "Search name",
-        "allPermissions": "All",
-        "loadingTip": "Loading..."
-      }
-    },
     "spaceForm": {
       "title": "Add Space",
       "form": {
