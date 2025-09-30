@@ -10,6 +10,7 @@ import { apis } from '@/api/tester';
 import { group } from '@/utils/common';
 import type { DataSourceType } from '../PropsType';
 import VirtualApiList from './virtualApiList.vue';
+import { ApiPermission } from '@/enums/enums';
 
 interface Props {
   dataSource:Array<DataSourceType>;
@@ -671,7 +672,7 @@ watch(() => [props.allData, props.groupedBy], () => {
     <AsyncComponent :visible="state.interfaceAuthVisible">
       <AuthorizeModal
         v-model:visible="state.interfaceAuthVisible"
-        enumKey="ApiPermission"
+        :enumKey="ApiPermission"
         :appId="appInfo?.id"
         :listUrl="`${TESTER}/apis/auth?apisId=${state.id}`"
         :delUrl="`${TESTER}/apis/auth`"

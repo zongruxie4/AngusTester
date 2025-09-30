@@ -6,6 +6,7 @@ import { Divider, Radio, RadioGroup } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 
+import { MockServicePermission } from '@/enums/enums';
 import { analysis, mock, services } from '@/api/tester';
 
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
@@ -309,7 +310,7 @@ const statusStyleMap = {
     <AsyncComponent :visible="authVisible">
       <AuthorizeModal
         v-model:visible="authVisible"
-        enumKey="MockServicePermission"
+        :enumKey="MockServicePermission"
         :appId="appInfo?.id"
         :listUrl="`${TESTER}/mock/service/${mockServiceInfo.id}/auth`"
         :delUrl="`${TESTER}/mock/service/auth`"

@@ -8,6 +8,7 @@ import { isEqual, cloneDeep } from 'lodash-es';
 import { exec, scenario } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
+import { ScenarioPermission } from '@/enums/enums'
 import ButtonGroup from './ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
 import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from './PropsType';
@@ -1400,7 +1401,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
     <AsyncComponent :visible="authVisible">
       <AuthorizeModal
         v-model:visible="authVisible"
-        enumKey="ScenarioPermission"
+        :enumKey="ScenarioPermission"
         :appId="props.appInfo?.id"
         :listUrl="`${TESTER}/scenario/auth?scenarioId=${scenarioConfigData?.id}`"
         :delUrl="`${TESTER}/scenario/auth`"

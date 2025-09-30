@@ -8,6 +8,7 @@ import { AxiosRequestConfig } from 'axios';
 import { isEqual } from 'lodash-es';
 import { exec, scenario } from '@/api/tester';
 
+import { ScenarioPermission } from '@/enums/enums';
 import ButtonGroup from './ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
 import { TOOLBAR_MENUITEMS, TOOLBAR_EXTRA_MENUITEMS, DRAWER_MENUITEMS } from './data';
@@ -1679,7 +1680,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
     <AsyncComponent :visible="authVisible">
       <AuthorizeModal
         v-model:visible="authVisible"
-        enumKey="ScenarioPermission"
+        :enumKey="ScenarioPermission"
         :appId="props.appInfo?.id"
         :listUrl="`${TESTER}/scenario/auth?scenarioId=${scenarioConfigData?.id}`"
         :delUrl="`${TESTER}/scenario/auth`"

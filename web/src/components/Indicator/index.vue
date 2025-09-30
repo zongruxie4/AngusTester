@@ -1,18 +1,29 @@
 <script setup lang="ts">
+// Vue core imports
 import { reactive, watch, onMounted, ref, defineAsyncComponent, nextTick } from 'vue';
-import { Input, notification, Icon, Hints, ShortDuration } from '@xcan-angus/vue-ui';
-import { Form, FormItem, RadioButton, RadioGroup, Button, Switch, Tooltip } from 'ant-design-vue';
-import IndicatorAssert from '@/components/IndicatorAssert/index.vue';
-import { enumUtils, http, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
+// UI component imports
+import { Input, notification, Icon, Hints, ShortDuration } from '@xcan-angus/vue-ui';
+import { Form, FormItem, RadioButton, RadioGroup, Button, Switch, Tooltip } from 'ant-design-vue';
+
+// Infrastructure imports
+import { enumUtils, http, TESTER } from '@xcan-angus/infra';
+
+// Local component imports
+import IndicatorAssert from '@/components/IndicatorAssert/index.vue';
+
+// Local imports
 import { indicator } from './apis';
 import { splitDuration, maxDuration } from 'src/utils/apis';
 
 const { t } = useI18n();
 
+/**
+ * Component props interface for indicator management
+ */
 export interface Props {
-  disabled:boolean;
+  disabled: boolean;
   type: 'API' | 'SCENARIO';
   id: string;
   test?: {
@@ -22,6 +33,7 @@ export interface Props {
   }
 }
 
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   type: 'API',
@@ -29,34 +41,36 @@ const props = withDefaults(defineProps<Props>(), {
   test: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component events
 const emit = defineEmits<{
   (e: 'rendered', value: true);
 }>();
 
+// Async component imports
 const ResponseTime = defineAsyncComponent(() => import('./response-time.vue'));
 
-// 获取指标信息 api 配置
+// Indicator data loading configuration
 const loadInfoConfig = {
-  perf: indicator.loadPerf,
-  stability: indicator.loadStaibility,
-  func: indicator.loadFunc
+  perf: indicator.loadPerformanceIndicator,
+  stability: indicator.loadStabilityIndicator,
+  func: indicator.loadFunctionalityIndicator
 };
 
+// Indicator data modification configuration
 const modifyConfig = {
-  perf: indicator.modifyPerf,
-  stability: indicator.modifyStability,
-  func: indicator.modifyFunc
+  perf: indicator.updatePerformanceIndicator,
+  stability: indicator.updateStabilityIndicator,
+  func: indicator.updateFunctionalityIndicator
 };
 
-// 删除指标配置
+// Indicator deletion configuration
 const delConfig = {
-  perf: indicator.delPerf,
-  stability: indicator.delStaibility,
-  func: indicator.delFunc
+  perf: indicator.deletePerformanceIndicator,
+  stability: indicator.deleteStabilityIndicator,
+  func: indicator.deleteFunctionalityIndicator
 };
 
-// 启用禁用指标
+// Test enable/disable configuration
 const enableConfig = {
   API: (params): Promise<[Error | null, any]> => {
     return http.put(`${TESTER}/apis/${props.id}/test/enabled`, params, {
@@ -70,7 +84,7 @@ const enableConfig = {
   }
 };
 
-// 获取启用禁用数据
+// Test enable/disable data loading configuration
 const loadEnableConfig = {
   API: (): Promise<[Error | null, any]> => {
     return http.get(`${TESTER}/apis/${props.id}`);
@@ -80,6 +94,7 @@ const loadEnableConfig = {
   }
 };
 
+// Indicator hints and tips configuration
 const tipsConfig = {
   // hints: {
   //   API: '接口指标设定值优先级高于服务指标',
@@ -98,12 +113,15 @@ const tipsConfig = {
   ]
 };
 
+// Current indicator type
 const indicatorType = ref<'perf' | 'stability'|'func'>(props.type === 'SCENARIO' ? 'perf' : 'func');
 
+// Component state management
 const state = reactive({
-  enableds: []
+  enableds: [] as string[]
 });
 
+// Performance indicator data
 const perfData = reactive({
   info: {
     threads: '',
@@ -120,6 +138,7 @@ const perfData = reactive({
   operation: '<='
 });
 
+// Stability indicator data
 const stability = reactive({
   info: {
     threads: '',
@@ -137,10 +156,11 @@ const stability = reactive({
   disabled: true
 });
 
+// Functionality indicator data
 const funcData = reactive({
   info: {
-    smoke: true, // 使用冒烟测试，
-    security: true, // 使用安全测试
+    smoke: true, // Use smoke testing
+    security: true, // Use security testing
     securityCheckSetting: 'NOT_SECURITY_CODE',
     smokeCheckSetting: 'API_AVAILABLE',
     userDefinedSecurityAssertion: undefined,
@@ -149,28 +169,40 @@ const funcData = reactive({
   disabled: true
 });
 
-let initPerData = {}; // 用于保存编辑前的原始值, 为后面提交前数据对比做铺垫
-let initStability = {};
-let initFunc = {};
+// Initial data backup for comparison before submission
+let initPerData = {}; // Backup for performance indicator data
+let initStability = {}; // Backup for stability indicator data
+let initFunc = {}; // Backup for functionality indicator data
 
+/**
+ * Watch for changes in indicator type and reload data
+ */
 watch(() => indicatorType.value, () => {
   loadIndicator();
 });
 
+// Component references
 const smokeAssertRef = ref();
 const securityAssertRef = ref();
-// 冒烟测试指标选项
+
+// Smoke testing indicator options
 const smokeEnumOpt = ref<{value: string; label: string}[]>([]);
-// 安全测试指标选项
+// Security testing indicator options
 const SecurityEnumOpt = ref<{value: string; label: string}[]>([]);
+
+/**
+ * Load functionality testing enum options
+ */
 const loadFuncEnumOpt = async () => {
-  const data1 = enumUtils.enumToMessages('SmokeCheckSetting'); // TODO 功能后期需要重新设计实现
+  const data1 = enumUtils.enumToMessages('SmokeCheckSetting'); // TODO: Feature needs redesign in later implementation
   smokeEnumOpt.value = (data1 || []).map(i => ({ ...i, label: i.message }));
-  const data2 = enumUtils.enumToMessages('SecurityCheckSetting'); // TODO 功能后期需要重新设计实现
+  const data2 = enumUtils.enumToMessages('SecurityCheckSetting'); // TODO: Feature needs redesign in later implementation
   SecurityEnumOpt.value = (data2 || []).map(i => ({ ...i, label: i.message }));
 };
 
-// 获取指标数据
+/**
+ * Load indicator data based on current type
+ */
 const loadIndicator = async () => {
   if (!props.id) {
     return;
@@ -198,6 +230,10 @@ const loadIndicator = async () => {
   }
 };
 
+/**
+ * Handle duration change for performance or stability indicators
+ * @param value - New duration value
+ */
 const handleDurationChange = (value: string) => {
   if (indicatorType.value === 'perf') {
     perfData.info.duration = value;
@@ -206,7 +242,9 @@ const handleDurationChange = (value: string) => {
   }
 };
 
-// 开放修改指标
+/**
+ * Enable editing mode for current indicator type
+ */
 const edit = () => {
   if (indicatorType.value === 'perf') {
     perfData.disabled = false;
@@ -220,7 +258,9 @@ const edit = () => {
   }
 };
 
-// 取消
+/**
+ * Cancel editing and restore original data
+ */
 const cancel = () => {
   if (indicatorType.value === 'perf') {
     perfData.disabled = true;
@@ -237,8 +277,13 @@ const cancel = () => {
   loadIndicator();
 };
 
+// Performance validation state
 const isValidatePerf = ref(false);
-// 校验性能指标数据
+
+/**
+ * Validate performance indicator data
+ * @returns True if validation passes, false otherwise
+ */
 const validatePerf = ():boolean => {
   isValidatePerf.value = true;
   const [durationValue] = splitDuration(perfData.info.duration);
@@ -269,8 +314,13 @@ const validatePerf = ():boolean => {
   return true;
 };
 
+// Stability validation state
 const isValidateStability = ref(false);
-// 校验稳定性指标数据
+
+/**
+ * Validate stability indicator data
+ * @returns True if validation passes, false otherwise
+ */
 const validateStability = (): boolean => {
   isValidateStability.value = true;
   const [durationValue] = splitDuration(stability.info.duration);
@@ -309,7 +359,9 @@ const validateStability = (): boolean => {
   return true;
 };
 
-// 修改接口性能指标
+/**
+ * Submit indicator modifications
+ */
 const putPerf = async () => {
   let params;
   if (indicatorType.value === 'perf') {
@@ -376,7 +428,9 @@ const putPerf = async () => {
   loadIndicator();
 };
 
-// 恢复默认指标
+/**
+ * Reset indicator to default values
+ */
 const delCurrent = async () => {
   const [error] = await delConfig[indicatorType.value](props.type, props.id);
   if (error) {
@@ -386,10 +440,14 @@ const delCurrent = async () => {
   loadIndicator();
 };
 
+// Duration input props configuration
 const durationInputProps = {
   onblur: () => handleDurationData()
 };
 
+/**
+ * Handle duration data validation and correction
+ */
 const handleDurationData = () => {
   const value = indicatorType.value === 'perf' ? perfData.info.duration : stability.info.duration;
   const [durationValue, unit] = splitDuration(value);
@@ -408,10 +466,14 @@ const handleDurationData = () => {
   }
 };
 
+// Ramp-up interval input props configuration
 const rampUpIntervalInputProps = {
   onblur: () => handleRampUpIntervalBlur()
 };
 
+/**
+ * Handle ramp-up interval validation and correction
+ */
 const handleRampUpIntervalBlur = () => {
   const [durationValue, unit] = splitDuration(perfData.info.rampUpInterval);
   if (!durationValue) {
@@ -423,6 +485,9 @@ const handleRampUpIntervalBlur = () => {
   }
 };
 
+/**
+ * Load target test configuration
+ */
 const loadTargetTest = async () => {
   const [error, { data }] = await loadEnableConfig[props.type]();
   if (error) {
@@ -441,6 +506,11 @@ const loadTargetTest = async () => {
   }
 };
 
+/**
+ * Change test type enable/disable status
+ * @param event - Enable/disable event
+ * @param flagKey - Test type key
+ */
 const changeTest = async (event, flagKey) => {
   const params = { enabled: event, testTypes: [...state.enableds] };
   if (event) {
@@ -455,6 +525,9 @@ const changeTest = async (event, flagKey) => {
   state.enableds = params.testTypes;
 };
 
+/**
+ * Watch for changes in props.id and reload data
+ */
 watch(() => props.id, () => {
   loadIndicator();
   if (!props.test) {
@@ -473,6 +546,9 @@ watch(() => props.id, () => {
   }
 });
 
+/**
+ * Initialize component on mount
+ */
 onMounted(() => {
   loadIndicator();
   loadFuncEnumOpt();
