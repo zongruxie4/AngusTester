@@ -29,8 +29,6 @@ export function usePerformancePolling (
   // eslint-disable-next-line @typescript-eslint/ban-types
   perfLoadListFunc: Function
 ) {
-  // ==================== State Management ====================
-
   /**
    * Whether the first data pull has completed at least once
    */
@@ -65,8 +63,6 @@ export function usePerformancePolling (
    * Polling timer reference
    */
   let timer: NodeJS.Timeout | null = null;
-
-  // ==================== Computed Properties ====================
 
   /**
    * Compute polling delay (ms) based on reportInterval with a minimum of 3 seconds
@@ -109,8 +105,6 @@ export function usePerformancePolling (
     return !(givenTime.isBefore(currentTime) || givenTime.isSame(currentTime));
   });
 
-  // ==================== Polling Methods ====================
-
   /**
    * Schedule next data update with the computed delay, or stop when execution finished
    * <p>
@@ -149,8 +143,6 @@ export function usePerformancePolling (
     }
   };
 
-  // ==================== Tab Management ====================
-
   /**
    * Handle switching of metric tabs and lazy-load corresponding data when needed
    * <p>
@@ -172,8 +164,6 @@ export function usePerformancePolling (
 
     countTabKey.value = value;
   };
-
-  // ==================== Data Loading Coordination ====================
 
   /**
    * Load execution info and refresh related metrics depending on current tab
@@ -222,8 +212,6 @@ export function usePerformancePolling (
     updateData();
   };
 
-  // ==================== Execution Status Monitoring ====================
-
   /**
    * React to execution detail changes
    * <p>
@@ -256,8 +244,6 @@ export function usePerformancePolling (
     });
   };
 
-  // ==================== Lifecycle Management ====================
-
   /**
    * Initialize polling and start monitoring execution status
    */
@@ -272,8 +258,7 @@ export function usePerformancePolling (
     clearTimer();
   };
 
-  // ==================== Lifecycle Hooks ====================
-
+  // Lifecycle Hooks
   onBeforeUnmount(() => {
     cleanupPolling();
   });

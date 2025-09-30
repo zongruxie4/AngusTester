@@ -17,17 +17,17 @@ const { dashboardConfig, dashboardConstants } = useDashboardConfig();
 <template>
   <div class="flex content items-center">
     <!-- Left content area - flexible width -->
-    <div class="flex content items-center flex-1 pr-20">
+    <div class="flex content items-center flex-1 pr-50">
       <img src="../../assets/images/home/exec.svg" class="w-43 h-35" />
       <div class="ml-3.25 text-content flex-1 font-serif">
-        <div class="text-3.5 font-semibold">{{ t('execution.header.title') }}</div>
+        <div class="text-3.5 font-semibold">{{ t('execution.introduce.title') }}</div>
         <div class="mt-3">
           <Icon icon="icon-duihaolv" class="mr-2.5" />
-          <span class="text-3.5">{{ t('execution.header.contentList1') }}</span>
+          <span class="text-3.5">{{ t('execution.introduce.capability1') }}</span>
         </div>
         <div class="mt-1 md-2">
           <Icon icon="icon-duihaolv" class="mr-2.5" />
-          <span class="text-3.5">{{ t('execution.header.contentList2') }}</span>
+          <span class="text-3.5">{{ t('execution.introduce.capability2') }}</span>
         </div>
       </div>
     </div>

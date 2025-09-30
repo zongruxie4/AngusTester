@@ -8,14 +8,10 @@ import { ExceptionInfo } from '../types';
  * for displaying error information to users.
  */
 export function useExceptionHandling () {
-  // ==================== State Management ====================
-
   /**
    * Current exception information for display
    */
   const exception = ref<ExceptionInfo | undefined>();
-
-  // ==================== Exception Processing Methods ====================
 
   /**
    * Derive exception info from scheduling or meter status/messages

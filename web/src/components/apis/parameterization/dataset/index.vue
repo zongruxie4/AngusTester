@@ -417,11 +417,11 @@ const hintTextMap = {
                 </TabPane>
               </template>
 
-              <TabPane key="preview" :tab="t('common.preview')">
+              <TabPane key="preview" :tab="t('actions.preview')">
                 <PreviewData :dataSource="item as any" />
               </TabPane>
 
-              <TabPane key="use" :tab="t('common.use')">
+              <TabPane key="use" :tab="t('actions.use')">
                 <DataSetUseList :id="item.id" />
               </TabPane>
             </Tabs>

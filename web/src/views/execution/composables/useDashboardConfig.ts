@@ -24,7 +24,7 @@ export function useDashboardConfig () {
     charts: [
       {
         type: ChartType.PIE,
-        title: t('common.scriptType'),
+        title: t('common.type'),
         field: 'script_type',
         enumKey: scriptTypeEnums,
         pieConfig: {
@@ -33,7 +33,7 @@ export function useDashboardConfig () {
       },
       {
         type: ChartType.PIE,
-        title: t('execution.chartInfo.executionStatus'),
+        title: t('common.status'),
         field: 'status',
         enumKey: execStatusEnums,
         pieConfig: {

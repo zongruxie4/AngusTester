@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 const TestSummary = defineAsyncComponent(() => import('./testSummary/index.vue'));
-const Execdetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
+const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
 const Task = defineAsyncComponent(() => import('./task/index.vue'));
 
 const activeTab = ref('func');
@@ -72,7 +72,7 @@ onMounted(() => {
       type="card"
       class="flex-1 min-h-0">
       <TabPane key="func" :tab="t('service.apiExecDetail.tabs.functionalTest')">
-        <Execdetail
+        <ExecDetail
           class="p-0"
           :showBackBtn="false"
           :execId="funcExecId"
@@ -83,7 +83,7 @@ onMounted(() => {
         <!--        <NoData size="small" class="mt-25" />-->
       </TabPane>
       <TabPane key="perf" :tab="t('service.apiExecDetail.tabs.performanceTest')">
-        <Execdetail
+        <ExecDetail
           :showBackBtn="false"
           :execId="perfExecId"
           :monicaEditorStyle="{height: '600px'}"
@@ -95,7 +95,7 @@ onMounted(() => {
         <!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="stability" :tab="t('service.apiExecDetail.tabs.stabilityTest')">
-        <Execdetail
+        <ExecDetail
           :showBackBtn="false"
           :execId="stabilityExecId"
           :monicaEditorStyle="{height: '600px'}"
@@ -107,7 +107,7 @@ onMounted(() => {
         <!--          class="mt-25" />-->
       </TabPane>
       <TabPane key="custom" :tab="t('service.apiExecDetail.tabs.customTest')">
-        <Execdetail
+        <ExecDetail
           :showBackBtn="false"
           :execId="customExecId"
           :monicaEditorStyle="{height: '600px'}"

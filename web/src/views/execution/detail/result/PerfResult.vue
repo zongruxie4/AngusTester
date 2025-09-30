@@ -29,11 +29,7 @@ interface Props {
     errorRate: string;
     rampUpInterval: string;
     rampUpThreads: string;
-  },
-  // passedInfo: {
-  //   passed: boolean;
-  //   failureMessage?: string;
-  // }
+  }
 }
 
 const { t } = useI18n();

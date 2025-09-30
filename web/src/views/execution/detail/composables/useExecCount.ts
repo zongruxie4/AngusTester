@@ -38,7 +38,7 @@ export const useExecCount = () => {
           const cvsValues = valuesMap[_key].cvsValue.split(',');
           map = cvsKeys.reduce((prev, cur, index) => {
             const _value = +cvsValues[index];
-            if (typeof _value === 'number' && !isNaN(_value)) {
+            if (!isNaN(_value)) {
               prev[cur] = _value;
             } else {
               prev[cur] = 0;
@@ -68,11 +68,11 @@ export const useExecCount = () => {
         if (cvsKey in value) {
           const existingItem = result.find((item) => item.name === value.name);
           if (existingItem) {
-            existingItem.data.push(value[cvsKey]);
+            existingItem.data.push(value[cvsKey] as number);
           } else {
             result.push({
               name: value.name,
-              data: [value[cvsKey]]
+              data: [value[cvsKey] as number]
             });
           }
         }

@@ -9,7 +9,6 @@ import { useServerData } from './composables/useServerData';
  * Props for the Server component
  */
 interface Props {
-  /** Execution ID for loading server data */
   execId: string
 }
 

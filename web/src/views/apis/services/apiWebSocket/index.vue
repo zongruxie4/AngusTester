@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const SocketForm = defineAsyncComponent(() => import('./components/socketForm.vue'));
-const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
+const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEditor/index.vue'));
 const Toolbar = defineAsyncComponent(() => import('@/components/layout/toolbar/index.vue'));
 const MessageList = defineAsyncComponent(() => import('./components/messageList.vue'));
 const Save = defineAsyncComponent(() => import('./components/save.vue'));

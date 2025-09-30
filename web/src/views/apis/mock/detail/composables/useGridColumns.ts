@@ -55,7 +55,7 @@ export function useGridColumns () {
       value: 'raw'
     },
     {
-      name: t('common.preview'),
+      name: t('actions.preview'),
       value: 'preview'
     }
   ];

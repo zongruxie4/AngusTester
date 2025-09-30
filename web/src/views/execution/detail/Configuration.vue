@@ -65,7 +65,10 @@ const execFormRef = ref();
           {{ t('actions.save') }}
         </Button>
         <RouterLink to="/execution">
-          <Button size="small">{{ t('actions.cancel') }}</Button>
+          <Button
+            size="small">
+            {{ t('actions.cancel') }}
+          </Button>
         </RouterLink>
       </div>
     </div>

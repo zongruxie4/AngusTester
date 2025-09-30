@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { SearchCriteria } from '@xcan-angus/infra';
 
 import { ErrorCountListItem, SampleErrorContent, StatusCodeData } from '../types';
 
@@ -11,8 +12,6 @@ import { ErrorCountListItem, SampleErrorContent, StatusCodeData } from '../types
  * for performance monitoring and error analysis.
  */
 export function useErrorManagement () {
-  // ==================== State Management ====================
-
   /**
    * Error count list for displaying error statistics
    */
@@ -31,7 +30,7 @@ export function useErrorManagement () {
     pageSize: 200,
     filters: [] as Array<{
       key: 'timestamp';
-      op: 'GREATER_THAN_EQUAL';
+      op: SearchCriteria.OpEnum;
       value: string;
     }>
   });
@@ -51,8 +50,6 @@ export function useErrorManagement () {
    */
   const statusCodeData = ref<StatusCodeData>({});
 
-  // ==================== Error Count Management ====================
-
   /**
    * Load latest error counters and compute error rates based on last sample summary
    * <p>
@@ -60,8 +57,10 @@ export function useErrorManagement () {
    */
   const loadErrorCount = async (
     detailId: string,
+    // eslint-disable-next-line @typescript-eslint/ban-types
     getSampleErrorCounterLatest: Function,
     newList: any[],
+    // eslint-disable-next-line @typescript-eslint/ban-types
     emit: Function
   ) => {
     const [counterErr, counterRes] = await getSampleErrorCounterLatest(detailId);
@@ -137,8 +136,6 @@ export function useErrorManagement () {
     return finalResult;
   };
 
-  // ==================== Sample Error Content Management ====================
-
   /**
    * Load paginated sample error contents incrementally using timestamp cursor
    * <p>
@@ -159,7 +156,7 @@ export function useErrorManagement () {
     if (errTimestamp.value) {
       errParams.value.filters = [{
         key: 'timestamp',
-        op: 'GREATER_THAN_EQUAL',
+        op: SearchCriteria.OpEnum.GreaterThanEqual,
         value: dayjs(errTimestamp.value).format(DATE_TIME_FORMAT)
       }];
     }
@@ -180,8 +177,6 @@ export function useErrorManagement () {
       sampleList.value = [...sampleList.value, ...data.list];
     }
   };
-
-  // ==================== Status Code Management ====================
 
   /**
    * Load latest HTTP status code counters (no history kept)
@@ -295,8 +290,6 @@ export function useErrorManagement () {
       }
     }
   };
-
-  // ==================== Reset Methods ====================
 
   /**
    * Reset error-related data to initial state

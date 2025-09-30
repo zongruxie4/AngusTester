@@ -159,23 +159,6 @@ const resultInfo = computed(() => {
           </div>
         </div>
 
-        <!-- <div class="flex border-b border-solid border-border-input">
-          <div
-            class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            忽略断言
-          </div>
-          <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-            {{ typeof props.execInfo?.ignoreAssertions ==='boolean'?(props.execInfo?.ignoreAssertions?'忽略':'不忽略'):'' }}
-          </div>
-          <div
-            class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            更新测试结果
-          </div>
-          <div class="flex-1 px-1.5 py-1.5 break-all whitespace-pre-wrap">
-            {{ typeof props.execInfo?.updateResult ==='boolean'?(props.execInfo?.updateResult?'更新':'不更新'):'' }}
-          </div>
-        </div> -->
-
         <div class="flex">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">

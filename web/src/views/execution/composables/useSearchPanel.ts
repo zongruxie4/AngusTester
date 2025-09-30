@@ -64,7 +64,7 @@ export function useSearchPanel (props: BasicProps) {
       },
       {
         key: 'executedByMe',
-        name: t('execution.searchPanel.executedByMe'),
+        name: t('quickSearch.executedByMe'),
         fieldKey: 'execBy'
       }
     ], String(userId.value || '')),
@@ -354,7 +354,6 @@ export function useSearchPanel (props: BasicProps) {
           emit('change', getFilters());
         }
 
-        // 保存到db
         if (db) {
           const dbData: {
             filters?: SearchCriteria[];
@@ -424,19 +423,28 @@ export function useSearchPanel (props: BasicProps) {
     {
       valueKey: 'startDate',
       type: 'date-range',
-      placeholder: [t('execution.searchPanel.plannedStartTimeFrom'), t('execution.searchPanel.plannedStartTimeTo')],
+      placeholder: [
+        t('execution.searchPanel.plannedStartTimeFrom'),
+        t('execution.searchPanel.plannedStartTimeTo')
+      ],
       showTime: true
     },
     {
       valueKey: 'actualStartDate',
       type: 'date-range',
-      placeholder: [t('execution.searchPanel.actualStartTimeFrom'), t('execution.searchPanel.actualStartTimeTo')],
+      placeholder: [
+        t('execution.searchPanel.actualStartTimeFrom'),
+        t('execution.searchPanel.actualStartTimeTo')
+      ],
       showTime: true
     },
     {
       valueKey: 'endDate',
       type: 'date-range',
-      placeholder: [t('execution.searchPanel.endTimeFrom'), t('execution.searchPanel.endTimeTo')],
+      placeholder: [
+        t('execution.searchPanel.endTimeFrom'),
+        t('execution.searchPanel.endTimeTo')
+      ],
       showTime: true
     },
     {
@@ -452,7 +460,10 @@ export function useSearchPanel (props: BasicProps) {
     {
       valueKey: 'createdDate',
       type: 'date-range',
-      placeholder: [t('execution.searchPanel.createdTimeFrom'), t('execution.searchPanel.createdTimeTo')],
+      placeholder: [
+        t('execution.searchPanel.createdTimeFrom'),
+        t('execution.searchPanel.createdTimeTo')
+      ],
       showTime: true
     },
     {
@@ -462,7 +473,10 @@ export function useSearchPanel (props: BasicProps) {
     },
     {
       valueKey: 'lastModifiedDate',
-      placeholder: [t('execution.searchPanel.lastModifiedTimeFrom'), t('execution.searchPanel.lastModifiedTimeTo')],
+      placeholder: [
+        t('execution.searchPanel.lastModifiedTimeFrom'),
+        t('execution.searchPanel.lastModifiedTimeTo')
+      ],
       type: 'date-range',
       showTime: true
     }

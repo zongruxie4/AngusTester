@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import YAML from 'yaml';
 import { isYAML } from '@/utils/dataFormat';
 
-import MonacoEditor from '@/components/monacoEditor/index.vue';
+import MonacoEditor from '@/components/MonacoEditor/index.vue';
 
 export interface Props {
   value:{[key:string]:any}|undefined;

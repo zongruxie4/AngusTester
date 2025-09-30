@@ -3,7 +3,7 @@ import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { DropdownSort, Icon, Input, SearchPanel, Select } from '@xcan-angus/vue-ui';
-import { TESTER, PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { TESTER, PageQuery, SearchCriteria, EditionType } from '@xcan-angus/infra';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { useSearchPanel } from './composables/useSearchPanel';
 import { BasicProps } from '@/types/types';
@@ -149,6 +149,7 @@ onMounted(async () => {
               </div>
             </template>
           </Select>
+
           <Select
             v-if="isScenarioTargetType"
             :value="scriptSourceIdFilter.value"
@@ -171,9 +172,10 @@ onMounted(async () => {
           </Select>
         </template>
       </SearchPanel>
+
       <div class="flex-shrink-0 flex items-center space-x-2.5">
         <Button
-          v-if="editionType === 'CLOUD_SERVICE'"
+          v-if="editionType === EditionType.CLOUD_SERVICE"
           type="primary"
           size="small"
           class="p-0">

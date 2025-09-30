@@ -1,4 +1,5 @@
 import { Ref } from 'vue';
+import { SearchCriteria } from '@xcan-angus/infra';
 import { ListData } from '../composables/useExecCount';
 
 /**
@@ -119,11 +120,7 @@ export type DataRateUnit = 'KB' | 'MB';
 export interface PerformanceListParams {
   pageNo: number;
   pageSize: number;
-  filters: Array<{
-    key: 'timestamp';
-    op: 'GREATER_THAN_EQUAL';
-    value: string;
-  }>;
+  filters: Array<SearchCriteria>;
   nodeId?: string;
 }
 

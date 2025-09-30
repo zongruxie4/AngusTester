@@ -23,7 +23,7 @@ const { t } = useI18n();
 const { gzip, ungzip } = codeUtils;
 const { valueKey, fileNameKey, enabledKey } = API_EXTENSION_KEY;
 const ApiForm = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/requestBody/form/index.vue'));
-const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
+const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEditor/index.vue'));
 const ModelModal = defineAsyncComponent(() => import('./modelModal.vue'));
 
 const globalConfigs = inject('globalConfigs', { VITE_MAX_FILE_SIZE: 10485760, VITE_DEBUG_MAX_FILE_SIZE: 524288000 });
