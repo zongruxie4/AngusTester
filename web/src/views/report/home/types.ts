@@ -6,7 +6,7 @@ import { ReportCategory, ReportPermission, ReportStatus, ReportTemplate } from '
 export type OrderByKey = 'createdDate' | 'createdByName';
 
 // Report related types
-export interface Report {
+export interface ReportDetail {
   id: string;
   name: string;
   version: string;
@@ -99,7 +99,7 @@ export interface TableColumn {
   groupName?: string;
   hide?: boolean;
   ellipsis?: boolean;
-  customRender?: (params: { text: any; record: Report }) => any;
+  customRender?: (params: { text: any; record: ReportDetail }) => any;
 }
 
 // Props types
@@ -121,7 +121,7 @@ export interface SearchPanelEmits {
 
 // Composable return types
 export interface UseReportDataReturn {
-  dataList: Ref<Report[]>;
+  dataList: Ref<ReportDetail[]>;
   loading: Ref<boolean>;
   pagination: Ref<PaginationConfig>;
   filters: Ref<SearchCriteria[]>;
@@ -133,11 +133,11 @@ export interface UseReportDataReturn {
   appInfo: Ref<any>;
   userInfo: Ref<any>;
   loadDataList: () => Promise<void>;
-  deleteReport: (report: Report) => void;
-  getShareToken: (report: Report) => Promise<void>;
-  generateReport: (report: Report) => Promise<void>;
+  deleteReport: (report: ReportDetail) => void;
+  getShareToken: (report: ReportDetail) => Promise<void>;
+  generateReport: (report: ReportDetail) => Promise<void>;
   addReport: (reportId?: string) => void;
-  viewReport: (report?: Report) => void;
+  viewReport: (report?: ReportDetail) => void;
   authFlagChange: (params: { auth: boolean }) => void;
   searchPanelChange: (data: SearchCriteria[]) => void;
   categoryChange: (value: string) => void;

@@ -1,16 +1,10 @@
-import { computed, inject, ref } from 'vue';
+import { inject, Ref, ref } from 'vue';
 import { modal, notification } from '@xcan-angus/vue-ui';
-import { PageQuery, SearchCriteria, appContext, toClipboard } from '@xcan-angus/infra';
+import { ProjectPageQuery, SearchCriteria, appContext, toClipboard } from '@xcan-angus/infra';
 import { report } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 import { useI18n } from 'vue-i18n';
-import type {
-  OrderByKey,
-  PaginationConfig,
-  ProjectInfo,
-  Report,
-  UseReportDataReturn
-} from '../types';
+import type { PaginationConfig, ReportDetail, UseReportDataReturn } from '../types';
 
 /**
  * Composable for managing report data operations
@@ -20,7 +14,7 @@ export function useReportData () {
   const { t } = useI18n();
 
   // Reactive state
-  const dataList = ref<Report[]>([]);
+  const dataList = ref<ReportDetail[]>([]);
   const loading = ref(false);
   const pagination = ref<PaginationConfig>({
     current: 1,
@@ -34,12 +28,11 @@ export function useReportData () {
   const generateLoading = ref<Record<string, boolean>>({});
 
   // Injected dependencies
-  const projectInfo = inject<ProjectInfo>('projectInfo', ref({ id: '', type: { value: '' } }));
   const appInfo = ref(appContext.getAccessApp());
   const userInfo = ref(appContext.getUser());
 
   // Computed properties
-  const projectId = computed(() => projectInfo.value?.id);
+  const projectId = inject<Ref<string>>('projectId', ref(''));
 
   /**
    * Load report list with current filters and pagination
@@ -50,14 +43,7 @@ export function useReportData () {
     }
 
     const { current, pageSize } = pagination.value;
-    const params: {
-      pageNo: number;
-      pageSize: number;
-      projectId: string;
-      filters?: SearchCriteria[];
-      orderBy?: OrderByKey;
-      orderSort?: PageQuery.OrderSort;
-    } = {
+    const params: ProjectPageQuery = {
       pageNo: current,
       pageSize,
       projectId: projectId.value,
@@ -69,7 +55,7 @@ export function useReportData () {
       params.filters = filters.value;
     }
     if (category.value) {
-      params.filters?.push({ key: 'category', op: 'EQUAL', value: category.value });
+      params.filters?.push({ key: 'category', op: SearchCriteria.OpEnum.Equal, value: category.value });
     }
 
     loading.value = true;
@@ -97,11 +83,11 @@ export function useReportData () {
   /**
    * Delete a report with confirmation
    */
-  const deleteReport = (report: Report) => {
+  const deleteReport = (reportDetail: ReportDetail) => {
     modal.confirm({
-      content: t('actions.tips.confirmDelete', { name: report.name }),
+      content: t('actions.tips.confirmDelete', { name: reportDetail.name }),
       onOk () {
-        return report.deleteReport([report.id]).then((resp) => {
+        return report.deleteReport([reportDetail.id]).then((resp) => {
           const [error] = resp;
           if (error) {
             return;
@@ -122,8 +108,8 @@ export function useReportData () {
   /**
    * Get share token for a report
    */
-  const getShareToken = async (report: Report) => {
-    const [error, { data }] = await report.getReportShareToken(report.id);
+  const getShareToken = async (reportDetail: ReportDetail) => {
+    const [error, { data }] = await report.getReportShareToken(reportDetail.id);
     if (error) {
       notification.error(t('reportHome.messages.getTokenFailed'));
       return;
@@ -136,10 +122,10 @@ export function useReportData () {
   /**
    * Generate report
    */
-  const generateReport = async (report: Report) => {
-    generateLoading.value[report.id] = true;
-    const [error] = await report.generateReport(report.id);
-    generateLoading.value[report.id] = false;
+  const generateReport = async (reportDetail: ReportDetail) => {
+    generateLoading.value[reportDetail.id] = true;
+    const [error] = await report.generateReport(reportDetail.id);
+    generateLoading.value[reportDetail.id] = false;
     if (error) {
       return;
     }
@@ -161,7 +147,7 @@ export function useReportData () {
   /**
    * Open view report modal
    */
-  const viewReport = (report?: Report) => {
+  const viewReport = (report?: ReportDetail) => {
     if (report) {
       selectId.value = report.id;
       selectReportPermissions.value = report.currentAuths || [];
@@ -206,7 +192,7 @@ export function useReportData () {
   /**
    * Handle pagination change
    */
-  const onPageChange = (page: any, _: any, sortData: any) => {
+  const onPageChange = (page: any) => {
     pagination.value.current = page.current;
     pagination.value.pageSize = page.pageSize;
     loadDataList();
@@ -215,7 +201,7 @@ export function useReportData () {
   /**
    * Handle sort change
    */
-  const toSort = (data: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort }) => {
+  const toSort = () => {
     pagination.value.current = 1;
     loadDataList();
   };
