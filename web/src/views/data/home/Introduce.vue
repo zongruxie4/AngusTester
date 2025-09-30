@@ -30,7 +30,7 @@ const introductionTips: IntroductionTip[] = [
 </script>
 
 <template>
-  <div class="bg-white rounded px-5 pt-0 pb-0 text-3.5">
+  <div class="bg-white rounded px-5 pt-0 pb-0 text-3.5 font-serif">
     <!-- Welcome Section -->
     <div class="font-semibold text-text-title">
       {{ t('dataHome.introduce.title') }}

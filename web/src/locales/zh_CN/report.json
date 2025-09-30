@@ -1,57 +1,13 @@
 {
   "reportHome": {
-    "messages": {
-      "deleteSuccess": "删除成功",
-      "getTokenFailed": "获取token失败",
-      "shareLinkCopied": "已复制分享链接到剪贴板",
-      "generatingReport": "正在生成报告"
-    },
-    "modal": {
-      "deleteReport": "删除报告",
-      "confirmDelete": "确认删除报告「{name}」吗？",
-      "reportPermission": "报告权限"
-    },
-    "actions": {
-      "generateNow": "立即生成"
-    },
-    "table": {
-      "template": "模板",
-      "resourceName": "资源名称",
-      "resourceType": "资源类型",
-      "resourceId": "资源ID",
-      "nextGenerateTime": "下次生成时间"
-    },
-    "permission": {
-      "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
-      "offTips": "无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
-    },
-    "globalAuth": {
-      "title": "报告权限",
-      "description": "授权给指定的\"功能\"操作权限给用户、部门、组，授予权限时\"查看\"权限是必须的。用户只能授权自己有授权权限的功能。",
-      "tabs": {
-        "user": "用户",
-        "dept": "部门",
-        "group": "组"
-      }
-    },
-    "summary": {
+    "introduce": {
       "description": "通过\"报告\"帮助团队可以全面总结研发活动的各个方面，包括进度、效能、质量、执行情况、结果分析等，这有助于提高透明度和沟通，为项目的成功交付提供有力支持。",
-      "workTitle": "在这里您和您的团队可以完成以下工作：",
       "features": {
         "generateReport": "根据报告模版在指定时间生成报告，并通过事件通知到相关人。",
         "viewReport": "查看我添加的或者授权给我的报告及内容。"
       }
     },
     "searchPanel": {
-      "quickQuery": "快速查询",
-      "menuItems": {
-        "all": "所有",
-        "myAdded": "我添加的",
-        "myModified": "我修改的",
-        "last1Day": "近1天",
-        "last3Days": "近3天",
-        "last7Days": "近7天"
-      },
       "searchOptions": {
         "namePlaceholder": "查询名称、描述",
         "resourceTypePlaceholder": "选择资源类型",
@@ -80,6 +36,23 @@
         "reportPermission": "报告权限"
       }
     },
+    "messages": {
+      "getTokenFailed": "获取token失败",
+      "shareLinkCopied": "已复制分享链接到剪贴板",
+      "generatingReport": "正在生成报告"
+    },
+    "modal": {
+      "deleteReport": "删除报告",
+      "confirmDelete": "确认删除报告「{name}」吗？",
+      "reportPermission": "报告权限"
+    },
+    "actions": {
+      "generateNow": "立即生成"
+    },
+    "table": {
+      "template": "模板",
+      "nextGenerateTime": "下次生成时间"
+    },
     "chart": {
       "categories": {
         "allReports": "全部报告",
@@ -107,12 +80,7 @@
         "organizationPersonnel": "组织人员",
         "time": "时间",
         "content": "内容",
-        "contentHint": "以下是报告输出内容目录信息。",
-        "memberTypes": {
-          "user": "用户",
-          "dept": "部门",
-          "group": "组"
-        }
+        "contentHint": "以下是报告输出内容目录信息。"
       },
       "generateRecord": {
         "reportName": "报告名称",

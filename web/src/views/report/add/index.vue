@@ -388,7 +388,7 @@ onMounted(() => {
                 <Input
                   v-model:value="formState.name"
                   :maxlength="100"
-                  :placeholder="t('common.placeholders.searchKeyword')" />
+                  :placeholder="t('reportAdd.form.namePlaceholder')" />
               </FormItem>
               <FormItem
                 class="flex-1 min-w-0 !mb-5"

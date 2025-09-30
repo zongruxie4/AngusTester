@@ -6,7 +6,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="bg-white rounded px-5 pt-0 pb-0 text-3.5">
+  <div class="bg-white rounded px-5 pt-0 pb-0 text-3.5 font-serif">
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('taskHome.welcomeToAngusTask') }}
     </div>

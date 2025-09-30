@@ -144,8 +144,8 @@
     "title": "Monitor",
     "monitor": "Monitor",
     "introduce": {
-      "aboutMonitor": "About Monitor",
-      "description": "Scenario monitoring helps you track system status in real-time, quickly identify and resolve issues, improving system reliability and user experience. Main application scenarios:",
+      "title": "About Monitor",
+      "description": "Scenario Monitoring gives you 24x7 visibility into business operations, detects performance/resource issues in real time, and helps troubleshoot faster to prevent risks and improve stability.",
       "scenarios": {
         "apiDelay": {
           "title": "API Delay Monitoring",

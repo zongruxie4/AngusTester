@@ -36,10 +36,10 @@ const tipList = [
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('file.introduce.title') }}
     </div>
-    <div class="mb-6">
+    <div class="mb-6 font-serif">
       {{ t('file.introduce.description') }}
     </div>
-    <div class="flex items-start justify-between">
+    <div class="flex items-start justify-between font-serif">
       <div
         v-for="item in tipList"
         :key="item.title"
