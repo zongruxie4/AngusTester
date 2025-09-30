@@ -225,7 +225,7 @@
       }
     },
     "list": {
-      "title": "Added Datasets",
+      "addedTitle": "Added Datasets",
       "noDataText": "You haven't added any datasets yet, immediately",
       "or": "or",
       "tableDropdown": {
@@ -300,17 +300,19 @@
       }
     },
     "preview": {
-      "hints": "A maximum of 10,000 data records can be previewed at a time. Mock function actual parameter values are generated during execution sampling.",
+      "hints": "Preview limited to 10k records. Mock parameters generate during sampling.",
       "previewRows": "Preview Rows",
       "placeholder": "1 ~ 10000"
     }
   },
   "datasource": {
     "title": "Data Source",
-    "titleAbout": "About Datasource",
-    "description": "Supports managing and connecting multiple datasource. After configuring datasource information, you can quickly generate test data, project demonstration scenarios, and quickly reference data source configuration information in JDBC tests, parameterized variables, and datasets.",
+    "addedTitle": "Added Datasource",
+    "introduce": {
+      "title": "About Datasource",
+      "description": "Supports managing and connecting multiple datasource. After configuring datasource information, you can quickly generate test data, project demonstration scenarios, and quickly reference data source configuration information in JDBC tests, parameterized variables, and datasets."
+    },
     "actions": {
-      "addedTitle": "Added Datasource",
       "addDataSource": "Add Datasource"
     },
     "searchOptions": {
@@ -338,7 +340,7 @@
       }
     }
   },
-  "fileSpace": {
+  "file": {
     "title": "File",
     "addedTitle": "Added Spaces",
     "type": {
@@ -439,32 +441,6 @@
           "modifyPasswordSuccess": "Modify Password Success",
           "copySuccess": "Copy Success"
         }
-      }
-    },
-    "permissionModal": {
-      "title": "Space Permission",
-      "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
-      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
-    },
-    "globalAuth": {
-      "title": "Space Permission",
-      "description": "Grant specified \"function\" operation permissions to users, departments, and groups. When granting permissions, \"VIEW\" permission is required. Users can only authorize functions for which they have authorization permissions.",
-      "tabs": {
-        "user": "User",
-        "dept": "Department",
-        "group": "Group"
-      },
-      "groupSet": {
-        "placeholders": {
-          "user": "Search user",
-          "dept": "Search department",
-          "group": "Search group"
-        }
-      },
-      "authSet": {
-        "searchPlaceholder": "Search name",
-        "allPermissions": "All",
-        "loadingTip": "Loading..."
       }
     },
     "spaceForm": {

@@ -1,4 +1,4 @@
-import { ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
+import { EnumMessage, ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
 
 /**
  * Form state for static dataset
@@ -41,7 +41,7 @@ export type FileDataSetFormState = {
   /** File extraction configuration */
   extraction: {
     /** Source type - always 'FILE' for file datasets */
-    source: 'FILE';
+    source: ExtractionSource;
     /** Type of file (CSV, EXCEL, TXT) */
     fileType: ExtractionFileType;
     /** Path to the file */
@@ -90,7 +90,7 @@ export type JdbcDatasetFormState = {
   /** JDBC extraction configuration */
   extraction: {
     /** Source type - always 'JDBC' for JDBC datasets */
-    source: 'JDBC';
+    source: ExtractionSource;
     /** Extraction method */
     method: ExtractionMethod;
     /** Expression for advanced extraction methods */
@@ -125,15 +125,24 @@ export type JdbcDatasetFormState = {
  * Dataset item as returned from API
  * Represents a complete dataset item with all its properties
  */
-export type DataSetItem = {
-  /** ID of the user who created this dataset */
-  createdBy: string;
-  /** Name of the user who created this dataset */
-  createdByName: string;
-  /** Creation date in ISO format */
-  createdDate: string;
+export type DataSetDetail = {
+  /** Dataset ID */
+  id: string;
+  /** Name of the dataset */
+  name: string;
   /** Description of the dataset */
   description: string;
+  /** Project ID this dataset belongs to */
+  projectId: string;
+  /** Source type */
+  source?: string;
+  /** Array of parameter name-value pairs */
+  parameters: {
+    /** Parameter name */
+    name: string;
+    /** Parameter value */
+    value: string;
+  }[];
   /** Whether the dataset has been extracted */
   extracted: boolean;
   /** Extraction configuration */
@@ -149,25 +158,15 @@ export type DataSetItem = {
     /** Match item for pattern-based extraction */
     matchItem: string;
     /** Extraction method */
-    method: {
-      /** Method value */
-      value: ExtractionMethod;
-      /** Method display message */
-      message: string;
-    };
+    method: EnumMessage<ExtractionMethod>;
     /** Name of the extraction */
     name: string;
     /** Source type */
-    source: ExtractionSource;
+    source: EnumMessage<ExtractionSource>;
     /** Extracted value */
     value: string;
     /** File type information */
-    fileType: {
-      /** File type value */
-      value: ExtractionFileType;
-      /** File type display message */
-      message: string;
-    };
+    fileType: EnumMessage<ExtractionFileType>;
     /** Path to the file */
     path: string;
     /** File encoding */
@@ -198,27 +197,18 @@ export type DataSetItem = {
       jdbcUrl: string;
     };
   };
-  /** Dataset ID */
-  id: string;
+  /** ID of the user who created this dataset */
+  createdBy: string;
+  /** Name of the user who created this dataset */
+  createdByName: string;
+  /** Creation date in ISO format */
+  createdDate: string;
   /** ID of the user who last modified this dataset */
   lastModifiedBy: string;
   /** Name of the user who last modified this dataset */
   lastModifiedByName: string;
   /** Last modification date in ISO format */
   lastModifiedDate: string;
-  /** Name of the dataset */
-  name: string;
-  /** Array of parameter name-value pairs */
-  parameters: {
-    /** Parameter name */
-    name: string;
-    /** Parameter value */
-    value: string;
-  }[];
-  /** Project ID this dataset belongs to */
-  projectId: string;
-  /** Source type */
-  source?: string;
   /** Whether preview is enabled */
   preview?: boolean;
 }
@@ -246,60 +236,6 @@ export type SourceItem = {
   /** Creation date in ISO format */
   createdDate: string;
 }
-
-// Component props
-export type DatasetListProps = {
-  /** Project ID this dataset list belongs to */
-  projectId: string;
-  /** User information */
-  userInfo: { id: string; };
-  /** Application information */
-  appInfo: { id: string; };
-  /** Notification trigger */
-  notify: string;
-}
-
-/**
- * Data source structure for preview component
- * Contains all necessary information for dataset preview
- */
-export type PreviewDataSource = {
-  id: string;
-  projectId: string;
-  extracted: boolean;
-  name: string;
-  extraction: {
-    defaultValue: string;
-    expression: string;
-    failureMessage: string;
-    finalValue: string;
-    matchItem: string;
-    method: ExtractionMethod;
-    name: string;
-    source: ExtractionSource;
-    value: string;
-    fileType: ExtractionFileType;
-    path: string;
-    encoding: Encoding;
-    quoteChar: string;
-    escapeChar: string;
-    separatorChar: string;
-    rowIndex: string;
-    columnIndex: string;
-    select: string;
-    parameterName: string;
-    datasource: {
-      type: string;
-      username: string;
-      password: string;
-      jdbcUrl: string;
-    };
-  };
-  parameters: {
-    name: string;
-    value: string;
-  }[];
-};
 
 /**
  * Pagination configuration for preview table

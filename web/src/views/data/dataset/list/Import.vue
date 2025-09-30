@@ -2,19 +2,16 @@
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph, UploadDragger, UploadFile } from 'ant-design-vue';
 import { Icon, Modal, Spin } from '@xcan-angus/vue-ui';
+import { ActionWhenDuplicate } from '@/enums/enums';
 import { dataSet } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { BasicProps } from '@/types/types';
 
 import { formatBytes } from '@/utils/common';
 
 const { t } = useI18n();
 
-interface Props {
-  visible: boolean;
-  projectId: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   visible: false,
   projectId: undefined
 });
@@ -30,7 +27,7 @@ const MAX_SIZE = 20;
 const loading = ref(false);
 
 const originFile = ref<UploadFile>();
-const strategyWhenDuplicated = ref<'COVER' | 'IGNORE'>('COVER');
+const strategyWhenDuplicated = ref<ActionWhenDuplicate>(ActionWhenDuplicate.COVER);
 const uploadErrorMsg = ref<string>();
 
 const uploadChange = async ({ file }: { file: UploadFile }) => {
@@ -41,7 +38,7 @@ const uploadChange = async ({ file }: { file: UploadFile }) => {
   }
 
   if (file?.size && file.size > maxFileSize.value) {
-    uploadErrorMsg.value = t('dataset.importDataset.fileSizeError', { maxSize: MAX_SIZE });
+    uploadErrorMsg.value = t('dataset.actions.importDataset.fileSizeError', { maxSize: MAX_SIZE });
     originFile.value = undefined;
     return;
   }
@@ -85,7 +82,7 @@ const ok = async () => {
 const reset = () => {
   originFile.value = undefined;
   uploadErrorMsg.value = undefined;
-  strategyWhenDuplicated.value = 'COVER';
+  strategyWhenDuplicated.value = ActionWhenDuplicate.COVER;
 };
 
 const okButtonProps = computed(() => {
@@ -112,7 +109,7 @@ const ellipsis = computed(() => {
     :width="600"
     :okButtonProps="okButtonProps"
     :confirmLoading="loading"
-    :title="t('dataset.importDataset.title')"
+    :title="t('dataset.actions.importDataset.title')"
     @cancel="cancel"
     @ok="ok">
     <Spin :spinning="loading" class="mb-5">
@@ -126,9 +123,9 @@ const ellipsis = computed(() => {
         @change="uploadChange">
         <div class="flex flex-col items-center justify-center text-3 leading-5">
           <Icon icon="icon-shangchuan" class="text-5 text-text-link" />
-          <div class="mt-1 mb-1.5 text-text-link">{{ t('dataset.importDataset.uploadArea.selectFile') }}</div>
+          <div class="mt-1 mb-1.5 text-text-link">{{ t('dataset.actions.importDataset.uploadArea.selectFile') }}</div>
           <div class="text-theme-sub-content">
-            {{ t('dataset.importDataset.uploadArea.description', { maxSize: MAX_SIZE }) }}
+            {{ t('dataset.actions.importDataset.uploadArea.description', { maxSize: MAX_SIZE }) }}
           </div>
         </div>
       </UploadDragger>
@@ -156,7 +153,7 @@ const ellipsis = computed(() => {
     </Spin>
 
     <div class="space-y-0.5 leading-5 text-3">
-      <div>{{ t('dataset.importDataset.duplicateStrategy.title') }}</div>
+      <div>{{ t('dataset.actions.importDataset.duplicateStrategy.title') }}</div>
       <RadioGroup v-model:value="strategyWhenDuplicated">
         <Radio value="COVER">{{ t('actions.cover') }}</Radio>
         <Radio value="IGNORE">{{ t('actions.ignore') }}</Radio>

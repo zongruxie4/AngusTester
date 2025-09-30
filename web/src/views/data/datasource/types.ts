@@ -19,7 +19,7 @@ export interface DataSourceFormState {
  * <p>Data source item with full information</p>
  * <p>Represents a complete data source record with all properties</p>
  */
-export interface DataSourceItem {
+export interface DataSourceDetail {
   id: string;
   name: string;
   database: DatabaseType;
@@ -43,7 +43,7 @@ export interface DataSourceItem {
  * <p>Enhanced data source item with UI state</p>
  * <p>Extends DataSourceItem with additional UI-related properties</p>
  */
-export interface EnhancedDataSourceItem extends DataSourceItem {
+export interface EnhancedDataSourceItem extends DataSourceDetail {
   connSuccess?: boolean;
   connFailureMessage?: string;
   testLoading: boolean;
@@ -56,7 +56,7 @@ export interface EnhancedDataSourceItem extends DataSourceItem {
 export interface SearchOption {
   valueKey: string;
   type: string;
-  placeholder?: string;
+  placeholder?: string | string[];
   allowClear?: boolean;
   maxlength?: number;
   enumKey?: any;
@@ -94,7 +94,7 @@ export interface DataSourceEmits {
  */
 export interface AddModalProps {
   visible: boolean;
-  editData?: DataSourceItem;
+  editData?: DataSourceDetail;
   projectId: string;
 }
 

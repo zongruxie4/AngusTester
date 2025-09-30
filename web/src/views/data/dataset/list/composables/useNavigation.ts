@@ -12,7 +12,7 @@ export function useNavigation () {
    * Routes to the static dataset creation form
    */
   const toCreateStaticDataSet = () => {
-    router.push('/data#dataSet?source=STATIC');
+    router.push('/data#dataSet?source=VALUE');
   };
 
   /**

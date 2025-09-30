@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { modal, notification } from '@xcan-angus/vue-ui';
-import { DataSourceItem } from '../types';
+import { DataSourceDetail } from '../types';
 
 /**
  * <p>Composable for managing UI actions and modal state</p>
@@ -12,7 +12,7 @@ export function useUIActions () {
 
   // Modal state
   const isModalVisible = ref(false);
-  const editData = ref<DataSourceItem | undefined>();
+  const editData = ref<DataSourceDetail | undefined>();
 
   /**
    * <p>Open add modal for creating new data source</p>
@@ -27,7 +27,7 @@ export function useUIActions () {
    * <p>Open edit modal for modifying existing data source</p>
    * <p>Sets edit data and shows the modal</p>
    */
-  const openEditModal = (record: DataSourceItem): void => {
+  const openEditModal = (record: DataSourceDetail): void => {
     editData.value = record;
     isModalVisible.value = true;
   };
@@ -46,7 +46,7 @@ export function useUIActions () {
    * <p>Displays confirmation modal before deleting data source</p>
    */
   const showDeleteConfirmation = (
-    record: DataSourceItem,
+    record: DataSourceDetail,
     onConfirm: () => Promise<void>
   ): void => {
     modal.confirm({

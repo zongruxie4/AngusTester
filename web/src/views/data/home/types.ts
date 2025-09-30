@@ -101,9 +101,7 @@ export interface ProjectCreationStatistics {
   };
   /** Database type statistics for datasources */
   datasourceByDb: {
-    H2: number;
-    HSQLDB: number;
-    SQLITE: number;
+    DB2: number;
     POSTGRES: number;
     MARIADB: number;
     MYSQL: number;

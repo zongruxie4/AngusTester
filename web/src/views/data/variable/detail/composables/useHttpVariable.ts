@@ -5,7 +5,7 @@ import { variable, apis } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
 import { ExtractionMethod, ExtractionSource, HttpExtractionLocation } from '@xcan-angus/infra';
 import { HttpVariableFormState, DetailTabKey, ButtonGroupAction } from '../types';
-import { VariableItem } from '../../types';
+import { VariableDetail } from '../../types';
 
 /**
  * Composable for managing HTTP variable logic in variable detail components
@@ -14,7 +14,7 @@ import { VariableItem } from '../../types';
 export function useHttpVariable (
   props: {
     projectId: string;
-    dataSource?: VariableItem;
+    dataSource?: VariableDetail;
   },
   emit: (event: string, ...args: any[]) => void
 ) {

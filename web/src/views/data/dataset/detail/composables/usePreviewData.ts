@@ -3,13 +3,13 @@ import { debounce } from 'throttle-debounce';
 import { dataSet } from '@/api/tester';
 import { utils, duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { TableData, PreviewDataSource, PreviewPagination, PreviewColumn } from '../../preview/types';
+import { DataSetDetail, PreviewPagination, PreviewColumn } from '../../types';
 
 /**
  * Composable for managing preview data logic in dataset preview component
  * Handles data loading, pagination, and error handling for dataset previews
  */
-export function usePreviewData (props: { dataSource?: PreviewDataSource }) {
+export function usePreviewData (props: { dataSource?: DataSetDetail }) {
   const { t } = useI18n();
 
   // Reactive references for component state
@@ -24,7 +24,7 @@ export function usePreviewData (props: { dataSource?: PreviewDataSource }) {
   const loaded = ref(false);
   const errorMessage = ref<string>();
   const columns = ref<PreviewColumn[]>([]);
-  const dataList = ref<TableData[]>([]);
+  const dataList = ref<any>([]);
 
   /**
    * Computed property for no data text

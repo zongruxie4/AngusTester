@@ -47,7 +47,7 @@ const cancel = (): void => {
 <template>
   <Modal
     :visible="visible"
-    :title="t('fileSpace.moveModal.title')"
+    :title="t('file.moveModal.title')"
     :okButtonProps="{
       disabled: !selectedKeys.length
     }"

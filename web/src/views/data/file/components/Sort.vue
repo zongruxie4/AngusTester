@@ -23,7 +23,7 @@ const handleSelect = (sortData: { orderBy: string; orderSort: string }): void =>
 </script>
 <template>
   <DropdownSort :menuItems="menus" @click="handleSelect">
-    <file-icon icon="icon-shunxu" :title="t('fileSpace.sort.title')"></file-icon>
+    <file-icon icon="icon-shunxu" :title="t('file.sort.title')"></file-icon>
   </DropdownSort>
 </template>
 <style scoped>

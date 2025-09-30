@@ -139,7 +139,7 @@ const createDirectory = async (record: SourceType) => {
     return;
   }
 
-  notification.success(t('fileSpace.fileManagement.messages.addDirectorySuccess'));
+  notification.success(t('file.fileManagement.messages.addDirectorySuccess'));
   await getList();
 };
 
@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
           <!-- Create directory button -->
           <FileIcon
             v-if="showAddDirectory"
-            :title="t('fileSpace.fileManagement.directory')"
+            :title="t('common.directory')"
             icon="icon-chuangjianwenjianjia"
             @click="create" />
 
@@ -287,7 +287,7 @@ onBeforeUnmount(() => {
                   ref="createInputRef"
                   v-model:value="record.name"
                   trimAll
-                  :placeholder="t('fileSpace.fileManagement.createDirectory')"
+                  :placeholder="t('file.fileManagement.createDirectory')"
                   :maxlength="400"
                   @click="(e) => e.stopPropagation()"
                   @keyup.enter="createEnter"
@@ -356,7 +356,7 @@ onBeforeUnmount(() => {
                 class="!h-6"
                 @click.stop="openSide(record)">
                 <Icon icon="icon-fuwuxinxi" class="align-text-bottom mr-0.5" />
-                {{ t('fileSpace.fileManagement.fileActions.details') }}
+                {{ t('file.fileManagement.fileActions.details') }}
               </Button>-->
 
               <!-- Download action -->
@@ -378,7 +378,7 @@ onBeforeUnmount(() => {
                 class="!h-6"
                 @click.stop="copyDownloadUrl(record)">
                 <Icon icon="icon-fuzhi" class="align-text-bottom mr-0.5" />
-                {{ t('fileSpace.fileManagement.fileActions.shareLink') }}
+                {{ t('file.fileManagement.fileActions.shareLink') }}
               </Button>
             </div>
           </template>

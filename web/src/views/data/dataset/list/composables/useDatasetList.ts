@@ -1,17 +1,16 @@
 import { ref, watch, onMounted } from 'vue';
 import { dataSet } from '@/api/tester';
-import { DataSetItem } from '../../types';
 import { getCurrentPage } from '@/utils/utils';
 import { notification } from '@xcan-angus/vue-ui';
+import { PageQuery, ProjectPageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { BasicProps } from '@/types/types';
+import { DataSetDetail } from '../../types';
 
 /**
  * Dataset list management composable
  * Handles data loading, pagination, and dataset operations
  */
-export function useDatasetList (props: {
-  projectId: string;
-  notify: string;
-}, deleteTabPane: (keys: string[]) => void) {
+export function useDatasetList (props: BasicProps, deleteTabPane: (keys: string[]) => void) {
   // Loading states
   const loaded = ref(false);
   const loading = ref(false);
@@ -26,27 +25,20 @@ export function useDatasetList (props: {
 
   // Search parameters
   const searchPanelParams = ref({
-    orderBy: undefined as string | undefined,
-    orderSort: undefined as 'ASC' | 'DESC' | undefined,
-    filters: [] as {key: string; op: string; value: string | string[]}[]
+    orderBy: 'createdDate',
+    orderSort: PageQuery.OrderSort.Desc,
+    filters: [] as SearchCriteria[]
   });
 
   // Table data
-  const tableData = ref<DataSetItem[]>([]);
+  const tableData = ref<DataSetDetail[]>([]);
 
   /**
    * Load dataset list from API
    * Fetches datasets based on current pagination and search parameters
    */
   const loadData = async () => {
-    const params: {
-      projectId: string;
-      pageNo: number;
-      pageSize: number;
-      orderBy?: string;
-      orderSort?: 'ASC' | 'DESC';
-      filters?: Array<Record<string, unknown>>
-    } = {
+    const params: ProjectPageQuery = {
       projectId: props.projectId,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize,
@@ -58,11 +50,7 @@ export function useDatasetList (props: {
     loaded.value = true;
     loading.value = false;
 
-    if (params.filters?.length) {
-      searchedFlag.value = true;
-    } else {
-      searchedFlag.value = false;
-    }
+    searchedFlag.value = !!params.filters?.length;
 
     if (error) {
       pagination.value.total = 0;
@@ -73,7 +61,7 @@ export function useDatasetList (props: {
     const data = res?.data || { total: 0, list: [] };
     if (data) {
       pagination.value.total = +data.total;
-      const _list = data.list as DataSetItem[];
+      const _list = data.list as DataSetDetail[];
       tableData.value = [..._list];
     }
   };
@@ -82,7 +70,11 @@ export function useDatasetList (props: {
    * Handle table change events (pagination, sorting)
    * Updates pagination and sorting parameters, then reloads data
    */
-  const handleTableChange = ({ current, pageSize }: { current: number; pageSize: number; }, _filters: { [key: string]: any }[], sorter: { orderBy: string; orderSort: 'ASC' | 'DESC' }) => {
+  const handleTableChange = (
+    { current, pageSize }: { current: number; pageSize: number; },
+    _filters: SearchCriteria[],
+    sorter: { orderBy: string; orderSort: PageQuery.OrderSort }
+  ) => {
     pagination.value.current = current;
     pagination.value.pageSize = pageSize;
 
@@ -96,7 +88,7 @@ export function useDatasetList (props: {
    * Handle search panel change events
    * Updates search filters and resets to first page, then reloads data
    */
-  const handleSearchPanelChange = (data: { filters: {key: string; op: string; value: string | string[]}[] }) => {
+  const handleSearchPanelChange = (data: { filters: SearchCriteria[] }) => {
     searchPanelParams.value.filters = data.filters;
     pagination.value.current = 1;
     loadData();
@@ -115,7 +107,7 @@ export function useDatasetList (props: {
    * Delete a dataset
    * Performs deletion and updates the list accordingly
    */
-  const deleteDataset = async (data: DataSetItem, t: (key: string, params?: any) => string) => {
+  const deleteDataset = async (data: DataSetDetail, t: (key: string, params?: any) => string) => {
     const id = data.id;
     const [error] = await dataSet.deleteDataSet([id]);
     if (error) {
@@ -137,7 +129,7 @@ export function useDatasetList (props: {
    * Clone a dataset
    * Creates a copy of the dataset and refreshes the list
    */
-  const cloneDataset = async (data: DataSetItem, t: (key: string) => string) => {
+  const cloneDataset = async (data: DataSetDetail, t: (key: string) => string) => {
     loading.value = true;
     const [error] = await dataSet.cloneDataSet([data.id]);
     loading.value = false;

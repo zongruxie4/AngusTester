@@ -1,5 +1,5 @@
 import { ref, Ref } from 'vue';
-import { DataSetItem } from '../../types';
+import { DataSetDetail } from '../../types';
 
 /**
  * Modal management composable
@@ -16,7 +16,7 @@ export function useModals () {
   const exportDataSetModalVisible = ref(false);
 
   // Selected dataset for preview
-  const selectedData = ref<Pick<DataSetItem, 'id'>>();
+  const selectedData = ref<Pick<DataSetDetail, 'id'>>();
 
   // Dataset ID for export
   const exportDataSetId = ref<string>();
@@ -25,7 +25,7 @@ export function useModals () {
    * Open preview modal for a dataset
    * Sets the selected dataset and shows the preview modal
    */
-  const openPreviewModal = (data: Pick<DataSetItem, 'id'>) => {
+  const openPreviewModal = (data: Pick<DataSetDetail, 'id'>) => {
     selectedData.value = { id: data.id };
     previewDataSetModalVisible.value = true;
   };

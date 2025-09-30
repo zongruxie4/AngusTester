@@ -73,12 +73,12 @@ const addShare = () => {
       class="rounded text-3 leading-3 h-7"
       :disabled="disabled"
       @click="addShare">
-      {{ t('fileSpace.share.shareList.addShare') }}
+      {{ t('file.share.shareList.addShare') }}
     </Button>
     <Divider class="my-3"></Divider>
     <Input
       v-model:value="remark"
-      :placeholder="t('fileSpace.share.shareList.searchRemark')"
+      :placeholder="t('file.share.shareList.searchRemark')"
       size="small"
       class="mb-3" />
     <template v-if="state.list.length">
@@ -134,11 +134,11 @@ const addShare = () => {
           </div>
         </column-item>
         <column-item
-          :label="t('fileSpace.share.shareList.validityPeriod')"
+          :label="t('file.share.shareList.validityPeriod')"
           className="w-18">
           <div class="flex justify-between w-full">
             <span>
-              {{ item.expiredFlag ? item.expiredDuration : t('fileSpace.share.shareList.permanentValid') }}
+              {{ item.expiredFlag ? item.expiredDuration : t('file.share.shareList.permanentValid') }}
             </span>
             <span class="text-gray-icon">
               <Icon

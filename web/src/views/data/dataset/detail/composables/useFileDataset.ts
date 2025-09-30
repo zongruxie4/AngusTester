@@ -3,7 +3,7 @@ import { computed, ref, watch, onMounted } from 'vue';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { dataSet } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
-import { FileDataSetFormState, DataSetItem } from '../../types';
+import { FileDataSetFormState, DataSetDetail } from '../../types';
 import { ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
 
 /**
@@ -13,7 +13,7 @@ import { ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from
 export function useFileDataset (
   props: {
     projectId: string;
-    dataSource?: DataSetItem;
+    dataSource?: DataSetDetail;
   },
   emit: (event: string, ...args: any[]) => void
 ) {

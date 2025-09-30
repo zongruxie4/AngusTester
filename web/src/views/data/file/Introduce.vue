@@ -10,31 +10,34 @@ const { t } = useI18n();
 const tipList = [
   {
     icon: datapng,
-    title: t('fileSpace.introduce.features.generateData.title'),
-    content: t('fileSpace.introduce.features.generateData.content')
+    title: t('file.introduce.features.generateData.title'),
+    content: t('file.introduce.features.generateData.content')
   },
   {
     icon: storagepng,
-    title: t('fileSpace.introduce.features.storageAndBackup.title'),
-    content: t('fileSpace.introduce.features.storageAndBackup.content')
+    title: t('file.introduce.features.storageAndBackup.title'),
+    content: t('file.introduce.features.storageAndBackup.content')
   },
   {
     icon: safepng,
-    title: t('fileSpace.introduce.features.securityAndProtection.title'),
-    content: t('fileSpace.introduce.features.securityAndProtection.content')
+    title: t('file.introduce.features.securityAndProtection.title'),
+    content: t('file.introduce.features.securityAndProtection.content')
   },
   {
     icon: spacepng,
-    title: t('fileSpace.introduce.features.spaceManagement.title'),
-    content: t('fileSpace.introduce.features.spaceManagement.content')
+    title: t('file.introduce.features.spaceManagement.title'),
+    content: t('file.introduce.features.spaceManagement.content')
   }
 ];
 
 </script>
 <template>
   <div class="text-3.5">
+    <div class="text-3.5 font-semibold mb-2.5">
+      {{ t('file.introduce.title') }}
+    </div>
     <div class="mb-6">
-      <div>{{ t('common.description') }}</div>
+      {{ t('file.introduce.description') }}
     </div>
     <div class="flex items-start justify-between">
       <div

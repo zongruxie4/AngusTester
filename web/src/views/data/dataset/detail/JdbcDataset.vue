@@ -3,19 +3,15 @@ import { defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs, Button } from 'ant-design-vue';
 import { IconRequired, Tooltip, Input, Icon, Hints, Toggle, SelectEnum } from '@xcan-angus/vue-ui';
+import { ExtractionMethod } from '@xcan-angus/infra';
+import { DataSetDetail } from '../types';
+import { BasicDataSourceProps } from '@/types/types';
+
 import { useJdbcDataset } from './composables/useJdbcDataset';
-import { DataSetItem } from '../types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  visible: boolean;
-  dataSource?: DataSetItem;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicDataSourceProps<DataSetDetail>>(), {
   projectId: undefined,
   userInfo: undefined,
   visible: false,
@@ -24,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
-  (e: 'ok', data: DataSetItem, isEdit: boolean): void;
+  (e: 'ok', data: DataSetDetail, isEdit: boolean): void;
   (e: 'delete', value: string): void;
   (e: 'export', value: string): void;
   (e: 'clone', value: string): void;
@@ -34,7 +30,7 @@ const emit = defineEmits<{
 
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/dataset/detail/ButtonGroup.vue'));
 const ParameterNameInput = defineAsyncComponent(() => import('@/views/data/dataset/detail/ParameterNameInput.vue'));
-const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/detail/PreviewData.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/detail/UseList.vue'));
 const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/dataset/detail/MatchItemPopover.vue'));
 const SelectDataSourceModal = defineAsyncComponent(() => import('@/views/data/variable/detail/jdbc/SelectDatasource.vue'));
@@ -89,7 +85,7 @@ defineExpose({
     @click="handleButtonClick" />
 
   <div class="flex items-center mb-3.5">
-    <div class="mr-2.5 flex-shrink-0 font-semibold w-18 text-3 text-right">
+    <div class="flex items-center flex-shrink-0 mr-2.5 w-18 font-semibold text-right justify-end">
       <IconRequired />
       <span>{{ t('common.name') }}</span>
     </div>
@@ -102,7 +98,7 @@ defineExpose({
   </div>
 
   <div class="flex items-start">
-    <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1 font-semibold w-18 text-3 text-right">
+    <div class="flex items-center flex-shrink-0 mr-2.5 w-18 transform-gpu translate-y-1 font-semibold text-right justify-end">
       <IconRequired class="invisible" />
       <span>{{ t('common.description') }}</span>
     </div>
@@ -125,14 +121,14 @@ defineExpose({
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>{{ t('dataset.detail.jdbcDataset.form.extraction') }}</span>
+          <span>{{ t('dataCommon.common.extraction') }}</span>
         </div>
       </template>
 
       <div>
         <Hints class="mb-2.5" :text="t('dataset.detail.jdbcDataset.form.hints')" />
 
-        <Toggle :title="t('dataset.detail.jdbcDataset.form.parameter')" class="text-3 leading-5 mb-3.5 params-container">
+        <Toggle :title="t('common.parameters')" class="text-3 leading-5 mb-3.5 params-container">
           <ParameterNameInput
             ref="parametersRef"
             :columnIndex="columnIndex"
@@ -261,18 +257,18 @@ defineExpose({
           </div>
         </Toggle>
 
-        <Toggle :title="t('dataset.detail.jdbcDataset.form.extractionConfig')" class="text-3 leading-5">
-          <template v-if="method === 'EXACT_VALUE'">
+        <Toggle :title="t('dataCommon.common.extractConfig')" class="text-3 leading-5">
+          <template v-if="method === ExtractionMethod.EXACT_VALUE">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataCommon.common.extractionMethod') }}</span>
+                  <span>{{ t('dataCommon.common.extractMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('dataCommon.common.extractionMethodPlaceholder')"
+                  :placeholder="t('dataCommon.common.extractMethodPlaceholder')"
                   class="w-full-24" />
               </div>
 
@@ -296,12 +292,12 @@ defineExpose({
               <div class="w-1/2 flex items-center">
                 <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
-                  <span>{{ t('dataCommon.common.extractionMethod') }}</span>
+                  <span>{{ t('dataCommon.common.extractMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('dataCommon.common.extractionMethodPlaceholder')"
+                  :placeholder="t('dataCommon.common.extractMethodPlaceholder')"
                   class="w-full-24" />
               </div>
 

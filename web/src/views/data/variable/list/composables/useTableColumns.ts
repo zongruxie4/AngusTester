@@ -37,7 +37,7 @@ export function useTableColumns () {
       dataIndex: 'passwordValue',
       ellipsis: true,
       width: '6%',
-      customRender: ({ text }: { text: any }) => text ? t('dataVariable.list.isPassword') : t('dataVariable.list.notPassword')
+      customRender: ({ text }: { text: any }) => text ? t('status.yes') : t('status.no')
     },
     {
       title: t('common.source'),

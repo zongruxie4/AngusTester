@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { variable } from '@/api/tester';
-import { VariableItem } from '../../types';
+import { VariableDetail } from '../../types';
 import { BasicProps } from '@/types/types';
 
 /**
@@ -24,7 +24,7 @@ export function useVariableDetail (
   // State management
   const loading = ref(false);
   const loaded = ref(false);
-  const dataSource = ref<VariableItem>();
+  const dataSource = ref<VariableDetail>();
   const exportModalVisible = ref(false);
   const exportId = ref<string>();
 
@@ -49,7 +49,7 @@ export function useVariableDetail (
       return;
     }
 
-    const data = res?.data as VariableItem;
+    const data = res?.data as VariableDetail;
     if (!data) {
       return;
     }
@@ -68,7 +68,7 @@ export function useVariableDetail (
    * @param data - Variable data that was saved
    * @param isEdit - Flag indicating if this is an edit operation
    */
-  const handleOk = (data: VariableItem, isEdit = false) => {
+  const handleOk = (data: VariableDetail, isEdit = false) => {
     const { id, name } = data;
     if (!isEdit) {
       const _id = props.data?._id;

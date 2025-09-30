@@ -13,12 +13,12 @@ export function useDropdownMenus () {
    */
   const buttonDropdownMenuItems = [
     {
-      name: t('dataset.list.buttonDropdown.fileExtractDataset'),
+      name: t('dataset.actions.addFileDataset'),
       key: 'file',
       noAuth: true
     },
     {
-      name: t('dataset.list.buttonDropdown.jdbcExtractDataset'),
+      name: t('dataset.actions.addJdbcDataset'),
       key: 'jdbc',
       noAuth: true
     }

@@ -2,7 +2,7 @@ import { ref, computed } from 'vue';
 import { dataSource } from '@/api/tester';
 import {
   SearchParams,
-  DataSourceItem,
+  DataSourceDetail,
   EnhancedDataSourceItem,
   ConnectionTestResult
 } from '../types';
@@ -17,7 +17,7 @@ export function useData (projectId: string) {
   const isFirstLoad = ref(true);
 
   // Data state
-  const dataList = ref<DataSourceItem[]>([]);
+  const dataList = ref<DataSourceDetail[]>([]);
   const dataMap = ref<Record<string, EnhancedDataSourceItem>>({});
   const total = ref(0);
 
@@ -107,7 +107,7 @@ export function useData (projectId: string) {
    * <p>Test data source connection</p>
    * <p>Tests the connection to a specific data source and updates UI state</p>
    */
-  const testDataSourceConnection = async (record: DataSourceItem): Promise<void> => {
+  const testDataSourceConnection = async (record: DataSourceDetail): Promise<void> => {
     if (loading.value) {
       return;
     }

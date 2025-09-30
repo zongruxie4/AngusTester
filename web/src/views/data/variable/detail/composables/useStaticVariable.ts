@@ -4,7 +4,7 @@ import { isEqual } from 'lodash-es';
 import { variable } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
 import { StaticVariableFormState, DetailTabKey, ButtonGroupAction } from '../types';
-import { VariableItem } from '../../types';
+import { VariableDetail } from '../../types';
 
 /**
  * Composable for managing static variable logic in variable detail components
@@ -13,7 +13,7 @@ import { VariableItem } from '../../types';
 export function useStaticVariable (
   props: {
     projectId: string;
-    dataSource?: VariableItem;
+    dataSource?: VariableDetail;
   },
   emit: (event: string, ...args: any[]) => void
 ) {

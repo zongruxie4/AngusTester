@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import { dataSource } from '@/api/tester';
-import { DataSourceFormState, DataSourceItem, DatabaseConfig } from '../types';
+import { DataSourceFormState, DataSourceDetail, DatabaseConfig } from '../types';
 
 /**
  * <p>Composable for managing Add/Edit modal functionality</p>
@@ -70,7 +70,7 @@ export function useAddModal (projectId: string) {
    * <p>Initialize form state with edit data</p>
    * <p>Populates form fields when editing existing data source</p>
    */
-  const initializeFormWithEditData = (editData: DataSourceItem): void => {
+  const initializeFormWithEditData = (editData: DataSourceDetail): void => {
     formState.value = {
       name: editData.name,
       database: editData.database,
