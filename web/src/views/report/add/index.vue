@@ -333,7 +333,7 @@ onMounted(() => {
 <template>
   <Modal
     :visible="props.visible"
-    :title="reportId ? t('common.add')"
+    :title="reportId ? t('actions.edit') : t('actions.add')"
     :width="1200"
     :okButtonProps="{
       loading: loading
@@ -388,7 +388,7 @@ onMounted(() => {
                 <Input
                   v-model:value="formState.name"
                   :maxlength="100"
-                  :placeholder="t('common.placeholders.searchKeyword')" />
+                  :placeholder="t('reportAdd.form.namePlaceholder')" />
               </FormItem>
               <FormItem
                 class="flex-1 min-w-0 !mb-5"

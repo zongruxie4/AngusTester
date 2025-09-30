@@ -57,11 +57,11 @@ const stepData = [
     <div class="text-3.5 font-semibold mb-1.5">
       {{ t('project.introduce.aboutProject') }}
     </div>
-    <div class="mb-6 text-3.5">
+    <div class="mb-6 text-3.5 font-serif">
       <div>{{ t('project.introduce.description') }}</div>
     </div>
 
-    <div class="flex items-center justify-center">
+    <div class="flex items-center justify-center font-serif">
       <div
         v-for="(item, idx) in stepData"
         :key="idx"

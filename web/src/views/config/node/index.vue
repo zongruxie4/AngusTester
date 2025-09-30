@@ -97,7 +97,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="px-5 py-5 h-full overflow-auto">
+  <div class="px-5 py-5 h-full overflow-auto font-serif">
     <NodeTip class="mb-5" />
     <div class="flex justify-between mb-3.5">
       <SearchPanel
@@ -105,6 +105,7 @@ onMounted(async () => {
         class="flex-1 mr-3"
         :options="searchOptions"
         @change="onSearchChange" />
+
       <div class="flex items-center space-x-2.5">
         <Button
           type="primary"
@@ -114,6 +115,7 @@ onMounted(async () => {
           <Icon icon="icon-jia" />
           {{ $t('node.actions.addNode') }}
         </Button>
+
         <Button
           v-if="editionType === EditionType.CLOUD_SERVICE"
           size="small"
@@ -122,10 +124,12 @@ onMounted(async () => {
           <Icon icon="icon-zaixiangoumai" />
           {{ $t('node.actions.buyNode') }}
         </Button>
+
         <div>
           <span class="text-3 mr-1">{{ $t('actions.autoRefresh') }}</span>
           <Switch v-model:checked="autoRefresh" size="small" />
         </div>
+
         <DropdownSort
           :menuItems="sortOptions as any"
           :disabled="loading"
@@ -135,6 +139,7 @@ onMounted(async () => {
             <span>{{ $t('actions.sort') }}</span>
           </Button>
         </DropdownSort>
+
         <Button
           class="rounded ml-3"
           size="small"
@@ -145,6 +150,7 @@ onMounted(async () => {
         </Button>
       </div>
     </div>
+
     <Spin :spinning="loading" mask>
       <NodeItems
         ref="nodeListRef"
@@ -155,6 +161,7 @@ onMounted(async () => {
         @loadList="refreshNodeList"
         @cancel="deleteItem" />
       <NoData v-show="pagination.total === 0" class="mt-45" />
+
       <Pagination
         v-show="pagination.total > 5"
         v-bind="pagination"

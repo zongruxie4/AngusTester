@@ -141,8 +141,8 @@
   "scenarioMonitor": {
     "title": "监控",
     "introduce": {
-      "aboutMonitor": "关于监控",
-      "description": "场景监控帮助您实时掌握系统状态，快速发现并解决问题，提升系统可靠性和用户体验。主要应用场景：",
+      "title": "关于监控",
+      "description": "场景监控帮助您从业务视角7×24小时实时跟踪业务运行状态，动态感知性能波动、资源异常等关键指标，从而快速发现、诊断并解决问题，有效预防潜在风险，提升系统稳定性。",
       "scenarios": {
         "apiDelay": {
           "title": "API延迟监控",

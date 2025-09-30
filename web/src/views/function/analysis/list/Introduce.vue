@@ -42,8 +42,8 @@ onBeforeUnmount(() => {
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('functionAnalysis.introduce.title') }}
     </div>
-    <div class="mb-6">
-      <div>{{ t('common.description') }}</div>
+    <div class="mb-6 font-serif">
+      <div>{{ t('functionAnalysis.introduce.description') }}</div>
     </div>
   </div>
 </template>

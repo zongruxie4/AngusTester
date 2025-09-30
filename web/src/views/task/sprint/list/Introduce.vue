@@ -5,22 +5,17 @@ import elementResizeDetector from 'element-resize-detector';
 
 const { t } = useI18n();
 
-// Reactive Data
 const containerRef = ref();
 const isTwoColumnLayout = ref(false);
 
 /**
- * <p>
  * Element resize detector instance for responsive layout handling.
- * <p>
  * Uses scroll strategy for better performance when detecting container size changes.
  */
 const resizeDetector = elementResizeDetector({ strategy: 'scroll' });
 
 /**
- * <p>
  * Handles container resize events to adjust layout.
- * <p>
  * Switches between single and two-column layout based on container width.
  * Uses 800px as the breakpoint for layout switching.
  */
@@ -47,9 +42,9 @@ onBeforeUnmount(() => {
 <template>
   <div ref="containerRef">
     <div class="text-3.5 font-semibold mb-2.5">{{ t('taskSprint.aboutSprint') }}</div>
-    <div class="text-3.5 mb-6">{{ t('taskSprint.aboutSprintDesc') }}</div>
+    <div class="text-3.5 mb-6 font-serif">{{ t('taskSprint.aboutSprintDesc') }}</div>
 
-    <div class="space-y-6">
+    <div class="space-y-6 font-serif">
       <div class="flex items-start justify-between">
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
@@ -75,6 +70,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </div>
+
       <div v-show="isTwoColumnLayout" class="flex items-start justify-between">
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
@@ -83,6 +79,7 @@ onBeforeUnmount(() => {
             <div class="text-3.5">{{ t('taskSprint.benefits.improveTransparencyDesc') }}</div>
           </div>
         </div>
+
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">

@@ -1,15 +1,13 @@
 <script setup lang="ts">
-// ===== IMPORTS =====
 import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-// ===== COMPOSABLES =====
 const { t } = useI18n();
 </script>
 
 <template>
   <!-- Product introduction section -->
-  <div class="bg-white rounded px-5 pt-0 pb-0 text-3.5">
+  <div class="bg-white rounded px-5 pt-0 pb-0 text-3.5 font-serif">
     <!-- Welcome title -->
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('scenarioHome.introduce.about') }}

@@ -36,7 +36,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
 <template>
   <div class="px-5 py-3">
     <!-- Proxy information panel with descriptions of different proxy types -->
-    <div class="border rounded p-5" style="border-color: #bcdcff;background-color: #f9fcff;">
+    <div class="border rounded p-5 font-serif" style="border-color: #bcdcff;background-color: #f9fcff;">
       <div class="text-3 leading-3 flex">
         <Icon class="text-tips text-3.5 mt-0.5" icon="icon-tishi1" />
         <p class="font-semibold text-3.5 font-serif ml-1.5 leading-5 whitespace-pre-wrap">

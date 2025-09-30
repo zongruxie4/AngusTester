@@ -3,7 +3,6 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import elementResizeDetector from 'element-resize-detector';
 
-// Composables and External Dependencies
 const { t } = useI18n();
 
 /**
@@ -48,7 +47,7 @@ onBeforeUnmount(() => {
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('taskAnalysis.aboutAnalysis') }}
     </div>
-    <div class="text-3.5 mb-6">
+    <div class="text-3.5 mb-6 font-serif">
       <div>{{ t('taskAnalysis.aboutAnalysisDesc') }}</div>
     </div>
   </div>

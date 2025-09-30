@@ -53,7 +53,7 @@ const {
     class="pl-5 py-5 w-full h-full flex flex-col">
     <!-- Page Header -->
     <div class="text-3.5 font-semibold mb-2.5">{{ t('datasource.introduce.title') }}</div>
-    <div class="mb-6 text-3.5">
+    <div class="mb-6 text-3.5 font-serif">
       <div>{{ t('datasource.introduce.description') }}</div>
     </div>
 

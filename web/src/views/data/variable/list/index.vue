@@ -161,7 +161,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex flex-col h-full overflow-auto px-5 leading-5 text-3">
+  <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <!-- Introduction Section -->
     <Introduce class="mb-7" />
 

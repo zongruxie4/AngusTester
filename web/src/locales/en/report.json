@@ -1,65 +1,13 @@
 {
   "reportHome": {
-    "messages": {
-      "deleteSuccess": "Delete successful",
-      "getTokenFailed": "Failed to get token",
-      "shareLinkCopied": "Share link copied to clipboard",
-      "generatingReport": "Generating report"
-    },
-    "modal": {
-      "deleteReport": "Delete Report",
-      "confirmDelete": "Are you sure you want to delete report 「{name}」?",
-      "reportPermission": "Report Permission"
-    },
-    "actions": {
-      "generateNow": "Generate Now"
-    },
-    "table": {
-      "template": "Template",
-      "resourceName": "Resource Name",
-      "resourceType": "Resource Type",
-      "resourceId": "Resource ID",
-      "nextGenerateTime": "Next Generate Time"
-    },
-    "permission": {
-      "onTips": "After enabling permission control, manual authorization is required for corresponding operation permissions.",
-      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
-    },
-    "globalAuth": {
-      "title": "Report Permission",
-      "description": "Grant operation permissions for specified 'functions' to users, departments, and groups. 'View' permission is required when granting permissions. Users can only authorize functions they have permission to authorize.",
-      "tabs": {
-        "user": "User",
-        "dept": "Department",
-        "group": "Group"
-      },
-      "authSet": {
-        "searchPlaceholder": "Search name"
-      },
-      "groupSet": {
-        "searchUser": "Search user",
-        "searchDept": "Search department",
-        "searchGroup": "Search group"
-      }
-    },
-    "summary": {
+    "introduce": {
       "description": "Through 'reports', teams can comprehensively summarize all aspects of development activities, including progress, efficiency, quality, execution status, result analysis, etc. This helps improve transparency and communication, providing strong support for successful project delivery.",
-      "workTitle": "Here you and your team can complete the following work:",
       "features": {
         "generateReport": "Generate reports based on report templates at specified times and notify relevant personnel through events.",
         "viewReport": "View reports I added or reports authorized to me and their content."
       }
     },
     "searchPanel": {
-      "quickQuery": "Quick Query",
-      "menuItems": {
-        "all": "All",
-        "myAdded": "My Added",
-        "myModified": "My Modified",
-        "last1Day": "Last Day",
-        "last3Days": "Last 3 Days",
-        "last7Days": "Last 7 Days"
-      },
       "searchOptions": {
         "namePlaceholder": "Search name, description",
         "resourceTypePlaceholder": "Select resource type",
@@ -87,6 +35,23 @@
         "addReport": "Add Report",
         "reportPermission": "Report Permission"
       }
+    },
+    "messages": {
+      "deleteSuccess": "Delete successful",
+      "getTokenFailed": "Failed to get token",
+      "shareLinkCopied": "Share link copied to clipboard",
+      "generatingReport": "Generating report"
+    },
+    "modal": {
+      "confirmDelete": "Are you sure you want to delete report 「{name}」?",
+      "reportPermission": "Report Permission"
+    },
+    "actions": {
+      "generateNow": "Generate Now"
+    },
+    "table": {
+      "template": "Template",
+      "nextGenerateTime": "Next Generate Time"
     },
     "chart": {
       "categories": {
@@ -117,12 +82,7 @@
         "project": "Project",
         "case": "Case",
         "content": "Content",
-        "contentHint": "The following is the report output content directory information.",
-        "memberTypes": {
-          "user": "User",
-          "dept": "Department",
-          "group": "Group"
-        }
+        "contentHint": "The following is the report output content directory information."
       },
       "generateRecord": {
         "reportName": "Report Name",

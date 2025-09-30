@@ -10,12 +10,12 @@ const { t } = useI18n();
       <div class="flex items-center space-x-2">
         <span class="text-3.5 font-semibold mb-1.5">{{ t('dataset.introduce.title') }}</span>
       </div>
-      <div class="mb-4">
+      <div class="mb-4 font-serif">
         {{ t('dataset.introduce.description') }}
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 font-serif">
       <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
         <div class="flex items-start space-x-3">
           <img src="./images/1.png" class="w-12 h-12 flex-shrink-0 rounded-md">

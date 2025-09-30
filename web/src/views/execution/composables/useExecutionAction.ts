@@ -302,7 +302,7 @@ export function useExecutionAction () {
     if (currItemDataList.length) {
       const successFalseItem = currItemDataList.find((f: any) => f.success);
       if (successFalseItem) {
-        notification.success(t('execution.messages.startSuccess'));
+        notification.success(t('actions.tips.startSuccess'));
       } else {
         notification.error(currItemDataList[0].message);
         item.errMessage = {
@@ -354,7 +354,7 @@ export function useExecutionAction () {
     if (currItemDataList.length) {
       const successFalseItem = currItemDataList.find((f: any) => f.success);
       if (successFalseItem) {
-        notification.success(t('execution.messages.stopSuccess'));
+        notification.success(t('actions.tips.stopSuccess'));
       } else {
         notification.error(currItemDataList[0].message);
         item.errMessage = {

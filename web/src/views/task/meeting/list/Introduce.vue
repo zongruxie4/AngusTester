@@ -3,14 +3,11 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import elementResizeDetector from 'element-resize-detector';
 
-// COMPOSABLES
 const { t } = useI18n();
 
-// REACTIVE STATE
 const containerRef = ref();
 const isTwoColumnLayout = ref(false);
 
-// RESIZE DETECTION
 const resizeDetector = elementResizeDetector({ strategy: 'scroll' });
 
 /**
@@ -46,12 +43,12 @@ onBeforeUnmount(() => {
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('taskMeeting.aboutMeeting') }}
     </div>
-    <div class="text-3.5 mb-6">
-      <div>{{ t('taskMeeting.aboutMeetingDesc') }}</div>
+    <div class="text-3.5 mb-6 font-serif">
+      {{ t('taskMeeting.aboutMeetingDesc') }}
     </div>
 
     <div class="space-y-6">
-      <div class="flex items-start justify-between">
+      <div class="flex items-start justify-between font-serif">
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
@@ -84,6 +81,7 @@ onBeforeUnmount(() => {
             <div class="text-3.5">{{ t('taskMeeting.meetingTypes.dailyStandupDesc') }}</div>
           </div>
         </div>
+
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">

@@ -30,15 +30,15 @@ onBeforeUnmount(() => {
     <div class="space-y-1">
       <div class="flex items-center space-x-2">
         <span class="text-3.5 font-semibold mb-1.5">
-          {{ t('scenarioMonitor.introduce.aboutMonitor') }}
+          {{ t('scenarioMonitor.introduce.title') }}
         </span>
       </div>
-      <div class="mb-4">
+      <div class="mb-4 font-serif">
         {{ t('scenarioMonitor.introduce.description') }}
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6 font-serif">
       <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
         <div class="flex items-start space-x-3">
           <img
