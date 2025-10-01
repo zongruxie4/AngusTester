@@ -24,7 +24,7 @@
     "introduce": {
       "welcome": "About AngusTester Testing",
       "description": "A professional test management platform designed to systematically verify whether software systems meet specifications and user requirements.",
-      "planTesting": "Coordinate and organize testers to conduct testing activities through comprehensive \"Test Plans\";",
+      "planTesting": "Coordinate and organize testers to conduct testing activities through comprehensive test plans;",
       "reviewCases": "Facilitate test case reviews to identify potential defects and errors early in the development cycle;",
       "reportAnalysis": "Provide comprehensive reporting and analysis of health, progress, and issue trends."
     },

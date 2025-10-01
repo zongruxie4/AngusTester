@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
 // Type Definitions
-type MenuKey = 'homepage' | 'sprint' | 'task' | 'backlog' | 'trash' | 'meeting' | 'analysis';
+type MenuKey = 'home' | 'sprint' | 'task' | 'backlog' | 'trash' | 'meeting' | 'analysis';
 
 // Component Imports
 const Homepage = defineAsyncComponent(() => import('@/views/issue/home/index.vue'));
@@ -64,7 +64,7 @@ const menuItems = computed(() => {
     {
       name: t('home.title'),
       icon: 'icon-zhuye',
-      key: 'homepage'
+      key: 'home'
     },
     projectTypeVisibilityMap.value.showBackLog
       ? {
@@ -117,7 +117,7 @@ const menuItems = computed(() => {
 const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
   if (!newMenuKey) return;
 
-  if (newMenuKey === 'homepage') {
+  if (newMenuKey === 'home') {
     if (hasHomepageRefreshTriggered) {
       homepageRefreshToken.value = utils.uuid();
     }
@@ -159,7 +159,7 @@ onMounted(async () => {
 </script>
 <template>
   <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
-    <template #homepage>
+    <template #home>
       <Homepage
         :projectId="projectId"
         :userInfo="userInfo"

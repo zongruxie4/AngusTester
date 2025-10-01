@@ -21,7 +21,7 @@ import { useI18n } from 'vue-i18n';
 import Sidebar from '@/views/apis/services/sidebar/index.vue';
 import { setting } from '@/api/gm';
 
-type MenuKey = 'homepage' | 'services' | 'trash';
+type MenuKey = 'home' | 'services' | 'trash';
 const { t } = useI18n();
 const ApiGroup = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/index.vue'));
 const ApiItem = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/index.vue'));
@@ -31,7 +31,7 @@ const Auth = defineAsyncComponent(() => import('@/views/apis/services/auth/index
 const DataModel = defineAsyncComponent(() => import('@/views/apis/services/dataModel/index.vue'));
 const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/securityTestResult/index.vue'));
 const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/smokeTestResult/index.vue'));
-const QuickStarted = defineAsyncComponent(() => import('@/views/apis/homepage/quickStarted.vue'));
+const QuickStarted = defineAsyncComponent(() => import('@/views/apis/home/quickStarted.vue'));
 
 const route = useRoute();
 const router = useRouter();

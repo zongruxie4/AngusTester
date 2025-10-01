@@ -36,11 +36,11 @@ export type AddedItem = {
 }
 
 /**
- * <p>Component props interface for main homepage component</p>
+ * <p>Component props interface for main home component</p>
  * <p>Defines the required and optional properties passed to the component</p>
  */
 export interface HomepageProps {
-  /** Project identifier for the homepage */
+  /** Project identifier for the home */
   projectId: string;
   /** User information object containing user details */
   userInfo: User;

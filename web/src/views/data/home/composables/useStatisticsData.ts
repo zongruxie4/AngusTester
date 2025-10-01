@@ -4,7 +4,7 @@ import { analysis } from '@/api/tester';
 import { UserCreationStatistics, ProjectCreationStatistics } from '../types';
 
 /**
- * <p>Composable for managing homepage data state and operations</p>
+ * <p>Composable for managing home data state and operations</p>
  * <p>Handles all data fetching, state management, and data transformations</p>
  */
 export function useStatisticsData (_projectId: string, userId: string) {

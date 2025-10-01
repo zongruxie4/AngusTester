@@ -21,11 +21,11 @@ const updateRefreshNotify = (value: string) => {
   notify.value = value;
 };
 
-const MyApis = defineAsyncComponent(() => import('@/views/apis/homepage/myApis/index.vue'));
+const MyApis = defineAsyncComponent(() => import('@/views/apis/home/myApis/index.vue'));
 const QuickEntrance = defineAsyncComponent(() => import('./quickStarted.vue'));
 const Statistics = defineAsyncComponent(() => import('./statistics.vue'));
 const ActivityTimeline = defineAsyncComponent(() => import('./activityTimeline.vue'));
-const Introduce = defineAsyncComponent(() => import('@/views/apis/homepage/introduce/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/apis/home/introduce/index.vue'));
 
 onMounted(() => {
   watch(() => props.refreshNotify, (newValue) => {

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 import { appContext, utils } from '@xcan-angus/infra';
 
-type MenuKey = 'homepage' | 'scenario' | 'trash' | 'monitor';
+type MenuKey = 'home' | 'scenario' | 'trash' | 'monitor';
 
 const Homepage = defineAsyncComponent(() => import('@/views/scenario/home/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/scenario/trash/index.vue'));
@@ -24,7 +24,7 @@ const menuItems: {
   name: string;
   key: MenuKey;
 }[] = [
-  { icon: 'icon-zhuye', name: t('home.title'), key: 'homepage' },
+  { icon: 'icon-zhuye', name: t('home.title'), key: 'home' },
   { icon: 'icon-changjingguanli', name: t('scenario.title'), key: 'scenario' },
   { icon: 'icon-jiankong2', name: t('scenarioMonitor.title'), key: 'monitor' },
   { icon: 'icon-qingchu', name: t('trash.title'), key: 'trash' }
@@ -44,7 +44,7 @@ const projectId = computed(() => {
 
 onMounted(() => {
   watch(() => activeKey.value, (newValue) => {
-    if (newValue === 'homepage') {
+    if (newValue === 'home') {
       if (homeRefreshNotifyFlag) {
         homeRefreshNotify.value = utils.uuid();
       }
@@ -74,7 +74,7 @@ onMounted(() => {
 </script>
 <template>
   <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
-    <template #homepage>
+    <template #home>
       <Homepage
         :projectId="projectId"
         :userInfo="userInfo"

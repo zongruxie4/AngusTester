@@ -4,7 +4,7 @@ import { utils, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
-type MenuKey = 'homepage' | 'variables' | 'dataSet' | 'file' | 'dataSource';
+type MenuKey = 'home' | 'variables' | 'dataSet' | 'file' | 'dataSource';
 
 const Homepage = defineAsyncComponent(() => import('@/views/data/home/index.vue'));
 const Variables = defineAsyncComponent(() => import('@/views/data/variable/index.vue'));
@@ -18,14 +18,14 @@ const userInfo = ref(appContext.getUser());
 const appInfo = ref(appContext.getAccessApp());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 
-const activeKey = ref<MenuKey>('homepage');
+const activeKey = ref<MenuKey>('home');
 
 const homepageRefreshNotify = ref<string>('');
 let homepageRefreshNotifyFlag = false;
 
 onMounted(() => {
   watch(() => activeKey.value, (newValue) => {
-    if (newValue === 'homepage') {
+    if (newValue === 'home') {
       if (homepageRefreshNotifyFlag) {
         homepageRefreshNotify.value = utils.uuid();
       }
@@ -40,7 +40,7 @@ const projectId = computed(() => {
 });
 
 const menuItems = [
-  { name: t('home.title'), icon: 'icon-zhuye', key: 'homepage' },
+  { name: t('home.title'), icon: 'icon-zhuye', key: 'home' },
   { name: t('dataVariable.title'), icon: 'icon-bianliang1', key: 'variables' },
   { name: t('dataset.title'), icon: 'icon-shujuji', key: 'dataSet' },
   { name: t('file.title'), icon: 'icon-wenjian1', key: 'file' },
@@ -49,7 +49,7 @@ const menuItems = [
 </script>
 <template>
   <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
-    <template #homepage>
+    <template #home>
       <Homepage
         v-if="projectId"
         :projectId="projectId"

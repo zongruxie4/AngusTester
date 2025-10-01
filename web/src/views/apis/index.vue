@@ -7,9 +7,9 @@ import { useI18n } from 'vue-i18n';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 import { nextTick } from 'process';
 
-type MenuKey = 'homepage' | 'services' | 'trash';
+type MenuKey = 'home' | 'services' | 'trash';
 
-const Homepage = defineAsyncComponent(() => import('@/views/apis/homepage/index.vue'));
+const Homepage = defineAsyncComponent(() => import('@/views/apis/home/index.vue'));
 const Services = defineAsyncComponent(() => import('@/views/apis/services/index.vue'));
 const Share = defineAsyncComponent(() => import('@/views/apis/share/index.vue'));
 const Server = defineAsyncComponent(() => import('@/views/apis/server/index.vue'));
@@ -46,7 +46,7 @@ let servicesRefreshNotifyFlag = false;
 
 onMounted(() => {
   watch(() => activeKey.value, (newValue) => {
-    if (newValue === 'homepage') {
+    if (newValue === 'home') {
       if (homepageRefreshNotifyFlag) {
         homepageRefreshNotify.value = utils.uuid();
       }
@@ -92,7 +92,7 @@ provide('replaceTabPane', (params) => servicesRef.value && servicesRef.value.rep
 provide('updateApiGroup', (params) => servicesRef.value && servicesRef.value.updateApiGroup(params));
 
 const menuItems = [
-  { name: t('home.title'), icon: 'icon-zhuye', key: 'homepage' },
+  { name: t('home.title'), icon: 'icon-zhuye', key: 'home' },
   { name: t('service.title'), icon: 'icon-fuwuxinxi', key: 'services' },
   { name: 'Mock', icon: 'icon-fuwuxinxi', key: 'mock' },
   { name: t('design.title'), icon: 'icon-sheji', key: 'design' },
@@ -104,7 +104,7 @@ const menuItems = [
 
 <template>
   <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
-    <template #homepage>
+    <template #home>
       <Homepage
         :projectId="projectId"
         :userInfo="userInfo"

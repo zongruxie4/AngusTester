@@ -15,7 +15,7 @@ const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInf
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const InterfaceHeader = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/header/index.vue'));
 const InterfaceList = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/list/index.vue'));
-const HomePage = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/homepage/index.vue'));
+const HomePage = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/home/index.vue'));
 const ApiInfoVue = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/slider/apis/info/index.vue'));
 // const VariableVue = defineAsyncComponent(() => import('@/views/apis/services/components/Variable/index.vue')); // 变量
 const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue')); // 分享记录
@@ -33,7 +33,7 @@ const ComponentVue = defineAsyncComponent(() => import('@/views/apis/services/co
 const SocketConfigVue = defineAsyncComponent(() => import('@/views/apis/services/apiWebSocket/components/config.vue'));
 const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/oas/doc.vue'));
 const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/index.vue'));
-const QuickEntrace = defineAsyncComponent(() => import('@/views/apis/homepage/quickStarted.vue'));
+const QuickEntrace = defineAsyncComponent(() => import('@/views/apis/home/quickStarted.vue'));
 const ServiceTestInfo = defineAsyncComponent(() => import('./slider/services/serviceTestInfo/index.vue'));
 
 interface Props {

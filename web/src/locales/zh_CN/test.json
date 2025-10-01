@@ -1362,7 +1362,7 @@
     "introduce": {
       "welcome": "关于AngusTester测试",
       "description": "一个专业的测试管理平台，用于系统化地验证软件系统是否符合规格说明和用户需求。",
-      "planTesting": "通过\"测试计划\"统筹测试人员开展测试活动；",
+      "planTesting": "通过测试计划统筹测试人员开展测试活动；",
       "reviewCases": "组织测试用例评审，及早发现潜在的缺陷和错误；",
       "reportAnalysis": "提供健康状况、进展情况和问题趋势全面分析。"
     },
