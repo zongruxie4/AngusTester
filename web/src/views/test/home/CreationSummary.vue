@@ -4,7 +4,7 @@ import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { AuthObjectType } from '@xcan-angus/infra';
 
-import { SummaryInfo } from '../types';
+import { SummaryInfo } from './types';
 import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
@@ -87,22 +87,6 @@ const loadSummaryData = async (): Promise<void> => {
   }
 };
 
-onMounted(() => {
-  watch(() => props.projectId, () => {
-    resetSummaryValues();
-    loadSummaryData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
-      return;
-    }
-
-    resetSummaryValues();
-    loadSummaryData();
-  }, { immediate: true });
-});
-
 /**
  * <p>Resets all summary values to empty strings.</p>
  * <p>Used before loading new data to avoid stale UI.</p>
@@ -124,6 +108,22 @@ const resetSummaryValues = () => {
   moduleByLast7Days.value = '';
   moduleByLastMonth.value = '';
 };
+
+onMounted(() => {
+  watch(() => props.projectId, () => {
+    resetSummaryValues();
+    loadSummaryData();
+  }, { immediate: true });
+
+  watch(() => props.notify, (newValue) => {
+    if (newValue === undefined || newValue === null || newValue === '') {
+      return;
+    }
+
+    resetSummaryValues();
+    loadSummaryData();
+  }, { immediate: true });
+});
 </script>
 <template>
   <div>

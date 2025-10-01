@@ -11,8 +11,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 
 // Lazy load components for better performance
 const Added = defineAsyncComponent(() => import('@/views/test/home/Added.vue'));
-const CreationSummary = defineAsyncComponent(() => import('@/views/test/home/summary/CreationSummary.vue'));
-const StatusSummary = defineAsyncComponent(() => import('@/views/test/home/summary/StatusSummary.vue'));
+const CreationSummary = defineAsyncComponent(() => import('@/views/test/home/CreationSummary.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/test/home/WorkCalendar.vue'));
 const BurnDownCharts = defineAsyncComponent(() => import('@/views/test/home/BurndownChart.vue'));
 const Introduction = defineAsyncComponent(() => import('@/views/test/home/Introduce.vue'));
