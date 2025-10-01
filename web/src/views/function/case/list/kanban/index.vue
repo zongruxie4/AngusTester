@@ -28,7 +28,7 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 const EditTaskModal = defineAsyncComponent(() => import('@/views/function/case/list/Edit.vue'));
 const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/Move.vue'));
 const UpdateResultModal = defineAsyncComponent(() => import('@/views/function/case/list/UpdateResult.vue'));
-const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
+const AddTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/Basic.vue'));
 const TestSteps = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/TestSteps.vue'));
 const PersonnelInfo = defineAsyncComponent(() => import('@/views/function/case/list/kanban/info/Personnel.vue'));

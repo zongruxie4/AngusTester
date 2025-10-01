@@ -67,7 +67,7 @@ const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/functio
 const TagList = defineAsyncComponent(() => import('@/views/function/case/list/TagSelector.vue'));
 const PlanList = defineAsyncComponent(() => import('@/views/function/case/list/PlanSelector.vue'));
 const UploadCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/Upload.vue'));
-const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
+const EditTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
 
 const { t } = useI18n();
 

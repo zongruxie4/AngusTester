@@ -1,7 +1,7 @@
 import { EnumMessage, EvalWorkloadMethod, Priority, ReviewStatus } from '@xcan-angus/infra';
 import { CaseStepView, CaseTestResult } from '@/enums/enums';
 import { AttachmentInfo, ProgressInfo, TagInfo } from '@/types/types';
-import { TaskInfo } from '@/views/task/types';
+import { TaskInfo } from '@/views/issue/types';
 
 export type PlanProps = {
   projectId: string;

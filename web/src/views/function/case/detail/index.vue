@@ -20,7 +20,7 @@ const CaseDetailTab = defineAsyncComponent(() => import('@/views/function/case/l
 const ReviewTab = defineAsyncComponent(() => import('@/views/function/case/list/flat/detail/Review.vue'));
 const AssocTaskTab = defineAsyncComponent(() => import('@/views/function/case/list/flat/detail/AssocTask.vue'));
 const AssocCaseTab = defineAsyncComponent(() => import('@/views/function/case/list/flat/detail/AssocCase.vue'));
-const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
+const AddTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
 
 interface IData {
   id: string;

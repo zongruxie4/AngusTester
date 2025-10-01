@@ -24,10 +24,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/kanban/index.vue')
       },
       {
-        path: '/task',
-        component: () => import('@/views/task/index.vue'),
+        path: '/issue',
+        component: () => import('@/views/issue/index.vue'),
         meta: {
-          caches: ['/task/:id']
+          caches: ['/issue/:id']
         }
       },
       {

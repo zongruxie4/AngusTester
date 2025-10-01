@@ -1,5 +1,5 @@
 import { CaseInfo } from '@/views/function/types';
-import { TaskInfo } from '@/views/task/types';
+import { TaskInfo } from '@/views/issue/types';
 import { FuncPlanPermission, TaskType } from '@/enums/enums';
 
 /**
