@@ -71,12 +71,15 @@
       },
       "actions": {
         "continueUpload": "继续上传",
-        "uploadAttachments": "上传附件，最多上传5个"
+        "uploadAttachments": "上传附件，最多上传5个",
+        "selectFile": "选择文件"
       },
       "messages": {
         "sprintDeadlineExceeded": "超过了迭代截止时间({deadline})",
         "descriptionMaxLength": "描述最大支持6000个字符",
-        "contactAdminForTags": "请联系管理员，前往\"项目\"-\"标签\"配置问题标签。"
+        "contactAdminForTags": "请联系管理员，前往\"项目\"-\"标签\"配置问题标签。",
+        "fileSizeLimit": "单个文件大小不超过{size}M，最多上传5个",
+        "fileSizeExceeded": "文件大小不能超过 {size} M"
       }
     },
     "aiGenerate": {
@@ -826,8 +829,7 @@
           "selectFile": "选择文件"
         },
         "messages": {
-          "fileSizeLimit": "文件大小不能超过 {size} M",
-          "uploadLimit": "单个文件大小不超过{size}M，最多上传5个"
+
         }
       },
       "basic": {
