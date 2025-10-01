@@ -20,7 +20,7 @@ const projectTypeVisibilityMap = inject<Ref<{[key: string]: boolean}>>('proTypeS
 
 // Lazy load components for better performance
 const Added = defineAsyncComponent(() => import('@/views/task/home/Added.vue'));
-const CreationSummary = defineAsyncComponent(() => import('@/views/task/home/summary/CreationSummary.vue'));
+const CreationSummary = defineAsyncComponent(() => import('@/views/task/home/CreationSummary.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/task/home/WorkCalendar.vue'));
 const BurndownChart = defineAsyncComponent(() => import('@/views/task/home/BurndownChart.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/task/home/Introduce.vue'));

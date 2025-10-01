@@ -14,7 +14,7 @@ import enProject from '@/locales/en/project.json';
 import enReport from '@/locales/en/report.json';
 import enScenario from '@/locales/en/scenario.json';
 import enScript from '@/locales/en/script.json';
-import enTask from '@/locales/en/task.json';
+import enIssue from '@/locales/en/issue.json';
 import enConfig from '@/locales/en/config.json';
 import enFunction from '@/locales/en/function.json';
 import enCommonComp from '@/locales/en/commonComp.json';
@@ -31,7 +31,7 @@ import zhProject from '@/locales/zh_CN/project.json';
 import zhReport from '@/locales/zh_CN/report.json';
 import zhScenario from '@/locales/zh_CN/scenario.json';
 import zhScript from '@/locales/zh_CN/script.json';
-import zhTask from '@/locales/zh_CN/task.json';
+import zhIssue from '@/locales/zh_CN/issue.json';
 import zhConfig from '@/locales/zh_CN/config.json';
 import zhFunction from '@/locales/zh_CN/function.json';
 import zhCommonComp from '@/locales/zh_CN/commonComp.json';
@@ -51,7 +51,7 @@ export const localeBundles = {
     ...enReport,
     ...enScenario,
     ...enScript,
-    ...enTask,
+    ...enIssue,
     ...enConfig,
     ...enFunction,
     ...enCommonComp
@@ -69,7 +69,7 @@ export const localeBundles = {
     ...zhReport,
     ...zhScenario,
     ...zhScript,
-    ...zhTask,
+    ...zhIssue,
     ...zhConfig,
     ...zhFunction,
     ...zhCommonComp

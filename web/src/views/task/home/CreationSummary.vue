@@ -131,8 +131,8 @@ onMounted(() => {
             <span class="text-3.5 font-semibold">{{ backlogByLastMonth }}</span>
           </div>
         </div>
-        <img src="./images/tag.png" class="w-15 absolute right-0 top-0 -z-1" />
-        <img src="./images/bgtag.png" class="w-full h-full absolute right-0 top-0 -z-2" />
+        <img src="images/tag.png" class="w-15 absolute right-0 top-0 -z-1" />
+        <img src="images/bgtag.png" class="w-full h-full absolute right-0 top-0 -z-2" />
       </div>
 
       <div class="p-3.5 rounded w-1/3 relative bg-img">
@@ -150,8 +150,8 @@ onMounted(() => {
             <span class="text-3.5 font-semibold">{{ sprintByLastMonth }}</span>
           </div>
         </div>
-        <img src="./images/sprint.png" class="w-15 absolute right-0 top-0 -z-1" />
-        <img src="./images/bgsprint.png" class="w-full h-full absolute right-0 top-0 -z-2" />
+        <img src="images/sprint.png" class="w-15 absolute right-0 top-0 -z-1" />
+        <img src="images/bgsprint.png" class="w-full h-full absolute right-0 top-0 -z-2" />
       </div>
 
       <div class="p-3.5 rounded w-1/3 relative bg-img">
@@ -169,8 +169,8 @@ onMounted(() => {
             <span class="text-3.5 font-semibold">{{ taskByLastMonth }}</span>
           </div>
         </div>
-        <img src="./images/task.png" class="w-15 absolute right-0 top-0 -z-1" />
-        <img src="./images/bgtask.png" class="w-full h-full absolute right-0 top-0 -z-2" />
+        <img src="images/task.png" class="w-15 absolute right-0 top-0 -z-1" />
+        <img src="images/bgtask.png" class="w-full h-full absolute right-0 top-0 -z-2" />
       </div>
 
       <div class="p-3.5 rounded w-1/3 relative bg-img">
@@ -188,8 +188,8 @@ onMounted(() => {
             <span class="text-3.5 font-semibold">{{ meetingByLastMonth }}</span>
           </div>
         </div>
-        <img src="./images/project.png" class="w-15 absolute right-0 top-0 -z-1" />
-        <img src="./images/bgproject.png" class="w-full h-full absolute right-0 top-0 -z-2" />
+        <img src="images/project.png" class="w-15 absolute right-0 top-0 -z-1" />
+        <img src="images/bgproject.png" class="w-full h-full absolute right-0 top-0 -z-2" />
       </div>
     </div>
   </div>
