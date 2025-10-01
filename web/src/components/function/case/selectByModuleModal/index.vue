@@ -16,7 +16,7 @@ import { debounce } from 'throttle-debounce';
 import TestResult from '@/components/TestResult/index.vue';
 
 // Type imports
-import { ReviewCaseInfo } from '@/views/function/review/types';
+import { ReviewCaseInfo } from '@/views/test/review/types';
 
 const { t } = useI18n();
 
@@ -94,8 +94,8 @@ const loadTestCasesData = async () => {
  * Apply search filter to case data based on keywords
  */
 const applySearchFilter = () => {
-  filteredCaseData.value = allCaseData.value.filter(item => 
-    (item.name || '').includes(searchKeywords.value || '') || 
+  filteredCaseData.value = allCaseData.value.filter(item =>
+    (item.name || '').includes(searchKeywords.value || '') ||
     (item.code || '').includes(searchKeywords.value || '')
   );
 };

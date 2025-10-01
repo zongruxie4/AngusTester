@@ -1,6 +1,6 @@
 import { Priority } from '@xcan-angus/infra';
 import { TaskType, BugLevel, TestType } from '@/enums/enums';
-import { CaseInfo } from '@/views/function/types';
+import { CaseInfo } from '@/views/test/types';
 import { TaskInfo } from '@/views/issue/types';
 import { AttachmentInfo } from '@/types/types';
 

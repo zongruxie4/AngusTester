@@ -16,7 +16,7 @@ import enScenario from '@/locales/en/scenario.json';
 import enScript from '@/locales/en/script.json';
 import enIssue from '@/locales/en/issue.json';
 import enConfig from '@/locales/en/config.json';
-import enFunction from '@/locales/en/function.json';
+import enTest from '@/locales/en/test.json';
 import enCommonComp from '@/locales/en/commonComp.json';
 
 // Locale files - Chinese
@@ -33,7 +33,7 @@ import zhScenario from '@/locales/zh_CN/scenario.json';
 import zhScript from '@/locales/zh_CN/script.json';
 import zhIssue from '@/locales/zh_CN/issue.json';
 import zhConfig from '@/locales/zh_CN/config.json';
-import zhFunction from '@/locales/zh_CN/function.json';
+import zhTest from '@/locales/zh_CN/test.json';
 import zhCommonComp from '@/locales/zh_CN/commonComp.json';
 
 // Locale message bundles
@@ -53,7 +53,7 @@ export const localeBundles = {
     ...enScript,
     ...enIssue,
     ...enConfig,
-    ...enFunction,
+    ...enTest,
     ...enCommonComp
   },
   zh_CN: {
@@ -71,7 +71,7 @@ export const localeBundles = {
     ...zhScript,
     ...zhIssue,
     ...zhConfig,
-    ...zhFunction,
+    ...zhTest,
     ...zhCommonComp
   }
 } as const;

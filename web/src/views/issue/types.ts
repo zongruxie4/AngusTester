@@ -2,7 +2,7 @@ import { EnumMessage, EvalWorkloadMethod, Priority, enumUtils } from '@xcan-angu
 import { BugLevel, ExecResult, TaskStatus, TaskType, TestType, AssociateUserType } from '@/enums/enums';
 import { AttachmentInfo, ProgressInfo, TagInfo } from '@/types/types';
 
-import { CaseInfo } from '@/views/function/types';
+import { CaseInfo } from '@/views/test/types';
 
 /** Task type name mapping for UI display */
 export const getTaskTypeName = () => {

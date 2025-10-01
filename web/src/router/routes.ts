@@ -31,8 +31,8 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: '/function',
-        component: () => import('@/views/function/index.vue')
+        path: '/test',
+        component: () => import('@/views/test/index.vue')
       },
       {
         path: '/apis',

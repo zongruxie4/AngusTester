@@ -184,7 +184,7 @@
     "failed": "Failed",
     "pending": "Pending",
     "inProgress": "In Progress",
-    "pendingConfirmation": "Unconfirmed",
+    "pendingConfirmation": "Confirming",
     "completed": "Completed",
     "notCompleted": "Not Completed",
     "cancelled": "Cancelled",
