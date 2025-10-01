@@ -1236,7 +1236,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="taskChild">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.tabs.subTask') }}</span>
+            <span>{{ t('common.subIssue') }}</span>
             <span>({{ currentTaskInfo?.subTaskInfos?.length || 0 }})</span>
           </div>
         </template>
@@ -1426,7 +1426,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="comments">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('common.comments') }}</span>
+            <span>{{ t('common.comment') }}</span>
             <span>({{ (currentTaskInfo as any)?.commentNum || 0 }})</span>
           </div>
         </template>

@@ -176,14 +176,14 @@ const burnDownCharts = computed(() => {
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.projectProgress.taskSummary.summary.fields.estimatedWorkload') }}
+          {{ t('common.evalWorkload') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.evalWorkload }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.projectProgress.taskSummary.summary.fields.actualWorkload') }}
+          {{ t('common.actualWorkload') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ totalOverview?.actualWorkload }}
@@ -193,14 +193,14 @@ const burnDownCharts = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.projectProgress.taskSummary.summary.fields.completedWorkload') }}
+          {{ t('common.completedWorkload') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.completedWorkload }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ t('reportPreview.projectProgress.taskSummary.summary.fields.savedWorkload') }}
+          {{ t('common.savingWorkload') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.savingWorkload }}

@@ -1755,7 +1755,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'tasks' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('task.kanbanView.drawer.assocTasks')"
+            :title="t('task.kanbanView.drawer.assocIssues')"
             @click="drawerActiveKeyChange('tasks')">
             <Icon icon="icon-ceshirenwu" class="text-4" />
           </div>
@@ -1771,7 +1771,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'attachments' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('common.attachments')"
+            :title="t('common.attachment')"
             @click="drawerActiveKeyChange('attachments')">
             <Icon icon="icon-lianjie1" class="text-4" />
           </div>
@@ -1787,7 +1787,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'comment' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('common.comments')"
+            :title="t('common.comment')"
             @click="drawerActiveKeyChange('comment')">
             <Icon icon="icon-pinglun" class="text-4" />
           </div>

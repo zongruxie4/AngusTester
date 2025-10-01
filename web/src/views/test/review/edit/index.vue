@@ -725,7 +725,7 @@ onMounted(async () => {
           :placeholder="t('caseReview.editForm.selectParticipantsPlaceholder')" />
       </FormItem>
 
-      <FormItem :label="t('common.attachments')">
+      <FormItem :label="t('common.attachment')">
         <div class="flex items-center mt-0.5">
           <Upload
             v-if="!formState?.attachments || formState?.attachments?.length < 10"

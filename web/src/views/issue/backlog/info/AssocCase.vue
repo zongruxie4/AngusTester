@@ -108,7 +108,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   <div class="basic-info-drawer">
     <div class="basic-info-header">
       <div class="flex items-center justify-between">
-        <h3 class="basic-info-title">{{ t('backlog.assocCase.title') }}</h3>
+        <h3 class="basic-info-title">{{ t('common.assocCases') }}</h3>
         <Button
           v-show="!isCaseEditing"
           type="link"
@@ -153,7 +153,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
             :maxTags="20"
             :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
             class="w-full"
-            :placeholder="t('backlog.assocCase.placeholder')"
+            :placeholder="t('backlog.edit.placeholders.maxAssocCases')"
             mode="multiple"
             @change="handleCaseSelectionChange">
             <template #option="record">
@@ -183,7 +183,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
               type="primary"
               size="small"
               @click="confirmCaseAssociationChanges">
-              {{ t('common.confirm') }}
+              {{ t('actions.confirm') }}
             </Button>
           </div>
         </template>

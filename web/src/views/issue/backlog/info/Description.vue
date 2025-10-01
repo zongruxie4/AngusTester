@@ -141,7 +141,7 @@ onMounted(() => {
               :height="200"
               @change="handleDescriptionContentChange" />
             <div v-show="hasDescriptionValidationError" class="text-status-error">
-              {{ t('backlog.info.description.messages.maxLength') }}
+              {{ t('common.placeholders.inputDescription30') }}
             </div>
           </div>
 
@@ -153,7 +153,7 @@ onMounted(() => {
               size="small"
               type="primary"
               @click="saveDescriptionChanges">
-              {{ t('common.confirm') }}
+              {{ t('actions.confirm') }}
             </Button>
           </div>
         </div>

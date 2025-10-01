@@ -130,7 +130,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.evalWorkload }}</div>
         <div class="label">
-          {{ t('task.list.statistics.evalWorkload') }}
+          {{ t('common.evalWorkload') }}
         </div>
       </div>
     </div>

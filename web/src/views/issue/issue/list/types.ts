@@ -26,7 +26,7 @@ export type TaskEditState = {
   /** Test execution identifier for task testing responsibility */
   testerId?: string | undefined;
   /** Flag indicating if this is a missing bug report */
-  missingBug?: boolean | undefined;
+  escapedBug?: boolean | undefined;
   /** Tag identifiers for task categorization and filtering */
   tagIds?: string[] | undefined;
   /** Task priority level for scheduling and resource allocation */

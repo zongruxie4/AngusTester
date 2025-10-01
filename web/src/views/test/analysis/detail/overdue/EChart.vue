@@ -114,7 +114,7 @@ const savingWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: t('functionAnalysis.detail.overdueAssessment.savedWorkloadPercentage')
+    subtext: t('functionAnalysis.detail.overdueAssessment.savingWorkloadPercentage')
   }
 }));
 

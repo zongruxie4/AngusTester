@@ -82,7 +82,7 @@ const confirm = async () => {
               size="small"
               type="link"
               @click="confirm">
-              {{ t('common.confirm') }}
+              {{ t('actions.confirm') }}
           </Button>
       </div>
     </template>

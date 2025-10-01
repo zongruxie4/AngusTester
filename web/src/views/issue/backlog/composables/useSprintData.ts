@@ -9,7 +9,6 @@ import {
   BacklogProps,
   SprintDataState,
   LoadingState,
-  SearchState,
   TaskQueryParams,
   SortParams,
   PRIORITY_LEVEL_CONFIG,

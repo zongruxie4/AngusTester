@@ -80,7 +80,7 @@ export const DRAWER_MENUITEMS:{
   },
   {
     icon: 'icon-pinglun',
-    name: t('common.comments'),
+    name: t('common.comment'),
     key: 'comment'
   }
 ];

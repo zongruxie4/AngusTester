@@ -372,7 +372,7 @@ const handleTesterSelectionBlur = async () => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('assigneeId')">
-                {{ t('common.assignToMe') }}
+                {{ t('actions.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isAssigneeEditing">
@@ -380,7 +380,7 @@ const handleTesterSelectionBlur = async () => {
                 v-show="isAssigneeEditing"
                 ref="assigneeSelectRef"
                 v-model:value="assigneeInputValue"
-                :placeholder="t('task.detailInfo.personnel.placeholders.selectAssignee')"
+                :placeholder="t('common.placeholders.selectAssignee')"
                 allowClear
                 :defaultOptions="assigneeDefaultOptions"
                 :action="`${TESTER}/project/${props.projectId}/member/user`"
@@ -422,7 +422,7 @@ const handleTesterSelectionBlur = async () => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('confirmerId')">
-                {{ t('common.assignToMe') }}
+                {{ t('actions.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isConfirmerEditing">
@@ -430,7 +430,7 @@ const handleTesterSelectionBlur = async () => {
                 v-show="isConfirmerEditing"
                 ref="confirmerSelectRef"
                 v-model:value="confirmerInputValue"
-                :placeholder="t('task.detailInfo.personnel.placeholders.selectConfirmer')"
+                :placeholder="t('common.placeholders.selectConfirmer')"
                 allowClear
                 :defaultOptions="confirmerDefaultOptions"
                 :action="`${TESTER}/project/${props.projectId}/member/user`"
@@ -462,7 +462,7 @@ const handleTesterSelectionBlur = async () => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('testerId')">
-                {{ t('common.assignToMe') }}
+                {{ t('actions.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isTesterEditing">
@@ -470,7 +470,7 @@ const handleTesterSelectionBlur = async () => {
                 v-show="isTesterEditing"
                 ref="testerSelectRef"
                 v-model:value="testerInputValue"
-                :placeholder="t('task.detailInfo.personnel.placeholders.selectTester')"
+                :placeholder="t('common.placeholders.selectTester')"
                 allowClear
                 internal
                 :defaultOptions="testerDefaultOptions"

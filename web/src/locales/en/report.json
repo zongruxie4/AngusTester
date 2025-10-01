@@ -1075,10 +1075,10 @@
             "oneTimeTestPass": "One-time Test Pass",
             "oneTimeTestPassRate": "One-time Test Pass Rate",
             "oneTimeReviewPassRate": "One-time Review Pass Rate",
-            "estimatedWorkload": "Estimated Workload",
+            "evalWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "completedWorkload": "Completed Workload",
-            "savedWorkload": "Saved Workload",
+            "savingWorkload": "Saved Workload",
             "workloadSaveRate": "Workload Save Rate"
           }
         },
@@ -1126,10 +1126,10 @@
             "oneTimeTestPass": "One-time Test Pass",
             "oneTimeTestPassRate": "One-time Test Pass Rate",
             "oneTimeReviewPassRate": "One-time Review Pass Rate",
-            "estimatedWorkload": "Estimated Workload",
+            "evalWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "completedWorkload": "Completed Workload",
-            "savedWorkload": "Saved Workload",
+            "savingWorkload": "Saved Workload",
             "workloadSaveRate": "Workload Save Rate"
           }
         },
@@ -1159,7 +1159,7 @@
             "reviewOpinion": "Review Opinion",
             "reviewTime": "Review Time",
             "workloadEvalMethod": "Workload Evaluation",
-            "estimatedWorkload": "Estimated Workload",
+            "evalWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "totalTestCount": "Total Test Count",
             "testFailCount": "Test Failure Count"
@@ -1220,10 +1220,10 @@
             "overdueRate": "Overdue Rate",
             "oneTimePassCount": "One-time Pass Count",
             "oneTimePassRate": "One-time Pass Rate",
-            "estimatedWorkload": "Estimated Workload",
+            "evalWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "completedWorkload": "Completed Workload",
-            "savedWorkload": "Saved Workload",
+            "savingWorkload": "Saved Workload",
             "workloadSaveRate": "Workload Save Rate"
           }
         },
@@ -1261,10 +1261,10 @@
             "oneTimeTestPass": "One-time Test Pass",
             "oneTimeTestPassRate": "One-time Test Pass Rate",
             "oneTimeReviewPassRate": "One-time Review Pass Rate",
-            "estimatedWorkload": "Estimated Workload",
+            "evalWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "completedWorkload": "Completed Workload",
-            "savedWorkload": "Saved Workload",
+            "savingWorkload": "Saved Workload",
             "workloadSaveRate": "Workload Save Rate"
           }
         },
@@ -1720,10 +1720,10 @@
             "overdueRate": "Overdue Rate",
             "oneTimePassCount": "One-time Pass Count",
             "oneTimePassRate": "One-time Pass Rate",
-            "estimatedWorkload": "Estimated Workload",
+            "evalWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "completedWorkload": "Completed Workload",
-            "savedWorkload": "Saved Workload",
+            "savingWorkload": "Saved Workload",
             "workloadSaveRate": "Workload Save Rate"
           }
         },
@@ -1767,10 +1767,10 @@
             "overdueRate": "Overdue Rate",
             "oneTimePassCount": "One-time Pass Count",
             "oneTimePassRate": "One-time Pass Rate",
-            "estimatedWorkload": "Estimated Workload",
+            "evalWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "completedWorkload": "Completed Workload",
-            "savedWorkload": "Saved Workload",
+            "savingWorkload": "Saved Workload",
             "workloadSaveRate": "Workload Save Rate"
           }
         },

@@ -51,13 +51,13 @@ const props = withDefaults(defineProps<Props>(), {
 const bugLevelRef = ref();
 const validBugRef = ref();
 const bugsRef = ref();
-const missingBugRef = ref();
+const escapedBugRef = ref();
 const bugWorkloadRef = ref();
 
 let bugsChart;
 let bugLevelEChart;
 let validBugEChart;
-let missingBugEChart;
+let escapedBugEChart;
 let bugWorkloadEChart;
 
 // 缺陷
@@ -82,7 +82,7 @@ const bugsEChartConfig = {
       t('taskAnalysis.detail.bugs.chartLabels.totalBugs'),
       t('taskAnalysis.detail.bugs.chartLabels.validBugs'),
       t('taskAnalysis.detail.bugs.chartLabels.invalidBugs'),
-      t('taskAnalysis.detail.bugs.chartLabels.missingBugs')
+      t('taskAnalysis.detail.bugs.chartLabels.escapedBugs')
     ],
     axisLabel: {
       interval: 0,
@@ -233,11 +233,11 @@ const validBugEChartConfig = JSON.parse(JSON.stringify({
 }));
 
 // 漏测缺陷
-const missingBugEChartConfig = JSON.parse(JSON.stringify({
+const escapedBugEChartConfig = JSON.parse(JSON.stringify({
   ...validBugEChartConfig,
   title: {
     ...validBugEChartConfig.title,
-    subtext: t('taskAnalysis.detail.bugs.chartTitles.missingBugRatio')
+    subtext: t('taskAnalysis.detail.bugs.chartTitles.escapedBugRatio')
   }
 }));
 
@@ -254,7 +254,7 @@ onMounted(() => {
   bugLevelEChart = eCharts.init(bugLevelRef.value);
   validBugEChart = eCharts.init(validBugRef.value);
   bugsChart = eCharts.init(bugsRef.value);
-  missingBugEChart = eCharts.init(missingBugRef.value);
+  escapedBugEChart = eCharts.init(escapedBugRef.value);
   bugWorkloadEChart = eCharts.init(bugWorkloadRef.value);
 
   watch([
@@ -300,17 +300,17 @@ onMounted(() => {
     };
     validBugEChartConfig.title.text = props.chart2Value.title;
 
-    missingBugEChartConfig.series[0].data[0] = {
-      ...missingBugEChartConfig.series[0].data[0],
+    escapedBugEChartConfig.series[0].data[0] = {
+      ...escapedBugEChartConfig.series[0].data[0],
       ...props.chart3Value.value[0],
       value: Number(props.chart3Value.value[0].value)
     };
-    missingBugEChartConfig.series[0].data[1] = {
-      ...missingBugEChartConfig.series[0].data[1],
+    escapedBugEChartConfig.series[0].data[1] = {
+      ...escapedBugEChartConfig.series[0].data[1],
       ...props.chart3Value.value[1],
       value: Number(props.chart3Value.value[1].value)
     };
-    missingBugEChartConfig.title.text = props.chart3Value.title;
+    escapedBugEChartConfig.title.text = props.chart3Value.title;
 
     bugWorkloadEChartConfig.series[0].data[0] = {
       ...bugWorkloadEChartConfig.series[0].data[0],
@@ -327,7 +327,7 @@ onMounted(() => {
     bugLevelEChart.setOption(bugLevelEChartConfig);
     validBugEChart.setOption(validBugEChartConfig);
     bugsChart.setOption(bugsEChartConfig);
-    missingBugEChart.setOption(missingBugEChartConfig);
+    escapedBugEChart.setOption(escapedBugEChartConfig);
     bugWorkloadEChart.setOption(bugWorkloadEChartConfig);
   }, {
     immediate: true,
@@ -339,7 +339,7 @@ defineExpose({
   resize: () => {
     bugLevelEChart.resize();
     validBugEChart.resize();
-    missingBugEChart.resize();
+    escapedBugEChart.resize();
     bugsChart.resize();
     bugWorkloadEChart.resize();
   }
@@ -351,7 +351,7 @@ defineExpose({
     <div ref="bugsRef" class="flex-1 min-w-90 h-35"></div>
     <div ref="bugLevelRef" class="flex-1 h-35"></div>
     <div ref="validBugRef" class="flex-1 h-35"></div>
-    <div ref="missingBugRef" class="flex-1 h-35"></div>
+    <div ref="escapedBugRef" class="flex-1 h-35"></div>
     <div ref="bugWorkloadRef" class="flex-1 h-35"></div>
   </div>
 </template>

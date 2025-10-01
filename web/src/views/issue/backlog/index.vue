@@ -242,7 +242,7 @@ onMounted(() => {
                   </div>
                   <div class="w-25 flex-shrink-0 flex items-center space-x-1 font-semibold">
                     <span>{{ totalTaskNum || 0 }}</span>
-                    <span>{{ t('backlog.taskCount') }}</span>
+                    <span>{{ t('backlog.issueCount') }}</span>
                   </div>
                 </div>
               </div>
@@ -280,7 +280,7 @@ onMounted(() => {
 
                           <div class="w-25 flex-shrink-0 flex items-center space-x-1 text-theme-sub-content">
                             <span>{{ sprintData.sprintTaskCountMap[item.id] || 0 }}</span>
-                            <span>{{ t('backlog.taskCount') }}</span>
+                            <span>{{ t('backlog.issueCount') }}</span>
                           </div>
 
                           <div class="flex-shrink-0 flex items-center mr-5">
@@ -289,12 +289,13 @@ onMounted(() => {
                               class="text-3 leading-3 px-1 py-1 rounded  text-white flex items-center flex-none whitespace-nowrap mr-3.5">
                               <div class="transform-gpu scale-90">{{ item.status?.message }}</div>
                             </div>
+
                             <Progress :percent="+item.progress?.completedRate" style="width:150px;" />
                           </div>
 
                           <div class="flex-shrink-0 text-theme-sub-content">
                             <span>{{ item.startDate }}</span>
-                            <span> {{ t('backlog.to') }} </span>
+                            <span class="ml-2 mr-2"> - </span>
                             <span>{{ item.deadlineDate }}</span>
                           </div>
                         </div>
@@ -326,7 +327,7 @@ onMounted(() => {
                             class="flex items-center space-x-1"
                             :to="`/task#task?sprintId=${item.id}&sprintName=${item.name}`">
                             <Icon icon="icon-renwu2" class="text-3.5" />
-                            <span>{{ t('backlog.enterSprint') }}</span>
+                            <span>{{ t('backlog.actions.enterSprint') }}</span>
                           </RouterLink>
                         </div>
                       </div>
@@ -338,22 +339,18 @@ onMounted(() => {
                           <template #title>
                             <div class="leading-5 text-theme-content">
                               <div class="mb-1 text-theme-title">{{ member.fullName }}</div>
+
                               <div class="flex items-center mb-0.5">
                                 <div class="flex items-center w-12.25">
-                                  <span>{{ t('backlog.columns.taskCount') }}</span>
+                                  <span>{{ t('backlog.issueCount') }}</span>
                                   <Colon class="w-1" />
                                 </div>
                                 <span>{{ sprintData.sprintMemberProgressMap[item.id]?.[member.id]?.validTaskNum || 0 }}</span>
                               </div>
+
                               <div class="flex items-center">
                                 <div class="flex items-center w-12.25">
-                                  <span>
-                                    {{
-                                      item.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                                        ? t('backlog.columns.storyPoint')
-                                        : t('backlog.columns.workHours')
-                                    }}
-                                  </span>
+                                  <span>{{ t('common.workload') }}</span>
                                   <Colon class="w-1" />
                                 </div>
                                 <span>{{ sprintData.sprintMemberProgressMap[item.id]?.[member.id]?.evalWorkload || 0 }}</span>
@@ -378,7 +375,7 @@ onMounted(() => {
                       <div
                         v-show="sprintExpansion.expandedSprintIds.has(item.id)"
                         class="empty-draggable mt-4.75 mx-5 h-9.5 flex items-center justify-center rounded text-theme-sub-content">
-                        {{ t('backlog.noTasksInSprint') }}
+                        {{ t('backlog.noIssueInSprint') }}
                       </div>
                     </template>
                   </template>
@@ -423,10 +420,10 @@ onMounted(() => {
                           <template #content>
                             <div class="max-w-100 space-y-1 leading-5 text-3 truncate">
                               <div
-                                :title="t('backlog.moveToBacklog')"
+                                :title="t('backlog.actions.moveToBacklog')"
                                 class="popover-item truncate cursor-pointer px-2"
                                 @click="moveTaskToBacklog(item.id, element, index)">
-                                {{ t('backlog.moveToBacklog') }}
+                                {{ t('backlog.actions.moveToBacklog') }}
                               </div>
 
                               <template v-for="_sprint in sprintData.sprintList" :key="_sprint.id">
@@ -448,7 +445,7 @@ onMounted(() => {
                             class="px-0 h-5 leading-5 space-x-1 flex items-center"
                             @click.stop="">
                             <Icon icon="icon-diedai" class="text-3.5" />
-                            <span>{{ t('backlog.moveTo') }}</span>
+                            <span>{{ t('backlog.actions.moveTo') }}</span>
                           </Button>
                         </Popover>
 
@@ -459,7 +456,7 @@ onMounted(() => {
                           class="px-0 h-5 leading-5 space-x-1 flex items-center"
                           @click.stop="confirmDeleteTask(element, index, item.id)">
                           <Icon icon="icon-qingchu" class="text-3.5" />
-                          <span>{{ t('backlog.delete') }}</span>
+                          <span>{{ t('actions.delete') }}</span>
                         </Button>
                       </div>
                     </div>
@@ -498,7 +495,7 @@ onMounted(() => {
 
                       <div class="flex-shrink-0 flex items-center space-x-1 mr-3.5 font-semibold">
                         <span>{{ backlogData.backlogTotalCount || 0 }}</span>
-                        <span>{{ t('backlog.taskCount') }}</span>
+                        <span>{{ t('backlog.issueCount') }}</span>
                       </div>
                     </div>
 
@@ -547,7 +544,7 @@ onMounted(() => {
                         class="flex items-center space-x-1"
                         @click="showAddTaskFormEnhanced">
                         <Icon icon="icon-jia" class="text-3.5" />
-                        <span>{{ t('backlog.main.addBacklog') }}</span>
+                        <span>{{ t('backlog.actions.add') }}</span>
                       </Button>
 
                       <Button
@@ -557,7 +554,7 @@ onMounted(() => {
                         class="flex items-center space-x-1"
                         @click="showAiGenerateTaskModal">
                         <Icon icon="icon-jia" class="text-3.5" />
-                        <span>{{ t('backlog.main.aiAddBacklog') }}</span>
+                        <span>{{ t('backlog.actions.aiAdd') }}</span>
                       </Button>
                     </div>
 
@@ -570,7 +567,7 @@ onMounted(() => {
                       class="flex items-center space-x-1 border-dashed w-full h-11"
                       @click="showAddTaskFormEnhanced">
                       <Icon icon="icon-jia" class="text-3.5" />
-                      <span>{{ t('backlog.main.addBacklog') }}</span>
+                      <span>{{ t('backlog.actions.add') }}</span>
                     </Button>
 
                     <div v-show="modal.isAddingNewTask" class="flex items-center">
@@ -592,7 +589,7 @@ onMounted(() => {
                         v-model:value="newTask.newTaskPriority"
                         internal
                         enumKey="Priority"
-                        :placeholder="t('backlog.main.placeholders.selectPriority')"
+                        :placeholder="t('common.placeholders.selectPriority')"
                         class="w-28 mr-2">
                         <template #option="record">
                           <TaskPriority :value="{ value: record.value, label: record.label }" />
@@ -603,7 +600,7 @@ onMounted(() => {
                         ref="newTaskNameInputRef"
                         v-model:value="newTask.newTaskName"
                         :maxlength="200"
-                        :placeholder="t('backlog.main.placeholders.taskName')"
+                        :placeholder="t('common.placeholders.inputName2')"
                         trim
                         class="w-200 mr-5"
                         @pressEnter="handleNewTaskNameEnter" />
@@ -628,7 +625,7 @@ onMounted(() => {
                           type="default"
                           size="small"
                           @click="openCreateTaskModal">
-                          {{ t('backlog.main.openAddModal') }}
+                          {{ t('backlog.actions.openAddModal') }}
                         </Button>
                       </div>
                     </div>
@@ -654,7 +651,7 @@ onMounted(() => {
                           ref="newTaskNameInputRef"
                           v-model:value="taskNameEditing.editingTaskNameMap[element.id]"
                           :maxlength="200"
-                          :placeholder="t('backlog.main.placeholders.taskName')"
+                          :placeholder="t('common.placeholders.inputName2')"
                           trim
                           class="w-100 mr-5"
                           @pressEnter="handleTaskNameEditEnter(element,index)" />

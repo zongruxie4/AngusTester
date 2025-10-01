@@ -129,7 +129,7 @@ const handleActualWorkloadEnter = () => {
         <div class="workload-method-item">
           <div class="workload-method-header">
             <Icon icon="icon-pinggugongzuoliang" class="text-3.5 text-theme-primary mr-1" />
-            <span class="workload-method-label">{{ t('task.detailInfo.basic.columns.evalWorkloadMethod') }}</span>
+            <span class="workload-method-label">{{ t('common.evalWorkloadMethod') }}</span>
           </div>
           <div class="workload-method-value">
             <span :class="{ 'placeholder-text': !props.dataSource?.evalWorkloadMethod?.message }">
@@ -146,7 +146,7 @@ const handleActualWorkloadEnter = () => {
               <div class="workload-item-header">
                 <Icon icon="icon-wanchenggongzuoliang" class="text-3.5 text-blue-500 mr-1" />
                 <span class="workload-label">
-                  {{ t('task.detailInfo.basic.columns.evalWorkload') }}
+                  {{ t('common.evalWorkload') }}
                 </span>
                 <Button
                   v-show="!isEvalWorkloadEditing"
@@ -186,7 +186,7 @@ const handleActualWorkloadEnter = () => {
               <div class="workload-item-header">
                 <Icon icon="icon-jieshenggongzuoliang" class="text-3.5 text-green-500 mr-1" />
                 <span class="workload-label">
-                  {{ t('task.detailInfo.basic.columns.actualWorkload') }}
+                  {{ t('common.actualWorkload') }}
                 </span>
                 <Button
                   v-show="!isActualWorkloadEditing"

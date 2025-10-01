@@ -54,13 +54,13 @@ const props = withDefaults(defineProps<Props>(), {
 const bugLevelRef = ref();
 const validBugRef = ref();
 const bugsRef = ref();
-const missingBugRef = ref();
+const escapedBugRef = ref();
 const bugWorkloadRef = ref();
 
 let bugsChart;
 let bugLevelEchart;
 let validBugEchart;
-let missingBugEchart;
+let escapedBugEchart;
 let bugWorkloadEchart;
 
 // 缺陷
@@ -85,7 +85,7 @@ const bugsEchartConfig = {
       t('functionAnalysis.detail.bugs.totalBugs'),
       t('functionAnalysis.detail.bugs.validBugs'),
       t('functionAnalysis.detail.bugs.invalidBugs'),
-      t('functionAnalysis.detail.bugs.missingBugs')
+      t('functionAnalysis.detail.bugs.escapedBugs')
     ],
     axisLabel: {
       interval: 0,
@@ -237,11 +237,11 @@ const validBugEchartConfig = JSON.parse(JSON.stringify({
 }));
 
 // 漏测缺陷
-const missingBugEchartConfig = JSON.parse(JSON.stringify({
+const escapedBugEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: t('functionAnalysis.detail.bugs.missingBugPercentage')
+    subtext: t('functionAnalysis.detail.bugs.escapedBugPercentage')
 
   }
 }));
@@ -262,7 +262,7 @@ onMounted(() => {
 
   bugsChart = eCharts.init(bugsRef.value);
 
-  missingBugEchart = eCharts.init(missingBugRef.value);
+  escapedBugEchart = eCharts.init(escapedBugRef.value);
 
   bugWorkloadEchart = eCharts.init(bugWorkloadRef.value);
 
@@ -297,15 +297,15 @@ onMounted(() => {
     };
     validBugEchartConfig.title.text = props.chart2Value.title;
 
-    missingBugEchartConfig.series[0].data[0] = {
-      ...missingBugEchartConfig.series[0].data[0],
+    escapedBugEchartConfig.series[0].data[0] = {
+      ...escapedBugEchartConfig.series[0].data[0],
       ...props.chart3Value.value[0]
     };
-    missingBugEchartConfig.series[0].data[1] = {
-      ...missingBugEchartConfig.series[0].data[1],
+    escapedBugEchartConfig.series[0].data[1] = {
+      ...escapedBugEchartConfig.series[0].data[1],
       ...props.chart3Value.value[1]
     };
-    missingBugEchartConfig.title.text = props.chart3Value.title;
+    escapedBugEchartConfig.title.text = props.chart3Value.title;
 
     bugWorkloadEchartConfig.series[0].data[0] = {
       ...bugWorkloadEchartConfig.series[0].data[0],
@@ -320,7 +320,7 @@ onMounted(() => {
     bugLevelEchart.setOption(bugLevelEchartConfig);
     validBugEchart.setOption(validBugEchartConfig);
     bugsChart.setOption(bugsEchartConfig);
-    missingBugEchart.setOption(missingBugEchartConfig);
+    escapedBugEchart.setOption(escapedBugEchartConfig);
     bugWorkloadEchart.setOption(bugWorkloadEchartConfig);
   }, {
     immediate: true,
@@ -332,7 +332,7 @@ defineExpose({
   resize: () => {
     bugLevelEchart.resize();
     validBugEchart.resize();
-    missingBugEchart.resize();
+    escapedBugEchart.resize();
     bugsChart.resize();
     bugWorkloadEchart.resize();
   }
@@ -354,7 +354,7 @@ defineExpose({
     <div ref="bugsRef" class="flex-1 min-w-80 h-40"></div>
     <div ref="bugLevelRef" class="flex-1 h-40"></div>
     <div ref="validBugRef" class="flex-1 h-40"></div>
-    <div ref="missingBugRef" class="flex-1 h-40"></div>
+    <div ref="escapedBugRef" class="flex-1 h-40"></div>
     <div ref="bugWorkloadRef" class="flex-1 h-40"></div>
   </div>
 </template>

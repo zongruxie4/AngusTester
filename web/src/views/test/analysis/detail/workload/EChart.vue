@@ -58,10 +58,10 @@ const workloadEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.workload.estimatedWorkload'),
-      t('functionAnalysis.detail.workload.actualWorkload'),
-      t('functionAnalysis.detail.workload.completedWorkload'),
-      t('functionAnalysis.detail.workload.savingWorkload')
+      t('common.evalWorkload'),
+      t('common.actualWorkload'),
+      t('common.completedWorkload'),
+      t('common.savingWorkload')
     ],
     axisLabel: {
       interval: 0,

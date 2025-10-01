@@ -123,10 +123,10 @@ const isContentTooLong = () => {
         <RichEditor
           :value="currentContent"
           :height="150"
-          :options="{placeholder: t('task.remark.placeholder')}"
+          :options="{placeholder: t('common.placeholders.inputDescription30')}"
           @change="(v:string)=> currentContent = v" />
         <div v-show="hasValidationError" class="text-status-error">
-          {{ t('task.remark.validation.maxLength') }}
+          {{ t('common.placeholders.inputDescription30') }}
         </div>
       </div>
       <div class="space-x-2.5 w-full flex items-center justify-end">
@@ -134,7 +134,7 @@ const isContentTooLong = () => {
           size="small"
           type="primary"
           @click="handleSubmitRemark">
-          {{ t('common.confirm') }}
+          {{ t('actions.confirm') }}
         </Button>
       </div>
     </div>

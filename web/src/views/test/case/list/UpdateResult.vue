@@ -157,8 +157,7 @@ watch(() => props.visible, (newValue) => {
       layout="horizontal"
       @finish="onFinish(false)">
       <FormItem
-        :label="props.selectedCase?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-          ? t('functionCase.updateCaseResultModal.evalWorkload') : t('functionCase.updateCaseResultModal.evalWorkload')"
+        :label="t('common.evalWorkload')"
         name="evalWorkload"
         :rules="{validator: validateDate, trigger: 'change' }">
         <div class="flex items-center text-3">
@@ -177,8 +176,7 @@ watch(() => props.visible, (newValue) => {
       </FormItem>
 
       <FormItem
-        :label="props.selectedCase?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-          ? t('functionCase.updateCaseResultModal.actualWorkload') : t('functionCase.updateCaseResultModal.actualWorkload')"
+        :label="t('functionCase.updateCaseResultModal.actualWorkload')"
         name="actualWorkload">
         <div class="flex items-center text-3">
           <Input
@@ -225,7 +223,7 @@ watch(() => props.visible, (newValue) => {
             size="small"
             htmlType="submit"
             class="px-3">
-            {{ t('common.confirm') }}
+            {{ t('actions.confirm') }}
           </Button>
           <Button
             size="small"

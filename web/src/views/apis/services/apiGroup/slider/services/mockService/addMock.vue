@@ -252,7 +252,7 @@ onMounted(() => {
           size="small"
           type="primary"
           @click="handleSave">
-          {{ t('common.confirm') }}
+          {{ t('actions.confirm') }}
         </Button>
       </div>
     </Spin>

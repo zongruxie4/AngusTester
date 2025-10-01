@@ -186,7 +186,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
               type="primary"
               size="small"
               @click="confirmCaseAssociationChanges">
-              {{ t('common.confirm') }}
+              {{ t('actions.confirm') }}
             </Button>
           </div>
         </template>

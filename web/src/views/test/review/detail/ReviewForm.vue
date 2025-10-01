@@ -169,7 +169,7 @@ onMounted(() => {
             htmlType="submit"
             class="px-6">
             <Icon icon="icon-tijiao" class="mr-2" />
-            {{ t('common.confirm') }}
+            {{ t('actions.confirm') }}
           </Button>
         </div>
       </FormItem>

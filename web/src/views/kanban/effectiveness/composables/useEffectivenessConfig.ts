@@ -83,19 +83,19 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
         semantic: 'rateHighGood'
       },
       {
-        name: t('kanban.effectiveness.evalWorkload'),
+        name: t('common.evalWorkload'),
         dataIndex: 'evalWorkload',
         icon: 'icon-eval-workload',
         semantic: 'neutral'
       },
       {
-        name: t('kanban.effectiveness.actualWorkload'),
+        name: t('common.actualWorkload'),
         dataIndex: 'actualWorkload',
         icon: 'icon-actual-workload',
         semantic: 'neutral'
       },
       {
-        name: t('kanban.effectiveness.savingWorkload'),
+        name: t('common.savingWorkload'),
         dataIndex: 'savingWorkload',
         icon: 'icon-saving-workload',
         semantic: 'workloadSaving'
@@ -174,19 +174,19 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
         semantic: 'rateHighGood'
       },
       {
-        name: t('kanban.effectiveness.evalWorkload'),
+        name: t('common.evalWorkload'),
         dataIndex: 'evalWorkload',
         icon: 'icon-eval-workload',
         semantic: 'neutral'
       },
       {
-        name: t('kanban.effectiveness.actualWorkload'),
+        name: t('common.actualWorkload'),
         dataIndex: 'actualWorkload',
         icon: 'icon-actual-workload',
         semantic: 'neutral'
       },
       {
-        name: t('kanban.effectiveness.savingWorkload'),
+        name: t('common.savingWorkload'),
         dataIndex: 'savingWorkload',
         icon: 'icon-saving-workload',
         semantic: 'workloadSaving'

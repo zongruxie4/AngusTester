@@ -269,7 +269,7 @@ watch(() => props.visible, (newValue) => {
 </script>
 <template>
   <Modal
-    :title="props.syncData ? t('common.add')"
+    :title="props.syncData ? t('actions.add')"
     :okButtonProps="{
       loading
     }"

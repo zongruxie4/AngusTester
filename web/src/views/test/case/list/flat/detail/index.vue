@@ -938,7 +938,7 @@ onBeforeUnmount(() => {
                   size="small"
                   class="p-0 h-3.5 leading-3.5 ml-1"
                   @click="handleSetTester">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </template>
             </template>
@@ -1177,7 +1177,7 @@ onBeforeUnmount(() => {
 
       <template v-if="!bigLayout">
         <Toggle
-          :title="t('common.attachments')"
+          :title="t('common.attachment')"
           class="mt-3.5">
           <div
             style="height: 108px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
@@ -1257,7 +1257,7 @@ onBeforeUnmount(() => {
                 size="small"
                 class="p-0 h-3.5 leading-3.5 ml-1"
                 @click="handleSetTester">
-                {{ t('common.assignToMe') }}
+                {{ t('actions.assignToMe') }}
               </Button>
             </template>
           </template>
@@ -1341,7 +1341,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        :title="t('common.attachments')"
+        :title="t('common.attachment')"
         class="mt-3.5">
         <div
           style="height: 108px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"

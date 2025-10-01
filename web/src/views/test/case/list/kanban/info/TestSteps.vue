@@ -126,7 +126,7 @@ onMounted(() => {
         size="small"
         type="primary"
         @click="ok">
-        {{ t('common.confirm') }}
+        {{ t('actions.confirm') }}
       </Button>
     </div>
   </div>

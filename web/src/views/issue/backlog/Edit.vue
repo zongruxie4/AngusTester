@@ -106,7 +106,7 @@ const formState = reactive<TaskEditState>({
   testType: TestType.FUNCTIONAL,
   bugLevel: BugLevel.MINOR,
   testerId: undefined,
-  missingBug: false,
+  escapedBug: false,
   softwareVersion: undefined
 });
 
@@ -181,7 +181,7 @@ const validateEvaluationWorkload = async (_rule: Rule, value: string) => {
 
   if (formState.actualWorkload) {
     if (!value) {
-      return Promise.reject(new Error(t('backlog.messages.inputEvalWorkload')));
+      return Promise.reject(new Error(t('common.placeholders.inputEvalWorkload')));
     }
     return Promise.resolve();
   }
@@ -215,12 +215,12 @@ const handleEvaluationWorkloadChange = (value: string) => {
  */
 const validateDeadlineDate = async (_rule: Rule, value: string) => {
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
-    return Promise.reject(new Error(t('backlog.messages.deadlineMustBeFuture')));
+    return Promise.reject(new Error(t('common.placeholders.deadlineMustBeFuture')));
   }
 
   if (sprintDeadlineDate.value) {
     if (dayjs(value).isAfter(dayjs(sprintDeadlineDate.value), 'seconds')) {
-      return Promise.reject(new Error(t('backlog.editForm.messages.sprintDeadlineExceeded', { deadline: sprintDeadlineDate.value })));
+      return Promise.reject(new Error(t('backlog.edit.messages.sprintDeadlineExceeded', { deadline: sprintDeadlineDate.value })));
     }
   }
   return Promise.resolve();
@@ -370,7 +370,7 @@ const buildFormParameters = () => {
 
   if (formState.taskType === TaskType.BUG) {
     params.bugLevel = formState.bugLevel;
-    params.missingBug = formState.missingBug;
+    params.escapedBug = formState.escapedBug;
   }
 
   if (formState.taskType === TaskType.API_TEST) {
@@ -427,7 +427,7 @@ const handleTaskCreation = async (shouldContinue = false) => {
     return;
   }
 
-  notification.success(t('backlog.editForm.messages.taskAddedSuccess'));
+  notification.success(t('actions.tip.addSuccess'));
   emit('ok', res?.data);
 
   if (!shouldContinue) {
@@ -448,7 +448,7 @@ const handleTaskUpdate = async () => {
     return;
   }
 
-  notification.success(t('backlog.editForm.messages.taskEditedSuccess'));
+  notification.success(t('actions.tips.editSuccess'));
   const taskData = await fetchTaskDetails();
   emit('ok', taskData);
   cancelModal();
@@ -525,7 +525,7 @@ const resetFormToDefaults = () => {
     formState.description = '';
   }
   formState.evalWorkload = undefined;
-  formState.actualWorkload = undefined
+  formState.actualWorkload = undefined;
   formState.name = props.name || '';
   formState.priority = Priority.MEDIUM;
   formState.bugLevel = BugLevel.MINOR;
@@ -538,7 +538,7 @@ const resetFormToDefaults = () => {
   formState.targetParentId = undefined;
   formState.taskType = props.taskType || TaskType.TASK;
   formState.testType = TestType.FUNCTIONAL;
-  formState.missingBug = false;
+  formState.escapedBug = false;
   formState.softwareVersion = undefined;
   formState.assigneeId = props.assigneeId || props.userInfo?.id || undefined;
   formState.testerId = props.taskType === TaskType.BUG ? props.userInfo?.id : undefined;
@@ -601,7 +601,6 @@ onMounted(() => {
       }
 
       // Populate form with task data
-      console.log('📝 Populating form with task data...');
       formState.attachments = taskData.attachments || [];
       formState.moduleId = taskData.moduleId ? (+taskData.moduleId < 0 ? undefined : taskData.moduleId) : undefined;
       formState.deadlineDate = taskData.deadlineDate;
@@ -632,18 +631,9 @@ onMounted(() => {
       formState.testType = taskData.testType?.value;
       formState.targetParentId = taskData.targetParentId;
       formState.testerId = taskData.testerId;
-      formState.missingBug = taskData.missingBug || false;
+      formState.escapedBug = taskData.escapedBug || false;
       formState.bugLevel = taskData.bugLevel?.value || BugLevel.MINOR;
       formState.softwareVersion = taskData.softwareVersion;
-
-      console.log('📋 Form state after population:', {
-        name: formState.name,
-        description: formState.description,
-        taskType: formState.taskType,
-        priority: formState.priority,
-        assigneeId: formState.assigneeId,
-        sprintId: formState.sprintId
-      });
 
       previousFormState = cloneDeep(formState);
 
@@ -664,16 +654,6 @@ onMounted(() => {
       isEditorVisible.value = false;
     }
   }, { immediate: true });
-
-  // Watch formState changes for debugging
-  watch(() => formState, (newState) => {
-    console.log('🔄 Form state changed:', {
-      name: newState.name,
-      description: newState.description,
-      taskType: newState.taskType,
-      priority: newState.priority
-    });
-  }, { deep: true });
 });
 
 /**
@@ -712,7 +692,7 @@ const modalTitle = computed(() => {
   if (props.taskId) {
     return t('actions.edit');
   }
-  return t('common.add');
+  return t('actions.add');
 });
 
 const isTaskTypeReadonly = computed(() => {
@@ -733,14 +713,13 @@ const shouldShowTestType = computed(() => {
   return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
 });
 
-// Description Validation
 /**
  * <p>Validate description length</p>
  * <p>Ensures description does not exceed maximum length limit</p>
  */
 const validateDescriptionLength = async () => {
   if (richEditorRef.value && richEditorRef.value.getLength() > 6000) {
-    return Promise.reject(new Error(t('backlog.editForm.messages.descriptionMaxLength')));
+    return Promise.reject(new Error(t('common.placeholders.inputDescription30')));
   }
   return Promise.resolve();
 };
@@ -789,7 +768,7 @@ const getPopupContainer = () => {
     :visible="props.visible"
     class="relative max-w-full"
     @cancel="cancelModal">
-    <Tooltip :title="isZoomedIn ? t('backlog.zoomOut') : t('backlog.zoomIn')">
+    <Tooltip :title="isZoomedIn ? t('actions.exitFullScreen') : t('actions.fullScreen')">
       <Icon
         :icon="isZoomedIn ? 'icon-tuichuzuida' : 'icon-zuidahua'"
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"
@@ -809,12 +788,12 @@ const getPopupContainer = () => {
           <FormItem
             name="name"
             :label="t('common.name')"
-            :rules="{ required: true, message: t('backlog.messages.taskNameRequired') }">
+            :rules="{ required: true, message: t('common.placeholders.inputName2') }">
             <Input
               v-model:value="formState.name"
               trim
               :maxlength="200"
-              :placeholder="t('backlog.placeholder.taskName')" />
+              :placeholder="t('common.placeholders.inputName2')" />
           </FormItem>
 
           <div class="flex space-x-4">
@@ -841,7 +820,7 @@ const getPopupContainer = () => {
                         <div
                           v-for="[taskType, typeName] in taskTypeName"
                           :key="taskType">
-                          {{ t(`backlog.taskTypeDescriptions.${taskType.toLowerCase()}`) }}
+                          {{ t(`backlog.typeDescriptions.${taskType.toLowerCase()}`) }}
                         </div>
                       </div>
                     </div>
@@ -857,7 +836,7 @@ const getPopupContainer = () => {
                 :readonly="isTaskTypeReadonly"
                 internal
                 enumKey="TaskType"
-                :placeholder="t('backlog.editForm.placeholders.selectTaskType')"
+                :placeholder="t('common.placeholders.selectIssueType')"
                 style="width: 280px;"
                 @change="handleTaskTypeChange">
                 <template #option="record">
@@ -879,7 +858,7 @@ const getPopupContainer = () => {
                 :allowClear="false"
                 internal
                 enumKey="Priority"
-                :placeholder="t('backlog.editForm.placeholders.selectPriority')">
+                :placeholder="t('common.placeholders.selectPriority')">
                 <template #option="record">
                   <TaskPriority :value="record" />
                 </template>
@@ -891,7 +870,7 @@ const getPopupContainer = () => {
             <div class="flex space-x-4">
               <FormItem
                 name="bugLevel"
-                :label="t('backlog.editForm.labels.bugLevel')"
+                :label="t('common.bugLevel')"
                 class="flex-1/2">
                 <SelectEnum
                   v-model:value="formState.bugLevel"
@@ -902,11 +881,11 @@ const getPopupContainer = () => {
               </FormItem>
 
               <FormItem
-                name="missingBug"
-                :label="t('backlog.editForm.labels.missingBug')"
+                name="escapedBug"
+                :label="t('common.escapedBug')"
                 class="flex-1/2">
                 <Select
-                  v-model:value="formState.missingBug"
+                  v-model:value="formState.escapedBug"
                   :options="[{value: true, label: t('status.yes')}, {value: false, label: t('status.no')}]">
                 </Select>
               </FormItem>
@@ -918,12 +897,12 @@ const getPopupContainer = () => {
               name="targetId"
               :label="t('common.scenario')"
               class="flex-1 min-w-0"
-              :rules="{ required: true, message: t('backlog.editForm.messages.selectScenario') }">
+              :rules="{ required: true, message: t('common.placeholders.selectScenario') }">
               <Select
                 v-model:value="formState.targetId"
                 showSearch
                 internal
-                :placeholder="t('backlog.editForm.placeholders.selectScenario')"
+                :placeholder="t('common.placeholders.selectScenario')"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
                 :readonly="!!props.taskId" />
@@ -932,7 +911,7 @@ const getPopupContainer = () => {
             <FormItem
               v-if="shouldShowTestType"
               name="testType"
-              :label="t('backlog.editForm.labels.testType')"
+              :label="t('common.testType')"
               class="flex-1"
               required>
               <SelectEnum
@@ -940,7 +919,7 @@ const getPopupContainer = () => {
                 :allowClear="false"
                 internal
                 enumKey="TestType"
-                :placeholder="t('backlog.editForm.placeholders.selectTestType')"
+                :placeholder="t('common.placeholders.selectTestType')"
                 style="width: 280px;" />
             </FormItem>
           </div>
@@ -949,7 +928,7 @@ const getPopupContainer = () => {
             <FormItem
               name="targetParentId"
               :label="t('common.service')"
-              :rules="{ required: true, message: t('backlog.editForm.messages.selectService') }">
+              :rules="{ required: true, message: t('common.placeholders.selectService') }">
               <Select
                 v-model:value="formState.targetParentId"
                 :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
@@ -959,7 +938,7 @@ const getPopupContainer = () => {
                 internal
                 defaultActiveFirstOption
                 showSearch
-                :placeholder="t('backlog.editForm.placeholders.selectOrSearchService')">
+                :placeholder="t('common.placeholders.selectOrSearchService')">
                 <template #option="record">
                   <div class="text-3 leading-3 flex items-center h-6.5">
                     <IconText
@@ -978,12 +957,12 @@ const getPopupContainer = () => {
                 :label="t('common.api')"
                 name="targetId"
                 class="flex-1 min-w-0"
-                :rules="{ required: true, message: t('backlog.editForm.messages.selectApi') }">
+                :rules="{ required: true, message: t('common.placeholders.selectApi') }">
                 <Select
                   v-model:value="formState.targetId"
                   showSearch
                   internal
-                  :placeholder="t('backlog.editForm.placeholders.selectApi')"
+                  :placeholder="t('common.placeholders.selectApi')"
                   :fieldNames="{ label: 'summary', value: 'id' }"
                   :action="`${TESTER}/apis?projectId=${props.projectId}&serviceId=${formState.targetParentId}&fullTextSearch=true`"
                   :readonly="!!props.taskId || !formState.targetParentId" />
@@ -992,7 +971,7 @@ const getPopupContainer = () => {
               <FormItem
                 v-if="shouldShowTestType"
                 name="testType"
-                :label="t('backlog.editForm.labels.testType')"
+                :label="t('common.testType')"
                 class="flex-1"
                 required>
                 <SelectEnum
@@ -1000,7 +979,7 @@ const getPopupContainer = () => {
                   :allowClear="false"
                   internal
                   enumKey="TestType"
-                  :placeholder="t('backlog.editForm.placeholders.selectTestType')"
+                  :placeholder="t('common.placeholders.selectTestType')"
                   style="width: 280px;" />
               </FormItem>
             </div>
@@ -1010,12 +989,13 @@ const getPopupContainer = () => {
             <FormItem
               name="assigneeId"
               class="flex-1/2"
-              :rules="{ required: true, message: t('backlog.editForm.messages.selectAssignee') }">
+              :rules="{ required: true, message: t('common.placeholders.selectAssignee') }">
               <template #label>
-                {{ t('common.assignee') }}<Popover placement="rightTop">
+                {{ t('common.assignee') }}
+                <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('common.assignee') }}
+                      {{ t('backlog.edit.descriptions.assignee') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1025,7 +1005,7 @@ const getPopupContainer = () => {
               <div class="flex items-center ">
                 <SelectUser
                   v-model:value="formState.assigneeId"
-                  :placeholder="t('backlog.editForm.placeholders.selectAssignee')"
+                  :placeholder="t('common.placeholders.selectAssignee')"
                   internal
                   class="flex-1 min-w-0"
                   :defaultOptions="assigneeDefaultOptions"
@@ -1036,17 +1016,18 @@ const getPopupContainer = () => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToRole('assigneeId')">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
 
             <FormItem name="confirmerId" class="flex-1/2">
               <template #label>
-                {{ t('common.confirmer') }}<Popover placement="rightTop">
+                {{ t('common.confirmer') }}
+                <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('common.confirmer') }}
+                      {{ t('backlog.edit.descriptions.confirmer') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1056,7 +1037,7 @@ const getPopupContainer = () => {
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.confirmerId"
-                  :placeholder="t('backlog.editForm.placeholders.selectConfirmer')"
+                  :placeholder="t('common.placeholders.selectConfirmer')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
@@ -1068,7 +1049,7 @@ const getPopupContainer = () => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToRole('confirmerId')">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1093,10 +1074,11 @@ const getPopupContainer = () => {
 
             <FormItem name="confirmerId" class="flex-1/2">
               <template #label>
-                {{ t('common.tester') }}<Popover placement="rightTop">
+                {{ t('common.tester') }}
+                <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('common.tester') }}
+                      {{ t('backlog.edit.descriptions.tester') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1106,7 +1088,7 @@ const getPopupContainer = () => {
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.testerId"
-                  :placeholder="t('backlog.editForm.placeholders.selectTester')"
+                  :placeholder="t('common.placeholders.selectTester')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
@@ -1118,7 +1100,7 @@ const getPopupContainer = () => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToRole('testerId')">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1132,8 +1114,8 @@ const getPopupContainer = () => {
               <RichEditor
                 ref="richEditorRef"
                 :value="formState.description"
-                :options="{placeholder: t('backlog.editForm.placeholders.taskDescription')}"
-                :height="340"
+                :options="{placeholder: t('common.placeholders.inputDescription30')}"
+                :height="280"
                 @change="handleRichEditorChange"
                 @loadingChange="handleRichEditorLoading" />
             </AsyncComponent>
@@ -1151,7 +1133,7 @@ const getPopupContainer = () => {
               :readonly="!!props.taskId"
               showSearch
               internal
-              :placeholder="t('backlog.editForm.placeholders.selectOrSearchSprint')"
+              :placeholder="t('common.placeholders.selectOrSearchSprint')"
               @change="handleSprintSelectionChange">
               <template #option="record">
                 <div class="flex items-center" :title="record.name">
@@ -1172,7 +1154,7 @@ const getPopupContainer = () => {
               size="small"
               showSearch
               allowClear
-              :placeholder="t('backlog.editForm.placeholders.selectOrSearchModule')">
+              :placeholder="t('common.placeholders.selectOrSearchModule')">
               <template #title="item">
                 <div class="flex items-center" :title="item.name">
                   <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -1182,7 +1164,7 @@ const getPopupContainer = () => {
             </TreeSelect>
           </FormItem>
 
-          <FormItem :label="t('backlog.editForm.labels.parentTask')" name="parentTaskId">
+          <FormItem :label="t('common.parentIssue')" name="parentTaskId">
             <Select
               v-if="!!props.parentTaskId"
               :readonly="true"
@@ -1202,7 +1184,7 @@ const getPopupContainer = () => {
               v-model:value="formState.parentTaskId"
               showSearch
               internal
-              :placeholder="t('backlog.editForm.placeholders.selectParentTask')"
+              :placeholder="t('common.placeholders.selectParentIssue')"
               :excludes="getExcludedTaskIds"
               :fieldNames="{ label: 'name', value: 'id' }"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
@@ -1220,12 +1202,12 @@ const getPopupContainer = () => {
             :rules="{ required: formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
               <span>
-                {{ t('backlog.editForm.labels.evalWorkload') }}
+                {{ t('common.evalWorkload') }}
               </span>
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ t('backlog.editForm.labels.evalWorkload') }}
+                    {{ t('backlog.edit.descriptions.evalWorkload') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1238,18 +1220,18 @@ const getPopupContainer = () => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('backlog.editForm.placeholders.workloadRange')"
+              :placeholder="t('common.placeholders.workloadRange')"
               @blur="handleEvaluationWorkloadChange($event.target.value)" />
           </FormItem>
 
           <template v-if="!!props.taskId">
             <FormItem name="actualWorkload">
               <template #label>
-                {{ t('backlog.editForm.labels.evalWorkload') }}
+                {{ t('common.evalWorkload') }}
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('backlog.editForm.labels.evalWorkload') }}
+                      {{ t('backlog.edit.descriptions.evalWorkload') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1261,7 +1243,7 @@ const getPopupContainer = () => {
                 size="small"
                 dataType="float"
                 trimAll
-                :placeholder="t('backlog.editForm.placeholders.workloadRange')"
+                :placeholder="t('common.placeholders.workloadRange')"
                 :min="0.1"
                 :max="1000"
                 @change="handleActualWorkloadChange($event.target.value)" />
@@ -1274,7 +1256,7 @@ const getPopupContainer = () => {
             <Select
               v-model:value="formState.softwareVersion"
               allowClear
-              :placeholder="t('backlog.editForm.placeholders.selectSoftwareVersion')"
+              :placeholder="t('common.placeholders.selectSoftwareVersion')"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
               :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
               :fieldNames="{value:'name', label: 'name'}">
@@ -1285,10 +1267,11 @@ const getPopupContainer = () => {
             name="tagIds"
             class="relative">
             <template #label>
-              {{ t('common.tag') }}<Popover placement="rightTop">
+              {{ t('common.tag') }}
+              <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ t('common.tag') }}
+                    {{ t('backlog.edit.descriptions.tags') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1304,14 +1287,14 @@ const getPopupContainer = () => {
               :maxTags="5"
               :allowClear="false"
               :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
-              :placeholder="t('backlog.editForm.placeholders.maxTags')"
+              :placeholder="t('backlog.edit.placeholders.maxTags')"
               mode="multiple"
-              :notFoundContent="t('backlog.editForm.messages.contactAdminForTags')" />
+              :notFoundContent="t('backlog.edit.messages.contactAdminForTags')" />
           </FormItem>
 
           <FormItem
             name="refTaskIds"
-            :label="t('backlog.editForm.labels.refTasks')"
+            :label="t('common.assocIssues')"
             class="relative">
             <Select
               v-model:value="formState.refTaskIds"
@@ -1323,7 +1306,7 @@ const getPopupContainer = () => {
               :maxTagTextLength="15"
               :maxTags="20"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
-              :placeholder="t('backlog.editForm.placeholders.maxRefTasks')"
+              :placeholder="t('backlog.edit.placeholders.maxAssocIssues')"
               mode="multiple">
               <template #option="record">
                 <div class="flex items-center leading-4.5 overflow-hidden">
@@ -1344,7 +1327,7 @@ const getPopupContainer = () => {
 
           <FormItem
             name="refCaseIds"
-            :label="t('backlog.editForm.labels.refCases')"
+            :label="t('common.assocCases')"
             class="relative">
             <Select
               v-model:value="formState.refCaseIds"
@@ -1356,7 +1339,7 @@ const getPopupContainer = () => {
               :maxTagTextLength="15"
               :maxTags="20"
               :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
-              :placeholder="t('backlog.editForm.placeholders.maxRefCases')"
+              :placeholder="t('backlog.edit.placeholders.maxAssocCases')"
               mode="multiple">
               <template #option="record">
                 <div class="flex items-center leading-4.5 overflow-hidden">
@@ -1375,7 +1358,7 @@ const getPopupContainer = () => {
             </Select>
           </FormItem>
 
-          <FormItem :label="t('common.attachments')">
+          <FormItem :label="t('common.attachment')">
             <div
               style="height: 60px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
               class="border border-dashed rounded flex flex-col px-2 py-1"
@@ -1408,7 +1391,7 @@ const getPopupContainer = () => {
                     :customRequest="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
                     <span class="text-3 leading-3 text-theme-text-hover">
-                      {{ t('backlog.editForm.buttons.continueUpload') }}
+                      {{ t('backlog.edit.actions.continueUpload') }}
                     </span>
                   </Upload>
                 </div>
@@ -1422,7 +1405,7 @@ const getPopupContainer = () => {
                     :customRequest="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                     <span class="text-3 text-theme-text-hover">
-                      {{ t('backlog.editForm.buttons.uploadAttachments') }}
+                      {{ t('backlog.edit.actions.uploadAttachments') }}
                     </span>
                   </Upload>
                 </div>
@@ -1455,7 +1438,7 @@ const getPopupContainer = () => {
         size="small"
         :disabled="isLoading"
         @click="submitForm(false)">
-        {{ t('common.confirm') }}
+        {{ t('actions.confirm') }}
       </Button>
     </template>
   </Modal>

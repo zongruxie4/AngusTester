@@ -381,7 +381,7 @@ onMounted(async () => {
                 :loading="isSubmitting"
                 @click="handleSubmit">
                 <Icon icon="icon-dangqianxuanzhong" class="mr-1" />
-                {{ t('common.confirm') }}
+                {{ t('actions.confirm') }}
               </Button>
               <RouterLink to="/apis#mock">
                 <Button size="small">

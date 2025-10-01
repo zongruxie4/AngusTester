@@ -77,7 +77,7 @@ const handleToggleDateFilter = (value: string) => {
       :maxlength="200"
       allowClear
       class="search-input mr-5"
-      :placeholder="t('backlog.placeholder.searchTaskName')"
+      :placeholder="t('common.placeholders.searchKeyword')"
       trim
       @change="handleSearchChange" />
 
@@ -104,7 +104,7 @@ const handleToggleDateFilter = (value: string) => {
       :class="{ 'active-key': search.assigneeId === userId }"
       class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2 font-semibold"
       @click="handleToggleAssignedToMeFilter">
-      {{ t('backlog.quickSearch.assignedToMe') }}
+      {{ t('quickSearch.assignedToMe') }}
     </div>
 
     <div

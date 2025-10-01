@@ -435,7 +435,7 @@ const handleTaskTypeSelectionBlur = async () => {
   if (selectedValue === TaskType.BUG) {
     await task.updateTask(currentTaskId.value, {
       bugLevel: BugLevel.MINOR,
-      missingBug: false
+      escapedBug: false
     });
   }
   if (error) {
@@ -757,7 +757,7 @@ onMounted(() => {
         <!-- Parent Task -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.parentTask') }}</span>
+            <span>{{ t('common.parentIssue') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text dash-text">{{ props.dataSource?.parentTaskName || '--' }}</span>
@@ -782,10 +782,10 @@ onMounted(() => {
                     {{ props.dataSource?.bugLevel?.message }}
                   </Tag>
                   <Tag
-                    v-if="props.dataSource?.missingBug"
+                    v-if="props.dataSource?.escapedBug"
                     color="error"
                     class="bug-tag">
-                    {{ t('task.detailInfo.basic.columns.missingBug') }}
+                    {{ t('task.detailInfo.basic.columns.escapedBug') }}
                   </Tag>
                 </template>
               </div>
@@ -802,7 +802,7 @@ onMounted(() => {
                 ref="taskTypeSelectRef"
                 v-model:value="taskTypeSelectValue"
                 enumKey="TaskType"
-                :placeholder="t('task.detailInfo.basic.columns.selectTaskType')"
+                :placeholder="t('common.placeholders.selectIssueType')"
                 class="edit-input"
                 @change="handleTaskTypeSelectionChange as any"
                 @blur="handleTaskTypeSelectionBlur as any">

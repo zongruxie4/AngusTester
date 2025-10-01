@@ -131,7 +131,7 @@ onMounted(() => {
               :height="200"
               @change="handleEditorContentChange" />
             <div v-show="hasContentLengthError" class="text-status-error">
-              {{ t('task.detailInfo.description.validation.maxLength') }}
+              {{ t('common.placeholders.inputDescription30') }}
             </div>
           </div>
 
@@ -143,7 +143,7 @@ onMounted(() => {
               size="small"
               type="primary"
               @click="confirmDescriptionEdit">
-              {{ t('common.confirm') }}
+              {{ t('actions.confirm') }}
             </Button>
           </div>
         </div>

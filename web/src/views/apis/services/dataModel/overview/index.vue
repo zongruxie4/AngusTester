@@ -151,7 +151,7 @@ const confirm = () => {
         size="small"
         type="primary"
         @click="confirm">
-        {{ t('common.confirm') }}
+        {{ t('actions.confirm') }}
       </Button>
       <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
     </div>

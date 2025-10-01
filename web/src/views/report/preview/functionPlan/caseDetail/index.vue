@@ -164,21 +164,21 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.estimatedWorkload') }}
+                {{ t('common.evalWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.evalWorkload }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.actualWorkload') }}
+                {{ t('common.actualWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.actualWorkload }}
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.completedWorkload') }}
+                {{ t('common.completedWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ casesMap[item.id].statusOverview?.completedWorkload }}
@@ -188,7 +188,7 @@ const testers = computed(() => {
             <div class="flex">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.savedWorkload') }}
+                {{ t('common.savingWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.savingWorkload }}

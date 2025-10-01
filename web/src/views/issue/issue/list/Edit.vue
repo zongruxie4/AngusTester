@@ -91,7 +91,7 @@ const formState = reactive<TaskEditState>({
   taskType: TaskType.TASK,
   bugLevel: BugLevel.MINOR,
   testerId: undefined,
-  missingBug: false,
+  escapedBug: false,
   softwareVersion: undefined
 });
 
@@ -120,7 +120,7 @@ const modalTitle = computed(() => {
   if (props.taskId) {
     return t('actions.edit');
   }
-  return t('common.add');
+  return t('actions.add');
 });
 
 /**
@@ -491,7 +491,7 @@ const buildTaskParameters = () => {
   // Add bug-specific fields
   if (formState.taskType === TaskType.BUG) {
     params.bugLevel = formState.bugLevel;
-    params.missingBug = formState.missingBug;
+    params.escapedBug = formState.escapedBug;
   }
 
   // Add API test-specific fields
@@ -653,7 +653,7 @@ const resetFormToDefaults = () => {
   formState.refTaskIds = [];
   formState.refCaseIds = props.refCaseIds || [];
   formState.taskType = props.taskType || TaskType.TASK;
-  formState.missingBug = false;
+  formState.escapedBug = false;
   formState.assigneeId = props.assigneeId || props.userInfo?.id || undefined;
   formState.testerId = props.taskType === TaskType.BUG ? props.userInfo?.id : undefined;
   formState.confirmerId = props.confirmerId || undefined;
@@ -712,7 +712,7 @@ const populateFormWithTaskData = (data: Partial<TaskDetail>) => {
   formState.refCaseIds = data.refCaseInfos?.map(item => item.id);
   formState.taskType = data.taskType?.value || TaskType.TASK;
   formState.testerId = data.testerId;
-  formState.missingBug = data.missingBug || false;
+  formState.escapedBug = data.escapedBug || false;
   formState.bugLevel = data.bugLevel?.value || BugLevel.MINOR;
   formState.softwareVersion = data.softwareVersion;
 
@@ -909,11 +909,11 @@ onMounted(() => {
                   :lazy="false" />
               </FormItem>
               <FormItem
-                name="missingBug"
-                :label="t('common.missingBug')"
+                name="escapedBug"
+                :label="t('common.escapedBug')"
                 class="flex-1/2">
                 <Select
-                  :value="(formState.missingBug as any)"
+                  :value="(formState.escapedBug as any)"
                   :options="[
                     { value: (true as any), label: t('status.yes') },
                     { value: (false as any), label: t('status.no') }
@@ -1046,7 +1046,7 @@ onMounted(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToField('assigneeId')">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1079,7 +1079,7 @@ onMounted(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToField('confirmerId')">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1129,7 +1129,7 @@ onMounted(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignCurrentUserToField('testerId')">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1198,7 +1198,7 @@ onMounted(() => {
           </FormItem>
 
           <FormItem
-            :label="t('common.parentTask')"
+            :label="t('common.parentIssue')"
             name="parentTaskId">
             <Select
               v-if="!!props.parentTaskId"
@@ -1329,7 +1329,7 @@ onMounted(() => {
 
           <FormItem
             name="refTaskIds"
-            :label="t('task.editModal.form.assocTasks')"
+            :label="t('task.editModal.form.assocIssues')"
             class="relative">
             <Select
               v-model:value="formState.refTaskIds"
@@ -1393,7 +1393,7 @@ onMounted(() => {
             </Select>
           </FormItem>
 
-          <FormItem :label="t('common.attachments')">
+          <FormItem :label="t('common.attachment')">
             <div
               style="height: 60px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
               class="border border-dashed rounded flex flex-col px-2 py-1"
@@ -1467,7 +1467,7 @@ onMounted(() => {
         size="small"
         :disabled="loading"
         @click="handleFormSubmit(false)">
-        {{ t('common.confirm') }}
+        {{ t('actions.confirm') }}
       </Button>
     </template>
   </Modal>

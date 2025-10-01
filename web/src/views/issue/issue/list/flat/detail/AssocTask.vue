@@ -181,7 +181,7 @@ const tableColumns = [
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: t('task.assocTask.columns.evalWorkload')
+    title: t('common.evalWorkload')
   },
   {
     key: 'status',
@@ -191,7 +191,7 @@ const tableColumns = [
   {
     key: 'assigneeName',
     dataIndex: 'assigneeName',
-    title: t('task.assocTask.columns.assigneeName')
+    title: t('common.assignee')
   },
   {
     key: 'deadlineDate',
@@ -280,7 +280,7 @@ const tableColumns = [
     <AsyncComponent :visible="isTaskSelectionModalVisible">
       <SelectTaskByModuleModal
         v-model:visible="isTaskSelectionModalVisible"
-        :title="t('task.assocTask.modal.selectTask', { title: props.title })"
+        :title="t('common.placeholders.selectIssue', { title: props.title })"
         :projectId="props.projectId"
         :action="`${TESTER}/task/${props.taskId}/task/notAssociated?taskType=${props.taskType}`"
         @ok="handleTaskAssociation" />

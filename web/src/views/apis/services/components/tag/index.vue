@@ -468,7 +468,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
         :disabled="props.disabled || tagList.length > 1999 || addBtnDisabled"
         @click="addSyncInfo">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('common.add') }}
+        {{ t('actions.add') }}
       </Button>
     </div>
     <div

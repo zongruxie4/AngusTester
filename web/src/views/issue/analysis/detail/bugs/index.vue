@@ -21,11 +21,11 @@ const getChartData = (data) => {
   const res = {} as any;
   const { CRITICAL = 0, MAJOR = 0, MINOR = 0, TRIVIAL = 0 } = data.bugLevelCount || {};
   const {
-    totalNum = 0, validBugNum = 0, invalidBugNum = 0, missingBugNum = 0,
-    validBugRate = 0, bugWorkload = 0, totalWorkload = 0, bugWorkloadRate = 0, missingBugRate = 0
+    totalNum = 0, validBugNum = 0, invalidBugNum = 0, escapedBugNum = 0,
+    validBugRate = 0, bugWorkload = 0, totalWorkload = 0, bugWorkloadRate = 0, escapedBugRate = 0
   } = data;
   res.chart0Value = {
-    yData: [totalNum, validBugNum, invalidBugNum, missingBugNum]
+    yData: [totalNum, validBugNum, invalidBugNum, escapedBugNum]
   };
   res.chart1Value = {
     title: '',
@@ -46,10 +46,10 @@ const getChartData = (data) => {
   };
 
   res.chart3Value = {
-    title: missingBugRate + '%',
+    title: escapedBugRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.bugs.chartLabels.nonMissingBugs'), value: totalNum - missingBugNum },
-      { name: t('taskAnalysis.detail.bugs.chartLabels.missingBugsCount'), value: missingBugNum }
+      { name: t('taskAnalysis.detail.bugs.chartLabels.nonEscapedBugs'), value: totalNum - escapedBugNum },
+      { name: t('taskAnalysis.detail.bugs.chartLabels.escapedBugsCount'), value: escapedBugNum }
     ]
   };
 

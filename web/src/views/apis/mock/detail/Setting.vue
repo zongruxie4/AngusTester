@@ -118,7 +118,7 @@ const securityFormRef = ref();
               <Divider type="vertical" />
               <a
                 class="text-text-link text-3 leading-3"
-                @click="handleEdit('common.confirm') }}</a>
+                @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -153,7 +153,7 @@ const securityFormRef = ref();
             <template v-if="editServiceDomain">
               <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -254,7 +254,7 @@ const securityFormRef = ref();
             <template v-if="editWorkThreadNum">
               <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -367,7 +367,7 @@ const securityFormRef = ref();
             <template v-if="editMaxContentLength">
               <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -400,7 +400,7 @@ const securityFormRef = ref();
             <template v-if="editWorkPushbackThreadNum">
               <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -434,7 +434,7 @@ const securityFormRef = ref();
             <template v-if="editMaxPushbackConnectTimeout">
               <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -468,7 +468,7 @@ const securityFormRef = ref();
             <template v-if="editMaxPushbackRequestTimeout">
               <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -624,7 +624,7 @@ const securityFormRef = ref();
               <template v-if="editOrigin">
                 <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -657,7 +657,7 @@ const securityFormRef = ref();
             <template v-if="editCredentials">
               <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -689,7 +689,7 @@ const securityFormRef = ref();
               <template v-if="editRequestMethods">
                 <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -718,7 +718,7 @@ const securityFormRef = ref();
               <template v-if="editRequestHeaders">
                 <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -747,7 +747,7 @@ const securityFormRef = ref();
               <template v-if="editExposeHeaders">
                 <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('common.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon

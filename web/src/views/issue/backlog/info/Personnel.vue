@@ -297,7 +297,7 @@ const testerDefaultOptions = computed(() => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('backlog.info.personnel.title') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.personnel') }}</h3>
     </div>
 
     <!-- Scrollable Content Area -->
@@ -333,7 +333,7 @@ const testerDefaultOptions = computed(() => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('assigneeId')">
-                {{ t('common.assignToMe') }}
+                {{ t('actions.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isAssigneeEditing">
@@ -341,7 +341,7 @@ const testerDefaultOptions = computed(() => {
                 v-show="isAssigneeEditing"
                 ref="assigneeSelectRef"
                 v-model:value="assigneeInputValue"
-                :placeholder="t('backlog.info.personnel.placeholders.selectAssignee')"
+                :placeholder="t('common.placeholders.selectAssignee')"
                 allowClear
                 :defaultOptions="assigneeDefaultOptions"
                 :action="`${TESTER}/project/${props.projectId}/member/user`"
@@ -383,7 +383,7 @@ const testerDefaultOptions = computed(() => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('confirmerId')">
-                {{ t('common.assignToMe') }}
+                {{ t('actions.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isConfirmerEditing">
@@ -391,7 +391,7 @@ const testerDefaultOptions = computed(() => {
                 v-show="isConfirmerEditing"
                 ref="confirmerSelectRef"
                 v-model:value="confirmerInputValue"
-                :placeholder="t('backlog.info.personnel.placeholders.selectConfirmer')"
+                :placeholder="t('common.placeholders.selectConfirmer')"
                 allowClear
                 :defaultOptions="confirmerDefaultOptions"
                 :action="`${TESTER}/project/${props.projectId}/member/user`"
@@ -423,7 +423,7 @@ const testerDefaultOptions = computed(() => {
                 type="link"
                 class="assign-to-me-btn"
                 @click="assignCurrentUserToRole('testerId')">
-                {{ t('common.assignToMe') }}
+                {{ t('actions.assignToMe') }}
               </Button>
             </div>
             <AsyncComponent :visible="isTesterEditing">
@@ -431,7 +431,7 @@ const testerDefaultOptions = computed(() => {
                 v-show="isTesterEditing"
                 ref="testerSelectRef"
                 v-model:value="testerInputValue"
-                :placeholder="t('backlog.info.personnel.placeholders.selectTester')"
+                :placeholder="t('common.placeholders.selectTester')"
                 allowClear
                 internal
                 :defaultOptions="testerDefaultOptions"

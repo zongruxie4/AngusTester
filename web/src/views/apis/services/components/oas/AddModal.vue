@@ -221,9 +221,9 @@ const title = computed(() => {
     case 'edit':
       return t('actions.edit');
     case 'add':
-      return t('common.add');
+      return t('actions.add');
     default:
-      return t('common.detail');
+      return t('actions.detail');
   }
 });
 
@@ -383,7 +383,7 @@ const modeContent = computed(() => {
         size="small"
         :loading="loading"
         @click="handleSave">
-        {{ t('common.confirm') }}
+        {{ t('actions.confirm') }}
       </Button>
     </template>
   </Modal>

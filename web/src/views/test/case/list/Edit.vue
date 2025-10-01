@@ -612,7 +612,7 @@ onMounted(() => {
                   size="small"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="setTesterForMe">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -847,7 +847,7 @@ onMounted(() => {
             </FormItem>
 
             <FormItem
-              :label="t('common.attachments')"
+              :label="t('common.attachment')"
               name="attachments">
               <div
                 style="height: 90px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"

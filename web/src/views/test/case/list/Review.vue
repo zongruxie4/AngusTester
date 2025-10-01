@@ -157,7 +157,7 @@ onMounted(() => {
             size="small"
             htmlType="submit"
             class="px-3">
-            {{ t('common.confirm') }}
+            {{ t('actions.confirm') }}
           </Button>
           <Button
             size="small"

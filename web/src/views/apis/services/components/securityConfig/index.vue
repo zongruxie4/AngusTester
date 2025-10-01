@@ -890,7 +890,7 @@ const OAuth2AuthorizationTypeOptions = [
         :disabled="props.disabled || authConfigList?.length > 49 || addBtnDisabled"
         @click="addAuthConfig">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('common.add') }}
+        {{ t('actions.add') }}
       </Button>
     </div>
     <div
@@ -1276,7 +1276,7 @@ const OAuth2AuthorizationTypeOptions = [
                   class="px-0"
                   :disabled="props.disabled"
                   @click="handleSave(auth)">
-                  {{ t('common.confirm') }}
+                  {{ t('actions.confirm') }}
                 </Button>
               </div>
             </div>

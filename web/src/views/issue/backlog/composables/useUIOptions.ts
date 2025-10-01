@@ -159,42 +159,42 @@ export function useUIOptions (
     {
       key: 'person' as DrawerActiveKey,
       icon: 'icon-quanburenyuan',
-      title: t('backlog.main.drawerTitles.personnel')
+      title: t('common.personnel')
     },
     {
       key: 'date' as DrawerActiveKey,
       icon: 'icon-riqi',
-      title: t('backlog.main.drawerTitles.date')
+      title: t('common.date')
     },
     {
       key: 'tasks' as DrawerActiveKey,
       icon: 'icon-ceshirenwu',
-      title: t('backlog.main.drawerTitles.relatedTasks')
+      title: t('common.assocIssues')
     },
     {
       key: 'cases' as DrawerActiveKey,
       icon: 'icon-ceshiyongli1',
-      title: t('backlog.main.drawerTitles.relatedCases')
+      title: t('common.assocCases')
     },
     {
       key: 'attachments' as DrawerActiveKey,
       icon: 'icon-lianjie1',
-      title: t('common.attachments')
+      title: t('common.attachment')
     },
     {
       key: 'remarks' as DrawerActiveKey,
       icon: 'icon-shuxie',
-      title: t('backlog.main.drawerTitles.remarks')
+      title: t('common.remark')
     },
     {
       key: 'comment' as DrawerActiveKey,
       icon: 'icon-pinglun',
-      title: t('common.comments')
+      title: t('common.comment')
     },
     {
       key: 'activity' as DrawerActiveKey,
       icon: 'icon-chakanhuodong',
-      title: t('backlog.main.drawerTitles.activity')
+      title: t('common.activity')
     }
   ]);
 

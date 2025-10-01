@@ -122,7 +122,7 @@ const addShare = () => {
                 size="small"
                 class="mx-2.5 text-3 leading-3"
                 @click="updatePassword(item)">
-                {{ t('common.confirm') }}
+                {{ t('actions.confirm') }}
               </Button>
               <Button
                 size="small"

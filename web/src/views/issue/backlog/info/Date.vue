@@ -71,13 +71,13 @@ const startDeadlineDateEditing = () => {
  */
 const handleDeadlineDateChange = (value: string) => {
   if (!value) {
-    dateValidationMessage.value = t('backlog.info.date.messages.selectDeadline');
+    dateValidationMessage.value = t('common.placeholders.selectDeadline');
     return;
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
     hasDateValidationError.value = true;
-    dateValidationMessage.value = t('backlog.info.date.messages.deadlineMustBeFuture');
+    dateValidationMessage.value = t('common.placeholders.deadlineMustBeFuture');
     return;
   }
 
@@ -130,7 +130,7 @@ const disablePastDates = (current: Dayjs) => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('backlog.info.date.title') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.date') }}</h3>
     </div>
 
     <!-- Scrollable Content Area -->
@@ -199,7 +199,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Processed Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.date.processTime') }}</span>
+            <span>{{ t('common.processedDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !processedDate }">{{ processedDate || '--' }}</span>
@@ -209,7 +209,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Confirmed Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.date.confirmTime') }}</span>
+            <span>{{ t('common.confirmedDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !confirmedDate }">{{ confirmedDate || '--' }}</span>
@@ -219,7 +219,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Completed Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.date.completeTime') }}</span>
+            <span>{{ t('common.completedDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !completedDate }">{{ completedDate || '--' }}</span>
@@ -229,7 +229,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Canceled Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.date.cancelTime') }}</span>
+            <span>{{ t('common.canceledDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !canceledDate }">{{ canceledDate || '--' }}</span>
@@ -239,7 +239,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Execute Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.date.executeTime') }}</span>
+            <span>{{ t('common.lastExecDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !execDate }">{{ execDate || '--' }}</span>

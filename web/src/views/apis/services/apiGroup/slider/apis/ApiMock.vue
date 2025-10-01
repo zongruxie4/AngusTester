@@ -214,7 +214,7 @@ const format = (data) => {
                 size="small"
                 type="primary"
                 @click="createMockApiById">
-                {{ t('common.confirm') }}
+                {{ t('actions.confirm') }}
               </Button>
             </div>
           </template>
@@ -237,7 +237,7 @@ const format = (data) => {
                 size="small"
                 type="primary"
                 @click="relatedMockServiceApi">
-                {{ t('common.confirm') }}
+                {{ t('actions.confirm') }}
               </Button>
             </div>
           </template>

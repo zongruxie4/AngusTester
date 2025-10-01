@@ -123,7 +123,7 @@ const isContentLengthInvalid = () => {
             size="small"
             type="link"
             @click="saveDescriptionChanges">
-            {{ t('common.confirm') }}
+            {{ t('actions.confirm') }}
           </Button>
         </template>
         <Button
@@ -142,11 +142,11 @@ const isContentLengthInvalid = () => {
           <RichEditor
             ref="richEditorRef"
             :value="descriptionContent"
-            :options="{placeholder: t('task.detailInfo.description.placeholder')}"
-            :placeholder="t('task.detailInfo.description.validation.maxLength')"
+            :options="{placeholder: t('common.placeholders.inputDescription30')}"
+            :placeholder="t('common.placeholders.inputDescription30')"
             @change="handleEditorContentChange" />
           <div v-show="isValidationError" class="text-status-error text-3">
-            {{ t('task.detailInfo.description.validation.maxLength') }}
+            {{ t('common.placeholders.inputDescription30') }}
           </div>
         </div>
       </template>

@@ -44,7 +44,7 @@ export type TaskInfo = {
   confirmerName: string;
   testerId: string;
   testerName: string;
-  missingBug: boolean;
+  escapedBug: boolean;
   unplanned: boolean;
   parentTaskId: string;
   parentTaskName: string;
@@ -118,7 +118,7 @@ export type TaskDetail = {
   confirmerName: string;
   testerId: string;
   testerName: string;
-  missingBug: boolean;
+  escapedBug: boolean;
   unplanned: boolean;
   parentTaskId: string;
   parentTaskName: string;

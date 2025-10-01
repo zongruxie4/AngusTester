@@ -208,7 +208,7 @@ defineExpose({ isValid, getData });
         size="small"
         :loading="props.loading"
         @click="save">
-        {{ t('common.confirm') }}
+        {{ t('actions.confirm') }}
       </Button>
       <Button
         type="default"

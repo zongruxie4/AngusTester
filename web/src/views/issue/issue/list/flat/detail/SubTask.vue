@@ -202,7 +202,7 @@ const saveNewSubTask = async () => {
 
   if (newSubTaskType.value === TaskType.BUG) {
     requestParams.bugLevel = BugLevel.MINOR;
-    requestParams.missingBug = false;
+    requestParams.escapedBug = false;
   }
 
   isOperationLoading.value = true;
@@ -718,7 +718,7 @@ const subTaskTableColumns = [
           type="primary"
           size="small"
           @click="saveNewSubTask">
-          {{ t('common.add') }}
+          {{ t('actions.add') }}
         </Button>
       </div>
     </div>

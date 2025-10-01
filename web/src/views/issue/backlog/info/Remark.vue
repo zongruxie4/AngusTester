@@ -175,7 +175,7 @@ const queryParams = computed(() => {
           :options="{placeholder: t('task.remark.placeholder')}"
           @change="handleEditorContentChange" />
         <div v-show="isValidationError" class="text-status-error">
-          {{ t('task.remark.validation.maxLength') }}
+          {{ t('common.placeholders.inputDescription30') }}
         </div>
       </div>
       <!-- Submit button section -->
@@ -184,7 +184,7 @@ const queryParams = computed(() => {
           size="small"
           type="primary"
           @click="submitRemark">
-          {{ t('common.confirm') }}
+          {{ t('actions.confirm') }}
         </Button>
       </div>
     </div>

@@ -133,7 +133,7 @@ const failMessage = computed(() => {
           <div :title="smtpContent?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ smtpContent?.name }}</div>
           <Tag v-if="smtpContent?.content?.plainBody" class="!leading-5">{{ t('xcan_scenarioDebugResult.text') }}</Tag>
           <Tag v-if="smtpContent?.content?.emlMessage" class="!leading-5">{{ t('xcan_scenarioDebugResult.emlFile') }}</Tag>
-          <Tag v-if="smtpContent?.content?.attachMessage" class="!leading-5">{{ t('common.attachments') }}</Tag>
+          <Tag v-if="smtpContent?.content?.attachMessage" class="!leading-5">{{ t('common.attachment') }}</Tag>
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="!smtpContent?.enabled">
               <StatusTag />

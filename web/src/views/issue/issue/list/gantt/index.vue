@@ -357,7 +357,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'tasks' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('task.ganttView.drawer.assocTasks')"
+          :title="t('task.ganttView.drawer.assocIssues')"
           @click="changeActiveDrawerTab('tasks')">
           <Icon icon="icon-ceshirenwu" class="text-4" />
         </div>
@@ -373,7 +373,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'attachments' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('common.attachments')"
+          :title="t('common.attachment')"
           @click="changeActiveDrawerTab('attachments')">
           <Icon icon="icon-lianjie1" class="text-4" />
         </div>
@@ -389,7 +389,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'comment' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('common.comments')"
+          :title="t('common.comment')"
           @click="changeActiveDrawerTab('comment')">
           <Icon icon="icon-pinglun" class="text-4" />
         </div>

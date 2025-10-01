@@ -59,7 +59,7 @@ export const contentTreeData = [
     key: 'activity'
   },
   {
-    title: t('common.comments'),
+    title: t('common.comment'),
     key: 'comment'
   }
 ];

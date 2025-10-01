@@ -94,7 +94,7 @@ const failMessage = computed(() => {
           <div :title="props.value?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ props.value?.name }}</div>
           <Tag v-if="smtpContent?.content?.plainBody" class="!leading-5">{{ t('smtpPlugin.functionTestDetailSmtp.contentType.text') }}</Tag>
           <Tag v-if="smtpContent?.content?.emlMessage" class="!leading-5">{{ t('smtpPlugin.functionTestDetailSmtp.contentType.emlFile') }}</Tag>
-          <Tag v-if="smtpContent?.content?.attachMessage" class="!leading-5">{{ t('common.attachments') }}</Tag>
+          <Tag v-if="smtpContent?.content?.attachMessage" class="!leading-5">{{ t('common.attachment') }}</Tag>
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="!props.value?.enabled">
               <StatusTag />

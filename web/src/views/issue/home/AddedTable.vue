@@ -194,7 +194,7 @@ const loadTaskData = async () => {
 
     return {
       ...taskItem,
-      linkUrl: '/task#task?' + http.getURLSearchParams(linkParams, true)
+      linkUrl: '/issue#issue?' + http.getURLSearchParams(linkParams, true)
     };
   });
 };
@@ -440,7 +440,7 @@ const emptyStateStyle = {
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
               <span>{{ t('issueHome.addedTable.emptyStates.noCreatedIssues') }}</span>
-              <RouterLink to="/task#task" class="ml-1 link">
+              <RouterLink to="/issue#issue" class="ml-1 link">
                 {{ t('issueHome.addedTable.emptyStates.addIssue') }}
               </RouterLink>
             </template>

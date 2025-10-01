@@ -94,12 +94,12 @@ const progressTableColumns = [
   },
   {
     key: 'evalWorkload',
-    title: t('functionPlan.planDetail.memberProgress.evalWorkload'),
+    title: t('common.evalWorkload'),
     dataIndex: 'evalWorkload'
   },
   {
     key: 'completedWorkload',
-    title: t('functionPlan.planDetail.memberProgress.completedWorkload'),
+    title: t('common.completedWorkload'),
     dataIndex: 'completedWorkload'
   },
   {

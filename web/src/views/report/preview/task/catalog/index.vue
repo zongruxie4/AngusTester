@@ -97,7 +97,7 @@ const showTestInfo = computed(() => {
           <DashedLine />
         </a>
         <a href="#a11" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('common.comments') }}</span>
+          <span class="h1">{{ t('common.comment') }}</span>
           <DashedLine />
         </a>
       </template>
@@ -112,7 +112,7 @@ const showTestInfo = computed(() => {
           <DashedLine />
         </a>
         <a href="#a10" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('common.comments') }}</span>
+          <span class="h1">{{ t('common.comment') }}</span>
           <DashedLine />
         </a>
       </template>

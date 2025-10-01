@@ -55,11 +55,11 @@ const topCarObj = {
   },
 
   evalWorkload: {
-    name: t('functionCase.statisticsPanel.evalWorkload'),
+    name: t('common.evalWorkload'),
     icon: 'icon-pinggugongzuoliang'
   },
   completedWorkload: {
-    name: t('functionCase.statisticsPanel.completedWorkload'),
+    name: t('common.completedWorkload'),
     icon: 'icon-wanchenggongzuoliang'
   },
   oneTimePassReviewNum: {

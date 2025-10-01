@@ -1233,7 +1233,7 @@ const drawerMenuItems = computed(() => {
     },
     {
       icon: 'icon-pinglun',
-      name: t('common.comments'),
+      name: t('common.comment'),
       key: 'comment'
     }
   ];

@@ -373,7 +373,7 @@ const confirmerDefaultOptions = computed(() => {
                   type="link"
                   class="assign-to-me-btn"
                   @click="assignCurrentUserToRole('assigneeId')">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
 
@@ -382,7 +382,7 @@ const confirmerDefaultOptions = computed(() => {
                   v-show="isAssigneeEditing"
                   ref="assigneeSelectRef"
                   v-model:value="assigneeSelectValue"
-                  :placeholder="t('task.detailInfo.personnel.placeholders.selectAssignee')"
+                  :placeholder="t('common.placeholders.selectAssignee')"
                   internal
                   :defaultOptions="assigneeDefaultOptions"
                   :action="`${TESTER}/project/${props.projectId}/member/user`"
@@ -432,7 +432,7 @@ const confirmerDefaultOptions = computed(() => {
                   type="link"
                   class="assign-to-me-btn"
                   @click="assignCurrentUserToRole('confirmerId')">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
 
@@ -441,7 +441,7 @@ const confirmerDefaultOptions = computed(() => {
                   v-show="isConfirmerEditing"
                   ref="confirmerSelectRef"
                   v-model:value="confirmerSelectValue"
-                  :placeholder="t('task.detailInfo.personnel.placeholders.selectConfirmer')"
+                  :placeholder="t('common.placeholders.selectConfirmer')"
                   allowClear
                   internal
                   :defaultOptions="confirmerDefaultOptions"
@@ -478,7 +478,7 @@ const confirmerDefaultOptions = computed(() => {
                   type="link"
                   class="assign-to-me-btn"
                   @click="assignCurrentUserToRole('testerId')">
-                  {{ t('common.assignToMe') }}
+                  {{ t('actions.assignToMe') }}
                 </Button>
               </div>
 
@@ -487,7 +487,7 @@ const confirmerDefaultOptions = computed(() => {
                   v-show="isTesterEditing"
                   ref="testerSelectRef"
                   v-model:value="testerSelectValue"
-                  :placeholder="t('task.detailInfo.personnel.placeholders.selectTester')"
+                  :placeholder="t('common.placeholders.selectTester')"
                   allowClear
                   internal
                   :defaultOptions="testerDefaultOptions"

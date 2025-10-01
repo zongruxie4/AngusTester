@@ -180,7 +180,7 @@ onMounted(() => {
           :types="['SCENARIO']"
           class="w-150 h-full" />
       </TabPane>
-      <TabPane key="comment" :tab="t('common.comments')">
+      <TabPane key="comment" :tab="t('common.comment')">
         <SmartComment
           ref="smartCommentRef"
           targetType="SCENARIO"

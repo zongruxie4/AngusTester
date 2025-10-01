@@ -166,7 +166,7 @@ const handleDeveloper = () => {
               size="small"
               class="p-0 h-3.5 leading-3.5 ml-1"
               @click="handleSetTester">
-              {{ t('common.assignToMe') }}
+              {{ t('actions.assignToMe') }}
             </Button>
           </div>
 
@@ -206,7 +206,7 @@ const handleDeveloper = () => {
               size="small"
               class="p-0 h-3.5 leading-3.5 ml-1"
               @click="handleDeveloper">
-              {{ t('common.assignToMe') }}
+              {{ t('actions.assignToMe') }}
             </Button>
           </div>
         </template>

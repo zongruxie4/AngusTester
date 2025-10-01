@@ -881,7 +881,7 @@ onMounted(() => {
         </Tooltip>
       </FormItem>
 
-      <FormItem :label="t('common.attachments')">
+      <FormItem :label="t('common.attachment')">
         <div class="flex items-center">
           <Upload
             :fileList="[]"

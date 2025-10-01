@@ -1,5 +1,5 @@
 import { useI18n } from 'vue-i18n';
-import { notification } from '@xcan-angus/vue-ui';
+import { notification, modal as modalV } from '@xcan-angus/vue-ui';
 import { cloneDeep } from 'lodash-es';
 import { task } from '@/api/tester';
 import { TaskType } from '@/enums/enums';
@@ -243,7 +243,7 @@ export function useTaskActions (
    * <p>Shows confirmation modal and handles task deletion</p>
    */
   const confirmDeleteTask = (data: TaskDetail, index: number, sprintId?: string) => {
-    (modal as any).confirm({
+    modalV.confirm({
       content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         const id = data.id;

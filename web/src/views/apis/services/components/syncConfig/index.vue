@@ -655,7 +655,7 @@ const handleSaveOk = () => {
           :disabled="props.disabled || syncList.length > 9 || addBtnDisabled"
           @click="addSyncInfo">
           <Icon icon="icon-jia" class="mr-1" />
-          {{ t('common.add') }}
+          {{ t('actions.add') }}
         </Button>
         <Button
           size="small"

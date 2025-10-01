@@ -541,7 +541,7 @@ defineExpose({
       <TabPane
         key="info"
         class="h-full"
-        :tab="t('common.detail')">
+        :tab="t('actions.detail')">
         <CaseDetailTab
           :caseDetail="caseDetail"
           :actionAuth="actionAuth"
@@ -694,7 +694,7 @@ defineExpose({
         key="comments"
         class="h-full">
         <template #tab>
-          <span>{{ t('common.comments') }} ({{ caseDetail?.commentNum || 0 }})</span>
+          <span>{{ t('common.comment') }} ({{ caseDetail?.commentNum || 0 }})</span>
         </template>
         <SmartComment
           ref="smartCommentRef"

@@ -268,7 +268,7 @@ onMounted(() => {
         size="small"
         :loading="isLoading || progressing"
         @click="saveModalData">
-        {{ t('common.confirm') }}
+        {{ t('actions.confirm') }}
       </Button>
     </div>
   </div>

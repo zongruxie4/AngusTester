@@ -24,27 +24,30 @@
   },
   "backlog": {
     "title": "Backlog",
-    "aboutBacklog": "About Backlog",
-    "aboutBacklogDesc": "Backlog is a task list containing Product Backlog and Sprint Backlog. Used to manage team work tasks, covering all current and future work items.",
-    "productBacklog": "Product Backlogs",
-    "productBacklogDesc": "Product requirements list maintained by Product Manager, containing feature requests, bug fixes, and technical improvements, sorted by priority.",
-    "sprintBacklog": "Sprint Backlogs",
-    "sprintBacklogDesc": "Current sprint work items selected from Product Backlog, defining specific tasks the team will complete in this sprint.",
-    "sprintBacklogTitle": "Sprint Backlogs",
     "productBacklogTitle": "Product Backlogs",
+    "sprintBacklogTitle": "Sprint Backlogs",
     "sprintCount": "sprints",
-    "taskCount": "tasks",
-    "noTasksInSprint": "No tasks in this Sprint",
+    "issueCount": "issues",
+    "noIssueInSprint": "No issues in this Sprint",
     "noBacklog": "No Backlog",
-    "to": "to",
-    "enterSprint": "Enter Sprint",
-    "moveTo": "Move to",
-    "moveToBacklog": "Backlog",
-    "placeholder": {
-      "searchTaskName": "Search task name",
-      "taskName": "Task name, maximum 200 characters"
+    "addedRemark": "Added remark",
+    "introduce": {
+      "title": "About Backlog",
+      "description": "Backlog is a task list containing Product Backlog and Sprint Backlog. Used to manage team work tasks, covering all current and future work items.",
+      "productBacklogDesc": "Product requirements list maintained by Product Manager, containing feature requests, bug fixes, and technical improvements, sorted by priority.",
+      "sprintBacklogDesc": "Current sprint work items selected from Product Backlog, defining specific tasks the team will complete in this sprint."
     },
-    "taskTypeDescriptions": {
+    "actions": {
+      "enterSprint": "Enter Sprint",
+      "moveTo": "Move to",
+      "moveToBacklog": "Backlog",
+      "split": "Split Issue",
+      "aiSplit": "AI Split",
+      "add": "Add Backlog",
+      "aiAdd": "AI Add Backlog",
+      "openAddModal": "Open Add Modal"
+    },
+    "typeDescriptions": {
       "requirement": "User expectations or requirements for business, functionality, etc., with broad descriptions.",
       "story": "Specific goals or expectations that users want to achieve, usually described in concise, understandable language, such as: As a <role>, I want <goal> so that <benefit>.",
       "task": "General work items or activities",
@@ -52,231 +55,44 @@
       "apiTest": "API functionality, performance, and stability testing tasks",
       "scenarioTest": "Scenario functionality, performance, and stability testing tasks"
     },
-    "messages": {
-      "confirmDelete": "Confirm delete task 「{name}」?",
-      "deleteSuccess": "Delete successful",
-      "addSuccess": "Add successful",
-      "editSuccess": "Edit successful",
-      "moveSuccess": "Move successful",
-      "splitSuccess": "Split successful",
-      "inputEvalWorkload": "Please enter estimated workload",
-      "deadlineMustBeFuture": "Deadline must be a future time",
-      "taskNameRequired": "Task name, maximum 200 characters"
-    },
-    "quickSearch": {
-      "all": "All",
-      "createdByMe": "Created by Me",
-      "assignedToMe": "Assigned to Me",
-      "lastDay": "Last Day",
-      "last3Day": "Last 3 Days",
-      "last7Day": "Last 7 Days"
-    },
-    "zoomIn": "Full Screen",
-    "zoomOut": "Zoom Out",
-    "comment": "Comments",
-    "activity": "Activity",
-    "addedRemark": "Added remark",
-    "aiGenerateTask": {
-      "title": "Auto Create Backlog",
-      "generating": "Generating...",
-      "maxTasksWarning": "Maximum 200 tasks allowed",
-      "aiKeywordsPlaceholder": "Describe your requirements to the AI agent, such as: Generate 10 main Wiki system product Backlogs.",
-      "tooltips": {
-        "nameRepeat": "Name repeated",
-        "deadlineDate": "Deadline must be greater than current time"
-      }
-    },
-    "assocCase": {
-      "title": "Associated Functional Cases",
-      "placeholder": "Maximum 20 cases can be associated"
-    },
-    "assocTask": {
-      "title": "Associated Tasks",
-      "placeholder": "Maximum 20 tasks can be associated"
-    },
-    "editForm": {
-      "labels": {
-        "bugLevel": "Bug Level",
-        "missingBug": "Escaped Bug",
-        "parentTask": "Parent",
-        "refTasks": "Related Tasks",
-        "refCases": "Related Cases"
-      },
+    "edit": {
       "placeholders": {
-        "selectTaskType": "Please select task type",
-        "selectPriority": "Please select priority",
-        "selectScenario": "Please select scenario",
-        "selectTestType": "Please select test type",
-        "selectOrSearchService": "Select or search service",
-        "selectApi": "Please select API",
-        "selectAssignee": "Select assignee",
-        "selectConfirmer": "Select confirmer",
-        "selectTester": "Select tester",
-        "taskDescription": "Task description, maximum 6000 characters",
-        "selectOrSearchSprint": "Select or search sprint",
-        "selectOrSearchModule": "Select or search module",
-        "selectParentTask": "Please select parent task",
-        "workloadRange": "Minimum 0.1, maximum 1000, up to 2 decimal places",
-        "selectSoftwareVersion": "Please select software version",
         "maxTags": "Maximum 5 tags can be added",
-        "maxRefTasks": "Maximum 20 tasks can be associated",
-        "maxRefCases": "Maximum 20 cases can be associated"
+        "maxAssocIssues": "Maximum 20 issues can be associated",
+        "maxAssocCases": "Maximum 20 cases can be associated"
       },
       "descriptions": {
-        "assignee": "Person responsible for actually executing assigned work tasks.",
+        "assignee": "Person responsible for actually executing assigned work issues.",
         "confirmer": "Person responsible for verifying and validating work results, will automatically enter confirmation process when assigned.",
         "tester": "Person responsible for testing and validating product functionality or service quality.",
-        "evalWorkload": "Estimated value of work task volume, comprehensive difficulty, and complexity.",
-        "actualWorkload": "Actual value of work task volume, comprehensive difficulty, and complexity.",
-        "tags": "\"Task tags\" can help you organize tasks with common points, such as \"project name, sprint version, business identifier\", etc."
+        "evalWorkload": "Estimated value of work issue volume, comprehensive difficulty, and complexity.",
+        "actualWorkload": "Actual value of work issue volume, comprehensive difficulty, and complexity.",
+        "tags": "\"Issue tags\" can help you organize issues with common points, such as \"project name, sprint version, business identifier\", etc."
       },
-      "buttons": {
-        "assignToMe": "Assign to Me",
+      "actions": {
         "continueUpload": "Continue Upload",
-        "uploadAttachments": "Upload attachments, maximum 5 files"
+        "uploadAttachments": "Upload attachments, maximum 5 files",
+        "selectFile": "Select File"
       },
       "messages": {
         "sprintDeadlineExceeded": "Exceeds sprint deadline ({deadline})",
-        "taskAddedSuccess": "Task added successfully",
-        "taskEditedSuccess": "Task edited successfully",
         "descriptionMaxLength": "Description supports maximum 6000 characters",
-        "selectScenario": "Please select scenario",
-        "selectService": "Please select service",
-        "selectApi": "Please select API",
-        "selectAssignee": "Select assignee",
-        "contactAdminForTags": "Please contact administrator to configure task tags in \"Application Management\" - \"Task Management\" - \"Task Tags\"."
+        "contactAdminForTags": "Please contact administrator to configure issue tags in \"Project\" - \"Tag\".",
+        "fileSizeLimit": "Single file size not exceeding {maxSize}M, maximum 5 files",
+        "fileSizeExceeded": "File size cannot exceed {maxSize} M"
       }
     },
-    "splitTask": {
-      "title": "Split Task",
-      "splitTask": "Split Task",
+    "aiGenerate": {
+      "title": "Auto Create Backlog",
+      "generating": "Generating...",
+      "maxTasksWarning": "Maximum 200 tasks allowed",
+      "aiKeywordsPlaceholder": "Describe your requirements to the AI agent, such as: Generate 10 main Wiki system product Backlogs."
+    },
+    "split": {
       "splitting": "Splitting...",
-      "aiSplit": "AI Split",
       "aiKeywords": "Split task \"{taskName}\" into multiple subtasks.",
       "aiPlaceholder": "Describe your requirements to the AI agent, such as: Split task \"{taskName}\" into multiple subtasks.",
-      "tooltips": {
-        "nameRepeat": "Name repeated",
-        "deadlineMustBeFuture": "Deadline must be greater than current time"
-      },
-      "messages": {
-        "maxSplitWarning": "Maximum 200 splits allowed"
-      }
-    },
-    "info": {
-      "basic": {
-        "parentTask": "Parent",
-        "missingBug": "Escaped Bug",
-        "processCount": "Processing Count",
-        "processFailCount": "Failed Count",
-        "oneTimePass": "One-time Pass",
-        "softwareVersion": "Software Version",
-        "unplannedTask": "Unplanned",
-        "placeholders": {
-          "selectOrSearchSprint": "Select or search sprint",
-          "selectOrSearchModule": "Select or search module",
-          "selectTaskType": "Please select task type",
-          "selectPriority": "Please select priority",
-          "workloadRange": "Value 0.1~1000, up to 2 decimal places",
-          "maxTags": "Maximum 5 tags allowed",
-          "selectSoftwareVersion": "Please select software version"
-        },
-        "messages": {
-          "contactAdminForTags": "Please contact administrator to configure task tags in \"Application Management\" - \"Task Management\" - \"Task Tags\"."
-        }
-      },
-      "date": {
-        "title": "Date",
-        "processTime": "Process Time",
-        "confirmTime": "Confirm Time",
-        "completeTime": "Complete Time",
-        "cancelTime": "Cancel Time",
-        "executeTime": "Execute Time",
-        "messages": {
-          "selectDeadline": "Please select deadline",
-          "deadlineMustBeFuture": "Deadline must be a future time"
-        }
-      },
-      "description": {
-        "messages": {
-          "maxLength": "Description supports maximum 8000 characters"
-        }
-      },
-      "personnel": {
-        "title": "Personnel",
-        "placeholders": {
-          "selectAssignee": "Select assignee",
-          "selectConfirmer": "Select confirmer",
-          "selectTester": "Select tester"
-        }
-      },
-      "scenario": {
-        "number": "Number",
-        "parentTask": "Parent",
-        "scenario": "Scenario",
-        "processCount": "Processing Count",
-        "processFailCount": "Failed Count",
-        "oneTimePass": "One-time Pass",
-        "placeholders": {
-          "taskName": "Task name, maximum 200 characters",
-          "selectOrSearchSprint": "Select or search sprint",
-          "selectOrSearchModule": "Select or search module",
-          "selectPriority": "Please select priority",
-          "workloadRange": "Value 0.1~1000, up to 2 decimal places",
-          "tags": "Maximum 5 tags allowed",
-          "notFoundTagContent": "Please contact administrator to configure task tags in \"Application Management\" - \"Task Management\" - \"Task Tags\".",
-          "version": "Please select software version"
-        }
-      },
-      "apis": {
-        "number": "Number",
-        "parentTask": "Parent",
-        "processCount": "Processing Count",
-        "processFailCount": "Failed Count",
-        "oneTimePass": "One-time Pass",
-        "placeholders": {
-          "taskName": "Task name, maximum 200 characters",
-          "selectOrSearchSprint": "Select or search sprint",
-          "selectOrSearchModule": "Select or search module",
-          "selectPriority": "Please select priority",
-          "workloadRange": "Value 0.1~1000, up to 2 decimal places",
-          "maxTags": "Maximum 5 tags allowed",
-          "selectSoftwareVersion": "Please select software version"
-        },
-        "messages": {
-          "contactAdminForTags": "Please contact administrator to configure task tags in \"Application Management\" - \"Task Management\" - \"Task Tags\"."
-        }
-      },
-      "attachment": {
-        "title": "Attachments",
-        "continueUpload": "Continue Upload",
-        "selectFile": "Select File",
-        "fileSizeLimit": "Single file size not exceeding {maxSize}M, maximum 5 files",
-        "messages": {
-          "fileSizeExceeded": "File size cannot exceed {maxSize} M"
-        }
-      }
-    },
-    "main": {
-      "addBacklog": "Add Backlog",
-      "aiAddBacklog": "AI Add Backlog",
-      "openAddModal": "Open Add Modal",
-      "placeholders": {
-        "selectPriority": "Please select priority",
-        "taskName": "Enter backlog name, maximum 200 characters, press Enter to auto-save"
-      },
-      "drawerTitles": {
-        "personnel": "Personnel",
-        "date": "Date",
-        "relatedTasks": "Related Tasks",
-        "relatedCases": "Related Test Cases",
-        "attachments": "Attachments",
-        "remarks": "Remarks",
-        "comments": "Comments",
-        "activity": "Activity"
-      },
-      "messages": {
-        "saveSuccess": "Save successful"
-      }
+      "maxSplitWarning": "Maximum 200 splits allowed"
     }
   },
   "task": {
@@ -575,7 +391,6 @@
     "detail": {
       "title": "Task Detail",
       "testInfo": "Basic Information",
-      "subTask": "Sub Tasks",
       "assocCaseTitle": "Associated Cases",
       "assocTaskTitle": "Associated Tasks",
       "columns": {
@@ -659,7 +474,6 @@
         "testInfo": "Basic Information",
         "comments": "Comments",
         "activity": "Activity",
-        "subTask": "Sub Tasks",
         "assocCase": "Associated Cases",
         "assocTask": "Associated Tasks"
       },
@@ -793,7 +607,7 @@
         "nameRule": "Task name, maximum 200 characters",
         "typePlaceholder": "Please select task type",
         "priorityPlaceholder": "Please select priority",
-        "missingBug": "Escaped Bug",
+        "escapedBug": "Escaped Bug",
         "scenarioPlaceholder": "Please select scenario",
         "scenarioRule": "Please select scenario",
         "testTypePlaceholder": "Please select test type",
@@ -818,7 +632,6 @@
         "sprintPlaceholder": "Select or search sprint",
         "sprintRule": "Please select sprint",
         "modulePlaceholder": "Select or search module",
-        "parentTask": "Parent",
         "parentTaskPlaceholder": "Please select parent task",
         "workload": {
           "evalWorkload": "Estimated Workload",
@@ -928,9 +741,6 @@
         "associateSubTaskSuccess": "Sub task association successful",
         "cancelSubTaskSuccess": "Sub task cancellation successful"
       },
-      "form": {
-        "taskName": "Enter task name, maximum 200 characters, press Enter to save automatically"
-      },
       "modal": {
         "title": "Associate Sub Task",
         "label": "Associate Sub Task",
@@ -953,7 +763,6 @@
           "namePlaceholder": "Task name, maximum 200 characters",
           "selectModule": "Select or search module",
           "selectSprint": "Select or search sprint",
-          "parentTask": "Parent",
           "selectPriority": "Select priority",
           "onePass": "One-Time Pass",
           "evalWorkloadMethod": "Evaluation Method",
@@ -1167,7 +976,7 @@
       "totalTaskCount": "Total Tasks",
       "validTaskCount": "Valid Tasks",
       "completedTaskCount": "Completed Tasks",
-      "estimatedWorkload": "Estimated Workload",
+      "evalWorkload": "Estimated Workload",
       "completedWorkload": "Completed Workload",
       "workloadCompletionRate": "Workload Completion",
       "overdueTaskCount": "Overdue Tasks",
@@ -1367,21 +1176,21 @@
           "totalBugs": "Total",
           "validBugs": "Valid",
           "invalidBugs": "Invalid",
-          "missingBugs": "Escaped",
+          "escapedBugs": "Escaped",
           "criticalBugs": "Critical",
           "majorBugs": "Major",
           "minorBugs": "Minor",
           "trivialBugs": "Trivial",
           "nonBugWorkload": "Non-Bug Workload",
           "bugWorkload": "Bug Workload",
-          "nonMissingBugs": "Non-Escaped Bugs",
-          "missingBugsCount": "Escaped Bugs"
+          "nonEscapedBugs": "Non-Escaped Bugs",
+          "escapedBugsCount": "Escaped Bugs"
         },
         "chartTitles": {
           "bugCount": "Bug Count",
           "bugLevel": "Bug Level",
           "validBugRatio": "Valid Bug Ratio",
-          "missingBugRatio": "Escaped Bug Ratio",
+          "escapedBugRatio": "Escaped Bug Ratio",
           "bugWorkloadRatio": "Bug Workload Ratio"
         },
         "pieChartLabels": {
@@ -1616,7 +1425,7 @@
       },
       "workload": {
         "chartLabels": {
-          "estimatedWorkload": "Estimated",
+          "evalWorkload": "Estimated",
           "actualWorkload": "Actual",
           "completedWorkload": "Completed",
           "savingWorkload": "Saving"

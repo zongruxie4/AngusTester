@@ -284,7 +284,7 @@ watch([() => apiDebugRef.value], () => {
           class="px-3"
           :loading="loading"
           @click.prevent="onSubmit(true)">
-          {{ t('common.confirm') }}
+          {{ t('actions.confirm') }}
         </Button>
         <Button
           v-show="!props.caseId"

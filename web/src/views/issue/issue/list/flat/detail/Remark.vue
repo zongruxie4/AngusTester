@@ -195,10 +195,10 @@ const apiParams = computed(() => {
           ref="richTextEditorRef"
           :value="currentRemarkContent"
           :height="150"
-          :options="{placeholder: t('task.remark.placeholder')}"
+          :options="{placeholder: t('common.placeholders.inputDescription30')}"
           @change="handleEditorContentChange" />
         <div v-show="isValidationError" class="text-status-error">
-          {{ t('task.remark.validation.maxLength') }}
+          {{ t('common.placeholders.inputDescription30') }}
         </div>
       </div>
 
@@ -208,7 +208,7 @@ const apiParams = computed(() => {
           size="small"
           type="primary"
           @click="submitRemark">
-          {{ t('common.confirm') }}
+          {{ t('actions.confirm') }}
         </Button>
       </div>
     </div>

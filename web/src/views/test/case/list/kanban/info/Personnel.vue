@@ -163,7 +163,7 @@ const change = async () => {
             type="link"
             class="p-0 h-5 leading-5 ml-1"
             @click="assignToMe">
-            {{ t('common.assignToMe') }}
+            {{ t('actions.assignToMe') }}
           </Button>
         </div>
 

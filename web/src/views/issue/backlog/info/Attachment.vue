@@ -50,7 +50,7 @@ const attachmentList = ref<AttachmentItem[]>([]);
  */
 const handleFileUploadChange = async ({ file }: { file: UploadFile }) => {
   if (file.size! > maxFileSizeInBytes.value) {
-    notification.warning(t('backlog.info.attachment.messages.fileSizeExceeded', { maxSize: MAX_FILE_SIZE_MB }));
+    notification.warning(t('backlog.edit.messages.fileSizeExceeded', { maxSize: MAX_FILE_SIZE_MB }));
     return;
   }
 
@@ -166,7 +166,7 @@ onMounted(() => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('backlog.info.attachment.title') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.attachment') }}</h3>
     </div>
 
     <!-- Scrollable Content Area -->
@@ -203,7 +203,7 @@ onMounted(() => {
                   type="link"
                   class="flex items-center h-auto leading-4.5 p-0">
                   <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
-                  <div class="flex-shrink-0 text-text-link ml-1">{{ t('backlog.info.attachment.continueUpload') }}</div>
+                  <div class="flex-shrink-0 text-text-link ml-1">{{ t('backlog.edit.actions.continueUpload') }}</div>
                 </Button>
               </Upload>
             </div>
@@ -221,12 +221,12 @@ onMounted(() => {
                 class="flex flex-col items-center justify-center h-auto leading-5 p-0">
                 <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
                 <div class="flex-shrink-0 text-text-link">
-                  {{ t('backlog.info.attachment.selectFile') }}
+                  {{ t('backlog.edit.actions.selectFile') }}
                 </div>
               </Button>
             </Upload>
             <div class="text-theme-sub-content mt-1">
-              {{ t('backlog.info.attachment.fileSizeLimit', { maxSize: MAX_FILE_SIZE_MB }) }}
+              {{ t('backlog.edit.messages.fileSizeLimit', { maxSize: MAX_FILE_SIZE_MB }) }}
             </div>
           </template>
         </Spin>

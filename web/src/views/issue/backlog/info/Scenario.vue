@@ -595,7 +595,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.name') }}</span>
+            <span>{{ t('common.scenario') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -617,7 +617,7 @@ onMounted(() => {
               :maxlength="200"
               trim
               class="edit-container"
-              :placeholder="t('backlog.info.scenario.placeholders.taskName')"
+              :placeholder="t('common.placeholders.inputName2')"
               @blur="handleTaskNameBlur"
               @pressEnter="handleTaskNameEnterPress" />
           </AsyncComponent>
@@ -687,7 +687,7 @@ onMounted(() => {
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               showSearch
-              :placeholder="t('backlog.info.scenario.placeholders.selectOrSearchSprint')"
+              :placeholder="t('common.placeholders.selectOrSearchSprint')"
               class="edit-container"
               @change="handleSprintSelectionChange"
               @blur="handleSprintBlur" />
@@ -722,7 +722,7 @@ onMounted(() => {
                 showSearch
                 allowClear
                 class="flex-1"
-                :placeholder="t('backlog.info.scenario.placeholders.selectOrSearchModule')">
+                :placeholder="t('common.placeholders.selectOrSearchModule')">
                 <template #title="item">
                   <div class="flex items-center" :title="item.name">
                     <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -787,7 +787,7 @@ onMounted(() => {
               ref="prioritySelectRef"
               v-model:value="priorityInputValue"
               enumKey="Priority"
-              :placeholder="t('backlog.info.scenario.placeholders.selectPriority')"
+              :placeholder="t('common.placeholders.selectPriority')"
               class="edit-container max-w-52"
               @change="handlePrioritySelectionChange"
               @blur="handlePriorityBlur">
@@ -835,7 +835,7 @@ onMounted(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('backlog.info.scenario.placeholders.workloadRange')"
+              :placeholder="t('common.placeholders.workloadRange')"
               @blur="handleEvalWorkloadBlur"
               @pressEnter="handleEvalWorkloadEnterPress" />
           </AsyncComponent>
@@ -867,7 +867,7 @@ onMounted(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('backlog.info.scenario.placeholders.workloadRange')"
+              :placeholder="t('common.placeholders.workloadRange')"
               @blur="handleActualWorkloadBlur"
               @pressEnter="handleActualWorkloadEnterPress" />
           </AsyncComponent>
@@ -875,7 +875,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.processCount') }}</span>
+            <span>{{ t('common.processCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -884,7 +884,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.processFailCount') }}</span>
+            <span>{{ t('common.processFailCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -930,7 +930,7 @@ onMounted(() => {
               :placeholder="t('common.tag')"
               mode="multiple"
               class="edit-container"
-              :notFoundContent="t('backlog.info.scenario.placeholders.notFoundTagContent')"
+              :notFoundContent="t('backlog.edit.messages.contactAdminForTags')"
               @change="handleTagSelectionChange"
               @blur="handleTagBlur" />
           </AsyncComponent>
@@ -938,7 +938,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.scenario.oneTimePass') }}</span>
+            <span>{{ t('common.oneTimePass') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -956,7 +956,7 @@ onMounted(() => {
                 ref="versionSelectRef"
                 v-model:value="versionInputValue"
                 allowClear
-                :placeholder="t('common.version')"
+                :placeholder="t('common.placeholders.selectSoftwareVersion')"
                 lazy
                 class="w-full"
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"

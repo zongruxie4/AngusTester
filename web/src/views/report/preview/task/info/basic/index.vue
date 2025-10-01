@@ -78,7 +78,7 @@ const onePassText = computed(() => {
               {{ task?.bugLevel?.message }}
             </Tag>
             <Tag
-              v-if="task?.missingBug"
+              v-if="task?.escapedBug"
               color="error"
               class="ml-2 text-3 leading-4">
               {{ t('reportPreview.task.info.basicInfo.fields.missedDefect') }}

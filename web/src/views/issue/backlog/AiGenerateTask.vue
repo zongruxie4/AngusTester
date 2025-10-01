@@ -165,7 +165,7 @@ const cancelModal = () => {
  */
 const confirmAndSaveTasks = async () => {
   if (taskIdList.value?.length > MAX_TASK_COUNT) {
-    notification.warning(t('backlog.aiGenerateTask.maxTasksWarning'));
+    notification.warning(t('backlog.aiGenerate.maxTasksWarning'));
     return;
   }
 
@@ -395,16 +395,16 @@ onMounted(() => {
     :width="1200"
     :confirmLoading="isConfirmLoading"
     :okButtonProps="okButtonProps"
-    :title="t('backlog.aiGenerateTask.title')"
+    :title="t('backlog.aiGenerate.title')"
     @cancel="cancelModal"
     @ok="confirmAndSaveTasks">
     <Spin
       :spinning="isGenerating||isConfirmLoading"
-      :tip="isGenerating ? t('backlog.aiGenerateTask.generating') : ''">
+      :tip="isGenerating ? t('backlog.aiGenerate.generating') : ''">
       <div class="flex flex-nowrap justify-between mb-3.5 space-x-5">
         <Input
           v-model:value="aiKeywordsInput"
-          :placeholder="t('backlog.aiGenerateTask.aiKeywordsPlaceholder')"
+          :placeholder="t('backlog.aiGenerate.aiKeywordsPlaceholder')"
           trim
           allowClear
           class="flex-1"
@@ -488,7 +488,7 @@ onMounted(() => {
           </SelectEnum>
 
           <Tooltip
-            :title="t('backlog.aiGenerateTask.tooltips.nameRepeat')"
+            :title="t('common.placeholders.nameRepeat')"
             internal
             placement="right"
             destroyTooltipOnHide
@@ -499,7 +499,7 @@ onMounted(() => {
               :maxlength="200"
               trim
               class="flex-1 mr-2.5"
-              :placeholder="t('backlog.aiGenerateTask.placeholders.taskName')"
+              :placeholder="t('common.placeholders.inputName2')"
               @change="handleTaskNameChange()" />
           </Tooltip>
 
@@ -511,7 +511,7 @@ onMounted(() => {
             trimAll
             :min="0.1"
             :max="1000"
-            :placeholder="t('backlog.aiGenerateTask.placeholders.evalWorkload')" />
+            :placeholder="t('common.placeholders.inputEvalWorkload')" />
 
           <SelectUser
             v-model:value="taskDataMap[taskId].assigneeId"

@@ -1605,7 +1605,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'attachments' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('common.attachments')"
+          :title="t('common.attachment')"
           @click="drawerActiveKeyChange('attachments')">
           <Icon icon="icon-lianjie1" class="text-4" />
         </div>
@@ -1621,7 +1621,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'comment' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('common.comments')"
+          :title="t('common.comment')"
           @click="drawerActiveKeyChange('comment')">
           <Icon icon="icon-pinglun" class="text-4" />
         </div>
@@ -1629,7 +1629,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'activity' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('common.activities')"
+          :title="t('common.activity')"
           @click="drawerActiveKeyChange('activity')">
           <Icon icon="icon-chakanhuodong" class="text-4" />
         </div>

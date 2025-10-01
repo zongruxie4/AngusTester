@@ -170,7 +170,7 @@ const handleTaskTypeBlur = async () => {
   if (newValue === TaskType.BUG) {
     await task.updateTask(currentTaskId.value, {
       bugLevel: BugLevel.MINOR,
-      missingBug: false
+      escapedBug: false
     });
   }
   isTaskTypeEditing.value = false;
@@ -181,7 +181,7 @@ const handleTaskTypeBlur = async () => {
   emit('change', {
     id: currentTaskId.value,
     bugLevel: { value: BugLevel.MINOR, message: enumUtils.getEnumDescription(BugLevel, BugLevel.MINOR) },
-    missingBug: false,
+    escapedBug: false,
     taskType: { value: newValue, message: taskTypeSelectMessage.value! }
   });
 };
@@ -446,7 +446,7 @@ const handleVersionBlur = async () => {
 
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.basic.columns.parentTask') }}</span>
+              <span>{{ t('common.parentIssue') }}</span>
             </div>
             <div class="info-value">
               <div v-if="!props.dataSource?.parentTaskId" class="info-text">
@@ -482,10 +482,10 @@ const handleVersionBlur = async () => {
                       {{ props.dataSource?.bugLevel?.message }}
                     </Tag>
                     <Tag
-                      v-if="props.dataSource?.missingBug"
+                      v-if="props.dataSource?.escapedBug"
                       color="error"
                       class="ml-2 text-3 leading-4">
-                      {{ t('task.detailInfo.basic.columns.missingBug') }}
+                      {{ t('task.detailInfo.basic.columns.escapedBug') }}
                     </Tag>
                   </template>
                 </div>
@@ -506,7 +506,7 @@ const handleVersionBlur = async () => {
                   :excludes="taskTypeExcludes"
                   internal
                   enumKey="TaskType"
-                  :placeholder="t('task.detailInfo.basic.columns.selectTaskType')"
+                  :placeholder="t('common.placeholders.selectIssueType')"
                   class="edit-select"
                   @change="handleTaskTypeChange"
                   @blur="handleTaskTypeBlur">

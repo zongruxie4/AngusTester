@@ -1064,10 +1064,10 @@
             "oneTimeTestPass": "一次性测试通过数",
             "oneTimeTestPassRate": "一次性测试通过率",
             "oneTimeReviewPassRate": "一次性评审通过率",
-            "estimatedWorkload": "评估工作量",
+            "evalWorkload": "评估工作量",
             "actualWorkload": "实际工作量",
             "completedWorkload": "完成工作量",
-            "savedWorkload": "节省工作量",
+            "savingWorkload": "节省工作量",
             "workloadSaveRate": "工作量节省率"
           }
         },
@@ -1120,10 +1120,10 @@
             "oneTimeTestPass": "一次性测试通过数",
             "oneTimeTestPassRate": "一次性测试通过率",
             "oneTimeReviewPassRate": "一次性评审通过率",
-            "estimatedWorkload": "评估工作量",
+            "evalWorkload": "评估工作量",
             "actualWorkload": "实际工作量",
             "completedWorkload": "完成工作量",
-            "savedWorkload": "节省工作量",
+            "savingWorkload": "节省工作量",
             "workloadSaveRate": "工作量节省率"
           }
         },
@@ -1209,10 +1209,10 @@
             "overdueRate": "逾期率",
             "oneTimePassCount": "一次性通过数",
             "oneTimePassRate": "一次性通过率",
-            "estimatedWorkload": "评估工作量",
+            "evalWorkload": "评估工作量",
             "actualWorkload": "实际工作量",
             "completedWorkload": "完成工作量",
-            "savedWorkload": "节省工作量",
+            "savingWorkload": "节省工作量",
             "workloadSaveRate": "工作量节省率"
           }
         },
@@ -1255,10 +1255,10 @@
             "oneTimeTestPass": "一次性测试通过数",
             "oneTimeTestPassRate": "一次性测试通过率",
             "oneTimeReviewPassRate": "一次性评审通过率",
-            "estimatedWorkload": "评估工作量",
+            "evalWorkload": "评估工作量",
             "actualWorkload": "实际工作量",
             "completedWorkload": "完成工作量",
-            "savedWorkload": "节省工作量",
+            "savingWorkload": "节省工作量",
             "workloadSaveRate": "工作量节省率"
           }
         },
@@ -1689,7 +1689,7 @@
           "completionTime": "完成时间",
           "confirmTask": "是否确认任务",
           "workloadEstimationMethod": "工作量评估方式",
-          "estimatedWorkload": "评估工作量",
+          "evalWorkload": "评估工作量",
           "actualWorkload": "实际工作量",
           "totalProcessCount": "总处理次数",
           "failedProcessCount": "处理失败次数"
@@ -1713,10 +1713,10 @@
             "overdueRate": "逾期率",
             "oneTimePassCount": "一次性通过数",
             "oneTimePassRate": "一次性通过率",
-            "estimatedWorkload": "评估工作量",
+            "evalWorkload": "评估工作量",
             "actualWorkload": "实际工作量",
             "completedWorkload": "完成工作量",
-            "savedWorkload": "节省工作量",
+            "savingWorkload": "节省工作量",
             "workloadSaveRate": "工作量节省率"
           }
         },
@@ -1760,10 +1760,10 @@
             "overdueRate": "逾期率",
             "oneTimePassCount": "一次性通过数",
             "oneTimePassRate": "一次性通过率",
-            "estimatedWorkload": "评估工作量",
+            "evalWorkload": "评估工作量",
             "actualWorkload": "实际工作量",
             "completedWorkload": "完成工作量",
-            "savedWorkload": "节省工作量",
+            "savingWorkload": "节省工作量",
             "workloadSaveRate": "工作量节省率"
           }
         },

@@ -43,7 +43,7 @@ export const contentTreeData = [
             key: 'info'
           },
           {
-            title: t('common.detail'),
+            title: t('actions.detail'),
             key: 'detail'
           },
           {
@@ -61,7 +61,7 @@ export const contentTreeData = [
             key: 'info'
           },
           {
-            title: t('common.detail'),
+            title: t('actions.detail'),
             key: 'detail'
           },
           {

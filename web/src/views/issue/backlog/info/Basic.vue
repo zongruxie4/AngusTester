@@ -2,8 +2,8 @@
 import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Tag, TreeSelect } from 'ant-design-vue';
-import { AsyncComponent, Colon, Icon, IconTask, Input, Select } from '@xcan-angus/vue-ui';
-import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { AsyncComponent, Icon, IconTask, Input, Select } from '@xcan-angus/vue-ui';
+import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskType, SoftwareVersionStatus } from '@/enums/enums';
@@ -97,7 +97,6 @@ const currentModuleId = computed(() => {
 const taskPriority = computed(() => props.dataSource?.priority?.value);
 const taskTags = computed(() => props.dataSource?.tags || []);
 const taskTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
 const evalWorkload = computed(() => props.dataSource?.evalWorkload);
 const actualWorkload = computed(() => props.dataSource?.actualWorkload);
 const isOverdue = computed(() => props.dataSource?.overdue);
@@ -459,7 +458,7 @@ const confirmTaskTypeChange = async () => {
   if (newTaskType === 'BUG') {
     await task.updateTask(currentTaskId.value, {
       bugLevel: 'MINOR',
-      missingBug: false
+      escapedBug: false
     });
   }
 
@@ -705,7 +704,7 @@ onMounted(() => {
                 :maxlength="200"
                 trim
                 class="edit-input"
-                :placeholder="t('backlog.placeholder.taskName')"
+                :placeholder="t('common.placeholders.inputName2')"
                 @blur="handleTaskNameBlur"
                 @pressEnter="handleTaskNameEnterPress" />
             </AsyncComponent>
@@ -715,7 +714,7 @@ onMounted(() => {
         <!-- Task Status -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.taskStatus') }}</span>
+            <span>{{ t('common.status') }}</span>
           </div>
 
           <div class="info-value">
@@ -754,7 +753,7 @@ onMounted(() => {
                 :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
                 :fieldNames="{ value: 'id', label: 'name' }"
                 showSearch
-                :placeholder="t('backlog.info.basic.placeholders.selectOrSearchSprint')"
+                :placeholder="t('common.placeholders.selectOrSearchSprint')"
                 class="edit-input"
                 @change="handleSprintSelectionChange"
                 @blur="confirmSprintChange" />
@@ -790,7 +789,7 @@ onMounted(() => {
                   showSearch
                   allowClear
                   class="edit-input"
-                  :placeholder="t('backlog.info.basic.placeholders.selectOrSearchModule')">
+                  :placeholder="t('common.placeholders.selectOrSearchModule')">
                   <template #title="item">
                     <div class="flex items-center" :title="item.name">
                       <Icon icon="icon-mokuai" class="mr-1" />
@@ -817,7 +816,7 @@ onMounted(() => {
         <!-- Parent Task -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.parentTask') }}</span>
+            <span>{{ t('common.parentIssue') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text dash-text">{{ props.dataSource?.parentTaskName || '--' }}</span>
@@ -842,10 +841,10 @@ onMounted(() => {
                     {{ props.dataSource?.bugLevel?.message }}
                   </Tag>
                   <Tag
-                    v-if="props.dataSource?.missingBug"
+                    v-if="props.dataSource?.escapedBug"
                     color="error"
                     class="bug-tag">
-                    {{ t('backlog.info.basic.missingBug') }}
+                    {{ t('common.escapedBug') }}
                   </Tag>
                 </template>
               </div>
@@ -863,7 +862,7 @@ onMounted(() => {
                 v-model:value="taskTypeInputValue"
                 :excludes="getTaskTypeExcludes"
                 enumKey="TaskType"
-                :placeholder="t('backlog.info.basic.placeholders.selectTaskType')"
+                :placeholder="t('common.placeholders.selectIssueType')"
                 class="edit-input"
                 @change="handleTaskTypeSelectionChange"
                 @blur="confirmTaskTypeChange">
@@ -899,7 +898,7 @@ onMounted(() => {
                 ref="prioritySelectRef"
                 v-model:value="priorityInputValue"
                 enumKey="Priority"
-                :placeholder="t('backlog.info.basic.placeholders.selectPriority')"
+                :placeholder="t('common.placeholders.selectPriority')"
                 class="edit-input"
                 @change="handlePrioritySelectionChange"
                 @blur="confirmPriorityChange">
@@ -946,7 +945,7 @@ onMounted(() => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('backlog.info.basic.placeholders.workloadRange')"
+                :placeholder="t('common.placeholders.workloadRange')"
                 @blur="handleEvalWorkloadBlur"
                 @pressEnter="handleEvalWorkloadEnterPress" />
             </AsyncComponent>
@@ -956,7 +955,7 @@ onMounted(() => {
         <!-- Actual Workload -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.evalWorkload') }}</span>
+            <span>{{ t('common.actualWorkload') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isActualWorkloadEditing" class="info-value-content">
@@ -978,7 +977,7 @@ onMounted(() => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('backlog.info.basic.placeholders.workloadRange')"
+                :placeholder="t('common.placeholders.workloadRange')"
                 @blur="handleActualWorkloadBlur"
                 @pressEnter="handleActualWorkloadEnterPress" />
             </AsyncComponent>
@@ -988,7 +987,7 @@ onMounted(() => {
         <!-- Process Count -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.processCount') }}</span>
+            <span>{{ t('common.processCount') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ totalProcessCount }}</span>
@@ -998,7 +997,7 @@ onMounted(() => {
         <!-- Failed Count -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.processFailCount') }}</span>
+            <span>{{ t('common.processFailCount') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ failedProcessCount }}</span>
@@ -1039,10 +1038,10 @@ onMounted(() => {
                 :maxTags="5"
                 :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
                 showSearch
-                :placeholder="t('backlog.info.basic.placeholders.maxTags')"
+                :placeholder="t('backlog.edit.placeholders.maxTags')"
                 mode="multiple"
                 class="edit-input"
-                :notFoundContent="t('backlog.info.basic.messages.contactAdminForTags')"
+                :notFoundContent="t('backlog.edit.messages.contactAdminForTags')"
                 @change="handleTagSelectionChange"
                 @blur="confirmTagChanges" />
             </AsyncComponent>
@@ -1052,7 +1051,7 @@ onMounted(() => {
         <!-- One Time Pass -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('backlog.info.basic.oneTimePass') }}</span>
+            <span>{{ t('common.oneTimePass') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': oneTimePassStatus === '--' }">{{ oneTimePassStatus }}</span>
@@ -1070,7 +1069,7 @@ onMounted(() => {
                 ref="versionSelectRef"
                 v-model:value="versionInputValue"
                 allowClear
-                :placeholder="t('backlog.info.basic.placeholders.selectSoftwareVersion')"
+                :placeholder="t('common.placeholders.selectSoftwareVersion')"
                 class="edit-input"
                 lazy
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"

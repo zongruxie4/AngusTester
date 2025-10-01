@@ -222,7 +222,7 @@ const params = computed(() => {
                     type="primary"
                     size="small"
                     @click="patchPassd(item,index)">
-                    {{ t('common.confirm') }}
+                    {{ t('actions.confirm') }}
                   </Button>
                   <Button size="small" @click="cancelPassd(item)">{{ t('actions.cancel') }}</Button>
                 </div>

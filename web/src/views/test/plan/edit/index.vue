@@ -961,7 +961,7 @@ onMounted(() => {
               <span class="mr-2">{{ t('functionPlan.editForm.form.reviewCloseConfirm') }}</span>
               <a
                 class="text-theme-special"
-                @click="confirmDisableReview">{{ t('common.confirm') }}</a>
+                @click="confirmDisableReview">{{ t('actions.confirm') }}</a>
               <Divider type="vertical" />
               <a
                 class="text-theme-special"
@@ -1040,7 +1040,7 @@ onMounted(() => {
         </Tooltip>
       </FormItem>
 
-      <FormItem :label="t('common.attachments')">
+      <FormItem :label="t('common.attachment')">
         <div class="flex items-center mt-0.5">
           <Upload
             :fileList="[]"

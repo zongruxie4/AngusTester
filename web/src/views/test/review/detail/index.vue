@@ -600,7 +600,7 @@ onUnmounted(() => {
                 <!-- Attachments -->
                 <div class="flex items-center space-x-2">
                   <Icon icon="icon-fujian" class="text-gray-400" />
-                  <span class="text-gray-600">{{ t('common.attachments') }}：</span>
+                  <span class="text-gray-600">{{ t('common.attachment') }}：</span>
                   <div class="flex items-center space-x-2">
                     <a
                       v-for="file in (reviewDetail?.attachments || [])"

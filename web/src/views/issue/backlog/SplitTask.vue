@@ -6,7 +6,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox } from 'ant-design-vue';
-import { duration, TESTER, utils, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { duration, TESTER, utils } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { ai } from '@/api/gm';
@@ -77,7 +77,7 @@ const aiKeywordsInput = ref('');
  */
 const enableAISplitMode = () => {
   isAISplitMode.value = true;
-  aiKeywordsInput.value = t('backlog.splitTask.aiKeywords', { taskName: props.dataSource?.name });
+  aiKeywordsInput.value = t('backlog.split.aiKeywords', { taskName: props.dataSource?.name });
 };
 
 /**
@@ -241,7 +241,7 @@ const cancelModal = () => {
  */
 const confirmAndCreateSubTasks = async () => {
   if (taskIdList.value?.length > MAX_TASK_COUNT) {
-    notification.warning(t('backlog.splitTask.messages.maxSplitWarning'));
+    notification.warning(t('backlog.split.maxSplitWarning'));
     return;
   }
 
@@ -280,7 +280,6 @@ const confirmAndCreateSubTasks = async () => {
   }
 };
 
-// Validation Functions
 /**
  * <p>Clear all validation error states</p>
  * <p>Resets all error sets to empty state</p>
@@ -440,18 +439,18 @@ onMounted(() => {
 <template>
   <Modal
     :visible="props.visible"
-    :width="1200"
+    :width="1250"
     :confirmLoading="isConfirmLoading"
     :okButtonProps="okButtonProps"
-    :title="t('backlog.splitTask.title')"
+    :title="t('backlog.actions.split')"
     @cancel="cancelModal"
     @ok="confirmAndCreateSubTasks">
-    <Spin :spinning="isGenerating" :tip="t('backlog.splitTask.splitting')">
+    <Spin :spinning="isGenerating" :tip="t('backlog.split.splitting')">
       <div class="flex flex-nowrap justify-between mb-3.5 space-x-5">
         <template v-if="!isAISplitMode">
           <div class="flex items-start font-semibold leading-4.5 pt-1.5">
             <div class="flex-shrink-0 flex items-center mr-1.5">
-              <span>{{ t('backlog.splitTask.splitTask') }}</span>
+              <span>{{ t('backlog.actions.split') }}</span>
               <Colon />
             </div>
             <div>{{ props.dataSource?.name }}</div>
@@ -466,14 +465,14 @@ onMounted(() => {
             ghost
             @click="enableAISplitMode">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('backlog.splitTask.aiSplit') }}</span>
+            <span>{{ t('backlog.actions.aiSplit') }}</span>
           </Button>
         </template>
 
         <template v-else-if="aiEnabled">
           <Input
             v-model:value="aiKeywordsInput"
-            :placeholder="t('backlog.splitTask.aiPlaceholder', { taskName: props.dataSource?.name })"
+            :placeholder="t('backlog.split.aiPlaceholder', { taskName: props.dataSource?.name })"
             trim
             allowClear
             class="flex-1"
@@ -485,7 +484,7 @@ onMounted(() => {
               type="primary"
               size="small"
               @click="generateSubTasksWithAI">
-              {{ t('backlog.splitTask.aiSplit') }}
+              {{ t('backlog.split.aiSplit') }}
             </Button>
             <Button
               type="default"
@@ -513,13 +512,13 @@ onMounted(() => {
           <span>{{ t('common.name') }}</span>
         </div>
 
-        <div class="w-9 space-x-0.5 head-item-container">
-          <span>{{ t('backlog.splitTask.headers.subTask') }}</span>
+        <div class="w-20 space-x-0.5 head-item-container">
+          <span>{{ t('common.subIssue') }}</span>
         </div>
 
         <div class="w-20 space-x-0.5 head-item-container">
           <span>
-            {{ t('backlog.splitTask.headers.evalWorkload') }}
+            {{ t('common.workload') }}
           </span>
         </div>
 
@@ -573,7 +572,7 @@ onMounted(() => {
           </SelectEnum>
 
           <Tooltip
-            :title="t('backlog.splitTask.tooltips.nameRepeat')"
+            :title="t('common.placeholders.nameRepeat')"
             internal
             placement="right"
             destroyTooltipOnHide
@@ -584,11 +583,11 @@ onMounted(() => {
               :maxlength="200"
               trim
               class="flex-1 mr-2.5"
-              :placeholder="t('backlog.splitTask.placeholders.taskName')"
+              :placeholder="t('common.placeholders.inputName2')"
               @change="handleTaskNameChange" />
           </Tooltip>
 
-          <div class="w-9 flex justify-center items-center mr-2.5">
+          <div class="w-20 flex justify-center items-center mr-2.5">
             <Checkbox
               :checked="taskDataMap[taskId].parentTaskId === currentParentTaskId"
               @change="handleSubTaskCheckboxChange(taskId)" />
@@ -602,7 +601,7 @@ onMounted(() => {
             trimAll
             :min="0.1"
             :max="1000"
-            :placeholder="t('backlog.splitTask.placeholders.workloadRange')" />
+            :placeholder="t('common.placeholders.workloadRange')" />
 
           <SelectUser
             v-model:value="taskDataMap[taskId].assigneeId"
@@ -623,7 +622,7 @@ onMounted(() => {
             :maxlength="80" />
 
           <Tooltip
-            :title="t('backlog.splitTask.tooltips.deadlineMustBeFuture')"
+            :title="t('common.placeholders.deadlineMustBeFuture')"
             internal
             placement="right"
             destroyTooltipOnHide

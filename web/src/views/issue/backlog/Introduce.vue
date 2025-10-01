@@ -7,10 +7,10 @@ const { t } = useI18n();
 <template>
   <div class="text-3.5">
     <div class="font-semibold mb-2.5">
-      {{ t('backlog.aboutBacklog') }}
+      {{ t('backlog.introduce.title') }}
     </div>
     <div class="mb-6 font-serif">
-      {{ t('backlog.aboutBacklogDesc') }}
+      {{ t('backlog.introduce.description') }}
     </div>
 
     <div class="space-y-6">
@@ -19,9 +19,9 @@ const { t } = useI18n();
           <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="font-semibold">
-              {{ t('backlog.productBacklog') }}
+              {{ t('backlog.productBacklogTitle') }}
             </div>
-            <div>{{ t('backlog.productBacklogDesc') }}</div>
+            <div>{{ t('backlog.introduce.productBacklogDesc') }}</div>
           </div>
         </div>
 
@@ -29,9 +29,9 @@ const { t } = useI18n();
           <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="font-semibold">
-              {{ t('backlog.sprintBacklog') }}
+              {{ t('backlog.sprintBacklogTitle') }}
             </div>
-            <div>{{ t('backlog.sprintBacklogDesc') }}</div>
+            <div>{{ t('backlog.introduce.sprintBacklogDesc') }}</div>
           </div>
         </div>
       </div>

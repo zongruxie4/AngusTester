@@ -110,7 +110,7 @@ const attachments = computed(() => props.sprintData?.attachments || []);
       <div class="flex items-start">
         <div style="width:calc(50% - 10px);" class="flex items-start">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('common.attachments') }}</span>
+            <span class="font-semibold text-black">{{ t('common.attachment') }}</span>
             <Colon class="w-1" />
           </div>
 

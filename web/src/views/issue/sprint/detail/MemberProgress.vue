@@ -102,12 +102,12 @@ const tableColumns = [
   },
   {
     key: 'evalWorkload',
-    title: t('taskSprint.progress.estimatedWorkload'),
+    title: t('common.evalWorkload'),
     dataIndex: 'evalWorkload'
   },
   {
     key: 'completedWorkload',
-    title: t('taskSprint.progress.completedWorkload'),
+    title: t('common.completedWorkload'),
     dataIndex: 'completedWorkload'
   },
   {

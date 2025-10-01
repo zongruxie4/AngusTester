@@ -173,7 +173,7 @@ const refTaskIds = computed(() => {
           type="primary"
           size="small"
           @click="ok">
-          {{ t('common.confirm') }}
+          {{ t('actions.confirm') }}
         </Button>
       </div>
     </template>
