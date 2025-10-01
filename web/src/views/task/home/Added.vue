@@ -80,7 +80,7 @@ const taskQueryParams = {
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-1">{{ t('taskHome.myTasks') }}</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('issueHome.myIssues') }}</div>
     <Tabs size="small">
       <!-- Created Tasks Tab: Shows tasks created by current user -->
       <TabPane key="createBy" forceRender>

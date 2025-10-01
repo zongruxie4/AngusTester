@@ -229,7 +229,7 @@ const executeBatchCancel = async () => {
 const executeBatchDelete = async () => {
   const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('actions.tips.confirmDelete', { num: selectedCount }),
+    content: t('actions.tips.confirmCountDelete', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const [error] = await task.deleteTask(taskIds);
@@ -238,7 +238,7 @@ const executeBatchDelete = async () => {
       }
 
       emit('refreshChange');
-      notification.success(t('actions.tips.deleteSuccess', { num: selectedCount }));
+      notification.success(t('actions.tips.deleteSuccess'));
       emit('batchAction', 'delete', taskIds);
       rowSelection.value.selectedRowKeys = [];
       selectedTaskDataMap.value = {};
@@ -593,7 +593,7 @@ const addToFavourites = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('task.table.messages.favouriteSuccess'));
+  notification.success(t('actions.tips.favouriteSuccess'));
   emit('dataChange', { id: taskData.id, favourite: true });
 };
 
@@ -607,7 +607,7 @@ const removeFromFavourites = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('task.table.messages.cancelFavouriteSuccess'));
+  notification.success(t('actions.tips.cancelFavouriteSuccess'));
   emit('dataChange', { id: taskData.id, favourite: false });
 };
 
@@ -621,7 +621,7 @@ const followTask = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('task.table.messages.followSuccess'));
+  notification.success(t('actions.tips.followSuccess'));
   emit('dataChange', { id: taskData.id, follow: true });
 };
 
@@ -635,7 +635,7 @@ const unfollowTask = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('task.table.messages.cancelFollowSuccess'));
+  notification.success(t('actions.tips.cancelFollowSuccess'));
   emit('dataChange', { id: taskData.id, follow: false });
 };
 

@@ -602,7 +602,7 @@ const editOk = async (data: TaskDetail) => {
 const toDelete = (data: TaskDetail) => {
   // Delete task with confirmation
   modal.confirm({
-    content: t('task.table.messages.confirmDelete', { name: data.name }),
+    content: t('actions.tips.confirmDelete', { name: data.name }),
     // Handle delete confirmation
     async onOk () {
       emit('update:loading', true);
@@ -613,7 +613,7 @@ const toDelete = (data: TaskDetail) => {
       }
 
       emit('refreshChange');
-      notification.success(t('task.table.messages.deleteTaskSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       await loadData();
       emit('update:loading', false);
     }
@@ -630,7 +630,7 @@ const toFavourite = async (data: TaskDetail, index: number, status: TaskDetail['
     return;
   }
 
-  notification.success(t('task.table.messages.favouriteSuccess'));
+  notification.success(t('actions.tips.favouriteSuccess'));
   taskDataMap.value[status][index].favourite = true;
 };
 
@@ -643,7 +643,7 @@ const toDeleteFavourite = async (data: TaskDetail, index: number, status: TaskDe
     return;
   }
 
-  notification.success(t('task.table.messages.cancelFavouriteSuccess'));
+  notification.success(t('actions.tips.cancelFavouriteSuccess'));
   taskDataMap.value[status][index].favourite = false;
 };
 
@@ -656,7 +656,7 @@ const toFollow = async (data: TaskDetail, index: number, status: TaskDetail['sta
     return;
   }
 
-  notification.success(t('task.table.messages.followSuccess'));
+  notification.success(t('actions.tips.followSuccess'));
   taskDataMap.value[status][index].follow = true;
 };
 
@@ -669,7 +669,7 @@ const toDeleteFollow = async (data: TaskDetail, index: number, status: TaskDetai
     return;
   }
 
-  notification.success(t('task.table.messages.cancelFollowSuccess'));
+  notification.success(t('actions.tips.cancelFollowSuccess'));
   taskDataMap.value[status][index].follow = false;
 };
 

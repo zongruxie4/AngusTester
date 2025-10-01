@@ -77,9 +77,9 @@ const paginationConfig = ref<{
       showTotal: (total: number) => {
         if (typeof paginationConfig.value === 'object') {
           const totalPage = Math.ceil(total / paginationConfig.value.pageSize);
-          return t('taskHome.addedTable.pagination', {
+          return t('pagination.pageInfo', {
             current: paginationConfig.value.current,
-            total: totalPage
+            totalPage: totalPage
           });
         }
       }
@@ -233,7 +233,7 @@ const handleUnfavoriteTask = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('taskHome.addedTable.messages.unfavoriteSuccess'));
+  notification.success(t('actions.tips.cancelFavoriteSuccess'));
   await loadTaskData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -253,7 +253,7 @@ const handleUnfollowTask = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('taskHome.addedTable.messages.unfollowSuccess'));
+  notification.success(t('actions.tips.cancelFollowSuccess'));
   await loadTaskData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -439,34 +439,34 @@ const emptyStateStyle = {
           <img class="w-27.5" src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
-              <span>{{ t('taskHome.addedTable.emptyStates.noCreatedTasks') }}</span>
+              <span>{{ t('issueHome.addedTable.emptyStates.noCreatedIssues') }}</span>
               <RouterLink to="/task#task" class="ml-1 link">
-                {{ t('taskHome.addedTable.emptyStates.addTask') }}
+                {{ t('issueHome.addedTable.emptyStates.addIssue') }}
               </RouterLink>
             </template>
 
             <template v-else-if="props.params?.assigneeId && props.params?.status === TaskStatus.PENDING">
-              <span>{{ t('taskHome.addedTable.emptyStates.noPendingTasks') }}</span>
+              <span>{{ t('issueHome.addedTable.emptyStates.noPendingIssues') }}</span>
             </template>
 
             <template v-else-if="props.params?.confirmerId && props.params?.status === TaskStatus.CONFIRMING">
-              <span>{{ t('taskHome.addedTable.emptyStates.noConfirmingTasks') }}</span>
+              <span>{{ t('issueHome.addedTable.emptyStates.noConfirmingIssues') }}</span>
             </template>
 
             <template v-else-if="props.params?.assigneeId && props.params?.status === TaskStatus.COMPLETED">
-              <span>{{ t('taskHome.addedTable.emptyStates.noCompletedTasks') }}</span>
+              <span>{{ t('issueHome.addedTable.emptyStates.noCompletedIssues') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.followBy">
-              <span>{{ t('taskHome.addedTable.emptyStates.noFollowedTasks') }}</span>
+              <span>{{ t('issueHome.addedTable.emptyStates.noFollowedIssues') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">
-              <span>{{ t('taskHome.addedTable.emptyStates.noFavouriteTasks') }}</span>
+              <span>{{ t('issueHome.addedTable.emptyStates.noFavouriteIssues') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.commentBy">
-              <span>{{ t('taskHome.addedTable.emptyStates.noCommentTasks') }}</span>
+              <span>{{ t('issueHome.addedTable.emptyStates.noCommentIssues') }}</span>
             </template>
           </div>
         </div>
@@ -482,7 +482,7 @@ const emptyStateStyle = {
         :emptyTextStyle="emptyStateStyle"
         :minSize="5"
         :noDataSize="'small'"
-        :noDataText="t('taskHome.addedTable.noDataText')"
+        :noDataText="t('common.noData')"
         rowKey="id"
         size="small"
         @change="handleTableChange">

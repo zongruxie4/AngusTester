@@ -184,7 +184,7 @@ const addToFavorites = async () => {
     return;
   }
 
-  notification.success(t('task.detail.messages.favouriteSuccess'));
+  notification.success(t('actions.tips.favouriteSuccess'));
   updateTaskData({ id: id, favourite: true });
 };
 
@@ -202,7 +202,7 @@ const removeFromFavorites = async () => {
     return;
   }
 
-  notification.success(t('task.detail.messages.cancelFavouriteSuccess'));
+  notification.success(t('actions.tips.cancelFavouriteSuccess'));
   updateTaskData({ id: id, favourite: false });
 };
 
@@ -220,7 +220,7 @@ const followCurrentTask = async () => {
     return;
   }
 
-  notification.success(t('task.detail.messages.followSuccess'));
+  notification.success(t('actions.tips.followSuccess'));
   updateTaskData({ id: id, follow: true });
 };
 
@@ -238,7 +238,7 @@ const unfollowCurrentTask = async () => {
     return;
   }
 
-  notification.success(t('task.detail.messages.cancelFollowSuccess'));
+  notification.success(t('actions.tips.cancelFollowSuccess'));
   updateTaskData({ id: id, follow: false });
 };
 

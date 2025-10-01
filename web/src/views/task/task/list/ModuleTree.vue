@@ -165,7 +165,7 @@ const handleModuleDeletion = (moduleData: ModuleItem) => {
         return;
       }
 
-      notification.success(t('task.list.moduleDeleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       emits('loadData', searchKeywords.value);
     }
   });

@@ -301,7 +301,7 @@ const addToFavourites = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('task.subTask.messages.favouriteSuccess'));
+  notification.success(t('actions.tips.favouriteSuccess'));
   emit('refreshChange');
 };
 
@@ -318,7 +318,7 @@ const removeFromFavourites = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('task.subTask.messages.cancelFavouriteSuccess'));
+  notification.success(t('actions.tips.cancelFavouriteSuccess'));
   emit('refreshChange');
 };
 
@@ -335,7 +335,7 @@ const followTask = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('task.subTask.messages.followSuccess'));
+  notification.success(t('actions.tips.followSuccess'));
   emit('refreshChange');
 };
 
@@ -352,7 +352,7 @@ const unfollowTask = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('task.subTask.messages.cancelFollowSuccess'));
+  notification.success(t('actions.tips.cancelFollowSuccess'));
   emit('refreshChange');
 };
 

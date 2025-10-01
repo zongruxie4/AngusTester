@@ -68,7 +68,7 @@ const menuItems = computed(() => {
     },
     projectTypeVisibilityMap.value.showBackLog
       ? {
-          name: t('taskHome.backlogName'),
+          name: t('backlog.title'),
           icon: 'icon-backlog',
           key: 'backlog'
         }

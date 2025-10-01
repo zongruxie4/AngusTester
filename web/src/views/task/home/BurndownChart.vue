@@ -34,11 +34,11 @@ const projectId = inject<Ref<string>>('projectId', ref(''));
 const chartDisplayOptions = computed(() => [
   {
     value: 'NUM',
-    label: t('taskHome.taskCount')
+    label: t('common.count')
   },
   {
     value: 'WORKLOAD',
-    label: t('taskHome.workload')
+    label: t('common.workload')
   }
 ]);
 

@@ -177,9 +177,6 @@
         "Modified date from",
         "Modified date to"
       ]
-    },
-    "rules": {},
-    "hints": {
     }
   },
   "status": {
@@ -305,6 +302,7 @@
     "collapseAll": "Collapse All",
     "tips": {
       "confirmDelete": "Are you sure you want to delete 「{name}」?",
+      "confirmCountDelete": "Are you sure you want to delete 「{num}」 items?",
       "createSuccess": "Create successful",
       "saveSuccess": "Save successful",
       "deleteSuccess": "Delete successful",
