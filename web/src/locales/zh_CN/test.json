@@ -1250,55 +1250,6 @@
       }
     }
   },
-  "functionTrash": {
-    "name": "回收站",
-    "title": "回收站",
-    "placeholder": {
-      "searchKeyword": "请输入查询关键字"
-    },
-    "tips": {
-      "adminOnly": "只允许管理员和删除人还原或彻底删除回收站数据。"
-    },
-    "stats": {
-      "items": "数量"
-    },
-    "filters": {
-      "title": "筛选",
-      "all": "全部"
-    },
-    "confirm": {
-      "delete": "确定要永久删除此项吗？",
-      "deleteAll": "确定要永久删除所有数据吗？"
-    },
-    "actions": {
-      "recoverAll": "全部还原",
-      "deleteAll": "全部删除",
-      "refresh": "刷新",
-      "recover": "还原",
-      "delete": "删除"
-    },
-    "messages": {
-      "recoverAllSuccess": "全部还原成功",
-      "deleteAllSuccess": "全部删除成功",
-      "recoverSuccess": "还原成功",
-      "deleteSuccess": "删除成功"
-    },
-    "tabs": {
-      "plan": "计划",
-      "case": "用例"
-    },
-    "columns": {
-      "name": "名称",
-      "creator": "添加人",
-      "deleter": "删除人",
-      "deleteTime": "删除时间",
-      "actions": "操作"
-    },
-    "empty": {
-      "description": "回收站为空",
-      "hint": "已删除的数据将在此显示"
-    }
-  },
   "functionHome": {
     "name": "主页",
     "myCases": {

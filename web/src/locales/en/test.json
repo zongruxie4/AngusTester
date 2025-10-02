@@ -1383,18 +1383,5 @@
         "savingWorkloadPercentage": "Saving Workload Percentage"
       }
     }
-  },
-  "functionTrash": {
-    "title": "Trash",
-    "placeholder": {
-      "searchKeyword": "Please enter search keyword"
-    },
-    "tips": {
-      "adminOnly": "Only administrators and deleters can restore or permanently delete recycle bin data."
-    },
-    "empty": {
-      "description": "Trash is empty",
-      "hint": "Deleted items will be displayed here"
-    }
   }
 }
