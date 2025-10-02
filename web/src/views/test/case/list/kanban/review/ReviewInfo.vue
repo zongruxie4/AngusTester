@@ -38,7 +38,7 @@ const reviewInfoColumns = [
       dataIndex: 'reviewFailNum'
     },
     {
-      label: t('functionCase.kanbanView.reviewInfoGrid.oneTimePass'),
+      label: t('common.counts..oneTimePassed'),
       dataIndex: 'oneReviewPass'
     },
     {

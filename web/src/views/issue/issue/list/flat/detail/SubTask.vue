@@ -607,7 +607,7 @@ const subTaskTableColumns = [
           <RouterLink
             target="_self"
             :title="record.name"
-            :to="`/task#task?projectId=${props.projectId}&taskId=${record.id}&total=1`"
+            :to="`/issue#issue?projectId=${props.projectId}&taskId=${record.id}&total=1`"
             style="color:#40a9ff">
             {{ record.name || '--' }}
           </RouterLink>

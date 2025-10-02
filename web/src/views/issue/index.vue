@@ -75,7 +75,7 @@ const menuItems = computed(() => {
       : null,
     projectTypeVisibilityMap.value.showSprint
       ? {
-          name: t('taskSprint.title'),
+          name: t('sprint.title'),
           icon: 'icon-diedai',
           key: 'sprint'
         }
@@ -87,7 +87,7 @@ const menuItems = computed(() => {
     },
     projectTypeVisibilityMap.value.showMeeting
       ? {
-          name: t('taskMeeting.title'),
+          name: t('meeting.title'),
           icon: 'icon-RT',
           key: 'meeting'
         }

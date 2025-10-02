@@ -143,7 +143,7 @@ const handleTaskDisassociation = (taskRecord: any) => {
  * @param taskRecord - The task record to open
  */
 const navigateToTaskDetail = (taskRecord: any) => {
-  router.push(`/task#task?taskId=${taskRecord.id}`);
+  router.push(`/issue#issue?taskId=${taskRecord.id}`);
 };
 
 /**

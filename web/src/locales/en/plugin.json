@@ -590,11 +590,6 @@
       "collapse": {
         "iteration": "Iteration {iteration}"
       },
-      "timeTexts": {
-        "minimum": "Min",
-        "average": "Avg",
-        "maximum": "Max"
-      },
       "ftp": {
         "duration": "Duration",
         "request": "Request",
@@ -953,17 +948,6 @@
           "threadCount": "Thread Count",
           "maxThreadCount": "Max Thread Count",
           "activeThreadCount": "Active Thread Count"
-        },
-        "responseTimeOptions": {
-          "average": "Avg",
-          "minimum": "Min",
-          "maximum": "Max",
-          "p50": "P50",
-          "p75": "P75",
-          "p90": "P90",
-          "p95": "P95",
-          "p99": "P99",
-          "p999": "P999"
         },
         "errorOptions": {
           "errorCount": "Error Count",
@@ -1979,9 +1963,6 @@
       "errorRate": "Error Rate",
       "iterations": "Iterations",
       "rowsPerSecond": "Rows Per Second",
-      "average": "Average",
-      "minimum": "Minimum",
-      "maximum": "Maximum",
       "concurrency": "Concurrency",
       "rowsPerSecondTps": "Rows Per Second (TPS)",
       "error": "Error",
@@ -2002,15 +1983,6 @@
     "transactionsPerSecond": "Transactions Per Second",
     "downloadPerSecond": "Download/Second",
     "uploadPerSecond": "Upload/Second",
-    "average": "Average",
-    "minimum": "Minimum",
-    "maximum": "Maximum",
-    "p50": "P50",
-    "p75": "P75",
-    "p90": "P90",
-    "p95": "P95",
-    "p99": "P99",
-    "p999": "P999",
     "errorRate": "Error Rate",
     "threadCount": "Thread Count",
     "activeThreadCount": "Active Thread Count",

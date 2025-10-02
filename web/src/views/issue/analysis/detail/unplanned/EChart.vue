@@ -33,7 +33,7 @@ let unplannedWorkloadRefEChart;
 // 任务数
 const unplannedTaskEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.unplannedTasks.chartTitles.taskCount'),
+    text: t('common.count'),
     bottom: 0,
     left: 'center',
     textStyle: {

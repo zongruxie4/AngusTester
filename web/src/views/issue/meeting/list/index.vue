@@ -156,7 +156,7 @@ onMounted(() => {
     </div>
 
     <div class="text-3.5 font-semibold mb-1">
-      {{ t('taskMeeting.addedMeetings') }}
+      {{ t('meeting.addedMeetings') }}
     </div>
     <Spin :spinning="isLoading" class="flex-1 flex flex-col">
       <template v-if="isDataLoaded">
@@ -165,9 +165,9 @@ onMounted(() => {
           class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>{{ t('taskMeeting.notAddedYet') }}</span>
-            <RouterLink class="router-link flex-1 truncate" :to="`/task#meeting?type=ADD`">
-              {{ t('taskMeeting.addMeeting') }}
+            <span>{{ t('meeting.notAddedYet') }}</span>
+            <RouterLink class="router-link flex-1 truncate" :to="`/issue#meeting?type=ADD`">
+              {{ t('meeting.addMeeting') }}
             </RouterLink>
           </div>
         </div>

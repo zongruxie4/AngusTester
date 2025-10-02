@@ -169,7 +169,7 @@ onMounted(() => {
     :visible="props.visible"
     :footer="null"
     :width="800"
-    :title="t('taskSprint.burndown.title')"
+    :title="t('sprint.burndown.title')"
     @cancel="closeModal">
     <div class="pt-1.5">
       <RadioGroup v-model:value="selectedChartType" :options="chartTypeOptions" />

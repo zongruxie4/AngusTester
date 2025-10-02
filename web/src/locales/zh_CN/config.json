@@ -502,7 +502,6 @@
           "threeHours": "最近3小时"
         },
         "columns": {
-          "average": "平均值",
           "highest": "最高",
           "lowest": "最低",
           "latest": "最新值"

@@ -1405,7 +1405,7 @@ const getPopupContainer = () => {
                     :customRequest="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                     <span class="text-3 text-theme-text-hover">
-                      {{ t('backlog.edit.actions.uploadAttachments') }}
+                      {{ t('actions.upload') }}
                     </span>
                   </Upload>
                 </div>

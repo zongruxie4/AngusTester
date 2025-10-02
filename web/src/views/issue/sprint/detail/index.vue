@@ -189,11 +189,11 @@ const exportSprintTasks = async () => {
  * Copies sprint link to clipboard
  */
 const copySprintLink = () => {
-  const message = window.location.origin + '/task#sprint?id=' + sprintId.value;
+  const message = window.location.origin + '/issue#sprint?id=' + sprintId.value;
   toClipboard(message).then(() => {
-    notification.success(t('taskSprint.messages.copyLinkSuccess'));
+    notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
-    notification.error(t('taskSprint.messages.copyLinkFailed'));
+    notification.error(t('actions.tips.copyLinkFailed'));
   });
 };
 
@@ -250,9 +250,9 @@ onMounted(() => {
         class="p-0">
         <RouterLink
           class="flex items-center space-x-1 leading-6.5 px-1.75"
-          :to="`/task#task?sprintId=${sprintId}&sprintName=${sprintData?.name}`">
+          :to="`/issue#issue?sprintId=${sprintId}&sprintName=${sprintData?.name}`">
           <Icon icon="icon-renwu2" class="text-3.5" />
-          <span>{{ t('taskSprint.actions.viewTasks') }}</span>
+          <span>{{ t('sprint.actions.viewIssues') }}</span>
         </RouterLink>
       </Button>
 
@@ -263,7 +263,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="exportSprintTasks">
         <Icon icon="icon-daochu" class="text-3.5" />
-        <span>{{ t('taskSprint.actions.exportTasks') }}</span>
+        <span>{{ t('sprint.actions.exportIssues') }}</span>
       </Button>
 
       <Button
@@ -296,7 +296,7 @@ onMounted(() => {
     <BasicInfo :sprintData="sprintData" :completionRate="completionRate" />
 
     <Tabs size="small">
-      <TabPane key="acceptanceCriteria" :tab="t('taskSprint.columns.acceptanceCriteria')">
+      <TabPane key="acceptanceCriteria" :tab="t('sprint.columns.acceptanceCriteria')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <!-- {{ dataSource?.acceptanceCriteria }} -->
           <RichEditor
@@ -305,7 +305,7 @@ onMounted(() => {
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="otherInformation" :tab="t('taskSprint.columns.otherInformation')">
+      <TabPane key="otherInformation" :tab="t('sprint.columns.otherInformation')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <!-- {{ dataSource?.otherInformation }} -->
           <RichEditor
@@ -317,16 +317,16 @@ onMounted(() => {
       <TabPane key="chart" :tab="t('chart.burndown.title')">
         <BurnDownChart :sprintId="sprintId" />
       </TabPane>
-      <TabPane key="progress" :tab="t('taskSprint.columns.memberProgress')">
+      <TabPane key="progress" :tab="t('sprint.columns.memberProgress')">
         <MembersProgress :sprintId="sprintId" :projectId="props.projectId" />
       </TabPane>
-      <TabPane key="workCalendar" :tab="t('taskSprint.columns.workCalendar')">
+      <TabPane key="workCalendar" :tab="t('common.workCalendar')">
         <WorkCalendar
           :projectId="props.projectId"
           :userInfo="props.userInfo"
           :sprintId="sprintId" />
       </TabPane>
-      <TabPane key="meetings" :tab="t('taskSprint.columns.meetingRecords')">
+      <TabPane key="meetings" :tab="t('sprint.columns.meetingRecords')">
         <Meeting :meetings="meetings" />
       </TabPane>
     </Tabs>

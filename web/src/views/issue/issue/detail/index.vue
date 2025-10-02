@@ -66,7 +66,7 @@ const currentTaskId = computed(() => {
  * Initializes the task details page by setting up URL and tab data
  */
 const initializeTaskDetail = () => {
-  router.replace('/task#task');
+  router.replace('/issue#issue');
 
   const taskId = props.data?.id;
   const tabPaneDataList = getTabPane(taskId);

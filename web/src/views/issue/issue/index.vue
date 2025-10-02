@@ -150,7 +150,7 @@ const processRouteHash = (hash: string) => {
   }
 
   // Clean up URL by removing hash parameters
-  router.replace('/task#task');
+  router.replace('/issue#issue');
 };
 
 /**

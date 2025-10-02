@@ -276,7 +276,7 @@ const getDuration = (mseconds) => {
               <Icon v-bind="getIcon(sysItem.dataIndex)" />
             </div>
             <div class="flex-1 text-text-sub-content">
-              {{ `${t('execution.testResult.maximum')} ${props.result[sysItem.maxIndex] || '--'}${sysItem.idx === 'network' ? 'MB' : '%'}` }}
+              {{ `${t('chart.max')} ${props.result[sysItem.maxIndex] || '--'}${sysItem.idx === 'network' ? 'MB' : '%'}` }}
             </div>
           </div>
         </template>

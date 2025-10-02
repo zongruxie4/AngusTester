@@ -176,7 +176,7 @@ export function useVariableDetail (
     toClipboard(window.location.origin + `/data#variables?id=${id}`).then(() => {
       notification.success(t('actions.tips.copyLinkSuccess'));
     }).catch(() => {
-      notification.error(t('actions.tips.copyLinkFail'));
+      notification.error(t('actions.tips.copyLinkFailed'));
     });
   };
 

@@ -1038,9 +1038,7 @@
     "sprintName": "所属迭代",
     "assigneeName": "经办人",
     "confirmerName": "确认人",
-    "createdByName": "创建人",
-    "average": "平均",
-    "max": "最大"
+    "createdByName": "创建人"
   },
   "xcan_indicator": {
     "functionalIndicator": "功能能指标",
@@ -1387,9 +1385,6 @@
     "transactionsPerS": "每秒事务数",
     "downloadPerSecond": "下载/秒",
     "uploadPerSecond": "上传/秒",
-    "average": "平均",
-    "minimum": "最小",
-    "maximum": "最大",
     "threadCount": "线程数",
     "activeThreadCount": "活跃线程数",
     "maxThreadCount": "最大线程数"
@@ -1466,9 +1461,6 @@
     "uploadPerSecond": "上传/秒",
     "maxThreadCount": "最大线程数",
     "activeThreadCount": "活跃线程数",
-    "average": "平均",
-    "minimum": "最小",
-    "maximum": "最大",
     "errorCount": "错误数",
     "errorRate": "错误率",
     "throughput": "吞吐量（TPS/QPS）",

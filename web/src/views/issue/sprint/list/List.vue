@@ -84,7 +84,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
             <RouterLink
               class="router-link"
               :title="item.name"
-              :to="`/task#sprint?id=${item.id}`">
+              :to="`/issue#sprint?id=${item.id}`">
               {{ item.name }}
             </RouterLink>
           </div>
@@ -144,7 +144,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
               <!-- Task count -->
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('taskSprint.taskCount') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('common.counts.issueCount') }}</span>
                   <span class="text-sm font-medium text-theme-content">
                     {{ item.taskNum }}
                   </span>
@@ -239,16 +239,16 @@ const getSprintStatusDotStyle = (statusValue: string) => {
               :emptyText="t('tcommon.noDescription')" />
           </div>
           <div class="flex items-center justify-between h-4 leading-5">
-            <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}&type=edit`">
+            <RouterLink class="flex items-center space-x-1" :to="`/issue#sprint?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
               <span>{{ t('actions.edit') }}</span>
             </RouterLink>
 
             <RouterLink
               class="flex items-center space-x-1 ml-3"
-              :to="`/task#task?sprintId=${item.id}&sprintName=${item.name}`">
+              :to="`/issue#issue?sprintId=${item.id}&sprintName=${item.name}`">
               <Icon icon="icon-renwu2" class="text-3.5" />
-              <span>{{ t('taskSprint.actions.viewTasks') }}</span>
+              <span>{{ t('sprint.actions.viewIssues') }}</span>
             </RouterLink>
 
             <Button

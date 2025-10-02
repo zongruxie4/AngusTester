@@ -179,7 +179,6 @@
         "vu": "并发数（VU）",
         "thread": "线程数",
         "rt": "响应时间（RT、毫秒）",
-        "average": "平均",
         "error": "错误（ERROR）",
         "errRate": "错误率",
         "other": "其他信息",
@@ -524,9 +523,7 @@
           "indicatorsAndResults": "测试指标和结果",
           "stabilityIndicators": "稳定性指标",
           "results": "结果",
-          "systemLoad": "应用系统平均负载",
-          "average": "平均",
-          "maximum": "最大"
+          "systemLoad": "应用系统平均负载"
         },
         "fields": {
           "testResult": "测试结果",
@@ -1497,9 +1494,7 @@
             }
           },
           "systemLoad": {
-            "title": "应用系统平均负载",
-            "average": "平均",
-            "maximum": "最大"
+            "title": "应用系统平均负载"
           }
         },
         "performanceTest": {

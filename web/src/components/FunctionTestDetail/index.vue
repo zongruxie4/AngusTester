@@ -214,7 +214,7 @@ const pending = computed(() => {
 });
 
 const texts = [t('status.passed'), t('status.ignored'), t('status.disabled'), t('status.total')];
-const timeTexts = [t('chart.min'), t('chart.average'), t('chart.max')];
+const timeTexts = [t('chart.max')];
 </script>
 <template>
   <div class="px-5">

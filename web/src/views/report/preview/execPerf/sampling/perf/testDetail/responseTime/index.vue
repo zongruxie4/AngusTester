@@ -52,15 +52,15 @@ const setSeries = (data: {
   for (let i = 0, len = names.length; i < len; i++) {
     const name = names[i];
     result.push({
-      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.responseTime.average'),
+      name: name + ' - ' + t('chart.average'),
       data: data[name].tranMean
     });
     result.push({
-      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.responseTime.minimum'),
+      name: name + ' - ' + t('chart.min'),
       data: data[name].tranMin
     });
     result.push({
-      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.responseTime.maximum'),
+      name: name + ' - ' + t('chart.max'),
       data: data[name].tranMax
     });
     result.push({
@@ -147,15 +147,15 @@ const tableData = computed(() => {
         </div>
         <div
           class="w-16 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>{{ t('reportPreview.execPerf.sampling.testDetail.responseTime.average') }}</span>
+          <span>{{ t('chart.average') }}</span>
         </div>
         <div
           class="w-16 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>{{ t('reportPreview.execPerf.sampling.testDetail.responseTime.minimum') }}</span>
+          <span>{{ t('chart.min') }}</span>
         </div>
         <div
           class="w-16 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>{{ t('reportPreview.execPerf.sampling.testDetail.responseTime.maximum') }}</span>
+          <span>{{ t('chart.max') }}</span>
         </div>
         <div
           class="w-16 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">

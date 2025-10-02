@@ -143,7 +143,7 @@ const reopenSprint = async (sprint: SprintInfo, index: number) => {
   if (error) {
     return;
   }
-  notification.success(t('taskSprint.messages.reopenSuccess'));
+  notification.success(t('actions.tips.reopenSuccess'));
   await updateSprintData(sprint.id, index);
 };
 
@@ -159,7 +159,7 @@ const restartSprint = async (sprint: SprintInfo, index: number) => {
   if (error) {
     return;
   }
-  notification.success(t('taskSprint.messages.restartSuccess'));
+  notification.success(t('actions.tips.restartSuccess'));
   await updateSprintData(sprint.id, index);
 };
 
@@ -178,7 +178,7 @@ const startSprint = async (sprint: SprintInfo, index: number) => {
     return;
   }
 
-  notification.success(t('taskSprint.messages.startSuccess'));
+  notification.success(t('actions.tips.startSuccess'));
   await updateSprintData(sprintId, index);
 };
 
@@ -196,7 +196,7 @@ const completeSprint = async (sprint: SprintInfo, index: number) => {
     return;
   }
 
-  notification.success(t('taskSprint.messages.completeSuccess'));
+  notification.success(t('actions.tips.completeSuccess'));
   await updateSprintData(sprintId, index);
 };
 
@@ -213,7 +213,7 @@ const blockSprint = async (sprint: SprintInfo, index: number) => {
     return;
   }
 
-  notification.success(t('taskSprint.messages.blockSuccess'));
+  notification.success(t('actions.tips.blockSuccess'));
   await updateSprintData(sprintId, index);
 };
 
@@ -487,14 +487,14 @@ const getDropdownMenuItems = () => {
     {
       key: 'reopen',
       icon: 'icon-zhongxindakai',
-      name: t('common.reopen'),
+      name: t('actions.reopen'),
       noAuth: true,
       permission: 'modify'
     },
     {
       key: 'restart',
       icon: 'icon-zhongxinkaishi',
-      name: t('common.restart'),
+      name: t('actions.restart'),
       noAuth: true,
       permission: 'modify'
     },
@@ -502,19 +502,19 @@ const getDropdownMenuItems = () => {
       key: 'viewBurnDown',
       icon: 'icon-jiankong',
       noAuth: true,
-      name: t('taskSprint.dropdownMenu.viewBurndown')
+      name: t('sprint.actions.dropdownMenu.viewBurndown')
     },
     {
       key: 'viewProgress',
       icon: 'icon-jiankong',
       noAuth: true,
-      name: t('taskSprint.dropdownMenu.viewProgress')
+      name: t('sprint.actions.dropdownMenu.viewProgress')
     },
     {
       key: 'viewWorkCalendar',
       icon: 'icon-jiankong',
       noAuth: true,
-      name: t('taskSprint.dropdownMenu.viewWorkCalendar')
+      name: t('sprint.actions.dropdownMenu.viewWorkCalendar')
     },
     {
       key: 'export',
@@ -552,15 +552,15 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="text-3.5 font-semibold mb-1">{{ t('taskSprint.addedSprints') }}</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('sprint.addedSprints') }}</div>
     <Spin :spinning="isLoading" class="flex-1 flex flex-col">
       <template v-if="isDataLoaded">
         <div v-if="!hasActiveSearch && sprintList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>{{ t('taskSprint.notAddedYet') }}</span>
-            <RouterLink class="router-link flex-1 truncate" :to="`/task#sprint?type=ADD`">
-              {{ t('taskSprint.addSprint') }}
+            <span>{{ t('sprint.notAddedYet') }}</span>
+            <RouterLink class="router-link flex-1 truncate" :to="`/issue#sprint?type=ADD`">
+              {{ t('sprint.actions.addSprint') }}
             </RouterLink>
           </div>
         </div>
@@ -612,9 +612,9 @@ onMounted(() => {
         :updateUrl="`${TESTER}/task/sprint/auth`"
         :enabledUrl="`${TESTER}/task/sprint/${selectedSprint?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/task/sprint/${selectedSprint?.id}/auth/status`"
-        :onTips="t('taskSprint.anthModal.onTips')"
-        :offTips="t('taskSprint.anthModal.offTips')"
-        :title="t('taskSprint.anthModal.title')"
+        :onTips="t('sprint.anthModal.onTips')"
+        :offTips="t('sprint.anthModal.offTips')"
+        :title="t('sprint.anthModal.title')"
         @change="handleAuthFlagChange" />
     </AsyncComponent>
 

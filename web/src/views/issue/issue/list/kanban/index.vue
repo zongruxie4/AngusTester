@@ -1382,7 +1382,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (status === TaskStatus.CANCELED || status === TaskStatus.COMPLETED) {
         menuItems.push({
-          name: t('common.reopen'),
+          name: t('actions.reopen'),
           key: 'reopen',
           icon: 'icon-zhongxindakaiceshirenwu',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isAssignee,
@@ -1391,7 +1391,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
 
         menuItems.push({
-          name: t('common.restart'),
+          name: t('actions.restart'),
           key: 'restart',
           icon: 'icon-zhongxinkaishiceshi',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.RESTART_TASK),
@@ -1805,7 +1805,7 @@ onMounted(() => {
           <div class="flex items-center justify-between mt-4 pl-5 space-x-2.5">
             <div class="flex-1 flex items-center truncate">
               <RouterLink
-                :to="`/task#sprint?id=${checkedSprintInfo?.id}`"
+                :to="`/issue#sprint?id=${checkedSprintInfo?.id}`"
                 :title="checkedSprintInfo?.name"
                 class="truncate"
                 style="max-width: 50%;">
@@ -1813,7 +1813,7 @@ onMounted(() => {
               </RouterLink>
               <div class="mx-1.5">/</div>
               <RouterLink
-                :to="`/task#task?id=${checkedTaskInfo?.id}`"
+                :to="`/issue#issue?id=${checkedTaskInfo?.id}`"
                 class="truncate flex-1"
                 :title="checkedTaskInfo?.name">
                 {{ checkedTaskInfo?.name }}

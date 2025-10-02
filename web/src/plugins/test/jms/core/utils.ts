@@ -44,7 +44,7 @@ const formatTime = (timestamp:number):string => {
 const letterMap = {
   ms: t('commonPlugin.utils.timeUnits.ms'),
   s: t('commonPlugin.utils.timeUnits.s'),
-  min: t('commonPlugin.utils.timeUnits.min'),
+  min: t('chart.min'),
   h: t('commonPlugin.utils.timeUnits.h'),
   d: t('commonPlugin.utils.timeUnits.d')
 };

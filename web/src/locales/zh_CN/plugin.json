@@ -589,11 +589,6 @@
       "collapse": {
         "iteration": "第{iteration}次迭代"
       },
-      "timeTexts": {
-        "minimum": "最小",
-        "average": "平均",
-        "maximum": "最大"
-      },
       "ftp": {
         "duration": "耗时",
         "request": "请求",
@@ -945,17 +940,6 @@
           "threadCount": "线程数",
           "maxThreadCount": "最大线程数",
           "activeThreadCount": "活跃线程数"
-        },
-        "responseTimeOptions": {
-          "average": "平均",
-          "minimum": "最小",
-          "maximum": "最大",
-          "p50": "P50",
-          "p75": "P75",
-          "p90": "P90",
-          "p95": "P95",
-          "p99": "P99",
-          "p999": "P999"
         },
         "errorOptions": {
           "errorCount": "错误数",
@@ -1968,9 +1952,6 @@
       "errorRate": "错误率",
       "iterations": "迭代数",
       "rowsPerSecond": "每秒行数",
-      "average": "平均",
-      "minimum": "最小",
-      "maximum": "最大",
       "concurrency": "并发数",
       "rowsPerSecondTps": "每秒行数 (TPS)",
       "error": "错误(Error)",
@@ -1991,15 +1972,6 @@
     "transactionsPerSecond": "每秒事务数",
     "downloadPerSecond": "下载/秒",
     "uploadPerSecond": "上传/秒",
-    "average": "平均",
-    "minimum": "最小",
-    "maximum": "最大",
-    "p50": "P50",
-    "p75": "P75",
-    "p90": "P90",
-    "p95": "P95",
-    "p99": "P99",
-    "p999": "P999",
     "errorRate": "错误率",
     "threadCount": "线程数",
     "activeThreadCount": "活跃线程数",

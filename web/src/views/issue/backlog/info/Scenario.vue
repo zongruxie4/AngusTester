@@ -875,7 +875,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('common.processCount') }}</span>
+            <span>{{ t('common.counts.processCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -884,7 +884,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('common.processFailCount') }}</span>
+            <span>{{ t('common.counts.processFailCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -938,7 +938,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('common.oneTimePass') }}</span>
+            <span>{{ t('common.counts..oneTimePassed') }}</span>
             <Colon class="w-1" />
           </div>
 

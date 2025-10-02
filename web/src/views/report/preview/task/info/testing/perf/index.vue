@@ -314,7 +314,7 @@ const artResult = computed(() => {
               <span>{{ nodeUsageSummary?.meanCpu ? `${nodeUsageSummary?.meanCpu}%` : '--' }}</span>
             </div>
             <div class="flex-1 flex items-center space-x-1">
-              <span>{{ t('reportPreview.task.info.testing.perf.systemLoad.maximum') }}</span>
+              <span>{{ t('chart.max') }}</span>
               <span>{{ nodeUsageSummary?.maxCpu ? `${nodeUsageSummary?.maxCpu}%` : '--' }}</span>
             </div>
           </div>
@@ -325,7 +325,7 @@ const artResult = computed(() => {
               <span>{{ nodeUsageSummary?.meanMemory ? `${nodeUsageSummary?.meanMemory}%` : '--' }}</span>
             </div>
             <div class="flex-1 flex items-center space-x-1">
-              <span>{{ t('reportPreview.task.info.testing.perf.systemLoad.maximum') }}</span>
+              <span>{{ t('chart.max') }}</span>
               <span>{{ nodeUsageSummary?.maxMemory ? `${nodeUsageSummary?.maxMemory}%` : '--' }}</span>
             </div>
           </div>
@@ -336,7 +336,7 @@ const artResult = computed(() => {
               <span>{{ nodeUsageSummary?.meanFilesystem ? `${nodeUsageSummary?.meanFilesystem}%` : '--' }}</span>
             </div>
             <div class="flex-1 flex items-center space-x-1">
-              <span>{{ t('reportPreview.task.info.testing.perf.systemLoad.maximum') }}</span>
+              <span>{{ t('chart.max') }}</span>
               <span>{{ nodeUsageSummary?.maxFilesystem ? `${nodeUsageSummary?.maxFilesystem}%` : '--' }}</span>
             </div>
           </div>
@@ -347,7 +347,7 @@ const artResult = computed(() => {
               <span>{{ nodeUsageSummary?.meanNetwork ? `${nodeUsageSummary?.meanNetwork}MB` : '--' }}</span>
             </div>
             <div class="flex-1 flex items-center space-x-1">
-              <span>{{ t('reportPreview.task.info.testing.perf.systemLoad.maximum') }}</span>
+              <span>{{ t('chart.max') }}</span>
               <span>{{ nodeUsageSummary?.maxNetwork ? `${nodeUsageSummary?.maxNetwork}MB` : '--' }}</span>
             </div>
           </div>

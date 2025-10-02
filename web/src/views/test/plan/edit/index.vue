@@ -738,7 +738,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="startPlan">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>{{ t('common.restart') }}</span>
+          <span>{{ t('actions.restart') }}</span>
         </Button>
 
         <Button

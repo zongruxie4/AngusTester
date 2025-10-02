@@ -82,9 +82,9 @@ export type TaskCount = {
   /** One-time pass rate */
   oneTimePassedRate: number;
   /** The number of task process times */
-  processTimes: number;
+  processCount: number;
   /** The number of task process failure times */
-  processFailTimes: number;
+  processFailCount: number;
   /** Eval workload */
   evalWorkload: number;
   /** Actual workload */

@@ -156,7 +156,7 @@ export const ButtonGroup = [
         tip: t('service.apis.buttonGroup.reTestTip')
       },
       {
-        name: t('common.reopen'),
+        name: t('actions.reopen'),
         key: 'reopen',
         permission: 'TEST',
         disabled: false,

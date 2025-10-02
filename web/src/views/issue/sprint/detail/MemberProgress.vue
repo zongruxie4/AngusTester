@@ -57,7 +57,7 @@ onMounted(() => {
 const tableColumns = [
   {
     key: 'assigneeName',
-    title: t('taskSprint.progress.member'),
+    title: t('common.members'),
     dataIndex: 'assigneeName',
     customCell: () => {
       return { style: 'white-space:nowrap;' };
@@ -75,7 +75,7 @@ const tableColumns = [
   },
   {
     key: 'totalTaskNum',
-    title: t('taskSprint.progress.totalTaskCount'),
+    title: t('common.counts.totalCount'),
     dataIndex: 'totalTaskNum',
     sorter: (a, b) => +a.totalTaskNum - (+b.totalTaskNum),
     customCell: () => {
@@ -84,7 +84,7 @@ const tableColumns = [
   },
   {
     key: 'validTaskNum',
-    title: t('taskSprint.progress.validTaskCount'),
+    title: t('common.counts.validCount'),
     dataIndex: 'validTaskNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
     customCell: () => {
@@ -93,7 +93,7 @@ const tableColumns = [
   },
   {
     key: 'completedNum',
-    title: t('taskSprint.progress.completedTaskCount'),
+    title: t('common.counts.completedCount'),
     dataIndex: 'completedNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
     customCell: () => {
@@ -112,13 +112,13 @@ const tableColumns = [
   },
   {
     key: 'completedWorkloadRate',
-    title: t('taskSprint.progress.workloadCompletionRate'),
+    title: t('common.counts.workloadCompletionRate'),
     dataIndex: 'completedWorkloadRate',
     customRender: ({ text }) => text + '%'
   },
   {
     key: 'overdueNum',
-    title: t('taskSprint.progress.overdueTaskCount'),
+    title: t('common.counts.overdueCount'),
     dataIndex: 'overdueNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
     customCell: () => {
@@ -127,7 +127,7 @@ const tableColumns = [
   },
   {
     key: 'overdueRate',
-    title: t('taskSprint.progress.overdueRate'),
+    title: t('common.counts.overdueRate'),
     dataIndex: 'overdueRate',
     customRender: ({ text }) => text + '%',
     customCell: () => {

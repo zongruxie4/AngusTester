@@ -141,35 +141,35 @@ const threadOptions = [
 
 const responseTimeOptions = [
   {
-    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.average'),
+    label: t('chart.average'),
     value: 'tranMean'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.minimum'),
+    label: t('chart.min'),
     value: 'tranMin'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.maximum'),
+    label: t('chart.max'),
     value: 'tranMax'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p50'),
+    label: t('chart.p50'),
     value: 'tranP50'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p75'),
+    label: t('chart.p75'),
     value: 'tranP75'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p90'),
+    label: t('chart.p90'),
     value: 'tranP90'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p95'),
+    label: t('chart.p95'),
     value: 'tranP95'
   },
   {
-    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p99'),
+    label: t('chart.p99'),
     value: 'tranP99'
   },
   {

@@ -73,7 +73,7 @@ export const bigReviewInfoColumns = [
       dataIndex: 'reviewFailNum'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.oneTimePass'),
+      label: t('common.counts..oneTimePassed'),
       dataIndex: 'oneReviewPass'
     },
     {
@@ -105,7 +105,7 @@ export const bigTestInfoColumns = [
       dataIndex: 'testFailNum'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.oneTimePass'),
+      label: t('common.counts..oneTimePassed'),
       dataIndex: 'oneTestPass'
     },
     {

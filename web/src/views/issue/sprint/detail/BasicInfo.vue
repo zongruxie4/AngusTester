@@ -59,7 +59,7 @@ const attachments = computed(() => props.sprintData?.attachments || []);
 
         <div class="w-1/2 flex items-start">
           <div class="w-24 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('taskSprint.columns.taskPrefix') }}</span>
+            <span class="font-semibold text-black">{{ t('sprint.columns.issuePrefix') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -86,7 +86,7 @@ const attachments = computed(() => props.sprintData?.attachments || []);
 
         <div class="w-1/2 flex items-center">
           <div class="w-24 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('taskSprint.columns.workloadAssessment') }}</span>
+            <span class="font-semibold text-black">{{ t('common.evalWorkloadMethod') }}</span>
             <Colon class="w-1" />
           </div>
 

@@ -845,7 +845,7 @@ const actionMenuItemsMap = computed(() => {
 
     if (status === TaskStatus.CANCELED || status === TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('common.reopen'),
+        name: t('actions.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.REOPEN_TASK as any) && !isAssignee,
@@ -854,7 +854,7 @@ const actionMenuItemsMap = computed(() => {
       });
 
       menuItems.push({
-        name: t('common.restart'),
+        name: t('actions.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any),
@@ -1022,7 +1022,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="reopenCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>{{ t('common.reopen') }}</span>
+          <span>{{ t('actions.reopen') }}</span>
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
@@ -1042,7 +1042,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="restartCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>{{ t('common.restart') }}</span>
+          <span>{{ t('actions.restart') }}</span>
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">

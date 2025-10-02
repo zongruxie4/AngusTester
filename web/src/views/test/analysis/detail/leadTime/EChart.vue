@@ -41,14 +41,14 @@ const leadTimeEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.leadTime.average'),
-      t('functionAnalysis.detail.leadTime.minimum'),
-      t('functionAnalysis.detail.leadTime.maximum'),
-      t('functionAnalysis.detail.leadTime.p50'),
-      t('functionAnalysis.detail.leadTime.p75'),
-      t('functionAnalysis.detail.leadTime.p90'),
-      t('functionAnalysis.detail.leadTime.p95'),
-      t('functionAnalysis.detail.leadTime.p99')
+      t('chart.average'),
+      t('chart.min'),
+      t('chart.max'),
+      t('chart.p50'),
+      t('chart.p75'),
+      t('chart.p90'),
+      t('chart.p95'),
+      t('chart.p99')
     ],
     axisLabel: {
       interval: 0,

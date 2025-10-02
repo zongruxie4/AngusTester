@@ -95,6 +95,72 @@
       "maxSplitWarning": "最大允许拆分200条"
     }
   },
+  "sprint": {
+    "title": "迭代",
+    "addedSprints": "已添加的迭代",
+    "notAddedYet": "还未添加，点击添加",
+    "introduce": {
+      "title": "关于迭代",
+      "description": "迭代将项目分解为固定时间周期（通常1-4周）的工作单元。每个迭代都有明确的目标、可交付成果和验收标准，确保团队持续交付价值。团队可以更好地规划工作、跟踪进度、识别风险，并在每个迭代结束时进行回顾和改进。",
+      "benefits": {
+        "organizeWork": "组织工作",
+        "organizeWorkDesc": "将复杂项目分解为可管理的迭代，明确目标和交付物",
+        "enhanceCollaboration": "增强协作",
+        "enhanceCollaborationDesc": "促进团队成员间的沟通和协作，提高工作效率",
+        "improveTransparency": "提高透明度",
+        "improveTransparencyDesc": "让项目进展和问题更加透明，便于管理和决策",
+        "improveFlexibility": "提高灵活性",
+        "improveFlexibilityDesc": "快速响应变化，调整优先级和计划",
+        "improveQuality": "提高质量",
+        "improveQualityDesc": "通过持续集成和测试，确保产品质量",
+        "enhanceSatisfaction": "提升满意度",
+        "enhanceSatisfactionDesc": "通过快速交付和反馈，提升客户和团队满意度"
+      }
+    },
+    "actions": {
+      "addSprint": "添加迭代",
+      "viewIssues": "查看问题",
+      "exportIssues": "导出问题",
+      "dropdownMenu": {
+        "viewBurndown": "查看燃尽图",
+        "viewProgress": "查看进度",
+        "viewWorkCalendar": "查看工作日历"
+      },
+      "sorts": {
+        "sortByCreateTime": "按添加时间",
+        "sortByCreator": "按添加人",
+        "sortByOwner": "按负责人"
+      }
+    },
+    "columns": {
+      "issuePrefix": "问题前缀",
+      "acceptanceCriteria": "验收标准",
+      "otherInformation": "其他信息",
+      "attachmentCount": "附件数",
+      "memberProgress": "成员进度",
+      "meetingRecords": "会议记录"
+    },
+    "placeholder": {
+      "inputSprintName": "输入迭代名称，最多可输入100字符",
+      "inputIssuePrefix": "输入问题前缀，最多可输入40字符",
+      "inputAcceptanceCriteria": "明确计软件产品交付的具体条件和标准",
+      "inputOtherInformation": "其他说明，如迭代策略、风险评估和管理等"
+    },
+    "tips": {
+      "ownerTip": "负责人负责迭代的整体规划和执行，包括任务分配、进度跟踪和风险管理",
+      "issuePrefixTip": "问题前缀用于标识属于该迭代的问题，便于任务管理和追踪",
+      "evalWorkloadMethodTip": "工作量评估方法用于估算任务的工作量，帮助团队更好地规划迭代",
+      "attachmentTip": "支持上传相关文档、设计稿、需求文档等附件，便于团队成员查阅"
+    },
+    "messages": {
+      "nameRequired": "请输入迭代名称",
+      "dateRequired": "请选择计划时间",
+      "startDateRequired": "请选择开始时间",
+      "endDateRequired": "请选择结束时间",
+      "ownerRequired": "请选择负责人",
+      "maxLengthExceeded": "内容长度超过限制"
+    }
+  },
   "task": {
     "title": "任务",
     "addTask": "添加任务",
@@ -829,7 +895,6 @@
           "selectFile": "选择文件"
         },
         "messages": {
-
         }
       },
       "basic": {
@@ -872,131 +937,7 @@
       }
     }
   },
-  "taskSprint": {
-    "title": "迭代",
-    "addSprint": "添加迭代",
-    "aboutSprint": "关于迭代",
-    "aboutSprintDesc": "迭代将项目分解为固定时间周期（通常1-4周）的工作单元。每个迭代都有明确的目标、可交付成果和验收标准，确保团队持续交付价值。团队可以更好地规划工作、跟踪进度、识别风险，并在每个迭代结束时进行回顾和改进。",
-    "scrumAgileProcess": "Scrum敏捷流程",
-    "addedSprints": "已添加的迭代",
-    "notAddedYet": "还未添加，点击添加",
-    "taskCount": "任务数",
-    "allMembers": "所有成员",
-    "benefits": {
-      "organizeWork": "组织工作",
-      "organizeWorkDesc": "将复杂项目分解为可管理的迭代，明确目标和交付物",
-      "enhanceCollaboration": "增强协作",
-      "enhanceCollaborationDesc": "促进团队成员间的沟通和协作，提高工作效率",
-      "improveTransparency": "提高透明度",
-      "improveTransparencyDesc": "让项目进展和问题更加透明，便于管理和决策",
-      "improveFlexibility": "提高灵活性",
-      "improveFlexibilityDesc": "快速响应变化，调整优先级和计划",
-      "improveQuality": "提高质量",
-      "improveQualityDesc": "通过持续集成和测试，确保产品质量",
-      "enhanceSatisfaction": "提升满意度",
-      "enhanceSatisfactionDesc": "通过快速交付和反馈，提升客户和团队满意度"
-    },
-    "columns": {
-      "workloadAssessment": "评估方法",
-      "taskPrefix": "任务前缀",
-      "attachmentCount": "附件数",
-      "acceptanceCriteria": "验收标准",
-      "otherInformation": "其他信息",
-      "memberProgress": "成员进度",
-      "workCalendar": "工作日历",
-      "meetingRecords": "会议记录"
-    },
-    "actions": {
-      "viewTasks": "查看任务",
-      "exportTasks": "导出任务"
-    },
-    "dropdownMenu": {
-      "viewBurndown": "查看燃尽图",
-      "viewProgress": "查看进度",
-      "viewWorkCalendar": "查看工作日历"
-    },
-    "form": {
-      "owner": "负责人",
-      "taskPrefix": "任务前缀",
-      "workloadAssessment": "评估方法",
-      "attachments": "附件",
-      "uploadAttachment": "上传附件",
-      "acceptanceCriteria": "验收标准",
-      "otherInformation": "其他信息"
-    },
-    "placeholder": {
-      "inputSprintName": "输入迭代名称，最多可输入100字符",
-      "selectOwner": "选择负责人",
-      "inputTaskPrefix": "输入任务前缀，最多可输入40字符",
-      "inputAcceptanceCriteria": "明确计软件产品交付的具体条件和标准",
-      "inputOtherInformation": "其他说明，如迭代策略、风险评估和管理等"
-    },
-    "tips": {
-      "ownerTip": "负责人负责迭代的整体规划和执行，包括任务分配、进度跟踪和风险管理",
-      "taskPrefixTip": "任务前缀用于标识属于该迭代的任务，便于任务管理和追踪",
-      "workloadAssessmentTip": "工作量评估方法用于估算任务的工作量，帮助团队更好地规划迭代",
-      "attachmentTip": "支持上传相关文档、设计稿、需求文档等附件，便于团队成员查阅"
-    },
-    "messages": {
-      "confirmDelete": "确认删除迭代「{name}」吗？",
-      "deleteSuccess": "删除成功",
-      "addSuccess": "添加成功",
-      "editSuccess": "编辑成功",
-      "startSuccess": "开始成功",
-      "completeSuccess": "完成成功",
-      "blockSuccess": "阻塞成功",
-      "reopenSuccess": "重新打开成功",
-      "restartSuccess": "重新开始成功",
-      "cloneSuccess": "克隆成功",
-      "copyLinkSuccess": "复制链接成功",
-      "copyLinkFailed": "复制链接失败",
-      "nameRequired": "请输入迭代名称",
-      "dateRequired": "请选择时间计划",
-      "startDateRequired": "请选择开始时间",
-      "endDateRequired": "请选择结束时间",
-      "ownerRequired": "请选择负责人",
-      "maxLengthExceeded": "内容长度超过限制"
-    },
-    "meeting": {
-      "type": "会议类型",
-      "date": "会议日期",
-      "time": "会议时间",
-      "location": "会议地点",
-      "moderator": "主持人",
-      "participants": "参会人员",
-      "content": "会议内容"
-    },
-    "searchPanel": {
-      "searchSprintName": "查询迭代名称、描述",
-      "selectOwner": "选择负责人",
-      "startDateGreaterEqual": "迭代开始时间",
-      "deadlineDateLessEqual": "迭代截止时间",
-      "sortByCreateTime": "按添加时间",
-      "sortByCreator": "按添加人",
-      "sortByOwner": "按负责人",
-      "myOwned": "我负责的"
-    },
-    "progress": {
-      "title": "成员进度",
-      "totalTaskCount": "总任务数",
-      "validTaskCount": "有效任务数",
-      "completedTaskCount": "完成任务数",
-      "evalWorkload": "评估工作量",
-      "completedWorkload": "完成工作量",
-      "workloadCompletionRate": "工作量完成率",
-      "overdueTaskCount": "逾期任务数",
-      "overdueRate": "逾期率"
-    },
-    "workCalendar": {
-      "title": "工作日历"
-    },
-    "anthModal": {
-      "title": "迭代权限",
-      "onTips": "开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有迭代相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级项目权限将自动授权查看权限。",
-      "offTips": "开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前迭代，查看用户同时需要有当前迭代父级项目权限。"
-    }
-  },
-  "taskMeeting": {
+  "meeting": {
     "title": "会议",
     "addMeeting": "添加会议",
     "editMeeting": "编辑会议",

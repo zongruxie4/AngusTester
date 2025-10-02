@@ -224,9 +224,9 @@ const toClone = async () => {
 
 const toCopyLink = () => {
   toClipboard(window.location.origin + `/apis#server?serviceId=${serviceId.value}&serverId=${serverId.value}`).then(() => {
-    notification.success(t('server.detail.copyLinkSuccess'));
+    notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
-    notification.error(t('server.detail.copyLinkFail'));
+    notification.error(t('actions.tips.copyLinkFailed'));
   });
 };
 

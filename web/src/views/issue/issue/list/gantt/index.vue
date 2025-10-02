@@ -407,7 +407,7 @@ onMounted(() => {
         <div class="flex items-center justify-between mt-4 pl-5 space-x-2.5">
           <div class="flex-1 flex items-center truncate">
             <RouterLink
-              :to="`/task#sprint?id=${selectedSprintInfo?.id}`"
+              :to="`/issue#sprint?id=${selectedSprintInfo?.id}`"
               :title="selectedSprintInfo?.name"
               class="truncate"
               style="max-width: 50%;">
@@ -415,7 +415,7 @@ onMounted(() => {
             </RouterLink>
             <div class="mx-1.5">/</div>
             <RouterLink
-              :to="`/task#task?id=${selectedTaskInfo?.id}`"
+              :to="`/issue#issue?id=${selectedTaskInfo?.id}`"
               class="truncate flex-1"
               :title="selectedTaskInfo?.name">
               {{ selectedTaskInfo?.name }}

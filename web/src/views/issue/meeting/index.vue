@@ -91,7 +91,7 @@ const initializeMeetingModule = () => {
         return {
           _id: 'meetingList',
           value: 'meetingList',
-          name: t('taskMeeting.title'),
+          name: t('meeting.title'),
           closable: false
         };
       }
@@ -147,7 +147,7 @@ const processRouteHash = (hash: string) => {
         const newMeetingId = utils.uuid();
         return {
           _id: newMeetingId,
-          name: t('taskMeeting.addMeeting'),
+          name: t('meeting.addMeeting'),
           value: 'meetingEdit',
           noCache: true,
           data: { _id: newMeetingId }
@@ -157,7 +157,7 @@ const processRouteHash = (hash: string) => {
   }
 
   // Clean up URL by removing hash parameters
-  router.replace('/task#meeting');
+  router.replace('/issue#meeting');
 };
 
 /**

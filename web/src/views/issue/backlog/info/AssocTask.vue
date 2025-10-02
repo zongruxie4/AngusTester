@@ -37,7 +37,7 @@ const associatedTaskList = computed(() => {
   return props.dataSource?.refTaskInfos?.map(item => {
     return {
       ...item,
-      linkUrl: `/task#task?taskId=${item.id}`
+      linkUrl: `/issue#issue?taskId=${item.id}`
     };
   }) || [];
 });

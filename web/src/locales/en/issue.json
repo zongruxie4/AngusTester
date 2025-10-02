@@ -95,6 +95,72 @@
       "maxSplitWarning": "Maximum 200 splits allowed"
     }
   },
+  "sprint": {
+    "title": "Sprint",
+    "addedSprints": "Added Sprints",
+    "notAddedYet": "Not Added Yet",
+    "introduce": {
+      "title": "About Sprint",
+      "description": "Sprints break down projects into fixed time cycles (usually 1-4 weeks) of work units. Each sprint has clear goals, deliverables, and acceptance criteria, ensuring teams continuously deliver value. Teams can better plan work, track progress, identify risks, and conduct retrospectives and improvements at the end of each sprint.",
+      "benefits": {
+        "organizeWork": "Organize Work",
+        "organizeWorkDesc": "Break down complex projects into manageable iterations with clear goals and deliverables",
+        "enhanceCollaboration": "Enhance Collaboration",
+        "enhanceCollaborationDesc": "Facilitate communication and collaboration among team members to improve work efficiency",
+        "improveTransparency": "Improve Transparency",
+        "improveTransparencyDesc": "Increase visibility into project progress and issues for better management and decision-making",
+        "improveFlexibility": "Improve Flexibility",
+        "improveFlexibilityDesc": "Quickly respond to changes and adjust priorities and plans",
+        "improveQuality": "Improve Quality",
+        "improveQualityDesc": "Ensure product quality through continuous integration and testing",
+        "enhanceSatisfaction": "Enhance Satisfaction",
+        "enhanceSatisfactionDesc": "Increase customer and team satisfaction through rapid delivery and feedback"
+      }
+    },
+    "actions": {
+      "addSprint": "Add Sprint",
+      "viewIssues": "View Issues",
+      "exportIssues": "Export Issues",
+      "dropdownMenu": {
+        "viewBurndown": "View Burndown Chart",
+        "viewProgress": "View Progress",
+        "viewWorkCalendar": "View Work Calendar"
+      },
+      "sorts": {
+        "sortByCreateTime": "By creation time",
+        "sortByCreator": "By creator",
+        "sortByOwner": "By owner"
+      }
+    },
+    "columns": {
+      "issuePrefix": "Issue Prefix",
+      "acceptanceCriteria": "Acceptance Criteria",
+      "otherInformation": "Other Information",
+      "attachmentCount": "Attachment Count",
+      "memberProgress": "Member Progress",
+      "meetingRecords": "Meeting Records"
+    },
+    "placeholder": {
+      "inputSprintName": "Enter sprint name (max 100 characters)",
+      "inputIssuePrefix": "Enter issue prefix (max 40 characters)",
+      "inputAcceptanceCriteria": "Define specific conditions and standards for software product delivery",
+      "inputOtherInformation": "Additional notes such as sprint strategy, risk assessment and management"
+    },
+    "tips": {
+      "ownerTip": "The owner is responsible for overall sprint planning and execution, including task assignment, progress tracking, and risk management",
+      "issuePrefixTip": "Issue prefix helps identify issues belonging to this sprint for easier management and tracking",
+      "evalWorkloadMethodTip": "Workload assessment method estimates task effort to help the team plan sprints better",
+      "attachmentTip": "Supports uploading relevant documents, designs, requirement specifications, etc. for team reference"
+    },
+    "messages": {
+      "nameRequired": "Sprint name is required",
+      "dateRequired": "Time plan is required",
+      "startDateRequired": "Start date is required",
+      "endDateRequired": "End date is required",
+      "ownerRequired": "Owner is required",
+      "maxLengthExceeded": "Content exceeds length limit"
+    }
+  },
   "task": {
     "title": "Tasks",
     "addTask": "Add Task",
@@ -869,129 +935,7 @@
       "title": "Comment"
     }
   },
-  "taskSprint": {
-    "title": "Sprint",
-    "addSprint": "Add Sprint",
-    "aboutSprint": "About Sprint",
-    "aboutSprintDesc": "Sprints break down projects into fixed time cycles (usually 1-4 weeks) of work units. Each sprint has clear goals, deliverables, and acceptance criteria, ensuring teams continuously deliver value. Teams can better plan work, track progress, identify risks, and conduct retrospectives and improvements at the end of each sprint.",
-    "scrumAgileProcess": "Scrum Agile Process",
-    "addedSprints": "Added Sprints",
-    "notAddedYet": "Not Added Yet",
-    "taskCount": "Tasks",
-    "allMembers": "All Members",
-    "benefits": {
-      "organizeWork": "Organize Work",
-      "organizeWorkDesc": "Break down complex projects into manageable iterations with clear goals and deliverables",
-      "enhanceCollaboration": "Enhance Collaboration",
-      "enhanceCollaborationDesc": "Facilitate communication and collaboration among team members to improve work efficiency",
-      "improveTransparency": "Improve Transparency",
-      "improveTransparencyDesc": "Increase visibility into project progress and issues for better management and decision-making",
-      "improveFlexibility": "Improve Flexibility",
-      "improveFlexibilityDesc": "Quickly respond to changes and adjust priorities and plans",
-      "improveQuality": "Improve Quality",
-      "improveQualityDesc": "Ensure product quality through continuous integration and testing",
-      "enhanceSatisfaction": "Enhance Satisfaction",
-      "enhanceSatisfactionDesc": "Increase customer and team satisfaction through rapid delivery and feedback"
-    },
-    "columns": {
-      "workloadAssessment": "Workload Assessment",
-      "taskPrefix": "Task Prefix",
-      "attachmentCount": "Attachment Count",
-      "acceptanceCriteria": "Acceptance Criteria",
-      "otherInformation": "Other Information",
-      "memberProgress": "Member Progress",
-      "workCalendar": "Work Calendar",
-      "meetingRecords": "Meeting Records"
-    },
-    "actions": {
-      "viewTasks": "View Tasks",
-      "exportTasks": "Export Tasks"
-    },
-    "dropdownMenu": {
-      "viewBurndown": "View Burndown Chart",
-      "viewProgress": "View Progress",
-      "viewWorkCalendar": "View Work Calendar"
-    },
-    "form": {
-      "taskPrefix": "Task Prefix",
-      "workloadAssessment": "Workload Assessment",
-      "uploadAttachment": "Upload",
-      "acceptanceCriteria": "Acceptance Criteria",
-      "otherInformation": "Other Information"
-    },
-    "placeholder": {
-      "inputSprintName": "Enter sprint name (max 100 characters)",
-      "selectOwner": "Select owner",
-      "inputTaskPrefix": "Enter task prefix (max 40 characters)",
-      "inputAcceptanceCriteria": "Define specific conditions and standards for software product delivery",
-      "inputOtherInformation": "Additional notes such as sprint strategy, risk assessment and management"
-    },
-    "tips": {
-      "ownerTip": "The owner is responsible for overall sprint planning and execution, including task assignment, progress tracking, and risk management",
-      "taskPrefixTip": "Task prefix helps identify tasks belonging to this sprint for easier management and tracking",
-      "workloadAssessmentTip": "Workload assessment method estimates task effort to help the team plan sprints better",
-      "attachmentTip": "Supports uploading relevant documents, designs, requirement specifications, etc. for team reference"
-    },
-    "messages": {
-      "confirmDelete": "Confirm deletion of sprint 「{name}」?",
-      "deleteSuccess": "Successfully deleted",
-      "addSuccess": "Successfully added",
-      "editSuccess": "Successfully edited",
-      "startSuccess": "Successfully started",
-      "completeSuccess": "Successfully completed",
-      "blockSuccess": "Successfully blocked",
-      "reopenSuccess": "Successfully reopened",
-      "restartSuccess": "Successfully restarted",
-      "cloneSuccess": "Successfully cloned",
-      "copyLinkSuccess": "Link copied successfully",
-      "copyLinkFailed": "Failed to copy link",
-      "nameRequired": "Sprint name is required",
-      "dateRequired": "Time plan is required",
-      "startDateRequired": "Start date is required",
-      "endDateRequired": "End date is required",
-      "ownerRequired": "Owner is required",
-      "maxLengthExceeded": "Content exceeds length limit"
-    },
-    "meeting": {
-      "date": "Meeting Date",
-      "time": "Meeting Time",
-      "location": "Location",
-      "moderator": "Moderator",
-      "participants": "Participants",
-      "content": "Meeting Content"
-    },
-    "searchPanel": {
-      "searchSprintName": "Search name, description",
-      "selectOwner": "Select owner",
-      "startDateGreaterEqual": "Sprint start date",
-      "deadlineDateLessEqual": "Sprint deadline date",
-      "sortByCreateTime": "By creation time",
-      "sortByCreator": "By creator",
-      "sortByOwner": "By owner",
-      "myOwned": "Owned by me"
-    },
-    "progress": {
-      "title": "Member Progress",
-      "member": "Member",
-      "totalTaskCount": "Total Tasks",
-      "validTaskCount": "Valid Tasks",
-      "completedTaskCount": "Completed Tasks",
-      "evalWorkload": "Estimated Workload",
-      "completedWorkload": "Completed Workload",
-      "workloadCompletionRate": "Workload Completion",
-      "overdueTaskCount": "Overdue Tasks",
-      "overdueRate": "Overdue Rate"
-    },
-    "workCalendar": {
-      "title": "Work Calendar"
-    },
-    "anthModal": {
-      "title": "Sprint Permission",
-      "onTips": "After enabling &quot;Permission Control&quot;, you need to manually authorize service permissions for the sprint to have corresponding operation permissions. The default setting is &quot;Permission Control&quot;. Note: If the authorization object does not have parent project permissions, it will automatically grant view permissions.",
-      "offTips": "After enabling &quot;No Permission Control&quot;, all users will be allowed to view and operate the current sprint publicly. Users with view permissions also need to have parent project permissions for the current sprint."
-    }
-  },
-  "taskMeeting": {
+  "meeting": {
     "title": "Meeting",
     "addMeeting": "Add Meeting",
     "editMeeting": "Edit Meeting",
@@ -1273,16 +1217,6 @@
         }
       },
       "leadTime": {
-        "chartLabels": {
-          "average": "Average",
-          "min": "Min",
-          "max": "Max",
-          "p50": "P50",
-          "p75": "P75",
-          "p90": "P90",
-          "p95": "P95",
-          "p99": "P99"
-        },
         "chartTitles": {
           "taskDeliveryCycle": "Task Delivery Cycle (Hours)"
         },

@@ -51,7 +51,7 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   auditOptions: createAuditOptions([
     {
       key: 'myOwned',
-      name: t('taskSprint.searchPanel.myOwned'),
+      name: t('quickSearch.ownedByMe'),
       fieldKey: 'ownerId'
     },
     {
@@ -104,7 +104,7 @@ const searchPanelConfig = [
   {
     valueKey: 'name',
     type: 'input' as const,
-    placeholder: t('taskSprint.searchPanel.searchSprintName'),
+    placeholder: t('common.placeholders.searchKeyword'),
     allowClear: true,
     maxlength: 100
   },
@@ -112,7 +112,7 @@ const searchPanelConfig = [
     valueKey: 'ownerId',
     type: 'select-user' as const,
     allowClear: true,
-    placeholder: t('taskSprint.searchPanel.selectOwner'),
+    placeholder: t('common.placeholders.selectOwner'),
     maxlength: 100
   },
   {
@@ -120,7 +120,7 @@ const searchPanelConfig = [
     type: 'date' as const,
     valueType: 'start',
     op: SearchCriteria.OpEnum.GreaterThanEqual,
-    placeholder: t('taskSprint.searchPanel.startDateGreaterEqual'),
+    placeholder: t('common.placeholders.selectStartDate'),
     showTime: true,
     allowClear: true
   },
@@ -129,7 +129,7 @@ const searchPanelConfig = [
     type: 'date' as const,
     valueType: 'start',
     op: SearchCriteria.OpEnum.LessThanEqual,
-    placeholder: t('taskSprint.searchPanel.deadlineDateLessEqual'),
+    placeholder: t('common.placeholders.selectDeadline'),
     showTime: true,
     allowClear: true
   }
@@ -142,17 +142,17 @@ const sortOptions: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('taskSprint.searchPanel.sortByCreateTime'),
+    name: t('sprint.actions.sorts.sortByCreateTime'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('taskSprint.searchPanel.sortByCreator'),
+    name: t('sprint.actions.sorts.sortByCreator'),
     key: 'createdBy',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('taskSprint.searchPanel.sortByOwner'),
+    name: t('sprint.actions.sorts.sortByOwner'),
     key: 'ownerId',
     orderSort: PageQuery.OrderSort.Asc
   }
@@ -245,9 +245,9 @@ onMounted(() => {
           type="primary"
           size="small"
           class="p-0">
-          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/task#sprint?type=ADD`">
+          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/issue#sprint?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('taskSprint.addSprint') }}</span>
+            <span>{{ t('sprint.actions.addSprint') }}</span>
           </RouterLink>
         </Button>
 

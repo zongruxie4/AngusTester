@@ -987,7 +987,7 @@ onMounted(() => {
         <!-- Process Count -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.processCount') }}</span>
+            <span>{{ t('common.counts.processCount') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ totalProcessCount }}</span>
@@ -997,7 +997,7 @@ onMounted(() => {
         <!-- Failed Count -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.processFailCount') }}</span>
+            <span>{{ t('common.counts.processFailCount') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ failedProcessCount }}</span>
@@ -1051,7 +1051,7 @@ onMounted(() => {
         <!-- One Time Pass -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.oneTimePass') }}</span>
+            <span>{{ t('common.counts..oneTimePassed') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': oneTimePassStatus === '--' }">{{ oneTimePassStatus }}</span>

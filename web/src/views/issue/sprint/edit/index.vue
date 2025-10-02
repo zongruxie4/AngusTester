@@ -226,13 +226,13 @@ const handleSprintCreation = async () => {
 const validateRichTextMaxLength = (validationRule) => {
   if (validationRule.field === 'acceptanceCriteria') {
     if (acceptanceCriteriaEditorRef.value && acceptanceCriteriaEditorRef.value.getLength() > 2000) {
-      return Promise.reject(t('taskSprint.messages.maxLengthExceeded'));
+      return Promise.reject(t('sprint.messages.maxLengthExceeded'));
     }
   }
 
   if (validationRule.field === 'otherInformation') {
     if (otherInformationEditorRef.value && otherInformationEditorRef.value.getLength() > 2000) {
-      return Promise.reject(t('taskSprint.messages.maxLengthExceeded'));
+      return Promise.reject(t('sprint.messages.maxLengthExceeded'));
     }
   }
   return Promise.resolve();
@@ -271,7 +271,7 @@ const startSprint = async () => {
     return;
   }
 
-  notification.success(t('taskSprint.messages.startSuccess'));
+  notification.success(t('actions.tips.startSuccess'));
   await loadSprintData(sprintId);
   refreshSprintList();
 };
@@ -294,7 +294,7 @@ const completeSprint = async () => {
     return;
   }
 
-  notification.success(t('taskSprint.messages.completeSuccess'));
+  notification.success(t('actions.tips.completeSuccess'));
   await loadSprintData(sprintId);
   refreshSprintList();
 };
@@ -381,11 +381,11 @@ const copySprintLink = () => {
     return;
   }
 
-  const sprintUrl = `${window.location.origin}/task#sprint?id=${sprintId}`;
+  const sprintUrl = `${window.location.origin}/issue#sprint?id=${sprintId}`;
   toClipboard(sprintUrl).then(() => {
-    notification.success(t('taskSprint.messages.copyLinkSuccess'));
+    notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
-    notification.error(t('taskSprint.messages.copyLinkFailed'));
+    notification.error(t('actions.tips.copyLinkFailed'));
   });
 };
 
@@ -557,11 +557,11 @@ const populateFormWithSprintData = (sprintData: SprintInfo) => {
  */
 const validateDateRange = async (_validationRule: Rule, dateRange: string[]) => {
   if (!dateRange) {
-    return Promise.reject(new Error(t('taskSprint.messages.dateRequired')));
+    return Promise.reject(new Error(t('sprint.messages.dateRequired')));
   } else if (!dateRange[0]) {
-    return Promise.reject(new Error(t('taskSprint.messages.startDateRequired')));
+    return Promise.reject(new Error(t('sprint.messages.startDateRequired')));
   } else if (!dateRange[1]) {
-    return Promise.reject(new Error(t('taskSprint.messages.endDateRequired')));
+    return Promise.reject(new Error(t('sprint.messages.endDateRequired')));
   } else {
     return Promise.resolve();
   }
@@ -691,7 +691,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="startSprint">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>{{ t('common.restart') }}</span>
+          <span>{{ t('actions.restart') }}</span>
         </Button>
 
         <Button
@@ -794,12 +794,12 @@ onMounted(() => {
       <FormItem
         :label="t('common.name')"
         name="name"
-        :rules="{ required: true, message: t('taskSprint.messages.nameRequired') }">
+        :rules="{ required: true, message: t('sprint.messages.nameRequired') }">
         <Input
           v-model:value="formState.name"
           size="small"
           :maxlength="100"
-          :placeholder="t('taskSprint.placeholder.inputSprintName')" />
+          :placeholder="t('sprint.placeholder.inputSprintName')" />
       </FormItem>
 
       <FormItem
@@ -820,11 +820,11 @@ onMounted(() => {
         :label="t('common.owner')"
         name="ownerId"
         class="relative"
-        :rules="{ required: true, message: t('taskSprint.messages.ownerRequired') }">
+        :rules="{ required: true, message: t('sprint.messages.ownerRequired') }">
         <SelectUser
           v-model:value="formState.ownerId"
           size="small"
-          :placeholder="t('taskSprint.placeholder.selectOwner')"
+          :placeholder="t('common.placeholder.selectOwner')"
           :defaultOptions="ownerSelectionOptions"
           :action="`${TESTER}/project/${props.projectId}/member/user`"
           :maxlength="80" />
@@ -833,14 +833,14 @@ onMounted(() => {
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
-            <div>{{ t('taskSprint.tips.ownerTip') }}</div>
+            <div>{{ t('sprint.tips.ownerTip') }}</div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 cursor-pointer" />
         </Tooltip>
       </FormItem>
 
       <FormItem
-        :label="t('taskSprint.form.taskPrefix')"
+        :label="t('sprint.columns.issuePrefix')"
         name="taskPrefix"
         class="relative">
         <Input
@@ -849,19 +849,19 @@ onMounted(() => {
           :readonly="!!currentSprintData?.id"
           :disabled="!!currentSprintData?.id"
           :maxlength="40"
-          :placeholder="t('taskSprint.placeholder.inputTaskPrefix')" />
+          :placeholder="t('sprint.placeholder.inputIssuePrefix')" />
         <Tooltip
           placement="right"
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
-            <div>{{ t('taskSprint.tips.taskPrefixTip') }}</div>
+            <div>{{ t('sprint.tips.issuePrefixTip') }}</div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 cursor-pointer" />
         </Tooltip>
       </FormItem>
 
-      <FormItem :label="t('taskSprint.form.workloadAssessment')" name="evalWorkloadMethod">
+      <FormItem :label="t('common.evalWorkloadMethod')" name="evalWorkloadMethod">
         <RadioGroup v-model:value="formState.evalWorkloadMethod" :disabled="isFormDisabled">
           <Radio
             v-for="item in workloadMethodOptions"
@@ -875,7 +875,7 @@ onMounted(() => {
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
-            <div>{{ t('taskSprint.tips.workloadAssessmentTip') }}</div>
+            <div>{{ t('sprint.tips.evalWorkloadMethodTip') }}</div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips text-3.5 cursor-pointer" />
         </Tooltip>
@@ -889,13 +889,13 @@ onMounted(() => {
             :customRequest="handleFileUpload">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
               <Icon icon="icon-lianjie1" class="mr-1" />
-              <span class="whitespace-nowrap">{{ t('taskSprint.form.uploadAttachment') }}</span>
+              <span class="whitespace-nowrap">{{ t('actions.upload') }}</span>
             </a>
           </Upload>
           <Tooltip :overlayStyle="{ 'max-width': '400px' }">
             <template #title>
               <div class="text-3 text-theme-sub-content leading-4 break-all">
-                {{ t('taskSprint.tips.attachmentTip') }}
+                {{ t('sprint.tips.attachmentTip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-2 -mt-0.25 text-3.5 cursor-pointer" />
@@ -925,7 +925,7 @@ onMounted(() => {
         </div>
       </FormItem>
       <Tabs size="small" class="pl-5">
-        <TabPane key="acceptanceCriteria" :tab="t('taskSprint.form.acceptanceCriteria')">
+        <TabPane key="acceptanceCriteria" :tab="t('sprint.columns.acceptanceCriteria')">
           <FormItem
             class="!mb-5"
             name="acceptanceCriteria"
@@ -933,10 +933,10 @@ onMounted(() => {
             <RichEditor
               ref="acceptanceCriteriaEditorRef"
               v-model:value="formState.acceptanceCriteria"
-              :options="{placeholder: t('taskSprint.placeholder.inputAcceptanceCriteria')}" />
+              :options="{placeholder: t('sprint.placeholder.inputAcceptanceCriteria')}" />
           </FormItem>
         </TabPane>
-        <TabPane key="otherInformation" :tab="t('taskSprint.form.otherInformation')">
+        <TabPane key="otherInformation" :tab="t('sprint.columns.otherInformation')">
           <FormItem
             class="!mb-5"
             name="otherInformation"
@@ -944,7 +944,7 @@ onMounted(() => {
             <RichEditor
               ref="otherInformationEditorRef"
               v-model:value="formState.otherInformation"
-              :options="{placeholder: t('taskSprint.placeholder.inputOtherInformation')}" />
+              :options="{placeholder: t('sprint.placeholder.inputOtherInformation')}" />
           </FormItem>
         </TabPane>
       </Tabs>

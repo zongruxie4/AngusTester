@@ -455,7 +455,7 @@ const handleVersionBlur = async () => {
               <RouterLink
                 v-else
                 target="_self"
-                :to="`/task#task?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
+                :to="`/issue#issue?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
                 class="info-link">
                 {{ props.dataSource?.parentTaskName || '--' }}
               </RouterLink>

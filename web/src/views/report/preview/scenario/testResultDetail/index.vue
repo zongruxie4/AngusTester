@@ -800,14 +800,14 @@ const sysItems = computed(() => [
             :key="sys.dataIndex"
             class="px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-b border-solid border-border-input flex">
             <div class="flex-1">
-              {{ t('reportPreview.scenario.testResultDetail.stabilityTest.average') }} {{ TEST_STABILITY_NODE?.[sys.meanDataIndex] ? `${TEST_STABILITY_NODE?.[sys.meanDataIndex]}${sys.unit}` : '--' }}
+              {{ t('chart.average') }} {{ TEST_STABILITY_NODE?.[sys.meanDataIndex] ? `${TEST_STABILITY_NODE?.[sys.meanDataIndex]}${sys.unit}` : '--' }}
               <img
                 v-if="getStabilityIcon(sys.meanDataIndex)"
                 :src="getStabilityIcon(sys.meanDataIndex)"
                 class="w-3" />
             </div>
             <div class="flex-1">
-              {{ t('reportPreview.scenario.testResultDetail.stabilityTest.maximum') }} {{ TEST_STABILITY_NODE?.[sys.maxDataIndex] ? `${TEST_STABILITY_NODE?.[sys.maxDataIndex]}${sys.unit}` : '--' }}
+              {{ t('chart.max') }} {{ TEST_STABILITY_NODE?.[sys.maxDataIndex] ? `${TEST_STABILITY_NODE?.[sys.maxDataIndex]}${sys.unit}` : '--' }}
             </div>
           </div>
         </div>

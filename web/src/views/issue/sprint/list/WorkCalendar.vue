@@ -47,7 +47,7 @@ const closeModal = () => {
     :visible="props.visible"
     :footer="null"
     :width="800"
-    :title="t('taskSprint.workCalendar.title')"
+    :title="t('common.workCalendar')"
     @cancel="closeModal">
     <WorkCalendar
       :projectId="props.projectId"

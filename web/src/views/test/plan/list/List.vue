@@ -456,7 +456,7 @@ const dropdownMenuItems = [
               class="px-0 flex items-center ml-2"
               @click="handleStartPlan(item, index)">
               <Icon icon="icon-kaishi" class="mr-0.5" />
-              <span>{{ item.status.value === FuncPlanStatus.COMPLETED ? t('common.restart') : t('actions.start') }}</span>
+              <span>{{ item.status.value === FuncPlanStatus.COMPLETED ? t('actions.restart') : t('actions.start') }}</span>
             </Button>
 
             <Button

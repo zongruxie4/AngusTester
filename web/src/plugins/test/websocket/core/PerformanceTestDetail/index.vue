@@ -135,7 +135,7 @@ const countCard = computed(() => {
     },
     {
       key: 'p50',
-      name: t('httpPlugin.performanceTestDetail.countCards.p50'),
+      name: t('chart.p50'),
       icon: 'icon-baifenwei',
       color: '201, 119, 255'
     },

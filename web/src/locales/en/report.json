@@ -181,7 +181,6 @@
         "vu": "Concurrency (VU)",
         "thread": "Thread number",
         "rt": "Response time (RT, milliseconds)",
-        "average": "Average",
         "error": "Error (ERROR)",
         "errRate": "Error rate",
         "other": "Other information",
@@ -525,9 +524,7 @@
           "indicatorsAndResults": "Test Indicators and Results",
           "stabilityIndicators": "Stability Indicators",
           "results": "Results",
-          "systemLoad": "Application System Average Load",
-          "average": "Average",
-          "maximum": "Maximum"
+          "systemLoad": "Application System Average Load"
         },
         "fields": {
           "testResult": "Test Result",
@@ -862,7 +859,6 @@
           "current": "Current",
           "brpsAll": "Download/Second (Current | Min | Max | Average)",
           "bwpsAll": "Upload/Second (Current | Min | Max | Average)",
-          "average": "Average",
           "high": "High",
           "low": "Low",
           "latest": "Latest"
@@ -1505,9 +1501,7 @@
             }
           },
           "systemLoad": {
-            "title": "Application System Average Load",
-            "average": "Average",
-            "maximum": "Maximum"
+            "title": "Application System Average Load"
           }
         },
         "performanceTest": {

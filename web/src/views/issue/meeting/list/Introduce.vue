@@ -41,10 +41,10 @@ onBeforeUnmount(() => {
 <template>
   <div ref="containerRef">
     <div class="text-3.5 font-semibold mb-2.5">
-      {{ t('taskMeeting.aboutMeeting') }}
+      {{ t('meeting.aboutMeeting') }}
     </div>
     <div class="text-3.5 mb-6 font-serif">
-      {{ t('taskMeeting.aboutMeetingDesc') }}
+      {{ t('meeting.aboutMeetingDesc') }}
     </div>
 
     <div class="space-y-6">
@@ -52,24 +52,24 @@ onBeforeUnmount(() => {
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.productGrooming') }}</div>
-            <div class="text-3.5">{{ t('taskMeeting.meetingTypes.productGroomingDesc') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('meeting.meetingTypes.productGrooming') }}</div>
+            <div class="text-3.5">{{ t('meeting.meetingTypes.productGroomingDesc') }}</div>
           </div>
         </div>
 
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.sprintPlanning') }}</div>
-            <div class="text-3.5">{{ t('taskMeeting.meetingTypes.sprintPlanningDesc') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('meeting.meetingTypes.sprintPlanning') }}</div>
+            <div class="text-3.5">{{ t('meeting.meetingTypes.sprintPlanningDesc') }}</div>
           </div>
         </div>
 
         <div v-show="!isTwoColumnLayout" class="flex items-start space-x-3 flex-1">
           <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.dailyStandup') }}</div>
-            <div class="text-3.5">{{ t('taskMeeting.meetingTypes.dailyStandupDesc') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('meeting.meetingTypes.dailyStandup') }}</div>
+            <div class="text-3.5">{{ t('meeting.meetingTypes.dailyStandupDesc') }}</div>
           </div>
         </div>
       </div>
@@ -77,16 +77,16 @@ onBeforeUnmount(() => {
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.dailyStandup') }}</div>
-            <div class="text-3.5">{{ t('taskMeeting.meetingTypes.dailyStandupDesc') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('meeting.meetingTypes.dailyStandup') }}</div>
+            <div class="text-3.5">{{ t('meeting.meetingTypes.dailyStandupDesc') }}</div>
           </div>
         </div>
 
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.sprintReview') }}</div>
-            <div class="text-3.5">{{ t('taskMeeting.meetingTypes.sprintReviewDesc') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('meeting.meetingTypes.sprintReview') }}</div>
+            <div class="text-3.5">{{ t('meeting.meetingTypes.sprintReviewDesc') }}</div>
           </div>
         </div>
       </div>
@@ -95,24 +95,24 @@ onBeforeUnmount(() => {
         <div v-show="!isTwoColumnLayout" class="flex items-start space-x-3 flex-1">
           <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.sprintReview') }}</div>
-            <div class="text-3.5">{{ t('taskMeeting.meetingTypes.sprintReviewDesc') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('meeting.meetingTypes.sprintReview') }}</div>
+            <div class="text-3.5">{{ t('meeting.meetingTypes.sprintReviewDesc') }}</div>
           </div>
         </div>
 
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/5.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.sprintRetrospective') }}</div>
-            <div class="text-3.5">{{ t('taskMeeting.meetingTypes.sprintRetrospectiveDesc') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('meeting.meetingTypes.sprintRetrospective') }}</div>
+            <div class="text-3.5">{{ t('meeting.meetingTypes.sprintRetrospectiveDesc') }}</div>
           </div>
         </div>
 
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/6.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.other') }}</div>
-            <div class="text-3.5">{{ t('taskMeeting.meetingTypes.otherDesc') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('meeting.meetingTypes.other') }}</div>
+            <div class="text-3.5">{{ t('meeting.meetingTypes.otherDesc') }}</div>
           </div>
         </div>
       </div>

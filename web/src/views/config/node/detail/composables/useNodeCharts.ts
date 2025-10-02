@@ -75,7 +75,7 @@ export const columns = [
     key: 'name'
   },
   {
-    title: t('node.detail.chartOptions.columns.average'),
+    title: t('chart.average'),
     dataIndex: 'average',
     key: 'average'
   },

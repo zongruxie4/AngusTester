@@ -107,12 +107,12 @@ const refreshMeetingList = () => {
  */
 const validateContentRequired = async () => {
   if (!meetingFormState.value.content) {
-    return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
+    return Promise.reject(new Error(t('meeting.messages.contentRequired')));
   }
 
   const richEditorData = contentRichEditorRef.value?.getData();
   if (!richEditorData) {
-    return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
+    return Promise.reject(new Error(t('meeting.messages.contentRequired')));
   }
 
   const parsedData = JSON.parse(richEditorData);
@@ -120,7 +120,7 @@ const validateContentRequired = async () => {
     if (parsedData.length === 1) {
       const contentValue = parsedData[0].insert.replaceAll('\n', '');
       if (!contentValue) {
-        return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
+        return Promise.reject(new Error(t('meeting.messages.contentRequired')));
       }
     }
   }
@@ -134,7 +134,7 @@ const validateContentRequired = async () => {
  */
 const validateTimeRequired = async () => {
   if (!meetingFormState.value.timeEnd || !meetingFormState.value.timeStart) {
-    return Promise.reject(new Error(t('taskMeeting.messages.timeRequired')));
+    return Promise.reject(new Error(t('meeting.messages.timeRequired')));
   }
   return Promise.resolve();
 };
@@ -175,7 +175,7 @@ const handleMeetingCreation = async () => {
     return;
   }
 
-  notification.success(t('taskMeeting.addSuccess'));
+  notification.success(t('meeting.addSuccess'));
 
   const currentTabId = props.data?._id;
   const newMeetingId = response?.data?.id;
@@ -373,7 +373,7 @@ onMounted(async () => {
         <Input
           v-model:value="meetingFormState.subject"
           :maxlength="200"
-          :placeholder="t('taskMeeting.placeholder.inputSubject')" />
+          :placeholder="t('meeting.placeholder.inputSubject')" />
       </FormItem>
 
       <div class="flex space-x-2">
@@ -388,7 +388,7 @@ onMounted(async () => {
               :lazy="false"
               class="flex-1 min-w-0"
               enumKey="TaskMeetingType" />
-            <Popover placement="right" :content="t('taskMeeting.messages.meetingTypeTip')">
+            <Popover placement="right" :content="t('meeting.messages.meetingTypeTip')">
               <Icon icon="icon-tishi1" class="text-tips text-3.5 cursor-pointer" />
             </Popover>
           </div>
@@ -401,7 +401,7 @@ onMounted(async () => {
           <div class="flex items-center space-x-1">
             <Select
               v-model:value="meetingFormState.sprintId"
-              :placeholder="t('taskMeeting.placeholder.selectSprint')"
+              :placeholder="t('meeting.placeholder.selectSprint')"
               :fieldNames="{
                 value: 'id',
                 label: 'name'
@@ -415,7 +415,7 @@ onMounted(async () => {
       <div class="flex space-x-2">
         <FormItem
           required
-          :label="t('taskMeeting.form.date')"
+          :label="t('meeting.form.date')"
           class="flex-1 min-w-0"
           name="date">
           <div class="flex items-center space-x-1">
@@ -429,10 +429,10 @@ onMounted(async () => {
         </FormItem>
 
         <FormItem
-          :label="t('taskMeeting.form.time')"
+          :label="t('meeting.form.time')"
           class="flex-1 min-w-0"
           name="time"
-          :rules="{validator: validateTimeRequired, message: t('taskMeeting.messages.timeRequired'), required: true}">
+          :rules="{validator: validateTimeRequired, message: t('meeting.messages.timeRequired'), required: true}">
           <div class="w-full flex items-center space-x-1">
             <DatePicker
               v-model:value="meetingFormState.timeStart"
@@ -452,11 +452,11 @@ onMounted(async () => {
       </div>
 
       <div class="flex space-x-2">
-        <FormItem :label="t('taskMeeting.form.location')" class="flex-1 min-w-0">
+        <FormItem :label="t('meeting.form.location')" class="flex-1 min-w-0">
           <div class="flex items-center space-x-1">
             <Input
               v-model:value="meetingFormState.location"
-              :placeholder="t('taskMeeting.placeholder.inputLocation')"
+              :placeholder="t('meeting.placeholder.inputLocation')"
               :maxlength="100"
               class="flex-1 min-w-0" />
             <Icon icon="" class="text-tips text-3.5 cursor-pointer" />
@@ -465,13 +465,13 @@ onMounted(async () => {
 
         <FormItem
           required
-          :label="t('taskMeeting.form.moderator')"
+          :label="t('meeting.form.moderator')"
           class="flex-1 min-w-0"
           name="moderator">
           <div class="flex items-center space-x-1">
             <Select
               v-model:value="meetingFormState.moderator"
-              :placeholder="t('taskMeeting.placeholder.selectModerator')"
+              :placeholder="t('meeting.placeholder.selectModerator')"
               :options="projectMembers"
               :fieldNames="selectFieldNames"
               class="flex-1 min-w-0" />
@@ -481,13 +481,13 @@ onMounted(async () => {
 
       <FormItem
         required
-        :label="t('taskMeeting.form.participants')"
+        :label="t('meeting.form.participants')"
         class="min-w-0"
         name="participants">
         <div class="flex items-center space-x-1">
           <Select
             v-model:value="meetingFormState.participants"
-            :placeholder="t('taskMeeting.placeholder.selectParticipants')"
+            :placeholder="t('meeting.placeholder.selectParticipants')"
             :maxTags="200"
             :options="projectMembers"
             :fieldNames="selectFieldNames"
@@ -497,7 +497,7 @@ onMounted(async () => {
       </FormItem>
 
       <FormItem
-        :label="t('taskMeeting.form.content')"
+        :label="t('meeting.form.content')"
         class="flex-1 !mb-5"
         name="content"
         :rules="{required: true, validator: validateContentRequired}">

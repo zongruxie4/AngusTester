@@ -101,7 +101,7 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
           <RouterLink
             class="router-link"
             :title="item.subject"
-            :to="`/task#meeting?id=${item.id}`">
+            :to="`/issue#meeting?id=${item.id}`">
             {{ item.subject }}
           </RouterLink>
         </div>
@@ -121,7 +121,7 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
                   type="avatar" />
               </div>
               <div class="flex flex-col">
-                <span class="text-xs text-theme-sub-content">{{ t('taskMeeting.columns.moderatorLabel') }}</span>
+                <span class="text-xs text-theme-sub-content">{{ t('meeting.columns.moderatorLabel') }}</span>
                 <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.moderator.fullName">
                   {{ item.moderator.fullName }}
                 </span>
@@ -146,7 +146,7 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
             <!-- Meeting time -->
             <div class="flex items-center space-x-2">
               <div class="flex flex-col">
-                <span class="text-xs text-theme-sub-content">{{ t('taskMeeting.columns.date') }}</span>
+                <span class="text-xs text-theme-sub-content">{{ t('meeting.columns.date') }}</span>
                 <span class="text-sm font-medium text-theme-content">
                   {{ item.date ? dayjs(item.date).format(DATE_FORMAT) : '--' }}
                 </span>
@@ -156,9 +156,9 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
             <!-- Participants -->
             <div class="flex items-center space-x-2">
               <div class="flex flex-col">
-                <span class="text-xs text-theme-sub-content">{{ t('taskMeeting.columns.participants') }}</span>
+                <span class="text-xs text-theme-sub-content">{{ t('meeting.columns.participants') }}</span>
                 <span class="text-sm font-medium text-theme-content">
-                  {{ item.participants?.length || 0 }} {{ t('taskMeeting.columns.participantUnit') }}
+                  {{ item.participants?.length || 0 }} {{ t('meeting.columns.participantUnit') }}
                 </span>
               </div>
               <div class="flex -space-x-1">
@@ -178,7 +178,7 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
                     placement="bottomLeft"
                     internal>
                     <template #title>
-                      <span class="text-sm font-medium">{{ t('taskMeeting.columns.participants') }} ({{ item.participants.length }})</span>
+                      <span class="text-sm font-medium">{{ t('meeting.columns.participants') }} ({{ item.participants.length }})</span>
                     </template>
                     <template #content>
                       <div class="grid grid-cols-5 gap-2 max-w-md">
@@ -241,7 +241,7 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
             :emptyText="t('common.noDescription')" />
         </div>
         <div class="flex space-x-3 items-center justify-between h-4 leading-5">
-          <RouterLink class="flex items-center space-x-1" :to="`/task#meeting?id=${item.id}&type=edit`">
+          <RouterLink class="flex items-center space-x-1" :to="`/issue#meeting?id=${item.id}&type=edit`">
             <Icon icon="icon-shuxie" class="text-3.5" />
             <span>{{ t('actions.edit') }}</span>
           </RouterLink>

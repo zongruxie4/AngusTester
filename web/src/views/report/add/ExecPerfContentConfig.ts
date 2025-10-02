@@ -117,7 +117,7 @@ export const contentTreeData = [
             key: 'rt',
             children: [
               {
-                title: t('reportAdd.execPerfContent.contentTree.average'),
+                title: t('chart.average'),
                 key: 'average'
               }
             ]

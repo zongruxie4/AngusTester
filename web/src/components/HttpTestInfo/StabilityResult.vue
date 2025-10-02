@@ -306,7 +306,7 @@ const formatDurationFromMilliseconds = (milliseconds: string) => {
           <span
             class="truncate"
             :title="props.result[systemResourceItem.dataIndex] ? `${props.result[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : ''">
-            {{ t('xcan_httpTestInfo.average') }} {{ props.result[systemResourceItem.dataIndex] ? `${props.result[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : '--' }}
+            {{ t('chart.average') }} {{ props.result[systemResourceItem.dataIndex] ? `${props.result[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : '--' }}
           </span>
           <Icon style="min-width: 12px;" v-bind="getStabilityStatusIcon(systemResourceItem.dataIndex)" />
         </div>
@@ -319,7 +319,7 @@ const formatDurationFromMilliseconds = (milliseconds: string) => {
           <span
             class="flex-1 truncate"
             :title="props.result[systemResourceItem.dataIndex] ? `${props.result[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : ''">
-            {{ t('xcan_httpTestInfo.max') }} {{ props.result[systemResourceItem.dataIndex] ? `${props.result[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : '--' }}
+            {{ t('chart.max') }} {{ props.result[systemResourceItem.dataIndex] ? `${props.result[systemResourceItem.dataIndex]}${systemResourceItem.unit}` : '--' }}
           </span>
         </div>
       </div>

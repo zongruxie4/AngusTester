@@ -194,11 +194,6 @@
         "last7Days": "近7天",
         "last30Days": "近30天"
       },
-      "metrics": {
-        "average": "平均",
-        "min": "最小",
-        "max": "最大"
-      },
       "executionStatus": {
         "reason": "原因"
       },

@@ -8,7 +8,7 @@ export const columns = [
     key: 'name'
   },
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.average'),
+    title: t('chart.average'),
     dataIndex: 'average',
     key: 'average'
   },

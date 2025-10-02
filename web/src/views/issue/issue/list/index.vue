@@ -165,7 +165,7 @@ const loadTaskListData = async () => {
 
     processedTaskList.push({
       ...taskItem,
-      linkUrl: '/task#task?' + http.getURLSearchParams(taskParams, true)
+      linkUrl: '/issue#issue?' + http.getURLSearchParams(taskParams, true)
     });
 
     sprintIdSet.add(taskItem.sprintId);
@@ -567,7 +567,7 @@ const currentModuleId = ref();
  * Initializes module tree and sets up watchers
  */
 onMounted(async () => {
-  await router.replace('/task#task');
+  await router.replace('/issue#issue');
 
   await loadModuleTreeData();
 
@@ -686,7 +686,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (taskStatus === TaskStatus.CANCELED || taskStatus === TaskStatus.COMPLETED) {
       menuItems.push({
-        name: t('common.reopen'),
+        name: t('actions.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isCurrentUserAssignee,
@@ -695,7 +695,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
       });
 
       menuItems.push({
-        name: t('common.restart'),
+        name: t('actions.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.RESTART_TASK),

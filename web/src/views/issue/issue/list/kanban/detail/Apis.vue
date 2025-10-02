@@ -764,7 +764,7 @@ onMounted(() => {
           <RouterLink
             v-else
             target="_self"
-            :to="`/task#task?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
+            :to="`/issue#issue?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
             style="color:#40a9ff"
             class="whitespace-pre-wrap break-words break-all">
             {{ props.dataSource?.parentTaskName || '--' }}

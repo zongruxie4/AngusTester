@@ -25,7 +25,7 @@ const testInfoColumns = [
       dataIndex: 'testFailNum'
     },
     {
-      label: t('caseReview.comp.testInfo.oneTimePass'),
+      label: t('common.counts..oneTimePassed'),
       dataIndex: 'oneTestPass'
     },
     {

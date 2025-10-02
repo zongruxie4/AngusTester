@@ -89,7 +89,7 @@ const initializeComponent = () => {
         return {
           _id: 'sprintList',
           value: 'sprintList',
-          name: t('taskSprint.title'),
+          name: t('sprint.title'),
           closable: false
         };
       }
@@ -151,7 +151,7 @@ const handleHashChange = (urlHash: string) => {
       const newSprintId = utils.uuid();
       return {
         _id: newSprintId,
-        name: t('taskSprint.addSprint'),
+        name: t('sprint.actions.addSprint'),
         value: 'sprintEdit',
         noCache: true,
         data: { _id: newSprintId }
@@ -160,7 +160,7 @@ const handleHashChange = (urlHash: string) => {
   }
 
   // Clean up URL by removing query parameters
-  router.replace('/task#sprint');
+  router.replace('/issue#sprint');
 };
 
 /**

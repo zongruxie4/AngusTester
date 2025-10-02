@@ -503,7 +503,6 @@
           "threeHours": "Last 3 hours"
         },
         "columns": {
-          "average": "Average",
           "highest": "Highest",
           "lowest": "Lowest",
           "latest": "Latest"

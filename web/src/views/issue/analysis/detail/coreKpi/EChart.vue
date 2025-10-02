@@ -81,10 +81,10 @@ const coreEChartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('taskAnalysis.detail.coreKpi.chartLabels.taskCount'),
-      t('taskAnalysis.detail.coreKpi.chartLabels.workload'),
-      t('taskAnalysis.detail.coreKpi.chartLabels.overdueCount'),
-      t('taskAnalysis.detail.coreKpi.chartLabels.bugCount')
+      t('common.counts.totalCount'),
+      t('common.workload'),
+      t('common.counts.overdueCount'),
+      t('common.counts.bugCount')
     ],
     axisLabel: {
       interval: 0,

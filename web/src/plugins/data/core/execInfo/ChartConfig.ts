@@ -17,14 +17,14 @@ export const allCvsNames = {
   tps: t('xcan_exec_chartConfig.transactionsPerSecond'),
   brps: t('xcan_exec_chartConfig.downloadPerSecond'),
   bwps: t('xcan_exec_chartConfig.uploadPerSecond'),
-  tranMean: t('xcan_exec_chartConfig.average'),
-  tranMin: t('xcan_exec_chartConfig.minimum'),
-  tranMax: t('xcan_exec_chartConfig.maximum'),
-  tranP50: t('xcan_exec_chartConfig.p50'),
-  tranP75: t('xcan_exec_chartConfig.p75'),
-  tranP90: t('xcan_exec_chartConfig.p90'),
-  tranP95: t('xcan_exec_chartConfig.p95'),
-  tranP99: t('xcan_exec_chartConfig.p99'),
+  tranMean: t('chart.average'),
+  tranMin: t('chart.min'),
+  tranMax: t('chart.max'),
+  tranP50: t('chart.p50'),
+  tranP75: t('chart.p75'),
+  tranP90: t('chart.p90'),
+  tranP95: t('chart.p95'),
+  tranP99: t('chart.p99'),
   tranP999: t('xcan_exec_chartConfig.p999'),
   errorRate: t('xcan_exec_chartConfig.errorRate'),
   threadPoolSize: t('xcan_exec_chartConfig.threadCount'),
@@ -50,37 +50,37 @@ export const allColumns = [
     width: '7%'
   },
   {
-    title: t('xcan_exec_chartConfig.average'),
+    title: t('chart.average'),
     dataIndex: 'tranMean',
     width: '5%'
   },
   {
-    title: t('xcan_exec_chartConfig.minimum'),
+    title: t('chart.min'),
     dataIndex: 'tranMin',
     width: '5%'
   },
   {
-    title: t('xcan_exec_chartConfig.maximum'),
+    title: t('chart.max'),
     dataIndex: 'tranMax',
     width: '5%'
   },
   {
-    title: t('xcan_exec_chartConfig.p50'),
+    title: t('chart.p50'),
     dataIndex: 'tranP50',
     width: '5%'
   },
   {
-    title: t('xcan_exec_chartConfig.p75'),
+    title: t('chart.p75'),
     dataIndex: 'tranP75',
     width: '5%'
   },
   {
-    title: t('xcan_exec_chartConfig.p90'),
+    title: t('chart.p90'),
     dataIndex: 'tranP90',
     width: '5%'
   },
   {
-    title: t('xcan_exec_chartConfig.p99'),
+    title: t('chart.p99'),
     dataIndex: 'tranP99',
     width: '5%'
   },
@@ -128,42 +128,42 @@ export const allResponseTimeColumns = [
     ellipsis: true
   },
   {
-    title: t('xcan_exec_chartConfig.average'),
+    title: t('chart.average'),
     dataIndex: 'tranMean',
     width: '9.5%'
   },
   {
-    title: t('xcan_exec_chartConfig.minimum'),
+    title: t('chart.min'),
     dataIndex: 'tranMin',
     width: '9.5%'
   },
   {
-    title: t('xcan_exec_chartConfig.maximum'),
+    title: t('chart.max'),
     dataIndex: 'tranMax',
     width: '9.5%'
   },
   {
-    title: t('xcan_exec_chartConfig.p50'),
+    title: t('chart.p50'),
     dataIndex: 'tranP50',
     width: '9.5%'
   },
   {
-    title: t('xcan_exec_chartConfig.p75'),
+    title: t('chart.p75'),
     dataIndex: 'tranP75',
     width: '9.5%'
   },
   {
-    title: t('xcan_exec_chartConfig.p90'),
+    title: t('chart.p90'),
     dataIndex: 'tranP90',
     width: '9.5%'
   },
   {
-    title: t('xcan_exec_chartConfig.p95'),
+    title: t('chart.p95'),
     dataIndex: 'tranP95',
     width: '9.5%'
   },
   {
-    title: t('xcan_exec_chartConfig.p99'),
+    title: t('chart.p99'),
     dataIndex: 'tranP99',
     width: '9.5%'
   },
@@ -334,35 +334,35 @@ export const responseTimeCvsKeys = ['tranMean', 'tranMin', 'tranMax', 'tranP50',
 
 export const responseTimeOptions = [
   {
-    label: t('xcan_exec_chartConfig.average'),
+    label: t('chart.average'),
     value: 'tranMean'
   },
   {
-    label: t('xcan_exec_chartConfig.minimum'),
+    label: t('chart.min'),
     value: 'tranMin'
   },
   {
-    label: t('xcan_exec_chartConfig.maximum'),
+    label: t('chart.max'),
     value: 'tranMax'
   },
   {
-    label: t('xcan_exec_chartConfig.p50'),
+    label: t('chart.p50'),
     value: 'tranP50'
   },
   {
-    label: t('xcan_exec_chartConfig.p75'),
+    label: t('chart.p75'),
     value: 'tranP75'
   },
   {
-    label: t('xcan_exec_chartConfig.p90'),
+    label: t('chart.p90'),
     value: 'tranP90'
   },
   {
-    label: t('xcan_exec_chartConfig.p95'),
+    label: t('chart.p95'),
     value: 'tranP95'
   },
   {
-    label: t('xcan_exec_chartConfig.p99'),
+    label: t('chart.p99'),
     value: 'tranP99'
   },
   {
@@ -378,42 +378,42 @@ export const responseTimeColumns = [
     ellipsis: true
   },
   {
-    title: t('xcan_exec_chartConfig.average'),
+    title: t('chart.average'),
     dataIndex: 'tranMean',
     width: '8%'
   },
   {
-    title: t('xcan_exec_chartConfig.minimum'),
+    title: t('chart.min'),
     dataIndex: 'tranMin',
     width: '8%'
   },
   {
-    title: t('xcan_exec_chartConfig.maximum'),
+    title: t('chart.max'),
     dataIndex: 'tranMax',
     width: '8%'
   },
   {
-    title: t('xcan_exec_chartConfig.p50'),
+    title: t('chart.p50'),
     dataIndex: 'tranP50',
     width: '8%'
   },
   {
-    title: t('xcan_exec_chartConfig.p75'),
+    title: t('chart.p75'),
     dataIndex: 'tranP75',
     width: '8%'
   },
   {
-    title: t('xcan_exec_chartConfig.p90'),
+    title: t('chart.p90'),
     dataIndex: 'tranP90',
     width: '8%'
   },
   {
-    title: t('xcan_exec_chartConfig.p95'),
+    title: t('chart.p95'),
     dataIndex: 'tranP95',
     width: '8%'
   },
   {
-    title: t('xcan_exec_chartConfig.p99'),
+    title: t('chart.p99'),
     dataIndex: 'tranP99',
     width: '8%'
   },

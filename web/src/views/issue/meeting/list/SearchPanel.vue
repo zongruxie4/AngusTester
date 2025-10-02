@@ -48,17 +48,17 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   auditOptions: createAuditOptions([
     {
       key: 'myModerated',
-      name: t('taskMeeting.quickSearch.myModerated'),
+      name: t('meeting.quickSearch.myModerated'),
       fieldKey: 'moderatorId'
     },
     {
       key: 'myCreated',
-      name: t('taskMeeting.quickSearch.myCreated'),
+      name: t('meeting.quickSearch.myCreated'),
       fieldKey: 'createdBy'
     },
     {
       key: 'myModified',
-      name: t('taskMeeting.quickSearch.myModified'),
+      name: t('meeting.quickSearch.myModified'),
       fieldKey: 'lastModifiedBy'
     }
   ], String(currentUser.value?.id || '')),
@@ -81,7 +81,7 @@ const searchPanelOptions = [
   {
     valueKey: 'subject',
     type: 'input' as const,
-    placeholder: t('taskMeeting.placeholder.searchSubject'),
+    placeholder: t('meeting.placeholder.searchSubject'),
     allowClear: true,
     maxlength: 100
   },
@@ -90,24 +90,24 @@ const searchPanelOptions = [
     type: 'select-enum' as const,
     enumKey: TaskMeetingType,
     allowClear: true,
-    placeholder: t('taskMeeting.placeholder.selectType')
+    placeholder: t('meeting.placeholder.selectType')
   },
   {
     valueKey: 'moderatorId',
     type: 'select-user' as const,
     allowClear: true,
-    placeholder: t('taskMeeting.placeholder.selectModeratorSearch')
+    placeholder: t('meeting.placeholder.selectModeratorSearch')
   },
   {
     valueKey: 'createdBy',
     type: 'select-user' as const,
     allowClear: true,
-    placeholder: t('taskMeeting.placeholder.selectCreator')
+    placeholder: t('meeting.placeholder.selectCreator')
   },
   {
     type: 'date-range' as const,
     valueKey: 'createdDate',
-    placeholder: [t('taskMeeting.placeholder.createTimeFrom'), t('taskMeeting.placeholder.createTimeTo')],
+    placeholder: [t('meeting.placeholder.createTimeFrom'), t('meeting.placeholder.createTimeTo')],
     showTime: true
   }
 ];
@@ -118,17 +118,17 @@ const sortMenuItems: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('taskMeeting.sort.byCreateDate'),
+    name: t('meeting.sort.byCreateDate'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('taskMeeting.sort.byCreator'),
+    name: t('meeting.sort.byCreator'),
     key: 'createdBy',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('taskMeeting.sort.bySubject'),
+    name: t('meeting.sort.bySubject'),
     key: 'subject',
     orderSort: PageQuery.OrderSort.Asc
   }
@@ -215,9 +215,9 @@ const handleRefresh = () => {
           type="primary"
           size="small"
           class="p-0">
-          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/task#meeting?type=ADD`">
+          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/issue#meeting?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('taskMeeting.addMeeting') }}</span>
+            <span>{{ t('meeting.addMeeting') }}</span>
           </RouterLink>
         </Button>
 

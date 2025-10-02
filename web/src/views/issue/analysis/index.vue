@@ -164,7 +164,7 @@ const processUrlHash = (urlHash: string) => {
   }
 
   // Clean up URL after processing
-  router.replace('/task#analysis');
+  router.replace('/issue#analysis');
 };
 
 /**
