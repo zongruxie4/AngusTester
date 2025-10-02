@@ -81,7 +81,7 @@ const menuItems = computed(() => {
         }
       : null,
     {
-      name: t('task.title'),
+      name: t('issue.title'),
       icon: 'icon-renwu2',
       key: 'task'
     },
@@ -94,7 +94,7 @@ const menuItems = computed(() => {
       : null,
     editionType.value !== EditionType.COMMUNITY
       ? {
-          name: t('taskAnalysis.title'),
+          name: t('issueAnalysis.title'),
           icon: 'icon-fenxi',
           key: 'analysis'
         }

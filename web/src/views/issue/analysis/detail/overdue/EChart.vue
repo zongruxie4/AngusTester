@@ -41,7 +41,7 @@ const completedWorkloadEChartConfig = {
     left: '35%',
     top: '52%',
     padding: 2,
-    subtext: t('taskAnalysis.detail.overdueAssessment.chartTitles.completedWorkloadRatio'),
+    subtext: t('common.counts.completedWorkloadRate'),
     itemGap: 40,
     textAlign: 'center',
     textStyle: {
@@ -113,7 +113,7 @@ const savingWorkloadEChartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEChartConfig,
   title: {
     ...completedWorkloadEChartConfig.title,
-    subtext: t('taskAnalysis.detail.overdueAssessment.chartTitles.savingWorkloadRatio')
+    subtext: t('common.counts.savingWorkloadRate')
   }
 }));
 
@@ -169,7 +169,7 @@ defineExpose({
             {{ props.overdueAssessmentData.overdueNum || 0 }}
           </div>
           <div>
-            {{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueCount') }}
+            {{ t('common.counts.overdueCount') }}
           </div>
         </div>
         <div class="text-center flex-1">
@@ -178,17 +178,17 @@ defineExpose({
             class="font-semibold text-5">
             {{ overdueAssessmentData?.riskLevel?.message }}
           </div>
-          <div>{{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueRisk') }}</div>
+          <div>{{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueRisk') }}</div>
         </div>
       </div>
       <div class="flex justify-around mt-3">
         <div class="text-center">
           <div class="font-semibold text-5  text-status-error">
             {{ props.overdueAssessmentData.overdueTime || 0 }}
-            {{ t('taskAnalysis.detail.overdueAssessment.statistics.hours') }}
+            {{ t('unit.hour') }}
           </div>
           <div>
-            {{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueTime') }}
+            {{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueTime') }}
           </div>
         </div>
 
@@ -197,17 +197,17 @@ defineExpose({
             {{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}
           </div>
           <div>
-            {{ t('taskAnalysis.detail.overdueAssessment.statistics.averageDailyProcessedWorkload') }}
+            {{ t('issueAnalysis.detail.overdueAssessment.statistics.averageDailyProcessedWorkload') }}
           </div>
         </div>
 
         <div class="text-center">
           <div class="font-semibold text-5">
             {{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}
-            {{ t('taskAnalysis.detail.overdueAssessment.statistics.hours') }}
+            {{ t('unit.hour') }}
           </div>
           <div>
-            {{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueWorkloadProcessingTime') }}
+            {{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueWorkloadProcessingTime') }}
           </div>
         </div>
       </div>

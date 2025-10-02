@@ -73,7 +73,7 @@ const confirmTaskAssociation = async () => {
     return;
   }
 
-  notification.success(t('task.subTask.messages.associateSubTaskSuccess'));
+  notification.success(t('issue.subTask.messages.associateSubTaskSuccess'));
   emit('update:visible', false);
   emit('ok');
   resetFormData();
@@ -119,7 +119,7 @@ const shouldExcludeTask = (taskData: { id: string }) => {
 <template>
   <!-- Task reference association modal -->
   <Modal
-    :title="t('task.subTask.modal.title')"
+    :title="t('issue.subTask.modal.title')"
     :centered="true"
     :visible="props.visible"
     :width="680"
@@ -128,7 +128,7 @@ const shouldExcludeTask = (taskData: { id: string }) => {
     <div class="flex items-start">
       <!-- Label section -->
       <div class="flex items-center flex-shrink-0 mr-1.5 leading-7">
-        <span>{{ t('task.subTask.modal.label') }}</span>
+        <span>{{ t('issue.subTask.modal.label') }}</span>
         <Colon />
       </div>
 
@@ -138,7 +138,7 @@ const shouldExcludeTask = (taskData: { id: string }) => {
         showSearch
         internal
         mode="tags"
-        :placeholder="t('task.subTask.modal.placeholder')"
+        :placeholder="t('issue.subTask.modal.placeholder')"
         class="flex-1"
         :excludes="shouldExcludeTask"
         :fieldNames="{ label: 'name', value: 'id' }"

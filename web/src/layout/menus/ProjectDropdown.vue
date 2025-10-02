@@ -97,7 +97,7 @@ const handleVisibleChange = (): void => {
         <div class="px-4 pt-3">
           <div class="flex items-center mb-3 search-container">
             <Input
-              :placeholder="t('project.searchProject')"
+              :placeholder="t('common.placeholders.searchKeyword')"
               trim
               allowClear
               class="flex-1 search-input"

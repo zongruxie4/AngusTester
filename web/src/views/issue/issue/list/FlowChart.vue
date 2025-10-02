@@ -21,7 +21,7 @@ const cancel = () => {
 
 <template>
   <Modal
-    :title="t('task.flowChart.title')"
+    :title="t('issue.flowChart.title')"
     :visible="props.visible"
     :footer="null"
     :bodyStyle="{ padding: '30px 30px' }"

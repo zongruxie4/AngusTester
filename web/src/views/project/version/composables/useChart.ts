@@ -24,7 +24,7 @@ export function useChart (props: ChartProps) {
       left: '35%',
       bottom: '10%',
       padding: 2,
-      subtext: t('taskAnalysis.detail.progress.chartTitles.taskProgress'),
+      subtext: t('issueAnalysis.detail.progress.chartTitles.taskProgress'),
       itemGap: 50,
       textAlign: 'center',
       textStyle: {
@@ -100,7 +100,7 @@ export function useChart (props: ChartProps) {
     ...completedEchartConfig,
     title: {
       ...completedEchartConfig.title,
-      subtext: t('taskAnalysis.detail.progress.chartTitles.workloadProgress')
+      subtext: t('issueAnalysis.detail.progress.chartTitles.workloadProgress')
     }
   }));
 

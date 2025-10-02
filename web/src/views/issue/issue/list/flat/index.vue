@@ -183,7 +183,7 @@ const handleMultiTaskSelection = (ids: string[]) => {
   // Validate selection count
   const selectedCount = selectedRowKeys.length;
   if (selectedCount > MAX_BATCH_OPERATION_COUNT) {
-    notification.info(t('task.detail.messages.maxBatchOperation', {
+    notification.info(t('issue.detail.messages.maxBatchOperation', {
       maxNum: MAX_BATCH_OPERATION_COUNT,
       selectedNum: selectedCount
     }));
@@ -209,7 +209,7 @@ const clearAllSelections = () => {
 const executeBatchCancel = async () => {
   const selectedCount = props.selectedIds.length;
   modal.confirm({
-    content: t('task.detail.batchActions.confirmCancel', { num: selectedCount }),
+    content: t('issue.detail.batchActions.confirmCancel', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const cancelPromises: Promise<any>[] = [];
@@ -234,7 +234,7 @@ const executeBatchCancel = async () => {
         // Handle complete success
         if (failureCount === 0) {
           emit('refreshChange');
-          notification.success(t('task.detail.batchActions.cancelSuccess', { num: selectedCount }));
+          notification.success(t('issue.detail.batchActions.cancelSuccess', { num: selectedCount }));
           emit('batchAction', 'cancel', taskIds);
           emit('update:selectedIds', []);
           selectedTaskDataMap.value = {};
@@ -243,13 +243,13 @@ const executeBatchCancel = async () => {
 
         // Handle complete failure
         if (failureCount === selectedCount) {
-          notification.error(t('task.detail.batchActions.cancelFailed', { num: selectedCount }));
+          notification.error(t('issue.detail.batchActions.cancelFailed', { num: selectedCount }));
           return;
         }
 
         // Handle partial success
         const successfulTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
-        notification.warning(t('task.detail.batchActions.cancelPartialSuccess', {
+        notification.warning(t('issue.detail.batchActions.cancelPartialSuccess', {
           num: selectedCount - failureCount,
           errorNum: failureCount
         }));
@@ -304,7 +304,7 @@ const executeBatchDelete = async () => {
 const executeBatchFavourite = async () => {
   const selectedCount = props.selectedIds.length;
   modal.confirm({
-    content: t('task.detail.batchActions.confirmFavourite', { num: selectedCount }),
+    content: t('issue.detail.batchActions.confirmFavourite', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const favouritePromises: Promise<any>[] = [];
@@ -337,13 +337,13 @@ const executeBatchFavourite = async () => {
 
         // Handle complete failure
         if (failureCount === selectedCount) {
-          notification.error(t('task.detail.batchActions.favouriteFailed', { num: selectedCount }));
+          notification.error(t('issue.detail.batchActions.favouriteFailed', { num: selectedCount }));
           return;
         }
 
         // Handle partial success
         const successfulTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
-        notification.warning(t('task.detail.batchActions.favouritePartialSuccess', {
+        notification.warning(t('issue.detail.batchActions.favouritePartialSuccess', {
           num: selectedCount - failureCount,
           errorNum: failureCount
         }));
@@ -371,7 +371,7 @@ const executeBatchFavourite = async () => {
 const executeBatchCancelFavourite = async () => {
   const selectedCount = props.selectedIds.length;
   modal.confirm({
-    content: t('task.detail.batchActions.confirmCancelFavourite', { num: selectedCount }),
+    content: t('issue.detail.batchActions.confirmCancelFavourite', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const cancelFavouritePromises: Promise<any>[] = [];
@@ -404,13 +404,13 @@ const executeBatchCancelFavourite = async () => {
 
         // Handle complete failure
         if (failureCount === selectedCount) {
-          notification.error(t('task.detail.batchActions.cancelFavouriteFailed', { num: selectedCount }));
+          notification.error(t('issue.detail.batchActions.cancelFavouriteFailed', { num: selectedCount }));
           return;
         }
 
         // Handle partial success
         const successfulTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
-        notification.warning(t('task.detail.batchActions.cancelFavouritePartialSuccess', {
+        notification.warning(t('issue.detail.batchActions.cancelFavouritePartialSuccess', {
           num: selectedCount - failureCount,
           errorNum: failureCount
         }));
@@ -438,7 +438,7 @@ const executeBatchCancelFavourite = async () => {
 const executeBatchFollow = async () => {
   const selectedCount = props.selectedIds.length;
   modal.confirm({
-    content: t('task.detail.batchActions.confirmFollow', { num: selectedCount }),
+    content: t('issue.detail.batchActions.confirmFollow', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const followPromises: Promise<any>[] = [];
@@ -471,13 +471,13 @@ const executeBatchFollow = async () => {
 
         // Handle complete failure
         if (failureCount === selectedCount) {
-          notification.error(t('task.detail.batchActions.cancelFollowFailed', { num: selectedCount }));
+          notification.error(t('issue.detail.batchActions.cancelFollowFailed', { num: selectedCount }));
           return;
         }
 
         // Handle partial success
         const successfulTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
-        notification.warning(t('task.detail.batchActions.cancelFollowPartialSuccess', {
+        notification.warning(t('issue.detail.batchActions.cancelFollowPartialSuccess', {
           num: selectedCount - failureCount,
           errorNum: failureCount
         }));
@@ -505,7 +505,7 @@ const executeBatchFollow = async () => {
 const executeBatchCancelFollow = async () => {
   const selectedCount = props.selectedIds.length;
   modal.confirm({
-    content: t('task.detail.batchActions.cancelFollowConfirm', { num: selectedCount }),
+    content: t('issue.detail.batchActions.cancelFollowConfirm', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const cancelFollowPromises: Promise<any>[] = [];
@@ -529,7 +529,7 @@ const executeBatchCancelFollow = async () => {
 
         // Handle complete success
         if (failureCount === 0) {
-          notification.success(t('task.detail.batchActions.cancelFollowNumSuccess', { num: selectedCount }));
+          notification.success(t('issue.detail.batchActions.cancelFollowNumSuccess', { num: selectedCount }));
           emit('batchAction', 'addFavourite', taskIds);
           emit('update:selectedIds', []);
           selectedTaskDataMap.value = {};
@@ -538,13 +538,13 @@ const executeBatchCancelFollow = async () => {
 
         // Handle complete failure
         if (failureCount === selectedCount) {
-          notification.error(t('task.detail.batchActions.cancelFollowFail', { num: selectedCount }));
+          notification.error(t('issue.detail.batchActions.cancelFollowFail', { num: selectedCount }));
           return;
         }
 
         // Handle partial success
         const successfulTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
-        notification.warning(t('task.detail.batchActions.cancelFollowPartialSuccess', {
+        notification.warning(t('issue.detail.batchActions.cancelFollowPartialSuccess', {
           num: selectedCount - failureCount,
           errorNum: failureCount
         }));

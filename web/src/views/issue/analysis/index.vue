@@ -96,7 +96,7 @@ const initializeComponent = () => {
         return {
           _id: 'analysisList',
           value: 'analysisList',
-          name: t('taskAnalysis.title'),
+          name: t('issueAnalysis.title'),
           closable: false
         };
       }
@@ -154,7 +154,7 @@ const processUrlHash = (urlHash: string) => {
         const newId = utils.uuid();
         return {
           _id: newId,
-          name: t('taskAnalysis.addAnalysis'),
+          name: t('issueAnalysis.actions.addAnalysis'),
           value: 'analysisEdit',
           noCache: true,
           data: { _id: newId }

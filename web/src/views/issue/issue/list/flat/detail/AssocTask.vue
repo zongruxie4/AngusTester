@@ -121,7 +121,7 @@ const handleTaskAssociation = async (selectedTaskIds: string[]) => {
  */
 const handleTaskDisassociation = (taskRecord: any) => {
   modal.confirm({
-    content: t('task.assocTask.messages.confirmCancelTask', { name: taskRecord.name }),
+    content: t('issue.assocTask.messages.confirmCancelTask', { name: taskRecord.name }),
     onOk () {
       return task.cancelAssociationTask(props.taskId, [taskRecord.id], {
         paramsType: true
@@ -217,7 +217,7 @@ const tableColumns = [
         size="small"
         @click="openTaskSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('task.assocTask.actions.associateTask', { title: props.title }) }}
+        {{ t('issue.assocTask.actions.associateTask', { title: props.title }) }}
       </Button>
     </div>
 

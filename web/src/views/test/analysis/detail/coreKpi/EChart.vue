@@ -80,10 +80,10 @@ const coreEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.coreKpi.caseCount'),
-      t('functionAnalysis.detail.coreKpi.workload'),
-      t('functionAnalysis.detail.coreKpi.overdueCount'),
-      t('functionAnalysis.detail.coreKpi.bugCount')
+      t('common.counts.caseCount'),
+      t('common.workload'),
+      t('common.counts.overdueCount'),
+      t('common.counts.bugCount')
     ],
     axisLabel: {
       interval: 0,

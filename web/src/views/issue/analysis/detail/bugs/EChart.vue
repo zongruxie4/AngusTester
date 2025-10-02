@@ -63,7 +63,7 @@ let bugWorkloadEChart;
 // 缺陷
 const bugsEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.bugs.chartTitles.bugCount'),
+    text: t('common.counts.bugCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -79,10 +79,10 @@ const bugsEChartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('taskAnalysis.detail.bugs.chartLabels.totalBugs'),
-      t('taskAnalysis.detail.bugs.chartLabels.validBugs'),
-      t('taskAnalysis.detail.bugs.chartLabels.invalidBugs'),
-      t('taskAnalysis.detail.bugs.chartLabels.escapedBugs')
+      t('issueAnalysis.detail.bugs.chartLabels.totalBugs'),
+      t('issueAnalysis.detail.bugs.chartLabels.validBugs'),
+      t('issueAnalysis.detail.bugs.chartLabels.invalidBugs'),
+      t('issueAnalysis.detail.bugs.chartLabels.escapedBugs')
     ],
     axisLabel: {
       interval: 0,
@@ -119,7 +119,7 @@ const bugLevelEChartConfig = {
     left: '35%',
     top: '40%',
     padding: 2,
-    subtext: t('taskAnalysis.detail.bugs.chartTitles.bugLevel'),
+    subtext: t('common.bugLevel'),
     // left: '25%',
     // top: '40%',
     itemGap: 60,
@@ -171,28 +171,28 @@ const bugLevelEChartConfig = {
       },
       data: [
         {
-          name: t('taskAnalysis.detail.bugs.pieChartLabels.criticalCount'),
+          name: t('issueAnalysis.detail.bugs.pieChartLabels.criticalCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: t('taskAnalysis.detail.bugs.pieChartLabels.majorCount'),
+          name: t('issueAnalysis.detail.bugs.pieChartLabels.majorCount'),
           value: 0,
           itemStyle: {
             color: 'gold'
           }
         },
         {
-          name: t('taskAnalysis.detail.bugs.pieChartLabels.minorCount'),
+          name: t('issueAnalysis.detail.bugs.pieChartLabels.minorCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: t('taskAnalysis.detail.bugs.pieChartLabels.trivialCount'),
+          name: t('issueAnalysis.detail.bugs.pieChartLabels.trivialCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'
@@ -208,7 +208,7 @@ const validBugEChartConfig = JSON.parse(JSON.stringify({
   ...bugLevelEChartConfig,
   title: {
     ...bugLevelEChartConfig.title,
-    subtext: t('taskAnalysis.detail.bugs.chartTitles.validBugRatio'),
+    subtext: t('issueAnalysis.detail.bugs.chartTitles.validBugRate'),
     itemGap: 50
   },
   series: [{
@@ -237,7 +237,7 @@ const escapedBugEChartConfig = JSON.parse(JSON.stringify({
   ...validBugEChartConfig,
   title: {
     ...validBugEChartConfig.title,
-    subtext: t('taskAnalysis.detail.bugs.chartTitles.escapedBugRatio')
+    subtext: t('issueAnalysis.detail.bugs.chartTitles.escapedBugRate')
   }
 }));
 
@@ -246,7 +246,7 @@ const bugWorkloadEChartConfig = JSON.parse(JSON.stringify({
   ...validBugEChartConfig,
   title: {
     ...validBugEChartConfig.title,
-    subtext: t('taskAnalysis.detail.bugs.chartTitles.bugWorkloadRatio')
+    subtext: t('issueAnalysis.detail.bugs.chartTitles.bugWorkloadRate')
   }
 }));
 

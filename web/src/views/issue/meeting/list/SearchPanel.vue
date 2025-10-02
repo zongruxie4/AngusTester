@@ -126,17 +126,17 @@ const sortMenuItems: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('meeting.actions.sorts.byCreateDate'),
+    name: t('common.createdDate'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('meeting.actions.sorts.byCreator'),
+    name: t('common.creator'),
     key: 'createdBy',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('meeting.actions.sorts.bySubject'),
+    name: t('common.subject'),
     key: 'subject',
     orderSort: PageQuery.OrderSort.Asc
   }

@@ -54,7 +54,7 @@ onMounted(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="flex items-center text-3">{{ t('task.testing.testResult.title') }}</div>
+      <div class="flex items-center text-3">{{ t('issue.testing.testResult.title') }}</div>
     </template>
 
     <template #default>

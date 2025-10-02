@@ -115,7 +115,7 @@ const handleTableSelection = (selectedKeys: string[]) => {
   const selectedCount = currentSelectedKeys.length;
   // Validate selection limit
   if (selectedCount > MAX_BATCH_SELECTION_LIMIT) {
-    notification.info(t('task.table.messages.maxBatchLimit', { maxNum: MAX_BATCH_SELECTION_LIMIT, selectedNum: selectedCount }));
+    notification.info(t('issue.table.messages.maxBatchLimit', { maxNum: MAX_BATCH_SELECTION_LIMIT, selectedNum: selectedCount }));
   }
 
   rowSelection.value.selectedRowKeys = currentSelectedKeys;
@@ -167,7 +167,7 @@ const clearBatchSelection = () => {
 const executeBatchCancel = async () => {
   const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.cancelConfirm', { num: selectedCount }),
+    content: t('issue.table.messages.cancelConfirm', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const cancelPromises: Promise<any>[] = [];
@@ -192,7 +192,7 @@ const executeBatchCancel = async () => {
         // All tasks cancelled successfully
         if (failedCount === 0) {
           emit('refreshChange');
-          notification.success(t('task.table.messages.cancelNumSuccess', { num: selectedCount }));
+          notification.success(t('issue.table.messages.cancelNumSuccess', { num: selectedCount }));
           emit('batchAction', 'cancel', taskIds);
           rowSelection.value.selectedRowKeys = [];
           selectedTaskDataMap.value = {};
@@ -201,13 +201,13 @@ const executeBatchCancel = async () => {
 
         // All tasks failed
         if (failedCount === selectedCount) {
-          notification.error(t('task.table.messages.cancelFail', { num: selectedCount }));
+          notification.error(t('issue.table.messages.cancelFail', { num: selectedCount }));
           return;
         }
 
         // Partial success - handle mixed results
         const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
-        notification.warning(t('task.table.messages.cancelPartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
+        notification.warning(t('issue.table.messages.cancelPartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
         emit('refreshChange');
         emit('batchAction', 'cancel', successTaskIds);
@@ -253,7 +253,7 @@ const executeBatchDelete = async () => {
 const executeBatchFavourite = async () => {
   const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.favouriteConfirm', { num: selectedCount }),
+    content: t('issue.table.messages.favouriteConfirm', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const favouritePromises: Promise<any>[] = [];
@@ -277,7 +277,7 @@ const executeBatchFavourite = async () => {
 
         // All tasks favourited successfully
         if (failedCount === 0) {
-          notification.success(t('task.table.messages.favouriteNumSuccess', { num: selectedCount }));
+          notification.success(t('issue.table.messages.favouriteNumSuccess', { num: selectedCount }));
           emit('batchAction', 'addFavourite', taskIds);
           rowSelection.value.selectedRowKeys = [];
           selectedTaskDataMap.value = {};
@@ -286,13 +286,13 @@ const executeBatchFavourite = async () => {
 
         // All tasks failed
         if (failedCount === selectedCount) {
-          notification.error(t('task.table.messages.favouriteFail', { num: selectedCount }));
+          notification.error(t('issue.table.messages.favouriteFail', { num: selectedCount }));
           return;
         }
 
         // Partial success - handle mixed results
         const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
-        notification.warning(t('task.table.messages.favouritePartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
+        notification.warning(t('issue.table.messages.favouritePartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
         emit('batchAction', 'addFavourite', successTaskIds);
 
@@ -313,7 +313,7 @@ const executeBatchFavourite = async () => {
 const executeBatchCancelFavourite = async () => {
   const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.cancelFavouriteConfirm', { num: selectedCount }),
+    content: t('issue.table.messages.cancelFavouriteConfirm', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const cancelFavouritePromises: Promise<any>[] = [];
@@ -337,7 +337,7 @@ const executeBatchCancelFavourite = async () => {
 
         // All tasks unfavourited successfully
         if (failedCount === 0) {
-          notification.success(t('task.table.messages.cancelFavouriteNumSuccess', { num: selectedCount }));
+          notification.success(t('issue.table.messages.cancelFavouriteNumSuccess', { num: selectedCount }));
           emit('batchAction', 'addFavourite', taskIds);
           rowSelection.value.selectedRowKeys = [];
           selectedTaskDataMap.value = {};
@@ -346,13 +346,13 @@ const executeBatchCancelFavourite = async () => {
 
         // All tasks failed
         if (failedCount === selectedCount) {
-          notification.error(t('task.table.messages.cancelFavouriteFail', { num: selectedCount }));
+          notification.error(t('issue.table.messages.cancelFavouriteFail', { num: selectedCount }));
           return;
         }
 
         // Partial success - handle mixed results
         const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
-        notification.warning(t('task.table.messages.cancelFavouritePartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
+        notification.warning(t('issue.table.messages.cancelFavouritePartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
         emit('batchAction', 'addFavourite', successTaskIds);
 
@@ -373,7 +373,7 @@ const executeBatchCancelFavourite = async () => {
 const executeBatchFollow = async () => {
   const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.followConfirm', { num: selectedCount }),
+    content: t('issue.table.messages.followConfirm', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const followPromises: Promise<any>[] = [];
@@ -397,7 +397,7 @@ const executeBatchFollow = async () => {
 
         // All tasks followed successfully
         if (failedCount === 0) {
-          notification.success(t('task.table.messages.followNumSuccess', { num: selectedCount }));
+          notification.success(t('issue.table.messages.followNumSuccess', { num: selectedCount }));
           emit('batchAction', 'addFollow', taskIds);
           rowSelection.value.selectedRowKeys = [];
           selectedTaskDataMap.value = {};
@@ -406,13 +406,13 @@ const executeBatchFollow = async () => {
 
         // All tasks failed
         if (failedCount === selectedCount) {
-          notification.error(t('task.table.messages.followFail', { num: selectedCount }));
+          notification.error(t('issue.table.messages.followFail', { num: selectedCount }));
           return;
         }
 
         // Partial success - handle mixed results
         const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
-        notification.warning(t('task.table.messages.followPartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
+        notification.warning(t('issue.table.messages.followPartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
         emit('batchAction', 'addFollow', successTaskIds);
 
@@ -433,7 +433,7 @@ const executeBatchFollow = async () => {
 const executeBatchCancelFollow = async () => {
   const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.cancelFollowConfirm', { num: selectedCount }),
+    content: t('issue.table.messages.cancelFollowConfirm', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
       const cancelFollowPromises: Promise<any>[] = [];
@@ -457,7 +457,7 @@ const executeBatchCancelFollow = async () => {
 
         // All tasks unfollowed successfully
         if (failedCount === 0) {
-          notification.success(t('task.table.messages.cancelFollowNumSuccess', { num: selectedCount }));
+          notification.success(t('issue.table.messages.cancelFollowNumSuccess', { num: selectedCount }));
           emit('batchAction', 'cancelFollow', taskIds);
           rowSelection.value.selectedRowKeys = [];
           selectedTaskDataMap.value = {};
@@ -466,13 +466,13 @@ const executeBatchCancelFollow = async () => {
 
         // All tasks failed
         if (failedCount === selectedCount) {
-          notification.error(t('task.table.messages.cancelFollowFail', { num: selectedCount }));
+          notification.error(t('issue.table.messages.cancelFollowFail', { num: selectedCount }));
           return;
         }
 
         // Partial success - handle mixed results
         const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
-        notification.warning(t('task.table.messages.cancelFollowPartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
+        notification.warning(t('issue.table.messages.cancelFollowPartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
         emit('batchAction', 'cancelFollow', successTaskIds);
 
@@ -518,7 +518,7 @@ const navigateToEdit = (taskId: string) => {
  */
 const deleteSingleTask = (taskData: TaskDetail) => {
   modal.confirm({
-    content: t('task.table.messages.deleteTaskConfirm', { name: taskData.name }),
+    content: t('issue.table.messages.deleteTaskConfirm', { name: taskData.name }),
     async onOk () {
       const [error] = await task.deleteTask([taskData.id]);
       if (error) {
@@ -527,7 +527,7 @@ const deleteSingleTask = (taskData: TaskDetail) => {
 
       emit('refreshChange');
       emit('delete', taskData.id);
-      notification.success(t('task.table.messages.deleteTaskSuccess'));
+      notification.success(t('issue.table.messages.deleteTaskSuccess'));
     }
   });
 };
@@ -651,7 +651,7 @@ const startTask = async (taskData: TaskDetail) => {
   }
 
   emit('refreshChange');
-  notification.success(t('task.table.messages.startSuccess'));
+  notification.success(t('issue.table.messages.startSuccess'));
   const updatedTaskData = await loadTaskDetail(taskId);
   emit('dataChange', updatedTaskData);
 };
@@ -668,7 +668,7 @@ const markAsProcessed = async (taskData: TaskDetail) => {
   }
 
   emit('refreshChange');
-  notification.success(t('task.table.messages.processedSuccess'));
+  notification.success(t('issue.table.messages.processedSuccess'));
   const updatedTaskData = await loadTaskDetail(taskId);
   emit('dataChange', updatedTaskData);
 };
@@ -717,7 +717,7 @@ const reopenTask = async (taskData: TaskDetail) => {
   }
 
   emit('refreshChange');
-  notification.success(t('task.table.messages.reopenSuccess'));
+  notification.success(t('issue.table.messages.reopenSuccess'));
   const updatedTaskData = await loadTaskDetail(taskId);
   emit('dataChange', updatedTaskData);
 };
@@ -734,7 +734,7 @@ const restartTask = async (taskData: TaskDetail) => {
   }
 
   emit('refreshChange');
-  notification.success(t('task.table.messages.restartSuccess'));
+  notification.success(t('issue.table.messages.restartSuccess'));
   const updatedTaskData = await loadTaskDetail(taskId);
   emit('dataChange', updatedTaskData);
 };
@@ -759,7 +759,7 @@ const cancelTask = async (taskData: TaskDetail) => {
   }
 
   emit('refreshChange');
-  notification.success(t('task.table.messages.cancelSuccess'));
+  notification.success(t('issue.table.messages.cancelSuccess'));
   const updatedTaskData = await loadTaskDetail(taskId);
   emit('dataChange', updatedTaskData);
 };
@@ -890,7 +890,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.apiScenario'),
+    title: t('issue.table.columns.apiScenario'),
     hide: true,
     dataIndex: 'targetName',
     groupName: 'target',
@@ -976,7 +976,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.failCount'),
+    title: t('issue.table.columns.failCount'),
     dataIndex: 'failNum',
     width: 130,
     hide: true,
@@ -985,7 +985,7 @@ const tableColumns: ({
     ellipsis: true
   },
   {
-    title: t('task.table.columns.processCount'),
+    title: t('issue.table.columns.processCount'),
     dataIndex: 'totalNum',
     width: 130,
     sorter: true,

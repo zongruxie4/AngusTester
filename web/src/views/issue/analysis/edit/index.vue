@@ -91,8 +91,8 @@ const formData = ref<AnalysisEditState>({
   containsDataDetail: true,
   planId: '',
   datasource: AnalysisDataSource.REAL_TIME_DATA,
-  orgType: AuthObjectType.DEPT,
-  orgId: '',
+  orgType: AuthObjectType.USER,
+  orgId: undefined,
   customRange: ['', '']
 });
 
@@ -299,12 +299,12 @@ onMounted(async () => {
         <Input
           v-model:value="formData.name"
           :maxlength="100"
-          :placeholder="t('taskAnalysis.placeholder.inputAnalysisName')" />
+          :placeholder="t('issueAnalysis.placeholder.inputAnalysisName')" />
       </FormItem>
 
       <FormItem
         name="template"
-        :label="t('taskAnalysis.form.template')"
+        :label="t('issueAnalysis.columns.template')"
         class="input-item"
         required>
         <SelectEnum
@@ -318,17 +318,17 @@ onMounted(async () => {
 
       <FormItem
         name="description"
-        :label="t('common.description')">
+        :label="t('issueAnalysis.columns.description')">
         <Textarea
           v-model:value="formData.description"
           :maxlength="200"
-          :placeholder="t('taskAnalysis.placeholder.inputAnalysisDesc')"
+          :placeholder="t('issueAnalysis.placeholder.inputAnalysisDesc')"
           @change="handleDescriptionChange" />
       </FormItem>
 
       <FormItem
         name="object"
-        :label="t('taskAnalysis.form.object')"
+        :label="t('issueAnalysis.columns.object')"
         class="input-item"
         required>
         <RadioGroup
@@ -346,7 +346,7 @@ onMounted(async () => {
       <template v-if="formData.object === AnalysisTaskObject.SPRINT">
         <FormItem
           name="planId"
-          :label="t('taskAnalysis.form.selectSprint')"
+          :label="t('common.placeholders.selectSprint')"
           required
           class="ml-16 input-item">
           <Select
@@ -358,7 +358,7 @@ onMounted(async () => {
             defaultActiveFirstOption
             showSearch
             internal
-            :placeholder="t('taskAnalysis.placeholder.selectSprint')">
+            :placeholder="t('common.placeholders.selectSprint')">
             <template #option="record">
               <div class="flex items-center" :title="record.name">
                 <Icon icon="icon-jihua" class="mr-1 text-4" />
@@ -372,7 +372,7 @@ onMounted(async () => {
       <template v-if="formData.object === AnalysisTaskObject.ASSIGNEE_ORG">
         <FormItem
           name="orgId"
-          :label="t('taskAnalysis.form.selectOrg')"
+          :label="t('common.organization')"
           required
           class="ml-16 input-item">
           <Select
@@ -413,16 +413,16 @@ onMounted(async () => {
         <Checkbox
           v-show="formData.object !== AnalysisTaskObject.ASSIGNEE_ORG || formData.orgType !== AuthObjectType.USER"
           v-model:checked="formData.containsUserAnalysis">
-          {{ t('taskAnalysis.form.containsUserAnalysis') }}
+          {{ t('issueAnalysis.columns.containsUserAnalysis') }}
         </Checkbox>
         <Checkbox v-model:checked="formData.containsDataDetail">
-          {{ t('taskAnalysis.form.containsDataDetail') }}
+          {{ t('issueAnalysis.columns.containsDataDetail') }}
         </Checkbox>
       </FormItem>
 
       <FormItem
         name="timeRange"
-        :label="t('taskAnalysis.form.timeRange')"
+        :label="t('issueAnalysis.columns.timeRange')"
         required>
         <RadioGroup
           v-model:value="formData.timeRange"
@@ -435,7 +435,7 @@ onMounted(async () => {
       </FormItem>
 
       <FormItem
-        :label="t('taskAnalysis.form.dataSource')"
+        :label="t('issueAnalysis.columns.dataSource')"
         name="datasource"
         required>
         <RadioGroup

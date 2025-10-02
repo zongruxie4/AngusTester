@@ -53,7 +53,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.totalTaskNum }}</div>
         <div class="label">
-          {{ t('task.list.statistics.totalTasks') }}
+          {{ t('issue.list.statistics.totalTasks') }}
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.pendingNum }}</div>
         <div class="label">
-          {{ t('task.list.statistics.pendingTasks') }}
+          {{ t('issue.list.statistics.pendingTasks') }}
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.inProgressNum }}</div>
         <div class="label">
-          {{ t('task.list.statistics.inProgressTasks') }}
+          {{ t('issue.list.statistics.inProgressTasks') }}
         </div>
       </div>
     </div>
@@ -86,7 +86,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.confirmingNum }}</div>
         <div class="label">
-          {{ t('task.list.statistics.confirmingTasks') }}
+          {{ t('issue.list.statistics.confirmingTasks') }}
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.completedNum }}</div>
         <div class="label">
-          {{ t('task.list.statistics.completedTasks') }}
+          {{ t('common.counts.completedCount') }}
         </div>
       </div>
     </div>
@@ -108,7 +108,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.canceledNum }}</div>
         <div class="label">
-          {{ t('task.list.statistics.canceledTasks') }}
+          {{ t('issue.list.statistics.canceledTasks') }}
         </div>
       </div>
     </div>
@@ -119,7 +119,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.overdueNum }}</div>
         <div class="label">
-          {{ t('task.list.statistics.overdueTasks') }}
+          {{ t('issue.list.statistics.overdueTasks') }}
         </div>
       </div>
     </div>
@@ -141,7 +141,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.completedWorkload }}</div>
         <div class="label">
-          {{ t('task.list.statistics.completedWorkload') }}
+          {{ t('common.completedWorkload') }}
         </div>
       </div>
     </div>
@@ -152,7 +152,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.oneTimePassedNum }}</div>
         <div class="label">
-          {{ t('task.list.statistics.oneTimePassedNum') }}
+          {{ t('issue.list.statistics.oneTimePassedNum') }}
         </div>
       </div>
     </div>
@@ -166,7 +166,7 @@ const formatPercentage = (value: string | undefined): string => {
           <span class="unit">%</span>
         </div>
         <div class="label">
-          {{ t('task.list.statistics.oneTimePassedRate') }}
+          {{ t('issue.list.statistics.oneTimePassedRate') }}
         </div>
       </div>
     </div>

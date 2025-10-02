@@ -25,7 +25,7 @@ let leadTimeRefEChart;
 // 任务交付周期(小时
 const leadTimeEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.leadTime.chartTitles.taskDeliveryCycle'),
+    text: t('issueAnalysis.detail.leadTime.chartTitles.taskDeliveryCycle'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -113,10 +113,10 @@ defineExpose({
             <span class="text-5 text-status-warn">
               {{ props.overdueAssessmentData.totalProcessingTime || 0 }}
             </span>
-            {{ t('taskAnalysis.detail.leadTime.statistics.hours') }}
+            {{ t('unit.hour') }}
           </div>
           <div>
-            {{ t('taskAnalysis.detail.leadTime.statistics.totalProcessingTime') }}
+            {{ t('issueAnalysis.detail.leadTime.statistics.totalProcessingTime') }}
           </div>
         </div>
       </div>
@@ -124,17 +124,17 @@ defineExpose({
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.userNum || 0 }}</div>
           <div>
-            {{ t('taskAnalysis.detail.leadTime.statistics.participants') }}
+            {{ t('issueAnalysis.detail.leadTime.statistics.participants') }}
           </div>
         </div>
         <div class="text-center">
           <div class="">
             <span class="font-semibold text-5">
               {{ props.overdueAssessmentData.userAvgProcessingTime || 0 }}
-            </span>{{ t('taskAnalysis.detail.leadTime.statistics.perHour') }}
+            </span>{{ t('issueAnalysis.detail.leadTime.statistics.perHour') }}
           </div>
           <div>
-            {{ t('taskAnalysis.detail.leadTime.statistics.averageDailyProcessingTime') }}
+            {{ t('issueAnalysis.detail.leadTime.statistics.averageDailyProcessingTime') }}
           </div>
         </div>
       </div>

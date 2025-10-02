@@ -42,7 +42,7 @@ let savingWorkloadEChart;
 
 const workloadEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.workload.chartTitles.workload'),
+    text: t('common.workload'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -97,7 +97,7 @@ const completedWorkloadEChartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('taskAnalysis.detail.workload.chartTitles.completedWorkloadRatio'),
+    subtext: t('common.counts.completedWorkloadRate'),
     itemGap: 40,
     textAlign: 'center',
     textStyle: {
@@ -170,7 +170,7 @@ const savingWorkloadEChartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEChartConfig,
   title: {
     ...completedWorkloadEChartConfig.title,
-    subtext: t('taskAnalysis.detail.workload.chartTitles.savingWorkloadRatio')
+    subtext: t('common.counts.savingWorkloadRate')
   }
 }));
 

@@ -345,7 +345,7 @@ const confirmerDefaultOptions = computed(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5">{{ t('task.detailInfo.personnel.title') }}</div>
+      <div class="text-3.5">{{ t('issue.detailInfo.personnel.title') }}</div>
     </template>
 
     <template #default>

@@ -17,45 +17,87 @@ const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 const getChartData = (data) => {
   const res = {} as any;
 
-  const { lastMonth, last7Days, today } = data;
+  if (!data) {
+    console.warn('getChartData: data is undefined or null');
+    return res;
+  }
+
+  const { lastMonth = {}, last7Days = {}, today = {} } = data;
 
   res.chart0Value = {
-    yData0: [today.completedNum, last7Days.completedNum, lastMonth.completedNum],
-    yData1: [today.overdueNum, last7Days.overdueNum, lastMonth.overdueNum],
-    yData2: [today.totalNum, last7Days.totalNum, lastMonth.totalNum]
+    yData0: [
+      today.completedNum || 0,
+      last7Days.completedNum || 0,
+      lastMonth.completedNum || 0
+    ],
+    yData1: [
+      today.overdueNum || 0,
+      last7Days.overdueNum || 0,
+      lastMonth.overdueNum || 0
+    ],
+    yData2: [
+      today.totalNum || 0,
+      last7Days.totalNum || 0,
+      lastMonth.totalNum || 0
+    ]
   };
   res.chart1Value = {
-    yData0: [today.completedWorkload, last7Days.completedWorkload, lastMonth.completedWorkload],
-    yData1: [today.overdueWorkload, last7Days.overdueWorkload, lastMonth.overdueWorkload],
-    yData2: [today.totalWorkload, last7Days.totalWorkload, lastMonth.totalWorkload]
+    yData0: [
+      today.completedWorkload || 0,
+      last7Days.completedWorkload || 0,
+      lastMonth.completedWorkload || 0
+    ],
+    yData1: [
+      today.overdueWorkload || 0,
+      last7Days.overdueWorkload || 0,
+      lastMonth.overdueWorkload || 0
+    ],
+    yData2: [
+      today.totalWorkload || 0,
+      last7Days.totalWorkload || 0,
+      lastMonth.totalWorkload || 0
+    ]
   };
-
   return res;
 };
 
 const totalValue = ref({});
 
-const personValues = ref([]);
+interface PersonValue {
+  userName: string;
+  chartData: any;
+  id: string;
+}
+
+const personValues = ref<PersonValue[]>([]);
 
 onMounted(() => {
   watch(() => props.analysisInfo, (newValue) => {
     if (newValue) {
-      const sourceData = newValue.data?.totalOverview || {};
-      totalValue.value = getChartData(sourceData);
+      try {
+        const sourceData = newValue.data?.totalOverview || {};
+        totalValue.value = getChartData(sourceData);
 
-      if (newValue?.containsUserAnalysis) {
-        const sourceData = newValue.data?.assigneesOverview || {};
-        const assignees = newValue.data?.assignees || [];
-        Object.keys(sourceData).forEach(userId => {
-          const viewData = sourceData[userId] || {};
-          const chartData = getChartData(viewData);
+        if (newValue?.containsUserAnalysis && newValue.data?.assigneesOverview) {
+          const sourceData = newValue.data.assigneesOverview;
+          const assignees = newValue.data?.assignees || [];
 
-          personValues.value.push({
-            userName: assignees[userId]?.fullName,
-            chartData,
-            id: userId
+          personValues.value = [];
+
+          Object.keys(sourceData).forEach(userId => {
+            const viewData = sourceData[userId] || {};
+            const chartData = getChartData(viewData);
+
+            personValues.value.push({
+              userName: assignees[userId]?.fullName,
+              chartData,
+              id: userId
+            });
           });
-        });
+        }
+      } catch (error) {
+        totalValue.value = {};
+        personValues.value = [];
       }
     } else {
       totalValue.value = {};
@@ -67,13 +109,13 @@ onMounted(() => {
   });
 });
 
-const totalChartRef = ref();
-const chartListRef = [];
+const totalChartRef = ref<any>();
+const chartListRef = ref<any[]>([]);
 defineExpose({
   resize: () => {
-    totalChartRef.value.resize();
-    chartListRef.forEach(item => {
-      item.resize();
+    totalChartRef.value?.resize();
+    chartListRef.value.forEach(item => {
+      item?.resize();
     });
   }
 });

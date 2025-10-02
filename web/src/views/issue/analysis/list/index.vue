@@ -152,14 +152,14 @@ const openCreateAnalysisDialog = (templateType = '') => {
     addTabPane({
       _id: 'analysisEdit',
       value: 'analysisEdit',
-      name: t('taskAnalysis.addAnalysis'),
+      name: t('issueAnalysis.actions.addAnalysis'),
       data: { template: templateType }
     });
   } else {
     addTabPane({
       _id: 'analysisEdit',
       value: 'analysisEdit',
-      name: t('taskAnalysis.addAnalysis')
+      name: t('issueAnalysis.actions.addAnalysis')
     });
   }
 };
@@ -214,7 +214,7 @@ const deleteAnalysis = (analysisData) => {
  */
 const updateAnalysisSnapshot = (analysisData) => {
   modal.confirm({
-    content: t('taskAnalysis.messages.confirmUpdateSnapshot', { name: analysisData.name }),
+    content: t('issueAnalysis.messages.confirmUpdateSnapshot', { name: analysisData.name }),
     onOk () {
       return analysis.refreshAnalysis(analysisData.id)
         .then(([error]) => {
@@ -323,7 +323,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="p-5 h-full flex flex-col overflow-x-hidden">
     <Introduce />
-    <div class="text-3.5 font-semibold mb-2.5">{{ t('taskAnalysis.addedAnalysis') }}</div>
+    <div class="text-3.5 font-semibold mb-2.5">{{ t('issueAnalysis.addedAnalysis') }}</div>
     <SearchPanel
       v-model:orderBy="sortingConfig.orderBy"
       v-model:orderSort="sortingConfig.orderSort"
@@ -361,7 +361,7 @@ onBeforeUnmount(() => {
                     {{ item.name }}
                   </div>
                   <Tag class="relative -top-1 mr-0 px-0.5 h-4" color="geekblue">
-                    {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('taskAnalysis.realTime') : t('taskAnalysis.snapshot') }}
+                    {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('issueAnalysis.status.realTime') : t('issueAnalysis.status.snapshot') }}
                   </Tag>
                 </div>
 
@@ -377,7 +377,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="mt-1 text-right">
               <span class="font-semibold mr-1">{{ item.createdByName }}</span>
-              {{ t('taskAnalysis.createdAt') }}&nbsp;{{ item.createdDate }}
+              {{ t('status.createdAt') }}&nbsp;{{ item.createdDate }}
             </div>
             <div class="flex justify-end">
               <Button
@@ -437,7 +437,7 @@ onBeforeUnmount(() => {
         <Icon :icon="TemplateIconConfig[selectedTemplate]" class="text-20 mt-20" />
         <div>{{ templateDescriptionMap[selectedTemplate] }}</div>
         <div>
-          {{ t('taskAnalysis.notCreatedYet') }}
+          {{ t('issueAnalysis.notCreatedYet') }}
           <Button
             type="link"
             size="small"

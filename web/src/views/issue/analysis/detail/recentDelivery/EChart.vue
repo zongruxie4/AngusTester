@@ -40,7 +40,7 @@ let deliveryWorkloadEChart;
 // 交付数（完成数）
 const deliveryEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.recentDelivery.chartTitles.deliveryCount'),
+    text: t('issueAnalysis.detail.recentDelivery.chartTitles.deliveryCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -56,9 +56,9 @@ const deliveryEChartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('taskAnalysis.detail.recentDelivery.chartLabels.today'),
-      t('quickSearch.last7Days'),
-      t('taskAnalysis.detail.recentDelivery.chartLabels.lastMonth')
+      t('chart.today'),
+      t('chart.last7Days'),
+      t('chart.lastMonth')
     ],
     axisLabel: {
       interval: 0,
@@ -74,15 +74,15 @@ const deliveryEChartConfig = {
   legend: {
     show: true,
     data: [
-      t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryCount'),
-      t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryOverdueCount'),
-      t('taskAnalysis.detail.recentDelivery.chartLabels.totalCount')
+      t('issueAnalysis.detail.recentDelivery.chartLabels.deliveryCount'),
+      t('issueAnalysis.detail.recentDelivery.chartLabels.deliveryOverdueCount'),
+      t('common.counts.totalCount')
     ],
     top: 0
   },
   series: [
     {
-      name: t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryCount'),
+      name: t('issueAnalysis.detail.recentDelivery.chartLabels.deliveryCount'),
       itemStyle: {
         color: '#52C41A',
         borderRadius: [5, 5, 0, 0]
@@ -97,7 +97,7 @@ const deliveryEChartConfig = {
       }
     },
     {
-      name: t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryOverdueCount'),
+      name: t('issueAnalysis.detail.recentDelivery.chartLabels.deliveryOverdueCount'),
       itemStyle: {
         color: 'orange',
         borderRadius: [5, 5, 0, 0]
@@ -111,7 +111,7 @@ const deliveryEChartConfig = {
       }
     },
     {
-      name: t('taskAnalysis.detail.recentDelivery.chartLabels.totalCount'),
+      name: t('common.counts.totalCount'),
       itemStyle: {
         color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
@@ -135,9 +135,7 @@ const deliveryWorkloadEChartConfig = JSON.parse(JSON.stringify({
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('taskAnalysis.detail.recentDelivery.chartTitles.deliveryWorkload'),
-    // left: '25%',
-    // top: '40%',
+    subtext: t('issueAnalysis.detail.recentDelivery.chartTitles.deliveryWorkload'),
     itemGap: 55,
     textAlign: 'center',
     textStyle: {

@@ -394,7 +394,7 @@ const handleVersionBlur = async () => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5">{{ t('task.detailInfo.scenario.title') }}</div>
+      <div class="text-3.5">{{ t('issue.detailInfo.scenario.title') }}</div>
     </template>
 
     <template #default>
@@ -568,7 +568,7 @@ const handleVersionBlur = async () => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('task.detailInfo.scenario.columns.evalWorkloadPlaceholder')"
+                :placeholder="t('issue.detailInfo.scenario.columns.evalWorkloadPlaceholder')"
                 @blur="handleEvalWorkloadBlur"
                 @pressEnter="handleEvalWorkloadEnter" />
             </AsyncComponent>
@@ -613,7 +613,7 @@ const handleVersionBlur = async () => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('task.detailInfo.scenario.columns.actualWorkloadPlaceholder')"
+                :placeholder="t('issue.detailInfo.scenario.columns.actualWorkloadPlaceholder')"
                 @blur="handleActualWorkloadBlur"
                 @pressEnter="handleActualWorkloadEnter" />
             </AsyncComponent>
@@ -645,7 +645,7 @@ const handleVersionBlur = async () => {
                 :allowClear="false"
                 internal
                 enumKey="Priority"
-                :placeholder="t('task.detailInfo.scenario.columns.selectPriority')"
+                :placeholder="t('issue.detailInfo.scenario.columns.selectPriority')"
                 class="left-component max-w-52"
                 @change="handlePriorityChange"
                 @blur="handlePriorityBlur">
@@ -658,7 +658,7 @@ const handleVersionBlur = async () => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.failNum') }}</span>
+              <span>{{ t('issue.detailInfo.scenario.columns.failNum') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -669,7 +669,7 @@ const handleVersionBlur = async () => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.totalNum') }}</span>
+              <span>{{ t('issue.detailInfo.scenario.columns.totalNum') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -678,7 +678,7 @@ const handleVersionBlur = async () => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.onePass') }}</span>
+              <span>{{ t('issue.detailInfo.scenario.columns.onePass') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -698,7 +698,7 @@ const handleVersionBlur = async () => {
                   ref="versionSelectRef"
                   v-model:value="versionSelectValue"
                   allowClear
-                  :placeholder="t('task.detailInfo.scenario.columns.softwareVersionPlaceholder')"
+                  :placeholder="t('issue.detailInfo.scenario.columns.softwareVersionPlaceholder')"
                   lazy
                   class="w-full max-w-60"
                   :action="`${TESTER}/software/version?projectId=${props.projectId}`"
@@ -777,10 +777,10 @@ const handleVersionBlur = async () => {
                 :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
                 showSearch
                 internal
-                :placeholder="t('task.detailInfo.scenario.columns.tagsPlaceholder')"
+                :placeholder="t('issue.detailInfo.scenario.columns.tagsPlaceholder')"
                 mode="multiple"
                 class="left-component"
-                :notFoundContent="t('task.detailInfo.scenario.columns.tagsNotFound')"
+                :notFoundContent="t('issue.detailInfo.scenario.columns.tagsNotFound')"
                 @change="handleTagChange"
                 @blur="handleTagBlur" />
             </AsyncComponent>

@@ -30,31 +30,31 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: completedRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedTaskCount'), value: totalNum - completedNum },
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedTaskCount'), value: completedNum }
+      { name: t('common.counts.uncompletedCount'), value: totalNum - completedNum },
+      { name: t('common.counts.completedCount'), value: completedNum }
     ]
   };
   res.chart2Value = {
     title: completedRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedWorkload'), value: evalWorkload - completedWorkload },
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedWorkload'), value: completedWorkload }
+      { name: t('common.counts.uncompletedWorkload'), value: evalWorkload - completedWorkload },
+      { name: t('common.completedWorkload'), value: completedWorkload }
     ]
   };
 
   res.chart3Value = {
     title: completedOverdueRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedOverdueCount'), value: overdueNum - completedOverdueNum },
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedOverdueCount'), value: completedOverdueNum }
+      { name: t('common.counts.uncompletedOverdueCount'), value: overdueNum - completedOverdueNum },
+      { name: t('common.counts.completedOverdueCount'), value: completedOverdueNum }
     ]
   };
 
   res.chart4Value = {
     title: completedBugRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedBugCount'), value: bugNum - completedBugNum },
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedBugCount'), value: completedBugNum }
+      { name: t('common.counts.uncompletedBugCount'), value: bugNum - completedBugNum },
+      { name: t('common.counts.completedBugCount'), value: completedBugNum }
     ]
   };
   return res;

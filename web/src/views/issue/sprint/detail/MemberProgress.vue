@@ -112,7 +112,7 @@ const tableColumns = [
   },
   {
     key: 'completedWorkloadRate',
-    title: t('common.counts.workloadCompletionRate'),
+    title: t('common.counts.completedWorkloadRate'),
     dataIndex: 'completedWorkloadRate',
     customRender: ({ text }) => text + '%'
   },

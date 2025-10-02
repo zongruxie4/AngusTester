@@ -237,7 +237,7 @@ const loadModuleTreeData = async (keywords?: string) => {
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: t('task.list.noModuleTask'), id: '-1' }, ...travelTreeData(data || [])];
+  moduleTreeData.value = [{ name: t('issue.list.noModuleTask'), id: '-1' }, ...travelTreeData(data || [])];
   if (currentModuleId.value && keywords && !moduleTreeData.value.find(item => item.id === currentModuleId.value)) {
     currentModuleId.value = '';
   }
@@ -328,7 +328,7 @@ const handleExportTemplate = async () => {
  */
 const handleTaskExport = async () => {
   if (isExporting.value) {
-    notification.info(t('task.messages.exportingInProgress'));
+    notification.info(t('issue.messages.exportingInProgress'));
     return;
   }
 
@@ -559,7 +559,7 @@ const updateTaskListData = (taskData: Partial<TaskDetail>) => {
 };
 
 // MODULE MANAGEMENT
-const moduleTreeData = ref([{ name: t('task.list.noModuleTask'), id: '-1' }]);
+const moduleTreeData = ref([{ name: t('issue.list.noModuleTask'), id: '-1' }]);
 const currentModuleId = ref();
 
 /**
@@ -668,7 +668,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
 
     if (taskStatus === TaskStatus.CONFIRMING) {
       menuItems.push({
-        name: t('task.actions.confirmComplete'),
+        name: t('issue.actions.confirmComplete'),
         key: TaskStatus.COMPLETED,
         icon: 'icon-yiwancheng',
         disabled: !isCurrentUserAdmin && !isCurrentUserConfirmer,
@@ -676,7 +676,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
       });
 
       menuItems.push({
-        name: t('task.actions.confirmIncomplete'),
+        name: t('issue.actions.confirmIncomplete'),
         key: 'uncompleted',
         icon: 'icon-shibaiyuanyin',
         disabled: !isCurrentUserAdmin && !isCurrentUserConfirmer,
@@ -691,7 +691,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
         icon: 'icon-zhongxindakaiceshirenwu',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isCurrentUserAssignee,
         hide: false,
-        tip: t('task.tips.reopenTip')
+        tip: t('issue.tips.reopenTip')
       });
 
       menuItems.push({
@@ -700,7 +700,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
         icon: 'icon-zhongxinkaishiceshi',
         disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.RESTART_TASK),
         hide: false,
-        tip: t('task.tips.restartTip')
+        tip: t('issue.tips.restartTip')
       });
     }
 

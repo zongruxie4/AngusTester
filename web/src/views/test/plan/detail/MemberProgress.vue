@@ -104,13 +104,13 @@ const progressTableColumns = [
   },
   {
     key: 'completedWorkloadRate',
-    title: t('functionPlan.planDetail.memberProgress.completedWorkloadRate'),
+    title: t('common.counts.completedWorkloadRate'),
     dataIndex: 'completedWorkloadRate',
     customRender: ({ text }) => text + '%'
   },
   {
     key: 'overdueNum',
-    title: t('functionPlan.planDetail.memberProgress.overdueNum'),
+    title: t('functionPlan.planDetail.memberProgress.overdueCount'),
     dataIndex: 'overdueNum',
     sorter: (a, b) => +a.overdueNum - (+b.overdueNum),
     customCell: () => {

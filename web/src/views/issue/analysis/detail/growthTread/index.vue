@@ -16,32 +16,32 @@ const props = withDefaults(defineProps<Props>(), {
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const targetResourceTypes = {
-  TEST_CUSTOMIZATION: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_CUSTOMIZATION'),
-  TEST_FUNCTIONALITY: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_FUNCTIONALITY'),
-  TEST_PERFORMANCE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_PERFORMANCE'),
-  TEST_STABILITY: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_STABILITY'),
-  SERVICES: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.SERVICES'),
-  APIS: t('common.api'),
-  CASES: t('common.useCase'),
-  PLAN: t('common.plan'),
-  SPRINT: t('common.sprint'),
-  TASK_SPRINT: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TASK_SPRINT'),
-  TASK: t('common.issue'),
-  MOCK_APIS: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.MOCK_APIS'),
-  MOCK_PUSHBACK: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.MOCK_PUSHBACK'),
-  MOCK_RESPONSE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.MOCK_RESPONSE'),
-  MOCK_SERVICE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.MOCK_SERVICE'),
-  DATA_DATASET: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.DATA_DATASET'),
-  DATA_DATASOURCE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.DATA_DATASOURCE'),
-  DATA_VARIABLE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.DATA_VARIABLE'),
-  TOTAL: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TOTAL'),
-  REPORT: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.REPORT'),
-  REPORT_RECORD: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.REPORT_RECORD'),
-  API_TEST: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.API_TEST'),
-  BUG: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.BUG'),
-  REQUIREMENT: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.REQUIREMENT'),
-  STORY: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.STORY'),
-  SCENARIO_TEST: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.SCENARIO_TEST')
+  TEST_CUSTOMIZATION: t('issueAnalysis.resourceTypes.TEST_CUSTOMIZATION'),
+  TEST_FUNCTIONALITY: t('issueAnalysis.resourceTypes.TEST_FUNCTIONALITY'),
+  TEST_PERFORMANCE: t('issueAnalysis.resourceTypes.TEST_PERFORMANCE'),
+  TEST_STABILITY: t('issueAnalysis.resourceTypes.TEST_STABILITY'),
+  SERVICES: t('issueAnalysis.resourceTypes.SERVICES'),
+  APIS: t('issueAnalysis.resourceTypes.API'),
+  CASES: t('issueAnalysis.resourceTypes.CASE'),
+  PLAN: t('issueAnalysis.resourceTypes.PLAN'),
+  SPRINT: t('issueAnalysis.resourceTypes.SPRINT'),
+  TASK_SPRINT: t('issueAnalysis.resourceTypes.TASK_SPRINT'),
+  TASK: t('issueAnalysis.resourceTypes.TASK'),
+  MOCK_APIS: t('issueAnalysis.resourceTypes.MOCK_APIS'),
+  MOCK_PUSHBACK: t('issueAnalysis.resourceTypes.MOCK_PUSHBACK'),
+  MOCK_RESPONSE: t('issueAnalysis.resourceTypes.MOCK_RESPONSE'),
+  MOCK_SERVICE: t('issueAnalysis.resourceTypes.MOCK_SERVICE'),
+  DATA_DATASET: t('issueAnalysis.resourceTypes.DATA_DATASET'),
+  DATA_DATASOURCE: t('issueAnalysis.resourceTypes.DATA_DATASOURCE'),
+  DATA_VARIABLE: t('issueAnalysis.resourceTypes.DATA_VARIABLE'),
+  TOTAL: t('issueAnalysis.resourceTypes.TOTAL'),
+  REPORT: t('issueAnalysis.resourceTypes.REPORT'),
+  REPORT_RECORD: t('issueAnalysis.resourceTypes.REPORT_RECORD'),
+  API_TEST: t('issueAnalysis.resourceTypes.API_TEST'),
+  BUG: t('issueAnalysis.resourceTypes.BUG'),
+  REQUIREMENT: t('issueAnalysis.resourceTypes.REQUIREMENT'),
+  STORY: t('issueAnalysis.resourceTypes.STORY'),
+  SCENARIO_TEST: t('issueAnalysis.resourceTypes.SCENARIO_TEST')
 };
 
 const getChartData = (data) => {
@@ -58,7 +58,6 @@ const getChartData = (data) => {
   const keys = Object.keys(data.timeSeries);
   let xData = [];
   let series = [];
-  debugger;
   if (keys.length) {
     keys.forEach(key => {
       data.timeSeries[key].forEach(i => {

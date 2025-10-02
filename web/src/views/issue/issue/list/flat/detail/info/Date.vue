@@ -72,13 +72,13 @@ const startDeadlineDateEditing = () => {
  */
 const handleDeadlineDateChange = (value: string) => {
   if (!value) {
-    dateValidationErrorMessage.value = t('task.detailInfo.date.validation.selectDeadline');
+    dateValidationErrorMessage.value = t('issue.detailInfo.date.validation.selectDeadline');
     return;
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
     isDateValidationError.value = true;
-    dateValidationErrorMessage.value = t('task.detailInfo.date.validation.futureTimeRequired');
+    dateValidationErrorMessage.value = t('issue.detailInfo.date.validation.futureTimeRequired');
     return;
   }
 
@@ -135,7 +135,7 @@ const isDateDisabled = (current: Dayjs) => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5">{{ t('task.detailInfo.date.title') }}</div>
+      <div class="text-3.5">{{ t('issue.detailInfo.date.title') }}</div>
     </template>
 
     <template #default>
@@ -203,7 +203,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.date.fields.processTime') }}</span>
+              <span>{{ t('issue.detailInfo.date.fields.processTime') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskProcessedDate }" class="info-text">
@@ -217,7 +217,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.date.fields.confirmTime') }}</span>
+              <span>{{ t('issue.detailInfo.date.fields.confirmTime') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskConfirmedDate }" class="info-text">
@@ -230,7 +230,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.date.fields.completeTime') }}</span>
+              <span>{{ t('issue.detailInfo.date.fields.completeTime') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskCompletedDate }" class="info-text">
@@ -244,7 +244,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('task.detailInfo.date.fields.cancelTime') }}</span>
+              <span>{{ t('issue.detailInfo.date.fields.cancelTime') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskCanceledDate }" class="info-text">

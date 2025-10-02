@@ -42,7 +42,7 @@ const topCarObj = {
     icon: 'icon-a-yicixingceshitongguoshuai'
   },
   overdueNum: {
-    name: t('functionCase.statisticsPanel.overdueNum'),
+    name: t('functionCase.statisticsPanel.overdueCount'),
     icon: 'icon-yiyuqi1'
   },
   blockedTestNum: {

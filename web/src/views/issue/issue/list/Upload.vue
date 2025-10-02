@@ -136,7 +136,7 @@ const submitImportForm = () => {
 </script>
 <template>
   <Modal
-    :title="t('task.upload.title')"
+    :title="t('issue.upload.title')"
     :visible="props.visible"
     class="upload-modal"
     @cancel="closeModal"
@@ -148,7 +148,7 @@ const submitImportForm = () => {
       class="upload-form">
       <FormItem
         v-if="proTypeShowMap.showSprint && props.visible"
-        :label="t('task.upload.form.iteration')"
+        :label="t('issue.upload.form.iteration')"
         name="sprintId">
         <Select
           v-model:value="formData.sprintId"
@@ -157,13 +157,13 @@ const submitImportForm = () => {
           :action="`${TESTER}/task/sprint?projectId=${projectId}&fullTextSearch=true`"
           :defaultActiveFirstOption="true"
           :lazy="false"
-          :placeholder="t('task.upload.form.selectSprint')"
+          :placeholder="t('issue.upload.form.selectSprint')"
           :fieldNames="{value: 'id', label: 'name'}"
           class="w-full" />
       </FormItem>
 
       <FormItem
-        :rules="{message: t('task.upload.form.uploadFile'), validator: validateFileSelection}"
+        :rules="{message: t('issue.upload.form.uploadFile'), validator: validateFileSelection}"
         name="file">
         <Spin :spinning="isLoading">
           <UploadDragger
@@ -175,8 +175,8 @@ const submitImportForm = () => {
             class="text-3 leading-5 upload-dragger">
             <div class="flex flex-col items-center justify-center text-3 leading-5 upload-dragger-inner">
               <Icon icon="icon-shangchuan" class="text-5 text-text-link upload-icon" />
-              <div class="mt-1 mb-1.5 text-text-link upload-title">{{ t('task.upload.form.selectFile') }}</div>
-              <div class="text-theme-sub-content upload-subtitle">{{ t('task.upload.form.uploadTip') }}</div>
+              <div class="mt-1 mb-1.5 text-text-link upload-title">{{ t('issue.upload.form.selectFile') }}</div>
+              <div class="text-theme-sub-content upload-subtitle">{{ t('issue.upload.form.uploadTip') }}</div>
             </div>
           </UploadDragger>
         </Spin>
@@ -202,13 +202,13 @@ const submitImportForm = () => {
             size="small"
             @click="handleDownloadTemplate">
             <Icon icon="icon-daochu1" class="text-4 cursor-pointer mr-1" />
-            {{ t('task.upload.form.taskImportTemplate') }}
+            {{ t('issue.upload.form.taskImportTemplate') }}
           </Button>
         </div>
       </FormItem>
 
       <FormItem
-        :label="t('task.upload.form.duplicateStrategy')"
+        :label="t('issue.upload.form.duplicateStrategy')"
         name="strategyWhenDuplicated"
         required>
         <RadioGroup

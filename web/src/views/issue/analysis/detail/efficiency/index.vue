@@ -28,24 +28,24 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: completedRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.uncompletedTaskCount'), value: totalNum - completedNum },
-      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.completedTaskCount2'), value: completedNum }
+      { name: t('common.counts.uncompletedCount'), value: totalNum - completedNum },
+      { name: t('common.counts.completedCount'), value: completedNum }
     ]
   };
 
   res.chart2Value = {
     title: oneTimePassedRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.oneTimeUncompletedTaskCount'), value: oneTimeNotPassedNum },
-      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedTaskCount'), value: oneTimePassedNum }
+      { name: t('issueAnalysis.detail.handlingEfficiency.chartLabels.oneTimeUncompletedCount'), value: oneTimeNotPassedNum },
+      { name: t('issueAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedCount'), value: oneTimePassedNum }
     ]
   };
 
   res.chart3Value = {
     title: twoTimePassedRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.twoTimeUncompletedTaskCount'), value: completedNum - twoTimePassedNum },
-      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedTaskCount'), value: twoTimePassedNum }
+      { name: t('issueAnalysis.detail.handlingEfficiency.chartLabels.twoTimeUncompletedCount'), value: completedNum - twoTimePassedNum },
+      { name: t('issueAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedCount'), value: twoTimePassedNum }
     ]
   };
   return res;

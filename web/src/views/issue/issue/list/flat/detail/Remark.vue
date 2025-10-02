@@ -233,7 +233,7 @@ const apiParams = computed(() => {
 
           <div class="ml-3 font-normal text-3 flex items-center space-x-2 leading-4">
             <div class="text-theme-content font-medium">{{ remarkItem.createdByName }}</div>
-            <div class="text-theme-content font-medium">{{ t('task.remark.actions.addRemark') }}</div>
+            <div class="text-theme-content font-medium">{{ t('issue.remark.actions.addRemark') }}</div>
             <div class="text-theme-sub-content">{{ remarkItem.createdDate }}</div>
             <Icon
               icon="icon-qingchu"

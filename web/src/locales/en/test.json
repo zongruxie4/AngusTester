@@ -1191,7 +1191,7 @@
         "completedBugPercentage": "Completed Bug Percentage",
         "incompleteCaseCount": "Incomplete Case Count",
         "completedCaseCount": "Completed Case Count",
-        "incompleteWorkload": "Incomplete Workload",
+        "uncompletedWorkload": "Incomplete Workload",
         "completedWorkload": "Completed Workload",
         "incompleteOverdueCount": "Incomplete Overdue Count",
         "completedOverdueCount": "Completed Overdue Count",
@@ -1357,7 +1357,7 @@
         "total3": "Total",
         "growthTrend": "Growth Trend"
       },
-      "unplannedTasks": {
+      "unplannedTests": {
         "caseCount": "Case Count",
         "totalCount": "Total Count",
         "unplannedCount": "Unplanned Count",
@@ -1375,7 +1375,7 @@
         "actualWorkload": "Actual Workload",
         "completedWorkload": "Completed Workload",
         "savingWorkload": "Saving Workload",
-        "incompleteWorkload": "Incomplete Workload",
+        "uncompletedWorkload": "Incomplete Workload",
         "completedWorkload2": "Completed Workload",
         "incompleteSavingWorkload": "Incomplete Saving Workload",
         "completedSavingWorkload": "Completed Saving Workload",

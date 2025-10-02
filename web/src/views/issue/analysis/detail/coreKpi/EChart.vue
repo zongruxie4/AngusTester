@@ -65,7 +65,7 @@ let completedBugEChart;
 // 核心指标
 const coreEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.coreKpi.chartTitles.coreKpi'),
+    text: t('issueAnalysis.detail.coreKpi.chartTitles.coreKpi'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -100,14 +100,14 @@ const coreEChartConfig = {
   legend: {
     show: true,
     data: [
-      t('taskAnalysis.detail.coreKpi.chartLabels.completedCount'),
-      t('taskAnalysis.detail.coreKpi.chartLabels.totalCount')
+      t('common.counts.completedCount'),
+      t('common.counts.totalCount')
     ],
     top: 0
   },
   series: [
     {
-      name: t('taskAnalysis.detail.coreKpi.chartLabels.completedCount'),
+      name: t('common.counts.completedCount'),
       itemStyle: {
         color: '#52C41A',
         borderRadius: [5, 5, 0, 0]
@@ -122,7 +122,7 @@ const coreEChartConfig = {
       }
     },
     {
-      name: t('taskAnalysis.detail.coreKpi.chartLabels.totalCount'),
+      name: t('common.counts.totalCount'),
       itemStyle: {
         color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
@@ -145,7 +145,7 @@ const completedEChartConfig = {
     left: '35%',
     top: '38%',
     padding: 2,
-    subtext: t('taskAnalysis.detail.coreKpi.chartTitles.completedTaskRatio'),
+    subtext: t('common.counts.completedRate'),
     itemGap: 60,
     textAlign: 'center',
     textStyle: {
@@ -218,7 +218,7 @@ const completedWorkloadEChartConfig = JSON.parse(JSON.stringify({
   ...completedEChartConfig,
   title: {
     ...completedEChartConfig.title,
-    subtext: t('taskAnalysis.detail.coreKpi.chartTitles.completedWorkloadRatio'),
+    subtext: t('common.counts.completedWorkloadRate'),
     itemGap: 60
   }
 }));
@@ -228,7 +228,7 @@ const completedOverdueEChartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEChartConfig,
   title: {
     ...completedWorkloadEChartConfig.title,
-    subtext: t('taskAnalysis.detail.coreKpi.chartTitles.completedOverdueRatio')
+    subtext: t('common.counts.completedOverdueRate')
   }
 }));
 
@@ -237,7 +237,7 @@ const completedBugEChartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEChartConfig,
   title: {
     ...completedWorkloadEChartConfig.title,
-    subtext: t('taskAnalysis.detail.coreKpi.chartTitles.completedBugRatio')
+    subtext: t('common.counts.completedBugRate')
   }
 }));
 

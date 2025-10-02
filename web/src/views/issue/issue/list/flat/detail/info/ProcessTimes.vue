@@ -46,7 +46,7 @@ const getOnePassTextClass = () => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5 font-medium">{{ t('task.detailInfo.basic.processCount') }}</div>
+      <div class="text-3.5 font-medium">{{ t('issue.detailInfo.basic.processCount') }}</div>
     </template>
 
     <template #default>
@@ -62,7 +62,7 @@ const getOnePassTextClass = () => {
                   :class="getOnePassIconClass()"
                   class="text-3.5" />
               </div>
-              <span class="process-label">{{ t('task.detailInfo.basic.columns.onePass') }}</span>
+              <span class="process-label">{{ t('issue.detailInfo.basic.columns.onePass') }}</span>
             </div>
             <div class="process-value">
               <span
@@ -79,7 +79,7 @@ const getOnePassTextClass = () => {
               <div class="process-icon-wrapper">
                 <Icon icon="icon-shuju" class="text-3.5 text-blue-500" />
               </div>
-              <span class="process-label">{{ t('task.detailInfo.basic.columns.totalProcessCount') }}</span>
+              <span class="process-label">{{ t('issue.detailInfo.basic.columns.totalProcessCount') }}</span>
             </div>
             <div class="process-value">
               <span :class="{ 'placeholder-text': totalProcessCount === 0 }">
@@ -94,7 +94,7 @@ const getOnePassTextClass = () => {
               <div class="process-icon-wrapper">
                 <Icon icon="icon-cuowu" class="text-3.5 text-red-500" />
               </div>
-              <span class="process-label">{{ t('task.detailInfo.basic.columns.failedProcessCount') }}</span>
+              <span class="process-label">{{ t('issue.detailInfo.basic.columns.failedProcessCount') }}</span>
             </div>
             <div class="process-value">
               <span :class="{ 'placeholder-text': failedProcessCount === 0 }">

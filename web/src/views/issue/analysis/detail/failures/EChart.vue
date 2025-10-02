@@ -41,7 +41,7 @@ let failureLevelEChart;
 // 故障数
 const failureEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.failures.chartTitles.failureCount'),
+    text: t('issueAnalysis.detail.failures.chartTitles.failureCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -57,11 +57,11 @@ const failureEChartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('taskAnalysis.detail.failures.chartLabels.totalFailures'),
-      t('taskAnalysis.detail.failures.chartLabels.completedFailures'),
-      t('taskAnalysis.detail.failures.chartLabels.overdueFailures'),
-      t('taskAnalysis.detail.failures.chartLabels.oneTimeFailures'),
-      t('taskAnalysis.detail.failures.chartLabels.twoTimeFailures')
+      t('issueAnalysis.detail.failures.chartLabels.totalFailures'),
+      t('issueAnalysis.detail.failures.chartLabels.completedFailures'),
+      t('issueAnalysis.detail.failures.chartLabels.overdueFailures'),
+      t('issueAnalysis.detail.failures.chartLabels.oneTimeFailures'),
+      t('issueAnalysis.detail.failures.chartLabels.twoTimeFailures')
     ],
     axisLabel: {
       interval: 0,
@@ -94,7 +94,7 @@ const failureEChartConfig = {
 const failureTimeEChartConfig = JSON.parse(JSON.stringify({
   ...failureEChartConfig,
   title: {
-    text: t('taskAnalysis.detail.failures.chartTitles.failureTime'),
+    text: t('issueAnalysis.detail.failures.chartTitles.failureTime'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -104,10 +104,10 @@ const failureTimeEChartConfig = JSON.parse(JSON.stringify({
   xAxis: {
     ...failureEChartConfig.xAxis,
     data: [
-      t('taskAnalysis.detail.failures.chartLabels.totalFailureTime'),
-      t('taskAnalysis.detail.failures.chartLabels.averageFailureTime'),
-      t('taskAnalysis.detail.failures.chartLabels.minFailureTime'),
-      t('taskAnalysis.detail.failures.chartLabels.maxFailureTime')
+      t('issueAnalysis.detail.failures.chartLabels.totalFailureTime'),
+      t('issueAnalysis.detail.failures.chartLabels.averageFailureTime'),
+      t('issueAnalysis.detail.failures.chartLabels.minFailureTime'),
+      t('issueAnalysis.detail.failures.chartLabels.maxFailureTime')
     ]
   },
   series: [
@@ -130,7 +130,7 @@ const failureLevelEChartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('taskAnalysis.detail.failures.chartTitles.failureLevel'),
+    subtext: t('issueAnalysis.detail.failures.chartTitles.failureLevel'),
     itemGap: 65,
     textAlign: 'center',
     textStyle: {
@@ -181,28 +181,28 @@ const failureLevelEChartConfig = {
       },
       data: [
         {
-          name: t('taskAnalysis.detail.failures.pieChartLabels.criticalCount'),
+          name: t('issueAnalysis.detail.failures.pieChartLabels.criticalCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: t('taskAnalysis.detail.failures.pieChartLabels.majorCount'),
+          name: t('issueAnalysis.detail.failures.pieChartLabels.majorCount'),
           value: 0,
           itemStyle: {
             color: 'rgb(220,34,133)'
           }
         },
         {
-          name: t('taskAnalysis.detail.failures.pieChartLabels.minorCount'),
+          name: t('issueAnalysis.detail.failures.pieChartLabels.minorCount'),
           value: 0,
           itemStyle: {
             color: 'rgb(246,159,42)'
           }
         },
         {
-          name: t('taskAnalysis.detail.failures.pieChartLabels.trivialCount'),
+          name: t('issueAnalysis.detail.failures.pieChartLabels.trivialCount'),
           value: 0,
           itemStyle: {
             color: 'rgb(231,238,246)'

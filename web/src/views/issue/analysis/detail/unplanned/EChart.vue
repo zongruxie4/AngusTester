@@ -49,9 +49,9 @@ const unplannedTaskEChartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('taskAnalysis.detail.unplannedTasks.chartLabels.totalCount'),
-      t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCount'),
-      t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCompletedCount')
+      t('common.counts.totalCount'),
+      t('issueAnalysis.detail.unplanned.chartLabels.unplannedCount'),
+      t('issueAnalysis.detail.unplanned.chartLabels.unplannedCompletedCount')
     ],
     axisLabel: {
       interval: 0,
@@ -92,9 +92,9 @@ const unplannedWorkloadEChartConfig = JSON.parse(JSON.stringify({
   xAxis: {
     type: 'category',
     data: [
-      t('taskAnalysis.detail.unplannedTasks.chartLabels.totalWorkload'),
-      t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedWorkload'),
-      t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCompletedWorkload')
+      t('issueAnalysis.detail.unplanned.chartLabels.totalWorkload'),
+      t('issueAnalysis.detail.unplanned.chartLabels.unplannedWorkload'),
+      t('issueAnalysis.detail.unplanned.chartLabels.unplannedCompletedWorkload')
     ],
     axisLabel: {
       interval: 0,
@@ -102,7 +102,7 @@ const unplannedWorkloadEChartConfig = JSON.parse(JSON.stringify({
     }
   },
   title: {
-    text: t('taskAnalysis.detail.unplannedTasks.chartTitles.workload'),
+    text: t('common.workload'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -141,10 +141,10 @@ defineExpose({
         <div class="font-semibold ">
           <span class="text-5 text-status-pending">
             {{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}
-          </span>{{ t('taskAnalysis.detail.unplannedTasks.metrics.hours') }}
+          </span>{{ t('unit.hour') }}
         </div>
         <div>
-          {{ t('taskAnalysis.detail.unplannedTasks.metrics.estimatedTime') }}
+          {{ t('issueAnalysis.detail.unplanned.metrics.estimatedTime') }}
         </div>
       </div>
     </div>

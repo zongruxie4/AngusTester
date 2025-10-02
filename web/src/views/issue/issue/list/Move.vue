@@ -34,7 +34,7 @@ const emit = defineEmits<{
 const confirmLoading = ref(false);
 const selectedSprintId = ref<string>();
 const defaultSprintOption = {
-  name: t('task.moveModal.defaultOptions.productBacklog'),
+  name: t('issue.moveModal.defaultOptions.productBacklog'),
   id: ''
 };
 
@@ -95,14 +95,14 @@ const moveTasksToSprint = async () => {
 </script>
 <template>
   <Modal
-    :title="t('task.moveModal.title')"
+    :title="t('issue.moveModal.title')"
     :visible="props.visible"
     :width="500"
     :confirmLoading="confirmLoading"
     @cancel="closeModal"
     @ok="moveTasksToSprint">
     <div class="flex items-center">
-      <div class="mr-2">{{ t('task.moveModal.form.selectSprint') }}</div>
+      <div class="mr-2">{{ t('issue.moveModal.form.selectSprint') }}</div>
       <Select
         v-model:value="selectedSprintId"
         :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
@@ -110,7 +110,7 @@ const moveTasksToSprint = async () => {
         :format="formatSprintOption"
         :additionalOption="defaultSprintOption"
         showSearch
-        :placeholder="t('task.moveModal.form.selectSprintPlaceholder')"
+        :placeholder="t('issue.moveModal.form.selectSprintPlaceholder')"
         class="flex-1" />
     </div>
   </Modal>

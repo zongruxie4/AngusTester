@@ -64,8 +64,8 @@ const backlogEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.backlogTasks.caseCount'),
-      t('functionAnalysis.detail.backlogTasks.workload')
+      t('common.counts.caseCount'),
+      t('common.workload')
     ],
     axisLabel: {
       interval: 0,

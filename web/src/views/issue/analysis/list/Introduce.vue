@@ -45,10 +45,10 @@ onBeforeUnmount(() => {
 <template>
   <div ref="containerWrapperRef">
     <div class="text-3.5 font-semibold mb-2.5">
-      {{ t('taskAnalysis.aboutAnalysis') }}
+      {{ t('issueAnalysis.introduce.title') }}
     </div>
     <div class="text-3.5 mb-6 font-serif">
-      <div>{{ t('taskAnalysis.aboutAnalysisDesc') }}</div>
+      <div>{{ t('issueAnalysis.introduce.description') }}</div>
     </div>
   </div>
 </template>

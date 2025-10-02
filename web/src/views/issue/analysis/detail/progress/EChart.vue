@@ -30,7 +30,7 @@ const progressEChartConfig = {
     left: '35%',
     top: '48%',
     padding: 2,
-    subtext: t('taskAnalysis.detail.progress.chartTitles.taskProgress'),
+    subtext: t('issueAnalysis.detail.progress.chartTitles.issueProgress'),
     itemGap: 45,
     textAlign: 'center',
     textStyle: {
@@ -102,7 +102,7 @@ const workloadProgressEChartConfig = JSON.parse(JSON.stringify({
   ...progressEChartConfig,
   title: {
     ...progressEChartConfig.title,
-    subtext: t('taskAnalysis.detail.progress.chartTitles.workloadProgress')
+    subtext: t('issueAnalysis.detail.progress.chartTitles.workloadProgress')
   }
 }));
 

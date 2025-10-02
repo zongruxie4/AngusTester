@@ -30,34 +30,34 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: '',
     value: [
-      { name: t('taskAnalysis.detail.bugs.chartLabels.criticalBugs'), value: CRITICAL },
-      { name: t('taskAnalysis.detail.bugs.chartLabels.majorBugs'), value: MAJOR },
-      { name: t('taskAnalysis.detail.bugs.chartLabels.minorBugs'), value: MINOR },
-      { name: t('taskAnalysis.detail.bugs.chartLabels.trivialBugs'), value: TRIVIAL }
+      { name: t('issueAnalysis.detail.bugs.chartLabels.criticalBugs'), value: CRITICAL },
+      { name: t('issueAnalysis.detail.bugs.chartLabels.majorBugs'), value: MAJOR },
+      { name: t('issueAnalysis.detail.bugs.chartLabels.minorBugs'), value: MINOR },
+      { name: t('issueAnalysis.detail.bugs.chartLabels.trivialBugs'), value: TRIVIAL }
     ]
   };
 
   res.chart2Value = {
     title: validBugRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.bugs.chartLabels.invalidBugs'), value: invalidBugNum },
-      { name: t('taskAnalysis.detail.bugs.chartLabels.validBugs'), value: validBugNum }
+      { name: t('issueAnalysis.detail.bugs.chartLabels.invalidBugs'), value: invalidBugNum },
+      { name: t('issueAnalysis.detail.bugs.chartLabels.validBugs'), value: validBugNum }
     ]
   };
 
   res.chart3Value = {
     title: escapedBugRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.bugs.chartLabels.nonEscapedBugs'), value: totalNum - escapedBugNum },
-      { name: t('taskAnalysis.detail.bugs.chartLabels.escapedBugsCount'), value: escapedBugNum }
+      { name: t('issueAnalysis.detail.bugs.chartLabels.nonEscapedBugs'), value: totalNum - escapedBugNum },
+      { name: t('issueAnalysis.detail.bugs.chartLabels.escapedBugsCount'), value: escapedBugNum }
     ]
   };
 
   res.chart4Value = {
     title: bugWorkloadRate + '%',
     value: [
-      { name: t('taskAnalysis.detail.bugs.chartLabels.nonBugWorkload'), value: totalWorkload - bugWorkload },
-      { name: t('taskAnalysis.detail.bugs.chartLabels.bugWorkload'), value: bugWorkload }
+      { name: t('issueAnalysis.detail.bugs.chartLabels.nonBugWorkload'), value: totalWorkload - bugWorkload },
+      { name: t('issueAnalysis.detail.bugs.chartLabels.bugWorkload'), value: bugWorkload }
     ]
   };
   return res;

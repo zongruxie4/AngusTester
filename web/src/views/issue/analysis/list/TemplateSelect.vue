@@ -33,7 +33,7 @@ const emits = defineEmits<{
  * Tree data for template selection with all available options
  */
 const templateTreeData = ref<{name: string; value: string; key: string}[]>([
-  { name: t('common.all'), value: '', key: '' }
+  { name: t('issueAnalysis.all'), value: '', key: '' }
 ]);
 
 /**

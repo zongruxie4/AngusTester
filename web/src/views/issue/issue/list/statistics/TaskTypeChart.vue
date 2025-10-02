@@ -137,7 +137,7 @@ const updateChartData = (): void => {
 
   // Add task type data points
   chartOptions.series?.[0].data.push({
-    name: t('task.list.statistics.typeColumns.story'),
+    name: t('issue.list.statistics.typeColumns.story'),
     value: +props.dataSource.storyNum
   });
   chartOptions.series?.[0].data.push({
@@ -145,19 +145,19 @@ const updateChartData = (): void => {
     value: +props.dataSource.taskNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('task.list.statistics.typeColumns.bug'),
+    name: t('issue.list.statistics.typeColumns.bug'),
     value: +props.dataSource.bugNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('task.list.statistics.typeColumns.requirement'),
+    name: t('issue.list.statistics.typeColumns.requirement'),
     value: +props.dataSource.requirementNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('task.list.statistics.typeColumns.apiTest'),
+    name: t('issue.list.statistics.typeColumns.apiTest'),
     value: +props.dataSource.apiTestNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('task.list.statistics.typeColumns.scenarioTest'),
+    name: t('issue.list.statistics.typeColumns.scenarioTest'),
     value: +props.dataSource.scenarioTestNum
   });
 

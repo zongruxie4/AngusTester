@@ -107,7 +107,7 @@ const todayDeliveryTableData = computed(() => {
  * Transforms last week's delivery data for table display
  */
 const last7DaysDeliveryTableData = computed(() => {
-  return transformMultiTableData(analysisData.value.data?.multiTableData?.last7Days);
+  return transformMultiTableData(analysisData.value.data?.multiTableData?.lastWeek);
 });
 
 /**
@@ -198,7 +198,7 @@ onBeforeUnmount(() => {
           <Tag
             color="geekblue"
             class="ml-5">
-            {{ analysisData.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('taskAnalysis.snapshot') : t('taskAnalysis.realTime') }}
+            {{ analysisData.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('issueAnalysis.status.snapshot') : t('issueAnalysis.status.realTime') }}
           </Tag>
         </div>
         <div class="mt-2 text-3.5">{{ analysisData.description }}</div>
@@ -207,7 +207,7 @@ onBeforeUnmount(() => {
             {{ analysisData.lastModifiedByName }}
           </span>
           <span class="text-3.5 ml-2">
-            {{ t('taskAnalysis.lastModifiedAt') }}&nbsp;{{ analysisData.lastModifiedDate }}
+            {{ t('status.modifiedAt') }}&nbsp;{{ analysisData.lastModifiedDate }}
           </span>
         </div>
       </div>
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
     <!-- Chart Display Section -->
     <div ref="chartWrapRef" class="mt-4">
       <div class="detail-title font-semibold pl-2 relative text-3.5 mb-3">
-        {{ t('taskAnalysis.charts') }}
+        {{ t('chart.title') }}
       </div>
 
       <!-- Dynamic Chart Components Based on Template Type -->
@@ -267,7 +267,7 @@ onBeforeUnmount(() => {
     <!-- Data Details Section -->
     <div v-if="analysisData?.containsDataDetail" class="mt-4">
       <div class="detail-title font-semibold pl-2 relative text-3.5 flex items-center">
-        <span>{{ t('taskAnalysis.details') }}</span>
+        <span>{{ t('common.details') }}</span>
         <Button
           v-show="props.data?.id"
           type="link"
@@ -282,8 +282,9 @@ onBeforeUnmount(() => {
 
       <!-- Special handling for Recent Delivery template with multiple time periods -->
       <template v-if="analysisData.template === AnalysisTaskTemplate.RECENT_DELIVERY">
-        <div class="text-center mt-3">
-          {{ t('taskAnalysis.today') }}
+        <div class="mt-3 text-3.5 font-semibold">
+          <Icon icon="icon-riqi" class="text-3.5" />
+          {{ t('chart.today') }}
         </div>
         <Table
           key="today"
@@ -293,7 +294,9 @@ onBeforeUnmount(() => {
           :scroll="{x: 1000, y: 300}"
           :columns="tableColumns"
           :dataSource="todayDeliveryTableData" />
-        <div class="text-center">
+
+        <div class="text-3.5 font-semibold">
+          <Icon icon="icon-riqi" class="text-3.5" />
           {{ t('quickSearch.last7Days') }}
         </div>
         <Table
@@ -304,8 +307,10 @@ onBeforeUnmount(() => {
           :scroll="{x: 1000, y: 300}"
           :columns="tableColumns"
           :dataSource="last7DaysDeliveryTableData" />
-        <div class="text-center">
-          {{ t('taskAnalysis.lastMonth') }}
+
+        <div class="text-3.5 font-semibold">
+          <Icon icon="icon-riqi" class="text-3.5" />
+          {{ t('chart.lastMonth') }}
         </div>
         <Table
           key="lastMonth"

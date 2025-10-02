@@ -141,15 +141,15 @@ const updateChartData = (): void => {
 
   // Add test type data points
   chartOptions.series?.[0].data.push({
-    name: t('task.list.statistics.typeColumns.functional'),
+    name: t('issue.list.statistics.typeColumns.functional'),
     value: +props.dataSource.functionalNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('task.list.statistics.typeColumns.perf'),
+    name: t('issue.list.statistics.typeColumns.perf'),
     value: +props.dataSource.perfNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('task.list.statistics.typeColumns.stability'),
+    name: t('issue.list.statistics.typeColumns.stability'),
     value: +props.dataSource.stabilityNum
   });
 
@@ -183,7 +183,7 @@ onMounted(() => {
       class="chart-container"></div>
     <!-- Chart center label -->
     <div class="chart-center-label">
-      <div class="label-title">{{ t('task.list.statistics.testType') }}</div>
+      <div class="label-title">{{ t('issue.list.statistics.testType') }}</div>
       <div class="label-value">{{ props.dataSource?.totalTestTypeNum }}</div>
     </div>
   </div>

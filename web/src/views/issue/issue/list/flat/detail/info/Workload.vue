@@ -120,7 +120,7 @@ const handleActualWorkloadEnter = () => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5 font-medium">{{ t('task.detailInfo.basic.workloadEvaluation') }}</div>
+      <div class="text-3.5 font-medium">{{ t('issue.detailInfo.basic.workloadEvaluation') }}</div>
     </template>
 
     <template #default>
@@ -173,7 +173,7 @@ const handleActualWorkloadEnter = () => {
                   trimAll
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
+                  :placeholder="t('issue.detailInfo.basic.columns.actualWorkloadPlaceholder')"
                   @blur="handleEvalWorkloadBlur"
                   @pressEnter="handleEvalWorkloadEnter" />
               </AsyncComponent>
@@ -213,7 +213,7 @@ const handleActualWorkloadEnter = () => {
                   trimAll
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
+                  :placeholder="t('issue.detailInfo.basic.columns.actualWorkloadPlaceholder')"
                   @blur="handleActualWorkloadBlur"
                   @pressEnter="handleActualWorkloadEnter" />
               </AsyncComponent>

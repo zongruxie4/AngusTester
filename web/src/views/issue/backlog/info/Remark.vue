@@ -172,7 +172,7 @@ const queryParams = computed(() => {
           ref="richTextEditorRef"
           :value="currentRemarkContent"
           :height="150"
-          :options="{placeholder: t('task.remark.placeholder')}"
+          :options="{placeholder: t('issue.remark.placeholder')}"
           @change="handleEditorContentChange" />
         <div v-show="isValidationError" class="text-status-error">
           {{ t('common.placeholders.inputDescription30') }}

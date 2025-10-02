@@ -31,9 +31,9 @@ let unplannedTaskRefEchart;
 let unplannedWorkloadRefEchart;
 
 // 用例数
-const unplannedTaskEchartConfig = {
+const unplannedTestEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.unplannedTasks.caseCount'),
+    text: t('common.counts.caseCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -49,9 +49,9 @@ const unplannedTaskEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.unplannedTasks.totalCount'),
-      t('functionAnalysis.detail.unplannedTasks.unplannedCount'),
-      t('functionAnalysis.detail.unplannedTasks.unplannedCompletedCount')
+      t('functionAnalysis.detail.unplannedTests.totalCount'),
+      t('functionAnalysis.detail.unplannedTests.unplannedCount'),
+      t('functionAnalysis.detail.unplannedTests.unplannedCompletedCount')
     ],
     axisLabel: {
       interval: 0,
@@ -88,13 +88,13 @@ const unplannedTaskEchartConfig = {
 };
 
 const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
-  ...unplannedTaskEchartConfig,
+  ...unplannedTestEchartConfig,
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.unplannedTasks.totalWorkload'),
-      t('functionAnalysis.detail.unplannedTasks.unplannedWorkload'),
-      t('functionAnalysis.detail.unplannedTasks.unplannedCompletedWorkload')
+      t('functionAnalysis.detail.unplannedTests.totalWorkload'),
+      t('functionAnalysis.detail.unplannedTests.unplannedWorkload'),
+      t('functionAnalysis.detail.unplannedTests.unplannedCompletedWorkload')
     ],
     axisLabel: {
       interval: 0,
@@ -102,7 +102,7 @@ const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
     }
   },
   title: {
-    text: t('functionAnalysis.detail.unplannedTasks.workload'),
+    text: t('functionAnalysis.detail.unplannedTests.workload'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -117,10 +117,10 @@ onMounted(() => {
   unplannedWorkloadRefEchart = eCharts.init(unplannedWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
-    unplannedTaskEchartConfig.series[0].data = props.chart0Value.yData;
+    unplannedTestEchartConfig.series[0].data = props.chart0Value.yData;
     unplannedWorkloadEchartConfig.series[0].data = props.chart1Value.yData;
 
-    unplannedTaskRefEchart.setOption(unplannedTaskEchartConfig);
+    unplannedTaskRefEchart.setOption(unplannedTestEchartConfig);
     unplannedWorkloadRefEchart.setOption(unplannedWorkloadEchartConfig);
   }, {
     immediate: true,
@@ -144,10 +144,10 @@ defineExpose({
           <span class="text-5 text-status-pending">
             {{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}
           </span>
-          {{ t('functionAnalysis.detail.unplannedTasks.hours') }}
+          {{ t('functionAnalysis.detail.unplannedTests.hours') }}
         </div>
         <div>
-          {{ t('functionAnalysis.detail.unplannedTasks.unplannedCaseEstimatedTime') }}
+          {{ t('functionAnalysis.detail.unplannedTests.unplannedCaseEstimatedTime') }}
         </div>
       </div>
     </div>

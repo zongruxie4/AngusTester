@@ -36,10 +36,10 @@ const getChartData = (data) => {
   res.chart2Value = {
     title: '',
     value: [
-      { name: t('taskAnalysis.detail.failures.chartLabels.criticalFailures'), value: CRITICAL },
-      { name: t('taskAnalysis.detail.failures.chartLabels.majorFailures'), value: MAJOR },
-      { name: t('taskAnalysis.detail.failures.chartLabels.minorFailures'), value: MINOR },
-      { name: t('taskAnalysis.detail.failures.chartLabels.trivialFailures'), value: TRIVIAL }
+      { name: t('issueAnalysis.detail.failures.chartLabels.criticalFailures'), value: CRITICAL },
+      { name: t('issueAnalysis.detail.failures.chartLabels.majorFailures'), value: MAJOR },
+      { name: t('issueAnalysis.detail.failures.chartLabels.minorFailures'), value: MINOR },
+      { name: t('issueAnalysis.detail.failures.chartLabels.trivialFailures'), value: TRIVIAL }
     ]
   };
   return res;

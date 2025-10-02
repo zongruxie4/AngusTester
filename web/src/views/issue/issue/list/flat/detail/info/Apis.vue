@@ -592,7 +592,7 @@ const onePassStatusText = computed(() => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('task.detailInfo.apis.columns.evalWorkloadPlaceholder')"
+                :placeholder="t('issue.detailInfo.apis.columns.evalWorkloadPlaceholder')"
                 @blur="handleEvalWorkloadBlur"
                 @pressEnter="handleEvalWorkloadEnter" />
             </AsyncComponent>
@@ -624,7 +624,7 @@ const onePassStatusText = computed(() => {
                 :allowClear="false"
                 internal
                 enumKey="Priority"
-                placeholder="t('task.detailInfo.apis.columns.selectPriority')"
+                placeholder="t('issue.detailInfo.apis.columns.selectPriority')"
                 class="left-component max-w-52"
                 @change="handlePriorityChange"
                 @blur="handlePriorityBlur">
@@ -637,7 +637,7 @@ const onePassStatusText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.onePass') }}</span>
+              <span>{{ t('issue.detailInfo.apis.columns.onePass') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -674,7 +674,7 @@ const onePassStatusText = computed(() => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('task.detailInfo.apis.columns.actualWorkloadPlaceholder')"
+                :placeholder="t('issue.detailInfo.apis.columns.actualWorkloadPlaceholder')"
                 @blur="handleActualWorkloadBlur"
                 @pressEnter="handleActualWorkloadEnter" />
             </AsyncComponent>
@@ -682,7 +682,7 @@ const onePassStatusText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.failNum') }}</span>
+              <span>{{ t('issue.detailInfo.apis.columns.failNum') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -702,7 +702,7 @@ const onePassStatusText = computed(() => {
                   ref="versionSelectRef"
                   v-model:value="versionSelectValue"
                   allowClear
-                  :placeholder="t('task.detailInfo.apis.columns.softwareVersionPlaceholder')"
+                  :placeholder="t('issue.detailInfo.apis.columns.softwareVersionPlaceholder')"
                   lazy
                   class="w-full max-w-60"
                   :action="`${TESTER}/software/version?projectId=${props.projectId}`"
@@ -782,10 +782,10 @@ const onePassStatusText = computed(() => {
                 :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
                 showSearch
                 internal
-                :placeholder="t('task.detailInfo.apis.columns.tagsPlaceholder')"
+                :placeholder="t('issue.detailInfo.apis.columns.tagsPlaceholder')"
                 mode="multiple"
                 class="left-component"
-                :notFoundContent="t('task.detailInfo.apis.columns.tagsNotFound')"
+                :notFoundContent="t('issue.detailInfo.apis.columns.tagsNotFound')"
                 @change="handleTagChange"
                 @blur="handleTagBlur" />
             </AsyncComponent>
@@ -793,7 +793,7 @@ const onePassStatusText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.totalNum') }}</span>
+              <span>{{ t('issue.detailInfo.apis.columns.totalNum') }}</span>
               <Colon class="w-1" />
             </div>
 

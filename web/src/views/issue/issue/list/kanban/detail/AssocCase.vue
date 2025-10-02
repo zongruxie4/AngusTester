@@ -111,7 +111,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   <div class="basic-info-drawer">
     <div class="basic-info-header">
       <div class="flex items-center justify-between">
-        <h3 class="basic-info-title">{{ t('task.assocCase.title') }}</h3>
+        <h3 class="basic-info-title">{{ t('issue.assocCase.title') }}</h3>
         <Button
           v-show="!isCaseEditing"
           type="link"
@@ -156,7 +156,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
             :maxTags="20"
             :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
             class="w-full"
-            :placeholder="t('task.assocCase.selectCasePlaceholder')"
+            :placeholder="t('issue.assocCase.selectCasePlaceholder')"
             mode="multiple"
             @change="handleCaseSelectionChange">
             <template #option="record">

@@ -61,7 +61,7 @@ let twoTimePassedEChart;
 // 完成任务
 const taskEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.handlingEfficiency.chartTitles.completedTasks'),
+    text: t('common.counts.completedCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -77,9 +77,9 @@ const taskEChartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('taskAnalysis.detail.handlingEfficiency.chartLabels.completedTaskCount'),
-      t('taskAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedCount'),
-      t('taskAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedCount')
+      t('common.counts.completedCount'),
+      t('issueAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedCount'),
+      t('issueAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedCount')
     ],
     axisLabel: {
       interval: 0,
@@ -116,7 +116,7 @@ const completedEChartConfig = {
     left: '35%',
     top: '50%',
     padding: 2,
-    subtext: t('taskAnalysis.detail.handlingEfficiency.chartTitles.completedTaskRatio'),
+    subtext: t('common.counts.completedRate'),
     itemGap: 40,
     textAlign: 'center',
     textStyle: {
@@ -189,7 +189,7 @@ const oneTimePassedEChartConfig = JSON.parse(JSON.stringify({
   ...completedEChartConfig,
   title: {
     ...completedEChartConfig.title,
-    subtext: t('taskAnalysis.detail.handlingEfficiency.chartTitles.oneTimeCompletedRatio'),
+    subtext: t('issueAnalysis.detail.handlingEfficiency.chartTitles.oneTimeCompletedRate'),
     itemGap: 40
   }
 }));
@@ -199,7 +199,7 @@ const twoTimePassedEChartConfig = JSON.parse(JSON.stringify({
   ...oneTimePassedEChartConfig,
   title: {
     ...oneTimePassedEChartConfig.title,
-    subtext: t('taskAnalysis.detail.handlingEfficiency.chartTitles.twoTimeCompletedRatio')
+    subtext: t('issueAnalysis.detail.handlingEfficiency.chartTitles.twoTimeCompletedRate')
   }
 }));
 

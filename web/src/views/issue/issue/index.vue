@@ -93,7 +93,7 @@ const initializeTaskModule = () => {
         return {
           _id: 'taskList',
           value: 'taskList',
-          name: t('task.title'),
+          name: t('issue.title'),
           closable: false
         };
       }
@@ -131,7 +131,7 @@ const processRouteHash = (hash: string) => {
       return {
         _id: 'taskList',
         value: 'taskList',
-        name: t('task.title'),
+        name: t('issue.title'),
         closable: false
       };
     });

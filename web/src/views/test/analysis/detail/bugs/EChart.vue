@@ -66,7 +66,7 @@ let bugWorkloadEchart;
 // 缺陷
 const bugsEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.bugs.bugCount'),
+    text: t('common.counts.bugCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -122,7 +122,7 @@ const bugLevelEchartConfig = {
     left: '30%',
     top: '35%',
     padding: 2,
-    subtext: t('functionAnalysis.detail.bugs.bugLevel'),
+    subtext: t('common.bugLevel'),
     // left: '25%',
     // top: '40%',
     itemGap: 70,

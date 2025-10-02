@@ -1201,23 +1201,23 @@ const isScenarioTest = computed(() => {
 const modeOptions = [
   {
     key: TaskViewMode.flat,
-    name: t('task.searchPanel.viewMode.flat'),
+    name: t('issue.searchPanel.viewMode.flat'),
     label: ''
 
   },
   {
     key: TaskViewMode.table,
-    name: t('task.searchPanel.viewMode.table'),
+    name: t('issue.searchPanel.viewMode.table'),
     label: ''
   },
   {
     key: TaskViewMode.kanban,
-    name: t('task.searchPanel.viewMode.kanban'),
+    name: t('issue.searchPanel.viewMode.kanban'),
     label: ''
   },
   {
     key: TaskViewMode.gantt,
-    name: t('task.searchPanel.viewMode.gantt'),
+    name: t('issue.searchPanel.viewMode.gantt'),
     label: ''
   }
 ];
@@ -1227,18 +1227,18 @@ const modeOptions = [
  */
 const modeTitle = computed(() => {
   if (props.viewMode === TaskViewMode.kanban) {
-    return t('task.searchPanel.viewMode.kanban');
+    return t('issue.searchPanel.viewMode.kanban');
   }
 
   if (props.viewMode === TaskViewMode.flat) {
-    return t('task.searchPanel.viewMode.flat');
+    return t('issue.searchPanel.viewMode.flat');
   }
 
   if (props.viewMode === TaskViewMode.table) {
-    return t('task.searchPanel.viewMode.table');
+    return t('issue.searchPanel.viewMode.table');
   }
 
-  return t('task.searchPanel.viewMode.gantt');
+  return t('issue.searchPanel.viewMode.gantt');
 });
 
 /**
@@ -1271,19 +1271,19 @@ const menuItems = computed(():SearchPanelMenuItem[] => {
     },
     {
       key: 'createdBy',
-      name: t('task.searchPanel.menuItems.myCreated')
+      name: t('issue.searchPanel.menuItems.myCreated')
     },
     {
       key: 'assigneeId',
-      name: t('task.searchPanel.menuItems.myAssigned')
+      name: t('issue.searchPanel.menuItems.myAssigned')
     },
     {
       key: 'progress',
-      name: t('task.searchPanel.menuItems.myProgress')
+      name: t('issue.searchPanel.menuItems.myProgress')
     },
     {
       key: 'confirmerId',
-      name: t('task.searchPanel.menuItems.myConfirm')
+      name: t('issue.searchPanel.menuItems.myConfirm')
     },
     ...taskTypeOptions.value,
     {
@@ -1401,31 +1401,31 @@ const searchOptions = [
   {
     type: 'date-range' as const,
     valueKey: 'processedDate',
-    placeholder: t('task.searchPanelOptions.processedDate').split(','),
+    placeholder: t('issue.searchPanelOptions.processedDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'confirmedDate',
-    placeholder: t('task.searchPanelOptions.confirmedDate').split(','),
+    placeholder: t('issue.searchPanelOptions.confirmedDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'completedDate',
-    placeholder: t('task.searchPanelOptions.completedDate').split(','),
+    placeholder: t('issue.searchPanelOptions.completedDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'canceledDate',
-    placeholder: t('task.searchPanelOptions.canceledDate').split(','),
+    placeholder: t('issue.searchPanelOptions.canceledDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'execDate',
-    placeholder: t('task.searchPanelOptions.execDate').split(','),
+    placeholder: t('issue.searchPanelOptions.execDate').split(','),
     showTime: true
   },
   {
@@ -1453,13 +1453,13 @@ const searchOptions = [
 
 const buttonDropdownMenuItems = [
   {
-    name: t('task.list.actions.exportTasks'),
+    name: t('issue.list.actions.exportTasks'),
     key: 'export',
     icon: 'icon-daochu1',
     noAuth: true
   },
   {
-    name: t('task.list.actions.importTasks'),
+    name: t('issue.list.actions.importTasks'),
     key: 'import',
     icon: 'icon-shangchuan',
     noAuth: true
@@ -1476,11 +1476,11 @@ const fieldNames = { label: 'name', value: 'id' };
 const groupMenuItems = [
   {
     key: 'none',
-    name: t('task.searchPanel.groupOptions.none')
+    name: t('issue.searchPanel.groupOptions.none')
   },
   {
     key: 'assigneeName',
-    name: t('task.searchPanel.groupOptions.assigneeName')
+    name: t('issue.searchPanel.groupOptions.assigneeName')
   },
   {
     key: 'lastModifiedByName',
@@ -1500,7 +1500,7 @@ const sortMenuItems = [
   },
   {
     key: 'assigneeName',
-    name: t('task.searchPanel.sortOptions.assigneeName'),
+    name: t('issue.searchPanel.sortOptions.assigneeName'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
@@ -1549,7 +1549,7 @@ const sortMenuItems = [
               style="margin-left:0;"
               @change="handleModuleGroupingToggle">
             </Switch>
-            <span>{{ t('task.searchPanel.moduleGroup') }}</span>
+            <span>{{ t('issue.searchPanel.moduleGroup') }}</span>
           </div>
 
           <template v-if="selectedSprintOption?.id">
@@ -1569,7 +1569,7 @@ const sortMenuItems = [
             :value="selectedSprintOption?.id"
             size="small"
             class="w-43 h-7 transform-gpu -translate-y-0.5 mr-5 mb-3"
-            :placeholder="t('task.list.search.sprintPlaceholder')"
+            :placeholder="t('issue.list.search.sprintPlaceholder')"
             showSearch
             autofocus
             :fieldNames="fieldNames"
@@ -1603,7 +1603,7 @@ const sortMenuItems = [
             :value="checkedTagIds"
             size="small"
             class="w-43 h-7 transform-gpu -translate-y-0.5 mb-3 mr-5"
-            :placeholder="t('task.list.search.tagsPlaceholder')"
+            :placeholder="t('issue.list.search.tagsPlaceholder')"
             showSearch
             autofocus
             :fieldNames="fieldNames"
@@ -1691,7 +1691,7 @@ const sortMenuItems = [
             :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="t('task.list.search.servicePlaceholder')"
+            :placeholder="t('issue.list.search.servicePlaceholder')"
             class="w-72 ml-2"
             showSearch
             @change="handleTargetParentIdChange">
@@ -1715,7 +1715,7 @@ const sortMenuItems = [
             :params="apiParams"
             :fieldNames="{ label: 'summary', value: 'id' }"
             :allowClear="true"
-            :placeholder="t('task.list.search.apiPlaceholder')"
+            :placeholder="t('issue.list.search.apiPlaceholder')"
             class="w-72 ml-2"
             showSearch
             @change="handleTargetIdChange">
@@ -1755,7 +1755,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('task.searchPanelOptions.workloadPlaceholder')"
+            :placeholder="t('issue.searchPanelOptions.workloadPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="handleWorkloadFilterChange">
             <template #prefix>
@@ -1774,7 +1774,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('task.searchPanelOptions.failNumPlaceholder')"
+            :placeholder="t('issue.searchPanelOptions.failNumPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="handleFailureCountFilterChange">
             <template #prefix>
@@ -1793,7 +1793,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('task.searchPanelOptions.totalNumPlaceholder')"
+            :placeholder="t('issue.searchPanelOptions.totalNumPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="handleTotalCountFilterChange">
             <template #prefix>
@@ -1814,7 +1814,7 @@ const sortMenuItems = [
           @click="handleCreateTask">
           <div class="flex items-center">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span class="ml-1">{{ t('task.list.actions.addTask') }}</span>
+            <span class="ml-1">{{ t('issue.list.actions.addTask') }}</span>
           </div>
           <Dropdown :menuItems="buttonDropdownMenuItems" @click="handleButtonDropdownClick">
             <div class="w-5 h-5 flex items-center justify-center">
@@ -1826,7 +1826,7 @@ const sortMenuItems = [
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="t('task.list.actions.flowChart')">
+          :title="t('issue.list.actions.flowChart')">
           <Icon
             icon="icon-liuchengtu"
             class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"

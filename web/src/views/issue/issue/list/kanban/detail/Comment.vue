@@ -46,7 +46,7 @@ onMounted(() => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('task.comment.title') }}</h3>
+      <h3 class="basic-info-title">{{ t('issue.comment.title') }}</h3>
     </div>
 
     <!-- Scrollable Content Area -->

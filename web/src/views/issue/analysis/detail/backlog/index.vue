@@ -34,11 +34,11 @@ const getChartData = (data) => {
     title: backloggedRate + '%',
     value: [
       {
-        name: t('taskAnalysis.detail.backlogTasks.chartLabels.unbacklogged'),
+        name: t('issueAnalysis.detail.backlogIssues.chartLabels.nonBacklogged'),
         value: totalNum - backloggedNum
       },
       {
-        name: t('taskAnalysis.detail.backlogTasks.chartLabels.backlogged'),
+        name: t('issueAnalysis.detail.backlogIssues.chartLabels.backlogged'),
         value: backloggedNum
       }
     ]
@@ -48,11 +48,11 @@ const getChartData = (data) => {
     title: backloggedWorkloadRate + '%',
     value: [
       {
-        name: t('taskAnalysis.detail.backlogTasks.chartLabels.unbackloggedWorkload'),
+        name: t('issueAnalysis.detail.backlogIssues.chartLabels.nonBackloggedWorkload'),
         value: totalWorkload - backloggedWorkload
       },
       {
-        name: t('taskAnalysis.detail.backlogTasks.chartLabels.backloggedWorkload'),
+        name: t('issueAnalysis.detail.backlogIssues.chartLabels.backloggedWorkload'),
         value: backloggedWorkload
       }
     ]

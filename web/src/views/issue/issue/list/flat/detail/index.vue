@@ -257,7 +257,7 @@ const startCurrentTask = async () => {
   }
 
   emit('refreshChange');
-  notification.success(t('task.messages.startSuccess'));
+  notification.success(t('issue.messages.startSuccess'));
   const taskData = await loadTaskData();
   if (taskData) {
     updateTaskData(taskData);
@@ -279,7 +279,7 @@ const markTaskAsProcessed = async () => {
   }
 
   emit('refreshChange');
-  notification.success(t('task.table.messages.processedSuccess'));
+  notification.success(t('issue.table.messages.processedSuccess'));
   const taskData = await loadTaskData();
   if (taskData) {
     updateTaskData(taskData);
@@ -343,7 +343,7 @@ const reopenCurrentTask = async () => {
   }
 
   emit('refreshChange');
-  notification.success(t('task.table.messages.reopenSuccess'));
+  notification.success(t('issue.table.messages.reopenSuccess'));
   const taskData = await loadTaskData();
   if (taskData) {
     updateTaskData(taskData);
@@ -365,7 +365,7 @@ const restartCurrentTask = async () => {
   }
 
   emit('refreshChange');
-  notification.success(t('task.table.messages.restartSuccess'));
+  notification.success(t('issue.table.messages.restartSuccess'));
   const taskData = await loadTaskData();
   if (taskData) {
     updateTaskData(taskData);
@@ -387,7 +387,7 @@ const cancelCurrentTask = async () => {
   }
 
   emit('refreshChange');
-  notification.success(t('task.table.messages.cancelSuccess'));
+  notification.success(t('issue.table.messages.cancelSuccess'));
   const taskData = await loadTaskData();
   if (taskData) {
     updateTaskData(taskData);
@@ -400,9 +400,9 @@ const cancelCurrentTask = async () => {
 const copyTaskLinkToClipboard = () => {
   const message = window.location.origin + props.linkUrl;
   toClipboard(message).then(() => {
-    notification.success(t('task.detail.messages.copyLinkSuccess'));
+    notification.success(t('issue.detail.messages.copyLinkSuccess'));
   }).catch(() => {
-    notification.error(t('task.detail.messages.copyLinkFailed'));
+    notification.error(t('issue.detail.messages.copyLinkFailed'));
   });
 };
 
@@ -827,7 +827,7 @@ const actionMenuItemsMap = computed(() => {
 
     if (status === TaskStatus.CONFIRMING) {
       menuItems.push({
-        name: t('task.actions.confirmComplete'),
+        name: t('issue.actions.confirmComplete'),
         key: 'completed',
         icon: 'icon-yiwancheng',
         disabled: !isAdmin && !isConfirmer,
@@ -835,7 +835,7 @@ const actionMenuItemsMap = computed(() => {
       });
 
       menuItems.push({
-        name: t('task.actions.confirmIncomplete'),
+        name: t('issue.actions.confirmIncomplete'),
         key: 'uncompleted',
         icon: 'icon-shibaiyuanyin',
         disabled: !isAdmin && !isConfirmer,
@@ -850,7 +850,7 @@ const actionMenuItemsMap = computed(() => {
         icon: 'icon-zhongxindakaiceshirenwu',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.REOPEN_TASK as any) && !isAssignee,
         hide: false,
-        tip: t('task.tips.reopenTip')
+        tip: t('issue.tips.reopenTip')
       });
 
       menuItems.push({
@@ -859,7 +859,7 @@ const actionMenuItemsMap = computed(() => {
         icon: 'icon-zhongxinkaishiceshi',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any),
         hide: false,
-        tip: t('task.tips.restartTip')
+        tip: t('issue.tips.restartTip')
       });
     }
 
@@ -998,7 +998,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="confirmTaskAsCompleted">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>{{ t('task.actions.confirmComplete') }}</span>
+          <span>{{ t('issue.actions.confirmComplete') }}</span>
         </Button>
 
         <!-- Confirm Incomplete Button -->
@@ -1010,7 +1010,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="confirmTaskAsIncomplete">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>{{ t('task.actions.confirmIncomplete') }}</span>
+          <span>{{ t('issue.actions.confirmIncomplete') }}</span>
         </Button>
 
         <!-- Reopen Task Button -->
@@ -1026,7 +1026,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                {{ t('task.tips.reopenTip') }}
+                {{ t('issue.tips.reopenTip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1" />
@@ -1046,7 +1046,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                {{ t('task.tips.restartTip') }}
+                {{ t('issue.tips.restartTip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1" />
@@ -1188,7 +1188,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :disabled="isPreviousButtonDisabled"
           @click="navigateToPreviousTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-chakanshangyitiao" />
-          <span>{{ isPreviousButtonDisabled ? t('task.detail.noMore') : t('task.detail.previousTask') }}</span>
+          <span>{{ isPreviousButtonDisabled ? t('issue.detail.noMore') : t('issue.detail.previousTask') }}</span>
         </Button>
 
         <Button
@@ -1197,7 +1197,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :disabled="isNextButtonDisabled"
           @click="navigateToNextTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-chakanxiayitiao" />
-          <span>{{ isNextButtonDisabled ? t('task.detail.noMore') : t('task.detail.nextTask') }}</span>
+          <span>{{ isNextButtonDisabled ? t('issue.detail.noMore') : t('issue.detail.nextTask') }}</span>
         </Button>
       </div>
     </div>
@@ -1253,7 +1253,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocTask">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.tabs.assocTask') }}</span>
+            <span>{{ t('issue.detail.tabs.assocTask') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.TASK) }})</span>
           </div>
         </template>
@@ -1265,8 +1265,8 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.assocTaskTab.title')"
-          :tips="t('task.detail.assocTaskTab.tips')"
+          :title="t('issue.detail.assocTaskTab.title')"
+          :tips="t('issue.detail.assocTaskTab.tips')"
           :taskType="TaskType.TASK"
           @editSuccess="loadTaskData" />
       </TabPane>
@@ -1275,7 +1275,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocRequirements">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.assocRequirementTab.title') }}</span>
+            <span>{{ t('issue.detail.assocRequirementTab.title') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.REQUIREMENT) }})</span>
           </div>
         </template>
@@ -1286,8 +1286,8 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.assocRequirementTab.title')"
-          :tips="t('task.detail.assocRequirementTab.tips')"
+          :title="t('issue.detail.assocRequirementTab.title')"
+          :tips="t('issue.detail.assocRequirementTab.tips')"
           :taskType="TaskType.REQUIREMENT"
           @editSuccess="loadTaskData" />
       </TabPane>
@@ -1296,7 +1296,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocStory">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.assocStoryTab.title') }}</span>
+            <span>{{ t('issue.detail.assocStoryTab.title') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.STORY) }})</span>
           </div>
         </template>
@@ -1307,8 +1307,8 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.assocStoryTab.title')"
-          :tips="t('task.detail.assocStoryTab.tips')"
+          :title="t('issue.detail.assocStoryTab.title')"
+          :tips="t('issue.detail.assocStoryTab.tips')"
           :taskType="TaskType.STORY"
           @editSuccess="loadTaskData" />
       </TabPane>
@@ -1317,7 +1317,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocBug">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.assocBugTab.title') }}</span>
+            <span>{{ t('issue.detail.assocBugTab.title') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.BUG) }})</span>
           </div>
         </template>
@@ -1328,8 +1328,8 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.assocBugTab.title')"
-          :tips="t('task.detail.assocBugTab.tips')"
+          :title="t('issue.detail.assocBugTab.title')"
+          :tips="t('issue.detail.assocBugTab.tips')"
           :taskType="TaskType.BUG"
           @editSuccess="loadTaskData" />
       </TabPane>
@@ -1338,7 +1338,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocCase">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.assocCaseTab.title') }}</span>
+            <span>{{ t('issue.detail.assocCaseTab.title') }}</span>
             <span>({{ currentTaskInfo?.refCaseInfos?.length || 0 }})</span>
           </div>
         </template>
@@ -1355,7 +1355,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocApiTest">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.assocApiTestTab.title') }}</span>
+            <span>{{ t('issue.detail.assocApiTestTab.title') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.API_TEST) }})</span>
           </div>
         </template>
@@ -1366,8 +1366,8 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.assocApiTestTab.title')"
-          :tips="t('task.detail.assocApiTestTab.tips')"
+          :title="t('issue.detail.assocApiTestTab.title')"
+          :tips="t('issue.detail.assocApiTestTab.tips')"
           :taskType="TaskType.API_TEST"
           @editSuccess="loadTaskData" />
       </TabPane>
@@ -1376,7 +1376,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocScenarioTest">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.assocScenarioTestTab.title') }}</span>
+            <span>{{ t('issue.detail.assocScenarioTestTab.title') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.SCENARIO_TEST) }})</span>
           </div>
         </template>
@@ -1387,8 +1387,8 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.assocScenarioTestTab.title')"
-          :tips="t('task.detail.assocScenarioTestTab.tips')"
+          :title="t('issue.detail.assocScenarioTestTab.title')"
+          :tips="t('issue.detail.assocScenarioTestTab.tips')"
           :taskType="TaskType.SCENARIO_TEST"
           @editSuccess="loadTaskData" />
       </TabPane>
@@ -1397,7 +1397,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane
         v-if="shouldShowTestInfo"
         key="testInfo"
-        :tab="t('task.detail.tabs.testInfo')">
+        :tab="t('issue.detail.tabs.testInfo')">
         <TestInfo
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
@@ -1442,7 +1442,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="activity">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.tabs.activity') }}</span>
+            <span>{{ t('issue.detail.tabs.activity') }}</span>
             <span>({{ (currentTaskInfo as any)?.activityNum || 0 }})</span>
           </div>
         </template>

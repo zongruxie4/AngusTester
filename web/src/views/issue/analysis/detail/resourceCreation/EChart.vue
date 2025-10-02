@@ -36,7 +36,7 @@ let unplannedWorkloadRefEChart;
 // 任务数
 const unplannedTaskEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.resourceCreation.chartTitles.resourceTotal'),
+    text: t('issueAnalysis.detail.resourceCreation.chartTitles.resourceTotal'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -95,7 +95,7 @@ const unplannedTaskEChartConfig = {
 
 const unplannedWorkloadEChartConfig: any = {
   title: {
-    text: t('taskAnalysis.detail.resourceCreation.chartTitles.resourceGrowth'),
+    text: t('issueAnalysis.detail.resourceCreation.chartTitles.resourceGrowth'),
     bottom: 0,
     left: 'center',
     textStyle: {

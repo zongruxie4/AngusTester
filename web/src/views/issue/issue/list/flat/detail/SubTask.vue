@@ -151,7 +151,7 @@ const handleSubTaskAssociation = async (selectedSubTaskIds: string[]) => {
     return;
   }
 
-  notification.success(t('task.subTask.messages.associateSubTaskSuccess'));
+  notification.success(t('issue.subTask.messages.associateSubTaskSuccess'));
   emit('refreshChange');
 };
 
@@ -229,7 +229,7 @@ const saveNewSubTask = async () => {
  */
 const deleteSubTask = (subTaskData: TaskDetail['subTaskInfos'][number]) => {
   modal.confirm({
-    content: t('task.subTask.messages.confirmCancelSubTask', { name: subTaskData.name }),
+    content: t('issue.subTask.messages.confirmCancelSubTask', { name: subTaskData.name }),
     async onOk () {
       const requestParams = {
         subTaskIds: [subTaskData.id]
@@ -242,7 +242,7 @@ const deleteSubTask = (subTaskData: TaskDetail['subTaskInfos'][number]) => {
         return;
       }
 
-      notification.success(t('task.subTask.messages.cancelSubTaskSuccess'));
+      notification.success(t('issue.subTask.messages.cancelSubTaskSuccess'));
       emit('refreshChange');
     }
   });
@@ -579,7 +579,7 @@ const subTaskTableColumns = [
           class="space-x-1"
           @click="openTaskEditModal">
           <Icon icon="icon-jia" />
-          <span>{{ t('task.subTask.actions.addSubTask') }}</span>
+          <span>{{ t('issue.subTask.actions.addSubTask') }}</span>
         </Button>
 
         <Button
@@ -588,7 +588,7 @@ const subTaskTableColumns = [
           class="space-x-1"
           @click="openTaskSelectionModal">
           <Icon icon="icon-guanlianziyuan" />
-          <span>{{ t('task.subTask.actions.associateSubTask') }}</span>
+          <span>{{ t('issue.subTask.actions.associateSubTask') }}</span>
         </Button>
       </div>
     </div>
@@ -707,7 +707,7 @@ const subTaskTableColumns = [
         ref="taskNameInputRef"
         v-model:value="newSubTaskName"
         :maxlength="200"
-        :placeholder="t('task.subTask.form.taskName')"
+        :placeholder="t('issue.subTask.form.taskName')"
         trim
         class="w-200 mr-5"
         @pressEnter="(e: any) => handleEnterKeyPress(e)" />

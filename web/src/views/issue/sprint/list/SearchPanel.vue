@@ -142,17 +142,17 @@ const sortOptions: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('sprint.actions.sorts.sortByCreateTime'),
+    name: t('common.createdDate'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('sprint.actions.sorts.sortByCreator'),
+    name: t('common.creator'),
     key: 'createdBy',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('sprint.actions.sorts.sortByOwner'),
+    name: t('common.owner'),
     key: 'ownerId',
     orderSort: PageQuery.OrderSort.Asc
   }

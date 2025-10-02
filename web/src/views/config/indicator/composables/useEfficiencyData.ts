@@ -20,23 +20,23 @@ export function useEfficiencyData () {
     },
     {
       dataIndex: 'workload',
-      title: t('indicator.efficiency.table.columns.workload')
+      title: t('common.workload')
     },
     {
       dataIndex: 'completedRate',
-      title: t('indicator.efficiency.table.columns.completedRate')
+      title: t('common.counts.completedRate')
     },
     {
       dataIndex: 'overdueRate',
-      title: t('indicator.efficiency.table.columns.overdueRate')
+      title: t('common.counts.overdueRate')
     },
     {
       dataIndex: 'oneTimePassedRate',
-      title: t('indicator.efficiency.table.columns.oneTimePassedRate')
+      title: t('common.counts.oneTimePassedRate')
     },
     {
       dataIndex: 'savingWorkloadRate',
-      title: t('indicator.efficiency.table.columns.savingWorkloadRate')
+      title: t('common.counts.savingWorkloadRate')
     }
   ];
 

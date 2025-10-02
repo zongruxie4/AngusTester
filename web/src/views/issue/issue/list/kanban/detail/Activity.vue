@@ -56,7 +56,7 @@ onMounted(() => {
   <div class="basic-info-drawer">
     <div class="basic-info-header">
       <h3 class="basic-info-title">
-        {{ t('task.detailInfo.activity.title') }}
+        {{ t('issue.detailInfo.activity.title') }}
       </h3>
     </div>
 

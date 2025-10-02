@@ -347,18 +347,21 @@ const searchPanelOptions = [
   {
     type: 'input' as const,
     valueKey: 'name',
-    placeholder: t('taskAnalysis.searchNameDesc')
+    placeholder: t('common.placeholders.searchKeyword')
   },
   {
     type: 'select-user' as const,
     valueKey: 'createdBy',
-    placeholder: t('taskAnalysis.selectCreator'),
+    placeholder: t('common.placeholders.selectCreator'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'date-range' as const,
     valueKey: 'createdDate',
-    placeholder: [t('taskAnalysis.createTimeFrom'), t('taskAnalysis.createTimeTo')],
+    placeholder: [
+      t('common.placeholders.selectCreatedDate.0'),
+      t('common.placeholders.selectCreatedDate.1')
+    ],
     showTime: true
   }
 ];
@@ -406,7 +409,7 @@ const sortMenuItems = [
           @click="handleCreateClick">
           <div class="flex items-center">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span class="ml-1">{{ t('taskAnalysis.addAnalysis') }}</span>
+            <span class="ml-1">{{ t('issueAnalysis.actions.addAnalysis') }}</span>
           </div>
         </Button>
 

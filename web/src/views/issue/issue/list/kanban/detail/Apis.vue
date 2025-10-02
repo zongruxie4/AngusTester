@@ -696,7 +696,7 @@ onMounted(() => {
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               showSearch
-              :placeholder="t('task.detailInfo.apis.columns.selectSprint')"
+              :placeholder="t('issue.detailInfo.apis.columns.selectSprint')"
               class="edit-container"
               @change="handleSprintSelectionChange"
               @blur="confirmSprintChange" />
@@ -731,7 +731,7 @@ onMounted(() => {
                 showSearch
                 allowClear
                 class="flex-1"
-                :placeholder="t('task.detailInfo.apis.columns.selectModule')">
+                :placeholder="t('issue.detailInfo.apis.columns.selectModule')">
                 <template #title="item">
                   <div class="flex items-center" :title="item.name">
                     <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -815,7 +815,7 @@ onMounted(() => {
               ref="prioritySelectRef"
               v-model:value="priorityInputValue"
               enumKey="Priority"
-              :placeholder="t('task.detailInfo.apis.columns.selectPriority')"
+              :placeholder="t('issue.detailInfo.apis.columns.selectPriority')"
               class="edit-container max-w-52"
               @change="handlePrioritySelectionChange as any"
               @blur="confirmPriorityChange as any">
@@ -865,7 +865,7 @@ onMounted(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('task.detailInfo.apis.columns.evalWorkloadPlaceholder')"
+              :placeholder="t('issue.detailInfo.apis.columns.evalWorkloadPlaceholder')"
               @blur="handleEvalWorkloadBlur"
               @pressEnter="handleEvalWorkloadEnterPress" />
           </AsyncComponent>
@@ -899,7 +899,7 @@ onMounted(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('task.detailInfo.apis.columns.actualWorkloadPlaceholder')"
+              :placeholder="t('issue.detailInfo.apis.columns.actualWorkloadPlaceholder')"
               @blur="handleActualWorkloadBlur"
               @pressEnter="handleActualWorkloadEnterPress" />
           </AsyncComponent>
@@ -907,7 +907,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.totalNum') }}</span>
+            <span>{{ t('issue.detailInfo.apis.columns.totalNum') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -916,7 +916,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.failNum') }}</span>
+            <span>{{ t('issue.detailInfo.apis.columns.failNum') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -959,10 +959,10 @@ onMounted(() => {
               :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
               showSearch
               allowClear
-              :placeholder="t('task.detailInfo.apis.columns.tagsPlaceholder')"
+              :placeholder="t('issue.detailInfo.apis.columns.tagsPlaceholder')"
               mode="multiple"
               class="edit-container"
-              :notFoundContent="t('task.detailInfo.apis.columns.tagsNotFound')"
+              :notFoundContent="t('issue.detailInfo.apis.columns.tagsNotFound')"
               @change="handleTagSelectionChange"
               @blur="confirmTagChanges" />
           </AsyncComponent>
@@ -970,7 +970,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.onePass') }}</span>
+            <span>{{ t('issue.detailInfo.apis.columns.onePass') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -988,7 +988,7 @@ onMounted(() => {
                 ref="versionSelectRef"
                 v-model:value="versionInputValue"
                 allowClear
-                :placeholder="t('task.detailInfo.apis.columns.softwareVersionPlaceholder')"
+                :placeholder="t('issue.detailInfo.apis.columns.softwareVersionPlaceholder')"
                 class="w-full"
                 lazy
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"

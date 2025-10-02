@@ -39,7 +39,7 @@ const getChartData = (data) => {
   res.chart2Value = {
     title: completedWorkloadRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.coreKpi.incompleteWorkload'), value: evalWorkload - completedWorkload },
+      { name: t('functionAnalysis.detail.coreKpi.uncompletedWorkload'), value: evalWorkload - completedWorkload },
       { name: t('functionAnalysis.detail.coreKpi.completedWorkload'), value: completedWorkload }
     ]
   };

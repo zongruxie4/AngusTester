@@ -358,7 +358,7 @@ const handleVersionBlur = async () => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5">{{ t('task.detailInfo.basic.title') }}</div>
+      <div class="text-3.5">{{ t('issue.detailInfo.basic.title') }}</div>
     </template>
 
     <template #default>
@@ -485,7 +485,7 @@ const handleVersionBlur = async () => {
                       v-if="props.dataSource?.escapedBug"
                       color="error"
                       class="ml-2 text-3 leading-4">
-                      {{ t('task.detailInfo.basic.columns.escapedBug') }}
+                      {{ t('common.escapedBug') }}
                     </Tag>
                   </template>
                 </div>
@@ -531,7 +531,7 @@ const handleVersionBlur = async () => {
                   ref="versionSelectRef"
                   v-model:value="versionSelectValue"
                   allowClear
-                  :placeholder="t('task.detailInfo.basic.columns.softwareVersionPlaceholder')"
+                  :placeholder="t('issue.detailInfo.basic.columns.softwareVersionPlaceholder')"
                   lazy
                   class="edit-select"
                   :action="`${TESTER}/software/version?projectId=${props.projectId}`"
@@ -587,7 +587,7 @@ const handleVersionBlur = async () => {
                   :allowClear="false"
                   internal
                   enumKey="Priority"
-                  :placeholder="t('task.detailInfo.basic.columns.selectPriority')"
+                  :placeholder="t('issue.detailInfo.basic.columns.selectPriority')"
                   class="edit-select"
                   @change="handlePriorityChange as any"
                   @blur="handlePriorityBlur as any">
@@ -649,10 +649,10 @@ const handleVersionBlur = async () => {
                   :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
                   showSearch
                   internal
-                  :placeholder="t('task.detailInfo.basic.columns.tagsPlaceholder')"
+                  :placeholder="t('issue.detailInfo.basic.columns.tagsPlaceholder')"
                   mode="multiple"
                   class="edit-select"
-                  :notFoundContent="t('task.detailInfo.basic.columns.tagsNotFound')"
+                  :notFoundContent="t('issue.detailInfo.basic.columns.tagsNotFound')"
                   @change="handleTagChange"
                   @blur="handleTagBlur" />
               </AsyncComponent>

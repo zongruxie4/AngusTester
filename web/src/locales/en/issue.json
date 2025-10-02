@@ -125,11 +125,6 @@
         "viewBurndown": "View Burndown Chart",
         "viewProgress": "View Progress",
         "viewWorkCalendar": "View Work Calendar"
-      },
-      "sorts": {
-        "sortByCreateTime": "By creation time",
-        "sortByCreator": "By creator",
-        "sortByOwner": "By owner"
       }
     },
     "columns": {
@@ -161,7 +156,7 @@
       "maxLengthExceeded": "Content exceeds length limit"
     }
   },
-  "task": {
+  "issue": {
     "title": "Tasks",
     "addTask": "Add Task",
     "editTask": "Edit Task",
@@ -363,7 +358,6 @@
       "statistics": {
         "title": "Task Statistics",
         "totalTasks": "Total",
-        "completedTasks": "Completed",
         "inProgressTasks": "In Progress",
         "pendingTasks": "Pending",
         "overdueTasks": "Overdue",
@@ -371,7 +365,6 @@
         "confirmingTasks": "Confirming",
         "completionRate": "Completion Rate",
         "evalWorkload": "Estimated Workload",
-        "completedWorkload": "Completed Workload",
         "remainingWorkload": "Remaining Workload",
         "oneTimePassedNum": "One-time Pass",
         "oneTimePassedRate": "One-time Pass Rate",
@@ -589,7 +582,6 @@
     },
     "table": {
       "columns": {
-        "workload": "Workload",
         "apiScenario": "API/Scenario",
         "failCount": "Fail Count",
         "processCount": "Processing Count",
@@ -673,7 +665,6 @@
         "nameRule": "Task name, maximum 200 characters",
         "typePlaceholder": "Please select task type",
         "priorityPlaceholder": "Please select priority",
-        "escapedBug": "Escaped Bug",
         "scenarioPlaceholder": "Please select scenario",
         "scenarioRule": "Please select scenario",
         "testTypePlaceholder": "Please select test type",
@@ -959,12 +950,7 @@
     },
     "actions": {
       "addMeeting": "Add Meeting",
-      "editMeeting": "Edit Meeting",
-      "sorts": {
-        "byCreateDate": "By Create Time",
-        "byCreator": "By Creator",
-        "bySubject": "By Subject"
-      }
+      "editMeeting": "Edit Meeting"
     },
     "columns": {
       "subject": "Subject",
@@ -999,101 +985,98 @@
       "meetingTypeTip": "Specify meeting type for identification and management."
     }
   },
-  "taskAnalysis": {
+  "issueAnalysis": {
     "title": "Analysis",
-    "addAnalysis": "Add Analysis",
-    "editAnalysis": "Edit Analysis",
-    "aboutAnalysis": "About Analysis",
-    "aboutAnalysisDesc": "Provides real-time task data analysis, supports data-driven decision making, ensures information transparency, enhances team collaboration and issue tracking, and improves project management efficiency. AngusTester includes built-in analysis templates such as burndown charts, backlog tasks, and risk assessments to help quickly view dashboards and key performance indicators (KPIs). Users can also customize analysis dashboards based on business needs.",
+    "all": "All Analysis",
     "addedAnalysis": "Added Analysis",
     "notCreatedYet": "Not created yet, click to create",
-    "createdAt": "Created at",
-    "lastModifiedAt": "Last modified at",
-    "realTime": "Real-time",
-    "snapshot": "Snapshot",
-    "charts": "Charts",
-    "details": "Details",
-    "today": "Today",
-    "lastWeek": "Last Week",
-    "lastMonth": "Last Month",
-    "sortByCreator": "Sort by Creator",
-    "sortByCreateTime": "Sort by Create Time",
-    "createTimeFrom": "Create time from",
-    "createTimeTo": "Create time to",
-    "searchNameDesc": "Search name, description",
-    "selectCreator": "Select creator",
-    "all": "All Analysis",
+    "introduce": {
+      "title": "About Analysis",
+      "description": "Provides real-time issue data analysis, supports data-driven decision making, ensures information transparency, enhances team collaboration and issue tracking, and improves project management efficiency. AngusTester includes built-in analysis templates such as burndown charts, backlog issues, and risk assessments to help quickly view dashboards and key performance indicators (KPIs). Users can also customize analysis dashboards based on business needs."
+    },
+    "actions": {
+      "addAnalysis": "Add Analysis",
+      "editAnalysis": "Edit Analysis"
+    },
+    "status": {
+      "realTime": "Real-time",
+      "snapshot": "Snapshot"
+    },
     "columns": {
       "template": "Template",
       "object": "Analysis Object",
       "timeRange": "Analysis Period",
-      "dataSource": "Data Display"
+      "dataSource": "Data Display",
+      "description": "Analysis Description",
+      "containsUserAnalysis": "Include Assignee Analysis",
+      "containsDataDetail": "Include Data Details"
     },
     "placeholder": {
       "inputAnalysisName": "Enter analysis name, maximum 100 characters",
-      "inputAnalysisDesc": "Enter analysis description, such as analysis purpose, background, etc., maximum 200 characters",
-      "selectSprint": "Select or search sprint",
-      "selectUser": "Select user",
-      "selectDept": "Select department",
-      "selectGroup": "Select group"
+      "inputAnalysisDesc": "Enter analysis description, such as analysis purpose, background, etc., maximum 200 characters"
     },
     "messages": {
-      "confirmDelete": "Confirm delete analysis 「{name}」?",
-      "confirmUpdateSnapshot": "Confirm update snapshot content for analysis 「{name}」?",
-      "deleteSuccess": "Delete successful",
-      "updateSuccess": "Update successful",
-      "addSuccess": "Add analysis successful",
-      "editSuccess": "Edit analysis successful",
-      "templateRequired": "Please select analysis template",
-      "nameRequired": "Please enter analysis name",
-      "objectRequired": "Please select analysis object",
-      "timeRangeRequired": "Please select analysis period",
-      "dataSourceRequired": "Please select data display method",
-      "iterationRequired": "Please select sprint",
-      "orgRequired": "Please select organization"
-    },
-    "form": {
-      "template": "Template",
-      "object": "Object",
-      "selectSprint": "Select sprint",
-      "selectOrg": "Select Organization",
-      "timeRange": "Period",
-      "dataSource": "Data Display",
-      "containsUserAnalysis": "Include Assignee Analysis",
-      "containsDataDetail": "Include Data Details"
+      "confirmUpdateSnapshot": "Confirm update snapshot content for analysis 「{name}」?"
     },
     "dataSource": {
       "realTime": "Display real-time data each time",
       "snapshot": "Save data snapshot, display snapshot data each time"
     },
-    "orgType": {
-      "dept": "Department",
-      "group": "Group",
-      "user": "User"
-    },
-    "objectType": {
-      "currentProject": "Current Project",
-      "plan": "Specified Iteration",
-      "testerOrg": "Specified Organization"
+    "resourceTypes": {
+      "TEST_CUSTOMIZATION": "Custom Test",
+      "TEST_FUNCTIONALITY": "Functional Test",
+      "TEST_PERFORMANCE": "Performance Test",
+      "TEST_STABILITY": "Stability Test",
+      "SERVICES": "Services",
+      "APIS": "APIs",
+      "CASES": "Cases",
+      "PLAN": "Plan",
+      "SPRINT": "Sprint",
+      "TASK_SPRINT": "Sprint",
+      "TASK": "Task",
+      "MOCK_APIS": "Mock APIs",
+      "MOCK_PUSHBACK": "Mock Pushback",
+      "MOCK_RESPONSE": "Mock Response",
+      "MOCK_SERVICE": "Mock Service",
+      "DATA_DATASET": "Dataset",
+      "DATA_DATASOURCE": "Data Source",
+      "DATA_VARIABLE": "Variable",
+      "TOTAL": "Total",
+      "REPORT": "Report",
+      "REPORT_RECORD": "Record",
+      "API_TEST": "API Test",
+      "BUG": "Bug",
+      "REQUIREMENT": "Requirement",
+      "STORY": "Story",
+      "SCENARIO_TEST": "Scenario Test"
     },
     "detail": {
-      "backlogTasks": {
+      "progress": {
+        "chartTitles": {
+          "issueProgress": "Issue Progress",
+          "workloadProgress": "Workload Progress"
+        }
+      },
+      "workload": {
+        "pieLabels": {
+          "incompleteSaving": "Uncompleted Saving",
+          "completedSaving": "Completed Saving"
+        }
+      },
+      "backlogIssues": {
         "chartLabels": {
-          "backlogAmount": "Backlogged",
-          "totalAmount": "Total",
-          "taskCount": "Count",
-          "workload": "Workload",
-          "backlogTaskRatio": "Backlog Task Ratio",
-          "backlogWorkloadRatio": "Backlog Workload Ratio",
-          "unbacklogged": "Unbacklogged",
+          "backloggedCount": "Backlogged",
+          "totalBackloggedCount": "Total",
+          "backlogIssueRate": "Backlog Issue Rate",
+          "backlogWorkloadRate": "Backlog Workload Rate",
+          "nonBacklogged": "Non Backlogged",
           "backlogged": "Backlogged",
-          "unbackloggedWorkload": "Unbacklogged",
+          "nonBackloggedWorkload": "Non Backlogged",
           "backloggedWorkload": "Backlogged"
         },
         "statistics": {
           "backlogWorkloadEstimatedTime": "Backlog Workload Estimated Time",
-          "hours": "hours",
-          "averageDailyProcessedTasks": "Daily Processed Tasks",
+          "averageDailyProcessedIssues": "Daily Processed Issues",
           "averageDailyProcessedWorkload": "Daily Processed Workload"
         }
       },
@@ -1113,11 +1096,9 @@
           "escapedBugsCount": "Escaped Bugs"
         },
         "chartTitles": {
-          "bugCount": "Bug Count",
-          "bugLevel": "Bug Level",
-          "validBugRatio": "Valid Bug Ratio",
-          "escapedBugRatio": "Escaped Bug Ratio",
-          "bugWorkloadRatio": "Bug Workload Ratio"
+          "validBugRate": "Valid Bug Rate",
+          "escapedBugRate": "Escaped Bug Rate",
+          "bugWorkloadRate": "Bug Workload Rate"
         },
         "pieChartLabels": {
           "criticalCount": "Critical Count",
@@ -1127,28 +1108,8 @@
         }
       },
       "coreKpi": {
-        "chartLabels": {
-          "taskCount": "Task",
-          "workload": "Workload",
-          "overdueCount": "Overdue",
-          "bugCount": "Bug",
-          "completedCount": "Completed",
-          "totalCount": "Total",
-          "uncompletedTaskCount": "Uncompleted",
-          "completedTaskCount": "Completed",
-          "uncompletedWorkload": "Uncompleted",
-          "completedWorkload": "Completed",
-          "uncompletedOverdueCount": "Uncompleted",
-          "completedOverdueCount": "Completed",
-          "uncompletedBugCount": "Uncompleted",
-          "completedBugCount": "Completed"
-        },
         "chartTitles": {
-          "coreKpi": "Core KPI",
-          "completedTaskRatio": "Completed Tasks",
-          "completedWorkloadRatio": "Completed Workload",
-          "completedOverdueRatio": "Completed Overdue",
-          "completedBugRatio": "Completed Bugs"
+          "coreKpi": "Core KPI"
         }
       },
       "failures": {
@@ -1181,181 +1142,67 @@
       },
       "handlingEfficiency": {
         "chartLabels": {
-          "completedTaskCount": "Completed",
           "oneTimeCompletedCount": "One-time",
           "twoTimeCompletedCount": "Two-time",
-          "uncompletedTaskCount": "Uncompleted",
-          "completedTaskCount2": "Completed",
-          "oneTimeUncompletedTaskCount": "Uncompleted",
-          "oneTimeCompletedTaskCount": "Completed",
-          "twoTimeUncompletedTaskCount": "Uncompleted",
-          "twoTimeCompletedTaskCount": "Completed"
+          "oneTimeUncompletedCount": "Uncompleted",
+          "twoTimeUncompletedCount": "Uncompleted"
         },
         "chartTitles": {
-          "completedTasks": "Completed",
-          "completedTaskRatio": "Completed Ratio",
-          "oneTimeCompletedRatio": "One-time Ratio",
-          "twoTimeCompletedRatio": "Two-time Ratio"
+          "oneTimeCompletedRate": "One-time rate",
+          "twoTimeCompletedRate": "Two-time rate"
         }
       },
       "leadTime": {
         "chartTitles": {
-          "taskDeliveryCycle": "Task Delivery Cycle (Hours)"
+          "taskDeliveryCycle": "Delivery Cycle (Hours)"
         },
         "statistics": {
           "totalProcessingTime": "Total Processing Time",
-          "hours": "hours",
           "participants": "Participants",
           "averageDailyProcessingTime": "Average Daily Processing Time",
           "perHour": "/hour"
         }
       },
       "overdueAssessment": {
-        "chartLabels": {
-          "unoverdueCount": "Unoverdue Count",
-          "overdueCount": "Overdue Count",
-          "unoverdueWorkload": "Unoverdue Workload",
-          "overdueWorkload": "Overdue Workload"
-        },
-        "chartTitles": {
-          "completedWorkloadRatio": "Completed Workload",
-          "savingWorkloadRatio": "Saving Workload"
-        },
         "statistics": {
-          "overdueCount": "Overdue Count",
           "overdueRisk": "Overdue Risk",
           "overdueTime": "Overdue Time",
-          "hours": "hours",
           "averageDailyProcessedWorkload": "Average Daily Processed Workload",
           "overdueWorkloadProcessingTime": "Overdue Processing Time"
         }
       },
-      "progress": {
-        "chartTitles": {
-          "taskProgress": "Task Progress",
-          "workloadProgress": "Workload Progress"
-        }
-      },
       "recentDelivery": {
         "chartLabels": {
-          "today": "Today",
-          "lastWeek": "Last Week",
-          "lastMonth": "Last Month",
           "deliveryCount": "Delivery",
-          "deliveryOverdueCount": "Overdue",
-          "totalCount": "Total"
+          "deliveryOverdueCount": "Overdue"
         },
         "chartTitles": {
           "deliveryCount": "Delivery Count (Completed)",
           "deliveryWorkload": "Delivery Workload (Completed)"
         }
       },
-      "resourceCreation": {
-        "chartTitles": {
-          "resourceTotal": "Total Resource Creation",
-          "resourceGrowth": "Resource Creation Growth Trend"
-        },
-        "resourceTypes": {
-          "TEST_CUSTOMIZATION": "Custom Test",
-          "TEST_FUNCTIONALITY": "Functional Test",
-          "TEST_PERFORMANCE": "Performance Test",
-          "TEST_STABILITY": "Stability Test",
-          "SERVICES": "Services",
-          "APIS": "APIs",
-          "CASES": "Cases",
-          "PLAN": "Plan",
-          "SPRINT": "Sprint",
-          "TASK_SPRINT": "Sprint",
-          "TASK": "Task",
-          "MOCK_APIS": "Mock APIs",
-          "MOCK_PUSHBACK": "Mock Pushback",
-          "MOCK_RESPONSE": "Mock Response",
-          "MOCK_SERVICE": "Mock Service",
-          "DATA_DATASET": "Dataset",
-          "DATA_DATASOURCE": "Data Source",
-          "DATA_VARIABLE": "Variable",
-          "TOTAL": "Total",
-          "REPORT": "Report",
-          "REPORT_RECORD": "Record",
-          "API_TEST": "API Test",
-          "BUG": "Bug",
-          "REQUIREMENT": "Requirement",
-          "STORY": "Story",
-          "SCENARIO_TEST": "Scenario Test",
-          "ANALYSIS": "Analysis",
-          "BACKLOG": "Backlog",
-          "MEETING": "Meeting"
-        }
-      },
-      "taskGrowthTread": {
-        "chartTitles": {
-          "taskGrowth": "Task Growth Volume",
-          "growthTrend": "Growth Trend"
-        },
-        "resourceTypes": {
-          "TEST_CUSTOMIZATION": "Custom Test",
-          "TEST_FUNCTIONALITY": "Functional Test",
-          "TEST_PERFORMANCE": "Performance Test",
-          "TEST_STABILITY": "Stability Test",
-          "SERVICES": "Services",
-          "APIS": "APIs",
-          "CASES": "Cases",
-          "PLAN": "Plan",
-          "SPRINT": "Sprint",
-          "TASK_SPRINT": "Sprint",
-          "TASK": "Task",
-          "MOCK_APIS": "Mock APIs",
-          "MOCK_PUSHBACK": "Mock Pushback",
-          "MOCK_RESPONSE": "Mock Response",
-          "MOCK_SERVICE": "Mock Service",
-          "DATA_DATASET": "Dataset",
-          "DATA_DATASOURCE": "Data Source",
-          "DATA_VARIABLE": "Variable",
-          "TOTAL": "Total",
-          "REPORT": "Report",
-          "REPORT_RECORD": "Record",
-          "API_TEST": "API Test",
-          "BUG": "Bug",
-          "REQUIREMENT": "Requirement",
-          "STORY": "Story",
-          "SCENARIO_TEST": "Scenario Test"
-        }
-      },
-      "unplannedTasks": {
+      "unplanned": {
         "chartLabels": {
-          "totalCount": "Total",
           "unplannedCount": "Unplanned",
           "unplannedCompletedCount": "Completed",
           "totalWorkload": "Total",
           "unplannedWorkload": "Unplanned",
           "unplannedCompletedWorkload": "Completed"
         },
-        "chartTitles": {
-          "taskCount": "Count",
-          "workload": "Workload"
-        },
         "metrics": {
-          "estimatedTime": "Estimated Time for Unplanned Tasks",
-          "hours": "Hours"
+          "estimatedTime": "Estimated Time for Unplanned Issues"
         }
       },
-      "workload": {
-        "chartLabels": {
-          "evalWorkload": "Estimated",
-          "actualWorkload": "Actual",
-          "completedWorkload": "Completed",
-          "savingWorkload": "Saving"
-        },
+      "growthTread": {
         "chartTitles": {
-          "workload": "Workload",
-          "completedWorkloadRatio": "Completed Workload",
-          "savingWorkloadRatio": "Saving Workload"
-        },
-        "pieLabels": {
-          "incompleteWorkload": "Incomplete Workload",
-          "completedWorkload": "Completed Workload",
-          "incompleteSaving": "Incomplete Saving",
-          "completedSaving": "Completed Saving"
+          "issueGrowth": "Issue Growth Count",
+          "growthTrend": "Growth Trend"
+        }
+      },
+      "resourceCreation": {
+        "chartTitles": {
+          "resourceTotal": "Total Resource Creation",
+          "resourceGrowth": "Resource Creation Growth Trend"
         }
       }
     }

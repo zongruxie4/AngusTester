@@ -111,7 +111,7 @@ const handleCaseAssociation = async (selectedCaseIds: string[]) => {
  */
 const handleCaseDisassociation = (caseRecord: any) => {
   modal.confirm({
-    content: t('task.assocCase.messages.confirmCancelCase', { name: caseRecord.name }),
+    content: t('issue.assocCase.messages.confirmCancelCase', { name: caseRecord.name }),
     onOk () {
       return task.cancelAssociationCase(props.taskId || '', [caseRecord.id], {
         paramsType: true
@@ -198,7 +198,7 @@ const tableColumns = [
         size="small"
         @click="openCaseSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('task.assocCase.actions.associateCase') }}
+        {{ t('issue.assocCase.actions.associateCase') }}
       </Button>
     </div>
 

@@ -36,7 +36,7 @@ let growthTreadWorkloadRefEChart;
 // 任务数
 const growthTreadTaskEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.taskGrowthTread.chartTitles.taskGrowth'),
+    text: t('issueAnalysis.detail.growthTread.chartTitles.issueGrowth'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -52,12 +52,12 @@ const growthTreadTaskEChartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('taskAnalysis.detail.taskGrowthTread.chartLabels.requirement'),
-      t('taskAnalysis.detail.taskGrowthTread.chartLabels.story'),
-      t('common.issue'),
-      t('taskAnalysis.detail.taskGrowthTread.chartLabels.bug'),
-      t('taskAnalysis.detail.taskGrowthTread.chartLabels.apiTest'),
-      t('taskAnalysis.detail.taskGrowthTread.chartLabels.scenarioTest'),
+      t('common.counts.requirementCount'),
+      t('common.counts.storyCount'),
+      t('common.counts.taskCount'),
+      t('common.counts.bugCount'),
+      t('common.counts.apiTestCount'),
+      t('common.counts.scenarioTestCount'),
       t('chart.total')
     ],
     axisLabel: {
@@ -96,7 +96,7 @@ const growthTreadTaskEChartConfig = {
 
 const growthTreadWorkloadEChartConfig: any = {
   title: {
-    text: t('taskAnalysis.detail.taskGrowthTread.chartTitles.growthTrend'),
+    text: t('issueAnalysis.detail.growthTread.chartTitles.growthTrend'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -149,7 +149,6 @@ onMounted(() => {
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
     growthTreadTaskEChartConfig.series[0].data = props.chart0Value.yData;
-    debugger;
     growthTreadWorkloadEChartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
