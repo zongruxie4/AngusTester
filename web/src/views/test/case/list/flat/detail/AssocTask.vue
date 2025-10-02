@@ -88,7 +88,7 @@ const handleDelTask = (record) => {
 };
 
 const openTask = (record) => {
-  router.push(`/task#task?taskId=${record.id}`);
+  router.push(`/issue#issue?taskId=${record.id}`);
 };
 
 const columns = [

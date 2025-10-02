@@ -180,7 +180,7 @@ onMounted(async () => {
         :appInfo="appInfo"
         :refreshNotify="sprintsRefreshToken" />
     </template>
-    <template #task>
+    <template #issue>
       <Task
         :projectId="projectId"
         :projectName="projectInfo?.name"

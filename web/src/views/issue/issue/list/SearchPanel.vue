@@ -884,7 +884,7 @@ onMounted(async () => {
   }, { immediate: true });
 
   watch(() => route.hash, () => {
-    if (!route.hash.startsWith('#task')) {
+    if (!route.hash.startsWith('#issue')) {
       return;
     }
 

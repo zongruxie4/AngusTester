@@ -166,7 +166,7 @@ const handleStorageKeyChange = () => {
  */
 onMounted(() => {
   watch(() => route.hash, (newHash) => {
-    if (!newHash.startsWith('#task')) {
+    if (!newHash.startsWith('#issue')) {
       return;
     }
 

@@ -29,7 +29,7 @@ const tableList = computed((): TaskInfo[] => {
     };
     return {
       ...item,
-      linkUrl: '/task#task?' + http.getURLSearchParams(_params, true)
+      linkUrl: '/issue#issue?' + http.getURLSearchParams(_params, true)
     };
   });
 });

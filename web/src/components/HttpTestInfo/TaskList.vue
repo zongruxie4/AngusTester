@@ -94,7 +94,7 @@ const props = withDefaults(defineProps<Props>(), {
         </template>
         <div class="px-1 flex h-6 items-center">
           <Icon :icon="getTaskTypeIcon(taskItem.taskType)" />
-          <span class="min-w-0 truncate flex-1" :title="taskItem.name"><a target="_blank" :href="`/tasks#tasks?projectId=${projectInfo.id}&taskId=${taskItem.targetId}&taskName=${taskItem.name}`">{{ taskItem.name }}</a></span>
+          <span class="min-w-0 truncate flex-1" :title="taskItem.name"><a target="_blank" :href="`/issue#issue?projectId=${projectInfo.id}&taskId=${taskItem.targetId}&taskName=${taskItem.name}`">{{ taskItem.name }}</a></span>
         </div>
       </Tooltip>
     </div>
