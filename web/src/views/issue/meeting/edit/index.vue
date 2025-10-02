@@ -76,7 +76,18 @@ const selectFieldNames = {
  * @returns Formatted parameters for API calls
  */
 const buildApiParameters = () => {
-  const { content, date, timeEnd, timeStart, type, location, moderator, subject, participants, sprintId } = meetingFormState.value;
+  const {
+    content,
+    date,
+    timeEnd,
+    timeStart,
+    type,
+    location,
+    moderator,
+    subject,
+    participants,
+    sprintId
+  } = meetingFormState.value;
   return {
     content,
     date,
@@ -175,7 +186,7 @@ const handleMeetingCreation = async () => {
     return;
   }
 
-  notification.success(t('meeting.addSuccess'));
+  notification.success(t('actions.tip.addSuccess'));
 
   const currentTabId = props.data?._id;
   const newMeetingId = response?.data?.id;
@@ -401,7 +412,7 @@ onMounted(async () => {
           <div class="flex items-center space-x-1">
             <Select
               v-model:value="meetingFormState.sprintId"
-              :placeholder="t('meeting.placeholder.selectSprint')"
+              :placeholder="t('common.placeholders.selectSprint')"
               :fieldNames="{
                 value: 'id',
                 label: 'name'
@@ -415,7 +426,7 @@ onMounted(async () => {
       <div class="flex space-x-2">
         <FormItem
           required
-          :label="t('meeting.form.date')"
+          :label="t('meeting.columns.date')"
           class="flex-1 min-w-0"
           name="date">
           <div class="flex items-center space-x-1">
@@ -429,7 +440,7 @@ onMounted(async () => {
         </FormItem>
 
         <FormItem
-          :label="t('meeting.form.time')"
+          :label="t('meeting.columns.time')"
           class="flex-1 min-w-0"
           name="time"
           :rules="{validator: validateTimeRequired, message: t('meeting.messages.timeRequired'), required: true}">
@@ -452,7 +463,7 @@ onMounted(async () => {
       </div>
 
       <div class="flex space-x-2">
-        <FormItem :label="t('meeting.form.location')" class="flex-1 min-w-0">
+        <FormItem :label="t('meeting.columns.location')" class="flex-1 min-w-0">
           <div class="flex items-center space-x-1">
             <Input
               v-model:value="meetingFormState.location"
@@ -465,7 +476,7 @@ onMounted(async () => {
 
         <FormItem
           required
-          :label="t('meeting.form.moderator')"
+          :label="t('meeting.columns.moderator')"
           class="flex-1 min-w-0"
           name="moderator">
           <div class="flex items-center space-x-1">
@@ -481,7 +492,7 @@ onMounted(async () => {
 
       <FormItem
         required
-        :label="t('meeting.form.participants')"
+        :label="t('meeting.columns.participants')"
         class="min-w-0"
         name="participants">
         <div class="flex items-center space-x-1">
@@ -497,7 +508,7 @@ onMounted(async () => {
       </FormItem>
 
       <FormItem
-        :label="t('meeting.form.content')"
+        :label="t('meeting.columns.content')"
         class="flex-1 !mb-5"
         name="content"
         :rules="{required: true, validator: validateContentRequired}">
@@ -520,7 +531,7 @@ onMounted(async () => {
   font-weight: 600 !important;
 }
 
-.ant-tabs-small>:deep(.ant-tabs-nav) .ant-tabs-tab {
+.ant-tabs-small > :deep(.ant-tabs-nav) .ant-tabs-tab {
   padding-top: 0;
 }
 </style>

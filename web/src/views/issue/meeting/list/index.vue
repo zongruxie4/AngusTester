@@ -167,7 +167,7 @@ onMounted(() => {
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('meeting.notAddedYet') }}</span>
             <RouterLink class="router-link flex-1 truncate" :to="`/issue#meeting?type=ADD`">
-              {{ t('meeting.addMeeting') }}
+              {{ t('meeting.actions.addMeeting') }}
             </RouterLink>
           </div>
         </div>

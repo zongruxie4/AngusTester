@@ -425,7 +425,8 @@
     "modifiedByMe": "我修改的",
     "executedByMe": "我执行的",
     "assignedToMe": "分派给我的",
-    "ownedByMe": "我负责的"
+    "ownedByMe": "我负责的",
+    "presideByMe": "我主持的"
   },
   "pagination": {
     "items": "条",

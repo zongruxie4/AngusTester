@@ -24,6 +24,7 @@ withDefaults(defineProps<{
   pageSizeOptions: () => ['4', '10', '15', '20', '30']
 });
 
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'delete', meeting: MeetingInfo): void;
   (e: 'pageChange', page: number, pageSize: number): void;
@@ -121,7 +122,7 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
                   type="avatar" />
               </div>
               <div class="flex flex-col">
-                <span class="text-xs text-theme-sub-content">{{ t('meeting.columns.moderatorLabel') }}</span>
+                <span class="text-xs text-theme-sub-content">{{ t('meeting.columns.moderator') }}</span>
                 <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.moderator.fullName">
                   {{ item.moderator.fullName }}
                 </span>
@@ -178,7 +179,9 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
                     placement="bottomLeft"
                     internal>
                     <template #title>
-                      <span class="text-sm font-medium">{{ t('meeting.columns.participants') }} ({{ item.participants.length }})</span>
+                      <span class="text-sm font-medium">{{
+                        t('meeting.columns.participants')
+                      }} ({{ item.participants.length }})</span>
                     </template>
                     <template #content>
                       <div class="grid grid-cols-5 gap-2 max-w-md">
@@ -192,11 +195,14 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
                               :src="participant.avatar"
                               type="avatar" />
                           </div>
-                          <span class="text-xs text-theme-content text-center truncate w-full" :title="participant.fullName">{{ participant.fullName }}</span>
+                          <span
+                            class="text-xs text-theme-content text-center truncate w-full"
+                            :title="participant.fullName">{{ participant.fullName }}</span>
                         </div>
                       </div>
                     </template>
-                    <div class="w-6 h-6 rounded-full bg-theme-primary/20 flex items-center justify-center text-xs font-bold text-theme-primary ring-1 ring-white shadow-sm cursor-pointer">
+                    <div
+                      class="w-6 h-6 rounded-full bg-theme-primary/20 flex items-center justify-center text-xs font-bold text-theme-primary ring-1 ring-white shadow-sm cursor-pointer">
                       +{{ item.participants.length - 8 }}
                     </div>
                   </Popover>
@@ -240,17 +246,19 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
             :value="item.content"
             :emptyText="t('common.noDescription')" />
         </div>
+
         <div class="flex space-x-3 items-center justify-between h-4 leading-5">
           <RouterLink class="flex items-center space-x-1" :to="`/issue#meeting?id=${item.id}&type=edit`">
             <Icon icon="icon-shuxie" class="text-3.5" />
             <span>{{ t('actions.edit') }}</span>
           </RouterLink>
+
           <Button
             type="text"
             size="small"
             @click="onDelete(item)">
             <Icon icon="icon-qingchu" />
-            <span>{{ t('actions.delete') }}</span>
+            <span class="ml-1">{{ t('actions.delete') }}</span>
           </Button>
         </div>
       </div>

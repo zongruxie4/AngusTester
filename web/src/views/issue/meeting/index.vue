@@ -147,7 +147,7 @@ const processRouteHash = (hash: string) => {
         const newMeetingId = utils.uuid();
         return {
           _id: newMeetingId,
-          name: t('meeting.addMeeting'),
+          name: t('meeting.actions.addMeeting'),
           value: 'meetingEdit',
           noCache: true,
           data: { _id: newMeetingId }

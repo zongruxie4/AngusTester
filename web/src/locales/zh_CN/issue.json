@@ -939,42 +939,56 @@
   },
   "meeting": {
     "title": "会议",
-    "addMeeting": "添加会议",
-    "editMeeting": "编辑会议",
-    "aboutMeeting": "关于会议",
-    "aboutMeetingDesc": "会议在敏捷框架中起到关键作用，通过定期的沟通、反馈和反思，帮助团队持续改进，提高工作效率，确保项目能够灵活应对变化。",
     "addedMeetings": "已添加的会议",
     "notAddedYet": "您尚未添加任何会议，立即",
-    "confirmDelete": "确定删除会议「{name}」吗？",
-    "deleteSuccess": "会议删除成功， 您可以在回收站查看删除后的会议",
-    "addSuccess": "添加成功",
-    "editSuccess": "修改成功",
+    "introduce": {
+      "title": "关于会议",
+      "description": "会议在敏捷框架中起到关键作用，通过定期的沟通、反馈和反思，帮助团队持续改进，提高工作效率，确保项目能够灵活应对变化。",
+      "meetingTypes": {
+        "productGrooming": "产品梳理会",
+        "productGroomingDesc": "明确产品愿景与短期目标，对待办梳理与优先级排序，确保可实施性。参与：产品负责人、开发团队、敏捷教练及相关干系人。",
+        "sprintPlanning": "迭代计划会议",
+        "sprintPlanningDesc": "确定本次迭代的交付范围与工作量。产品负责人展示待办，团队讨论与估算，选入可完成项。参与：敏捷教练、产品负责人、开发团队。",
+        "dailyStandup": "每日站会",
+        "dailyStandupDesc": "以最短时间同步进展、问题与计划，实时掌握迭代状态，促进协同。",
+        "sprintReview": "迭代回顾会议",
+        "sprintReviewDesc": "展示迭代产出，收集反馈并更新待办，确定后续方向。参与：敏捷团队及干系人。",
+        "sprintRetrospective": "迭代总结(反思)会",
+        "sprintRetrospectiveDesc": "回顾流程，识别问题与改进点，制定下一步改进行动。参与：敏捷团队。",
+        "other": "其他会议",
+        "otherDesc": "团队在敏捷过程中组织的其他会议，如技术/需求评审、发布计划、障碍消除、团队建设等。"
+      }
+    },
+    "actions": {
+      "addMeeting": "添加会议",
+      "editMeeting": "编辑会议",
+      "sorts": {
+        "byCreateDate": "按添加时间",
+        "byCreator": "按添加人",
+        "bySubject": "按主题"
+      }
+    },
     "columns": {
       "subject": "会议主题",
       "type": "会议类型",
       "date": "会议日期",
       "time": "会议时间",
       "location": "会议地点",
-      "moderator": "会议主持",
+      "moderator": "主持人",
       "participants": "参会人员",
       "participantUnit": "人",
       "content": "会议内容",
       "sprint": "所属迭代",
-      "moderatorLabel": "主持人",
       "participantsCount": "共{count}个参与者"
     },
     "placeholder": {
-      "inputSubject": "最多支持200个字符",
-      "selectSprint": "选择所属迭代",
+      "inputSubject": "会议主题，最多支持200个字符",
       "selectModerator": "选择会议主持人",
       "selectParticipants": "选择参会人员",
       "inputLocation": "记录会议地点或在线会议的链接",
       "searchSubject": "查询会议主题",
-      "selectType": "会议类型",
-      "selectModeratorSearch": "选择主持人",
-      "selectCreator": "选择创建人",
-      "createTimeFrom": "添加时间从",
-      "createTimeTo": "添加时间到"
+      "selectMeetingType": "选择会议类型",
+      "selectModeratorSearch": "选择主持人"
     },
     "messages": {
       "subjectRequired": "请输入会议主题",
@@ -985,44 +999,6 @@
       "participantsRequired": "请选择参会人员",
       "contentRequired": "请输入会议内容",
       "meetingTypeTip": "指定会议类型，以便识别和管理。"
-    },
-    "form": {
-      "subject": "会议主题",
-      "type": "会议类型",
-      "date": "会议日期",
-      "time": "会议时间",
-      "location": "会议地点",
-      "moderator": "会议主持",
-      "participants": "参会人员",
-      "content": "会议内容"
-    },
-    "meetingTypes": {
-      "productGrooming": "产品梳理会",
-      "productGroomingDesc": "明确产品愿景与短期目标，对待办梳理与优先级排序，确保可实施性。参与：产品负责人、开发团队、敏捷教练及相关干系人。",
-      "sprintPlanning": "迭代计划会议",
-      "sprintPlanningDesc": "确定本次迭代的交付范围与工作量。产品负责人展示待办，团队讨论与估算，选入可完成项。参与：敏捷教练、产品负责人、开发团队。",
-      "dailyStandup": "每日站会",
-      "dailyStandupDesc": "以最短时间同步进展、问题与计划，实时掌握迭代状态，促进协同。",
-      "sprintReview": "迭代回顾会议",
-      "sprintReviewDesc": "展示迭代产出，收集反馈并更新待办，确定后续方向。参与：敏捷团队及干系人。",
-      "sprintRetrospective": "迭代总结(反思)会",
-      "sprintRetrospectiveDesc": "回顾流程，识别问题与改进点，制定下一步改进行动。参与：敏捷团队。",
-      "other": "其他会议",
-      "otherDesc": "团队在敏捷过程中组织的其他会议，如技术/需求评审、发布计划、障碍消除、团队建设等。"
-    },
-    "quickSearch": {
-      "all": "全部",
-      "myModerated": "我主持的",
-      "myCreated": "我创建的",
-      "myModified": "我修改的",
-      "lastDay": "近1天",
-      "lastThreeDays": "近3天",
-      "lastWeek": "近7天"
-    },
-    "sort": {
-      "byCreateDate": "按添加时间",
-      "byCreator": "按添加人",
-      "bySubject": "主题"
     }
   },
   "taskAnalysis": {

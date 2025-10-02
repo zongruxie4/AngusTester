@@ -6,7 +6,12 @@ import { Button } from 'ant-design-vue';
 import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { TaskMeetingType } from '@/enums/enums';
 import { LoadingProps } from '@/types/types';
-import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import {
+  QuickSearchOptions,
+  createAuditOptions,
+  createTimeOptions,
+  type QuickSearchConfig
+} from '@/components/quickSearch';
 
 // TYPES & INTERFACES
 type OrderByKey = string;
@@ -47,18 +52,18 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   // Audit information options
   auditOptions: createAuditOptions([
     {
-      key: 'myModerated',
-      name: t('meeting.quickSearch.myModerated'),
+      key: 'presideByMe',
+      name: t('quickSearch.presideByMe'),
       fieldKey: 'moderatorId'
     },
     {
-      key: 'myCreated',
-      name: t('meeting.quickSearch.myCreated'),
+      key: 'createdByMe',
+      name: t('quickSearch.createdByMe'),
       fieldKey: 'createdBy'
     },
     {
       key: 'myModified',
-      name: t('meeting.quickSearch.myModified'),
+      name: t('quickSearch.modifiedByMe'),
       fieldKey: 'lastModifiedBy'
     }
   ], String(currentUser.value?.id || '')),
@@ -90,7 +95,7 @@ const searchPanelOptions = [
     type: 'select-enum' as const,
     enumKey: TaskMeetingType,
     allowClear: true,
-    placeholder: t('meeting.placeholder.selectType')
+    placeholder: t('meeting.placeholder.selectMeetingType')
   },
   {
     valueKey: 'moderatorId',
@@ -102,12 +107,15 @@ const searchPanelOptions = [
     valueKey: 'createdBy',
     type: 'select-user' as const,
     allowClear: true,
-    placeholder: t('meeting.placeholder.selectCreator')
+    placeholder: t('common.placeholders.selectCreator')
   },
   {
     type: 'date-range' as const,
     valueKey: 'createdDate',
-    placeholder: [t('meeting.placeholder.createTimeFrom'), t('meeting.placeholder.createTimeTo')],
+    placeholder: [
+      t('commons.placeholders.selectCreatedDate.0'),
+      t('commons.placeholders.selectCreatedDate.1')
+    ],
     showTime: true
   }
 ];
@@ -118,17 +126,17 @@ const sortMenuItems: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('meeting.sort.byCreateDate'),
+    name: t('meeting.actions.sorts.byCreateDate'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('meeting.sort.byCreator'),
+    name: t('meeting.actions.sorts.byCreator'),
     key: 'createdBy',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('meeting.sort.bySubject'),
+    name: t('meeting.actions.sorts.bySubject'),
     key: 'subject',
     orderSort: PageQuery.OrderSort.Asc
   }
@@ -217,7 +225,7 @@ const handleRefresh = () => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/issue#meeting?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('meeting.addMeeting') }}</span>
+            <span>{{ t('meeting.actions.addMeeting') }}</span>
           </RouterLink>
         </Button>
 

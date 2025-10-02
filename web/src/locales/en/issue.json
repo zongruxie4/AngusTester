@@ -937,38 +937,56 @@
   },
   "meeting": {
     "title": "Meeting",
-    "addMeeting": "Add Meeting",
-    "editMeeting": "Edit Meeting",
-    "aboutMeeting": "About Meeting",
-    "aboutMeetingDesc": "Meetings play a key role in agile frameworks, helping teams continuously improve, increase work efficiency, and ensure projects can flexibly respond to changes through regular communication, feedback, and reflection.",
     "addedMeetings": "Added Meetings",
     "notAddedYet": "You haven't added any meetings yet, immediately",
-    "confirmDelete": "Confirm delete meeting 「{name}」?",
-    "deleteSuccess": "Meeting deleted successfully, you can view the deleted meeting in the recycle bin",
-    "addSuccess": "Add successful",
-    "editSuccess": "Edit successful",
+    "introduce": {
+      "title": "About Meeting",
+      "description": "Meetings play a key role in agile frameworks, helping teams continuously improve, increase work efficiency, and ensure projects can flexibly respond to changes through regular communication, feedback, and reflection.",
+      "meetingTypes": {
+        "productGrooming": "Product Grooming",
+        "productGroomingDesc": "Clarify product vision and near-term goals. Refine and prioritize the backlog to ensure feasibility. Participants: Product Owner, Dev Team, Scrum Master, stakeholders.",
+        "sprintPlanning": "Sprint Planning",
+        "sprintPlanningDesc": "Define sprint scope and workload. PO presents backlog; team discusses, estimates, and selects deliverables. Participants: Scrum Master, Product Owner, Dev Team.",
+        "dailyStandup": "Daily Standup",
+        "dailyStandupDesc": "Sync progress, blockers, and plans in minutes. Keep sprint status visible and collaboration tight.",
+        "sprintReview": "Sprint Review",
+        "sprintReviewDesc": "Show deliverables, gather feedback, and update backlog. Align next steps. Participants: Scrum team and stakeholders.",
+        "sprintRetrospective": "Sprint Retrospective",
+        "sprintRetrospectiveDesc": "Reflect on process, identify issues and improvements, commit actions for the next sprint. Participants: Scrum team.",
+        "other": "Other Meetings",
+        "otherDesc": "Other agile meetings such as technical/requirement reviews, release planning, impediment removal, team building, etc."
+      }
+    },
+    "actions": {
+      "addMeeting": "Add Meeting",
+      "editMeeting": "Edit Meeting",
+      "sorts": {
+        "byCreateDate": "By Create Time",
+        "byCreator": "By Creator",
+        "bySubject": "By Subject"
+      }
+    },
     "columns": {
+      "subject": "Subject",
+      "type": "Type",
       "date": "Date",
       "time": "Time",
+      "location": "Location",
       "moderator": "Moderator",
       "participants": "Participants",
       "participantUnit": "users",
       "content": "Content",
-      "moderatorLabel": "Moderator",
+      "sprint": "Sprint",
       "participantsCount": "{count} participants"
     },
     "placeholder": {
-      "inputSubject": "Maximum 200 characters",
-      "selectSprint": "Select sprint",
+      "inputSubject": "Meeting subject, maximum 200 characters",
       "selectModerator": "Select meeting moderator",
       "selectParticipants": "Select participants",
       "inputLocation": "Record meeting location or online meeting link",
       "searchSubject": "Search meeting subject",
-      "selectType": "Meeting type",
-      "selectModeratorSearch": "Select moderator",
-      "selectCreator": "Select creator",
-      "createTimeFrom": "Create time from",
-      "createTimeTo": "Create time to"
+      "selectMeetingType": "Meeting meeting type",
+      "selectModeratorSearch": "Select moderator"
     },
     "messages": {
       "subjectRequired": "Please enter meeting subject",
@@ -979,42 +997,6 @@
       "participantsRequired": "Please select participants",
       "contentRequired": "Please enter meeting content",
       "meetingTypeTip": "Specify meeting type for identification and management."
-    },
-    "form": {
-      "date": "Date",
-      "time": "Time",
-      "location": "Location",
-      "moderator": "Moderator",
-      "participants": "Participants",
-      "content": "Content"
-    },
-    "meetingTypes": {
-      "productGrooming": "Product Grooming",
-      "productGroomingDesc": "Clarify product vision and near-term goals. Refine and prioritize the backlog to ensure feasibility. Participants: Product Owner, Dev Team, Scrum Master, stakeholders.",
-      "sprintPlanning": "Sprint Planning",
-      "sprintPlanningDesc": "Define sprint scope and workload. PO presents backlog; team discusses, estimates, and selects deliverables. Participants: Scrum Master, Product Owner, Dev Team.",
-      "dailyStandup": "Daily Standup",
-      "dailyStandupDesc": "Sync progress, blockers, and plans in minutes. Keep sprint status visible and collaboration tight.",
-      "sprintReview": "Sprint Review",
-      "sprintReviewDesc": "Show deliverables, gather feedback, and update backlog. Align next steps. Participants: Scrum team and stakeholders.",
-      "sprintRetrospective": "Sprint Retrospective",
-      "sprintRetrospectiveDesc": "Reflect on process, identify issues and improvements, commit actions for the next sprint. Participants: Scrum team.",
-      "other": "Other Meetings",
-      "otherDesc": "Other agile meetings such as technical/requirement reviews, release planning, impediment removal, team building, etc."
-    },
-    "quickSearch": {
-      "all": "All",
-      "myModerated": "My Moderated",
-      "myCreated": "My Created",
-      "myModified": "My Modified",
-      "lastDay": "Last Day",
-      "lastThreeDays": "Last 3 Days",
-      "lastWeek": "Last Week"
-    },
-    "sort": {
-      "byCreateDate": "By Create Time",
-      "byCreator": "By Creator",
-      "bySubject": "Subject"
     }
   },
   "taskAnalysis": {

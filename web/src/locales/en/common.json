@@ -426,7 +426,8 @@
     "modifiedByMe": "Modified by Me",
     "executedByMe": "Executed by Me",
     "assignedToMe": "Assigned to Me",
-    "ownedByMe": "Owned by Me"
+    "ownedByMe": "Owned by Me",
+    "presideByMe": "Preside by Me"
   },
   "pagination": {
     "items": "Items",
