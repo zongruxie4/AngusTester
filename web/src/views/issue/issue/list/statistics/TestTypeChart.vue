@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/infra';
+import { utils, ScriptType, enumUtils } from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
 import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipComponentOption } from 'echarts/components';
 import { PieChart, PieSeriesOption } from 'echarts/charts';
@@ -141,15 +141,15 @@ const updateChartData = (): void => {
 
   // Add test type data points
   chartOptions.series?.[0].data.push({
-    name: t('issue.list.statistics.typeColumns.functional'),
+    name: enumUtils.getEnumDescription(ScriptType.TEST_FUNCTIONALITY),
     value: +props.dataSource.functionalNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('issue.list.statistics.typeColumns.perf'),
+    name: enumUtils.getEnumDescription(ScriptType.TEST_PERFORMANCE),
     value: +props.dataSource.perfNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('issue.list.statistics.typeColumns.stability'),
+    name: enumUtils.getEnumDescription(ScriptType.TEST_STABILITY),
     value: +props.dataSource.stabilityNum
   });
 
@@ -183,7 +183,7 @@ onMounted(() => {
       class="chart-container"></div>
     <!-- Chart center label -->
     <div class="chart-center-label">
-      <div class="label-title">{{ t('issue.list.statistics.testType') }}</div>
+      <div class="label-title">{{ t('common.testType') }}</div>
       <div class="label-value">{{ props.dataSource?.totalTestTypeNum }}</div>
     </div>
   </div>

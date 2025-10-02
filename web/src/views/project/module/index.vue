@@ -355,7 +355,7 @@ onMounted(() => {
                                 key="add"
                                 class="flex items-center space-x-2 py-2">
                                 <Icon icon="icon-jia" class="text-blue-600 mr-1" />
-                                <span>{{ t('module.actions.newSubModule') }}</span>
+                                <span>{{ t('actions.addSub') }}</span>
                               </MenuItem>
                               <MenuItem
                                 v-if="canMoveUp({id, name, index, pid})"

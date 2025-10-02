@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
+import { ActivityInfo as Activity, Scroll } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, SearchCriteria, TESTER } from '@xcan-angus/infra';
 import { ActivityInfo, BaseProps } from '@/types/types';
 
@@ -53,7 +53,7 @@ const handleDataChange = (data: ActivityInfo[]) => {
     transition
     class="h-full"
     @change="handleDataChange">
-    <ActivityInfo
+    <Activity
       :dataSource="activityDataList"
       infoKey="description"
       class="pr-5" />

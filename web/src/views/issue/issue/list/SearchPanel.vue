@@ -1201,23 +1201,23 @@ const isScenarioTest = computed(() => {
 const modeOptions = [
   {
     key: TaskViewMode.flat,
-    name: t('issue.searchPanel.viewMode.flat'),
+    name: t('issue.viewMode.flat'),
     label: ''
 
   },
   {
     key: TaskViewMode.table,
-    name: t('issue.searchPanel.viewMode.table'),
+    name: t('issue.viewMode.table'),
     label: ''
   },
   {
     key: TaskViewMode.kanban,
-    name: t('issue.searchPanel.viewMode.kanban'),
+    name: t('issue.viewMode.kanban'),
     label: ''
   },
   {
     key: TaskViewMode.gantt,
-    name: t('issue.searchPanel.viewMode.gantt'),
+    name: t('issue.viewMode.gantt'),
     label: ''
   }
 ];
@@ -1227,18 +1227,18 @@ const modeOptions = [
  */
 const modeTitle = computed(() => {
   if (props.viewMode === TaskViewMode.kanban) {
-    return t('issue.searchPanel.viewMode.kanban');
+    return t('issue.viewMode.kanban');
   }
 
   if (props.viewMode === TaskViewMode.flat) {
-    return t('issue.searchPanel.viewMode.flat');
+    return t('issue.viewMode.flat');
   }
 
   if (props.viewMode === TaskViewMode.table) {
-    return t('issue.searchPanel.viewMode.table');
+    return t('issue.viewMode.table');
   }
 
-  return t('issue.searchPanel.viewMode.gantt');
+  return t('issue.viewMode.gantt');
 });
 
 /**
@@ -1271,19 +1271,19 @@ const menuItems = computed(():SearchPanelMenuItem[] => {
     },
     {
       key: 'createdBy',
-      name: t('issue.searchPanel.menuItems.myCreated')
+      name: t('quickSearch.createdByMe')
     },
     {
       key: 'assigneeId',
-      name: t('issue.searchPanel.menuItems.myAssigned')
+      name: t('quickSearch.assignedToMe')
     },
     {
-      key: 'progress',
-      name: t('issue.searchPanel.menuItems.myProgress')
+      key: 'inProgress',
+      name: t('quickSearch.inProgress')
     },
     {
       key: 'confirmerId',
-      name: t('issue.searchPanel.menuItems.myConfirm')
+      name: t('quickSearch.conformByMe')
     },
     ...taskTypeOptions.value,
     {
@@ -1305,54 +1305,54 @@ const searchOptions = [
   {
     type: 'input' as const,
     valueKey: 'name',
-    placeholder: t('common.name')
+    placeholder: t('common.placeholders.searchKeyword')
   },
   {
     type: 'select-enum' as const,
     valueKey: 'status',
-    placeholder: t('common.status'),
+    placeholder: t('common.placeholders.selectStatus'),
     enumKey: TaskStatusEnum
   },
   {
     type: 'select-enum' as const,
     valueKey: 'priority',
-    placeholder: t('common.priority'),
+    placeholder: t('common.placeholders.selectPriority'),
     enumKey: Priority
   },
   {
     type: 'select-user' as const,
     valueKey: 'assigneeId',
-    placeholder: t('common.assignee'),
+    placeholder: t('common.placeholders.selectAssignee'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user' as const,
     valueKey: 'confirmerId',
-    placeholder: t('common.confirmer'),
+    placeholder: t('common.placeholders.selectConfirmer'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user' as const,
     valueKey: 'execBy',
-    placeholder: t('common.executor'),
+    placeholder: t('common.placeholders.selectExecutor'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user' as const,
     valueKey: 'createdBy',
-    placeholder: t('common.createdBy'),
+    placeholder: t('common.placeholders.selectCreator'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-user' as const,
     valueKey: 'lastModifiedBy',
-    placeholder: t('common.lastModifiedBy'),
+    placeholder: t('common.placeholders.selectModifier'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'select-enum' as const,
     valueKey: 'testType',
-    placeholder: t('common.testType'),
+    placeholder: t('common.placeholders.selectTestType'),
     enumKey: TestType
   },
   {
@@ -1361,13 +1361,13 @@ const searchOptions = [
     params: { projectId: props.projectId },
     valueKey: 'moduleId',
     showSearch: true,
-    placeholder: t('common.module'),
+    placeholder: t('common.placeholders.selectModule'),
     fieldNames: { label: 'name', value: 'id' }
   },
   {
     type: 'select-enum' as const,
     valueKey: 'execResult',
-    placeholder: t('common.execResult'),
+    placeholder: t('common.placeholders.selectExecutionResult'),
     enumKey: Result
   },
   {
@@ -1383,83 +1383,113 @@ const searchOptions = [
   {
     type: 'date-range' as const,
     valueKey: 'createdDate',
-    placeholder: t('common.createdDate').split(','),
+    placeholder: [
+      t('common.placeholders.selectCreatedDateRange.0'),
+      t('common.placeholders.selectCreatedDateRange.1')
+    ],
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'startDate',
-    placeholder: t('common.startDate').split(','),
+    placeholder: [
+      t('common.placeholders.selectStartDateRange.0'),
+      t('common.placeholders.selectStartDateRange.1')
+    ],
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'deadlineDate',
-    placeholder: t('common.deadlineDate').split(','),
+    placeholder: [
+      t('common.placeholders.selectDeadlineRange.0'),
+      t('common.placeholders.selectDeadlineRange.1')
+    ],
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'processedDate',
-    placeholder: t('issue.searchPanelOptions.processedDate').split(','),
+    placeholder: [
+      t('common.placeholders.selectProcessedDateRange.0'),
+      t('common.placeholders.selectProcessedDateRange.1')
+    ],
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'confirmedDate',
-    placeholder: t('issue.searchPanelOptions.confirmedDate').split(','),
+    placeholder: [
+      t('common.placeholders.selectConfirmedDateRange.0'),
+      t('common.placeholders.selectConfirmedDateRange.1')
+    ],
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'completedDate',
-    placeholder: t('issue.searchPanelOptions.completedDate').split(','),
+    placeholder: [
+      t('common.placeholders.selectCompletedDateRange.0'),
+      t('common.placeholders.selectCompletedDateRange.1')
+    ],
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'canceledDate',
-    placeholder: t('issue.searchPanelOptions.canceledDate').split(','),
+    placeholder: [
+      t('common.placeholders.selectCanceledDateRange.0'),
+      t('common.placeholders.selectCanceledDateRange.1')
+    ],
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'execDate',
-    placeholder: t('issue.searchPanelOptions.execDate').split(','),
+    placeholder: [
+      t('common.placeholders.selectExecutedDateRange.0'),
+      t('common.placeholders.selectExecutedDateRange.1')
+    ],
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'lastModifiedDate',
-    placeholder: t('common.lastModifiedDate').split(','),
+    placeholder: [
+      t('common.placeholders.selectModifiedDateRange.0'),
+      t('common.placeholders.selectModifiedDateRange.1')
+    ],
     showTime: true
   },
   {
     type: 'input' as const,
     valueKey: 'evalWorkload',
-    noDefaultSlot: true
+    noDefaultSlot: true,
+    placeholder: t('common.placeholders.inputEvalWorkload')
   },
   {
     type: 'input' as const,
     valueKey: 'failNum',
-    noDefaultSlot: true
+    noDefaultSlot: true,
+    placeholder: t('common.placeholders.inputProcessCount')
   },
   {
     type: 'input' as const,
     valueKey: 'totalNum',
-    noDefaultSlot: true
+    noDefaultSlot: true,
+    placeholder: t('common.placeholders.inputProcessFailedCount')
   }
 ];
 
 const buttonDropdownMenuItems = [
   {
-    name: t('issue.list.actions.exportTasks'),
+    name: t('issue.actions.exportIssues'),
     key: 'export',
     icon: 'icon-daochu1',
     noAuth: true
   },
   {
-    name: t('issue.list.actions.importTasks'),
+    name: t('issue.actions.importIssues'),
     key: 'import',
     icon: 'icon-shangchuan',
     noAuth: true
@@ -1476,15 +1506,15 @@ const fieldNames = { label: 'name', value: 'id' };
 const groupMenuItems = [
   {
     key: 'none',
-    name: t('issue.searchPanel.groupOptions.none')
+    name: t('common.none')
   },
   {
     key: 'assigneeName',
-    name: t('issue.searchPanel.groupOptions.assigneeName')
+    name: t('common.assignee')
   },
   {
     key: 'lastModifiedByName',
-    name: t('actions.astModifiedBy')
+    name: t('common.modifier')
   },
   {
     key: 'taskType',
@@ -1495,12 +1525,12 @@ const groupMenuItems = [
 const sortMenuItems = [
   {
     key: 'createdByName',
-    name: t('common.createdBy'),
+    name: t('common.creator'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'assigneeName',
-    name: t('issue.searchPanel.sortOptions.assigneeName'),
+    name: t('common.assignee'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
@@ -1549,7 +1579,7 @@ const sortMenuItems = [
               style="margin-left:0;"
               @change="handleModuleGroupingToggle">
             </Switch>
-            <span>{{ t('issue.searchPanel.moduleGroup') }}</span>
+            <span>{{ t('common.module') }}</span>
           </div>
 
           <template v-if="selectedSprintOption?.id">
@@ -1569,7 +1599,7 @@ const sortMenuItems = [
             :value="selectedSprintOption?.id"
             size="small"
             class="w-43 h-7 transform-gpu -translate-y-0.5 mr-5 mb-3"
-            :placeholder="t('issue.list.search.sprintPlaceholder')"
+            :placeholder="t('common.placeholders.selectSprint')"
             showSearch
             autofocus
             :fieldNames="fieldNames"
@@ -1603,7 +1633,7 @@ const sortMenuItems = [
             :value="checkedTagIds"
             size="small"
             class="w-43 h-7 transform-gpu -translate-y-0.5 mb-3 mr-5"
-            :placeholder="t('issue.list.search.tagsPlaceholder')"
+            :placeholder="t('common.placeholders.selectTag')"
             showSearch
             autofocus
             :fieldNames="fieldNames"
@@ -1691,7 +1721,7 @@ const sortMenuItems = [
             :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            :placeholder="t('issue.list.search.servicePlaceholder')"
+            :placeholder="t('common.placeholders.selectService')"
             class="w-72 ml-2"
             showSearch
             @change="handleTargetParentIdChange">
@@ -1715,7 +1745,7 @@ const sortMenuItems = [
             :params="apiParams"
             :fieldNames="{ label: 'summary', value: 'id' }"
             :allowClear="true"
-            :placeholder="t('issue.list.search.apiPlaceholder')"
+            :placeholder="t('common.placeholders.selectApi')"
             class="w-72 ml-2"
             showSearch
             @change="handleTargetIdChange">
@@ -1755,7 +1785,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('issue.searchPanelOptions.workloadPlaceholder')"
+            :placeholder="t('common.placeholders.inputEvalWorkload')"
             class="w-72 ml-2 scope-select"
             @change="handleWorkloadFilterChange">
             <template #prefix>
@@ -1774,7 +1804,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('issue.searchPanelOptions.failNumPlaceholder')"
+            :placeholder="t('common.placeholders.inputProcessFailedCount')"
             class="w-72 ml-2 scope-select"
             @change="handleFailureCountFilterChange">
             <template #prefix>
@@ -1793,7 +1823,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('issue.searchPanelOptions.totalNumPlaceholder')"
+            :placeholder="t('common.placeholders.inputProcessCount')"
             class="w-72 ml-2 scope-select"
             @change="handleTotalCountFilterChange">
             <template #prefix>
@@ -1814,7 +1844,7 @@ const sortMenuItems = [
           @click="handleCreateTask">
           <div class="flex items-center">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span class="ml-1">{{ t('issue.list.actions.addTask') }}</span>
+            <span class="ml-1">{{ t('issue.actions.addIssue') }}</span>
           </div>
           <Dropdown :menuItems="buttonDropdownMenuItems" @click="handleButtonDropdownClick">
             <div class="w-5 h-5 flex items-center justify-center">
@@ -1826,7 +1856,7 @@ const sortMenuItems = [
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="t('issue.list.actions.flowChart')">
+          :title="t('issue.actions.viewFlowChart')">
           <Icon
             icon="icon-liuchengtu"
             class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"

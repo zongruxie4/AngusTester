@@ -89,7 +89,6 @@
     },
     "actions": {
       "addModule": "Add Module",
-      "newSubModule": "New Sub Module",
       "moveModule": "Move Module"
     },
     "messages": {

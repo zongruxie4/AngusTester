@@ -850,7 +850,7 @@ const actionMenuItemsMap = computed(() => {
         icon: 'icon-zhongxindakaiceshirenwu',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.REOPEN_TASK as any) && !isAssignee,
         hide: false,
-        tip: t('issue.tips.reopenTip')
+        tip: t('issue.messages.reopenTip')
       });
 
       menuItems.push({
@@ -859,7 +859,7 @@ const actionMenuItemsMap = computed(() => {
         icon: 'icon-zhongxinkaishiceshi',
         disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any),
         hide: false,
-        tip: t('issue.tips.restartTip')
+        tip: t('issue.messages.restartTip')
       });
     }
 
@@ -1026,7 +1026,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                {{ t('issue.tips.reopenTip') }}
+                {{ t('issue.messages.reopenTip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1" />
@@ -1046,7 +1046,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                {{ t('issue.tips.restartTip') }}
+                {{ t('issue.messages.restartTip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1" />

@@ -113,8 +113,8 @@ const searchPanelOptions = [
     type: 'date-range' as const,
     valueKey: 'createdDate',
     placeholder: [
-      t('commons.placeholders.selectCreatedDate.0'),
-      t('commons.placeholders.selectCreatedDate.1')
+      t('commons.placeholders.selectCreatedDateRange.0'),
+      t('commons.placeholders.selectCreatedDateRange.1')
     ],
     showTime: true
   }

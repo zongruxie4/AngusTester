@@ -91,7 +91,6 @@
     },
     "actions": {
       "addModule": "添加模块",
-      "newSubModule": "新建子模块",
       "moveModule": "移动模块"
     },
     "messages": {

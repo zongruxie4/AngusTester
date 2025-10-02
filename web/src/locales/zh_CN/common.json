@@ -5,14 +5,18 @@
     "basicInfo": "基本信息",
     "workCalendar": "工作日历",
     "memberProgress": "成员进度",
+    "none": "无",
     "data": "数据",
     "noData": "无数据 ~",
-    "noSet": "未设置",
     "attachment": "附件",
     "noAttachment": "无附件 ~",
     "description": "描述",
     "noDescription": "无描述 ~",
+    "remark": "备注",
     "noRemark": "无备注~",
+    "module": "模块",
+    "noModule": "无模块 ~",
+    "noSet": "未设置",
     "loading": "加载中...",
     "ellipsis": "...",
     "result": "结果",
@@ -81,7 +85,6 @@
     "resourceId": "资源ID",
     "resourceName": "资源名称",
     "organization": "组织",
-    "module": "模块",
     "sprint": "迭代",
     "plan": "计划",
     "review": "评审",
@@ -92,6 +95,10 @@
     "subIssue": "子问题",
     "assocIssues": "关联问题",
     "backlog": "待办",
+    "requirement": "需求",
+    "story": "故事",
+    "task": "任务",
+    "bug": "缺陷",
     "meeting": "会议",
     "script": "脚本",
     "scenario": "场景",
@@ -135,7 +142,6 @@
     "unplanned": "计划外",
     "version": "版本",
     "softwareVersion": "软件版本",
-    "remark": "备注",
     "tag": "标签",
     "comment": "评论",
     "createdBy": "创建人",
@@ -217,10 +223,13 @@
       "deadlineMustBeFuture": "截止时间必须是一个未来时间",
       "inputValue": "输入值，最大支持4096个字符",
       "inputMockValue": "输入值，支持Mock函数，最大支持4096个字符",
+      "inputProcessCount": "输入处理次数",
+      "inputProcessFailedCount": "输入不通过次数",
       "selectCreator": "选择添加人",
       "selectModifier": "选择修改人",
       "selectOwner": "选择负责人",
       "selectSource": "选择来源",
+      "selectStatus": "选择状态",
       "selectResource": "选择资源",
       "selectResourceType": "选择资源类型",
       "selectPluginType": "选择插件类型",
@@ -233,33 +242,64 @@
       "selectAssignee": "选择经办人",
       "selectConfirmer": "选择确认人",
       "selectTester": "选择测试人",
+      "selectExecutor": "选择执行人",
       "selectOrSearchSprint": "选择或查询迭代",
       "selectOrSearchModule": "选择或查模块",
       "selectParentIssue": "请选择父问题",
       "selectSoftwareVersion": "请选择所属版本",
       "selectProject": "选择项目",
+      "selectService": "选择服务",
+      "selectApi": "选择接口",
+      "selectModule": "选择模块",
       "selectIssue": "选择问题",
       "selectSprint": "选择迭代",
       "selectPlan": "选择计划",
       "selectCase": "选择用例",
       "selectExecution": "选择执行",
-      "selectService": "选择服务",
-      "selectApi": "选择接口",
+      "selectExecutionResult": "选择执行结果",
       "selectScenario": "选择场景",
       "selectTag": "选择标签",
       "searchTag": "搜索标签",
-      "selectStartDate": "选择开始时间",
-      "selectEndDate": "选择结束时间",
-      "selectDeadline": "选择截止时间",
       "selectDate": [
         "时间从",
         "时间到"
       ],
-      "selectCreatedDate": [
+      "selectStartDate": "选择开始时间",
+      "selectStartDateRange": [
+        "开始时间从",
+        "开始时间到"
+      ],
+      "selectEndDate": "选择结束时间",
+      "selectDeadline": "选择截止时间",
+      "selectDeadlineRange": [
+        "截止时间从",
+        "截止时间到"
+      ],
+      "selectProcessedDateRange": [
+        "处理时间从",
+        "处理时间到"
+      ],
+      "selectConfirmedDateRange": [
+        "确认时间从",
+        "确认时间到"
+      ],
+      "selectCompletedDateRange": [
+        "完成时间从",
+        "完成时间到"
+      ],
+      "selectCanceledDateRange": [
+        "取消时间从",
+        "取消时间到"
+      ],
+      "selectExecutedDateRange": [
+        "执行时间从",
+        "执行时间到"
+      ],
+      "selectCreatedDateRange": [
         "创建时间从",
         "创建时间到"
       ],
-      "selectModifiedDate": [
+      "selectModifiedDateRange": [
         "修改时间从",
         "修改时间到"
       ]
@@ -309,6 +349,7 @@
     "view": "查看",
     "detail": "详情",
     "add": "添加",
+    "addSub": "添加子级",
     "edit": "编辑",
     "delete": "删除",
     "deleteAll": "全部删除",
@@ -439,6 +480,8 @@
     "modifiedByMe": "我修改的",
     "executedByMe": "我执行的",
     "assignedToMe": "分派给我的",
+    "inProgress": "待我处理",
+    "conformByMe": "待我确认",
     "ownedByMe": "我负责的",
     "presideByMe": "我主持的"
   },

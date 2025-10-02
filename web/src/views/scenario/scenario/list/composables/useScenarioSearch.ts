@@ -51,8 +51,8 @@ export function useScenarioSearch () {
       valueType: 'multiple',
       allowClear: true,
       placeholder: [
-        t('common.placeholders.selectCreatedDate.0'),
-        t('common.placeholders.selectCreatedDate.1')
+        t('common.placeholders.selectCreatedDateRange.0'),
+        t('common.placeholders.selectCreatedDateRange.1')
       ]
     }
   ]);

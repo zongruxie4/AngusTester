@@ -130,7 +130,7 @@ const handleModuleNameUpdate = async (moduleId: string, event: { target: { value
   if (error) {
     return;
   }
-  notification.success(t('issue.list.moduleUpdateSuccess'));
+  notification.success(t('actions.tips.updateSuccess'));
   currentEditId.value = undefined;
   emits('loadData', searchKeywords.value);
 };
@@ -255,7 +255,7 @@ const handleModuleMoveDown = async (moduleRecord: any) => {
   if (error) {
     return;
   }
-  notification.success(t('issue.list.moduleMoveSuccess'));
+  notification.success(t('actions.tips.moveSuccess'));
   emits('loadData', searchKeywords.value);
 };
 
@@ -295,7 +295,7 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
     <div class="flex justify-between h-11 space-x-4 p-2">
       <Input
         v-model:value="searchKeywords"
-        :placeholder="t('issue.list.placeholder.searchModule')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         @change="handleModuleSearch" />
       <Button
         :disabled="!isAdmin && projectInfo?.createdBy !== currentUserInfo?.id && projectInfo.ownerId !== currentUserInfo?.id"
@@ -303,7 +303,7 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
         size="small"
         @click="handleContextMenuClick({key: 'add'}, {id: undefined})">
         <Icon icon="icon-jia" />
-        {{ t('issue.list.module.addModule') }}
+        {{ t('actions.add') }}
       </Button>
     </div>
 
@@ -312,7 +312,7 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleModuleSelectionChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
-      <span class="flex-1">{{ t('issue.list.module.allTasks') }}</span>
+      <span class="flex-1">{{ t('common.all') }}</span>
     </div>
 
     <Tree
@@ -331,7 +331,7 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
         <div v-if="currentEditId === id" class="flex items-center">
           <Input
             ref="nameInputRef"
-            :placeholder="t('issue.list.placeholder.inputModuleName')"
+            :placeholder="t('common.placeholders.inputName')"
             class="flex-1 mr-2 bg-white"
             trim
             :value="name"
@@ -367,7 +367,7 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
               <Menu class="w-50" @click="handleContextMenuClick($event, {name, id, index, ids, pid, childLevels})">
                 <MenuItem v-if="level < 4" key="add">
                   <Icon icon="icon-jia" />
-                  {{ t('issue.list.module.createSubModule') }}
+                  {{ t('actions.addSub') }}
                 </MenuItem>
                 <MenuItem v-if="index > 0 || +pid > 0" key="up">
                   <Icon icon="icon-shangyi" />
@@ -379,15 +379,15 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
                 </MenuItem>
                 <MenuItem key="move">
                   <Icon icon="icon-yidong" />
-                  {{ t('issue.list.module.moveModule') }}
+                  {{ t('actions.move') }}
                 </MenuItem>
                 <MenuItem key="edit">
                   <Icon icon="icon-bianji" />
-                  {{ t('issue.list.module.editModule') }}
+                  {{ t('actions.edit') }}
                 </MenuItem>
                 <MenuItem key="del">
                   <Icon icon="icon-qingchu" />
-                  {{ t('issue.list.module.deleteModule') }}
+                  {{ t('actions.delete') }}
                 </MenuItem>
               </Menu>
             </template>

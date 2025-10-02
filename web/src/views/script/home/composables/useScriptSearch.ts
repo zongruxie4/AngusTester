@@ -212,8 +212,8 @@ export function useScriptSearch (userId: string) {
       type: 'date-range',
       valueKey: 'createdDate',
       placeholder: [
-        t('common.placeholders.selectCreatedDate.0'),
-        t('common.placeholders.selectCreatedDate.1')
+        t('common.placeholders.selectCreatedDateRange.0'),
+        t('common.placeholders.selectCreatedDateRange.1')
       ],
       showTime: true
     },
@@ -221,8 +221,8 @@ export function useScriptSearch (userId: string) {
       type: 'date-range',
       valueKey: 'lastModifiedDate',
       placeholder: [
-        t('common.placeholders.selectModifiedDate.0'),
-        t('common.placeholders.selectModifiedDate.1')
+        t('common.placeholders.selectModifiedDateRange.0'),
+        t('common.placeholders.selectModifiedDateRange.1')
       ],
       showTime: true
     }

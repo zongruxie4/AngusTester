@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/infra';
+import { utils, enumUtils } from '@xcan-angus/infra';
+import { TaskType } from '@/enums/enums';
 import * as echarts from 'echarts/core';
 import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipComponentOption } from 'echarts/components';
 import { PieChart, PieSeriesOption } from 'echarts/charts';
@@ -137,27 +138,27 @@ const updateChartData = (): void => {
 
   // Add task type data points
   chartOptions.series?.[0].data.push({
-    name: t('issue.list.statistics.typeColumns.story'),
+    name: enumUtils.getEnumDescription(enumUtils, TaskType.STORY),
     value: +props.dataSource.storyNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('common.issue'),
+    name: enumUtils.getEnumDescription(enumUtils, TaskType.TASK),
     value: +props.dataSource.taskNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('issue.list.statistics.typeColumns.bug'),
+    name: enumUtils.getEnumDescription(enumUtils, TaskType.BUG),
     value: +props.dataSource.bugNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('issue.list.statistics.typeColumns.requirement'),
+    name: enumUtils.getEnumDescription(enumUtils, TaskType.REQUIREMENT),
     value: +props.dataSource.requirementNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('issue.list.statistics.typeColumns.apiTest'),
+    name: enumUtils.getEnumDescription(enumUtils, TaskType.API_TEST),
     value: +props.dataSource.apiTestNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('issue.list.statistics.typeColumns.scenarioTest'),
+    name: enumUtils.getEnumDescription(enumUtils, TaskType.SCENARIO_TEST),
     value: +props.dataSource.scenarioTestNum
   });
 

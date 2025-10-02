@@ -146,8 +146,8 @@ export function useSearchPanel (
       type: 'date-range',
       valueKey: 'createdDate',
       placeholder: [
-        t('common.placeholders.selectCreatedDate.0'),
-        t('common.placeholders.selectCreatedDate.1')
+        t('common.placeholders.selectCreatedDateRange.0'),
+        t('common.placeholders.selectCreatedDateRange.1')
       ],
       showTime: true
     }

@@ -53,7 +53,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.totalTaskNum }}</div>
         <div class="label">
-          {{ t('issue.list.statistics.totalTasks') }}
+          {{ t('common.total') }}
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.pendingNum }}</div>
         <div class="label">
-          {{ t('issue.list.statistics.pendingTasks') }}
+          {{ t('status.pending') }}
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.inProgressNum }}</div>
         <div class="label">
-          {{ t('issue.list.statistics.inProgressTasks') }}
+          {{ t('status.inProgress') }}
         </div>
       </div>
     </div>
@@ -86,7 +86,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.confirmingNum }}</div>
         <div class="label">
-          {{ t('issue.list.statistics.confirmingTasks') }}
+          {{ t('status.pendingConfirmation') }}
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.completedNum }}</div>
         <div class="label">
-          {{ t('common.counts.completedCount') }}
+          {{ t('status.completed') }}
         </div>
       </div>
     </div>
@@ -108,7 +108,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.canceledNum }}</div>
         <div class="label">
-          {{ t('issue.list.statistics.canceledTasks') }}
+          {{ t('status.cancelled') }}
         </div>
       </div>
     </div>
@@ -119,7 +119,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.overdueNum }}</div>
         <div class="label">
-          {{ t('issue.list.statistics.overdueTasks') }}
+          {{ t('status.overdue') }}
         </div>
       </div>
     </div>
@@ -152,7 +152,7 @@ const formatPercentage = (value: string | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.oneTimePassedNum }}</div>
         <div class="label">
-          {{ t('issue.list.statistics.oneTimePassedNum') }}
+          {{ t('common.counts.oneTimePassed') }}
         </div>
       </div>
     </div>
@@ -166,7 +166,7 @@ const formatPercentage = (value: string | undefined): string => {
           <span class="unit">%</span>
         </div>
         <div class="label">
-          {{ t('issue.list.statistics.oneTimePassedRate') }}
+          {{ t('common.counts.oneTimePassedRate') }}
         </div>
       </div>
     </div>
