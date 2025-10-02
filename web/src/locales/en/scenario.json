@@ -224,39 +224,5 @@
       "successCount": "Success",
       "failureCount": "Failure"
     }
-  },
-  "scenarioTrash": {
-    "title": "Trash",
-    "placeholder": {
-      "searchKeyword": "Please enter search keyword"
-    },
-    "tips": {
-      "adminOnly": "Only administrators and deleters can restore or permanently delete trash data."
-    },
-    "stats": {
-      "items": "Items"
-    },
-    "filters": {
-      "title": "Filter",
-      "all": "All"
-    },
-    "confirm": {
-      "delete": "Are you sure you want to permanently delete this item?",
-      "deleteAll": "Are you sure you want to permanently delete all items?"
-    },
-    "description": "Only administrators and deleters can restore or permanently delete data from the trash.",
-    "messages": {
-      "restoreSuccess": "Restored successfully",
-      "deleteSuccess": "Deleted successfully",
-      "restoreAllSuccess": "All restored successfully",
-      "deleteAllSuccess": "All deleted successfully"
-    },
-    "table": {
-      "searchPlaceholder": "Please enter search keywords"
-    },
-    "empty": {
-      "description": "No items in trash",
-      "hint": "Deleted items will appear here"
-    }
   }
 }
