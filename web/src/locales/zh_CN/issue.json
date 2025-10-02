@@ -1347,29 +1347,5 @@
         }
       }
     }
-  },
-  "taskTrash": {
-    "title": "回收站",
-    "placeholder": {
-      "searchKeyword": "请输入查询关键字"
-    },
-    "tips": {
-      "adminOnly": "只允许管理员和删除人还原或彻底删除回收站数据。"
-    },
-    "stats": {
-      "items": "数量"
-    },
-    "filters": {
-      "title": "过滤",
-      "all": "全部"
-    },
-    "confirm": {
-      "delete": "确定删除此项吗？",
-      "deleteAll": "确定删除所有数据吗？"
-    },
-    "empty": {
-      "description": "回收站中没有数据",
-      "hint": "删除的数据将显示在这里，您可以恢复或永久删除它们"
-    }
   }
 }
