@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Icon, NoData, Select } from '@xcan-angus/vue-ui';
+import { Icon, IconTask, NoData, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskDetail } from '../../types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 const { t } = useI18n();
 
 // Component Props & Emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -25,52 +25,53 @@ const emit = defineEmits<{
 }>();
 
 // Reactive State Variables
-const isCaseEditing = ref(false);
-const selectedCaseIds = ref<string[]>([]);
+const isTaskEditing = ref(false);
+const selectedTaskIds = ref<string[]>([]);
 
 // Computed Properties
 const currentTaskId = computed(() => {
   return props.dataSource?.id;
 });
 
-const associatedCaseList = computed(() => {
-  return props.dataSource?.refCaseInfos?.map(item => {
+const associatedTaskList = computed(() => {
+  return props.dataSource?.refTaskInfos?.map(item => {
     return {
       ...item,
-      linkUrl: `/function#cases?id=${item.id}&projectId=${props.projectId}`
+      linkUrl: `/issue#issue?taskId=${item.id}`
     };
   }) || [];
 });
 
-const associatedCaseIds = computed(() => {
-  return associatedCaseList.value.map(item => item.id);
+const associatedTaskIds = computed(() => {
+  return associatedTaskList.value.map(item => item.id);
 });
 
+// Task Association Management Functions
 /**
- * <p>Initialize case association editing mode</p>
- * <p>Enables editing state for case associations</p>
+ * <p>Initialize task association editing mode</p>
+ * <p>Enables editing state for task associations</p>
  */
-const startCaseAssociationEditing = () => {
-  isCaseEditing.value = true;
+const startTaskAssociationEditing = () => {
+  isTaskEditing.value = true;
 };
 
 /**
- * <p>Cancel case association editing</p>
+ * <p>Cancel task association editing</p>
  * <p>Exits editing mode without saving changes</p>
  */
-const cancelCaseAssociationEditing = () => {
-  isCaseEditing.value = false;
+const cancelTaskAssociationEditing = () => {
+  isTaskEditing.value = false;
 };
 
 /**
- * <p>Confirm case association changes</p>
- * <p>Saves the selected case associations and updates the task</p>
+ * <p>Confirm task association changes</p>
+ * <p>Saves the selected task associations and updates the task</p>
  */
-const confirmCaseAssociationChanges = async () => {
+const confirmTaskAssociationChanges = async () => {
   const updateParams = {
-    refCaseIds: selectedCaseIds.value
+    refTaskIds: selectedTaskIds.value
   };
-  isCaseEditing.value = false;
+  isTaskEditing.value = false;
   const [error] = await task.updateTask(currentTaskId.value, updateParams);
   if (error) {
     return;
@@ -81,13 +82,14 @@ const confirmCaseAssociationChanges = async () => {
 };
 
 /**
- * <p>Handle case selection change</p>
- * <p>Updates the selected case IDs when user selects new cases</p>
+ * <p>Handle task selection change</p>
+ * <p>Updates the selected task IDs when user selects new tasks</p>
  */
-const handleCaseSelectionChange = (ids: any) => {
-  selectedCaseIds.value = ids;
+const handleTaskSelectionChange = (ids: any) => {
+  selectedTaskIds.value = ids;
 };
 
+// Data Loading Functions
 /**
  * <p>Load task details</p>
  * <p>Fetches complete task information from the server</p>
@@ -99,7 +101,6 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   if (error || !res?.data) {
     return { id: currentTaskId.value };
   }
-
   return res.data;
 };
 </script>
@@ -108,12 +109,12 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   <div class="basic-info-drawer">
     <div class="basic-info-header">
       <div class="flex items-center justify-between">
-        <h3 class="basic-info-title">{{ t('common.assocCases') }}</h3>
+        <h3 class="basic-info-title">{{ t('common.assocIssues') }}</h3>
         <Button
-          v-show="!isCaseEditing"
+          v-show="!isTaskEditing"
           type="link"
           class="edit-btn"
-          @click="startCaseAssociationEditing">
+          @click="startTaskAssociationEditing">
           <Icon icon="icon-shuxie" />
         </Button>
       </div>
@@ -122,15 +123,15 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
     <!-- Scrollable Content Area -->
     <div class="scrollable-content">
       <div class="basic-info-content">
-        <template v-if="!isCaseEditing">
-          <div v-if="associatedCaseList.length" class="w-full space-y-1.5 truncate">
+        <template v-if="!isTaskEditing">
+          <div v-if="associatedTaskList.length" class="w-full space-y-1.5 truncate">
             <RouterLink
-              v-for="item in associatedCaseList"
+              v-for="item in associatedTaskList"
               :key="item.id"
               :to="item.linkUrl"
               target="_blank"
               class="flex items-center overflow-hidden">
-              <Icon icon="icon-gongnengyongli" class="text-4 flex-shrink-0" />
+              <IconTask :value="item.taskType?.value" />
               <span class="truncate ml-1">{{ item.name }}</span>
             </RouterLink>
           </div>
@@ -143,7 +144,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
 
         <template v-else>
           <Select
-            :value="associatedCaseIds"
+            :value="associatedTaskIds"
             showSearch
             internal
             allowClear
@@ -151,14 +152,14 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
             :maxTagCount="10"
             :maxTagTextLength="15"
             :maxTags="20"
-            :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
+            :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
             class="w-full"
-            :placeholder="t('backlog.edit.placeholders.maxAssocCases')"
+            :placeholder="t('backlog.edit.placeholders.maxAssocIssues')"
             mode="multiple"
-            @change="handleCaseSelectionChange">
+            @change="handleTaskSelectionChange">
             <template #option="record">
               <div class="flex items-center leading-4.5 overflow-hidden">
-                <Icon icon="icon-gongnengyongli" class="text-4 flex-shrink-0" />
+                <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
                 <div class="link truncate ml-1" :title="record.name">
                   {{ record.name }}
                 </div>
@@ -176,13 +177,13 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
             <Button
               type="default"
               size="small"
-              @click="cancelCaseAssociationEditing">
+              @click="cancelTaskAssociationEditing">
               {{ t('actions.cancel') }}
             </Button>
             <Button
               type="primary"
               size="small"
-              @click="confirmCaseAssociationChanges">
+              @click="confirmTaskAssociationChanges">
               {{ t('actions.confirm') }}
             </Button>
           </div>

@@ -96,22 +96,6 @@
         "title": "选择用例",
         "searchPlaceholder": "查询名称、编码"
       },
-      "moduleTreeSelector": {
-        "title": "用例",
-        "noModule": "无模块",
-        "allCases": "全部",
-        "searchModule": "搜索模块",
-        "addModule": "添加模块",
-        "editModule": "编辑模块",
-        "deleteModule": "删除模块",
-        "moveModule": "移动模块",
-        "moduleName": "模块名称",
-        "inputModuleName": "请输入模块名称",
-        "confirmDelete": "确定删除模块「{name}」吗？",
-        "updateSuccess": "修改成功",
-        "deleteSuccess": "删除模块成功",
-        "moveSuccess": "移动成功"
-      },
       "delScriptModal": {
         "title": "删除测试脚本",
         "functionalTest": "功能测试",
@@ -238,10 +222,6 @@
     "restartTaskTestModal": {
       "title": "重新开始测试",
       "restartSuccess": "重新开始测试设置成功"
-    },
-    "selectTaskByModuleModal": {
-      "title": "选择任务",
-      "searchPlaceholder": "查询名称、编码"
     },
     "exportScriptModal": {
       "title": "导出脚本",

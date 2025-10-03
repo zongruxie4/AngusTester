@@ -2,20 +2,23 @@
 import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { Button, Tag, TreeSelect } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconTask, Input, Select } from '@xcan-angus/vue-ui';
-import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskType, BugLevel, SoftwareVersionStatus } from '@/enums/enums';
+import { TaskDetail } from '@/views/issue/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskDetail } from '@/views/issue/types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+
+// Async components
+const Description = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Description.vue'));
 
 // Component props and emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -30,9 +33,6 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskDetail>): void;
   (event: 'refresh'): void;
 }>();
-
-// Async components
-const Description = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Description.vue'));
 
 // Task name editing state
 const taskNameInputRef = ref();
@@ -101,7 +101,6 @@ const currentTaskType = computed(() => props.dataSource?.taskType?.value);
 const currentPriority = computed(() => props.dataSource?.priority?.value);
 const currentTags = computed(() => props.dataSource?.tags || []);
 const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
 const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
 const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
 const isTaskOverdue = computed(() => props.dataSource?.overdue);
@@ -612,7 +611,7 @@ onMounted(() => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('issue.detailInfo.basic.title') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.basicInfo') }}</h3>
     </div>
 
     <!-- Scrollable Content Area -->
@@ -696,7 +695,7 @@ onMounted(() => {
                 :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
                 :fieldNames="{ value: 'id', label: 'name' }"
                 showSearch
-                :placeholder="t('issue.detailInfo.basic.columns.selectSprint')"
+                :placeholder="t('common.placeholders.selectSprint')"
                 class="edit-input"
                 @change="handleSprintSelectionChange"
                 @blur="handleSprintSelectionBlur" />
@@ -731,7 +730,7 @@ onMounted(() => {
                   showSearch
                   allowClear
                   class="edit-input"
-                  :placeholder="t('issue.detailInfo.basic.columns.selectModule')">
+                  :placeholder="t('common.placeholders.selectModule')">
                   <template #title="item">
                     <div class="flex items-center" :title="item.name">
                       <Icon icon="icon-mokuai" class="mr-1" />
@@ -838,7 +837,7 @@ onMounted(() => {
                 ref="prioritySelectRef"
                 v-model:value="prioritySelectValue"
                 enumKey="Priority"
-                :placeholder="t('issue.detailInfo.basic.columns.selectPriority')"
+                :placeholder="t('common.placeholders.selectPriority')"
                 class="edit-input"
                 @change="handlePrioritySelectionChange as any"
                 @blur="handlePrioritySelectionBlur as any">
@@ -885,7 +884,7 @@ onMounted(() => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('issue.detailInfo.basic.columns.evalWorkloadPlaceholder')"
+                :placeholder="t('common.placeholders.intputEvalWorkload')"
                 @blur="handleEvalWorkloadInputBlur"
                 @pressEnter="handleEvalWorkloadInputEnter" />
             </AsyncComponent>
@@ -919,7 +918,7 @@ onMounted(() => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('issue.detailInfo.basic.columns.actualWorkloadPlaceholder')"
+                :placeholder="t('common.placeholders.inputActualWorkload')"
                 @blur="handleActualWorkloadInputBlur"
                 @pressEnter="handleActualWorkloadInputEnter" />
             </AsyncComponent>
@@ -929,7 +928,7 @@ onMounted(() => {
         <!-- Process Count -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('issue.detailInfo.basic.columns.totalProcessCount') }}</span>
+            <span>{{ t('common.counts.processCount') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ totalProcessCount }}</span>
@@ -939,7 +938,7 @@ onMounted(() => {
         <!-- Failed Count -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('issue.detailInfo.basic.columns.processFailCount') }}</span>
+            <span>{{ t('common.counts.processFailCount') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text">{{ processFailCount }}</span>
@@ -980,10 +979,10 @@ onMounted(() => {
                 :maxTags="5"
                 :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
                 showSearch
-                :placeholder="t('issue.detailInfo.basic.columns.tagsPlaceholder')"
+                :placeholder="t('common.placeholders.selectTag')"
                 mode="multiple"
                 class="edit-input"
-                :notFoundContent="t('issue.detailInfo.basic.columns.tagsNotFound')"
+                :notFoundContent="t('backlog.edit.messages.contactAdminForTags')"
                 @change="handleTagSelectionChange as any"
                 @blur="handleTagSelectionBlur as any" />
             </AsyncComponent>
@@ -993,7 +992,7 @@ onMounted(() => {
         <!-- One Time Pass -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('issue.detailInfo.basic.columns.onePass') }}</span>
+            <span>{{ t('common.counts.oneTimePassed') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': onePassStatusText === '--' }">{{ onePassStatusText }}</span>
@@ -1011,7 +1010,7 @@ onMounted(() => {
                 ref="versionSelectRef"
                 v-model:value="versionSelectValue"
                 allowClear
-                :placeholder="t('issue.detailInfo.basic.columns.softwareVersionPlaceholder')"
+                :placeholder="t('common.placeholders.selectSoftwareVersion')"
                 class="edit-input"
                 lazy
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"

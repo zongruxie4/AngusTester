@@ -1,7 +1,6 @@
 import { Priority } from '@xcan-angus/infra';
 import { TaskType, BugLevel, TestType } from '@/enums/enums';
-import { CaseInfo } from '@/views/test/types';
-import { TaskInfo } from '@/views/issue/types';
+import { TaskDetail, TaskInfo } from '@/views/issue/types';
 import { AttachmentInfo } from '@/types/types';
 
 export type TaskEditState = {
@@ -83,13 +82,16 @@ export interface AssocTaskProps {
   tips?: string;
 }
 
-export type AssocCaseProps = {
+export type TaskDetailProps = {
   projectId: string;
   userInfo: { id: string; fullName: string};
   appInfo: { id: string; };
-  dataSource: CaseInfo;
+  dataSource: TaskDetail;
+  largePageLayout?: boolean;
   taskId?: string;
   loading?: boolean;
   notify?: string;
   id: string;
+  tips?: string;
+  taskInfo?: any;
 }

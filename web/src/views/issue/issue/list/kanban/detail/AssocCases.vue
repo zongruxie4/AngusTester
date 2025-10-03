@@ -7,10 +7,10 @@ import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { TaskDetail } from '@/views/issue/types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 // Component Props & Emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -111,7 +111,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   <div class="basic-info-drawer">
     <div class="basic-info-header">
       <div class="flex items-center justify-between">
-        <h3 class="basic-info-title">{{ t('issue.assocCase.title') }}</h3>
+        <h3 class="basic-info-title">{{ t('common.assocCases') }}</h3>
         <Button
           v-show="!isCaseEditing"
           type="link"
@@ -156,7 +156,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
             :maxTags="20"
             :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
             class="w-full"
-            :placeholder="t('issue.assocCase.selectCasePlaceholder')"
+            :placeholder="t('common.placeholders.selectCase')"
             mode="multiple"
             @change="handleCaseSelectionChange">
             <template #option="record">

@@ -1278,7 +1278,7 @@ const menuItems = computed(():SearchPanelMenuItem[] => {
       name: t('quickSearch.assignedToMe')
     },
     {
-      key: 'inProgress',
+      key: 'progress',
       name: t('quickSearch.inProgress')
     },
     {

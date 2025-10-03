@@ -6,12 +6,12 @@ import { useI18n } from 'vue-i18n';
 import { task } from '@/api/tester';
 
 import { TaskDetail } from '../../types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 const { t } = useI18n();
 
 // Component Props & Emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

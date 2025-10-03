@@ -1358,7 +1358,21 @@ const getPopupContainer = () => {
             </Select>
           </FormItem>
 
-          <FormItem :label="t('common.attachment')">
+          <FormItem
+            name="attachments"
+            class="relative">
+            <template #label>
+              {{ t('common.attachment') }}
+              <Popover placement="rightTop">
+                <template #content>
+                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">
+                    {{ t('backlog.edit.actions.uploadAttachments') }}
+                  </div>
+                </template>
+                <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
+              </Popover>
+            </template>
+
             <div
               style="height: 60px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
               class="border border-dashed rounded flex flex-col px-2 py-1"

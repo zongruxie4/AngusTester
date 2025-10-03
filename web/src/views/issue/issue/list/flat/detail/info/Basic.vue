@@ -8,14 +8,14 @@ import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BugLevel, SoftwareVersionStatus, TaskType } from '@/enums/enums';
 import { TaskDetail } from '@/views/issue/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
 
 // Component props and emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -358,7 +358,7 @@ const handleVersionBlur = async () => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5">{{ t('issue.detailInfo.basic.title') }}</div>
+      <div class="text-3.5">{{ t('common.basicInfo') }}</div>
     </template>
 
     <template #default>
@@ -531,7 +531,7 @@ const handleVersionBlur = async () => {
                   ref="versionSelectRef"
                   v-model:value="versionSelectValue"
                   allowClear
-                  :placeholder="t('issue.detailInfo.basic.columns.softwareVersionPlaceholder')"
+                  :placeholder="t('common.placeholders.selectSoftwareVersion')"
                   lazy
                   class="edit-select"
                   :action="`${TESTER}/software/version?projectId=${props.projectId}`"
@@ -587,7 +587,7 @@ const handleVersionBlur = async () => {
                   :allowClear="false"
                   internal
                   enumKey="Priority"
-                  :placeholder="t('issue.detailInfo.basic.columns.selectPriority')"
+                  :placeholder="t('common.placeholders.selectPriority')"
                   class="edit-select"
                   @change="handlePriorityChange as any"
                   @blur="handlePriorityBlur as any">
@@ -649,10 +649,10 @@ const handleVersionBlur = async () => {
                   :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
                   showSearch
                   internal
-                  :placeholder="t('issue.detailInfo.basic.columns.tagsPlaceholder')"
+                  :placeholder="t('common.placeholders.selectTag')"
                   mode="multiple"
                   class="edit-select"
-                  :notFoundContent="t('issue.detailInfo.basic.columns.tagsNotFound')"
+                  :notFoundContent="t('backlog.edit.messages.contactAdminForTags')"
                   @change="handleTagChange"
                   @blur="handleTagBlur" />
               </AsyncComponent>

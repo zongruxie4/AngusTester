@@ -6,16 +6,9 @@ import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { TaskDetail } from '@/views/issue/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; fullName: string; };
-  appInfo: { id: string; };
-  dataSource: TaskDetail;
-  taskId: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -65,7 +58,7 @@ const handleEvalWorkloadBlur = async (event: FocusEvent) => {
     return;
   }
   emit('loadingChange', true);
-  const [error] = await task.editEvalWorkloadApi(props.taskId, { workload: newValue });
+  const [error] = await task.editEvalWorkloadApi(props.taskId || props.dataSource.id, { workload: newValue });
   emit('loadingChange', false);
   isEvalWorkloadEditing.value = false;
   if (error) {
@@ -101,7 +94,7 @@ const handleActualWorkloadBlur = async (event: FocusEvent) => {
     return;
   }
   emit('loadingChange', true);
-  const [error] = await task.editActualWorkload(props.taskId, { workload: newValue });
+  const [error] = await task.editActualWorkload(props.taskId || props.dataSource.id, { workload: newValue });
   emit('loadingChange', false);
   isActualWorkloadEditing.value = false;
   if (error) {
@@ -120,7 +113,7 @@ const handleActualWorkloadEnter = () => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5 font-medium">{{ t('issue.detailInfo.basic.workloadEvaluation') }}</div>
+      <div class="text-3.5 font-medium">{{ t('common.evalWorkloadMethod') }}</div>
     </template>
 
     <template #default>
@@ -173,7 +166,7 @@ const handleActualWorkloadEnter = () => {
                   trimAll
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('issue.detailInfo.basic.columns.actualWorkloadPlaceholder')"
+                  :placeholder="t('common.placeholders.inputActualWorkload')"
                   @blur="handleEvalWorkloadBlur"
                   @pressEnter="handleEvalWorkloadEnter" />
               </AsyncComponent>
@@ -213,7 +206,7 @@ const handleActualWorkloadEnter = () => {
                   trimAll
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('issue.detailInfo.basic.columns.actualWorkloadPlaceholder')"
+                  :placeholder="t('common.placeholders.inputActualWorkload')"
                   @blur="handleActualWorkloadBlur"
                   @pressEnter="handleActualWorkloadEnter" />
               </AsyncComponent>

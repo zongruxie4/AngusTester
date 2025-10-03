@@ -19,7 +19,7 @@
       "table": {
         "messages": {
           "noAddedScenarios": "You haven't added any scenarios yet, ",
-          "noFavoritedScenarios": "You don't have any favorited scenarios",
+          "noFavoritedScenarios": "You don't have any favourited scenarios",
           "noFollowedScenarios": "You don't have any followed scenarios",
           "pageInfo": "Page {current}/{total}"
         }

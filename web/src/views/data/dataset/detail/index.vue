@@ -104,7 +104,7 @@ const toCopyLink = (id: string) => {
   toClipboard(window.location.origin + `/data#dataSet?id=${id}`).then(() => {
     notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
-    notification.error(t('actions.tips.copyFail'));
+    notification.error(t('actions.tips.copyFailed'));
   });
 };
 

@@ -183,20 +183,6 @@ const handleDataTypeChange = (value: string, index: number, item: ParamsItem) =>
   emitParameterChange(index, updatedParameter);
 };
 
-// const addValueItem = (item, index) => {
-//   const value = state.formData[index][valueKey];
-//   value.push('');
-//   const temp = { ...item, [valueKey]: value };
-//   changeEmit(index, temp);
-// };
-
-// const delValueItem = (item, index, subIndex) => {
-//   const value = state.formData[index][valueKey];
-//   value.splice(subIndex, 1);
-//   const temp = { ...item, [valueKey]: value };
-//   changeEmit(index, temp);
-// };
-
 /**
  * Handle input blur event for parameter fields
  * @param e - Blur event
@@ -340,7 +326,7 @@ const synchronizeParameterList = (): void => {
       existingItem[enabledKey] = true;
     }
   });
-  
+
   // Reverse comparison: find extra parameters in formData and mark for removal
   state.formData?.forEach((currentParam, index) => {
     if (currentParam.in === 'path') {

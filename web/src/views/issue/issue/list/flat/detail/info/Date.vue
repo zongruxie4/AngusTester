@@ -8,10 +8,10 @@ import { task } from '@/api/tester';
 
 import { TaskDetail } from '@/views/issue/types';
 import { TIME_FORMAT } from '@/utils/constant';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 // Component props and emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -72,13 +72,13 @@ const startDeadlineDateEditing = () => {
  */
 const handleDeadlineDateChange = (value: string) => {
   if (!value) {
-    dateValidationErrorMessage.value = t('issue.detailInfo.date.validation.selectDeadline');
+    dateValidationErrorMessage.value = t('common.placeholders.selectDeadline');
     return;
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
     isDateValidationError.value = true;
-    dateValidationErrorMessage.value = t('issue.detailInfo.date.validation.futureTimeRequired');
+    dateValidationErrorMessage.value = t('common.placeholders.futureTimeRequired');
     return;
   }
 
@@ -135,7 +135,7 @@ const isDateDisabled = (current: Dayjs) => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5">{{ t('issue.detailInfo.date.title') }}</div>
+      <div class="text-3.5">{{ t('common.date') }}</div>
     </template>
 
     <template #default>
@@ -190,7 +190,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('common.startTime') }}</span>
+              <span>{{ t('common.startDate') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskStartDate }" class="info-text">
@@ -203,7 +203,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('issue.detailInfo.date.fields.processTime') }}</span>
+              <span>{{ t('common.processedDate') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskProcessedDate }" class="info-text">
@@ -217,7 +217,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('issue.detailInfo.date.fields.confirmTime') }}</span>
+              <span>{{ t('common.confirmedDate') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskConfirmedDate }" class="info-text">
@@ -230,7 +230,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('issue.detailInfo.date.fields.completeTime') }}</span>
+              <span>{{ t('common.completedDate') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskCompletedDate }" class="info-text">
@@ -244,7 +244,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('issue.detailInfo.date.fields.cancelTime') }}</span>
+              <span>{{ t('common.canceledDate') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskCanceledDate }" class="info-text">
@@ -257,7 +257,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('common.execDate') }}</span>
+              <span>{{ t('common.lastExecDate') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskExecDate }" class="info-text">
@@ -324,7 +324,7 @@ const isDateDisabled = (current: Dayjs) => {
 /* Label Styling */
 .info-label {
   flex-shrink: 0;
-  width: 5rem;
+  width: 5.5rem;
   display: flex;
   align-items: center;
   min-height: 1.5rem;

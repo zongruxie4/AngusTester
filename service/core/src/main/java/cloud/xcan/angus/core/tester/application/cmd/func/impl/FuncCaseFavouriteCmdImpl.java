@@ -52,7 +52,7 @@ public class FuncCaseFavouriteCmdImpl extends CommCmd<FuncCaseFavourite, Long> i
    * </p>
    * <p>
    * Checks case existence and prevents duplicate favorites. Adds the case to user's favorites
-   * and logs the activity. Validates that the case exists and is not already favorited.
+   * and logs the activity. Validates that the case exists and is not already favourited.
    * </p>
    * @param favourite the favorite case entity to add
    * @return ID and name of the created favorite

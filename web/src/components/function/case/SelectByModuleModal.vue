@@ -36,13 +36,14 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Component events
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]): void;
 }>();
 
 // Async component definitions
-const ModuleTree = defineAsyncComponent(() => import('@/components/module/treeSelector/index.vue'));
+const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleTreeSelector.vue'));
 
 // Component state management
 const selectedCaseIds = ref<string[]>([]);

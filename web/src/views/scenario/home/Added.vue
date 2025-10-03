@@ -80,7 +80,7 @@ const createQueryParams = (type: 'createdBy' | 'followBy' | 'favouriteBy'): Scen
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('status.favorited') }}</span>
+            <span class="mr-1">{{ t('status.favourited') }}</span>
             <span>(</span>
             <span>{{ favoriteTotal }}</span>
             <span>)</span>

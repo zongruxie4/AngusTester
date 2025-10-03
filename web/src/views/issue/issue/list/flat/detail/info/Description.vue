@@ -4,12 +4,12 @@ import { Button } from 'ant-design-vue';
 import { Icon, NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { task } from '@/api/tester';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import { TaskDetail } from '@/views/issue/types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
 
 // Component props and emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   taskId: undefined,
   projectId: undefined,
   userInfo: undefined,

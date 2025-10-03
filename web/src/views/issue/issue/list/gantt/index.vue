@@ -68,8 +68,8 @@ const PersonnelInfo = defineAsyncComponent(() => import('@/views/issue/issue/lis
 const DateInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Date.vue'));
 const Comment = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Comment.vue'));
 const Activity = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Activity.vue'));
-const AssocTasks = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocTask.vue'));
-const AssocCases = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocCase.vue'));
+const AssocTasks = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocIssues.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocCases.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Remark.vue'));
 
@@ -341,7 +341,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'person' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('issue.ganttView.drawer.personnel')"
+          :title="t('common.personnel')"
           @click="changeActiveDrawerTab('person')">
           <Icon icon="icon-quanburenyuan" class="text-4" />
         </div>
@@ -349,7 +349,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'date' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('issue.ganttView.drawer.date')"
+          :title="t('common.date')"
           @click="changeActiveDrawerTab('date')">
           <Icon icon="icon-riqi" class="text-4" />
         </div>
@@ -357,7 +357,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'tasks' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('issue.ganttView.drawer.assocIssues')"
+          :title="t('common.assocIssues')"
           @click="changeActiveDrawerTab('tasks')">
           <Icon icon="icon-ceshirenwu" class="text-4" />
         </div>
@@ -365,7 +365,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'cases' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('issue.ganttView.drawer.assocCases')"
+          :title="t('common.assocCases')"
           @click="changeActiveDrawerTab('cases')">
           <Icon icon="icon-ceshiyongli1" class="text-4" />
         </div>
@@ -381,7 +381,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'remarks' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('issue.ganttView.drawer.remarks')"
+          :title="t('common.remark')"
           @click="changeActiveDrawerTab('remarks')">
           <Icon icon="icon-shuxie" class="text-4" />
         </div>
@@ -397,7 +397,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': activeDrawerTab === 'activity' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('issue.ganttView.drawer.activity')"
+          :title="t('common.activity')"
           @click="changeActiveDrawerTab('activity')">
           <Icon icon="icon-chakanhuodong" class="text-4" />
         </div>

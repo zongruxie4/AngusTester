@@ -7,10 +7,10 @@ import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { TaskDetail } from '@/views/issue/types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 // Component Props & Emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -47,7 +47,6 @@ const associatedTaskIds = computed(() => {
   return associatedTaskList.value.map(item => item.id);
 });
 
-// Task Association Management Functions
 /**
  * <p>Initialize task association editing mode</p>
  * <p>Enables editing state for task associations</p>
@@ -110,7 +109,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   <div class="basic-info-drawer">
     <div class="basic-info-header">
       <div class="flex items-center justify-between">
-        <h3 class="basic-info-title">{{ t('issue.assocTask.title') }}</h3>
+        <h3 class="basic-info-title">{{ t('common.assocIssues') }}</h3>
         <Button
           v-show="!isTaskEditing"
           type="link"
@@ -155,7 +154,7 @@ const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
             :maxTags="20"
             :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
             class="w-full"
-            :placeholder="t('issue.assocTask.selectTaskPlaceholder')"
+            :placeholder="t('common.placeholders.selectIssue')"
             mode="multiple"
             @change="handleTaskSelectionChange">
             <template #option="record">

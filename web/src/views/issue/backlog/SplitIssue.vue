@@ -13,16 +13,16 @@ import { ai } from '@/api/gm';
 import { task } from '@/api/tester';
 import { TaskType } from '@/enums/enums';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
 import { TIME_FORMAT } from '@/utils/constant';
-import { TaskEditState, AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskEditState, TaskDetailProps } from '@/views/issue/issue/list/types';
 
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 
 // Component Props & Emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   visible: false,
   projectId: undefined,
   dataSource: undefined
@@ -513,7 +513,7 @@ onMounted(() => {
         </div>
 
         <div class="w-20 space-x-0.5 head-item-container">
-          <span>{{ t('common.subIssue') }}</span>
+          <span>{{ t('common.subIssues') }}</span>
         </div>
 
         <div class="w-20 space-x-0.5 head-item-container">

@@ -1,26 +1,26 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { Button, TreeSelect } from 'ant-design-vue';
-import {
-  AsyncComponent, Colon, Icon, IconTask, Input,
-  ScriptTypeTag, Select
-} from '@xcan-angus/vue-ui';
+import { AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskDetail } from '../../types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 import { SoftwareVersionStatus } from '@/enums/enums';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
 
+// Async Components
+const Description = defineAsyncComponent(() => import('@/views/issue/backlog/info/Description.vue'));
+
 const { t } = useI18n();
 
 // Component Props & Emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -33,9 +33,6 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskDetail>): void;
   (event: 'refresh'): void;
 }>();
-
-// Async Components
-const Description = defineAsyncComponent(() => import('@/views/issue/backlog/info/Description.vue'));
 
 // Reactive State Variables - Task Name Management
 const taskNameInputRef = ref();
@@ -94,7 +91,6 @@ const taskType = computed(() => props.dataSource?.taskType?.value);
 const taskPriority = computed(() => props.dataSource?.priority?.value);
 const taskTags = computed(() => props.dataSource?.tags || []);
 const taskTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
 const evalWorkload = computed(() => props.dataSource?.evalWorkload);
 const actualWorkload = computed(() => props.dataSource?.actualWorkload);
 const isOverdue = computed(() => props.dataSource?.overdue);
@@ -191,11 +187,9 @@ const fetchTaskDetailsById = async (id: string): Promise<Partial<TaskDetail>> =>
   if (error || !res?.data) {
     return { id };
   }
-
   return res.data;
 };
 
-// Sprint Management Functions
 /**
  * <p>Initialize sprint editing mode</p>
  * <p>Sets the current sprint value and enables editing state</p>
@@ -251,7 +245,6 @@ const handleSprintBlur = async () => {
   emit('change', updatedTaskInfo);
 };
 
-// Task Name Management Functions
 /**
  * <p>Initialize task name editing mode</p>
  * <p>Sets the current task name value and enables editing state</p>
@@ -302,7 +295,6 @@ const handleTaskNameEnterPress = () => {
   }
 };
 
-// Workload Management Functions
 /**
  * <p>Initialize actual workload editing mode</p>
  * <p>Sets the current actual workload value and enables editing state</p>
@@ -403,7 +395,6 @@ const handleEvalWorkloadEnterPress = () => {
   }
 };
 
-// Priority Management Functions
 /**
  * <p>Initialize priority editing mode</p>
  * <p>Sets the current priority value and enables editing state</p>
@@ -453,7 +444,6 @@ const handlePriorityBlur = async () => {
   emit('change', { id: currentTaskId.value, priority: { value: newPriority, message: priorityDisplayMessage.value! } });
 };
 
-// Tag Management Functions
 /**
  * <p>Initialize tag editing mode</p>
  * <p>Sets the current tag values and enables editing state</p>
@@ -503,7 +493,6 @@ const handleTagBlur = async () => {
   emit('change', { id: currentTaskId.value, tags: selectedTagList.value });
 };
 
-// Version Management Functions
 /**
  * <p>Initialize version editing mode</p>
  * <p>Sets the current version value and enables editing state</p>
@@ -550,7 +539,6 @@ const handleVersionBlur = async () => {
   emit('change', { id: currentTaskId.value, softwareVersion: versionInputValue.value });
 };
 
-// Utility Functions
 /**
  * <p>Emit loading state change event</p>
  * <p>Forwards loading state changes to parent component</p>

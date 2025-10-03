@@ -7,14 +7,7 @@ import { TaskType } from '@/enums/enums';
 import { TaskDetail } from '@/views/issue/types';
 import { TestInfo } from '@/views/execution/types';
 
-/**
- * Lazy-loaded component for displaying API test results
- */
 const ApiTestResult = defineAsyncComponent(() => import('@/views/execution/detail/result/ApiResult.vue'));
-
-/**
- * Lazy-loaded component for displaying scenario test results
- */
 const ScenarioResult = defineAsyncComponent(() => import('@/views/execution/detail/result/ScenarioResult.vue'));
 
 // Component Props
@@ -54,7 +47,7 @@ onMounted(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="flex items-center text-3">{{ t('issue.testing.testResult.title') }}</div>
+      <div class="flex items-center text-3">{{ t('common.testResult') }}</div>
     </template>
 
     <template #default>

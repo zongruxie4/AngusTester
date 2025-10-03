@@ -725,7 +725,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
       });
     } else {
       menuItems.push({
-        name: t('actions.favorite'),
+        name: t('actions.addFavourite'),
         key: 'addFavourite',
         icon: 'icon-yishoucang',
         disabled: false,

@@ -72,7 +72,7 @@ public class ScenarioFavoriteRest {
   }
 
   @Operation(summary = "Query scenario favorites list",
-      description = "Retrieve paginated list of favorited scenarios with filtering capabilities",
+      description = "Retrieve paginated list of favourited scenarios with filtering capabilities",
       operationId = "scenario:favourite:list")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario favorites list retrieved successfully")})
@@ -83,7 +83,7 @@ public class ScenarioFavoriteRest {
   }
 
   @Operation(summary = "Query scenario favorites count",
-      description = "Get total count of favorited scenarios for the specified project",
+      description = "Get total count of favourited scenarios for the specified project",
       operationId = "scenario:favourite:count")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Scenario favorites count retrieved successfully")})

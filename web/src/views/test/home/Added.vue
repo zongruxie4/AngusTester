@@ -114,7 +114,7 @@ const commentedCasesParams = {
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('status.favorited') }}</span>
+            <span class="mr-1">{{ t('status.favourited') }}</span>
             <span>(</span>
             <span>{{ favoriteCasesCount }}</span>
             <span>)</span>

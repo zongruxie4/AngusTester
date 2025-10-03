@@ -18,7 +18,7 @@ interface RequestParams {
  * Component props interface for Statistics component
  */
 type Props = {
-  collapse: boolean; // Whether the statistics panel is collapsed
+  collapse: boolean;
   params: RequestParams;
   projectId: string;
   userInfo: { id: string };

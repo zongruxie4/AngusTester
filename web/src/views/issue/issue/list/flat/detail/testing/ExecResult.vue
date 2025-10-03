@@ -84,7 +84,7 @@ const shouldShowContent = computed(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3">{{ t('issue.testing.execResult.title') }}</div>
+      <div class="text-3">{{ t('common.testResult') }}</div>
     </template>
 
     <template #default>
@@ -140,7 +140,7 @@ const shouldShowContent = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('issue.testing.execResult.fields.execByName') }}</span>
+              <span>{{ t('common.executor') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -184,7 +184,7 @@ const shouldShowContent = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('common.execDate') }}</span>
+              <span>{{ t('common.lastExecDate') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -245,7 +245,7 @@ const shouldShowContent = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('issue.testing.execResult.fields.execByName') }}</span>
+              <span>{{ t('common.executor') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -286,7 +286,7 @@ const shouldShowContent = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('common.execDate') }}</span>
+              <span>{{ t('common.lastExecDate') }}</span>
               <Colon class="w-1" />
             </div>
 

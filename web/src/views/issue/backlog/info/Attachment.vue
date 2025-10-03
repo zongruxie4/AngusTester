@@ -7,7 +7,7 @@ import { upload, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 import { TaskDetail } from '../../types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 const { t } = useI18n();
 
@@ -22,7 +22,7 @@ type AttachmentItem = {
 }
 
 // Component Props & Emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -225,8 +225,8 @@ onMounted(() => {
                 </div>
               </Button>
             </Upload>
-            <div class="text-theme-sub-content mt-1">
-              {{ t('backlog.edit.messages.fileSizeLimit', { maxSize: MAX_FILE_SIZE_MB }) }}
+            <div class="text-theme-sub-content mt-1 ml-3 mr-3">
+              {{ t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }) }}
             </div>
           </template>
         </Spin>

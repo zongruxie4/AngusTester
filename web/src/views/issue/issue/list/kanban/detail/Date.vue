@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { AsyncComponent, Colon, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
+import { AsyncComponent, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { TaskDetail } from '@/views/issue/types';
 import { TIME_FORMAT } from '@/utils/constant';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 // Component props and emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -70,13 +70,13 @@ const enterDateEditMode = () => {
  */
 const handleDatePickerChange = (value: string) => {
   if (!value) {
-    dateErrorMessage.value = t('issue.detailInfo.date.validation.selectDeadline');
+    dateErrorMessage.value = t('common.placeholders.selectDeadline');
     return;
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
     hasDateError.value = true;
-    dateErrorMessage.value = t('issue.detailInfo.date.validation.futureTimeRequired');
+    dateErrorMessage.value = t('common.placeholders.futureTimeRequired');
     return;
   }
 
@@ -129,7 +129,7 @@ const isDateDisabled = (current: Dayjs) => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('issue.detailInfo.date.title') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.date') }}</h3>
     </div>
 
     <!-- Scrollable Content Area -->
@@ -198,7 +198,7 @@ const isDateDisabled = (current: Dayjs) => {
         <!-- Processed Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('issue.detailInfo.date.fields.processTime') }}</span>
+            <span>{{ t('common.processedDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !taskProcessedDate }">{{ taskProcessedDate || '--' }}</span>
@@ -208,7 +208,7 @@ const isDateDisabled = (current: Dayjs) => {
         <!-- Confirmed Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('issue.detailInfo.date.fields.confirmTime') }}</span>
+            <span>{{ t('common.confirmedDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !taskConfirmedDate }">{{ taskConfirmedDate || '--' }}</span>
@@ -218,7 +218,7 @@ const isDateDisabled = (current: Dayjs) => {
         <!-- Completed Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('issue.detailInfo.date.fields.completeTime') }}</span>
+            <span>{{ t('common.completedDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !taskCompletedDate }">{{ taskCompletedDate || '--' }}</span>
@@ -228,7 +228,7 @@ const isDateDisabled = (current: Dayjs) => {
         <!-- Canceled Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('issue.detailInfo.date.fields.cancelTime') }}</span>
+            <span>{{ t('common.canceledDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !taskCanceledDate }">{{ taskCanceledDate || '--' }}</span>
@@ -238,7 +238,7 @@ const isDateDisabled = (current: Dayjs) => {
         <!-- Execute Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.execDate') }}</span>
+            <span>{{ t('common.lastExecDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !taskExecDate }">{{ taskExecDate || '--' }}</span>

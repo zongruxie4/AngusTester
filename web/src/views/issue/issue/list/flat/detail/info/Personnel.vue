@@ -5,12 +5,12 @@ import { AsyncComponent, Icon, SelectUser, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import { TaskDetail } from '@/views/issue/types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
 
 // Component props and emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -345,7 +345,7 @@ const confirmerDefaultOptions = computed(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5">{{ t('issue.detailInfo.personnel.title') }}</div>
+      <div class="text-3.5">{{ t('common.personnel') }}</div>
     </template>
 
     <template #default>

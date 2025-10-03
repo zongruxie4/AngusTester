@@ -78,8 +78,8 @@
         "sprintDeadlineExceeded": "Exceeds sprint deadline ({deadline})",
         "descriptionMaxLength": "Description supports maximum 6000 characters",
         "contactAdminForTags": "Please contact administrator to configure issue tags in \"Project\" - \"Tag\".",
-        "fileSizeLimit": "Single file size not exceeding {maxSize}M, maximum 5 files",
-        "fileSizeExceeded": "File size cannot exceed {maxSize} M"
+        "fileSizeLimit": "Single file size not exceeding {size}M, maximum 5 files",
+        "fileSizeExceeded": "File size cannot exceed {size} M"
       }
     },
     "aiGenerate": {
@@ -158,502 +158,103 @@
   },
   "issue": {
     "title": "Issue",
-    "actions": {
-      "addIssue": "Add Issue",
-      "confirmComplete": "Confirm Complete",
-      "confirmIncomplete": "Confirm Incomplete",
-      "importIssues": "Import Issues",
-      "exportIssues": "Export Issues",
-      "viewFlowChart": "View Flow"
-    },
     "viewMode": {
       "flat": "Flat View",
       "table": "Table View",
       "kanban": "Kanban View",
-      "gantt": "Gantt Chart View"
+      "gantt": "Gantt View"
     },
-    "messages": {
-      "exportingInProgress": "You have tasks being exported, please try again later",
-      "reopenTip": "Update task status to 'Pending', do not clear statistics count and status.",
-      "restartTip": "Update task to 'Pending', related statistics count and status will be cleared."
-    },
-    "detail": {
-      "title": "Task Detail",
-      "testInfo": "Basic Information",
-      "assocCaseTitle": "Associated Cases",
-      "assocTaskTitle": "Associated Tasks",
-      "columns": {
-        "personnel": "Personnel Information",
-        "date": "Time Information",
-        "apis": "API Information",
-        "scenario": "Scenario Information"
-      },
-      "batchActions": {
-        "confirmCancel": "Confirm cancel {num} selected tasks?",
-        "confirmDelete": "Confirm delete {num} selected tasks?",
-        "cancelSuccess": "All {num} selected tasks cancelled successfully",
-        "cancelFailed": "All {num} selected tasks cancelled failed",
-        "cancelPartialSuccess": "{num} selected tasks cancelled successfully, {errorNum} tasks cancelled failed",
-        "deleteSuccess": "All {num} selected tasks deleted successfully",
-        "deleteFailed": "All {num} selected tasks deleted failed",
-        "deletePartialSuccess": "{num} selected tasks deleted successfully, {errorNum} tasks deleted failed",
-        "moveSuccess": "All {num} selected tasks moved successfully",
-        "moveFailed": "All {num} selected tasks moved failed",
-        "movePartialSuccess": "{num} selected tasks moved successfully, {errorNum} tasks moved failed",
-        "favouriteFailed": "All {num} selected tasks favourited failed",
-        "favouritePartialSuccess": "{num} selected tasks favourited successfully, {errorNum} tasks favourited failed",
-        "confirmFavourite": "Confirm favourite {num} selected tasks?",
-        "confirmCancelFavourite": "Confirm unfavourite {num} selected tasks?",
-        "cancelFavouriteFailed": "All {num} selected tasks unfavourited failed",
-        "cancelFavouritePartialSuccess": "{num} selected tasks unfavourited successfully, {errorNum} tasks unfavourited failed",
-        "confirmFollow": "Confirm follow {num} selected tasks?",
-        "cancelFollowFailed": "All {num} selected tasks unfollowed failed",
-        "cancelFollowPartialSuccess": "{num} selected tasks unfollowed successfully, {errorNum} tasks unfollowed failed"
-      },
-      "messages": {
-        "maxBatchOperation": "Maximum support batch operation {maxNum} tasks, currently selected {selectedNum} tasks.",
-        "copyLinkSuccess": "Copy link successful",
-        "copyLinkFailed": "Copy link failed",
-        "splitSuccess": "Task split successful",
-        "splitFailed": "Task split failed",
-        "moveSuccess": "Task move successful",
-        "moveFailed": "Task move failed",
-        "deleteSuccess": "Task delete successful",
-        "deleteFailed": "Task delete failed",
-        "editSuccess": "Task edit successful",
-        "editFailed": "Task edit failed",
-        "refreshSuccess": "Refresh successful",
-        "refreshFailed": "Refresh failed",
-        "confirmDelete": "Confirm delete task 「{name}」?",
-        "startSuccess": "Task started successfully",
-        "pauseSuccess": "Task paused successfully",
-        "completeSuccess": "Task completed successfully",
-        "reopenSuccess": "Task reopened successfully",
-        "restartSuccess": "Task restarted successfully"
-      },
-      "placeholder": {
-        "searchTask": "Search task",
-        "selectAssignee": "Select assignee",
-        "selectReporter": "Select reporter",
-        "selectSprint": "Select sprint",
-        "inputDescription": "Please enter task description",
-        "inputRemark": "Please enter remark content",
-        "inputComment": "Please enter comment content",
-        "selectPriority": "Select priority",
-        "selectStatus": "Select status",
-        "selectTaskType": "Select task type"
-      },
-      "tips": {
-        "batchOperationLimit": "Batch operation supports maximum 200 tasks",
-        "copyLinkTip": "Copy current task link to clipboard",
-        "fullScreenTip": "Full screen display task details",
-        "refreshTip": "Refresh task data",
-        "editTip": "Edit current task",
-        "moveTip": "Move task to other sprint",
-        "deleteTip": "Delete current task",
-        "splitTip": "Split current task into multiple sub tasks"
-      },
-      "priority": {
-        "low": "Low",
-        "medium": "Medium",
-        "high": "High",
-        "urgent": "Urgent"
-      },
-      "tabs": {
-        "testInfo": "Basic Information",
-        "comments": "Comments",
-        "activity": "Activity",
-        "assocCase": "Associated Cases",
-        "assocTask": "Associated Tasks"
-      },
-      "assocTaskTab": {
-        "title": "Tasks",
-        "tips": "Record other tasks associated with the current task to help the team understand the dependencies between tasks."
-      },
-      "assocRequirementTab": {
-        "title": "Requirements",
-        "tips": "Trace problems to the original requirements to help understand the background and scope of the problem."
-      },
-      "assocStory": {
-        "title": "Stories",
-        "tips": "Trace user-centric functional requirements to help understand the background and scope of the problem."
-      },
-      "assocBugTab": {
-        "title": "Bugs",
-        "tips": "Trace problems to the original requirements to help understand the background and scope of the problem."
-      },
-      "assocCaseTab": {
-        "title": "Functional Cases",
-        "tips": "Record other tasks associated with the current task to help the team understand the dependencies between tasks."
-      },
-      "assocApiTestTab": {
-        "title": "API Tests",
-        "tips": "Establish a relationship with the corresponding API test task to facilitate the tracking of API test progress and ensure normal operation of the interface."
-      },
-      "assocScenarioTestTab": {
-        "title": "Scenario Tests",
-        "tips": "Establish a relationship with the corresponding scenario test task to facilitate the understanding of the effectiveness of functions in real scenarios and ensure the completeness of the solution."
-      },
-      "noMore": "No More",
-      "previousTask": "Previous Task",
-      "nextTask": "Next Task"
-    },
-    "upload": {
-      "title": "Import Task",
-      "form": {
-        "iteration": "Sprint",
-        "selectSprint": "Select sprint",
+    "actions": {
+      "addIssue": "Add Issue",
+      "processed": "Processed",
+      "confirmComplete": "Confirmed",
+      "confirmIncomplete": "Mark Incomplete",
+      "importIssues": "Import Issues",
+      "exportIssues": "Export Issues",
+      "viewFlowChart": "View Flow",
+      "associate": "Associate {title}",
+      "upload": {
         "uploadFile": "Please upload file",
         "selectFile": "Select File",
         "uploadTip": "You can directly drag files into this area for direct upload. File size should not exceed 20M, supporting .xls .xlsx file types.",
-        "taskImportTemplate": "Import Template",
+        "importTemplate": "Import Template",
         "duplicateStrategy": "Duplicate Processing Strategy"
+      },
+      "move": {
+        "options": {
+          "productBacklog": "Product Backlog",
+          "productSprint": "Product Sprint"
+        }
       }
     },
-    "table": {
-      "columns": {
-        "apiScenario": "API/Scenario",
-        "failCount": "Fail Count",
-        "processCount": "Processing Count",
-        "processTime": "Process Time",
-        "confirmTime": "Confirm Time",
-        "completeTime": "Complete Time",
-        "cancelTime": "Cancel Time",
-        "lastModifyTime": "Modify Time"
+    "messages": {
+      "exportingInProgress": "You have issues being exported, please try again later",
+      "reopenTip": "Update issue status to 'Pending', do not clear statistics count and status.",
+      "restartTip": "Update issue to 'Pending', related statistics count and status will be cleared.",
+      "noStartPermission": "No permission to start processing",
+      "noCancelPermission": "No permission to cancel issue",
+      "onlyMoveToInProgressOrCanceled": "Can only move to In Progress or Canceled",
+      "noProcessedPermission": "No permission to mark as processed",
+      "onlyMoveToConfirmingOrCanceled": "Can only move to Confirming or Canceled",
+      "onlyMoveToCompletedOrCanceled": "Can only move to Completed or Canceled",
+      "noCompletedPermission": "No permission to confirm completion",
+      "onlyMoveToCompletedOrCanceledFromConfirming": "Can only move to Completed or Canceled",
+      "onlyMoveToPending": "Can only move to Pending",
+      "noReopenPermission": "No permission to reopen",
+      "noConfirmer": "This issue has no confirmer, no confirmation needed, can only move to Completed or Canceled",
+      "addedRemark": "added remark"
+    },
+    "detail": {
+      "tabs": {
+        "subIssueTip": "Used to break down large complex tasks into smaller, more manageable sub-tasks, facilitating team collaboration and division of work.",
+        "assocTaskTip": "Track tasks related to this issue to understand dependencies.",
+        "assocRequirementTip": "Trace back to original requirements for context and impact analysis.",
+        "assocStoryTip": "Trace back to user stories for functional context and impact understanding.",
+        "assocBugTip": "Trace back to original requirements for context and impact analysis.",
+        "assocCaseTitle": "Functional Test",
+        "assocCaseTip": "Track test cases related to this issue to understand testing dependencies.",
+        "assocApiTestTitle": "API Test",
+        "assocApiTestTip": "Link to API testing tasks for progress tracking and API health verification.",
+        "assocScenarioTestTitle": "Scenario Test",
+        "assocScenarioTestTip": "Link to scenario testing tasks to validate functionality in real-world usage.",
+        "testInfoTitle": "Test Information",
+        "subIssue": {
+          "actions": {
+            "addSubIssue": "Add Sub Issue",
+            "assocSubIssue": "Associate Sub Issue"
+          },
+          "messages": {
+            "confirmCancelSubIssue": "Confirm to cancel sub issue 「{name}」?",
+            "assocSubIssueSuccess": "Sub issue association successful",
+            "cancelSubIssueSuccess": "Sub issue cancellation successful"
+          }
+        }
       },
       "messages": {
-        "maxBatchLimit": "Maximum support for batch operations of {maxNum} tasks, currently selected {selectedNum} tasks.",
-        "cancelConfirm": "Are you sure to cancel the selected {num} tasks?",
-        "cancelNumSuccess": "All {num} selected tasks cancelled successfully",
-        "cancelFail": "All {num} selected tasks failed to cancel",
-        "cancelPartial": "{successNum} selected tasks cancelled successfully, {errorNum} tasks failed to cancel",
-        "deleteConfirm": "Are you sure to delete the selected {num} tasks?",
-        "deleteSuccess": "Selected {num} tasks deleted successfully",
-        "favouriteConfirm": "Are you sure to favourite the selected {num} tasks?",
-        "favouriteNumSuccess": "All {num} selected tasks favourited successfully",
-        "favouriteFail": "All {num} selected tasks failed to favourite",
-        "favouritePartial": "{successNum} selected tasks favourited successfully, {errorNum} tasks failed to favourite",
-        "cancelFavouriteConfirm": "Are you sure to cancel favourite for the selected {num} tasks?",
-        "cancelFavouriteNumSuccess": "All {num} selected tasks cancelled favourite successfully",
-        "cancelFavouriteFail": "All {num} selected tasks failed to cancel favourite",
-        "cancelFavouritePartial": "{successNum} selected tasks cancelled favourite successfully, {errorNum} tasks failed to cancel favourite",
-        "followConfirm": "Are you sure to follow the selected {num} tasks?",
-        "followNumSuccess": "All {num} selected tasks followed successfully",
-        "followFail": "All {num} selected tasks failed to follow",
-        "followPartial": "{successNum} selected tasks followed successfully, {errorNum} tasks failed to follow",
-        "cancelFollowConfirm": "Are you sure to cancel follow for the selected {num} tasks?",
-        "cancelFollowNumSuccess": "All {num} selected tasks cancelled follow successfully",
-        "cancelFollowFail": "All {num} selected tasks failed to cancel follow",
-        "cancelFollowPartial": "{successNum} selected tasks cancelled follow successfully, {errorNum} tasks failed to cancel follow",
-        "deleteTaskConfirm": "Are you sure to delete task 「{name}」?",
-        "deleteTaskSuccess": "Task deleted successfully, you can view the deleted task in the recycle bin",
-        "startSuccess": "Task started processing successfully",
-        "processedSuccess": "Task processed successfully",
-        "reopenSuccess": "Task reopened successfully",
-        "restartSuccess": "Task restarted successfully",
-        "cancelSuccess": "Task cancelled successfully",
-        "copySuccess": "Copy successful",
-        "copyFail": "Copy failed"
-      }
-    },
-    "moveModal": {
-      "title": "Move Task",
-      "form": {
-        "selectSprint": "Select sprint",
-        "selectSprintPlaceholder": "Select or search sprint"
-      },
-      "messages": {
-        "moveSuccess": "Task moved successfully",
-        "batchMoveSuccess": "All {num} selected tasks moved successfully"
-      },
-      "defaultOptions": {
-        "productBacklog": "Product Backlog"
-      }
-    },
-    "ganttView": {
-      "drawer": {
-        "personnel": "Personnel",
-        "date": "Date",
-        "assocTasks": "Associated Tasks",
-        "assocCases": "Associated Cases",
-        "attachments": "Attachments",
-        "remarks": "Remarks",
-        "comments": "Comments",
-        "activity": "Activity"
+        "confirmCancel": "Confirm cancel {num} selected issues?",
+        "cancelSuccess": "All {num} selected issues cancelled successfully",
+        "cancelFailed": "All {num} selected issues cancelled failed",
+        "cancelPartialSuccess": "{num} selected issues cancelled successfully, {errorNum} issues cancelled failed",
+        "favouriteSuccess": "All {num} selected issues favourited successfully",
+        "favouriteFailed": "All {num} selected issues favourited failed",
+        "favouritePartialSuccess": "{num} selected issues favourited successfully, {errorNum} issues favourited failed",
+        "confirmFavourite": "Confirm favourite {num} selected issues?",
+        "confirmCancelFavourite": "Confirm unfavourite {num} selected issues?",
+        "cancelFavouriteSuccess": "All {num} selected issues cancelled favourite successfully",
+        "cancelFavouriteFailed": "All {num} selected issues unfavourited failed",
+        "cancelFavouritePartialSuccess": "{num} selected issues unfavourited successfully, {errorNum} issues unfavourited failed",
+        "confirmFollow": "Confirm follow {num} selected issues?",
+        "confirmCancelFollow": "Are you sure to cancel follow for the selected {num} issues?",
+        "followSuccess": "All {num} selected issues followed successfully",
+        "followFailed": "All {num} selected issues failed to follow",
+        "cancelFollowSuccess": "All {num} selected issues cancelled follow successfully",
+        "cancelFollowFailed": "All {num} selected issues unfollowed failed",
+        "cancelFollowPartialSuccess": "{num} selected issues unfollowed successfully, {errorNum} issues unfollowed failed",
+        "maxBatchLimit": "Maximum support batch operation {maxNum} issues, currently selected {selectedNum} issues."
       }
     },
     "flowChart": {
       "title": "Task Processing Flow Chart"
-    },
-    "editModal": {
-      "tooltip": {
-        "zoomIn": "Full Screen",
-        "zoomOut": "Minimize"
-      },
-      "form": {
-        "namePlaceholder": "Task name, maximum 200 characters",
-        "nameRule": "Task name, maximum 200 characters",
-        "typePlaceholder": "Please select task type",
-        "priorityPlaceholder": "Please select priority",
-        "scenarioPlaceholder": "Please select scenario",
-        "scenarioRule": "Please select scenario",
-        "testTypePlaceholder": "Please select test type",
-        "servicePlaceholder": "Select or search service",
-        "serviceRule": "Please select service",
-        "apiPlaceholder": "Please select API",
-        "apiRule": "Please select API",
-        "assigneePlaceholder": "Select assignee",
-        "assigneeRule": "Select assignee",
-        "assigneeTip": "Responsible for actually executing assigned work tasks.",
-        "confirmerPlaceholder": "Select confirmer",
-        "confirmerTip": "Person responsible for verifying and validating work results, will automatically enter confirmation process when specified.",
-        "deadline": "Deadline",
-        "deadlineRule": "Please select deadline",
-        "deadlineFutureRule": "Deadline must be a future time",
-        "deadlineSprintRule": "Exceeds sprint deadline ({deadline})",
-        "testerPlaceholder": "Select tester",
-        "testerTip": "Person responsible for testing and validating product functionality or service quality.",
-        "description": "Description",
-        "descriptionPlaceholder": "Task description, maximum 6000 characters",
-        "descriptionRule": "Description maximum 6000 characters",
-        "sprintPlaceholder": "Select or search sprint",
-        "sprintRule": "Please select sprint",
-        "modulePlaceholder": "Select or search module",
-        "parentTaskPlaceholder": "Please select parent task",
-        "workload": {
-          "evalWorkload": "Estimated Workload",
-          "actualWorkload": "Actual Workload",
-          "placeholder": "Value 0.1 - 1000, up to 2 decimal places",
-          "storyPointTip": "Assessment value of work volume, comprehensive difficulty, complexity, etc.",
-          "workloadTip": "Time spent on work assessment, calculated in hours.",
-          "actualStoryPointTip": "Actual value of work volume, comprehensive difficulty, complexity, etc.",
-          "actualWorkloadTip": "Actual time spent on work, calculated in hours.",
-          "rule": "Please enter estimated workload"
-        },
-        "softwareVersion": "Software Version",
-        "softwareVersionPlaceholder": "Please select version",
-        "tags": "Tags",
-        "tagsPlaceholder": "Maximum 5 tags",
-        "tagsTip": "\"Task tags\" can help you organize tasks with common points, such as \"project name, sprint version, business identifier\", etc.",
-        "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
-        "assocTasks": "Associated Tasks",
-        "assocTasksPlaceholder": "Maximum 20 associated tasks",
-        "assocCases": "Associated Cases",
-        "assocCasesPlaceholder": "Maximum 20 associated cases",
-        "attachments": "Attachments",
-        "attachmentsAdd": "Add attachments, maximum 5 attachments",
-        "attachmentsContinue": "Continue Upload",
-        "attachmentsUpload": "Upload attachments, maximum 5 attachments"
-      },
-      "messages": {
-        "addSuccess": "Task added successfully",
-        "editSuccess": "Task edited successfully"
-      }
-    },
-    "kanbanView": {
-      "drawer": {
-        "personnel": "Personnel",
-        "date": "Date",
-        "assocTasks": "Associated Tasks",
-        "assocCases": "Associated Cases",
-        "attachments": "Attachments",
-        "remarks": "Remarks",
-        "comments": "Comments",
-        "activity": "Activity"
-      },
-      "messages": {
-        "noStartPermission": "No permission to start processing",
-        "noCancelPermission": "No permission to cancel task",
-        "onlyMoveToInProgressOrCanceled": "Can only move to In Progress or Canceled",
-        "noProcessedPermission": "No permission to mark as processed",
-        "onlyMoveToConfirmingOrCanceled": "Can only move to Confirming or Canceled",
-        "onlyMoveToCompletedOrCanceled": "Can only move to Completed or Canceled",
-        "noCompletedPermission": "No permission to confirm completion",
-        "onlyMoveToCompletedOrCanceledFromConfirming": "Can only move to Completed or Canceled",
-        "onlyMoveToPending": "Can only move to Pending",
-        "noReopenPermission": "No permission to reopen",
-        "noConfirmer": "This task has no confirmer, no confirmation needed, can only move to Completed or Canceled"
-      },
-      "group": {
-        "swimLane": "Swim Lane",
-        "expandAll": "Expand All",
-        "collapseAll": "Collapse All",
-        "tasks": "tasks",
-        "ungrouped": "Ungrouped"
-      }
-    },
-    "assocCase": {
-      "title": "Associated Cases",
-      "description": "Track the completion status of functional test cases for tasks, understand which functions have been implemented and tested, facilitating more accurate task progress assessment.",
-      "actions": {
-        "associateCase": "Associate Case"
-      },
-      "messages": {
-        "confirmCancelCase": "Confirm to cancel association with case 「{name}」?"
-      },
-      "selectCasePlaceholder": "Maximum 20 associated cases"
-    },
-    "assocTask": {
-      "title": "Associated Tasks",
-      "actions": {
-        "associateTask": "Associate {title}"
-      },
-      "messages": {
-        "confirmCancelTask": "Confirm to cancel association with task 「{name}」?"
-      },
-      "modal": {
-        "selectTask": "Select {title}"
-      },
-      "selectTaskPlaceholder": "Maximum 20 associated tasks"
-    },
-    "remark": {
-      "placeholder": " Add supplementary instructions, such as precautions, reasons for rejection, etc. Maximum 6000 characters supported",
-      "validation": {
-        "maxLength": "Remarks support a maximum of 6000 characters"
-      },
-      "actions": {
-        "addRemark": "added a remark"
-      },
-      "title": "Remark"
-    },
-    "subTask": {
-      "title": "Sub Tasks",
-      "description": "Used to break down large complex tasks into smaller, more manageable sub-tasks, facilitating team collaboration and division of work.",
-      "actions": {
-        "addSubTask": "Add Sub Task",
-        "associateSubTask": "Associate Sub Task"
-      },
-      "messages": {
-        "confirmCancelSubTask": "Confirm to cancel sub task 「{name}」?",
-        "associateSubTaskSuccess": "Sub task association successful",
-        "cancelSubTaskSuccess": "Sub task cancellation successful"
-      },
-      "modal": {
-        "title": "Associate Sub Task",
-        "label": "Associate Sub Task",
-        "placeholder": "Please select sub task"
-      }
-    },
-    "testing": {
-      "title": "Testing",
-      "execResult": {
-        "title": "Execution Information"
-      },
-      "testResult": {
-        "title": "Test Result"
-      }
-    },
-    "detailInfo": {
-      "title": "Detail Information",
-      "apis": {
-        "columns": {
-          "namePlaceholder": "Task name, maximum 200 characters",
-          "selectModule": "Select or search module",
-          "selectSprint": "Select or search sprint",
-          "selectPriority": "Select priority",
-          "onePass": "One-Time Pass",
-          "evalWorkloadMethod": "Evaluation Method",
-          "evalWorkload": "Estimated",
-          "actualWorkload": "Actual",
-          "actualWorkloadPlaceholder": "Value 0.1 - 1000, up to 2 decimal places",
-          "evalWorkloadPlaceholder": "Value 0.1 - 1000, up to 2 decimal places",
-          "failedProcessCount": "Failure Count",
-          "totalProcessCount": "Total Count",
-          "softwareVersion": "Software Version",
-          "softwareVersionPlaceholder": "Please select version",
-          "unplanned": "Unplanned",
-          "tagsPlaceholder": "Maximum 5 tags",
-          "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\"."
-        }
-      },
-      "basic": {
-        "title": "Basic Information",
-        "workloadEvaluation": "Workload Evaluation",
-        "processCount": "Processing Count",
-        "columns": {
-          "namePlaceholder": "Task name, maximum 200 characters",
-          "selectModule": "Select or search module",
-          "selectSprint": "Select or search sprint",
-          "onePass": "One-Time Pass",
-          "actualWorkloadPlaceholder": "Value 0.1 - 1000, up to 2 decimal places",
-          "evalWorkloadPlaceholder": "Value 0.1 - 1000, up to 2 decimal places",
-          "failedProcessCount": "Failure Count",
-          "totalProcessCount": "Total Count",
-          "softwareVersion": "Version",
-          "softwareVersionPlaceholder": "Please select version",
-          "unplanned": "Unplanned",
-          "tags": "Tags",
-          "tagsPlaceholder": "Maximum 5 tags",
-          "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\"."
-        }
-      },
-      "description": {
-        "title": "Description",
-        "placeholder": "Add detailed description, maximum 6000 characters",
-        "validation": {
-          "maxLength": "Description supports maximum 6000 characters"
-        }
-      },
-      "personnel": {
-        "title": "Personnel",
-        "placeholders": {
-          "selectAssignee": "Select Assignee",
-          "selectConfirmer": "Select Confirmer",
-          "selectTester": "Select Tester"
-        }
-      },
-      "date": {
-        "title": "Date",
-        "fields": {
-          "deadline": "Deadline Time",
-          "processTime": "Process Time",
-          "confirmTime": "Confirm Time",
-          "completeTime": "Complete Time",
-          "cancelTime": "Cancel Time",
-          "execTime": "Execute Time",
-          "createTime": "Create Time",
-          "lastModifyTime": "Modify Time"
-        },
-        "validation": {
-          "selectDeadline": "Please select deadline",
-          "futureTimeRequired": "Deadline must be a future time"
-        }
-      },
-      "attachment": {
-        "title": "Attachments",
-        "actions": {
-          "continueUpload": "Continue Upload",
-          "selectFile": "Select File"
-        },
-        "messages": {
-          "fileSizeLimit": "File size cannot exceed {size} M",
-          "uploadLimit": "Single file size cannot exceed {size}M, maximum 5 files"
-        }
-      },
-      "scenario": {
-        "title": "Basic Information",
-        "columns": {
-          "namePlaceholder": "Task name, maximum 200 characters",
-          "selectSprint": "Select or search sprint",
-          "evalWorkloadPlaceholder": "Value 0.1 - 1000, up to 2 decimal places",
-          "actualWorkloadPlaceholder": "Value 0.1 - 1000, up to 2 decimal places",
-          "selectPriority": "Please select priority",
-          "failNum": "Processing Failure Count",
-          "totalNum": "Processing Times",
-          "onePass": "One-Time Pass",
-          "softwareVersion": "Software Version",
-          "softwareVersionPlaceholder": "Please select version",
-          "unplanned": "Unplanned",
-          "tagsPlaceholder": "Maximum 5 tags",
-          "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\"."
-        }
-      },
-      "activity": {
-        "title": "Activity"
-      }
-    },
-    "comment": {
-      "title": "Comment"
     }
   },
   "meeting": {
@@ -778,7 +379,10 @@
       "BUG": "Bug",
       "REQUIREMENT": "Requirement",
       "STORY": "Story",
-      "SCENARIO_TEST": "Scenario Test"
+      "SCENARIO_TEST": "Scenario Test",
+      "ANALYSIS": "Analysis",
+      "BACKLOG": "Backlog",
+      "MEETING": "Meeting"
     },
     "detail": {
       "progress": {

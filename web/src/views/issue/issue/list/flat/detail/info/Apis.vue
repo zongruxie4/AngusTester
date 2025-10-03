@@ -5,19 +5,19 @@ import { useI18n } from 'vue-i18n';
 import {
   AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, Toggle
 } from '@xcan-angus/vue-ui';
-import { EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
+import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
 import { SoftwareVersionStatus } from '@/enums/enums';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskDetail } from '@/views/issue/types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
 
 // Component props and emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -592,7 +592,7 @@ const onePassStatusText = computed(() => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('issue.detailInfo.apis.columns.evalWorkloadPlaceholder')"
+                :placeholder="t('common.placeholders.inputEvalWorkload')"
                 @blur="handleEvalWorkloadBlur"
                 @pressEnter="handleEvalWorkloadEnter" />
             </AsyncComponent>
@@ -624,7 +624,7 @@ const onePassStatusText = computed(() => {
                 :allowClear="false"
                 internal
                 enumKey="Priority"
-                placeholder="t('issue.detailInfo.apis.columns.selectPriority')"
+                placeholder="t('common.placeholders.selectPriority')"
                 class="left-component max-w-52"
                 @change="handlePriorityChange"
                 @blur="handlePriorityBlur">
@@ -637,7 +637,7 @@ const onePassStatusText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('issue.detailInfo.apis.columns.onePass') }}</span>
+              <span>{{ t('common.counts.oneTimePassed') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -674,7 +674,7 @@ const onePassStatusText = computed(() => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('issue.detailInfo.apis.columns.actualWorkloadPlaceholder')"
+                :placeholder="t('common.placeholders.inputActualWorkload')"
                 @blur="handleActualWorkloadBlur"
                 @pressEnter="handleActualWorkloadEnter" />
             </AsyncComponent>
@@ -682,7 +682,7 @@ const onePassStatusText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('issue.detailInfo.apis.columns.failNum') }}</span>
+              <span>{{ t('common.counts.failedCount') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -702,7 +702,7 @@ const onePassStatusText = computed(() => {
                   ref="versionSelectRef"
                   v-model:value="versionSelectValue"
                   allowClear
-                  :placeholder="t('issue.detailInfo.apis.columns.softwareVersionPlaceholder')"
+                  :placeholder="t('common.placeholders.selectSoftwareVersion')"
                   lazy
                   class="w-full max-w-60"
                   :action="`${TESTER}/software/version?projectId=${props.projectId}`"
@@ -782,10 +782,10 @@ const onePassStatusText = computed(() => {
                 :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
                 showSearch
                 internal
-                :placeholder="t('issue.detailInfo.apis.columns.tagsPlaceholder')"
+                :placeholder="t('common.placeholders.selectTag')"
                 mode="multiple"
                 class="left-component"
-                :notFoundContent="t('issue.detailInfo.apis.columns.tagsNotFound')"
+                :notFoundContent="t('backlog.edit.descriptions.contactAdminForTags')"
                 @change="handleTagChange"
                 @blur="handleTagBlur" />
             </AsyncComponent>
@@ -793,7 +793,7 @@ const onePassStatusText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('issue.detailInfo.apis.columns.totalNum') }}</span>
+              <span>{{ t('common.counts.totalCount') }}</span>
               <Colon class="w-1" />
             </div>
 

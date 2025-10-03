@@ -53,13 +53,13 @@ const emit = defineEmits<{
 // Async Components
 const BasicInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/info/index.vue'));
 const TestInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/testing/index.vue'));
-const Remark = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/Remark.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/Activity.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/Comment.vue'));
-const SubTask = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/SubTask.vue'));
-const SplitTask = defineAsyncComponent(() => import('@/views/issue/backlog/SplitTask.vue'));
-const AssocCaseTab = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/AssocCase.vue'));
-const AssocTaskTab = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/AssocTask.vue'));
+const Remarks = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/Remark.vue'));
+const Activities = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/Activity.vue'));
+const Comments = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/Comment.vue'));
+const SubIssues = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/SubIssues.vue'));
+const SplitIssue = defineAsyncComponent(() => import('@/views/issue/backlog/SplitIssue.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/AssocCases.vue'));
+const AssocIssues = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/AssocIssues.vue'));
 
 // Composables
 const { t } = useI18n();
@@ -97,7 +97,6 @@ const isFullScreen = ref(false);
 const isSplitTaskVisible = ref(false);
 const selectedTaskForSplit = ref<TaskDetail>();
 
-// UI Actions
 /**
  * Toggles full screen mode for the task detail view
  */
@@ -257,7 +256,7 @@ const startCurrentTask = async () => {
   }
 
   emit('refreshChange');
-  notification.success(t('issue.messages.startSuccess'));
+  notification.success(t('actions.tips.startSuccess'));
   const taskData = await loadTaskData();
   if (taskData) {
     updateTaskData(taskData);
@@ -279,7 +278,7 @@ const markTaskAsProcessed = async () => {
   }
 
   emit('refreshChange');
-  notification.success(t('issue.table.messages.processedSuccess'));
+  notification.success(t('actions.tips.processSuccess'));
   const taskData = await loadTaskData();
   if (taskData) {
     updateTaskData(taskData);
@@ -343,7 +342,7 @@ const reopenCurrentTask = async () => {
   }
 
   emit('refreshChange');
-  notification.success(t('issue.table.messages.reopenSuccess'));
+  notification.success(t('actions.tips.reopenSuccess'));
   const taskData = await loadTaskData();
   if (taskData) {
     updateTaskData(taskData);
@@ -365,7 +364,7 @@ const restartCurrentTask = async () => {
   }
 
   emit('refreshChange');
-  notification.success(t('issue.table.messages.restartSuccess'));
+  notification.success(t('actions.tips.restartSuccess'));
   const taskData = await loadTaskData();
   if (taskData) {
     updateTaskData(taskData);
@@ -387,7 +386,7 @@ const cancelCurrentTask = async () => {
   }
 
   emit('refreshChange');
-  notification.success(t('issue.table.messages.cancelSuccess'));
+  notification.success(t('actions.tips.cancelSuccess'));
   const taskData = await loadTaskData();
   if (taskData) {
     updateTaskData(taskData);
@@ -400,9 +399,9 @@ const cancelCurrentTask = async () => {
 const copyTaskLinkToClipboard = () => {
   const message = window.location.origin + props.linkUrl;
   toClipboard(message).then(() => {
-    notification.success(t('issue.detail.messages.copyLinkSuccess'));
+    notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
-    notification.error(t('issue.detail.messages.copyLinkFailed'));
+    notification.error(t('actions.tips.copyLinkFailed'));
   });
 };
 
@@ -884,7 +883,7 @@ const actionMenuItemsMap = computed(() => {
       });
     } else {
       menuItems.push({
-        name: t('actions.favorite'),
+        name: t('actions.addFavourite'),
         key: 'addFavourite',
         icon: 'icon-yishoucang',
         disabled: false,
@@ -1105,7 +1104,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           class="flex items-center"
           @click="addToFavorites">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-yishoucang" />
-          <span>{{ t('actions.favorite') }}</span>
+          <span>{{ t('actions.addFavourite') }}</span>
         </Button>
 
         <!-- Remove from Favorites Button -->
@@ -1188,7 +1187,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :disabled="isPreviousButtonDisabled"
           @click="navigateToPreviousTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-chakanshangyitiao" />
-          <span>{{ isPreviousButtonDisabled ? t('issue.detail.noMore') : t('issue.detail.previousTask') }}</span>
+          <span>{{ isPreviousButtonDisabled ? t('actions.noMore') : t('actions.previousItem') }}</span>
         </Button>
 
         <Button
@@ -1197,7 +1196,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :disabled="isNextButtonDisabled"
           @click="navigateToNextTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-chakanxiayitiao" />
-          <span>{{ isNextButtonDisabled ? t('issue.detail.noMore') : t('issue.detail.nextTask') }}</span>
+          <span>{{ isNextButtonDisabled ? t('actions.noMore') : t('actions.nextItem') }}</span>
         </Button>
       </div>
     </div>
@@ -1236,58 +1235,37 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="taskChild">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('common.subIssue') }}</span>
+            <span>{{ t('common.subIssues') }}</span>
             <span>({{ currentTaskInfo?.subTaskInfos?.length || 0 }})</span>
           </div>
         </template>
-        <SubTask
+        <SubIssues
           v-model:loading="isLoading"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :taskInfo="currentTaskInfo"
+          :tips="t('issue.detail.tabs.subIssueTip')"
           @refreshChange="refreshTaskData" />
-      </TabPane>
-
-      <!-- Associated Task Tab -->
-      <TabPane key="assocTask">
-        <template #tab>
-          <div class="inline-flex">
-            <span>{{ t('issue.detail.tabs.assocTask') }}</span>
-            <span>({{ getReferencedTaskCount(TaskType.TASK) }})</span>
-          </div>
-        </template>
-
-        <AssocTaskTab
-          :key="TaskType.TASK"
-          :projectId="props.projectId"
-          :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
-          :dataSource="currentTaskInfo?.refTaskInfos || []"
-          :taskId="props.id"
-          :title="t('issue.detail.assocTaskTab.title')"
-          :tips="t('issue.detail.assocTaskTab.tips')"
-          :taskType="TaskType.TASK"
-          @editSuccess="loadTaskData" />
       </TabPane>
 
       <!-- Associated Requirements Tab -->
       <TabPane key="assocRequirements">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('issue.detail.assocRequirementTab.title') }}</span>
+            <span>{{ t('common.requirement') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.REQUIREMENT) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssues
           :key="TaskType.REQUIREMENT"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('issue.detail.assocRequirementTab.title')"
-          :tips="t('issue.detail.assocRequirementTab.tips')"
+          :title="t('common.requirement')"
+          :tips="t('issue.detail.tabs.assocRequirementTip')"
           :taskType="TaskType.REQUIREMENT"
           @editSuccess="loadTaskData" />
       </TabPane>
@@ -1296,20 +1274,42 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocStory">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('issue.detail.assocStoryTab.title') }}</span>
+            <span>{{ t('common.story') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.STORY) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssues
           :key="TaskType.STORY"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('issue.detail.assocStoryTab.title')"
-          :tips="t('issue.detail.assocStoryTab.tips')"
+          :title="t('common.story')"
+          :tips="t('issue.detail.tabs.assocStoryTip')"
           :taskType="TaskType.STORY"
+          @editSuccess="loadTaskData" />
+      </TabPane>
+
+      <!-- Associated Task Tab -->
+      <TabPane key="assocTasks">
+        <template #tab>
+          <div class="inline-flex">
+            <span>{{ t('common.task') }}</span>
+            <span>({{ getReferencedTaskCount(TaskType.TASK) }})</span>
+          </div>
+        </template>
+
+        <AssocIssues
+          :key="TaskType.TASK"
+          :projectId="props.projectId"
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :dataSource="currentTaskInfo?.refTaskInfos || []"
+          :taskId="props.id"
+          :title="t('common.task')"
+          :tips="t('issue.detail.tabs.assocTaskTip')"
+          :taskType="TaskType.TASK"
           @editSuccess="loadTaskData" />
       </TabPane>
 
@@ -1317,19 +1317,19 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocBug">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('issue.detail.assocBugTab.title') }}</span>
+            <span>{{ t('common.bug') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.BUG) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssues
           :key="TaskType.BUG"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('issue.detail.assocBugTab.title')"
-          :tips="t('issue.detail.assocBugTab.tips')"
+          :title="t('common.bug')"
+          :tips="t('issue.detail.tabs.assocBugTip')"
           :taskType="TaskType.BUG"
           @editSuccess="loadTaskData" />
       </TabPane>
@@ -1338,16 +1338,17 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocCase">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('issue.detail.assocCaseTab.title') }}</span>
+            <span>{{ t('issue.detail.tabs.assocCaseTitle') }}</span>
             <span>({{ currentTaskInfo?.refCaseInfos?.length || 0 }})</span>
           </div>
         </template>
-        <AssocCaseTab
+        <AssocCases
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="(currentTaskInfo?.refCaseInfos || []) as any"
           :taskId="props.id"
+          :tips="t('issue.detail.tabs.assocCaseTip')"
           @editSuccess="loadTaskData" />
       </TabPane>
 
@@ -1355,19 +1356,19 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocApiTest">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('issue.detail.assocApiTestTab.title') }}</span>
+            <span>{{ t('issue.detail.tabs.assocApiTestTitle') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.API_TEST) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssues
           :key="TaskType.API_TEST"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('issue.detail.assocApiTestTab.title')"
-          :tips="t('issue.detail.assocApiTestTab.tips')"
+          :title="t('issue.detail.tabs.assocApiTestTitle')"
+          :tips="t('issue.detail.tabs.assocApiTestTip')"
           :taskType="TaskType.API_TEST"
           @editSuccess="loadTaskData" />
       </TabPane>
@@ -1376,19 +1377,19 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="assocScenarioTest">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('issue.detail.assocScenarioTestTab.title') }}</span>
+            <span>{{ t('issue.detail.tabs.assocScenarioTestTitle') }}</span>
             <span>({{ getReferencedTaskCount(TaskType.SCENARIO_TEST) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssues
           :key="TaskType.SCENARIO_TEST"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
           :appInfo="{ ...props.appInfo, fullName: '' }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('issue.detail.assocScenarioTestTab.title')"
-          :tips="t('issue.detail.assocScenarioTestTab.tips')"
+          :title="t('issue.detail.tabs.assocScenarioTestTitle')"
+          :tips="t('issue.detail.tabs.assocScenarioTestTip')"
           :taskType="TaskType.SCENARIO_TEST"
           @editSuccess="loadTaskData" />
       </TabPane>
@@ -1397,7 +1398,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane
         v-if="shouldShowTestInfo"
         key="testInfo"
-        :tab="t('issue.detail.tabs.testInfo')">
+        :tab="t('issue.detail.tabs.testInfoTitle')">
         <TestInfo
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
@@ -1414,7 +1415,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
             <span>({{ (currentTaskInfo as any)?.remarkNum || 0 }})</span>
           </div>
         </template>
-        <Remark
+        <Remarks
           :id="props.id"
           v-model:notify="remarkNotificationId"
           :projectId="props.projectId"
@@ -1430,7 +1431,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
             <span>({{ (currentTaskInfo as any)?.commentNum || 0 }})</span>
           </div>
         </template>
-        <Comment
+        <Comments
           :id="props.id"
           :notify="commentNotificationId"
           :projectId="props.projectId"
@@ -1442,11 +1443,11 @@ const getReferencedTaskCount = (type = 'TASK') => {
       <TabPane key="activity">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('issue.detail.tabs.activity') }}</span>
+            <span>{{ t('common.activity') }}</span>
             <span>({{ (currentTaskInfo as any)?.activityNum || 0 }})</span>
           </div>
         </template>
-        <Activity
+        <Activities
           :id="props.id"
           :notify="activityNotificationId"
           :projectId="props.projectId"
@@ -1457,7 +1458,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
 
     <!-- Split Task Dialog -->
     <AsyncComponent :visible="isSplitTaskVisible">
-      <SplitTask
+      <SplitIssue
         v-model:visible="isSplitTaskVisible"
         :projectId="props.projectId"
         :userInfo="props.userInfo"

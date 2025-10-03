@@ -271,7 +271,7 @@ const validateEvaluationWorkload = async (_rule: Rule, value: string) => {
   }
   if (formState.actualWorkload) {
     if (!value) {
-      return Promise.reject(new Error(t('issue.editModal.form.workload.rule')));
+      return Promise.reject(new Error(t('common.placeholders.inputEvalWorkload')));
     }
     return Promise.resolve();
   }
@@ -294,7 +294,7 @@ const handleActualWorkloadChange = (value: string) => {
  */
 const handleEvaluationWorkloadChange = (value: string) => {
   if (!value) {
-    formState.actualWorkload = '';
+    formState.actualWorkload = undefined;
     formRef.value.clearValidate('evalWorkload');
   }
 };
@@ -307,16 +307,16 @@ const handleEvaluationWorkloadChange = (value: string) => {
  */
 const validateDeadlineDate = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error(t('issue.editModal.form.deadlineRule')));
+    return Promise.reject(new Error(t('common.placeholders.deadlineMustBeFuture')));
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
-    return Promise.reject(new Error(t('issue.editModal.form.deadlineFutureRule')));
+    return Promise.reject(new Error(t('common.placeholders.deadlineMustBeFuture')));
   }
 
   if (sprintDeadlineDate.value) {
     if (dayjs(value).isAfter(dayjs(sprintDeadlineDate.value), 'seconds')) {
-      return Promise.reject(new Error(t('issue.editModal.form.deadlineSprintRule',
+      return Promise.reject(new Error(t('backlog.edit.messages.sprintDeadlineExceeded',
         { deadline: sprintDeadlineDate.value })));
     }
   }
@@ -389,7 +389,7 @@ const descriptionEditorRef = ref();
  */
 const validateDescriptionLength = async () => {
   if (descriptionEditorRef.value && descriptionEditorRef.value.getLength() > 6000) {
-    Promise.reject(new Error(t('issue.editModal.form.descriptionRule')));
+    Promise.reject(new Error(t('common.placeholders.inputDescription30')));
   }
   return Promise.resolve();
 };
@@ -551,7 +551,7 @@ const handleTaskCreation = async (shouldContinue = false) => {
     return;
   }
 
-  notification.success(t('actions.tips.addSuccess'));
+  notification.success(t('actions.tip.addSuccess'));
   emit('ok', res?.data, true);
 
   if (!shouldContinue) {
@@ -800,7 +800,7 @@ onMounted(() => {
     :visible="props.visible"
     class="relative max-w-full"
     @cancel="closeModal">
-    <Tooltip :title="zoomInFlag ? t('issue.editModal.tooltip.zoomOut') : t('issue.editModal.tooltip.zoomIn')">
+    <Tooltip :title="zoomInFlag ? t('actions.exitFullScreen') : t('actions.fullScreen')">
       <Icon
         :icon="zoomInFlag ? 'icon-tuichuzuida' : 'icon-zuidahua'"
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"
@@ -819,12 +819,12 @@ onMounted(() => {
           <FormItem
             name="name"
             :label="t('common.name')"
-            :rules="{ required: true, message: t('issue.editModal.form.nameRule') }">
+            :rules="{ required: true, message: t('common.placeholders.inputName2') }">
             <Input
               v-model:value="formState.name"
               trim
               :maxlength="200"
-              :placeholder="t('common.placeholders.searchKeyword')" />
+              :placeholder="t('common.placeholders.inputName2')" />
           </FormItem>
 
           <div class="flex space-x-4">
@@ -847,11 +847,12 @@ onMounted(() => {
                           <span>{{ typeName }}</span>
                         </div>
                       </div>
+
                       <div class="ml-3.5 space-y-2">
                         <div
                           v-for="[taskType, typeName] in taskTypeName"
                           :key="taskType">
-                          {{ t(`backlog.taskTypeDescriptions.${taskType.toLowerCase()}`) }}
+                          {{ t(`backlog.typeDescriptions.${taskType.toLowerCase()}`) }}
                         </div>
                       </div>
                     </div>
@@ -867,7 +868,7 @@ onMounted(() => {
                 :readonly="isTaskTypeReadonly"
                 internal
                 enumKey="TaskType"
-                :placeholder="t('issue.editModal.form.typePlaceholder')"
+                :placeholder="t('common.placeholders.selectIssueType')"
                 @change="handleTaskTypeChange">
                 <template #option="record">
                   <div class="flex items-center">
@@ -888,7 +889,7 @@ onMounted(() => {
                 :allowClear="false"
                 internal
                 enumKey="Priority"
-                :placeholder="t('issue.editModal.form.priorityPlaceholder')">
+                :placeholder="t('common.placeholders.selectPriority')">
                 <template #option="record">
                   <TaskPriority :value="record" />
                 </template>
@@ -908,6 +909,7 @@ onMounted(() => {
                   :allowClear="false"
                   :lazy="false" />
               </FormItem>
+
               <FormItem
                 name="escapedBug"
                 :label="t('common.escapedBug')"
@@ -928,7 +930,7 @@ onMounted(() => {
               name="targetId"
               :label="t('common.scenario')"
               class="flex-1 min-w-0"
-              :rules="{ required: true, message: t('issue.editModal.form.scenarioRule') }">
+              :rules="{ required: true, message: t('common.placeholders.selectScenario') }">
               <Select
                 v-model:value="formState.targetId"
                 showSearch
@@ -950,7 +952,7 @@ onMounted(() => {
                 :allowClear="false"
                 internal
                 enumKey="TestType"
-                :placeholder="t('issue.editModal.form.testTypePlaceholder')" />
+                :placeholder="t('common.placeholders.selectTestType')" />
             </FormItem>
           </div>
 
@@ -958,7 +960,7 @@ onMounted(() => {
             <FormItem
               name="targetParentId"
               :label="t('common.service')"
-              :rules="{ required: true, message: t('issue.editModal.form.serviceRule') }">
+              :rules="{ required: true, message: t('common.placeholders.selectService') }">
               <Select
                 v-model:value="formState.targetParentId"
                 :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
@@ -968,7 +970,7 @@ onMounted(() => {
                 internal
                 defaultActiveFirstOption
                 showSearch
-                :placeholder="t('issue.editModal.form.servicePlaceholder')">
+                :placeholder="t('common.placeholders.selectOrSearchService')">
                 <template #option="record">
                   <div class="text-3 leading-3 flex items-center h-6.5">
                     <IconText
@@ -987,12 +989,12 @@ onMounted(() => {
                 :label="t('common.api')"
                 name="targetId"
                 class="flex-1 min-w-0"
-                :rules="{ required: true, message: t('issue.editModal.form.apiRule') }">
+                :rules="{ required: true, message: t('common.placeholders.selectApi') }">
                 <Select
                   v-model:value="formState.targetId"
                   showSearch
                   internal
-                  :placeholder="t('issue.editModal.form.apiPlaceholder')"
+                  :placeholder="t('common.placeholders.selectApi')"
                   :fieldNames="{ label: 'summary', value: 'id' }"
                   :action="`${TESTER}/apis?projectId=${props.projectId}&serviceId=${formState.targetParentId}&fullTextSearch=true`"
                   :readonly="!!props.taskId || !formState.targetParentId" />
@@ -1009,7 +1011,7 @@ onMounted(() => {
                   :allowClear="false"
                   internal
                   enumKey="TestType"
-                  :placeholder="t('issue.editModal.form.testTypePlaceholder')" />
+                  :placeholder="t('common.placeholders.selectTestType')" />
               </FormItem>
             </div>
           </template>
@@ -1018,13 +1020,13 @@ onMounted(() => {
             <FormItem
               name="assigneeId"
               class="flex-1/2"
-              :rules="{ required: true, message: t('issue.editModal.form.assigneeRule') }">
+              :rules="{ required: true, message: t('common.placeholders.selectAssignee') }">
               <template #label>
                 {{ t('common.assignee') }}
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('issue.editModal.form.assigneeTip') }}
+                      {{ t('backlog.edit.descriptions.assignee') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1034,7 +1036,7 @@ onMounted(() => {
               <div class="flex items-center ">
                 <SelectUser
                   v-model:value="formState.assigneeId"
-                  :placeholder="t('issue.editModal.form.assigneePlaceholder')"
+                  :placeholder="t('common.placeholders.selectAssignee')"
                   internal
                   class="flex-1 min-w-0"
                   :defaultOptions="assigneeDefaultOptions"
@@ -1056,7 +1058,7 @@ onMounted(() => {
                 {{ t('common.confirmer') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('issue.editModal.form.confirmerTip') }}
+                      {{ t('backlog.edit.descriptions.confirmer') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1066,7 +1068,7 @@ onMounted(() => {
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.confirmerId"
-                  :placeholder="t('issue.editModal.form.confirmerPlaceholder')"
+                  :placeholder="t('common.placeholders.selectConfirmer')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
@@ -1108,16 +1110,17 @@ onMounted(() => {
                 {{ t('common.tester') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('issue.editModal.form.testerTip') }}
+                      {{ t('backlog.edit.descriptions.tester') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
                 </Popover>
               </template>
+
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.testerId"
-                  :placeholder="t('issue.editModal.form.testerPlaceholder')"
+                  :placeholder="t('common.placeholders.selectTester')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
@@ -1143,8 +1146,8 @@ onMounted(() => {
               <RichEditor
                 ref="descriptionEditorRef"
                 v-model:value="formState.description"
-                :options="{placeholder: t('issue.editModal.form.descriptionPlaceholder')}"
-                :height="300"
+                :options="{placeholder: t('common.placeholders.inputDescription30')}"
+                :height="280"
                 @change="handleEditorContentChange"
                 @loadingChange="handleEditorLoadingChange" />
             </AsyncComponent>
@@ -1156,7 +1159,7 @@ onMounted(() => {
             v-if="proTypeShowMap.showSprint"
             :label="t('common.sprint')"
             name="sprintId"
-            :rules="{ required: true, message: t('issue.editModal.form.sprintRule') }">
+            :rules="{ required: true, message: t('common.placeholders.selectSprint') }">
             <Select
               v-model:value="formState.sprintId"
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
@@ -1164,7 +1167,7 @@ onMounted(() => {
               :readonly="!!props.taskId"
               showSearch
               internal
-              :placeholder="t('issue.editModal.form.sprintPlaceholder')"
+              :placeholder="t('common.placeholders.selectOrSearchSprint')"
               @change="(value: any, option: any) => handleSprintChange(value, option)">
               <template #option="record">
                 <div class="flex items-center" :title="record.name">
@@ -1187,7 +1190,7 @@ onMounted(() => {
               size="small"
               showSearch
               allowClear
-              :placeholder="t('issue.editModal.form.modulePlaceholder')">
+              :placeholder="t('common.placeholders.selectOrSearchModule')">
               <template #title="item">
                 <div class="flex items-center" :title="item.name">
                   <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -1219,7 +1222,7 @@ onMounted(() => {
               v-model:value="formState.parentTaskId"
               showSearch
               internal
-              :placeholder="t('issue.editModal.form.parentTaskPlaceholder')"
+              :placeholder="t('common.placeholders.selectParentIssue')"
               :excludes="shouldExcludeTaskId"
               :fieldNames="{ label: 'name', value: 'id' }"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
@@ -1237,14 +1240,6 @@ onMounted(() => {
             :rules="{ required: !!formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
               {{ t('common.evalWorkload') }}
-              <Popover placement="rightTop">
-                <template #content>
-                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ t('issue.editModal.form.workload.workloadTip') }}
-                  </div>
-                </template>
-                <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
-              </Popover>
             </template>
 
             <Input
@@ -1254,7 +1249,7 @@ onMounted(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('issue.editModal.form.workload.placeholder')"
+              :placeholder="t('common.placeholders.workloadRange')"
               @blur="handleEvaluationWorkloadChange($event.target.value)" />
           </FormItem>
 
@@ -1265,7 +1260,7 @@ onMounted(() => {
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('issue.editModal.form.workload.actualWorkloadTip') }}
+                      {{ t('backlog.edit.descriptions.evalWorkload') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1278,7 +1273,7 @@ onMounted(() => {
                 size="small"
                 dataType="float"
                 trimAll
-                :placeholder="t('issue.editModal.form.workload.placeholder')"
+                :placeholder="t('common.placeholders.workloadRange')"
                 :min="0.1"
                 :max="1000"
                 @change="handleActualWorkloadChange($event.target.value)" />
@@ -1291,7 +1286,7 @@ onMounted(() => {
             <Select
               v-model:value="formState.softwareVersion"
               allowClear
-              :placeholder="t('issue.editModal.form.softwareVersionPlaceholder')"
+              :placeholder="t('common.placeholders.selectSoftwareVersion')"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
               :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
               :fieldNames="{value:'name', label: 'name'}">
@@ -1306,12 +1301,13 @@ onMounted(() => {
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ t('issue.editModal.form.tagsTip') }}
+                    {{ t('backlog.edit.descriptions.tags') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
               </Popover>
             </template>
+
             <Select
               v-model:value="formState.tagIds"
               showSearch
@@ -1322,14 +1318,14 @@ onMounted(() => {
               :maxTags="5"
               :allowClear="false"
               :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
-              :placeholder="t('issue.editModal.form.tagsPlaceholder')"
+              :placeholder="t('backlog.edit.placeholders.maxTags')"
               mode="multiple"
-              :notFoundContent="t('issue.editModal.form.tagsNotFound')" />
+              :notFoundContent="t('backlog.edit.messages.contactAdminForTags')" />
           </FormItem>
 
           <FormItem
             name="refTaskIds"
-            :label="t('issue.editModal.form.assocIssues')"
+            :label="t('common.assocIssues')"
             class="relative">
             <Select
               v-model:value="formState.refTaskIds"
@@ -1341,7 +1337,7 @@ onMounted(() => {
               :maxTagTextLength="15"
               :maxTags="20"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
-              :placeholder="t('issue.editModal.form.assocTasksPlaceholder')"
+              :placeholder="t('backlog.edit.placeholders.maxAssocIssues')"
               mode="multiple">
               <template #option="record">
                 <div class="flex items-center leading-4.5 overflow-hidden">
@@ -1362,7 +1358,7 @@ onMounted(() => {
 
           <FormItem
             name="refCaseIds"
-            :label="t('issue.editModal.form.assocCases')"
+            :label="t('common.assocCases')"
             class="relative">
             <Select
               v-model:value="formState.refCaseIds"
@@ -1374,7 +1370,7 @@ onMounted(() => {
               :maxTagTextLength="15"
               :maxTags="20"
               :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
-              :placeholder="t('issue.editModal.form.assocCasesPlaceholder')"
+              :placeholder="t('backlog.edit.placeholders.maxAssocCases')"
               mode="multiple">
               <template #option="record">
                 <div class="flex items-center leading-4.5 overflow-hidden">
@@ -1393,13 +1389,28 @@ onMounted(() => {
             </Select>
           </FormItem>
 
-          <FormItem :label="t('common.attachment')">
+          <FormItem
+            name="attachments"
+            class="relative">
+            <template #label>
+              {{ t('common.attachment') }}
+              <Popover placement="rightTop">
+                <template #content>
+                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">
+                    {{ t('backlog.edit.actions.uploadAttachments') }}
+                  </div>
+                </template>
+                <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
+              </Popover>
+            </template>
             <div
               style="height: 60px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
               class="border border-dashed rounded flex flex-col px-2 py-1"
               :class="formState?.attachments?.length?'justify-between':'justify-center'">
               <template v-if="formState.attachments?.length">
-                <div style="height: 286px;scrollbar-gutter: stable;" class="overflow-hidden hover:overflow-y-auto -mr-2 pr-1">
+                <div
+                  style="height: 286px;scrollbar-gutter: stable;"
+                  class="overflow-hidden hover:overflow-y-auto -mr-2 pr-1">
                   <div
                     v-for="(item,index) in formState.attachments"
                     :key="index"
@@ -1417,6 +1428,7 @@ onMounted(() => {
                       @click="removeAttachmentFile(index)" />
                   </div>
                 </div>
+
                 <div v-if="formState.attachments.length < 5" class="flex justify-end">
                   <Upload
                     :fileList="[]"
@@ -1424,7 +1436,7 @@ onMounted(() => {
                     class="-mb-1 mr-1"
                     :customRequest="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                    <span class="text-3 leading-3 text-theme-text-hover">{{ t('issue.editModal.form.attachmentsContinue') }}</span>
+                    <span class="text-3 leading-3 text-theme-text-hover">{{ t('backlog.edit.actions.continueUpload') }}</span>
                   </Upload>
                 </div>
               </template>
@@ -1435,7 +1447,7 @@ onMounted(() => {
                     :fileList="[]"
                     :customRequest="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
-                    <span class="text-3 text-theme-text-hover">{{ t('issue.editModal.form.attachmentsUpload') }}</span>
+                    <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
                   </Upload>
                 </div>
               </template>

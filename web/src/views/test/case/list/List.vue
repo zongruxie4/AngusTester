@@ -736,7 +736,7 @@ const tableAction = computed(() => {
       {
         key: 'addFavourite',
         icon: _case.favourite ? 'icon-quxiaoshoucang' : 'icon-yishoucang',
-        name: _case.favourite ? t('actions.cancelFavourite') : t('actions.favorite'),
+        name: _case.favourite ? t('actions.cancelFavourite') : t('actions.addFavourite'),
         permission: 'edit',
         noAuth: true
       },

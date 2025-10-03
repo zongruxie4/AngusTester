@@ -3,22 +3,22 @@ import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { Button, TreeSelect } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconTask, Input, ScriptTypeTag, Select } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { SoftwareVersionStatus } from '@/enums/enums';
+
+import { TaskDetail } from '@/views/issue/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
 
-import { TaskDetail } from '@/views/issue/types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
-
 const { t } = useI18n();
 
 // Component Props & Emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -86,7 +86,6 @@ const taskType = computed(() => props.dataSource?.taskType?.value);
 const taskPriority = computed(() => props.dataSource?.priority?.value);
 const taskTags = computed(() => props.dataSource?.tags || []);
 const taskTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
 const evalWorkload = computed(() => props.dataSource?.evalWorkload);
 const actualWorkload = computed(() => props.dataSource?.actualWorkload);
 const isOverdue = computed(() => props.dataSource?.overdue);

@@ -9,17 +9,18 @@ import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
+import { TaskDetail } from '@/views/issue/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
+
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskDetail } from '@/views/issue/types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
 
 // Async components
 const Description = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Description.vue'));
 
 // Component props and emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -88,7 +89,6 @@ const currentTaskType = computed(() => props.dataSource?.taskType?.value);
 const currentPriority = computed(() => props.dataSource?.priority?.value);
 const currentTags = computed(() => props.dataSource?.tags || []);
 const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
 const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
 const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
 const isOverdue = computed(() => props.dataSource?.overdue);
@@ -553,7 +553,7 @@ onMounted(() => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div>
-      <div class="text-theme-title mb-2.5 font-semibold">{{ t('issue.detailInfo.scenario.title') }}</div>
+      <div class="text-theme-title mb-2.5 font-semibold">{{ t('common.scenario') }}</div>
 
       <div class="space-y-2.5">
         <div class="flex items-start">
@@ -657,7 +657,7 @@ onMounted(() => {
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               showSearch
-              :placeholder="t('issue.detailInfo.scenario.columns.selectSprint')"
+              :placeholder="t('common.placeholders.selectSprint')"
               class="edit-container"
               @change="handleSprintSelectionChange"
               @blur="handleSprintSelectionBlur" />
@@ -692,7 +692,7 @@ onMounted(() => {
                 showSearch
                 allowClear
                 class="flex-1"
-                :placeholder="t('issue.detailInfo.scenario.columns.selectModule')">
+                :placeholder="t('common.placeholders.selectModule')">
                 <template #title="item">
                   <div class="flex items-center" :title="item.name">
                     <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -763,7 +763,7 @@ onMounted(() => {
               ref="prioritySelectRef"
               v-model:value="priorityInputValue"
               enumKey="Priority"
-              :placeholder="t('issue.detailInfo.scenario.columns.selectPriority')"
+              :placeholder="t('common.placeholders.selectPriority')"
               class="edit-container max-w-52"
               @change="handlePrioritySelectionChange"
               @blur="handlePrioritySelectionBlur">
@@ -811,7 +811,7 @@ onMounted(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('issue.detailInfo.scenario.columns.evalWorkloadPlaceholder')"
+              :placeholder="t('common.Placeholders.inputEvalWorkload')"
               @blur="handleEvalWorkloadInputBlur"
               @pressEnter="handleEvalWorkloadInputEnter" />
           </AsyncComponent>
@@ -843,7 +843,7 @@ onMounted(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('issue.detailInfo.scenario.columns.actualWorkloadPlaceholder')"
+              :placeholder="t('common.Placeholders.inputActualWorkload')"
               @blur="handleActualWorkloadInputBlur"
               @pressEnter="handleActualWorkloadInputEnter" />
           </AsyncComponent>
@@ -851,7 +851,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('issue.detailInfo.scenario.columns.totalNum') }}</span>
+            <span>{{ t('common.counts.totalCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -860,7 +860,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('issue.detailInfo.scenario.columns.failNum') }}</span>
+            <span>{{ t('common.counts.failedCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -903,10 +903,10 @@ onMounted(() => {
               :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
               allowClear
               showSearch
-              :placeholder="t('issue.detailInfo.scenario.columns.tagsPlaceholder')"
+              :placeholder="t('common.placeholders.selectTag')"
               mode="multiple"
               class="edit-container"
-              :notFoundContent="t('issue.detailInfo.scenario.columns.tagsNotFound')"
+              :notFoundContent="t('backlog.edit.messages.contactAdminForTags')"
               @change="handleTagSelectionChange"
               @blur="handleTagSelectionBlur" />
           </AsyncComponent>
@@ -914,7 +914,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('issue.detailInfo.scenario.columns.onePass') }}</span>
+            <span>{{ t('common.counts.oneTimePassed') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -932,7 +932,7 @@ onMounted(() => {
                 ref="versionSelectRef"
                 v-model:value="versionInputValue"
                 allowClear
-                :placeholder="t('issue.detailInfo.scenario.columns.softwareVersionPlaceholder')"
+                :placeholder="t('common.placeholders.selectSoftwareVersion')"
                 class="w-full"
                 lazy
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"

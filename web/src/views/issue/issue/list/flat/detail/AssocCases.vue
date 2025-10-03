@@ -7,21 +7,22 @@ import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
-const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/selectByModuleModal/index.vue'));
+const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/SelectByModuleModal.vue'));
 
 /**
  * Props interface for AssocCase component
  */
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   taskId: undefined,
-  dataSource: undefined
+  dataSource: undefined,
+  tips: ''
 });
 
 // Composables
@@ -30,9 +31,6 @@ const { t } = useI18n();
 
 /**
  * Event emitter for component communication
- * <p>
- * Emits events to notify parent components about loading state changes
- * and successful edit operations
  */
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -42,22 +40,16 @@ const emit = defineEmits<{
 
 /**
  * Loading state for submit operations
- * <p>
- * Indicates whether a case association operation is currently in progress
  */
 const isSubmitLoading = ref(false);
 
 /**
  * Visibility state for the case selection modal
- * <p>
- * Controls whether the case selection modal is currently displayed
  */
 const isCaseSelectionModalVisible = ref(false);
 
 /**
  * Closes the case selection modal
- * <p>
- * Resets the modal visibility state when user cancels the operation
  */
 const closeCaseSelectionModal = () => {
   isCaseSelectionModalVisible.value = false;
@@ -65,8 +57,6 @@ const closeCaseSelectionModal = () => {
 
 /**
  * Opens the case selection modal
- * <p>
- * Shows the modal interface for selecting test cases to associate
  */
 const openCaseSelectionModal = () => {
   isCaseSelectionModalVisible.value = true;
@@ -111,7 +101,7 @@ const handleCaseAssociation = async (selectedCaseIds: string[]) => {
  */
 const handleCaseDisassociation = (caseRecord: any) => {
   modal.confirm({
-    content: t('issue.assocCase.messages.confirmCancelCase', { name: caseRecord.name }),
+    content: t('actions.tips.confirmCancelAssoc', { name: caseRecord.name }),
     onOk () {
       return task.cancelAssociationCase(props.taskId || '', [caseRecord.id], {
         paramsType: true
@@ -190,7 +180,7 @@ const tableColumns = [
     <!-- Header section with description and action button -->
     <div class="flex mb-2 items-center pr-2">
       <div class="flex-1 min-w-0 truncate px-1">
-        <Hints :text="t('common.description')" />
+        <Hints :text="props.tips" />
       </div>
       <Button
         :disabled="(props.dataSource as any)?.refCaseInfos?.length > 19"
@@ -198,7 +188,7 @@ const tableColumns = [
         size="small"
         @click="openCaseSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('issue.assocCase.actions.associateCase') }}
+        {{ t('common.assocCases') }}
       </Button>
     </div>
 

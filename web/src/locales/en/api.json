@@ -1742,7 +1742,7 @@
       "addApiAction": "Add API",
       "addApiTabName": "Add API",
       "followEmptyTip": "No followed APIs",
-      "favoriteEmptyTip": "No favorited APIs",
+      "favoriteEmptyTip": "No favourited APIs",
       "deleteTip": "Are you sure you want to delete API 「{name}」?",
       "deleteSuccess": "API deleted successfully",
       "cancelFavoriteSuccess": "API unfavorited successfully",

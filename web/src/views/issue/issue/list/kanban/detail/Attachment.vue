@@ -6,11 +6,10 @@ import { upload, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskDetail } from '@/views/issue/types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 /**
  * <p>Attachment item interface</p>
- * <p>Defines the structure of a single attachment file</p>
  */
 type AttachmentItem = {
   id: string;
@@ -19,7 +18,7 @@ type AttachmentItem = {
 }
 
 // Component props and emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -68,7 +67,7 @@ const maxFileSizeInBytes = computed(() => {
  */
 const handleFileUploadChange = async ({ file }: { file: UploadFile }) => {
   if (file.size! > maxFileSizeInBytes.value) {
-    notification.warning(t('issue.detailInfo.attachment.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }));
+    notification.warning(t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }));
     return;
   }
 
@@ -164,7 +163,7 @@ onMounted(() => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('issue.detailInfo.attachment.title') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.attachment') }}</h3>
     </div>
 
     <!-- Scrollable Content Area -->
@@ -202,7 +201,7 @@ onMounted(() => {
                   class="flex items-center h-auto leading-4.5 p-0">
                   <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
                   <div class="flex-shrink-0 text-text-link ml-1">
-                    {{ t('issue.detailInfo.attachment.actions.continueUpload') }}
+                    {{ t('backlog.edit.actions.continueUpload') }}
                   </div>
                 </Button>
               </Upload>
@@ -220,11 +219,11 @@ onMounted(() => {
                 type="link"
                 class="flex flex-col items-center justify-center h-auto leading-5 p-0">
                 <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
-                <div class="flex-shrink-0 text-text-link">{{ t('issue.detailInfo.attachment.actions.selectFile') }}</div>
+                <div class="flex-shrink-0 text-text-link">{{ t('backlog.edit.actions.selectFile') }}</div>
               </Button>
             </Upload>
-            <div class="text-theme-sub-content mt-1">
-              {{ t('issue.detailInfo.attachment.messages.uploadLimit', { size: MAX_FILE_SIZE_MB }) }}
+            <div class="text-theme-sub-content mt-1 ml-3 mr-3">
+              {{ t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }) }}
             </div>
           </template>
         </Spin>

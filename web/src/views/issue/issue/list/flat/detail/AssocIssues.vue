@@ -11,6 +11,7 @@ import { AssocTaskProps } from '@/views/issue/issue/list/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
+
 const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));
 
 const props = withDefaults(defineProps<AssocTaskProps>(), {
@@ -121,7 +122,7 @@ const handleTaskAssociation = async (selectedTaskIds: string[]) => {
  */
 const handleTaskDisassociation = (taskRecord: any) => {
   modal.confirm({
-    content: t('issue.assocTask.messages.confirmCancelTask', { name: taskRecord.name }),
+    content: t('actions.tips.confirmCancelAssoc', { name: taskRecord.name }),
     onOk () {
       return task.cancelAssociationTask(props.taskId, [taskRecord.id], {
         paramsType: true
@@ -171,7 +172,7 @@ const tableColumns = [
   {
     key: 'taskType',
     dataIndex: 'taskType',
-    title: t('common.taskType')
+    title: t('common.type')
   },
   {
     key: 'priority',
@@ -181,7 +182,8 @@ const tableColumns = [
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: t('common.evalWorkload')
+    title: t('common.evalWorkload'),
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'status',
@@ -191,12 +193,14 @@ const tableColumns = [
   {
     key: 'assigneeName',
     dataIndex: 'assigneeName',
-    title: t('common.assignee')
+    title: t('common.assignee'),
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('common.deadlineDate')
+    title: t('common.deadlineDate'),
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'action',
@@ -217,7 +221,7 @@ const tableColumns = [
         size="small"
         @click="openTaskSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('issue.assocTask.actions.associateTask', { title: props.title }) }}
+        {{ t('issue.actions.associate', { title: props.title }) }}
       </Button>
     </div>
 
@@ -228,7 +232,7 @@ const tableColumns = [
       :pagination="false"
       size="small"
       noDataSize="small"
-      noDataText="">
+      :noDataText="t('common.noData')">
       <template #bodyCell="{column, record}">
         <!-- Task name with navigation link -->
         <template v-if="column.dataIndex === 'name'">

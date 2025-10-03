@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { AsyncComponent, Colon, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
+import { AsyncComponent, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
 import { task } from '@/api/tester';
 
 import { TaskDetail } from '../../types';
 import { TIME_FORMAT } from '@/utils/constant';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 const { t } = useI18n();
 
 // Component Props & Emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -189,7 +189,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Start Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.startTime') }}</span>
+            <span>{{ t('common.startDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !startDate }">{{ startDate || '--' }}</span>

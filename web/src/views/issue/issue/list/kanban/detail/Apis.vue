@@ -2,23 +2,23 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from 'vue';
 import { Button, TreeSelect } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select } from '@xcan-angus/vue-ui';
-import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskDetail } from '@/views/issue/types';
 import { SoftwareVersionStatus } from '@/enums/enums';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
 
 // Async Components
 const Description = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Description.vue'));
 
 // Component Props & Emits
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -91,7 +91,6 @@ const taskType = computed(() => props.dataSource?.taskType?.value);
 const taskPriority = computed(() => props.dataSource?.priority?.value);
 const taskTags = computed(() => props.dataSource?.tags || []);
 const taskTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
 const evalWorkload = computed(() => props.dataSource?.evalWorkload);
 const actualWorkload = computed(() => props.dataSource?.actualWorkload);
 const isOverdue = computed(() => props.dataSource?.overdue);
@@ -696,7 +695,7 @@ onMounted(() => {
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               showSearch
-              :placeholder="t('issue.detailInfo.apis.columns.selectSprint')"
+              :placeholder="t('common.placeholders.selectSprint')"
               class="edit-container"
               @change="handleSprintSelectionChange"
               @blur="confirmSprintChange" />
@@ -731,7 +730,7 @@ onMounted(() => {
                 showSearch
                 allowClear
                 class="flex-1"
-                :placeholder="t('issue.detailInfo.apis.columns.selectModule')">
+                :placeholder="t('common.placeholders.selectModule')">
                 <template #title="item">
                   <div class="flex items-center" :title="item.name">
                     <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -815,7 +814,7 @@ onMounted(() => {
               ref="prioritySelectRef"
               v-model:value="priorityInputValue"
               enumKey="Priority"
-              :placeholder="t('issue.detailInfo.apis.columns.selectPriority')"
+              :placeholder="t('common.placeholders.selectPriority')"
               class="edit-container max-w-52"
               @change="handlePrioritySelectionChange as any"
               @blur="confirmPriorityChange as any">
@@ -865,7 +864,7 @@ onMounted(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('issue.detailInfo.apis.columns.evalWorkloadPlaceholder')"
+              :placeholder="t('common.placeholders.intputEvalWorkload')"
               @blur="handleEvalWorkloadBlur"
               @pressEnter="handleEvalWorkloadEnterPress" />
           </AsyncComponent>
@@ -899,7 +898,7 @@ onMounted(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('issue.detailInfo.apis.columns.actualWorkloadPlaceholder')"
+              :placeholder="t('common.placeholders.inputActualWorkload')"
               @blur="handleActualWorkloadBlur"
               @pressEnter="handleActualWorkloadEnterPress" />
           </AsyncComponent>
@@ -907,7 +906,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('issue.detailInfo.apis.columns.totalNum') }}</span>
+            <span>{{ t('common.counts.processCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -916,7 +915,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('issue.detailInfo.apis.columns.failNum') }}</span>
+            <span>{{ t('common.counts.processFailCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -959,10 +958,10 @@ onMounted(() => {
               :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
               showSearch
               allowClear
-              :placeholder="t('issue.detailInfo.apis.columns.tagsPlaceholder')"
+              :placeholder="t('common.placeholders.selectTag')"
               mode="multiple"
               class="edit-container"
-              :notFoundContent="t('issue.detailInfo.apis.columns.tagsNotFound')"
+              :notFoundContent="t('backlog.edit.descriptions.contactAdminForTags')"
               @change="handleTagSelectionChange"
               @blur="confirmTagChanges" />
           </AsyncComponent>
@@ -970,7 +969,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('issue.detailInfo.apis.columns.onePass') }}</span>
+            <span>{{ t('common.counts.oneTimePassed') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -982,13 +981,14 @@ onMounted(() => {
             <span>{{ t('common.softwareVersion') }}</span>
             <Colon class="w-1" />
           </div>
+
           <div class="flex-1 min-w-0">
             <template v-if="isVersionEditing">
               <Select
                 ref="versionSelectRef"
                 v-model:value="versionInputValue"
                 allowClear
-                :placeholder="t('issue.detailInfo.apis.columns.softwareVersionPlaceholder')"
+                :placeholder="t('common.placeholders.selectSoftwareVersion')"
                 class="w-full"
                 lazy
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"
@@ -1025,6 +1025,7 @@ onMounted(() => {
             <span>{{ t('common.unplanned') }}</span>
             <Colon class="w-1" />
           </div>
+
           <div>
             {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
           </div>

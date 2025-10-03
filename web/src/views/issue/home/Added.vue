@@ -27,7 +27,7 @@ const taskCountTotals = {
   completed: ref(0),
   createdBy: ref(0),
   followed: ref(0),
-  favorited: ref(0),
+  favourited: ref(0),
   commented: ref(0)
 };
 
@@ -66,8 +66,8 @@ const taskQueryParams = {
     followBy: props.userInfo?.id
   },
 
-  // Tasks favorited by current user
-  favorited: {
+  // Tasks favourited by current user
+  favourited: {
     favouriteBy: props.userInfo?.id
   },
 
@@ -172,22 +172,22 @@ const taskQueryParams = {
           :params="taskQueryParams.followed" />
       </TabPane>
 
-      <!-- Favorited Tasks Tab: Shows tasks favorited by current user -->
+      <!-- Favorited Tasks Tab: Shows tasks favourited by current user -->
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('status.favorited') }}</span>
+            <span class="mr-1">{{ t('status.favourited') }}</span>
             <span>(</span>
-            <span>{{ taskCountTotals.favorited }}</span>
+            <span>{{ taskCountTotals.favourited }}</span>
             <span>)</span>
           </div>
         </template>
         <TaskTable
-          v-model:total="taskCountTotals.favorited.value"
+          v-model:total="taskCountTotals.favourited.value"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="taskQueryParams.favorited" />
+          :params="taskQueryParams.favourited" />
       </TabPane>
 
       <!-- Commented Tasks Tab: Shows tasks commented by current user -->

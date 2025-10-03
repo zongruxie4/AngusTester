@@ -7,7 +7,10 @@ import { debounce } from 'throttle-debounce';
 
 const { t } = useI18n();
 
-// ===== Component Props and Emits =====
+// Lazy load ModuleTree component to improve performance
+const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleTreeSelector.vue'));
+
+// Component Props and Emits
 interface Props {
   visible: boolean;
   projectId: string;
@@ -21,15 +24,13 @@ const props = withDefaults(defineProps<Props>(), {
   title: undefined
 });
 
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'ok', value: string[], rowValue: any[]): void;
 }>();
 
-// Lazy load ModuleTree component to improve performance
-const ModuleTree = defineAsyncComponent(() => import('@/components/module/treeSelector/index.vue'));
-
-// ===== Reactive Data and State =====
+// Reactive Data and State
 const selectedTaskIds = ref<string[]>([]);
 const selectedTaskRows = ref([]);
 const allTaskData = ref<any[]>([]);
@@ -38,9 +39,7 @@ const isLoading = ref(false);
 const selectedModuleId = ref('');
 const searchKeywords = ref('');
 
-// ===== Table Configuration =====
 /**
- * <p>
  * Row selection configuration for the task table.
  * <p>
  * Handles selection changes and updates the selected task IDs and rows.
@@ -53,7 +52,6 @@ const tableRowSelection = {
 };
 
 /**
- * <p>
  * Table column configuration for displaying task information.
  * <p>
  * Defines the columns for code, name, status, and task type.
@@ -84,7 +82,6 @@ const tableColumns = [
   }
 ];
 
-// ===== Computed Properties =====
 /**
  * <p>
  * Computed property for the modal title.
@@ -93,12 +90,10 @@ const tableColumns = [
  * @returns The modal title string
  */
 const computedModalTitle = computed(() => {
-  return props.title || t('commonComp.selectTaskByModuleModal.title');
+  return props.title || t('common.issue');
 });
 
-// ===== API Methods =====
 /**
- * <p>
  * Loads task cases from the API based on the selected module.
  * <p>
  * Fetches task data and applies initial filtering based on search keywords.
@@ -119,9 +114,7 @@ const loadTaskCases = async () => {
   applyDataFiltering();
 };
 
-// ===== Data Filtering Methods =====
 /**
- * <p>
  * Applies filtering to the task data based on search keywords.
  * <p>
  * Filters tasks by name or code containing the search keywords.
@@ -134,7 +127,6 @@ const applyDataFiltering = () => {
 };
 
 /**
- * <p>
  * Debounced search filter handler.
  * <p>
  * Clears current selection and applies filtering when search keywords change.
@@ -144,9 +136,7 @@ const handleSearchFilter = debounce(duration.search, () => {
   applyDataFiltering();
 });
 
-// ===== Event Handlers =====
 /**
- * <p>
  * Handles the modal cancel action.
  * <p>
  * Emits the update:visible event to close the modal.
@@ -156,7 +146,6 @@ const handleModalCancel = () => {
 };
 
 /**
- * <p>
  * Handles the modal confirm action.
  * <p>
  * Emits the ok event with selected task IDs and rows, or cancels if no selection.
@@ -169,7 +158,6 @@ const handleModalConfirm = () => {
   }
 };
 
-// ===== Lifecycle Hooks =====
 // Watch for modal visibility changes
 watch(() => props.visible, (isVisible) => {
   if (isVisible) {
@@ -198,7 +186,6 @@ watch(() => selectedModuleId.value, () => {
     <div v-if="props.visible" class="modal-content">
       <!-- Left module tree area -->
       <div class="module-tree-section">
-        <h4 class="section-title">{{ t('commonComp.selectTaskByModuleModal.moduleTree') }}</h4>
         <div class="module-tree-container">
           <ModuleTree
             v-model:moduleId="selectedModuleId"
@@ -210,13 +197,11 @@ watch(() => selectedModuleId.value, () => {
 
       <!-- Right task list area -->
       <div class="task-list-section">
-        <h4 class="section-title">{{ t('commonComp.selectTaskByModuleModal.taskList') }}</h4>
-
         <!-- Search area -->
         <div class="search-section">
           <Input
             v-model:value="searchKeywords"
-            :placeholder="t('commonComp.selectTaskByModuleModal.searchPlaceholder')"
+            :placeholder="t('common.placeholders.searchKeyword')"
             class="search-input"
             @change="handleSearchFilter">
             <template #prefix>

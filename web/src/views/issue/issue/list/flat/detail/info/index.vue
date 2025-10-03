@@ -1,21 +1,12 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
 import { TaskType } from '@/enums/enums';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import { TaskDetail } from '@/views/issue/types';
 
-// Component props type definition
-type Props = {
-  projectId: string;
-  userInfo: { id: string; fullName: string; };
-  appInfo: { id: string; };
-  dataSource: TaskDetail;
-  largePageLayout: boolean;
-  loading: boolean;
-}
-
 // Component props and emits
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

@@ -6,11 +6,14 @@ import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER, PageQuery, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { TaskDetail } from '../../types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 import { Remark } from '@/views/issue/issue/types';
 
+// Async Components
+const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+
 // Component Props
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   id: '-1'
 });
 
@@ -24,9 +27,6 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 const notify = ref();
-
-// Async Components
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
 // Reactive State Variables
 const remarkList = ref<Remark[]>([]);
@@ -172,7 +172,7 @@ const queryParams = computed(() => {
           ref="richTextEditorRef"
           :value="currentRemarkContent"
           :height="150"
-          :options="{placeholder: t('issue.remark.placeholder')}"
+          :options="{placeholder: t('common.placeholders.inputDescription30')}"
           @change="handleEditorContentChange" />
         <div v-show="isValidationError" class="text-status-error">
           {{ t('common.placeholders.inputDescription30') }}

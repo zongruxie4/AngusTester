@@ -99,22 +99,6 @@
         "reviewStatus": "Review Status",
         "testResult": "Test Result"
       },
-      "moduleTreeSelector": {
-        "title": "Cases",
-        "noModule": "No Module",
-        "allCases": "All",
-        "searchModule": "Search Module",
-        "addModule": "Add Module",
-        "editModule": "Edit Module",
-        "deleteModule": "Delete Module",
-        "moveModule": "Move Module",
-        "moduleName": "Module Name",
-        "inputModuleName": "Please enter module name",
-        "confirmDelete": "Are you sure you want to delete module 「{name}」?",
-        "updateSuccess": "Update successful",
-        "deleteSuccess": "Module deleted successfully",
-        "moveSuccess": "Move successful"
-      },
       "delScriptModal": {
         "title": "Delete Test Script",
         "functionalTest": "Functional Test",
@@ -241,11 +225,6 @@
     "restartTaskTestModal": {
       "title": "Restart Test",
       "restartSuccess": "Test restarted successfully"
-    },
-    "selectTaskByModuleModal": {
-      "title": "Select Task",
-      "task": "Task",
-      "searchPlaceholder": "Search by name or code"
     },
     "exportScriptModal": {
       "title": "Export Script",

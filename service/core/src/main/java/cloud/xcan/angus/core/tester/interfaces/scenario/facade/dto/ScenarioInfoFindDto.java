@@ -59,7 +59,7 @@ public class ScenarioInfoFindDto extends PageQuery {
   @Schema(description = "Scenario last modification date for temporal filtering")
   private LocalDateTime lastModifiedDate;
 
-  @Schema(description = "User identifier who favorited the scenario for filtering")
+  @Schema(description = "User identifier who favourited the scenario for filtering")
   private Long favouriteBy;
 
   @Schema(description = "User identifier who followed the scenario for filtering")

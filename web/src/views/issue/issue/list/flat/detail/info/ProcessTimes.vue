@@ -2,18 +2,9 @@
 import { computed } from 'vue';
 import { Toggle, Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
-import { TaskDetail } from '@/views/issue/types';
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; fullName: string; };
-  appInfo: { id: string; };
-  dataSource: TaskDetail;
-  taskId: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -46,7 +37,7 @@ const getOnePassTextClass = () => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3.5 font-medium">{{ t('issue.detailInfo.basic.processCount') }}</div>
+      <div class="text-3.5 font-medium">{{ t('common.counts.processCount') }}</div>
     </template>
 
     <template #default>
@@ -62,7 +53,7 @@ const getOnePassTextClass = () => {
                   :class="getOnePassIconClass()"
                   class="text-3.5" />
               </div>
-              <span class="process-label">{{ t('issue.detailInfo.basic.columns.onePass') }}</span>
+              <span class="process-label">{{ t('common.counts.oneTimePassed') }}</span>
             </div>
             <div class="process-value">
               <span
@@ -79,7 +70,7 @@ const getOnePassTextClass = () => {
               <div class="process-icon-wrapper">
                 <Icon icon="icon-shuju" class="text-3.5 text-blue-500" />
               </div>
-              <span class="process-label">{{ t('issue.detailInfo.basic.columns.totalProcessCount') }}</span>
+              <span class="process-label">{{ t('common.counts.processCount') }}</span>
             </div>
             <div class="process-value">
               <span :class="{ 'placeholder-text': totalProcessCount === 0 }">
@@ -94,7 +85,7 @@ const getOnePassTextClass = () => {
               <div class="process-icon-wrapper">
                 <Icon icon="icon-cuowu" class="text-3.5 text-red-500" />
               </div>
-              <span class="process-label">{{ t('issue.detailInfo.basic.columns.failedProcessCount') }}</span>
+              <span class="process-label">{{ t('common.counts.processFailCount') }}</span>
             </div>
             <div class="process-value">
               <span :class="{ 'placeholder-text': failedProcessCount === 0 }">

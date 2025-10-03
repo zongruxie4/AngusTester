@@ -6,10 +6,10 @@ import { useI18n } from 'vue-i18n';
 
 import { ActivityInfo } from '@/types/types';
 import { CombinedTargetType } from '@/enums/enums';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 // Component Props
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -56,7 +56,7 @@ onMounted(() => {
   <div class="basic-info-drawer">
     <div class="basic-info-header">
       <h3 class="basic-info-title">
-        {{ t('issue.detailInfo.activity.title') }}
+        {{ t('common.activity') }}
       </h3>
     </div>
 

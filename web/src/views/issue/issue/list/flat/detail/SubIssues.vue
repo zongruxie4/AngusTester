@@ -5,41 +5,38 @@ import {
   AsyncComponent, Colon, Dropdown, Hints, Icon, IconTask,
   Input, modal, notification, Table
 } from '@xcan-angus/vue-ui';
-import { EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
+import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BugLevel, TaskType } from '@/enums/enums';
 
+import { TaskDetail } from '@/views/issue/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
+
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskDetail } from '@/views/issue/types';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+
+const EditTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
+const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));
 
 /**
  * Props interface for SubTask component
- * <p>
- * Defines the required properties for displaying and managing
- * sub-tasks associated with a parent task.
  */
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined,
   taskInfo: undefined,
-  loading: false
+  loading: false,
+  tips: ''
 });
 
 // Composables
 const { t } = useI18n();
 
-/**
- * Event emitter for component communication
- * <p>
- * Emits events to notify parent components about data changes,
- * loading state updates, and refresh requirements
- */
+// Event emitter for component communication
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'refreshChange'): void;
@@ -48,72 +45,42 @@ const emit = defineEmits<{
 }>();
 
 /**
- * Lazy-loaded task edit modal component
- * <p>
- * Provides a modal interface for editing existing tasks
- */
-const EditTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
-
-/**
- * Lazy-loaded task selection modal component
- * <p>
- * Provides a modal interface for selecting tasks to associate as sub-tasks
- */
-const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));
-
-/**
  * Loading state for API operations
- * <p>
- * Indicates whether a sub-task operation is currently in progress
  */
 const isOperationLoading = ref(false);
 
 /**
  * ID of the currently selected task for editing
- * <p>
- * Used to identify which task should be opened in the edit modal
  */
 const selectedTaskForEdit = ref<string>();
 
 /**
  * Visibility state for the task edit modal
- * <p>
- * Controls whether the task edit modal is currently displayed
  */
 const isTaskEditModalVisible = ref(false);
 
 /**
  * Visibility state for the task selection modal
- * <p>
- * Controls whether the task selection modal is currently displayed
  */
 const isTaskSelectionModalVisible = ref(false);
 
 /**
  * Task type for the new sub-task being created
- * <p>
- * Stores the selected task type from the form dropdown
  */
 const newSubTaskType = ref<TaskDetail['taskType']['value']>();
 
 /**
  * Priority level for the new sub-task being created
- * <p>
- * Stores the selected priority from the form dropdown
  */
 const newSubTaskPriority = ref<TaskDetail['priority']['value']>();
 
 /**
  * Name for the new sub-task being created
- * <p>
- * Stores the task name entered in the form input
  */
 const newSubTaskName = ref<string>();
 
 /**
  * Opens the task edit modal for creating a new sub-task
- * <p>
- * Shows the task edit modal to allow users to create a new sub-task
  */
 const openTaskEditModal = () => {
   isTaskEditModalVisible.value = true;
@@ -121,8 +88,6 @@ const openTaskEditModal = () => {
 
 /**
  * Handles successful completion of task edit modal
- * <p>
- * Clears the selected task ID and triggers a data refresh
  */
 const handleTaskEditSuccess = () => {
   selectedTaskForEdit.value = undefined;
@@ -143,7 +108,7 @@ const handleSubTaskAssociation = async (selectedSubTaskIds: string[]) => {
   };
 
   isOperationLoading.value = true;
-  const [error] = await task.setSubTask((props.taskInfo as any)?.id, requestParams);
+  const [error] = await task.setSubTask(props.taskInfo?.id || props.id, requestParams);
   isOperationLoading.value = false;
   isTaskSelectionModalVisible.value = false;
 
@@ -151,7 +116,7 @@ const handleSubTaskAssociation = async (selectedSubTaskIds: string[]) => {
     return;
   }
 
-  notification.success(t('issue.subTask.messages.associateSubTaskSuccess'));
+  notification.success(t('issue.detail.tabs.subIssue.messages.assocSubIssueSuccess'));
   emit('refreshChange');
 };
 
@@ -214,8 +179,8 @@ const saveNewSubTask = async () => {
   }
 
   newSubTaskName.value = undefined;
-  newSubTaskType.value = (props.taskInfo as any)?.taskType?.value;
-  newSubTaskPriority.value = (props.taskInfo as any)?.priority?.value;
+  newSubTaskType.value = props.taskInfo?.taskType?.value;
+  newSubTaskPriority.value = props.taskInfo?.priority?.value;
   emit('refreshChange');
 };
 
@@ -229,20 +194,20 @@ const saveNewSubTask = async () => {
  */
 const deleteSubTask = (subTaskData: TaskDetail['subTaskInfos'][number]) => {
   modal.confirm({
-    content: t('issue.subTask.messages.confirmCancelSubTask', { name: subTaskData.name }),
+    content: t('issue.detail.tabs.subIssue.messages.confirmCancelSubIssue', { name: subTaskData.name }),
     async onOk () {
       const requestParams = {
         subTaskIds: [subTaskData.id]
       };
       emit('update:loading', true);
-      const [error] = await task.cancelSubTask((props.taskInfo as any)?.id, requestParams);
+      const [error] = await task.cancelSubTask(props.taskInfo?.id || props.id, requestParams);
       emit('update:loading', false);
 
       if (error) {
         return;
       }
 
-      notification.success(t('issue.subTask.messages.cancelSubTaskSuccess'));
+      notification.success(t('issue.detail.tabs.subIssue.messages.cancelSubIssueSuccess'));
       emit('refreshChange');
     }
   });
@@ -363,10 +328,10 @@ const unfollowTask = async (taskData: TaskDetail) => {
  * based on the parent task's properties
  */
 onMounted(() => {
-  newSubTaskType.value = [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes((props.taskInfo as any)?.taskType?.value)
+  newSubTaskType.value = [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(props.taskInfo?.taskType?.value)
     ? TaskType.TASK
-    : (props.taskInfo as any)?.taskType?.value;
-  newSubTaskPriority.value = (props.taskInfo as any)?.priority?.value;
+    : props.taskInfo?.taskType?.value;
+  newSubTaskPriority.value = props.taskInfo?.priority?.value;
 });
 
 /**
@@ -375,7 +340,7 @@ onMounted(() => {
  * Returns the sprint identifier associated with the parent task
  */
 const parentSprintId = computed(() => {
-  return (props.taskInfo as any)?.sprintId;
+  return props.taskInfo?.sprintId;
 });
 
 /**
@@ -384,7 +349,7 @@ const parentSprintId = computed(() => {
  * Returns the module identifier associated with the parent task
  */
 const parentModuleId = computed(() => {
-  return (props.taskInfo as any)?.moduleId;
+  return props.taskInfo?.moduleId;
 });
 
 /**
@@ -393,7 +358,7 @@ const parentModuleId = computed(() => {
  * Returns the unique identifier of the parent task
  */
 const parentTaskId = computed(() => {
-  return (props.taskInfo as any)?.id;
+  return props.taskInfo?.id;
 });
 
 /**
@@ -402,7 +367,7 @@ const parentTaskId = computed(() => {
  * Returns progress statistics for all sub-tasks including completion counts and rates
  */
 const subTaskProgressInfo = computed(() => {
-  return (props.taskInfo as any)?.subTaskProgress || {
+  return props.taskInfo?.subTaskProgress || {
     completed: '0',
     completedRate: '0',
     total: '0'
@@ -415,10 +380,9 @@ const subTaskProgressInfo = computed(() => {
  * Returns the array of sub-task data associated with the parent task
  */
 const subTaskDataList = computed(() => {
-  return (props.taskInfo as any)?.subTaskInfos || [];
+  return props.taskInfo?.subTaskInfos || [];
 });
 
-// Dropdown menu configuration
 /**
  * Dynamic menu items map for sub-task dropdown menus
  * <p>
@@ -503,7 +467,7 @@ const subTaskTableColumns = [
   {
     key: 'taskType',
     dataIndex: 'taskType',
-    title: t('common.taskType')
+    title: t('common.type')
   },
   {
     key: 'priority',
@@ -516,7 +480,8 @@ const subTaskTableColumns = [
     dataIndex: 'evalWorkload',
     title: t('common.evalWorkload'),
     groupName: 'task',
-    hide: true
+    hide: true,
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'status',
@@ -526,12 +491,14 @@ const subTaskTableColumns = [
   {
     key: 'assigneeName',
     dataIndex: 'assigneeName',
-    title: t('common.assignee')
+    title: t('common.assignee'),
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('common.deadlineDate')
+    title: t('common.deadlineDate'),
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'action',
@@ -543,10 +510,13 @@ const subTaskTableColumns = [
 
 <template>
   <div class="h-full leading-5">
+    <!-- Description hints -->
+    <Hints :text="props.tips" class="flex-1 min-w-0 truncate ml-1" />
+
     <!-- Header section with progress and action buttons -->
-    <div class="flex items-center mb-2.5 pr-5">
+    <div class="flex items-center justify-between mb-2.5 mt-1.5 pr-5">
       <!-- Progress indicator -->
-      <div class="flex items-center flex-nowrap h-8 px-3.5 rounded" style="background-color:#FAFAFA;">
+      <div class="flex items-center h-8 px-3.5 rounded" style="background-color:#FAFAFA;">
         <span class="flex-shrink-0 font-semibold text-theme-title">
           {{ t('common.progress') }}
         </span>
@@ -568,9 +538,6 @@ const subTaskTableColumns = [
         </span>
       </div>
 
-      <!-- Description hints -->
-      <Hints :text="t('common.description')" class="flex-1 min-w-0 truncate ml-1" />
-
       <!-- Action buttons -->
       <div class="flex items-center space-x-2.5">
         <Button
@@ -579,7 +546,7 @@ const subTaskTableColumns = [
           class="space-x-1"
           @click="openTaskEditModal">
           <Icon icon="icon-jia" />
-          <span>{{ t('issue.subTask.actions.addSubTask') }}</span>
+          <span>{{ t('issue.detail.tabs.subIssue.actions.addSubIssue') }}</span>
         </Button>
 
         <Button
@@ -588,7 +555,7 @@ const subTaskTableColumns = [
           class="space-x-1"
           @click="openTaskSelectionModal">
           <Icon icon="icon-guanlianziyuan" />
-          <span>{{ t('issue.subTask.actions.associateSubTask') }}</span>
+          <span>{{ t('issue.detail.tabs.subIssue.actions.assocSubIssue') }}</span>
         </Button>
       </div>
     </div>
@@ -616,17 +583,17 @@ const subTaskTableColumns = [
         <!-- Progress display -->
         <template v-if="column.dataIndex === 'progress'">
           <div style="width: 120px;" class="flex items-center space-x-1">
-            <span>{{ `${record?.progress?.completed || 0} / ${record?.progress?.total || 0}` }}</span>
             <Progress
               :percent="+record?.progress?.completedRate"
-              style="width: 80px;"
-              class="mr-3.5" />
+              :showInfo="false"
+              style="width: 80px; margin-right: 6px;" />
+            <span>{{ `${record?.progress?.completed || 0}/${record?.progress?.total || 0}` }}</span>
           </div>
         </template>
 
         <!-- Task type display -->
         <template v-if="column.dataIndex === 'taskType'">
-          <div style="width:80px;" class="flex items-center">
+          <div style="width:70px;" class="flex items-center">
             <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
             <span class="ml-1">{{ record.taskType?.message }}</span>
           </div>
@@ -639,7 +606,7 @@ const subTaskTableColumns = [
 
         <!-- Status display -->
         <template v-if="column.dataIndex === 'status'">
-          <TaskStatus :value="record.priority" />
+          <TaskStatus :value="record.status" />
         </template>
 
         <!-- Action buttons -->
@@ -707,7 +674,7 @@ const subTaskTableColumns = [
         ref="taskNameInputRef"
         v-model:value="newSubTaskName"
         :maxlength="200"
-        :placeholder="t('issue.subTask.form.taskName')"
+        :placeholder="t('common.placeholders.inputName2')"
         trim
         class="w-200 mr-5"
         @pressEnter="(e: any) => handleEnterKeyPress(e)" />
@@ -734,6 +701,8 @@ const subTaskTableColumns = [
         :appInfo="props.appInfo"
         :moduleId="parentModuleId === '-1' ? undefined : parentModuleId"
         :parentTaskId="parentTaskId"
+        :priority="props.taskInfo?.priority?.value"
+        :deadlineDate="props.taskInfo?.deadlineDate"
         @ok="handleTaskEditSuccess" />
     </AsyncComponent>
 
@@ -741,8 +710,9 @@ const subTaskTableColumns = [
     <AsyncComponent :visible="isTaskSelectionModalVisible">
       <SelectTaskByModuleModal
         v-model:visible="isTaskSelectionModalVisible"
+        :title="t('issue.detail.tabs.subIssue.actions.assocSubIssue')"
         :projectId="props.projectId"
-        :action="`${TESTER}/task/${(props.taskInfo as any)?.id}/subtask/notAssociated`"
+        :action="`${TESTER}/task/${props.taskInfo?.id || props.id}/subtask/notAssociated`"
         @ok="handleSubTaskAssociation" />
     </AsyncComponent>
   </div>

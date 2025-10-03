@@ -6,7 +6,7 @@ import {
   Arrow, AsyncComponent, Colon, DropdownSort, Icon, IconTask,
   Image, Input, Popover, Spin, Tooltip
 } from '@xcan-angus/vue-ui';
-import { EvalWorkloadMethod, Priority } from '@xcan-angus/infra';
+import { Priority } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 import { TaskType, TaskSprintPermission } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
@@ -36,20 +36,20 @@ const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 const Introduce = defineAsyncComponent(() => import('@/views/issue/backlog/Introduce.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/issue/backlog/SearchPanel.vue'));
 const EditTaskModal = defineAsyncComponent(() => import('@/views/issue/backlog/Edit.vue'));
-const SplitTask = defineAsyncComponent(() => import('@/views/issue/backlog/SplitTask.vue'));
-const AIGenerateTask = defineAsyncComponent(() => import('@/views/issue/backlog/AiGenerateTask.vue'));
+const SplitIssue = defineAsyncComponent(() => import('@/views/issue/backlog/SplitIssue.vue'));
+const AiGenerateIssue = defineAsyncComponent(() => import('@/views/issue/backlog/AiGenerateIssue.vue'));
 
 const ApiInfo = defineAsyncComponent(() => import('@/views/issue/backlog/info/Apis.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/issue/backlog/info/Basic.vue'));
 const ScenarioInfo = defineAsyncComponent(() => import('@/views/issue/backlog/info/Scenario.vue'));
 const PersonnelInfo = defineAsyncComponent(() => import('@/views/issue/backlog/info/Personnel.vue'));
 const DateInfo = defineAsyncComponent(() => import('@/views/issue/backlog/info/Date.vue'));
-const RefTasks = defineAsyncComponent(() => import('@/views/issue/backlog/info/AssocTask.vue'));
-const RefCases = defineAsyncComponent(() => import('@/views/issue/backlog/info/AssocCase.vue'));
-const AttachmentInfo = defineAsyncComponent(() => import('@/views/issue/backlog/info/Attachment.vue'));
+const AssocIssues = defineAsyncComponent(() => import('@/views/issue/backlog/info/AssocIssues.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/issue/backlog/info/AssocCases.vue'));
+const Attachments = defineAsyncComponent(() => import('@/views/issue/backlog/info/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/issue/backlog/info/Remark.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/issue/backlog/info/Comment.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/issue/backlog/info/Activity.vue'));
+const Comments = defineAsyncComponent(() => import('@/views/issue/backlog/info/Comment.vue'));
+const Activities = defineAsyncComponent(() => import('@/views/issue/backlog/info/Activity.vue'));
 
 // Initialize composables
 const {
@@ -844,7 +844,7 @@ onMounted(() => {
                   @change="updateCurrentTaskInfo"
                   @loadingChange="setLoadingState" />
 
-                <RefTasks
+                <AssocIssues
                   v-show="ui.drawerActiveKey === 'tasks'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
@@ -853,7 +853,7 @@ onMounted(() => {
                   @change="updateCurrentTaskInfo"
                   @loadingChange="setLoadingState" />
 
-                <RefCases
+                <AssocCases
                   v-show="ui.drawerActiveKey === 'cases'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
@@ -862,7 +862,7 @@ onMounted(() => {
                   @change="updateCurrentTaskInfo"
                   @loadingChange="setLoadingState" />
 
-                <AttachmentInfo
+                <Attachments
                   v-show="ui.drawerActiveKey === 'attachments'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
@@ -871,7 +871,7 @@ onMounted(() => {
                   @change="updateCurrentTaskInfo"
                   @loadingChange="setLoadingState" />
 
-                <Comment
+                <Comments
                   v-show="ui.drawerActiveKey === 'comment'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
@@ -880,7 +880,7 @@ onMounted(() => {
                   @change="updateCurrentTaskInfo"
                   @loadingChange="setLoadingState" />
 
-                <Activity
+                <Activities
                   v-show="ui.drawerActiveKey === 'activity'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
@@ -916,7 +916,7 @@ onMounted(() => {
     </Spin>
 
     <AsyncComponent :visible="modal.isSplitTaskModalVisible">
-      <SplitTask
+      <SplitIssue
         v-model:visible="modal.isSplitTaskModalVisible"
         :projectId="props.projectId || ''"
         :dataSource="selected.selectedTaskInfo"
@@ -927,7 +927,7 @@ onMounted(() => {
     </AsyncComponent>
 
     <AsyncComponent :visible="modal.isAiGenerateTaskModalVisible">
-      <AIGenerateTask
+      <AiGenerateIssue
         v-model:visible="modal.isAiGenerateTaskModalVisible"
         :projectId="props.projectId || ''"
         @ok="handleAiGenerateTaskSuccess"

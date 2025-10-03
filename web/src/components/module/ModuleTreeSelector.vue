@@ -1,0 +1,189 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { Icon, Input } from '@xcan-angus/vue-ui';
+import { Button, Tree } from 'ant-design-vue';
+import { modules } from '@/api/tester';
+import { travelTreeData } from '@/utils/utils';
+
+const { t } = useI18n();
+
+type Props = {
+  projectId: string;
+  userInfo: { id: string; };
+  appInfo: { id: string; };
+  notify: string;
+  moduleId: string;
+  projectName: string;
+  title: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  projectId: undefined,
+  userInfo: undefined,
+  appInfo: undefined,
+  notify: undefined,
+  moduleId: '',
+  disabled: false,
+  title: ''
+});
+
+const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string): void }>();
+
+const nameInputRef = ref();
+
+const handleSelectKeysChange = (selectKeys) => {
+  if (!selectKeys.length) {
+    return;
+  }
+  emits('update:moduleId', selectKeys[0]);
+};
+
+const editId = ref<string>();
+
+const cancelEdit = () => {
+  editId.value = undefined;
+};
+
+const moduleTreeData = ref([{ name: t('common.noModule'), id: '-1' }]);
+
+const loadDataList = async () => {
+  const [error, { data }] = await modules.getModuleTree({
+    projectId: props.projectId
+  });
+  if (error) {
+    return;
+  }
+  moduleTreeData.value = [{ name: t('common.noModule'), id: '-1' }, ...travelTreeData(data || [])];
+};
+
+onMounted(() => {
+  loadDataList();
+});
+
+defineExpose({
+  loadDataList
+});
+</script>
+<template>
+  <div class="h-full flex flex-col">
+    <div
+      :class="{'active': props.moduleId === ''}"
+      class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
+      @click="handleSelectKeysChange([''])">
+      <Icon icon="icon-liebiaoshitu" class="text-3.5" />
+      <span class="flex-1">{{ t('common.all') }}</span>
+    </div>
+    <Tree
+      :treeData="moduleTreeData"
+      :selectedKeys="[props.moduleId]"
+      class="flex-1 overflow-auto"
+      blockNode
+      defaultExpandAll
+      :fieldNames="{
+        children: 'children',
+        title: 'name',
+        key: 'id'
+      }"
+      @select="handleSelectKeysChange">
+      <template
+        #title="{key, title, name, id, index, level, isLast, pid, ids, sequence, childLevels, hasEditPermission}">
+        <div v-if="editId === id" class="flex items-center">
+          <Input
+            ref="nameInputRef"
+            :placeholder="t('common.placeholders.inputName')"
+            class="flex-1 mr-2 bg-white"
+            trim
+            :value="name"
+            :allowClear="false"
+            :maxlength="50" />
+          <Button
+            type="link"
+            size="small"
+            class="px-0 py-0 mr-1"
+            @click="cancelEdit">
+            {{ t('actions.cancel') }}
+          </Button>
+        </div>
+        <div v-else class="flex items-center space-x-2 tree-title">
+          <Icon v-if="id !== '-1'" icon="icon-mokuai" />
+          <Icon
+            v-else
+            icon="icon-liebiaoshitu"
+            class="text-3.5" />
+          <span class="flex-1">{{ name }}</span>
+        </div>
+      </template>
+    </Tree>
+  </div>
+</template>
+<style scoped>
+.tree-title:hover .gengduo {
+  display: inline-block;
+}
+
+:deep(.ant-tree .ant-tree-indent-unit) {
+  width: 18px;
+}
+
+.all-case:hover, .all-case.active {
+  background-color: var(--content-tabs-bg-selected);
+}
+
+:deep(.ant-tree) {
+  background-color: transparent;
+  font-size: 12px;
+}
+
+:deep(.ant-tree .ant-tree-treenode) {
+  width: 100%;
+  height: 36px;
+  padding-left: 0;
+  line-height: 20px;
+}
+
+:deep(.ant-tree .ant-tree-treenode.ant-tree-treenode-selected) {
+  background-color: var(--content-tabs-bg-selected);
+}
+
+:deep(.ant-tree .ant-tree-treenode:hover) {
+  background-color: var(--content-tabs-bg-selected);
+}
+
+:deep(.ant-tree .ant-tree-switcher) {
+  width: 16px;
+  height: 34px;
+  margin-top: 2px;
+  line-height: 34px;
+}
+
+:deep(.ant-tree .ant-tree-node-content-wrapper:hover) {
+  background-color: transparent;
+}
+
+:deep(.ant-tree .ant-tree-node-content-wrapper) {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  justify-content: center;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  line-height: 36px;
+}
+
+:deep(.ant-tree .ant-tree-node-content-wrapper .ant-tree-iconEle) {
+  height: 36px;
+  line-height: 36px;
+  vertical-align: initial;
+}
+
+:deep(.ant-tree .ant-tree-node-selected) {
+  background-color: transparent;
+}
+
+:deep(.ant-tree .ant-tree-indent-unit) {
+  width: 18px;
+}
+
+</style>

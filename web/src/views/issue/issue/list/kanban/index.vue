@@ -64,8 +64,8 @@ const PersonnelInfo = defineAsyncComponent(() => import('@/views/issue/issue/lis
 const DateInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Date.vue'));
 const Comment = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Comment.vue'));
 const Activity = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Activity.vue'));
-const AssocTasks = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocTask.vue'));
-const AssocCases = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocCase.vue'));
+const AssocIssues = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocIssues.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocCases.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Remark.vue'));
 
@@ -185,7 +185,7 @@ const loadData = async () => {
     if (!assigneeNameSet.has(item.assigneeName)) {
       if (!item.assigneeName) {
         assigneeNameList.value.unshift({
-          name: t('issue.kanbanView.group.ungrouped'),
+          name: t('status.ungrouped'),
           value: '-1'
         });
       } else {
@@ -688,7 +688,7 @@ const toStart = async (data: TaskDetail, notificationFlag = true, errorCallback?
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('issue.table.messages.startSuccess'));
+    notification.success(t('actions.tips.startSuccess'));
   }
   loadData();
 };
@@ -708,7 +708,7 @@ const toProcessed = async (data: TaskDetail, notificationFlag = true, errorCallb
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('issue.table.messages.processedSuccess'));
+    notification.success(t('actions.tips.processSuccess'));
   }
   loadData();
 };
@@ -762,7 +762,7 @@ const toReopen = async (data: TaskDetail, notificationFlag = true, errorCallback
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('issue.table.messages.reopenSuccess'));
+    notification.success(t('actions.tips.reopenSuccess'));
   }
   loadData();
 };
@@ -782,7 +782,7 @@ const toRestart = async (data: TaskDetail, notificationFlag = true, errorCallbac
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('issue.table.messages.restartSuccess'));
+    notification.success(t('actions.tips.restartSuccess'));
   }
   loadData();
 };
@@ -817,7 +817,7 @@ const toCancel = async (data: TaskDetail, notificationFlag = true, errorCallback
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('issue.table.messages.cancelSuccess'));
+    notification.success(t('actions.tips.cancelSuccess'));
   }
   loadData();
 };
@@ -874,7 +874,7 @@ const dragHandler = async (
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('issue.kanbanView.messages.noStartPermission'));
+        notification.warning(t('issue.messages.noStartPermission'));
         return;
       }
     } else if (toStatus === TaskStatus.CANCELED) {
@@ -885,7 +885,7 @@ const dragHandler = async (
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('issue.kanbanView.messages.noCancelPermission'));
+        notification.warning(t('issue.messages.noCancelPermission'));
         return;
       }
     } else {
@@ -894,7 +894,7 @@ const dragHandler = async (
       } else {
         resetDrag(id, index, status, toStatus);
       }
-      notification.warning(t('issue.kanbanView.messages.onlyMoveToInProgressOrCanceled'));
+      notification.warning(t('issue.messages.onlyMoveToInProgressOrCanceled'));
       return;
     }
 
@@ -930,7 +930,7 @@ const dragHandler = async (
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('issue.kanbanView.messages.noConfirmer'));
+        notification.warning(t('issue.messages.noConfirmer'));
         return;
       }
 
@@ -941,7 +941,7 @@ const dragHandler = async (
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('issue.kanbanView.messages.noProcessedPermission'));
+        notification.warning(t('issue.messages.noProcessedPermission'));
         return;
       }
     } else if (toStatus === TaskStatus.CANCELED) {
@@ -952,7 +952,7 @@ const dragHandler = async (
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('issue.kanbanView.messages.noCancelPermission'));
+        notification.warning(t('issue.messages.noCancelPermission'));
         return;
       }
     } else if (toStatus === TaskStatus.COMPLETED) {
@@ -963,7 +963,7 @@ const dragHandler = async (
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('issue.kanbanView.messages.onlyMoveToConfirmingOrCanceled'));
+        notification.warning(t('issue.messages.onlyMoveToConfirmingOrCanceled'));
         return;
       }
 
@@ -973,7 +973,7 @@ const dragHandler = async (
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('issue.kanbanView.messages.noCompletedPermission'));
+        notification.warning(t('issue.messages.noCompletedPermission'));
         return;
       }
     } else {
@@ -984,9 +984,9 @@ const dragHandler = async (
       }
 
       if (confirmerId) {
-        notification.warning(t('issue.kanbanView.messages.onlyMoveToConfirmingOrCanceled'));
+        notification.warning(t('issue.messages.onlyMoveToConfirmingOrCanceled'));
       } else {
-        notification.warning(t('issue.kanbanView.messages.onlyMoveToCompletedOrCanceled'));
+        notification.warning(t('issue.messages.onlyMoveToCompletedOrCanceled'));
       }
 
       return;
@@ -1037,7 +1037,7 @@ const dragHandler = async (
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('issue.kanbanView.messages.noCompletedPermission'));
+        notification.warning(t('issue.messages.noCompletedPermission'));
         return;
       }
     } else if (toStatus === TaskStatus.CANCELED) {
@@ -1048,7 +1048,7 @@ const dragHandler = async (
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('issue.kanbanView.messages.noCancelPermission'));
+        notification.warning(t('issue.messages.noCancelPermission'));
         return;
       }
     } else {
@@ -1057,7 +1057,7 @@ const dragHandler = async (
       } else {
         resetDrag(id, index, status, toStatus);
       }
-      notification.warning(t('issue.kanbanView.messages.onlyMoveToCompletedOrCanceledFromConfirming'));
+      notification.warning(t('issue.messages.onlyMoveToCompletedOrCanceledFromConfirming'));
       return;
     }
 
@@ -1095,7 +1095,7 @@ const dragHandler = async (
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('issue.kanbanView.messages.noReopenPermission'));
+        notification.warning(t('issue.messages.noReopenPermission'));
         return;
       }
     } else {
@@ -1104,7 +1104,7 @@ const dragHandler = async (
       } else {
         resetDrag(id, index, status, toStatus);
       }
-      notification.warning(t('issue.kanbanView.messages.onlyMoveToPending'));
+      notification.warning(t('issue.messages.onlyMoveToPending'));
       return;
     }
 
@@ -1352,7 +1352,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (status === TaskStatus.IN_PROGRESS) {
         menuItems.push({
-          name: t('issue.kanbanView.actions.processed'),
+          name: t('issue.actions.processed'),
           key: 'processed',
           icon: 'icon-yichuli',
           disabled: !isAdmin && !isAssignee,
@@ -1387,7 +1387,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           icon: 'icon-zhongxindakaiceshirenwu',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isAssignee,
           hide: false,
-          tip: t('issue.detail.tips.reopenTip')
+          tip: t('issue.messages.reopenTip')
         });
 
         menuItems.push({
@@ -1396,7 +1396,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           icon: 'icon-zhongxinkaishiceshi',
           disabled: !isAdmin && !permissions.includes(TaskSprintPermission.RESTART_TASK),
           hide: false,
-          tip: t('issue.detail.tips.restartTip')
+          tip: t('issue.messages.restartTip')
         });
       }
 
@@ -1597,7 +1597,7 @@ onMounted(() => {
                 class="text-3.5 cursor-pointer"
                 @click="toggleOpen" />
             </Tooltip>
-            <span class="font-semibold">{{ t('issue.kanbanView.group.swimLane') }}</span>
+            <span class="font-semibold">{{ t('common.swimLane') }}</span>
           </div>
           <div
             v-for="_status in statusList"
@@ -1739,7 +1739,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'person' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('issue.kanbanView.drawer.personnel')"
+            :title="t('common.personnel')"
             @click="drawerActiveKeyChange('person')">
             <Icon icon="icon-quanburenyuan" class="text-4" />
           </div>
@@ -1747,7 +1747,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'date' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('issue.kanbanView.drawer.date')"
+            :title="t('common.date')"
             @click="drawerActiveKeyChange('date')">
             <Icon icon="icon-riqi" class="text-4" />
           </div>
@@ -1755,7 +1755,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'tasks' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('issue.kanbanView.drawer.assocIssues')"
+            :title="t('common.assocIssues')"
             @click="drawerActiveKeyChange('tasks')">
             <Icon icon="icon-ceshirenwu" class="text-4" />
           </div>
@@ -1763,7 +1763,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'cases' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('issue.kanbanView.drawer.assocCases')"
+            :title="t('common.assocCases')"
             @click="drawerActiveKeyChange('cases')">
             <Icon icon="icon-ceshiyongli1" class="text-4" />
           </div>
@@ -1779,7 +1779,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'remarks' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('issue.kanbanView.drawer.remarks')"
+            :title="t('common.remark')"
             @click="drawerActiveKeyChange('remarks')">
             <Icon icon="icon-shuxie" class="text-4" />
           </div>
@@ -1795,7 +1795,7 @@ onMounted(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'activity' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            :title="t('issue.kanbanView.drawer.activity')"
+            :title="t('common.activity')"
             @click="drawerActiveKeyChange('activity')">
             <Icon icon="icon-chakanhuodong" class="text-4" />
           </div>
@@ -1878,7 +1878,7 @@ onMounted(() => {
                 @change="taskInfoChange"
                 @loadingChange="loadingChange" />
 
-              <AssocTasks
+              <AssocIssues
                 v-show="drawerActiveKey === 'tasks'"
                 :projectId="props.projectId"
                 :appInfo="props.appInfo"

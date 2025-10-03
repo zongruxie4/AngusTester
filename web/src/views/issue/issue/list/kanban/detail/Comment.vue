@@ -4,10 +4,10 @@ import { SmartComment } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { CombinedTargetType } from '@/enums/enums';
-import { AssocCaseProps } from '@/views/issue/issue/list/types';
+import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 // Component Props
-const props = withDefaults(defineProps<AssocCaseProps>(), {
+const props = withDefaults(defineProps<TaskDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -46,7 +46,7 @@ onMounted(() => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('issue.comment.title') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.comment') }}</h3>
     </div>
 
     <!-- Scrollable Content Area -->

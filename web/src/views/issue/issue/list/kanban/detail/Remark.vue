@@ -115,7 +115,7 @@ const isContentTooLong = () => {
 <template>
   <div class="basic-info-drawer">
     <div class="basic-info-header">
-      <h3 class="basic-info-title">{{ t('issue.remark.title') }}</h3>
+      <h3 class="basic-info-title">{{ t('common.remark') }}</h3>
     </div>
 
     <div class="pr-2">
@@ -161,7 +161,7 @@ const isContentTooLong = () => {
                 <div class="border-2 border-theme-text-box w-2.5 h-2.5 rounded-full"></div>
                 <div class="ml-3 font-normal text-3 flex items-center space-x-2 leading-4">
                   <div class="text-theme-content font-medium">{{ remark.createdByName }}</div>
-                  <div class="text-theme-content font-medium">{{ t('issue.remark.actions.addRemark') }}</div>
+                  <div class="text-theme-content font-medium">{{ t('issue.messages.addedRemark') }}</div>
                   <div class="text-theme-sub-content">{{ remark.createdDate }}</div>
                   <Icon
                     icon="icon-qingchu"

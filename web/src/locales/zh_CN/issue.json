@@ -158,501 +158,103 @@
   },
   "issue": {
     "title": "问题",
-    "actions": {
-      "addIssue": "添加问题",
-      "confirmComplete": "确认完成",
-      "confirmIncomplete": "确认未完成",
-      "importIssues": "导入问题",
-      "exportIssues": "导出问题",
-      "viewFlowChart": "查看流程图"
-    },
     "viewMode": {
       "flat": "平铺视图",
       "table": "表格视图",
       "kanban": "看板视图",
       "gantt": "甘特图视图"
     },
-    "messages": {
-      "exportingInProgress": "您有正在导出的任务，请稍后再试",
-      "reopenTip": "将任务状态更新为`待处理`、不清理统计计数和状态。",
-      "restartTip": "将任务更新为`待处理`，相关统计计数和状态会被清除。"
-    },
-    "detail": {
-      "title": "任务详情",
-      "remark": "备注",
-      "testInfo": "测试信息",
-      "comments": "评论",
-      "activity": "活动",
-      "assocCase": "关联用例",
-      "assocTask": "关联任务",
-      "columns": {
-        "personnel": "人员信息",
-        "date": "时间信息",
-        "apis": "接口信息",
-        "scenario": "场景信息"
-      },
-      "batchActions": {
-        "confirmCancel": "确定取消选中的 {num} 条任务吗？",
-        "confirmDelete": "确定删除选中的 {num} 条任务吗？",
-        "cancelSuccess": "选中的 {num} 条任务全部取消成功",
-        "cancelFailed": "选中的 {num} 条任务全部取消失败",
-        "cancelPartialSuccess": "选中的 {num} 条任务取消成功，{errorNum} 条任务取消失败",
-        "deleteSuccess": "选中的 {num} 条任务全部删除成功",
-        "deleteFailed": "选中的 {num} 条任务全部删除失败",
-        "deletePartialSuccess": "选中的 {num} 条任务删除成功，{errorNum} 条任务删除失败",
-        "moveSuccess": "选中的 {num} 条任务全部移动成功",
-        "moveFailed": "选中的 {num} 条任务全部移动失败",
-        "movePartialSuccess": "选中的 {num} 条任务移动成功，{errorNum} 条任务移动失败",
-        "favouriteFailed": "选中的 {num} 条任务全部收藏失败",
-        "favouritePartialSuccess": "选中的 {num} 条任务收藏成功，{errorNum} 条任务收藏失败",
-        "confirmFavourite": "确定收藏选中的{num}条任务吗？",
-        "confirmCancelFavourite": "确定取消收藏选中的{num}条任务吗？",
-        "cancelFavouriteFailed": "选中的{num}条任务全部取消收藏失败",
-        "cancelFavouritePartialSuccess": "选中的{num}条任务取消收藏成功，{errorNum}条任务取消收藏失败",
-        "confirmFollow": "确定关注选中的{num}条任务吗？",
-        "cancelFollowFailed": "选中的{num}条任务全部取消关注失败",
-        "cancelFollowPartialSuccess": "选中的{num}条任务取消关注成功，{errorNum}条任务取消关注失败"
-      },
-      "messages": {
-        "maxBatchOperation": "最大支持批量操作 {maxNum} 个任务，当前已选中 {selectedNum} 个任务。",
-        "copyLinkSuccess": "复制链接成功",
-        "copyLinkFailed": "复制链接失败",
-        "splitSuccess": "任务拆分成功",
-        "splitFailed": "任务拆分失败",
-        "moveSuccess": "任务移动成功",
-        "moveFailed": "任务移动失败",
-        "deleteSuccess": "任务删除成功",
-        "deleteFailed": "任务删除失败",
-        "editSuccess": "任务编辑成功",
-        "editFailed": "任务编辑失败",
-        "refreshSuccess": "刷新成功",
-        "refreshFailed": "刷新失败",
-        "confirmDelete": "确定删除任务「{name}」吗？",
-        "startSuccess": "任务开始成功",
-        "pauseSuccess": "任务暂停成功",
-        "completeSuccess": "任务完成成功",
-        "reopenSuccess": "任务重新打开成功",
-        "restartSuccess": "任务重新开始成功"
-      },
-      "placeholder": {
-        "searchTask": "搜索任务",
-        "selectAssignee": "选择负责人",
-        "selectReporter": "选择报告人",
-        "selectSprint": "选择所属迭代",
-        "inputDescription": "请输入任务描述",
-        "inputRemark": "请输入备注内容",
-        "inputComment": "请输入评论内容",
-        "selectPriority": "选择优先级",
-        "selectStatus": "选择状态",
-        "selectTaskType": "选择任务类型"
-      },
-      "tips": {
-        "batchOperationLimit": "批量操作最多支持200个任务",
-        "copyLinkTip": "复制当前任务链接到剪贴板",
-        "fullScreenTip": "全屏显示任务详情",
-        "refreshTip": "刷新任务数据",
-        "editTip": "编辑当前任务",
-        "moveTip": "移动任务到其他迭代",
-        "deleteTip": "删除当前任务",
-        "splitTip": "将当前任务拆分为多个子任务"
-      },
-      "priority": {
-        "low": "低",
-        "medium": "中",
-        "high": "高",
-        "urgent": "紧急"
-      },
-      "tabs": {
-        "remark": "备注",
-        "testInfo": "测试信息",
-        "comments": "评论",
-        "activity": "活动",
-        "assocCase": "关联用例",
-        "assocTask": "关联任务"
-      },
-      "assocTaskTab": {
-        "title": "任务",
-        "tips": "记录与当前任务相关联的其他任务，帮助团队了解任务之间的依赖关系。"
-      },
-      "assocRequirementTab": {
-        "title": "需求",
-        "tips": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。"
-      },
-      "assocStoryTab": {
-        "title": "故事",
-        "tips": "追溯用户角度描述功能需求，方便理解问题产生的背景和影响范围。"
-      },
-      "assocBugTab": {
-        "title": "缺陷",
-        "tips": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。"
-      },
-      "assocCaseTab": {
-        "title": "功能用例",
-        "tips": "记录与当前任务相关联的其他任务，帮助团队了解任务之间的依赖关系。"
-      },
-      "assocApiTestTab": {
-        "title": "接口测试",
-        "tips": "建立与对应接口测试任务关联关系，方便追溯接口测试进展，确保接口正常工作。"
-      },
-      "assocScenarioTestTab": {
-        "title": "场景测试",
-        "tips": "建立与对应场景测试任务关联关系，方便了解真实场景中功能的有效性，确保解决方案的完整性。"
-      },
-      "noMore": "没有了",
-      "previousTask": "上一条任务",
-      "nextTask": "下一条任务"
-    },
-    "upload": {
-      "title": "导入任务",
-      "form": {
-        "iteration": "迭代",
-        "selectSprint": "选择迭代",
+    "actions": {
+      "addIssue": "添加问题",
+      "processed": "已处理",
+      "confirmComplete": "确认完成",
+      "confirmIncomplete": "确认未完成",
+      "importIssues": "导入问题",
+      "exportIssues": "导出问题",
+      "viewFlowChart": "查看流程图",
+      "associate": "关联{title}",
+      "upload": {
         "uploadFile": "请上传文件",
         "selectFile": "选择文件",
         "uploadTip": "可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.xls .xlsx类型文件。",
-        "taskImportTemplate": "导入模板",
+        "importTemplate": "导入模板",
         "duplicateStrategy": "重复时处理策略"
+      },
+      "move": {
+        "options": {
+          "productBacklog": "产品待办",
+          "productSprint": "产品迭代"
+        }
       }
     },
-    "table": {
-      "columns": {
-        "apiScenario": "接口/场景",
-        "service": "服务",
-        "failCount": "失败次数",
-        "processCount": "处理次数",
-        "processTime": "处理时间",
-        "confirmTime": "确认时间",
-        "completeTime": "完成时间",
-        "cancelTime": "取消时间",
-        "lastModifyTime": "最后修改时间"
+    "messages": {
+      "exportingInProgress": "您有正在导出的问题，请稍后再试",
+      "reopenTip": "将问题状态更新为`待处理`、不清理统计计数和状态。",
+      "restartTip": "将问题更新为`待处理`，相关统计计数和状态会被清除。",
+      "noStartPermission": "没有开始处理权限",
+      "noCancelPermission": "没有取消问题权限",
+      "onlyMoveToInProgressOrCanceled": "只能移动到进行中、已取消",
+      "noProcessedPermission": "没有已处理权限",
+      "onlyMoveToConfirmingOrCanceled": "只能移动到待确认、已取消",
+      "onlyMoveToCompletedOrCanceled": "只能移动到已完成、已取消",
+      "noCompletedPermission": "没有确认完成权限",
+      "onlyMoveToCompletedOrCanceledFromConfirming": "只能移动到已完成、已取消",
+      "onlyMoveToPending": "只能移动到待处理",
+      "noReopenPermission": "没有重新打开权限",
+      "noConfirmer": "该问题没有确认人，无需确认，只能移动到已完成、已取消",
+      "addedRemark": "添加了备注"
+    },
+    "detail": {
+      "tabs": {
+        "subIssueTip": "用于将大型复杂问题分解成更小、更易管理的子问题，便于团队成员分工协作。",
+        "assocTaskTip": "记录与当前问题相关联的其他任务，了解问题之间的依赖关系。",
+        "assocRequirementTip": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。",
+        "assocStoryTip": "追溯用户角度描述功能需求，方便理解问题产生的背景和影响范围。",
+        "assocBugTip": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。",
+        "assocCaseTitle": "功能测试",
+        "assocCaseTip": "记录与当前问题相关联的测试用例，了解问题与测试之间的依赖关系。",
+        "assocApiTestTitle": "接口测试",
+        "assocApiTestTip": "建立与对应接口测试任务关联关系，方便追溯接口测试进展，确保接口正常工作。",
+        "assocScenarioTestTitle": "场景测试",
+        "assocScenarioTestTip": "建立与对应场景测试任务关联关系，方便了解真实场景中功能的有效性，确保解决方案的完整性。",
+        "testInfoTitle": "测试信息",
+        "subIssue": {
+          "actions": {
+            "addSubIssue": "添加子问题",
+            "assocSubIssue": "关联子问题"
+          },
+          "messages": {
+            "confirmCancelSubIssue": "确定取消子问题「{name}」吗？",
+            "assocSubIssueSuccess": "关联子问题成功",
+            "cancelSubIssueSuccess": "取消子问题成功"
+          }
+        }
       },
       "messages": {
-        "maxBatchLimit": "最大支持批量操作 {maxNum} 个任务，当前已选中 {selectedNum} 个任务。",
-        "cancelConfirm": "确定取消选中的 {num} 条任务吗？",
-        "cancelNumSuccess": "选中的 {num} 条任务全部取消成功",
-        "cancelFail": "选中的 {num} 条任务全部取消失败",
-        "cancelPartial": "选中的 {successNum} 条任务取消成功，{errorNum} 条任务取消失败",
-        "deleteConfirm": "确定删除选中的 {num} 条任务吗？",
-        "deleteSuccess": "选中的 {num} 条任务删除成功",
-        "favouriteConfirm": "确定收藏选中的 {num} 条任务吗？",
-        "favouriteNumSuccess": "选中的 {num} 条任务全部收藏成功",
-        "favouriteFail": "选中的 {num} 条任务全部收藏失败",
-        "favouritePartial": "选中的 {successNum} 条任务收藏成功，{errorNum} 条任务收藏失败",
-        "cancelFavouriteConfirm": "确定取消收藏选中的 {num} 条任务吗？",
-        "cancelFavouriteNumSuccess": "选中的 {num} 条任务全部取消收藏成功",
-        "cancelFavouriteFail": "选中的 {num} 条任务全部取消收藏失败",
-        "cancelFavouritePartial": "选中的 {successNum} 条任务取消收藏成功，{errorNum} 条任务取消收藏失败",
-        "followConfirm": "确定关注选中的 {num} 条任务吗？",
-        "followNumSuccess": "选中的 {num} 条任务全部关注成功",
-        "followFail": "选中的 {num} 条任务全部关注失败",
-        "followPartial": "选中的 {successNum} 条任务关注成功，{errorNum} 条任务关注失败",
-        "cancelFollowConfirm": "确定取消关注选中的 {num} 条任务吗？",
-        "cancelFollowNumSuccess": "选中的 {num} 条任务全部取消关注成功",
-        "cancelFollowFail": "选中的 {num} 条任务全部取消关注失败",
-        "cancelFollowPartial": "选中的 {successNum} 条任务取消关注成功，{errorNum} 条任务取消关注失败",
-        "deleteTaskConfirm": "确定删除任务「{name}」吗？",
-        "deleteTaskSuccess": "任务删除成功，您可以在回收站查看删除后的任务",
-        "startSuccess": "任务开始处理成功",
-        "processedSuccess": "任务已处理成功",
-        "reopenSuccess": "任务重新打开成功",
-        "restartSuccess": "任务重新开始成功",
-        "cancelSuccess": "任务取消成功",
-        "copySuccess": "复制成功",
-        "copyFail": "复制失败"
-      }
-    },
-    "moveModal": {
-      "title": "移动任务",
-      "form": {
-        "selectSprint": "选择迭代",
-        "selectSprintPlaceholder": "选择或查询迭代"
-      },
-      "messages": {
-        "moveSuccess": "任务移动成功",
-        "batchMoveSuccess": "选中的 {num} 条任务全部移动成功"
-      },
-      "defaultOptions": {
-        "productBacklog": "产品Backlog"
-      }
-    },
-    "ganttView": {
-      "drawer": {
-        "personnel": "人员",
-        "date": "日期",
-        "assocIssues": "关联任务",
-        "assocCases": "关联用例",
-        "attachments": "附件",
-        "remarks": "备注",
-        "comments": "评论",
-        "activity": "活动"
+        "confirmCancel": "确定取消选中的 {num} 条问题吗？",
+        "cancelSuccess": "选中的 {num} 条数据全部取消成功",
+        "cancelFailed": "选中的 {num} 条问题全部取消失败",
+        "cancelPartialSuccess": "选中的 {num} 条问题取消成功，{errorNum} 条问题取消失败",
+        "favouriteSuccess": "选中的 {num} 条问题全部收藏成功",
+        "favouriteFailed": "选中的 {num} 条问题全部收藏失败",
+        "favouritePartialSuccess": "选中的 {num} 条问题收藏成功，{errorNum} 条问题收藏失败",
+        "confirmFavourite": "确定收藏选中的{num}条问题吗？",
+        "cancelFavouriteSuccess": "选中的 {num} 条问题全部取消收藏成功",
+        "confirmCancelFavourite": "确定取消收藏选中的{num}条问题吗？",
+        "cancelFavouriteFailed": "选中的{num}条问题全部取消收藏失败",
+        "cancelFavouritePartialSuccess": "选中的{num}条问题取消收藏成功，{errorNum}条问题取消收藏失败",
+        "confirmFollow": "确定关注选中的{num}条问题吗？",
+        "confirmCancelFollow": "确定取消关注选中的 {num} 条问题吗？",
+        "followSuccess": "选中的 {num} 条问题全部关注成功",
+        "followFailed": "选中的 {num} 条问题全部关注失败",
+        "cancelFollowSuccess": "选中的 {num} 条问题全部取消关注成功",
+        "cancelFollowFailed": "选中的{num}条问题全部取消关注失败",
+        "cancelFollowPartialSuccess": "选中的{num}条问题取消关注成功，{errorNum}条问题取消关注失败",
+        "maxBatchLimit": "最大支持批量操作 {maxNum} 个问题，当前已选中 {selectedNum} 个问题。"
       }
     },
     "flowChart": {
       "title": "问题处理流程图"
-    },
-    "editModal": {
-      "tooltip": {
-        "zoomIn": "全屏",
-        "zoomOut": "缩小"
-      },
-      "form": {
-        "namePlaceholder": "任务名称，最大支持200字符",
-        "nameRule": "任务名称，最大支持200字符",
-        "typePlaceholder": "请选择任务类型",
-        "priorityPlaceholder": "请选择优先级",
-        "scenarioPlaceholder": "请选择场景",
-        "scenarioRule": "请选择场景",
-        "testTypePlaceholder": "请选择测试类型",
-        "servicePlaceholder": "选择或查询服务",
-        "serviceRule": "请选择服务",
-        "apiPlaceholder": "请选择接口",
-        "apiRule": "请选择接口",
-        "assigneePlaceholder": "选择经办人",
-        "assigneeRule": "选择经办人",
-        "assigneeTip": "负责实际执行分配的工作任务。",
-        "assignToMe": "指派给我",
-        "confirmerPlaceholder": "选择确认人",
-        "confirmerTip": "负责核实和验证工作结果的人员，指定后会自动进入确认流程。",
-        "deadlineRule": "请选择截止时间",
-        "deadlineFutureRule": "截止时间必须是一个未来时间",
-        "deadlineSprintRule": "超过了迭代截止时间({deadline})",
-        "testerPlaceholder": "选择测试人",
-        "testerTip": "负责测试和验证产品功能或服务质量的人员。",
-        "descriptionPlaceholder": "任务描述，最大支持6000个字符",
-        "descriptionRule": "描述最大支持6000个字符",
-        "sprintPlaceholder": "选择或查询迭代",
-        "sprintRule": "请选择所属迭代",
-        "modulePlaceholder": "选择或查模块",
-        "parentTaskPlaceholder": "请选择父任务",
-        "workload": {
-          "evalWorkload": "评估工作量",
-          "actualWorkload": "实际工作量",
-          "placeholder": "支持值0.1~1000，最多2位小数",
-          "storyPointTip": "工作任务量、综合难度、复杂度等的评估值。",
-          "workloadTip": "工作评估所花费的时间，以小时为单位计算。",
-          "actualWorkloadTip": "工作任务量、综合难度、复杂度等的实际值。",
-          "rule": "请输入评估工作量"
-        },
-        "softwareVersion": "软件版本",
-        "softwareVersionPlaceholder": "请选择所属版本",
-        "tags": "标签",
-        "tagsPlaceholder": "最多可添加5个标签",
-        "tagsTip": "\"任务标签\"可以帮助您组织有共同点的任务，例如\"项目名称、迭代版本、业务标识\"等。",
-        "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
-        "assocIssues": "关联任务",
-        "assocTasksPlaceholder": "最多可关联20个任务",
-        "assocCases": "关联用例",
-        "assocCasesPlaceholder": "最多可关联20个用例",
-        "attachments": "附件",
-        "attachmentsAdd": "添加附件,最多上传5个附件",
-        "attachmentsContinue": "继续上传",
-        "attachmentsUpload": "上传附件，最多上传5个"
-      },
-      "messages": {
-        "addSuccess": "任务添加成功",
-        "editSuccess": "任务编辑成功"
-      }
-    },
-    "kanbanView": {
-      "drawer": {
-        "personnel": "人员",
-        "date": "日期",
-        "assocIssues": "关联任务",
-        "assocCases": "关联用例",
-        "attachments": "附件",
-        "remarks": "备注",
-        "comments": "评论",
-        "activity": "活动"
-      },
-      "actions": {
-        "processed": "已处理",
-        "completed": "确认完成"
-      },
-      "messages": {
-        "noStartPermission": "没有开始处理权限",
-        "noCancelPermission": "没有取消任务权限",
-        "onlyMoveToInProgressOrCanceled": "只能移动到进行中、已取消",
-        "noProcessedPermission": "没有已处理权限",
-        "onlyMoveToConfirmingOrCanceled": "只能移动到待确认、已取消",
-        "onlyMoveToCompletedOrCanceled": "只能移动到已完成、已取消",
-        "noCompletedPermission": "没有确认完成权限",
-        "onlyMoveToCompletedOrCanceledFromConfirming": "只能移动到已完成、已取消",
-        "onlyMoveToPending": "只能移动到待处理",
-        "noReopenPermission": "没有重新打开权限",
-        "noConfirmer": "该任务没有确认人，无需确认，只能移动到已完成、已取消"
-      },
-      "group": {
-        "swimLane": "泳道",
-        "expandAll": "全部展开",
-        "collapseAll": "全部收起",
-        "tasks": "个任务",
-        "ungrouped": "未分组"
-      }
-    },
-    "assocCase": {
-      "title": "关联功能用例",
-      "description": "跟踪任务功能测试用例完成情况，了解任务的哪些功能已经被实现和测试，方便更准确地评估任务进度。",
-      "actions": {
-        "associateCase": "关联用例"
-      },
-      "messages": {
-        "confirmCancelCase": "确认取消关联用例「{name}」吗？"
-      },
-      "selectCasePlaceholder": "最多可关联20个用例"
-    },
-    "assocTask": {
-      "title": "关联任务",
-      "actions": {
-        "associateTask": "关联{title}"
-      },
-      "messages": {
-        "confirmCancelTask": "确认取消关联任务「{name}」吗？"
-      },
-      "modal": {
-        "selectTask": "选择{title}"
-      },
-      "selectTaskPlaceholder": "最多可关联20个任务"
-    },
-    "remark": {
-      "placeholder": " 添加补充说明，如注意事项，确认不通过原因等，最大支持6000个字符",
-      "validation": {
-        "maxLength": "备注最大支持6000个字符"
-      },
-      "actions": {
-        "addRemark": "添加了备注"
-      },
-      "title": "备注"
-    },
-    "subTask": {
-      "title": "子任务",
-      "description": "用于将大型复杂任务分解成更小、更易管理的子任务，便于团队成员分工协作。",
-      "actions": {
-        "addSubTask": "添加子任务",
-        "associateSubTask": "关联子任务"
-      },
-      "messages": {
-        "confirmCancelSubTask": "确定取消子任务「{name}」吗？",
-        "associateSubTaskSuccess": "关联子任务成功",
-        "cancelSubTaskSuccess": "取消子任务成功"
-      },
-      "modal": {
-        "title": "关联子任务",
-        "label": "关联子任务",
-        "placeholder": "请选择子任务"
-      }
-    },
-    "testing": {
-      "title": "测试",
-      "execResult": {
-        "title": "执行信息",
-        "fields": {
-          "execByName": "执行人",
-          "lastExecTime": "最后执行时间"
-        }
-      },
-      "testResult": {
-        "title": "测试结果"
-      }
-    },
-    "detailInfo": {
-      "title": "详细信息",
-      "apis": {
-        "columns": {
-          "namePlaceholder": "任务名称，最大支持200字符",
-          "selectModule": "选择或查询模块",
-          "selectSprint": "选择或查询迭代",
-          "selectPriority": "请选择优先级",
-          "onePass": "一次性通过",
-          "failedProcessCount": "失败次数",
-          "totalProcessCount": "总处理次数",
-          "softwareVersion": "软件版本",
-          "softwareVersionPlaceholder": "请选择所属版本",
-          "unplanned": "未计划的",
-          "tagsPlaceholder": "最多可添加5个标签",
-          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。"
-        }
-      },
-      "description": {
-        "title": "描述",
-        "placeholder": "添加详细说明，最大支持6000个字符",
-        "validation": {
-          "maxLength": "描述最大支持6000个字符"
-        }
-      },
-      "personnel": {
-        "title": "人员",
-        "actions": {
-          "assignToMe": "指派给我"
-        },
-        "placeholders": {
-          "selectAssignee": "选择经办人",
-          "selectConfirmer": "选择确认人",
-          "selectTester": "选择测试人"
-        }
-      },
-      "date": {
-        "title": "日期",
-        "fields": {
-          "deadline": "截止时间",
-          "processTime": "处理时间",
-          "confirmTime": "确认时间",
-          "completeTime": "完成时间",
-          "cancelTime": "取消时间",
-          "execTime": "执行时间",
-          "createTime": "添加时间",
-          "lastModifyTime": "最后修改时间"
-        },
-        "validation": {
-          "selectDeadline": "请选择截止时间",
-          "futureTimeRequired": "截止时间必须是一个未来时间"
-        }
-      },
-      "attachment": {
-        "title": "附件",
-        "actions": {
-          "continueUpload": "继续上传",
-          "selectFile": "选择文件"
-        },
-        "messages": {
-        }
-      },
-      "basic": {
-        "title": "基本信息",
-        "workloadEvaluation": "评估方法",
-        "processCount": "处理次数",
-        "columns": {
-          "namePlaceholder": "任务名称，最大支持200字符",
-          "selectSprint": "选择或查询迭代",
-          "selectModule": "选择或查询模块",
-          "onePass": "一次性通过",
-          "selectTaskType": "请选择任务类型",
-          "selectPriority": "请选择优先级",
-          "failedProcessCount": "失败次数",
-          "totalProcessCount": "总处理次数",
-          "softwareVersion": "软件版本",
-          "softwareVersionPlaceholder": "请选择所属版本",
-          "unplanned": "未计划的",
-          "tagsPlaceholder": "最多可添加5个标签",
-          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。"
-        }
-      },
-      "scenario": {
-        "title": "基本信息",
-        "columns": {
-          "namePlaceholder": "任务名称，最大支持200字符",
-          "selectSprint": "选择或查询迭代",
-          "selectModule": "选择或查询模块",
-          "selectPriority": "请选择优先级",
-          "failNum": "失败次数",
-          "totalNum": "处理次数",
-          "onePass": "一次性通过",
-          "softwareVersion": "软件版本",
-          "softwareVersionPlaceholder": "请选择所属版本",
-          "unplanned": "未计划的",
-          "tagsPlaceholder": "最多可添加5个标签",
-          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。"
-        }
-      }
     }
   },
   "meeting": {

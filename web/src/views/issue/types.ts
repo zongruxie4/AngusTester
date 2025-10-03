@@ -82,6 +82,7 @@ export type TaskInfo = {
   createdDate: string;
   avatar: string;
   lastModifiedBy: string;
+  lastModifiedByName: string;
   lastModifiedDate: string;
 }
 
