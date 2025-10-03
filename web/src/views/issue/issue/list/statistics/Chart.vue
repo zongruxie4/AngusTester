@@ -2,35 +2,22 @@
 import { defineAsyncComponent } from 'vue';
 
 import { TaskCount } from '../../types';
-
-/**
- * Component props interface for Chart component
- */
-type Props = {
-  dataSource: TaskCount;
-}
+import { DataSourceProps } from '@/types/types';
 
 // Props Definition
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DataSourceProps<TaskCount>>(), {
   dataSource: undefined
 });
 
-/**
- * Lazy-loaded TaskTypeChart component for displaying task type distribution
- */
 const TaskTypeChart = defineAsyncComponent(() => import('./TaskTypeChart.vue'));
-
-/**
- * Lazy-loaded TestTypeChart component for displaying test type distribution
- */
 const TestTypeChart = defineAsyncComponent(() => import('./TestTypeChart.vue'));
 </script>
 
 <template>
   <!-- Chart container with two side-by-side chart components -->
   <div class="chart-container">
-    <TestTypeChart :dataSource="props.dataSource" class="chart-item" />
     <TaskTypeChart :dataSource="props.dataSource" class="chart-item" />
+    <TestTypeChart :dataSource="props.dataSource" class="chart-item" />
   </div>
 </template>
 <style scoped>

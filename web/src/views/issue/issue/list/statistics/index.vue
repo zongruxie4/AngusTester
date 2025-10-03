@@ -163,7 +163,7 @@ onMounted(() => {
     <CollapsePanel :key="componentId" :showArrow="false">
       <!-- Statistics cards section -->
       <Count :dataSource="statisticsData" class="statistics-cards" />
-      <!-- Charts section -->
+      <!-- ECharts section -->
       <Chart :dataSource="statisticsData" />
     </CollapsePanel>
   </Collapse>

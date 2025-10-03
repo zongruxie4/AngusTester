@@ -83,7 +83,7 @@ const menuItems = computed(() => {
     {
       name: t('issue.title'),
       icon: 'icon-renwu2',
-      key: 'task'
+      key: 'issue'
     },
     projectTypeVisibilityMap.value.showMeeting
       ? {

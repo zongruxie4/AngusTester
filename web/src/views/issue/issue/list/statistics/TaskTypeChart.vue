@@ -138,27 +138,27 @@ const updateChartData = (): void => {
 
   // Add task type data points
   chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(enumUtils, TaskType.STORY),
+    name: enumUtils.getEnumDescription(TaskType, TaskType.STORY),
     value: +props.dataSource.storyNum
   });
   chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(enumUtils, TaskType.TASK),
+    name: enumUtils.getEnumDescription(TaskType, TaskType.TASK),
     value: +props.dataSource.taskNum
   });
   chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(enumUtils, TaskType.BUG),
+    name: enumUtils.getEnumDescription(TaskType, TaskType.BUG),
     value: +props.dataSource.bugNum
   });
   chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(enumUtils, TaskType.REQUIREMENT),
+    name: enumUtils.getEnumDescription(TaskType, TaskType.REQUIREMENT),
     value: +props.dataSource.requirementNum
   });
   chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(enumUtils, TaskType.API_TEST),
+    name: enumUtils.getEnumDescription(TaskType, TaskType.API_TEST),
     value: +props.dataSource.apiTestNum
   });
   chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(enumUtils, TaskType.SCENARIO_TEST),
+    name: enumUtils.getEnumDescription(TaskType, TaskType.SCENARIO_TEST),
     value: +props.dataSource.scenarioTestNum
   });
 

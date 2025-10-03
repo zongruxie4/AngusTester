@@ -141,15 +141,15 @@ const updateChartData = (): void => {
 
   // Add test type data points
   chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(ScriptType.TEST_FUNCTIONALITY),
+    name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_FUNCTIONALITY),
     value: +props.dataSource.functionalNum
   });
   chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(ScriptType.TEST_PERFORMANCE),
+    name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_PERFORMANCE),
     value: +props.dataSource.perfNum
   });
   chartOptions.series?.[0].data.push({
-    name: enumUtils.getEnumDescription(ScriptType.TEST_STABILITY),
+    name: enumUtils.getEnumDescription(ScriptType, ScriptType.TEST_STABILITY),
     value: +props.dataSource.stabilityNum
   });
 

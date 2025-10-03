@@ -3,19 +3,13 @@ import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 
 import { TaskCount } from '../../types';
-
-/**
- * Component props interface for Count component
- */
-type Props = {
-  dataSource: TaskCount;
-}
+import { DataSourceProps } from '@/types/types';
 
 // Composables
 const { t } = useI18n();
 
 // Props Definition
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DataSourceProps<TaskCount>>(), {
   dataSource: undefined
 });
 
