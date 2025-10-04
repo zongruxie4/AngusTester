@@ -19,15 +19,15 @@ const attachments = computed(() => props.planData?.attachments || []);
 <template>
   <div class="max-w-250 mb-2 basic-card">
     <div class="text-theme-title mb-2 text-3.5 font-semibold basic-title">
-      {{ t('testPlan.planDetail.basicInfo.title') }}
+      {{ t('common.basicInfo') }}
     </div>
 
     <div class="space-y-2.5">
       <div class="flex items-start space-x-5">
         <div class="w-1/2 flex items-start mt-2.5">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('testPlan.columns.planName') }}</span>
-            <Colon class="w-1" />
+            <span class="font-semibold text-black">{{ t('common.name') }}</span>
+            <Colon class="w-1 mr-2" />
           </div>
 
           <div class="whitespace-pre-wrap break-words break-all ml-2">{{ planData?.name }}</div>
@@ -36,7 +36,7 @@ const attachments = computed(() => props.planData?.attachments || []);
         <div class="w-1/2 flex items-start mt-2.5">
           <div class="w-24 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
             <span class="font-semibold text-black">{{ t('common.planTime') }}</span>
-            <Colon class="w-1" />
+            <Colon class="w-1 mr-2" />
           </div>
 
           <div class="text-3 whitespace-nowrap ml-2">
@@ -51,7 +51,7 @@ const attachments = computed(() => props.planData?.attachments || []);
         <div class="w-1/2 flex items-start">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
             <span class="font-semibold text-black">{{ t('common.owner') }}</span>
-            <Colon class="w-1" />
+            <Colon class="w-1 mr-2" />
           </div>
 
           <div class="whitespace-pre-wrap break-words break-all ml-2">{{ planData?.ownerName }}</div>
@@ -60,7 +60,7 @@ const attachments = computed(() => props.planData?.attachments || []);
         <div class="w-1/2 flex items-start">
           <div class="w-24 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
             <span class="font-semibold text-black">{{ t('testPlan.columns.casePrefix') }}</span>
-            <Colon class="w-1" />
+            <Colon class="w-1 mr-2" />
           </div>
 
           <div
@@ -75,7 +75,7 @@ const attachments = computed(() => props.planData?.attachments || []);
         <div class="w-1/2 flex items-center">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
             <span class="font-semibold text-black">{{ t('common.status') }}</span>
-            <Colon class="w-1" />
+            <Colon class="w-1 mr-2" />
           </div>
 
           <div class="text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5 ml-2">
@@ -86,8 +86,8 @@ const attachments = computed(() => props.planData?.attachments || []);
 
         <div class="w-1/2 flex items-center">
           <div class="w-24 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('testPlan.planDetail.basicInfo.workloadAssessment') }}</span>
-            <Colon class="w-1" />
+            <span class="font-semibold text-black">{{ t('common.evalWorkloadMethod') }}</span>
+            <Colon class="w-1 mr-2" />
           </div>
 
           <div class="whitespace-pre-wrap break-words break-all ml-2">
@@ -100,7 +100,7 @@ const attachments = computed(() => props.planData?.attachments || []);
         <div class="w-1/2 flex items-center">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right mr-1.5">
             <span class="font-semibold text-black">{{ t('common.progress') }}</span>
-            <Colon class="w-1" />
+            <Colon class="w-1 mr-2" />
           </div>
 
           <Progress :percent="completionRate" style="width:150px;" />
@@ -111,7 +111,7 @@ const attachments = computed(() => props.planData?.attachments || []);
         <div style="width:calc(50% - 10px);" class="flex items-start">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
             <span class="font-semibold text-black">{{ t('common.attachment') }}</span>
-            <Colon class="w-1" />
+            <Colon class="w-1 mr-2" />
           </div>
 
           <div class="space-y-1 truncate ml-2">

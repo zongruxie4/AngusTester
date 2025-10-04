@@ -21,11 +21,11 @@ const props = withDefaults(defineProps<Props>(), {
 const chartTypeOptions = computed(() => [
   {
     value: 'NUM',
-    label: t('chart.burndown.countBurndown')
+    label: t('common.count')
   },
   {
     value: 'WORKLOAD',
-    label: t('chart.burndown.workloadBurndown')
+    label: t('common.workload')
   }
 ]);
 

@@ -49,7 +49,7 @@ const loadMemberProgressData = async () => {
 const progressTableColumns = [
   {
     key: 'testerName',
-    title: t('testPlan.planDetail.memberProgress.member'),
+    title: t('common.tester'),
     dataIndex: 'testerName',
     customCell: () => {
       return { style: 'white-space:nowrap;' };
@@ -67,7 +67,7 @@ const progressTableColumns = [
   },
   {
     key: 'totalCaseNum',
-    title: t('testPlan.planDetail.memberProgress.totalCaseNum'),
+    title: t('common.counts.caseCount'),
     dataIndex: 'totalCaseNum',
     sorter: (a, b) => +a.totalCaseNum - (+b.totalCaseNum),
     customCell: () => {
@@ -76,7 +76,7 @@ const progressTableColumns = [
   },
   {
     key: 'validCaseNum',
-    title: t('testPlan.planDetail.memberProgress.validCaseNum'),
+    title: t('common.counts.validCount'),
     dataIndex: 'validCaseNum',
     sorter: (a, b) => +a.validCaseNum - (+b.validCaseNum),
     customCell: () => {
@@ -85,7 +85,7 @@ const progressTableColumns = [
   },
   {
     key: 'passedTestNum',
-    title: t('testPlan.planDetail.memberProgress.passedTestNum'),
+    title: t('common.counts.testSuccessCount'),
     dataIndex: 'passedTestNum',
     sorter: (a, b) => +a.passedTestNum - (+b.passedTestNum),
     customCell: () => {
@@ -110,7 +110,7 @@ const progressTableColumns = [
   },
   {
     key: 'overdueNum',
-    title: t('testPlan.planDetail.memberProgress.overdueCount'),
+    title: t('common.counts.overdueCount'),
     dataIndex: 'overdueNum',
     sorter: (a, b) => +a.overdueNum - (+b.overdueNum),
     customCell: () => {
@@ -119,7 +119,7 @@ const progressTableColumns = [
   },
   {
     key: 'overdueRate',
-    title: t('testPlan.planDetail.memberProgress.overdueRate'),
+    title: t('common.counts.overdueRate'),
     dataIndex: 'overdueRate',
     customRender: ({ text }) => text + '%'
   }

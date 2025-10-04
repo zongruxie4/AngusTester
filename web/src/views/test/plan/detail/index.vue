@@ -22,10 +22,10 @@ const props = withDefaults(defineProps<BasicProps>(), {
 
 // Async components
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const WorkCalendar = defineAsyncComponent(() => import('@/views/test/home/WorkCalendar.vue'));
 const BurnDownChart = defineAsyncComponent(() => import('@/views/test/plan/detail/BurndownChart.vue'));
 const MemberProgress = defineAsyncComponent(() => import('@/views/test/plan/detail/MemberProgress.vue'));
-const WorkCalendar = defineAsyncComponent(() => import('@/views/test/home/WorkCalendar.vue'));
-const BasicInfo = defineAsyncComponent(() => import('./BasicInfo.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/test/plan/detail/BasicInfo.vue'));
 
 // Injected dependencies
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
@@ -212,7 +212,7 @@ const testerTableColumns = [
   {
     key: 'content',
     dataIndex: 'content',
-    title: t('testPlan.planDetail.table.workResponsibilities'),
+    title: t('testPlan.columns.workResponsibilities'),
     ellipsis: true
   }
 ];
@@ -258,7 +258,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="navigateToCaseList">
         <Icon icon="icon-ceshiyongli1" class="text-3.5" />
-        <span>{{ t('testPlan.planDetail.buttons.viewCases') }}</span>
+        <span>{{ t('testPlan.actions.viewCases') }}</span>
       </Button>
 
       <Button
@@ -268,7 +268,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="exportTestCases">
         <Icon icon="icon-daochu" class="text-3.5" />
-        <span>{{ t('testPlan.planDetail.buttons.exportCases') }}</span>
+        <span>{{ t('testPlan.actions.exportCases') }}</span>
       </Button>
 
       <Button
