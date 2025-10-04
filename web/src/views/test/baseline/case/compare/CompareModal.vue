@@ -11,8 +11,8 @@ import _ from 'lodash-es';
 const { t } = useI18n();
 
 // Async components for case comparison
-const AssocTasks = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocTask.vue'));
-const AssocCases = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocCase.vue'));
+const AssocTasks = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocIssues.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocCases.vue'));
 const Attachment = defineAsyncComponent(() => import('@/views/test/review/detail/case/Attachment.vue'));
 
 // Props and Emits

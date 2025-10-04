@@ -139,6 +139,8 @@ public interface FuncCaseQuery {
 
   FuncCaseInfo findLeastByProjectId(Long projectId);
 
+  List<FuncCaseInfo> findInfo(Collection<Long> ids);
+
   Map<String, List<FuncCaseInfo>> checkAndFindByPlanAndName(Long projectId, Set<String> caseNames);
 
   void checkAddCaseNameExists(FuncPlan planDb, List<FuncCase> cases);

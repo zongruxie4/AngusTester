@@ -17,19 +17,19 @@ const props = withDefaults(defineProps<Props>(), {
 const testInfoColumns = [
   [
     {
-      label: t('testCaseReview.comp.testInfo.testCount'),
+      label: t('common.counts.testCount'),
       dataIndex: 'testNum'
     },
     {
-      label: t('testCaseReview.comp.testInfo.failCount'),
+      label: t('common.counts.testFailCount'),
       dataIndex: 'testFailNum'
     },
     {
-      label: t('common.counts..oneTimePassed'),
+      label: t('common.counts.oneTimePassed'),
       dataIndex: 'oneTestPass'
     },
     {
-      label: t('testCaseReview.comp.testInfo.resultRemark'),
+      label: t('common.resultRemark'),
       dataIndex: 'testRemark'
     }
   ]
@@ -48,7 +48,7 @@ const getOneTestPass = computed(() => {
     <div class="flex items-center mb-4">
       <Icon icon="icon-ceshixinxi" class="text-amber-500 mr-2" />
       <h3 class="text-lg font-semibold text-gray-900">
-        {{ t('testCaseReview.comp.testInfo.title') }}
+        {{ t('common.testInfo') }}
       </h3>
     </div>
 

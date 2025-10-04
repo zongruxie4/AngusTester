@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, onUnmounted, readonly, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, TabPane, Tabs, Tag } from 'ant-design-vue';
 import {
@@ -39,8 +39,8 @@ const Precondition = defineAsyncComponent(() => import('@/views/test/review/deta
 const Members = defineAsyncComponent(() => import('@/views/test/review/detail/case/Member.vue'));
 const TestResult = defineAsyncComponent(() => import('@/views/test/review/detail/case/TestResult.vue'));
 const Attachment = defineAsyncComponent(() => import('@/views/test/review/detail/case/Attachment.vue'));
-const AssocTasks = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocTask.vue'));
-const AssocCases = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocCase.vue'));
+const AssocIssues = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocIssues.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocCases.vue'));
 const Description = defineAsyncComponent(() => import('@/views/test/review/detail/case/Description.vue'));
 
 // Composables and injections
@@ -104,7 +104,7 @@ const columns = [
     width: 32
   },
   {
-    title: t('testCaseReview.detail.caseCode'),
+    title: t('common.code'),
     key: 'caseCode',
     dataIndex: 'caseInfo',
     customRender: ({ text }) => {
@@ -113,7 +113,7 @@ const columns = [
     width: 160
   },
   {
-    title: t('testCaseReview.detail.caseName'),
+    title: t('common.name'),
     dataIndex: 'caseInfo',
     key: 'caseName',
     ellipsis: true,
@@ -140,7 +140,7 @@ const columns = [
     }
   },
   {
-    title: t('testCaseReview.detail.reviewStatus'),
+    title: t('common.reviewStatus'),
     dataIndex: 'reviewStatus',
     customRender: ({ text }):string => text?.message,
     width: 100,
@@ -166,7 +166,7 @@ const startReview = async () => {
   if (error) {
     return;
   }
-  notification.success(t('testCaseReview.detail.reviewStartedSuccess'));
+  notification.success(t('actions.tips.startSuccess'));
   await loadReviewDetail(reviewId.value);
 };
 
@@ -359,7 +359,7 @@ const handleReviewCancel = () => {
  */
 const delCase = async (record) => {
   modal.confirm({
-    title: t('testCaseReview.detail.confirmCancelReviewCase', { name: record?.caseInfo?.name || '' }),
+    title: t('testCaseReview.detail.messages.confirmCancelReviewCase', { name: record?.caseInfo?.name || '' }),
     async onOk () {
       const [error] = await func.deleteReviewCase([record.id]);
       if (error) {
@@ -379,8 +379,8 @@ const delCase = async (record) => {
  */
 const restart = async (record) => {
   modal.confirm({
-    title: t('testCaseReview.detail.restartReview'),
-    content: t('testCaseReview.detail.confirmRestartReviewCase', { name: record?.caseInfo?.name || '' }),
+    title: t('testCaseReview.detail.actions.restartReview'),
+    content: t('testCaseReview.detail.messages.confirmRestartReviewCase', { name: record?.caseInfo?.name || '' }),
     async onOk () {
       const [error] = await func.restartReviewCase([record.id]);
       if (error) {
@@ -397,8 +397,8 @@ const restart = async (record) => {
  */
 const reset = async (record) => {
   modal.confirm({
-    title: t('testCaseReview.detail.resetReview'),
-    content: t('testCaseReview.detail.confirmResetReviewCase', { name: record?.caseInfo?.name || '' }),
+    title: t('testCaseReview.detail.actions.resetReview'),
+    content: t('testCaseReview.detail.messages.confirmResetReviewCase', { name: record?.caseInfo?.name || '' }),
     async onOk () {
       const [error] = await func.resetReviewCase([record.id]);
       if (error) {
@@ -523,7 +523,7 @@ onUnmounted(() => {
                 :loading="startLoading"
                 @click="startReview">
                 <Icon icon="icon-kaishi" class="mr-2" />
-                {{ t('testCaseReview.detail.startReview') }}
+                {{ t('testCaseReview.detail.actions.startReview') }}
               </Button>
             </div>
           </div>
@@ -535,7 +535,7 @@ onUnmounted(() => {
                 <!-- Progress bar -->
                 <div class="flex items-center space-x-4">
                   <div class="text-sm text-gray-600">
-                    {{ t('common') }}
+                    {{ t('common.progress') }}
                   </div>
                   <div class="flex items-center space-x-2">
                     <div class="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -558,7 +558,7 @@ onUnmounted(() => {
               <div class="flex items-center space-x-6 text-sm">
                 <div class="flex items-center space-x-2">
                   <Icon icon="icon-jihua" class="text-gray-400" />
-                  <span class="text-gray-600">{{ t('testCaseReview.detail.testPlan') }}：</span>
+                  <span class="text-gray-600">{{ t('testCaseReview.columns.testPlan') }}：</span>
                   <span class="font-medium text-gray-900">{{ reviewDetail?.planName }}</span>
                 </div>
               </div>
@@ -576,7 +576,7 @@ onUnmounted(() => {
                 <!-- Participants -->
                 <div class="flex items-center space-x-2">
                   <Icon icon="icon-tuandui" class="text-gray-400" />
-                  <span class="text-gray-600">{{ t('testCaseReview.detail.participants') }}：</span>
+                  <span class="text-gray-600">{{ t('common.participants') }}：</span>
                   <div class="flex items-center space-x-1">
                     <div
                       v-for="person in (reviewDetail?.participants || []).slice(0, 6)"
@@ -607,7 +607,7 @@ onUnmounted(() => {
                       {{ file.name }}
                     </a>
                     <span v-if="!reviewDetail?.attachments?.length" class="text-sm text-gray-400">
-                      {{ t('testCaseReview.detail.noAttachments') }}
+                      {{ t('common.noAttachment') }}
                     </span>
                   </div>
                 </div>
@@ -623,14 +623,14 @@ onUnmounted(() => {
             size="small"
             class="bg-white rounded-lg shadow-sm font-medium text-xs"
             :tabBarStyle="{ marginBottom: 0, padding: '0 10px' }">
-            <TabPane key="testerResponsibilities" :tab="t('testCaseReview.detail.testCases')">
+            <TabPane key="testerResponsibilities" :tab="t('testCaseReview.detail.columns.reviewCases')">
               <!-- Search and actions bar -->
               <div class="p-3 border-b border-gray-100 text-xs">
                 <div class="flex items-center justify-between" :class="{ 'mobile-search': isMobile }">
                   <div class="flex items-center space-x-2 search-inputs" :class="{ 'w-full': isMobile }">
                     <Input
                       v-model:value="keywords"
-                      :placeholder="t('testCaseReview.detail.enterQueryName')"
+                      :placeholder="t('common.placeholders.searchKeyword')"
                       :class="isMobile ? 'w-full' : 'w-56'"
                       allowClear
                       @change="handleKeywordChange">
@@ -642,7 +642,7 @@ onUnmounted(() => {
                     <SelectEnum
                       v-model:value="reviewStatus"
                       :class="isMobile ? 'w-full' : 'w-40'"
-                      :placeholder="t('testCaseReview.detail.selectReviewStatus')"
+                      :placeholder="t('testCaseReview.detail.placeholders.selectReviewStatus')"
                       enumKey="ReviewStatus"
                       allowClear
                       @change="handleChangeStatus">
@@ -658,7 +658,7 @@ onUnmounted(() => {
                     :class="{ 'w-full': isMobile }"
                     @click="addReviewCase">
                     <Icon icon="icon-jia" class="mr-2" />
-                    {{ t('testCaseReview.detail.addReviewCase') }}
+                    {{ t('testCaseReview.actions.addReviewCase') }}
                   </Button>
                 </div>
               </div>
@@ -727,7 +727,7 @@ onUnmounted(() => {
                         size="small"
                         @click.stop="restart(record)">
                         <Icon icon="icon-zhongxinkaishi" class="mr-1" />
-                        {{ t('testCaseReview.detail.restartNewReview') }}
+                        {{ t('testCaseReview.detail.actions.restartReview') }}
                       </Button>
 
                       <Button
@@ -738,7 +738,7 @@ onUnmounted(() => {
                         size="small"
                         @click.stop="reset(record)">
                         <Icon icon="icon-zhongzhipingshenjieguo" class="mr-1" />
-                        {{ t('testCaseReview.detail.resetReview') }}
+                        {{ t('testCaseReview.detail.actions.resetReview') }}
                       </Button>
 
                       <RouterLink :to="`/test#cases?id=${record.caseId}`">
@@ -758,9 +758,9 @@ onUnmounted(() => {
               <template v-if="selectReviewCaseIds.length">
                 <div class="ml-10">
                   <div class="font-semibold text-3.5 mt-5">
-                    {{ t('testCaseReview.detail.reviewInfoSelected') }}
+                    {{ t('common.reviewInfo') }}
                     <span class="text-sub-content">{{
-                      t('testCaseReview.detail.selectedCount', {count: selectReviewCaseIds.length})
+                      t('testCaseReview.detail.messages.selectedCount', {count: selectReviewCaseIds.length})
                     }}</span>
                   </div>
                   <ReviewForm
@@ -771,7 +771,7 @@ onUnmounted(() => {
                 </div>
               </template>
             </TabPane>
-            <TabPane key="description" :tab="t('testCaseReview.detail.reviewDescription')">
+            <TabPane key="description" :tab="t('testCaseReview.columns.reviewDescription')">
               <div v-if="reviewDetail?.description" class="">
                 <RichEditor
                   :value="reviewDetail?.description"
@@ -816,7 +816,7 @@ onUnmounted(() => {
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('basicInfo')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-jibenxinxi" class="mr-1 text-blue-500" />
-                  <span>{{ t('testCaseReview.comp.caseBasicInfo.title') }}</span>
+                  <span>{{ t('common.basicInfo') }}</span>
                 </div>
                 <Icon :icon="expand.basicInfo ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
@@ -834,7 +834,7 @@ onUnmounted(() => {
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('precondition')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-shezhi1" class="mr-1 text-orange-500" />
-                  <span>{{ t('testCaseReview.comp.precondition.title') }}</span>
+                  <span>{{ t('common.precondition') }}</span>
                 </div>
                 <Icon :icon="expand.precondition ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
@@ -851,7 +851,7 @@ onUnmounted(() => {
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('steps')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-jihua1" class="mr-1 text-indigo-500" />
-                  <span>{{ t('testCaseReview.detail.testSteps') }}</span>
+                  <span>{{ t('common.testSteps') }}</span>
                 </div>
                 <Icon :icon="expand.steps ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
@@ -885,7 +885,7 @@ onUnmounted(() => {
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('reviewResult')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-pingshen" class="mr-1 text-green-500" />
-                  <span>{{ t('testCaseReview.comp.caseReviewResult.title') }}</span>
+                  <span>{{ t('common.reviewResult') }}</span>
                 </div>
                 <Icon :icon="expand.reviewResult ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
@@ -899,7 +899,7 @@ onUnmounted(() => {
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('testInfo')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-ceshixinxi" class="mr-1 text-amber-500" />
-                  <span>{{ t('testCaseReview.comp.testInfo.title') }}</span>
+                  <span>{{ t('common.testInfo') }}</span>
                 </div>
                 <Icon :icon="expand.testInfo ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
@@ -913,7 +913,7 @@ onUnmounted(() => {
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('members')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-chuangjianren" class="mr-1 text-pink-500" />
-                  <span>{{ t('testCaseReview.comp.member.title') }}</span>
+                  <span>{{ t('common.members') }}</span>
                 </div>
                 <Icon :icon="expand.members ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
@@ -931,12 +931,12 @@ onUnmounted(() => {
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('assocTasks')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-renwu" class="mr-1 text-emerald-500" />
-                  <span>{{ t('testCaseReview.comp.assocTask.title') }}</span>
+                  <span>{{ t('common.assocIssues') }}</span>
                 </div>
                 <Icon :icon="expand.assocTasks ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
               <div v-show="expand.assocTasks">
-                <AssocTasks
+                <AssocIssues
                   :dataSource="selectReviewCaseInfo?.caseInfo?.refTaskInfos"
                   :projectId="props.projectId"
                   :caseInfo="selectReviewCaseInfo?.caseInfo"
@@ -949,7 +949,7 @@ onUnmounted(() => {
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('assocCases')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-gongnengyongli" class="mr-1 text-cyan-500" />
-                  <span>{{ t('testCaseReview.comp.assocCase.title') }}</span>
+                  <span>{{ t('common.assocCases') }}</span>
                 </div>
                 <Icon :icon="expand.assocCases ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
@@ -967,7 +967,7 @@ onUnmounted(() => {
               <div class="flex items-center justify-between cursor-pointer select-none" @click="toggleSection('attachments')">
                 <div class="flex items-center text-gray-800 text-sm font-medium">
                   <Icon icon="icon-wenjian" class="mr-1 text-indigo-500" />
-                  <span>{{ t('testCaseReview.comp.attachment.title') }}</span>
+                  <span>{{ t('common.attachment') }}</span>
                 </div>
                 <Icon :icon="expand.attachments ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>

@@ -55,7 +55,7 @@ const reviewCase = async () => {
   if (error) {
     return;
   }
-  notification.success(t('testCaseReview.detail.reviewSuccess'));
+  notification.success(t('testCaseReview.detail.messages.reviewSuccess'));
   emits('update');
 };
 
@@ -115,7 +115,7 @@ onMounted(() => {
       @finish="reviewCase">
       <FormItem
         name="reviewStatus"
-        :label="t('testCaseReview.detail.reviewResult')"
+        :label="t('common.reviewStatus')"
         class="mb-6">
         <RadioGroup
           v-model:value="formState.reviewStatus"
@@ -132,7 +132,7 @@ onMounted(() => {
 
       <FormItem
         name="reviewRemark"
-        :label="t('testCaseReview.detail.reviewOpinion')"
+        :label="t('testCaseReview.detail.columns.reviewOpinion')"
         class="mb-6">
         <div class="space-y-4">
           <Select
@@ -140,7 +140,7 @@ onMounted(() => {
             v-model:value="failMessageValue"
             :options="failMessageSelectOptions"
             class="w-full"
-            :placeholder="t('testCaseReview.detail.selectFailReason')"
+            :placeholder="t('testCaseReview.detail.placeholders.selectFailReason')"
             @change="changeFailMessage" />
 
           <Input
@@ -150,7 +150,7 @@ onMounted(() => {
             class="w-full"
             :autoSize="{ minRows: 4, maxRows: 8}"
             :maxlength="200"
-            :placeholder="t('testCaseReview.detail.enterReviewOpinion')"
+            :placeholder="t('testCaseReview.detail.placeholders.enterReviewOpinion')"
             :showCount="true" />
         </div>
       </FormItem>

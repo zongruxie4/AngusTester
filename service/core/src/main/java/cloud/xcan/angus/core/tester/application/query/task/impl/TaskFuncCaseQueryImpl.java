@@ -158,10 +158,10 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
         return;
       }
 
-      List<Long> assocTaskIds = tfcs.stream().filter(TaskFuncCase::isTaskAssocCase)
+      List<Long> assocIds = tfcs.stream().filter(TaskFuncCase::isTaskAssocCase)
           .map(TaskFuncCase::getWideTargetIds).flatMap(Collection::stream).distinct()
           .toList();
-      Map<Long, TaskInfo> assocTaskInfoMap = taskInfoRepo.findByIdIn(assocTaskIds)
+      Map<Long, TaskInfo> assocTaskInfoMap = taskInfoRepo.findByIdIn(assocIds)
           .stream().collect(Collectors.toMap(TaskInfo::getId, x -> x));
       if (isNotEmpty(assocTaskInfoMap)) {
         for (TaskFuncCaseAssoc<?, ?> case0 : cases) {

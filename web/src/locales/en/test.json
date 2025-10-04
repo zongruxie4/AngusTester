@@ -55,7 +55,8 @@
       "addPlan": "Add Plan",
       "viewCases": "View Cases",
       "resetTest": "Reset Test",
-      "resetReview": "Reset Review"
+      "resetReview": "Reset Review",
+      "exportCases": "Export Cases"
     },
     "columns": {
       "planName": "Name",
@@ -63,12 +64,13 @@
       "testingObjectives": "Testing Objectives",
       "testingScope": "Testing Scopes",
       "acceptanceCriteria": "Acceptance Criteria",
-      "otherInformation": "Other Information"
+      "otherInformation": "Other Information",
+      "workResponsibilities": "Work Responsibilities"
     },
     "placeholders": {
       "planNamePlaceholder": "Plan brief description, up to 200 characters",
       "enterPlanName": "Please enter plan name",
-      "selectReview": "Slect review",
+      "selectReview": "Select review",
       "casePrefixPlaceholder": "Case prefix, up to 40 characters",
       "testingObjectivesPlaceholder": "Define the specific content and scope of the test activity, including which functions and modules need to be tested, which platforms and versions need to be tested, etc.",
       "enterTestingObjectives": "Please enter testing objectives",
@@ -94,70 +96,6 @@
       "planResetReviewSuccess": "Plan reset review successfully",
       "duplicatePersonnel": "Duplicate personnel, please select again",
       "charLimit2000": "Characters cannot exceed 2000"
-    },
-    "planDetail": {
-      "basicInfo": {
-        "title": "Basic Information",
-        "planName": "Name",
-        "owner": "Owner",
-        "to": "To",
-        "isReview": "Review",
-        "casePrefix": "Case Prefix",
-        "workloadAssessment": "Workload Assessment",
-        "acceptanceCriteria": "Acceptance Criteria",
-        "otherInformation": "Other Information"
-      },
-      "tabs": {
-        "workCalendar": "Work Calendar",
-        "memberProgress": "Member Progress",
-        "otherInformation": "Other Information",
-        "acceptanceCriteria": "Acceptance Criteria",
-        "testingScope": "Testing Scopes",
-        "testingObjectives": "Testing Objectives",
-        "testers": "Testers"
-      },
-      "buttons": {
-        "viewCases": "View Cases",
-        "exportCases": "Export Cases"
-      },
-      "table": {
-        "content": "Work Responsibilities",
-        "viewCases": "View Cases",
-        "exportCases": "Export Cases",
-        "workResponsibilities": "Work Responsibilities"
-      },
-      "notifications": {
-        "copySuccess": "Copy Success",
-        "copyFailed": "Copy Failed"
-      },
-      "memberProgress": {
-        "member": "Member",
-        "totalCaseNum": "Total Case Num",
-        "validCaseNum": "Valid Case Num",
-        "passedTestNum": "Passed Test Num",
-        "evalWorkload": "Eval Workload",
-        "completedWorkload": "Completed Workload",
-        "completedWorkloadRate": "Completed Workload Rate",
-        "overdueNum": "Overdue Num",
-        "overdueRate": "Overdue Rate"
-      },
-      "comp": {
-        "progress": {
-          "title": "Member Progress",
-          "member": "Member",
-          "totalCaseNum": "Total Case Num",
-          "validCaseNum": "Valid Case Num",
-          "passedTestNum": "Passed Test Num",
-          "evalWorkload": "Eval Workload",
-          "completedWorkload": "Completed Workload",
-          "completedWorkloadRate": "Completed Workload Rate",
-          "overdueNum": "Overdue Num",
-          "overdueRate": "Overdue Rate"
-        },
-        "workCalendar": {
-          "title": "Work Calendar"
-        }
-      }
     }
   },
   "testCase": {
@@ -671,43 +609,10 @@
   },
   "testCaseReview": {
     "title": "Review",
-    "addReview": "Add Review",
-    "list": {
-      "addedReviews": "Added Reviews",
-      "noReviewsAdded": "You haven't added any reviews yet, ",
-      "addReview": "Add Review",
-      "reviewStartedSuccess": "Review launched successfully",
-      "reviewCompletedSuccess": "Review completed",
-      "confirmDeleteReview": "Are you sure you want to delete review 「{name}」?",
-      "reviewDeletedSuccess": "Review deleted successfully, you can view the deleted review in the recycle bin",
-      "reviewClonedSuccess": "Review cloned successfully",
-      "searchReviewNameDescription": "Search review name, description",
-      "selectOwner": "Select owner",
-      "createdTimeGreaterEqual": "Created start date",
-      "createdTimeLessEqual": "Created end date",
-      "sortByAddTime": "Sort by add time",
-      "sortByAddPerson": "Sort by creator",
-      "sortByName": "Sort by name",
-      "sortByOwner": "Sort by owner",
-      "owner": "Owner",
-      "participants": "Participants",
-      "allParticipants": "All participants",
-      "testPlan": "Test Plan",
-      "attachmentCount": "Attachments",
-      "modifiedBy": "Modified at",
-      "goToReview": "Review",
-      "totalCases": "Total Cases",
-      "quickQuery": "Quick Query",
-      "all": "All",
-      "myResponsible": "Owned by Me",
-      "myCreated": "My Created",
-      "myModified": "My Modified",
-      "lastDay": "Last Day",
-      "lastThreeDays": "Last 3 Days",
-      "lastWeek": "Last Week"
-    },
+    "addedReviews": "Added Reviews",
+    "noReviewsAdded": "You haven't added any reviews yet, ",
     "introduce": {
-      "aboutReview": "About Review",
+      "title": "About Review",
       "description": "Test case review is a structured check and discussion of cases to improve correctness, completeness, and executability. Reviews typically involve testers, developers, product managers and other stakeholders.",
       "improveQuality": {
         "title": "Improve Test Case Quality",
@@ -734,78 +639,53 @@
         "description": "Codify review learnings into guidelines and templates to continuously improve authoring and review."
       }
     },
-    "editForm": {
-      "modifySuccess": "Modified successfully",
-      "addSuccess": "Added successfully",
-      "charLimitExceeded": "Characters cannot exceed 2000",
-      "confirmDeleteReview": "Are you sure you want to delete review 「{name}」?",
-      "reviewDeletedSuccess": "Review deleted successfully, you can view the deleted review in the recycle bin",
-      "confirmDeleteCase": "Confirm delete 「{name}」?",
+    "actions": {
+      "addReview": "Add Review",
+      "goToReview": "Review",
       "reviewNow": "Review Now",
+      "addReviewCase": "Add Review Cases"
+    },
+    "columns": {
+      "testPlan": "Test Plan",
+      "reviewCases": "Review Cases",
+      "reviewDescription": "Review Description"
+    },
+    "placeholders": {
       "enterReviewName": "Please enter review name",
       "reviewBriefOverview": "Review brief overview, supports up to 200 characters",
-      "testPlan": "Test Plan",
       "selectTestPlan": "Please select test plan",
-      "selectTestPlanPlaceholder": "Select test plan",
-      "selectOwner": "Please select owner",
-      "selectOwnerPlaceholder": "Select owner",
-      "participants": "Participants",
-      "selectParticipants": "Please select participants",
-      "selectParticipantsPlaceholder": "Select participants",
-      "attachments": "Attachments",
-      "uploadAttachments": "Upload",
-      "attachmentsDescription": "Support uploading related documents, such as: requirements specification, reference materials, system architecture diagram, test specifications, technical documents, etc. Supported formats: jpg, bmp, png, gif, txt, docx, jpeg, rar, zip, doc, xlsx, xls, pdf; up to 10 attachments can be uploaded.",
-      "reviewCases": "Review Cases",
-      "reviewDescription": "Review Description",
-      "enterQueryName": "Enter query name",
-      "addReviewCase": "Add Cases",
-      "caseId": "Case ID",
-      "reviewStatus": "Review Status",
-      "selectCase": "Select Case",
-      "queryNameCode": "Query name, code",
-      "allCases": "All Cases",
-      "enterModuleName": "Please enter module name",
-      "confirmDeleteModule": "Are you sure you want to delete module 「{name}」?",
-      "deleteModuleSuccess": "Module deleted successfully",
-      "moveSuccess": "Moved successfully",
-      "noModuleCases": "No module cases"
+      "selectParticipants": "Please select participants"
+    },
+    "messages": {
+      "charLimitExceeded": "Characters cannot exceed 2000",
+      "attachmentsDescription": "Support uploading related documents, such as: requirements specification, reference materials, system architecture diagram, test specifications, technical documents, etc. Supported formats: jpg, bmp, png, gif, txt, docx, jpeg, rar, zip, doc, xlsx, xls, pdf; up to 10 attachments can be uploaded."
     },
     "detail": {
       "title": "Case Details",
-      "reviewStartedSuccess": "Review started successfully",
-      "reviewStatus": "Review Status",
-      "confirmCancelReviewCase": "Confirm to cancel review case 「{name}」?",
-      "restartReview": "Restart Review",
-      "confirmRestartReviewCase": "Confirm to restart review case 「{name}」?",
-      "resetReview": "Reset",
-      "confirmResetReviewCase": "Update the case to \"Pending Review\", related statistics and status will be cleared. Confirm to reset the review result for case 「{name}」?",
-      "precondition": "Precondition",
-      "steps": "Steps",
-      "reviewInfo": "Review Info",
-      "members": "Members",
-      "testInfo": "Test Info",
-      "assocTasks": "Associated Tasks",
-      "assocCases": "Associated Cases",
-      "attachments": "Attachments",
-      "startReview": "Start Review",
-      "testPlan": "Test Plan",
-      "owner": "Owner",
-      "participants": "Participants",
-      "noAttachments": "None",
-      "enterQueryName": "Enter query name",
-      "selectReviewStatus": "Select review status",
-      "addReviewCase": "Add Cases",
-      "restartNewReview": "Restart",
-      "reviewInfoSelected": "Review Info",
-      "selectedCount": "(Selected {count})",
-      "testCases": "Review Cases",
-      "reviewDescription": "Review Description",
-      "testSteps": "Test Steps",
-      "reviewSuccess": "Review successful",
-      "reviewResult": "Review Result",
-      "reviewOpinion": "Review Opinion",
-      "selectFailReason": "Select failure reason",
-      "enterReviewOpinion": "Enter review opinion, up to 200 characters",
+      "actions": {
+        "startReview": "Start Review",
+        "restartReview": "Restart",
+        "resetReview": "Reset"
+      },
+      "columns": {
+        "reviewOpinion": "Review Opinion",
+        "reviewCases": "Review Cases"
+      },
+      "messages": {
+        "reviewSuccess": "Review successful",
+        "selectedCount": "(Selected {count})",
+        "confirmCancelReviewCase": "Confirm to cancel review case 「{name}」?",
+        "confirmRestartReviewCase": "Confirm to restart review case 「{name}」?",
+        "confirmResetReviewCase": "Update the case to \"Pending Review\", related statistics and status will be cleared. Confirm to reset the review result for case 「{name}」?"
+      },
+      "placeholders": {
+        "selectReviewStatus": "Select review status",
+        "reviewBriefOverview": "Review brief overview, supports up to 200 characters",
+        "selectTestPlan": "Please select test plan",
+        "selectParticipants": "Please select participants",
+        "selectFailReason": "Select failure reason",
+        "enterReviewOpinion": "Enter review opinion, up to 200 characters"
+      },
       "failReasons": {
         "caseNameNotClear": "Case name description is not concise and clear",
         "caseDesignInconsistent": "Case design is inconsistent with requirements, test is invalid",
@@ -817,47 +697,6 @@
         "priorityUnreasonable": "Priority arrangement is unreasonable, may affect test efficiency and effectiveness",
         "logicInconsistent": "Logical relationship with other cases is inconsistent or has conflicts",
         "other": "Other"
-      }
-    },
-    "comp": {
-      "testInfo": {
-        "title": "Test Info",
-        "testCount": "Test Times",
-        "failCount": "Fail Times",
-        "oneTimePass": "One-time Pass",
-        "resultRemark": "Result Remark"
-      },
-      "caseBasicInfo": {
-        "title": "Basic Information",
-        "version": "Case Version",
-        "softwareVersion": "Software Version",
-        "tags": "Tags",
-        "planName": "Plan",
-        "moduleName": "Module",
-        "testResult": "Test Result",
-        "evalWorkload": "Estimated Workload",
-        "actualWorkload": "Actual Workload"
-      },
-      "member": {
-        "title": "Member Info"
-      },
-      "precondition": {
-        "title": "Precondition"
-      },
-      "assocCase": {
-        "title": "Associated Cases"
-      },
-      "assocTask": {
-        "title": "Associated Tasks"
-      },
-      "attachment": {
-        "title": "Attachments"
-      },
-      "caseReviewResult": {
-        "title": "Review Info",
-        "reviewStatus": "Review Status",
-        "reviewOpinion": "Review Opinion",
-        "noOpinion": "None"
       }
     }
   },

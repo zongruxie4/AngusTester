@@ -6,7 +6,7 @@ const { t } = useI18n();
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-2.5">{{ t('testCaseReview.introduce.aboutReview') }}</div>
+    <div class="text-3.5 font-semibold mb-2.5">{{ t('testCaseReview.introduce.title') }}</div>
     <div class="text-3.5 mb-6 font-serif">{{ t('testCaseReview.introduce.description') }}</div>
 
     <div class="space-y-6 font-serif">

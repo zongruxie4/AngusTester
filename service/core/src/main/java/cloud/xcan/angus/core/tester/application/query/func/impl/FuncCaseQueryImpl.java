@@ -2002,6 +2002,16 @@ public class FuncCaseQueryImpl implements FuncCaseQuery {
   }
 
   /**
+   * Finds multiple case info objects by IDs.
+   * @param ids collection of case info IDs
+   * @return List of FuncCaseInfo objects
+   */
+  @Override
+  public List<FuncCaseInfo> findInfo(Collection<Long> ids) {
+    return funcCaseInfoRepo.findAllById(ids);
+  }
+
+  /**
    * Checks and finds cases by plan ID and names with validation.
    * <p>
    * Validates that all requested case names exist within the plan and groups them by name.

@@ -140,7 +140,7 @@ const processTreeData = (treeData: any[], callback = (item: any) => item) => {
 };
 
 // Data Loading
-const moduleTreeData = ref([{ name: t('testCaseReview.editForm.noModuleCases'), id: '-1' }]);
+const moduleTreeData = ref([{ name: t('common.noModule'), id: '-1' }]);
 
 /**
  * Loads module tree data from server
@@ -157,7 +157,7 @@ const loadModuleTreeData = async () => {
     return;
   }
   moduleTreeData.value = [
-    { name: t('testCaseReview.editForm.noModuleCases'), id: '-1' },
+    { name: t('common.noModule'), id: '-1' },
     ...processTreeData(data || [])
   ];
 };
@@ -183,7 +183,7 @@ defineExpose({
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleModuleSelectionChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
-      <span class="flex-1">{{ t('testCaseReview.editForm.allCases') }}</span>
+      <span class="flex-1">{{ t('common.all') }}</span>
     </div>
 
     <Tree
@@ -203,7 +203,7 @@ defineExpose({
         <div v-if="editingModuleId === id" class="flex items-center">
           <Input
             ref="nameInputRef"
-            :placeholder="t('testCaseReview.editForm.enterModuleName')"
+            :placeholder="t('common.placeholders.searchKeyword')"
             class="flex-1 mr-2 bg-white"
             trim
             :value="name"

@@ -216,7 +216,7 @@ public class FuncReviewCaseQueryImpl implements FuncReviewCaseQuery {
           Collectors.toList());
 
       // Retrieve case information for all cases in a single query
-      Map<Long, FuncCaseInfo> caseInfoMap = funcCaseQuery.checkAndFindInfo(caseIds).stream()
+      Map<Long, FuncCaseInfo> caseInfoMap = funcCaseQuery.findInfo(caseIds).stream()
           .collect(Collectors.toMap(FuncCaseInfo::getId, x -> x));
 
       // Associate case information with each review case

@@ -193,7 +193,7 @@ watch(() => props.visible, (isVisible) => {
 </script>
 <template>
   <Modal
-    :title="t('testCaseReview.editForm.selectCase')"
+    :title="t('common.placeholders.selectCase')"
     :visible="props.visible"
     :width="1100"
     :loading="loading"
@@ -208,7 +208,7 @@ watch(() => props.visible, (isVisible) => {
       <div class="flex-1 ml-2">
         <Input
           v-model:value="searchKeywords"
-          :placeholder="t('testCaseReview.editForm.queryNameCode')"
+          :placeholder="t('common.placeholders.searchKeyword')"
           class="w-100"
           allowClear="true"
           @change="handleSearchFilter" />

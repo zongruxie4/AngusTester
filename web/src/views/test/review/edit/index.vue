@@ -64,8 +64,6 @@ const formState = ref<ReviewEditState>({
 /**
  * Handles file upload for review attachments
  * <p>
- * Validates file count limit and uploads file to server
- * <p>
  * Updates form state with uploaded file information
  */
 const handleFileUpload = async (file) => {
@@ -107,8 +105,6 @@ const removeAttachmentFile = (index: number) => {
 /**
  * Prepares form parameters for API submission
  * <p>
- * Maps case list to case IDs and cleans up empty optional fields
- * <p>
  * Returns sanitized parameters ready for API calls
  */
 const prepareFormParameters = () => {
@@ -148,8 +144,6 @@ const refreshReviewList = () => {
 /**
  * Handles review update operation
  * <p>
- * Validates form changes and submits update request
- * <p>
  * Updates UI state and shows success notification
  */
 const handleReviewUpdate = async () => {
@@ -179,8 +173,6 @@ const handleReviewUpdate = async () => {
 
 /**
  * Handles review creation operation
- * <p>
- * Submits new review data and updates tab navigation
  * <p>
  * Shows success notification and replaces current tab
  */
@@ -212,21 +204,17 @@ const descRichRef = ref();
 /**
  * Validates description field character limit
  * <p>
- * Checks if description exceeds maximum allowed characters
- * <p>
  * Returns promise rejection if limit exceeded
  */
 const validateDescription = async () => {
   if (descRichRef.value && descRichRef.value.getLength() > 2000) {
-    return Promise.reject(new Error(t('testCaseReview.editForm.charLimitExceeded')));
+    return Promise.reject(new Error(t('testCaseReview.messages.charLimitExceeded')));
   }
   return Promise.resolve();
 };
 
 /**
  * Handles form submission for both create and update operations
- * <p>
- * Validates form data and calls appropriate handler based on edit mode
  * <p>
  * Refreshes review list after successful operation
  */
@@ -244,8 +232,6 @@ const handleFormSubmit = async () => {
 /**
  * Handles review deletion with confirmation
  * <p>
- * Shows confirmation modal and deletes review if confirmed
- * <p>
  * Updates UI state and shows success notification
  */
 const handleReviewDeletion = async () => {
@@ -255,7 +241,7 @@ const handleReviewDeletion = async () => {
   }
 
   modal.confirm({
-    content: t('testCaseReview.editForm.confirmDeleteReview', { name: reviewData.name }),
+    content: t('actions.tips.confirmDelete', { name: reviewData.name }),
     async onOk () {
       const reviewId = reviewData.id;
       loading.value = true;
@@ -265,7 +251,7 @@ const handleReviewDeletion = async () => {
         return;
       }
 
-      notification.success(t('testCaseReview.editForm.reviewDeletedSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       deleteTabPane([reviewId]);
       refreshReviewList();
     }
@@ -283,8 +269,6 @@ const handleFormCancel = () => {
 
 /**
  * Loads review detail data from server
- * <p>
- * Fetches review information and populates form state
  * <p>
  * Updates tab pane with review name
  */
@@ -317,8 +301,6 @@ const loadReviewDetail = async (reviewId: string) => {
 
 /**
  * Populates form state with review data
- * <p>
- * Maps review data to form fields and initializes state
  * <p>
  * Handles participants and attachments data mapping
  */
@@ -380,8 +362,6 @@ const loadEnumerationOptions = () => {
 /**
  * Loads user permissions for current plan
  * <p>
- * Fetches permissions based on admin status or plan-specific auth
- * <p>
  * Updates permissions array for UI control
  */
 const loadPermissions = async (planId: string) => {
@@ -408,8 +388,6 @@ const members = ref<{id: string; fullName: string; value: string; label: string}
 
 /**
  * Loads project members for form selection
- * <p>
- * Fetches project members and formats for dropdown options
  * <p>
  * Maps member data to required format for select components
  */
@@ -440,8 +418,6 @@ const handlePlanIdChange = () => {
 
 /**
  * Loads review case list from server
- * <p>
- * Fetches cases with optional search filters and pagination
  * <p>
  * Updates case list and pagination state
  */
@@ -484,8 +460,6 @@ const openCaseSelectionModal = () => {
 
 /**
  * Handles adding cases to review
- * <p>
- * Adds cases to existing review or local case list
  * <p>
  * Closes modal and refreshes case list
  */
@@ -565,7 +539,7 @@ const tableColumns = [
 const handleCaseDeletion = async (caseRecord: ReviewCaseInfo) => {
   if (reviewId.value) {
     modal.confirm({
-      title: t('testCaseReview.editForm.confirmDeleteCase', { name: caseRecord.name }),
+      title: t('actions.tips.confirmDelete', { name: caseRecord.name }),
       async onOk () {
         const [error] = await func.deleteReviewCase([caseRecord.id]);
         if (error) {
@@ -654,7 +628,7 @@ onMounted(async () => {
           :href="`/test#reviews?id=${reviewId}`"
           class="flex items-center space-x-1">
           <Icon icon="icon-pingshen" class="text-3.5" />
-          <span>{{ t('testCaseReview.editForm.reviewNow') }}</span>
+          <span>{{ t('testCaseReview.actions.reviewNow') }}</span>
         </Button>
       </template>
 
@@ -675,27 +649,27 @@ onMounted(async () => {
       size="small"
       layout="horizontal">
       <FormItem
-        :label="t('testCaseReview.editForm.name')"
+        :label="t('common.name')"
         name="name"
-        :rules="{ required: true, message: t('testCaseReview.editForm.enterReviewName') }">
+        :rules="{ required: true, message: t('testCaseReview.placeholders.enterReviewName') }">
         <Input
           v-model:value="formState.name"
           size="small"
           :maxlength="200"
-          :placeholder="t('testCaseReview.editForm.reviewBriefOverview')" />
+          :placeholder="t('testCaseReview.placeholders.reviewBriefOverview')" />
       </FormItem>
 
       <FormItem
-        :label="t('testCaseReview.editForm.testPlan')"
+        :label="t('testCaseReview.columns.testPlan')"
         name="planId"
-        :rules="{ required: true, message: t('testCaseReview.editForm.selectTestPlan') }">
+        :rules="{ required: true, message: t('testCaseReview.placeholders.selectTestPlan') }">
         <Select
           v-model:value="formState.planId"
           size="small"
           :disabled="!!reviewId"
           :action="`${TESTER}/func/plan?projectId=${props.projectId}&review=true&fullTextSearch=true`"
           :fieldNames="{value: 'id', label: 'name'}"
-          :placeholder="t('testCaseReview.editForm.selectTestPlanPlaceholder')"
+          :placeholder="t('testCaseReview.placeholders.selectTestPlan')"
           @change="handlePlanIdChange" />
       </FormItem>
 
@@ -703,26 +677,26 @@ onMounted(async () => {
         :label="t('common.owner')"
         name="ownerId"
         class="relative"
-        :rules="{ required: true, message: t('testCaseReview.editForm.selectOwner') }">
+        :rules="{ required: true, message: t('common.placeholders.selectOwner') }">
         <SelectUser
           v-model:value="formState.ownerId"
           size="small"
-          :placeholder="t('testCaseReview.editForm.selectOwnerPlaceholder')"
+          :placeholder="t('common.placeholders.selectOwner')"
           :action="`${TESTER}/project/${props.projectId}/member/user`"
           :maxlength="80" />
       </FormItem>
 
       <FormItem
-        :label="t('testCaseReview.editForm.participants')"
+        :label="t('common.participants')"
         name="participantIds"
         class="relative"
-        :rules="{ required: true, message: t('testCaseReview.editForm.selectParticipants') }">
+        :rules="{ required: true, message: t('testCaseReview.placeholders.selectParticipants') }">
         <Select
           v-model:value="formState.participantIds"
           :options="members"
           mode="multiple"
           size="small"
-          :placeholder="t('testCaseReview.editForm.selectParticipantsPlaceholder')" />
+          :placeholder="t('testCaseReview.placeholders.selectParticipants')" />
       </FormItem>
 
       <FormItem :label="t('common.attachment')">
@@ -742,7 +716,7 @@ onMounted(async () => {
           <Tooltip :overlayStyle="{ 'max-width': '400px' }">
             <template #title>
               <div class="text-3 text-theme-sub-content leading-4 break-all">
-                {{ t('testCaseReview.editForm.attachmentsDescription') }}
+                {{ t('testCaseReview.messages.attachmentsDescription') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1 -mt-0.25 text-3.5 cursor-pointer" />
@@ -779,12 +753,12 @@ onMounted(async () => {
         <TabPane
           key="funcCase"
           forceRender
-          :tab="t('testCaseReview.editForm.reviewCases')">
+          :tab="t('testCaseReview.columns.reviewCases')">
           <div class="flex justify-between mb-3">
             <Input
               v-model:value="searchKeywords"
               :disabled="!reviewId"
-              :placeholder="t('testCaseReview.editForm.enterQueryName')"
+              :placeholder="t('common.placeholders.searchKeyword')"
               class="w-50"
               @change="handleSearchKeywordChange" />
 
@@ -795,7 +769,7 @@ onMounted(async () => {
               type="primary"
               @click="openCaseSelectionModal">
               <Icon icon="icon-jia" class="mr-1" />
-              {{ t('testCaseReview.editForm.addReviewCase') }}
+              {{ t('testCaseReview.actions.addReviewCase') }}
             </Button>
           </div>
 
@@ -825,7 +799,7 @@ onMounted(async () => {
           </Table>
         </TabPane>
 
-        <TabPane key="description" :tab="t('testCaseReview.editForm.reviewDescription')">
+        <TabPane key="description" :tab="t('testCaseReview.columns.reviewDescription')">
           <FormItem name="description" :rules="[{validator: validateDescription}]">
             <RichEditor
               ref="descRichRef"

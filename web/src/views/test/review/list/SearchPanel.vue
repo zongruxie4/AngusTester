@@ -97,7 +97,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: t('testCaseReview.list.searchReviewNameDescription'),
+    placeholder: t('common.placeholders.searchKeyword'),
     allowClear: true,
     maxlength: 100
   },
@@ -105,15 +105,15 @@ const searchPanelOptions = [
     valueKey: 'ownerId',
     type: 'select-user',
     allowClear: true,
-    placeholder: t('testCaseReview.list.selectOwner'),
+    placeholder: t('common.placeholders.selectOwner'),
     maxlength: 100
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
     placeholder: [
-      t('testCaseReview.list.createdTimeGreaterEqual'),
-      t('testCaseReview.list.createdTimeLessEqual')
+      t('common.placeholders.selectCreatedDateRange.0'),
+      t('common.placeholders.selectCreatedDateRange.1')
     ],
     showTime: true,
     allowClear: true
@@ -126,22 +126,22 @@ const sortMenuItems: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('testCaseReview.list.sortByName'),
+    name: t('common.name'),
     key: 'name',
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('testCaseReview.list.sortByOwner'),
+    name: t('common.owner'),
     key: 'ownerId',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('testCaseReview.list.sortByAddPerson'),
+    name: t('common.creator'),
     key: 'createdBy',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('testCaseReview.list.sortByAddTime'),
+    name: t('common.createdDate'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Asc
   }
@@ -236,7 +236,7 @@ onMounted(() => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/test#reviews?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('testCaseReview.list.addReview') }}</span>
+            <span>{{ t('testCaseReview.actions.addReview') }}</span>
           </RouterLink>
         </Button>
 
