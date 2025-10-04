@@ -137,7 +137,7 @@
       "memberProgress": "成员进度",
       "meetingRecords": "会议记录"
     },
-    "placeholder": {
+    "placeholders": {
       "inputSprintName": "输入迭代名称，最多可输入100字符",
       "inputIssuePrefix": "输入问题前缀，最多可输入40字符",
       "inputAcceptanceCriteria": "明确计软件产品交付的具体条件和标准",
@@ -184,8 +184,8 @@
       },
       "move": {
         "options": {
-          "productBacklog": "产品待办",
-          "productSprint": "产品迭代"
+          "productBacklog": "产品待办列表",
+          "productSprint": "产品迭代计划"
         }
       }
     },

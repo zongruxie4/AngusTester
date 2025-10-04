@@ -176,11 +176,11 @@ const exportTestCases = async () => {
  * </p>
  */
 const copyPlanUrl = () => {
-  const planUrl = window.location.origin + '/function#plans?id=' + currentPlanId.value;
+  const planUrl = window.location.origin + '/test#plans?id=' + currentPlanId.value;
   toClipboard(planUrl).then(() => {
     notification.success(t('actions.tips.copySuccess'));
   }).catch(() => {
-    notification.error(t('testPlan.planDetail.notifications.copyFailed'));
+    notification.error(t('actions.tips.copyFailed'));
   });
 };
 
@@ -245,7 +245,7 @@ onMounted(() => {
         class="p-0">
         <RouterLink
           class="flex items-center space-x-1 leading-6.5 px-1.75"
-          :to="`/function#plans?id=${currentPlanId}&type=edit`">
+          :to="`/test#plans?id=${currentPlanId}&type=edit`">
           <Icon icon="icon-shuxie" class="text-3.5" />
           <span>{{ t('actions.edit') }}</span>
         </RouterLink>
@@ -292,7 +292,7 @@ onMounted(() => {
     <BasicInfo :planData="planDetailData" :completionRate="completedRate" />
 
     <Tabs size="small">
-      <TabPane key="testerResponsibilities" :tab="t('testPlan.planDetail.tabs.testers')">
+      <TabPane key="testerResponsibilities" :tab="t('common.tester')">
         <Table
           :columns="testerTableColumns"
           :dataSource="testerResponsibilities"
@@ -312,7 +312,7 @@ onMounted(() => {
           </template>
         </Table>
       </TabPane>
-      <TabPane key="testingObjectives" :tab="t('testPlan.planDetail.tabs.testingObjectives')">
+      <TabPane key="testingObjectives" :tab="t('testPlan.columns.testingObjectives')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
             v-if="planDetailData?.otherInformation"
@@ -320,7 +320,7 @@ onMounted(() => {
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="testingScope" :tab="t('testPlan.planDetail.tabs.testingScope')">
+      <TabPane key="testingScope" :tab="t('testPlan.columns.testingScope')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
             v-if="planDetailData?.otherInformation"
@@ -328,7 +328,7 @@ onMounted(() => {
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="acceptanceCriteria" :tab="t('testPlan.planDetail.tabs.acceptanceCriteria')">
+      <TabPane key="acceptanceCriteria" :tab="t('testPlan.columns.acceptanceCriteria')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
             v-if="planDetailData?.acceptanceCriteria"
@@ -336,7 +336,7 @@ onMounted(() => {
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="otherInformation" :tab="t('testPlan.planDetail.tabs.otherInformation')">
+      <TabPane key="otherInformation" :tab="t('testPlan.columns.otherInformation')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
             v-if="planDetailData?.otherInformation"
@@ -347,10 +347,10 @@ onMounted(() => {
       <TabPane key="chart" :tab="t('chart.burndown.title')">
         <BurnDownChart :planId="currentPlanId" />
       </TabPane>
-      <TabPane key="progress" :tab="t('testPlan.planDetail.tabs.memberProgress')">
+      <TabPane key="progress" :tab="t('common.memberProgress')">
         <MemberProgress :planId="currentPlanId" :projectId="props.projectId" />
       </TabPane>
-      <TabPane key="workCalendar" :tab="t('testPlan.planDetail.tabs.workCalendar')">
+      <TabPane key="workCalendar" :tab="t('common.workCalendar')">
         <WorkCalendar
           :projectId="props.projectId"
           :userInfo="props.userInfo as any"

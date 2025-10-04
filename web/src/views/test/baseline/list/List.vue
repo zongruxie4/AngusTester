@@ -108,7 +108,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
             <RouterLink
               class="router-link flex-1 truncate"
               :title="item.name"
-              :to="`/function#baseline?id=${item.id}`">
+              :to="`/test#baseline?id=${item.id}`">
               {{ item.name }}
             </RouterLink>
           </div>
@@ -187,7 +187,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
             </span>
           </div>
           <div class="flex items-center justify-between h-4 leading-5">
-            <RouterLink class="flex items-center space-x-1" :to="`/function#baseline?id=${item.id}&type=edit`">
+            <RouterLink class="flex items-center space-x-1" :to="`/test#baseline?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
               <span>{{ t('actions.edit') }}</span>
             </RouterLink>

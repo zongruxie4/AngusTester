@@ -11,7 +11,7 @@
       "title": "我的用例",
       "noAddedCases": "您尚未添加任何用例，立即",
       "addCase": "添加用例",
-      "noFavoritedCases": "您没有收藏的用例",
+      "noFavouritedCases": "您没有收藏的用例",
       "noFollowedCases": "您没有关注的用例",
       "noPendingCases": "您没有待测试的用例"
     },
@@ -21,46 +21,8 @@
   },
   "testPlan": {
     "title": "计划",
-    "main": {
-      "addPlan": "添加计划"
-    },
-    "list": {
-      "addedPlans": "已添加的计划",
-      "noPlans": "您尚未添加任何计划，立即",
-      "addPlan": "添加计划",
-      "searchPlanName": "查询计划名称、描述",
-      "isReview": "评审",
-      "selectStatus": "选择状态",
-      "selectOwner": "选择负责人",
-      "planStartTime": "计划开始时间",
-      "planDeadlineTime": "计划截止时间",
-      "resetTest": "重置测试",
-      "resetReview": "重置评审",
-      "exportCase": "导出用例",
-      "sortByName": "按名称",
-      "sortByOwner": "按负责人",
-      "sortByAddTime": "按添加时间",
-      "sortByCreator": "按添加人",
-      "to": "至",
-      "allMembers": "所有成员",
-      "totalCases": "总用例",
-      "isReviewLabel": "是否评审",
-      "workloadAssessment": "工作量评估",
-      "casePrefix": "用例前缀",
-      "attachmentCount": "附件数",
-      "viewCases": "查看用例",
-      "planStartSuccess": "计划开始成功",
-      "planCompletedSuccess": "计划已完成",
-      "planBlockedSuccess": "计划标记为阻塞成功",
-      "confirmDeletePlan": "确定删除计划「{name}」吗？",
-      "planDeleteSuccess": "计划删除成功， 您可以在回收站查看删除后的计划",
-      "planCloneSuccess": "计划克隆成功",
-      "planResetTestSuccess": "计划重置测试成功",
-      "planResetReviewSuccess": "计划重置评审成功",
-      "planPermission": "计划权限",
-      "permissionControlOnTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有计划相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级项目权限将自动授权查看权限。",
-      "permissionControlOffTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前计划，查看用户同时需要有当前计划父级项目权限。"
-    },
+    "addedPlans": "已添加的计划",
+    "noPlans": "您尚未添加任何计划，立即",
     "introduce": {
       "title": "关于测试计划",
       "description": "测试计划是软件测试生命周期中的核心组成部分，为测试团队提供系统性的指导框架。通过制定详细的测试计划，可以确保测试活动有序进行，提高测试效率和质量，降低项目风险。",
@@ -89,75 +51,49 @@
         "description": "建立质量评估标准和测试通过准则，确保结果客观可比。"
       }
     },
-    "editForm": {
-      "validation": {
-        "selectPlanTime": "请选择计划时间",
-        "selectStartTime": "请选择计划开始时间",
-        "selectDeadlineTime": "请选择计划截止时间",
-        "selectTester": "请选择测试人员",
-        "duplicatePersonnel": "人员重复，请重新选择",
-        "charLimit2000": "字符不能超过2000",
-        "charLimit2000WithCount": "字符不能超过2000个字符"
-      },
-      "notifications": {
-        "saveSuccess": "修改成功",
-        "addSuccess": "添加成功",
-        "planStartSuccess": "计划开始成功",
-        "planCompletedSuccess": "计划已完成",
-        "confirmDeletePlan": "确定删除计划「{name}」吗？",
-        "planDeleteSuccess": "计划删除成功， 您可以在回收站查看删除后的计划",
-        "planCloneSuccess": "计划克隆成功",
-        "planResetTestSuccess": "计划重置测试成功",
-        "planResetReviewSuccess": "计划重置评审成功",
-        "copyLinkSuccess": "复制链接成功",
-        "copyLinkFailed": "复制链接失败"
-      },
-      "buttons": {
-        "resetTest": "重置测试",
-        "resetReview": "重置评审"
-      },
-      "form": {
-        "planName": "计划名称",
-        "planNamePlaceholder": "计划简要概述，最多支持200个字符",
-        "enterPlanName": "请输入计划名称",
-        "owner": "负责人",
-        "selectOwner": "选择负责人",
-        "selectOwnerPlaceholder": "选择负责人",
-        "ownerTooltip": "通过为计划设置负责人，可以明确测试的责任和权利，更好地促进任务的完成和进度控制，如：解决问题、推进进度、协作团队成员、识别和管理风险等。",
-        "timePlanTooltip": "确定测试活动的开始时间和结束时间，以确保在项目周期内完成所有测试。",
-        "testers": "测试人员",
-        "testersTooltip": "明确参与本次测试计划的测试人员，只允许测试人员参与测试活动。确定测试人员的角色，负责测试的范围，或执行哪些测试任务和测试用例，避免责任模糊和任务遗漏。",
-        "isReview": "是否评审",
-        "reviewTooltip": "开启后，团队内部可通过审核过程评估测试用例、测试步骤和测试结果等方面的质量和有效性，并且开启后只有用例评审通过后才可以进入测试，默认开启。",
-        "reviewCloseConfirm": "关闭后会自动清除用例评审状态（不包括评审次数计数），确认是否继续？",
-        "workloadAssessment": "工作量评估",
-        "workloadAssessmentTooltip": "指定工作量评估方式。工时是指每个人员完成一项工作实际所花费的时间，以小时为单位计算；故事点是基于工作任务量、综合难度、复杂度等的评估值，使用故事点能强制团队细分任务中问题，具有灵活、敏捷度高的特点，推荐使用。",
-        "casePrefix": "用例前缀",
-        "casePrefixPlaceholder": "用例前缀，最多可输入40个字符",
-        "casePrefixTooltip": "设置后计划下用例名会以该前缀开头，不允许修改。",
-        "attachments": "附件",
-        "uploadAttachments": "上传附件",
-        "attachmentsTooltip": "其他文档，如：需求说明书、参考资料、系统架构图、测试规范、技术文档等。支持的格式：\"jpg\",\"bmp\",\"png\",\"gif\",\"txt\",\"docx\",\"jpeg\",\"rar\",\"zip\",\"doc\",\"xlsx\",\"xls\",\"pdf\"；最多上传10个附件。",
-        "testingObjectives": "测试目标",
-        "testingObjectivesPlaceholder": "界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。",
-        "enterTestingObjectives": "请输入测试目标",
-        "testingScope": "测试范围",
-        "testingScopePlaceholder": "界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。",
-        "enterTestingScope": "请输入测试范围",
-        "acceptanceCriteria": "验收标准",
-        "acceptanceCriteriaPlaceholder": "明确计软件产品交付的具体条件和标准。",
-        "otherInformation": "其他说明",
-        "otherInformationPlaceholder": "其他说明，如测试策略、风险评估和管理等。"
-      },
-      "testerSelect": {
-        "selectPersonnel": "选择人员",
-        "workResponsibilities": "工作职责"
-      },
-      "permissionModal": {
-        "title": "计划权限",
-        "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有计划相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级项目权限将自动授权查看权限。",
-        "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前计划，查看用户同时需要有当前计划父级项目权限。"
-      }
+    "actions": {
+      "addPlan": "添加计划",
+      "viewCases": "查看用例",
+      "resetTest": "重置测试",
+      "resetReview": "重置评审"
+    },
+    "columns": {
+      "planName": "计划名称",
+      "casePrefix": "用例前缀",
+      "testingObjectives": "测试目标",
+      "testingScope": "测试范围",
+      "acceptanceCriteria": "验收标准",
+      "otherInformation": "其他说明"
+    },
+    "placeholders": {
+      "planNamePlaceholder": "输入计划简要概述，最多支持200个字符",
+      "enterPlanName": "请输入计划名称",
+      "selectReview": "选择评审",
+      "casePrefixPlaceholder": "用例前缀，最多可输入40个字符",
+      "testingObjectivesPlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。",
+      "enterTestingObjectives": "请输入测试目标",
+      "testingScopePlaceholder": "输入界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。",
+      "enterTestingScope": "请输入测试范围",
+      "acceptanceCriteriaPlaceholder": "明确计软件产品交付的具体条件和标准。",
+      "otherInformationPlaceholder": "其他说明，如测试策略、风险评估和管理等。",
+      "selectPersonnelPlaceholder": "选择人员",
+      "enterWorkResponsibilities": "输入工作职责"
+    },
+    "tips": {
+      "ownerTooltip": "设置计划负责人，明确测试责任和权限，便于任务推进、团队协作和风险管控。",
+      "timePlanTooltip": "设定测试活动的开始和结束时间，确保在项目周期内完成所有测试任务。",
+      "testersTooltip": "选择参与测试的人员，明确其测试范围和职责，避免任务遗漏和责任模糊。",
+      "reviewTooltip": "开启后，用例需通过评审才能进入测试阶段，确保测试质量和有效性。默认开启。",
+      "workloadAssessmentTooltip": "选择工作量评估方式：工时（实际耗时）或故事点（任务复杂度），推荐使用故事点。",
+      "casePrefixTooltip": "设置用例名称前缀，设置后不可修改。",
+      "attachmentsTooltip": "支持上传相关文档（需求、架构图、规范等），格式：jpg、png、pdf、docx等，最多10个文件。"
+    },
+    "messages": {
+      "reviewCloseConfirm": "关闭后会自动清除用例评审状态（不包括评审次数计数），确认是否继续？",
+      "planResetTestSuccess": "计划重置测试成功",
+      "planResetReviewSuccess": "计划重置评审成功",
+      "duplicatePersonnel": "人员重复，请重新选择",
+      "charLimit2000": "字符不能超过2000"
     },
     "planDetail": {
       "basicInfo": {

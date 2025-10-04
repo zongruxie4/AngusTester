@@ -1156,7 +1156,7 @@ onBeforeUnmount(() => {
                 ref="descRichRef"
                 v-model:value="descriptionContent"
                 class="add-case" />
-              <div v-show="descError" class="text-status-error">{{ t('testCase.detail.caseDetail.descCharLimit2000') }}</div>
+              <div v-show="descError" class="text-status-error">{{ t('testPlan.messages.charLimit2000') }}</div>
             </div>
           </template>
 
@@ -1214,7 +1214,7 @@ onBeforeUnmount(() => {
                   name="file"
                   :customRequest="upLoadFile">
                   <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                  <span class="text-3 text-theme-text-hover">{{ t('testCase.detail.caseDetail.uploadAttachments') }}</span>
+                  <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
                 </Upload>
               </template>
             </div>
@@ -1378,7 +1378,7 @@ onBeforeUnmount(() => {
                 name="file"
                 :customRequest="upLoadFile">
                 <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                <span class="text-3 text-theme-text-hover">{{ t('testCase.detail.caseDetail.uploadAttachments') }}</span>
+                <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
               </Upload>
             </template>
           </div>

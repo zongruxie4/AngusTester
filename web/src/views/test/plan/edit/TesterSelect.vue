@@ -123,14 +123,14 @@ defineExpose({
         :error="!!tester.id && duplicateUserIds.includes(tester.id)"
         size="small"
         allowClear
-        :placeholder="t('testPlan.editForm.testerSelect.selectPersonnel')"
+        :placeholder="t('testPlan.placeholders.selectPersonnelPlaceholder')"
         class="!w-50"
         @change="handleUserSelectionChange" />
       <div class="flex-1">
         <Input
           v-model:value="tester.description"
           :maxlength="1000"
-          :placeholder="t('testPlan.editForm.testerSelect.workResponsibilities')"
+          :placeholder="t('testPlan.placeholders.enterWorkResponsibilities')"
           @blur="emitTesterData" />
       </div>
     </div>

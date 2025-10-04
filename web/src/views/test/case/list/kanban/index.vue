@@ -1639,7 +1639,7 @@ const checkedCaseId = computed(() => {
         <div class="flex items-center justify-between mt-4 pl-5 space-x-2.5">
           <div class="flex-1 flex items-center truncate">
             <RouterLink
-              :to="`/function#plans?id=${checkedPlanInfo?.id}`"
+              :to="`/test#plans?id=${checkedPlanInfo?.id}`"
               :title="checkedPlanInfo?.name"
               class="truncate"
               style="max-width: 50%;">

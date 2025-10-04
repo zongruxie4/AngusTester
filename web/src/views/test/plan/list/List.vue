@@ -203,14 +203,14 @@ const dropdownMenuItems = [
             <RouterLink
               class="router-link flex-1 truncate"
               :title="item.name"
-              :to="`/function#plans?id=${item.id}`">
+              :to="`/test#plans?id=${item.id}`">
               {{ item.name }}
             </RouterLink>
           </div>
 
           <div class="text-3 whitespace-nowrap">
             <span class="text-theme-title ml-2">{{ item.startDate }}</span>
-            <span class="text-theme-sub-content mx-2">{{ t('testPlan.list.to') }}</span>
+            <span class="text-theme-sub-content mx-2">-</span>
             <span class="text-theme-title">{{ item.deadlineDate }}</span>
           </div>
 
@@ -263,7 +263,7 @@ const dropdownMenuItems = [
               <!-- Case count -->
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('testPlan.list.totalCases') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('common.counts.caseCount') }}</span>
                   <span class="text-sm font-medium text-theme-content">
                     {{ item.caseNum }}
                   </span>
@@ -275,7 +275,7 @@ const dropdownMenuItems = [
                 <div class="flex flex-col">
                   <span class="text-xs text-theme-sub-content">{{ t('common.members') }}</span>
                   <span class="text-sm font-medium text-theme-content">
-                    {{ item.members?.length || 0 }} {{ t('organization.user') }}
+                    {{ item.members?.length || 0 }}
                   </span>
                 </div>
 
@@ -343,7 +343,7 @@ const dropdownMenuItems = [
                   {{ item.lastModifiedByName }}
                 </span>
 
-                <span>{{ t('testPlan.list.modifiedBy') }}</span>
+                <span>{{ t('status.modifiedAt') }}</span>
 
                 <span class="text-theme-sub-content">{{ item.lastModifiedDate }}</span>
               </div>
@@ -367,7 +367,7 @@ const dropdownMenuItems = [
 
             <div class="flex ml-8  mt-3">
               <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('testPlan.list.isReviewLabel') }}</span>
+                <span>{{ t('common.review') }}</span>
                 <Colon />
               </div>
               <div :class="item.review ? 'text-green-600' : 'text-red-500'">{{ item.review ? t('status.on') : t('status.off') }}</div>
@@ -375,7 +375,7 @@ const dropdownMenuItems = [
 
             <div class="flex ml-8  mt-3">
               <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('testPlan.list.workloadAssessment') }}</span>
+                <span>{{ t('common.evalWorkloadMethod') }}</span>
                 <Colon />
               </div>
 
@@ -384,7 +384,7 @@ const dropdownMenuItems = [
 
             <div v-if="item.casePrefix" class="flex ml-8 mt-3 relative">
               <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('testPlan.list.casePrefix') }}</span>
+                <span>{{ t('testPlan.columns.casePrefix') }}</span>
                 <Colon />
               </div>
 
@@ -397,7 +397,7 @@ const dropdownMenuItems = [
             </div>
 
             <div v-if="item.attachments?.length" class="whitespace-nowrap ml-8 mt-3">
-              <span>{{ t('testPlan.list.attachmentCount') }}</span>
+              <span>{{ t('common.attachment') }}</span>
 
               <Colon />
 
@@ -433,7 +433,7 @@ const dropdownMenuItems = [
           </div>
 
           <div class="flex items-center justify-between h-4 leading-5">
-            <RouterLink class="flex items-center space-x-1" :to="`/function#plans?id=${item.id}&type=edit`">
+            <RouterLink class="flex items-center space-x-1" :to="`/test#plans?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
               <span>{{ t('actions.edit') }}</span>
             </RouterLink>
@@ -445,7 +445,7 @@ const dropdownMenuItems = [
               class="px-0 flex items-center ml-3"
               @click="handleGoToCases(item)">
               <Icon icon="icon-ceshiyongli1" class="mr-0.5" />
-              <span>{{ t('testPlan.list.viewCases') }}</span>
+              <span>{{ t('testPlan.actions.viewCases') }}</span>
             </Button>
 
             <Button

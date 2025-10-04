@@ -125,7 +125,7 @@ const handleStartPlan = async (data: PlanDetail, index: number) => {
     return;
   }
 
-  notification.success(t('testPlan.list.planStartSuccess'));
+  notification.success(t('actions.tips.startSuccess'));
   await updateTableData(id, index);
 };
 
@@ -143,7 +143,7 @@ const handleCompletePlan = async (data: PlanDetail, index: number) => {
     return;
   }
 
-  notification.success(t('testPlan.list.planCompletedSuccess'));
+  notification.success(t('actions.tips.completeSuccess'));
   await updateTableData(id, index);
 };
 
@@ -161,7 +161,7 @@ const handleBlockPlan = async (data: PlanDetail, index: number) => {
     return;
   }
 
-  notification.success(t('testPlan.list.planBlockedSuccess'));
+  notification.success(t('actions.tips.blockSuccess'));
   await updateTableData(id, index);
 };
 
@@ -171,7 +171,7 @@ const handleBlockPlan = async (data: PlanDetail, index: number) => {
  */
 const handleDeletePlan = async (planData: PlanDetail) => {
   modal.confirm({
-    content: t('testPlan.list.confirmDeletePlan', { name: planData.name }),
+    content: t('actions.tips.confirmDelete', { name: planData.name }),
     async onOk () {
       const id = planData.id;
       const [error] = await funcPlan.deletePlan(id);
@@ -179,7 +179,7 @@ const handleDeletePlan = async (planData: PlanDetail) => {
         return;
       }
 
-      notification.success(t('testPlan.list.planDeleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       refresh();
 
       deleteTabPane([id]);
@@ -384,15 +384,15 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="text-3.5 font-semibold mb-1">{{ t('testPlan.list.addedPlans') }}</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('testPlan.addedPlans') }}</div>
     <Spin :spinning="isLoading" class="flex-1 flex flex-col">
       <template v-if="isDataLoaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>{{ t('testPlan.list.noPlans') }}</span>
-            <RouterLink class="router-link flex-1 truncate" :to="`/function#plans?type=ADD`">
-              {{ t('testPlan.list.addPlan') }}
+            <span>{{ t('testPlan.noPlans') }}</span>
+            <RouterLink class="router-link flex-1 truncate" :to="`/test#plans?type=ADD`">
+              {{ t('testPlan.actions.addPlan') }}
             </RouterLink>
           </div>
         </div>
@@ -438,7 +438,7 @@ onMounted(() => {
         :initStatusUrl="`${TESTER}/func/plan/${selectedData?.id}/auth/status`"
         :onTips="t('testPlan.list.permissionControlOnTips')"
         :offTips="t('testPlan.list.permissionControlOffTips')"
-        :title="t('testPlan.list.planPermission')"
+        :title="t('common.permission')"
         @change="handleAuthFlagChange" />
     </AsyncComponent>
   </div>

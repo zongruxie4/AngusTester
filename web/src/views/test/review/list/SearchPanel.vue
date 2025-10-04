@@ -234,7 +234,7 @@ onMounted(() => {
           type="primary"
           size="small"
           class="p-0">
-          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/function#reviews?type=ADD`">
+          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/test#reviews?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
             <span>{{ t('testCaseReview.list.addReview') }}</span>
           </RouterLink>

@@ -651,7 +651,7 @@ onMounted(async () => {
           :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.REVIEW)"
           type="default"
           size="small"
-          :href="`/function#reviews?id=${reviewId}`"
+          :href="`/test#reviews?id=${reviewId}`"
           class="flex items-center space-x-1">
           <Icon icon="icon-pingshen" class="text-3.5" />
           <span>{{ t('testCaseReview.editForm.reviewNow') }}</span>
@@ -735,7 +735,7 @@ onMounted(async () => {
             :customRequest="handleFileUpload">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
               <Icon icon="icon-lianjie1" class="mr-1" />
-              <span class="whitespace-nowrap">{{ t('testCaseReview.editForm.uploadAttachments') }}</span>
+              <span class="whitespace-nowrap">{{ t('actions.upload') }}</span>
             </a>
           </Upload>
 

@@ -799,7 +799,7 @@ onMounted(() => {
           v-model:value="formState.name"
           size="small"
           :maxlength="100"
-          :placeholder="t('sprint.placeholder.inputSprintName')" />
+          :placeholder="t('sprint.placeholders.inputSprintName')" />
       </FormItem>
 
       <FormItem
@@ -849,7 +849,7 @@ onMounted(() => {
           :readonly="!!currentSprintData?.id"
           :disabled="!!currentSprintData?.id"
           :maxlength="40"
-          :placeholder="t('sprint.placeholder.inputIssuePrefix')" />
+          :placeholder="t('sprint.placeholders.inputIssuePrefix')" />
         <Tooltip
           placement="right"
           arrowPointAtCenter
@@ -933,7 +933,7 @@ onMounted(() => {
             <RichEditor
               ref="acceptanceCriteriaEditorRef"
               v-model:value="formState.acceptanceCriteria"
-              :options="{placeholder: t('sprint.placeholder.inputAcceptanceCriteria')}" />
+              :options="{placeholder: t('sprint.placeholders.inputAcceptanceCriteria')}" />
           </FormItem>
         </TabPane>
         <TabPane key="otherInformation" :tab="t('sprint.columns.otherInformation')">
@@ -944,7 +944,7 @@ onMounted(() => {
             <RichEditor
               ref="otherInformationEditorRef"
               v-model:value="formState.otherInformation"
-              :options="{placeholder: t('sprint.placeholder.inputOtherInformation')}" />
+              :options="{placeholder: t('sprint.placeholders.inputOtherInformation')}" />
           </FormItem>
         </TabPane>
       </Tabs>

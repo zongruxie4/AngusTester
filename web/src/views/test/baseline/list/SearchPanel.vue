@@ -217,7 +217,7 @@ const handleRefreshClick = () => {
           type="primary"
           size="small"
           class="p-0">
-          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/function#baseline?type=ADD`">
+          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/test#baseline?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
             <span>{{ t('testCaseBaseline.list.addBaseline') }}</span>
           </RouterLink>

@@ -418,7 +418,7 @@ onMounted(() => {
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">
-              <span>{{ t('testHome.myCases.noFavoritedCases') }}</span>
+              <span>{{ t('testHome.myCases.noFavouritedCases') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.followBy">

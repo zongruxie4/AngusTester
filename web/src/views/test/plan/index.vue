@@ -131,7 +131,7 @@ const handleHashChange = (hash: string) => {
         const newId = utils.uuid();
         return {
           _id: newId,
-          name: t('testPlan.main.addPlan'),
+          name: t('testPlan.actions.addPlan'),
           value: 'planEdit',
           noCache: true,
           data: { _id: newId }
@@ -139,7 +139,7 @@ const handleHashChange = (hash: string) => {
       });
     }
   }
-  router.replace('/function#plans');
+  router.replace('/test#plans');
 };
 
 /**

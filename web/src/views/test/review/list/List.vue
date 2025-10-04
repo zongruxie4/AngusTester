@@ -197,7 +197,7 @@ const dropdownMenuItems = [
             <RouterLink
               class="router-link flex-1 truncate"
               :title="item.name"
-              :to="`/function#reviews?id=${item.id}`">
+              :to="`/test#reviews?id=${item.id}`">
               {{ item.name }}
             </RouterLink>
           </div>
@@ -364,12 +364,12 @@ const dropdownMenuItems = [
               </div>
 
               <div class="flex items-center justify-between h-4 leading-5">
-                <RouterLink class="flex items-center space-x-1" :to="`/function#reviews?id=${item.id}&type=edit`">
+                <RouterLink class="flex items-center space-x-1" :to="`/test#reviews?id=${item.id}&type=edit`">
                   <Icon icon="icon-shuxie" class="text-3.5" />
                   <span>{{ t('actions.edit') }}</span>
                 </RouterLink>
 
-                <RouterLink class="flex items-center ml-3" :to="`/function#reviews?id=${item.id}`">
+                <RouterLink class="flex items-center ml-3" :to="`/test#reviews?id=${item.id}`">
                   <Icon icon="icon-shuxie" class="mr-0.5" />
                   <span>{{ t('testCaseReview.list.goToReview') }}</span>
                 </RouterLink>

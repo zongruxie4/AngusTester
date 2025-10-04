@@ -294,7 +294,7 @@ onMounted(() => {
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('testCaseReview.list.noReviewsAdded') }}</span>
-            <RouterLink class="router-link flex-1 truncate" :to="`/function#reviews?type=ADD`">
+            <RouterLink class="router-link flex-1 truncate" :to="`/test#reviews?type=ADD`">
               {{ t('testCaseReview.list.addReview') }}
             </RouterLink>
           </div>

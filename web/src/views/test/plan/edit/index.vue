@@ -97,11 +97,11 @@ const infoRichRef = ref();
  */
 const validateDateRange = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error(t('testPlan.editForm.validation.selectPlanTime')));
+    return Promise.reject(new Error(t('common.placeholders.selectPlanTime')));
   } else if (!value[0]) {
-    return Promise.reject(new Error(t('testPlan.editForm.validation.selectStartTime')));
+    return Promise.reject(new Error(t('common.placeholders.selectStartDate')));
   } else if (!value[1]) {
-    return Promise.reject(new Error(t('testPlan.editForm.validation.selectDeadlineTime')));
+    return Promise.reject(new Error(t('common.placeholders.selectDeadline')));
   } else {
     return Promise.resolve();
   }
@@ -113,12 +113,12 @@ const validateDateRange = async (_rule: Rule, value: string) => {
  */
 const validateTesterSelection = async () => {
   if (Object.keys(formState.value.testerResponsibilities).length === 0) {
-    return Promise.reject(new Error(t('testPlan.editForm.validation.selectTester')));
+    return Promise.reject(new Error(t('common.placeholders.selectTester')));
   }
   if (testerSelectRef.value.validate()) {
     return Promise.resolve();
   } else {
-    return Promise.reject(new Error(t('testPlan.editForm.validation.duplicatePersonnel')));
+    return Promise.reject(new Error(t('testPlan.messages.duplicatePersonnel')));
   }
 };
 
@@ -129,22 +129,22 @@ const validateTesterSelection = async () => {
 const validateRichTextMaxLength = async (value) => {
   if (value.field === 'testingObjectives') {
     if (objectiveRichRef.value && objectiveRichRef.value.getLength() >= 2000) {
-      Promise.reject(new Error(t('testPlan.editForm.validation.charLimit2000')));
+      Promise.reject(new Error(t('testPlan.messages.charLimit2000')));
     }
   }
   if (value.field === 'otherInformation') {
     if (infoRichRef.value && infoRichRef.value.getLength() >= 2000) {
-      Promise.reject(new Error(t('testPlan.editForm.validation.charLimit2000')));
+      Promise.reject(new Error(t('testPlan.messages.charLimit2000')));
     }
   }
   if (value.field === 'acceptanceCriteria') {
     if (criteriaRichRef.value && criteriaRichRef.value.getLength() >= 2000) {
-      Promise.reject(new Error(t('testPlan.editForm.validation.charLimit2000')));
+      Promise.reject(new Error(t('testPlan.messages.charLimit2000')));
     }
   }
   if (value.field === 'testingScope') {
     if (scopeRichRef.value && scopeRichRef.value.getLength() >= 2000) {
-      Promise.reject(new Error(t('testPlan.editForm.validation.charLimit2000')));
+      Promise.reject(new Error(t('testPlan.messages.charLimit2000')));
     }
   }
   return Promise.resolve();
@@ -349,7 +349,7 @@ const startPlan = async () => {
     return;
   }
 
-  notification.success(t('testPlan.editForm.notifications.planStartSuccess'));
+  notification.success(t('actions.tips.startSuccess'));
   await loadPlanData(planId);
   refreshPlanList();
 };
@@ -371,7 +371,7 @@ const completePlan = async () => {
     return;
   }
 
-  notification.success(t('testPlan.editForm.notifications.planCompletedSuccess'));
+  notification.success(t('actions.tips.completeSuccess'));
   await loadPlanData(planId);
   refreshPlanList();
 };
@@ -387,7 +387,7 @@ const deletePlan = async () => {
   }
 
   modal.confirm({
-    content: t('testPlan.editForm.notifications.confirmDeletePlan', { name: planData.name }),
+    content: t('actions.tips.confirmDelete', { name: planData.name }),
     async onOk () {
       const planId = planData.id;
       loading.value = true;
@@ -397,7 +397,7 @@ const deletePlan = async () => {
         return;
       }
 
-      notification.success(t('testPlan.editForm.notifications.planDeleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       deleteTabPane([planId]);
       refreshPlanList();
     }
@@ -442,7 +442,7 @@ const clonePlan = async () => {
     return;
   }
 
-  notification.success(t('testPlan.editForm.notifications.planCloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   refreshPlanList();
 };
 
@@ -464,7 +464,7 @@ const resetTestResults = async () => {
     return;
   }
 
-  notification.success(t('testPlan.editForm.notifications.planResetTestSuccess'));
+  notification.success(t('testPlan.messages.planResetTestSuccess'));
   await loadPlanData(planId);
   refreshPlanList();
 };
@@ -487,7 +487,7 @@ const resetReviewResults = async () => {
     return;
   }
 
-  notification.success(t('testPlan.editForm.notifications.planResetReviewSuccess'));
+  notification.success(t('testPlan.messages.planResetReviewSuccess'));
   await loadPlanData(planId);
   refreshPlanList();
 };
@@ -502,10 +502,10 @@ const copyPlanLink = () => {
     return;
   }
 
-  toClipboard(window.location.origin + `/function#plans?id=${planId}`).then(() => {
-    notification.success(t('testPlan.editForm.notifications.copyLinkSuccess'));
+  toClipboard(window.location.origin + `/test#plans?id=${planId}`).then(() => {
+    notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
-    notification.error(t('testPlan.editForm.notifications.copyLinkFailed'));
+    notification.error(t('actions.tips.copyLinkFailed'));
   });
 };
 
@@ -810,7 +810,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="resetTestResults">
           <Icon icon="icon-zhongzhiceshijieguo" class="text-3.5" />
-          <span>{{ t('testPlan.editForm.buttons.resetTest') }}</span>
+          <span>{{ t('testPlan.actions.resetTest') }}</span>
         </Button>
 
         <Button
@@ -820,7 +820,7 @@ onMounted(() => {
           class="flex items-center space-x-1"
           @click="resetReviewResults">
           <Icon icon="icon-zhongzhipingshenjieguo" class="text-3.5" />
-          <span>{{ t('testPlan.editForm.buttons.resetReview') }}</span>
+          <span>{{ t('testPlan.actions.resetReview') }}</span>
         </Button>
 
         <Button
@@ -860,25 +860,25 @@ onMounted(() => {
       size="small"
       layout="horizontal">
       <FormItem
-        :label="t('testPlan.editForm.form.planName')"
+        :label="t('testPlan.columns.planName')"
         name="name"
-        :rules="{ required: true, message: t('testPlan.editForm.form.enterPlanName') }">
+        :rules="{ required: true, message: t('testPlan.placeholders.enterPlanName') }">
         <Input
           v-model:value="formState.name"
           size="small"
           :maxlength="200"
-          :placeholder="t('testPlan.editForm.form.planNamePlaceholder')" />
+          :placeholder="t('testPlan.placeholders.planNamePlaceholder')" />
       </FormItem>
 
       <FormItem
         :label="t('common.owner')"
         name="ownerId"
         class="relative"
-        :rules="{ required: true, message: t('testPlan.editForm.form.selectOwner') }">
+        :rules="{ required: true, message: t('common.placeholders.selectOwner') }">
         <SelectUser
           v-model:value="formState.ownerId"
           size="small"
-          :placeholder="t('testPlan.editForm.form.selectOwnerPlaceholder')"
+          :placeholder="t('common.placeholders.selectOwner')"
           :action="`${TESTER}/project/${props.projectId}/member/user`"
           :maxlength="80" />
 
@@ -888,7 +888,7 @@ onMounted(() => {
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
             <div>
-              {{ t('testPlan.editForm.form.ownerTooltip') }}
+              {{ t('testPlan.tips.ownerTooltip') }}
             </div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 z-10 cursor-pointer" />
@@ -904,7 +904,7 @@ onMounted(() => {
           format="YYYY-MM-DD HH:mm:ss"
           :showNow="false"
           :showTime="{ format: TIME_FORMAT }"
-          :placeholder="[t('common.startTime'), t('testPlan.editForm.form.deadlineTime')]"
+          :placeholder="[t('common.startDate'), t('common.deadlineDate')]"
           type="date-range"
           size="small"
           class="w-full" />
@@ -914,14 +914,14 @@ onMounted(() => {
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
-            <div>{{ t('testPlan.editForm.form.timePlanTooltip') }}</div>
+            <div>{{ t('testPlan.tips.timePlanTooltip') }}</div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 cursor-pointer" />
         </Tooltip>
       </FormItem>
 
       <FormItem
-        :label="t('testPlan.editForm.form.testers')"
+        :label="t('common.tester')"
         name="testerResponsibilities"
         class="relative"
         :rules="[{ required: true }, { validator: validateTesterSelection }]">
@@ -939,7 +939,7 @@ onMounted(() => {
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
             <div>
-              {{ t('testPlan.editForm.form.testersTooltip') }}
+              {{ t('testPlan.tips.testersTooltip') }}
             </div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 cursor-pointer" />
@@ -947,7 +947,7 @@ onMounted(() => {
       </FormItem>
 
       <FormItem
-        :label="t('testPlan.editForm.form.isReview')"
+        :label="t('common.review')"
         required
         class="flex-1"
         name="review">
@@ -958,7 +958,7 @@ onMounted(() => {
           :overlayStyle="{ 'max-width': '430px' }">
           <template #title>
             <div>
-              <span class="mr-2">{{ t('testPlan.editForm.form.reviewCloseConfirm') }}</span>
+              <span class="mr-2">{{ t('testPlan.messages.reviewCloseConfirm') }}</span>
               <a
                 class="text-theme-special"
                 @click="confirmDisableReview">{{ t('actions.confirm') }}</a>
@@ -981,7 +981,7 @@ onMounted(() => {
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
             <div>
-              {{ t('testPlan.editForm.form.reviewTooltip') }}
+              {{ t('testPlan.tips.reviewTooltip') }}
             </div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips mt-0.25 ml-1 text-3.5 cursor-pointer" />
@@ -989,7 +989,7 @@ onMounted(() => {
       </FormItem>
 
       <FormItem
-        :label="t('testPlan.editForm.form.workloadAssessment')"
+        :label="t('common.evalWorkloadMethod')"
         name="evalWorkloadMethod"
         class="flex-1">
         <RadioGroup
@@ -1010,7 +1010,7 @@ onMounted(() => {
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
             <div>
-              {{ t('testPlan.editForm.form.workloadAssessmentTooltip') }}
+              {{ t('testPlan.tips.workloadAssessmentTooltip') }}
             </div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips text-3.5 cursor-pointer" />
@@ -1018,7 +1018,7 @@ onMounted(() => {
       </FormItem>
 
       <FormItem
-        :label="t('testPlan.editForm.form.casePrefix')"
+        :label="t('testPlan.columns.casePrefix')"
         name="casePrefix"
         class="relative flex-1">
         <Input
@@ -1027,14 +1027,14 @@ onMounted(() => {
           :readonly="!!planDetailData?.id"
           :disabled="!!planDetailData?.id"
           :maxlength="40"
-          :placeholder="t('testPlan.editForm.form.casePrefixPlaceholder')" />
+          :placeholder="t('testPlan.placeholders.casePrefixPlaceholder')" />
 
         <Tooltip
           placement="right"
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
-            <div>{{ t('testPlan.editForm.form.casePrefixTooltip') }}</div>
+            <div>{{ t('testPlan.tips.casePrefixTooltip') }}</div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 cursor-pointer" />
         </Tooltip>
@@ -1049,14 +1049,14 @@ onMounted(() => {
             :customRequest="handleFileUpload">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
               <Icon icon="icon-lianjie1" class="mr-1" />
-              <span class="whitespace-nowrap">{{ t('testPlan.editForm.form.uploadAttachments') }}</span>
+              <span class="whitespace-nowrap">{{ t('actions.upload') }}</span>
             </a>
           </Upload>
 
           <Tooltip :overlayStyle="{ 'max-width': '400px' }">
             <template #title>
               <div class="text-3 text-theme-sub-content leading-4 break-all">
-                {{ t('testPlan.editForm.form.attachmentsTooltip') }}
+                {{ t('testPlan.tips.attachmentsTooltip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1 -mt-0.25 text-3.5 cursor-pointer" />
@@ -1093,7 +1093,7 @@ onMounted(() => {
         <TabPane key="testingObjectives" forceRender>
           <template #tab>
             <div class="text-right pr-2">
-              <span>{{ t('testPlan.editForm.form.testingObjectives') }}</span>
+              <span>{{ t('testPlan.columns.testingObjectives') }}</span>
             </div>
           </template>
 
@@ -1105,13 +1105,13 @@ onMounted(() => {
             <RichEditor
               ref="objectiveRichRef"
               v-model:value="formState.testingObjectives"
-              :options="{placeholder: t('testPlan.editForm.form.testingObjectivesPlaceholder')}" />
+              :options="{placeholder: t('testPlan.placeholders.testingObjectivesPlaceholder')}" />
           </FormItem>
         </TabPane>
 
         <TabPane key="testingScope" forceRender>
           <template #tab>
-            <span>{{ t('testPlan.editForm.form.testingScope') }}</span>
+            <span>{{ t('testPlan.columns.testingScope') }}</span>
           </template>
 
           <FormItem
@@ -1122,13 +1122,13 @@ onMounted(() => {
             <RichEditor
               ref="scopeRichRef"
               v-model:value="formState.testingScope"
-              :options="{placeholder: t('testPlan.editForm.form.testingScopePlaceholder')}" />
+              :options="{placeholder: t('testPlan.placeholders.testingScopePlaceholder')}" />
           </FormItem>
         </TabPane>
 
         <TabPane
           key="acceptanceCriteria"
-          :tab="t('testPlan.editForm.form.acceptanceCriteria')"
+          :tab="t('testPlan.columns.acceptanceCriteria')"
           forceRender>
           <FormItem
             label=""
@@ -1137,13 +1137,13 @@ onMounted(() => {
             <RichEditor
               ref="criteriaRichRef"
               v-model:value="formState.acceptanceCriteria"
-              :options="{placeholder: t('testPlan.editForm.form.acceptanceCriteriaPlaceholder')}" />
+              :options="{placeholder: t('testPlan.placeholders.acceptanceCriteriaPlaceholder')}" />
           </FormItem>
         </TabPane>
 
         <TabPane
           key="otherInformation"
-          :tab="t('testPlan.editForm.form.otherInformation')"
+          :tab="t('testPlan.columns.otherInformation')"
           forceRender>
           <FormItem
             label=""
@@ -1152,7 +1152,7 @@ onMounted(() => {
             <RichEditor
               ref="infoRichRef"
               v-model:value="formState.otherInformation"
-              :options="{placeholder: t('testPlan.editForm.form.otherInformationPlaceholder')}" />
+              :options="{placeholder: t('testPlan.placeholders.otherInformationPlaceholder')}" />
           </FormItem>
         </TabPane>
       </Tabs>

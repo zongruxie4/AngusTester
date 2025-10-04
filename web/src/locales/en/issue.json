@@ -137,7 +137,7 @@
       "memberProgress": "Member Progress",
       "meetingRecords": "Meeting Records"
     },
-    "placeholder": {
+    "placeholders": {
       "inputSprintName": "Enter sprint name (max 100 characters)",
       "inputIssuePrefix": "Enter issue prefix (max 40 characters)",
       "inputAcceptanceCriteria": "Define specific conditions and standards for software product delivery",
@@ -184,8 +184,8 @@
       },
       "move": {
         "options": {
-          "productBacklog": "Product Backlog",
-          "productSprint": "Product Sprint"
+          "productBacklog": "Product Backlog List",
+          "productSprint": "Product Sprint Plan"
         }
       }
     },

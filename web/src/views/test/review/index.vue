@@ -119,7 +119,7 @@ const processHashParameters = (hash: string) => {
     }
   }
 
-  router.replace('/function#reviews');
+  router.replace('/test#reviews');
 };
 
 /**

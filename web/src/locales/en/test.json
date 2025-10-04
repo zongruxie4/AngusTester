@@ -11,7 +11,7 @@
       "title": "My Cases",
       "noAddedCases": "You haven't added any cases yet, ",
       "addCase": "Add Case",
-      "noFavoritedCases": "You have no favourited cases",
+      "noFavouritedCases": "You have no favourited cases",
       "noFollowedCases": "You have no followed cases",
       "noPendingCases": "You have no pending test cases"
     },
@@ -21,47 +21,8 @@
   },
   "testPlan": {
     "title": "Plan",
-    "main": {
-      "addPlan": "Add Plan"
-    },
-    "list": {
-      "addedPlans": "Added Plans",
-      "noPlans": "You haven't added any plans yet, ",
-      "addPlan": "Add Plan",
-      "searchPlanName": "Search plan name or description",
-      "isReview": "Review",
-      "selectStatus": "Select Status",
-      "selectOwner": "Select Owner",
-      "planStartTime": "Plan start date",
-      "planDeadlineTime": "Plan deadline date",
-      "resetTest": "Reset Test",
-      "resetReview": "Reset Review",
-      "exportCase": "Export Cases",
-      "sortByName": "Sort by Name",
-      "sortByOwner": "Sort by Owner",
-      "sortByAddTime": "Sort by Created Time",
-      "sortByCreator": "Sort by Creator",
-      "to": "to",
-      "allMembers": "All Members",
-      "totalCases": "Total Cases",
-      "isReviewLabel": "Review",
-      "workloadAssessment": "Workload Assessment",
-      "casePrefix": "Case Prefix",
-      "attachmentCount": "Attachments",
-      "modifiedBy": "Modified at",
-      "viewCases": "View Cases",
-      "planStartSuccess": "Plan started successfully",
-      "planCompletedSuccess": "Plan completed",
-      "planBlockedSuccess": "Plan marked as blocked successfully",
-      "confirmDeletePlan": "Confirm to delete plan 「{name}」?",
-      "planDeleteSuccess": "Plan deleted successfully, you can view the deleted plan in the recycle bin",
-      "planCloneSuccess": "Plan cloned successfully",
-      "planResetTestSuccess": "Plan test reset successfully",
-      "planResetReviewSuccess": "Plan review reset successfully",
-      "planPermission": "Plan Permission",
-      "permissionControlOnTips": "After enabling \"Permission Control\", you need to manually authorize service permissions to have plan operation permissions. Permission control is enabled by default. Note: If the authorized object does not have parent project permissions, view permissions will be automatically granted.",
-      "permissionControlOffTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current plan. Users viewing the plan must also have parent project permissions for the current plan."
-    },
+    "addedPlans": "Added Plans",
+    "noPlans": "You haven't added any plans yet, ",
     "introduce": {
       "title": "About Test Plan",
       "description": "Test plans serve as the core component of the software testing lifecycle, providing a systematic framework for testing teams. Through detailed test planning, we ensure organized testing activities, improve efficiency and quality, while reducing project risks.",
@@ -90,75 +51,49 @@
         "description": "Establish quality assessment criteria and test pass requirements."
       }
     },
-    "editForm": {
-      "validation": {
-        "selectPlanTime": "Please select plan time",
-        "selectStartTime": "Please select plan start time",
-        "selectDeadlineTime": "Please select plan deadline time",
-        "selectTester": "Please select tester",
-        "duplicatePersonnel": "Duplicate personnel, please select again",
-        "charLimit2000": "Characters cannot exceed 2000",
-        "charLimit2000WithCount": "Characters cannot exceed 2000 characters"
-      },
-      "notifications": {
-        "saveSuccess": "Modify successfully",
-        "addSuccess": "Add successfully",
-        "planStartSuccess": "Plan start successfully",
-        "planCompletedSuccess": "Plan completed",
-        "confirmDeletePlan": "Confirm to delete plan 「{name}」?",
-        "planDeleteSuccess": "Plan deleted successfully, you can view the deleted plan in the recycle bin",
-        "planCloneSuccess": "Plan cloned successfully",
-        "planResetTestSuccess": "Plan reset test successfully",
-        "planResetReviewSuccess": "Plan reset review successfully",
-        "copyLinkSuccess": "Copy link successfully",
-        "copyLinkFailed": "Copy link failed"
-      },
-      "buttons": {
-        "resetTest": "Reset Test",
-        "resetReview": "Reset Review"
-      },
-      "form": {
-        "planName": "Name",
-        "planNamePlaceholder": "Plan brief description, up to 200 characters",
-        "enterPlanName": "Please enter plan name",
-        "owner": "Owner",
-        "selectOwner": "Select owner",
-        "selectOwnerPlaceholder": "Select owner",
-        "ownerTooltip": "By setting the owner of the plan, the responsibility and rights of testing can be clearly defined, which can better promote the completion of tasks and progress control, such as: solving problems, advancing progress, collaborating with team members, identifying and managing risks, etc.",
-        "timePlanTooltip": "Determine the start and end times of the test activity to ensure that all tests are completed within the project cycle.",
-        "testers": "Testers",
-        "testersTooltip": "Clearly define the testers participating in this test plan, only allowing testers to participate in test activities. Determine the role of the tester, the scope of the test, or the test tasks and test cases to be executed, to avoid responsibility ambiguity and task omissions.",
-        "isReview": "Review",
-        "reviewTooltip": "After enabling, the team can evaluate the quality and effectiveness of test cases, test steps, and test results through the review process, and only after the test case review is passed can it enter the test, which is enabled by default.",
-        "reviewCloseConfirm": "After disabling, the test case review status will be automatically cleared (excluding review count), confirm whether to continue?",
-        "workloadAssessment": "Workload Assessment",
-        "workloadAssessmentTooltip": "Specify the workload assessment method. The work hour is the actual time spent by each person to complete a work, calculated in hours; the story point is an evaluation value based on the workload, complexity, and other factors of the work task, which can force the team to subdivide problems in the task, with flexible and agile characteristics, recommended to use.",
-        "casePrefix": "Case Prefix",
-        "casePrefixPlaceholder": "Case prefix, up to 40 characters",
-        "casePrefixTooltip": "After setting, the case name under the plan will start with this prefix and cannot be modified.",
-        "attachments": "Attachments",
-        "uploadAttachments": "Upload",
-        "attachmentsTooltip": "Other documents, such as: requirements specification, reference materials, system architecture diagram, test specifications, technical documents, etc. Supported formats: \"jpg\",\"bmp\",\"png\",\"gif\",\"txt\",\"docx\",\"jpeg\",\"rar\",\"zip\",\"doc\",\"xlsx\",\"xls\",\"pdf\"; up to 10 attachments can be uploaded.",
-        "testingObjectives": "Testing Objectives",
-        "testingObjectivesPlaceholder": "Define the specific content and scope of the test activity, including which functions and modules need to be tested, which platforms and versions need to be tested, etc.",
-        "enterTestingObjectives": "Please enter testing objectives",
-        "testingScope": "Testing Scopes",
-        "testingScopePlaceholder": "Define the specific content and scope of the test activity, including which functions and modules need to be tested, which platforms and versions need to be tested, etc.",
-        "enterTestingScope": "Please enter testing scope",
-        "acceptanceCriteria": "Acceptance Criteria",
-        "acceptanceCriteriaPlaceholder": "Clearly define the specific conditions and standards for the delivery of the software product.",
-        "otherInformation": "Other Information",
-        "otherInformationPlaceholder": "Other information, such as test strategy, risk assessment, and management, etc."
-      },
-      "testerSelect": {
-        "selectPersonnel": "Select Personnel",
-        "workResponsibilities": "Work Responsibilities"
-      },
-      "permissionModal": {
-        "title": "Plan Permission",
-        "onTips": "After enabling \"Permission Control\", you need to manually authorize service permissions to have plan operation permissions. Permission control is enabled by default. Note: If the authorized object does not have parent project permissions, view permissions will be automatically granted.",
-        "offTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current plan. Users viewing the plan must also have parent project permissions for the current plan."
-      }
+    "actions": {
+      "addPlan": "Add Plan",
+      "viewCases": "View Cases",
+      "resetTest": "Reset Test",
+      "resetReview": "Reset Review"
+    },
+    "columns": {
+      "planName": "Name",
+      "casePrefix": "Case Prefix",
+      "testingObjectives": "Testing Objectives",
+      "testingScope": "Testing Scopes",
+      "acceptanceCriteria": "Acceptance Criteria",
+      "otherInformation": "Other Information"
+    },
+    "placeholders": {
+      "planNamePlaceholder": "Plan brief description, up to 200 characters",
+      "enterPlanName": "Please enter plan name",
+      "selectReview": "Slect review",
+      "casePrefixPlaceholder": "Case prefix, up to 40 characters",
+      "testingObjectivesPlaceholder": "Define the specific content and scope of the test activity, including which functions and modules need to be tested, which platforms and versions need to be tested, etc.",
+      "enterTestingObjectives": "Please enter testing objectives",
+      "testingScopePlaceholder": "Define the specific content and scope of the test activity, including which functions and modules need to be tested, which platforms and versions need to be tested, etc.",
+      "enterTestingScope": "Please enter testing scope",
+      "acceptanceCriteriaPlaceholder": "Clearly define the specific conditions and standards for the delivery of the software product.",
+      "otherInformationPlaceholder": "Other information, such as test strategy, risk assessment, and management, etc.",
+      "selectPersonnelPlaceholder": "Select Personnel",
+      "enterWorkResponsibilities": "Enter work responsibilities"
+    },
+    "tips": {
+      "ownerTooltip": "Set plan owner to clarify testing responsibilities and permissions, facilitating task progress, team collaboration, and risk management.",
+      "timePlanTooltip": "Set start and end times for test activities to ensure all testing tasks are completed within the project cycle.",
+      "testersTooltip": "Select testing participants, clarify their testing scope and responsibilities to avoid task omissions and unclear responsibilities.",
+      "reviewTooltip": "When enabled, test cases must pass review before entering testing phase to ensure quality and effectiveness. Enabled by default.",
+      "workloadAssessmentTooltip": "Choose workload assessment method: work hours (actual time spent) or story points (task complexity). Story points recommended.",
+      "casePrefixTooltip": "Set case name prefix, cannot be modified after setting.",
+      "attachmentsTooltip": "Upload related documents (requirements, architecture diagrams, specifications, etc.). Formats: jpg, png, pdf, docx, etc. Maximum 10 files."
+    },
+    "messages": {
+      "reviewCloseConfirm": "After disabling, the test case review status will be automatically cleared (excluding review count), confirm whether to continue?",
+      "planResetTestSuccess": "Plan reset test successfully",
+      "planResetReviewSuccess": "Plan reset review successfully",
+      "duplicatePersonnel": "Duplicate personnel, please select again",
+      "charLimit2000": "Characters cannot exceed 2000"
     },
     "planDetail": {
       "basicInfo": {

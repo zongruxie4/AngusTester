@@ -142,7 +142,7 @@ const handleHashChange = (hash: string) => {
     }
   }
 
-  router.replace('/function#baseline');
+  router.replace('/test#baseline');
 };
 
 /**

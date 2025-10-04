@@ -26,7 +26,7 @@ const attachments = computed(() => props.planData?.attachments || []);
       <div class="flex items-start space-x-5">
         <div class="w-1/2 flex items-start mt-2.5">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('testPlan.planDetail.basicInfo.planName') }}</span>
+            <span class="font-semibold text-black">{{ t('testPlan.columns.planName') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -59,7 +59,7 @@ const attachments = computed(() => props.planData?.attachments || []);
 
         <div class="w-1/2 flex items-start">
           <div class="w-24 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('testPlan.planDetail.basicInfo.casePrefix') }}</span>
+            <span class="font-semibold text-black">{{ t('testPlan.columns.casePrefix') }}</span>
             <Colon class="w-1" />
           </div>
 

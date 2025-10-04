@@ -881,7 +881,7 @@ onMounted(() => {
                         :fileList="[]"
                         :customRequest="upLoadFile">
                         <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
-                        <span class="text-3 text-theme-text-hover">{{ t('testCase.addCaseModal.uploadAttachments') }}</span>
+                        <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
                       </Upload>
                     </div>
                   </template>
