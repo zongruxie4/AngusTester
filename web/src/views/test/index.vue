@@ -71,7 +71,7 @@ const caseParameterCacheKey = computed(() => {
  * <p>Navigates to the cases section and either adds the tab directly or stores it for later processing.</p>
  */
 const addTabPane = (record) => {
-  router.push('/function#cases');
+  router.push('/test#cases');
   if (typeof caseComponentRef.value?.updateTabPane === 'function') {
     caseComponentRef.value.addTabPane(record);
   } else {
@@ -84,7 +84,7 @@ const addTabPane = (record) => {
  * <p>Navigates to the cases section and updates the specified tab.</p>
  */
 const updateTabPane = (record) => {
-  router.push('/function#cases');
+  router.push('/test#cases');
   if (typeof caseComponentRef.value?.updateTabPane === 'function') {
     caseComponentRef.value.updateTabPane(record);
   }
@@ -121,7 +121,7 @@ const setCaseListPlanParam = async (record) => {
       caseComponentRef.value.setCaseListPlanParam();
     });
   }
-  await router.push('/function#cases');
+  await router.push('/test#cases');
 };
 
 /**

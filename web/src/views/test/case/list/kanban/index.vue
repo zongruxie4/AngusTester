@@ -1647,7 +1647,7 @@ const checkedCaseId = computed(() => {
             </RouterLink>
             <div class="mx-1.5">/</div>
             <RouterLink
-              :to="`/function#cases?id=${checkedCaseInfo?.id}`"
+              :to="`/test#cases?id=${checkedCaseInfo?.id}`"
               class="truncate flex-1"
               :title="checkedCaseInfo?.name">
               {{ checkedCaseInfo?.name }}

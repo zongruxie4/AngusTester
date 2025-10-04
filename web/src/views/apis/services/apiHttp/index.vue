@@ -2096,7 +2096,7 @@ provide('selectHandle', closeDrawer);
         <template #agent>
           <AgentVue v-if="activeDrawerKey === 'agent'" class="pr-5 mt-2" />
         </template>
-        <template #case>
+        <template #cases>
           <!-- <TestCase
             v-if="activeDrawerKey === 'case'"
             :id="props.id"

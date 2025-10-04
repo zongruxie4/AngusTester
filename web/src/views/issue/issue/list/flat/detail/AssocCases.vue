@@ -123,7 +123,7 @@ const handleCaseDisassociation = (caseRecord: any) => {
  * @param caseRecord - The test case record to open
  */
 const navigateToCaseDetail = (caseRecord: any) => {
-  router.push(`/function#cases?id=${caseRecord.id}`);
+  router.push(`/test#cases?id=${caseRecord.id}`);
 };
 
 /**

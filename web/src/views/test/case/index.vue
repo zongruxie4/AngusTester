@@ -448,7 +448,7 @@ onMounted(() => {
   }, { immediate: true });
 
   watch(() => route.fullPath, () => {
-    if (!route.fullPath.includes('/function#cases')) {
+    if (!route.fullPath.includes('/test#cases')) {
       return;
     }
     const fullPath = decodeURI(route.fullPath);
@@ -471,7 +471,7 @@ onMounted(() => {
           notify: 0,
           queryParams: restoreFilters(result)
         });
-        router.replace('/function#cases');
+        router.replace('/test#cases');
       }
     }
   }, {

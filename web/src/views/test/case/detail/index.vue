@@ -215,7 +215,7 @@ const handleClick = (type: CaseActionAuth) => {
 
 // 复制Url
 const handleCopy = async () => {
-  const message = `${window.location.origin}/function#cases?
+  const message = `${window.location.origin}/test#cases?
   id=${caseDetail.value.id}&projectId=${projectId.value}&
   name=${caseDetail.value.name}&currIndex=${props.currIndex}&
   total=${props.queryParams.total}&pageNo=${props.queryParams.pageNo}&

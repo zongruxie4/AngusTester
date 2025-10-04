@@ -741,7 +741,7 @@ onUnmounted(() => {
                         {{ t('testCaseReview.detail.resetReview') }}
                       </Button>
 
-                      <RouterLink :to="`/function#cases?id=${record.caseId}`">
+                      <RouterLink :to="`/test#cases?id=${record.caseId}`">
                         <Button
                           type="text"
                           size="small"

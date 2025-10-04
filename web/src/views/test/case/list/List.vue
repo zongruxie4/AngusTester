@@ -1205,7 +1205,7 @@ const handleCopy = async (value) => {
 
   const _params = http.getURLSearchParams(_qery, true);
 
-  const message = `${window.location.origin}/function#cases?id=${value.id}&name=${value.name}&projectId=${projectInfo.value.id}&${_params}&total=${total.value}`;
+  const message = `${window.location.origin}/test#cases?id=${value.id}&name=${value.name}&projectId=${projectInfo.value.id}&${_params}&total=${total.value}`;
   toClipboard(message).then(() => {
     notification.success(t('actions.tips.copySuccess'));
   }).catch(() => {

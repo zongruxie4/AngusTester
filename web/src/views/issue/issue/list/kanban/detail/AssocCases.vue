@@ -38,7 +38,7 @@ const associatedCaseList = computed(() => {
   return props.dataSource?.refCaseInfos?.map(item => {
     return {
       ...item,
-      linkUrl: `/function#cases?id=${item.id}&projectId=${props.projectId}`
+      linkUrl: `/test#cases?id=${item.id}&projectId=${props.projectId}`
     };
   }) || [];
 });

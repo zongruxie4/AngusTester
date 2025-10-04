@@ -31,7 +31,7 @@ const dataList = computed(() => {
   return props.dataSource?.map(item => {
     return {
       ...item,
-      linkUrl: `/function#cases?id=${item.id}&projectId=${props.projectId}`
+      linkUrl: `/test#cases?id=${item.id}&projectId=${props.projectId}`
     };
   }) || [];
 });
