@@ -403,11 +403,11 @@ const getProcessedParameterData = () => {
 };
 
 // Expose component methods
-defineExpose({ 
-  updateComp: updateComponentData, 
-  getModelResolve: getModelResolution, 
-  validate: validateParameterContents, 
-  getData: getProcessedParameterData 
+defineExpose({
+  updateComp: updateComponentData,
+  getModelResolve: getModelResolution,
+  validate: validateParameterContents,
+  getData: getProcessedParameterData
 });
 </script>
 <template>

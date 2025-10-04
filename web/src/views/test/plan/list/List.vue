@@ -210,7 +210,7 @@ const dropdownMenuItems = [
 
           <div class="text-3 whitespace-nowrap">
             <span class="text-theme-title ml-2">{{ item.startDate }}</span>
-            <span class="text-theme-sub-content mx-2">{{ t('functionPlan.list.to') }}</span>
+            <span class="text-theme-sub-content mx-2">{{ t('testPlan.list.to') }}</span>
             <span class="text-theme-title">{{ item.deadlineDate }}</span>
           </div>
 
@@ -263,7 +263,7 @@ const dropdownMenuItems = [
               <!-- Case count -->
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('functionPlan.list.totalCases') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('testPlan.list.totalCases') }}</span>
                   <span class="text-sm font-medium text-theme-content">
                     {{ item.caseNum }}
                   </span>
@@ -343,7 +343,7 @@ const dropdownMenuItems = [
                   {{ item.lastModifiedByName }}
                 </span>
 
-                <span>{{ t('functionPlan.list.modifiedBy') }}</span>
+                <span>{{ t('testPlan.list.modifiedBy') }}</span>
 
                 <span class="text-theme-sub-content">{{ item.lastModifiedDate }}</span>
               </div>
@@ -367,7 +367,7 @@ const dropdownMenuItems = [
 
             <div class="flex ml-8  mt-3">
               <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('functionPlan.list.isReviewLabel') }}</span>
+                <span>{{ t('testPlan.list.isReviewLabel') }}</span>
                 <Colon />
               </div>
               <div :class="item.review ? 'text-green-600' : 'text-red-500'">{{ item.review ? t('status.on') : t('status.off') }}</div>
@@ -375,7 +375,7 @@ const dropdownMenuItems = [
 
             <div class="flex ml-8  mt-3">
               <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('functionPlan.list.workloadAssessment') }}</span>
+                <span>{{ t('testPlan.list.workloadAssessment') }}</span>
                 <Colon />
               </div>
 
@@ -384,7 +384,7 @@ const dropdownMenuItems = [
 
             <div v-if="item.casePrefix" class="flex ml-8 mt-3 relative">
               <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('functionPlan.list.casePrefix') }}</span>
+                <span>{{ t('testPlan.list.casePrefix') }}</span>
                 <Colon />
               </div>
 
@@ -397,7 +397,7 @@ const dropdownMenuItems = [
             </div>
 
             <div v-if="item.attachments?.length" class="whitespace-nowrap ml-8 mt-3">
-              <span>{{ t('functionPlan.list.attachmentCount') }}</span>
+              <span>{{ t('testPlan.list.attachmentCount') }}</span>
 
               <Colon />
 
@@ -445,7 +445,7 @@ const dropdownMenuItems = [
               class="px-0 flex items-center ml-3"
               @click="handleGoToCases(item)">
               <Icon icon="icon-ceshiyongli1" class="mr-0.5" />
-              <span>{{ t('functionPlan.list.viewCases') }}</span>
+              <span>{{ t('testPlan.list.viewCases') }}</span>
             </Button>
 
             <Button

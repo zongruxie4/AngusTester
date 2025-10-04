@@ -160,7 +160,7 @@ const openAddCaseModal = () => {
  */
 const deleteCaseFromBaseline = (record) => {
   modal.confirm({
-    content: t('functionBaseline.case.confirmUnlinkCase', { name: record.name }),
+    content: t('testCaseBaseline.case.confirmUnlinkCase', { name: record.name }),
     onOk () {
       return func.deleteBaselineCase(props.baselineId, [record.id])
         .then(([error]) => {
@@ -297,7 +297,7 @@ onMounted(() => {
           :caseInfo="selectedCaseInfo" />
 
         <div class="font-semibold text-3.5">
-          {{ t('functionBaseline.case.testSteps') }}
+          {{ t('testCaseBaseline.case.testSteps') }}
         </div>
 
         <CaseStep

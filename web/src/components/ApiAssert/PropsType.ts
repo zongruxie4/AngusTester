@@ -11,7 +11,7 @@ export interface AssertionExecutionResult {
 }
 
 // Assertion type definition that can be either enum value or object with message and value
-export type AssertionTypeDefinition = 
+export type AssertionTypeDefinition =
     | { message: string; value: AssertionType }
     | AssertionType
     | undefined;

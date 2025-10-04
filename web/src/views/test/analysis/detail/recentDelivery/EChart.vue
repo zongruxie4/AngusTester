@@ -43,7 +43,7 @@ let deliverygedWorkloadEchart;
 // 交付数（完成数）
 const deliveryEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.recentDelivery.deliveryCount'),
+    text: t('testAnalysis.detail.recentDelivery.deliveryCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -59,9 +59,9 @@ const deliveryEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.recentDelivery.today'),
+      t('testAnalysis.detail.recentDelivery.today'),
       t('quickSearch.last7Days'),
-      t('functionAnalysis.detail.recentDelivery.lastMonth')
+      t('testAnalysis.detail.recentDelivery.lastMonth')
     ],
     axisLabel: {
       interval: 0,
@@ -77,15 +77,15 @@ const deliveryEchartConfig = {
   legend: {
     show: true,
     data: [
-      t('functionAnalysis.detail.recentDelivery.deliveryCount2'),
-      t('functionAnalysis.detail.recentDelivery.deliveryOverdueCount'),
-      t('functionAnalysis.detail.recentDelivery.totalCount')
+      t('testAnalysis.detail.recentDelivery.deliveryCount2'),
+      t('testAnalysis.detail.recentDelivery.deliveryOverdueCount'),
+      t('testAnalysis.detail.recentDelivery.totalCount')
     ],
     top: 0
   },
   series: [
     {
-      name: t('functionAnalysis.detail.recentDelivery.deliveryCount2'),
+      name: t('testAnalysis.detail.recentDelivery.deliveryCount2'),
       itemStyle: {
         color: 'blue',
         borderRadius: [5, 5, 0, 0]
@@ -100,7 +100,7 @@ const deliveryEchartConfig = {
       }
     },
     {
-      name: t('functionAnalysis.detail.recentDelivery.deliveryOverdueCount'),
+      name: t('testAnalysis.detail.recentDelivery.deliveryOverdueCount'),
       itemStyle: {
         color: 'orange',
         borderRadius: [5, 5, 0, 0]
@@ -114,7 +114,7 @@ const deliveryEchartConfig = {
       }
     },
     {
-      name: t('functionAnalysis.detail.recentDelivery.totalCount'),
+      name: t('testAnalysis.detail.recentDelivery.totalCount'),
       itemStyle: {
         color: 'green',
         borderRadius: [5, 5, 0, 0]
@@ -138,7 +138,7 @@ const deliveryWorkloadEchartConfig = JSON.parse(JSON.stringify({
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('functionAnalysis.detail.recentDelivery.deliveryWorkload'),
+    subtext: t('testAnalysis.detail.recentDelivery.deliveryWorkload'),
     // left: '25%',
     // top: '40%',
     itemGap: 55,

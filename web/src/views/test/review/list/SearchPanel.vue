@@ -97,7 +97,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: t('caseReview.list.searchReviewNameDescription'),
+    placeholder: t('testCaseReview.list.searchReviewNameDescription'),
     allowClear: true,
     maxlength: 100
   },
@@ -105,15 +105,15 @@ const searchPanelOptions = [
     valueKey: 'ownerId',
     type: 'select-user',
     allowClear: true,
-    placeholder: t('caseReview.list.selectOwner'),
+    placeholder: t('testCaseReview.list.selectOwner'),
     maxlength: 100
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
     placeholder: [
-      t('caseReview.list.createdTimeGreaterEqual'),
-      t('caseReview.list.createdTimeLessEqual')
+      t('testCaseReview.list.createdTimeGreaterEqual'),
+      t('testCaseReview.list.createdTimeLessEqual')
     ],
     showTime: true,
     allowClear: true
@@ -126,22 +126,22 @@ const sortMenuItems: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('caseReview.list.sortByName'),
+    name: t('testCaseReview.list.sortByName'),
     key: 'name',
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('caseReview.list.sortByOwner'),
+    name: t('testCaseReview.list.sortByOwner'),
     key: 'ownerId',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('caseReview.list.sortByAddPerson'),
+    name: t('testCaseReview.list.sortByAddPerson'),
     key: 'createdBy',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('caseReview.list.sortByAddTime'),
+    name: t('testCaseReview.list.sortByAddTime'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Asc
   }
@@ -236,7 +236,7 @@ onMounted(() => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/function#reviews?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('caseReview.list.addReview') }}</span>
+            <span>{{ t('testCaseReview.list.addReview') }}</span>
           </RouterLink>
         </Button>
 

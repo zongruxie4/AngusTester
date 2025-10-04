@@ -60,7 +60,7 @@ const onFinish = async () => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.reviewCase.reviewSuccess'));
+  notification.success(t('testCase.reviewCase.reviewSuccess'));
   emits('update:visible', false);
   emits('update');
 };
@@ -81,16 +81,16 @@ const changeFailMessage = (value) => {
 };
 
 const failMessage = [
-  t('functionCase.reviewCase.failReasons.caseNameNotClear'),
-  t('functionCase.reviewCase.failReasons.caseDesignInconsistent'),
-  t('functionCase.reviewCase.failReasons.missingPrerequisites'),
-  t('functionCase.reviewCase.failReasons.stepAccuracyInsufficient'),
-  t('functionCase.reviewCase.failReasons.descriptionUnclear'),
-  t('functionCase.reviewCase.failReasons.incompleteCoverage'),
-  t('functionCase.reviewCase.failReasons.boundaryUnclear'),
-  t('functionCase.reviewCase.failReasons.priorityUnreasonable'),
-  t('functionCase.reviewCase.failReasons.logicInconsistent'),
-  t('functionCase.reviewCase.failReasons.other')
+  t('testCase.reviewCase.failReasons.caseNameNotClear'),
+  t('testCase.reviewCase.failReasons.caseDesignInconsistent'),
+  t('testCase.reviewCase.failReasons.missingPrerequisites'),
+  t('testCase.reviewCase.failReasons.stepAccuracyInsufficient'),
+  t('testCase.reviewCase.failReasons.descriptionUnclear'),
+  t('testCase.reviewCase.failReasons.incompleteCoverage'),
+  t('testCase.reviewCase.failReasons.boundaryUnclear'),
+  t('testCase.reviewCase.failReasons.priorityUnreasonable'),
+  t('testCase.reviewCase.failReasons.logicInconsistent'),
+  t('testCase.reviewCase.failReasons.other')
 ];
 const failOpt = failMessage.map((i, idx) => ({ label: i, value: idx + 1 === failMessage.length ? 'other' : idx }));
 
@@ -100,7 +100,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    :title="t('functionCase.reviewCase.title')"
+    :title="t('testCase.reviewCase.title')"
     :visible="props.visible"
     :width="600"
     :footer="null"
@@ -113,7 +113,7 @@ onMounted(() => {
       @finish="onFinish">
       <FormItem
         name="reviewStatus"
-        :label="t('functionCase.reviewCase.reviewResult')"
+        :label="t('testCase.reviewCase.reviewResult')"
         class="mb-1">
         <RadioGroup
           v-model:value="formState.reviewStatus"
@@ -129,13 +129,13 @@ onMounted(() => {
 
       <FormItem
         name="reviewRemark"
-        :label="t('functionCase.reviewCase.reviewRemark')">
+        :label="t('testCase.reviewCase.reviewRemark')">
         <Select
           v-show="formState.reviewStatus === ReviewStatus.FAILED"
           v-model:value="failMessageValue"
           :options="failOpt"
           class="w-100"
-          :placeholder="t('functionCase.reviewCase.selectFailReason')"
+          :placeholder="t('testCase.reviewCase.selectFailReason')"
           @change="changeFailMessage" />
 
         <Input
@@ -146,7 +146,7 @@ onMounted(() => {
           class="mt-1"
           :autoSize="{ minRows: 6, maxRows: 6}"
           :maxlength="200"
-          :placeholder="t('functionCase.reviewCase.enterReviewRemark')" />
+          :placeholder="t('testCase.reviewCase.enterReviewRemark')" />
       </FormItem>
 
       <FormItem class="mt-5">

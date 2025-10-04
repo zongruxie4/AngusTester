@@ -114,7 +114,7 @@ defineExpose({
         v-model:value="selectValue"
         size="small"
         class="w-43"
-        :placeholder="t('functionCase.selectPlanModal.selectPlan')"
+        :placeholder="t('testCase.selectPlanModal.selectPlan')"
         showSearch
         :fieldNames="{ label: 'name', value: 'id' }"
         :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"

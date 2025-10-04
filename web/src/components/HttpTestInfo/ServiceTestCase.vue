@@ -19,11 +19,11 @@ const props = withDefaults(defineProps<Props>(), {
 // Service test case statistics configuration
 const serviceTestCaseStatisticsConfig = [
   [
-    { label: t('xcan_httpTestInfo.totalTestCount'), dataIndex: 'enabledTestNum' }, 
+    { label: t('xcan_httpTestInfo.totalTestCount'), dataIndex: 'enabledTestNum' },
     { label: t('xcan_httpTestInfo.functionalTestCount'), dataIndex: 'enabledFuncTestNum' }
   ],
   [
-    { label: t('xcan_httpTestInfo.performanceTestCount'), dataIndex: 'enabledPerfTestNum' }, 
+    { label: t('xcan_httpTestInfo.performanceTestCount'), dataIndex: 'enabledPerfTestNum' },
     { label: t('xcan_httpTestInfo.stabilityTestCount'), dataIndex: 'enabledStabilityTestNum' }
   ]
 ];

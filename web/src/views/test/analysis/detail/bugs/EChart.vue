@@ -82,10 +82,10 @@ const bugsEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.bugs.totalBugs'),
-      t('functionAnalysis.detail.bugs.validBugs'),
-      t('functionAnalysis.detail.bugs.invalidBugs'),
-      t('functionAnalysis.detail.bugs.escapedBugs')
+      t('testAnalysis.detail.bugs.totalBugs'),
+      t('testAnalysis.detail.bugs.validBugs'),
+      t('testAnalysis.detail.bugs.invalidBugs'),
+      t('testAnalysis.detail.bugs.escapedBugs')
     ],
     axisLabel: {
       interval: 0,
@@ -175,28 +175,28 @@ const bugLevelEchartConfig = {
       },
       data: [
         {
-          name: t('functionAnalysis.detail.bugs.criticalCount'),
+          name: t('testAnalysis.detail.bugs.criticalCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: t('functionAnalysis.detail.bugs.majorCount'),
+          name: t('testAnalysis.detail.bugs.majorCount'),
           value: 0,
           itemStyle: {
             color: 'gold'
           }
         },
         {
-          name: t('functionAnalysis.detail.bugs.minorCount'),
+          name: t('testAnalysis.detail.bugs.minorCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: t('functionAnalysis.detail.bugs.trivialCount'),
+          name: t('testAnalysis.detail.bugs.trivialCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'
@@ -212,7 +212,7 @@ const validBugEchartConfig = JSON.parse(JSON.stringify({
   ...bugLevelEchartConfig,
   title: {
     ...bugLevelEchartConfig.title,
-    subtext: t('functionAnalysis.detail.bugs.validBugPercentage'),
+    subtext: t('testAnalysis.detail.bugs.validBugPercentage'),
     itemGap: 60
   },
   series: [{
@@ -241,7 +241,7 @@ const escapedBugEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: t('functionAnalysis.detail.bugs.escapedBugPercentage')
+    subtext: t('testAnalysis.detail.bugs.escapedBugPercentage')
 
   }
 }));
@@ -251,7 +251,7 @@ const bugWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: t('functionAnalysis.detail.bugs.bugWorkloadPercentage')
+    subtext: t('testAnalysis.detail.bugs.bugWorkloadPercentage')
   }
 }));
 
@@ -344,11 +344,11 @@ defineExpose({
     <div class="w-30 space-y-2 text-center">
       <div>
         <span class="text-8 font-semibold">{{ props.value.testCaseHitRate || 0 }}</span>%
-        <div>{{ t('functionAnalysis.detail.bugs.testCaseHitRate') }}</div>
+        <div>{{ t('testAnalysis.detail.bugs.testCaseHitRate') }}</div>
       </div>
       <div>
         <span class="text-8 font-semibold">{{ props.value.testCaseHitNum || 0 }}</span>
-        <div>{{ t('functionAnalysis.detail.bugs.testCaseHitCount') }}</div>
+        <div>{{ t('testAnalysis.detail.bugs.testCaseHitCount') }}</div>
       </div>
     </div>
     <div ref="bugsRef" class="flex-1 min-w-80 h-40"></div>

@@ -62,12 +62,12 @@ const paginationConfig = ref({
 });
 const tableColumns = [
   {
-    title: t('functionBaseline.editForm.caseCode'),
+    title: t('testCaseBaseline.editForm.caseCode'),
     dataIndex: 'code',
     width: 120
   },
   {
-    title: t('functionBaseline.editForm.caseName'),
+    title: t('testCaseBaseline.editForm.caseName'),
     dataIndex: 'name'
   },
   {
@@ -82,7 +82,7 @@ const tableColumns = [
     width: 120
   },
   {
-    title: t('functionBaseline.editForm.testResult'),
+    title: t('testCaseBaseline.editForm.testResult'),
     dataIndex: 'testResult',
     width: 120
   },
@@ -196,7 +196,7 @@ const handleBaselineDelete = async () => {
   }
 
   modal.confirm({
-    content: t('functionBaseline.editForm.confirmDeleteBaseline', { name: data.name }),
+    content: t('testCaseBaseline.editForm.confirmDeleteBaseline', { name: data.name }),
     async onOk () {
       const id = data.id;
       isLoading.value = true;
@@ -206,7 +206,7 @@ const handleBaselineDelete = async () => {
         return;
       }
 
-      notification.success(t('functionBaseline.editForm.baselineDeletedSuccess'));
+      notification.success(t('testCaseBaseline.editForm.baselineDeletedSuccess'));
       deleteTabPane([id, id + '_detail']);
       refreshBaselineList();
     }
@@ -395,7 +395,7 @@ const handleAddCaseConfirm = async (caseIds: string[], cases: BaselineCaseInfo[]
 const deleteCaseFromBaseline = async (record: BaselineCaseInfo) => {
   if (currentBaselineId.value) {
     modal.confirm({
-      title: t('functionBaseline.editForm.confirmDeleteCase', { name: record.name }),
+      title: t('testCaseBaseline.editForm.confirmDeleteCase', { name: record.name }),
       async onOk () {
         const [error] = await func.deleteBaselineCaseById([record.id]);
         if (error) {
@@ -421,7 +421,7 @@ const validateDescription = () => {
     return Promise.resolve();
   }
   if (richEditorRef.value && richEditorRef.value.getLength() > 2000) {
-    return Promise.reject(t('functionBaseline.editForm.charactersCannotExceed2000'));
+    return Promise.reject(t('testCaseBaseline.editForm.charactersCannotExceed2000'));
   }
   return Promise.resolve();
 };
@@ -510,27 +510,27 @@ onMounted(() => {
       size="small"
       layout="horizontal">
       <FormItem
-        :label="t('functionBaseline.editForm.name')"
+        :label="t('testCaseBaseline.editForm.name')"
         name="name"
-        :rules="{ required: true, message: t('functionBaseline.editForm.pleaseEnterBaselineName') }">
+        :rules="{ required: true, message: t('testCaseBaseline.editForm.pleaseEnterBaselineName') }">
         <Input
           v-model:value="currentFormState.name"
           size="small"
           :maxlength="200"
-          :placeholder="t('functionBaseline.editForm.baselineBriefOverview')" />
+          :placeholder="t('testCaseBaseline.editForm.baselineBriefOverview')" />
       </FormItem>
 
       <FormItem
-        :label="t('functionBaseline.editForm.testPlan')"
+        :label="t('testCaseBaseline.editForm.testPlan')"
         name="planId"
-        :rules="{ required: true, message: t('functionBaseline.editForm.pleaseSelectTestPlan') }">
+        :rules="{ required: true, message: t('testCaseBaseline.editForm.pleaseSelectTestPlan') }">
         <Select
           v-model:value="currentFormState.planId"
           size="small"
           :disabled="!!currentBaselineId"
           :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{value: 'id', label: 'name'}"
-          :placeholder="t('functionBaseline.editForm.selectTestPlan')"
+          :placeholder="t('testCaseBaseline.editForm.selectTestPlan')"
           @change="handlePlanIdChange" />
       </FormItem>
 
@@ -541,12 +541,12 @@ onMounted(() => {
         <TabPane
           key="funcCase"
           forceRender
-          :tab="t('functionBaseline.editForm.baselineCases')">
+          :tab="t('testCaseBaseline.editForm.baselineCases')">
           <div class="flex justify-between mb-3">
             <Input
               v-model:value="searchKeywords"
               :disabled="!currentBaselineId"
-              :placeholder="t('functionBaseline.editForm.enterQueryName')"
+              :placeholder="t('testCaseBaseline.editForm.enterQueryName')"
               class="w-50"
               @change="handleSearchKeywordChange" />
             <Button
@@ -555,7 +555,7 @@ onMounted(() => {
               type="primary"
               @click="openAddBaselineCaseModal">
               <Icon icon="icon-jia" class="mr-1" />
-              {{ t('functionBaseline.editForm.addBaselineCase') }}
+              {{ t('testCaseBaseline.editForm.addBaselineCase') }}
             </Button>
           </div>
 
@@ -598,7 +598,7 @@ onMounted(() => {
             <RichEditor
               ref="richEditorRef"
               v-model:value="currentFormState.description"
-              :placeholder="t('functionBaseline.editForm.baselineBriefOverview2000')"
+              :placeholder="t('testCaseBaseline.editForm.baselineBriefOverview2000')"
               :height="200" />
           </FormItem>
         </TabPane>

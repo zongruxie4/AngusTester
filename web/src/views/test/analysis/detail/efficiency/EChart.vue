@@ -61,7 +61,7 @@ let twoTimePassedEchart;
 // 完成用例
 const bugsEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.handlingEfficiency.completedCases'),
+    text: t('testAnalysis.detail.handlingEfficiency.completedCases'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -77,9 +77,9 @@ const bugsEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.handlingEfficiency.completedCaseCount'),
-      t('functionAnalysis.detail.handlingEfficiency.oneTimeCompletedCount'),
-      t('functionAnalysis.detail.handlingEfficiency.twoTimeCompletedCount')
+      t('testAnalysis.detail.handlingEfficiency.completedCaseCount'),
+      t('testAnalysis.detail.handlingEfficiency.oneTimeCompletedCount'),
+      t('testAnalysis.detail.handlingEfficiency.twoTimeCompletedCount')
     ],
     axisLabel: {
       interval: 0,
@@ -116,7 +116,7 @@ const completedEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('functionAnalysis.detail.handlingEfficiency.completedCasePercentage'),
+    subtext: t('testAnalysis.detail.handlingEfficiency.completedCasePercentage'),
     itemGap: 40,
     textAlign: 'center',
     textStyle: {
@@ -190,7 +190,7 @@ const oneTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: t('functionAnalysis.detail.handlingEfficiency.oneTimeCompletedPercentage'),
+    subtext: t('testAnalysis.detail.handlingEfficiency.oneTimeCompletedPercentage'),
     itemGap: 40
   }
 }));
@@ -200,7 +200,7 @@ const twoTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...oneTimePassedEchartConfig,
   title: {
     ...oneTimePassedEchartConfig.title,
-    subtext: t('functionAnalysis.detail.handlingEfficiency.twoTimeCompletedPercentage')
+    subtext: t('testAnalysis.detail.handlingEfficiency.twoTimeCompletedPercentage')
   }
 }));
 

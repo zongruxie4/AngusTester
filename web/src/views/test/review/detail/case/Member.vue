@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: true
 });
 
-const emits = defineEmits<{(e: 'change')}>()
+const emits = defineEmits<{(e: 'change')}>();
 
 const peopleInfoColumns = [
   [
@@ -44,7 +44,7 @@ const peopleInfoColumns = [
 
 const isEditTester = ref(false);
 const testerIcContent = ref();
-const testerSelectRef = ref()
+const testerSelectRef = ref();
 const saveTesterLoading = ref(false);
 const toEditTester = () => {
   isEditTester.value = true;
@@ -53,7 +53,6 @@ const toEditTester = () => {
   nextTick(() => {
     testerSelectRef.value.focus();
   });
-
 };
 
 const saveTester = async () => {
@@ -75,16 +74,16 @@ const saveTester = async () => {
     return;
   }
   emits('change');
-}
+};
 
 const handleSetTester = () => {
   testerIcContent.value = props?.userInfo?.id;
   saveTester();
-}
+};
 
 const isEditDeveloper = ref(false);
 const developerIcContent = ref();
-const developerSelectRef = ref()
+const developerSelectRef = ref();
 const saveDeveloperLoading = ref(false);
 const toEditDeveloper = () => {
   isEditDeveloper.value = true;
@@ -93,7 +92,6 @@ const toEditDeveloper = () => {
   nextTick(() => {
     developerSelectRef.value.focus();
   });
-
 };
 
 const saveDeveloper = async () => {
@@ -115,15 +113,12 @@ const saveDeveloper = async () => {
     return;
   }
   emits('change');
-}
+};
 
 const handleDeveloper = () => {
   developerIcContent.value = props?.userInfo?.id;
   saveDeveloper();
-}
-
-
-
+};
 
 </script>
 <template>
@@ -169,12 +164,8 @@ const handleDeveloper = () => {
               {{ t('actions.assignToMe') }}
             </Button>
           </div>
-
         </template>
-
-
       </template>
-
 
       <template #developerName="{text}">
         <template v-if="isEditDeveloper">
@@ -210,8 +201,6 @@ const handleDeveloper = () => {
             </Button>
           </div>
         </template>
-
-
       </template>
     </Grid>
   </div>

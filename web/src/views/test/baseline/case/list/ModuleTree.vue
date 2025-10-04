@@ -49,7 +49,7 @@ const parentModuleId = ref<string>();
 const isCreateModalVisible = ref(false);
 const isMoveModalVisible = ref(false);
 const selectedModuleForMove = ref();
-const moduleTreeData = ref([{ name: t('functionBaseline.case.moduleTree.noModuleCases'), id: '-1' }]);
+const moduleTreeData = ref([{ name: t('testCaseBaseline.case.moduleTree.noModuleCases'), id: '-1' }]);
 
 /**
  * Handle module selection change
@@ -135,7 +135,7 @@ const handleModuleNameEditBlur = (id: string, event: { target: { value: string }
  */
 const deleteModule = (data: ModuleItem) => {
   modal.confirm({
-    content: t('functionBaseline.case.moduleTree.confirmDeleteModule', { name: data.name }),
+    content: t('testCaseBaseline.case.moduleTree.confirmDeleteModule', { name: data.name }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -146,7 +146,7 @@ const deleteModule = (data: ModuleItem) => {
         return;
       }
 
-      notification.success(t('functionBaseline.case.moduleTree.deleteModuleSuccess'));
+      notification.success(t('testCaseBaseline.case.moduleTree.deleteModuleSuccess'));
       emits('loadData', searchKeywords.value);
     }
   });
@@ -267,7 +267,7 @@ const loadModuleTreeData = async () => {
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: t('functionBaseline.case.moduleTree.noModuleCases'), id: '-1' }, ...processTreeData(data || [])];
+  moduleTreeData.value = [{ name: t('testCaseBaseline.case.moduleTree.noModuleCases'), id: '-1' }, ...processTreeData(data || [])];
 };
 
 /**
@@ -290,7 +290,7 @@ defineExpose({
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleModuleSelectionChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
-      <span class="flex-1">{{ t('functionBaseline.case.moduleTree.allCases') }}</span>
+      <span class="flex-1">{{ t('testCaseBaseline.case.moduleTree.allCases') }}</span>
     </div>
 
     <!-- Module Tree -->
@@ -310,7 +310,7 @@ defineExpose({
         <div v-if="editingModuleId === id" class="flex items-center">
           <Input
             ref="nameInputRef"
-            :placeholder="t('functionBaseline.case.moduleTree.enterModuleName')"
+            :placeholder="t('testCaseBaseline.case.moduleTree.enterModuleName')"
             class="flex-1 mr-2 bg-white"
             trim
             :value="name"

@@ -51,10 +51,10 @@ const props = withDefaults(defineProps<Props>(), {
   hideImportBtn: false,
   disabled: false,
   viewType: false,
-  fieldNames: () => ({ 
-    valueKey: API_EXTENSION_KEY.valueKey, 
-    enabledKey: API_EXTENSION_KEY.enabledKey, 
-    fileNameKey: API_EXTENSION_KEY.fileNameKey 
+  fieldNames: () => ({
+    valueKey: API_EXTENSION_KEY.valueKey,
+    enabledKey: API_EXTENSION_KEY.enabledKey,
+    fileNameKey: API_EXTENSION_KEY.fileNameKey
   })
 });
 
@@ -357,11 +357,11 @@ const getParameterItemSchema = (item: ParamsItem) => {
  * @param index - Index of the parameter
  */
 const addChildParameter = (parentItem: ParamsItem, index: number) => {
-  jsonContentRefs.value[index].addItem({ 
-    type: parentItem.type.split('(')[0], 
-    id: -1, 
-    idLine: [-1], 
-    level: 0 
+  jsonContentRefs.value[index].addItem({
+    type: parentItem.type.split('(')[0],
+    id: -1,
+    idLine: [-1],
+    level: 0
   });
 };
 
@@ -490,10 +490,10 @@ const updateComponentData = async () => {
 };
 
 // Expose component methods
-defineExpose({ 
-  getModelResolve: getModelResolution, 
-  updateComp: updateComponentData, 
-  validate: validateFormContents 
+defineExpose({
+  getModelResolve: getModelResolution,
+  updateComp: updateComponentData,
+  validate: validateFormContents
 });
 
 </script>

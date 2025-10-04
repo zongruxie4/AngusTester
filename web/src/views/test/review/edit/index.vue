@@ -218,7 +218,7 @@ const descRichRef = ref();
  */
 const validateDescription = async () => {
   if (descRichRef.value && descRichRef.value.getLength() > 2000) {
-    return Promise.reject(new Error(t('caseReview.editForm.charLimitExceeded')));
+    return Promise.reject(new Error(t('testCaseReview.editForm.charLimitExceeded')));
   }
   return Promise.resolve();
 };
@@ -255,7 +255,7 @@ const handleReviewDeletion = async () => {
   }
 
   modal.confirm({
-    content: t('caseReview.editForm.confirmDeleteReview', { name: reviewData.name }),
+    content: t('testCaseReview.editForm.confirmDeleteReview', { name: reviewData.name }),
     async onOk () {
       const reviewId = reviewData.id;
       loading.value = true;
@@ -265,7 +265,7 @@ const handleReviewDeletion = async () => {
         return;
       }
 
-      notification.success(t('caseReview.editForm.reviewDeletedSuccess'));
+      notification.success(t('testCaseReview.editForm.reviewDeletedSuccess'));
       deleteTabPane([reviewId]);
       refreshReviewList();
     }
@@ -565,7 +565,7 @@ const tableColumns = [
 const handleCaseDeletion = async (caseRecord: ReviewCaseInfo) => {
   if (reviewId.value) {
     modal.confirm({
-      title: t('caseReview.editForm.confirmDeleteCase', { name: caseRecord.name }),
+      title: t('testCaseReview.editForm.confirmDeleteCase', { name: caseRecord.name }),
       async onOk () {
         const [error] = await func.deleteReviewCase([caseRecord.id]);
         if (error) {
@@ -654,7 +654,7 @@ onMounted(async () => {
           :href="`/function#reviews?id=${reviewId}`"
           class="flex items-center space-x-1">
           <Icon icon="icon-pingshen" class="text-3.5" />
-          <span>{{ t('caseReview.editForm.reviewNow') }}</span>
+          <span>{{ t('testCaseReview.editForm.reviewNow') }}</span>
         </Button>
       </template>
 
@@ -675,27 +675,27 @@ onMounted(async () => {
       size="small"
       layout="horizontal">
       <FormItem
-        :label="t('caseReview.editForm.name')"
+        :label="t('testCaseReview.editForm.name')"
         name="name"
-        :rules="{ required: true, message: t('caseReview.editForm.enterReviewName') }">
+        :rules="{ required: true, message: t('testCaseReview.editForm.enterReviewName') }">
         <Input
           v-model:value="formState.name"
           size="small"
           :maxlength="200"
-          :placeholder="t('caseReview.editForm.reviewBriefOverview')" />
+          :placeholder="t('testCaseReview.editForm.reviewBriefOverview')" />
       </FormItem>
 
       <FormItem
-        :label="t('caseReview.editForm.testPlan')"
+        :label="t('testCaseReview.editForm.testPlan')"
         name="planId"
-        :rules="{ required: true, message: t('caseReview.editForm.selectTestPlan') }">
+        :rules="{ required: true, message: t('testCaseReview.editForm.selectTestPlan') }">
         <Select
           v-model:value="formState.planId"
           size="small"
           :disabled="!!reviewId"
           :action="`${TESTER}/func/plan?projectId=${props.projectId}&review=true&fullTextSearch=true`"
           :fieldNames="{value: 'id', label: 'name'}"
-          :placeholder="t('caseReview.editForm.selectTestPlanPlaceholder')"
+          :placeholder="t('testCaseReview.editForm.selectTestPlanPlaceholder')"
           @change="handlePlanIdChange" />
       </FormItem>
 
@@ -703,26 +703,26 @@ onMounted(async () => {
         :label="t('common.owner')"
         name="ownerId"
         class="relative"
-        :rules="{ required: true, message: t('caseReview.editForm.selectOwner') }">
+        :rules="{ required: true, message: t('testCaseReview.editForm.selectOwner') }">
         <SelectUser
           v-model:value="formState.ownerId"
           size="small"
-          :placeholder="t('caseReview.editForm.selectOwnerPlaceholder')"
+          :placeholder="t('testCaseReview.editForm.selectOwnerPlaceholder')"
           :action="`${TESTER}/project/${props.projectId}/member/user`"
           :maxlength="80" />
       </FormItem>
 
       <FormItem
-        :label="t('caseReview.editForm.participants')"
+        :label="t('testCaseReview.editForm.participants')"
         name="participantIds"
         class="relative"
-        :rules="{ required: true, message: t('caseReview.editForm.selectParticipants') }">
+        :rules="{ required: true, message: t('testCaseReview.editForm.selectParticipants') }">
         <Select
           v-model:value="formState.participantIds"
           :options="members"
           mode="multiple"
           size="small"
-          :placeholder="t('caseReview.editForm.selectParticipantsPlaceholder')" />
+          :placeholder="t('testCaseReview.editForm.selectParticipantsPlaceholder')" />
       </FormItem>
 
       <FormItem :label="t('common.attachment')">
@@ -735,14 +735,14 @@ onMounted(async () => {
             :customRequest="handleFileUpload">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
               <Icon icon="icon-lianjie1" class="mr-1" />
-              <span class="whitespace-nowrap">{{ t('caseReview.editForm.uploadAttachments') }}</span>
+              <span class="whitespace-nowrap">{{ t('testCaseReview.editForm.uploadAttachments') }}</span>
             </a>
           </Upload>
 
           <Tooltip :overlayStyle="{ 'max-width': '400px' }">
             <template #title>
               <div class="text-3 text-theme-sub-content leading-4 break-all">
-                {{ t('caseReview.editForm.attachmentsDescription') }}
+                {{ t('testCaseReview.editForm.attachmentsDescription') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1 -mt-0.25 text-3.5 cursor-pointer" />
@@ -779,12 +779,12 @@ onMounted(async () => {
         <TabPane
           key="funcCase"
           forceRender
-          :tab="t('caseReview.editForm.reviewCases')">
+          :tab="t('testCaseReview.editForm.reviewCases')">
           <div class="flex justify-between mb-3">
             <Input
               v-model:value="searchKeywords"
               :disabled="!reviewId"
-              :placeholder="t('caseReview.editForm.enterQueryName')"
+              :placeholder="t('testCaseReview.editForm.enterQueryName')"
               class="w-50"
               @change="handleSearchKeywordChange" />
 
@@ -795,7 +795,7 @@ onMounted(async () => {
               type="primary"
               @click="openCaseSelectionModal">
               <Icon icon="icon-jia" class="mr-1" />
-              {{ t('caseReview.editForm.addReviewCase') }}
+              {{ t('testCaseReview.editForm.addReviewCase') }}
             </Button>
           </div>
 
@@ -825,7 +825,7 @@ onMounted(async () => {
           </Table>
         </TabPane>
 
-        <TabPane key="description" :tab="t('caseReview.editForm.reviewDescription')">
+        <TabPane key="description" :tab="t('testCaseReview.editForm.reviewDescription')">
           <FormItem name="description" :rules="[{validator: validateDescription}]">
             <RichEditor
               ref="descRichRef"

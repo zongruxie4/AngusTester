@@ -30,15 +30,13 @@ const saveLoading = ref(false);
 const toEdit = () => {
   isEditDescription.value = true;
   descriptionContent.value = props?.caseInfo?.description;
-}
+};
 
 const cancel = () => {
   isEditDescription.value = false;
-}
+};
 
 const confirm = async () => {
-
-
   if (descRichRef.value.getLength() > 6000) {
     descError.value = true;
     return;
@@ -62,31 +60,36 @@ const confirm = async () => {
   }
   isEditDescription.value = false;
   emits('change');
-}
+};
 
 </script>
 <template>
   <div class="bg-white rounded-lg">
     <template v-if="!props.readonly">
       <div v-show="!isEditDescription" class="flex justify-end">
-          <Button size="small" type="link" @click="toEdit">
-              <Icon icon="icon-xiugai" />
-          </Button>
+        <Button
+          size="small"
+          type="link"
+          @click="toEdit">
+          <Icon icon="icon-xiugai" />
+        </Button>
       </div>
       <div v-show="isEditDescription" class="flex justify-end">
-          <Button size="small" type="link" @click="cancel">
-              {{ t('actions.cancel') }}
-          </Button>
-          <Button
-              :loading="saveLoading"
-              size="small"
-              type="link"
-              @click="confirm">
-              {{ t('actions.confirm') }}
-          </Button>
+        <Button
+          size="small"
+          type="link"
+          @click="cancel">
+          {{ t('actions.cancel') }}
+        </Button>
+        <Button
+          :loading="saveLoading"
+          size="small"
+          type="link"
+          @click="confirm">
+          {{ t('actions.confirm') }}
+        </Button>
       </div>
     </template>
-
 
     <template v-if="isEditDescription">
       <div class="mt-3 mx-2">
@@ -94,7 +97,7 @@ const confirm = async () => {
           ref="descRichRef"
           v-model:value="descriptionContent"
           class="add-case" />
-        <div v-show="descError" class="text-status-error">{{ t('functionCase.detail.caseDetail.descCharLimit2000') }}</div>
+        <div v-show="descError" class="text-status-error">{{ t('testCase.detail.caseDetail.descCharLimit2000') }}</div>
       </div>
     </template>
 
@@ -110,5 +113,3 @@ const confirm = async () => {
     </div>
   </div>
 </template>
-
-

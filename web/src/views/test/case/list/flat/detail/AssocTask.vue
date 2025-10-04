@@ -71,7 +71,7 @@ const handlePut = async (refTaskIds) => {
 
 const handleDelTask = (record) => {
   modal.confirm({
-    content: t('functionCase.detail.assocTask.confirmCancelAssocTask', { name: record.name }),
+    content: t('testCase.detail.assocTask.confirmCancelAssocTask', { name: record.name }),
     onOk () {
       return funcCase.cancelAssociationTask(props.caseId, {
         assocTaskIds: [record.id]
@@ -155,7 +155,7 @@ const columns = [
         size="small"
         @click="startEdit">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('functionCase.detail.assocTask.associate', {name: props.title}) }}
+        {{ t('testCase.detail.assocTask.associate', {name: props.title}) }}
       </Button>
     </div>
     <Table
@@ -208,7 +208,7 @@ const columns = [
     <AsyncComponent :visible="selectTaskVisible">
       <SelectTaskByModuleModal
         v-model:visible="selectTaskVisible"
-        :title="t('functionCase.detail.assocTask.select', {name: props.title})"
+        :title="t('testCase.detail.assocTask.select', {name: props.title})"
         :action="`${TESTER}/func/case/${props.caseId}/task/notAssociated?taskType=${props.taskType}`"
         :projectId="props.projectId"
         @ok="handlePut" />

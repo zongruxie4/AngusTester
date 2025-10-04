@@ -2,9 +2,9 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { Modal, Scroll, List, Table, DropdownGroup, Icon, Input, Select, HttpMethodText, NoData, IconText } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import SelectApisCase from '../SelectApisCase/index.vue';
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;

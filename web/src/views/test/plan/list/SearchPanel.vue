@@ -99,7 +99,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: t('functionPlan.list.searchPlanName'),
+    placeholder: t('testPlan.list.searchPlanName'),
     allowClear: true,
     maxlength: 100
   },
@@ -108,13 +108,13 @@ const searchPanelOptions = [
     type: 'select',
     allowClear: true,
     options: [{ label: t('status.yes'), value: true }, { label: t('status.no'), value: false }],
-    placeholder: t('functionPlan.list.isReview')
+    placeholder: t('testPlan.list.isReview')
   },
   {
     valueKey: 'ownerId',
     type: 'select-user',
     allowClear: true,
-    placeholder: t('functionPlan.list.selectOwner'),
+    placeholder: t('testPlan.list.selectOwner'),
     maxlength: 100
   },
   {
@@ -122,7 +122,7 @@ const searchPanelOptions = [
     type: 'date',
     valueType: 'start',
     op: SearchCriteria.OpEnum.GreaterThanEqual,
-    placeholder: t('functionPlan.list.planStartTime'),
+    placeholder: t('testPlan.list.planStartTime'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   },
@@ -131,7 +131,7 @@ const searchPanelOptions = [
     type: 'date',
     valueType: 'start',
     op: SearchCriteria.OpEnum.LessThanEqual,
-    placeholder: t('functionPlan.list.planDeadlineTime'),
+    placeholder: t('testPlan.list.planDeadlineTime'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   }
@@ -143,22 +143,22 @@ const sortMenuItems: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('functionPlan.list.sortByName'),
+    name: t('testPlan.list.sortByName'),
     key: 'name',
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('functionPlan.list.sortByOwner'),
+    name: t('testPlan.list.sortByOwner'),
     key: 'ownerId',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('functionPlan.list.sortByCreator'),
+    name: t('testPlan.list.sortByCreator'),
     key: 'createdBy',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('functionPlan.list.sortByAddTime'),
+    name: t('testPlan.list.sortByAddTime'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Asc
   }
@@ -253,7 +253,7 @@ onMounted(() => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/function#plans?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('functionPlan.list.addPlan') }}</span>
+            <span>{{ t('testPlan.list.addPlan') }}</span>
           </RouterLink>
         </Button>
 

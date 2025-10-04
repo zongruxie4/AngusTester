@@ -61,7 +61,7 @@ const handlePut = async (refCaseIds) => {
 
 const handleDelTask = (record) => {
   modal.confirm({
-    content: t('functionCase.kanbanView.assocCase.confirmCancelAssocCase', { name: record.name }),
+    content: t('testCase.kanbanView.assocCase.confirmCancelAssocCase', { name: record.name }),
     onOk () {
       return funcCase.cancelAssociationCase(props.caseId, {
         assocCaseIds: [record.id]
@@ -135,7 +135,7 @@ const columns = [
     <div class="flex mb-2 items-center">
     </div> -->
     <div class="flex-1 truncate min-w-0 px-1">
-      <Hints :text="t('functionCase.kanbanView.assocCase.associateCaseTip')" />
+      <Hints :text="t('testCase.kanbanView.assocCase.associateCaseTip')" />
     </div>
     <Button
       :disabled="props.dataSource?.length > 19"
@@ -143,7 +143,7 @@ const columns = [
       size="small"
       @click="startEdit">
       <Icon icon="icon-jia" class="mr-1" />
-      {{ t('functionCase.kanbanView.assocCase.associateCase') }}
+      {{ t('testCase.kanbanView.assocCase.associateCase') }}
     </Button>
   </div>
 

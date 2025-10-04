@@ -8,7 +8,7 @@ import { isEqual, cloneDeep } from 'lodash-es';
 import { exec, scenario } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { ScenarioPermission } from '@/enums/enums'
+import { ScenarioPermission } from '@/enums/enums';
 import ButtonGroup from './ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
 import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from './PropsType';

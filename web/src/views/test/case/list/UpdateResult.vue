@@ -77,7 +77,7 @@ const onFinish = async (addBug = false) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.updateCaseResultModal.testResultUpdateSuccess'));
+  notification.success(t('testCase.updateCaseResultModal.testResultUpdateSuccess'));
   emits('update:visible', false);
   emits('update');
   if (addBug) {
@@ -117,7 +117,7 @@ const evalWorkloadChange = (value) => {
 const validateDate = async (_rule: Rule, value: string) => {
   if (formState.value.actualWorkload) {
     if (!value) {
-      return Promise.reject(new Error(t('functionCase.updateCaseResultModal.enterEvalWorkload')));
+      return Promise.reject(new Error(t('testCase.updateCaseResultModal.enterEvalWorkload')));
     } else {
       return Promise.resolve();
     }
@@ -144,7 +144,7 @@ watch(() => props.visible, (newValue) => {
 </script>
 <template>
   <Modal
-    :title="props.resultPassed ? t('functionCase.updateCaseResultModal.testPassed') : t('functionCase.updateCaseResultModal.testNotPassed')"
+    :title="props.resultPassed ? t('testCase.updateCaseResultModal.testPassed') : t('testCase.updateCaseResultModal.testNotPassed')"
     :visible="props.visible"
     :width="600"
     :footer="null"
@@ -167,16 +167,16 @@ watch(() => props.visible, (newValue) => {
             dataType="float"
             :min="0.1"
             :max="1000"
-            :placeholder="t('functionCase.updateCaseResultModal.minMaxRange')"
+            :placeholder="t('testCase.updateCaseResultModal.minMaxRange')"
             @blur="evalWorkloadChange($event.target.value)" />
           <span
             v-if="props.selectedCase?.evalWorkloadMethod?.value !== EvalWorkloadMethod.STORY_POINT"
-            class="whitespace-nowrap ml-1">{{ t('functionCase.updateCaseResultModal.hour') }}</span>
+            class="whitespace-nowrap ml-1">{{ t('testCase.updateCaseResultModal.hour') }}</span>
         </div>
       </FormItem>
 
       <FormItem
-        :label="t('functionCase.updateCaseResultModal.actualWorkload')"
+        :label="t('testCase.updateCaseResultModal.actualWorkload')"
         name="actualWorkload">
         <div class="flex items-center text-3">
           <Input
@@ -185,16 +185,16 @@ watch(() => props.visible, (newValue) => {
             dataType="float"
             :min="0.1"
             :max="1000"
-            :placeholder="t('functionCase.updateCaseResultModal.minMaxRange')"
+            :placeholder="t('testCase.updateCaseResultModal.minMaxRange')"
             @change="actualWorkloadChange($event.target.value)" />
           <span
             v-if="props.selectedCase?.evalWorkloadMethod?.value !== EvalWorkloadMethod.STORY_POINT"
-            class="whitespace-nowrap ml-1">{{ t('functionCase.updateCaseResultModal.hour') }}</span>
+            class="whitespace-nowrap ml-1">{{ t('testCase.updateCaseResultModal.hour') }}</span>
         </div>
       </FormItem>
 
       <FormItem
-        :label="props.resultPassed ? t('functionCase.updateCaseResultModal.testRemark') : t('functionCase.updateCaseResultModal.notPassedReason')"
+        :label="props.resultPassed ? t('testCase.updateCaseResultModal.testRemark') : t('testCase.updateCaseResultModal.notPassedReason')"
         name="testRemark"
         :required="!props.resultPassed">
         <Input
@@ -203,7 +203,7 @@ watch(() => props.visible, (newValue) => {
           type="textarea"
           :autoSize="{ minRows: 6, maxRows: 6 }"
           :maxlength="200"
-          :placeholder="t('functionCase.updateCaseResultModal.testResultOrProcess')" />
+          :placeholder="t('testCase.updateCaseResultModal.testResultOrProcess')" />
       </FormItem>
 
       <FormItem class="mt-5">
@@ -215,7 +215,7 @@ watch(() => props.visible, (newValue) => {
             size="small"
             class="px-3"
             @click="handleSubmit">
-            {{ t('functionCase.updateCaseResultModal.confirmAndSubmitBug') }}
+            {{ t('testCase.updateCaseResultModal.confirmAndSubmitBug') }}
           </Button>
           <Button
             :loading="loading"

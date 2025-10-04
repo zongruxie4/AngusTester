@@ -180,7 +180,7 @@ const copyPlanUrl = () => {
   toClipboard(planUrl).then(() => {
     notification.success(t('actions.tips.copySuccess'));
   }).catch(() => {
-    notification.error(t('functionPlan.planDetail.notifications.copyFailed'));
+    notification.error(t('testPlan.planDetail.notifications.copyFailed'));
   });
 };
 
@@ -212,7 +212,7 @@ const testerTableColumns = [
   {
     key: 'content',
     dataIndex: 'content',
-    title: t('functionPlan.planDetail.table.workResponsibilities'),
+    title: t('testPlan.planDetail.table.workResponsibilities'),
     ellipsis: true
   }
 ];
@@ -258,7 +258,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="navigateToCaseList">
         <Icon icon="icon-ceshiyongli1" class="text-3.5" />
-        <span>{{ t('functionPlan.planDetail.buttons.viewCases') }}</span>
+        <span>{{ t('testPlan.planDetail.buttons.viewCases') }}</span>
       </Button>
 
       <Button
@@ -268,7 +268,7 @@ onMounted(() => {
         class="flex items-center space-x-1"
         @click="exportTestCases">
         <Icon icon="icon-daochu" class="text-3.5" />
-        <span>{{ t('functionPlan.planDetail.buttons.exportCases') }}</span>
+        <span>{{ t('testPlan.planDetail.buttons.exportCases') }}</span>
       </Button>
 
       <Button
@@ -292,7 +292,7 @@ onMounted(() => {
     <BasicInfo :planData="planDetailData" :completionRate="completedRate" />
 
     <Tabs size="small">
-      <TabPane key="testerResponsibilities" :tab="t('functionPlan.planDetail.tabs.testers')">
+      <TabPane key="testerResponsibilities" :tab="t('testPlan.planDetail.tabs.testers')">
         <Table
           :columns="testerTableColumns"
           :dataSource="testerResponsibilities"
@@ -312,7 +312,7 @@ onMounted(() => {
           </template>
         </Table>
       </TabPane>
-      <TabPane key="testingObjectives" :tab="t('functionPlan.planDetail.tabs.testingObjectives')">
+      <TabPane key="testingObjectives" :tab="t('testPlan.planDetail.tabs.testingObjectives')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
             v-if="planDetailData?.otherInformation"
@@ -320,7 +320,7 @@ onMounted(() => {
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="testingScope" :tab="t('functionPlan.planDetail.tabs.testingScope')">
+      <TabPane key="testingScope" :tab="t('testPlan.planDetail.tabs.testingScope')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
             v-if="planDetailData?.otherInformation"
@@ -328,7 +328,7 @@ onMounted(() => {
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="acceptanceCriteria" :tab="t('functionPlan.planDetail.tabs.acceptanceCriteria')">
+      <TabPane key="acceptanceCriteria" :tab="t('testPlan.planDetail.tabs.acceptanceCriteria')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
             v-if="planDetailData?.acceptanceCriteria"
@@ -336,7 +336,7 @@ onMounted(() => {
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="otherInformation" :tab="t('functionPlan.planDetail.tabs.otherInformation')">
+      <TabPane key="otherInformation" :tab="t('testPlan.planDetail.tabs.otherInformation')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
             v-if="planDetailData?.otherInformation"
@@ -347,10 +347,10 @@ onMounted(() => {
       <TabPane key="chart" :tab="t('chart.burndown.title')">
         <BurnDownChart :planId="currentPlanId" />
       </TabPane>
-      <TabPane key="progress" :tab="t('functionPlan.planDetail.tabs.memberProgress')">
+      <TabPane key="progress" :tab="t('testPlan.planDetail.tabs.memberProgress')">
         <MemberProgress :planId="currentPlanId" :projectId="props.projectId" />
       </TabPane>
-      <TabPane key="workCalendar" :tab="t('functionPlan.planDetail.tabs.workCalendar')">
+      <TabPane key="workCalendar" :tab="t('testPlan.planDetail.tabs.workCalendar')">
         <WorkCalendar
           :projectId="props.projectId"
           :userInfo="props.userInfo as any"

@@ -41,11 +41,11 @@ let chartInstance: echarts.ECharts;
 const chartTargetOptions = computed(() => [
   {
     value: 'NUM',
-    label: t('chart.burndown.countBurndown')
+    label: t('common.count')
   },
   {
     value: 'WORKLOAD',
-    label: t('chart.burndown.workloadBurndown')
+    label: t('common.workload')
   }
 ]);
 
@@ -174,7 +174,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="pt-1.5 flex flex-col">
     <div class="text-3.5 font-semibold flex justify-between">
-      {{ t('functionHome.burndown.title') }}
+      {{ t('chart.burndown.title') }}
       <RadioGroup v-model:value="selectedChartTarget" :options="chartTargetOptions">
       </RadioGroup>
     </div>

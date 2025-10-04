@@ -170,7 +170,7 @@ const handleDropdownVisibilityChange = async (isOpen: boolean) => {
  */
 const handleValueChange = (selectedValue: any) => {
   if (selectedValue === undefined || selectedValue === null) {
-    selectedValue = undefined
+    selectedValue = undefined;
   }
 
   const stringValue = selectedValue ? String(selectedValue) : selectedValue;

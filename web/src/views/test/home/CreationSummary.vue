@@ -127,7 +127,7 @@ onMounted(() => {
 </script>
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-3">{{ t('functionHome.myCreationSummary.title') }}</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('testHome.myCreationSummary.title') }}</div>
     <div class="flex flex-1 space-x-3.75 justify-start">
       <div class="p-3.5 rounded w-1/4 relative bg-img bg-yellow">
         <div class="space-x-2">
@@ -185,7 +185,7 @@ onMounted(() => {
 
       <div class="p-3.5 rounded w-1/4 relative bg-img bg-green">
         <div class="space-x-2">
-          <span class="text-3.5">{{ t('functionHome.myCreationSummary.baseline') }}</span>
+          <span class="text-3.5">{{ t('common.baseline') }}</span>
           <span class="text-4.5 font-semibold">{{ allBaseline }}</span>
         </div>
         <div class="mt-6 flex items-center w-full">

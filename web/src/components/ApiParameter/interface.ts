@@ -76,12 +76,12 @@ const generateUriFromParameters = (uri: string, paths: ParamsItem[], querys?: Pa
   const pathUri = uri.split('?')[0] || '/';
   const originalPath = pathUri.replace(/(\S+)\?\S*/, '$1');
   let pathname = '';
-  
+
   // Regular expression to match path parameters in format {name}
   const pathParameterRegex = new RegExp(/{((?!{).)*}/g);
   const decodedUrl = decodeURIComponent(originalPath);
   const uriPathParameters = decodedUrl.match(pathParameterRegex);
-  
+
   if (paths?.length) {
     let tempPath = decodedUrl;
     if (paths?.length > (uriPathParameters?.length || 0)) {

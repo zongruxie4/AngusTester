@@ -48,7 +48,7 @@ const testInfoColumns = [
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('functionCase.kanbanView.testInfo') }}
+      {{ t('testCase.kanbanView.testInfo') }}
     </div>
 
     <Grid

@@ -119,7 +119,7 @@ onMounted(() => {
         type="text"
         @click="handleFavourite">
         <Icon :icon="scenarioData.favourite ? 'icon-quxiaoshoucang' : 'icon-yishoucang'" class="mr-1" />
-          {{ scenarioData.favourite ? t('actions.cancelFavourite') : t('actions.addFavourite') }}
+        {{ scenarioData.favourite ? t('actions.cancelFavourite') : t('actions.addFavourite') }}
       </Button>
     </div>
     <TestSummary

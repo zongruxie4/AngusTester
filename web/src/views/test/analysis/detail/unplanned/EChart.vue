@@ -49,9 +49,9 @@ const unplannedTestEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.unplannedTests.totalCount'),
-      t('functionAnalysis.detail.unplannedTests.unplannedCount'),
-      t('functionAnalysis.detail.unplannedTests.unplannedCompletedCount')
+      t('testAnalysis.detail.unplannedTests.totalCount'),
+      t('testAnalysis.detail.unplannedTests.unplannedCount'),
+      t('testAnalysis.detail.unplannedTests.unplannedCompletedCount')
     ],
     axisLabel: {
       interval: 0,
@@ -92,9 +92,9 @@ const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.unplannedTests.totalWorkload'),
-      t('functionAnalysis.detail.unplannedTests.unplannedWorkload'),
-      t('functionAnalysis.detail.unplannedTests.unplannedCompletedWorkload')
+      t('testAnalysis.detail.unplannedTests.totalWorkload'),
+      t('testAnalysis.detail.unplannedTests.unplannedWorkload'),
+      t('testAnalysis.detail.unplannedTests.unplannedCompletedWorkload')
     ],
     axisLabel: {
       interval: 0,
@@ -102,7 +102,7 @@ const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
     }
   },
   title: {
-    text: t('functionAnalysis.detail.unplannedTests.workload'),
+    text: t('testAnalysis.detail.unplannedTests.workload'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -144,10 +144,10 @@ defineExpose({
           <span class="text-5 text-status-pending">
             {{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}
           </span>
-          {{ t('functionAnalysis.detail.unplannedTests.hours') }}
+          {{ t('testAnalysis.detail.unplannedTests.hours') }}
         </div>
         <div>
-          {{ t('functionAnalysis.detail.unplannedTests.unplannedCaseEstimatedTime') }}
+          {{ t('testAnalysis.detail.unplannedTests.unplannedCaseEstimatedTime') }}
         </div>
       </div>
     </div>

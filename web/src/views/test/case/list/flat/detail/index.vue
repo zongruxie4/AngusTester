@@ -343,7 +343,7 @@ const editDeadlineDate = async () => {
   }
 
   if (dayjs(deadlineDate.value).isBefore(dayjs(), 'minute')) {
-    notification.warning(t('functionCase.detail.caseDetail.deadlineMustBeFuture'));
+    notification.warning(t('testCase.detail.caseDetail.deadlineMustBeFuture'));
     return;
   }
 
@@ -652,7 +652,7 @@ onBeforeUnmount(() => {
                   :maxlength="200"
                   size="small"
                   class="absolute -top-1.25"
-                  :placeholder="t('functionCase.detail.caseDetail.name')"
+                  :placeholder="t('testCase.detail.caseDetail.name')"
                   @blur="editName" />
               </template>
 
@@ -750,7 +750,7 @@ onBeforeUnmount(() => {
                   :autofocus="isEditEvalWorkload"
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('functionCase.kanbanView.infoBasic.evalWorkloadPlaceholder')"
+                  :placeholder="t('testCase.kanbanView.infoBasic.evalWorkloadPlaceholder')"
                   dataType="float"
                   size="small"
                   class="w-65 absolute -top-1.25"
@@ -770,7 +770,7 @@ onBeforeUnmount(() => {
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                       {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                        ? t('functionCase.kanbanView.infoBasic.evalWorkloadTip') :t ('functionCase.kanbanView.infoBasic.evalWorkloadTipTime') }}
+                        ? t('testCase.kanbanView.infoBasic.evalWorkloadTip') :t ('testCase.kanbanView.infoBasic.evalWorkloadTipTime') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
@@ -789,7 +789,7 @@ onBeforeUnmount(() => {
                   :autofocus="isEditActualWorkload"
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('functionCase.kanbanView.infoBasic.actualWorkloadPlaceholder')"
+                  :placeholder="t('testCase.kanbanView.infoBasic.actualWorkloadPlaceholder')"
                   dataType="float"
                   size="small"
                   class="w-65 absolute -top-1.25"
@@ -809,7 +809,7 @@ onBeforeUnmount(() => {
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                       {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                        ? t('functionCase.kanbanView.infoBasic.actualWorkloadTip') : t('functionCase.kanbanView.infoBasic.actualWorkloadTipTime') }}
+                        ? t('testCase.kanbanView.infoBasic.actualWorkloadTip') : t('testCase.kanbanView.infoBasic.actualWorkloadTipTime') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
@@ -869,7 +869,7 @@ onBeforeUnmount(() => {
                 ref="versionRef"
                 v-model:value="versionValue"
                 allowClear
-                :placeholder="t('functionCase.detail.caseDetail.selectVersion')"
+                :placeholder="t('testCase.detail.caseDetail.selectVersion')"
                 lazy
                 class="w-full max-w-60"
                 :action="`${TESTER}/software/version?projectId=${projectId}`"
@@ -905,7 +905,7 @@ onBeforeUnmount(() => {
 
       <template v-if="!bigLayout">
         <Toggle
-          :title="t('functionCase.detail.caseDetail.personnel')"
+          :title="t('testCase.detail.caseDetail.personnel')"
           class="mt-3.5">
           <Grid
             :columns="peopleInfoColumns"
@@ -946,7 +946,7 @@ onBeforeUnmount(() => {
         </Toggle>
 
         <Toggle
-          :title="t('functionCase.detail.caseDetail.date')"
+          :title="t('testCase.detail.caseDetail.date')"
           class="mt-3.5">
           <Grid
             :columns="dateInfoColumns"
@@ -983,7 +983,7 @@ onBeforeUnmount(() => {
         </Toggle>
 
         <Toggle
-          :title="t('functionCase.detail.caseDetail.reviewInfo')"
+          :title="t('testCase.detail.caseDetail.reviewInfo')"
           class="mt-3.5">
           <Grid
             :columns="reviewInfoColumns"
@@ -999,7 +999,7 @@ onBeforeUnmount(() => {
         </Toggle>
 
         <Toggle
-          :title="t('functionCase.detail.caseDetail.testInfo')"
+          :title="t('testCase.detail.caseDetail.testInfo')"
           class="mt-3.5">
           <Grid
             :columns="testInfoColumns"
@@ -1024,7 +1024,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('functionCase.detail.caseDetail.precondition') }}</span>
+            <span>{{ t('testCase.detail.caseDetail.precondition') }}</span>
             <template v-if="isEditPrecondition">
               <Button
                 class="font-normal text-theme-special"
@@ -1054,8 +1054,8 @@ onBeforeUnmount(() => {
             <RichEditor
               ref="preconditionRichRef"
               v-model:value="preconditionContent"
-              :options="{ placeholder: t('functionCase.detail.caseDetail.inputPrecondition')}" />
-            <div v-show="preconditionError" class="text-status-error">{{ t('functionCase.detail.caseDetail.descCharLimit') }}</div>
+              :options="{ placeholder: t('testCase.detail.caseDetail.inputPrecondition')}" />
+            <div v-show="preconditionError" class="text-status-error">{{ t('testCase.detail.caseDetail.descCharLimit') }}</div>
           </template>
           <template v-else>
             <template v-if="caseDetail?.precondition">
@@ -1076,7 +1076,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('functionCase.detail.caseDetail.testSteps') }}</span>
+            <span>{{ t('testCase.detail.caseDetail.testSteps') }}</span>
             <template v-if="isEditSteps">
               <Button
                 class="font-normal text-theme-special"
@@ -1156,7 +1156,7 @@ onBeforeUnmount(() => {
                 ref="descRichRef"
                 v-model:value="descriptionContent"
                 class="add-case" />
-              <div v-show="descError" class="text-status-error">{{ t('functionCase.detail.caseDetail.descCharLimit2000') }}</div>
+              <div v-show="descError" class="text-status-error">{{ t('testCase.detail.caseDetail.descCharLimit2000') }}</div>
             </div>
           </template>
 
@@ -1214,7 +1214,7 @@ onBeforeUnmount(() => {
                   name="file"
                   :customRequest="upLoadFile">
                   <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                  <span class="text-3 text-theme-text-hover">{{ t('functionCase.detail.caseDetail.uploadAttachments') }}</span>
+                  <span class="text-3 text-theme-text-hover">{{ t('testCase.detail.caseDetail.uploadAttachments') }}</span>
                 </Upload>
               </template>
             </div>
@@ -1224,7 +1224,7 @@ onBeforeUnmount(() => {
     </div>
 
     <div v-if="bigLayout" class="w-75 flex-none ml-2">
-      <Toggle :title="t('functionCase.detail.caseDetail.personnel')">
+      <Toggle :title="t('testCase.detail.caseDetail.personnel')">
         <Grid
           :columns="peopleInfoColumns"
           :dataSource="caseDetail"
@@ -1265,7 +1265,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        :title="t('functionCase.detail.caseDetail.date')"
+        :title="t('testCase.detail.caseDetail.date')"
         class="mt-3.5">
         <Grid
           :columns="dateInfoColumns"
@@ -1304,7 +1304,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        :title="t('functionCase.detail.caseDetail.reviewInfo')"
+        :title="t('testCase.detail.caseDetail.reviewInfo')"
         class="mt-3.5">
         <Grid
           :columns="reviewInfoColumns"
@@ -1321,7 +1321,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        :title="t('functionCase.detail.caseDetail.testInfo')"
+        :title="t('testCase.detail.caseDetail.testInfo')"
         class="mt-3.5">
         <Grid
           :columns="testInfoColumns"
@@ -1378,7 +1378,7 @@ onBeforeUnmount(() => {
                 name="file"
                 :customRequest="upLoadFile">
                 <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                <span class="text-3 text-theme-text-hover">{{ t('functionCase.detail.caseDetail.uploadAttachments') }}</span>
+                <span class="text-3 text-theme-text-hover">{{ t('testCase.detail.caseDetail.uploadAttachments') }}</span>
               </Upload>
             </template>
           </div>

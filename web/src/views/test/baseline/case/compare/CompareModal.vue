@@ -279,7 +279,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    :title="t('functionBaseline.case.compareModalTitle')"
+    :title="t('testCaseBaseline.case.compareModalTitle')"
     :visible="props.visible"
     :width="1000"
     :footer="false"
@@ -287,7 +287,7 @@ onMounted(() => {
     <div style="height: 80svh; overflow-y: auto;">
       <div class="flex  items-center space-x-3">
         <div class="inline-flex items-center">
-          {{ t('functionBaseline.case.hideSameItems') }}
+          {{ t('testCaseBaseline.case.hideSameItems') }}
           <Switch
             v-model:checked="shouldHideSameItems"
             size="small"
@@ -311,7 +311,7 @@ onMounted(() => {
       </div>
       <div class="flex leading-10 border-b border-t mt-2">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
-          {{ t('functionBaseline.case.versionNumber') }}
+          {{ t('testCaseBaseline.case.versionNumber') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
           <Select
@@ -331,7 +331,7 @@ onMounted(() => {
 
       <div v-show="!shouldHideSameItems || !!caseNameHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
-          {{ t('functionBaseline.case.name') }}
+          {{ t('testCaseBaseline.case.name') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
           <div v-if="baseCaseData?.name">
@@ -367,7 +367,7 @@ onMounted(() => {
 
       <div v-show="!shouldHideSameItems || !!casePreconditionHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
-          {{ t('functionBaseline.case.precondition') }}
+          {{ t('testCaseBaseline.case.precondition') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
           <div v-if="baseCaseData?.precondition">
@@ -395,14 +395,14 @@ onMounted(() => {
 
       <div v-show="!shouldHideSameItems || !!testStepsHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l flex flex-col justify-center  bg-gray-bg">
-          {{ t('functionBaseline.case.testSteps') }}
+          {{ t('testCaseBaseline.case.testSteps') }}
         </div>
         <div class="flex-1 border-r">
           <div v-if="baseCaseData?.steps?.length" class="-mb-0.25">
             <div class="flex border-b">
               <span class="w-8 border-r"></span>
-              <span class="flex-1 px-2 border-r">{{ t('functionBaseline.case.stepDescription') }}</span>
-              <span class="flex-1 px-2">{{ t('functionBaseline.case.expectedResult') }}</span>
+              <span class="flex-1 px-2 border-r">{{ t('testCaseBaseline.case.stepDescription') }}</span>
+              <span class="flex-1 px-2">{{ t('testCaseBaseline.case.expectedResult') }}</span>
             </div>
             <div v-for="(step, idx) in baseCaseData.steps" class="flex border-b leading-5">
               <div class="w-8 text-center border-r py-2">{{ idx + 1 }}</div>
@@ -431,8 +431,8 @@ onMounted(() => {
           <div v-if="compareCaseData?.steps?.length" class="-mb-0.25">
             <div class="flex border-b">
               <span class="w-8 border-r"></span>
-              <span class="flex-1 px-2 border-r">{{ t('functionBaseline.case.stepDescription') }}</span>
-              <span class="flex-1 px-2">{{ t('functionBaseline.case.expectedResult') }}</span>
+              <span class="flex-1 px-2 border-r">{{ t('testCaseBaseline.case.stepDescription') }}</span>
+              <span class="flex-1 px-2">{{ t('testCaseBaseline.case.expectedResult') }}</span>
             </div>
             <div v-for="(step, idx) in compareCaseData.steps" class="flex border-b leading-5">
               <div class="w-8 text-center border-r py-2">{{ idx + 1 }}</div>
@@ -461,7 +461,7 @@ onMounted(() => {
 
       <div v-show="!shouldHideSameItems || !!associatedTasksHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
-          {{ t('functionBaseline.case.associatedTasks') }}
+          {{ t('testCaseBaseline.case.associatedTasks') }}
         </div>
         <div class="flex-1 border-r px-2 min-w-0">
           <div v-if="baseCaseData?.refTaskInfos" class="py-1">
@@ -485,7 +485,7 @@ onMounted(() => {
 
       <div v-show="!shouldHideSameItems || !!associatedCasesHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
-          {{ t('functionBaseline.case.associatedCases') }}
+          {{ t('testCaseBaseline.case.associatedCases') }}
         </div>
         <div class="flex-1 border-r px-2 min-w-0">
           <div v-if="baseCaseData?.refCaseInfos" class="py-1">

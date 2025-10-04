@@ -64,7 +64,7 @@ let completedBugEchart;
 
 const coreEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.coreKpi.coreIndicators'),
+    text: t('testAnalysis.detail.coreKpi.coreIndicators'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -99,14 +99,14 @@ const coreEchartConfig = {
   legend: {
     show: true,
     data: [
-      t('functionAnalysis.detail.coreKpi.completedAmount'),
-      t('functionAnalysis.detail.coreKpi.totalAmount')
+      t('testAnalysis.detail.coreKpi.completedAmount'),
+      t('testAnalysis.detail.coreKpi.totalAmount')
     ],
     top: 0
   },
   series: [
     {
-      name: t('functionAnalysis.detail.coreKpi.completedAmount'),
+      name: t('testAnalysis.detail.coreKpi.completedAmount'),
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)',
         borderRadius: [5, 5, 0, 0]
@@ -121,7 +121,7 @@ const coreEchartConfig = {
       }
     },
     {
-      name: t('functionAnalysis.detail.coreKpi.totalAmount'),
+      name: t('testAnalysis.detail.coreKpi.totalAmount'),
       itemStyle: {
         color: 'rgba(136, 185, 242, 0.8)',
         borderRadius: [5, 5, 0, 0]
@@ -143,7 +143,7 @@ const completedEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('functionAnalysis.detail.coreKpi.completedCasePercentage'),
+    subtext: t('testAnalysis.detail.coreKpi.completedCasePercentage'),
     itemGap: 40,
     textAlign: 'center',
     textStyle: {
@@ -218,7 +218,7 @@ const completedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: t('functionAnalysis.detail.coreKpi.completedWorkloadPercentage'),
+    subtext: t('testAnalysis.detail.coreKpi.completedWorkloadPercentage'),
     itemGap: 40
   }
 }));
@@ -228,7 +228,7 @@ const completedOverdueEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: t('functionAnalysis.detail.coreKpi.completedOverduePercentage')
+    subtext: t('testAnalysis.detail.coreKpi.completedOverduePercentage')
   }
 }));
 
@@ -237,7 +237,7 @@ const completedBugEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: t('functionAnalysis.detail.coreKpi.completedBugPercentage')
+    subtext: t('testAnalysis.detail.coreKpi.completedBugPercentage')
   }
 }));
 

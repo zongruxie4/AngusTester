@@ -27,7 +27,7 @@ const emits = defineEmits<{
 }>();
 
 const templateTreeData = ref<{name: string; value: string}[]>([
-  { name: t('functionAnalysis.templateSelectList.allAnalysis'), value: '' }
+  { name: t('testAnalysis.templateSelectList.allAnalysis'), value: '' }
 ]);
 
 /**

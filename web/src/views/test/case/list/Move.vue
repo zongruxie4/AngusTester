@@ -55,7 +55,7 @@ const format = (data) => {
 </script>
 <template>
   <Modal
-    :title="t('functionCase.moveCaseModal.title')"
+    :title="t('testCase.moveCaseModal.title')"
     :visible="props.visible"
     :width="600"
     :footer="null"
@@ -67,8 +67,8 @@ const format = (data) => {
       @finish="onFinish">
       <FormItem
         name="targetPlanId"
-        :label="t('functionCase.moveCaseModal.selectPlan')"
-        :rules="[{ required: true, message: t('functionCase.moveCaseModal.pleaseSelectPlan') }]"
+        :label="t('testCase.moveCaseModal.selectPlan')"
+        :rules="[{ required: true, message: t('testCase.moveCaseModal.pleaseSelectPlan') }]"
         class="flex-1">
         <Select
           v-model:value="formState.targetPlanId"
@@ -77,7 +77,7 @@ const format = (data) => {
           :format="format"
           showSearch
           allowClear
-          :placeholder="t('functionCase.moveCaseModal.selectOrQueryPlan')">
+          :placeholder="t('testCase.moveCaseModal.selectOrQueryPlan')">
           <template #option="item">
             <div class="flex items-center">
               <Icon icon="icon-jihua" class="mr-1 text-3.5" />

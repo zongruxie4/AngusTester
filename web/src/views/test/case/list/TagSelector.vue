@@ -115,7 +115,7 @@ defineExpose({
           v-model:value="selectValue"
           size="small"
           class="w-43"
-          :placeholder="t('functionCase.selectTag.selectTag')"
+          :placeholder="t('testCase.selectTag.selectTag')"
           showSearch
           internal
           :fieldNames="{ label: 'name', value: 'id' }"

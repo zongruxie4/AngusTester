@@ -49,10 +49,10 @@ const props = withDefaults(defineProps<Props>(), {
   hideImportBtn: false,
   disabled: false,
   viewType: false,
-  fieldNames: () => ({ 
-    valueKey: API_EXTENSION_KEY.valueKey, 
-    enabledKey: API_EXTENSION_KEY.enabledKey, 
-    fileNameKey: API_EXTENSION_KEY.fileNameKey 
+  fieldNames: () => ({
+    valueKey: API_EXTENSION_KEY.valueKey,
+    enabledKey: API_EXTENSION_KEY.enabledKey,
+    fileNameKey: API_EXTENSION_KEY.fileNameKey
   })
 });
 
@@ -414,10 +414,10 @@ const updateFlatComponentData = async () => {
 };
 
 // Expose component methods
-defineExpose({ 
-  getModelResolve: getFlatModelResolution, 
-  updateComp: updateFlatComponentData, 
-  validate: validateFlatFormContents 
+defineExpose({
+  getModelResolve: getFlatModelResolution,
+  updateComp: updateFlatComponentData,
+  validate: validateFlatFormContents
 });
 
 </script>

@@ -163,7 +163,7 @@ const cancelFavourite = async (data: ApiItem) => {
     return;
   }
 
-  notification.success(t('apis.myApis.cancelFavoriteSuccess'));
+  notification.success(t('apis.myApis.cancelFavouriteSuccess'));
   loadData();
 
   if (typeof updateRefreshNotify === 'function') {

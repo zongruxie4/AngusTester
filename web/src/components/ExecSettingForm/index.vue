@@ -1729,7 +1729,7 @@ const resetParam = () => {
   webSocketSettingResponseTimeoutUnit.value = 's';
   maxWaitTimeoutMillisUnit.value = 'ms';
   reconnectionIntervalUnit.value = 'ms';
-        isRampUpEnabled.value = false;
+  isRampUpEnabled.value = false;
   isRampDownEnabled.value = false;
 };
 

@@ -6,32 +6,32 @@ const { t } = useI18n();
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-2.5">{{ t('functionPlan.introduce.title') }}</div>
-    <div class="text-3.5 mb-6 font-serif">{{ t('functionPlan.introduce.description') }}</div>
+    <div class="text-3.5 font-semibold mb-2.5">{{ t('testPlan.introduce.title') }}</div>
+    <div class="text-3.5 mb-6 font-serif">{{ t('testPlan.introduce.description') }}</div>
 
     <div class="space-y-6">
       <div class="flex items-start justify-between font-serif">
         <div class="flex items-start space-x-3 w-1/3">
           <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('functionPlan.introduce.testScope.title') }}</div>
-            <div class="text-3.5">{{ t('functionPlan.introduce.testScope.description') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('testPlan.introduce.testScope.title') }}</div>
+            <div class="text-3.5">{{ t('testPlan.introduce.testScope.description') }}</div>
           </div>
         </div>
 
         <div class="flex items-start space-x-3 w-1/3">
           <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('functionPlan.introduce.timeManagement.title') }}</div>
-            <div class="text-3.5">{{ t('functionPlan.introduce.timeManagement.description') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('testPlan.introduce.timeManagement.title') }}</div>
+            <div class="text-3.5">{{ t('testPlan.introduce.timeManagement.description') }}</div>
           </div>
         </div>
 
         <div class="flex items-start space-x-3 w-1/3">
           <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('functionPlan.introduce.riskManagement.title') }}</div>
-            <div class="text-3.5">{{ t('functionPlan.introduce.riskManagement.description') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('testPlan.introduce.riskManagement.title') }}</div>
+            <div class="text-3.5">{{ t('testPlan.introduce.riskManagement.description') }}</div>
           </div>
         </div>
       </div>
@@ -40,24 +40,24 @@ const { t } = useI18n();
         <div class="flex items-start space-x-3 w-1/3">
           <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('functionPlan.introduce.communication.title') }}</div>
-            <div class="text-3.5">{{ t('functionPlan.introduce.communication.description') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('testPlan.introduce.communication.title') }}</div>
+            <div class="text-3.5">{{ t('testPlan.introduce.communication.description') }}</div>
           </div>
         </div>
 
         <div class="flex items-start space-x-3 w-1/3">
           <img src="./images/5.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('functionPlan.introduce.continuousImprovement.title') }}</div>
-            <div class="text-3.5">{{ t('functionPlan.introduce.continuousImprovement.description') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('testPlan.introduce.continuousImprovement.title') }}</div>
+            <div class="text-3.5">{{ t('testPlan.introduce.continuousImprovement.description') }}</div>
           </div>
         </div>
 
         <div class="flex items-start space-x-3 w-1/3">
           <img src="./images/6.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('functionPlan.introduce.standards.title') }}</div>
-            <div class="text-3.5">{{ t('functionPlan.introduce.standards.description') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('testPlan.introduce.standards.title') }}</div>
+            <div class="text-3.5">{{ t('testPlan.introduce.standards.description') }}</div>
           </div>
         </div>
       </div>

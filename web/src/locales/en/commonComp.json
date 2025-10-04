@@ -993,7 +993,7 @@
   "xcan_favoriteFollow": {
     "cancelAllFavoritesSuccess": "Cancel all favorites successfully",
     "cancelAllFollowsSuccess": "Cancel all follows successfully",
-    "cancelFavoriteSuccess": "Cancel favorite successfully",
+    "cancelFavouriteSuccess": "Cancel favorite successfully",
     "cancelFollowSuccess": "Cancel follow successfully",
     "cancelAllFavorites": "Cancel All Favorites",
     "cancelAllFollows": "Cancel All Follows",

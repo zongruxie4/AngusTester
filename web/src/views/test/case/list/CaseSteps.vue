@@ -132,25 +132,25 @@ const menus = [
   {
     key: 'delete',
     icon: 'icon-qingchu',
-    name: t('functionCase.addCaseModal.deleteStep'),
+    name: t('testCase.addCaseModal.deleteStep'),
     noAuth: true
   },
   {
     key: 'clone',
     icon: 'icon-fuzhi',
-    name: t('functionCase.addCaseModal.cloneStep'),
+    name: t('testCase.addCaseModal.cloneStep'),
     noAuth: true
   },
   {
     key: 'top',
     icon: 'icon-shangyi',
-    name: t('functionCase.addCaseModal.moveToTop'),
+    name: t('testCase.addCaseModal.moveToTop'),
     noAuth: true
   },
   {
     key: 'bottom',
     icon: 'icon-xiayi',
-    name: t('functionCase.addCaseModal.moveToBottom'),
+    name: t('testCase.addCaseModal.moveToBottom'),
     noAuth: true
   }
 ];
@@ -179,12 +179,12 @@ const handleClick = (key:string, item, index) => {
         <div class="flex">
           <div class="w-8 flex justify-center pt-1 flex-none">#</div>
           <div class="px-1.5 py-1 border-theme-text-box border-r flex-1/2">
-            {{ t('functionCase.addCaseModal.stepDescription') }}
+            {{ t('testCase.addCaseModal.stepDescription') }}
           </div>
           <div
             class="px-1.5 py-1 border-theme-text-box flex-1/2"
             :class="{'border-r': !props.readonly || props.showOutBorder}">
-            {{ t('functionCase.addCaseModal.expectedResult') }}
+            {{ t('testCase.addCaseModal.expectedResult') }}
           </div>
           <div v-show="!props.readonly" class="w-12 flex-none py-1 text-center">{{ t('common.actions') }}</div>
         </div>
@@ -213,7 +213,7 @@ const handleClick = (key:string, item, index) => {
                 v-model:value="item.step"
                 mode="view"
                 :toolbarOptions="toolbarOptions"
-                :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterStepDescription')}"
+                :options="{theme: 'bubble', placeholder: t('testCase.addCaseModal.enterStepDescription')}"
                 class="step-content"
                 height="auto" />
 
@@ -223,7 +223,7 @@ const handleClick = (key:string, item, index) => {
                 v-model:value="item.step"
                 mode="edit"
                 :toolbarOptions="toolbarOptions"
-                :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterStepDescription')}"
+                :options="{theme: 'bubble', placeholder: t('testCase.addCaseModal.enterStepDescription')}"
                 class="step-content"
                 height="auto"
                 @change="inputChange" />
@@ -236,7 +236,7 @@ const handleClick = (key:string, item, index) => {
                 v-model:value="item.expectedResult"
                 mode="view"
                 :toolbarOptions="toolbarOptions"
-                :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterExpectedResult')}"
+                :options="{theme: 'bubble', placeholder: t('testCase.addCaseModal.enterExpectedResult')}"
                 class="step-content"
                 height="auto" />
 
@@ -245,7 +245,7 @@ const handleClick = (key:string, item, index) => {
                 :key="`${index}_expectedResult`"
                 v-model:value="item.expectedResult"
                 :toolbarOptions="toolbarOptions"
-                :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterExpectedResult')}"
+                :options="{theme: 'bubble', placeholder: t('testCase.addCaseModal.enterExpectedResult')}"
                 class="step-content"
                 height="auto"
                 @change="inputChange" />
@@ -272,31 +272,31 @@ const handleClick = (key:string, item, index) => {
           type="link"
           class="flex items-center px-0 text-3 leading-3 h-4"
           @click="hanldeAdd">
-          <Icon icon="icon-jia" class="mr-1 -mt-0.5" />{{ t('functionCase.addCaseModal.addStep') }}
+          <Icon icon="icon-jia" class="mr-1 -mt-0.5" />{{ t('testCase.addCaseModal.addStep') }}
         </Button>
       </div>
     </template>
 
     <template v-if="props.stepView === CaseStepView.TEXT">
-      <div class="pl-1">{{ t('functionCase.addCaseModal.stepDescription') }}</div>
+      <div class="pl-1">{{ t('testCase.addCaseModal.stepDescription') }}</div>
       <RichEditor
         v-model:value="steps[0].step"
         :mode="props.readonly ? 'view' : 'edit'"
         :disabled="props.readonly"
         :toolbarOptions="toolbarOptions"
-        :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterStepDescription')}"
+        :options="{theme: 'bubble', placeholder: t('testCase.addCaseModal.enterStepDescription')}"
         :height="100"
         class="border"
         @change="inputChange" />
 
-      <div class="mt-3 pl-1">{{ t('functionCase.addCaseModal.expectedResult') }}</div>
+      <div class="mt-3 pl-1">{{ t('testCase.addCaseModal.expectedResult') }}</div>
 
       <RichEditor
         v-model:value="steps[0].expectedResult"
         :mode="props.readonly ? 'view' : 'edit'"
         :disabled="props.readonly"
         :toolbarOptions="toolbarOptions"
-        :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterExpectedResult')}"
+        :options="{theme: 'bubble', placeholder: t('testCase.addCaseModal.enterExpectedResult')}"
         :height="100"
         class="border"
         @change="inputChange" />

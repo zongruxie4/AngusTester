@@ -28,34 +28,34 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: '',
     value: [
-      { name: t('functionAnalysis.detail.bugs.criticalBugs'), value: CRITICAL },
-      { name: t('functionAnalysis.detail.bugs.majorBugs'), value: MAJOR },
-      { name: t('functionAnalysis.detail.bugs.minorBugs'), value: MINOR },
-      { name: t('functionAnalysis.detail.bugs.trivialBugs'), value: TRIVIAL }
+      { name: t('testAnalysis.detail.bugs.criticalBugs'), value: CRITICAL },
+      { name: t('testAnalysis.detail.bugs.majorBugs'), value: MAJOR },
+      { name: t('testAnalysis.detail.bugs.minorBugs'), value: MINOR },
+      { name: t('testAnalysis.detail.bugs.trivialBugs'), value: TRIVIAL }
     ]
   };
 
   res.chart2Value = {
     title: validBugRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.bugs.invalidBugs'), value: invalidBugNum },
-      { name: t('functionAnalysis.detail.bugs.validBugs'), value: validBugNum }
+      { name: t('testAnalysis.detail.bugs.invalidBugs'), value: invalidBugNum },
+      { name: t('testAnalysis.detail.bugs.validBugs'), value: validBugNum }
     ]
   };
 
   res.chart3Value = {
     title: escapedBugRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.bugs.nonEscapedBugs'), value: totalNum - escapedBugNum },
-      { name: t('functionAnalysis.detail.bugs.escapedBugCount'), value: escapedBugNum }
+      { name: t('testAnalysis.detail.bugs.nonEscapedBugs'), value: totalNum - escapedBugNum },
+      { name: t('testAnalysis.detail.bugs.escapedBugCount'), value: escapedBugNum }
     ]
   };
 
   res.chart4Value = {
     title: bugWorkloadRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.bugs.nonBugWorkload'), value: totalWorkload - bugWorkload },
-      { name: t('functionAnalysis.detail.bugs.bugWorkload'), value: bugWorkload }
+      { name: t('testAnalysis.detail.bugs.nonBugWorkload'), value: totalWorkload - bugWorkload },
+      { name: t('testAnalysis.detail.bugs.bugWorkload'), value: bugWorkload }
     ]
   };
   return res;

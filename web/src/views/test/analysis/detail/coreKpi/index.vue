@@ -32,31 +32,31 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: completedRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.coreKpi.incompleteCaseCount'), value: totalNum - completedNum },
-      { name: t('functionAnalysis.detail.coreKpi.completedCaseCount'), value: completedNum }
+      { name: t('testAnalysis.detail.coreKpi.incompleteCaseCount'), value: totalNum - completedNum },
+      { name: t('testAnalysis.detail.coreKpi.completedCaseCount'), value: completedNum }
     ]
   };
   res.chart2Value = {
     title: completedWorkloadRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.coreKpi.uncompletedWorkload'), value: evalWorkload - completedWorkload },
-      { name: t('functionAnalysis.detail.coreKpi.completedWorkload'), value: completedWorkload }
+      { name: t('testAnalysis.detail.coreKpi.uncompletedWorkload'), value: evalWorkload - completedWorkload },
+      { name: t('testAnalysis.detail.coreKpi.completedWorkload'), value: completedWorkload }
     ]
   };
 
   res.chart3Value = {
     title: completedOverdueRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.coreKpi.incompleteOverdueCount'), value: overdueNum - completedOverdueNum },
-      { name: t('functionAnalysis.detail.coreKpi.completedOverdueCount'), value: completedOverdueNum }
+      { name: t('testAnalysis.detail.coreKpi.incompleteOverdueCount'), value: overdueNum - completedOverdueNum },
+      { name: t('testAnalysis.detail.coreKpi.completedOverdueCount'), value: completedOverdueNum }
     ]
   };
 
   res.chart4Value = {
     title: completedBugRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.coreKpi.incompleteBugCount'), value: bugNum - completedBugNum },
-      { name: t('functionAnalysis.detail.coreKpi.completedBugCount'), value: completedBugNum }
+      { name: t('testAnalysis.detail.coreKpi.incompleteBugCount'), value: bugNum - completedBugNum },
+      { name: t('testAnalysis.detail.coreKpi.completedBugCount'), value: completedBugNum }
     ]
   };
   return res;

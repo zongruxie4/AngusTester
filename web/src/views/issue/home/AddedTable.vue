@@ -233,7 +233,7 @@ const handleUnfavoriteTask = async (taskData: TaskDetail) => {
     return;
   }
 
-  notification.success(t('actions.tips.cancelFavoriteSuccess'));
+  notification.success(t('actions.tips.cancelFavouriteSuccess'));
   await loadTaskData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -439,34 +439,34 @@ const emptyStateStyle = {
           <img class="w-27.5" src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
-              <span>{{ t('issueHome.addedTable.emptyStates.noCreatedIssues') }}</span>
+              <span>{{ t('issueHome.myIssues.emptyStates.noCreatedIssues') }}</span>
               <RouterLink to="/issue#issue" class="ml-1 link">
-                {{ t('issueHome.addedTable.emptyStates.addIssue') }}
+                {{ t('issueHome.myIssues.emptyStates.addIssue') }}
               </RouterLink>
             </template>
 
             <template v-else-if="props.params?.assigneeId && props.params?.status === TaskStatus.PENDING">
-              <span>{{ t('issueHome.addedTable.emptyStates.noPendingIssues') }}</span>
+              <span>{{ t('issueHome.myIssues.emptyStates.noPendingIssues') }}</span>
             </template>
 
             <template v-else-if="props.params?.confirmerId && props.params?.status === TaskStatus.CONFIRMING">
-              <span>{{ t('issueHome.addedTable.emptyStates.noConfirmingIssues') }}</span>
+              <span>{{ t('issueHome.myIssues.emptyStates.noConfirmingIssues') }}</span>
             </template>
 
             <template v-else-if="props.params?.assigneeId && props.params?.status === TaskStatus.COMPLETED">
-              <span>{{ t('issueHome.addedTable.emptyStates.noCompletedIssues') }}</span>
+              <span>{{ t('issueHome.myIssues.emptyStates.noCompletedIssues') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.followBy">
-              <span>{{ t('issueHome.addedTable.emptyStates.noFollowedIssues') }}</span>
+              <span>{{ t('issueHome.myIssues.emptyStates.noFollowedIssues') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">
-              <span>{{ t('issueHome.addedTable.emptyStates.noFavouriteIssues') }}</span>
+              <span>{{ t('issueHome.myIssues.emptyStates.noFavouriteIssues') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.commentBy">
-              <span>{{ t('issueHome.addedTable.emptyStates.noCommentIssues') }}</span>
+              <span>{{ t('issueHome.myIssues.emptyStates.noCommentIssues') }}</span>
             </template>
           </div>
         </div>

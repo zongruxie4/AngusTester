@@ -18,39 +18,39 @@ const topCarObj = {
     icon: 'icon-zonglan'
   },
   totalCaseNum: {
-    name: t('functionCase.statisticsPanel.totalCaseNum'),
+    name: t('testCase.statisticsPanel.totalCaseNum'),
     icon: 'icon-zongyongli'
   },
   pendingTestNum: {
-    name: t('functionCase.statisticsPanel.pendingTestNum'),
+    name: t('testCase.statisticsPanel.pendingTestNum'),
     icon: 'icon-daiceshi'
   },
   passedTestNum: {
-    name: t('functionCase.statisticsPanel.passedTestNum'),
+    name: t('testCase.statisticsPanel.passedTestNum'),
     icon: 'icon-ceshitongguo'
   },
   notPassedTestNum: {
-    name: t('functionCase.statisticsPanel.notPassedTestNum'),
+    name: t('testCase.statisticsPanel.notPassedTestNum'),
     icon: 'icon-ceshiweitongguo'
   },
   oneTimePassedTestNum: {
-    name: t('functionCase.statisticsPanel.oneTimePassedTestNum'),
+    name: t('testCase.statisticsPanel.oneTimePassedTestNum'),
     icon: 'icon-a-yicixingceshitongguoshu'
   },
   oneTimePassedTestRate: {
-    name: t('functionCase.statisticsPanel.oneTimePassedTestRate'),
+    name: t('testCase.statisticsPanel.oneTimePassedTestRate'),
     icon: 'icon-a-yicixingceshitongguoshuai'
   },
   overdueNum: {
-    name: t('functionCase.statisticsPanel.overdueCount'),
+    name: t('testCase.statisticsPanel.overdueCount'),
     icon: 'icon-yiyuqi1'
   },
   blockedTestNum: {
-    name: t('functionCase.statisticsPanel.blockedTestNum'),
+    name: t('testCase.statisticsPanel.blockedTestNum'),
     icon: 'icon-zusaizhong'
   },
   canceledTestNum: {
-    name: t('functionCase.statisticsPanel.canceledTestNum'),
+    name: t('testCase.statisticsPanel.canceledTestNum'),
     icon: 'icon-yiquxiao'
   },
 
@@ -63,11 +63,11 @@ const topCarObj = {
     icon: 'icon-wanchenggongzuoliang'
   },
   oneTimePassReviewNum: {
-    name: t('functionCase.statisticsPanel.oneTimePassReviewNum'),
+    name: t('testCase.statisticsPanel.oneTimePassReviewNum'),
     icon: 'icon-a-yicixingpingshentongguoshu'
   },
   oneTimePassReviewRate: {
-    name: t('functionCase.statisticsPanel.oneTimePassReviewRate'),
+    name: t('testCase.statisticsPanel.oneTimePassReviewRate'),
     icon: 'icon-a-yicixingpingshentongguoshuai'
   }
 };

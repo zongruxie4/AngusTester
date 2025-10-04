@@ -31,24 +31,24 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: passedReviewRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.reviewEfficiency.notPassedCaseCount'), value: totalNum - passedReviewNum },
-      { name: t('functionAnalysis.detail.reviewEfficiency.passedCaseCount'), value: passedReviewNum }
+      { name: t('testAnalysis.detail.reviewEfficiency.notPassedCaseCount'), value: totalNum - passedReviewNum },
+      { name: t('testAnalysis.detail.reviewEfficiency.passedCaseCount'), value: passedReviewNum }
     ]
   };
 
   res.chart2Value = {
     title: oneTimePassedReviewRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.reviewEfficiency.oneTimeNotPassedCaseCount'), value: twoTimePassedReviewNum },
-      { name: t('functionAnalysis.detail.reviewEfficiency.oneTimePassedCaseCount'), value: oneTimeNotPassedReviewNum }
+      { name: t('testAnalysis.detail.reviewEfficiency.oneTimeNotPassedCaseCount'), value: twoTimePassedReviewNum },
+      { name: t('testAnalysis.detail.reviewEfficiency.oneTimePassedCaseCount'), value: oneTimeNotPassedReviewNum }
     ]
   };
 
   res.chart3Value = {
     title: twoTimePassedReviewRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.reviewEfficiency.twoTimeNotPassedCaseCount'), value: passedReviewNum - twoTimePassedReviewNum },
-      { name: t('functionAnalysis.detail.reviewEfficiency.twoTimePassedCaseCount'), value: twoTimePassedReviewNum }
+      { name: t('testAnalysis.detail.reviewEfficiency.twoTimeNotPassedCaseCount'), value: passedReviewNum - twoTimePassedReviewNum },
+      { name: t('testAnalysis.detail.reviewEfficiency.twoTimePassedCaseCount'), value: twoTimePassedReviewNum }
     ]
   };
   return res;

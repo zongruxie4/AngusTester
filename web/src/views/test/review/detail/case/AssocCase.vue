@@ -43,7 +43,7 @@ const dataList = computed(() => {
     <div v-if="!hideTitle" class="flex items-center mb-4">
       <Icon icon="icon-gongnengyongli" class="text-cyan-500 mr-2" />
       <h3 class="text-lg font-semibold text-gray-900">
-        {{ t('caseReview.comp.assocCase.title') }}
+        {{ t('testCaseReview.comp.assocCase.title') }}
       </h3>
     </div>
 

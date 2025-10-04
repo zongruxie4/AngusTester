@@ -186,8 +186,8 @@ const handleFavourite = async (rowData: CaseDetail) => {
     return;
   }
   notification.success(rowData.favourite
-    ? t('functionCase.cancelFavouriteSuccess')
-    : t('functionCase.favouriteSuccess'));
+    ? t('testCase.cancelFavouriteSuccess')
+    : t('testCase.favouriteSuccess'));
   rowData.favourite = !rowData.favourite;
   updateFollowFavourite('addFavourite');
 };
@@ -209,8 +209,8 @@ const handleFollow = async (rowData: CaseDetail) => {
   }
 
   notification.success(rowData.follow
-    ? t('functionCase.cancelFollowSuccess')
-    : t('functionCase.followSuccess'));
+    ? t('testCase.cancelFollowSuccess')
+    : t('testCase.followSuccess'));
   rowData.follow = !rowData.follow;
   updateFollowFavourite('addFollow');
 };
@@ -288,7 +288,7 @@ const handleSetResultBlocked = async (value) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.caseSetBlocked'));
+  notification.success(t('testCase.caseSetBlocked'));
   await getCaseInfo();
 };
 
@@ -304,7 +304,7 @@ const handleSetResultCanceled = async (value) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.cancelSuccess'));
+  notification.success(t('testCase.cancelSuccess'));
   await getCaseInfo();
 };
 
@@ -320,7 +320,7 @@ const handelResetTestResults = async (rowData: CaseDetail) => {
     return;
   }
 
-  notification.success(t('functionCase.resetTestResultSuccess'));
+  notification.success(t('testCase.resetTestResultSuccess'));
   await getCaseInfo();
 };
 
@@ -335,7 +335,7 @@ const handleResetReviewResult = async (rowData: CaseDetail) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.resetReviewSuccess'));
+  notification.success(t('testCase.resetReviewSuccess'));
   await getCaseInfo();
 };
 
@@ -348,7 +348,7 @@ const handleReTest = async (rowData: CaseDetail) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.resetTestStatusSuccess'));
+  notification.success(t('testCase.resetTestStatusSuccess'));
   await getCaseInfo();
 };
 
@@ -359,10 +359,10 @@ const handleDeleteCase = async (rowData?: CaseDetail) => {
   }
   modal.confirm({
     centered: true,
-    title: t('functionCase.deleteCase'),
+    title: t('testCase.deleteCase'),
     content: rowData
-      ? t('functionCase.confirmDeleteCase', { name: rowData.name })
-      : t('functionCase.confirmDeleteSelectedCases'),
+      ? t('testCase.confirmDeleteCase', { name: rowData.name })
+      : t('testCase.confirmDeleteSelectedCases'),
     async onOk () {
       await delCase(rowData);
     }
@@ -428,7 +428,7 @@ onMounted(() => {
       if (!tabData.includes('caseList')) {
         addTabPane({
           _id: 'case_home',
-          name: t('functionCase.title'),
+          name: t('testCase.title'),
           type: 'caseList',
           closable: false,
           icon: 'icon-zhuye',
@@ -437,7 +437,7 @@ onMounted(() => {
       } else {
         updateTabPane({
           _id: 'case_home',
-          name: t('functionCase.title'),
+          name: t('testCase.title'),
           type: 'caseList',
           closable: false,
           icon: 'icon-zhuye',
@@ -554,7 +554,7 @@ defineExpose({
                 @onClick="(type, value) => handleDetailAction(type, value, record)" />
             </Spin>
 
-            <Tooltip placement="topLeft" :title="t('functionCase.backToTop')">
+            <Tooltip placement="topLeft" :title="t('testCase.backToTop')">
               <div
                 v-if="showAnchor"
                 class="absolute right-2 bottom-2 z-999 h-6 w-6  cursor-pointer border border-border-divider rounded-full text-center leading-5"

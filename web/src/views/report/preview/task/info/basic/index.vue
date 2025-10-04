@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../../PropsType';
-import {TaskType} from "@/enums/enums";
+import { TaskType } from '@/enums/enums';
 
 const { t } = useI18n();
 

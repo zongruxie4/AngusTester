@@ -40,8 +40,8 @@ const emits = defineEmits<{
 
 const showTotal = (_total: number) => {
   return props.enabledGroup
-    ? t('functionCase.infoView.totalGroups', { total: _total })
-    : t('functionCase.infoView.totalItems', { total: _total });
+    ? t('testCase.infoView.totalGroups', { total: _total })
+    : t('testCase.infoView.totalItems', { total: _total });
 };
 
 const hanldeListExpand = (item) => {

@@ -93,7 +93,7 @@ const initializeBrowserTabs = () => {
         return {
           _id: 'analysisList',
           value: 'analysisList',
-          name: t('functionAnalysis.name'),
+          name: t('testAnalysis.name'),
           closable: false
         };
       }
@@ -149,7 +149,7 @@ const handleHashChange = (hash: string) => {
         const newId = utils.uuid();
         return {
           _id: newId,
-          name: t('functionAnalysis.list.addAnalysis'),
+          name: t('testAnalysis.list.addAnalysis'),
           value: 'analysisEdit',
           noCache: true,
           data: { _id: newId }

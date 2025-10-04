@@ -64,8 +64,6 @@ const {
   selectedIds
 } = useScriptTable(props.permissionsMap);
 
-
-
 /**
  * Import demo scripts
  */

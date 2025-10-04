@@ -558,7 +558,7 @@ onMounted(() => {
                 <template #tab><span class="font-semibold">{{ t('node.message.executingTasks') }}</span></template>
                 <Execution :id="id" />
               </TabPane>
-              <TabPane key=.executor.>
+              <TabPane key=".executor.">
                 <template #tab><span class="font-semibold">{{ t('node.message.executorProcess') }}</span></template>
                 <ExecutionPropulsion :nodeId="id" :tenantId="state.infos?.tenantId" />
               </TabPane>

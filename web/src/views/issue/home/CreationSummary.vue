@@ -114,7 +114,7 @@ onMounted(() => {
 </script>
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-3">{{ t('issueHome.myCreation') }}</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('issueHome.myCreationSummary.title') }}</div>
     <div class="flex flex-1 space-x-3.75 justify-start">
       <div class="p-3.5 rounded w-1/3 relative bg-img">
         <div class="space-x-2">

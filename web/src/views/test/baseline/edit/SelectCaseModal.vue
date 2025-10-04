@@ -92,12 +92,12 @@ const handleSearchFilter = debounce(duration.search, () => {
 // Table Configuration
 const tableColumns = [
   {
-    title: t('functionBaseline.editForm.caseCode'),
+    title: t('testCaseBaseline.editForm.caseCode'),
     dataIndex: 'code',
     width: 120
   },
   {
-    title: t('functionBaseline.editForm.caseName'),
+    title: t('testCaseBaseline.editForm.caseName'),
     dataIndex: 'name'
   },
   {
@@ -112,12 +112,12 @@ const tableColumns = [
     width: 80
   },
   {
-    title: t('functionBaseline.editForm.reviewStatus'),
+    title: t('testCaseBaseline.editForm.reviewStatus'),
     dataIndex: 'reviewStatus',
     width: 100
   },
   {
-    title: t('functionBaseline.editForm.testResult'),
+    title: t('testCaseBaseline.editForm.testResult'),
     dataIndex: 'testResult',
     width: 100
   },
@@ -160,7 +160,7 @@ watch(() => selectedModuleId.value, () => {
 </script>
 <template>
   <Modal
-    :title="t('functionBaseline.editForm.selectCase')"
+    :title="t('testCaseBaseline.editForm.selectCase')"
     :visible="props.visible"
     :width="1280"
     :loading="isLoading"
@@ -175,7 +175,7 @@ watch(() => selectedModuleId.value, () => {
       <div class="flex-1 ml-2">
         <Input
           v-model:value="searchKeywords"
-          :placeholder="t('functionBaseline.editForm.queryNameCode')"
+          :placeholder="t('testCaseBaseline.editForm.queryNameCode')"
           class="w-100"
           @change="handleSearchFilter" />
         <Table

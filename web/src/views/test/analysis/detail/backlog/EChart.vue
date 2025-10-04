@@ -48,7 +48,7 @@ let backloggedWorkloadEchart;
 // 积压量
 const backlogEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.backlogTasks.backlogVolume'),
+    text: t('testAnalysis.detail.backlogTasks.backlogVolume'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -81,14 +81,14 @@ const backlogEchartConfig = {
   legend: {
     show: true,
     data: [
-      t('functionAnalysis.detail.backlogTasks.backlogVolume'),
-      t('functionAnalysis.detail.backlogTasks.totalVolume')
+      t('testAnalysis.detail.backlogTasks.backlogVolume'),
+      t('testAnalysis.detail.backlogTasks.totalVolume')
     ],
     top: 0
   },
   series: [
     {
-      name: t('functionAnalysis.detail.backlogTasks.backlogVolume'),
+      name: t('testAnalysis.detail.backlogTasks.backlogVolume'),
       itemStyle: {
         color: 'orange',
         borderRadius: [5, 5, 0, 0]
@@ -103,7 +103,7 @@ const backlogEchartConfig = {
       }
     },
     {
-      name: t('functionAnalysis.detail.backlogTasks.totalVolume'),
+      name: t('testAnalysis.detail.backlogTasks.totalVolume'),
       itemStyle: {
         color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
@@ -125,7 +125,7 @@ const backloggedTaskEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('functionAnalysis.detail.backlogTasks.backlogCaseCount'),
+    subtext: t('testAnalysis.detail.backlogTasks.backlogCaseCount'),
     itemGap: 55,
     textAlign: 'center',
     textStyle: {
@@ -199,7 +199,7 @@ const backloggedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...backloggedTaskEchartConfig,
   title: {
     ...backloggedTaskEchartConfig.title,
-    subtext: t('functionAnalysis.detail.backlogTasks.backlogWorkload')
+    subtext: t('testAnalysis.detail.backlogTasks.backlogWorkload')
   }
 }));
 
@@ -259,10 +259,10 @@ defineExpose({
             <span class="text-5 text-status-error">
               {{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}
             </span>
-            {{ t('functionAnalysis.detail.backlogTasks.hours') }}
+            {{ t('testAnalysis.detail.backlogTasks.hours') }}
           </div>
           <div>
-            {{ t('functionAnalysis.detail.backlogTasks.backlogWorkloadEstimatedTime') }}
+            {{ t('testAnalysis.detail.backlogTasks.backlogWorkloadEstimatedTime') }}
           </div>
         </div>
       </div>
@@ -270,13 +270,13 @@ defineExpose({
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedNum || 0 }}</div>
           <div>
-            {{ t('functionAnalysis.detail.backlogTasks.averageDailyProcessedCases') }}
+            {{ t('testAnalysis.detail.backlogTasks.averageDailyProcessedCases') }}
           </div>
         </div>
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}</div>
           <div>
-            {{ t('functionAnalysis.detail.backlogTasks.averageDailyProcessedWorkload') }}
+            {{ t('testAnalysis.detail.backlogTasks.averageDailyProcessedWorkload') }}
           </div>
         </div>
       </div>

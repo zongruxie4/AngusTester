@@ -56,13 +56,13 @@ const toEdit = () => {
 
 const dateChange = (value:string) => {
   if (!value) {
-    dateErrorMessage.value = t('functionCase.kanbanView.infoDate.selectDeadlineTime');
+    dateErrorMessage.value = t('testCase.kanbanView.infoDate.selectDeadlineTime');
     return;
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
     dateError.value = true;
-    dateErrorMessage.value = t('functionCase.kanbanView.infoDate.deadlineMustBeFuture');
+    dateErrorMessage.value = t('testCase.kanbanView.infoDate.deadlineMustBeFuture');
     return;
   }
 
@@ -132,13 +132,13 @@ const change = async () => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('functionCase.kanbanView.infoDate.title') }}
+      {{ t('testCase.kanbanView.infoDate.title') }}
     </div>
 
     <div class="space-y-2.5">
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('functionCase.kanbanView.infoDate.reviewTime') }}</span>
+          <span>{{ t('testCase.kanbanView.infoDate.reviewTime') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -147,7 +147,7 @@ const change = async () => {
 
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('functionCase.kanbanView.infoDate.reviewCompleteTime') }}</span>
+          <span>{{ t('testCase.kanbanView.infoDate.reviewCompleteTime') }}</span>
           <Colon class="w-1" />
         </div>
 

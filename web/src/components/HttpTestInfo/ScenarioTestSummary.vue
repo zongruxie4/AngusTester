@@ -19,11 +19,11 @@ const props = withDefaults(defineProps<Props>(), {
 // Scenario test summary statistics configuration
 const scenarioTestSummaryConfig = [
   [
-    { label: t('status.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, 
+    { label: t('status.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' },
     { label: t('status.passed'), dataIndex: 'successNum', bgColor: 'bg-status-success' }
   ],
   [
-    { label: t('status.failed'), dataIndex: 'failNum', bgColor: 'bg-status-error' }, 
+    { label: t('status.failed'), dataIndex: 'failNum', bgColor: 'bg-status-error' },
     { label: t('status.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }
   ]
 ];

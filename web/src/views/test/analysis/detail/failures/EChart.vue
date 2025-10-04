@@ -42,7 +42,7 @@ let failureLevelEchart;
 // 故障数
 const failureEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.failures.failureCount'),
+    text: t('testAnalysis.detail.failures.failureCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -58,11 +58,11 @@ const failureEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.failures.totalFailure'),
-      t('functionAnalysis.detail.failures.failureCompletedCount'),
-      t('functionAnalysis.detail.failures.failureOverdueCount'),
-      t('functionAnalysis.detail.failures.oneTimeFailureCount'),
-      t('functionAnalysis.detail.failures.twoTimeFailureCount')
+      t('testAnalysis.detail.failures.totalFailure'),
+      t('testAnalysis.detail.failures.failureCompletedCount'),
+      t('testAnalysis.detail.failures.failureOverdueCount'),
+      t('testAnalysis.detail.failures.oneTimeFailureCount'),
+      t('testAnalysis.detail.failures.twoTimeFailureCount')
     ],
     axisLabel: {
       interval: 0,
@@ -96,7 +96,7 @@ const failureEchartConfig = {
 const failureTimeEchartConfig = JSON.parse(JSON.stringify({
   ...failureEchartConfig,
   title: {
-    text: t('functionAnalysis.detail.failures.failureTime'),
+    text: t('testAnalysis.detail.failures.failureTime'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -106,10 +106,10 @@ const failureTimeEchartConfig = JSON.parse(JSON.stringify({
   xAxis: {
     ...failureEchartConfig.xAxis,
     data: [
-      t('functionAnalysis.detail.failures.totalFailureTime'),
-      t('functionAnalysis.detail.failures.averageFailureTime'),
-      t('functionAnalysis.detail.failures.minFailureTime'),
-      t('functionAnalysis.detail.failures.maxFailureTime')
+      t('testAnalysis.detail.failures.totalFailureTime'),
+      t('testAnalysis.detail.failures.averageFailureTime'),
+      t('testAnalysis.detail.failures.minFailureTime'),
+      t('testAnalysis.detail.failures.maxFailureTime')
     ]
   },
   series: [
@@ -132,7 +132,7 @@ const failureLevelEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('functionAnalysis.detail.failures.defectLevel'),
+    subtext: t('testAnalysis.detail.failures.defectLevel'),
     // left: '25%',
     // top: '40%',
     itemGap: 65,
@@ -185,28 +185,28 @@ const failureLevelEchartConfig = {
       },
       data: [
         {
-          name: t('functionAnalysis.detail.failures.criticalCount'),
+          name: t('testAnalysis.detail.failures.criticalCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: t('functionAnalysis.detail.failures.majorCount'),
+          name: t('testAnalysis.detail.failures.majorCount'),
           value: 0,
           itemStyle: {
             color: 'gold'
           }
         },
         {
-          name: t('functionAnalysis.detail.failures.minorCount'),
+          name: t('testAnalysis.detail.failures.minorCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: t('functionAnalysis.detail.failures.trivialCount'),
+          name: t('testAnalysis.detail.failures.trivialCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'

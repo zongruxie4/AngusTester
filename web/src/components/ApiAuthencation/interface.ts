@@ -304,13 +304,13 @@ export const processApiKeyData = (dataSource: any[]): [Record<string, string>, R
   queryList.forEach(item => {
     queryAuth[item.name] = item[valueKey];
   });
-  
+
   const headerAuth: Record<string, string> = {};
   const headerList = dataSource.filter(item => item.in === 'header');
   headerList.forEach(item => {
     headerAuth[item.name] = item[valueKey];
   });
-  
+
   return [headerAuth, queryAuth];
 };
 
@@ -322,19 +322,19 @@ export const processApiKeyData = (dataSource: any[]): [Record<string, string>, R
 export const processApiKeyDataForDisplay = (dataSource: any): [Record<string, string>, Record<string, string>] => {
   const first = { name: dataSource.name, in: dataSource.in, [valueKey]: dataSource[valueKey] };
   const others = dataSource[securityApiKeyPerfix] || [];
-  
+
   const queryAuth: Record<string, string> = {};
   const queryList = [first, ...others].filter(item => item.in === 'query');
   queryList.forEach(item => {
     queryAuth[item.name] = item[valueKey];
   });
-  
+
   const headerAuth: Record<string, string> = {};
   const headerList = [first, ...others].filter(item => item.in === 'header');
   headerList.forEach(item => {
     headerAuth[item.name] = item[valueKey];
   });
-  
+
   return [headerAuth, queryAuth];
 };
 

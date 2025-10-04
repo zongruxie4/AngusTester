@@ -30,7 +30,7 @@ const progressEchartConfig = {
     left: '35%',
     top: '38%',
     padding: 2,
-    subtext: t('functionAnalysis.detail.progress.caseProgress'),
+    subtext: t('testAnalysis.detail.progress.caseProgress'),
     // left: '25%',
     // top: '40%',
     itemGap: 47,
@@ -105,7 +105,7 @@ const workloadProgressEchartConfig = JSON.parse(JSON.stringify({
   ...progressEchartConfig,
   title: {
     ...progressEchartConfig.title,
-    subtext: t('functionAnalysis.detail.progress.workloadProgress')
+    subtext: t('testAnalysis.detail.progress.workloadProgress')
   }
 }));
 

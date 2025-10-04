@@ -10,8 +10,8 @@ interface Props {
   readonly: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {
-    caseInfo: () => ({}),
-    readonly: true
+  caseInfo: () => ({}),
+  readonly: true
 });
 
 const emits = defineEmits<{(e: 'change')}>();
@@ -25,56 +25,61 @@ const stepsValue = ref();
 const saveLoading = ref(false);
 
 const toEdit = () => {
-    editable.value = true;
-}
+  editable.value = true;
+};
 
 const cancel = () => {
-    editable.value = false;
-    stepsValue.value = JSON.parse(JSON.stringify(props?.caseInfo?.steps || []));
-}
+  editable.value = false;
+  stepsValue.value = JSON.parse(JSON.stringify(props?.caseInfo?.steps || []));
+};
 
 const confirm = async () => {
-    saveLoading.value = true;
-    const [error] = await funcCase.updateCase([{
-        id: props.caseInfo.id,
-        steps: stepsValue.value
-    }]);
-    saveLoading.value = false;
+  saveLoading.value = true;
+  const [error] = await funcCase.updateCase([{
+    id: props.caseInfo.id,
+    steps: stepsValue.value
+  }]);
+  saveLoading.value = false;
 
-    if (error) {
-        return;
-    }
-    editable.value = false;
-    emits('change');
-}
+  if (error) {
+    return;
+  }
+  editable.value = false;
+  emits('change');
+};
 
 </script>
 <template>
-
-<div>
+  <div>
     <template v-if="!props.readonly">
-        <div v-show="!editable" class="flex justify-end">
-            <Button size="small" type="link" @click="toEdit">
-                <Icon icon="icon-xiugai" />
-            </Button>
-        </div>
-        <div v-show="editable" class="flex justify-end">
-            <Button size="small" type="link" @click="cancel">
-                {{ t('actions.cancel') }}
-            </Button>
-            <Button
-                :loading="saveLoading"
-                size="small"
-                type="link"
-                @click="confirm">
-                {{ t('actions.confirm') }}
-            </Button>
-        </div>
+      <div v-show="!editable" class="flex justify-end">
+        <Button
+          size="small"
+          type="link"
+          @click="toEdit">
+          <Icon icon="icon-xiugai" />
+        </Button>
+      </div>
+      <div v-show="editable" class="flex justify-end">
+        <Button
+          size="small"
+          type="link"
+          @click="cancel">
+          {{ t('actions.cancel') }}
+        </Button>
+        <Button
+          :loading="saveLoading"
+          size="small"
+          type="link"
+          @click="confirm">
+          {{ t('actions.confirm') }}
+        </Button>
+      </div>
     </template>
     <CaseStep
-        v-model:value="stepsValue"
-        :defaultValue="editable ? stepsValue : props?.caseInfo?.steps"
-        :stepView="props?.caseInfo?.stepView?.value"
-        :readonly="!editable" />
-</div>
+      v-model:value="stepsValue"
+      :defaultValue="editable ? stepsValue : props?.caseInfo?.steps"
+      :stepView="props?.caseInfo?.stepView?.value"
+      :readonly="!editable" />
+  </div>
 </template>

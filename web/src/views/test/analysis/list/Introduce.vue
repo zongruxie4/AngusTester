@@ -40,10 +40,10 @@ onBeforeUnmount(() => {
 <template>
   <div ref="containerRef">
     <div class="text-3.5 font-semibold mb-2.5">
-      {{ t('functionAnalysis.introduce.title') }}
+      {{ t('testAnalysis.introduce.title') }}
     </div>
     <div class="mb-6 font-serif">
-      <div>{{ t('functionAnalysis.introduce.description') }}</div>
+      <div>{{ t('testAnalysis.introduce.description') }}</div>
     </div>
   </div>
 </template>

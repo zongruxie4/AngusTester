@@ -124,7 +124,7 @@ onMounted(() => {
         }
       }
     ];
-    
+
     testProgressChartInstance = echarts.init(testProgressChartRef.value);
     testResultChartInstance = echarts.init(testResultChartRef.value);
     testProgressChartInstance.setOption(testProgressConfig);

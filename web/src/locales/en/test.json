@@ -1,55 +1,25 @@
 {
-  "functionHome": {
-    "myCases": {
-      "title": "My Cases",
-      "pendingTest": "Pending",
-      "noAddedCases": "You haven't added any cases yet, ",
-      "addCase": "Add Case",
-      "noFavoritedCases": "You have no favourited cases",
-      "noFollowedCases": "You have no followed cases",
-      "noPendingCases": "You have no pending test cases",
-      "testResult": "Test Result",
-      "confirmDeleteCase": "Confirm to delete case 「{name}」?",
-      "deleteSuccess": "Case deleted successfully",
-      "cancelFavoriteSuccess": "Case unfavorited successfully",
-      "cancelFollowSuccess": "Case unfollowed successfully",
-      "pageInfo": "Page {current}/{total}"
-    },
-    "myCreationSummary": {
-      "title": "My Creations",
-      "baseline": "Baseline",
-      "last7Days": "Last 7 Days",
-      "last30Days": "Last 30 Days"
-    },
+  "testHome": {
     "introduce": {
-      "welcome": "About AngusTester Testing",
+      "title": "About AngusTester Testing",
       "description": "A professional test management platform designed to systematically verify whether software systems meet specifications and user requirements.",
       "planTesting": "Coordinate and organize testers to conduct testing activities through comprehensive test plans;",
       "reviewCases": "Facilitate test case reviews to identify potential defects and errors early in the development cycle;",
       "reportAnalysis": "Provide comprehensive reporting and analysis of health, progress, and issue trends."
     },
-    "summary": {
-      "title": "Resource Statistics",
-      "priority": {
-        "title": "Priority",
-        "highest": "Highest",
-        "high": "High",
-        "medium": "Medium",
-        "low": "Low",
-        "lowest": "Lowest"
-      },
-      "plan": {
-        "totalPlan": "Total Plan"
-      },
-      "case": {
-        "totalCase": "Total Case"
-      },
-      "review": {
-        "totalReview": "Total Review"
-      }
+    "myCases": {
+      "title": "My Cases",
+      "noAddedCases": "You haven't added any cases yet, ",
+      "addCase": "Add Case",
+      "noFavoritedCases": "You have no favourited cases",
+      "noFollowedCases": "You have no followed cases",
+      "noPendingCases": "You have no pending test cases"
+    },
+    "myCreationSummary": {
+      "title": "My Creations"
     }
   },
-  "functionPlan": {
+  "testPlan": {
     "title": "Plan",
     "main": {
       "addPlan": "Add Plan"
@@ -255,8 +225,8 @@
       }
     }
   },
-  "functionCase": {
-    "title": "Use Case",
+  "testCase": {
+    "title": "Case",
     "deleteCase": "Delete Case",
     "confirmDeleteCase": "Are you sure you want to delete case 「{name}」?",
     "confirmDeleteSelectedCases": "Are you sure you want to delete the selected cases?",
@@ -764,7 +734,7 @@
       }
     }
   },
-  "caseReview": {
+  "testCaseReview": {
     "title": "Review",
     "addReview": "Add Review",
     "list": {
@@ -956,7 +926,7 @@
       }
     }
   },
-  "functionBaseline": {
+  "testCaseBaseline": {
     "title": "Baseline",
     "list": {
       "createdBaselines": "Added Baselines",
@@ -1062,7 +1032,7 @@
       }
     }
   },
-  "functionAnalysis": {
+  "testAnalysis": {
     "title": "Analysis",
     "list": {
       "title": "Added Analysis",

@@ -22,7 +22,7 @@ const Trash = defineAsyncComponent(() => import('@/views/test/trash/index.vue'))
 const { t } = useI18n();
 const router = useRouter();
 
-const projectInfo = inject('projectInfo', ref({}))
+const projectInfo = inject('projectInfo', ref({}));
 
 // Reactive State
 const currentUserInfo = ref(appContext.getUser());
@@ -192,28 +192,28 @@ const menuItems = computed(() => {
       icon: 'icon-zhuye'
     },
     {
-      name: t('functionPlan.title'),
+      name: t('testPlan.title'),
       key: 'plans',
       icon: 'icon-jihua1'
     },
     {
-      name: t('functionCase.title'),
+      name: t('testCase.title'),
       key: 'cases',
       icon: 'icon-ceshiyongli1'
     },
     {
-      name: t('caseReview.title'),
+      name: t('testCaseReview.title'),
       key: 'reviews',
       icon: 'icon-pingshen'
     },
     {
-      name: t('functionBaseline.title'),
+      name: t('testCaseBaseline.title'),
       key: 'baseline',
       icon: 'icon-jixian'
     },
     currentEditionType.value !== EditionType.COMMUNITY
       ? {
-          name: t('functionAnalysis.title'),
+          name: t('testAnalysis.title'),
           key: 'analysis',
           icon: 'icon-fenxi'
         }

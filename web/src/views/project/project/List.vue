@@ -263,7 +263,8 @@ defineExpose({
                   </div>
                   <Tag class="project-type-tag">{{ item.type?.message }}</Tag>
                   <div class="project-id-text" :title="item.id">
-                    ID: <span>{{ item.id }}</span></div>
+                    ID: <span>{{ item.id }}</span>
+                  </div>
                 </div>
 
                 <div class="project-description-row">

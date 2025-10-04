@@ -79,7 +79,7 @@ const initializeBaselineModule = () => {
         return {
           _id: 'baselineList',
           value: 'baselineList',
-          name: t('functionBaseline.name'),
+          name: t('testCaseBaseline.name'),
           closable: false
         };
       }
@@ -133,7 +133,7 @@ const handleHashChange = (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: t('functionBaseline.list.addBaseline'),
+          name: t('testCaseBaseline.list.addBaseline'),
           value: 'baselineEdit',
           noCache: true,
           data: { _id: id }

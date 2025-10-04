@@ -80,7 +80,7 @@ export default class API {
   }
 
   loadApis (params: any, axiosConfig = {}): Promise<[Error | null, any]> {
-    const {id, ...otherParams} = params;
+    const { id, ...otherParams } = params;
     return http.get(`${baseUrl}/${id}/apis`, { ...otherParams, fullTextSearch: true }, axiosConfig);
   }
 

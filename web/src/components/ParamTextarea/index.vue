@@ -33,10 +33,9 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
-
 const placeholder = computed(() => {
-  return props.placeholder ||  t('xcan_paramTextarea.enterParameterValue')
-})
+  return props.placeholder || t('xcan_paramTextarea.enterParameterValue');
+});
 
 const keyword = ref('');
 const allFunction = inject('allFunction', ref<MockFunction[]>([]));

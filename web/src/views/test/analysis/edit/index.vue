@@ -209,9 +209,9 @@ const handleSave = async () => {
 
     // Show success notification
     if (!parameters.id) {
-      notification.success(t('functionAnalysis.editForm.addAnalysisSuccess'));
+      notification.success(t('testAnalysis.editForm.addAnalysisSuccess'));
     } else {
-      notification.success(t('functionAnalysis.editForm.updateAnalysisSuccess'));
+      notification.success(t('testAnalysis.editForm.updateAnalysisSuccess'));
     }
 
     emits('ok');
@@ -274,7 +274,7 @@ onMounted(async () => {
       class="w-200 mt-5">
       <FormItem
         name="template"
-        :label="t('functionAnalysis.editForm.analysisTemplate')"
+        :label="t('testAnalysis.editForm.analysisTemplate')"
         required>
         <SelectEnum
           v-model:value="formData.template"
@@ -287,27 +287,27 @@ onMounted(async () => {
 
       <FormItem
         name="name"
-        :label="t('functionAnalysis.editForm.analysisName')"
+        :label="t('testAnalysis.editForm.analysisName')"
         required>
         <Input
           v-model:value="formData.name"
           :maxlength="100"
-          :placeholder="t('functionAnalysis.editForm.inputAnalysisName')" />
+          :placeholder="t('testAnalysis.editForm.inputAnalysisName')" />
       </FormItem>
 
       <FormItem
         name="description"
-        :label="t('functionAnalysis.editForm.analysisDescription')">
+        :label="t('testAnalysis.editForm.analysisDescription')">
         <Textarea
           v-model:value="formData.description"
           :maxlength="200"
-          :placeholder="t('functionAnalysis.editForm.inputAnalysisDescription')"
+          :placeholder="t('testAnalysis.editForm.inputAnalysisDescription')"
           @change="handleDescriptionChange" />
       </FormItem>
 
       <FormItem
         name="object"
-        :label="t('functionAnalysis.editForm.analysisObject')"
+        :label="t('testAnalysis.editForm.analysisObject')"
         required>
         <RadioGroup
           v-model:value="formData.object"
@@ -324,7 +324,7 @@ onMounted(async () => {
       <template v-if="formData.object === AnalysisCaseObject.PLAN">
         <FormItem
           name="planId"
-          :label="t('functionAnalysis.editForm.selectPlan')"
+          :label="t('testAnalysis.editForm.selectPlan')"
           required
           class="ml-16">
           <Select
@@ -336,7 +336,7 @@ onMounted(async () => {
             defaultActiveFirstOption
             showSearch
             internal
-            :placeholder="t('functionAnalysis.editForm.selectOrSearchPlan')">
+            :placeholder="t('testAnalysis.editForm.selectOrSearchPlan')">
             <template #option="record">
               <div class="flex items-center" :title="record.name">
                 <Icon icon="icon-jihua" class="mr-1 text-4" />
@@ -350,7 +350,7 @@ onMounted(async () => {
       <template v-if="formData.object === AnalysisCaseObject.TESTER_ORG">
         <FormItem
           name="orgId"
-          :label="t('functionAnalysis.editForm.selectOrganization')"
+          :label="t('testAnalysis.editForm.selectOrganization')"
           required
           class="ml-16">
           <Select
@@ -395,17 +395,17 @@ onMounted(async () => {
         <Checkbox
           v-show="formData.object !== AnalysisCaseObject.TESTER_ORG || formData.orgType !== AuthObjectType.USER"
           v-model:checked="formData.containsUserAnalysis">
-          {{ t('functionAnalysis.editForm.includeAssigneeAnalysis') }}
+          {{ t('testAnalysis.editForm.includeAssigneeAnalysis') }}
         </Checkbox>
 
         <Checkbox v-model:checked="formData.containsDataDetail">
-          {{ t('functionAnalysis.editForm.includeDataDetail') }}
+          {{ t('testAnalysis.editForm.includeDataDetail') }}
         </Checkbox>
       </FormItem>
 
       <FormItem
         name="timeRange"
-        :label="t('functionAnalysis.editForm.analysisPeriod')"
+        :label="t('testAnalysis.editForm.analysisPeriod')"
         required>
         <RadioGroup v-model:value="formData.timeRange" :options="analysisTimeRangeOptions"></RadioGroup>
         <DatePicker
@@ -416,7 +416,7 @@ onMounted(async () => {
       </FormItem>
 
       <FormItem
-        :label="t('functionAnalysis.editForm.dataDisplay')"
+        :label="t('testAnalysis.editForm.dataDisplay')"
         name="datasource"
         required>
         <RadioGroup v-model:value="formData.datasource" :options="dataSourceOptions" />

@@ -19,14 +19,14 @@ const attachments = computed(() => props.planData?.attachments || []);
 <template>
   <div class="max-w-250 mb-2 basic-card">
     <div class="text-theme-title mb-2 text-3.5 font-semibold basic-title">
-      {{ t('functionPlan.planDetail.basicInfo.title') }}
+      {{ t('testPlan.planDetail.basicInfo.title') }}
     </div>
 
     <div class="space-y-2.5">
       <div class="flex items-start space-x-5">
         <div class="w-1/2 flex items-start mt-2.5">
           <div class="w-18 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('functionPlan.planDetail.basicInfo.planName') }}</span>
+            <span class="font-semibold text-black">{{ t('testPlan.planDetail.basicInfo.planName') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -59,7 +59,7 @@ const attachments = computed(() => props.planData?.attachments || []);
 
         <div class="w-1/2 flex items-start">
           <div class="w-24 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('functionPlan.planDetail.basicInfo.casePrefix') }}</span>
+            <span class="font-semibold text-black">{{ t('testPlan.planDetail.basicInfo.casePrefix') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -86,7 +86,7 @@ const attachments = computed(() => props.planData?.attachments || []);
 
         <div class="w-1/2 flex items-center">
           <div class="w-24 flex items-center justify-end whitespace-nowrap flex-shrink-0 text-right">
-            <span class="font-semibold text-black">{{ t('functionPlan.planDetail.basicInfo.workloadAssessment') }}</span>
+            <span class="font-semibold text-black">{{ t('testPlan.planDetail.basicInfo.workloadAssessment') }}</span>
             <Colon class="w-1" />
           </div>
 

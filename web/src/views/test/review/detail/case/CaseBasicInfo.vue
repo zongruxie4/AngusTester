@@ -2,7 +2,7 @@
 import { computed, ref, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Grid, Icon, Input, Select } from '@xcan-angus/vue-ui';
-import { Tag, Button  } from 'ant-design-vue';
+import { Tag, Button } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 
@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: true
 });
 
-const emits = defineEmits<{(e: 'change')}>()
+const emits = defineEmits<{(e: 'change')}>();
 
 const infoColumns = computed(() => [
   [
@@ -75,7 +75,6 @@ const infoColumns = computed(() => [
   ]
 ]);
 
-
 // eidt case name
 const nameEditable = ref(false);
 const nameValue = ref();
@@ -83,7 +82,7 @@ const nameEditRef = ref();
 const handleEditName = (text) => {
   nameValue.value = text;
   nameEditable.value = true;
-}
+};
 const saveName = async (text) => {
   if (!(nameValue.value.trim()) || nameValue.value === text) {
     nameEditable.value = false;
@@ -137,7 +136,6 @@ const saveTags = async () => {
   emits('change');
 };
 
-
 // edit evalWorkload
 const isEditEvalWorkload = ref(false);
 const evalWorkloadInputRef = ref();
@@ -150,7 +148,7 @@ const openEditEvalWorkload = () => {
   });
 };
 
-const saveEvalWorkload = async() => {
+const saveEvalWorkload = async () => {
   if (+evalWorkloadValue.value === (+props.caseInfo?.evalWorkload) || (!evalWorkloadValue.value && !props.caseInfo?.evalWorkload)) {
     isEditEvalWorkload.value = false;
     return;
@@ -165,8 +163,6 @@ const saveEvalWorkload = async() => {
   emits('change');
 };
 
-
-
 </script>
 <template>
   <div class="bg-white rounded-lg p-6">
@@ -179,18 +175,21 @@ const saveEvalWorkload = async() => {
       labelSpacing="12px"
       font-size="14px"
       class="case-basic-info-grid">
-
       <template #name="{text}">
         <template v-if="nameEditable">
           <Input
-            v-model:value="nameValue"
             ref="nameEditRef"
+            v-model:value="nameValue"
             @blur="saveName(text)" />
         </template>
         <template v-else>
           <div class="flex space-x-2 items-center">
             <span class="truncate">{{ text }}</span>
-            <Button v-show="!props.readonly" size="small" type="link" @click="handleEditName(text)">
+            <Button
+              v-show="!props.readonly"
+              size="small"
+              type="link"
+              @click="handleEditName(text)">
               <Icon icon="icon-xiugai" class="text-theme-special" />
             </Button>
           </div>
@@ -237,7 +236,7 @@ const saveEvalWorkload = async() => {
             :defaultOptions="defaultTags"
             :fieldNames="{ label: 'name', value: 'id' }"
             :maxTags="5"
-            :placeholder="t('functionCase.kanbanView.infoBasic.addTagsPlaceholder')"
+            :placeholder="t('testCase.kanbanView.infoBasic.addTagsPlaceholder')"
             :class="{'border-error':tagsIds && tagsIds.length > 5 }"
             :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
             mode="multiple"
@@ -254,7 +253,11 @@ const saveEvalWorkload = async() => {
           </Tag>
           <span v-if="!text?.length" class="text-gray-400 text-sm">--</span>
 
-          <Button v-show="!props.readonly" size="small" type="link" @click="openEditTag">
+          <Button
+            v-show="!props.readonly"
+            size="small"
+            type="link"
+            @click="openEditTag">
             <Icon icon="icon-xiugai" class="text-theme-special" />
           </Button>
         </div>
@@ -262,30 +265,30 @@ const saveEvalWorkload = async() => {
 
       <template #evalWorkload="{text}">
         <div class="flex items-center relative">
-            <template v-if="isEditEvalWorkload">
-              <Input
-                ref="evalWorkloadInputRef"
-                v-model:value="evalWorkloadValue"
-                :allowClear="false"
-                :autofocus="isEditEvalWorkload"
-                :min="0.1"
-                :max="1000"
-                :placeholder="t('functionCase.kanbanView.infoBasic.evalWorkloadPlaceholder')"
-                dataType="float"
-                size="small"
-                class="w-65 absolute -top-1.25"
-                @blur="saveEvalWorkload" />
-            </template>
+          <template v-if="isEditEvalWorkload">
+            <Input
+              ref="evalWorkloadInputRef"
+              v-model:value="evalWorkloadValue"
+              :allowClear="false"
+              :autofocus="isEditEvalWorkload"
+              :min="0.1"
+              :max="1000"
+              :placeholder="t('testCase.kanbanView.infoBasic.evalWorkloadPlaceholder')"
+              dataType="float"
+              size="small"
+              class="w-65 absolute -top-1.25"
+              @blur="saveEvalWorkload" />
+          </template>
 
-            <template v-else>
-              {{ text || '--' }}
-              <Icon
-                v-show="!props.readonly"
-                class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
-                icon="icon-shuxie"
-                @click="openEditEvalWorkload" />
-            </template>
-          </div>
+          <template v-else>
+            {{ text || '--' }}
+            <Icon
+              v-show="!props.readonly"
+              class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
+              icon="icon-shuxie"
+              @click="openEditEvalWorkload" />
+          </template>
+        </div>
       </template>
 
       <template #actualWorkload="{text}">

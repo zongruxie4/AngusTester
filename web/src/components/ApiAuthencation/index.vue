@@ -12,17 +12,17 @@ import { http, utils, TESTER, AuthClientIn } from '@xcan-angus/infra';
 import axios from 'axios';
 
 // Local imports
-import { 
-  AuthItem, 
-  authenticationTypeOptions as _authTypeOptions, 
-  oauth2FlowTypeOptions as flowAuthType, 
-  oauth2FieldLabels as authLabels, 
-  oauth2FlowFieldKeys as flowAuthKeys, 
-  oauth2EncryptionMethodOptions as encryptionTypeOpt, 
-  apiKeyPlacementOptions as inOpt, 
-  createDefaultAuthenticationItem as getAuthItem, 
-  processApiKeyData as getApiKeyData, 
-  processApiKeyDataForDisplay as getShowApiKeyData 
+import {
+  AuthItem,
+  authenticationTypeOptions as _authTypeOptions,
+  oauth2FlowTypeOptions as flowAuthType,
+  oauth2FieldLabels as authLabels,
+  oauth2FlowFieldKeys as flowAuthKeys,
+  oauth2EncryptionMethodOptions as encryptionTypeOpt,
+  apiKeyPlacementOptions as inOpt,
+  createDefaultAuthenticationItem as getAuthItem,
+  processApiKeyData as getApiKeyData,
+  processApiKeyDataForDisplay as getShowApiKeyData
 } from './interface';
 
 // Utility imports
@@ -121,14 +121,14 @@ const handleAuthenticationTypeChange = (): void => {
   authenticationScheme.value = '';
   selectedInheritedSecurityId.value = '';
   oauth2FlowType.value = 'authorizationCode';
-  
+
   // Emit appropriate change event based on authentication type
   if (['basic', 'bearer'].includes(authenticationType.value)) {
     emit('change', { type: 'http' });
   } else {
     emit('change', { type: authenticationType.value });
   }
-  
+
   // Update authentication status
   if (authenticationType.value) {
     emit('update:auth', true);

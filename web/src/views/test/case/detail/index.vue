@@ -112,7 +112,7 @@ const getData = async (value: 'before' | 'after') => {
 
   if (value === 'before') {
     if (pageNo.value <= 1) {
-      notification.success(t('functionCase.detail.firstDataTip'));
+      notification.success(t('testCase.detail.firstDataTip'));
       hasBeforeData.value = true;
       return;
     } else {
@@ -122,7 +122,7 @@ const getData = async (value: 'before' | 'after') => {
 
   if (value === 'after') {
     if (pageNo.value >= total.value) {
-      notification.success(t('functionCase.detail.lastDataTip'));
+      notification.success(t('testCase.detail.lastDataTip'));
       hasLastData.value = true;
       return;
     } else {
@@ -361,7 +361,7 @@ defineExpose({
               size="small"
               @click="handleClick('updateTestResult_passed')">
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-              <span>{{ t('functionCase.detail.testPassed') }}</span>
+              <span>{{ t('testCase.detail.testPassed') }}</span>
             </Button>
 
             <Button
@@ -371,7 +371,7 @@ defineExpose({
               size="small"
               @click="handleClick('updateTestResult_notPassed')">
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-              <span>{{ t('functionCase.detail.testNotPassed') }}</span>
+              <span>{{ t('testCase.detail.testNotPassed') }}</span>
             </Button>
           </template>
 
@@ -383,7 +383,7 @@ defineExpose({
               size="small"
               @click="handleClick('retestResult')">
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-              <span>{{ t('functionCase.detail.retest') }}</span>
+              <span>{{ t('testCase.detail.retest') }}</span>
             </Button>
           </template>
 
@@ -394,11 +394,11 @@ defineExpose({
             size="small"
             @click="handleClick('resetTestResult')">
             <Icon class="mr-1" icon="icon-zhongzhiceshijieguo" />
-            <span>{{ t('functionCase.detail.resetTestResult') }}</span>
+            <span>{{ t('testCase.detail.resetTestResult') }}</span>
             <Popover placement="bottom">
               <template #content>
                 <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                  {{ t('functionCase.detail.resetTestResultTip') }}
+                  {{ t('testCase.detail.resetTestResultTip') }}
                 </div>
               </template>
               <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -414,7 +414,7 @@ defineExpose({
           size="small"
           @click="handleClick('updateTestResult_blocked')">
           <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-          {{ t('functionCase.detail.setBlocked') }}
+          {{ t('testCase.detail.setBlocked') }}
         </Button>
 
         <Button
@@ -435,7 +435,7 @@ defineExpose({
           :disabled="!actionAuth.includes('edit')"
           @click="addBug">
           <Icon class="mr-1" icon="icon-bianji" />
-          <span>{{ t('functionCase.detail.submitBug') }}</span>
+          <span>{{ t('testCase.detail.submitBug') }}</span>
         </Button>
 
         <Button
@@ -507,7 +507,7 @@ defineExpose({
           class="mt-2 mr-2"
           :disabled="hasBeforeData"
           @click="getData('before')">
-          <Icon class="mr-1" icon="icon-chakanshangyitiao" />{{ t('functionCase.detail.viewPrevious') }}
+          <Icon class="mr-1" icon="icon-chakanshangyitiao" />{{ t('testCase.detail.viewPrevious') }}
         </Button>
 
         <Button
@@ -515,7 +515,7 @@ defineExpose({
           class="mt-2 mr-2"
           :disabled="hasLastData"
           @click="getData('after')">
-          <Icon class="mr-1" icon="icon-chakanxiayitiao" />{{ t('functionCase.detail.viewNext') }}
+          <Icon class="mr-1" icon="icon-chakanxiayitiao" />{{ t('testCase.detail.viewNext') }}
         </Button>
       </div>
     </div>
@@ -551,7 +551,7 @@ defineExpose({
       <TabPane
         v-if="!!caseDetail?.review"
         key="reviewRecord"
-        :tab="t('functionCase.detail.reviewRecord')">
+        :tab="t('testCase.detail.reviewRecord')">
         <ReviewTab
           ref="reviewRecordRef"
           :caseDetail="caseDetail" />
@@ -586,14 +586,14 @@ defineExpose({
           :caseId="caseDetail?.id"
           :title="t('common.issue')"
           :taskType="TaskType.TASK"
-          :tips="t('functionCase.detail.taskTip')"
+          :tips="t('testCase.detail.taskTip')"
           @editSuccess="editSuccess" />
       </TabPane>
 
       <TabPane key="assocRequirements">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('functionCase.detail.requirement') }}</span>
+            <span>{{ t('testCase.detail.requirement') }}</span>
             <span>({{ getRefTaskNum(TaskType.REQUIREMENT) }})</span>
           </div>
         </template>
@@ -604,16 +604,16 @@ defineExpose({
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          :title="t('functionCase.detail.requirement')"
+          :title="t('testCase.detail.requirement')"
           :taskType="TaskType.REQUIREMENT"
-          :tips="t('functionCase.detail.requirementTip')"
+          :tips="t('testCase.detail.requirementTip')"
           @editSuccess="editSuccess" />
       </TabPane>
 
       <TabPane key="assocStory">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('functionCase.detail.story') }}</span>
+            <span>{{ t('testCase.detail.story') }}</span>
             <span>({{ getRefTaskNum(TaskType.STORY) }})</span>
           </div>
         </template>
@@ -624,16 +624,16 @@ defineExpose({
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          :title="t('functionCase.detail.story')"
+          :title="t('testCase.detail.story')"
           :taskType="TaskType.STORY"
-          :tips="t('functionCase.detail.storyTip')"
+          :tips="t('testCase.detail.storyTip')"
           @editSuccess="editSuccess" />
       </TabPane>
 
       <TabPane key="assocBug">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('functionCase.detail.bug') }}</span>
+            <span>{{ t('testCase.detail.bug') }}</span>
             <span>({{ getRefTaskNum(TaskType.BUG) }})</span>
           </div>
         </template>
@@ -644,16 +644,16 @@ defineExpose({
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          :title="t('functionCase.detail.bug')"
+          :title="t('testCase.detail.bug')"
           :taskType="TaskType.BUG"
-          :tips="t('functionCase.detail.bugTip')"
+          :tips="t('testCase.detail.bugTip')"
           @editSuccess="editSuccess" />
       </TabPane>
 
       <TabPane key="assocApiTest">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('functionCase.detail.apiTest') }}</span>
+            <span>{{ t('testCase.detail.apiTest') }}</span>
             <span>({{ getRefTaskNum(TaskType.API_TEST) }})</span>
           </div>
         </template>
@@ -664,16 +664,16 @@ defineExpose({
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          :title="t('functionCase.detail.apiTest')"
+          :title="t('testCase.detail.apiTest')"
           :taskType="TaskType.API_TEST"
-          :tips="t('functionCase.detail.apiTestTip')"
+          :tips="t('testCase.detail.apiTestTip')"
           @editSuccess="editSuccess" />
       </TabPane>
 
       <TabPane key="assocScenarioTest">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('functionCase.detail.scenarioTest') }}</span>
+            <span>{{ t('testCase.detail.scenarioTest') }}</span>
             <span>({{ getRefTaskNum(TaskType.SCENARIO_TEST) }})</span>
           </div>
         </template>
@@ -684,9 +684,9 @@ defineExpose({
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          :title="t('functionCase.detail.scenarioTest')"
+          :title="t('testCase.detail.scenarioTest')"
           :taskType="TaskType.SCENARIO_TEST"
-          :tips="t('functionCase.detail.scenarioTestTip')"
+          :tips="t('testCase.detail.scenarioTestTip')"
           @editSuccess="editSuccess" />
       </TabPane>
 
@@ -713,7 +713,7 @@ defineExpose({
         key="activity"
         class="h-full">
         <template #tab>
-          <span>{{ t('functionCase.detail.activity') }}({{ caseDetail?.activityNum || 0 }})</span>
+          <span>{{ t('testCase.detail.activity') }}({{ caseDetail?.activityNum || 0 }})</span>
         </template>
         <Scroll
           v-model:spinning="activityLoading"
@@ -738,7 +738,7 @@ defineExpose({
         :assigneeId="caseDetail.developerId"
         :userInfo="userInfo"
         :refCaseIds="[caseDetail.id]"
-        :name="t('functionCase.mainView.testNotPassedName', {name: caseDetail.name})"
+        :name="t('testCase.mainView.testNotPassedName', {name: caseDetail.name})"
         :description="caseDetail.testRemark"
         :taskType="TaskType.BUG"
         :confirmerId="caseDetail?.testerId"

@@ -30,9 +30,9 @@ const reviewStatusEnum = ref({});
 
 const testData = computed(() => {
   const result = [
-    { name: t('functionCase.statisticsPanel.pendingReview'), value: +props.dataSource.pendingReviewNum, enumKey: 'PENDING' },
-    { name: t('functionCase.statisticsPanel.reviewPassed'), value: +props.dataSource.passedReviewNum, enumKey: 'PASSED' },
-    { name: t('functionCase.statisticsPanel.reviewNotPassed'), value: +props.dataSource.failedReviewNum, enumKey: 'FAILED' }
+    { name: t('testCase.statisticsPanel.pendingReview'), value: +props.dataSource.pendingReviewNum, enumKey: 'PENDING' },
+    { name: t('testCase.statisticsPanel.reviewPassed'), value: +props.dataSource.passedReviewNum, enumKey: 'PASSED' },
+    { name: t('testCase.statisticsPanel.reviewNotPassed'), value: +props.dataSource.failedReviewNum, enumKey: 'FAILED' }
   ];
   result.forEach((i) => {
     i.name = reviewStatusEnum.value?.[i.enumKey]?.message || i.name;
@@ -55,7 +55,7 @@ onMounted(() => {
       key="1"
       style="width: 220px;"
       class="chart-item"
-      :title="t('functionCase.statisticsPanel.reviewStatus')"
+      :title="t('testCase.statisticsPanel.reviewStatus')"
       :color="['rgb(154, 154, 154)', 'rgb(92, 200, 0)', 'rgb(255, 95, 27)']"
       :total="+props.dataSource.totalReviewCaseNum"
       :data-source="testData" />

@@ -100,7 +100,7 @@ const refTaskIds = computed(() => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-y-auto">
     <div class="flex items-center text-theme-title mb-2.5">
-      <span class="font-semibold">{{ t('functionCase.kanbanView.assocTask.title') }}</span>
+      <span class="font-semibold">{{ t('testCase.kanbanView.assocTask.title') }}</span>
       <Button
         v-if="props.canEdit"
         v-show="!editFlag"
@@ -142,7 +142,7 @@ const refTaskIds = computed(() => {
         :maxTags="20"
         :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
         class="w-full"
-        :placeholder="t('functionCase.kanbanView.assocTask.placeholder')"
+        :placeholder="t('testCase.kanbanView.assocTask.placeholder')"
         mode="multiple"
         @change="selectChange">
         <template #option="record">

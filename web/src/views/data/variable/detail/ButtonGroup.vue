@@ -54,15 +54,15 @@ const handleClick = (action: ButtonGroupAction) => {
     </Button>
 
     <Button
-        type="default"
-        size="small"
-        class="flex items-center space-x-1"
-        @click="handleClick('cancel')">
-        <Icon icon="icon-zhongzhi2" class="text-3.5" />
-        <span>
-          {{ t('actions.cancel') }}
-        </span>
-      </Button>
+      type="default"
+      size="small"
+      class="flex items-center space-x-1"
+      @click="handleClick('cancel')">
+      <Icon icon="icon-zhongzhi2" class="text-3.5" />
+      <span>
+        {{ t('actions.cancel') }}
+      </span>
+    </Button>
 
     <!-- Edit mode buttons - only visible when editing an existing variable -->
     <template v-if="props.editFlag">
@@ -77,7 +77,6 @@ const handleClick = (action: ButtonGroupAction) => {
           {{ t('actions.delete') }}
         </span>
       </Button>
-
 
       <!-- Export button - exports the variable configuration -->
       <Button

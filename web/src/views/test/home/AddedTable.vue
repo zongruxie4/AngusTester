@@ -77,7 +77,7 @@ const paginationConfig = ref<{
       showTotal: (total: number) => {
         if (typeof paginationConfig.value === 'object') {
           const totalPage = Math.ceil(total / paginationConfig.value.pageSize);
-          return t('functionHome.myCases.pageInfo', { current: paginationConfig.value.current, total: totalPage });
+          return t('pagination.pageInfo', { current: paginationConfig.value.current, totalPage });
         }
       }
     });
@@ -185,7 +185,7 @@ const loadTableData = async () => {
  */
 const handleDeleteCase = (caseData: CaseInfo) => {
   modal.confirm({
-    content: t('factions.tips.confirmDeleteCase', { name: caseData.name }),
+    content: t('actions.tips.confirmDelete', { name: caseData.name }),
     async onOk () {
       const caseId = caseData.id;
       const deleteParams = [caseId];
@@ -218,7 +218,7 @@ const handleCancelFavorite = async (caseData: CaseInfo) => {
     return;
   }
 
-  notification.success(t('functionHome.myCases.cancelFavoriteSuccess'));
+  notification.success(t('actions.tips.cancelFavouriteSuccess'));
   await loadTableData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -238,7 +238,7 @@ const handleCancelFollow = async (caseData: CaseInfo) => {
     return;
   }
 
-  notification.success(t('functionHome.myCases.cancelFollowSuccess'));
+  notification.success(t('actions.tips.cancelFollowSuccess'));
   await loadTableData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -413,20 +413,20 @@ onMounted(() => {
           <img class="w-27.5" src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
-              <span>{{ t('functionHome.myCases.noAddedCases') }}</span>
-              <RouterLink to="/function#cases" class="ml-1 link">{{ t('functionHome.myCases.addCase') }}</RouterLink>
+              <span>{{ t('testHome.myCases.noAddedCases') }}</span>
+              <RouterLink to="/function#cases" class="ml-1 link">{{ t('testHome.myCases.addCase') }}</RouterLink>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">
-              <span>{{ t('functionHome.myCases.noFavoritedCases') }}</span>
+              <span>{{ t('testHome.myCases.noFavoritedCases') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.followBy">
-              <span>{{ t('functionHome.myCases.noFollowedCases') }}</span>
+              <span>{{ t('testHome.myCases.noFollowedCases') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.testerId">
-              <span>{{ t('functionHome.myCases.noPendingCases') }}</span>
+              <span>{{ t('testHome.myCases.noPendingCases') }}</span>
             </template>
           </div>
         </div>
@@ -467,7 +467,7 @@ onMounted(() => {
           <div v-else-if="column.dataIndex === 'action'">
             <template v-if="column.actionKey === 'favouriteBy'">
               <Button
-                :title="t('functionHome.myCases.cancelFavorite')"
+                :title="t('actions.cancelFavourite')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -478,7 +478,7 @@ onMounted(() => {
 
             <template v-else-if="column.actionKey === 'followBy'">
               <Button
-                :title="t('functionHome.myCases.cancelFollow')"
+                :title="t('actions.cancelFollow')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"

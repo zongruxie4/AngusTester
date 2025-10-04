@@ -25,7 +25,7 @@ let leadTimeRefEchart;
 // 用例交付周期(小时
 const leadTimeEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.leadTime.caseDeliveryCycle'),
+    text: t('testAnalysis.detail.leadTime.caseDeliveryCycle'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -111,10 +111,10 @@ defineExpose({
         <div class="text-center flex-1">
           <div class="font-semibold ">
             <span class="text-5 text-status-warn">{{ props.overdueAssessmentData.totalProcessingTime || 0 }}</span>
-            {{ t('functionAnalysis.detail.leadTime.hours') }}
+            {{ t('testAnalysis.detail.leadTime.hours') }}
           </div>
           <div>
-            {{ t('functionAnalysis.detail.leadTime.totalProcessingTime') }}
+            {{ t('testAnalysis.detail.leadTime.totalProcessingTime') }}
           </div>
         </div>
       </div>
@@ -122,17 +122,17 @@ defineExpose({
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.userNum || 0 }}</div>
           <div>
-            {{ t('functionAnalysis.detail.leadTime.participants') }}
+            {{ t('testAnalysis.detail.leadTime.participants') }}
           </div>
         </div>
         <div class="text-center">
           <div class="">
             <span class="font-semibold text-5">
               {{ props.overdueAssessmentData.userAvgProcessingTime || 0 }}
-            </span>{{ t('functionAnalysis.detail.leadTime.perHour') }}
+            </span>{{ t('testAnalysis.detail.leadTime.perHour') }}
           </div>
           <div>
-            {{ t('functionAnalysis.detail.leadTime.dailyAverageProcessingTime') }}
+            {{ t('testAnalysis.detail.leadTime.dailyAverageProcessingTime') }}
           </div>
         </div>
       </div>

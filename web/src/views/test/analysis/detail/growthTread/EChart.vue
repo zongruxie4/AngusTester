@@ -33,7 +33,7 @@ let taskGrowthTreadRefEchart;
 
 const taskGrowthTreadEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.taskGrowthTread.growthTrend'),
+    text: t('testAnalysis.detail.taskGrowthTread.growthTrend'),
     bottom: 0,
     left: 'center',
     textStyle: {

@@ -40,8 +40,8 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: backloggedRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.backlogTasks.notBackloggedCount'), value: totalNum - backloggedNum },
-      { name: t('functionAnalysis.detail.backlogTasks.backloggedCount'), value: backloggedNum }
+      { name: t('testAnalysis.detail.backlogTasks.notBackloggedCount'), value: totalNum - backloggedNum },
+      { name: t('testAnalysis.detail.backlogTasks.backloggedCount'), value: backloggedNum }
     ]
   };
 
@@ -49,10 +49,10 @@ const getChartData = (data) => {
     title: backloggedWorkloadRate + '%',
     value: [
       {
-        name: t('functionAnalysis.detail.backlogTasks.notBackloggedWorkload'),
+        name: t('testAnalysis.detail.backlogTasks.notBackloggedWorkload'),
         value: totalWorkload - backloggedWorkload
       },
-      { name: t('functionAnalysis.detail.backlogTasks.backloggedWorkload'), value: backloggedWorkload }
+      { name: t('testAnalysis.detail.backlogTasks.backloggedWorkload'), value: backloggedWorkload }
     ]
   };
   return res;

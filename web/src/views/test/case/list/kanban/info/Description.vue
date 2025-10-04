@@ -108,7 +108,7 @@ onMounted(() => {
             :value="content"
             @change="editorChange" />
           <div v-show="descrError" class="text-status-error">
-            {{ t('functionCase.kanbanView.infoDescription.maxCharError') }}
+            {{ t('testCase.kanbanView.infoDescription.maxCharError') }}
           </div>
         </div>
 

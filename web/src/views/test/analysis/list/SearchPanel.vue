@@ -308,15 +308,15 @@ const searchOptions = [
   {
     type: 'select-user',
     valueKey: 'createdBy',
-    placeholder: t('functionAnalysis.searchPanelOptions.createdByPlaceholder'),
+    placeholder: t('testAnalysis.searchPanelOptions.createdByPlaceholder'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
     placeholder: [
-      t('functionAnalysis.searchPanelOptions.createdDatePlaceholder[0]'),
-      t('functionAnalysis.searchPanelOptions.createdDatePlaceholder[1]')
+      t('testAnalysis.searchPanelOptions.createdDatePlaceholder[0]'),
+      t('testAnalysis.searchPanelOptions.createdDatePlaceholder[1]')
     ],
     showTime: true
   }
@@ -325,7 +325,7 @@ const searchOptions = [
 const sortMenuItems = [
   {
     key: 'name',
-    name: t('functionAnalysis.searchPanel.sortOptions.name'),
+    name: t('testAnalysis.searchPanel.sortOptions.name'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
@@ -360,7 +360,7 @@ const sortMenuItems = [
           @click="handleCreateAnalysis">
           <div class="flex items-center">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span class="ml-1">{{ t('functionAnalysis.searchPanel.addAnalysis') }}</span>
+            <span class="ml-1">{{ t('testAnalysis.searchPanel.addAnalysis') }}</span>
           </div>
         </Button>
 

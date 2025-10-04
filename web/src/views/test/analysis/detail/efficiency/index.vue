@@ -31,24 +31,24 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: passedTestRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.handlingEfficiency.incompleteCaseCount'), value: totalNum - passedTestNum },
-      { name: t('functionAnalysis.detail.handlingEfficiency.completedCaseCount2'), value: passedTestNum }
+      { name: t('testAnalysis.detail.handlingEfficiency.incompleteCaseCount'), value: totalNum - passedTestNum },
+      { name: t('testAnalysis.detail.handlingEfficiency.completedCaseCount2'), value: passedTestNum }
     ]
   };
 
   res.chart2Value = {
     title: oneTimePassedRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.handlingEfficiency.oneTimeIncompleteCaseCount'), value: oneTimeNotPassedNum },
-      { name: t('functionAnalysis.detail.handlingEfficiency.oneTimeCompletedCaseCount'), value: oneTimePassedNum }
+      { name: t('testAnalysis.detail.handlingEfficiency.oneTimeIncompleteCaseCount'), value: oneTimeNotPassedNum },
+      { name: t('testAnalysis.detail.handlingEfficiency.oneTimeCompletedCaseCount'), value: oneTimePassedNum }
     ]
   };
 
   res.chart3Value = {
     title: twoTimePassedRate + '%',
     value: [
-      { name: t('functionAnalysis.detail.handlingEfficiency.twoTimeIncompleteCaseCount'), value: passedTestNum - twoTimePassedNum },
-      { name: t('functionAnalysis.detail.handlingEfficiency.twoTimeCompletedCaseCount'), value: twoTimePassedNum }
+      { name: t('testAnalysis.detail.handlingEfficiency.twoTimeIncompleteCaseCount'), value: passedTestNum - twoTimePassedNum },
+      { name: t('testAnalysis.detail.handlingEfficiency.twoTimeCompletedCaseCount'), value: twoTimePassedNum }
     ]
   };
   return res;

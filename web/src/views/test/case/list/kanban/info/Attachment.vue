@@ -34,7 +34,7 @@ const attachments = ref<AttachmentInfo[]>([]);
 
 const uploadChange = async ({ file }: { file: UploadFile }) => {
   if (file.size! > maxFileSize.value) {
-    notification.warning(t('functionCase.kanbanView.infoAttachment.fileSizeLimit', { size: MAX_SIZE }));
+    notification.warning(t('testCase.kanbanView.infoAttachment.fileSizeLimit', { size: MAX_SIZE }));
     return;
   }
 
@@ -144,7 +144,7 @@ onMounted(() => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('functionCase.kanbanView.infoAttachment.title') }}
+      {{ t('testCase.kanbanView.infoAttachment.title') }}
     </div>
 
     <Spin
@@ -179,7 +179,7 @@ onMounted(() => {
               type="link"
               class="flex items-center h-auto leading-4.5 p-0">
               <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
-              <div class="flex-shrink-0 text-text-link ml-1">{{ t('functionCase.kanbanView.infoAttachment.continueUpload') }}</div>
+              <div class="flex-shrink-0 text-text-link ml-1">{{ t('testCase.kanbanView.infoAttachment.continueUpload') }}</div>
             </Button>
           </Upload>
         </div>
@@ -196,10 +196,10 @@ onMounted(() => {
             type="link"
             class="flex flex-col items-center justify-center h-auto leading-5 p-0">
             <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
-            <div class="flex-shrink-0 text-text-link">{{ t('functionCase.kanbanView.infoAttachment.selectFile') }}</div>
+            <div class="flex-shrink-0 text-text-link">{{ t('testCase.kanbanView.infoAttachment.selectFile') }}</div>
           </Button>
         </Upload>
-        <div class="text-theme-sub-content mt-1">{{ t('functionCase.kanbanView.infoAttachment.fileSizeTip', { size: MAX_SIZE }) }}</div>
+        <div class="text-theme-sub-content mt-1">{{ t('testCase.kanbanView.infoAttachment.fileSizeTip', { size: MAX_SIZE }) }}</div>
       </template>
     </Spin>
   </div>

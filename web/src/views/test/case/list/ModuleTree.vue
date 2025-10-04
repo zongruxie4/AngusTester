@@ -111,7 +111,7 @@ const hadleblur = (id: string, event: { target: { value: string } }) => {
 // 删除弹框
 const toDelete = (data: TagItem) => {
   modal.confirm({
-    content: t('functionCase.moduleTree.confirmDeleteModule', { name: data.name }),
+    content: t('testCase.moduleTree.confirmDeleteModule', { name: data.name }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -122,7 +122,7 @@ const toDelete = (data: TagItem) => {
         return;
       }
 
-      notification.success(t('functionCase.moduleTree.deleteModuleSuccess'));
+      notification.success(t('testCase.moduleTree.deleteModuleSuccess'));
       emits('loadData', keywords.value);
     }
   });
@@ -222,7 +222,7 @@ const onMenuClick = (menu, record) => {
     <div class="flex justify-between h-11 space-x-4 p-2">
       <Input
         v-model:value="keywords"
-        :placeholder="t('functionCase.moduleTree.searchModule')"
+        :placeholder="t('testCase.moduleTree.searchModule')"
         @change="handleSearchModule" />
       <Button
         :disabled="!isAdmin && projectInfo?.createdBy !== userInfo?.id && projectInfo.ownerId !== userInfo?.id"
@@ -230,7 +230,7 @@ const onMenuClick = (menu, record) => {
         size="small"
         @click="onMenuClick({key: 'add'}, {id: undefined})">
         <Icon icon="icon-jia" />
-        {{ t('functionCase.moduleTree.addModule') }}
+        {{ t('testCase.moduleTree.addModule') }}
       </Button>
     </div>
 
@@ -239,7 +239,7 @@ const onMenuClick = (menu, record) => {
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleSelectKeysChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
-      <span class="flex-1">{{ t('functionCase.moduleTree.allCases') }}</span>
+      <span class="flex-1">{{ t('testCase.moduleTree.allCases') }}</span>
     </div>
 
     <Tree
@@ -258,7 +258,7 @@ const onMenuClick = (menu, record) => {
         <div v-if="editId === id" class="flex items-center">
           <Input
             ref="nameInputRef"
-            :placeholder="t('functionCase.moduleTree.enterModuleName')"
+            :placeholder="t('testCase.moduleTree.enterModuleName')"
             class="flex-1 mr-2 bg-white"
             trim
             :value="name"
@@ -295,7 +295,7 @@ const onMenuClick = (menu, record) => {
               <Menu class="w-50" @click="onMenuClick($event, {name, id, index, ids, pid, childLevels})">
                 <MenuItem v-if="level < 4" key="add">
                   <Icon icon="icon-jia" />
-                  {{ t('functionCase.moduleTree.createSubModule') }}
+                  {{ t('testCase.moduleTree.createSubModule') }}
                 </MenuItem>
                 <MenuItem v-if="index > 0 || +pid > 0" key="up">
                   <Icon icon="icon-shangyi" />

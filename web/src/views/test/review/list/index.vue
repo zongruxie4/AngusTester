@@ -96,7 +96,7 @@ const startReview = async (reviewData: ReviewDetail, itemIndex: number) => {
     return;
   }
 
-  notification.success(t('caseReview.list.reviewStartedSuccess'));
+  notification.success(t('testCaseReview.list.reviewStartedSuccess'));
   await updateReviewItem(reviewId, itemIndex);
 };
 
@@ -114,7 +114,7 @@ const completeReview = async (reviewData: ReviewDetail, itemIndex: number) => {
     return;
   }
 
-  notification.success(t('caseReview.list.reviewCompletedSuccess'));
+  notification.success(t('testCaseReview.list.reviewCompletedSuccess'));
   await updateReviewItem(reviewId, itemIndex);
 };
 
@@ -287,15 +287,15 @@ onMounted(() => {
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <Introduce class="mb-7" />
-    <div class="text-3.5 font-semibold mb-1">{{ t('caseReview.list.addedReviews') }}</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('testCaseReview.list.addedReviews') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && reviewList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>{{ t('caseReview.list.noReviewsAdded') }}</span>
+            <span>{{ t('testCaseReview.list.noReviewsAdded') }}</span>
             <RouterLink class="router-link flex-1 truncate" :to="`/function#reviews?type=ADD`">
-              {{ t('caseReview.list.addReview') }}
+              {{ t('testCaseReview.list.addReview') }}
             </RouterLink>
           </div>
         </div>

@@ -1745,7 +1745,7 @@
       "favoriteEmptyTip": "No favourited APIs",
       "deleteTip": "Are you sure you want to delete API 「{name}」?",
       "deleteSuccess": "API deleted successfully",
-      "cancelFavoriteSuccess": "API unfavorited successfully",
+      "cancelFavouriteSuccess": "API unfavorited successfully",
       "cancelFollowSuccess": "API unfollowed successfully",
       "columns": {
         "summary": "Name",

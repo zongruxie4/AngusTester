@@ -45,7 +45,7 @@ const defaultUserOptions = computed(() => {
 });
 
 const numberMatchConditions = ref<{ value: SearchCriteria.OpEnum, message: string }[]>(
-  [{ value: SearchCriteria.OpEnum.Equal, message: t('functionBaseline.case.equal') }]
+  [{ value: SearchCriteria.OpEnum.Equal, message: t('testCaseBaseline.case.equal') }]
 );
 const searchPanelRef = ref();
 
@@ -54,51 +54,51 @@ const searchPanelRef = ref();
  */
 const searchPanelOptions = computed(() => [
   {
-    placeholder: t('functionBaseline.case.queryCaseCodeName'),
+    placeholder: t('testCaseBaseline.case.queryCaseCodeName'),
     valueKey: 'name',
     type: 'input',
     allowClear: true
   },
   {
-    placeholder: t('functionBaseline.case.selectCreator'),
+    placeholder: t('testCaseBaseline.case.selectCreator'),
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('functionBaseline.case.selectTester'),
+    placeholder: t('testCaseBaseline.case.selectTester'),
     valueKey: 'testerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('functionBaseline.case.selectDeveloper'),
+    placeholder: t('testCaseBaseline.case.selectDeveloper'),
     valueKey: 'developerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('functionBaseline.case.selectPriority'),
+    placeholder: t('testCaseBaseline.case.selectPriority'),
     valueKey: 'priority',
     type: 'select-enum',
     enumKey: Priority,
     allowClear: true
   },
   {
-    placeholder: t('functionBaseline.case.selectTestResult'),
+    placeholder: t('testCaseBaseline.case.selectTestResult'),
     valueKey: 'testResult',
     type: 'select-enum',
     enumKey: CaseTestResult,
     allowClear: true
   },
   {
-    placeholder: t('functionBaseline.case.selectReviewer'),
+    placeholder: t('testCaseBaseline.case.selectReviewer'),
     valueKey: 'reviewerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('functionBaseline.case.selectReviewStatus'),
+    placeholder: t('testCaseBaseline.case.selectReviewStatus'),
     valueKey: 'reviewStatus',
     type: 'select-enum',
     enumKey: ReviewStatusEnum,
@@ -106,8 +106,8 @@ const searchPanelOptions = computed(() => [
   },
   {
     placeholder: [
-      t('functionBaseline.case.searchPanel.reviewDateFrom'),
-      t('functionBaseline.case.searchPanel.reviewDateTo')
+      t('testCaseBaseline.case.searchPanel.reviewDateFrom'),
+      t('testCaseBaseline.case.searchPanel.reviewDateTo')
     ],
     valueKey: 'reviewDate',
     type: 'date-range',
@@ -116,8 +116,8 @@ const searchPanelOptions = computed(() => [
   },
   {
     placeholder: [
-      t('functionBaseline.case.searchPanel.updateDateFrom'),
-      t('functionBaseline.case.searchPanel.updateDateTo')
+      t('testCaseBaseline.case.searchPanel.updateDateFrom'),
+      t('testCaseBaseline.case.searchPanel.updateDateTo')
     ],
     valueKey: 'lastModifiedDate',
     type: 'date-range',
@@ -126,8 +126,8 @@ const searchPanelOptions = computed(() => [
   },
   {
     placeholder: [
-      t('functionBaseline.case.searchPanel.deadlineDateFrom'),
-      t('functionBaseline.case.searchPanel.deadlineDateTo')
+      t('testCaseBaseline.case.searchPanel.deadlineDateFrom'),
+      t('testCaseBaseline.case.searchPanel.deadlineDateTo')
     ],
     valueKey: 'deadlineDate',
     type: 'date-range',
@@ -136,8 +136,8 @@ const searchPanelOptions = computed(() => [
   },
   {
     placeholder: [
-      t('functionBaseline.case.searchPanel.createdDateFrom'),
-      t('functionBaseline.case.searchPanel.createdDateTo')
+      t('testCaseBaseline.case.searchPanel.createdDateFrom'),
+      t('testCaseBaseline.case.searchPanel.createdDateTo')
     ],
     valueKey: 'createdDate',
     type: 'date-range',
@@ -146,8 +146,8 @@ const searchPanelOptions = computed(() => [
   },
   {
     placeholder: [
-      t('functionBaseline.case.searchPanel.testResultHandleDateFrom'),
-      t('functionBaseline.case.searchPanel.testResultHandleDateTo')
+      t('testCaseBaseline.case.searchPanel.testResultHandleDateFrom'),
+      t('testCaseBaseline.case.searchPanel.testResultHandleDateTo')
     ],
     valueKey: 'testResultHandleDate',
     type: 'date-range',
@@ -628,7 +628,7 @@ const handleAddCaseClick = () => {
           type="primary"
           @click="handleAddCaseClick">
           <Icon icon="icon-jia" class="mr-1" />
-          {{ t('functionBaseline.case.searchPanel.addCase') }}
+          {{ t('testCaseBaseline.case.searchPanel.addCase') }}
         </Button>
       </div>
     </div>
@@ -673,7 +673,7 @@ const handleAddCaseClick = () => {
           data-type="float"
           size="small"
           allowClear
-          :placeholder="t('functionBaseline.case.searchPanel.testNumPlaceholder')"
+          :placeholder="t('testCaseBaseline.case.searchPanel.testNumPlaceholder')"
           style="width: 296px;"
           :min="0"
           :debounce="500"
@@ -699,7 +699,7 @@ const handleAddCaseClick = () => {
           data-type="float"
           size="small"
           allowClear
-          :placeholder="t('functionBaseline.case.searchPanel.testFailNumPlaceholder')"
+          :placeholder="t('testCaseBaseline.case.searchPanel.testFailNumPlaceholder')"
           style="width: 296px;"
           :min="0"
           :debounce="500"
@@ -725,7 +725,7 @@ const handleAddCaseClick = () => {
           data-type="float"
           size="small"
           allowClear
-          :placeholder="t('functionBaseline.case.searchPanel.reviewNumPlaceholder')"
+          :placeholder="t('testCaseBaseline.case.searchPanel.reviewNumPlaceholder')"
           style="width: 296px;"
           :min="0"
           :debounce="500"

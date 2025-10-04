@@ -61,7 +61,7 @@ let twoTimePassedEchart;
 // 通过评审用例
 const bugsEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.reviewEfficiency.passedReviewCases'),
+    text: t('testAnalysis.detail.reviewEfficiency.passedReviewCases'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -77,9 +77,9 @@ const bugsEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('functionAnalysis.detail.reviewEfficiency.passedCase'),
-      t('functionAnalysis.detail.reviewEfficiency.oneTimePassedCount'),
-      t('functionAnalysis.detail.reviewEfficiency.twoTimePassedCount')
+      t('testAnalysis.detail.reviewEfficiency.passedCase'),
+      t('testAnalysis.detail.reviewEfficiency.oneTimePassedCount'),
+      t('testAnalysis.detail.reviewEfficiency.twoTimePassedCount')
     ],
     axisLabel: {
       interval: 0,
@@ -116,7 +116,7 @@ const completedEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('functionAnalysis.detail.reviewEfficiency.reviewPassedCasePercentage'),
+    subtext: t('testAnalysis.detail.reviewEfficiency.reviewPassedCasePercentage'),
     // left: '25%',
     // top: '40%',
     itemGap: 40,
@@ -193,7 +193,7 @@ const oneTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: t('functionAnalysis.detail.reviewEfficiency.oneTimePassedReviewCasePercentage'),
+    subtext: t('testAnalysis.detail.reviewEfficiency.oneTimePassedReviewCasePercentage'),
     itemGap: 40
   }
 }));
@@ -203,7 +203,7 @@ const twoTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...oneTimePassedEchartConfig,
   title: {
     ...oneTimePassedEchartConfig.title,
-    subtext: t('functionAnalysis.detail.reviewEfficiency.twoTimePassedReviewCasePercentage')
+    subtext: t('testAnalysis.detail.reviewEfficiency.twoTimePassedReviewCasePercentage')
   }
 }));
 

@@ -7,9 +7,8 @@
       "workItem2": "Assign tasks clearly with responsible parties for efficient collaboration;",
       "workItem3": "Monitor project health and progress trends in real-time."
     },
-    "myIssues": "My Issues",
-    "myCreation": "My Creations",
-    "addedTable": {
+    "myIssues": {
+      "title": "My Issues",
       "emptyStates": {
         "noCreatedIssues": "You haven't added any issues yet, ",
         "addIssue": "Add Issue",
@@ -20,6 +19,9 @@
         "noFavouriteIssues": "You have no favorite issues",
         "noCommentIssues": "You have no comments issues"
       }
+    },
+    "myCreationSummary": {
+      "title": "My Creations"
     }
   },
   "backlog": {

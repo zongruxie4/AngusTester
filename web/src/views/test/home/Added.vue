@@ -53,7 +53,7 @@ const commentedCasesParams = {
 <template>
   <div>
     <div class="text-3.5 font-semibold mb-1">
-      {{ t('functionHome.myCases.title') }}
+      {{ t('testHome.myCases.title') }}
     </div>
 
     <Tabs size="small">
@@ -78,7 +78,7 @@ const commentedCasesParams = {
       <TabPane key="testResult" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ t('functionHome.myCases.pendingTest') }}</span>
+            <span class="mr-1">{{ t('status.pending') }}</span>
             <span>(</span>
             <span>{{ pendingCasesCount }}</span>
             <span>)</span>

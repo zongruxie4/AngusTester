@@ -25,12 +25,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Injected dependencies
-const projectTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ 
-  showTask: true, 
-  showBackLog: true, 
-  showMeeting: true, 
-  showSprint: true, 
-  showTasStatistics: true 
+const projectTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({
+  showTask: true,
+  showBackLog: true,
+  showMeeting: true,
+  showSprint: true,
+  showTasStatistics: true
 }));
 
 // Async component definitions

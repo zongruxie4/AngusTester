@@ -131,7 +131,7 @@ const handleHashChange = (hash: string) => {
         const newId = utils.uuid();
         return {
           _id: newId,
-          name: t('functionPlan.main.addPlan'),
+          name: t('testPlan.main.addPlan'),
           value: 'planEdit',
           noCache: true,
           data: { _id: newId }

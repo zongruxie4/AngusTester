@@ -114,15 +114,15 @@ const securityFormRef = ref();
             <template v-if="editName">
               <a
                 class="text-text-link text-3 leading-3"
-                @click="handleEdit('actions.cancel') }}</a>
-              <Divider type="vertical" />
+                vertical"@click="handleEdit('actions.cancel') }}</a>
+              <Divider type=" />
               <a
                 class="text-text-link text-3 leading-3"
-                @click="handleEdit('actions.confirm') }}</a>
+                icon-shuxie"@click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
-                icon="icon-shuxie"
+                icon="
                 class="text-text-link text-3 cursor-pointer"
                 @click="handleEdit('name','open','infoForm')" />
             </template>
@@ -151,14 +151,20 @@ const securityFormRef = ref();
           :disabled="!editServiceDomain">
           <template v-if="editionType !== EditionType.CLOUD_SERVICE && hasEditAuth" #suffix>
             <template v-if="editServiceDomain">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-              <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+              <a
+                class="text-text-link text-3 leading-3"
+                vertical"
+                @click="handleEdit('actions.cancel') }}</a>
+              <Divider type=" />
+              <a
+                class="text-text-link text-3 leading-3"
+                icon-shuxie"
+                class="text-text-link text-3 cursor-pointer"
+                @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
-                icon="icon-shuxie"
-                class="text-text-link text-3 cursor-pointer"
+                icon="
                 @click="handleEdit('serviceDomainUrl','open','infoForm')" />
             </template>
           </template>
@@ -252,14 +258,20 @@ const securityFormRef = ref();
           :disabled="!editWorkThreadNum">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editWorkThreadNum">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-              <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+              <a
+                class="text-text-link text-3 leading-3"
+                vertical"
+                @click="handleEdit('actions.cancel') }}</a>
+              <Divider type=" />
+              <a
+                class="text-text-link text-3 leading-3"
+                icon-shuxie"
+                class="text-text-link text-3 cursor-pointer"
+                @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
-                icon="icon-shuxie"
-                class="text-text-link text-3 cursor-pointer"
+                icon="
                 @click="handleEdit('workThreadNum','open','settingForm')" />
             </template>
           </template>
@@ -365,14 +377,20 @@ const securityFormRef = ref();
           dataType="number">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editMaxContentLength">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-              <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+              <a
+                class="text-text-link text-3 leading-3"
+                vertical"
+                @click="handleEdit('actions.cancel') }}</a>
+              <Divider type=" />
+              <a
+                class="text-text-link text-3 leading-3"
+                icon-shuxie"
+                class="text-text-link text-3 cursor-pointer"
+                @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
-                icon="icon-shuxie"
-                class="text-text-link text-3 cursor-pointer"
+                icon="
                 @click="handleEdit('maxContentLength','open','settingForm')" />
             </template>
           </template>
@@ -398,14 +416,20 @@ const securityFormRef = ref();
           dataType="number">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editWorkPushbackThreadNum">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-              <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+              <a
+                class="text-text-link text-3 leading-3"
+                vertical"
+                @click="handleEdit('actions.cancel') }}</a>
+              <Divider type=" />
+              <a
+                class="text-text-link text-3 leading-3"
+                icon-shuxie"
+                class="text-text-link text-3 cursor-pointer"
+                @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
-                icon="icon-shuxie"
-                class="text-text-link text-3 cursor-pointer"
+                icon="
                 @click="handleEdit('workPushbackThreadNum','open','settingForm')" />
             </template>
           </template>
@@ -432,14 +456,20 @@ const securityFormRef = ref();
           includes="-">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editMaxPushbackConnectTimeout">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-              <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+              <a
+                class="text-text-link text-3 leading-3"
+                vertical"
+                @click="handleEdit('actions.cancel') }}</a>
+              <Divider type=" />
+              <a
+                class="text-text-link text-3 leading-3"
+                icon-shuxie"
+                class="text-text-link text-3 cursor-pointer"
+                @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
-                icon="icon-shuxie"
-                class="text-text-link text-3 cursor-pointer"
+                icon="
                 @click="handleEdit('maxPushbackConnectTimeout','open','settingForm')" />
             </template>
           </template>
@@ -466,14 +496,20 @@ const securityFormRef = ref();
           includes="-">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editMaxPushbackRequestTimeout">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-              <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+              <a
+                class="text-text-link text-3 leading-3"
+                vertical"
+                @click="handleEdit('actions.cancel') }}</a>
+              <Divider type=" />
+              <a
+                class="text-text-link text-3 leading-3"
+                icon-shuxie"
+                class="text-text-link text-3 cursor-pointer"
+                @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
-                icon="icon-shuxie"
-                class="text-text-link text-3 cursor-pointer"
+                icon="
                 @click="handleEdit('maxPushbackRequestTimeout','open','settingForm')" />
             </template>
           </template>
@@ -622,14 +658,20 @@ const securityFormRef = ref();
             :disabled="!editOrigin">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editOrigin">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-                <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+                <a
+                  class="text-text-link text-3 leading-3"
+                  vertical"
+                  @click="handleEdit('actions.cancel') }}</a>
+                <Divider type=" />
+                <a
+                  class="text-text-link text-3 leading-3"
+                  icon-shuxie"
+                  class="text-text-link text-3 cursor-pointer"
+                  @click="handleEdit('actions.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
-                  icon="icon-shuxie"
-                  class="text-text-link text-3 cursor-pointer"
+                  icon="
                   @click="handleEdit('allowCorsOrigin','open','apisCorsForm')" />
               </template>
             </template>
@@ -655,14 +697,20 @@ const securityFormRef = ref();
             :disabled="!editCredentials" />
           <div class="absolute right-2 top-0.75">
             <template v-if="editCredentials">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-              <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+              <a
+                class="text-text-link text-3 leading-3"
+                vertical"
+                @click="handleEdit('actions.cancel') }}</a>
+              <Divider type=" />
+              <a
+                class="text-text-link text-3 leading-3"
+                icon-shuxie"
+                class="text-text-link text-3 cursor-pointer"
+                @click="handleEdit('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
-                icon="icon-shuxie"
-                class="text-text-link text-3 cursor-pointer"
+                icon="
                 @click="handleEdit('allowCorsCredentials','open','apisCorsForm')" />
             </template>
           </div>
@@ -687,14 +735,20 @@ const securityFormRef = ref();
             :class="editRequestMethods?'api-cors-allow-cors-request-methods-edit':'api-cors-allow-cors-request-methods'">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editRequestMethods">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-                <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+                <a
+                  class="text-text-link text-3 leading-3"
+                  vertical"
+                  @click="handleEdit('actions.cancel') }}</a>
+                <Divider type=" />
+                <a
+                  class="text-text-link text-3 leading-3"
+                  icon-shuxie"
+                  class="text-text-link text-3 cursor-pointer"
+                  @click="handleEdit('actions.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
-                  icon="icon-shuxie"
-                  class="text-text-link text-3 cursor-pointer"
+                  icon="
                   @click="handleEdit('allowCorsRequestMethods','open','apisCorsForm')" />
               </template>
             </template>
@@ -716,14 +770,20 @@ const securityFormRef = ref();
           <Input v-model:value="apisCors.allowCorsRequestHeaders" :disabled="!editRequestHeaders">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editRequestHeaders">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-                <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+                <a
+                  class="text-text-link text-3 leading-3"
+                  vertical"
+                  @click="handleEdit('actions.cancel') }}</a>
+                <Divider type=" />
+                <a
+                  class="text-text-link text-3 leading-3"
+                  icon-shuxie"
+                  class="text-text-link text-3 cursor-pointer"
+                  @click="handleEdit('actions.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
-                  icon="icon-shuxie"
-                  class="text-text-link text-3 cursor-pointer"
+                  icon="
                   @click="handleEdit('allowCorsRequestHeaders','open','apisCorsForm')" />
               </template>
             </template>
@@ -745,14 +805,20 @@ const securityFormRef = ref();
           <Input v-model:value="apisCors.allowExposeHeaders" :disabled="!editExposeHeaders">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editExposeHeaders">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.cancel') }}</a>
-                <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('actions.confirm') }}</a>
+                <a
+                  class="text-text-link text-3 leading-3"
+                  vertical"
+                  @click="handleEdit('actions.cancel') }}</a>
+                <Divider type=" />
+                <a
+                  class="text-text-link text-3 leading-3"
+                  icon-shuxie"
+                  class="text-text-link text-3 cursor-pointer"
+                  @click="handleEdit('actions.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
-                  icon="icon-shuxie"
-                  class="text-text-link text-3 cursor-pointer"
+                  icon="
                   @click="handleEdit('allowExposeHeaders','open','apisCorsForm')" />
               </template>
             </template>

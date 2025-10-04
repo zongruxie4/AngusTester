@@ -29,7 +29,7 @@ const handleDownload = (url:string) => {
     <div v-if="!props.hideTitle" class="flex items-center mb-4">
       <Icon icon="icon-fujian" class="text-indigo-500 mr-2" />
       <h3 class="text-lg font-semibold text-gray-900">
-        {{ t('caseReview.comp.attachment.title') }}
+        {{ t('testCaseReview.comp.attachment.title') }}
       </h3>
     </div>
 

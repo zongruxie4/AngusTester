@@ -7,9 +7,8 @@
       "workItem2": "明确责任人，高效分配和协作任务；",
       "workItem3": "实时监控项目健康度和进展趋势。"
     },
-    "myIssues": "我的问题",
-    "myCreation": "我添加的",
-    "addedTable": {
+    "myIssues": {
+      "title": "我的问题",
       "emptyStates": {
         "noCreatedIssues": "您尚未添加任何问题，立即",
         "addIssue": "添加问题",
@@ -20,6 +19,9 @@
         "noFavouriteIssues": "您没有收藏的问题",
         "noCommentIssues": "您没有评论的问题"
       }
+    },
+    "myCreationSummary": {
+      "title": "我添加的"
     }
   },
   "backlog": {

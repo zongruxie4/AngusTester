@@ -159,7 +159,7 @@ const openNewEditTab = () => {
     const newId = utils.uuid();
     return {
       _id: newId,
-      name: t('caseReview.addReview'),
+      name: t('testCaseReview.addReview'),
       value: 'reviewEdit',
       noCache: true,
       data: { _id: newId }

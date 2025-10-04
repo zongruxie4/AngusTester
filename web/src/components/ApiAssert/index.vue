@@ -147,7 +147,7 @@ const extractionLocationOptionsMap = computed(() => {
   return assertionIdList.value.reduce((optionsMap, assertionId) => {
     const extractionMethod = assertionData[assertionId].extraction.method;
     if (extractionMethod && extractionMethod === 'EXACT_VALUE') {
-      optionsMap[assertionId] = availableOptions.filter((option) => 
+      optionsMap[assertionId] = availableOptions.filter((option) =>
         !['RESPONSE_BODY', 'RESPONSE_HEADER', 'REQUEST_RAW_BODY'].includes(option.value)
       );
     } else {
@@ -701,7 +701,7 @@ const hasAssertionContent = (assertionId: string, assertionData: { [key: string]
 const validateExtractionExpression = (expressionValue: string, assertionId: string): boolean => {
   const extractionMethod = assertionDataMap.value[assertionId].extraction.method;
   let validationResult: { valid: boolean; message: string; } = { valid: false, message: '' };
-  
+
   if (extractionMethod === 'JSON_PATH') {
     validationResult = jsonpath.isValid(expressionValue);
   } else if (extractionMethod === 'X_PATH') {
@@ -731,7 +731,7 @@ const validateExtractionExpression = (expressionValue: string, assertionId: stri
 const validateAssertionExpression = (expressionValue: string, assertionId: string): boolean => {
   const assertionCondition = assertionDataMap.value[assertionId].assertionCondition;
   let validationResult: { valid: boolean; message: string; } = { valid: false, message: '' };
-  
+
   if (assertionCondition === 'JSON_PATH_MATCH') {
     validationResult = jsonpath.isValid(expressionValue);
   } else if (assertionCondition === 'XPATH_MATCH') {
@@ -760,11 +760,11 @@ const validateAllAssertions = (): boolean => {
   resetValidationErrors();
   const assertionIds = assertionIdList.value;
   const seenNames: Set<string> = new Set();
-  
+
   for (let i = 0, len = assertionIds.length; i < len; i++) {
     const assertionId = assertionIds[i];
     const currentAssertionData = assertionDataMap.value[assertionId];
-    
+
     if (hasAssertionContent(assertionId, currentAssertionData)) {
       // Validate assertion name
       if (!currentAssertionData.name) {
@@ -871,7 +871,7 @@ const getProcessedAssertionData = (): { data: FormItem[], variables: string[] } 
   const checkedSet = checkedAssertionSet.value;
   const processedAssertions: FormItem[] = [];
   const variableNameSet = new Set<string>();
-  
+
   for (let i = 0, len = assertionIds.length; i < len; i++) {
     const assertionId = assertionIds[i];
     if (assertionData[assertionId].name) {
@@ -879,8 +879,8 @@ const getProcessedAssertionData = (): { data: FormItem[], variables: string[] } 
       processedAssertion.enabled = checkedSet.has(assertionId);
 
       // Handle null/empty conditions and empty expected values
-      if (NULL_EMPTY_CONDITIONS.includes(processedAssertion.assertionCondition) || 
-          processedAssertion.expected === '' || 
+      if (NULL_EMPTY_CONDITIONS.includes(processedAssertion.assertionCondition) ||
+          processedAssertion.expected === '' ||
           processedAssertion.expected === undefined) {
         processedAssertion.expected = null;
       }
@@ -965,7 +965,7 @@ onMounted(() => {
         const assertionData = assertionList[i] as FormItem;
         const extractionData = assertionData.extraction;
         const assertionCondition = assertionData.assertionCondition?.value || assertionData.assertionCondition;
-        
+
         assertionIdList.value.push(assertionId);
         expandedAssertionMap.value[assertionId] = true;
         assertionDataMap.value[assertionId] = {
@@ -1050,7 +1050,7 @@ const assertionExpressionPlaceholderMap = computed(() => {
   const assertionIds = assertionIdList.value;
   const assertionData = assertionDataMap.value;
   const placeholderMap: { [key: string]: string } = {};
-  
+
   for (let i = 0, len = assertionIds.length; i < len; i++) {
     const assertionId = assertionIds[i];
     switch (assertionData[assertionId].assertionCondition) {

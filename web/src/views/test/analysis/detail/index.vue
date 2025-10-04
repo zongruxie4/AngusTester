@@ -198,7 +198,7 @@ onBeforeUnmount(() => {
           <Tag
             color="geekblue"
             class="ml-5">
-            {{ analysisData.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('functionAnalysis.detail.snapshot') : t('functionAnalysis.detail.realTime') }}
+            {{ analysisData.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('testAnalysis.detail.snapshot') : t('testAnalysis.detail.realTime') }}
           </Tag>
         </div>
         <div class="mt-2 text-3.5">{{ analysisData.description }}</div>
@@ -207,7 +207,7 @@ onBeforeUnmount(() => {
             {{ analysisData.lastModifiedByName }}
           </span>
           <span class="text-3.5 ml-2">
-            {{ t('functionAnalysis.detail.lastModifiedAt') }}&nbsp;{{ analysisData.lastModifiedDate }}
+            {{ t('testAnalysis.detail.lastModifiedAt') }}&nbsp;{{ analysisData.lastModifiedDate }}
           </span>
         </div>
       </div>
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
     <!-- Chart Display Section -->
     <div class="mt-4">
       <div class="detail-title font-semibold pl-2 relative text-3.5 mb-3">
-        {{ t('functionAnalysis.detail.charts') }}
+        {{ t('testAnalysis.detail.charts') }}
       </div>
 
       <!-- Dynamic Chart Components Based on Template Type -->
@@ -283,7 +283,7 @@ onBeforeUnmount(() => {
       <!-- Special handling for Recent Delivery template with multiple time periods -->
       <template v-if="analysisData.template === AnalysisCaseTemplate.RECENT_DELIVERY">
         <div class="text-center mt-3">
-          {{ t('functionAnalysis.today') }}
+          {{ t('testAnalysis.today') }}
         </div>
         <Table
           key="today"
@@ -305,7 +305,7 @@ onBeforeUnmount(() => {
           :columns="tableColumns"
           :dataSource="last7DaysDeliveryTableData" />
         <div class="text-center">
-          {{ t('functionAnalysis.lastMonth') }}
+          {{ t('testAnalysis.lastMonth') }}
         </div>
         <Table
           key="lastMonth"

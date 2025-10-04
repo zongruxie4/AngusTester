@@ -129,18 +129,18 @@ const handleSearchKeywordsChange = debounce(500, () => {
  */
 const applyDataFilters = () => {
   filteredApiTestData.value = props.dataSource;
-  
+
   if (searchKeywords.value) {
-    filteredApiTestData.value = filteredApiTestData.value.filter(item => 
+    filteredApiTestData.value = filteredApiTestData.value.filter(item =>
       item.summary?.includes(searchKeywords.value!)
     );
   }
-  
+
   if (selectedTestStatus.value) {
     if (selectedTestStatus.value === 'passed') {
       filteredApiTestData.value = filteredApiTestData.value.filter(item => item.passed === true);
     } else if (selectedTestStatus.value === 'unpassed') {
-      filteredApiTestData.value = filteredApiTestData.value.filter(item => 
+      filteredApiTestData.value = filteredApiTestData.value.filter(item =>
         item.tested === true && item.failed === true
       );
     } else {

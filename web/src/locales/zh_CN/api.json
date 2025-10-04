@@ -1753,7 +1753,7 @@
       "favoriteEmptyTip": "没有关注的接口",
       "deleteTip": "确定删除接口「{name}」吗？",
       "deleteSuccess": "删除接口成功",
-      "cancelFavoriteSuccess": "接口取消收藏成功",
+      "cancelFavouriteSuccess": "接口取消收藏成功",
       "cancelFollowSuccess": "接口取消关注成功",
       "columns": {
         "summary": "名称",

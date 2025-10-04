@@ -136,7 +136,7 @@ const change = async () => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('functionCase.kanbanView.infoPersonnel.title') }}
+      {{ t('testCase.kanbanView.infoPersonnel.title') }}
     </div>
 
     <div class="space-y-2.5">
@@ -172,7 +172,7 @@ const change = async () => {
             v-show="testerEditFlag"
             ref="testerRef"
             v-model:value="testerIdValue"
-            :placeholder="t('functionCase.kanbanView.infoPersonnel.selectTester')"
+            :placeholder="t('testCase.kanbanView.infoPersonnel.selectTester')"
             allowClear
             :defaultOptions="testerDefaultOptions"
             :action="`${TESTER}/project/${props.projectId}/member/user`"

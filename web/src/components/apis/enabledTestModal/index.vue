@@ -88,7 +88,7 @@ const handleModalConfirmation = async () => {
     isLoading.value = false;
     return;
   }
-  
+
   const enabledTypes = visibleTestTypes.value.filter(type => enabledTestTypes.value.includes(type));
   if (enabledTypes.length) {
     const [error] = await services.toggleTestEnabled(props.id, true, { testTypes: enabledTypes }, {

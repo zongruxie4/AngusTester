@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import {computed, defineAsyncComponent, inject, Ref, ref} from 'vue';
-import {appContext} from '@xcan-angus/infra';
-import {useI18n} from 'vue-i18n';
+import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
+import { appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 

@@ -677,7 +677,7 @@ const tableAction = computed(() => {
       action.actionMenus[_case.id].push({
         key: 'resetTestResult',
         icon: 'icon-zhongzhiceshijieguo',
-        name: t('functionCase.mainView.resetTestResult'),
+        name: t('testCase.mainView.resetTestResult'),
         permission: 'resetTestResult'
       });
     }
@@ -694,24 +694,24 @@ const tableAction = computed(() => {
         action.actionMenus[_case.id].push({
           key: 'updateTestResult_passed',
           icon: 'icon-xiugaiceshijieguo',
-          name: t('functionCase.mainView.testPassed'),
+          name: t('testCase.mainView.testPassed'),
           permission: 'updateTestResult'
         }, {
           key: 'updateTestResult_notPassed',
           icon: 'icon-xiugaiceshijieguo',
-          name: t('functionCase.mainView.testNotPassed'),
+          name: t('testCase.mainView.testNotPassed'),
           permission: 'updateTestResult'
         }, {
           key: 'updateTestResult_blocked',
           icon: 'icon-xiugaiceshijieguo',
-          name: t('functionCase.mainView.setBlocked'),
+          name: t('testCase.mainView.setBlocked'),
           permission: 'updateTestResult'
         });
       } else {
         action.actionMenus[_case.id].push({
           key: 'retestResult',
           icon: 'icon-xiugaiceshijieguo',
-          name: t('functionCase.mainView.retest'),
+          name: t('testCase.mainView.retest'),
           permission: 'retestResult'
         });
       }
@@ -904,7 +904,7 @@ const loadEnums = () => {
 };
 
 // 模块相关
-const moduleTreeData = ref([{ name: t('functionCase.case.moduleTree.noModuleCases'), id: '-1' }]);
+const moduleTreeData = ref([{ name: t('testCase.case.moduleTree.noModuleCases'), id: '-1' }]);
 const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
   const [error, { data }] = await modules.getModuleTree({
@@ -920,7 +920,7 @@ const loadModuleTree = async (keywords?: string) => {
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: t('functionCase.case.moduleTree.noModuleCases'), id: '-1' }, ...travelTreeData(data || [])];
+  moduleTreeData.value = [{ name: t('testCase.case.moduleTree.noModuleCases'), id: '-1' }, ...travelTreeData(data || [])];
   if (moduleId.value && keywords && !moduleTreeData.value.find(item => item.id === moduleId.value)) {
     moduleId.value = '';
   }
@@ -992,10 +992,10 @@ const refreshRecycleBin = inject('refreshRecycleBin', (_key: 'useCase') => { });
 const handleDelete = async (rowData?: CaseDetailChecked) => {
   modal.confirm({
     centered: true,
-    title: t('functionCase.mainView.deleteCase'),
+    title: t('testCase.mainView.deleteCase'),
     content: rowData
-      ? t('functionCase.mainView.confirmDeleteCase', { name: rowData.name })
-      : t('functionCase.mainView.confirmDeleteSelectedCases'),
+      ? t('testCase.mainView.confirmDeleteCase', { name: rowData.name })
+      : t('testCase.mainView.confirmDeleteSelectedCases'),
     async onOk () {
       await delCase(rowData);
     }
@@ -1043,7 +1043,7 @@ const hanldeResetTestResults = async (rowData: CaseDetailChecked) => {
     updateLoading(false);
     return;
   }
-  notification.success(t('functionCase.mainView.resetTestResultSuccess'));
+  notification.success(t('testCase.mainView.resetTestResultSuccess'));
   refreshChange();
 };
 
@@ -1055,7 +1055,7 @@ const handleResetReviewResult = async (rowData: CaseDetailChecked) => {
     updateLoading(false);
     return;
   }
-  notification.success(t('functionCase.mainView.resetReviewResultSuccess'));
+  notification.success(t('testCase.mainView.resetReviewResultSuccess'));
   refreshChange();
 };
 
@@ -1067,7 +1067,7 @@ const handleReTest = async (rowData: CaseDetailChecked) => {
     updateLoading(false);
     return;
   }
-  notification.success(t('functionCase.mainView.resetTestStatusSuccess'));
+  notification.success(t('testCase.mainView.resetTestStatusSuccess'));
   refreshChange();
 };
 
@@ -1178,7 +1178,7 @@ const handleSetREsultBlocked = async (value) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.mainView.setBlockedSuccess'));
+  notification.success(t('testCase.mainView.setBlockedSuccess'));
   refreshChange();
 };
 
@@ -1191,7 +1191,7 @@ const handleSetREsultCanceled = async (value) => {
   if (error) {
     return;
   }
-  notification.success(t('functionCase.mainView.cancelSuccess'));
+  notification.success(t('testCase.mainView.cancelSuccess'));
   refreshChange();
 };
 
@@ -1302,8 +1302,8 @@ const handleFavourite = async (rowData: CaseDetailChecked) => {
     return;
   }
   notification.success(rowData.favourite
-    ? t('functionCase.mainView.cancelFavouriteSuccess')
-    : t('functionCase.mainView.favouriteSuccess'));
+    ? t('testCase.mainView.cancelFavouriteSuccess')
+    : t('testCase.mainView.favouriteSuccess'));
   rowData.favourite = !rowData.favourite;
   emits('updateFollowFavourite', 'addFavourite');
 };
@@ -1316,8 +1316,8 @@ const handleFollow = async (rowData: CaseDetailChecked) => {
     return;
   }
   notification.success(rowData.follow
-    ? t('functionCase.mainView.cancelFollowSuccess')
-    : t('functionCase.mainView.followSuccess'));
+    ? t('testCase.mainView.cancelFollowSuccess')
+    : t('testCase.mainView.followSuccess'));
   rowData.follow = !rowData.follow;
   emits('updateFollowFavourite', 'addFollow');
 };
@@ -1481,17 +1481,17 @@ watch(() => selectedRowKeys.value, (newValue) => {
 const modeOptions = [
   {
     key: CaseViewMode.flat,
-    name: t('functionCase.mainView.tileView'),
+    name: t('testCase.mainView.tileView'),
     label: ''
   },
   {
     key: CaseViewMode.table,
-    name: t('functionCase.mainView.listView'),
+    name: t('testCase.mainView.listView'),
     label: ''
   },
   {
     key: CaseViewMode.kanban,
-    name: t('functionCase.mainView.kanbanView'),
+    name: t('testCase.mainView.kanbanView'),
     label: ''
   }
 ];
@@ -1505,13 +1505,13 @@ const quickList = [
   },
   {
     type: 'createdBy',
-    name: t('functionCase.mainView.myAdded'),
+    name: t('testCase.mainView.myAdded'),
     selected: false,
     group: 'createdBy'
   },
   {
     type: 'testerId',
-    name: t('functionCase.mainView.waitingForTest'),
+    name: t('testCase.mainView.waitingForTest'),
     selected: false,
     group: 'testerId'
   },
@@ -1537,51 +1537,51 @@ const quickList = [
 
 const searchOptions = computed(() => [
   {
-    placeholder: t('functionCase.case.selectCreator'),
+    placeholder: t('testCase.case.selectCreator'),
     valueKey: 'name',
     type: 'input',
     allowClear: true
   },
   {
-    placeholder: t('functionCase.case.selectCreator'),
+    placeholder: t('testCase.case.selectCreator'),
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('functionCase.case.selectTester'),
+    placeholder: t('testCase.case.selectTester'),
     valueKey: 'testerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('functionCase.case.selectDeveloper'),
+    placeholder: t('testCase.case.selectDeveloper'),
     valueKey: 'developerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('functionCase.case.selectPriority'),
+    placeholder: t('testCase.case.selectPriority'),
     valueKey: 'priority',
     type: 'select-enum',
     enumKey: Priority,
     allowClear: true
   },
   {
-    placeholder: t('functionCase.case.selectTestResult'),
+    placeholder: t('testCase.case.selectTestResult'),
     valueKey: 'testResult',
     type: 'select-enum',
     enumKey: CaseTestResult,
     allowClear: true
   },
   {
-    placeholder: t('functionCase.case.selectReviewer'),
+    placeholder: t('testCase.case.selectReviewer'),
     valueKey: 'reviewerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('functionCase.case.selectReviewStatus'),
+    placeholder: t('testCase.case.selectReviewStatus'),
     valueKey: 'reviewStatus',
     type: 'select-enum',
     enumKey: ReviewStatusEnum,
@@ -1589,8 +1589,8 @@ const searchOptions = computed(() => [
   },
   {
     placeholder: [
-      t('functionCase.case.searchPanel.reviewDateFrom'),
-      t('functionCase.case.searchPanel.reviewDateTo')
+      t('testCase.case.searchPanel.reviewDateFrom'),
+      t('testCase.case.searchPanel.reviewDateTo')
     ],
     valueKey: 'reviewDate',
     type: 'date-range',
@@ -1599,8 +1599,8 @@ const searchOptions = computed(() => [
   },
   {
     placeholder: [
-      t('functionCase.case.searchPanel.updateDateFrom'),
-      t('functionCase.case.searchPanel.updateDateTo')
+      t('testCase.case.searchPanel.updateDateFrom'),
+      t('testCase.case.searchPanel.updateDateTo')
     ],
     valueKey: 'lastModifiedDate',
     type: 'date-range',
@@ -1609,8 +1609,8 @@ const searchOptions = computed(() => [
   },
   {
     placeholder: [
-      t('functionCase.case.searchPanel.deadlineDateFrom'),
-      t('functionCase.case.searchPanel.deadlineDateTo')
+      t('testCase.case.searchPanel.deadlineDateFrom'),
+      t('testCase.case.searchPanel.deadlineDateTo')
     ],
     valueKey: 'deadlineDate',
     type: 'date-range',
@@ -1619,8 +1619,8 @@ const searchOptions = computed(() => [
   },
   {
     placeholder: [
-      t('functionCase.case.searchPanel.createdDateFrom'),
-      t('functionCase.case.searchPanel.createdDateTo')
+      t('testCase.case.searchPanel.createdDateFrom'),
+      t('testCase.case.searchPanel.createdDateTo')
     ],
     valueKey: 'createdDate',
     type: 'date-range',
@@ -1629,8 +1629,8 @@ const searchOptions = computed(() => [
   },
   {
     placeholder: [
-      t('functionCase.case.searchPanel.testResultHandleDateFrom'),
-      t('functionCase.case.searchPanel.testResultHandleDateTo')
+      t('testCase.case.searchPanel.testResultHandleDateFrom'),
+      t('testCase.case.searchPanel.testResultHandleDateTo')
     ],
     valueKey: 'testResultHandleDate',
     type: 'date-range',
@@ -1650,13 +1650,13 @@ const searchOptions = computed(() => [
 
 const buttonDropdownMenuItems = computed(() => [
   {
-    name: t('functionCase.mainView.exportCase'),
+    name: t('testCase.mainView.exportCase'),
     key: 'export',
     icon: 'icon-daochu1',
     noAuth: !caseList.value.length
   },
   {
-    name: t('functionCase.mainView.importCase'),
+    name: t('testCase.mainView.importCase'),
     key: 'import',
     icon: 'icon-shangchuan'
   }
@@ -1664,14 +1664,14 @@ const buttonDropdownMenuItems = computed(() => [
 
 const modeTitle = computed(() => {
   if (props.viewMode === CaseViewMode.kanban) {
-    return t('functionCase.mainView.listView');
+    return t('testCase.mainView.listView');
   }
 
   if (props.viewMode === CaseViewMode.flat) {
-    return t('functionCase.mainView.kanbanView');
+    return t('testCase.mainView.kanbanView');
   }
 
-  return t('functionCase.mainView.tileView');
+  return t('testCase.mainView.tileView');
 });
 
 const modeIcon = computed(() => {
@@ -1693,33 +1693,33 @@ const groupMenuItems = [
   },
   {
     key: 'testerName',
-    name: t('functionCase.mainView.groupByTester')
+    name: t('testCase.mainView.groupByTester')
   },
   {
     key: 'lastModifiedByName',
-    name: t('functionCase.mainView.groupByLastModifier')
+    name: t('testCase.mainView.groupByLastModifier')
   }
 ];
 
 const sortMenuItems = [
   {
     key: 'createdByName',
-    name: t('functionCase.mainView.sortByCreator'),
+    name: t('testCase.mainView.sortByCreator'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'testerName',
-    name: t('functionCase.mainView.sortByTester'),
+    name: t('testCase.mainView.sortByTester'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'priority',
-    name: t('functionCase.mainView.sortByPriority'),
+    name: t('testCase.mainView.sortByPriority'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'deadlineDate',
-    name: t('functionCase.mainView.sortByDeadline'),
+    name: t('testCase.mainView.sortByDeadline'),
     orderSort: PageQuery.OrderSort.Asc
   }];
 
@@ -1770,7 +1770,7 @@ defineExpose({
 
             <div class="h-7 leading-7 mb-3 mr-5">
               <span class="text-3 text-theme-content">
-                <span>{{ t('functionCase.mainView.groupByModule') }}</span>
+                <span>{{ t('testCase.mainView.groupByModule') }}</span>
                 <Colon class="mr-2" />
               </span>
 
@@ -1859,7 +1859,7 @@ defineExpose({
                 data-type="float"
                 size="small"
                 allowClear
-                :placeholder="t('functionCase.mainView.testTimes')"
+                :placeholder="t('testCase.mainView.testTimes')"
                 style="width: 296px;"
                 :min="0"
                 :debounce="500"
@@ -1884,7 +1884,7 @@ defineExpose({
                 data-type="float"
                 size="small"
                 allowClear
-                :placeholder="t('functionCase.mainView.failTimes')"
+                :placeholder="t('testCase.mainView.failTimes')"
                 style="width: 296px;"
                 :min="0"
                 :debounce="500"
@@ -1909,7 +1909,7 @@ defineExpose({
                 data-type="float"
                 size="small"
                 allowClear
-                :placeholder="t('functionCase.mainView.reviewTimes')"
+                :placeholder="t('testCase.mainView.reviewTimes')"
                 style="width: 296px;"
                 :min="0"
                 :debounce="500"
@@ -1938,7 +1938,7 @@ defineExpose({
               type="primary"
               @click="handleAiAdd">
               <Icon icon="icon-jia" class="text-3.5" />
-              <span class="ml-1">{{ t('functionCase.mainView.smartAddCase') }}</span>
+              <span class="ml-1">{{ t('testCase.mainView.smartAddCase') }}</span>
             </Button>
 
             <Button
@@ -1948,7 +1948,7 @@ defineExpose({
               @click="handleAdd">
               <div class="flex items-center">
                 <Icon icon="icon-jia" class="text-3.5" />
-                <span class="ml-1">{{ t('functionCase.mainView.addCase') }}</span>
+                <span class="ml-1">{{ t('testCase.mainView.addCase') }}</span>
               </div>
 
               <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
@@ -1978,7 +1978,7 @@ defineExpose({
             <Tooltip
               arrowPointAtCenter
               placement="topLeft"
-              :title="isOpenCount ? t('functionCase.mainView.hideStatistics') : t('functionCase.mainView.viewStatistics')">
+              :title="isOpenCount ? t('testCase.mainView.hideStatistics') : t('testCase.mainView.viewStatistics')">
               <IconCount
                 :value="isOpenCount"
                 class="mr-2 text-4.5"
@@ -2021,7 +2021,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleAction('updateTestResult_passed')">
-            {{ t('functionCase.mainView.testPassed') }}
+            {{ t('testCase.mainView.testPassed') }}
           </Button>
 
           <Button
@@ -2030,7 +2030,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleAction('updateTestResult_notPassed')">
-            {{ t('functionCase.mainView.testNotPassed') }}
+            {{ t('testCase.mainView.testNotPassed') }}
           </Button>
 
           <Button
@@ -2180,7 +2180,7 @@ defineExpose({
       :userInfo="userInfo"
       :refCaseIds="[selectedCase?.id]"
       :description="selectedCase?.testRemark"
-      :name="t('functionCase.mainView.testNotPassedName', { name: selectedCase?.name || '' })"
+      :name="t('testCase.mainView.testNotPassedName', { name: selectedCase?.name || '' })"
       :taskType="TaskType.BUG"
       :confirmerId="selectedCase?.testerId"
       @ok="handleAddTask" />

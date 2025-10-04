@@ -180,7 +180,7 @@ const loadData = async () => {
     if (!testerNameSet.has(item.testerName)) {
       if (!item.testerName) {
         testerNameList.value.unshift({
-          name: t('functionCase.kanbanView.ungrouped'),
+          name: t('testCase.kanbanView.ungrouped'),
           value: '-1'
         });
       } else {
@@ -364,7 +364,7 @@ const dragHandler = (
         } else {
           resetDrag(id, index, testResult, toTestResult);
         }
-        notification.warning(t('functionCase.kanbanView.caseNotReviewed'));
+        notification.warning(t('testCase.kanbanView.caseNotReviewed'));
         return;
       }
 
@@ -374,12 +374,12 @@ const dragHandler = (
         } else {
           resetDrag(id, index, testResult, toTestResult);
         }
-        notification.warning(t('functionCase.kanbanView.caseReviewFailed'));
+        notification.warning(t('testCase.kanbanView.caseReviewFailed'));
         return;
       }
 
       if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
-        notification.warning(t('functionCase.kanbanView.noTestPermission'));
+        notification.warning(t('testCase.kanbanView.noTestPermission'));
         return;
       }
     }
@@ -436,7 +436,7 @@ const dragHandler = (
       } else {
         resetDrag(id, index, testResult, toTestResult);
       }
-      notification.warning(t('functionCase.kanbanView.canOnlyMoveToPending'));
+      notification.warning(t('testCase.kanbanView.canOnlyMoveToPending'));
       return;
     } else {
       if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
@@ -467,7 +467,7 @@ const dragHandler = (
       } else {
         resetDrag(id, index, testResult, toTestResult);
       }
-      notification.warning(t('functionCase.kanbanView.canOnlyMoveToTestResults'));
+      notification.warning(t('testCase.kanbanView.canOnlyMoveToTestResults'));
       return;
     } else {
       if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
@@ -779,7 +779,7 @@ const editOk = async (id:string) => {
 
 const toDelete = (data: CaseDetail) => {
   modal.confirm({
-    content: t('functionCase.kanbanView.confirmDeleteCase', { name: data.name }),
+    content: t('testCase.kanbanView.confirmDeleteCase', { name: data.name }),
     async onOk () {
       emit('loadingChange', true);
       const [error] = await funcCase.deleteCase([data.id]);
@@ -789,7 +789,7 @@ const toDelete = (data: CaseDetail) => {
       }
 
       emit('refreshChange');
-      notification.success(t('functionCase.kanbanView.caseDeleteSuccess'));
+      notification.success(t('testCase.kanbanView.caseDeleteSuccess'));
       await loadData();
       emit('loadingChange', false);
     }
@@ -804,7 +804,7 @@ const toFavourite = async (data: CaseDetail, index: number, testResult: CaseTest
     return;
   }
 
-  notification.success(t('functionCase.kanbanView.caseFavouriteSuccess'));
+  notification.success(t('testCase.kanbanView.caseFavouriteSuccess'));
   caseDataMap.value[testResult][index].favourite = true;
 };
 
@@ -816,7 +816,7 @@ const toDeleteFavourite = async (data: CaseDetail, index: number, testResult: Ca
     return;
   }
 
-  notification.success(t('functionCase.kanbanView.caseUnfavouriteSuccess'));
+  notification.success(t('testCase.kanbanView.caseUnfavouriteSuccess'));
   caseDataMap.value[testResult][index].favourite = false;
 };
 
@@ -828,7 +828,7 @@ const toFollow = async (data: CaseDetail, index: number, testResult: CaseTestRes
     return;
   }
 
-  notification.success(t('functionCase.kanbanView.caseFollowSuccess'));
+  notification.success(t('testCase.kanbanView.caseFollowSuccess'));
   caseDataMap.value[testResult][index].follow = true;
 };
 
@@ -840,7 +840,7 @@ const toDeleteFollow = async (data: CaseDetail, index: number, testResult: CaseT
     return;
   }
 
-  notification.success(t('functionCase.kanbanView.caseUnfollowSuccess'));
+  notification.success(t('testCase.kanbanView.caseUnfollowSuccess'));
   caseDataMap.value[testResult][index].follow = false;
 };
 
@@ -854,7 +854,7 @@ const toClone = async (data: CaseDetail) => {
   }
 
   emit('refreshChange');
-  notification.success(t('functionCase.kanbanView.caseCloneSuccess'));
+  notification.success(t('testCase.kanbanView.caseCloneSuccess'));
   await loadData();
 };
 
@@ -885,7 +885,7 @@ const testOk = async () => {
   selectedCaseInfo.value = undefined;
   resultPassed.value = false;
   emit('refreshChange');
-  notification.success(t('functionCase.kanbanView.testResultUpdateSuccess'));
+  notification.success(t('testCase.kanbanView.testResultUpdateSuccess'));
   await loadData();
 };
 
@@ -937,7 +937,7 @@ const addTaskOk = async (data) => {
     return;
   }
 
-  notification.success(t('functionCase.kanbanView.bugTaskAssociated'));
+  notification.success(t('testCase.kanbanView.bugTaskAssociated'));
   // 更新该条数据
   const [_error, _res] = await funcCase.getCaseDetail(selectedCaseInfo.value?.id);
   if (_error) {
@@ -967,7 +967,7 @@ const toRetest = async (data: CaseDetail, notificationFlag = true, errorCallback
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('functionCase.kanbanView.caseRetestSuccess'));
+    notification.success(t('testCase.kanbanView.caseRetestSuccess'));
   }
   loadData();
 };
@@ -982,7 +982,7 @@ const toResetTestResult = async (data: CaseDetail) => {
   }
 
   emit('refreshChange');
-  notification.success(t('functionCase.kanbanView.caseResetTestResultSuccess'));
+  notification.success(t('testCase.kanbanView.caseResetTestResultSuccess'));
   loadData();
 };
 
@@ -1000,7 +1000,7 @@ const toBlock = async (data: CaseDetail, notificationFlag = true, errorCallback?
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('functionCase.kanbanView.caseBlockedSuccess'));
+    notification.success(t('testCase.kanbanView.caseBlockedSuccess'));
   }
   loadData();
 };
@@ -1019,7 +1019,7 @@ const toCancel = async (data: CaseDetail, notificationFlag = true, errorCallback
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('functionCase.kanbanView.caseCancelSuccess'));
+    notification.success(t('testCase.kanbanView.caseCancelSuccess'));
   }
   loadData();
 };
@@ -1165,7 +1165,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       if (!review || (review && reviewStatus === ReviewStatus.PASSED)) {
         if (testResult === CaseTestResult.PENDING || testResult === CaseTestResult.BLOCKED) {
           menuItems.push({
-            name: t('functionCase.kanbanView.testPassed'),
+            name: t('testCase.kanbanView.testPassed'),
             key: 'testPassed',
             icon: 'icon-xiugaiceshijieguo',
             disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
@@ -1173,7 +1173,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           });
 
           menuItems.push({
-            name: t('functionCase.kanbanView.testNotPassed'),
+            name: t('testCase.kanbanView.testNotPassed'),
             key: 'testNotPassed',
             icon: 'icon-xiugaiceshijieguo',
             disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
@@ -1182,7 +1182,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
           if (testResult === CaseTestResult.PENDING) {
             menuItems.push({
-              name: t('functionCase.kanbanView.setBlocked'),
+              name: t('testCase.kanbanView.setBlocked'),
               key: 'block',
               icon: 'icon-xiugaiceshijieguo',
               disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
@@ -1191,7 +1191,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           }
         } else if (testResult === CaseTestResult.PASSED || testResult === CaseTestResult.NOT_PASSED || testResult === CaseTestResult.CANCELED) {
           menuItems.push({
-            name: t('functionCase.kanbanView.retest'),
+            name: t('testCase.kanbanView.retest'),
             key: 'retest',
             icon: 'icon-xiugaiceshijieguo',
             disabled: !isAdmin.value && (!permissions.includes(FuncPlanPermission.RESET_TEST_RESULT) || planAuthMap.value[item.planId]) && item.testerId !== props.userInfo?.id,
@@ -1200,7 +1200,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
           if (testResult === CaseTestResult.NOT_PASSED) {
             menuItems.push({
-              name: t('functionCase.kanbanView.addBug'),
+              name: t('testCase.kanbanView.addBug'),
               key: 'addBug',
               icon: 'icon-bianji',
               disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.MODIFY_CASE),
@@ -1212,12 +1212,12 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         // 测试次数大于0才允许重置测试结果
         if (+testNum > 0) {
           menuItems.push({
-            name: t('functionCase.kanbanView.resetTestResult'),
+            name: t('testCase.kanbanView.resetTestResult'),
             key: 'resetTestResult',
             icon: 'icon-zhongzhiceshijieguo',
             disabled: !isAdmin.value && (!permissions.includes(FuncPlanPermission.RESET_TEST_RESULT) || planAuthMap.value[item.planId]),
             hide: false,
-            tip: t('functionCase.kanbanView.resetTestResultTip')
+            tip: t('testCase.kanbanView.resetTestResultTip')
           });
         }
 
@@ -1411,7 +1411,7 @@ const checkedCaseId = computed(() => {
               class="text-3.5 cursor-pointer"
               @click="toggleOpen" />
           </Tooltip>
-          <span class="font-semibold">{{ t('functionCase.kanbanView.swimLane') }}</span>
+          <span class="font-semibold">{{ t('testCase.kanbanView.swimLane') }}</span>
         </div>
         <div
           v-for="_testResult in testResultList"
@@ -1549,7 +1549,7 @@ const checkedCaseId = computed(() => {
           v-if="false"
           :class="{ 'drawer-active-item': drawerActiveKey === 'testStep' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.testSteps')"
+          :title="t('testCase.kanbanView.testSteps')"
           @click="drawerActiveKeyChange('testStep')">
           <Icon icon="icon-renwu2" class="text-4" />
         </div>
@@ -1557,7 +1557,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'person' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.personnel')"
+          :title="t('testCase.kanbanView.personnel')"
           @click="drawerActiveKeyChange('person')">
           <Icon icon="icon-quanburenyuan" class="text-4" />
         </div>
@@ -1565,7 +1565,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'date' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.date')"
+          :title="t('testCase.kanbanView.date')"
           @click="drawerActiveKeyChange('date')">
           <Icon icon="icon-riqi" class="text-4" />
         </div>
@@ -1573,7 +1573,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'reviewInfo' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.reviewInfo')"
+          :title="t('testCase.kanbanView.reviewInfo')"
           @click="drawerActiveKeyChange('reviewInfo')">
           <Icon icon="icon-pingtaimorenzhibiao1" class="text-4" />
         </div>
@@ -1581,7 +1581,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'testInfo' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.testInfo')"
+          :title="t('testCase.kanbanView.testInfo')"
           @click="drawerActiveKeyChange('testInfo')">
           <Icon icon="icon-renwuceshibaogao" class="text-4" />
         </div>
@@ -1589,7 +1589,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'refTasks' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.associatedTasks')"
+          :title="t('testCase.kanbanView.associatedTasks')"
           @click="drawerActiveKeyChange('refTasks')">
           <Icon icon="icon-ceshirenwu" class="text-4" />
         </div>
@@ -1597,7 +1597,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'refCases' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.associatedCases')"
+          :title="t('testCase.kanbanView.associatedCases')"
           @click="drawerActiveKeyChange('refCases')">
           <Icon icon="icon-ceshiyongli1" class="text-4" />
         </div>
@@ -1613,7 +1613,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'reviewRecord' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.reviewRecordTitle')"
+          :title="t('testCase.kanbanView.reviewRecordTitle')"
           @click="drawerActiveKeyChange('reviewRecord')">
           <Icon icon="icon-pingshen" class="text-4" />
         </div>

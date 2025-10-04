@@ -103,7 +103,7 @@ const completeReview = async (reviewData: ReviewDetail, itemIndex: number) => {
  */
 const deleteReview = async (reviewData: ReviewDetail) => {
   modal.confirm({
-    content: t('caseReview.list.confirmDeleteReview', { name: reviewData.name }),
+    content: t('testCaseReview.list.confirmDeleteReview', { name: reviewData.name }),
     async onOk () {
       const reviewId = reviewData.id;
       const [error] = await func.deleteReview(reviewId);
@@ -111,7 +111,7 @@ const deleteReview = async (reviewData: ReviewDetail) => {
         return;
       }
 
-      notification.success(t('caseReview.list.reviewDeletedSuccess'));
+      notification.success(t('testCaseReview.list.reviewDeletedSuccess'));
       emit('refresh');
 
       deleteTabPane([reviewId]);
@@ -129,7 +129,7 @@ const cloneReview = async (reviewData: ReviewDetail) => {
     return;
   }
 
-  notification.success(t('caseReview.list.reviewClonedSuccess'));
+  notification.success(t('testCaseReview.list.reviewClonedSuccess'));
   emit('refresh');
 };
 
@@ -251,7 +251,7 @@ const dropdownMenuItems = [
               <!-- Case count -->
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('caseReview.list.totalCases') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('testCaseReview.list.totalCases') }}</span>
                   <span class="text-sm font-medium text-theme-content">
                     {{ item.caseNum }}
                   </span>
@@ -261,7 +261,7 @@ const dropdownMenuItems = [
               <!-- Participants -->
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('caseReview.list.participants') }}</span>
+                  <span class="text-xs text-theme-sub-content">{{ t('testCaseReview.list.participants') }}</span>
                   <span class="text-sm font-medium text-theme-content">
                     {{ item.participants?.length || 0 }} 人
                   </span>
@@ -283,7 +283,7 @@ const dropdownMenuItems = [
                       placement="bottomLeft"
                       internal>
                       <template #title>
-                        <span class="text-sm font-medium">{{ t('caseReview.list.participants') }} ({{ item.participants.length }})</span>
+                        <span class="text-sm font-medium">{{ t('testCaseReview.list.participants') }} ({{ item.participants.length }})</span>
                       </template>
                       <template #content>
                         <div class="grid grid-cols-5 gap-2 max-w-md">
@@ -324,7 +324,7 @@ const dropdownMenuItems = [
                 <span class="text-theme-content font-medium truncate max-w-16" :title="item.lastModifiedByName">
                   {{ item.lastModifiedByName }}
                 </span>
-                <span>{{ t('caseReview.list.modifiedBy') }}</span>
+                <span>{{ t('testCaseReview.list.modifiedBy') }}</span>
                 <span class="text-theme-sub-content">{{ item.lastModifiedDate }}</span>
               </div>
             </div>
@@ -345,7 +345,7 @@ const dropdownMenuItems = [
                 <span class="text-theme-content ml-2">{{ item.id || "--" }}</span>
               </div>
               <div class="flex items-center mr-8 mt-1">
-                <span>{{ t('caseReview.list.testPlan') }}</span>
+                <span>{{ t('testCaseReview.list.testPlan') }}</span>
                 <Colon />
                 <span class="text-theme-content ml-2 truncate max-w-48" :title="item.planName">{{ item.planName || "--" }}</span>
               </div>
@@ -371,7 +371,7 @@ const dropdownMenuItems = [
 
                 <RouterLink class="flex items-center ml-3" :to="`/function#reviews?id=${item.id}`">
                   <Icon icon="icon-shuxie" class="mr-0.5" />
-                  <span>{{ t('caseReview.list.goToReview') }}</span>
+                  <span>{{ t('testCaseReview.list.goToReview') }}</span>
                 </RouterLink>
 
                 <Button

@@ -29,11 +29,11 @@ export const minPeopleInfoColumns = [[bigPeopleInfoColumns[0][0], bigPeopleInfoC
 export const bigDateInfoColumns = [
   [
     {
-      label: t('functionCase.detail.caseColumConfig.reviewTime'),
+      label: t('testCase.detail.caseColumConfig.reviewTime'),
       dataIndex: 'reviewDate'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.testCompleteTime'),
+      label: t('testCase.detail.caseColumConfig.testCompleteTime'),
       dataIndex: 'testResultHandleDate'
     },
     {
@@ -60,16 +60,16 @@ export const minDateInfoColumns = [
 export const bigReviewInfoColumns = [
   [
     {
-      label: t('functionCase.detail.caseColumConfig.enableReview'),
+      label: t('testCase.detail.caseColumConfig.enableReview'),
       dataIndex: 'review',
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },
     {
-      label: t('functionCase.detail.caseColumConfig.reviewCount'),
+      label: t('testCase.detail.caseColumConfig.reviewCount'),
       dataIndex: 'reviewNum'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.reviewFailCount'),
+      label: t('testCase.detail.caseColumConfig.reviewFailCount'),
       dataIndex: 'reviewFailNum'
     },
     {
@@ -77,7 +77,7 @@ export const bigReviewInfoColumns = [
       dataIndex: 'oneReviewPass'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.reviewOpinion'),
+      label: t('testCase.detail.caseColumConfig.reviewOpinion'),
       dataIndex: 'reviewRemark'
     }
   ]
@@ -97,11 +97,11 @@ export const minReviewInfoColumns = [
 export const bigTestInfoColumns = [
   [
     {
-      label: t('functionCase.detail.caseColumConfig.testCount'),
+      label: t('testCase.detail.caseColumConfig.testCount'),
       dataIndex: 'testNum'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.failCount'),
+      label: t('testCase.detail.caseColumConfig.failCount'),
       dataIndex: 'testFailNum'
     },
     {
@@ -109,7 +109,7 @@ export const bigTestInfoColumns = [
       dataIndex: 'oneTestPass'
     },
     {
-      label: t('functionCase.detail.caseColumConfig.resultRemark'),
+      label: t('testCase.detail.caseColumConfig.resultRemark'),
       dataIndex: 'testRemark'
     }
   ]

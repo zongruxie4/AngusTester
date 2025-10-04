@@ -101,7 +101,7 @@ watch(() => props.visible, newValue => {
 </script>
 <template>
   <Modal
-    :title="t('functionCase.uploadCase.title')"
+    :title="t('testCase.uploadCase.title')"
     :visible="props.visible"
     @cancel="cancel"
     @ok="ok">
@@ -119,11 +119,11 @@ watch(() => props.visible, newValue => {
           :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
           :defaultActiveFirstOption="true"
           :lazy="false"
-          :placeholder="t('functionCase.uploadCase.selectPlan')"
+          :placeholder="t('testCase.uploadCase.selectPlan')"
           :fieldNames="{value: 'id', label: 'name'}" />
       </FormItem>
 
-      <FormItem :rules="{message: t('functionCase.uploadCase.pleaseUploadFile'), validator: validateFile}" name="file">
+      <FormItem :rules="{message: t('testCase.uploadCase.pleaseUploadFile'), validator: validateFile}" name="file">
         <Spin :spinning="loading">
           <UploadDragger
             v-show="!formData.file"
@@ -134,8 +134,8 @@ watch(() => props.visible, newValue => {
             class="text-3 leading-5">
             <div class="flex flex-col items-center justify-center text-3 leading-5">
               <Icon icon="icon-shangchuan" class="text-5 text-text-link" />
-              <div class="mt-1 mb-1.5 text-text-link">{{ t('functionCase.uploadCase.selectFile') }}</div>
-              <div class="text-theme-sub-content">{{ t('functionCase.uploadCase.uploadDescription') }}</div>
+              <div class="mt-1 mb-1.5 text-text-link">{{ t('testCase.uploadCase.selectFile') }}</div>
+              <div class="text-theme-sub-content">{{ t('testCase.uploadCase.uploadDescription') }}</div>
             </div>
           </UploadDragger>
         </Spin>
@@ -161,13 +161,13 @@ watch(() => props.visible, newValue => {
             size="small"
             @click="handleDownloadTemplate">
             <Icon icon="icon-daochu1" class="text-4 cursor-pointer mr-1" />
-            {{ t('functionCase.uploadCase.caseImportTemplate') }}
+            {{ t('testCase.uploadCase.caseImportTemplate') }}
           </Button>
         </div>
       </FormItem>
 
       <FormItem
-        :label="t('functionCase.uploadCase.duplicateStrategy')"
+        :label="t('testCase.uploadCase.duplicateStrategy')"
         name="strategyWhenDuplicated"
         required>
         <RadioGroup

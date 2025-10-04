@@ -137,12 +137,12 @@ const leftColumnConfig = [
     class: 'w-8 border-r text-center'
   },
   {
-    title: t('functionBaseline.case.name'),
+    title: t('testCaseBaseline.case.name'),
     dataIndex: 'name',
     class: 'flex-1 border-r'
   },
   {
-    title: t('functionBaseline.case.versionNumber'),
+    title: t('testCaseBaseline.case.versionNumber'),
     dataIndex: 'version',
     class: 'w-20'
   }
@@ -150,12 +150,12 @@ const leftColumnConfig = [
 
 const rightColumnConfig = [
   {
-    title: t('functionBaseline.case.name'),
+    title: t('testCaseBaseline.case.name'),
     dataIndex: 'name',
     class: 'flex-1 border-r'
   },
   {
-    title: t('functionBaseline.case.versionNumber'),
+    title: t('testCaseBaseline.case.versionNumber'),
     dataIndex: 'version',
     class: 'w-20 border-r'
   },
@@ -250,7 +250,7 @@ const rightColumnConfig = [
               type="link"
               size="small"
               @click="openCaseComparisonModal(caseId)">
-              {{ t('functionBaseline.case.compare') }}
+              {{ t('testCaseBaseline.case.compare') }}
             </Button>
           </tmplate>
           <template v-else>

@@ -25,16 +25,16 @@ const oneReviewPass = computed(() => {
 const reviewInfoColumns = [
   [
     {
-      label: t('functionCase.kanbanView.reviewInfoGrid.enableReview'),
+      label: t('testCase.kanbanView.reviewInfoGrid.enableReview'),
       dataIndex: 'review',
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },
     {
-      label: t('functionCase.kanbanView.reviewInfoGrid.reviewCount'),
+      label: t('testCase.kanbanView.reviewInfoGrid.reviewCount'),
       dataIndex: 'reviewNum'
     },
     {
-      label: t('functionCase.kanbanView.reviewInfoGrid.reviewFailCount'),
+      label: t('testCase.kanbanView.reviewInfoGrid.reviewFailCount'),
       dataIndex: 'reviewFailNum'
     },
     {
@@ -42,7 +42,7 @@ const reviewInfoColumns = [
       dataIndex: 'oneReviewPass'
     },
     {
-      label: t('functionCase.kanbanView.reviewInfoGrid.reviewOpinion'),
+      label: t('testCase.kanbanView.reviewInfoGrid.reviewOpinion'),
       dataIndex: 'reviewRemark'
     }
   ]
@@ -51,7 +51,7 @@ const reviewInfoColumns = [
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.reviewInfoGrid.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('testCase.kanbanView.reviewInfoGrid.title') }}</div>
     <Grid
       :columns="reviewInfoColumns"
       :dataSource="props.dataSource"

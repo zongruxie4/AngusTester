@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { LoadingProps } from '@/types/types';
-import {formatDateString} from "@/utils/utils";
+import { formatDateString } from '@/utils/utils';
 
 const { t } = useI18n();
 

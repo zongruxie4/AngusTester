@@ -104,7 +104,7 @@ defineExpose({
 </script>
 <template>
   <div class="text-3 overflow-auto h-full">
-    <div class="text-title text-3 font-medium mt-2">{{ t('functionCase.detail.review.reviewCount') }}</div>
+    <div class="text-title text-3 font-medium mt-2">{{ t('testCase.detail.review.reviewCount') }}</div>
 
     <div class="flex w-150 space-x-15 mt-2">
       <div class="flex-1 inline-flex bg-gray-light rounded">
@@ -115,21 +115,21 @@ defineExpose({
       </div>
 
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-status-success text-white rounded">{{ t('functionCase.detail.review.reviewPassed') }}</label>
+        <label class="w-20 px-2 py-1 bg-status-success text-white rounded">{{ t('testCase.detail.review.reviewPassed') }}</label>
         <div class=" px-2 py-1  w-15 font-medium">
           {{ reviewNum.successNum }}
         </div>
       </div>
 
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-status-error text-white rounded">{{ t('functionCase.detail.review.reviewFailed') }}</label>
+        <label class="w-20 px-2 py-1 bg-status-error text-white rounded">{{ t('testCase.detail.review.reviewFailed') }}</label>
         <div class=" px-2 py-1  w-15 font-medium">
           {{ reviewNum.failNum }}
         </div>
       </div>
     </div>
 
-    <div class="text-title text-3 font-medium mt-6">{{ t('functionCase.detail.review.reviewRecords') }}</div>
+    <div class="text-title text-3 font-medium mt-6">{{ t('testCase.detail.review.reviewRecords') }}</div>
     <div class="mt-2 space-y-2">
       <div
         v-for="record in reviewRecords"
@@ -144,7 +144,7 @@ defineExpose({
             class="w-5 mr-2" />
           <span class="font-semibold flex-1/3">
             {{ record.reviewerName }} {{ record.reviewStatus?.value === ReviewStatus.PASSED
-              ? t('functionCase.detail.review.reviewPassedCase') : t('functionCase.detail.review.reviewFailedCase') }}
+              ? t('testCase.detail.review.reviewPassedCase') : t('testCase.detail.review.reviewFailedCase') }}
           </span>
           <div class=" flex-1/2">{{ record.reviewDate }}</div>
         </div>
@@ -165,13 +165,13 @@ defineExpose({
 
     <div v-if="!!selectRecordInfo" class="flex max-w-200 ">
       <div class="flex-1 p-2 border-r  space-y-3">
-        <div class="mb-3">{{ t('functionCase.detail.review.reviewVersion') }}</div>
+        <div class="mb-3">{{ t('testCase.detail.review.reviewVersion') }}</div>
 
         <CaseInfo :caseInfo="selectRecordInfo" />
 
         <Precondition :caseInfo="selectRecordInfo" />
 
-        <div class="font-semibold text-3.5">{{ t('functionCase.detail.review.testSteps') }}</div>
+        <div class="font-semibold text-3.5">{{ t('testCase.detail.review.testSteps') }}</div>
 
         <CaseStep :defaultValue="selectRecordInfo?.steps || {}" readonly />
 
@@ -179,13 +179,13 @@ defineExpose({
       </div>
 
       <div class="flex-1 p-2 space-y-3">
-        <div class="mb-3">{{ t('functionCase.detail.review.latestVersion') }}</div>
+        <div class="mb-3">{{ t('testCase.detail.review.latestVersion') }}</div>
 
         <CaseInfo :caseInfo="props.caseDetail" />
 
         <Precondition :caseInfo="props.caseDetail" :contentClass="preconditionClass" />
 
-        <div class="font-semibold text-3.5">{{ t('functionCase.detail.review.testSteps') }}</div>
+        <div class="font-semibold text-3.5">{{ t('testCase.detail.review.testSteps') }}</div>
 
         <div :class="stepsClass">
           <CaseStep :defaultValue="props?.caseDetail?.steps || []" readonly />

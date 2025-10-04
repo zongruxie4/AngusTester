@@ -59,13 +59,13 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   enumOptions: createEnumOptions([
     {
       key: 'established=1',
-      name: t('functionBaseline.list.established'),
+      name: t('testCaseBaseline.list.established'),
       fieldKey: 'established',
       fieldValue: 'true'
     },
     {
       key: 'established=0',
-      name: t('functionBaseline.list.notEstablished'),
+      name: t('testCaseBaseline.list.notEstablished'),
       fieldKey: 'established',
       fieldValue: 'false'
     }
@@ -89,7 +89,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: t('functionBaseline.list.searchBaselineNameDescription'),
+    placeholder: t('testCaseBaseline.list.searchBaselineNameDescription'),
     allowClear: true,
     maxlength: 100
   },
@@ -97,15 +97,15 @@ const searchPanelOptions = [
     valueKey: 'ownerId',
     type: 'select-user',
     allowClear: true,
-    placeholder: t('functionBaseline.list.selectOwner'),
+    placeholder: t('testCaseBaseline.list.selectOwner'),
     maxlength: 100
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
     placeholder: [
-      t('functionBaseline.list.createdTimeGreaterEqual'),
-      t('functionBaseline.list.createdTimeLessEqual')
+      t('testCaseBaseline.list.createdTimeGreaterEqual'),
+      t('testCaseBaseline.list.createdTimeLessEqual')
     ],
     showTime: true,
     allowClear: true
@@ -119,17 +119,17 @@ const sortMenuItems: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('functionBaseline.list.sortByName'),
+    name: t('testCaseBaseline.list.sortByName'),
     key: 'name',
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('functionBaseline.list.sortByAddPerson'),
+    name: t('testCaseBaseline.list.sortByAddPerson'),
     key: 'createdBy',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('functionBaseline.list.sortByAddTime'),
+    name: t('testCaseBaseline.list.sortByAddTime'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Asc
   }
@@ -219,7 +219,7 @@ const handleRefreshClick = () => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/function#baseline?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('functionBaseline.list.addBaseline') }}</span>
+            <span>{{ t('testCaseBaseline.list.addBaseline') }}</span>
           </RouterLink>
         </Button>
 

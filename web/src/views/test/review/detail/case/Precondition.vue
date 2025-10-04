@@ -26,7 +26,6 @@ const emit = defineEmits<{
 
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
-
 const descRichRef = ref();
 const openFlag = ref(true);
 const editFlag = ref(false);
@@ -106,7 +105,9 @@ const caseId = computed(() => {
         <Button
           size="small"
           type="link"
-          @click="cancel">{{ t('actions.cancel') }}</Button>
+          @click="cancel">
+          {{ t('actions.cancel') }}
+        </Button>
         <Button
           size="small"
           type="link"
@@ -122,12 +123,15 @@ const caseId = computed(() => {
           v-model:value="content"
           :height="80" />
         <div v-show="descErr" class="text-status-error">
-          {{ t('functionCase.kanbanView.infoPrecondition.maxCharError') }}
+          {{ t('testCase.kanbanView.infoPrecondition.maxCharError') }}
         </div>
       </div>
     </AsyncComponent>
     <AsyncComponent :visible="!editFlag">
-      <div v-if="props.caseInfo?.precondition" v-show="!editFlag" :class="props.contentClass">
+      <div
+        v-if="props.caseInfo?.precondition"
+        v-show="!editFlag"
+        :class="props.contentClass">
         <div class="bg-gray-50 rounded-lg p-4">
           <RichEditor :value="props.caseInfo?.precondition" mode="view" />
         </div>
