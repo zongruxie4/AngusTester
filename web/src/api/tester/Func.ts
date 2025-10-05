@@ -103,7 +103,7 @@ export default class API {
     return http.post(`${baseUrl}/baseline/${baselineId}/case`, caseIds);
   }
 
-  deleteBaselineCase (baselineId: string, caseIds: string): Promise<[Error | null, any]> {
+  deleteBaselineCase (baselineId: string, caseIds): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/baseline/${baselineId}/case`, caseIds, {
       dataType: true
     });

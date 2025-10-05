@@ -259,7 +259,11 @@
       "selectAssignee": "选择经办人",
       "selectConfirmer": "选择确认人",
       "selectTester": "选择测试人",
+      "selectDeveloper": "选择开发人",
+      "selectReviewer": "选择评审人",
       "selectExecutor": "选择执行人",
+      "selectTestResult": "选择测试结果",
+      "selectReviewStatus": "选择评审状态",
       "selectOrSearchSprint": "选择或查询迭代",
       "selectOrSearchModule": "选择或查模块",
       "selectParentIssue": "请选择父问题",
@@ -312,6 +316,10 @@
       "selectExecutedDateRange": [
         "执行时间从",
         "执行时间到"
+      ],
+      "selectReviewDateRange": [
+        "评审时间从",
+        "评审时间到"
       ],
       "selectCreatedDateRange": [
         "创建时间从",

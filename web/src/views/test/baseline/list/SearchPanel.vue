@@ -59,13 +59,13 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   enumOptions: createEnumOptions([
     {
       key: 'established=1',
-      name: t('testCaseBaseline.list.established'),
+      name: t('testCaseBaseline.messages.established'),
       fieldKey: 'established',
       fieldValue: 'true'
     },
     {
       key: 'established=0',
-      name: t('testCaseBaseline.list.notEstablished'),
+      name: t('testCaseBaseline.messages.notEstablished'),
       fieldKey: 'established',
       fieldValue: 'false'
     }
@@ -89,7 +89,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: t('testCaseBaseline.list.searchBaselineNameDescription'),
+    placeholder: t('common.placeholders.searchKeyword'),
     allowClear: true,
     maxlength: 100
   },
@@ -97,15 +97,15 @@ const searchPanelOptions = [
     valueKey: 'ownerId',
     type: 'select-user',
     allowClear: true,
-    placeholder: t('testCaseBaseline.list.selectOwner'),
+    placeholder: t('common.placeholders.selectOwner'),
     maxlength: 100
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
     placeholder: [
-      t('testCaseBaseline.list.createdTimeGreaterEqual'),
-      t('testCaseBaseline.list.createdTimeLessEqual')
+      t('common.placeholders.selectCreatedDateRange.0'),
+      t('common.placeholders.selectCreatedDateRange.1')
     ],
     showTime: true,
     allowClear: true
@@ -119,17 +119,17 @@ const sortMenuItems: {
   orderSort: PageQuery.OrderSort;
 }[] = [
   {
-    name: t('testCaseBaseline.list.sortByName'),
+    name: t('common.name'),
     key: 'name',
     orderSort: PageQuery.OrderSort.Desc
   },
   {
-    name: t('testCaseBaseline.list.sortByAddPerson'),
+    name: t('common.creator'),
     key: 'createdBy',
     orderSort: PageQuery.OrderSort.Asc
   },
   {
-    name: t('testCaseBaseline.list.sortByAddTime'),
+    name: t('common.createdDate'),
     key: 'createdDate',
     orderSort: PageQuery.OrderSort.Asc
   }
@@ -219,7 +219,7 @@ const handleRefreshClick = () => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/test#baseline?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('testCaseBaseline.list.addBaseline') }}</span>
+            <span>{{ t('testCaseBaseline.actions.addBaseline') }}</span>
           </RouterLink>
         </Button>
 

@@ -68,7 +68,7 @@ const handleBaselineEstablishment = async (baselineData: BaselineDetail) => {
  */
 const handleBaselineDeletion = async (baselineData: BaselineDetail) => {
   modal.confirm({
-    content: t('testCaseBaseline.list.confirmDeleteBaseline', { name: baselineData.name }),
+    content: t('testCaseBaseline.messages.confirmDeleteBaseline', { name: baselineData.name }),
     async onOk () {
       const id = baselineData.id;
       const [error] = await func.deleteBaseline([id]);
@@ -76,7 +76,7 @@ const handleBaselineDeletion = async (baselineData: BaselineDetail) => {
         return;
       }
 
-      notification.success(t('testCaseBaseline.list.baselineDeletedSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       emit('refresh');
 
       deleteTabPane([id]);
@@ -122,7 +122,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
                   class="w-2 h-2 rounded-full"
                   :class="getBaselineStatusDotStyle(item.established)">
                 </div>
-                <span>{{ item.established ? t('testCaseBaseline.list.established') : t('testCaseBaseline.list.notEstablished') }}</span>
+                <span>{{ item.established ? t('testCaseBaseline.messages.established') : t('testCaseBaseline.messages.notEstablished') }}</span>
               </div>
             </div>
           </div>
@@ -137,7 +137,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
                   <span class="text-xs text-theme-sub-content">ID</span>
-                  <span class="text-sm text-theme-content">
+                  <span class="text-xs text-theme-content">
                     {{ item.id || "--" }}
                   </span>
                 </div>
@@ -146,8 +146,8 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
               <!-- Test Plan -->
               <div class="flex items-center space-x-2">
                 <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('testCaseBaseline.list.testPlan') }}</span>
-                  <span class="text-sm text-theme-content truncate max-w-82" :title="item.planName">
+                  <span class="text-xs text-theme-sub-content">{{ t('testCaseBaseline.columns.testPlan') }}</span>
+                  <span class="text-xs text-theme-content truncate max-w-82" :title="item.planName">
                     {{ item.planName || "--" }}
                   </span>
                 </div>
@@ -161,7 +161,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
                 <span class="text-theme-content font-medium truncate max-w-16" :title="item.lastModifiedByName">
                   {{ item.lastModifiedByName }}
                 </span>
-                <span>{{ t('testCaseBaseline.list.modifiedBy') }}</span>
+                <span>{{ t('status.modifiedAt') }}</span>
                 <span class="text-theme-sub-content">{{ item.lastModifiedDate }}</span>
               </div>
             </div>
@@ -199,7 +199,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
               class="px-0 flex items-center ml-3"
               @click="handleBaselineEstablishment(item)">
               <Icon icon="icon-yiwancheng" class="mr-0.5" />
-              <span>{{ t('testCaseBaseline.list.establishBaseline') }}</span>
+              <span>{{ t('testCaseBaseline.actions.establishBaseline') }}</span>
             </Button>
 
             <Button

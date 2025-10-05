@@ -234,14 +234,14 @@
       "futureTimeRequired": "Must be a future time",
       "inputDescription": "Enter description, max 200 characters",
       "inputDescription30": "Enter description, maximum 6000 characters",
-      "inputEvalWorkload": "Enter estimated workload",
-      "inputActualWorkload": "Enter actual workload",
+      "inputEvalWorkload": "Estimated workload",
+      "inputActualWorkload": "Actual workload",
       "workloadRange": "Range 0.1 to 1000 (max 2 decimals)",
       "deadlineMustBeFuture": "Deadline must be a future time",
       "inputValue": "Enter value, max 4096 characters",
       "inputMockValue": "Enter value, mock functions supported, max 4096 characters",
-      "inputProcessCount": "Enter processed count",
-      "inputProcessFailedCount": "Enter failed count",
+      "inputProcessCount": "Processed count",
+      "inputProcessFailedCount": "Failed count",
       "selectCreator": "Select creator",
       "selectModifier": "Select modifier",
       "selectOwner": "Select owner",
@@ -259,7 +259,11 @@
       "selectAssignee": "Select assignee",
       "selectConfirmer": "Select confirmer",
       "selectTester": "Select tester",
+      "selectDeveloper": "Select developer",
+      "selectReviewer": "Select reviewer",
       "selectExecutor": "Select executor",
+      "selectTestResult": "Select test result",
+      "selectReviewStatus": "Select review status",
       "selectOrSearchSprint": "Select or search sprint",
       "selectOrSearchModule": "Select or search module",
       "selectParentIssue": "Select parent issue",
@@ -312,6 +316,10 @@
       "selectExecutedDateRange": [
         "Execute date from",
         "Execute date to"
+      ],
+      "selectReviewDateRange": [
+        "Review date from",
+        "Review date to"
       ],
       "selectCreatedDateRange": [
         "Created date from",

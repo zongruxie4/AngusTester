@@ -96,68 +96,6 @@
       "planResetReviewSuccess": "计划重置评审成功",
       "duplicatePersonnel": "人员重复，请重新选择",
       "charLimit2000": "字符不能超过2000"
-    },
-    "planDetail": {
-      "basicInfo": {
-        "title": "基本信息",
-        "planName": "计划名称",
-        "owner": "负责人",
-        "to": "至",
-        "testers": "测试人员",
-        "isReview": "是否评审",
-        "casePrefix": "用例前缀",
-        "attachments": "附件",
-        "workloadAssessment": "工作量评估",
-        "acceptanceCriteria": "验收标准",
-        "otherInformation": "其他说明"
-      },
-      "tabs": {
-        "workCalendar": "工作日历",
-        "memberProgress": "成员进度",
-        "otherInformation": "其他说明",
-        "acceptanceCriteria": "验收标准",
-        "testingScope": "测试范围",
-        "testingObjectives": "测试目标",
-        "testers": "测试人员"
-      },
-      "table": {
-        "content": "工作职责",
-        "viewCases": "查看用例",
-        "exportCases": "导出用例",
-        "workResponsibilities": "工作职责"
-      },
-      "notifications": {
-        "copySuccess": "复制成功",
-        "copyFailed": "复制失败"
-      },
-      "memberProgress": {
-        "member": "成员",
-        "totalCaseNum": "总用例数",
-        "validCaseNum": "用例数",
-        "passedTestNum": "通过测试数",
-        "evalWorkload": "评估工作量",
-        "completedWorkload": "已完成工作量",
-        "completedWorkloadRate": "完成率",
-        "overdueNum": "逾期用例数",
-        "overdueRate": "逾期率"
-      },
-      "comp": {
-        "progress": {
-          "title": "成员进度",
-          "member": "成员",
-          "totalCaseNum": "总用例数",
-          "validCaseNum": "用例数",
-          "passedTestNum": "通过测试用例数",
-          "evalWorkload": "评估工作量",
-          "completedWorkload": "完成工作量",
-          "completedWorkloadRate": "工作量完成率",
-          "overdueNum": "逾期用例数",
-          "overdueRate": "逾期率"
-        },
-        "workCalendar": {
-          "title": "工作日历"
-        }
-      }
     }
   },
   "testCase": {
@@ -1584,40 +1522,11 @@
   },
   "testCaseBaseline": {
     "title": "基线",
-    "list": {
-      "createdBaselines": "已创建的基线",
-      "noBaselinesAdded": "您尚未添加任何基线，立即",
-      "addBaseline": "添加基线",
-      "baselineEstablished": "基线建立成功",
-      "confirmDeleteBaseline": "确定要删除基线「{name}」吗？",
-      "baselineDeletedSuccess": "基线删除成功",
-      "searchBaselineNameDescription": "查询基线名称、描述",
-      "selectOwner": "选择负责人",
-      "createdTimeGreaterEqual": "创建开始时间",
-      "createdTimeLessEqual": "创建结束时间",
-      "delete": "删除",
-      "clone": "克隆",
-      "sortByAddTime": "按添加时间",
-      "sortByAddPerson": "按添加人",
-      "established": "已建立",
-      "notEstablished": "未建立",
-      "testPlan": "测试计划",
-      "modifiedBy": "修改于",
-      "noDescription": "无描述~",
-      "edit": "编辑",
-      "establishBaseline": "建立基线",
-      "quickSearch": "快速查询",
-      "all": "全部",
-      "myCreated": "我创建的",
-      "myModified": "我修改的",
-      "lastDay": "近1天",
-      "lastThreeDays": "近3天",
-      "lastWeek": "近7天",
-      "sortByName": "按名称",
-      "sort": "排序",
-      "refresh": "刷新",
-      "aboutBaseline": "关于基线",
-      "baselineDescription": "基线是指在软件开发生命周期特定阶段所定义和记录的功能特性及相关属性的标准参考点。基线为测试活动提供明确的框架，使团队能够基于统一标准进行比较、评估和管理。",
+    "addedBaselines": "已创建的基线",
+    "noBaselinesAdded": "您尚未添加任何基线，立即",
+    "introduce": {
+      "title": "关于基线",
+      "description": "基线是指在软件开发生命周期特定阶段所定义和记录的功能特性及相关属性的标准参考点。基线为测试活动提供明确的框架，使团队能够基于统一标准进行比较、评估和管理。",
       "versionControl": "版本控制",
       "versionControlDescription": "基线帮助团队跟踪和管理不同版本的功能测试用例，确保所有团队成员基于相同的标准进行协作。",
       "changeManagement": "变更管理",
@@ -1625,105 +1534,44 @@
       "auditCompliance": "审计和合规",
       "auditComplianceDescription": "基线为审计和合规性检查提供必要的记录快照，便于验证开发和测试过程的透明度与合规性。"
     },
-    "editForm": {
-      "save": "保存",
-      "delete": "删除",
-      "cancel": "取消",
-      "modifySuccess": "修改成功",
-      "addSuccess": "添加成功",
-      "confirmDeleteBaseline": "确定要删除基线「{name}」吗？",
-      "baselineDeletedSuccess": "基线删除成功，您可以在回收站中查看已删除的基线",
-      "name": "名称",
-      "pleaseEnterBaselineName": "请输入基线名称",
-      "baselineBriefOverview": "基线简要概述，最多支持200个字符",
+    "actions": {
+      "addBaseline": "添加基线",
+      "establishBaseline": "建立基线",
+      "addBaselineCase": "添加基线用例"
+    },
+    "columns": {
       "testPlan": "测试计划",
-      "pleaseSelectTestPlan": "请选择测试计划",
-      "selectTestPlan": "选择测试计划",
-      "baselineBriefOverview2000": "基线详细描述，最多支持2000个字符",
-      "charactersCannotExceed2000": "字符数不能超过2000",
       "baselineCases": "基线用例",
-      "description": "基线说明",
-      "enterQueryName": "输入查询名称",
-      "addBaselineCase": "添加基线用例",
-      "caseId": "用例ID",
-      "caseName": "名称",
-      "operation": "操作",
-      "confirmDeleteCase": "确认删除「{name}」吗？",
-      "selectCase": "选择用例",
-      "queryNameCode": "查询名称、编码",
-      "code": "编号",
-      "reviewStatus": "评审状态",
-      "testResult": "测试结果",
-      "tester": "测试人"
+      "baselineDescription": "基线描述"
+    },
+    "messages": {
+      "baselineEstablished": "基线建立成功",
+      "confirmDeleteBaseline": "确定要删除基线「{name}」吗？",
+      "established": "已建立",
+      "notEstablished": "未建立"
+    },
+    "placeholders": {
+      "confirmDeleteBaseline": "确定要删除基线「{name}」吗？",
+      "baselineBriefOverview": "基线简要描述，最多支持200个字符",
+      "selectTestPlan": "选择测试计划",
+      "baselineDescriptionOverview2000": "基线详细描述，最多支持2000个字符",
+      "charactersCannotExceed2000": "字符数不能超过2000"
     },
     "case": {
+      "detailTitle": "用例详情",
       "baselineCases": "基线用例",
       "baselineCompare": "基线对比",
-      "code": "编码",
-      "name": "名称",
-      "priority": "优先级",
-      "version": "版本",
-      "creator": "创建人",
-      "createTime": "创建时间",
-      "operation": "操作",
       "confirmUnlinkCase": "确认取消关联用例「{name}」吗？",
-      "cancel": "取消",
-      "testSteps": "测试步骤",
-      "queryCaseCodeName": "查询用例编号、名称",
-      "selectCreator": "选择添加人",
-      "selectTester": "选择测试人",
-      "selectDeveloper": "选择开发人",
-      "selectPriority": "选择优先级",
-      "selectTestResult": "选择测试结果",
-      "selectReviewer": "选择评审人",
-      "selectReviewStatus": "选择评审状态",
-      "equal": "等于",
-      "versionNumber": "版本号",
       "compare": "比照",
       "compareModalTitle": "用例对比",
       "hideSameItems": "隐藏相同项",
       "showSameItems": "显示相同项",
-      "basicInfo": "基本信息",
-      "precondition": "前置条件",
-      "description": "描述",
-      "members": "成员",
-      "testInfo": "测试信息",
-      "associatedTasks": "关联任务",
-      "associatedCases": "关联用例",
-      "attachments": "附件",
-      "compareTag": {
-        "new": "新增",
-        "deleted": "删除",
-        "modified": "修改"
-      },
       "stepDescription": "步骤描述",
       "expectedResult": "预期结果",
-      "searchPanel": {
-        "reviewDateFrom": "评审时间从",
-        "reviewDateTo": "评审时间到",
-        "updateDateFrom": "更新时间从",
-        "updateDateTo": "更新时间到",
-        "deadlineDateFrom": "完成时间从",
-        "deadlineDateTo": "完成时间到",
-        "createdDateFrom": "添加时间从",
-        "createdDateTo": "添加时间到",
-        "testResultHandleDateFrom": "测试时间从",
-        "testResultHandleDateTo": "测试时间到",
-        "overdue": "已逾期",
-        "addCase": "添加基线用例",
+      "placeholders": {
         "testFailNumPlaceholder": "失败次数",
         "reviewNumPlaceholder": "评审次数",
         "testNumPlaceholder": "测试次数"
-      },
-      "moduleTree": {
-        "allCases": "全部用例",
-        "noModuleCases": "无模块",
-        "enterModuleName": "请输入模块名称",
-        "cancel": "取消",
-        "confirmDeleteModule": "确定删除模块「{name}」吗？",
-        "modifySuccess": "修改成功",
-        "deleteModuleSuccess": "删除模块成功",
-        "moveSuccess": "移动成功"
       }
     }
   },

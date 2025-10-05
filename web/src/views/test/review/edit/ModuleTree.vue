@@ -5,10 +5,6 @@ import { AsyncComponent, Icon, Input, notification } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
 import { modules } from '@/api/tester';
 
-// Component imports
-const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
-const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/module/Move.vue'));
-
 // Type Definitions
 type Props = {
   projectId: string;
@@ -36,12 +32,7 @@ const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId
 
 // Reactive State
 const nameInputRef = ref();
-const loading = ref(false);
-const searchKeywords = ref<string>();
 const editingModuleId = ref<string>();
-const parentModuleId = ref<string>();
-const createModalVisible = ref(false);
-const moveModalVisible = ref(false);
 
 /**
  * Handles module selection change
@@ -56,15 +47,6 @@ const handleModuleSelectionChange = (selectedKeys: string[]) => {
 };
 
 /**
- * Handles successful module creation
- * <p>
- * Emits data reload event with current search keywords
- */
-const handleModuleCreationSuccess = () => {
-  emits('loadData', searchKeywords.value);
-};
-
-/**
  * Cancels module editing mode
  * <p>
  * Clears editing state and exits edit mode
@@ -72,48 +54,6 @@ const handleModuleCreationSuccess = () => {
 const cancelModuleEditing = () => {
   editingModuleId.value = undefined;
 };
-
-/**
- * Handles module name update on enter key press
- * <p>
- * Validates input and submits module name update
- * <p>
- * Shows success notification and refreshes data
- */
-const handleModuleNameUpdate = async (moduleId: string, event: { target: { value: string } }) => {
-  const newName = event.target.value;
-  if (!newName) {
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await modules.updateModule([{ id: moduleId, name: newName }]);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  notification.success(t('actions.tips.modifySuccess'));
-  editingModuleId.value = undefined;
-  emits('loadData', searchKeywords.value);
-};
-
-/**
- * Handles module name update on input blur
- * <p>
- * Delays execution to allow for potential cancel operation
- * <p>
- * Calls name update if still in editing mode
- */
-const handleModuleNameBlur = (moduleId: string, event: { target: { value: string } }) => {
-  setTimeout(() => {
-    if (editingModuleId.value === moduleId) {
-      handleModuleNameUpdate(moduleId, event);
-    }
-  }, 300);
-};
-
-// Tree Data Processing
-const activeModule = ref();
 
 /**
  * Processes tree data with additional metadata
@@ -208,9 +148,7 @@ defineExpose({
             trim
             :value="name"
             :allowClear="false"
-            :maxlength="50"
-            @blur="handleModuleNameBlur(id, $event)"
-            @pressEnter="handleModuleNameUpdate(id, $event)" />
+            :maxlength="50" />
 
           <Button
             type="link"
@@ -232,23 +170,6 @@ defineExpose({
       </template>
     </Tree>
   </div>
-
-  <AsyncComponent :visible="createModalVisible">
-    <CreateModal
-      v-model:visible="createModalVisible"
-      :projectId="props.projectId"
-      :pid="parentModuleId"
-      @ok="handleModuleCreationSuccess" />
-  </AsyncComponent>
-
-  <AsyncComponent :visible="moveModalVisible">
-    <MoveModuleModal
-      v-model:visible="moveModalVisible"
-      :projectId="props.projectId"
-      :projectName="props.projectName"
-      :module="activeModule"
-      @ok="handleModuleCreationSuccess" />
-  </AsyncComponent>
 </template>
 <style scoped>
 .tree-title:hover .gengduo {

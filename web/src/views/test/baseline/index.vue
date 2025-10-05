@@ -133,7 +133,7 @@ const handleHashChange = (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: t('testCaseBaseline.list.addBaseline'),
+          name: t('testCaseBaseline.actions.addBaseline'),
           value: 'baselineEdit',
           noCache: true,
           data: { _id: id }

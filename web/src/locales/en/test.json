@@ -643,7 +643,7 @@
       "addReview": "Add Review",
       "goToReview": "Review",
       "reviewNow": "Review Now",
-      "addReviewCase": "Add Review Cases"
+      "addReviewCase": "Add Cases"
     },
     "columns": {
       "testPlan": "Test Plan",
@@ -702,28 +702,11 @@
   },
   "testCaseBaseline": {
     "title": "Baseline",
-    "list": {
-      "createdBaselines": "Added Baselines",
-      "noBaselinesAdded": "You haven't added any baselines yet, ",
-      "addBaseline": "Add Baseline",
-      "baselineEstablished": "Baseline established successfully",
-      "confirmDeleteBaseline": "Are you sure you want to delete baseline 「{name}」?",
-      "baselineDeletedSuccess": "Baseline deleted successfully",
-      "searchBaselineNameDescription": "Search baseline name, description",
-      "selectOwner": "Select owner",
-      "createdTimeGreaterEqual": "Created start date",
-      "createdTimeLessEqual": "Created end date",
-      "sortByAddTime": "Sort by add time",
-      "sortByAddPerson": "Sort by add person",
-      "established": "Established",
-      "notEstablished": "Not Established",
-      "testPlan": "Test Plan",
-      "establishBaseline": "Establish",
-      "quickSearch": "Quick Search",
-      "all": "All",
-      "sortByName": "Sort by name",
-      "aboutBaseline": "About Baseline",
-      "baselineDescription": "A baseline is a standard reference point defined and recorded at a specific stage of the software development lifecycle, encompassing functional features and related attributes. Baselines provide a clear framework for testing activities, enabling teams to compare, evaluate, and manage based on unified standards.",
+    "addedBaselines": "Added Baselines",
+    "noBaselinesAdded": "You haven't added any baselines yet, ",
+    "introduce": {
+      "title": "About Baseline",
+      "description": "A baseline is a standard reference point defined and recorded at a specific stage of the software development lifecycle, encompassing functional features and related attributes. Baselines provide a clear framework for testing activities, enabling teams to compare, evaluate, and manage based on unified standards.",
       "versionControl": "Version Control",
       "versionControlDescription": "Baselines help teams track and manage functional test cases across different versions, ensuring all team members collaborate based on consistent standards.",
       "changeManagement": "Change Management",
@@ -731,78 +714,44 @@
       "auditCompliance": "Audit and Compliance",
       "auditComplianceDescription": "Baselines provide necessary record snapshots for audit and compliance checks, facilitating verification of transparency and compliance in development and testing processes."
     },
-    "editForm": {
-      "modifySuccess": "Modified successfully",
-      "addSuccess": "Added successfully",
+    "actions": {
+      "addBaseline": "Add Baseline",
+      "establishBaseline": "Establish",
+      "addBaselineCase": "Add Cases"
+    },
+    "columns": {
+      "testPlan": "Test Plan",
+      "baselineCases": "Baseline Cases",
+      "baselineDescription": "Baseline Description"
+    },
+    "messages": {
+      "baselineEstablished": "Baseline established successfully",
       "confirmDeleteBaseline": "Are you sure you want to delete baseline 「{name}」?",
-      "baselineDeletedSuccess": "Baseline deleted successfully, you can view the deleted baseline in the recycle bin",
+      "established": "Established",
+      "notEstablished": "Not Established"
+    },
+    "placeholders": {
       "pleaseEnterBaselineName": "Please enter baseline name",
       "baselineBriefOverview": "Baseline brief overview, supports up to 200 characters",
-      "testPlan": "Test Plan",
-      "pleaseSelectTestPlan": "Please select test plan",
       "selectTestPlan": "Select test plan",
-      "baselineBriefOverview2000": "Baseline detailed description, supports up to 2000 characters",
-      "charactersCannotExceed2000": "Character count cannot exceed 2000",
-      "baselineCases": "Baseline Cases",
-      "description": "Baseline Description",
-      "enterQueryName": "Enter query name",
-      "addBaselineCase": "Add Cases",
-      "confirmDeleteCase": "Confirm delete 「{name}」?",
-      "selectCase": "Select Case",
-      "queryNameCode": "Query name, code"
+      "baselineDescriptionOverview2000": "Baseline detailed description, supports up to 2000 characters",
+      "charactersCannotExceed2000": "Character count cannot exceed 2000"
     },
     "case": {
+      "detailTitle": "Case Details",
       "baselineCases": "Baseline Cases",
       "baselineCompare": "Baseline Compare",
-      "createTime": "Create Time",
       "confirmUnlinkCase": "Confirm unlink case 「{name}」?",
-      "testSteps": "Test Steps",
-      "queryCaseCodeName": "Query case code, name",
-      "selectCreator": "Select creator",
-      "selectTester": "Select tester",
-      "selectDeveloper": "Select developer",
-      "selectPriority": "Select priority",
-      "selectTestResult": "Select test result",
-      "selectReviewer": "Select reviewer",
-      "selectReviewStatus": "Select review status",
-      "equal": "Equal",
-      "versionNumber": "Version Number",
       "compare": "Compare",
       "compareModalTitle": "Case Compare",
       "hideSameItems": "Hide same items",
       "showSameItems": "Show same items",
-      "precondition": "Precondition",
-      "members": "Members",
-      "testInfo": "Test Info",
-      "associatedTasks": "Associated Tasks",
-      "associatedCases": "Associated Cases",
-      "attachments": "Attachments",
       "stepDescription": "Step Description",
       "expectedResult": "Expected Result",
-      "searchPanel": {
-        "reviewDateFrom": "Review time from",
-        "reviewDateTo": "Review time to",
-        "updateDateFrom": "Update time from",
-        "updateDateTo": "Update time to",
-        "deadlineDateFrom": "Deadline time from",
-        "deadlineDateTo": "Deadline time to",
-        "createdDateFrom": "Created time from",
-        "createdDateTo": "Created time to",
-        "testResultHandleDateFrom": "Test time from",
-        "testResultHandleDateTo": "Test time to",
-        "addCase": "Add Cases",
+      "placeholders": {
         "testFailNumPlaceholder": "Test fail times",
         "reviewNumPlaceholder": "Review times",
         "testNumPlaceholder": "Test times"
-      },
-      "moduleTree": {
-        "allCases": "All Cases",
-        "noModuleCases": "No Module",
-        "enterModuleName": "Please enter module name",
-        "confirmDeleteModule": "Are you sure you want to delete module 「{name}」?",
-        "modifySuccess": "Modified successfully",
-        "deleteModuleSuccess": "Module deleted successfully",
-        "moveSuccess": "Moved successfully"
       }
     }
   },

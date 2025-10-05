@@ -11,6 +11,7 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 const TagList = defineAsyncComponent(() => import('@/views/test/case/list/TagSelector.vue'));
 
 const { t } = useI18n();
@@ -44,9 +45,6 @@ const defaultUserOptions = computed(() => {
   return {};
 });
 
-const numberMatchConditions = ref<{ value: SearchCriteria.OpEnum, message: string }[]>(
-  [{ value: SearchCriteria.OpEnum.Equal, message: t('testCaseBaseline.case.equal') }]
-);
 const searchPanelRef = ref();
 
 /**
@@ -54,51 +52,51 @@ const searchPanelRef = ref();
  */
 const searchPanelOptions = computed(() => [
   {
-    placeholder: t('testCaseBaseline.case.queryCaseCodeName'),
+    placeholder: t('common.placeholders.searchKeyword'),
     valueKey: 'name',
     type: 'input',
     allowClear: true
   },
   {
-    placeholder: t('testCaseBaseline.case.selectCreator'),
+    placeholder: t('common.placeholders.selectCreator'),
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('testCaseBaseline.case.selectTester'),
+    placeholder: t('common.placeholders.selectTester'),
     valueKey: 'testerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('testCaseBaseline.case.selectDeveloper'),
+    placeholder: t('common.placeholders.selectDeveloper'),
     valueKey: 'developerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('testCaseBaseline.case.selectPriority'),
+    placeholder: t('common.placeholders.selectPriority'),
     valueKey: 'priority',
     type: 'select-enum',
     enumKey: Priority,
     allowClear: true
   },
   {
-    placeholder: t('testCaseBaseline.case.selectTestResult'),
+    placeholder: t('common.placeholders.selectTestResult'),
     valueKey: 'testResult',
     type: 'select-enum',
     enumKey: CaseTestResult,
     allowClear: true
   },
   {
-    placeholder: t('testCaseBaseline.case.selectReviewer'),
+    placeholder: t('common.placeholders.selectReviewer'),
     valueKey: 'reviewerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: t('testCaseBaseline.case.selectReviewStatus'),
+    placeholder: t('common.placeholders.selectReviewStatus'),
     valueKey: 'reviewStatus',
     type: 'select-enum',
     enumKey: ReviewStatusEnum,
@@ -106,8 +104,8 @@ const searchPanelOptions = computed(() => [
   },
   {
     placeholder: [
-      t('testCaseBaseline.case.searchPanel.reviewDateFrom'),
-      t('testCaseBaseline.case.searchPanel.reviewDateTo')
+      t('common.placeholders.selectReviewDateRange.0'),
+      t('common.placeholders.selectReviewDateRange.1')
     ],
     valueKey: 'reviewDate',
     type: 'date-range',
@@ -116,8 +114,8 @@ const searchPanelOptions = computed(() => [
   },
   {
     placeholder: [
-      t('testCaseBaseline.case.searchPanel.updateDateFrom'),
-      t('testCaseBaseline.case.searchPanel.updateDateTo')
+      t('common.placeholders.selectModifiedDateRange.0'),
+      t('common.placeholders.selectModifiedDateRange.1')
     ],
     valueKey: 'lastModifiedDate',
     type: 'date-range',
@@ -126,8 +124,8 @@ const searchPanelOptions = computed(() => [
   },
   {
     placeholder: [
-      t('testCaseBaseline.case.searchPanel.deadlineDateFrom'),
-      t('testCaseBaseline.case.searchPanel.deadlineDateTo')
+      t('common.placeholders.selectDeadlineRange.0'),
+      t('common.placeholders.selectDeadlineRange.1')
     ],
     valueKey: 'deadlineDate',
     type: 'date-range',
@@ -136,8 +134,8 @@ const searchPanelOptions = computed(() => [
   },
   {
     placeholder: [
-      t('testCaseBaseline.case.searchPanel.createdDateFrom'),
-      t('testCaseBaseline.case.searchPanel.createdDateTo')
+      t('common.placeholders.selectCreatedDateRange.0'),
+      t('common.placeholders.selectCreatedDateRange.1')
     ],
     valueKey: 'createdDate',
     type: 'date-range',
@@ -146,8 +144,8 @@ const searchPanelOptions = computed(() => [
   },
   {
     placeholder: [
-      t('testCaseBaseline.case.searchPanel.testResultHandleDateFrom'),
-      t('testCaseBaseline.case.searchPanel.testResultHandleDateTo')
+      t('common.placeholders.selectProcessedDateRange.0'),
+      t('common.placeholders.selectProcessedDateRange.1')
     ],
     valueKey: 'testResultHandleDate',
     type: 'date-range',
@@ -628,7 +626,7 @@ const handleAddCaseClick = () => {
           type="primary"
           @click="handleAddCaseClick">
           <Icon icon="icon-jia" class="mr-1" />
-          {{ t('testCaseBaseline.case.searchPanel.addCase') }}
+          {{ t('testCaseBaseline.actions.addBaselineCase') }}
         </Button>
       </div>
     </div>
@@ -670,24 +668,18 @@ const handleAddCaseClick = () => {
       <template #testNum>
         <Input
           :value="testExecutionCount"
-          data-type="float"
-          size="small"
+          dataType="float"
           allowClear
-          :placeholder="t('testCaseBaseline.case.searchPanel.testNumPlaceholder')"
+          :max="100"
+          :placeholder="t('testCaseBaseline.case.placeholders.testNumPlaceholder')"
           style="width: 296px;"
-          :min="0"
-          :debounce="500"
           @change="(event: ChangeEvent) => handleNumericInputChange(event.target.value, 'testNum')">
           <template #prefix>
-            <Select
-              :value="testExecutionCountScope"
-              size="small"
-              :options="numberMatchConditions"
-              :fieldNames="{ label: 'message', value: 'value' }"
-              :allowClear="false"
+            <SelectEnum
+              v-model:value="testExecutionCountScope"
               :bordered="false"
-              class="w-24"
-              @change="handleNumericScopeChange($event, 'testNum')" />
+              enumKey="NumberCompareCondition"
+              class="w-38" />
           </template>
         </Input>
       </template>
@@ -696,24 +688,18 @@ const handleAddCaseClick = () => {
       <template #testFailNum>
         <Input
           :value="testFailureCount"
-          data-type="float"
-          size="small"
+          dataType="float"
           allowClear
-          :placeholder="t('testCaseBaseline.case.searchPanel.testFailNumPlaceholder')"
+          :max="100"
+          :placeholder="t('testCaseBaseline.case.placeholders.testFailNumPlaceholder')"
           style="width: 296px;"
-          :min="0"
-          :debounce="500"
           @change="handleNumericInputChange($event.target.value, 'testFailNum')">
           <template #prefix>
-            <Select
+            <SelectEnum
               v-model:value="testFailureCountScope"
-              size="small"
-              :options="numberMatchConditions"
-              :fieldNames="{ label: 'message', value: 'value' }"
-              :allowClear="false"
               :bordered="false"
-              class="w-24"
-              @change="handleNumericScopeChange($event, 'testFailNum')" />
+              enumKey="NumberCompareCondition"
+              class="w-38" />
           </template>
         </Input>
       </template>
@@ -722,24 +708,18 @@ const handleAddCaseClick = () => {
       <template #reviewNum>
         <Input
           :value="reviewCount"
-          data-type="float"
-          size="small"
+          dataType="float"
           allowClear
-          :placeholder="t('testCaseBaseline.case.searchPanel.reviewNumPlaceholder')"
+          :max="100"
+          :placeholder="t('testCaseBaseline.case.placeholders.reviewNumPlaceholder')"
           style="width: 296px;"
-          :min="0"
-          :debounce="500"
           @change="(event: ChangeEvent) => handleNumericInputChange(event.target.value, 'reviewNum')">
           <template #prefix>
-            <Select
-              :value="reviewCountScope"
-              size="small"
-              :options="numberMatchConditions"
-              :fieldNames="{ label: 'message', value: 'value' }"
-              :allowClear="false"
+            <SelectEnum
+              v-model:value="reviewCountScope"
               :bordered="false"
-              class="w-24"
-              @change="handleNumericScopeChange($event, 'reviewNum')" />
+              enumKey="NumberCompareCondition"
+              class="w-38" />
           </template>
         </Input>
       </template>

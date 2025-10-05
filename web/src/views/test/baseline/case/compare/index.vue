@@ -137,12 +137,12 @@ const leftColumnConfig = [
     class: 'w-8 border-r text-center'
   },
   {
-    title: t('testCaseBaseline.case.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     class: 'flex-1 border-r'
   },
   {
-    title: t('testCaseBaseline.case.versionNumber'),
+    title: t('common.version'),
     dataIndex: 'version',
     class: 'w-20'
   }
@@ -150,12 +150,12 @@ const leftColumnConfig = [
 
 const rightColumnConfig = [
   {
-    title: t('testCaseBaseline.case.name'),
+    title: t('common.name'),
     dataIndex: 'name',
     class: 'flex-1 border-r'
   },
   {
-    title: t('testCaseBaseline.case.versionNumber'),
+    title: t('common.version'),
     dataIndex: 'version',
     class: 'w-20 border-r'
   },

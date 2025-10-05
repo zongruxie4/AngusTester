@@ -1793,7 +1793,7 @@ const sortMenuItems = [
                 v-model:value="workloadFilter.op"
                 :bordered="false"
                 enumKey="NumberCompareCondition"
-                class="w-26" />
+                class="w-32" />
             </template>
           </Input>
         </template>
@@ -1812,7 +1812,7 @@ const sortMenuItems = [
                 v-model:value="failureCountFilter.op"
                 :bordered="false"
                 enumKey="NumberCompareCondition"
-                class="w-26" />
+                class="w-32" />
             </template>
           </Input>
         </template>
@@ -1831,7 +1831,7 @@ const sortMenuItems = [
                 v-model:value="totalCountFilter.op"
                 :bordered="false"
                 enumKey="NumberCompareCondition"
-                class="w-26" />
+                class="w-32" />
             </template>
           </Input>
         </template>

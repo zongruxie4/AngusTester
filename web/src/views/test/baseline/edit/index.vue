@@ -45,7 +45,7 @@ const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const isBaselineFlagVisible = ref(false);
 const originalFormState = ref<BaselineEditState>();
 const currentFormState = ref<BaselineEditState>({
-  planId: '',
+  planId: undefined,
   description: '',
   name: '',
   caseIds: []
@@ -62,12 +62,12 @@ const paginationConfig = ref({
 });
 const tableColumns = [
   {
-    title: t('testCaseBaseline.editForm.caseCode'),
+    title: t('common.code'),
     dataIndex: 'code',
     width: 120
   },
   {
-    title: t('testCaseBaseline.editForm.caseName'),
+    title: t('common.name'),
     dataIndex: 'name'
   },
   {
@@ -82,7 +82,7 @@ const tableColumns = [
     width: 120
   },
   {
-    title: t('testCaseBaseline.editForm.testResult'),
+    title: t('common.testResult'),
     dataIndex: 'testResult',
     width: 120
   },
@@ -196,7 +196,7 @@ const handleBaselineDelete = async () => {
   }
 
   modal.confirm({
-    content: t('testCaseBaseline.editForm.confirmDeleteBaseline', { name: data.name }),
+    content: t('testCaseBaseline.messages.confirmDeleteBaseline', { name: data.name }),
     async onOk () {
       const id = data.id;
       isLoading.value = true;
@@ -206,7 +206,7 @@ const handleBaselineDelete = async () => {
         return;
       }
 
-      notification.success(t('testCaseBaseline.editForm.baselineDeletedSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       deleteTabPane([id, id + '_detail']);
       refreshBaselineList();
     }
@@ -395,9 +395,9 @@ const handleAddCaseConfirm = async (caseIds: string[], cases: BaselineCaseInfo[]
 const deleteCaseFromBaseline = async (record: BaselineCaseInfo) => {
   if (currentBaselineId.value) {
     modal.confirm({
-      title: t('testCaseBaseline.editForm.confirmDeleteCase', { name: record.name }),
+      content: t('actions.tips.confirmDelete', { name: record.name }),
       async onOk () {
-        const [error] = await func.deleteBaselineCaseById([record.id]);
+        const [error] = await func.deleteBaselineCase([record.baselineId], [record.id]);
         if (error) {
           return;
         }
@@ -421,7 +421,7 @@ const validateDescription = () => {
     return Promise.resolve();
   }
   if (richEditorRef.value && richEditorRef.value.getLength() > 2000) {
-    return Promise.reject(t('testCaseBaseline.editForm.charactersCannotExceed2000'));
+    return Promise.reject(t('testCaseBaseline.placeholders.charactersCannotExceed2000'));
   }
   return Promise.resolve();
 };
@@ -510,27 +510,27 @@ onMounted(() => {
       size="small"
       layout="horizontal">
       <FormItem
-        :label="t('testCaseBaseline.editForm.name')"
+        :label="t('common.name')"
         name="name"
-        :rules="{ required: true, message: t('testCaseBaseline.editForm.pleaseEnterBaselineName') }">
+        :rules="{ required: true, message: t('testCaseBaseline.placeholders.baselineBriefOverview') }">
         <Input
           v-model:value="currentFormState.name"
           size="small"
           :maxlength="200"
-          :placeholder="t('testCaseBaseline.editForm.baselineBriefOverview')" />
+          :placeholder="t('testCaseBaseline.placeholders.baselineBriefOverview')" />
       </FormItem>
 
       <FormItem
-        :label="t('testCaseBaseline.editForm.testPlan')"
+        :label="t('testCaseBaseline.columns.testPlan')"
         name="planId"
-        :rules="{ required: true, message: t('testCaseBaseline.editForm.pleaseSelectTestPlan') }">
+        :rules="{ required: true, message: t('testCaseBaseline.placeholders.selectTestPlan') }">
         <Select
           v-model:value="currentFormState.planId"
           size="small"
           :disabled="!!currentBaselineId"
           :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{value: 'id', label: 'name'}"
-          :placeholder="t('testCaseBaseline.editForm.selectTestPlan')"
+          :placeholder="t('testCaseBaseline.placeholders.selectTestPlan')"
           @change="handlePlanIdChange" />
       </FormItem>
 
@@ -541,12 +541,12 @@ onMounted(() => {
         <TabPane
           key="funcCase"
           forceRender
-          :tab="t('testCaseBaseline.editForm.baselineCases')">
+          :tab="t('testCaseBaseline.columns.baselineCases')">
           <div class="flex justify-between mb-3">
             <Input
               v-model:value="searchKeywords"
               :disabled="!currentBaselineId"
-              :placeholder="t('testCaseBaseline.editForm.enterQueryName')"
+              :placeholder="t('common.placeholders.searchKeyword')"
               class="w-50"
               @change="handleSearchKeywordChange" />
             <Button
@@ -555,7 +555,7 @@ onMounted(() => {
               type="primary"
               @click="openAddBaselineCaseModal">
               <Icon icon="icon-jia" class="mr-1" />
-              {{ t('testCaseBaseline.editForm.addBaselineCase') }}
+              {{ t('testCaseBaseline.actions.addBaselineCase') }}
             </Button>
           </div>
 
@@ -577,6 +577,7 @@ onMounted(() => {
 
               <template v-if="column.dataIndex === 'action'">
                 <Button
+                  :disabled="!currentFormState.planId || baselineDataSource?.established"
                   type="text"
                   size="small"
                   @click="deleteCaseFromBaseline(record)">
@@ -590,7 +591,7 @@ onMounted(() => {
 
         <TabPane
           key="description"
-          :tab="t('common.description')">
+          :tab="t('testCaseBaseline.columns.baselineDescription')">
           <FormItem
             label=""
             name="description"
@@ -598,7 +599,7 @@ onMounted(() => {
             <RichEditor
               ref="richEditorRef"
               v-model:value="currentFormState.description"
-              :placeholder="t('testCaseBaseline.editForm.baselineBriefOverview2000')"
+              :options="{placeholder: t('testCaseBaseline.placeholders.baselineDescriptionOverview2000')}"
               :height="200" />
           </FormItem>
         </TabPane>

@@ -76,7 +76,7 @@ const handleBaselineEstablishment = async (data: BaselineDetail) => {
   if (error) {
     return;
   }
-  notification.success(t('testCaseBaseline.list.baselineEstablished'));
+  notification.success(t('testCaseBaseline.messages.baselineEstablished'));
   await loadBaselineData();
 };
 
@@ -86,7 +86,7 @@ const handleBaselineEstablishment = async (data: BaselineDetail) => {
  */
 const handleBaselineDeletion = async (data: BaselineDetail) => {
   modal.confirm({
-    content: t('testCaseBaseline.list.confirmDeleteBaseline', { name: data.name }),
+    content: t('testCaseBaseline.messages.confirmDeleteBaseline', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await func.deleteBaseline([id]);
@@ -94,7 +94,7 @@ const handleBaselineDeletion = async (data: BaselineDetail) => {
         return;
       }
 
-      notification.success(t('testCaseBaseline.list.baselineDeletedSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       await loadBaselineData();
 
       deleteTabPane([id]);
@@ -172,15 +172,15 @@ onMounted(() => {
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <Introduce class="mb-7" />
-    <div class="text-3.5 font-semibold mb-1">{{ t('testCaseBaseline.list.createdBaselines') }}</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('testCaseBaseline.addedBaselines') }}</div>
     <Spin :spinning="isLoading" class="flex-1 flex flex-col">
       <template v-if="isDataLoaded">
         <div v-if="!hasSearchFilters && baselineList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>{{ t('testCaseBaseline.list.noBaselinesAdded') }}</span>
+            <span>{{ t('testCaseBaseline.noBaselinesAdded') }}</span>
             <RouterLink class="router-link flex-1 truncate" :to="`/test#baseline?type=ADD`">
-              {{ t('testCaseBaseline.list.addBaseline') }}
+              {{ t('testCaseBaseline.actions.addBaseline') }}
             </RouterLink>
           </div>
         </div>
