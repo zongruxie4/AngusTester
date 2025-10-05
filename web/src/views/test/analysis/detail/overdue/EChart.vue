@@ -38,7 +38,7 @@ let savingWorkloadEChart;
 const completedWorkloadEChartConfig = {
   title: {
     text: t('common.counts.overdueRate'),
-    left: '30%',
+    left: '45%',
     bottom: '5%',
     textAlign: 'center',
     textStyle: {
@@ -60,6 +60,7 @@ const completedWorkloadEChartConfig = {
   legend: {
     top: 'center',
     orient: 'vertical',
+    right: '1%',
     itemGap: 12,
     textStyle: {
       fontSize: 12,
@@ -71,7 +72,7 @@ const completedWorkloadEChartConfig = {
       name: '',
       type: 'pie',
       radius: ['35%', '60%'],
-      center: ['30%', '50%'],
+      center: ['45%', '50%'],
       avoidLabelOverlap: true,
       label: {
         show: true,
@@ -124,7 +125,7 @@ const completedWorkloadEChartConfig = {
 const savingWorkloadEChartConfig = {
   title: {
     text: t('common.counts.overdueWorkloadRate'),
-    left: '30%',
+    left: '45%',
     bottom: '5%',
     textAlign: 'center',
     textStyle: {
@@ -146,6 +147,7 @@ const savingWorkloadEChartConfig = {
   legend: {
     top: 'center',
     orient: 'vertical',
+    right: '1%',
     itemGap: 12,
     textStyle: {
       fontSize: 12,
@@ -157,7 +159,7 @@ const savingWorkloadEChartConfig = {
       name: '',
       type: 'pie',
       radius: ['35%', '60%'],
-      center: ['30%', '50%'],
+      center: ['45%', '50%'],
       avoidLabelOverlap: true,
       label: {
         show: true,
@@ -312,15 +314,19 @@ defineExpose({
 <style scoped>
 .overdue-analysis-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* side-by-side */
   gap: 12px;
   padding: 8px;
+  align-items: stretch;
 }
 
 .metrics-section {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex: 0 0 40%;
+  max-width: 40%;
+  justify-content: center; /* vertically center within parent */
 }
 
 .metrics-grid {
@@ -334,27 +340,22 @@ defineExpose({
 }
 
 .metric-card {
-  background: #fafafa;
-  border: 1px solid #e8e8e8;
-  border-radius: 6px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
   padding: 12px;
   text-align: center;
-  transition: all 0.2s ease;
 }
 
 .metric-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-color: #d9d9d9;
+  box-shadow: none;
+  border-color: transparent;
 }
 
-.metric-card.overdue-count {
-  background: linear-gradient(135deg, #fff2f0 0%, #ffebe6 100%);
-  border-color: #ffccc7;
-}
-
+.metric-card.overdue-count,
 .metric-card.risk-level {
-  background: linear-gradient(135deg, #f6ffed 0%, #f0f9ff 100%);
-  border-color: #b7eb8f;
+  background: transparent;
+  border: none;
 }
 
 .metric-value {
@@ -400,9 +401,13 @@ defineExpose({
 
 .charts-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 12px;
   min-height: 200px;
+  flex: 0 0 60%;
+  max-width: 60%;
+  justify-items: center;
+  align-items: center;
 }
 
 .chart-container {
@@ -411,12 +416,22 @@ defineExpose({
   border-radius: 0;
   padding: 8px;
   min-height: 180px;
-  width: 100%;
+  width: 350px;
   overflow: hidden;
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
+  .overdue-analysis-container {
+    flex-direction: column;
+  }
+
+  .metrics-section,
+  .charts-section {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
   .metrics-grid {
     grid-template-columns: 1fr;
   }
