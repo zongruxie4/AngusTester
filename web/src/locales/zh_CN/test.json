@@ -1591,6 +1591,26 @@
       "realTime": "实时",
       "snapshot": "快照"
     },
+    "columns": {
+      "template": "模版",
+      "scope": "分析对象",
+      "timeRange": "分析期间",
+      "dataSource": "数据展示",
+      "description": "分析描述",
+      "containsUserAnalysis": "包含经办人分析",
+      "containsDataDetail": "包含数据明细"
+    },
+    "placeholder": {
+      "inputAnalysisName": "输入分析名称，最多可输入100字符",
+      "inputAnalysisDesc": "输入分析描述，如分析的目的、背景等，最多支持200字符"
+    },
+    "messages": {
+      "confirmUpdateSnapshot": "确认更新分析「{name}」的快照内容吗？"
+    },
+    "dataSource": {
+      "realTime": "实时数据",
+      "snapshot": "保存数据快照"
+    },
     "editForm": {
       "save": "保存",
       "cancel": "取消",

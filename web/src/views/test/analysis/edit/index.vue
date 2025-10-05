@@ -250,7 +250,7 @@ onMounted(async () => {
 </script>
 <template>
   <div class="p-5">
-    <div class="mb-2 flex space-x-2">
+    <div class="mb-4 flex space-x-2">
       <Button
         type="primary"
         size="small"
@@ -269,12 +269,24 @@ onMounted(async () => {
     <Form
       ref="formRef"
       :colon="false"
-      :labelCol="{style: {'min-width': '90px'}}"
+      :labelCol="{style: {width: '100px'}}"
       :model="formData"
       class="w-200 mt-5">
       <FormItem
+        name="name"
+        :label="t('common.name')"
+        class="input-item"
+        required>
+        <Input
+          v-model:value="formData.name"
+          :maxlength="100"
+          :placeholder="t('testAnalysis.placeholder.inputAnalysisName')" />
+      </FormItem>
+
+      <FormItem
         name="template"
-        :label="t('testAnalysis.editForm.analysisTemplate')"
+        :label="t('testAnalysis.columns.template')"
+        class="input-item"
         required>
         <SelectEnum
           v-model:value="formData.template"
@@ -286,28 +298,19 @@ onMounted(async () => {
       </FormItem>
 
       <FormItem
-        name="name"
-        :label="t('testAnalysis.editForm.analysisName')"
-        required>
-        <Input
-          v-model:value="formData.name"
-          :maxlength="100"
-          :placeholder="t('testAnalysis.editForm.inputAnalysisName')" />
-      </FormItem>
-
-      <FormItem
         name="description"
-        :label="t('testAnalysis.editForm.analysisDescription')">
+        :label="t('testAnalysis.columns.description')">
         <Textarea
           v-model:value="formData.description"
           :maxlength="200"
-          :placeholder="t('testAnalysis.editForm.inputAnalysisDescription')"
+          :placeholder="t('testAnalysis.placeholder.inputAnalysisDesc')"
           @change="handleDescriptionChange" />
       </FormItem>
 
       <FormItem
         name="object"
-        :label="t('testAnalysis.editForm.analysisObject')"
+        :label="t('testAnalysis.columns.scope')"
+        class="input-item"
         required>
         <RadioGroup
           v-model:value="formData.object"
@@ -324,9 +327,9 @@ onMounted(async () => {
       <template v-if="formData.object === AnalysisCaseObject.PLAN">
         <FormItem
           name="planId"
-          :label="t('testAnalysis.editForm.selectPlan')"
+          :label="t('common.plan')"
           required
-          class="ml-16">
+          class="ml-16 input-item">
           <Select
             v-model:value="formData.planId"
             :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
@@ -336,7 +339,7 @@ onMounted(async () => {
             defaultActiveFirstOption
             showSearch
             internal
-            :placeholder="t('testAnalysis.editForm.selectOrSearchPlan')">
+            :placeholder="t('common.placeholders.selectPlan')">
             <template #option="record">
               <div class="flex items-center" :title="record.name">
                 <Icon icon="icon-jihua" class="mr-1 text-4" />
@@ -350,9 +353,9 @@ onMounted(async () => {
       <template v-if="formData.object === AnalysisCaseObject.TESTER_ORG">
         <FormItem
           name="orgId"
-          :label="t('testAnalysis.editForm.selectOrganization')"
+          :label="t('common.organization')"
           required
-          class="ml-16">
+          class="ml-16 input-item">
           <Select
             v-model:value="formData.orgType"
             :options="organizationTypeOptions"
@@ -395,17 +398,17 @@ onMounted(async () => {
         <Checkbox
           v-show="formData.object !== AnalysisCaseObject.TESTER_ORG || formData.orgType !== AuthObjectType.USER"
           v-model:checked="formData.containsUserAnalysis">
-          {{ t('testAnalysis.editForm.includeAssigneeAnalysis') }}
+          {{ t('testAnalysis.columns.containsUserAnalysis') }}
         </Checkbox>
 
         <Checkbox v-model:checked="formData.containsDataDetail">
-          {{ t('testAnalysis.editForm.includeDataDetail') }}
+          {{ t('testAnalysis.columns.containsDataDetail') }}
         </Checkbox>
       </FormItem>
 
       <FormItem
         name="timeRange"
-        :label="t('testAnalysis.editForm.analysisPeriod')"
+        :label="t('testAnalysis.columns.timeRange')"
         required>
         <RadioGroup v-model:value="formData.timeRange" :options="analysisTimeRangeOptions"></RadioGroup>
         <DatePicker
@@ -416,7 +419,7 @@ onMounted(async () => {
       </FormItem>
 
       <FormItem
-        :label="t('testAnalysis.editForm.dataDisplay')"
+        :label="t('testAnalysis.columns.dataSource')"
         name="datasource"
         required>
         <RadioGroup v-model:value="formData.datasource" :options="dataSourceOptions" />
@@ -427,5 +430,6 @@ onMounted(async () => {
 <style scoped>
 .ant-form :deep(.ant-form-item) label {
   height: 28px;
+  font-weight: 500;
 }
 </style>

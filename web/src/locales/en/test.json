@@ -771,6 +771,26 @@
       "realTime": "Real-time",
       "snapshot": "Snapshot"
     },
+    "columns": {
+      "template": "Template",
+      "scope": "Scope",
+      "timeRange": "Period",
+      "dataSource": "Data Display",
+      "description": "Description",
+      "containsUserAnalysis": "Include Assignee Analysis",
+      "containsDataDetail": "Include Data Details"
+    },
+    "placeholder": {
+      "inputAnalysisName": "Enter analysis name, maximum 100 characters",
+      "inputAnalysisDesc": "Enter analysis description, such as analysis purpose, background, etc., maximum 200 characters"
+    },
+    "messages": {
+      "confirmUpdateSnapshot": "Confirm update snapshot content for analysis 「{name}」?"
+    },
+    "dataSource": {
+      "realTime": "Display real-time data each time",
+      "snapshot": "Save data snapshot, display snapshot data each time"
+    },
     "editForm": {
       "analysisTemplate": "Template",
       "analysisName": "Name",

@@ -30,7 +30,7 @@ export interface AnalysisEditState {
   resource: 'TASK';
   description: string;
   template: AnalysisTaskTemplate;
-  planId: string;
+  planId?: string;
   datasource: AnalysisDataSource;
   orgType?: AuthObjectType;
   orgId?: string;
