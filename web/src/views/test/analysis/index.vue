@@ -149,7 +149,7 @@ const handleHashChange = (hash: string) => {
         const newId = utils.uuid();
         return {
           _id: newId,
-          name: t('testAnalysis.list.addAnalysis'),
+          name: t('testAnalysis.actions.addAnalysis'),
           value: 'analysisEdit',
           noCache: true,
           data: { _id: newId }

@@ -100,14 +100,14 @@ const navigateToAddAnalysis = (templateValue = '') => {
     addTabPane({
       _id: 'analysisEdit',
       value: 'analysisEdit',
-      name: t('testAnalysis.list.addAnalysis'),
+      name: t('testAnalysis.actions.addAnalysis'),
       data: { template: templateValue }
     });
   } else {
     addTabPane({
       _id: 'analysisEdit',
       value: 'analysisEdit',
-      name: t('testAnalysis.list.addAnalysis')
+      name: t('testAnalysis.actions.addAnalysis')
     });
   }
 };
@@ -187,7 +187,7 @@ const handleDeleteAnalysis = (analysisData) => {
  */
 const handleUpdateSnapshot = (analysisData) => {
   modal.confirm({
-    content: t('testAnalysis.list.updateSnapshotConfirm', { name: analysisData.name }),
+    content: t('actions.tips.confirmUpdate', { name: analysisData.name }),
     onOk () {
       return analysis.refreshAnalysis(analysisData.id)
         .then(([error]) => {
@@ -291,7 +291,7 @@ onBeforeUnmount(() => {
   <div class="p-5 h-full flex flex-col overflow-x-hidden">
     <Introduce />
     <div class="text-3.5 font-semibold mb-2.5">
-      {{ t('testAnalysis.list.title') }}
+      {{ t('testAnalysis.addedAnalysis') }}
     </div>
 
     <SearchPanel
@@ -333,7 +333,7 @@ onBeforeUnmount(() => {
                     </div>
 
                     <Tag class="relative -top-1 mr-0 px-0.5 h-5" color="geekblue">
-                      {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('testAnalysis.list.realTime') : t('testAnalysis.list.snapshot') }}
+                      {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('testAnalysis.status.realTime') : t('testAnalysis.status.snapshot') }}
                     </Tag>
                   </div>
 
@@ -406,7 +406,7 @@ onBeforeUnmount(() => {
         <Icon :icon="TemplateIconConfig[selectedTemplate]" class="text-20 mt-20" />
         <div>{{ templateDescriptionConfig[selectedTemplate] }}</div>
         <div>
-          {{ t('testAnalysis.list.notCreated') }}
+          {{ t('testAnalysis.notCreatedYet') }}
           <Button
             type="link"
             size="small"

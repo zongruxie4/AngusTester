@@ -337,7 +337,7 @@
     },
     "columns": {
       "template": "模版",
-      "object": "分析对象",
+      "scope": "分析对象",
       "timeRange": "分析期间",
       "dataSource": "数据展示",
       "description": "分析描述",

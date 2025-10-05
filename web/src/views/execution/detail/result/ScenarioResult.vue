@@ -125,7 +125,7 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/2 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('common.counts..oneTimePassed') }}</span>
+            <span>{{ t('common.counts.oneTimePassed') }}</span>
             <Colon class="w-1" />
           </div>
           <div class="whitespace-pre-wrap break-words break-all">{{ onePassText }}</div>
@@ -199,7 +199,7 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/3 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('common.counts..oneTimePassed') }}</span>
+            <span>{{ t('common.counts.oneTimePassed') }}</span>
             <Colon class="w-1" />
           </div>
           <div class="whitespace-pre-wrap break-words break-all">{{ onePassText }}</div>

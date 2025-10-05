@@ -337,10 +337,10 @@
     },
     "columns": {
       "template": "Template",
-      "object": "Analysis Object",
-      "timeRange": "Analysis Period",
+      "scope": "Scope",
+      "timeRange": "Period",
       "dataSource": "Data Display",
-      "description": "Analysis Description",
+      "description": "Description",
       "containsUserAnalysis": "Include Assignee Analysis",
       "containsDataDetail": "Include Data Details"
     },

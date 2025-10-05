@@ -38,7 +38,7 @@ const reviewInfoColumns = [
       dataIndex: 'reviewFailNum'
     },
     {
-      label: t('common.counts..oneTimePassed'),
+      label: t('common.counts.oneTimePassed'),
       dataIndex: 'oneReviewPass'
     },
     {

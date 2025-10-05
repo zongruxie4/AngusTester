@@ -144,7 +144,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
       customRender: ({ text }) => text || '--'
     },
     {
-      label: t('fcommon.actualWorkload'),
+      label: t('common.actualWorkload'),
       dataIndex: 'actualWorkload',
       customRender: ({ text }) => text || '--'
     }

@@ -308,15 +308,15 @@ const searchOptions = [
   {
     type: 'select-user',
     valueKey: 'createdBy',
-    placeholder: t('testAnalysis.searchPanelOptions.createdByPlaceholder'),
+    placeholder: t('common.placeholders.selectCreator'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
     placeholder: [
-      t('testAnalysis.searchPanelOptions.createdDatePlaceholder[0]'),
-      t('testAnalysis.searchPanelOptions.createdDatePlaceholder[1]')
+      t('common.placeholders.selectCreatedDateRange[0]'),
+      t('common.placeholders.selectCreatedDateRange[1]')
     ],
     showTime: true
   }
@@ -325,12 +325,12 @@ const searchOptions = [
 const sortMenuItems = [
   {
     key: 'name',
-    name: t('testAnalysis.searchPanel.sortOptions.name'),
+    name: t('common.name'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'createdByName',
-    name: t('common.createdBy'),
+    name: t('common.creator'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
@@ -360,7 +360,7 @@ const sortMenuItems = [
           @click="handleCreateAnalysis">
           <div class="flex items-center">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span class="ml-1">{{ t('testAnalysis.searchPanel.addAnalysis') }}</span>
+            <span class="ml-1">{{ t('testAnalysis.actions.addAnalysis') }}</span>
           </div>
         </Button>
 

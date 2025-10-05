@@ -3,10 +3,8 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import elementResizeDetector from 'element-resize-detector';
 
-// Component setup
 const { t } = useI18n();
 
-// Reactive state
 const isTwoColumnLayout = ref(false);
 const containerRef = ref();
 
@@ -42,7 +40,7 @@ onBeforeUnmount(() => {
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('testAnalysis.introduce.title') }}
     </div>
-    <div class="mb-6 font-serif">
+    <div class="mb-6 text-3.5 font-serif">
       <div>{{ t('testAnalysis.introduce.description') }}</div>
     </div>
   </div>

@@ -459,6 +459,7 @@
     "expandAll": "全部展开",
     "collapseAll": "全部收起",
     "tips": {
+      "confirmUpdate": "确定更新「{name}」吗？",
       "confirmDelete": "确定删除「{name}」吗？",
       "confirmCountDelete": "确定删除「{num}」条记录吗?",
       "cancelConfirm": "确定取消选中的 {num} 条记录吗？",

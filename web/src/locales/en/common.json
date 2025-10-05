@@ -213,7 +213,7 @@
       "uncompletedOverdueCount": "Uncompleted overdue",
       "completedOverdueCount": "Completed overdue",
       "overdueRate": "Overdue rate",
-      "oneTimePassed": "One-time passed",
+      "oneTimePassed": "One-time Passed",
       "oneTimePassedCount": "One-time passed",
       "oneTimePassedRate": "One-time rate",
       "processCount": "Processing count",
@@ -459,6 +459,7 @@
     "expandAll": "Expand All",
     "collapseAll": "Collapse All",
     "tips": {
+      "confirmUpdate": "Are you sure you want to update 「{name}」?",
       "confirmDelete": "Are you sure you want to delete 「{name}」?",
       "confirmCountDelete": "Are you sure you want to delete 「{num}」 items?",
       "confirmCancel": "Are you sure to cancel the selected {num} items?",

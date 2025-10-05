@@ -1053,7 +1053,7 @@ onMounted(() => {
         <!-- One Time Pass -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.counts..oneTimePassed') }}</span>
+            <span>{{ t('common.counts.oneTimePassed') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': oneTimePassStatus === '--' }">{{ oneTimePassStatus }}</span>

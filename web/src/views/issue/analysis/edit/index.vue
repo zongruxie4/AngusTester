@@ -89,7 +89,7 @@ const formData = ref<AnalysisEditState>({
   description: '',
   containsUserAnalysis: true,
   containsDataDetail: true,
-  planId: '',
+  planId: undefined,
   datasource: AnalysisDataSource.REAL_TIME_DATA,
   orgType: AuthObjectType.USER,
   orgId: undefined,
@@ -328,7 +328,7 @@ onMounted(async () => {
 
       <FormItem
         name="object"
-        :label="t('issueAnalysis.columns.object')"
+        :label="t('issueAnalysis.columns.scope')"
         class="input-item"
         required>
         <RadioGroup
@@ -346,7 +346,7 @@ onMounted(async () => {
       <template v-if="formData.object === AnalysisTaskObject.SPRINT">
         <FormItem
           name="planId"
-          :label="t('common.placeholders.selectSprint')"
+          :label="t('common.sprint')"
           required
           class="ml-16 input-item">
           <Select

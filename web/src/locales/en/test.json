@@ -757,46 +757,19 @@
   },
   "testAnalysis": {
     "title": "Analysis",
-    "list": {
-      "title": "Added Analysis",
-      "addAnalysis": "Add Analysis",
-      "deleteConfirm": "Are you sure you want to delete the analysis 「{name}」?",
-      "deleteSuccess": "Delete successful",
-      "updateSnapshotConfirm": "Are you sure you want to update the snapshot content of analysis 「{name}」?",
-      "updateSuccess": "Update successful",
-      "realTime": "Real-time",
-      "snapshot": "Snapshot",
-      "notCreated": "Not created yet, click to create",
-      "create": "Create"
-    },
+    "all": "All Analysis",
+    "addedAnalysis": "Added Analysis",
+    "notCreatedYet": "Not created yet, click to create",
     "introduce": {
       "title": "About Analysis",
       "description": "Used to provide real-time test data analysis, promote data-driven decision making, ensure information transparency, enhance team collaboration and issue tracking, and improve project development quality assurance levels. AngusTester provides default analysis templates such as burndown charts, backlog tasks, risk assessment, etc., helping users quickly view dashboards and key performance indicators (KPIs), while users can also customize analysis dashboards based on business focus areas."
     },
-    "templateSelectList": {
-      "allAnalysis": "All Analysis"
+    "actions": {
+      "addAnalysis": "Add Analysis"
     },
-    "searchPanel": {
-      "quickQuery": "Quick Query",
-      "all": "All",
-      "myAdded": "My Added",
-      "myModified": "My Modified",
-      "lastDay": "Last Day",
-      "lastThreeDays": "Last 3 Days",
-      "lastWeek": "Last Week",
-      "addAnalysis": "Add Analysis",
-      "searchOptions": {
-        "namePlaceholder": "Search by name or description",
-        "createdByPlaceholder": "Select creator",
-        "createdDatePlaceholder": [
-          "Created time from",
-          "Created time to"
-        ]
-      },
-      "sortOptions": {
-        "createdByName": "Sort by creator",
-        "createdDate": "Sort by creation time"
-      }
+    "status": {
+      "realTime": "Real-time",
+      "snapshot": "Snapshot"
     },
     "editForm": {
       "analysisTemplate": "Template",

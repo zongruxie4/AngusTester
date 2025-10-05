@@ -29,7 +29,7 @@ export const minPeopleInfoColumns = [[bigPeopleInfoColumns[0][0], bigPeopleInfoC
 export const bigDateInfoColumns = [
   [
     {
-      label: t('testCase.detail.caseColumConfig.reviewTime'),
+      label: t('common.reviewDate'),
       dataIndex: 'reviewDate'
     },
     {
@@ -73,7 +73,7 @@ export const bigReviewInfoColumns = [
       dataIndex: 'reviewFailNum'
     },
     {
-      label: t('common.counts..oneTimePassed'),
+      label: t('common.counts.oneTimePassed'),
       dataIndex: 'oneReviewPass'
     },
     {
@@ -105,7 +105,7 @@ export const bigTestInfoColumns = [
       dataIndex: 'testFailNum'
     },
     {
-      label: t('common.counts..oneTimePassed'),
+      label: t('common.counts.oneTimePassed'),
       dataIndex: 'oneTestPass'
     },
     {
