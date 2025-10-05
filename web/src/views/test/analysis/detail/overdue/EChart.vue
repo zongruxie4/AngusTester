@@ -21,11 +21,11 @@ const props = withDefaults(defineProps<Props>(), {
   overdueAssessmentData: () => ({}),
   chart1Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -41,7 +41,7 @@ const completedWorkloadEchartConfig = {
     left: '35%',
     top: '40%',
     padding: 2,
-    subtext: t('testAnalysis.detail.overdueAssessment.completedWorkloadPercentage'),
+    subtext: t('common.counts.completedWorkloadRate'),
     itemGap: 50,
     textAlign: 'center',
     textStyle: {
@@ -114,7 +114,7 @@ const savingWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: t('testAnalysis.detail.overdueAssessment.savingWorkloadPercentage')
+    subtext: t('common.counts.savingWorkloadRate')
   }
 }));
 
@@ -123,24 +123,28 @@ onMounted(() => {
 
   savingWorkloadEchart = eCharts.init(savingWorkloadRef.value);
 
-  watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value], () => {
+  watch([() => props.chart1Value, () => props.chart2Value], () => {
     completedWorkloadEchartConfig.series[0].data[0] = {
       ...completedWorkloadEchartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+      name: props.chart1Value.value[0].name,
+      value: Number(props.chart1Value.value[0].value)
     };
     completedWorkloadEchartConfig.series[0].data[1] = {
       ...completedWorkloadEchartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+      name: props.chart1Value.value[1].name,
+      value: Number(props.chart1Value.value[1].value)
     };
     completedWorkloadEchartConfig.title.text = props.chart1Value.title;
 
     savingWorkloadEchartConfig.series[0].data[0] = {
       ...savingWorkloadEchartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      name: props.chart2Value.value[0].name,
+      value: Number(props.chart2Value.value[0].value)
     };
     savingWorkloadEchartConfig.series[0].data[1] = {
       ...savingWorkloadEchartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      name: props.chart2Value.value[1].name,
+      value: Number(props.chart2Value.value[1].value)
     };
     savingWorkloadEchartConfig.title.text = props.chart2Value.title;
     completedWorkloadEchart.setOption(completedWorkloadEchartConfig);
@@ -168,39 +172,39 @@ defineExpose({
             {{ props.overdueAssessmentData.overdueNum || 0 }}
           </div>
           <div>
-            {{ t('testAnalysis.detail.overdueAssessment.overdueCount') }}
+            {{ t('common.counts.overdueCount') }}
           </div>
         </div>
         <div class="text-center flex-1">
           <div :class="`risk-level-${props.overdueAssessmentData?.riskLevel?.value}`" class="font-semibold text-5">
             {{ overdueAssessmentData?.riskLevel?.message }}
           </div>
-          <div>{{ t('testAnalysis.detail.overdueAssessment.overdueRisk') }}</div>
+          <div>{{ t('testAnalysis.detail.overdueAssessment.statistics.overdueRisk') }}</div>
         </div>
       </div>
       <div class="flex justify-around mt-3">
         <div class="text-center">
           <div class="font-semibold text-5  text-status-error">
-            {{ props.overdueAssessmentData.overdueTime || 0 }}{{ t('testAnalysis.detail.overdueAssessment.hours') }}
+            {{ props.overdueAssessmentData.overdueTime || 0 }}{{ t('unit.hour') }}
           </div>
           <div>
-            {{ t('testAnalysis.detail.overdueAssessment.overdueTime') }}
+            {{ t('testAnalysis.detail.overdueAssessment.statistics.overdueTime') }}
           </div>
         </div>
 
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}</div>
           <div>
-            {{ t('testAnalysis.detail.overdueAssessment.dailyAverageProcessedWorkload') }}
+            {{ t('testAnalysis.detail.overdueAssessment.statistics.averageDailyProcessedWorkload') }}
           </div>
         </div>
 
         <div class="text-center">
           <div class="font-semibold text-5">
-            {{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}{{ t('testAnalysis.detail.overdueAssessment.hours') }}
+            {{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}{{ t('unit.hour') }}
           </div>
           <div>
-            {{ t('testAnalysis.detail.overdueAssessment.overdueWorkloadEstimatedProcessingTime') }}
+            {{ t('testAnalysis.detail.overdueAssessment.statistics.overdueWorkloadProcessingTime') }}
           </div>
         </div>
       </div>

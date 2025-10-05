@@ -18,10 +18,8 @@ const getChartData = (data) => {
   const res = {} as any;
 
   const {
-    dailyProcessedWorkload = 0, overdueNum = 0,
-    overdueRate = 0, overdueTime = 0,
-    overdueWorkload = 0, overdueWorkloadProcessingTime = 0,
-    overdueWorkloadRate = 0, riskLevel = 0,
+    overdueNum = 0, overdueRate = 0,
+    overdueWorkload = 0, overdueWorkloadRate = 0,
     totalNum = 0, totalWorkload = 0
   } = data;
 
@@ -29,23 +27,23 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: overdueRate + '%',
     value: [
-      { name: t('testAnalysis.detail.overdueAssessment.notOverdueCount'), value: totalNum - overdueNum },
-      { name: t('testAnalysis.detail.overdueAssessment.overdueCount'), value: overdueNum }
+      { name: t('common.counts.nonOverdueCount'), value: totalNum - overdueNum },
+      { name: t('common.counts.overdueCount'), value: overdueNum }
     ]
   };
 
   res.chart2Value = {
     title: overdueWorkloadRate + '%',
     value: [
-      { name: t('testAnalysis.detail.overdueAssessment.notOverdueWorkload'), value: totalWorkload - overdueWorkload },
-      { name: t('testAnalysis.detail.overdueAssessment.overdueWorkload'), value: overdueWorkload }
+      { name: t('common.counts.nonOverdueCount'), value: totalWorkload - overdueWorkload },
+      { name: t('common.counts.overdueCount'), value: overdueWorkload }
     ]
   };
   return res;
 };
 
 const totalValue = ref({});
-const personValues = ref([]);
+const personValues = ref<any[]>([]);
 
 onMounted(() => {
   watch(() => props.analysisInfo, (newValue) => {
@@ -78,7 +76,7 @@ onMounted(() => {
 });
 
 const totalChartRef = ref();
-const chartListRef = [];
+const chartListRef: any[] = [];
 defineExpose({
   resize: () => {
     totalChartRef.value.resize();

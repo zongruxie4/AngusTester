@@ -19,7 +19,6 @@ const getChartData = (data) => {
   const {
     actualWorkload = 0, completedWorkload = 0,
     completedWorkloadRate = 0, evalWorkload = 0,
-    invalidWorkload = 0, invalidWorkloadRate = 0,
     savingWorkload = 0, savingWorkloadRate = 0
   } = data;
   res.chart0Value = {
@@ -28,16 +27,16 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: completedWorkloadRate + '%',
     value: [
-      { name: t('testAnalysis.detail.workload.uncompletedWorkload'), value: evalWorkload - completedWorkload },
-      { name: t('testAnalysis.detail.workload.completedWorkload2'), value: completedWorkload }
+      { name: t('status.notCompleted'), value: evalWorkload - completedWorkload },
+      { name: t('status.completed'), value: completedWorkload }
     ]
   };
 
   res.chart2Value = {
     title: savingWorkloadRate + '%',
     value: [
-      { name: t('testAnalysis.detail.workload.incompleteSavingWorkload'), value: evalWorkload - savingWorkload },
-      { name: t('testAnalysis.detail.workload.completedSavingWorkload'), value: savingWorkload }
+      { name: t('testAnalysis.detail.workload.pieLabels.saving'), value: evalWorkload - savingWorkload },
+      { name: t('testAnalysis.detail.workload.pieLabels.notSaving'), value: savingWorkload }
     ]
   };
   return res;

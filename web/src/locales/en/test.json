@@ -791,52 +791,38 @@
       "realTime": "Display real-time data each time",
       "snapshot": "Save data snapshot, display snapshot data each time"
     },
-    "editForm": {
-      "analysisTemplate": "Template",
-      "analysisName": "Name",
-      "analysisDescription": "Description",
-      "analysisObject": "Object",
-      "selectPlan": "Select Plan",
-      "selectOrganization": "Select Organization",
-      "selectUser": "Select User",
-      "selectDepartment": "Select Department",
-      "selectGroup": "Select Group",
-      "includeAssigneeAnalysis": "Include Assignee Analysis",
-      "includeDataDetail": "Include Data Detail",
-      "analysisPeriod": "Period",
-      "dataDisplay": "Data Display",
-      "inputAnalysisName": "Enter analysis name, maximum 100 characters",
-      "inputAnalysisDescription": "Enter analysis description, such as analysis purpose, background, etc., maximum 200 characters",
-      "selectOrSearchPlan": "Select or search plan",
-      "realTimeData": "Display real-time data each time",
-      "snapshotData": "Save data snapshot, display snapshot data each time",
-      "department": "Department",
-      "group": "Group",
-      "user": "User",
-      "addAnalysisSuccess": "Analysis added successfully",
-      "updateAnalysisSuccess": "Analysis updated successfully"
-    },
     "detail": {
-      "lastModifiedAt": "Last modified at",
-      "charts": "Chart",
-      "detail": "Detail",
-      "snapshot": "Snapshot",
-      "realTime": "Real-time",
-      "backlogTasks": {
-        "backlogVolume": "Backlog Volume",
-        "totalVolume": "Total Volume",
-        "backlogCaseCount": "Backlog Case Count",
-        "backlogWorkload": "Backlog Workload",
-        "backlogWorkloadEstimatedTime": "Backlog Workload Estimated Time",
-        "hours": "hours",
-        "averageDailyProcessedCases": "Average Daily Processed Cases",
-        "averageDailyProcessedWorkload": "Average Daily Processed Workload",
-        "caseCount": "Case Count",
-        "workload": "Workload",
-        "notBackloggedCount": "Not Backlogged Count",
-        "backloggedCount": "Backlogged Count",
-        "notBackloggedWorkload": "Not Backlogged Workload",
-        "backloggedWorkload": "Backlogged Workload"
+      "progress": {
+        "chartTitles": {
+          "caseProgress": "Case Progress",
+          "workloadProgress": "Workload Progress"
+        }
+      },
+      "workload": {
+        "eval": "Estimated",
+        "actual": "Actual",
+        "completed": "Completed",
+        "saving": "Saving",
+        "pieLabels": {
+          "saving": "Saving",
+          "notSaving": "Actual"
+        }
+      },
+      "backlogCases": {
+        "chartLabels": {
+          "backloggedCount": "Backlogged",
+          "totalBackloggedCount": "Total",
+          "backlogCaseCountRate": "Case Rate",
+          "backlogWorkloadRate": "Workload Rate",
+          "notBackloggedCount": "Not Backlogged",
+          "notBackloggedWorkload": "Not Backlogged Workload",
+          "backloggedWorkload": "Backlogged Workload"
+        },
+        "statistics": {
+          "backlogWorkloadEstimatedTime": "Backlog Workload Estimated Time",
+          "averageDailyProcessedCases": "Average Daily Processed Cases",
+          "averageDailyProcessedWorkload": "Average Daily Processed Workload"
+        }
       },
       "bugs": {
         "bugCount": "Bug Count",
@@ -930,21 +916,12 @@
         "perHour": "/Hour"
       },
       "overdueAssessment": {
-        "notOverdueCount": "Not Overdue Count",
-        "overdueCount": "Overdue Count",
-        "notOverdueWorkload": "Not Overdue Workload",
-        "overdueWorkload": "Overdue Workload",
-        "completedWorkloadPercentage": "Completed Workload Percentage",
-        "savingWorkloadPercentage": "Saved Workload Percentage",
-        "overdueRisk": "Overdue Risk",
-        "overdueTime": "Overdue Time",
-        "hours": "Hours",
-        "dailyAverageProcessedWorkload": "Daily Average Processed Workload",
-        "overdueWorkloadEstimatedProcessingTime": "Overdue Workload Estimated Processing Time"
-      },
-      "progress": {
-        "caseProgress": "Case Progress",
-        "workloadProgress": "Workload Progress"
+        "statistics": {
+          "overdueRisk": "Overdue Risk",
+          "overdueTime": "Overdue Time",
+          "averageDailyProcessedWorkload": "Average Daily Processed Workload",
+          "overdueWorkloadProcessingTime": "Overdue Processing Time"
+        }
       },
       "recentDelivery": {
         "deliveryCount": "Delivery Count (Completed)",
@@ -955,6 +932,67 @@
         "deliveryOverdueCount": "Delivery Overdue Count",
         "totalCount": "Total Count",
         "deliveryWorkload": "Delivery Workload (Completed)"
+      },
+      "reviewEfficiency": {
+        "notPassedCaseCount": "Not Passed Case Count",
+        "passedCaseCount": "Passed Case Count",
+        "oneTimeNotPassedCaseCount": "One-time Not Passed Case Count",
+        "oneTimePassedCaseCount": "One-time Passed Case Count",
+        "twoTimeNotPassedCaseCount": "Two-time Not Passed Case Count",
+        "twoTimePassedCaseCount": "Two-time Passed Case Count",
+        "passedReviewCases": "Passed Review Cases",
+        "passedCase": "Passed Case",
+        "oneTimePassedCount": "One-time Passed Count",
+        "twoTimePassedCount": "Two-time Passed Count",
+        "reviewPassedCasePercentage": "Review Passed Case Percentage",
+        "oneTimePassedReviewCasePercentage": "One-time Passed Review Case Percentage",
+        "twoTimePassedReviewCasePercentage": "Two-time Passed Review Case Percentage"
+      },
+      "unplanned": {
+        "caseCount": "Case Count",
+        "totalCount": "Total Count",
+        "unplannedCount": "Unplanned Count",
+        "unplannedCompletedCount": "Unplanned Completed Count",
+        "workload": "Workload",
+        "totalWorkload": "Total Workload",
+        "unplannedWorkload": "Unplanned Workload",
+        "unplannedCompletedWorkload": "Unplanned Completed Workload",
+        "unplannedCaseEstimatedTime": "Unplanned Case Estimated Time",
+        "hours": "Hours"
+      },
+      "growthTread": {
+        "customTest": "Custom Test",
+        "functionalTest": "Functional Test",
+        "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test",
+        "services": "Services",
+        "apis": "APIs",
+        "cases": "Cases",
+        "taskSprint": "Sprint",
+        "mockApis": "Mock APIs",
+        "mockPushback": "Mock Pushback",
+        "mockResponse": "Mock Response",
+        "mockService": "Mock Service",
+        "dataDataset": "Dataset",
+        "dataDatasource": "Datasource",
+        "dataVariable": "Variable",
+        "total2": "Total",
+        "report": "Report",
+        "reportRecord": "Record",
+        "apiTest": "API Test",
+        "bug": "Bug",
+        "requirement": "Requirement",
+        "story": "Story",
+        "scenarioTest": "Scenario Test",
+        "caseGrowthAmount": "Case Growth Amount",
+        "requirement2": "Requirement",
+        "story2": "Story",
+        "case2": "Case",
+        "bug2": "Bug",
+        "apiTest2": "API Test",
+        "scenarioTest2": "Scenario Test",
+        "total3": "Total",
+        "growthTrend": "Growth Trend"
       },
       "resourceCreation": {
         "customTest": "Custom Test",
@@ -993,80 +1031,6 @@
         "analysis2": "Analysis",
         "total3": "Total",
         "createdResourceGrowthTrend": "Created Resource Growth Trend"
-      },
-      "reviewEfficiency": {
-        "notPassedCaseCount": "Not Passed Case Count",
-        "passedCaseCount": "Passed Case Count",
-        "oneTimeNotPassedCaseCount": "One-time Not Passed Case Count",
-        "oneTimePassedCaseCount": "One-time Passed Case Count",
-        "twoTimeNotPassedCaseCount": "Two-time Not Passed Case Count",
-        "twoTimePassedCaseCount": "Two-time Passed Case Count",
-        "passedReviewCases": "Passed Review Cases",
-        "passedCase": "Passed Case",
-        "oneTimePassedCount": "One-time Passed Count",
-        "twoTimePassedCount": "Two-time Passed Count",
-        "reviewPassedCasePercentage": "Review Passed Case Percentage",
-        "oneTimePassedReviewCasePercentage": "One-time Passed Review Case Percentage",
-        "twoTimePassedReviewCasePercentage": "Two-time Passed Review Case Percentage"
-      },
-      "taskGrowthTread": {
-        "customTest": "Custom Test",
-        "functionalTest": "Functional Test",
-        "performanceTest": "Performance Test",
-        "stabilityTest": "Stability Test",
-        "services": "Services",
-        "apis": "APIs",
-        "cases": "Cases",
-        "taskSprint": "Sprint",
-        "mockApis": "Mock APIs",
-        "mockPushback": "Mock Pushback",
-        "mockResponse": "Mock Response",
-        "mockService": "Mock Service",
-        "dataDataset": "Dataset",
-        "dataDatasource": "Datasource",
-        "dataVariable": "Variable",
-        "total2": "Total",
-        "report": "Report",
-        "reportRecord": "Record",
-        "apiTest": "API Test",
-        "bug": "Bug",
-        "requirement": "Requirement",
-        "story": "Story",
-        "scenarioTest": "Scenario Test",
-        "caseGrowthAmount": "Case Growth Amount",
-        "requirement2": "Requirement",
-        "story2": "Story",
-        "case2": "Case",
-        "bug2": "Bug",
-        "apiTest2": "API Test",
-        "scenarioTest2": "Scenario Test",
-        "total3": "Total",
-        "growthTrend": "Growth Trend"
-      },
-      "unplannedTests": {
-        "caseCount": "Case Count",
-        "totalCount": "Total Count",
-        "unplannedCount": "Unplanned Count",
-        "unplannedCompletedCount": "Unplanned Completed Count",
-        "workload": "Workload",
-        "totalWorkload": "Total Workload",
-        "unplannedWorkload": "Unplanned Workload",
-        "unplannedCompletedWorkload": "Unplanned Completed Workload",
-        "unplannedCaseEstimatedTime": "Unplanned Case Estimated Time",
-        "hours": "Hours"
-      },
-      "workload": {
-        "workload": "Workload",
-        "evalWorkload": "Estimated Workload",
-        "actualWorkload": "Actual Workload",
-        "completedWorkload": "Completed Workload",
-        "savingWorkload": "Saving Workload",
-        "uncompletedWorkload": "Incomplete Workload",
-        "completedWorkload2": "Completed Workload",
-        "incompleteSavingWorkload": "Incomplete Saving Workload",
-        "completedSavingWorkload": "Completed Saving Workload",
-        "completedWorkloadPercentage": "Completed Workload Percentage",
-        "savingWorkloadPercentage": "Saving Workload Percentage"
       }
     }
   }

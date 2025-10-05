@@ -26,16 +26,16 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: completedWorkloadRate + '%',
     value: [
-      { name: t('common.counts.uncompletedWorkload'), value: evalWorkload - completedWorkload },
-      { name: t('common.completedWorkload'), value: completedWorkload }
+      { name: t('status.notCompleted'), value: evalWorkload - completedWorkload },
+      { name: t('status.completed'), value: completedWorkload }
     ]
   };
 
   res.chart2Value = {
     title: savingWorkloadRate + '%',
     value: [
-      { name: t('issueAnalysis.detail.workload.pieLabels.incompleteSaving'), value: evalWorkload - savingWorkload },
-      { name: t('issueAnalysis.detail.workload.pieLabels.completedSaving'), value: savingWorkload }
+      { name: t('issueAnalysis.detail.workload.pieLabels.saving'), value: evalWorkload - savingWorkload },
+      { name: t('issueAnalysis.detail.workload.pieLabels.notSaving'), value: savingWorkload }
     ]
   };
   return res;

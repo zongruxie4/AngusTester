@@ -20,8 +20,8 @@ const { t } = useI18n();
 
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
-  userInfo: () => ({ id: '' }),
-  refreshNotify: 0,
+  userInfo: () => ({ id: '' } as { id: string }),
+  refreshNotify: '0',
   onShow: false
 });
 
@@ -62,6 +62,14 @@ const templateDescriptionConfig = computed(() => {
     config[item.value] = item.message;
   });
   return config;
+});
+
+/**
+ * Convert userInfo to the expected format for SearchPanel.
+ */
+const searchPanelUserInfo = computed(() => {
+  if (!props.userInfo) return undefined;
+  return { id: String(props.userInfo.id || '') };
 });
 
 /**
@@ -285,7 +293,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleWindowResize);
 });
-
 </script>
 <template>
   <div class="p-5 h-full flex flex-col overflow-x-hidden">
@@ -297,7 +304,7 @@ onBeforeUnmount(() => {
     <SearchPanel
       v-model:orderBy="sortConfig.orderBy"
       v-model:orderSort="sortConfig.orderSort"
-      :userInfo="props.userInfo"
+      :userInfo="searchPanelUserInfo"
       :projectId="props.projectId"
       @change="handleSearchSubmit"
       @add="navigateToAddAnalysis" />
@@ -307,7 +314,7 @@ onBeforeUnmount(() => {
         v-model:template="selectedTemplate"
         v-model:templateData="templateOptions"
         v-model:templateDesc="templateDescriptions"
-        class="w-50 h-full overflow-y-auto bg-gray-1" />
+        class="w-55 h-full overflow-y-auto bg-gray-1" />
 
       <div
         v-show="analysisList.length"
@@ -318,35 +325,36 @@ onBeforeUnmount(() => {
         <div
           v-for="item in analysisList"
           :key="item.id"
-          class="pr-2 flex-1/5 min-w-0 flex-grow-0 mb-2.5">
+          class="pr-2 flex-1/5 flex-grow-0 mb-2.5 min-w-0">
           <div class="border rounded p-2 h-full flex flex-col justify-between">
-            <div>
-              <div class="flex space-x-2 ">
-                <Icon :icon="TemplateIconConfig[item.template]" class="text-8 mt-6" />
-                <div class="flex-1 min-w-0">
-                  <div class="flex justify-between">
-                    <div
-                      :title="item.name"
-                      class="flex-1 min-w-0 text-3.5 font-semibold mb-1 text-theme-special cursor-pointer truncate"
-                      @click="navigateToAnalysisDetail(item)">
-                      {{ item.name }}
-                    </div>
-
-                    <Tag class="relative -top-1 mr-0 px-0.5 h-5" color="geekblue">
-                      {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('testAnalysis.status.realTime') : t('testAnalysis.status.snapshot') }}
-                    </Tag>
+            <div class="flex space-x-2 ">
+              <Icon :icon="TemplateIconConfig[item.template]" class="text-8 mt-6" />
+              <div class="flex-1 min-w-0 mt-1">
+                <div class="flex justify-between">
+                  <div
+                    :title="item.name"
+                    class="flex-1 min-w-0 text-3.5 font-semibold mb-1 text-theme-special cursor-pointer truncate"
+                    @click="navigateToAnalysisDetail(item)">
+                    {{ item.name }}
                   </div>
+                  <Tag class="relative -top-1 mr-0 px-0.5 h-4" color="geekblue">
+                    {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('testAnalysis.status.realTime') : t('testAnalysis.status.snapshot') }}
+                  </Tag>
+                </div>
 
-                  <p class="">{{ templateDescriptionConfig[item.template] }}</p>
+                <div class="project-description-row">
+                  <div
+                    v-if="item.description"
+                    class="project-description-text">
+                    <div class="mt-2">{{ item.description }}</div>
+                  </div>
+                  <p v-else class="project-no-description-text">{{ t('common.noDescription') }}</p>
                 </div>
               </div>
-
-              <div class="mt-1  text-right">
-                <div>
-                  <span class="font-semibold mr-1">{{ item.createdByName }}</span>
-                  {{ t('common.createdBy') }}{{ item.createdDate }}
-                </div>
-              </div>
+            </div>
+            <div class="mt-1 text-right">
+              <span class="font-semibold mr-1">{{ item.lastModifiedByName || 'Unknown' }}</span>
+              {{ t('status.createdAt') }}&nbsp;{{ item.lastModifiedDate || 'Unknown' }}
             </div>
             <div class="flex justify-end">
               <Button
@@ -390,7 +398,7 @@ onBeforeUnmount(() => {
                     class="text-3.5 font-semibold mb-1 text-theme-special cursor-pointer flex items-center"
                     @click="navigateToAddAnalysis(item.value)">
                     <Icon icon="icon-jia" />
-                    {{ item.description }}
+                    {{ item.message }}
                   </div>
                   <p class="">{{ templateDescriptionConfig[item.value] }}</p>
                 </div>

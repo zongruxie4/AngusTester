@@ -20,15 +20,15 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   chart0Value: () => ({
-    chart0Value: [0, 0, 0, 0]
+    yData: [0, 0, 0, 0]
   }),
   chart1Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -42,7 +42,7 @@ let savingWorkloadEchart;
 
 const workloadEchartConfig = {
   title: {
-    text: t('testAnalysis.detail.workload.workload'),
+    text: t('common.workload'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -58,10 +58,10 @@ const workloadEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('common.evalWorkload'),
-      t('common.actualWorkload'),
-      t('common.completedWorkload'),
-      t('common.savingWorkload')
+      t('testAnalysis.detail.workload.eval'),
+      t('testAnalysis.detail.workload.actual'),
+      t('testAnalysis.detail.workload.completed'),
+      t('testAnalysis.detail.workload.saving')
     ],
     axisLabel: {
       interval: 0,
@@ -98,7 +98,7 @@ const completedWorkloadEchartConfig = {
     left: '35%',
     top: '38%',
     padding: 2,
-    subtext: t('testAnalysis.detail.workload.completedWorkloadPercentage'),
+    subtext: t('common.counts.completedWorkloadRate'),
     // left: '25%',
     // top: '40%',
     itemGap: 47,
@@ -151,7 +151,7 @@ const completedWorkloadEchartConfig = {
       },
       data: [
         {
-          name: t('status.incomplete'),
+          name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
             color: 'rgb(246,159,42)'
@@ -173,7 +173,7 @@ const savingWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: t('testAnalysis.detail.workload.savingWorkloadPercentage')
+    subtext: t('common.counts.savingWorkloadRate')
   }
 }));
 
@@ -189,21 +189,25 @@ onMounted(() => {
 
     completedWorkloadEchartConfig.series[0].data[0] = {
       ...completedWorkloadEchartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+      name: props.chart1Value.value[0].name,
+      value: Number(props.chart1Value.value[0].value)
     };
     completedWorkloadEchartConfig.series[0].data[1] = {
       ...completedWorkloadEchartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+      name: props.chart1Value.value[1].name,
+      value: Number(props.chart1Value.value[1].value)
     };
     completedWorkloadEchartConfig.title.text = props.chart1Value.title;
 
     savingWorkloadEchartConfig.series[0].data[0] = {
       ...savingWorkloadEchartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      name: props.chart2Value.value[0].name,
+      value: Number(props.chart2Value.value[0].value)
     };
     savingWorkloadEchartConfig.series[0].data[1] = {
       ...savingWorkloadEchartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      name: props.chart2Value.value[1].name,
+      value: Number(props.chart2Value.value[1].value)
     };
     savingWorkloadEchartConfig.title.text = props.chart2Value.title;
     completedWorkloadEchart.setOption(completedWorkloadEchartConfig);

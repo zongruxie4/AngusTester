@@ -394,9 +394,13 @@
         }
       },
       "workload": {
+        "eval": "评估",
+        "actual": "实际",
+        "completed": "完成",
+        "saving": "节省",
         "pieLabels": {
-          "incompleteSaving": "未节省工作量",
-          "completedSaving": "已节省工作量"
+          "saving": "已节省",
+          "notSaving": "实际"
         }
       },
       "backlogIssues": {
@@ -412,7 +416,7 @@
         },
         "statistics": {
           "backlogWorkloadEstimatedTime": "积压工作量预计耗时",
-          "averageDailyProcessedIssues": "每天平均处理问题数",
+          "averageDailyProcessedIssues": "平均每天处理问题数",
           "averageDailyProcessedWorkload": "平均每天处理工作量"
         }
       },
@@ -495,7 +499,7 @@
         "statistics": {
           "totalProcessingTime": "总处理时长",
           "participants": "参与人员",
-          "averageDailyProcessingTime": "每天平均处理时长",
+          "averageDailyProcessingTime": "平均每天处理时长",
           "perHour": "/小时"
         }
       },

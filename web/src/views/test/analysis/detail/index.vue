@@ -198,7 +198,7 @@ onBeforeUnmount(() => {
           <Tag
             color="geekblue"
             class="ml-5">
-            {{ analysisData.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('testAnalysis.detail.snapshot') : t('testAnalysis.detail.realTime') }}
+            {{ analysisData.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('testAnalysis.status.snapshot') : t('testAnalysis.status.realTime') }}
           </Tag>
         </div>
         <div class="mt-2 text-3.5">{{ analysisData.description }}</div>
@@ -207,7 +207,7 @@ onBeforeUnmount(() => {
             {{ analysisData.lastModifiedByName }}
           </span>
           <span class="text-3.5 ml-2">
-            {{ t('testAnalysis.detail.lastModifiedAt') }}&nbsp;{{ analysisData.lastModifiedDate }}
+            {{ t('status.modifiedAt') }}&nbsp;{{ analysisData.lastModifiedDate }}
           </span>
         </div>
       </div>
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
     <!-- Chart Display Section -->
     <div class="mt-4">
       <div class="detail-title font-semibold pl-2 relative text-3.5 mb-3">
-        {{ t('testAnalysis.detail.charts') }}
+        {{ t('chart.title') }}
       </div>
 
       <!-- Dynamic Chart Components Based on Template Type -->

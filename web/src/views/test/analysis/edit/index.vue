@@ -209,9 +209,9 @@ const handleSave = async () => {
 
     // Show success notification
     if (!parameters.id) {
-      notification.success(t('testAnalysis.editForm.addAnalysisSuccess'));
+      notification.success(t('actions.tips.addSuccess'));
     } else {
-      notification.success(t('testAnalysis.editForm.updateAnalysisSuccess'));
+      notification.success(t('actions.tips.updateSuccess'));
     }
 
     emits('ok');

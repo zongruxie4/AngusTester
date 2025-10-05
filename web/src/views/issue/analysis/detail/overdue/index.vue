@@ -34,8 +34,8 @@ const getChartData = (data) => {
   res.chart2Value = {
     title: overdueWorkloadRate + '%',
     value: [
-      { name: t('common.counts.nonOverdueWorkload'), value: totalWorkload - overdueWorkload },
-      { name: t('common.counts.overdueWorkload'), value: overdueWorkload }
+      { name: t('common.counts.nonOverdueCount'), value: totalWorkload - overdueWorkload },
+      { name: t('common.counts.overdueCount'), value: overdueWorkload }
     ]
   };
   return res;

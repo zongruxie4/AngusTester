@@ -116,13 +116,13 @@ defineExpose({
     <div class="flex-1">
       <div ref="burndownRef" class="flex-1 h-50"></div>
       <div class="text-center font-medium  mt-1">
-        {{ t('testAnalysis.detail.burndown.caseBurndownCount') }}
+        {{ t('chart.burndown.countBurndown') }}
       </div>
     </div>
     <div class="flex-1">
       <div ref="workloadBurndownRef" class="flex-1 h-50"></div>
       <div class="text-center font-medium mt-1">
-        {{ t('testAnalysis.detail.burndown.workloadBurndown') }}
+        {{ t('chart.burndown.workloadBurndown') }}
       </div>
     </div>
   </div>

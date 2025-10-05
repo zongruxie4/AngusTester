@@ -30,7 +30,7 @@ const progressEchartConfig = {
     left: '35%',
     top: '38%',
     padding: 2,
-    subtext: t('testAnalysis.detail.progress.caseProgress'),
+    subtext: t('testAnalysis.detail.progress.chartTitles.caseProgress'),
     // left: '25%',
     // top: '40%',
     itemGap: 47,
@@ -105,7 +105,7 @@ const workloadProgressEchartConfig = JSON.parse(JSON.stringify({
   ...progressEchartConfig,
   title: {
     ...progressEchartConfig.title,
-    subtext: t('testAnalysis.detail.progress.workloadProgress')
+    subtext: t('testAnalysis.detail.progress.chartTitles.workloadProgress')
   }
 }));
 
@@ -117,21 +117,25 @@ onMounted(() => {
   watch([() => props.value0, () => props.value1], () => {
     progressEchartConfig.series[0].data[0] = {
       ...progressEchartConfig.series[0].data[0],
-      ...props.value0[0]
+      ...props.value0[0],
+      value: Number(props.value0[0].value)
     };
     progressEchartConfig.series[0].data[1] = {
       ...progressEchartConfig.series[0].data[1],
-      ...props.value0[1]
+      ...props.value0[1],
+      value: Number(props.value0[1].value)
     };
     progressEchartConfig.title.text = props.title0;
 
     workloadProgressEchartConfig.series[0].data[0] = {
       ...workloadProgressEchartConfig.series[0].data[0],
-      ...props.value1[0]
+      ...props.value1[0],
+      value: Number(props.value1[0].value)
     };
     workloadProgressEchartConfig.series[0].data[1] = {
       ...workloadProgressEchartConfig.series[0].data[1],
-      ...props.value1[1]
+      ...props.value1[1],
+      value: Number(props.value1[1].value)
     };
     workloadProgressEchartConfig.title.text = props.title1;
     progressEchart.setOption(progressEchartConfig);
