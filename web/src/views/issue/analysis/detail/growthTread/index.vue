@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { enumUtils } from '@xcan-angus/infra';
+import { TaskType } from '@/enums/enums';
 import { getDateArr } from '@/utils/utils';
 
 interface Props {
@@ -16,32 +18,13 @@ const props = withDefaults(defineProps<Props>(), {
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const targetResourceTypes = {
-  TEST_CUSTOMIZATION: t('issueAnalysis.resourceTypes.TEST_CUSTOMIZATION'),
-  TEST_FUNCTIONALITY: t('issueAnalysis.resourceTypes.TEST_FUNCTIONALITY'),
-  TEST_PERFORMANCE: t('issueAnalysis.resourceTypes.TEST_PERFORMANCE'),
-  TEST_STABILITY: t('issueAnalysis.resourceTypes.TEST_STABILITY'),
-  SERVICES: t('issueAnalysis.resourceTypes.SERVICES'),
-  APIS: t('issueAnalysis.resourceTypes.API'),
-  CASES: t('issueAnalysis.resourceTypes.CASE'),
-  PLAN: t('issueAnalysis.resourceTypes.PLAN'),
-  SPRINT: t('issueAnalysis.resourceTypes.SPRINT'),
-  TASK_SPRINT: t('issueAnalysis.resourceTypes.TASK_SPRINT'),
-  TASK: t('issueAnalysis.resourceTypes.TASK'),
-  MOCK_APIS: t('issueAnalysis.resourceTypes.MOCK_APIS'),
-  MOCK_PUSHBACK: t('issueAnalysis.resourceTypes.MOCK_PUSHBACK'),
-  MOCK_RESPONSE: t('issueAnalysis.resourceTypes.MOCK_RESPONSE'),
-  MOCK_SERVICE: t('issueAnalysis.resourceTypes.MOCK_SERVICE'),
-  DATA_DATASET: t('issueAnalysis.resourceTypes.DATA_DATASET'),
-  DATA_DATASOURCE: t('issueAnalysis.resourceTypes.DATA_DATASOURCE'),
-  DATA_VARIABLE: t('issueAnalysis.resourceTypes.DATA_VARIABLE'),
-  TOTAL: t('issueAnalysis.resourceTypes.TOTAL'),
-  REPORT: t('issueAnalysis.resourceTypes.REPORT'),
-  REPORT_RECORD: t('issueAnalysis.resourceTypes.REPORT_RECORD'),
-  API_TEST: t('issueAnalysis.resourceTypes.API_TEST'),
-  BUG: t('issueAnalysis.resourceTypes.BUG'),
-  REQUIREMENT: t('issueAnalysis.resourceTypes.REQUIREMENT'),
-  STORY: t('issueAnalysis.resourceTypes.STORY'),
-  SCENARIO_TEST: t('issueAnalysis.resourceTypes.SCENARIO_TEST')
+  TOTAL: t('common.total'),
+  REQUIREMENT: enumUtils.getEnumDescription(TaskType, TaskType.REQUIREMENT),
+  STORY: enumUtils.getEnumDescription(TaskType, TaskType.STORY),
+  TASK: enumUtils.getEnumDescription(TaskType, TaskType.TASK),
+  BUG: enumUtils.getEnumDescription(TaskType, TaskType.BUG),
+  API_TEST: enumUtils.getEnumDescription(TaskType, TaskType.API_TEST),
+  SCENARIO_TEST: enumUtils.getEnumDescription(TaskType, TaskType.SCENARIO_TEST)
 };
 
 const getChartData = (data) => {

@@ -34,16 +34,16 @@ const props = withDefaults(defineProps<Props>(), {
 
 const deliveryRef = ref();
 const deliveryWorkloadRef = ref();
-const deliverygedWorkloadRef = ref();
+// removed unused ref
 
 let deliveryRefEchart;
 let deliveryWorkloadEchart;
-let deliverygedWorkloadEchart;
+// removed unused var
 
 // 交付数（完成数）
 const deliveryEchartConfig = {
   title: {
-    text: t('testAnalysis.detail.recentDelivery.deliveryCount'),
+    text: t('testAnalysis.detail.recentDelivery.chartTitles.deliveryCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -59,9 +59,9 @@ const deliveryEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('testAnalysis.detail.recentDelivery.today'),
-      t('quickSearch.last7Days'),
-      t('testAnalysis.detail.recentDelivery.lastMonth')
+      t('chart.today'),
+      t('chart.last7Days'),
+      t('chart.lastMonth')
     ],
     axisLabel: {
       interval: 0,
@@ -77,17 +77,17 @@ const deliveryEchartConfig = {
   legend: {
     show: true,
     data: [
-      t('testAnalysis.detail.recentDelivery.deliveryCount2'),
-      t('testAnalysis.detail.recentDelivery.deliveryOverdueCount'),
-      t('testAnalysis.detail.recentDelivery.totalCount')
+      t('testAnalysis.detail.recentDelivery.chartLabels.deliveryCount'),
+      t('testAnalysis.detail.recentDelivery.chartLabels.deliveryOverdueCount'),
+      t('common.counts.totalCount')
     ],
     top: 0
   },
   series: [
     {
-      name: t('testAnalysis.detail.recentDelivery.deliveryCount2'),
+      name: t('testAnalysis.detail.recentDelivery.chartLabels.deliveryCount'),
       itemStyle: {
-        color: 'blue',
+        color: '#52C41A',
         borderRadius: [5, 5, 0, 0]
       },
       barGap: 0,
@@ -100,7 +100,7 @@ const deliveryEchartConfig = {
       }
     },
     {
-      name: t('testAnalysis.detail.recentDelivery.deliveryOverdueCount'),
+      name: t('testAnalysis.detail.recentDelivery.chartLabels.deliveryOverdueCount'),
       itemStyle: {
         color: 'orange',
         borderRadius: [5, 5, 0, 0]
@@ -114,9 +114,9 @@ const deliveryEchartConfig = {
       }
     },
     {
-      name: t('testAnalysis.detail.recentDelivery.totalCount'),
+      name: t('common.counts.totalCount'),
       itemStyle: {
-        color: 'green',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       data: [0, 0],
@@ -138,7 +138,7 @@ const deliveryWorkloadEchartConfig = JSON.parse(JSON.stringify({
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('testAnalysis.detail.recentDelivery.deliveryWorkload'),
+    subtext: t('testAnalysis.detail.recentDelivery.chartTitles.deliveryWorkload'),
     // left: '25%',
     // top: '40%',
     itemGap: 55,

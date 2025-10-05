@@ -31,23 +31,23 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({}),
   chart0Value: () => ({
-    chart0Value: [0, 0, 0, 0]
+    yData: [0, 0, 0, 0]
   }),
   chart1Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart3Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart4Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -82,10 +82,10 @@ const bugsEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('testAnalysis.detail.bugs.totalBugs'),
-      t('testAnalysis.detail.bugs.validBugs'),
-      t('testAnalysis.detail.bugs.invalidBugs'),
-      t('testAnalysis.detail.bugs.escapedBugs')
+      t('testAnalysis.detail.bugs.chartLabels.totalBugs'),
+      t('testAnalysis.detail.bugs.chartLabels.validBugs'),
+      t('testAnalysis.detail.bugs.chartLabels.invalidBugs'),
+      t('testAnalysis.detail.bugs.chartLabels.escapedBugs')
     ],
     axisLabel: {
       interval: 0,
@@ -175,28 +175,28 @@ const bugLevelEchartConfig = {
       },
       data: [
         {
-          name: t('testAnalysis.detail.bugs.criticalCount'),
+          name: t('testAnalysis.detail.bugs.pieChartLabels.criticalCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: t('testAnalysis.detail.bugs.majorCount'),
+          name: t('testAnalysis.detail.bugs.pieChartLabels.majorCount'),
           value: 0,
           itemStyle: {
             color: 'gold'
           }
         },
         {
-          name: t('testAnalysis.detail.bugs.minorCount'),
+          name: t('testAnalysis.detail.bugs.pieChartLabels.minorCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: t('testAnalysis.detail.bugs.trivialCount'),
+          name: t('testAnalysis.detail.bugs.pieChartLabels.trivialCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'
@@ -212,7 +212,7 @@ const validBugEchartConfig = JSON.parse(JSON.stringify({
   ...bugLevelEchartConfig,
   title: {
     ...bugLevelEchartConfig.title,
-    subtext: t('testAnalysis.detail.bugs.validBugPercentage'),
+    subtext: t('testAnalysis.detail.bugs.chartTitles.validBugRate'),
     itemGap: 60
   },
   series: [{
@@ -241,8 +241,7 @@ const escapedBugEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: t('testAnalysis.detail.bugs.escapedBugPercentage')
-
+    subtext: t('testAnalysis.detail.bugs.chartTitles.escapedBugRate')
   }
 }));
 
@@ -251,7 +250,7 @@ const bugWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: t('testAnalysis.detail.bugs.bugWorkloadPercentage')
+    subtext: t('testAnalysis.detail.bugs.chartTitles.bugWorkloadRate')
   }
 }));
 
@@ -271,19 +270,23 @@ onMounted(() => {
 
     bugLevelEchartConfig.series[0].data[0] = {
       ...bugLevelEchartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+      ...props.chart1Value.value[0],
+      value: Number(props.chart1Value.value[0].value)
     };
     bugLevelEchartConfig.series[0].data[1] = {
       ...bugLevelEchartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+      ...props.chart1Value.value[1],
+      value: Number(props.chart1Value.value[1].value)
     };
     bugLevelEchartConfig.series[0].data[2] = {
       ...bugLevelEchartConfig.series[0].data[2],
-      ...props.chart1Value.value[2]
+      ...props.chart1Value.value[2],
+      value: Number(props.chart1Value.value[2].value)
     };
     bugLevelEchartConfig.series[0].data[3] = {
       ...bugLevelEchartConfig.series[0].data[3],
-      ...props.chart1Value.value[3]
+      ...props.chart1Value.value[3],
+      value: Number(props.chart1Value.value[3].value)
     };
     bugLevelEchartConfig.title.text = props.chart1Value.title;
 
@@ -341,17 +344,17 @@ defineExpose({
 </script>
 <template>
   <div class="flex space-x-2">
-    <div class="w-30 space-y-2 text-center">
+    <div class="w-38 space-y-2 text-center">
       <div>
-        <span class="text-8 font-semibold">{{ props.value.testCaseHitRate || 0 }}</span>%
+        <span class="text-6 font-semibold">{{ props.value.testCaseHitRate || 0 }}</span>%
         <div>{{ t('testAnalysis.detail.bugs.testCaseHitRate') }}</div>
       </div>
       <div>
-        <span class="text-8 font-semibold">{{ props.value.testCaseHitNum || 0 }}</span>
+        <span class="text-6 font-semibold">{{ props.value.testCaseHitNum || 0 }}</span>
         <div>{{ t('testAnalysis.detail.bugs.testCaseHitCount') }}</div>
       </div>
     </div>
-    <div ref="bugsRef" class="flex-1 min-w-80 h-40"></div>
+    <div ref="bugsRef" class="flex-1 min-w-100 h-40"></div>
     <div ref="bugLevelRef" class="flex-1 h-40"></div>
     <div ref="validBugRef" class="flex-1 h-40"></div>
     <div ref="escapedBugRef" class="flex-1 h-40"></div>

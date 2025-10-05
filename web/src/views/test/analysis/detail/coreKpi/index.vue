@@ -19,10 +19,10 @@ const getChartData = (data) => {
 
   const {
     totalNum = 0, completedNum = 0, completedRate = '-',
-    bugNum = 0, bugRate = 0, completedBugNum = 0, completedBugRate = '-',
+    bugNum = 0, completedBugNum = 0, completedBugRate = '-',
     completedOverdueNum = 0, completedOverdueRate = '-',
     completedWorkload = 0, completedWorkloadRate = '-',
-    evalWorkload = 0, overdueNum = 0, overdueRate = 0
+    evalWorkload = 0, overdueNum = 0
   } = data;
 
   res.chart0Value = {
@@ -32,38 +32,45 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: completedRate + '%',
     value: [
-      { name: t('testAnalysis.detail.coreKpi.incompleteCaseCount'), value: totalNum - completedNum },
-      { name: t('testAnalysis.detail.coreKpi.completedCaseCount'), value: completedNum }
+      { name: t('status.notCompleted'), value: totalNum - completedNum },
+      { name: t('status.completed'), value: completedNum }
     ]
   };
   res.chart2Value = {
     title: completedWorkloadRate + '%',
     value: [
-      { name: t('testAnalysis.detail.coreKpi.uncompletedWorkload'), value: evalWorkload - completedWorkload },
-      { name: t('testAnalysis.detail.coreKpi.completedWorkload'), value: completedWorkload }
+      { name: t('status.notCompleted'), value: evalWorkload - completedWorkload },
+      { name: t('status.completed'), value: completedWorkload }
     ]
   };
 
   res.chart3Value = {
     title: completedOverdueRate + '%',
     value: [
-      { name: t('testAnalysis.detail.coreKpi.incompleteOverdueCount'), value: overdueNum - completedOverdueNum },
-      { name: t('testAnalysis.detail.coreKpi.completedOverdueCount'), value: completedOverdueNum }
+      { name: t('status.notCompleted'), value: overdueNum - completedOverdueNum },
+      { name: t('status.completed'), value: completedOverdueNum }
     ]
   };
 
   res.chart4Value = {
     title: completedBugRate + '%',
     value: [
-      { name: t('testAnalysis.detail.coreKpi.incompleteBugCount'), value: bugNum - completedBugNum },
-      { name: t('testAnalysis.detail.coreKpi.completedBugCount'), value: completedBugNum }
+      { name: t('status.notCompleted'), value: bugNum - completedBugNum },
+      { name: t('status.completed'), value: completedBugNum }
     ]
   };
   return res;
 };
 
 const totalValue = ref({});
-const personValues = ref([]);
+
+interface PersonValue {
+  userName: string;
+  chartData: any;
+  id: string;
+}
+
+const personValues = ref<PersonValue[]>([]);
 
 onMounted(() => {
   watch(() => props.analysisInfo, (newValue) => {
@@ -96,12 +103,12 @@ onMounted(() => {
 });
 
 const totalChartRef = ref();
-const chartListRef = [];
+const chartListRef = ref<any[]>([]);
 defineExpose({
   resize: () => {
-    totalChartRef.value.resize();
-    chartListRef.forEach(item => {
-      item.resize();
+    totalChartRef.value?.resize();
+    chartListRef.value.forEach(item => {
+      item?.resize();
     });
   }
 });
@@ -123,7 +130,7 @@ defineExpose({
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
     <EChart
-      ref="chartListRef"
+      :ref="(el) => { if (el) chartListRef.push(el) }"
       v-bind="item.chartData"
       class="ml-3" />
   </div>

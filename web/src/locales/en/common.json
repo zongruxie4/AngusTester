@@ -207,7 +207,7 @@
       "testFailCount": "Test failures",
       "overdueCount": "Overdue",
       "overdueWorkload": "Overdue workload",
-      "completedOverdueRate": "Completed Overdue Rate",
+      "completedOverdueRate": "Completed overdue rate",
       "nonOverdueCount": "Non overdue",
       "nonOverdueWorkload": "Non overdue workload",
       "uncompletedOverdueCount": "Uncompleted overdue",
@@ -223,7 +223,7 @@
       "actualWorkload": "Actual workload",
       "completedWorkload": "Completed workload",
       "uncompletedWorkload": "Uncompleted workload",
-      "completedWorkloadRate": "Workload completion rate",
+      "completedWorkloadRate": "Completed workload rate",
       "savingWorkload": "Workload saved",
       "savingWorkloadRate": "Workload savings rate"
     },

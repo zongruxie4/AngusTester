@@ -107,7 +107,7 @@ const todayDeliveryTableData = computed(() => {
  * Transforms last week's delivery data for table display
  */
 const last7DaysDeliveryTableData = computed(() => {
-  return transformMultiTableData(analysisData.value.data?.multiTableData?.last7Days);
+  return transformMultiTableData(analysisData.value.data?.multiTableData?.lastWeek);
 });
 
 /**
@@ -232,16 +232,16 @@ onBeforeUnmount(() => {
       <div v-if="analysisData.template === AnalysisCaseTemplate.OVERDUE_ASSESSMENT">
         <OverdueAssessmentChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.SUBMITTED_BUGS" class="max-w-400">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.SUBMITTED_BUGS">
         <BugsChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.TESTING_EFFICIENCY" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.TESTING_EFFICIENCY" class="max-w-400">
         <TestingEfficiencyChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.REVIEW_EFFICIENCY" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.REVIEW_EFFICIENCY" class="max-w-400">
         <ReviewEfficiencyChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.CORE_KPI" class="max-w-400">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.CORE_KPI">
         <CoreKpiChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
       <div v-if="analysisData.template === AnalysisCaseTemplate.BACKLOG_CASES" class="max-w-400">
@@ -282,8 +282,9 @@ onBeforeUnmount(() => {
 
       <!-- Special handling for Recent Delivery template with multiple time periods -->
       <template v-if="analysisData.template === AnalysisCaseTemplate.RECENT_DELIVERY">
-        <div class="text-center mt-3">
-          {{ t('testAnalysis.today') }}
+        <div class="mt-3 text-3.5 font-semibold">
+          <Icon icon="icon-riqi" class="text-3.5" />
+          {{ t('chart.today') }}
         </div>
         <Table
           key="today"
@@ -293,8 +294,10 @@ onBeforeUnmount(() => {
           :scroll="{x: 1000, y: 300}"
           :columns="tableColumns"
           :dataSource="todayDeliveryTableData" />
-        <div class="text-center">
-          {{ t('quickSearch.last7Days') }}
+
+        <div class="text-3.5 font-semibold">
+          <Icon icon="icon-riqi" class="text-3.5" />
+          {{ t('chart.last7Days') }}
         </div>
         <Table
           key="last7Days"
@@ -304,8 +307,10 @@ onBeforeUnmount(() => {
           :scroll="{x: 1000, y: 300}"
           :columns="tableColumns"
           :dataSource="last7DaysDeliveryTableData" />
-        <div class="text-center">
-          {{ t('testAnalysis.lastMonth') }}
+
+        <div class="text-3.5 font-semibold">
+          <Icon icon="icon-riqi" class="text-3.5" />
+          {{ t('chart.lastMonth') }}
         </div>
         <Table
           key="lastMonth"

@@ -36,7 +36,7 @@ let unplannedWorkloadRefEchart;
 // 用例数
 const unplannedTaskEchartConfig = {
   title: {
-    text: t('testAnalysis.detail.resourceCreation.createdResourceTotal'),
+    text: t('testAnalysis.detail.resourceCreation.chartTitles.resourceTotal'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -52,12 +52,12 @@ const unplannedTaskEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('testAnalysis.detail.resourceCreation.plan2'),
+      t('common.plan'),
       t('common.useCase'),
-      t('testAnalysis.detail.resourceCreation.review2'),
-      t('testAnalysis.detail.resourceCreation.baseline2'),
-      t('testAnalysis.detail.resourceCreation.analysis2'),
-      t('testAnalysis.detail.resourceCreation.total3')
+      t('common.review'),
+      t('common.baseline'),
+      t('common.analysis'),
+      t('common.total')
     ],
     axisLabel: {
       interval: 0,
@@ -95,7 +95,7 @@ const unplannedTaskEchartConfig = {
 
 const unplannedWorkloadEchartConfig = {
   title: {
-    text: t('testAnalysis.detail.resourceCreation.createdResourceGrowthTrend'),
+    text: t('testAnalysis.detail.resourceCreation.chartTitles.resourceGrowth'),
     bottom: 0,
     left: 'center',
     textStyle: {

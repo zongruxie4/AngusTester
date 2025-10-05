@@ -17,19 +17,42 @@ const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 const getChartData = (data) => {
   const res = {} as any;
 
-  const { lastMonth, last7Days, today } = data;
+  const { lastMonth, lastWeek, today } = data;
 
   res.chart0Value = {
-    yData0: [today.completedNum, last7Days.completedNum, lastMonth.completedNum],
-    yData1: [today.overdueNum, last7Days.overdueNum, lastMonth.overdueNum],
-    yData2: [today.totalNum, last7Days.totalNum, lastMonth.totalNum]
+    yData0: [
+      today.completedNum || 0,
+      lastWeek.completedNum || 0,
+      lastMonth.completedNum || 0
+    ],
+    yData1: [
+      today.overdueNum || 0,
+      lastWeek.overdueNum || 0,
+      lastMonth.overdueNum || 0
+    ],
+    yData2: [
+      today.totalNum || 0,
+      lastWeek.totalNum || 0,
+      lastMonth.totalNum || 0
+    ]
   };
   res.chart1Value = {
-    yData0: [today.completedWorkload, last7Days.completedWorkload, lastMonth.completedWorkload],
-    yData1: [today.overdueWorkload, last7Days.overdueWorkload, lastMonth.overdueWorkload],
-    yData2: [today.totalWorkload, last7Days.totalWorkload, lastMonth.totalWorkload]
+    yData0: [
+      today.completedWorkload || 0,
+      lastWeek.completedWorkload || 0,
+      lastMonth.completedWorkload || 0
+    ],
+    yData1: [
+      today.overdueWorkload || 0,
+      lastWeek.overdueWorkload || 0,
+      lastMonth.overdueWorkload || 0
+    ],
+    yData2: [
+      today.totalWorkload || 0,
+      lastWeek.totalWorkload || 0,
+      lastMonth.totalWorkload || 0
+    ]
   };
-
   return res;
 };
 
@@ -44,8 +67,8 @@ onMounted(() => {
       totalValue.value = getChartData(sourceData);
 
       if (newValue?.containsUserAnalysis) {
-        const sourceData = newValue.data?.testersOverview || {};
-        const assignees = newValue.data?.testers || [];
+        const sourceData = newValue.data?.assigneesOverview || {};
+        const assignees = newValue.data?.assignees || [];
         Object.keys(sourceData).forEach(userId => {
           const viewData = sourceData[userId] || {};
           const chartData = getChartData(viewData);

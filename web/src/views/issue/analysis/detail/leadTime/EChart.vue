@@ -25,7 +25,7 @@ let leadTimeRefEChart;
 // 任务交付周期(小时
 const leadTimeEChartConfig = {
   title: {
-    text: t('issueAnalysis.detail.leadTime.chartTitles.taskDeliveryCycle'),
+    text: t('issueAnalysis.detail.leadTime.chartTitles.deliveryCycle'),
     bottom: 0,
     left: 'center',
     textStyle: {

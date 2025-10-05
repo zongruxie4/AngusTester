@@ -28,34 +28,34 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: '',
     value: [
-      { name: t('testAnalysis.detail.bugs.criticalBugs'), value: CRITICAL },
-      { name: t('testAnalysis.detail.bugs.majorBugs'), value: MAJOR },
-      { name: t('testAnalysis.detail.bugs.minorBugs'), value: MINOR },
-      { name: t('testAnalysis.detail.bugs.trivialBugs'), value: TRIVIAL }
+      { name: t('testAnalysis.detail.bugs.chartLabels.criticalBugs'), value: CRITICAL },
+      { name: t('testAnalysis.detail.bugs.chartLabels.majorBugs'), value: MAJOR },
+      { name: t('testAnalysis.detail.bugs.chartLabels.minorBugs'), value: MINOR },
+      { name: t('testAnalysis.detail.bugs.chartLabels.trivialBugs'), value: TRIVIAL }
     ]
   };
 
   res.chart2Value = {
     title: validBugRate + '%',
     value: [
-      { name: t('testAnalysis.detail.bugs.invalidBugs'), value: invalidBugNum },
-      { name: t('testAnalysis.detail.bugs.validBugs'), value: validBugNum }
+      { name: t('testAnalysis.detail.bugs.chartLabels.invalidBugs'), value: invalidBugNum },
+      { name: t('testAnalysis.detail.bugs.chartLabels.validBugs'), value: validBugNum }
     ]
   };
 
   res.chart3Value = {
     title: escapedBugRate + '%',
     value: [
-      { name: t('testAnalysis.detail.bugs.nonEscapedBugs'), value: totalNum - escapedBugNum },
-      { name: t('testAnalysis.detail.bugs.escapedBugCount'), value: escapedBugNum }
+      { name: t('testAnalysis.detail.bugs.chartLabels.nonEscapedBugs'), value: totalNum - escapedBugNum },
+      { name: t('testAnalysis.detail.bugs.chartLabels.escapedBugsCount'), value: escapedBugNum }
     ]
   };
 
   res.chart4Value = {
     title: bugWorkloadRate + '%',
     value: [
-      { name: t('testAnalysis.detail.bugs.nonBugWorkload'), value: totalWorkload - bugWorkload },
-      { name: t('testAnalysis.detail.bugs.bugWorkload'), value: bugWorkload }
+      { name: t('testAnalysis.detail.bugs.chartLabels.nonBugWorkload'), value: totalWorkload - bugWorkload },
+      { name: t('testAnalysis.detail.bugs.chartLabels.bugWorkload'), value: bugWorkload }
     ]
   };
   return res;
@@ -63,7 +63,13 @@ const getChartData = (data) => {
 
 const totalValue = ref({});
 
-const personValues = ref([]);
+interface PersonValue {
+  userName: string;
+  chartData: any;
+  id: string;
+}
+
+const personValues = ref<PersonValue[]>([]);
 
 onMounted(() => {
   watch(() => props.analysisInfo, (newValue) => {
@@ -95,12 +101,12 @@ onMounted(() => {
   });
 });
 const totalChartRef = ref();
-const chartListRef = [];
+const chartListRef = ref<any[]>([]);
 defineExpose({
   resize: () => {
-    totalChartRef.value.resize();
-    chartListRef.forEach(item => {
-      item.resize();
+    totalChartRef.value?.resize();
+    chartListRef.value.forEach(item => {
+      item?.resize();
     });
   }
 });
@@ -124,7 +130,7 @@ defineExpose({
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
     <EChart
-      ref="chartListRef"
+      :ref="(el) => { if (el) chartListRef.push(el) }"
       v-bind="item.chartData"
       class="ml-3" />
   </div>

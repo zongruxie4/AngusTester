@@ -355,37 +355,6 @@
       "realTime": "实时数据",
       "snapshot": "保存数据快照"
     },
-    "resourceTypes": {
-      "TEST_CUSTOMIZATION": "自定义测试",
-      "TEST_FUNCTIONALITY": "功能测试",
-      "TEST_PERFORMANCE": "性能测试",
-      "TEST_STABILITY": "稳定性测试",
-      "SERVICES": "服务",
-      "APIS": "接口",
-      "CASES": "用例",
-      "PLAN": "计划",
-      "SPRINT": "迭代",
-      "TASK_SPRINT": "迭代",
-      "TASK": "任务",
-      "MOCK_APIS": "Mock接口",
-      "MOCK_PUSHBACK": "Mock回推",
-      "MOCK_RESPONSE": "Mock响应",
-      "MOCK_SERVICE": "Mock服务",
-      "DATA_DATASET": "数据集",
-      "DATA_DATASOURCE": "数据源",
-      "DATA_VARIABLE": "变量",
-      "TOTAL": "合计",
-      "REPORT": "报告",
-      "REPORT_RECORD": "记录",
-      "API_TEST": "接口测试",
-      "BUG": "缺陷",
-      "REQUIREMENT": "需求",
-      "STORY": "故事",
-      "SCENARIO_TEST": "场景测试",
-      "ANALYSIS": "分析",
-      "BACKLOG": "待办",
-      "MEETING": "会议"
-    },
     "detail": {
       "progress": {
         "chartTitles": {
@@ -483,9 +452,7 @@
       "handlingEfficiency": {
         "chartLabels": {
           "oneTimeCompletedCount": "一次性完成数",
-          "twoTimeCompletedCount": "两次完成数",
-          "oneTimeUncompletedCount": "一次性未完成数",
-          "twoTimeUncompletedCount": "两次未完成数"
+          "twoTimeCompletedCount": "两次完成数"
         },
         "chartTitles": {
           "oneTimeCompletedRate": "一次完成占比",
@@ -494,7 +461,7 @@
       },
       "leadTime": {
         "chartTitles": {
-          "taskDeliveryCycle": "交付周期(小时)"
+          "deliveryCycle": "交付周期(小时)"
         },
         "statistics": {
           "totalProcessingTime": "总处理时长",

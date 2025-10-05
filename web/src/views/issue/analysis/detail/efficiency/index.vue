@@ -20,7 +20,7 @@ const getChartData = (data) => {
     totalNum = 0, completedNum = 0,
     completedRate = 0, oneTimeNotPassedNum = 0,
     oneTimePassedNum = 0, oneTimePassedRate = 0,
-    twoTimePassedNum = 0, twoTimePassedRate = 0, twoTimeNotPassedNum = 0
+    twoTimePassedNum = 0, twoTimePassedRate = 0
   } = data;
   res.chart0Value = {
     yData: [completedNum, oneTimeNotPassedNum, oneTimePassedNum]
@@ -36,16 +36,16 @@ const getChartData = (data) => {
   res.chart2Value = {
     title: oneTimePassedRate + '%',
     value: [
-      { name: t('issueAnalysis.detail.handlingEfficiency.chartLabels.oneTimeUncompletedCount'), value: oneTimeNotPassedNum },
-      { name: t('issueAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedCount'), value: oneTimePassedNum }
+      { name: t('common.counts.uncompletedCount'), value: oneTimeNotPassedNum },
+      { name: t('common.counts.completedCount'), value: oneTimePassedNum }
     ]
   };
 
   res.chart3Value = {
     title: twoTimePassedRate + '%',
     value: [
-      { name: t('issueAnalysis.detail.handlingEfficiency.chartLabels.twoTimeUncompletedCount'), value: completedNum - twoTimePassedNum },
-      { name: t('issueAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedCount'), value: twoTimePassedNum }
+      { name: t('common.counts.uncompletedCount'), value: completedNum - twoTimePassedNum },
+      { name: t('common.counts.completedCount'), value: twoTimePassedNum }
     ]
   };
   return res;

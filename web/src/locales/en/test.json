@@ -825,95 +825,92 @@
         }
       },
       "bugs": {
-        "bugCount": "Bug Count",
-        "totalBugs": "Total Bugs",
-        "validBugs": "Valid Bugs",
-        "invalidBugs": "Invalid Bugs",
-        "escapedBugs": "Missing Bugs",
-        "bugLevel": "Bug Level",
-        "criticalBugs": "Critical Bugs",
-        "majorBugs": "Major Bugs",
-        "minorBugs": "Minor Bugs",
-        "trivialBugs": "Trivial Bugs",
-        "criticalCount": "Critical Count",
-        "majorCount": "Major Count",
-        "minorCount": "Minor Count",
-        "trivialCount": "Trivial Count",
-        "validBugPercentage": "Valid Bug Percentage",
-        "escapedBugPercentage": "Missing Bug Percentage",
-        "bugWorkloadPercentage": "Bug Workload Percentage",
-        "nonBugWorkload": "Non-Bug Workload",
-        "bugWorkload": "Bug Workload",
-        "nonEscapedBugs": "Non-Escaped Bugs",
-        "escapedBugCount": "Escaped Bug Count",
-        "testCaseHitRate": "Test Case Hit Rate",
-        "testCaseHitCount": "Test Case Hit Count"
+        "testCaseHitCount": "Case Hit Count",
+        "testCaseHitRate": "Case Hit Rate",
+        "chartLabels": {
+          "totalBugs": "Total",
+          "validBugs": "Valid",
+          "invalidBugs": "Invalid",
+          "escapedBugs": "Escaped",
+          "criticalBugs": "Critical",
+          "majorBugs": "Major",
+          "minorBugs": "Minor",
+          "trivialBugs": "Trivial",
+          "nonBugWorkload": "Non-Bug Workload",
+          "bugWorkload": "Bug Workload",
+          "nonEscapedBugs": "Non-Escaped Bugs",
+          "escapedBugsCount": "Escaped Bugs"
+        },
+        "chartTitles": {
+          "validBugRate": "Valid Bug Rate",
+          "escapedBugRate": "Escaped Bug Rate",
+          "bugWorkloadRate": "Bug Workload Rate"
+        },
+        "pieChartLabels": {
+          "criticalCount": "Critical Count",
+          "majorCount": "Major Count",
+          "minorCount": "Minor Count",
+          "trivialCount": "Trivial Count"
+        }
       },
       "coreKpi": {
-        "coreIndicators": "Core Indicators",
-        "caseCount": "Case Count",
-        "workload": "Workload",
-        "overdueCount": "Overdue Count",
-        "bugCount": "Bug Count",
-        "completedAmount": "Completed Amount",
-        "totalAmount": "Total Amount",
-        "completedCasePercentage": "Completed Case Percentage",
-        "completedWorkloadPercentage": "Completed Workload Percentage",
-        "completedOverduePercentage": "Completed Overdue Percentage",
-        "completedBugPercentage": "Completed Bug Percentage",
-        "incompleteCaseCount": "Incomplete Case Count",
-        "completedCaseCount": "Completed Case Count",
-        "uncompletedWorkload": "Incomplete Workload",
-        "completedWorkload": "Completed Workload",
-        "incompleteOverdueCount": "Incomplete Overdue Count",
-        "completedOverdueCount": "Completed Overdue Count",
-        "incompleteBugCount": "Incomplete Bug Count",
-        "completedBugCount": "Completed Bug Count"
+        "chartTitles": {
+          "coreKpi": "Core KPI"
+        }
       },
       "failures": {
-        "failureCount": "Failure Count",
-        "totalFailure": "Total Failure",
-        "failureCompletedCount": "Failure Completed Count",
-        "failureOverdueCount": "Failure Overdue Count",
-        "oneTimeFailureCount": "One-time Failure Count",
-        "twoTimeFailureCount": "Two-time Failure Count",
-        "failureTime": "Failure Time (Hours)",
-        "totalFailureTime": "Total Failure Time",
-        "averageFailureTime": "Average Failure Time",
-        "minFailureTime": "Min Failure Time",
-        "maxFailureTime": "Max Failure Time",
-        "defectLevel": "Defect Level",
-        "criticalFailureCount": "Critical Failure Count",
-        "majorFailureCount": "Major Failure Count",
-        "minorFailureCount": "Minor Failure Count",
-        "trivialFailureCount": "Trivial Failure Count",
-        "criticalCount": "Critical Count",
-        "majorCount": "Major Count",
-        "minorCount": "Minor Count",
-        "trivialCount": "Trivial Count"
+        "chartLabels": {
+          "totalFailures": "Total",
+          "completedFailures": "Completed",
+          "overdueFailures": "Overdue",
+          "oneTimeFailures": "One-time",
+          "twoTimeFailures": "Two-time",
+          "totalFailureTime": "Total Time",
+          "averageFailureTime": "Average Time",
+          "minFailureTime": "Min Time",
+          "maxFailureTime": "Max Time",
+          "criticalFailures": "Critical",
+          "majorFailures": "Major",
+          "minorFailures": "Minor",
+          "trivialFailures": "Trivial"
+        },
+        "chartTitles": {
+          "failureCount": "Failure Count",
+          "failureTime": "Failure Time (Hours)",
+          "failureLevel": "Failure Level"
+        },
+        "pieChartLabels": {
+          "criticalCount": "Critical Count",
+          "majorCount": "Major Count",
+          "minorCount": "Minor Count",
+          "trivialCount": "Trivial Count"
+        }
       },
       "handlingEfficiency": {
-        "completedCases": "Completed Cases",
-        "completedCaseCount": "Completed Case Count",
-        "oneTimeCompletedCount": "One-time Completed Count",
-        "twoTimeCompletedCount": "Two-time Completed Count",
-        "completedCasePercentage": "Completed Case Percentage",
-        "oneTimeCompletedPercentage": "One-time Completed Percentage",
-        "twoTimeCompletedPercentage": "Two-time Completed Percentage",
-        "incompleteCaseCount": "Incomplete Case Count",
-        "completedCaseCount2": "Completed Case Count",
-        "oneTimeIncompleteCaseCount": "One-time Incomplete Case Count",
-        "oneTimeCompletedCaseCount": "One-time Completed Case Count",
-        "twoTimeIncompleteCaseCount": "Two-time Incomplete Case Count",
-        "twoTimeCompletedCaseCount": "Two-time Completed Case Count"
+        "chartLabels": {
+          "completedRate": "Passed Rate",
+          "completedCount": "Passed",
+          "uncompletedCount": "Not Passed",
+          "oneTimeCompletedCount": "One-time",
+          "twoTimeCompletedCount": "Two-time",
+          "oneTimeUncompletedCount": "Uncompleted",
+          "twoTimeUncompletedCount": "Uncompleted"
+        },
+        "chartTitles": {
+          "oneTimeCompletedRate": "One-time Passed Rate",
+          "twoTimeCompletedRate": "Two-time Passed Rate"
+        }
       },
       "leadTime": {
-        "caseDeliveryCycle": "Case Delivery Cycle (Hours)",
-        "totalProcessingTime": "Total Processing Time",
-        "hours": "Hours",
-        "participants": "Participants",
-        "dailyAverageProcessingTime": "Daily Average Processing Time",
-        "perHour": "/Hour"
+        "chartTitles": {
+          "deliveryCycle": "Delivery Cycle (Hours)"
+        },
+        "statistics": {
+          "totalProcessingTime": "Total Processing Time",
+          "participants": "Participants",
+          "averageDailyProcessingTime": "Average Daily Processing Time",
+          "perHour": "/hour"
+        }
       },
       "overdueAssessment": {
         "statistics": {
@@ -923,114 +920,51 @@
           "overdueWorkloadProcessingTime": "Overdue Processing Time"
         }
       },
-      "recentDelivery": {
-        "deliveryCount": "Delivery Count (Completed)",
-        "today": "Today",
-        "lastWeek": "Last Week",
-        "lastMonth": "Last Month",
-        "deliveryCount2": "Delivery Count",
-        "deliveryOverdueCount": "Delivery Overdue Count",
-        "totalCount": "Total Count",
-        "deliveryWorkload": "Delivery Workload (Completed)"
-      },
       "reviewEfficiency": {
-        "notPassedCaseCount": "Not Passed Case Count",
-        "passedCaseCount": "Passed Case Count",
-        "oneTimeNotPassedCaseCount": "One-time Not Passed Case Count",
-        "oneTimePassedCaseCount": "One-time Passed Case Count",
-        "twoTimeNotPassedCaseCount": "Two-time Not Passed Case Count",
-        "twoTimePassedCaseCount": "Two-time Passed Case Count",
-        "passedReviewCases": "Passed Review Cases",
-        "passedCase": "Passed Case",
-        "oneTimePassedCount": "One-time Passed Count",
-        "twoTimePassedCount": "Two-time Passed Count",
-        "reviewPassedCasePercentage": "Review Passed Case Percentage",
-        "oneTimePassedReviewCasePercentage": "One-time Passed Review Case Percentage",
-        "twoTimePassedReviewCasePercentage": "Two-time Passed Review Case Percentage"
+        "chartLabels": {
+          "completedRate": "Passed Rate",
+          "completedCount": "Passed",
+          "uncompletedCount": "Not Passed",
+          "oneTimeCompletedCount": "One-time",
+          "twoTimeCompletedCount": "Two-time",
+          "oneTimeUncompletedCount": "Uncompleted",
+          "twoTimeUncompletedCount": "Uncompleted"
+        },
+        "chartTitles": {
+          "oneTimeCompletedRate": "One-time Passed Rate",
+          "twoTimeCompletedRate": "Two-time Passed Rate"
+        }
+      },
+      "recentDelivery": {
+        "chartLabels": {
+          "deliveryCount": "Delivery",
+          "deliveryOverdueCount": "Overdue"
+        },
+        "chartTitles": {
+          "deliveryCount": "Delivery Count (Completed)",
+          "deliveryWorkload": "Delivery Workload (Completed)"
+        }
       },
       "unplanned": {
-        "caseCount": "Case Count",
-        "totalCount": "Total Count",
-        "unplannedCount": "Unplanned Count",
-        "unplannedCompletedCount": "Unplanned Completed Count",
-        "workload": "Workload",
-        "totalWorkload": "Total Workload",
-        "unplannedWorkload": "Unplanned Workload",
-        "unplannedCompletedWorkload": "Unplanned Completed Workload",
-        "unplannedCaseEstimatedTime": "Unplanned Case Estimated Time",
-        "hours": "Hours"
+        "chartLabels": {
+          "unplannedCount": "Unplanned",
+          "unplannedCompletedCount": "Passed",
+          "totalWorkload": "Total",
+          "unplannedWorkload": "Unplanned",
+          "unplannedCompletedWorkload": "Completed"
+        },
+        "metrics": {
+          "estimatedTime": "Estimated Time for Unplanned Cases"
+        }
       },
       "growthTread": {
-        "customTest": "Custom Test",
-        "functionalTest": "Functional Test",
-        "performanceTest": "Performance Test",
-        "stabilityTest": "Stability Test",
-        "services": "Services",
-        "apis": "APIs",
-        "cases": "Cases",
-        "taskSprint": "Sprint",
-        "mockApis": "Mock APIs",
-        "mockPushback": "Mock Pushback",
-        "mockResponse": "Mock Response",
-        "mockService": "Mock Service",
-        "dataDataset": "Dataset",
-        "dataDatasource": "Datasource",
-        "dataVariable": "Variable",
-        "total2": "Total",
-        "report": "Report",
-        "reportRecord": "Record",
-        "apiTest": "API Test",
-        "bug": "Bug",
-        "requirement": "Requirement",
-        "story": "Story",
-        "scenarioTest": "Scenario Test",
-        "caseGrowthAmount": "Case Growth Amount",
-        "requirement2": "Requirement",
-        "story2": "Story",
-        "case2": "Case",
-        "bug2": "Bug",
-        "apiTest2": "API Test",
-        "scenarioTest2": "Scenario Test",
-        "total3": "Total",
-        "growthTrend": "Growth Trend"
+        "growthTrend": "Growth rend"
       },
       "resourceCreation": {
-        "customTest": "Custom Test",
-        "functionalTest": "Functional Test",
-        "performanceTest": "Performance Test",
-        "stabilityTest": "Stability Test",
-        "services": "Services",
-        "apis": "APIs",
-        "cases": "Cases",
-        "taskSprint": "Sprint",
-        "mockApis": "Mock APIs",
-        "mockPushback": "Mock Pushback",
-        "mockResponse": "Mock Response",
-        "mockService": "Mock Service",
-        "dataDataset": "Dataset",
-        "dataDatasource": "Datasource",
-        "dataVariable": "Variable",
-        "total2": "Total",
-        "report": "Report",
-        "reportRecord": "Record",
-        "apiTest": "API Test",
-        "bug": "Bug",
-        "requirement": "Requirement",
-        "story": "Story",
-        "scenarioTest": "Scenario Test",
-        "analysis": "Analysis",
-        "backlog": "Backlog",
-        "meeting": "Meeting",
-        "baseline": "Baseline",
-        "case": "Case",
-        "review": "Review",
-        "createdResourceTotal": "Created Resource Total",
-        "plan2": "Plan",
-        "review2": "Review",
-        "baseline2": "Baseline",
-        "analysis2": "Analysis",
-        "total3": "Total",
-        "createdResourceGrowthTrend": "Created Resource Growth Trend"
+        "chartTitles": {
+          "resourceTotal": "Total Resource Creation",
+          "resourceGrowth": "Resource Creation Growth Trend"
+        }
       }
     }
   }

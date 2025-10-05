@@ -40,10 +40,10 @@ const getChartData = (data) => {
   res.chart2Value = {
     title: '',
     value: [
-      { name: t('testAnalysis.detail.failures.criticalFailureCount'), value: CRITICAL },
-      { name: t('testAnalysis.detail.failures.majorFailureCount'), value: MAJOR },
-      { name: t('testAnalysis.detail.failures.minorFailureCount'), value: MINOR },
-      { name: t('testAnalysis.detail.failures.trivialFailureCount'), value: TRIVIAL }
+      { name: t('testAnalysis.detail.failures.chartLabels.criticalFailures'), value: CRITICAL },
+      { name: t('testAnalysis.detail.failures.chartLabels.majorFailures'), value: MAJOR },
+      { name: t('testAnalysis.detail.failures.chartLabels.minorFailures'), value: MINOR },
+      { name: t('testAnalysis.detail.failures.chartLabels.trivialFailures'), value: TRIVIAL }
     ]
   };
   return res;
@@ -51,7 +51,13 @@ const getChartData = (data) => {
 
 const totalValue = ref({});
 
-const personValues = ref([]);
+interface PersonValue {
+  userName: string;
+  chartData: any;
+  id: string;
+}
+
+const personValues = ref<PersonValue[]>([]);
 
 onMounted(() => {
   watch(() => props.analysisInfo, (newValue) => {
@@ -84,12 +90,12 @@ onMounted(() => {
 });
 
 const totalChartRef = ref();
-const chartListRef = [];
+const chartListRef = ref<any[]>([]);
 defineExpose({
   resize: () => {
-    totalChartRef.value.resize();
-    chartListRef.forEach(item => {
-      item.resize();
+    totalChartRef.value?.resize();
+    chartListRef.value.forEach(item => {
+      item?.resize();
     });
   }
 });
@@ -111,7 +117,7 @@ defineExpose({
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
     <EChart
-      ref="chartListRef"
+      :ref="(el) => { if (el) chartListRef.push(el) }"
       v-bind="item.chartData"
       class="ml-3" />
   </div>

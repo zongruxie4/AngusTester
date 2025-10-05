@@ -276,7 +276,7 @@ defineExpose({
 </script>
 <template>
   <div class="flex">
-    <div ref="bugsRef" class="flex-1 h-33 w-100"></div>
+    <div ref="bugsRef" class="flex-1 h-33 w-120"></div>
     <div ref="completedRef" class="flex-1 h-33"></div>
     <div ref="oneTimePassedRef" class="flex-1 h-33"></div>
     <div ref="twoTimePassedRef" class="flex-1 h-33"></div>

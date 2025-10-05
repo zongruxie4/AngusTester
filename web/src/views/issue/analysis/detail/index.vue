@@ -235,10 +235,10 @@ onBeforeUnmount(() => {
       <div v-if="analysisData.template === AnalysisTaskTemplate.BUGS" class="max-w-400">
         <BugsChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.HANDLING_EFFICIENCY" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.HANDLING_EFFICIENCY" class="max-w-400">
         <HandlingEfficiencyChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.CORE_KPI" class="max-w-400">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.CORE_KPI">
         <CoreKpiChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
       <div v-if="analysisData.template === AnalysisTaskTemplate.FAILURES" class="max-w-300">
@@ -297,7 +297,7 @@ onBeforeUnmount(() => {
 
         <div class="text-3.5 font-semibold">
           <Icon icon="icon-riqi" class="text-3.5" />
-          {{ t('quickSearch.last7Days') }}
+          {{ t('chart.last7Days') }}
         </div>
         <Table
           key="last7Days"

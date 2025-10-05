@@ -28,23 +28,23 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   chart0Value: () => ({
-    chart0Value: [0, 0, 0, 0]
+    yData: [0, 0, 0]
   }),
   chart1Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart3Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart4Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -61,7 +61,7 @@ let twoTimePassedEchart;
 // 完成用例
 const bugsEchartConfig = {
   title: {
-    text: t('testAnalysis.detail.handlingEfficiency.completedCases'),
+    text: t('testAnalysis.detail.handlingEfficiency.chartLabels.completedCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -77,9 +77,9 @@ const bugsEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('testAnalysis.detail.handlingEfficiency.completedCaseCount'),
-      t('testAnalysis.detail.handlingEfficiency.oneTimeCompletedCount'),
-      t('testAnalysis.detail.handlingEfficiency.twoTimeCompletedCount')
+      t('testAnalysis.detail.handlingEfficiency.chartLabels.completedCount'),
+      t('testAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedCount'),
+      t('testAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedCount')
     ],
     axisLabel: {
       interval: 0,
@@ -95,7 +95,7 @@ const bugsEchartConfig = {
   series: [
     {
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
+        color: 'rgb(16,168,46)',
         borderRadius: [5, 5, 0, 0]
       },
 
@@ -114,9 +114,9 @@ const completedEchartConfig = {
   title: {
     text: '0%',
     left: '35%',
-    top: '45%',
+    top: '50%',
     padding: 2,
-    subtext: t('testAnalysis.detail.handlingEfficiency.completedCasePercentage'),
+    subtext: t('testAnalysis.detail.handlingEfficiency.chartLabels.completedRate'),
     itemGap: 40,
     textAlign: 'center',
     textStyle: {
@@ -169,14 +169,14 @@ const completedEchartConfig = {
           name: '',
           value: 0,
           itemStyle: {
-            color: 'rgba(136, 185, 242, 0.8)'
+            color: 'rgb(251,164,46)'
           }
         },
         {
           name: '',
           value: 0,
           itemStyle: {
-            color: 'rgba(45, 142, 255, 1)'
+            color: 'rgb(16,168,46)'
           }
         }
 
@@ -190,7 +190,7 @@ const oneTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: t('testAnalysis.detail.handlingEfficiency.oneTimeCompletedPercentage'),
+    subtext: t('testAnalysis.detail.handlingEfficiency.chartTitles.oneTimeCompletedRate'),
     itemGap: 40
   }
 }));
@@ -200,7 +200,7 @@ const twoTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...oneTimePassedEchartConfig,
   title: {
     ...oneTimePassedEchartConfig.title,
-    subtext: t('testAnalysis.detail.handlingEfficiency.twoTimeCompletedPercentage')
+    subtext: t('testAnalysis.detail.handlingEfficiency.chartTitles.twoTimeCompletedRate')
   }
 }));
 
@@ -218,31 +218,37 @@ onMounted(() => {
 
     completedEchartConfig.series[0].data[0] = {
       ...completedEchartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+      ...props.chart1Value.value[0],
+      value: Number(props.chart1Value.value[0].value)
     };
     completedEchartConfig.series[0].data[1] = {
       ...completedEchartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+      ...props.chart1Value.value[1],
+      value: Number(props.chart1Value.value[1].value)
     };
     completedEchartConfig.title.text = props.chart1Value.title;
 
     oneTimePassedEchartConfig.series[0].data[0] = {
       ...oneTimePassedEchartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      ...props.chart2Value.value[0],
+      value: Number(props.chart2Value.value[0].value)
     };
     oneTimePassedEchartConfig.series[0].data[1] = {
       ...oneTimePassedEchartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      ...props.chart2Value.value[1],
+      value: Number(props.chart2Value.value[1].value)
     };
     oneTimePassedEchartConfig.title.text = props.chart2Value.title;
 
     twoTimePassedEchartConfig.series[0].data[0] = {
       ...twoTimePassedEchartConfig.series[0].data[0],
-      ...props.chart3Value.value[0]
+      ...props.chart3Value.value[0],
+      value: Number(props.chart3Value.value[0].value)
     };
     twoTimePassedEchartConfig.series[0].data[1] = {
       ...twoTimePassedEchartConfig.series[0].data[1],
-      ...props.chart3Value.value[1]
+      ...props.chart3Value.value[1],
+      value: Number(props.chart3Value.value[1].value)
     };
     twoTimePassedEchartConfig.title.text = props.chart3Value.title;
 
@@ -268,9 +274,9 @@ defineExpose({
 </script>
 <template>
   <div class="flex">
-    <div ref="bugsRef" class="flex-1 h-30"></div>
-    <div ref="completedRef" class="flex-1 h-30"></div>
-    <div ref="oneTimePassedRef" class="flex-1 h-30"></div>
-    <div ref="twoTimePassedRef" class="flex-1 h-30"></div>
+    <div ref="bugsRef" class="flex-1 h-33 w-120"></div>
+    <div ref="completedRef" class="flex-1 h-33"></div>
+    <div ref="oneTimePassedRef" class="flex-1 h-33"></div>
+    <div ref="twoTimePassedRef" class="flex-1 h-33"></div>
   </div>
 </template>

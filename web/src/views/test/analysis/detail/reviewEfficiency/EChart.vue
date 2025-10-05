@@ -61,7 +61,7 @@ let twoTimePassedEchart;
 // 通过评审用例
 const bugsEchartConfig = {
   title: {
-    text: t('testAnalysis.detail.reviewEfficiency.passedReviewCases'),
+    text: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -77,9 +77,9 @@ const bugsEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('testAnalysis.detail.reviewEfficiency.passedCase'),
-      t('testAnalysis.detail.reviewEfficiency.oneTimePassedCount'),
-      t('testAnalysis.detail.reviewEfficiency.twoTimePassedCount')
+      t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'),
+      t('testAnalysis.detail.reviewEfficiency.chartLabels.oneTimeCompletedCount'),
+      t('testAnalysis.detail.reviewEfficiency.chartLabels.twoTimeCompletedCount')
     ],
     axisLabel: {
       interval: 0,
@@ -116,7 +116,7 @@ const completedEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('testAnalysis.detail.reviewEfficiency.reviewPassedCasePercentage'),
+    subtext: t('testAnalysis.detail.handlingEfficiency.chartLabels.completedRate'),
     // left: '25%',
     // top: '40%',
     itemGap: 40,
@@ -193,7 +193,7 @@ const oneTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: t('testAnalysis.detail.reviewEfficiency.oneTimePassedReviewCasePercentage'),
+    subtext: t('testAnalysis.detail.reviewEfficiency.chartTitles.oneTimeCompletedRate'),
     itemGap: 40
   }
 }));
@@ -203,7 +203,7 @@ const twoTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...oneTimePassedEchartConfig,
   title: {
     ...oneTimePassedEchartConfig.title,
-    subtext: t('testAnalysis.detail.reviewEfficiency.twoTimePassedReviewCasePercentage')
+    subtext: t('testAnalysis.detail.reviewEfficiency.chartTitles.twoTimeCompletedRate')
   }
 }));
 
@@ -277,7 +277,7 @@ defineExpose({
 </script>
 <template>
   <div class="flex">
-    <div ref="bugsRef" class="flex-1 h-30"></div>
+    <div ref="bugsRef" class="flex-1 h-30 w-120"></div>
     <div ref="completedRef" class="flex-1 h-30"></div>
     <div ref="oneTimePassedRef" class="flex-1 h-30"></div>
     <div ref="twoTimePassedRef" class="flex-1 h-30"></div>

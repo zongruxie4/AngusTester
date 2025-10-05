@@ -34,19 +34,19 @@ const props = withDefaults(defineProps<Props>(), {
   }),
   chart1Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart3Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart4Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -64,7 +64,7 @@ let completedBugEchart;
 
 const coreEchartConfig = {
   title: {
-    text: t('testAnalysis.detail.coreKpi.coreIndicators'),
+    text: t('testAnalysis.detail.coreKpi.chartTitles.coreKpi'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -80,7 +80,7 @@ const coreEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('common.counts.caseCount'),
+      t('common.counts.totalCount'),
       t('common.workload'),
       t('common.counts.overdueCount'),
       t('common.counts.bugCount')
@@ -99,16 +99,16 @@ const coreEchartConfig = {
   legend: {
     show: true,
     data: [
-      t('testAnalysis.detail.coreKpi.completedAmount'),
-      t('testAnalysis.detail.coreKpi.totalAmount')
+      t('common.counts.completedCount'),
+      t('common.counts.totalCount')
     ],
     top: 0
   },
   series: [
     {
-      name: t('testAnalysis.detail.coreKpi.completedAmount'),
+      name: t('common.counts.completedCount'),
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
+        color: '#52C41A',
         borderRadius: [5, 5, 0, 0]
       },
       barGap: 0,
@@ -121,9 +121,9 @@ const coreEchartConfig = {
       }
     },
     {
-      name: t('testAnalysis.detail.coreKpi.totalAmount'),
+      name: t('common.counts.totalCount'),
       itemStyle: {
-        color: 'rgba(136, 185, 242, 0.8)',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       data: [0, 0, 0],
@@ -141,10 +141,10 @@ const completedEchartConfig = {
   title: {
     text: '0%',
     left: '35%',
-    top: '45%',
+    top: '38%',
     padding: 2,
-    subtext: t('testAnalysis.detail.coreKpi.completedCasePercentage'),
-    itemGap: 40,
+    subtext: t('common.counts.completedRate'),
+    itemGap: 60,
     textAlign: 'center',
     textStyle: {
       fontSize: 12,
@@ -204,7 +204,7 @@ const completedEchartConfig = {
           name: '',
           value: 0,
           itemStyle: {
-            color: 'rgba(45, 142, 255, 1)'
+            color: '#52C41A'
           }
         }
 
@@ -218,8 +218,8 @@ const completedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: t('testAnalysis.detail.coreKpi.completedWorkloadPercentage'),
-    itemGap: 40
+    subtext: t('common.counts.completedWorkloadRate'),
+    itemGap: 60
   }
 }));
 
@@ -228,7 +228,7 @@ const completedOverdueEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: t('testAnalysis.detail.coreKpi.completedOverduePercentage')
+    subtext: t('common.counts.completedOverdueRate')
   }
 }));
 
@@ -237,7 +237,7 @@ const completedBugEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: t('testAnalysis.detail.coreKpi.completedBugPercentage')
+    subtext: t('common.counts.completedBugRate')
   }
 }));
 
@@ -264,41 +264,49 @@ onMounted(() => {
 
     completedEchartConfig.series[0].data[0] = {
       ...completedEchartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+      ...props.chart1Value.value[0],
+      value: Number(props.chart1Value.value[0].value)
     };
     completedEchartConfig.series[0].data[1] = {
       ...completedEchartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+      ...props.chart1Value.value[1],
+      value: Number(props.chart1Value.value[1].value)
     };
     completedEchartConfig.title.text = props.chart1Value.title;
 
     completedWorkloadEchartConfig.series[0].data[0] = {
       ...completedWorkloadEchartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      ...props.chart2Value.value[0],
+      value: Number(props.chart2Value.value[0].value)
     };
     completedWorkloadEchartConfig.series[0].data[1] = {
       ...completedWorkloadEchartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      ...props.chart2Value.value[1],
+      value: Number(props.chart2Value.value[1].value)
     };
     completedWorkloadEchartConfig.title.text = props.chart2Value.title;
 
     completedOverdueEchartConfig.series[0].data[0] = {
       ...completedOverdueEchartConfig.series[0].data[0],
-      ...props.chart3Value.value[0]
+      ...props.chart3Value.value[0],
+      value: Number(props.chart3Value.value[0].value)
     };
     completedOverdueEchartConfig.series[0].data[1] = {
       ...completedOverdueEchartConfig.series[0].data[1],
-      ...props.chart3Value.value[1]
+      ...props.chart3Value.value[1],
+      value: Number(props.chart3Value.value[1].value)
     };
     completedOverdueEchartConfig.title.text = props.chart3Value.title;
 
     completedBugEchartConfig.series[0].data[0] = {
       ...completedBugEchartConfig.series[0].data[0],
-      ...props.chart4Value.value[0]
+      ...props.chart4Value.value[0],
+      value: Number(props.chart4Value.value[0].value)
     };
     completedBugEchartConfig.series[0].data[1] = {
       ...completedBugEchartConfig.series[0].data[1],
-      ...props.chart4Value.value[1]
+      ...props.chart4Value.value[1],
+      value: Number(props.chart4Value.value[1].value)
     };
     completedBugEchartConfig.title.text = props.chart4Value.title;
 
@@ -326,10 +334,10 @@ defineExpose({
 </script>
 <template>
   <div class="flex">
-    <div ref="coreRef" class="h-40 w-100"></div>
-    <div ref="completedRef" class="flex-1 h-30"></div>
-    <div ref="completedWorkloadRef" class="flex-1 h-30"></div>
-    <div ref="completedOverdueRef" class="flex-1 h-30"></div>
-    <div ref="completedBugRef" class="flex-1 h-30"></div>
+    <div ref="coreRef" class="h-40 w-120"></div>
+    <div ref="completedRef" class="flex-1 h-35"></div>
+    <div ref="completedWorkloadRef" class="flex-1 h-35"></div>
+    <div ref="completedOverdueRef" class="flex-1 h-35"></div>
+    <div ref="completedBugRef" class="flex-1 h-35"></div>
   </div>
 </template>

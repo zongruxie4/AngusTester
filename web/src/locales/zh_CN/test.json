@@ -1645,102 +1645,92 @@
         }
       },
       "bugs": {
-        "total": "总共",
-        "bugCount": "缺陷数",
-        "totalBugs": "总缺陷",
-        "validBugs": "有效缺陷",
-        "invalidBugs": "无效缺陷",
-        "escapedBugs": "漏测缺陷",
-        "bugLevel": "缺陷等级",
-        "criticalBugs": "致命缺陷数",
-        "majorBugs": "严重缺陷数",
-        "minorBugs": "一般缺陷数",
-        "trivialBugs": "轻微缺陷数",
-        "criticalCount": "致命数",
-        "majorCount": "严重数",
-        "minorCount": "一般数",
-        "trivialCount": "轻微数",
-        "validBugPercentage": "有效缺陷占比",
-        "escapedBugPercentage": "漏测缺陷占比",
-        "bugWorkloadPercentage": "缺陷工作量占比",
-        "notCompleted": "未完成",
-        "completed": "已完成",
-        "nonBugWorkload": "非缺陷工作量",
-        "bugWorkload": "缺陷工作量",
-        "nonEscapedBugs": "非漏测缺陷数",
-        "escapedBugCount": "漏测缺陷数",
+        "testCaseHitCount": "用例命中数",
         "testCaseHitRate": "用例命中率",
-        "testCaseHitCount": "用例命中数"
+        "chartLabels": {
+          "totalBugs": "总缺陷",
+          "validBugs": "有效缺陷",
+          "invalidBugs": "无效缺陷",
+          "escapedBugs": "漏测缺陷",
+          "criticalBugs": "致命",
+          "majorBugs": "严重",
+          "minorBugs": "一般",
+          "trivialBugs": "轻微",
+          "nonBugWorkload": "非缺陷工作量",
+          "bugWorkload": "缺陷工作量",
+          "nonEscapedBugs": "非漏测缺陷数",
+          "escapedBugsCount": "漏测缺陷数"
+        },
+        "chartTitles": {
+          "validBugRate": "有效缺陷占比",
+          "escapedBugRate": "漏测缺陷占比",
+          "bugWorkloadRate": "缺陷工作量占比"
+        },
+        "pieChartLabels": {
+          "criticalCount": "致命数",
+          "majorCount": "严重数",
+          "minorCount": "一般数",
+          "trivialCount": "轻微数"
+        }
       },
       "coreKpi": {
-        "total": "总共",
-        "coreIndicators": "核心指标",
-        "caseCount": "用例数",
-        "workload": "工作量",
-        "overdueCount": "逾期数",
-        "bugCount": "缺陷数",
-        "completedAmount": "完成量",
-        "totalAmount": "总量",
-        "completedCasePercentage": "完成用例占比",
-        "completedWorkloadPercentage": "完成工作量占比",
-        "completedOverduePercentage": "逾期逾期数占比",
-        "completedBugPercentage": "完成缺陷占比",
-        "incompleteCaseCount": "未完成用例数",
-        "completedCaseCount": "完成用例数",
-        "uncompletedWorkload": "未完成工作量",
-        "completedWorkload": "完成工作量",
-        "incompleteOverdueCount": "未完成逾期数",
-        "completedOverdueCount": "完成逾期数",
-        "incompleteBugCount": "未完成缺陷数",
-        "completedBugCount": "完成缺陷数"
+        "chartTitles": {
+          "coreKpi": "核心指标"
+        }
       },
       "failures": {
-        "total": "总共",
-        "failureCount": "故障数",
-        "totalFailure": "总故障",
-        "failureCompletedCount": "故障完成数",
-        "failureOverdueCount": "故障逾期数",
-        "oneTimeFailureCount": "一次性故障数",
-        "twoTimeFailureCount": "两次故障数",
-        "failureTime": "故事件(小时)",
-        "totalFailureTime": "总故障时间",
-        "averageFailureTime": "平均故障时间",
-        "minFailureTime": "最小故障时间",
-        "maxFailureTime": "最大故障时间",
-        "defectLevel": "缺陷等级",
-        "criticalFailureCount": "致命故障数",
-        "majorFailureCount": "严重故障数",
-        "minorFailureCount": "一般故障数",
-        "trivialFailureCount": "轻微故障数",
-        "criticalCount": "致命数",
-        "majorCount": "严重数",
-        "minorCount": "一般数",
-        "trivialCount": "轻微数"
+        "chartLabels": {
+          "totalFailures": "总故障",
+          "completedFailures": "完成数",
+          "overdueFailures": "逾期数",
+          "oneTimeFailures": "一次性故障",
+          "twoTimeFailures": "两次故障",
+          "totalFailureTime": "总时间",
+          "averageFailureTime": "平均时间",
+          "minFailureTime": "最小时间",
+          "maxFailureTime": "最大时间",
+          "criticalFailures": "致命",
+          "majorFailures": "严重",
+          "minorFailures": "一般",
+          "trivialFailures": "轻微"
+        },
+        "chartTitles": {
+          "failureCount": "故障数",
+          "failureTime": "故障时间(小时)",
+          "failureLevel": "故障等级"
+        },
+        "pieChartLabels": {
+          "criticalCount": "致命数",
+          "majorCount": "严重数",
+          "minorCount": "一般数",
+          "trivialCount": "轻微数"
+        }
       },
       "handlingEfficiency": {
-        "total": "总共",
-        "completedCases": "完成用例",
-        "completedCaseCount": "完成用例数",
-        "oneTimeCompletedCount": "一次性完成数",
-        "twoTimeCompletedCount": "两次完成数",
-        "completedCasePercentage": "完成用例占比",
-        "oneTimeCompletedPercentage": "一次完成用例占比",
-        "twoTimeCompletedPercentage": "两次完成用例占比",
-        "incompleteCaseCount": "未完成用例数",
-        "completedCaseCount2": "完成用例数",
-        "oneTimeIncompleteCaseCount": "一次性未完成用例数",
-        "oneTimeCompletedCaseCount": "一次性完成用例数",
-        "twoTimeIncompleteCaseCount": "两次未完成用例数",
-        "twoTimeCompletedCaseCount": "两次完成用例数"
+        "chartLabels": {
+          "completedRate": "通过率",
+          "completedCount": "通过数",
+          "uncompletedCount": "未通过数",
+          "oneTimeCompletedCount": "一次性通过数",
+          "twoTimeCompletedCount": "两次通过数",
+          "oneTimeUncompletedCount": "一次性未通过数",
+          "twoTimeUncompletedCount": "两次未通过数"
+        },
+        "chartTitles": {
+          "oneTimeCompletedRate": "一次通过占比",
+          "twoTimeCompletedRate": "两次通过占比"
+        }
       },
       "leadTime": {
-        "total": "总共",
-        "caseDeliveryCycle": "用例交付周期(小时)",
-        "totalProcessingTime": "总处理时长",
-        "hours": "小时",
-        "participants": "参与人员",
-        "dailyAverageProcessingTime": "平均每天处理时长",
-        "perHour": "/小时"
+        "chartTitles": {
+          "deliveryCycle": "交付周期(小时)"
+        },
+        "statistics": {
+          "totalProcessingTime": "总处理时长",
+          "participants": "参与人员",
+          "averageDailyProcessingTime": "平均每天处理时长",
+          "perHour": "/小时"
+        }
       },
       "overdueAssessment": {
         "statistics": {
@@ -1750,125 +1740,51 @@
           "overdueWorkloadProcessingTime": "逾期预计处理时长"
         }
       },
-      "recentDelivery": {
-        "total": "总共",
-        "deliveryCount": "交付数（完成数）",
-        "today": "今天",
-        "lastWeek": "近一周",
-        "lastMonth": "近一月",
-        "deliveryCount2": "交付数",
-        "deliveryOverdueCount": "交付逾期数",
-        "totalCount": "总数",
-        "deliveryWorkload": "交付工作量（完成量）"
-      },
       "reviewEfficiency": {
-        "total": "总共",
-        "notPassedCaseCount": "未通过用例数",
-        "passedCaseCount": "通过用例数",
-        "oneTimeNotPassedCaseCount": "一次性未通过用例数",
-        "oneTimePassedCaseCount": "一次性通过用例数",
-        "twoTimeNotPassedCaseCount": "两次未通过用例数",
-        "twoTimePassedCaseCount": "两次通过用例数",
-        "passedReviewCases": "通过评审用例",
-        "passedCase": "通过用例",
-        "oneTimePassedCount": "一次性通过数",
-        "twoTimePassedCount": "两次通过数",
-        "reviewPassedCasePercentage": "评审通过用例占比",
-        "oneTimePassedReviewCasePercentage": "一次性通过评审用例占比",
-        "twoTimePassedReviewCasePercentage": "两次通过评审用例占比"
+        "chartLabels": {
+          "completedRate": "通过率",
+          "completedCount": "通过数",
+          "uncompletedCount": "未通过数",
+          "oneTimeCompletedCount": "一次性通过数",
+          "twoTimeCompletedCount": "两次通过数",
+          "oneTimeUncompletedCount": "一次性未通过数",
+          "twoTimeUncompletedCount": "两次未通过数"
+        },
+        "chartTitles": {
+          "oneTimeCompletedRate": "一次通过占比",
+          "twoTimeCompletedRate": "两次通过占比"
+        }
+      },
+      "recentDelivery": {
+        "chartLabels": {
+          "deliveryCount": "交付数",
+          "deliveryOverdueCount": "交付逾期数"
+        },
+        "chartTitles": {
+          "deliveryCount": "交付数（完成数）",
+          "deliveryWorkload": "交付工作量（完成量）"
+        }
       },
       "unplanned": {
-        "total": "总共",
-        "caseCount": "用例数",
-        "totalCount": "总数",
-        "unplannedCount": "计划外数",
-        "unplannedCompletedCount": "计划外完成数",
-        "workload": "工作量",
-        "totalWorkload": "总工作量",
-        "unplannedWorkload": "计划外工作量",
-        "unplannedCompletedWorkload": "计划外完成工作量",
-        "unplannedCaseEstimatedTime": "计划外用例预计耗时",
-        "hours": "小时"
+        "chartLabels": {
+          "unplannedCount": "计划外数",
+          "unplannedCompletedCount": "计划外通过数",
+          "totalWorkload": "总工作量",
+          "unplannedWorkload": "计划外工作量",
+          "unplannedCompletedWorkload": "计划外完成工作量"
+        },
+        "metrics": {
+          "estimatedTime": "计划外问题预计耗时"
+        }
       },
       "growthTread": {
-        "total": "总共",
-        "customTest": "自定义测试",
-        "functionalTest": "功能测试",
-        "performanceTest": "性能测试",
-        "stabilityTest": "稳定性测试",
-        "services": "服务",
-        "apis": "接口",
-        "cases": "用例",
-        "plan": "计划",
-        "sprint": "迭代",
-        "taskSprint": "迭代",
-        "task": "用例",
-        "mockApis": "Mock接口",
-        "mockPushback": "Mock回推",
-        "mockResponse": "Mock响应",
-        "mockService": "Mock服务",
-        "dataDataset": "数据集",
-        "dataDatasource": "数据源",
-        "dataVariable": "变量",
-        "total2": "合计",
-        "report": "报告",
-        "reportRecord": "记录",
-        "apiTest": "接口测试",
-        "bug": "缺陷",
-        "requirement": "需求",
-        "story": "故事",
-        "scenarioTest": "场景测试",
-        "caseGrowthAmount": "用例增长量",
-        "requirement2": "需求",
-        "story2": "故事",
-        "case2": "用例",
-        "bug2": "缺陷",
-        "apiTest2": "接口测试",
-        "scenarioTest2": "场景测试",
-        "total3": "总计",
         "growthTrend": "增长趋势"
       },
       "resourceCreation": {
-        "total": "总共",
-        "customTest": "自定义测试",
-        "functionalTest": "功能测试",
-        "performanceTest": "性能测试",
-        "stabilityTest": "稳定性测试",
-        "services": "服务",
-        "apis": "接口",
-        "cases": "用例",
-        "plan": "计划",
-        "sprint": "迭代",
-        "taskSprint": "迭代",
-        "task": "用例",
-        "mockApis": "Mock接口",
-        "mockPushback": "Mock回推",
-        "mockResponse": "Mock响应",
-        "mockService": "Mock服务",
-        "dataDataset": "数据集",
-        "dataDatasource": "数据源",
-        "dataVariable": "变量",
-        "total2": "合计",
-        "report": "报告",
-        "reportRecord": "记录",
-        "apiTest": "接口测试",
-        "bug": "缺陷",
-        "requirement": "需求",
-        "story": "故事",
-        "scenarioTest": "场景测试",
-        "analysis": "分析",
-        "backlog": "backlog",
-        "meeting": "会议",
-        "baseline": "基线",
-        "case": "用例",
-        "review": "评审",
-        "createdResourceTotal": "创建资源总量",
-        "plan2": "计划",
-        "review2": "评审",
-        "baseline2": "基线",
-        "analysis2": "分析",
-        "total3": "总计",
-        "createdResourceGrowthTrend": "创建资源增长趋势"
+        "chartTitles": {
+          "resourceTotal": "创建资源总量",
+          "resourceGrowth": "创建资源增长趋势"
+        }
       }
     }
   }

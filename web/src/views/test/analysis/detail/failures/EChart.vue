@@ -20,14 +20,14 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   chart0Value: () => ({
-    chart0Value: [0, 0, 0, 0, 0]
+    yData: [0, 0, 0, 0, 0]
   }),
   chart1Value: () => ({
-    chart0Value: [0, 0, 0, 0]
+    yData: [0, 0, 0, 0]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -42,7 +42,7 @@ let failureLevelEchart;
 // 故障数
 const failureEchartConfig = {
   title: {
-    text: t('testAnalysis.detail.failures.failureCount'),
+    text: t('issueAnalysis.detail.failures.chartTitles.failureCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -58,11 +58,11 @@ const failureEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('testAnalysis.detail.failures.totalFailure'),
-      t('testAnalysis.detail.failures.failureCompletedCount'),
-      t('testAnalysis.detail.failures.failureOverdueCount'),
-      t('testAnalysis.detail.failures.oneTimeFailureCount'),
-      t('testAnalysis.detail.failures.twoTimeFailureCount')
+      t('issueAnalysis.detail.failures.chartLabels.totalFailures'),
+      t('issueAnalysis.detail.failures.chartLabels.completedFailures'),
+      t('issueAnalysis.detail.failures.chartLabels.overdueFailures'),
+      t('issueAnalysis.detail.failures.chartLabels.oneTimeFailures'),
+      t('issueAnalysis.detail.failures.chartLabels.twoTimeFailures')
     ],
     axisLabel: {
       interval: 0,
@@ -96,7 +96,7 @@ const failureEchartConfig = {
 const failureTimeEchartConfig = JSON.parse(JSON.stringify({
   ...failureEchartConfig,
   title: {
-    text: t('testAnalysis.detail.failures.failureTime'),
+    text: t('issueAnalysis.detail.failures.chartTitles.failureTime'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -106,10 +106,10 @@ const failureTimeEchartConfig = JSON.parse(JSON.stringify({
   xAxis: {
     ...failureEchartConfig.xAxis,
     data: [
-      t('testAnalysis.detail.failures.totalFailureTime'),
-      t('testAnalysis.detail.failures.averageFailureTime'),
-      t('testAnalysis.detail.failures.minFailureTime'),
-      t('testAnalysis.detail.failures.maxFailureTime')
+      t('issueAnalysis.detail.failures.chartLabels.totalFailureTime'),
+      t('issueAnalysis.detail.failures.chartLabels.averageFailureTime'),
+      t('issueAnalysis.detail.failures.chartLabels.minFailureTime'),
+      t('issueAnalysis.detail.failures.chartLabels.maxFailureTime')
     ]
   },
   series: [
@@ -132,9 +132,7 @@ const failureLevelEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('testAnalysis.detail.failures.defectLevel'),
-    // left: '25%',
-    // top: '40%',
+    subtext: t('issueAnalysis.detail.failures.chartTitles.failureLevel'),
     itemGap: 65,
     textAlign: 'center',
     textStyle: {
@@ -185,31 +183,31 @@ const failureLevelEchartConfig = {
       },
       data: [
         {
-          name: t('testAnalysis.detail.failures.criticalCount'),
+          name: t('issueAnalysis.detail.failures.pieChartLabels.criticalCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: t('testAnalysis.detail.failures.majorCount'),
+          name: t('issueAnalysis.detail.failures.pieChartLabels.majorCount'),
           value: 0,
           itemStyle: {
-            color: 'gold'
+            color: 'rgb(220,34,133)'
           }
         },
         {
-          name: t('testAnalysis.detail.failures.minorCount'),
+          name: t('issueAnalysis.detail.failures.pieChartLabels.minorCount'),
           value: 0,
           itemStyle: {
-            color: 'rgba(255, 165, 43, 1)'
+            color: 'rgb(246,159,42)'
           }
         },
         {
-          name: t('testAnalysis.detail.failures.trivialCount'),
+          name: t('issueAnalysis.detail.failures.pieChartLabels.trivialCount'),
           value: 0,
           itemStyle: {
-            color: 'rgba(136, 185, 242, 1)'
+            color: 'rgb(231,238,246)'
           }
         }
       ]
@@ -227,29 +225,31 @@ onMounted(() => {
   watch([
     () => props.chart0Value,
     () => props.chart1Value,
-    () => props.chart2Value,
-    () => props.chart3Value,
-    () => props.chart4Value
+    () => props.chart2Value
   ], () => {
     failureEchartConfig.series[0].data = props.chart0Value.yData;
     failureTimeEchartConfig.series[0].data = props.chart1Value.yData;
 
     failureLevelEchartConfig.series[0].data[0] = {
       ...failureLevelEchartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      ...props.chart2Value.value[0],
+      value: Number(props.chart2Value.value[0].value)
     };
     failureLevelEchartConfig.series[0].data[1] = {
       ...failureLevelEchartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      ...props.chart2Value.value[1],
+      value: Number(props.chart2Value.value[1].value)
     };
 
     failureLevelEchartConfig.series[0].data[2] = {
       ...failureLevelEchartConfig.series[0].data[2],
-      ...props.chart2Value.value[2]
+      ...props.chart2Value.value[2],
+      value: Number(props.chart2Value.value[2].value)
     };
     failureLevelEchartConfig.series[0].data[3] = {
-      ...failureLevelEchartConfig.series[0].data[4],
-      ...props.chart2Value.value[3]
+      ...failureLevelEchartConfig.series[0].data[3],
+      ...props.chart2Value.value[3],
+      value: Number(props.chart2Value.value[3].value)
     };
     failureLevelEchartConfig.title.text = props.chart2Value.title;
 

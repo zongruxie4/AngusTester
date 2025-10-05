@@ -30,31 +30,31 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: completedRate + '%',
     value: [
-      { name: t('common.counts.uncompletedCount'), value: totalNum - completedNum },
-      { name: t('common.counts.completedCount'), value: completedNum }
+      { name: t('status.notCompleted'), value: totalNum - completedNum },
+      { name: t('status.completed'), value: completedNum }
     ]
   };
   res.chart2Value = {
     title: completedRate + '%',
     value: [
-      { name: t('common.counts.uncompletedWorkload'), value: evalWorkload - completedWorkload },
-      { name: t('common.completedWorkload'), value: completedWorkload }
+      { name: t('status.notCompleted'), value: evalWorkload - completedWorkload },
+      { name: t('status.completed'), value: completedWorkload }
     ]
   };
 
   res.chart3Value = {
     title: completedOverdueRate + '%',
     value: [
-      { name: t('common.counts.uncompletedOverdueCount'), value: overdueNum - completedOverdueNum },
-      { name: t('common.counts.completedOverdueCount'), value: completedOverdueNum }
+      { name: t('status.notCompleted'), value: overdueNum - completedOverdueNum },
+      { name: t('status.completed'), value: completedOverdueNum }
     ]
   };
 
   res.chart4Value = {
     title: completedBugRate + '%',
     value: [
-      { name: t('common.counts.uncompletedBugCount'), value: bugNum - completedBugNum },
-      { name: t('common.counts.completedBugCount'), value: completedBugNum }
+      { name: t('status.notCompleted'), value: bugNum - completedBugNum },
+      { name: t('status.completed'), value: completedBugNum }
     ]
   };
   return res;

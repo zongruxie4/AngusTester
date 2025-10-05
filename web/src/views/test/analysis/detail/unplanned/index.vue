@@ -19,10 +19,9 @@ const getChartData = (data) => {
 
   const {
     totalNum = 0, totalWorkload = 0,
-    unplannedCompletedNum = 0, unplannedCompletedRate = 0,
+    unplannedCompletedNum = 0,
     unplannedNum = 0, unplannedWorkload = 0,
-    unplannedWorkloadCompleted = 0, unplannedWorkloadCompletedRate = 0,
-    unplannedWorkloadProcessingTime = 0, unplannedWorkloadRate = 0
+    unplannedWorkloadCompleted = 0
   } = data;
 
   res.overdueAssessmentData = data;
@@ -45,8 +44,8 @@ onMounted(() => {
       totalValue.value = getChartData(sourceData);
 
       if (newValue?.containsUserAnalysis) {
-        const sourceData = newValue.data?.testersOverview || {};
-        const assignees = newValue.data?.testers || [];
+        const sourceData = newValue.data?.assigneesOverview || {};
+        const assignees = newValue.data?.assignees || [];
         Object.keys(sourceData).forEach(userId => {
           const viewData = sourceData[userId] || {};
           const chartData = getChartData(viewData);

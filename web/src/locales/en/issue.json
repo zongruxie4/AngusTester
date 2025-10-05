@@ -355,37 +355,6 @@
       "realTime": "Display real-time data each time",
       "snapshot": "Save data snapshot, display snapshot data each time"
     },
-    "resourceTypes": {
-      "TEST_CUSTOMIZATION": "Custom Test",
-      "TEST_FUNCTIONALITY": "Functional Test",
-      "TEST_PERFORMANCE": "Performance Test",
-      "TEST_STABILITY": "Stability Test",
-      "SERVICES": "Services",
-      "APIS": "APIs",
-      "CASES": "Cases",
-      "PLAN": "Plan",
-      "SPRINT": "Sprint",
-      "TASK_SPRINT": "Sprint",
-      "TASK": "Task",
-      "MOCK_APIS": "Mock APIs",
-      "MOCK_PUSHBACK": "Mock Pushback",
-      "MOCK_RESPONSE": "Mock Response",
-      "MOCK_SERVICE": "Mock Service",
-      "DATA_DATASET": "Dataset",
-      "DATA_DATASOURCE": "Data Source",
-      "DATA_VARIABLE": "Variable",
-      "TOTAL": "Total",
-      "REPORT": "Report",
-      "REPORT_RECORD": "Record",
-      "API_TEST": "API Test",
-      "BUG": "Bug",
-      "REQUIREMENT": "Requirement",
-      "STORY": "Story",
-      "SCENARIO_TEST": "Scenario Test",
-      "ANALYSIS": "Analysis",
-      "BACKLOG": "Backlog",
-      "MEETING": "Meeting"
-    },
     "detail": {
       "progress": {
         "chartTitles": {
@@ -483,18 +452,16 @@
       "handlingEfficiency": {
         "chartLabels": {
           "oneTimeCompletedCount": "One-time",
-          "twoTimeCompletedCount": "Two-time",
-          "oneTimeUncompletedCount": "Uncompleted",
-          "twoTimeUncompletedCount": "Uncompleted"
+          "twoTimeCompletedCount": "Two-time"
         },
         "chartTitles": {
-          "oneTimeCompletedRate": "One-time rate",
-          "twoTimeCompletedRate": "Two-time rate"
+          "oneTimeCompletedRate": "One-time Completed Rate",
+          "twoTimeCompletedRate": "Two-time Completed Rate"
         }
       },
       "leadTime": {
         "chartTitles": {
-          "taskDeliveryCycle": "Delivery Cycle (Hours)"
+          "deliveryCycle": "Delivery Cycle (Hours)"
         },
         "statistics": {
           "totalProcessingTime": "Total Processing Time",

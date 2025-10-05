@@ -19,10 +19,10 @@ const getChartData = (data) => {
 
   const {
     totalNum = 0, passedReviewNum = 0,
-    oneTimePassedReviewNum = 0, oneTimeNotPassedReviewNum = 0,
-    oneTimeNotPassedReviewRate = 0, oneTimePassedReviewRate = 0,
-    passedReviewRate = 0, twoTimePassedReviewRate = 0,
-    twoTimePassedReviewNum = 0, twoTimeNotPassedReviewNum
+    oneTimePassedReviewNum = 0,
+    oneTimeNotPassedReviewNum = 0,
+    passedReviewRate = 0,
+    twoTimePassedReviewNum = 0
   } = data;
 
   res.chart0Value = {
@@ -31,24 +31,24 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: passedReviewRate + '%',
     value: [
-      { name: t('testAnalysis.detail.reviewEfficiency.notPassedCaseCount'), value: totalNum - passedReviewNum },
-      { name: t('testAnalysis.detail.reviewEfficiency.passedCaseCount'), value: passedReviewNum }
+      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.uncompletedCount'), value: totalNum - passedReviewNum },
+      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'), value: passedReviewNum }
     ]
   };
 
   res.chart2Value = {
-    title: oneTimePassedReviewRate + '%',
+    title: passedReviewRate + '%',
     value: [
-      { name: t('testAnalysis.detail.reviewEfficiency.oneTimeNotPassedCaseCount'), value: twoTimePassedReviewNum },
-      { name: t('testAnalysis.detail.reviewEfficiency.oneTimePassedCaseCount'), value: oneTimeNotPassedReviewNum }
+      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.uncompletedCount'), value: oneTimeNotPassedReviewNum },
+      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'), value: oneTimePassedReviewNum }
     ]
   };
 
   res.chart3Value = {
-    title: twoTimePassedReviewRate + '%',
+    title: passedReviewRate + '%',
     value: [
-      { name: t('testAnalysis.detail.reviewEfficiency.twoTimeNotPassedCaseCount'), value: passedReviewNum - twoTimePassedReviewNum },
-      { name: t('testAnalysis.detail.reviewEfficiency.twoTimePassedCaseCount'), value: twoTimePassedReviewNum }
+      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.uncompletedCount'), value: passedReviewNum - twoTimePassedReviewNum },
+      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'), value: twoTimePassedReviewNum }
     ]
   };
   return res;

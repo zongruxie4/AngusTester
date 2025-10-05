@@ -33,7 +33,7 @@ let unplannedWorkloadRefEchart;
 // 用例数
 const unplannedTestEchartConfig = {
   title: {
-    text: t('common.counts.caseCount'),
+    text: t('common.count'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -49,9 +49,9 @@ const unplannedTestEchartConfig = {
   xAxis: {
     type: 'category',
     data: [
-      t('testAnalysis.detail.unplanned.totalCount'),
-      t('testAnalysis.detail.unplanned.unplannedCount'),
-      t('testAnalysis.detail.unplanned.unplannedCompletedCount')
+      t('common.counts.totalCount'),
+      t('testAnalysis.detail.unplanned.chartLabels.unplannedCount'),
+      t('testAnalysis.detail.unplanned.chartLabels.unplannedCompletedCount')
     ],
     axisLabel: {
       interval: 0,
@@ -92,9 +92,9 @@ const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   xAxis: {
     type: 'category',
     data: [
-      t('testAnalysis.detail.unplanned.totalWorkload'),
-      t('testAnalysis.detail.unplanned.unplannedWorkload'),
-      t('testAnalysis.detail.unplanned.unplannedCompletedWorkload')
+      t('testAnalysis.detail.unplanned.chartLabels.totalWorkload'),
+      t('testAnalysis.detail.unplanned.chartLabels.unplannedWorkload'),
+      t('testAnalysis.detail.unplanned.chartLabels.unplannedCompletedWorkload')
     ],
     axisLabel: {
       interval: 0,
@@ -102,7 +102,7 @@ const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
     }
   },
   title: {
-    text: t('testAnalysis.detail.unplanned.workload'),
+    text: t('common.workload'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -143,11 +143,10 @@ defineExpose({
         <div class="font-semibold ">
           <span class="text-5 text-status-pending">
             {{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}
-          </span>
-          {{ t('testAnalysis.detail.unplanned.hours') }}
+          </span>{{ t('unit.hour') }}
         </div>
         <div>
-          {{ t('testAnalysis.detail.unplanned.unplannedCaseEstimatedTime') }}
+          {{ t('testAnalysis.detail.unplanned.metrics.estimatedTime') }}
         </div>
       </div>
     </div>

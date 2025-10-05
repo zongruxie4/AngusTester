@@ -14,7 +14,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   overdueAssessmentData: () => ({}),
   chart0Value: () => ({
-    yData: [0, 0]
+    yData: [0, 0, 0, 0, 0, 0, 0, 0]
   })
 });
 
@@ -25,7 +25,7 @@ let leadTimeRefEchart;
 // 用例交付周期(小时
 const leadTimeEchartConfig = {
   title: {
-    text: t('testAnalysis.detail.leadTime.caseDeliveryCycle'),
+    text: t('testAnalysis.detail.leadTime.chartTitles.deliveryCycle'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -111,10 +111,10 @@ defineExpose({
         <div class="text-center flex-1">
           <div class="font-semibold ">
             <span class="text-5 text-status-warn">{{ props.overdueAssessmentData.totalProcessingTime || 0 }}</span>
-            {{ t('testAnalysis.detail.leadTime.hours') }}
+            {{ t('unit.hour') }}
           </div>
           <div>
-            {{ t('testAnalysis.detail.leadTime.totalProcessingTime') }}
+            {{ t('testAnalysis.detail.leadTime.statistics.totalProcessingTime') }}
           </div>
         </div>
       </div>
@@ -122,17 +122,17 @@ defineExpose({
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.userNum || 0 }}</div>
           <div>
-            {{ t('testAnalysis.detail.leadTime.participants') }}
+            {{ t('testAnalysis.detail.leadTime.statistics.participants') }}
           </div>
         </div>
         <div class="text-center">
           <div class="">
             <span class="font-semibold text-5">
               {{ props.overdueAssessmentData.userAvgProcessingTime || 0 }}
-            </span>{{ t('testAnalysis.detail.leadTime.perHour') }}
+            </span>{{ t('testAnalysis.detail.leadTime.statistics.perHour') }}
           </div>
           <div>
-            {{ t('testAnalysis.detail.leadTime.dailyAverageProcessingTime') }}
+            {{ t('testAnalysis.detail.leadTime.statistics.averageDailyProcessingTime') }}
           </div>
         </div>
       </div>
