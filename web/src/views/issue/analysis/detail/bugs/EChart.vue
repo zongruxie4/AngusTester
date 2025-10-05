@@ -348,7 +348,7 @@ defineExpose({
 </script>
 <template>
   <div class="flex space-x-4">
-    <div ref="bugsRef" class="flex-1 min-w-90 h-35"></div>
+    <div ref="bugsRef" class="flex-1 min-w-100 h-35"></div>
     <div ref="bugLevelRef" class="flex-1 h-35"></div>
     <div ref="validBugRef" class="flex-1 h-35"></div>
     <div ref="escapedBugRef" class="flex-1 h-35"></div>

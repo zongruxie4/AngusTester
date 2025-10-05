@@ -18,18 +18,17 @@ const getChartData = (data) => {
   const res = {} as any;
 
   const failureLevelCount = data?.failureLevelCount || {};
-  const { CRITICAL, MAJOR, MINOR, TRIVIAL } = failureLevelCount;
+  const { CRITICAL = 0, MAJOR = 0, MINOR = 0, TRIVIAL = 0 } = failureLevelCount;
 
   const {
-    bugNum = 0, failureAvgTime = 0,
-    failureCompletedNum = 0, failureCompletedRate = 0,
+    failureAvgTime = 0,
+    failureCompletedNum = 0,
     failureMaxTime = 0, failureMinTime = 0, failureNum = 0,
-    failureOverdueNum = 0, failureOverdueRate = 0,
-    failureTotalTime = 0, failureWorkload = 0,
-    oneTimeFailureNum = 0, oneTimeFailureRate = 0,
-    totalNum = 0, totalWorkload = 0,
-    twoTimeFailureNum = 0, twoTimeFailureRate = 0
-  } = data;
+    failureOverdueNum = 0,
+    failureTotalTime = 0,
+    oneTimeFailureNum = 0,
+    twoTimeFailureNum = 0
+  } = data || {};
   res.chart0Value = {
     yData: [failureNum, failureCompletedNum, failureOverdueNum, oneTimeFailureNum, twoTimeFailureNum]
   };
@@ -101,24 +100,85 @@ defineExpose({
 });
 </script>
 <template>
-  <div>
-    <div class="font-semibold pl-3">
-      {{ t('chart.total') }}
+  <div class="overdue-analysis-page">
+    <div class="analysis-section">
+      <div class="section-header">
+        <h3 class="section-title">{{ t('chart.total') }}</h3>
+      </div>
+      <EChart
+        ref="totalChartRef"
+        v-bind="totalValue"
+        class="analysis-chart" />
     </div>
-    <EChart
-      ref="totalChartRef"
-      v-bind="totalValue"
-      class="ml-3" />
-  </div>
 
-  <div
-    v-for="item in personValues"
-    :key="item.id"
-    class="mt-5">
-    <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <EChart
-      :ref="(el) => { if (el) chartListRef.push(el) }"
-      v-bind="item.chartData"
-      class="ml-3" />
+    <div
+      v-for="item in personValues"
+      :key="item.id"
+      class="analysis-section">
+      <div class="section-header">
+        <h3 class="section-title">{{ item.userName }}</h3>
+      </div>
+      <EChart
+        :ref="(el) => { if (el) chartListRef.push(el) }"
+        v-bind="item.chartData"
+        class="analysis-chart" />
+    </div>
   </div>
 </template>
+
+<style scoped>
+.overdue-analysis-page {
+  padding: 6px;
+  min-height: 100vh;
+}
+
+.analysis-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.analysis-section:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.section-header {
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.analysis-chart {
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .overdue-analysis-page {
+    padding: 8px;
+  }
+
+  .analysis-section {
+    margin-bottom: 8px;
+  }
+
+  .section-header {
+    padding: 10px 12px 6px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+}
+</style>

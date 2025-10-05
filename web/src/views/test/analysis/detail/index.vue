@@ -220,13 +220,13 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- Dynamic Chart Components Based on Template Type -->
-      <div v-if="analysisData.template === AnalysisCaseTemplate.PROGRESS" class="w-200">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.PROGRESS">
         <ProgressChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.BURNDOWN" class="w-275">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.BURNDOWN">
         <BurndownChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.WORKLOAD" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.WORKLOAD">
         <WorkloadChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
       <div v-if="analysisData.template === AnalysisCaseTemplate.OVERDUE_ASSESSMENT">
@@ -235,31 +235,31 @@ onBeforeUnmount(() => {
       <div v-if="analysisData.template === AnalysisCaseTemplate.SUBMITTED_BUGS">
         <BugsChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.TESTING_EFFICIENCY" class="max-w-400">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.TESTING_EFFICIENCY">
         <TestingEfficiencyChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.REVIEW_EFFICIENCY" class="max-w-400">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.REVIEW_EFFICIENCY">
         <ReviewEfficiencyChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
       <div v-if="analysisData.template === AnalysisCaseTemplate.CORE_KPI">
         <CoreKpiChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.BACKLOG_CASES" class="max-w-400">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.BACKLOG_CASES">
         <BacklogChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.RECENT_DELIVERY" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.RECENT_DELIVERY">
         <RecentDeliveryChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.LEAD_TIME" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.LEAD_TIME">
         <LeadTimeChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.UNPLANNED_CASES" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.UNPLANNED_CASES">
         <UnplannedChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.CASE_GROWTH_TREND" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.CASE_GROWTH_TREND">
         <GrowthTrendChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisCaseTemplate.RESOURCE_CREATION" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisCaseTemplate.RESOURCE_CREATION">
         <ResourceCreationChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
     </div>

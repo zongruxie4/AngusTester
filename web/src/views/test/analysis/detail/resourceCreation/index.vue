@@ -16,38 +16,12 @@ const props = withDefaults(defineProps<Props>(), {
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const targetDataCategery = {
-  TEST_CUSTOMIZATION: t('testAnalysis.detail.resourceCreation.customTest'),
-  TEST_FUNCTIONALITY: t('testAnalysis.detail.resourceCreation.functionalTest'),
-  TEST_PERFORMANCE: t('testAnalysis.detail.resourceCreation.performanceTest'),
-  TEST_STABILITY: t('testAnalysis.detail.resourceCreation.stabilityTest'),
-  SERVICES: t('common.service'),
-  APIS: t('common.api'),
-  CASES: t('common.useCase'),
-  PLAN: t('common.plan'),
-  SPRINT: t('common.sprint'),
-  TASK_SPRINT: t('common.sprint'),
-  TASK: t('common.issue'),
-  MOCK_APIS: t('testAnalysis.detail.resourceCreation.mockApis'),
-  MOCK_PUSHBACK: t('testAnalysis.detail.resourceCreation.mockPushback'),
-  MOCK_RESPONSE: t('testAnalysis.detail.resourceCreation.mockResponse'),
-  MOCK_SERVICE: t('testAnalysis.detail.resourceCreation.mockService'),
-  DATA_DATASET: t('testAnalysis.detail.resourceCreation.dataDataset'),
-  DATA_DATASOURCE: t('testAnalysis.detail.resourceCreation.dataDatasource'),
-  DATA_VARIABLE: t('testAnalysis.detail.resourceCreation.dataVariable'),
   TOTAL: t('common.total'),
-  REPORT: t('common.report'),
-  REPORT_RECORD: t('common.reportRecord'),
-  API_TEST: t('common.apiTest'),
-  BUG: t('common.bug'),
-  REQUIREMENT: t('common.requirement'),
-  STORY: t('common.story'),
-  SCENARIO_TEST: t('common.scenarioTest'),
-  ANALYSIS: t('common.analysis'),
-  BACKLOG: t('common.backlog'),
-  MEETING: t('common.meeting'),
+  PLAN: t('common.plan'),
   BASELINE: t('common.baseline'),
   CASE: t('common.useCase'),
-  REVIEW: t('common.review')
+  REVIEW: t('common.review'),
+  ANALYSIS: t('common.analysis')
 };
 
 const getChartData = (data) => {
@@ -60,8 +34,8 @@ const getChartData = (data) => {
   };
 
   const keys = Object.keys(data.timeSeries);
-  let xData = [];
-  let series = [];
+  let xData: string[] = [];
+  let series: any[] = [];
   if (keys.length) {
     keys.forEach(key => {
       data.timeSeries[key].forEach(i => {
@@ -105,7 +79,13 @@ const getChartData = (data) => {
 
 const totalValue = ref({});
 
-const personValues = ref([]);
+interface PersonValue {
+  userName: string;
+  chartData: any;
+  id: string;
+}
+
+const personValues = ref<PersonValue[]>([]);
 
 onMounted(() => {
   watch(() => props.analysisInfo, (newValue) => {
@@ -137,37 +117,101 @@ onMounted(() => {
   });
 });
 
-const totalChartRef = ref();
-const chartListRef = [];
+const totalChartRef = ref<any>();
+const chartListRef = ref<any[]>([]);
 defineExpose({
   resize: () => {
-    totalChartRef.value.resize();
-    chartListRef.forEach(item => {
-      item.resize();
+    totalChartRef.value?.resize();
+    chartListRef.value.forEach(item => {
+      item?.resize();
     });
   }
 });
 
 </script>
 <template>
-  <div>
-    <div class="font-semibold pl-3">
-      {{ t('chart.total') }}
+  <div class="overdue-analysis-page">
+    <div class="analysis-section">
+      <div class="section-header">
+        <h3 class="section-title">{{ t('chart.total') }}</h3>
+      </div>
+      <EChart
+        ref="totalChartRef"
+        v-bind="totalValue"
+        class="analysis-chart" />
     </div>
-    <EChart
-      ref="totalChartRef"
-      v-bind="totalValue"
-      class="ml-3" />
-  </div>
 
-  <div
-    v-for="item in personValues"
-    :key="item.id"
-    class="mt-5">
-    <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <EChart
-      ref="chartListRef"
-      v-bind="item.chartData"
-      class="ml-3" />
+    <div
+      v-for="item in personValues"
+      :key="item.id"
+      class="analysis-section">
+      <div class="section-header">
+        <h3 class="section-title">{{ item.userName }}</h3>
+      </div>
+      <EChart
+        :ref="(el) => { if (el) chartListRef.push(el) }"
+        v-bind="item.chartData"
+        class="analysis-chart" />
+    </div>
   </div>
 </template>
+
+<style scoped>
+.overdue-analysis-page {
+  padding: 6px;
+}
+
+.analysis-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.overdue-analysis-page .analysis-section:last-child {
+  margin-bottom: 0;
+}
+
+.analysis-section:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.section-header {
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.analysis-chart {
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .overdue-analysis-page {
+    padding: 8px;
+  }
+
+  .analysis-section {
+    margin-bottom: 8px;
+  }
+
+  .section-header {
+    padding: 10px 12px 6px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+}
+</style>

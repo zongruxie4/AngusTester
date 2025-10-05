@@ -125,7 +125,7 @@ const backloggedTaskEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('testAnalysis.detail.backlogCases.chartLabels.backlogCaseCountRate'),
+    subtext: t('common.useCase'),
     itemGap: 55,
     textAlign: 'center',
     textStyle: {
@@ -194,6 +194,7 @@ const backloggedTaskEchartConfig = {
   ]
 };
 
+// 积压用例量
 const backloggedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...backloggedTaskEchartConfig,
   title: {

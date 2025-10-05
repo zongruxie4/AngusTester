@@ -232,7 +232,7 @@ onBeforeUnmount(() => {
       <div v-if="analysisData.template === AnalysisTaskTemplate.OVERDUE_ASSESSMENT">
         <OverdueAssessmentChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.BUGS" class="max-w-400">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.BUGS">
         <BugsChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
       <div v-if="analysisData.template === AnalysisTaskTemplate.HANDLING_EFFICIENCY" class="max-w-400">
