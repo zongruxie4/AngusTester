@@ -18,24 +18,24 @@ const getChartData = (data) => {
   const res = {} as any;
 
   const {
-    dailyProcessedWorkload = 0, overdueNum = 0, overdueRate = 0,
-    overdueTime = 0, overdueWorkload = 0, overdueWorkloadProcessingTime = 0,
-    overdueWorkloadRate = 0, riskLevel = 0, totalNum = 0, totalWorkload = 0
+    overdueNum = 0, overdueRate = 0,
+    overdueWorkload = 0,
+    overdueWorkloadRate = 0, totalNum = 0, totalWorkload = 0
   } = data;
   res.overdueAssessmentData = data;
   res.chart1Value = {
     title: overdueRate + '%',
     value: [
-      { name: t('common.counts.nonOverdueCount'), value: totalNum - overdueNum },
-      { name: t('common.counts.overdueCount'), value: overdueNum }
+      { name: t('status.notOverdue'), value: totalNum - overdueNum },
+      { name: t('status.overdue'), value: overdueNum }
     ]
   };
 
   res.chart2Value = {
     title: overdueWorkloadRate + '%',
     value: [
-      { name: t('common.counts.nonOverdueCount'), value: totalWorkload - overdueWorkload },
-      { name: t('common.counts.overdueCount'), value: overdueWorkload }
+      { name: t('status.notOverdue'), value: totalWorkload - overdueWorkload },
+      { name: t('status.overdue'), value: overdueWorkload }
     ]
   };
   return res;
@@ -43,7 +43,13 @@ const getChartData = (data) => {
 
 const totalValue = ref({});
 
-const personValues = ref([]);
+interface PersonValue {
+  userName: string;
+  chartData: any;
+  id: string;
+}
+
+const personValues = ref<PersonValue[]>([]);
 
 onMounted(() => {
   watch(() => props.analysisInfo, (newValue) => {
@@ -76,37 +82,99 @@ onMounted(() => {
 });
 
 const totalChartRef = ref();
-const chartListRef = [];
+const chartListRef = ref<any[]>([]);
 defineExpose({
   resize: () => {
-    totalChartRef.value.resize();
-    chartListRef.forEach(item => {
-      item.resize();
+    totalChartRef.value?.resize();
+    chartListRef.value.forEach(item => {
+      item?.resize();
     });
   }
 });
 </script>
 <template>
-  <div>
-    <div>
-      <div class="font-semibold pl-3">
-        {{ t('chart.total') }}
+  <div class="overdue-analysis-page">
+    <!-- Overall analysis -->
+    <div class="analysis-section">
+      <div class="section-header">
+        <h3 class="section-title">{{ t('chart.total') }}</h3>
       </div>
       <EChart
         ref="totalChartRef"
         v-bind="totalValue"
-        class="ml-3" />
+        class="analysis-chart" />
     </div>
 
+    <!-- Individual analysis -->
     <div
       v-for="item in personValues"
       :key="item.id"
-      class="mt-5">
-      <div class="font-semibold pl-3">{{ item.userName }}</div>
+      class="analysis-section">
+      <div class="section-header">
+        <h3 class="section-title">{{ item.userName }}</h3>
+      </div>
       <EChart
-        ref="chartListRef"
+        :ref="(el) => { if (el) chartListRef.push(el) }"
         v-bind="item.chartData"
-        class="ml-3" />
+        class="analysis-chart" />
     </div>
   </div>
 </template>
+
+<style scoped>
+.overdue-analysis-page {
+  padding: 6px;
+  min-height: 100vh;
+}
+
+.analysis-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.analysis-section:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.section-header {
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.analysis-chart {
+  padding: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .overdue-analysis-page {
+    padding: 8px;
+  }
+
+  .analysis-section {
+    margin-bottom: 8px;
+  }
+
+  .section-header {
+    padding: 10px 12px 6px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+}
+</style>

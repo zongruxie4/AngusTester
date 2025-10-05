@@ -108,10 +108,10 @@
       },
       "backlog": {
         "backlogTaskTitle": "Backlog Issues",
-        "backlogTaskRatio": "Backlog Ratio",
+        "backlogTaskRatio": "Backlog Rate",
         "backlogCount": "Backlog",
         "completionCount": "Completion",
-        "backlogWorkloadRatio": "Workload Ratio",
+        "backlogWorkloadRatio": "Workload Rate",
         "backlogWorkload": "Backlog",
         "completionWorkload": "Completion",
         "backlogUseCaseTitle": "Backlog Use Case",
@@ -121,7 +121,7 @@
       },
       "overdue": {
         "overdueAssessment": "Overdue Assessment",
-        "overdueTaskRatio": "Overdue Count Ratio",
+        "overdueTaskRatio": "Overdue Count Rate",
         "overdueCount": "Overdue",
         "nonOverdueCount": "Non-Overdue",
         "overdueRisk": "Risk",
@@ -131,11 +131,11 @@
       "unplanned": {
         "unplannedWorkTitle": "Unplanned Work",
         "unplannedTaskCount": "Total",
-        "unplannedTaskRatio": "Unplanned Ratio",
+        "unplannedTaskRatio": "Unplanned Rate",
         "unplannedCount": "Unplanned",
         "nonUnplannedCount": "Non-Unplanned",
         "unplannedWorkload": "Workload",
-        "unplannedWorkloadRatio": "Workload Ratio",
+        "unplannedWorkloadRatio": "Workload Rate",
         "unplannedAmount": "Unplanned",
         "nonUnplannedAmount": "Non-Unplanned",
         "estimatedTime": "Estimated Time"

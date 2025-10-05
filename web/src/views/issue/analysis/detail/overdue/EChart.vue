@@ -37,71 +37,83 @@ let savingWorkloadEChart;
 
 const completedWorkloadEChartConfig = {
   title: {
-    text: '0%',
-    left: '35%',
-    top: '52%',
-    padding: 2,
-    subtext: t('common.counts.completedWorkloadRate'),
-    itemGap: 40,
+    text: t('common.counts.overdueRate'),
+    left: '30%',
+    bottom: '5%',
     textAlign: 'center',
     textStyle: {
       fontSize: 12,
-      fontWeight: 'bolder'
-    },
-    subtextStyle: {
-      fontSize: 12,
-      color: '#000'
+      fontWeight: '600',
+      color: '#595959'
     }
   },
   tooltip: {
-    trigger: 'item'
+    trigger: 'item',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: {
+      color: '#fff',
+      fontSize: 12
+    },
+    formatter: '{b}: {c} ({d}%)'
   },
   legend: {
-    top: 'middle',
-    right: '10',
+    top: 'center',
     orient: 'vertical',
-    itemHeight: 14,
-    itemWidth: 14,
-    itemGap: 2
+    itemGap: 12,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
   },
   series: [
     {
       name: '',
       type: 'pie',
-      radius: '65%',
-      center: ['35%', '50%'],
+      radius: ['35%', '60%'],
+      center: ['30%', '50%'],
       avoidLabelOverlap: true,
       label: {
         show: true,
-        formatter: '{c}'
-      },
-      itemStyle: {
-        borderRadius: 2,
-        borderColor: '#fff',
-        borderWidth: 1
-      },
-      emphasis: {
-        label: {
-          show: true
+        position: 'center',
+        formatter: function () {
+          return '{a|' + (props.chart1Value?.title || '0%') + '}';
+        },
+        rich: {
+          a: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: '#262626'
+          }
         }
       },
-      labelLine: {
-        show: true,
-        length: 5
+      itemStyle: {
+        borderRadius: 4,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      emphasis: {
+        scale: true,
+        scaleSize: 5,
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.3)'
+        }
       },
       data: [
         {
-          name: t('status.notCompleted'),
+          name: t('status.notOverdue'),
           value: 0,
           itemStyle: {
-            color: 'rgb(117,246,42)'
+            color: '#52c41a'
           }
         },
         {
-          name: t('status.completed'),
+          name: t('status.overdue'),
           value: 0,
           itemStyle: {
-            color: 'rgb(205,115,120)'
+            color: '#ff7875'
           }
         }
       ]
@@ -109,13 +121,91 @@ const completedWorkloadEChartConfig = {
   ]
 };
 
-const savingWorkloadEChartConfig = JSON.parse(JSON.stringify({
-  ...completedWorkloadEChartConfig,
+const savingWorkloadEChartConfig = {
   title: {
-    ...completedWorkloadEChartConfig.title,
-    subtext: t('common.counts.savingWorkloadRate')
-  }
-}));
+    text: t('common.counts.overdueWorkloadRate'),
+    left: '30%',
+    bottom: '5%',
+    textAlign: 'center',
+    textStyle: {
+      fontSize: 12,
+      fontWeight: '600',
+      color: '#595959'
+    }
+  },
+  tooltip: {
+    trigger: 'item',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: {
+      color: '#fff',
+      fontSize: 12
+    },
+    formatter: '{b}: {c} ({d}%)'
+  },
+  legend: {
+    top: 'center',
+    orient: 'vertical',
+    itemGap: 12,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
+  },
+  series: [
+    {
+      name: '',
+      type: 'pie',
+      radius: ['35%', '60%'],
+      center: ['30%', '50%'],
+      avoidLabelOverlap: true,
+      label: {
+        show: true,
+        position: 'center',
+        formatter: function () {
+          return '{a|' + (props.chart2Value?.title || '0%') + '}';
+        },
+        rich: {
+          a: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: '#262626'
+          }
+        }
+      },
+      itemStyle: {
+        borderRadius: 4,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      emphasis: {
+        scale: true,
+        scaleSize: 5,
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.3)'
+        }
+      },
+      data: [
+        {
+          name: t('status.notOverdue'),
+          value: 0,
+          itemStyle: {
+            color: '#52c41a'
+          }
+        },
+        {
+          name: t('status.overdue'),
+          value: 0,
+          itemStyle: {
+            color: '#ff7875'
+          }
+        }
+      ]
+    }
+  ]
+};
 
 onMounted(() => {
   completedWorkloadEChart = eCharts.init(completedWorkloadRef.value);
@@ -132,7 +222,7 @@ onMounted(() => {
       ...props.chart1Value.value[1],
       value: Number(props.chart1Value.value[1].value)
     };
-    completedWorkloadEChartConfig.title.text = props.chart1Value.title;
+    // Title is now static, rate value is shown in center
 
     savingWorkloadEChartConfig.series[0].data[0] = {
       ...savingWorkloadEChartConfig.series[0].data[0],
@@ -144,7 +234,7 @@ onMounted(() => {
       ...props.chart2Value.value[1],
       value: Number(props.chart2Value.value[1].value)
     };
-    savingWorkloadEChartConfig.title.text = props.chart2Value.title;
+    // Title is now static, rate value is shown in center
     completedWorkloadEChart.setOption(completedWorkloadEChartConfig);
     savingWorkloadEChart.setOption(savingWorkloadEChartConfig);
   }, {
@@ -161,71 +251,202 @@ defineExpose({
 });
 </script>
 <template>
-  <div class="flex">
-    <div class="px-3 w-130">
-      <div class="flex justify-around">
-        <div class="text-center flex-1">
-          <div class="font-semibold text-5 text-status-error">
-            {{ props.overdueAssessmentData.overdueNum || 0 }}
-          </div>
-          <div>
-            {{ t('common.counts.overdueCount') }}
-          </div>
+  <div class="overdue-analysis-container">
+    <!-- Key metrics cards section -->
+    <div class="metrics-section">
+      <div class="metrics-grid">
+        <!-- Overdue count -->
+        <div class="metric-card overdue-count">
+          <div class="metric-value">{{ props.overdueAssessmentData.overdueNum || 0 }}</div>
+          <div class="metric-label">{{ t('common.counts.overdueCount') }}</div>
         </div>
-        <div class="text-center flex-1">
+
+        <!-- Risk level -->
+        <div class="metric-card risk-level">
           <div
-            :class="`risk-level-${props.overdueAssessmentData?.riskLevel?.value}`"
-            class="font-semibold text-5">
+            :class="`risk-indicator risk-${props.overdueAssessmentData?.riskLevel?.value?.toLowerCase()}`"
+            class="metric-value">
             {{ overdueAssessmentData?.riskLevel?.message }}
           </div>
-          <div>{{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueRisk') }}</div>
+          <div class="metric-label">{{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueRisk') }}</div>
         </div>
       </div>
-      <div class="flex justify-around mt-3">
-        <div class="text-center">
-          <div class="font-semibold text-5  text-status-error">
+
+      <div class="metrics-grid secondary">
+        <!-- Overdue time -->
+        <div class="metric-card">
+          <div class="metric-value text-warning">
             {{ props.overdueAssessmentData.overdueTime || 0 }}
-            {{ t('unit.hour') }}
+            <span class="unit">{{ t('unit.hour') }}</span>
           </div>
-          <div>
-            {{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueTime') }}
-          </div>
+          <div class="metric-label">{{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueTime') }}</div>
         </div>
 
-        <div class="text-center">
-          <div class="font-semibold text-5">
+        <!-- Average daily processed workload -->
+        <div class="metric-card">
+          <div class="metric-value">
             {{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}
           </div>
-          <div>
-            {{ t('issueAnalysis.detail.overdueAssessment.statistics.averageDailyProcessedWorkload') }}
-          </div>
+          <div class="metric-label">{{ t('issueAnalysis.detail.overdueAssessment.statistics.averageDailyProcessedWorkload') }}</div>
         </div>
 
-        <div class="text-center">
-          <div class="font-semibold text-5">
+        <!-- Estimated processing time -->
+        <div class="metric-card">
+          <div class="metric-value">
             {{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}
-            {{ t('unit.hour') }}
+            <span class="unit">{{ t('unit.hour') }}</span>
           </div>
-          <div>
-            {{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueWorkloadProcessingTime') }}
-          </div>
+          <div class="metric-label">{{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueWorkloadProcessingTime') }}</div>
         </div>
       </div>
     </div>
-    <div ref="completedWorkloadRef" class="flex-1 h-35"></div>
-    <div ref="savingWorkloadRef" class="flex-1 h-35"></div>
+
+    <!-- Charts section -->
+    <div class="charts-section">
+      <div ref="completedWorkloadRef" class="chart-container"></div>
+      <div ref="savingWorkloadRef" class="chart-container"></div>
+    </div>
   </div>
 </template>
 <style scoped>
-.risk-level-LOW {
-  color: 'gold'
+.overdue-analysis-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px;
 }
 
-.risk-level-HIGH {
-  color: 'red'
+.metrics-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.risk-level-NONE {
-  color: '#52C41A'
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.metrics-grid.secondary {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.metric-card {
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.metric-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-color: #d9d9d9;
+}
+
+.metric-card.overdue-count {
+  background: linear-gradient(135deg, #fff2f0 0%, #ffebe6 100%);
+  border-color: #ffccc7;
+}
+
+.metric-card.risk-level {
+  background: linear-gradient(135deg, #f6ffed 0%, #f0f9ff 100%);
+  border-color: #b7eb8f;
+}
+
+.metric-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.metric-value.text-warning {
+  color: #fa8c16;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #8c8c8c;
+  line-height: 1.3;
+}
+
+.unit {
+  font-size: 14px;
+  color: #8c8c8c;
+  margin-left: 2px;
+}
+
+.risk-indicator {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.risk-indicator.risk-low {
+  color: #52c41a;
+}
+
+.risk-indicator.risk-high {
+  color: #ff4d4f;
+}
+
+.risk-indicator.risk-none {
+  color: #1890ff;
+}
+
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+  min-height: 200px;
+}
+
+.chart-container {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 8px;
+  min-height: 180px;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics-grid.secondary {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-section {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .chart-container {
+    min-height: 160px;
+  }
+
+  .metric-value {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .charts-section {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .chart-container {
+    min-height: 140px;
+    padding: 4px;
+  }
 }
 </style>
