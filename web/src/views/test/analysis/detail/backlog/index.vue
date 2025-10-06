@@ -134,7 +134,6 @@ defineExpose({
 <style scoped>
 .overdue-analysis-page {
   padding: 6px;
-  min-height: 100vh;
 }
 
 .analysis-section {
