@@ -197,6 +197,8 @@
       "completedBugRate": "Completed bug rate",
       "uncompletedBugCount": "Uncompleted bugs",
       "completedBugCount": "Completed bugs",
+      "reviewCount": "Review",
+      "completedReviewRate": "Completed Review Rate",
       "caseCount": "Cases",
       "apiTestCount": "API Test",
       "scenarioTestCount": "Scenario Test",

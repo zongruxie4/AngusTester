@@ -361,7 +361,9 @@ onBeforeUnmount(() => {
                     {{ item.name }}
                   </div>
                   <Tag class="relative -top-1 mr-0 px-0.5 h-4" color="geekblue">
-                    {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('issueAnalysis.status.realTime') : t('issueAnalysis.status.snapshot') }}
+                    {{
+                      item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('issueAnalysis.status.realTime') : t('issueAnalysis.status.snapshot')
+                    }}
                   </Tag>
                 </div>
 

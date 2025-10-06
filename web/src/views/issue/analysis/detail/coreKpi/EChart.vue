@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
@@ -10,21 +10,22 @@ interface Props {
   };
   chart1Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
   chart2Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
   chart3Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
   chart4Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
 }
+
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -66,17 +67,20 @@ let completedBugEChart;
 const coreEChartConfig = {
   title: {
     text: t('issueAnalysis.detail.coreKpi.chartTitles.coreKpi'),
-    bottom: 0,
-    left: 'center',
+    left: '50%',
+    bottom: '2%',
+    textAlign: 'center',
     textStyle: {
-      fontSize: 12
+      fontSize: 12,
+      fontWeight: '600',
+      color: '#595959'
     }
   },
   grid: {
-    left: '40',
-    right: '30',
-    bottom: '50',
-    top: '40'
+    left: '10%',
+    right: '10%',
+    bottom: '30%',
+    top: '15%'
   },
   xAxis: {
     type: 'category',
@@ -88,14 +92,37 @@ const coreEChartConfig = {
     ],
     axisLabel: {
       interval: 0,
-      overflow: 'break'
+      overflow: 'break',
+      fontSize: 12,
+      color: '#666'
+    },
+    axisLine: {
+      lineStyle: {
+        color: '#e8e8e8'
+      }
     }
   },
   yAxis: [{
-    type: 'value'
+    type: 'value',
+    axisLabel: {
+      fontSize: 12,
+      color: '#666'
+    },
+    splitLine: {
+      lineStyle: {
+        type: 'dashed',
+        color: '#f0f0f0'
+      }
+    }
   }],
   tooltip: {
-    show: true
+    show: true,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: {
+      color: '#fff',
+      fontSize: 12
+    }
   },
   legend: {
     show: true,
@@ -103,36 +130,44 @@ const coreEChartConfig = {
       t('common.counts.completedCount'),
       t('common.counts.totalCount')
     ],
-    top: 0
+    top: 0,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
   },
   series: [
     {
       name: t('common.counts.completedCount'),
       itemStyle: {
         color: '#52C41A',
-        borderRadius: [5, 5, 0, 0]
+        borderRadius: [4, 4, 0, 0]
       },
       barGap: 0,
-      data: [0, 0, 0],
+      data: [0, 0, 0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '42%',
       label: {
         show: true,
-        position: 'top'
+        position: 'top',
+        fontSize: 12,
+        color: '#666'
       }
     },
     {
       name: t('common.counts.totalCount'),
       itemStyle: {
         color: 'rgb(68,93,179)',
-        borderRadius: [5, 5, 0, 0]
+        borderRadius: [4, 4, 0, 0]
       },
-      data: [0, 0, 0],
+      data: [0, 0, 0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '42%',
       label: {
         show: true,
-        position: 'top'
+        position: 'top',
+        fontSize: 12,
+        color: '#666'
       }
     }
   ]
@@ -141,68 +176,82 @@ const coreEChartConfig = {
 // 完成任务占比
 const completedEChartConfig = {
   title: {
-    text: '0%',
+    text: t('common.counts.completedRate'),
     left: '35%',
-    top: '38%',
-    padding: 2,
-    subtext: t('common.counts.completedRate'),
-    itemGap: 60,
+    bottom: '6%',
     textAlign: 'center',
     textStyle: {
       fontSize: 12,
-      fontWeight: 'bolder'
-    },
-    subtextStyle: {
-      fontSize: 12,
-      color: '#000'
+      fontWeight: '600',
+      color: '#595959'
     }
   },
   tooltip: {
-    trigger: 'item'
+    trigger: 'item',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: {
+      color: '#fff',
+      fontSize: 12
+    },
+    formatter: '{b}: {c} ({d}%)'
   },
   legend: {
-    top: 'middle',
-    right: '10',
+    top: 'center',
+    right: '2px',
     orient: 'vertical',
-    itemHeight: 14,
-    itemWidth: 14,
-    itemGap: 2
+    itemGap: 4,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
   },
   series: [
     {
       name: '',
       type: 'pie',
-      radius: '65%',
+      radius: ['30%', '60%'],
       center: ['35%', '50%'],
       avoidLabelOverlap: true,
       label: {
         show: true,
-        formatter: '{c}'
-      },
-      itemStyle: {
-        borderRadius: 2,
-        borderColor: '#fff',
-        borderWidth: 1
-      },
-      emphasis: {
-        label: {
-          show: true
+        position: 'center',
+        formatter: function () {
+          const title = props.chart1Value?.title || '0.0%';
+          return '{a|' + title + '}';
+        },
+        rich: {
+          a: {
+            fontSize: 14,
+            fontWeight: 'bold',
+            color: '#262626'
+          }
         }
       },
-      labelLine: {
-        show: true,
-        length: 5
+      itemStyle: {
+        borderRadius: 4,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      emphasis: {
+        scale: true,
+        scaleSize: 5,
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.3)'
+        }
       },
       data: [
         {
-          name: '',
+          name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
-            color: 'rgba(255, 165, 43, 1)'
+            color: '#ff7875'
           }
         },
         {
-          name: '',
+          name: t('status.completed'),
           value: 0,
           itemStyle: {
             color: '#52C41A'
@@ -218,9 +267,40 @@ const completedWorkloadEChartConfig = JSON.parse(JSON.stringify({
   ...completedEChartConfig,
   title: {
     ...completedEChartConfig.title,
-    subtext: t('common.counts.completedWorkloadRate'),
-    itemGap: 60
-  }
+    text: t('common.counts.completedWorkloadRate'),
+    left: '35%',
+    bottom: '6%'
+  },
+  legend: {
+    top: 'center',
+    right: '2px',
+    orient: 'vertical',
+    itemGap: 4,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
+  },
+  series: [{
+    ...completedEChartConfig.series[0],
+    radius: ['30%', '60%'],
+    center: ['35%', '50%'],
+    label: {
+      show: true,
+      position: 'center',
+      formatter: function () {
+        const title = props.chart2Value?.title || '0.0%';
+        return '{a|' + title + '}';
+      },
+      rich: {
+        a: {
+          fontSize: 14,
+          fontWeight: 'bold',
+          color: '#262626'
+        }
+      }
+    }
+  }]
 }));
 
 // 逾期逾期数占比
@@ -228,18 +308,128 @@ const completedOverdueEChartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEChartConfig,
   title: {
     ...completedWorkloadEChartConfig.title,
-    subtext: t('common.counts.completedOverdueRate')
-  }
+    text: t('common.counts.completedOverdueRate'),
+    left: '35%',
+    bottom: '6%'
+  },
+  legend: {
+    top: 'center',
+    right: '2px',
+    orient: 'vertical',
+    itemGap: 4,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
+  },
+  series: [{
+    ...completedWorkloadEChartConfig.series[0],
+    radius: ['30%', '60%'],
+    center: ['35%', '50%'],
+    label: {
+      show: true,
+      position: 'center',
+      formatter: function () {
+        const title = props.chart3Value?.title || '0.0%';
+        return '{a|' + title + '}';
+      },
+      rich: {
+        a: {
+          fontSize: 14,
+          fontWeight: 'bold',
+          color: '#262626'
+        }
+      }
+    }
+  }]
 }));
 
 // 完成缺陷占比
-const completedBugEChartConfig = JSON.parse(JSON.stringify({
-  ...completedWorkloadEChartConfig,
+const completedBugEChartConfig = {
   title: {
-    ...completedWorkloadEChartConfig.title,
-    subtext: t('common.counts.completedBugRate')
-  }
-}));
+    text: t('common.counts.completedBugRate'),
+    left: '35%',
+    bottom: '6%',
+    textAlign: 'center',
+    textStyle: {
+      fontSize: 12,
+      fontWeight: '600',
+      color: '#595959'
+    }
+  },
+  tooltip: {
+    trigger: 'item',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: {
+      color: '#fff',
+      fontSize: 12
+    },
+    formatter: '{b}: {c} ({d}%)'
+  },
+  legend: {
+    top: 'center',
+    right: '2px',
+    orient: 'vertical',
+    itemGap: 4,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
+  },
+  series: [{
+    name: '',
+    type: 'pie',
+    radius: ['30%', '60%'],
+    center: ['35%', '50%'],
+    avoidLabelOverlap: true,
+    label: {
+      show: true,
+      position: 'center',
+      formatter: function () {
+        const title = props.chart4Value?.title || '0.0%';
+        return '{a|' + title + '}';
+      },
+      rich: {
+        a: {
+          fontSize: 14,
+          fontWeight: 'bold',
+          color: '#262626'
+        }
+      }
+    },
+    itemStyle: {
+      borderRadius: 4,
+      borderColor: '#fff',
+      borderWidth: 2
+    },
+    emphasis: {
+      scale: true,
+      scaleSize: 5,
+      itemStyle: {
+        shadowBlur: 10,
+        shadowOffsetX: 0,
+        shadowColor: 'rgba(0, 0, 0, 0.3)'
+      }
+    },
+    data: [
+      {
+        name: t('status.notCompleted'),
+        value: 0,
+        itemStyle: {
+          color: '#ff7875'
+        }
+      },
+      {
+        name: t('status.completed'),
+        value: 0,
+        itemStyle: {
+          color: '#52C41A'
+        }
+      }
+    ]
+  }]
+};
 
 onMounted(() => {
   completedEChart = eCharts.init(completedRef.value);
@@ -247,6 +437,26 @@ onMounted(() => {
   coreChart = eCharts.init(coreRef.value);
   completedOverdueEChart = eCharts.init(completedOverdueRef.value);
   completedBugEChart = eCharts.init(completedBugRef.value);
+
+  const handleResize = () => {
+    // Update bar width for responsive design
+    const isMobile = window.innerWidth < 768;
+    coreEChartConfig.series[0].barMaxWidth = isMobile ? '28%' : '42%';
+    coreEChartConfig.series[1].barMaxWidth = isMobile ? '28%' : '42%';
+
+    // Resize all charts
+    completedEChart?.resize();
+    completedWorkloadEChart?.resize();
+    coreChart?.resize();
+    completedOverdueEChart?.resize();
+    completedBugEChart?.resize();
+  };
+
+  window.addEventListener('resize', handleResize);
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+  });
 
   watch([
     () => props.chart0Value,
@@ -257,6 +467,10 @@ onMounted(() => {
   ], () => {
     coreEChartConfig.series[0].data = props.chart0Value.yData0;
     coreEChartConfig.series[1].data = props.chart0Value.yData1;
+    // Update bar width for responsive design
+    const isMobile = window.innerWidth < 768;
+    coreEChartConfig.series[0].barMaxWidth = isMobile ? '28%' : '42%';
+    coreEChartConfig.series[1].barMaxWidth = isMobile ? '28%' : '42%';
 
     completedEChartConfig.series[0].data[0] = {
       ...completedEChartConfig.series[0].data[0],
@@ -268,7 +482,12 @@ onMounted(() => {
       ...props.chart1Value.value[1],
       value: Number(props.chart1Value.value[1].value)
     };
-    completedEChartConfig.title.text = props.chart1Value.title;
+    // Update the center label formatter for the first chart
+    completedEChartConfig.series[0].label.formatter = function () {
+      const title = props.chart1Value?.title || '0.0%';
+      return '{a|' + title + '}';
+    };
+    // Title is now static, rate value is shown in center
 
     completedWorkloadEChartConfig.series[0].data[0] = {
       ...completedWorkloadEChartConfig.series[0].data[0],
@@ -280,7 +499,12 @@ onMounted(() => {
       ...props.chart2Value.value[1],
       value: Number(props.chart2Value.value[1].value)
     };
-    completedWorkloadEChartConfig.title.text = props.chart2Value.title;
+    // Update the center label formatter for the second chart
+    completedWorkloadEChartConfig.series[0].label.formatter = function () {
+      const title = props.chart2Value?.title || '0.0%';
+      return '{a|' + title + '}';
+    };
+    // Title is now static, rate value is shown in center
 
     completedOverdueEChartConfig.series[0].data[0] = {
       ...completedOverdueEChartConfig.series[0].data[0],
@@ -292,7 +516,12 @@ onMounted(() => {
       ...props.chart3Value.value[1],
       value: Number(props.chart3Value.value[1].value)
     };
-    completedOverdueEChartConfig.title.text = props.chart3Value.title;
+    // Update the center label formatter for the third chart
+    completedOverdueEChartConfig.series[0].label.formatter = function () {
+      const title = props.chart3Value?.title || '0.0%';
+      return '{a|' + title + '}';
+    };
+    // Title is now static, rate value is shown in center
 
     completedBugEChartConfig.series[0].data[0] = {
       ...completedBugEChartConfig.series[0].data[0],
@@ -304,7 +533,12 @@ onMounted(() => {
       ...props.chart4Value.value[1],
       value: Number(props.chart4Value.value[1].value)
     };
-    completedBugEChartConfig.title.text = props.chart4Value.title;
+    // Update the center label formatter for the fourth chart
+    completedBugEChartConfig.series[0].label.formatter = function () {
+      const title = props.chart4Value?.title || '0.0%';
+      return '{a|' + title + '}';
+    };
+    // Title is now static, rate value is shown in center
 
     completedEChart.setOption(completedEChartConfig);
     completedWorkloadEChart.setOption(completedWorkloadEChartConfig);
@@ -319,20 +553,134 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    completedEChart.resize();
-    completedWorkloadEChart.resize();
-    coreChart.resize();
-    completedOverdueEChart.resize();
-    completedBugEChart.resize();
+    completedEChart?.resize();
+    completedWorkloadEChart?.resize();
+    coreChart?.resize();
+    completedOverdueEChart?.resize();
+    completedBugEChart?.resize();
   }
 });
 </script>
 <template>
-  <div class="flex">
-    <div ref="coreRef" class="h-40 w-120"></div>
-    <div ref="completedRef" class="flex-1 h-35"></div>
-    <div ref="completedWorkloadRef" class="flex-1 h-35"></div>
-    <div ref="completedOverdueRef" class="flex-1 h-35"></div>
-    <div ref="completedBugRef" class="flex-1 h-35"></div>
+  <div class="chart-container">
+    <div class="main-layout">
+      <!-- Right side: Charts area -->
+      <div class="right-side">
+        <!-- Single row: All charts -->
+        <div class="chart-row">
+          <div ref="coreRef" class="chart-item bar-chart"></div>
+          <div ref="completedRef" class="chart-item pie-chart"></div>
+          <div ref="completedWorkloadRef" class="chart-item pie-chart"></div>
+          <div ref="completedOverdueRef" class="chart-item pie-chart"></div>
+          <div ref="completedBugRef" class="chart-item pie-chart"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+<style scoped>
+.chart-container {
+  padding: 20px 20px 0px 0px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.main-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.right-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.chart-row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  height: 200px;
+}
+
+.chart-item {
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.bar-chart {
+  flex: 1.5;
+  padding-left: 50px;
+}
+
+.pie-chart {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Tablet responsive */
+@media (max-width: 1200px) {
+  .main-layout {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .right-side {
+    order: 1;
+  }
+
+  .chart-row {
+    flex-wrap: wrap;
+  }
+
+  .chart-item {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 200px;
+  }
+
+  .bar-chart {
+    flex: 1 1 calc(100% - 8px);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .chart-container {
+    padding: 12px 12px 12px 4px;
+  }
+
+  .main-layout {
+    gap: 12px;
+  }
+
+  .chart-row {
+    height: 200px;
+    flex-direction: column;
+  }
+
+  .chart-item {
+    flex: 1;
+    min-width: 100%;
+  }
+}
+
+/* Small mobile responsive */
+@media (max-width: 480px) {
+  .chart-container {
+    padding: 8px 8px 8px 2px;
+  }
+
+  .chart-row {
+    height: 200px;
+  }
+}
+</style>

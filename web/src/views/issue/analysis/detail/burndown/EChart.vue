@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
@@ -13,6 +13,7 @@ interface Props {
     yData: [number[], number[]]
   };
 }
+
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -86,6 +87,17 @@ onMounted(() => {
 
   workloadBurndownEChart = eCharts.init(workloadBurndownRef.value);
 
+  const handleResize = () => {
+    burndownEChart?.resize();
+    workloadBurndownEChart?.resize();
+  };
+
+  window.addEventListener('resize', handleResize);
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+  });
+
   watch([() => props.chart0Data, () => props.chart1Data], () => {
     burndownEChartConfig.series[0].data = props.chart0Data.yData[0];
     burndownEChartConfig.series[1].data = props.chart0Data.yData[1];
@@ -105,24 +117,29 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    burndownEChart.resize();
-    workloadBurndownEChart.resize();
+    burndownEChart?.resize();
+    workloadBurndownEChart?.resize();
   }
 });
 </script>
 <template>
-  <div class="flex">
+  <div class="flex chart-container">
     <div class="flex-1">
-      <div ref="burndownRef" class="flex-1 h-50"></div>
+      <div ref="burndownRef" class="flex-1 h-60 px-10"></div>
       <div class="text-center font-medium  mt-1">
         {{ t('chart.burndown.countBurndown') }}
       </div>
     </div>
     <div class="flex-1">
-      <div ref="workloadBurndownRef" class="flex-1 h-50"></div>
+      <div ref="workloadBurndownRef" class="flex-1 h-60 px-10"></div>
       <div class="text-center font-medium mt-1">
         {{ t('chart.burndown.workloadBurndown') }}
       </div>
     </div>
   </div>
 </template>
+<style scoped>
+.chart-container {
+  padding: 30px;
+}
+</style>

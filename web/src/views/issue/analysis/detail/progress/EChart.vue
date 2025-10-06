@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
   title0: string;
   title1: string;
-  value0: {name: string, value: string|number}[];
-  value1: {name: string, value: string|number}[];
+  value0: { name: string, value: string | number }[];
+  value1: { name: string, value: string | number }[];
 }
+
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -26,71 +27,84 @@ let workloadProcessEChart;
 
 const progressEChartConfig = {
   title: {
-    text: '0%',
-    left: '35%',
-    top: '48%',
-    padding: 2,
-    subtext: t('issueAnalysis.detail.progress.chartTitles.issueProgress'),
-    itemGap: 45,
+    text: t('issueAnalysis.detail.progress.chartTitles.issueProgress'),
+    left: '40%',
+    bottom: '5%',
     textAlign: 'center',
     textStyle: {
       fontSize: 12,
-      fontWeight: 'bolder'
-    },
-    subtextStyle: {
-      fontSize: 12,
-      color: '#000'
+      fontWeight: '600',
+      color: '#595959'
     }
   },
   tooltip: {
-    trigger: 'item'
+    trigger: 'item',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: {
+      color: '#fff',
+      fontSize: 12
+    },
+    formatter: '{b}: {c} ({d}%)'
   },
   legend: {
-    top: 'middle',
-    right: '10',
+    top: 'center',
     orient: 'vertical',
-    itemHeight: 14,
-    itemWidth: 14,
-    itemGap: 2
+    right: '30%',
+    itemGap: 12,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
   },
   series: [
     {
       name: '',
       type: 'pie',
-      radius: '70%',
-      center: ['35%', '45%'],
+      radius: ['50%', '78%'],
+      center: ['40%', '38%'],
       avoidLabelOverlap: true,
       label: {
         show: true,
-        formatter: '{c}'
-      },
-      itemStyle: {
-        borderRadius: 2,
-        borderColor: '#fff',
-        borderWidth: 1
-      },
-      emphasis: {
-        label: {
-          show: true
+        position: 'center',
+        formatter: function () {
+          return '{a|' + (props.title0 || '0%') + '}';
+        },
+        rich: {
+          a: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: '#262626'
+          }
         }
       },
-      labelLine: {
-        show: true,
-        length: 5
+      itemStyle: {
+        borderRadius: 4,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      emphasis: {
+        scale: true,
+        scaleSize: 5,
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.3)'
+        }
       },
       data: [
         {
           name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
-            color: 'rgb(246,159,42)'
+            color: '#ff7875'
           }
         },
         {
           name: t('status.completed'),
           value: 0,
           itemStyle: {
-            color: '#53c61b'
+            color: '#52c41a'
           }
         }
       ]
@@ -102,13 +116,35 @@ const workloadProgressEChartConfig = JSON.parse(JSON.stringify({
   ...progressEChartConfig,
   title: {
     ...progressEChartConfig.title,
-    subtext: t('issueAnalysis.detail.progress.chartTitles.workloadProgress')
-  }
+    text: t('issueAnalysis.detail.progress.chartTitles.workloadProgress')
+  },
+  series: [
+    {
+      ...progressEChartConfig.series[0],
+      label: {
+        ...progressEChartConfig.series[0].label,
+        formatter: function () {
+          return '{a|' + (props.title1 || '0%') + '}';
+        }
+      }
+    }
+  ]
 }));
 
 onMounted(() => {
   progressEChart = eCharts.init(progressRef.value);
   workloadProcessEChart = eCharts.init(workloadProcessRef.value);
+
+  const handleResize = () => {
+    progressEChart?.resize();
+    workloadProcessEChart?.resize();
+  };
+
+  window.addEventListener('resize', handleResize);
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+  });
 
   watch([() => props.value0, () => props.value1], () => {
     progressEChartConfig.series[0].data[0] = {
@@ -121,7 +157,7 @@ onMounted(() => {
       ...props.value0[1],
       value: Number(props.value0[1].value)
     };
-    progressEChartConfig.title.text = props.title0;
+    // Title is now static, rate value is shown in center
 
     workloadProgressEChartConfig.series[0].data[0] = {
       ...workloadProgressEChartConfig.series[0].data[0],
@@ -133,7 +169,11 @@ onMounted(() => {
       ...props.value1[1],
       value: Number(props.value1[1].value)
     };
-    workloadProgressEChartConfig.title.text = props.title1;
+    // Update the center label formatter for the second chart
+    workloadProgressEChartConfig.series[0].label.formatter = function () {
+      return '{a|' + (props.title1 || '0%') + '}';
+    };
+    // Title is now static, rate value is shown in center
     progressEChart.setOption(progressEChartConfig);
     workloadProcessEChart.setOption(workloadProgressEChartConfig);
   }, {
@@ -144,15 +184,20 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    progressEChart.resize();
-    workloadProcessEChart.resize();
+    progressEChart?.resize();
+    workloadProcessEChart?.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex">
-    <div ref="progressRef" class="flex-1 h-35"></div>
-    <div ref="workloadProcessRef" class="flex-1 h-35"></div>
+  <div class="flex chart-container">
+    <div ref="progressRef" class="flex-1 h-30"></div>
+    <div ref="workloadProcessRef" class="flex-1 h-30"></div>
   </div>
 </template>
+<style scoped>
+.chart-container {
+  padding: 20px;
+}
+</style>

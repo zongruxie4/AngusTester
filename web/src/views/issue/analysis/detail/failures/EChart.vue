@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
@@ -12,9 +12,10 @@ interface Props {
   }
   chart2Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
 }
+
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -82,7 +83,7 @@ const failureEChartConfig = {
       },
       data: [0, 0, 0, 0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -157,7 +158,6 @@ const failureLevelEChartConfig = {
     {
       name: '',
       type: 'pie',
-      // radius: ['50%', '65%'],
       radius: '65%',
       center: ['35%', '40%'],
       avoidLabelOverlap: true,
@@ -218,6 +218,18 @@ onMounted(() => {
   failureLevelEChart = eCharts.init(failureLevelRef.value);
   failureChart = eCharts.init(failureRef.value);
 
+  const handleResize = () => {
+    failureTimeEChart?.resize();
+    failureLevelEChart?.resize();
+    failureChart?.resize();
+  };
+
+  window.addEventListener('resize', handleResize);
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+  });
+
   watch([
     () => props.chart0Value,
     () => props.chart1Value,
@@ -262,17 +274,22 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    failureTimeEChart.resize();
-    failureLevelEChart.resize();
-    failureChart.resize();
+    failureTimeEChart?.resize();
+    failureLevelEChart?.resize();
+    failureChart?.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex space-x-5">
+  <div class="flex chart-container">
     <div ref="failureRef" class="flex-1 h-40"></div>
-    <div ref="failureTimeRef" class="flex-1 h-40"></div>
+    <div ref="failureTimeRef" class="flex-1 h-40 ml-30"></div>
     <div ref="failureLevelRef" class="flex-1 h-40"></div>
   </div>
 </template>
+<style scoped>
+.chart-container {
+  padding: 20px;
+}
+</style>

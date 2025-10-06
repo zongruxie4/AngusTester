@@ -27,11 +27,11 @@ const props = withDefaults(defineProps<Props>(), {
 const unplannedTaskRef = ref();
 const unplannedWorkloadRef = ref();
 
-let unplannedTaskRefEchart;
-let unplannedWorkloadRefEchart;
+let unplannedTaskRefEChart;
+let unplannedWorkloadRefEChart;
 
 // 用例数
-const unplannedTestEchartConfig = {
+const unplannedTestEChartConfig = {
   title: {
     text: t('common.count'),
     bottom: 0,
@@ -72,13 +72,13 @@ const unplannedTestEchartConfig = {
     {
       name: '',
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       barGap: 0,
       data: [0, 0, 0, 0, 0, 0, 0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -87,8 +87,8 @@ const unplannedTestEchartConfig = {
   ]
 };
 
-const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
-  ...unplannedTestEchartConfig,
+const unplannedWorkloadEChartConfig = JSON.parse(JSON.stringify({
+  ...unplannedTestEChartConfig,
   xAxis: {
     type: 'category',
     data: [
@@ -112,16 +112,16 @@ const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
 }));
 
 onMounted(() => {
-  unplannedTaskRefEchart = eCharts.init(unplannedTaskRef.value);
+  unplannedTaskRefEChart = eCharts.init(unplannedTaskRef.value);
 
-  unplannedWorkloadRefEchart = eCharts.init(unplannedWorkloadRef.value);
+  unplannedWorkloadRefEChart = eCharts.init(unplannedWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
-    unplannedTestEchartConfig.series[0].data = props.chart0Value.yData;
-    unplannedWorkloadEchartConfig.series[0].data = props.chart1Value.yData;
+    unplannedTestEChartConfig.series[0].data = props.chart0Value.yData;
+    unplannedWorkloadEChartConfig.series[0].data = props.chart1Value.yData;
 
-    unplannedTaskRefEchart.setOption(unplannedTestEchartConfig);
-    unplannedWorkloadRefEchart.setOption(unplannedWorkloadEchartConfig);
+    unplannedTaskRefEChart.setOption(unplannedTestEChartConfig);
+    unplannedWorkloadRefEChart.setOption(unplannedWorkloadEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -130,14 +130,14 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    unplannedTaskRefEchart.resize();
-    unplannedWorkloadRefEchart.resize();
+    unplannedTaskRefEChart.resize();
+    unplannedWorkloadRefEChart.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex">
+  <div class="flex chart-container">
     <div class="px-3 w-50 flex items-center">
       <div class="text-center flex-1">
         <div class="font-semibold ">
@@ -145,7 +145,7 @@ defineExpose({
             {{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}
           </span>{{ t('unit.hour') }}
         </div>
-        <div>
+        <div class="metric-subtitle">
           {{ t('testAnalysis.detail.unplanned.metrics.estimatedTime') }}
         </div>
       </div>
@@ -155,15 +155,11 @@ defineExpose({
   </div>
 </template>
 <style scoped>
-.risk-level-LOW {
-  color: 'gold'
+.chart-container {
+  padding: 20px;
 }
 
-.risk-level-HIGH {
-  color: 'red'
-}
-
-.risk-level-NONE {
-  color: '#52C41A'
+.metric-subtitle {
+  color: #9e9c9c;
 }
 </style>

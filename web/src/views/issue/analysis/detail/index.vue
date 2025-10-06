@@ -198,7 +198,9 @@ onBeforeUnmount(() => {
           <Tag
             color="geekblue"
             class="ml-5">
-            {{ analysisData.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('issueAnalysis.status.snapshot') : t('issueAnalysis.status.realTime') }}
+            {{
+              analysisData.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('issueAnalysis.status.snapshot') : t('issueAnalysis.status.realTime')
+            }}
           </Tag>
         </div>
         <div class="mt-2 text-3.5">{{ analysisData.description }}</div>
@@ -220,13 +222,13 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- Dynamic Chart Components Based on Template Type -->
-      <div v-if="analysisData.template === AnalysisTaskTemplate.PROGRESS" class="w-200">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.PROGRESS">
         <ProgressChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.BURNDOWN" class="w-275">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.BURNDOWN">
         <BurndownChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.WORKLOAD" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.WORKLOAD">
         <WorkloadChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
       <div v-if="analysisData.template === AnalysisTaskTemplate.OVERDUE_ASSESSMENT">
@@ -235,31 +237,31 @@ onBeforeUnmount(() => {
       <div v-if="analysisData.template === AnalysisTaskTemplate.BUGS">
         <BugsChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.HANDLING_EFFICIENCY" class="max-w-400">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.HANDLING_EFFICIENCY">
         <HandlingEfficiencyChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
       <div v-if="analysisData.template === AnalysisTaskTemplate.CORE_KPI">
         <CoreKpiChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.FAILURES" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.FAILURES">
         <FailuresChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.BACKLOG_TASKS" class="max-w-400">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.BACKLOG_TASKS">
         <BacklogsChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.RECENT_DELIVERY" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.RECENT_DELIVERY">
         <RecentDeliveryChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.LEAD_TIME" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.LEAD_TIME">
         <LeadTimeChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.UNPLANNED_TASKS" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.UNPLANNED_TASKS">
         <UnplannedChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.TASK_GROWTH_TREND" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.TASK_GROWTH_TREND">
         <GrowthTrendChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
-      <div v-if="analysisData.template === AnalysisTaskTemplate.RESOURCE_CREATION" class="max-w-300">
+      <div v-if="analysisData.template === AnalysisTaskTemplate.RESOURCE_CREATION">
         <ResourceCreationChart ref="chartRef" :analysisInfo="analysisData" />
       </div>
     </div>
@@ -340,7 +342,7 @@ onBeforeUnmount(() => {
   @apply relative;
 }
 
-.detail-title::before{
+.detail-title::before {
   @apply bg-blue-1;
 
   content: '';

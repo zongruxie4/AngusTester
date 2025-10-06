@@ -16,6 +16,7 @@ interface Props {
     yData2: number[]
   },
 }
+
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -90,7 +91,7 @@ const deliveryEChartConfig = {
       barGap: 0,
       data: [0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -104,7 +105,7 @@ const deliveryEChartConfig = {
       },
       data: [0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -118,7 +119,7 @@ const deliveryEChartConfig = {
       },
       data: [0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -179,21 +180,13 @@ defineExpose({
 
 </script>
 <template>
-  <div class="flex">
+  <div class="flex chart-container">
     <div ref="deliveryRef" class="flex-1 h-40"></div>
     <div ref="deliveryWorkloadRef" class="flex-1 h-40"></div>
   </div>
 </template>
 <style scoped>
-.risk-level-LOW {
-  color: 'gold'
-}
-
-.risk-level-HIGH {
-  color: 'red'
-}
-
-.risk-level-NONE {
-  color: '#52C41A'
+.chart-container {
+  padding: 20px;
 }
 </style>

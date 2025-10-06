@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
@@ -28,23 +28,23 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   chart0Value: () => ({
-    chart0Value: [0, 0, 0, 0]
+    yData: [0, 0, 0]
   }),
   chart1Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart3Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart4Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -54,25 +54,28 @@ const bugsRef = ref();
 const twoTimePassedRef = ref();
 
 let bugsChart;
-let completedEchart;
-let oneTimePassedEchart;
-let twoTimePassedEchart;
+let completedEChart;
+let oneTimePassedEChart;
+let twoTimePassedEChart;
 
 // 通过评审用例
-const bugsEchartConfig = {
+const bugsEChartConfig = {
   title: {
     text: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'),
-    bottom: 0,
-    left: 'center',
+    left: '50%',
+    bottom: '2%',
+    textAlign: 'center',
     textStyle: {
-      fontSize: 12
+      fontSize: 12,
+      fontWeight: '600',
+      color: '#595959'
     }
   },
   grid: {
-    left: '40',
-    right: '30',
-    bottom: '50',
-    top: '20'
+    left: '10%',
+    right: '10%',
+    bottom: '30%',
+    top: '15%'
   },
   xAxis: {
     type: 'category',
@@ -83,138 +86,253 @@ const bugsEchartConfig = {
     ],
     axisLabel: {
       interval: 0,
-      overflow: 'break'
+      overflow: 'break',
+      fontSize: 12,
+      color: '#666'
+    },
+    axisLine: {
+      lineStyle: {
+        color: '#e8e8e8'
+      }
     }
   },
   yAxis: {
-    type: 'value'
+    type: 'value',
+    axisLabel: {
+      fontSize: 12,
+      color: '#666'
+    },
+    splitLine: {
+      lineStyle: {
+        type: 'dashed',
+        color: '#f0f0f0'
+      }
+    }
   },
   tooltip: {
-    show: true
+    show: true,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: {
+      color: '#fff',
+      fontSize: 12
+    }
   },
   series: [
     {
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
-        borderRadius: [5, 5, 0, 0]
+        color: function (params) {
+          const colors = ['#52c41a', '#faad14', '#1890ff'];
+          return colors[params.dataIndex] || '#1890ff';
+        },
+        borderRadius: [4, 4, 0, 0]
       },
-
       data: [0, 0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '42%',
       label: {
         show: true,
-        position: 'top'
+        position: 'top',
+        fontSize: 12,
+        color: '#666'
       }
     }
   ]
 };
 // 评审通过用例占比
-const completedEchartConfig = {
+const completedEChartConfig = {
   title: {
-    text: '0%',
+    text: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedRate'),
     left: '35%',
-    top: '45%',
-    padding: 2,
-    subtext: t('testAnalysis.detail.handlingEfficiency.chartLabels.completedRate'),
-    // left: '25%',
-    // top: '40%',
-    itemGap: 40,
+    bottom: '6%',
     textAlign: 'center',
     textStyle: {
       fontSize: 12,
-      fontWeight: 'bolder'
-    },
-    subtextStyle: {
-      fontSize: 12,
-      color: '#000'
+      fontWeight: '600',
+      color: '#595959'
     }
   },
   tooltip: {
-    trigger: 'item'
+    trigger: 'item',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: {
+      color: '#fff',
+      fontSize: 12
+    },
+    formatter: '{b}: {c} ({d}%)'
   },
   legend: {
-    top: 'middle',
-    right: '10',
+    top: 'center',
+    right: '2px',
     orient: 'vertical',
-    itemHeight: 14,
-    itemWidth: 14,
-    itemGap: 2
+    itemGap: 4,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
   },
   series: [
     {
       name: '',
       type: 'pie',
-      // radius: ['50%', '65%'],
-      radius: '65%',
+      radius: ['30%', '60%'],
       center: ['35%', '50%'],
       avoidLabelOverlap: true,
       label: {
         show: true,
-        formatter: '{c}'
-      },
-      itemStyle: {
-        borderRadius: 2,
-        borderColor: '#fff',
-        borderWidth: 1
-      },
-      emphasis: {
-        label: {
-          show: true
+        position: 'center',
+        formatter: function () {
+          return '{a|' + (props.chart1Value?.title || '0%') + '}';
+        },
+        rich: {
+          a: {
+            fontSize: 14,
+            fontWeight: 'bold',
+            color: '#262626'
+          }
         }
       },
-      labelLine: {
-        show: true,
-        length: 5
+      itemStyle: {
+        borderRadius: 4,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      emphasis: {
+        scale: true,
+        scaleSize: 5,
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.3)'
+        }
       },
       data: [
         {
-          name: '',
+          name: t('testAnalysis.detail.reviewEfficiency.chartLabels.uncompletedCount'),
           value: 0,
           itemStyle: {
-            color: 'rgba(136, 185, 242, 0.8)'
+            color: '#ff7875'
           }
         },
         {
-          name: '',
+          name: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'),
           value: 0,
           itemStyle: {
-            color: 'rgba(45, 142, 255, 1)'
+            color: '#52c41a'
           }
         }
-
       ]
     }
   ]
 };
 
 // 一次完成用例占比
-const oneTimePassedEchartConfig = JSON.parse(JSON.stringify({
-  ...completedEchartConfig,
+const oneTimePassedEChartConfig = JSON.parse(JSON.stringify({
+  ...completedEChartConfig,
   title: {
-    ...completedEchartConfig.title,
-    subtext: t('testAnalysis.detail.reviewEfficiency.chartTitles.oneTimeCompletedRate'),
-    itemGap: 40
-  }
+    ...completedEChartConfig.title,
+    text: t('testAnalysis.detail.reviewEfficiency.chartTitles.oneTimeCompletedRate'),
+    left: '35%',
+    bottom: '6%'
+  },
+  legend: {
+    top: 'center',
+    right: '2px',
+    orient: 'vertical',
+    itemGap: 4,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
+  },
+  series: [{
+    ...completedEChartConfig.series[0],
+    radius: ['30%', '60%'],
+    center: ['35%', '50%'],
+    label: {
+      show: true,
+      position: 'center',
+      formatter: function () {
+        return '{a|' + (props.chart2Value?.title || '0%') + '}';
+      },
+      rich: {
+        a: {
+          fontSize: 14,
+          fontWeight: 'bold',
+          color: '#262626'
+        }
+      }
+    }
+  }]
 }));
 
 // 两次完成用例占比
-const twoTimePassedEchartConfig = JSON.parse(JSON.stringify({
-  ...oneTimePassedEchartConfig,
+const twoTimePassedEChartConfig = JSON.parse(JSON.stringify({
+  ...oneTimePassedEChartConfig,
   title: {
-    ...oneTimePassedEchartConfig.title,
-    subtext: t('testAnalysis.detail.reviewEfficiency.chartTitles.twoTimeCompletedRate')
-  }
+    ...oneTimePassedEChartConfig.title,
+    text: t('testAnalysis.detail.reviewEfficiency.chartTitles.twoTimeCompletedRate'),
+    left: '35%',
+    bottom: '6%'
+  },
+  legend: {
+    top: 'center',
+    right: '2px',
+    orient: 'vertical',
+    itemGap: 4,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
+  },
+  series: [{
+    ...oneTimePassedEChartConfig.series[0],
+    radius: ['30%', '60%'],
+    center: ['35%', '50%'],
+    label: {
+      show: true,
+      position: 'center',
+      formatter: function () {
+        return '{a|' + (props.chart3Value?.title || '0%') + '}';
+      },
+      rich: {
+        a: {
+          fontSize: 14,
+          fontWeight: 'bold',
+          color: '#262626'
+        }
+      }
+    }
+  }]
 }));
 
 onMounted(() => {
-  completedEchart = eCharts.init(completedRef.value);
+  completedEChart = eCharts.init(completedRef.value);
 
-  oneTimePassedEchart = eCharts.init(oneTimePassedRef.value);
+  oneTimePassedEChart = eCharts.init(oneTimePassedRef.value);
 
   bugsChart = eCharts.init(bugsRef.value);
 
-  twoTimePassedEchart = eCharts.init(twoTimePassedRef.value);
+  twoTimePassedEChart = eCharts.init(twoTimePassedRef.value);
+
+  const handleResize = () => {
+    // Update bar width for responsive design
+    const isMobile = window.innerWidth < 768;
+    bugsEChartConfig.series[0].barMaxWidth = isMobile ? '28%' : '42%';
+
+    // Resize all charts
+    completedEChart?.resize();
+    oneTimePassedEChart?.resize();
+    bugsChart?.resize();
+    twoTimePassedEChart?.resize();
+  };
+
+  window.addEventListener('resize', handleResize);
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+  });
 
   watch([
     () => props.chart0Value,
@@ -223,42 +341,63 @@ onMounted(() => {
     () => props.chart3Value,
     () => props.chart4Value
   ], () => {
-    bugsEchartConfig.series[0].data = props.chart0Value.yData;
+    bugsEChartConfig.series[0].data = props.chart0Value.yData;
+    // Update bar width for responsive design
+    const isMobile = window.innerWidth < 768;
+    bugsEChartConfig.series[0].barMaxWidth = isMobile ? '28%' : '42%';
 
-    completedEchartConfig.series[0].data[0] = {
-      ...completedEchartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+    completedEChartConfig.series[0].data[0] = {
+      ...completedEChartConfig.series[0].data[0],
+      ...props.chart1Value.value[0],
+      value: Number(props.chart1Value.value[0].value)
     };
-    completedEchartConfig.series[0].data[1] = {
-      ...completedEchartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+    completedEChartConfig.series[0].data[1] = {
+      ...completedEChartConfig.series[0].data[1],
+      ...props.chart1Value.value[1],
+      value: Number(props.chart1Value.value[1].value)
     };
-    completedEchartConfig.title.text = props.chart1Value.title;
+    // Update the center label formatter for the first chart
+    completedEChartConfig.series[0].label.formatter = function () {
+      return '{a|' + (props.chart1Value?.title || '0%') + '}';
+    };
+    // Title is now static, rate value is shown in center
 
-    oneTimePassedEchartConfig.series[0].data[0] = {
-      ...oneTimePassedEchartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+    oneTimePassedEChartConfig.series[0].data[0] = {
+      ...oneTimePassedEChartConfig.series[0].data[0],
+      ...props.chart2Value.value[0],
+      value: Number(props.chart2Value.value[0].value)
     };
-    oneTimePassedEchartConfig.series[0].data[1] = {
-      ...oneTimePassedEchartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+    oneTimePassedEChartConfig.series[0].data[1] = {
+      ...oneTimePassedEChartConfig.series[0].data[1],
+      ...props.chart2Value.value[1],
+      value: Number(props.chart2Value.value[1].value)
     };
-    oneTimePassedEchartConfig.title.text = props.chart2Value.title;
+    // Update the center label formatter for the second chart
+    oneTimePassedEChartConfig.series[0].label.formatter = function () {
+      return '{a|' + (props.chart2Value?.title || '0%') + '}';
+    };
+    // Title is now static, rate value is shown in center
 
-    twoTimePassedEchartConfig.series[0].data[0] = {
-      ...twoTimePassedEchartConfig.series[0].data[0],
-      ...props.chart3Value.value[0]
+    twoTimePassedEChartConfig.series[0].data[0] = {
+      ...twoTimePassedEChartConfig.series[0].data[0],
+      ...props.chart3Value.value[0],
+      value: Number(props.chart3Value.value[0].value)
     };
-    twoTimePassedEchartConfig.series[0].data[1] = {
-      ...twoTimePassedEchartConfig.series[0].data[1],
-      ...props.chart3Value.value[1]
+    twoTimePassedEChartConfig.series[0].data[1] = {
+      ...twoTimePassedEChartConfig.series[0].data[1],
+      ...props.chart3Value.value[1],
+      value: Number(props.chart3Value.value[1].value)
     };
-    twoTimePassedEchartConfig.title.text = props.chart3Value.title;
+    // Update the center label formatter for the third chart
+    twoTimePassedEChartConfig.series[0].label.formatter = function () {
+      return '{a|' + (props.chart3Value?.title || '0%') + '}';
+    };
+    // Title is now static, rate value is shown in center
 
-    completedEchart.setOption(completedEchartConfig);
-    oneTimePassedEchart.setOption(oneTimePassedEchartConfig);
-    bugsChart.setOption(bugsEchartConfig);
-    twoTimePassedEchart.setOption(twoTimePassedEchartConfig);
+    completedEChart.setOption(completedEChartConfig);
+    oneTimePassedEChart.setOption(oneTimePassedEChartConfig);
+    bugsChart.setOption(bugsEChartConfig);
+    twoTimePassedEChart.setOption(twoTimePassedEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -267,19 +406,129 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    completedEchart.resize();
-    oneTimePassedEchart.resize();
-    bugsChart.resize();
-    twoTimePassedEchart.resize();
+    completedEChart?.resize();
+    oneTimePassedEChart?.resize();
+    bugsChart?.resize();
+    twoTimePassedEChart?.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex">
-    <div ref="bugsRef" class="flex-1 h-30 w-120"></div>
-    <div ref="completedRef" class="flex-1 h-30"></div>
-    <div ref="oneTimePassedRef" class="flex-1 h-30"></div>
-    <div ref="twoTimePassedRef" class="flex-1 h-30"></div>
+  <div class="chart-container">
+    <div class="main-layout">
+      <!-- Right side: Charts area -->
+      <div class="right-side">
+        <!-- Single row: All charts -->
+        <div class="chart-row">
+          <div ref="bugsRef" class="chart-item bar-chart"></div>
+          <div ref="completedRef" class="chart-item pie-chart"></div>
+          <div ref="oneTimePassedRef" class="chart-item pie-chart"></div>
+          <div ref="twoTimePassedRef" class="chart-item pie-chart"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+<style scoped>
+.chart-container {
+  padding: 20px 20px 0px 0px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.main-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.right-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.chart-row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  height: 160px;
+}
+
+.chart-item {
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.bar-chart {
+  flex: 1;
+  padding-left: 50px;
+}
+
+.pie-chart {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Tablet responsive */
+@media (max-width: 1200px) {
+  .main-layout {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .right-side {
+    order: 1;
+  }
+
+  .chart-row {
+    flex-wrap: wrap;
+  }
+
+  .chart-item {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 200px;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .chart-container {
+    padding: 12px 12px 12px 4px;
+  }
+
+  .main-layout {
+    gap: 12px;
+  }
+
+  .chart-row {
+    height: 180px;
+    flex-direction: column;
+  }
+
+  .chart-item {
+    flex: 1;
+    min-width: 100%;
+  }
+}
+
+/* Small mobile responsive */
+@media (max-width: 480px) {
+  .chart-container {
+    padding: 8px 8px 8px 2px;
+  }
+
+  .chart-row {
+    height: 160px;
+  }
+}
+</style>

@@ -10,10 +10,11 @@ interface Props {
 
   },
   chart1Value: {
-    value: {name: string, data: number[]}[],
+    value: { name: string, data: number[] }[],
     xData: string[]
   },
 }
+
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -79,13 +80,13 @@ const growthTreadTaskEChartConfig = {
     {
       name: '',
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       barGap: 0,
       data: [0, 0, 0, 0, 0, 0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -177,21 +178,13 @@ defineExpose({
 
 </script>
 <template>
-  <div class="flex">
+  <div class="flex chart-container">
     <div ref="growthTreadTaskRef" class="flex-1 h-45"></div>
     <div ref="growthTreadWorkloadRef" class="flex-1 h-45"></div>
   </div>
 </template>
 <style scoped>
-.risk-level-LOW {
-  color: 'gold'
-}
-
-.risk-level-HIGH {
-  color: 'red'
-}
-
-.risk-level-NONE {
-  color: '#52C41A'
+.chart-container {
+  padding: 20px;
 }
 </style>

@@ -8,13 +8,14 @@ interface Props {
 
   chart1Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
   chart2Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
 }
+
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -289,7 +290,9 @@ defineExpose({
           <div class="metric-value">
             {{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}
           </div>
-          <div class="metric-label">{{ t('issueAnalysis.detail.overdueAssessment.statistics.averageDailyProcessedWorkload') }}</div>
+          <div class="metric-label">
+            {{ t('issueAnalysis.detail.overdueAssessment.statistics.averageDailyProcessedWorkload') }}
+          </div>
         </div>
 
         <!-- Estimated processing time -->
@@ -298,7 +301,9 @@ defineExpose({
             {{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}
             <span class="unit">{{ t('unit.hour') }}</span>
           </div>
-          <div class="metric-label">{{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueWorkloadProcessingTime') }}</div>
+          <div class="metric-label">
+            {{ t('issueAnalysis.detail.overdueAssessment.statistics.overdueWorkloadProcessingTime') }}
+          </div>
         </div>
       </div>
     </div>
@@ -315,7 +320,8 @@ defineExpose({
   display: flex;
   flex-direction: row; /* side-by-side */
   gap: 12px;
-  padding: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
   align-items: stretch;
 }
 

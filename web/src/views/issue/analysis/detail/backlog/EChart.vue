@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
@@ -14,13 +14,14 @@ interface Props {
 
   chart1Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
   chart2Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
 }
+
 const props = withDefaults(defineProps<Props>(), {
   overdueAssessmentData: () => ({}),
   chart0Value: () => ({
@@ -45,38 +46,32 @@ let backlogRefEChart;
 let backloggedTaskEChart;
 let backloggedWorkloadEChart;
 
-// 积压量
+// 积压量（对齐测试 Backlog 柱图样式）
 const backlogEChartConfig = {
   title: {
     text: t('issueAnalysis.detail.backlogIssues.chartLabels.backloggedCount'),
-    bottom: 0,
-    left: 'center',
-    textStyle: {
-      fontSize: 12
-    }
+    left: '50%',
+    bottom: '2%',
+    textAlign: 'center',
+    textStyle: { fontSize: 12, fontWeight: '600', color: '#595959' }
   },
-  grid: {
-    left: '40',
-    right: '30',
-    bottom: '50',
-    top: '40'
-  },
+  grid: { left: '10%', right: '10%', bottom: '30%', top: '15%' },
   xAxis: {
     type: 'category',
-    data: [
-      t('common.count'),
-      t('common.workload')
-    ],
-    axisLabel: {
-      interval: 0,
-      overflow: 'break'
-    }
+    data: [t('common.count'), t('common.workload')],
+    axisLabel: { interval: 0, overflow: 'break', fontSize: 12, color: '#666' },
+    axisLine: { lineStyle: { color: '#e8e8e8' } }
   },
   yAxis: [{
-    type: 'value'
+    type: 'value',
+    axisLabel: { fontSize: 12, color: '#666' },
+    splitLine: { lineStyle: { type: 'dashed', color: '#f0f0f0' } }
   }],
   tooltip: {
-    show: true
+    show: true,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: { color: '#fff', fontSize: 12 }
   },
   legend: {
     show: true,
@@ -84,116 +79,101 @@ const backlogEChartConfig = {
       t('issueAnalysis.detail.backlogIssues.chartLabels.backloggedCount'),
       t('issueAnalysis.detail.backlogIssues.chartLabels.totalBackloggedCount')
     ],
-    top: 0
+    top: 0,
+    textStyle: { fontSize: 12, color: '#595959' }
   },
   series: [
     {
       name: t('issueAnalysis.detail.backlogIssues.chartLabels.backloggedCount'),
-      itemStyle: {
-        color: 'orange',
-        borderRadius: [5, 5, 0, 0]
-      },
+      itemStyle: { color: '#faad14', borderRadius: [4, 4, 0, 0] },
       barGap: 0,
       data: [0, 0],
       type: 'bar',
-      barMaxWidth: '20',
-      label: {
-        show: true,
-        position: 'top'
-      }
+      barMaxWidth: '36%',
+      label: { show: true, position: 'top', fontSize: 12, color: '#666' }
     },
     {
       name: t('issueAnalysis.detail.backlogIssues.chartLabels.totalBackloggedCount'),
-      itemStyle: {
-        color: 'rgb(68,93,179)',
-        borderRadius: [5, 5, 0, 0]
-      },
+      itemStyle: { color: 'rgb(68,93,179)', borderRadius: [4, 4, 0, 0] },
       data: [0, 0],
       type: 'bar',
-      barMaxWidth: '20',
-      label: {
-        show: true,
-        position: 'top'
-      }
+      barMaxWidth: '36%',
+      label: { show: true, position: 'top', fontSize: 12, color: '#666' }
     }
   ]
 };
-// 积压任务数
+// 积压任务数（对齐测试 Backlog 饼图样式）
 const backloggedTaskEChartConfig = {
   title: {
-    text: '0%',
+    text: t('issueAnalysis.detail.backlogIssues.chartLabels.backlogIssueRate'),
     left: '35%',
-    top: '40%',
-    padding: 2,
-    subtext: t('issueAnalysis.detail.backlogIssues.chartLabels.backlogIssueRate'),
-    itemGap: 55,
+    bottom: '6%',
     textAlign: 'center',
-    textStyle: {
-      fontSize: 12,
-      fontWeight: 'bolder'
-    },
-    subtextStyle: {
-      fontSize: 12,
-      color: '#000'
-    }
+    textStyle: { fontSize: 12, fontWeight: '600', color: '#595959' }
   },
   tooltip: {
-    trigger: 'item'
+    trigger: 'item',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: { color: '#fff', fontSize: 12 },
+    formatter: '{b}: {c} ({d}%)'
   },
   legend: {
-    top: 'middle',
-    right: '10',
+    top: 'center',
+    right: '2px',
     orient: 'vertical',
-    itemHeight: 14,
-    itemWidth: 14,
-    itemGap: 2
+    itemGap: 4,
+    textStyle: { fontSize: 12, color: '#595959' }
   },
-  series: [
-    {
-      name: '',
-      type: 'pie',
-      radius: '55%',
-      center: ['35%', '45%'],
-      avoidLabelOverlap: true,
-      label: {
-        show: true,
-        formatter: '{c}'
+  series: [{
+    name: '',
+    type: 'pie',
+    radius: ['30%', '60%'],
+    center: ['35%', '50%'],
+    avoidLabelOverlap: true,
+    label: {
+      show: true,
+      position: 'center',
+      formatter: function () {
+        const title = props.chart1Value?.title || '0.0%';
+        return '{a|' + title + '}';
       },
-      emphasis: {
-        label: {
-          show: true
-        }
-      },
-      labelLine: {
-        show: true,
-        length: 5
-      },
-      data: [
-        {
-          name: t('status.notCompleted'),
-          value: 0,
-          itemStyle: {
-            color: 'rgb(15,175,62)'
-          }
-        },
-        {
-          name: t('status.completed'),
-          value: 0,
-          itemStyle: {
-            color: 'rgb(246,159,42)'
-          }
-        }
-      ]
-    }
-  ]
+      rich: { a: { fontSize: 14, fontWeight: 'bold', color: '#262626' } }
+    },
+    itemStyle: { borderRadius: 4, borderColor: '#fff', borderWidth: 2 },
+    emphasis: {
+      scale: true,
+      scaleSize: 5,
+      itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0,0,0,0.3)' }
+    },
+    data: [
+      { name: t('status.notCompleted'), value: 0, itemStyle: { color: '#ff7875' } },
+      { name: t('status.completed'), value: 0, itemStyle: { color: '#52C41A' } }
+    ]
+  }]
 };
 
 const backloggedWorkloadEChartConfig = JSON.parse(JSON.stringify({
   ...backloggedTaskEChartConfig,
   title: {
     ...backloggedTaskEChartConfig.title,
-    subtext: t('issueAnalysis.detail.backlogIssues.chartLabels.backlogWorkloadRate')
-  }
+    text: t('issueAnalysis.detail.backlogIssues.chartLabels.backlogWorkloadRate'),
+    left: '35%',
+    bottom: '6%'
+  },
+  legend: { top: 'center', right: '2px', orient: 'vertical', itemGap: 4, textStyle: { fontSize: 12, color: '#595959' } },
+  series: [{
+    ...backloggedTaskEChartConfig.series[0],
+    radius: ['30%', '60%'],
+    center: ['35%', '50%'],
+    label: {
+      ...backloggedTaskEChartConfig.series[0].label,
+      formatter: function () {
+        const title = props.chart2Value?.title || '0.0%';
+        return '{a|' + title + '}';
+      }
+    }
+  }]
 }));
 
 onMounted(() => {
@@ -202,9 +182,27 @@ onMounted(() => {
 
   backloggedWorkloadEChart = eCharts.init(backloggedWorkloadRef.value);
 
+  const handleResize = () => {
+    const isMobile = window.innerWidth < 768;
+    backlogEChartConfig.series[0].barMaxWidth = isMobile ? '20%' : '28%';
+    backlogEChartConfig.series[1].barMaxWidth = isMobile ? '20%' : '28%';
+    backloggedTaskEChart?.resize();
+    backloggedWorkloadEChart?.resize();
+    backlogRefEChart?.resize();
+  };
+
+  window.addEventListener('resize', handleResize);
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+  });
+
   watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value], () => {
     backlogEChartConfig.series[0].data = props.chart0Value.yData0;
     backlogEChartConfig.series[1].data = props.chart0Value.yData1;
+    const isMobile = window.innerWidth < 768;
+    backlogEChartConfig.series[0].barMaxWidth = isMobile ? '20%' : '28%';
+    backlogEChartConfig.series[1].barMaxWidth = isMobile ? '20%' : '28%';
 
     backloggedTaskEChartConfig.series[0].data[0] = {
       ...backloggedTaskEChartConfig.series[0].data[0],
@@ -216,7 +214,10 @@ onMounted(() => {
       ...props.chart1Value.value[1],
       value: Number(props.chart1Value.value[1].value)
     };
-    backloggedTaskEChartConfig.title.text = props.chart1Value.title;
+    backloggedTaskEChartConfig.series[0].label.formatter = function () {
+      const title = props.chart1Value?.title || '0.0%';
+      return '{a|' + title + '}';
+    };
 
     backloggedWorkloadEChartConfig.series[0].data[0] = {
       ...backloggedWorkloadEChartConfig.series[0].data[0],
@@ -228,7 +229,10 @@ onMounted(() => {
       ...props.chart2Value.value[1],
       value: Number(props.chart2Value.value[1].value)
     };
-    backloggedWorkloadEChartConfig.title.text = props.chart2Value.title;
+    backloggedWorkloadEChartConfig.series[0].label.formatter = function () {
+      const title = props.chart2Value?.title || '0.0%';
+      return '{a|' + title + '}';
+    };
     backloggedTaskEChart.setOption(backloggedTaskEChartConfig);
     backloggedWorkloadEChart.setOption(backloggedWorkloadEChartConfig);
     backlogRefEChart.setOption(backlogEChartConfig);
@@ -240,59 +244,171 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    backloggedTaskEChart.resize();
-    backloggedWorkloadEChart.resize();
-    backlogRefEChart.resize();
+    backloggedTaskEChart?.resize();
+    backloggedWorkloadEChart?.resize();
+    backlogRefEChart?.resize();
   }
 });
-
 </script>
 <template>
-  <div class="flex">
-    <div class="px-3 w-100">
-      <div class="flex justify-around">
-        <div class="text-center flex-1">
-          <div class="font-semibold ">
-            <span class="text-5 text-status-error">
-              {{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}
-            </span>
-            {{ t('unit.hour') }}
+  <div class="chart-container">
+    <div class="main-layout">
+      <div class="left-side">
+        <div class="px-3 w-100">
+          <div class="flex justify-around">
+            <div class="text-center flex-1">
+              <div class="font-semibold ">
+                <span class="text-5 text-status-error">
+                  {{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}
+                </span>
+                {{ t('unit.hour') }}
+              </div>
+              <div class="metric-subtitle">
+                {{ t('issueAnalysis.detail.backlogIssues.statistics.backlogWorkloadEstimatedTime') }}
+              </div>
+            </div>
           </div>
-          <div>
-            {{ t('issueAnalysis.detail.backlogIssues.statistics.backlogWorkloadEstimatedTime') }}
+          <div class="flex justify-around mt-3">
+            <div class="text-center">
+              <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedNum || 0 }}</div>
+              <div class="metric-subtitle">
+                {{ t('issueAnalysis.detail.backlogIssues.statistics.averageDailyProcessedIssues') }}
+              </div>
+            </div>
+            <div class="text-center">
+              <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}</div>
+              <div class="metric-subtitle">
+                {{ t('issueAnalysis.detail.backlogIssues.statistics.averageDailyProcessedWorkload') }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="flex justify-around mt-3">
-        <div class="text-center">
-          <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedNum || 0 }}</div>
-          <div>
-            {{ t('issueAnalysis.detail.backlogIssues.statistics.averageDailyProcessedIssues') }}
-          </div>
-        </div>
-        <div class="text-center">
-          <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}</div>
-          <div>
-            {{ t('issueAnalysis.detail.backlogIssues.statistics.averageDailyProcessedWorkload') }}
-          </div>
+      <div class="right-side">
+        <div class="chart-row">
+          <div ref="backlogRef" class="chart-item bar-chart"></div>
+          <div ref="backloggedTaskRef" class="chart-item pie-chart"></div>
+          <div ref="backloggedWorkloadRef" class="chart-item pie-chart"></div>
         </div>
       </div>
     </div>
-    <div ref="backlogRef" class="flex-1 h-40"></div>
-    <div ref="backloggedTaskRef" class="flex-1 h-40"></div>
-    <div ref="backloggedWorkloadRef" class="flex-1 h-40"></div>
   </div>
 </template>
 <style scoped>
-.risk-level-LOW {
-  color: 'gold'
+.chart-container {
+  padding: 20px 20px 0px 0px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.risk-level-HIGH {
-  color: 'red'
+.main-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
-.risk-level-NONE {
-  color: '#52C41A'
+.right-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-left: 100px;
+  min-width: 0;
+}
+
+.left-side {
+  padding-top: 20px;
+  width: 220px;
+  box-sizing: border-box;
+}
+
+.metric-subtitle {
+  color: #9e9c9c;
+}
+
+.chart-row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  height: 200px;
+}
+
+.chart-item {
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.bar-chart {
+  flex: 1.5;
+  padding-left: 50px;
+}
+
+.pie-chart {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 1200px) {
+  .main-layout {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .left-side {
+    width: 100%;
+  }
+
+  .right-side {
+    order: 1;
+  }
+
+  .chart-row {
+    flex-wrap: wrap;
+  }
+
+  .chart-item {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 200px;
+  }
+
+  .bar-chart {
+    flex: 1 1 calc(100% - 8px);
+  }
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    padding: 12px 12px 12px 4px;
+  }
+
+  .main-layout {
+    gap: 12px;
+  }
+
+  .chart-row {
+    height: 200px;
+    flex-direction: column;
+  }
+
+  .chart-item {
+    flex: 1;
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    padding: 8px 8px 8px 2px;
+  }
+
+  .chart-row {
+    height: 200px;
+  }
 }
 </style>

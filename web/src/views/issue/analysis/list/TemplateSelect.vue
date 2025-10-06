@@ -24,15 +24,15 @@ const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
-  (e: 'update:template', value: string):void;
-  (e: 'update:templateData', value: EnumMessage<AnalysisTaskTemplate>[]):void;
-  (e:'update:templateDesc', value: EnumMessage<AnalysisTaskTemplateDesc>[]):void
+  (e: 'update:template', value: string): void;
+  (e: 'update:templateData', value: EnumMessage<AnalysisTaskTemplate>[]): void;
+  (e: 'update:templateDesc', value: EnumMessage<AnalysisTaskTemplateDesc>[]): void
 }>();
 
 /**
  * Tree data for template selection with all available options
  */
-const templateTreeData = ref<{name: string; value: string; key: string}[]>([
+const templateTreeData = ref<{ name: string; value: string; key: string }[]>([
   { name: t('issueAnalysis.all'), value: '', key: '' }
 ]);
 

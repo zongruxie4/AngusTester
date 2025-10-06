@@ -36,12 +36,12 @@ const deliveryRef = ref();
 const deliveryWorkloadRef = ref();
 // removed unused ref
 
-let deliveryRefEchart;
-let deliveryWorkloadEchart;
+let deliveryRefEChart;
+let deliveryWorkloadEChart;
 // removed unused var
 
 // 交付数（完成数）
-const deliveryEchartConfig = {
+const deliveryEChartConfig = {
   title: {
     text: t('testAnalysis.detail.recentDelivery.chartTitles.deliveryCount'),
     bottom: 0,
@@ -93,7 +93,7 @@ const deliveryEchartConfig = {
       barGap: 0,
       data: [0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -107,7 +107,7 @@ const deliveryEchartConfig = {
       },
       data: [0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -121,7 +121,7 @@ const deliveryEchartConfig = {
       },
       data: [0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -131,8 +131,8 @@ const deliveryEchartConfig = {
 };
 
 // 交付工作量（完成量）
-const deliveryWorkloadEchartConfig = JSON.parse(JSON.stringify({
-  ...deliveryEchartConfig,
+const deliveryWorkloadEChartConfig = JSON.parse(JSON.stringify({
+  ...deliveryEChartConfig,
   title: {
     text: '0%',
     left: '35%',
@@ -156,20 +156,20 @@ const deliveryWorkloadEchartConfig = JSON.parse(JSON.stringify({
 }));
 
 onMounted(() => {
-  deliveryRefEchart = eCharts.init(deliveryRef.value);
-  deliveryWorkloadEchart = eCharts.init(deliveryWorkloadRef.value);
+  deliveryRefEChart = eCharts.init(deliveryRef.value);
+  deliveryWorkloadEChart = eCharts.init(deliveryWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
-    deliveryEchartConfig.series[0].data = props.chart0Value.yData0;
-    deliveryEchartConfig.series[1].data = props.chart0Value.yData1;
-    deliveryEchartConfig.series[2].data = props.chart0Value.yData2;
+    deliveryEChartConfig.series[0].data = props.chart0Value.yData0;
+    deliveryEChartConfig.series[1].data = props.chart0Value.yData1;
+    deliveryEChartConfig.series[2].data = props.chart0Value.yData2;
 
-    deliveryWorkloadEchartConfig.series[0].data = props.chart1Value.yData0;
-    deliveryWorkloadEchartConfig.series[1].data = props.chart1Value.yData1;
-    deliveryWorkloadEchartConfig.series[2].data = props.chart1Value.yData2;
+    deliveryWorkloadEChartConfig.series[0].data = props.chart1Value.yData0;
+    deliveryWorkloadEChartConfig.series[1].data = props.chart1Value.yData1;
+    deliveryWorkloadEChartConfig.series[2].data = props.chart1Value.yData2;
 
-    deliveryWorkloadEchart.setOption(deliveryWorkloadEchartConfig);
-    deliveryRefEchart.setOption(deliveryEchartConfig);
+    deliveryWorkloadEChart.setOption(deliveryWorkloadEChartConfig);
+    deliveryRefEChart.setOption(deliveryEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -178,28 +178,20 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    deliveryWorkloadEchart.resize();
-    deliveryRefEchart.resize();
+    deliveryWorkloadEChart.resize();
+    deliveryRefEChart.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex">
+  <div class="flex chart-container">
     <div ref="deliveryRef" class="flex-1 h-40"></div>
     <div ref="deliveryWorkloadRef" class="flex-1 h-40"></div>
   </div>
 </template>
 <style scoped>
-.risk-level-LOW {
-  color: 'gold'
-}
-
-.risk-level-HIGH {
-  color: 'red'
-}
-
-.risk-level-NONE {
-  color: '#52C41A'
+.chart-container {
+  padding: 20px;
 }
 </style>

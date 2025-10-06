@@ -374,12 +374,12 @@
       },
       "backlogIssues": {
         "chartLabels": {
-          "backloggedCount": "积压量",
-          "totalBackloggedCount": "总量",
+          "backloggedCount": "积压数",
+          "totalBackloggedCount": "总数",
           "backlogIssueRate": "积压问题占比",
           "backlogWorkloadRate": "积压工作量占比",
-          "nonBacklogged": "未积压",
-          "backlogged": "积压",
+          "nonBacklogged": "未积压数",
+          "backlogged": "积压数",
           "nonBackloggedWorkload": "未积压工作量",
           "backloggedWorkload": "积压工作量"
         },

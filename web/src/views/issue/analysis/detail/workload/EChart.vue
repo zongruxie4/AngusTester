@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
@@ -9,13 +9,14 @@ interface Props {
   };
   chart1Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
   chart2Value: {
     title: string;
-    value: {name: string, value: string|number}[];
+    value: { name: string, value: string | number }[];
   }
 }
+
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -77,12 +78,12 @@ const workloadEChartConfig = {
   series: [
     {
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       data: [0, 0, 0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -93,72 +94,84 @@ const workloadEChartConfig = {
 
 const completedWorkloadEChartConfig = {
   title: {
-    text: '0%',
-    left: '35%',
-    top: '45%',
-    padding: 2,
-    subtext: t('common.counts.completedWorkloadRate'),
-    itemGap: 40,
+    text: t('common.counts.completedWorkloadRate'),
+    left: '40%',
+    bottom: '5%',
     textAlign: 'center',
     textStyle: {
       fontSize: 12,
-      fontWeight: 'bolder'
-    },
-    subtextStyle: {
-      fontSize: 12,
-      color: '#000'
+      fontWeight: '600',
+      color: '#595959'
     }
   },
   tooltip: {
-    trigger: 'item'
+    trigger: 'item',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderColor: 'transparent',
+    textStyle: {
+      color: '#fff',
+      fontSize: 12
+    },
+    formatter: '{b}: {c} ({d}%)'
   },
   legend: {
-    top: 'middle',
-    right: '10',
+    top: 'center',
     orient: 'vertical',
-    itemHeight: 14,
-    itemWidth: 14,
-    itemGap: 2
+    right: '30%',
+    itemGap: 12,
+    textStyle: {
+      fontSize: 12,
+      color: '#595959'
+    }
   },
   series: [
     {
       name: '',
       type: 'pie',
-      // radius: ['45%', '60%'],
-      radius: '60%',
-      center: ['35%', '45%'],
+      radius: ['50%', '78%'],
+      center: ['40%', '38%'],
       avoidLabelOverlap: true,
       label: {
         show: true,
-        formatter: '{c}'
-      },
-      itemStyle: {
-        borderRadius: 2,
-        borderColor: '#fff',
-        borderWidth: 1
-      },
-      emphasis: {
-        label: {
-          show: true
+        position: 'center',
+        formatter: function () {
+          return '{a|' + (props.chart1Value?.title || '0%') + '}';
+        },
+        rich: {
+          a: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: '#262626'
+          }
         }
       },
-      labelLine: {
-        show: true,
-        length: 5
+      itemStyle: {
+        borderRadius: 4,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      emphasis: {
+        scale: true,
+        scaleSize: 5,
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.3)'
+        }
       },
       data: [
         {
           name: t('status.notCompleted'),
           value: 0,
           itemStyle: {
-            color: 'rgb(246,159,42)'
+            color: '#ff7875'
           }
         },
         {
           name: t('status.completed'),
           value: 0,
           itemStyle: {
-            color: '#52C41A'
+            color: '#52c41a'
           }
         }
       ]
@@ -170,14 +183,37 @@ const savingWorkloadEChartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEChartConfig,
   title: {
     ...completedWorkloadEChartConfig.title,
-    subtext: t('common.counts.savingWorkloadRate')
-  }
+    text: t('common.counts.savingWorkloadRate')
+  },
+  series: [
+    {
+      ...completedWorkloadEChartConfig.series[0],
+      label: {
+        ...completedWorkloadEChartConfig.series[0].label,
+        formatter: function () {
+          return '{a|' + (props.chart2Value?.title || '0%') + '}';
+        }
+      }
+    }
+  ]
 }));
 
 onMounted(() => {
   completedWorkloadEChart = eCharts.init(completedWorkloadRef.value);
   savingWorkloadEChart = eCharts.init(savingWorkloadRef.value);
   workloadChart = eCharts.init(workloadRef.value);
+
+  const handleResize = () => {
+    completedWorkloadEChart?.resize();
+    savingWorkloadEChart?.resize();
+    workloadChart?.resize();
+  };
+
+  window.addEventListener('resize', handleResize);
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+  });
 
   watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value], () => {
     workloadEChartConfig.series[0].data = props.chart0Value.yData;
@@ -192,7 +228,7 @@ onMounted(() => {
       name: props.chart1Value.value[1].name,
       value: Number(props.chart1Value.value[1].value)
     };
-    completedWorkloadEChartConfig.title.text = props.chart1Value.title;
+    // Title is now static, rate value is shown in center
 
     savingWorkloadEChartConfig.series[0].data[0] = {
       ...savingWorkloadEChartConfig.series[0].data[0],
@@ -204,7 +240,11 @@ onMounted(() => {
       name: props.chart2Value.value[1].name,
       value: Number(props.chart2Value.value[1].value)
     };
-    savingWorkloadEChartConfig.title.text = props.chart2Value.title;
+    // Update the center label formatter for the second chart
+    savingWorkloadEChartConfig.series[0].label.formatter = function () {
+      return '{a|' + (props.chart2Value?.title || '0%') + '}';
+    };
+    // Title is now static, rate value is shown in center
     completedWorkloadEChart.setOption(completedWorkloadEChartConfig);
     savingWorkloadEChart.setOption(savingWorkloadEChartConfig);
     workloadChart.setOption(workloadEChartConfig);
@@ -216,17 +256,22 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    completedWorkloadEChart.resize();
-    savingWorkloadEChart.resize();
-    workloadChart.resize();
+    completedWorkloadEChart?.resize();
+    savingWorkloadEChart?.resize();
+    workloadChart?.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex">
-    <div ref="workloadRef" class="flex-1 h-30"></div>
-    <div ref="completedWorkloadRef" class="flex-1 h-30"></div>
-    <div ref="savingWorkloadRef" class="flex-1 h-30"></div>
+  <div class="flex chart-container">
+    <div ref="workloadRef" class="flex-1 h-35"></div>
+    <div ref="completedWorkloadRef" class="flex-1 h-35"></div>
+    <div ref="savingWorkloadRef" class="flex-1 h-35"></div>
   </div>
 </template>
+<style scoped>
+.chart-container {
+  padding: 20px;
+}
+</style>

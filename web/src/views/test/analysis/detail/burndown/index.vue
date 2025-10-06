@@ -34,9 +34,15 @@ const getChartData = (data, target = 'NUM') => {
   return res;
 };
 
+interface PersonValue {
+  userName: string;
+  chartData: any;
+  id: string;
+}
+
 const totalValue = ref({});
 
-const personValues = ref([]);
+const personValues = ref<PersonValue[]>([]);
 
 onMounted(() => {
   watch(() => props.analysisInfo, (newValue) => {
@@ -74,12 +80,12 @@ onMounted(() => {
 });
 
 const totalChartRef = ref();
-const chartListRef = [];
+const chartListRef = ref<any[]>([]);
 defineExpose({
   resize: () => {
-    totalChartRef.value.resize();
-    chartListRef.forEach(item => {
-      item.resize();
+    totalChartRef.value?.resize();
+    chartListRef.value.forEach(item => {
+      item?.resize();
     });
   }
 });
@@ -105,7 +111,7 @@ defineExpose({
         <h3 class="section-title">{{ item.userName }}</h3>
       </div>
       <EChart
-        ref="chartListRef"
+        :ref="(el) => { if (el) chartListRef.push(el) }"
         v-bind="item.chartData"
         class="analysis-chart" />
     </div>

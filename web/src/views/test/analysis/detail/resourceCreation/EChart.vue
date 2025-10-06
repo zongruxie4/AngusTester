@@ -30,11 +30,11 @@ const props = withDefaults(defineProps<Props>(), {
 const unplannedTaskRef = ref();
 const unplannedWorkloadRef = ref();
 
-let unplannedTaskRefEchart;
-let unplannedWorkloadRefEchart;
+let unplannedTaskRefEChart;
+let unplannedWorkloadRefEChart;
 
 // 用例数
-const unplannedTaskEchartConfig = {
+const unplannedTaskEChartConfig = {
   title: {
     text: t('testAnalysis.detail.resourceCreation.chartTitles.resourceTotal'),
     bottom: 0,
@@ -78,13 +78,13 @@ const unplannedTaskEchartConfig = {
     {
       name: '',
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       barGap: 0,
       data: [0, 0, 0, 0, 0, 0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -93,7 +93,7 @@ const unplannedTaskEchartConfig = {
   ]
 };
 
-const unplannedWorkloadEchartConfig = {
+const unplannedWorkloadEChartConfig = {
   title: {
     text: t('testAnalysis.detail.resourceCreation.chartTitles.resourceGrowth'),
     bottom: 0,
@@ -143,22 +143,22 @@ const unplannedWorkloadEchartConfig = {
 };
 
 onMounted(() => {
-  unplannedTaskRefEchart = eCharts.init(unplannedTaskRef.value);
+  unplannedTaskRefEChart = eCharts.init(unplannedTaskRef.value);
 
-  unplannedWorkloadRefEchart = eCharts.init(unplannedWorkloadRef.value);
+  unplannedWorkloadRefEChart = eCharts.init(unplannedWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
-    unplannedTaskEchartConfig.series[0].data = props.chart0Value.yData;
-    unplannedWorkloadEchartConfig.series = props.chart1Value.value.map(i => {
+    unplannedTaskEChartConfig.series[0].data = props.chart0Value.yData;
+    unplannedWorkloadEChartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
         stack: 'Total'
       };
     });
-    unplannedWorkloadEchartConfig.xAxis.data = props.chart1Value.xData;
+    unplannedWorkloadEChartConfig.xAxis.data = props.chart1Value.xData;
 
-    unplannedTaskRefEchart.setOption(unplannedTaskEchartConfig);
-    unplannedWorkloadRefEchart.setOption(unplannedWorkloadEchartConfig);
+    unplannedTaskRefEChart.setOption(unplannedTaskEChartConfig);
+    unplannedWorkloadRefEChart.setOption(unplannedWorkloadEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -167,28 +167,20 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    unplannedTaskRefEchart.resize();
-    unplannedWorkloadRefEchart.resize();
+    unplannedTaskRefEChart.resize();
+    unplannedWorkloadRefEChart.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex space-x-4">
+  <div class="flex chart-container">
     <div ref="unplannedTaskRef" class="flex-1 h-40"></div>
     <div ref="unplannedWorkloadRef" class="flex-1 h-40"></div>
   </div>
 </template>
 <style scoped>
-.risk-level-LOW {
-  color: 'gold'
-}
-
-.risk-level-HIGH {
-  color: 'red'
-}
-
-.risk-level-NONE {
-  color: '#52C41A'
+.chart-container {
+  padding: 20px;
 }
 </style>

@@ -112,7 +112,7 @@ defineExpose({
         <h3 class="section-title">{{ item.userName }}</h3>
       </div>
       <EChart
-        ref="chartListRef"
+        :ref="(el) => { if (el) chartListRef.push(el) }"
         v-bind="item.chartData"
         class="analysis-chart" />
     </div>

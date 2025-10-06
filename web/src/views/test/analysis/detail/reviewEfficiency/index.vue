@@ -160,13 +160,9 @@ defineExpose({
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
-}
-
-.overdue-analysis-page .analysis-section:last-child {
-  margin-bottom: 0;
 }
 
 .analysis-section:hover {

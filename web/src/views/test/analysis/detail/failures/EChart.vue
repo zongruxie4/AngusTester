@@ -36,11 +36,11 @@ const failureLevelRef = ref();
 const failureRef = ref();
 
 let failureChart;
-let failureTimeEchart;
-let failureLevelEchart;
+let failureTimeEChart;
+let failureLevelEChart;
 
 // 故障数
-const failureEchartConfig = {
+const failureEChartConfig = {
   title: {
     text: t('issueAnalysis.detail.failures.chartTitles.failureCount'),
     bottom: 0,
@@ -93,8 +93,8 @@ const failureEchartConfig = {
   ]
 };
 // 故障时间（小时）
-const failureTimeEchartConfig = JSON.parse(JSON.stringify({
-  ...failureEchartConfig,
+const failureTimeEChartConfig = JSON.parse(JSON.stringify({
+  ...failureEChartConfig,
   title: {
     text: t('issueAnalysis.detail.failures.chartTitles.failureTime'),
     bottom: 0,
@@ -104,7 +104,7 @@ const failureTimeEchartConfig = JSON.parse(JSON.stringify({
     }
   },
   xAxis: {
-    ...failureEchartConfig.xAxis,
+    ...failureEChartConfig.xAxis,
     data: [
       t('issueAnalysis.detail.failures.chartLabels.totalFailureTime'),
       t('issueAnalysis.detail.failures.chartLabels.averageFailureTime'),
@@ -114,7 +114,7 @@ const failureTimeEchartConfig = JSON.parse(JSON.stringify({
   },
   series: [
     {
-      ...failureEchartConfig.series[0],
+      ...failureEChartConfig.series[0],
       data: [0, 0, 0, 0],
       itemStyle: { // rgba(255, 165, 43, 1)
         color: 'orange',
@@ -126,7 +126,7 @@ const failureTimeEchartConfig = JSON.parse(JSON.stringify({
 
 //
 // 缺陷等级
-const failureLevelEchartConfig = {
+const failureLevelEChartConfig = {
   title: {
     text: '',
     left: '35%',
@@ -216,9 +216,9 @@ const failureLevelEchartConfig = {
 };
 
 onMounted(() => {
-  failureTimeEchart = eCharts.init(failureTimeRef.value);
+  failureTimeEChart = eCharts.init(failureTimeRef.value);
 
-  failureLevelEchart = eCharts.init(failureLevelRef.value);
+  failureLevelEChart = eCharts.init(failureLevelRef.value);
 
   failureChart = eCharts.init(failureRef.value);
 
@@ -227,35 +227,35 @@ onMounted(() => {
     () => props.chart1Value,
     () => props.chart2Value
   ], () => {
-    failureEchartConfig.series[0].data = props.chart0Value.yData;
-    failureTimeEchartConfig.series[0].data = props.chart1Value.yData;
+    failureEChartConfig.series[0].data = props.chart0Value.yData;
+    failureTimeEChartConfig.series[0].data = props.chart1Value.yData;
 
-    failureLevelEchartConfig.series[0].data[0] = {
-      ...failureLevelEchartConfig.series[0].data[0],
+    failureLevelEChartConfig.series[0].data[0] = {
+      ...failureLevelEChartConfig.series[0].data[0],
       ...props.chart2Value.value[0],
       value: Number(props.chart2Value.value[0].value)
     };
-    failureLevelEchartConfig.series[0].data[1] = {
-      ...failureLevelEchartConfig.series[0].data[1],
+    failureLevelEChartConfig.series[0].data[1] = {
+      ...failureLevelEChartConfig.series[0].data[1],
       ...props.chart2Value.value[1],
       value: Number(props.chart2Value.value[1].value)
     };
 
-    failureLevelEchartConfig.series[0].data[2] = {
-      ...failureLevelEchartConfig.series[0].data[2],
+    failureLevelEChartConfig.series[0].data[2] = {
+      ...failureLevelEChartConfig.series[0].data[2],
       ...props.chart2Value.value[2],
       value: Number(props.chart2Value.value[2].value)
     };
-    failureLevelEchartConfig.series[0].data[3] = {
-      ...failureLevelEchartConfig.series[0].data[3],
+    failureLevelEChartConfig.series[0].data[3] = {
+      ...failureLevelEChartConfig.series[0].data[3],
       ...props.chart2Value.value[3],
       value: Number(props.chart2Value.value[3].value)
     };
-    failureLevelEchartConfig.title.text = props.chart2Value.title;
+    failureLevelEChartConfig.title.text = props.chart2Value.title;
 
-    failureTimeEchart.setOption(failureTimeEchartConfig);
-    failureLevelEchart.setOption(failureLevelEchartConfig);
-    failureChart.setOption(failureEchartConfig);
+    failureTimeEChart.setOption(failureTimeEChartConfig);
+    failureLevelEChart.setOption(failureLevelEChartConfig);
+    failureChart.setOption(failureEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -264,17 +264,22 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    failureTimeEchart.resize();
-    failureLevelEchart.resize();
+    failureTimeEChart.resize();
+    failureLevelEChart.resize();
     failureChart.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex space-x-5">
+  <div class="flex chart-container">
     <div ref="failureRef" class="flex-1 h-40"></div>
     <div ref="failureTimeRef" class="flex-1 h-40"></div>
     <div ref="failureLevelRef" class="flex-1 h-40"></div>
   </div>
 </template>
+<style scoped>
+.chart-container {
+  padding: 20px;
+}
+</style>

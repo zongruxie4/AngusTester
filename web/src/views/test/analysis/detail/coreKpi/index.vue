@@ -19,15 +19,15 @@ const getChartData = (data) => {
 
   const {
     totalNum = 0, completedNum = 0, completedRate = '-',
-    bugNum = 0, completedBugNum = 0, completedBugRate = '-',
+    reviewNum = 0, completedReviewNum = 0, completedReviewRate = '-',
     completedOverdueNum = 0, completedOverdueRate = '-',
     completedWorkload = 0, completedWorkloadRate = '-',
     evalWorkload = 0, overdueNum = 0
   } = data;
 
   res.chart0Value = {
-    yData0: [completedNum, completedWorkload, completedOverdueNum, completedBugNum],
-    yData1: [totalNum, evalWorkload, overdueNum, bugNum]
+    yData0: [completedNum, completedWorkload, completedOverdueNum, completedReviewNum],
+    yData1: [totalNum, evalWorkload, overdueNum, reviewNum]
   };
   res.chart1Value = {
     title: completedRate + '%',
@@ -53,10 +53,10 @@ const getChartData = (data) => {
   };
 
   res.chart4Value = {
-    title: completedBugRate + '%',
+    title: completedReviewRate + '%',
     value: [
-      { name: t('status.notCompleted'), value: bugNum - completedBugNum },
-      { name: t('status.completed'), value: completedBugNum }
+      { name: t('status.notCompleted'), value: reviewNum - completedReviewNum },
+      { name: t('status.completed'), value: completedReviewNum }
     ]
   };
   return res;

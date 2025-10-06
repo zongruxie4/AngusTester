@@ -1630,8 +1630,8 @@
       },
       "backlogCases": {
         "chartLabels": {
-          "backloggedCount": "积压量",
-          "totalBackloggedCount": "总量",
+          "backloggedCount": "积压数",
+          "totalBackloggedCount": "总数",
           "backlogCaseCountRate": "用例占比",
           "backlogWorkloadRate": "工作量占比",
           "notBackloggedCount": "未积压数",

@@ -5,7 +5,12 @@ import { Button } from 'ant-design-vue';
 import { DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { cloneDeep } from 'lodash-es';
 import { PageQuery, SearchCriteria, XCanDexie } from '@xcan-angus/infra';
-import { QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import {
+  QuickSearchOptions,
+  createAuditOptions,
+  createTimeOptions,
+  type QuickSearchConfig
+} from '@/components/quickSearch';
 import dayjs from 'dayjs';
 
 // Type Definitions
@@ -99,7 +104,10 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
  * Handle sorting configuration changes
  * @param {object} data - Sorting data containing orderBy and orderSort
  */
-const handleSortingChange = (data: { orderBy: 'createdByName' | 'lastModifiedByName' ; orderSort: PageQuery.OrderSort; }) => {
+const handleSortingChange = (data: {
+  orderBy: 'createdByName' | 'lastModifiedByName';
+  orderSort: PageQuery.OrderSort;
+}) => {
   emit('update:orderBy', data.orderBy);
   emit('update:orderSort', data.orderSort);
 };
@@ -450,7 +458,7 @@ const sortMenuItems = [
   color: #fff;
 }
 
-.ant-tag.tag-checked :deep(.ant-tag-close-icon)>svg {
+.ant-tag.tag-checked :deep(.ant-tag-close-icon) > svg {
   color: #fff;
 }
 

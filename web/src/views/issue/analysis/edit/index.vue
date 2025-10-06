@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
   data: undefined
 });
 
-const emits = defineEmits<{(e: 'ok')}>();
+const emits = defineEmits<{(e: 'ok') }>();
 
 // Vue Composition API Setup
 const { t } = useI18n();
@@ -59,7 +59,7 @@ const loadAnalysisObjectOptions = () => {
   analysisObjectOptions.value = enumUtils.enumToMessages(AnalysisTaskObject);
 };
 
-const timeRangeOptions = ref<{message: string, value:string}[]>([]);
+const timeRangeOptions = ref<{ message: string, value: string }[]>([]);
 
 /**
  * Loads time range options from enum definitions.

@@ -29,9 +29,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const taskGrowthTreadRef = ref();
 
-let taskGrowthTreadRefEchart;
+let taskGrowthTreadRefEChart;
 
-const taskGrowthTreadEchartConfig = {
+const taskGrowthTreadEChartConfig = {
   title: {
     text: t('testAnalysis.detail.growthTread.growthTrend'),
     bottom: 0,
@@ -81,18 +81,18 @@ const taskGrowthTreadEchartConfig = {
 };
 
 onMounted(() => {
-  taskGrowthTreadRefEchart = eCharts.init(taskGrowthTreadRef.value);
+  taskGrowthTreadRefEChart = eCharts.init(taskGrowthTreadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
-    taskGrowthTreadEchartConfig.series = props.chart1Value.value.map(i => {
+    taskGrowthTreadEChartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
         stack: 'Total'
       };
     });
-    taskGrowthTreadEchartConfig.xAxis.data = props.chart1Value.xData;
+    taskGrowthTreadEChartConfig.xAxis.data = props.chart1Value.xData;
 
-    taskGrowthTreadRefEchart.setOption(taskGrowthTreadEchartConfig);
+    taskGrowthTreadRefEChart.setOption(taskGrowthTreadEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -101,26 +101,18 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    taskGrowthTreadRefEchart.resize();
+    taskGrowthTreadRefEChart.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex">
+  <div class="flex chart-container">
     <div ref="taskGrowthTreadRef" class="flex-1 h-40"></div>
   </div>
 </template>
 <style scoped>
-.risk-level-LOW {
-  color: 'gold'
-}
-
-.risk-level-HIGH {
-  color: 'red'
-}
-
-.risk-level-NONE {
-  color: '#52C41A'
+.chart-container {
+  padding: 20px;
 }
 </style>

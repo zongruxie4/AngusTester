@@ -12,6 +12,7 @@ interface Props {
     yData: number[]
   },
 }
+
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -72,13 +73,13 @@ const unplannedTaskEChartConfig = {
     {
       name: '',
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       barGap: 0,
       data: [0, 0, 0, 0, 0, 0, 0, 0],
       type: 'bar',
-      barMaxWidth: '20',
+      barMaxWidth: '30',
       label: {
         show: true,
         position: 'top'
@@ -135,7 +136,7 @@ defineExpose({
 });
 </script>
 <template>
-  <div class="flex">
+  <div class="flex chart-container">
     <div class="px-3 w-50 flex items-center">
       <div class="text-center flex-1">
         <div class="font-semibold ">
@@ -143,7 +144,7 @@ defineExpose({
             {{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}
           </span>{{ t('unit.hour') }}
         </div>
-        <div>
+        <div class="metric-subtitle">
           {{ t('issueAnalysis.detail.unplanned.metrics.estimatedTime') }}
         </div>
       </div>
@@ -153,15 +154,11 @@ defineExpose({
   </div>
 </template>
 <style scoped>
-.risk-level-LOW {
-  color: 'gold'
+.chart-container {
+  padding: 20px;
 }
 
-.risk-level-HIGH {
-  color: 'red'
-}
-
-.risk-level-NONE {
-  color: '#52C41A'
+.metric-subtitle {
+  color: #9e9c9c;
 }
 </style>

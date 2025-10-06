@@ -18,6 +18,6 @@ export const TemplateIconConfig = {
 };
 
 export type MenuItem = {
-    key: 'none' | 'createdBy' | 'lastModifiedBy' | 'last1Day' | 'last3Days' | 'last7Days';
-    name: string;
+  key: 'none' | 'createdBy' | 'lastModifiedBy' | 'last1Day' | 'last3Days' | 'last7Days';
+  name: string;
 }

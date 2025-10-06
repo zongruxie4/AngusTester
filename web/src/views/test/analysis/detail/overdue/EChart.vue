@@ -316,7 +316,8 @@ defineExpose({
   display: flex;
   flex-direction: row; /* side-by-side */
   gap: 12px;
-  padding: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
   align-items: stretch;
 }
 
