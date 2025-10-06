@@ -18,7 +18,10 @@ const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 const getChartData = (data) => {
   const res = {} as any;
 
-  const { apiTestNum = 0, requirementNum = 0, scenarioTestNum = 0, storyNum = 0, bugNum = 0, taskNum = 0, totalNum = 0 } = data;
+  const {
+    apiTestNum = 0, requirementNum = 0, scenarioTestNum = 0,
+    storyNum = 0, bugNum = 0, taskNum = 0, totalNum = 0
+  } = data;
   res.overdueAssessmentData = data;
   res.chart0Value = {
     yData: [requirementNum, storyNum, taskNum, bugNum, apiTestNum, scenarioTestNum, totalNum]
@@ -79,13 +82,13 @@ onMounted(() => {
 
       if (newValue?.containsUserAnalysis) {
         const sourceData = newValue.data?.testersOverview || {};
-        const assignees = newValue.data?.testers || [];
+        const testers = newValue.data?.testers || [];
         Object.keys(sourceData).forEach(userId => {
           const viewData = sourceData[userId] || {};
           const chartData = getChartData(viewData);
 
           personValues.value.push({
-            userName: assignees[userId]?.fullName,
+            userName: testers[userId]?.fullName,
             chartData,
             id: userId
           });

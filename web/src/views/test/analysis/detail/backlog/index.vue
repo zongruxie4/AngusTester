@@ -36,8 +36,14 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: backloggedRate + '%',
     value: [
-      { name: t('testAnalysis.detail.backlogCases.chartLabels.notBackloggedCount'), value: totalNum - backloggedNum },
-      { name: t('testAnalysis.detail.backlogCases.chartLabels.backloggedCount'), value: backloggedNum }
+      {
+        name: t('testAnalysis.detail.backlogCases.chartLabels.notBackloggedCount'),
+        value: totalNum - backloggedNum
+      },
+      {
+        name: t('testAnalysis.detail.backlogCases.chartLabels.backloggedCount'),
+        value: backloggedNum
+      }
     ]
   };
 
@@ -48,7 +54,10 @@ const getChartData = (data) => {
         name: t('testAnalysis.detail.backlogCases.chartLabels.notBackloggedWorkload'),
         value: totalWorkload - backloggedWorkload
       },
-      { name: t('testAnalysis.detail.backlogCases.chartLabels.backloggedWorkload'), value: backloggedWorkload }
+      {
+        name: t('testAnalysis.detail.backlogCases.chartLabels.backloggedWorkload'),
+        value: backloggedWorkload
+      }
     ]
   };
   return res;
@@ -72,13 +81,13 @@ onMounted(() => {
 
       if (newValue?.containsUserAnalysis) {
         const sourceData = newValue.data?.testersOverview || {};
-        const assignees = newValue.data?.testers || [];
+        const testers = newValue.data?.testers || [];
         Object.keys(sourceData).forEach(userId => {
           const viewData = sourceData[userId] || {};
           const chartData = getChartData(viewData);
 
           personValues.value.push({
-            userName: assignees[userId]?.fullName,
+            userName: testers[userId]?.fullName,
             chartData,
             id: userId
           });

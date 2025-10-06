@@ -60,13 +60,13 @@ onMounted(() => {
 
       if (newValue?.containsUserAnalysis) {
         const sourceData = newValue.data?.testersOverview || {};
-        const assignees = newValue.data?.testers || [];
+        const testers = newValue.data?.testers || [];
         Object.keys(sourceData).forEach(userId => {
           const viewData = sourceData[userId] || {};
           const chartData = getChartData(viewData);
 
           personValues.value.push({
-            userName: assignees[userId]?.fullName,
+            userName: testers[userId]?.fullName,
             chartData,
             id: userId
           });

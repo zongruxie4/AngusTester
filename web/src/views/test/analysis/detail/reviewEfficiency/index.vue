@@ -31,24 +31,42 @@ const getChartData = (data) => {
   res.chart1Value = {
     title: passedReviewRate + '%',
     value: [
-      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.uncompletedCount'), value: totalNum - passedReviewNum },
-      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'), value: passedReviewNum }
+      {
+        name: t('testAnalysis.detail.reviewEfficiency.chartLabels.uncompletedCount'),
+        value: totalNum - passedReviewNum
+      },
+      {
+        name: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'),
+        value: passedReviewNum
+      }
     ]
   };
 
   res.chart2Value = {
     title: passedReviewRate + '%',
     value: [
-      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.uncompletedCount'), value: oneTimeNotPassedReviewNum },
-      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'), value: oneTimePassedReviewNum }
+      {
+        name: t('testAnalysis.detail.reviewEfficiency.chartLabels.uncompletedCount'),
+        value: oneTimeNotPassedReviewNum
+      },
+      {
+        name: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'),
+        value: oneTimePassedReviewNum
+      }
     ]
   };
 
   res.chart3Value = {
     title: passedReviewRate + '%',
     value: [
-      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.uncompletedCount'), value: passedReviewNum - twoTimePassedReviewNum },
-      { name: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'), value: twoTimePassedReviewNum }
+      {
+        name: t('testAnalysis.detail.reviewEfficiency.chartLabels.uncompletedCount'),
+        value: passedReviewNum - twoTimePassedReviewNum
+      },
+      {
+        name: t('testAnalysis.detail.reviewEfficiency.chartLabels.completedCount'),
+        value: twoTimePassedReviewNum
+      }
     ]
   };
   return res;
@@ -72,13 +90,13 @@ onMounted(() => {
 
       if (newValue?.containsUserAnalysis) {
         const sourceData = newValue.data?.testersOverview || {};
-        const assignees = newValue.data?.testers || [];
+        const testers = newValue.data?.testers || [];
         Object.keys(sourceData).forEach(userId => {
           const viewData = sourceData[userId] || {};
           const chartData = getChartData(viewData);
 
           personValues.value.push({
-            userName: assignees[userId]?.fullName,
+            userName: testers[userId]?.fullName,
             chartData,
             id: userId
           });

@@ -48,10 +48,14 @@ onMounted(() => {
 
       if (newValue?.containsUserAnalysis) {
         const sourceData = newValue.data?.testersOverview || {};
-        const assignees = newValue.data?.testers || [];
+        const testers = newValue.data?.testers || [];
         Object.keys(sourceData).forEach(userId => {
           const viewData = sourceData[userId] || {};
-          const { completedNum = 0, completedRate = 0, completedWorkload = 0, completedWorkloadRate = 0, evalWorkload = 0, totalNum = 0 } = viewData;
+          const {
+            completedNum = 0, completedRate = 0, completedWorkload = 0,
+            completedWorkloadRate = 0, evalWorkload = 0, totalNum = 0
+          } = viewData;
+
           const chartData = {
             value0: [
               { name: t('status.notCompleted'), value: totalNum - completedNum },
@@ -66,7 +70,7 @@ onMounted(() => {
           };
 
           personValues.value.push({
-            userName: assignees[userId]?.fullName,
+            userName: testers[userId]?.fullName,
             chartData,
             id: userId
           });

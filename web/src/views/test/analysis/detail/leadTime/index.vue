@@ -25,7 +25,12 @@ const getChartData = (data) => {
   } = data;
   res.overdueAssessmentData = data;
   res.chart0Value = {
-    yData: [avgProcessingTime, minProcessingTime, maxProcessingTime, p50ProcessingTime, p75ProcessingTime, p90ProcessingTime, p95ProcessingTime, p99ProcessingTime]
+    yData: [
+      avgProcessingTime, minProcessingTime,
+      maxProcessingTime, p50ProcessingTime,
+      p75ProcessingTime, p90ProcessingTime,
+      p95ProcessingTime, p99ProcessingTime
+    ]
   };
   return res;
 };
@@ -41,14 +46,14 @@ onMounted(() => {
       totalValue.value = getChartData(sourceData);
 
       if (newValue?.containsUserAnalysis) {
-        const sourceData = newValue.data?.assigneesOverview || {};
-        const assignees = newValue.data?.assignees || [];
+        const sourceData = newValue.data?.testersOverview || {};
+        const testers = newValue.data?.testers || [];
         Object.keys(sourceData).forEach(userId => {
           const viewData = sourceData[userId] || {};
           const chartData = getChartData(viewData);
 
           personValues.value.push({
-            userName: assignees[userId]?.fullName,
+            userName: testers[userId]?.fullName,
             chartData,
             id: userId
           });
