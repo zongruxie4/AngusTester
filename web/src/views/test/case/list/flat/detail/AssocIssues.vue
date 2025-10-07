@@ -36,20 +36,33 @@ const emit = defineEmits<{
 const submitLoading = ref(false);
 const selectTaskVisible = ref(false);
 
+/**
+ * Get filtered table data by current task type
+ */
 const tableData = computed(() => {
   return (props.dataSource || []).filter(item => item.taskType.value === props.taskType);
 });
 
-// const editRef = ref(false);
+/**
+ * Cancel edit flow and close task selector
+ */
 const cancelEdit = () => {
   // editRef.value = false;
   selectTaskVisible.value = false;
 };
+
+/**
+ * Start edit flow and open task selector
+ */
 const startEdit = () => {
   // editRef.value = true;
   selectTaskVisible.value = true;
 };
-// const refTaskIds = ref<string[]>([]);
+
+/**
+ * Submit association of selected tasks to the current case
+ * @param refTaskIds - Selected task IDs
+ */
 const handlePut = async (refTaskIds) => {
   selectTaskVisible.value = false;
   if (!refTaskIds.length) {
@@ -59,8 +72,6 @@ const handlePut = async (refTaskIds) => {
   submitLoading.value = true;
   const [error] = await funcCase.putAssociationTask(props.caseId, {
     assocTaskIds: refTaskIds
-  }, {
-    paramsType: true
   });
   submitLoading.value = false;
   if (error) {
@@ -69,14 +80,16 @@ const handlePut = async (refTaskIds) => {
   emit('editSuccess');
 };
 
+/**
+ * Remove association for one linked task record
+ * @param record - The associated task record to remove
+ */
 const handleDelTask = (record) => {
   modal.confirm({
     content: t('testCase.detail.assocTask.confirmCancelAssocTask', { name: record.name }),
     onOk () {
       return funcCase.cancelAssociationTask(props.caseId, {
         assocTaskIds: [record.id]
-      }, {
-        paramsType: true
       }).then(([error]) => {
         if (error) {
           return;
@@ -87,6 +100,10 @@ const handleDelTask = (record) => {
   });
 };
 
+/**
+ * Open a task detail page in router by ID
+ * @param record - The task record to open
+ */
 const openTask = (record) => {
   router.push(`/issue#issue?taskId=${record.id}`);
 };
@@ -163,7 +180,8 @@ const columns = [
       :dataSource="tableData || []"
       :pagination="false"
       size="small"
-      noDataSize="small">
+      noDataSize="small"
+      :noDataText="t('common.noData')">
       <template #bodyCell="{column, record}">
         <template v-if="column.dataIndex === 'name'">
           <Button

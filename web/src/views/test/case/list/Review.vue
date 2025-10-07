@@ -6,22 +6,23 @@ import { EnumMessage, ReviewStatus, enumUtils } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
-import { CaseDetailChecked } from './types';
+import { CaseDetail } from '@/views/test/types';
 
 const { t } = useI18n();
 
+// Type definitions
 type Params = {
   id: string;
   reviewRemark: string;
   reviewStatus: string;
 }
 
+// Component props interface
 interface Props {
   visible: boolean;
   type: 'batch' | 'one',
-  selectedCase?: CaseDetailChecked;
+  selectedCase?: CaseDetail;
   selectedRowKeys?: string[];
-
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,17 +32,27 @@ const props = withDefaults(defineProps<Props>(), {
   selectedRowKeys: () => []
 });
 
+// Component emits
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'update'):void}>();
 
+// Form state management
 const formState = ref<{ reviewRemark: string; reviewStatus: string }>({ reviewRemark: '', reviewStatus: 'PASSED' });
+const loading = ref(false);
 
+// Modal management functions
+
+/**
+ * Close the modal
+ */
 const close = () => {
   emits('update:visible', false);
 };
 
-const loading = ref(false);
+/**
+ * Handle form submission
+ */
 const onFinish = async () => {
-  const params:Params[] = props.type === 'batch'
+  const params: Params[] = props.type === 'batch'
     ? props.selectedRowKeys.map(item => ({
       id: item,
       reviewRemark: formState.value.reviewRemark || null,
@@ -65,21 +76,33 @@ const onFinish = async () => {
   emits('update');
 };
 
+// Enum management
 const reviewStatusEnum = ref<EnumMessage<ReviewStatus>[]>([]);
+
+/**
+ * Load review status enum options
+ */
 const loadEnums = () => {
   const data = enumUtils.enumToMessages(ReviewStatus);
   reviewStatusEnum.value = data.filter(item => item.value !== ReviewStatus.PENDING) || [];
 };
 
-const failMessageValue = ref();
-const changeFailMessage = (value) => {
+// Form handling functions
+const failMessageValue = ref<string>();
+
+/**
+ * Handle fail message selection change
+ * @param value - Selected fail message value
+ */
+const changeFailMessage = (value: string) => {
   if (value === 'other') {
     formState.value.reviewRemark = '';
   } else {
-    formState.value.reviewRemark = failMessage[value];
+    formState.value.reviewRemark = failMessage[Number(value)];
   }
 };
 
+// Fail reason options
 const failMessage = [
   t('testCase.reviewCase.failReasons.caseNameNotClear'),
   t('testCase.reviewCase.failReasons.caseDesignInconsistent'),
@@ -92,8 +115,9 @@ const failMessage = [
   t('testCase.reviewCase.failReasons.logicInconsistent'),
   t('testCase.reviewCase.failReasons.other')
 ];
-const failOpt = failMessage.map((i, idx) => ({ label: i, value: idx + 1 === failMessage.length ? 'other' : idx }));
+const failOpt = failMessage.map((i, idx) => ({ label: i, value: idx + 1 === failMessage.length ? 'other' : idx.toString() }));
 
+// Component lifecycle
 onMounted(() => {
   loadEnums();
 });

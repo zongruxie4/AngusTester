@@ -17,47 +17,61 @@ const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   dataSource: undefined
 });
 
-const dataList = ref<ActivityInfo[]>([]);
-const params = ref<{
-  mainTargetId:string;
-  filters:[{ key: 'targetType', value: CombinedTargetType.FUNC_CASE, op: SearchCriteria.OpEnum.Equal }]
+const activityList = ref<ActivityInfo[]>([]);
+const queryParams = ref<{
+  mainTargetId: number;
+  filters: { key: 'targetType'; value: CombinedTargetType; op: SearchCriteria.OpEnum; }[]
 }>();
 
-const change = (data: ActivityInfo[]) => {
-  dataList.value = data;
+/**
+ * Handle activity list updates emitted by the infinite scroll component
+ * Keeps local state in sync with server-side paginated results
+ */
+const handleActivityChange = (data: any[]) => {
+  activityList.value = data;
 };
 
-const targetId = computed(() => {
+const caseId = computed(() => {
   return props.dataSource?.id;
 });
 
-onMounted(() => {
-  watch(() => targetId.value, (newValue, oldValue) => {
+/**
+ * Initialize reactive watchers for case id changes
+ * Recomputes query parameters whenever selected case changes
+ */
+const initWatchers = () => {
+  watch(() => caseId.value, (newValue, oldValue) => {
     if (newValue === oldValue) {
       return;
     }
 
-    params.value = {
-      mainTargetId: targetId.value,
+    queryParams.value = {
+      mainTargetId: caseId.value,
       filters: [{ key: 'targetType', value: CombinedTargetType.FUNC_CASE, op: SearchCriteria.OpEnum.Equal }]
     };
   }, { immediate: true });
+};
+
+onMounted(() => {
+  initWatchers();
 });
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('testCase.kanbanView.activity.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('testCase.kanbanView.activity.title') }}
+    </div>
 
     <Scroll
-      v-if="targetId"
+      v-if="caseId"
       :action="`${TESTER}/activity`"
-      :hideNoData="!!dataList.length"
-      :params="params"
+      :hideNoData="!!activityList.length"
+      :params="queryParams"
       :lineHeight="32"
       transition
       style="height:calc(100% - 30px);"
-      @change="change">
-      <ActivityInfoPage :dataSource="dataList" infoKey="description" />
+      @change="handleActivityChange">
+      <ActivityInfoPage :dataSource="activityList" infoKey="description" />
     </Scroll>
   </div>
 </template>

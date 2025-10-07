@@ -3,13 +3,14 @@ import { Ref, inject, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
-import { TESTER, enumUtils } from '@xcan-angus/infra';
+import { TESTER, enumOptionUtils } from '@xcan-angus/infra';
 import { StrategyWhenDuplicated } from '@/enums/enums';
 import { formatBytes } from '@/utils/common';
 import { funcCase } from '@/api/tester';
 
 const { t } = useI18n();
 
+// Component props interface
 export interface Props{
   visible: boolean;
   downloadTemplate: () => void;
@@ -19,38 +20,53 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false
 });
 
+// Component emits
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok'):void;}>();
-const projectId = inject<Ref<string>>('projectId', ref(''));
 
+// Basic state management
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const loading = ref(false);
 const strategyWhenDuplicatedOpt = ref<{value: string; label: string}[]>([]);
 
+// Form state management
 const formRef = ref();
-
 const formData = ref<{
-  file: File|undefined;
+  file: File | undefined;
   strategyWhenDuplicated: StrategyWhenDuplicated;
-  planId: string|undefined;
+  planId: string | undefined;
 }>({
   file: undefined,
   strategyWhenDuplicated: StrategyWhenDuplicated.COVER,
   planId: undefined
 });
 
+/**
+ * Load strategy when duplicated enum options
+ */
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages(StrategyWhenDuplicated);
-  strategyWhenDuplicatedOpt.value = data.map(i => ({ value: i.value, label: i.message }));
+  strategyWhenDuplicatedOpt.value = enumOptionUtils.loadEnumAsOptions(StrategyWhenDuplicated);
 };
 
-const handleFile = (fileInfo) => {
+/**
+ * Handle file selection
+ * @param fileInfo - File information
+ */
+const handleFile = (fileInfo: any) => {
   formData.value.file = fileInfo.file;
   formRef.value.validateFields(['file']);
 };
 
+/**
+ * Delete selected file
+ */
 const deleteFile = () => {
   formData.value.file = undefined;
 };
 
+/**
+ * Validate file field
+ * @returns Validation result
+ */
 const validateFile = async () => {
   if (formData.value.file) {
     return Promise.resolve();
@@ -58,23 +74,34 @@ const validateFile = async () => {
   return Promise.reject();
 };
 
+/**
+ * Handle download template
+ */
 const handleDownloadTemplate = () => {
   if (typeof props.downloadTemplate === 'function') {
     props.downloadTemplate();
   }
 };
 
+/**
+ * Cancel upload
+ */
 const cancel = () => {
   emits('update:visible', false);
 };
 
+/**
+ * Confirm upload
+ */
 const ok = () => {
   formRef.value.validate()
     .then(async () => {
       const formParams = new FormData();
-      formParams.append('planId', formData.value.planId);
+      formParams.append('planId', formData.value.planId || '');
       formParams.append('strategyWhenDuplicated', formData.value.strategyWhenDuplicated);
-      formParams.append('file', formData.value.file);
+      if (formData.value.file) {
+        formParams.append('file', formData.value.file);
+      }
       loading.value = true;
       const [error] = await funcCase.importCase(formParams);
       loading.value = false;
@@ -86,6 +113,7 @@ const ok = () => {
     });
 };
 
+// Watchers
 watch(() => props.visible, newValue => {
   if (!newValue) {
     formData.value.file = undefined;

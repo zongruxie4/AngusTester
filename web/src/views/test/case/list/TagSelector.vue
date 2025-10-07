@@ -8,6 +8,7 @@ import { tag } from '@/api/tester';
 
 const { t } = useI18n();
 
+// Component props interface
 interface Props {
   tagIds: string[];
 }
@@ -15,24 +16,41 @@ const props = withDefaults(defineProps<Props>(), {
   tagIds: () => []
 });
 
-const emit = defineEmits<{(e: 'change', _val:string[]): void
+// Component emits
+const emit = defineEmits<{(e: 'change', _val: string[]): void
 }>();
-// Inject project information
+
+// Basic state management
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const tagList = ref<{ id: string, name: string, closeFlag: boolean }[]>([]);
 const checkedIds = ref<string[]>([]);
+
+/**
+ * Toggle tag selection
+ * @param tagId - Tag ID to toggle
+ */
 const selectTag = (tagId: string) => {
   checkedIds.value.includes(tagId) ? checkedIds.value = checkedIds.value.filter(f => f !== tagId) : checkedIds.value.push(tagId);
   emit('change', checkedIds.value);
 };
 
+// UI state management
 const showSelect = ref(false);
-const todoHandler = () => {
+const selectValue = ref<string>();
+
+/**
+ * Handle add tag button click
+ */
+const handleAddTag = () => {
   showSelect.value = true;
   selectValue.value = undefined;
 };
 
-const selectValue = ref<string>();
+/**
+ * Handle tag selection change
+ * @param _value - Selected value
+ * @param option - Selected option
+ */
 const selectChange = (_value: any, option: any) => {
   showSelect.value = false;
   const { id, name } = option;
@@ -43,7 +61,11 @@ const selectChange = (_value: any, option: any) => {
   emit('change', checkedIds.value);
 };
 
-const closeTag = (tagId:string) => {
+/**
+ * Close tag
+ * @param tagId - Tag ID to close
+ */
+const closeTag = (tagId: string) => {
   tagList.value = tagList.value.filter(f => f.id !== tagId);
   if (checkedIds.value.includes(tagId)) {
     checkedIds.value = checkedIds.value.filter(f => f !== tagId);
@@ -51,10 +73,16 @@ const closeTag = (tagId:string) => {
   }
 };
 
+/**
+ * Handle select blur
+ */
 const handleBlur = () => {
   showSelect.value = false;
 };
 
+/**
+ * Load cached tag list
+ */
 const getCacheTagList = async () => {
   const [error, { data }] = await tag.getTagList({ projectId: projectId.value, filters: [{ key: 'id', op: 'IN', value: props.tagIds }] });
   if (error) {
@@ -66,6 +94,7 @@ const getCacheTagList = async () => {
   });
 };
 
+// Watchers
 watch(() => props.tagIds, (newValue) => {
   if (newValue?.length) {
     getCacheTagList();
@@ -76,6 +105,7 @@ watch(() => props.tagIds, (newValue) => {
   immediate: true
 });
 
+// Expose functions to parent components
 defineExpose({
   checkedIds
 });
@@ -104,7 +134,7 @@ defineExpose({
         <Button
           class="h-6 flex items-center"
           size="small"
-          @click="todoHandler">
+          @click="handleAddTag">
           <Icon icon="icon-jia" class="text-3 mr-1 -mt-0.25" />
           {{ t('common.tag') }}
         </Button>

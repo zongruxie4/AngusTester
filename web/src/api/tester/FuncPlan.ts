@@ -50,7 +50,7 @@ export default class API {
     return http.patch(`${baseUrl}/case/review/reset`, params, { paramsType: true });
   }
 
-  getCurrentAuth (params: {ids: string[], admin: boolean}): Promise<[Error | null, any]> {
+  getCurrentAuth (params: {ids: number[], admin: boolean}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/user/auth/current`, params);
   }
 

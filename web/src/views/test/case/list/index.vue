@@ -29,29 +29,32 @@ const emits = defineEmits<{(e: 'cacheParams', value: PageQuery): void;
   (e: 'openInfo', value): void;
 }>();
 
-// Inject project information
+// Basic state management
 const projectId = inject<Ref<string>>('projectId', ref(''));
-
 const userInfo = ref(appContext.getUser());
 
-// 存储展示模式的key
+// Cache keys for user preferences
 const cacheModeKey = computed(() => {
   return `${userInfo?.value?.id}${projectId.value}caseMode`;
 });
-// 存储展开收起的key
 const cacheCountKey = computed(() => {
   return `${userInfo?.value?.id}${projectId.value}caseCount`;
 });
 
+// View state management
 const queryParams = ref<PageQuery>();
 const isStatisticsCollapsed = ref(typeof localStore.get(cacheCountKey.value) === 'boolean' ? localStore.get(cacheCountKey.value) : true);
 const viewMode = ref<CaseViewMode>(localStore.get(cacheModeKey.value) ?? CaseViewMode.flat);
 
+// Data state
 const caseCountData = ref<CaseCount>();
+const statisticsRefreshNotify = ref<string>('');
 
-// Statistics panel state
-const statisticsRefreshNotify = ref<string>(''); // Statistics panel refresh notification
+// Event handlers
 
+/**
+ * Toggle statistics panel collapse state
+ */
 const countChange = () => {
   isStatisticsCollapsed.value = !isStatisticsCollapsed.value;
   localStore.set(cacheCountKey.value, isStatisticsCollapsed.value);
@@ -61,24 +64,37 @@ const countChange = () => {
 };
 
 /**
- * Handles refresh notifications for statistics panel
+ * Handle refresh notifications for statistics panel
  */
 const handleRefreshChange = () => {
   statisticsRefreshNotify.value = utils.uuid();
 };
 
+/**
+ * Change view mode and save to local storage
+ * @param value - New view mode
+ */
 const viewModeChange = (value: CaseViewMode) => {
   viewMode.value = value;
   localStore.set(cacheModeKey.value, value);
 };
 
+// Component references and loading state
 const funcCaseListRef = ref<any>();
-
 const loading = ref(false);
-const updateLoading = (_loading: boolean): void => {
-  loading.value = _loading;
+
+/**
+ * Update loading state
+ * @param isLoading - Loading state
+ */
+const updateLoading = (isLoading: boolean): void => {
+  loading.value = isLoading;
 };
 
+/**
+ * Handle opening case info in new tab
+ * @param tabParams - Tab parameters
+ */
 const handleOpenInfo = async (tabParams) => {
   emits('openInfo', tabParams);
 };
@@ -97,13 +113,20 @@ const statisticsParameters = computed(() => {
   return parameters;
 });
 
+// Resize detection for statistics panel
 const caseCountRef = ref(null);
 const resizeDetector = elementResizeDetectorMaker();
 const countHeight = ref(0);
-const resize = (element) => {
+
+/**
+ * Handle element resize
+ * @param element - Resized element
+ */
+const resize = (element: HTMLElement) => {
   countHeight.value = element.offsetHeight;
 };
 
+// Component lifecycle
 onMounted(() => {
   if (!caseCountRef.value) {
     return;
@@ -114,8 +137,10 @@ onMounted(() => {
   handleRefreshChange();
 });
 
+// Provide functions to child components
 provide('updateLoading', updateLoading as () => void);
 
+// Expose functions to parent components
 defineExpose({
   resetParam: () => {
     funcCaseListRef.value && funcCaseListRef.value.resetParam();

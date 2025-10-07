@@ -4,6 +4,7 @@ import { Image, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { ReviewStatus } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
+import { CaseDetail } from '@/views/test/types';
 
 const CaseInfo = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/CaseInfo.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/test/review/detail/case/Precondition.vue'));
@@ -11,13 +12,13 @@ const CaseStep = defineAsyncComponent(() => import('@/views/test/case/list/CaseS
 const Description = defineAsyncComponent(() => import('@/views/test/review/detail/case/Description.vue'));
 
 interface Props {
-  caseDetail: {id: string; reviewNum: number; reviewFailNum: number;};
+  caseDetail: CaseDetail;
 }
 
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
-  caseDetail: () => ({ id: '' })
+  caseDetail: () => ({ id: '' } as unknown as CaseDetail)
 });
 
 const reviewNum = computed(() => {
@@ -33,6 +34,10 @@ const stepsClass = ref();
 
 const selectRecordId = ref();
 const selectRecordInfo = ref();
+
+/**
+ * Change current review record and compute diff highlights
+ */
 const changeCurrentRecord = async (record) => {
   if (selectRecordId.value === record.id) {
     return;
@@ -79,6 +84,9 @@ const changeCurrentRecord = async (record) => {
 };
 
 const reviewRecords = ref([]);
+/**
+ * Load review records of current case
+ */
 const loadReviewRecord = async () => {
   const [error, { data }] = await funcCase.getReviewRecord(props.caseDetail?.id);
   if (error) {

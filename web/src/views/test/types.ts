@@ -62,7 +62,7 @@ export type CaseTestStep = {
 }
 
 export type CaseDetail = {
-  id: string;
+  id: number;
   name: string;
   code: string;
   description: string;
@@ -114,5 +114,9 @@ export type CaseDetail = {
   avatar: string;
   createdDate: string;
   lastModifiedBy: number;
+  lastModifiedByName: string;
   lastModifiedDate: string;
+  /** Optional reference map used when updating associations */
+  refMap?: { TASK: number[]; CASE: number[] };
+  checked?: boolean;
 }

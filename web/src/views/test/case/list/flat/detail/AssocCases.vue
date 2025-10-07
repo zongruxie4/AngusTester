@@ -9,6 +9,7 @@ import { AssocCaseProps } from '@/views/test/case/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
+
 const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/SelectByModuleModal.vue'));
 
 const props = withDefaults(defineProps<AssocCaseProps>(), {
@@ -34,12 +35,24 @@ const editRef = ref(false);
 
 const selectCaseVisible = ref(false);
 
+/**
+ * Cancel current edit flow and close edit mode
+ */
 const cancelEdit = () => {
   editRef.value = false;
 };
+
+/**
+ * Start edit flow by opening select-case modal
+ */
 const startEdit = () => {
   selectCaseVisible.value = true;
 };
+
+/**
+ * Submit association of selected case IDs to the current case
+ * @param refCaseIds - Selected associated case IDs
+ */
 const handlePut = async (refCaseIds) => {
   selectCaseVisible.value = false;
   if (!refCaseIds.length) {
@@ -49,8 +62,6 @@ const handlePut = async (refCaseIds) => {
   submitLoading.value = true;
   const [error] = await funcCase.putAssociationCase(props.caseId, {
     assocCaseIds: refCaseIds
-  }, {
-    paramsType: true
   });
   submitLoading.value = false;
   if (error) {
@@ -59,14 +70,16 @@ const handlePut = async (refCaseIds) => {
   emit('editSuccess');
 };
 
+/**
+ * Remove association for a single linked case record
+ * @param record - The associated case record to remove
+ */
 const handleDelTask = (record) => {
   modal.confirm({
     content: t('testCase.kanbanView.assocCase.confirmCancelAssocCase', { name: record.name }),
     onOk () {
       return funcCase.cancelAssociationCase(props.caseId, {
         assocCaseIds: [record.id]
-      }, {
-        paramsType: true
       }).then(([error]) => {
         if (error) {
           return;
@@ -77,6 +90,10 @@ const handleDelTask = (record) => {
   });
 };
 
+/**
+ * Open a new tab pointing to the case info view for a record
+ * @param record - The case record to open
+ */
 const openCaseTab = (record) => {
   addTabPane({
     _id: record.id,
@@ -133,7 +150,7 @@ const columns = [
 <template>
   <div>
     <div class="flex mb-2 items-center">
-    </div> -->
+    </div>
     <div class="flex-1 truncate min-w-0 px-1">
       <Hints :text="t('testCase.kanbanView.assocCase.associateCaseTip')" />
     </div>
@@ -152,7 +169,8 @@ const columns = [
     :dataSource="props.dataSource || []"
     :pagination="false"
     size="small"
-    noDataSize="small">
+    noDataSize="small"
+    :noDataText="t('common.noData')">
     <template #bodyCell="{column, record}">
       <template v-if="column.dataIndex === 'name'">
         <Button
@@ -191,5 +209,4 @@ const columns = [
       :action="`${TESTER}/func/case/${props.caseId}/case/notAssociated`"
       @ok="handlePut" />
   </AsyncComponent>
-  </div>
 </template>

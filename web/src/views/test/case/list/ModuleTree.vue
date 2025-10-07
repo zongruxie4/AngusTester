@@ -7,9 +7,11 @@ import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { modules } from '@/api/tester';
 
+// Async component imports
 const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
 const MoveModal = defineAsyncComponent(() => import('@/views/project/module/Move.vue'));
 
+// Type definitions
 type TagItem = {
   id: string;
   name: string;
@@ -17,6 +19,7 @@ type TagItem = {
   showTitle?: string;
 }
 
+// Component props interface
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -36,42 +39,63 @@ const props = withDefaults(defineProps<Props>(), {
   dataList: () => []
 });
 
+// Component emits
 const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string):void}>();
 
 const { t } = useI18n();
 
+// Basic state management
 const projectInfo = inject('projectInfo', ref({}));
 const isAdmin = computed(() => appContext.isAdmin());
 const userInfo = ref(appContext.getUser());
 
+// UI state management
 const nameInputRef = ref();
-
 const loading = ref(false);
-const handleSelectKeysChange = (selectKeys) => {
+const keywords = ref<string>();
+const editId = ref<string>();
+const pid = ref<string>();
+const modalVisible = ref(false);
+const moveVisible = ref(false);
+
+// Event handlers
+
+/**
+ * Handle module selection change
+ * @param selectKeys - Selected module keys
+ */
+const handleSelectKeysChange = (selectKeys: string[]) => {
   if (!selectKeys.length) {
     return;
   }
   emits('update:moduleId', selectKeys[0]);
 };
 
+/**
+ * Handle module search with debounce
+ */
 const handleSearchModule = debounce(duration.search, () => {
   emits('loadData', keywords.value);
 });
 
-const keywords = ref();
-const editId = ref<string>();
-const pid = ref<string>();
-const modalVisible = ref(false);
-const moveVisible = ref(false);
-
+/**
+ * Open create module modal
+ */
 const toCreate = () => {
   modalVisible.value = true;
 };
 
+/**
+ * Handle create module success
+ */
 const createOk = () => {
   emits('loadData', keywords.value);
 };
 
+/**
+ * Start editing module name
+ * @param data - Module data
+ */
 const toEdit = (data: TagItem) => {
   if (props.disabled) {
     return;
@@ -79,10 +103,18 @@ const toEdit = (data: TagItem) => {
   editId.value = data.id;
 };
 
+/**
+ * Cancel editing module name
+ */
 const cancelEdit = () => {
   editId.value = undefined;
 };
 
+/**
+ * Handle module name edit completion
+ * @param id - Module ID
+ * @param event - Input event
+ */
 const pressEnter = async (id: string, event: { target: { value: string } }) => {
   const value = event.target.value;
   if (!value) {
@@ -100,7 +132,12 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
   emits('loadData', keywords.value);
 };
 
-const hadleblur = (id: string, event: { target: { value: string } }) => {
+/**
+ * Handle input blur event with delay
+ * @param id - Module ID
+ * @param event - Input event
+ */
+const handleBlur = (id: string, event: { target: { value: string } }) => {
   setTimeout(() => {
     if (editId.value === id) {
       pressEnter(id, event);
@@ -108,7 +145,10 @@ const hadleblur = (id: string, event: { target: { value: string } }) => {
   }, 300);
 };
 
-// 删除弹框
+/**
+ * Delete module with confirmation
+ * @param data - Module data
+ */
 const toDelete = (data: TagItem) => {
   modal.confirm({
     content: t('testCase.moduleTree.confirmDeleteModule', { name: data.name }),
@@ -128,7 +168,11 @@ const toDelete = (data: TagItem) => {
   });
 };
 
-const moveUp = async (record) => {
+/**
+ * Move module up in hierarchy
+ * @param record - Module record with position info
+ */
+const moveUp = async (record: any) => {
   const { index, ids, pid, id } = record;
   let params = {};
   if (index === 0) {
@@ -169,7 +213,11 @@ const moveUp = async (record) => {
   emits('loadData', keywords.value);
 };
 
-const moveDown = async (record) => {
+/**
+ * Move module down in hierarchy
+ * @param record - Module record with position info
+ */
+const moveDown = async (record: any) => {
   const { index, ids, id } = record;
   let parentChildren;
   if (ids.length === 1) {
@@ -194,13 +242,24 @@ const moveDown = async (record) => {
   emits('loadData', keywords.value);
 };
 
-const activeModule = ref();
-const moveLevel = (record) => {
+// Context menu management
+const activeModule = ref<any>();
+
+/**
+ * Open move level modal
+ * @param record - Module record
+ */
+const moveLevel = (record: any) => {
   activeModule.value = record;
   moveVisible.value = true;
 };
 
-const onMenuClick = (menu, record) => {
+/**
+ * Handle context menu click
+ * @param menu - Menu item
+ * @param record - Module record
+ */
+const onMenuClick = (menu: any, record: any) => {
   if (menu.key === 'edit') {
     toEdit(record);
   } else if (menu.key === 'add') {
@@ -264,7 +323,7 @@ const onMenuClick = (menu, record) => {
             :value="name"
             :allowClear="false"
             :maxlength="50"
-            @blur="hadleblur(id, $event)"
+            @blur="handleBlur(id, $event)"
             @pressEnter="pressEnter(id, $event)" />
           <Button
             type="link"

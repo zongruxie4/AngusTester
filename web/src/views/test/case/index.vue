@@ -12,8 +12,10 @@ import { CaseDetail } from '@/views/test/types';
 
 const { t } = useI18n();
 
-export type CaseActionAuth = 'edit'| 'debug' | 'review' | 'clone' | 'move' | 'delete' | 'updateTestResult_passed' | 'updateTestResult_notPassed' | 'updateTestResult_blocked' | 'updateTestResult_canceled' | 'resetTestResult' | 'resetReviewResult' | 'retestResult' | 'copy' | 'addFavourite' | 'addFollow' | 'copyUrl'
+// Type definitions
+export type CaseActionAuth = 'edit'| 'debug' | 'review' | 'clone' | 'move' | 'delete' | 'updateTestResult' | 'updateTestResult_passed' | 'updateTestResult_notPassed' | 'updateTestResult_blocked' | 'updateTestResult_canceled' | 'resetTestResult' | 'resetReviewResult' | 'retestResult' | 'copy' | 'addFavourite' | 'addFollow' | 'cancelFollow' | 'cancelFavourite' | 'copyUrl'
 
+// Component imports
 const CaseList = defineAsyncComponent(() => import('@/views/test/case/list/index.vue'));
 const CaseInfo = defineAsyncComponent(() => import('@/views/test/case/detail/index.vue'));
 const AddCaseModal = defineAsyncComponent(() => import('@/views/test/case/list/Edit.vue'));
@@ -21,6 +23,7 @@ const ReviewModal = defineAsyncComponent(() => import('@/views/test/case/list/Re
 const MoveCaseModal = defineAsyncComponent(() => import('@/views/test/case/list/Move.vue'));
 const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/test/case/list/UpdateResult.vue'));
 
+// Basic state management
 const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const appInfo = ref(appContext.getAccessApp());
@@ -29,18 +32,20 @@ const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
 const caseListRef = ref();
-const addTabPane = (data) => {
+// Tab management functions
+const addTabPane = (tabData) => {
   if (typeof browserTabRef.value?.add === 'function') {
     browserTabRef.value.add(() => {
-      return { ...data };
+      return { ...tabData };
     });
   }
 };
 
-const deleteTabPane = (keys: string[]) => {
-  browserTabRef.value.remove(keys);
+const deleteTabPane = (tabKeys: string[]) => {
+  tabKeys.forEach(key => browserTabRef.value.remove(key));
 };
 
+// Guide system state management
 const { useMutations, useState } = VuexHelper;
 const { stepVisible, stepKey, stepContent } = useState(['stepVisible', 'stepKey', 'stepContent'], 'guideStore');
 const { updateGuideStep } = useMutations(['updateGuideType', 'updateGuideStep'], 'guideStore');
@@ -50,8 +55,13 @@ const tabGuideStep = () => {
   addTabPane({ _id: 'case_home' });
 };
 
+/**
+ * Restore filter parameters from URL query string
+ * @param data - Query parameters object
+ * @returns Object with filters array and other parameters
+ */
 const restoreFilters = (data) => {
-  const filters = [];
+  const filters: Array<{ key: string; op: string; value: string }> = [];
 
   const filterKeys = Object.keys(data).filter(key => key.startsWith('filters['));
   const filterIndices = filterKeys.map(key => key.match(/\[\d+\]/)?.[0]);
@@ -71,16 +81,18 @@ const restoreFilters = (data) => {
   return { filters, ...newData, total: +newData.total };
 };
 
-const updateCaseTab = async (value) => {
-  browserTabRef.value.update(value);
+// Tab update functions
+const updateCaseTab = async (tabValue) => {
+  browserTabRef.value.update(tabValue);
 };
 
-const favoriteFollowRef = ref(null);
-const updateFollowFavourite = (type: 'addFollow' | 'addFavourite') => {
+// Follow and favorite notification management
+const favoriteFollowRef = ref<{ followNotify: number; favouriteNotify: number } | null>(null);
+const updateFollowFavourite = (actionType: 'addFollow' | 'addFavourite') => {
   if (!favoriteFollowRef.value) {
     return;
   }
-  if (type === 'addFollow') {
+  if (actionType === 'addFollow') {
     favoriteFollowRef.value.followNotify++;
     return;
   }
@@ -88,9 +100,15 @@ const updateFollowFavourite = (type: 'addFollow' | 'addFavourite') => {
   favoriteFollowRef.value.favouriteNotify++;
 };
 
-const caseInfoRef = ref(null);
+// Scroll management for case info panel
+const caseInfoRef = ref<HTMLElement | null>(null);
 const scrollNotify = ref(0);
 const showAnchor = ref(false);
+
+/**
+ * Check scroll position and show/hide back to top button
+ * @param event - Scroll event
+ */
 const checkScroll = (event) => {
   const container = event.target;
   caseInfoRef.value = event.target;
@@ -118,24 +136,31 @@ const scrollToTop = () => {
   }
 };
 
-// 详情操作按钮
-const currTabInfo = ref();
+// Case detail action handlers
+const currentTabInfo = ref();
 const selectedCase = ref();
-const handleDetailAction = (type: CaseActionAuth, value: CaseDetail, tabInfo) => {
-  currTabInfo.value = tabInfo;
-  selectedCase.value = value;
-  switch (type) {
+
+/**
+ * Handle case detail actions based on action type
+ * @param actionType - Type of action to perform
+ * @param caseData - Case data object
+ * @param tabInfo - Tab information
+ */
+const handleDetailAction = (actionType: CaseActionAuth, caseData: CaseDetail, tabInfo) => {
+  currentTabInfo.value = tabInfo;
+  selectedCase.value = caseData;
+  switch (actionType) {
     case 'edit':
-      handleEdit(value);
+      handleEdit(caseData);
       break;
     case 'clone':
-      handleClone(value);
+      handleClone(caseData);
       break;
     case 'move':
       handleAction('move');
       break;
     case 'delete':
-      handleDeleteCase(value);
+      handleDeleteCase(caseData);
       break;
     case 'review':
       handleAction('review');
@@ -147,100 +172,114 @@ const handleDetailAction = (type: CaseActionAuth, value: CaseDetail, tabInfo) =>
       handleAction('updateTestResult_notPassed');
       break;
     case 'updateTestResult_blocked':
-      handleSetResultBlocked(value);
+      handleSetResultBlocked(caseData);
       break;
     case 'updateTestResult_canceled':
-      handleSetResultCanceled(value);
+      handleSetResultCanceled(caseData);
       break;
     case 'resetTestResult':
-      handelResetTestResults(value);
+      handleResetTestResults(caseData);
       break;
     case 'retestResult':
-      handleReTest(value);
+      handleReTest(caseData);
       break;
     case 'resetReviewResult':
-      handleResetReviewResult(value);
+      handleResetReviewResult(caseData);
       break;
     case 'addFavourite':
-      handleFavourite(value);
+      handleFavourite(caseData);
       break;
     case 'addFollow':
-      handleFollow(value);
+      handleFollow(caseData);
       break;
   }
 };
 
-// 收藏
+// Favorite functionality
 const favouriteLoading = ref(false);
-const handleFavourite = async (rowData: CaseDetail) => {
+
+/**
+ * Toggle case favorite status
+ * @param caseData - Case data object
+ */
+const handleFavourite = async (caseData: CaseDetail) => {
   if (favouriteLoading.value) {
     return;
   }
   favouriteLoading.value = true;
-  const [error] = rowData.favourite
-    ? await funcCase.cancelFavouriteCase(rowData.id)
-    : await funcCase.AddFavouriteCase(rowData.id);
+  const [error] = caseData.favourite
+    ? await funcCase.cancelFavouriteCase(caseData.id)
+    : await funcCase.AddFavouriteCase(caseData.id);
   favouriteLoading.value = false;
   if (error) {
     return;
   }
-  notification.success(rowData.favourite
+  notification.success(caseData.favourite
     ? t('testCase.cancelFavouriteSuccess')
     : t('testCase.favouriteSuccess'));
-  rowData.favourite = !rowData.favourite;
+  caseData.favourite = !caseData.favourite;
   updateFollowFavourite('addFavourite');
 };
 
-// 关注
+// Follow functionality
 const followLoading = ref(false);
-const handleFollow = async (rowData: CaseDetail) => {
+
+/**
+ * Toggle case follow status
+ * @param caseData - Case data object
+ */
+const handleFollow = async (caseData: CaseDetail) => {
   if (followLoading.value) {
     return;
   }
   followLoading.value = true;
-  const [error] = rowData.follow
-    ? await funcCase.cancelFollowCase(rowData.id)
-    : await funcCase.addFollowCase(rowData.id);
+  const [error] = caseData.follow
+    ? await funcCase.cancelFollowCase(caseData.id)
+    : await funcCase.addFollowCase(caseData.id);
   favouriteLoading.value = false;
   followLoading.value = false;
   if (error) {
     return;
   }
 
-  notification.success(rowData.follow
+  notification.success(caseData.follow
     ? t('testCase.cancelFollowSuccess')
     : t('testCase.followSuccess'));
-  rowData.follow = !rowData.follow;
+  caseData.follow = !caseData.follow;
   updateFollowFavourite('addFollow');
 };
 
-// 编辑用例
+// Case editing functionality
 const editCaseVisible = ref(false);
 const isDebug = ref(false);
-const editCase = ref<CaseDetail>();
-const handleEdit = (rowData: CaseDetail) => {
-  editCase.value = rowData;
+const editCase = ref<CaseDetail & { checked: boolean }>();
+
+const handleEdit = (caseData: CaseDetail) => {
+  editCase.value = { ...caseData, checked: false };
   isDebug.value = false;
   editCaseVisible.value = true;
 };
 
-// 编辑或者添加用例成功更新列表
 const addOrEditSuccess = () => {
   getCaseInfo();
 };
 
 const caseInfoLoading = ref(false);
 const getCaseInfo = async () => {
-  browserTabRef.value.update({ ...currTabInfo.value, notify: currTabInfo.value.notify + 1 });
+  browserTabRef.value.update({ ...currentTabInfo.value, notify: currentTabInfo.value.notify + 1 });
 };
 
-const handleClone = async (rowData?: CaseDetail) => {
-  if (caseInfoLoading.value) {
+/**
+ * Clone a test case
+ * @param caseData - Case data to clone
+ */
+const handleClone = async (caseData?: CaseDetail) => {
+  if (caseInfoLoading.value || !caseData) {
     return;
   }
-  const ids = [rowData.id];
+  const caseIds = [caseData.id];
   caseInfoLoading.value = true;
-  const [error] = await funcCase.cloneCase(ids);
+  const [error] = await funcCase.cloneCase(caseIds);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -248,10 +287,16 @@ const handleClone = async (rowData?: CaseDetail) => {
   notification.success(t('actions.tips.cloneSuccess'));
 };
 
+// Modal visibility states
 const caseReviewVisible = ref(false);
 const caseMoveVisible = ref(false);
 const caseUpdateTestResultVisible = ref(false);
 const resultPassed = ref(false);
+
+/**
+ * Handle modal actions for case operations
+ * @param action - Action type to perform
+ */
 const handleAction = (action: 'review' | 'move' | 'updateTestResult_passed'| 'updateTestResult_notPassed') => {
   switch (action) {
     case 'review':
@@ -275,15 +320,20 @@ const updateCaseSuccess = () => {
   getCaseInfo();
 };
 
-// 设为阻塞中
-const handleSetResultBlocked = async (value) => {
-  const params = [
+// Test result management
+
+/**
+ * Set case test result to blocked
+ * @param caseData - Case data object
+ */
+const handleSetResultBlocked = async (caseData) => {
+  const updateParams = [
     {
-      id: value.id,
+      id: caseData.id,
       testResult: CaseTestResult.BLOCKED
     }
   ];
-  const [error] = await funcCase.updateCaseResult(params);
+  const [error] = await funcCase.updateCaseResult(updateParams);
   if (error) {
     return;
   }
@@ -291,15 +341,18 @@ const handleSetResultBlocked = async (value) => {
   await getCaseInfo();
 };
 
-// 取消case
-const handleSetResultCanceled = async (value) => {
-  const params = [
+/**
+ * Set case test result to canceled
+ * @param caseData - Case data object
+ */
+const handleSetResultCanceled = async (caseData) => {
+  const updateParams = [
     {
-      id: value.id,
+      id: caseData.id,
       testResult: CaseTestResult.CANCELED
     }
   ];
-  const [error] = await funcCase.updateCaseResult(params);
+  const [error] = await funcCase.updateCaseResult(updateParams);
   if (error) {
     return;
   }
@@ -307,13 +360,16 @@ const handleSetResultCanceled = async (value) => {
   await getCaseInfo();
 };
 
-// 重置测试
-const handelResetTestResults = async (rowData: CaseDetail) => {
+/**
+ * Reset case test results
+ * @param caseData - Case data object
+ */
+const handleResetTestResults = async (caseData: CaseDetail) => {
   if (caseInfoLoading.value) {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await funcCase.resetCaseResult([rowData.id]);
+  const [error] = await funcCase.resetCaseResult([caseData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -323,13 +379,16 @@ const handelResetTestResults = async (rowData: CaseDetail) => {
   await getCaseInfo();
 };
 
-// 重置评审
-const handleResetReviewResult = async (rowData: CaseDetail) => {
+/**
+ * Reset case review results
+ * @param caseData - Case data object
+ */
+const handleResetReviewResult = async (caseData: CaseDetail) => {
   if (caseInfoLoading.value) {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await funcCase.resetReviewCase([rowData.id]);
+  const [error] = await funcCase.resetReviewCase([caseData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -338,12 +397,15 @@ const handleResetReviewResult = async (rowData: CaseDetail) => {
   await getCaseInfo();
 };
 
-// 重新测试 将用例改为待测试
-const handleReTest = async (rowData: CaseDetail) => {
+/**
+ * Retest case - change case status to pending test
+ * @param caseData - Case data object
+ */
+const handleReTest = async (caseData: CaseDetail) => {
   if (caseInfoLoading.value) {
     return;
   }
-  const [error] = await funcCase.retestResult([rowData.id]);
+  const [error] = await funcCase.retestResult([caseData.id]);
   if (error) {
     return;
   }
@@ -351,43 +413,63 @@ const handleReTest = async (rowData: CaseDetail) => {
   await getCaseInfo();
 };
 
-// 删除用例
-const handleDeleteCase = async (rowData?: CaseDetail) => {
+// Case deletion functionality
+
+/**
+ * Show confirmation dialog and delete case
+ * @param caseData - Case data to delete
+ */
+const handleDeleteCase = async (caseData?: CaseDetail) => {
   if (caseInfoLoading.value) {
     return;
   }
   modal.confirm({
     centered: true,
     title: t('testCase.deleteCase'),
-    content: rowData
-      ? t('testCase.confirmDeleteCase', { name: rowData.name })
+    content: caseData
+      ? t('testCase.confirmDeleteCase', { name: caseData.name })
       : t('testCase.confirmDeleteSelectedCases'),
     async onOk () {
-      await delCase(rowData);
+      await deleteCase(caseData);
     }
   });
 };
 
-const delCase = async (rowData?: CaseDetail) => {
+/**
+ * Execute case deletion
+ * @param caseData - Case data to delete
+ */
+const deleteCase = async (caseData?: CaseDetail) => {
+  if (!caseData) {
+    return;
+  }
   caseInfoLoading.value = true;
-  const [error] = await funcCase.deleteCase([rowData.id]);
+  const [error] = await funcCase.deleteCase(caseData.id);
   caseInfoLoading.value = false;
   if (error) {
     return;
   }
 
-  deleteTabPane([currTabInfo.value._id]);
+  if (currentTabInfo.value?._id) {
+    deleteTabPane([currentTabInfo.value._id]);
+  }
   notification.success(t('actions.tips.deleteSuccess'));
 };
 
-const updateTabPane = (data) => {
-  browserTabRef.value.update(data);
+// Tab and cache management
+const updateTabPane = (tabData) => {
+  browserTabRef.value.update(tabData);
 };
 
-const setCacheParams = (queryParams, key: string) => {
-  browserTabRef.value.update({ key, queryParams });
+const setCacheParams = (queryParams, tabKey: string) => {
+  browserTabRef.value.update({ key: tabKey, queryParams });
 };
 
+/**
+ * Handle successful case move operation
+ * @param oldPlanId - Original plan ID
+ * @param newPlanId - New plan ID
+ */
 const handleMoveSuccess = (oldPlanId: string, newPlanId: string) => {
   if (typeof browserTabRef.value?.update === 'function') {
     const tabData = browserTabRef.value.getData();
@@ -400,19 +482,26 @@ const handleMoveSuccess = (oldPlanId: string, newPlanId: string) => {
   }
 };
 
-const handleViewCaseInfo = async (value) => {
+/**
+ * Open case info in new tab
+ * @param caseInfo - Case information object
+ */
+const handleViewCaseInfo = async (caseInfo) => {
   addTabPane({
-    _id: 'case' + value.caseId,
-    name: value.caseName,
+    _id: 'case' + caseInfo.caseId,
+    name: caseInfo.caseName,
     type: 'caseInfo',
     source: 'list',
     closable: true,
-    caseId: value.caseId,
-    queryParams: value.queryParams,
+    caseId: caseInfo.caseId,
+    queryParams: caseInfo.queryParams,
     notify: 0
   });
 };
 
+/**
+ * Reset case list parameters and open home tab
+ */
 const setCaseListPlanParam = () => {
   browserTabRef.value.open('case_home');
   if (caseListRef.value) {
@@ -420,7 +509,9 @@ const setCaseListPlanParam = () => {
   }
 };
 
+// Component lifecycle and watchers
 onMounted(() => {
+  // Watch for browser tab changes and ensure case list tab exists
   watch(() => browserTabRef.value, () => {
     if (typeof browserTabRef.value?.update === 'function') {
       const tabData = browserTabRef.value.getData().map(item => item.type);
@@ -446,6 +537,7 @@ onMounted(() => {
     }
   }, { immediate: true });
 
+  // Watch for route changes and handle case info opening from URL
   watch(() => route.fullPath, () => {
     if (!route.fullPath.includes('/test#cases')) {
       return;
@@ -479,12 +571,14 @@ onMounted(() => {
   });
 });
 
+// Provide functions to child components
 provide('addTabPane', addTabPane);
 provide('updateTabPane', updateTabPane);
 provide('deleteTabPane', deleteTabPane);
 provide('userInfo', userInfo.value);
 provide('appInfo', appInfo.value);
 
+// Expose functions to parent components
 defineExpose({
   addTabPane,
   updateTabPane,
@@ -502,7 +596,7 @@ defineExpose({
       :stepVisible="stepVisible"
       :stepKey="stepKey"
       :stepContent="stepContent"
-      :userId="userInfo?.id"
+      :userId="userInfo?.id?.toString()"
       class="flex-1 h-full"
       @updateGuideStep="tabGuideStep">
       <template #default="record">
@@ -544,7 +638,7 @@ defineExpose({
                 :caseId="record.caseId"
                 :currIndex="record.currIndex"
                 :total="record.total"
-                :userInfo="userInfo"
+                :userInfo="{ id: userInfo?.id?.toString() || '' }"
                 :queryParams="record.queryParams"
                 :notify="record.notify"
                 type="tab"

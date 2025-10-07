@@ -6,14 +6,15 @@ import { TESTER } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
-import { CaseDetailChecked } from './types';
+import { CaseDetail } from '@/views/test/types';
 
 const { t } = useI18n();
 
+// Component props interface
 interface Props {
   visible: boolean;
   type: 'batch' | 'one',
-  selectedCase: CaseDetailChecked;
+  selectedCase: CaseDetail;
   selectedRowKeys: string[];
 }
 
@@ -24,17 +25,25 @@ const props = withDefaults(defineProps<Props>(), {
   selectedRowKeys: () => []
 });
 
+// Component emits
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'update'):void}>();
 
+// Form state management
 const formState = ref<{ targetPlanId?: string }>({ targetPlanId: undefined });
 const projectId = inject<Ref<string>>('projectId', ref(''));
+const loading = ref(false);
 
+/**
+ * Close the modal and reset form
+ */
 const close = () => {
   emits('update:visible', false);
   formState.value.targetPlanId = undefined;
 };
 
-const loading = ref(false);
+/**
+ * Handle form submission
+ */
 const onFinish = async () => {
   const ids = props.type === 'batch' ? props.selectedRowKeys : [props.selectedCase.id];
   loading.value = true;
@@ -49,7 +58,12 @@ const onFinish = async () => {
   formState.value.targetPlanId = undefined;
 };
 
-const format = (data) => {
+/**
+ * Format plan options to disable current plan
+ * @param data - Plan data
+ * @returns Formatted plan data
+ */
+const format = (data: any) => {
   return { ...data, disabled: data.id === props.selectedCase?.planId };
 };
 </script>

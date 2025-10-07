@@ -2,18 +2,9 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import {
-  Arrow,
-  AsyncComponent,
-  Colon,
-  Dropdown,
-  Icon,
-  IconTask,
-  Image,
-  modal,
-  notification,
-  Tooltip
+  Arrow, AsyncComponent, Colon, Dropdown, Icon, IconTask, Image, modal, notification, Tooltip
 } from '@xcan-angus/vue-ui';
-import { appContext, enumUtils, PageQuery, ProjectPageQuery, ReviewStatus } from '@xcan-angus/infra';
+import { appContext, enumUtils, PageQuery, SearchCriteria, ProjectPageQuery, ReviewStatus } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
@@ -35,8 +26,8 @@ const PersonnelInfo = defineAsyncComponent(() => import('@/views/test/case/list/
 const DateInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/Date.vue'));
 const ReviewInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/review/ReviewInfo.vue'));
 const TestInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/TestInfo.vue'));
-const AssocTask = defineAsyncComponent(() => import('@/views/test/case/list/kanban/AssocIssues.vue'));
-const AssocCase = defineAsyncComponent(() => import('@/views/test/case/list/kanban/AssocCases.vue'));
+const AssocIssues = defineAsyncComponent(() => import('@/views/test/case/list/kanban/AssocIssues.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/test/case/list/kanban/AssocCases.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/Attachment.vue'));
 const ReviewRecord = defineAsyncComponent(() => import('@/views/test/case/list/kanban/review/ReviewRecord.vue'));
 const Comment = defineAsyncComponent(() => import('@/views/test/case/list/kanban/Comment.vue'));
@@ -44,9 +35,9 @@ const Activity = defineAsyncComponent(() => import('@/views/test/case/list/kanba
 
 type Props = {
   projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  filters: { key: string; op: string; value: boolean | string | string[]; }[];
+  userInfo: { id: number; };
+  appInfo: { id: number; };
+  filters: SearchCriteria[];
   notify: string;
   moduleId: string;
   groupKey: 'none' | 'testerName' | 'lastModifiedByName';
@@ -75,9 +66,9 @@ const { t } = useI18n();
 
 const isAdmin = computed(() => appContext.isAdmin());
 
-const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment' | 'activity' | 'refTasks' | 'refCases' | 'attachments' | 'remarks'>('basic');
+const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment' | 'activity' | 'refTasks' | 'refCases' | 'attachments' | 'remarks' | 'reviewInfo' | 'testInfo' | 'reviewRecord'>('basic');
 
-const planPermissionsMap = ref<Map<string, FuncPlanPermission[]>>(new Map());
+const planPermissionsMap = ref<Map<number, FuncPlanPermission[]>>(new Map());
 const planAuthMap = ref({});
 
 const testResultList = ref<{ message: string; value: CaseTestResult }[]>([]);
@@ -97,15 +88,15 @@ const numMap = ref<{ [key in CaseTestResult]: number }>({
   CANCELED: 0
 });
 
-const testerNameList = ref<{ name: string; value: string }[]>([]);
-const lastModifiedByNameList = ref<{ name: string; value: string }[]>([]);
-const groupDataMap = ref<{ [key: string]: { [key in CaseTestResult]: CaseDetail[] } }>({});
+const testerNameList = ref<{ name: string; value: number }[]>([]);
+const lastModifiedByNameList = ref<{ name: string; value: number }[]>([]);
+const groupDataMap = ref<{ [key: number]: { [key in CaseTestResult]: CaseDetail[] } }>({});
 
 const isDraggingToColumn = ref<number|null>(null);
 const isDraggingToColumnTestResult = ref<CaseTestResult[]>([]);
 
 const openFlag = ref(false);
-const arrowOpenSet = ref(new Set<string>());
+const arrowOpenSet = ref(new Set<number>());
 
 const checkedCaseInfo = ref<CaseDetail>();
 const checkedPlanInfo = ref<{ id: string; name: string; }>();
@@ -115,9 +106,8 @@ const selectedIndex = ref<number>();
 const selectedTestResult = ref<CaseTestResult>();
 const selectedCaseInfo = ref<CaseDetail>();
 
-// 拖动到确认完成、确认未完成相关数据，用于取消确认完成、取消确认未完成时重置数据
 const selectedToTestResult = ref<CaseTestResult>();
-const selectedGroupKey = ref<'none' | 'testerName' | 'lastModifiedByName'>();
+const selectedGroupKey = ref<string|undefined>();
 
 const caseModalVisible = ref(false);
 const moveModalVisible = ref(false);
@@ -126,11 +116,17 @@ const taskModalVisible = ref(false);
 
 const resultPassed = ref(false);
 
-const loadEnum = async () => {
+/**
+ * Load enums for test results used to render columns and labels
+ */
+const loadEnums = async () => {
   testResultList.value = enumUtils.enumToMessages(CaseTestResult);
 };
 
-const loadData = async () => {
+/**
+ * Load cases for current filters and group settings, including permissions
+ */
+const loadCases = async () => {
   const params = getParams();
   emit('loadingChange', true);
   const [error, res] = await funcCase.getCaseList({ infoScope: 'DETAIL', ...params });
@@ -147,7 +143,7 @@ const loadData = async () => {
   const _caseList: CaseDetail[] = [];
   _caseList.push(...list);
   if (len < +total) {
-    const pages = Math.ceil((total - len) / params.pageSize);
+    const pages = Math.ceil((total - len) / (params.pageSize || 10));
     for (let i = 0, len = pages; i < len; i++) {
       const pageNo = i + 2;
       const _params = { ...params, pageNo };
@@ -162,11 +158,10 @@ const loadData = async () => {
     }
   }
 
-  // 保存原始数据
   caseList.value = _caseList;
 
   const newList: CaseDetail[] = [];
-  const planIdSet = new Set<string>();
+  const planIdSet = new Set<number>();
   const testerNameSet = new Set<string>();
   const lastModifiedByNameSet = new Set<string>();
   for (let i = 0, len = _caseList.length; i < len; i++) {
@@ -181,7 +176,7 @@ const loadData = async () => {
       if (!item.testerName) {
         testerNameList.value.unshift({
           name: t('testCase.kanbanView.ungrouped'),
-          value: '-1'
+          value: -1
         });
       } else {
         testerNameList.value.push({
@@ -212,7 +207,6 @@ const loadData = async () => {
 
   planPermissionsMap.value.clear();
   const sprintIds = Array.from(planIdSet);
-  // 管理员拥有所有权限，无需加载权限
   if (!isAdmin.value) {
     const [error, { data }] = await funcPlan.getCurrentAuth({
       ids: sprintIds,
@@ -237,6 +231,9 @@ const loadData = async () => {
   emit('loadingChange', false);
 };
 
+/**
+ * Build list query params from component props
+ */
 const getParams = () => {
   const params: ProjectPageQuery & {
     moduleId?: string;
@@ -257,9 +254,12 @@ const getParams = () => {
   return params;
 };
 
+/**
+ * Accumulate a single case into grouped data map by selected group key
+ */
 const setGroupData = (data:CaseDetail) => {
-  const { testResult: { value: testResultValue }, testerId = '-1', lastModifiedBy } = data;
-  let key = '';
+  const { testResult: { value: testResultValue }, testerId = -1, lastModifiedBy } = data;
+  let key = -1;
   if (props.groupKey === 'testerName') {
     key = testerId;
   } else if (props.groupKey === 'lastModifiedByName') {
@@ -277,6 +277,9 @@ const setGroupData = (data:CaseDetail) => {
   }
 };
 
+/**
+ * Ensure each group has buckets for all test results
+ */
 const setDefaultGroupData = () => {
   const _testResultList = testResultList.value.map(item => item.value);
   for (const key in groupDataMap.value) {
@@ -290,10 +293,13 @@ const setDefaultGroupData = () => {
   }
 };
 
-const dragMove = (event) => {
+/**
+ * Visual highlight rules while dragging across columns
+ */
+const handleDragMove = (event) => {
   const [, toIndex] = event.to.id.split('-') as [CaseTestResult, number];
   const [fromResult] = event.from.id.split('-') as [CaseTestResult, number];
-  const [, , draggedId] = event.dragged.id.split('-') as [CaseTestResult, number, string];
+  const [, , draggedId] = event.dragged.id.split('-') as [CaseTestResult, number, number];
   let cancelDisabled = false;
   const cancelItem = menuItemsMap.value.get(draggedId)?.find(item => item.key === 'cancel');
   if (!cancelItem) {
@@ -335,24 +341,31 @@ const dragMove = (event) => {
   }
 };
 
-const dragStart = () => {
-  // 开始拖动时清空高亮
+/**
+ * Reset highlight state on drag start
+ */
+const handleDragStart = () => {
   isDraggingToColumn.value = null;
   isDraggingToColumnTestResult.value = [];
 };
 
-const dragEnd = () => {
-  // 拖动结束时清空高亮
+/**
+ * Clear highlight state on drag end
+ */
+const handleDragEnd = () => {
   isDraggingToColumn.value = null;
   isDraggingToColumnTestResult.value = [];
 };
 
-const dragHandler = (
+/**
+ * Apply business rules for dropping a card between columns
+ */
+const handleDropBusinessRules = (
   data:CaseDetail,
   testResult:CaseTestResult,
   toTestResult:CaseTestResult,
   index:number,
-  groupKey?:'none' | 'testerName' | 'lastModifiedByName'
+  groupKey?:string
 ) => {
   const { review, reviewStatus: { value: reviewStatus }, planId, id } = data;
   const permissions = planPermissionsMap.value.get(planId) || [];
@@ -360,9 +373,9 @@ const dragHandler = (
     if (review) {
       if (reviewStatus === ReviewStatus.PENDING) {
         if (groupKey) {
-          resetGroupDrag(id, index, testResult, toTestResult, groupKey);
+          revertDragInGroup(id, index, testResult, toTestResult, groupKey);
         } else {
-          resetDrag(id, index, testResult, toTestResult);
+          revertDragInFlat(id, index, testResult, toTestResult);
         }
         notification.warning(t('testCase.kanbanView.caseNotReviewed'));
         return;
@@ -370,9 +383,9 @@ const dragHandler = (
 
       if (reviewStatus === ReviewStatus.FAILED) {
         if (groupKey) {
-          resetGroupDrag(id, index, testResult, toTestResult, groupKey);
+          revertDragInGroup(id, index, testResult, toTestResult, groupKey);
         } else {
-          resetDrag(id, index, testResult, toTestResult);
+          revertDragInFlat(id, index, testResult, toTestResult);
         }
         notification.warning(t('testCase.kanbanView.caseReviewFailed'));
         return;
@@ -407,9 +420,9 @@ const dragHandler = (
     if (toTestResult === CaseTestResult.BLOCKED) {
       toBlock(data, false, () => {
         if (groupKey) {
-          resetGroupDrag(id, index, testResult, toTestResult, groupKey);
+          revertDragInGroup(id, index, testResult, toTestResult, groupKey);
         } else {
-          resetDrag(id, index, testResult, toTestResult);
+          revertDragInFlat(id, index, testResult, toTestResult);
         }
       });
       return;
@@ -418,9 +431,9 @@ const dragHandler = (
     if (toTestResult === CaseTestResult.CANCELED) {
       toCancel(data, false, () => {
         if (groupKey) {
-          resetGroupDrag(id, index, testResult, toTestResult, groupKey);
+          revertDragInGroup(id, index, testResult, toTestResult, groupKey);
         } else {
-          resetDrag(id, index, testResult, toTestResult);
+          revertDragInFlat(id, index, testResult, toTestResult);
         }
       });
       return;
@@ -432,29 +445,29 @@ const dragHandler = (
   if (testResult === CaseTestResult.PASSED || testResult === CaseTestResult.NOT_PASSED || testResult === CaseTestResult.CANCELED) {
     if (toTestResult !== CaseTestResult.PENDING) {
       if (groupKey) {
-        resetGroupDrag(id, index, testResult, toTestResult, groupKey);
+        revertDragInGroup(id, index, testResult, toTestResult, groupKey);
       } else {
-        resetDrag(id, index, testResult, toTestResult);
+        revertDragInFlat(id, index, testResult, toTestResult);
       }
       notification.warning(t('testCase.kanbanView.canOnlyMoveToPending'));
       return;
     } else {
       if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
         if (groupKey) {
-          resetGroupDrag(id, index, testResult, toTestResult, groupKey);
+          revertDragInGroup(id, index, testResult, toTestResult, groupKey);
         } else {
-          resetDrag(id, index, testResult, toTestResult);
+          revertDragInFlat(id, index, testResult, toTestResult);
         }
-        notification.warning('没有测试权限');
+        notification.warning('No test permission');
         return;
       }
     }
 
     toRetest(data, false, () => {
       if (groupKey) {
-        resetGroupDrag(id, index, testResult, toTestResult, groupKey);
+        revertDragInGroup(id, index, testResult, toTestResult, groupKey);
       } else {
-        resetDrag(id, index, testResult, toTestResult);
+        revertDragInFlat(id, index, testResult, toTestResult);
       }
     });
     return;
@@ -463,20 +476,20 @@ const dragHandler = (
   if (testResult === CaseTestResult.BLOCKED) {
     if (toTestResult !== CaseTestResult.PASSED && toTestResult !== CaseTestResult.NOT_PASSED && toTestResult !== CaseTestResult.CANCELED) {
       if (groupKey) {
-        resetGroupDrag(id, index, testResult, toTestResult, groupKey);
+        revertDragInGroup(id, index, testResult, toTestResult, groupKey);
       } else {
-        resetDrag(id, index, testResult, toTestResult);
+        revertDragInFlat(id, index, testResult, toTestResult);
       }
       notification.warning(t('testCase.kanbanView.canOnlyMoveToTestResults'));
       return;
     } else {
       if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
         if (groupKey) {
-          resetGroupDrag(id, index, testResult, toTestResult, groupKey);
+          revertDragInGroup(id, index, testResult, toTestResult, groupKey);
         } else {
-          resetDrag(id, index, testResult, toTestResult);
+          revertDragInFlat(id, index, testResult, toTestResult);
         }
-        notification.warning('没有测试权限');
+        notification.warning('No test permission');
         return;
       }
     }
@@ -504,54 +517,65 @@ const dragHandler = (
     if (toTestResult === CaseTestResult.CANCELED) {
       toCancel(data, false, () => {
         if (groupKey) {
-          resetGroupDrag(id, index, testResult, toTestResult, groupKey);
+          revertDragInGroup(id, index, testResult, toTestResult, groupKey);
         } else {
-          resetDrag(id, index, testResult, toTestResult);
+          revertDragInFlat(id, index, testResult, toTestResult);
         }
       });
     }
   }
 };
 
-const dragAdd = async (event: { item: { id: string; }; }, toTestResult: CaseTestResult) => {
-  const [testResult, index, id] = (event.item.id.split('-')) as [CaseTestResult, number, string];
+/**
+ * Handle item added into a flat column by drag-and-drop
+ */
+const handleDragAdd = async (event: { item: { id: string; }; }, toTestResult: CaseTestResult) => {
+  const [testResult, index, id] = (event.item.id.split('-')) as [CaseTestResult, number, number];
   const targetData = caseDataMap.value[toTestResult].find(item => item.id === id);
   if (!targetData) {
     return;
   }
 
-  dragHandler(targetData, testResult, toTestResult, index);
+  handleDropBusinessRules(targetData, testResult, toTestResult, index);
 };
 
-const groupDragAdd = async (event: { item: { id: string; } }, toTestResult: CaseTestResult) => {
-  const [testResult, index, id, groupKey] = (event.item.id.split('-')) as [CaseTestResult, number, string, string];
+/**
+ * Handle item added into a grouped column by drag-and-drop
+ */
+const handleGroupDragAdd = async (event: { item: { id: string; } }, toTestResult: CaseTestResult) => {
+  const [testResult, index, id, groupKey] = (event.item.id.split('-')) as [CaseTestResult, number, number, string];
   const targetData = groupDataMap.value[groupKey][toTestResult].find(item => item.id === id);
   if (!targetData) {
     return;
   }
 
-  dragHandler(targetData, testResult, toTestResult, index, groupKey);
+  handleDropBusinessRules(targetData, testResult, toTestResult, index, groupKey);
 };
 
-const resetDrag = (id: string, index: number, testResult: CaseTestResult, toTestResult: CaseTestResult) => {
+/**
+ * Revert drag in flat view by moving card back to original position
+ */
+const revertDragInFlat = (id: number, index: number, testResult: CaseTestResult, toTestResult: CaseTestResult) => {
   const _index = caseDataMap.value[toTestResult].findIndex(item => item.id === id);
   const dragData = caseDataMap.value[toTestResult][_index];
-  // 删除已被添加的数据
   caseDataMap.value[toTestResult].splice(_index, 1);
-  // 移动数据重置设置到原位置
   caseDataMap.value[testResult].splice(index, 0, dragData);
 };
 
-const resetGroupDrag = (id: string, index: number, testResult: CaseTestResult, toTestResult: CaseTestResult, groupKey: string) => {
+/**
+ * Revert drag in grouped view by moving card back to original position
+ */
+const revertDragInGroup = (id: number, index: number, testResult: CaseTestResult, toTestResult: CaseTestResult, groupKey: string) => {
   const _index = groupDataMap.value[groupKey][toTestResult].findIndex(item => item.id === id);
   const dragData = groupDataMap.value[groupKey][toTestResult][_index];
-  // 删除已被添加的数据
   groupDataMap.value[groupKey][toTestResult].splice(_index, 1);
-  // 移动数据重置设置到原位置
   groupDataMap.value[groupKey][testResult].splice(index, 0, dragData);
 };
 
-const toSort = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName'; orderSort: PageQuery.OrderSort; }) => {
+/**
+ * Entry point for applying sort to all columns
+ */
+const handleSortRequest = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName'; orderSort: PageQuery.OrderSort; }) => {
   sortData(data.orderBy, data.orderSort);
 };
 
@@ -619,7 +643,10 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'test
   }
 };
 
-const toGroup = (value: 'none' | 'testerName' | 'lastModifiedByName') => {
+/**
+ * Apply grouping and rebuild grouped data map
+ */
+const handleGroupChange = (value: 'none' | 'testerName' | 'lastModifiedByName') => {
   arrowOpenSet.value.clear();
 
   if (value === 'none') {
@@ -638,7 +665,10 @@ const toGroup = (value: 'none' | 'testerName' | 'lastModifiedByName') => {
   setDefaultGroupData();
 };
 
-const toChecked = async (caseInfo: CaseDetail, index:number, groupKey:string) => {
+/**
+ * Load and open drawer for selected case card
+ */
+const handleSelectCard = async (caseInfo: CaseDetail, index:number, groupKey?:string) => {
   const id = caseInfo.id;
   if (id === checkedCaseInfo.value?.id) {
     drawerClose();
@@ -664,6 +694,9 @@ const toChecked = async (caseInfo: CaseDetail, index:number, groupKey:string) =>
   selectedTestResult.value = data.testResult?.value;
 };
 
+/**
+ * Close the right drawer and clear selection state
+ */
 const drawerClose = () => {
   checkedCaseInfo.value = undefined;
   checkedPlanInfo.value = undefined;
@@ -672,6 +705,9 @@ const drawerClose = () => {
   selectedIndex.value = undefined;
 };
 
+/**
+ * Handle actions from card context menu
+ */
 const dropdownClick = (
   menuItem: ActionMenuItem,
   data: CaseDetail,
@@ -754,6 +790,9 @@ const dropdownClick = (
   }
 };
 
+/**
+ * Open edit modal for a specific case
+ */
 const toEdit = (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   selectedCaseInfo.value = data;
   selectedIndex.value = index;
@@ -761,7 +800,10 @@ const toEdit = (data: CaseDetail, index: number, testResult: CaseTestResult) => 
   caseModalVisible.value = true;
 };
 
-const editOk = async (id:string) => {
+/**
+ * Handle edit modal success and refresh the edited row
+ */
+const editOk = async (id:number) => {
   const index = selectedIndex.value as number;
   const testResult = selectedTestResult.value as CaseTestResult;
 
@@ -777,6 +819,9 @@ const editOk = async (id:string) => {
   selectedTestResult.value = undefined;
 };
 
+/**
+ * Confirm and delete a case, then reload list
+ */
 const toDelete = (data: CaseDetail) => {
   modal.confirm({
     content: t('testCase.kanbanView.confirmDeleteCase', { name: data.name }),
@@ -790,12 +835,15 @@ const toDelete = (data: CaseDetail) => {
 
       emit('refreshChange');
       notification.success(t('testCase.kanbanView.caseDeleteSuccess'));
-      await loadData();
+      await loadCases();
       emit('loadingChange', false);
     }
   });
 };
 
+/**
+ * Add to favourites and update local state
+ */
 const toFavourite = async (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.AddFavouriteCase(data.id);
@@ -808,6 +856,9 @@ const toFavourite = async (data: CaseDetail, index: number, testResult: CaseTest
   caseDataMap.value[testResult][index].favourite = true;
 };
 
+/**
+ * Remove from favourites and update local state
+ */
 const toDeleteFavourite = async (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.cancelFavouriteCase(data.id);
@@ -820,6 +871,9 @@ const toDeleteFavourite = async (data: CaseDetail, index: number, testResult: Ca
   caseDataMap.value[testResult][index].favourite = false;
 };
 
+/**
+ * Start following a case and update local state
+ */
 const toFollow = async (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.addFollowCase(data.id);
@@ -832,6 +886,9 @@ const toFollow = async (data: CaseDetail, index: number, testResult: CaseTestRes
   caseDataMap.value[testResult][index].follow = true;
 };
 
+/**
+ * Stop following a case and update local state
+ */
 const toDeleteFollow = async (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   emit('loadingChange', true);
   const [error] = await funcCase.cancelFollowCase(data.id);
@@ -844,6 +901,9 @@ const toDeleteFollow = async (data: CaseDetail, index: number, testResult: CaseT
   caseDataMap.value[testResult][index].follow = false;
 };
 
+/**
+ * Clone a case and reload list
+ */
 const toClone = async (data: CaseDetail) => {
   const id = data.id;
   emit('loadingChange', true);
@@ -855,40 +915,58 @@ const toClone = async (data: CaseDetail) => {
 
   emit('refreshChange');
   notification.success(t('testCase.kanbanView.caseCloneSuccess'));
-  await loadData();
+  await loadCases();
 };
 
+/**
+ * Open move modal for a case
+ */
 const toMove = (data: CaseDetail) => {
   selectedCaseInfo.value = data;
   moveModalVisible.value = true;
 };
 
+/**
+ * Handle move modal success and reload list
+ */
 const moveOk = () => {
   selectedCaseInfo.value = undefined;
   emit('refreshChange');
-  loadData();
+  loadCases();
 };
 
+/**
+ * Open update test result modal with Passed preset
+ */
 const toPassed = async (data: CaseDetail) => {
   selectedCaseInfo.value = data;
   updateTestResultVisible.value = true;
   resultPassed.value = true;
 };
 
+/**
+ * Open update test result modal with Not Passed preset
+ */
 const toNotPassed = async (data: CaseDetail) => {
   selectedCaseInfo.value = data;
   updateTestResultVisible.value = true;
   resultPassed.value = false;
 };
 
+/**
+ * Handle update test result success and reload list
+ */
 const testOk = async () => {
   selectedCaseInfo.value = undefined;
   resultPassed.value = false;
   emit('refreshChange');
   notification.success(t('testCase.kanbanView.testResultUpdateSuccess'));
-  await loadData();
+  await loadCases();
 };
 
+/**
+ * Cancel update test result and revert drag preview if necessary
+ */
 const updateTestResultCancel = () => {
   const id = selectedCaseInfo.value?.id;
   const index = selectedIndex.value;
@@ -899,9 +977,9 @@ const updateTestResultCancel = () => {
   }
 
   if (selectedGroupKey.value) {
-    resetGroupDrag(id, index, testResult, toTestResult, selectedGroupKey.value);
+    revertDragInGroup(id, index, testResult, toTestResult, selectedGroupKey.value);
   } else {
-    resetDrag(id, index, testResult, toTestResult);
+    revertDragInFlat(id, index, testResult, toTestResult);
   }
 
   resultPassed.value = false;
@@ -912,6 +990,9 @@ const updateTestResultCancel = () => {
   selectedToTestResult.value = undefined;
 };
 
+/**
+ * Open create bug modal with linked tester/developer defaults
+ */
 const toAddBug = (data: CaseDetail, index: number, testResult: CaseTestResult) => {
   selectedCaseInfo.value = data;
   selectedIndex.value = index;
@@ -919,6 +1000,9 @@ const toAddBug = (data: CaseDetail, index: number, testResult: CaseTestResult) =
   taskModalVisible.value = true;
 };
 
+/**
+ * Handle bug creation success and update case references
+ */
 const addTaskOk = async (data) => {
   if (!data?.id) {
     return;
@@ -938,8 +1022,7 @@ const addTaskOk = async (data) => {
   }
 
   notification.success(t('testCase.kanbanView.bugTaskAssociated'));
-  // 更新该条数据
-  const [_error, _res] = await funcCase.getCaseDetail(selectedCaseInfo.value?.id);
+  const [_error, _res] = await funcCase.getCaseDetail(selectedCaseInfo?.value?.id || -1);
   if (_error) {
     return;
   }
@@ -953,6 +1036,9 @@ const addTaskOk = async (data) => {
   selectedTestResult.value = undefined;
 };
 
+/**
+ * Trigger retest action on a case and optionally notify
+ */
 const toRetest = async (data: CaseDetail, notificationFlag = true, errorCallback?:()=>void) => {
   const id = data.id;
   emit('loadingChange', true);
@@ -969,9 +1055,12 @@ const toRetest = async (data: CaseDetail, notificationFlag = true, errorCallback
   if (notificationFlag) {
     notification.success(t('testCase.kanbanView.caseRetestSuccess'));
   }
-  loadData();
+  loadCases();
 };
 
+/**
+ * Reset test result to Pending and reload list
+ */
 const toResetTestResult = async (data: CaseDetail) => {
   const id = data.id;
   emit('loadingChange', true);
@@ -983,9 +1072,12 @@ const toResetTestResult = async (data: CaseDetail) => {
 
   emit('refreshChange');
   notification.success(t('testCase.kanbanView.caseResetTestResultSuccess'));
-  loadData();
+  loadCases();
 };
 
+/**
+ * Set case to Blocked and reload list
+ */
 const toBlock = async (data: CaseDetail, notificationFlag = true, errorCallback?:()=>void) => {
   const id = data.id;
   emit('loadingChange', true);
@@ -1002,13 +1094,16 @@ const toBlock = async (data: CaseDetail, notificationFlag = true, errorCallback?
   if (notificationFlag) {
     notification.success(t('testCase.kanbanView.caseBlockedSuccess'));
   }
-  loadData();
+  loadCases();
 };
 
+/**
+ * Cancel case and reload list
+ */
 const toCancel = async (data: CaseDetail, notificationFlag = true, errorCallback?:()=>void) => {
   const id = data.id;
   emit('loadingChange', true);
-  const [error] = await funcCase.updateCaseResult([{ id, testResult: CaseTestResult.CANCELED }], { dataType: true });
+  const [error] = await funcCase.updateCaseResult([{ id, testResult: CaseTestResult.CANCELED }]);
   emit('loadingChange', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -1021,14 +1116,20 @@ const toCancel = async (data: CaseDetail, notificationFlag = true, errorCallback
   if (notificationFlag) {
     notification.success(t('testCase.kanbanView.caseCancelSuccess'));
   }
-  loadData();
+  loadCases();
 };
 
+/**
+ * Set drawer active tab
+ */
 const drawerActiveKeyChange = (key: 'basic' | 'testStep' | 'person' | 'date' | 'comment' | 'activity' | 'refTasks' | 'refCases' | 'attachments' | 'remarks') => {
   drawerActiveKey.value = key;
 };
 
-const arrowOpenChange = (open: boolean, id: string) => {
+/**
+ * Toggle single group open/close state
+ */
+const arrowOpenChange = (open: boolean, id: number) => {
   if (open) {
     arrowOpenSet.value.add(id);
     return;
@@ -1037,11 +1138,14 @@ const arrowOpenChange = (open: boolean, id: string) => {
   arrowOpenSet.value.delete(id);
 };
 
+/**
+ * Expand or collapse all groups
+ */
 const toggleOpen = () => {
   openFlag.value = !openFlag.value;
 
   if (openFlag.value) {
-    let list: string[] = [];
+    let list: number[] = [];
     if (props.groupKey === 'testerName') {
       list = testerNameList.value.map(item => item.value);
     } else if (props.groupKey === 'lastModifiedByName') {
@@ -1058,10 +1162,16 @@ const toggleOpen = () => {
   arrowOpenSet.value.clear();
 };
 
+/**
+ * Emit loading state to parent
+ */
 const loadingChange = (value:boolean) => {
   emit('loadingChange', value);
 };
 
+/**
+ * Sync case info changes into local maps and drawer data
+ */
 const caseInfoChange = (data: Partial<CaseDetail>) => {
   if (checkedCaseInfo.value) {
     checkedCaseInfo.value = { ...checkedCaseInfo.value, ...data };
@@ -1071,7 +1181,7 @@ const caseInfoChange = (data: Partial<CaseDetail>) => {
   const list = caseList.value;
   for (let i = 0, len = list.length; i < len; i++) {
     if (list[i].id === id) {
-      list[i] = data;
+      list[i] = data as CaseDetail;
       break;
     }
   }
@@ -1085,6 +1195,9 @@ const caseInfoChange = (data: Partial<CaseDetail>) => {
   }
 };
 
+/**
+ * Reset all local state for list and grouping
+ */
 const resetData = () => {
   caseList.value = [];
   groupDataMap.value = {};
@@ -1108,31 +1221,31 @@ const resetData = () => {
 };
 
 onMounted(() => {
-  loadEnum();
+  loadEnums();
 
   watch(() => props.projectId, (newValue) => {
     if (!newValue) {
       return;
     }
 
-    loadData();
+    loadCases();
   }, { immediate: true });
 
   watch([() => props.filters, () => props.moduleId], () => {
-    loadData();
+    loadCases();
   });
 
   watch([() => props.orderBy, () => props.orderSort], () => {
-    toSort({ orderBy: props.orderBy, orderSort: props.orderSort });
+    handleSortRequest({ orderBy: props.orderBy, orderSort: props.orderSort });
   });
 
   watch(() => props.groupKey, () => {
-    toGroup(props.groupKey);
+    handleGroupChange(props.groupKey);
   });
 });
 
-const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
-  const map = new Map<string, ActionMenuItem[]>();
+const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
+  const map = new Map<number, ActionMenuItem[]>();
   for (const key in caseDataMap.value) {
     const list = (caseDataMap.value[key] || []) as CaseDetail[];
     for (let i = 0, len = list.length; i < len; i++) {
@@ -1236,7 +1349,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('actions.clone'),
         key: 'clone',
         icon: 'icon-fuzhi',
-        disabled: !isAdmin.value && !permissions.includes('ADD_CASE'),
+        disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.ADD_CASE),
         hide: false
       });
 
@@ -1304,7 +1417,7 @@ const showGroupData = computed(() => {
 });
 
 const checkedCaseId = computed(() => {
-  return checkedCaseInfo?.value?.id;
+  return checkedCaseInfo?.value?.id ?? -1;
 });
 </script>
 
@@ -1316,7 +1429,7 @@ const checkedCaseId = computed(() => {
         :key="item.value"
         class="col-item h-full w-1/5 border-r border-solid border-theme-text-box overflow-hidden">
         <div class="flex items-center px-2.5 py-1.5 space-x-1.5 font-semibold head-container">
-          <span>{{ item.description }}</span>
+          <span>{{ item.message }}</span>
           <span>{{ numMap[item.value] }}</span>
         </div>
         <Draggable
@@ -1330,16 +1443,16 @@ const checkedCaseId = computed(() => {
           style="height: calc(100% - 32px);"
           :class="{'highlight-enabled':testResultIndex===isDraggingToColumn,highlight:isDraggingToColumnTestResult.includes(item.value)}"
           class="draggable-container overflow-y-auto scroll-smooth p-2"
-          @move="dragMove"
-          @start="dragStart"
-          @end="dragEnd"
-          @add="dragAdd($event, item.value)">
+          @move="handleDragMove"
+          @start="handleDragStart"
+          @end="handleDragEnd"
+          @add="handleDragAdd($event, item.value)">
           <template #item="{ element, index }: { element: CaseDetail; index: number; }">
             <div
               :id="`${item.value}-${index}-${element.id}`"
               :class="{ 'active-item': checkedCaseId === element.id }"
               class="case-board-item border border-solid rounded border-theme-text-box p-2 space-y-1.5"
-              @click="toChecked(element,index)">
+              @click="handleSelectCard(element,index)">
               <div class="flex items-center overflow-hidden">
                 <IconTask :value="element.testResult.value" class="mr-1.5" />
                 <span :title="element.name" class="flex-1 truncate font-semibold">{{ element.name }}</span>
@@ -1418,7 +1531,7 @@ const checkedCaseId = computed(() => {
           :key="_testResult.value"
           style="width:calc((100% - 200px)/5);"
           class="col-item border-r border-solid border-theme-text-box flex items-center px-2.5 py-1.5 space-x-1.5 font-semibold head-container">
-          <span>{{ _testResult.description }}</span>
+          <span>{{ _testResult.message }}</span>
           <span>{{ numMap[_testResult.value] }}</span>
         </div>
       </div>
@@ -1471,16 +1584,16 @@ const checkedCaseId = computed(() => {
                 ghostClass="ghost"
                 itemKey="id"
                 tag="div"
-                @move="dragMove"
-                @start="dragStart"
-                @end="dragEnd"
-                @add="groupDragAdd($event, _testResult.value)">
+                @move="handleDragMove"
+                @start="handleDragStart"
+                @end="handleDragEnd"
+                @add="handleGroupDragAdd($event, _testResult.value)">
                 <template #item="{ element, index }: { element: CaseDetail; index: number; }">
                   <div
                     :id="`${_testResult.value}-${index}-${element.id}-${_createdByName.value}`"
                     :class="{ 'active-item': checkedCaseId === element.id }"
                     class="case-board-item border border-solid rounded border-theme-text-box p-2 space-y-1.5"
-                    @click="toChecked(element,index,_createdByName.value)">
+                    @click="handleSelectCard(element,index,String(_createdByName.value))">
                     <div class="flex items-center overflow-hidden">
                       <IconTask :value="element.testResult.value" class="mr-1.5" />
                       <span :title="element.name" class="flex-1 truncate font-semibold">{{ element.name }}</span>
@@ -1724,7 +1837,7 @@ const checkedCaseId = computed(() => {
               @change="caseInfoChange"
               @loadingChange="loadingChange" />
 
-            <AssocTask
+            <AssocIssues
               v-show="drawerActiveKey === 'refTasks'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
@@ -1734,7 +1847,7 @@ const checkedCaseId = computed(() => {
               @change="caseInfoChange"
               @loadingChange="loadingChange" />
 
-            <AssocCase
+            <AssocCases
               v-show="drawerActiveKey === 'refCases'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"

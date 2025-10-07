@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { Grid, ReviewStatus } from '@xcan-angus/vue-ui';
-import { EvalWorkloadMethod } from '@xcan-angus/infra';
 import { Tag } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 

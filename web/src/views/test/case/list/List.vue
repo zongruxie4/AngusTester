@@ -4,13 +4,12 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, modal, NoData, notification } from '@xcan-angus/vue-ui';
 import {
-  appContext, download, enumUtils, http, PageQuery, SearchCriteria, TESTER, toClipboard
-  , ReviewStatus
+  appContext, download, enumUtils, http, PageQuery, SearchCriteria, TESTER, toClipboard, ReviewStatus
 } from '@xcan-angus/infra';
 import { analysis, funcCase, funcPlan, modules } from '@/api/tester';
 import { travelTreeData } from '@/utils/utils';
 
-import { CaseActionAuth, CaseDetailChecked, EnabledGroup } from './types';
+import { CaseActionAuth, EnabledGroup } from './types';
 import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
 import { CaseCount, CaseViewMode, getActionAuth } from '@/views/test/case/types';
 import { CaseDetail } from '@/views/test/types';
@@ -18,6 +17,7 @@ import { CaseDetail } from '@/views/test/types';
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Case_Template.xlsx?url';
 
+// Async component imports
 const FlatView = defineAsyncComponent(() => import('@/views/test/case/list/flat/index.vue'));
 const TableView = defineAsyncComponent(() => import('@/views/test/case/list/table/index.vue'));
 const KanbanView = defineAsyncComponent(() => import('@/views/test/case/list/kanban/index.vue'));
@@ -35,6 +35,7 @@ const SearchPanel = defineAsyncComponent(() => import('@/views/test/case/list/Se
 
 const { t } = useI18n();
 
+// Component props interface
 interface Props {
   loading: boolean;
   viewMode: CaseViewMode;
@@ -55,27 +56,30 @@ const props = withDefaults(defineProps<Props>(), {
   tabInfo: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component emits
 const emits = defineEmits<{
   (e: 'update:count', value: CaseCount): void;
-  (e: 'openInfo', infoTabParams): void;
+  (e: 'openInfo', infoTabParams: any): void;
   (e: 'updateFollowFavourite', type: 'addFollow' | 'addFavourite'): void;
   (e: 'cacheParams', value: any): void;
   (e: 'viewModeChange', value: CaseViewMode): void;
   (e: 'countChange'): void;
 }>();
 
+// Global Injects & Basic State
 const projectInfo = inject('projectInfo', ref({ id: '', name: '' }));
 const userInfo = inject<{ id: string, fullName: string }>('userInfo');
 const appInfo = inject<{ id: string, name: string }>('appInfo');
 const updateLoading = inject<((value: boolean) => void)>('updateLoading', () => undefined);
 const isAdmin = computed(() => appContext.isAdmin());
 
+// Loading Flags & Action Types
 const firstLoadInfo = ref(true);
 const firstLoading = ref(true);
 const actionType = ref<'search' | 'del' | undefined>(undefined);
 const searchPanelRef = ref();
 
+// Query & Pagination State
 const params = ref({
   pageNo: 1,
   pageSize: 10,
@@ -85,10 +89,17 @@ const params = ref({
 });
 const total = ref(0);
 
-const loadingChange = (value:boolean) => {
+/**
+ * Handle loading state change
+ * @param value - Loading state
+ */
+const loadingChange = (value: boolean) => {
   updateLoading(value);
 };
 
+/**
+ * Refresh data and count
+ */
 const refreshChange = () => {
   if (props.isOpenCount) {
     loadCaseCount();
@@ -96,16 +107,24 @@ const refreshChange = () => {
   loadData();
 };
 
+/**
+ * Set parameters and load data
+ */
 const setParamsAndLoadData = () => {
   params.value.pageNo = 1;
   actionType.value = 'search';
   refreshChange();
 };
 
+// Module Grouping
 const enabledGroup = ref<EnabledGroup>(true);
-const moduleId = ref();
+const moduleId = ref<string>();
 
-const enabledGroupChange = (value) => {
+/**
+ * Handle module grouping change
+ * @param value - Grouping enabled state
+ */
+const enabledGroupChange = (value: boolean) => {
   enabledGroup.value = value;
   if (enabledGroup.value) {
     moduleId.value = '';
@@ -114,7 +133,10 @@ const enabledGroupChange = (value) => {
   }
 };
 
-// Search panel event handlers
+/**
+ * Handle search criteria change
+ * @param filters - Search criteria array
+ */
 const handleSearchChange = (filters: SearchCriteria[]) => {
   params.value.pageNo = 1;
   params.value.filters = filters;
@@ -122,28 +144,49 @@ const handleSearchChange = (filters: SearchCriteria[]) => {
   refreshChange();
 };
 
+/**
+ * Handle view mode change
+ * @param viewMode - New view mode
+ */
 const handleViewModeChange = (viewMode: CaseViewMode) => {
   emits('viewModeChange', viewMode);
 };
 
+/**
+ * Handle count panel toggle
+ */
 const handleCountChange = () => {
   emits('countChange');
 };
 
+/**
+ * Handle refresh action
+ */
 const handleRefresh = () => {
   params.value.pageNo = 1;
   refreshChange();
 };
 
+/**
+ * Handle add case action
+ */
 const handleAdd = () => {
   editCase.value = undefined;
   addVisible.value = true;
 };
 
+/**
+ * Handle AI add case action
+ */
 const handleAiAdd = () => {
   aiAddVisible.value = true;
 };
 
+// ===== Export / Import =====
+
+/**
+ * Handle case export
+ */
 const handleExport = async () => {
   if (exportLoading.value) {
     return;
@@ -158,22 +201,27 @@ const handleExport = async () => {
   exportLoading.value = false;
 };
 
+/**
+ * Handle case import
+ */
 const handleImport = () => {
   uploadCaseVisible.value = true;
 };
 
-const cacheParamsKey = computed(() => {
-  return `${userInfo?.id}${projectInfo.value.id}_case`;
-});
-
 let isInit = true;
 
+/**
+ * Load data based on view mode
+ */
 const loadData = () => {
   if (props.viewMode !== CaseViewMode.kanban) {
     loadCaseList();
   }
 };
 
+/**
+ * Load case count statistics
+ */
 const loadCaseCount = async (): Promise<void> => {
   const [error, { data }] = await analysis.getFuncCaseCount(
     { ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value }
@@ -184,11 +232,13 @@ const loadCaseCount = async (): Promise<void> => {
   emits('update:count', data);
 };
 
-// 表格操作选中的当前rowData
-const checkedCase = ref<CaseDetailChecked>();
+// ===== Case List & Table Actions =====
+const checkedCase = ref<CaseDetail>();
+const caseList = ref<CaseDetail[]>([]);
 
-const caseList = ref<CaseDetailChecked[]>([]);
-
+/**
+ * Load case list data
+ */
 const loadCaseList = async (): Promise<void> => {
   if (props.loading) {
     return;
@@ -203,15 +253,12 @@ const loadCaseList = async (): Promise<void> => {
     updateLoading(false);
     return;
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { pageNo, pageSize, ...otherParam } = params.value;
 
   if (props.viewMode === CaseViewMode.table && tabViewRef.value) {
     tabViewRef.value.selectedRowKeys = [];
   }
 
   selectedRowKeys.value = [];
-
   caseList.value = data.list.map(item => ({ ...item, checked: false }));
   await getPlanAuth();
 
@@ -243,7 +290,9 @@ const loadCaseList = async (): Promise<void> => {
     if (!checkedCase.value) {
       checkedCase.value = data.list[0];
     }
-    await getCaseInfo(checkedCase.value?.id);
+    if (checkedCase.value?.id) {
+      await getCaseInfo(checkedCase.value.id);
+    }
   }
   updateLoading(false);
 };
@@ -252,10 +301,11 @@ const tableAction = computed(() => {
   const action = { auth: {}, actionMenus: {} };
   for (let i = 0; i < caseList.value.length; i++) {
     const _case = caseList.value[i];
-    if (userInfo?.id === _case.testerId &&
+    if (userInfo?.id === _case.testerId?.toString() &&
       (planAuthMap.value[_case.planId]?.permissions || []).includes(FuncPlanPermission.TEST)) {
-      planAuthMap.value[_case.planId]?.permissions &&
-      planAuthMap.value[_case.planId].permissions.push(FuncPlanPermission.TEST);
+      if (planAuthMap.value[_case.planId]?.permissions) {
+        planAuthMap.value[_case.planId].permissions.push(FuncPlanPermission.TEST);
+      }
     }
 
     action.auth[_case.id] = getActionAuth((planAuthMap.value[_case.planId]?.permissions || []));
@@ -265,13 +315,13 @@ const tableAction = computed(() => {
       }
     }
     if (action.auth[_case.id].includes('retestResult')) {
-      if (!planAuthMap.value[_case.planId].funcPlanAuth && userInfo?.id !== _case.testerId) {
+      if (!planAuthMap.value[_case.planId].funcPlanAuth && userInfo?.id !== _case.testerId?.toString()) {
         action.auth[_case.id] = action.auth[_case.id].filter(i => i !== 'retestResult');
       }
     }
     action.actionMenus[_case.id] = [];
 
-    // 测试次数大于0才允许重置测试结果
+    // Allow resetting test result only when test count > 0
     if (+_case.testNum > 0) {
       action.actionMenus[_case.id].push({
         key: 'resetTestResult',
@@ -357,9 +407,7 @@ const tableAction = computed(() => {
   return action;
 });
 
-// Removed search-related methods - now handled by SearchPanel component
-
-// 用例详情
+// Case detail state
 const caseInfo = ref<CaseDetail>();
 const firstCase = ref<CaseDetail>();
 const getCaseInfo = async (id: string) => {
@@ -383,6 +431,9 @@ const planAuthMap = ref<{[id: string]: {
   permissions: string[];
 }}>({});
 
+/**
+ * Get current user's permissions for each plan within the current case list
+ */
 const getPlanAuth = async () => {
   if (isAdmin.value) {
     caseList.value.forEach(i => {
@@ -393,7 +444,7 @@ const getPlanAuth = async () => {
     });
     return;
   }
-  const planIds = caseList.value.map(i => i.planId);
+  const planIds = caseList.value.map(i => i.planId?.toString()).filter(Boolean);
   if (!planIds.length) {
     return;
   }
@@ -413,7 +464,7 @@ const getPlanAuth = async () => {
   });
 };
 
-// 模块相关
+// ===== Module Tree =====
 const moduleTreeData = ref([{ name: t('testCase.case.moduleTree.noModuleCases'), id: '-1' }]);
 const loadModuleTree = async (keywords?: string) => {
   const [error, { data }] = await modules.getModuleTree({
@@ -450,13 +501,13 @@ onMounted(async () => {
   });
 });
 
-// 所有所选中的用例的Ids
+// Selected case IDs
 const selectedRowKeys = ref<string[]>([]);
 
-// 操作类型:batch:批量 one:操作一条数据
+// Operation type: 'batch' for bulk, 'one' for single row action
 const btnType = ref<'batch' | 'one'>('one');
 const reviewVisible = ref(false);
-const selectedCase = ref<CaseDetailChecked>();
+const selectedCase = ref<CaseDetail>();
 const moveVisible = ref(false);
 const updateTestResultVisible = ref(false);
 const resultPassed = ref(false);
@@ -468,13 +519,13 @@ const batchDisabled = ref({
   updateTestResult: false
 });
 
-// 移动成功
+// Move success
 const moveSuccess = () => {
   refreshChange();
 };
 
-// 修改成功
-const updteSuccess = () => {
+// Update success
+const updateSuccess = () => {
   refreshChange();
 };
 
@@ -482,7 +533,7 @@ const editSuccess = () => {
   refreshChange();
 };
 
-const handleClone = async (rowData: CaseDetailChecked) => {
+const handleClone = async (rowData: CaseDetail) => {
   updateLoading(true);
   const [error] = await funcCase.cloneCase([rowData.id]);
   if (error) {
@@ -496,8 +547,8 @@ const handleClone = async (rowData: CaseDetailChecked) => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
 const refreshRecycleBin = inject('refreshRecycleBin', (_key: 'useCase') => { });
 
-// 删除
-const handleDelete = async (rowData?: CaseDetailChecked) => {
+// Delete case(s)
+const handleDelete = async (rowData?: CaseDetail) => {
   modal.confirm({
     centered: true,
     title: t('testCase.mainView.deleteCase'),
@@ -510,9 +561,10 @@ const handleDelete = async (rowData?: CaseDetailChecked) => {
   });
 };
 
-const delCase = async (rowData?: CaseDetailChecked) => {
+const delCase = async (rowData?: CaseDetail) => {
   updateLoading(true);
-  const [error] = await funcCase.deleteCase(rowData ? [rowData.id] : selectedRowKeys.value);
+  const ids: string[] = rowData ? [rowData.id] : selectedRowKeys.value;
+  const [error] = await funcCase.deleteCase(ids.join(','));
   if (error) {
     updateLoading(false);
     return;
@@ -543,8 +595,8 @@ const getCurrentPage = (pageNo: number, pageSize: number, total: number): number
   return pageNo;
 };
 
-// 重置测试
-const hanldeResetTestResults = async (rowData: CaseDetailChecked) => {
+// Reset test
+const handleResetTestResults = async (rowData: CaseDetail) => {
   updateLoading(true);
   const [error] = await funcCase.resetCaseResult([rowData.id]);
   if (error) {
@@ -555,8 +607,8 @@ const hanldeResetTestResults = async (rowData: CaseDetailChecked) => {
   refreshChange();
 };
 
-// 重置评审
-const handleResetReviewResult = async (rowData: CaseDetailChecked) => {
+// Reset review
+const handleResetReviewResult = async (rowData: CaseDetail) => {
   updateLoading(true);
   const [error] = await funcCase.resetReviewCase([rowData.id]);
   if (error) {
@@ -567,8 +619,8 @@ const handleResetReviewResult = async (rowData: CaseDetailChecked) => {
   refreshChange();
 };
 
-// 重新测试 将用例改为待测试
-const handleReTest = async (rowData: CaseDetailChecked) => {
+// Re-test: set case to To Be Tested
+const handleReTest = async (rowData: CaseDetail) => {
   updateLoading(true);
   const [error] = await funcCase.retestResult([rowData.id]);
   if (error) {
@@ -579,8 +631,8 @@ const handleReTest = async (rowData: CaseDetailChecked) => {
   refreshChange();
 };
 
-// 平铺视图点击数据获取详情
-const hanldeSelectCase = async (_case: CaseDetailChecked) => {
+// Flat view: click item to load detail
+const handleSelectCase = async (_case: CaseDetail) => {
   checkedCase.value = _case;
   if (_case.id === caseInfo.value?.id) {
     return;
@@ -598,8 +650,8 @@ const hanldeSelectCase = async (_case: CaseDetailChecked) => {
   });
 };
 
-// 详情操作按钮
-const handleDetailAction = (type: CaseActionAuth, value: CaseDetailChecked) => {
+// Detail action buttons
+const handleDetailAction = (type: CaseActionAuth, value: CaseDetail) => {
   switch (type) {
     case 'edit':
       handleEdit(value);
@@ -623,13 +675,13 @@ const handleDetailAction = (type: CaseActionAuth, value: CaseDetailChecked) => {
       handleAction('updateTestResult_notPassed', value);
       break;
     case 'updateTestResult_blocked':
-      handleSetREsultBlocked(value);
+      handleSetResultBlocked(value);
       break;
     case 'updateTestResult_canceled':
-      handleSetREsultCanceled(value);
+      handleSetResultCanceled(value);
       break;
     case 'resetTestResult':
-      hanldeResetTestResults(value);
+      handleResetTestResults(value);
       break;
     case 'retestResult':
       handleReTest(value);
@@ -649,10 +701,10 @@ const handleDetailAction = (type: CaseActionAuth, value: CaseDetailChecked) => {
   }
 };
 
-// 评审 移动 修改测试结果封装逻辑
+// Encapsulated actions: review / move / update test result
 const handleAction = (
   action: 'review' | 'move' | 'updateTestResult_passed' | 'updateTestResult_notPassed',
-  rowData?: CaseDetailChecked
+  rowData?: CaseDetail
 ) => {
   btnType.value = rowData ? 'one' : 'batch';
   selectedCase.value = rowData;
@@ -674,8 +726,8 @@ const handleAction = (
   }
 };
 
-// 设为阻塞中
-const handleSetREsultBlocked = async (value) => {
+// Set result to BLOCKED
+const handleSetResultBlocked = async (value) => {
   const params = [
     {
       id: value.id,
@@ -690,8 +742,8 @@ const handleSetREsultBlocked = async (value) => {
   refreshChange();
 };
 
-// 取消case
-const handleSetREsultCanceled = async (value) => {
+// Set result to CANCELED
+const handleSetResultCanceled = async (value) => {
   const params = [
     { id: value.id, testResult: CaseTestResult.CANCELED }
   ];
@@ -703,15 +755,15 @@ const handleSetREsultCanceled = async (value) => {
   refreshChange();
 };
 
-const handleCopy = async (value) => {
+const handleCopy = async (value: CaseDetail) => {
   const idIndex = caseList.value?.findIndex(item => item.id === value.id);
-  const _qery = {
+  const _query = {
     ...params.value,
     projectId: projectInfo.value?.id,
     currIndex: idIndex
   };
 
-  const _params = http.getURLSearchParams(_qery, true);
+  const _params = http.getURLSearchParams(_query, true);
 
   const message = `${window.location.origin}/test#cases?id=${value.id}&name=${value.name}&projectId=${projectInfo.value.id}&${_params}&total=${total.value}`;
   toClipboard(message).then(() => {
@@ -721,20 +773,20 @@ const handleCopy = async (value) => {
   });
 };
 
-// 编辑用例
-const editCase = ref<CaseDetailChecked>();
-const handleEdit = (rowData: CaseDetailChecked) => {
+// Edit case
+const editCase = ref<CaseDetail>();
+const handleEdit = (rowData: CaseDetail) => {
   editCase.value = rowData;
   addVisible.value = true;
 };
 
-// 编辑或者添加用例成功更新列表
-const addOrEidtSuccess = () => {
+// Refresh list after add or edit
+const addOrEditSuccess = () => {
   refreshChange();
 };
 
-// 表格模式点击名称打开详情tab页 详情包含上一条下一条功能,上一条下一条请求数据使用本tab页数据的search条件
-const handleViewInfo = async (rowData: CaseDetailChecked) => {
+// Table mode: clicking name opens detail tab with prev/next using current search criteria
+const handleViewInfo = async (rowData: CaseDetail) => {
   const currIndex = caseList.value.findIndex(item => item.id === rowData.id);
   const tabParams = {
     caseId: rowData.id,
@@ -751,20 +803,20 @@ const handleViewInfo = async (rowData: CaseDetailChecked) => {
 };
 
 const calculateDataPosition = (_total, _pageNo, _pageSize, n) => {
-  // 计算当前页的起始位置
+  // Compute the start index of the current page
   const startIndex = (_pageNo - 1) * _pageSize;
 
-  // 计算n在当前页的位置
+  // Compute the position of n within the current page
   const positionInPage = startIndex + n;
-  // 返回当前数据在所有数据集里的位置
+  // Return the position in the entire dataset
   return positionInPage;
 };
 
-// 导出用例
+// Export cases
 const exportLoading = ref(false);
 
-// 导出用例模板
-const handdleExportTemplate = async () => {
+// Export import template
+const handleExportTemplate = async () => {
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = Template;
@@ -774,22 +826,22 @@ const handdleExportTemplate = async () => {
   document.body.removeChild(a);
 };
 
-// 打开上传弹窗
+// Open upload modal
 const uploadCaseVisible = ref(false);
-const handleUploadCase = () => {
-  uploadCaseVisible.value = true;
-};
-// 取消上传用例文件
+// const handleUploadCase = () => {
+//   uploadCaseVisible.value = true;
+// };
+// Cancel uploading case file
 const cancelUpload = () => {
   uploadCaseVisible.value = false;
 };
-// 上传成功用例文件
+// Reload list after successful upload
 const handleUploadOk = () => {
   loadCaseList();
 };
 
-// 收藏
-const handleFavourite = async (rowData: CaseDetailChecked) => {
+// Favourite toggle
+const handleFavourite = async (rowData: CaseDetail) => {
   updateLoading(true);
   const [error] = rowData.favourite ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.AddFavouriteCase(rowData.id);
   updateLoading(false);
@@ -803,7 +855,7 @@ const handleFavourite = async (rowData: CaseDetailChecked) => {
   emits('updateFollowFavourite', 'addFavourite');
 };
 
-const handleFollow = async (rowData: CaseDetailChecked) => {
+const handleFollow = async (rowData: CaseDetail) => {
   updateLoading(true);
   const [error] = rowData.follow ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.addFollowCase(rowData.id);
   updateLoading(false);
@@ -817,11 +869,11 @@ const handleFollow = async (rowData: CaseDetailChecked) => {
   emits('updateFollowFavourite', 'addFollow');
 };
 
-// 提Bug
+// Create a Bug task
 const taskModalVisible = ref(false);
 const addBug = (description?: string) => {
   if (selectedCase.value) {
-    selectedCase.value.testRemark = description;
+    selectedCase.value.testRemark = description || '';
   }
   taskModalVisible.value = true;
 };
@@ -974,7 +1026,7 @@ defineExpose({
       <div class="h-full overflow-hidden bg-gray-1" :class="{'w-70 mr-2': enabledGroup, 'w-0': !enabledGroup}">
         <ModuleTree
           v-model:moduleId="moduleId"
-          :projectId="projectInfo.id"
+          :projectId="String(projectInfo?.id || '')"
           :projectName="projectInfo?.name"
           :dataList="moduleTreeData"
           @loadData="loadModuleTree" />
@@ -1055,7 +1107,7 @@ defineExpose({
           <KanbanView
             v-show="props.viewMode === CaseViewMode.kanban"
             v-model:moduleId="moduleId"
-            :filters="params?.filters"
+            :filters="params.filters as any"
             :projectId="projectInfo?.id"
             :userInfo="userInfo"
             :appInfo="appInfo"
@@ -1089,7 +1141,7 @@ defineExpose({
               :caseList="caseList"
               :checkedCase="checkedCase"
               class="flex-1"
-              @select="hanldeSelectCase"
+              @select="handleSelectCase"
               @change="listChange">
               <template #info>
                 <CaseDetailPage
@@ -1105,7 +1157,7 @@ defineExpose({
                   :queryParams="detailQueryParams"
                   :currIndex="detailIndex"
                   type="info"
-                  @onClick="handleDetailAction"
+                  @onClick="(type: any, value: any) => handleDetailAction(type, value)"
                   @getInfo="getCaseInfo"
                   @editSuccess="editSuccess"
                   @scroll="checkScroll" />
@@ -1126,13 +1178,13 @@ defineExpose({
       v-model:visible="addVisible"
       :editCase="editCase"
       :moduleId="(moduleId && moduleId !== '-1') ? moduleId : undefined"
-      @update="addOrEidtSuccess" />
+      @update="addOrEditSuccess" />
   </AsyncComponent>
 
   <AsyncComponent :visible="aiAddVisible">
     <AiAddModal
       v-model:visible="aiAddVisible"
-      @update="addOrEidtSuccess" />
+      @update="addOrEditSuccess" />
   </AsyncComponent>
 
   <AsyncComponent :visible="reviewVisible">
@@ -1142,7 +1194,7 @@ defineExpose({
       :selectedCase="selectedCase"
       :selectedRowKeys="selectedRowKeys"
       :type="btnType"
-      @update="updteSuccess" />
+      @update="updateSuccess" />
   </AsyncComponent>
 
   <AsyncComponent :visible="moveVisible">
@@ -1163,14 +1215,14 @@ defineExpose({
       :selectedCase="selectedCase"
       :selectedRowKeys="selectedRowKeys"
       :type="btnType"
-      @update="updteSuccess"
+      @update="updateSuccess"
       @addBug="addBug" />
   </AsyncComponent>
 
   <AsyncComponent :visible="uploadCaseVisible">
     <UploadCaseModal
       v-model:visible="uploadCaseVisible"
-      :downloadTemplate="handdleExportTemplate"
+      :downloadTemplate="handleExportTemplate"
       @cancel="cancelUpload"
       @ok="handleUploadOk" />
   </AsyncComponent>
@@ -1180,13 +1232,16 @@ defineExpose({
       v-model:visible="taskModalVisible"
       :projectId="projectInfo?.id"
       :appInfo="appInfo"
-      :assigneeId="selectedCase?.developerId"
+      :assigneeId="selectedCase?.developerId?.toString()"
       :userInfo="userInfo"
       :refCaseIds="selectedCase?.id ? [selectedCase.id] : []"
       :description="selectedCase?.testRemark"
       :name="t('testCase.mainView.testNotPassedName', { name: selectedCase?.name || '' })"
       :taskType="TaskType.BUG"
-      :confirmerId="selectedCase?.testerId"
+      :confirmerId="selectedCase?.testerId?.toString()"
+      :deadlineDate="undefined"
+      :priority="undefined as any"
+      :severity="undefined as any"
       @ok="handleAddTask" />
   </AsyncComponent>
 </template>

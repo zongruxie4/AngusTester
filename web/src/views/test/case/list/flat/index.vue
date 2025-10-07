@@ -3,7 +3,8 @@ import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Pagination } from 'ant-design-vue';
 import { Colon, Icon, ReviewStatus } from '@xcan-angus/vue-ui';
 import { ReviewStatus as ReviewStatusEnum, PageQuery } from '@xcan-angus/infra';
-import { CaseDetailChecked, EnabledGroup, GroupCaseList } from '../types';
+import { EnabledGroup, GroupCaseList } from '../types';
+import { CaseDetail } from '@/views/test/types';
 
 import TestResult from '@/components/TestResult/index.vue';
 
@@ -13,9 +14,9 @@ interface Props {
   params: PageQuery;
   total: number;
   loading: boolean;
-  checkedCase: CaseDetailChecked;
+  checkedCase: CaseDetail;
   enabledGroup: EnabledGroup;
-  caseList: CaseDetailChecked[];
+  caseList: CaseDetail[];
   groupCaseList: GroupCaseList[];
 }
 
@@ -32,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'update:selectedRowKeys', value: string[]): void;
-  (e: 'select', value: CaseDetailChecked): void;
+  (e: 'select', value: CaseDetail): void;
   (e: 'change', value: { current: number; pageSize: number; }): void;
   (e: 'update:params', params): void;
   (e: 'getData'): void;
@@ -44,10 +45,16 @@ const showTotal = (_total: number) => {
     : t('testCase.infoView.totalItems', { total: _total });
 };
 
-const hanldeListExpand = (item) => {
+/**
+ * Toggle expand/collapse for a group list item
+ */
+const handleListExpand = (item) => {
   item.isOpen = !item.isOpen;
 };
 
+/**
+ * Clear all selections across groups or flat list
+ */
 const cancelCheckAll = (_selectedRowKeys) => {
   emits('update:selectedRowKeys', _selectedRowKeys);
   if (props.enabledGroup) {
@@ -63,6 +70,9 @@ const cancelCheckAll = (_selectedRowKeys) => {
   }
 };
 
+/**
+ * Select or deselect all items in a group
+ */
 const handleCheckAll = (e, item) => {
   item.checkAll = e.target.checked;
   item.indeterminate = false;
@@ -73,14 +83,12 @@ const handleCheckAll = (e, item) => {
   }
 
   const _selectedRowKeys = props.groupCaseList.flatMap(record => record.selectedRowKeys);
-  if (_selectedRowKeys.length) {
-    emits('update:selectedRowKeys', _selectedRowKeys);
-    return;
-  }
-
-  emits('update:selectedRowKeys', []);
+  emits('update:selectedRowKeys', _selectedRowKeys.length ? _selectedRowKeys : []);
 };
 
+/**
+ * Select or deselect a single item; updates group state accordingly
+ */
 const handleCheckOne = (e, groupItem, item) => {
   if (props.enabledGroup) {
     if (e.target.checked) {
@@ -104,12 +112,7 @@ const handleCheckOne = (e, groupItem, item) => {
       }
     }
     const _selectedRowKeys = props.groupCaseList.flatMap(record => record.selectedRowKeys);
-    if (_selectedRowKeys.length) {
-      emits('update:selectedRowKeys', _selectedRowKeys);
-      return;
-    }
-
-    emits('update:selectedRowKeys', []);
+    emits('update:selectedRowKeys', _selectedRowKeys.length ? _selectedRowKeys : []);
   } else {
     item.checked = e.target.checked;
     const _selectedRowKeys = props.caseList.filter(item => item.checked).map(item => item.id);
@@ -121,11 +124,16 @@ const handleCheckOne = (e, groupItem, item) => {
   }
 };
 
-// 平铺视图点击数据获取详情
-const hanldeSelectCase = (_case: CaseDetailChecked) => {
+/**
+ * Flat view: emit selected case for detail panel
+ */
+const handleSelectCase = (_case: CaseDetail) => {
   emits('select', _case);
 };
 
+/**
+ * Emit pagination change
+ */
 const tableChange = ({ current, pageSize }) => {
   emits('change', { current, pageSize });
 };
@@ -147,7 +155,7 @@ defineExpose({
                   class="text-3"
                   :class="groupCase.isOpen ? 'expand-icon-open' : 'expand-icon'"
                   :icon="groupCase.isOpen ? 'icon-jian' : 'icon-jia'"
-                  @click="hanldeListExpand(groupCase)" />
+                  @click="handleListExpand(groupCase)" />
               </Button>
 
               <Checkbox
@@ -173,7 +181,7 @@ defineExpose({
                 :key="item.id"
                 :class="{ 'bg-theme-tabs-selected': props.checkedCase?.id === item.id }"
                 class="item p-2 border-b cursor-pointer border-theme-text-box bg-theme-menu-hover flex"
-                @click="hanldeSelectCase(item)">
+                @click="handleSelectCase(item)">
                 <Checkbox
                   class="-mt-0.75 ml-5 mr-2"
                   :checked="groupCase.selectedRowKeys?.includes(item.id)"
@@ -223,7 +231,7 @@ defineExpose({
             :key="item.id"
             :class="{ 'bg-theme-tabs-selected': props.checkedCase?.id === item.id }"
             class="item p-2 border-b cursor-pointer border-theme-text-box bg-theme-menu-hover flex"
-            @click="hanldeSelectCase(item)">
+            @click="handleSelectCase(item)">
             <Checkbox
               class="-mt-0.75 mr-2"
               :checked="item.checked"

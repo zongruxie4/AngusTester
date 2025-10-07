@@ -1,28 +1,13 @@
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref, watch, Ref } from 'vue';
 import {
-  DatePicker,
-  Hints,
-  Icon,
-  IconTask,
-  Input,
-  Modal,
-  notification,
-  Select,
-  Spin,
-  Dropdown
+  DatePicker, Hints, Icon, IconTask, Input, Modal, notification, Select, Spin, Dropdown
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 import {
-  EvalWorkloadMethod,
-  Priority,
-  SearchCriteria,
-  enumUtils,
-  TESTER,
-  upload,
-  localStore,
-  utils, appContext
+  EvalWorkloadMethod, Priority, SearchCriteria, enumUtils, TESTER,
+  upload, localStore, utils, appContext
 } from '@xcan-angus/infra';
 import { CaseStepView, SoftwareVersionStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
@@ -31,19 +16,20 @@ import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
-import { CaseDetailChecked, CaseEditState } from './types';
+import { CaseEditState } from './types';
 
-import CaseSteps from '@/views/test/case/list/CaseSteps.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import RichEditor from '@/components/richEditor/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
+import CaseSteps from '@/views/test/case/list/CaseSteps.vue';
 
 const { t } = useI18n();
 
+// Component props interface
 interface Props {
   visible: boolean;
-  editCase?: CaseDetailChecked;
-  moduleId?: string;
+  editCase?: CaseDetail;
+  moduleId?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -51,39 +37,58 @@ const props = withDefaults(defineProps<Props>(), {
   editCase: undefined
 });
 
+// Component emits
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'update', id?:string):void}>();
 
+// Basic state management
 const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
-const addCaseSizeKey = `${userInfo.value.id}${projectId.value}addFuncCaseSize`;
+const addCaseSizeKey = `${userInfo.value?.id || ''}${projectId.value}addFuncCaseSize`;
 
-// TODO 字段顺序保持一致
+// Form state management
 const formRef = ref();
-const formState = ref<CaseEditState>({
+
+// Extended form state interface to include all form fields
+interface ExtendedCaseEditState extends Omit<CaseEditState, 'refIdMap'> {
+  refCaseIds: number[];
+  refTaskIds: number[];
+  softwareVersion?: string;
+  id?: string;
+}
+
+const formState = ref<ExtendedCaseEditState>({
   attachments: [],
   deadlineDate: '',
   description: '',
   evalWorkload: '',
   actualWorkload: '',
-  moduleId: undefined,
+  moduleId: 0,
   name: '',
-  planId: undefined,
+  planId: 0,
   precondition: '',
   priority: Priority.MEDIUM,
   steps: [],
   tagIds: [],
-  testerId: userInfo.value.id,
+  testerId: userInfo.value?.id || 0,
   refCaseIds: [],
   refTaskIds: [],
   developerId: undefined,
   softwareVersion: undefined,
-  stepView: CaseStepView.TABLE
+  stepView: CaseStepView.TABLE,
+  caseType: 'FUNC'
 });
 
-const oldFormState = ref<CaseEditState>();
-
+const oldFormState = ref<ExtendedCaseEditState>();
 const caseDetail = ref<CaseDetail>();
+// Data fetching functions
+
+/**
+ * Fetch case information for editing
+ */
 const getCaseInfo = async () => {
+  if (!props.editCase?.id) {
+    return;
+  }
   const [error, { data }] = await funcCase.getCaseDetail(props.editCase.id);
   if (error) {
     return;
@@ -96,19 +101,19 @@ const getCaseInfo = async () => {
     } else if (key === 'attachments') {
       formState.value[key] = data[key] || [];
     } else if (key === 'refTaskInfos') {
-      formState.value[key].refTaskIds = (data.refTaskInfos || []).map(item => {
+      formState.value.refTaskIds = (data.refTaskInfos || []).map(item => {
         return item.id;
       });
     } else if (key === 'refCaseInfos') {
-      formState.value[key].refCaseIds = (data.refCaseInfos || []).map(item => {
+      formState.value.refCaseIds = (data.refCaseInfos || []).map(item => {
         return item.id;
       });
     } else if (key === 'actualWorkload') {
       formState.value.actualWorkload = data?.actualWorkload || data?.evalWorkload;
     } else if (key === 'priority') {
-      formState.value.priority = data?.priority.value;
+      formState.value.priority = data?.priority?.value || Priority.MEDIUM;
     } else if (key === 'precondition') {
-      formState.value[key] = getJson(data?.[key]);
+      formState.value[key] = getJson(data?.[key]) || '';
     } else if (key === 'stepView') {
       formState.value[key] = data?.[key]?.value || 'TABLE';
     } else {
@@ -117,7 +122,7 @@ const getCaseInfo = async () => {
           data[key] = undefined;
         }
       }
-      formState.value[key] = data?.[key];
+      (formState.value as any)[key] = data?.[key];
     }
   });
 
@@ -126,7 +131,14 @@ const getCaseInfo = async () => {
   oldFormState.value = JSON.parse(JSON.stringify(formState.value));
 };
 
-const getJson = (value) => {
+// Utility functions
+
+/**
+ * Parse JSON value for rich text content
+ * @param value - Value to parse
+ * @returns Parsed JSON string
+ */
+const getJson = (value: string): string | undefined => {
   if (!value) {
     return undefined;
   }
@@ -141,12 +153,22 @@ const getJson = (value) => {
   }
 };
 
+// Modal and form management
+
+/**
+ * Close the modal
+ */
 const close = () => {
   emits('update:visible', false);
 };
 
 const stepsRef = ref();
-const resetForm = (type?:'save') => {
+
+/**
+ * Reset form to initial state
+ * @param type - Reset type ('save' for save and continue)
+ */
+const resetForm = (type?: 'save') => {
   formRef.value.resetFields(Object.keys(formState.value).filter(item => item !== 'planId' && item !== 'deadlineDate'));
   formState.value.refCaseIds = [];
   formState.value.refTaskIds = [];
@@ -154,18 +176,24 @@ const resetForm = (type?:'save') => {
     formState.value.steps = [];
     formState.value.description = '';
     stepDefaultValue.value = [];
-    formState.value.moduleId = props.moduleId || undefined;
+    formState.value.moduleId = props.moduleId ? Number(props.moduleId) : 0;
   }
   formRef.value.clearValidate();
 };
 
+// Form submission functions
 const saveType = ref('save');
+
+/**
+ * Save form data
+ * @param type - Save type ('save' or 'add')
+ */
 const save = (type: 'save' | 'add') => {
   if (loading.value) {
     return;
   }
   saveType.value = type;
-  let _ruleKeys = [
+  let validationRuleKeys = [
     'name',
     'planId',
     'testerId',
@@ -173,11 +201,10 @@ const save = (type: 'save' | 'add') => {
   ];
 
   if (formState.value.actualWorkload) {
-    _ruleKeys = [..._ruleKeys, 'evalWorkload'];
+    validationRuleKeys = [...validationRuleKeys, 'evalWorkload'];
   }
 
-  const _validateRuleKeys = _ruleKeys;
-  formRef.value.validate(_validateRuleKeys)
+  formRef.value.validate(validationRuleKeys)
     .then(async () => {
       if (formState.value.description?.length > 2000) {
         notification.warning(t('testCase.addCaseModal.descriptionTooLong'));
@@ -192,6 +219,10 @@ const save = (type: 'save' | 'add') => {
     });
 };
 
+/**
+ * Prepare form parameters for API calls
+ * @returns Cleaned form parameters
+ */
 const getParams = () => {
   const params = JSON.parse(JSON.stringify(formState.value));
   if (!params.tagIds?.length) {
@@ -224,7 +255,14 @@ const getParams = () => {
 };
 
 const loading = ref(false);
+
+/**
+ * Save edited case
+ */
 const editSave = async () => {
+  if (!props.editCase?.id) {
+    return;
+  }
   if (utils.deepCompare(oldFormState.value, formState.value)) {
     emits('update:visible', false);
     return;
@@ -240,6 +278,10 @@ const editSave = async () => {
   emits('update:visible', false);
   emits('update', props.editCase.id);
 };
+
+/**
+ * Save new case
+ */
 const addSave = async () => {
   const params = getParams();
   loading.value = true;
@@ -257,7 +299,13 @@ const addSave = async () => {
   }
 };
 
-const upLoadFile = async ({ file }: { file }) => {
+// File upload functionality
+
+/**
+ * Handle file upload
+ * @param param - Upload parameter containing file
+ */
+const upLoadFile = async ({ file }: { file: any }) => {
   if (file.size > 100 * 1024 * 1024) {
     notification.error(t('testCase.addCaseModal.fileTooLarge'));
     return;
@@ -280,13 +328,25 @@ const upLoadFile = async ({ file }: { file }) => {
   }
 };
 
+/**
+ * Delete uploaded file
+ * @param index - File index to delete
+ */
 const delFile = (index: number) => {
   formState.value?.attachments?.splice(index, 1);
 };
 
-const stepDefaultValue = ref<{ expectedResult: string; step: string;}[]>([]);
+// Step default values
+const stepDefaultValue = ref<{ expectedResult: string; step: string; }[]>([]);
 
-const disabledDate = (current) => {
+// Date validation functions
+
+/**
+ * Check if date should be disabled
+ * @param current - Current date
+ * @returns Whether date should be disabled
+ */
+const disabledDate = (current: dayjs.Dayjs) => {
   if (props.editCase) {
     return false;
   }
@@ -294,7 +354,12 @@ const disabledDate = (current) => {
   return current.isBefore(today);
 };
 
-// 定义截止时间触发校验是否可以提交，true可以，false不可以（超过计划截止时间的校验可提交）
+/**
+ * Validate deadline date
+ * @param rule - Validation rule
+ * @param value - Date value to validate
+ * @returns Promise with validation result
+ */
 const validateDate = async (_rule: Rule, value: string) => {
   if (!value) {
     return Promise.reject(new Error(t('testCase.addCaseModal.pleaseSelectDeadlineTime')));
@@ -307,15 +372,23 @@ const validateDate = async (_rule: Rule, value: string) => {
   }
 };
 
-// 指派测试人为当前登录人
+// User assignment functions
+
+/**
+ * Assign current user as tester
+ */
 const setTesterForMe = () => {
-  if (userInfo.value.id) {
+  if (userInfo.value?.id) {
     formState.value.testerId = userInfo.value.id;
   }
 };
 
-const members = ref([]);
+// Member management
+const members = ref<any[]>([]);
 
+/**
+ * Load project members
+ */
 const loadMembers = async () => {
   const [error, { data }] = await project.getProjectMember(projectId.value);
   if (error) {
@@ -330,14 +403,21 @@ const loadMembers = async () => {
   });
 };
 
+// Plan management
 const planParams = computed(() => {
   return { projectId: projectId.value };
 });
 
-const evalWorkloadMethod = ref<{value: string, message: string}>();
+const evalWorkloadMethod = ref<{ value: string; message: string }>();
 const planEndDate = ref<string>();
-const planChange = (_value, options) => {
-  formState.value.deadlineDate = _value ? options.deadlineDate : '';
+
+/**
+ * Handle plan change and update deadline date
+ * @param value - Plan value
+ * @param options - Plan options
+ */
+const planChange = (value: any, options: any) => {
+  formState.value.deadlineDate = value ? options.deadlineDate : '';
   planEndDate.value = options?.deadlineDate;
   evalWorkloadMethod.value = options?.evalWorkloadMethod;
   if (formState.value.deadlineDate && dayjs(formState.value.deadlineDate).isBefore(dayjs())) {
@@ -348,7 +428,12 @@ const planChange = (_value, options) => {
   }
 };
 
-const moduleTreeData = ref([]);
+// Module management
+const moduleTreeData = ref<any[]>([]);
+
+/**
+ * Load module tree data
+ */
 const getModuleTreeData = async () => {
   if (!projectId.value) {
     return;
@@ -362,7 +447,12 @@ const getModuleTreeData = async () => {
   moduleTreeData.value = data || [];
 };
 
-const stepViewOpt = ref<{name: string, key: string}[]>([]);
+// Enum management
+const stepViewOpt = ref<{ name: string; key: string }[]>([]);
+
+/**
+ * Load enum options
+ */
 const loadEnums = async () => {
   const data = enumUtils.enumToMessages(EvalWorkloadMethod);
   evalWorkloadMethod.value = data?.filter(item => item.value === EvalWorkloadMethod.STORY_POINT)[0];
@@ -371,11 +461,22 @@ const loadEnums = async () => {
   stepViewOpt.value = data1.map(i => ({ name: i.message, key: i.value }));
 };
 
-const changeStepView = ({ key }) => {
-  formState.value.stepView = key;
+/**
+ * Change step view mode
+ * @param param - Object containing key
+ */
+const changeStepView = ({ key }: { key: string }) => {
+  formState.value.stepView = key as CaseStepView;
 };
 
+// Rich text validation
 const conditionRichRef = ref();
+const descRichRef = ref();
+
+/**
+ * Validate precondition rich text length
+ * @returns Promise with validation result
+ */
 const validateCondition = () => {
   if (!formState.value.precondition) {
     return Promise.resolve();
@@ -386,7 +487,10 @@ const validateCondition = () => {
   return Promise.resolve();
 };
 
-const descRichRef = ref();
+/**
+ * Validate description rich text length
+ * @returns Promise with validation result
+ */
 const validateDesc = () => {
   if (!formState.value.description) {
     return Promise.resolve();
@@ -397,27 +501,91 @@ const validateDesc = () => {
   return Promise.resolve();
 };
 
+// UI state management
 const isZoom = ref(typeof localStore.get(addCaseSizeKey) === 'boolean' ? localStore.get(addCaseSizeKey) : false);
 const style = ref({ width: isZoom.value ? '100%' : '1200px' });
+
+/**
+ * Toggle modal zoom state
+ */
 const handleZoom = () => {
   isZoom.value = !isZoom.value;
   localStore.set(addCaseSizeKey, isZoom.value);
   style.value.width = isZoom.value ? '100%' : '1200px';
 };
 
-const actualWorkloadChange = (value) => {
+// Computed properties for form values
+const planIdValue = computed({
+  get: () => formState.value.planId?.toString() || '',
+  set: (value: string) => {
+    formState.value.planId = value ? Number(value) : 0;
+  }
+});
+
+const testerIdValue = computed({
+  get: () => formState.value.testerId?.toString() || '',
+  set: (value: string) => {
+    formState.value.testerId = value ? Number(value) : 0;
+  }
+});
+
+const developerIdValue = computed({
+  get: () => formState.value.developerId?.toString() || '',
+  set: (value: string) => {
+    formState.value.developerId = value ? Number(value) : 0;
+  }
+});
+
+const tagIdsValue = computed({
+  get: () => formState.value.tagIds?.map(id => id.toString()) || [],
+  set: (value: string[]) => {
+    formState.value.tagIds = value.map(id => Number(id));
+  }
+});
+
+const refTaskIdsValue = computed({
+  get: () => formState.value.refTaskIds?.map(id => id.toString()) || [],
+  set: (value: string[]) => {
+    formState.value.refTaskIds = value.map(id => Number(id));
+  }
+});
+
+const refCaseIdsValue = computed({
+  get: () => formState.value.refCaseIds?.map(id => id.toString()) || [],
+  set: (value: string[]) => {
+    formState.value.refCaseIds = value.map(id => Number(id));
+  }
+});
+
+// Workload validation functions
+
+/**
+ * Handle actual workload change
+ * @param value - Actual workload value
+ */
+const actualWorkloadChange = (value: string) => {
   if (!value) {
     formRef.value.clearValidate('evalWorkload');
   }
 };
 
-const evalWorkloadChange = (value) => {
+/**
+ * Handle eval workload change
+ * @param value - Eval workload value
+ */
+const evalWorkloadChange = (value: string) => {
   if (!value) {
     formState.value.actualWorkload = '';
     formRef.value.clearValidate('evalWorkload');
   }
 };
 
+/**
+ * Validate eval workload
+ * @param rule - Validation rule
+ * @param value - Value to validate
+ * @returns Promise with validation result
+ */
 const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
   if (formState.value.actualWorkload) {
     if (!value) {
@@ -554,7 +722,7 @@ onMounted(() => {
               name="planId"
               :rules="{required:true,message: t('testCase.addCaseModal.pleaseSelectPlan')}">
               <Select
-                v-model:value="formState.planId"
+                v-model:value="planIdValue"
                 :disabled="!!props.editCase"
                 :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
                 :fieldNames="{ value: 'id', label: 'name' }"
@@ -602,8 +770,8 @@ onMounted(() => {
               :rules="{required:true,message: t('testCase.addCaseModal.pleaseSelectTester')}">
               <div class="flex items-center">
                 <Select
-                  v-model:value="formState.testerId"
-                  :options="members"
+                  v-model:value="testerIdValue"
+                  :options="members as any"
                   class="flex-1"
                   size="small" />
                 <Button
@@ -621,8 +789,8 @@ onMounted(() => {
               name="developerId"
               :rules="{required:true,message: t('testCase.addCaseModal.pleaseSelectDeveloper')}">
               <Select
-                v-model:value="formState.developerId"
-                :options="members"
+                v-model:value="developerIdValue"
+                :options="members as any"
                 class="flex-1"
                 size="small" />
             </FormItem>
@@ -648,14 +816,14 @@ onMounted(() => {
                 enumKey="Priority"
                 size="small">
                 <template #option="record">
-                  <TaskPriority :value="record" />
+                  <TaskPriority :value="record as any" />
                 </template>
               </SelectEnum>
             </FormItem>
 
             <FormItem
               name="evalWorkload"
-              :rules="{required: formState.actualWorkload, validator: evalWorkloadValidateDate,trigger: 'change' }">
+              :rules="{required: !!formState.actualWorkload, validator: evalWorkloadValidateDate,trigger: 'change' }">
               <template #label>
                 <span class="flex items-center">
                   {{ t('common.evalWorkloadMethod') }}
@@ -766,7 +934,7 @@ onMounted(() => {
               </template>
 
               <Select
-                v-model:value="formState.tagIds"
+                v-model:value="tagIdsValue"
                 showSearch
                 :fieldNames="{label:'name',value:'id'}"
                 :maxTagCount="5"
@@ -790,7 +958,7 @@ onMounted(() => {
               :label="t('testCase.addCaseModal.relatedTasks')"
               class="relative">
               <Select
-                v-model:value="formState.refTaskIds"
+                v-model:value="refTaskIdsValue"
                 showSearch
                 internal
                 :allowClear="false"
@@ -823,7 +991,7 @@ onMounted(() => {
               :label="t('testCase.addCaseModal.relatedCases')"
               class="relative">
               <Select
-                v-model:value="formState.refCaseIds"
+                v-model:value="refCaseIdsValue"
                 showSearch
                 internal
                 :allowClear="false"

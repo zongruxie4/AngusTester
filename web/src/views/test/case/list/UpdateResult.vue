@@ -8,10 +8,11 @@ import type { Rule } from 'ant-design-vue/es/form';
 import { funcCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
-import { CaseDetailChecked } from './types';
+import { CaseDetail } from '@/views/test/types';
 
 const { t } = useI18n();
 
+// Type definitions
 type Params = {
   id: string;
   testResult: string;
@@ -19,10 +20,11 @@ type Params = {
   actualWorkload?: string
 }
 
+// Component props interface
 interface Props {
   visible: boolean;
   type: 'batch' | 'one',
-  selectedCase?: CaseDetailChecked;
+  selectedCase?: CaseDetail;
   selectedRowKeys?: string[];
   resultPassed?: boolean;
 }
@@ -35,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   selectedRowKeys: () => []
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component emits
 const emits = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'update'): void;
@@ -43,16 +45,23 @@ const emits = defineEmits<{
   (e: 'addBug', description?: string): void
 }>();
 
+// Form state management
 const formRef = ref();
-const formState = ref<{ testRemark: string; testResult: string, evalWorkload?: string, actualWorkload?: string }>
+const formState = ref<{ testRemark: string; testResult: string, evalWorkload?: number, actualWorkload?: number }>
 ({ testRemark: '', testResult: CaseTestResult.PASSED });
+const loading = ref(false);
 
+/**
+ * Close the modal
+ */
 const close = () => {
   emits('update:visible', false);
   emits('cancel');
 };
-
-const loading = ref(false);
+/**
+ * Handle form submission
+ * @param addBug - Whether to add bug after submission
+ */
 const onFinish = async (addBug = false) => {
   const params: Params[] = props.type === 'batch'
     ? props.selectedRowKeys.map(item => ({
@@ -64,7 +73,7 @@ const onFinish = async (addBug = false) => {
     }))
     : [
         {
-          id: props.selectedCase.id,
+          id: props.selectedCase?.id,
           testRemark: formState.value.testRemark || null,
           testResult: formState.value.testResult,
           evalWorkload: formState.value.evalWorkload || null,
@@ -85,6 +94,9 @@ const onFinish = async (addBug = false) => {
   }
 };
 
+/**
+ * Handle form submission with bug creation
+ */
 const handleSubmit = () => {
   formRef.value.validate()
     .then(async () => {
@@ -92,28 +104,43 @@ const handleSubmit = () => {
     });
 };
 
+// Enum management
 const testResultEnum = ref<EnumMessage<CaseTestResult>[]>([]);
+
+/**
+ * Load test result enum options
+ */
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages(CaseTestResult);
-  if (!data) {
-    return;
-  }
-  testResultEnum.value = data.filter(item => ![CaseTestResult.PENDING, CaseTestResult.BLOCKED, CaseTestResult.CANCELED].includes(item.value)) || [];
+  testResultEnum.value = enumUtils.enumToMessages(CaseTestResult, [CaseTestResult.PENDING, CaseTestResult.BLOCKED, CaseTestResult.CANCELED]);
 };
 
-const actualWorkloadChange = (value) => {
+/**
+ * Handle actual workload change
+ * @param value - Actual workload value
+ */
+const actualWorkloadChange = (value: string) => {
   if (!value) {
     formRef.value.clearValidate('evalWorkload');
   }
 };
 
-const evalWorkloadChange = (value) => {
+/**
+ * Handle eval workload change
+ * @param value - Eval workload value
+ */
+const evalWorkloadChange = (value: string) => {
   if (!value) {
-    formState.value.actualWorkload = '';
+    formState.value.actualWorkload = undefined;
     formRef.value.clearValidate('evalWorkload');
   }
 };
 
+/**
+ * Validate eval workload field
+ * @param _rule - Validation rule
+ * @param value - Field value
+ * @returns Validation result
+ */
 const validateDate = async (_rule: Rule, value: string) => {
   if (formState.value.actualWorkload) {
     if (!value) {
@@ -126,10 +153,12 @@ const validateDate = async (_rule: Rule, value: string) => {
   }
 };
 
+// Component lifecycle
 onMounted(() => {
   loadEnums();
 });
 
+// Watchers
 watch(() => props.visible, (newValue) => {
   if (!newValue || !props.selectedCase) {
     return;

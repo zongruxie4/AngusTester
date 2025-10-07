@@ -5,7 +5,8 @@ import { Dropdown, Icon, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { PageQuery } from '@xcan-angus/infra';
 
-import { CaseActionAuth, CaseDetailChecked, EnabledGroup, GroupCaseList } from '../types';
+import { CaseActionAuth, EnabledGroup, GroupCaseList } from '../types';
+import { CaseDetail } from '@/views/test/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
@@ -17,7 +18,7 @@ interface Props {
   enabledGroup: EnabledGroup;
   caseActionAuth: Record<string, string[]>;
   actionMenus: Record<string, any[]>;
-  caseList: CaseDetailChecked[];
+  caseList: CaseDetail[];
   groupCaseList: GroupCaseList[];
   selectedRowKeys: string[];
 }
@@ -37,8 +38,8 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'update:selectedRowKeys', value: string[]): void;
-  (e: 'onClick', type:CaseActionAuth, value:CaseDetailChecked):void;
-  (e: 'openInfo', value:CaseDetailChecked):void;
+  (e: 'onClick', type:CaseActionAuth, value:CaseDetail):void;
+  (e: 'openInfo', value:CaseDetail):void;
   (e: 'change', value:{pagination, sorter}):void;
 }>();
 
@@ -157,11 +158,11 @@ const onSelectChange = (_selectedRowKeys) => {
   }));
 };
 
-const handleClick = async (type: CaseActionAuth, value: CaseDetailChecked) => {
+const handleClick = async (type: CaseActionAuth, value: CaseDetail) => {
   emits('onClick', type, value);
 };
 
-const handleViewInfo = (value:CaseDetailChecked) => {
+const handleViewInfo = (value:CaseDetail) => {
   emits('openInfo', value);
 };
 

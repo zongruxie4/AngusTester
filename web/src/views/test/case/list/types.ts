@@ -48,22 +48,18 @@ export type CaseEditState = {
 
 export type CaseInfoEditProps = {
   projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  userInfo: { id: number; };
+  appInfo: { id: number; };
   dataSource: CaseDetail;
   canEdit: boolean;
 }
-
-export type CaseDetailChecked = CaseDetail & {
-  checked: boolean;
-};
 
 export type GroupCaseList = {
   id: string;
   groupName: any;
   isOpen: boolean;
   checkAll: boolean;
-  children: CaseDetailChecked[],
+  children: CaseDetail[],
   indeterminate?: boolean;
   method?: { value: string; message: string };
   endpoint?: string;

@@ -26,50 +26,68 @@ const emit = defineEmits<{
   (event: 'update:dataSource', value: CaseDetail): void;
 }>();
 
-const editFlag = ref(false);
-const taskIds = ref<string[]>([]);
+const isEditing = ref(false);
+const selectedTaskIds = ref<string[]>([]);
 
-const toEdit = () => {
-  editFlag.value = true;
+/**
+ * Enter edit mode to update associated tasks
+ */
+const enterEdit = () => {
+  isEditing.value = true;
 };
 
-const cancel = () => {
-  editFlag.value = false;
+/**
+ * Cancel edit mode and restore view-only state
+ */
+const cancelEdit = () => {
+  isEditing.value = false;
 };
 
-const ok = async () => {
+/**
+ * Persist task associations and reload case detail
+ */
+const submitChanges = async () => {
   const params = [{
     id: caseId.value,
-    refTaskIds: taskIds.value
+    refTaskIds: selectedTaskIds.value
   }];
-  editFlag.value = false;
-  loadingChange(true);
+  isEditing.value = false;
+  emitLoadingChange(true);
   const [error] = await funcCase.updateCase(params);
-  loadingChange(false);
+  emitLoadingChange(false);
   if (error) {
     return;
   }
 
-  change();
+  refreshCaseDetail();
 };
 
-const selectChange = (ids:string[]) => {
-  taskIds.value = ids;
+/**
+ * Handle multi-select change for tasks
+ */
+const handleSelectChange = (ids:string[]) => {
+  selectedTaskIds.value = ids;
 };
 
-const loadingChange = (value:boolean) => {
+/**
+ * Emit loading state to parent
+ */
+const emitLoadingChange = (value:boolean) => {
   emit('loadingChange', value);
 };
 
-const change = async () => {
+/**
+ * Reload full case detail
+ */
+const refreshCaseDetail = async () => {
   const id = props.dataSource?.id;
   if (!id) {
     return;
   }
 
-  loadingChange(true);
+  emitLoadingChange(true);
   const [error, res] = await funcCase.getCaseDetail(id);
-  loadingChange(false);
+  emitLoadingChange(false);
   if (error) {
     return;
   }
@@ -83,7 +101,7 @@ const caseId = computed(() => {
   return props.dataSource?.id;
 });
 
-const refTaskList = computed(() => {
+const associatedTaskList = computed(() => {
   return props.dataSource?.refTaskInfos?.map(item => {
     return {
       ...item,
@@ -92,8 +110,8 @@ const refTaskList = computed(() => {
   }) || [];
 });
 
-const refTaskIds = computed(() => {
-  return refTaskList.value.map(item => item.id);
+const associatedTaskIds = computed(() => {
+  return associatedTaskList.value.map(item => item.id);
 });
 </script>
 
@@ -103,18 +121,18 @@ const refTaskIds = computed(() => {
       <span class="font-semibold">{{ t('testCase.kanbanView.assocTask.title') }}</span>
       <Button
         v-if="props.canEdit"
-        v-show="!editFlag"
+        v-show="!isEditing"
         type="link"
         class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-        @click="toEdit">
+        @click="enterEdit">
         <Icon icon="icon-shuxie" class="text-3.5" />
       </Button>
     </div>
 
-    <template v-if="!editFlag">
-      <div v-if="refTaskList.length" class="w-full space-y-1.5 truncate">
+    <template v-if="!isEditing">
+      <div v-if="associatedTaskList.length" class="w-full space-y-1.5 truncate">
         <RouterLink
-          v-for="item in refTaskList"
+          v-for="item in associatedTaskList"
           :key="item.id"
           :to="item.linkUrl"
           target="_blank"
@@ -132,7 +150,7 @@ const refTaskIds = computed(() => {
 
     <template v-else>
       <Select
-        :value="refTaskIds"
+        :value="associatedTaskIds"
         showSearch
         internal
         allowClear
@@ -144,7 +162,7 @@ const refTaskIds = computed(() => {
         class="w-full"
         :placeholder="t('testCase.kanbanView.assocTask.placeholder')"
         mode="multiple"
-        @change="selectChange">
+        @change="handleSelectChange">
         <template #option="record">
           <div class="flex items-center leading-4.5 overflow-hidden">
             <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
@@ -166,13 +184,13 @@ const refTaskIds = computed(() => {
         <Button
           type="default"
           size="small"
-          @click="cancel">
+          @click="cancelEdit">
           {{ t('actions.cancel') }}
         </Button>
         <Button
           type="primary"
           size="small"
-          @click="ok">
+          @click="submitChanges">
           {{ t('actions.confirm') }}
         </Button>
       </div>

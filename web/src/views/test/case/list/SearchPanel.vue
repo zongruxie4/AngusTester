@@ -19,7 +19,7 @@ import { CaseViewMode } from '@/views/test/case/types';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
 
-// Types & interfaces
+// Type definitions
 type Props = {
   viewMode: CaseViewMode;
   projectId: string;
@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
   moduleId: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component emits
 const emit = defineEmits<{
   (e: 'change', value: SearchCriteria[]): void;
   (e: 'update:orderBy', value: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName'): void;
@@ -71,6 +71,7 @@ const aiEnabled = inject('aiEnabled', ref(false));
 // eslint-disable-next-line no-undef
 let database: XCanDexie<{ id: string; data: any; }>;
 
+// Component references
 const searchPanelRef = ref();
 
 // Quick search state
@@ -81,11 +82,11 @@ const quickSelectDate = ref<string[]>([]);
 const overdue = ref(false);
 
 // Numeric filters
-const testNum = ref(''); // 测试次数
+const testNum = ref(''); // Test count
 const testNumScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal);
-const testFailNum = ref(''); // 失败次数
+const testFailNum = ref(''); // Failure count
 const testFailScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal);
-const reviewNum = ref(''); // 评审次数
+const reviewNum = ref(''); // Review count
 const reviewNumScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal);
 
 // Search criteria filters
@@ -239,7 +240,6 @@ const handleQuickSearchChange = (types: string[], allType: boolean) => {
   const createdDateItems = _filters.filter(item => item.key === 'createdDate');
 
   if (types.includes('all')) {
-    // 主动选中全部
     if (allType) {
       testNum.value = '';
       testFailNum.value = '';
@@ -971,7 +971,7 @@ onMounted(async () => {
             @change="(event: any) => handleTimesChange(event.target.value, 'testNum')">
             <template #prefix>
               <Select
-                :value="testNumScope.value"
+                :value="testNumScope.toString()"
                 size="small"
                 :options="numberMatchCondition"
                 :fieldNames="{ label: 'description', value: 'value' }"
@@ -996,7 +996,7 @@ onMounted(async () => {
             @change="handleTimesChange($event.target.value, 'testFailNum')">
             <template #prefix>
               <Select
-                :value="testFailScope.value"
+                :value="testFailScope.toString()"
                 size="small"
                 :options="numberMatchCondition"
                 :fieldNames="{ label: 'description', value: 'value' }"
@@ -1021,7 +1021,7 @@ onMounted(async () => {
             @change="(event: any) => handleTimesChange(event.target.value, 'reviewNum')">
             <template #prefix>
               <Select
-                :value="reviewNumScope.value"
+                :value="reviewNumScope.toString()"
                 size="small"
                 :options="numberMatchCondition"
                 :fieldNames="{ label: 'message', value: 'value' }"

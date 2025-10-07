@@ -4,6 +4,7 @@ import { Image, NoData } from '@xcan-angus/vue-ui';
 import { ReviewStatus } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
+import { CaseDetail } from '@/views/test/types';
 
 const BasicInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/review/ReviewRecordCase.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/test/review/detail/case/Precondition.vue'));
@@ -11,13 +12,13 @@ const Description = defineAsyncComponent(() => import('@/views/test/review/detai
 const CaseStep = defineAsyncComponent(() => import('@/views/test/case/list/CaseSteps.vue'));
 
 interface Props {
-  dataSource: {id: string; reviewNum: number; reviewFailNum: number;};
+  dataSource: CaseDetail;
 }
 
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
-  dataSource: () => ({ id: '' })
+  dataSource: () => ({ id: -1 } as unknown as CaseDetail)
 });
 
 const reviewNum = computed(() => {

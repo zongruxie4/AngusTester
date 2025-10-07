@@ -19,6 +19,10 @@ const props = withDefaults(defineProps<CaseInfoEditProps>(), {
 
 const commentRef = ref();
 
+/**
+ * Initialize comment widget watchers
+ * Refreshes SmartComment when selected case changes
+ */
 onMounted(() => {
   watch(() => caseId.value, async (newValue) => {
     if (!newValue) {

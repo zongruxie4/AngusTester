@@ -8,6 +8,7 @@ import { funcPlan } from '@/api/tester';
 
 const { t } = useI18n();
 
+// Component props interface
 interface Props {
   planId?: string;
   planName?: string;
@@ -17,28 +18,40 @@ const props = withDefaults(defineProps<Props>(), {
   planName: ''
 });
 
-// eslint-disable-next-line func-call-spacing
+// Component emits
 const emit = defineEmits<{
-  (e: 'change', value:string|undefined): void
+  (e: 'change', value: string | undefined): void
 }>();
 
-// Inject project information
+// Basic state management
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const planInfo = ref<{ id: string, name: string }>();
 const checkedId = ref<string>();
 
+// UI state management
 const showSelect = ref(false);
-const todoHandler = () => {
+const selectValue = ref<string>();
+
+// Event handlers
+
+/**
+ * Handle add plan button click
+ */
+const handleAddPlan = () => {
   showSelect.value = true;
   selectValue.value = undefined;
 };
 
-const selectValue = ref<string>();
+/**
+ * Handle plan selection change
+ * @param _value - Selected value
+ * @param option - Selected option
+ */
 const selectChange = (_value: any, option: any) => {
   showSelect.value = false;
   const { id, name } = option;
-  const exsitId = planInfo.value?.id;
-  if (exsitId === id) {
+  const existId = planInfo.value?.id;
+  if (existId === id) {
     return;
   }
 
@@ -47,6 +60,9 @@ const selectChange = (_value: any, option: any) => {
   emit('change', checkedId.value);
 };
 
+/**
+ * Toggle plan selection
+ */
 const selectTag = () => {
   if (checkedId.value) {
     checkedId.value = undefined;
@@ -57,16 +73,25 @@ const selectTag = () => {
   emit('change', checkedId.value);
 };
 
+/**
+ * Close plan tag
+ */
 const closeTag = () => {
   planInfo.value = undefined;
   checkedId.value = undefined;
   emit('change', checkedId.value);
 };
 
+/**
+ * Handle select blur
+ */
 const handleBlur = () => {
   showSelect.value = false;
 };
 
+/**
+ * Load plan details
+ */
 const loadPlanList = async () => {
   const [error, res] = await funcPlan.getPlanDetail(props.planId);
   if (error) {
@@ -76,6 +101,7 @@ const loadPlanList = async () => {
   planInfo.value = res?.data;
 };
 
+// Watchers
 watch(() => props.planId, (newValue) => {
   if (newValue) {
     checkedId.value = newValue;
@@ -93,6 +119,7 @@ watch(() => props.planId, (newValue) => {
   immediate: true
 });
 
+// Expose functions to parent components
 defineExpose({
   checkedId
 });
@@ -104,7 +131,7 @@ defineExpose({
         v-if="!showSelect"
         class="h-6 flex items-center"
         size="small"
-        @click="todoHandler">
+        @click="handleAddPlan">
         <Icon icon="icon-jia" class="text-3 mr-1 -mt-0.25" />
         {{ t('common.plan') }}
       </Button>

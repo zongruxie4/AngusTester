@@ -41,7 +41,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  caseDetail: () => ({ id: '' }),
+  caseDetail: () => ({ id: '' } as unknown as CaseDetail),
   actionAuth: () => ({})
 });
 
@@ -90,10 +90,17 @@ watch(() => bigLayout.value, (newValue) => {
   immediate: true
 });
 
+/**
+ * Disable date before yesterday end-of-day
+ */
 const disabledDate = current => {
   return current && current < dayjs().subtract(1, 'day').endOf('day');
 };
 
+/**
+ * Download a file by URL
+ * @param url - File URL to download
+ */
 const handleDownload = (url:string) => {
   download(url);
 };
@@ -166,9 +173,12 @@ const priorityRef = ref();
 const evalWorkloadInputRef = ref();
 const actualWorkloadInputRef = ref();
 
-// 编辑名称
 const isEditName = ref(false);
 const editNameLoading = ref(false);
+
+/**
+ * Enter editing mode for name and focus the input
+ */
 const openEditName = () => {
   isEditName.value = true;
   nextTick(() => {
@@ -176,6 +186,9 @@ const openEditName = () => {
   });
 };
 
+/**
+ * Persist new name to backend on blur
+ */
 const editName = async (event) => {
   if (event.target.value === props.caseDetail?.name || !event.target.value) {
     isEditName.value = false;
@@ -192,10 +205,13 @@ const editName = async (event) => {
   emit('editSuccess');
 };
 
-// 编辑优先级
 const isEditPriority = ref(false);
 const editPriorityLoading = ref(false);
 const priority = ref();
+
+/**
+ * Enter editing mode for priority and focus the selector
+ */
 const openEditPriority = () => {
   isEditPriority.value = true;
   priority.value = props.caseDetail?.priority?.value;
@@ -204,8 +220,11 @@ const openEditPriority = () => {
   });
 };
 
+/**
+ * Persist new priority to backend
+ * @param value - New priority value
+ */
 const editPriority = async (value:Priority) => {
-  // 请求加载中,不允许再次发送
   if (editPriorityLoading.value || value === props.caseDetail?.priority?.value) {
     isEditPriority.value = false;
     return;
@@ -221,9 +240,12 @@ const editPriority = async (value:Priority) => {
   emit('editSuccess');
 };
 
-// 编辑评估工作量
 const isEditEvalWorkload = ref(false);
 const editEvalWorkloadLoading = ref(false);
+
+/**
+ * Enter editing mode for estimated workload and focus the input
+ */
 const openEditEvalWorkload = () => {
   isEditEvalWorkload.value = true;
   nextTick(() => {
@@ -231,6 +253,9 @@ const openEditEvalWorkload = () => {
   });
 };
 
+/**
+ * Persist estimated workload to backend
+ */
 const editEvalWorkload = async (event) => {
   if (+event.target.value === (+props.caseDetail?.evalWorkload) || (!event.target.value && !props.caseDetail?.evalWorkload)) {
     isEditEvalWorkload.value = false;
@@ -247,10 +272,13 @@ const editEvalWorkload = async (event) => {
   emit('editSuccess');
 };
 
-// 编辑实际工作量
 const alWorkload = ref(props.caseDetail?.actualWorkload);
 const isEditActualWorkload = ref(false);
 const editActualWorkloadLoading = ref(false);
+
+/**
+ * Enter editing mode for actual workload and focus the input
+ */
 const openEditActualWorkload = () => {
   alWorkload.value = props.caseDetail.actualWorkload || props.caseDetail.evalWorkload;
   isEditActualWorkload.value = true;
@@ -259,6 +287,9 @@ const openEditActualWorkload = () => {
   });
 };
 
+/**
+ * Persist actual workload to backend
+ */
 const editActualWorkload = async (event) => {
   if (+event.target.value === (+props.caseDetail?.actualWorkload) || (!event.target.value && !props.caseDetail?.evalWorkload)) {
     isEditActualWorkload.value = false;
@@ -275,11 +306,14 @@ const editActualWorkload = async (event) => {
   emit('editSuccess');
 };
 
-// 编辑标签
 const tagsIds = ref<string[]>([]);
 const defaultTags = ref<{[key: string]: { name: string; id: string }}>({});
 const isEditTag = ref(false);
 const editTagLoading = ref(false);
+
+/**
+ * Enter editing mode for tags and focus the selector
+ */
 const openEditTag = () => {
   tagsIds.value = (props.caseDetail?.tags || [])?.map(item => {
     defaultTags.value[item.id] = { id: item.id, name: item.name };
@@ -291,6 +325,9 @@ const openEditTag = () => {
   });
 };
 
+/**
+ * Persist tags to backend if changed and within limit
+ */
 const editTag = async () => {
   if (editTagLoading.value || tagsIds.value?.length > 5) {
     isEditTag.value = false;
@@ -312,11 +349,14 @@ const editTag = async () => {
   emit('editSuccess');
 };
 
-// 修改时间
 const datePickerRef = ref();
 const isEditDisabledDate = ref(false);
 const deadlineDate = ref(dayjs().add(1, 'day').format(DATE_TIME_FORMAT));
 const loading = ref(false);
+
+/**
+ * Enter editing mode for deadline date and focus the picker
+ */
 const openEditDeadlineDate = () => {
   deadlineDate.value = props.caseDetail?.deadlineDate;
   isEditDisabledDate.value = true;
@@ -325,6 +365,9 @@ const openEditDeadlineDate = () => {
   });
 };
 
+/**
+ * Persist deadline date, with validation for future date
+ */
 const editDeadlineDate = async () => {
   if (loading.value || props.caseDetail?.deadlineDate === deadlineDate.value) {
     isEditDisabledDate.value = false;
@@ -350,14 +393,24 @@ const attachmentsData = computed(() => {
 });
 
 const isUpload = ref(false);
+/**
+ * Show upload controls on mouse enter
+ */
 const handleMouseenter = () => {
   isUpload.value = true;
 };
+
+/**
+ * Hide upload controls on mouse leave
+ */
 const handleMouseleave = () => {
   isUpload.value = false;
 };
 
-// 删除附件
+/**
+ * Remove attachment by index
+ * @param i - Attachment index to remove
+ */
 const cancelFile = async (i:number) => {
   if (!attachmentsData.value.length) {
     return;
@@ -373,7 +426,10 @@ const cancelFile = async (i:number) => {
 };
 
 const fileList = ref<{id?:string, name:string, url:string}[]>([]);
-// 上传附件
+
+/**
+ * Upload attachment via custom request
+ */
 const upLoadFile = async function (file) {
   if (fileList.value.length >= 5 || uploadLoading.value) {
     return;
@@ -390,6 +446,9 @@ const upLoadFile = async function (file) {
 };
 
 const uploadLoading = ref<boolean>(false);
+/**
+ * Persist new attachments list after upload
+ */
 const updateAttachment = async (data) => {
   if (uploadLoading.value) {
     return;
@@ -409,19 +468,29 @@ const updateAttachment = async (data) => {
   emit('editSuccess');
 };
 
-// 修改前置条件
 const preconditionRichRef = ref();
 const preconditionError = ref();
 const isEditPrecondition = ref(false);
 const preconditionContent = ref();
 const savePreconditionLoading = ref(false);
+
+/**
+ * Enter editing mode for precondition
+ */
 const handleEditPrecondition = () => {
   isEditPrecondition.value = true;
   preconditionContent.value = props.caseDetail.precondition || undefined;
 };
+/**
+ * Cancel precondition editing
+ */
 const cancelEditPrecondition = () => {
   isEditPrecondition.value = false;
 };
+
+/**
+ * Persist precondition with length validation
+ */
 const savePrecondition = async () => {
   if (preconditionContent.value === props.caseDetail.precondition) {
     isEditPrecondition.value = false;
@@ -448,17 +517,28 @@ const savePrecondition = async () => {
   emit('editSuccess');
 };
 
-// 修改测试步骤
 const isEditSteps = ref(false);
 const stepsContent = ref([]);
 const saveStepsLoading = ref(false);
+
+/**
+ * Enter editing mode for steps (deep clone original)
+ */
 const handleEditSteps = () => {
   isEditSteps.value = true;
   stepsContent.value = JSON.parse(JSON.stringify(props.caseDetail?.steps || []));
 };
+
+/**
+ * Cancel steps editing
+ */
 const cancelEditSteps = () => {
   isEditSteps.value = false;
 };
+
+/**
+ * Persist steps
+ */
 const saveSteps = async () => {
   if (saveStepsLoading.value) {
     return;
@@ -481,13 +561,25 @@ const descError = ref(false);
 const isEditDescription = ref(false);
 const descriptionContent = ref();
 const saveDescriptionLoading = ref(false);
+
+/**
+ * Enter editing mode for description
+ */
 const handleEditDescription = () => {
   isEditDescription.value = true;
   descriptionContent.value = props.caseDetail?.description || undefined;
 };
+
+/**
+ * Cancel description editing
+ */
 const cancelEditDescription = () => {
   isEditDescription.value = false;
 };
+
+/**
+ * Persist description with length validation
+ */
 const saveDescription = async () => {
   if (descRichRef.value.getLength() > 6000) {
     descError.value = true;
@@ -514,11 +606,14 @@ const saveDescription = async () => {
   emit('editSuccess');
 };
 
-// 修改测试人
 const testerSelectRef = ref();
 const isEditTester = ref(false);
 const testerIcContent = ref();
 const saveTesterLoading = ref(false);
+
+/**
+ * Enter editing mode for tester selector
+ */
 const handleEditTester = () => {
   isEditTester.value = true;
   testerIcContent.value = props.caseDetail?.testerId;
@@ -527,6 +622,9 @@ const handleEditTester = () => {
   });
 };
 
+/**
+ * Persist tester selection
+ */
 const saveTester = async () => {
   if (testerIcContent.value === props.caseDetail?.testerId) {
     isEditTester.value = false;
@@ -548,8 +646,11 @@ const saveTester = async () => {
   emit('editSuccess');
 };
 
+/**
+ * Set current user as tester
+ */
 const handleSetTester = async () => {
-  if (userInfo?.value.id === props.caseDetail?.testerId) {
+  if (userInfo?.value?.id === props.caseDetail?.testerId) {
     return;
   }
   if (saveTesterLoading.value) {
@@ -558,7 +659,7 @@ const handleSetTester = async () => {
   saveTesterLoading.value = true;
   const [error] = await funcCase.updateCase([{
     id: props.caseDetail.id,
-    testerId: userInfo?.value.id
+    testerId: userInfo?.value?.id
   }]);
   saveTesterLoading.value = false;
   if (error) {
@@ -567,10 +668,13 @@ const handleSetTester = async () => {
   emit('editSuccess');
 };
 
-// 修改版本
 const versionRef = ref();
 const versionEditFlag = ref(false);
 const versionValue = ref();
+
+/**
+ * Enter editing mode for software version
+ */
 const toEditVersion = () => {
   versionEditFlag.value = true;
   versionValue.value = props.caseDetail?.softwareVersion;
@@ -583,10 +687,16 @@ const toEditVersion = () => {
   });
 };
 
+/**
+ * Update local version value on change
+ */
 const versionChange = (value) => {
   versionValue.value = value;
 };
 
+/**
+ * Persist version value on blur
+ */
 const versionBlur = async () => {
   const value = versionValue.value;
   if (value === props.caseDetail?.softwareVersion) {
