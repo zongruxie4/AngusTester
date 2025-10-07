@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { Grid, ReviewStatus } from '@xcan-angus/vue-ui';
-import { EvalWorkloadMethod } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { Tag } from 'ant-design-vue';
 
@@ -13,7 +12,7 @@ interface Props {
   caseInfo?: {[key: string]: any}
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   caseInfo: undefined
 });
 

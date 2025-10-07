@@ -2,12 +2,11 @@
 import { computed, defineAsyncComponent, inject, onMounted, provide, ref, Ref } from 'vue';
 import { Spin } from '@xcan-angus/vue-ui';
 import elementResizeDetectorMaker from 'element-resize-detector';
-import { localStore, PageQuery } from '@xcan-angus/infra';
+import { appContext, localStore, PageQuery, utils, SearchCriteria } from '@xcan-angus/infra';
 
 import { CaseCount, CaseViewMode } from '@/views/test/case/types';
 
-const Statistics = defineAsyncComponent(() => import('@/views/test/case/list/statistics/index.vue'));
-const PieChart = defineAsyncComponent(() => import('@/views/test/case/list/statistics/Chart.vue'));
+const StatisticsPanel = defineAsyncComponent(() => import('@/views/test/case/list/statistics/index.vue'));
 const CaseList = defineAsyncComponent(() => import('@/views/test/case/list/List.vue'));
 
 interface Props {
@@ -33,29 +32,39 @@ const emits = defineEmits<{(e: 'cacheParams', value: PageQuery): void;
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
-const userInfo: any = inject('userInfo');
+const userInfo = ref(appContext.getUser());
 
 // 存储展示模式的key
 const cacheModeKey = computed(() => {
-  return `${userInfo.id}${projectId.value}caseMode`;
+  return `${userInfo?.value?.id}${projectId.value}caseMode`;
 });
 // 存储展开收起的key
 const cacheCountKey = computed(() => {
-  return `${userInfo.id}${projectId.value}caseCount`;
+  return `${userInfo?.value?.id}${projectId.value}caseCount`;
 });
 
 const queryParams = ref<PageQuery>();
-const isOpenCount = ref(typeof localStore.get(cacheCountKey.value) === 'boolean' ? localStore.get(cacheCountKey.value) : true);
+const isStatisticsCollapsed = ref(typeof localStore.get(cacheCountKey.value) === 'boolean' ? localStore.get(cacheCountKey.value) : true);
 const viewMode = ref<CaseViewMode>(localStore.get(cacheModeKey.value) ?? CaseViewMode.flat);
 
 const caseCountData = ref<CaseCount>();
 
+// Statistics panel state
+const statisticsRefreshNotify = ref<string>(''); // Statistics panel refresh notification
+
 const countChange = () => {
-  isOpenCount.value = !isOpenCount.value;
-  localStore.set(cacheCountKey.value, isOpenCount.value);
-  if (isOpenCount.value) {
+  isStatisticsCollapsed.value = !isStatisticsCollapsed.value;
+  localStore.set(cacheCountKey.value, isStatisticsCollapsed.value);
+  if (isStatisticsCollapsed.value) {
     funcCaseListRef.value?.loadCaseCount();
   }
+};
+
+/**
+ * Handles refresh notifications for statistics panel
+ */
+const handleRefreshChange = () => {
+  statisticsRefreshNotify.value = utils.uuid();
 };
 
 const viewModeChange = (value: CaseViewMode) => {
@@ -74,6 +83,20 @@ const handleOpenInfo = async (tabParams) => {
   emits('openInfo', tabParams);
 };
 
+/**
+ * Computed property for statistics panel parameters
+ * Builds parameters for statistics API calls
+ */
+const statisticsParameters = computed(() => {
+  const parameters: { projectId: string; filters?: SearchCriteria[] } = {
+    projectId: projectId.value
+  };
+  if (queryParams.value?.filters) {
+    parameters.filters = queryParams.value.filters;
+  }
+  return parameters;
+});
+
 const caseCountRef = ref(null);
 const resizeDetector = elementResizeDetectorMaker();
 const countHeight = ref(0);
@@ -86,6 +109,9 @@ onMounted(() => {
     return;
   }
   resizeDetector.listenTo(caseCountRef.value, resize);
+
+  // Initialize statistics refresh
+  handleRefreshChange();
 });
 
 provide('updateLoading', updateLoading as () => void);
@@ -97,32 +123,30 @@ defineExpose({
 });
 </script>
 <template>
-  <Spin
-    :spinning="loading"
-    class="flex flex-col h-full overflow-y-auto overflow-x-hidden">
-    <div
-      ref="caseCountRef"
-      class="flex items-center top-count-element mx-3.5 justify-between"
-      :class="{ 'top-count-element-expanded': isOpenCount }">
-      <template v-if="isOpenCount">
-        <Statistics :dataSource="caseCountData" class="" />
-        <PieChart :dataSource="caseCountData" />
-      </template>
-    </div>
+  <Spin :spinning="loading" class="flex flex-col pl-3.5 pt-3.5 h-full overflow-y-auto overflow-x-hidden">
+    <StatisticsPanel
+      :collapse="!isStatisticsCollapsed"
+      :params="statisticsParameters"
+      :notify="statisticsRefreshNotify"
+      :userInfo="{ id: '' }"
+      :appInfo="{ id: '' }"
+      :projectId="projectId"
+      :class="{ 'mb-3': isStatisticsCollapsed }"
+      class="pr-5" />
 
-    <div class="p-3.5 flex-1 min-h-0">
-      <CaseList
-        ref="funcCaseListRef"
-        :count="caseCountData"
-        :viewMode="viewMode"
-        :isOpenCount="isOpenCount"
-        :queryParams="queryParams"
-        :notify="props.notify"
-        :tabInfo="props.tabInfo"
-        @viewModeChange="viewModeChange"
-        @countChange="countChange"
-        @openInfo="handleOpenInfo" />
-    </div>
+    <CaseList
+      ref="funcCaseListRef"
+      :loading="loading"
+      :count="caseCountData"
+      :viewMode="viewMode"
+      :isOpenCount="isStatisticsCollapsed"
+      :queryParams="queryParams"
+      :notify="props.notify"
+      :tabInfo="props.tabInfo"
+      @viewModeChange="viewModeChange"
+      @countChange="countChange"
+      @openInfo="handleOpenInfo"
+      @refreshChange="handleRefreshChange" />
   </Spin>
 </template>
 <style scoped>

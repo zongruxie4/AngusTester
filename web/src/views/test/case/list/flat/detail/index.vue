@@ -1,19 +1,10 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue';
 import {
-  DatePicker,
-  Grid,
-  Icon,
-  Input,
-  NoData,
-  notification,
-  ReviewStatus,
-  Select,
-  SelectUser,
-  Toggle
+  DatePicker, Grid, Icon, Input, NoData, notification, ReviewStatus, Select, SelectUser, Toggle
 } from '@xcan-angus/vue-ui';
 import { Button, Popover, Tag, Upload } from 'ant-design-vue';
-import { download, duration, EvalWorkloadMethod, Priority, TESTER, upload, utils, SearchCriteria } from '@xcan-angus/infra';
+import { download, duration, EvalWorkloadMethod, Priority, TESTER, upload, utils, SearchCriteria, appContext } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
@@ -62,9 +53,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const userInfo = inject('userInfo');
-
-// Inject project information
+const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const bigLayout = ref(true);
@@ -153,7 +142,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
 
 const getOneTestPass = computed(() => {
   if (props.caseDetail?.testNum && Number(props.caseDetail.testNum) > 0) {
-    return props.caseDetail?.testFailNum === '0' &&
+    return props.caseDetail?.testFailNum === 0 &&
     props.caseDetail?.testResult?.value === CaseTestResult.PASSED
       ? t('status.yes')
       : t('status.no');
@@ -164,7 +153,7 @@ const getOneTestPass = computed(() => {
 const getOneReviewPass = computed(() => {
   if (props.caseDetail?.reviewNum && Number(props.caseDetail.reviewNum) > 0) {
     return props.caseDetail?.reviewFailNum === '0' &&
-    props.caseDetail?.reviewStatus?.value === CaseTestResult.PASSED
+    props.caseDetail?.reviewStatus?.value === ReviewStatus.PASSED
       ? t('status.yes')
       : t('status.no');
   }
@@ -560,7 +549,7 @@ const saveTester = async () => {
 };
 
 const handleSetTester = async () => {
-  if (userInfo?.id === props.caseDetail?.testerId) {
+  if (userInfo?.value.id === props.caseDetail?.testerId) {
     return;
   }
   if (saveTesterLoading.value) {
@@ -569,7 +558,7 @@ const handleSetTester = async () => {
   saveTesterLoading.value = true;
   const [error] = await funcCase.updateCase([{
     id: props.caseDetail.id,
-    testerId: userInfo.id
+    testerId: userInfo?.value.id
   }]);
   saveTesterLoading.value = false;
   if (error) {

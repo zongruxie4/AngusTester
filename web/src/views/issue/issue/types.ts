@@ -98,7 +98,7 @@ export type TaskCount = {
   /** Calculates progress percentage (0-100) */
   progress: string;
   /** Calculates overdue rate percentage (0-100) */
-  overdueRate: string;
+  overdueRate: number;
 }
 
 /**

@@ -14,13 +14,13 @@ import { funcCase, funcPlan } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseActionAuth, getActionAuth } from '@/views/test/case/types';
 
-export type TabKey = 'info' | 'activity' | 'comments' | 'assocTask' | 'assocCase'
+export type TabKey = 'info' | 'activity' | 'comments' | 'assocIssues' | 'assocCases'
 
 const CaseDetailTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/index.vue'));
 const ReviewTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/Review.vue'));
-const AssocTaskTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/AssocTask.vue'));
-const AssocCaseTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/AssocCase.vue'));
-const AddTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
+const AssocIssuesTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/AssocIssues.vue'));
+const AssocCasesTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/AssocCases.vue'));
+const AddIssueModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
 
 interface IData {
   id: string;
@@ -263,7 +263,7 @@ const activityParams = ref({
 });
 
 const refresh = () => {
-  if (['info', 'assocTask', 'assocCase'].includes(activeKey.value)) {
+  if (['info', 'assocIssues', 'assocCases'].includes(activeKey.value)) {
     getCaseInfo(caseDetail.value.id);
   }
 
@@ -557,7 +557,7 @@ defineExpose({
           :caseDetail="caseDetail" />
       </TabPane>
 
-      <TabPane key="assocCase">
+      <TabPane key="assocCases">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('common.useCase') }}</span>
@@ -565,21 +565,21 @@ defineExpose({
           </div>
         </template>
 
-        <AssocCaseTab
+        <AssocCasesTab
           :dataSource="caseDetail?.refCaseInfos"
           :projectId="projectId"
           :caseId="caseDetail?.id"
           @editSuccess="editSuccess" />
       </TabPane>
 
-      <TabPane key="assocTask">
+      <TabPane key="assocIssues">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('common.issue') }}</span>
             <span>({{ getRefTaskNum(TaskType.TASK) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssuesTab
           :key="TaskType.TASK"
           :dataSource="caseDetail?.refTaskInfos"
           :projectId="projectId"
@@ -597,7 +597,7 @@ defineExpose({
             <span>({{ getRefTaskNum(TaskType.REQUIREMENT) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssuesTab
           :key="TaskType.REQUIREMENT"
           :projectId="projectId"
           :userInfo="props.userInfo"
@@ -617,7 +617,7 @@ defineExpose({
             <span>({{ getRefTaskNum(TaskType.STORY) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssuesTab
           :key="TaskType.STORY"
           :projectId="projectId"
           :userInfo="props.userInfo"
@@ -637,7 +637,7 @@ defineExpose({
             <span>({{ getRefTaskNum(TaskType.BUG) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssuesTab
           :key="TaskType.BUG"
           :projectId="projectId"
           :userInfo="props.userInfo"
@@ -657,7 +657,7 @@ defineExpose({
             <span>({{ getRefTaskNum(TaskType.API_TEST) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssuesTab
           :key="TaskType.API_TEST"
           :projectId="projectId"
           :userInfo="props.userInfo"
@@ -677,7 +677,7 @@ defineExpose({
             <span>({{ getRefTaskNum(TaskType.SCENARIO_TEST) }})</span>
           </div>
         </template>
-        <AssocTaskTab
+        <AssocIssuesTab
           :key="TaskType.SCENARIO_TEST"
           :projectId="projectId"
           :userInfo="props.userInfo"
@@ -731,7 +731,7 @@ defineExpose({
     </Tabs>
 
     <AsyncComponent :visible="taskModalVisible">
-      <AddTaskModal
+      <AddIssueModal
         v-model:visible="taskModalVisible"
         :projectId="projectId"
         :appInfo="appInfo"

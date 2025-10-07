@@ -1,124 +1,175 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-import { Icon } from '@xcan-angus/vue-ui';
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { Collapse, CollapsePanel } from 'ant-design-vue';
+import { utils, SearchCriteria } from '@xcan-angus/infra';
+import { analysis } from '@/api/tester';
+
 import { CaseCount } from '@/views/test/case/types';
 
-const { t } = useI18n();
-
-interface Props {
-  dataSource: CaseCount
+/**
+ * API request parameters interface
+ */
+interface RequestParams {
+  projectId: string;
+  filters?: SearchCriteria[];
 }
+
+/**
+ * Component props interface for Statistics component
+ */
+type Props = {
+  collapse: boolean;
+  params: RequestParams;
+  projectId: string;
+  userInfo: { id: string };
+  appInfo: { id: string };
+  notify: string;
+  moduleId?: string;
+}
+
+// Props and Emits Definition
 const props = withDefaults(defineProps<Props>(), {
-  dataSource: () => ({}) as CaseCount
+  collapse: false,
+  params: undefined,
+  projectId: undefined,
+  userInfo: undefined,
+  appInfo: undefined,
+  notify: undefined,
+  moduleId: undefined
 });
 
-const topCarObj = {
-  progress: {
-    name: t('common.progress'),
-    icon: 'icon-zonglan'
-  },
-  totalCaseNum: {
-    name: t('testCase.statisticsPanel.totalCaseNum'),
-    icon: 'icon-zongyongli'
-  },
-  pendingTestNum: {
-    name: t('testCase.statisticsPanel.pendingTestNum'),
-    icon: 'icon-daiceshi'
-  },
-  passedTestNum: {
-    name: t('testCase.statisticsPanel.passedTestNum'),
-    icon: 'icon-ceshitongguo'
-  },
-  notPassedTestNum: {
-    name: t('testCase.statisticsPanel.notPassedTestNum'),
-    icon: 'icon-ceshiweitongguo'
-  },
-  oneTimePassedTestNum: {
-    name: t('testCase.statisticsPanel.oneTimePassedTestNum'),
-    icon: 'icon-a-yicixingceshitongguoshu'
-  },
-  oneTimePassedTestRate: {
-    name: t('testCase.statisticsPanel.oneTimePassedTestRate'),
-    icon: 'icon-a-yicixingceshitongguoshuai'
-  },
-  overdueNum: {
-    name: t('testCase.statisticsPanel.overdueCount'),
-    icon: 'icon-yiyuqi1'
-  },
-  blockedTestNum: {
-    name: t('testCase.statisticsPanel.blockedTestNum'),
-    icon: 'icon-zusaizhong'
-  },
-  canceledTestNum: {
-    name: t('testCase.statisticsPanel.canceledTestNum'),
-    icon: 'icon-yiquxiao'
-  },
+// eslint-disable-next-line func-call-spacing
+const emit = defineEmits<{
+  (e: 'update:loading', value: boolean): void;
+}>();
 
-  evalWorkload: {
-    name: t('common.evalWorkload'),
-    icon: 'icon-pinggugongzuoliang'
-  },
-  completedWorkload: {
-    name: t('common.completedWorkload'),
-    icon: 'icon-wanchenggongzuoliang'
-  },
-  oneTimePassReviewNum: {
-    name: t('testCase.statisticsPanel.oneTimePassReviewNum'),
-    icon: 'icon-a-yicixingpingshentongguoshu'
-  },
-  oneTimePassReviewRate: {
-    name: t('testCase.statisticsPanel.oneTimePassReviewRate'),
-    icon: 'icon-a-yicixingpingshentongguoshuai'
+/**
+ * Lazy-loaded Count component for displaying statistics cards
+ */
+const Count = defineAsyncComponent(() => import('./Count.vue'));
+/**
+ * Lazy-loaded Chart component for displaying charts
+ */
+const Chart = defineAsyncComponent(() => import('./Chart.vue'));
+
+// Constants and State
+const componentId = utils.uuid();
+
+/**
+ * Default statistics data structure with all values initialized to 0
+ */
+const defaultStatisticsData: CaseCount = {
+  actualWorkload: 0,
+  canceledTestNum: 0,
+  completedWorkload: 0,
+  evalWorkload: 0,
+  failedReviewNum: 0,
+  notPassedTestNum: 0,
+  oneTimePassedTestNum: 0,
+  oneTimePassedTestRate: 0,
+  oneTimePassReviewNum: 0,
+  oneTimePassReviewRate: 0,
+  overdueNum: 0,
+  passedReviewNum: 0,
+  passedTestNum: 0,
+  pendingReviewNum: 0,
+  pendingTestNum: 0,
+  progress: '0',
+  totalCaseNum: 0,
+  totalReviewCaseNum: 0,
+  totalReviewedCaseNum: 0,
+  totalReviewTimes: 0,
+  totalTestFailTimes: 0,
+  totalTestTimes: 0,
+  totalTestedCaseNum: 0,
+  validCaseNum: 0,
+  blockedTestNum: 0
+};
+
+const statisticsData = ref<CaseCount>({ ...defaultStatisticsData });
+
+/**
+ * Determines the active key for the collapse component based on collapse state
+ */
+const activeKey = computed(() => {
+  if (props.collapse) {
+    return '';
+  }
+  return componentId;
+});
+
+/**
+ * Loads statistics data from the API
+ * <p>
+ * Constructs request parameters and calls the analysis API to fetch case statistics.
+ * Updates the loading state and statistics data based on the response.
+ */
+const loadStatisticsData = async (): Promise<void> => {
+  emit('update:loading', true);
+
+  let requestParams: RequestParams = {
+    projectId: props.projectId
+  };
+
+  // Merge additional parameters if provided
+  if (props.params) {
+    requestParams = { ...requestParams, ...props.params };
+  }
+
+  const [error, response] = await analysis.getFuncCaseCount(requestParams);
+  emit('update:loading', false);
+
+  if (error) {
+    return;
+  }
+
+  if (response?.data) {
+    statisticsData.value = response.data;
   }
 };
 
-const getCount = (key) => {
-  if (!props.dataSource) {
-    return 0;
-  }
-  if (props.dataSource[key] === undefined) {
-    return ['oneTimePassedTestRate', 'oneTimePassReviewRate', 'progress'].includes(key) ? '0.00%' : 0;
-  }
-  return ['oneTimePassedTestRate', 'oneTimePassReviewRate', 'progress'].includes(key)
-    ? props.dataSource[key] + '%'
-    : key === 'totalUsedPlan'
-      ? `${props.dataSource[key]}/${props.dataSource.totalPlan}`
-      : props.dataSource[key];
-};
+// Lifecycle Hooks
+onMounted(() => {
+  // Watch for changes in filter parameters
+  watch(() => props.params, (newValue) => {
+    if (!newValue) {
+      return;
+    }
+    loadStatisticsData();
+  }, { immediate: false });
+
+  // Watch for notification changes to trigger data refresh
+  watch(() => props.notify, (newValue) => {
+    if (newValue === undefined || newValue === null) {
+      return;
+    }
+    loadStatisticsData();
+  }, { immediate: true });
+});
 </script>
 <template>
-  <div class="flex items-center flex-wrap text-3 leading-3 text-theme-sub-content" style="max-width: 1280px;">
-    <div
-      v-for="(value,key) in topCarObj"
-      :key="key"
-      class="flex p-3 rounded-lg mt-2 mr-2 "
-      style="min-width: 172px;background-color: rgb(252, 250, 255);">
-      <Icon class="text-10  mr-3 flex-none" :icon="value.icon" />
-      <div class="pt-1.5 flex flex-col justify-between">
-        <div class="text-theme-content text-4 text">
-          {{ getCount(key) }}
-        </div>
-        <div>{{ value.name }}</div>
-      </div>
-    </div>
-  </div>
+  <!-- Statistics panel with collapsible functionality -->
+  <Collapse
+    v-model:activeKey="activeKey"
+    ghost
+    collapsible="disabled">
+    <CollapsePanel :key="componentId" :showArrow="false">
+      <!-- Statistics cards section -->
+      <Count :dataSource="statisticsData" class="statistics-cards" />
+      <!-- ECharts section -->
+      <Chart :dataSource="statisticsData" />
+    </CollapsePanel>
+  </Collapse>
 </template>
 <style scoped>
-.card-bg {
-  background-color: rgb(252, 250, 255);
+.ant-collapse :deep(.ant-collapse-item) .ant-collapse-header {
+  display: none;
 }
 
-.flex-w {
-  flex: 1 1 20%;
-}
-
-.right-item {
-  margin-left: 8px;
-}
-
-@media screen and (min-width: 1441px) {
-  .right-item {
-    margin-left: 20px;
-  }
+.ant-collapse :deep(.ant-collapse-content) .ant-collapse-content-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
 }
 </style>

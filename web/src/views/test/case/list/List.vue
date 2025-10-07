@@ -1,49 +1,14 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Button, Switch } from 'ant-design-vue';
+import { Button } from 'ant-design-vue';
+import { AsyncComponent, modal, NoData, notification } from '@xcan-angus/vue-ui';
 import {
-  AsyncComponent,
-  Colon,
-  Dropdown,
-  DropdownGroup,
-  DropdownSort,
-  Icon,
-  IconCount,
-  IconRefresh,
-  Input,
-  modal,
-  NoData,
-  notification,
-  QuickSelect,
-  ReviewStatus,
-  SearchPanel,
-  Select,
-  Tooltip
-} from '@xcan-angus/vue-ui';
-import {
-  appContext,
-  download,
-  duration,
-  EnumMessage,
-  enumUtils,
-  http,
-  NumberCompareCondition,
-  Priority,
-  ReviewStatus as ReviewStatusEnum,
-  PageQuery,
-  SearchCriteria,
-  TESTER,
-  toClipboard,
-  XCanDexie
+  appContext, download, enumUtils, http, PageQuery, SearchCriteria, TESTER, toClipboard
+  , ReviewStatus
 } from '@xcan-angus/infra';
-import dayjs, { Dayjs } from 'dayjs';
-import { debounce } from 'throttle-debounce';
 import { analysis, funcCase, funcPlan, modules } from '@/api/tester';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { travelTreeData } from '@/utils/utils';
-import TaskPriority from '@/components/TaskPriority/index.vue';
-import TestResult from '@/components/TestResult/index.vue';
 
 import { CaseActionAuth, CaseDetailChecked, EnabledGroup } from './types';
 import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
@@ -64,17 +29,11 @@ const AiAddModal = defineAsyncComponent(() => import('@/views/test/case/list/AiA
 const ReviewModal = defineAsyncComponent(() => import('@/views/test/case/list/Review.vue'));
 const MoveModal = defineAsyncComponent(() => import('@/views/test/case/list/Move.vue'));
 const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/test/case/list/UpdateResult.vue'));
-const TagList = defineAsyncComponent(() => import('@/views/test/case/list/TagSelector.vue'));
-const PlanList = defineAsyncComponent(() => import('@/views/test/case/list/PlanSelector.vue'));
 const UploadCaseModal = defineAsyncComponent(() => import('@/views/test/case/list/Upload.vue'));
 const EditTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
+const SearchPanel = defineAsyncComponent(() => import('@/views/test/case/list/SearchPanel.vue'));
 
 const { t } = useI18n();
-
-interface IData {
-  id: string;
-  data: any
-}
 
 interface Props {
   loading: boolean;
@@ -109,25 +68,20 @@ const emits = defineEmits<{
 const projectInfo = inject('projectInfo', ref({ id: '', name: '' }));
 const userInfo = inject<{ id: string, fullName: string }>('userInfo');
 const appInfo = inject<{ id: string, name: string }>('appInfo');
-const aiEnabled = inject('aiEnabled', ref(false));
 const updateLoading = inject<((value: boolean) => void)>('updateLoading', () => undefined);
 const isAdmin = computed(() => appContext.isAdmin());
-const defaultUser = { [userInfo?.id]: { fullName: userInfo?.fullName, id: userInfo?.id } };
-
-const boardsGroupKey = ref<'none' | 'testerName' | 'lastModifiedByName'>('none');
-const boardsOrderBy = ref<'priority' | 'deadlineDate' | 'createdByName' | 'testerName'>();
-const boardsOrderSort = ref<PageQuery.OrderSort>();
 
 const firstLoadInfo = ref(true);
 const firstLoading = ref(true);
-const actionType = ref(undefined);
-
+const actionType = ref<'search' | 'del' | undefined>(undefined);
 const searchPanelRef = ref();
 
 const params = ref({
   pageNo: 1,
   pageSize: 10,
-  filters: []
+  filters: [] as SearchCriteria[],
+  orderBy: undefined as 'priority' | 'deadlineDate' | 'createdByName' | 'testerName' | undefined,
+  orderSort: undefined as PageQuery.OrderSort | undefined
 });
 const total = ref(0);
 
@@ -145,12 +99,12 @@ const refreshChange = () => {
 const setParamsAndLoadData = () => {
   params.value.pageNo = 1;
   actionType.value = 'search';
-  setParamsFilters();
-  setQuickType();
   refreshChange();
 };
 
 const enabledGroup = ref<EnabledGroup>(true);
+const moduleId = ref();
+
 const enabledGroupChange = (value) => {
   enabledGroup.value = value;
   if (enabledGroup.value) {
@@ -160,257 +114,52 @@ const enabledGroupChange = (value) => {
   }
 };
 
-const searchData = ref<SearchCriteria[]>([]);
-
-const selectedTypes = ref<string[]>([]);
-
-const overdue = ref(false);
-const overdueChange = (_val) => {
-  overdue.value = _val;
-  setParamsAndLoadData();
-};
-
-const planId = ref();
-const planName = ref();
-
-const tagIds = ref<string[]>([]);
-
-const tagChange = (_tagIds: string[]) => {
-  tagIds.value = _tagIds;
-  setParamsAndLoadData();
-};
-
-const planChange = (_planId: string) => {
-  planId.value = _planId;
-  setParamsAndLoadData();
-};
-
-const testNum = ref(''); // 测试次数
-const testNumScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal); // 测试次数p
-const testFailNum = ref(''); // 失败次数
-const testFailScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal); // 失败次数op
-const reviewNum = ref(''); // 评审次数
-const reviewNumScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal); // 评审次数op
-
-const handleTimesChange = debounce(duration.resize, (value: string, type: 'testNum' | 'testFailNum' | 'reviewNum') => {
-  if (type === 'testNum') {
-    testNum.value = value;
-  }
-  if (type === 'testFailNum') {
-    testFailNum.value = value;
-  }
-  if (type === 'reviewNum') {
-    reviewNum.value = value;
-  }
-
-  setParamsAndLoadData();
-});
-
-const handleScopeChange = (value: SearchCriteria.OpEnum, type: 'testNum' | 'testFailNum' | 'reviewNum') => {
-  if (type === 'testNum') {
-    testNumScope.value = value;
-    if (!testNum.value) {
-      return;
-    }
-  }
-  if (type === 'testFailNum') {
-    testFailScope.value = value;
-    if (!testFailNum.value) {
-      return;
-    }
-  }
-  if (type === 'reviewNum') {
-    reviewNumScope.value = value;
-    if (!reviewNum.value) {
-      return;
-    }
-  }
-  setParamsAndLoadData();
-};
-
-const setParamsFilters = () => {
-  const othersData: SearchCriteria[] = [];
-  if (testNum.value) {
-    othersData.push({ key: 'testNum', op: testNumScope.value, value: testNum.value });
-  }
-  if (testFailNum.value) {
-    othersData.push({ key: 'testFailNum', op: testFailScope.value, value: testFailNum.value });
-  }
-  if (testFailNum.value) {
-    othersData.push({ key: 'reviewNum', op: reviewNumScope.value, value: reviewNum.value });
-  }
-
-  if (planId.value) {
-    othersData.push(
-      {
-        key: 'planId',
-        op: SearchCriteria.OpEnum.Equal,
-        value: planId.value
-      }
-    );
-  }
-  if (overdue.value) {
-    othersData.push({
-      key: 'overdue',
-      op: SearchCriteria.OpEnum.Equal,
-      value: true
-    });
-  }
-
-  if (tagIds.value?.length) {
-    const set = new Set(tagIds.value);
-    othersData.push({
-      key: 'tagId',
-      op: SearchCriteria.OpEnum.In,
-      value: Array.from(set)
-    });
-  }
-  params.value.filters = [...searchData.value, ...othersData];
-};
-
-const quickSelectDate = ref<string[]>([]);
-const getQuickDate = (type) => {
-  let _startDate: Dayjs | undefined;
-  let _endDate: Dayjs | undefined;
-
-  if (type === 'last1Day') {
-    _startDate = dayjs().startOf('date');
-    _endDate = dayjs().endOf('date');
-  }
-
-  if (type === 'last3Days') {
-    _startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-    _endDate = dayjs();
-  }
-
-  if (type === 'last7Days') {
-    _startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-    _endDate = dayjs();
-  }
-
-  return [_startDate ? _startDate.format(DATE_TIME_FORMAT) : '', _endDate ? _endDate.format(DATE_TIME_FORMAT) : ''];
-};
-
-// 比较快速选中的时间和搜索框时间是否一致
-const getCreatedDateIsQuickDate = (createdDateItems, quickSelectDate) => {
-  let hasUpDateTime = false;
-  if (createdDateItems.length) {
-    for (let i = 0; i < createdDateItems.length; i++) {
-      const item = createdDateItems[i];
-      if (item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
-        hasUpDateTime = item.value === quickSelectDate[0];
-      }
-
-      if (item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.LessThanEqual) {
-        hasUpDateTime = item.value === quickSelectDate[1];
-      }
-    }
-  }
-  return hasUpDateTime;
-};
-
-const quickSearchChange = (types: string[], allType: boolean) => {
+// Search panel event handlers
+const handleSearchChange = (filters: SearchCriteria[]) => {
   params.value.pageNo = 1;
-  selectedTypes.value = types;
+  params.value.filters = filters;
   actionType.value = 'search';
-  const _filters = params.value.filters || [];
-  const createdByItem = _filters.find(item => item.key === 'createdBy');
-  const testerIdItem = _filters.find(item => item.key === 'testerId');
-  const testResultItem = _filters.find(item => item.key === 'testResult');
-  const createdDateItems = _filters.filter(item => item.key === 'createdDate');
-  if (types.includes('all')) {
-    // 主动选中全部
-    if (allType) {
-      testNum.value = '';
-      testFailNum.value = '';
-      reviewNum.value = '';
-      overdue.value = false;
-      if (_filters?.length) {
-        const othersParams = _filters;
-        if (othersParams.length) {
-          searchPanelRef.value.clear();
-        } else {
-          refreshChange();
-        }
-      }
-      return;
-    }
+  refreshChange();
+};
 
-    if (_filters?.length) {
-      const hasUpDateTime = getCreatedDateIsQuickDate(createdDateItems, quickSelectDate.value);
+const handleViewModeChange = (viewMode: CaseViewMode) => {
+  emits('viewModeChange', viewMode);
+};
 
-      const configItems = [];
-      if (hasUpDateTime) {
-        configItems.push({ valueKey: 'createdDate', value: undefined });
-      }
+const handleCountChange = () => {
+  emits('countChange');
+};
 
-      if (createdByItem?.value === userInfo.id) {
-        configItems.push({ valueKey: 'createdBy', value: undefined });
-      }
+const handleRefresh = () => {
+  params.value.pageNo = 1;
+  refreshChange();
+};
 
-      if (testerIdItem?.value === userInfo.id && testResultItem?.value === CaseTestResult.PENDING) {
-        configItems.push({ valueKey: 'testerId', value: undefined });
-        configItems.push({ valueKey: 'testResult', value: undefined });
-      }
+const handleAdd = () => {
+  editCase.value = undefined;
+  addVisible.value = true;
+};
 
-      if (configItems.length) {
-        searchPanelRef.value.setConfigs(configItems);
-      } else {
-        selectedTypes.value = [];
-      }
-    }
+const handleAiAdd = () => {
+  aiAddVisible.value = true;
+};
+
+const handleExport = async () => {
+  if (exportLoading.value) {
     return;
   }
 
-  if (types.includes('last1Day') || types.includes('last3Days') || types.includes('last7Days')) {
-    if (types.includes('last1Day')) {
-      const _date = getQuickDate('last1Day');
-      quickSelectDate.value = _date;
-    }
+  exportLoading.value = true;
+  const _filters = selectedRowKeys.value.length
+    ? [...params.value.filters, { key: 'id', value: selectedRowKeys.value, op: SearchCriteria.OpEnum.In }]
+    : params.value.filters;
+  const _params = http.getURLSearchParams({ filters: _filters }, true);
+  await download(`${TESTER}/func/case/export?projectId=${projectInfo.value.id}&${_params}`);
+  exportLoading.value = false;
+};
 
-    if (types.includes('last3Days')) {
-      const _date = getQuickDate('last3Days');
-      quickSelectDate.value = _date;
-    }
-
-    if (types.includes('last7Days')) {
-      const _date = getQuickDate('last7Days');
-      quickSelectDate.value = _date;
-    }
-  }
-
-  const configItems = [];
-
-  if (types.includes('createdBy')) {
-    configItems.push({ valueKey: 'createdBy', value: userInfo.id, defaultOptions: defaultUser });
-  } else {
-    if (createdByItem?.value === userInfo.id) {
-      configItems.push({ valueKey: 'createdBy', value: undefined });
-    }
-  }
-
-  if (types.includes('testerId')) {
-    configItems.push({ valueKey: 'testerId', value: userInfo.id, defaultOptions: defaultUser });
-    configItems.push({ valueKey: 'testResult', value: CaseTestResult.PENDING });
-  } else {
-    if (testerIdItem?.value === userInfo.id && testResultItem?.value === CaseTestResult.PENDING) {
-      configItems.push({ valueKey: 'testerId', value: undefined });
-      configItems.push({ valueKey: 'testResult', value: undefined });
-    }
-  }
-
-  if (types.includes('last1Day') || types.includes('last3Days') || types.includes('last7Days')) {
-    configItems.push({ valueKey: 'createdDate', value: quickSelectDate.value });
-  } else {
-    const hasUpDateTime = getCreatedDateIsQuickDate(createdDateItems, quickSelectDate.value);
-    if (hasUpDateTime) {
-      configItems.push({ valueKey: 'createdDate', value: undefined });
-    }
-  }
-
-  if (configItems.length) {
-    searchPanelRef.value.setConfigs(configItems);
-  }
+const handleImport = () => {
+  uploadCaseVisible.value = true;
 };
 
 const cacheParamsKey = computed(() => {
@@ -418,151 +167,6 @@ const cacheParamsKey = computed(() => {
 });
 
 let isInit = true;
-let db: XCanDexie<IData>;
-const init = async () => {
-  if (!db) {
-    db = new XCanDexie<IData>('parameter');
-  }
-
-  const [, _data] = await db.get(cacheParamsKey.value);
-  if (!_data) {
-    selectedTypes.value = ['all'];
-
-    refreshChange();
-    return;
-  }
-
-  enabledGroup.value = !!_data?.data.enabledGroup;
-  if (enabledGroup.value) {
-    moduleId.value = '';
-  } else {
-    moduleId.value = undefined;
-  }
-  const _cacheFilters = _data?.data.filters;
-  if (_cacheFilters.length) {
-    params.value.filters = _cacheFilters;
-    setQuickType();
-    const _otherFilters: SearchCriteria[] = [];
-    for (let i = 0; i < _cacheFilters.length; i++) {
-      const item = _cacheFilters[i] as SearchCriteria;
-      if (['planId', 'tagId', 'overdue', 'testNum', 'testFailNum', 'reviewNum'].includes(item.key)) {
-        if (item.key === 'planId') {
-          planId.value = item.value as string;
-        }
-
-        if (item.key === 'tagId') {
-          const set = new Set(item.value);
-          tagIds.value = Array.from(set);
-        }
-
-        if (item.key === 'overdue') {
-          overdue.value = item.value as boolean;
-        }
-
-        if (item.key === 'testNum') {
-          testNum.value = item.value as string;
-          testNumScope.value = item.op;
-        }
-
-        if (item.key === 'testFailNum') {
-          testFailNum.value = item.value as string;
-          reviewNumScope.value = item.op;
-        }
-
-        if (item.key === 'reviewNum') {
-          reviewNum.value = item.value as string;
-          reviewNumScope.value = item.op;
-        }
-      } else {
-        _otherFilters.push(item);
-      }
-    }
-
-    if (_otherFilters.length) {
-      const defaultParams = [];
-      const createdDataValue: string[] = [];
-      const deadlineDateValue: string[] = [];
-      const reviewDateValue: string[] = [];
-      const lastModifiedDateValue: string[] = [];
-      const testResultHandleDateValue: string[] = [];
-      for (let i = 0; i < _otherFilters.length; i++) {
-        const item = _otherFilters[i] as SearchCriteria;
-
-        if (item.key === 'createdDate') {
-          if (item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
-            createdDataValue[0] = item.value as string;
-          }
-
-          if (item.op === SearchCriteria.OpEnum.LessThanEqual) {
-            createdDataValue[1] = item.value as string;
-          }
-        } else if (item.key === 'deadlineDate') {
-          if (item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
-            deadlineDateValue[0] = item.value as string;
-          }
-
-          if (item.op === SearchCriteria.OpEnum.LessThanEqual) {
-            deadlineDateValue[1] = item.value as string;
-          }
-        } else if (item.key === 'reviewDate') {
-          if (item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
-            reviewDateValue[0] = item.value as string;
-          }
-
-          if (item.op === SearchCriteria.OpEnum.LessThanEqual) {
-            reviewDateValue[1] = item.value as string;
-          }
-        } else if (item.key === 'lastModifiedDate') {
-          if (item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
-            lastModifiedDateValue[0] = item.value as string;
-          }
-
-          if (item.op === SearchCriteria.OpEnum.LessThanEqual) {
-            lastModifiedDateValue[1] = item.value as string;
-          }
-        } else if (item.key === 'testResultHandleDate') {
-          if (item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
-            testResultHandleDateValue[0] = item.value as string;
-          }
-
-          if (item.op === SearchCriteria.OpEnum.LessThanEqual) {
-            testResultHandleDateValue[1] = item.value as string;
-          }
-        } else {
-          defaultParams.push({ valueKey: item.key, value: item.value });
-        }
-      }
-
-      if (createdDataValue.length) {
-        defaultParams.push({ valueKey: 'createdDate', value: createdDataValue });
-      }
-
-      if (deadlineDateValue.length) {
-        defaultParams.push({ valueKey: 'deadlineDate', value: deadlineDateValue });
-      }
-
-      if (reviewDateValue.length) {
-        defaultParams.push({ valueKey: 'reviewDate', value: reviewDateValue });
-      }
-
-      if (lastModifiedDateValue.length) {
-        defaultParams.push({ valueKey: 'lastModifiedDate', value: lastModifiedDateValue });
-      }
-
-      if (testResultHandleDateValue.length) {
-        defaultParams.push({ valueKey: 'testResultHandleDate', value: testResultHandleDateValue });
-      }
-
-      if (defaultParams.length) {
-        searchPanelRef.value.setConfigs(defaultParams);
-      }
-    }
-    refreshChange();
-  } else {
-    selectedTypes.value = ['all'];
-    refreshChange();
-  }
-};
 
 const loadData = () => {
   if (props.viewMode !== CaseViewMode.kanban) {
@@ -601,11 +205,6 @@ const loadCaseList = async (): Promise<void> => {
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { pageNo, pageSize, ...otherParam } = params.value;
-
-  db.add(JSON.parse(JSON.stringify({
-    id: cacheParamsKey.value,
-    data: JSON.parse(JSON.stringify({ ...otherParam, enabledGroup: enabledGroup.value }))
-  })));
 
   if (props.viewMode === CaseViewMode.table && tabViewRef.value) {
     tabViewRef.value.selectedRowKeys = [];
@@ -758,84 +357,7 @@ const tableAction = computed(() => {
   return action;
 });
 
-const searchChange = (data: SearchCriteria[], _header, valueKey) => {
-  params.value.pageNo = 1;
-  searchData.value = data;
-  actionType.value = 'search';
-  setParamsFilters();
-
-  if (valueKey) {
-    setQuickType();
-  } else {
-    if (selectedTypes.value.includes('all')) {
-      const _filters = params.value.filters.filter(item => !['planId', 'tagId'].includes(item.key));
-      if (_filters.length) {
-        selectedTypes.value = [];
-      }
-    }
-  }
-  refreshChange();
-};
-
-const setQuickType = () => {
-  const _filters = params.value.filters || [];
-  if (_filters.length === 0) {
-    selectedTypes.value = ['all'];
-    return;
-  }
-
-  const filterKeys = _filters.map(item => item.key);
-  if (filterKeys.every(item => ['planId', 'tagId'].includes(item))) {
-    selectedTypes.value = ['all'];
-    return;
-  }
-
-  selectedTypes.value = selectedTypes.value.filter(item => item !== 'all');
-  const createdByElement = _filters.find(element => element.key === 'createdBy');
-  const testerIdItem = _filters.find(item => item.key === 'testerId');
-  const testResultItem = _filters.find(item => item.key === 'testResult');
-  const createdDateItems = _filters.filter(item => item.key === 'createdDate');
-  if (createdByElement?.value === userInfo.id) {
-    if (!selectedTypes.value.includes('createdBy')) {
-      selectedTypes.value.push('createdBy');
-    }
-  } else {
-    if (selectedTypes.value.includes('createdBy')) {
-      selectedTypes.value = selectedTypes.value.filter(item => item !== 'createdBy');
-    }
-  }
-  if (testerIdItem?.value === userInfo.id && testResultItem?.value === CaseTestResult.PENDING) {
-    if (!selectedTypes.value.includes('testerId')) {
-      selectedTypes.value.push('testerId');
-    }
-  } else {
-    if (selectedTypes.value.includes('testerId')) {
-      selectedTypes.value = selectedTypes.value.filter(item => item !== 'testerId');
-    }
-  }
-
-  if (createdDateItems.length && (selectedTypes.value.includes('last1Day') ||
-    selectedTypes.value.includes('last3Days') ||
-    selectedTypes.value.includes('last7Days'))) {
-    let hasUpDateTime = false;
-    for (let i = 0; i < createdDateItems.length; i++) {
-      const item = createdDateItems[i];
-      if (item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
-        hasUpDateTime = item.value === quickSelectDate.value[0];
-      }
-
-      if (item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.LessThanEqual) {
-        hasUpDateTime = item.value === quickSelectDate.value[1];
-      }
-    }
-
-    if (!hasUpDateTime) {
-      selectedTypes.value = selectedTypes.value.filter(item => item !== 'last1Day' && item !== 'last3Days' && item !== 'last7Days');
-    }
-  } else {
-    selectedTypes.value = selectedTypes.value.filter(item => item !== 'last1Day' && item !== 'last3Days' && item !== 'last7Days');
-  }
-};
+// Removed search-related methods - now handled by SearchPanel component
 
 // 用例详情
 const caseInfo = ref<CaseDetail>();
@@ -853,15 +375,8 @@ const getCaseInfo = async (id: string) => {
 };
 
 const addVisible = ref(false);
-const handleAdd = () => {
-  editCase.value = undefined;
-  addVisible.value = true;
-};
 
 const aiAddVisible = ref(false);
-const handleAiAdd = () => {
-  aiAddVisible.value = true;
-};
 
 const planAuthMap = ref<{[id: string]: {
   funcPlanAuth: boolean;
@@ -898,14 +413,8 @@ const getPlanAuth = async () => {
   });
 };
 
-const numberMatchCondition = ref<EnumMessage<NumberCompareCondition>[]>([NumberCompareCondition.EQUAL]);
-const loadEnums = () => {
-  numberMatchCondition.value = enumUtils.enumToMessages(NumberCompareCondition);
-};
-
 // 模块相关
 const moduleTreeData = ref([{ name: t('testCase.case.moduleTree.noModuleCases'), id: '-1' }]);
-const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
   const [error, { data }] = await modules.getModuleTree({
     projectId: projectInfo.value?.id,
@@ -927,9 +436,8 @@ const loadModuleTree = async (keywords?: string) => {
 };
 
 onMounted(async () => {
-  await loadEnums();
   await loadModuleTree();
-  await init();
+  refreshChange();
 
   watch(() => projectInfo.value?.id, newValue => {
     if (newValue) {
@@ -1254,19 +762,6 @@ const calculateDataPosition = (_total, _pageNo, _pageSize, n) => {
 
 // 导出用例
 const exportLoading = ref(false);
-const handleExport = async () => {
-  if (exportLoading.value) {
-    return;
-  }
-
-  exportLoading.value = true;
-  const _filters = selectedRowKeys.value.length
-    ? [...params.value.filters, { key: 'id', value: selectedRowKeys.value, op: SearchCriteria.OpEnum.In }]
-    : params.value.filters;
-  const _params = http.getURLSearchParams({ filters: _filters }, true);
-  await download(`${TESTER}/func/case/export?projectId=${projectInfo.value.id}&${_params}`);
-  exportLoading.value = false;
-};
 
 // 导出用例模板
 const handdleExportTemplate = async () => {
@@ -1324,9 +819,9 @@ const handleFollow = async (rowData: CaseDetailChecked) => {
 
 // 提Bug
 const taskModalVisible = ref(false);
-const addBug = (remark = undefined) => {
+const addBug = (description?: string) => {
   if (selectedCase.value) {
-    selectedCase.value.testRemark = remark;
+    selectedCase.value.testRemark = description;
   }
   taskModalVisible.value = true;
 };
@@ -1381,28 +876,6 @@ const cancelSelectedRowKeys = () => {
   }
 };
 
-const buttonDropdownClick = ({ key }: { key: 'import' | 'export' }) => {
-  if (key === 'import') {
-    handleUploadCase();
-    return;
-  }
-
-  if (key === 'export') {
-    handleExport();
-  }
-};
-
-const viewModeChange = (key) => {
-  const mode = key;
-  emits('viewModeChange', mode);
-};
-
-const toRefresh = () => {
-  params.value.pageNo = 1;
-  setParamsFilters();
-  refreshChange();
-};
-
 const detailQueryParams = computed(() => {
   return {
     ...params.value,
@@ -1439,6 +912,7 @@ watch(() => props.viewMode, (newValue) => {
 watch(() => selectedRowKeys.value, (newValue) => {
   btnType.value = 'batch';
   batchDisabled.value = {
+    review: false,
     move: false,
     del: false,
     updateTestResult: false
@@ -1478,255 +952,12 @@ watch(() => selectedRowKeys.value, (newValue) => {
   }
 });
 
-const modeOptions = [
-  {
-    key: CaseViewMode.flat,
-    name: t('testCase.mainView.tileView'),
-    label: ''
-  },
-  {
-    key: CaseViewMode.table,
-    name: t('testCase.mainView.listView'),
-    label: ''
-  },
-  {
-    key: CaseViewMode.kanban,
-    name: t('testCase.mainView.kanbanView'),
-    label: ''
-  }
-];
-
-const quickList = [
-  {
-    type: 'all',
-    name: t('common.all'),
-    selected: false,
-    group: 'all'
-  },
-  {
-    type: 'createdBy',
-    name: t('testCase.mainView.myAdded'),
-    selected: false,
-    group: 'createdBy'
-  },
-  {
-    type: 'testerId',
-    name: t('testCase.mainView.waitingForTest'),
-    selected: false,
-    group: 'testerId'
-  },
-  {
-    type: 'last1Day',
-    name: t('quickSearch.last1Day'),
-    selected: false,
-    group: 'time'
-  },
-  {
-    type: 'last3Days',
-    name: t('quickSearch.last3Days'),
-    selected: false,
-    group: 'time'
-  },
-  {
-    type: 'last7Days',
-    name: t('quickSearch.last7Days'),
-    selected: false,
-    group: 'time'
-  }
-];
-
-const searchOptions = computed(() => [
-  {
-    placeholder: t('testCase.case.selectCreator'),
-    valueKey: 'name',
-    type: 'input',
-    allowClear: true
-  },
-  {
-    placeholder: t('testCase.case.selectCreator'),
-    valueKey: 'createdBy',
-    type: 'select-user',
-    allowClear: true
-  },
-  {
-    placeholder: t('testCase.case.selectTester'),
-    valueKey: 'testerId',
-    type: 'select-user',
-    allowClear: true
-  },
-  {
-    placeholder: t('testCase.case.selectDeveloper'),
-    valueKey: 'developerId',
-    type: 'select-user',
-    allowClear: true
-  },
-  {
-    placeholder: t('testCase.case.selectPriority'),
-    valueKey: 'priority',
-    type: 'select-enum',
-    enumKey: Priority,
-    allowClear: true
-  },
-  {
-    placeholder: t('testCase.case.selectTestResult'),
-    valueKey: 'testResult',
-    type: 'select-enum',
-    enumKey: CaseTestResult,
-    allowClear: true
-  },
-  {
-    placeholder: t('testCase.case.selectReviewer'),
-    valueKey: 'reviewerId',
-    type: 'select-user',
-    allowClear: true
-  },
-  {
-    placeholder: t('testCase.case.selectReviewStatus'),
-    valueKey: 'reviewStatus',
-    type: 'select-enum',
-    enumKey: ReviewStatusEnum,
-    allowClear: true
-  },
-  {
-    placeholder: [
-      t('testCase.case.searchPanel.reviewDateFrom'),
-      t('testCase.case.searchPanel.reviewDateTo')
-    ],
-    valueKey: 'reviewDate',
-    type: 'date-range',
-    allowClear: true,
-    showTime: true
-  },
-  {
-    placeholder: [
-      t('testCase.case.searchPanel.updateDateFrom'),
-      t('testCase.case.searchPanel.updateDateTo')
-    ],
-    valueKey: 'lastModifiedDate',
-    type: 'date-range',
-    allowClear: true,
-    showTime: true
-  },
-  {
-    placeholder: [
-      t('testCase.case.searchPanel.deadlineDateFrom'),
-      t('testCase.case.searchPanel.deadlineDateTo')
-    ],
-    valueKey: 'deadlineDate',
-    type: 'date-range',
-    allowClear: true,
-    showTime: true
-  },
-  {
-    placeholder: [
-      t('testCase.case.searchPanel.createdDateFrom'),
-      t('testCase.case.searchPanel.createdDateTo')
-    ],
-    valueKey: 'createdDate',
-    type: 'date-range',
-    allowClear: true,
-    showTime: true
-  },
-  {
-    placeholder: [
-      t('testCase.case.searchPanel.testResultHandleDateFrom'),
-      t('testCase.case.searchPanel.testResultHandleDateTo')
-    ],
-    valueKey: 'testResultHandleDate',
-    type: 'date-range',
-    allowClear: true,
-    showTime: true
-  },
-  {
-    valueKey: 'testNum'
-  },
-  {
-    valueKey: 'testFailNum'
-  },
-  {
-    valueKey: 'reviewNum'
-  }
-].filter(Boolean));
-
-const buttonDropdownMenuItems = computed(() => [
-  {
-    name: t('testCase.mainView.exportCase'),
-    key: 'export',
-    icon: 'icon-daochu1',
-    noAuth: !caseList.value.length
-  },
-  {
-    name: t('testCase.mainView.importCase'),
-    key: 'import',
-    icon: 'icon-shangchuan'
-  }
-]);
-
-const modeTitle = computed(() => {
-  if (props.viewMode === CaseViewMode.kanban) {
-    return t('testCase.mainView.listView');
-  }
-
-  if (props.viewMode === CaseViewMode.flat) {
-    return t('testCase.mainView.kanbanView');
-  }
-
-  return t('testCase.mainView.tileView');
-});
-
-const modeIcon = computed(() => {
-  if (props.viewMode === CaseViewMode.kanban) {
-    return 'icon-liebiaoshitu';
-  }
-
-  if (props.viewMode === CaseViewMode.flat) {
-    return 'icon-kanbanshitu';
-  }
-
-  return 'icon-pingpushitu';
-});
-
-const groupMenuItems = [
-  {
-    key: 'none',
-    name: t('actions.noGroup')
-  },
-  {
-    key: 'testerName',
-    name: t('testCase.mainView.groupByTester')
-  },
-  {
-    key: 'lastModifiedByName',
-    name: t('testCase.mainView.groupByLastModifier')
-  }
-];
-
-const sortMenuItems = [
-  {
-    key: 'createdByName',
-    name: t('testCase.mainView.sortByCreator'),
-    orderSort: PageQuery.OrderSort.Asc
-  },
-  {
-    key: 'testerName',
-    name: t('testCase.mainView.sortByTester'),
-    orderSort: PageQuery.OrderSort.Asc
-  },
-  {
-    key: 'priority',
-    name: t('testCase.mainView.sortByPriority'),
-    orderSort: PageQuery.OrderSort.Asc
-  },
-  {
-    key: 'deadlineDate',
-    name: t('testCase.mainView.sortByDeadline'),
-    orderSort: PageQuery.OrderSort.Asc
-  }];
+// Removed search-related computed properties - now handled by SearchPanel component
 
 const resetParam = () => {
-  searchPanelRef.value.clear(false);
   params.value.filters = [];
-  init();
+  searchPanelRef.value?.clear(false);
+  refreshChange();
 };
 
 defineExpose({
@@ -1750,249 +981,25 @@ defineExpose({
       </div>
 
       <div class="flex-1 flex flex-col overflow-hidden">
-        <div class="flex-shrink-0 flex justify-between items-start">
-          <div class="flex items-center flex-wrap">
-            <QuickSelect
-              class="mb-3"
-              :list="quickList"
-              :selectedTypes="selectedTypes"
-              @change="quickSearchChange" />
-
-            <div class="px-4 h-7 leading-7 mb-3">
-              <span>{{ t('status.overdue') }}</span>
-              <Colon class="mr-2" />
-              <Switch
-                :checked="overdue"
-                size="small"
-                class="w-8"
-                @change="overdueChange" />
-            </div>
-
-            <div class="h-7 leading-7 mb-3 mr-5">
-              <span class="text-3 text-theme-content">
-                <span>{{ t('testCase.mainView.groupByModule') }}</span>
-                <Colon class="mr-2" />
-              </span>
-
-              <Switch
-                v-model:checked="enabledGroup"
-                size="small"
-                class="w-8"
-                @change="enabledGroupChange" />
-            </div>
-
-            <PlanList
-              class="mb-3 mr-5"
-              :planId="planId"
-              :planName="planName"
-              @change="planChange" />
-
-            <TagList
-              ref="tagListRef"
-              class="mb-3 mr-5"
-              :tagIds="tagIds"
-              @change="tagChange" />
-
-            <template v-if="props.viewMode === CaseViewMode.kanban">
-              <DropdownSort
-                v-model:orderBy="boardsOrderBy"
-                v-model:orderSort="boardsOrderSort"
-                :menuItems="sortMenuItems">
-                <Button
-                  size="small"
-                  type="text"
-                  class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
-                  <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                  <span class="ml-1">{{ t('actions.sort') }}</span>
-                </Button>
-              </DropdownSort>
-
-              <DropdownGroup v-model:activeKey="boardsGroupKey" :menuItems="groupMenuItems">
-                <Button
-                  size="small"
-                  type="text"
-                  class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
-                  <Icon icon="icon-fenzu" class="text-3.5" />
-                  <span class="ml-1">{{ t('organization.group') }}</span>
-                </Button>
-              </DropdownGroup>
-            </template>
-          </div>
-        </div>
-
-        <div class="flex justify-between items-start space-x-5">
-          <SearchPanel
-            ref="searchPanelRef"
-            class="mb-3 flex-shrink-0 flex-1"
-            :options="searchOptions"
-            :width="296"
-            @change="searchChange">
-            <template #planId_option="item">
-              <div class="flex items-center" :title="item.name">
-                <Icon icon="icon-jihua" class="mr-1 text-3.5 flex-none" />
-                <div class="truncate">{{ item.name }}</div>
-              </div>
-            </template>
-
-            <template #moduleId_option="item">
-              <div class="flex items-center" :title="item.name">
-                <Icon icon="icon-mokuai" class="mr-1 text-3.5 flex-none" />
-                <div class="truncate">{{ item.name }}</div>
-              </div>
-            </template>
-
-            <template #priority_option="item">
-              <TaskPriority :value="item" />
-            </template>
-
-            <template #testResult_option="item">
-              <TestResult :value="item" />
-            </template>
-
-            <template #reviewStatus_option="item">
-              <ReviewStatus :value="item" />
-            </template>
-
-            <template #testNum>
-              <Input
-                :value="testNum"
-                data-type="float"
-                size="small"
-                allowClear
-                :placeholder="t('testCase.mainView.testTimes')"
-                style="width: 296px;"
-                :min="0"
-                :debounce="500"
-                @change="(event: ChangeEvent) => handleTimesChange(event.target.value, 'testNum')">
-                <template #prefix>
-                  <Select
-                    :value="testNumScope"
-                    size="small"
-                    :options="numberMatchCondition"
-                    :fieldNames="{ label: 'description', value: 'value' }"
-                    :allowClear="false"
-                    :bordered="false"
-                    class="w-24"
-                    @change="handleScopeChange($event, 'testNum')" />
-                </template>
-              </Input>
-            </template>
-
-            <template #testFailNum>
-              <Input
-                :value="testFailNum"
-                data-type="float"
-                size="small"
-                allowClear
-                :placeholder="t('testCase.mainView.failTimes')"
-                style="width: 296px;"
-                :min="0"
-                :debounce="500"
-                @change="handleTimesChange($event.target.value, 'testFailNum')">
-                <template #prefix>
-                  <Select
-                    v-model:value="testFailScope"
-                    size="small"
-                    :options="numberMatchCondition"
-                    :fieldNames="{ label: 'description', value: 'value' }"
-                    :allowClear="false"
-                    :bordered="false"
-                    class="w-24"
-                    @change="handleScopeChange($event, 'testFailNum')" />
-                </template>
-              </Input>
-            </template>
-
-            <template #reviewNum>
-              <Input
-                :value="reviewNum"
-                data-type="float"
-                size="small"
-                allowClear
-                :placeholder="t('testCase.mainView.reviewTimes')"
-                style="width: 296px;"
-                :min="0"
-                :debounce="500"
-                @change="(event: ChangeEvent) => handleTimesChange(event.target.value, 'reviewNum')">
-                <template #prefix>
-                  <Select
-                    :value="reviewNumScope"
-                    size="small"
-                    :options="numberMatchCondition"
-                    :fieldNames="{ label: 'message', value: 'value' }"
-                    :allowClear="false"
-                    :bordered="false"
-                    class="w-24"
-                    @change="handleScopeChange($event, 'reviewNum')" />
-                </template>
-              </Input>
-            </template>
-          </SearchPanel>
-
-          <div class="flex items-center space-x-2">
-            <Button
-              v-if="aiEnabled"
-              class="flex-shrink-0 flex items-center"
-              size="small"
-              ghost
-              type="primary"
-              @click="handleAiAdd">
-              <Icon icon="icon-jia" class="text-3.5" />
-              <span class="ml-1">{{ t('testCase.mainView.smartAddCase') }}</span>
-            </Button>
-
-            <Button
-              class="flex-shrink-0 flex items-center pr-0"
-              type="primary"
-              size="small"
-              @click="handleAdd">
-              <div class="flex items-center">
-                <Icon icon="icon-jia" class="text-3.5" />
-                <span class="ml-1">{{ t('testCase.mainView.addCase') }}</span>
-              </div>
-
-              <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
-                <div class="w-5 h-5 flex items-center justify-center">
-                  <Icon icon="icon-more" />
-                </div>
-              </Dropdown>
-            </Button>
-
-            <Tooltip
-              arrowPointAtCenter
-              placement="topLeft"
-              :title="modeTitle">
-              <Dropdown
-                :value="[props.viewMode]"
-                :menuItems="modeOptions"
-                @click="viewModeChange($event.key)">
-                <div>
-                  <Icon
-                    :icon="modeIcon"
-                    class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0" />
-                  <Icon icon="icon-xiajiantou" class="ml-1" />
-                </div>
-              </Dropdown>
-            </Tooltip>
-
-            <Tooltip
-              arrowPointAtCenter
-              placement="topLeft"
-              :title="isOpenCount ? t('testCase.mainView.hideStatistics') : t('testCase.mainView.viewStatistics')">
-              <IconCount
-                :value="isOpenCount"
-                class="mr-2 text-4.5"
-                @click="emits('countChange')" />
-            </Tooltip>
-
-            <Tooltip
-              arrowPointAtCenter
-              placement="topLeft"
-              :title="t('actions.refresh')">
-              <IconRefresh class="text-4 mr-3.5" @click="toRefresh" />
-            </Tooltip>
-          </div>
-        </div>
+        <SearchPanel
+          ref="searchPanelRef"
+          :viewMode="props.viewMode"
+          :projectId="projectInfo.id"
+          :userInfo="userInfo"
+          :appInfo="appInfo"
+          :notify="String(props.notify)"
+          :enabledGroup="enabledGroup"
+          :moduleId="moduleId"
+          @change="handleSearchChange"
+          @viewModeChange="handleViewModeChange"
+          @countChange="handleCountChange"
+          @refresh="handleRefresh"
+          @add="handleAdd"
+          @aiAdd="handleAiAdd"
+          @export="handleExport"
+          @import="handleImport"
+          @update:enabledGroup="enabledGroupChange"
+          @update:moduleId="(value) => moduleId = value" />
 
         <div
           :visible="!!selectedRowKeys?.length"
@@ -2046,11 +1053,8 @@ defineExpose({
 
         <template v-if="props.viewMode === CaseViewMode.kanban">
           <KanbanView
-            v-show="viewMode === CaseViewMode.kanban"
+            v-show="props.viewMode === CaseViewMode.kanban"
             v-model:moduleId="moduleId"
-            :groupKey="boardsGroupKey"
-            :orderBy="boardsOrderBy"
-            :orderSort="boardsOrderSort"
             :filters="params?.filters"
             :projectId="projectInfo?.id"
             :userInfo="userInfo"
@@ -2178,7 +1182,7 @@ defineExpose({
       :appInfo="appInfo"
       :assigneeId="selectedCase?.developerId"
       :userInfo="userInfo"
-      :refCaseIds="[selectedCase?.id]"
+      :refCaseIds="selectedCase?.id ? [selectedCase.id] : []"
       :description="selectedCase?.testRemark"
       :name="t('testCase.mainView.testNotPassedName', { name: selectedCase?.name || '' })"
       :taskType="TaskType.BUG"

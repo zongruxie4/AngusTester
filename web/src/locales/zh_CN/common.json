@@ -466,7 +466,7 @@
       "confirmUpdate": "确定更新「{name}」吗？",
       "confirmDelete": "确定删除「{name}」吗？",
       "confirmCountDelete": "确定删除「{num}」条记录吗?",
-      "cancelConfirm": "确定取消选中的 {num} 条记录吗？",
+      "cancelConfirm": "确定取消选中的「{num}」条记录吗？",
       "confirmCancelAssoc": "确认取消与「{name}」关联吗?",
       "createSuccess": "创建成功",
       "saveSuccess": "保存成功",

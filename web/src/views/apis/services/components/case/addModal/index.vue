@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: ''
 });
 
-const userInfo: any = ref(appContext.getUser());
+const userInfo = ref(appContext.getUser());
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 

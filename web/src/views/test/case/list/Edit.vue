@@ -22,7 +22,7 @@ import {
   TESTER,
   upload,
   localStore,
-  utils
+  utils, appContext
 } from '@xcan-angus/infra';
 import { CaseStepView, SoftwareVersionStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
@@ -53,10 +53,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'update', id?:string):void}>();
 
-const userInfo: any = inject('userInfo');
-// Inject project information
+const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
-const addCaseSizeKey = `${userInfo.id}${projectId.value}addFuncCaseSize`;
+const addCaseSizeKey = `${userInfo.value.id}${projectId.value}addFuncCaseSize`;
 
 // TODO 字段顺序保持一致
 const formRef = ref();
@@ -73,7 +72,7 @@ const formState = ref<CaseEditState>({
   priority: Priority.MEDIUM,
   steps: [],
   tagIds: [],
-  testerId: userInfo?.id,
+  testerId: userInfo.value.id,
   refCaseIds: [],
   refTaskIds: [],
   developerId: undefined,
@@ -310,8 +309,8 @@ const validateDate = async (_rule: Rule, value: string) => {
 
 // 指派测试人为当前登录人
 const setTesterForMe = () => {
-  if (userInfo?.id) {
-    formState.value.testerId = userInfo.id;
+  if (userInfo.value.id) {
+    formState.value.testerId = userInfo.value.id;
   }
 };
 

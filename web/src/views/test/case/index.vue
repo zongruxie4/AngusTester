@@ -22,7 +22,6 @@ const MoveCaseModal = defineAsyncComponent(() => import('@/views/test/case/list/
 const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/test/case/list/UpdateResult.vue'));
 
 const userInfo = ref(appContext.getUser());
-// Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const appInfo = ref(appContext.getAccessApp());
 

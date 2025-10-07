@@ -24,11 +24,11 @@ import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { SearchPanelMenuItem, SearchPanelOption, TaskViewMode } from '@/views/issue/issue/types';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { SearchPanelMenuItem, SearchPanelOption, TaskViewMode } from '@/views/issue/issue/types';
 
 // Types & interfaces
 type Props = {
