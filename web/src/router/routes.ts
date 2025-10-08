@@ -203,7 +203,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/apis/share',
-    component: () => import('@/views/apis/apisShare/index.vue')
+    component: () => import('@/views/apis/share/shared/index.vue')
   }
 ];
 
