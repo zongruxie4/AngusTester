@@ -94,11 +94,11 @@ const selectedTagOptions = ref<{ id: string; name: string; showTitle: string; sh
 const checkedTagIds = ref<string[]>([]);
 
 // Numeric filters
-const testNum = ref<number>(undefined); // Test count
+const testNum = ref<number | undefined>(undefined); // Test count
 const testNumScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal);
-const testFailNum = ref<number>(undefined); // Failure count
+const testFailNum = ref<number | undefined>(undefined); // Failure count
 const testFailScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal);
-const reviewNum = ref<number>(undefined); // Review count
+const reviewNum = ref<number | undefined>(undefined); // Review count
 const reviewNumScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal);
 
 // Search criteria filters
@@ -106,12 +106,17 @@ const searchFilters = ref<SearchCriteria[]>([]);
 
 // Numeric comparison conditions
 const numberMatchCondition = ref<EnumMessage<NumberCompareCondition>[]>([]);
+// Quick search options for case test result
+const caseTestResultOptions = ref<{ name: string; key: string }[]>([]);
 
 /**
  * Loads numeric comparison condition options
  */
 const loadEnums = () => {
   numberMatchCondition.value = enumUtils.enumToMessages(NumberCompareCondition);
+  // Build quick search items for case test results
+  const enumData = enumUtils.enumToMessages(CaseTestResult);
+  caseTestResultOptions.value = enumData.map(item => ({ name: item.message, key: item.value }));
 };
 
 /**
@@ -169,7 +174,7 @@ const handleModuleGroupingChange = (checked: any) => {
 /**
  * Handles numeric filter changes with debouncing
  */
-const handleTimesChange = debounce(duration.resize, (value: string, type: 'testNum' | 'testFailNum' | 'reviewNum') => {
+const handleTimesChange = debounce(duration.resize, (value: number | undefined, type: 'testNum' | 'testFailNum' | 'reviewNum') => {
   if (type === 'testNum') {
     testNum.value = value;
   }
@@ -270,6 +275,12 @@ const handleQuickSearchMenuItemClick = (data: { key: string; name: string }) => 
       return;
     }
 
+    // Deselect case test result quick option -> clear testResult
+    if (enumUtils.getEnumValues(CaseTestResult).includes(itemKey)) {
+      updateSearchPanelConfigs([{ valueKey: 'testResult', value: undefined }]);
+      return;
+    }
+
     return;
   }
 
@@ -307,6 +318,17 @@ const handleQuickSearchMenuItemClick = (data: { key: string; name: string }) => 
     quickSelectDate.value = dateRange;
     updateSearchPanelConfigs([{ valueKey: 'createdDate', value: dateRange }]);
   }
+
+  // Handle case test result selections (mutual exclusion)
+  if (enumUtils.getEnumValues(CaseTestResult).includes(itemKey)) {
+    // Clear other test result selections first
+    enumUtils.getEnumValues(CaseTestResult).forEach(k => {
+      selectedQuickSearchItems.value.delete(k);
+    });
+    selectedQuickSearchItems.value.set(itemKey, { key: itemKey });
+    updateSearchPanelConfigs([{ valueKey: 'testResult', value: itemKey }]);
+    return;
+  }
 };
 
 /**
@@ -322,9 +344,9 @@ const clearAllFilters = () => {
   }
 
   // Reset all filter states
-  testNum.value = '';
-  testFailNum.value = '';
-  reviewNum.value = '';
+  testNum.value = undefined;
+  testFailNum.value = undefined;
+  reviewNum.value = undefined;
   overdue.value = false;
   quickSelectDate.value = [];
 
@@ -584,6 +606,8 @@ const menuItems = computed(() => [
     key: 'testerId',
     name: t('testCase.mainView.waitingForTest')
   },
+  // Quick options for specific test results
+  ...caseTestResultOptions.value,
   {
     key: 'last1Day',
     name: t('quickSearch.last1Day')
@@ -904,15 +928,15 @@ const initializeComponent = async () => {
             overdue.value = item.value as boolean;
           }
           if (item.key === 'testNum') {
-            testNum.value = item.value as string;
+            testNum.value = item.value as number;
             testNumScope.value = item.op || SearchCriteria.OpEnum.Equal;
           }
           if (item.key === 'testFailNum') {
-            testFailNum.value = item.value as string;
+            testFailNum.value = item.value as number;
             testFailScope.value = item.op || SearchCriteria.OpEnum.Equal;
           }
           if (item.key === 'reviewNum') {
-            reviewNum.value = item.value as string;
+            reviewNum.value = item.value as number;
             reviewNumScope.value = item.op || SearchCriteria.OpEnum.Equal;
           }
         } else {
@@ -1070,9 +1094,9 @@ const resetData = () => {
   selectedQuickSearchItems.value.set('all', { key: 'all' });
   quickSelectDate.value = [];
   overdue.value = false;
-  testNum.value = '';
-  testFailNum.value = '';
-  reviewNum.value = '';
+  testNum.value = undefined;
+  testFailNum.value = undefined;
+  reviewNum.value = undefined;
   testNumScope.value = SearchCriteria.OpEnum.Equal;
   testFailScope.value = SearchCriteria.OpEnum.Equal;
   reviewNumScope.value = SearchCriteria.OpEnum.Equal;
@@ -1433,7 +1457,7 @@ watch(
 
         <template #testNum>
           <Input
-            :value="testNum"
+            :value="typeof testNum === 'number' ? String(testNum) : undefined"
             data-type="float"
             size="small"
             allowClear
@@ -1458,7 +1482,7 @@ watch(
 
         <template #testFailNum>
           <Input
-            :value="testFailNum"
+            :value="typeof testFailNum === 'number' ? String(testFailNum) : undefined"
             data-type="float"
             size="small"
             allowClear
@@ -1483,7 +1507,7 @@ watch(
 
         <template #reviewNum>
           <Input
-            :value="reviewNum"
+            :value="typeof reviewNum === 'number' ? String(reviewNum) : undefined"
             data-type="float"
             size="small"
             allowClear
