@@ -3,8 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } fr
 import { useI18n } from 'vue-i18n';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 import { appContext, utils } from '@xcan-angus/infra';
-
-type MenuKey = 'home' | 'scenario' | 'trash' | 'monitor';
+import { ProjectInfo } from '@/layout/types';
 
 const Homepage = defineAsyncComponent(() => import('@/views/scenario/home/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/scenario/trash/index.vue'));
@@ -14,9 +13,10 @@ const Monitor = defineAsyncComponent(() => import('@/views/scenario/monitor/inde
 const { t } = useI18n();
 
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const appInfo = ref(appContext.getAccessApp());
 
+type MenuKey = 'home' | 'scenario' | 'trash' | 'monitor';
 const activeKey = ref<MenuKey>();
 
 const menuItems: {

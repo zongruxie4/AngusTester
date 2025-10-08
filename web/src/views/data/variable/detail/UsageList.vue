@@ -36,7 +36,7 @@ const {
   <Spin :spinning="loading" class="text-3 leading-5">
     <!-- Header with title and action buttons -->
     <div class="flex items-center justify-between mb-2">
-      <Hints :text="t('dataVariable.detail.useList.title')" />
+      <Hints :text="t('variable.detail.useList.title')" />
 
       <!-- Action buttons when not in batch delete mode -->
       <div v-if="!rowSelection" class="flex items-center space-x-2.5">

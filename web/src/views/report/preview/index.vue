@@ -12,6 +12,7 @@ import print from 'print-js';
 import { exec, report } from '@/api/tester';
 
 import { ExecContent, ExecInfo, ExecResult, ReportContent, ReportInfo } from './PropsType';
+import { ProjectInfo } from '@/layout/types';
 
 const { t } = useI18n();
 
@@ -28,7 +29,7 @@ const ExecFunctionReport = defineAsyncComponent(() => import('@/views/report/pre
 const ExecPerfReport = defineAsyncComponent(() => import('@/views/report/preview/execPerf/index.vue'));
 
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject<Ref<{ [key: string]: any }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const appInfo = ref(appContext.getAccessApp());
 
 const route = useRoute();

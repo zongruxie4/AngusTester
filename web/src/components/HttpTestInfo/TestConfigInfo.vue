@@ -1,10 +1,9 @@
 <script setup lang="ts">
-// Vue core imports
-import { computed, watch, ref, inject } from 'vue';
+import { computed, watch, ref, inject, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-// UI component imports
 import { Grid, Icon } from '@xcan-angus/vue-ui';
+import { ProjectInfo } from '@/layout/types';
 
 const { t } = useI18n();
 
@@ -23,7 +22,10 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Injected project information
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
+
+// Test configuration data source
+const testConfigDataSource = ref<Record<string, any>>({});
 
 /**
  * Computed property for test configuration table columns
@@ -75,9 +77,6 @@ const testConfigTableColumns = computed(() => {
   ]];
 });
 
-// Test configuration data source
-const testConfigDataSource = ref<Record<string, any>>({});
-
 /**
  * Watch for changes in props value and update data source
  */
@@ -96,7 +95,7 @@ watch(() => props.value, newValue => {
         <template v-if="!testConfigDataSource.id">
           {{ t('xcan_httpTestInfo.untested') }}
         </template>
-        <template v-else-if="props.enabled === false && !testConfigDataSource.id">
+        <template v-else-if="!props.enabled && !testConfigDataSource.id">
           {{ t('status.disabled') }}
         </template>
         <template v-else-if="text">

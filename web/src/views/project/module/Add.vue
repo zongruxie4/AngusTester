@@ -23,7 +23,7 @@ const { t } = useI18n();
 
 // Props definition with proper defaults
 const props = withDefaults(defineProps<AddModuleProps>(), {
-  projectId: '',
+  projectId: undefined,
   visible: false,
   pid: undefined
 });

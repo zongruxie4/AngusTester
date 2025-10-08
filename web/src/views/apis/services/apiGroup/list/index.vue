@@ -9,8 +9,10 @@ import ListItem from './listItem.vue';
 import { apis } from '@/api/tester';
 import { group } from '@/utils/common';
 import type { DataSourceType } from '../PropsType';
-import VirtualApiList from './virtualApiList.vue';
 import { ApiPermission } from '@/enums/enums';
+import { ProjectInfo } from '@/layout/types';
+
+import VirtualApiList from './virtualApiList.vue';
 
 interface Props {
   dataSource:Array<DataSourceType>;
@@ -65,7 +67,7 @@ const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/a
 const erd = elementResizeDetector({ strategy: 'scroll' });
 
 const notify = ref(0);
-const projectInfo = inject('projectInfo');
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const api = inject('api', reactive<{id: string, type?: string}>({ id: '' })); // 用于提供给外面当前 打开的 api
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function

@@ -116,13 +116,13 @@ export function useVariableUsage (props: { id: string }) {
 
     // Check if selection exceeds limit
     if (selectedNum > MAX_NUM) {
-      notification.error(t('dataVariable.detail.useList.notifications.batchDeleteLimit', { max: MAX_NUM, current: selectedNum }));
+      notification.error(t('variable.detail.useList.notifications.batchDeleteLimit', { max: MAX_NUM, current: selectedNum }));
       return;
     }
 
     // Confirm and execute batch delete
     modal.confirm({
-      content: t('dataVariable.detail.useList.notifications.batchDeleteConfirm', { num: selectedNum }),
+      content: t('variable.detail.useList.notifications.batchDeleteConfirm', { num: selectedNum }),
       async onOk () {
         const ids = selectedRowKeys;
         const num = ids.length;
@@ -160,7 +160,7 @@ export function useVariableUsage (props: { id: string }) {
           // Handle different outcomes
           if (errorNum === 0) {
             // All successful
-            notification.success(t('dataVariable.detail.useList.notifications.batchDeleteAllSuccess', { num }));
+            notification.success(t('variable.detail.useList.notifications.batchDeleteAllSuccess', { num }));
             pagination.value.total = pagination.value.total - num;
             rowSelection.value = undefined;
             dataList.value = dataList.value.filter((item) => !ids.includes(item.targetId));
@@ -169,13 +169,13 @@ export function useVariableUsage (props: { id: string }) {
 
           if (errorNum === num) {
             // All failed
-            notification.error(t('dataVariable.detail.useList.notifications.batchDeleteAllFail'));
+            notification.error(t('variable.detail.useList.notifications.batchDeleteAllFail'));
             return;
           }
 
           // Partial success
           const successIds = ids.filter(item => !errorIds.includes(item));
-          notification.warning(t('dataVariable.detail.useList.notifications.batchDeletePartialSuccess', {
+          notification.warning(t('variable.detail.useList.notifications.batchDeletePartialSuccess', {
             success: successIds.length,
             fail: errorNum
           }));
@@ -224,7 +224,7 @@ export function useVariableUsage (props: { id: string }) {
     // Check selection limit
     const selectedNum = selectedRowKeys.length;
     if (selectedNum > MAX_NUM) {
-      notification.info(t('dataVariable.detail.useList.notifications.batchDeleteLimit', { max: MAX_NUM, current: selectedNum }));
+      notification.info(t('variable.detail.useList.notifications.batchDeleteLimit', { max: MAX_NUM, current: selectedNum }));
     }
 
     rowSelection.value.selectedRowKeys = selectedRowKeys;

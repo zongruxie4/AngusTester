@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-// Vue core imports
-import { inject, ref } from 'vue';
+import { inject, Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Icon, Tooltip, Grid } from '@xcan-angus/vue-ui';
+import { ProjectInfo } from '@/layout/types';
+import { TaskType } from '@/enums/enums';
 
 const { t } = useI18n();
 
@@ -17,7 +16,7 @@ interface TaskItem {
   code: string;
   serviceId: string;
   serviceName: string;
-  taskType: 'API_TEST' | 'BUG' | 'SCENARIO_TEST' | 'STORY' | 'TASK';
+  taskType: TaskType;
   targetId: string;
 }
 
@@ -27,9 +26,12 @@ interface TaskItem {
 interface Props {
   dataSource: TaskItem[];
 }
+const props = withDefaults(defineProps<Props>(), {
+  dataSource: () => ([])
+});
 
 // Injected project information
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 
 /**
  * Get task type icon based on task type
@@ -38,15 +40,15 @@ const projectInfo = inject('projectInfo', ref({ id: '' }));
  */
 const getTaskTypeIcon = (taskType: string) => {
   switch (taskType) {
-    case 'API_TEST':
+    case TaskType.API_TEST:
       return 'icon-jiekouceshi';
-    case 'SCENARIO_TEST':
+    case TaskType.SCENARIO_TEST:
       return 'icon-changjingceshi';
-    case 'BUG':
+    case TaskType.BUG:
       return 'icon-quexian';
-    case 'STORY':
+    case TaskType.STORY:
       return 'icon-gushi';
-    case 'TASK':
+    case TaskType.TASK:
       return 'icon-renwu1';
     default:
       return 'icon-renwu1';
@@ -68,15 +70,16 @@ const taskTooltipTableColumns = [
       dataIndex: 'confirmerName',
       label: t('xcan_httpTestInfo.confirmerName')
     },
-    { dataIndex: 'createdByName', label: t('common.createdBy') },
-    { dataIndex: 'createdDate', label: t('common.createdDate') }
+    {
+      dataIndex: 'createdByName',
+      label: t('common.createdBy')
+    },
+    {
+      dataIndex: 'createdDate',
+      label: t('common.createdDate')
+    }
   ]
 ];
-
-const props = withDefaults(defineProps<Props>(), {
-  dataSource: () => ([])
-});
-
 </script>
 <template>
   <div class="text-3">
@@ -94,7 +97,13 @@ const props = withDefaults(defineProps<Props>(), {
         </template>
         <div class="px-1 flex h-6 items-center">
           <Icon :icon="getTaskTypeIcon(taskItem.taskType)" />
-          <span class="min-w-0 truncate flex-1" :title="taskItem.name"><a target="_blank" :href="`/issue#issue?projectId=${projectInfo.id}&taskId=${taskItem.targetId}&taskName=${taskItem.name}`">{{ taskItem.name }}</a></span>
+          <span class="min-w-0 truncate flex-1" :title="taskItem.name">
+            <a
+              target="_blank"
+              :href="`/issue#issue?projectId=${projectInfo.id}&taskId=${taskItem.targetId}&taskName=${taskItem.name}`">
+              {{ taskItem.name }}
+            </a>
+          </span>
         </div>
       </Tooltip>
     </div>

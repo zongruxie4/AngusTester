@@ -184,7 +184,7 @@ onMounted(() => {
             @click="navigateToCreateStaticVariable">
             <div class="flex items-center">
               <Icon icon="icon-jia" class="text-3.5" />
-              <span class="ml-1">{{ t('dataVariable.actions.static') }}</span>
+              <span class="ml-1">{{ t('variable.actions.static') }}</span>
             </div>
             <Dropdown
               :menuItems="buttonDropdownMenuItems"
@@ -221,7 +221,7 @@ onMounted(() => {
           <Tooltip
             arrowPointAtCenter
             placement="topLeft"
-            :title="t('dataVariable.actions.uploadVariable')">
+            :title="t('variable.actions.uploadVariable')">
             <Icon
               icon="icon-shangchuan"
               class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
@@ -232,7 +232,7 @@ onMounted(() => {
           <Tooltip
             arrowPointAtCenter
             placement="topLeft"
-            :title="t('dataVariable.actions.downloadVariable')">
+            :title="t('variable.actions.downloadVariable')">
             <Icon
               icon="icon-daochu1"
               class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"

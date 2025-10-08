@@ -9,6 +9,7 @@ import { ReportTemplate, ReportCategory } from '@/enums/enums';
 import { reportMenus } from './config';
 import dayjs from 'dayjs';
 import { report as reportApi } from '@/api/tester';
+import { ProjectInfo } from '@/layout/types';
 
 const { t } = useI18n();
 
@@ -27,7 +28,7 @@ const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok')
 
 // Injected dependencies
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
-const projectInfo = inject('projectInfo', ref<{[key: string]: string}>({}));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const tenantInfo = ref(appContext.getUser());
 
 // Reactive variables

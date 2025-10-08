@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { AsyncComponent, Spin } from '@xcan-angus/vue-ui';
 import { appContext, SearchCriteria } from '@xcan-angus/infra';
 import { ScriptPermission } from '@/enums/enums';
+import { ProjectInfo } from '@/layout/types';
 
 import { useScriptData } from './composables/useScriptData';
 import { useScriptImport } from './composables/useScriptImport';
@@ -22,10 +23,9 @@ const router = useRouter();
 
 // Injected values
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = ref(appContext.getAccessApp());
-
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const projectId = computed(() => projectInfo.value?.id);
+const appInfo = ref(appContext.getAccessApp());
 
 // Computed values with proper type conversion
 const userInfoForProps = computed(() => ({

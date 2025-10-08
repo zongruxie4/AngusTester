@@ -110,7 +110,7 @@ const errorNumChange = (value: number) => {
 
 const customRequest = async ({ file }) => {
   if (file.size > props.maxFileSize) {
-    notification.error(t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.summaryFileSize', { maxSize: utils.formatBytes(props.maxFileSize) }));
+    notification.error(t('variable.detail.httpVariable.httpConfigs.requestBodyParameter.summaryFileSize', { maxSize: utils.formatBytes(props.maxFileSize) }));
     return;
   }
 
@@ -416,13 +416,13 @@ const language = computed(() => {
           size="small"
           class="ml-2"
           @click="formatRawContent">
-          {{ t('dataVariable.detail.httpVariable.httpConfigs.formatRawContent') }}
+          {{ t('variable.detail.httpVariable.httpConfigs.formatRawContent') }}
         </Button>
         <Button
           type="link"
           size="small"
           @click="compressRawContent">
-          {{ t('dataVariable.detail.httpVariable.httpConfigs.compressRawContent') }}
+          {{ t('variable.detail.httpVariable.httpConfigs.compressRawContent') }}
         </Button>
       </template>
     </div>
@@ -468,7 +468,7 @@ const language = computed(() => {
           :disabled="!!fileName"
           size="small">
           <Icon icon="icon-tuisongtongzhi" class="mr-1" />
-          <span>{{ t('dataVariable.detail.httpVariable.httpConfigs.uploadFile') }}</span>
+          <span>{{ t('variable.detail.httpVariable.httpConfigs.uploadFile') }}</span>
         </Button>
       </Upload>
       <template v-if="!!fileName">

@@ -1,13 +1,16 @@
 <script lang="ts" setup>
-import { ref, computed, defineAsyncComponent, watch, inject } from 'vue';
+import { ref, computed, defineAsyncComponent, watch, inject, Ref } from 'vue';
 import { Modal, RadioGroup, Radio, Textarea, InputGroup } from 'ant-design-vue';
 import { Input, SelectEnum, IconRequired, Select, notification, Tooltip, Icon } from '@xcan-angus/vue-ui';
 import { TESTER, http, HttpExtractionLocation } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { ProjectInfo } from '@/layout/types';
 
 import { getRequestConfigs } from './getRequestConfigs';
 import { ListVariableObj } from './PropsType';
 const { t } = useI18n();
+
+const HTTPConfigs = defineAsyncComponent(() => import('./HTTPConfigs/index.vue'));
 
 interface Props {
   visible: boolean;
@@ -25,9 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean), (e: 'ok', value: any)}>();
 
-const HTTPConfigs = defineAsyncComponent(() => import('./HTTPConfigs/index.vue'));
-
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 
 const variable = ref<ListVariableObj>({
   name: '',

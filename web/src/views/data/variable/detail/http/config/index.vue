@@ -578,7 +578,7 @@ defineExpose({
         v-model:value="httpMethod"
         class="w-25"
         enumKey="HttpMethod"
-        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestMethodPlaceholder')">
+        :placeholder="t('variable.detail.httpVariable.httpConfigs.requestMethodPlaceholder')">
         <template #option="record">
           <HttpMethodText :value="record.value" />
         </template>
@@ -594,7 +594,7 @@ defineExpose({
         :allowClear="false"
         style="flex:1 1 40%"
         class="input-container"
-        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestUrlPlaceholder')"
+        :placeholder="t('variable.detail.httpVariable.httpConfigs.requestUrlPlaceholder')"
         size="default"
         @change="urlChange"
         @blur="urlBlur" />
@@ -607,7 +607,7 @@ defineExpose({
             size="small"
             :count="queryPathErrorNum">
             <div class="flex items-center space-x-0.5">
-              <div>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestParameters') }}</div>
+              <div>{{ t('variable.detail.httpVariable.httpConfigs.requestParameters') }}</div>
               <div class="flex items-center space-x-0.5">
                 <em>(</em>
                 <span>{{ queryPathNum }}</span>
@@ -633,7 +633,7 @@ defineExpose({
             size="small"
             :count="headerErrorNum">
             <div class="flex items-center space-x-0.5">
-              <div>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestHeaders') }}</div>
+              <div>{{ t('variable.detail.httpVariable.httpConfigs.requestHeaders') }}</div>
               <div class="flex items-center space-x-0.5">
                 <em>(</em>
                 <span>{{ headerNum }}</span>
@@ -658,7 +658,7 @@ defineExpose({
             size="small"
             :count="cookieErrorNum">
             <div class="flex items-center space-x-0.5">
-              <div>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestCookie') }}</div>
+              <div>{{ t('variable.detail.httpVariable.httpConfigs.requestCookie') }}</div>
               <div class="flex items-center space-x-0.5">
                 <em>(</em>
                 <span>{{ cookieNum }}</span>
@@ -678,7 +678,7 @@ defineExpose({
       <TabPane key="Authorization">
         <template #tab>
           <Badge v-if="!!authentication?.type" color="green" />
-          <span>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestAuthorization') }}</span>
+          <span>{{ t('variable.detail.httpVariable.httpConfigs.requestAuthorization') }}</span>
         </template>
         <ExecAuthencation
           :defaultValue="defaultAuthentication"
@@ -688,7 +688,7 @@ defineExpose({
       <TabPane key="body">
         <template #tab>
           <Badge v-if="hasRequestBody" color="green" />
-          <Badge size="small" :count="bodyErrorNum">{{ t('dataVariable.detail.httpVariable.httpConfigs.requestBody') }}</Badge>
+          <Badge size="small" :count="bodyErrorNum">{{ t('variable.detail.httpVariable.httpConfigs.requestBody') }}</Badge>
         </template>
         <RequestBody
           ref="bodyRef"

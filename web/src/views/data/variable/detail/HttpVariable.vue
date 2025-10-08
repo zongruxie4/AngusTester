@@ -155,7 +155,7 @@ const httpConfigsRef = ref();
 
       <div>
         <!-- Configuration hints -->
-        <Hints class="mb-2.5" :text="t('dataVariable.detail.httpVariable.hints')" />
+        <Hints class="mb-2.5" :text="t('variable.detail.httpVariable.hints')" />
 
         <!-- HTTP request configuration -->
         <Toggle :title="t('dataCommon.common.readConfig')" class="leading-5 mb-3.5">
@@ -167,7 +167,7 @@ const httpConfigsRef = ref();
               class="flex items-center p-0 border-none h-3.5 leading-3.5 space-x-1"
               @click="toSelectApi">
               <Icon icon="icon-xuanze" class="text-3.5" />
-              <span>{{ t('dataVariable.detail.httpVariable.httpConfigs.selectApi') }}</span>
+              <span>{{ t('variable.detail.httpVariable.httpConfigs.selectApi') }}</span>
             </Button>
           </div>
 
@@ -175,7 +175,7 @@ const httpConfigsRef = ref();
           <div class="flex items-start mb-3.5">
             <div class="w-26 flex-shrink-0 transform-gpu translate-y-1 text-3 font-semibold flex justify-end items-center mr-2.5">
               <IconRequired />
-              <span>{{ t('dataVariable.detail.httpVariable.interfaceConfig') }}</span>
+              <span>{{ t('variable.detail.httpVariable.interfaceConfig') }}</span>
             </div>
             <HTTPConfigs
               ref="httpConfigsRef"
@@ -412,7 +412,7 @@ const httpConfigsRef = ref();
                   </div>
                   <Input
                     v-model:value="expression"
-                    :placeholder="t('dataVariable.detail.httpVariable.expressionPlaceholder ')"
+                    :placeholder="t('variable.detail.httpVariable.expressionPlaceholder ')"
                     class="w-full-16"
                     trim
                     :maxlength="1024" />

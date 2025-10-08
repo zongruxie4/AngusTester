@@ -129,7 +129,7 @@ const handleBlurValue = (targetText: string) => {
       <Radio :value="true">
         <div class="flex items-center">
           <span class="mr-2">{{ t('status.yes') }}</span>
-          <Hints :text="t('dataVariable.detail.staticVariable.passwordHint')" />
+          <Hints :text="t('variable.detail.staticVariable.passwordHint')" />
         </div>
       </Radio>
     </RadioGroup>
@@ -168,7 +168,7 @@ const handleBlurValue = (targetText: string) => {
       </template>
 
       <div class="flex">
-        <Hints class="mb-2.5" :text="t('dataVariable.detail.staticVariable.hints')" />
+        <Hints class="mb-2.5" :text="t('variable.detail.staticVariable.hints')" />
         <FunctionsButton class="ml-1 text-3.5" />
       </div>
       <ParamTextarea

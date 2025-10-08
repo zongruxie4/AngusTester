@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, nextTick, onMounted, Ref, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, modal, NoData, notification } from '@xcan-angus/vue-ui';
@@ -8,6 +8,7 @@ import {
 } from '@xcan-angus/infra';
 import { analysis, funcCase, funcPlan, modules } from '@/api/tester';
 import { travelTreeData } from '@/utils/utils';
+import { ProjectInfo } from '@/layout/types';
 
 import { CaseActionAuth, EnabledGroup } from './types';
 import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
@@ -57,6 +58,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Component emits
+// eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'update:count', value: CaseCount): void;
   (e: 'openInfo', infoTabParams: any): void;
@@ -67,9 +69,9 @@ const emits = defineEmits<{
 }>();
 
 // Global Injects & Basic State
-const projectInfo = inject('projectInfo', ref({ id: '', name: '' }));
-const userInfo = inject<{ id: string, fullName: string }>('userInfo');
-const appInfo = inject<{ id: string, name: string }>('appInfo');
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
+const userInfo = inject<{ id: number, fullName: string }>('userInfo');
+const appInfo = inject<{ id: number, name: string }>('appInfo');
 const updateLoading = inject<((value: boolean) => void)>('updateLoading', () => undefined);
 const isAdmin = computed(() => appContext.isAdmin());
 
@@ -118,7 +120,7 @@ const setParamsAndLoadData = () => {
 
 // Module Grouping
 const enabledGroup = ref<EnabledGroup>(true);
-const moduleId = ref<string>();
+const moduleId = ref<number | undefined>();
 
 /**
  * Handle module grouping change
@@ -127,7 +129,7 @@ const moduleId = ref<string>();
 const enabledGroupChange = (value: boolean) => {
   enabledGroup.value = value;
   if (enabledGroup.value) {
-    moduleId.value = '';
+    moduleId.value = -1;
   } else {
     moduleId.value = undefined;
   }
@@ -182,8 +184,6 @@ const handleAiAdd = () => {
   aiAddVisible.value = true;
 };
 
-// ===== Export / Import =====
-
 /**
  * Handle case export
  */
@@ -232,7 +232,7 @@ const loadCaseCount = async (): Promise<void> => {
   emits('update:count', data);
 };
 
-// ===== Case List & Table Actions =====
+// Case List & Table Actions
 const checkedCase = ref<CaseDetail>();
 const caseList = ref<CaseDetail[]>([]);
 
@@ -301,7 +301,7 @@ const tableAction = computed(() => {
   const action = { auth: {}, actionMenus: {} };
   for (let i = 0; i < caseList.value.length; i++) {
     const _case = caseList.value[i];
-    if (userInfo?.id === _case.testerId?.toString() &&
+    if (userInfo?.id === _case.testerId &&
       (planAuthMap.value[_case.planId]?.permissions || []).includes(FuncPlanPermission.TEST)) {
       if (planAuthMap.value[_case.planId]?.permissions) {
         planAuthMap.value[_case.planId].permissions.push(FuncPlanPermission.TEST);
@@ -315,7 +315,7 @@ const tableAction = computed(() => {
       }
     }
     if (action.auth[_case.id].includes('retestResult')) {
-      if (!planAuthMap.value[_case.planId].funcPlanAuth && userInfo?.id !== _case.testerId?.toString()) {
+      if (!planAuthMap.value[_case.planId].funcPlanAuth && userInfo?.id !== _case.testerId) {
         action.auth[_case.id] = action.auth[_case.id].filter(i => i !== 'retestResult');
       }
     }
@@ -410,7 +410,7 @@ const tableAction = computed(() => {
 // Case detail state
 const caseInfo = ref<CaseDetail>();
 const firstCase = ref<CaseDetail>();
-const getCaseInfo = async (id: string) => {
+const getCaseInfo = async (id: number) => {
   updateLoading(true);
   const [error, { data }] = await funcCase.getCaseDetail(id);
   updateLoading(false);
@@ -426,7 +426,7 @@ const addVisible = ref(false);
 
 const aiAddVisible = ref(false);
 
-const planAuthMap = ref<{[id: string]: {
+const planAuthMap = ref<{[id: number]: {
   funcPlanAuth: boolean;
   permissions: string[];
 }}>({});
@@ -444,7 +444,7 @@ const getPlanAuth = async () => {
     });
     return;
   }
-  const planIds = caseList.value.map(i => i.planId?.toString()).filter(Boolean);
+  const planIds = caseList.value.map(i => i.planId).filter(Boolean);
   if (!planIds.length) {
     return;
   }
@@ -464,25 +464,21 @@ const getPlanAuth = async () => {
   });
 };
 
-// ===== Module Tree =====
-const moduleTreeData = ref([{ name: t('testCase.case.moduleTree.noModuleCases'), id: '-1' }]);
+// Module Tree
+const moduleTreeData = ref([{ name: t('common.noModule'), id: '-1' }]);
 const loadModuleTree = async (keywords?: string) => {
   const [error, { data }] = await modules.getModuleTree({
     projectId: projectInfo.value?.id,
     filters: keywords
-      ? [{
-          value: keywords,
-          op: SearchCriteria.OpEnum.Match,
-          key: 'name'
-        }]
+      ? [{ value: keywords, op: SearchCriteria.OpEnum.Match, key: 'name' }]
       : []
   });
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: t('testCase.case.moduleTree.noModuleCases'), id: '-1' }, ...travelTreeData(data || [])];
-  if (moduleId.value && keywords && !moduleTreeData.value.find(item => item.id === moduleId.value)) {
-    moduleId.value = '';
+  moduleTreeData.value = [{ name: t('common.noModule'), id: '-1' }, ...travelTreeData(data || [])];
+  if (moduleId.value && keywords && !moduleTreeData.value.find(item => item.id === String(moduleId.value))) {
+    moduleId.value = undefined;
   }
 };
 
@@ -492,7 +488,7 @@ onMounted(async () => {
 
   watch(() => projectInfo.value?.id, newValue => {
     if (newValue) {
-      moduleId.value = '';
+      moduleId.value = undefined;
       loadModuleTree();
     }
   });
@@ -502,7 +498,7 @@ onMounted(async () => {
 });
 
 // Selected case IDs
-const selectedRowKeys = ref<string[]>([]);
+const selectedRowKeys = ref<number[]>([]);
 
 // Operation type: 'batch' for bulk, 'one' for single row action
 const btnType = ref<'batch' | 'one'>('one');
@@ -563,8 +559,8 @@ const handleDelete = async (rowData?: CaseDetail) => {
 
 const delCase = async (rowData?: CaseDetail) => {
   updateLoading(true);
-  const ids: string[] = rowData ? [rowData.id] : selectedRowKeys.value;
-  const [error] = await funcCase.deleteCase(ids.join(','));
+  const ids: number[] = rowData ? [rowData.id] : selectedRowKeys.value;
+  const [error] = await funcCase.deleteCase(ids);
   if (error) {
     updateLoading(false);
     return;
@@ -807,9 +803,7 @@ const calculateDataPosition = (_total, _pageNo, _pageSize, n) => {
   const startIndex = (_pageNo - 1) * _pageSize;
 
   // Compute the position of n within the current page
-  const positionInPage = startIndex + n;
-  // Return the position in the entire dataset
-  return positionInPage;
+  return startIndex + n;
 };
 
 // Export cases
@@ -828,9 +822,7 @@ const handleExportTemplate = async () => {
 
 // Open upload modal
 const uploadCaseVisible = ref(false);
-// const handleUploadCase = () => {
-//   uploadCaseVisible.value = true;
-// };
+
 // Cancel uploading case file
 const cancelUpload = () => {
   uploadCaseVisible.value = false;
@@ -1023,7 +1015,7 @@ defineExpose({
 <template>
   <div class="h-full text-3">
     <div class="flex h-full">
-      <div class="h-full overflow-hidden bg-gray-1" :class="{'w-70 mr-2': enabledGroup, 'w-0': !enabledGroup}">
+      <div class="flex-shrink-0 h-full overflow-hidden pb-3 bg-gray-1 text-3" :class="{'w-65 mr-2': enabledGroup , 'w-0': !enabledGroup}">
         <ModuleTree
           v-model:moduleId="moduleId"
           :projectId="String(projectInfo?.id || '')"

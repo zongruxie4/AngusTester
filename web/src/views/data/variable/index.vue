@@ -51,7 +51,7 @@ const initialize = () => {
         return {
           _id: 'variableList',
           value: 'variableList',
-          name: t('dataVariable.title'),
+          name: t('variable.title'),
           closable: false
         };
       }
@@ -85,13 +85,13 @@ const hashChange = (hash:string) => {
     });
   } else if (source) {
     browserTabRef.value.add(() => {
-      let name = t('dataVariable.actions.static');
+      let name = t('variable.actions.static');
       if (source === 'FILE') {
-        name = t('dataVariable.actions.file');
+        name = t('variable.actions.file');
       } else if (source === 'HTTP') {
-        name = t('dataVariable.actions.http');
+        name = t('variable.actions.http');
       } else if (source === 'JDBC') {
-        name = t('dataVariable.actions.jdbc');
+        name = t('variable.actions.jdbc');
       }
 
       const uid = utils.uuid();

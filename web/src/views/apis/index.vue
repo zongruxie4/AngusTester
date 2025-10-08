@@ -3,11 +3,9 @@ import { computed, defineAsyncComponent, inject, onMounted, provide, reactive, R
 import { utils, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { ProjectInfo } from '@/layout/types';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
-import { nextTick } from 'process';
-
-type MenuKey = 'home' | 'services' | 'trash';
 
 const Homepage = defineAsyncComponent(() => import('@/views/apis/home/index.vue'));
 const Services = defineAsyncComponent(() => import('@/views/apis/services/index.vue'));
@@ -17,13 +15,15 @@ const Trash = defineAsyncComponent(() => import('@/views/apis/trash/index.vue'))
 const Design = defineAsyncComponent(() => import('@/views/apis/design/index.vue'));
 const Mock = defineAsyncComponent(() => import('@/views/apis/mock/index.vue'));
 
+type MenuKey = 'home' | 'services' | 'trash';
+
 const activeKey = ref<MenuKey>();
 const servicesRef = ref();
 const router = useRouter();
 const { t } = useI18n();
 
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const appInfo = ref(appContext.getAccessApp());
 
 const projectId = computed(() => {

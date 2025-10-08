@@ -41,7 +41,7 @@
       "noDataSource": "You haven't added any data sources"
     }
   },
-  "dataVariable": {
+  "variable": {
     "title": "Variable",
     "introduce": {
       "title": "About Variable",

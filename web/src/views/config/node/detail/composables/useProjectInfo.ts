@@ -1,17 +1,5 @@
 import { inject, computed, Ref, ref } from 'vue';
-
-/**
- * <p>Project information interface</p>
- * <p>Defines the structure of project data</p>
- */
-interface ProjectInfo {
-  /** Unique identifier for the project */
-  id: string;
-  /** Name of the project */
-  name?: string;
-  /** Description of the project */
-  description?: string;
-}
+import { ProjectInfo } from '@/layout/types';
 
 /**
  * <p>Composable for managing project information</p>
@@ -24,7 +12,7 @@ export function useProjectInfo () {
    * <p>Injected project information from parent component</p>
    * <p>Contains project details such as ID, name, and description</p>
    */
-  const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({ id: '' }));
+  const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 
   /**
    * <p>Computed project identifier</p>

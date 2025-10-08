@@ -156,7 +156,7 @@ const {
 
       <div>
         <!-- Configuration hints -->
-        <Hints class="mb-2.5" :text="t('dataVariable.detail.jdbcVariable.hints')" />
+        <Hints class="mb-2.5" :text="t('variable.detail.jdbcVariable.hints')" />
 
         <!-- Database connection configuration -->
         <Toggle :title="t('dataCommon.common.readConfig')" class="text-3 leading-5 mb-3.5">
@@ -170,7 +170,7 @@ const {
               class="flex items-center p-0 border-none h-3.5 leading-3.5 space-x-1"
               @click="toSelectDataSource">
               <Icon icon="icon-xuanze" class="text-3.5" />
-              <span>{{ t('dataVariable.detail.jdbcVariable.selectDataSource') }}</span>
+              <span>{{ t('variable.detail.jdbcVariable.selectDataSource') }}</span>
             </Button>
           </div>
 
@@ -179,25 +179,25 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.jdbcVariable.databaseType') }}</span>
+                <span>{{ t('variable.detail.jdbcVariable.databaseType') }}</span>
               </div>
               <SelectEnum
                 v-model:value="dbType"
                 enumKey="DatabaseType"
-                :placeholder="t('dataVariable.detail.jdbcVariable.databaseTypePlaceholder')"
+                :placeholder="t('variable.detail.jdbcVariable.databaseTypePlaceholder')"
                 class="w-full-24" />
             </div>
 
             <div class="w-1/2 flex items-center mb-3.5">
               <div class="w-25 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.jdbcVariable.jdbcUrl') }}</span>
+                <span>{{ t('variable.detail.jdbcVariable.jdbcUrl') }}</span>
               </div>
               <Input
                 v-model:value="jdbcUrl"
                 :maxlength="2048"
                 class="w-full-24"
-                :placeholder="t('dataVariable.detail.jdbcVariable.jdbcUrlPlaceholder')"
+                :placeholder="t('variable.detail.jdbcVariable.jdbcUrlPlaceholder')"
                 trimAll />
             </div>
           </div>
@@ -213,7 +213,7 @@ const {
                 v-model:value="username"
                 class="w-full-24"
                 :maxlength="200"
-                :placeholder="t('dataVariable.detail.jdbcVariable.usernamePlaceholder')"
+                :placeholder="t('variable.detail.jdbcVariable.usernamePlaceholder')"
                 trimAll />
             </div>
 
@@ -226,7 +226,7 @@ const {
                 v-model:value="password"
                 :maxlength="800"
                 class="w-full-24"
-                :placeholder="t('dataVariable.detail.jdbcVariable.passwordPlaceholder')"
+                :placeholder="t('variable.detail.jdbcVariable.passwordPlaceholder')"
                 trimAll />
             </div>
           </div>
@@ -235,11 +235,11 @@ const {
           <div class="flex items-start mb-3.5">
             <div class="w-28 flex-shrink-0 transform-gpu translate-y-1 text-3 font-semibold flex justify-end items-center mr-2.5">
               <IconRequired />
-              <span>{{ t('dataVariable.detail.jdbcVariable.selectStatement') }}</span>
+              <span>{{ t('variable.detail.jdbcVariable.selectStatement') }}</span>
             </div>
             <Input
               v-model:value="selectSqlString"
-              :placeholder="t('dataVariable.detail.jdbcVariable.selectStatementPlaceholder')"
+              :placeholder="t('variable.detail.jdbcVariable.selectStatementPlaceholder')"
               class="w-full-24"
               type="textarea"
               trim
@@ -260,7 +260,7 @@ const {
                 dataType="number"
                 :placeholder="t('dataCommon.common.readStartRowPlaceholder')"
                 trimAll />
-              <Tooltip :title="t('dataVariable.detail.jdbcVariable.readStartRowTooltip')">
+              <Tooltip :title="t('variable.detail.jdbcVariable.readStartRowTooltip')">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>

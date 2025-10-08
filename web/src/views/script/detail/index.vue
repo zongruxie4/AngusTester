@@ -8,6 +8,8 @@ import { useRoute, useRouter } from 'vue-router';
 import YAML from 'yaml';
 import { Button } from 'ant-design-vue';
 import { ScriptPermission } from '@/enums/enums';
+import { appContext } from '@xcan-angus/infra';
+import { ProjectInfo } from '@/layout/types';
 
 import {
   useScriptData,
@@ -16,7 +18,6 @@ import {
   useAI,
   useDrawer
 } from './composables';
-import { appContext } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
@@ -33,7 +34,7 @@ const route = useRoute();
 const router = useRouter();
 
 const isAdmin = computed(() => appContext.isAdmin());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const aiEnabled = inject('aiEnabled', ref(false));
 
 const formRef = ref();

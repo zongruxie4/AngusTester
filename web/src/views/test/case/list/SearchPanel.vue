@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Switch } from 'ant-design-vue';
 import {
   Colon, Dropdown, DropdownGroup, DropdownSort, Icon, IconCount,
-  IconRefresh, Input, QuickSelect, ReviewStatus, SearchPanel, Select, Tooltip
+  IconRefresh, Input, ReviewStatus, SearchPanel, Select, Tooltip
 } from '@xcan-angus/vue-ui';
 import {
   duration, EnumMessage, enumUtils, NumberCompareCondition,
@@ -12,6 +12,7 @@ import {
 } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
+import { isEqual, cloneDeep } from 'lodash-es';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { CaseTestResult } from '@/enums/enums';
 import { CaseViewMode } from '@/views/test/case/types';
@@ -22,15 +23,15 @@ import TestResult from '@/components/TestResult/index.vue';
 // Type definitions
 type Props = {
   viewMode: CaseViewMode;
-  projectId: string;
-  userInfo: { id: string; fullName: string };
-  appInfo: { id: string; name: string };
+  projectId: number;
+  userInfo: { id: number; fullName: string };
+  appInfo: { id: number; name: string };
   notify: string;
   orderBy?: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName';
   orderSort?: PageQuery.OrderSort;
   groupKey?: 'none' | 'testerName' | 'lastModifiedByName';
   enabledGroup: boolean;
-  moduleId?: string;
+  moduleId?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -75,7 +76,7 @@ let database: XCanDexie<{ id: string; data: any; }>;
 const searchPanelRef = ref();
 
 // Quick search state
-const selectedTypes = ref<string[]>([]);
+const selectedQuickSearchItems = ref(new Map<string, { key: string }>());
 const quickSelectDate = ref<string[]>([]);
 
 // Filter states
@@ -124,9 +125,16 @@ const handleGroupingChange = (
 
 /**
  * Handles overdue filter toggle
+ * Removes "All" selection when overdue filter is enabled
  */
 const handleOverdueChange = (checked: any) => {
   overdue.value = checked;
+
+  // Remove "All" selection when overdue filter is enabled
+  if (checked) {
+    selectedQuickSearchItems.value.delete('all');
+  }
+
   emit('change', buildSearchCriteria());
 };
 
@@ -139,6 +147,11 @@ const handleModuleGroupingChange = (checked: any) => {
     emit('update:moduleId', '');
   } else {
     emit('update:moduleId', undefined);
+  }
+
+  // Save module grouping preference to database
+  if (database) {
+    database.add({ id: dbModuleKey.value, data: checked + '' });
   }
 };
 
@@ -208,128 +221,111 @@ const getQuickDate = (type: 'last1Day' | 'last3Days' | 'last7Days') => {
   return [_startDate ? _startDate.format(DATE_TIME_FORMAT) : '', _endDate ? _endDate.format(DATE_TIME_FORMAT) : ''];
 };
 
-/**
- * Compares quick selected date with search panel date
- */
-const getCreatedDateIsQuickDate = (createdDateItems: SearchCriteria[], quickSelectDate: string[]) => {
-  let hasUpDateTime = false;
-  if (createdDateItems.length) {
-    for (let i = 0; i < createdDateItems.length; i++) {
-      const item = createdDateItems[i];
-      if (item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.GreaterThanEqual) {
-        hasUpDateTime = item.value === quickSelectDate[0];
-      }
-
-      if (item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.LessThanEqual) {
-        hasUpDateTime = item.value === quickSelectDate[1];
-      }
-    }
-  }
-  return hasUpDateTime;
-};
 
 /**
- * Handles quick search changes
+ * Handles quick search menu item clicks
+ * Manages the selection/deselection of quick search filters
+ * @param data - The clicked menu item data
  */
-const handleQuickSearchChange = (types: string[], allType: boolean) => {
-  selectedTypes.value = types;
-  const _filters = searchFilters.value || [];
-  const createdByItem = _filters.find(item => item.key === 'createdBy');
-  const testerIdItem = _filters.find(item => item.key === 'testerId');
-  const testResultItem = _filters.find(item => item.key === 'testResult');
-  const createdDateItems = _filters.filter(item => item.key === 'createdDate');
+const handleQuickSearchMenuItemClick = (data: { key: string; name: string }) => {
+  const itemKey = data.key;
 
-  if (types.includes('all')) {
-    if (allType) {
-      testNum.value = '';
-      testFailNum.value = '';
-      reviewNum.value = '';
-      overdue.value = false;
-      if (_filters?.length) {
-        const othersParams = _filters;
-        if (othersParams.length) {
-          searchPanelRef.value.clear();
-        } else {
-          emit('change', buildSearchCriteria());
-        }
-      }
+  // Handle deselection of already selected items
+  if (selectedQuickSearchItems.value.has(itemKey)) {
+    // "All" button remains selected when clicked again
+    if (itemKey === 'all') {
       return;
     }
 
-    if (_filters?.length) {
-      const hasUpDateTime = getCreatedDateIsQuickDate(createdDateItems, quickSelectDate.value);
+    // Remove the selected item
+    selectedQuickSearchItems.value.delete(itemKey);
 
-      const configItems: any[] = [];
-      if (hasUpDateTime) {
-        configItems.push({ valueKey: 'createdDate', value: undefined });
-      }
-
-      if (createdByItem?.value === props.userInfo.id) {
-        configItems.push({ valueKey: 'createdBy', value: undefined });
-      }
-
-      if (testerIdItem?.value === props.userInfo.id && testResultItem?.value === CaseTestResult.PENDING) {
-        configItems.push({ valueKey: 'testerId', value: undefined });
-        configItems.push({ valueKey: 'testResult', value: undefined });
-      }
-
-      if (configItems.length) {
-        searchPanelRef.value.setConfigs(configItems);
-      } else {
-        selectedTypes.value = [];
-      }
+    // Clear corresponding search panel configurations
+    if (itemKey === 'createdBy') {
+      updateSearchPanelConfigs([{ valueKey: 'createdBy', value: undefined }]);
+      return;
     }
+
+    if (itemKey === 'testerId') {
+      updateSearchPanelConfigs([
+        { valueKey: 'testerId', value: undefined },
+        { valueKey: 'testResult', value: undefined }
+      ]);
+      return;
+    }
+
+    if (['last1Day', 'last3Days', 'last7Days'].includes(itemKey)) {
+      quickSelectDate.value = [];
+      updateSearchPanelConfigs([{ valueKey: 'createdDate', value: undefined }]);
+      return;
+    }
+
     return;
   }
 
-  if (types.includes('last1Day') || types.includes('last3Days') || types.includes('last7Days')) {
-    if (types.includes('last1Day')) {
-      const _date = getQuickDate('last1Day');
-      quickSelectDate.value = _date;
-    }
-
-    if (types.includes('last3Days')) {
-      const _date = getQuickDate('last3Days');
-      quickSelectDate.value = _date;
-    }
-
-    if (types.includes('last7Days')) {
-      const _date = getQuickDate('last7Days');
-      quickSelectDate.value = _date;
-    }
+  // Handle "All" selection - clears all other filters
+  if (itemKey === 'all') {
+    clearAllFilters();
+    return;
   }
 
-  const configItems: any[] = [];
-
-  if (types.includes('createdBy')) {
-    configItems.push({ valueKey: 'createdBy', value: props.userInfo.id, defaultOptions: { [props.userInfo.id]: { fullName: props.userInfo.fullName, id: props.userInfo.id } } });
-  } else {
-    if (createdByItem?.value === props.userInfo.id) {
-      configItems.push({ valueKey: 'createdBy', value: undefined });
-    }
+  // Handle specific filter selections
+  if (itemKey === 'createdBy') {
+    updateSearchPanelConfigs([{ valueKey: 'createdBy', value: props.userInfo.id }]);
+    return;
   }
 
-  if (types.includes('testerId')) {
-    configItems.push({ valueKey: 'testerId', value: props.userInfo.id, defaultOptions: { [props.userInfo.id]: { fullName: props.userInfo.fullName, id: props.userInfo.id } } });
-    configItems.push({ valueKey: 'testResult', value: CaseTestResult.PENDING });
-  } else {
-    if (testerIdItem?.value === props.userInfo.id && testResultItem?.value === CaseTestResult.PENDING) {
-      configItems.push({ valueKey: 'testerId', value: undefined });
-      configItems.push({ valueKey: 'testResult', value: undefined });
-    }
+  if (itemKey === 'testerId') {
+    updateSearchPanelConfigs([
+      { valueKey: 'testerId', value: props.userInfo.id },
+      { valueKey: 'testResult', value: CaseTestResult.PENDING }
+    ]);
+    return;
   }
 
-  if (types.includes('last1Day') || types.includes('last3Days') || types.includes('last7Days')) {
-    configItems.push({ valueKey: 'createdDate', value: quickSelectDate.value });
-  } else {
-    const hasUpDateTime = getCreatedDateIsQuickDate(createdDateItems, quickSelectDate.value);
-    if (hasUpDateTime) {
-      configItems.push({ valueKey: 'createdDate', value: undefined });
-    }
+  if (['last1Day', 'last3Days', 'last7Days'].includes(itemKey)) {
+    // Clear other time selections first (mutual exclusion)
+    selectedQuickSearchItems.value.delete('last1Day');
+    selectedQuickSearchItems.value.delete('last3Days');
+    selectedQuickSearchItems.value.delete('last7Days');
+
+    // Set the selected time option
+    selectedQuickSearchItems.value.set(itemKey, { key: itemKey });
+
+    quickSelectDate.value = [];
+    const dateRange = getQuickDate(itemKey as 'last1Day' | 'last3Days' | 'last7Days');
+    quickSelectDate.value = dateRange;
+    updateSearchPanelConfigs([{ valueKey: 'createdDate', value: dateRange }]);
+  }
+};
+
+/**
+ * Clears all filters and resets the search panel
+ */
+const clearAllFilters = () => {
+  selectedQuickSearchItems.value.clear();
+  selectedQuickSearchItems.value.set('all', { key: 'all' });
+
+  // Clear search panel
+  if (typeof searchPanelRef.value?.clear === 'function') {
+    searchPanelRef.value.clear();
   }
 
-  if (configItems.length) {
-    searchPanelRef.value.setConfigs(configItems);
+  // Reset all filter states
+  testNum.value = '';
+  testFailNum.value = '';
+  reviewNum.value = '';
+  overdue.value = false;
+  quickSelectDate.value = [];
+};
+
+/**
+ * Updates search panel configurations
+ * @param configs - Array of configuration objects
+ */
+const updateSearchPanelConfigs = (configs: { valueKey: string; value: any }[]) => {
+  if (typeof searchPanelRef.value?.setConfigs === 'function') {
+    searchPanelRef.value.setConfigs(configs);
   }
 };
 
@@ -423,42 +419,30 @@ const handleCountChange = () => {
 };
 
 // Computed properties
-const quickList = computed(() => [
+const menuItems = computed(() => [
   {
-    type: 'all',
-    name: t('common.all'),
-    selected: false,
-    group: 'all'
+    key: 'all',
+    name: t('common.all')
   },
   {
-    type: 'createdBy',
-    name: t('testCase.mainView.myAdded'),
-    selected: false,
-    group: 'createdBy'
+    key: 'createdBy',
+    name: t('testCase.mainView.myAdded')
   },
   {
-    type: 'testerId',
-    name: t('testCase.mainView.waitingForTest'),
-    selected: false,
-    group: 'testerId'
+    key: 'testerId',
+    name: t('testCase.mainView.waitingForTest')
   },
   {
-    type: 'last1Day',
-    name: t('quickSearch.last1Day'),
-    selected: false,
-    group: 'time'
+    key: 'last1Day',
+    name: t('quickSearch.last1Day')
   },
   {
-    type: 'last3Days',
-    name: t('quickSearch.last3Days'),
-    selected: false,
-    group: 'time'
+    key: 'last3Days',
+    name: t('quickSearch.last3Days')
   },
   {
-    type: 'last7Days',
-    name: t('quickSearch.last7Days'),
-    selected: false,
-    group: 'time'
+    key: 'last7Days',
+    name: t('quickSearch.last7Days')
   }
 ]);
 
@@ -722,6 +706,13 @@ const initializeComponent = async () => {
   const enabledGroup = moduleData?.data === 'true';
   emit('update:enabledGroup', enabledGroup);
 
+  // Set moduleId based on enabledGroup state
+  if (enabledGroup) {
+    emit('update:moduleId', '');
+  } else {
+    emit('update:moduleId', undefined);
+  }
+
   // Load search criteria data
   const [, searchData] = await database.get(dbParamsKey.value);
   const savedSearchData = searchData?.data;
@@ -796,6 +787,29 @@ const initializeComponent = async () => {
       searchFilters.value = [];
     }
 
+    // Load overdue filter state
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'isOverdueEnabled')) {
+      overdue.value = savedSearchData.isOverdueEnabled || false;
+    } else {
+      overdue.value = false;
+    }
+
+    // Load numeric filter states
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'testNum')) {
+      testNum.value = savedSearchData.testNum || '';
+      testNumScope.value = savedSearchData.testNumScope || SearchCriteria.OpEnum.Equal;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'testFailNum')) {
+      testFailNum.value = savedSearchData.testFailNum || '';
+      testFailScope.value = savedSearchData.testFailScope || SearchCriteria.OpEnum.Equal;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'reviewNum')) {
+      reviewNum.value = savedSearchData.reviewNum || '';
+      reviewNumScope.value = savedSearchData.reviewNumScope || SearchCriteria.OpEnum.Equal;
+    }
+
     // Set search panel data
     if (typeof searchPanelRef.value?.setConfigs === 'function') {
       const configs: { valueKey: string; value: string | string[] | undefined }[] = [];
@@ -808,6 +822,37 @@ const initializeComponent = async () => {
       if (configs.length) {
         searchPanelRef.value.setConfigs(configs);
       }
+    }
+
+    // Set up quick search based on loaded filters
+    const createdBy = searchFilters.value.find(item => item.key === 'createdBy')?.value;
+    if (createdBy && createdBy === props.userInfo.id) {
+      selectedQuickSearchItems.value.set('createdBy', { key: 'createdBy' });
+    }
+
+    const testerId = searchFilters.value.find(item => item.key === 'testerId')?.value;
+    const testResult = searchFilters.value.find(item => item.key === 'testResult')?.value;
+    if (testerId === props.userInfo.id && testResult === CaseTestResult.PENDING) {
+      selectedQuickSearchItems.value.set('testerId', { key: 'testerId' });
+    }
+
+    // Check for date filters
+    const createdDateStart = searchFilters.value.find(item => item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.GreaterThanEqual)?.value;
+    const createdDateEnd = searchFilters.value.find(item => item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.LessThanEqual)?.value;
+    if (createdDateStart && createdDateEnd) {
+      const dateString = [createdDateStart, createdDateEnd];
+      if (isEqual(dateString, getQuickDate('last1Day'))) {
+        selectedQuickSearchItems.value.set('last1Day', { key: 'last1Day' });
+      } else if (isEqual(dateString, getQuickDate('last3Days'))) {
+        selectedQuickSearchItems.value.set('last3Days', { key: 'last3Days' });
+      } else if (isEqual(dateString, getQuickDate('last7Days'))) {
+        selectedQuickSearchItems.value.set('last7Days', { key: 'last7Days' });
+      }
+    }
+
+    // If no quick search items are selected, set "all" as default
+    if (selectedQuickSearchItems.value.size === 0) {
+      selectedQuickSearchItems.value.set('all', { key: 'all' });
     }
 
     // Emit the search criteria
@@ -823,7 +868,8 @@ const initializeComponent = async () => {
  * Resets all component data to initial state
  */
 const resetData = () => {
-  selectedTypes.value = ['all'];
+  selectedQuickSearchItems.value.clear();
+  selectedQuickSearchItems.value.set('all', { key: 'all' });
   quickSelectDate.value = [];
   overdue.value = false;
   testNum.value = '';
@@ -867,6 +913,119 @@ onMounted(async () => {
   await loadEnums();
   await initializeComponent();
 });
+
+// Watch for changes in search filters and update quick search state accordingly
+watch(
+  [
+    () => searchFilters.value,
+    () => overdue.value,
+    () => testNum.value,
+    () => testFailNum.value,
+    () => reviewNum.value,
+    () => selectedQuickSearchItems.value
+  ], () => {
+    const _filters = searchFilters.value;
+    if (!(_filters.length ||
+      overdue.value ||
+      !!testNum.value ||
+      !!testFailNum.value ||
+      !!reviewNum.value)) {
+      selectedQuickSearchItems.value.clear();
+      selectedQuickSearchItems.value.set('all', { key: 'all' });
+
+      emit('change', buildSearchCriteria());
+    } else {
+      // Remove the selected "All" option from quick search
+      selectedQuickSearchItems.value.delete('all');
+
+      // Set up quick search based on current filters
+      const createdBy = _filters.find(item => item.key === 'createdBy')?.value;
+      if (createdBy && createdBy === props.userInfo.id) {
+        selectedQuickSearchItems.value.set('createdBy', { key: 'createdBy' });
+      } else {
+        selectedQuickSearchItems.value.delete('createdBy');
+      }
+
+      const testerId = _filters.find(item => item.key === 'testerId')?.value;
+      const testResult = _filters.find(item => item.key === 'testResult')?.value;
+      if (testerId === props.userInfo.id && testResult === CaseTestResult.PENDING) {
+        selectedQuickSearchItems.value.set('testerId', { key: 'testerId' });
+
+        // Remove other conflicting options
+        selectedQuickSearchItems.value.delete('createdBy');
+      } else {
+        selectedQuickSearchItems.value.delete('testerId');
+      }
+
+      // Check for date filters (mutual exclusion)
+      const createdDateStart = _filters.find(item => item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.GreaterThanEqual)?.value;
+      const createdDateEnd = _filters.find(item => item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.LessThanEqual)?.value;
+
+      // Clear all time selections first
+      selectedQuickSearchItems.value.delete('last1Day');
+      selectedQuickSearchItems.value.delete('last3Days');
+      selectedQuickSearchItems.value.delete('last7Days');
+
+      if (createdDateStart && createdDateEnd) {
+        const dateString = [createdDateStart, createdDateEnd];
+        if (isEqual(dateString, getQuickDate('last1Day'))) {
+          selectedQuickSearchItems.value.set('last1Day', { key: 'last1Day' });
+        } else if (isEqual(dateString, getQuickDate('last3Days'))) {
+          selectedQuickSearchItems.value.set('last3Days', { key: 'last3Days' });
+        } else if (isEqual(dateString, getQuickDate('last7Days'))) {
+          selectedQuickSearchItems.value.set('last7Days', { key: 'last7Days' });
+        }
+      }
+
+      emit('change', buildSearchCriteria());
+    }
+
+    // Save to database
+    if (database) {
+      const dbData: {
+        filters?: SearchCriteria[];
+        isOverdueEnabled?: boolean;
+        testNum?: string;
+        testFailNum?: string;
+        reviewNum?: string;
+        testNumScope?: SearchCriteria.OpEnum;
+        testFailScope?: SearchCriteria.OpEnum;
+        reviewNumScope?: SearchCriteria.OpEnum;
+      } = {};
+
+      if (_filters.length) {
+        dbData.filters = cloneDeep(_filters);
+      }
+
+      if (overdue.value) {
+        dbData.isOverdueEnabled = overdue.value;
+      }
+
+      if (testNum.value) {
+        dbData.testNum = testNum.value;
+        dbData.testNumScope = testNumScope.value;
+      }
+
+      if (testFailNum.value) {
+        dbData.testFailNum = testFailNum.value;
+        dbData.testFailScope = testFailScope.value;
+      }
+
+      if (reviewNum.value) {
+        dbData.reviewNum = reviewNum.value;
+        dbData.reviewNumScope = reviewNumScope.value;
+      }
+
+      if (Object.keys(dbData).length) {
+        database.add({
+          id: dbParamsKey.value,
+          data: dbData
+        });
+      } else {
+        database.delete(dbParamsKey.value);
+      }
+    }
+  }, { immediate: false, deep: false });
 </script>
 
 <template>
@@ -879,11 +1038,14 @@ onMounted(async () => {
           <Colon />
         </div>
         <div class="flex flex-wrap ml-2">
-          <QuickSelect
-            class="mb-3"
-            :list="quickList"
-            :selectedTypes="selectedTypes"
-            @change="handleQuickSearchChange" />
+          <div
+            v-for="item in menuItems"
+            :key="item.key"
+            :class="{ 'active-key': selectedQuickSearchItems.has(item.key) }"
+            class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
+            @click="handleQuickSearchMenuItemClick(item)">
+            {{ item.name }}
+          </div>
 
           <div class="px-4 h-7 leading-7 mb-3">
             <span>{{ t('status.overdue') }}</span>
@@ -897,7 +1059,7 @@ onMounted(async () => {
 
           <div class="h-7 leading-7 mb-3 mr-5">
             <span class="text-3 text-theme-content">
-              <span>{{ t('testCase.mainView.groupByModule') }}</span>
+              <span>{{ t('common.module') }}</span>
               <Colon class="mr-2" />
             </span>
 
@@ -1100,3 +1262,10 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.active-key {
+  background-color: #4ea0fd;
+  color: #fff;
+}
+</style>

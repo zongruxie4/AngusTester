@@ -1,22 +1,21 @@
 <script setup lang='ts'>
-// Vue core imports
-import { ref, watch, onMounted, computed, defineAsyncComponent, inject } from 'vue';
+import { ref, watch, onMounted, computed, defineAsyncComponent, inject, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
-import { Button, Collapse, CollapsePanel, RadioGroup, Radio, TabPane, Tabs, Textarea, Switch, InputGroup } from 'ant-design-vue';
+import {
+  Button, Collapse, CollapsePanel, RadioGroup, Radio, TabPane, Tabs, Textarea, Switch, InputGroup
+} from 'ant-design-vue';
 import { Hints, Input, Icon, SelectEnum, IconRequired, Arrow } from '@xcan-angus/vue-ui';
-
-// Infrastructure imports
 import { EnumMessage, ExtractionMethod, utils, enumUtils, HttpExtractionLocation } from '@xcan-angus/infra';
 import { RadioChangeEvent } from 'ant-design-vue/es/radio/interface';
 
 // Local imports
 import { VariableObj } from './PropsType';
+import { ProjectInfo } from '@/layout/types';
 
 const { t } = useI18n();
+
 // Injected dependencies
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const currentProjectId = computed(() => {
   return projectInfo.value?.id;
 });

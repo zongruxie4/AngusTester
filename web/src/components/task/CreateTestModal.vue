@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { CombinedTargetType, EnumMessage, http, Priority, TESTER } from '@xcan-angus/infra';
+import { CombinedTargetType, http, Priority, TESTER } from '@xcan-angus/infra';
 import { CheckboxGroup, Form, FormItem } from 'ant-design-vue';
 import { Icon, Modal, notification, Select, Toggle } from '@xcan-angus/vue-ui';
 import { project } from '@/api/tester';
 import { ProjectType, TestType } from '@/enums/enums';
 import { FormData } from './types';
-import { ProjectDisplayInfo } from '@/layout/types';
+import { ProjectInfo } from '@/layout/types';
 
 const { t } = useI18n();
 
 // Lazy load TestForm component to improve performance
 const TestForm = defineAsyncComponent(() => import('./TestForm.vue'));
 
-// ===== Component Props and Emits =====
+// Component Props and Emits
 interface Props {
   visible: boolean,
   infoText: string,
@@ -35,9 +35,8 @@ const emit = defineEmits<{
   (e: 'update:id', val: string | undefined): void,
 }>();
 
-// ===== Reactive Data and State =====
 // Inject project information from parent component
-const projectInfo = inject<Ref<ProjectDisplayInfo>>('projectInfo', ref({ id: '', name: '', type: {} as EnumMessage<ProjectType> }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const projectMembers = ref([]);
 
 // Form references for validation
@@ -91,7 +90,7 @@ const testTypeOptions = [
 
 const isConfirmLoading = ref<boolean>(false);
 
-// ===== Computed Properties =====
+// Computed Properties
 /**
  * <p>
  * Computed property that returns form data based on selected test types.
@@ -135,7 +134,7 @@ const apiEndpointUrl = computed(() => {
   }
 });
 
-// ===== API Methods =====
+// API Methods
 /**
  * <p>
  * Loads project members from the API.
@@ -150,7 +149,7 @@ const loadProjectMembers = async () => {
   projectMembers.value = data || [];
 };
 
-// ===== Validation Methods =====
+// Validation Methods
 /**
  * <p>
  * Validates that at least one test type is selected.
@@ -200,7 +199,7 @@ const validateAllTestForms = () => {
   return isValid;
 };
 
-// ===== Event Handlers =====
+// Event Handlers
 /**
  * <p>
  * Handles the OK button click event.
@@ -278,7 +277,7 @@ const resetFormValidation = () => {
   sprintFormRef.value?.clearValidate();
 };
 
-// ===== Lifecycle Hooks =====
+// Lifecycle Hooks
 onMounted(() => {
   // Watch for modal visibility changes
   watch(() => props.visible, (isVisible) => {

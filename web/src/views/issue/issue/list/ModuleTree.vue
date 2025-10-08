@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, ref } from 'vue';
+import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { appContext, duration } from '@xcan-angus/infra';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { modules } from '@/api/tester';
+import { ProjectInfo } from '@/layout/types';
 
 /**
  * Module item interface for tree display
@@ -40,16 +41,16 @@ const props = withDefaults(defineProps<Props>(), {
   dataList: () => []
 });
 
-// EMITS
+// Emits
 const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string):void}>();
 
-// ASYNC COMPONENTS
+// Async components
 const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
 const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/module/Move.vue'));
 
-// COMPOSABLES & INJECTIONS
+// Composables & injections
 const { t } = useI18n();
-const projectInfo = inject('projectInfo', ref({}));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const isAdmin = computed(() => appContext.isAdmin());
 const currentUserInfo = ref(appContext.getUser());
 

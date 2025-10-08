@@ -2,10 +2,9 @@
 import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
 import { appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { ProjectInfo } from '@/layout/types';
 
-import LeftMenu from '@/components/layout/leftMenu/index.vue';
-
-const { t } = useI18n();
+const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const Projects = defineAsyncComponent(() => import('@/views/project/project/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/project/trash/index.vue'));
 const Activity = defineAsyncComponent(() => import('@/views/project/activity/index.vue'));
@@ -13,8 +12,10 @@ const Module = defineAsyncComponent(() => import('@/views/project/module/index.v
 const Tags = defineAsyncComponent(() => import('@/views/project/tag/index.vue'));
 const Version = defineAsyncComponent(() => import('@/views/project/version/index.vue'));
 
+const { t } = useI18n();
+
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const appInfo = ref(appContext.getAccessApp());
 const aiAgent = inject('aiAgent', ref({ chatIframe: '' }));
 const aiEnabled = inject('aiEnabled', ref(false));

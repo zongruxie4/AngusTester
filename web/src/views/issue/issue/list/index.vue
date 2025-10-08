@@ -10,12 +10,11 @@ import { TaskSprintPermission, TaskStatus } from '@/enums/enums';
 import { getCurrentPage, travelTreeData } from '@/utils/utils';
 import { TaskDetail } from '../../types';
 import { ActionMenuItem, TaskViewMode } from '../types';
+
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Task_Template.xlsx?url';
 
-/**
- * Component props interface for task list page
- */
+// Component props interface for task list page
 type Props = {
   sprintId: string;
   sprintName: string;
@@ -26,7 +25,7 @@ type Props = {
   notify: string;
 }
 
-// COMPONENT PROPS
+// Component props
 const props = withDefaults(defineProps<Props>(), {
   sprintId: undefined,
   sprintName: undefined,
@@ -36,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined
 });
 
-// ASYNC COMPONENTS
+// Async components
 const StatisticsPanel = defineAsyncComponent(() => import('@/views/issue/issue/list/statistics/index.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/issue/issue/list/SearchPanel.vue'));
 const Edit = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
@@ -44,13 +43,13 @@ const Move = defineAsyncComponent(() => import('@/views/issue/issue/list/Move.vu
 const Upload = defineAsyncComponent(() => import('@/views/issue/issue/list/Upload.vue'));
 const FlowChart = defineAsyncComponent(() => import('@/views/issue/issue/list/FlowChart.vue'));
 
-const ModuleTree = defineAsyncComponent(() => import('./ModuleTree.vue'));
+const ModuleTree = defineAsyncComponent(() => import('@/views/issue/issue/list/ModuleTree.vue'));
 const KanbanView = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/index.vue'));
 const GanttView = defineAsyncComponent(() => import('@/views/issue/issue/list/gantt/index.vue'));
 const TableView = defineAsyncComponent(() => import('@/views/issue/issue/list/table/index.vue'));
 const FlatView = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/index.vue'));
 
-// COMPOSABLES & INJECTIONS
+// Composables & injections
 const { t } = useI18n();
 const router = useRouter();
 
@@ -58,7 +57,7 @@ const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 const isAdmin = computed(() => appContext.isAdmin());
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
-// REACTIVE STATE
+// Reactive state
 const statisticsRefreshNotify = ref<string>(); // Statistics panel refresh notification
 const listRefreshNotify = ref<string>(); // Task list refresh notification
 

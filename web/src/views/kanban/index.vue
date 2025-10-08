@@ -4,8 +4,11 @@ import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Colon, DatePicker, Icon, IconRefresh, Image, Select } from '@xcan-angus/vue-ui';
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
-import DefaultAvatar from '../../assets/images/default.png';
 import type { CreatorObjectType } from './types';
+import { ProjectInfo } from '@/layout/types';
+
+import DefaultAvatar from '../../assets/images/default.png';
+
 import { useKanbanFilters } from './composables/useKanbanFilters';
 import { useKanbanView } from './composables/useKanbanView';
 import { useKanbanOptions } from './composables/useKanbanOptions';
@@ -13,7 +16,7 @@ import { useKanbanOptions } from './composables/useKanbanOptions';
 const { t } = useI18n();
 
 // external contexts
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; } | undefined>>('projectInfo', ref());
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showSprint: true }));
 
 // async components

@@ -60,13 +60,13 @@ const handleExportConfirm = async (): Promise<void> => {
     :visible="props.visible"
     :width="500"
     :confirmLoading="exportConfig.loading"
-    :title="t('dataVariable.actions.exportModal.title')"
+    :title="t('variable.actions.exportModal.title')"
     @cancel="handleCancel"
     @ok="handleExportConfirm">
     <!-- Export format selection section -->
     <div class="flex items-center">
       <div class="flex items-center mr-3.5">
-        <span>{{ t('dataVariable.actions.exportModal.format') }}</span>
+        <span>{{ t('variable.actions.exportModal.format') }}</span>
         <Colon />
       </div>
 

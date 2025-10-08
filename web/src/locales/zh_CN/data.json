@@ -41,7 +41,7 @@
       "noDataSource": "您没有添加数据源"
     }
   },
-  "dataVariable": {
+  "variable": {
     "title": "变量",
     "introduce": {
       "title": "关于变量",

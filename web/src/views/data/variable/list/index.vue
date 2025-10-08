@@ -167,7 +167,7 @@ defineExpose({
 
     <!-- Page Title -->
     <div class="text-3.5 font-semibold mb-1">
-      {{ t('dataVariable.list.addedTitle') }}
+      {{ t('variable.list.addedTitle') }}
     </div>
 
     <!-- Main Content -->
@@ -192,18 +192,18 @@ defineExpose({
                 size="small"
                 class="text-3.5 py-0 px-0 mx-1"
                 @click="navigateToCreateStaticVariable">
-                <span>{{ t('dataVariable.actions.static') }}</span>
+                <span>{{ t('variable.actions.static') }}</span>
               </Button>
             </Dropdown>
 
-            <span>{{ t('dataVariable.list.or') }}</span>
+            <span>{{ t('variable.list.or') }}</span>
 
             <Button
               type="link"
               size="small"
               class="text-3.5 py-0 px-0 mx-1"
               @click="showImportModal">
-              <span>{{ t('dataVariable.actions.uploadVariable') }}</span>
+              <span>{{ t('variable.actions.uploadVariable') }}</span>
             </Button>
           </div>
         </div>

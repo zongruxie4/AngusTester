@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, ref } from 'vue';
+import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
 import { duration, appContext } from '@xcan-angus/infra';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { modules } from '@/api/tester';
+import { ProjectInfo } from '@/layout/types';
 
 // Async component imports
 const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
@@ -13,7 +14,7 @@ const MoveModal = defineAsyncComponent(() => import('@/views/project/module/Move
 
 // Type definitions
 type TagItem = {
-  id: string;
+  id: number;
   name: string;
   showName?: string;
   showTitle?: string;
@@ -21,12 +22,12 @@ type TagItem = {
 
 // Component props interface
 type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  projectId: number;
+  userInfo: { id: number; };
+  appInfo: { id: number; };
   notify: string;
   dataList: TagItem[];
-  moduleId: string;
+  moduleId: number;
   projectName: string;
 }
 
@@ -45,7 +46,7 @@ const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId
 const { t } = useI18n();
 
 // Basic state management
-const projectInfo = inject('projectInfo', ref({}));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const isAdmin = computed(() => appContext.isAdmin());
 const userInfo = ref(appContext.getUser());
 
@@ -53,8 +54,8 @@ const userInfo = ref(appContext.getUser());
 const nameInputRef = ref();
 const loading = ref(false);
 const keywords = ref<string>();
-const editId = ref<string>();
-const pid = ref<string>();
+const editId = ref<number>();
+const pid = ref<number>();
 const modalVisible = ref(false);
 const moveVisible = ref(false);
 
@@ -115,7 +116,7 @@ const cancelEdit = () => {
  * @param id - Module ID
  * @param event - Input event
  */
-const pressEnter = async (id: string, event: { target: { value: string } }) => {
+const pressEnter = async (id: number, event: { target: { value: string } }) => {
   const value = event.target.value;
   if (!value) {
     return;
@@ -137,7 +138,7 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
  * @param id - Module ID
  * @param event - Input event
  */
-const handleBlur = (id: string, event: { target: { value: string } }) => {
+const handleBlur = (id: number, event: { target: { value: string } }) => {
   setTimeout(() => {
     if (editId.value === id) {
       pressEnter(id, event);
@@ -294,9 +295,9 @@ const onMenuClick = (menu: any, record: any) => {
     </div>
 
     <div
-      :class="{'active': props.moduleId === ''}"
+      :class="{'active': props.moduleId === -1}"
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
-      @click="handleSelectKeysChange([''])">
+      @click="handleSelectKeysChange(['-1'])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
       <span class="flex-1">{{ t('testCase.moduleTree.allCases') }}</span>
     </div>

@@ -2,9 +2,9 @@
 import { computed, defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
 import { utils, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import LeftMenu from '@/components/layout/leftMenu/index.vue';
+import { ProjectInfo } from '@/layout/types';
 
-type MenuKey = 'home' | 'variables' | 'dataSet' | 'file' | 'dataSource';
+import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
 const Homepage = defineAsyncComponent(() => import('@/views/data/home/index.vue'));
 const Variables = defineAsyncComponent(() => import('@/views/data/variable/index.vue'));
@@ -16,8 +16,9 @@ const { t } = useI18n();
 
 const userInfo = ref(appContext.getUser());
 const appInfo = ref(appContext.getAccessApp());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 
+type MenuKey = 'home' | 'variables' | 'dataSet' | 'file' | 'dataSource';
 const activeKey = ref<MenuKey>('home');
 
 const homepageRefreshNotify = ref<string>('');
@@ -41,7 +42,7 @@ const projectId = computed(() => {
 
 const menuItems = [
   { name: t('home.title'), icon: 'icon-zhuye', key: 'home' },
-  { name: t('dataVariable.title'), icon: 'icon-bianliang1', key: 'variables' },
+  { name: t('variable.title'), icon: 'icon-bianliang1', key: 'variables' },
   { name: t('dataset.title'), icon: 'icon-shujuji', key: 'dataSet' },
   { name: t('file.title'), icon: 'icon-wenjian1', key: 'file' },
   { name: t('datasource.title'), icon: 'icon-shujuyuan', key: 'dataSource' }

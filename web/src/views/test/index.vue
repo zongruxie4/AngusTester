@@ -3,13 +3,10 @@ import { computed, defineAsyncComponent, inject, nextTick, onMounted, provide, r
 import { XCanDexie, sessionStore, utils, appContext, EditionType, SearchCriteria } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-
-import LeftMenu from '@/components/layout/leftMenu/index.vue';
-
-// Type Definitions
-type MenuKey = 'home' | 'plans' | 'cases' | 'modules' | 'tags' | 'trash';
+import { ProjectInfo } from '@/layout/types';
 
 // Component Imports
+const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const Homepage = defineAsyncComponent(() => import('@/views/test/home/index.vue'));
 const Plan = defineAsyncComponent(() => import('@/views/test/plan/index.vue'));
 const Case = defineAsyncComponent(() => import('@/views/test/case/index.vue'));
@@ -22,14 +19,15 @@ const Trash = defineAsyncComponent(() => import('@/views/test/trash/index.vue'))
 const { t } = useI18n();
 const router = useRouter();
 
-const projectInfo = inject('projectInfo', ref({}));
-
 // Reactive State
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const currentUserInfo = ref(appContext.getUser());
 const currentProjectId = computed(() => projectInfo.value?.id);
 const applicationInfo = ref(appContext.getAccessApp());
 const changeProjectInfo = inject('changeProjectInfo', () => undefined);
 
+// Type Definitions
+type MenuKey = 'home' | 'plans' | 'cases' | 'modules' | 'tags' | 'trash';
 const activeMenuKey = ref<MenuKey>();
 const currentEditionType = ref();
 

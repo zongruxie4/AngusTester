@@ -4,6 +4,7 @@ import { notification } from '@xcan-angus/vue-ui';
 import { project } from '@/api/tester';
 import { ProjectType } from '@/enums/enums';
 import type { FormValidationResult, Project, UseProjectFormReturn } from '../types';
+import { ProjectInfo } from '@/layout/types';
 
 /**
  * Project form management composable
@@ -24,7 +25,7 @@ export function useForm (
     (projectId: string, force: boolean) => ({ projectId, force })
   );
   const getNewCurrentProject = inject('getNewCurrentProject', () => undefined);
-  const projectInfo = inject('projectInfo', ref({ id: '' }));
+  const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
   const delTabPane = inject('delTabPane',
     (tabKey: string) => { console.log('delTabPane not provided:', tabKey); }
   );

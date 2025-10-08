@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, Ref, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { TabPane, Tabs, TypographyParagraph } from 'ant-design-vue';
 import { Icon, Image } from '@xcan-angus/vue-ui';
 import { localStore } from '@xcan-angus/infra';
+import { ProjectInfo } from '@/layout/types';
 
 type MenuItem = {
   key: string;
@@ -26,7 +27,7 @@ const emit = defineEmits<{
 }>();
 
 const defaultImg = new URL('./images/default.png', import.meta.url).href;
-const projectInfo = inject('projectInfo', ref<{ id: string; name: string; avatar: string }>());
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 
 const router = useRouter();
 const route = useRoute();

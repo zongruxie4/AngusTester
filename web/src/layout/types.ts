@@ -5,15 +5,15 @@ import { ProjectType } from '@/enums/enums';
  * Project information interface
  */
 export interface ProjectInfo {
-  id: string;
+  id: number;
   avatar: string;
   name: string;
   type: EnumMessage<ProjectType>;
-  ownerId: string;
+  ownerId: number;
   description: string;
-  createdBy: string;
+  createdBy: number;
   createdDate: string;
-  lastModifiedBy: string;
+  lastModifiedBy: number;
   lastModifiedDate: string;
 }
 
@@ -21,11 +21,11 @@ export interface ProjectInfo {
  * Simplified project info for display
  */
 export interface ProjectDisplayInfo {
-  id: string;
+  id: number;
   avatar?: string;
   name: string;
-  createdBy?: string;
-  ownerId?: string;
+  createdBy?: number;
+  ownerId?: number;
   type?: EnumMessage<ProjectType>;
 }
 

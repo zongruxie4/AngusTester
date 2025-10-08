@@ -166,7 +166,7 @@ export function useVariableList (projectId: string, notify: string) {
     const num = selectedRowKeys.length;
     if (num > MAX_BATCH_DELETE_NUM) {
       notification.info(
-        t('dataVariable.list.messages.maxBatchDelete', {
+        t('variable.list.messages.maxBatchDelete', {
           maxNum: MAX_BATCH_DELETE_NUM,
           num
         })

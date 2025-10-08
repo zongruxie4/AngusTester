@@ -156,7 +156,7 @@ const {
 
       <div>
         <!-- Configuration hints -->
-        <Hints class="mb-2.5" :text="t('dataVariable.detail.fileVariable.hints')" />
+        <Hints class="mb-2.5" :text="t('variable.detail.fileVariable.hints')" />
 
         <!-- File reading configuration -->
         <Toggle :title="t('dataCommon.common.readConfig')" class="text-3 leading-5 mb-3.5">
@@ -164,13 +164,13 @@ const {
           <div class="flex items-center mb-3.5">
             <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
               <IconRequired />
-              <span>{{ t('dataVariable.detail.fileVariable.filePath') }}</span>
+              <span>{{ t('variable.detail.fileVariable.filePath') }}</span>
             </div>
             <Input
               v-model:value="filePath"
               :maxlength="800"
               style="width:calc(100% - 82px);"
-              :placeholder="t('dataVariable.detail.fileVariable.filePathPlaceholder')"
+              :placeholder="t('variable.detail.fileVariable.filePathPlaceholder')"
               trimAll />
           </div>
 
@@ -179,7 +179,7 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.fileVariable.fileType') }}</span>
+                <span>{{ t('variable.detail.fileVariable.fileType') }}</span>
               </div>
               <SelectEnum
                 v-model:value="fileType"
@@ -190,7 +190,7 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.fileVariable.fileEncoding') }}</span>
+                <span>{{ t('variable.detail.fileVariable.fileEncoding') }}</span>
               </div>
               <SelectInput
                 v-model:value="encoding"
@@ -213,7 +213,7 @@ const {
                 dataType="number"
                 :placeholder="t('dataCommon.common.readStartRowPlaceholder')"
                 trimAll />
-              <Tooltip :title="t('dataVariable.detail.fileVariable.readStartRowTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
+              <Tooltip :title="t('variable.detail.fileVariable.readStartRowTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -240,13 +240,13 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.fileVariable.separator') }}</span>
+                <span>{{ t('variable.detail.fileVariable.separator') }}</span>
               </div>
               <Input
                 v-model:value="separatorChar"
                 :maxlength="1"
                 trimAll />
-              <Tooltip :title="t('dataVariable.detail.fileVariable.separatorTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
+              <Tooltip :title="t('variable.detail.fileVariable.separatorTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -254,13 +254,13 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.fileVariable.escapeChar') }}</span>
+                <span>{{ t('variable.detail.fileVariable.escapeChar') }}</span>
               </div>
               <Input
                 v-model:value="escapeChar"
                 :maxlength="1"
                 trimAll />
-              <Tooltip :title="t('dataVariable.detail.fileVariable.escapeCharTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
+              <Tooltip :title="t('variable.detail.fileVariable.escapeCharTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -270,13 +270,13 @@ const {
             <div class="w-1/2 flex items-center">
               <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
-                <span>{{ t('dataVariable.detail.fileVariable.quoteChar') }}</span>
+                <span>{{ t('variable.detail.fileVariable.quoteChar') }}</span>
               </div>
               <Input
                 v-model:value="quoteChar"
                 :maxlength="1"
                 trimAll />
-              <Tooltip :title="t('dataVariable.detail.fileVariable.quoteCharTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
+              <Tooltip :title="t('variable.detail.fileVariable.quoteCharTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>

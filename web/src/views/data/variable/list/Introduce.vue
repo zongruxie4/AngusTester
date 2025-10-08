@@ -9,11 +9,11 @@ const { t } = useI18n();
     <div class="space-y-1">
       <div class="flex items-center space-x-2">
         <span class="text-3.5 font-semibold mb-1.5">
-          {{ t('dataVariable.introduce.title') }}
+          {{ t('variable.introduce.title') }}
         </span>
       </div>
       <div class="mb-4 font-serif">
-        {{ t('dataVariable.introduce.description') }}
+        {{ t('variable.introduce.description') }}
       </div>
     </div>
 
@@ -26,10 +26,10 @@ const { t } = useI18n();
             alt="File Extraction Icon">
           <div class="space-y-1">
             <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
-              {{ t('dataVariable.introduce.types.fileExtract.title') }}
+              {{ t('variable.introduce.types.fileExtract.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('dataVariable.introduce.types.fileExtract.description') }}
+              {{ t('variable.introduce.types.fileExtract.description') }}
             </p>
           </div>
         </div>
@@ -43,10 +43,10 @@ const { t } = useI18n();
             alt="HTTP Extraction Icon">
           <div class="space-y-1">
             <h3 class="font-semibold text-gray-800 group-hover:text-purple-600 transition-colors">
-              {{ t('dataVariable.introduce.types.httpExtract.title') }}
+              {{ t('variable.introduce.types.httpExtract.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('dataVariable.introduce.types.httpExtract.description') }}
+              {{ t('variable.introduce.types.httpExtract.description') }}
             </p>
           </div>
         </div>
@@ -60,10 +60,10 @@ const { t } = useI18n();
             alt="JDBC Extraction Icon">
           <div class="space-y-1">
             <h3 class="font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">
-              {{ t('dataVariable.introduce.types.jdbcExtract.title') }}
+              {{ t('variable.introduce.types.jdbcExtract.title') }}
             </h3>
             <p class="text-gray-600 leading-relaxed">
-              {{ t('dataVariable.introduce.types.jdbcExtract.description') }}
+              {{ t('variable.introduce.types.jdbcExtract.description') }}
             </p>
           </div>
         </div>

@@ -14,17 +14,17 @@ export function useDropdownMenus () {
    */
   const buttonDropdownMenuItems: DropdownMenuItem[] = [
     {
-      name: t('dataVariable.actions.file'),
+      name: t('variable.actions.file'),
       key: 'file',
       noAuth: true
     },
     {
-      name: t('dataVariable.actions.http'),
+      name: t('variable.actions.http'),
       key: 'http',
       noAuth: true
     },
     {
-      name: t('dataVariable.actions.jdbc'),
+      name: t('variable.actions.jdbc'),
       key: 'jdbc',
       noAuth: true
     }
@@ -51,17 +51,17 @@ export function useDropdownMenus () {
    */
   const searchPanelButtonDropdownMenuItems: DropdownMenuItem[] = [
     {
-      name: t('dataVariable.actions.file'),
+      name: t('variable.actions.file'),
       key: 'file',
       noAuth: true
     },
     {
-      name: t('dataVariable.actions.http'),
+      name: t('variable.actions.http'),
       key: 'http',
       noAuth: true
     },
     {
-      name: t('dataVariable.actions.jdbc'),
+      name: t('variable.actions.jdbc'),
       key: 'jdbc',
       noAuth: true
     }

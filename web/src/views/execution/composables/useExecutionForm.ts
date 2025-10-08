@@ -6,12 +6,7 @@ import { ScriptType } from '@xcan-angus/infra';
 
 import { angusScript } from '@/api/tester';
 import { exec } from '@/api/ctrl';
-
-export interface ProjectInfo {
-  id: string;
-  avatar: string;
-  name: string;
-}
+import { ProjectInfo } from '@/layout/types';
 
 export interface FormState {
   name: string;
@@ -36,7 +31,7 @@ export function useExecutionForm () {
   const route = useRoute();
 
   // Inject project information
-  const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+  const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
   const projectId = computed(() => projectInfo.value?.id);
 
   // Form state

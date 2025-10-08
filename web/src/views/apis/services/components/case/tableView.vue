@@ -1,12 +1,6 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, inject, ref, watch } from 'vue';
-import {
-  AsyncComponent,
-  Icon,
-  Input,
-  notification,
-  Table
-} from '@xcan-angus/vue-ui';
+import { defineAsyncComponent, inject, Ref, ref, watch } from 'vue';
+import { AsyncComponent, Icon, Input, notification, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
@@ -14,6 +8,7 @@ import { useI18n } from 'vue-i18n';
 
 import { Case } from './type';
 import { apis } from '@/api/tester';
+import { ProjectInfo } from '@/layout/types';
 
 interface Props {
   id: string; // apiId
@@ -23,12 +18,14 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   serviceId: ''
 });
+
 const { t } = useI18n();
 
 const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/addModal/index.vue'));
 const ExecCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/exec/index.vue'));
 
-const projectInfo = inject('projectInfo', ref());
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
+
 const keywords = ref();
 const addCaseVisible = ref(false);
 const execCaseVisible = ref(false);

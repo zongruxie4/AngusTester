@@ -18,11 +18,10 @@ import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
-import Sidebar from '@/views/apis/services/sidebar/index.vue';
 import { setting } from '@/api/gm';
+import { ProjectInfo } from '@/layout/types';
 
-type MenuKey = 'home' | 'services' | 'trash';
-const { t } = useI18n();
+const Sidebar = defineAsyncComponent(() => import('@/views/apis/services/sidebar/index.vue'));
 const ApiGroup = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/index.vue'));
 const ApiItem = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/index.vue'));
 const servicesMock = defineAsyncComponent(() => import('@/views/apis/services/mock/servicesMock.vue'));
@@ -32,6 +31,8 @@ const DataModel = defineAsyncComponent(() => import('@/views/apis/services/dataM
 const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/securityTestResult/index.vue'));
 const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/smokeTestResult/index.vue'));
 const QuickStarted = defineAsyncComponent(() => import('@/views/apis/home/quickStarted.vue'));
+
+const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
@@ -46,7 +47,7 @@ const readyState = ref(3);
 const responseCount = ref(0);
 
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const appInfo = ref(appContext.getAccessApp());
 
 const projectId = computed(() => {

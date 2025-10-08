@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, defineAsyncComponent, reactive, onMounted, nextTick, onBeforeUnmount, computed, watch, inject } from 'vue';
+import {
+  ref, defineAsyncComponent, reactive, onMounted, nextTick, onBeforeUnmount, computed, watch, inject, Ref
+} from 'vue';
 import { Form, FormItem, Switch, Collapse, CollapsePanel, Checkbox, CheckboxGroup, Badge, Button } from 'ant-design-vue';
 import { Input, Select, SelectEnum, DatePicker, Icon, IconRequired, Arrow, RadioGroup, Tooltip, ShortDuration, Colon } from '@xcan-angus/vue-ui';
 import { TESTER, SupportedLanguage, DatabaseType, TransactionIsolation, PoolType } from '@xcan-angus/infra';
@@ -7,6 +9,12 @@ import type { Rule } from 'ant-design-vue/es/form';
 import elementResizeDetector from 'element-resize-detector';
 import { cloneDeep } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
+import { ProjectInfo } from '@/layout/types';
+
+const LineChart = defineAsyncComponent(() => import('./LineChart.vue'));
+const Variables = defineAsyncComponent(() => import('./Variables/index.vue'));
+const SelectDataSourceModal = defineAsyncComponent(() => import('./SelectDataSourceModal/index.vue'));
+
 const { t } = useI18n();
 
 export interface Props {
@@ -22,11 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   isDeep: false
 });
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-
-const LineChart = defineAsyncComponent(() => import('./LineChart.vue'));
-const Variables = defineAsyncComponent(() => import('./Variables/index.vue'));
-const SelectDataSourceModal = defineAsyncComponent(() => import('./SelectDataSourceModal/index.vue'));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 
 const variablesRef = ref();
 

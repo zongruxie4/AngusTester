@@ -54,7 +54,7 @@ const urlMap = ref<{ [key: string]: { [key: string]: {name:string;url:string} } 
 
 const customRequest = async ({ file }: { file: UploadFile }, id: string, index:number) => {
   if (totalSize.value + file.size > +props.maxFileSize) {
-    notification.warning(t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.summaryFileSize', { maxSize: utils.formatBytes(props.maxFileSize) }));
+    notification.warning(t('variable.detail.httpVariable.httpConfigs.requestBodyParameter.summaryFileSize', { maxSize: utils.formatBytes(props.maxFileSize) }));
     return;
   }
 
@@ -414,7 +414,7 @@ const selectOptions = computed(() => {
       <Select
         v-model:value="dataMap[item].type"
         class="w-25"
-        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.parameterTypePlaceholder')"
+        :placeholder="t('variable.detail.httpVariable.httpConfigs.requestBodyParameter.parameterTypePlaceholder')"
         :options="selectOptions"
         @change="typeChange($event, index, item)" />
       <div
@@ -430,7 +430,7 @@ const selectOptions = computed(() => {
             size="small"
             class="mr-3 transform-gpu translate-y-0.25">
             <Icon icon="icon-xuanze" class="mr-1" />
-            <span>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.selectFile') }}</span>
+            <span>{{ t('variable.detail.httpVariable.httpConfigs.requestBodyParameter.selectFile') }}</span>
           </Button>
         </Upload>
         <template v-if="!!fileMap[item]?.length">
@@ -453,7 +453,7 @@ const selectOptions = computed(() => {
       <Input
         v-else
         v-model:value="dataMap[item].value"
-        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.parameterValuePlaceholder')"
+        :placeholder="t('variable.detail.httpVariable.httpConfigs.requestBodyParameter.parameterValuePlaceholder')"
         trim
         class="flex-1"
         :maxlength="4096"

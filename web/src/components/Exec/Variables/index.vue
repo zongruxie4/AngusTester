@@ -7,6 +7,7 @@ import { duration, http, utils, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import { VariableItem } from './PropsType';
+import { ProjectInfo } from '@/layout/types';
 
 const { t } = useI18n();
 
@@ -20,8 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const VariableListModal = defineAsyncComponent(() => import('./VariableListModal/index.vue'));
 
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '235919398915801099', avatar: '', name: '' }));
-// const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 
 const updateVariableByIteration = ref(true);
 

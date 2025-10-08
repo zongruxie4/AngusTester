@@ -164,7 +164,7 @@ onBeforeUnmount(() => {
     <div
       v-show="!value && !focused"
       class="absolute left-2 top-0 h-full leading-5.5 py-1 text-3 text-theme-placeholder select-none pointer-events-none">
-      {{ t('dataVariable.detail.httpVariable.httpConfigs.serverPlaceholder') }}
+      {{ t('variable.detail.httpVariable.httpConfigs.serverPlaceholder') }}
     </div>
     <div
       ref="inputRef"
@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
       <template #content>
         <div class="text-3">
           <div v-show="showErrorPopover" class="text-rule">
-            {{ t('dataVariable.detail.httpVariable.httpConfigs.serverVariableNotFound') }}
+            {{ t('variable.detail.httpVariable.httpConfigs.serverVariableNotFound') }}
           </div>
           <div v-show="!showErrorPopover">
             <div class="font-bold text-text-title flex items-center">

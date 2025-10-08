@@ -1,7 +1,4 @@
-/**
- * Type definitions for project module management components
- * These types ensure type safety across the module management system
- */
+import { SearchCriteria } from '@xcan-angus/infra';
 
 /**
  * Represents a single module item in the project structure
@@ -9,7 +6,7 @@
  */
 export interface ModuleItem {
   /** Unique identifier for the module */
-  id: string;
+  id: number;
   /** Display name of the module */
   name: string;
   /** Optional key for tree component compatibility */
@@ -25,11 +22,11 @@ export interface ModuleItem {
   /** Index position among siblings */
   index?: number;
   /** Array of parent IDs leading to this module */
-  ids?: string[];
+  ids?: number[];
   /** Whether this is the last item in its level */
   isLast?: boolean;
   /** Parent module ID (-1 for root level) */
-  pid?: string;
+  pid?: number;
   /** Sort sequence number for ordering */
   sequence?: string;
   /** Maximum depth of child levels */
@@ -45,11 +42,11 @@ export interface ModuleItem {
  */
 export interface ModuleProps {
   /** Project ID to manage modules for */
-  projectId: string;
+  projectId: number;
   /** Current user information */
-  userInfo: { id: string; };
+  userInfo: { id: number; };
   /** Application information */
-  appInfo: { id: string; };
+  appInfo: { id: number; };
   /** Notification settings */
   notify: string;
   /** Whether the component is in read-only mode */
@@ -63,11 +60,11 @@ export interface ModuleProps {
  */
 export interface AddModuleProps {
   /** Project ID where the module will be created */
-  projectId: string;
+  projectId: number;
   /** Whether the modal is visible */
   visible: boolean;
   /** Parent module ID (optional for root level modules) */
-  pid?: string;
+  pid?: number;
 }
 
 /**
@@ -77,13 +74,13 @@ export interface MoveModuleProps {
   /** Whether the modal is visible */
   visible: boolean;
   /** Project ID containing the module */
-  projectId: string;
+  projectId: number;
   /** Project name for display in tree root */
   projectName: string;
   /** Module to be moved */
   module: {
     /** Module ID */
-    id: string;
+    id: number;
     /** Number of child levels this module contains */
     childLevels: number;
     /** Current parent ID */
@@ -96,11 +93,11 @@ export interface MoveModuleProps {
  */
 export interface ModuleApiParams {
   /** Project ID */
-  projectId: string;
+  projectId: number;
   /** Optional search filters */
   filters?: Array<{
     key: 'name';
-    op: 'MATCH';
+    op: SearchCriteria.OpEnum.Match;
     value: string;
   }>;
 }
@@ -122,11 +119,11 @@ export interface CreateModuleParams {
  */
 export interface UpdateModuleParams {
   /** Module ID */
-  id: string;
+  id: number;
   /** New module name (optional) */
   name?: string;
   /** New parent ID (optional) */
-  pid?: string;
+  pid?: number;
   /** New sequence number (optional) */
   sequence?: number;
 }
@@ -136,5 +133,5 @@ export interface UpdateModuleParams {
  */
 export interface DeleteModuleParams {
   /** Array of module IDs to delete */
-  ids: string[];
+  ids: number[];
 }

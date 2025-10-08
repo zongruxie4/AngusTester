@@ -35,7 +35,7 @@ const reviewInfoColumns = [
       dataIndex: 'reviewNum'
     },
     {
-      label: t('testCase.kanbanView.reviewInfoGrid.reviewFailCount'),
+      label: t('common.counts.reviewFailCount'),
       dataIndex: 'reviewFailNum'
     },
     {

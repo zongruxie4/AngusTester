@@ -2,13 +2,10 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 import { appContext, utils, EditionType } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-
-import LeftMenu from '@/components/layout/leftMenu/index.vue';
-
-// Type Definitions
-type MenuKey = 'home' | 'sprint' | 'task' | 'backlog' | 'trash' | 'meeting' | 'analysis';
+import { ProjectInfo } from '@/layout/types';
 
 // Component Imports
+const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const Homepage = defineAsyncComponent(() => import('@/views/issue/home/index.vue'));
 const Backlog = defineAsyncComponent(() => import('@/views/issue/backlog/index.vue'));
 const Sprint = defineAsyncComponent(() => import('@/views/issue/sprint/index.vue'));
@@ -22,7 +19,7 @@ const { t } = useI18n();
 
 // Reactive State
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const appInfo = ref(appContext.getAccessApp());
 const projectTypeVisibilityMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({
   showTask: true,
@@ -32,6 +29,8 @@ const projectTypeVisibilityMap = inject<Ref<{[key: string]: boolean}>>('proTypeS
   showTasStatistics: true
 }));
 
+// Type Definitions
+type MenuKey = 'home' | 'sprint' | 'task' | 'backlog' | 'trash' | 'meeting' | 'analysis';
 const activeKey = ref<MenuKey>();
 const editionType = ref();
 

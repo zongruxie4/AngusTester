@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, inject, nextTick, ref, watch } from 'vue';
+import { defineAsyncComponent, inject, nextTick, Ref, ref, watch } from 'vue';
 import {
   AsyncComponent,
   Colon,
@@ -19,21 +19,25 @@ import { useI18n } from 'vue-i18n';
 
 import { Case } from './type';
 import { apis } from '@/api/tester';
+import { ProjectInfo } from '@/layout/types';
 
 interface Props {
   id: string; // apiId
   layout: 'horizontal'|'inline'
 }
+
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   layout: 'horizontal'
 });
+
 const { t } = useI18n();
 
 const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/addModal/index.vue'));
 const ExecCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/exec/index.vue'));
 
-const projectInfo = inject('projectInfo', ref());
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
+
 const keywords = ref();
 const addCaseVisible = ref(false);
 const execCaseVisible = ref(false);
