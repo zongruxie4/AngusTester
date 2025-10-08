@@ -246,6 +246,9 @@
       "inputMockValue": "输入值，支持Mock函数，最大支持4096个字符",
       "inputProcessCount": "输入处理次数",
       "inputProcessFailedCount": "输入不通过次数",
+      "inputTestCount": "输入测试次数",
+      "inputTestFailedCount": "输入不通过次数",
+      "inputReviewCount": "输入评审次数",
       "selectCreator": "选择添加人",
       "selectModifier": "选择修改人",
       "selectOwner": "选择负责人",
@@ -320,6 +323,10 @@
       "selectExecutedDateRange": [
         "执行时间从",
         "执行时间到"
+      ],
+      "selectTestDateRange": [
+        "测试时间从",
+        "测试时间到"
       ],
       "selectReviewDateRange": [
         "评审时间从",

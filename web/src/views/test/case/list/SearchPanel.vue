@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Button, Switch } from 'ant-design-vue';
+import { Button, Switch, Tag } from 'ant-design-vue';
 import {
   Colon, Dropdown, DropdownGroup, DropdownSort, Icon, IconCount,
   IconRefresh, Input, ReviewStatus, SearchPanel, Select, Tooltip
 } from '@xcan-angus/vue-ui';
 import {
   duration, EnumMessage, enumUtils, NumberCompareCondition,
-  Priority, ReviewStatus as ReviewStatusEnum, PageQuery, SearchCriteria, XCanDexie
+  Priority, ReviewStatus as ReviewStatusEnum, PageQuery, SearchCriteria, XCanDexie, TESTER
 } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
@@ -48,6 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Component emits
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'change', value: SearchCriteria[]): void;
   (e: 'update:orderBy', value: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName'): void;
@@ -82,12 +83,22 @@ const quickSelectDate = ref<string[]>([]);
 // Filter states
 const overdue = ref(false);
 
+// Plan selection state
+const isPlanSelectorVisible = ref(false);
+const selectedPlanOption = ref<{ id: string; name: string; showTitle: string; showName: string }>();
+const checkedPlanId = ref<string>();
+
+// Tag selection state
+const isTagSelectorVisible = ref(false);
+const selectedTagOptions = ref<{ id: string; name: string; showTitle: string; showName: string }[]>([]);
+const checkedTagIds = ref<string[]>([]);
+
 // Numeric filters
-const testNum = ref(''); // Test count
+const testNum = ref<number>(undefined); // Test count
 const testNumScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal);
-const testFailNum = ref(''); // Failure count
+const testFailNum = ref<number>(undefined); // Failure count
 const testFailScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal);
-const reviewNum = ref(''); // Review count
+const reviewNum = ref<number>(undefined); // Review count
 const reviewNumScope = ref<SearchCriteria.OpEnum>(SearchCriteria.OpEnum.Equal);
 
 // Search criteria filters
@@ -221,7 +232,6 @@ const getQuickDate = (type: 'last1Day' | 'last3Days' | 'last7Days') => {
   return [_startDate ? _startDate.format(DATE_TIME_FORMAT) : '', _endDate ? _endDate.format(DATE_TIME_FORMAT) : ''];
 };
 
-
 /**
  * Handles quick search menu item clicks
  * Manages the selection/deselection of quick search filters
@@ -317,6 +327,15 @@ const clearAllFilters = () => {
   reviewNum.value = '';
   overdue.value = false;
   quickSelectDate.value = [];
+
+  // Reset plan and tag filters
+  isPlanSelectorVisible.value = false;
+  selectedPlanOption.value = undefined;
+  checkedPlanId.value = undefined;
+
+  isTagSelectorVisible.value = false;
+  selectedTagOptions.value = [];
+  checkedTagIds.value = [];
 };
 
 /**
@@ -346,6 +365,17 @@ const handleSearchPanelChange = (
  */
 const buildSearchCriteria = () => {
   const searchCriteria: SearchCriteria[] = [...searchFilters.value];
+
+  // Add plan filter if selected
+  if (checkedPlanId.value) {
+    searchCriteria.push({ key: 'planId', op: SearchCriteria.OpEnum.Equal, value: checkedPlanId.value });
+  }
+
+  // Add tag filters if any tags are selected
+  if (checkedTagIds.value.length) {
+    const tagValues: string[] = [...checkedTagIds.value];
+    searchCriteria.push({ key: 'tagId', op: SearchCriteria.OpEnum.In, value: tagValues });
+  }
 
   // Add numeric filters
   if (testNum.value) {
@@ -418,6 +448,128 @@ const handleCountChange = () => {
   emit('countChange');
 };
 
+/**
+ * Formats data for display with truncation
+ * @param data - Object containing id and name
+ * @returns Formatted object with display properties
+ */
+const formatDisplayData = ({ id, name }: { id: string; name: string; }) => {
+  const MAX_DISPLAY_LENGTH = 10;
+  let displayTitle = '';
+  let displayName = name;
+
+  if (name.length > MAX_DISPLAY_LENGTH) {
+    displayTitle = name;
+    displayName = displayName.slice(0, MAX_DISPLAY_LENGTH) + '...';
+  }
+  return { id, name, showTitle: displayTitle, showName: displayName };
+};
+
+/**
+ * Shows the plan selector dropdown
+ */
+const showPlanSelector = () => {
+  isPlanSelectorVisible.value = true;
+};
+
+/**
+ * Handles plan selection from dropdown
+ * @param value - Selected plan value
+ * @param option - Selected plan option data
+ */
+const handlePlanSelection = (value: any, option: any) => {
+  if (!value) return;
+
+  isPlanSelectorVisible.value = false;
+
+  selectedPlanOption.value = formatDisplayData({ id: String(value), name: option.name });
+  checkedPlanId.value = String(value);
+};
+
+/**
+ * Hides the plan selector dropdown
+ */
+const hidePlanSelector = () => {
+  isPlanSelectorVisible.value = false;
+};
+
+/**
+ * Toggles the selected plan state
+ */
+const togglePlanSelection = () => {
+  const id = selectedPlanOption.value?.id;
+  if (checkedPlanId.value === id) {
+    checkedPlanId.value = undefined;
+    return;
+  }
+  checkedPlanId.value = id;
+};
+
+/**
+ * Removes the selected plan
+ */
+const removeSelectedPlan = () => {
+  selectedPlanOption.value = undefined;
+  checkedPlanId.value = undefined;
+};
+
+/**
+ * Shows the tag selector dropdown
+ */
+const showTagSelector = () => {
+  isTagSelectorVisible.value = true;
+};
+
+/**
+ * Handles tag selection from dropdown
+ * @param value - Selected tag value
+ * @param option - Selected tag option data
+ */
+const handleTagSelection = (value: any, option: any) => {
+  if (!value) return;
+
+  isTagSelectorVisible.value = false;
+
+  const ids = selectedTagOptions.value.map(item => item.id);
+  const stringValue = String(value);
+  if (ids.includes(stringValue)) {
+    return;
+  }
+
+  selectedTagOptions.value.push(formatDisplayData({ id: stringValue, name: option.name }));
+  checkedTagIds.value.push(stringValue);
+};
+
+/**
+ * Hides the tag selector dropdown
+ */
+const hideTagSelector = () => {
+  isTagSelectorVisible.value = false;
+};
+
+/**
+ * Toggles the selected tag state
+ * @param data - Tag option data
+ */
+const toggleTagSelection = (data: { id: string; name: string; showTitle: string; showName: string }) => {
+  const id = data.id;
+  if (checkedTagIds.value.includes(id)) {
+    checkedTagIds.value = checkedTagIds.value.filter(item => item !== id);
+    return;
+  }
+  checkedTagIds.value.push(id);
+};
+
+/**
+ * Removes the selected tag
+ * @param data - Tag option data to remove
+ */
+const removeSelectedTag = (data: { id: string; name: string; showTitle: string; showName: string }) => {
+  const id = data.id;
+  selectedTagOptions.value = selectedTagOptions.value.filter(item => item.id !== id);
+  checkedTagIds.value = checkedTagIds.value.filter(item => item !== id);
+};
+
 // Computed properties
 const menuItems = computed(() => [
   {
@@ -448,51 +600,51 @@ const menuItems = computed(() => [
 
 const searchOptions = computed(() => [
   {
-    placeholder: t('testCase.case.selectCreator'),
+    placeholder: t('common.placeholders.searchKeyword'),
     valueKey: 'name',
     type: 'input' as const,
     allowClear: true
   },
   {
-    placeholder: t('testCase.case.selectCreator'),
+    placeholder: t('common.placeholders.selectCreator'),
     valueKey: 'createdBy',
     type: 'select-user' as const,
     allowClear: true
   },
   {
-    placeholder: t('testCase.case.selectTester'),
+    placeholder: t('common.placeholders.selectTester'),
     valueKey: 'testerId',
     type: 'select-user' as const,
     allowClear: true
   },
   {
-    placeholder: t('testCase.case.selectDeveloper'),
+    placeholder: t('common.placeholders.selectDeveloper'),
     valueKey: 'developerId',
     type: 'select-user' as const,
     allowClear: true
   },
   {
-    placeholder: t('testCase.case.selectPriority'),
+    placeholder: t('common.placeholders.selectPriority'),
     valueKey: 'priority',
     type: 'select-enum' as const,
     enumKey: Priority,
     allowClear: true
   },
   {
-    placeholder: t('testCase.case.selectTestResult'),
+    placeholder: t('common.placeholders.selectTestResult'),
     valueKey: 'testResult',
     type: 'select-enum' as const,
     enumKey: CaseTestResult,
     allowClear: true
   },
   {
-    placeholder: t('testCase.case.selectReviewer'),
+    placeholder: t('common.placeholders.selectReviewer'),
     valueKey: 'reviewerId',
     type: 'select-user' as const,
     allowClear: true
   },
   {
-    placeholder: t('testCase.case.selectReviewStatus'),
+    placeholder: t('common.placeholders.selectReviewStatus'),
     valueKey: 'reviewStatus',
     type: 'select-enum' as const,
     enumKey: ReviewStatusEnum,
@@ -500,8 +652,18 @@ const searchOptions = computed(() => [
   },
   {
     placeholder: [
-      t('testCase.case.searchPanel.reviewDateFrom'),
-      t('testCase.case.searchPanel.reviewDateTo')
+      t('common.placeholders.selectTestDateRange.0'),
+      t('common.placeholders.selectTestDateRange.1')
+    ],
+    valueKey: 'testResultHandleDate',
+    type: 'date-range' as const,
+    allowClear: true,
+    showTime: true
+  },
+  {
+    placeholder: [
+      t('common.placeholders.selectReviewDateRange.0'),
+      t('common.placeholders.selectReviewDateRange.1')
     ],
     valueKey: 'reviewDate',
     type: 'date-range' as const,
@@ -510,8 +672,8 @@ const searchOptions = computed(() => [
   },
   {
     placeholder: [
-      t('testCase.case.searchPanel.updateDateFrom'),
-      t('testCase.case.searchPanel.updateDateTo')
+      t('common.placeholders.selectModifiedDateRange.0'),
+      t('common.placeholders.selectModifiedDateRange.1')
     ],
     valueKey: 'lastModifiedDate',
     type: 'date-range' as const,
@@ -520,8 +682,8 @@ const searchOptions = computed(() => [
   },
   {
     placeholder: [
-      t('testCase.case.searchPanel.deadlineDateFrom'),
-      t('testCase.case.searchPanel.deadlineDateTo')
+      t('common.placeholders.selectDeadlineRange.0'),
+      t('common.placeholders.selectDeadlineRange.1')
     ],
     valueKey: 'deadlineDate',
     type: 'date-range' as const,
@@ -530,20 +692,10 @@ const searchOptions = computed(() => [
   },
   {
     placeholder: [
-      t('testCase.case.searchPanel.createdDateFrom'),
-      t('testCase.case.searchPanel.createdDateTo')
+      t('common.placeholders.selectCreatedDateRange.0'),
+      t('common.placeholders.selectCreatedDateRange.1')
     ],
     valueKey: 'createdDate',
-    type: 'date-range' as const,
-    allowClear: true,
-    showTime: true
-  },
-  {
-    placeholder: [
-      t('testCase.case.searchPanel.testResultHandleDateFrom'),
-      t('testCase.case.searchPanel.testResultHandleDateTo')
-    ],
-    valueKey: 'testResultHandleDate',
     type: 'date-range' as const,
     allowClear: true,
     showTime: true
@@ -663,16 +815,36 @@ const currentUserId = computed(() => {
 });
 
 /**
+ * Determines whether to show the add plan button
+ */
+const showAddPlanBtn = computed(() => {
+  if (isPlanSelectorVisible.value) {
+    return false;
+  }
+  return !selectedPlanOption.value;
+});
+
+/**
+ * Determines whether to show the add tag button (max 3 tags)
+ */
+const showAddTagBtn = computed(() => {
+  if (isTagSelectorVisible.value) {
+    return false;
+  }
+  return selectedTagOptions.value.length < 3;
+});
+
+/**
  * Generates base key for database storage based on user and project
  */
 const dbBaseKey = computed(() => {
   let key = '';
   if (currentUserId.value) {
-    key = currentUserId.value;
+    key = String(currentUserId.value);
   }
 
   if (props.projectId) {
-    key += props.projectId;
+    key += String(props.projectId);
   }
 
   return key;
@@ -794,6 +966,32 @@ const initializeComponent = async () => {
       overdue.value = false;
     }
 
+    // Load plan filter state
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'selectedPlanId')) {
+      checkedPlanId.value = savedSearchData.selectedPlanId;
+    } else {
+      checkedPlanId.value = undefined;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'selectedPlanOption')) {
+      selectedPlanOption.value = savedSearchData.selectedPlanOption;
+    } else {
+      selectedPlanOption.value = undefined;
+    }
+
+    // Load tag filter states
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'selectedTagIds')) {
+      checkedTagIds.value = savedSearchData.selectedTagIds || [];
+    } else {
+      checkedTagIds.value = [];
+    }
+
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'selectedTagOptions')) {
+      selectedTagOptions.value = savedSearchData.selectedTagOptions || [];
+    } else {
+      selectedTagOptions.value = [];
+    }
+
     // Load numeric filter states
     if (Object.prototype.hasOwnProperty.call(savedSearchData, 'testNum')) {
       testNum.value = savedSearchData.testNum || '';
@@ -879,6 +1077,15 @@ const resetData = () => {
   testFailScope.value = SearchCriteria.OpEnum.Equal;
   reviewNumScope.value = SearchCriteria.OpEnum.Equal;
   searchFilters.value = [];
+
+  // Reset plan and tag filters
+  isPlanSelectorVisible.value = false;
+  selectedPlanOption.value = undefined;
+  checkedPlanId.value = undefined;
+
+  isTagSelectorVisible.value = false;
+  selectedTagOptions.value = [];
+  checkedTagIds.value = [];
 };
 
 /**
@@ -922,6 +1129,8 @@ watch(
     () => testNum.value,
     () => testFailNum.value,
     () => reviewNum.value,
+    () => checkedPlanId.value,
+    () => checkedTagIds.value.length,
     () => selectedQuickSearchItems.value
   ], () => {
     const _filters = searchFilters.value;
@@ -929,7 +1138,9 @@ watch(
       overdue.value ||
       !!testNum.value ||
       !!testFailNum.value ||
-      !!reviewNum.value)) {
+      !!reviewNum.value ||
+      !!checkedPlanId.value ||
+      checkedTagIds.value.length)) {
       selectedQuickSearchItems.value.clear();
       selectedQuickSearchItems.value.set('all', { key: 'all' });
 
@@ -985,9 +1196,23 @@ watch(
       const dbData: {
         filters?: SearchCriteria[];
         isOverdueEnabled?: boolean;
-        testNum?: string;
-        testFailNum?: string;
-        reviewNum?: string;
+        selectedPlanId?: string;
+        selectedPlanOption?: {
+          id: string;
+          name: string;
+          showTitle: string;
+          showName: string;
+        };
+        selectedTagIds?: string[];
+        selectedTagOptions?: {
+          id: string;
+          name: string;
+          showTitle: string;
+          showName: string;
+        }[];
+        testNum?: number;
+        testFailNum?: number;
+        reviewNum?: number;
         testNumScope?: SearchCriteria.OpEnum;
         testFailScope?: SearchCriteria.OpEnum;
         reviewNumScope?: SearchCriteria.OpEnum;
@@ -999,6 +1224,22 @@ watch(
 
       if (overdue.value) {
         dbData.isOverdueEnabled = overdue.value;
+      }
+
+      if (checkedPlanId.value) {
+        dbData.selectedPlanId = checkedPlanId.value;
+      }
+
+      if (selectedPlanOption.value) {
+        dbData.selectedPlanOption = cloneDeep(selectedPlanOption.value);
+      }
+
+      if (checkedTagIds.value.length) {
+        dbData.selectedTagIds = cloneDeep(checkedTagIds.value);
+      }
+
+      if (selectedTagOptions.value.length) {
+        dbData.selectedTagOptions = cloneDeep(selectedTagOptions.value);
       }
 
       if (testNum.value) {
@@ -1030,7 +1271,8 @@ watch(
 
 <template>
   <div class="text-3 leading-5">
-    <div class="flex items-start justify-between mb-1.5">
+    <!-- Quick Search Section -->
+    <div class="flex items-start justify-between">
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-1 mt-1.5 rounded-full"></div>
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
@@ -1070,6 +1312,74 @@ watch(
               @change="handleModuleGroupingChange" />
           </div>
 
+          <template v-if="selectedPlanOption?.id">
+            <Tag
+              :title="selectedPlanOption?.showTitle"
+              :class="checkedPlanId === selectedPlanOption.id ? 'plan tag-checked' : ''"
+              closable
+              class="h-6 mr-5 mb-3 rounded-xl px-2.5"
+              @click="togglePlanSelection"
+              @close="removeSelectedPlan">
+              {{ selectedPlanOption?.showName }}
+            </Tag>
+          </template>
+
+          <Select
+            v-if="isPlanSelectorVisible"
+            :value="selectedPlanOption?.id"
+            size="small"
+            class="w-43 h-7 transform-gpu -translate-y-0.5 mr-5 mb-3"
+            :placeholder="t('common.placeholders.selectPlan')"
+            showSearch
+            autofocus
+            :fieldNames="{ label: 'name', value: 'id' }"
+            :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
+            @change="handlePlanSelection"
+            @blur="hidePlanSelector" />
+
+          <Button
+            v-if="showAddPlanBtn"
+            class="h-6 mr-5 mb-3 px-2.5 flex items-center"
+            size="small"
+            @click="showPlanSelector">
+            <Icon icon="icon-jia" class="text-3 mr-1" />
+            <span>{{ t('common.plan') }}</span>
+          </Button>
+
+          <Tag
+            v-for="item in selectedTagOptions"
+            :key="item.id"
+            :title="item.showTitle"
+            :class="checkedTagIds.includes(item.id) ? 'tag tag-checked' : ''"
+            closable
+            class="h-6 mb-3 rounded-xl px-2.5"
+            @click="toggleTagSelection(item)"
+            @close="removeSelectedTag(item)">
+            {{ item.showName }}
+          </Tag>
+
+          <Select
+            v-if="isTagSelectorVisible"
+            :value="checkedTagIds"
+            size="small"
+            class="w-43 h-7 transform-gpu -translate-y-0.5 mb-3 mr-5"
+            :placeholder="t('common.placeholders.selectTag')"
+            showSearch
+            autofocus
+            :fieldNames="{ label: 'name', value: 'id' }"
+            :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
+            @change="handleTagSelection"
+            @blur="hideTagSelector" />
+
+          <Button
+            v-if="showAddTagBtn"
+            class="h-6 px-2.5 mb-3 flex items-center mr-5"
+            size="small"
+            @click="showTagSelector">
+            <Icon icon="icon-jia" class="text-3 mr-1" />
+            <span>{{ t('common.tag') }}</span>
+          </Button>
+
           <template v-if="props.viewMode === CaseViewMode.kanban">
             <DropdownSort
               :orderBy="props.orderBy"
@@ -1102,7 +1412,8 @@ watch(
       </div>
     </div>
 
-    <div class="flex items-start justify-between mb-1.5 space-x-4">
+    <!-- Custom Search Section  -->
+    <div class="flex items-start justify-between mb-2.5 space-x-4">
       <SearchPanel
         ref="searchPanelRef"
         class="flex-1"
@@ -1126,7 +1437,7 @@ watch(
             data-type="float"
             size="small"
             allowClear
-            :placeholder="t('testCase.mainView.testTimes')"
+            :placeholder="t('common.placeholders.inputTestCount')"
             style="width: 296px;"
             :min="0"
             :debounce="500"
@@ -1136,7 +1447,7 @@ watch(
                 :value="testNumScope.toString()"
                 size="small"
                 :options="numberMatchCondition"
-                :fieldNames="{ label: 'description', value: 'value' }"
+                :fieldNames="{ label: 'message', value: 'value' }"
                 :allowClear="false"
                 :bordered="false"
                 class="w-24"
@@ -1151,7 +1462,7 @@ watch(
             data-type="float"
             size="small"
             allowClear
-            :placeholder="t('testCase.mainView.failTimes')"
+            :placeholder="t('common.placeholders.inputTestFailedCount')"
             style="width: 296px;"
             :min="0"
             :debounce="500"
@@ -1161,7 +1472,7 @@ watch(
                 :value="testFailScope.toString()"
                 size="small"
                 :options="numberMatchCondition"
-                :fieldNames="{ label: 'description', value: 'value' }"
+                :fieldNames="{ label: 'message', value: 'value' }"
                 :allowClear="false"
                 :bordered="false"
                 class="w-24"
@@ -1176,7 +1487,7 @@ watch(
             data-type="float"
             size="small"
             allowClear
-            :placeholder="t('testCase.mainView.reviewTimes')"
+            :placeholder="t('common.placeholders.inputReviewCount')"
             style="width: 296px;"
             :min="0"
             :debounce="500"
@@ -1267,5 +1578,26 @@ watch(
 .active-key {
   background-color: #4ea0fd;
   color: #fff;
+}
+
+.ant-tag {
+  background-color: #fff;
+}
+
+.ant-tag.tag-checked {
+  background-color: rgba(255, 129, 0, 60%);
+  color: #fff;
+}
+
+.ant-tag.tag-checked :deep(.ant-tag-close-icon)>svg {
+  color: #fff;
+}
+
+:deep(.plan.tag-checked) {
+  background-color: rgba(255, 129, 0, 60%);
+}
+
+.tag.tag-checked {
+  background-color: #4ea0fd;
 }
 </style>

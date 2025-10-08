@@ -66,7 +66,7 @@ export default class API {
     return http.put(`${baseUrl}/${caseId}/deadline/${deadline}`);
   }
 
-  moveCase (targetPlanId: number, caseIds: number[]): Promise<[Error | null, any]> {
+  moveCase (targetPlanId: number | undefined, caseIds: number[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/move?targetPlanId=${targetPlanId}`, caseIds, { paramsType: false });
   }
 

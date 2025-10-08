@@ -1464,20 +1464,17 @@ const searchOptions = [
   {
     type: 'input' as const,
     valueKey: 'evalWorkload',
-    noDefaultSlot: true,
-    placeholder: t('common.placeholders.inputEvalWorkload')
+    noDefaultSlot: true
   },
   {
     type: 'input' as const,
     valueKey: 'failNum',
-    noDefaultSlot: true,
-    placeholder: t('common.placeholders.inputProcessCount')
+    noDefaultSlot: true
   },
   {
     type: 'input' as const,
     valueKey: 'totalNum',
-    noDefaultSlot: true,
-    placeholder: t('common.placeholders.inputProcessFailedCount')
+    noDefaultSlot: true
   }
 ];
 

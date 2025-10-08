@@ -15,7 +15,7 @@ interface Props {
   visible: boolean;
   type: 'batch' | 'one',
   selectedCase: CaseDetail;
-  selectedRowKeys: string[];
+  selectedRowKeys: number[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'update'):void}>();
 
 // Form state management
-const formState = ref<{ targetPlanId?: string }>({ targetPlanId: undefined });
+const formState = ref<{ targetPlanId?: number }>({ targetPlanId: undefined });
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const loading = ref(false);
 
@@ -47,7 +47,7 @@ const close = () => {
 const onFinish = async () => {
   const ids = props.type === 'batch' ? props.selectedRowKeys : [props.selectedCase.id];
   loading.value = true;
-  const [error] = await funcCase.moveCase(formState.value.targetPlanId as string, ids);
+  const [error] = await funcCase.moveCase(formState.value.targetPlanId, ids);
   loading.value = false;
   if (error) {
     return;

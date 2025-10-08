@@ -246,6 +246,9 @@
       "inputMockValue": "Enter value, mock functions supported, max 4096 characters",
       "inputProcessCount": "Processed count",
       "inputProcessFailedCount": "Failed count",
+      "inputTestCount": "Test count",
+      "inputTestFailedCount": "Failed count",
+      "inputReviewCount": "Review count",
       "selectCreator": "Select creator",
       "selectModifier": "Select modifier",
       "selectOwner": "Select owner",
@@ -320,6 +323,10 @@
       "selectExecutedDateRange": [
         "Execute date from",
         "Execute date to"
+      ],
+      "selectTestDateRange": [
+        "Test date from",
+        "Test date to"
       ],
       "selectReviewDateRange": [
         "Review date from",

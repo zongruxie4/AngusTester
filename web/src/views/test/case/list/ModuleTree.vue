@@ -282,7 +282,7 @@ const onMenuClick = (menu: any, record: any) => {
     <div class="flex justify-between h-11 space-x-4 p-2">
       <Input
         v-model:value="keywords"
-        :placeholder="t('testCase.moduleTree.searchModule')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         @change="handleSearchModule" />
       <Button
         :disabled="!isAdmin && projectInfo?.createdBy !== userInfo?.id && projectInfo.ownerId !== userInfo?.id"
@@ -299,7 +299,7 @@ const onMenuClick = (menu: any, record: any) => {
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleSelectKeysChange(['-1'])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
-      <span class="flex-1">{{ t('testCase.moduleTree.allCases') }}</span>
+      <span class="flex-1">{{ t('common.all') }}</span>
     </div>
 
     <Tree
