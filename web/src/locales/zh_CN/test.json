@@ -146,7 +146,7 @@
       "enterCaseName": "输入用例名称，最多可输入400字符",
       "precondition": "前置条件",
       "preconditionHint": "测试执行前需要满足的所有条件或环境配置。",
-      "enterPrecondition": "输入前置条件，最多支持2000字符。",
+      "enterPrecondition": "输入前置条件，最多支持2000字符",
       "testSteps": "测试步骤",
       "switchType": "切换类型",
       "testStepsHint": "指执行测试用例时需要采取的具体操作步骤与预期结果，作为通过与否的判断标准。",

@@ -62,9 +62,9 @@ const formState = ref<ExtendedCaseEditState>({
   description: '',
   evalWorkload: '',
   actualWorkload: '',
-  moduleId: 0,
+  moduleId: undefined,
   name: '',
-  planId: 0,
+  planId: undefined,
   precondition: '',
   priority: Priority.MEDIUM,
   steps: [],
@@ -131,8 +131,6 @@ const getCaseInfo = async () => {
   oldFormState.value = JSON.parse(JSON.stringify(formState.value));
 };
 
-// Utility functions
-
 /**
  * Parse JSON value for rich text content
  * @param value - Value to parse
@@ -152,8 +150,6 @@ const getJson = (value: string): string | undefined => {
     return JSON.stringify([{ insert: value }]);
   }
 };
-
-// Modal and form management
 
 /**
  * Close the modal
@@ -176,7 +172,12 @@ const resetForm = (type?: 'save') => {
     formState.value.steps = [];
     formState.value.description = '';
     stepDefaultValue.value = [];
-    formState.value.moduleId = props.moduleId ? Number(props.moduleId) : 0;
+    // Set module ID if provided and valid, otherwise undefined to show placeholder
+    if (props.moduleId && +props.moduleId > 0) {
+      formState.value.moduleId = Number(props.moduleId);
+    } else {
+      formState.value.moduleId = undefined;
+    }
   }
   formRef.value.clearValidate();
 };
@@ -212,9 +213,9 @@ const save = (type: 'save' | 'add') => {
       }
 
       if (props.editCase) {
-        editSave();
+        await editSave();
       } else {
-        addSave();
+        await addSave();
       }
     });
 };
@@ -276,7 +277,7 @@ const editSave = async () => {
   }
   notification.success(t('actions.tips.modifySuccess'));
   emits('update:visible', false);
-  emits('update', props.editCase.id);
+  emits('update', props.editCase.id.toString());
 };
 
 /**
@@ -298,8 +299,6 @@ const addSave = async () => {
     resetForm('save');
   }
 };
-
-// File upload functionality
 
 /**
  * Handle file upload
@@ -339,8 +338,6 @@ const delFile = (index: number) => {
 // Step default values
 const stepDefaultValue = ref<{ expectedResult: string; step: string; }[]>([]);
 
-// Date validation functions
-
 /**
  * Check if date should be disabled
  * @param current - Current date
@@ -372,8 +369,6 @@ const validateDate = async (_rule: Rule, value: string) => {
   }
 };
 
-// User assignment functions
-
 /**
  * Assign current user as tester
  */
@@ -404,28 +399,37 @@ const loadMembers = async () => {
 };
 
 // Plan management
-const planParams = computed(() => {
-  return { projectId: projectId.value };
-});
 
 const evalWorkloadMethod = ref<{ value: string; message: string }>();
 const planEndDate = ref<string>();
 
 /**
  * Handle plan change and update deadline date
- * @param value - Plan value
- * @param options - Plan options
+ * @param _value - Plan value (unused)
+ * @param option - Selected plan option containing deadline and workload method
  */
-const planChange = (value: any, options: any) => {
-  formState.value.deadlineDate = value ? options.deadlineDate : '';
-  planEndDate.value = options?.deadlineDate;
-  evalWorkloadMethod.value = options?.evalWorkloadMethod;
-  if (formState.value.deadlineDate && dayjs(formState.value.deadlineDate).isBefore(dayjs())) {
-    formState.value.deadlineDate = dayjs().add(2, 'hour').format(DATE_TIME_FORMAT);
+const planChange = (_value: any, option: any) => {
+  if (!props.editCase) {
+    // For new cases, set deadline based on plan deadline
+    if (option?.deadlineDate) {
+      if (dayjs(option?.deadlineDate).isAfter(dayjs())) {
+        formState.value.deadlineDate = option.deadlineDate;
+      } else {
+        formState.value.deadlineDate = dayjs().add(2, 'hour').format(DATE_TIME_FORMAT);
+      }
+    }
+  } else {
+    // For existing cases, use plan deadline directly
+    formState.value.deadlineDate = option?.deadlineDate || '';
   }
+
+  // Adjust deadline to business hours (8 AM - 7 PM)
   if (formState.value.deadlineDate && (dayjs(formState.value.deadlineDate).hour() > 19 || dayjs(formState.value.deadlineDate).hour() < 8)) {
     formState.value.deadlineDate = dayjs(formState.value.deadlineDate).add(12, 'hour').format(DATE_TIME_FORMAT);
   }
+
+  planEndDate.value = formState.value.deadlineDate;
+  evalWorkloadMethod.value = option?.evalWorkloadMethod?.value;
 };
 
 // Module management
@@ -516,23 +520,23 @@ const handleZoom = () => {
 
 // Computed properties for form values
 const planIdValue = computed({
-  get: () => formState.value.planId?.toString() || '',
-  set: (value: string) => {
-    formState.value.planId = value ? Number(value) : 0;
+  get: () => formState.value.planId || undefined,
+  set: (value: number | undefined) => {
+    formState.value.planId = value ? Number(value) : undefined;
   }
 });
 
 const testerIdValue = computed({
-  get: () => formState.value.testerId?.toString() || '',
-  set: (value: string) => {
-    formState.value.testerId = value ? Number(value) : 0;
+  get: () => formState.value.testerId || undefined,
+  set: (value: number | undefined) => {
+    formState.value.testerId = value ? Number(value) : undefined;
   }
 });
 
 const developerIdValue = computed({
-  get: () => formState.value.developerId?.toString() || '',
-  set: (value: string) => {
-    formState.value.developerId = value ? Number(value) : 0;
+  get: () => formState.value.developerId || undefined,
+  set: (value: number | undefined) => {
+    formState.value.developerId = value ? Number(value) : undefined;
   }
 });
 
@@ -556,8 +560,6 @@ const refCaseIdsValue = computed({
     formState.value.refCaseIds = value.map(id => Number(id));
   }
 });
-
-// Workload validation functions
 
 /**
  * Handle actual workload change
@@ -631,7 +633,7 @@ onMounted(() => {
     :style="style"
     class="relative max-w-full"
     @cancel="close">
-    <Tooltip :title="isZoom ? t('actions.recover') : t('actions.fullscreen')">
+    <Tooltip :title="isZoom ? t('actions.recover') : t('actions.fullScreen')">
       <Icon
         :icon="isZoom?'icon-tuichuzuida':'icon-zuidahua'"
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"
@@ -672,8 +674,8 @@ onMounted(() => {
               <RichEditor
                 ref="conditionRichRef"
                 v-model:value="formState.precondition"
-                :height="100"
-                :placeholder="t('testCase.addCaseModal.enterPrecondition')" />
+                :height="155"
+                :options="{placeholder: t('testCase.addCaseModal.enterPrecondition')}" />
             </FormItem>
 
             <FormItem>
@@ -712,27 +714,26 @@ onMounted(() => {
               <RichEditor
                 ref="descRichRef"
                 v-model:value="formState.description"
+                :options="{placeholder: t('common.placeholders.inputDescription30')}"
+                :height="280"
                 class="add-case" />
             </FormItem>
           </div>
 
-          <div style="width: 320px;" class="ml-5 h-full">
+          <div style="width: 320px;" class="ml-5 h-full side-form">
             <FormItem
               :label="t('common.plan')"
               name="planId"
-              :rules="{required:true,message: t('testCase.addCaseModal.pleaseSelectPlan')}">
+              :rules="{ required: true, message: t('common.placeholders.selectPlan') }">
               <Select
                 v-model:value="planIdValue"
-                :disabled="!!props.editCase"
                 :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
                 :fieldNames="{ value: 'id', label: 'name' }"
-                :params="planParams"
-                :lazy="false"
-                defaultActiveFirstOption
+                :readonly="!!props.editCase"
                 showSearch
-                :placeholder="t('testCase.addCaseModal.selectOrQueryPlan')"
-                loadMode="infinity"
-                @change="planChange">
+                internal
+                :placeholder="t('common.placeholders.selectPlan')"
+                @change="(value: any, option: any) => planChange(value, option)">
                 <template #option="item">
                   <div class="flex items-center" :title="item.name">
                     <Icon icon="icon-jihua" class="mr-1 text-3.5" />
@@ -771,6 +772,7 @@ onMounted(() => {
               <div class="flex items-center">
                 <Select
                   v-model:value="testerIdValue"
+                  :placeholder="t('testCase.addCaseModal.pleaseSelectTester')"
                   :options="members as any"
                   class="flex-1"
                   size="small" />
@@ -790,6 +792,7 @@ onMounted(() => {
               :rules="{required:true,message: t('testCase.addCaseModal.pleaseSelectDeveloper')}">
               <Select
                 v-model:value="developerIdValue"
+                :placeholder="t('testCase.addCaseModal.pleaseSelectDeveloper')"
                 :options="members as any"
                 class="flex-1"
                 size="small" />
@@ -1102,19 +1105,21 @@ onMounted(() => {
   </Modal>
 </template>
 <style scoped>
-:deep(.ant-select.ant-select-sm.ant-select-multiple .ant-select-selector) {
-  max-height: 76px;
-  overflow-y: auto;
+:deep(.ant-form-item-label) {
+  max-width: 720px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-:deep(.tox-tinymce-aux > .tox-textarea > textarea::placeholder) {
-  color: red !important;  /* 这里可以设置你想要的颜色 */
+:deep(.ant-form-item:not(.ant-form-item-has-error)) {
+  margin-bottom: 15px;
 }
-</style>
 
-<style>
-.module_tree .ant-select-tree .ant-select-tree-node-content-wrapper {
-  min-height: 24px;
-  line-height: 24px;
+:deep(.ant-form-item .ant-form-item-has-error) {
+  margin-bottom: 15px;
+}
+
+:deep(.ant-form-item-with-help .ant-form-item-explain) {
+  min-height: 20px;
 }
 </style>

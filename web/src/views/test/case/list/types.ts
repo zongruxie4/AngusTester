@@ -25,8 +25,8 @@ export type EnabledGroup = boolean;
 
 export type CaseEditState = {
   name: string;
-  planId?: number;
-  moduleId?: number;
+  planId?: number | undefined;
+  moduleId?: number | undefined;
   caseType: 'FUNC' | 'APIS'
   deadlineDate: string;
   description: string;

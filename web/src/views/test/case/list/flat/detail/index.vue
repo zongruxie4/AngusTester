@@ -751,7 +751,7 @@ onBeforeUnmount(() => {
                   :maxlength="200"
                   size="small"
                   class="absolute -top-1.25"
-                  :placeholder="t('testCase.detail.caseDetail.name')"
+                  :placeholder="t('common.name')"
                   @blur="editName" />
               </template>
 

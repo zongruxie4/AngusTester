@@ -143,7 +143,7 @@
       "enterCaseName": "Enter case name, maximum 400 characters",
       "precondition": "Precondition",
       "preconditionHint": "All conditions or environment configurations that need to be met before test execution.",
-      "enterPrecondition": "Enter precondition, supports up to 2000 characters.",
+      "enterPrecondition": "Enter precondition, supports up to 2000 characters",
       "testSteps": "Test Steps",
       "switchType": "Switch Type",
       "testStepsHint": "Specific operation steps and expected results to be taken when executing test cases, as criteria for pass/fail judgment.",
