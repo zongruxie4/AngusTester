@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { Grid } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { ReviewStatus } from '@xcan-angus/infra';
 
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
 
@@ -17,7 +18,7 @@ const props = withDefaults(defineProps<CaseInfoEditProps>(), {
 
 const oneReviewPass = computed(() => {
   if (props.dataSource?.reviewNum && Number(props.dataSource.reviewNum) > 0) {
-    return props.dataSource?.reviewFailNum === '0' && props.dataSource?.reviewStatus?.value === 'PASSED' ? t('status.yes') : t('status.no');
+    return props.dataSource?.reviewFailNum === '0' && props.dataSource?.reviewStatus?.value === ReviewStatus.PASSED ? t('status.yes') : t('status.no');
   }
   return '--';
 });
@@ -30,7 +31,7 @@ const reviewInfoColumns = [
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },
     {
-      label: t('testCase.kanbanView.reviewInfoGrid.reviewCount'),
+      label: t('common.counts.reviewCount'),
       dataIndex: 'reviewNum'
     },
     {

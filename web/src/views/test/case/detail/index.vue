@@ -29,12 +29,12 @@ interface IData {
 
 export interface Props {
   source:'list' | 'home' | 'share',
-  caseId?: string;
+  caseId?: number;
   tabKey?:string;
   currIndex?:number;
-  userInfo?:{id:string};
+  userInfo?:{id:number};
   caseInfo?: CaseDetail,
-  caseActionAuth?: {[key:string]:CaseActionAuth[]},
+  caseActionAuth?: {[key:number]:CaseActionAuth[]},
   queryParams?: any
   scrollNotify?: number;
   notify?: number;
@@ -44,7 +44,7 @@ const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   source: undefined,
-  caseId: '',
+  caseId: -1,
   tabKey: '',
   currIndex: 0,
   userInfo: undefined,
@@ -58,45 +58,53 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'onClick', type: CaseActionAuth, value: CaseDetail): void;
-  (e: 'editSuccess', id:string): void;
-  (e: 'getInfo', id:string): void;
+  (e: 'editSuccess', id:number): void;
+  (e: 'getInfo', id:number): void;
   (e: 'updateCaseTab', value): void;
   (e: 'update:loading', value: boolean): void;
 }>();
 
 const isAdmin = computed(() => appContext.isAdmin());
-const projectId = inject<Ref<string>>('projectId', ref(''));
+const projectId = inject<Ref<number>>('projectId', ref(-1));
 const userInfo = ref(appContext.getUser());
 const appInfo = ref(appContext.getAccessApp());
 
+// UI state
 const activeKey = ref<TabKey>('info');
 const detailRef = ref<HTMLElement | null>(null);
 
-const caseAuth = ref<{ [key: string]: CaseActionAuth[] }>({});
+// Case data & permissions
+const caseAuth = ref<{ [key: number]: CaseActionAuth[] }>({});
 const caseDetail = ref<CaseDetail>();
 
+// List navigation cache
 const pageNo = ref(1);
 const total = ref(1);
 const filters = ref([]);
 
+// Navigation guard flags
 const hasLastData = ref(false);
 const hasBeforeData = ref(false);
-let isFirstClick = true;
+let isFirstNavigation = true;
 
 let db;
-const getData = async (value: 'before' | 'after') => {
+/**
+ * Navigate to adjacent case (previous/next) and refresh detail.
+ */
+const fetchAdjacentCase = async (direction: 'before' | 'after') => {
   if (!db) {
     db = new XCanDexie<IData>('parameter');
   }
 
   const cacheParamsKey = `${props.userInfo?.id}${props.queryParams.projectId}_case`;
 
-  if (isFirstClick) {
+  // Initialize from props or cache for first navigation
+  if (isFirstNavigation) {
     if (props.queryParams && Object.keys(props.queryParams).length) {
       const _params = props.queryParams;
       filters.value = _params?.filters || [];
       total.value = +_params.total;
-      pageNo.value = calculateDataPosition(+_params.total, +_params.pageNo, +_params.pageSize, +_params.currIndex + 1);
+      pageNo.value = calculateAbsoluteIndex(+_params.total, +_params.pageNo, +_params.pageSize, +_params.currIndex + 1);
       db.add({ id: cacheParamsKey, data: props.queryParams });
     } else {
       const [, _data] = await db.get(cacheParamsKey);
@@ -104,13 +112,13 @@ const getData = async (value: 'before' | 'after') => {
         const _params = _data.data;
         total.value = +_params.total;
         filters.value = _params?.filters || [];
-        pageNo.value = calculateDataPosition(+_params.total, +_params.pageNo, +_params.pageSize, +_params.currIndex + 1);
+        pageNo.value = calculateAbsoluteIndex(+_params.total, +_params.pageNo, +_params.pageSize, +_params.currIndex + 1);
       }
     }
-    isFirstClick = false;
+    isFirstNavigation = false;
   }
 
-  if (value === 'before') {
+  if (direction === 'before') {
     if (pageNo.value <= 1) {
       notification.success(t('testCase.detail.firstDataTip'));
       hasBeforeData.value = true;
@@ -120,7 +128,7 @@ const getData = async (value: 'before' | 'after') => {
     }
   }
 
-  if (value === 'after') {
+  if (direction === 'after') {
     if (pageNo.value >= total.value) {
       notification.success(t('testCase.detail.lastDataTip'));
       hasLastData.value = true;
@@ -130,7 +138,7 @@ const getData = async (value: 'before' | 'after') => {
     }
   }
 
-  value === 'before' ? pageNo.value-- : pageNo.value++;
+  direction === 'before' ? pageNo.value-- : pageNo.value++;
 
   const params = { pageNo: pageNo.value, pageSize: 1, enabledGroup: false, filters: filters.value, projectId: projectId.value };
   const [listError, listRes] = await funcCase.getCaseList({ infoScope: PageQuery.InfoScope.DETAIL, ...params });
@@ -142,10 +150,13 @@ const getData = async (value: 'before' | 'after') => {
   }
 
   total.value = +listRes.data.total;
-  await getCaseInfo(listRes.data.list[0].id);
+  await fetchCaseDetail(listRes.data.list[0].id);
 };
 
-const calculateDataPosition = (_total, _pageNo, _pageSize, n) => {
+/**
+ * Calculate absolute index within the dataset for given page and offset.
+ */
+const calculateAbsoluteIndex = (_total, _pageNo, _pageSize, n) => {
   const startIndex = (_pageNo - 1) * _pageSize;
   return startIndex + n;
 };
@@ -153,7 +164,10 @@ const calculateDataPosition = (_total, _pageNo, _pageSize, n) => {
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 
-const getCaseInfo = async (id: string) => {
+/**
+ * Load case detail, compute permissions and update related tab meta.
+ */
+const fetchCaseDetail = async (id: number) => {
   destroyInactiveTabPane.value = true;
   emits('update:loading', true);
   const [error, { data }] = await funcCase.getCaseDetail(id);
@@ -164,7 +178,7 @@ const getCaseInfo = async (id: string) => {
   caseDetail.value = data;
 
   updateTabPane({ _id: props.tabKey, caseId: data.id, name: data.name, value: 'caseInfo' });
-  await getPlanAuth(data.planId);
+  await fetchPlanPermissions(data.planId);
   caseAuth.value[data.id] = getActionAuth(planAuthList.value);
   if (caseAuth.value[data.id].includes('resetTestResult')) {
     if (!funcPlanAuth.value) {
@@ -180,7 +194,10 @@ const getCaseInfo = async (id: string) => {
 
 const planAuthList = ref<string[]>([]);
 const funcPlanAuth = ref(true);
-const getPlanAuth = async (planId) => {
+/**
+ * Resolve and normalize effective permissions for current plan.
+ */
+const fetchPlanPermissions = async (planId) => {
   if (isAdmin.value) {
     funcPlanAuth.value = true;
     planAuthList.value = enumUtils.getEnumValues(FuncPlanPermission);
@@ -199,22 +216,29 @@ const getPlanAuth = async (planId) => {
     funcPlanAuth.value = false;
     planAuthList.value = enumUtils.getEnumValues(FuncPlanPermission);
   }
-  if (props.userInfo?.id === caseDetail.value.testerId && !planAuthList.value.includes(FuncPlanPermission.TEST)) {
+  if (props.userInfo?.id === caseDetail.value?.testerId && !planAuthList.value.includes(FuncPlanPermission.TEST)) {
     planAuthList.value.push(FuncPlanPermission.TEST);
   }
 };
 const destroyInactiveTabPane = ref(true);
 
+// Derived action permissions for current case
 const actionAuth = computed(() => {
-  return caseAuth.value[caseDetail.value?.id] || [];
+  return caseAuth.value[caseDetail.value?.id || 0] || [];
 });
 
-const handleClick = (type: CaseActionAuth) => {
-  emits('onClick', type, caseDetail.value);
+/**
+ * Emit action event for parent to handle.
+ */
+const emitActionClick = (type: any) => {
+  emits('onClick', type, caseDetail.value as CaseDetail);
 };
 
-// 复制Url
-const handleCopy = async () => {
+// Copy shareable link to clipboard
+const copyShareLink = async () => {
+  if (!caseDetail.value) {
+    return;
+  }
   const message = `${window.location.origin}/test#cases?
   id=${caseDetail.value.id}&projectId=${projectId.value}&
   name=${caseDetail.value.name}&currIndex=${props.currIndex}&
@@ -228,23 +252,27 @@ const handleCopy = async () => {
   });
 };
 
-// 提Bug
+// Issue modal visibility
 const taskModalVisible = ref(false);
-const addBug = () => {
+const openAddBugModal = () => {
   taskModalVisible.value = true;
 };
 
-const handleAddTask = async () => {
-  editSuccess();
+const handleAddIssueOk = async () => {
+  onEditSuccess();
 };
 
-const smartCommentRef = ref(null);
+const smartCommentRef = ref<any>(null);
 const reviewRecordRef = ref();
 
-const editSuccess = () => {
+/**
+ * Handle edit completed and refresh detail if in tab mode.
+ */
+const onEditSuccess = () => {
+  if (!caseDetail.value?.id) return;
   emits('editSuccess', caseDetail.value.id);
   if (props.tabKey) {
-    getCaseInfo(caseDetail.value.id);
+    fetchCaseDetail(caseDetail.value.id);
   }
 };
 
@@ -252,7 +280,8 @@ const buttonGroupRef = ref<HTMLElement>();
 const buttonHeight = ref(0);
 let buttonErd:Erd;
 
-const buttonResizeHandler = debounce(duration.resize, (element) => {
+// Observe action bar size changes to layout tabs height
+const onButtonResize = debounce(duration.resize, (element) => {
   buttonHeight.value = element.offsetHeight;
 });
 
@@ -262,9 +291,12 @@ const activityParams = ref({
   filters: [{ key: 'targetType', value: CombinedTargetType.FUNC_CASE, op: SearchCriteria.OpEnum.Equal }]
 });
 
-const refresh = () => {
-  if (['info', 'assocIssues', 'assocCases'].includes(activeKey.value)) {
-    getCaseInfo(caseDetail.value.id);
+/**
+ * Refresh content of current active tab or detail.
+ */
+const refreshActiveTabContent = () => {
+  if (['info', 'assocIssues', 'assocCases'].includes(activeKey.value) && caseDetail.value?.id) {
+    fetchCaseDetail(caseDetail.value.id);
   }
 
   if (activeKey.value === 'activity') {
@@ -280,17 +312,21 @@ const refresh = () => {
   }
 };
 
-const getRefTaskNum = (type: TaskType) => {
+// Count referenced tasks by type
+const countRefTasksByType = (type: TaskType) => {
   return (caseDetail.value?.refTaskInfos || []).filter(item => item.taskType.value === type).length || 0;
 };
 
 const activityList = ref([]);
-const getActivityList = (data) => {
+const onActivityListChange = (data) => {
   activityList.value = data;
 };
 
+// External notify triggers reload
 watch(() => props.notify, () => {
-  getCaseInfo(props.caseId);
+  if (props.caseId) {
+    fetchCaseDetail(props.caseId);
+  }
 });
 
 watch(() => activeKey.value, () => {
@@ -306,8 +342,8 @@ watch(() => props.caseInfo, (newValue) => {
     caseAuth.value = props.caseActionAuth || {};
   }
 
-  if (!newValue && props.tabKey) {
-    getCaseInfo(props.caseId);
+  if (!newValue && props.tabKey && props.caseId) {
+    fetchCaseDetail(props.caseId);
   }
 
   nextTick(() => {
@@ -334,13 +370,13 @@ onMounted(() => {
     }
 
     buttonErd = elementResizeDetector();
-    buttonErd.listenTo(buttonGroupRef.value, buttonResizeHandler);
+    buttonErd.listenTo(buttonGroupRef.value, onButtonResize);
   });
 });
 
 onBeforeUnmount(() => {
   if (buttonErd) {
-    buttonErd.removeListener(buttonGroupRef.value!, buttonResizeHandler);
+    buttonErd.removeListener(buttonGroupRef.value!, onButtonResize);
   }
 });
 
@@ -359,7 +395,7 @@ defineExpose({
               type="primary"
               class="mt-2 mr-2"
               size="small"
-              @click="handleClick('updateTestResult_passed')">
+              @click="emitActionClick('updateTestResult_passed')">
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
               <span>{{ t('testCase.detail.testPassed') }}</span>
             </Button>
@@ -369,7 +405,7 @@ defineExpose({
               type="primary"
               class="mt-2 mr-2"
               size="small"
-              @click="handleClick('updateTestResult_notPassed')">
+              @click="emitActionClick('updateTestResult_notPassed')">
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
               <span>{{ t('testCase.detail.testNotPassed') }}</span>
             </Button>
@@ -381,7 +417,7 @@ defineExpose({
               type="primary"
               class="mt-2 mr-2"
               size="small"
-              @click="handleClick('retestResult')">
+              @click="emitActionClick('retestResult')">
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
               <span>{{ t('testCase.detail.retest') }}</span>
             </Button>
@@ -392,7 +428,7 @@ defineExpose({
             :disabled="!actionAuth.includes('resetTestResult')"
             class="mt-2 mr-2"
             size="small"
-            @click="handleClick('resetTestResult')">
+            @click="emitActionClick('resetTestResult')">
             <Icon class="mr-1" icon="icon-zhongzhiceshijieguo" />
             <span>{{ t('testCase.detail.resetTestResult') }}</span>
             <Popover placement="bottom">
@@ -412,7 +448,7 @@ defineExpose({
           :disabled="!actionAuth.includes('updateTestResult')"
           class="mt-2 mr-2"
           size="small"
-          @click="handleClick('updateTestResult_blocked')">
+          @click="emitActionClick('updateTestResult_blocked')">
           <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
           {{ t('testCase.detail.setBlocked') }}
         </Button>
@@ -423,7 +459,7 @@ defineExpose({
           :disabled="!actionAuth.includes('updateTestResult')"
           class="mt-2 mr-2"
           size="small"
-          @click="handleClick('updateTestResult_canceled')">
+          @click="emitActionClick('updateTestResult_canceled')">
           <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
           {{ t('actions.cancel') }}
         </Button>
@@ -433,7 +469,7 @@ defineExpose({
           size="small"
           class="mt-2 mr-2"
           :disabled="!actionAuth.includes('edit')"
-          @click="addBug">
+          @click="openAddBugModal">
           <Icon class="mr-1" icon="icon-bianji" />
           <span>{{ t('testCase.detail.submitBug') }}</span>
         </Button>
@@ -442,7 +478,7 @@ defineExpose({
           size="small"
           class="mt-2 mr-2"
           :disabled="!actionAuth.includes('edit')"
-          @click="handleClick('edit')">
+          @click="emitActionClick('edit')">
           <Icon class="mr-1" icon="icon-bianji" />
           <span>{{ t('actions.edit') }}</span>
         </Button>
@@ -451,7 +487,7 @@ defineExpose({
           :disabled="!actionAuth.includes('clone')"
           class="mt-2 mr-2"
           size="small"
-          @click="handleClick('clone')">
+          @click="emitActionClick('clone')">
           <Icon class="mr-1" icon="icon-fuzhi" />
           <span>{{ t('actions.clone') }}</span>
         </Button>
@@ -460,7 +496,7 @@ defineExpose({
           :disabled="!actionAuth.includes('move')"
           class="mt-2 mr-2"
           size="small"
-          @click="handleClick('move')">
+          @click="emitActionClick('move')">
           <Icon class="mr-1 text-3" icon="icon-yidong" />
           <span>{{ t('actions.move') }}</span>
         </Button>
@@ -468,7 +504,7 @@ defineExpose({
         <Button
           class="mt-2 mr-2"
           size="small"
-          @click="handleClick('addFavourite')">
+          @click="emitActionClick('addFavourite')">
           <Icon class="mr-1 text-3" :icon="caseDetail?.favourite?'icon-quxiaoshoucang':'icon-yishoucang'" />
           <span>{{ caseDetail?.favourite ? t('actions.cancelFavourite') : t('actions.addFavourite') }}</span>
         </Button>
@@ -476,7 +512,7 @@ defineExpose({
         <Button
           class="mt-2 mr-2"
           size="small"
-          @click="handleClick('addFollow')">
+          @click="emitActionClick('addFollow')">
           <Icon class="mr-1 text-3" :icon="caseDetail?.follow?'icon-quxiaoguanzhu':'icon-yiguanzhu'" />
           <span>{{ caseDetail?.follow ? t('actions.cancelFollow') : t('actions.addFollow') }}</span>
         </Button>
@@ -485,7 +521,7 @@ defineExpose({
           :disabled="!actionAuth.includes('delete')"
           class="mt-2 mr-2"
           size="small"
-          @click="handleClick('delete')">
+          @click="emitActionClick('delete')">
           <Icon class="mr-1" icon="icon-qingchu" />
           <span>{{ t('actions.delete') }}</span>
         </Button>
@@ -494,7 +530,7 @@ defineExpose({
           <Button
             class="mt-2 mr-2"
             size="small"
-            @click="handleCopy">
+            @click="copyShareLink">
             <Icon class="mr-1" icon="icon-fuzhi" />
             <span>{{ t('actions.copyLink') }}</span>
           </Button>
@@ -506,7 +542,7 @@ defineExpose({
           size="small"
           class="mt-2 mr-2"
           :disabled="hasBeforeData"
-          @click="getData('before')">
+          @click="fetchAdjacentCase('before')">
           <Icon class="mr-1" icon="icon-chakanshangyitiao" />{{ t('testCase.detail.viewPrevious') }}
         </Button>
 
@@ -514,7 +550,7 @@ defineExpose({
           size="small"
           class="mt-2 mr-2"
           :disabled="hasLastData"
-          @click="getData('after')">
+          @click="fetchAdjacentCase('after')">
           <Icon class="mr-1" icon="icon-chakanxiayitiao" />{{ t('testCase.detail.viewNext') }}
         </Button>
       </div>
@@ -530,7 +566,7 @@ defineExpose({
           type="link"
           size="small"
           class="mr-2"
-          @click="refresh">
+          @click="refreshActiveTabContent">
           <Icon
             icon="icon-shuaxin"
             class="mr-1" />
@@ -545,7 +581,7 @@ defineExpose({
         <CaseDetailTab
           :caseDetail="caseDetail"
           :actionAuth="actionAuth"
-          @editSuccess="editSuccess" />
+          @editSuccess="onEditSuccess" />
       </TabPane>
 
       <TabPane
@@ -569,14 +605,14 @@ defineExpose({
           :dataSource="caseDetail?.refCaseInfos"
           :projectId="projectId"
           :caseId="caseDetail?.id"
-          @editSuccess="editSuccess" />
+          @editSuccess="onEditSuccess" />
       </TabPane>
 
       <TabPane key="assocIssues">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('common.issue') }}</span>
-            <span>({{ getRefTaskNum(TaskType.TASK) }})</span>
+            <span>({{ countRefTasksByType(TaskType.TASK) }})</span>
           </div>
         </template>
         <AssocIssuesTab
@@ -587,14 +623,14 @@ defineExpose({
           :title="t('common.issue')"
           :taskType="TaskType.TASK"
           :tips="t('testCase.detail.taskTip')"
-          @editSuccess="editSuccess" />
+          @editSuccess="onEditSuccess" />
       </TabPane>
 
       <TabPane key="assocRequirements">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('testCase.detail.requirement') }}</span>
-            <span>({{ getRefTaskNum(TaskType.REQUIREMENT) }})</span>
+            <span>({{ countRefTasksByType(TaskType.REQUIREMENT) }})</span>
           </div>
         </template>
         <AssocIssuesTab
@@ -607,14 +643,14 @@ defineExpose({
           :title="t('testCase.detail.requirement')"
           :taskType="TaskType.REQUIREMENT"
           :tips="t('testCase.detail.requirementTip')"
-          @editSuccess="editSuccess" />
+          @editSuccess="onEditSuccess" />
       </TabPane>
 
       <TabPane key="assocStory">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('testCase.detail.story') }}</span>
-            <span>({{ getRefTaskNum(TaskType.STORY) }})</span>
+            <span>({{ countRefTasksByType(TaskType.STORY) }})</span>
           </div>
         </template>
         <AssocIssuesTab
@@ -627,14 +663,14 @@ defineExpose({
           :title="t('testCase.detail.story')"
           :taskType="TaskType.STORY"
           :tips="t('testCase.detail.storyTip')"
-          @editSuccess="editSuccess" />
+          @editSuccess="onEditSuccess" />
       </TabPane>
 
       <TabPane key="assocBug">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('testCase.detail.bug') }}</span>
-            <span>({{ getRefTaskNum(TaskType.BUG) }})</span>
+            <span>({{ countRefTasksByType(TaskType.BUG) }})</span>
           </div>
         </template>
         <AssocIssuesTab
@@ -647,14 +683,14 @@ defineExpose({
           :title="t('testCase.detail.bug')"
           :taskType="TaskType.BUG"
           :tips="t('testCase.detail.bugTip')"
-          @editSuccess="editSuccess" />
+          @editSuccess="onEditSuccess" />
       </TabPane>
 
       <TabPane key="assocApiTest">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('testCase.detail.apiTest') }}</span>
-            <span>({{ getRefTaskNum(TaskType.API_TEST) }})</span>
+            <span>({{ countRefTasksByType(TaskType.API_TEST) }})</span>
           </div>
         </template>
         <AssocIssuesTab
@@ -667,14 +703,14 @@ defineExpose({
           :title="t('testCase.detail.apiTest')"
           :taskType="TaskType.API_TEST"
           :tips="t('testCase.detail.apiTestTip')"
-          @editSuccess="editSuccess" />
+          @editSuccess="onEditSuccess" />
       </TabPane>
 
       <TabPane key="assocScenarioTest">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('testCase.detail.scenarioTest') }}</span>
-            <span>({{ getRefTaskNum(TaskType.SCENARIO_TEST) }})</span>
+            <span>({{ countRefTasksByType(TaskType.SCENARIO_TEST) }})</span>
           </div>
         </template>
         <AssocIssuesTab
@@ -687,7 +723,7 @@ defineExpose({
           :title="t('testCase.detail.scenarioTest')"
           :taskType="TaskType.SCENARIO_TEST"
           :tips="t('testCase.detail.scenarioTestTip')"
-          @editSuccess="editSuccess" />
+          @editSuccess="onEditSuccess" />
       </TabPane>
 
       <TabPane
@@ -724,7 +760,7 @@ defineExpose({
           :notify="activityNotify"
           transition
           class="h-full"
-          @change="getActivityList">
+          @change="onActivityListChange">
           <ActivityInfo :dataSource="activityList" infoKey="description" />
         </Scroll>
       </TabPane>
@@ -735,14 +771,14 @@ defineExpose({
         v-model:visible="taskModalVisible"
         :projectId="projectId"
         :appInfo="appInfo"
-        :assigneeId="caseDetail.developerId"
+        :assigneeId="caseDetail?.developerId"
         :userInfo="userInfo"
-        :refCaseIds="[caseDetail.id]"
-        :name="t('testCase.mainView.testNotPassedName', {name: caseDetail.name})"
-        :description="caseDetail.testRemark"
+        :refCaseIds="[caseDetail?.id]"
+        :name="t('testCase.mainView.testNotPassedName', {name: caseDetail?.name})"
+        :description="caseDetail?.testRemark"
         :taskType="TaskType.BUG"
         :confirmerId="caseDetail?.testerId"
-        @ok="handleAddTask" />
+        @ok="handleAddIssueOk" />
     </AsyncComponent>
   </div>
 </template>

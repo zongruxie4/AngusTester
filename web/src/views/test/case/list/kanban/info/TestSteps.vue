@@ -31,7 +31,10 @@ const editFlag = ref(false);
 const steps = ref<{expectedResult:string;step:string;}[]>([]);
 const stepsContent = ref<{expectedResult:string;step:string;}[]>([]);
 
-const toEdit = () => {
+/*
+  Enter steps edit mode and clone current steps as working copy.
+*/
+const openEditSteps = () => {
   editFlag.value = true;
   stepsContent.value = cloneDeep(steps.value);
 };
@@ -40,7 +43,10 @@ const cancel = () => {
   editFlag.value = false;
 };
 
-const ok = async () => {
+/*
+  Persist updated steps and refresh case detail.
+*/
+const saveSteps = async () => {
   loadingChange(true);
   const [error] = await funcCase.updateCase([{
     id: props.dataSource?.id,
@@ -106,7 +112,7 @@ onMounted(() => {
         v-show="!editFlag"
         type="link"
         class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-        @click="toEdit">
+        @click="openEditSteps">
         <Icon icon="icon-shuxie" class="text-3.5" />
       </Button>
     </div>
@@ -125,7 +131,7 @@ onMounted(() => {
       <Button
         size="small"
         type="primary"
-        @click="ok">
+        @click="saveSteps">
         {{ t('actions.confirm') }}
       </Button>
     </div>

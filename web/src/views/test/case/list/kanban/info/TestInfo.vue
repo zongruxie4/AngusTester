@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { Grid } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { CaseTestResult } from '@/enums/enums';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
 
 import TestResult from '@/components/TestResult/index.vue';
@@ -18,7 +19,7 @@ const props = withDefaults(defineProps<CaseInfoEditProps>(), {
 
 const oneTestPass = computed(() => {
   if (props.dataSource?.testNum && Number(props.dataSource.testNum) > 0) {
-    return props.dataSource?.testFailNum === '0' && props.dataSource?.testResult?.value === 'PASSED' ? t('status.yes') : t('status.no');
+    return props.dataSource?.testFailNum === 0 && props.dataSource?.testResult?.value === CaseTestResult.PASSED ? t('status.yes') : t('status.no');
   }
   return '--';
 });
@@ -26,19 +27,19 @@ const oneTestPass = computed(() => {
 const testInfoColumns = [
   [
     {
-      label: '测试次数',
+      label: t('common.counts.testCount'),
       dataIndex: 'testNum'
     },
     {
-      label: '失败次数',
+      label: t('common.counts.testFailCount'),
       dataIndex: 'testFailNum'
     },
     {
-      label: '是否一次性通过',
+      label: t('common.counts.oneTimePassed'),
       dataIndex: 'oneTestPass'
     },
     {
-      label: '结果备注',
+      label: t('common.resultRemark'),
       dataIndex: 'testRemark'
     }
   ]

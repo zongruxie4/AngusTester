@@ -13,6 +13,7 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
+// Async sub-sections
 const Description = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/Description.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/Precondition.vue'));
 const TestStep = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/TestSteps.vue'));
@@ -34,7 +35,7 @@ const emit = defineEmits<{
   (event: 'update:dataSource', value: CaseDetail): void;
 }>();
 
-// Inject project information
+// Injected states
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const nameInputRef = ref();
@@ -45,7 +46,7 @@ const actualWorkloadInputRef = ref();
 
 const isEditName = ref(false);
 const tagsIds = ref<string[]>([]);
-const defaultTags = ref<{[key: string]: { name: string; id: string }}>({});
+const defaultTags = ref<{[key: string]: { label: string; value: string }}>({});
 const isEditTag = ref(false);
 const isEditPriority = ref(false);
 const priority = ref();
@@ -53,6 +54,14 @@ const isEditEvalWorkload = ref(false);
 const alWorkload = ref(props.dataSource?.actualWorkload);
 const isEditActualWorkload = ref(false);
 
+/*
+  Coerce select option to expected Priority shape for display component.
+*/
+const coercePriorityOption = (option: any) => option;
+
+/*
+  Enter name edit mode and autofocus the input.
+*/
 const openEditName = () => {
   isEditName.value = true;
   nextTick(() => {
@@ -60,6 +69,9 @@ const openEditName = () => {
   });
 };
 
+/*
+  Persist updated name if changed and reload detail.
+*/
 const editName = async (event) => {
   if (event.target.value === props.dataSource?.name || !event.target.value) {
     isEditName.value = false;
@@ -77,6 +89,9 @@ const editName = async (event) => {
   change();
 };
 
+/*
+  Enter priority edit mode and autofocus the select.
+*/
 const openEditPriority = () => {
   isEditPriority.value = true;
   priority.value = props.dataSource?.priority?.value;
@@ -85,8 +100,10 @@ const openEditPriority = () => {
   });
 };
 
+/*
+  Persist updated priority if changed and reload detail.
+*/
 const editPriority = async (value) => {
-  // 请求加载中,不允许再次发送
   if (value === props.dataSource?.priority?.value) {
     isEditPriority.value = false;
     return;
@@ -103,6 +120,9 @@ const editPriority = async (value) => {
   change();
 };
 
+/*
+  Enter eval workload edit mode and autofocus input.
+*/
 const openEditEvalWorkload = () => {
   isEditEvalWorkload.value = true;
   nextTick(() => {
@@ -110,6 +130,9 @@ const openEditEvalWorkload = () => {
   });
 };
 
+/*
+  Persist updated eval workload if changed and reload detail.
+*/
 const editEvalWorkload = async (event) => {
   if (+event.target.value === (+props.dataSource?.evalWorkload) || (!event.target.value && !props.dataSource?.evalWorkload)) {
     isEditEvalWorkload.value = false;
@@ -117,7 +140,7 @@ const editEvalWorkload = async (event) => {
   }
 
   loadingChange(true);
-  const [error] = await funcCase.putEvalWorkload(props.dataSource.id, { workload: event.target.value });
+  const [error] = await funcCase.putEvalWorkload(props.dataSource.id, { workload: String(event.target.value) });
   loadingChange(false);
   isEditEvalWorkload.value = false;
   if (error) {
@@ -127,6 +150,9 @@ const editEvalWorkload = async (event) => {
   change();
 };
 
+/*
+  Enter actual workload edit mode and autofocus input.
+*/
 const openEditActualWorkload = () => {
   alWorkload.value = props.dataSource.actualWorkload || props.dataSource.evalWorkload;
   isEditActualWorkload.value = true;
@@ -135,6 +161,9 @@ const openEditActualWorkload = () => {
   });
 };
 
+/*
+  Persist updated actual workload if changed and reload detail.
+*/
 const editActualWorkload = async (event) => {
   if (+event.target.value === (+props.dataSource?.actualWorkload) || (!event.target.value && !props.dataSource?.evalWorkload)) {
     isEditActualWorkload.value = false;
@@ -142,7 +171,7 @@ const editActualWorkload = async (event) => {
   }
 
   loadingChange(true);
-  const [error] = await funcCase.putActualWorkload(props.dataSource.id, { workload: event.target.value });
+  const [error] = await funcCase.putActualWorkload(props.dataSource.id, { workload: String(event.target.value) });
   loadingChange(false);
   isEditActualWorkload.value = false;
   if (error) {
@@ -152,10 +181,12 @@ const editActualWorkload = async (event) => {
   change();
 };
 
-// 编辑标签
+/*
+  Enter tag edit mode and preload current tags.
+*/
 const openEditTag = () => {
   tagsIds.value = (props.dataSource?.tags || [])?.map(item => {
-    defaultTags.value[item.id] = { id: item.id, name: item.name };
+    defaultTags.value[item.id] = { value: item.id, label: item.name };
     return item.id;
   }) || [];
   isEditTag.value = true;
@@ -164,6 +195,9 @@ const openEditTag = () => {
   });
 };
 
+/*
+  Persist updated tag list if changed and reload detail.
+*/
 const editTag = async () => {
   if (tagsIds.value?.length > 5) {
     isEditTag.value = false;
@@ -188,10 +222,16 @@ const editTag = async () => {
   change();
 };
 
+/*
+  Emit loading state to parent.
+*/
 const loadingChange = (value:boolean) => {
   emit('loadingChange', value);
 };
 
+/*
+  Refresh case detail and sync to parent.
+*/
 const change = async () => {
   const id = props.dataSource?.id;
   if (!id) {
@@ -328,7 +368,7 @@ const infoColumns = [
                 :placeholder="t('testCase.kanbanView.infoBasic.priorityPlaceholder')"
                 @blur="editPriority($event.target.value)">
                 <template #option="item">
-                  <TaskPriority :value="item" />
+                  <TaskPriority :value="coercePriorityOption(item)" />
                 </template>
               </SelectEnum>
             </template>
@@ -392,7 +432,7 @@ const infoColumns = [
             <template v-if="isEditEvalWorkload">
               <Input
                 ref="evalWorkloadInputRef"
-                :value="props.dataSource?.evalWorkload"
+                :value="props.dataSource?.evalWorkload !== undefined && props.dataSource?.evalWorkload !== null ? String(props.dataSource?.evalWorkload) : ''"
                 :allowClear="false"
                 :autofocus="isEditEvalWorkload"
                 :min="0.1"
@@ -432,7 +472,7 @@ const infoColumns = [
             <template v-if="isEditActualWorkload">
               <Input
                 ref="actualWorkloadInputRef"
-                :value="alWorkload"
+                :value="alWorkload !== undefined && alWorkload !== null ? String(alWorkload) : ''"
                 :allowClear="false"
                 :autofocus="isEditActualWorkload"
                 :min="0.1"

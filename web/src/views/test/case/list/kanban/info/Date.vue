@@ -41,7 +41,10 @@ const testResultHandleDate = computed(() => props.dataSource?.testResultHandleDa
 const reviewDate = computed(() => props.dataSource?.reviewDate);
 const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
-const toEdit = () => {
+/*
+  Enter deadline edit mode and autofocus the date picker.
+*/
+const openEditDeadline = () => {
   dateValue.value = deadlineDate.value;
   editFlag.value = true;
 
@@ -54,7 +57,10 @@ const toEdit = () => {
   });
 };
 
-const dateChange = (value:string) => {
+/*
+  Validate deadline value; disallow empty and past times.
+*/
+const validateDeadlineChange = (value:string) => {
   if (!value) {
     dateErrorMessage.value = t('testCase.kanbanView.infoDate.selectDeadlineTime');
     return;
@@ -70,7 +76,10 @@ const dateChange = (value:string) => {
   dateErrorMessage.value = undefined;
 };
 
-const dateBlur = async () => {
+/*
+  Commit deadline on blur if valid and changed; otherwise keep focus.
+*/
+const commitDeadlineIfValid = async () => {
   if (dateError.value) {
     if (typeof dateRef.value?.focus === 'function') {
       dateRef.value?.focus();
@@ -85,9 +94,9 @@ const dateBlur = async () => {
     return;
   }
 
-  loadingChange(true);
+  emitLoadingChange(true);
   const [error] = await funcCase.putDeadline(caseId.value, value);
-  loadingChange(false);
+  emitLoadingChange(false);
   if (error) {
     if (typeof dateRef.value?.focus === 'function') {
       dateRef.value?.focus();
@@ -97,7 +106,7 @@ const dateBlur = async () => {
   }
 
   editFlag.value = false;
-  change();
+  await refreshCaseDetail();
 };
 
 // 禁用日期组件当前时间之前的年月日
@@ -106,19 +115,25 @@ const disabledDate = (current: Dayjs) => {
   return current.isBefore(today, 'day');
 };
 
-const loadingChange = (value:boolean) => {
+/*
+  Emit loading state to parent.
+*/
+const emitLoadingChange = (value:boolean) => {
   emit('loadingChange', value);
 };
 
-const change = async () => {
+/*
+  Refresh case detail and sync to parent.
+*/
+const refreshCaseDetail = async () => {
   const id = props.dataSource?.id;
   if (!id) {
     return;
   }
 
-  loadingChange(true);
+  emitLoadingChange(true);
   const [error, res] = await funcCase.getCaseDetail(id);
-  loadingChange(false);
+  emitLoadingChange(false);
   if (error) {
     return;
   }
@@ -175,7 +190,7 @@ const change = async () => {
             v-if="props.canEdit"
             type="link"
             class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="toEdit">
+            @click="openEditDeadline">
             <Icon icon="icon-shuxie" class="text-3.5" />
           </Button>
         </div>
@@ -198,8 +213,8 @@ const change = async () => {
               size="small"
               class="edit-container"
               showToday
-              @change="dateChange"
-              @blur="dateBlur" />
+              @change="validateDeadlineChange"
+              @blur="commitDeadlineIfValid" />
           </Tooltip>
         </AsyncComponent>
       </div>

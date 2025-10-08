@@ -8,7 +8,7 @@ import { funcCase } from '@/api/tester';
 
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
-import { AttachmentInfo } from '@/types/types';
+// import { AttachmentInfo } from '@/types/types';
 
 const { t } = useI18n();
 
@@ -27,14 +27,20 @@ const emit = defineEmits<{
   (event: 'update:dataSource', value: CaseDetail): void;
 }>();
 
-const MAX_SIZE = 10;
+const MAX_FILE_MB = 10;
 
 const loading = ref(false);
-const attachments = ref<AttachmentInfo[]>([]);
+type AttachmentViewItem = { id: string; name: string; url: string };
+const attachments = ref<AttachmentViewItem[]>([]);
 
-const uploadChange = async ({ file }: { file: UploadFile }) => {
+/*
+  Handle file upload change event.
+  Validate file size, upload the file, merge with existing list,
+  persist to server, and refresh the case detail.
+*/
+const handleUploadChange = async ({ file }: { file: UploadFile }) => {
   if (file.size! > maxFileSize.value) {
-    notification.warning(t('testCase.kanbanView.infoAttachment.fileSizeLimit', { size: MAX_SIZE }));
+    notification.warning(t('testCase.kanbanView.infoAttachment.fileSizeLimit', { size: MAX_FILE_MB }));
     return;
   }
 
@@ -63,10 +69,14 @@ const uploadChange = async ({ file }: { file: UploadFile }) => {
     url: data.url
   });
 
-  await updateAttachments(attachmentList);
+  await persistAttachments(attachmentList);
 };
 
-const toDelete = async (data: AttachmentInfo) => {
+/*
+  Remove a single attachment and persist the updated list to server,
+  then refresh the case detail.
+*/
+const handleDeleteAttachment = async (data: AttachmentViewItem) => {
   const attachmentList = attachments.value.filter(item => item.id !== data.id).map(item => {
     return {
       name: item.name,
@@ -74,10 +84,13 @@ const toDelete = async (data: AttachmentInfo) => {
     };
   });
 
-  await updateAttachments(attachmentList);
+  await persistAttachments(attachmentList);
 };
 
-const updateAttachments = async (data:{name:string;url:string}[]) => {
+/*
+  Persist attachments to server and refresh case detail upon success.
+*/
+const persistAttachments = async (data:{name:string;url:string}[]) => {
   const params = {
     attachments: data
   };
@@ -88,26 +101,35 @@ const updateAttachments = async (data:{name:string;url:string}[]) => {
     return;
   }
 
-  await change();
+  await refreshCaseDetail();
 };
 
-const customRequest = () => {
+/*
+  Prevent Upload component from auto uploading; we handle it manually.
+*/
+const preventAutoUpload = () => {
   return false;
 };
 
-const loadingChange = (value:boolean) => {
+/*
+  Emit loading state change to parent component.
+*/
+const emitLoadingChange = (value:boolean) => {
   emit('loadingChange', value);
 };
 
-const change = async () => {
+/*
+  Refresh case detail from server and sync to parent via emits.
+*/
+const refreshCaseDetail = async () => {
   const id = props.dataSource?.id;
   if (!id) {
     return;
   }
 
-  loadingChange(true);
+  emitLoadingChange(true);
   const [error, res] = await funcCase.getCaseDetail(id);
-  loadingChange(false);
+  emitLoadingChange(false);
   if (error) {
     return;
   }
@@ -121,7 +143,7 @@ const caseId = computed(() => props.dataSource?.id);
 const isEmpty = computed(() => !attachments.value.length);
 
 const maxFileSize = computed(() => {
-  return 1024 * 1024 * MAX_SIZE;
+  return 1024 * 1024 * MAX_FILE_MB;
 });
 
 onMounted(() => {
@@ -164,7 +186,7 @@ onMounted(() => {
             v-if="props.canEdit"
             icon="icon-qingchu"
             class="text-3.5 flex-shrink-0 cursor-pointer text-theme-text-hover"
-            @click="toDelete(item)">
+            @click="handleDeleteAttachment(item)">
           </icon>
         </div>
 
@@ -172,8 +194,8 @@ onMounted(() => {
           <Upload
             :maxCount="5"
             :showUploadList="false"
-            :customRequest="customRequest"
-            @change="uploadChange">
+            :customRequest="preventAutoUpload"
+            @change="handleUploadChange">
             <Button
               size="small"
               type="link"
@@ -189,8 +211,8 @@ onMounted(() => {
         <Upload
           :maxCount="5"
           :showUploadList="false"
-          :customRequest="customRequest"
-          @change="uploadChange">
+          :customRequest="preventAutoUpload"
+          @change="handleUploadChange">
           <Button
             size="small"
             type="link"
@@ -199,7 +221,7 @@ onMounted(() => {
             <div class="flex-shrink-0 text-text-link">{{ t('testCase.kanbanView.infoAttachment.selectFile') }}</div>
           </Button>
         </Upload>
-        <div class="text-theme-sub-content mt-1">{{ t('testCase.kanbanView.infoAttachment.fileSizeTip', { size: MAX_SIZE }) }}</div>
+        <div class="text-theme-sub-content mt-1">{{ t('testCase.kanbanView.infoAttachment.fileSizeTip', { size: MAX_FILE_MB }) }}</div>
       </template>
     </Spin>
   </div>

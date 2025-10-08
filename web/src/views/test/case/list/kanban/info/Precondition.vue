@@ -30,7 +30,10 @@ const openFlag = ref(true);
 const editFlag = ref(false);
 const content = ref<string>('');
 
-const toEdit = () => {
+/*
+  Enter precondition edit mode.
+*/
+const openEditPrecondition = () => {
   openFlag.value = true;
   editFlag.value = true;
 };
@@ -41,12 +44,18 @@ const cancel = () => {
 
 const descErr = ref(false);
 
+/*
+  Validate precondition length (<= 2000 characters).
+*/
 const validateDesc = () => {
   return descRichRef.value.getLength() <= 2000;
 };
 
-const ok = async () => {
-  if (validateDesc()) {
+/*
+  Validate and persist precondition, then notify parent to refresh.
+*/
+const savePrecondition = async () => {
+  if (!validateDesc()) {
     descErr.value = true;
     return;
   }
@@ -101,7 +110,7 @@ const caseId = computed(() => {
         v-show="!editFlag"
         type="link"
         class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-        @click="toEdit">
+        @click="openEditPrecondition">
         <Icon icon="icon-shuxie" class="text-3.5" />
       </Button>
     </div>
@@ -121,7 +130,7 @@ const caseId = computed(() => {
           <Button
             size="small"
             type="primary"
-            @click="ok">
+            @click="savePrecondition">
             {{ t('actions.confirm') }}
           </Button>
         </div>

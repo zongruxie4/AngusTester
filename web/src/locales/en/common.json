@@ -198,6 +198,7 @@
       "uncompletedBugCount": "Uncompleted bugs",
       "completedBugCount": "Completed bugs",
       "reviewCount": "Review",
+      "reviewFailCount": "Review failures",
       "completedReviewRate": "Completed Review Rate",
       "caseCount": "Cases",
       "apiTestCount": "API Test",

@@ -198,6 +198,7 @@
       "uncompletedBugCount": "未完成缺陷数",
       "completedBugCount": "完成缺陷数",
       "reviewCount": "评审数",
+      "reviewFailCount": "评审失败数",
       "completedReviewRate": "评审完成率",
       "caseCount": "用例数",
       "apiTestCount": "API测试数",

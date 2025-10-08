@@ -25,8 +25,8 @@ export type EnabledGroup = boolean;
 
 export type CaseEditState = {
   name: string;
-  planId: number;
-  moduleId: number;
+  planId?: number;
+  moduleId?: number;
   caseType: 'FUNC' | 'APIS'
   deadlineDate: string;
   description: string;
@@ -34,7 +34,7 @@ export type CaseEditState = {
   actualWorkload: string;
   precondition: string;
   priority: Priority;
-  testerId: number;
+  testerId?: number;
   developerId?: number,
   stepView: CaseStepView,
   steps: CaseTestStep [],
@@ -48,14 +48,14 @@ export type CaseEditState = {
 
 export type CaseInfoEditProps = {
   projectId: string;
-  userInfo: { id: number; };
+  userInfo: { id: number; fullName?: string };
   appInfo: { id: number; };
   dataSource: CaseDetail;
   canEdit: boolean;
 }
 
 export type GroupCaseList = {
-  id: string;
+  id: number;
   groupName: any;
   isOpen: boolean;
   checkAll: boolean;
@@ -63,5 +63,5 @@ export type GroupCaseList = {
   indeterminate?: boolean;
   method?: { value: string; message: string };
   endpoint?: string;
-  selectedRowKeys?: string[]
+  selectedRowKeys?: number[]
 }

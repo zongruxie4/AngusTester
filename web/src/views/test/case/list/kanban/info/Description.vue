@@ -31,13 +31,19 @@ const openFlag = ref(true);
 const editFlag = ref(false);
 const content = ref<string>('');
 
-const toEdit = () => {
+/*
+  Enter description edit mode and preload current content.
+*/
+const openEditDescription = () => {
   openFlag.value = true;
   editFlag.value = true;
   content.value = props.dataSource?.description || '';
 };
 
-const editorChange = (value: string) => {
+/*
+  Handle rich editor content change and sync to local state.
+*/
+const handleEditorChange = (value: string) => {
   content.value = value;
 };
 
@@ -53,7 +59,10 @@ const validateDesc = () => {
   return richRef.value.getLength() <= 2000;
 };
 
-const ok = async () => {
+/*
+  Validate and persist description, then notify parent to refresh.
+*/
+const saveDescription = async () => {
   if (!validateDesc()) {
     descrError.value = true;
     return;
@@ -95,7 +104,7 @@ onMounted(() => {
         v-show="!editFlag"
         type="link"
         class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-        @click="toEdit">
+        @click="openEditDescription">
         <Icon icon="icon-shuxie" class="text-3.5" />
       </Button>
     </div>
@@ -106,7 +115,7 @@ onMounted(() => {
           <RichEditor
             ref="richRef"
             :value="content"
-            @change="editorChange" />
+            @change="handleEditorChange" />
           <div v-show="descrError" class="text-status-error">
             {{ t('testCase.kanbanView.infoDescription.maxCharError') }}
           </div>
@@ -117,7 +126,7 @@ onMounted(() => {
           <Button
             size="small"
             type="primary"
-            @click="ok">
+            @click="saveDescription">
             {{ t('actions.confirm') }}
           </Button>
         </div>

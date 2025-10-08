@@ -80,18 +80,18 @@ export type CaseCount = {
 }
 
 export interface AssocCaseProps {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  caseId: string;
+  projectId: number;
+  userInfo: { id: number; };
+  appInfo: { id: number; };
+  caseId: number;
   dataSource: CaseInfo[];
 }
 
 export interface AssocTaskProps {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  caseId: string;
+  projectId: number;
+  userInfo: { id: number; };
+  appInfo: { id: number; };
+  caseId: number;
   dataSource: TaskInfo[];
   title: string;
   taskType: TaskType;

@@ -38,12 +38,10 @@ const { updateGuideStep } = useMutations(['updateGuideStep'], 'guideStore');
 const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
-// 生成的用例列表
 const caseList = ref<CaseEditState[]>([]);
 const generateLoading = ref(false);
 const question = ref();
 
-// TODO 字段顺序保持一致
 let defaultCaseItem:CaseEditState = {
   attachments: [],
   deadlineDate: '',

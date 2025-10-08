@@ -144,10 +144,8 @@ const tableColumns = computed(() => [
   }
 ].filter(Boolean));
 
-// 表格视图下 所有所选中的用例的Ids，table功能
 const selectedRowKeys = ref<string[]>([]);
 
-// 父表格SelectChange
 const onSelectChange = (_selectedRowKeys) => {
   selectedRowKeys.value = _selectedRowKeys;
   emits('update:selectedRowKeys', _selectedRowKeys.filter((id) => {

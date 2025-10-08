@@ -29,7 +29,7 @@ const emit = defineEmits<{
 const testerRef = ref();
 const testerEditFlag = ref(false);
 const testerMessage = ref<string>();
-const testerIdValue = ref<string>();
+const testerIdValue = ref<number>();
 
 const developerName = computed(() => props.dataSource?.developerName);
 const reviewerName = computed(() => props.dataSource?.reviewerName);
@@ -60,7 +60,10 @@ const userName = computed(() => {
   return props.userInfo?.fullName;
 });
 
-const toEditAssignee = () => {
+/*
+  Enter tester edit mode and autofocus the selector.
+*/
+const openEditAssignee = () => {
   testerIdValue.value = testerId.value;
   testerEditFlag.value = true;
 
@@ -73,32 +76,41 @@ const toEditAssignee = () => {
   });
 };
 
+/*
+  Assign current user as tester and commit immediately.
+*/
 const assignToMe = () => {
   testerIdValue.value = userId.value;
   testerMessage.value = userName.value;
-  testerBlur();
+  commitTesterIfChanged();
 };
 
-const testerChange = async (
+/*
+  Handle tester selection change; store display name for feedback.
+*/
+const handleTesterChange = async (
   _event: { target: { value: string; } },
   option: { id: string; fullName: string; }
 ) => {
   testerMessage.value = option.fullName;
 };
 
-const testerBlur = async () => {
+/*
+  Commit tester selection if changed; otherwise close edit mode.
+*/
+const commitTesterIfChanged = async () => {
   const value = testerIdValue.value;
   if (value === testerId.value) {
     testerEditFlag.value = false;
     return;
   }
 
-  loadingChange(true);
+  emitLoadingChange(true);
   const [error] = await funcCase.updateCase([{
     id: props.dataSource?.id,
     testerId: value
   }]);
-  loadingChange(false);
+  emitLoadingChange(false);
   if (error) {
     if (typeof testerRef.value?.focus === 'function') {
       testerRef.value?.focus();
@@ -107,22 +119,28 @@ const testerBlur = async () => {
   }
 
   testerEditFlag.value = false;
-  change();
+  refreshCaseDetail();
 };
 
-const loadingChange = (value:boolean) => {
+/*
+  Emit loading state to parent.
+*/
+const emitLoadingChange = (value:boolean) => {
   emit('loadingChange', value);
 };
 
-const change = async () => {
+/*
+  Refresh case detail and sync to parent.
+*/
+const refreshCaseDetail = async () => {
   const id = props.dataSource?.id;
   if (!id) {
     return;
   }
 
-  loadingChange(true);
+  emitLoadingChange(true);
   const [error, res] = await funcCase.getCaseDetail(id);
-  loadingChange(false);
+  emitLoadingChange(false);
   if (error) {
     return;
   }
@@ -154,7 +172,7 @@ const change = async () => {
           <Button
             type="link"
             class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="toEditAssignee">
+            @click="openEditAssignee">
             <Icon icon="icon-shuxie" class="text-3.5" />
           </Button>
           <Button
@@ -178,8 +196,8 @@ const change = async () => {
             :action="`${TESTER}/project/${props.projectId}/member/user`"
             :maxlength="80"
             class="edit-container"
-            @change="testerChange"
-            @blur="testerBlur" />
+            @change="handleTesterChange"
+            @blur="commitTesterIfChanged" />
         </AsyncComponent>
       </div>
 
