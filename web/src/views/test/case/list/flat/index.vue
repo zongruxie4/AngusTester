@@ -44,8 +44,8 @@ const showTotal = (_total: number) => {
 const cancelCheckAll = (_selectedRowKeys) => {
   emits('update:selectedRowKeys', _selectedRowKeys);
   props.caseList.forEach(item => {
-      item.checked = false;
-    });
+    item.checked = false;
+  });
 };
 
 /**
@@ -53,12 +53,12 @@ const cancelCheckAll = (_selectedRowKeys) => {
  */
 const handleCheckOne = (e, item) => {
   item.checked = e.target.checked;
-    const _selectedRowKeys = props.caseList.filter(item => item.checked).map(item => item.id);
-    if (_selectedRowKeys.length) {
-      emits('update:selectedRowKeys', _selectedRowKeys);
-    } else {
-      emits('update:selectedRowKeys', []);
-    }
+  const _selectedRowKeys = props.caseList.filter(item => item.checked).map(item => item.id);
+  if (_selectedRowKeys.length) {
+    emits('update:selectedRowKeys', _selectedRowKeys);
+  } else {
+    emits('update:selectedRowKeys', []);
+  }
 };
 
 /**
@@ -84,41 +84,41 @@ defineExpose({
     <div class="w-65 border-r border-theme-text-box justify-between h-full flex flex-col">
       <div class="text-3 leading-3 text-theme-sub-content overflow-y-auto flex-1">
         <div
-            v-for="item in props.caseList"
-            :key="item.id"
-            :class="{ 'bg-theme-tabs-selected': props.checkedCase?.id === item.id }"
-            class="item p-2 border-b cursor-pointer border-theme-text-box bg-theme-menu-hover flex"
-            @click="handleSelectCase(item)">
-            <Checkbox
-              class="-mt-0.75 mr-2"
-              :checked="item.checked"
-              :value="item.id"
-              @click.stop
-              @change="(e) => handleCheckOne(e, item)" />
+          v-for="item in props.caseList"
+          :key="item.id"
+          :class="{ 'bg-theme-tabs-selected': props.checkedCase?.id === item.id }"
+          class="item p-2 border-b cursor-pointer border-theme-text-box bg-theme-menu-hover flex"
+          @click="handleSelectCase(item)">
+          <Checkbox
+            class="-mt-0.75 mr-2"
+            :checked="item.checked"
+            :value="item.id"
+            @click.stop
+            @change="(e) => handleCheckOne(e, item)" />
 
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center text-theme-title">
-                <Icon
-                  icon="icon-gongnengyongli"
-                  class="mr-1.5 flex-none text-4" />
-                <div
-                  class="truncate flex-1 min-w-0"
-                  :title="item.name">
-                  {{ item.name }}
-                </div>
-              </div>
-
-              <div class="flex mt-2">
-                <div class="pl-5">{{ item.code }}</div>
-                <template v-if="item.reviewStatus?.value && item.reviewStatus?.value !== ReviewStatusEnum.PASSED">
-                  <ReviewStatus :value="item.reviewStatus" class="ml-5" />
-                </template>
-                <template v-else>
-                  <TestResult :value="item.testResult" class="ml-5" />
-                </template>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center text-theme-title">
+              <Icon
+                icon="icon-gongnengyongli"
+                class="mr-1.5 flex-none text-4" />
+              <div
+                class="truncate flex-1 min-w-0"
+                :title="item.name">
+                {{ item.name }}
               </div>
             </div>
+
+            <div class="flex mt-2">
+              <div class="pl-5">{{ item.code }}</div>
+              <template v-if="item.reviewStatus?.value && item.reviewStatus?.value !== ReviewStatusEnum.PASSED">
+                <ReviewStatus :value="item.reviewStatus" class="ml-5" />
+              </template>
+              <template v-else>
+                <TestResult :value="item.testResult" class="ml-5" />
+              </template>
+            </div>
           </div>
+        </div>
       </div>
 
       <template v-if="props.caseList.length">
