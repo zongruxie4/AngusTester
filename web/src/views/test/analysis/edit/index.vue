@@ -117,7 +117,7 @@ const loadAnalysisDetail = async (id) => {
     containsUserAnalysis,
     containsDataDetail,
     planId,
-    orgType,
+    orgType: orgType.value || orgType,
     orgId,
     timeRange: timeRange.value,
     datasource: datasource.value,
