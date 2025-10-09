@@ -275,6 +275,7 @@ defineExpose({
         </Button>
 
         <Dropdown
+          v-if="props.actionMenus[record.id]"
           :menuItems="props.actionMenus[record.id]"
           :permissions="caseActionAuth[record.id] || []"
           @click="handleClick($event.key, record)">

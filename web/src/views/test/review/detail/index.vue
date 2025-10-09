@@ -691,7 +691,7 @@ onUnmounted(() => {
 
                     <template v-if="column.key === 'caseName'">
                       <span class="inline-flex items-center">
-                        <span class="truncate">{{ record.caseInfo.name }}</span>
+                        <span class="truncate">{{ record.caseInfo?.name }}</span>
                         <span
                           v-if="record?.caseInfo?.overdue"
                           class="ml-3 inline-flex items-center justify-center text-red-700 text-xs font-medium rounded-full border border-red-200 bg-red-100 whitespace-nowrap text-center"

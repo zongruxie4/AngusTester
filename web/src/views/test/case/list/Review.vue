@@ -123,7 +123,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    :title="t('actions.review')"
+    :title="t('common.review')"
     :visible="props.visible"
     :width="600"
     :footer="null"
@@ -168,7 +168,7 @@ onMounted(() => {
           class="mt-1"
           :autoSize="{ minRows: 6, maxRows: 6}"
           :maxlength="200"
-          :placeholder="t('common.placeholder.inputReviewOpinion')" />
+          :placeholder="t('common.placeholders.inputReviewOpinion')" />
       </FormItem>
 
       <FormItem class="mt-5">
