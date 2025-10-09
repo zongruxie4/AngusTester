@@ -724,7 +724,7 @@ onMounted(() => {
             <FormItem
               :label="t('common.plan')"
               name="planId"
-              :rules="{ required: true, message: t('common.placeholders.selectPlan') }">
+              :rules="{ required: true, message: t('common.placeholders.selectOrSearchPlan') }">
               <Select
                 v-model:value="planIdValue"
                 :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
@@ -732,7 +732,7 @@ onMounted(() => {
                 :readonly="!!props.editCase"
                 showSearch
                 internal
-                :placeholder="t('common.placeholders.selectPlan')"
+                :placeholder="t('common.placeholders.selectOrSearchPlan')"
                 @change="(value: any, option: any) => planChange(value, option)">
                 <template #option="item">
                   <div class="flex items-center" :title="item.name">
@@ -755,7 +755,7 @@ onMounted(() => {
                 size="small"
                 showSearch
                 allowClear
-                :placeholder="t('testCase.addCaseModal.selectOrQueryModule')">
+                :placeholder="t('common.placeholders.selectOrSearchModule')">
                 <template #title="item">
                   <div class="flex items-center" :title="item.name">
                     <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
