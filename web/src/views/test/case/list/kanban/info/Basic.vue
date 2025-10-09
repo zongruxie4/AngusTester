@@ -261,7 +261,7 @@ const infoColumns = [
       dataIndex: 'id'
     },
     {
-      label: t('fcommon.code'),
+      label: t('common.code'),
       dataIndex: 'code'
     },
     {
@@ -297,7 +297,7 @@ const infoColumns = [
       dataIndex: 'testResult'
     },
     {
-      label: t('fcommon.evalWorkload'),
+      label: t('common.evalWorkload'),
       dataIndex: 'evalWorkload',
       customRender: ({ text }) => text || '--'
     },

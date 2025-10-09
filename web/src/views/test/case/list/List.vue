@@ -10,7 +10,7 @@ import { analysis, testCase, testPlan, modules } from '@/api/tester';
 import { travelTreeData } from '@/utils/utils';
 import { ProjectInfo } from '@/layout/types';
 
-import { CaseActionAuth, EnabledGroup } from './types';
+import { CaseActionAuth, EnabledModuleGroup } from './types';
 import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
 import { CaseCount, CaseViewMode, getActionAuth } from '@/views/test/case/types';
 import { CaseDetail } from '@/views/test/types';
@@ -119,16 +119,16 @@ const setParamsAndLoadData = () => {
 };
 
 // Module Grouping
-const enabledGroup = ref<EnabledGroup>(true);
+const enabledModuleGroup = ref<EnabledModuleGroup>(true);
 const moduleId = ref<number | undefined>();
 
 /**
  * Handle module grouping change
  * @param value - Grouping enabled state
  */
-const enabledGroupChange = (value: boolean) => {
-  enabledGroup.value = value;
-  if (enabledGroup.value) {
+const enabledModuleGroupChange = (value: boolean) => {
+  enabledModuleGroup.value = value;
+  if (enabledModuleGroup.value) {
     moduleId.value = -1;
   } else {
     moduleId.value = undefined;
@@ -1015,7 +1015,7 @@ defineExpose({
 <template>
   <div class="h-full text-3">
     <div class="flex h-full">
-      <div class="flex-shrink-0 h-full overflow-hidden pb-3 bg-gray-1 text-3" :class="{'w-65 mr-2': enabledGroup , 'w-0': !enabledGroup}">
+      <div class="flex-shrink-0 h-full overflow-hidden pb-3 bg-gray-1 text-3" :class="{'w-65 mr-2': enabledModuleGroup , 'w-0': !enabledModuleGroup}">
         <ModuleTree
           v-model:moduleId="moduleId"
           :projectId="String(projectInfo?.id || '')"
@@ -1030,7 +1030,7 @@ defineExpose({
           :userInfo="userInfo"
           :appInfo="appInfo"
           :notify="String(props.notify)"
-          :enabledGroup="enabledGroup"
+          :enabledGroup="enabledModuleGroup"
           :moduleId="moduleId"
           @change="handleSearchChange"
           @viewModeChange="handleViewModeChange"
@@ -1040,7 +1040,7 @@ defineExpose({
           @aiAdd="handleAiAdd"
           @export="handleExport"
           @import="handleImport"
-          @update:enabledGroup="enabledGroupChange"
+          @update:enabledGroup="enabledModuleGroupChange"
           @update:moduleId="(value) => moduleId = value" />
 
         <div

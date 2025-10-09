@@ -10,7 +10,7 @@ export interface VisibleProps {
 }
 
 export type BaseProps = {
-  id: string;
+  id: number;
   notify?: string;
 }
 
@@ -81,13 +81,13 @@ export type ActivityInfo = {
 }
 
 export type AttachmentInfo = {
-  id?: number;
+  id?: number | string;
   name: string;
   url: string;
 }
 
 export type TagInfo = {
-  id: string;
+  id: number;
   name: string;
 }
 

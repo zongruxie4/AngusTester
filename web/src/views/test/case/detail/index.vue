@@ -140,7 +140,7 @@ const fetchAdjacentCase = async (direction: 'before' | 'after') => {
 
   direction === 'before' ? pageNo.value-- : pageNo.value++;
 
-  const params = { pageNo: pageNo.value, pageSize: 1, enabledGroup: false, filters: filters.value, projectId: projectId.value };
+  const params = { pageNo: pageNo.value, pageSize: 1, enabledModuleGroup: false, filters: filters.value, projectId: projectId.value };
   const [listError, listRes] = await testCase.getCaseList({ infoScope: PageQuery.InfoScope.DETAIL, ...params });
   if (listError) {
     return;
@@ -622,7 +622,7 @@ defineExpose({
           :caseId="caseDetail?.id"
           :title="t('common.task')"
           :taskType="TaskType.TASK"
-          :tips="t('testCase.message.assocTaskTip')"
+          :tips="t('testCase.messages.assocTaskTip')"
           @editSuccess="onEditSuccess" />
       </TabPane>
 
@@ -642,7 +642,7 @@ defineExpose({
           :caseId="caseDetail?.id"
           :title="t('common.requirement')"
           :taskType="TaskType.REQUIREMENT"
-          :tips="t('testCase.message.assocRequirementTip')"
+          :tips="t('testCase.messages.assocRequirementTip')"
           @editSuccess="onEditSuccess" />
       </TabPane>
 
@@ -662,7 +662,7 @@ defineExpose({
           :caseId="caseDetail?.id"
           :title="t('common.story')"
           :taskType="TaskType.STORY"
-          :tips="t('testCase.message.assocStoryTip')"
+          :tips="t('testCase.messages.assocStoryTip')"
           @editSuccess="onEditSuccess" />
       </TabPane>
 
@@ -682,7 +682,7 @@ defineExpose({
           :caseId="caseDetail?.id"
           :title="t('common.bug')"
           :taskType="TaskType.BUG"
-          :tips="t('testCase.message.assocBugTip')"
+          :tips="t('testCase.messages.assocBugTip')"
           @editSuccess="onEditSuccess" />
       </TabPane>
 
@@ -702,7 +702,7 @@ defineExpose({
           :caseId="caseDetail?.id"
           :title="t('common.apiTest')"
           :taskType="TaskType.API_TEST"
-          :tips="t('testCase.message.assocApiTestTip')"
+          :tips="t('testCase.messages.assocApiTestTip')"
           @editSuccess="onEditSuccess" />
       </TabPane>
 
@@ -722,7 +722,7 @@ defineExpose({
           :caseId="caseDetail?.id"
           :title="t('common.scenarioTest')"
           :taskType="TaskType.SCENARIO_TEST"
-          :tips="t('testCase.message.assocScenarioTestTip')"
+          :tips="t('testCase.messages.assocScenarioTestTip')"
           @editSuccess="onEditSuccess" />
       </TabPane>
 

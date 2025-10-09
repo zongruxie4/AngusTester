@@ -11,14 +11,14 @@ export type PlanProps = {
 }
 
 export type CaseInfo = {
-  id: string;
+  id: number;
   name: string;
   code: string;
   description: string;
-  projectId: string;
-  planId: string;
+  projectId: number;
+  planId: number;
   planName: string;
-  moduleId: string;
+  moduleId: number;
   moduleName: string;
   softwareVersion: string;
   priority: EnumMessage<Priority>;
@@ -28,30 +28,30 @@ export type CaseInfo = {
   evalWorkload: number;
   actualWorkload: number;
   review: boolean;
-  reviewerId: string;
+  reviewerId: number;
   reviewerName: string;
   reviewDate: string;
   reviewStatus: EnumMessage<ReviewStatus>;
   reviewRemark: string;
-  reviewNum: string;
-  reviewFailNum: string;
-  testerId: string;
+  reviewNum: number;
+  reviewFailNum: number;
+  testerId: number;
   testerName: string;
-  developerId: string;
+  developerId: number;
   developerName: string;
-  testNum: string;
-  testFailNum: string;
+  testNum: number;
+  testFailNum: number;
   testResult: EnumMessage<CaseTestResult>;
   testRemark: string;
   testResultHandleDate: string;
   favourite: boolean;
   follow: boolean;
-  tenantId?: string;
-  createdBy: string;
+  tenantId?: number;
+  createdBy: number;
   createdByName: string;
   avatar: string;
   createdDate: string;
-  lastModifiedBy: string;
+  lastModifiedBy: number;
   lastModifiedDate: string;
   tags: TagInfo[];
 }

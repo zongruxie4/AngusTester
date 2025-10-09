@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Pagination } from 'ant-design-vue';
 import { Colon, Icon, ReviewStatus } from '@xcan-angus/vue-ui';
 import { ReviewStatus as ReviewStatusEnum, PageQuery } from '@xcan-angus/infra';
-import { EnabledGroup, GroupCaseList } from '../types';
+import { EnabledModuleGroup, GroupCaseList } from '../types';
 import { CaseDetail } from '@/views/test/types';
 
 import TestResult from '@/components/TestResult/index.vue';
@@ -15,7 +15,7 @@ interface Props {
   total: number;
   loading: boolean;
   checkedCase: CaseDetail;
-  enabledGroup: EnabledGroup;
+  enabledModuleGroup: EnabledModuleGroup;
   caseList: CaseDetail[];
   groupCaseList: GroupCaseList[];
 }
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   total: 0,
   loading: false,
   checkedCase: undefined,
-  enabledGroup: false,
+  enabledModuleGroup: false,
   caseList: () => [],
   groupCaseList: () => []
 });
@@ -40,7 +40,7 @@ const emits = defineEmits<{
 }>();
 
 const showTotal = (_total: number) => {
-  return props.enabledGroup
+  return props.enabledModuleGroup
     ? t('testCase.messages.totalGroups', { total: _total })
     : t('testCase.messages.totalItems', { total: _total });
 };
@@ -57,7 +57,7 @@ const handleListExpand = (item) => {
  */
 const cancelCheckAll = (_selectedRowKeys) => {
   emits('update:selectedRowKeys', _selectedRowKeys);
-  if (props.enabledGroup) {
+  if (props.enabledModuleGroup) {
     props.groupCaseList.forEach(childrenRecord => {
       childrenRecord.selectedRowKeys = _selectedRowKeys.includes(childrenRecord.id)
         ? childrenRecord.children.map(item => item.id)
@@ -90,7 +90,7 @@ const handleCheckAll = (e, item) => {
  * Select or deselect a single item; updates group state accordingly
  */
 const handleCheckOne = (e, groupItem, item) => {
-  if (props.enabledGroup) {
+  if (props.enabledModuleGroup) {
     if (e.target.checked) {
       if (!groupItem.selectedRowKeys.includes(item.id)) {
         groupItem.selectedRowKeys.push(item.id);
@@ -146,7 +146,7 @@ defineExpose({
   <div class="flex border-t border-theme-text-box overflow-auto">
     <div class="w-65 border-r border-theme-text-box justify-between h-full flex flex-col">
       <div class="text-3 leading-3 text-theme-sub-content overflow-y-auto flex-1">
-        <template v-if="props.enabledGroup">
+        <template v-if="props.enabledModuleGroup">
           <div v-for="groupCase in props.groupCaseList" :key="groupCase.id">
             <div
               class="item p-2 border-b cursor-pointer border-theme-text-box bg-theme-menu-hover flex justify-between items-center">

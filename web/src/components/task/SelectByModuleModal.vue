@@ -13,7 +13,7 @@ const ModuleTree = defineAsyncComponent(() => import('@/components/module/Module
 // Component Props and Emits
 interface Props {
   visible: boolean;
-  projectId: string;
+  projectId: number;
   action: string;
   title: string;
 }
@@ -36,8 +36,8 @@ const selectedTaskRows = ref([]);
 const allTaskData = ref<any[]>([]);
 const filteredTaskData = ref<any[]>([]);
 const isLoading = ref(false);
-const selectedModuleId = ref('');
-const searchKeywords = ref('');
+const selectedModuleId = ref(undefined);
+const searchKeywords = ref(undefined);
 
 /**
  * Row selection configuration for the task table.

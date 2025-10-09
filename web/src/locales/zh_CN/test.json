@@ -200,12 +200,12 @@
       "resetTestResultTip": "将用例更新为`待测试`，相关统计计数和状态会被清除。",
       "firstDataTip": "已经是第一条数据啦！",
       "lastDataTip": "已经是最后一条数据啦！",
-      "assocRequirementTip": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。",
-      "assocStoryTip": "追溯用户角度描述功能需求，方便理解问题产生的背景和影响范围。",
-      "assocBugTip": "追踪软件功能中的错误，确保及时修复，帮助识别和解决系统性问题。",
-      "assocApiTestTip": "建立与对应接口测试任务关联关系，方便追溯接口测试进展，确保接口正常工作。",
-      "assocScenarioTestTip": "建立与对应场景测试任务关联关系，方便了解真实场景中功能的有效性，确保解决方案的完整性。",
-      "assocTaskTip": "记录与当前用例相关联的开发或测试任务，帮助团队追踪测试任务。"
+      "assocRequirementTip": "将用例追溯到原始需求，便于理解产生背景与影响范围。",
+      "assocStoryTip": "将用例追溯到用户故事，便于从用户视角理解背景与影响范围。",
+      "assocBugTip": "追踪功能缺陷，确保及时修复，并帮助识别与解决系统性问题。",
+      "assocApiTestTip": "关联对应的接口测试任务，便于追踪测试进展并验证接口可用性。",
+      "assocScenarioTestTip": "关联对应的场景测试任务，便于评估真实场景下的功能有效性，确保方案完整性。",
+      "assocTaskTip": "关联与当前用例相关的开发/测试任务，便于团队统一跟踪。"
     }
   },
   "testCaseReview": {

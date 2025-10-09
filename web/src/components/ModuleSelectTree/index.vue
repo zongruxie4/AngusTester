@@ -13,7 +13,7 @@ import { travelTreeData } from '@/utils/utils';
  * Module item interface for tree display
  */
 type ModuleItem = {
-  id: string;
+  id: number;
   name: string;
   showName?: string;
   showTitle?: string;
@@ -23,13 +23,13 @@ type ModuleItem = {
  * Component props interface for module tree
  */
 type Props = {
-  projectId: string;
+  projectId: number;
   projectName: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  userInfo: { id: number; };
+  appInfo: { id: number; };
   notify: string;
   dataList: ModuleItem[];
-  moduleId: string;
+  moduleId: number;
   readonly: boolean;
 }
 
@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 
 // Emits
-const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value?: string):void}>();
+const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value?: number):void}>();
 
 // Async components
 const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
@@ -56,14 +56,14 @@ const { t } = useI18n();
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const isAdmin = computed(() => appContext.isAdmin());
 const currentUserInfo = ref(appContext.getUser());
-const moduleTreeData = ref<ModuleItem[]>([{ name: t('common.noModule'), id: '-1' }]);
+const moduleTreeData = ref<ModuleItem[]>([{ name: t('common.noModule'), id: -1 }]);
 
 // REACTIVE STATE
 const nameInputRef = ref();
 const isLoading = ref(false);
 const searchKeywords = ref();
-const currentEditId = ref<string>();
-const parentModuleId = ref<string>();
+const currentEditId = ref<number>();
+const parentModuleId = ref<number>();
 const isCreateModalVisible = ref(false);
 const isMoveModalVisible = ref(false);
 const activeModuleData = ref();
@@ -72,7 +72,7 @@ const activeModuleData = ref();
  * Handles module selection change
  * @param selectedKeys - Array of selected module keys
  */
-const handleModuleSelectionChange = (selectedKeys: string[]) => {
+const handleModuleSelectionChange = (selectedKeys: number[]) => {
   if (!selectedKeys.length) {
     return;
   }
@@ -120,7 +120,7 @@ const handleEditCancel = () => {
  * @param moduleId - ID of module being edited
  * @param event - Input event with new value
  */
-const handleModuleNameUpdate = async (moduleId: string, event: { target: { value: string } }) => {
+const handleModuleNameUpdate = async (moduleId: number, event: { target: { value: string } }) => {
   const newName = event.target.value;
   if (!newName) {
     return;
@@ -142,7 +142,7 @@ const handleModuleNameUpdate = async (moduleId: string, event: { target: { value
  * @param moduleId - ID of module being edited
  * @param event - Input event with new value
  */
-const handleModuleNameBlur = (moduleId: string, event: { target: { value: string } }) => {
+const handleModuleNameBlur = (moduleId: number, event: { target: { value: string } }) => {
   setTimeout(() => {
     if (currentEditId.value === moduleId) {
       handleModuleNameUpdate(moduleId, event);
@@ -194,7 +194,7 @@ const handleModuleMoveUp = async (moduleRecord: any) => {
     }
     moveParams = {
       id,
-      pid: targetParent.pid || '-1',
+      pid: targetParent.pid || -1,
       sequence: (+targetParent.sequence) - 1
     };
   } else {
@@ -305,8 +305,8 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: t('common.noModule'), id: '-1' }, ...travelTreeData(data || [])];
-  if (props.moduleId && searchKeywords.value && !moduleTreeData.value.find(item => item.id === String(props.moduleId))) {
+  moduleTreeData.value = [{ name: t('common.noModule'), id: -1 }, ...travelTreeData(data || [])];
+  if (props.moduleId && searchKeywords.value && !moduleTreeData.value.find(item => item.id === props.moduleId)) {
     emits('update:moduleId', undefined);
   }
 };
@@ -345,9 +345,9 @@ defineExpose({
     </div>
 
     <div
-      :class="{'active': props.moduleId === ''}"
+      :class="{'active': props.moduleId === undefined}"
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
-      @click="handleModuleSelectionChange([''])">
+      @click="handleModuleSelectionChange([])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
       <span class="flex-1">{{ t('common.all') }}</span>
     </div>

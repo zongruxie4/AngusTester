@@ -21,7 +21,7 @@ export type ActionMenuItem = {
   tip?: string;
 }
 
-export type EnabledGroup = boolean;
+export type EnabledModuleGroup = boolean;
 
 export type CaseEditState = {
   name: string;
