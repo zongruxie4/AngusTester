@@ -547,10 +547,10 @@ const refreshRecycleBin = inject('refreshRecycleBin', (_key: 'useCase') => { });
 const handleDelete = async (rowData?: CaseDetail) => {
   modal.confirm({
     centered: true,
-    title: t('testCase.mainView.deleteCase'),
+    title: t('actions.delete'),
     content: rowData
-      ? t('testCase.mainView.confirmDeleteCase', { name: rowData.name })
-      : t('testCase.mainView.confirmDeleteSelectedCases'),
+      ? t('actions.tips.confirmDelete', { name: rowData.name })
+      : t('actions.tips.confirmDataDelete'),
     async onOk () {
       await delCase(rowData);
     }
@@ -599,7 +599,7 @@ const handleResetTestResults = async (rowData: CaseDetail) => {
     updateLoading(false);
     return;
   }
-  notification.success(t('testCase.mainView.resetTestResultSuccess'));
+  notification.success(t('testCase.messages.resetTestResultSuccess'));
   refreshChange();
 };
 
@@ -623,7 +623,7 @@ const handleReTest = async (rowData: CaseDetail) => {
     updateLoading(false);
     return;
   }
-  notification.success(t('testCase.mainView.resetTestStatusSuccess'));
+  notification.success(t('testCase.messages.resetTestStatusSuccess'));
   refreshChange();
 };
 
@@ -747,7 +747,7 @@ const handleSetResultCanceled = async (value) => {
   if (error) {
     return;
   }
-  notification.success(t('testCase.mainView.cancelSuccess'));
+  notification.success(t('actions.tips.cancelSuccess'));
   refreshChange();
 };
 
@@ -841,8 +841,8 @@ const handleFavourite = async (rowData: CaseDetail) => {
     return;
   }
   notification.success(rowData.favourite
-    ? t('testCase.mainView.cancelFavouriteSuccess')
-    : t('testCase.mainView.favouriteSuccess'));
+    ? t('actions.tips.cancelFavouriteSuccess')
+    : t('actions.tips.favouriteSuccess'));
   rowData.favourite = !rowData.favourite;
   emits('updateFollowFavourite', 'addFavourite');
 };
@@ -855,8 +855,8 @@ const handleFollow = async (rowData: CaseDetail) => {
     return;
   }
   notification.success(rowData.follow
-    ? t('testCase.mainView.cancelFollowSuccess')
-    : t('testCase.mainView.followSuccess'));
+    ? t('actions.tips.cancelFollowSuccess')
+    : t('actions.tips.followSuccess'));
   rowData.follow = !rowData.follow;
   emits('updateFollowFavourite', 'addFollow');
 };

@@ -201,7 +201,7 @@ onMounted(() => {
               type="link"
               class="flex items-center h-auto leading-4.5 p-0">
               <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
-              <div class="flex-shrink-0 text-text-link ml-1">{{ t('testCase.kanbanView.infoAttachment.continueUpload') }}</div>
+              <div class="flex-shrink-0 text-text-link ml-1">{{ t('actions.continueUpload') }}</div>
             </Button>
           </Upload>
         </div>

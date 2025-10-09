@@ -104,7 +104,7 @@ onMounted(() => {
   <div class="mt-4">
     <div class="flex items-center text-theme-title mb-1.75">
       <span class="font-semibold">
-        {{ t('testCase.kanbanView.testSteps') }}
+        {{ t('common.testSteps') }}
       </span>
 
       <Button

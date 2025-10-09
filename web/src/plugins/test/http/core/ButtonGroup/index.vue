@@ -43,7 +43,7 @@ const MENUITEMS:readonly ButtonGroupMenuItem[] = [
   { name: t('actions.cancelFavourite'), icon: 'icon-quxiaoshoucang', key: 'cancelFavourite' },
   { name: t('actions.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
   { name: t('httpPlugin.actions.createExecution'), icon: 'icon-tiaoshi', key: 'test' },
-  { name: t('common.debug'), icon: 'icon-tiaoshi', key: 'debug' }
+  { name: t('actions.debug'), icon: 'icon-tiaoshi', key: 'debug' }
 ];
 
 const SAVE_ITEM = { name: t('actions.save'), icon: 'icon-baocun', key: 'save' };

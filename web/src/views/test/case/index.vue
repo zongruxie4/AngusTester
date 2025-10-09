@@ -215,8 +215,8 @@ const handleFavourite = async (caseData: CaseDetail) => {
     return;
   }
   notification.success(caseData.favourite
-    ? t('testCase.cancelFavouriteSuccess')
-    : t('testCase.favouriteSuccess'));
+    ? t('actions.tips.cancelFavouriteSuccess')
+    : t('actions.tips.favouriteSuccess'));
   caseData.favourite = !caseData.favourite;
   updateFollowFavourite('addFavourite');
 };
@@ -243,8 +243,8 @@ const handleFollow = async (caseData: CaseDetail) => {
   }
 
   notification.success(caseData.follow
-    ? t('testCase.cancelFollowSuccess')
-    : t('testCase.followSuccess'));
+    ? t('actions.tips.cancelFollowSuccess')
+    : t('actions.tips.followSuccess'));
   caseData.follow = !caseData.follow;
   updateFollowFavourite('addFollow');
 };
@@ -337,7 +337,7 @@ const handleSetResultBlocked = async (caseData) => {
   if (error) {
     return;
   }
-  notification.success(t('testCase.caseSetBlocked'));
+  notification.success(t('testCase.messages.caseSetBlocked'));
   await getCaseInfo();
 };
 
@@ -356,7 +356,7 @@ const handleSetResultCanceled = async (caseData) => {
   if (error) {
     return;
   }
-  notification.success(t('testCase.cancelSuccess'));
+  notification.success(t('actions.tips.cancelSuccess'));
   await getCaseInfo();
 };
 
@@ -375,7 +375,7 @@ const handleResetTestResults = async (caseData: CaseDetail) => {
     return;
   }
 
-  notification.success(t('testCase.resetTestResultSuccess'));
+  notification.success(t('testCase.messages.resetTestResultSuccess'));
   await getCaseInfo();
 };
 
@@ -393,7 +393,7 @@ const handleResetReviewResult = async (caseData: CaseDetail) => {
   if (error) {
     return;
   }
-  notification.success(t('testCase.resetReviewSuccess'));
+  notification.success(t('testCase.messages.resetReviewSuccess'));
   await getCaseInfo();
 };
 
@@ -409,7 +409,7 @@ const handleReTest = async (caseData: CaseDetail) => {
   if (error) {
     return;
   }
-  notification.success(t('testCase.resetTestStatusSuccess'));
+  notification.success(t('testCase.messages.resetTestStatusSuccess'));
   await getCaseInfo();
 };
 
@@ -425,10 +425,10 @@ const handleDeleteCase = async (caseData?: CaseDetail) => {
   }
   modal.confirm({
     centered: true,
-    title: t('testCase.deleteCase'),
+    title: t('actions.delete'),
     content: caseData
-      ? t('testCase.confirmDeleteCase', { name: caseData.name })
-      : t('testCase.confirmDeleteSelectedCases'),
+      ? t('actions.tips.confirmDelete', { name: caseData.name })
+      : t('actions.tips.confirmDataDelete'),
     async onOk () {
       await deleteCase(caseData);
     }
@@ -444,7 +444,7 @@ const deleteCase = async (caseData?: CaseDetail) => {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await funcCase.deleteCase(caseData.id);
+  const [error] = await funcCase.deleteCase([caseData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -647,7 +647,7 @@ defineExpose({
                 @onClick="(type, value) => handleDetailAction(type, value, record)" />
             </Spin>
 
-            <Tooltip placement="topLeft" :title="t('testCase.backToTop')">
+            <Tooltip placement="topLeft" :title="t('testCase.actions.backToTop')">
               <div
                 v-if="showAnchor"
                 class="absolute right-2 bottom-2 z-999 h-6 w-6  cursor-pointer border border-border-divider rounded-full text-center leading-5"

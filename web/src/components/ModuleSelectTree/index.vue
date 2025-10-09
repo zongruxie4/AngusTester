@@ -105,9 +105,6 @@ const handleModuleCreationComplete = () => {
  * @param moduleData - Module data to edit
  */
 const handleModuleEdit = (moduleData: ModuleItem) => {
-  if (props.disabled) {
-    return;
-  }
   currentEditId.value = moduleData.id;
 };
 

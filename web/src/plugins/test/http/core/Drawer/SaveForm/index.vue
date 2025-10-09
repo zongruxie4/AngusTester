@@ -123,7 +123,7 @@ defineExpose({ isValid, getData });
     <div class="space-y-0.5">
       <div class="flex items-center">
         <IconRequired />
-        <span>{{ t('httpPlugin.drawerItem.name') }}</span>
+        <span>{{ t('common.name') }}</span>
       </div>
       <Input
         :maxlength="200"

@@ -1123,7 +1123,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('testCase.detail.caseDetail.precondition') }}</span>
+            <span>{{ t('common.precondition') }}</span>
             <template v-if="isEditPrecondition">
               <Button
                 class="font-normal text-theme-special"
@@ -1175,7 +1175,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('testCase.detail.caseDetail.testSteps') }}</span>
+            <span>{{ t('common.testSteps') }}</span>
             <template v-if="isEditSteps">
               <Button
                 class="font-normal text-theme-special"

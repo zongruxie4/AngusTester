@@ -750,7 +750,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
  * Builds parameters for statistics API calls
  */
 const statisticsParameters = computed(() => {
-  const parameters = { };
+  const parameters: any = { };
   if (proTypeShowMap.value.showBackLog) {
     parameters.backlog = false;
   }
