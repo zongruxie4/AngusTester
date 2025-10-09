@@ -33,13 +33,14 @@ export type ReviewEditState = {
   name: string;
   ownerId: number;
   participantIds: number[];
-  attachments?: Attachment[];
+  attachments?: AttachmentInfo[];
   description?: string;
 }
 
 export type ReviewCaseInfo = {
   id: number;
   name: string;
+  code: string;
   projectId: number;
   planId: number;
   planName: string;
@@ -73,4 +74,5 @@ export type ReviewCaseDetail = {
   createdBy: number;
   createdByName: string;
   createdDate: string;
+  caseInfo?: CaseDetail;
 }

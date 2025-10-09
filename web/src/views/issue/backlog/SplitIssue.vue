@@ -10,7 +10,7 @@ import { duration, TESTER, utils } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { ai } from '@/api/gm';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { TaskType } from '@/enums/enums';
 
 import { TIME_FORMAT } from '@/utils/constant';
@@ -266,7 +266,7 @@ const confirmAndCreateSubTasks = async () => {
       }
     }
 
-    const [error] = await task.addTask(taskParams);
+    const [error] = await issue.addTask(taskParams);
     if (error) {
       errorCount++;
     }

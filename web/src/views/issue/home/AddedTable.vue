@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, IconTask, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { http, PageQuery, ProjectPageQuery, utils } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { TaskStatus } from '@/enums/enums';
 
 import { getCurrentPage } from '@/utils/utils';
@@ -166,7 +166,7 @@ const buildQueryParams = () => {
 const loadTaskData = async () => {
   const queryParams = buildQueryParams();
   isLoading.value = true;
-  const [error, response] = await task.getTaskList(queryParams);
+  const [error, response] = await issue.getTaskList(queryParams);
   isLoading.value = false;
   isDataLoaded.value = true;
 
@@ -206,7 +206,7 @@ const handleTaskDeletion = (taskData: TaskDetail) => {
   modal.confirm({
     content: t('actions.tips.confirmDelete', { name: taskData.name }),
     async onOk () {
-      const [error] = await task.deleteTask([taskData.id]);
+      const [error] = await issue.deleteTask([taskData.id]);
       if (error) {
         return;
       }
@@ -226,7 +226,7 @@ const handleTaskDeletion = (taskData: TaskDetail) => {
  */
 const handleUnfavoriteTask = async (taskData: TaskDetail) => {
   isLoading.value = true;
-  const [error] = await task.cancelFavouriteTask(taskData.id);
+  const [error] = await issue.cancelFavouriteTask(taskData.id);
   isLoading.value = false;
 
   if (error) {
@@ -246,7 +246,7 @@ const handleUnfavoriteTask = async (taskData: TaskDetail) => {
  */
 const handleUnfollowTask = async (taskData: TaskDetail) => {
   isLoading.value = true;
-  const [error] = await task.cancelFollowTask(taskData.id);
+  const [error] = await issue.cancelFollowTask(taskData.id);
   isLoading.value = false;
 
   if (error) {

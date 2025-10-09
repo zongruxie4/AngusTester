@@ -2,7 +2,7 @@
 import { ref, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Grid, Icon, SelectUser } from '@xcan-angus/vue-ui';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import { Button } from 'ant-design-vue';
 const { t } = useI18n();
 
@@ -64,7 +64,7 @@ const saveTester = async () => {
     return;
   }
   saveTesterLoading.value = true;
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props?.caseInfo?.id,
     testerId: testerIcContent.value
   }]);
@@ -103,7 +103,7 @@ const saveDeveloper = async () => {
     return;
   }
   saveDeveloperLoading.value = true;
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props?.caseInfo?.id,
     developerId: developerIcContent.value
   }]);

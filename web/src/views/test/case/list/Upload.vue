@@ -6,7 +6,7 @@ import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vu
 import { TESTER, enumOptionUtils } from '@xcan-angus/infra';
 import { StrategyWhenDuplicated } from '@/enums/enums';
 import { formatBytes } from '@/utils/common';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -103,7 +103,7 @@ const ok = () => {
         formParams.append('file', formData.value.file);
       }
       loading.value = true;
-      const [error] = await funcCase.importCase(formParams);
+      const [error] = await testCase.importCase(formParams);
       loading.value = false;
       if (error) {
         return;

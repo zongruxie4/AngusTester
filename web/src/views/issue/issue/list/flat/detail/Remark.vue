@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Scroll } from '@xcan-angus/vue-ui';
 import { PageQuery, TESTER, utils } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { Remark } from '@/views/issue/issue/types';
 import { BaseProps } from '@/types/types';
@@ -84,7 +84,7 @@ const handleEditorContentChange = (newContent: string) => {
  * @param remarkId - The ID of the remark to delete
  */
 const deleteRemark = async (remarkId: string) => {
-  const [error] = await task.deleteTaskRemark(remarkId);
+  const [error] = await issue.deleteTaskRemark(remarkId);
   if (error) {
     return;
   }
@@ -161,7 +161,7 @@ const submitRemark = async () => {
   isValidationError.value = false;
 
   const requestParams = { taskId: props.id, content: currentRemarkContent.value };
-  const [error] = await task.addTaskRemark(requestParams);
+  const [error] = await issue.addTaskRemark(requestParams);
   if (error) {
     return;
   }

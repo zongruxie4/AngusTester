@@ -6,7 +6,7 @@ import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { appContext, download, enumUtils, TESTER, toClipboard, utils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { TaskSprintPermission } from '@/enums/enums';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { SprintInfo } from '../types';
 import { DATE_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { BasicProps } from '@/types/types';
@@ -110,7 +110,7 @@ const loadUserPermissions = async (id: string) => {
   }
   const params = { admin: true };
   isLoading.value = true;
-  const [error, res] = await task.getCurrentUserSprintAuth(id, params);
+  const [error, res] = await issue.getCurrentUserSprintAuth(id, params);
   isLoading.value = false;
   if (error) {
     return;
@@ -133,7 +133,7 @@ const loadUserPermissions = async (id: string) => {
  */
 const loadSprintData = async (id: string) => {
   isLoading.value = true;
-  const [error, res] = await task.getSprintDetail(id);
+  const [error, res] = await issue.getSprintDetail(id);
   isLoading.value = false;
   if (error) {
     return;

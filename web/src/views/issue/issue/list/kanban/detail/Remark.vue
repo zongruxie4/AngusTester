@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { Remark } from '@/views/issue/issue/types';
 import { BaseProps } from '@/types/types';
@@ -57,7 +57,7 @@ const handleScrollChange = (data: Remark[]) => {
  * Delete a remark by id then update local list
  */
 const handleDeleteRemark = async (id: string) => {
-  const [error] = await task.deleteTaskRemark(id);
+  const [error] = await issue.deleteTaskRemark(id);
   if (error) {
     return;
   }
@@ -82,7 +82,7 @@ const handleSubmitRemark = async () => {
   hasValidationError.value = false;
 
   const req = { taskId: props.id, content: currentContent.value } as const;
-  const [error] = await task.addTaskRemark(req);
+  const [error] = await issue.addTaskRemark(req);
   if (error) {
     return;
   }

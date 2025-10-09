@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, Image, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { appContext, download, TESTER, toClipboard, enumUtils } from '@xcan-angus/infra';
-import { funcPlan } from '@/api/tester';
+import { testPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { FuncPlanPermission } from '@/enums/enums';
@@ -76,7 +76,7 @@ const loadUserPermissions = async (planId: string) => {
     admin: true
   };
   loading.value = true;
-  const [error, res] = await funcPlan.getCurrentAuthByPlanId(planId, params);
+  const [error, res] = await testPlan.getCurrentAuthByPlanId(planId, params);
   loading.value = false;
   if (error) {
     return;
@@ -97,7 +97,7 @@ const loadPlanDetailData = async (planId: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await funcPlan.getPlanDetail(planId);
+  const [error, res] = await testPlan.getPlanDetail(planId);
   loading.value = false;
   if (error) {
     return;

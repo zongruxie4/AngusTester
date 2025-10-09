@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { Button, Upload, UploadFile } from 'ant-design-vue';
 import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { upload, utils } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskDetail } from '@/views/issue/types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
@@ -123,7 +123,7 @@ const updateTaskAttachments = async (attachmentData: {name: string; url: string}
     attachments: attachmentData
   };
   isUploading.value = true;
-  const [error] = await task.editTaskAttachment(currentTaskId.value, updateParams);
+  const [error] = await issue.editTaskAttachment(currentTaskId.value, updateParams);
   isUploading.value = false;
   if (error) {
     return;

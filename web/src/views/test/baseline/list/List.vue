@@ -3,7 +3,7 @@ import { defineAsyncComponent, inject } from 'vue';
 import { Button, Pagination } from 'ant-design-vue';
 import { Icon, modal, NoData, notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { func } from '@/api/tester';
+import { test } from '@/api/tester';
 import { BaselineDetail } from '@/views/test/baseline/types';
 
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
@@ -71,7 +71,7 @@ const handleBaselineDeletion = async (baselineData: BaselineDetail) => {
     content: t('testCaseBaseline.messages.confirmDeleteBaseline', { name: baselineData.name }),
     async onOk () {
       const id = baselineData.id;
-      const [error] = await func.deleteBaseline([id]);
+      const [error] = await test.deleteBaseline([id]);
       if (error) {
         return;
       }

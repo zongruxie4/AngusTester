@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AsyncComponent, Icon, Input, notification } from '@xcan-angus/vue-ui';
+import { Icon, Input } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
 import { modules } from '@/api/tester';
 
 // Type Definitions
 type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-  moduleId: string;
+  projectId: number;
   projectName: string;
+  userInfo: { id: number; };
+  appInfo: { id: number; };
+  notify: string;
+  moduleId: number;
 }
 
 // Props and Context
@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined,
-  moduleId: '',
+  moduleId: undefined,
   disabled: false
 });
 
@@ -119,7 +119,7 @@ defineExpose({
 <template>
   <div class="h-full flex flex-col">
     <div
-      :class="{'active': props.moduleId === ''}"
+      :class="{'active': props.moduleId === undefined}"
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleModuleSelectionChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />

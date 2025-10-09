@@ -433,7 +433,7 @@ const selectScriptOk = (data: ScenarioConfig['script']) => {
       }
 
       if (!Object.prototype.hasOwnProperty.call(scenarioConfigData.value.script, 'task')) {
-        scenarioConfigData.value.script.task = {
+        scenarioConfigData.value.script.issue = {
           pipelines
         };
       } else {
@@ -905,7 +905,7 @@ const setScenarioConfigData = (data: ScenarioInfo) => {
     };
 
     if (script.task) {
-      scenarioConfigData.value.script.task = {
+      scenarioConfigData.value.script.issue = {
         ...script.task,
         arguments: _arguments,
         pipelines: []

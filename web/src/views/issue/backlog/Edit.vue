@@ -10,7 +10,7 @@ import {
 import { EvalWorkloadMethod, localStore, Priority, TESTER, upload } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { modules, task } from '@/api/tester';
+import { modules, issue } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
 import { TaskEditState } from '@/views/issue/issue/list/types';
@@ -421,7 +421,7 @@ const submitForm = async (shouldContinue: boolean) => {
 const handleTaskCreation = async (shouldContinue = false) => {
   isLoading.value = true;
   const params = buildFormParameters();
-  const [error, res] = await task.addTask(params);
+  const [error, res] = await issue.addTask(params);
   isLoading.value = false;
   if (error) {
     return;
@@ -442,7 +442,7 @@ const handleTaskCreation = async (shouldContinue = false) => {
 const handleTaskUpdate = async () => {
   isLoading.value = true;
   const params = buildFormParameters();
-  const [error] = await task.putTask(props.taskId!, params);
+  const [error] = await issue.putTask(props.taskId!, params);
   isLoading.value = false;
   if (error) {
     return;
@@ -470,7 +470,7 @@ const cancelModal = () => {
 const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   isLoading.value = true;
   console.log('🔍 Fetching task details for taskId:', props.taskId);
-  const [error, res] = await task.getTaskDetail(props.taskId!);
+  const [error, res] = await issue.getTaskDetail(props.taskId!);
   isLoading.value = false;
 
   if (error) {

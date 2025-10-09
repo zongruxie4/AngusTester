@@ -1,4 +1,4 @@
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 
 export default {
   namespaced: true,
@@ -20,7 +20,7 @@ export default {
   },
   actions: {
     async loadTaskInfo ({ commit }, id:string):Promise<void> {
-      const [error, { data = {} }] = await task.getTaskDetail(id);
+      const [error, { data = {} }] = await issue.getTaskDetail(id);
       if (error) {
         return;
       }

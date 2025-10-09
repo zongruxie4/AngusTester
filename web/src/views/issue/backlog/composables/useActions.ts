@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n';
 import { notification, modal as modalV } from '@xcan-angus/vue-ui';
 import { cloneDeep } from 'lodash-es';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { TaskType } from '@/enums/enums';
 import { TaskDetail } from '../../types';
 import {
@@ -58,7 +58,7 @@ export function useTaskActions (
     };
 
     loading.isLoading = true;
-    const [error, res] = await task.addTask(params);
+    const [error, res] = await issue.addTask(params);
     loading.isLoading = false;
 
     if (error) {
@@ -91,7 +91,7 @@ export function useTaskActions (
    */
   const loadTaskInfoById = async (id: string): Promise<TaskDetail | undefined> => {
     loading.loadingTaskIds.add(id);
-    const [error, res] = await task.getTaskDetail(id);
+    const [error, res] = await issue.getTaskDetail(id);
     loading.loadingTaskIds.delete(id);
 
     if (error) {
@@ -121,7 +121,7 @@ export function useTaskActions (
     };
 
     loading.isLoading = true;
-    await task.moveTask(params);
+    await issue.moveTask(params);
     loading.isLoading = false;
 
     sprintData.sprintTasksMap[toId].push(taskData);
@@ -152,7 +152,7 @@ export function useTaskActions (
     };
 
     loading.isLoading = true;
-    await task.moveTask(params);
+    await issue.moveTask(params);
     loading.isLoading = false;
 
     sprintData.sprintTasksMap[toId].push(taskData);
@@ -183,7 +183,7 @@ export function useTaskActions (
     };
 
     loading.isLoading = true;
-    await task.moveTask(params);
+    await issue.moveTask(params);
     loading.isLoading = false;
 
     backlogData.backlogTotalCount += 1;
@@ -204,7 +204,7 @@ export function useTaskActions (
     };
 
     loading.isLoading = true;
-    await task.moveTask(params);
+    await issue.moveTask(params);
     loading.isLoading = false;
 
     const fromId = event.from.id;
@@ -230,7 +230,7 @@ export function useTaskActions (
     };
 
     loading.isLoading = true;
-    await task.moveTask(params);
+    await issue.moveTask(params);
     loading.isLoading = false;
 
     const fromId = event.from.id;
@@ -247,7 +247,7 @@ export function useTaskActions (
       content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         const id = data.id;
-        const [error] = await task.deleteTask([id]);
+        const [error] = await issue.deleteTask([id]);
         if (error) {
           return;
         }
@@ -291,7 +291,7 @@ export function useTaskActions (
     const id = data.id;
     const newName = taskNameEditing.editingTaskNameMap[id];
     // loading.isLoading = true;
-    const [error] = await task.editTaskName(id, newName);
+    const [error] = await issue.editTaskName(id, newName);
     // loading.isLoading = false;
 
     if (error) {

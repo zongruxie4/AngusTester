@@ -14,7 +14,7 @@ import { useI18n } from 'vue-i18n';
 import { CaseEditState } from '@/views/test/case/list/types';
 import { CaseStepView, SoftwareVersionStatus } from '@/enums/enums';
 import { VisibleProps } from '@/types/types';
-import { funcCase, project, modules } from '@/api/tester';
+import { testCase, project, modules } from '@/api/tester';
 import { ai } from '@/api/gm';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
@@ -237,7 +237,7 @@ const loading = ref(false);
 const addSave = async () => {
   const params = getParams();
   loading.value = true;
-  const [error] = await funcCase.addCase([...params]);
+  const [error] = await testCase.addCase([...params]);
   loading.value = false;
   if (error) {
     return;

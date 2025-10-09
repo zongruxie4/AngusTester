@@ -5,7 +5,7 @@ import { Button, Form, FormItem } from 'ant-design-vue';
 import { EnumMessage, enumUtils, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { CaseTestResult } from '@/enums/enums';
 import type { Rule } from 'ant-design-vue/es/form';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
@@ -81,7 +81,7 @@ const onFinish = async (addBug = false) => {
         }
       ];
   loading.value = true;
-  const [error] = await funcCase.putCaseResult(params);
+  const [error] = await testCase.putCaseResult(params);
   loading.value = false;
   if (error) {
     return;

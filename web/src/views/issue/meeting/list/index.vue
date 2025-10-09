@@ -3,7 +3,7 @@ import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ProjectPageQuery } from '@xcan-angus/infra';
 import { modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { MeetingInfo } from '../types';
 import { BasicProps } from '@/types/types';
 
@@ -75,7 +75,7 @@ const fetchMeetingList = async () => {
     ...searchParameters.value
   };
 
-  const [error, response] = await task.getMeetingList(queryParams);
+  const [error, response] = await issue.getMeetingList(queryParams);
   isDataLoaded.value = true;
   isLoading.value = false;
 
@@ -104,7 +104,7 @@ const handleMeetingDeletion = async (meetingData: MeetingInfo) => {
     content: t('actions.tips.confirmDelete', { name: meetingData.subject }),
     async onOk () {
       const meetingId = meetingData.id;
-      const [error] = await task.deleteMeeting(meetingId);
+      const [error] = await issue.deleteMeeting(meetingId);
       if (error) {
         return;
       }

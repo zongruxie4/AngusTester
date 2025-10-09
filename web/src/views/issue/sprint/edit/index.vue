@@ -11,7 +11,7 @@ import {
 import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';
 import { TaskSprintPermission, TaskSprintStatus } from '@/enums/enums';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { EditFormState, SprintInfo } from '../types';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { BasicProps } from '@/types/types';
@@ -169,7 +169,7 @@ const handleSprintUpdate = async () => {
   const params = prepareFormParams();
 
   isLoading.value = true;
-  const [error] = await task.putSprint(params);
+  const [error] = await issue.putSprint(params);
   isLoading.value = false;
   if (error) {
     return;
@@ -194,7 +194,7 @@ const handleSprintCreation = async () => {
   const params = prepareFormParams();
 
   isLoading.value = true;
-  const [error, response] = await task.addSprint(params);
+  const [error, response] = await issue.addSprint(params);
   isLoading.value = false;
   if (error) {
     return;
@@ -264,7 +264,7 @@ const startSprint = async () => {
   }
 
   isLoading.value = true;
-  const [error] = await task.startSprint(sprintId);
+  const [error] = await issue.startSprint(sprintId);
   isLoading.value = false;
 
   if (error) {
@@ -287,7 +287,7 @@ const completeSprint = async () => {
   }
 
   isLoading.value = true;
-  const [error] = await task.endSprint(sprintId);
+  const [error] = await issue.endSprint(sprintId);
   isLoading.value = false;
 
   if (error) {
@@ -314,7 +314,7 @@ const deleteSprint = async () => {
     async onOk () {
       const sprintId = sprintData.id;
       isLoading.value = true;
-      const [error] = await task.deleteSprint(sprintId);
+      const [error] = await issue.deleteSprint(sprintId);
       isLoading.value = false;
       if (error) {
         return;
@@ -361,7 +361,7 @@ const cloneSprint = async () => {
   }
 
   isLoading.value = true;
-  const [error] = await task.cloneSprint(sprintId);
+  const [error] = await issue.cloneSprint(sprintId);
   isLoading.value = false;
   if (error) {
     return;
@@ -435,7 +435,7 @@ const loadUserPermissions = async (sprintId: string) => {
   };
 
   isLoading.value = true;
-  const [error, response] = await task.getCurrentUserSprintAuth(sprintId, authParams);
+  const [error, response] = await issue.getCurrentUserSprintAuth(sprintId, authParams);
   isLoading.value = false;
   if (error) {
     return;
@@ -465,7 +465,7 @@ const loadUserPermissions = async (sprintId: string) => {
  */
 const loadSprintData = async (sprintId: string) => {
   isLoading.value = true;
-  const [error, response] = await task.getSprintDetail(sprintId);
+  const [error, response] = await issue.getSprintDetail(sprintId);
   isLoading.value = false;
   if (error) {
     return;

@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import type { TaskTrashItem } from '../types';
 
@@ -24,7 +24,7 @@ export function useTrashActions (projectId: string) {
     loading.value = true;
 
     try {
-      const [error] = await task.backTrashTask(item.id);
+      const [error] = await issue.backTrashTask(item.id);
       if (error) {
         throw error;
       }
@@ -47,7 +47,7 @@ export function useTrashActions (projectId: string) {
   const deleteItem = async (item: TaskTrashItem): Promise<boolean> => {
     loading.value = true;
     try {
-      const [error] = await task.deleteTrashTask(item.id);
+      const [error] = await issue.deleteTrashTask(item.id);
       if (error) {
         throw error;
       }
@@ -70,7 +70,7 @@ export function useTrashActions (projectId: string) {
     loading.value = true;
     try {
       const params = { projectId };
-      const [error] = await task.backAllTrashTask(params);
+      const [error] = await issue.backAllTrashTask(params);
       if (error) {
         throw error;
       }
@@ -93,7 +93,7 @@ export function useTrashActions (projectId: string) {
     loading.value = true;
     try {
       const params = { projectId };
-      const [error] = await task.deleteAllTrashTask(params);
+      const [error] = await issue.deleteAllTrashTask(params);
       if (error) {
         throw error;
       }

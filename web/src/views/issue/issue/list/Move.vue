@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { RadioGroup, Radio } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -82,7 +82,7 @@ const moveTasksToSprint = async () => {
     targetSprintId: moveScope.value === MoveScope.BACKLOG ? undefined : (targetSprintId || undefined)
   };
 
-  const [error] = await task.moveTask(moveParams);
+  const [error] = await issue.moveTask(moveParams);
   confirmLoading.value = false;
 
   if (error) {

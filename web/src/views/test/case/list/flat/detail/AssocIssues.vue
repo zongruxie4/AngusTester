@@ -4,7 +4,7 @@ import { AsyncComponent, Hints, Icon, modal, Table } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { Button, Progress } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskType } from '@/enums/enums';
 import { AssocTaskProps } from '@/views/test/case/types';
@@ -70,7 +70,7 @@ const handlePut = async (refTaskIds) => {
     return;
   }
   submitLoading.value = true;
-  const [error] = await funcCase.putAssociationTask(props.caseId, {
+  const [error] = await testCase.putAssociationTask(props.caseId, {
     assocTaskIds: refTaskIds
   });
   submitLoading.value = false;
@@ -88,7 +88,7 @@ const handleDelTask = (record) => {
   modal.confirm({
     content: t('testCase.detail.assocTask.confirmCancelAssocTask', { name: record.name }),
     onOk () {
-      return funcCase.cancelAssociationTask(props.caseId, {
+      return testCase.cancelAssociationTask(props.caseId, {
         assocTaskIds: [record.id]
       }).then(([error]) => {
         if (error) {

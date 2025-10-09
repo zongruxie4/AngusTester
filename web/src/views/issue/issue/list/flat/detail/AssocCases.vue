@@ -5,7 +5,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { FuncPlanStatus } from '@/enums/enums';
 import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
@@ -79,7 +79,7 @@ const handleCaseAssociation = async (selectedCaseIds: string[]) => {
   }
   isSubmitLoading.value = true;
 
-  const [error] = await task.associationCase(props.taskId || '', selectedCaseIds, {
+  const [error] = await issue.associationCase(props.taskId || '', selectedCaseIds, {
     paramsType: true
   });
 
@@ -103,7 +103,7 @@ const handleCaseDisassociation = (caseRecord: any) => {
   modal.confirm({
     content: t('actions.tips.confirmCancelAssoc', { name: caseRecord.name }),
     onOk () {
-      return task.cancelAssociationCase(props.taskId || '', [caseRecord.id], {
+      return issue.cancelAssociationCase(props.taskId || '', [caseRecord.id], {
         paramsType: true
       }).then(([error]) => {
         if (error) {

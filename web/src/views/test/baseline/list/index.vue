@@ -3,7 +3,7 @@ import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { ProjectPageQuery } from '@xcan-angus/infra';
-import { func } from '@/api/tester';
+import { test } from '@/api/tester';
 
 import { BaselineDetail } from '@/views/test/baseline/types';
 import { BasicProps } from '@/types/types';
@@ -71,7 +71,7 @@ const handleSearchParametersChange = (data) => {
 const handleBaselineEstablishment = async (data: BaselineDetail) => {
   isLoading.value = true;
   const id = data.id;
-  const [error] = await func.establishBaseline(id);
+  const [error] = await test.establishBaseline(id);
   isLoading.value = false;
   if (error) {
     return;
@@ -89,7 +89,7 @@ const handleBaselineDeletion = async (data: BaselineDetail) => {
     content: t('testCaseBaseline.messages.confirmDeleteBaseline', { name: data.name }),
     async onOk () {
       const id = data.id;
-      const [error] = await func.deleteBaseline([id]);
+      const [error] = await test.deleteBaseline([id]);
       if (error) {
         return;
       }
@@ -125,7 +125,7 @@ const loadBaselineData = async () => {
     ...searchParameters.value
   };
 
-  const [error, res] = await func.getBaselineList(params);
+  const [error, res] = await test.getBaselineList(params);
   isDataLoaded.value = true;
   isLoading.value = false;
 

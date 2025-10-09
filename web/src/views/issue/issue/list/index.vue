@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { appContext, download, enumUtils, http, PageQuery, SearchCriteria, utils, routerUtils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { modules, task } from '@/api/tester';
+import { modules, issue } from '@/api/tester';
 import { TaskSprintPermission, TaskStatus } from '@/enums/enums';
 import { getCurrentPage, travelTreeData } from '@/utils/utils';
 import { TaskDetail } from '../../types';
@@ -135,7 +135,7 @@ const loadTaskListData = async () => {
 
   isLoading.value = false;
   const params = buildApiParameters();
-  const [error, response] = await task.getTaskList({ ...params, moduleId: currentModuleId.value });
+  const [error, response] = await issue.getTaskList({ ...params, moduleId: currentModuleId.value });
   isLoading.value = false;
   isDataLoaded.value = true;
   if (error) {
@@ -215,7 +215,7 @@ const loadSprintPermissions = async (sprintId: string) => {
   const params = {
     admin: true
   };
-  return await task.getUserSprintAuth(sprintId, props.userInfo?.id, params);
+  return await issue.getUserSprintAuth(sprintId, props.userInfo?.id, params);
 };
 
 /**

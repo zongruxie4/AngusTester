@@ -6,7 +6,7 @@ import Gantt from '@xcan-angus/frappe-gantt';
 import dayjs from 'dayjs';
 import { SearchCriteria } from '@xcan-angus/infra';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { TaskType } from '@/enums/enums';
 
@@ -126,7 +126,7 @@ const buildTaskListRequestParams = (): TaskListRequestParams => {
  */
 const fetchTaskDetailsById = async (taskId: string): Promise<Partial<TaskDetail>> => {
   emit('update:loading', true);
-  const [error, res] = await task.getTaskDetail(taskId);
+  const [error, res] = await issue.getTaskDetail(taskId);
   emit('update:loading', false);
 
   if (error || !res?.data) {
@@ -149,7 +149,7 @@ const resetComponentData = () => {
  * <p>Fetches all available tasks across multiple pages to ensure complete data set</p>
  */
 const loadAllTaskPages = async (baseParams: TaskListRequestParams): Promise<TaskDetail[]> => {
-  const [error, res] = await task.getTaskList(baseParams);
+  const [error, res] = await issue.getTaskList(baseParams);
 
   if (error) {
     throw error;
@@ -166,7 +166,7 @@ const loadAllTaskPages = async (baseParams: TaskListRequestParams): Promise<Task
     for (let i = 0, len = remainingPages; i < len; i++) {
       const pageNo = i + 2;
       const pageParams = { ...baseParams, pageNo };
-      const [_error, _res] = await task.getTaskList(pageParams);
+      const [_error, _res] = await issue.getTaskList(pageParams);
 
       if (_error) {
         throw _error;

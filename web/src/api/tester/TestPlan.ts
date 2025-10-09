@@ -18,27 +18,27 @@ export default class API {
     return http.get(`${baseUrl}`, { ...params, fullTextSearch: true });
   }
 
-  getPlanDetail (planId: string): Promise<[Error | null, any]> {
+  getPlanDetail (planId: number): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${planId}`);
   }
 
-  startPlan (planId: string) : Promise<[Error | null, any]> {
+  startPlan (planId: number) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${planId}/start`);
   }
 
-  endPlan (planId: string) : Promise<[Error | null, any]> {
+  endPlan (planId: number) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${planId}/end`);
   }
 
-  blockPlan (planId: string) : Promise<[Error | null, any]> {
+  blockPlan (planId: number) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${planId}/block`);
   }
 
-  deletePlan (planId: string) : Promise<[Error | null, any]> {
+  deletePlan (planId: number) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${planId}`);
   }
 
-  clonePlan (planId: string) : Promise<[Error | null, any]> {
+  clonePlan (planId: number) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${planId}/clone`);
   }
 
@@ -54,15 +54,15 @@ export default class API {
     return http.get(`${baseUrl}/user/auth/current`, params);
   }
 
-  getCurrentAuthByPlanId (planId: string, params: {admin: boolean} = {}): Promise<[Error | null, any]> {
+  getCurrentAuthByPlanId (planId: number, params: any = {}): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${planId}/user/auth/current`, params);
   }
 
-  getNotReviewedCase (planId: string, params) : Promise<[Error | null, any]> {
+  getNotReviewedCase (planId: number, params) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${planId}/case/notReviewed`, params);
   }
 
-  getCaseNotEstablishedBaseline (planId: string, params = {}) : Promise<[Error | null, any]> {
+  getCaseNotEstablishedBaseline (planId: number, params = {}) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${planId}/case/notEstablishedBaseline`, params);
   }
 }

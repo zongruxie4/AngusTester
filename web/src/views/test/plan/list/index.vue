@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { AsyncComponent, notification, Spin, modal } from '@xcan-angus/vue-ui';
 import { appContext, TESTER, utils, ProjectPageQuery } from '@xcan-angus/infra';
-import { funcPlan } from '@/api/tester';
+import { testPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
@@ -83,7 +83,7 @@ const handleSearchChange = (data) => {
  * @param index - Index in the data list
  */
 const updateTableData = async (id: string, index: number) => {
-  const [error, res] = await funcPlan.getPlanDetail(id);
+  const [error, res] = await testPlan.getPlanDetail(id);
   isLoading.value = false;
   if (error) {
     return;
@@ -119,7 +119,7 @@ const updateTableData = async (id: string, index: number) => {
 const handleStartPlan = async (data: PlanDetail, index: number) => {
   isLoading.value = true;
   const id = data.id;
-  const [error] = await funcPlan.startPlan(id);
+  const [error] = await testPlan.startPlan(id);
   if (error) {
     isLoading.value = false;
     return;
@@ -137,7 +137,7 @@ const handleStartPlan = async (data: PlanDetail, index: number) => {
 const handleCompletePlan = async (data: PlanDetail, index: number) => {
   isLoading.value = true;
   const id = data.id;
-  const [error] = await funcPlan.endPlan(id);
+  const [error] = await testPlan.endPlan(id);
   if (error) {
     isLoading.value = false;
     return;
@@ -155,7 +155,7 @@ const handleCompletePlan = async (data: PlanDetail, index: number) => {
 const handleBlockPlan = async (data: PlanDetail, index: number) => {
   isLoading.value = true;
   const id = data.id;
-  const [error] = await funcPlan.blockPlan(id);
+  const [error] = await testPlan.blockPlan(id);
   if (error) {
     isLoading.value = false;
     return;
@@ -174,7 +174,7 @@ const handleDeletePlan = async (planData: PlanDetail) => {
     content: t('actions.tips.confirmDelete', { name: planData.name }),
     async onOk () {
       const id = planData.id;
-      const [error] = await funcPlan.deletePlan(id);
+      const [error] = await testPlan.deletePlan(id);
       if (error) {
         return;
       }
@@ -242,7 +242,7 @@ const loadData = async () => {
     ...searchPanelParams.value
   };
 
-  const [error, res] = await funcPlan.getPlanList(params);
+  const [error, res] = await testPlan.getPlanList(params);
   isDataLoaded.value = true;
   isLoading.value = false;
 
@@ -303,7 +303,7 @@ const loadPermissions = async (id: string) => {
   const params = {
     admin: true
   };
-  return await funcPlan.getCurrentAuthByPlanId(id, params);
+  return await testPlan.getCurrentAuthByPlanId(id, params);
 };
 
 /**

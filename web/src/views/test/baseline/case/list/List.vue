@@ -3,9 +3,11 @@ import { defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, modal, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { func } from '@/api/tester';
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import { test } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
+import { BasicProps } from '@/types/types';
+
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 const { t } = useI18n();
 
@@ -26,16 +28,7 @@ const AssocCases = defineAsyncComponent(() => import('@/views/test/review/detail
 const Description = defineAsyncComponent(() => import('@/views/test/review/detail/case/Description.vue'));
 const Search = defineAsyncComponent(() => import('./Search.vue'));
 
-// Props Definition
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  baselineId: string;
-  planId: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -91,7 +84,7 @@ const paginationConfig = ref({
 });
 const searchFilters = ref([]);
 const isSelectCaseModalVisible = ref(false);
-const selectedModuleId = ref('');
+const selectedModuleId = ref<number|undefined>();
 const baselineCaseList = ref([]);
 
 // Data Loading Methods
@@ -101,7 +94,7 @@ const baselineCaseList = ref([]);
  */
 const handleCaseSelectionConfirm = async (caseIds: string[] = []) => {
   isSelectCaseModalVisible.value = false;
-  const [error] = await func.addBaselineCase(props.baselineId, caseIds);
+  const [error] = await test.addBaselineCase(props.baselineId, caseIds);
   if (error) {
     return;
   }
@@ -113,7 +106,7 @@ const handleCaseSelectionConfirm = async (caseIds: string[] = []) => {
  */
 const loadBaselineCaseList = async () => {
   const { current, pageSize } = paginationConfig.value;
-  const [error, { data }] = await func.getBaselineCaseList(props.baselineId, {
+  const [error, { data }] = await test.getBaselineCaseList(props.baselineId, {
     moduleId: selectedModuleId.value,
     projectId: props.projectId,
     pageNo: current,
@@ -131,7 +124,7 @@ const loadBaselineCaseList = async () => {
  * Load baseline information
  */
 const loadBaselineInfo = async () => {
-  const [error, res] = await func.getBaselineDetail(props.baselineId);
+  const [error, res] = await test.getBaselineDetail(props.baselineId);
   if (error) {
     return;
   }
@@ -168,7 +161,7 @@ const deleteCaseFromBaseline = (record) => {
   modal.confirm({
     content: t('testCaseBaseline.case.confirmUnlinkCase', { name: record.name }),
     onOk () {
-      return func.deleteBaselineCase(props.baselineId, [record.id])
+      return test.deleteBaselineCase(props.baselineId, [record.id])
         .then(([error]) => {
           if (error) {
             return;
@@ -232,7 +225,7 @@ const createRowClickHandler = (record) => {
         selectedRowKey.value = '';
       } else {
         selectedRowKey.value = record.id;
-        const [error, { data }] = await func.getBaselineCaseDetail(props.baselineId, record.id);
+        const [error, { data }] = await test.getBaselineCaseDetail(props.baselineId, record.id);
         if (error) {
           selectedCaseInfo.value = record;
           return;

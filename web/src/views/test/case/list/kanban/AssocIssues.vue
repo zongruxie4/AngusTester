@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Icon, IconTask, NoData, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
@@ -53,7 +53,7 @@ const submitChanges = async () => {
   }];
   isEditing.value = false;
   emitLoadingChange(true);
-  const [error] = await funcCase.updateCase(params);
+  const [error] = await testCase.updateCase(params);
   emitLoadingChange(false);
   if (error) {
     return;
@@ -86,7 +86,7 @@ const refreshCaseDetail = async () => {
   }
 
   emitLoadingChange(true);
-  const [error, res] = await funcCase.getCaseDetail(id);
+  const [error, res] = await testCase.getCaseDetail(id);
   emitLoadingChange(false);
   if (error) {
     return;

@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
       </div>
 
       <div class="flex items-start">
-        <label class="w-26 text-gray-600 font-medium mt-1">{{ t('testCaseReview.detail.columns.reviewOpinion') }}：</label>
+        <label class="w-26 text-gray-600 font-medium mt-1">{{ t('common.reviewOpinion') }}：</label>
         <div class="flex-1">
           <div v-if="props.caseInfo?.reviewRemark" class="bg-gray-50 rounded-lg p-3 text-gray-700 leading-relaxed">
             {{ props.caseInfo?.reviewRemark }}

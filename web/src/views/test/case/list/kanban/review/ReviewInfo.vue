@@ -43,7 +43,7 @@ const reviewInfoColumns = [
       dataIndex: 'oneReviewPass'
     },
     {
-      label: t('testCase.kanbanView.reviewInfoGrid.reviewOpinion'),
+      label: t('common.reviewOpinion'),
       dataIndex: 'reviewRemark'
     }
   ]
@@ -52,7 +52,7 @@ const reviewInfoColumns = [
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('testCase.kanbanView.reviewInfoGrid.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('common.reviewInfo') }}</div>
     <Grid
       :columns="reviewInfoColumns"
       :dataSource="props.dataSource"

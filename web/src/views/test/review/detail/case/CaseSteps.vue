@@ -3,7 +3,7 @@ import { ref, defineAsyncComponent } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 interface Props {
   caseInfo: {[key: string]: any};
@@ -35,7 +35,7 @@ const cancel = () => {
 
 const confirm = async () => {
   saveLoading.value = true;
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props.caseInfo.id,
     steps: stepsValue.value
   }]);

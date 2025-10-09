@@ -12,7 +12,7 @@ import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 
 // API and type imports
-import { func, funcPlan, project } from '@/api/tester';
+import { test, testPlan, project } from '@/api/tester';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
 import { ReviewEditState, ReviewCaseInfo, ReviewDetail } from '../types';
@@ -155,7 +155,7 @@ const handleReviewUpdate = async () => {
   const params = prepareFormParameters();
   delete params.planId;
   loading.value = true;
-  const [error] = await func.putReview(params);
+  const [error] = await test.putReview(params);
   loading.value = false;
   if (error) {
     return;
@@ -179,7 +179,7 @@ const handleReviewUpdate = async () => {
 const handleReviewCreation = async () => {
   const params = prepareFormParameters();
   loading.value = true;
-  const [error, response] = await func.addReview(params);
+  const [error, response] = await test.addReview(params);
   loading.value = false;
   if (error) {
     return;
@@ -245,7 +245,7 @@ const handleReviewDeletion = async () => {
     async onOk () {
       const reviewId = reviewData.id;
       loading.value = true;
-      const [error] = await func.deleteReview(reviewId);
+      const [error] = await test.deleteReview(reviewId);
       loading.value = false;
       if (error) {
         return;
@@ -278,7 +278,7 @@ const loadReviewDetail = async (reviewId: string) => {
   }
 
   loading.value = true;
-  const [error, response] = await func.getReviewDetail(reviewId);
+  const [error, response] = await test.getReviewDetail(reviewId);
   loading.value = false;
   if (error) {
     return;
@@ -374,7 +374,7 @@ const loadPermissions = async (planId: string) => {
     admin: true
   };
   loading.value = true;
-  const [error, response] = await funcPlan.getCurrentAuthByPlanId(planId, params);
+  const [error, response] = await testPlan.getCurrentAuthByPlanId(planId, params);
   loading.value = false;
   if (error) {
     return;
@@ -422,7 +422,7 @@ const handlePlanIdChange = () => {
  * Updates case list and pagination state
  */
 const loadReviewCaseList = async () => {
-  const [error, { data }] = await func.getReviewCaseList({
+  const [error, { data }] = await test.getReviewCaseList({
     reviewId: reviewId.value,
     filters: searchKeywords.value ? [{ value: searchKeywords.value, key: 'caseName', op: 'MATCH' }] : [],
     pageNo: pagination.value.current,
@@ -465,7 +465,7 @@ const openCaseSelectionModal = () => {
  */
 const handleAddCasesToReview = async (caseIds: string[], cases: ReviewCaseInfo[]) => {
   if (reviewId.value) {
-    const [error] = await func.addReviewCase({
+    const [error] = await test.addReviewCase({
       caseIds: caseIds,
       reviewId: reviewId.value
     });
@@ -541,7 +541,7 @@ const handleCaseDeletion = async (caseRecord: ReviewCaseInfo) => {
     modal.confirm({
       title: t('actions.tips.confirmDelete', { name: caseRecord.name }),
       async onOk () {
-        const [error] = await func.deleteReviewCase([caseRecord.id]);
+        const [error] = await test.deleteReviewCase([caseRecord.id]);
         if (error) {
           return;
         }

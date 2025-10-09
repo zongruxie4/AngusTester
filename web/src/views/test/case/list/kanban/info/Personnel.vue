@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, SelectUser } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
@@ -106,7 +106,7 @@ const commitTesterIfChanged = async () => {
   }
 
   emitLoadingChange(true);
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props.dataSource?.id,
     testerId: value
   }]);
@@ -139,7 +139,7 @@ const refreshCaseDetail = async () => {
   }
 
   emitLoadingChange(true);
-  const [error, res] = await funcCase.getCaseDetail(id);
+  const [error, res] = await testCase.getCaseDetail(id);
   emitLoadingChange(false);
   if (error) {
     return;

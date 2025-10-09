@@ -1,19 +1,11 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
+import { Icon, Input } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
 import { modules } from '@/api/tester';
 
 const { t } = useI18n();
-
-// Type Definitions
-type ModuleItem = {
-  id: string;
-  name: string;
-  showName?: string;
-  showTitle?: string;
-}
 
 // Props Definition
 type Props = {

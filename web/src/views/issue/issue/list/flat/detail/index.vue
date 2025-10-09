@@ -7,7 +7,7 @@ import { appContext, duration, enumUtils, http, toClipboard, utils } from '@xcan
 import { TaskSprintPermission, TaskStatus, TaskType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 import { cloneDeep } from 'lodash-es';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 
 import { TaskDetail } from '@/views/issue/types';
 import { ActionMenuItem } from '@/views/issue/issue/types';
@@ -157,7 +157,7 @@ const deleteCurrentTask = () => {
   modal.confirm({
     content: t('actions.tips.confirmDelete', { name }),
     async onOk () {
-      const [error] = await task.deleteTask([id]);
+      const [error] = await issue.deleteTask([id]);
       if (error) {
         return;
       }
@@ -178,7 +178,7 @@ const addToFavorites = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.favouriteTask(id);
+  const [error] = await issue.favouriteTask(id);
   if (error) {
     return;
   }
@@ -196,7 +196,7 @@ const removeFromFavorites = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.cancelFavouriteTask(id);
+  const [error] = await issue.cancelFavouriteTask(id);
   if (error) {
     return;
   }
@@ -214,7 +214,7 @@ const followCurrentTask = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.followTask(id);
+  const [error] = await issue.followTask(id);
   if (error) {
     return;
   }
@@ -232,7 +232,7 @@ const unfollowCurrentTask = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.cancelFollowTask(id);
+  const [error] = await issue.cancelFollowTask(id);
   if (error) {
     return;
   }
@@ -250,7 +250,7 @@ const startCurrentTask = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.startTask(id);
+  const [error] = await issue.startTask(id);
   if (error) {
     return;
   }
@@ -272,7 +272,7 @@ const markTaskAsProcessed = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.processedTask(id);
+  const [error] = await issue.processedTask(id);
   if (error) {
     return;
   }
@@ -294,7 +294,7 @@ const confirmTaskAsIncomplete = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.confirmTask(id, 'FAIL');
+  const [error] = await issue.confirmTask(id, 'FAIL');
   if (error) {
     return;
   }
@@ -315,7 +315,7 @@ const confirmTaskAsCompleted = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.confirmTask(id, 'SUCCESS');
+  const [error] = await issue.confirmTask(id, 'SUCCESS');
   if (error) {
     return;
   }
@@ -336,7 +336,7 @@ const reopenCurrentTask = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.reopenTask(id);
+  const [error] = await issue.reopenTask(id);
   if (error) {
     return;
   }
@@ -358,7 +358,7 @@ const restartCurrentTask = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.restartTask(id);
+  const [error] = await issue.restartTask(id);
   if (error) {
     return;
   }
@@ -380,7 +380,7 @@ const cancelCurrentTask = async () => {
   }
 
   const { id } = currentTaskInfo.value;
-  const [error] = await task.cancelTask(id);
+  const [error] = await issue.cancelTask(id);
   if (error) {
     return;
   }
@@ -472,7 +472,7 @@ const loadTaskListData = async (pageNo: number) => {
 
   params.pageNo = pageNo;
   const queryStr = http.getURLSearchParams(params, true);
-  const [error, res] = await task.getTaskList(params);
+  const [error, res] = await issue.getTaskList(params);
   if (error) {
     return;
   }
@@ -559,7 +559,7 @@ const refreshCommentTab = () => {
 const loadTaskData = async (): Promise<Partial<TaskDetail>> => {
   const id = props.id;
   isLoading.value = true;
-  const [error, res] = await task.getTaskDetail(id);
+  const [error, res] = await issue.getTaskDetail(id);
   isLoading.value = false;
   if (error) {
     if ((error as any)?.ext?.eKey === 'resource_not_found') {
@@ -593,7 +593,7 @@ const loadSprintPermissions = async (id: string | undefined) => {
     const params = {
       admin: true
     };
-    const [error, res] = await task.getUserSprintAuth(id, props.userInfo?.id, params);
+    const [error, res] = await issue.getUserSprintAuth(id, props.userInfo?.id, params);
     if (error) {
       return;
     }

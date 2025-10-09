@@ -5,7 +5,7 @@ import { Grid, Icon, Input, Popover, ReviewStatus, Select } from '@xcan-angus/vu
 import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
 
@@ -79,7 +79,7 @@ const editName = async (event) => {
   }
 
   loadingChange(true);
-  const [error] = await funcCase.putName(props.dataSource.id, event.target.value);
+  const [error] = await testCase.putName(props.dataSource.id, event.target.value);
   loadingChange(false);
   isEditName.value = false;
   if (error) {
@@ -110,7 +110,7 @@ const editPriority = async (value) => {
   }
 
   loadingChange(true);
-  const [error] = await funcCase.putPriority(props.dataSource.id, value);
+  const [error] = await testCase.putPriority(props.dataSource.id, value);
   loadingChange(false);
   isEditPriority.value = false;
   if (error) {
@@ -140,7 +140,7 @@ const editEvalWorkload = async (event) => {
   }
 
   loadingChange(true);
-  const [error] = await funcCase.putEvalWorkload(props.dataSource.id, { workload: String(event.target.value) });
+  const [error] = await testCase.putEvalWorkload(props.dataSource.id, { workload: String(event.target.value) });
   loadingChange(false);
   isEditEvalWorkload.value = false;
   if (error) {
@@ -171,7 +171,7 @@ const editActualWorkload = async (event) => {
   }
 
   loadingChange(true);
-  const [error] = await funcCase.putActualWorkload(props.dataSource.id, { workload: String(event.target.value) });
+  const [error] = await testCase.putActualWorkload(props.dataSource.id, { workload: String(event.target.value) });
   loadingChange(false);
   isEditActualWorkload.value = false;
   if (error) {
@@ -212,7 +212,7 @@ const editTag = async () => {
   }
   const params = { tagIds: tagsIds.value.length ? tagsIds.value : null };
   loadingChange(true);
-  const [error] = await funcCase.putTag(props.dataSource.id, params);
+  const [error] = await testCase.putTag(props.dataSource.id, params);
   loadingChange(false);
   isEditTag.value = false;
   if (error) {
@@ -239,7 +239,7 @@ const change = async () => {
   }
 
   loadingChange(true);
-  const [error, res] = await funcCase.getCaseDetail(id);
+  const [error, res] = await testCase.getCaseDetail(id);
   loadingChange(false);
   if (error) {
     return;

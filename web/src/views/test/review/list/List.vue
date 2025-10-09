@@ -4,7 +4,7 @@ import { Avatar, Button, Pagination, Popover, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { Colon, Dropdown, Icon, Image, modal, NoData, notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { func } from '@/api/tester';
+import { test } from '@/api/tester';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { ReviewDetail } from '../types';
 
@@ -106,7 +106,7 @@ const deleteReview = async (reviewData: ReviewDetail) => {
     content: t('actions.tips.confirmDelete', { name: reviewData.name }),
     async onOk () {
       const reviewId = reviewData.id;
-      const [error] = await func.deleteReview(reviewId);
+      const [error] = await test.deleteReview(reviewId);
       if (error) {
         return;
       }
@@ -124,7 +124,7 @@ const deleteReview = async (reviewData: ReviewDetail) => {
  * @param reviewData - The review data to clone
  */
 const cloneReview = async (reviewData: ReviewDetail) => {
-  const [error] = await func.cloneReview(reviewData.id);
+  const [error] = await test.cloneReview(reviewData.id);
   if (error) {
     return;
   }

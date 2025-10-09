@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import { funcPlan } from '@/api/tester';
+import { testPlan } from '@/api/tester';
 import { ReviewCaseInfo } from '@/views/test/review/types';
 
 // Component imports
@@ -13,10 +13,10 @@ const ModuleTree = defineAsyncComponent(() => import('@/views/test/review/edit/M
 
 // Type Definitions
 interface Props {
-  planId: string;
+  planId: number;
   visible: boolean;
-  reviewId?: string;
-  projectId: string;
+  reviewId?: number;
+  projectId: number;
 }
 
 // Props and Context
@@ -29,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 
 // Event Emitters
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]): void
@@ -65,7 +66,7 @@ const handleModalConfirm = () => {
 };
 
 // Case Loading and Filtering
-const selectedModuleId = ref('');
+const selectedModuleId = ref<number|undefined>();
 
 /**
  * Loads available cases for selection
@@ -79,7 +80,7 @@ const loadAvailableCases = async () => {
     return;
   }
   loading.value = true;
-  const [error, response] = await funcPlan.getNotReviewedCase(props.planId, {
+  const [error, response] = await testPlan.getNotReviewedCase(props.planId, {
     reviewId: props.reviewId,
     moduleId: selectedModuleId.value
   });

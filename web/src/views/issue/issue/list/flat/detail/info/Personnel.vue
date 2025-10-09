@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, SelectUser, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import { TaskDetail } from '@/views/issue/types';
@@ -109,7 +109,7 @@ const handleAssigneeBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskAssignees(currentTaskId.value, { assigneeId: newValue });
+  const [error] = await issue.editTaskAssignees(currentTaskId.value, { assigneeId: newValue });
   emit('loadingChange', false);
   if (error) {
     if (typeof assigneeSelectRef.value?.focus === 'function') {
@@ -161,7 +161,7 @@ const handleConfirmerBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskConfirmer(currentTaskId.value, { confirmerId: newValue ?? null });
+  const [error] = await issue.editTaskConfirmer(currentTaskId.value, { confirmerId: newValue ?? null });
   emit('loadingChange', false);
   if (error) {
     if (typeof confirmerSelectRef.value?.focus === 'function') {
@@ -213,7 +213,7 @@ const handleTesterBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.updateTask(currentTaskId.value, { testerId: newValue });
+  const [error] = await issue.updateTask(currentTaskId.value, { testerId: newValue });
   emit('loadingChange', false);
   if (error) {
     if (typeof testerSelectRef.value?.focus === 'function') {

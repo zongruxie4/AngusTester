@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { useI18n } from 'vue-i18n';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 import { TIME_FORMAT } from '@/utils/constant';
 import { CaseDetail } from '@/views/test/types';
@@ -95,7 +95,7 @@ const commitDeadlineIfValid = async () => {
   }
 
   emitLoadingChange(true);
-  const [error] = await funcCase.putDeadline(caseId.value, value);
+  const [error] = await testCase.putDeadline(caseId.value, value);
   emitLoadingChange(false);
   if (error) {
     if (typeof dateRef.value?.focus === 'function') {
@@ -132,7 +132,7 @@ const refreshCaseDetail = async () => {
   }
 
   emitLoadingChange(true);
-  const [error, res] = await funcCase.getCaseDetail(id);
+  const [error, res] = await testCase.getCaseDetail(id);
   emitLoadingChange(false);
   if (error) {
     return;

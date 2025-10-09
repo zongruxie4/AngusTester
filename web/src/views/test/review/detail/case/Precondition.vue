@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -55,7 +55,7 @@ const ok = async () => {
 
   const params = [{ id: caseId.value, precondition: content.value }];
   emit('loadingChange', true);
-  const [error] = await funcCase.updateCase(params);
+  const [error] = await testCase.updateCase(params);
   emit('loadingChange', false);
   if (error) {
     return;

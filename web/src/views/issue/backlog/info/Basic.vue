@@ -5,7 +5,7 @@ import { Button, Tag, TreeSelect } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconTask, Input, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { modules, task } from '@/api/tester';
+import { modules, issue } from '@/api/tester';
 import { TaskType, SoftwareVersionStatus } from '@/enums/enums';
 
 import { TaskDetail } from '../../types';
@@ -146,7 +146,7 @@ const handleTaskNameBlur = async (event: FocusEvent) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskName(currentTaskId.value, newTaskName);
+  const [error] = await issue.editTaskName(currentTaskId.value, newTaskName);
   emit('loadingChange', false);
   isTaskNameEditing.value = false;
   if (error) {
@@ -196,7 +196,7 @@ const handleActualWorkloadBlur = async (event: FocusEvent) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editActualWorkload(currentTaskId.value, { workload: newWorkload });
+  const [error] = await issue.editActualWorkload(currentTaskId.value, { workload: newWorkload });
   emit('loadingChange', false);
   isActualWorkloadEditing.value = false;
   if (error) {
@@ -246,7 +246,7 @@ const handleEvalWorkloadBlur = async (event: FocusEvent) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editEvalWorkloadApi(currentTaskId.value, { workload: newWorkload });
+  const [error] = await issue.editEvalWorkloadApi(currentTaskId.value, { workload: newWorkload });
   emit('loadingChange', false);
   isEvalWorkloadEditing.value = false;
   if (error) {
@@ -312,7 +312,7 @@ const confirmSprintChange = async () => {
     taskIds: [currentTaskId.value],
     targetSprintId: newSprintId
   };
-  const [error] = await task.moveTask(moveTaskParams);
+  const [error] = await issue.moveTask(moveTaskParams);
   emit('loadingChange', false);
   isSprintEditing.value = false;
   if (error) {
@@ -356,7 +356,7 @@ const confirmModuleChange = async () => {
   const updateParams = {
     moduleId: newModuleId
   };
-  const [error] = await task.updateTask(currentTaskId.value, updateParams);
+  const [error] = await issue.updateTask(currentTaskId.value, updateParams);
   emit('loadingChange', false);
   isModuleEditing.value = false;
   if (error) {
@@ -401,7 +401,7 @@ const loadModuleTreeData = async () => {
  */
 const fetchTaskDetailsById = async (id: string): Promise<Partial<TaskDetail>> => {
   emit('loadingChange', true);
-  const [error, res] = await task.getTaskDetail(id);
+  const [error, res] = await issue.getTaskDetail(id);
   emit('loadingChange', false);
   if (error || !res?.data) {
     return { id };
@@ -452,13 +452,13 @@ const confirmTaskTypeChange = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskTaskType(currentTaskId.value, newTaskType);
+  const [error] = await issue.editTaskTaskType(currentTaskId.value, newTaskType);
   emit('loadingChange', false);
   isTaskTypeEditing.value = false;
 
   // Set default bug properties when task type is changed to BUG
   if (newTaskType === 'BUG') {
-    await task.updateTask(currentTaskId.value, {
+    await issue.updateTask(currentTaskId.value, {
       bugLevel: 'MINOR',
       escapedBug: false
     });
@@ -532,7 +532,7 @@ const confirmPriorityChange = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskPriority(currentTaskId.value, newPriority);
+  const [error] = await issue.editTaskPriority(currentTaskId.value, newPriority);
   emit('loadingChange', false);
   isPriorityEditing.value = false;
   if (error) {
@@ -584,7 +584,7 @@ const confirmTagChanges = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskTags(currentTaskId.value, { tagIds: newTagIds });
+  const [error] = await issue.editTaskTags(currentTaskId.value, { tagIds: newTagIds });
   emit('loadingChange', false);
   isTagEditing.value = false;
   if (error) {
@@ -630,7 +630,7 @@ const confirmVersionChange = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.updateTask(currentTaskId.value, { softwareVersion: newVersion || '' });
+  const [error] = await issue.updateTask(currentTaskId.value, { softwareVersion: newVersion || '' });
   emit('loadingChange', false);
   isVersionEditing.value = false;
   if (error) {

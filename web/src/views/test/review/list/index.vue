@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Spin, notification } from '@xcan-angus/vue-ui';
 import { utils, appContext, ProjectPageQuery } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { func } from '@/api/tester';
+import { test } from '@/api/tester';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 
 import { BasicProps } from '@/types/types';
@@ -71,7 +71,7 @@ const handleSearchChange = (searchData) => {
  */
 const updateReviewItem = async (reviewId: string, itemIndex: number) => {
   loading.value = true;
-  const [error, response] = await func.getReviewDetail(reviewId);
+  const [error, response] = await test.getReviewDetail(reviewId);
   loading.value = false;
   if (error) {
     return;
@@ -90,7 +90,7 @@ const updateReviewItem = async (reviewId: string, itemIndex: number) => {
 const startReview = async (reviewData: ReviewDetail, itemIndex: number) => {
   loading.value = true;
   const reviewId = reviewData.id;
-  const [error] = await func.startReview(reviewId);
+  const [error] = await test.startReview(reviewId);
   loading.value = false;
   if (error) {
     return;
@@ -108,7 +108,7 @@ const startReview = async (reviewData: ReviewDetail, itemIndex: number) => {
 const completeReview = async (reviewData: ReviewDetail, itemIndex: number) => {
   loading.value = true;
   const reviewId = reviewData.id;
-  const [error] = await func.endReview(reviewId);
+  const [error] = await test.endReview(reviewId);
   loading.value = false;
   if (error) {
     return;
@@ -141,7 +141,7 @@ const loadReviewData = async () => {
     ...searchParams.value
   };
 
-  const [error, response] = await func.getReviewList(queryParams);
+  const [error, response] = await test.getReviewList(queryParams);
   loaded.value = true;
   loading.value = false;
 
@@ -216,7 +216,7 @@ const loadReviewPermissions = async (reviewId: string) => {
   const params = {
     admin: true
   };
-  return await func.getReviewAuthByPlanId(reviewId, params);
+  return await test.getReviewAuthByPlanId(reviewId, params);
 };
 
 /**

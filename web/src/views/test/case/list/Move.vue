@@ -3,7 +3,7 @@ import { inject, ref, Ref } from 'vue';
 import { Icon, Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
@@ -47,7 +47,7 @@ const close = () => {
 const onFinish = async () => {
   const ids = props.type === 'batch' ? props.selectedRowKeys : [props.selectedCase.id];
   loading.value = true;
-  const [error] = await funcCase.moveCase(formState.value.targetPlanId, ids);
+  const [error] = await testCase.moveCase(formState.value.targetPlanId, ids);
   loading.value = false;
   if (error) {
     return;
@@ -69,7 +69,7 @@ const format = (data: any) => {
 </script>
 <template>
   <Modal
-    :title="t('testCase.moveCaseModal.title')"
+    :title="t('actions.move')"
     :visible="props.visible"
     :width="600"
     :footer="null"

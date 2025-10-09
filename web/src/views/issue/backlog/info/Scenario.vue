@@ -5,7 +5,7 @@ import { AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select } f
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { modules, task } from '@/api/tester';
+import { modules, issue } from '@/api/tester';
 import { TaskDetail } from '../../types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 import { SoftwareVersionStatus } from '@/enums/enums';
@@ -136,7 +136,7 @@ const confirmModuleChange = async () => {
   const updateParams = {
     moduleId: newModuleId
   };
-  const [error] = await task.updateTask(currentTaskId.value, updateParams);
+  const [error] = await issue.updateTask(currentTaskId.value, updateParams);
   emit('loadingChange', false);
   isModuleEditing.value = false;
   if (error) {
@@ -182,7 +182,7 @@ const loadModuleTreeData = async () => {
  */
 const fetchTaskDetailsById = async (id: string): Promise<Partial<TaskDetail>> => {
   emit('loadingChange', true);
-  const [error, res] = await task.getTaskDetail(id);
+  const [error, res] = await issue.getTaskDetail(id);
   emit('loadingChange', false);
   if (error || !res?.data) {
     return { id };
@@ -233,7 +233,7 @@ const handleSprintBlur = async () => {
     taskIds: [currentTaskId.value],
     targetSprintId: newSprintId
   };
-  const [error] = await task.moveTask(moveParams);
+  const [error] = await issue.moveTask(moveParams);
   emit('loadingChange', false);
   isSprintEditing.value = false;
   if (error) {
@@ -275,7 +275,7 @@ const handleTaskNameBlur = async (event: FocusEvent) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskName(currentTaskId.value, newTaskName);
+  const [error] = await issue.editTaskName(currentTaskId.value, newTaskName);
   emit('loadingChange', false);
   isTaskNameEditing.value = false;
   if (error) {
@@ -325,7 +325,7 @@ const handleActualWorkloadBlur = async (event: FocusEvent) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editActualWorkload(currentTaskId.value, { workload: newActualWorkload });
+  const [error] = await issue.editActualWorkload(currentTaskId.value, { workload: newActualWorkload });
   emit('loadingChange', false);
   isActualWorkloadEditing.value = false;
   if (error) {
@@ -375,7 +375,7 @@ const handleEvalWorkloadBlur = async (event: FocusEvent) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editEvalWorkloadApi(currentTaskId.value, { workload: newEvalWorkload });
+  const [error] = await issue.editEvalWorkloadApi(currentTaskId.value, { workload: newEvalWorkload });
   emit('loadingChange', false);
   isEvalWorkloadEditing.value = false;
   if (error) {
@@ -434,7 +434,7 @@ const handlePriorityBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskPriority(currentTaskId.value, newPriority);
+  const [error] = await issue.editTaskPriority(currentTaskId.value, newPriority);
   emit('loadingChange', false);
   isPriorityEditing.value = false;
   if (error) {
@@ -483,7 +483,7 @@ const handleTagBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskTags(currentTaskId.value, { tagIds: newTagIds });
+  const [error] = await issue.editTaskTags(currentTaskId.value, { tagIds: newTagIds });
   emit('loadingChange', false);
   isTagEditing.value = false;
   if (error) {
@@ -529,7 +529,7 @@ const handleVersionBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.updateTask(currentTaskId.value, { softwareVersion: newVersion || '' });
+  const [error] = await issue.updateTask(currentTaskId.value, { softwareVersion: newVersion || '' });
   emit('loadingChange', false);
   isVersionEditing.value = false;
   if (error) {

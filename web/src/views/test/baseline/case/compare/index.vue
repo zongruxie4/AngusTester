@@ -4,7 +4,9 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Select } from '@xcan-angus/vue-ui';
 import lodash from 'lodash-es';
-import { func } from '@/api/tester';
+import { test } from '@/api/tester';
+import { BaselineCaseInfo, BaselineDetail } from '@/views/test/baseline/types';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
@@ -12,15 +14,7 @@ const { t } = useI18n();
 const CompareModal = defineAsyncComponent(() => import('./CompareModal.vue'));
 
 // Props Definition
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  baselineId: string;
-  planId: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -29,11 +23,11 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Reactive Data
-const availableBaselines = ref([]);
-const allCaseIdentifiers = ref<string[]>([]);
+const availableBaselines = ref<BaselineDetail[]>([]);
+const allCaseIdentifiers = ref<number[]>([]);
 const isCompareModalVisible = ref(false);
-const selectedCompareBaselineId = ref();
-const baseCaseData = ref({});
+const selectedCompareBaselineId = ref<number>();
+const baseCaseData = ref<BaselineCaseInfo>({} as BaselineCaseInfo);
 const compareCaseData = ref({});
 
 /**
@@ -47,7 +41,7 @@ const currentBaseline = computed(() => {
  * Load all available baselines for comparison
  */
 const loadAvailableBaselines = async () => {
-  const [error, { data }] = await func.getBaselineList({
+  const [error, { data }] = await test.getBaselineList({
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId
@@ -63,7 +57,7 @@ const loadAvailableBaselines = async () => {
  * Load base case data from the current baseline
  */
 const loadBaseCaseData = async () => {
-  const [error, { data }] = await func.getBaselineCaseList(props.baselineId, {
+  const [error, { data }] = await test.getBaselineCaseList(props.baselineId, {
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId
@@ -81,7 +75,7 @@ const loadBaseCaseData = async () => {
  * Load compare case data from the selected baseline
  */
 const loadCompareCaseData = async () => {
-  const [error, { data }] = await func.getBaselineCaseList(selectedCompareBaselineId.value, {
+  const [error, { data }] = await test.getBaselineCaseList(Number(selectedCompareBaselineId.value), {
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId

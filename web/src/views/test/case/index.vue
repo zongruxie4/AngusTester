@@ -4,7 +4,7 @@ import { Tooltip } from 'ant-design-vue';
 import { AsyncComponent, BrowserTab, Icon, modal, notification, Spin, VuexHelper } from '@xcan-angus/vue-ui';
 import { appContext } from '@xcan-angus/infra';
 import { useRoute, useRouter } from 'vue-router';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import { CaseTestResult } from '@/enums/enums';
 
 import { useI18n } from 'vue-i18n';
@@ -208,8 +208,8 @@ const handleFavourite = async (caseData: CaseDetail) => {
   }
   favouriteLoading.value = true;
   const [error] = caseData.favourite
-    ? await funcCase.cancelFavouriteCase(caseData.id)
-    : await funcCase.AddFavouriteCase(caseData.id);
+    ? await testCase.cancelFavouriteCase(caseData.id)
+    : await testCase.AddFavouriteCase(caseData.id);
   favouriteLoading.value = false;
   if (error) {
     return;
@@ -234,8 +234,8 @@ const handleFollow = async (caseData: CaseDetail) => {
   }
   followLoading.value = true;
   const [error] = caseData.follow
-    ? await funcCase.cancelFollowCase(caseData.id)
-    : await funcCase.addFollowCase(caseData.id);
+    ? await testCase.cancelFollowCase(caseData.id)
+    : await testCase.addFollowCase(caseData.id);
   favouriteLoading.value = false;
   followLoading.value = false;
   if (error) {
@@ -279,7 +279,7 @@ const handleClone = async (caseData?: CaseDetail) => {
   }
   const caseIds = [caseData.id];
   caseInfoLoading.value = true;
-  const [error] = await funcCase.cloneCase(caseIds);
+  const [error] = await testCase.cloneCase(caseIds);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -333,7 +333,7 @@ const handleSetResultBlocked = async (caseData) => {
       testResult: CaseTestResult.BLOCKED
     }
   ];
-  const [error] = await funcCase.updateCaseResult(updateParams);
+  const [error] = await testCase.updateCaseResult(updateParams);
   if (error) {
     return;
   }
@@ -352,7 +352,7 @@ const handleSetResultCanceled = async (caseData) => {
       testResult: CaseTestResult.CANCELED
     }
   ];
-  const [error] = await funcCase.updateCaseResult(updateParams);
+  const [error] = await testCase.updateCaseResult(updateParams);
   if (error) {
     return;
   }
@@ -369,7 +369,7 @@ const handleResetTestResults = async (caseData: CaseDetail) => {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await funcCase.resetCaseResult([caseData.id]);
+  const [error] = await testCase.resetCaseResult([caseData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -388,7 +388,7 @@ const handleResetReviewResult = async (caseData: CaseDetail) => {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await funcCase.resetReviewCase([caseData.id]);
+  const [error] = await testCase.resetReviewCase([caseData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;
@@ -405,7 +405,7 @@ const handleReTest = async (caseData: CaseDetail) => {
   if (caseInfoLoading.value) {
     return;
   }
-  const [error] = await funcCase.retestResult([caseData.id]);
+  const [error] = await testCase.retestResult([caseData.id]);
   if (error) {
     return;
   }
@@ -444,7 +444,7 @@ const deleteCase = async (caseData?: CaseDetail) => {
     return;
   }
   caseInfoLoading.value = true;
-  const [error] = await funcCase.deleteCase([caseData.id]);
+  const [error] = await testCase.deleteCase([caseData.id]);
   caseInfoLoading.value = false;
   if (error) {
     return;
