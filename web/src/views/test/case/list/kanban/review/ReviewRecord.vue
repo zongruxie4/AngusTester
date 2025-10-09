@@ -111,7 +111,7 @@ defineExpose({
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('testCase.kanbanView.reviewRecord.title') }}
+      {{ t('common.reviewRecord') }}
     </div>
 
     <div class="flex flex-col space-y-2">
@@ -126,7 +126,7 @@ defineExpose({
 
       <div class="flex items-center rounded overflow-hidden">
         <div class="w-20 px-2 py-1 bg-status-success text-white rounded">
-          {{ t('testCase.kanbanView.reviewRecord.reviewPassed') }}
+          {{ t('status.passed') }}
         </div>
         <div class="w-20 px-2 py-1 font-medium bg-gray-light">
           {{ reviewNum.successNum }}
@@ -135,7 +135,7 @@ defineExpose({
 
       <div class="flex items-center rounded overflow-hidden">
         <div class="w-20 px-2 py-1 bg-status-error text-white rounded">
-          {{ t('testCase.kanbanView.reviewRecord.reviewFailed') }}
+          {{ t('status.notPassed') }}
         </div>
         <div class="w-20 px-2 py-1 font-medium bg-gray-light">
           {{ reviewNum.failNum }}
@@ -144,7 +144,7 @@ defineExpose({
     </div>
 
     <div class="text-title text-3 font-medium mt-6">
-      {{ t('testCase.kanbanView.reviewRecord.reviewRecords') }}
+      {{ t('common.reviewRecord') }}
     </div>
 
     <div class="mt-2 space-y-2">
@@ -162,8 +162,8 @@ defineExpose({
 
           <span class="font-semibold flex-1/3">{{ record.reviewerName }}
             {{ record.reviewStatus?.value === ReviewStatus.PASSED
-              ? t('testCase.kanbanView.reviewRecord.reviewPassedCase')
-              : t('testCase.kanbanView.reviewRecord.reviewFailedCase') }}</span>
+              ? t('testCase.messages.reviewPassedCase')
+              : t('testCase.messages.reviewFailedCase') }}</span>
 
           <div class=" flex-1/2">{{ record.reviewDate }}</div>
         </div>
@@ -186,7 +186,7 @@ defineExpose({
 
     <div v-if="!!selectRecordInfo" class="flex max-w-200 ">
       <div class="flex-1 p-2 border-r  space-y-3">
-        <div class="mb-3">{{ t('testCase.kanbanView.reviewRecord.reviewVersion') }}</div>
+        <div class="mb-3">{{ t('testCase.messages.reviewVersion') }}</div>
 
         <BasicInfo :caseInfo="selectRecordInfo" />
 
@@ -202,7 +202,7 @@ defineExpose({
       </div>
 
       <div class="flex-1 p-2 space-y-3">
-        <div class="mb-3">{{ t('testCase.kanbanView.reviewRecord.latestVersion') }}</div>
+        <div class="mb-3">{{ t('testCase.messages.latestVersion') }}</div>
 
         <BasicInfo :caseInfo="props.dataSource" />
 

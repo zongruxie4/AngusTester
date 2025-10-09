@@ -52,8 +52,8 @@ const pagination = computed(() => {
     total: +props.total,
     showTotal: (_total: number) => {
       return props.enabledGroup
-        ? t('testCase.tableView.totalGroups', { total: _total })
-        : t('testCase.tableView.totalItems', { total: _total });
+        ? t('testCase.messages.totalGroups', { total: _total })
+        : t('testCase.messages.totalItems', { total: _total });
     }
   };
 });
@@ -77,7 +77,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('testCase.tableView.caseName'),
+    title: t('common.name'),
     dataIndex: 'name',
     width: '23%',
     ellipsis: true,

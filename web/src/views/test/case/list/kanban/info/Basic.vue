@@ -337,7 +337,7 @@ const infoColumns = [
                 :maxlength="200"
                 size="small"
                 class="absolute -top-1.25"
-                :placeholder="t('testCase.kanbanView.infoBasic.caseName')"
+                :placeholder="t('common.name')"
                 @blur="editName" />
             </template>
 
@@ -365,7 +365,7 @@ const infoColumns = [
                 enumKey="Priority"
                 size="small"
                 class="w-52 absolute -top-1.25"
-                :placeholder="t('testCase.kanbanView.infoBasic.priorityPlaceholder')"
+                :placeholder="t('common.placeholders.selectPriority')"
                 @blur="editPriority($event.target.value)">
                 <template #option="item">
                   <TaskPriority :value="coercePriorityOption(item)" />
@@ -394,7 +394,7 @@ const infoColumns = [
                 :defaultOptions="defaultTags"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 :maxTags="5"
-                :placeholder="t('testCase.kanbanView.infoBasic.addTagsPlaceholder')"
+                :placeholder="t('common.placeholders.selectTag')"
                 :class="{'border-error':tagsIds && tagsIds.length > 5 }"
                 :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
                 mode="multiple"
@@ -437,7 +437,7 @@ const infoColumns = [
                 :autofocus="isEditEvalWorkload"
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('testCase.kanbanView.infoBasic.evalWorkloadPlaceholder')"
+                :placeholder="t('common.placeholders.inputEvalWorkload')"
                 dataType="float"
                 size="small"
                 class="w-65 absolute -top-1.25"
@@ -457,8 +457,8 @@ const infoColumns = [
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                     {{ props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                      ? t('testCase.kanbanView.infoBasic.evalWorkloadTip')
-                      : t('testCase.kanbanView.infoBasic.evalWorkloadTipTime') }}
+                      ? t('testCase.messages.storyPointsHint')
+                      : t('testCase.messages.storyWorkHoursHint') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
@@ -477,7 +477,7 @@ const infoColumns = [
                 :autofocus="isEditActualWorkload"
                 :min="0.1"
                 :max="1000"
-                :placeholder="t('testCase.kanbanView.infoBasic.actualWorkloadPlaceholder')"
+                :placeholder="t('common.placeholders.inputActualWorkload')"
                 dataType="float"
                 size="small"
                 class="w-65 absolute -top-1.25"
@@ -498,7 +498,7 @@ const infoColumns = [
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                     {{ props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                      ? t('testCase.kanbanView.infoBasic.actualWorkloadTip') : t('testCase.kanbanView.infoBasic.actualWorkloadTipTime') }}
+                      ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />

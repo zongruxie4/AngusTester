@@ -118,7 +118,7 @@ const associatedTaskIds = computed(() => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-y-auto">
     <div class="flex items-center text-theme-title mb-2.5">
-      <span class="font-semibold">{{ t('testCase.kanbanView.assocTask.title') }}</span>
+      <span class="font-semibold">{{ t('common.assocIssues') }}</span>
       <Button
         v-if="props.canEdit"
         v-show="!isEditing"
@@ -160,7 +160,7 @@ const associatedTaskIds = computed(() => {
         :maxTags="20"
         :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
         class="w-full"
-        :placeholder="t('testCase.kanbanView.assocTask.placeholder')"
+        :placeholder="t('testCase.messages.maxAssocIssues')"
         mode="multiple"
         @change="handleSelectChange">
         <template #option="record">

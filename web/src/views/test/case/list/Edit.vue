@@ -208,7 +208,7 @@ const save = (type: 'save' | 'add') => {
   formRef.value.validate(validationRuleKeys)
     .then(async () => {
       if (formState.value.description?.length > 2000) {
-        notification.warning(t('testCase.messages.descriptionTooLong'));
+        notification.warning(t('testCase.messages.richTextTooLong'));
         return;
       }
 

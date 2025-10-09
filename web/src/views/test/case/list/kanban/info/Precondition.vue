@@ -102,7 +102,7 @@ const caseId = computed(() => {
   <div class="mt-4">
     <div class="flex items-center text-theme-title mb-1.75">
       <span class="font-semibold">
-        {{ t('testCase.kanbanView.infoPrecondition.title') }}
+        {{ t('common.precondition') }}
       </span>
 
       <Button
@@ -122,7 +122,7 @@ const caseId = computed(() => {
           v-model:value="content"
           :height="80" />
         <div v-show="descErr" class="text-status-error">
-          {{ t('testCase.kanbanView.infoPrecondition.maxCharError') }}
+          {{ t('testCase.messages.enterPrecondition') }}
         </div>
 
         <div class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">

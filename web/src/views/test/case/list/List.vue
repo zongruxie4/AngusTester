@@ -326,7 +326,7 @@ const tableAction = computed(() => {
       action.actionMenus[_case.id].push({
         key: 'resetTestResult',
         icon: 'icon-zhongzhiceshijieguo',
-        name: t('testCase.mainView.resetTestResult'),
+        name: t('testCase.actions.resetTestResult'),
         permission: 'resetTestResult'
       });
     }
@@ -343,24 +343,24 @@ const tableAction = computed(() => {
         action.actionMenus[_case.id].push({
           key: 'updateTestResult_passed',
           icon: 'icon-xiugaiceshijieguo',
-          name: t('testCase.mainView.testPassed'),
+          name: t('testCase.actions.testPassed'),
           permission: 'updateTestResult'
         }, {
           key: 'updateTestResult_notPassed',
           icon: 'icon-xiugaiceshijieguo',
-          name: t('testCase.mainView.testNotPassed'),
+          name: t('testCase.actions.testNotPassed'),
           permission: 'updateTestResult'
         }, {
           key: 'updateTestResult_blocked',
           icon: 'icon-xiugaiceshijieguo',
-          name: t('testCase.mainView.setBlocked'),
+          name: t('testCase.actions.setBlocked'),
           permission: 'updateTestResult'
         });
       } else {
         action.actionMenus[_case.id].push({
           key: 'retestResult',
           icon: 'icon-xiugaiceshijieguo',
-          name: t('testCase.mainView.retest'),
+          name: t('testCase.actions.retest'),
           permission: 'retestResult'
         });
       }
@@ -611,7 +611,7 @@ const handleResetReviewResult = async (rowData: CaseDetail) => {
     updateLoading(false);
     return;
   }
-  notification.success(t('testCase.mainView.resetReviewResultSuccess'));
+  notification.success(t('testCase.messages.resetReviewResultSuccess'));
   refreshChange();
 };
 
@@ -734,7 +734,7 @@ const handleSetResultBlocked = async (value) => {
   if (error) {
     return;
   }
-  notification.success(t('testCase.mainView.setBlockedSuccess'));
+  notification.success(t('testCase.messages.setBlockedSuccess'));
   refreshChange();
 };
 
@@ -1070,7 +1070,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleAction('updateTestResult_passed')">
-            {{ t('testCase.mainView.testPassed') }}
+            {{ t('testCase.actions.testPassed') }}
           </Button>
 
           <Button
@@ -1079,7 +1079,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleAction('updateTestResult_notPassed')">
-            {{ t('testCase.mainView.testNotPassed') }}
+            {{ t('testCase.actions.testNotPassed') }}
           </Button>
 
           <Button
@@ -1226,7 +1226,7 @@ defineExpose({
       :userInfo="userInfo"
       :refCaseIds="selectedCase?.id ? [selectedCase.id] : []"
       :description="selectedCase?.testRemark"
-      :name="t('testCase.mainView.testNotPassedName', { name: selectedCase?.name || '' })"
+      :name="t('testCase.messages.testNotPassedName', { name: selectedCase?.name || '' })"
       :taskType="TaskType.BUG"
       :confirmerId="selectedCase?.testerId?.toString()"
       :deadlineDate="undefined"

@@ -26,7 +26,7 @@ const oneReviewPass = computed(() => {
 const reviewInfoColumns = [
   [
     {
-      label: t('testCase.kanbanView.reviewInfoGrid.enableReview'),
+      label: t('testCase.messages.enableReview'),
       dataIndex: 'review',
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },

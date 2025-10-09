@@ -41,8 +41,8 @@ const emits = defineEmits<{
 
 const showTotal = (_total: number) => {
   return props.enabledGroup
-    ? t('testCase.infoView.totalGroups', { total: _total })
-    : t('testCase.infoView.totalItems', { total: _total });
+    ? t('testCase.messages.totalGroups', { total: _total })
+    : t('testCase.messages.totalItems', { total: _total });
 };
 
 /**

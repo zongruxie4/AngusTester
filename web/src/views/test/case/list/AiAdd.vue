@@ -147,7 +147,7 @@ const validateList = () => {
       errorIndex = index;
     }
     if (item.description?.length > 2000) {
-      notification.warning(t('testCase.messages.descriptionTooLong'));
+      notification.warning(t('testCase.messages.richTextTooLong'));
       valid = false;
       errorIndex = index;
     }

@@ -40,7 +40,7 @@ const attachments = ref<AttachmentViewItem[]>([]);
 */
 const handleUploadChange = async ({ file }: { file: UploadFile }) => {
   if (file.size! > maxFileSize.value) {
-    notification.warning(t('testCase.kanbanView.infoAttachment.fileSizeLimit', { size: MAX_FILE_MB }));
+    notification.warning(t('testCase.messages.fileSizeLimit', { size: MAX_FILE_MB }));
     return;
   }
 
@@ -166,7 +166,7 @@ onMounted(() => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('testCase.kanbanView.infoAttachment.title') }}
+      {{ t('common.attachment') }}
     </div>
 
     <Spin
@@ -218,10 +218,10 @@ onMounted(() => {
             type="link"
             class="flex flex-col items-center justify-center h-auto leading-5 p-0">
             <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
-            <div class="flex-shrink-0 text-text-link">{{ t('testCase.kanbanView.infoAttachment.selectFile') }}</div>
+            <div class="flex-shrink-0 text-text-link">{{ t('testCase.messages.selectFile') }}</div>
           </Button>
         </Upload>
-        <div class="text-theme-sub-content mt-1">{{ t('testCase.kanbanView.infoAttachment.fileSizeTip', { size: MAX_FILE_MB }) }}</div>
+        <div class="text-theme-sub-content mt-1">{{ t('testCase.messages.fileSizeTip', { size: MAX_FILE_MB }) }}</div>
       </template>
     </Spin>
   </div>

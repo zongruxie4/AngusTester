@@ -175,7 +175,7 @@ const loadCases = async () => {
     if (!testerNameSet.has(item.testerName)) {
       if (!item.testerName) {
         testerNameList.value.unshift({
-          name: t('testCase.kanbanView.ungrouped'),
+          name: t('status.ungrouped'),
           value: -1
         });
       } else {
@@ -377,7 +377,7 @@ const handleDropBusinessRules = (
         } else {
           revertDragInFlat(id, index, testResult, toTestResult);
         }
-        notification.warning(t('testCase.kanbanView.caseNotReviewed'));
+        notification.warning(t('testCase.messages.caseNotReviewed'));
         return;
       }
 
@@ -387,12 +387,12 @@ const handleDropBusinessRules = (
         } else {
           revertDragInFlat(id, index, testResult, toTestResult);
         }
-        notification.warning(t('testCase.kanbanView.caseReviewFailed'));
+        notification.warning(t('testCase.messages.caseReviewFailed'));
         return;
       }
 
       if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
-        notification.warning(t('testCase.kanbanView.noTestPermission'));
+        notification.warning(t('testCase.messages.noTestPermission'));
         return;
       }
     }
@@ -449,7 +449,7 @@ const handleDropBusinessRules = (
       } else {
         revertDragInFlat(id, index, testResult, toTestResult);
       }
-      notification.warning(t('testCase.kanbanView.canOnlyMoveToPending'));
+      notification.warning(t('testCase.messages.canOnlyMoveToPending'));
       return;
     } else {
       if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
@@ -480,7 +480,7 @@ const handleDropBusinessRules = (
       } else {
         revertDragInFlat(id, index, testResult, toTestResult);
       }
-      notification.warning(t('testCase.kanbanView.canOnlyMoveToTestResults'));
+      notification.warning(t('testCase.messages.canOnlyMoveToTestResults'));
       return;
     } else {
       if (!isAdmin.value && !permissions.includes(FuncPlanPermission.TEST)) {
@@ -960,7 +960,7 @@ const testOk = async () => {
   selectedCaseInfo.value = undefined;
   resultPassed.value = false;
   emit('refreshChange');
-  notification.success(t('testCase.kanbanView.testResultUpdateSuccess'));
+  notification.success(t('testCase.messages.testResultUpdateSuccess'));
   await loadCases();
 };
 
@@ -1021,7 +1021,7 @@ const addTaskOk = async (data) => {
     return;
   }
 
-  notification.success(t('testCase.kanbanView.bugTaskAssociated'));
+  notification.success(t('testCase.messages.bugIssueAssociated'));
   const [_error, _res] = await testCase.getCaseDetail(selectedCaseInfo?.value?.id || -1);
   if (_error) {
     return;
@@ -1053,7 +1053,7 @@ const toRetest = async (data: CaseDetail, notificationFlag = true, errorCallback
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('testCase.kanbanView.caseRetestSuccess'));
+    notification.success(t('testCase.messages.caseRetestSuccess'));
   }
   loadCases();
 };
@@ -1092,7 +1092,7 @@ const toBlock = async (data: CaseDetail, notificationFlag = true, errorCallback?
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('testCase.kanbanView.caseBlockedSuccess'));
+    notification.success(t('testCase.messages.caseBlockedSuccess'));
   }
   loadCases();
 };
@@ -1278,7 +1278,7 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
       if (!review || (review && reviewStatus === ReviewStatus.PASSED)) {
         if (testResult === CaseTestResult.PENDING || testResult === CaseTestResult.BLOCKED) {
           menuItems.push({
-            name: t('testCase.kanbanView.testPassed'),
+            name: t('testCase.actions.testPassed'),
             key: 'testPassed',
             icon: 'icon-xiugaiceshijieguo',
             disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
@@ -1286,7 +1286,7 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
           });
 
           menuItems.push({
-            name: t('testCase.kanbanView.testNotPassed'),
+            name: t('testCase.actions.testNotPassed'),
             key: 'testNotPassed',
             icon: 'icon-xiugaiceshijieguo',
             disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
@@ -1295,7 +1295,7 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
 
           if (testResult === CaseTestResult.PENDING) {
             menuItems.push({
-              name: t('testCase.kanbanView.setBlocked'),
+              name: t('testCase.actions.setBlocked'),
               key: 'block',
               icon: 'icon-xiugaiceshijieguo',
               disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.TEST),
@@ -1304,7 +1304,7 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
           }
         } else if (testResult === CaseTestResult.PASSED || testResult === CaseTestResult.NOT_PASSED || testResult === CaseTestResult.CANCELED) {
           menuItems.push({
-            name: t('testCase.kanbanView.retest'),
+            name: t('testCase.actions.retest'),
             key: 'retest',
             icon: 'icon-xiugaiceshijieguo',
             disabled: !isAdmin.value && (!permissions.includes(FuncPlanPermission.RESET_TEST_RESULT) || planAuthMap.value[item.planId]) && item.testerId !== props.userInfo?.id,
@@ -1313,7 +1313,7 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
 
           if (testResult === CaseTestResult.NOT_PASSED) {
             menuItems.push({
-              name: t('testCase.kanbanView.addBug'),
+              name: t('testCase.actions.submitBug'),
               key: 'addBug',
               icon: 'icon-bianji',
               disabled: !isAdmin.value && !permissions.includes(FuncPlanPermission.MODIFY_CASE),
@@ -1325,12 +1325,12 @@ const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
         // 测试次数大于0才允许重置测试结果
         if (+testNum > 0) {
           menuItems.push({
-            name: t('testCase.kanbanView.resetTestResult'),
+            name: t('testCase.actions.resetTestResult'),
             key: 'resetTestResult',
             icon: 'icon-zhongzhiceshijieguo',
             disabled: !isAdmin.value && (!permissions.includes(FuncPlanPermission.RESET_TEST_RESULT) || planAuthMap.value[item.planId]),
             hide: false,
-            tip: t('testCase.kanbanView.resetTestResultTip')
+            tip: t('testCase.messages.resetTestResultTip')
           });
         }
 
@@ -1524,7 +1524,7 @@ const checkedCaseId = computed(() => {
               class="text-3.5 cursor-pointer"
               @click="toggleOpen" />
           </Tooltip>
-          <span class="font-semibold">{{ t('testCase.kanbanView.swimLane') }}</span>
+          <span class="font-semibold">{{ t('common.swimLane') }}</span>
         </div>
         <div
           v-for="_testResult in testResultList"
@@ -1670,7 +1670,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'person' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('testCase.kanbanView.personnel')"
+          :title="t('common.personnel')"
           @click="drawerActiveKeyChange('person')">
           <Icon icon="icon-quanburenyuan" class="text-4" />
         </div>
@@ -1678,7 +1678,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'date' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('testCase.kanbanView.date')"
+          :title="t('common.date')"
           @click="drawerActiveKeyChange('date')">
           <Icon icon="icon-riqi" class="text-4" />
         </div>
@@ -1686,7 +1686,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'reviewInfo' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('testCase.kanbanView.reviewInfo')"
+          :title="t('common.reviewInfo')"
           @click="drawerActiveKeyChange('reviewInfo')">
           <Icon icon="icon-pingtaimorenzhibiao1" class="text-4" />
         </div>
@@ -1694,7 +1694,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'testInfo' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('testCase.kanbanView.testInfo')"
+          :title="t('common.testInfo')"
           @click="drawerActiveKeyChange('testInfo')">
           <Icon icon="icon-renwuceshibaogao" class="text-4" />
         </div>
@@ -1702,7 +1702,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'refTasks' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('testCase.kanbanView.associatedTasks')"
+          :title="t('common.assocIssues')"
           @click="drawerActiveKeyChange('refTasks')">
           <Icon icon="icon-ceshirenwu" class="text-4" />
         </div>
@@ -1710,7 +1710,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'refCases' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('testCase.kanbanView.associatedCases')"
+          :title="t('common.assocCases')"
           @click="drawerActiveKeyChange('refCases')">
           <Icon icon="icon-ceshiyongli1" class="text-4" />
         </div>
@@ -1726,7 +1726,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'reviewRecord' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('testCase.kanbanView.reviewRecordTitle')"
+          :title="t('common.reviewRecord')"
           @click="drawerActiveKeyChange('reviewRecord')">
           <Icon icon="icon-pingshen" class="text-4" />
         </div>

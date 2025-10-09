@@ -33,7 +33,7 @@ export const bigDateInfoColumns = [
       dataIndex: 'reviewDate'
     },
     {
-      label: t('testCase.detail.caseColumConfig.testCompleteTime'),
+      label: t('common.completedDate'),
       dataIndex: 'testResultHandleDate'
     },
     {
@@ -60,16 +60,16 @@ export const minDateInfoColumns = [
 export const bigReviewInfoColumns = [
   [
     {
-      label: t('testCase.detail.caseColumConfig.enableReview'),
+      label: t('testCase.messages.enableReview'),
       dataIndex: 'review',
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },
     {
-      label: t('testCase.detail.caseColumConfig.reviewCount'),
+      label: t('common.reviewCount'),
       dataIndex: 'reviewNum'
     },
     {
-      label: t('testCase.detail.caseColumConfig.reviewFailCount'),
+      label: t('common.reviewFailedCount'),
       dataIndex: 'reviewFailNum'
     },
     {
@@ -97,11 +97,11 @@ export const minReviewInfoColumns = [
 export const bigTestInfoColumns = [
   [
     {
-      label: t('testCase.detail.caseColumConfig.testCount'),
+      label: t('common.testCount'),
       dataIndex: 'testNum'
     },
     {
-      label: t('testCase.detail.caseColumConfig.failCount'),
+      label: t('common.counts.failedCount'),
       dataIndex: 'testFailNum'
     },
     {
@@ -109,7 +109,7 @@ export const bigTestInfoColumns = [
       dataIndex: 'oneTestPass'
     },
     {
-      label: t('testCase.detail.caseColumConfig.resultRemark'),
+      label: t('testCase.messages.resultRemark'),
       dataIndex: 'testRemark'
     }
   ]

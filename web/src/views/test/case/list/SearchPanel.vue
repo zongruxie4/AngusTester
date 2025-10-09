@@ -600,11 +600,11 @@ const menuItems = computed(() => [
   },
   {
     key: 'createdBy',
-    name: t('testCase.mainView.myAdded')
+    name: t('quickSearch.createdByMe')
   },
   {
     key: 'testerId',
-    name: t('testCase.mainView.waitingForTest')
+    name: t('quickSearch.testByMe')
   },
   // Quick options for specific test results
   ...caseTestResultOptions.value,
@@ -740,12 +740,12 @@ const searchOptions = computed(() => [
 
 const buttonDropdownMenuItems = computed(() => [
   {
-    name: t('testCase.mainView.exportCase'),
+    name: t('testCase.actions.exportCases'),
     key: 'export',
     icon: 'icon-daochu1'
   },
   {
-    name: t('testCase.mainView.importCase'),
+    name: t('testCase.actions.importCases'),
     key: 'import',
     icon: 'icon-shangchuan'
   }
@@ -754,31 +754,29 @@ const buttonDropdownMenuItems = computed(() => [
 const modeOptions = [
   {
     key: CaseViewMode.flat,
-    name: t('testCase.mainView.tileView'),
+    name: t('testCase.viewMode.flat'),
     label: ''
   },
   {
     key: CaseViewMode.table,
-    name: t('testCase.mainView.listView'),
+    name: t('testCase.viewMode.table'),
     label: ''
   },
   {
     key: CaseViewMode.kanban,
-    name: t('testCase.mainView.kanbanView'),
+    name: t('testCase.viewMode.kanban'),
     label: ''
   }
 ];
 
 const modeTitle = computed(() => {
   if (props.viewMode === CaseViewMode.kanban) {
-    return t('testCase.mainView.kanbanView');
+    return t('testCase.viewMode.kanban');
   }
-
   if (props.viewMode === CaseViewMode.flat) {
-    return t('testCase.mainView.tileView');
+    return t('testCase.viewMode.flat');
   }
-
-  return t('testCase.mainView.listView');
+  return t('testCase.viewMode.table');
 });
 
 const modeIcon = computed(() => {
@@ -800,33 +798,33 @@ const groupMenuItems = [
   },
   {
     key: 'testerName',
-    name: t('testCase.mainView.groupByTester')
+    name: t('common.tester')
   },
   {
     key: 'lastModifiedByName',
-    name: t('testCase.mainView.groupByLastModifier')
+    name: t('common.modifier')
   }
 ];
 
 const sortMenuItems = [
   {
     key: 'createdByName',
-    name: t('testCase.mainView.sortByCreator'),
+    name: t('common.creator'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'testerName',
-    name: t('testCase.mainView.sortByTester'),
+    name: t('common.tester'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'priority',
-    name: t('testCase.mainView.sortByPriority'),
+    name: t('common.priority'),
     orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'deadlineDate',
-    name: t('testCase.mainView.sortByDeadline'),
+    name: t('common.deadline'),
     orderSort: PageQuery.OrderSort.Asc
   }
 ];
@@ -1540,7 +1538,7 @@ watch(
           type="primary"
           @click="handleAiAdd">
           <Icon icon="icon-jia" class="text-3.5" />
-          <span class="ml-1">{{ t('testCase.mainView.smartAddCase') }}</span>
+          <span class="ml-1">{{ t('testCase.actions.smartAddCase') }}</span>
         </Button>
 
         <Button
@@ -1550,7 +1548,7 @@ watch(
           @click="handleAdd">
           <div class="flex items-center">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span class="ml-1">{{ t('testCase.mainView.addCase') }}</span>
+            <span class="ml-1">{{ t('testCase.actions.addCase') }}</span>
           </div>
           <Dropdown :menuItems="buttonDropdownMenuItems" @click="handleButtonDropdownClick">
             <div class="w-5 h-5 flex items-center justify-center">
@@ -1580,7 +1578,7 @@ watch(
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
-          :title="t('testCase.mainView.viewStatistics')">
+          :title="t('testCase.actions.viewStatistics')">
           <IconCount
             :value="true"
             class="text-4 flex-shrink-0"

@@ -154,7 +154,7 @@ const refreshCaseDetail = async () => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('testCase.kanbanView.infoPersonnel.title') }}
+      {{ t('common.personnel') }}
     </div>
 
     <div class="space-y-2.5">
@@ -190,7 +190,7 @@ const refreshCaseDetail = async () => {
             v-show="testerEditFlag"
             ref="testerRef"
             v-model:value="testerIdValue"
-            :placeholder="t('testCase.kanbanView.infoPersonnel.selectTester')"
+            :placeholder="t('common.placeholders.selectTester')"
             allowClear
             :defaultOptions="testerDefaultOptions"
             :action="`${TESTER}/project/${props.projectId}/member/user`"

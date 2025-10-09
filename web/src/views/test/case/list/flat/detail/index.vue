@@ -375,7 +375,7 @@ const editDeadlineDate = async () => {
   }
 
   if (dayjs(deadlineDate.value).isBefore(dayjs(), 'minute')) {
-    notification.warning(t('testCase.detail.caseDetail.deadlineMustBeFuture'));
+    notification.warning(t('testCase.messages.deadlineMustBeFuture'));
     return;
   }
 
@@ -849,7 +849,7 @@ onBeforeUnmount(() => {
                   :autofocus="isEditEvalWorkload"
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('testCase.kanbanView.infoBasic.evalWorkloadPlaceholder')"
+                  :placeholder="t('common.placeholders.inputEvalWorkload')"
                   dataType="float"
                   size="small"
                   class="w-65 absolute -top-1.25"
@@ -869,7 +869,7 @@ onBeforeUnmount(() => {
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                       {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                        ? t('testCase.kanbanView.infoBasic.evalWorkloadTip') :t ('testCase.kanbanView.infoBasic.evalWorkloadTipTime') }}
+                        ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
@@ -888,7 +888,7 @@ onBeforeUnmount(() => {
                   :autofocus="isEditActualWorkload"
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('testCase.kanbanView.infoBasic.actualWorkloadPlaceholder')"
+                  :placeholder="t('common.placeholders.inputActualWorkload')"
                   dataType="float"
                   size="small"
                   class="w-65 absolute -top-1.25"
@@ -908,7 +908,7 @@ onBeforeUnmount(() => {
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                       {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                        ? t('testCase.kanbanView.infoBasic.actualWorkloadTip') : t('testCase.kanbanView.infoBasic.actualWorkloadTipTime') }}
+                      ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
@@ -968,7 +968,7 @@ onBeforeUnmount(() => {
                 ref="versionRef"
                 v-model:value="versionValue"
                 allowClear
-                :placeholder="t('testCase.detail.caseDetail.selectVersion')"
+                :placeholder="t('common.placeholders.selectSoftwareVersion')"
                 lazy
                 class="w-full max-w-60"
                 :action="`${TESTER}/software/version?projectId=${projectId}`"
@@ -1004,7 +1004,7 @@ onBeforeUnmount(() => {
 
       <template v-if="!bigLayout">
         <Toggle
-          :title="t('testCase.detail.caseDetail.personnel')"
+          :title="t('common.personnel')"
           class="mt-3.5">
           <Grid
             :columns="peopleInfoColumns"
@@ -1045,7 +1045,7 @@ onBeforeUnmount(() => {
         </Toggle>
 
         <Toggle
-          :title="t('testCase.detail.caseDetail.date')"
+          :title="t('common.date')"
           class="mt-3.5">
           <Grid
             :columns="dateInfoColumns"
@@ -1082,7 +1082,7 @@ onBeforeUnmount(() => {
         </Toggle>
 
         <Toggle
-          :title="t('testCase.detail.caseDetail.reviewInfo')"
+          :title="t('common.reviewInfo')"
           class="mt-3.5">
           <Grid
             :columns="reviewInfoColumns"
@@ -1098,7 +1098,7 @@ onBeforeUnmount(() => {
         </Toggle>
 
         <Toggle
-          :title="t('testCase.detail.caseDetail.testInfo')"
+          :title="t('common.testInfo')"
           class="mt-3.5">
           <Grid
             :columns="testInfoColumns"
@@ -1153,8 +1153,8 @@ onBeforeUnmount(() => {
             <RichEditor
               ref="preconditionRichRef"
               v-model:value="preconditionContent"
-              :options="{ placeholder: t('testCase.detail.caseDetail.inputPrecondition')}" />
-            <div v-show="preconditionError" class="text-status-error">{{ t('testCase.detail.caseDetail.descCharLimit') }}</div>
+              :options="{ placeholder: t('testCase.messages.inputPrecondition')}" />
+            <div v-show="preconditionError" class="text-status-error">{{ t('testCase.messages.descCharLimit2000') }}</div>
           </template>
           <template v-else>
             <template v-if="caseDetail?.precondition">
@@ -1323,7 +1323,7 @@ onBeforeUnmount(() => {
     </div>
 
     <div v-if="bigLayout" class="w-75 flex-none ml-2">
-      <Toggle :title="t('testCase.detail.caseDetail.personnel')">
+      <Toggle :title="t('common.personnel')">
         <Grid
           :columns="peopleInfoColumns"
           :dataSource="caseDetail"
@@ -1364,7 +1364,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        :title="t('testCase.detail.caseDetail.date')"
+        :title="t('common.date')"
         class="mt-3.5">
         <Grid
           :columns="dateInfoColumns"
@@ -1403,7 +1403,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        :title="t('testCase.detail.caseDetail.reviewInfo')"
+        :title="t('common.reviewInfo')"
         class="mt-3.5">
         <Grid
           :columns="reviewInfoColumns"
@@ -1420,7 +1420,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        :title="t('testCase.detail.caseDetail.testInfo')"
+        :title="t('common.testInfo')"
         class="mt-3.5">
         <Grid
           :columns="testInfoColumns"
