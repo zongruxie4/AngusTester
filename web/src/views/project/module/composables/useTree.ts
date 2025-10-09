@@ -131,7 +131,7 @@ export function useTree (
    * @returns Found module item or undefined
    */
   const findModuleById = (
-    moduleId: string,
+    moduleId: number,
     treeData: ModuleItem[] = dataList.value
   ): ModuleItem | undefined => {
     for (const node of treeData) {
@@ -146,7 +146,6 @@ export function useTree (
         }
       }
     }
-
     return undefined;
   };
 
@@ -159,10 +158,10 @@ export function useTree (
    * @returns Array of module IDs from root to target
    */
   const getModulePath = (
-    moduleId: string,
+    moduleId: number,
     treeData: ModuleItem[] = dataList.value
   ): string[] => {
-    const findPath = (nodes: ModuleItem[], targetId: string, path: string[] = []): string[] | null => {
+    const findPath = (nodes: ModuleItem[], targetId: number, path: string[] = []): string[] | null => {
       for (const node of nodes) {
         const currentPath = [...path, node.id];
 

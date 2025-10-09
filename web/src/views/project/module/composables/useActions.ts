@@ -20,11 +20,11 @@ export function useActions (onDataChange: () => Promise<void>) {
   const { t } = useI18n();
 
   // Modal and editing state management
-  const editId = ref<string>();
+  const editId = ref<number>();
   const modalVisible = ref(false);
   const moveVisible = ref(false);
   const activeModule = ref<ModuleItem>();
-  const currentParentId = ref<string>();
+  const currentParentId = ref<number>();
 
   /**
    * Creates a new module with the specified parameters
@@ -134,28 +134,24 @@ export function useActions (onDataChange: () => Promise<void>) {
     const { index, id } = record;
     let updateParams: UpdateModuleParams;
 
-    // If moving up from first position, move to parent level
+    const currentSeq = Number((record as any).sequence ?? 0);
+
     if (index === 0) {
-      // Find target parent from the chain of IDs
-      let targetParent: ModuleItem | undefined;
-      // Implementation would need access to dataList to find the target parent
-      // This is a simplified version
+      // Minimal safe fallback: keep parent unchanged, reset sequence to 0
       updateParams = {
         id,
-        pid: targetParent?.pid || '-1',
-        sequence: targetParent ? Number(targetParent.sequence) - 1 : 0
+        sequence: 0
       };
     } else {
-      // Move up within the same level
       updateParams = {
         id,
-        sequence: Number(record.sequence) - 1
+        sequence: currentSeq - 1
       };
     }
 
     const success = await updateModule([updateParams]);
     if (success) {
-      notification.success(t('actions.tips.moveSuccess'));
+      // success notification handled inside updateModule
     }
   };
 
@@ -169,14 +165,16 @@ export function useActions (onDataChange: () => Promise<void>) {
     index: number;
     ids: string[];
   }): Promise<void> => {
+    const currentSeq = Number((record as any).sequence ?? 0);
+
     const updateParams: UpdateModuleParams = {
       id: record.id,
-      sequence: Number(record.sequence) + 1
+      sequence: currentSeq + 1
     };
 
     const success = await updateModule([updateParams]);
     if (success) {
-      notification.success(t('actions.tips.moveSuccess'));
+      // success notification handled inside updateModule
     }
   };
 
@@ -198,7 +196,7 @@ export function useActions (onDataChange: () => Promise<void>) {
    * @param moduleId - ID of module to move
    * @param newParentId - ID of new parent module
    */
-  const executeModuleMove = async (moduleId: string, newParentId: string): Promise<boolean> => {
+  const executeModuleMove = async (moduleId: number, newParentId: number): Promise<boolean> => {
     const updateParams: UpdateModuleParams = {
       id: moduleId,
       pid: newParentId
@@ -232,7 +230,7 @@ export function useActions (onDataChange: () => Promise<void>) {
    * @param moduleId - ID of the module being edited
    * @param newName - New name for the module
    */
-  const saveEdit = async (moduleId: string, newName: string): Promise<void> => {
+  const saveEdit = async (moduleId: number, newName: string): Promise<void> => {
     if (!newName.trim()) {
       return;
     }
@@ -253,7 +251,7 @@ export function useActions (onDataChange: () => Promise<void>) {
    *
    * @param parentId - Optional parent ID for the new module
    */
-  const openCreateModal = (parentId?: string): void => {
+  const openCreateModal = (parentId?: number): void => {
     currentParentId.value = parentId;
     modalVisible.value = true;
   };

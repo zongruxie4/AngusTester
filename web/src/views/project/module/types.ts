@@ -95,11 +95,7 @@ export interface ModuleApiParams {
   /** Project ID */
   projectId: number;
   /** Optional search filters */
-  filters?: Array<{
-    key: 'name';
-    op: SearchCriteria.OpEnum.Match;
-    value: string;
-  }>;
+  filters?: SearchCriteria[];
 }
 
 /**

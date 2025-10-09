@@ -1,7 +1,9 @@
 import { ref, type Ref } from 'vue';
 import { modules } from '@/api/tester';
-import type { ModuleItem, ModuleApiParams } from '../types';
+import type { ModuleApiParams } from '../types';
 import { travelTreeData } from '@/utils/utils';
+import { SearchCriteria } from '@xcan-angus/infra';
+import { TreeData } from '@/types/types';
 
 /**
  * Composable for managing module data operations
@@ -10,9 +12,9 @@ import { travelTreeData } from '@/utils/utils';
  * @param projectId - Reactive project ID reference
  * @returns Object containing reactive data and data management functions
  */
-export function useData (projectId: Ref<string>) {
+export function useData (projectId: Ref<number>) {
   // Reactive state for module data management
-  const dataList = ref<ModuleItem[]>([]);
+  const dataList = ref<TreeData[]>([]);
   const loading = ref(false);
   const loaded = ref(false);
   const searchedFlag = ref(false);
@@ -34,11 +36,10 @@ export function useData (projectId: Ref<string>) {
     if (searchValue?.trim()) {
       params.filters = [{
         key: 'name',
-        op: 'MATCH',
+        op: SearchCriteria.OpEnum.Match,
         value: searchValue.trim()
       }];
     }
-
     return params;
   };
 
@@ -80,7 +81,7 @@ export function useData (projectId: Ref<string>) {
 
       // Process and transform the data for tree display
       const rawData = response?.data || [];
-      const processedData = rawData as Array<{id: string; name: string}>;
+      const processedData = rawData as Array<TreeData>;
 
       // Transform data using utility function for tree structure
       dataList.value = travelTreeData(processedData);
