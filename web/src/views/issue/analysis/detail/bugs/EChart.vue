@@ -66,7 +66,7 @@ const bugsEChartConfig = {
   title: {
     text: t('common.counts.bugCount'),
     left: '50%',
-    bottom: '12%',
+    bottom: '0%',
     textAlign: 'center',
     textStyle: {
       fontSize: 12,
@@ -77,7 +77,7 @@ const bugsEChartConfig = {
   grid: {
     left: '10%',
     right: '10%',
-    bottom: '20%',
+    bottom: '24%',
     top: '15%'
   },
   xAxis: {
@@ -168,7 +168,7 @@ const bugLevelEChartConfig = {
   },
   legend: {
     top: 'center',
-    right: '2px',
+    left: '60%',
     orient: 'vertical',
     itemGap: 4,
     textStyle: {
@@ -245,7 +245,7 @@ const validBugEChartConfig = JSON.parse(JSON.stringify({
   },
   legend: {
     top: 'center',
-    right: '2px',
+    left: '60%',
     orient: 'vertical',
     itemGap: 4,
     textStyle: {
@@ -301,7 +301,7 @@ const escapedBugEChartConfig = JSON.parse(JSON.stringify({
   },
   legend: {
     top: 'center',
-    right: '2px',
+    left: '60%',
     orient: 'vertical',
     itemGap: 4,
     textStyle: {
@@ -341,7 +341,7 @@ const bugWorkloadEChartConfig = JSON.parse(JSON.stringify({
   },
   legend: {
     top: 'center',
-    right: '2px',
+    left: '60%',
     orient: 'vertical',
     itemGap: 4,
     textStyle: {
