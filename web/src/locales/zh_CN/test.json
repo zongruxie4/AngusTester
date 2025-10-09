@@ -269,7 +269,6 @@
         "resetReview": "重置评审"
       },
       "columns": {
-        "reviewOpinion": "评审意见",
         "reviewCases": "评审用例"
       },
       "messages": {

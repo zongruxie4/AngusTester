@@ -99,7 +99,8 @@
       "addModuleHint": "回车或鼠标失焦时保存添加模块，双击已存在模块可进入编辑状态",
       "noModules": "您尚未添加任何模块，立即",
       "noModulesDescription": "您尚未添加任何模块。",
-      "moduleNamePlaceholder": "请输入模块名称"
+      "noSearchResults": "没有匹配的搜索结果",
+      "tryDifferentKeywords": "尝试其他关键字再试"
     }
   },
   "version": {

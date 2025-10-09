@@ -202,15 +202,13 @@ onMounted(() => {
   <div ref="containerRef" class="w-full h-full bg-white rounded-lg shadow-sm flex flex-col">
     <!-- Header Section -->
     <div ref="headerRef" class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-100">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-            <Icon icon="icon-mokuai" class="text-blue-600 text-lg" />
-          </div>
-          <div>
-            <h2 class="text-3.5 font-semibold text-gray-900">{{ t('module.introduce.aboutModule') }}</h2>
-            <p class="text-3.5 text-gray-600 mt-1 font-serif">{{ t('module.introduce.description') }}</p>
-          </div>
+      <div class="flex items-center">
+        <div class="w-8 h-8 bg-blue-100 rounded flex items-center justify-center mr-3">
+          <Icon icon="icon-mokuai" class="text-blue-600" />
+        </div>
+        <div>
+          <h2 class="text-base font-medium text-gray-900">{{ t('module.introduce.aboutModule') }}</h2>
+          <p class="text-xs text-gray-500 mt-0.5">{{ t('module.introduce.description') }}</p>
         </div>
       </div>
     </div>
@@ -222,7 +220,7 @@ onMounted(() => {
         <div class="flex-1 max-w-md">
           <Input
             v-model:value="searchValue"
-            :placeholder="t('module.messages.moduleNamePlaceholder')"
+            :placeholder="t('common.placeholders.searchKeyword')"
             class="w-full"
             size="small"
             trimAll
@@ -294,7 +292,7 @@ onMounted(() => {
               <!-- Module tree display -->
               <div
                 v-else
-                class="bg-gray-50 rounded-lg p-2 overflow-y-auto"
+                class="bg-white border rounded p-2 overflow-y-auto"
                 :style="{ height: moduleTreeHeight }">
                 <Tree
                   :key="dataList.length"
@@ -330,18 +328,18 @@ onMounted(() => {
                     </div>
 
                     <!-- Normal display mode -->
-                    <div v-else class="flex items-center space-x-2 tree-title group hover:bg-white hover:shadow-sm rounded-lg p-1.5 transition-all duration-200">
+                    <div v-else class="flex items-center space-x-2 rounded p-1.5">
                       <div class="w-6 h-6 bg-blue-100 rounded flex items-center justify-center flex-shrink-0">
                         <Icon icon="icon-mokuai" class="text-blue-600 text-sm" />
                       </div>
                       <div class="flex items-center space-x-2 flex-1 min-w-0">
-                        <span class="truncate text-xs font-medium text-gray-900" :title="name">{{ name }}</span>
+                        <span class="truncate text-xs text-gray-900" :title="name">{{ name }}</span>
 
                         <!-- Action dropdown menu -->
                         <Dropdown :trigger="['click']">
                           <Button
                             v-if="!props.disabled && hasEditPermission"
-                            class="hidden group-hover:inline-flex items-center justify-center w-6 h-6 rounded hover:bg-gray-100"
+                            class="items-center justify-center w-6 h-6 rounded"
                             type="text"
                             size="small">
                             <Icon icon="icon-more" class="text-gray-400 text-sm" />
@@ -418,27 +416,21 @@ onMounted(() => {
 </template>
 <style scoped>
 /* Tree component styling */
-:deep(.ant-tree) {
+::deep(.ant-tree) {
   background-color: transparent;
   font-size: 12px;
 }
 
-:deep(.ant-tree .ant-tree-treenode) {
+::deep(.ant-tree .ant-tree-treenode) {
   width: 100%;
   height: auto;
   padding: 1px 0;
   line-height: 1.3;
 }
 
-:deep(.ant-tree .ant-tree-treenode.ant-tree-treenode-selected) {
-  background-color: transparent;
-}
+/* 使用 antd 默认 hover/selected 背景，不做覆盖 */
 
-:deep(.ant-tree .ant-tree-treenode:hover) {
-  background-color: transparent;
-}
-
-:deep(.ant-tree .ant-tree-switcher) {
+::deep(.ant-tree .ant-tree-switcher) {
   width: 14px;
   height: 14px;
   margin-top: 1px;
@@ -449,16 +441,12 @@ onMounted(() => {
   top: 14px;
 }
 
-:deep(.ant-tree .ant-tree-switcher .ant-tree-switcher-icon) {
+::deep(.ant-tree .ant-tree-switcher .ant-tree-switcher-icon) {
   font-size: 16px;
   color: #6b7280;
 }
 
-:deep(.ant-tree .ant-tree-node-content-wrapper:hover) {
-  background-color: transparent;
-}
-
-:deep(.ant-tree .ant-tree-node-content-wrapper) {
+::deep(.ant-tree .ant-tree-node-content-wrapper) {
   display: flex;
   flex: 1 1 0%;
   flex-direction: column;
@@ -469,63 +457,27 @@ onMounted(() => {
   line-height: 1.3;
 }
 
-:deep(.ant-tree .ant-tree-node-content-wrapper .ant-tree-iconEle) {
+::deep(.ant-tree .ant-tree-node-content-wrapper .ant-tree-iconEle) {
   height: auto;
   line-height: 1.3;
   vertical-align: initial;
 }
 
-:deep(.ant-tree .ant-tree-node-selected) {
-  background-color: transparent;
-}
-
-:deep(.ant-tree .ant-tree-indent-unit) {
+::deep(.ant-tree .ant-tree-indent-unit) {
   width: 20px;
 }
 
-:deep(.ant-tree-node-content-wrapper.ant-tree-node-content-wrapper-normal) {
-  @apply !flex-1 min-w-0;
+::deep(.ant-tree-node-content-wrapper.ant-tree-node-content-wrapper-normal) {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
-/* Custom hover effects */
-.tree-title:hover {
-  transform: translateY(-1px);
-}
+/* 下拉菜单使用 antd 默认样式，不做覆盖 */
 
-/* Menu styling */
-:deep(.ant-dropdown-menu) {
-  border-radius: 8px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  border: 1px solid #e5e7eb;
-}
-
-:deep(.ant-dropdown-menu-item) {
-  padding: 3px 6px;
-  border-radius: 4px;
-  margin: 1px 2px;
-  transition: all 0.2s ease;
-  font-size: 12px;
-}
-
-:deep(.ant-dropdown-menu-item:hover) {
-  background-color: #f3f4f6;
-}
-
-/* Input styling */
-:deep(.ant-input) {
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  transition: all 0.2s ease;
-  font-size: 12px;
-}
-
-:deep(.ant-input:focus) {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
+/* 输入框使用 antd 默认样式，不做覆盖 */
 
 /* Spin styling */
-:deep(.ant-spin-container) {
+::deep(.ant-spin-container) {
   height: 100%;
   min-height: 0;
 }
