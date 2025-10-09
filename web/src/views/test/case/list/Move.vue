@@ -81,8 +81,8 @@ const format = (data: any) => {
       @finish="onFinish">
       <FormItem
         name="targetPlanId"
-        :label="t('testCase.moveCaseModal.selectPlan')"
-        :rules="[{ required: true, message: t('testCase.moveCaseModal.pleaseSelectPlan') }]"
+        :label="t('common.placeholders.selectPlan')"
+        :rules="[{ required: true, message: t('common.placeholders.selectPlan') }]"
         class="flex-1">
         <Select
           v-model:value="formState.targetPlanId"
@@ -91,7 +91,7 @@ const format = (data: any) => {
           :format="format"
           showSearch
           allowClear
-          :placeholder="t('testCase.moveCaseModal.selectOrQueryPlan')">
+          :placeholder="t('common.placeholders.selectPlan')">
           <template #option="item">
             <div class="flex items-center">
               <Icon icon="icon-jihua" class="mr-1 text-3.5" />

@@ -142,17 +142,17 @@ const validateList = () => {
     }
 
     if (dayjs(item.deadlineDate).isBefore(dayjs(), 'minute')) {
-      notification.warning(t('testCase.addCaseModal.deadlineMustBeFuture'));
+      notification.warning(t('testCase.messages.deadlineMustBeFuture'));
       valid = false;
       errorIndex = index;
     }
     if (item.description?.length > 2000) {
-      notification.warning(t('testCase.addCaseModal.descriptionTooLong'));
+      notification.warning(t('testCase.messages.descriptionTooLong'));
       valid = false;
       errorIndex = index;
     }
     if (item.actualWorkload && !item.evalWorkload) {
-      notification.warning(t('testCase.addCaseModal.pleaseEnterEvalWorkload'));
+      notification.warning(t('testCase.messages.pleaseEnterEvalWorkload'));
       valid = false;
       errorIndex = index;
     }
@@ -253,7 +253,7 @@ const addSave = async () => {
 
 const upLoadFile = async ({ file }: { file }) => {
   if (file.size > 100 * 1024 * 1024) {
-    notification.error(t('testCase.addCaseModal.fileTooLarge'));
+    notification.error(t('testCase.messages.fileTooLarge'));
     return;
   }
 
@@ -289,9 +289,9 @@ const disabledDate = (current) => {
 const validateDate = async (_rule: Rule, value: string) => {
   if (formState.value.planId) {
     if (!value) {
-      return Promise.reject(new Error(t('testCase.addCaseModal.pleaseSelectDeadlineTime')));
+      return Promise.reject(new Error(t('common.placeholders.selectDeadline')));
     } else if (dayjs(value).isBefore(dayjs(), 'minute')) {
-      return Promise.reject(new Error(t('testCase.addCaseModal.deadlineMustBeFuture')));
+      return Promise.reject(new Error(t('testCase.messages.deadlineMustBeFuture')));
     }
   }
   return Promise.resolve();
@@ -368,7 +368,7 @@ const validateCondition = () => {
     return Promise.resolve();
   }
   if (preRichRef.value && preRichRef.value.getLength() > 2000) {
-    return Promise.reject(t('testCase.addCaseModal.richTextTooLong'));
+    return Promise.reject(t('testCase.messages.richTextTooLong'));
   }
   return Promise.resolve();
 };
@@ -385,7 +385,7 @@ const evalWorkloadChange = (value) => {
 const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
   if (formState.value.actualWorkload) {
     if (!value) {
-      return Promise.reject(new Error(t('testCase.addCaseModal.pleaseEnterEvalWorkload')));
+      return Promise.reject(new Error(t('testCase.messages.pleaseEnterEvalWorkload')));
     } else {
       return Promise.resolve();
     }
@@ -449,7 +449,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    :title="t('testCase.addCaseModal.aiGenerate')"
+    :title="t('testCase.actions.aiGenerate')"
     :visible="props.visible"
     :footer="null"
     :style="style"
@@ -458,7 +458,7 @@ onMounted(() => {
     <div class="mb-4 flex space-x-2 items-center">
       <Input
         v-model:value="question"
-        :placeholder="t('testCase.addCaseModal.enterQuestion')" />
+        :placeholder="t('testCase.messages.enterQuestion')" />
       <Button
         type="primary"
         size="small"
@@ -466,7 +466,7 @@ onMounted(() => {
         :loading="generateLoading"
         :disabled="!question"
         @click="generateCaseList">
-        {{ t('testCase.addCaseModal.generateCases') }}
+        {{ t('testCase.messages.generateCases') }}
       </Button>
     </div>
 
@@ -504,12 +504,12 @@ onMounted(() => {
               <FormItem
                 :label="t('common.name')"
                 name="name"
-                :rules="[{ required: true, message: t('testCase.addCaseModal.pleaseEnterCaseName') }]">
+                :rules="[{ required: true, message: t('testCase.messages.pleaseEnterCaseName') }]">
                 <Input
                   v-model:value="formState.name"
                   size="small"
                   :maxlength="400"
-                  :placeholder="t('testCase.addCaseModal.enterCaseName')" />
+                  :placeholder="t('testCase.messages.enterCaseName')" />
               </FormItem>
 
               <FormItem
@@ -517,30 +517,30 @@ onMounted(() => {
                 :rules="[{validator: validateCondition}]">
                 <template #label>
                   <div class="text-3 flex space-x-2 items-center">
-                    <span>{{ t('testCase.addCaseModal.precondition') }}</span>
-                    <Hints :text="t('testCase.addCaseModal.preconditionHint')" />
+                    <span>{{ t('common.precondition') }}</span>
+                    <Hints :text="t('testCase.messages.preconditionHint')" />
                   </div>
                 </template>
                 <RichEditor
                   ref="preRichRef"
                   v-model:value="formState.precondition"
                   :height="100"
-                  :placeholder="t('testCase.addCaseModal.enterPrecondition')" />
+                  :placeholder="t('testCase.messages.enterPrecondition')" />
               </FormItem>
 
               <FormItem>
                 <template #label>
                   <div class="text-3 flex space-x-2 items-center">
-                    <span>{{ t('testCase.addCaseModal.testSteps') }}</span>
+                    <span>{{ t('common.testSteps') }}</span>
                     <Dropdown
                       :value="[formState.stepView]"
                       :menuItems="stepViewOpt"
                       @click="changeStepView">
                       <span class="text-theme-special">
-                        {{ t('testCase.addCaseModal.switchType') }} <Icon icon="icon-xiajiantou" />
+                        {{ t('testCase.actions.switchType') }} <Icon icon="icon-xiajiantou" />
                       </span>
                     </Dropdown>
-                    <Hints :text="t('testCase.addCaseModal.testStepsHint')" />
+                    <Hints :text="t('testCase.messages.testStepsHint')" />
                   </div>
                 </template>
 
@@ -557,7 +557,7 @@ onMounted(() => {
                 <template #label>
                   <div class="text-3 flex space-x-2 items-center">
                     <span>{{ t('common.description') }}</span>
-                    <Hints :text="t('testCase.addCaseModal.descriptionHint')" />
+                    <Hints :text="t('testCase.messages.descriptionHint')" />
                   </div>
                 </template>
 
@@ -572,7 +572,7 @@ onMounted(() => {
                 Key=""
                 :label="t('common.plan')"
                 name="planId"
-                :rules="{required:true,message:t('testCase.addCaseModal.pleaseSelectPlan')}">
+                :rules="{required:true,message:t('common.placeholders.selectPlan')}">
                 <Select
                   v-model:value="formState.planId"
                   :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
@@ -580,7 +580,7 @@ onMounted(() => {
                   :lazy="false"
                   defaultActiveFirstOption
                   showSearch
-                  :placeholder="t('testCase.addCaseModal.selectOrQueryPlan')"
+                  :placeholder="t('common.placeholders.selectPlan')"
                   loadMode="infinity"
                   @change="planChange">
                   <template #option="item">
@@ -602,7 +602,7 @@ onMounted(() => {
                   :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
                   showSearch
                   allowClear
-                  :placeholder="t('testCase.addCaseModal.selectOrQueryModule')">
+                  :placeholder="t('common.placeholders.selectModule')">
                   <template #title="item">
                     <div class="flex items-center" :title="item.name">
                       <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -615,7 +615,7 @@ onMounted(() => {
               <FormItem
                 :label="t('common.tester')"
                 name="testerId"
-                :rules="{required:true,message:t('testCase.addCaseModal.pleaseSelectTester')}">
+                :rules="{required:true,message:t('common.placeholders.selectTester')}">
                 <div class="flex items-center">
                   <Select
                     v-model:value="formState.testerId"
@@ -635,7 +635,7 @@ onMounted(() => {
               <FormItem
                 :label="t('common.developer')"
                 name="developerId"
-                :rules="{required:true,message:t('testCase.addCaseModal.pleaseSelectDeveloper')}">
+                :rules="{required:true,message:t('common.placeholders.selectDeveloper')}">
                 <Select
                   v-model:value="formState.developerId"
                   :options="members"
@@ -653,7 +653,7 @@ onMounted(() => {
                       placement="right"
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
-                      :title="t('testCase.addCaseModal.priorityHint')">
+                      :title="t('testCase.messages.priorityHint')">
                       <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
@@ -680,7 +680,7 @@ onMounted(() => {
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
                       :title="evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                        ? t('testCase.addCaseModal.storyPointsHint') : t('testCase.addCaseModal.workHoursHint')">
+                        ? t('testCase.messages.storyPointsHint') : t('testCase.messages.workHoursHint')">
                       <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
@@ -692,7 +692,7 @@ onMounted(() => {
                   :disabled="!formState.planId"
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('testCase.addCaseModal.minMaxDecimal')"
+                  :placeholder="t('testCase.messages.minMaxDecimal')"
                   dataType="float"
                   @blur="evalWorkloadChange($event.target.value)" />
               </FormItem>
@@ -703,7 +703,7 @@ onMounted(() => {
                 <Select
                   v-model:value="formState.softwareVersion"
                   allowClear
-                  :placeholder="t('testCase.addCaseModal.pleaseSelectVersion')"
+                  :placeholder="t('common.placeholders.selectSoftwareVersion')"
                   :action="`${TESTER}/software/version?projectId=${projectId}`"
                   :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: SearchCriteria.OpEnum.In}]}"
                   :fieldNames="{value:'name', label: 'name'}">
@@ -720,7 +720,7 @@ onMounted(() => {
                       placement="right"
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
-                      :title="t('testCase.addCaseModal.deadlineHint')">
+                      :title="t('testCase.messages.deadlineHint')">
                       <Icon icon="icon-tishi1" class="text-tips aml-1 cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
@@ -732,7 +732,7 @@ onMounted(() => {
                   :showTime="{hideDisabledOptions: true,format:TIME_FORMAT}"
                   :disabled="!formState.planId"
                   allowClear
-                  :placeholder="t('testCase.addCaseModal.pleaseSelectDeadline')"
+                  :placeholder="t('common.placeholders.selectDeadline')"
                   size="small"
                   type="date"
                   class="w-full" />
@@ -746,7 +746,7 @@ onMounted(() => {
                       placement="right"
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
-                      :title="t('testCase.addCaseModal.tagsHint')">
+                      :title="t('testCase.messages.tagsHint')">
                       <Icon icon="icon-tishi1" class="text-tips cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
@@ -761,7 +761,7 @@ onMounted(() => {
                   :maxTags="5"
                   :allowClear="false"
                   :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
-                  :placeholder="t('testCase.addCaseModal.selectOrQueryTags')"
+                  :placeholder="t('common.placeholders.selectTag')"
                   mode="multiple">
                   <template #option="item">
                     <div class="flex items-center" :title="item.name">
@@ -774,7 +774,7 @@ onMounted(() => {
 
               <FormItem
                 name="refTaskIds"
-                :label="t('testCase.addCaseModal.relatedTasks')"
+                :label="t('common.assocIssues')"
                 class="relative">
                 <Select
                   v-model:value="formState.refTaskIds"
@@ -786,7 +786,7 @@ onMounted(() => {
                   :maxTagTextLength="15"
                   :maxTags="20"
                   :action="`${TESTER}/task?projectId=${projectId}&fullTextSearch=true`"
-                  :placeholder="t('testCase.addCaseModal.maxRelatedTasks')"
+                  :placeholder="t('testCase.messages.maxAssocIssues')"
                   mode="multiple">
                   <template #option="record">
                     <div class="flex items-center leading-4.5 overflow-hidden">
@@ -807,7 +807,7 @@ onMounted(() => {
 
               <FormItem
                 name="refCaseIds"
-                :label="t('testCase.addCaseModal.relatedCases')"
+                :label="t('testCase.messages.assocCases')"
                 class="relative">
                 <Select
                   v-model:value="formState.refCaseIds"
@@ -819,7 +819,7 @@ onMounted(() => {
                   :maxTagTextLength="15"
                   :maxTags="20"
                   :action="`${TESTER}/func/case?projectId=${projectId}&fullTextSearch=true`"
-                  :placeholder="t('testCase.addCaseModal.maxRelatedCases')"
+                  :placeholder="t('testCase.messages.maxAssocCases')"
                   mode="multiple">
                   <template #option="record">
                     <div class="flex items-center leading-4.5 overflow-hidden">
@@ -864,10 +864,9 @@ onMounted(() => {
                         :fileList="[]"
                         name="file"
                         class="-mb-1 mr-1"
-                        :customRequest="upLoadFile"
-                        ">
+                        :customRequest="upLoadFile" >
                         <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                        <span class="text-3 leading-3 text-theme-text-hover">{{ t('testCase.addCaseModal.continueUpload') }}</span>
+                        <span class="text-3 leading-3 text-theme-text-hover">{{ t('actions.continueUpload') }}</span>
                       </Upload>
                     </div>
                   </template>

@@ -179,7 +179,7 @@ onMounted(() => {
       class="chart-container"></div>
     <!-- Chart center label -->
     <div class="chart-center-label">
-      <div class="label-title">{{ t('testCase.statisticsPanel.reviewStatus') }}</div>
+      <div class="label-title">{{ t('common.reviewStatus') }}</div>
       <div class="label-value">{{ props.dataSource?.totalReviewCaseNum }}</div>
     </div>
   </div>

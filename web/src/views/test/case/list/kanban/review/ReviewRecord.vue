@@ -193,7 +193,7 @@ defineExpose({
         <Precondition :caseInfo="selectRecordInfo" />
 
         <div class="font-semibold text-3.5">
-          {{ t('testCase.kanbanView.reviewRecord.testSteps') }}
+          {{ t('common.testSteps') }}
         </div>
 
         <CaseStep :defaultValue="selectRecordInfo?.steps || {}" readonly />
@@ -209,7 +209,7 @@ defineExpose({
         <Precondition :caseInfo="props.dataSource" :contentClass="preconditionClass" />
 
         <div class="font-semibold text-3.5">
-          {{ t('testCase.kanbanView.reviewRecord.testSteps') }}
+          {{ t('common.testSteps') }}
         </div>
 
         <div :class="stepsClass">

@@ -1662,7 +1662,7 @@ const checkedCaseId = computed(() => {
           v-if="false"
           :class="{ 'drawer-active-item': drawerActiveKey === 'testStep' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('testCase.kanbanView.testSteps')"
+          :title="t('common.testSteps')"
           @click="drawerActiveKeyChange('testStep')">
           <Icon icon="icon-renwu2" class="text-4" />
         </div>

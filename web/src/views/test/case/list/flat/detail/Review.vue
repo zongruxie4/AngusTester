@@ -179,7 +179,7 @@ defineExpose({
 
         <Precondition :caseInfo="selectRecordInfo" />
 
-        <div class="font-semibold text-3.5">{{ t('testCase.detail.review.testSteps') }}</div>
+        <div class="font-semibold text-3.5">{{ t('common.testSteps') }}</div>
 
         <CaseStep :defaultValue="selectRecordInfo?.steps || {}" readonly />
 
@@ -193,7 +193,7 @@ defineExpose({
 
         <Precondition :caseInfo="props.caseDetail" :contentClass="preconditionClass" />
 
-        <div class="font-semibold text-3.5">{{ t('testCase.detail.review.testSteps') }}</div>
+        <div class="font-semibold text-3.5">{{ t('common.testSteps') }}</div>
 
         <div :class="stepsClass">
           <CaseStep :defaultValue="props?.caseDetail?.steps || []" readonly />
