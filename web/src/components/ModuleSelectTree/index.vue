@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
+import { computed, defineAsyncComponent, inject, Ref, ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { appContext, duration } from '@xcan-angus/infra';
+import { appContext, duration, SearchCriteria } from '@xcan-angus/infra';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { modules } from '@/api/tester';
 import { ProjectInfo } from '@/layout/types';
+import { travelTreeData } from '@/utils/utils';
 
 /**
  * Module item interface for tree display
@@ -29,6 +30,7 @@ type Props = {
   notify: string;
   dataList: ModuleItem[];
   moduleId: string;
+  readonly: boolean;
 }
 
 // COMPONENT PROPS
@@ -37,12 +39,13 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined,
-  disabled: false,
-  dataList: () => []
+  dataList: () => [],
+  readonly: false
 });
 
+
 // Emits
-const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string):void}>();
+const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value?: string):void}>();
 
 // Async components
 const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
@@ -53,6 +56,7 @@ const { t } = useI18n();
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const isAdmin = computed(() => appContext.isAdmin());
 const currentUserInfo = ref(appContext.getUser());
+const moduleTreeData = ref<ModuleItem[]>([{ name: t('common.noModule'), id: '-1' }]);
 
 // REACTIVE STATE
 const nameInputRef = ref();
@@ -79,7 +83,7 @@ const handleModuleSelectionChange = (selectedKeys: string[]) => {
  * Handles module search with debounce
  */
 const handleModuleSearch = debounce(duration.search, () => {
-  emits('loadData', searchKeywords.value);
+  loadModuleTreeData();
 });
 
 /**
@@ -93,7 +97,7 @@ const handleModuleCreation = () => {
  * Handles module creation completion
  */
 const handleModuleCreationComplete = () => {
-  emits('loadData', searchKeywords.value);
+  loadModuleTreeData();
 };
 
 /**
@@ -133,7 +137,7 @@ const handleModuleNameUpdate = async (moduleId: string, event: { target: { value
   }
   notification.success(t('actions.tips.updateSuccess'));
   currentEditId.value = undefined;
-  emits('loadData', searchKeywords.value);
+  loadModuleTreeData();
 };
 
 /**
@@ -167,7 +171,7 @@ const handleModuleDeletion = (moduleData: ModuleItem) => {
       }
 
       notification.success(t('actions.tips.deleteSuccess'));
-      emits('loadData', searchKeywords.value);
+      loadModuleTreeData();
     }
   });
 };
@@ -222,7 +226,7 @@ const handleModuleMoveUp = async (moduleRecord: any) => {
     return;
   }
   notification.success(t('actions.tips.moveSuccess'));
-  emits('loadData', searchKeywords.value);
+  loadModuleTreeData();
 };
 
 /**
@@ -257,7 +261,7 @@ const handleModuleMoveDown = async (moduleRecord: any) => {
     return;
   }
   notification.success(t('actions.tips.moveSuccess'));
-  emits('loadData', searchKeywords.value);
+  loadModuleTreeData();
 };
 
 /**
@@ -290,10 +294,45 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
     handleModuleLevelMove(moduleRecord);
   }
 };
+
+/**
+ * Load module tree data
+ */
+ const loadModuleTreeData = async () => {
+  const [error, { data }] = await modules.getModuleTree({
+    projectId: props.projectId,
+    filters: searchKeywords.value
+      ? [{ value: searchKeywords.value, op: SearchCriteria.OpEnum.Match, key: 'name' }]
+      : []
+  });
+  if (error) {
+    return;
+  }
+  moduleTreeData.value = [{ name: t('common.noModule'), id: '-1' }, ...travelTreeData(data || [])];
+  if (props.moduleId && searchKeywords.value && !moduleTreeData.value.find(item => item.id === String(props.moduleId))) {
+    emits('update:moduleId', undefined);
+  }
+};
+
+/**
+ * Initialize component data on mount
+ */
+onMounted(() => {
+  loadModuleTreeData();
+
+  watch(() => props.projectId, () => {
+    loadModuleTreeData();
+  });
+});
+
+// Expose methods for parent component
+defineExpose({
+  loadDataList: loadModuleTreeData
+});
 </script>
 <template>
   <div class="h-full flex flex-col">
-    <div class="flex justify-between h-11 space-x-4 p-2">
+    <div v-if="!readonly" class="flex justify-between h-11 space-x-4 p-2">
       <Input
         v-model:value="searchKeywords"
         :placeholder="t('common.placeholders.searchKeyword')"
@@ -317,7 +356,7 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
     </div>
 
     <Tree
-      :treeData="props.dataList"
+      :treeData="moduleTreeData"
       :selectedKeys="[props.moduleId]"
       class="flex-1 overflow-auto"
       blockNode
@@ -355,7 +394,7 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
             icon="icon-liebiaoshitu"
             class="text-3.5" />
           <span class="flex-1 min-w-0 truncate" :title="name">{{ name }}</span>
-          <Dropdown :trigger="['click']">
+          <Dropdown v-if="!readonly" :trigger="['click']">
             <Button
               v-if="id !== '-1' && hasEditPermission"
               type="text"
@@ -430,6 +469,62 @@ const handleContextMenuClick = (menuItem: any, moduleRecord: any) => {
 
 :deep(.ant-tree-node-content-wrapper.ant-tree-node-content-wrapper-normal) {
   @apply !flex-1 min-w-0;
+}
+
+:deep(.ant-tree) {
+  background-color: transparent;
+  font-size: 12px;
+}
+
+:deep(.ant-tree .ant-tree-treenode) {
+  width: 100%;
+  height: 36px;
+  padding-left: 0;
+  line-height: 20px;
+}
+
+:deep(.ant-tree .ant-tree-treenode.ant-tree-treenode-selected) {
+  background-color: var(--content-tabs-bg-selected);
+}
+
+:deep(.ant-tree .ant-tree-treenode:hover) {
+  background-color: var(--content-tabs-bg-selected);
+}
+
+:deep(.ant-tree .ant-tree-switcher) {
+  width: 16px;
+  height: 34px;
+  margin-top: 2px;
+  line-height: 34px;
+}
+
+:deep(.ant-tree .ant-tree-node-content-wrapper:hover) {
+  background-color: transparent;
+}
+
+:deep(.ant-tree .ant-tree-node-content-wrapper) {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  justify-content: center;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  line-height: 36px;
+}
+
+:deep(.ant-tree .ant-tree-node-content-wrapper .ant-tree-iconEle) {
+  height: 36px;
+  line-height: 36px;
+  vertical-align: initial;
+}
+
+:deep(.ant-tree .ant-tree-node-selected) {
+  background-color: transparent;
+}
+
+:deep(.ant-tree .ant-tree-indent-unit) {
+  width: 18px;
 }
 
 </style>

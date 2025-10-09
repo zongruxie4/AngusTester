@@ -372,6 +372,7 @@ export const travelTreeData = (treeData: TreeData[], callback = (item: TreeData)
       if (processedItem !== item) {
         Object.assign(item, processedItem);
       }
+
     });
   }
 

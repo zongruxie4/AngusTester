@@ -656,7 +656,7 @@ onMounted(() => {
         class="flex items-center px-0 mt-1"
         @click="addNewSubTask">
         <Icon icon="icon-jia" class="mr-1 text-3.5" />
-        <span>{{ t('actions.saveAndContinue') }}</span>
+        <span>{{ t('actions.add') }}</span>
       </Button>
     </Spin>
   </Modal>
