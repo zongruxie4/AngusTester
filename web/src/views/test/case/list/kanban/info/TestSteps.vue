@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData } from '@xcan-angus/vue-ui';
 import { cloneDeep } from 'lodash-es';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
@@ -48,7 +48,7 @@ const cancel = () => {
 */
 const saveSteps = async () => {
   loadingChange(true);
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props.dataSource?.id,
     steps: stepsContent.value
   }]);
@@ -68,7 +68,7 @@ const change = async () => {
   }
 
   loadingChange(true);
-  const [error, res] = await funcCase.getCaseDetail(id);
+  const [error, res] = await testCase.getCaseDetail(id);
   loadingChange(false);
   if (error) {
     return;

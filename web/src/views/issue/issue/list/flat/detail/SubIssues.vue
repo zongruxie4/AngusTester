@@ -6,7 +6,7 @@ import {
   Input, modal, notification, Table
 } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BugLevel, TaskType } from '@/enums/enums';
 
@@ -108,7 +108,7 @@ const handleSubTaskAssociation = async (selectedSubTaskIds: string[]) => {
   };
 
   isOperationLoading.value = true;
-  const [error] = await task.setSubTask(props.taskInfo?.id || props.id, requestParams);
+  const [error] = await issue.setSubTask(props.taskInfo?.id || props.id, requestParams);
   isOperationLoading.value = false;
   isTaskSelectionModalVisible.value = false;
 
@@ -171,7 +171,7 @@ const saveNewSubTask = async () => {
   }
 
   isOperationLoading.value = true;
-  const [error] = await task.addTask(requestParams);
+  const [error] = await issue.addTask(requestParams);
   isOperationLoading.value = false;
 
   if (error) {
@@ -200,7 +200,7 @@ const deleteSubTask = (subTaskData: TaskDetail['subTaskInfos'][number]) => {
         subTaskIds: [subTaskData.id]
       };
       emit('update:loading', true);
-      const [error] = await task.cancelSubTask(props.taskInfo?.id || props.id, requestParams);
+      const [error] = await issue.cancelSubTask(props.taskInfo?.id || props.id, requestParams);
       emit('update:loading', false);
 
       if (error) {
@@ -261,7 +261,7 @@ const handleDropdownMenuClick = (menuItem: any, taskData: TaskDetail) => {
  * @param taskData - The task to add to favourites
  */
 const addToFavourites = async (taskData: TaskDetail) => {
-  const [error] = await task.favouriteTask(taskData.id);
+  const [error] = await issue.favouriteTask(taskData.id);
   if (error) {
     return;
   }
@@ -278,7 +278,7 @@ const addToFavourites = async (taskData: TaskDetail) => {
  * @param taskData - The task to remove from favourites
  */
 const removeFromFavourites = async (taskData: TaskDetail) => {
-  const [error] = await task.cancelFavouriteTask(taskData.id);
+  const [error] = await issue.cancelFavouriteTask(taskData.id);
   if (error) {
     return;
   }
@@ -295,7 +295,7 @@ const removeFromFavourites = async (taskData: TaskDetail) => {
  * @param taskData - The task to follow
  */
 const followTask = async (taskData: TaskDetail) => {
-  const [error] = await task.followTask(taskData.id);
+  const [error] = await issue.followTask(taskData.id);
   if (error) {
     return;
   }
@@ -312,7 +312,7 @@ const followTask = async (taskData: TaskDetail) => {
  * @param taskData - The task to unfollow
  */
 const unfollowTask = async (taskData: TaskDetail) => {
-  const [error] = await task.cancelFollowTask(taskData.id);
+  const [error] = await issue.cancelFollowTask(taskData.id);
   if (error) {
     return;
   }

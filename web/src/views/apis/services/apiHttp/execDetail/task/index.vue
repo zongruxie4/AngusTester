@@ -2,7 +2,7 @@
 import { onMounted, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IconTask, Table } from '@xcan-angus/vue-ui';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
 
@@ -29,7 +29,7 @@ const taskList = ref([]);
 const loadTasks = async () => {
   const { current, pageSize } = pagination.value;
   loading.value = true;
-  const [error, { data }] = await task.getTaskList({
+  const [error, { data }] = await issue.getTaskList({
     projectId: props.projectId,
     taskType: 'APIS_TEST',
     filters: [{ value: props.apisId, op: 'EQUAL', key: 'targetId' }],

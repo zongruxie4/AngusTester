@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Spin } from '@xcan-angus/vue-ui';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 
 import { TaskDetail } from '@/views/issue/types';
 import { TestInfo } from '@/views/execution/types';
@@ -56,7 +56,7 @@ const loadTaskResultData = async () => {
   const { taskType, testType, targetId } = props.dataSource;
   isLoadingData.value = true;
 
-  const [error, response] = await task.getTaskResult(taskType?.value, targetId, testType?.value);
+  const [error, response] = await issue.getTaskResult(taskType?.value, targetId, testType?.value);
   isLoadingData.value = false;
 
   if (error) {

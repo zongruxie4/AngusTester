@@ -10,7 +10,7 @@ import {
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
-import { funcPlan, project } from '@/api/tester';
+import { testPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
@@ -273,7 +273,7 @@ const handlePlanUpdate = async () => {
 
   const params = prepareFormParams();
   loading.value = true;
-  const [error] = await funcPlan.putPlan(params);
+  const [error] = await testPlan.putPlan(params);
   loading.value = false;
   if (error) {
     return;
@@ -296,7 +296,7 @@ const handlePlanUpdate = async () => {
 const handlePlanCreation = async () => {
   const params = prepareFormParams();
   loading.value = true;
-  const [error, res] = await funcPlan.addPlan(params);
+  const [error, res] = await testPlan.addPlan(params);
   loading.value = false;
   if (error) {
     return;
@@ -343,7 +343,7 @@ const startPlan = async () => {
   }
 
   loading.value = true;
-  const [error] = await funcPlan.startPlan(planId!);
+  const [error] = await testPlan.startPlan(planId!);
   loading.value = false;
   if (error) {
     return;
@@ -365,7 +365,7 @@ const completePlan = async () => {
   }
 
   loading.value = true;
-  const [error] = await funcPlan.endPlan(planId!);
+  const [error] = await testPlan.endPlan(planId!);
   loading.value = false;
   if (error) {
     return;
@@ -391,7 +391,7 @@ const deletePlan = async () => {
     async onOk () {
       const planId = planData.id;
       loading.value = true;
-      const [error] = await funcPlan.deletePlan(planId!);
+      const [error] = await testPlan.deletePlan(planId!);
       loading.value = false;
       if (error) {
         return;
@@ -436,7 +436,7 @@ const clonePlan = async () => {
   }
 
   loading.value = true;
-  const [error] = await funcPlan.clonePlan(planId!);
+  const [error] = await testPlan.clonePlan(planId!);
   loading.value = false;
   if (error) {
     return;
@@ -458,7 +458,7 @@ const resetTestResults = async () => {
 
   const params = { ids: [planId] };
   loading.value = true;
-  const [error] = await funcPlan.resetCaseResult(params);
+  const [error] = await testPlan.resetCaseResult(params);
   loading.value = false;
   if (error) {
     return;
@@ -481,7 +481,7 @@ const resetReviewResults = async () => {
 
   const params = { ids: [planId] };
   loading.value = true;
-  const [error] = await funcPlan.resetCaseReview(params);
+  const [error] = await testPlan.resetCaseReview(params);
   loading.value = false;
   if (error) {
     return;
@@ -531,7 +531,7 @@ const loadPlanData = async (planId: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await funcPlan.getPlanDetail(planId);
+  const [error, res] = await testPlan.getPlanDetail(planId);
   loading.value = false;
   if (error) {
     return;
@@ -656,7 +656,7 @@ const loadUserPermissions = async (planId: string) => {
     admin: true
   };
   loading.value = true;
-  const [error, res] = await funcPlan.getCurrentAuthByPlanId(planId, params);
+  const [error, res] = await testPlan.getCurrentAuthByPlanId(planId, params);
   loading.value = false;
   if (error) {
     return;

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER, PageQuery, utils } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { TaskDetail } from '../../types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 import { Remark } from '@/views/issue/issue/types';
@@ -44,7 +44,7 @@ const handleScrollDataChange = (data: Remark[]) => {
  * <p>Removes a remark from the server and updates the local list</p>
  */
 const deleteRemark = async (remarkId: string) => {
-  const [error] = await task.deleteTaskRemark(remarkId);
+  const [error] = await issue.deleteTaskRemark(remarkId);
   if (error) {
     return;
   }
@@ -112,7 +112,7 @@ const submitRemark = async () => {
   const requestParams = { taskId: props.id, content: currentRemarkContent.value };
 
   emit('loadingChange', true);
-  const [error] = await task.addTaskRemark(requestParams);
+  const [error] = await issue.addTaskRemark(requestParams);
   emit('loadingChange', false);
   if (error) {
     return;

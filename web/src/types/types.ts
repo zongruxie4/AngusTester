@@ -19,12 +19,12 @@ export type DataSourceProps<T> = {
 }
 
 export type BasicProps = {
-  projectId: string;
+  projectId: number;
   projectName?: string;
-  userInfo?: { id: string; fullName?: string } | User;
-  appInfo?: { id: string; } | AppInfo;
+  userInfo?: { id: number; fullName?: string } | User;
+  appInfo?: { id: number; } | AppInfo;
   total?: 0,
-  userId?: '',
+  userId?: number,
   notify?: string;
   onShow?: boolean;
   disabled?: false,
@@ -33,10 +33,10 @@ export type BasicProps = {
 }
 
 export type BasicDataSourceProps<T> = {
-  projectId: string;
+  projectId: number;
   projectName?: string;
-  userInfo?: { id: string; fullName?: string } | User;
-  appInfo?: { id: string; } | AppInfo;
+  userInfo?: { id: number; fullName?: string } | User;
+  appInfo?: { id: number; } | AppInfo;
   notify?: string;
   onShow?: boolean;
   disabled?: false,
@@ -45,7 +45,7 @@ export type BasicDataSourceProps<T> = {
 }
 
 export type UserInfo = {
-  id: string;
+  id: number;
   username: string;
   fullName: string;
   mobile: string;
@@ -65,13 +65,13 @@ export interface CreateTimeSetting {
 }
 
 export type ActivityInfo = {
-  id: string;
-  projectId: string;
-  userId: string;
+  id: number;
+  projectId: number;
+  userId: number;
   fullName: string;
   avatar: string;
-  targetId: string;
-  parentTargetId: string;
+  targetId: number;
+  parentTargetId: number;
   targetType: EnumMessage<CombinedTargetType>;
   targetName: string;
   optDate: string;
@@ -81,6 +81,7 @@ export type ActivityInfo = {
 }
 
 export type AttachmentInfo = {
+  id?: number;
   name: string;
   url: string;
 }

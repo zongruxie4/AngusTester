@@ -6,7 +6,7 @@ import { AsyncComponent, modal, NoData, notification } from '@xcan-angus/vue-ui'
 import {
   appContext, download, enumUtils, http, PageQuery, SearchCriteria, TESTER, toClipboard, ReviewStatus
 } from '@xcan-angus/infra';
-import { analysis, funcCase, funcPlan, modules } from '@/api/tester';
+import { analysis, testCase, testPlan, modules } from '@/api/tester';
 import { travelTreeData } from '@/utils/utils';
 import { ProjectInfo } from '@/layout/types';
 
@@ -245,7 +245,7 @@ const loadCaseList = async (): Promise<void> => {
   }
 
   updateLoading(true);
-  const [error, { data = { list: [], total: 0 } }] = await funcCase.getCaseList(
+  const [error, { data = { list: [], total: 0 } }] = await testCase.getCaseList(
     { infoScope: PageQuery.InfoScope.DETAIL, ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value }
   );
   firstLoading.value = false;
@@ -412,7 +412,7 @@ const caseInfo = ref<CaseDetail>();
 const firstCase = ref<CaseDetail>();
 const getCaseInfo = async (id: number) => {
   updateLoading(true);
-  const [error, { data }] = await funcCase.getCaseDetail(id);
+  const [error, { data }] = await testCase.getCaseDetail(id);
   updateLoading(false);
   if (error) {
     return;
@@ -448,7 +448,7 @@ const getPlanAuth = async () => {
   if (!planIds.length) {
     return;
   }
-  const [error, { data }] = await funcPlan.getCurrentAuth({
+  const [error, { data }] = await testPlan.getCurrentAuth({
     ids: planIds,
     admin: true
   });
@@ -531,7 +531,7 @@ const editSuccess = () => {
 
 const handleClone = async (rowData: CaseDetail) => {
   updateLoading(true);
-  const [error] = await funcCase.cloneCase([rowData.id]);
+  const [error] = await testCase.cloneCase([rowData.id]);
   if (error) {
     updateLoading(false);
     return;
@@ -560,7 +560,7 @@ const handleDelete = async (rowData?: CaseDetail) => {
 const delCase = async (rowData?: CaseDetail) => {
   updateLoading(true);
   const ids: number[] = rowData ? [rowData.id] : selectedRowKeys.value;
-  const [error] = await funcCase.deleteCase(ids);
+  const [error] = await testCase.deleteCase(ids);
   if (error) {
     updateLoading(false);
     return;
@@ -594,7 +594,7 @@ const getCurrentPage = (pageNo: number, pageSize: number, total: number): number
 // Reset test
 const handleResetTestResults = async (rowData: CaseDetail) => {
   updateLoading(true);
-  const [error] = await funcCase.resetCaseResult([rowData.id]);
+  const [error] = await testCase.resetCaseResult([rowData.id]);
   if (error) {
     updateLoading(false);
     return;
@@ -606,7 +606,7 @@ const handleResetTestResults = async (rowData: CaseDetail) => {
 // Reset review
 const handleResetReviewResult = async (rowData: CaseDetail) => {
   updateLoading(true);
-  const [error] = await funcCase.resetReviewCase([rowData.id]);
+  const [error] = await testCase.resetReviewCase([rowData.id]);
   if (error) {
     updateLoading(false);
     return;
@@ -618,7 +618,7 @@ const handleResetReviewResult = async (rowData: CaseDetail) => {
 // Re-test: set case to To Be Tested
 const handleReTest = async (rowData: CaseDetail) => {
   updateLoading(true);
-  const [error] = await funcCase.retestResult([rowData.id]);
+  const [error] = await testCase.retestResult([rowData.id]);
   if (error) {
     updateLoading(false);
     return;
@@ -730,7 +730,7 @@ const handleSetResultBlocked = async (value) => {
       testResult: CaseTestResult.BLOCKED
     }
   ];
-  const [error] = await funcCase.updateCaseResult(params);
+  const [error] = await testCase.updateCaseResult(params);
   if (error) {
     return;
   }
@@ -743,7 +743,7 @@ const handleSetResultCanceled = async (value) => {
   const params = [
     { id: value.id, testResult: CaseTestResult.CANCELED }
   ];
-  const [error] = await funcCase.updateCaseResult(params);
+  const [error] = await testCase.updateCaseResult(params);
   if (error) {
     return;
   }
@@ -835,7 +835,7 @@ const handleUploadOk = () => {
 // Favourite toggle
 const handleFavourite = async (rowData: CaseDetail) => {
   updateLoading(true);
-  const [error] = rowData.favourite ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.AddFavouriteCase(rowData.id);
+  const [error] = rowData.favourite ? await testCase.cancelFavouriteCase(rowData.id) : await testCase.AddFavouriteCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;
@@ -849,7 +849,7 @@ const handleFavourite = async (rowData: CaseDetail) => {
 
 const handleFollow = async (rowData: CaseDetail) => {
   updateLoading(true);
-  const [error] = rowData.follow ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.addFollowCase(rowData.id);
+  const [error] = rowData.follow ? await testCase.cancelFollowCase(rowData.id) : await testCase.addFollowCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;

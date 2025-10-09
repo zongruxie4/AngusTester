@@ -7,13 +7,13 @@ import {
 } from '@xcan-angus/vue-ui';
 import { appContext, download, duration, enumUtils, SearchCriteria, ReviewStatus } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import { func, funcPlan } from '@/api/tester';
+import { test, testPlan } from '@/api/tester';
 import { FuncPlanPermission, FuncPlanStatus } from '@/enums/enums';
 import { CaseInfo } from '@/views/test/types';
 
 // Type imports
 import { BasicProps } from '@/types/types';
-import type { ReviewDetail } from '@/views/test/review/types';
+import { ReviewCaseDetail, ReviewDetail } from '@/views/test/review/types';
 
 // Component imports
 import RichEditor from '@/components/richEditor/index.vue';
@@ -91,9 +91,9 @@ const reviewCaseList = ref<CaseInfo[]>([]);
 const reviewId = ref();
 
 // Selection state
-const selectedRowKey = ref<string|undefined>();
-const selectReviewCaseInfo = ref();
-const selectReviewCaseIds = ref<string[]>([]);
+const selectedRowKey = ref<number|undefined>();
+const selectReviewCaseInfo = ref<ReviewCaseDetail>();
+const selectReviewCaseIds = ref<number[]>([]);
 const activeMenuKey = ref();
 
 // Table columns
@@ -161,7 +161,7 @@ const columns = [
  */
 const startReview = async () => {
   startLoading.value = true;
-  const [error] = await func.startReview(reviewId.value);
+  const [error] = await test.startReview(reviewId.value);
   startLoading.value = false;
   if (error) {
     return;
@@ -174,7 +174,7 @@ const startReview = async () => {
  * <p>Loads user permissions for the specified plan.</p>
  * <p>If user is admin, loads all permissions. Otherwise, fetches permissions from API.</p>
  */
-const loadPermissions = async (planId: string) => {
+const loadPermissions = async (planId: number) => {
   if (isAdmin.value) {
     permissions.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
@@ -182,7 +182,7 @@ const loadPermissions = async (planId: string) => {
 
   const params = { admin: true };
   loading.value = true;
-  const [error, res] = await funcPlan.getCurrentAuthByPlanId(planId, params);
+  const [error, res] = await testPlan.getCurrentAuthByPlanId(planId, params);
   loading.value = false;
   if (error) {
     return;
@@ -200,7 +200,7 @@ const loadReviewDetail = async (reviewId: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await func.getReviewDetail(reviewId);
+  const [error, res] = await test.getReviewDetail(reviewId);
   loading.value = false;
   if (error) {
     return;
@@ -225,7 +225,7 @@ const loadReviewDetail = async (reviewId: string) => {
  */
 const loadReviewCaseList = async (reviewId: string) => {
   const { current, pageSize } = pagination.value;
-  const [error, { data }] = await func.getReviewCaseList({
+  const [error, { data }] = await test.getReviewCaseList({
     reviewId: reviewId,
     filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: SearchCriteria.OpEnum.Match }] : [],
     reviewStatus: reviewStatus.value,
@@ -271,7 +271,7 @@ const customRow = (record) => {
           activeMenuKey.value = undefined;
           drawerRef.value.close();
         }
-        selectedRowKey.value = '';
+        selectedRowKey.value = undefined;
       } else {
         selectedRowKey.value = record.id;
       }
@@ -284,7 +284,7 @@ const customRow = (record) => {
  * <p>Determines which case version to display based on review status.</p>
  */
 const loadReviewCaseDetail = async () => {
-  const [error, { data }] = await func.getReviewCaseDetail(selectedRowKey.value);
+  const [error, { data }] = await test.getReviewCaseDetail(selectedRowKey.value as number);
   if (error) {
     return;
   }
@@ -298,14 +298,14 @@ const loadReviewCaseDetail = async () => {
  * <p>Closes the case detail drawer and clears selection.</p>
  */
 const onCloseDrawer = () => {
-  selectedRowKey.value = '';
+  selectedRowKey.value = undefined;
 };
 
 /**
  * <p>Handles checkbox changes for case selection.</p>
  * <p>Updates the list of selected case IDs for batch operations.</p>
  */
-const onCheckedChange = (event, caseId: string) => {
+const onCheckedChange = (event, caseId: number) => {
   event.stopPropagation();
   if (event.target.checked) {
     selectReviewCaseIds.value.push(caseId);
@@ -361,7 +361,7 @@ const delCase = async (record) => {
   modal.confirm({
     title: t('testCaseReview.detail.messages.confirmCancelReviewCase', { name: record?.caseInfo?.name || '' }),
     async onOk () {
-      const [error] = await func.deleteReviewCase([record.id]);
+      const [error] = await test.deleteReviewCase([record.id]);
       if (error) {
         return;
       }
@@ -382,7 +382,7 @@ const restart = async (record) => {
     title: t('testCaseReview.detail.actions.restartReview'),
     content: t('testCaseReview.detail.messages.confirmRestartReviewCase', { name: record?.caseInfo?.name || '' }),
     async onOk () {
-      const [error] = await func.restartReviewCase([record.id]);
+      const [error] = await test.restartReviewCase([record.id]);
       if (error) {
         return;
       }
@@ -400,7 +400,7 @@ const reset = async (record) => {
     title: t('testCaseReview.detail.actions.resetReview'),
     content: t('testCaseReview.detail.messages.confirmResetReviewCase', { name: record?.caseInfo?.name || '' }),
     async onOk () {
-      const [error] = await func.resetReviewCase([record.id]);
+      const [error] = await test.resetReviewCase([record.id]);
       if (error) {
         return;
       }
@@ -415,7 +415,7 @@ const reset = async (record) => {
  */
 const handleAddCase = async (caseIds: string[]) => {
   selectModalVisible.value = false;
-  const [error] = await func.addReviewCase({
+  const [error] = await test.addReviewCase({
     caseIds: caseIds,
     reviewId: reviewId.value
   });
@@ -516,7 +516,7 @@ onUnmounted(() => {
               </div>
 
               <Button
-                v-if="reviewDetail?.status?.value === ReviewStatus.PENDING"
+                v-if="reviewDetail?.status?.value === FuncPlanStatus.PENDING"
                 size="small"
                 type="primary"
                 class="shadow-sm"
@@ -683,7 +683,7 @@ onUnmounted(() => {
                       <Checkbox
                         :disabled="record.reviewStatus?.value !== ReviewStatus.PENDING
                           || !permissions.includes(FuncPlanPermission.REVIEW)
-                          || reviewDetail?.status?.value === ReviewStatus.PENDING"
+                          || reviewDetail?.status?.value === FuncPlanStatus.PENDING"
                         :checked="selectReviewCaseIds.includes(record.id)"
                         @click="onCheckedChange($event, record.id)">
                       </Checkbox>
@@ -733,7 +733,7 @@ onUnmounted(() => {
                       <Button
                         :disabled="!permissions.includes(FuncPlanPermission.REVIEW)
                           || record.reviewStatus?.value === ReviewStatus.PENDING
-                          || reviewDetail?.status?.value === ReviewStatus.PENDING"
+                          || reviewDetail?.status?.value === FuncPlanStatus.PENDING"
                         type="text"
                         size="small"
                         @click.stop="reset(record)">
@@ -890,7 +890,7 @@ onUnmounted(() => {
                 <Icon :icon="expand.reviewResult ? 'icon-shouqijiantou1' : 'icon-zhankaijiantou1'" class="text-gray-400" />
               </div>
               <div v-show="expand.reviewResult">
-                <CaseReviewResult :caseInfo="selectReviewCaseInfo" />
+                <CaseReviewResult :caseInfo="selectReviewCaseInfo?.caseInfo" />
               </div>
             </div>
 

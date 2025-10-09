@@ -2,7 +2,7 @@ import { computed } from 'vue';
 import { debounce } from 'throttle-debounce';
 import { duration, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import {
   BacklogProps,
@@ -120,7 +120,7 @@ export function useTaskData (
     Object.assign(params, backlogData.backlogSortParams || {});
 
     loading.isLoading = true;
-    const [error, res] = await task.getTaskList(params);
+    const [error, res] = await issue.getTaskList(params);
     loading.isLoading = false;
     backlogData.isBacklogDataLoaded = true;
 

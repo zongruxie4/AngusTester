@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Image, NoData } from '@xcan-angus/vue-ui';
 import { ReviewStatus } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 
 const BasicInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/review/ReviewRecordCase.vue'));
@@ -85,7 +85,7 @@ const changeCurrentRecord = async (record) => {
 
 const reviewRecords = ref([]);
 const loadReviewRecord = async () => {
-  const [error, { data }] = await funcCase.getReviewRecord(props.dataSource?.id);
+  const [error, { data }] = await testCase.getReviewRecord(props.dataSource?.id);
   if (error) {
     return;
   }

@@ -3,7 +3,7 @@ import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { TaskDetail } from '@/views/issue/types';
@@ -102,7 +102,7 @@ const handleDatePickerBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editDeadlineDateApi(currentTaskId.value, selectedValue);
+  const [error] = await issue.editDeadlineDateApi(currentTaskId.value, selectedValue);
   emit('loadingChange', false);
   if (error) {
     if (typeof datePickerRef.value?.focus === 'function') {

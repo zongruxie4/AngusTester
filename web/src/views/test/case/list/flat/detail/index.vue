@@ -11,7 +11,7 @@ import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseTestResult, SoftwareVersionStatus } from '@/enums/enums';
 
@@ -196,7 +196,7 @@ const editName = async (event) => {
   }
 
   editNameLoading.value = true;
-  const [error] = await funcCase.putName(props.caseDetail.id, event.target.value);
+  const [error] = await testCase.putName(props.caseDetail.id, event.target.value);
   editNameLoading.value = false;
   isEditName.value = false;
   if (error) {
@@ -231,7 +231,7 @@ const editPriority = async (value:Priority) => {
   }
 
   editPriorityLoading.value = true;
-  const [error] = await funcCase.putPriority(props.caseDetail.id, value);
+  const [error] = await testCase.putPriority(props.caseDetail.id, value);
   editPriorityLoading.value = false;
   isEditPriority.value = false;
   if (error) {
@@ -263,7 +263,7 @@ const editEvalWorkload = async (event) => {
   }
 
   editEvalWorkloadLoading.value = true;
-  const [error] = await funcCase.putEvalWorkload(props.caseDetail.id, { workload: event.target.value });
+  const [error] = await testCase.putEvalWorkload(props.caseDetail.id, { workload: event.target.value });
   editEvalWorkloadLoading.value = false;
   isEditEvalWorkload.value = false;
   if (error) {
@@ -297,7 +297,7 @@ const editActualWorkload = async (event) => {
   }
 
   editActualWorkloadLoading.value = true;
-  const [error] = await funcCase.putActualWorkload(props.caseDetail.id, { workload: event.target.value });
+  const [error] = await testCase.putActualWorkload(props.caseDetail.id, { workload: event.target.value });
   editActualWorkloadLoading.value = false;
   isEditActualWorkload.value = false;
   if (error) {
@@ -340,7 +340,7 @@ const editTag = async () => {
     return;
   }
   editTagLoading.value = true;
-  const [error] = await funcCase.putTag(props.caseDetail.id, { tagIds: tagsIds.value.length ? tagsIds.value : null });
+  const [error] = await testCase.putTag(props.caseDetail.id, { tagIds: tagsIds.value.length ? tagsIds.value : null });
   editTagLoading.value = false;
   isEditTag.value = false;
   if (error) {
@@ -380,7 +380,7 @@ const editDeadlineDate = async () => {
   }
 
   loading.value = true;
-  const [error] = await funcCase.putDeadline(props.caseDetail.id, deadlineDate.value);
+  const [error] = await testCase.putDeadline(props.caseDetail.id, deadlineDate.value);
   loading.value = false;
   isEditDisabledDate.value = false;
   if (error) {
@@ -417,7 +417,7 @@ const cancelFile = async (i:number) => {
   }
   const attachments = attachmentsData.value?.filter((_item, index) => index !== i);
   uploadLoading.value = true;
-  const [error] = await funcCase.putAttachment(props.caseDetail.id, { attachments });
+  const [error] = await testCase.putAttachment(props.caseDetail.id, { attachments });
   uploadLoading.value = false;
   if (error) {
     return;
@@ -458,7 +458,7 @@ const updateAttachment = async (data) => {
     attachments.push(...attachmentsData.value);
   }
   uploadLoading.value = true;
-  const [error] = await funcCase.putAttachment(props.caseDetail.id, { attachments });
+  const [error] = await testCase.putAttachment(props.caseDetail.id, { attachments });
   uploadLoading.value = false;
 
   if (error) {
@@ -505,7 +505,7 @@ const savePrecondition = async () => {
     return;
   }
   savePreconditionLoading.value = true;
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props.caseDetail.id,
     precondition: preconditionContent.value
   }]);
@@ -544,7 +544,7 @@ const saveSteps = async () => {
     return;
   }
   saveStepsLoading.value = true;
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props.caseDetail.id,
     steps: stepsContent.value
   }]);
@@ -594,7 +594,7 @@ const saveDescription = async () => {
     return;
   }
   saveDescriptionLoading.value = true;
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props.caseDetail.id,
     description: descriptionContent.value
   }]);
@@ -634,7 +634,7 @@ const saveTester = async () => {
     return;
   }
   saveTesterLoading.value = true;
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props.caseDetail.id,
     testerId: testerIcContent.value
   }]);
@@ -657,7 +657,7 @@ const handleSetTester = async () => {
     return;
   }
   saveTesterLoading.value = true;
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props.caseDetail.id,
     testerId: userInfo?.value?.id
   }]);
@@ -705,7 +705,7 @@ const versionBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await funcCase.updateCase([{ softwareVersion: value || '', id: props.caseDetail.id }]);
+  const [error] = await testCase.updateCase([{ softwareVersion: value || '', id: props.caseDetail.id }]);
   emit('loadingChange', false);
   versionEditFlag.value = false;
   if (error) {

@@ -5,7 +5,7 @@ import { Icon, Input, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, DatePicker, Form, FormItem, Popover } from 'ant-design-vue';
 import { EnumMessage, enumUtils, EvalWorkloadMethod, TESTER, utils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
-import { project, task } from '@/api/tester';
+import { project, issue } from '@/api/tester';
 import { EditFormState, MeetingInfo } from '../types';
 import { TaskMeetingType } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
@@ -156,7 +156,7 @@ const validateTimeRequired = async () => {
 const handleMeetingUpdate = async () => {
   const apiParams = buildApiParameters();
   isLoading.value = true;
-  const [error] = await task.updateMeeting(apiParams);
+  const [error] = await issue.updateMeeting(apiParams);
   isLoading.value = false;
 
   if (error) {
@@ -179,7 +179,7 @@ const handleMeetingUpdate = async () => {
 const handleMeetingCreation = async () => {
   const apiParams = buildApiParameters();
   isLoading.value = true;
-  const [error, response] = await task.addMeeting(apiParams);
+  const [error, response] = await issue.addMeeting(apiParams);
   isLoading.value = false;
 
   if (error) {
@@ -231,7 +231,7 @@ const loadMeetingData = async (meetingId: string) => {
   }
 
   isLoading.value = true;
-  const [error, response] = await task.getMeetingDetail(meetingId);
+  const [error, response] = await issue.getMeetingDetail(meetingId);
   isLoading.value = false;
 
   if (error) {

@@ -6,7 +6,7 @@ import { Tag, Button } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
 const { t } = useI18n();
@@ -88,7 +88,7 @@ const saveName = async (text) => {
     nameEditable.value = false;
     return;
   }
-  const [error] = await funcCase.putName(props?.caseInfo?.id, nameValue.value);
+  const [error] = await testCase.putName(props?.caseInfo?.id, nameValue.value);
   nameEditable.value = false;
   if (error) {
     return;
@@ -127,7 +127,7 @@ const saveTags = async () => {
   }
   const params = { tagIds: tagsIds.value.length ? tagsIds.value : null };
 
-  const [error] = await funcCase.putTag(props?.caseInfo?.id, params);
+  const [error] = await testCase.putTag(props?.caseInfo?.id, params);
 
   isEditTag.value = false;
   if (error) {
@@ -154,7 +154,7 @@ const saveEvalWorkload = async () => {
     return;
   }
 
-  const [error] = await funcCase.putEvalWorkload(props?.caseInfo?.id, { workload: evalWorkloadValue.value });
+  const [error] = await testCase.putEvalWorkload(props?.caseInfo?.id, { workload: evalWorkloadValue.value });
 
   isEditEvalWorkload.value = false;
   if (error) {

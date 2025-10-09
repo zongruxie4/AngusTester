@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, modal, notification } from '@xcan-angus/vue-ui';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { TaskStatus } from '@/enums/enums';
 
 import { TaskDetail } from '@/views/issue/types';
@@ -216,7 +216,7 @@ const executeBatchCancel = async () => {
 
       // Create cancel promises for all selected tasks
       for (let i = 0, len = taskIds.length; i < len; i++) {
-        cancelPromises.push(task.cancelTask(taskIds[i], { silence: true }));
+        cancelPromises.push(issue.cancelTask(taskIds[i], { silence: true }));
       }
 
       Promise.all(cancelPromises).then((results: [Error | null, any][]) => {
@@ -281,7 +281,7 @@ const executeBatchDelete = async () => {
     content: t('actions.tips.confirmCountDelete', { num: selectedCount }),
     async onOk () {
       const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
-      const [error] = await task.deleteTask(taskIds);
+      const [error] = await issue.deleteTask(taskIds);
 
       if (error) {
         return;
@@ -311,7 +311,7 @@ const executeBatchFavourite = async () => {
 
       // Create favourite promises for all selected tasks
       for (let i = 0, len = taskIds.length; i < len; i++) {
-        favouritePromises.push(task.favouriteTask(taskIds[i], { silence: true }));
+        favouritePromises.push(issue.favouriteTask(taskIds[i], { silence: true }));
       }
 
       Promise.all(favouritePromises).then((results: [Error | null, any][]) => {
@@ -378,7 +378,7 @@ const executeBatchCancelFavourite = async () => {
 
       // Create cancel favourite promises for all selected tasks
       for (let i = 0, len = taskIds.length; i < len; i++) {
-        cancelFavouritePromises.push(task.cancelFavouriteTask(taskIds[i], { silence: true }));
+        cancelFavouritePromises.push(issue.cancelFavouriteTask(taskIds[i], { silence: true }));
       }
 
       Promise.all(cancelFavouritePromises).then((results: [Error | null, any][]) => {
@@ -445,7 +445,7 @@ const executeBatchFollow = async () => {
 
       // Create follow promises for all selected tasks
       for (let i = 0, len = taskIds.length; i < len; i++) {
-        followPromises.push(task.followTask(taskIds[i], { silence: true }));
+        followPromises.push(issue.followTask(taskIds[i], { silence: true }));
       }
 
       Promise.all(followPromises).then((results: [Error | null, any][]) => {
@@ -512,7 +512,7 @@ const executeBatchCancelFollow = async () => {
 
       // Create cancel follow promises for all selected tasks
       for (let i = 0, len = taskIds.length; i < len; i++) {
-        cancelFollowPromises.push(task.cancelFollowTask(taskIds[i], { silence: true }));
+        cancelFollowPromises.push(issue.cancelFollowTask(taskIds[i], { silence: true }));
       }
 
       Promise.all(cancelFollowPromises).then((results: [Error | null, any][]) => {

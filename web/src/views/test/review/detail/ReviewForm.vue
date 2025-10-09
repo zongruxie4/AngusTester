@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { EnumMessage, ReviewStatus, enumUtils } from '@xcan-angus/infra';
-import { func } from '@/api/tester';
+import { test } from '@/api/tester';
 
 // Composables
 const { t } = useI18n();
@@ -50,7 +50,7 @@ const reviewCase = async () => {
     reviewStatus: formState.value.reviewStatus
   }));
   loading.value = true;
-  const [error] = await func.reviewCase(reviewParams);
+  const [error] = await test.reviewCase(reviewParams);
   loading.value = false;
   if (error) {
     return;
@@ -132,7 +132,7 @@ onMounted(() => {
 
       <FormItem
         name="reviewRemark"
-        :label="t('testCaseReview.detail.columns.reviewOpinion')"
+        :label="t('common.reviewOpinion')"
         class="mb-6">
         <div class="space-y-4">
           <Select
@@ -140,7 +140,7 @@ onMounted(() => {
             v-model:value="failMessageValue"
             :options="failMessageSelectOptions"
             class="w-full"
-            :placeholder="t('testCaseReview.detail.placeholders.selectFailReason')"
+            :placeholder="t('testCaseReview.detail.placeholders.selectNotPassedReason')"
             @change="changeFailMessage" />
 
           <Input
@@ -150,7 +150,7 @@ onMounted(() => {
             class="w-full"
             :autoSize="{ minRows: 4, maxRows: 8}"
             :maxlength="200"
-            :placeholder="t('testCaseReview.detail.placeholders.enterReviewOpinion')"
+            :placeholder="t('common.placeholders.inputReviewOpinion')"
             :showCount="true" />
         </div>
       </FormItem>

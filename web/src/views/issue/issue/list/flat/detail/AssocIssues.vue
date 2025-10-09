@@ -6,7 +6,7 @@ import { Button, Progress } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { TaskType } from '@/enums/enums';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { AssocTaskProps } from '@/views/issue/issue/list/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -100,7 +100,7 @@ const handleTaskAssociation = async (selectedTaskIds: string[]) => {
   }
   isSubmitLoading.value = true;
 
-  const [error] = await task.associationTask(props.taskId, selectedTaskIds, {
+  const [error] = await issue.associationTask(props.taskId, selectedTaskIds, {
     paramsType: true
   });
 
@@ -124,7 +124,7 @@ const handleTaskDisassociation = (taskRecord: any) => {
   modal.confirm({
     content: t('actions.tips.confirmCancelAssoc', { name: taskRecord.name }),
     onOk () {
-      return task.cancelAssociationTask(props.taskId, [taskRecord.id], {
+      return issue.cancelAssociationTask(props.taskId, [taskRecord.id], {
         paramsType: true
       }).then(([error]) => {
         if (error) {

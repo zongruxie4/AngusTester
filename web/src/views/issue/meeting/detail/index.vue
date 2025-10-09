@@ -3,7 +3,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, Spin } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { MeetingInfo } from '../types';
 import { DATE_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { BasicProps } from '@/types/types';
@@ -58,7 +58,7 @@ const fetchMeetingDetails = async (meetingId: string) => {
   }
 
   isLoading.value = true;
-  const [error, response] = await task.getMeetingDetail(meetingId);
+  const [error, response] = await issue.getMeetingDetail(meetingId);
   isLoading.value = false;
 
   if (error) {

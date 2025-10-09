@@ -6,7 +6,7 @@ import { AsyncComponent, Icon, Input, modal, notification, Select, Spin, Table }
 import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils, duration, SearchCriteria } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
-import { func, project } from '@/api/tester';
+import { test, project } from '@/api/tester';
 import { BasicProps } from '@/types/types';
 
 import { BaselineCaseInfo, BaselineDetail, BaselineEditState } from '@/views/test/baseline/types';
@@ -136,7 +136,7 @@ const handleBaselineEditConfirm = async () => {
   const params = getFormParameters();
   delete params.planId;
   isLoading.value = true;
-  const [error] = await func.updateBaseline(params);
+  const [error] = await test.updateBaseline(params);
   isLoading.value = false;
   if (error) {
     return;
@@ -158,7 +158,7 @@ const handleBaselineEditConfirm = async () => {
 const handleBaselineAddConfirm = async () => {
   const params = getFormParameters();
   isLoading.value = true;
-  const [error, res] = await func.addBaseline(params);
+  const [error, res] = await test.addBaseline(params);
   isLoading.value = false;
   if (error) {
     return;
@@ -200,7 +200,7 @@ const handleBaselineDelete = async () => {
     async onOk () {
       const id = data.id;
       isLoading.value = true;
-      const [error] = await func.deleteBaseline([id]);
+      const [error] = await test.deleteBaseline([id]);
       isLoading.value = false;
       if (error) {
         return;
@@ -230,7 +230,7 @@ const loadBaselineData = async (id: string) => {
   }
 
   isLoading.value = true;
-  const [error, res] = await func.getBaselineDetail(id);
+  const [error, res] = await test.getBaselineDetail(id);
   isLoading.value = false;
   if (error) {
     return;
@@ -337,7 +337,7 @@ const handlePlanIdChange = () => {
  * Load baseline case list
  */
 const loadBaselineCaseList = async () => {
-  const [error, { data }] = await func.getBaselineCaseList(currentBaselineId.value, {
+  const [error, { data }] = await test.getBaselineCaseList(currentBaselineId.value, {
     filters: searchKeywords.value ? [{ value: searchKeywords.value, key: 'caseName', op: SearchCriteria.OpEnum.Match }] : [],
     pageNo: paginationConfig.value.current,
     pageSize: paginationConfig.value.pageSize,
@@ -376,7 +376,7 @@ const openAddBaselineCaseModal = () => {
  */
 const handleAddCaseConfirm = async (caseIds: string[], cases: BaselineCaseInfo[]) => {
   if (currentBaselineId.value) {
-    const [error] = await func.addBaselineCase(currentBaselineId.value, caseIds);
+    const [error] = await test.addBaselineCase(currentBaselineId.value, caseIds);
     if (error) {
       return;
     }
@@ -397,7 +397,7 @@ const deleteCaseFromBaseline = async (record: BaselineCaseInfo) => {
     modal.confirm({
       content: t('actions.tips.confirmDelete', { name: record.name }),
       async onOk () {
-        const [error] = await func.deleteBaselineCase([record.baselineId], [record.id]);
+        const [error] = await test.deleteBaselineCase([record.baselineId], [record.id]);
         if (error) {
           return;
         }

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import { funcPlan } from '@/api/tester';
+import { testPlan } from '@/api/tester';
 
 import { BaselineCaseInfo } from '@/views/test/baseline/types';
 
@@ -68,7 +68,7 @@ const loadAvailableCases = async () => {
     return;
   }
   isLoading.value = true;
-  const [error, resp] = await funcPlan.getCaseNotEstablishedBaseline(props.planId, {
+  const [error, resp] = await testPlan.getCaseNotEstablishedBaseline(props.planId, {
     baselineId: props.baselineId,
     moduleId: selectedModuleId.value
   });

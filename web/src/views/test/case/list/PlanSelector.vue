@@ -4,7 +4,7 @@ import { inject, ref, watch, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { Icon, Select } from '@xcan-angus/vue-ui';
-import { funcPlan } from '@/api/tester';
+import { testPlan } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -93,7 +93,7 @@ const handleBlur = () => {
  * Load plan details
  */
 const loadPlanList = async () => {
-  const [error, res] = await funcPlan.getPlanDetail(props.planId);
+  const [error, res] = await testPlan.getPlanDetail(props.planId);
   if (error) {
     return;
   }
@@ -141,7 +141,7 @@ defineExpose({
         v-model:value="selectValue"
         size="small"
         class="w-43"
-        :placeholder="t('testCase.selectPlanModal.selectPlan')"
+        :placeholder="t('common.placeholders.selectPlan')"
         showSearch
         :fieldNames="{ label: 'name', value: 'id' }"
         :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"

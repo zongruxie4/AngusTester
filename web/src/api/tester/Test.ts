@@ -1,5 +1,4 @@
 import { http } from '@xcan-angus/infra';
-import { slice } from 'lodash-es';
 
 let baseUrl: string;
 export default class API {
@@ -15,23 +14,23 @@ export default class API {
     return http.put(`${baseUrl}/review`, { ...params, fullTextSearch: true });
   }
 
-  cloneReview (reviewId: string): Promise<[Error | null, any]> {
+  cloneReview (reviewId: number): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/review/${reviewId}/clone`);
   }
 
-  startReview (reviewId: string): Promise<[Error | null, any]> {
+  startReview (reviewId: number): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/review/${reviewId}/start`);
   }
 
-  endReview (reviewId: string): Promise<[Error | null, any]> {
+  endReview (reviewId: number): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/review/${reviewId}/end`);
   }
 
-  deleteReview (reviewId: string): Promise<[Error | null, any]> {
+  deleteReview (reviewId: number): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/review/${reviewId}`);
   }
 
-  getReviewDetail (reviewId: string): Promise<[Error | null, any]> {
+  getReviewDetail (reviewId: number): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/review/${reviewId}`);
   }
 
@@ -39,7 +38,7 @@ export default class API {
     return http.get(`${baseUrl}/review`, { ...params, fullTextSearch: true });
   }
 
-  getReviewAuthByPlanId (planId: string, params): Promise<[Error | null, any]> {
+  getReviewAuthByPlanId (planId: number, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/review/${planId}/user/auth/current`, params);
   }
 
@@ -47,7 +46,7 @@ export default class API {
     return http.post(`${baseUrl}/review/case`, params);
   }
 
-  deleteReviewCase (caseIds: string[]): Promise<[Error | null, any]> {
+  deleteReviewCase (caseIds: number[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/review/case`, caseIds, {
       dataType: true
     });
@@ -57,7 +56,7 @@ export default class API {
     return http.put(`${baseUrl}/review/case/review`, params);
   }
 
-  getReviewCaseDetail (caseId: string): Promise<[Error | null, any]> {
+  getReviewCaseDetail (caseId: number): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/review/case/${caseId}`);
   }
 
@@ -65,11 +64,11 @@ export default class API {
     return http.get(`${baseUrl}/review/case`, { ...params, fullTextSearch: true });
   }
 
-  restartReviewCase (caseIds: string[]): Promise<[Error | null, any]> {
+  restartReviewCase (caseIds: number[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/review/case/restart`, { ids: caseIds }, { paramsType: true });
   }
 
-  resetReviewCase (caseIds: string[]): Promise<[Error | null, any]> {
+  resetReviewCase (caseIds: number[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/review/case/reset`, { ids: caseIds }, { paramsType: true });
   }
 
@@ -91,7 +90,7 @@ export default class API {
     });
   }
 
-  getBaselineDetail (baselineId: string): Promise<[Error | null, any]> {
+  getBaselineDetail (baselineId: number): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/baseline/${baselineId}`);
   }
 
@@ -99,27 +98,27 @@ export default class API {
     return http.get(`${baseUrl}/baseline`, { ...params, fullTextSearch: true });
   }
 
-  addBaselineCase (baselineId: string, caseIds) : Promise<[Error | null, any]> {
+  addBaselineCase (baselineId: number, caseIds) : Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/baseline/${baselineId}/case`, caseIds);
   }
 
-  deleteBaselineCase (baselineId: string, caseIds): Promise<[Error | null, any]> {
+  deleteBaselineCase (baselineId: number, caseIds): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/baseline/${baselineId}/case`, caseIds, {
       dataType: true
     });
   }
 
-  deleteBaselineCaseById (baselineCaseId: string[]): Promise<[Error | null, any]> {
+  deleteBaselineCaseById (baselineCaseId: number[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/baseline/case`, baselineCaseId, {
       dataType: true
     });
   }
 
-  getBaselineCaseList (baselineId: string, params): Promise<[Error | null, any]> {
+  getBaselineCaseList (baselineId: number, params): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/baseline/${baselineId}/case`, { ...params, fullTextSearch: true });
   }
 
-  getBaselineCaseDetail (baselineId: string, caseId: string): Promise<[Error | null, any]> {
+  getBaselineCaseDetail (baselineId: number, caseId: number): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/baseline/${baselineId}/case/${caseId}`, null, {
       silence: false
     });

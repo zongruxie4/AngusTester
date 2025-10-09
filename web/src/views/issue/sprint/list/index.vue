@@ -6,7 +6,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { appContext, download, ProjectPageQuery, TESTER, utils } from '@xcan-angus/infra';
 import ProcessPng from './images/process.png';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { TaskSprintPermission, TaskSprintStatus } from '@/enums/enums';
 
 import { SprintInfo } from '../types';
@@ -89,7 +89,7 @@ const handleRefresh = () => {
  * @param index - Index of the sprint in the list
  */
 const updateSprintData = async (sprintId: string, index: number) => {
-  const [error, response] = await task.getSprintDetail(sprintId);
+  const [error, response] = await issue.getSprintDetail(sprintId);
   isLoading.value = false;
   if (error) {
     return;
@@ -134,7 +134,7 @@ const openWorkCalendar = (sprint: SprintInfo) => {
  */
 const reopenSprint = async (sprint: SprintInfo, index: number) => {
   isLoading.value = true;
-  const [error] = await task.reopenSprint({
+  const [error] = await issue.reopenSprint({
     ids: [sprint.id]
   }, {
     paramsType: true
@@ -154,7 +154,7 @@ const reopenSprint = async (sprint: SprintInfo, index: number) => {
  */
 const restartSprint = async (sprint: SprintInfo, index: number) => {
   isLoading.value = true;
-  const [error] = await task.restartSprint({ ids: [sprint.id] }, { paramsType: true });
+  const [error] = await issue.restartSprint({ ids: [sprint.id] }, { paramsType: true });
   isLoading.value = false;
   if (error) {
     return;
@@ -171,7 +171,7 @@ const restartSprint = async (sprint: SprintInfo, index: number) => {
 const startSprint = async (sprint: SprintInfo, index: number) => {
   isLoading.value = true;
   const sprintId = sprint.id;
-  const [error] = await task.startSprint(sprintId);
+  const [error] = await issue.startSprint(sprintId);
   isLoading.value = false;
   if (error) {
     isLoading.value = false;
@@ -190,7 +190,7 @@ const startSprint = async (sprint: SprintInfo, index: number) => {
 const completeSprint = async (sprint: SprintInfo, index: number) => {
   isLoading.value = true;
   const sprintId = sprint.id;
-  const [error] = await task.endSprint(sprintId);
+  const [error] = await issue.endSprint(sprintId);
   if (error) {
     isLoading.value = false;
     return;
@@ -208,7 +208,7 @@ const completeSprint = async (sprint: SprintInfo, index: number) => {
 const blockSprint = async (sprint: SprintInfo, index: number) => {
   isLoading.value = true;
   const sprintId = sprint.id;
-  const [error] = await task.blockSprint(sprintId);
+  const [error] = await issue.blockSprint(sprintId);
   if (error) {
     return;
   }
@@ -226,7 +226,7 @@ const deleteSprint = async (sprint: SprintInfo) => {
     content: t('actions.tips.confirmDelete', { name: sprint.name }),
     async onOk () {
       const sprintId = sprint.id;
-      const [error] = await task.deleteSprint(sprintId);
+      const [error] = await issue.deleteSprint(sprintId);
       if (error) {
         return;
       }
@@ -267,7 +267,7 @@ const handleAuthFlagChange = async ({ auth }: { auth: boolean }) => {
  * @param sprint - Sprint data to clone
  */
 const cloneSprint = async (sprint: SprintInfo) => {
-  const [error] = await task.cloneSprint(sprint.id);
+  const [error] = await issue.cloneSprint(sprint.id);
   if (error) {
     return;
   }
@@ -358,7 +358,7 @@ const loadSprintData = async () => {
     ...searchParameters
   };
 
-  const [error, response] = await task.getSprintList(params);
+  const [error, response] = await issue.getSprintList(params);
   isDataLoaded.value = true;
   isLoading.value = false;
 
@@ -420,7 +420,7 @@ const loadSprintPermissions = async (sprintId: string) => {
   const params = {
     admin: true
   };
-  return await task.getCurrentUserSprintAuth(sprintId, params);
+  return await issue.getCurrentUserSprintAuth(sprintId, params);
 };
 
 const dropdownPermissionsMap = computed(() => {

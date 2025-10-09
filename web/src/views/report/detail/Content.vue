@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, Hints } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
-import { apis, exec, funcCase, funcPlan, scenario, services, task } from '@/api/tester';
+import { apis, exec, testCase, testPlan, scenario, services, issue } from '@/api/tester';
 import { dept, group, user } from '@/api/gm';
 import { ReportTemplate } from '@/enums/enums';
 import { AuthObjectType, enumOptionUtils } from '@xcan-angus/infra';
@@ -93,7 +93,7 @@ const execName = ref();
  * @param sprintId - ID of the sprint
  */
 const loadSprintName = async (sprintId) => {
-  const [error, { data }] = await task.getSprintDetail(sprintId);
+  const [error, { data }] = await issue.getSprintDetail(sprintId);
   if (error) {
     return;
   }
@@ -105,7 +105,7 @@ const loadSprintName = async (sprintId) => {
  * @param taskId - ID of the task
  */
 const loadTaskName = async (taskId) => {
-  const [error, { data }] = await task.getTaskDetail(taskId);
+  const [error, { data }] = await issue.getTaskDetail(taskId);
   if (error) {
     return;
   }
@@ -117,7 +117,7 @@ const loadTaskName = async (taskId) => {
  * @param planId - ID of the plan
  */
 const loadPlanName = async (planId) => {
-  const [error, { data }] = await funcPlan.getPlanDetail(planId);
+  const [error, { data }] = await testPlan.getPlanDetail(planId);
   if (error) {
     return;
   }
@@ -129,7 +129,7 @@ const loadPlanName = async (planId) => {
  * @param caseId - ID of the case
  */
 const loadCaseName = async (caseId) => {
-  const [error, { data }] = await funcCase.getCaseDetail(caseId);
+  const [error, { data }] = await testCase.getCaseDetail(caseId);
   if (error) {
     return;
   }

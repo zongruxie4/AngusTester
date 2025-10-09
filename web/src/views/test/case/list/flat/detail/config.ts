@@ -77,7 +77,7 @@ export const bigReviewInfoColumns = [
       dataIndex: 'oneReviewPass'
     },
     {
-      label: t('testCase.detail.caseColumConfig.reviewOpinion'),
+      label: t('common.reviewOpinion'),
       dataIndex: 'reviewRemark'
     }
   ]

@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch, defineAsyncComponent } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
 
@@ -63,7 +63,7 @@ const savePrecondition = async () => {
 
   const params = [{ id: caseId.value, precondition: content.value }];
   emit('loadingChange', true);
-  const [error] = await funcCase.updateCase(params);
+  const [error] = await testCase.updateCase(params);
   emit('loadingChange', false);
   if (error) {
     return;

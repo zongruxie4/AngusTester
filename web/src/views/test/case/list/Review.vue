@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { Input, Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { EnumMessage, ReviewStatus, enumUtils } from '@xcan-angus/infra';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
@@ -12,9 +12,9 @@ const { t } = useI18n();
 
 // Type definitions
 type Params = {
-  id: string;
+  id: number;
   reviewRemark: string;
-  reviewStatus: string;
+  reviewStatus: ReviewStatus;
 }
 
 // Component props interface
@@ -22,7 +22,7 @@ interface Props {
   visible: boolean;
   type: 'batch' | 'one',
   selectedCase?: CaseDetail;
-  selectedRowKeys?: string[];
+  selectedRowKeys?: number[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'update'):void}>();
 
 // Form state management
-const formState = ref<{ reviewRemark: string; reviewStatus: string }>({ reviewRemark: '', reviewStatus: 'PASSED' });
+const formState = ref<{ reviewRemark: string; reviewStatus: ReviewStatus }>({ reviewRemark: '', reviewStatus: ReviewStatus.PASSED });
 const loading = ref(false);
 
 // Modal management functions
@@ -60,18 +60,18 @@ const onFinish = async () => {
     }))
     : [
         {
-          id: props.selectedCase.id,
+          id: props.selectedCase?.id,
           reviewRemark: formState.value.reviewRemark || null,
           reviewStatus: formState.value.reviewStatus
         }
       ];
   loading.value = true;
-  const [error] = await funcCase.reviewCase(params);
+  const [error] = await testCase.reviewCase(params);
   loading.value = false;
   if (error) {
     return;
   }
-  notification.success(t('testCase.reviewCase.reviewSuccess'));
+  notification.success(t('actions.tips.reviewSuccess'));
   emits('update:visible', false);
   emits('update');
 };
@@ -83,8 +83,7 @@ const reviewStatusEnum = ref<EnumMessage<ReviewStatus>[]>([]);
  * Load review status enum options
  */
 const loadEnums = () => {
-  const data = enumUtils.enumToMessages(ReviewStatus);
-  reviewStatusEnum.value = data.filter(item => item.value !== ReviewStatus.PENDING) || [];
+  reviewStatusEnum.value = enumUtils.enumToMessages(ReviewStatus, [ReviewStatus.PENDING]);
 };
 
 // Form handling functions
@@ -104,16 +103,16 @@ const changeFailMessage = (value: string) => {
 
 // Fail reason options
 const failMessage = [
-  t('testCase.reviewCase.failReasons.caseNameNotClear'),
-  t('testCase.reviewCase.failReasons.caseDesignInconsistent'),
-  t('testCase.reviewCase.failReasons.missingPrerequisites'),
-  t('testCase.reviewCase.failReasons.stepAccuracyInsufficient'),
-  t('testCase.reviewCase.failReasons.descriptionUnclear'),
-  t('testCase.reviewCase.failReasons.incompleteCoverage'),
-  t('testCase.reviewCase.failReasons.boundaryUnclear'),
-  t('testCase.reviewCase.failReasons.priorityUnreasonable'),
-  t('testCase.reviewCase.failReasons.logicInconsistent'),
-  t('testCase.reviewCase.failReasons.other')
+  t('testCaseReview.detail.failReasons.caseNameNotClear'),
+  t('testCaseReview.detail.failReasons.caseDesignInconsistent'),
+  t('testCaseReview.detail.failReasons.missingPrerequisites'),
+  t('testCaseReview.detail.failReasons.stepAccuracyInsufficient'),
+  t('testCaseReview.detail.failReasons.descriptionUnclear'),
+  t('testCaseReview.detail.failReasons.incompleteCoverage'),
+  t('testCaseReview.detail.failReasons.boundaryUnclear'),
+  t('testCaseReview.detail.failReasons.priorityUnreasonable'),
+  t('testCaseReview.detail.failReasons.logicInconsistent'),
+  t('testCaseReview.detail.failReasons.other')
 ];
 const failOpt = failMessage.map((i, idx) => ({ label: i, value: idx + 1 === failMessage.length ? 'other' : idx.toString() }));
 
@@ -124,7 +123,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    :title="t('testCase.reviewCase.title')"
+    :title="t('actions.review')"
     :visible="props.visible"
     :width="600"
     :footer="null"
@@ -137,7 +136,7 @@ onMounted(() => {
       @finish="onFinish">
       <FormItem
         name="reviewStatus"
-        :label="t('testCase.reviewCase.reviewResult')"
+        :label="t('common.reviewResult')"
         class="mb-1">
         <RadioGroup
           v-model:value="formState.reviewStatus"
@@ -153,15 +152,14 @@ onMounted(() => {
 
       <FormItem
         name="reviewRemark"
-        :label="t('testCase.reviewCase.reviewRemark')">
+        :label="t('common.reviewOpinion')">
         <Select
           v-show="formState.reviewStatus === ReviewStatus.FAILED"
           v-model:value="failMessageValue"
           :options="failOpt"
           class="w-100"
-          :placeholder="t('testCase.reviewCase.selectFailReason')"
+          :placeholder="t('testCaseReview.detail.placeholders.selectNotPassedReason')"
           @change="changeFailMessage" />
-
         <Input
           v-show="formState.reviewStatus !== ReviewStatus.FAILED || failMessageValue === 'other'"
           v-model:value="formState.reviewRemark"
@@ -170,7 +168,7 @@ onMounted(() => {
           class="mt-1"
           :autoSize="{ minRows: 6, maxRows: 6}"
           :maxlength="200"
-          :placeholder="t('testCase.reviewCase.enterReviewRemark')" />
+          :placeholder="t('common.placeholder.inputReviewOpinion')" />
       </FormItem>
 
       <FormItem class="mt-5">

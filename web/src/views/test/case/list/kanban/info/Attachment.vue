@@ -4,7 +4,7 @@ import { Button, Upload, UploadFile } from 'ant-design-vue';
 import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { utils, upload } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
@@ -95,7 +95,7 @@ const persistAttachments = async (data:{name:string;url:string}[]) => {
     attachments: data
   };
   loading.value = true;
-  const [error] = await funcCase.putAttachment(caseId.value, params);
+  const [error] = await testCase.putAttachment(caseId.value, params);
   loading.value = false;
   if (error) {
     return;
@@ -128,7 +128,7 @@ const refreshCaseDetail = async () => {
   }
 
   emitLoadingChange(true);
-  const [error, res] = await funcCase.getCaseDetail(id);
+  const [error, res] = await testCase.getCaseDetail(id);
   emitLoadingChange(false);
   if (error) {
     return;

@@ -1,7 +1,7 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { appContext, enumUtils, PageQuery } from '@xcan-angus/infra';
-import { analysis, task } from '@/api/tester';
+import { analysis, issue } from '@/api/tester';
 import { TaskSprintPermission } from '@/enums/enums';
 import { SprintInfo } from '@/views/issue/sprint/types';
 import { MemberCount } from '../types';
@@ -60,7 +60,7 @@ export function useSprintData (
     Object.assign(params, (sprintData.sprintSortParamsMap[id] || {}));
 
     try {
-      const [error, res] = await task.getTaskList(params);
+      const [error, res] = await issue.getTaskList(params);
 
       if (error) {
         return;
@@ -138,7 +138,7 @@ export function useSprintData (
 
     loading.isLoading = true;
     try {
-      const [error, res] = await task.getSprintList(params);
+      const [error, res] = await issue.getSprintList(params);
 
       if (error) {
         loading.isLoading = false;
@@ -182,7 +182,7 @@ export function useSprintData (
       admin: true
     };
 
-    return await task.getUserSprintAuth(id, props.userInfo?.id || '', params);
+    return await issue.getUserSprintAuth(id, props.userInfo?.id || '', params);
   };
 
   /**

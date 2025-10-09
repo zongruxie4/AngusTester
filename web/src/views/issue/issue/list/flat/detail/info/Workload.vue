@@ -2,7 +2,7 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, Input, Toggle } from '@xcan-angus/vue-ui';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { TaskDetail } from '@/views/issue/types';
@@ -58,7 +58,7 @@ const handleEvalWorkloadBlur = async (event: FocusEvent) => {
     return;
   }
   emit('loadingChange', true);
-  const [error] = await task.editEvalWorkloadApi(props.taskId || props.dataSource.id, { workload: newValue });
+  const [error] = await issue.editEvalWorkloadApi(props.taskId || props.dataSource.id, { workload: newValue });
   emit('loadingChange', false);
   isEvalWorkloadEditing.value = false;
   if (error) {
@@ -94,7 +94,7 @@ const handleActualWorkloadBlur = async (event: FocusEvent) => {
     return;
   }
   emit('loadingChange', true);
-  const [error] = await task.editActualWorkload(props.taskId || props.dataSource.id, { workload: newValue });
+  const [error] = await issue.editActualWorkload(props.taskId || props.dataSource.id, { workload: newValue });
   emit('loadingChange', false);
   isActualWorkloadEditing.value = false;
   if (error) {

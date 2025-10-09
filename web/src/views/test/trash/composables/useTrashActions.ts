@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { func } from '@/api/tester';
+import { test } from '@/api/tester';
 
 /**
  * Composable for managing trash action operations
@@ -19,7 +19,7 @@ export function useTrashActions (projectId: string) {
   const recoverItem = async (itemId: string): Promise<boolean> => {
     loading.value = true;
 
-    const [error] = await func.backTrash(itemId);
+    const [error] = await test.backTrash(itemId);
     loading.value = false;
 
     if (error) {
@@ -37,7 +37,7 @@ export function useTrashActions (projectId: string) {
   const deleteItem = async (itemId: string): Promise<boolean> => {
     loading.value = true;
 
-    const [error] = await func.deleteTrash(itemId);
+    const [error] = await test.deleteTrash(itemId);
     loading.value = false;
 
     if (error) {
@@ -56,7 +56,7 @@ export function useTrashActions (projectId: string) {
 
     loading.value = true;
 
-    const [error] = await func.backAllTrash({ projectId });
+    const [error] = await test.backAllTrash({ projectId });
     loading.value = false;
 
     if (error) {
@@ -75,7 +75,7 @@ export function useTrashActions (projectId: string) {
 
     loading.value = true;
 
-    const [error] = await func.deleteAllTrash({ projectId });
+    const [error] = await test.deleteAllTrash({ projectId });
     loading.value = false;
 
     if (error) {

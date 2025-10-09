@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue';
-import { func } from '@/api/tester';
+import { test } from '@/api/tester';
 import { PageQuery, ProjectPageQuery } from '@xcan-angus/infra';
 import { getCurrentPage } from '@/utils/utils';
 import { FuncTargetType } from '@/enums/enums';
@@ -57,7 +57,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
       requestParams.orderSort = orderSort.value;
     }
 
-    const [error, res] = await func.getTrashList(requestParams);
+    const [error, res] = await test.getTrashList(requestParams);
     loaded.value = true;
     loading.value = false;
 

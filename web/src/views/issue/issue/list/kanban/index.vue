@@ -10,7 +10,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { appContext, enumUtils, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { TaskSprintPermission, TaskStatus, TaskType } from '@/enums/enums';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import { TaskDetail } from '@/views/issue/types';
@@ -133,7 +133,7 @@ const loadData = async () => {
   // Load all task data with pagination support
   const params = getParams();
   emit('update:loading', true);
-  const [error, res] = await task.getTaskList(params);
+  const [error, res] = await issue.getTaskList(params);
   if (error) {
     resetData();
     emit('update:loading', false);
@@ -153,7 +153,7 @@ const loadData = async () => {
     for (let i = 0, len = pages; i < len; i++) {
       const pageNo = i + 2;
       const _params = { ...params, pageNo };
-      const [_error, _res] = await task.getTaskList(_params);
+      const [_error, _res] = await issue.getTaskList(_params);
       if (_error) {
         emit('update:loading', false);
         return;
@@ -260,13 +260,13 @@ const loadPermissions = async (id: string) => {
     admin: true
   };
 
-  return await task.getUserSprintAuth(id, props.userInfo?.id, params);
+  return await issue.getUserSprintAuth(id, props.userInfo?.id, params);
 };
 
 const loadTaskInfoById = async (id: string): Promise<Partial<TaskDetail>> => {
   // Load detailed task information by ID
   emit('update:loading', true);
-  const [error, res] = await task.getTaskDetail(id);
+  const [error, res] = await issue.getTaskDetail(id);
   emit('update:loading', false);
   if (error || !res?.data) {
     return { id };
@@ -606,7 +606,7 @@ const toDelete = (data: TaskDetail) => {
     // Handle delete confirmation
     async onOk () {
       emit('update:loading', true);
-      const [error] = await task.deleteTask([data.id]);
+      const [error] = await issue.deleteTask([data.id]);
       if (error) {
         emit('update:loading', false);
         return;
@@ -624,7 +624,7 @@ const toDelete = (data: TaskDetail) => {
 const toFavourite = async (data: TaskDetail, index: number, status: TaskDetail['status']['value']) => {
   // Add task to favourites
   emit('update:loading', true);
-  const [error] = await task.favouriteTask(data.id);
+  const [error] = await issue.favouriteTask(data.id);
   emit('update:loading', false);
   if (error) {
     return;
@@ -637,7 +637,7 @@ const toFavourite = async (data: TaskDetail, index: number, status: TaskDetail['
 const toDeleteFavourite = async (data: TaskDetail, index: number, status: TaskDetail['status']['value']) => {
   // Remove task from favourites
   emit('update:loading', true);
-  const [error] = await task.cancelFavouriteTask(data.id);
+  const [error] = await issue.cancelFavouriteTask(data.id);
   emit('update:loading', false);
   if (error) {
     return;
@@ -650,7 +650,7 @@ const toDeleteFavourite = async (data: TaskDetail, index: number, status: TaskDe
 const toFollow = async (data: TaskDetail, index: number, status: TaskDetail['status']['value']) => {
   // Follow task for notifications
   emit('update:loading', true);
-  const [error] = await task.followTask(data.id);
+  const [error] = await issue.followTask(data.id);
   emit('update:loading', false);
   if (error) {
     return;
@@ -663,7 +663,7 @@ const toFollow = async (data: TaskDetail, index: number, status: TaskDetail['sta
 const toDeleteFollow = async (data: TaskDetail, index: number, status: TaskDetail['status']['value']) => {
   // Stop following task
   emit('update:loading', true);
-  const [error] = await task.cancelFollowTask(data.id);
+  const [error] = await issue.cancelFollowTask(data.id);
   emit('update:loading', false);
   if (error) {
     return;
@@ -677,7 +677,7 @@ const toStart = async (data: TaskDetail, notificationFlag = true, errorCallback?
   // Start task (change status to IN_PROGRESS)
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await task.startTask(id);
+  const [error] = await issue.startTask(id);
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -697,7 +697,7 @@ const toProcessed = async (data: TaskDetail, notificationFlag = true, errorCallb
   // Mark task as processed (change status to CONFIRMING)
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await task.processedTask(id);
+  const [error] = await issue.processedTask(id);
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -717,7 +717,7 @@ const toUncomplete = async (data: TaskDetail, errorCallback?: () => void) => {
   // Mark task as uncompleted (confirm with FAIL status)
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await task.confirmTask(id, 'FAIL');
+  const [error] = await issue.confirmTask(id, 'FAIL');
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -734,7 +734,7 @@ const toCompleted = async (data: TaskDetail, errorCallback?: () => void) => {
   // Mark task as completed (confirm with SUCCESS status)
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await task.confirmTask(id, 'SUCCESS');
+  const [error] = await issue.confirmTask(id, 'SUCCESS');
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -751,7 +751,7 @@ const toReopen = async (data: TaskDetail, notificationFlag = true, errorCallback
   // Reopen task (change status from COMPLETED/CANCELED to PENDING)
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await task.reopenTask(id);
+  const [error] = await issue.reopenTask(id);
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -771,7 +771,7 @@ const toRestart = async (data: TaskDetail, notificationFlag = true, errorCallbac
   // Restart task (reset task to initial state)
   const id = data.id;
   emit('update:loading', true);
-  const [error] = await task.restartTask(id);
+  const [error] = await issue.restartTask(id);
   emit('update:loading', false);
   if (error) {
     if (typeof errorCallback === 'function') {
@@ -807,7 +807,7 @@ const moveTaskOk = () => {
 const toCancel = async (data: TaskDetail, notificationFlag = true, errorCallback?: () => void) => {
   // Cancel task (change status to CANCELED)
   const id = data.id;
-  const [error] = await task.cancelTask(id);
+  const [error] = await issue.cancelTask(id);
   if (error) {
     if (typeof errorCallback === 'function') {
       errorCallback();

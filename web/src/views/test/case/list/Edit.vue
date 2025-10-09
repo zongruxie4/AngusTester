@@ -11,7 +11,7 @@ import {
 } from '@xcan-angus/infra';
 import { CaseStepView, SoftwareVersionStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
-import { funcCase, modules, project } from '@/api/tester';
+import { testCase, modules, project } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
 import { useI18n } from 'vue-i18n';
@@ -89,7 +89,7 @@ const getCaseInfo = async () => {
   if (!props.editCase?.id) {
     return;
   }
-  const [error, { data }] = await funcCase.getCaseDetail(props.editCase.id);
+  const [error, { data }] = await testCase.getCaseDetail(props.editCase.id);
   if (error) {
     return;
   }
@@ -270,7 +270,7 @@ const editSave = async () => {
   }
   const params = getParams();
   loading.value = true;
-  const [error] = await funcCase.putCase([{ id: props.editCase.id, ...params }]);
+  const [error] = await testCase.putCase([{ id: props.editCase.id, ...params }]);
   loading.value = false;
   if (error) {
     return;
@@ -286,7 +286,7 @@ const editSave = async () => {
 const addSave = async () => {
   const params = getParams();
   loading.value = true;
-  const [error] = await funcCase.addCase([params]);
+  const [error] = await testCase.addCase([params]);
   loading.value = false;
   if (error) {
     return;

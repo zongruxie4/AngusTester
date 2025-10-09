@@ -10,7 +10,7 @@ import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 
 import { CaseTestResult, CombinedTargetType, FuncPlanPermission, TaskType } from '@/enums/enums';
-import { funcCase, funcPlan } from '@/api/tester';
+import { testCase, testPlan } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseActionAuth, getActionAuth } from '@/views/test/case/types';
 
@@ -141,7 +141,7 @@ const fetchAdjacentCase = async (direction: 'before' | 'after') => {
   direction === 'before' ? pageNo.value-- : pageNo.value++;
 
   const params = { pageNo: pageNo.value, pageSize: 1, enabledGroup: false, filters: filters.value, projectId: projectId.value };
-  const [listError, listRes] = await funcCase.getCaseList({ infoScope: PageQuery.InfoScope.DETAIL, ...params });
+  const [listError, listRes] = await testCase.getCaseList({ infoScope: PageQuery.InfoScope.DETAIL, ...params });
   if (listError) {
     return;
   }
@@ -170,7 +170,7 @@ const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 const fetchCaseDetail = async (id: number) => {
   destroyInactiveTabPane.value = true;
   emits('update:loading', true);
-  const [error, { data }] = await funcCase.getCaseDetail(id);
+  const [error, { data }] = await testCase.getCaseDetail(id);
   emits('update:loading', false);
   if (error) {
     return;
@@ -203,7 +203,7 @@ const fetchPlanPermissions = async (planId) => {
     planAuthList.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
   }
-  const [error, { data }] = await funcPlan.getCurrentAuthByPlanId(planId);
+  const [error, { data }] = await testPlan.getCurrentAuthByPlanId(planId);
   if (error) {
     return;
   }

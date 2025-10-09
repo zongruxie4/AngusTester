@@ -3,7 +3,7 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import { TaskDetail } from '@/views/issue/types';
@@ -76,7 +76,7 @@ const saveDescriptionChanges = async () => {
 
   const params = { description: descriptionContent.value };
   emit('loadingChange', true);
-  const [error] = await task.editTaskDescription(props.taskId || '', params);
+  const [error] = await issue.editTaskDescription(props.taskId || '', params);
   emit('loadingChange', false);
   if (error) {
     return;

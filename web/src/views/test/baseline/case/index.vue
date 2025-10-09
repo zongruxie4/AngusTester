@@ -2,7 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
-import { func } from '@/api/tester';
+import { test } from '@/api/tester';
 import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
@@ -29,7 +29,7 @@ const currentPlanId = ref();
  * Load baseline information and update tab pane
  */
 const loadBaselineInfo = async () => {
-  const [error, res] = await func.getBaselineDetail(props.data.id);
+  const [error, res] = await test.getBaselineDetail(Number(props.data?.id));
   if (error) {
     return;
   }
@@ -43,7 +43,7 @@ const loadBaselineInfo = async () => {
   currentPlanId.value = data.planId;
 
   if (name && typeof updateTabPane === 'function') {
-    updateTabPane({ name, _id: props.data.id + '-case' });
+    updateTabPane({ name, _id: props.data?.id + '-case' });
   }
 };
 
@@ -51,7 +51,7 @@ const loadBaselineInfo = async () => {
  * Initialize component data on mount
  */
 onMounted(() => {
-  if (props.data.id) {
+  if (props.data?.id) {
     loadBaselineInfo();
   }
 });
@@ -65,13 +65,13 @@ onMounted(() => {
       <TabPane key="baselinecase" :tab="t('testCaseBaseline.case.baselineCases')">
         <BaselineCaseList
           v-bind="props"
-          :baselineId="props.data.id"
+          :baselineId="Number(props.data?.id)"
           :planId="currentPlanId" />
       </TabPane>
       <TabPane key="baselineCompare" :tab="t('testCaseBaseline.case.baselineCompare')">
         <BaselineCompare
           v-bind="props"
-          :baselineId="props.data.id"
+          :baselineId="Number(props.data?.id)"
           :planId="currentPlanId" />
       </TabPane>
     </Tabs>

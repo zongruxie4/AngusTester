@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Image, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { ReviewStatus } from '@xcan-angus/infra';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 
 const CaseInfo = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/CaseInfo.vue'));
@@ -88,7 +88,7 @@ const reviewRecords = ref([]);
  * Load review records of current case
  */
 const loadReviewRecord = async () => {
-  const [error, { data }] = await funcCase.getReviewRecord(props.caseDetail?.id);
+  const [error, { data }] = await testCase.getReviewRecord(props.caseDetail?.id);
   if (error) {
     return;
   }

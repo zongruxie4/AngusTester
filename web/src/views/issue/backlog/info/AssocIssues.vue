@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, IconTask, NoData, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskDetail } from '../../types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
@@ -72,7 +72,7 @@ const confirmTaskAssociationChanges = async () => {
     refTaskIds: selectedTaskIds.value
   };
   isTaskEditing.value = false;
-  const [error] = await task.updateTask(currentTaskId.value, updateParams);
+  const [error] = await issue.updateTask(currentTaskId.value, updateParams);
   if (error) {
     return;
   }
@@ -96,7 +96,7 @@ const handleTaskSelectionChange = (ids: any) => {
  */
 const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   emit('loadingChange', true);
-  const [error, res] = await task.getTaskDetail(currentTaskId.value);
+  const [error, res] = await issue.getTaskDetail(currentTaskId.value);
   emit('loadingChange', false);
   if (error || !res?.data) {
     return { id: currentTaskId.value };

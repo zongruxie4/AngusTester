@@ -3,7 +3,7 @@ import { defineAsyncComponent, inject, ref } from 'vue';
 import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { TESTER, ReviewStatus as ReviewStatusEnum } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { AssocCaseProps } from '@/views/test/case/types';
 
@@ -60,7 +60,7 @@ const handlePut = async (refCaseIds) => {
     return;
   }
   submitLoading.value = true;
-  const [error] = await funcCase.putAssociationCase(props.caseId, {
+  const [error] = await testCase.putAssociationCase(props.caseId, {
     assocCaseIds: refCaseIds
   });
   submitLoading.value = false;
@@ -78,7 +78,7 @@ const handleDelTask = (record) => {
   modal.confirm({
     content: t('testCase.kanbanView.assocCase.confirmCancelAssocCase', { name: record.name }),
     onOk () {
-      return funcCase.cancelAssociationCase(props.caseId, {
+      return testCase.cancelAssociationCase(props.caseId, {
         assocCaseIds: [record.id]
       }).then(([error]) => {
         if (error) {

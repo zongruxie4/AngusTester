@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 import { appContext, PageQuery, ProjectPageQuery } from '@xcan-angus/infra';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import type { TaskTrashItem, TaskTrashPagination, TaskTrashParams } from '../types';
 
 /**
@@ -47,7 +47,7 @@ export function useTrashData (
     };
 
     try {
-      const [error, res] = await task.getTrashTaskList(requestParams);
+      const [error, res] = await issue.getTrashTaskList(requestParams);
       if (error) {
         throw error;
       }

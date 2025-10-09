@@ -2,11 +2,11 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Modal, Select } from '@xcan-angus/vue-ui';
-import { func } from '@/api/tester';
+import { test } from '@/api/tester';
 
 import RichEditor from '@/components/richEditor/index.vue';
 import { Switch } from 'ant-design-vue';
-import _ from 'lodash-es';
+import lodash from 'lodash-es';
 
 const { t } = useI18n();
 
@@ -18,10 +18,10 @@ const Attachment = defineAsyncComponent(() => import('@/views/test/review/detail
 // Props and Emits
 interface Props {
   visible: boolean;
-  caseId: string;
-  baselineId: string;
-  compareBaselineId: string;
-  projectId: string;
+  caseId: number;
+  baselineId: number;
+  compareBaselineId: number;
+  projectId: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -61,7 +61,7 @@ const resetComparisonData = () => {
  * Load base case details from baseline
  */
 const loadBaseCaseDetails = async () => {
-  const [error, { data }] = await func.getBaselineCaseDetail(props.baselineId, props.caseId);
+  const [error, { data }] = await test.getBaselineCaseDetail(props.baselineId, props.caseId);
   if (error) {
     return;
   }
@@ -81,7 +81,7 @@ const loadBaseCaseDetails = async () => {
  * Load compare case details from baseline
  */
 const loadCompareCaseDetails = async () => {
-  const [error, { data }] = await func.getBaselineCaseDetail(props.compareBaselineId, props.caseId);
+  const [error, { data }] = await test.getBaselineCaseDetail(props.compareBaselineId, props.caseId);
   if (error) {
     return;
   }
@@ -199,7 +199,7 @@ const associatedTasksHighlightClass = computed(() => {
     return 'bg-blue-active';
   } else if (!!baseCaseData.value?.refTaskInfos?.length &&
   (baseCaseData.value?.refTaskInfos?.length === compareCaseData.value?.refTaskInfos?.length)) {
-    const differentTasks = _.differenceBy(baseCaseData.value.refTaskInfos?.length, compareCaseData.value.refTaskInfos, 'id');
+    const differentTasks = lodash.differenceBy(baseCaseData.value.refTaskInfos?.length, compareCaseData.value.refTaskInfos, 'id');
     if (differentTasks?.length) {
       return 'bg-blue-active';
     }
@@ -219,7 +219,7 @@ const associatedCasesHighlightClass = computed(() => {
   } else if (!!baseCaseData.value?.refCaseInfos?.length && (baseCaseData.value?.refCaseInfos?.length !== compareCaseData.value.refCaseInfos?.length)) {
     return 'bg-blue-active';
   } else if (!!baseCaseData.value?.refCaseInfos?.length && (baseCaseData.value?.refCaseInfos?.length === compareCaseData.value.refCaseInfos?.length)) {
-    const differentCases = _.differenceBy(baseCaseData.value.refCaseInfos?.length, compareCaseData.value.refCaseInfos, 'id');
+    const differentCases = lodash.differenceBy(baseCaseData.value.refCaseInfos?.length, compareCaseData.value.refCaseInfos, 'id');
     if (differentCases?.length) {
       return 'bg-blue-active';
     }
@@ -243,7 +243,7 @@ const attachmentsHighlightClass = computed(() => {
     return 'bg-blue-active';
   } else if (!!baseCaseData.value?.attachmentsData?.length &&
   (baseCaseData.value?.attachmentsData?.length === compareCaseData.value.attachmentsData?.length)) {
-    const differentAttachments = _.differenceBy(baseCaseData.value.attachmentsData?.length, compareCaseData.value.attachmentsData, 'id');
+    const differentAttachments = lodash.differenceBy(baseCaseData.value.attachmentsData?.length, compareCaseData.value.attachmentsData, 'id');
     if (differentAttachments?.length) {
       return 'bg-blue-active';
     }

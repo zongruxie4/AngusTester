@@ -6,7 +6,7 @@ import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vu
 import { enumUtils, TESTER } from '@xcan-angus/infra';
 import { StrategyWhenDuplicated } from '@/enums/enums';
 import { formatBytes } from '@/utils/common';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -124,7 +124,7 @@ const submitImportForm = () => {
       formParams.append('strategyWhenDuplicated', formData.value.strategyWhenDuplicated);
       formData.value.file && formParams.append('file', formData.value.file);
       isLoading.value = true;
-      const [error] = await task.importTask(formParams);
+      const [error] = await issue.importTask(formParams);
       isLoading.value = false;
       if (error) {
         return;

@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, Toggle } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { SoftwareVersionStatus } from '@/enums/enums';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
@@ -119,7 +119,7 @@ const handleTaskNameBlur = async (event: FocusEvent) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskName(currentTaskId.value, newValue);
+  const [error] = await issue.editTaskName(currentTaskId.value, newValue);
   emit('loadingChange', false);
   isTaskNameEditing.value = false;
   if (error) {
@@ -169,7 +169,7 @@ const handleActualWorkloadBlur = async (event: FocusEvent) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editActualWorkload(currentTaskId.value, { workload: newValue });
+  const [error] = await issue.editActualWorkload(currentTaskId.value, { workload: newValue });
   emit('loadingChange', false);
   isActualWorkloadEditing.value = false;
   if (error) {
@@ -219,7 +219,7 @@ const handleEvalWorkloadBlur = async (event: FocusEvent) => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editEvalWorkloadApi(currentTaskId.value, { workload: newValue });
+  const [error] = await issue.editEvalWorkloadApi(currentTaskId.value, { workload: newValue });
   emit('loadingChange', false);
   isEvalWorkloadEditing.value = false;
   if (error) {
@@ -280,7 +280,7 @@ const handlePriorityBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskPriority(currentTaskId.value, newValue);
+  const [error] = await issue.editTaskPriority(currentTaskId.value, newValue);
   emit('loadingChange', false);
   isPriorityEditing.value = false;
   if (error) {
@@ -333,7 +333,7 @@ const handleTagBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskTags(currentTaskId.value, { tagIds: newTagIds });
+  const [error] = await issue.editTaskTags(currentTaskId.value, { tagIds: newTagIds });
   emit('loadingChange', false);
   isTagEditing.value = false;
   if (error) {
@@ -380,7 +380,7 @@ const handleVersionBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await task.updateTask(currentTaskId.value, { softwareVersion: newValue || '' });
+  const [error] = await issue.updateTask(currentTaskId.value, { softwareVersion: newValue || '' });
   emit('loadingChange', false);
   isVersionEditing.value = false;
   if (error) {

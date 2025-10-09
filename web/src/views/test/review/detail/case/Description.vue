@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 
-import { funcCase } from '@/api/tester';
+import { testCase } from '@/api/tester';
 import RichEditor from '@/components/richEditor/index.vue';
 
 const { t } = useI18n();
@@ -50,7 +50,7 @@ const confirm = async () => {
     return;
   }
   saveLoading.value = true;
-  const [error] = await funcCase.updateCase([{
+  const [error] = await testCase.updateCase([{
     id: props?.caseInfo?.id,
     description: descriptionContent.value
   }]);

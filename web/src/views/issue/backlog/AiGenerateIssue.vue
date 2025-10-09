@@ -11,7 +11,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { TaskType } from '@/enums/enums';
 
-import { task } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { ai } from '@/api/gm';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -190,7 +190,7 @@ const confirmAndSaveTasks = async () => {
       }
     }
 
-    const [error] = await task.addTask(taskParams);
+    const [error] = await issue.addTask(taskParams);
     if (error) {
       errorCount++;
     }
