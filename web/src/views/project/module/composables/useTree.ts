@@ -146,7 +146,6 @@ export function useTree (
         }
       }
     }
-
     return undefined;
   };
 
