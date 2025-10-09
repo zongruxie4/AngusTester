@@ -48,7 +48,7 @@ const formatPercentage = (value: string | number | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.totalCaseNum }}</div>
         <div class="label">
-          {{ t('testCase.statisticsPanel.totalCaseNum') }}
+          {{ t('common.counts.totalCount') }}
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@ const formatPercentage = (value: string | number | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.pendingTestNum }}</div>
         <div class="label">
-          {{ t('testCase.statisticsPanel.pendingTestNum') }}
+          {{ t('status.pendingTest') }}
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@ const formatPercentage = (value: string | number | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.passedTestNum }}</div>
         <div class="label">
-          {{ t('testCase.statisticsPanel.passedTestNum') }}
+          {{ t('common.counts.testPassedCount') }}
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@ const formatPercentage = (value: string | number | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.notPassedTestNum }}</div>
         <div class="label">
-          {{ t('testCase.statisticsPanel.notPassedTestNum') }}
+          {{ t('common.counts.testFailCount') }}
         </div>
       </div>
     </div>
@@ -92,7 +92,7 @@ const formatPercentage = (value: string | number | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.oneTimePassedTestNum }}</div>
         <div class="label">
-          {{ t('testCase.statisticsPanel.oneTimePassedTestNum') }}
+          {{ t('common.counts.oneTimePassedCount') }}
         </div>
       </div>
     </div>
@@ -106,7 +106,7 @@ const formatPercentage = (value: string | number | undefined): string => {
           <span class="unit">%</span>
         </div>
         <div class="label">
-          {{ t('testCase.statisticsPanel.oneTimePassedTestRate') }}
+          {{ t('common.counts.oneTimePassedRate') }}
         </div>
       </div>
     </div>
@@ -128,7 +128,7 @@ const formatPercentage = (value: string | number | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.blockedTestNum }}</div>
         <div class="label">
-          {{ t('testCase.statisticsPanel.blockedTestNum') }}
+          {{ t('status.blocked') }}
         </div>
       </div>
     </div>
@@ -139,7 +139,7 @@ const formatPercentage = (value: string | number | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.canceledTestNum }}</div>
         <div class="label">
-          {{ t('testCase.statisticsPanel.canceledTestNum') }}
+          {{ t('status.cancelled') }}
         </div>
       </div>
     </div>
@@ -172,7 +172,7 @@ const formatPercentage = (value: string | number | undefined): string => {
       <div class="content">
         <div class="value">{{ props.dataSource?.oneTimePassReviewNum }}</div>
         <div class="label">
-          {{ t('testCase.statisticsPanel.oneTimePassReviewNum') }}
+          {{ t('common.counts.oneTimePassedReviewCount') }}
         </div>
       </div>
     </div>
@@ -186,7 +186,7 @@ const formatPercentage = (value: string | number | undefined): string => {
           <span class="unit">%</span>
         </div>
         <div class="label">
-          {{ t('testCase.statisticsPanel.oneTimePassReviewRate') }}
+          {{ t('common.counts.oneTimePassedReviewRate') }}
         </div>
       </div>
     </div>

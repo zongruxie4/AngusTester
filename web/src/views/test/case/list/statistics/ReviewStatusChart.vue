@@ -137,15 +137,15 @@ const updateChartData = (): void => {
 
   // Add review status data points
   chartOptions.series?.[0].data.push({
-    name: t('testCase.statisticsPanel.pendingReview'),
+    name: t('status.pending'),
     value: +props.dataSource.pendingReviewNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('testCase.statisticsPanel.reviewPassed'),
+    name: t('status.passed'),
     value: +props.dataSource.passedReviewNum
   });
   chartOptions.series?.[0].data.push({
-    name: t('testCase.statisticsPanel.reviewNotPassed'),
+    name: t('status.notPassed'),
     value: +props.dataSource.failedReviewNum
   });
 

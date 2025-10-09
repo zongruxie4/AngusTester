@@ -824,7 +824,7 @@ const editOk = async (id:number) => {
  */
 const toDelete = (data: CaseDetail) => {
   modal.confirm({
-    content: t('testCase.kanbanView.confirmDeleteCase', { name: data.name }),
+    content: t('actions.tips.confirmDelete', { name: data.name }),
     async onOk () {
       emit('loadingChange', true);
       const [error] = await funcCase.deleteCase([data.id]);
@@ -834,7 +834,7 @@ const toDelete = (data: CaseDetail) => {
       }
 
       emit('refreshChange');
-      notification.success(t('testCase.kanbanView.caseDeleteSuccess'));
+      notification.success(t('actions.tips.deleteSuccess'));
       await loadCases();
       emit('loadingChange', false);
     }
@@ -852,7 +852,7 @@ const toFavourite = async (data: CaseDetail, index: number, testResult: CaseTest
     return;
   }
 
-  notification.success(t('testCase.kanbanView.caseFavouriteSuccess'));
+  notification.success(t('actions.tips.favouriteSuccess'));
   caseDataMap.value[testResult][index].favourite = true;
 };
 
@@ -867,7 +867,7 @@ const toDeleteFavourite = async (data: CaseDetail, index: number, testResult: Ca
     return;
   }
 
-  notification.success(t('testCase.kanbanView.caseUnfavouriteSuccess'));
+  notification.success(t('actions.tips.cancelFavouriteSuccess'));
   caseDataMap.value[testResult][index].favourite = false;
 };
 
@@ -882,7 +882,7 @@ const toFollow = async (data: CaseDetail, index: number, testResult: CaseTestRes
     return;
   }
 
-  notification.success(t('testCase.kanbanView.caseFollowSuccess'));
+  notification.success(t('actions.tips'));
   caseDataMap.value[testResult][index].follow = true;
 };
 
@@ -897,7 +897,7 @@ const toDeleteFollow = async (data: CaseDetail, index: number, testResult: CaseT
     return;
   }
 
-  notification.success(t('testCase.kanbanView.caseUnfollowSuccess'));
+  notification.success(t('actions.tips.cancelFollowSuccess'));
   caseDataMap.value[testResult][index].follow = false;
 };
 
@@ -914,7 +914,7 @@ const toClone = async (data: CaseDetail) => {
   }
 
   emit('refreshChange');
-  notification.success(t('testCase.kanbanView.caseCloneSuccess'));
+  notification.success(t('actions.tips.cloneSuccess'));
   await loadCases();
 };
 
@@ -1071,7 +1071,7 @@ const toResetTestResult = async (data: CaseDetail) => {
   }
 
   emit('refreshChange');
-  notification.success(t('testCase.kanbanView.caseResetTestResultSuccess'));
+  notification.success(t('testCase.messages.resetTestResultSuccess'));
   loadCases();
 };
 
@@ -1114,7 +1114,7 @@ const toCancel = async (data: CaseDetail, notificationFlag = true, errorCallback
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success(t('testCase.kanbanView.caseCancelSuccess'));
+    notification.success(t('actions.tips.cancelSuccess'));
   }
   loadCases();
 };

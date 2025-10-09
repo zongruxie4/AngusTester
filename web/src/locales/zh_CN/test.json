@@ -100,21 +100,15 @@
   },
   "testCase": {
     "title": "用例",
-    "deleteCase": "删除用例",
-    "confirmDeleteCase": "确定删除用例「{name}」吗？",
-    "confirmDeleteSelectedCases": "确定删除选中的用例吗？",
-    "cancelFavouriteSuccess": "取消收藏成功",
-    "favouriteSuccess": "收藏成功",
-    "cancelFollowSuccess": "取消关注成功",
-    "followSuccess": "关注成功",
-    "cloneSuccess": "克隆成功",
-    "caseSetBlocked": "用例设为阻塞中",
-    "cancelSuccess": "取消成功",
-    "resetTestResultSuccess": "重置测试结果成功",
-    "resetReviewSuccess": "重置评审成功",
-    "resetTestStatusSuccess": "重置测试状态成功",
-    "deleteSuccess": "删除成功，可以在回收站查看删除后的用例",
-    "backToTop": "回到顶部",
+    "actions": {
+      "backToTop": "回到顶部"
+    },
+    "messages": {
+      "caseSetBlocked": "用例设为阻塞中",
+      "resetTestResultSuccess": "重置测试结果成功",
+      "resetReviewSuccess": "重置评审成功",
+      "resetTestStatusSuccess": "重置测试状态成功"
+    },
     "statisticsPanel": {
       "progress": "进度",
       "totalCaseNum": "总用例",

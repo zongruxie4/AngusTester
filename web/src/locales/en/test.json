@@ -100,21 +100,15 @@
   },
   "testCase": {
     "title": "Case",
-    "deleteCase": "Delete Case",
-    "confirmDeleteCase": "Are you sure you want to delete case 「{name}」?",
-    "confirmDeleteSelectedCases": "Are you sure you want to delete the selected cases?",
-    "cancelFavouriteSuccess": "Unfavorited successfully",
-    "favouriteSuccess": "Favorited successfully",
-    "cancelFollowSuccess": "Unfollowed successfully",
-    "followSuccess": "Followed successfully",
-    "cloneSuccess": "Cloned successfully",
-    "caseSetBlocked": "Case set to blocked",
-    "cancelSuccess": "Cancelled successfully",
-    "resetTestResultSuccess": "Test result reset successfully",
-    "resetReviewSuccess": "Review reset successfully",
-    "resetTestStatusSuccess": "Test status reset successfully",
-    "deleteSuccess": "Deleted successfully, you can view the deleted case in the recycle bin",
-    "backToTop": "Back to top",
+    "actions": {
+      "backToTop": "Back to top"
+    },
+    "messages": {
+      "caseSetBlocked": "Case set to blocked",
+      "resetTestResultSuccess": "Test result reset successfully",
+      "resetReviewSuccess": "Review reset successfully",
+      "resetTestStatusSuccess": "Test status reset successfully"
+    },
     "statisticsPanel": {
       "totalCaseNum": "Total Cases",
       "pendingTestNum": "Pending Test",

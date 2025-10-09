@@ -152,7 +152,7 @@ const handleBlur = (id: number, event: { target: { value: string } }) => {
  */
 const toDelete = (data: TagItem) => {
   modal.confirm({
-    content: t('testCase.moduleTree.confirmDeleteModule', { name: data.name }),
+    content: t('actions.tips.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };

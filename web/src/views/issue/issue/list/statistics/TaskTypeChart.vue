@@ -59,8 +59,8 @@ const chartOptions: EChartsOption = {
     top: 'middle',
     right: 0,
     orient: 'vertical',
-    itemHeight: 14,
-    itemWidth: 14,
+    itemHeight: 12,
+    itemWidth: 12,
     itemGap: 5
   },
   color: CHART_COLORS,
@@ -201,12 +201,12 @@ onMounted(() => {
 <style scoped>
 .chart-wrapper {
   position: relative;
-  line-height: 1.25;
+  line-height: 1.15;
   font-size: 0.75rem;
 }
 
 .chart-container {
-  height: 8.5rem; /* h-34 equivalent */
+  height: 8rem; /* h-34 equivalent */
 }
 
 .chart-center-label {
