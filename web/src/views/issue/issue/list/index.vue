@@ -43,7 +43,7 @@ const Move = defineAsyncComponent(() => import('@/views/issue/issue/list/Move.vu
 const Upload = defineAsyncComponent(() => import('@/views/issue/issue/list/Upload.vue'));
 const FlowChart = defineAsyncComponent(() => import('@/views/issue/issue/list/FlowChart.vue'));
 
-const ModuleTree = defineAsyncComponent(() => import('@/views/issue/issue/list/ModuleTree.vue'));
+const ModuleTree = defineAsyncComponent(() => import('@/components/ModuleSelectTree/index.vue'));
 const KanbanView = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/index.vue'));
 const GanttView = defineAsyncComponent(() => import('@/views/issue/issue/list/gantt/index.vue'));
 const TableView = defineAsyncComponent(() => import('@/views/issue/issue/list/table/index.vue'));
@@ -218,29 +218,6 @@ const loadSprintPermissions = async (sprintId: string) => {
   return await issue.getUserSprintAuth(sprintId, props.userInfo?.id, params);
 };
 
-/**
- * Loads module tree data
- * @param keywords - Optional search keywords for filtering modules
- */
-const loadModuleTreeData = async (keywords?: string) => {
-  const [error, { data }] = await modules.getModuleTree({
-    projectId: props.projectId,
-    filters: keywords
-      ? [{
-          value: keywords,
-          op: SearchCriteria.OpEnum.Match,
-          key: 'name'
-        }]
-      : []
-  });
-  if (error) {
-    return;
-  }
-  moduleTreeData.value = [{ name: t('common.noModule'), id: '-1' }, ...travelTreeData(data || [])];
-  if (currentModuleId.value && keywords && !moduleTreeData.value.find(item => item.id === currentModuleId.value)) {
-    currentModuleId.value = '';
-  }
-};
 
 /**
  * Handles search panel filter changes
@@ -568,11 +545,9 @@ const currentModuleId = ref();
 onMounted(async () => {
   await router.replace('/issue#issue');
 
-  await loadModuleTreeData();
 
   watch(() => props.projectId, () => {
     currentModuleId.value = '';
-    loadModuleTreeData();
   });
 
   watch(() => listRefreshNotify.value, (newNotificationValue) => {
@@ -806,9 +781,7 @@ const statisticsParameters = computed(() => {
         <ModuleTree
           v-model:moduleId="currentModuleId"
           :projectId="props.projectId"
-          :projectName="props.projectName"
-          :dataList="moduleTreeData"
-          @loadData="loadModuleTreeData" />
+          :projectName="props.projectName" />
       </div>
       <div class="flex-1 flex flex-col overflow-x-hidden">
         <SearchPanel

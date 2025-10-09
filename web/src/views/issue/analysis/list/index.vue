@@ -159,7 +159,8 @@ const openCreateAnalysisDialog = (templateType = '') => {
     addTabPane({
       _id: 'analysisEdit',
       value: 'analysisEdit',
-      name: t('issueAnalysis.actions.addAnalysis')
+      name: t('issueAnalysis.actions.addAnalysis'),
+      data: { template: selectedTemplate.value }
     });
   }
 };

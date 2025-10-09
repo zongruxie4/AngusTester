@@ -12,7 +12,7 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 const { t } = useI18n();
 
 // Async components for case management
-const ModuleTree = defineAsyncComponent(() => import('./ModuleTree.vue'));
+const ModuleTree = defineAsyncComponent(() => import('@/components/ModuleSelectTree/index.vue'));
 const SelectCaseModal = defineAsyncComponent(() => import('@/views/test/baseline/edit/SelectCaseModal.vue'));
 
 // Async components for case details
@@ -275,12 +275,14 @@ onUnmounted(() => {
       class="w-70">
       <ModuleTree
         v-model:moduleId="selectedModuleId"
-        v-bind="props" />
+        v-bind="props"
+        :readonly="true" />
     </div>
     <div class="flex-1">
       <!-- Search -->
       <Search
-        :established="currentBaselineInfo?.established"
+        :established="currentBaselineInfo?.established":q
+        
         @handleAddCase="openAddCaseModal"
         @change="handleSearchParametersChange" />
 

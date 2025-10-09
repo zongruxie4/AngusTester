@@ -217,7 +217,7 @@ watch(() => category.value, () => {
     <AsyncComponent :visible="authModalVisible">
       <AuthorizeModal
         v-model:visible="authModalVisible"
-        enumKey="ReportPermission"
+        :enumKey="ReportPermission"
         :appId="appInfo?.id"
         :listUrl="`${TESTER}/report/auth?reportId=${selectId}`"
         :delUrl="`${TESTER}/report/auth`"

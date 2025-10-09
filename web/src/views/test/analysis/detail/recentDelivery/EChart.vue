@@ -134,22 +134,11 @@ const deliveryEChartConfig = {
 const deliveryWorkloadEChartConfig = JSON.parse(JSON.stringify({
   ...deliveryEChartConfig,
   title: {
-    text: '0%',
-    left: '35%',
-    top: '45%',
-    padding: 2,
-    subtext: t('testAnalysis.detail.recentDelivery.chartTitles.deliveryWorkload'),
-    // left: '25%',
-    // top: '40%',
-    itemGap: 55,
-    textAlign: 'center',
+    left: 'center',
+    bottom: 0,
+    text: t('testAnalysis.detail.recentDelivery.chartTitles.deliveryWorkload'),
     textStyle: {
-      fontSize: 12,
-      fontWeight: 'bolder'
-    },
-    subtextStyle: {
-      fontSize: 12,
-      color: '#000'
+      fontSize: 12
     }
   }
 

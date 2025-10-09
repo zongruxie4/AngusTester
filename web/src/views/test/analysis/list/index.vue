@@ -115,7 +115,8 @@ const navigateToAddAnalysis = (templateValue = '') => {
     addTabPane({
       _id: 'analysisEdit',
       value: 'analysisEdit',
-      name: t('testAnalysis.actions.addAnalysis')
+      name: t('testAnalysis.actions.addAnalysis'),
+      data: { template: selectedTemplate.value }
     });
   }
 };
