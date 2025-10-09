@@ -1417,7 +1417,7 @@ const showGroupData = computed(() => {
 });
 
 const checkedCaseId = computed(() => {
-  return checkedCaseInfo?.value?.id ?? -1;
+  return checkedCaseInfo?.value?.id ?? 0;
 });
 </script>
 

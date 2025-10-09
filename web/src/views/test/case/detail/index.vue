@@ -454,6 +454,16 @@ defineExpose({
         </Button>
 
         <Button
+          v-if="caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PENDING"
+          :disabled="!actionAuth.includes('review')"
+          class="mt-2 mr-2"
+          size="small"
+          @click="emitActionClick('review')">
+          <Icon class="mr-1" icon="icon-pingshen" />
+          {{ t('common.review') }}
+        </Button>
+
+        <Button
           v-if="!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PASSED)
             && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail?.testResult?.value)"
           :disabled="!actionAuth.includes('updateTestResult')"

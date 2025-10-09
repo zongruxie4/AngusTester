@@ -375,6 +375,15 @@ const tableAction = computed(() => {
       });
     }
 
+    if (_case?.review && _case?.reviewStatus.value === ReviewStatus.PENDING) {
+      action.actionMenus[_case.id].push({
+        key: 'review',
+        icon: 'icon-pingshen',
+        name: t('common.review'),
+        noAuth: true
+      });
+    }
+
     action.actionMenus[_case.id].push(
       {
         key: 'clone',
@@ -1114,7 +1123,7 @@ defineExpose({
               :params="params"
               :total="total"
               :caseActionAuth="tableAction.auth"
-              :menus="tableAction.actionMenus"
+              :actionMenus="tableAction.actionMenus"
               :caseList="caseList"
               class="flex-1 pb-3.5"
               @onClick="handleDetailAction"
