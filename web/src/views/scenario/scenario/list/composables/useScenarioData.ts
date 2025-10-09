@@ -18,6 +18,7 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
   const loading = ref(false);
   const errorMessage = ref<string>();
   const dataList = ref<ScenarioInfo[]>([]);
+  const moduleId = ref<string>();
 
   /**
    * Load scenario data from API
@@ -28,7 +29,7 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
   const loadData = async (
     filters?: SearchCriteria[],
     orderBy?: SortKey,
-    orderSort?: PageQuery.OrderSort
+    orderSort?: PageQuery.OrderSort,
   ): Promise<void> => {
     // Skip if no project ID
     if (!projectId.value) {
@@ -39,7 +40,7 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
       projectId: projectId.value,
       pageNo: 1,
       pageSize: 2000,
-      infoScope: PageQuery.InfoScope.DETAIL
+      infoScope: PageQuery.InfoScope.DETAIL,
     };
 
     // Add filters if provided
@@ -57,7 +58,7 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
     }
 
     loading.value = true;
-    const [error, res] = await scenario.getScenarioList(params);
+    const [error, res] = await scenario.getScenarioList({ ...params, moduleId: moduleId.value });
     loaded.value = true;
     loading.value = false;
     errorMessage.value = undefined;
@@ -93,6 +94,10 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
       }
       loadData();
     });
+
+    watch(() => moduleId.value, () => {
+      loadData();
+    });
   });
 
   return {
@@ -101,6 +106,7 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
     loading,
     errorMessage,
     dataList,
+    moduleId,
 
     // Methods
     loadData
