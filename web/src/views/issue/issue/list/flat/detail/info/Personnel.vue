@@ -30,17 +30,17 @@ const emit = defineEmits<{
 const assigneeSelectRef = ref();
 const isAssigneeEditing = ref(false);
 const assigneeSelectMessage = ref<string>();
-const assigneeSelectValue = ref<string>();
+const assigneeSelectValue = ref<number>();
 
 const confirmerSelectRef = ref();
 const isConfirmerEditing = ref(false);
 const confirmerSelectMessage = ref<string>();
-const confirmerSelectValue = ref<string>();
+const confirmerSelectValue = ref<number>();
 
 const testerSelectRef = ref();
 const isTesterEditing = ref(false);
 const testerSelectMessage = ref<string>();
-const testerSelectValue = ref<string>();
+const testerSelectValue = ref<number>();
 
 // Personnel editing methods
 /**

@@ -67,7 +67,7 @@ export interface AssocTaskProps {
   /** Project identifier for context */
   projectId: number;
   /** User information object */
-  userInfo: { id: number; };
+  userInfo: { id: number; fullName?: string};
   /** Application information object */
   appInfo: { id: number; };
   /** Current task identifier */
@@ -83,7 +83,7 @@ export interface AssocTaskProps {
 }
 
 export type TaskDetailProps = {
-  projectId: string;
+  projectId: number;
   userInfo: { id: number; fullName: string};
   appInfo: { id: number; };
   dataSource: TaskDetail;
@@ -91,7 +91,7 @@ export type TaskDetailProps = {
   taskId?: number;
   loading?: boolean;
   notify?: string;
-  id: number;
+  id?: number;
   tips?: string;
   taskInfo?: any;
 }

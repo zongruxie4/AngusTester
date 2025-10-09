@@ -62,8 +62,8 @@ const sprintDeadlineDate = ref<string>();
 const moduleTreeData = ref([]);
 
 // Default options for user selection components
-const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
-const confirmerDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
+const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:number;}}>();
+const confirmerDefaultOptions = ref<{[key:string]:{fullName:string;id:number;}}>();
 
 // Store original form state for comparison during edit
 let originalFormState: TaskEditState | undefined;
@@ -565,7 +565,7 @@ const handleTaskCreation = async (shouldContinue = false) => {
 const handleTaskUpdate = async () => {
   loading.value = true;
   const params = buildTaskParameters();
-  const [error] = await issue.putTask(props.taskId as string, params);
+  const [error] = await issue.putTask(props.taskId as number, params);
   loading.value = false;
   if (error) {
     return;
@@ -607,7 +607,7 @@ const loadModuleTreeData = async () => {
  */
 const loadTaskData = async (): Promise<Partial<TaskDetail>> => {
   loading.value = true;
-  const [error, res] = await issue.getTaskDetail(props.taskId as string);
+  const [error, res] = await issue.getTaskDetail(props.taskId);
   loading.value = false;
   if (error || !res?.data) {
     return { id: props.taskId! };

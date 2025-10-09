@@ -18,12 +18,12 @@ import { ActionMenuItem } from '@/views/issue/issue/types';
 
 // Type definitions for component props
 type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  projectId: number;
+  userInfo: { id: number; fullName: string; };
+  appInfo: { id: number; };
   filters: SearchCriteria[];
   notify: string;
-  moduleId: string;
+  moduleId: number;
   loading: boolean;
   groupKey: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType';
   orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
@@ -76,21 +76,21 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', r
 // Drawer and modal state
 const drawerActiveKey = ref<'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks'>('basic');
 const checkedTaskInfo = ref<TaskDetail>();
-const checkedSprintInfo = ref<{ id: string; name: string; }>();
+const checkedSprintInfo = ref<{ id: number; name: string; }>();
 const moveModalVisible = ref(false);
 const taskModalVisible = ref(false);
 
 // Task selection state
-const selectedTaskSprintId = ref<string>();
-const selectedTaskId = ref<string>();
+const selectedTaskSprintId = ref<number>();
+const selectedTaskId = ref<number>();
 const selectedTaskName = ref<string>();
 const selectedIndex = ref<number>();
 const selectedStatus = ref<TaskDetail['status']['value']>();
-const selectedByGroupKey = ref<string>();
-const searchSprintId = ref<string>();
+const selectedByGroupKey = ref<number>();
+const searchSprintId = ref<number>();
 
 // Permission and data maps
-const sprintPermissionsMap = ref<Map<string, TaskSprintPermission[]>>(new Map());
+const sprintPermissionsMap = ref<Map<number, TaskSprintPermission[]>>(new Map());
 
 // Task data collections
 const statusList = ref<{ message: string; value: TaskDetail['status']['value'] }[]>([]);
@@ -112,13 +112,13 @@ const taskCountMap = ref<{ [key in TaskDetail['status']['value']]: number }>({
 });
 
 // Group data lists
-const assigneeNameList = ref<{ name: string; value: string }[]>([]);
-const lastModifiedByNameList = ref<{ name: string; value: string }[]>([]);
+const assigneeNameList = ref<{ name: string; value: number }[]>([]);
+const lastModifiedByNameList = ref<{ name: string; value: number }[]>([]);
 const taskTypeList = ref<{ name: string; value: string }[]>([]);
 
 // UI state
 const isGroupExpanded = ref(false);
-const expandedGroupSet = ref(new Set<string>());
+const expandedGroupSet = ref(new Set<number>());
 const isDraggingToColumn = ref<number | null>(null);
 const isDraggingToColumnStatus = ref<TaskDetail['status']['value'][]>([]);
 
@@ -168,7 +168,7 @@ const loadData = async () => {
 
   // Process tasks and organize data
   const newList: TaskDetail[] = [];
-  const sprintIdSet = new Set<string>();
+  const sprintIdSet = new Set<number>();
   const assigneeNameSet = new Set<string>();
   const lastModifiedByNameSet = new Set<string>();
   const taskTypeSet = new Set<string>();
@@ -186,7 +186,7 @@ const loadData = async () => {
       if (!item.assigneeName) {
         assigneeNameList.value.unshift({
           name: t('status.ungrouped'),
-          value: '-1'
+          value: undefined as unknown as number
         });
       } else {
         assigneeNameList.value.push({
@@ -254,7 +254,7 @@ const loadData = async () => {
   emit('update:loading', false);
 };
 
-const loadPermissions = async (id: string) => {
+const loadPermissions = async (id: number) => {
   // Load user sprint permissions
   const params = {
     admin: true
@@ -263,7 +263,7 @@ const loadPermissions = async (id: string) => {
   return await issue.getUserSprintAuth(id, props.userInfo?.id, params);
 };
 
-const loadTaskInfoById = async (id: string): Promise<Partial<TaskDetail>> => {
+const loadTaskInfoById = async (id: number): Promise<Partial<TaskDetail>> => {
   // Load detailed task information by ID
   emit('update:loading', true);
   const [error, res] = await issue.getTaskDetail(id);
@@ -278,11 +278,11 @@ const getParams = () => {
   // Build API request parameters
   const params: {
     backlog: false,
-    projectId: string;
+    projectId: number;
     pageNo: number;
     pageSize: number;
-    moduleId?: string;
-    filters?: { key: string; op: string; value: boolean | string | string[]; }[];
+    moduleId?: number;
+    filters?: SearchCriteria[];
   } = {
     backlog: false,
     projectId: props.projectId,
@@ -403,8 +403,8 @@ const toGroup = (value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskTy
 
 const setGroupData = (data: TaskDetail) => {
   // Add task to appropriate group based on groupKey
-  const { status: { value: statusValue }, assigneeId = '-1', lastModifiedBy, taskType: { value: taskTypeValue } } = data;
-  let key = '';
+  const { status: { value: statusValue }, assigneeId, lastModifiedBy, taskType: { value: taskTypeValue } } = data;
+  let key;
 
   if (props.groupKey === 'assigneeName') {
     key = assigneeId;
@@ -440,7 +440,7 @@ const setDefaultGroupData = () => {
 };
 
 // Task selection methods
-const toChecked = async (data: TaskDetail, index: number, groupByKey: string) => {
+const toChecked = async (data: TaskDetail, index: number, groupByKey: number) => {
   // Handle task selection for detail view
   if (data.id === checkedTaskInfo.value?.id) {
     // Deselect if same task is clicked
@@ -575,14 +575,14 @@ const dropdownClick = (menuItem: ActionMenuItem, data: TaskDetail, index: number
   }
 };
 
-const toEdit = (id: string, index: number, status: TaskDetail['status']['value']) => {
+const toEdit = (id: number, index: number, status: TaskDetail['status']['value']) => {
   // Open task edit modal
   selectedTaskId.value = id;
   selectedIndex.value = index;
   selectedStatus.value = status;
   // Set current sprint from search filters
   const item = props.filters.find(item => item.key === 'sprintId');
-  searchSprintId.value = item?.value as string;
+  searchSprintId.value = item?.value;
   taskModalVisible.value = true;
 };
 
@@ -824,7 +824,7 @@ const toCancel = async (data: TaskDetail, notificationFlag = true, errorCallback
 
 // Drag and drop methods
 const resetDrag = (
-  id: string,
+  id: number,
   index: number,
   status: TaskDetail['status']['value'],
   toStatus: TaskDetail['status']['value']
@@ -839,7 +839,7 @@ const resetDrag = (
 };
 
 const resetGroupDrag = (
-  id: string,
+  id: number,
   index: number,
   status: TaskDetail['status']['value'],
   toStatus: TaskDetail['status']['value'],
@@ -1123,7 +1123,7 @@ const dragAdd = async (
   toStatus: TaskDetail['status']['value']
 ) => {
   // Handle drag and drop add event for non-grouped view
-  const [status, index, id] = (event.item.id.split('-')) as [TaskDetail['status']['value'], number, string];
+  const [status, index, id] = (event.item.id.split('-')) as [TaskDetail['status']['value'], number, number];
   const targetData = taskDataMap.value[toStatus].find(item => item.id === id);
   if (!targetData) {
     return;
@@ -1137,7 +1137,7 @@ const groupDragAdd = async (
   toStatus: TaskDetail['status']['value']
 ) => {
   // Handle drag and drop add event for grouped view
-  const [status, index, id, groupKey] = (event.item.id.split('-')) as [TaskDetail['status']['value'], number, string, string];
+  const [status, index, id, groupKey] = (event.item.id.split('-')) as [TaskDetail['status']['value'], number, number, string];
   const targetData = groupDataMap.value[groupKey][toStatus].find(item => item.id === id);
   if (!targetData) {
     return;
@@ -1150,7 +1150,7 @@ const dragMove = (event) => {
   // Handle drag move event to determine valid drop targets
   const [, toIndex] = event.to.id.split('-') as [TaskDetail['status']['value'], number];
   const [fromStatus] = event.from.id.split('-') as [TaskDetail['status']['value'], number];
-  const [, , draggedId, confirmerId] = event.dragged.id.split('-') as [TaskDetail['status']['value'], number, string, string];
+  const [, , draggedId, confirmerId] = event.dragged.id.split('-') as [TaskDetail['status']['value'], number, number, string];
   const cancelDisabled = !!menuItemsMap.value.get(draggedId)?.find(item => item.key === 'cancel')?.disabled;
 
   if (fromStatus === TaskStatus.PENDING) {
@@ -1212,7 +1212,7 @@ const drawerActiveKeyChange = (key: 'basic' | 'person' | 'date' | 'comment' | 'a
   drawerActiveKey.value = key;
 };
 
-const arrowOpenChange = (open: boolean, id: string) => {
+const arrowOpenChange = (open: boolean, id: number) => {
   // Toggle group expansion state
   if (open) {
     expandedGroupSet.value.add(id);
@@ -1229,11 +1229,11 @@ const toggleOpen = () => {
     // Expand all groups
     let list: string[] = [];
     if (props.groupKey === 'assigneeName') {
-      list = assigneeNameList.value.map(item => item.value);
+      list = assigneeNameList.value.map(item => item.value.toString());
     } else if (props.groupKey === 'lastModifiedByName') {
-      list = lastModifiedByNameList.value.map(item => item.value);
+      list = lastModifiedByNameList.value.map(item => item.value.toString());
     } else if (props.groupKey === 'taskType') {
-      list = taskTypeList.value.map(item => item.value);
+      list = taskTypeList.value.map(item => item.value.toString());
     }
 
     for (let i = 0, len = list.length; i < len; i++) {
@@ -1297,9 +1297,9 @@ const checkedTaskType = computed(() => {
   return checkedTaskInfo?.value?.taskType?.value;
 });
 
-const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
+const menuItemsMap = computed<Map<number, ActionMenuItem[]>>(() => {
   // Generate context menu items for each task based on permissions and status
-  const map = new Map<string, ActionMenuItem[]>();
+  const map = new Map<number, ActionMenuItem[]>();
   for (const key in taskDataMap.value) {
     const list = taskDataMap.value[key] || [];
     for (let i = 0, len = list.length; i < len; i++) {
@@ -1612,16 +1612,16 @@ onMounted(() => {
           <div
             v-for="_createdByName in showGroupData"
             :key="_createdByName.value"
-            :class="{ 'h-full': expandedGroupSet.has(_createdByName.value) }"
+            :class="{ 'h-full': expandedGroupSet.has(_createdByName.value as number) }"
             class="flex items-start flex-nowrap border-b border-solid border-theme-text-box overflow-x-hidden">
             <div class="w-50 flex-shrink-0 flex items-center justify-between px-2.5 py-3.5">
               <div class="flex items-center overflow-hidden">
                 <Arrow
-                  :open="expandedGroupSet.has(_createdByName.value)"
+                  :open="expandedGroupSet.has(_createdByName.value as number)"
                   type="dashed"
                   class="flex-shrink-0 mr-1.5"
                   style="font-size:12px;"
-                  @change="arrowOpenChange($event, _createdByName.value)" />
+                  @change="arrowOpenChange($event, _createdByName.value as number)" />
                 <IconTask
                   v-if="props.groupKey === 'taskType'"
                   :value="_createdByName.value"
@@ -1638,7 +1638,7 @@ onMounted(() => {
               </div>
             </div>
             <div class="relative h-full flex items-start" style="width: calc(100% - 193px);">
-              <template v-if="!expandedGroupSet.has(_createdByName.value)">
+              <template v-if="!expandedGroupSet.has(_createdByName.value as number)">
                 <div
                   v-for="_status in statusList"
                   :key="_status.value"
@@ -1648,10 +1648,10 @@ onMounted(() => {
                   <span>{{ groupDataMap[_createdByName.value]?.[_status.value]?.length || 0 }}</span>
                 </div>
               </template>
-              <AsyncComponent :visible="arrowOpenSet.has(_createdByName.value)">
+              <AsyncComponent :visible="expandedGroupSet.has(_createdByName.value as number)">
                 <Draggable
                   v-for="(_status, statusIndex) in statusList"
-                  v-show="expandedGroupSet.has(_createdByName.value)"
+                  v-show="expandedGroupSet.has(_createdByName.value as number)"
                   :id="`${_status.value}-${statusIndex}`"
                   :key="_status.value"
                   style="width:20%;height: 100%;"
@@ -1672,7 +1672,7 @@ onMounted(() => {
                       :id="`${_status.value}-${index}-${element.id}-${(element.confirmerId || '0')}-${_createdByName.value}`"
                       :class="{ 'active-item': checkedTaskId === element.id }"
                       class="task-board-item border border-solid rounded border-theme-text-box p-2 space-y-1.5"
-                      @click="toChecked(element, statusIndex, _createdByName.value)">
+                      @click="toChecked(element, statusIndex, _createdByName.value as number)">
                       <div class="flex items-center overflow-hidden">
                         <IconTask :value="element.taskType.value" class="mr-1.5" />
                         <span :title="element.name" class="flex-1 truncate font-semibold">{{ element.name }}</span>

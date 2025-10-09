@@ -44,12 +44,12 @@ const taskNameInputValue = ref<string>();
 // Evaluation workload editing state
 const evalWorkloadInputRef = ref();
 const isEvalWorkloadEditing = ref(false);
-const evalWorkloadInputValue = ref<string>();
+const evalWorkloadInputValue = ref<number>();
 
 // Actual workload editing state
 const actualWorkloadInputRef = ref();
 const isActualWorkloadEditing = ref(false);
-const actualWorkloadInputValue = ref<string>();
+const actualWorkloadInputValue = ref<number>();
 
 // Priority editing state
 const prioritySelectRef = ref();
@@ -60,13 +60,13 @@ const priorityInputValue = ref<TaskDetail['priority']['value']>();
 // Tag editing state
 const tagSelectRef = ref();
 const isTagEditing = ref(false);
-const selectedTagList = ref<{id:string;name:string;}[]>([]);
-const selectedTagIdList = ref<string[]>([]);
+const selectedTagList = ref<{id:number;name:string;}[]>([]);
+const selectedTagIdList = ref<number[]>([]);
 
 // Module editing state
 const moduleTreeSelectRef = ref();
 const isModuleEditing = ref(false);
-const moduleInputValue = ref<string>();
+const moduleInputValue = ref<number>();
 
 // Version editing state
 const versionSelectRef = ref();
@@ -76,10 +76,9 @@ const versionInputValue = ref<string>();
 // Computed properties
 const currentSprintId = computed(() => props.dataSource?.sprintId);
 const currentModuleId = computed(() => {
-  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
+  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === -1) {
     return undefined;
   }
-
   return props.dataSource?.moduleId;
 });
 const currentTaskId = computed(() => props.dataSource?.id);
@@ -139,7 +138,7 @@ const confirmModuleSelection = async () => {
   }
 
   emit('refresh');
-  const taskInfo = await loadTaskInfoById(currentTaskId.value);
+  const taskInfo = await loadTaskInfoById(currentTaskId.value as number);
   emit('change', taskInfo);
 };
 
@@ -174,7 +173,7 @@ const loadModuleTreeData = async () => {
  * @param id - Task ID
  * @returns Partial task information
  */
-const loadTaskInfoById = async (id: string): Promise<Partial<TaskDetail>> => {
+const loadTaskInfoById = async (id: number): Promise<Partial<TaskDetail>> => {
   emit('loadingChange', true);
   const [error, res] = await issue.getTaskDetail(id);
   emit('loadingChange', false);
@@ -189,7 +188,7 @@ const loadTaskInfoById = async (id: string): Promise<Partial<TaskDetail>> => {
 const sprintSelectRef = ref();
 const isSprintEditing = ref(false);
 const sprintDisplayMessage = ref<string>();
-const sprintInputValue = ref<string>();
+const sprintInputValue = ref<number>();
 
 /**
  * Enter sprint editing mode and focus the select
@@ -313,7 +312,7 @@ const enterActualWorkloadEditMode = () => {
  * @param event - Input blur event
  */
 const handleActualWorkloadInputBlur = async (event: FocusEvent) => {
-  const value = (event.target as HTMLInputElement).value;
+  const value = Number((event.target as HTMLInputElement).value);
   if (value === currentActualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;
@@ -360,7 +359,7 @@ const enterEvalWorkloadEditMode = () => {
  * @param event - Input blur event
  */
 const handleEvalWorkloadInputBlur = async (event: FocusEvent) => {
-  const value = (event.target as HTMLInputElement).value;
+  const value = Number((event.target as HTMLInputElement).value);
   if (value === currentEvalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;

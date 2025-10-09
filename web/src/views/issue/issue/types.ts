@@ -15,6 +15,10 @@ export enum TaskViewMode {
  * containing content, creator information, and metadata
  */
 export type Remark = {
+    /** Unique identifier of the remark */
+    id: number;
+    /** ID of the associated task */
+    taskId: number;
   /** Rich text content of the remark */
   content: string;
   /** ID of the user who created the remark */
@@ -23,10 +27,6 @@ export type Remark = {
   createdByName: string;
   /** Creation date of the remark */
   createdDate: string;
-  /** Unique identifier of the remark */
-  id: string;
-  /** ID of the associated task */
-  taskId: string;
 }
 
 /**
@@ -106,7 +106,7 @@ export type TaskCount = {
  */
 export type ActionMenuItem = {
   name: string;
-  key: 'delete' | 'edit' | 'start' | 'processed' | 'uncompleted' | 'completed' | 'reopen' | 'restart' | 'cancel' | 'move' | 'cancelFavourite' | 'addFavourite' | 'cancelFollow' | 'addFollow' | 'copyLink';
+  key: 'delete' | 'edit' | 'start' | 'processed' | 'split' | 'uncompleted' | 'completed' | 'reopen' | 'restart' | 'cancel' | 'move' | 'cancelFavourite' | 'addFavourite' | 'cancelFollow' | 'addFollow' | 'copyLink';
   icon: string;
   disabled: boolean;
   hide: boolean;

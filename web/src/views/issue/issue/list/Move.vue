@@ -16,10 +16,10 @@ enum MoveScope {
 
 // Props and Emits Definition
 interface Props {
-  projectId: string;
+  projectId: number;
   visible: boolean;
-  taskIds: string;
-  sprintId?: string;
+  taskIds: number[];
+  sprintId?: number;
   taskName?: string;
 }
 
@@ -34,12 +34,12 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
-  (e: 'ok', value: string, ids:string[]): void;
+  (e: 'ok', value: number, ids:number[]): void;
 }>();
 
 // Reactive data
 const confirmLoading = ref(false);
-const selectedSprintId = ref<string>();
+const selectedSprintId = ref<number>();
 const moveScope = ref<MoveScope>(MoveScope.SPRINT);
 
 /**
@@ -89,7 +89,7 @@ const moveTasksToSprint = async () => {
     return;
   }
 
-  emit('ok', targetSprintId || '', moveParams.taskIds);
+  emit('ok', targetSprintId, moveParams.taskIds);
   closeModal();
 
   // Show success notification based on single or batch move

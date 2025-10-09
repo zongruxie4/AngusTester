@@ -48,12 +48,12 @@ const taskNameInputValue = ref<string>();
 // Evaluation workload editing state
 const evalWorkloadInputRef = ref();
 const isEvalWorkloadEditing = ref(false);
-const evalWorkloadInputValue = ref<string>();
+const evalWorkloadInputValue = ref<number>();
 
 // Actual workload editing state
 const actualWorkloadInputRef = ref();
 const isActualWorkloadEditing = ref(false);
-const actualWorkloadInputValue = ref<string>();
+const actualWorkloadInputValue = ref<number>();
 
 // Priority editing state
 const prioritySelectRef = ref();
@@ -70,7 +70,7 @@ const selectedTagIds = ref<string[]>([]);
 // Module editing state
 const moduleTreeSelectRef = ref();
 const isModuleEditing = ref(false);
-const moduleInputValue = ref<string>();
+const moduleInputValue = ref<number>();
 
 // Version editing state
 const versionSelectRef = ref();
@@ -81,7 +81,7 @@ const versionInputValue = ref<string>();
 const sprintSelectRef = ref();
 const isSprintEditing = ref(false);
 const sprintDisplayMessage = ref<string>();
-const sprintInputValue = ref<string>();
+const sprintInputValue = ref<number>();
 
 // Computed Properties
 const taskId = computed(() => props.dataSource?.id);
@@ -111,7 +111,7 @@ const oneTimePassStatus = computed(() => {
 // Additional Computed Properties
 const currentSprintId = computed(() => props.dataSource?.sprintId);
 const currentModuleId = computed(() => {
-  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
+  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === -1) {
     return undefined;
   }
   return props.dataSource?.moduleId;
@@ -138,7 +138,7 @@ const loadModuleTreeData = async () => {
  * <p>Fetch detailed task information by ID</p>
  * <p>Returns partial task info for updating component state</p>
  */
-const fetchTaskDetailsById = async (id: string): Promise<Partial<TaskDetail>> => {
+const fetchTaskDetailsById = async (id: number): Promise<Partial<TaskDetail>> => {
   emit('loadingChange', true);
   const [error, res] = await issue.getTaskDetail(id);
   emit('loadingChange', false);
@@ -331,7 +331,7 @@ const startActualWorkloadEditing = () => {
  */
 const handleActualWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newWorkload = target?.value;
+  const newWorkload = Number(target?.value);
   if (newWorkload === actualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;
@@ -381,7 +381,7 @@ const startEvalWorkloadEditing = () => {
  */
 const handleEvalWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newWorkload = target?.value;
+  const newWorkload = Number(target?.value);
   if (newWorkload === evalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;

@@ -8,9 +8,9 @@ import { TestInfo } from '@/views/execution/types';
 
 // Component Props
 type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  projectId: number;
+  userInfo: { id: number; };
+  appInfo: { id: number; };
   dataSource: TaskDetail;
   largePageLayout: boolean;
   loading: boolean;
@@ -25,14 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false
 });
 
-/**
- * Lazy-loaded component for displaying execution results
- */
 const ExecutionResult = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/testing/ExecResult.vue'));
-
-/**
- * Lazy-loaded component for displaying test results
- */
 const TestResult = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/testing/TestResult.vue'));
 
 /**

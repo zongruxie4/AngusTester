@@ -20,11 +20,11 @@ const MoveTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/lis
 
 // Type Definitions
 type Props = {
-  projectId: string;
-  selectedIds: string[];
+  projectId: number;
+  selectedIds: number[];
   dataSource: TaskDetail[];
   pagination: { current: number; pageSize: number; total: number; };
-  menuItemsMap: Map<string, ActionMenuItem[]>;
+  menuItemsMap: Map<number, ActionMenuItem[]>;
   loading: boolean;
 }
 
@@ -40,18 +40,18 @@ const props = withDefaults(defineProps<Props>(), {
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
-  (event: 'update:selectedIds', value: string[]): void;
+  (event: 'update:selectedIds', value: number[]): void;
   (event: 'update:loading', value: boolean): void;
   (event: 'tableChange', pagination: { current: number; pageSize: number }, sorter: {
     orderBy: string;
     orderSort: PageQuery.OrderSort
   }): void;
-  (event: 'edit', value: string): void;
+  (event: 'edit', value: number): void;
   (event: 'move', value: TaskDetail): void;
-  (event: 'delete', value: string): void;
+  (event: 'delete', value: number): void;
   (event: 'dataChange', value: Partial<TaskDetail>): void;
   (event: 'refreshChange'): void;
-  (event: 'batchAction', type: 'cancel' | 'delete' | 'addFollow' | 'cancelFollow' | 'addFavourite' | 'cancelFavourite' | 'move', value: string[]): void;
+  (event: 'batchAction', type: 'cancel' | 'delete' | 'addFollow' | 'cancelFollow' | 'addFavourite' | 'cancelFavourite' | 'move', value: number[]): void;
 }>();
 
 // Constants
@@ -61,11 +61,11 @@ const MAX_BATCH_SELECTION_LIMIT = 200;
 const moveModalVisible = ref(false);
 const selectedTaskDataMap = ref<{
   [key: string]: {
-    id: string;
+    id: number;
     status: TaskDetail['status']['value'];
     favourite: boolean;
     follow: boolean;
-    sprintId: string;
+    sprintId: number;
   }
 }>({});
 
@@ -83,7 +83,7 @@ const isBatchCancelFollowDisabled = ref(false);
  * <p>Updates the selected task data map and validates selection limits
  * @param selectedKeys - Array of selected task IDs
  */
-const handleTableSelection = (selectedKeys: string[]) => {
+const handleTableSelection = (selectedKeys: number[]) => {
   // Remove deselected tasks from the data map
   const deselectedTaskIds = props.dataSource.reduce((prev, current) => {
     const taskId = current.id;
@@ -97,11 +97,11 @@ const handleTableSelection = (selectedKeys: string[]) => {
         status: current.status.value,
         favourite: current.favourite,
         follow: current.follow,
-        sprintId: current.sprintId || ''
+        sprintId: current.sprintId
       };
     }
     return prev;
-  }, [] as string[]);
+  }, [] as number[]);
 
   // Filter out deselected tasks from current selection
   const currentSelectedKeys = rowSelection.value.selectedRowKeys.filter(item => !deselectedTaskIds.includes(item));
@@ -124,9 +124,9 @@ const handleTableSelection = (selectedKeys: string[]) => {
 
 // Table Configuration
 const rowSelection = ref<{
-  onChange:(key: string[]) => void;
+  onChange:(key: number[]) => void;
   getCheckboxProps: (data: TaskDetail) => ({ disabled: boolean; });
-  selectedRowKeys: string[];
+  selectedRowKeys: number[];
     }>({
       onChange: handleTableSelection,
       getCheckboxProps: () => {
@@ -179,7 +179,7 @@ const executeBatchCancel = async () => {
       }
 
       Promise.all(cancelPromises).then((results: [Error | null, any][]) => {
-        const failedTaskIds: string[] = [];
+        const failedTaskIds: number[] = [];
 
         // Collect failed task IDs
         for (let i = 0, len = results.length; i < len; i++) {
@@ -265,7 +265,7 @@ const executeBatchFavourite = async () => {
       }
 
       Promise.all(favouritePromises).then((results: [Error | null, any][]) => {
-        const failedTaskIds: string[] = [];
+        const failedTaskIds: number[] = [];
 
         // Collect failed task IDs
         for (let i = 0, len = results.length; i < len; i++) {
@@ -325,7 +325,7 @@ const executeBatchCancelFavourite = async () => {
       }
 
       Promise.all(cancelFavouritePromises).then((results: [Error | null, any][]) => {
-        const failedTaskIds: string[] = [];
+        const failedTaskIds: number[] = [];
 
         // Collect failed task IDs
         for (let i = 0, len = results.length; i < len; i++) {
@@ -385,7 +385,7 @@ const executeBatchFollow = async () => {
       }
 
       Promise.all(followPromises).then((results: [Error | null, any][]) => {
-        const failedTaskIds: string[] = [];
+        const failedTaskIds: number[] = [];
 
         // Collect failed task IDs
         for (let i = 0, len = results.length; i < len; i++) {
@@ -445,7 +445,7 @@ const executeBatchCancelFollow = async () => {
       }
 
       Promise.all(cancelFollowPromises).then((results: [Error | null, any][]) => {
-        const failedTaskIds: string[] = [];
+        const failedTaskIds: number[] = [];
 
         // Collect failed task IDs
         for (let i = 0, len = results.length; i < len; i++) {
@@ -499,7 +499,7 @@ const openBatchMoveModal = () => {
  * @param _sprintId - Target sprint ID (unused)
  * @param taskIds - Array of moved task IDs
  */
-const handleBatchMoveSuccess = async (_sprintId: string, taskIds: string[]) => {
+const handleBatchMoveSuccess = async (_sprintId: number, taskIds: number[]) => {
   emit('batchAction', 'move', taskIds);
   rowSelection.value.selectedRowKeys = [];
   selectedTaskDataMap.value = {};
@@ -509,7 +509,7 @@ const handleBatchMoveSuccess = async (_sprintId: string, taskIds: string[]) => {
  * Navigates to task edit page
  * @param taskId - ID of the task to edit
  */
-const navigateToEdit = (taskId: string) => {
+const navigateToEdit = (taskId: number) => {
   emit('edit', taskId);
 };
 
@@ -783,7 +783,7 @@ const copyTaskLink = (taskData: TaskDetail) => {
  * @param taskId - ID of the task to load
  * @returns Promise resolving to partial task data
  */
-const loadTaskDetail = async (taskId: string): Promise<Partial<TaskDetail>> => {
+const loadTaskDetail = async (taskId: number): Promise<Partial<TaskDetail>> => {
   emit('update:loading', true);
   const [error, response] = await issue.getTaskDetail(taskId);
   emit('update:loading', false);
@@ -820,7 +820,7 @@ onMounted(() => {
     const selectedTasks = (Object.values(newSelectedData) || []) as {
       favourite: boolean;
       follow: boolean;
-      id: string;
+      id: number;
       status: string;
     }[];
 

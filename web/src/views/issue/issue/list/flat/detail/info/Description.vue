@@ -76,7 +76,7 @@ const saveDescriptionChanges = async () => {
 
   const params = { description: descriptionContent.value };
   emit('loadingChange', true);
-  const [error] = await issue.editTaskDescription(props.taskId || '', params);
+  const [error] = await issue.editTaskDescription(props.taskId as number, params);
   emit('loadingChange', false);
   if (error) {
     return;

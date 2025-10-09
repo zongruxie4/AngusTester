@@ -52,7 +52,7 @@ const isOperationLoading = ref(false);
 /**
  * ID of the currently selected task for editing
  */
-const selectedTaskForEdit = ref<string>();
+const selectedTaskForEdit = ref<number>();
 
 /**
  * Visibility state for the task edit modal

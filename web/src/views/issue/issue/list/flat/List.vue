@@ -10,9 +10,9 @@ import TaskStatus from '@/components/TaskStatus/index.vue';
  * Component props interface for task list display
  */
 type Props = {
-  projectId: string;
-  checkedId: string;
-  selectedIds: string[];
+  projectId: number;
+  checkedId: number;
+  selectedIds: number[];
   dataSource: TaskDetail[];
   pagination: { current: number; pageSize: number; total: number; };
 }
@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (e: 'paginationChange', value: { current: number; pageSize: number; }): void;
   (e: 'checked', value: TaskDetail): void;
-  (e: 'select', value: string[]): void;
+  (e: 'select', value: number[]): void;
 }>();
 
 /**
@@ -58,7 +58,7 @@ const handleTaskClick = (taskData: TaskDetail) => {
  * Adds or removes task IDs from the selected list based on checkbox state
  * @param event - The checkbox change event containing checked state and value
  */
-const handleCheckboxChange = (event: { target: { checked: boolean; value: string; } }) => {
+const handleCheckboxChange = (event: { target: { checked: boolean; value: number; } }) => {
   const { checked, value } = event.target;
   if (checked) {
     // Add to selection if not already selected

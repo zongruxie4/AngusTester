@@ -11,14 +11,14 @@ import { ActionMenuItem } from '@/views/issue/issue/types';
 
 // Component props interface for task list management
 type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  selectedIds: string[];
+  projectId: number;
+  userInfo: { id: number; fullName: string };
+  appInfo: { id: number; };
+  selectedIds: number[];
   dataSource: TaskDetail[];
   editTaskData: TaskDetail;
   pagination: { current: number; pageSize: number; total: number; };
-  menuItemsMap: Map<string, ActionMenuItem[]>;
+  menuItemsMap: Map<number, ActionMenuItem[]>;
   loading: boolean;
   loaded: boolean;
 }
@@ -44,19 +44,19 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
-  (event: 'update:selectedIds', value: string[]): void;
-  (event: 'edit', value: string): void;
+  (event: 'update:selectedIds', value: number[]): void;
+  (event: 'edit', value: number): void;
   (event: 'move', value: TaskDetail): void;
-  (event: 'delete', value:string): void;
+  (event: 'delete', value: number): void;
   (event: 'dataChange', value: Partial<TaskDetail>): void;
   (event: 'refreshChange'): void;
   (event: 'splitOk'): void;
   (event: 'paginationChange', value: { current: number; pageSize: number; }): void;
-  (event: 'batchAction', type: 'cancel' | 'delete' | 'addFollow' | 'cancelFollow' | 'addFavourite' | 'cancelFavourite' | 'move', value: string[]): void;
+  (event: 'batchAction', type: 'cancel' | 'delete' | 'addFollow' | 'cancelFollow' | 'addFavourite' | 'cancelFavourite' | 'move', value: number[]): void;
 }>();
 
 // Async Components
-const List = defineAsyncComponent(() => import('./List.vue'));
+const List = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/List.vue'));
 const Details = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/index.vue'));
 const MoveTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Move.vue'));
 
@@ -82,11 +82,11 @@ const isMoveModalVisible = ref(false);
 // Map of selected task data for batch operations
 const selectedTaskDataMap = ref<{
   [key: string]: {
-    id: string;
+    id: number;
     status: TaskDetail['status']['value'];
     favourite: boolean;
     follow: boolean;
-    sprintId?: string;
+    sprintId?: number;
   }
 }>({});
 
@@ -110,7 +110,7 @@ const handleSingleTaskSelection = (data: TaskDetail) => {
  * <p>Handles edit task action</p>
  * <p>Emits edit event with task ID to parent component for opening edit modal</p>
  */
-const handleEditTask = (id: string) => {
+const handleEditTask = (id: number) => {
   emit('edit', id);
 };
 
@@ -118,7 +118,7 @@ const handleEditTask = (id: string) => {
  * <p>Handles delete task confirmation</p>
  * <p>Emits delete event with task ID to parent component for task deletion</p>
  */
-const handleDeleteTask = (id: string) => {
+const handleDeleteTask = (id: number) => {
   emit('delete', id);
 };
 
@@ -151,7 +151,7 @@ const handleRefreshRequest = () => {
  * <p>Manages the selected task IDs and their associated data for batch processing</p>
  * <p>Validates selection count against maximum allowed batch operations</p>
  */
-const handleMultiTaskSelection = (ids: string[]) => {
+const handleMultiTaskSelection = (ids: number[]) => {
   // Remove unselected tasks from data map
   const unselectedIds = props.dataSource.reduce((prev, cur) => {
     const id = cur.id;
@@ -161,14 +161,14 @@ const handleMultiTaskSelection = (ids: string[]) => {
     } else {
       // Add selected task data to map
       selectedTaskDataMap.value[id] = {
-        id,
+        id: id,
         status: cur.status.value,
         favourite: cur.favourite,
         follow: cur.follow
       };
     }
     return prev;
-  }, [] as string[]);
+  }, [] as number[]);
 
   // Update selected IDs, filtering out unselected ones
   const selectedRowKeys = props.selectedIds.filter(item => !unselectedIds.includes(item));
@@ -216,11 +216,11 @@ const executeBatchCancel = async () => {
 
       // Create cancel promises for all selected tasks
       for (let i = 0, len = taskIds.length; i < len; i++) {
-        cancelPromises.push(issue.cancelTask(taskIds[i], { silence: true }));
+        cancelPromises.push(issue.cancelTask(taskIds[i] as unknown as number, { silence: true }));
       }
 
       Promise.all(cancelPromises).then((results: [Error | null, any][]) => {
-        const failedTaskIds: string[] = [];
+        const failedTaskIds: number[] = [];
 
         // Identify failed operations
         for (let i = 0, len = results.length; i < len; i++) {
@@ -280,7 +280,7 @@ const executeBatchDelete = async () => {
   modal.confirm({
     content: t('actions.tips.confirmCountDelete', { num: selectedCount }),
     async onOk () {
-      const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
+      const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id as unknown as number);
       const [error] = await issue.deleteTask(taskIds);
 
       if (error) {
@@ -311,11 +311,11 @@ const executeBatchFavourite = async () => {
 
       // Create favourite promises for all selected tasks
       for (let i = 0, len = taskIds.length; i < len; i++) {
-        favouritePromises.push(issue.favouriteTask(taskIds[i], { silence: true }));
+        favouritePromises.push(issue.favouriteTask(taskIds[i] as unknown as number, { silence: true }));
       }
 
       Promise.all(favouritePromises).then((results: [Error | null, any][]) => {
-        const failedTaskIds: string[] = [];
+        const failedTaskIds: number[] = [];
 
         // Identify failed operations
         for (let i = 0, len = results.length; i < len; i++) {
@@ -373,7 +373,7 @@ const executeBatchCancelFavourite = async () => {
   modal.confirm({
     content: t('issue.detail.messages.confirmCancelFavourite', { num: selectedCount }),
     async onOk () {
-      const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
+      const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id as unknown as number);
       const cancelFavouritePromises: Promise<any>[] = [];
 
       // Create cancel favourite promises for all selected tasks
@@ -382,7 +382,7 @@ const executeBatchCancelFavourite = async () => {
       }
 
       Promise.all(cancelFavouritePromises).then((results: [Error | null, any][]) => {
-        const failedTaskIds: string[] = [];
+        const failedTaskIds: number[] = [];
 
         // Identify failed operations
         for (let i = 0, len = results.length; i < len; i++) {
@@ -449,7 +449,7 @@ const executeBatchFollow = async () => {
       }
 
       Promise.all(followPromises).then((results: [Error | null, any][]) => {
-        const failedTaskIds: string[] = [];
+        const failedTaskIds: number[] = [];
 
         // Identify failed operations
         for (let i = 0, len = results.length; i < len; i++) {
@@ -516,7 +516,7 @@ const executeBatchCancelFollow = async () => {
       }
 
       Promise.all(cancelFollowPromises).then((results: [Error | null, any][]) => {
-        const failedTaskIds: string[] = [];
+        const failedTaskIds: number[] = [];
 
         // Identify failed operations
         for (let i = 0, len = results.length; i < len; i++) {
@@ -576,7 +576,7 @@ const openBatchMoveModal = () => {
  * <p>Handles successful batch move operation</p>
  * <p>Clears selections and emits move action to parent component</p>
  */
-const handleBatchMoveSuccess = async (_sprintId: string, taskIds: string[]) => {
+const handleBatchMoveSuccess = async (_sprintId: number, taskIds: number[]) => {
   emit('batchAction', 'move', taskIds);
   emit('update:selectedIds', []);
   selectedTaskDataMap.value = {};
@@ -638,7 +638,7 @@ onMounted(() => {
     const selectedTasks = (Object.values(newSelectedData) || []) as {
       favourite: boolean;
       follow: boolean;
-      id: string;
+      id: number;
       status: string;
     }[];
 
@@ -793,7 +793,7 @@ onMounted(() => {
     <AsyncComponent :visible="isMoveModalVisible">
       <MoveTaskModal
         v-model:visible="isMoveModalVisible"
-        :taskIds="props.selectedIds.join(',')"
+        :taskIds="props.selectedIds"
         :projectId="props.projectId"
         @ok="handleBatchMoveSuccess" />
     </AsyncComponent>

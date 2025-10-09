@@ -42,12 +42,12 @@ const taskNameInputValue = ref<string>();
 // Evaluation workload editing state
 const evalWorkloadInputRef = ref();
 const isEvalWorkloadEditing = ref(false);
-const evalWorkloadInputValue = ref<string>();
+const evalWorkloadInputValue = ref<number>();
 
 // Actual workload editing state
 const actualWorkloadInputRef = ref();
 const isActualWorkloadEditing = ref(false);
-const actualWorkloadInputValue = ref<string>();
+const actualWorkloadInputValue = ref<number>();
 
 // Task type editing state
 const taskTypeSelectRef = ref();
@@ -59,12 +59,12 @@ const taskTypeSelectValue = ref<TaskDetail['taskType']['value']>();
 const sprintSelectRef = ref();
 const isSprintEditing = ref(false);
 const sprintSelectMessage = ref<string>();
-const sprintSelectValue = ref<string>();
+const sprintSelectValue = ref<number>();
 
 // Module editing state
 const moduleTreeSelectRef = ref();
 const isModuleEditing = ref(false);
-const moduleTreeSelectValue = ref<string>();
+const moduleTreeSelectValue = ref<number>();
 
 // Priority editing state
 const prioritySelectRef = ref();
@@ -75,8 +75,8 @@ const prioritySelectValue = ref<TaskDetail['priority']['value']>();
 // Tag editing state
 const tagSelectRef = ref();
 const isTagEditing = ref(false);
-const selectedTagList = ref<{id: string; name: string;}[]>([]);
-const selectedTagIdList = ref<string[]>([]);
+const selectedTagList = ref<{id: number; name: string;}[]>([]);
+const selectedTagIdList = ref<number[]>([]);
 
 // Version editing state
 const versionSelectRef = ref();
@@ -89,7 +89,7 @@ const moduleTreeData = ref([]);
 // Computed properties
 const currentSprintId = computed(() => props.dataSource?.sprintId);
 const currentModuleId = computed(() => {
-  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
+  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === -1) {
     return undefined;
   }
   return props.dataSource?.moduleId;
@@ -134,7 +134,7 @@ const loadModuleTreeData = async () => {
  * @param id - Task ID
  * @returns Partial task information
  */
-const loadTaskInfoById = async (id: string): Promise<Partial<TaskDetail>> => {
+const loadTaskInfoById = async (id: number): Promise<Partial<TaskDetail>> => {
   emit('loadingChange', true);
   const [error, res] = await issue.getTaskDetail(id);
   emit('loadingChange', false);
@@ -215,7 +215,7 @@ const enterActualWorkloadEditMode = () => {
  */
 const handleActualWorkloadInputBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const inputValue = target.value;
+  const inputValue = Number(target.value);
   if (inputValue === currentActualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;
@@ -263,7 +263,7 @@ const enterEvalWorkloadEditMode = () => {
  */
 const handleEvalWorkloadInputBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const inputValue = target.value;
+  const inputValue = Number(target.value);
   if (inputValue === currentEvalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;

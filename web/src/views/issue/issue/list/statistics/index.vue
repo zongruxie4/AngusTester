@@ -10,7 +10,7 @@ import { TaskCount } from '../../types';
  * API request parameters interface
  */
 interface RequestParams {
-  projectId: string;
+  projectId: number;
   filters?: SearchCriteria[];
 }
 
@@ -20,11 +20,11 @@ interface RequestParams {
 type Props = {
   collapse: boolean;
   params: RequestParams;
-  projectId: string;
-  userInfo: { id: string };
-  appInfo: { id: string };
+  projectId: number;
+  userInfo: { id: number };
+  appInfo: { id: number };
   notify: string;
-  moduleId?: string;
+  moduleId?: number;
 }
 
 // Props and Emits Definition

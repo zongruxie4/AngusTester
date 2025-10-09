@@ -91,7 +91,7 @@ const openTaskSelectionModal = () => {
  *
  * @param selectedTaskIds - Array of task IDs to associate with the parent task
  */
-const handleTaskAssociation = async (selectedTaskIds: string[]) => {
+const handleTaskAssociation = async (selectedTaskIds: number[]) => {
   isTaskSelectionModalVisible.value = false;
 
   if (!selectedTaskIds.length) {

@@ -5,9 +5,9 @@ import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { appContext, download, enumUtils, http, PageQuery, SearchCriteria, utils, routerUtils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { modules, issue } from '@/api/tester';
+import { issue } from '@/api/tester';
 import { TaskSprintPermission, TaskStatus } from '@/enums/enums';
-import { getCurrentPage, travelTreeData } from '@/utils/utils';
+import { getCurrentPage } from '@/utils/utils';
 import { TaskDetail } from '../../types';
 import { ActionMenuItem, TaskViewMode } from '../types';
 
@@ -16,12 +16,12 @@ import Template from '/file/Import_Task_Template.xlsx?url';
 
 // Component props interface for task list page
 type Props = {
-  sprintId: string;
+  sprintId: number;
   sprintName: string;
-  projectId: string;
+  projectId: number;
   projectName: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  userInfo: { id: number; fullName: string; };
+  appInfo: { id: number; };
   notify: string;
 }
 
@@ -53,7 +53,7 @@ const FlatView = defineAsyncComponent(() => import('@/views/issue/issue/list/fla
 const { t } = useI18n();
 const router = useRouter();
 
-const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
+const deleteTabPane = inject<(value: number[]) => void>('deleteTabPane');
 const isAdmin = computed(() => appContext.isAdmin());
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
@@ -78,19 +78,19 @@ const currentOrderSort = ref<PageQuery.OrderSort>();
 const searchFilters = ref<SearchCriteria[]>([]);
 const paginationInfo = ref<{ current: number; pageSize: number; total: number; }>({ current: 1, pageSize: 10, total: 0 });
 const taskListData = ref<TaskDetail[]>([]);
-const sprintPermissionsCache = ref<Map<string, TaskSprintPermission[]>>(new Map());
+const sprintPermissionsCache = ref<Map<number, TaskSprintPermission[]>>(new Map());
 
 const selectedTaskName = ref<string>();
-const selectedTaskSprintId = ref<string>();
-const selectedTaskId = ref<string>();
+const selectedTaskSprintId = ref<number>();
+const selectedTaskId = ref<number>();
 const isTaskModalVisible = ref(false);
 const isMoveModalVisible = ref(false);
 const isUploadModalVisible = ref(false);
 
-const searchSprintId = ref<string>();
+const searchSprintId = ref<number>();
 const currentEditTaskData = ref<TaskDetail>(); // Task data for edit modal
 
-const selectedTaskIds = ref<string[]>([]); // Batch selected task IDs
+const selectedTaskIds = ref<number[]>([]); // Batch selected task IDs
 
 const previousSearchParams = ref<{[key:string]:any}>();
 
@@ -101,7 +101,7 @@ const previousSearchParams = ref<{[key:string]:any}>();
 const buildApiParameters = () => {
   const params: {
     backlog?: boolean,
-    projectId: string;
+    projectId: number;
     pageNo: number;
     pageSize: number;
     filters?: SearchCriteria[];
@@ -150,7 +150,7 @@ const loadTaskListData = async () => {
   const pageSize = +params.pageSize;
   const taskListItems = (data.list || []);
   const processedTaskList: TaskDetail[] = [];
-  const sprintIdSet = new Set<string>();
+  const sprintIdSet = new Set<number>();
 
   for (let i = 0, len = taskListItems.length; i < len; i++) {
     const taskItem = taskListItems[i];
@@ -174,9 +174,9 @@ const loadTaskListData = async () => {
 
   // Reset selected tasks if search conditions changed (excluding page number)
   if (previousSearchParams.value) {
-    delete previousSearchParams.value.pageNo;
-    delete params.pageNo;
-    if (!isEqual(previousSearchParams.value, params)) {
+    const { pageNo: _prevPageNo, ...prevRest } = previousSearchParams.value;
+    const { pageNo: _currPageNo, ...currRest } = params;
+    if (!isEqual(prevRest, currRest)) {
       selectedTaskIds.value = [];
     }
   }
@@ -211,13 +211,12 @@ const loadTaskListData = async () => {
  * @param sprintId - Sprint ID to load permissions for
  * @returns Promise with permission data
  */
-const loadSprintPermissions = async (sprintId: string) => {
+const loadSprintPermissions = async (sprintId: number) => {
   const params = {
     admin: true
   };
   return await issue.getUserSprintAuth(sprintId, props.userInfo?.id, params);
 };
-
 
 /**
  * Handles search panel filter changes
@@ -261,7 +260,7 @@ const handlePaginationChange = (paginationData: { current: number; pageSize: num
 const handleTaskCreation = () => {
   // Set current sprint from search filters
   const sprintFilter = searchFilters.value.find(filter => filter.key === 'sprintId');
-  searchSprintId.value = sprintFilter?.value as string;
+  searchSprintId.value = sprintFilter?.value;
   isTaskModalVisible.value = true;
 };
 
@@ -349,7 +348,7 @@ const handleViewModeChange = (newViewMode: TaskViewMode) => {
  * Handles task edit by opening edit modal
  * @param taskId - ID of task to edit
  */
-const handleTaskEdit = (taskId: string) => {
+const handleTaskEdit = (taskId: number) => {
   selectedTaskId.value = taskId;
   handleTaskCreation();
 };
@@ -374,7 +373,7 @@ const handleTaskEditComplete = (taskData: TaskDetail, isNewTask = false) => {
  * Handles task deletion
  * @param taskId - ID of task to delete
  */
-const handleTaskDeletion = (taskId: string) => {
+const handleTaskDeletion = (taskId: number) => {
   paginationInfo.value.current = getCurrentPage(paginationInfo.value.current, paginationInfo.value.pageSize, paginationInfo.value.total);
   loadTaskListData();
   if (typeof deleteTabPane === 'function') {
@@ -409,7 +408,7 @@ const handleTaskMoveComplete = () => {
  * @param actionKey - Action to perform
  * @param taskIds - Array of task IDs to perform action on
  */
-const handleBatchAction = (actionKey: 'cancel' | 'delete' | 'addFollow' | 'addFavourite' | 'move', taskIds: string[]) => {
+const handleBatchAction = (actionKey: 'cancel' | 'delete' | 'addFollow' | 'addFavourite' | 'move', taskIds: number[]) => {
   switch (actionKey) {
     case 'cancel':
       handleBatchCancel(taskIds);
@@ -535,8 +534,7 @@ const updateTaskListData = (taskData: Partial<TaskDetail>) => {
 };
 
 // MODULE MANAGEMENT
-const moduleTreeData = ref([{ name: t('common.noModule'), id: '-1' }]);
-const currentModuleId = ref();
+const currentModuleId = ref<number>();
 
 /**
  * Component mounted lifecycle hook
@@ -545,9 +543,8 @@ const currentModuleId = ref();
 onMounted(async () => {
   await router.replace('/issue#issue');
 
-
   watch(() => props.projectId, () => {
-    currentModuleId.value = '';
+    currentModuleId.value = undefined;
   });
 
   watch(() => listRefreshNotify.value, (newNotificationValue) => {
@@ -560,7 +557,7 @@ onMounted(async () => {
 
   watch(() => isModuleGroupEnabled.value, () => {
     if (isModuleGroupEnabled.value) {
-      currentModuleId.value = '';
+      currentModuleId.value = undefined;
     } else {
       currentModuleId.value = undefined;
     }
@@ -578,8 +575,8 @@ onMounted(async () => {
  * Computed property for task action menu items
  * Generates context menu items based on task status and user permissions
  */
-const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
-  const menuItemsMap = new Map<string, ActionMenuItem[]>();
+const taskActionMenuItems = computed<Map<number, ActionMenuItem[]>>(() => {
+  const menuItemsMap = new Map<number, ActionMenuItem[]>();
   const taskList = taskListData.value || [];
 
   for (let i = 0, len = taskList.length; i < len; i++) {
@@ -589,7 +586,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
     const sprintAuth = taskItem.sprintAuth;
 
     const permissions = sprintPermissionsCache.value.get(sprintId) || [];
-    const { currentAssociateType, confirmerId, assigneeId, createdBy } = taskItem;
+    const { currentAssociateType, confirmerId, assigneeId } = taskItem;
 
     const currentUserId = props.userInfo?.id;
     const isCurrentUserAdmin = !!currentAssociateType?.map(associateType => associateType.value).includes('SYS_ADMIN' || 'APP_ADMIN');
@@ -643,7 +640,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
     if (taskStatus === TaskStatus.CONFIRMING) {
       menuItems.push({
         name: t('issue.actions.confirmComplete'),
-        key: TaskStatus.COMPLETED,
+        key: 'completed',
         icon: 'icon-yiwancheng',
         disabled: !isCurrentUserAdmin && !isCurrentUserConfirmer,
         hide: false
@@ -883,7 +880,7 @@ const statisticsParameters = computed(() => {
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
-        :moduleId="currentModuleId === '-1' ? undefined : currentModuleId"
+        :moduleId="currentModuleId === -1 ? undefined : currentModuleId"
         @ok="handleTaskEditComplete" />
     </AsyncComponent>
 
@@ -895,7 +892,7 @@ const statisticsParameters = computed(() => {
       <Move
         v-model:visible="isMoveModalVisible"
         :sprintId="selectedTaskSprintId"
-        :taskIds="selectedTaskId"
+        :taskIds="selectedTaskId ? [selectedTaskId] : selectedTaskIds"
         :taskName="selectedTaskName"
         :projectId="props.projectId"
         @ok="handleTaskMoveComplete" />
