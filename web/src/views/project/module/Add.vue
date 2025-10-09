@@ -170,7 +170,7 @@ const combinedOkButtonProps = computed<ButtonProps>(() => ({
     <!-- Input field for module name -->
     <Input
       v-model:value="inputValue"
-      :placeholder="t('module.messages.moduleNamePlaceholder')"
+      :placeholder="t('common.placeholders.inputName')"
       trim
       :allowClear="true"
       :maxlength="50"

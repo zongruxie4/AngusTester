@@ -14,12 +14,9 @@ const { t } = useI18n();
 
 // Props definition with proper TypeScript support
 const props = withDefaults(defineProps<BasicProps>(), {
-  projectId: '',
-  userInfo: () => ({ id: '' }),
-  appInfo: () => ({ id: '' }),
-  notify: '',
-  disabled: false,
-  projectName: ''
+  projectId: undefined,
+  userInfo: undefined,
+  appInfo: undefined
 });
 
 // Async component definitions for better code splitting
@@ -69,10 +66,6 @@ const {
   moveVisible,
   activeModule,
   currentParentId,
-  createModule,
-  updateModule,
-  deleteModule,
-  startEdit,
   cancelEdit,
   saveEdit,
   openCreateModal,
@@ -84,12 +77,9 @@ const {
   searchValue,
   nameInputRef,
   handleSearchChange,
-  clearSearch,
   canMoveUp,
   canMoveDown,
-  canAddSubModule,
-  processTreeData,
-  findModuleById
+  canAddSubModule
 } = useTree(dataList, searchModules);
 
 /**
@@ -264,9 +254,6 @@ onMounted(() => {
                 <Icon icon="icon-mokuai" class="text-4xl text-gray-400" />
               </div>
               <h3 class="text-sm font-medium text-gray-900 mb-2">{{ t('module.messages.noModules') }}</h3>
-              <p class="text-gray-500 text-xs mb-4 text-center max-w-md">
-                {{ props.disabled ? t('module.messages.noModulesDescription') : t('module.messages.noModulesHint') }}
-              </p>
               <Button
                 v-if="!props.disabled"
                 type="primary"
@@ -360,7 +347,7 @@ onMounted(() => {
                                 key="up"
                                 class="flex items-center space-x-2 py-2">
                                 <Icon icon="icon-shangyi" class="text-green-600 mr-1" />
-                                <span>{{ index < 1 ? t('actions.moveUp') : t('actions.moveToUpperLevel') }}</span>
+                                <span>{{ index < 1 ? t('actions.moveToUpperLevel') : t('actions.moveUp') }}</span>
                               </MenuItem>
                               <MenuItem
                                 v-if="canMoveDown({id, name, isLast})"

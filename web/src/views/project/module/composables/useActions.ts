@@ -134,28 +134,24 @@ export function useActions (onDataChange: () => Promise<void>) {
     const { index, id } = record;
     let updateParams: UpdateModuleParams;
 
-    // If moving up from first position, move to parent level
+    const currentSeq = Number((record as any).sequence ?? 0);
+
     if (index === 0) {
-      // Find target parent from the chain of IDs
-      let targetParent: ModuleItem | undefined;
-      // Implementation would need access to dataList to find the target parent
-      // This is a simplified version
+      // Minimal safe fallback: keep parent unchanged, reset sequence to 0
       updateParams = {
         id,
-        pid: targetParent?.pid || '-1',
-        sequence: targetParent ? Number(targetParent.sequence) - 1 : 0
+        sequence: 0
       };
     } else {
-      // Move up within the same level
       updateParams = {
         id,
-        sequence: Number(record.sequence) - 1
+        sequence: currentSeq - 1
       };
     }
 
     const success = await updateModule([updateParams]);
     if (success) {
-      notification.success(t('actions.tips.moveSuccess'));
+      // success notification handled inside updateModule
     }
   };
 
@@ -169,14 +165,16 @@ export function useActions (onDataChange: () => Promise<void>) {
     index: number;
     ids: string[];
   }): Promise<void> => {
+    const currentSeq = Number((record as any).sequence ?? 0);
+
     const updateParams: UpdateModuleParams = {
       id: record.id,
-      sequence: Number(record.sequence) + 1
+      sequence: currentSeq + 1
     };
 
     const success = await updateModule([updateParams]);
     if (success) {
-      notification.success(t('actions.tips.moveSuccess'));
+      // success notification handled inside updateModule
     }
   };
 
