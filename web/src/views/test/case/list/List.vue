@@ -304,6 +304,7 @@ const tableAction = computed(() => {
     if (userInfo?.id === _case.testerId &&
       (planAuthMap.value[_case.planId]?.permissions || []).includes(FuncPlanPermission.TEST)) {
       if (planAuthMap.value[_case.planId]?.permissions) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         planAuthMap.value[_case.planId].permissions.push(FuncPlanPermission.TEST);
       }
     }
@@ -466,6 +467,7 @@ const getPlanAuth = async () => {
   }
 
   planIds.map(planId => {
+    // eslint-disable-next-line no-return-assign
     return planAuthMap.value[planId] = {
       ...data[planId],
       permissions: (data[planId].permissions || []).map(i => i.value)
@@ -490,21 +492,6 @@ const loadModuleTree = async (keywords?: string) => {
     moduleId.value = undefined;
   }
 };
-
-onMounted(async () => {
-  await loadModuleTree();
-  refreshChange();
-
-  watch(() => projectInfo.value?.id, newValue => {
-    if (newValue) {
-      moduleId.value = undefined;
-      loadModuleTree();
-    }
-  });
-  watch(() => moduleId.value, () => {
-    setParamsAndLoadData();
-  });
-});
 
 // Selected case IDs
 const selectedRowKeys = ref<number[]>([]);
@@ -942,6 +929,12 @@ const detailIndex = computed(() => {
   return calculateDataPosition(+total.value, params.value.pageNo, params.value.pageSize, currIndex + 1);
 });
 
+const resetParam = () => {
+  params.value.filters = [];
+  searchPanelRef.value?.clear(false);
+  refreshChange();
+};
+
 watch(() => props.notify, () => {
   checkedCase.value = undefined;
   caseInfo.value = undefined;
@@ -1005,13 +998,20 @@ watch(() => selectedRowKeys.value, (newValue) => {
   }
 });
 
-// Removed search-related computed properties - now handled by SearchPanel component
-
-const resetParam = () => {
-  params.value.filters = [];
-  searchPanelRef.value?.clear(false);
+onMounted(async () => {
+  await loadModuleTree();
   refreshChange();
-};
+
+  watch(() => projectInfo.value?.id, newValue => {
+    if (newValue) {
+      moduleId.value = undefined;
+      loadModuleTree();
+    }
+  });
+  watch(() => moduleId.value, () => {
+    setParamsAndLoadData();
+  });
+});
 
 defineExpose({
   selectedRowKeys,
@@ -1026,8 +1026,8 @@ defineExpose({
     <div class="flex h-full">
       <div class="flex-shrink-0 h-full overflow-hidden pb-3 bg-gray-1 text-3" :class="{'w-65 mr-2': enabledModuleGroup , 'w-0': !enabledModuleGroup}">
         <ModuleTree
-          v-model:moduleId="moduleId"
-          :projectId="String(projectInfo?.id || '')"
+          :moduleId="moduleId as number"
+          :projectId="projectInfo?.id"
           :projectName="projectInfo?.name" />
       </div>
 
@@ -1176,7 +1176,7 @@ defineExpose({
     <AddModal
       v-model:visible="addVisible"
       :editCase="editCase"
-      :moduleId="(moduleId && moduleId !== '-1') ? moduleId : undefined"
+      :moduleId="(moduleId && moduleId !== -1) ? moduleId : undefined"
       @update="addOrEditSuccess" />
   </AsyncComponent>
 
@@ -1231,13 +1231,13 @@ defineExpose({
       v-model:visible="taskModalVisible"
       :projectId="projectInfo?.id"
       :appInfo="appInfo"
-      :assigneeId="selectedCase?.developerId?.toString()"
+      :assigneeId="selectedCase?.developerId"
       :userInfo="userInfo"
       :refCaseIds="selectedCase?.id ? [selectedCase.id] : []"
       :description="selectedCase?.testRemark"
       :name="t('testCase.messages.testNotPassedName', { name: selectedCase?.name || '' })"
       :taskType="TaskType.BUG"
-      :confirmerId="selectedCase?.testerId?.toString()"
+      :confirmerId="selectedCase?.testerId"
       :deadlineDate="undefined"
       :priority="undefined as any"
       :severity="undefined as any"

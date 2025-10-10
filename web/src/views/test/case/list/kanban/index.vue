@@ -34,12 +34,12 @@ const Comment = defineAsyncComponent(() => import('@/views/test/case/list/kanban
 const Activity = defineAsyncComponent(() => import('@/views/test/case/list/kanban/Activity.vue'));
 
 type Props = {
-  projectId: string;
+  projectId: number;
   userInfo: { id: number; };
   appInfo: { id: number; };
   filters: SearchCriteria[];
   notify: string;
-  moduleId: string;
+  moduleId: number;
   groupKey: 'none' | 'testerName' | 'lastModifiedByName';
   orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'testerName';
   orderSort: PageQuery.OrderSort;
@@ -66,7 +66,7 @@ const { t } = useI18n();
 
 const isAdmin = computed(() => appContext.isAdmin());
 
-const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment' | 'activity' | 'refTasks' | 'refCases' | 'attachments' | 'remarks' | 'reviewInfo' | 'testInfo' | 'reviewRecord'>('basic');
+const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment' | 'activity' | 'assocIssues' | 'assocCases' | 'attachments' | 'remarks' | 'reviewInfo' | 'testInfo' | 'reviewRecord'>('basic');
 
 const planPermissionsMap = ref<Map<number, FuncPlanPermission[]>>(new Map());
 const planAuthMap = ref({});
@@ -234,7 +234,7 @@ const loadCases = async () => {
  */
 const getParams = () => {
   const params: ProjectPageQuery & {
-    moduleId?: string;
+    moduleId?: number;
   } = {
     projectId: props.projectId,
     pageNo: 1,
@@ -1006,10 +1006,7 @@ const addTaskOk = async (data) => {
     return;
   }
 
-  const refMap = selectedCaseInfo.value?.refMap || {
-    TASK: [],
-    CASE: []
-  };
+  const refMap = selectedCaseInfo.value?.refMap || { TASK: [], CASE: [] };
   refMap.TASK.push(data.id);
   const [error] = await testCase.updateCase([{
     id: selectedCaseInfo.value?.id,
@@ -1053,7 +1050,7 @@ const toRetest = async (data: CaseDetail, notificationFlag = true, errorCallback
   if (notificationFlag) {
     notification.success(t('testCase.messages.caseRetestSuccess'));
   }
-  loadCases();
+  await loadCases();
 };
 
 /**
@@ -1070,7 +1067,7 @@ const toResetTestResult = async (data: CaseDetail) => {
 
   emit('refreshChange');
   notification.success(t('testCase.messages.resetTestResultSuccess'));
-  loadCases();
+  await loadCases();
 };
 
 /**
@@ -1092,7 +1089,7 @@ const toBlock = async (data: CaseDetail, notificationFlag = true, errorCallback?
   if (notificationFlag) {
     notification.success(t('testCase.messages.caseBlockedSuccess'));
   }
-  loadCases();
+  await loadCases();
 };
 
 /**
@@ -1114,13 +1111,13 @@ const toCancel = async (data: CaseDetail, notificationFlag = true, errorCallback
   if (notificationFlag) {
     notification.success(t('actions.tips.cancelSuccess'));
   }
-  loadCases();
+  await loadCases();
 };
 
 /**
  * Set drawer active tab
  */
-const drawerActiveKeyChange = (key: 'basic' | 'testStep' | 'person' | 'date' | 'comment' | 'activity' | 'refTasks' | 'refCases' | 'attachments' | 'remarks') => {
+const drawerActiveKeyChange = (key: 'basic' | 'testStep' | 'reviewInfo' | 'person' | 'date' | 'comment' | 'activity' | 'testInfo' | 'assocIssues' | 'assocCases' | 'attachments' | 'remarks') => {
   drawerActiveKey.value = key;
 };
 
@@ -1132,7 +1129,6 @@ const arrowOpenChange = (open: boolean, id: number) => {
     arrowOpenSet.value.add(id);
     return;
   }
-
   arrowOpenSet.value.delete(id);
 };
 
@@ -1184,12 +1180,13 @@ const caseInfoChange = (data: Partial<CaseDetail>) => {
     }
   }
 
-  if (caseDataMap.value[selectedTestResult.value]?.[selectedIndex.value]) {
-    caseDataMap.value[selectedTestResult.value][selectedIndex.value] = data;
+  const selectedTestResultKey = selectedTestResult.value as string;
+  if (caseDataMap.value[selectedTestResultKey]?.[selectedIndex.value]) {
+    caseDataMap.value[selectedTestResultKey][selectedIndex.value] = data;
   }
 
-  if (groupDataMap.value[checkedGroupKey.value]?.[selectedTestResult.value]?.[selectedIndex.value]) {
-    groupDataMap.value[checkedGroupKey.value][selectedTestResult.value][selectedIndex.value] = data;
+  if (groupDataMap.value[selectedTestResultKey]?.[selectedTestResultKey]?.[selectedIndex.value]) {
+    groupDataMap.value[selectedTestResultKey][selectedTestResultKey][selectedIndex.value] = data;
   }
 };
 
@@ -1698,18 +1695,18 @@ const checkedCaseId = computed(() => {
         </div>
 
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'refTasks' }"
+          :class="{ 'drawer-active-item': drawerActiveKey === 'assocIssues' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('common.assocIssues')"
-          @click="drawerActiveKeyChange('refTasks')">
+          @click="drawerActiveKeyChange('assocIssues')">
           <Icon icon="icon-ceshirenwu" class="text-4" />
         </div>
 
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'refCases' }"
+          :class="{ 'drawer-active-item': drawerActiveKey === 'assocCases' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('common.assocCases')"
-          @click="drawerActiveKeyChange('refCases')">
+          @click="drawerActiveKeyChange('assocCases')">
           <Icon icon="icon-ceshiyongli1" class="text-4" />
         </div>
 
@@ -1836,7 +1833,7 @@ const checkedCaseId = computed(() => {
               @loadingChange="loadingChange" />
 
             <AssocIssues
-              v-show="drawerActiveKey === 'refTasks'"
+              v-show="drawerActiveKey === 'assocIssues'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
@@ -1846,7 +1843,7 @@ const checkedCaseId = computed(() => {
               @loadingChange="loadingChange" />
 
             <AssocCases
-              v-show="drawerActiveKey === 'refCases'"
+              v-show="drawerActiveKey === 'assocCases'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"

@@ -87,10 +87,11 @@ export type CaseDetail = {
   reviewDate: string;
   reviewStatus: EnumMessage<ReviewStatus>;
   reviewRemark: string;
-  reviewNum: string;
-  reviewFailNum: string;
+  reviewNum: number;
+  reviewFailNum: number;
   testerId: number;
   testerName: string;
+  testerAvatar: string;
   developerId: number;
   developerName: string;
   testNum: number;

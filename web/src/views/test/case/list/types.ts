@@ -47,7 +47,7 @@ export type CaseEditState = {
 }
 
 export type CaseInfoEditProps = {
-  projectId: string;
+  projectId: number;
   userInfo: { id: number; fullName?: string };
   appInfo: { id: number; };
   dataSource: CaseDetail;

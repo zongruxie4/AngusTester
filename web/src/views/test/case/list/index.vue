@@ -50,8 +50,6 @@ const viewMode = ref<CaseViewMode>(localStore.get(cacheModeKey.value) ?? CaseVie
 const caseCountData = ref<CaseCount>();
 const statisticsRefreshNotify = ref<string>('');
 
-// Event handlers
-
 /**
  * Toggle statistics panel collapse state
  */

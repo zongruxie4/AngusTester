@@ -18,7 +18,9 @@ const props = withDefaults(defineProps<CaseInfoEditProps>(), {
 
 const oneReviewPass = computed(() => {
   if (props.dataSource?.reviewNum && Number(props.dataSource.reviewNum) > 0) {
-    return props.dataSource?.reviewFailNum === '0' && props.dataSource?.reviewStatus?.value === ReviewStatus.PASSED ? t('status.yes') : t('status.no');
+    return props.dataSource?.reviewFailNum === 0 && props.dataSource?.reviewStatus?.value === ReviewStatus.PASSED
+      ? t('status.yes')
+      : t('status.no');
   }
   return '--';
 });
@@ -49,10 +51,11 @@ const reviewInfoColumns = [
   ]
 ];
 </script>
-
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('common.reviewInfo') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('common.reviewInfo') }}
+    </div>
     <Grid
       :columns="reviewInfoColumns"
       :dataSource="props.dataSource"

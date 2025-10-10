@@ -20,7 +20,7 @@ interface Props {
   actionMenus: Record<string, any[]>;
   caseList: CaseDetail[];
   groupCaseList: GroupCaseList[];
-  selectedRowKeys: string[];
+  selectedRowKeys: number[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
-  (e: 'update:selectedRowKeys', value: string[]): void;
+  (e: 'update:selectedRowKeys', value: number[]): void;
   (e: 'onClick', type:CaseActionAuth, value:CaseDetail):void;
   (e: 'openInfo', value:CaseDetail):void;
   (e: 'change', value:{pagination, sorter}):void;
