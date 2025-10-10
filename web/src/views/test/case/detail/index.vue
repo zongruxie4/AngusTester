@@ -456,6 +456,7 @@ defineExpose({
         <Button
           v-if="caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PENDING"
           :disabled="!actionAuth.includes('review')"
+          type="primary"
           class="mt-2 mr-2"
           size="small"
           @click="emitActionClick('review')">

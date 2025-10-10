@@ -86,7 +86,8 @@ const isItemSelected = (key: string): boolean => {
 defineExpose({
   resetSelections,
   getSearchCriteria,
-  clearExternalConditions
+  clearExternalConditions,
+  handleOptionClick
 });
 </script>
 

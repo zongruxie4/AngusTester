@@ -30,6 +30,7 @@ const emit = defineEmits<{
 // Use the search composable
 const {
   searchPanelRef,
+  quickSearchOptionsRef,
   filters,
   serviceIdFilter,
   sourceIdFilter,
@@ -99,6 +100,7 @@ watch(
 
     // Debounce search to avoid frequent requests
     searchTimer = setTimeout(() => {
+      debugger;
       emit('change', getData());
     }, 100);
   },
@@ -109,6 +111,7 @@ watch(
   <div class="mt-2.5 mb-3.5">
     <!-- Quick Search Options Component -->
     <QuickSearchOptions
+      ref="quickSearchOptionsRef"
       :config="quickSearchConfig"
       @change="handleQuickSearchChange" />
 

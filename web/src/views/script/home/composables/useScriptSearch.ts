@@ -16,6 +16,8 @@ export function useScriptSearch (userId: string) {
 
   // Search panel reference
   const searchPanelRef = ref();
+  // Quick search options reference
+  const quickSearchOptionsRef = ref();
 
   // Filters
   const filters = ref<SearchCriteria[]>([]);
@@ -64,16 +66,52 @@ export function useScriptSearch (userId: string) {
     if (isUpdating) return;
 
     isUpdating = true;
-    nextTick(() => {
-      // Merge quick search criteria with existing filters
-      const quickSearchFields = ['createdBy', 'lastModifiedBy', 'type', 'createdDate'];
-      const otherFilters = filters.value.filter(f => f.key && !quickSearchFields.includes(f.key));
-      const newFilters = [...otherFilters, ...searchCriteria];
+    // Merge quick search criteria with existing filters
+    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'type', 'createdDate'];
+    const otherFilters = filters.value.filter(f => f.key && !quickSearchFields.includes(f.key));
+    if (_selectedKeys.includes('createdBy')) {
+      if (!filters.value.find(f => f.key === 'createdBy')) {
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdBy',
+            value: userId,
+          }]);
+        }
+      }
+    } else {
+      if (filters.value.find(f => f.key === 'createdBy')?.value === userId) {
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdBy',
+            value: undefined,
+          }]);
+        }
+      }
+    }
+    if (_selectedKeys.includes('lastModifiedBy')) {
+      if (!filters.value.find(f => f.key === 'lastModifiedBy')) {
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'lastModifiedBy',
+            value: userId,
+          }]);
+        }
+      }
+    } else {
+      if (filters.value.find(f => f.key === 'lastModifiedBy')?.value === userId) {
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'lastModifiedBy',
+            value: undefined,
+          }]);
+        }
+      }
+    }
+    const newFilters = [...otherFilters, ...searchCriteria];
 
-      // Always update filters to ensure watch triggers
-      filters.value = newFilters;
-      isUpdating = false;
-    });
+    // Always update filters to ensure watch triggers
+    filters.value = newFilters;
+    isUpdating = false;
   };
 
   /**
@@ -87,25 +125,44 @@ export function useScriptSearch (userId: string) {
     if (isUpdating) return;
 
     isUpdating = true;
-    nextTick(() => {
-      // Only update filters if they are different to avoid unnecessary re-renders
-      const quickSearchFields = ['createdBy', 'lastModifiedBy', 'type', 'createdDate'];
-      const quickSearchFilters = filters.value.filter(f => f.key && quickSearchFields.includes(f.key));
-      const newFilters = [...quickSearchFilters, ..._filters];
+    const quickSearchFields = ['type', 'createdDate'];
+    const commonFields = ['createdBy', 'lastModifiedBy'];
+    let quickSearchFilters = filters.value.filter(f => f.key && [...quickSearchFields, ...commonFields].includes(f.key));
 
-      // Check if filters actually changed
-      if (JSON.stringify(filters.value) !== JSON.stringify(newFilters)) {
-        filters.value = newFilters;
-      }
+    if (key && commonFields.includes(key)) {
+      quickSearchFilters = quickSearchFilters.filter(f => f.key !== key);
+    }
 
-      if (key === 'source') {
-        // Reset service, API, scenario
-        serviceIdFilter.value.value = undefined;
-        sourceIdFilter.value.value = undefined;
-      }
+    const searchCriteriaKeys = quickSearchOptionsRef.value.getSearchCriteria().map(f => f.key);
+    if (searchCriteriaKeys.includes('createdBy') && key === 'createdBy' && _filters.find(f => f.key === 'createdBy')?.value !== userId) {
+      quickSearchOptionsRef.value.handleOptionClick({
+        key: 'createdBy',
+        name: t('quickSearch.createdByMe')
+      });
+    }
+    if (searchCriteriaKeys.includes('lastModifiedBy') && key === 'lastModifiedBy' && _filters.find(f => f.key === 'lastModifiedBy')?.value !== userId) {
+      quickSearchOptionsRef.value.handleOptionClick({
+        key: 'lastModifiedBy',
+        name: t('quickSearch.createdByMe')
+      });
+    }
+  
+    
+    const newFilters = [...quickSearchFilters, ..._filters];
 
-      isUpdating = false;
-    });
+    // Check if filters actually changed
+    if (JSON.stringify(filters.value) !== JSON.stringify(newFilters)) {
+      filters.value = newFilters;
+    }
+
+    if (key === 'source') {
+      // Reset service, API, scenario
+      serviceIdFilter.value.value = undefined;
+      sourceIdFilter.value.value = undefined;
+    }
+    console.log(filters.value, 'filters');
+
+    isUpdating = false;
   };
 
   /**
@@ -249,6 +306,7 @@ export function useScriptSearch (userId: string) {
   return {
     // Reactive data
     searchPanelRef,
+    quickSearchOptionsRef,
     filters,
     serviceIdFilter,
     sourceIdFilter,
