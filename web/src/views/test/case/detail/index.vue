@@ -75,7 +75,7 @@ const detailRef = ref<HTMLElement | null>(null);
 
 // Case data & permissions
 const caseAuth = ref<{ [key: number]: CaseActionAuth[] }>({});
-const caseDetail = ref<CaseDetail>();
+const caseDetail = ref<CaseDetail>({} as CaseDetail);
 
 // List navigation cache
 const pageNo = ref(1);
@@ -389,7 +389,7 @@ defineExpose({
     <div class="flex justify-between">
       <div ref="buttonGroupRef" class="flex items-center button-combination flex-wrap">
         <template v-if="!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PASSED)">
-          <template v-if="![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail?.testResult?.value)">
+          <template v-if="![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail.testResult?.value)">
             <Button
               :disabled="!actionAuth.includes('updateTestResult')"
               type="primary"
@@ -444,7 +444,7 @@ defineExpose({
 
         <Button
           v-if="(!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PASSED))
-            && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail?.testResult?.value)"
+            && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail.testResult?.value)"
           :disabled="!actionAuth.includes('updateTestResult')"
           class="mt-2 mr-2"
           size="small"
@@ -465,7 +465,7 @@ defineExpose({
 
         <Button
           v-if="!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === ReviewStatus.PASSED)
-            && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail?.testResult?.value)"
+            && ![CaseTestResult.PASSED, CaseTestResult.NOT_PASSED, CaseTestResult.CANCELED].includes(caseDetail.testResult?.value)"
           :disabled="!actionAuth.includes('updateTestResult')"
           class="mt-2 mr-2"
           size="small"
@@ -587,7 +587,7 @@ defineExpose({
       <TabPane
         key="info"
         class="h-full"
-        :tab="t('actions.detail')">
+        :tab="t('common.basicInfo')">
         <CaseDetailTab
           :caseDetail="caseDetail"
           :actionAuth="actionAuth"
@@ -621,7 +621,7 @@ defineExpose({
       <TabPane key="assocIssues">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('common.issue') }}</span>
+            <span>{{ t('common.task') }}</span>
             <span>({{ countRefTasksByType(TaskType.TASK) }})</span>
           </div>
         </template>

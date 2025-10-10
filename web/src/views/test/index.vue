@@ -234,7 +234,7 @@ onMounted(async () => {
   const queryString = window.location.hash;
   const searchParams = new URLSearchParams(queryString);
   const urlParams = Object.fromEntries(searchParams.entries());
-  if (urlParams.projectId && urlParams.projectId !== currentProjectId.value) {
+  if (urlParams.projectId && urlParams.projectId !== currentProjectId.value?.toString()) {
     changeProjectInfo();
   }
 

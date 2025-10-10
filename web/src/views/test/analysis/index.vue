@@ -93,7 +93,7 @@ const initializeBrowserTabs = () => {
         return {
           _id: 'analysisList',
           value: 'analysisList',
-          name: t('testAnalysis.name'),
+          name: t('testAnalysis.title'),
           closable: false
         };
       }
@@ -199,7 +199,7 @@ provide('replaceTabPane', replaceTabPane);
     v-model:activeKey="activeTabKey"
     hideAdd
     class="h-full"
-    :userId="props.userInfo.id"
+    :userId="props.userInfo?.id"
     :storageKey="storageKey"
     @storageKeyChange="handleStorageKeyChange">
     <template #default="record">

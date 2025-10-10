@@ -24,7 +24,7 @@ const { browserTabRef, List, Detail, storageKey, storageKeyChange } = useVersion
     ref="browserTabRef"
     hideAdd
     class="h-full"
-    :userId="props.userInfo.id"
+    :userId="props.userInfo?.id"
     :storageKey="storageKey"
     @storageKeyChange="storageKeyChange">
     <template #default="record">

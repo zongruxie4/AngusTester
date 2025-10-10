@@ -127,7 +127,7 @@
       "importCases": "Import Cases",
       "viewStatistics": "View Statistics",
       "assocCases": "Associate Cases",
-      "assocIssues": "Associate Issues",
+      "assocIssues": "Associate {name}",
       "submitBug": "Submit Bug"
     },
     "messages": {

@@ -127,7 +127,7 @@
       "importCases": "导入用例",
       "viewStatistics": "查看统计",
       "assocCases": "关联用例",
-      "assocIssues": "关联问题",
+      "assocIssues": "关联{name}",
       "submitBug": "提交Bug"
     },
     "messages": {

@@ -189,7 +189,7 @@ onMounted(() => {
           :showPublishTitle="false"
           :bordered="false"
           :public0="false"
-          :userId="props.userInfo.id"
+          :userId="props.userInfo?.id"
           :targetId="props.data?.scenarioId"
           :action="`${TESTER}/comment`" />
       </TabPane>

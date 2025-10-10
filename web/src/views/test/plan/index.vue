@@ -183,9 +183,9 @@ provide('replaceTabPane', replaceTabPane);
     ref="browserTabRef"
     hideAdd
     class="h-full"
-    :userId="props.userInfo.id"
+    :userId="props.userInfo?.id"
     :storageKey="storageKey"
-    @storageKeyChange="storageKeyChange">
+    @storageKeyChange="handleStorageKeyChange">
     <template #default="record">
       <template v-if="record.value === 'planList'">
         <PlanList

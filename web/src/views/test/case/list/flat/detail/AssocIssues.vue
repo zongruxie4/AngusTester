@@ -34,7 +34,7 @@ const emit = defineEmits<{
 }>();
 
 const submitLoading = ref(false);
-const selectTaskVisible = ref(false);
+const selectIssueVisible = ref(false);
 
 /**
  * Get filtered table data by current task type
@@ -46,33 +46,31 @@ const tableData = computed(() => {
 /**
  * Cancel edit flow and close task selector
  */
-const cancelEdit = () => {
+const cancelIssueSelectionModal = () => {
   // editRef.value = false;
-  selectTaskVisible.value = false;
+  selectIssueVisible.value = false;
 };
 
 /**
  * Start edit flow and open task selector
  */
-const startEdit = () => {
+const openIssueSelectionModal = () => {
   // editRef.value = true;
-  selectTaskVisible.value = true;
+  selectIssueVisible.value = true;
 };
 
 /**
  * Submit association of selected tasks to the current case
- * @param refTaskIds - Selected task IDs
+ * @param selectTaskIds - Selected task IDs
  */
-const handlePut = async (refTaskIds) => {
-  selectTaskVisible.value = false;
-  if (!refTaskIds.length) {
-    cancelEdit();
+const handleAssociationTask = async (selectTaskIds) => {
+  selectIssueVisible.value = false;
+  if (!selectTaskIds.length) {
+    cancelIssueSelectionModal();
     return;
   }
   submitLoading.value = true;
-  const [error] = await testCase.putAssociationTask(props.caseId, {
-    assocTaskIds: refTaskIds
-  });
+  const [error] = await testCase.putAssociationTask(props.caseId, selectTaskIds);
   submitLoading.value = false;
   if (error) {
     return;
@@ -84,13 +82,11 @@ const handlePut = async (refTaskIds) => {
  * Remove association for one linked task record
  * @param record - The associated task record to remove
  */
-const handleDelTask = (record) => {
+const handleCancelAssociationTask = (record) => {
   modal.confirm({
     content: t('actions.tips.confirmCancelAssoc', { name: record.name }),
     onOk () {
-      return testCase.cancelAssociationTask(props.caseId, {
-        assocTaskIds: [record.id]
-      }).then(([error]) => {
+      return testCase.cancelAssociationTask(props.caseId, [record.id]).then(([error]) => {
         if (error) {
           return;
         }
@@ -170,7 +166,7 @@ const columns = [
       <Button
         :disabled="props.dataSource?.length > 19"
         size="small"
-        @click="startEdit">
+        @click="openIssueSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
         {{ t('testCase.actions.assocIssues', {name: props.title}) }}
       </Button>
@@ -203,7 +199,7 @@ const columns = [
           <Button
             size="small"
             type="text"
-            @click="handleDelTask(record)">
+            @click="handleCancelAssociationTask(record)">
             <Icon icon="icon-qingchu" class="mr-1" />
             {{ t('actions.cancel') }}
           </Button>
@@ -223,13 +219,13 @@ const columns = [
       </template>
     </Table>
 
-    <AsyncComponent :visible="selectTaskVisible">
+    <AsyncComponent :visible="selectIssueVisible">
       <SelectTaskByModuleModal
-        v-model:visible="selectTaskVisible"
+        v-model:visible="selectIssueVisible"
         :title="t('testCase.messages.assocSelect', {name: props.title})"
         :action="`${TESTER}/func/case/${props.caseId}/task/notAssociated?taskType=${props.taskType}`"
         :projectId="props.projectId"
-        @ok="handlePut" />
+        @ok="handleAssociationTask" />
     </AsyncComponent>
   </div>
 </template>

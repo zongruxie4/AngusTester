@@ -38,14 +38,14 @@ const selectCaseVisible = ref(false);
 /**
  * Cancel current edit flow and close edit mode
  */
-const cancelEdit = () => {
+const cancelCaseSelectionModal = () => {
   editRef.value = false;
 };
 
 /**
  * Start edit flow by opening select-case modal
  */
-const startEdit = () => {
+const openCaseSelectionModal = () => {
   selectCaseVisible.value = true;
 };
 
@@ -56,7 +56,7 @@ const startEdit = () => {
 const handlePut = async (refCaseIds) => {
   selectCaseVisible.value = false;
   if (!refCaseIds.length) {
-    cancelEdit();
+    cancelCaseSelectionModal();
     return;
   }
   submitLoading.value = true;
@@ -158,7 +158,7 @@ const columns = [
       :disabled="props.dataSource?.length > 19"
       :loading="submitLoading"
       size="small"
-      @click="startEdit">
+      @click="openCaseSelectionModal">
       <Icon icon="icon-jia" class="mr-1" />
       {{ t('testCase.actions.assocCases') }}
     </Button>

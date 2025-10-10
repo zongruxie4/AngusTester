@@ -106,12 +106,12 @@ export default class API {
     return http.put(`${baseUrl}/${caseId}/association/case/cancel`, params);
   }
 
-  putAssociationTask (caseId: number, params): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${caseId}/association/task`, params);
+  putAssociationTask (caseId: number, assocTaskIds: number[]) : Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${caseId}/association/task`, { assocTaskIds }, { paramsType: true });
   }
 
-  cancelAssociationTask (caseId: number, params): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${caseId}/association/task/cancel`, params);
+  cancelAssociationTask (caseId: number, assocTaskIds: number[]): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${caseId}/association/task/cancel`, { assocTaskIds }, { paramsType: true });
   }
 
   AddFavouriteCase (caseId: number): Promise<[Error | null, any]> {

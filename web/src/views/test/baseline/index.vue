@@ -79,7 +79,7 @@ const initializeBaselineModule = () => {
         return {
           _id: 'baselineList',
           value: 'baselineList',
-          name: t('testCaseBaseline.name'),
+          name: t('testCaseBaseline.title'),
           closable: false
         };
       }
@@ -186,7 +186,7 @@ provide('replaceTabPane', replaceTabPane);
     ref="browserTabRef"
     hideAdd
     class="h-full"
-    :userId="props.userInfo.id"
+    :userId="props.userInfo?.id"
     :storageKey="browserTabStorageKey"
     @storageKeyChange="handleStorageKeyChange">
     <template #default="record">

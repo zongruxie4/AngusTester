@@ -198,7 +198,7 @@ onMounted(() => {
         </div>
         <div>
           <h2 class="text-base font-medium text-gray-900">{{ t('module.introduce.aboutModule') }}</h2>
-          <p class="text-xs text-gray-500 mt-0.5">{{ t('module.introduce.description') }}</p>
+          <p class="text-3.5 text-gray-500 mt-0.5">{{ t('module.introduce.description') }}</p>
         </div>
       </div>
     </div>
