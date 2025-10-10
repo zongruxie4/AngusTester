@@ -327,7 +327,6 @@ const handleQuickSearchMenuItemClick = (data: { key: string; name: string }) => 
     });
     selectedQuickSearchItems.value.set(itemKey, { key: itemKey });
     updateSearchPanelConfigs([{ valueKey: 'testResult', value: itemKey }]);
-    return;
   }
 };
 

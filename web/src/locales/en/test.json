@@ -153,7 +153,7 @@
       "tagsHint": "Used for classification and quick retrieval, supports up to 5 associations.",
       "maxAssocIssues": "Maximum 20 related tasks",
       "maxAssocCases": "Maximum 20 related cases",
-      "assocCaseTip": "\"Associated Case\" are used to establish relationships between different cases for easy management and traceability. Cases that can establish associations include: dependent cases, extended cases, same functionality cases, key functionality cases, etc.",
+      "assocCaseTip": "Link related test cases to improve traceability and management efficiency.",
       "fileTooLarge": "Upload file or text size exceeds 100MB, please upload again",
       "richTextTooLong": "Rich text characters cannot exceed 2000, including URL address length after file upload",
       "aiGenerateHint": "Generate function cases through AI intelligence to improve case writing efficiency",
@@ -205,7 +205,7 @@
       "assocBugTip": "Track functional defects to ensure timely fixes and surface systemic issues.",
       "assocApiTestTip": "Associate the corresponding API test task to track progress and verify API availability.",
       "assocScenarioTestTip": "Associate the corresponding scenario test task to assess effectiveness in real scenarios and ensure solution completeness.",
-      "assocTaskTip": "Associate development/testing tasks related to this case for unified team tracking."
+      "assocTaskTip": "Associate development and testing tasks related to this case for unified team tracking."
     }
   },
   "testCaseReview": {

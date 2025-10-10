@@ -21,85 +21,88 @@ const props = withDefaults(defineProps<Props>(), {
   caseDetail: () => ({ id: '' } as unknown as CaseDetail)
 });
 
-const reviewNum = computed(() => {
-  const total = +(props.caseDetail?.reviewNum || 0);
-  const failNum = +(props.caseDetail?.reviewFailNum || 0);
-  const successNum = total - failNum;
-  return { total, failNum, successNum };
+const reviewStatistics = computed(() => {
+  const totalReviews = +(props.caseDetail?.reviewNum || 0);
+  const failedReviews = +(props.caseDetail?.reviewFailNum || 0);
+  const successfulReviews = totalReviews - failedReviews;
+  return { total: totalReviews, failNum: failedReviews, successNum: successfulReviews };
 });
 
-const preconditionClass = ref('');
-const descriptionClass = ref('');
-const stepsClass = ref();
+const preconditionDiffClass = ref('');
+const descriptionDiffClass = ref('');
+const stepsDiffClass = ref();
 
-const selectRecordId = ref();
-const selectRecordInfo = ref();
+const selectedReviewRecordId = ref();
+const selectedReviewRecordInfo = ref();
 
 /**
  * Change current review record and compute diff highlights
  */
-const changeCurrentRecord = async (record) => {
-  if (selectRecordId.value === record.id) {
+const handleReviewRecordSelection = async (reviewRecord) => {
+  if (selectedReviewRecordId.value === reviewRecord.id) {
     return;
   }
-  selectRecordId.value = record.id;
-  selectRecordInfo.value = record.reviewedCase;
+  selectedReviewRecordId.value = reviewRecord.id;
+  selectedReviewRecordInfo.value = reviewRecord.reviewedCase;
 
-  if (!selectRecordInfo.value.precondition && props.caseDetail.precondition) {
-    preconditionClass.value = 'bg-status-add';
-  } else if (selectRecordInfo.value.precondition && !props.caseDetail.precondition) {
-    preconditionClass.value = 'bg-status-del';
-  } else if (selectRecordInfo.value.precondition !== props.caseDetail.precondition) {
-    preconditionClass.value = 'bg-status-modify';
+  if (!selectedReviewRecordInfo.value.precondition && props.caseDetail.precondition) {
+    preconditionDiffClass.value = 'bg-status-add';
+  } else if (selectedReviewRecordInfo.value.precondition && !props.caseDetail.precondition) {
+    preconditionDiffClass.value = 'bg-status-del';
+  } else if (selectedReviewRecordInfo.value.precondition !== props.caseDetail.precondition) {
+    preconditionDiffClass.value = 'bg-status-modify';
   } else {
-    preconditionClass.value = '';
+    preconditionDiffClass.value = '';
   }
 
-  if (!selectRecordInfo.value.description && props.caseDetail.description) {
-    descriptionClass.value = 'background-color: rgba(82, 196, 26, 0.1);';
-  } else if (selectRecordInfo.value.description && !props.caseDetail.description) {
-    descriptionClass.value = 'background-color: rgba(255, 82, 82, 0.1);';
-  } else if (selectRecordInfo.value.description !== props.caseDetail.description) {
-    descriptionClass.value = 'background-color: rgba(255, 102, 0, 0.1);';
+  if (!selectedReviewRecordInfo.value.description && props.caseDetail.description) {
+    descriptionDiffClass.value = 'background-color: rgba(82, 196, 26, 0.1);';
+  } else if (selectedReviewRecordInfo.value.description && !props.caseDetail.description) {
+    descriptionDiffClass.value = 'background-color: rgba(255, 82, 82, 0.1);';
+  } else if (selectedReviewRecordInfo.value.description !== props.caseDetail.description) {
+    descriptionDiffClass.value = 'background-color: rgba(255, 102, 0, 0.1);';
   } else {
-    descriptionClass.value = '';
+    descriptionDiffClass.value = '';
   }
 
-  if (!selectRecordInfo.value.steps?.length && props.caseDetail.steps?.length) {
-    stepsClass.value = 'bg-status-add';
-  } else if (selectRecordInfo.value.steps?.length && !props.caseDetail.steps?.length) {
-    stepsClass.value = 'bg-status-del';
-  } else if (!!selectRecordInfo.value.steps?.length && (selectRecordInfo.value.steps?.length !== props.caseDetail.steps?.length)) {
-    stepsClass.value = 'bg-status-modify';
-  } else if (!!selectRecordInfo.value.steps?.length && (selectRecordInfo.value.steps?.length === props.caseDetail.steps?.length)) {
-    const isModify = selectRecordInfo.value.steps.some((item, idx) => {
-      return (item.expectedResult !== props.caseDetail.steps[idx].expectedResult) || (item.step !== props.caseDetail.steps[idx].step);
+  if (!selectedReviewRecordInfo.value.steps?.length && props.caseDetail.steps?.length) {
+    stepsDiffClass.value = 'bg-status-add';
+  } else if (selectedReviewRecordInfo.value.steps?.length && !props.caseDetail.steps?.length) {
+    stepsDiffClass.value = 'bg-status-del';
+  } else if (!!selectedReviewRecordInfo.value.steps?.length &&
+    (selectedReviewRecordInfo.value.steps?.length !== props.caseDetail.steps?.length)) {
+    stepsDiffClass.value = 'bg-status-modify';
+  } else if (!!selectedReviewRecordInfo.value.steps?.length &&
+    (selectedReviewRecordInfo.value.steps?.length === props.caseDetail.steps?.length)) {
+    const hasStepsChanged = selectedReviewRecordInfo.value.steps.some((stepItem, stepIndex) => {
+      return (stepItem.expectedResult !== props.caseDetail.steps[stepIndex].expectedResult) ||
+        (stepItem.step !== props.caseDetail.steps[stepIndex].step);
     });
-    if (isModify) {
-      stepsClass.value = 'bg-status-modify';
+    if (hasStepsChanged) {
+      stepsDiffClass.value = 'bg-status-modify';
     }
   } else {
-    stepsClass.value = '';
+    stepsDiffClass.value = '';
   }
 };
 
-const reviewRecords = ref([]);
+const reviewRecordsList = ref([]);
 /**
  * Load review records of current case
  */
-const loadReviewRecord = async () => {
+const loadReviewRecords = async () => {
   const [error, { data }] = await testCase.getReviewRecord(props.caseDetail?.id);
   if (error) {
     return;
   }
-  reviewRecords.value = data || [];
+  reviewRecordsList.value = data || [];
 };
 
 onMounted(() => {
-  watch(() => props.caseDetail?.id, newValue => {
-    if (newValue) {
-      loadReviewRecord();
-      selectRecordInfo.value = undefined;
+  watch(() => props.caseDetail?.id, caseId => {
+    if (caseId) {
+      loadReviewRecords();
+      selectedReviewRecordInfo.value = undefined;
     }
   }, {
     immediate: true
@@ -107,7 +110,7 @@ onMounted(() => {
 });
 
 defineExpose({
-  refresh: loadReviewRecord
+  refresh: loadReviewRecords
 });
 </script>
 <template>
@@ -118,21 +121,25 @@ defineExpose({
       <div class="flex-1 inline-flex bg-gray-light rounded">
         <label class="w-20 px-2 py-1 bg-blue-1 text-white rounded">{{ t('chart.total') }}</label>
         <div class=" px-2 py-1  w-15 font-medium">
-          {{ reviewNum.total }}
+          {{ reviewStatistics.total }}
         </div>
       </div>
 
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-status-success text-white rounded">{{ t('testCase.messages.reviewPassed') }}</label>
+        <label class="w-20 px-2 py-1 bg-status-success text-white rounded">
+          {{ t('testCase.messages.reviewPassed') }}
+        </label>
         <div class=" px-2 py-1  w-15 font-medium">
-          {{ reviewNum.successNum }}
+          {{ reviewStatistics.successNum }}
         </div>
       </div>
 
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-status-error text-white rounded">{{ t('testCase.messages.reviewFailed') }}</label>
+        <label class="w-20 px-2 py-1 bg-status-error text-white rounded">
+          {{ t('testCase.messages.reviewFailed') }}
+        </label>
         <div class=" px-2 py-1  w-15 font-medium">
-          {{ reviewNum.failNum }}
+          {{ reviewStatistics.failNum }}
         </div>
       </div>
     </div>
@@ -140,11 +147,11 @@ defineExpose({
     <div class="text-title text-3 font-medium mt-6">{{ t('common.reviewRecord') }}</div>
     <div class="mt-2 space-y-2">
       <div
-        v-for="record in reviewRecords"
+        v-for="record in reviewRecordsList"
         :key="record.id"
         class="p-2 border rounded max-w-200 cursor-pointer"
-        :class="{'bg-gray-9': record.id === selectRecordId}"
-        @click="changeCurrentRecord(record)">
+        :class="{'bg-gray-9': record.id === selectedReviewRecordId}"
+        @click="handleReviewRecordSelection(record)">
         <div class="flex items-center">
           <Image
             type="avatar"
@@ -167,23 +174,23 @@ defineExpose({
       </div>
     </div>
 
-    <div v-if="!reviewRecords?.length" class="h-80">
+    <div v-if="!reviewRecordsList?.length" class="h-80">
       <NoData size="small" />
     </div>
 
-    <div v-if="!!selectRecordInfo" class="flex max-w-200 ">
+    <div v-if="!!selectedReviewRecordInfo" class="flex max-w-200 ">
       <div class="flex-1 p-2 border-r  space-y-3">
         <div class="mb-3">{{ t('testCase.messages.reviewVersion') }}</div>
 
-        <CaseInfo :caseInfo="selectRecordInfo" />
+        <CaseInfo :caseInfo="selectedReviewRecordInfo" />
 
-        <Precondition :caseInfo="selectRecordInfo" />
+        <Precondition :caseInfo="selectedReviewRecordInfo" />
 
         <div class="font-semibold text-3.5">{{ t('common.testSteps') }}</div>
 
-        <CaseStep :defaultValue="selectRecordInfo?.steps || {}" readonly />
+        <CaseStep :defaultValue="selectedReviewRecordInfo?.steps || {}" readonly />
 
-        <Description :caseInfo="selectRecordInfo" />
+        <Description :caseInfo="selectedReviewRecordInfo" />
       </div>
 
       <div class="flex-1 p-2 space-y-3">
@@ -191,17 +198,17 @@ defineExpose({
 
         <CaseInfo :caseInfo="props.caseDetail" />
 
-        <Precondition :caseInfo="props.caseDetail" :contentClass="preconditionClass" />
+        <Precondition :caseInfo="props.caseDetail" :contentClass="preconditionDiffClass" />
 
         <div class="font-semibold text-3.5">{{ t('common.testSteps') }}</div>
 
-        <div :class="stepsClass">
+        <div :class="stepsDiffClass">
           <CaseStep :defaultValue="props?.caseDetail?.steps || []" readonly />
         </div>
 
-        {{ descriptionClass }}
+        {{ descriptionDiffClass }}
 
-        <Description :caseInfo="props?.caseDetail" :contentBg="descriptionClass" />
+        <Description :caseInfo="props?.caseDetail" :contentBg="descriptionDiffClass" />
       </div>
     </div>
   </div>

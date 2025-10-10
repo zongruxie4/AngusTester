@@ -3,7 +3,6 @@ import { computed, defineAsyncComponent, inject, onMounted, provide, ref, Ref } 
 import { Spin } from '@xcan-angus/vue-ui';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { appContext, localStore, PageQuery, utils, SearchCriteria } from '@xcan-angus/infra';
-
 import { CaseCount, CaseViewMode } from '@/views/test/case/types';
 
 const StatisticsPanel = defineAsyncComponent(() => import('@/views/test/case/list/statistics/index.vue'));

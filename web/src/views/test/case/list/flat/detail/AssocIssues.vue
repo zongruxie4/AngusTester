@@ -33,45 +33,45 @@ const emit = defineEmits<{
   (event: 'editSuccess'): void;
 }>();
 
-const submitLoading = ref(false);
-const selectIssueVisible = ref(false);
+const isSubmitting = ref(false);
+const isSelectTaskModalVisible = ref(false);
 
 /**
  * Get filtered table data by current task type
  */
-const tableData = computed(() => {
-  return (props.dataSource || []).filter(item => item.taskType.value === props.taskType);
+const filteredTaskData = computed(() => {
+  return (props.dataSource || []).filter(task => task.taskType.value === props.taskType);
 });
 
 /**
  * Cancel edit flow and close task selector
  */
-const cancelIssueSelectionModal = () => {
-  // editRef.value = false;
-  selectIssueVisible.value = false;
+const cancelTaskSelectionModal = () => {
+  // isEditMode.value = false;
+  isSelectTaskModalVisible.value = false;
 };
 
 /**
  * Start edit flow and open task selector
  */
-const openIssueSelectionModal = () => {
-  // editRef.value = true;
-  selectIssueVisible.value = true;
+const openTaskSelectionModal = () => {
+  // isEditMode.value = true;
+  isSelectTaskModalVisible.value = true;
 };
 
 /**
  * Submit association of selected tasks to the current case
- * @param selectTaskIds - Selected task IDs
+ * @param selectedTaskIds - Selected task IDs
  */
-const handleAssociationTask = async (selectTaskIds) => {
-  selectIssueVisible.value = false;
-  if (!selectTaskIds.length) {
-    cancelIssueSelectionModal();
+const handleAssociateTasks = async (selectedTaskIds) => {
+  isSelectTaskModalVisible.value = false;
+  if (!selectedTaskIds.length) {
+    cancelTaskSelectionModal();
     return;
   }
-  submitLoading.value = true;
-  const [error] = await testCase.putAssociationTask(props.caseId, selectTaskIds);
-  submitLoading.value = false;
+  isSubmitting.value = true;
+  const [error] = await testCase.putAssociationTask(props.caseId, selectedTaskIds);
+  isSubmitting.value = false;
   if (error) {
     return;
   }
@@ -80,13 +80,13 @@ const handleAssociationTask = async (selectTaskIds) => {
 
 /**
  * Remove association for one linked task record
- * @param record - The associated task record to remove
+ * @param taskRecord - The associated task record to remove
  */
-const handleCancelAssociationTask = (record) => {
+const handleRemoveTaskAssociation = (taskRecord) => {
   modal.confirm({
-    content: t('actions.tips.confirmCancelAssoc', { name: record.name }),
+    content: t('actions.tips.confirmCancelAssoc', { name: taskRecord.name }),
     onOk () {
-      return testCase.cancelAssociationTask(props.caseId, [record.id]).then(([error]) => {
+      return testCase.cancelAssociationTask(props.caseId, [taskRecord.id]).then(([error]) => {
         if (error) {
           return;
         }
@@ -98,10 +98,10 @@ const handleCancelAssociationTask = (record) => {
 
 /**
  * Open a task detail page in router by ID
- * @param record - The task record to open
+ * @param taskRecord - The task record to open
  */
-const openTask = (record) => {
-  router.push(`/issue#issue?taskId=${record.id}`);
+const openTaskDetail = (taskRecord) => {
+  router.push(`/issue#issue?taskId=${taskRecord.id}`);
 };
 
 const columns = [
@@ -166,14 +166,14 @@ const columns = [
       <Button
         :disabled="props.dataSource?.length > 19"
         size="small"
-        @click="openIssueSelectionModal">
+        @click="openTaskSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
         {{ t('testCase.actions.assocIssues', {name: props.title}) }}
       </Button>
     </div>
     <Table
       :columns="columns"
-      :dataSource="tableData || []"
+      :dataSource="filteredTaskData || []"
       :pagination="false"
       size="small"
       noDataSize="small"
@@ -183,7 +183,7 @@ const columns = [
           <Button
             type="link"
             size="small"
-            @click="openTask(record)">
+            @click="openTaskDetail(record)">
             {{ record.name }}
           </Button>
         </template>
@@ -199,7 +199,7 @@ const columns = [
           <Button
             size="small"
             type="text"
-            @click="handleCancelAssociationTask(record)">
+            @click="handleRemoveTaskAssociation(record)">
             <Icon icon="icon-qingchu" class="mr-1" />
             {{ t('actions.cancel') }}
           </Button>
@@ -219,13 +219,13 @@ const columns = [
       </template>
     </Table>
 
-    <AsyncComponent :visible="selectIssueVisible">
+    <AsyncComponent :visible="isSelectTaskModalVisible">
       <SelectTaskByModuleModal
-        v-model:visible="selectIssueVisible"
+        v-model:visible="isSelectTaskModalVisible"
         :title="t('testCase.messages.assocSelect', {name: props.title})"
         :action="`${TESTER}/func/case/${props.caseId}/task/notAssociated?taskType=${props.taskType}`"
         :projectId="props.projectId"
-        @ok="handleAssociationTask" />
+        @ok="handleAssociateTasks" />
     </AsyncComponent>
   </div>
 </template>

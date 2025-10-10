@@ -1,22 +1,14 @@
 <script lang="ts" setup>
-// Vue core imports
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
-
-// Infrastructure imports
 import { http, duration } from '@xcan-angus/infra';
-
-// Third-party library imports
 import { debounce } from 'throttle-debounce';
-
-// Local component imports
 import TestResult from '@/components/TestResult/index.vue';
-
-// Type imports
 import { ReviewCaseInfo } from '@/views/test/review/types';
+
+// Async component definitions
+const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleTreeSelector.vue'));
 
 const { t } = useI18n();
 
@@ -25,7 +17,7 @@ const { t } = useI18n();
  */
 interface Props {
   visible: boolean;
-  projectId: string;
+  projectId: number;
   action: string;
 }
 
@@ -39,19 +31,16 @@ const props = withDefaults(defineProps<Props>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
-  (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]): void;
+  (e: 'ok', value: number[], rowValue: ReviewCaseInfo[]): void;
 }>();
 
-// Async component definitions
-const ModuleTree = defineAsyncComponent(() => import('@/components/module/ModuleTreeSelector.vue'));
-
 // Component state management
-const selectedCaseIds = ref<string[]>([]);
+const selectedCaseIds = ref<number[]>([]);
 const selectedCaseRows = ref<ReviewCaseInfo[]>([]);
 const allCaseData = ref<any[]>([]);
 const filteredCaseData = ref<any[]>([]);
 const isLoading = ref(false);
-const selectedModuleId = ref('');
+const selectedModuleId = ref<number>();
 const searchKeywords = ref<string>('');
 
 /**
@@ -109,6 +98,21 @@ const handleSearchFilter = debounce(duration.search, () => {
   applySearchFilter();
 });
 
+/**
+ * Handle table row selection change
+ * @param selectedRowKeys - Selected row keys
+ * @param selectedRows - Selected row data
+ */
+ const handleRowSelectionChange = (selectedRowKeys: number[], selectedRows: ReviewCaseInfo[]) => {
+  selectedCaseIds.value = selectedRowKeys;
+  selectedCaseRows.value = selectedRows;
+};
+
+// Table row selection configuration
+const tableRowSelection = ref({
+  onChange: handleRowSelectionChange
+});
+
 // Component watchers
 watch(() => props.visible, (isVisible: boolean) => {
   if (isVisible) {
@@ -153,22 +157,6 @@ const tableColumns = [
     dataIndex: 'testerName'
   }
 ];
-
-/**
- * Handle table row selection change
- * @param selectedRowKeys - Selected row keys
- * @param selectedRows - Selected row data
- */
-const handleRowSelectionChange = (selectedRowKeys: string[], selectedRows: ReviewCaseInfo[]) => {
-  selectedCaseIds.value = selectedRowKeys;
-  selectedCaseRows.value = selectedRows;
-};
-
-// Table row selection configuration
-const tableRowSelection = ref({
-  onChange: handleRowSelectionChange
-});
-
 </script>
 <template>
   <Modal

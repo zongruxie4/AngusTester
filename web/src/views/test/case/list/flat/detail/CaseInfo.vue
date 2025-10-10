@@ -16,7 +16,7 @@ withDefaults(defineProps<Props>(), {
   caseInfo: undefined
 });
 
-const infoColumns = computed(() => [
+const caseInfoColumns = computed(() => [
   [
     { label: t('common.name'), dataIndex: 'name' },
     { label: t('common.code'), dataIndex: 'code' },
@@ -50,7 +50,7 @@ const infoColumns = computed(() => [
     </div>
 
     <Grid
-      :columns="infoColumns"
+      :columns="caseInfoColumns"
       :dataSource="caseInfo"
       :spacing="20"
       :marginBottom="4"

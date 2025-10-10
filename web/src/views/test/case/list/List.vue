@@ -480,9 +480,7 @@ const moduleTreeData = ref([{ name: t('common.noModule'), id: '-1' }]);
 const loadModuleTree = async (keywords?: string) => {
   const [error, { data }] = await modules.getModuleTree({
     projectId: projectInfo.value?.id,
-    filters: keywords
-      ? [{ value: keywords, op: SearchCriteria.OpEnum.Match, key: 'name' }]
-      : []
+    filters: keywords ? [{ value: keywords, op: SearchCriteria.OpEnum.Match, key: 'name' }] : []
   });
   if (error) {
     return;
@@ -583,7 +581,6 @@ const getCurrentPage = (pageNo: number, pageSize: number, total: number): number
       return pageNo - 1;
     }
   }
-
   return pageNo;
 };
 
@@ -720,12 +717,7 @@ const handleAction = (
 
 // Set result to BLOCKED
 const handleSetResultBlocked = async (value) => {
-  const params = [
-    {
-      id: value.id,
-      testResult: CaseTestResult.BLOCKED
-    }
-  ];
+  const params = [{ id: value.id, testResult: CaseTestResult.BLOCKED }];
   const [error] = await testCase.updateCaseResult(params);
   if (error) {
     return;
@@ -831,7 +823,9 @@ const handleUploadOk = () => {
 // Favourite toggle
 const handleFavourite = async (rowData: CaseDetail) => {
   updateLoading(true);
-  const [error] = rowData.favourite ? await testCase.cancelFavouriteCase(rowData.id) : await testCase.AddFavouriteCase(rowData.id);
+  const [error] = rowData.favourite
+    ? await testCase.cancelFavouriteCase(rowData.id)
+    : await testCase.AddFavouriteCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;
@@ -845,7 +839,9 @@ const handleFavourite = async (rowData: CaseDetail) => {
 
 const handleFollow = async (rowData: CaseDetail) => {
   updateLoading(true);
-  const [error] = rowData.follow ? await testCase.cancelFollowCase(rowData.id) : await testCase.addFollowCase(rowData.id);
+  const [error] = rowData.follow
+    ? await testCase.cancelFollowCase(rowData.id)
+    : await testCase.addFollowCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;
@@ -1024,7 +1020,9 @@ defineExpose({
 <template>
   <div class="h-full text-3">
     <div class="flex h-full">
-      <div class="flex-shrink-0 h-full overflow-hidden pb-3 bg-gray-1 text-3" :class="{'w-65 mr-2': enabledModuleGroup , 'w-0': !enabledModuleGroup}">
+      <div
+        class="flex-shrink-0 h-full overflow-hidden pb-3 bg-gray-1 text-3"
+        :class="{'w-65 mr-2': enabledModuleGroup , 'w-0': !enabledModuleGroup}">
         <ModuleTree
           :moduleId="moduleId as number"
           :projectId="projectInfo?.id"

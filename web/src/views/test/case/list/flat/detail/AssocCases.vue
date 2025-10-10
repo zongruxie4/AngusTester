@@ -30,40 +30,40 @@ const emit = defineEmits<{
 
 const addTabPane = inject('addTabPane', (value: any) => value);
 
-const submitLoading = ref(false);
-const editRef = ref(false);
+const isSubmitting = ref(false);
+const isEditMode = ref(false);
 
-const selectCaseVisible = ref(false);
+const isSelectCaseModalVisible = ref(false);
 
 /**
  * Cancel current edit flow and close edit mode
  */
 const cancelCaseSelectionModal = () => {
-  editRef.value = false;
+  isEditMode.value = false;
 };
 
 /**
  * Start edit flow by opening select-case modal
  */
 const openCaseSelectionModal = () => {
-  selectCaseVisible.value = true;
+  isSelectCaseModalVisible.value = true;
 };
 
 /**
  * Submit association of selected case IDs to the current case
- * @param refCaseIds - Selected associated case IDs
+ * @param selectedCaseIds - Selected associated case IDs
  */
-const handlePut = async (refCaseIds) => {
-  selectCaseVisible.value = false;
-  if (!refCaseIds.length) {
+const handleAssociateCases = async (selectedCaseIds) => {
+  isSelectCaseModalVisible.value = false;
+  if (!selectedCaseIds.length) {
     cancelCaseSelectionModal();
     return;
   }
-  submitLoading.value = true;
+  isSubmitting.value = true;
   const [error] = await testCase.putAssociationCase(props.caseId, {
-    assocCaseIds: refCaseIds
+    assocCaseIds: selectedCaseIds
   });
-  submitLoading.value = false;
+  isSubmitting.value = false;
   if (error) {
     return;
   }
@@ -72,14 +72,14 @@ const handlePut = async (refCaseIds) => {
 
 /**
  * Remove association for a single linked case record
- * @param record - The associated case record to remove
+ * @param caseRecord - The associated case record to remove
  */
-const handleDelTask = (record) => {
+const handleRemoveCaseAssociation = (caseRecord) => {
   modal.confirm({
-    content: t('actions.tips.confirmCancelAssoc', { name: record.name }),
+    content: t('actions.tips.confirmCancelAssoc', { name: caseRecord.name }),
     onOk () {
       return testCase.cancelAssociationCase(props.caseId, {
-        assocCaseIds: [record.id]
+        assocCaseIds: [caseRecord.id]
       }).then(([error]) => {
         if (error) {
           return;
@@ -92,15 +92,15 @@ const handleDelTask = (record) => {
 
 /**
  * Open a new tab pointing to the case info view for a record
- * @param record - The case record to open
+ * @param caseRecord - The case record to open
  */
-const openCaseTab = (record) => {
+const openCaseDetailTab = (caseRecord) => {
   addTabPane({
-    _id: record.id,
-    name: record.caseName,
+    _id: caseRecord.id,
+    name: caseRecord.caseName,
     type: 'caseInfo',
     closable: true,
-    caseId: record.id
+    caseId: caseRecord.id
   });
 };
 
@@ -156,7 +156,7 @@ const columns = [
     </div>
     <Button
       :disabled="props.dataSource?.length > 19"
-      :loading="submitLoading"
+      :loading="isSubmitting"
       size="small"
       @click="openCaseSelectionModal">
       <Icon icon="icon-jia" class="mr-1" />
@@ -176,7 +176,7 @@ const columns = [
         <Button
           type="link"
           size="small"
-          @click="openCaseTab(record)">
+          @click="openCaseDetailTab(record)">
           {{ record.name }}
         </Button>
       </template>
@@ -185,7 +185,7 @@ const columns = [
         <Button
           size="small"
           type="text"
-          @click="handleDelTask(record)">
+          @click="handleRemoveCaseAssociation(record)">
           <Icon icon="icon-qingchu" class="mr-1" />
           {{ t('actions.cancel') }}
         </Button>
@@ -202,11 +202,11 @@ const columns = [
     </template>
   </Table>
 
-  <AsyncComponent :visible="selectCaseVisible">
+  <AsyncComponent :visible="isSelectCaseModalVisible">
     <SelectCaseByModuleModal
-      v-model:visible="selectCaseVisible"
+      v-model:visible="isSelectCaseModalVisible"
       :projectId="props.projectId"
       :action="`${TESTER}/func/case/${props.caseId}/case/notAssociated`"
-      @ok="handlePut" />
+      @ok="handleAssociateCases" />
   </AsyncComponent>
 </template>

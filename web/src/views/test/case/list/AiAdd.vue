@@ -864,7 +864,7 @@ onMounted(() => {
                         :fileList="[]"
                         name="file"
                         class="-mb-1 mr-1"
-                        :customRequest="upLoadFile" >
+                        :customRequest="upLoadFile">
                         <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
                         <span class="text-3 leading-3 text-theme-text-hover">{{ t('actions.continueUpload') }}</span>
                       </Upload>

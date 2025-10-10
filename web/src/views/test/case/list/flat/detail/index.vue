@@ -56,11 +56,11 @@ const { t } = useI18n();
 const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
-const bigLayout = ref(true);
-const detailRef = ref();
-let erd:Erd;
-const resizeHandler = debounce(duration.resize, (element) => {
-  bigLayout.value = element.offsetWidth >= 960;
+const isWideLayout = ref(true);
+const detailContainerRef = ref();
+let resizeDetector:Erd;
+const handleContainerResize = debounce(duration.resize, (element) => {
+  isWideLayout.value = element.offsetWidth >= 960;
 });
 
 export type GridColumns = {
@@ -71,24 +71,10 @@ export type GridColumns = {
 }
 
 const peopleInfoColumns = ref<GridColumns[][]>(bigPeopleInfoColumns);
-
 const dateInfoColumns = ref<GridColumns[][]>(bigDateInfoColumns);
-
 const reviewInfoColumns = ref<GridColumns[][]>(bigReviewInfoColumns);
-
 const testInfoColumns = ref<GridColumns[][]>(bigTestInfoColumns);
-
 const apisInfoColumns = ref<GridColumns[][]>(bigApisInfoColumns);
-
-watch(() => bigLayout.value, (newValue) => {
-  peopleInfoColumns.value = newValue ? bigPeopleInfoColumns : minPeopleInfoColumns;
-  dateInfoColumns.value = newValue ? bigDateInfoColumns : minDateInfoColumns;
-  reviewInfoColumns.value = newValue ? bigReviewInfoColumns : minReviewInfoColumns;
-  testInfoColumns.value = newValue ? bigTestInfoColumns : minTestInfoColumns;
-  apisInfoColumns.value = newValue ? bigApisInfoColumns : minApisInfoColumns;
-}, {
-  immediate: true
-});
 
 /**
  * Disable date before yesterday end-of-day
@@ -159,7 +145,7 @@ const getOneTestPass = computed(() => {
 
 const getOneReviewPass = computed(() => {
   if (props.caseDetail?.reviewNum && Number(props.caseDetail.reviewNum) > 0) {
-    return props.caseDetail?.reviewFailNum === '0' &&
+    return props.caseDetail?.reviewFailNum === 0 &&
     props.caseDetail?.reviewStatus?.value === ReviewStatus.PASSED
       ? t('status.yes')
       : t('status.no');
@@ -257,7 +243,8 @@ const openEditEvalWorkload = () => {
  * Persist estimated workload to backend
  */
 const editEvalWorkload = async (event) => {
-  if (+event.target.value === (+props.caseDetail?.evalWorkload) || (!event.target.value && !props.caseDetail?.evalWorkload)) {
+  if (+event.target.value === (+props.caseDetail?.evalWorkload) ||
+    (!event.target.value && !props.caseDetail?.evalWorkload)) {
     isEditEvalWorkload.value = false;
     return;
   }
@@ -272,7 +259,7 @@ const editEvalWorkload = async (event) => {
   emit('editSuccess');
 };
 
-const alWorkload = ref(props.caseDetail?.actualWorkload);
+const actualWorkloadValue = ref(props.caseDetail?.actualWorkload);
 const isEditActualWorkload = ref(false);
 const editActualWorkloadLoading = ref(false);
 
@@ -280,7 +267,7 @@ const editActualWorkloadLoading = ref(false);
  * Enter editing mode for actual workload and focus the input
  */
 const openEditActualWorkload = () => {
-  alWorkload.value = props.caseDetail.actualWorkload || props.caseDetail.evalWorkload;
+  actualWorkloadValue.value = props.caseDetail.actualWorkload || props.caseDetail.evalWorkload;
   isEditActualWorkload.value = true;
   nextTick(() => {
     actualWorkloadInputRef.value.focus();
@@ -291,7 +278,8 @@ const openEditActualWorkload = () => {
  * Persist actual workload to backend
  */
 const editActualWorkload = async (event) => {
-  if (+event.target.value === (+props.caseDetail?.actualWorkload) || (!event.target.value && !props.caseDetail?.evalWorkload)) {
+  if (+event.target.value === (+props.caseDetail?.actualWorkload) ||
+    (!event.target.value && !props.caseDetail?.evalWorkload)) {
     isEditActualWorkload.value = false;
     return;
   }
@@ -306,8 +294,8 @@ const editActualWorkload = async (event) => {
   emit('editSuccess');
 };
 
-const tagsIds = ref<string[]>([]);
-const defaultTags = ref<{[key: string]: { name: string; id: string }}>({});
+const tagsIds = ref<number[]>([]);
+const defaultTags = ref<{[key: string]: { name: string; id: number }}>({});
 const isEditTag = ref(false);
 const editTagLoading = ref(false);
 
@@ -388,78 +376,80 @@ const editDeadlineDate = async () => {
   }
   emit('editSuccess');
 };
+
 const attachmentsData = computed(() => {
   return props.caseDetail?.attachments || [];
 });
 
-const isUpload = ref(false);
+const isUploadControlsVisible = ref(false);
 /**
  * Show upload controls on mouse enter
  */
-const handleMouseenter = () => {
-  isUpload.value = true;
+const handleUploadAreaMouseEnter = () => {
+  isUploadControlsVisible.value = true;
 };
 
 /**
  * Hide upload controls on mouse leave
  */
-const handleMouseleave = () => {
-  isUpload.value = false;
+const handleUploadAreaMouseLeave = () => {
+  isUploadControlsVisible.value = false;
 };
 
 /**
  * Remove attachment by index
- * @param i - Attachment index to remove
+ * @param attachmentIndex - Attachment index to remove
  */
-const cancelFile = async (i:number) => {
+const handleRemoveAttachment = async (attachmentIndex:number) => {
   if (!attachmentsData.value.length) {
     return;
   }
-  const attachments = attachmentsData.value?.filter((_item, index) => index !== i);
-  uploadLoading.value = true;
-  const [error] = await testCase.putAttachment(props.caseDetail.id, { attachments });
-  uploadLoading.value = false;
+  const remainingAttachments = attachmentsData.value?.filter((_item, index) => index !== attachmentIndex);
+  isUploading.value = true;
+  const [error] = await testCase.putAttachment(props.caseDetail.id, { attachments: remainingAttachments });
+  isUploading.value = false;
   if (error) {
     return;
   }
   emit('editSuccess');
 };
 
-const fileList = ref<{id?:string, name:string, url:string}[]>([]);
+const uploadedFileList = ref<{id?:string, name:string, url:string}[]>([]);
 
 /**
  * Upload attachment via custom request
  */
-const upLoadFile = async function (file) {
-  if (fileList.value.length >= 5 || uploadLoading.value) {
+const handleFileUpload = async function (uploadFile) {
+  if (uploadedFileList.value.length >= 5 || isUploading.value) {
     return;
   }
 
-  uploadLoading.value = true;
-  const [error, { data = [] }] = await upload(file.file, { bizKey: 'angusTesterCaseAttachments' });
-  uploadLoading.value = false;
+  isUploading.value = true;
+  const [error, { data = [] }] = await upload(uploadFile.file, { bizKey: 'angusTesterCaseAttachments' });
+  isUploading.value = false;
   if (error) {
     return;
   }
 
-  await updateAttachment(data);
+  await updateAttachmentList(data);
 };
 
-const uploadLoading = ref<boolean>(false);
+const isUploading = ref<boolean>(false);
+
 /**
  * Persist new attachments list after upload
  */
-const updateAttachment = async (data) => {
-  if (uploadLoading.value) {
+const updateAttachmentList = async (uploadedData) => {
+  if (isUploading.value) {
     return;
   }
-  const attachments = data?.map(item => ({ name: item.name, url: item.url }));
+  const newAttachments = uploadedData?.map(fileItem => ({ name: fileItem.name, url: fileItem.url }));
   if (attachmentsData.value.length) {
-    attachments.push(...attachmentsData.value);
+    newAttachments.push(...attachmentsData.value);
   }
-  uploadLoading.value = true;
-  const [error] = await testCase.putAttachment(props.caseDetail.id, { attachments });
-  uploadLoading.value = false;
+  isUploading.value = true;
+  const [error] = await testCase.putAttachment(props.caseDetail.id, { attachments: newAttachments });
+  isUploading.value = false;
 
   if (error) {
     return;
@@ -669,15 +659,15 @@ const handleSetTester = async () => {
 };
 
 const versionRef = ref();
-const versionEditFlag = ref(false);
-const versionValue = ref();
+const isVersionEditMode = ref(false);
+const selectedVersionValue = ref();
 
 /**
  * Enter editing mode for software version
  */
-const toEditVersion = () => {
-  versionEditFlag.value = true;
-  versionValue.value = props.caseDetail?.softwareVersion;
+const openVersionEditMode = () => {
+  isVersionEditMode.value = true;
+  selectedVersionValue.value = props.caseDetail?.softwareVersion;
   nextTick(() => {
     setTimeout(() => {
       if (typeof versionRef.value?.focus === 'function') {
@@ -690,24 +680,24 @@ const toEditVersion = () => {
 /**
  * Update local version value on change
  */
-const versionChange = (value) => {
-  versionValue.value = value;
+const handleVersionChange = (newVersionValue) => {
+  selectedVersionValue.value = newVersionValue;
 };
 
 /**
  * Persist version value on blur
  */
-const versionBlur = async () => {
-  const value = versionValue.value;
-  if (value === props.caseDetail?.softwareVersion) {
-    versionEditFlag.value = false;
+const handleVersionBlur = async () => {
+  const versionValue = selectedVersionValue.value;
+  if (versionValue === props.caseDetail?.softwareVersion) {
+    isVersionEditMode.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await testCase.updateCase([{ softwareVersion: value || '', id: props.caseDetail.id }]);
+  const [error] = await testCase.updateCase([{ softwareVersion: versionValue || '', id: props.caseDetail.id }]);
   emit('loadingChange', false);
-  versionEditFlag.value = false;
+  isVersionEditMode.value = false;
   if (error) {
     return;
   }
@@ -715,19 +705,29 @@ const versionBlur = async () => {
   emit('editSuccess');
 };
 
+watch(() => isWideLayout.value, (isWide) => {
+  peopleInfoColumns.value = isWide ? bigPeopleInfoColumns : minPeopleInfoColumns;
+  dateInfoColumns.value = isWide ? bigDateInfoColumns : minDateInfoColumns;
+  reviewInfoColumns.value = isWide ? bigReviewInfoColumns : minReviewInfoColumns;
+  testInfoColumns.value = isWide ? bigTestInfoColumns : minTestInfoColumns;
+  apisInfoColumns.value = isWide ? bigApisInfoColumns : minApisInfoColumns;
+}, {
+  immediate: true
+});
+
 onMounted(() => {
-  erd = elementResizeDetector();
-  erd.listenTo(detailRef.value, resizeHandler);
+  resizeDetector = elementResizeDetector();
+  resizeDetector.listenTo(detailContainerRef.value, handleContainerResize);
 });
 
 onBeforeUnmount(() => {
-  erd.removeListener(detailRef.value, resizeHandler);
+  resizeDetector.removeListener(detailContainerRef.value, handleContainerResize);
 });
 </script>
 <template>
   <div
-    ref="detailRef"
-    :class="bigLayout?'flex pr-2':'pr-3.5'"
+    ref="detailContainerRef"
+    :class="isWideLayout?'flex pr-2':'pr-3.5'"
     class="overflow-y-auto h-full">
     <div class="flex-1">
       <Toggle
@@ -883,7 +883,7 @@ onBeforeUnmount(() => {
               <template v-if="isEditActualWorkload">
                 <Input
                   ref="actualWorkloadInputRef"
-                  :value="alWorkload"
+                  :value="actualWorkloadValue"
                   :allowClear="false"
                   :autofocus="isEditActualWorkload"
                   :min="0.1"
@@ -908,7 +908,7 @@ onBeforeUnmount(() => {
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                       {{ caseDetail?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                      ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
+                        ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
@@ -963,10 +963,10 @@ onBeforeUnmount(() => {
           </template>
 
           <template #softwareVersion="{text}">
-            <template v-if="versionEditFlag">
+            <template v-if="isVersionEditMode">
               <Select
                 ref="versionRef"
-                v-model:value="versionValue"
+                v-model:value="selectedVersionValue"
                 allowClear
                 :placeholder="t('common.placeholders.selectSoftwareVersion')"
                 lazy
@@ -974,8 +974,8 @@ onBeforeUnmount(() => {
                 :action="`${TESTER}/software/version?projectId=${projectId}`"
                 :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: SearchCriteria.OpEnum.In}]}"
                 :fieldNames="{value:'name', label: 'name'}"
-                @blur="versionBlur"
-                @change="versionChange">
+                @blur="handleVersionBlur"
+                @change="handleVersionChange">
               </Select>
             </template>
 
@@ -993,7 +993,7 @@ onBeforeUnmount(() => {
                 <Button
                   type="link"
                   class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                  @click="toEditVersion">
+                  @click="openVersionEditMode">
                   <Icon icon="icon-shuxie" class="text-3.5" />
                 </Button>
               </div>
@@ -1002,7 +1002,7 @@ onBeforeUnmount(() => {
         </Grid>
       </Toggle>
 
-      <template v-if="!bigLayout">
+      <template v-if="!isWideLayout">
         <Toggle
           :title="t('common.personnel')"
           class="mt-3.5">
@@ -1274,7 +1274,7 @@ onBeforeUnmount(() => {
         </template>
       </Toggle>
 
-      <template v-if="!bigLayout">
+      <template v-if="!isWideLayout">
         <Toggle
           :title="t('common.attachment')"
           class="mt-3.5">
@@ -1282,8 +1282,8 @@ onBeforeUnmount(() => {
             style="height: 108px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
             class="border border-dashed rounded flex flex-col px-2 py-1 mx-2 mt-3 mb-3"
             :class="attachmentsData.length?'justify-between':'justify-center'"
-            @mouseenter="handleMouseenter"
-            @mouseleave="handleMouseleave">
+            @mouseenter="handleUploadAreaMouseEnter"
+            @mouseleave="handleUploadAreaMouseLeave">
             <template v-if="attachmentsData.length">
               <div style="height: 90px;scrollbar-gutter: stable;" class="overflow-hidden hover:overflow-y-auto -mr-2 pr-1">
                 <div
@@ -1301,7 +1301,7 @@ onBeforeUnmount(() => {
                   <Icon
                     icon="icon-qingchu"
                     class="text-theme-special text-theme-text-hover cursor-pointer flex-shrink-0 leading-4 text-3.5"
-                    @click="cancelFile(index)" />
+                    @click="handleRemoveAttachment(index)" />
                 </div>
               </div>
             </template>
@@ -1311,7 +1311,7 @@ onBeforeUnmount(() => {
                 <Upload
                   :fileList="[]"
                   name="file"
-                  :customRequest="upLoadFile">
+                  :customRequest="handleFileUpload">
                   <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
                   <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
                 </Upload>
@@ -1322,7 +1322,7 @@ onBeforeUnmount(() => {
       </template>
     </div>
 
-    <div v-if="bigLayout" class="w-75 flex-none ml-2">
+    <div v-if="isWideLayout" class="w-75 flex-none ml-2">
       <Toggle :title="t('common.personnel')">
         <Grid
           :columns="peopleInfoColumns"
@@ -1446,8 +1446,8 @@ onBeforeUnmount(() => {
           style="height: 108px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
           class="border border-dashed rounded flex flex-col px-2 py-1 mx-2 mt-3.5 mb-7"
           :class="attachmentsData.length?'justify-between':'justify-center'"
-          @mouseenter="handleMouseenter"
-          @mouseleave="handleMouseleave">
+          @mouseenter="handleUploadAreaMouseEnter"
+          @mouseleave="handleUploadAreaMouseLeave">
           <template v-if="attachmentsData.length">
             <div style="height: 90px;scrollbar-gutter: stable;" class="overflow-hidden hover:overflow-y-auto -mr-2 pr-1">
               <div
@@ -1465,7 +1465,7 @@ onBeforeUnmount(() => {
                 <Icon
                   icon="icon-qingchu"
                   class="text-theme-special text-theme-text-hover cursor-pointer flex-shrink-0 leading-4 text-3.5"
-                  @click="cancelFile(index)" />
+                  @click="handleRemoveAttachment(index)" />
               </div>
             </div>
           </template>
@@ -1475,7 +1475,7 @@ onBeforeUnmount(() => {
               <Upload
                 :fileList="[]"
                 name="file"
-                :customRequest="upLoadFile">
+                :customRequest="handleFileUpload">
                 <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
                 <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
               </Upload>
