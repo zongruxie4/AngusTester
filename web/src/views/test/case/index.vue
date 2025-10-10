@@ -320,8 +320,6 @@ const updateCaseSuccess = () => {
   getCaseInfo();
 };
 
-// Test result management
-
 /**
  * Set case test result to blocked
  * @param caseData - Case data object
@@ -412,8 +410,6 @@ const handleReTest = async (caseData: CaseDetail) => {
   notification.success(t('testCase.messages.resetTestStatusSuccess'));
   await getCaseInfo();
 };
-
-// Case deletion functionality
 
 /**
  * Show confirmation dialog and delete case
@@ -638,7 +634,7 @@ defineExpose({
                 :caseId="record.caseId"
                 :currIndex="record.currIndex"
                 :total="record.total"
-                :userInfo="{ id: userInfo?.id?.toString() || '' }"
+                :userInfo="{ id: userInfo?.id }"
                 :queryParams="record.queryParams"
                 :notify="record.notify"
                 type="tab"

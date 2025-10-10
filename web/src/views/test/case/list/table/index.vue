@@ -60,6 +60,31 @@ const tableChange = (pagination, _filters, sorter) => {
   emits('change', { pagination: pagination, sorter: sorter });
 };
 
+const selectedRowKeys = ref<string[]>([]);
+
+const onSelectChange = (_selectedRowKeys) => {
+  selectedRowKeys.value = _selectedRowKeys;
+  emits('update:selectedRowKeys', _selectedRowKeys.filter((id) => {
+    if (props.enabledModuleGroup) {
+      return !props.groupCaseList.map(group => group.id).includes(id);
+    }
+    return true;
+  }));
+};
+
+const handleClick = async (type: CaseActionAuth, value: CaseDetail) => {
+  emits('onClick', type, value);
+};
+
+const handleViewInfo = (value:CaseDetail) => {
+  emits('openInfo', value);
+};
+
+defineExpose({
+  selectedRowKeys,
+  onSelectChange
+});
+
 const tableColumns = computed(() => [
   props.enabledModuleGroup && {
     title: '',
@@ -141,31 +166,6 @@ const tableColumns = computed(() => [
     width: 140
   }
 ].filter(Boolean));
-
-const selectedRowKeys = ref<string[]>([]);
-
-const onSelectChange = (_selectedRowKeys) => {
-  selectedRowKeys.value = _selectedRowKeys;
-  emits('update:selectedRowKeys', _selectedRowKeys.filter((id) => {
-    if (props.enabledModuleGroup) {
-      return !props.groupCaseList.map(group => group.id).includes(id);
-    }
-    return true;
-  }));
-};
-
-const handleClick = async (type: CaseActionAuth, value: CaseDetail) => {
-  emits('onClick', type, value);
-};
-
-const handleViewInfo = (value:CaseDetail) => {
-  emits('openInfo', value);
-};
-
-defineExpose({
-  selectedRowKeys,
-  onSelectChange
-});
 </script>
 <template>
   <Table

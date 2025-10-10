@@ -1061,7 +1061,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleAction('move')">
-            {{ t('actions.move ') }}
+            {{ t('actions.move') }}
           </Button>
 
           <Button

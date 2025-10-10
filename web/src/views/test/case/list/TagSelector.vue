@@ -2,7 +2,7 @@
 import { inject, ref, watch, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Tag, Tooltip } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { Icon, Select } from '@xcan-angus/vue-ui';
 import { tag } from '@/api/tester';
 
@@ -10,27 +10,29 @@ const { t } = useI18n();
 
 // Component props interface
 interface Props {
-  tagIds: string[];
+  tagIds: number[];
 }
 const props = withDefaults(defineProps<Props>(), {
   tagIds: () => []
 });
 
 // Component emits
-const emit = defineEmits<{(e: 'change', _val: string[]): void
+const emit = defineEmits<{(e: 'change', _val: number[]): void
 }>();
 
 // Basic state management
 const projectId = inject<Ref<string>>('projectId', ref(''));
-const tagList = ref<{ id: string, name: string, closeFlag: boolean }[]>([]);
-const checkedIds = ref<string[]>([]);
+const tagList = ref<{ id: number, name: string, closeFlag: boolean }[]>([]);
+const checkedIds = ref<number[]>([]);
 
 /**
  * Toggle tag selection
  * @param tagId - Tag ID to toggle
  */
-const selectTag = (tagId: string) => {
-  checkedIds.value.includes(tagId) ? checkedIds.value = checkedIds.value.filter(f => f !== tagId) : checkedIds.value.push(tagId);
+const selectTag = (tagId: number) => {
+  checkedIds.value.includes(tagId)
+    ? checkedIds.value = checkedIds.value.filter(f => f !== tagId)
+    : checkedIds.value.push(tagId);
   emit('change', checkedIds.value);
 };
 
@@ -65,7 +67,7 @@ const selectChange = (_value: any, option: any) => {
  * Close tag
  * @param tagId - Tag ID to close
  */
-const closeTag = (tagId: string) => {
+const closeTag = (tagId: number) => {
   tagList.value = tagList.value.filter(f => f.id !== tagId);
   if (checkedIds.value.includes(tagId)) {
     checkedIds.value = checkedIds.value.filter(f => f !== tagId);
@@ -84,7 +86,8 @@ const handleBlur = () => {
  * Load cached tag list
  */
 const getCacheTagList = async () => {
-  const [error, { data }] = await tag.getTagList({ projectId: projectId.value, filters: [{ key: 'id', op: 'IN', value: props.tagIds }] });
+  const params = { projectId: projectId.value, filters: [{ key: 'id', op: SearchCriteria.OpEnum.In, value: props.tagIds }] };
+  const [error, { data }] = await tag.getTagList(params);
   if (error) {
     return;
   }

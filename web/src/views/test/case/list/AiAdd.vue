@@ -807,7 +807,7 @@ onMounted(() => {
 
               <FormItem
                 name="refCaseIds"
-                :label="t('testCase.messages.assocCases')"
+                :label="t('common.assocCases')"
                 class="relative">
                 <Select
                   v-model:value="formState.refCaseIds"

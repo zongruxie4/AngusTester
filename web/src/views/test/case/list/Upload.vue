@@ -125,7 +125,6 @@ watch(() => props.visible, newValue => {
 }, {
   immediate: true
 });
-
 </script>
 <template>
   <Modal

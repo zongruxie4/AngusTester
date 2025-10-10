@@ -10,29 +10,28 @@ const { t } = useI18n();
 
 // Component props interface
 interface Props {
-  planId?: string;
+  planId?: number;
   planName?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
-  planId: '',
+  planId: undefined,
   planName: ''
 });
 
 // Component emits
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
-  (e: 'change', value: string | undefined): void
+  (e: 'change', value: number | undefined): void
 }>();
 
 // Basic state management
 const projectId = inject<Ref<string>>('projectId', ref(''));
-const planInfo = ref<{ id: string, name: string }>();
-const checkedId = ref<string>();
+const planInfo = ref<{ id: number, name: string }>();
+const checkedId = ref<number>();
 
 // UI state management
 const showSelect = ref(false);
 const selectValue = ref<string>();
-
-// Event handlers
 
 /**
  * Handle add plan button click
@@ -54,7 +53,6 @@ const selectChange = (_value: any, option: any) => {
   if (existId === id) {
     return;
   }
-
   planInfo.value = { id, name };
   checkedId.value = id;
   emit('change', checkedId.value);
@@ -69,7 +67,6 @@ const selectTag = () => {
   } else {
     checkedId.value = planInfo.value?.id;
   }
-
   emit('change', checkedId.value);
 };
 
@@ -93,11 +90,10 @@ const handleBlur = () => {
  * Load plan details
  */
 const loadPlanList = async () => {
-  const [error, res] = await testPlan.getPlanDetail(props.planId);
+  const [error, res] = await testPlan.getPlanDetail(props.planId as number);
   if (error) {
     return;
   }
-
   planInfo.value = res?.data;
 };
 
@@ -113,7 +109,6 @@ watch(() => props.planId, (newValue) => {
 
     return;
   }
-
   checkedId.value = undefined;
 }, {
   immediate: true

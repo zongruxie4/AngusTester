@@ -90,8 +90,6 @@ const handleDrop = (event: DragEvent, index: number) => {
   targetIndex.value = index;
 };
 
-// Step management functions
-
 /**
  * Add a new test step
  */
@@ -234,7 +232,9 @@ const menus = [
 <template>
   <div class="text-3">
     <template v-if="props.stepView === CaseStepView.TABLE">
-      <div class="border-theme-text-box rounded" :class="{'border': props.showOutBorder}">
+      <div
+        class="border-theme-text-box rounded"
+        :class="{'border': props.showOutBorder}">
         <div class="flex">
           <div class="w-8 flex justify-center pt-1 flex-none">#</div>
           <div class="px-1.5 py-1 border-theme-text-box border-r flex-1/2">
@@ -245,7 +245,9 @@ const menus = [
             :class="{'border-r': !props.readonly || props.showOutBorder}">
             {{ t('testCase.messages.expectedResult') }}
           </div>
-          <div v-show="!props.readonly" class="w-12 flex-none py-1 text-center">{{ t('common.actions') }}</div>
+          <div v-show="!props.readonly" class="w-12 flex-none py-1 text-center">
+            {{ t('common.actions') }}
+          </div>
         </div>
 
         <div
