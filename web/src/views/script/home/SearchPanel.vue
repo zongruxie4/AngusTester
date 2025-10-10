@@ -100,7 +100,6 @@ watch(
 
     // Debounce search to avoid frequent requests
     searchTimer = setTimeout(() => {
-      debugger;
       emit('change', getData());
     }, 100);
   },

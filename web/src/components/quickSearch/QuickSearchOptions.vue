@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<QuickSearchOptionsProps>(), {
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
-  (e: 'change', selectedKeys: string[], searchCriteria: SearchCriteria[]): void;
+  (e: 'change', selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void;
 }>();
 
 // Use the quick search composable
@@ -65,9 +65,10 @@ const {
   handleOptionClick,
   resetSelections,
   getSearchCriteria,
-  clearExternalConditions
-} = useQuickSearch(props.config, (selectedKeys, searchCriteria) => {
-  emit('change', selectedKeys, searchCriteria);
+  clearExternalConditions,
+  clearSelectedMap
+} = useQuickSearch(props.config, (selectedKeys, searchCriteria, key) => {
+  emit('change', selectedKeys, searchCriteria, key);
 });
 
 /**
@@ -87,7 +88,8 @@ defineExpose({
   resetSelections,
   getSearchCriteria,
   clearExternalConditions,
-  handleOptionClick
+  handleOptionClick,
+  clearSelectedMap
 });
 </script>
 

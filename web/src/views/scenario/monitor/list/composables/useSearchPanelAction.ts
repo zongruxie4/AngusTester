@@ -1,13 +1,16 @@
+import { ref } from 'vue';
 import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import type { OrderByKey } from '../../types';
 
 type FilterItem = SearchCriteria;
 type SearchPanelParams = PageQuery;
 
+
 export function useSearchPanelAction (
   searchPanelRef: any,
-  _selectedMenuMap: any,
+  userId: string,
   searchFilters: any,
   assocFilters: any,
   quickSearchFilters: any,
@@ -17,24 +20,97 @@ export function useSearchPanelAction (
   emit: (value: SearchPanelParams) => void,
   emitRefresh: () => void
 ) {
+  const { t } = useI18n();
+
   // Filter configuration
   const assocKeys = ['createdDate', 'createdBy'];
+
+  // Quick search options ref
+  const quickSearchOptionsRef = ref();
 
   /**
    * Handle search panel change event
    * @param data - Filter items from search panel
    */
-  const searchChange = (data: FilterItem[]): void => {
-    // Merge search panel filters with quick search filters
-    const quickSearchFields = ['createdBy', 'lastModifiedBy', 'createdDate', 'status'];
-    const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
-    const searchPanelFilters = data.filter(f => f.key && !quickSearchFields.includes(f.key as string));
+  const searchChange = (data: FilterItem[], _headers?: { [key: string]: string }, key?: string): void => {
+    if (key === 'createdBy') {
+      const searchCriteriaKeys = quickSearchOptionsRef.value.getSearchCriteria().map(f => f.key);
+      if (searchCriteriaKeys.includes('createdBy')) {
+        quickSearchOptionsRef.value.clearSelectedMap('createdBy');
+      }
+      quickSearchFilters.value = quickSearchFilters.value.filter(f => f.key !== 'createdBy');
+    }
+    if (key === 'createdDate') {
+      const searchCriteriaKeys = quickSearchOptionsRef.value.getSearchCriteria().map(f => f.key);
+      if (searchCriteriaKeys.includes('createdDate')) {
+        quickSearchOptionsRef.value.clearSelectedMap(['createdDate', 'last1Day', 'last3Days', 'last7Days']);
+      }
+      quickSearchFilters.value = quickSearchFilters.value.filter(f => f.key !== 'createdDate');
+    }
 
-    searchFilters.value = [...currentQuickSearchFilters, ...searchPanelFilters];
-    assocFilters.value = data.filter(item => item.key && assocKeys.includes(item.key));
+    searchFilters.value = [...(data || []).filter(f => !assocKeys.includes(f.key as string))];
+    assocFilters.value = data.filter(item => item.key && assocKeys.includes(item.key as string));
 
     emit(getParams());
   };
+
+  /**
+ * Handle quick search changes
+ * Processes quick search filters and updates state
+ * @param selectedKeys - Array of selected option keys
+ * @param searchCriteria - Array of search criteria from quick search
+ */
+const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
+  console.log('handleQuickSearchChange', selectedKeys, searchCriteria, key);
+  // Update quick search filters
+  if (key === 'createdBy') {
+    if (selectedKeys.includes(key)) {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'createdBy',
+          value: userId
+        }]);
+      }
+    } else {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'createdBy',
+          value: undefined
+        }]);
+      }
+    }
+    searchCriteria = searchCriteria.filter(f => f.key !== 'createdBy');
+  }
+
+  if (key && key.startsWith('last')) {
+    if (selectedKeys.includes(key)) {
+      const createdDataSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
+      const createdDataValue = [createdDataSearchCriteria[0].value, createdDataSearchCriteria[1].value]
+
+      console.log('createdDataValue', createdDataValue)
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'createdDate',
+          value: createdDataValue,
+          type: 'date-range'
+        }]);
+      }
+    } else {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'createdDate',
+          value: undefined,
+          type: 'date-range'
+        }]);
+      }
+    }
+    searchCriteria = searchCriteria.filter(f => f.key !== 'createdDate');
+  }
+  quickSearchFilters.value = searchCriteria;
+
+  // Emit change event with current params
+  emit(getParams());
+};
 
   /**
    * Handle sort change event
@@ -56,6 +132,8 @@ export function useSearchPanelAction (
   return {
     searchChange,
     toSort,
-    refresh
+    refresh,
+    quickSearchOptionsRef,
+    handleQuickSearchChange
   };
 }

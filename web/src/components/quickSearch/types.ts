@@ -135,4 +135,6 @@ export interface UseQuickSearchReturn {
   getSearchCriteria: () => SearchCriteria[];
   /** Clear external conditions */
   clearExternalConditions: () => void;
+  /** Clear selected map */
+  clearSelectedMap: (key?: string) => void;
 }

@@ -87,9 +87,9 @@ const {
         <template v-else>
           <SearchPanel
             :projectId="props.projectId"
+            :userId="props.userInfo?.id"
             @change="(data) => searchChange(data)"
             @refresh="refresh" />
-
           <NoData v-if="dataList.length === 0" class="flex-1" />
 
           <div

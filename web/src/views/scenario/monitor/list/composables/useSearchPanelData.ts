@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue';
+import { computed, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { PageQuery, TESTER, appContext } from '@xcan-angus/infra';
 import { createAuditOptions, createTimeOptions, createEnumTypeConfig, type QuickSearchConfig } from '@/components/quickSearch';
@@ -14,6 +14,10 @@ import type {
 
 export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn {
   const { t } = useI18n();
+
+    // Search panel ref
+  const searchPanelRef = ref();
+  
 
   // Search panel options configuration
   const searchPanelOptions: SearchPanelOption[] = [
@@ -89,7 +93,9 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
     ], 'createdDate'),
     // External clear function
     externalClearFunction: () => {
-      // This will be set by the parent component
+      if (typeof searchPanelRef.value?.clear === 'function') {
+        searchPanelRef.value.clear();
+      }
     }
   }));
 
@@ -146,6 +152,7 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
     getParams,
     searchChange,
     toSort,
-    refresh
+    refresh,
+    searchPanelRef
   };
 }

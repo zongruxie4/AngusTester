@@ -68,18 +68,19 @@ const getDateRange = (timeRange: TimeRangeValue): string[] => {
  */
 export function useQuickSearch (
   config: QuickSearchConfig,
-  onChange?: (selectedKeys: string[], searchCriteria: SearchCriteria[]) => void
+  onChange?: (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string) => void
 ): UseQuickSearchReturn {
   const { t } = useI18n();
 
   // Internal state
   const selectedMap = ref<Map<string, QuickSearchOption>>(new Map());
   const isAllSelected = ref(true); // 默认选中"全部"选项
+  const lastSelectedKey = ref<string | undefined>(undefined);
 
   // Initialize with "all" selected and trigger initial callback
   const initializeWithAllSelected = () => {
     if (onChange) {
-      onChange(['all'], []);
+      onChange(['all'], [], undefined);
     }
   };
 
@@ -208,6 +209,7 @@ export function useQuickSearch (
    */
   const handleOptionClick = (option: QuickSearchOption) => {
     const key = option.key;
+    lastSelectedKey.value = key;
 
     // Handle "All" option
     if (key === 'all') {
@@ -219,7 +221,7 @@ export function useQuickSearch (
 
         // Manually trigger onChange since watch might not detect the change
         if (onChange) {
-          onChange(selectedOptions.value, getSearchCriteria());
+          onChange(selectedOptions.value, getSearchCriteria(), key);
         }
       } else {
         // Select "All" and clear all other selections
@@ -229,7 +231,7 @@ export function useQuickSearch (
 
         // Manually trigger onChange since watch might not detect the change
         if (onChange) {
-          onChange(selectedOptions.value, getSearchCriteria());
+          onChange(selectedOptions.value, getSearchCriteria(), key);
         }
       }
     } else {
@@ -270,8 +272,26 @@ export function useQuickSearch (
 
         selectedMap.value.set(key, option);
       }
+      if (onChange) {
+        onChange(selectedOptions.value, getSearchCriteria(), lastSelectedKey.value);
+      }
     }
   };
+
+  const clearSelectedMap = (key?: string | string[]) => {
+    if (key) {
+      if (Array.isArray(key)) {
+        key.forEach(k => {
+          selectedMap.value.delete(k);
+        });
+      } else {
+        selectedMap.value.delete(key);
+      }
+    } else {
+      selectedMap.value.clear();
+    }
+  }
+
 
   /**
    * Reset all selections
@@ -281,23 +301,24 @@ export function useQuickSearch (
     isAllSelected.value = false;
     clearExternalConditions();
 
+    lastSelectedKey.value = undefined;
     if (onChange) {
-      onChange([], []);
+      onChange([], [], undefined);
     }
   };
 
   /**
    * Watch for external changes and trigger callback
    */
-  watch(
-    [selectedMap, isAllSelected],
-    () => {
-      if (onChange) {
-        onChange(selectedOptions.value, getSearchCriteria());
-      }
-    },
-    { deep: true, immediate: false }
-  );
+  // watch(
+  //   [selectedMap, isAllSelected],
+  //   () => {
+  //     if (onChange) {
+  //       onChange(selectedOptions.value, getSearchCriteria(), lastSelectedKey.value);
+  //     }
+  //   },
+  //   { deep: true, immediate: false }
+  // );
 
   // Initialize with "all" selected
   initializeWithAllSelected();
@@ -309,7 +330,8 @@ export function useQuickSearch (
     handleOptionClick,
     resetSelections,
     getSearchCriteria,
-    clearExternalConditions
+    clearExternalConditions,
+    clearSelectedMap
   };
 }
 

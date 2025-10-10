@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref,  } from 'vue';
 import { DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
@@ -13,11 +13,13 @@ import { useSearchPanelAction } from './composables/useSearchPanelAction';
 interface Props {
   loading: boolean;
   projectId: string;
+  userId?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
-  projectId: undefined
+  projectId: undefined,
+  userId: undefined
 });
 
 // Component emits
@@ -27,8 +29,7 @@ const emits = defineEmits<{
   (e: 'refresh'): void;
 }>();
 
-// Search panel ref
-const searchPanelRef = ref();
+
 
 // Use composables
 const {
@@ -40,24 +41,21 @@ const {
   searchFilters,
   quickSearchFilters,
   assocFilters,
-  getParams
+  getParams,
+  searchPanelRef,
 } = useSearchPanelData(props.projectId);
 
-// Update external clear function with search panel ref
-quickSearchConfig.value.externalClearFunction = () => {
-  if (typeof searchPanelRef.value?.clear === 'function') {
-    searchPanelRef.value.clear();
-  }
-};
 
 // Use logic composable
 const {
   searchChange,
   toSort,
-  refresh
+  refresh,
+  quickSearchOptionsRef,
+  handleQuickSearchChange
 } = useSearchPanelAction(
   searchPanelRef,
-  ref({}),
+  props.userId as string,
   searchFilters,
   assocFilters,
   quickSearchFilters,
@@ -68,25 +66,14 @@ const {
   () => emits('refresh')
 );
 
-/**
- * Handle quick search changes
- * Processes quick search filters and updates state
- * @param selectedKeys - Array of selected option keys
- * @param searchCriteria - Array of search criteria from quick search
- */
-const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
-  // Update quick search filters
-  quickSearchFilters.value = searchCriteria;
 
-  // Emit change event with current params
-  emits('change', getParams());
-};
 </script>
 
 <template>
   <div class="mt-2.5 mb-3.5">
     <!-- Quick Search Options Component -->
     <QuickSearchOptions
+      ref="quickSearchOptionsRef"
       :config="quickSearchConfig"
       @change="handleQuickSearchChange" />
 

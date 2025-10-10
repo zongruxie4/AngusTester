@@ -260,4 +260,8 @@ export interface UseSearchPanelDataReturn {
   searchChange: (data: SearchCriteria[]) => void;
   toSort: (sortData: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort }) => void;
   refresh: () => void;
+
+  // Refs
+  searchPanelRef: Ref<any>;
+  quickSearchOptionsRef?: Ref<any>;
 }
