@@ -160,7 +160,6 @@ const loadCases = async () => {
 
   caseList.value = _caseList;
 
-  const newList: CaseDetail[] = [];
   const planIdSet = new Set<number>();
   const testerNameSet = new Set<string>();
   const lastModifiedByNameSet = new Set<string>();
@@ -169,7 +168,6 @@ const loadCases = async () => {
     const testResult = item.testResult?.value;
     numMap.value[testResult] += 1;
     caseDataMap.value[testResult].push(item);
-    newList.push(item);
     planIdSet.add(item.planId);
 
     if (!testerNameSet.has(item.testerName)) {

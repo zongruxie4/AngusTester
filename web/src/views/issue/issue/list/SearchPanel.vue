@@ -1582,7 +1582,7 @@ const sortMenuItems = [
           <template v-if="selectedSprintOption?.id">
             <Tag
               :title="selectedSprintOption?.showTitle"
-              :class="checkedSprintId === selectedSprintOption.id ? 'sprint tag-checked' : ''"
+              :class="checkedSprintId === Number(selectedSprintOption.id) ? 'sprint tag-checked' : ''"
               closable
               class="h-6 mr-5 mb-3 rounded-xl px-2.5"
               @click="toggleSprintSelection"
@@ -1617,7 +1617,7 @@ const sortMenuItems = [
             v-for="item in selectedTagOptions"
             :key="item.id"
             :title="item.showTitle"
-            :class="checkedTagIds.includes(item.id) ? 'tag tag-checked' : ''"
+            :class="checkedTagIds.includes(Number(item.id)) ? 'tag tag-checked' : ''"
             closable
             class="h-6 mb-3 rounded-xl px-2.5"
             @click="toggleTagSelection(item)"

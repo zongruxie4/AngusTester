@@ -64,8 +64,8 @@ const priorityInputValue = ref<TaskDetail['priority']['value']>();
 // Tag editing state
 const tagSelectRef = ref();
 const isTagEditing = ref(false);
-const selectedTagList = ref<{ id: string; name: string; }[]>([]);
-const selectedTagIds = ref<string[]>([]);
+const selectedTagList = ref<{ id: number; name: string; }[]>([]);
+const selectedTagIds = ref<number[]>([]);
 
 // Module editing state
 const moduleTreeSelectRef = ref();

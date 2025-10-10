@@ -261,7 +261,7 @@ const startPriorityEditing = () => {
  * @param option - Selected priority option containing value and message
  */
 const handlePriorityChange = async (
-  value: string,
+  _value: string,
   option?: { label: string; value: string }) => {
   if (option?.label) {
     prioritySelectMessage.value = option.label;
@@ -316,7 +316,7 @@ const startTagEditing = () => {
  * @param options - Array of selected tag options containing id and name
  */
 const handleTagChange = async (
-  value: any,
+  _value: any,
   options: any) => {
   selectedTagList.value = options;
 };
@@ -364,7 +364,7 @@ const startVersionEditing = () => {
  * @param value - Selected software version value
  * @param option - Selected option (unused)
  */
-const handleVersionChange = (value: any, option?: any) => {
+const handleVersionChange = (value: any, _option?: any) => {
   versionSelectValue.value = value;
 };
 

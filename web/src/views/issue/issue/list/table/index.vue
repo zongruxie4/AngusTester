@@ -1253,7 +1253,7 @@ const EXEC_RESULT_COLOR = {
     <AsyncComponent :visible="moveModalVisible">
       <MoveTaskModal
         v-model:visible="moveModalVisible"
-        :taskIds="rowSelection.selectedRowKeys.join(',')"
+        :taskIds="rowSelection.selectedRowKeys"
         :projectId="props.projectId"
         @ok="handleBatchMoveSuccess" />
     </AsyncComponent>
