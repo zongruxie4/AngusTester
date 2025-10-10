@@ -39,12 +39,12 @@ const taskNameInputValue = ref<string>();
 // Evaluation workload editing state
 const evalWorkloadInputRef = ref();
 const isEvalWorkloadEditing = ref(false);
-const evalWorkloadInputValue = ref<string>();
+const evalWorkloadInputValue = ref<number>();
 
 // Actual workload editing state
 const actualWorkloadInputRef = ref();
 const isActualWorkloadEditing = ref(false);
-const actualWorkloadInputValue = ref<string>();
+const actualWorkloadInputValue = ref<number>();
 
 // Priority editing state
 const prioritySelectRef = ref();
@@ -55,8 +55,8 @@ const prioritySelectValue = ref<TaskDetail['priority']['value']>();
 // Tag editing state
 const tagSelectRef = ref();
 const isTagEditing = ref(false);
-const selectedTagList = ref<{id:string;name:string;}[]>([]);
-const selectedTagIdList = ref<string[]>([]);
+const selectedTagList = ref<{id:number;name:string;}[]>([]);
+const selectedTagIdList = ref<number[]>([]);
 
 // Software version editing state
 const versionSelectRef = ref();
@@ -162,7 +162,7 @@ const startActualWorkloadEditing = () => {
  */
 const handleActualWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newValue = target?.value;
+  const newValue = Number(target?.value);
   if (newValue === currentActualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;
@@ -212,7 +212,7 @@ const startEvalWorkloadEditing = () => {
  */
 const handleEvalWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newValue = target?.value;
+  const newValue = Number(target?.value);
   if (newValue === currentEvalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;
@@ -261,7 +261,7 @@ const startPriorityEditing = () => {
  * @param option - Selected priority option containing value and message
  */
 const handlePriorityChange = async (
-  value: string,
+  _value: string,
   option?: { label: string; value: string }) => {
   if (option?.label) {
     prioritySelectMessage.value = option.label;
@@ -316,7 +316,7 @@ const startTagEditing = () => {
  * @param options - Array of selected tag options containing id and name
  */
 const handleTagChange = async (
-  value: any,
+  _value: any,
   options: any) => {
   selectedTagList.value = options;
 };
@@ -364,7 +364,7 @@ const startVersionEditing = () => {
  * @param value - Selected software version value
  * @param option - Selected option (unused)
  */
-const handleVersionChange = (value: any, option?: any) => {
+const handleVersionChange = (value: any, _option?: any) => {
   versionSelectValue.value = value;
 };
 

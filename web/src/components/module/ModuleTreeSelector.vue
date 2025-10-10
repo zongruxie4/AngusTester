@@ -9,11 +9,11 @@ import { travelTreeData } from '@/utils/utils';
 const { t } = useI18n();
 
 type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  projectId: number;
+  userInfo: { id: number; };
+  appInfo: { id: number; };
   notify: string;
-  moduleId: string;
+  moduleId: number;
   projectName: string;
   title: string;
 }
@@ -23,12 +23,12 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined,
-  moduleId: '',
+  moduleId: undefined,
   disabled: false,
   title: ''
 });
 
-const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string): void }>();
+const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: number): void }>();
 
 const nameInputRef = ref();
 
@@ -68,7 +68,7 @@ defineExpose({
 <template>
   <div class="h-full flex flex-col">
     <div
-      :class="{'active': props.moduleId === ''}"
+      :class="{'active': props.moduleId === -1}"
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleSelectKeysChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />

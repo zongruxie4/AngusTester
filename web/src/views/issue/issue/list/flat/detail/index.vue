@@ -17,10 +17,10 @@ type TabPaneKey = 'basicInfo' | 'remark' | 'testInfo' | 'comments' | 'activity';
 
 type Props = {
   editTaskData: TaskDetail;
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  id: string;
+  projectId: number;
+  userInfo: { id: number; fullName: string };
+  appInfo: { id: number; };
+  id: number;
   menuItems: ActionMenuItem[];
   type: 'details' | 'list';
   linkUrl: string;
@@ -42,9 +42,9 @@ const props = withDefaults(defineProps<Props>(), {
 // Component Events
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
-  (event: 'edit', value: string): void;
+  (event: 'edit', value: number): void;
   (event: 'move', value: TaskDetail): void;
-  (event: 'delete', value: string): void;
+  (event: 'delete', value: number): void;
   (event: 'dataChange', value: Partial<TaskDetail>): void;
   (event: 'refreshChange'): void;
   (event: 'splitOk'): void;
@@ -64,8 +64,8 @@ const AssocIssues = defineAsyncComponent(() => import('@/views/issue/issue/list/
 // Composables
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
-const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
-const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
+const replaceTabPane = inject<(id: number, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
+const deleteTabPane = inject<(value: number[]) => void>('deleteTabPane');
 const windowResizeNotify = inject('windowResizeNotify', ref<string>());
 
 // Computed Properties
@@ -588,7 +588,7 @@ const loadTaskData = async (): Promise<Partial<TaskDetail>> => {
  * <p>
  * Fetches user-specific permissions or uses admin permissions
  */
-const loadSprintPermissions = async (id: string | undefined) => {
+const loadSprintPermissions = async (id: number | undefined) => {
   if (!isAdmin.value && id) {
     const params = {
       admin: true
@@ -1224,7 +1224,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           v-if="isLargePageLayout === false || isLargePageLayout === true"
           v-model:loading="isLoading"
           :projectId="props.projectId"
-          :userInfo="{ ...props.userInfo }"
+          :userInfo="{ ...props.userInfo, fullName: '' }"
           :appInfo="{ ...props.appInfo }"
           :dataSource="currentTaskInfo"
           :largePageLayout="isLargePageLayout"
@@ -1243,7 +1243,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           v-model:loading="isLoading"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo }"
           :taskInfo="currentTaskInfo"
           :tips="t('issue.detail.tabs.subIssueTip')"
           @refreshChange="refreshTaskData" />
@@ -1261,7 +1261,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :key="TaskType.REQUIREMENT"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('common.requirement')"
@@ -1282,7 +1282,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :key="TaskType.STORY"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('common.story')"
@@ -1304,7 +1304,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :key="TaskType.TASK"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('common.task')"
@@ -1325,7 +1325,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :key="TaskType.BUG"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('common.bug')"
@@ -1345,7 +1345,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
         <AssocCases
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo }"
           :dataSource="(currentTaskInfo?.refCaseInfos || []) as any"
           :taskId="props.id"
           :tips="t('issue.detail.tabs.assocCaseTip')"
@@ -1364,7 +1364,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :key="TaskType.API_TEST"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('issue.detail.tabs.assocApiTestTitle')"
@@ -1385,7 +1385,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :key="TaskType.SCENARIO_TEST"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo }"
           :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('issue.detail.tabs.assocScenarioTestTitle')"
@@ -1401,8 +1401,8 @@ const getReferencedTaskCount = (type = 'TASK') => {
         :tab="t('issue.detail.tabs.testInfoTitle')">
         <TestInfo
           :projectId="props.projectId"
-          :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :userInfo="{ ...props.userInfo }"
+          :appInfo="{ ...props.appInfo }"
           :dataSource="currentTaskInfo"
           :largePageLayout="isLargePageLayout" />
       </TabPane>
@@ -1420,7 +1420,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           v-model:notify="remarkNotificationId"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }" />
+          :appInfo="{ ...props.appInfo }" />
       </TabPane>
 
       <!-- Comments Tab -->
@@ -1435,8 +1435,8 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :id="props.id"
           :notify="commentNotificationId"
           :projectId="props.projectId"
-          :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }" />
+          :userInfo="{ ...props.userInfo }"
+          :appInfo="{ ...props.appInfo }" />
       </TabPane>
 
       <!-- Activity Tab -->
@@ -1452,7 +1452,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
           :notify="activityNotificationId"
           :projectId="props.projectId"
           :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }" />
+          :appInfo="{ ...props.appInfo }" />
       </TabPane>
     </Tabs>
 

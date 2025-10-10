@@ -65,11 +65,11 @@ export const bigReviewInfoColumns = [
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },
     {
-      label: t('common.reviewCount'),
+      label: t('common.counts.reviewCount'),
       dataIndex: 'reviewNum'
     },
     {
-      label: t('common.reviewFailedCount'),
+      label: t('common.counts.reviewFailCount'),
       dataIndex: 'reviewFailNum'
     },
     {
@@ -97,7 +97,7 @@ export const minReviewInfoColumns = [
 export const bigTestInfoColumns = [
   [
     {
-      label: t('common.testCount'),
+      label: t('common.counts.testCount'),
       dataIndex: 'testNum'
     },
     {
@@ -109,7 +109,7 @@ export const bigTestInfoColumns = [
       dataIndex: 'oneTestPass'
     },
     {
-      label: t('testCase.messages.resultRemark'),
+      label: t('common.reviewOpinion'),
       dataIndex: 'testRemark'
     }
   ]

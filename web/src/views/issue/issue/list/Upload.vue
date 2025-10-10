@@ -10,7 +10,7 @@ import { issue } from '@/api/tester';
 
 const { t } = useI18n();
 
-// ===== Props and Emits Definition =====
+// Props and Emits Definition
 export interface Props{
   visible: boolean;
   downloadTemplate: ()=> void;
@@ -47,20 +47,6 @@ const formData = ref<{
   file: undefined,
   strategyWhenDuplicated: StrategyWhenDuplicated.COVER,
   sprintId: undefined
-});
-
-// Lifecycle Hooks
-watch(() => props.visible, newValue => {
-  if (!newValue) {
-    formData.value.file = undefined;
-    formData.value.strategyWhenDuplicated = StrategyWhenDuplicated.COVER;
-  }
-
-  if (!strategyOptions.value.length) {
-    loadStrategyOptions();
-  }
-}, {
-  immediate: true
 });
 
 /**
@@ -133,6 +119,20 @@ const submitImportForm = () => {
       closeModal();
     });
 };
+
+// Lifecycle Hooks
+watch(() => props.visible, newValue => {
+  if (!newValue) {
+    formData.value.file = undefined;
+    formData.value.strategyWhenDuplicated = StrategyWhenDuplicated.COVER;
+  }
+
+  if (!strategyOptions.value.length) {
+    loadStrategyOptions();
+  }
+}, {
+  immediate: true
+});
 </script>
 <template>
   <Modal

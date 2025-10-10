@@ -8,13 +8,7 @@ import { issue } from '@/api/tester';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import { TaskDetail } from '@/views/issue/types';
-
-// Type definitions
-type AttachmentItem = {
-  id: string;
-  name: string;
-  url: string;
-}
+import { AttachmentInfo } from '@/types/types';
 
 // Component props and emits
 const props = withDefaults(defineProps<TaskDetailProps>(), {
@@ -37,9 +31,8 @@ const MAX_FILE_SIZE_MB = 10;
 
 // Component state
 const isUploading = ref(false);
-const attachmentList = ref<AttachmentItem[]>([]);
+const attachmentList = ref<AttachmentInfo[]>([]);
 
-// File upload methods
 /**
  * <p>Handles file upload change event to process new file uploads.</p>
  * <p>Validates file size, uploads the file, and updates the attachment list.</p>
@@ -83,7 +76,7 @@ const handleFileUpload = async ({ file }: { file: UploadFile }) => {
  * <p>Handles attachment deletion by removing the specified attachment from the list.</p>
  * @param attachmentToDelete - The attachment item to be deleted
  */
-const handleAttachmentDelete = async (attachmentToDelete: AttachmentItem) => {
+const handleAttachmentDelete = async (attachmentToDelete: AttachmentInfo) => {
   const updatedAttachmentList = attachmentList.value.filter(item => item.id !== attachmentToDelete.id).map(item => {
     return {
       name: item.name,
@@ -120,7 +113,17 @@ const handleCustomUploadRequest = () => {
   return false;
 };
 
-// Lifecycle hooks
+// Computed properties
+const currentTaskId = computed(() => props.dataSource?.id);
+const isAttachmentListEmpty = computed(() => !attachmentList.value.length);
+
+/**
+ * <p>Computes the maximum file size in bytes based on the configured MB limit.</p>
+ */
+const maxFileSizeBytes = computed(() => {
+  return 1024 * 1024 * MAX_FILE_SIZE_MB;
+});
+
 /**
  * <p>Initializes component and watches for data source changes.</p>
  * <p>Updates attachment list when task data changes.</p>
@@ -140,19 +143,7 @@ onMounted(() => {
     });
   }, { immediate: true });
 });
-
-// Computed properties
-const currentTaskId = computed(() => props.dataSource?.id);
-const isAttachmentListEmpty = computed(() => !attachmentList.value.length);
-
-/**
- * <p>Computes the maximum file size in bytes based on the configured MB limit.</p>
- */
-const maxFileSizeBytes = computed(() => {
-  return 1024 * 1024 * MAX_FILE_SIZE_MB;
-});
 </script>
-
 <template>
   <Toggle>
     <template #title>

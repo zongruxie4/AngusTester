@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
   orderBy: undefined,
   orderSort: undefined,
   groupKey: 'none',
-  enabledGroup: true,
+  enabledModuleGroup: true,
   moduleId: undefined
 });
 

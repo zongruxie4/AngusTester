@@ -21,7 +21,7 @@ export type ActionMenuItem = {
   tip?: string;
 }
 
-export type EnabledGroup = boolean;
+export type EnabledModuleGroup = boolean;
 
 export type CaseEditState = {
   name: string;
@@ -47,7 +47,7 @@ export type CaseEditState = {
 }
 
 export type CaseInfoEditProps = {
-  projectId: string;
+  projectId: number;
   userInfo: { id: number; fullName?: string };
   appInfo: { id: number; };
   dataSource: CaseDetail;

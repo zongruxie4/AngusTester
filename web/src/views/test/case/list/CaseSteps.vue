@@ -331,7 +331,7 @@ const menus = [
           type="link"
           class="flex items-center px-0 text-3 leading-3 h-4"
           @click="handleAdd">
-          <Icon icon="icon-jia" class="mr-1 -mt-0.5" />{{ t('testCase.messages.addStep') }}
+          <Icon icon="icon-jia" class="mr-1 -mt-0.5" />{{ t('testCase.actions.addStep') }}
         </Button>
       </div>
     </template>

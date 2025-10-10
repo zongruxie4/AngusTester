@@ -34,11 +34,11 @@ import SelectEnum from '@/components/enum/SelectEnum.vue';
 type Props = {
   collapse: boolean; // Controls statistics panel expand/collapse state
   viewMode: TaskViewMode;
-  sprintId: string;
+  sprintId: number;
   sprintName: string;
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  projectId: number;
+  userInfo: { id: number; };
+  appInfo: { id: number; };
   notify: string;
   orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
   orderSort: PageQuery.OrderSort;
@@ -103,12 +103,12 @@ const isModuleGroupingEnabled = ref(false);
 // Sprint selection state
 const isSprintSelectorVisible = ref(false);
 const selectedSprintOption = ref<SearchPanelOption>();
-const checkedSprintId = ref<string>();
+const checkedSprintId = ref<number>();
 
 // Tag selection state
 const isTagSelectorVisible = ref(false);
 const selectedTagOptions = ref<SearchPanelOption[]>([]);
-const checkedTagIds = ref<string[]>([]);
+const checkedTagIds = ref<number[]>([]);
 
 // Search criteria filters
 const searchFilters = ref<SearchCriteria[]>([]);
@@ -370,7 +370,7 @@ const handleSprintSelection = (value: any, option: any) => {
   isSprintSelectorVisible.value = false;
 
   selectedSprintOption.value = formatDisplayData({ id: String(value), name: option.name });
-  checkedSprintId.value = String(value);
+  checkedSprintId.value = Number(value);
 };
 
 /**
@@ -389,7 +389,7 @@ const toggleSprintSelection = () => {
     checkedSprintId.value = undefined;
     return;
   }
-  checkedSprintId.value = id;
+  checkedSprintId.value = Number(id);
 };
 
 /**
@@ -424,7 +424,7 @@ const handleTagSelection = (value: any, option: any) => {
   }
 
   selectedTagOptions.value.push(formatDisplayData({ id: stringValue, name: option.name }));
-  checkedTagIds.value.push(stringValue);
+  checkedTagIds.value.push(Number(value));
 };
 
 /**
@@ -439,7 +439,7 @@ const hideTagSelector = () => {
  * @param data - Tag option data
  */
 const toggleTagSelection = (data: SearchPanelOption) => {
-  const id = data.id;
+  const id = Number(data.id);
   if (checkedTagIds.value.includes(id)) {
     checkedTagIds.value = checkedTagIds.value.filter(item => item !== id);
     return;
@@ -454,7 +454,7 @@ const toggleTagSelection = (data: SearchPanelOption) => {
 const removeSelectedTag = (data: SearchPanelOption) => {
   const id = data.id;
   selectedTagOptions.value = selectedTagOptions.value.filter(item => item.id !== id);
-  checkedTagIds.value = checkedTagIds.value.filter(item => item !== id);
+  checkedTagIds.value = checkedTagIds.value.filter(item => item !== Number(id));
 };
 
 /**
@@ -609,7 +609,7 @@ const buildSearchCriteria = () => {
 
   // Add tag filters if any tags are selected
   if (checkedTagIds.value.length) {
-    const tagValues: string[] = [...checkedTagIds.value];
+    const tagValues: number[] = [...checkedTagIds.value];
     searchCriteria.push({ key: 'tagId', op: SearchCriteria.OpEnum.In, value: tagValues });
   }
 
@@ -739,7 +739,7 @@ const initializeComponent = async () => {
     }
 
     if (props.sprintName) {
-      selectedSprintOption.value = formatDisplayData({ id: props.sprintId, name: props.sprintName });
+      selectedSprintOption.value = formatDisplayData({ id: String(props.sprintId), name: props.sprintName });
     } else {
       if (Object.prototype.hasOwnProperty.call(savedSearchData, 'selectedSprintOption')) {
         selectedSprintOption.value = savedSearchData.selectedSprintOption;
@@ -901,7 +901,7 @@ onMounted(async () => {
 
     const { sprintId, sprintName } = queryParameters;
     if (sprintId) {
-      checkedSprintId.value = sprintId;
+      checkedSprintId.value = Number(sprintId);
     }
 
     if (sprintName) {
@@ -1020,14 +1020,14 @@ onMounted(async () => {
         const dbData: {
           searchFilters?: SearchCriteria[];
           isOverdueEnabled?: true;
-          selectedSprintId?: string;
+          selectedSprintId?: number;
           selectedSprintOption?: {
             id: string;
             name: string;
             showTitle: string;
             showName: string;
           };
-          selectedTagIds?: string[];
+          selectedTagIds?: number[];
           selectedTagOptions?: {
             id: string;
             name: string;
@@ -1109,7 +1109,7 @@ const currentUserId = computed(() => {
 const dbBaseKey = computed(() => {
   let key = '';
   if (currentUserId.value) {
-    key = currentUserId.value;
+    key = String(currentUserId.value);
   }
 
   if (props.projectId) {
@@ -1582,7 +1582,7 @@ const sortMenuItems = [
           <template v-if="selectedSprintOption?.id">
             <Tag
               :title="selectedSprintOption?.showTitle"
-              :class="checkedSprintId === selectedSprintOption.id ? 'sprint tag-checked' : ''"
+              :class="checkedSprintId === Number(selectedSprintOption.id) ? 'sprint tag-checked' : ''"
               closable
               class="h-6 mr-5 mb-3 rounded-xl px-2.5"
               @click="toggleSprintSelection"
@@ -1617,7 +1617,7 @@ const sortMenuItems = [
             v-for="item in selectedTagOptions"
             :key="item.id"
             :title="item.showTitle"
-            :class="checkedTagIds.includes(item.id) ? 'tag tag-checked' : ''"
+            :class="checkedTagIds.includes(Number(item.id)) ? 'tag tag-checked' : ''"
             closable
             class="h-6 mb-3 rounded-xl px-2.5"
             @click="toggleTagSelection(item)"

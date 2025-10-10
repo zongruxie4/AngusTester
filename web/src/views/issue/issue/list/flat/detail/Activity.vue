@@ -6,7 +6,7 @@ import { ActivityInfo, BaseProps } from '@/types/types';
 
 // Props interface for Activity component
 const props = withDefaults(defineProps<BaseProps>(), {
-  id: '',
+  id: undefined,
   notify: undefined
 });
 

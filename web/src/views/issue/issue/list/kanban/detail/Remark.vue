@@ -12,7 +12,7 @@ import { BaseProps } from '@/types/types';
  * Props for remark list and submission
  */
 const props = withDefaults(defineProps<BaseProps>(), {
-  id: '',
+  id: undefined,
   notify: undefined
 });
 
@@ -56,7 +56,7 @@ const handleScrollChange = (data: Remark[]) => {
 /**
  * Delete a remark by id then update local list
  */
-const handleDeleteRemark = async (id: string) => {
+const handleDeleteRemark = async (id: number) => {
   const [error] = await issue.deleteTaskRemark(id);
   if (error) {
     return;

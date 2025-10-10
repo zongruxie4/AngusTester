@@ -29,19 +29,19 @@ const emit = defineEmits<{
 const assigneeSelectRef = ref();
 const isAssigneeEditing = ref(false);
 const assigneeDisplayName = ref<string>();
-const assigneeInputValue = ref<string>();
+const assigneeInputValue = ref<number>();
 
 // Confirmer editing state
 const confirmerSelectRef = ref();
 const isConfirmerEditing = ref(false);
 const confirmerDisplayName = ref<string>();
-const confirmerInputValue = ref<string>();
+const confirmerInputValue = ref<number>();
 
 // Tester editing state
 const testerSelectRef = ref();
 const isTesterEditing = ref(false);
 const testerDisplayName = ref<string>();
-const testerInputValue = ref<string>();
+const testerInputValue = ref<number>();
 
 // Computed properties
 /**
@@ -220,7 +220,7 @@ const handleAssigneeSelectionBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await issue.editTaskAssignees(currentTaskId.value, { assigneeId: selectedValue || '' });
+  const [error] = await issue.editTaskAssignees(currentTaskId.value, { assigneeId: selectedValue as number });
   emit('loadingChange', false);
   if (error) {
     if (typeof assigneeSelectRef.value?.focus === 'function') {
@@ -270,7 +270,7 @@ const handleConfirmerSelectionBlur = async () => {
   }
 
   emit('loadingChange', true);
-  const [error] = await issue.editTaskConfirmer(currentTaskId.value, { confirmerId: selectedValue || '' });
+  const [error] = await issue.editTaskConfirmer(currentTaskId.value, { confirmerId: selectedValue as number });
   emit('loadingChange', false);
   if (error) {
     if (typeof confirmerSelectRef.value?.focus === 'function') {

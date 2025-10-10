@@ -11,15 +11,15 @@ import { CombinedTargetType, TESTER } from '@xcan-angus/infra';
  */
 type Props = {
   /** Unique identifier of the target entity */
-  id: string;
+  id: number;
   /** Notification trigger for refreshing comment data */
   notify: string;
   /** User information object containing user ID */
-  userInfo: { id: string; };
+  userInfo: { id: number; };
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  id: '',
+  id: undefined,
   notify: undefined,
   userInfo: undefined
 });

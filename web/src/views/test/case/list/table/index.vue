@@ -5,7 +5,7 @@ import { Dropdown, Icon, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { PageQuery } from '@xcan-angus/infra';
 
-import { CaseActionAuth, EnabledGroup, GroupCaseList } from '../types';
+import { CaseActionAuth, EnabledModuleGroup, GroupCaseList } from '../types';
 import { CaseDetail } from '@/views/test/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -15,19 +15,19 @@ interface Props {
   params: PageQuery;
   total: number;
   loading: boolean;
-  enabledGroup: EnabledGroup;
+  enabledGroup: EnabledModuleGroup;
   caseActionAuth: Record<string, string[]>;
   actionMenus: Record<string, any[]>;
   caseList: CaseDetail[];
   groupCaseList: GroupCaseList[];
-  selectedRowKeys: string[];
+  selectedRowKeys: number[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   params: undefined,
   total: 0,
   loading: false,
-  enabledGroup: false,
+  enabledModuleGroup: false,
   caseActionAuth: () => ({}),
   actionMenus: () => ({}),
   caseList: () => [],
@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
-  (e: 'update:selectedRowKeys', value: string[]): void;
+  (e: 'update:selectedRowKeys', value: number[]): void;
   (e: 'onClick', type:CaseActionAuth, value:CaseDetail):void;
   (e: 'openInfo', value:CaseDetail):void;
   (e: 'change', value:{pagination, sorter}):void;
@@ -51,9 +51,7 @@ const pagination = computed(() => {
     pageSize: props.params.pageSize,
     total: +props.total,
     showTotal: (_total: number) => {
-      return props.enabledGroup
-        ? t('testCase.messages.totalGroups', { total: _total })
-        : t('testCase.messages.totalItems', { total: _total });
+      return t('testCase.messages.totalItems', { total: _total });
     }
   };
 });
@@ -63,7 +61,7 @@ const tableChange = (pagination, _filters, sorter) => {
 };
 
 const tableColumns = computed(() => [
-  props.enabledGroup && {
+  props.enabledModuleGroup && {
     title: '',
     width: 30,
     dataIndex: 'expend'
@@ -149,7 +147,7 @@ const selectedRowKeys = ref<string[]>([]);
 const onSelectChange = (_selectedRowKeys) => {
   selectedRowKeys.value = _selectedRowKeys;
   emits('update:selectedRowKeys', _selectedRowKeys.filter((id) => {
-    if (props.enabledGroup) {
+    if (props.enabledModuleGroup) {
       return !props.groupCaseList.map(group => group.id).includes(id);
     }
     return true;
@@ -171,7 +169,7 @@ defineExpose({
 </script>
 <template>
   <Table
-    :dataSource="props.enabledGroup?props.groupCaseList:props.caseList"
+    :dataSource="props.enabledModuleGroup?props.groupCaseList:props.caseList"
     :loading="props.loading"
     :columns="tableColumns"
     :pagination="pagination"
@@ -298,7 +296,7 @@ defineExpose({
 
 .top-count-element-expanded {
   height: auto;
-  transition: height 0.5s ease-in-out; /* 使用新的过渡动画属性 */
+  transition: height 0.5s ease-in-out;
 }
 
 .fade-enter-from {

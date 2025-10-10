@@ -21,7 +21,7 @@ const { t } = useI18n();
 // Reactive State Variables
 const activityList = ref<ActivityInfo[]>([]);
 const activityQueryParams = ref<{
-  mainTargetId: string;
+  mainTargetId: number;
   filters: [{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum }]
 }>();
 

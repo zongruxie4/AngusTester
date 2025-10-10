@@ -7,15 +7,7 @@ import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskDetail } from '@/views/issue/types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
-
-/**
- * <p>Attachment item interface</p>
- */
-type AttachmentItem = {
-  id: string;
-  name: string;
-  url: string;
-}
+import { AttachmentInfo } from '@/types/types';
 
 // Component props and emits
 const props = withDefaults(defineProps<TaskDetailProps>(), {
@@ -40,7 +32,7 @@ const MAX_FILE_SIZE_MB = 10;
 
 // Component state
 const isUploading = ref(false);
-const attachmentList = ref<AttachmentItem[]>([]);
+const attachmentList = ref<AttachmentInfo[]>([]);
 
 /**
  * <p>Get current task ID from props</p>
@@ -103,7 +95,7 @@ const handleFileUploadChange = async ({ file }: { file: UploadFile }) => {
  * <p>Handle attachment deletion</p>
  * <p>Removes the specified attachment from the list and updates the task</p>
  */
-const handleAttachmentDeletion = async (attachmentToDelete: AttachmentItem) => {
+const handleAttachmentDeletion = async (attachmentToDelete: AttachmentInfo) => {
   const updatedAttachmentList = attachmentList.value.filter(item => item.id !== attachmentToDelete.id).map(item => {
     return {
       name: item.name,

@@ -17,12 +17,12 @@ import { TaskDetail } from '@/views/issue/types';
  * <p>Defines all required properties for the Gantt chart component including project context, filters, and UI state</p>
  */
 type GanttChartProps = {
-  projectId: string;
-  userInfo: { id: string; fullName: string; };
-  appInfo: { id: string; };
+  projectId: number;
+  userInfo: { id: number; fullName: string; };
+  appInfo: { id: number; };
   filters: SearchCriteria[];
   notify: string;
-  moduleId: string;
+  moduleId: number;
   loading: boolean;
 };
 
@@ -30,10 +30,10 @@ type DrawerTabType = 'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tas
 
 type TaskListRequestParams = {
   backlog: false;
-  projectId: string;
+  projectId: number;
   pageNo: number;
   pageSize: number;
-  moduleId?: string;
+  moduleId?: number;
   filters?: SearchCriteria[];
 };
 
@@ -124,7 +124,7 @@ const buildTaskListRequestParams = (): TaskListRequestParams => {
  * <p>Loads detailed task information by ID</p>
  * <p>Fetches complete task details from the API for a specific task</p>
  */
-const fetchTaskDetailsById = async (taskId: string): Promise<Partial<TaskDetail>> => {
+const fetchTaskDetailsById = async (taskId: number): Promise<Partial<TaskDetail>> => {
   emit('update:loading', true);
   const [error, res] = await issue.getTaskDetail(taskId);
   emit('update:loading', false);
@@ -190,7 +190,7 @@ const transformTasksForGanttChart = (tasks: TaskDetail[]): TaskDetail[] => {
       ...task,
       start: task.startDate || task.createdDate,
       end: task.completedDate || dayjs().format(DATE_TIME_FORMAT),
-      progress: task.completedDate ? 100 : (+(task as any).completedRate || 0),
+      progress: task.progress || task.completedDate ? 100 : (+(task as any).completedRate || 0),
       description: '',
       dependencies: task.parentTaskId ? [task.parentTaskId] : []
     };

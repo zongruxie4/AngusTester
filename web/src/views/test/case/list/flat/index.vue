@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { Button, Checkbox, Pagination } from 'ant-design-vue';
-import { Colon, Icon, ReviewStatus } from '@xcan-angus/vue-ui';
+import { Checkbox, Pagination } from 'ant-design-vue';
+import { Icon, ReviewStatus } from '@xcan-angus/vue-ui';
 import { ReviewStatus as ReviewStatusEnum, PageQuery } from '@xcan-angus/infra';
-import { EnabledGroup, GroupCaseList } from '../types';
 import { CaseDetail } from '@/views/test/types';
 
 import TestResult from '@/components/TestResult/index.vue';
@@ -15,9 +14,7 @@ interface Props {
   total: number;
   loading: boolean;
   checkedCase: CaseDetail;
-  enabledGroup: EnabledGroup;
   caseList: CaseDetail[];
-  groupCaseList: GroupCaseList[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -25,14 +22,12 @@ const props = withDefaults(defineProps<Props>(), {
   total: 0,
   loading: false,
   checkedCase: undefined,
-  enabledGroup: false,
-  caseList: () => [],
-  groupCaseList: () => []
+  caseList: () => []
 });
 
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
-  (e: 'update:selectedRowKeys', value: string[]): void;
+  (e: 'update:selectedRowKeys', value: number[]): void;
   (e: 'select', value: CaseDetail): void;
   (e: 'change', value: { current: number; pageSize: number; }): void;
   (e: 'update:params', params): void;
@@ -40,16 +35,7 @@ const emits = defineEmits<{
 }>();
 
 const showTotal = (_total: number) => {
-  return props.enabledGroup
-    ? t('testCase.messages.totalGroups', { total: _total })
-    : t('testCase.messages.totalItems', { total: _total });
-};
-
-/**
- * Toggle expand/collapse for a group list item
- */
-const handleListExpand = (item) => {
-  item.isOpen = !item.isOpen;
+  return t('testCase.messages.totalItems', { total: _total });
 };
 
 /**
@@ -57,70 +43,21 @@ const handleListExpand = (item) => {
  */
 const cancelCheckAll = (_selectedRowKeys) => {
   emits('update:selectedRowKeys', _selectedRowKeys);
-  if (props.enabledGroup) {
-    props.groupCaseList.forEach(childrenRecord => {
-      childrenRecord.selectedRowKeys = _selectedRowKeys.includes(childrenRecord.id)
-        ? childrenRecord.children.map(item => item.id)
-        : [];
-    });
-  } else {
-    props.caseList.forEach(item => {
-      item.checked = false;
-    });
-  }
-};
-
-/**
- * Select or deselect all items in a group
- */
-const handleCheckAll = (e, item) => {
-  item.checkAll = e.target.checked;
-  item.indeterminate = false;
-  if (e.target.checked) {
-    item.selectedRowKeys = item.children.map(item => item.id);
-  } else {
-    item.selectedRowKeys = [];
-  }
-
-  const _selectedRowKeys = props.groupCaseList.flatMap(record => record.selectedRowKeys);
-  emits('update:selectedRowKeys', _selectedRowKeys.length ? _selectedRowKeys : []);
+  props.caseList.forEach(item => {
+    item.checked = false;
+  });
 };
 
 /**
  * Select or deselect a single item; updates group state accordingly
  */
-const handleCheckOne = (e, groupItem, item) => {
-  if (props.enabledGroup) {
-    if (e.target.checked) {
-      if (!groupItem.selectedRowKeys.includes(item.id)) {
-        groupItem.selectedRowKeys.push(item.id);
-      }
-
-      if (groupItem.selectedRowKeys.length === groupItem.children.length) {
-        groupItem.checkAll = true;
-      } else {
-        groupItem.indeterminate = true;
-      }
-    } else {
-      groupItem.selectedRowKeys = groupItem.selectedRowKeys.filter(f => f !== item.id);
-      groupItem.checkAll = false;
-      if (groupItem.selectedRowKeys.length === 0) {
-        groupItem.indeterminate = false;
-        emits('update:selectedRowKeys', []);
-      } else {
-        groupItem.indeterminate = true;
-      }
-    }
-    const _selectedRowKeys = props.groupCaseList.flatMap(record => record.selectedRowKeys);
-    emits('update:selectedRowKeys', _selectedRowKeys.length ? _selectedRowKeys : []);
+const handleCheckOne = (e, item) => {
+  item.checked = e.target.checked;
+  const _selectedRowKeys = props.caseList.filter(item => item.checked).map(item => item.id);
+  if (_selectedRowKeys.length) {
+    emits('update:selectedRowKeys', _selectedRowKeys);
   } else {
-    item.checked = e.target.checked;
-    const _selectedRowKeys = props.caseList.filter(item => item.checked).map(item => item.id);
-    if (_selectedRowKeys.length) {
-      emits('update:selectedRowKeys', _selectedRowKeys);
-    } else {
-      emits('update:selectedRowKeys', []);
-    }
+    emits('update:selectedRowKeys', []);
   }
 };
 
@@ -146,123 +83,42 @@ defineExpose({
   <div class="flex border-t border-theme-text-box overflow-auto">
     <div class="w-65 border-r border-theme-text-box justify-between h-full flex flex-col">
       <div class="text-3 leading-3 text-theme-sub-content overflow-y-auto flex-1">
-        <template v-if="props.enabledGroup">
-          <div v-for="groupCase in props.groupCaseList" :key="groupCase.id">
-            <div
-              class="item p-2 border-b cursor-pointer border-theme-text-box bg-theme-menu-hover flex justify-between items-center">
-              <Button class="h-4 w-4 p-0 leading-4 flex-none -ml-1">
-                <Icon
-                  class="text-3"
-                  :class="groupCase.isOpen ? 'expand-icon-open' : 'expand-icon'"
-                  :icon="groupCase.isOpen ? 'icon-jian' : 'icon-jia'"
-                  @click="handleListExpand(groupCase)" />
-              </Button>
+        <div
+          v-for="item in props.caseList"
+          :key="item.id"
+          :class="{ 'bg-theme-tabs-selected': props.checkedCase?.id === item.id }"
+          class="item p-2 border-b cursor-pointer border-theme-text-box bg-theme-menu-hover flex"
+          @click="handleSelectCase(item)">
+          <Checkbox
+            class="-mt-0.75 mr-2"
+            :checked="item.checked"
+            :value="item.id"
+            @click.stop
+            @change="(e) => handleCheckOne(e, item)" />
 
-              <Checkbox
-                class="mx-2"
-                :checked="groupCase.checkAll"
-                :indeterminate="groupCase.indeterminate"
-                @change="(e) => handleCheckAll(e, groupCase)" />
-
-              <div class="flex items-center text-theme-title flex-1">
-                <Icon icon="icon-mokuai" class="mr-1 flex-none text-4" />
-                <div
-                  class="truncate"
-                  style="width: 200px;"
-                  :title="groupCase.groupName">
-                  {{ groupCase.groupName }}
-                </div>
-              </div>
-            </div>
-
-            <template v-if="groupCase.isOpen">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center text-theme-title">
+              <Icon
+                icon="icon-gongnengyongli"
+                class="mr-1.5 flex-none text-4" />
               <div
-                v-for="item in groupCase.children"
-                :key="item.id"
-                :class="{ 'bg-theme-tabs-selected': props.checkedCase?.id === item.id }"
-                class="item p-2 border-b cursor-pointer border-theme-text-box bg-theme-menu-hover flex"
-                @click="handleSelectCase(item)">
-                <Checkbox
-                  class="-mt-0.75 ml-5 mr-2"
-                  :checked="groupCase.selectedRowKeys?.includes(item.id)"
-                  :value="item.id"
-                  @click.stop
-                  @change="(e) => handleCheckOne(e, groupCase, item)" />
-
-                <div class="flex-1">
-                  <div class="flex justify-between">
-                    <div class="flex items-center text-theme-title">
-                      <Icon
-                        icon="icon-gongnengyongli"
-                        class="mr-1.5 flex-none text-4" />
-                      <div
-                        class="truncate"
-                        style="width: 140px;"
-                        :title="item.name">
-                        {{ item.name }}
-                      </div>
-                    </div>
-
-                    <template v-if="item.reviewStatus?.value && item.reviewStatus?.value !== ReviewStatusEnum.PASSED">
-                      <ReviewStatus :value="item.reviewStatus" class="ml-5" />
-                    </template>
-
-                    <template v-else>
-                      <TestResult :value="item.testResult" class="ml-5" />
-                    </template>
-                  </div>
-
-                  <div class="flex justify-between mt-2 text-3">
-                    <div>{{ item.code }}</div>
-                    <div>
-                      {{ t('common.priority') }}
-                      <Colon class="mr-1" />{{ item.priority.message }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </template>
-          </div>
-        </template>
-
-        <template v-else>
-          <div
-            v-for="item in props.caseList"
-            :key="item.id"
-            :class="{ 'bg-theme-tabs-selected': props.checkedCase?.id === item.id }"
-            class="item p-2 border-b cursor-pointer border-theme-text-box bg-theme-menu-hover flex"
-            @click="handleSelectCase(item)">
-            <Checkbox
-              class="-mt-0.75 mr-2"
-              :checked="item.checked"
-              :value="item.id"
-              @click.stop
-              @change="(e) => handleCheckOne(e, undefined, item)" />
-
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center text-theme-title">
-                <Icon
-                  icon="icon-gongnengyongli"
-                  class="mr-1.5 flex-none text-4" />
-                <div
-                  class="truncate flex-1 min-w-0"
-                  :title="item.name">
-                  {{ item.name }}
-                </div>
-              </div>
-
-              <div class="flex mt-2">
-                <div class="pl-5">{{ item.code }}</div>
-                <template v-if="item.reviewStatus?.value && item.reviewStatus?.value !== ReviewStatusEnum.PASSED">
-                  <ReviewStatus :value="item.reviewStatus" class="ml-5" />
-                </template>
-                <template v-else>
-                  <TestResult :value="item.testResult" class="ml-5" />
-                </template>
+                class="truncate flex-1 min-w-0"
+                :title="item.name">
+                {{ item.name }}
               </div>
             </div>
+
+            <div class="flex mt-2">
+              <div class="pl-5">{{ item.code }}</div>
+              <template v-if="item.reviewStatus?.value && item.reviewStatus?.value !== ReviewStatusEnum.PASSED">
+                <ReviewStatus :value="item.reviewStatus" class="ml-5" />
+              </template>
+              <template v-else>
+                <TestResult :value="item.testResult" class="ml-5" />
+              </template>
+            </div>
           </div>
-        </template>
+        </div>
       </div>
 
       <template v-if="props.caseList.length">

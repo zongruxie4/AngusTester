@@ -27,11 +27,11 @@ const emit = defineEmits<{
 // Editing state
 const evalWorkloadInputRef = ref();
 const isEvalWorkloadEditing = ref(false);
-const evalWorkloadInputValue = ref<string>();
+const evalWorkloadInputValue = ref<number>();
 
 const actualWorkloadInputRef = ref();
 const isActualWorkloadEditing = ref(false);
-const actualWorkloadInputValue = ref<string>();
+const actualWorkloadInputValue = ref<number>();
 
 // Computed values
 const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
@@ -52,7 +52,7 @@ const startEvalWorkloadEditing = () => {
 
 const handleEvalWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newValue = target?.value;
+  const newValue = Number(target?.value);
   if (newValue === currentEvalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;
@@ -88,7 +88,7 @@ const startActualWorkloadEditing = () => {
 
 const handleActualWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const newValue = target?.value;
+  const newValue = Number(target?.value);
   if (newValue === currentActualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;

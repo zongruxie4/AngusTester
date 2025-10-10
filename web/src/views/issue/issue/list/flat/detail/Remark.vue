@@ -12,7 +12,7 @@ import { BaseProps } from '@/types/types';
  * Props interface for Remark component
  */
 const props = withDefaults(defineProps<BaseProps>(), {
-  id: '',
+  id: undefined,
   notify: undefined
 });
 
@@ -83,7 +83,7 @@ const handleEditorContentChange = (newContent: string) => {
  *
  * @param remarkId - The ID of the remark to delete
  */
-const deleteRemark = async (remarkId: string) => {
+const deleteRemark = async (remarkId: number) => {
   const [error] = await issue.deleteTaskRemark(remarkId);
   if (error) {
     return;

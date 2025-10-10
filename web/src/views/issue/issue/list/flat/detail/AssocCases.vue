@@ -70,7 +70,7 @@ const openCaseSelectionModal = () => {
  *
  * @param selectedCaseIds - Array of case IDs to associate with the task
  */
-const handleCaseAssociation = async (selectedCaseIds: string[]) => {
+const handleCaseAssociation = async (selectedCaseIds: number[]) => {
   isCaseSelectionModalVisible.value = false;
 
   if (!selectedCaseIds.length) {
@@ -79,7 +79,7 @@ const handleCaseAssociation = async (selectedCaseIds: string[]) => {
   }
   isSubmitLoading.value = true;
 
-  const [error] = await issue.associationCase(props.taskId || '', selectedCaseIds, {
+  const [error] = await issue.associationCase(props.taskId as number, selectedCaseIds, {
     paramsType: true
   });
 
@@ -103,7 +103,7 @@ const handleCaseDisassociation = (caseRecord: any) => {
   modal.confirm({
     content: t('actions.tips.confirmCancelAssoc', { name: caseRecord.name }),
     onOk () {
-      return issue.cancelAssociationCase(props.taskId || '', [caseRecord.id], {
+      return issue.cancelAssociationCase(props.taskId as number, [caseRecord.id], {
         paramsType: true
       }).then(([error]) => {
         if (error) {

@@ -10,15 +10,15 @@ export default class API {
     return http.post(`${baseUrl}`, parmas);
   }
 
-  putTask (id: string, parmas): Promise<[Error | null, any]> {
+  putTask (id: number, parmas): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}`, parmas);
   }
 
-  updateTask (taskId: string, parmas): Promise<[Error | null, any]> {
+  updateTask (taskId: number, parmas): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${taskId}`, parmas);
   }
 
-  getTaskDetail (id: string): Promise<[Error | null, any]> {
+  getTaskDetail (id: number): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}`);
   }
 
@@ -30,79 +30,79 @@ export default class API {
     return http.patch(`${baseUrl}/move`, params, { paramsType: false });
   }
 
-  startTask (id: string): Promise<[Error | null, any]> {
+  startTask (id: number): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/start`);
   }
 
-  cancelTask (id: string, option = {}): Promise<[Error | null, any]> {
+  cancelTask (id: number, option = {}): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/cancel`, null, option);
   }
 
-  completeTask (id: string): Promise<[Error | null, any]> {
+  completeTask (id: number): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/complete`);
   }
 
-  deleteTask (ids: string[]): Promise<[Error | null, any]> {
+  deleteTask (ids: number[]): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}`, { ids });
   }
 
-  processedTask (id: string): Promise<[Error | null, any]> {
+  processedTask (id: number): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/processed`);
   }
 
-  confirmTask (id: string, status: 'SUCCESS' | 'FAIL'): Promise<[Error | null, any]> {
+  confirmTask (id: number, status: 'SUCCESS' | 'FAIL'): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/result/${status}/confirm`);
   }
 
-  reopenTask (id: string): Promise<[Error | null, any]> {
+  reopenTask (id: number): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${id}/reopen`);
   }
 
-  restartTask (id: string): Promise<[Error | null, any]> {
+  restartTask (id: number): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/${id}/restart`);
   }
 
-  editTaskName (id: string, name: string): Promise<[Error | null, any]> {
+  editTaskName (id: number, name: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/name?name=${name}`);
   }
 
-  editTaskDescription (id: string, parmas: {description: string}): Promise<[Error | null, any]> {
+  editTaskDescription (id: number, parmas: {description: string}): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/description`, parmas);
   }
 
-  editEvalWorkloadApi<T> (id: string, params: T): Promise<[Error | null, any]> {
+  editEvalWorkloadApi<T> (id: number, params: T): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/evalWorkload`, params);
   }
 
-  editActualWorkload<T> (id: string, params: T): Promise<[Error | null, any]> {
+  editActualWorkload<T> (id: number, params: T): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/actualWorkload`, params);
   }
 
-  editDeadlineDateApi (id: string, deadlineDate: string): Promise<[Error | null, any]> {
+  editDeadlineDateApi (id: number, deadlineDate: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/deadline/${deadlineDate}`);
   }
 
-  editTaskAssignees (id: string, parmas: { assigneeId: string }): Promise<[Error | null, any]> {
+  editTaskAssignees (id: number, parmas: { assigneeId: number }): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/assignee`, parmas);
   }
 
-  editTaskConfirmer (id: string, parmas: { confirmerId: string|null }): Promise<[Error | null, any]> {
+  editTaskConfirmer (id: number, parmas: { confirmerId: number|null }): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/confirmer`, parmas);
   }
 
-  editTaskPriority (id: string, priority: string): Promise<[Error | null, any]> {
+  editTaskPriority (id: number, priority: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/priority/${priority}`);
   }
 
-  editTaskTaskType (id: string, taskType: string): Promise<[Error | null, any]> {
+  editTaskTaskType (id: number, taskType: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/type?type=${taskType}`);
   }
 
-  editTaskAttachment (id: string, parmas: { attachments: { name: string, url: string }[] }): Promise<[Error | null, any]> {
+  editTaskAttachment (id: number, parmas: { attachments: { name: string, url: string }[] }): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/attachment`, parmas);
   }
 
-  editTaskTags (id: string, parmas: { tagIds: string[] | null }): Promise<[Error | null, any]> {
+  editTaskTags (id: number, parmas: { tagIds: number[] | null }): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/tag`, parmas);
   }
 
@@ -110,68 +110,68 @@ export default class API {
     return http.post(`${baseUrl}/import`, param);
   }
 
-  associationTask (taskId: string, assocTaskIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+  associationTask (taskId: number, assocTaskIds: number[], axiosConf = {}) : Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${taskId}/association/task`, {
       assocTaskIds
     }, axiosConf);
   }
 
-  cancelAssociationTask (taskId: string, assocTaskIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+  cancelAssociationTask (taskId: number, assocTaskIds: number[], axiosConf = {}) : Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${taskId}/association/task/cancel`, {
       assocTaskIds
     }, axiosConf);
   }
 
-  associationCase (taskId: string, assocCaseIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+  associationCase (taskId: number, assocCaseIds: number[], axiosConf = {}) : Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${taskId}/association/case`, {
       assocCaseIds
     }, axiosConf);
   }
 
-  cancelAssociationCase (taskId: string, assocCaseIds: string[], axiosConf = {}) : Promise<[Error | null, any]> {
+  cancelAssociationCase (taskId: number, assocCaseIds: number[], axiosConf = {}) : Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${taskId}/association/case/cancel`, {
       assocCaseIds
     }, axiosConf);
   }
 
-  addTaskRemark (params: { taskId: string, content: string }): Promise<[Error | null, any]> {
+  addTaskRemark (params: { taskId: number, content: string }): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/remark`, params);
   }
 
-  deleteTaskRemark (remarkId: string): Promise<[Error | null, any]> {
+  deleteTaskRemark (remarkId: number): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/remark/${remarkId}`);
   }
 
-  favouriteTask (id:string, option?: {[key: string]: any}): Promise<[Error | null, any]> {
+  favouriteTask (id:number, option?: {[key: string]: any}): Promise<[Error | null, any]> {
     if (!option) { option = {}; }
     return http.post(`${baseUrl}/${id}/favourite`, null, { ...option });
   }
 
-  followTask (id:string, option = {}): Promise<[Error | null, any]> {
+  followTask (id:number, option = {}): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/${id}/follow`, null, option);
   }
 
-  cancelFavouriteTask (id:string, option = {}): Promise<[Error | null, any]> {
+  cancelFavouriteTask (id:number, option = {}): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${id}/favourite`, null, option);
   }
 
-  cancelFollowTask (id:string, option = {}): Promise<[Error | null, any]> {
+  cancelFollowTask (id:number, option = {}): Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/${id}/follow`, null, option);
   }
 
-  deleteTrashTask (taskId: string) : Promise<[Error | null, any]> {
+  deleteTrashTask (taskId: number) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/trash/${taskId}`);
   }
 
-  deleteAllTrashTask (params: {projectId: string}) : Promise<[Error | null, any]> {
+  deleteAllTrashTask (params: {projectId: number}) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/trash`, params);
   }
 
-  backTrashTask (taskId: string) : Promise<[Error | null, any]> {
+  backTrashTask (taskId: number) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/trash/${taskId}/back`);
   }
 
-  backAllTrashTask (params: {projectId: string}) : Promise<[Error | null, any]> {
+  backAllTrashTask (params: {projectId: number}) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/trash/back`, params, { paramsType: true });
   }
 
@@ -187,7 +187,7 @@ export default class API {
     return http.put(`${baseUrl}/sprint`, params);
   }
 
-  getSprintDetail (sprintId: string) : Promise<[Error | null, any]> {
+  getSprintDetail (sprintId: number) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/sprint/${sprintId}`);
   }
 
@@ -195,23 +195,23 @@ export default class API {
     return http.get(`${baseUrl}/sprint`, { ...params, fullTextSearch: true });
   }
 
-  deleteSprint (sprintId: string) : Promise<[Error | null, any]> {
+  deleteSprint (sprintId: number) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/sprint/${sprintId}`);
   }
 
-  cloneSprint (sprintId: string) : Promise<[Error | null, any]> {
+  cloneSprint (sprintId: number) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/sprint/${sprintId}/clone`);
   }
 
-  startSprint (sprintId: string, axiosConf = {}) : Promise<[Error | null, any]> {
+  startSprint (sprintId: number, axiosConf = {}) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/sprint/${sprintId}/start`, null, axiosConf);
   }
 
-  endSprint (sprintId: string, axiosConf = {}) : Promise<[Error | null, any]> {
+  endSprint (sprintId: number, axiosConf = {}) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/sprint/${sprintId}/end`, null, axiosConf);
   }
 
-  blockSprint (sprintId: string, axiosConf = {}) : Promise<[Error | null, any]> {
+  blockSprint (sprintId: number, axiosConf = {}) : Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/sprint/${sprintId}/block`, null, axiosConf);
   }
 
@@ -223,23 +223,23 @@ export default class API {
     return http.patch(`${baseUrl}/sprint/task/restart`, params, axiosConf);
   }
 
-  getUserSprintAuth<T> (sprintId: string, userId: string, params: T) : Promise<[Error | null, any]> {
+  getUserSprintAuth<T> (sprintId: number, userId: number, params: T) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/sprint/${sprintId}/user/${userId}/auth`, params);
   }
 
-  getCurrentUserSprintAuth<T> (sprintId: string, params: T): Promise<[Error | null, any]> {
+  getCurrentUserSprintAuth<T> (sprintId: number, params: T): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/sprint/${sprintId}/user/auth/current`, params);
   }
 
-  getTaskResult (taskType: string, targetId: string, testType: string) : Promise<[Error | null, any]> {
+  getTaskResult (taskType: string, targetId: number, testType: string) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${taskType}/${targetId}/${testType}/result`);
   }
 
-  setSubTask<T> (taskId: string, params:T): Promise<[Error | null, any]> {
+  setSubTask<T> (taskId: number, params:T): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${taskId}/subtask/set`, params, { paramsType: true });
   }
 
-  cancelSubTask<T> (taskId: string, params:T): Promise<[Error | null, any]> {
+  cancelSubTask<T> (taskId: number, params:T): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${taskId}/subtask/cancel`, params, { paramsType: true });
   }
 
@@ -251,11 +251,11 @@ export default class API {
     return http.patch(`${baseUrl}/meeting`, params);
   }
 
-  deleteMeeting (meetingId: string) : Promise<[Error | null, any]> {
+  deleteMeeting (meetingId: number) : Promise<[Error | null, any]> {
     return http.del(`${baseUrl}/meeting/${meetingId}`);
   }
 
-  getMeetingDetail (meetingId: string) : Promise<[Error | null, any]> {
+  getMeetingDetail (meetingId: number) : Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/meeting/${meetingId}`);
   }
 

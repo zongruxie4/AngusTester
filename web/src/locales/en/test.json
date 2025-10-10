@@ -200,12 +200,12 @@
       "resetTestResultTip": "Update case to 'Pending Test', related statistics and status will be cleared.",
       "firstDataTip": "This is already the first record!",
       "lastDataTip": "This is already the last record!",
-      "assocRequirementTip": "Trace issues back to original requirements, helping to understand the background and impact scope of the problem.",
-      "assocStoryTip": "Trace user perspective description of functional requirements, helping to understand the background and impact scope of the problem.",
-      "assocBugTip": "Track errors in software functionality, ensure timely fixes, help identify and resolve systemic issues.",
-      "assocApiTestTip": "Establish association with corresponding API test tasks, facilitating tracking of API test progress and ensuring normal interface operation.",
-      "assocScenarioTestTip": "Establish association with corresponding scenario test tasks, facilitating understanding of functionality effectiveness in real scenarios and ensuring solution completeness.",
-      "assocTaskTip": "Record development or testing tasks associated with the current case, helping teams track testing tasks."
+      "assocRequirementTip": "Trace cases to the original requirement to clarify context and impact scope.",
+      "assocStoryTip": "Trace cases to the user story to clarify context and impact from the user perspective.",
+      "assocBugTip": "Track functional defects to ensure timely fixes and surface systemic issues.",
+      "assocApiTestTip": "Associate the corresponding API test task to track progress and verify API availability.",
+      "assocScenarioTestTip": "Associate the corresponding scenario test task to assess effectiveness in real scenarios and ensure solution completeness.",
+      "assocTaskTip": "Associate development/testing tasks related to this case for unified team tracking."
     }
   },
   "testCaseReview": {

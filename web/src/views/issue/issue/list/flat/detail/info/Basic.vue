@@ -53,8 +53,8 @@ const prioritySelectValue = ref<TaskDetail['priority']['value']>();
 // Tag editing state
 const tagSelectRef = ref();
 const isTagEditing = ref(false);
-const selectedTagList = ref<{id: string; name: string;}[]>([]);
-const selectedTagIdList = ref<string[]>([]);
+const selectedTagList = ref<{id: number; name: string;}[]>([]);
+const selectedTagIdList = ref<number[]>([]);
 
 // Software version editing state
 const versionSelectRef = ref();
