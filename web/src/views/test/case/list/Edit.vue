@@ -38,7 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Component emits
-const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'update', id?:string):void}>();
+const emits = defineEmits<{(e: 'update:visible', value: boolean): void; (e: 'update', id?: string): void }>();
 
 // Basic state management
 const userInfo = ref(appContext.getUser());
@@ -190,7 +190,7 @@ const saveType = ref('save');
  * @param type - Save type ('save' or 'add')
  */
 const save = (type: 'save' | 'add') => {
-  if (loading.value) {
+  if (isLoading.value) {
     return;
   }
   saveType.value = type;
@@ -255,7 +255,7 @@ const getParams = () => {
   return params;
 };
 
-const loading = ref(false);
+const isLoading = ref(false);
 
 /**
  * Save edited case
@@ -269,9 +269,9 @@ const editSave = async () => {
     return;
   }
   const params = getParams();
-  loading.value = true;
+  isLoading.value = true;
   const [error] = await testCase.putCase([{ id: props.editCase.id, ...params }]);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
@@ -285,9 +285,9 @@ const editSave = async () => {
  */
 const addSave = async () => {
   const params = getParams();
-  loading.value = true;
+  isLoading.value = true;
   const [error] = await testCase.addCase([params]);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
@@ -300,30 +300,33 @@ const addSave = async () => {
   }
 };
 
+// Constants
+const MAX_FILE_SIZE_MB = 10;
+
 /**
  * Handle file upload
  * @param param - Upload parameter containing file
  */
-const upLoadFile = async ({ file }: { file: any }) => {
-  if (file.size > 100 * 1024 * 1024) {
+const handleFileUpload = async ({ file }: { file: File }) => {
+  if (!formState.value.attachments || formState.value.attachments.length >= 5 || isLoading.value) {
+    return;
+  }
+
+  if (file.size! > 1024 * 1024 * MAX_FILE_SIZE_MB) {
     notification.error(t('testCase.messages.fileTooLarge'));
     return;
   }
 
-  if (formState.value.attachments?.length >= 5 || loading.value) {
-    return;
-  }
-
-  loading.value = true;
-  const [error, { data = [] }] = await upload(file.originFileObj, { bizKey: 'angusTesterCaseAttachments' });
-  loading.value = false;
+  isLoading.value = true;
+  const [error, { data = [] }] = await upload(file, { bizKey: 'angusTesterCaseAttachments' });
+  isLoading.value = false;
   if (error) {
     return;
   }
 
   if (data && data.length > 0) {
-    const newData = data?.map(item => ({ name: item.name, url: item.url }));
-    formState.value.attachments.push(...newData);
+    const attachments = data?.map(item => ({ name: item.name, url: item.url }));
+    formState.value.attachments.push(...attachments);
   }
 };
 
@@ -639,7 +642,7 @@ onMounted(() => {
         @click="handleZoom" />
     </Tooltip>
 
-    <Spin :spinning="loading" class="h-full">
+    <Spin :spinning="isLoading" class="h-full">
       <Form
         :key="formState.id"
         ref="formRef"
@@ -1023,7 +1026,9 @@ onMounted(() => {
                 class="border border-dashed rounded flex flex-col px-2 py-1"
                 :class="formState.attachments.length?'justify-between':'justify-center'">
                 <template v-if="formState.attachments?.length">
-                  <div style="height: 286px;scrollbar-gutter: stable;" class="overflow-hidden hover:overflow-y-auto -mr-2 pr-1">
+                  <div
+                    style="height: 286px;scrollbar-gutter: stable;"
+                    class="overflow-hidden hover:overflow-y-auto -mr-2 pr-1">
                     <div
                       v-for="(item,index) in formState.attachments"
                       :key="index"
@@ -1047,7 +1052,7 @@ onMounted(() => {
                       :fileList="[]"
                       name="file"
                       class="-mb-1 mr-1"
-                      :customRequest="upLoadFile">
+                      :customRequest="handleFileUpload">
                       <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
                       <span class="text-3 leading-3 text-theme-text-hover">{{ t('actions.continueUpload') }}</span>
                     </Upload>
@@ -1059,7 +1064,7 @@ onMounted(() => {
                     <Upload
                       name="file"
                       :fileList="[]"
-                      :customRequest="upLoadFile">
+                      :customRequest="handleFileUpload">
                       <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                       <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
                     </Upload>

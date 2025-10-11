@@ -125,7 +125,7 @@ public class TagQueryImpl implements TagQuery {
       return;
     }
     List<Long> tagsIds = tags.stream().map(TagTarget::getTagId)
-        .toList();
+        .collect(Collectors.toList());
     List<Long> existedTagsIds = tagRepo.findIdByIdIn(tagsIds);
     if (tagsIds.size() == existedTagsIds.size()) {
       return;
@@ -168,7 +168,8 @@ public class TagQueryImpl implements TagQuery {
       if (tagIds.size() == existedTags.size()) {
         return existedTags;
       }
-      tagIds.removeAll(existedTags.stream().map(Tag::getId).toList());
+      // tagIds.removeAll(existedTags.stream().map(Tag::getId).toList()) -> Fix: UnsupportedOperationException
+      tagIds.removeAll(existedTags.stream().map(Tag::getId).collect(Collectors.toList()));
       assertResourceNotFound(isEmpty(tagIds), tagIds, "Report");
     }
     return existedTags;
@@ -232,7 +233,7 @@ public class TagQueryImpl implements TagQuery {
   @Override
   public void checkUpdateNameExists(Long projectId, Collection<Tag> tags) {
     List<Tag> tagsDb = tagRepo.findByProjectIdAndNameIn(projectId,
-        tags.stream().map(Tag::getName).toList());
+        tags.stream().map(Tag::getName).collect(Collectors.toList()));
     if (isEmpty(tagsDb)) {
       return;
     }
@@ -336,7 +337,7 @@ public class TagQueryImpl implements TagQuery {
   public void setTags(List<? extends ResourceTagAssoc<?, ?>> ress) {
     if (isNotEmpty(ress)) {
       Map<Long, List<TagTarget>> taskTagMap = tagTargetRepo.findAllByTargetIdIn(
-              ress.stream().map(ResourceTagAssoc::getId).toList())
+              ress.stream().map(ResourceTagAssoc::getId).collect(Collectors.toList()))
           .stream().collect(groupingBy(TagTarget::getTargetId));
       if (isEmpty(taskTagMap)) {
         return;
@@ -344,7 +345,7 @@ public class TagQueryImpl implements TagQuery {
       ress.forEach(x -> x.setTagTargets((taskTagMap.get(x.getId()))));
       List<Tag> tags = tagRepo.findByIdIn(
           taskTagMap.values().stream().flatMap(Collection::stream).map(TagTarget::getTagId)
-              .toList());
+              .collect(Collectors.toList()));
       if (isNotEmpty(tags)) {
         Map<Long, Tag> tagMaps = tags.stream().collect((Collectors.toMap(Tag::getId, x -> x)));
         ress.stream().map(ResourceTagAssoc::getTagTargets)
