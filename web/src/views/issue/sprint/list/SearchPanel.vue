@@ -27,6 +27,7 @@ const emits = defineEmits<{
 // User context and component references
 const currentUser = ref(appContext.getUser());
 const searchPanelRef = ref();
+const quickSearchOptionsRef = ref();
 
 // Sprint status options for filtering
 const sprintStatusOptions = ref<{ name: string; key: string }[]>([]);
@@ -178,13 +179,17 @@ const getSearchParameters = () => {
  * Handle search panel filter changes
  * @param filterData - New filter data from search panel
  */
-const handleSearchPanelChange = (filterData: SearchCriteria[]) => {
+const handleSearchPanelChange = (filterData: SearchCriteria[], _headers?: { [key: string]: string }, _changedKey?: string) => {
   // Merge search panel filters with quick search filters
-  const quickSearchFields = ['ownerId', 'createdBy', 'lastModifiedBy', 'status', 'createdDate'];
-  const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
-  const searchPanelFilters = filterData.filter(f => f.key && !quickSearchFields.includes(f.key as string));
+  // const quickSearchFields = ['ownerId', 'createdBy', 'lastModifiedBy', 'status', 'createdDate'];
+  // const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
+  // const searchPanelFilters = filterData.filter(f => f.key && !quickSearchFields.includes(f.key as string));
 
-  searchFilters.value = [...currentQuickSearchFilters, ...searchPanelFilters];
+  if (_changedKey === 'ownerId') {
+    quickSearchOptionsRef.value.clearSelectedMap(['myOwned']);
+  }
+
+  searchFilters.value = [...(filterData || []).filter(f => !associatedFilterKeys.includes(f.key as string))];
   associatedFilters.value = filterData.filter(item => associatedFilterKeys.includes(item.key || ''));
 
   emits('change', getSearchParameters());
@@ -196,9 +201,21 @@ const handleSearchPanelChange = (filterData: SearchCriteria[]) => {
  * @param selectedKeys - Array of selected option keys
  * @param searchCriteria - Array of search criteria from quick search
  */
-const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
+  // Handle my owned filter
+  if (key === 'myOwned') {
+    if (typeof searchPanelRef.value?.setConfigs === 'function') {
+      const ownerIdSearchCriteria = searchCriteria.find(f => f.key === 'ownerId');
+      searchPanelRef.value.setConfigs([{
+        valueKey: 'ownerId',
+        type: 'select-user',
+        value: ownerIdSearchCriteria?.value
+      }]);
+    }
+    return;
+  }
   // Update quick search filters
-  quickSearchFilters.value = searchCriteria;
+  quickSearchFilters.value = searchCriteria.filter(f => !['ownerId'].includes(f.key as string));
 
   // Emit change event with current params
   emits('change', getSearchParameters());
@@ -230,6 +247,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <!-- Quick Search Options Component -->
     <QuickSearchOptions
+      ref="quickSearchOptionsRef"
       :config="quickSearchConfig"
       @change="handleQuickSearchChange" />
 
