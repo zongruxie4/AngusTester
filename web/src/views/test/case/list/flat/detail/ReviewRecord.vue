@@ -4,12 +4,12 @@ import { Image, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { ReviewStatus } from '@xcan-angus/infra';
 import { testCase } from '@/api/tester';
-import { CaseDetail } from '@/views/test/types';
+import { CaseDetail, CaseReviewRecord } from '@/views/test/types';
 
 const CaseInfo = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/CaseInfo.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/info/Precondition.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/test/review/detail/case/Precondition.vue'));
 const CaseStep = defineAsyncComponent(() => import('@/views/test/case/list/CaseSteps.vue'));
-const Description = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/info/Description.vue'));
+const Description = defineAsyncComponent(() => import('@/views/test/review/detail/case/Description.vue'));
 
 interface Props {
   caseDetail: CaseDetail;
@@ -86,7 +86,7 @@ const handleReviewRecordSelection = async (reviewRecord) => {
   }
 };
 
-const reviewRecordsList = ref([]);
+const reviewRecordsList = ref<CaseReviewRecord[]>([]);
 /**
  * Load review records of current case
  */
@@ -115,11 +115,15 @@ defineExpose({
 </script>
 <template>
   <div class="text-3 overflow-auto h-full">
-    <div class="text-title text-3 font-medium mt-2">{{ t('common.counts.reviewCount') }}</div>
+    <div class="text-title text-3 font-medium mt-2">
+      {{ t('common.counts.reviewCount') }}
+    </div>
 
     <div class="flex w-150 space-x-15 mt-2">
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-blue-1 text-white rounded">{{ t('chart.total') }}</label>
+        <label class="w-20 px-2 py-1 bg-blue-1 text-white rounded">
+          {{ t('chart.total') }}
+        </label>
         <div class=" px-2 py-1  w-15 font-medium">
           {{ reviewStatistics.total }}
         </div>
@@ -144,7 +148,9 @@ defineExpose({
       </div>
     </div>
 
-    <div class="text-title text-3 font-medium mt-6">{{ t('common.reviewRecord') }}</div>
+    <div class="text-title text-3 font-medium mt-6">
+      {{ t('common.reviewRecord') }}
+    </div>
     <div class="mt-2 space-y-2">
       <div
         v-for="record in reviewRecordsList"
@@ -170,7 +176,9 @@ defineExpose({
           :title="record.reviewRemark">
           {{ record.reviewRemark }}
         </div>
-        <div v-else class="text-sub-content mt-3 truncate">{{ t('common.noRemark') }}</div>
+        <div v-else class="text-sub-content mt-3 truncate">
+          {{ t('common.noRemark') }}
+        </div>
       </div>
     </div>
 

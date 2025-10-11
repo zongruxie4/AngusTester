@@ -35,13 +35,13 @@ const CaseReviewResult = defineAsyncComponent(() => import('@/views/test/review/
 // const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/CaseSteps.vue'));
 const CaseStep = defineAsyncComponent(() => import('@/views/test/review/detail/case/CaseSteps.vue'));
 const CaseBasicInfo = defineAsyncComponent(() => import('@/views/test/review/detail/case/CaseBasicInfo.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/info/Precondition.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/test/review/detail/case/Precondition.vue'));
 const Members = defineAsyncComponent(() => import('@/views/test/review/detail/case/Member.vue'));
 const TestResult = defineAsyncComponent(() => import('@/views/test/review/detail/case/TestResult.vue'));
 const Attachment = defineAsyncComponent(() => import('@/views/test/review/detail/case/Attachment.vue'));
 const AssocIssues = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocIssues.vue'));
 const AssocCases = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocCases.vue'));
-const Description = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/info/Description.vue'));
+const Description = defineAsyncComponent(() => import('@/views/test/review/detail/case/Description.vue'));
 
 // Composables and injections
 const { t } = useI18n();

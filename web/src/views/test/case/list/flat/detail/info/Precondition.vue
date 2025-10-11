@@ -1,150 +1,146 @@
-<script lang="ts" setup>
-import { defineAsyncComponent, ref, onMounted, watch, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Toggle, Icon, NoData } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-
+import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
-
-const { t } = useI18n();
+import { CaseDetail } from '@/views/test/types';
+import RichEditor from '@/components/richEditor/index.vue';
 
 interface Props {
-  caseInfo?: { id: number; precondition: string};
-  contentClass: string;
-  readonly: boolean;
+  id?: number;
+  dataSource?: CaseDetail;
+  projectId?: string;
+  taskId?: number;
+  actionAuth?: {[key: string]: any};
 }
+
 const props = withDefaults(defineProps<Props>(), {
-  caseInfo: undefined,
-  contentClass: '',
-  readonly: true
+  id: undefined,
+  dataSource: undefined,
+  projectId: undefined,
+  taskId: undefined,
+  actionAuth: () => ({})
 });
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
+  (event: 'change', value: Partial<CaseDetail>): void;
   (event: 'loadingChange', value: boolean): void;
-  (event: 'change'): void;
 }>();
 
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const { t } = useI18n();
 
-const descRichRef = ref();
-const openFlag = ref(true);
-const editFlag = ref(false);
-const content = ref<string>('');
+const preconditionExpand = ref(true);
+const preconditionRichRef = ref();
+const preconditionError = ref();
+const isEditPrecondition = ref(false);
+const preconditionContent = ref();
+const savePreconditionLoading = ref(false);
 
-const toEdit = () => {
-  openFlag.value = true;
-  editFlag.value = true;
+/**
+ * <p>Enter editing mode for precondition.</p>
+ * <p>Sets the current precondition content for editing.</p>
+ */
+const handleEditPrecondition = () => {
+  isEditPrecondition.value = true;
+  preconditionContent.value = props.dataSource?.precondition || undefined;
 };
 
-const cancel = () => {
-  editFlag.value = false;
+/**
+ * <p>Cancel precondition editing.</p>
+ * <p>Exits editing mode without saving changes.</p>
+ */
+const cancelEditPrecondition = () => {
+  isEditPrecondition.value = false;
 };
 
-const descErr = ref(false);
-
-const validateDesc = () => {
-  return descRichRef.value.getLength() <= 2000;
-};
-
-const ok = async () => {
-  if (validateDesc()) {
-    descErr.value = true;
+/**
+ * <p>Persist precondition with length validation.</p>
+ * <p>Saves the precondition if changed and validates character limit.</p>
+ */
+const savePrecondition = async () => {
+  if (!props.dataSource) {
+    isEditPrecondition.value = false;
     return;
   }
-  descErr.value = false;
 
-  const params = [{ id: caseId.value, precondition: content.value }];
-  emit('loadingChange', true);
-  const [error] = await testCase.updateCase(params);
-  emit('loadingChange', false);
+  if (preconditionContent.value === props.dataSource.precondition) {
+    isEditPrecondition.value = false;
+    return;
+  }
+  if (preconditionRichRef.value.getLength() > 6000) {
+    preconditionError.value = true;
+    return;
+  }
+  preconditionError.value = false;
+  if (savePreconditionLoading.value) {
+    return;
+  }
+  savePreconditionLoading.value = true;
+  const [error] = await testCase.updateCase([{
+    id: props.dataSource.id,
+    precondition: preconditionContent.value
+  }]);
+  savePreconditionLoading.value = false;
   if (error) {
     return;
   }
-
-  editFlag.value = false;
-  emit('change');
+  isEditPrecondition.value = false;
+  emit('change', { precondition: preconditionContent.value });
 };
-
-const getJson = (value) => {
-  if (!value) {
-    return undefined;
-  }
-  try {
-    const result = JSON.parse(value);
-    if (typeof result === 'object') {
-      return value;
-    }
-    return JSON.stringify([{ insert: value }]);
-  } catch {
-    return JSON.stringify([{ insert: value }]);
-  }
-};
-
-const caseId = computed(() => {
-  return props?.caseInfo?.id;
-});
-
-onMounted(() => {
-  watch(() => props.caseInfo, (newValue) => {
-    content.value = getJson(newValue?.precondition || '');
-  }, { immediate: true });
-});
 </script>
-<template>
-  <div class="bg-white rounded-lg">
-    <div v-show="!props.readonly" class="flex justify-end items-center text-theme-title mb-1.75">
-      <Button
-        v-show="!editFlag"
-        type="link"
-        class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none text-theme-special"
-        @click="toEdit">
-        <Icon icon="icon-xiugai" />
-      </Button>
 
-      <div v-show="editFlag" class="space-x-2.5 w-full flex items-center justify-end">
-        <Button
-          size="small"
-          type="link"
-          @click="cancel">
-          {{ t('actions.cancel') }}
-        </Button>
-        <Button
-          size="small"
-          type="link"
-          @click="ok">
-          {{ t('actions.confirm') }}
-        </Button>
+<template>
+  <Toggle
+    v-model:open="preconditionExpand"
+    class="mt-3.5">
+    <template #title>
+      <div class="flex items-center space-x-2">
+        <span class="text-3.5">{{ t('common.precondition') }}</span>
+        <template v-if="isEditPrecondition">
+          <Button
+            class="font-normal text-theme-special"
+            type="link"
+            size="small"
+            @click="savePrecondition">
+            {{ t('actions.save') }}
+          </Button>
+          <Button
+            class="font-normal text-theme-special"
+            type="link"
+            size="small"
+            @click="cancelEditPrecondition">
+            {{ t('actions.cancel') }}
+          </Button>
+        </template>
+        <Icon
+          v-else-if="props.actionAuth['edit']"
+          icon="icon-xiugai"
+          class="text-3.5 text-theme-special text-theme-text-hover cursor-pointer"
+          @click="handleEditPrecondition" />
       </div>
-    </div>
-    <AsyncComponent :visible="editFlag">
-      <div v-show="editFlag">
+    </template>
+
+    <template #default>
+      <template v-if="isEditPrecondition">
         <RichEditor
-          ref="descRichRef"
-          v-model:value="content"
-          :height="80" />
-        <div v-show="descErr" class="text-status-error">
-          {{ t('testCase.kanbanView.infoPrecondition.maxCharError') }}
-        </div>
-      </div>
-    </AsyncComponent>
-    <AsyncComponent :visible="!editFlag">
-      <div
-        v-if="props.caseInfo?.precondition"
-        v-show="!editFlag"
-        :class="props.contentClass">
-        <div class="bg-gray-50 rounded-lg p-4">
-          <RichEditor :value="props.caseInfo?.precondition" mode="view" />
-        </div>
-      </div>
-      <div
-        v-else
-        v-show="!editFlag"
-        class="text-center py-8 text-gray-400"
-        :class="props.contentClass">
-        <Icon icon="icon-kong" class="text-4xl mb-2" />
-        <div>{{ t('common.noData') }}</div>
-      </div>
-    </AsyncComponent>
-  </div>
+          ref="preconditionRichRef"
+          v-model:value="preconditionContent"
+          :options="{ placeholder: t('testCase.messages.inputPrecondition')}" />
+        <div v-show="preconditionError" class="text-status-error">{{ t('testCase.messages.descCharLimit2000') }}</div>
+      </template>
+      <template v-else>
+        <template v-if="dataSource?.precondition">
+          <RichEditor :value="dataSource.precondition" mode="view" />
+        </template>
+        <template v-else>
+          <NoData
+            :text="t('common.noData')"
+            class="my-8"
+            size="small" />
+        </template>
+      </template>
+    </template>
+  </Toggle>
 </template>

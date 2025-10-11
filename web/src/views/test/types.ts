@@ -121,3 +121,22 @@ export type CaseDetail = {
   refMap?: { TASK: number[]; CASE: number[] };
   checked?: boolean;
 }
+
+export type CaseReviewRecord = {
+  id?: number;
+  name?: string;
+  planId?: number;
+  reviewCaseId?: number;
+  reviewId?: number;
+  caseId?: number;
+  reviewedCase?: CaseInfo;
+  reviewerId?: number;
+  reviewerName?: string;
+  reviewDate?: Date | string;
+  reviewStatus?: EnumMessage<ReviewStatus>;
+  reviewRemark?: string;
+  createdBy?: number;
+  createdByName?: string;
+  avatar?: string;
+  createdDate?: Date | string;
+}

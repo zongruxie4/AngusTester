@@ -20,9 +20,6 @@ public class FuncCaseReviewVo {
 
   private Long planId;
 
-  //@NameJoinField(id = "planId", repository = "funcPlanRepo")
-  //private String planName;
-
   private Long reviewCaseId;
 
   private Long reviewId;
