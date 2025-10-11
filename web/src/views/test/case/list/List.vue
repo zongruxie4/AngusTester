@@ -80,6 +80,7 @@ const firstLoadInfo = ref(true);
 const firstLoading = ref(true);
 const actionType = ref<'search' | 'del' | undefined>(undefined);
 const searchPanelRef = ref();
+const groupKey = ref<string>('none');
 
 // Query & Pagination State
 const params = ref({
@@ -1031,6 +1032,7 @@ defineExpose({
 
       <div class="flex-1 flex flex-col overflow-hidden">
         <SearchPanel
+          v-model:groupKey="groupKey"
           ref="searchPanelRef"
           :viewMode="props.viewMode"
           :projectId="projectInfo.id"
@@ -1104,6 +1106,7 @@ defineExpose({
           <KanbanView
             v-show="props.viewMode === CaseViewMode.kanban"
             v-model:moduleId="moduleId"
+            :groupKey="groupKey"
             :filters="params.filters as any"
             :projectId="projectInfo?.id"
             :userInfo="userInfo"

@@ -6,7 +6,7 @@ import { SearchCriteria } from '@xcan-angus/infra';
  */
 export interface ModuleItem {
   /** Unique identifier for the module */
-  id: number;
+  id: string;
   /** Display name of the module */
   name: string;
   /** Optional key for tree component compatibility */
@@ -26,7 +26,7 @@ export interface ModuleItem {
   /** Whether this is the last item in its level */
   isLast?: boolean;
   /** Parent module ID (-1 for root level) */
-  pid?: number;
+  pid?: string;
   /** Sort sequence number for ordering */
   sequence?: string;
   /** Maximum depth of child levels */
@@ -115,11 +115,11 @@ export interface CreateModuleParams {
  */
 export interface UpdateModuleParams {
   /** Module ID */
-  id: number;
+  id: string;
   /** New module name (optional) */
   name?: string;
   /** New parent ID (optional) */
-  pid?: number;
+  pid?: string;
   /** New sequence number (optional) */
   sequence?: number;
 }
