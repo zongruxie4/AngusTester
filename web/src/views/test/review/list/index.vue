@@ -303,6 +303,7 @@ onMounted(() => {
         <template v-else>
           <SearchPanel
             :loading="loading"
+            :userId="props.userInfo?.id"
             @refresh="refresh"
             @change="handleSearchChange" />
 

@@ -225,8 +225,8 @@ const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchC
         }]);
       }
     }
-    searchCriteria = searchCriteria.filter(f => f.key !== 'ownerId');
   }
+  searchCriteria = searchCriteria.filter(f => !assocKeys.includes(f.key as string));
   // Update quick search filters
   quickSearchFilters.value = searchCriteria;
 
