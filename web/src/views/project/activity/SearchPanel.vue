@@ -41,13 +41,20 @@ const emits = defineEmits<{
   (e: 'toCancelBatchDelete'): void;
 }>();
 
+// Template refs
+const searchPanelRef = ref();
+const quickSearchOptionsRef = ref();
+
 // Use composables
 const {
   searchPanelOptions,
   buildSearchParams,
   handleSearchChange,
-  clearAllFilters
-} = useActivitySearch();
+  clearAllFilters,
+  searchFilters,
+  quickSearchFilters,
+  assocFilters,
+} = useActivitySearch(quickSearchOptionsRef);
 
 /**
  * Quick search configuration for activity search panel
@@ -77,16 +84,15 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   }
 }));
 
-// Template refs
-const searchPanelRef = ref();
+
 
 /**
  * Handle search panel change events
  *
  * @param data - Search panel data
  */
-const onSearchChange = (data: SearchCriteria[]) => {
-  handleSearchChange(data);
+const onSearchChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, _changedKey?: string) => {
+  handleSearchChange(data, _headers, _changedKey);
   emits('change', buildSearchParams());
 };
 
@@ -96,7 +102,34 @@ const onSearchChange = (data: SearchCriteria[]) => {
  * @param selectedKeys - Array of selected option keys
  * @param searchCriteria - Array of search criteria from quick search
  */
-const handleQuickSearchChange = (_selectedKeys: string[], _searchCriteria: SearchCriteria[]): void => {
+const handleQuickSearchChange = (_selectedKeys: string[], _searchCriteria: SearchCriteria[], changedKey?: string): void => {
+  if (changedKey === 'myActivity') {
+    const userIdSearchCriteria = _searchCriteria.find(f => f.key === 'userId');
+    if (typeof searchPanelRef.value?.setConfigs === 'function') {
+      searchPanelRef.value.setConfigs([{
+        valueKey: 'userId',
+        type: 'select-user',
+        value: userIdSearchCriteria?.value
+      }]);
+    }
+    return;
+  }
+
+  if (changedKey && changedKey.startsWith('last') && (changedKey.endsWith('Day') || changedKey.endsWith('Days'))) {
+    const optDateSearchCriteria = _searchCriteria.filter(f => f.key === 'optDate');
+    let optDateValue: [string, string] | undefined = undefined;
+    if (optDateSearchCriteria.length > 0) {
+      optDateValue = [optDateSearchCriteria[0].value, optDateSearchCriteria[1].value];
+    }
+    if (typeof searchPanelRef.value?.setConfigs === 'function') {
+      searchPanelRef.value.setConfigs([{
+        valueKey: 'optDate',
+        type: 'date-range',
+        value: optDateValue
+      }]);
+    }
+    return;
+  }
   // Update quick search filters in the composable
   // This will be handled by the composable's internal state
   emits('change', buildSearchParams());
@@ -142,6 +175,7 @@ defineExpose({
   <div class="mt-8 mb-3.5">
     <!-- Quick Search Options Component -->
     <QuickSearchOptions
+      ref="quickSearchOptionsRef"
       :config="quickSearchConfig"
       :descriptionSlot="t('activity.messages.maxResourceActivityHint', { maxResource })"
       @change="handleQuickSearchChange" />
