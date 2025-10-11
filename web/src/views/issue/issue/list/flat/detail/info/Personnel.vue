@@ -341,7 +341,6 @@ const confirmerDefaultOptions = computed(() => {
   };
 });
 </script>
-
 <template>
   <Toggle>
     <template #title>
@@ -391,20 +390,6 @@ const confirmerDefaultOptions = computed(() => {
                   @change="handleAssigneeChange"
                   @blur="handleAssigneeBlur" />
               </AsyncComponent>
-            </div>
-          </div>
-        </div>
-
-        <!-- Executor -->
-        <div class="info-row">
-          <div class="info-item">
-            <div class="info-label">
-              <span>{{ t('common.executor') }}</span>
-            </div>
-            <div class="info-value">
-              <span :class="{ 'placeholder-text': !currentExecByName }" class="info-text">
-                {{ currentExecByName || '--' }}
-              </span>
             </div>
           </div>
         </div>
@@ -509,6 +494,20 @@ const confirmerDefaultOptions = computed(() => {
             </div>
             <div class="info-value">
               <span class="info-text">{{ currentCreatedByName }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Executor -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.executor') }}</span>
+            </div>
+            <div class="info-value">
+              <span :class="{ 'placeholder-text': !currentExecByName }" class="info-text">
+                {{ currentExecByName || '--' }}
+              </span>
             </div>
           </div>
         </div>

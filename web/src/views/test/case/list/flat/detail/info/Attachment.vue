@@ -177,3 +177,8 @@ const updateAttachmentList = async (uploadedData) => {
     </div>
   </Toggle>
 </template>
+<style scoped>
+:deep(.toggle-title) {
+  @apply text-3.5;
+}
+</style>

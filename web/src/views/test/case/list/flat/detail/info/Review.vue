@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { Grid, ReviewStatus } from '@xcan-angus/vue-ui';
+import { computed, ref } from 'vue';
+import { Grid, ReviewStatus, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
 
@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+const reviewExpand = ref(true);
+
 /**
  * <p>Calculates if the review passed on first attempt.</p>
  * <p>Returns 'Yes' if review passed with no failures, 'No' otherwise, or '--' if no reviews.</p>
@@ -39,17 +41,26 @@ const getOneReviewPass = computed(() => {
   return '--';
 });
 </script>
-
 <template>
-  <Grid
-    :columns="columns"
-    :dataSource="dataSource"
-    :marginBottom="4"
-    labelSpacing="10px"
-    font-size="12px"
-    class="pt-2 pl-5.5">
-    <template #oneReviewPass>
-      {{ getOneReviewPass }}
-    </template>
-  </Grid>
+  <Toggle
+    v-model:open="reviewExpand"
+    :title="t('common.review')"
+    class="mt-3.5">
+    <Grid
+      :columns="columns"
+      :dataSource="dataSource"
+      :marginBottom="4"
+      labelSpacing="10px"
+      font-size="12px"
+      class="pt-2 pl-5.5">
+      <template #oneReviewPass>
+        {{ getOneReviewPass }}
+      </template>
+    </Grid>
+  </Toggle>
 </template>
+<style scoped>
+:deep(.toggle-title) {
+  @apply text-3.5;
+}
+</style>

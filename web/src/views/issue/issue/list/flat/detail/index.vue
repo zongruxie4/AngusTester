@@ -1219,7 +1219,7 @@ const getReferencedTaskCount = (type = 'TASK') => {
       </template>
 
       <!-- Basic Info Tab -->
-      <TabPane key="basicInfo" :tab="t('common.basicInfo')">
+      <TabPane key="basicInfo" :tab="t('common.detail')">
         <BasicInfo
           v-if="isLargePageLayout === false || isLargePageLayout === true"
           v-model:loading="isLoading"

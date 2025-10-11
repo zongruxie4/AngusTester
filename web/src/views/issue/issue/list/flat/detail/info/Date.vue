@@ -140,7 +140,19 @@ const isDateDisabled = (current: Dayjs) => {
 
     <template #default>
       <div class="date-info-container">
-        <!-- Deadline Row -->
+        <!-- Created Date -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.createdDate') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">{{ taskCreatedDate }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Deadline Date -->
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
@@ -186,7 +198,7 @@ const isDateDisabled = (current: Dayjs) => {
           </div>
         </div>
 
-        <!-- Process Dates -->
+        <!-- Start Date -->
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
@@ -200,6 +212,7 @@ const isDateDisabled = (current: Dayjs) => {
           </div>
         </div>
 
+        <!-- Processed Date -->
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
@@ -263,18 +276,6 @@ const isDateDisabled = (current: Dayjs) => {
               <span :class="{ 'placeholder-text': !taskExecDate }" class="info-text">
                 {{ taskExecDate || '--' }}
               </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- System Dates -->
-        <div class="info-row">
-          <div class="info-item">
-            <div class="info-label">
-              <span>{{ t('common.createdDate') }}</span>
-            </div>
-            <div class="info-value">
-              <span class="info-text">{{ taskCreatedDate }}</span>
             </div>
           </div>
         </div>

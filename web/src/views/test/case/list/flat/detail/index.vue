@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue';
-import { Toggle } from '@xcan-angus/vue-ui';
 import { duration, appContext } from '@xcan-angus/infra';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
-import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
 
 import {
@@ -47,8 +45,6 @@ const emit = defineEmits<{
   (e: 'loadingChange', value:boolean):void;
 }>();
 
-const { t } = useI18n();
-
 const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
@@ -72,14 +68,11 @@ const reviewInfoColumns = ref<GridColumns[][]>(bigReviewInfoColumns);
 const testInfoColumns = ref<GridColumns[][]>(bigTestInfoColumns);
 const apisInfoColumns = ref<GridColumns[][]>(bigApisInfoColumns);
 
-const infoExpand = ref(true);
-
 /**
  * <p>Handles case data change events from child components.</p>
  * <p>Forwards the change event to parent components.</p>
- * @param data - Partial case information that has been changed
  */
-const handleCaseDataChange = (data: Partial<CaseDetail>) => {
+const handleCaseDataChange = () => {
   emit('editSuccess');
 };
 
@@ -107,85 +100,60 @@ onBeforeUnmount(() => {
     ref="detailContainerRef"
     :class="isWideLayout?'flex pr-2':'pr-3.5'"
     class="overflow-y-auto h-full">
-    <div class="flex-1">
+    <div class="flex-1 space-y-6">
       <!-- Main Task Info Section -->
       <div class="space-y-4">
-        <Toggle
-          v-model:open="infoExpand"
-          :title="t('common.basicInfo')">
-          <BasicInfo
-            :id="caseDetail.id"
-            :dataSource="caseDetail"
-            :projectId="projectId"
-            :userInfo="userInfo"
-            :taskId="caseDetail.id"
-            :actionAuth="actionAuth"
-            @change="handleCaseDataChange"
-            @loadingChange="emit('loadingChange', $event)" />
-        </Toggle>
+        <BasicInfo
+          :id="caseDetail.id"
+          :dataSource="caseDetail"
+          :projectId="projectId"
+          :taskId="caseDetail.id"
+          :actionAuth="actionAuth"
+          @change="handleCaseDataChange"
+          @loadingChange="emit('loadingChange', $event)" />
       </div>
 
       <!-- Metrics Section - Personnel, Date, Review and Test Info for small layout -->
       <template v-if="!isWideLayout">
-        <Toggle
-          :title="t('common.personnel')"
-          class="mt-3.5">
-          <PersonnelInfo
-            :id="caseDetail.id"
-            :dataSource="caseDetail"
-            :projectId="projectId"
-            :userInfo="userInfo"
-            :taskId="caseDetail.id"
-            :actionAuth="actionAuth"
-            :columns="peopleInfoColumns"
-            @change="handleCaseDataChange"
-            @loadingChange="emit('loadingChange', $event)" />
-        </Toggle>
+        <PersonnelInfo
+          :id="caseDetail.id"
+          :dataSource="caseDetail"
+          :projectId="projectId"
+          :taskId="caseDetail.id"
+          :actionAuth="actionAuth"
+          :columns="peopleInfoColumns"
+          @change="handleCaseDataChange"
+          @loadingChange="emit('loadingChange', $event)" />
 
-        <Toggle
-          :title="t('common.date')"
-          class="mt-3.5">
-          <DateInfo
-            :id="caseDetail.id"
-            :dataSource="caseDetail"
-            :projectId="projectId"
-            :userInfo="userInfo"
-            :taskId="caseDetail.id"
-            :actionAuth="actionAuth"
-            :columns="dateInfoColumns"
-            @change="handleCaseDataChange"
-            @loadingChange="emit('loadingChange', $event)" />
-        </Toggle>
+        <DateInfo
+          :id="caseDetail.id"
+          :dataSource="caseDetail"
+          :projectId="projectId"
+          :taskId="caseDetail.id"
+          :actionAuth="actionAuth"
+          :columns="dateInfoColumns"
+          @change="handleCaseDataChange"
+          @loadingChange="emit('loadingChange', $event)" />
 
-        <Toggle
-          :title="t('common.reviewInfo')"
-          class="mt-3.5">
-          <ReviewInfo
-            :id="caseDetail.id"
-            :dataSource="caseDetail"
-            :projectId="projectId"
-            :userInfo="userInfo"
-            :taskId="caseDetail.id"
-            :actionAuth="actionAuth"
-            :columns="reviewInfoColumns"
-            @change="handleCaseDataChange"
-            @loadingChange="emit('loadingChange', $event)" />
-        </Toggle>
+        <ReviewInfo
+          :id="caseDetail.id"
+          :dataSource="caseDetail"
+          :projectId="projectId"
+          :taskId="caseDetail.id"
+          :actionAuth="actionAuth"
+          :columns="reviewInfoColumns"
+          @change="handleCaseDataChange"
+          @loadingChange="emit('loadingChange', $event)" />
 
-        <Toggle
-          :title="t('common.testInfo')"
-          class="mt-3.5">
-          <TestInfo
-            :id="caseDetail.id"
-            :dataSource="caseDetail"
-            :projectId="projectId"
-            :userInfo="userInfo"
-            :taskId="caseDetail.id"
-            :actionAuth="actionAuth"
-            :columns="testInfoColumns"
-            @change="handleCaseDataChange"
-            @loadingChange="emit('loadingChange', $event)" />
-        </Toggle>
+        <TestInfo
+          :id="caseDetail.id"
+          :dataSource="caseDetail"
+          :projectId="projectId"
+          :taskId="caseDetail.id"
+          :actionAuth="actionAuth"
+          :columns="testInfoColumns"
+          @change="handleCaseDataChange"
+          @loadingChange="emit('loadingChange', $event)" />
       </template>
 
       <!-- Additional Info Section -->
@@ -194,7 +162,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :userInfo="userInfo"
           :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           @change="handleCaseDataChange"
@@ -204,7 +171,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :userInfo="userInfo"
           :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           @change="handleCaseDataChange"
@@ -214,7 +180,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :userInfo="userInfo"
           :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           @change="handleCaseDataChange"
@@ -226,7 +191,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :userInfo="userInfo"
           :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           @change="handleCaseDataChange"
@@ -234,78 +198,55 @@ onBeforeUnmount(() => {
       </template>
     </div>
 
-    <div v-if="isWideLayout" class="w-75 flex-none ml-2">
-      <Toggle :title="t('common.personnel')">
-        <PersonnelInfo
-          :id="caseDetail.id"
-          :dataSource="caseDetail"
-          :projectId="projectId"
-          :userInfo="userInfo"
-          :taskId="caseDetail.id"
-          :actionAuth="actionAuth"
-          :columns="peopleInfoColumns"
-          @change="handleCaseDataChange"
-          @loadingChange="emit('loadingChange', $event)" />
-      </Toggle>
+    <div v-if="isWideLayout" class="w-75 flex-none ml-2 space-y-4">
+      <PersonnelInfo
+        :id="caseDetail.id"
+        :dataSource="caseDetail"
+        :projectId="projectId"
+        :taskId="caseDetail.id"
+        :actionAuth="actionAuth"
+        :columns="peopleInfoColumns"
+        @change="handleCaseDataChange"
+        @loadingChange="emit('loadingChange', $event)" />
 
-      <Toggle
-        :title="t('common.date')"
-        class="mt-3.5">
-        <DateInfo
-          :id="caseDetail.id"
-          :dataSource="caseDetail"
-          :projectId="projectId"
-          :userInfo="userInfo"
-          :taskId="caseDetail.id"
-          :actionAuth="actionAuth"
-          :columns="dateInfoColumns"
-          @change="handleCaseDataChange"
-          @loadingChange="emit('loadingChange', $event)" />
-      </Toggle>
+      <DateInfo
+        :id="caseDetail.id"
+        :dataSource="caseDetail"
+        :projectId="projectId"
+        :taskId="caseDetail.id"
+        :actionAuth="actionAuth"
+        :columns="dateInfoColumns"
+        @change="handleCaseDataChange"
+        @loadingChange="emit('loadingChange', $event)" />
 
-      <Toggle
-        :title="t('common.reviewInfo')"
-        class="mt-3.5">
-        <ReviewInfo
-          :id="caseDetail.id"
-          :dataSource="caseDetail"
-          :projectId="projectId"
-          :userInfo="userInfo"
-          :taskId="caseDetail.id"
-          :actionAuth="actionAuth"
-          :columns="reviewInfoColumns"
-          @change="handleCaseDataChange"
-          @loadingChange="emit('loadingChange', $event)" />
-      </Toggle>
+      <ReviewInfo
+        :id="caseDetail.id"
+        :dataSource="caseDetail"
+        :projectId="projectId"
+        :taskId="caseDetail.id"
+        :actionAuth="actionAuth"
+        :columns="reviewInfoColumns"
+        @change="handleCaseDataChange"
+        @loadingChange="emit('loadingChange', $event)" />
 
-      <Toggle
-        :title="t('common.testInfo')"
-        class="mt-3.5">
-        <TestInfo
-          :id="caseDetail.id"
-          :dataSource="caseDetail"
-          :projectId="projectId"
-          :userInfo="userInfo"
-          :taskId="caseDetail.id"
-          :actionAuth="actionAuth"
-          :columns="testInfoColumns"
-          @change="handleCaseDataChange"
-          @loadingChange="emit('loadingChange', $event)" />
-      </Toggle>
+      <TestInfo
+        :id="caseDetail.id"
+        :dataSource="caseDetail"
+        :projectId="projectId"
+        :taskId="caseDetail.id"
+        :actionAuth="actionAuth"
+        :columns="testInfoColumns"
+        @change="handleCaseDataChange"
+        @loadingChange="emit('loadingChange', $event)" />
 
-      <Toggle
-        :title="t('common.attachment')"
-        class="mt-3.5">
-        <AttachmentInfo
-          :id="caseDetail.id"
-          :dataSource="caseDetail"
-          :projectId="projectId"
-          :userInfo="userInfo"
-          :taskId="caseDetail.id"
-          :actionAuth="actionAuth"
-          @change="handleCaseDataChange"
-          @loadingChange="emit('loadingChange', $event)" />
-      </Toggle>
+      <AttachmentInfo
+        :id="caseDetail.id"
+        :dataSource="caseDetail"
+        :projectId="projectId"
+        :taskId="caseDetail.id"
+        :actionAuth="actionAuth"
+        @change="handleCaseDataChange"
+        @loadingChange="emit('loadingChange', $event)" />
     </div>
   </div>
 </template>
