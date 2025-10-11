@@ -348,6 +348,9 @@ const handleEditorLoadingChange = (value: boolean) => {
   loading.value = value;
 };
 
+// Constants
+const MAX_FILE_SIZE_MB = 10;
+
 /**
  * Handle file upload for task attachments
  * @param info - Upload change info
@@ -355,6 +358,11 @@ const handleEditorLoadingChange = (value: boolean) => {
 const handleFileUpload = async function (info: any) {
   const file = info.file;
   if (!formState.attachments || formState.attachments.length >= 5 || loading.value) {
+    return;
+  }
+
+  if (file.size! > 1024 * 1024 * MAX_FILE_SIZE_MB) {
+    notification.warning(t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }));
     return;
   }
 
@@ -606,7 +614,7 @@ const loadModuleTreeData = async () => {
  */
 const loadTaskData = async (): Promise<Partial<TaskDetail>> => {
   loading.value = true;
-  const [error, res] = await issue.getTaskDetail(props.taskId);
+  const [error, res] = await issue.getTaskDetail(props.taskId as number);
   loading.value = false;
   if (error || !res?.data) {
     return { id: props.taskId! };
@@ -1236,14 +1244,24 @@ onMounted(() => {
 
           <FormItem
             name="evalWorkload"
-            :rules="{ required: !!formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
+            :rules="{ required: formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
-              {{ t('common.evalWorkload') }}
+              <span class="flex items-center">
+                {{ t('common.evalWorkload') }}
+                <Tooltip
+                  placement="right"
+                  arrowPointAtCenter
+                  :overlayStyle="{'max-width':'400px'}"
+                  :title="evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                    ? t('common.storyPointsHint') : t('common.workHoursHint')">
+                  <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
+                </Tooltip>
+              </span>
             </template>
-
             <Input
               v-model:value="formState.evalWorkload"
               size="small"
+              :disabled="!formState.sprintId"
               dataType="float"
               trimAll
               :min="0.1"
@@ -1255,21 +1273,22 @@ onMounted(() => {
           <template v-if="!!props.taskId">
             <FormItem name="actualWorkload">
               <template #label>
-                <span class="w-70">{{ t('common.actualWorkload') }}</span>
-                <Popover placement="rightTop">
-                  <template #content>
-                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('backlog.edit.descriptions.evalWorkload') }}
-                    </div>
-                  </template>
-                  <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
-                </Popover>
+                <span class="flex items-center">
+                  {{ t('common.actualWorkload') }}
+                  <Tooltip
+                    placement="right"
+                    arrowPointAtCenter
+                    :overlayStyle="{'max-width':'400px'}"
+                    :title="evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                      ? t('common.actualStoryPointsHint') : t('common.actualWorkHoursHint')">
+                    <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
+                  </Tooltip>
+                </span>
               </template>
-
               <Input
                 v-model:value="formState.actualWorkload"
-                class="w-70"
                 size="small"
+                :disabled="!formState.sprintId"
                 dataType="float"
                 trimAll
                 :placeholder="t('common.placeholders.workloadRange')"
@@ -1440,13 +1459,16 @@ onMounted(() => {
                 </div>
               </template>
               <template v-else>
-                <div class="flex justify-center">
+                <div class="flex justify-center text-center">
                   <Upload
                     name="file"
                     :fileList="[]"
                     :customRequest="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                     <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
+                    <span class="text-3 block">
+                      {{ t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }) }}
+                  </span>
                   </Upload>
                 </div>
               </template>

@@ -49,9 +49,9 @@ export type TaskEditState = {
   /** Test type for API and scenario testing */
   testType?: TestType | undefined;
   /** Target identifier for API and scenario testing */
-  targetId?: string | undefined;
+  targetId?: number | undefined;
   /** Target parent identifier for API testing */
-  targetParentId?: string | undefined;
+  targetParentId?: number | undefined;
 
   // Temp for edit
   userInfo?: { id: number; fullName?: string};

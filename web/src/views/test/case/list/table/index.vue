@@ -94,7 +94,7 @@ const tableColumns = computed(() => [
   {
     title: t('common.code'),
     dataIndex: 'code',
-    width: '11%',
+    width: 120,
     customCell: () => {
       return { style: 'white-space:nowrap;position: relative;' };
     }
@@ -102,7 +102,6 @@ const tableColumns = computed(() => [
   {
     title: t('common.name'),
     dataIndex: 'name',
-    width: '23%',
     ellipsis: true,
     customCell: () => {
       return { style: 'white-space: nowrap;' };
@@ -112,7 +111,7 @@ const tableColumns = computed(() => [
     title: t('common.priority'),
     dataIndex: 'priority',
     customRender: ({ text }):string => text?.message,
-    width: '10%',
+    width: 100,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
@@ -121,7 +120,7 @@ const tableColumns = computed(() => [
     title: t('common.reviewStatus'),
     dataIndex: 'reviewStatus',
     customRender: ({ text }):string => text?.message,
-    width: '10%',
+    width: 120,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
@@ -130,7 +129,7 @@ const tableColumns = computed(() => [
     title: t('common.testResult'),
     dataIndex: 'testResult',
     customRender: ({ text }):string => text?.message,
-    width: '10%',
+    width: 120,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
@@ -138,7 +137,7 @@ const tableColumns = computed(() => [
   {
     title: t('common.creator'),
     dataIndex: 'createdByName',
-    width: '10%',
+    width: 120,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
@@ -146,7 +145,7 @@ const tableColumns = computed(() => [
   {
     title: t('common.tester'),
     dataIndex: 'testerName',
-    width: '10%',
+    width: 120,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
@@ -155,7 +154,7 @@ const tableColumns = computed(() => [
     title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     sorter: true,
-    width: '10%',
+    width: 140,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }
@@ -163,7 +162,7 @@ const tableColumns = computed(() => [
   {
     title: t('common.actions'),
     dataIndex: 'action',
-    width: 140
+    width: 170
   }
 ].filter(Boolean));
 </script>

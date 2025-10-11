@@ -39,7 +39,7 @@ const attachmentList = ref<AttachmentInfo[]>([]);
  * @param param - Upload change event containing the file
  */
 const handleFileUpload = async ({ file }: { file: UploadFile }) => {
-  if (file.size! > maxFileSizeBytes.value) {
+  if (file.size! > 1024 * 1024 * MAX_FILE_SIZE_MB) {
     notification.warning(t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }));
     return;
   }
@@ -116,13 +116,6 @@ const handleCustomUploadRequest = () => {
 // Computed properties
 const currentTaskId = computed(() => props.dataSource?.id);
 const isAttachmentListEmpty = computed(() => !attachmentList.value.length);
-
-/**
- * <p>Computes the maximum file size in bytes based on the configured MB limit.</p>
- */
-const maxFileSizeBytes = computed(() => {
-  return 1024 * 1024 * MAX_FILE_SIZE_MB;
-});
 
 /**
  * <p>Initializes component and watches for data source changes.</p>

@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { Input, Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { EnumMessage, ReviewStatus, enumUtils } from '@xcan-angus/infra';
-import { testCase } from '@/api/tester';
+import { test } from '@/api/tester';
 
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
@@ -39,8 +39,6 @@ const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'upda
 const formState = ref<{ reviewRemark: string; reviewStatus: ReviewStatus }>({ reviewRemark: '', reviewStatus: ReviewStatus.PASSED });
 const loading = ref(false);
 
-// Modal management functions
-
 /**
  * Close the modal
  */
@@ -66,7 +64,7 @@ const onFinish = async () => {
         }
       ];
   loading.value = true;
-  const [error] = await testCase.reviewCase(params);
+  const [error] = await test.reviewCase(params);
   loading.value = false;
   if (error) {
     return;
@@ -125,14 +123,14 @@ onMounted(() => {
   <Modal
     :title="t('common.review')"
     :visible="props.visible"
-    :width="600"
+    :width="800"
     :footer="null"
     @cancel="close">
     <Form
       :model="formState"
       size="small"
       layout="horizontal"
-      :labelCol="{style: { width: '80px' }}"
+      :labelCol="{style: { width: '100px' }}"
       @finish="onFinish">
       <FormItem
         name="reviewStatus"

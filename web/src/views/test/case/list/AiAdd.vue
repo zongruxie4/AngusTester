@@ -680,7 +680,7 @@ onMounted(() => {
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
                       :title="evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                        ? t('testCase.messages.storyPointsHint') : t('testCase.messages.workHoursHint')">
+                        ? t('common.storyPointsHint') : t('common.workHoursHint')">
                       <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
@@ -692,7 +692,7 @@ onMounted(() => {
                   :disabled="!formState.planId"
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('testCase.messages.minMaxDecimal')"
+                  :placeholder="t('common.placeholders.workloadRange')"
                   dataType="float"
                   @blur="evalWorkloadChange($event.target.value)" />
               </FormItem>

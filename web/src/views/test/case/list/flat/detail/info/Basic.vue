@@ -431,7 +431,7 @@ const handleVersionBlur = async () => {
               <template #content>
                 <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                   {{ dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                    ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
+                     ? t('common.storyPointsHint') : t('common.workHoursHint') }}
                 </div>
               </template>
               <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
@@ -469,7 +469,7 @@ const handleVersionBlur = async () => {
               <template #content>
                 <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                   {{ dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                    ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
+                    ? t('common.actualStoryPointsHint') : t('common.actualWorkHoursHint') }}
                 </div>
               </template>
               <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />

@@ -46,10 +46,6 @@ export default class API {
     return http.patch(`${baseUrl}/result/reset`, caseIds, { dataType: true });
   }
 
-  reviewCase (params): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/review`, params);
-  }
-
   resetReviewCase (caseIds: number[]): Promise<[Error | null, any]> {
     return http.patch(`${baseUrl}/review/reset`, caseIds, { dataType: true });
   }

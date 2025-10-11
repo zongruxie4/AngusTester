@@ -115,40 +115,40 @@ defineExpose({
 </script>
 <template>
   <div class="text-3 overflow-auto h-full">
-    <div class="text-title text-3 font-medium mt-2">
-      {{ t('common.counts.reviewCount') }}
+    <div class="text-title font-semibold mt-2">
+      {{ t('testCase.messages.reviewStatistics') }}
     </div>
 
     <div class="flex w-150 space-x-15 mt-2">
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-blue-1 text-white rounded">
+        <label class="w-30 px-2 py-1 bg-blue-1 text-white rounded">
           {{ t('chart.total') }}
         </label>
-        <div class=" px-2 py-1  w-15 font-medium">
+        <div class="px-2 py-1 w-30 text-3.5 font-semibold">
           {{ reviewStatistics.total }}
         </div>
       </div>
 
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-status-success text-white rounded">
+        <label class="w-30 px-2 py-1 bg-status-success text-white rounded">
           {{ t('testCase.messages.reviewPassed') }}
         </label>
-        <div class=" px-2 py-1  w-15 font-medium">
+        <div class="px-2 py-1 w-30 text-3.5 font-semibold">
           {{ reviewStatistics.successNum }}
         </div>
       </div>
 
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-status-error text-white rounded">
+        <label class="w-30 px-2 py-1 bg-status-error text-white rounded">
           {{ t('testCase.messages.reviewFailed') }}
         </label>
-        <div class=" px-2 py-1  w-15 font-medium">
+        <div class="px-2 py-1 w-30 text-3.5 font-semibold">
           {{ reviewStatistics.failNum }}
         </div>
       </div>
     </div>
 
-    <div class="text-title text-3 font-medium mt-6">
+    <div class="text-title font-semibold mt-6">
       {{ t('common.reviewRecord') }}
     </div>
     <div class="mt-2 space-y-2">

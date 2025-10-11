@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<TaskEditState>(), {
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
-  (e: 'update:taskId', value: string | undefined): void;
+  (e: 'update:taskId', value: number | undefined): void;
   (e: 'ok', value?: Partial<TaskDetail>): void;
 }>();
 
@@ -114,8 +114,8 @@ const formState = reactive<TaskEditState>({
 const taskTypeName = getTaskTypeName();
 
 // User Selection Default Options
-const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
-const confirmerDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
+const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:number;}}>();
+const confirmerDefaultOptions = ref<{[key:string]:{fullName:string;id:number;}}>();
 
 // Computed Properties
 const shouldShowContinueButton = computed(() => {
@@ -251,12 +251,20 @@ const handleRichEditorLoading = (isEditorLoading: boolean) => {
   isLoading.value = isEditorLoading;
 };
 
+// Constants
+const MAX_FILE_SIZE_MB = 10;
+
 /**
  * <p>Handle file upload</p>
  * <p>Uploads attachment files and adds them to the form state</p>
  */
 const handleFileUpload = async function ({ file }: { file: File }) {
   if (!formState.attachments || formState.attachments.length >= 5 || isLoading.value) {
+    return;
+  }
+
+  if (file.size! > 1024 * 1024 * MAX_FILE_SIZE_MB) {
+    notification.warning(t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }));
     return;
   }
 
@@ -679,7 +687,7 @@ const getExcludedTaskTypes = (data: { value: TaskDetail['taskType']['value']; me
  * <p>Exclude current task from parent task selection</p>
  * <p>Prevents selecting the current task as its own parent</p>
  */
-const getExcludedTaskIds = (data: { id: string }) => {
+const getExcludedTaskIds = (data: { id: number }) => {
   return props.taskId === data.id;
 };
 
@@ -1130,7 +1138,7 @@ const getPopupContainer = () => {
               v-model:value="formState.sprintId"
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
-              :readonly="!!props.taskId"
+              :readonly="!!props.taskId && !!formState.sprintId"
               showSearch
               internal
               :placeholder="t('common.placeholders.selectOrSearchSprint')"
@@ -1201,21 +1209,22 @@ const getPopupContainer = () => {
             name="evalWorkload"
             :rules="{ required: formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
-              <span>
+              <span class="flex items-center">
                 {{ t('common.evalWorkload') }}
+                <Tooltip
+                  placement="right"
+                  arrowPointAtCenter
+                  :overlayStyle="{'max-width':'400px'}"
+                  :title="currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                    ? t('common.storyPointsHint') : t('common.workHoursHint')">
+                  <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
+                </Tooltip>
               </span>
-              <Popover placement="rightTop">
-                <template #content>
-                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ t('backlog.edit.descriptions.evalWorkload') }}
-                  </div>
-                </template>
-                <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
-              </Popover>
             </template>
             <Input
               v-model:value="formState.evalWorkload"
               size="small"
+              :disabled="!formState.sprintId"
               dataType="float"
               trimAll
               :min="0.1"
@@ -1227,20 +1236,22 @@ const getPopupContainer = () => {
           <template v-if="!!props.taskId">
             <FormItem name="actualWorkload">
               <template #label>
-                {{ t('common.evalWorkload') }}
-                <Popover placement="rightTop">
-                  <template #content>
-                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('backlog.edit.descriptions.evalWorkload') }}
-                    </div>
-                  </template>
-                  <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
-                </Popover>
+                <span class="flex items-center">
+                  {{ t('common.actualWorkload') }}
+                  <Tooltip
+                    placement="right"
+                    arrowPointAtCenter
+                    :overlayStyle="{'max-width':'400px'}"
+                    :title="currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                      ? t('common.actualStoryPointsHint') : t('common.actualWorkHoursHint')">
+                    <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
+                  </Tooltip>
+                </span>
               </template>
               <Input
                 v-model:value="formState.actualWorkload"
-                class="w-70"
                 size="small"
+                :disabled="!formState.sprintId"
                 dataType="float"
                 trimAll
                 :placeholder="t('common.placeholders.workloadRange')"
@@ -1412,7 +1423,7 @@ const getPopupContainer = () => {
               </template>
 
               <template v-else>
-                <div class="flex justify-center">
+                <div class="flex justify-center text-center">
                   <Upload
                     name="file"
                     :fileList="[]"
@@ -1420,6 +1431,9 @@ const getPopupContainer = () => {
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                     <span class="text-3 text-theme-text-hover">
                       {{ t('actions.upload') }}
+                    </span>
+                    <span class="text-3 block">
+                      {{ t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }) }}
                     </span>
                   </Upload>
                 </div>
