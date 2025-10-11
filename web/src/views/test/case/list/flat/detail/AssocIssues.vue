@@ -161,16 +161,18 @@ const columns = [
   <div>
     <div class="flex mb-2 items-center pr-2">
       <div class="flex-1 ml-1 min-w-0 truncate">
-        <Hints v-if="props.tips" :text="props.tips" />
+        <Hints :text="t('testCase.messages.assocCaseTip')" />
       </div>
       <Button
         :disabled="props.dataSource?.length > 19"
+        :loading="isSubmitting"
         size="small"
         @click="openTaskSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('testCase.actions.assocIssues', {name: props.title}) }}
+        {{ t('testCase.actions.assocCases') }}
       </Button>
     </div>
+
     <Table
       :columns="columns"
       :dataSource="filteredTaskData || []"

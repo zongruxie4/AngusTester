@@ -61,7 +61,6 @@ const confirm = async () => {
   isEditDescription.value = false;
   emits('change');
 };
-
 </script>
 <template>
   <div class="bg-white rounded-lg">
@@ -97,7 +96,9 @@ const confirm = async () => {
           ref="descRichRef"
           v-model:value="descriptionContent"
           class="add-case" />
-        <div v-show="descError" class="text-status-error">{{ t('testPlan.messages.charLimit2000') }}</div>
+        <div v-show="descError" class="text-status-error">
+          {{ t('testPlan.messages.charLimit2000') }}
+        </div>
       </div>
     </template>
 

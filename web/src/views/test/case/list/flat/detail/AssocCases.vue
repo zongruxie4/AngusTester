@@ -149,64 +149,66 @@ const columns = [
 </script>
 <template>
   <div>
-    <div class="flex mb-2 items-center">
+    <div class="flex mb-2 items-center pr-2">
+      <div class="flex-1 ml-1 min-w-0 truncate">
+        <Hints :text="t('testCase.messages.assocCaseTip')" />
+      </div>
+      <Button
+        :disabled="props.dataSource?.length > 19"
+        :loading="isSubmitting"
+        size="small"
+        @click="openCaseSelectionModal">
+        <Icon icon="icon-jia" class="mr-1" />
+        {{ t('testCase.actions.assocCases') }}
+      </Button>
     </div>
-    <div class="flex-1 truncate min-w-0 px-1">
-      <Hints :text="t('testCase.messages.assocCaseTip')" />
-    </div>
-    <Button
-      :disabled="props.dataSource?.length > 19"
-      :loading="isSubmitting"
+
+    <Table
+      :columns="columns"
+      :dataSource="props.dataSource || []"
+      :pagination="false"
       size="small"
-      @click="openCaseSelectionModal">
-      <Icon icon="icon-jia" class="mr-1" />
-      {{ t('testCase.actions.assocCases') }}
-    </Button>
+      noDataSize="small"
+      :noDataText="t('common.noData')">
+      <template #bodyCell="{column, record}">
+        <template v-if="column.dataIndex === 'name'">
+          <Button
+            type="link"
+            size="small"
+            @click="openCaseDetailTab(record)">
+            {{ record.name }}
+          </Button>
+        </template>
+
+        <template v-if="column.dataIndex === 'action'">
+          <Button
+            size="small"
+            type="text"
+            @click="handleRemoveCaseAssociation(record)">
+            <Icon icon="icon-qingchu" class="mr-1" />
+            {{ t('actions.cancel') }}
+          </Button>
+        </template>
+
+        <template v-if="column.dataIndex === 'priority'">
+          <TaskPriority :value="record?.priority" />
+        </template>
+
+        <template v-if="column.dataIndex === 'status'">
+          <ReviewStatus
+            v-if="record?.reviewStatus?.value !== ReviewStatusEnum.PASSED && record.review"
+            :value="record.reviewStatus" />
+          <TestResult v-else :value="record.testResult" />
+        </template>
+      </template>
+    </Table>
+
+    <AsyncComponent :visible="isSelectCaseModalVisible">
+      <SelectCaseByModuleModal
+        v-model:visible="isSelectCaseModalVisible"
+        :projectId="props.projectId"
+        :action="`${TESTER}/func/case/${props.caseId}/case/notAssociated`"
+        @ok="handleAssociateCases" />
+    </AsyncComponent>
   </div>
-
-  <Table
-    :columns="columns"
-    :dataSource="props.dataSource || []"
-    :pagination="false"
-    size="small"
-    noDataSize="small"
-    :noDataText="t('common.noData')">
-    <template #bodyCell="{column, record}">
-      <template v-if="column.dataIndex === 'name'">
-        <Button
-          type="link"
-          size="small"
-          @click="openCaseDetailTab(record)">
-          {{ record.name }}
-        </Button>
-      </template>
-
-      <template v-if="column.dataIndex === 'action'">
-        <Button
-          size="small"
-          type="text"
-          @click="handleRemoveCaseAssociation(record)">
-          <Icon icon="icon-qingchu" class="mr-1" />
-          {{ t('actions.cancel') }}
-        </Button>
-      </template>
-
-      <template v-if="column.dataIndex === 'priority'">
-        <TaskPriority :value="record?.priority" />
-      </template>
-
-      <template v-if="column.dataIndex === 'status'">
-        <ReviewStatus v-if="record?.reviewStatus?.value !== ReviewStatusEnum.PASSED && record.review" :value="record.reviewStatus" />
-        <TestResult v-else :value="record.testResult" />
-      </template>
-    </template>
-  </Table>
-
-  <AsyncComponent :visible="isSelectCaseModalVisible">
-    <SelectCaseByModuleModal
-      v-model:visible="isSelectCaseModalVisible"
-      :projectId="props.projectId"
-      :action="`${TESTER}/func/case/${props.caseId}/case/notAssociated`"
-      @ok="handleAssociateCases" />
-  </AsyncComponent>
 </template>

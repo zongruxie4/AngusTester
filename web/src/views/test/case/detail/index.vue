@@ -572,7 +572,8 @@ defineExpose({
           class="mt-2 mr-2"
           :disabled="hasPreviousData"
           @click="navigateToAdjacentCase('before')">
-          <Icon class="mr-1" icon="icon-chakanshangyitiao" />{{ t('actions.previousItem') }}
+          <Icon class="mr-1" icon="icon-chakanshangyitiao" />
+          {{ t('actions.previousItem') }}
         </Button>
 
         <Button
@@ -580,7 +581,8 @@ defineExpose({
           class="mt-2 mr-2"
           :disabled="hasNextData"
           @click="navigateToAdjacentCase('after')">
-          <Icon class="mr-1" icon="icon-chakanxiayitiao" />{{ t('actions.nextItem') }}
+          <Icon class="mr-1" icon="icon-chakanxiayitiao" />
+          {{ t('actions.nextItem') }}
         </Button>
       </div>
     </div>
@@ -596,9 +598,7 @@ defineExpose({
           size="small"
           class="mr-2"
           @click="refreshActiveTabContent">
-          <Icon
-            icon="icon-shuaxin"
-            class="mr-1" />
+          <Icon icon="icon-shuaxin" class="mr-1" />
           {{ t('actions.refresh') }}
         </Button>
       </template>

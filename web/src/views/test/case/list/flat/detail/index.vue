@@ -9,10 +9,9 @@ import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { CaseTestResult, SoftwareVersionStatus } from '@/enums/enums';
 
 import {
@@ -754,11 +753,10 @@ onBeforeUnmount(() => {
                   :placeholder="t('common.name')"
                   @blur="editName" />
               </template>
-
               <template v-else>
                 <span> {{ text }}
                   <Icon
-                    v-if="props.actionAuth.includes('edit')"
+                    v-if="props.actionAuth['edit']"
                     class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer flex-none -mt-1"
                     icon="icon-shuxie"
                     @click="openEditName" />
@@ -786,11 +784,10 @@ onBeforeUnmount(() => {
                   </template>
                 </SelectEnum>
               </template>
-
               <template v-else>
                 <TaskPriority :value="text" />
                 <Icon
-                  v-if="props.actionAuth.includes('edit')"
+                  v-if="props.actionAuth['edit']"
                   class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer flex-none"
                   icon="icon-shuxie"
                   @click="openEditPriority" />
@@ -816,7 +813,6 @@ onBeforeUnmount(() => {
                   class="w-full"
                   @blur="editTag" />
               </template>
-
               <template v-else>
                 <div class="inline-flex items-center leading-6">
                   <Tag
@@ -829,7 +825,7 @@ onBeforeUnmount(() => {
                   </Tag>
                   <template v-if="!text?.length">--</template>
                   <Icon
-                    v-if="props.actionAuth.includes('edit')"
+                    v-if="props.actionAuth['edit']"
                     :class="{'transform-gpu':text?.length}"
                     class="ml-2.5 text-3 text-theme-special text-theme-text-hover cursor-pointer "
                     icon="icon-shuxie"
@@ -859,7 +855,7 @@ onBeforeUnmount(() => {
               <template v-else>
                 {{ text || '--' }}
                 <Icon
-                  v-if="props.actionAuth.includes('edit')"
+                  v-if="props.actionAuth['edit']"
                   class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
                   icon="icon-shuxie"
                   @click="openEditEvalWorkload" />
@@ -894,11 +890,10 @@ onBeforeUnmount(() => {
                   class="w-65 absolute -top-1.25"
                   @blur="editActualWorkload" />
               </template>
-
               <template v-else>
                 {{ text || '--' }}
                 <Icon
-                  v-if="props.actionAuth.includes('edit') && caseDetail?.evalWorkload"
+                  v-if="props.actionAuth['edit'] && caseDetail?.evalWorkload"
                   class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
                   icon="icon-shuxie"
                   @click="openEditActualWorkload" />
@@ -1026,12 +1021,12 @@ onBeforeUnmount(() => {
               <template v-else>
                 <span>{{ text }}</span>
                 <Icon
-                  v-if="props.actionAuth.includes('edit')"
+                  v-if="props.actionAuth['edit']"
                   icon="icon-xiugai"
                   class="text-3.5 text-theme-special text-theme-text-hover cursor-pointer ml-2"
                   @click="handleEditTester" />
                 <Button
-                  v-if="props.actionAuth.includes('edit') && caseDetail.testerId !== userInfo?.id"
+                  v-if="props.actionAuth['edit'] && caseDetail.testerId !== userInfo?.id"
                   :loading="saveTesterLoading"
                   type="link"
                   size="small"
@@ -1059,7 +1054,7 @@ onBeforeUnmount(() => {
                 <template v-if="!isEditDisabledDate">
                   {{ text }}
                   <Icon
-                    v-if="props.actionAuth.includes('edit')"
+                    v-if="props.actionAuth['edit']"
                     class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer -mt-0.5"
                     icon="icon-shuxie"
                     @click="openEditDeadlineDate" />
@@ -1123,7 +1118,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('common.precondition') }}</span>
+            <span class="text-3.5">{{ t('common.precondition') }}</span>
             <template v-if="isEditPrecondition">
               <Button
                 class="font-normal text-theme-special"
@@ -1141,7 +1136,7 @@ onBeforeUnmount(() => {
               </Button>
             </template>
             <Icon
-              v-else-if="props.actionAuth.includes('edit')"
+              v-else-if="props.actionAuth['edit']"
               icon="icon-xiugai"
               class="text-3.5 text-theme-special text-theme-text-hover cursor-pointer"
               @click="handleEditPrecondition" />
@@ -1175,7 +1170,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('common.testSteps') }}</span>
+            <span class="text-3.5">{{ t('common.testSteps') }}</span>
             <template v-if="isEditSteps">
               <Button
                 class="font-normal text-theme-special"
@@ -1193,7 +1188,7 @@ onBeforeUnmount(() => {
               </Button>
             </template>
             <Icon
-              v-else-if="props.actionAuth.includes('edit')"
+              v-else-if="props.actionAuth['edit']"
               icon="icon-xiugai"
               class="text-3.5 text-theme-special text-theme-text-hover cursor-pointer"
               @click="handleEditSteps" />
@@ -1223,7 +1218,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('common.description') }}</span>
+            <span class="text-3.5">{{ t('common.description') }}</span>
             <template v-if="isEditDescription">
               <Button
                 class="font-normal text-theme-special"
@@ -1241,7 +1236,7 @@ onBeforeUnmount(() => {
               </Button>
             </template>
             <Icon
-              v-else-if="props.actionAuth.includes('edit')"
+              v-else-if="props.actionAuth['edit']"
               icon="icon-xiugai"
               class="text-3.5 cursor-pointer text-theme-special text-theme-text-hover "
               @click="handleEditDescription" />
@@ -1307,7 +1302,7 @@ onBeforeUnmount(() => {
             </template>
 
             <div class="flex justify-around h-6">
-              <template v-if="props.actionAuth.includes('edit') && (caseDetail?.attachments?.length || 0) < 5">
+              <template v-if="props.actionAuth['edit'] && (caseDetail?.attachments?.length || 0) < 5">
                 <Upload
                   :fileList="[]"
                   name="file"
@@ -1345,12 +1340,12 @@ onBeforeUnmount(() => {
             <template v-else>
               <span>{{ text }}</span>
               <Icon
-                v-if="props.actionAuth.includes('edit')"
+                v-if="props.actionAuth['edit']"
                 icon="icon-xiugai"
                 class="text-3.5 text-theme-special text-theme-text-hover cursor-pointer ml-2"
                 @click="handleEditTester" />
               <Button
-                v-if="props.actionAuth.includes('edit') && caseDetail.testerId !== userInfo?.id"
+                v-if="props.actionAuth['edit'] && caseDetail.testerId !== userInfo?.id"
                 :loading="saveTesterLoading"
                 type="link"
                 size="small"
@@ -1379,7 +1374,7 @@ onBeforeUnmount(() => {
               <template v-if="!isEditDisabledDate">
                 {{ text }}
                 <Icon
-                  v-if="props.actionAuth.includes('edit')"
+                  v-if="props.actionAuth['edit']"
                   class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer -mt-0.5"
                   icon="icon-shuxie"
                   @click="openEditDeadlineDate" />
@@ -1471,7 +1466,7 @@ onBeforeUnmount(() => {
           </template>
 
           <div class="flex justify-around h-6">
-            <template v-if="props.actionAuth.includes('edit') && (caseDetail?.attachments?.length || 0) < 5">
+            <template v-if="props.actionAuth['edit'] && (caseDetail?.attachments?.length || 0) < 5">
               <Upload
                 :fileList="[]"
                 name="file"
@@ -1486,3 +1481,5 @@ onBeforeUnmount(() => {
     </div>
   </div>
 </template>
+<style scoped>
+</style>

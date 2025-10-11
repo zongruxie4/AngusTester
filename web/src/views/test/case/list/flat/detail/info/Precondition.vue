@@ -9,7 +9,7 @@ import { testCase } from '@/api/tester';
 const { t } = useI18n();
 
 interface Props {
-  caseInfo?: { precondition: string};
+  caseInfo?: { id: number; precondition: string};
   contentClass: string;
   readonly: boolean;
 }
@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: true
 });
 
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'change'): void;
@@ -80,15 +81,15 @@ const getJson = (value) => {
   }
 };
 
+const caseId = computed(() => {
+  return props?.caseInfo?.id;
+});
+
 onMounted(() => {
   watch(() => props.caseInfo, (newValue) => {
     content.value = getJson(newValue?.precondition || '');
   }, { immediate: true });
 });
-const caseId = computed(() => {
-  return props?.caseInfo?.id;
-});
-
 </script>
 <template>
   <div class="bg-white rounded-lg">
