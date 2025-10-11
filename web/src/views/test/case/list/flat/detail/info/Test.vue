@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { Grid } from '@xcan-angus/vue-ui';
+import { computed, ref } from 'vue';
+import { Grid, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
 import { CaseTestResult } from '@/enums/enums';
@@ -26,6 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+const testExpand = ref(true);
+
 /**
  * <p>Calculates if the test passed on first attempt.</p>
  * <p>Returns 'Yes' if test passed with no failures, 'No' otherwise, or '--' if no tests.</p>
@@ -42,19 +44,30 @@ const getOneTestPass = computed(() => {
 });
 </script>
 <template>
-  <Grid
-    :columns="columns"
-    :dataSource="dataSource"
-    :spacing="20"
-    :marginBottom="4"
-    labelSpacing="10px"
-    font-size="12px"
-    class="pt-2 pl-5.5">
-    <template #oneTestPass>
-      {{ getOneTestPass }}
-    </template>
-    <template #testResult="{text}">
-      <TestResult :value="text" />
-    </template>
-  </Grid>
+  <Toggle
+    v-model:open="testExpand"
+    :title="t('common.test')"
+    class="mt-3.5">
+    <Grid
+      :columns="columns"
+      :dataSource="dataSource"
+      :spacing="20"
+      :marginBottom="4"
+      labelSpacing="10px"
+      font-size="12px"
+      class="pt-2 pl-5.5">
+      <template #oneTestPass>
+        {{ getOneTestPass }}
+      </template>
+      <template #testResult="{text}">
+        <TestResult :value="text" />
+      </template>
+    </Grid>
+  </Toggle>
 </template>
+
+<style scoped>
+:deep(.toggle-title) {
+  @apply text-3.5;
+}
+</style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue';
-import { Grid, Icon, SelectUser } from '@xcan-angus/vue-ui';
+import { Grid, Icon, SelectUser, Toggle } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
@@ -37,6 +37,7 @@ const testerSelectRef = ref();
 const isEditTester = ref(false);
 const testerIcContent = ref();
 const saveTesterLoading = ref(false);
+const personnelExpand = ref(true);
 
 /**
  * <p>Enter editing mode for tester selector.</p>
@@ -106,40 +107,49 @@ const handleSetTester = async () => {
 };
 </script>
 <template>
-  <Grid
-    :columns="columns"
-    :dataSource="dataSource"
-    :spacing="20"
-    :marginBottom="4"
-    labelSpacing="10px"
-    font-size="12px"
-    class="pt-2 pl-5.5">
-    <template #testerName="{text}">
-      <template v-if="isEditTester">
-        <SelectUser
-          ref="testerSelectRef"
-          v-model:value="testerIcContent"
-          class="flex-1"
-          size="small"
-          @blur="saveTester" />
+  <Toggle
+    v-model:open="personnelExpand"
+    :title="t('common.personnel')">
+    <Grid
+      :columns="columns"
+      :dataSource="dataSource"
+      :spacing="20"
+      :marginBottom="4"
+      labelSpacing="10px"
+      font-size="12px"
+      class="pt-2 pl-5.5">
+      <template #testerName="{text}">
+        <template v-if="isEditTester">
+          <SelectUser
+            ref="testerSelectRef"
+            v-model:value="testerIcContent"
+            class="flex-1"
+            size="small"
+            @blur="saveTester" />
+        </template>
+        <template v-else>
+          <span>{{ text }}</span>
+          <Icon
+            v-if="props.actionAuth['edit']"
+            icon="icon-xiugai"
+            class="text-3.5 text-theme-special text-theme-text-hover cursor-pointer ml-2"
+            @click="handleEditTester" />
+          <Button
+            v-if="props.actionAuth['edit'] && dataSource.testerId !== appContext.getUser()?.id"
+            :loading="saveTesterLoading"
+            type="link"
+            size="small"
+            class="p-0 h-3.5 leading-3.5 ml-1"
+            @click="handleSetTester">
+            {{ t('actions.assignToMe') }}
+          </Button>
+        </template>
       </template>
-      <template v-else>
-        <span>{{ text }}</span>
-        <Icon
-          v-if="props.actionAuth['edit']"
-          icon="icon-xiugai"
-          class="text-3.5 text-theme-special text-theme-text-hover cursor-pointer ml-2"
-          @click="handleEditTester" />
-        <Button
-          v-if="props.actionAuth['edit'] && dataSource.testerId !== appContext.getUser()?.id"
-          :loading="saveTesterLoading"
-          type="link"
-          size="small"
-          class="p-0 h-3.5 leading-3.5 ml-1"
-          @click="handleSetTester">
-          {{ t('actions.assignToMe') }}
-        </Button>
-      </template>
-    </template>
-  </Grid>
+    </Grid>
+  </Toggle>
 </template>
+<style scoped>
+:deep(.toggle-title) {
+  @apply text-3.5;
+}
+</style>

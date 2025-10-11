@@ -90,7 +90,6 @@ const savePrecondition = async () => {
   emit('change', { precondition: preconditionContent.value });
 };
 </script>
-
 <template>
   <Toggle
     v-model:open="preconditionExpand"

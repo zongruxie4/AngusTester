@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue';
-import { Grid, Icon, DatePicker, notification } from '@xcan-angus/vue-ui';
+import { Grid, Icon, DatePicker, notification, Toggle } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
@@ -37,6 +37,7 @@ const datePickerRef = ref();
 const isEditDisabledDate = ref(false);
 const deadlineDate = ref(dayjs().add(1, 'day').format(DATE_TIME_FORMAT));
 const loading = ref(false);
+const dateExpand = ref(true);
 
 /**
  * <p>Disable date before yesterday end-of-day.</p>
@@ -90,38 +91,47 @@ const editDeadlineDate = async () => {
   emit('change', { deadlineDate: deadlineDate.value });
 };
 </script>
-
 <template>
-  <Grid
-    :columns="columns"
-    :dataSource="dataSource"
-    :marginBottom="4"
-    labelSpacing="10px"
-    font-size="12px"
-    class="pt-2 pl-5.5">
-    <template #deadlineDate="{ text }">
-      <div class="flex items-center relative w-full">
-        <template v-if="!isEditDisabledDate">
-          {{ text }}
-          <Icon
-            v-if="props.actionAuth['edit']"
-            class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer -mt-0.5"
-            icon="icon-shuxie"
-            @click="openEditDeadlineDate" />
-        </template>
-        <template v-else>
-          <DatePicker
-            ref="datePickerRef"
-            v-model:value="deadlineDate"
-            :allowClear="false"
-            :disabledDate="disabledDate"
-            :showTime="{ efaultValue: dayjs('00:00:00', TIME_FORMAT) }"
-            size="small"
-            type="date"
-            class="w-full absolute -top-1.25"
-            @blur="editDeadlineDate" />
-        </template>
-      </div>
-    </template>
-  </Grid>
+  <Toggle
+    v-model:open="dateExpand"
+    :title="t('common.date')"
+    class="mt-3.5">
+    <Grid
+      :columns="columns"
+      :dataSource="dataSource"
+      :marginBottom="4"
+      labelSpacing="10px"
+      font-size="12px"
+      class="pt-2 pl-5.5">
+      <template #deadlineDate="{ text }">
+        <div class="flex items-center relative w-full">
+          <template v-if="!isEditDisabledDate">
+            {{ text }}
+            <Icon
+              v-if="props.actionAuth['edit']"
+              class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer -mt-0.5"
+              icon="icon-shuxie"
+              @click="openEditDeadlineDate" />
+          </template>
+          <template v-else>
+            <DatePicker
+              ref="datePickerRef"
+              v-model:value="deadlineDate"
+              :allowClear="false"
+              :disabledDate="disabledDate"
+              :showTime="{ efaultValue: dayjs('00:00:00', TIME_FORMAT) }"
+              size="small"
+              type="date"
+              class="w-full absolute -top-1.25"
+              @blur="editDeadlineDate" />
+          </template>
+        </div>
+      </template>
+    </Grid>
+  </Toggle>
 </template>
+<style scoped>
+:deep(.toggle-title) {
+  @apply text-3.5;
+}
+</style>

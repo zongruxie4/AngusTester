@@ -606,7 +606,7 @@ defineExpose({
       <TabPane
         key="info"
         class="h-full"
-        :tab="t('common.basicInfo')">
+        :tab="t('common.detail')">
         <CaseDetailTab
           :caseDetail="caseDetail"
           :currentCaseActionPermissions="currentCaseActionPermissions"

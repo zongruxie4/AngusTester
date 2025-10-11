@@ -68,6 +68,7 @@
     "execName": "执行名",
     "execStatus": "执行状态",
     "execResult": "执行结果",
+    "test": "测试",
     "testType": "测试类型",
     "testResult": "测试结果",
     "testSteps": "测试步骤",

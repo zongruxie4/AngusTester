@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
-import { Grid, Icon, Input, Select, ReviewStatus } from '@xcan-angus/vue-ui';
+import { Grid, Icon, Input, Select, ReviewStatus, Toggle } from '@xcan-angus/vue-ui';
 import { Button, Popover, Tag } from 'ant-design-vue';
 import { EvalWorkloadMethod, Priority, TESTER, utils, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
@@ -60,6 +60,7 @@ const isEditTag = ref(false);
 const editTagLoading = ref(false);
 const isVersionEditMode = ref(false);
 const selectedVersionValue = ref();
+const infoExpand = ref(true);
 
 // Computed properties
 const infoColumns = computed(() => [
@@ -294,267 +295,276 @@ const handleVersionBlur = async () => {
 };
 </script>
 <template>
-  <Grid
-    :columns="infoColumns"
-    :dataSource="dataSource"
-    :spacing="20"
-    :marginBottom="4"
-    labelSpacing="10px"
-    font-size="12px"
-    class="pt-2 pl-5.5">
-    <template #name="{text}">
-      <div class="flex items-center w-full relative">
-        <template v-if="isEditName">
-          <Input
-            ref="nameInputRef"
-            :value="text"
-            :allowClear="false"
-            :maxlength="200"
-            size="small"
-            class="absolute -top-1.25"
-            :placeholder="t('common.name')"
-            @blur="editName" />
-        </template>
-        <template v-else>
-          <span> {{ text }}
+  <Toggle
+    v-model:open="infoExpand"
+    :title="t('common.basicInfo')">
+    <Grid
+      :columns="infoColumns"
+      :dataSource="dataSource"
+      :spacing="20"
+      :marginBottom="4"
+      labelSpacing="10px"
+      font-size="12px"
+      class="pt-2 pl-5.5">
+      <template #name="{text}">
+        <div class="flex items-center w-full relative">
+          <template v-if="isEditName">
+            <Input
+              ref="nameInputRef"
+              :value="text"
+              :allowClear="false"
+              :maxlength="200"
+              size="small"
+              class="absolute -top-1.25"
+              :placeholder="t('common.name')"
+              @blur="editName" />
+          </template>
+          <template v-else>
+            <span> {{ text }}
+              <Icon
+                v-if="props.actionAuth['edit']"
+                class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer flex-none -mt-1"
+                icon="icon-shuxie"
+                @click="openEditName" />
+            </span>
+          </template>
+        </div>
+      </template>
+
+      <template #priority="{text}">
+        <div class="flex items-center relative">
+          <template v-if="isEditPriority">
+            <SelectEnum
+              ref="priorityRef"
+              v-model:value="priority"
+              :allowClear="false"
+              :disabled="editPriorityLoading"
+              :autofocus="isEditPriority"
+              enumKey="Priority"
+              size="small"
+              class="w-52 absolute -top-1.25"
+              :placeholder="t('common.priority')"
+              @blur="editPriority(priority as Priority)">
+              <template #option="item">
+                <TaskPriority :value="item as any" />
+              </template>
+            </SelectEnum>
+          </template>
+          <template v-else>
+            <TaskPriority :value="text" />
             <Icon
               v-if="props.actionAuth['edit']"
-              class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer flex-none -mt-1"
+              class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer flex-none"
               icon="icon-shuxie"
-              @click="openEditName" />
-          </span>
-        </template>
-      </div>
-    </template>
+              @click="openEditPriority" />
+          </template>
+        </div>
+      </template>
 
-    <template #priority="{text}">
-      <div class="flex items-center relative">
-        <template v-if="isEditPriority">
-          <SelectEnum
-            ref="priorityRef"
-            v-model:value="priority"
-            :allowClear="false"
-            :disabled="editPriorityLoading"
-            :autofocus="isEditPriority"
-            enumKey="Priority"
-            size="small"
-            class="w-52 absolute -top-1.25"
-            :placeholder="t('common.priority')"
-            @blur="editPriority(priority as Priority)">
-            <template #option="item">
-              <TaskPriority :value="item as any" />
-            </template>
-          </SelectEnum>
+      <template #tags="{text}">
+        <div class="flex items-center flex-wrap">
+          <template v-if="isEditTag">
+            <Select
+              ref="tagsSelectRef"
+              v-model:value="tagsIds"
+              showSearch
+              :defaultOptions="defaultTags"
+              :fieldNames="{ label: 'label', value: 'value' }"
+              :maxTags="5"
+              :placeholder="t('common.tag')"
+              :class="{'border-error':tagsIds && tagsIds.length > 5 }"
+              :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
+              mode="multiple"
+              size="small"
+              class="w-full"
+              @blur="editTag" />
+          </template>
+          <template v-else>
+            <div class="inline-flex items-center leading-6">
+              <Tag
+                v-for="(tag,index) in (text || [])"
+                :key="tag.id"
+                :class="{'min-w-17.5':!tag.name,'last-child':index===text.length-1}"
+                color="rgba(252, 253, 255, 1)"
+                class="text-3 px-2 font-normal text-theme-sub-content mr-2 h-6 py-1 border-border-divider">
+                {{ tag.name }}
+              </Tag>
+              <template v-if="!text?.length">--</template>
+              <Icon
+                v-if="props.actionAuth['edit']"
+                :class="{'transform-gpu':text?.length}"
+                class="ml-2.5 text-3 text-theme-special text-theme-text-hover cursor-pointer "
+                icon="icon-shuxie"
+                @click="openEditTag" />
+            </div>
+          </template>
+        </div>
+      </template>
+
+      <template #evalWorkload="{text}">
+        <div class="flex items-center relative">
+          <template v-if="isEditEvalWorkload">
+            <Input
+              ref="evalWorkloadInputRef"
+              :value="dataSource?.evalWorkload?.toString()"
+              :allowClear="false"
+              :autofocus="isEditEvalWorkload"
+              :min="0.1"
+              :max="1000"
+              :placeholder="t('common.placeholders.inputEvalWorkload')"
+              dataType="float"
+              size="small"
+              class="w-65 absolute -top-1.25"
+              @blur="editEvalWorkload" />
+          </template>
+
+          <template v-else>
+            {{ text || '--' }}
+            <Icon
+              v-if="props.actionAuth['edit']"
+              class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
+              icon="icon-shuxie"
+              @click="openEditEvalWorkload" />
+            <Popover
+              placement="rightTop"
+              arrowPointAtCenter>
+              <template #content>
+                <div class="text-3 text-theme-sub-content max-w-75 leading-4">
+                  {{ dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                    ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
+                </div>
+              </template>
+              <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
+            </Popover>
+          </template>
+        </div>
+      </template>
+
+      <template #actualWorkload="{text}">
+        <div class="flex items-center relative">
+          <template v-if="isEditActualWorkload">
+            <Input
+              ref="actualWorkloadInputRef"
+              :value="actualWorkloadValue"
+              :allowClear="false"
+              :autofocus="isEditActualWorkload"
+              :min="0.1"
+              :max="1000"
+              :placeholder="t('common.placeholders.inputActualWorkload')"
+              dataType="float"
+              size="small"
+              class="w-65 absolute -top-1.25"
+              @blur="editActualWorkload" />
+          </template>
+          <template v-else>
+            {{ text || '--' }}
+            <Icon
+              v-if="props.actionAuth['edit'] && dataSource?.evalWorkload"
+              class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
+              icon="icon-shuxie"
+              @click="openEditActualWorkload" />
+            <Popover
+              placement="rightTop"
+              arrowPointAtCenter>
+              <template #content>
+                <div class="text-3 text-theme-sub-content max-w-75 leading-4">
+                  {{ dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                    ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
+                </div>
+              </template>
+              <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
+            </Popover>
+          </template>
+        </div>
+      </template>
+
+      <template #planName="{text}">
+        <span>
+          <Icon icon="icon-jihua" class="mr-1.25 flex-none -mt-0.25" />{{ text }}
+        </span>
+      </template>
+
+      <template #moduleName="{text}">
+        <template v-if="!text">
+          --
+        </template>
+        <div v-else class="-mt-1 flex">
+          <Tag
+            class="px-0 py-1 font-normal text-theme-content rounded bg-white flex border-none">
+            <Icon icon="icon-mokuai" class="mr-1.25 flex-none mt-0.5" />
+            <div class="flex-1  whitespace-break-spaces break-all leading-4">{{ text }}</div>
+          </Tag>
+        </div>
+      </template>
+
+      <template #reviewStatus="{text}">
+        <template v-if="text">
+          <ReviewStatus :value="text" />
         </template>
         <template v-else>
-          <TaskPriority :value="text" />
-          <Icon
-            v-if="props.actionAuth['edit']"
-            class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer flex-none"
-            icon="icon-shuxie"
-            @click="openEditPriority" />
+          --
         </template>
-      </div>
-    </template>
+      </template>
 
-    <template #tags="{text}">
-      <div class="flex items-center flex-wrap">
-        <template v-if="isEditTag">
+      <template #testResult="{text}">
+        <div class="flex items-center">
+          <TestResult :value="text" />
+          <div
+            v-if="dataSource?.overdue"
+            class="border border-status-error rounded px-0.5 ml-5"
+            style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
+            {{ t('status.overdue') }}
+          </div>
+        </div>
+      </template>
+
+      <template #version="{text}">
+        <span v-if="text">v{{ text }}</span>
+        <template v-else>--</template>
+      </template>
+
+      <template #softwareVersion="{text}">
+        <template v-if="isVersionEditMode">
           <Select
-            ref="tagsSelectRef"
-            v-model:value="tagsIds"
-            showSearch
-            :defaultOptions="defaultTags"
-            :fieldNames="{ label: 'label', value: 'value' }"
-            :maxTags="5"
-            :placeholder="t('common.tag')"
-            :class="{'border-error':tagsIds && tagsIds.length > 5 }"
-            :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
-            mode="multiple"
-            size="small"
-            class="w-full"
-            @blur="editTag" />
+            ref="versionRef"
+            v-model:value="selectedVersionValue"
+            allowClear
+            :placeholder="t('common.placeholders.selectSoftwareVersion')"
+            lazy
+            class="w-full max-w-60"
+            :action="`${TESTER}/software/version?projectId=${projectId}`"
+            :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: SearchCriteria.OpEnum.In}]}"
+            :fieldNames="{value:'name', label: 'name'}"
+            @blur="handleVersionBlur"
+            @change="handleVersionChange">
+          </Select>
         </template>
+
         <template v-else>
-          <div class="inline-flex items-center leading-6">
-            <Tag
-              v-for="(tag,index) in (text || [])"
-              :key="tag.id"
-              :class="{'min-w-17.5':!tag.name,'last-child':index===text.length-1}"
-              color="rgba(252, 253, 255, 1)"
-              class="text-3 px-2 font-normal text-theme-sub-content mr-2 h-6 py-1 border-border-divider">
-              {{ tag.name }}
-            </Tag>
-            <template v-if="!text?.length">--</template>
-            <Icon
-              v-if="props.actionAuth['edit']"
-              :class="{'transform-gpu':text?.length}"
-              class="ml-2.5 text-3 text-theme-special text-theme-text-hover cursor-pointer "
-              icon="icon-shuxie"
-              @click="openEditTag" />
+          <div class="flex space-x-1">
+            <RouterLink
+              v-if="dataSource?.softwareVersion"
+              class="text-theme-special"
+              :to="`/task#version?name=${dataSource?.softwareVersion}`">
+              {{ dataSource?.softwareVersion }}
+            </RouterLink>
+            <template v-else>
+              --
+            </template>
+            <Button
+              type="link"
+              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
+              @click="openVersionEditMode">
+              <Icon icon="icon-shuxie" class="text-3.5" />
+            </Button>
           </div>
         </template>
-      </div>
-    </template>
-
-    <template #evalWorkload="{text}">
-      <div class="flex items-center relative">
-        <template v-if="isEditEvalWorkload">
-          <Input
-            ref="evalWorkloadInputRef"
-            :value="dataSource?.evalWorkload?.toString()"
-            :allowClear="false"
-            :autofocus="isEditEvalWorkload"
-            :min="0.1"
-            :max="1000"
-            :placeholder="t('common.placeholders.inputEvalWorkload')"
-            dataType="float"
-            size="small"
-            class="w-65 absolute -top-1.25"
-            @blur="editEvalWorkload" />
-        </template>
-
-        <template v-else>
-          {{ text || '--' }}
-          <Icon
-            v-if="props.actionAuth['edit']"
-            class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
-            icon="icon-shuxie"
-            @click="openEditEvalWorkload" />
-          <Popover
-            placement="rightTop"
-            arrowPointAtCenter>
-            <template #content>
-              <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                {{ dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                  ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
-              </div>
-            </template>
-            <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
-          </Popover>
-        </template>
-      </div>
-    </template>
-
-    <template #actualWorkload="{text}">
-      <div class="flex items-center relative">
-        <template v-if="isEditActualWorkload">
-          <Input
-            ref="actualWorkloadInputRef"
-            :value="actualWorkloadValue"
-            :allowClear="false"
-            :autofocus="isEditActualWorkload"
-            :min="0.1"
-            :max="1000"
-            :placeholder="t('common.placeholders.inputActualWorkload')"
-            dataType="float"
-            size="small"
-            class="w-65 absolute -top-1.25"
-            @blur="editActualWorkload" />
-        </template>
-        <template v-else>
-          {{ text || '--' }}
-          <Icon
-            v-if="props.actionAuth['edit'] && dataSource?.evalWorkload"
-            class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
-            icon="icon-shuxie"
-            @click="openEditActualWorkload" />
-          <Popover
-            placement="rightTop"
-            arrowPointAtCenter>
-            <template #content>
-              <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                {{ dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                  ? t('testCase.messages.storyPointsHint') : t('testCase.messages.storyWorkHoursHint') }}
-              </div>
-            </template>
-            <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
-          </Popover>
-        </template>
-      </div>
-    </template>
-
-    <template #planName="{text}">
-      <span>
-        <Icon icon="icon-jihua" class="mr-1.25 flex-none -mt-0.25" />{{ text }}
-      </span>
-    </template>
-
-    <template #moduleName="{text}">
-      <template v-if="!text">
-        --
       </template>
-      <div v-else class="-mt-1 flex">
-        <Tag
-          class="px-0 py-1 font-normal text-theme-content rounded bg-white flex border-none">
-          <Icon icon="icon-mokuai" class="mr-1.25 flex-none mt-0.5" />
-          <div class="flex-1  whitespace-break-spaces break-all leading-4">{{ text }}</div>
-        </Tag>
-      </div>
-    </template>
-
-    <template #reviewStatus="{text}">
-      <template v-if="text">
-        <ReviewStatus :value="text" />
-      </template>
-      <template v-else>
-        --
-      </template>
-    </template>
-
-    <template #testResult="{text}">
-      <div class="flex items-center">
-        <TestResult :value="text" />
-        <div
-          v-if="dataSource?.overdue"
-          class="border border-status-error rounded px-0.5 ml-5"
-          style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-          {{ t('status.overdue') }}
-        </div>
-      </div>
-    </template>
-
-    <template #version="{text}">
-      <span v-if="text">v{{ text }}</span>
-      <template v-else>--</template>
-    </template>
-
-    <template #softwareVersion="{text}">
-      <template v-if="isVersionEditMode">
-        <Select
-          ref="versionRef"
-          v-model:value="selectedVersionValue"
-          allowClear
-          :placeholder="t('common.placeholders.selectSoftwareVersion')"
-          lazy
-          class="w-full max-w-60"
-          :action="`${TESTER}/software/version?projectId=${projectId}`"
-          :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: SearchCriteria.OpEnum.In}]}"
-          :fieldNames="{value:'name', label: 'name'}"
-          @blur="handleVersionBlur"
-          @change="handleVersionChange">
-        </Select>
-      </template>
-
-      <template v-else>
-        <div class="flex space-x-1">
-          <RouterLink
-            v-if="dataSource?.softwareVersion"
-            class="text-theme-special"
-            :to="`/task#version?name=${dataSource?.softwareVersion}`">
-            {{ dataSource?.softwareVersion }}
-          </RouterLink>
-          <template v-else>
-            --
-          </template>
-          <Button
-            type="link"
-            class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="openVersionEditMode">
-            <Icon icon="icon-shuxie" class="text-3.5" />
-          </Button>
-        </div>
-      </template>
-    </template>
-  </Grid>
+    </Grid>
+  </Toggle>
 </template>
+<style scoped>
+:deep(.toggle-title) {
+  @apply text-3.5;
+}
+</style>

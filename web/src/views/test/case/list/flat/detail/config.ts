@@ -41,20 +41,20 @@ export const minPeopleInfoColumns = [
 export const bigDateInfoColumns = [
   [
     {
-      label: t('common.reviewDate'),
-      dataIndex: 'reviewDate'
-    },
-    {
-      label: t('common.completedDate'),
-      dataIndex: 'testResultHandleDate'
-    },
-    {
       label: t('common.createdDate'),
       dataIndex: 'createdDate'
     },
     {
       label: t('common.deadlineDate'),
       dataIndex: 'deadlineDate'
+    },
+    {
+      label: t('common.reviewDate'),
+      dataIndex: 'reviewDate'
+    },
+    {
+      label: t('common.completedDate'),
+      dataIndex: 'testResultHandleDate'
     },
     {
       label: t('common.lastModifiedDate'),
@@ -78,7 +78,7 @@ export const minDateInfoColumns = [
 export const bigReviewInfoColumns = [
   [
     {
-      label: t('testCase.messages.enableReview'),
+      label: t('status.enabled'),
       dataIndex: 'review',
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },
@@ -120,7 +120,7 @@ export const bigTestInfoColumns = [
       dataIndex: 'testNum'
     },
     {
-      label: t('common.counts.failedCount'),
+      label: t('common.counts.testFailCount'),
       dataIndex: 'testFailNum'
     },
     {
@@ -128,7 +128,7 @@ export const bigTestInfoColumns = [
       dataIndex: 'oneTestPass'
     },
     {
-      label: t('common.reviewOpinion'),
+      label: t('common.testResult'),
       dataIndex: 'testRemark'
     }
   ]
