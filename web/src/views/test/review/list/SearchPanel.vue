@@ -5,12 +5,15 @@ import { PageQuery, SearchCriteria, enumUtils, appContext } from '@xcan-angus/in
 import { FuncPlanStatus } from '@/enums/enums';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { LoadingProps } from '@/types/types';
 import { QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig } from '@/components/quickSearch';
 
 // Props and Component Setup
-const props = withDefaults(defineProps<LoadingProps>(), {
-  loading: false
+const props = withDefaults(defineProps<{
+  loading: boolean;
+  userId: string;
+}>(), {
+  loading: false,
+  userId: ''
 });
 
 const { t } = useI18n();
@@ -27,6 +30,7 @@ const emits = defineEmits<{
 // State Management
 const currentUser = ref(appContext.getUser());
 const searchPanelRef = ref();
+const quickSearchOptionsRef = ref();
 const planStatusOptions = ref<{name: string; key: string}[]>([]);
 
 // Search State
@@ -35,7 +39,7 @@ const quickSearchFilters = ref<SearchCriteria[]>([]);
 const associatedFilters = ref<SearchCriteria[]>([]);
 const currentOrderBy = ref();
 const currentOrderSort = ref();
-const associatedKeys = ['ownerId'];
+const associatedKeys = ['ownerId', 'createdDate'];
 
 /**
  * Quick search configuration for review search panel
@@ -167,14 +171,20 @@ const getSearchParameters = () => {
  * Handles search criteria changes from the search panel
  * @param searchCriteria - The new search criteria
  */
-const handleSearchChange = (searchCriteria: SearchCriteria[]) => {
+const handleSearchChange = (searchCriteria: SearchCriteria[], _headers?: { [key: string]: string }, key?: string) => {
   // Merge search panel filters with quick search filters
-  const quickSearchFields = ['ownerId', 'createdBy', 'lastModifiedBy', 'status', 'createdDate'];
-  const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
-  const searchPanelFilters = searchCriteria.filter(f => f.key && !quickSearchFields.includes(f.key as string));
+  if (key === 'ownerId') {
+    quickSearchOptionsRef.value.clearSelectedMap(['ownedByMe']);
+    quickSearchFilters.value = quickSearchFilters.value.filter(f => f.key !== 'ownerId');
+  }
 
-  searchFilters.value = [...currentQuickSearchFilters, ...searchPanelFilters];
-  associatedFilters.value = searchCriteria.filter(item => associatedKeys.includes(item.key));
+  if (key === 'createdDate') {
+    quickSearchOptionsRef.value.clearSelectedMap(['createdDate', 'last1Day', 'last3Days', 'last7Days']);
+    quickSearchFilters.value = quickSearchFilters.value.filter(f => f.key !== 'createdDate');
+  }
+
+  searchFilters.value = [...(searchCriteria || []).filter(f => !associatedKeys.includes(f.key as string))];
+  associatedFilters.value = searchCriteria.filter(item => associatedKeys.includes(item.key as string));
 
   emits('change', getSearchParameters());
 };
@@ -185,9 +195,61 @@ const handleSearchChange = (searchCriteria: SearchCriteria[]) => {
  * @param selectedKeys - Array of selected option keys
  * @param searchCriteria - Array of search criteria from quick search
  */
-const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
+  // Update quick search filters
+  let isAssociated = false;
+  if (key === 'ownedByMe') {
+    isAssociated = true;
+    if (selectedKeys.includes(key)) {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'ownerId',
+          type: 'select-user',
+          value: props.userId
+        }]);
+      }
+    } else {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'ownerId',
+          type: 'select-user',
+          value: undefined
+        }]);
+      }
+    }
+  }
+
+  if (key && key.startsWith('last') && (key.endsWith('Day') || key.endsWith('Days'))) {
+    isAssociated = true;
+    if (selectedKeys.includes(key)) {
+      const createdDataSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
+      if (createdDataSearchCriteria.length > 0) {
+        const createdDataValue = [createdDataSearchCriteria[0].value, createdDataSearchCriteria[1].value];
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdDate',
+            value: createdDataValue,
+            type: 'date-range'
+          }]);
+        }
+      }
+    } else {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'createdDate',
+          value: undefined,
+          type: 'date-range'
+        }]);
+      }
+    }
+  }
+  
+  searchCriteria = searchCriteria.filter(f => !associatedKeys.includes(f.key as string));
   // Update quick search filters
   quickSearchFilters.value = searchCriteria;
+  if (isAssociated) {
+    return;
+  }
 
   // Emit change event with current params
   emits('change', getSearchParameters());
@@ -219,6 +281,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <!-- Quick Search Options Component -->
     <QuickSearchOptions
+      ref="quickSearchOptionsRef"
       :config="quickSearchConfig"
       @change="handleQuickSearchChange" />
 

@@ -61,7 +61,6 @@ export function useSearchPanelAction (
  * @param searchCriteria - Array of search criteria from quick search
  */
 const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
-  console.log('handleQuickSearchChange', selectedKeys, searchCriteria, key);
   // Update quick search filters
   if (key === 'createdBy') {
     if (selectedKeys.includes(key)) {
@@ -82,12 +81,11 @@ const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchC
     searchCriteria = searchCriteria.filter(f => f.key !== 'createdBy');
   }
 
-  if (key && key.startsWith('last')) {
+  if (key && key.startsWith('last') && (key.endsWith('Day') && key.endsWith('Days'))) {
     if (selectedKeys.includes(key)) {
       const createdDataSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
       const createdDataValue = [createdDataSearchCriteria[0].value, createdDataSearchCriteria[1].value]
 
-      console.log('createdDataValue', createdDataValue)
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
         searchPanelRef.value.setConfigs([{
           valueKey: 'createdDate',
