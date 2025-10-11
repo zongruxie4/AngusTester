@@ -7,15 +7,18 @@ import dayjs from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { TIME_FORMAT } from '@/utils/constant';
-import { LoadingProps } from '@/types/types';
 import { QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig } from '@/components/quickSearch';
 
 // composables
 const { t } = useI18n();
 
 // props and emits
-const props = withDefaults(defineProps<LoadingProps>(), {
-  loading: false
+const props = withDefaults(defineProps<{
+  loading: boolean;
+  userId: string;
+}>(), {
+  loading: false,
+  userId: ''
 });
 
 type OrderByKey = string;
@@ -29,6 +32,7 @@ const emits = defineEmits<{
 // reactive data
 const userInfo = ref(appContext.getUser());
 const searchPanelRef = ref();
+const quickSearchOptionsRef = ref();
 const planStatusOptions = ref<{name: string; key: string}[]>([]);
 
 // search state
@@ -184,13 +188,12 @@ const getSearchParams = () => {
  * Handles search panel filter changes and updates associated filters
  * @param data - Array of search criteria from search panel
  */
-const handleSearchChange = (data: SearchCriteria[]) => {
-  // Merge search panel filters with quick search filters
-  const quickSearchFields = ['ownerId', 'createdBy', 'lastModifiedBy', 'status', 'createdDate'];
-  const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
-  const searchPanelFilters = data.filter(f => f.key && !quickSearchFields.includes(f.key as string));
-
-  searchFilters.value = [...currentQuickSearchFilters, ...searchPanelFilters];
+const handleSearchChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, key?: string) => {
+  if (key === 'ownerId') {
+    quickSearchOptionsRef.value.clearSelectedMap(['ownedByMe']);
+    quickSearchFilters.value = quickSearchFilters.value.filter(f => f.key !== 'ownerId');
+  }
+  searchFilters.value = [...(data || []).filter(f => !assocKeys.includes(f.key as string))];
   assocFilters.value = data.filter(item => assocKeys.includes(item.key as string));
 
   emits('change', getSearchParams());
@@ -202,7 +205,28 @@ const handleSearchChange = (data: SearchCriteria[]) => {
  * @param selectedKeys - Array of selected option keys
  * @param searchCriteria - Array of search criteria from quick search
  */
-const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
+  // Update quick search filters
+  if (key === 'ownedByMe') {
+    if (selectedKeys.includes(key)) {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'ownerId',
+          type: 'select-user',
+          value: props.userId
+        }]);
+      }
+    } else {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'ownerId',
+          type: 'select-user',
+          value: undefined
+        }]);
+      }
+    }
+    searchCriteria = searchCriteria.filter(f => f.key !== 'ownerId');
+  }
   // Update quick search filters
   quickSearchFilters.value = searchCriteria;
 
@@ -236,6 +260,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <!-- Quick Search Options Component -->
     <QuickSearchOptions
+      ref="quickSearchOptionsRef"
       :config="quickSearchConfig"
       @change="handleQuickSearchChange" />
 
