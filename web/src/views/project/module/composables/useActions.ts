@@ -26,6 +26,7 @@ export function useActions (onDataChange: () => Promise<void>) {
   const activeModule = ref<ModuleItem>();
   const currentParentId = ref<number>();
 
+
   /**
    * Creates a new module with the specified parameters
    * Shows success notification and refreshes data on completion
@@ -130,22 +131,47 @@ export function useActions (onDataChange: () => Promise<void>) {
   const moveModuleUp = async (record: ModuleItem & {
     index: number;
     ids: string[];
-  }): Promise<void> => {
-    const { index, id } = record;
+  }, dataList: ModuleItem[]): Promise<void> => {
+    const { index, id, ids, pid } = record;
+    
     let updateParams: UpdateModuleParams;
 
-    const currentSeq = Number((record as any).sequence ?? 0);
-
     if (index === 0) {
+      let targetSequece: number = 0;
+      let targetParentId: string = '-1';
+
+      ids.reduce((pre: ModuleItem[], cur: string): ModuleItem[] => {
+        if (cur === String(pid)) {
+          const curIndex = pre.findIndex(f => String(f.id) === cur);
+          targetSequece = Number(pre[curIndex]?.sequence ?? 0) + 1;
+          targetParentId = String(pre[curIndex]?.pid ?? '-1');
+          return [];
+        } else {
+          return pre.find(f => String(f.id) === cur)?.children || [];
+        }
+      }, dataList);
+
       // Minimal safe fallback: keep parent unchanged, reset sequence to 0
       updateParams = {
         id,
-        sequence: 0
+        pid: targetParentId,
+        sequence: targetSequece
       };
     } else {
+      let targetSequece: number = 0;
+
+      ids.reduce((pre: ModuleItem[], cur: string): ModuleItem[] => {
+        if (cur === String(id)) {
+          const curIndex = pre.findIndex(f => String(f.id) === cur);
+          targetSequece = Number(pre[curIndex - 1]?.sequence ?? 0) - 1;
+          return [];
+        } else {
+          return pre.find(f => String(f.id) === cur)?.children || [];
+        }
+      }, dataList);
       updateParams = {
         id,
-        sequence: currentSeq - 1
+        sequence: targetSequece
       };
     }
 
@@ -164,12 +190,24 @@ export function useActions (onDataChange: () => Promise<void>) {
   const moveModuleDown = async (record: ModuleItem & {
     index: number;
     ids: string[];
-  }): Promise<void> => {
-    const currentSeq = Number((record as any).sequence ?? 0);
+  }, dataList: ModuleItem[]): Promise<void> => {
+
+    const { id, ids } = record;
+    let targetSequece: number = 0;
+
+    ids.reduce((pre: ModuleItem[], cur: string): ModuleItem[] => {
+      if (cur === String(id)) {
+        const curIndex = pre.findIndex(f => String(f.id) === cur);
+        targetSequece = Number(pre[curIndex + 1]?.sequence ?? 0) + 1;
+        return [];
+      } else {
+        return pre.find(f => String(f.id) === cur)?.children || [];
+      }
+    }, dataList);
 
     const updateParams: UpdateModuleParams = {
       id: record.id,
-      sequence: currentSeq + 1
+      sequence: targetSequece
     };
 
     const success = await updateModule([updateParams]);
@@ -277,7 +315,7 @@ export function useActions (onDataChange: () => Promise<void>) {
   const handleMenuAction = (menuKey: string, module: ModuleItem & {
     index: number;
     ids: string[];
-  }): void => {
+  }, dataList: ModuleItem[]): void => {
     switch (menuKey) {
       case 'edit':
         startEdit(module);
@@ -289,10 +327,10 @@ export function useActions (onDataChange: () => Promise<void>) {
         deleteModule(module);
         break;
       case 'up':
-        moveModuleUp(module);
+        moveModuleUp(module, dataList);
         break;
       case 'down':
-        moveModuleDown(module);
+        moveModuleDown(module, dataList);
         break;
       case 'move':
         initiateModuleMove(module);

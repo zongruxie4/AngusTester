@@ -132,7 +132,7 @@ const handleDropdownClick = (menu: { key: string | number }, record: ModuleItem 
   index: number;
   ids: string[];
 }): void => {
-  handleMenuAction(String(menu.key), record);
+  handleMenuAction(String(menu.key), record, dataList.value);
 };
 
 /**
