@@ -180,7 +180,7 @@ const columns = [
         size="small"
         @click="openTaskSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
-        {{ t('testCase.actions.assocCases') }}
+        {{ t('testCase.actions.assocIssues', {name: props.title}) }}
       </Button>
     </div>
 

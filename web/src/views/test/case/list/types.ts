@@ -24,8 +24,9 @@ export type ActionMenuItem = {
 export type EnabledModuleGroup = boolean;
 
 export type CaseEditState = {
+  id?: string;
   name: string;
-  planId?: number | undefined;
+  planId?: string | undefined;
   moduleId?: number | undefined;
   caseType: 'FUNC' | 'APIS'
   deadlineDate: string;
@@ -34,16 +35,19 @@ export type CaseEditState = {
   actualWorkload: string;
   precondition: string;
   priority: Priority;
-  testerId?: number;
-  developerId?: number,
+  testerId?: string;
+  developerId?: string,
   stepView: CaseStepView,
-  steps: CaseTestStep [],
-  tagIds: number[];
-  refIdMap: {
+  steps?: CaseTestStep [],
+  tagIds?: string[];
+  refIdMap?: {
     TASK: number[];
     CASE: number[];
   };
-  attachments: AttachmentInfo[]
+  attachments?: AttachmentInfo[],
+  refCaseIds?: string[];
+  refTaskIds?: string[];
+  softwareVersion?: string;
 }
 
 export type CaseInfoEditProps = {

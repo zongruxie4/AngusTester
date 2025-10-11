@@ -539,10 +539,10 @@ const handleFormSubmit = async (shouldContinue: boolean) => {
       normalized.attachments = normalized.attachments || [];
       return normalized;
     };
-    
+
     const normalizedOriginal = normalizeForComparison(originalFormState);
     const normalizedCurrent = normalizeForComparison(formState);
-    
+
     const hasChanges = !isEqual(normalizedOriginal, normalizedCurrent);
     if (!hasChanges) {
       emit('update:visible', false);
@@ -1476,7 +1476,7 @@ onMounted(() => {
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                     <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
                     <span class="text-3 block">
-                       {{ t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }) }}
+                      {{ t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }) }}
                     </span>
                   </Upload>
                 </div>

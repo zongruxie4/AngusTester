@@ -81,7 +81,7 @@ export type ActivityInfo = {
 }
 
 export type AttachmentInfo = {
-  id?: number | string;
+  id?: string;
   name: string;
   url: string;
 }

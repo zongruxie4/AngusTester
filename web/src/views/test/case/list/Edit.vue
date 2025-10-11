@@ -49,14 +49,7 @@ const addCaseSizeKey = `${userInfo.value?.id || ''}${projectId.value}addFuncCase
 const formRef = ref();
 
 // Extended form state interface to include all form fields
-interface ExtendedCaseEditState extends Omit<CaseEditState, 'refIdMap'> {
-  refCaseIds: number[];
-  refTaskIds: number[];
-  softwareVersion?: string;
-  id?: string;
-}
-
-const formState = ref<ExtendedCaseEditState>({
+const caseFormData = ref<CaseEditState>({
   attachments: [],
   deadlineDate: '',
   description: '',
@@ -69,7 +62,7 @@ const formState = ref<ExtendedCaseEditState>({
   priority: Priority.MEDIUM,
   steps: [],
   tagIds: [],
-  testerId: userInfo.value?.id || 0,
+  testerId: userInfo.value?.id?.toString(),
   refCaseIds: [],
   refTaskIds: [],
   developerId: undefined,
@@ -78,14 +71,13 @@ const formState = ref<ExtendedCaseEditState>({
   caseType: 'FUNC'
 });
 
-const oldFormState = ref<ExtendedCaseEditState>();
-const caseDetail = ref<CaseDetail>();
-// Data fetching functions
+const originalFormData = ref<CaseEditState>();
+const currentCaseDetail = ref<CaseDetail>();
 
 /**
- * Fetch case information for editing
+ * Load case details for editing
  */
-const getCaseInfo = async () => {
+const loadCaseDetails = async () => {
   if (!props.editCase?.id) {
     return;
   }
@@ -93,42 +85,42 @@ const getCaseInfo = async () => {
   if (error) {
     return;
   }
-  Object.keys(formState.value).forEach((key) => {
+  Object.keys(caseFormData.value).forEach((key) => {
     if (key === 'tagIds') {
-      formState.value.tagIds = (data.tags || []).map(item => {
+      caseFormData.value.tagIds = (data.tags || []).map(item => {
         return item.id;
       });
     } else if (key === 'attachments') {
-      formState.value[key] = data[key] || [];
+      caseFormData.value[key] = data[key] || [];
     } else if (key === 'refTaskInfos') {
-      formState.value.refTaskIds = (data.refTaskInfos || []).map(item => {
+      caseFormData.value.refTaskIds = (data.refTaskInfos || []).map(item => {
         return item.id;
       });
     } else if (key === 'refCaseInfos') {
-      formState.value.refCaseIds = (data.refCaseInfos || []).map(item => {
+      caseFormData.value.refCaseIds = (data.refCaseInfos || []).map(item => {
         return item.id;
       });
     } else if (key === 'actualWorkload') {
-      formState.value.actualWorkload = data?.actualWorkload || data?.evalWorkload;
+      caseFormData.value.actualWorkload = data?.actualWorkload || data?.evalWorkload;
     } else if (key === 'priority') {
-      formState.value.priority = data?.priority?.value || Priority.MEDIUM;
+      caseFormData.value.priority = data?.priority?.value || Priority.MEDIUM;
     } else if (key === 'precondition') {
-      formState.value[key] = getJson(data?.[key]) || '';
+      caseFormData.value[key] = getJson(data?.[key]) || '';
     } else if (key === 'stepView') {
-      formState.value[key] = data?.[key]?.value || 'TABLE';
+      caseFormData.value[key] = data?.[key]?.value || 'TABLE';
     } else {
       if (key === 'moduleId') {
         if (data?.[key] === '-1') {
           data[key] = undefined;
         }
       }
-      (formState.value as any)[key] = data?.[key];
+      (caseFormData.value as any)[key] = data?.[key];
     }
   });
 
-  caseDetail.value = data;
+  currentCaseDetail.value = data;
   stepDefaultValue.value = data.steps;
-  oldFormState.value = JSON.parse(JSON.stringify(formState.value));
+  originalFormData.value = JSON.parse(JSON.stringify(caseFormData.value));
 };
 
 /**
@@ -165,18 +157,18 @@ const stepsRef = ref();
  * @param type - Reset type ('save' for save and continue)
  */
 const resetForm = (type?: 'save') => {
-  formRef.value.resetFields(Object.keys(formState.value).filter(item => item !== 'planId' && item !== 'deadlineDate'));
-  formState.value.refCaseIds = [];
-  formState.value.refTaskIds = [];
+  formRef.value.resetFields(Object.keys(caseFormData.value as any).filter(item => item !== 'planId' && item !== 'deadlineDate'));
+  caseFormData.value.refCaseIds = [];
+  caseFormData.value.refTaskIds = [];
   if (type !== 'save') {
-    formState.value.steps = [];
-    formState.value.description = '';
+    caseFormData.value.steps = [];
+    caseFormData.value.description = '';
     stepDefaultValue.value = [];
     // Set module ID if provided and valid, otherwise undefined to show placeholder
     if (props.moduleId && +props.moduleId > 0) {
-      formState.value.moduleId = Number(props.moduleId);
+      caseFormData.value.moduleId = props.moduleId;
     } else {
-      formState.value.moduleId = undefined;
+      caseFormData.value.moduleId = undefined;
     }
   }
   formRef.value.clearValidate();
@@ -201,21 +193,21 @@ const save = (type: 'save' | 'add') => {
     'deadlineDate'
   ];
 
-  if (formState.value.actualWorkload) {
+  if (caseFormData.value.actualWorkload) {
     validationRuleKeys = [...validationRuleKeys, 'evalWorkload'];
   }
 
   formRef.value.validate(validationRuleKeys)
     .then(async () => {
-      if (formState.value.description?.length > 2000) {
+      if (caseFormData.value.description?.length > 2000) {
         notification.warning(t('testCase.messages.richTextTooLong'));
         return;
       }
 
       if (props.editCase) {
-        await editSave();
+        await saveEditedCase();
       } else {
-        await addSave();
+        await saveNewCase();
       }
     });
 };
@@ -224,8 +216,8 @@ const save = (type: 'save' | 'add') => {
  * Prepare form parameters for API calls
  * @returns Cleaned form parameters
  */
-const getParams = () => {
-  const params = JSON.parse(JSON.stringify(formState.value));
+const prepareFormParams = () => {
+  const params = JSON.parse(JSON.stringify(caseFormData.value));
   if (!params.tagIds?.length) {
     delete params.tagIds;
   }
@@ -260,15 +252,15 @@ const isLoading = ref(false);
 /**
  * Save edited case
  */
-const editSave = async () => {
+const saveEditedCase = async () => {
   if (!props.editCase?.id) {
     return;
   }
-  if (utils.deepCompare(oldFormState.value, formState.value)) {
+  if (utils.deepCompare(originalFormData.value, caseFormData.value)) {
     emits('update:visible', false);
     return;
   }
-  const params = getParams();
+  const params = prepareFormParams();
   isLoading.value = true;
   const [error] = await testCase.putCase([{ id: props.editCase.id, ...params }]);
   isLoading.value = false;
@@ -283,8 +275,8 @@ const editSave = async () => {
 /**
  * Save new case
  */
-const addSave = async () => {
-  const params = getParams();
+const saveNewCase = async () => {
+  const params = prepareFormParams();
   isLoading.value = true;
   const [error] = await testCase.addCase([params]);
   isLoading.value = false;
@@ -308,7 +300,7 @@ const MAX_FILE_SIZE_MB = 10;
  * @param param - Upload parameter containing file
  */
 const handleFileUpload = async ({ file }: { file: File }) => {
-  if (!formState.value.attachments || formState.value.attachments.length >= 5 || isLoading.value) {
+  if (!caseFormData.value.attachments || caseFormData.value.attachments.length >= 5 || isLoading.value) {
     return;
   }
 
@@ -326,7 +318,7 @@ const handleFileUpload = async ({ file }: { file: File }) => {
 
   if (data && data.length > 0) {
     const attachments = data?.map(item => ({ name: item.name, url: item.url }));
-    formState.value.attachments.push(...attachments);
+    caseFormData.value.attachments.push(...attachments);
   }
 };
 
@@ -334,8 +326,8 @@ const handleFileUpload = async ({ file }: { file: File }) => {
  * Delete uploaded file
  * @param index - File index to delete
  */
-const delFile = (index: number) => {
-  formState.value?.attachments?.splice(index, 1);
+const removeAttachment = (index: number) => {
+  caseFormData.value?.attachments?.splice(index, 1);
 };
 
 // Step default values
@@ -375,24 +367,24 @@ const validateDate = async (_rule: Rule, value: string) => {
 /**
  * Assign current user as tester
  */
-const setTesterForMe = () => {
+const assignTesterToMe = () => {
   if (userInfo.value?.id) {
-    formState.value.testerId = userInfo.value.id;
+    caseFormData.value.testerId = userInfo.value.id.toString();
   }
 };
 
 // Member management
-const members = ref<any[]>([]);
+const projectMembers = ref<any[]>([]);
 
 /**
- * Load project members
+ * Load project projectMembers
  */
-const loadMembers = async () => {
+const loadProjectMembers = async () => {
   const [error, { data }] = await project.getProjectMember(projectId.value);
   if (error) {
     return;
   }
-  members.value = (data || []).map(i => {
+  projectMembers.value = (data || []).map(i => {
     return {
       ...i,
       label: i.fullName,
@@ -410,37 +402,37 @@ const planEndDate = ref<string>();
  * @param _value - Plan value (unused)
  * @param option - Selected plan option containing deadline and workload method
  */
-const planChange = (_value: any, option: any) => {
+const handlePlanChange = (_value: any, option: any) => {
   if (!props.editCase) {
     // For new cases, set deadline based on plan deadline
     if (option?.deadlineDate) {
       if (dayjs(option?.deadlineDate).isAfter(dayjs())) {
-        formState.value.deadlineDate = option.deadlineDate;
+        caseFormData.value.deadlineDate = option.deadlineDate;
       } else {
-        formState.value.deadlineDate = dayjs().add(2, 'hour').format(DATE_TIME_FORMAT);
+        caseFormData.value.deadlineDate = dayjs().add(2, 'hour').format(DATE_TIME_FORMAT);
       }
     }
   } else {
     // For existing cases, use plan deadline directly
-    formState.value.deadlineDate = option?.deadlineDate || '';
+    caseFormData.value.deadlineDate = option?.deadlineDate || '';
   }
 
   // Adjust deadline to business hours (8 AM - 7 PM)
-  if (formState.value.deadlineDate && (dayjs(formState.value.deadlineDate).hour() > 19 || dayjs(formState.value.deadlineDate).hour() < 8)) {
-    formState.value.deadlineDate = dayjs(formState.value.deadlineDate).add(12, 'hour').format(DATE_TIME_FORMAT);
+  if (caseFormData.value.deadlineDate && (dayjs(caseFormData.value.deadlineDate).hour() > 19 || dayjs(caseFormData.value.deadlineDate).hour() < 8)) {
+    caseFormData.value.deadlineDate = dayjs(caseFormData.value.deadlineDate).add(12, 'hour').format(DATE_TIME_FORMAT);
   }
 
-  planEndDate.value = formState.value.deadlineDate;
+  planEndDate.value = caseFormData.value.deadlineDate;
   evalWorkloadMethod.value = option?.evalWorkloadMethod?.value;
 };
 
 // Module management
-const moduleTreeData = ref<any[]>([]);
+const moduleTreeOptions = ref<any[]>([]);
 
 /**
- * Load module tree data
+ * Load module tree options
  */
-const getModuleTreeData = async () => {
+const loadModuleTreeOptions = async () => {
   if (!projectId.value) {
     return;
   }
@@ -450,7 +442,7 @@ const getModuleTreeData = async () => {
   if (error) {
     return;
   }
-  moduleTreeData.value = data || [];
+  moduleTreeOptions.value = data || [];
 };
 
 // Enum management
@@ -459,7 +451,7 @@ const stepViewOpt = ref<{ name: string; key: string }[]>([]);
 /**
  * Load enum options
  */
-const loadEnums = async () => {
+const loadEnumOptions = async () => {
   const data = enumUtils.enumToMessages(EvalWorkloadMethod);
   evalWorkloadMethod.value = data?.filter(item => item.value === EvalWorkloadMethod.STORY_POINT)[0];
 
@@ -471,8 +463,8 @@ const loadEnums = async () => {
  * Change step view mode
  * @param param - Object containing key
  */
-const changeStepView = ({ key }: { key: string }) => {
-  formState.value.stepView = key as CaseStepView;
+const handleStepViewChange = ({ key }: { key: string }) => {
+  caseFormData.value.stepView = key as CaseStepView;
 };
 
 // Rich text validation
@@ -483,8 +475,8 @@ const descRichRef = ref();
  * Validate precondition rich text length
  * @returns Promise with validation result
  */
-const validateCondition = () => {
-  if (!formState.value.precondition) {
+const validatePrecondition = () => {
+  if (!caseFormData.value.precondition) {
     return Promise.resolve();
   }
   if (conditionRichRef.value && conditionRichRef.value.getLength() > 2000) {
@@ -497,8 +489,8 @@ const validateCondition = () => {
  * Validate description rich text length
  * @returns Promise with validation result
  */
-const validateDesc = () => {
-  if (!formState.value.description) {
+const validateDescriptionription = () => {
+  if (!caseFormData.value.description) {
     return Promise.resolve();
   }
   if (descRichRef.value && descRichRef.value.getLength() > 2000) {
@@ -521,45 +513,45 @@ const handleZoom = () => {
 };
 
 // Computed properties for form values
-const planIdValue = computed({
-  get: () => formState.value.planId || undefined,
-  set: (value: number | undefined) => {
-    formState.value.planId = value ? Number(value) : undefined;
+const selectedPlanId = computed({
+  get: () => caseFormData.value.planId || undefined,
+  set: (value: string | undefined) => {
+    caseFormData.value.planId = value;
   }
 });
 
-const testerIdValue = computed({
-  get: () => formState.value.testerId || undefined,
-  set: (value: number | undefined) => {
-    formState.value.testerId = value ? Number(value) : undefined;
+const selectedTesterId = computed({
+  get: () => caseFormData.value.testerId || undefined,
+  set: (value: string | undefined) => {
+    caseFormData.value.testerId = value;
   }
 });
 
-const developerIdValue = computed({
-  get: () => formState.value.developerId || undefined,
-  set: (value: number | undefined) => {
-    formState.value.developerId = value ? Number(value) : undefined;
+const selectedDeveloperId = computed({
+  get: () => caseFormData.value.developerId || undefined,
+  set: (value: string | undefined) => {
+    caseFormData.value.developerId = value;
   }
 });
 
-const tagIdsValue = computed({
-  get: () => formState.value.tagIds?.map(id => id.toString()) || [],
+const selectedTagIds = computed({
+  get: () => caseFormData.value.tagIds?.map(id => id.toString()) || [],
   set: (value: string[]) => {
-    formState.value.tagIds = value.map(id => Number(id));
+    caseFormData.value.tagIds = value;
   }
 });
 
-const refTaskIdsValue = computed({
-  get: () => formState.value.refTaskIds?.map(id => id.toString()) || [],
+const selectedRefTaskIds = computed({
+  get: () => caseFormData.value.refTaskIds?.map(id => id.toString()) || [],
   set: (value: string[]) => {
-    formState.value.refTaskIds = value.map(id => Number(id));
+    caseFormData.value.refTaskIds = value;
   }
 });
 
-const refCaseIdsValue = computed({
-  get: () => formState.value.refCaseIds?.map(id => id.toString()) || [],
+const selectedRefCaseIds = computed({
+  get: () => caseFormData.value.refCaseIds?.map(id => id.toString()) || [],
   set: (value: string[]) => {
-    formState.value.refCaseIds = value.map(id => Number(id));
+    caseFormData.value.refCaseIds = value;
   }
 });
 
@@ -567,7 +559,7 @@ const refCaseIdsValue = computed({
  * Handle actual workload change
  * @param value - Actual workload value
  */
-const actualWorkloadChange = (value: string) => {
+const handleActualWorkloadChange = (value: string) => {
   if (!value) {
     formRef.value.clearValidate('evalWorkload');
   }
@@ -577,9 +569,9 @@ const actualWorkloadChange = (value: string) => {
  * Handle eval workload change
  * @param value - Eval workload value
  */
-const evalWorkloadChange = (value: string) => {
+const handleEvalWorkloadChange = (value: string) => {
   if (!value) {
-    formState.value.actualWorkload = '';
+    caseFormData.value.actualWorkload = '';
     formRef.value.clearValidate('evalWorkload');
   }
 };
@@ -590,8 +582,8 @@ const evalWorkloadChange = (value: string) => {
  * @param value - Value to validate
  * @returns Promise with validation result
  */
-const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
-  if (formState.value.actualWorkload) {
+const validateEvalWorkload = async (_rule: Rule, value: string) => {
+  if (caseFormData.value.actualWorkload) {
     if (!value) {
       return Promise.reject(new Error(t('testCase.messages.pleaseEnterEvalWorkload')));
     } else {
@@ -605,9 +597,9 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
 onMounted(() => {
   watch(() => props.visible, async (newValue) => {
     if (newValue) {
-      await getModuleTreeData();
+      await loadModuleTreeOptions();
       if (props.editCase) {
-        getCaseInfo();
+        loadCaseDetails();
       } else {
         resetForm();
       }
@@ -617,14 +609,14 @@ onMounted(() => {
   });
   watch(() => projectId.value, (newValue) => {
     if (newValue) {
-      loadMembers();
-      getModuleTreeData();
+      loadProjectMembers();
+      loadModuleTreeOptions();
     }
   }, {
     immediate: true
   });
 
-  loadEnums();
+  loadEnumOptions();
 });
 </script>
 <template>
@@ -644,9 +636,9 @@ onMounted(() => {
 
     <Spin :spinning="isLoading" class="h-full">
       <Form
-        :key="formState.id"
+        :key="caseFormData.id"
         ref="formRef"
-        :model="formState"
+        :model="caseFormData"
         size="small"
         layout="vertical"
         class="h-full">
@@ -657,7 +649,7 @@ onMounted(() => {
               name="name"
               :rules="[{ required: true, message: t('testCase.messages.pleaseEnterCaseName') }]">
               <Input
-                v-model:value="formState.name"
+                v-model:value="caseFormData.name"
                 size="small"
                 :maxlength="400"
                 :placeholder="t('testCase.messages.enterCaseName')" />
@@ -665,7 +657,7 @@ onMounted(() => {
 
             <FormItem
               name="precondition"
-              :rules="[{validator: validateCondition}]">
+              :rules="[{validator: validatePrecondition}]">
               <template #label>
                 <div class="text-3 flex space-x-2 items-center">
                   <span>{{ t('common.precondition') }}</span>
@@ -675,7 +667,7 @@ onMounted(() => {
 
               <RichEditor
                 ref="conditionRichRef"
-                v-model:value="formState.precondition"
+                v-model:value="caseFormData.precondition"
                 :height="155"
                 :options="{placeholder: t('testCase.messages.enterPrecondition')}" />
             </FormItem>
@@ -686,9 +678,9 @@ onMounted(() => {
                   <span>{{ t('common.testSteps') }}</span>
 
                   <Dropdown
-                    :value="[formState.stepView]"
+                    :value="[caseFormData.stepView]"
                     :menuItems="stepViewOpt"
-                    @click="changeStepView">
+                    @click="handleStepViewChange">
                     <span class="text-theme-special">{{ t('testCase.actions.switchType') }}
                       <Icon icon="icon-xiajiantou" /></span>
                   </Dropdown>
@@ -698,14 +690,14 @@ onMounted(() => {
 
               <CaseSteps
                 ref="stepsRef"
-                v-model:value="formState.steps"
-                :stepView="formState.stepView"
+                v-model:value="caseFormData.steps"
+                :stepView="caseFormData.stepView"
                 :defaultValue="stepDefaultValue" />
             </FormItem>
 
             <FormItem
               name="description"
-              :rules="[{validator: validateDesc}]">
+              :rules="[{validator: validateDescription}]">
               <template #label>
                 <div class="text-3 flex space-x-2 items-center">
                   <span>{{ t('common.description') }}</span>
@@ -715,7 +707,7 @@ onMounted(() => {
 
               <RichEditor
                 ref="descRichRef"
-                v-model:value="formState.description"
+                v-model:value="caseFormData.description"
                 :options="{placeholder: t('common.placeholders.inputDescription30')}"
                 :height="280"
                 class="add-case" />
@@ -728,14 +720,14 @@ onMounted(() => {
               name="planId"
               :rules="{ required: true, message: t('common.placeholders.selectOrSearchPlan') }">
               <Select
-                v-model:value="planIdValue"
+                v-model:value="selectedPlanId"
                 :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
                 :fieldNames="{ value: 'id', label: 'name' }"
                 :readonly="!!props.editCase"
                 showSearch
                 internal
                 :placeholder="t('common.placeholders.selectOrSearchPlan')"
-                @change="(value: any, option: any) => planChange(value, option)">
+                @change="(value: any, option: any) => handlePlanChange(value, option)">
                 <template #option="item">
                   <div class="flex items-center" :title="item.name">
                     <Icon icon="icon-jihua" class="mr-1 text-3.5" />
@@ -749,9 +741,9 @@ onMounted(() => {
               :label="t('common.module')"
               name="moduleId">
               <TreeSelect
-                v-model:value="formState.moduleId"
+                v-model:value="caseFormData.moduleId"
                 dropdownClassName="module_tree"
-                :treeData="moduleTreeData"
+                :treeData="moduleTreeOptions"
                 :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
                 :virtual="false"
                 size="small"
@@ -773,16 +765,16 @@ onMounted(() => {
               :rules="{required:true,message: t('common.placeholders.selectTester')}">
               <div class="flex items-center">
                 <Select
-                  v-model:value="testerIdValue"
+                  v-model:value="selectedTesterId"
                   :placeholder="t('common.placeholders.selectTester')"
-                  :options="members as any"
+                  :options="projectMembers as any"
                   class="flex-1"
                   size="small" />
                 <Button
                   type="link"
                   size="small"
                   class="p-0 h-5 leading-5 ml-1"
-                  @click="setTesterForMe">
+                  @click="assignTesterToMe">
                   {{ t('actions.assignToMe') }}
                 </Button>
               </div>
@@ -793,9 +785,9 @@ onMounted(() => {
               name="developerId"
               :rules="{required:true,message: t('common.placeholders.selectDeveloper')}">
               <Select
-                v-model:value="developerIdValue"
+                v-model:value="selectedDeveloperId"
                 :placeholder="t('common.placeholders.selectDeveloper')"
-                :options="members as any"
+                :options="projectMembers as any"
                 class="flex-1"
                 size="small" />
             </FormItem>
@@ -817,7 +809,7 @@ onMounted(() => {
               </template>
 
               <SelectEnum
-                v-model:value="formState.priority"
+                v-model:value="caseFormData.priority"
                 enumKey="Priority"
                 size="small">
                 <template #option="record">
@@ -828,7 +820,7 @@ onMounted(() => {
 
             <FormItem
               name="evalWorkload"
-              :rules="{required: !!formState.actualWorkload, validator: evalWorkloadValidateDate,trigger: 'change' }">
+              :rules="{required: !!caseFormData.actualWorkload, validator: validateEvalWorkload,trigger: 'change' }">
               <template #label>
                 <span class="flex items-center">
                   {{ t('common.evalWorkload') }}
@@ -844,14 +836,14 @@ onMounted(() => {
               </template>
 
               <Input
-                v-model:value="formState.evalWorkload"
+                v-model:value="caseFormData.evalWorkload"
                 size="small"
-                :disabled="!formState.planId"
+                :disabled="!caseFormData.planId"
                 :min="0.1"
                 :max="1000"
                 :placeholder="t('common.placeholders.workloadRange')"
                 dataType="float"
-                @blur="evalWorkloadChange($event.target.value)" />
+                @blur="handleEvalWorkloadChange($event.target.value)" />
             </FormItem>
 
             <template v-if="props.editCase">
@@ -872,14 +864,14 @@ onMounted(() => {
                 </template>
 
                 <Input
-                  v-model:value="formState.actualWorkload"
+                  v-model:value="caseFormData.actualWorkload"
                   size="small"
-                  :disabled="!formState.planId"
+                  :disabled="!caseFormData.planId"
                   :min="0.1"
                   :max="1000"
                   :placeholder="t('common.placeholders.workloadRange')"
                   dataType="float"
-                  @change="actualWorkloadChange($event.target.value)" />
+                  @change="handleActualWorkloadChange($event.target.value)" />
               </FormItem>
             </template>
 
@@ -887,7 +879,7 @@ onMounted(() => {
               name="softwareVersion"
               :label="t('common.softwareVersion')">
               <Select
-                v-model:value="formState.softwareVersion"
+                v-model:value="caseFormData.softwareVersion"
                 allowClear
                 :placeholder="t('common.placeholders.selectSoftwareVersion')"
                 :action="`${TESTER}/software/version?projectId=${projectId}`"
@@ -913,10 +905,10 @@ onMounted(() => {
               </template>
 
               <DatePicker
-                v-model:value="formState.deadlineDate"
+                v-model:value="caseFormData.deadlineDate"
                 :disabledDate="disabledDate"
                 :showTime="{hideDisabledOptions: true,format:TIME_FORMAT}"
-                :disabled="!formState.planId"
+                :disabled="!caseFormData.planId"
                 allowClear
                 :placeholder="t('common.placeholders.selectDeadline')"
                 size="small"
@@ -939,7 +931,7 @@ onMounted(() => {
               </template>
 
               <Select
-                v-model:value="tagIdsValue"
+                v-model:value="selectedTagIds"
                 showSearch
                 :fieldNames="{label:'name',value:'id'}"
                 :maxTagCount="5"
@@ -963,7 +955,7 @@ onMounted(() => {
               :label="t('common.assocIssues')"
               class="relative">
               <Select
-                v-model:value="refTaskIdsValue"
+                v-model:value="selectedRefTaskIds"
                 showSearch
                 internal
                 :allowClear="false"
@@ -996,7 +988,7 @@ onMounted(() => {
               :label="t('common.assocCases')"
               class="relative">
               <Select
-                v-model:value="refCaseIdsValue"
+                v-model:value="selectedRefCaseIds"
                 showSearch
                 internal
                 :allowClear="false"
@@ -1024,15 +1016,15 @@ onMounted(() => {
               <div
                 style="height: 90px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
                 class="border border-dashed rounded flex flex-col px-2 py-1"
-                :class="formState.attachments.length?'justify-between':'justify-center'">
-                <template v-if="formState.attachments?.length">
+                :class="caseFormData.attachments.length?'justify-between':'justify-center'">
+                <template v-if="caseFormData.attachments?.length">
                   <div
                     style="height: 286px;scrollbar-gutter: stable;"
                     class="overflow-hidden hover:overflow-y-auto -mr-2 pr-1">
                     <div
-                      v-for="(item,index) in formState.attachments"
+                      v-for="(item,index) in caseFormData.attachments"
                       :key="index"
-                      :class="{'rounded-b':index===formState.attachments.length-1}"
+                      :class="{'rounded-b':index===caseFormData.attachments.length-1}"
                       class="flex items-center justify-between text-3 leading-3">
                       <div
                         :title="item.name"
@@ -1043,11 +1035,11 @@ onMounted(() => {
                       <Icon
                         icon="icon-qingchu"
                         class="text-theme-special text-theme-text-hover cursor-pointer flex-shrink-0 leading-4 text-3.5"
-                        @click="delFile(index)" />
+                        @click="removeAttachment(index)" />
                     </div>
                   </div>
 
-                  <div v-if="formState.attachments.length < 5" class="flex justify-end">
+                  <div v-if="caseFormData.attachments.length < 5" class="flex justify-end">
                     <Upload
                       :fileList="[]"
                       name="file"
@@ -1060,13 +1052,16 @@ onMounted(() => {
                 </template>
 
                 <template v-else>
-                  <div class="flex justify-center">
+                  <div class="flex justify-center text-center">
                     <Upload
                       name="file"
                       :fileList="[]"
                       :customRequest="handleFileUpload">
                       <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                       <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
+                      <span class="text-3 block">
+                        {{ t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }) }}
+                      </span>
                     </Upload>
                   </div>
                 </template>
