@@ -281,8 +281,8 @@ onUnmounted(() => {
     <div class="flex-1">
       <!-- Search -->
       <Search
-        :established="currentBaselineInfo?.established":q
-
+        :established="currentBaselineInfo?.established"
+:userId="props.userInfo?.id"
         @handleAddCase="openAddCaseModal"
         @change="handleSearchParametersChange" />
 

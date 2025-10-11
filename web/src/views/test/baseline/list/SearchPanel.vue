@@ -32,9 +32,10 @@ const quickSearchFilters = ref<SearchCriteria[]>([]);
 const associatedFilters = ref<SearchCriteria[]>([]);
 const currentOrderBy = ref();
 const currentOrderSort = ref();
+const quickSearchOptionsRef = ref();
 
 // Configuration Constants
-const ASSOCIATED_KEYS = ['ownerId'];
+const ASSOCIATED_KEYS = ['createdDate'];
 
 /**
  * Quick search configuration for baseline search panel
@@ -155,14 +156,17 @@ const getSearchParameters = () => {
  * Handle search panel change
  * @param data - Search criteria data
  */
-const handleSearchPanelChange = (data: SearchCriteria[]) => {
-  // Merge search panel filters with quick search filters
-  const quickSearchFields = ['createdBy', 'lastModifiedBy', 'established', 'createdDate'];
-  const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
-  const searchPanelFilters = data.filter(f => f.key && !quickSearchFields.includes(f.key as string));
+const handleSearchPanelChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, key?: string) => {
+  if (key === 'createdDate') {
+    const searchCriteriaKeys = quickSearchOptionsRef.value.getSearchCriteria().map(f => f.key);
+    if (searchCriteriaKeys.includes('createdDate')) {
+      quickSearchOptionsRef.value.clearSelectedMap(['createdDate', 'last1Day', 'last3Days', 'last7Days']);
+    }
+    quickSearchFilters.value = quickSearchFilters.value.filter(f => f.key !== 'createdDate');
+  }
 
-  searchFilters.value = [...currentQuickSearchFilters, ...searchPanelFilters];
-  associatedFilters.value = data.filter(item => ASSOCIATED_KEYS.includes(item.key));
+  searchFilters.value = [...(data || []).filter(f => !ASSOCIATED_KEYS.includes(f.key as string))];
+  associatedFilters.value = data.filter(item => ASSOCIATED_KEYS.includes(item.key as string));
 
   emits('change', getSearchParameters());
 };
@@ -173,13 +177,40 @@ const handleSearchPanelChange = (data: SearchCriteria[]) => {
  * @param selectedKeys - Array of selected option keys
  * @param searchCriteria - Array of search criteria from quick search
  */
-const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
+
+  // Update quick search filters
+  if (key && key.startsWith('last') && (key.endsWith('Day') || key.endsWith('Days'))) {
+    if (selectedKeys.includes(key)) {
+      const createdDataSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
+      const createdDataValue = [createdDataSearchCriteria[0].value, createdDataSearchCriteria[1].value];
+      if (createdDataValue.length > 0) {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{
+          valueKey: 'createdDate',
+          type: 'date-range',
+          value: createdDataValue
+        }]);
+      } else {
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdDate',
+            type: 'date-range',
+            value: undefined
+          }]);
+        }
+       }
+      }
+    }
+  }
+
+  searchCriteria = searchCriteria.filter(f => !ASSOCIATED_KEYS.includes(f.key as string));
   // Update quick search filters
   quickSearchFilters.value = searchCriteria;
 
   // Emit change event with current params
   emits('change', getSearchParameters());
-};
+}
 
 /**
  * Handle sort change
@@ -202,6 +233,7 @@ const handleRefreshClick = () => {
   <div class="mt-2.5 mb-3.5">
     <!-- Quick Search Options Component -->
     <QuickSearchOptions
+      ref="quickSearchOptionsRef"
       :config="quickSearchConfig"
       @change="handleQuickSearchChange" />
 

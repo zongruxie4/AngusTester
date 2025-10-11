@@ -48,6 +48,7 @@ let searchDatabase: XCanDexie<{ id: string; data: any; }>;
 
 // REFS
 const searchPanelRef = ref();
+const quickSearchOptionsRef = ref();
 
 // Reactive state
 const searchFilters = ref<SearchCriteria[]>([]);
@@ -130,12 +131,13 @@ const handleSearchPanelChange = (
   _headers?: { [key: string]: string },
   _changedKey?: string
 ) => {
-  // Merge search panel filters with quick search filters
-  const quickSearchFields = ['createdBy', 'lastModifiedBy', 'createdDate'];
-  const currentQuickSearchFilters = quickSearchFilters.value.filter(f => f.key && quickSearchFields.includes(f.key as string));
-  const searchPanelFilters = searchData.filter(f => f.key && !quickSearchFields.includes(f.key as string));
-
-  searchFilters.value = [...currentQuickSearchFilters, ...searchPanelFilters];
+  if (_changedKey === 'createdBy') {
+    quickSearchOptionsRef.value.clearSelectedMap(['createdBy']);
+  }
+  if (_changedKey === 'createdDate') {
+    quickSearchOptionsRef.value.clearSelectedMap(['createdDate', 'last1Day', 'last3Days', 'last7Days']);
+  }
+  searchFilters.value = [...searchData];
 };
 
 /**
@@ -144,9 +146,41 @@ const handleSearchPanelChange = (
  * @param selectedKeys - Array of selected option keys
  * @param searchCriteria - Array of search criteria from quick search
  */
-const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]): void => {
+const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void => {
+
+  let isAssociated = false;
+  if (key === 'createdBy') {
+    isAssociated = true;
+    const createdBySearchCriteria = searchCriteria.find(f => f.key === 'createdBy');
+    if (typeof searchPanelRef.value?.setConfigs === 'function') {
+      searchPanelRef.value.setConfigs([{
+        valueKey: 'createdBy',
+        type: 'select-user',
+        value: createdBySearchCriteria?.value
+      }]);
+    }
+  }
+  if (key && key.startsWith('last') && (key.endsWith('Day') || key.endsWith('Days'))) {
+    isAssociated = true;
+    const createdDateSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
+    let createdDateValue: [string, string] | undefined = undefined;
+    if (createdDateSearchCriteria.length > 0) {
+      createdDateValue = [createdDateSearchCriteria[0].value, createdDateSearchCriteria[1].value];
+    }
+    if (typeof searchPanelRef.value?.setConfigs === 'function') {
+      searchPanelRef.value.setConfigs([{
+        valueKey: 'createdDate',
+        type: 'date-range',
+        value: createdDateValue
+      }]);
+    }
+  }
+
+  if (isAssociated) {
+    return;
+  }
   // Update quick search filters
-  quickSearchFilters.value = searchCriteria;
+  quickSearchFilters.value = searchCriteria.filter(f => !['createdBy', 'createdDate'].includes(f.key as string));
 
   // Emit change event with current params
   emit('change', getSearchFilters());
@@ -157,7 +191,7 @@ const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: Search
  * @returns Cloned search filters array
  */
 const getSearchFilters = () => {
-  const clonedFilters: SearchCriteria[] = cloneDeep(searchFilters.value);
+  const clonedFilters: SearchCriteria[] = cloneDeep([...quickSearchFilters.value, ...searchFilters.value]);
   return clonedFilters;
 };
 
@@ -343,6 +377,7 @@ const sortMenuItems = [
   <div class="text-3 leading-5">
     <!-- Quick Search Options Component -->
     <QuickSearchOptions
+      ref="quickSearchOptionsRef"
       :config="quickSearchConfig"
       @change="handleQuickSearchChange" />
 
