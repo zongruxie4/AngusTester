@@ -15,7 +15,7 @@ import { CaseDetail } from '@/views/test/types';
 import { CaseActionAuth, getActionAuth } from '@/views/test/case/types';
 
 const CaseDetailTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/index.vue'));
-const ReviewTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/Review.vue'));
+const ReviewRecordTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/ReviewRecord.vue'));
 const AssocIssuesTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/AssocIssues.vue'));
 const AssocCasesTab = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/AssocCases.vue'));
 const AddIssueModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
@@ -617,7 +617,7 @@ defineExpose({
         v-if="!!caseDetail?.review"
         key="reviewRecord"
         :tab="t('common.reviewRecord')">
-        <ReviewTab
+        <ReviewRecordTab
           ref="reviewRecordComponentRef"
           :caseDetail="caseDetail" />
       </TabPane>
