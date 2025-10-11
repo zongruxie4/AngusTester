@@ -131,6 +131,27 @@ const initializeBrowserTabs = () => {
       }
     });
   }
+  // Watch for browser tab changes and ensure case list tab exists
+  watch(() => browserTabRef.value, () => {
+    if (typeof browserTabRef.value?.update === 'function') {
+      const tabData = browserTabRef.value.getData().map(item => item.value);
+      if (!tabData.includes('scenarioList')) {
+        addTabPane({
+          _id: 'scenarioList',
+          value: 'scenarioList',
+          name: t('scenario.title'),
+          closable: false // Prevent closing the main scenario list tab
+        });
+      } else {
+        updateTabPane({
+          _id: 'scenarioList',
+          value: 'scenarioList',
+          name: t('scenario.title'),
+          closable: false // Prevent closing the main scenario list tab
+        });
+      }
+    }
+  }, { immediate: true });
 
   handleHashChange(route.hash);
 };

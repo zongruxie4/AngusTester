@@ -57,6 +57,28 @@ const initialize = () => {
     });
   }
 
+  // Watch for browser tab changes and ensure case list tab exists
+  watch(() => browserTabRef.value, () => {
+    if (typeof browserTabRef.value?.update === 'function') {
+      const tabData = browserTabRef.value.getData().map(item => item.value);
+      if (!tabData.includes('dataSetList')) {
+        addTabPane({
+          _id: 'dataSetList',
+          value: 'dataSetList',
+          name: t('dataset.title'),
+          closable: false
+        });
+      } else {
+        updateTabPane({
+          _id: 'dataSetList',
+          value: 'dataSetList',
+          name: t('dataset.title'),
+          closable: false
+        });
+      }
+    }
+  }, { immediate: true });
+
   hashChange(route.hash);
 };
 

@@ -63,6 +63,28 @@ const initialize = () => {
     });
   }
 
+  // Watch for browser tab changes and ensure case list tab exists
+  watch(() => browserTabRef.value, () => {
+    if (typeof browserTabRef.value?.update === 'function') {
+      const tabData = browserTabRef.value.getData().map(item => item.value);
+      if (!tabData.includes('shareList')) {
+        addTabPane({
+          _id: 'shareList',
+          value: 'shareList',
+          name: t('apiShare.title'),
+          closable: false
+        });
+      } else {
+        updateTabPane({
+          _id: 'shareList',
+          value: 'shareList',
+          name: t('apiShare.title'),
+          closable: false
+        });
+      }
+    }
+  }, { immediate: true });
+
   hashChange(route.hash);
 };
 

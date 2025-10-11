@@ -86,6 +86,27 @@ const initialize = () => {
       }
     });
   }
+  // Watch for browser tab changes and ensure case list tab exists
+  watch(() => browserTabRef.value, () => {
+    if (typeof browserTabRef.value?.update === 'function') {
+      const tabData = browserTabRef.value.getData().map(item => item.value);
+      if (!tabData.includes('planList')) {
+        addTabPane({
+          _id: 'planList',
+          value: 'planList',
+          name: t('common.plan'),
+          closable: false
+        });
+      } else {
+        updateTabPane({
+          _id: 'planList',
+          value: 'planList',
+          name: t('common.plan'),
+          closable: false
+        });
+      }
+    }
+  }, { immediate: true });
   handleHashChange(route.hash);
 };
 

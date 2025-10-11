@@ -85,6 +85,28 @@ const initialize = () => {
       }
     });
   }
+  
+  // Watch for browser tab changes and ensure case list tab exists
+  watch(() => browserTabRef.value, () => {
+    if (typeof browserTabRef.value?.update === 'function') {
+      const tabData = browserTabRef.value.getData().map(item => item.value);
+      if (!tabData.includes('reviewList')) {
+        addTabPane({
+          _id: 'reviewList',
+          value: 'reviewList',
+          name: t('common.review'),
+          closable: false
+        });
+      } else {
+        updateTabPane({
+          _id: 'reviewList',
+          value: 'reviewList',
+          name: t('common.review'),
+          closable: false
+        });
+      }
+    }
+  }, { immediate: true });
 
   processHashParameters(route.hash);
 };
