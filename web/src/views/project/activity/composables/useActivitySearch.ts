@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TESTER, CombinedTargetType, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 
@@ -8,7 +8,7 @@ import { TESTER, CombinedTargetType, PageQuery, SearchCriteria } from '@xcan-ang
  *
  * @returns Object containing search configuration and management functions
  */
-export function useActivitySearch () {
+export function useActivitySearch (quickSearchOptionsRef: Ref) {
   const { t } = useI18n();
 
   // Search panel configuration
@@ -90,7 +90,14 @@ export function useActivitySearch () {
    *
    * @param data - New filter data from search panel
    */
-  const handleSearchChange = (data: SearchCriteria[]) => {
+  const handleSearchChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, _changedKey?: string) => {
+    debugger;
+    if (_changedKey === 'userId') {
+      quickSearchOptionsRef.value.clearSelectedMap(['myActivity']);
+    }
+    if (_changedKey === 'optDate') {
+      quickSearchOptionsRef.value.clearSelectedMap(['last1Day', 'last3Days', 'last7Days']);
+    }
     searchFilters.value = data.filter(item => !assocKeys.includes(item.key as string));
     assocFilters.value = data.filter(item => assocKeys.includes(item.key as string));
   };
