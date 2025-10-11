@@ -98,8 +98,6 @@ const infoColumns = computed(() => [
   ]
 ]);
 
-// Removed unused computed property
-
 // Name editing functions
 const openEditName = () => {
   isEditName.value = true;
@@ -292,11 +290,9 @@ const handleVersionBlur = async () => {
   if (error) {
     return;
   }
-
   emit('change', { softwareVersion: versionValue });
 };
 </script>
-
 <template>
   <Grid
     :columns="infoColumns"

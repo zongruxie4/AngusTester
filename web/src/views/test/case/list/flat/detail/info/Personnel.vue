@@ -105,7 +105,6 @@ const handleSetTester = async () => {
   emit('change', { testerId: appContext.getUser()?.id });
 };
 </script>
-
 <template>
   <Grid
     :columns="columns"

@@ -90,7 +90,6 @@ const saveDescription = async () => {
   emit('change', { description: descriptionContent.value });
 };
 </script>
-
 <template>
   <Toggle
     v-model:open="remarkExpand"

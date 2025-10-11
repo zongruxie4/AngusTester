@@ -41,7 +41,6 @@ const getOneTestPass = computed(() => {
   return '--';
 });
 </script>
-
 <template>
   <Grid
     :columns="columns"

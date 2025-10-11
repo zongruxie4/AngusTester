@@ -80,7 +80,6 @@ const saveSteps = async () => {
   emit('change', { steps: stepsContent.value });
 };
 </script>
-
 <template>
   <Toggle
     v-model:open="conditionsExpand"

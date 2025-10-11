@@ -118,7 +118,6 @@ onBeforeUnmount(() => {
             :dataSource="caseDetail"
             :projectId="projectId"
             :userInfo="userInfo"
-            :appInfo="appInfo"
             :taskId="caseDetail.id"
             :actionAuth="actionAuth"
             @change="handleCaseDataChange"

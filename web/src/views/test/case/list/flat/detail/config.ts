@@ -1,6 +1,7 @@
 import { i18n } from '@xcan-angus/infra';
 
 const t = i18n.getI18n()?.global?.t || ((value: string) => value);
+
 export const bigPeopleInfoColumns = [
   [
     {
@@ -24,7 +25,18 @@ export const bigPeopleInfoColumns = [
       dataIndex: 'lastModifiedByName'
     }]
 ];
-export const minPeopleInfoColumns = [[bigPeopleInfoColumns[0][0], bigPeopleInfoColumns[0][1], bigPeopleInfoColumns[0][2]], [bigPeopleInfoColumns[0][3], bigPeopleInfoColumns[0][4]]];
+
+export const minPeopleInfoColumns = [
+  [
+    bigPeopleInfoColumns[0][0],
+    bigPeopleInfoColumns[0][1],
+    bigPeopleInfoColumns[0][2]
+  ],
+  [
+    bigPeopleInfoColumns[0][3],
+    bigPeopleInfoColumns[0][4]
+  ]
+];
 
 export const bigDateInfoColumns = [
   [
@@ -50,11 +62,17 @@ export const bigDateInfoColumns = [
     }
   ]
 ];
+
 export const minDateInfoColumns = [
   [
-    bigDateInfoColumns[0][0], bigDateInfoColumns[0][1], bigDateInfoColumns[0][2]
+    bigDateInfoColumns[0][0],
+    bigDateInfoColumns[0][1],
+    bigDateInfoColumns[0][2]
   ],
-  [bigDateInfoColumns[0][3], bigDateInfoColumns[0][4]]
+  [
+    bigDateInfoColumns[0][3],
+    bigDateInfoColumns[0][4]
+  ]
 ];
 
 export const bigReviewInfoColumns = [
@@ -82,6 +100,7 @@ export const bigReviewInfoColumns = [
     }
   ]
 ];
+
 export const minReviewInfoColumns = [
   [
     bigReviewInfoColumns[0][0],
@@ -114,6 +133,7 @@ export const bigTestInfoColumns = [
     }
   ]
 ];
+
 export const minTestInfoColumns = [
   [
     bigTestInfoColumns[0][0],
@@ -154,6 +174,7 @@ export const bigApisInfoColumns = [
     }
   ]
 ];
+
 export const minApisInfoColumns = [
   [
     bigApisInfoColumns[0][0],
