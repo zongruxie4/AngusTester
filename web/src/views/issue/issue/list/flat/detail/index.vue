@@ -1469,7 +1469,6 @@ const getReferencedTaskCount = (type = 'TASK') => {
     </AsyncComponent>
   </Spin>
 </template>
-
 <style scoped>
 /* Full screen mode styles */
 .fixed-full {

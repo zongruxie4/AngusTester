@@ -7,8 +7,8 @@ import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 
 const BasicInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/review/ReviewRecordCase.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/test/review/detail/case/Precondition.vue'));
-const Description = defineAsyncComponent(() => import('@/views/test/review/detail/case/Description.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/info/Precondition.vue'));
+const Description = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/info/Description.vue'));
 const CaseStep = defineAsyncComponent(() => import('@/views/test/case/list/CaseSteps.vue'));
 
 interface Props {

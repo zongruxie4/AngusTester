@@ -69,9 +69,7 @@ const currentTaskType = computed(() => props.dataSource?.taskType?.value);
 const currentPriority = computed(() => props.dataSource?.priority?.value);
 const currentTags = computed(() => props.dataSource?.tags || []);
 const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-// (moved to Workload.vue)
 const isTaskOverdue = computed(() => props.dataSource?.overdue);
-// (moved to ProcessTimes.vue)
 
 /**
  * <p>Initiates task name editing mode by setting the input value and enabling edit flag.</p>
@@ -306,7 +304,6 @@ const handleTagBlur = async () => {
   emit('change', { id: currentTaskId.value, tags: selectedTagList.value });
 };
 
-// Software version editing methods
 /**
  * <p>Initiates software version editing mode by setting the select value and enabling edit flag.</p>
  * <p>Focuses the select field after a short delay to ensure proper rendering.</p>
@@ -354,7 +351,6 @@ const handleVersionBlur = async () => {
   emit('change', { id: currentTaskId.value, softwareVersion: versionSelectValue.value });
 };
 </script>
-
 <template>
   <Toggle>
     <template #title>

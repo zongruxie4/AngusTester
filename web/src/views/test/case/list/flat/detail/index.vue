@@ -9,10 +9,9 @@ import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { CaseTestResult, SoftwareVersionStatus } from '@/enums/enums';
 
 import {
@@ -754,7 +753,6 @@ onBeforeUnmount(() => {
                   :placeholder="t('common.name')"
                   @blur="editName" />
               </template>
-
               <template v-else>
                 <span> {{ text }}
                   <Icon
@@ -786,7 +784,6 @@ onBeforeUnmount(() => {
                   </template>
                 </SelectEnum>
               </template>
-
               <template v-else>
                 <TaskPriority :value="text" />
                 <Icon
@@ -816,7 +813,6 @@ onBeforeUnmount(() => {
                   class="w-full"
                   @blur="editTag" />
               </template>
-
               <template v-else>
                 <div class="inline-flex items-center leading-6">
                   <Tag
@@ -894,7 +890,6 @@ onBeforeUnmount(() => {
                   class="w-65 absolute -top-1.25"
                   @blur="editActualWorkload" />
               </template>
-
               <template v-else>
                 {{ text || '--' }}
                 <Icon
@@ -1123,7 +1118,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('common.precondition') }}</span>
+            <span class="text-3.5">{{ t('common.precondition') }}</span>
             <template v-if="isEditPrecondition">
               <Button
                 class="font-normal text-theme-special"
@@ -1175,7 +1170,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('common.testSteps') }}</span>
+            <span class="text-3.5">{{ t('common.testSteps') }}</span>
             <template v-if="isEditSteps">
               <Button
                 class="font-normal text-theme-special"
@@ -1223,7 +1218,7 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>{{ t('common.description') }}</span>
+            <span class="text-3.5">{{ t('common.description') }}</span>
             <template v-if="isEditDescription">
               <Button
                 class="font-normal text-theme-special"
@@ -1486,3 +1481,5 @@ onBeforeUnmount(() => {
     </div>
   </div>
 </template>
+<style scoped>
+</style>

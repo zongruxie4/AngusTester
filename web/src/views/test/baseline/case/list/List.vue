@@ -19,13 +19,13 @@ const SelectCaseModal = defineAsyncComponent(() => import('@/views/test/baseline
 const CaseReviewResult = defineAsyncComponent(() => import('@/views/test/review/detail/case/CaseReviewResult.vue'));
 const CaseStep = defineAsyncComponent(() => import('@/views/test/case/list/CaseSteps.vue'));
 const CaseBasicInfo = defineAsyncComponent(() => import('@/views/test/review/detail/case/CaseBasicInfo.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/test/review/detail/case/Precondition.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/info/Precondition.vue'));
 const Members = defineAsyncComponent(() => import('@/views/test/review/detail/case/Member.vue'));
 const TestInfo = defineAsyncComponent(() => import('@/views/test/review/detail/case/TestResult.vue'));
 const Attachment = defineAsyncComponent(() => import('@/views/test/review/detail/case/Attachment.vue'));
 const AssocTasks = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocIssues.vue'));
 const AssocCases = defineAsyncComponent(() => import('@/views/test/review/detail/case/AssocCases.vue'));
-const Description = defineAsyncComponent(() => import('@/views/test/review/detail/case/Description.vue'));
+const Description = defineAsyncComponent(() => import('@/views/test/case/list/flat/detail/info/Description.vue'));
 const Search = defineAsyncComponent(() => import('./Search.vue'));
 
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -282,7 +282,7 @@ onUnmounted(() => {
       <!-- Search -->
       <Search
         :established="currentBaselineInfo?.established":q
-        
+
         @handleAddCase="openAddCaseModal"
         @change="handleSearchParametersChange" />
 
