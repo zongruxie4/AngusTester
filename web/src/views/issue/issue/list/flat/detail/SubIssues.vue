@@ -322,19 +322,6 @@ const unfollowTask = async (taskData: TaskDetail) => {
 };
 
 /**
- * Component mounted lifecycle hook
- * <p>
- * Initializes the form data with appropriate default values
- * based on the parent task's properties
- */
-onMounted(() => {
-  newSubTaskType.value = [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(props.taskInfo?.taskType?.value)
-    ? TaskType.TASK
-    : props.taskInfo?.taskType?.value;
-  newSubTaskPriority.value = props.taskInfo?.priority?.value;
-});
-
-/**
  * Sprint ID from the parent task
  * <p>
  * Returns the sprint identifier associated with the parent task
@@ -381,6 +368,19 @@ const subTaskProgressInfo = computed(() => {
  */
 const subTaskDataList = computed(() => {
   return props.taskInfo?.subTaskInfos || [];
+});
+
+/**
+ * Component mounted lifecycle hook
+ * <p>
+ * Initializes the form data with appropriate default values
+ * based on the parent task's properties
+ */
+onMounted(() => {
+  newSubTaskType.value = [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(props.taskInfo?.taskType?.value)
+    ? TaskType.TASK
+    : props.taskInfo?.taskType?.value;
+  newSubTaskPriority.value = props.taskInfo?.priority?.value;
 });
 
 /**
@@ -452,7 +452,8 @@ const subTaskTableColumns = [
   {
     key: 'code',
     dataIndex: 'code',
-    title: t('common.code')
+    title: t('common.code'),
+    width: 130
   },
   {
     key: 'name',
@@ -462,48 +463,53 @@ const subTaskTableColumns = [
   {
     key: 'progress',
     dataIndex: 'progress',
-    title: t('common.progress')
+    title: t('common.progress'),
+    width: 140
   },
   {
     key: 'taskType',
     dataIndex: 'taskType',
-    title: t('common.type')
+    title: t('common.type'),
+    width: 120
   },
   {
     key: 'priority',
     dataIndex: 'priority',
     title: t('common.priority'),
-    groupName: 'task'
+    width: 120
   },
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
     title: t('common.evalWorkload'),
-    groupName: 'task',
-    hide: true,
-    customRender: ({ text }) => text || '--'
+    customRender: ({ text }) => text || '--',
+    width: 150
   },
   {
     key: 'status',
     dataIndex: 'status',
-    title: t('common.status')
+    title: t('common.status'),
+    width: 120
   },
   {
     key: 'assigneeName',
     dataIndex: 'assigneeName',
     title: t('common.assignee'),
-    customRender: ({ text }) => text || '--'
+    customRender: ({ text }) => text || '--',
+    width: 140
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
     title: t('common.deadlineDate'),
-    customRender: ({ text }) => text || '--'
+    customRender: ({ text }) => text || '--',
+    width: 150
   },
   {
     key: 'action',
     dataIndex: 'action',
-    title: t('common.actions')
+    title: t('common.actions'),
+    width: 180
   }
 ];
 </script>

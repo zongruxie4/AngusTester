@@ -624,7 +624,7 @@ defineExpose({
       <TabPane key="assocCases">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('common.useCase') }}</span>
+            <span>{{ t('common.assocCases') }}</span>
             <span>({{ caseDetail?.refCaseInfos?.length || 0 }})</span>
           </div>
         </template>

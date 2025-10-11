@@ -69,7 +69,7 @@ const handleAssociateTasks = async (selectedTaskIds) => {
     return;
   }
   isSubmitting.value = true;
-  const [error] = await testCase.putAssociationTask(props.caseId, selectedTaskIds);
+  const [error] = await testCase.putAssociationTask(props.caseId as number, selectedTaskIds);
   isSubmitting.value = false;
   if (error) {
     return;
@@ -85,7 +85,7 @@ const handleRemoveTaskAssociation = (taskRecord) => {
   modal.confirm({
     content: t('actions.tips.confirmCancelAssoc', { name: taskRecord.name }),
     onOk () {
-      return testCase.cancelAssociationTask(props.caseId, [taskRecord.id]).then(([error]) => {
+      return testCase.cancelAssociationTask(props.caseId as number, [taskRecord.id]).then(([error]) => {
         if (error) {
           return;
         }
@@ -107,7 +107,8 @@ const columns = [
   {
     key: 'code',
     dataIndex: 'code',
-    title: t('common.code')
+    title: t('common.code'),
+    width: 130
   },
   {
     key: 'name',
@@ -117,47 +118,53 @@ const columns = [
   {
     key: 'progress',
     dataIndex: 'progress',
-    title: t('common.progress')
+    title: t('common.progress'),
+    width: 140
   },
   {
     key: 'taskType',
     dataIndex: 'taskType',
-    title: t('common.type')
+    title: t('common.type'),
+    width: 120
   },
   {
     key: 'priority',
     dataIndex: 'priority',
-    title: t('common.priority')
+    title: t('common.priority'),
+    width: 120
   },
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
     title: t('common.evalWorkload'),
-    customRender: ({ text }) => text || '--'
+    customRender: ({ text }) => text || '--',
+    width: 150
   },
   {
     key: 'status',
     dataIndex: 'status',
-    title: t('common.status')
+    title: t('common.status'),
+    width: 120
   },
   {
     key: 'assigneeName',
     dataIndex: 'assigneeName',
     title: t('common.assignee'),
+    width: 140,
     customRender: ({ text }) => text || '--'
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
     title: t('common.deadlineDate'),
-    width: 110,
+    width: 150,
     customRender: ({ text }) => text || '--'
   },
   {
     key: 'action',
     dataIndex: 'action',
-    width: 110,
-    title: t('common.actions')
+    title: t('common.actions'),
+    width: 110
   }
 ];
 </script>

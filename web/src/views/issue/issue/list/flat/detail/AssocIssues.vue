@@ -157,7 +157,8 @@ const tableColumns = [
   {
     key: 'code',
     dataIndex: 'code',
-    title: t('common.code')
+    title: t('common.code'),
+    width: 130
   },
   {
     key: 'name',
@@ -167,45 +168,53 @@ const tableColumns = [
   {
     key: 'progress',
     dataIndex: 'progress',
-    title: t('common.progress')
+    title: t('common.progress'),
+    width: 140
   },
   {
     key: 'taskType',
     dataIndex: 'taskType',
-    title: t('common.type')
+    title: t('common.type'),
+    width: 120
   },
   {
     key: 'priority',
     dataIndex: 'priority',
-    title: t('common.priority')
+    title: t('common.priority'),
+    width: 120
   },
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
     title: t('common.evalWorkload'),
-    customRender: ({ text }) => text || '--'
+    customRender: ({ text }) => text || '--',
+    width: 150
   },
   {
     key: 'status',
     dataIndex: 'status',
-    title: t('common.status')
+    title: t('common.status'),
+    width: 120
   },
   {
     key: 'assigneeName',
     dataIndex: 'assigneeName',
     title: t('common.assignee'),
-    customRender: ({ text }) => text || '--'
+    customRender: ({ text }) => text || '--',
+    width: 140
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
     title: t('common.deadlineDate'),
-    customRender: ({ text }) => text || '--'
+    customRender: ({ text }) => text || '--',
+    width: 150
   },
   {
     key: 'action',
     dataIndex: 'action',
-    title: t('common.actions')
+    title: t('common.actions'),
+    width: 110
   }
 ];
 </script>

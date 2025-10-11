@@ -136,7 +136,8 @@ const tableColumns = [
   {
     key: 'code',
     dataIndex: 'code',
-    title: t('common.code')
+    title: t('common.code'),
+    width: 130
   },
   {
     key: 'name',
@@ -146,32 +147,41 @@ const tableColumns = [
   {
     key: 'priority',
     dataIndex: 'priority',
-    title: t('common.priority')
+    title: t('common.priority'),
+    width: 120
   },
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: t('common.evalWorkload')
+    title: t('common.evalWorkload'),
+    width: 150,
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'status',
     dataIndex: 'status',
-    title: t('common.status')
+    title: t('common.status'),
+    width: 120
   },
   {
     key: 'testerName',
     dataIndex: 'testerName',
-    title: t('common.testerName')
+    title: t('common.tester'),
+    width: 140,
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('common.deadlineDate')
+    title: t('common.deadlineDate'),
+    width: 150,
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'action',
     dataIndex: 'action',
-    title: t('common.actions')
+    title: t('common.actions'),
+    width: 110
   }
 ];
 </script>

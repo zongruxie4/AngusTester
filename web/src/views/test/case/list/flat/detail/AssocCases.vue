@@ -60,9 +60,7 @@ const handleAssociateCases = async (selectedCaseIds) => {
     return;
   }
   isSubmitting.value = true;
-  const [error] = await testCase.putAssociationCase(props.caseId, {
-    assocCaseIds: selectedCaseIds
-  });
+  const [error] = await testCase.putAssociationCase(props.caseId, selectedCaseIds);
   isSubmitting.value = false;
   if (error) {
     return;
@@ -78,9 +76,7 @@ const handleRemoveCaseAssociation = (caseRecord) => {
   modal.confirm({
     content: t('actions.tips.confirmCancelAssoc', { name: caseRecord.name }),
     onOk () {
-      return testCase.cancelAssociationCase(props.caseId, {
-        assocCaseIds: [caseRecord.id]
-      }).then(([error]) => {
+      return testCase.cancelAssociationCase(props.caseId, [caseRecord.id]).then(([error]) => {
         if (error) {
           return;
         }
@@ -108,7 +104,8 @@ const columns = [
   {
     key: 'code',
     dataIndex: 'code',
-    title: t('common.code')
+    title: t('common.code'),
+    width: 130
   },
   {
     key: 'name',
@@ -118,32 +115,41 @@ const columns = [
   {
     key: 'priority',
     dataIndex: 'priority',
-    title: t('common.priority')
+    title: t('common.priority'),
+    width: 120
   },
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: t('common.evalWorkload')
+    title: t('common.evalWorkload'),
+    width: 150,
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'status',
     dataIndex: 'status',
-    title: t('common.status')
+    title: t('common.status'),
+    width: 120
   },
   {
     key: 'testerName',
     dataIndex: 'testerName',
-    title: t('common.tester')
+    title: t('common.tester'),
+    width: 140,
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('common.deadlineDate')
+    title: t('common.deadlineDate'),
+    width: 150,
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'action',
     dataIndex: 'action',
-    title: t('common.actions')
+    title: t('common.actions'),
+    width: 110
   }
 ];
 </script>

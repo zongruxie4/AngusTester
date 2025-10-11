@@ -213,7 +213,7 @@
         "assocRequirementTip": "Trace back to original requirements for context and impact analysis.",
         "assocStoryTip": "Trace back to user stories for functional context and impact understanding.",
         "assocBugTip": "Trace back to original requirements for context and impact analysis.",
-        "assocCaseTitle": "Functional Test",
+        "assocCaseTitle": "Test Cases",
         "assocCaseTip": "Track test cases related to this issue to understand testing dependencies.",
         "assocApiTestTitle": "API Test",
         "assocApiTestTip": "Link to API testing tasks for progress tracking and API health verification.",

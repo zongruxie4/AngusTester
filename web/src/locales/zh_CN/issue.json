@@ -213,7 +213,7 @@
         "assocRequirementTip": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。",
         "assocStoryTip": "追溯用户角度描述功能需求，方便理解问题产生的背景和影响范围。",
         "assocBugTip": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。",
-        "assocCaseTitle": "功能测试",
+        "assocCaseTitle": "测试用例",
         "assocCaseTip": "记录与当前问题相关联的测试用例，了解问题与测试之间的依赖关系。",
         "assocApiTestTitle": "接口测试",
         "assocApiTestTip": "建立与对应接口测试任务关联关系，方便追溯接口测试进展，确保接口正常工作。",

@@ -98,12 +98,12 @@ export default class API {
     return http.post(`${baseUrl}/import`, formData);
   }
 
-  putAssociationCase (caseId: number, params): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${caseId}/association/case`, params);
+  putAssociationCase (caseId: number, assocCaseIds: number[]): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${caseId}/association/case`, { assocCaseIds }, { paramsType: true });
   }
 
-  cancelAssociationCase (caseId: number, params): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${caseId}/association/case/cancel`, params);
+  cancelAssociationCase (caseId: number, assocCaseIds: number[]): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${caseId}/association/case/cancel`, { assocCaseIds }, { paramsType: true });
   }
 
   putAssociationTask (caseId: number, assocTaskIds: number[]) : Promise<[Error | null, any]> {
