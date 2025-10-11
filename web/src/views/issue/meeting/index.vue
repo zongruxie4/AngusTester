@@ -97,6 +97,28 @@ const initializeMeetingModule = () => {
       }
     });
   }
+  
+  // Watch for browser tab changes and ensure case list tab exists
+  watch(() => browserTabRef.value, () => {
+    if (typeof browserTabRef.value?.update === 'function') {
+      const tabData = browserTabRef.value.getData().map(item => item.value);
+      if (!tabData.includes('meetingList')) {
+        addTabPane({
+          _id: 'meetingList',
+          value: 'meetingList',
+          name: t('meeting.title'),
+          closable: false
+        });
+      } else {
+        updateTabPane({
+          _id: 'meetingList',
+          value: 'meetingList',
+          name: t('meeting.title'),
+          closable: false
+        });
+      }
+    }
+  }, { immediate: true });
   processRouteHash(route.hash);
 };
 

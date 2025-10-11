@@ -86,6 +86,28 @@ const initializeBaselineModule = () => {
     });
   }
 
+  // Watch for browser tab changes and ensure case list tab exists
+  watch(() => browserTabRef.value, () => {
+    if (typeof browserTabRef.value?.update === 'function') {
+      const tabData = browserTabRef.value.getData().map(item => item.value);
+      if (!tabData.includes('baselineList')) {
+        addTabPane({
+          _id: 'baselineList',
+          value: 'baselineList',
+          name: t('testCaseBaseline.title'),
+          closable: false
+        });
+      } else {
+        updateTabPane({
+          _id: 'baselineList',
+          value: 'baselineList',
+          name: t('testCaseBaseline.title'),
+          closable: false
+        });
+      }
+    }
+  }, { immediate: true });
+
   handleHashChange(route.hash);
 };
 

@@ -96,6 +96,28 @@ const initializeComponent = () => {
     });
   }
 
+  // Watch for browser tab changes and ensure case list tab exists
+  watch(() => browserTabRef.value, () => {
+    if (typeof browserTabRef.value?.update === 'function') {
+      const tabData = browserTabRef.value.getData().map(item => item.value);
+      if (!tabData.includes('monitorList')) {
+        addTabPane({
+          _id: 'monitorList',
+          value: 'monitorList',
+          name: t('scenarioMonitor.monitor'),
+          closable: false
+        });
+      } else {
+        updateTabPane({
+          _id: 'monitorList',
+          value: 'monitorList',
+          name: t('scenarioMonitor.monitor'),
+          closable: false
+        });
+      }
+    }
+  }, { immediate: true });
+
   // Process current hash for tab navigation
   processHashChange(route.hash);
 };
@@ -200,6 +222,7 @@ provide('replaceTabPane', replaceTabPane);
 </script>
 <template>
   <BrowserTab
+    v-if="props.projectId"
     ref="browserTabRef"
     v-model:activeKey="activeTabKey"
     hideAdd

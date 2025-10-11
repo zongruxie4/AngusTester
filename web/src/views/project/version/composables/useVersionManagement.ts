@@ -84,6 +84,28 @@ export function useVersionManagement (props: VersionManagementProps) {
       });
     }
 
+    // Watch for browser tab changes and ensure case list tab exists
+    watch(() => browserTabRef.value, () => {
+      if (typeof browserTabRef.value?.update === 'function') {
+        const tabData = browserTabRef.value.getData().map(item => item.value);
+        if (!tabData.includes('versionList')) {
+          addTabPane({
+            _id: 'versionList',
+            value: 'versionList',
+            name: t('version.title'),
+            closable: false // Prevent closing of main version list tab
+          });
+        } else {
+          updateTabPane({
+            _id: 'versionList',
+            value: 'versionList',
+            name: t('version.title'),
+            closable: false // Prevent closing of main version list tab
+          });
+        }
+      }
+    }, { immediate: true });
+
     hashChange(route.hash);
   };
 
