@@ -45,7 +45,6 @@ const emit = defineEmits<{
   (e: 'loadingChange', value:boolean):void;
 }>();
 
-const userInfo = ref(appContext.getUser());
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const isWideLayout = ref(true);

@@ -65,7 +65,6 @@ const emits = defineEmits<{
 const isAdmin = computed(() => appContext.isAdmin());
 const projectId = inject<Ref<number>>('projectId', ref(-1));
 const userInfo = ref(appContext.getUser());
-const appInfo = ref(appContext.getAccessApp());
 
 // UI state
 type TabKey = 'info' | 'activity' | 'comments' | 'assocIssues' | 'assocCases';
@@ -637,24 +636,6 @@ defineExpose({
           @editSuccess="onEditSuccess" />
       </TabPane>
 
-      <TabPane key="assocIssues">
-        <template #tab>
-          <div class="inline-flex">
-            <span>{{ t('common.task') }}</span>
-            <span>({{ countReferencedTasksByType(TaskType.TASK) }})</span>
-          </div>
-        </template>
-        <AssocIssuesTab
-          :key="TaskType.TASK"
-          :dataSource="caseDetail?.refTaskInfos"
-          :projectId="projectId"
-          :caseId="caseDetail?.id"
-          :title="t('common.task')"
-          :taskType="TaskType.TASK"
-          :tips="t('testCase.messages.assocTaskTip')"
-          @editSuccess="onEditSuccess" />
-      </TabPane>
-
       <TabPane key="assocRequirements">
         <template #tab>
           <div class="inline-flex">
@@ -663,10 +644,8 @@ defineExpose({
           </div>
         </template>
         <AssocIssuesTab
-          :key="TaskType.REQUIREMENT"
           :projectId="projectId"
           :userInfo="props.userInfo"
-          :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
           :title="t('common.requirement')"
@@ -683,15 +662,30 @@ defineExpose({
           </div>
         </template>
         <AssocIssuesTab
-          :key="TaskType.STORY"
           :projectId="projectId"
           :userInfo="props.userInfo"
-          :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
           :title="t('common.story')"
           :taskType="TaskType.STORY"
           :tips="t('testCase.messages.assocStoryTip')"
+          @editSuccess="onEditSuccess" />
+      </TabPane>
+
+      <TabPane key="assocTasks">
+        <template #tab>
+          <div class="inline-flex">
+            <span>{{ t('common.task') }}</span>
+            <span>({{ countReferencedTasksByType(TaskType.TASK) }})</span>
+          </div>
+        </template>
+        <AssocIssuesTab
+          :dataSource="caseDetail?.refTaskInfos"
+          :projectId="projectId"
+          :caseId="caseDetail?.id"
+          :title="t('common.task')"
+          :taskType="TaskType.TASK"
+          :tips="t('testCase.messages.assocTaskTip')"
           @editSuccess="onEditSuccess" />
       </TabPane>
 
@@ -703,10 +697,8 @@ defineExpose({
           </div>
         </template>
         <AssocIssuesTab
-          :key="TaskType.BUG"
           :projectId="projectId"
           :userInfo="props.userInfo"
-          :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
           :title="t('common.bug')"
@@ -723,10 +715,8 @@ defineExpose({
           </div>
         </template>
         <AssocIssuesTab
-          :key="TaskType.API_TEST"
           :projectId="projectId"
           :userInfo="props.userInfo"
-          :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
           :title="t('common.apiTest')"
@@ -743,10 +733,8 @@ defineExpose({
           </div>
         </template>
         <AssocIssuesTab
-          :key="TaskType.SCENARIO_TEST"
           :projectId="projectId"
           :userInfo="props.userInfo"
-          :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
           :title="t('common.scenarioTest')"
@@ -799,7 +787,6 @@ defineExpose({
       <AddIssueModal
         v-model:visible="isAddBugModalVisible"
         :projectId="projectId"
-        :appInfo="appInfo"
         :assigneeId="caseDetail?.developerId"
         :userInfo="userInfo"
         :refCaseIds="[caseDetail?.id]"

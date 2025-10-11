@@ -28,7 +28,6 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
 const props = withDefaults(defineProps<TaskEditState>(), {
   projectId: undefined,
   userInfo: undefined,
-  appInfo: undefined,
   sprintId: undefined,
   visible: false,
   taskId: undefined,

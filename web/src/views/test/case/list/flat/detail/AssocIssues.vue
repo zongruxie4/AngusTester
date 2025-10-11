@@ -19,7 +19,6 @@ const { t } = useI18n();
 const props = withDefaults(defineProps<AssocTaskProps>(), {
   projectId: undefined,
   userInfo: undefined,
-  appInfo: undefined,
   caseId: undefined,
   dataSource: undefined,
   title: 'Task',
@@ -133,7 +132,8 @@ const columns = [
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: t('common.evalWorkload')
+    title: t('common.evalWorkload'),
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'status',
@@ -143,16 +143,20 @@ const columns = [
   {
     key: 'assigneeName',
     dataIndex: 'assigneeName',
-    title: t('common.assignee')
+    title: t('common.assignee'),
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: t('common.deadlineDate')
+    title: t('common.deadlineDate'),
+    width: 110,
+    customRender: ({ text }) => text || '--'
   },
   {
     key: 'action',
     dataIndex: 'action',
+    width: 110,
     title: t('common.actions')
   }
 ];

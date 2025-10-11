@@ -160,7 +160,7 @@ const tableColumns = [
 </script>
 <template>
   <Modal
-    :title="t('commonComp.selectCaseByModule.title')"
+    :title="t('common.placeholders.selectCase')"
     :visible="props.visible"
     :width="1000"
     :loading="isLoading"
@@ -175,7 +175,7 @@ const tableColumns = [
       <div class="flex-1 ml-2">
         <Input
           v-model:value="searchKeywords"
-          :placeholder="t('commonComp.selectCaseByModule.searchPlaceholder')"
+          :placeholder="t('common.placeholders.searchKeyword')"
           class="w-100"
           @change="handleSearchFilter" />
         <Table

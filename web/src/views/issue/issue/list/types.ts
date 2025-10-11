@@ -54,7 +54,7 @@ export type TaskEditState = {
   targetParentId?: string | undefined;
 
   // Temp for edit
-  userInfo?: { id: number; };
+  userInfo?: { id: number; fullName?: string};
   appInfo?: { id: number; };
   visible?: boolean;
   taskId?: number;

@@ -89,9 +89,9 @@ export interface AssocCaseProps {
 
 export interface AssocTaskProps {
   projectId: number;
-  userInfo: { id: number; };
-  appInfo: { id: number; };
-  caseId: number;
+  userInfo?: { id: number; };
+  appInfo?: { id: number; };
+  caseId?: number;
   dataSource: TaskInfo[];
   title: string;
   taskType: TaskType;
