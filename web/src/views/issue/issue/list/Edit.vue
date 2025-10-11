@@ -447,9 +447,7 @@ const buildTaskParameters = () => {
     assigneeId: formState.assigneeId,
     deadlineDate: formState.deadlineDate,
     priority: formState.priority,
-    parentTaskId: formState.parentTaskId,
-    testerId: formState.testerId,
-    softwareVersion: formState.softwareVersion || undefined
+    parentTaskId: formState.parentTaskId
   };
 
   // Add parent task ID if provided
@@ -460,6 +458,14 @@ const buildTaskParameters = () => {
   // Add optional fields if they have values
   if (formState.confirmerId) {
     params.confirmerId = formState.confirmerId;
+  }
+
+  if (formState.testerId) {
+    params.testerId = formState.testerId;
+  }
+
+  if (formState.softwareVersion) {
+    params.softwareVersion = formState.softwareVersion;
   }
 
   if (formState.moduleId && +formState.moduleId > 0) {
@@ -523,7 +529,21 @@ const buildTaskParameters = () => {
 const handleFormSubmit = async (shouldContinue: boolean) => {
   // For existing tasks, check if form has changes
   if (props.taskId) {
-    const hasChanges = isEqual(originalFormState, formState);
+    // Create normalized objects for comparison
+    const normalizeForComparison = (obj: any) => {
+      const normalized = { ...obj };
+      // Ensure all array fields are arrays
+      normalized.tagIds = normalized.tagIds || [];
+      normalized.refTaskIds = normalized.refTaskIds || [];
+      normalized.refCaseIds = normalized.refCaseIds || [];
+      normalized.attachments = normalized.attachments || [];
+      return normalized;
+    };
+    
+    const normalizedOriginal = normalizeForComparison(originalFormState);
+    const normalizedCurrent = normalizeForComparison(formState);
+    
+    const hasChanges = !isEqual(normalizedOriginal, normalizedCurrent);
     if (!hasChanges) {
       emit('update:visible', false);
       return;
@@ -714,9 +734,9 @@ const populateFormWithTaskData = (data: Partial<TaskDetail>) => {
   formState.priority = data.priority?.value || Priority.MEDIUM;
   formState.parentTaskId = data.parentTaskId;
   formState.sprintId = data.sprintId;
-  formState.tagIds = data.tags?.map(item => item.id);
-  formState.refTaskIds = data.refTaskInfos?.map(item => item.id);
-  formState.refCaseIds = data.refCaseInfos?.map(item => item.id);
+  formState.tagIds = data.tags?.map(item => item.id) || [];
+  formState.refTaskIds = data.refTaskInfos?.map(item => item.id) || [];
+  formState.refCaseIds = data.refCaseInfos?.map(item => item.id) || [];
   formState.taskType = data.taskType?.value || TaskType.TASK;
   formState.testerId = data.testerId;
   formState.escapedBug = data.escapedBug || false;
@@ -1244,24 +1264,14 @@ onMounted(() => {
 
           <FormItem
             name="evalWorkload"
-            :rules="{ required: formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
+            :rules="{ required: !!formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
-              <span class="flex items-center">
-                {{ t('common.evalWorkload') }}
-                <Tooltip
-                  placement="right"
-                  arrowPointAtCenter
-                  :overlayStyle="{'max-width':'400px'}"
-                  :title="evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                    ? t('common.storyPointsHint') : t('common.workHoursHint')">
-                  <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
-                </Tooltip>
-              </span>
+              {{ t('common.evalWorkload') }}
             </template>
+
             <Input
               v-model:value="formState.evalWorkload"
               size="small"
-              :disabled="!formState.sprintId"
               dataType="float"
               trimAll
               :min="0.1"
@@ -1273,22 +1283,21 @@ onMounted(() => {
           <template v-if="!!props.taskId">
             <FormItem name="actualWorkload">
               <template #label>
-                <span class="flex items-center">
-                  {{ t('common.actualWorkload') }}
-                  <Tooltip
-                    placement="right"
-                    arrowPointAtCenter
-                    :overlayStyle="{'max-width':'400px'}"
-                    :title="evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                      ? t('common.actualStoryPointsHint') : t('common.actualWorkHoursHint')">
-                    <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
-                  </Tooltip>
-                </span>
+                <span class="w-70">{{ t('common.actualWorkload') }}</span>
+                <Popover placement="rightTop">
+                  <template #content>
+                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">
+                      {{ t('backlog.edit.descriptions.evalWorkload') }}
+                    </div>
+                  </template>
+                  <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
+                </Popover>
               </template>
+
               <Input
                 v-model:value="formState.actualWorkload"
+                class="w-70"
                 size="small"
-                :disabled="!formState.sprintId"
                 dataType="float"
                 trimAll
                 :placeholder="t('common.placeholders.workloadRange')"
@@ -1467,8 +1476,8 @@ onMounted(() => {
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                     <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
                     <span class="text-3 block">
-                      {{ t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }) }}
-                  </span>
+                       {{ t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }) }}
+                    </span>
                   </Upload>
                 </div>
               </template>

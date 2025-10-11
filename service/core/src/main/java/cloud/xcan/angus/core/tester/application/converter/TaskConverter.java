@@ -151,6 +151,7 @@ public class TaskConverter {
         .setPriority(task.getPriority())
         .setAssigneeId(task.getAssigneeId())
         .setConfirmerId(task.getConfirmerId())
+        .setTesterId(task.getTesterId())
         .setDeadlineDate(task.getDeadlineDate())
         .setAttachments(task.getAttachments())
         .setDescription(task.getDescription())

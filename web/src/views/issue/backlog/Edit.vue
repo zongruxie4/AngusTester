@@ -333,7 +333,8 @@ const buildFormParameters = () => {
     priority: formState.priority,
     parentTaskId: formState.parentTaskId,
     testerId: formState.testerId,
-    softwareVersion: formState.softwareVersion
+    softwareVersion: formState.softwareVersion,
+    attachments: formState.attachments
   };
 
   if (props.parentTaskId) {
@@ -391,7 +392,6 @@ const buildFormParameters = () => {
     params.testType = formState.testType;
     params.targetId = formState.targetId;
   }
-
   return params;
 };
 
@@ -477,21 +477,16 @@ const cancelModal = () => {
  */
 const fetchTaskDetails = async (): Promise<Partial<TaskDetail>> => {
   isLoading.value = true;
-  console.log('🔍 Fetching task details for taskId:', props.taskId);
   const [error, res] = await issue.getTaskDetail(props.taskId!);
   isLoading.value = false;
 
   if (error) {
-    console.error('Error fetching task details:', error);
     return { id: props.taskId! };
   }
 
   if (!res?.data) {
-    console.warn('No data returned from task.getTaskDetail');
     return { id: props.taskId! };
   }
-
-  console.log('Task details loaded successfully:', res.data);
   return res.data;
 };
 
@@ -556,6 +551,111 @@ const resetFormToDefaults = () => {
   } else {
     formState.moduleId = undefined;
   }
+  formState.attachments = undefined;
+};
+
+/**
+ * <p>Exclude task types from selection</p>
+ * <p>Filters out certain task types based on current task state</p>
+ */
+const getExcludedTaskTypes = (data: { value: TaskDetail['taskType']['value']; message: string }) => {
+  const value = data.value;
+  const currentTaskType = formState.taskType;
+  if (props.taskId) {
+    if (currentTaskType === TaskType.API_TEST) {
+      return value !== TaskType.API_TEST;
+    }
+    if (currentTaskType === TaskType.SCENARIO_TEST) {
+      return value !== TaskType.SCENARIO_TEST;
+    }
+    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
+  }
+  return false;
+};
+
+/**
+ * <p>Exclude current task from parent task selection</p>
+ * <p>Prevents selecting the current task as its own parent</p>
+ */
+const getExcludedTaskIds = (data: { id: number }) => {
+  return props.taskId === data.id;
+};
+
+// Computed Properties
+const currentUserId = computed(() => {
+  return props.userInfo?.id;
+});
+
+const modalTitle = computed(() => {
+  if (props.taskId) {
+    return t('actions.edit');
+  }
+  return t('actions.add');
+});
+
+const isTaskTypeReadonly = computed(() => {
+  return (
+    props.taskId && (formState.taskType === TaskType.API_TEST || formState.taskType === TaskType.SCENARIO_TEST)
+  ) || !!props.taskType;
+});
+
+const shouldShowEditor = computed(() => {
+  return props.visible && (isEditorVisible.value || !props.taskId);
+});
+
+const shouldShowTestType = computed(() => {
+  const taskType = formState.taskType;
+  if (!taskType) {
+    return false;
+  }
+  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
+});
+
+/**
+ * <p>Validate description length</p>
+ * <p>Ensures description does not exceed maximum length limit</p>
+ */
+const validateDescriptionLength = async () => {
+  if (richEditorRef.value && richEditorRef.value.getLength() > 6000) {
+    return Promise.reject(new Error(t('common.placeholders.inputDescription30')));
+  }
+  return Promise.resolve();
+};
+
+// Style Computed Properties
+const modalStyle = computed(() => {
+  if (isZoomedIn.value) {
+    return {
+      width: '100%'
+    };
+  }
+  return {
+    width: '1000px'
+  };
+});
+
+const formStyle = computed(() => {
+  if (isZoomedIn.value) {
+    return {
+      height: '86vh'
+    };
+  }
+  return {
+    height: '75vh',
+    minHeight: '665px'
+  };
+});
+
+const zoomInFlagCacheKey = computed(() => {
+  return `${props.userInfo?.id}${props?.projectId}${btoa('modalSize')}`;
+});
+
+/**
+ * <p>Get popup container for dropdowns</p>
+ * <p>Returns document body as popup container for better positioning</p>
+ */
+const getPopupContainer = () => {
+  return document.body;
 };
 
 // Lifecycle Hooks
@@ -663,110 +763,6 @@ onMounted(() => {
     }
   }, { immediate: true });
 });
-
-/**
- * <p>Exclude task types from selection</p>
- * <p>Filters out certain task types based on current task state</p>
- */
-const getExcludedTaskTypes = (data: { value: TaskDetail['taskType']['value']; message: string }) => {
-  const value = data.value;
-  const currentTaskType = formState.taskType;
-  if (props.taskId) {
-    if (currentTaskType === TaskType.API_TEST) {
-      return value !== TaskType.API_TEST;
-    }
-    if (currentTaskType === TaskType.SCENARIO_TEST) {
-      return value !== TaskType.SCENARIO_TEST;
-    }
-    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
-  }
-  return false;
-};
-
-/**
- * <p>Exclude current task from parent task selection</p>
- * <p>Prevents selecting the current task as its own parent</p>
- */
-const getExcludedTaskIds = (data: { id: number }) => {
-  return props.taskId === data.id;
-};
-
-// Computed Properties
-const currentUserId = computed(() => {
-  return props.userInfo?.id;
-});
-
-const modalTitle = computed(() => {
-  if (props.taskId) {
-    return t('actions.edit');
-  }
-  return t('actions.add');
-});
-
-const isTaskTypeReadonly = computed(() => {
-  return (
-    props.taskId && (formState.taskType === TaskType.API_TEST || formState.taskType === TaskType.SCENARIO_TEST)
-  ) || !!props.taskType;
-});
-
-const shouldShowEditor = computed(() => {
-  return props.visible && (isEditorVisible.value || !props.taskId);
-});
-
-const shouldShowTestType = computed(() => {
-  const taskType = formState.taskType;
-  if (!taskType) {
-    return false;
-  }
-  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
-});
-
-/**
- * <p>Validate description length</p>
- * <p>Ensures description does not exceed maximum length limit</p>
- */
-const validateDescriptionLength = async () => {
-  if (richEditorRef.value && richEditorRef.value.getLength() > 6000) {
-    return Promise.reject(new Error(t('common.placeholders.inputDescription30')));
-  }
-  return Promise.resolve();
-};
-
-// Style Computed Properties
-const modalStyle = computed(() => {
-  if (isZoomedIn.value) {
-    return {
-      width: '100%'
-    };
-  }
-  return {
-    width: '1000px'
-  };
-});
-
-const formStyle = computed(() => {
-  if (isZoomedIn.value) {
-    return {
-      height: '86vh'
-    };
-  }
-  return {
-    height: '75vh',
-    minHeight: '665px'
-  };
-});
-
-const zoomInFlagCacheKey = computed(() => {
-  return `${props.userInfo?.id}${props?.projectId}${btoa('modalSize')}`;
-});
-
-/**
- * <p>Get popup container for dropdowns</p>
- * <p>Returns document body as popup container for better positioning</p>
- */
-const getPopupContainer = () => {
-  return document.body;
-};
 </script>
 <template>
   <Modal
@@ -1068,7 +1064,7 @@ const getPopupContainer = () => {
               :label="t('common.deadlineDate')"
               name="deadlineDate"
               class="flex-1/2"
-              :rules="{ required: true, validator: validateDeadlineDate }">
+              :rules="{ validator: validateDeadlineDate }">
               <DatePicker
                 v-model:value="formState.deadlineDate"
                 :showNow="false"
