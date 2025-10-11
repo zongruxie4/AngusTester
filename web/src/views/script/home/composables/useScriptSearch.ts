@@ -62,24 +62,23 @@ export function useScriptSearch (userId: string) {
   /**
    * Handle quick search changes
    */
-  const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[]) => {
+  const handleQuickSearchChange = (_selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string) => {
     if (isUpdating) return;
 
     isUpdating = true;
     // Merge quick search criteria with existing filters
     const quickSearchFields = ['createdBy', 'lastModifiedBy', 'type', 'createdDate'];
     const otherFilters = filters.value.filter(f => f.key && !quickSearchFields.includes(f.key));
-    if (_selectedKeys.includes('createdBy')) {
-      if (!filters.value.find(f => f.key === 'createdBy')) {
+    if (key === 'createdBy') {
+      const createdBySearchCriteria = searchCriteria.find(f => f.key === 'createdBy');
+      if (createdBySearchCriteria) {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
             valueKey: 'createdBy',
             value: userId,
           }]);
         }
-      }
-    } else {
-      if (filters.value.find(f => f.key === 'createdBy')?.value === userId) {
+      } else {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
             valueKey: 'createdBy',
@@ -88,21 +87,41 @@ export function useScriptSearch (userId: string) {
         }
       }
     }
-    if (_selectedKeys.includes('lastModifiedBy')) {
-      if (!filters.value.find(f => f.key === 'lastModifiedBy')) {
+    if (key === 'lastModifiedBy') {
+      const lastModifiedBySearchCriteria = searchCriteria.find(f => f.key === 'lastModifiedBy');
+      if (lastModifiedBySearchCriteria) {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
             valueKey: 'lastModifiedBy',
             value: userId,
           }]);
         }
-      }
-    } else {
-      if (filters.value.find(f => f.key === 'lastModifiedBy')?.value === userId) {
+      } else {
         if (typeof searchPanelRef.value?.setConfigs === 'function') {
           searchPanelRef.value.setConfigs([{
             valueKey: 'lastModifiedBy',
             value: undefined,
+          }]);
+        }
+      }
+    }
+    if (key && key.startsWith('last') && (key.endsWith('Day') || key.endsWith('Days'))) {
+      const createdDataSearchCriteria = searchCriteria.filter(f => f.key === 'createdDate');
+      if (createdDataSearchCriteria.length > 0) {
+        const createdDataValue = [createdDataSearchCriteria[0]?.value, createdDataSearchCriteria[1]?.value]
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdDate',
+            value: createdDataValue,
+            type: 'date-range'
+          }]);
+        }
+      } else {
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{
+            valueKey: 'createdDate',
+            value: undefined,
+            type: 'date-range'
           }]);
         }
       }
@@ -125,29 +144,23 @@ export function useScriptSearch (userId: string) {
     if (isUpdating) return;
 
     isUpdating = true;
-    const quickSearchFields = ['type', 'createdDate'];
-    const commonFields = ['createdBy', 'lastModifiedBy'];
-    let quickSearchFilters = filters.value.filter(f => f.key && [...quickSearchFields, ...commonFields].includes(f.key));
-
-    if (key && commonFields.includes(key)) {
+    
+    const searchCriteriaKeys = quickSearchOptionsRef.value.getSearchCriteria().map(f => f.key);
+    let quickSearchFilters = filters.value.filter(f => f.key && searchCriteriaKeys.includes(f.key));
+    if (key && searchCriteriaKeys.includes(key)) {
       quickSearchFilters = quickSearchFilters.filter(f => f.key !== key);
     }
-
-    const searchCriteriaKeys = quickSearchOptionsRef.value.getSearchCriteria().map(f => f.key);
-    if (searchCriteriaKeys.includes('createdBy') && key === 'createdBy' && _filters.find(f => f.key === 'createdBy')?.value !== userId) {
-      quickSearchOptionsRef.value.handleOptionClick({
-        key: 'createdBy',
-        name: t('quickSearch.createdByMe')
-      });
+    
+    if (key === 'createdBy' && searchCriteriaKeys.includes('createdBy')) {
+      quickSearchOptionsRef.value.clearSelectedMap('createdBy');
     }
-    if (searchCriteriaKeys.includes('lastModifiedBy') && key === 'lastModifiedBy' && _filters.find(f => f.key === 'lastModifiedBy')?.value !== userId) {
-      quickSearchOptionsRef.value.handleOptionClick({
-        key: 'lastModifiedBy',
-        name: t('quickSearch.createdByMe')
-      });
+    if (key === 'lastModifiedBy' && searchCriteriaKeys.includes('lastModifiedBy')) {
+      quickSearchOptionsRef.value.clearSelectedMap('lastModifiedBy');
+    }
+    if (key === 'createdDate' && searchCriteriaKeys.includes('createdDate')) {
+      quickSearchOptionsRef.value.clearSelectedMap(['createdDate', 'last1Day', 'last3Days', 'last7Days']);
     }
   
-    
     const newFilters = [...quickSearchFilters, ..._filters];
 
     // Check if filters actually changed
