@@ -139,130 +139,427 @@ watch(() => props.visible, newValue => {
     :title="t('issue.actions.importIssues')"
     :visible="props.visible"
     class="upload-modal"
+    :width="600"
+    :centered="true"
     @cancel="closeModal"
     @ok="submitImportForm">
-    <Form
-      ref="formRef"
-      :model="formData"
-      size="small"
-      class="upload-form">
-      <FormItem
-        v-if="proTypeShowMap.showSprint && props.visible"
-        :label="t('common.sprint')"
-        name="sprintId">
-        <Select
-          v-model:value="formData.sprintId"
-          allowClear
-          :disabled="!projectId"
-          :action="`${TESTER}/task/sprint?projectId=${projectId}&fullTextSearch=true`"
-          :defaultActiveFirstOption="true"
-          :lazy="false"
-          :placeholder="t('common.placeholders.selectSprint')"
-          :fieldNames="{value: 'id', label: 'name'}"
-          class="w-full" />
-      </FormItem>
+    <div class="upload-container">
+      <Form
+        ref="formRef"
+        :model="formData"
+        size="small"
+        class="upload-form">
+        <FormItem
+          v-if="proTypeShowMap.showSprint && props.visible"
+          :label="t('common.sprint')"
+          name="sprintId">
+          <Select
+            v-model:value="formData.sprintId"
+            allowClear
+            :disabled="!projectId"
+            :action="`${TESTER}/task/sprint?projectId=${projectId}&fullTextSearch=true`"
+            :defaultActiveFirstOption="true"
+            :lazy="false"
+            :placeholder="t('common.placeholders.selectSprint')"
+            :fieldNames="{value: 'id', label: 'name'}"
+            class="enhanced-select" />
+        </FormItem>
 
-      <FormItem
-        :rules="{message: t('issue.actions.upload.uploadFile'), validator: validateFileSelection}"
-        name="file">
-        <Spin :spinning="isLoading">
-          <UploadDragger
-            v-show="!formData.file"
-            accept=".xls,.xlsx"
-            :multiple="false"
-            :showUploadList="false"
-            :customRequest="handleFileSelection"
-            class="text-3 leading-5 upload-dragger">
-            <div class="flex flex-col items-center justify-center text-3 leading-5 upload-dragger-inner">
-              <Icon icon="icon-shangchuan" class="text-5 text-text-link upload-icon" />
-              <div class="mt-1 mb-1.5 text-text-link upload-title">{{ t('issue.actions.upload.selectFile') }}</div>
-              <div class="text-theme-sub-content upload-subtitle">{{ t('issue.actions.upload.uploadTip') }}</div>
-            </div>
-          </UploadDragger>
-        </Spin>
+        <FormItem
+          :rules="{message: t('issue.actions.upload.uploadFile'), validator: validateFileSelection}"
+          name="file">
+          <Spin :spinning="isLoading">
+            <UploadDragger
+              v-show="!formData.file"
+              accept=".xls,.xlsx"
+              :multiple="false"
+              :showUploadList="false"
+              :customRequest="handleFileSelection"
+              class="enhanced-upload-dragger">
+              <div class="upload-content">
+                <div class="upload-icon-container">
+                  <Icon icon="icon-shangchuan" class="upload-main-icon" />
+                  <div class="upload-icon-bg"></div>
+                </div>
+                <div class="upload-text">
+                  <div class="upload-title">{{ t('issue.actions.upload.selectFile') }}</div>
+                  <div class="upload-subtitle">{{ t('issue.actions.upload.uploadTip') }}</div>
+                </div>
+              </div>
+            </UploadDragger>
+          </Spin>
 
-        <div
-          v-show="!!formData.file"
-          class="file-card">
-          <div class="file-row">
-            <div :title="formData.file?.name" class="file-name truncate">{{ formData.file?.name }}</div>
-            <div class="file-size">{{ formatBytes(Number(formData.file?.size)) }}</div>
-            <div class="file-actions">
-              <Icon
-                icon="icon-qingchu"
-                class="cursor-pointer ml-2 text-3.5 text-theme-text-hover"
-                @click="removeSelectedFile" />
+          <div
+            v-show="!!formData.file"
+            class="file-preview-card">
+            <div class="file-preview-content">
+              <div class="file-icon">
+                <Icon icon="icon-excel" class="file-type-icon" />
+              </div>
+              <div class="file-info">
+                <div :title="formData.file?.name" class="file-name">{{ formData.file?.name }}</div>
+                <div class="file-meta">
+                  <span class="file-size">{{ formatBytes(Number(formData.file?.size)) }}</span>
+                  <span class="file-status">
+                    <Icon icon="icon-chenggong" class="status-icon success" />
+                    {{ t('common.ready') }}
+                  </span>
+                </div>
+              </div>
+              <div class="file-actions">
+                <Button
+                  type="text"
+                  size="small"
+                  class="remove-btn"
+                  @click="removeSelectedFile">
+                  <Icon icon="icon-qingchu" class="remove-icon" />
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="text-right mt-2">
-          <Button
-            type="link"
-            size="small"
-            @click="handleDownloadTemplate">
-            <Icon icon="icon-daochu1" class="text-4 cursor-pointer mr-1" />
-            {{ t('issue.actions.upload.importTemplate') }}
-          </Button>
-        </div>
-      </FormItem>
+          <div class="template-download">
+            <Button
+              type="link"
+              size="small"
+              class="template-btn"
+              @click="handleDownloadTemplate">
+              <Icon icon="icon-daochu1" class="template-icon" />
+              {{ t('issue.actions.upload.importTemplate') }}
+            </Button>
+          </div>
+        </FormItem>
 
-      <FormItem
-        :label="t('issue.actions.upload.duplicateStrategy')"
-        name="strategyWhenDuplicated"
-        required>
-        <RadioGroup
-          v-model:value="formData.strategyWhenDuplicated"
-          :options="strategyOptions"
-          class="strategy-group">
-        </RadioGroup>
-      </FormItem>
-    </Form>
+        <FormItem
+          :label="t('issue.actions.upload.duplicateStrategy')"
+          name="strategyWhenDuplicated"
+          required>
+          <RadioGroup
+            v-model:value="formData.strategyWhenDuplicated"
+            :options="strategyOptions"
+            class="enhanced-radio-group">
+          </RadioGroup>
+        </FormItem>
+      </Form>
+    </div>
   </Modal>
 </template>
 
 <style scoped>
+/* Modal Styles */
 .upload-modal :deep(.ant-modal-body) {
-  padding: 16px 20px;
+  padding: 0;
+}
+
+.upload-modal :deep(.ant-modal-header) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.upload-modal :deep(.ant-modal-title) {
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.upload-modal :deep(.ant-modal-close) {
+  color: white;
+}
+
+.upload-modal :deep(.ant-modal-close:hover) {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Container */
+.upload-container {
+  padding: 20px;
+  background: #fafbfc;
+}
+
+/* Form Styles */
+.upload-form :deep(.ant-form-item) {
+  margin-bottom: 16px;
 }
 
 .upload-form :deep(.ant-form-item-label) {
   font-weight: 600;
+  color: #262626;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
-.upload-form :deep(.ant-form-item) {
+/* Enhanced Select */
+.enhanced-select :deep(.ant-select-selector) {
+  border-radius: 8px;
+  border: 2px solid #f0f0f0;
+  transition: all 0.3s ease;
+  height: 40px;
+}
+
+.enhanced-select :deep(.ant-select-selector:hover) {
+  border-color: #40a9ff;
+}
+
+.enhanced-select :deep(.ant-select-focused .ant-select-selector) {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* Enhanced Upload Dragger */
+.enhanced-upload-dragger {
+  border: 2px dashed #d9d9d9;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.enhanced-upload-dragger:hover {
+  border-color: #40a9ff;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.1);
+}
+
+.enhanced-upload-dragger:active {
+  transform: translateY(0);
+}
+
+.upload-content {
+  padding: 24px 16px;
+  text-align: center;
+  position: relative;
+}
+
+.upload-icon-container {
+  position: relative;
+  display: inline-block;
   margin-bottom: 12px;
 }
 
-.upload-dragger {
-  border: 1px dashed #cbd5e1;
+.upload-main-icon {
+  font-size: 40px;
+  color: #1890ff;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.upload-icon-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
+  border-radius: 50%;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+.enhanced-upload-dragger:hover .upload-main-icon {
+  transform: scale(1.1);
+  color: #40a9ff;
+}
+
+.enhanced-upload-dragger:hover .upload-icon-bg {
+  opacity: 0.8;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.upload-text {
+  margin-bottom: 12px;
+}
+
+.upload-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 6px;
+}
+
+.upload-subtitle {
+  font-size: 13px;
+  color: #8c8c8c;
+  line-height: 1.4;
+}
+
+/* File Preview Card */
+.file-preview-card {
+  background: white;
+  border: 2px solid #52c41a;
   border-radius: 8px;
-  background: #fafafa;
-  transition: all .2s ease;
+  padding: 12px;
+  margin-top: 12px;
+  box-shadow: 0 2px 8px rgba(82, 196, 26, 0.1);
+  animation: slideInUp 0.3s ease;
 }
 
-.upload-dragger:hover {
-  background: #f5faff;
-  border-color: #93c5fd;
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.upload-dragger-inner { padding: 18px 8px; }
-.upload-icon { color: #3b82f6; }
-.upload-title { font-weight: 600; }
-.upload-subtitle { font-size: 12px; color: #6b7280; }
+.file-preview-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-.file-card {
-  padding: 8px 12px;
-  border: 1px solid #e5e7eb;
+.file-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
   border-radius: 6px;
-  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
-.file-row { display: flex; align-items: center; gap: 8px; }
-.file-name { flex: 2; }
-.file-size { flex: 1; text-align: right; color: #6b7280; }
-.file-actions { flex: 1; text-align: right; color: #9ca3af; }
 
-.strategy-group :deep(.ant-radio-wrapper) {
-  margin-right: 16px;
+.file-type-icon {
+  font-size: 20px;
+  color: white;
+}
+
+.file-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.file-size {
+  color: #8c8c8c;
+}
+
+.file-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #52c41a;
+  font-weight: 500;
+}
+
+.status-icon {
+  font-size: 14px;
+}
+
+.status-icon.success {
+  color: #52c41a;
+}
+
+.file-actions {
+  flex-shrink: 0;
+}
+
+.remove-btn {
+  color: #ff4d4f;
+  border: none;
+  background: none;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: #fff2f0;
+  color: #ff7875;
+}
+
+.remove-icon {
+  font-size: 16px;
+}
+
+/* Template Download */
+.template-download {
+  text-align: right;
+  margin-top: 8px;
+}
+
+.template-btn {
+  color: #1890ff;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.template-btn:hover {
+  background: #f0f9ff;
+  color: #40a9ff;
+}
+
+.template-icon {
+  margin-right: 4px;
+  font-size: 14px;
+}
+
+/* Enhanced Radio Group */
+.enhanced-radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.enhanced-radio-group :deep(.ant-radio-wrapper) {
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  background: #fafafa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.enhanced-radio-group :deep(.ant-radio-wrapper:hover) {
+  border-color: #40a9ff;
+  background: #f0f9ff;
+}
+
+.enhanced-radio-group :deep(.ant-radio-wrapper-checked) {
+  border-color: #1890ff;
+  background: #e6f7ff;
+  box-shadow: 0 1px 4px rgba(24, 144, 255, 0.1);
+}
+
+.enhanced-radio-group :deep(.ant-radio) {
+  margin-right: 8px;
+}
+
+.enhanced-radio-group :deep(.ant-radio-inner) {
+  width: 16px;
+  height: 16px;
+}
+
+.enhanced-radio-group :deep(.ant-radio-checked .ant-radio-inner) {
+  background-color: #1890ff;
+  border-color: #1890ff;
 }
 </style>

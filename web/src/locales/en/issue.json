@@ -121,8 +121,8 @@
     },
     "actions": {
       "addSprint": "Add Sprint",
-      "viewIssues": "View Issues",
-      "exportIssues": "Export Issues",
+      "viewIssues": "View Issue",
+      "exportIssues": "Export Issue",
       "dropdownMenu": {
         "viewBurndown": "View Burndown Chart",
         "viewProgress": "View Progress",
@@ -180,7 +180,7 @@
         "selectFile": "Select File",
         "uploadTip": "You can directly drag files into this area for direct upload. File size should not exceed 20M, supporting .xls .xlsx file types.",
         "importTemplate": "Import Template",
-        "duplicateStrategy": "Duplicate Processing Strategy"
+        "duplicateStrategy": "Encountering Duplicates"
       },
       "move": {
         "options": {

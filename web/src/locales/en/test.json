@@ -182,7 +182,7 @@
       "pleaseUploadFile": "Please upload file",
       "uploadDescription": "You can drag files directly into this area for upload. File size should not exceed 20M, supports .xls .xlsx file types.",
       "caseImportTemplate": "Case Import Template",
-      "duplicateStrategy": "When encountering duplicates",
+      "duplicateStrategy": "Encountering Duplicates",
       "fileSizeLimit": "File size cannot exceed {size} M",
       "selectFile": "Select File",
       "fileSizeTip": "Single file size cannot exceed {size}M, maximum 5 files",

@@ -180,7 +180,7 @@
         "selectFile": "选择文件",
         "uploadTip": "可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.xls .xlsx类型文件。",
         "importTemplate": "导入模板",
-        "duplicateStrategy": "重复时处理策略"
+        "duplicateStrategy": "遇到重复时"
       },
       "move": {
         "options": {
