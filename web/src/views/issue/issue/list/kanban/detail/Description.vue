@@ -125,9 +125,10 @@ onMounted(() => {
 
       <AsyncComponent :visible="isDescriptionEditing">
         <div v-show="isDescriptionEditing" class="description-edit-container">
-          <div>
+          <div class="mb-2.5 border border-gray-200">
             <RichEditor
               :value="descriptionContent"
+              :options="{theme: 'bubble', placeholder: t('common.placeholders.inputDescription30')}"
               :height="200"
               @change="handleEditorContentChange" />
             <div v-show="hasContentLengthError" class="text-status-error">

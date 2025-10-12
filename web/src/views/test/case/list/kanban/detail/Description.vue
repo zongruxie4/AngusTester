@@ -108,10 +108,11 @@ onMounted(() => {
 
     <AsyncComponent :visible="editFlag">
       <div v-show="editFlag">
-        <div>
+        <div class="mb-2.5 border border-gray-200">
           <RichEditor
             ref="richRef"
             :value="content"
+            :options="{theme: 'bubble', placeholder: t('common.placeholders.inputDescription30')}"
             @change="handleEditorChange" />
           <div v-show="descrError" class="text-status-error">
             {{ t('testCase.messages.richTextTooLong') }}

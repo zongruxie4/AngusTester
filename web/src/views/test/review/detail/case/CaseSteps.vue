@@ -47,7 +47,6 @@ const confirm = async () => {
   editable.value = false;
   emits('change');
 };
-
 </script>
 <template>
   <div>

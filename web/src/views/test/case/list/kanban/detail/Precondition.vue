@@ -114,10 +114,13 @@ const caseId = computed(() => {
 
     <AsyncComponent :visible="editFlag">
       <div v-show="editFlag">
-        <RichEditor
-          ref="descRichRef"
-          v-model:value="content"
-          :height="80" />
+        <div class="mb-2.5 border border-gray-200">
+          <RichEditor
+            ref="descRichRef"
+            v-model:value="content"
+            :options="{theme: 'bubble', placeholder: t('testCase.messages.enterPrecondition')}"
+            :height="80" />
+        </div>
         <div v-show="descErr" class="text-status-error">
           {{ t('testCase.messages.enterPrecondition') }}
         </div>
@@ -136,7 +139,6 @@ const caseId = computed(() => {
 
     <AsyncComponent :visible="!editFlag">
       <div v-show="!editFlag">
-        <!-- {{ content }} -->
         <RichEditor
           v-model:value="content"
           mode="view" />

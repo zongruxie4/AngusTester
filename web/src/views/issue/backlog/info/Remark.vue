@@ -167,12 +167,12 @@ const queryParams = computed(() => {
     </div>
 
     <div class="pr-2">
-      <div class="mb-2.5">
+      <div class="mb-2.5 border border-gray-200">
         <RichEditor
           ref="richTextEditorRef"
           :value="currentRemarkContent"
           :height="150"
-          :options="{placeholder: t('common.placeholders.inputDescription30')}"
+          :options="{theme: 'bubble', placeholder: t('common.placeholders.inputDescription30')}"
           @change="handleEditorContentChange" />
         <div v-show="isValidationError" class="text-status-error">
           {{ t('common.placeholders.inputDescription30') }}

@@ -134,11 +134,12 @@ onMounted(() => {
 
       <AsyncComponent :visible="isDescriptionEditing">
         <div v-show="isDescriptionEditing" class="description-edit-container">
-          <div>
+          <div class="mb-2.5 border border-gray-200">
             <RichEditor
               ref="richEditorRef"
               :value="descriptionContent"
               :height="200"
+              :options="{theme: 'bubble', placeholder: t('common.placeholders.inputDescription30')}"
               @change="handleDescriptionContentChange" />
             <div v-show="hasDescriptionValidationError" class="text-status-error">
               {{ t('common.placeholders.inputDescription30') }}

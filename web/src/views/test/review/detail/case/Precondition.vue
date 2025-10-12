@@ -48,7 +48,7 @@ const validateDesc = () => {
 };
 
 const ok = async () => {
-  if (validateDesc()) {
+  if (!validateDesc()) {
     descErr.value = true;
     return;
   }
@@ -119,12 +119,15 @@ onMounted(() => {
     </div>
     <AsyncComponent :visible="editFlag">
       <div v-show="editFlag">
-        <RichEditor
-          ref="descRichRef"
-          v-model:value="content"
-          :height="80" />
+        <div class="mb-2.5 border border-gray-200">
+          <RichEditor
+            ref="descRichRef"
+            v-model:value="content"
+            :options="{theme: 'bubble', placeholder: t('testCase.messages.enterPrecondition')}"
+            :height="80" />
+        </div>
         <div v-show="descErr" class="text-status-error">
-          {{ t('testCase.kanbanView.infoPrecondition.maxCharError') }}
+          {{ t('testCase.messages.enterPrecondition') }}
         </div>
       </div>
     </AsyncComponent>

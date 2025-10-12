@@ -92,10 +92,13 @@ const confirm = async () => {
 
     <template v-if="isEditDescription">
       <div class="mt-3 mx-2">
-        <RichEditor
-          ref="descRichRef"
-          v-model:value="descriptionContent"
-          class="add-case" />
+        <div class="mb-2.5 border border-gray-200">
+          <RichEditor
+            ref="descRichRef"
+            v-model:value="descriptionContent"
+            :options="{theme: 'bubble', placeholder: t('common.placeholders.inputDescription30')}"
+            class="add-case" />
+        </div>
         <div v-show="descError" class="text-status-error">
           {{ t('testPlan.messages.charLimit2000') }}
         </div>

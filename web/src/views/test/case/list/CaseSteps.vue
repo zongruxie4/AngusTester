@@ -305,6 +305,7 @@ const menus = [
                 v-else
                 :key="`${index}_expectedResult`"
                 v-model:value="item.expectedResult"
+                mode="edit"
                 :toolbarOptions="toolbarOptions"
                 :options="{theme: 'bubble', placeholder: t('testCase.messages.enterExpectedResult')}"
                 class="step-content"
