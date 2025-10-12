@@ -6,19 +6,20 @@ import { download, upload } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
+import { CaseActionAuth } from '@/views/test/case/types';
 
 interface Props {
   id?: number;
   dataSource?: CaseDetail;
   projectId?: string;
-  actionAuth?: {[key: string]: any};
+  actionAuth?: CaseActionAuth[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   dataSource: undefined,
   projectId: undefined,
-  actionAuth: () => ({})
+  actionAuth: () => ([])
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -162,7 +163,7 @@ const updateAttachmentList = async (uploadedData) => {
       </template>
 
       <div class="flex justify-around h-6">
-        <template v-if="props.actionAuth['edit'] && (dataSource?.attachments?.length || 0) < 5">
+        <template v-if="props.actionAuth.includes('edit') && (dataSource?.attachments?.length || 0) < 5">
           <Upload
             :fileList="[]"
             name="file"

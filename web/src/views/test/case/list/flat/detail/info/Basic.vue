@@ -7,6 +7,8 @@ import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { SoftwareVersionStatus } from '@/enums/enums';
+import { CaseActionAuth } from '@/views/test/case/types';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
@@ -16,7 +18,7 @@ interface Props {
   dataSource?: CaseDetail;
   projectId?: string;
   taskId?: number;
-  actionAuth?: {[key: string]: any};
+  actionAuth?: CaseActionAuth[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined,
   projectId: undefined,
   taskId: undefined,
-  actionAuth: () => ({})
+  actionAuth: () => ([])
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -130,7 +132,6 @@ const editPriority = async (value: Priority) => {
   }
   emit('change', { priority: { value, message: '' } });
 };
-
 
 // Tag editing functions
 const openEditTag = () => {
@@ -242,13 +243,16 @@ const handleVersionBlur = async () => {
               @blur="editName" />
           </template>
           <template v-else>
-            <span> {{ text }}
-              <Icon
-                v-if="props.actionAuth['edit']"
-                class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer flex-none -mt-1"
-                icon="icon-shuxie"
-                @click="openEditName" />
-            </span>
+            <div class="flex items-center">
+              <span>{{ text }}</span>
+              <Button
+                v-if="props.actionAuth.includes('edit')"
+                type="link"
+                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
+                @click="openEditName">
+                <Icon icon="icon-shuxie" class="text-3.5" />
+              </Button>
+            </div>
           </template>
         </div>
       </template>
@@ -273,12 +277,16 @@ const handleVersionBlur = async () => {
             </SelectEnum>
           </template>
           <template v-else>
-            <TaskPriority :value="text" />
-            <Icon
-              v-if="props.actionAuth['edit']"
-              class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer flex-none"
-              icon="icon-shuxie"
-              @click="openEditPriority" />
+            <div class="flex items-center">
+              <TaskPriority :value="text" />
+              <Button
+                v-if="props.actionAuth.includes('edit')"
+                type="link"
+                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
+                @click="openEditPriority">
+                <Icon icon="icon-shuxie" class="text-3.5" />
+              </Button>
+            </div>
           </template>
         </div>
       </template>
@@ -312,17 +320,17 @@ const handleVersionBlur = async () => {
                 {{ tag.name }}
               </Tag>
               <template v-if="!text?.length">--</template>
-              <Icon
-                v-if="props.actionAuth['edit']"
-                :class="{'transform-gpu':text?.length}"
-                class="ml-2.5 text-3 text-theme-special text-theme-text-hover cursor-pointer "
-                icon="icon-shuxie"
-                @click="openEditTag" />
+              <Button
+                v-if="props.actionAuth.includes('edit')"
+                type="link"
+                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
+                @click="openEditTag">
+                <Icon icon="icon-shuxie" class="text-3.5" />
+              </Button>
             </div>
           </template>
         </div>
       </template>
-
 
       <template #planName="{text}">
         <span>
@@ -387,7 +395,7 @@ const handleVersionBlur = async () => {
         </template>
 
         <template v-else>
-          <div class="flex space-x-1">
+          <div class="flex items-center">
             <RouterLink
               v-if="dataSource?.softwareVersion"
               class="text-theme-special"
@@ -398,8 +406,9 @@ const handleVersionBlur = async () => {
               --
             </template>
             <Button
+              v-if="props.actionAuth.includes('edit')"
               type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
+              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
               @click="openVersionEditMode">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
@@ -412,5 +421,9 @@ const handleVersionBlur = async () => {
 <style scoped>
 :deep(.toggle-title) {
   font-size: 0.875rem;
+}
+
+.border-none {
+  border: none;
 }
 </style>

@@ -6,12 +6,13 @@ import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { CaseActionAuth } from '@/views/test/case/types';
 
 interface Props {
   id?: number;
   dataSource?: CaseDetail;
   projectId?: string;
-  actionAuth?: {[key: string]: any};
+  actionAuth?: CaseActionAuth[];
   columns?: any[][];
 }
 
@@ -19,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   dataSource: undefined,
   projectId: undefined,
-  actionAuth: () => ({}),
+  actionAuth: () => ([]),
   columns: () => []
 });
 
@@ -106,7 +107,7 @@ const editDeadlineDate = async () => {
           <template v-if="!isEditDisabledDate">
             {{ text }}
             <Icon
-              v-if="props.actionAuth['edit']"
+              v-if="props.actionAuth.includes('edit')"
               class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer -mt-0.5"
               icon="icon-shuxie"
               @click="openEditDeadlineDate" />

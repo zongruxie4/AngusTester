@@ -3,12 +3,13 @@ import { computed, ref } from 'vue';
 import { Grid, ReviewStatus, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
+import { CaseActionAuth } from '@/views/test/case/types';
 
 interface Props {
   id?: number;
   dataSource?: CaseDetail;
   projectId?: string;
-  actionAuth?: {[key: string]: any};
+  actionAuth?: CaseActionAuth[];
   columns?: any[][];
 }
 
@@ -16,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   dataSource: undefined,
   projectId: undefined,
-  actionAuth: () => ({}),
+  actionAuth: () => ([]),
   columns: () => []
 });
 

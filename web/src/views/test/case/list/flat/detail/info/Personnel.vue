@@ -6,12 +6,13 @@ import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { appContext } from '@xcan-angus/infra';
+import { CaseActionAuth } from '@/views/test/case/types';
 
 interface Props {
   id?: number;
   dataSource?: CaseDetail;
   projectId?: string;
-  actionAuth?: {[key: string]: any};
+  actionAuth?: CaseActionAuth[];
   columns?: any[][];
 }
 
@@ -19,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   dataSource: undefined,
   projectId: undefined,
-  actionAuth: () => ({}),
+  actionAuth: () => ([]),
   columns: () => []
 });
 
@@ -128,12 +129,12 @@ const handleSetTester = async () => {
         <template v-else>
           <span>{{ text }}</span>
           <Icon
-            v-if="props.actionAuth['edit']"
+            v-if="props.actionAuth.includes('edit')"
             icon="icon-xiugai"
             class="text-3.5 text-theme-special text-theme-text-hover cursor-pointer ml-2"
             @click="handleEditTester" />
           <Button
-            v-if="props.actionAuth['edit'] && dataSource.testerId !== appContext.getUser()?.id"
+            v-if="props.actionAuth.includes('edit') && dataSource?.testerId !== appContext.getUser()?.id"
             :loading="saveTesterLoading"
             type="link"
             size="small"

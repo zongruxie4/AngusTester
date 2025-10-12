@@ -5,20 +5,22 @@ import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
+import { CaseActionAuth } from '@/views/test/case/types';
+
 import RichEditor from '@/components/richEditor/index.vue';
 
 interface Props {
   id?: number;
   dataSource?: CaseDetail;
   projectId?: string;
-  actionAuth?: {[key: string]: any};
+  actionAuth?: CaseActionAuth[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   dataSource: undefined,
   projectId: undefined,
-  actionAuth: () => ({})
+  actionAuth: () => ([])
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -112,7 +114,7 @@ const savePrecondition = async () => {
           </Button>
         </template>
         <Icon
-          v-else-if="props.actionAuth['edit']"
+          v-else-if="props.actionAuth.includes('edit')"
           icon="icon-xiugai"
           class="text-3.5 text-theme-special text-theme-text-hover cursor-pointer"
           @click="handleEditPrecondition" />
@@ -124,8 +126,12 @@ const savePrecondition = async () => {
         <RichEditor
           ref="preconditionRichRef"
           v-model:value="preconditionContent"
-          :options="{ placeholder: t('testCase.messages.inputPrecondition')}" />
-        <div v-show="preconditionError" class="text-status-error">{{ t('testCase.messages.descCharLimit2000') }}</div>
+          :options="{ placeholder: t('testCase.messages.enterPrecondition')}" />
+        <div
+          v-show="preconditionError"
+          class="text-status-error">
+          {{ t('testCase.messages.descCharLimit2000') }}
+        </div>
       </template>
       <template v-else>
         <template v-if="dataSource?.precondition">

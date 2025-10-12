@@ -608,7 +608,7 @@ defineExpose({
         :tab="t('common.detail')">
         <CaseDetailTab
           :caseDetail="caseDetail"
-          :currentCaseActionPermissions="currentCaseActionPermissions"
+          :actionAuth="currentCaseActionPermissions"
           @editSuccess="onEditSuccess" />
       </TabPane>
 

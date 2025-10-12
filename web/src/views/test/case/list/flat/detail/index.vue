@@ -4,6 +4,7 @@ import { duration } from '@xcan-angus/infra';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { CaseDetail } from '@/views/test/types';
+import { CaseActionAuth } from '@/views/test/case/types';
 
 import {
   bigApisInfoColumns,
@@ -21,23 +22,24 @@ import {
 // Import info components
 const BasicInfo = defineAsyncComponent(() => import('./info/Basic.vue'));
 const WorkloadInfo = defineAsyncComponent(() => import('./info/Workload.vue'));
+const PreconditionInfo = defineAsyncComponent(() => import('./info/Precondition.vue'));
+const StepsInfo = defineAsyncComponent(() => import('./info/Steps.vue'));
+const DescriptionInfo = defineAsyncComponent(() => import('./info/Description.vue'));
+
 const PersonnelInfo = defineAsyncComponent(() => import('./info/Personnel.vue'));
 const DateInfo = defineAsyncComponent(() => import('./info/Date.vue'));
 const ReviewInfo = defineAsyncComponent(() => import('./info/Review.vue'));
 const TestInfo = defineAsyncComponent(() => import('./info/Test.vue'));
-const DescriptionInfo = defineAsyncComponent(() => import('./info/Description.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('./info/Attachment.vue'));
-const PreconditionInfo = defineAsyncComponent(() => import('./info/Precondition.vue'));
-const StepsInfo = defineAsyncComponent(() => import('./info/Steps.vue'));
 
 interface Props {
   caseDetail: CaseDetail;
-  actionAuth: {[key: string]: any}
+  actionAuth: CaseActionAuth[]
 }
 
 withDefaults(defineProps<Props>(), {
   caseDetail: () => ({ id: '' } as unknown as CaseDetail),
-  actionAuth: () => ({})
+  actionAuth: () => ([])
 });
 
 // eslint-disable-next-line func-call-spacing

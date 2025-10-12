@@ -6,19 +6,20 @@ import { testCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { CaseDetail } from '@/views/test/types';
+import { CaseActionAuth } from '@/views/test/case/types';
 
 interface Props {
   id?: number;
   dataSource?: CaseDetail;
   projectId?: string;
-  actionAuth?: {[key: string]: any};
+  actionAuth?: CaseActionAuth[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   dataSource: undefined,
   projectId: undefined,
-  actionAuth: () => ({})
+  actionAuth: () => ([])
 });
 
 const { t } = useI18n();
@@ -147,11 +148,11 @@ const handleActualWorkloadEnter = () => {
                   {{ t('common.evalWorkload') }}
                 </span>
                 <Button
-                  v-show="!isEvalWorkloadEditing"
+                  v-show="!isEvalWorkloadEditing && props.actionAuth.includes('edit')"
                   type="link"
-                  class="workload-edit-btn"
+                  class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
                   @click="startEvalWorkloadEditing">
-                  <Icon icon="icon-shuxie" class="text-3" />
+                  <Icon icon="icon-shuxie" class="text-3.5" />
                 </Button>
               </div>
 
@@ -187,11 +188,11 @@ const handleActualWorkloadEnter = () => {
                   {{ t('common.actualWorkload') }}
                 </span>
                 <Button
-                  v-show="!isActualWorkloadEditing"
+                  v-show="!isActualWorkloadEditing && props.actionAuth.includes('edit')"
                   type="link"
-                  class="workload-edit-btn"
+                  class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
                   @click="startActualWorkloadEditing">
-                  <Icon icon="icon-shuxie" class="text-3" />
+                  <Icon icon="icon-shuxie" class="text-3.5" />
                 </Button>
               </div>
 
@@ -330,20 +331,8 @@ const handleActualWorkloadEnter = () => {
   color: #7c8087;
 }
 
-.workload-edit-btn {
-  padding: 0.125rem;
-  height: 1.25rem;
-  width: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s;
-  margin-right: 0.375rem;
-}
-
-.workload-edit-btn:hover {
-  background-color: #f3f4f6;
+.border-none {
+  border: none;
 }
 
 .workload-value {

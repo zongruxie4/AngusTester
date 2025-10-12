@@ -5,20 +5,22 @@ import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
+import { CaseActionAuth } from '@/views/test/case/types';
+
 import RichEditor from '@/components/richEditor/index.vue';
 
 interface Props {
   id?: number;
   dataSource?: CaseDetail;
   projectId?: string;
-  actionAuth?: {[key: string]: any};
+  actionAuth?: CaseActionAuth[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   dataSource: undefined,
   projectId: undefined,
-  actionAuth: () => ({})
+  actionAuth: () => ([])
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -37,25 +39,26 @@ const descriptionContent = ref();
 const saveDescriptionLoading = ref(false);
 
 /**
- * <p>Enter editing mode for description.</p>
- * <p>Sets the current description content for editing.</p>
+ * <p>Initiates description editing mode by opening the toggle and enabling edit flag.</p>
+ * <p>Sets the content value to the current case description.</p>
  */
 const handleEditDescription = () => {
+  remarkExpand.value = true;
   isEditDescription.value = true;
-  descriptionContent.value = props.dataSource?.description || undefined;
+  descriptionContent.value = props.dataSource?.description || '';
 };
 
 /**
- * <p>Cancel description editing.</p>
- * <p>Exits editing mode without saving changes.</p>
+ * <p>Cancels description editing and resets content to original value.</p>
  */
 const cancelEditDescription = () => {
   isEditDescription.value = false;
+  descriptionContent.value = props.dataSource?.description || '';
 };
 
 /**
- * <p>Persist description with length validation.</p>
- * <p>Saves the description if changed and validates character limit.</p>
+ * <p>Saves the description changes by calling the API to update case description.</p>
+ * <p>Validates content length before saving and handles errors appropriately.</p>
  */
 const saveDescription = async () => {
   if (!props.dataSource) {
@@ -93,55 +96,68 @@ const saveDescription = async () => {
     v-model:open="remarkExpand"
     class="mt-3.5">
     <template #title>
-      <div class="flex items-center space-x-2">
-        <span class="text-3.5">{{ t('common.description') }}</span>
+      <div class="flex items-center text-3.5">
+        <span>{{ t('common.description') }}</span>
         <template v-if="isEditDescription">
           <Button
-            class="font-normal text-theme-special"
-            type="link"
             size="small"
-            @click="saveDescription">
-            {{ t('actions.save') }}
-          </Button>
-          <Button
-            class="font-normal text-theme-special"
             type="link"
-            size="small"
             @click="cancelEditDescription">
             {{ t('actions.cancel') }}
           </Button>
+          <Button
+            size="small"
+            type="link"
+            @click="saveDescription">
+            {{ t('actions.confirm') }}
+          </Button>
         </template>
-        <Icon
-          v-else-if="props.actionAuth['edit']"
-          icon="icon-xiugai"
-          class="text-3.5 cursor-pointer text-theme-special text-theme-text-hover "
-          @click="handleEditDescription" />
+        <Button
+          v-else-if="props.actionAuth.includes('edit')"
+          type="link"
+          class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
+          @click="handleEditDescription">
+          <Icon icon="icon-shuxie" class="text-3.5" />
+        </Button>
       </div>
     </template>
 
     <template #default>
       <template v-if="isEditDescription">
-        <div class="mt-3 mx-2">
+        <div class="mb-2.5 mt-2.5 ml-5.5">
           <RichEditor
             ref="descRichRef"
             v-model:value="descriptionContent"
-            class="add-case" />
-          <div v-show="descError" class="text-status-error">{{ t('testPlan.messages.charLimit2000') }}</div>
+            :options="{placeholder: t('common.placeholders.inputDescription30')}"
+            :placeholder="t('common.placeholders.inputDescription30')" />
+          <div v-show="descError" class="text-status-error text-3">
+            {{ t('testPlan.messages.charLimit2000') }}
+          </div>
         </div>
       </template>
 
-      <template v-else-if="dataSource?.description">
+      <div v-if="!isEditDescription" class="browser-container">
         <RichEditor
+          v-if="dataSource?.description"
           :value="dataSource.description"
           mode="view" />
-      </template>
+      </div>
 
-      <template v-else>
-        <NoData
-          :text="t('common.noData')"
-          size="small"
-          class="mt-20" />
-      </template>
+      <NoData
+        v-if="!isEditDescription && !dataSource?.description"
+        size="small"
+        style="min-height: 160px;" />
     </template>
   </Toggle>
 </template>
+
+<style scoped>
+.border-none {
+  border: none;
+}
+
+.browser-container  {
+  padding-left: 21px;
+  transform: translateY(1px);
+}
+</style>

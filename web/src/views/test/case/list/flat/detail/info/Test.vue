@@ -4,13 +4,15 @@ import { Grid, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
 import { CaseTestResult } from '@/enums/enums';
+import { CaseActionAuth } from '@/views/test/case/types';
+
 import TestResult from '@/components/TestResult/index.vue';
 
 interface Props {
   id?: number;
   dataSource?: CaseDetail;
   projectId?: string;
-  actionAuth?: {[key: string]: any};
+  actionAuth?: CaseActionAuth[];
   columns?: any[][];
 }
 
@@ -18,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   dataSource: undefined,
   projectId: undefined,
-  actionAuth: () => ({}),
+  actionAuth: () => ([]),
   columns: () => []
 });
 

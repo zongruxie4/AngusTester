@@ -152,11 +152,14 @@ const isContentLengthInvalid = () => {
       </template>
 
       <div v-if="!isDescriptionEditing" class="browser-container">
-        <RichEditor :value="props.dataSource?.description" mode="view" />
+        <RichEditor
+          v-if="dataSource?.description"
+          :value="props.dataSource?.description"
+          mode="view" />
       </div>
 
       <NoData
-        v-if="!isDescriptionEditing&&!descriptionContent?.length"
+        v-if="!isDescriptionEditing && !descriptionContent?.length"
         size="small"
         style="min-height: 160px;" />
     </template>
