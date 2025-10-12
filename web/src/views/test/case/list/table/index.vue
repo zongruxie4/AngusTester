@@ -154,7 +154,7 @@ const tableColumns = computed(() => [
     title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     sorter: true,
-    width: 140,
+    width: 150,
     customCell: () => {
       return { style: 'white-space:nowrap;' };
     }

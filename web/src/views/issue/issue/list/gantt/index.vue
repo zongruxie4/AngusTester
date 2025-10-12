@@ -61,17 +61,17 @@ const emit = defineEmits<{
 }>();
 
 // ASYNC COMPONENTS
-const APIInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Apis.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Basic.vue'));
 const ScenarioInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Scenario.vue'));
 const PersonnelInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Personnel.vue'));
 const DateInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Date.vue'));
 const Comment = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Comment.vue'));
 const Activity = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Activity.vue'));
-const AssocTasks = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocIssues.vue'));
+const AssocIssues = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocIssues.vue'));
 const AssocCases = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/AssocCases.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Remark.vue'));
+const APIInfo = defineAsyncComponent(() => import('@/views/issue/issue/list/kanban/detail/Apis.vue'));
 
 // Task data and Gantt chart references
 const taskList = ref<TaskDetail[]>([]);
@@ -480,7 +480,7 @@ onMounted(() => {
               @change="handleTaskInfoChange as any"
               @loadingChange="handleLoadingStateChange" />
 
-            <AssocTasks
+            <AssocIssues
               v-show="activeDrawerTab === 'tasks'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"

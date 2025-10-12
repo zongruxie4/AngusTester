@@ -20,6 +20,7 @@ const EditTaskModal = defineAsyncComponent(() => import('@/views/test/case/list/
 const MoveModal = defineAsyncComponent(() => import('@/views/test/case/list/Move.vue'));
 const UpdateResultModal = defineAsyncComponent(() => import('@/views/test/case/list/UpdateResult.vue'));
 const AddTaskModal = defineAsyncComponent(() => import('@/views/issue/issue/list/Edit.vue'));
+
 const BasicInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/Basic.vue'));
 const TestSteps = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/TestSteps.vue'));
 const PersonnelInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/Personnel.vue'));
