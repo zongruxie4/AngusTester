@@ -296,6 +296,7 @@
       "selectIssue": "Select issue",
       "selectSprint": "Select target sprint",
       "selectPlan": "Select plan",
+      "selectOrSearchPlan": "Select or search plan",
       "selectPlanTime": "Select plan time",
       "selectCase": "Select use case",
       "selectExecution": "Select execution",

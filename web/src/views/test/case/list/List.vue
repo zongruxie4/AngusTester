@@ -241,10 +241,6 @@ const caseList = ref<CaseDetail[]>([]);
  * Load case list data
  */
 const loadCaseList = async (): Promise<void> => {
-  if (props.loading) {
-    return;
-  }
-
   updateLoading(true);
   const [error, { data = { list: [], total: 0 } }] = await testCase.getCaseList(
     { infoScope: PageQuery.InfoScope.DETAIL, ...params.value, projectId: projectInfo.value?.id, moduleId: moduleId.value }
@@ -527,8 +523,8 @@ const editSuccess = () => {
 const handleClone = async (rowData: CaseDetail) => {
   updateLoading(true);
   const [error] = await testCase.cloneCase([rowData.id]);
+  updateLoading(false);
   if (error) {
-    updateLoading(false);
     return;
   }
   notification.success(t('actions.tips.cloneSuccess'));
@@ -556,8 +552,8 @@ const delCase = async (rowData?: CaseDetail) => {
   updateLoading(true);
   const ids: number[] = rowData ? [rowData.id] : selectedRowKeys.value;
   const [error] = await testCase.deleteCase(ids);
+  updateLoading(false);
   if (error) {
-    updateLoading(false);
     return;
   }
 
@@ -589,8 +585,8 @@ const getCurrentPage = (pageNo: number, pageSize: number, total: number): number
 const handleResetTestResults = async (rowData: CaseDetail) => {
   updateLoading(true);
   const [error] = await testCase.resetCaseResult([rowData.id]);
+  updateLoading(false);
   if (error) {
-    updateLoading(false);
     return;
   }
   notification.success(t('testCase.messages.resetTestResultSuccess'));
@@ -601,8 +597,8 @@ const handleResetTestResults = async (rowData: CaseDetail) => {
 const handleResetReviewResult = async (rowData: CaseDetail) => {
   updateLoading(true);
   const [error] = await testCase.resetReviewCase([rowData.id]);
+  updateLoading(false);
   if (error) {
-    updateLoading(false);
     return;
   }
   notification.success(t('testCase.messages.resetReviewResultSuccess'));
@@ -613,8 +609,8 @@ const handleResetReviewResult = async (rowData: CaseDetail) => {
 const handleReTest = async (rowData: CaseDetail) => {
   updateLoading(true);
   const [error] = await testCase.retestResult([rowData.id]);
+  updateLoading(false);
   if (error) {
-    updateLoading(false);
     return;
   }
   notification.success(t('testCase.messages.resetTestStatusSuccess'));
