@@ -29,16 +29,6 @@ const caseInfoColumns = computed(() => [
     {
       label: t('common.testResult'),
       dataIndex: 'testResult'
-    },
-    {
-      label: t('common.evalWorkload'),
-      dataIndex: 'evalWorkload',
-      customRender: ({ text }) => text || '--'
-    },
-    {
-      label: t('common.actualWorkload'),
-      dataIndex: 'actualWorkload',
-      customRender: ({ text }) => text || '--'
     }
   ]
 ]);
@@ -73,13 +63,6 @@ const caseInfoColumns = computed(() => [
         <template v-if="!text?.length">--</template>
       </template>
 
-      <template #evalWorkload="{text}">
-        {{ text || '--' }}
-      </template>
-
-      <template #actualWorkload="{text}">
-        {{ text || '--' }}
-      </template>
 
       <template #planName="{text}">
         <span>

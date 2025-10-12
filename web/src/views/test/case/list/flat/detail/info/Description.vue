@@ -11,7 +11,6 @@ interface Props {
   id?: number;
   dataSource?: CaseDetail;
   projectId?: string;
-  taskId?: number;
   actionAuth?: {[key: string]: any};
 }
 
@@ -19,7 +18,6 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   dataSource: undefined,
   projectId: undefined,
-  taskId: undefined,
   actionAuth: () => ({})
 });
 

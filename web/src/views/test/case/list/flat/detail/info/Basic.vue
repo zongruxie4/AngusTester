@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
 import { Grid, Icon, Input, Select, ReviewStatus, Toggle } from '@xcan-angus/vue-ui';
-import { Button, Popover, Tag } from 'ant-design-vue';
-import { EvalWorkloadMethod, Priority, TESTER, utils, SearchCriteria } from '@xcan-angus/infra';
+import { Button, Tag } from 'ant-design-vue';
+import { Priority, TESTER, utils, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
@@ -39,8 +39,6 @@ const { t } = useI18n();
 const nameInputRef = ref();
 const tagsSelectRef = ref();
 const priorityRef = ref();
-const evalWorkloadInputRef = ref();
-const actualWorkloadInputRef = ref();
 const versionRef = ref();
 
 // Editing states
@@ -49,11 +47,6 @@ const editNameLoading = ref(false);
 const isEditPriority = ref(false);
 const editPriorityLoading = ref(false);
 const priority = ref();
-const isEditEvalWorkload = ref(false);
-const editEvalWorkloadLoading = ref(false);
-const actualWorkloadValue = ref();
-const isEditActualWorkload = ref(false);
-const editActualWorkloadLoading = ref(false);
 const tagsIds = ref<string[]>([]);
 const defaultTags = ref<{[key: string]: { label: string; value: string }}>({});
 const isEditTag = ref(false);
@@ -85,16 +78,6 @@ const infoColumns = computed(() => [
     {
       label: t('common.testResult'),
       dataIndex: 'testResult'
-    },
-    {
-      label: t('common.evalWorkload'),
-      dataIndex: 'evalWorkload',
-      customRender: ({ text }) => text || '--'
-    },
-    {
-      label: t('common.actualWorkload'),
-      dataIndex: 'actualWorkload',
-      customRender: ({ text }) => text || '--'
     }
   ]
 ]);
@@ -148,67 +131,6 @@ const editPriority = async (value: Priority) => {
   emit('change', { priority: { value, message: '' } });
 };
 
-// Eval workload editing functions
-const openEditEvalWorkload = () => {
-  isEditEvalWorkload.value = true;
-  nextTick(() => {
-    evalWorkloadInputRef.value.focus();
-  });
-};
-
-const editEvalWorkload = async (event) => {
-  if (!props.dataSource) {
-    isEditEvalWorkload.value = false;
-    return;
-  }
-
-  if (+event.target.value === (+props.dataSource?.evalWorkload) ||
-    (!event.target.value && !props.dataSource?.evalWorkload)) {
-    isEditEvalWorkload.value = false;
-    return;
-  }
-
-  editEvalWorkloadLoading.value = true;
-  const [error] = await testCase.putEvalWorkload(props.dataSource.id, { workload: event.target.value });
-  editEvalWorkloadLoading.value = false;
-  isEditEvalWorkload.value = false;
-  if (error) {
-    return;
-  }
-  emit('change', { evalWorkload: event.target.value });
-};
-
-// Actual workload editing functions
-const openEditActualWorkload = () => {
-  if (!props.dataSource) return;
-  actualWorkloadValue.value = props.dataSource.actualWorkload || props.dataSource.evalWorkload;
-  isEditActualWorkload.value = true;
-  nextTick(() => {
-    actualWorkloadInputRef.value.focus();
-  });
-};
-
-const editActualWorkload = async (event) => {
-  if (!props.dataSource) {
-    isEditActualWorkload.value = false;
-    return;
-  }
-
-  if (+event.target.value === (+props.dataSource?.actualWorkload) ||
-    (!event.target.value && !props.dataSource?.evalWorkload)) {
-    isEditActualWorkload.value = false;
-    return;
-  }
-
-  editActualWorkloadLoading.value = true;
-  const [error] = await testCase.putActualWorkload(props.dataSource.id, { workload: event.target.value });
-  editActualWorkloadLoading.value = false;
-  isEditActualWorkload.value = false;
-  if (error) {
-    return;
-  }
-  emit('change', { actualWorkload: event.target.value });
-};
 
 // Tag editing functions
 const openEditTag = () => {
@@ -401,82 +323,6 @@ const handleVersionBlur = async () => {
         </div>
       </template>
 
-      <template #evalWorkload="{text}">
-        <div class="flex items-center relative">
-          <template v-if="isEditEvalWorkload">
-            <Input
-              ref="evalWorkloadInputRef"
-              :value="dataSource?.evalWorkload?.toString()"
-              :allowClear="false"
-              :autofocus="isEditEvalWorkload"
-              :min="0.1"
-              :max="1000"
-              :placeholder="t('common.placeholders.inputEvalWorkload')"
-              dataType="float"
-              size="small"
-              class="w-65 absolute -top-1.25"
-              @blur="editEvalWorkload" />
-          </template>
-
-          <template v-else>
-            {{ text || '--' }}
-            <Icon
-              v-if="props.actionAuth['edit']"
-              class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
-              icon="icon-shuxie"
-              @click="openEditEvalWorkload" />
-            <Popover
-              placement="rightTop"
-              arrowPointAtCenter>
-              <template #content>
-                <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                  {{ dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                     ? t('common.storyPointsHint') : t('common.workHoursHint') }}
-                </div>
-              </template>
-              <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
-            </Popover>
-          </template>
-        </div>
-      </template>
-
-      <template #actualWorkload="{text}">
-        <div class="flex items-center relative">
-          <template v-if="isEditActualWorkload">
-            <Input
-              ref="actualWorkloadInputRef"
-              :value="actualWorkloadValue"
-              :allowClear="false"
-              :autofocus="isEditActualWorkload"
-              :min="0.1"
-              :max="1000"
-              :placeholder="t('common.placeholders.inputActualWorkload')"
-              dataType="float"
-              size="small"
-              class="w-65 absolute -top-1.25"
-              @blur="editActualWorkload" />
-          </template>
-          <template v-else>
-            {{ text || '--' }}
-            <Icon
-              v-if="props.actionAuth['edit'] && dataSource?.evalWorkload"
-              class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
-              icon="icon-shuxie"
-              @click="openEditActualWorkload" />
-            <Popover
-              placement="rightTop"
-              arrowPointAtCenter>
-              <template #content>
-                <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                  {{ dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                    ? t('common.actualStoryPointsHint') : t('common.actualWorkHoursHint') }}
-                </div>
-              </template>
-              <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
-            </Popover>
-          </template>
-        </div>
-      </template>
 
       <template #planName="{text}">
         <span>
@@ -523,7 +369,7 @@ const handleVersionBlur = async () => {
         <template v-else>--</template>
       </template>
 
-      <template #softwareVersion="{text}">
+      <template #softwareVersion>
         <template v-if="isVersionEditMode">
           <Select
             ref="versionRef"
@@ -565,6 +411,6 @@ const handleVersionBlur = async () => {
 </template>
 <style scoped>
 :deep(.toggle-title) {
-  @apply text-3.5;
+  font-size: 0.875rem;
 }
 </style>

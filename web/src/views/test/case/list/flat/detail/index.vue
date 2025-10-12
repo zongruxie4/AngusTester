@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue';
-import { duration, appContext } from '@xcan-angus/infra';
+import { duration } from '@xcan-angus/infra';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { CaseDetail } from '@/views/test/types';
@@ -20,6 +20,7 @@ import {
 
 // Import info components
 const BasicInfo = defineAsyncComponent(() => import('./info/Basic.vue'));
+const WorkloadInfo = defineAsyncComponent(() => import('./info/Workload.vue'));
 const PersonnelInfo = defineAsyncComponent(() => import('./info/Personnel.vue'));
 const DateInfo = defineAsyncComponent(() => import('./info/Date.vue'));
 const ReviewInfo = defineAsyncComponent(() => import('./info/Review.vue'));
@@ -106,7 +107,14 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :taskId="caseDetail.id"
+          :actionAuth="actionAuth"
+          @change="handleCaseDataChange"
+          @loadingChange="emit('loadingChange', $event)" />
+
+        <WorkloadInfo
+          :id="caseDetail.id"
+          :dataSource="caseDetail"
+          :projectId="projectId"
           :actionAuth="actionAuth"
           @change="handleCaseDataChange"
           @loadingChange="emit('loadingChange', $event)" />
@@ -118,7 +126,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           :columns="peopleInfoColumns"
           @change="handleCaseDataChange"
@@ -128,7 +135,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           :columns="dateInfoColumns"
           @change="handleCaseDataChange"
@@ -138,7 +144,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           :columns="reviewInfoColumns"
           @change="handleCaseDataChange"
@@ -148,7 +153,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           :columns="testInfoColumns"
           @change="handleCaseDataChange"
@@ -161,7 +165,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           @change="handleCaseDataChange"
           @loadingChange="emit('loadingChange', $event)" />
@@ -170,7 +173,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           @change="handleCaseDataChange"
           @loadingChange="emit('loadingChange', $event)" />
@@ -179,7 +181,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           @change="handleCaseDataChange"
           @loadingChange="emit('loadingChange', $event)" />
@@ -190,7 +191,6 @@ onBeforeUnmount(() => {
           :id="caseDetail.id"
           :dataSource="caseDetail"
           :projectId="projectId"
-          :taskId="caseDetail.id"
           :actionAuth="actionAuth"
           @change="handleCaseDataChange"
           @loadingChange="emit('loadingChange', $event)" />
@@ -202,7 +202,6 @@ onBeforeUnmount(() => {
         :id="caseDetail.id"
         :dataSource="caseDetail"
         :projectId="projectId"
-        :taskId="caseDetail.id"
         :actionAuth="actionAuth"
         :columns="peopleInfoColumns"
         @change="handleCaseDataChange"
@@ -212,7 +211,6 @@ onBeforeUnmount(() => {
         :id="caseDetail.id"
         :dataSource="caseDetail"
         :projectId="projectId"
-        :taskId="caseDetail.id"
         :actionAuth="actionAuth"
         :columns="dateInfoColumns"
         @change="handleCaseDataChange"
@@ -222,7 +220,6 @@ onBeforeUnmount(() => {
         :id="caseDetail.id"
         :dataSource="caseDetail"
         :projectId="projectId"
-        :taskId="caseDetail.id"
         :actionAuth="actionAuth"
         :columns="reviewInfoColumns"
         @change="handleCaseDataChange"
@@ -232,7 +229,6 @@ onBeforeUnmount(() => {
         :id="caseDetail.id"
         :dataSource="caseDetail"
         :projectId="projectId"
-        :taskId="caseDetail.id"
         :actionAuth="actionAuth"
         :columns="testInfoColumns"
         @change="handleCaseDataChange"
@@ -242,7 +238,6 @@ onBeforeUnmount(() => {
         :id="caseDetail.id"
         :dataSource="caseDetail"
         :projectId="projectId"
-        :taskId="caseDetail.id"
         :actionAuth="actionAuth"
         @change="handleCaseDataChange"
         @loadingChange="emit('loadingChange', $event)" />
