@@ -106,120 +106,318 @@ onMounted(() => {
 defineExpose({
   refresh: loadReviewRecord
 });
-
 </script>
 <template>
-  <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('common.reviewRecord') }}
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">{{ t('common.reviewRecord') }}</h3>
     </div>
 
-    <div class="flex flex-col space-y-2">
-      <div class="flex items-center rounded overflow-hidden">
-        <div class="w-20 px-2 py-1 bg-blue-1 text-white rounded">
-          {{ t('chart.total') }}
-        </div>
-        <div class="w-20 px-2 py-1 font-medium bg-gray-light">
-          {{ reviewNum.total }}
-        </div>
-      </div>
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
+        <!-- Review Statistics -->
+        <div class="review-stats">
+          <div class="stat-item">
+            <div class="stat-label bg-blue-1 text-white">
+              {{ t('chart.total') }}
+            </div>
+            <div class="stat-value bg-gray-light">
+              {{ reviewNum.total }}
+            </div>
+          </div>
 
-      <div class="flex items-center rounded overflow-hidden">
-        <div class="w-20 px-2 py-1 bg-status-success text-white rounded">
-          {{ t('status.passed') }}
-        </div>
-        <div class="w-20 px-2 py-1 font-medium bg-gray-light">
-          {{ reviewNum.successNum }}
-        </div>
-      </div>
+          <div class="stat-item">
+            <div class="stat-label bg-status-success text-white">
+              {{ t('status.passed') }}
+            </div>
+            <div class="stat-value bg-gray-light">
+              {{ reviewNum.successNum }}
+            </div>
+          </div>
 
-      <div class="flex items-center rounded overflow-hidden">
-        <div class="w-20 px-2 py-1 bg-status-error text-white rounded">
-          {{ t('status.notPassed') }}
-        </div>
-        <div class="w-20 px-2 py-1 font-medium bg-gray-light">
-          {{ reviewNum.failNum }}
-        </div>
-      </div>
-    </div>
-
-    <div class="text-title text-3 font-medium mt-6">
-      {{ t('common.reviewRecord') }}
-    </div>
-
-    <div class="mt-2 space-y-2">
-      <div
-        v-for="record in reviewRecords"
-        :key="record.id"
-        class="p-2 border rounded max-w-200 cursor-pointer"
-        :class="{'bg-gray-9': record.id === selectRecordId}"
-        @click="changeCurrentRecord(record)">
-        <div class="flex items-center">
-          <Image
-            type="avatar"
-            :src="record.avatar"
-            class="w-5 mr-2" />
-
-          <span class="font-semibold flex-1/3">{{ record.reviewerName }}
-            {{ record.reviewStatus?.value === ReviewStatus.PASSED
-              ? t('testCase.messages.reviewPassedCase')
-              : t('testCase.messages.reviewFailedCase') }}</span>
-
-          <div class=" flex-1/2">{{ record.reviewDate }}</div>
+          <div class="stat-item">
+            <div class="stat-label bg-status-error text-white">
+              {{ t('status.notPassed') }}
+            </div>
+            <div class="stat-value bg-gray-light">
+              {{ reviewNum.failNum }}
+            </div>
+          </div>
         </div>
 
-        <div
-          v-if="record.reviewRemark"
-          class=" mt-3 truncate"
-          :title="record.reviewRemark">
-          {{ record.reviewRemark }}
-        </div>
-        <div v-else class="text-sub-content mt-3 truncate">
-          {{ t('common.noRemark') }}
-        </div>
-      </div>
-    </div>
+        <!-- Review Records List -->
+        <div class="review-records-section">
+          <div class="section-title">{{ t('common.reviewRecord') }}</div>
 
-    <div v-if="!reviewRecords?.length" class="h-80">
-      <NoData size="small" />
-    </div>
+          <div class="records-list">
+            <div
+              v-for="record in reviewRecords"
+              :key="record.id"
+              class="record-item"
+              :class="{'selected': record.id === selectRecordId}"
+              @click="changeCurrentRecord(record)">
+              <div class="record-header">
+                <Image
+                  type="avatar"
+                  :src="record.avatar"
+                  class="record-avatar" />
 
-    <div v-if="!!selectRecordInfo" class="flex max-w-200 ">
-      <div class="flex-1 p-2 border-r  space-y-3">
-        <div class="mb-3">{{ t('testCase.messages.reviewVersion') }}</div>
+                <span class="reviewer-name">{{ record.reviewerName }}
+                  {{ record.reviewStatus?.value === ReviewStatus.PASSED
+                    ? t('testCase.messages.reviewPassedCase')
+                    : t('testCase.messages.reviewFailedCase') }}</span>
 
-        <BasicInfo :caseInfo="selectRecordInfo" />
+                <div class="review-date">{{ record.reviewDate }}</div>
+              </div>
 
-        <Precondition :caseInfo="selectRecordInfo" />
+              <div
+                v-if="record.reviewRemark"
+                class="review-remark"
+                :title="record.reviewRemark">
+                {{ record.reviewRemark }}
+              </div>
+              <div v-else class="no-remark">
+                {{ t('common.noRemark') }}
+              </div>
+            </div>
+          </div>
 
-        <div class="font-semibold text-3.5">
-          {{ t('common.testSteps') }}
-        </div>
-
-        <CaseStep :defaultValue="selectRecordInfo?.steps || {}" readonly />
-
-        <Description :caseInfo="selectRecordInfo" />
-      </div>
-
-      <div class="flex-1 p-2 space-y-3">
-        <div class="mb-3">{{ t('testCase.messages.latestVersion') }}</div>
-
-        <BasicInfo :caseInfo="props.dataSource" />
-
-        <Precondition :caseInfo="props.dataSource" :contentClass="preconditionClass" />
-
-        <div class="font-semibold text-3.5">
-          {{ t('common.testSteps') }}
+          <div v-if="!reviewRecords?.length" class="no-data-container">
+            <NoData size="small" />
+          </div>
         </div>
 
-        <div :class="stepsClass">
-          <CaseStep :defaultValue="props?.dataSource?.steps || []" readonly />
+        <!-- Comparison View -->
+        <div v-if="!!selectRecordInfo" class="comparison-view">
+          <div class="comparison-column">
+            <div class="column-title">{{ t('testCase.messages.reviewVersion') }}</div>
+
+            <BasicInfo :caseInfo="selectRecordInfo" />
+
+            <Precondition :caseInfo="selectRecordInfo" />
+
+            <div class="section-subtitle">
+              {{ t('common.testSteps') }}
+            </div>
+
+            <CaseStep :defaultValue="selectRecordInfo?.steps || {}" readonly />
+
+            <Description :caseInfo="selectRecordInfo" />
+          </div>
+
+          <div class="comparison-column">
+            <div class="column-title">{{ t('testCase.messages.latestVersion') }}</div>
+
+            <BasicInfo :caseInfo="props.dataSource" />
+
+            <Precondition :caseInfo="props.dataSource" :contentClass="preconditionClass" />
+
+            <div class="section-subtitle">
+              {{ t('common.testSteps') }}
+            </div>
+
+            <div :class="stepsClass">
+              <CaseStep :defaultValue="props?.dataSource?.steps || []" readonly />
+            </div>
+
+            <Description :caseInfo="props?.dataSource" :contentBg="descriptionClass" />
+          </div>
         </div>
-
-        {{ descriptionClass }}
-
-        <Description :caseInfo="props?.dataSource" :contentBg="descriptionClass" />
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Review statistics styles */
+.review-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.stat-label {
+  width: 80px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.stat-value {
+  width: 80px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Review records section */
+.review-records-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+}
+
+.records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.record-item {
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.record-item:hover {
+  background-color: #f5f5f5;
+}
+
+.record-item.selected {
+  background-color: #e6f7ff;
+  border-color: #1890ff;
+}
+
+.record-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.record-avatar {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.reviewer-name {
+  font-weight: 600;
+  font-size: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.review-date {
+  font-size: 12px;
+  color: #8c8c8c;
+  flex-shrink: 0;
+}
+
+.review-remark {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #262626;
+  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.no-remark {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.no-data-container {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Comparison view styles */
+.comparison-view {
+  display: flex;
+  gap: 16px;
+  max-width: 100%;
+}
+
+.comparison-column {
+  flex: 1;
+  padding: 8px;
+  border-right: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comparison-column:last-child {
+  border-right: none;
+}
+
+.column-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #262626;
+  margin: 8px 0 4px 0;
+}
+</style>
