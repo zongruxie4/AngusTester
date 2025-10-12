@@ -270,7 +270,7 @@ const isDateDisabled = (current: Dayjs) => {
         <div class="info-row">
           <div class="info-item">
             <div class="info-label">
-              <span>{{ t('common.lastExecDate') }}</span>
+              <span>{{ t('common.execDate') }}</span>
             </div>
             <div class="info-value">
               <span :class="{ 'placeholder-text': !taskExecDate }" class="info-text">
@@ -325,7 +325,7 @@ const isDateDisabled = (current: Dayjs) => {
 /* Label Styling */
 .info-label {
   flex-shrink: 0;
-  width: 5.5rem;
+  width: 5rem;
   display: flex;
   align-items: center;
   min-height: 1.5rem;
@@ -394,49 +394,6 @@ const isDateDisabled = (current: Dayjs) => {
 .placeholder-text {
   color: #7c8087 !important;
   font-weight: 400 !important;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .date-info-container {
-    padding: 0.75rem 1rem;
-    gap: 0.25rem;
-  }
-
-  .info-row {
-    gap: 0.25rem;
-  }
-
-  .info-item {
-    gap: 0.25rem;
-  }
-
-  .info-label {
-    width: 4.5rem;
-  }
-
-  .edit-date-picker {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 640px) {
-  .date-info-container {
-    padding: 0.5rem 0.75rem;
-    gap: 0.125rem;
-  }
-
-  .info-label {
-    width: 4rem;
-  }
-
-  .info-label span {
-    font-size: 0.6875rem;
-  }
-
-  .info-text {
-    font-size: 0.6875rem;
-  }
 }
 
 /* Animation for smooth transitions */

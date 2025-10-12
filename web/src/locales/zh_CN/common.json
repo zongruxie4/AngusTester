@@ -151,6 +151,7 @@
     "canceledDate": "取消时间",
     "completedDate": "完成时间",
     "confirmedDate": "确认时间",
+    "execDate": "执行时间",
     "lastExecDate": "最后执行时间",
     "execCompletedDate": "执行完成时间",
     "reviewDate": "评审时间",

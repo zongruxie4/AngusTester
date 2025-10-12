@@ -239,7 +239,7 @@ const disablePastDates = (current: Dayjs) => {
         <!-- Execute Date -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('common.lastExecDate') }}</span>
+            <span>{{ t('common.execDate') }}</span>
           </div>
           <div class="info-value">
             <span class="info-text" :class="{ 'dash-text': !execDate }">{{ execDate || '--' }}</span>

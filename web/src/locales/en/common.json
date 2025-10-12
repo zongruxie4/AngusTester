@@ -151,6 +151,7 @@
     "canceledDate": "Canceled Date",
     "completedDate": "Completed Date",
     "confirmedDate": "Confirmed Date",
+    "execDate": "Exec Date",
     "lastExecDate": "Last Exec Date",
     "execCompletedDate": "Exec Completed Date",
     "reviewDate": "Review Date",
