@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, modal, NoData, notification } from '@xcan-angus/vue-ui';
 import {
-  appContext, download, enumUtils, http, PageQuery, SearchCriteria, TESTER, toClipboard, ReviewStatus
+  appContext, download, enumUtils, http, PageQuery, SearchCriteria, TESTER, toClipboard, ReviewStatus, routerUtils
 } from '@xcan-angus/infra';
 import { analysis, testCase, testPlan, modules } from '@/api/tester';
 import { travelTreeData } from '@/utils/utils';
@@ -183,23 +183,6 @@ const handleAdd = () => {
  */
 const handleAiAdd = () => {
   aiAddVisible.value = true;
-};
-
-/**
- * Handle case export
- */
-const handleExport = async () => {
-  if (exportLoading.value) {
-    return;
-  }
-
-  exportLoading.value = true;
-  const _filters = selectedRowKeys.value.length
-    ? [...params.value.filters, { key: 'id', value: selectedRowKeys.value, op: SearchCriteria.OpEnum.In }]
-    : params.value.filters;
-  const _params = http.getURLSearchParams({ filters: _filters }, true);
-  await download(`${TESTER}/func/case/export?projectId=${projectInfo.value.id}&${_params}`);
-  exportLoading.value = false;
 };
 
 /**
@@ -792,17 +775,36 @@ const calculateDataPosition = (_total, _pageNo, _pageSize, n) => {
 };
 
 // Export cases
-const exportLoading = ref(false);
+const isExporting = ref(false);
 
 // Export import template
-const handleExportTemplate = async () => {
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = Template;
-  a.download = 'Import_Case_Template.xlsx';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+const handleImportTemplate = async () => {
+  const downloadLink = document.createElement('a');
+  downloadLink.style.display = 'none';
+  downloadLink.href = Template;
+  downloadLink.download = 'Import_Case_Template.xlsx';
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+};
+
+/**
+ * Handle case export
+ */
+const handleExport = async () => {
+  if (isExporting.value) {
+    notification.info(t('actions.tips.exportingInProgress'));
+    return;
+  }
+
+  isExporting.value = true;
+  const _filters = selectedRowKeys.value.length
+    ? [...params.value.filters, { key: 'id', value: selectedRowKeys.value, op: SearchCriteria.OpEnum.In }]
+    : params.value.filters;
+  const exportUrl = routerUtils.getTesterApiUrl('/func/case/export') +
+    '?' + http.getURLSearchParams({ projectId: projectInfo.value.id, filters: _filters.value }, true);
+  await download(exportUrl);
+  isExporting.value = false;
 };
 
 // Open upload modal
@@ -1218,7 +1220,7 @@ defineExpose({
   <AsyncComponent :visible="uploadCaseVisible">
     <UploadCaseModal
       v-model:visible="uploadCaseVisible"
-      :downloadTemplate="handleExportTemplate"
+      :downloadTemplate="handleImportTemplate"
       @cancel="cancelUpload"
       @ok="handleUploadOk" />
   </AsyncComponent>

@@ -288,7 +288,7 @@ const handleUploadTaskComplete = () => {
 /**
  * Handles template export for task import
  */
-const handleExportTemplate = async () => {
+const handleImportTemplate = async () => {
   const downloadLink = document.createElement('a');
   downloadLink.style.display = 'none';
   downloadLink.href = Template;
@@ -301,7 +301,7 @@ const handleExportTemplate = async () => {
 /**
  * Handles task list export
  */
-const handleTaskExport = async () => {
+const handleIssueExport = async () => {
   if (isExporting.value) {
     notification.info(t('actions.tips.exportingInProgress'));
     return;
@@ -408,7 +408,7 @@ const handleTaskMoveComplete = () => {
  * @param actionKey - Action to perform
  * @param taskIds - Array of task IDs to perform action on
  */
-const handleBatchAction = (actionKey: 'cancel' | 'delete' | 'addFollow' | 'addFavourite' | 'move', taskIds: number[]) => {
+const handleBatchAction = (actionKey: 'cancel' | 'delete' | 'addFollow' | 'addFavourite' | 'move', taskIds: string[]) => {
   switch (actionKey) {
     case 'cancel':
       handleBatchCancel(taskIds);
@@ -797,9 +797,9 @@ const statisticsParameters = computed(() => {
           class="mb-1.5 pr-5"
           @change="handleSearchPanelChange"
           @add="handleTaskCreation"
-          @export="handleTaskExport"
+          @export="handleIssueExport"
           @uploadTask="openUploadTaskModal"
-          @exportTemplate="handleExportTemplate"
+          @exportTemplate="handleImportTemplate"
           @viewModeChange="handleViewModeChange" />
 
         <KanbanView
@@ -900,7 +900,7 @@ const statisticsParameters = computed(() => {
     <AsyncComponent :visible="isUploadModalVisible">
       <Upload
         v-model:visible="isUploadModalVisible"
-        :downloadTemplate="handleExportTemplate"
+        :downloadTemplate="handleImportTemplate"
         @cancel="handleUploadTaskCancel"
         @ok="handleUploadTaskComplete" />
     </AsyncComponent>
