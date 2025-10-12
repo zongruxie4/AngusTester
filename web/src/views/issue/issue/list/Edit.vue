@@ -185,6 +185,10 @@ const formStyle = computed(() => {
   };
 });
 
+const softwareVersionParams = {
+    filters: [{ value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN' }]
+  };
+
 /**
  * Generate cache key for storing zoom state in local storage
  * Unique per user and project combination
@@ -1313,8 +1317,8 @@ onMounted(() => {
               allowClear
               :placeholder="t('common.placeholders.selectSoftwareVersion')"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-              :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
-              :fieldNames="{value:'name', label: 'name'}">
+              :params="softwareVersionParams"
+              :fieldNames="{ value:'name', label: 'name'}">
             </Select>
           </FormItem>
 
