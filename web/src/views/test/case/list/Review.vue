@@ -484,34 +484,6 @@ onMounted(() => {
   font-size: 12px;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .review-container {
-    padding: 16px;
-  }
-
-  .review-info-card {
-    padding: 12px;
-    margin-bottom: 16px;
-  }
-
-  .status-radio-group {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .button-group {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .submit-btn,
-  .cancel-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
 /* Animation effects */
 .review-container {
   animation: fadeInUp 0.3s ease-out;
