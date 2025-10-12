@@ -14,9 +14,9 @@ import TestResult from '@/components/TestResult/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 // Async sub-sections
-const Description = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/Description.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/Precondition.vue'));
-const TestStep = defineAsyncComponent(() => import('@/views/test/case/list/kanban/info/TestSteps.vue'));
+const Description = defineAsyncComponent(() => import('@/views/test/case/list/kanban/detail/Description.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/test/case/list/kanban/detail/Precondition.vue'));
+const TestStep = defineAsyncComponent(() => import('@/views/test/case/list/kanban/detail/TestSteps.vue'));
 
 const { t } = useI18n();
 

@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 
-const BasicInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/review/ReviewRecordCase.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/test/case/list/kanban/detail/ReviewRecordCase.vue'));
 const Precondition = defineAsyncComponent(() => import('@/views/test/review/detail/case/Precondition.vue'));
 const Description = defineAsyncComponent(() => import('@/views/test/review/detail/case/Description.vue'));
 const CaseStep = defineAsyncComponent(() => import('@/views/test/case/list/CaseSteps.vue'));
