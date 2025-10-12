@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, nextTick, ref, Ref } from 'vue';
-import { Tag } from 'ant-design-vue';
-import { Grid, Icon, Input, Popover, ReviewStatus, Select } from '@xcan-angus/vue-ui';
+import { Button } from 'ant-design-vue';
+import { Icon, Input, Popover, ReviewStatus, Select } from '@xcan-angus/vue-ui';
 import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
@@ -45,8 +45,8 @@ const evalWorkloadInputRef = ref();
 const actualWorkloadInputRef = ref();
 
 const isEditName = ref(false);
-const tagsIds = ref<string[]>([]);
-const defaultTags = ref<{[key: string]: { label: string; value: string }}>({});
+const tagsIds = ref<number[]>([]);
+const defaultTags = ref<{[key: string]: { label: string; value: number }}>({});
 const isEditTag = ref(false);
 const isEditPriority = ref(false);
 const priority = ref();
@@ -57,7 +57,10 @@ const isEditActualWorkload = ref(false);
 /*
   Coerce select option to expected Priority shape for display component.
 */
-const coercePriorityOption = (option: any) => option;
+const coercePriorityOption = (option: any) => ({
+  value: option.value,
+  label: option.label || option.message || option.value
+});
 
 /*
   Enter name edit mode and autofocus the input.
@@ -250,336 +253,488 @@ const change = async () => {
   emit('update:dataSource', data);
 };
 
-const infoColumns = [
-  [
-    {
-      label: t('common.name'),
-      dataIndex: 'name'
-    },
-    {
-      label: t('common.id'),
-      dataIndex: 'id'
-    },
-    {
-      label: t('common.code'),
-      dataIndex: 'code'
-    },
-    {
-      label: t('common.reviewStatus'),
-      dataIndex: 'reviewStatus'
-    },
-    {
-      label: t('common.version'),
-      dataIndex: 'version'
-    },
-    {
-      label: t('common.softwareVersion'),
-      dataIndex: 'softwareVersion'
-    },
-    {
-      label: t('common.priority'),
-      dataIndex: 'priority'
-    },
-    {
-      label: t('common.tag'),
-      dataIndex: 'tags'
-    },
-    {
-      label: t('common.plan'),
-      dataIndex: 'planName'
-    },
-    {
-      label: t('common.module'),
-      dataIndex: 'moduleName'
-    },
-    {
-      label: t('common.testResult'),
-      dataIndex: 'testResult'
-    },
-    {
-      label: t('common.evalWorkload'),
-      dataIndex: 'evalWorkload',
-      customRender: ({ text }) => text || '--'
-    },
-    {
-      label: t('common.actualWorkload'),
-      dataIndex: 'actualWorkload',
-      customRender: ({ text }) => text || '--'
-    },
-    {
-      label: t('common.unplanned'),
-      dataIndex: 'unplanned',
-      customRender: ({ text }) => text ? t('status.yes') : t('status.no')
-    }
-  ]
-];
 </script>
 <template>
-  <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div>
-      <div class="text-theme-title mb-2.5 font-semibold">
-        {{ t('common.basicInfo') }}
-      </div>
-
-      <Grid
-        :columns="infoColumns"
-        :dataSource="props.dataSource"
-        :spacing="0"
-        :marginBottom="4"
-        font-size="12px">
-        <template #name="{text}">
-          <div class="flex items-center w-full relative">
-            <template v-if="isEditName">
-              <Input
-                ref="nameInputRef"
-                :value="text"
-                :allowClear="false"
-                :maxlength="200"
-                size="small"
-                class="absolute -top-1.25"
-                :placeholder="t('common.name')"
-                @blur="editName" />
-            </template>
-
-            <template v-else>
-              <span>
-                <span>{{ text }}</span>
-                <Icon
-                  v-if="props.canEdit"
-                  class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer flex-none -mt-1"
-                  icon="icon-shuxie"
-                  @click="openEditName" />
-              </span>
-            </template>
-          </div>
-        </template>
-
-        <template #priority="{text}">
-          <div class="flex items-center relative">
-            <template v-if="isEditPriority">
-              <SelectEnum
-                ref="priorityRef"
-                v-model:value="priority"
-                :allowClear="false"
-                :autofocus="isEditPriority"
-                enumKey="Priority"
-                size="small"
-                class="w-52 absolute -top-1.25"
-                :placeholder="t('common.placeholders.selectPriority')"
-                @blur="editPriority($event.target.value)">
-                <template #option="item">
-                  <TaskPriority :value="coercePriorityOption(item)" />
-                </template>
-              </SelectEnum>
-            </template>
-
-            <template v-else>
-              <TaskPriority :value="text" />
-              <Icon
-                v-if="props.canEdit"
-                class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer flex-none"
-                icon="icon-shuxie"
-                @click="openEditPriority" />
-            </template>
-          </div>
-        </template>
-
-        <template #tags="{text}">
-          <div class="flex items-center flex-wrap">
-            <template v-if="isEditTag">
-              <Select
-                ref="tagsSelectRef"
-                v-model:value="tagsIds"
-                showSearch
-                :defaultOptions="defaultTags"
-                :fieldNames="{ label: 'name', value: 'id' }"
-                :maxTags="5"
-                :placeholder="t('common.placeholders.selectTag')"
-                :class="{'border-error':tagsIds && tagsIds.length > 5 }"
-                :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
-                mode="multiple"
-                size="small"
-                class="w-full"
-                @blur="editTag" />
-            </template>
-
-            <template v-else>
-              <div class="inline-flex items-center leading-6">
-                <Tag
-                  v-for="(tag,index) in (text || [])"
-                  :key="tag.id"
-                  :class="{'min-w-17.5':!tag.name,'last-child':index===text.length-1}"
-                  color="rgba(252, 253, 255, 1)"
-                  class="text-3 px-2 font-normal text-theme-sub-content mr-2 h-6 py-1 border-border-divider">
-                  <span>{{ tag.name }}</span>
-                </Tag>
-
-                <template v-if="!text?.length">--</template>
-
-                <Icon
-                  v-if="props.canEdit"
-                  :class="{'transform-gpu':text?.length}"
-                  class="ml-2.5 text-3 text-theme-special text-theme-text-hover cursor-pointer "
-                  icon="icon-shuxie"
-                  @click="openEditTag" />
-              </div>
-            </template>
-          </div>
-        </template>
-
-        <template #evalWorkload="{text}">
-          <div class="flex items-center relative">
-            <template v-if="isEditEvalWorkload">
-              <Input
-                ref="evalWorkloadInputRef"
-                :value="props.dataSource?.evalWorkload !== undefined && props.dataSource?.evalWorkload !== null ? String(props.dataSource?.evalWorkload) : ''"
-                :allowClear="false"
-                :autofocus="isEditEvalWorkload"
-                :min="0.1"
-                :max="1000"
-                :placeholder="t('common.placeholders.inputEvalWorkload')"
-                dataType="float"
-                size="small"
-                class="w-65 absolute -top-1.25"
-                @blur="editEvalWorkload" />
-            </template>
-
-            <template v-else>
-              {{ text || '--' }}
-              <Icon
-                v-if="props.canEdit"
-                class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
-                icon="icon-shuxie"
-                @click="openEditEvalWorkload" />
-              <Popover
-                placement="rightTop"
-                arrowPointAtCenter>
-                <template #content>
-                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                      ? t('common.storyPointsHint') : t('common.workHoursHint') }}
-                  </div>
-                </template>
-                <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
-              </Popover>
-            </template>
-          </div>
-        </template>
-
-        <template #actualWorkload="{text}">
-          <div class="flex items-center relative">
-            <template v-if="isEditActualWorkload">
-              <Input
-                ref="actualWorkloadInputRef"
-                :value="alWorkload !== undefined && alWorkload !== null ? String(alWorkload) : ''"
-                :allowClear="false"
-                :autofocus="isEditActualWorkload"
-                :min="0.1"
-                :max="1000"
-                :placeholder="t('common.placeholders.inputActualWorkload')"
-                dataType="float"
-                size="small"
-                class="w-65 absolute -top-1.25"
-                @blur="editActualWorkload" />
-            </template>
-
-            <template v-else>
-              {{ text || '--' }}
-              <Icon
-                v-if="props.canEdit && props.dataSource?.evalWorkload"
-                class="ml-2.5 text-3 leading-3 text-theme-special text-theme-text-hover cursor-pointer"
-                icon="icon-shuxie"
-                @click="openEditActualWorkload" />
-
-              <Popover
-                placement="rightTop"
-                arrowPointAtCenter>
-                <template #content>
-                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                      ? t('common.actualStoryPointsHint') : t('common.actualWorkHoursHint') }}
-                  </div>
-                </template>
-                <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
-              </Popover>
-            </template>
-          </div>
-        </template>
-
-        <template #planName="{text}">
-          <span>
-            <Icon icon="icon-jihua" class="mr-1.25 flex-none -mt-0.25" />{{ text }}
-          </span>
-        </template>
-
-        <template #moduleName="{text}">
-          <template v-if="!text">
-            --
-          </template>
-          <div v-else class="-mt-1 flex">
-            <Tag
-              class="px-0 py-1 font-normal text-theme-content rounded bg-white flex border-none">
-              <Icon icon="icon-mokuai" class="mr-1.25 flex-none mt-0.5" />
-              <div class="flex-1  whitespace-break-spaces break-all leading-4">{{ text }}</div>
-            </Tag>
-          </div>
-        </template>
-
-        <template #reviewStatus="{text}">
-          <template v-if="text">
-            <ReviewStatus :value="text" />
-          </template>
-          <template v-else>
-            --
-          </template>
-        </template>
-
-        <template #testResult="{text}">
-          <div class="flex items-center">
-            <TestResult :value="text" />
-            <div
-              v-if="props.dataSource?.overdue"
-              class="border border-status-error rounded px-0.5 ml-5"
-              style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span>{{ t('status.overdue') }}</span>
-            </div>
-          </div>
-        </template>
-
-        <template #version="{text}">
-          <span v-if="text">v{{ text }}</span>
-          <template v-else>--</template>
-        </template>
-
-        <template #softwareVersion="{text}">
-          <span v-if="text">{{ text }}</span>
-          <template v-else>--</template>
-        </template>
-      </Grid>
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">{{ t('common.basicInfo') }}</h3>
     </div>
 
-    <Precondition
-      :projectId="props.projectId"
-      :appInfo="props.appInfo"
-      :dataSource="props.dataSource"
-      :canEdit="props.canEdit"
-      @change="change"
-      @loadingChange="loadingChange" />
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
+        <!-- Case Code -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.code') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ props.dataSource?.code }}</span>
+            <div
+              v-if="props.dataSource?.overdue"
+              class="overdue-badge">
+              {{ t('status.overdue') }}
+            </div>
+          </div>
+        </div>
 
-    <TestStep
-      :projectId="props.projectId"
-      :appInfo="props.appInfo"
-      :dataSource="props.dataSource"
-      :canEdit="props.canEdit"
-      @change="change"
-      @loadingChange="loadingChange" />
+        <!-- Case Name -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.name') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isEditName" class="info-value-content">
+              <span class="info-text">{{ props.dataSource?.name }}</span>
+              <Button
+                v-if="props.canEdit"
+                type="link"
+                class="edit-btn"
+                @click="openEditName">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <Input
+              v-show="isEditName"
+              ref="nameInputRef"
+              :value="props.dataSource?.name"
+              :allowClear="false"
+              :maxlength="200"
+              size="small"
+              class="edit-input"
+              :placeholder="t('common.name')"
+              @blur="editName" />
+          </div>
+        </div>
 
-    <Description
-      :projectId="props.projectId"
-      :appInfo="props.appInfo"
-      :dataSource="props.dataSource"
-      :canEdit="props.canEdit"
-      @change="change"
-      @loadingChange="loadingChange" />
+        <!-- Review Status -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.reviewStatus') }}</span>
+          </div>
+          <div class="info-value">
+            <ReviewStatus v-if="props.dataSource?.reviewStatus" :value="props.dataSource?.reviewStatus" />
+            <span v-else class="info-text dash-text">--</span>
+          </div>
+        </div>
+
+        <!-- Version -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.version') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text" :class="{ 'dash-text': !props.dataSource?.softwareVersion }">
+              {{ props.dataSource?.softwareVersion || '--' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Software Version -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.softwareVersion') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text" :class="{ 'dash-text': !props.dataSource?.softwareVersion }">
+              {{ props.dataSource?.softwareVersion || '--' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Priority -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.priority') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isEditPriority" class="info-value-content">
+              <TaskPriority :value="props.dataSource?.priority" />
+              <Button
+                v-if="props.canEdit"
+                type="link"
+                class="edit-btn"
+                @click="openEditPriority">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <SelectEnum
+              v-show="isEditPriority"
+              ref="priorityRef"
+              v-model:value="priority"
+              :allowClear="false"
+              :autofocus="isEditPriority"
+              enumKey="Priority"
+              size="small"
+              class="edit-input"
+              :placeholder="t('common.placeholders.selectPriority')"
+              @blur="editPriority($event.target.value)">
+              <template #option="item">
+                <TaskPriority :value="coercePriorityOption(item)" />
+              </template>
+            </SelectEnum>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.tag') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isEditTag" class="info-value-content">
+              <div v-if="props.dataSource?.tags?.length" class="tags-container">
+                <div
+                  v-for="tag in props.dataSource?.tags"
+                  :key="tag.id"
+                  class="tag-item">
+                  {{ tag.name }}
+                </div>
+              </div>
+              <span v-else class="info-text dash-text">--</span>
+              <Button
+                v-if="props.canEdit"
+                type="link"
+                class="edit-btn"
+                @click="openEditTag">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <Select
+              v-show="isEditTag"
+              ref="tagsSelectRef"
+              v-model:value="tagsIds"
+              showSearch
+              :defaultOptions="defaultTags"
+              :fieldNames="{ label: 'name', value: 'id' }"
+              :maxTags="5"
+              :placeholder="t('common.placeholders.selectTag')"
+              :class="{'border-error':tagsIds && tagsIds.length > 5 }"
+              :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
+              mode="multiple"
+              size="small"
+              class="edit-input"
+              @blur="editTag" />
+          </div>
+        </div>
+
+        <!-- Plan -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.plan') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text" :class="{ 'dash-text': !props.dataSource?.planName }">
+              {{ props.dataSource?.planName || '--' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Module -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.module') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text" :class="{ 'dash-text': !props.dataSource?.moduleName }">
+              {{ props.dataSource?.moduleName || '--' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Test Result -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.testResult') }}</span>
+          </div>
+          <div class="info-value">
+            <TestResult :value="props.dataSource?.testResult" />
+          </div>
+        </div>
+
+        <!-- Eval Workload -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.evalWorkload') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isEditEvalWorkload" class="info-value-content">
+              <span class="info-text" :class="{ 'dash-text': !props.dataSource?.evalWorkload }">
+                {{ props.dataSource?.evalWorkload || '--' }}
+              </span>
+              <Button
+                v-if="props.canEdit"
+                type="link"
+                class="edit-btn"
+                @click="openEditEvalWorkload">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <Input
+              v-show="isEditEvalWorkload"
+              ref="evalWorkloadInputRef"
+              :value="props.dataSource?.evalWorkload !== undefined && props.dataSource?.evalWorkload !== null ? String(props.dataSource?.evalWorkload) : ''"
+              :allowClear="false"
+              :autofocus="isEditEvalWorkload"
+              :min="0.1"
+              :max="1000"
+              :placeholder="t('common.placeholders.inputEvalWorkload')"
+              dataType="float"
+              size="small"
+              class="edit-input"
+              @blur="editEvalWorkload" />
+          </div>
+        </div>
+
+        <!-- Actual Workload -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.actualWorkload') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isEditActualWorkload" class="info-value-content">
+              <span class="info-text" :class="{ 'dash-text': !props.dataSource?.actualWorkload }">
+                {{ props.dataSource?.actualWorkload || '--' }}
+              </span>
+              <Button
+                v-if="props.canEdit && props.dataSource?.evalWorkload"
+                type="link"
+                class="edit-btn"
+                @click="openEditActualWorkload">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <Input
+              v-show="isEditActualWorkload"
+              ref="actualWorkloadInputRef"
+              :value="alWorkload !== undefined && alWorkload !== null ? String(alWorkload) : ''"
+              :allowClear="false"
+              :autofocus="isEditActualWorkload"
+              :min="0.1"
+              :max="1000"
+              :placeholder="t('common.placeholders.inputActualWorkload')"
+              dataType="float"
+              size="small"
+              class="edit-input"
+              @blur="editActualWorkload" />
+          </div>
+        </div>
+
+        <!-- Unplanned -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.unplanned') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">
+              {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-sections -->
+      <div class="description-section">
+        <Precondition
+          :projectId="props.projectId"
+          :appInfo="props.appInfo"
+          :dataSource="props.dataSource"
+          :canEdit="props.canEdit"
+          @change="change"
+          @loadingChange="loadingChange" />
+
+        <TestStep
+          :projectId="props.projectId"
+          :appInfo="props.appInfo"
+          :dataSource="props.dataSource"
+          :canEdit="props.canEdit"
+          @change="change"
+          @loadingChange="loadingChange" />
+
+        <Description
+          :projectId="props.projectId"
+          :appInfo="props.appInfo"
+          :dataSource="props.dataSource"
+          :canEdit="props.canEdit"
+          @change="change"
+          @loadingChange="loadingChange" />
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Description section styles */
+.description-section {
+  padding: 16px 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Info row styles */
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  min-height: auto;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* Label styles */
+.info-label {
+  flex-shrink: 0;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #686868;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.info-label span {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* Value area styles */
+.info-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.info-value-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Text styles */
+.info-text {
+  font-size: 12px;
+  color: #262626;
+  line-height: 1.4;
+  word-break: break-word;
+  flex: 1;
+  min-width: 0;
+}
+.info-text.dash-text {
+  color: #8c8c8c;
+}
+
+/* Edit button styles */
+.edit-btn {
+  flex-shrink: 0;
+  padding: 0;
+  height: 16px;
+  width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: #1890ff !important;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-left: auto;
+}
+.edit-btn:focus {
+  color: #1890ff !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.edit-btn:hover {
+  color: #1890ff;
+}
+.edit-btn .anticon {
+  font-size: 12px;
+}
+
+/* Edit input styles */
+.edit-input {
+  width: 100%;
+  font-size: 12px;
+}
+
+/* Tags container styles */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+.tag-item {
+  font-size: 10px;
+  padding: 2px 6px;
+  background: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  color: #595959;
+  line-height: 1.2;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Overdue badge */
+.overdue-badge {
+  font-size: 10px;
+  padding: 1px 4px;
+  background: #fff2f0;
+  border: 1px solid #ffccc7;
+  border-radius: 2px;
+  color: #ff4d4f;
+  line-height: 1.2;
+  margin-left: 6px;
+}
+</style>

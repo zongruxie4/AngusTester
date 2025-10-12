@@ -101,19 +101,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-4">
-    <div class="flex items-center text-theme-title mb-1.75">
-      <span class="font-semibold">
-        {{ t('common.testSteps') }}
-      </span>
-
+  <div class="section-container">
+    <div class="section-header">
+      <h3 class="section-title">{{ t('common.testSteps') }}</h3>
       <Button
         v-if="props.canEdit"
         v-show="!editFlag"
         type="link"
-        class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
+        class="edit-btn"
         @click="openEditSteps">
-        <Icon icon="icon-shuxie" class="text-3.5" />
+        <Icon icon="icon-shuxie" />
       </Button>
     </div>
 
@@ -137,3 +134,61 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Section container styles */
+.section-container {
+  margin-top: 0;
+  margin-left: -20px;
+  margin-right: -20px;
+}
+
+/* Section header styles */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Edit button styles */
+.edit-btn {
+  flex-shrink: 0;
+  padding: 0;
+  height: 16px;
+  width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: #1890ff !important;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.edit-btn:focus {
+  color: #1890ff !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.edit-btn:hover {
+  color: #1890ff;
+}
+
+.edit-btn .anticon {
+  font-size: 12px;
+}
+</style>

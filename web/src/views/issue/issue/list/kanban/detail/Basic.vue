@@ -42,12 +42,12 @@ const taskNameInputValue = ref<string>();
 // Evaluation workload editing state
 const evalWorkloadInputRef = ref();
 const isEvalWorkloadEditing = ref(false);
-const evalWorkloadInputValue = ref<number>();
+const evalWorkloadInputValue = ref<string>();
 
 // Actual workload editing state
 const actualWorkloadInputRef = ref();
 const isActualWorkloadEditing = ref(false);
-const actualWorkloadInputValue = ref<number>();
+const actualWorkloadInputValue = ref<string>();
 
 // Task type editing state
 const taskTypeSelectRef = ref();
@@ -59,7 +59,7 @@ const taskTypeSelectValue = ref<TaskDetail['taskType']['value']>();
 const sprintSelectRef = ref();
 const isSprintEditing = ref(false);
 const sprintSelectMessage = ref<string>();
-const sprintSelectValue = ref<number>();
+const sprintSelectValue = ref<string>();
 
 // Module editing state
 const moduleTreeSelectRef = ref();
@@ -76,7 +76,7 @@ const prioritySelectValue = ref<TaskDetail['priority']['value']>();
 const tagSelectRef = ref();
 const isTagEditing = ref(false);
 const selectedTagList = ref<{id: number; name: string;}[]>([]);
-const selectedTagIdList = ref<number[]>([]);
+const selectedTagIdList = ref<string[]>([]);
 
 // Version editing state
 const versionSelectRef = ref();
@@ -197,7 +197,7 @@ const handleTaskNameInputEnter = () => {
  * Enter actual workload editing mode and focus the input
  */
 const enterActualWorkloadEditMode = () => {
-  actualWorkloadInputValue.value = currentActualWorkload.value;
+  actualWorkloadInputValue.value = currentActualWorkload.value?.toString();
   isActualWorkloadEditing.value = true;
 
   nextTick(() => {
@@ -245,7 +245,7 @@ const handleActualWorkloadInputEnter = () => {
  * Enter evaluation workload editing mode and focus the input
  */
 const enterEvalWorkloadEditMode = () => {
-  evalWorkloadInputValue.value = currentEvalWorkload.value;
+  evalWorkloadInputValue.value = currentEvalWorkload.value?.toString();
   isEvalWorkloadEditing.value = true;
 
   nextTick(() => {
@@ -293,7 +293,7 @@ const handleEvalWorkloadInputEnter = () => {
  * Enter sprint editing mode and focus the select
  */
 const enterSprintEditMode = () => {
-  sprintSelectValue.value = currentSprintId.value;
+  sprintSelectValue.value = currentSprintId.value?.toString();
   isSprintEditing.value = true;
 
   nextTick(() => {
@@ -321,7 +321,7 @@ const handleSprintSelectionChange = async (_value: any, option: any) => {
  */
 const handleSprintSelectionBlur = async () => {
   const selectedValue = sprintSelectValue.value;
-  if (!selectedValue || selectedValue === currentSprintId.value) {
+  if (!selectedValue || selectedValue === currentSprintId.value?.toString()) {
     isSprintEditing.value = false;
     return;
   }
@@ -329,7 +329,7 @@ const handleSprintSelectionBlur = async () => {
   emit('loadingChange', true);
   const moveTaskParams = {
     taskIds: [currentTaskId.value],
-    targetSprintId: selectedValue
+    targetSprintId: Number(selectedValue)
   };
   const [error] = await issue.moveTask(moveTaskParams);
   emit('loadingChange', false);
@@ -496,7 +496,7 @@ const handlePrioritySelectionBlur = async () => {
  * Enter tag editing mode and focus the select
  */
 const enterTagEditMode = () => {
-  selectedTagIdList.value = currentTagIds.value;
+  selectedTagIdList.value = currentTagIds.value.map(id => id.toString());
   isTagEditing.value = true;
 
   nextTick(() => {
@@ -523,7 +523,7 @@ const handleTagSelectionChange = async (_value: any, options: any) => {
  * Handle tag selection blur and update task tags
  */
 const handleTagSelectionBlur = async () => {
-  const selectedIds = selectedTagIdList.value;
+  const selectedIds = selectedTagIdList.value.map(id => Number(id));
   if (isEqual(selectedIds, currentTagIds.value)) {
     isTagEditing.value = false;
     return;
@@ -623,7 +623,12 @@ onMounted(() => {
             <span>{{ t('common.code') }}</span>
           </div>
           <div class="info-value">
-            {{ props.dataSource?.code }}
+            <span class="info-text">{{ props.dataSource?.code }}</span>
+            <div
+              v-if="isTaskOverdue"
+              class="overdue-badge">
+              {{ t('status.overdue') }}
+            </div>
           </div>
         </div>
 
@@ -663,12 +668,7 @@ onMounted(() => {
             <span>{{ t('common.status') }}</span>
           </div>
           <div class="info-value">
-            <div class="info-value-content">
-              <TaskStatus :value="currentTaskStatus" />
-              <span v-if="isTaskOverdue" class="overdue-badge">
-                {{ t('status.overdue') }}
-              </span>
-            </div>
+            <TaskStatus :value="currentTaskStatus" />
           </div>
         </div>
 
