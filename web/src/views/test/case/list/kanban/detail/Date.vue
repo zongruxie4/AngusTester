@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { AsyncComponent, Colon, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
+import { AsyncComponent, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
@@ -145,99 +145,237 @@ const refreshCaseDetail = async () => {
 </script>
 
 <template>
-  <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('common.date') }}
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">{{ t('common.date') }}</h3>
     </div>
 
-    <div class="space-y-2.5">
-      <div class="flex items-start">
-        <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('common.reviewDate') }}</span>
-          <Colon class="w-1" />
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
+        <!-- Created Date -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.createdDate') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ createdDate }}</span>
+          </div>
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ reviewDate || '--' }}</div>
-      </div>
-
-      <div class="flex items-start">
-        <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('common.completedDate') }}</span>
-          <Colon class="w-1" />
+        <!-- Deadline Date -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.deadlineDate') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!editFlag" class="info-value-content">
+              <span class="info-text">{{ deadlineDate }}</span>
+              <Button
+                v-if="props.canEdit"
+                type="link"
+                class="edit-btn"
+                @click="openEditDeadline">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="editFlag">
+              <Tooltip
+                :visible="dateError"
+                :title="dateErrorMessage"
+                placement="left"
+                arrowPointAtCenter>
+                <DatePicker
+                  v-show="editFlag"
+                  ref="dateRef"
+                  v-model:value="dateValue"
+                  :error="dateError"
+                  :showNow="false"
+                  :disabledDate="disabledDate"
+                  :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
+                  type="date"
+                  size="small"
+                  class="edit-input"
+                  showToday
+                  @change="validateDeadlineChange"
+                  @blur="commitDeadlineIfValid" />
+              </Tooltip>
+            </AsyncComponent>
+          </div>
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ testResultHandleDate || '--' }}</div>
-      </div>
-
-      <div class="flex items-start">
-        <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('common.createdDate') }}</span>
-          <Colon class="w-1" />
+        <!-- Review Date -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.reviewDate') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text" :class="{ 'dash-text': !reviewDate }">{{ reviewDate || '--' }}</span>
+          </div>
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ createdDate }}</div>
-      </div>
-
-      <div class="flex items-start">
-        <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('common.deadlineDate') }}</span>
-          <Colon class="w-1" />
+        <!-- Test Result Handle Date -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.completedDate') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text" :class="{ 'dash-text': !testResultHandleDate }">{{ testResultHandleDate || '--' }}</span>
+          </div>
         </div>
 
-        <div v-show="!editFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-          <div>{{ deadlineDate }}</div>
-          <Button
-            v-if="props.canEdit"
-            type="link"
-            class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="openEditDeadline">
-            <Icon icon="icon-shuxie" class="text-3.5" />
-          </Button>
+        <!-- Last Modified Date -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('common.lastModifiedDate') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text" :class="{ 'dash-text': !lastModifiedDate }">{{ lastModifiedDate || '--' }}</span>
+          </div>
         </div>
-
-        <AsyncComponent :visible="editFlag">
-          <Tooltip
-            :visible="dateError"
-            :title="dateErrorMessage"
-            placement="left"
-            arrowPointAtCenter>
-            <DatePicker
-              v-show="editFlag"
-              ref="dateRef"
-              v-model:value="dateValue"
-              :error="dateError"
-              :showNow="false"
-              :disabledDate="disabledDate"
-              :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
-              type="date"
-              size="small"
-              class="edit-container"
-              showToday
-              @change="validateDeadlineChange"
-              @blur="commitDeadlineIfValid" />
-          </Tooltip>
-        </AsyncComponent>
-      </div>
-
-      <div class="flex items-start">
-        <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('common.lastModifiedDate') }}</span>
-          <Colon class="w-1" />
-        </div>
-
-        <div class="whitespace-pre-wrap break-words break-all">{{ lastModifiedDate || '--' }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.border-none {
-  border: none;
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.edit-container {
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Info row styles */
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  min-height: auto;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* Label styles */
+.info-label {
+  flex-shrink: 0;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #686868;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.info-label span {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* Value area styles */
+.info-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.info-value-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   width: 100%;
-  transform: translateY(-5px);
+  min-height: 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Text styles */
+.info-text {
+  font-size: 12px;
+  color: #262626;
+  line-height: 1.4;
+  word-break: break-word;
+  flex: 1;
+  min-width: 0;
+}
+.info-text.dash-text {
+  color: #8c8c8c;
+}
+
+/* Edit button styles */
+.edit-btn {
+  flex-shrink: 0;
+  padding: 0;
+  height: 16px;
+  width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: #1890ff !important;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-left: auto;
+}
+.edit-btn:focus {
+  color: #1890ff !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.edit-btn:hover {
+  color: #1890ff;
+}
+.edit-btn .anticon {
+  font-size: 12px;
+}
+
+/* Edit input styles */
+.edit-input {
+  width: 100%;
+  font-size: 12px;
+}
+
+/* Legacy style compatibility */
+.border-none {
+  border: none;
 }
 </style>
