@@ -67,22 +67,37 @@ const startAssigneeEditing = () => {
  */
 const assignCurrentUserToRole = (key:'assigneeId'|'confirmerId'|'testerId') => {
   if (key === 'assigneeId') {
+    isAssigneeEditing.value = true;
     assigneeSelectValue.value = currentUserId.value;
     assigneeSelectMessage.value = currentUserName.value;
-    handleAssigneeBlur();
+    nextTick(() => {
+      setTimeout(() => {
+        handleAssigneeBlur();
+      }, 100);
+    });
     return;
   }
 
   if (key === 'confirmerId') {
+    isConfirmerEditing.value = true;
     confirmerSelectValue.value = currentUserId.value;
     confirmerSelectMessage.value = currentUserName.value;
-    handleConfirmerBlur();
+    nextTick(() => {
+      setTimeout(() => {
+        handleConfirmerBlur();
+      }, 100);
+    });
   }
 
   if (key === 'testerId') {
+    isTesterEditing.value = true;
     testerSelectValue.value = currentUserId.value;
     testerSelectMessage.value = currentUserName.value;
-    handleTesterBlur();
+    nextTick(() => {
+      setTimeout(() => {
+        handleTesterBlur();
+      }, 100);
+    });
   }
 };
 
@@ -103,19 +118,23 @@ const handleAssigneeChange = async (
  */
 const handleAssigneeBlur = async () => {
   const newValue = assigneeSelectValue.value;
-  if (!newValue || newValue === currentAssigneeId.value) {
+  if (newValue === currentAssigneeId.value) {
+    isAssigneeEditing.value = false;
+    return;
+  }
+
+  if (!currentTaskId.value) {
     isAssigneeEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await issue.editTaskAssignees(currentTaskId.value, { assigneeId: newValue });
+  const [error] = await issue.editTaskAssignees(currentTaskId.value, { assigneeId: newValue! });
   emit('loadingChange', false);
   if (error) {
     if (typeof assigneeSelectRef.value?.focus === 'function') {
       assigneeSelectRef.value?.focus();
     }
-
     return;
   }
 
@@ -160,6 +179,11 @@ const handleConfirmerBlur = async () => {
     return;
   }
 
+  if (!currentTaskId.value) {
+    isConfirmerEditing.value = false;
+    return;
+  }
+
   emit('loadingChange', true);
   const [error] = await issue.editTaskConfirmer(currentTaskId.value, { confirmerId: newValue ?? null });
   emit('loadingChange', false);
@@ -167,7 +191,6 @@ const handleConfirmerBlur = async () => {
     if (typeof confirmerSelectRef.value?.focus === 'function') {
       confirmerSelectRef.value?.focus();
     }
-
     return;
   }
 
@@ -212,6 +235,11 @@ const handleTesterBlur = async () => {
     return;
   }
 
+  if (!currentTaskId.value) {
+    isTesterEditing.value = false;
+    return;
+  }
+
   emit('loadingChange', true);
   const [error] = await issue.updateTask(currentTaskId.value, { testerId: newValue });
   emit('loadingChange', false);
@@ -219,7 +247,6 @@ const handleTesterBlur = async () => {
     if (typeof testerSelectRef.value?.focus === 'function') {
       testerSelectRef.value?.focus();
     }
-
     return;
   }
 
@@ -380,7 +407,7 @@ const confirmerDefaultOptions = computed(() => {
                 <SelectUser
                   v-show="isAssigneeEditing"
                   ref="assigneeSelectRef"
-                  v-model:value="assigneeSelectValue"
+                  v-model:value="assigneeSelectValue as any"
                   :placeholder="t('common.placeholders.selectAssignee')"
                   internal
                   :defaultOptions="assigneeDefaultOptions"
@@ -425,7 +452,7 @@ const confirmerDefaultOptions = computed(() => {
                 <SelectUser
                   v-show="isConfirmerEditing"
                   ref="confirmerSelectRef"
-                  v-model:value="confirmerSelectValue"
+                  v-model:value="confirmerSelectValue as any"
                   :placeholder="t('common.placeholders.selectConfirmer')"
                   allowClear
                   internal
@@ -471,7 +498,7 @@ const confirmerDefaultOptions = computed(() => {
                 <SelectUser
                   v-show="isTesterEditing"
                   ref="testerSelectRef"
-                  v-model:value="testerSelectValue"
+                  v-model:value="testerSelectValue as any"
                   :placeholder="t('common.placeholders.selectTester')"
                   allowClear
                   internal
