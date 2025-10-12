@@ -280,7 +280,6 @@ const handleQuickSearchMenuItemClick = (data: { key: string; name: string }) => 
       updateSearchPanelConfigs([{ valueKey: 'testResult', value: undefined }]);
       return;
     }
-
     return;
   }
 
@@ -629,28 +628,16 @@ const searchOptions = computed(() => [
     allowClear: true
   },
   {
-    placeholder: t('common.placeholders.selectCreator'),
-    valueKey: 'createdBy',
-    type: 'select-user' as const,
+    placeholder: t('common.placeholders.selectPriority'),
+    valueKey: 'priority',
+    type: 'select-enum' as const,
+    enumKey: Priority,
     allowClear: true
   },
   {
     placeholder: t('common.placeholders.selectTester'),
     valueKey: 'testerId',
     type: 'select-user' as const,
-    allowClear: true
-  },
-  {
-    placeholder: t('common.placeholders.selectDeveloper'),
-    valueKey: 'developerId',
-    type: 'select-user' as const,
-    allowClear: true
-  },
-  {
-    placeholder: t('common.placeholders.selectPriority'),
-    valueKey: 'priority',
-    type: 'select-enum' as const,
-    enumKey: Priority,
     allowClear: true
   },
   {
@@ -661,18 +648,31 @@ const searchOptions = computed(() => [
     allowClear: true
   },
   {
-    placeholder: t('common.placeholders.selectReviewer'),
-    valueKey: 'reviewerId',
-    type: 'select-user' as const,
-    allowClear: true
-  },
-  {
     placeholder: t('common.placeholders.selectReviewStatus'),
     valueKey: 'reviewStatus',
     type: 'select-enum' as const,
     enumKey: ReviewStatusEnum,
     allowClear: true
   },
+  {
+    placeholder: t('common.placeholders.selectCreator'),
+    valueKey: 'createdBy',
+    type: 'select-user' as const,
+    allowClear: true
+  },
+  {
+    placeholder: t('common.placeholders.selectDeveloper'),
+    valueKey: 'developerId',
+    type: 'select-user' as const,
+    allowClear: true
+  },
+  {
+    placeholder: t('common.placeholders.selectReviewer'),
+    valueKey: 'reviewerId',
+    type: 'select-user' as const,
+    allowClear: true
+  },
+
   {
     placeholder: [
       t('common.placeholders.selectTestDateRange.0'),
