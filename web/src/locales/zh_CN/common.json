@@ -71,6 +71,7 @@
     "test": "测试",
     "testType": "测试类型",
     "testResult": "测试结果",
+    "testRemark": "测试备注",
     "testSteps": "测试步骤",
     "reviewStatus": "评审状态",
     "reviewResult": "评审结果",

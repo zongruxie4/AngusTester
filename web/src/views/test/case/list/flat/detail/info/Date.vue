@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   dataSource: undefined,
   projectId: undefined,
-  actionAuth: () => ([]),
+  actionAuth: () => ([])
 });
 
 // eslint-disable-next-line func-call-spacing

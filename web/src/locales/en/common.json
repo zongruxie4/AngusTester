@@ -71,6 +71,7 @@
     "test": "Test",
     "testType": "Test Type",
     "testResult": "Test Result",
+    "testRemark": "Test Remark",
     "testSteps": "Test Steps",
     "reviewStatus": "Review Status",
     "reviewResult": "Review Result",
