@@ -11,11 +11,12 @@ import { EvalWorkloadMethod, localStore, Priority, TESTER, upload } from '@xcan-
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, issue } from '@/api/tester';
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT, MAX_FILE_SIZE_MB, UPLOAD_ISSUE_FILE_KEY } from '@/utils/constant';
 import { BugLevel, SoftwareVersionStatus, TaskType } from '@/enums/enums';
 
 import { TaskEditState } from './types';
 import { TaskDetail, getTaskTypeName } from '../../types';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
@@ -348,9 +349,6 @@ const handleEditorLoadingChange = (value: boolean) => {
   loading.value = value;
 };
 
-// Constants
-const MAX_FILE_SIZE_MB = 10;
-
 /**
  * Handle file upload for task attachments
  * @param info - Upload change info
@@ -367,7 +365,7 @@ const handleFileUpload = async function (info: any) {
   }
 
   loading.value = true;
-  const [error, { data = [] }] = await upload(file, { bizKey: 'angusTesterTaskAttachments' });
+  const [error, { data = [] }] = await upload(file, { bizKey: UPLOAD_ISSUE_FILE_KEY });
   loading.value = false;
   if (error) {
     return;

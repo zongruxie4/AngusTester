@@ -8,6 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { TaskDetail } from '@/views/issue/types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 import { AttachmentInfo } from '@/types/types';
+import { MAX_FILE_SIZE_MB, UPLOAD_ISSUE_FILE_KEY } from '@/utils/constant';
 
 // Component props and emits
 const props = withDefaults(defineProps<TaskDetailProps>(), {
@@ -24,11 +25,6 @@ const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'change', value: Partial<TaskDetail>): void;
 }>();
-
-/**
- * <p>Maximum file size in MB for uploads</p>
- */
-const MAX_FILE_SIZE_MB = 10;
 
 // Component state
 const isUploading = ref(false);
@@ -64,7 +60,7 @@ const handleFileUploadChange = async ({ file }: { file: UploadFile }) => {
   }
 
   isUploading.value = true;
-  const [error, res] = await upload(file.originFileObj!, { bizKey: 'angusTesterTaskAttachments' });
+  const [error, res] = await upload(file.originFileObj!, { bizKey: UPLOAD_ISSUE_FILE_KEY });
   if (error) {
     isUploading.value = false;
     return;

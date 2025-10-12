@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Toggle, Icon } from '@xcan-angus/vue-ui';
-import { Upload } from 'ant-design-vue';
+import { Toggle, Icon, Spin } from '@xcan-angus/vue-ui';
+import { Button, Upload } from 'ant-design-vue';
 import { download, upload } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
 import { CaseActionAuth } from '@/views/test/case/types';
+import { MAX_FILE_SIZE_MB, UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
 
 interface Props {
   id?: number;
@@ -30,9 +31,8 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const isUploadControlsVisible = ref(false);
+// Component state
 const isUploading = ref<boolean>(false);
-const uploadedFileList = ref<{id?:string, name:string, url:string}[]>([]);
 
 /**
  * <p>Gets the current attachments data from the data source.</p>
@@ -43,28 +43,18 @@ const attachmentsData = computed(() => {
 });
 
 /**
+ * <p>Checks if attachment list is empty.</p>
+ * @returns True if no attachments exist
+ */
+const isAttachmentListEmpty = computed(() => !attachmentsData.value.length);
+
+/**
  * <p>Download a file by URL.</p>
  * <p>Triggers file download for the specified URL.</p>
  * @param url - File URL to download
  */
-const handleDownload = (url:string) => {
+const handleDownload = (url: string) => {
   download(url);
-};
-
-/**
- * <p>Show upload controls on mouse enter.</p>
- * <p>Makes upload controls visible when hovering over upload area.</p>
- */
-const handleUploadAreaMouseEnter = () => {
-  isUploadControlsVisible.value = true;
-};
-
-/**
- * <p>Hide upload controls on mouse leave.</p>
- * <p>Hides upload controls when mouse leaves upload area.</p>
- */
-const handleUploadAreaMouseLeave = () => {
-  isUploadControlsVisible.value = false;
 };
 
 /**
@@ -72,7 +62,7 @@ const handleUploadAreaMouseLeave = () => {
  * <p>Removes the specified attachment from the case.</p>
  * @param attachmentIndex - Attachment index to remove
  */
-const handleRemoveAttachment = async (attachmentIndex:number) => {
+const handleRemoveAttachment = async (attachmentIndex: number) => {
   if (!props.dataSource || !attachmentsData.value.length) {
     return;
   }
@@ -91,13 +81,17 @@ const handleRemoveAttachment = async (attachmentIndex:number) => {
  * <p>Handles file upload and adds to attachment list.</p>
  * @param uploadFile - File upload object
  */
-const handleFileUpload = async function (uploadFile) {
-  if (uploadedFileList.value.length >= 5 || isUploading.value) {
+const handleFileUpload = async ({ file }: { file: any }) => {
+  if (file.size > 1024 * 1024 * MAX_FILE_SIZE_MB) {
+    return;
+  }
+
+  if (attachmentsData.value.length >= 5 || isUploading.value) {
     return;
   }
 
   isUploading.value = true;
-  const [error, { data = [] }] = await upload(uploadFile.file, { bizKey: 'angusTesterCaseAttachments' });
+  const [error, { data = [] }] = await upload(file, { bizKey: UPLOAD_TEST_FILE_KEY });
   isUploading.value = false;
   if (error) {
     return;
@@ -106,11 +100,19 @@ const handleFileUpload = async function (uploadFile) {
 };
 
 /**
+ * <p>Custom upload request handler that prevents default upload behavior.</p>
+ * <p>Returns false to disable automatic upload, allowing custom handling.</p>
+ */
+const handleCustomUploadRequest = () => {
+  return false;
+};
+
+/**
  * <p>Persist new attachments list after upload.</p>
  * <p>Updates the case with the new attachment list.</p>
  * @param uploadedData - Array of uploaded file data
  */
-const updateAttachmentList = async (uploadedData) => {
+const updateAttachmentList = async (uploadedData: any[]) => {
   if (!props.dataSource || isUploading.value) {
     return;
   }
@@ -129,55 +131,103 @@ const updateAttachmentList = async (uploadedData) => {
 };
 </script>
 <template>
-  <Toggle
-    :title="t('common.attachment')"
-    class="mt-3.5">
-    <div
-      style="height: 108px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
-      class="border border-dashed rounded flex flex-col px-2 py-1 mx-2 mt-3 mb-3"
-      :class="attachmentsData.length?'justify-between':'justify-center'"
-      @mouseenter="handleUploadAreaMouseEnter"
-      @mouseleave="handleUploadAreaMouseLeave">
-      <template v-if="attachmentsData.length">
-        <div
-          style="height: 90px;scrollbar-gutter: stable;"
-          class="overflow-hidden hover:overflow-y-auto -mr-2 pr-1">
+  <Toggle>
+    <template #title>
+      <div class="text-3.5">{{ t('common.attachment') }}</div>
+    </template>
+
+    <template #default>
+      <Spin
+        :spinning="isUploading"
+        :class="{ empty: isAttachmentListEmpty }"
+        class="upload-container w-full ml-5.5 px-3 py-2.5 leading-5 mt-2.5 text-3 rounded border border-dashed">
+        <template v-if="!isAttachmentListEmpty">
           <div
-            v-for="(item,index) in dataSource?.attachments"
+            v-for="(item, index) in attachmentsData"
             :key="index"
-            :class="{'rounded-b':index===dataSource?.attachments?.length-1}"
-            class="flex items-center justify-between text-3 leading-3">
-            <div
-              :title="item.name"
-              class="truncate text-theme-sub-content leading-4 cursor-pointer"
-              style="width: 250px;"
-              @click="handleDownload(item.url)">
-              {{ item.name }}
-            </div>
+            class="leading-4 mb-1.5 last:mb-0 flex items-center justify-between overflow-hidden">
+            <a
+              class="flex-1 flex-nowrap truncate"
+              :download="item.name"
+              :href="item.url"
+              @click="handleDownload(item.url)">{{ item.name }}</a>
             <Icon
               icon="icon-qingchu"
-              class="text-theme-special text-theme-text-hover cursor-pointer flex-shrink-0 leading-4 text-3.5"
-              @click="handleRemoveAttachment(index)" />
+              class="text-3.5 flex-shrink-0 cursor-pointer text-theme-text-hover"
+              @click="handleRemoveAttachment(index)">
+            </Icon>
           </div>
-        </div>
-      </template>
 
-      <div class="flex justify-around h-6">
-        <template v-if="props.actionAuth.includes('edit') && (dataSource?.attachments?.length || 0) < 5">
-          <Upload
-            :fileList="[]"
-            name="file"
-            :customRequest="handleFileUpload">
-            <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-            <span class="text-3 text-theme-text-hover">{{ t('actions.upload') }}</span>
-          </Upload>
+          <div
+            v-if="props.actionAuth.includes('edit') && attachmentsData.length < 5"
+            class="upload-action flex justify-center h-5">
+            <Upload
+              :maxCount="5"
+              :showUploadList="false"
+              :customRequest="handleCustomUploadRequest"
+              @change="handleFileUpload">
+              <Button
+                size="small"
+                type="link"
+                class="flex items-center h-auto leading-4.5 p-0">
+                <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
+                <div class="flex-shrink-0 text-text-link ml-1">
+                  {{ t('actions.upload') }}
+                </div>
+              </Button>
+            </Upload>
+          </div>
         </template>
-      </div>
-    </div>
+
+        <template v-else>
+          <Upload
+            :maxCount="5"
+            :showUploadList="false"
+            :customRequest="handleCustomUploadRequest"
+            @change="handleFileUpload">
+            <Button
+              size="small"
+              type="link"
+              class="flex flex-col items-center justify-center h-auto leading-5 p-0">
+              <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
+              <div class="flex-shrink-0 text-text-link">
+                {{ t('actions.upload') }}
+              </div>
+            </Button>
+          </Upload>
+          <div class="text-theme-sub-content mt-1 ml-3 mr-3">
+            {{ t('backlog.edit.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }) }}
+          </div>
+        </template>
+      </Spin>
+    </template>
   </Toggle>
 </template>
 <style scoped>
-:deep(.toggle-title) {
-  @apply text-3.5;
+.upload-container {
+  width: calc(100% - 22px);
+  border-color: var(--border-text-box);
+  background-color: #fafafa;
+}
+
+.empty.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.upload-action {
+  visibility: visible;
+}
+
+.upload-container:hover .upload-action {
+  visibility: visible;
+}
+
+:deep(.ant-upload.ant-upload-select) {
+  width: 100%;
 }
 </style>

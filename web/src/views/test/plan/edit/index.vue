@@ -12,7 +12,7 @@ import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
 import { testPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT, UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
 
 import { PlanDetail, PlanEditFormState } from '../types';
 import { BasicProps } from '@/types/types';
@@ -173,7 +173,7 @@ const handleFileUpload = async (file) => {
   }
 
   loading.value = true;
-  const [error, { data = [] }] = await upload(file.file, { bizKey: 'angusTesterCaseAttachments' });
+  const [error, { data = [] }] = await upload(file.file, { bizKey: UPLOAD_TEST_FILE_KEY });
   loading.value = false;
   if (error) {
     return;

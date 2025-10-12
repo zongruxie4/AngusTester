@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { TaskSprintPermission, TaskSprintStatus } from '@/enums/enums';
 import { issue } from '@/api/tester';
 import { EditFormState, SprintInfo } from '../types';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { DATE_TIME_FORMAT, UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
 import { BasicProps } from '@/types/types';
 
 /**
@@ -587,7 +587,7 @@ const handleFileUpload = async (uploadInfo: any) => {
 
   isLoading.value = true;
   const [error, { data = [] }] = await upload(file, {
-    bizKey: 'angusTesterCaseAttachments'
+    bizKey: UPLOAD_TEST_FILE_KEY
   });
   isLoading.value = false;
   if (error) {

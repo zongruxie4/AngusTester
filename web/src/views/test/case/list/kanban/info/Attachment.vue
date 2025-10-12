@@ -8,7 +8,7 @@ import { testCase } from '@/api/tester';
 
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
-// import { AttachmentInfo } from '@/types/types';
+import { UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
 
 const { t } = useI18n();
 
@@ -45,7 +45,7 @@ const handleUploadChange = async ({ file }: { file: UploadFile }) => {
   }
 
   loading.value = true;
-  const [error, res] = await upload(file.originFileObj!, { bizKey: 'angusTesterCaseAttachments' });
+  const [error, res] = await upload(file.originFileObj!, { bizKey: UPLOAD_TEST_FILE_KEY });
   if (error) {
     loading.value = false;
     return;

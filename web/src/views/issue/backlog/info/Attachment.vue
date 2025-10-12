@@ -5,6 +5,7 @@ import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { upload, utils } from '@xcan-angus/infra';
 import { issue } from '@/api/tester';
+import { MAX_FILE_SIZE_MB, UPLOAD_ISSUE_FILE_KEY } from '@/utils/constant';
 
 import { TaskDetail } from '../../types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
@@ -35,11 +36,6 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskDetail>): void;
 }>();
 
-/**
- * <p>Maximum file size in MB for uploads</p>
- */
-const MAX_FILE_SIZE_MB = 10;
-
 // Reactive State Variables
 const isUploading = ref(false);
 const attachmentList = ref<AttachmentItem[]>([]);
@@ -55,7 +51,7 @@ const handleFileUploadChange = async ({ file }: { file: UploadFile }) => {
   }
 
   isUploading.value = true;
-  const [error, res] = await upload(file.originFileObj!, { bizKey: 'angusTesterTaskAttachments' });
+  const [error, res] = await upload(file.originFileObj!, { bizKey: UPLOAD_ISSUE_FILE_KEY });
   if (error) {
     isUploading.value = false;
     return;

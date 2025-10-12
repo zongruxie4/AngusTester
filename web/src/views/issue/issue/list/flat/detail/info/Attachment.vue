@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { upload, utils } from '@xcan-angus/infra';
 import { issue } from '@/api/tester';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
+import { MAX_FILE_SIZE_MB, UPLOAD_ISSUE_FILE_KEY } from '@/utils/constant';
 
 import { TaskDetail } from '@/views/issue/types';
 import { AttachmentInfo } from '@/types/types';
@@ -26,9 +27,6 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskDetail>): void;
 }>();
 
-// Constants
-const MAX_FILE_SIZE_MB = 10;
-
 // Component state
 const isUploading = ref(false);
 const attachmentList = ref<AttachmentInfo[]>([]);
@@ -45,7 +43,7 @@ const handleFileUpload = async ({ file }: { file: UploadFile }) => {
   }
 
   isUploading.value = true;
-  const [error, res] = await upload(file.originFileObj!, { bizKey: 'angusTesterTaskAttachments' });
+  const [error, res] = await upload(file.originFileObj!, { bizKey: UPLOAD_ISSUE_FILE_KEY });
   if (error) {
     isUploading.value = false;
     return;

@@ -12,7 +12,7 @@ import {
 import { CaseStepView, SoftwareVersionStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
 import { testCase, modules, project } from '@/api/tester';
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT, MAX_FILE_SIZE_MB, UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
 
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
@@ -292,9 +292,6 @@ const saveNewCase = async () => {
   }
 };
 
-// Constants
-const MAX_FILE_SIZE_MB = 10;
-
 /**
  * Handle file upload
  * @param param - Upload parameter containing file
@@ -310,7 +307,7 @@ const handleFileUpload = async ({ file }: { file: File }) => {
   }
 
   isLoading.value = true;
-  const [error, { data = [] }] = await upload(file, { bizKey: 'angusTesterCaseAttachments' });
+  const [error, { data = [] }] = await upload(file, { bizKey: UPLOAD_TEST_FILE_KEY });
   isLoading.value = false;
   if (error) {
     return;

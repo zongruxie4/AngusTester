@@ -2,6 +2,12 @@ export const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 export const DATE_FORMAT = 'YYYY-MM-DD';
 export const TIME_FORMAT = 'HH:mm:ss';
 
+export const MAX_FILE_SIZE_MB = 10;
+export const MAX_FILE_SIZE_MB_X2 = 20;
+
+export const UPLOAD_TEST_FILE_KEY = 'angusTesterCaseAttachments';
+export const UPLOAD_ISSUE_FILE_KEY = 'angusTesterTaskAttachments';
+
 export const SETTING_KEYS = {
   MAX_RESOURCE_ACTIVITIES: 'MAX_RESOURCE_ACTIVITIES'
 

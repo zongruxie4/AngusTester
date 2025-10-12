@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { StrategyWhenDuplicated } from '@/enums/enums';
 import { formatBytes } from '@/utils/common';
 import { BasicProps } from '@/types/types';
+import { MAX_FILE_SIZE_MB_X2 as MAX_FILE_SIZE_MB } from '@/utils/constant';
 
 const { t } = useI18n();
 
@@ -22,9 +23,6 @@ const emit = defineEmits<{
   (event: 'update:visible', value: boolean): void;
   (event: 'ok'): void;
 }>();
-
-// Constants
-const MAX_FILE_SIZE_MB = 20;
 
 // Reactive state
 const loading = ref(false);

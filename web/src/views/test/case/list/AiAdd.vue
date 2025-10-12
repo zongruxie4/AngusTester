@@ -16,7 +16,7 @@ import { CaseStepView, SoftwareVersionStatus } from '@/enums/enums';
 import { VisibleProps } from '@/types/types';
 import { testCase, project, modules } from '@/api/tester';
 import { ai } from '@/api/gm';
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT, UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
 
 import CaseSteps from '@/views/test/case/list/CaseSteps.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -262,7 +262,7 @@ const upLoadFile = async ({ file }: { file }) => {
   }
 
   loading.value = true;
-  const [error, { data = [] }] = await upload(file.originFileObj, { bizKey: 'angusTesterCaseAttachments' });
+  const [error, { data = [] }] = await upload(file.originFileObj, { bizKey: UPLOAD_TEST_FILE_KEY });
   loading.value = false;
   if (error) {
     return;

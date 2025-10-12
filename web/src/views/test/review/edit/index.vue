@@ -16,6 +16,7 @@ import { test, testPlan, project } from '@/api/tester';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
 import { ReviewEditState, ReviewCaseInfo, ReviewDetail } from '../types';
+import { UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
 
 // Component imports
 import RichEditor from '@/components/richEditor/index.vue';
@@ -77,7 +78,7 @@ const handleFileUpload = async (file) => {
   }
 
   loading.value = true;
-  const [error, { data = [] }] = await upload(file.file, { bizKey: 'angusTesterCaseAttachments' });
+  const [error, { data = [] }] = await upload(file.file, { bizKey: UPLOAD_TEST_FILE_KEY });
   loading.value = false;
   if (error) {
     return;
@@ -126,7 +127,6 @@ const prepareFormParameters = () => {
   }
 
   delete params.date;
-
   return params;
 };
 

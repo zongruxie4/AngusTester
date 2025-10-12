@@ -11,7 +11,7 @@ import { EvalWorkloadMethod, localStore, Priority, TESTER, upload } from '@xcan-
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, issue } from '@/api/tester';
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT, MAX_FILE_SIZE_MB, UPLOAD_ISSUE_FILE_KEY } from '@/utils/constant';
 import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
 import { TaskEditState } from '@/views/issue/issue/list/types';
 
@@ -251,9 +251,6 @@ const handleRichEditorLoading = (isEditorLoading: boolean) => {
   isLoading.value = isEditorLoading;
 };
 
-// Constants
-const MAX_FILE_SIZE_MB = 10;
-
 /**
  * <p>Handle file upload</p>
  * <p>Uploads attachment files and adds them to the form state</p>
@@ -269,7 +266,7 @@ const handleFileUpload = async function ({ file }: { file: File }) {
   }
 
   isLoading.value = true;
-  const [error, { data = [] }] = await upload(file, { bizKey: 'angusTesterTaskAttachments' });
+  const [error, { data = [] }] = await upload(file, { bizKey: UPLOAD_ISSUE_FILE_KEY });
   isLoading.value = false;
   if (error) {
     return;
