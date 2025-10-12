@@ -647,6 +647,10 @@ const zoomInFlagCacheKey = computed(() => {
   return `${props.userInfo?.id}${props?.projectId}${btoa('modalSize')}`;
 });
 
+const softwareVersionParams = {
+  filters: [{ value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN' }]
+};
+
 /**
  * <p>Get popup container for dropdowns</p>
  * <p>Returns document body as popup container for better positioning</p>
@@ -1262,7 +1266,7 @@ onMounted(() => {
               allowClear
               :placeholder="t('common.placeholders.selectSoftwareVersion')"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-              :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
+              :params="softwareVersionParams"
               :fieldNames="{value:'name', label: 'name'}">
             </Select>
           </FormItem>

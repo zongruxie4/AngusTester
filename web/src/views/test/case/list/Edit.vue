@@ -92,11 +92,11 @@ const loadCaseDetails = async () => {
       });
     } else if (key === 'attachments') {
       caseFormData.value[key] = data[key] || [];
-    } else if (key === 'refTaskInfos') {
+    } else if (key === 'refTaskIds') {
       caseFormData.value.refTaskIds = (data.refTaskInfos || []).map(item => {
         return item.id;
       });
-    } else if (key === 'refCaseInfos') {
+    } else if (key === 'refCaseIds') {
       caseFormData.value.refCaseIds = (data.refCaseInfos || []).map(item => {
         return item.id;
       });
@@ -425,6 +425,10 @@ const handlePlanChange = (_value: any, option: any) => {
 
 // Module management
 const moduleTreeOptions = ref<any[]>([]);
+
+const softwareVersionParams = {
+  filters: [{ value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN' }]
+};
 
 /**
  * Load module tree options
@@ -880,7 +884,7 @@ onMounted(() => {
                 allowClear
                 :placeholder="t('common.placeholders.selectSoftwareVersion')"
                 :action="`${TESTER}/software/version?projectId=${projectId}`"
-                :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: SearchCriteria.OpEnum.In}]}"
+                :params="softwareVersionParams"
                 :fieldNames="{value:'name', label: 'name'}">
               </Select>
             </FormItem>
