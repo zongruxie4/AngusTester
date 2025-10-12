@@ -91,7 +91,7 @@ const handleFileUpload = async ({ file }: { file: any }) => {
   }
 
   isUploading.value = true;
-  const [error, { data = [] }] = await upload(file, { bizKey: UPLOAD_TEST_FILE_KEY });
+  const [error, { data = [] }] = await upload(file.originFileObj || file, { bizKey: UPLOAD_TEST_FILE_KEY });
   isUploading.value = false;
   if (error) {
     return;
