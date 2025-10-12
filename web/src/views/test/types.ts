@@ -99,6 +99,7 @@ export type CaseDetail = {
   testResult: EnumMessage<CaseTestResult>;
   testRemark: string;
   testResultHandleDate: string;
+  unplanned: boolean;
   attachments: AttachmentInfo[];
   tags: TagInfo[];
   refTaskInfos: TaskInfo[];

@@ -91,7 +91,6 @@ export function useActivitySearch (quickSearchOptionsRef: Ref) {
    * @param data - New filter data from search panel
    */
   const handleSearchChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, _changedKey?: string) => {
-    debugger;
     if (_changedKey === 'userId') {
       quickSearchOptionsRef.value.clearSelectedMap(['myActivity']);
     }

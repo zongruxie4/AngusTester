@@ -7,12 +7,10 @@ import { CaseDetail } from '@/views/test/types';
 import { CaseActionAuth } from '@/views/test/case/types';
 
 import {
-  bigApisInfoColumns,
   bigDateInfoColumns,
   bigPeopleInfoColumns,
   bigReviewInfoColumns,
   bigTestInfoColumns,
-  minApisInfoColumns,
   minDateInfoColumns,
   minPeopleInfoColumns,
   minReviewInfoColumns,
@@ -68,7 +66,6 @@ const peopleInfoColumns = ref<GridColumns[][]>(bigPeopleInfoColumns);
 const dateInfoColumns = ref<GridColumns[][]>(bigDateInfoColumns);
 const reviewInfoColumns = ref<GridColumns[][]>(bigReviewInfoColumns);
 const testInfoColumns = ref<GridColumns[][]>(bigTestInfoColumns);
-const apisInfoColumns = ref<GridColumns[][]>(bigApisInfoColumns);
 
 /**
  * <p>Handles case data change events from child components.</p>
@@ -83,7 +80,6 @@ watch(() => isWideLayout.value, (isWide) => {
   dateInfoColumns.value = isWide ? bigDateInfoColumns : minDateInfoColumns;
   reviewInfoColumns.value = isWide ? bigReviewInfoColumns : minReviewInfoColumns;
   testInfoColumns.value = isWide ? bigTestInfoColumns : minTestInfoColumns;
-  apisInfoColumns.value = isWide ? bigApisInfoColumns : minApisInfoColumns;
 }, {
   immediate: true
 });

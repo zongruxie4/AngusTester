@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue';
-import { Grid, Icon, Input, Select, ReviewStatus, Toggle } from '@xcan-angus/vue-ui';
-import { Button, Tag } from 'ant-design-vue';
+import { nextTick, ref } from 'vue';
+import { Icon, Input, Select, ReviewStatus, Toggle } from '@xcan-angus/vue-ui';
+import { Button } from 'ant-design-vue';
 import { Priority, TESTER, utils, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
@@ -49,40 +49,15 @@ const editNameLoading = ref(false);
 const isEditPriority = ref(false);
 const editPriorityLoading = ref(false);
 const priority = ref();
-const tagsIds = ref<string[]>([]);
-const defaultTags = ref<{[key: string]: { label: string; value: string }}>({});
+const tagsIds = ref<number[]>([]);
+const defaultTags = ref<{[key: number]: { name: string; id: number }}>({});
 const isEditTag = ref(false);
 const editTagLoading = ref(false);
 const isVersionEditMode = ref(false);
 const selectedVersionValue = ref();
 const infoExpand = ref(true);
 
-// Computed properties
-const infoColumns = computed(() => [
-  [
-    { label: t('common.name'), dataIndex: 'name' },
-    { label: t('common.id'), dataIndex: 'id' },
-    { label: t('common.code'), dataIndex: 'code' },
-    { label: t('common.reviewStatus'), dataIndex: 'reviewStatus' },
-    { label: t('common.version'), dataIndex: 'version' },
-    { label: t('common.softwareVersion'), dataIndex: 'softwareVersion' },
-    { label: t('common.priority'), dataIndex: 'priority' },
-    {
-      label: t('common.unplanned'),
-      dataIndex: 'unplanned',
-      customRender: ({ text }) => text ? t('status.yes') : t('status.no')
-    }
-  ],
-  [
-    { label: t('common.tag'), dataIndex: 'tags' },
-    { label: t('common.plan'), dataIndex: 'planName' },
-    { label: t('common.module'), dataIndex: 'moduleName' },
-    {
-      label: t('common.testResult'),
-      dataIndex: 'testResult'
-    }
-  ]
-]);
+// Computed properties - removed infoColumns as we now use manual layout
 
 // Name editing functions
 const openEditName = () => {
@@ -113,7 +88,11 @@ const openEditPriority = () => {
   isEditPriority.value = true;
   priority.value = props.dataSource?.priority?.value;
   nextTick(() => {
-    priorityRef.value.focus();
+    setTimeout(() => {
+      if (typeof priorityRef.value?.focus === 'function') {
+        priorityRef.value?.focus();
+      }
+    }, 100);
   });
 };
 
@@ -136,13 +115,16 @@ const editPriority = async (value: Priority) => {
 // Tag editing functions
 const openEditTag = () => {
   tagsIds.value = (props.dataSource?.tags || [])?.map(item => {
-    const idStr = item.id.toString();
-    defaultTags.value[idStr] = { label: item.name, value: idStr };
-    return idStr;
+    defaultTags.value[item.id] = { name: item.name, id: item.id };
+    return item.id;
   }) || [];
   isEditTag.value = true;
   nextTick(() => {
-    tagsSelectRef.value.focus();
+    setTimeout(() => {
+      if (typeof tagsSelectRef.value?.focus === 'function') {
+        tagsSelectRef.value?.focus();
+      }
+    }, 100);
   });
 };
 
@@ -156,15 +138,14 @@ const editTag = async () => {
     isEditTag.value = false;
     return;
   }
-  const oldTagIds = props.dataSource?.tags?.map(item => item.id.toString()) || [];
+  const oldTagIds = props.dataSource?.tags?.map(item => item.id) || [];
   const isEqual = utils.deepCompare(oldTagIds, tagsIds.value);
   if (isEqual) {
     isEditTag.value = false;
     return;
   }
   editTagLoading.value = true;
-  const tagIdsAsNumbers = tagsIds.value.map(id => parseInt(id));
-  const [error] = await testCase.putTag(props.dataSource.id, { tagIds: tagsIds.value.length ? tagIdsAsNumbers : null });
+  const [error] = await testCase.putTag(props.dataSource.id, { tagIds: tagsIds.value.length ? tagsIds.value : null });
   editTagLoading.value = false;
   isEditTag.value = false;
   if (error) {
@@ -173,7 +154,7 @@ const editTag = async () => {
   // Convert tag IDs back to tag objects for the change event
   const updatedTags = tagsIds.value.map(id => {
     const tagInfo = defaultTags.value[id];
-    return tagInfo ? { id: parseInt(id), name: tagInfo.label } : null;
+    return tagInfo ? { id: id, name: tagInfo.name } : null;
   }).filter((tag): tag is { id: number; name: string } => tag !== null);
   emit('change', { tags: updatedTags });
 };
@@ -221,206 +202,438 @@ const handleVersionBlur = async () => {
   <Toggle
     v-model:open="infoExpand"
     :title="t('common.basicInfo')">
-    <Grid
-      :columns="infoColumns"
-      :dataSource="dataSource"
-      :spacing="20"
-      :marginBottom="4"
-      labelSpacing="10px"
-      font-size="12px"
-      class="pt-2 pl-5.5">
-      <template #name="{text}">
-        <div class="flex items-center w-full relative">
-          <template v-if="isEditName">
-            <Input
-              ref="nameInputRef"
-              :value="text"
-              :allowClear="false"
-              :maxlength="200"
-              size="small"
-              class="absolute -top-1.25"
-              :placeholder="t('common.name')"
-              @blur="editName" />
-          </template>
-          <template v-else>
-            <div class="flex items-center">
-              <span>{{ text }}</span>
-              <Button
-                v-if="props.actionAuth.includes('edit')"
-                type="link"
-                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-                @click="openEditName">
-                <Icon icon="icon-shuxie" class="text-3.5" />
-              </Button>
+    <template #default>
+      <div class="basic-info-container">
+        <!-- Primary Information Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.code') }}</span>
             </div>
-          </template>
-        </div>
-      </template>
+            <div class="info-value">
+              <div class="flex items-center">
+                <span class="info-text">{{ dataSource?.code }}</span>
+                <div
+                  v-if="dataSource?.overdue"
+                  class="overdue-badge">
+                  {{ t('status.overdue') }}
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <template #priority="{text}">
-        <div class="flex items-center relative">
-          <template v-if="isEditPriority">
-            <SelectEnum
-              ref="priorityRef"
-              v-model:value="priority"
-              :allowClear="false"
-              :disabled="editPriorityLoading"
-              :autofocus="isEditPriority"
-              enumKey="Priority"
-              size="small"
-              class="w-52 absolute -top-1.25"
-              :placeholder="t('common.priority')"
-              @blur="editPriority(priority as Priority)">
-              <template #option="item">
-                <TaskPriority :value="item as any" />
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.testResult') }}</span>
+            </div>
+            <div class="info-value">
+              <TestResult :value="dataSource?.testResult" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Name and Review Status Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.name') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isEditName" class="info-value-content">
+                <span class="info-text">{{ dataSource?.name }}</span>
+                <Button
+                  v-if="props.actionAuth.includes('edit')"
+                  type="link"
+                  class="edit-btn"
+                  @click="openEditName">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
+              </div>
+
+              <Input
+                v-show="isEditName"
+                ref="nameInputRef"
+                :value="dataSource?.name"
+                :allowClear="false"
+                :maxlength="200"
+                class="edit-input"
+                :placeholder="t('common.name')"
+                @blur="editName" />
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.reviewStatus') }}</span>
+            </div>
+            <div class="info-value">
+              <template v-if="dataSource?.reviewStatus">
+                <ReviewStatus :value="dataSource.reviewStatus" />
               </template>
-            </SelectEnum>
-          </template>
-          <template v-else>
-            <div class="flex items-center">
-              <TaskPriority :value="text" />
-              <Button
-                v-if="props.actionAuth.includes('edit')"
-                type="link"
-                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-                @click="openEditPriority">
-                <Icon icon="icon-shuxie" class="text-3.5" />
-              </Button>
+              <template v-else>
+                <span class="info-text">--</span>
+              </template>
             </div>
-          </template>
-        </div>
-      </template>
-
-      <template #tags="{text}">
-        <div class="flex items-center flex-wrap">
-          <template v-if="isEditTag">
-            <Select
-              ref="tagsSelectRef"
-              v-model:value="tagsIds"
-              showSearch
-              :defaultOptions="defaultTags"
-              :fieldNames="{ label: 'label', value: 'value' }"
-              :maxTags="5"
-              :placeholder="t('common.tag')"
-              :class="{'border-error':tagsIds && tagsIds.length > 5 }"
-              :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
-              mode="multiple"
-              size="small"
-              class="w-full"
-              @blur="editTag" />
-          </template>
-          <template v-else>
-            <div class="inline-flex items-center leading-6">
-              <Tag
-                v-for="(tag,index) in (text || [])"
-                :key="tag.id"
-                :class="{'min-w-17.5':!tag.name,'last-child':index===text.length-1}"
-                color="rgba(252, 253, 255, 1)"
-                class="text-3 px-2 font-normal text-theme-sub-content mr-2 h-6 py-1 border-border-divider">
-                {{ tag.name }}
-              </Tag>
-              <template v-if="!text?.length">--</template>
-              <Button
-                v-if="props.actionAuth.includes('edit')"
-                type="link"
-                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-                @click="openEditTag">
-                <Icon icon="icon-shuxie" class="text-3.5" />
-              </Button>
-            </div>
-          </template>
-        </div>
-      </template>
-
-      <template #planName="{text}">
-        <span>
-          <Icon icon="icon-jihua" class="mr-1.25 flex-none -mt-0.25" />{{ text }}
-        </span>
-      </template>
-
-      <template #moduleName="{text}">
-        <template v-if="!text">
-          --
-        </template>
-        <div v-else class="-mt-1 flex">
-          <Tag
-            class="px-0 py-1 font-normal text-theme-content rounded bg-white flex border-none">
-            <Icon icon="icon-mokuai" class="mr-1.25 flex-none mt-0.5" />
-            <div class="flex-1  whitespace-break-spaces break-all leading-4">{{ text }}</div>
-          </Tag>
-        </div>
-      </template>
-
-      <template #reviewStatus="{text}">
-        <template v-if="text">
-          <ReviewStatus :value="text" />
-        </template>
-        <template v-else>
-          --
-        </template>
-      </template>
-
-      <template #testResult="{text}">
-        <div class="flex items-center">
-          <TestResult :value="text" />
-          <div
-            v-if="dataSource?.overdue"
-            class="border border-status-error rounded px-0.5 ml-5"
-            style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            {{ t('status.overdue') }}
           </div>
         </div>
-      </template>
 
-      <template #version="{text}">
-        <span v-if="text">v{{ text }}</span>
-        <template v-else>--</template>
-      </template>
-
-      <template #softwareVersion>
-        <template v-if="isVersionEditMode">
-          <Select
-            ref="versionRef"
-            v-model:value="selectedVersionValue"
-            allowClear
-            :placeholder="t('common.placeholders.selectSoftwareVersion')"
-            lazy
-            class="w-full max-w-60"
-            :action="`${TESTER}/software/version?projectId=${projectId}`"
-            :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: SearchCriteria.OpEnum.In}]}"
-            :fieldNames="{value:'name', label: 'name'}"
-            @blur="handleVersionBlur"
-            @change="handleVersionChange">
-          </Select>
-        </template>
-
-        <template v-else>
-          <div class="flex items-center">
-            <RouterLink
-              v-if="dataSource?.softwareVersion"
-              class="text-theme-special"
-              :to="`/task#version?name=${dataSource?.softwareVersion}`">
-              {{ dataSource?.softwareVersion }}
-            </RouterLink>
-            <template v-else>
-              --
-            </template>
-            <Button
-              v-if="props.actionAuth.includes('edit')"
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="openVersionEditMode">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
+        <!-- Version and Software Version Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.version') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">--</span>
+            </div>
           </div>
-        </template>
-      </template>
-    </Grid>
+
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.softwareVersion') }}</span>
+            </div>
+            <div class="info-value">
+              <template v-if="isVersionEditMode">
+                <Select
+                  ref="versionRef"
+                  v-model:value="selectedVersionValue"
+                  allowClear
+                  :placeholder="t('common.placeholders.selectSoftwareVersion')"
+                  lazy
+                  class="edit-select"
+                  :action="`${TESTER}/software/version?projectId=${projectId}`"
+                  :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: SearchCriteria.OpEnum.In}]}"
+                  :fieldNames="{value:'name', label: 'name'}"
+                  @blur="handleVersionBlur"
+                  @change="handleVersionChange">
+                </Select>
+              </template>
+              <template v-else>
+                <div class="info-value-content">
+                  <RouterLink
+                    v-if="dataSource?.softwareVersion"
+                    class="info-link"
+                    :to="`/task#version?name=${dataSource?.softwareVersion}`">
+                    {{ dataSource?.softwareVersion }}
+                  </RouterLink>
+                  <span v-else class="info-text">--</span>
+                  <Button
+                    v-if="props.actionAuth.includes('edit')"
+                    type="link"
+                    class="edit-btn"
+                    @click="openVersionEditMode">
+                    <Icon icon="icon-shuxie" class="text-3.5" />
+                  </Button>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plan and Module Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.plan') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">{{ dataSource?.planName || '--' }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.module') }}</span>
+            </div>
+            <div class="info-value">
+              <template v-if="!dataSource?.moduleName">
+                <span class="info-text">--</span>
+              </template>
+              <div v-else class="module-tag">
+                <Icon icon="icon-mokuai" class="mr-1.25 flex-none mt-0.5" />
+                <div class="flex-1 whitespace-break-spaces break-all leading-4">{{ dataSource.moduleName }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Priority and Unplanned Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.priority') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isEditPriority" class="info-value-content">
+                <TaskPriority :value="dataSource?.priority as any" />
+                <Button
+                  v-if="props.actionAuth.includes('edit')"
+                  type="link"
+                  class="edit-btn"
+                  @click="openEditPriority">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
+              </div>
+
+              <SelectEnum
+                v-show="isEditPriority"
+                ref="priorityRef"
+                v-model:value="priority"
+                :allowClear="false"
+                :disabled="editPriorityLoading"
+                :autofocus="isEditPriority"
+                enumKey="Priority"
+                class="edit-select"
+                :placeholder="t('common.priority')"
+                @blur="editPriority(priority as Priority)">
+                <template #option="item">
+                  <TaskPriority :value="item as any" />
+                </template>
+              </SelectEnum>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('common.unplanned') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">{{ dataSource?.unplanned ? t('status.yes') : t('status.no') }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tags Row -->
+        <div class="info-row">
+          <div class="info-item info-item-full">
+            <div class="info-label">
+              <span>{{ t('common.tag') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isEditTag" class="info-value-content">
+                <div v-if="dataSource?.tags?.length" class="tags-container">
+                  <div
+                    v-for="tag in dataSource.tags"
+                    :key="tag.id"
+                    class="tag-item">
+                    {{ tag.name }}
+                  </div>
+                </div>
+                <span v-else class="info-text">--</span>
+                <Button
+                  v-if="props.actionAuth.includes('edit')"
+                  type="link"
+                  class="edit-btn"
+                  @click="openEditTag">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
+              </div>
+
+              <Select
+                v-show="isEditTag"
+                ref="tagsSelectRef"
+                v-model:value="tagsIds as any"
+                showSearch
+                :defaultOptions="defaultTags as any"
+                :fieldNames="{ label: 'name', value: 'id' }"
+                :maxTags="5"
+                :placeholder="t('common.placeholders.selectTag')"
+                :class="{'border-error':tagsIds && tagsIds.length > 5 }"
+                :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
+                mode="multiple"
+                internal
+                class="edit-select"
+                :notFoundContent="t('backlog.edit.messages.contactAdminForTags')"
+                @blur="editTag" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
   </Toggle>
 </template>
 <style scoped>
 :deep(.toggle-title) {
   font-size: 0.875rem;
+}
+
+/* Main Container */
+.basic-info-container {
+  padding: 1rem 1.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Info Row Layout */
+.info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.info-item-full {
+  grid-column: 1 / -1;
+}
+
+/* Individual Info Item */
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.125rem;
+  min-height: 2rem;
+}
+
+/* Label Styling */
+.info-label {
+  flex-shrink: 0;
+  width: 5rem;
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+.info-label span {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #7c8087;
+  line-height: 1.2;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* Value Styling */
+.info-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+.info-text {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #374151;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.info-link {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #3b82f6;
+  text-decoration: none;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+  transition: color 0.2s ease;
+}
+
+.info-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Value Content Container */
+.info-value-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* Edit Button */
+.edit-btn {
+  padding: 0.125rem;
+  height: 1.25rem;
+  width: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.edit-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* Edit Input and Select */
+.edit-input,
+.edit-select {
+  width: 100%;
+  max-width: 20rem;
+  font-size: 0.75rem;
+}
+
+/* Tags Container */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.tag-item {
+  padding: 0.25rem 0.5rem;
+  height: 1.375rem;
+  line-height: 1.375rem;
+  border-radius: 0.25rem;
+  border: 1px solid #dbeafe;
+  background-color: #eff6ff;
+  color: #6d7ebc;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Module Tag */
+.module-tag {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  height: 1.375rem;
+  border-radius: 0.25rem;
+  border: 1px solid #dbeafe;
+  background-color: #eff6ff;
+  color: #6d7ebc;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Overdue Badge */
+.overdue-badge {
+  flex-shrink: 0;
+  border: 1px solid #ef4444;
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  margin-left: 0.5rem;
+  color: #ef4444;
+  font-size: 0.75rem;
+  line-height: 1;
+  font-weight: 500;
+}
+
+/* Animation for smooth transitions */
+.info-item {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .border-none {

@@ -82,7 +82,6 @@ onMounted(() => {
   watch([() => browserTabRef.value, () => userInfo.value], () => {
     if (browserTabRef.value && userInfo.value?.id) {
       if (typeof browserTabRef.value?.update === 'function') {
-        debugger;
         const tabData = browserTabRef.value.getData().map(item => item.type);
         // Add project home tab if not exists
         if (!tabData.includes(PROJECT_PAGE_TYPES.PROJECT_HOME)) {

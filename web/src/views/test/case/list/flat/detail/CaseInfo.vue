@@ -63,7 +63,6 @@ const caseInfoColumns = computed(() => [
         <template v-if="!text?.length">--</template>
       </template>
 
-
       <template #planName="{text}">
         <span>
           <Icon icon="icon-jihua" class="mr-1.25 flex-none -mt-0.25" />{{ text }}

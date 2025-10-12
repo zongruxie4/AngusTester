@@ -366,7 +366,14 @@ const handleVersionBlur = async () => {
               <span>{{ t('common.code') }}</span>
             </div>
             <div class="info-value">
-              <span class="info-text">{{ props.dataSource?.code }}</span>
+              <div class="flex items-center">
+                <span class="info-text">{{ props.dataSource?.code }}</span>
+                <span
+                  v-if="isTaskOverdue"
+                  class="overdue-badge">
+                  {{ t('status.overdue') }}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -375,14 +382,7 @@ const handleVersionBlur = async () => {
               <span>{{ t('common.status') }}</span>
             </div>
             <div class="info-value">
-              <div class="flex items-center">
-                <TaskStatus :value="currentTaskStatus" />
-                <span
-                  v-if="isTaskOverdue"
-                  class="overdue-badge">
-                  {{ t('status.overdue') }}
-                </span>
-              </div>
+              <TaskStatus :value="currentTaskStatus" />
             </div>
           </div>
         </div>

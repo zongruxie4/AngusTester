@@ -3816,7 +3816,6 @@ function coalesceText (n) {
 }
 function instance_of (o, c) {
   return o instanceof c;
-  // debugger;
   // while (o != null) {
   // 	if (o.constructor === c) {
   // 		return true;
