@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { Modal, Input, notification, Icon } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Upload } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-
 import { apis } from '@/api/tester';
 
 interface Props {
@@ -16,8 +15,15 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
-const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+  (e: 'cancel'):void;
+  (e: 'ok'):void;
+  (e: 'update:visible', value: boolean):void
+}>();
+
 const { t } = useI18n();
+
 const loading = ref(false);
 const formRef = ref();
 const fileList = ref<{name: string, status: string}[]>([]);
@@ -67,7 +73,6 @@ const ok = async () => {
     emits('ok');
   });
 };
-
 </script>
 <template>
   <Modal
@@ -91,6 +96,7 @@ const ok = async () => {
           :maxlength="100"
           :placeholder="t('common.placeholders.searchKeyword')" />
       </FormItem>
+
       <FormItem
         name="content"
         :label="t('design.importDesignModal.fileLabel')"
@@ -101,7 +107,9 @@ const ok = async () => {
           accept=".json,.yaml"
           :customRequest="handleFile"
           @remove="delFile">
-          <div v-show="!formState.content" class="border border-dashed rounded p-4 flex flex-col items-center justify-around space-y-2 text-3 border-blue-1">
+          <div
+            v-show="!formState.content"
+            class="border border-dashed rounded p-4 flex flex-col items-center justify-around space-y-2 text-3 border-blue-1">
             <Icon icon="icon-daoru" class="text-blue-hover" />
             <span class="text-blue-hover">{{ t('design.importDesignModal.uploadFile') }}</span>
             <div class="text-text-sub-content">

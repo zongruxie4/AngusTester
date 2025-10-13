@@ -16,8 +16,15 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
-const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+  (e: 'cancel'):void;
+  (e: 'ok'):void;
+  (e: 'update:visible', value: boolean):void
+}>();
+
 const { t } = useI18n();
+
 const loading = ref(false);
 const formRef = ref();
 const formState = ref({
@@ -45,7 +52,6 @@ const ok = async () => {
     emits('ok');
   });
 };
-
 </script>
 <template>
   <Modal

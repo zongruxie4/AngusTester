@@ -5,22 +5,18 @@ import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { IPane } from '@xcan-angus/infra';
 import { ApiMenuKey } from '@/views/apis/menu';
+import { BasicProps } from '@/types/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-}
+const List = defineAsyncComponent(() => import('@/views/apis/design/list/index.vue'));
+const DesignDocContent = defineAsyncComponent(() => import('@/views/apis/design/DesignDoc.vue'));
 
-const { t } = useI18n();
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
 });
 
-const List = defineAsyncComponent(() => import('@/views/apis/design/list/index.vue'));
-const DesignDocContent = defineAsyncComponent(() => import('@/views/apis/design/apiDesignDoc/index.vue'));
+const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
@@ -46,6 +42,32 @@ const updateTabPane = (data: IPane) => {
 
 const replaceTabPane = (key: string, data: { key: string }) => {
   browserTabRef.value.replace(key, data);
+};
+
+const hashChange = async (hash: string) => {
+  const queryString = hash.split('?')[1];
+  if (!queryString) {
+    return;
+  }
+
+  const queryParameters = queryString.split('&').reduce((prev, cur) => {
+    const [key, value] = cur.split('=');
+    prev[key] = value;
+    return prev;
+  }, {} as { [key: string]: string });
+
+  const { id } = queryParameters;
+  if (id) {
+    browserTabRef.value.add(() => {
+      return {
+        _id: id + '-doc',
+        designId: id,
+        value: 'designDocContent',
+        data: { _id: id, id }
+      };
+    });
+  }
+  await router.replace(`/apis#${ApiMenuKey.DESIGN}`);
 };
 
 const initialize = () => {
@@ -87,35 +109,16 @@ const initialize = () => {
   hashChange(route.hash);
 };
 
-const hashChange = async (hash: string) => {
-  const queryString = hash.split('?')[1];
-  if (!queryString) {
-    return;
-  }
-
-  const queryParameters = queryString.split('&').reduce((prev, cur) => {
-    const [key, value] = cur.split('=');
-    prev[key] = value;
-    return prev;
-  }, {} as { [key: string]: string });
-
-  const { id } = queryParameters;
-  if (id) {
-    browserTabRef.value.add(() => {
-      return {
-        _id: id + '-doc',
-        designId: id,
-        value: 'designDocContent',
-        data: { _id: id, id }
-      };
-    });
-  }
-  router.replace(`/apis#${ApiMenuKey.DESIGN}`);
-};
-
 const storageKeyChange = () => {
   initialize();
 };
+
+const storageKey = computed(() => {
+  if (!props.projectId) {
+    return undefined;
+  }
+  return `design${props.projectId}`;
+});
 
 onMounted(() => {
   watch(() => route.hash, () => {
@@ -127,21 +130,10 @@ onMounted(() => {
   });
 });
 
-const storageKey = computed(() => {
-  if (!props.projectId) {
-    return undefined;
-  }
-  return `design${props.projectId}`;
-});
-
 provide('addTabPane', addTabPane);
-
 provide('getTabPane', getTabPane);
-
 provide('deleteTabPane', deleteTabPane);
-
 provide('updateTabPane', updateTabPane);
-
 provide('replaceTabPane', replaceTabPane);
 </script>
 

@@ -7,6 +7,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { Dayjs } from 'dayjs';
 import { analysis } from '@/api/tester';
 import { TaskStatus } from '@/enums/enums';
+import { BasicProps } from '@/types/types';
 
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import TaskStatusV from '@/components/TaskStatus/index.vue';
@@ -15,13 +16,7 @@ import { TaskInfo } from '@/views/issue/types';
 /**
  * Props interface for WorkCalendar component.
  */
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-  sprintId?: string;
-}
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   notify: undefined,
@@ -81,7 +76,6 @@ const getOverdueTasks = (current: Dayjs) => {
   if (taskDataByDate.value[dateString]) {
     return taskDataByDate.value[dateString].filter(item => item.overdue);
   }
-
   return [];
 };
 

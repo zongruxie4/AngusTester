@@ -3,23 +3,15 @@ import { TabPane, Tabs } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { ActivityTimeline } from '@xcan-angus/vue-ui';
 import { CombinedTargetType } from '@xcan-angus/infra';
+import { BasicProps } from '@/types/types';
 
-// ===== COMPOSABLES =====
 const { t } = useI18n();
 
-// ===== TYPES =====
-interface ComponentProps {
-  projectId: string;
-  userInfo: { id: string; };
-}
-
-// ===== PROPS =====
-const props = withDefaults(defineProps<ComponentProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined
 });
 
-// ===== CONSTANTS =====
 // Activity types to filter in timeline
 const ACTIVITY_TYPES = [CombinedTargetType.SCENARIO, CombinedTargetType.SCENARIO_MONITOR];
 </script>

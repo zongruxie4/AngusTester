@@ -3,16 +3,9 @@ import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline } from '@xcan-angus/vue-ui';
 import { CombinedTargetType } from '@xcan-angus/infra';
+import { BasicProps } from '@/types/types';
 
-/**
- * Props interface for ActivityTimeline component.
- */
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined
 });
@@ -30,7 +23,6 @@ const activityResourceTypes = [
   CombinedTargetType.SOFTWARE_VERSION
 ];
 </script>
-
 <template>
   <div class="bg-white rounded px-5" style="height: 520px">
     <Tabs size="small" class="h-full">

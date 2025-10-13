@@ -6,18 +6,6 @@ import { AppInfo, User } from '@xcan-angus/infra';
 export type DataType = 'dataset' | 'space' | 'datasource' | 'variable';
 
 /**
- * Props interface for the Table component
- */
-export type AddedTableProps = {
-  projectId: string;
-  userId: string;
-  total: number;
-  notify: string;
-  deletedNotify: string;
-  type: DataType;
-}
-
-/**
  * <p>
  * Created item interface representing a data item
  * </p>

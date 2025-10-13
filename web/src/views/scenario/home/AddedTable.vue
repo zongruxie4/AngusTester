@@ -5,7 +5,9 @@ import { Button } from 'ant-design-vue';
 import { Icon, Table } from '@xcan-angus/vue-ui';
 import { getCurrentPage } from '@/utils/utils';
 import { ScenarioMenuKey } from '@/views/scenario/menu';
-import type { MyScenariosTableProps, TableChangeParams } from './types';
+import type { TableChangeParams } from './types';
+import { BasicProps } from '@/types/types';
+
 import { useData } from './composables/useData';
 import { useTableColumns } from './composables/useTableColumns';
 import { useTableActions } from './composables/useTableActions';
@@ -13,7 +15,7 @@ import { useTableActions } from './composables/useTableActions';
 const { t } = useI18n();
 
 // Component props with proper typing
-const props = withDefaults(defineProps<MyScenariosTableProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   params: undefined,
   total: 0,
   notify: undefined,

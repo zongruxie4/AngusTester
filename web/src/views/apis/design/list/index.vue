@@ -1,36 +1,29 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
-import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image, Dropdown } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Dropdown, Icon, Image, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { ProjectPageQuery } from '@xcan-angus/infra';
 import { ApiMenuKey } from '@/views/apis/menu';
+import { BasicProps } from '@/types/types';
+import { ApiDesignInfo } from '../types';
 
-import { DesignInfo } from '../PropsType';
-import SearchPanel from '@/views/apis/design/list/searchPanel/index.vue';
+const SearchPanel = defineAsyncComponent(() => import('@/views/apis/design/list/SearchPanel.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/apis/design/list/Introduce.vue'));
+const EditModal = defineAsyncComponent(() => import('@/views/apis/design/Edit.vue'));
+const ExportModal = defineAsyncComponent(() => import('@/views/apis/design/Export.vue'));
+const ImportModal = defineAsyncComponent(() => import('@/views/apis/design/Import.vue'));
+const ImportServiceModal = defineAsyncComponent(() => import('@/views/apis/design/ImportService.vue'));
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
+const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined
 });
-
-type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
-const { t } = useI18n();
-const Introduce = defineAsyncComponent(() => import('@/views/apis/design/list/introduce/index.vue'));
-const EditModal = defineAsyncComponent(() => import('@/views/apis/design/edit/index.vue'));
-const ExportModal = defineAsyncComponent(() => import('@/views/apis/design/export/index.vue'));
-const ImportModal = defineAsyncComponent(() => import('@/views/apis/design/import/index.vue'));
-const ImportServiceModal = defineAsyncComponent(() => import('@/views/apis/design/importService/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const addTabPane = inject<(keys: string[]) => void>('addTabPane', () => ({}));
@@ -57,7 +50,7 @@ const pagination = ref({
 });
 const pageNo = ref(1);
 
-const dataList = ref<DesignInfo[]>([]);
+const dataList = ref<ApiDesignInfo[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
 
 const refresh = () => {
@@ -72,7 +65,7 @@ const searchChange = (data) => {
   loadData();
 };
 
-const toDelete = async (data: DesignInfo) => {
+const toDelete = async (data: ApiDesignInfo) => {
   modal.confirm({
     content: t('actions.tips.confirmDelete', { name: data.name }),
     async onOk () {
@@ -86,7 +79,7 @@ const toDelete = async (data: DesignInfo) => {
         pagination.value.current -= 1;
       }
 
-      loadData();
+      await loadData();
       deleteTabPane([id]);
     }
   });
@@ -102,14 +95,7 @@ const tableChange = (page, _, sorter) => {
 
 const loadData = async () => {
   loading.value = true;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    orderBy?: OrderByKey;
-    orderSort?: OrderSortKey;
-    filters?: { key: string; op: string; value: string; }[];
-  } = {
+  const params: ProjectPageQuery = {
     projectId: props.projectId,
     pageNo: pagination.value.current,
     pageSize: pagination.value.pageSize,
@@ -120,11 +106,7 @@ const loadData = async () => {
   loaded.value = true;
   loading.value = false;
 
-  if (params.filters?.length || params.orderBy) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
+  searchedFlag.value = !!(params.filters?.length || params.orderBy);
 
   if (error) {
     pagination.value.total = 0;
@@ -135,25 +117,9 @@ const loadData = async () => {
   const data = res?.data || { total: 0, list: [] };
   if (data) {
     pagination.value.total = +data.total;
-    const _list = data.list || [] as DesignInfo[];
-    dataList.value = _list;
+    dataList.value = data.list || [] as ApiDesignInfo[];
   }
 };
-
-onMounted(() => {
-  watch(() => props.projectId, () => {
-    pageNo.value = 1;
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: false });
-});
 
 const importDesign = () => {
   importVisible.value = true;
@@ -179,7 +145,7 @@ const cloneDesign = async (record: {id: string; name: string; url?: string}) => 
     return;
   }
   notification.success(t('actions.tips.cloneSuccess'));
-  loadData();
+  await loadData();
 };
 
 const releaseDesign = async (record: {id: string; name: string; url?: string}) => {
@@ -188,7 +154,7 @@ const releaseDesign = async (record: {id: string; name: string; url?: string}) =
     return;
   }
   notification.success(t('design.detail.publishSuccess'));
-  loadData();
+  await loadData();
 };
 
 const generateService = async (record: {id: string; name: string; url?: string}) => {
@@ -197,7 +163,7 @@ const generateService = async (record: {id: string; name: string; url?: string})
     return;
   }
   notification.success(t('design.home.generated'));
-  loadData();
+  await loadData();
 };
 
 const handleEnterDesign = async (record) => {
@@ -230,6 +196,21 @@ const handleDesign = (record: {id: string; name: string; url?: string}, key) => 
 const handleImportOk = () => {
   loadData();
 };
+
+onMounted(() => {
+  watch(() => props.projectId, () => {
+    pageNo.value = 1;
+    loadData();
+  }, { immediate: true });
+
+  watch(() => props.notify, (newValue) => {
+    if (!newValue) {
+      return;
+    }
+
+    loadData();
+  }, { immediate: false });
+});
 
 const columns = [
   {
@@ -326,7 +307,6 @@ const moreButton = (record) => {
   ];
 };
 </script>
-
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <div class="flex space-x-1">

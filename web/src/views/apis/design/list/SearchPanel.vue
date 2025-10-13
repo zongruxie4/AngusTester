@@ -150,7 +150,6 @@ const menuItemClick = (data) => {
     if (key === '') {
       selectedMenuMap.value = { '': true };
       quickSearchFilters.value = [];
-      // 清空搜索面板
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
         searchChangeFlag = true;
@@ -211,9 +210,6 @@ const importDesign = () => {
 const importService = () => {
   emits('importService');
 };
-
-onMounted(() => {
-});
 </script>
 
 <template>
