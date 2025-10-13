@@ -6,7 +6,7 @@ import { Colon, Icon, Image, NoData, notification, SearchPanel, Spin } from '@xc
 import { TESTER } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 import { ServerInfo } from '../PropsType';
 import { cloneDeep } from 'lodash-es';
 

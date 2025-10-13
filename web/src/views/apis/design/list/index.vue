@@ -4,7 +4,7 @@ import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image, Dropdown } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 import { DesignInfo } from '../PropsType';
 import SearchPanel from '@/views/apis/design/list/searchPanel/index.vue';

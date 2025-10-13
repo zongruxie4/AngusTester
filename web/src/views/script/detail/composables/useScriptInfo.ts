@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 import { utils } from '@xcan-angus/infra';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 /**
  * Script info display management composable

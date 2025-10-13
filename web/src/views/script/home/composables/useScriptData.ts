@@ -4,7 +4,7 @@ import { ResourceCount } from '../../types';
 import { utils, appContext, ProjectPageQuery, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { ScriptInfo } from '@/views/script/types';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 /**
  * Composable for managing script data including list, permissions and resource counts

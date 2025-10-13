@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from 'vue-router';
 import Layout from '@/layout/Default.vue';
 import { i18n } from '@xcan-angus/infra';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string): string => value);

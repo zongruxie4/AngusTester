@@ -7,7 +7,7 @@ import { useRoute } from 'vue-router';
 import router from '@/router';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { MockServicePermission, MockServiceStatus } from '@/enums/enums';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 // Import composables
 import { useMockData } from './composables/useMockData';

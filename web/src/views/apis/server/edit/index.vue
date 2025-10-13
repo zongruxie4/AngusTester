@@ -5,7 +5,7 @@ import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 import { ServerConfig } from './PropsType';
 

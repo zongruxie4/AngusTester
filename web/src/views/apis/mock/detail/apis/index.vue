@@ -27,7 +27,7 @@ import { SearchCriteria, PageQuery, HttpMethod, ResponseDelayMode, utils, TESTER
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Button, Collapse, CollapsePanel, Switch } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 import { MockServicePermission } from '@/enums/enums';
 import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';

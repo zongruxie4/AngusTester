@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 type Props = {
   projectId: string;

@@ -4,7 +4,7 @@ import { utils, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ProjectInfo } from '@/layout/types';
-import { ApiMenuKey, createMenuItems } from '@/views/apis/types';
+import { ApiMenuKey, createMenuItems } from '@/views/apis/menu';
 
 const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const Homepage = defineAsyncComponent(() => import('@/views/apis/home/index.vue'));

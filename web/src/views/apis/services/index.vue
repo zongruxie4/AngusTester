@@ -17,7 +17,7 @@ import { utils, appContext, IPane } from '@xcan-angus/infra';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 import { setting } from '@/api/gm';
 import { ProjectInfo } from '@/layout/types';

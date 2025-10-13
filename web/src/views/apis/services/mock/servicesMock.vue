@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router';
 import type { Rule } from 'ant-design-vue/es/form';
 import { mock, services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 import ApiList from '@/views/apis/mock/add/ApiList.vue';
 import HeadInfo from '@/components/layout/header/info/index.vue';

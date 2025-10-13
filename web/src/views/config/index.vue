@@ -1,29 +1,19 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
+import { ConfigMenuKey, createMenuItems } from './menu';
 
 const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const AppInfo = defineAsyncComponent(() => import('@/views/config/app/index.vue'));
 const Indicator = defineAsyncComponent(() => import('@/views/config/indicator/index.vue'));
 const Event = defineAsyncComponent(() => import('@/views/config/event/index.vue'));
 const Proxy = defineAsyncComponent(() => import('@/views/config/proxy/index.vue'));
-const Node = defineAsyncComponent(() => import('./node/index.vue'));
+const Node = defineAsyncComponent(() => import('@/views/config/node/index.vue'));
 
-const activeKey = ref('appInfo');
+const { t } = useI18n();
 
-const menuItems: {
-  icon: string;
-  name: string;
-  key: string;
-}[] = [
-  { icon: 'icon-yingyongxinxi', name: t('app.title'), key: 'appInfo' },
-  { icon: 'icon-zhibiao', name: t('indicator.title'), key: 'indicator' },
-  { icon: 'icon-tuisongtongzhi', name: t('event.title'), key: 'event' },
-  { icon: 'icon-guanlijiedian', name: t('node.title'), key: 'node' },
-  { icon: 'icon-jiekoudaili', name: t('proxy.title'), key: 'proxy' }
-];
+const activeKey = ref<ConfigMenuKey>(ConfigMenuKey.APP_INFO);
+const menuItems = createMenuItems(t);
 </script>
 <template>
   <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
@@ -31,13 +21,19 @@ const menuItems: {
       <AppInfo class="overflow-auto h-full" />
     </template>
     <template #indicator>
-      <Indicator v-if="activeKey === 'indicator'" class="overflow-auto h-full" />
+      <Indicator
+        v-if="activeKey === ConfigMenuKey.INDICATOR"
+        class="overflow-auto h-full" />
     </template>
     <template #event>
-      <Event v-if="activeKey === 'event'" class="overflow-auto h-full" />
+      <Event
+        v-if="activeKey === ConfigMenuKey.EVENT"
+        class="overflow-auto h-full" />
     </template>
     <template #proxy>
-      <Proxy v-if="activeKey === 'proxy'" class="overflow-auto h-full" />
+      <Proxy
+        v-if="activeKey === ConfigMenuKey.PROXY"
+        class="overflow-auto h-full" />
     </template>
     <template #node>
       <Node class="overflow-auto h-full" />

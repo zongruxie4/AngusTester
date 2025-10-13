@@ -2,7 +2,7 @@ import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { AuthAppFuncTree, WebTagValue } from '@xcan-angus/infra';
-import { ApiMenuKey } from '@/views/apis/types';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 /**
  * Menu item interface for navigation
