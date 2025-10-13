@@ -85,7 +85,7 @@
       "schedulingResult": "调度结果",
       "processExitCode": "进程退出码",
       "downloadFileName": "runner.log"
-    },
+    }
   },
   "httpPlugin": {
     "actions": {

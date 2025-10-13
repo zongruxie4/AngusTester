@@ -94,13 +94,14 @@ const favouriteByParams = {
     </Tabs>
   </div>
 </template>
+
 <style scoped>
 .ant-tabs {
   line-height: 20px;
 }
 
 :deep(.ant-tabs-content-holder) {
-  min-height: 166px;
+  min-height: 225px;
 }
 
 .ant-tabs-top>:deep(.ant-tabs-nav),

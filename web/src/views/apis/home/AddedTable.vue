@@ -213,30 +213,32 @@ const columns = computed(() => {
       title: 'ID',
       dataIndex: 'id',
       ellipsis: true,
-      width: '16%'
+      width: 160
     },
     {
-      title: t('apis.myApis.columns.summary'),
+      title: t('common.name'),
       dataIndex: 'summary',
       ellipsis: true,
-      sorter: true
+      sorter: true,
+      width: '45%'
     },
     {
-      title: t('apis.myApis.columns.endpoint'),
+      title: t('common.path'),
       dataIndex: 'endpoint',
-      ellipsis: true
+      ellipsis: true,
+      width: '55%'
     },
     {
       title: t('common.status'),
       dataIndex: 'status',
-      width: '7%'
+      width: 130
     },
     {
       title: t('common.createdDate'),
       dataIndex: 'createdDate',
       ellipsis: true,
       sorter: true,
-      width: '14%'
+      width: 160
     }
   ];
 
@@ -250,7 +252,7 @@ const columns = computed(() => {
   } = {
     title: t('common.actions'),
     dataIndex: 'action',
-    width: 50
+    width: 80
   };
 
   const _params = props.params;
