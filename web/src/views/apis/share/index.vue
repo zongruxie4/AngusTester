@@ -6,23 +6,17 @@ import { utils, IPane } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { ApiMenuKey } from '@/views/apis/menu';
+import { BasicProps } from '@/types/types';
 
-const { t } = useI18n();
+const List = defineAsyncComponent(() => import('@/views/apis/share/list/index.vue'));
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
 });
 
-const List = defineAsyncComponent(() => import('@/views/apis/share/list/index.vue'));
-// const Detail = defineAsyncComponent(() => import('@/views/apis/share/detail/index.vue'));
+const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
@@ -34,22 +28,27 @@ const addTabPane = (data: IPane) => {
   });
 };
 
+// return tab panes matched by key
 const getTabPane = (key: string): IPane[] | undefined => {
   return browserTabRef.value.getData(key);
 };
 
+// remove tab panes by keys
 const deleteTabPane = (keys: string[]) => {
   browserTabRef.value.remove(keys);
 };
 
+// update a tab pane in place
 const updateTabPane = (data: IPane) => {
   browserTabRef.value.update(data);
 };
 
+// replace a tab by key with new data
 const replaceTabPane = (key: string, data: { key: string }) => {
   browserTabRef.value.replace(key, data);
 };
 
+// ensure default list tab exists and sync its title
 const initialize = () => {
   if (typeof browserTabRef.value?.add === 'function') {
     browserTabRef.value.add((ids: string[]) => {
@@ -89,6 +88,7 @@ const initialize = () => {
   hashChange(route.hash);
 };
 
+// parse location hash and open proper tabs (list/edit/detail)
 const hashChange = async (hash: string) => {
   const queryString = hash.split('?')[1];
   if (!queryString) {
@@ -126,7 +126,7 @@ const hashChange = async (hash: string) => {
               data: { _id: data?.list?.[0].id, id: data?.list?.[0].id }
             };
           });
-          router.replace(`/apis#${ApiMenuKey.SHARE}`);
+          await router.replace(`/apis#${ApiMenuKey.SHARE}`);
         }
         return;
       }
@@ -152,14 +152,24 @@ const hashChange = async (hash: string) => {
       });
     }
   }
-  router.replace(`/apis#${ApiMenuKey.SHARE}`);
+  await router.replace(`/apis#${ApiMenuKey.SHARE}`);
 };
 
+// re-initialize tabs when storageKey changed (cross-project switching)
 const storageKeyChange = () => {
   initialize();
 };
 
+// persist tabs per project
+const storageKey = computed(() => {
+  if (!props.projectId) {
+    return undefined;
+  }
+  return `share${props.projectId}`;
+});
+
 onMounted(() => {
+  // react to route hash updates to open or switch tabs
   watch(() => route.hash, () => {
     if (!route.hash.startsWith('#share')) {
       return;
@@ -169,21 +179,10 @@ onMounted(() => {
   });
 });
 
-const storageKey = computed(() => {
-  if (!props.projectId) {
-    return undefined;
-  }
-  return `share${props.projectId}`;
-});
-
 provide('addTabPane', addTabPane);
-
 provide('getTabPane', getTabPane);
-
 provide('deleteTabPane', deleteTabPane);
-
 provide('updateTabPane', updateTabPane);
-
 provide('replaceTabPane', replaceTabPane);
 </script>
 
@@ -193,7 +192,7 @@ provide('replaceTabPane', replaceTabPane);
     ref="browserTabRef"
     hideAdd
     class="h-full"
-    :userId="props.userInfo?.id"
+    :userId="String(props.userInfo?.id ?? '')"
     :storageKey="storageKey"
     @storageKeyChange="storageKeyChange">
     <template #default="record">
@@ -202,7 +201,7 @@ provide('replaceTabPane', replaceTabPane);
           v-bind="record"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
-          :projectId="props.projectId" />
+          :projectId="String(props.projectId)" />
       </template>
 
       <template v-else-if="record.value === 'shareDetails'">

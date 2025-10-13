@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch, computed, nextTick } from 'vue';
-import { DatePicker, Hints, Input, Modal, Colon, Select, Icon, HttpMethodText, notification } from '@xcan-angus/vue-ui';
-import { Checkbox, Form, FormItem, Textarea, RadioGroup, Button } from 'ant-design-vue';
-import { toClipboard, TESTER, enumUtils, DomainManager, AppOrServiceRoute, EnumMessage } from '@xcan-angus/infra';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { Colon, DatePicker, Hints, HttpMethodText, Icon, Input, Modal, notification, Select } from '@xcan-angus/vue-ui';
+import { Button, Checkbox, Form, FormItem, RadioGroup, Textarea } from 'ant-design-vue';
+import { AppOrServiceRoute, DomainManager, EnumMessage, enumUtils, TESTER, toClipboard } from '@xcan-angus/infra';
 import { ApisShareScope } from '@/enums/enums';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { ShareEditForm } from '@/views/apis/share/types';
 
 const { t } = useI18n();
 
@@ -13,9 +14,9 @@ interface Props {
   visible: boolean;
   shareId?: string;
   projectId: string;
-  servicesId?: string; // 分享固定服务或接口
-  apisIds?: string[]; // 分享固定接口
-  shareScope?: string;
+  servicesId?: string;
+  apisIds?: string[];
+  shareScope?: ApisShareScope;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -34,17 +35,18 @@ const baseUrl = computed(() => {
   return `${origin.value}/apis/share`;
 });
 
-const formState = ref({
+const formState = ref<ShareEditForm>({
   name: undefined,
   remark: undefined,
   expiredDate: undefined,
   displayOptions: { includeServiceInfo: true, allowDebug: false, schemaStyle: 'TABLE' },
-  shareScope: 'SERVICES',
+  shareScope: ApisShareScope.SERVICES,
   servicesId: props.servicesId || undefined,
   apisIds: props.apisIds as string[]
 });
 
 const apisShareScope = ref<EnumMessage<ApisShareScope>[]>([]);
+// load options for share scope selector
 const loadApisShareScopeOpt = () => {
   apisShareScope.value = enumUtils.enumToMessages(ApisShareScope);
 };
@@ -52,6 +54,7 @@ const loadApisShareScopeOpt = () => {
 const loading = ref(false);
 const formRef = ref();
 
+// load detail for editing when shareId exists
 const loadData = async (id: string) => {
   if (loading.value) {
     return;
@@ -85,54 +88,53 @@ const loadData = async (id: string) => {
   }
 };
 
-// 范围变更
+// when share scope changes, normalize dependent fields
 const handleScopeChange = () => {
-  if (formState.value.shareScope === 'SERVICES') {
+  if (formState.value.shareScope === ApisShareScope.SERVICES) {
     formState.value.apisIds = [];
     selectApis.value = [];
-  } else if (formState.value.shareScope === 'SINGLE_APIS' && !!formState.value.apisIds.length) {
+  } else if (formState.value.shareScope === ApisShareScope.SINGLE_APIS && !!formState.value.apisIds.length) {
     formState.value.apisIds = [formState.value.apisIds[0]];
     selectApis.value = selectApis.value.filter(i => i.id === formState.value.apisIds[0]);
   }
 };
 
-// 服务变更
+// when service changed, reset selected apis
 const handleServiceChange = () => {
   formState.value.apisIds = [];
 };
 
-const handleSigngeApiChange = (apisId: string) => {
-  formState.value.apisIds = [apisId];
+// select single api for SINGLE_APIS scope
+const handleSigngeApiChange = (value: any) => {
+  formState.value.apisIds = [String(value)];
 };
 
 const selectApiId = ref();
-// const selectApi = ref();
 const selectApis = ref<any[]>([]);
-// const handleMultipleApiChange = (_apisId: string, option) => {
-//   selectApi.value = option || undefined;
-// };
 
-const addMultipleApis = (apisId: string, option) => {
+// add api to selection in PARTIAL_APIS scope
+const addMultipleApis = (value: any, option: any) => {
   selectApis.value.push(option);
-  formState.value.apisIds.push(apisId);
-  // selectApis.value.push(selectApi.value);
-  // formState.value.apisIds.push(selectApiId.value);
+  formState.value.apisIds.push(String(value));
   nextTick(() => {
     selectApiId.value = undefined;
   });
 };
 
-const delApis = (api, idx) => {
+// remove selected api by index
+const delApis = (api: any, idx: number) => {
   selectApis.value.splice(idx, 1);
   formState.value.apisIds = formState.value.apisIds.filter(id => api.id !== id);
 };
 
+// close modal and reset form
 const cancel = () => {
   formRef.value.resetFields();
   emits('update:visible', false);
   emits('cancel');
 };
 
+// validate and submit
 const ok = async () => {
   formRef.value.validate().then(async () => {
     if (!props.shareId) {
@@ -143,6 +145,7 @@ const ok = async () => {
   });
 };
 
+// create share and copy link on success
 const addOk = async () => {
   loading.value = true;
   const [error, { data }] = await apis.addShare({
@@ -167,6 +170,7 @@ const addOk = async () => {
   emits('update:visible', false);
 };
 
+// update existing share
 const editOk = async () => {
   loading.value = true;
   const [error] = await apis.patchShared({
@@ -195,7 +199,7 @@ onMounted(async () => {
           remark: undefined,
           expiredDate: undefined,
           displayOptions: { includeServiceInfo: true, allowDebug: false, schemaStyle: 'TABLE' },
-          shareScope: props.shareScope || 'SERVICES',
+          shareScope: props.shareScope || ApisShareScope.SERVICES,
           servicesId: props.servicesId,
           apisIds: props.apisIds || []
         };
@@ -216,7 +220,6 @@ const schemaStyleOpt = [
     label: t('apiShare.schemaStyle.tree')
   }
 ];
-
 </script>
 <template>
   <Modal
@@ -244,6 +247,7 @@ const schemaStyleOpt = [
           :maxlength="100"
           :placeholder="t('common.placeholders.searchKeyword')" />
       </FormItem>
+
       <FormItem
         :label="t('common.remark')"
         class="!mb-5"
@@ -254,6 +258,7 @@ const schemaStyleOpt = [
           :placeholder="t('apiShare.form.remarkPlaceholder')">
         </Textarea>
       </FormItem>
+
       <FormItem
         name="expiredDate"
         :label="t('common.expiredDate')"
@@ -267,6 +272,7 @@ const schemaStyleOpt = [
           <Hints :text="t('apiShare.form.expiredDateHint')" />
         </div>
       </FormItem>
+
       <FormItem
         :label="t('apiShare.form.displayOptions')"
         class="!mb-5"
@@ -280,6 +286,7 @@ const schemaStyleOpt = [
             v-model:checked="formState.displayOptions.allowDebug">
             {{ t('apiShare.form.allowDebug') }}
           </Checkbox>
+
           <div class="inline-flex items-center text-3 ml-2">
             <span>{{ t('apiShare.form.fieldStyle') }}</span>
             <Colon />
@@ -303,6 +310,7 @@ const schemaStyleOpt = [
             @change="handleScopeChange">
           </RadioGroup>
         </FormItem>
+
         <FormItem
           :label="t('apiShare.form.selectService')"
           name="servicesId"
@@ -315,14 +323,15 @@ const schemaStyleOpt = [
             :fieldNames="{value: 'id', label: 'name'}"
             @change="handleServiceChange" />
         </FormItem>
+
         <FormItem
-          v-if="['PARTIAL_APIS', 'SINGLE_APIS'].includes(formState.shareScope)"
+          v-if="[ApisShareScope.PARTIAL_APIS, ApisShareScope.SINGLE_APIS].includes(formState.shareScope)"
           :label="t('common.api')"
           name="apisIds"
           class="flex-1 min-w-0"
           required>
           <Select
-            v-if="formState.shareScope === 'SINGLE_APIS'"
+            v-if="formState.shareScope === ApisShareScope.SINGLE_APIS"
             :value="formState.apisIds[0]"
             :disabled="!formState.servicesId"
             :placeholder="t('apiShare.form.selectApiPlaceholder')"
@@ -330,7 +339,9 @@ const schemaStyleOpt = [
             :fieldNames="{value: 'id', label: 'summary'}"
             @change="handleSigngeApiChange" />
 
-          <div v-if="formState.shareScope === 'PARTIAL_APIS'" class="flex items-center space-x-2 text-3">
+          <div
+            v-if="formState.shareScope === ApisShareScope.PARTIAL_APIS"
+            class="flex items-center space-x-2 text-3">
             <Select
               v-model:value="selectApiId"
               :disabled="!formState.servicesId"
@@ -340,19 +351,13 @@ const schemaStyleOpt = [
               :disabledList="formState.apisIds"
               :fieldNames="{value: 'id', label: 'summary'}"
               @change="addMultipleApis" />
-            <!-- <Button
-                :disabled="!selectApi"
-                size="small"
-                type="primary"
-                @click="addMultipleApis">
-                <Icon icon="icon-jia" />
-              </Button> -->
-
             <span>{{ t('apiShare.form.selectedApis', { count: formState.apisIds?.length || 0 }) }}</span>
           </div>
         </FormItem>
 
-        <FormItem v-if="formState.shareScope === 'PARTIAL_APIS'" label="">
+        <FormItem
+          v-if="formState.shareScope === ApisShareScope.PARTIAL_APIS"
+          label="">
           <div class="max-h-50 overflow-y-auto pl-22 ">
             <div
               v-for="(item, idx) in selectApis"
@@ -360,7 +365,9 @@ const schemaStyleOpt = [
               class="px-1 flex h-6 items-center ">
               <HttpMethodText :value="item.method" />
               <span class="min-w-0 truncate flex-1" :title="item.endpoint">{{ item.endpoint }}</span>
-              <span class="min-w-0 truncate flex-1" :title="item.apisName || item.caseName || item.summary">{{ item.apisName || item.caseName || item.summary }}</span>
+              <span class="min-w-0 truncate flex-1" :title="item.apisName || item.caseName || item.summary">
+                {{ item.apisName || item.caseName || item.summary }}
+              </span>
               <Button
                 type="link"
                 size="small"

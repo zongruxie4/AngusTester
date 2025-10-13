@@ -1,51 +1,45 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, inject, onMounted, ref, watch, nextTick } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
-import { AsyncComponent, Icon, modal, NoData, notification, Spin, Table, Image } from '@xcan-angus/vue-ui';
-import { toClipboard } from '@xcan-angus/infra';
+import { AsyncComponent, Icon, Image, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { toClipboard, ProjectPageQuery, PageQuery } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { ShareInfo } from '../PropsType';
-import SearchPanel from '@/views/apis/share/list/searchPanel/index.vue';
-import { nextTick } from 'process';
+import { ShareInfo } from '../types';
+import { BasicProps } from '@/types/types';
 
-const { t } = useI18n();
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined
 });
 
-type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
+const SearchPanel = defineAsyncComponent(() => import('@/views/apis/share/list/SearchPanel.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/apis/share/list/Introduce.vue'));
+const EditModal = defineAsyncComponent(() => import('@/views/apis/share/Edit.vue'));
 
-const Introduce = defineAsyncComponent(() => import('@/views/apis/share/list/introduce/index.vue'));
-const EditModal = defineAsyncComponent(() => import('@/views/apis/share/edit/index.vue'));
+const { t } = useI18n();
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
+// UI/loading states
 const loaded = ref(false);
 const loading = ref(false);
 const searchedFlag = ref(false);
 const editVisible = ref(false);
+// current share id to edit
 const selectShareId = ref();
 
+// search/sort params synchronized with SearchPanel and Table change
 const searchPanelParams = ref({
-  orderBy: undefined,
-  orderSort: undefined,
-  filters: []
+  orderBy: undefined as string | undefined,
+  orderSort: undefined as PageQuery.OrderSort | undefined,
+  filters: [] as Array<any>
 });
 
+// basic pagination state
 const pagination = ref({
   current: 1,
   pageSize: 10,
@@ -53,41 +47,53 @@ const pagination = ref({
 });
 const pageNo = ref(1);
 
+// table data list
 const dataList = ref<ShareInfo[]>([]);
+// shareId -> permissions (cached)
 const permissionsMap = ref<Map<string, string[]>>(new Map());
 
+/**
+ * Refresh list from first page, clearing cached permissions
+ */
 const refresh = () => {
   pagination.value.current = 1;
   permissionsMap.value.clear();
   loadData();
 };
 
+/**
+ * Handle search panel change and reset to page 1
+ */
 const searchChange = (data) => {
   pagination.value.current = 1;
   searchPanelParams.value.filters = data.filters;
   loadData();
 };
 
+/**
+ * Confirm and delete a share record, then refresh list and close related tabs
+ */
 const toDelete = async (data: ShareInfo) => {
   modal.confirm({
     content: t('apiShare.list.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await apis.deleteShare(id);
-      if (error) {
-        return;
-      }
+      if (error) return;
       notification.success(t('actions.tips.deleteSuccess'));
+      // if last item on current page removed, step back one page
       if (pagination.value.current > 1 && dataList.value.length === 1) {
         pagination.value.current -= 1;
       }
-
-      loadData();
+      await loadData();
       deleteTabPane([id]);
     }
   });
 };
 
+/**
+ * Update pagination and sort state when table changes
+ */
 const tableChange = (page, _, sorter) => {
   searchPanelParams.value.orderBy = sorter.orderBy || undefined;
   searchPanelParams.value.orderSort = sorter.orderSort || undefined;
@@ -96,19 +102,16 @@ const tableChange = (page, _, sorter) => {
   loadData();
 };
 
+/**
+ * Fetch share list data based on current pagination and search params
+ */
 const loadData = async () => {
   loading.value = true;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    orderBy?: OrderByKey;
-    orderSort?: OrderSortKey;
-    filters?: { key: string; op: string; value: string; }[];
-  } = {
-    projectId: props.projectId,
-    pageNo: pagination.value.current,
-    pageSize: pagination.value.pageSize,
+  const { current, pageSize } = pagination.value;
+  const params: ProjectPageQuery = {
+    projectId: String(props.projectId ?? ''),
+    pageNo: current,
+    pageSize,
     ...searchPanelParams.value
   };
 
@@ -116,11 +119,8 @@ const loadData = async () => {
   loaded.value = true;
   loading.value = false;
 
-  if (params.filters?.length || params.orderBy) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
+  // mark if user has applied filters or sorting
+  searchedFlag.value = !!(params.filters?.length || params.orderBy);
 
   if (error) {
     pagination.value.total = 0;
@@ -129,33 +129,23 @@ const loadData = async () => {
   }
 
   const data = res?.data || { total: 0, list: [] };
-  if (data) {
-    pagination.value.total = +data.total;
-    const _list = (data.list || [] as ShareInfo[]);
-    dataList.value = _list;
-  }
+  pagination.value.total = +data.total;
+  dataList.value = (data.list || [] as ShareInfo[]);
 };
 
-onMounted(() => {
-  watch(() => props.projectId, () => {
-    pageNo.value = 1;
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: false });
-});
-
-const editVersion = (record = {}) => {
-  selectShareId.value = record.id;
+/**
+ * Open edit modal for the selected share (compatible with MouseEvent handler)
+ */
+const editVersion = (record: { id?: string } | MouseEvent = {}) => {
+  // extract id if a record object is passed; ignore when it's a MouseEvent
+  const maybeRecord = record as any;
+  selectShareId.value = maybeRecord && typeof maybeRecord === 'object' ? maybeRecord.id : undefined;
   editVisible.value = true;
 };
 
+/**
+ * Copy share link to clipboard; fetch detail first if url is missing
+ */
 const copyLink = async (record: {id: string; name: string; url?: string} = { name: '', id: '' }) => {
   if (record.url) {
     toClipboard(t('apiShare.messages.copyLinkSuccess', { name: record.name, url: record.url })).then(() => {
@@ -164,27 +154,42 @@ const copyLink = async (record: {id: string; name: string; url?: string} = { nam
     return;
   }
   const [error, { data }] = await apis.getShareDetail(record.id);
-  if (error) {
-    return;
-  }
+  if (error) return;
   record.url = data?.url;
   toClipboard(t('apiShare.messages.copyLinkSuccess', { name: record.name, url: record.url })).then(() => {
     notification.success(t('apiShare.messages.copyToClipboardSuccess'));
   });
 };
 
+/**
+ * Open share page in a new window by share id
+ */
 const handleEnterShare = async (shareId: string) => {
   const [error, { data }] = await apis.getShareDetail(shareId);
-  if (error) {
-    return;
-  }
-  nextTick(() => {
+  if (error) return;
+  await nextTick(() => {
     window.open(data.url);
   });
 };
 
+onMounted(() => {
+  // reload when project changes
+  watch(() => props.projectId, () => {
+    pageNo.value = 1;
+    loadData();
+  }, { immediate: true });
+
+  // refresh when notified
+  watch(() => props.notify, (newValue) => {
+    if (!newValue) return;
+    loadData();
+  }, { immediate: false });
+});
+
+// Table columns definition
 const columns = [
   {
+    key: 'name',
     title: t('common.name'),
     dataIndex: 'name',
     width: '15%',
@@ -192,11 +197,13 @@ const columns = [
     sorter: true
   },
   {
+    key: 'isExpired',
     title: t('common.isExpired'),
     dataIndex: 'isExpired',
     width: '8%'
   },
   {
+    key: 'createdByAvatar',
     title: t('apiShare.list.columns.sharePerson'),
     dataIndex: 'createdByAvatar',
     width: '8%',
@@ -204,12 +211,14 @@ const columns = [
     ellipsis: true
   },
   {
+    key: 'shareScope',
     title: t('apiShare.list.columns.shareScope'),
     dataIndex: 'shareScope',
     width: '8%',
     customRender: ({ text }) => text?.message
   },
   {
+    key: 'expiredDate',
     title: t('common.expiredDate'),
     dataIndex: 'expiredDate',
     width: '9%',
@@ -218,6 +227,7 @@ const columns = [
     groupName: 'date'
   },
   {
+    key: 'createdDate',
     title: t('apiShare.list.columns.shareDate'),
     dataIndex: 'createdDate',
     width: '9%',
@@ -226,17 +236,20 @@ const columns = [
     hide: true
   },
   {
+    key: 'viewNum',
     title: t('apiShare.list.columns.viewCount'),
     dataIndex: 'viewNum',
     width: '8%'
   },
   {
+    key: 'remark',
     title: t('common.remark'),
     dataIndex: 'remark',
     ellipsis: true,
     width: '12%'
   },
   {
+    key: 'lastModifiedByName',
     title: t('common.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     groupName: 'lastModifiedByName',
@@ -244,6 +257,7 @@ const columns = [
     width: '8%'
   },
   {
+    key: 'lastModifiedDate',
     title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     groupName: 'lastModifiedByName',
@@ -251,6 +265,7 @@ const columns = [
     width: '8%'
   },
   {
+    key: 'actions',
     title: t('common.actions'),
     dataIndex: 'actions',
     width: '15%'
@@ -285,6 +300,8 @@ const columns = [
               :columns="columns"
               :dataSource="dataList"
               :pagination="pagination"
+              noDataSize="small"
+              :noDataText="t('common.noData')"
               @change="tableChange">
               <template #bodyCell="{column, record}">
                 <template v-if="column.dataIndex === 'name'">
@@ -296,6 +313,7 @@ const columns = [
                     {{ record.name }}
                   </Button>
                 </template>
+
                 <template v-if="column.dataIndex === 'createdByAvatar'">
                   <div class="inline-flex items-center ">
                     <Image
@@ -305,13 +323,18 @@ const columns = [
                     <span class="flex-1 truncate" :title="record.createdByName">{{ record.createdByName }}</span>
                   </div>
                 </template>
+
                 <template v-if="column.dataIndex === 'remark'">
                   <template v-if="record.remark">{{ record.remark }}</template>
                   <span v-else class="text-sub-content">{{ t('common.noRemark') }}</span>
                 </template>
+
                 <template v-if="column.dataIndex === 'isExpired'">
-                  <Tag :color="record.expired ? 'error' : 'success'">{{ record.expired ? t('apiShare.list.expired') : t('apiShare.list.notExpired') }}</Tag>
+                  <Tag :color="record.expired ? 'error' : 'success'">
+                    {{ record.expired ? t('apiShare.list.expired') : t('apiShare.list.notExpired') }}
+                  </Tag>
                 </template>
+
                 <template v-if="column.dataIndex === 'actions'">
                   <Button
                     type="text"
@@ -345,7 +368,7 @@ const columns = [
       <EditModal
         v-model:visible="editVisible"
         :shareId="selectShareId"
-        :projectId="props.projectId"
+        :projectId="String(props.projectId)"
         @ok="loadData" />
     </AsyncComponent>
   </div>

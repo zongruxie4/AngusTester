@@ -82,7 +82,7 @@ const ResponseError = defineAsyncComponent(() => import('@/views/apis/services/a
 const ApiDoc = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/doc/index.vue'));
 const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/tableView.vue'));
 const ApiMockVue = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/mockApi/index.vue')); //
-const ApiShare = defineAsyncComponent(() => import('@/views/apis/share/edit/index.vue'));
+const ApiShare = defineAsyncComponent(() => import('@/views/apis/share/Edit.vue'));
 
 const shareVisible = ref(false); // 分享弹窗
 const handleShare = () => {

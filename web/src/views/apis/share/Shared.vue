@@ -8,9 +8,10 @@ import '@xcan-angus/rapidoc';
 import { useI18n } from 'vue-i18n';
 import { shareApis } from '@/api/tester';
 
+const Agent = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/Agent.vue'));
+
 const { t } = useI18n();
 const route = useRoute();
-const Agent = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/Agent.vue'));
 const id = ref();
 const pat = ref();
 
@@ -28,6 +29,13 @@ const currentProxy = ref({});
 const currentProxyUrl = ref();
 const readyState = ref(-1);
 
+// augment window type for requestWs used in debug proxy websocket
+declare global {
+  interface Window {
+    requestWs: ReconnectingWebSocket | null;
+  }
+}
+
 const connectWs = () => {
   window.requestWs = new ReconnectingWebSocket(currentProxyUrl.value, [], {
     maxRetries: 3,
@@ -36,15 +44,20 @@ const connectWs = () => {
     connectionTimeout: 60000
   });
 
-  window.requestWs.addEventListener('open', () => {
-    readyState.value = window.requestWs.readyState || 1;
+  window.requestWs?.addEventListener('open', () => {
+    const ws = window.requestWs;
+    if (ws) {
+      readyState.value = ws.readyState || 1;
+    }
   });
 
-  window.requestWs.addEventListener('error', () => {
-    readyState.value = window.requestWs?.readyState || 3;
+  window.requestWs?.addEventListener('error', () => {
+    const ws = window.requestWs;
+    readyState.value = ws?.readyState || 3;
   });
-  window.requestWs.addEventListener('close', () => {
-    readyState.value = window.requestWs?.readyState || 3;
+  window.requestWs?.addEventListener('close', () => {
+    const ws = window.requestWs;
+    readyState.value = ws?.readyState || 3;
   });
 };
 
@@ -62,11 +75,13 @@ const loadData = async () => {
     responseErr.value = error.message;
     return;
   }
+  // populate view model from response
   viewData.value = data;
   openapi.value = data.openapi;
   displayOptions.value = data.displayOptions;
   displayOptions.value.schemaStyle = displayOptions.value.schemaStyle.toLowerCase();
   apiProxy.value = data.apiProxy;
+  // pick default enabled proxy if debug allowed
   if (displayOptions.value.allowDebug) {
     Object.keys(apiProxy.value || {}).forEach(key => {
       if (apiProxy.value[key].enabled) {
@@ -82,10 +97,12 @@ const docOrigin = ref();
 onMounted(async () => {
   id.value = route.query.id;
   pat.value = route.query.pat;
+  // acquire token and tester origin
   accessToken.value = cookieUtils.getTokenInfo().access_token;
   docOrigin.value = DomainManager.getInstance().getAppDomain(AppOrServiceRoute.tester);
   await loadData();
 
+  // (re)connect websocket when proxy url changes
   watch(() => currentProxyUrl.value, (newValue) => {
     if (newValue) {
       connectWs();

@@ -1,4 +1,6 @@
 import type { Dayjs } from 'dayjs';
+import { EnumMessage } from '@xcan-angus/infra';
+import { ApisShareScope } from '@/enums/enums';
 
 export type DisplayOptions = {
   includeServiceInfo: boolean;
@@ -12,7 +14,7 @@ export type ShareInfo = {
   remark: string;
   expiredDate: Dayjs;
   displayOptions: DisplayOptions;
-  shareScope: 'SERVICES' | 'PARTIAL_APIS' | 'SINGLE_APIS';
+  shareScope: EnumMessage<ApisShareScope>;
   servicesId: string;
   apisIds: string[];
   url: string;
@@ -22,4 +24,14 @@ export type ShareInfo = {
   createdDate: Dayjs;
   lastModifiedByName: string;
   lastModifiedDate: Dayjs;
+}
+
+export type ShareEditForm = {
+  name?: string;
+  remark?: string;
+  expiredDate?: string;
+  displayOptions: DisplayOptions;
+  shareScope: ApisShareScope;
+  servicesId?: string;
+  apisIds: string[];
 }
