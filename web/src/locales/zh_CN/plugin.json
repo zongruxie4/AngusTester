@@ -1821,7 +1821,7 @@
       "storeCompress": "是否压缩",
       "storeEncrypt": "是否加密"
     },
-    "dataSet": {
+    "dataset": {
       "format": "格式",
       "lineEnding": "行尾",
       "includeHeader": "包含头",

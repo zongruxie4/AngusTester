@@ -3,7 +3,7 @@ import { AppInfo, User } from '@xcan-angus/infra';
 /**
  * Data type enumeration for different item types
  */
-export type DataType = 'dataSet' | 'space' | 'dataSource' | 'variable';
+export type DataType = 'dataset' | 'space' | 'datasource' | 'variable';
 
 /**
  * Props interface for the Table component

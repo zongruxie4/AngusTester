@@ -5,6 +5,7 @@ import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane, ExtractionSource } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
+import { DataMenuKey } from '@/views/data/menu';
 
 const { t } = useI18n();
 
@@ -122,7 +123,7 @@ const hashChange = (hash:string) => {
     });
   }
 
-  router.replace('/data#dataSet');
+  router.replace(`/data#${DataMenuKey.DATASET}`);
 };
 
 const storageKeyChange = () => {
@@ -138,7 +139,7 @@ const storageKey = computed(() => {
 
 onMounted(() => {
   watch(() => route.hash, () => {
-    if (!route.hash.startsWith('#dataSet')) {
+    if (!route.hash.startsWith('#dataset')) {
       return;
     }
     hashChange(route.hash);

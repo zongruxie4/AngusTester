@@ -5,7 +5,7 @@ import { Modal, NoData, Table, Icon, Input, Spin } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 
 import { DatasetItem } from './PropsType';
 
@@ -81,7 +81,7 @@ const loadData = async () => {
   }
 
   loading.value = true;
-  const [error, res] = await dataSet.getDataSetList(params);
+  const [error, res] = await dataset.getDataSetList(params);
   loaded.value = true;
   loading.value = false;
 

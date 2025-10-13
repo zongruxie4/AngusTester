@@ -1835,7 +1835,7 @@
       "storeCompress": "Compress",
       "storeEncrypt": "Encrypt"
     },
-    "dataSet": {
+    "dataset": {
       "format": "Format",
       "lineEnding": "Line Ending",
       "includeHeader": "Include Header",

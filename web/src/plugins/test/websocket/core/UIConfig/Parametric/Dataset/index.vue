@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, Colon, Tooltip, Arrow } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup, Radio, Collapse, CollapsePanel, TabPane, Tabs, Popconfirm } from 'ant-design-vue';
 import { EnumMessage, ActionOnEOF, SharingMode, enumUtils } from '@xcan-angus/infra';
-
+import { DataMenuKey } from '@/views/data/menu';
 import { DatasetItem } from './PropsType';
 import { HTTPConfig } from '../../PropsType';
 
@@ -259,7 +259,7 @@ const hintTextMap = {
                   class="p-0 h-5 leading-5">
                   <RouterLink
                     class="flex items-center space-x-1"
-                    :to="`/data#dataSet?id=${item['x-id']}`"
+                    :to="`/data#${DataMenuKey.DATASET}?id=${item['x-id']}`"
                     target="_blank">
                     <Icon icon="icon-lianjie1" class="text-3.5" />
                   </RouterLink>

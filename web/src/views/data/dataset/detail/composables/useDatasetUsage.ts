@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n';
 import { computed, ref, watch, onMounted } from 'vue';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import { SourceItem } from '../../types';
-import { dataSet, paramTarget } from '@/api/tester';
+import { dataset, paramTarget } from '@/api/tester';
 
 /**
  * Composable for managing dataset usage list logic
@@ -247,7 +247,7 @@ export function useDatasetUsage (props: { id: string }) {
    */
   const loadUsageData = async () => {
     loading.value = true;
-    const [error, res] = await dataSet.getDataSetTarget(props.id);
+    const [error, res] = await dataset.getDataSetTarget(props.id);
     loading.value = false;
     loaded.value = true;
     if (error) {

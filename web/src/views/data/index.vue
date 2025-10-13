@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, Ref, ref, watch } fr
 import { utils, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { ProjectInfo } from '@/layout/types';
+import { DataMenuKey, createMenuItems } from '@/views/data/menu';
 
 const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const Homepage = defineAsyncComponent(() => import('@/views/data/home/index.vue'));
@@ -16,36 +17,26 @@ const { t } = useI18n();
 const userInfo = ref(appContext.getUser());
 const appInfo = ref(appContext.getAccessApp());
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
+const projectId = computed(() => {
+  return projectInfo.value?.id;
+});
 
-type MenuKey = 'home' | 'variables' | 'dataSet' | 'file' | 'dataSource';
-const activeKey = ref<MenuKey>('home');
+const activeKey = ref<DataMenuKey>(DataMenuKey.HOME);
+const menuItems = createMenuItems(t);
 
 const homepageRefreshNotify = ref<string>('');
 let homepageRefreshNotifyFlag = false;
 
 onMounted(() => {
   watch(() => activeKey.value, (newValue) => {
-    if (newValue === 'home') {
+    if (newValue === DataMenuKey.HOME) {
       if (homepageRefreshNotifyFlag) {
         homepageRefreshNotify.value = utils.uuid();
       }
-
       homepageRefreshNotifyFlag = true;
     }
   }, { immediate: true });
 });
-
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
-
-const menuItems = [
-  { name: t('home.title'), icon: 'icon-zhuye', key: 'home' },
-  { name: t('variable.title'), icon: 'icon-bianliang1', key: 'variables' },
-  { name: t('dataset.title'), icon: 'icon-shujuji', key: 'dataSet' },
-  { name: t('file.title'), icon: 'icon-wenjian1', key: 'file' },
-  { name: t('datasource.title'), icon: 'icon-shujuyuan', key: 'dataSource' }
-];
 </script>
 <template>
   <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
@@ -59,14 +50,14 @@ const menuItems = [
     </template>
     <template #variables>
       <Variables
-        v-if="activeKey === 'variables' && projectId"
+        v-if="activeKey === DataMenuKey.VARIABLES && projectId"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
-    <template #dataSet>
+    <template #dataset>
       <DataSet
-        v-if="activeKey === 'dataSet' && projectId"
+        v-if="activeKey === DataMenuKey.DATASET && projectId"
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo" />
@@ -78,7 +69,7 @@ const menuItems = [
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
-    <template #dataSource>
+    <template #datasource>
       <SourceData
         v-if="projectId"
         :projectId="projectId"

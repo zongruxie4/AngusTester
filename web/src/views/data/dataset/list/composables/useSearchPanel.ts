@@ -2,7 +2,7 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-
+import { DataMenuKey } from '@/views/data/menu';
 import { createAuditOptions, createTimeOptions, type QuickSearchConfig } from '@/components/quickSearch';
 import { useDropdownMenus } from '@/views/data/dataset/list/composables';
 
@@ -120,16 +120,16 @@ export function useSearchPanel (emits: DatasetSearchEmits) {
 
   const buttonDropdownClick = ({ key }: { key: 'file' | 'jdbc' }) => {
     if (key === 'file') {
-      router.push('/data#dataSet?source=FILE');
+      router.push(`/data#${DataMenuKey.DATASET}?source=FILE`);
       return;
     }
     if (key === 'jdbc') {
-      router.push('/data#dataSet?source=JDBC');
+      router.push(`/data#${DataMenuKey.DATASET}?source=JDBC`);
     }
   };
 
   const toCreateStaticDataSet = () => {
-    router.push('/data#dataSet?source=VALUE');
+    router.push(`/data#${DataMenuKey.DATASET}?source=VALUE`);
   };
 
   const toBatchDelete = () => {

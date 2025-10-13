@@ -1,5 +1,5 @@
 import { ref, watch, onMounted } from 'vue';
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 import { notification } from '@xcan-angus/vue-ui';
 import { PageQuery, ProjectPageQuery, SearchCriteria } from '@xcan-angus/infra';
@@ -46,7 +46,7 @@ export function useDatasetList (props: BasicProps, deleteTabPane: (keys: string[
     };
 
     loading.value = true;
-    const [error, res] = await dataSet.getDataSetList(params);
+    const [error, res] = await dataset.getDataSetList(params);
     loaded.value = true;
     loading.value = false;
 
@@ -109,7 +109,7 @@ export function useDatasetList (props: BasicProps, deleteTabPane: (keys: string[
    */
   const deleteDataset = async (data: DataSetDetail, t: (key: string, params?: any) => string) => {
     const id = data.id;
-    const [error] = await dataSet.deleteDataSet([id]);
+    const [error] = await dataset.deleteDataSet([id]);
     if (error) {
       return;
     }
@@ -131,7 +131,7 @@ export function useDatasetList (props: BasicProps, deleteTabPane: (keys: string[
    */
   const cloneDataset = async (data: DataSetDetail, t: (key: string) => string) => {
     loading.value = true;
-    const [error] = await dataSet.cloneDataSet([data.id]);
+    const [error] = await dataset.cloneDataSet([data.id]);
     loading.value = false;
     if (error) {
       return;

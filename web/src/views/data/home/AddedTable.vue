@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { getCurrentPage } from '@/utils/utils';
 import { useAddedData, useAddedTableColumns, useAddedEmptyState } from './composables';
 import { AddedItem, AddedTableProps } from '@/views/data/home/types';
+import { DataMenuKey } from '@/views/data/menu';
 
 const { t } = useI18n();
 
@@ -55,8 +56,8 @@ const { emptyStateConfig, hasCreateAction } = useAddedEmptyState(props.type);
 const handleCreateClick = () => {
   if (props.type === 'variable') {
     navigateToCreate.variable();
-  } else if (props.type === 'dataSet') {
-    navigateToCreate.dataSet();
+  } else if (props.type === 'dataset') {
+    navigateToCreate.dataset();
   }
 };
 
@@ -168,7 +169,7 @@ const emptyTextStyle = {
               <RouterLink
                 class="link flex-1 truncate"
                 :title="record.name"
-                :to="`/data#variables?id=${record.id}`">
+                :to="`/data#${DataMenuKey.VARIABLES}?id=${record.id}`">
                 {{ record.name }}
               </RouterLink>
               <IconCopy :copyText="`{${record.name}}`" class="ml-1.5" />
@@ -176,12 +177,12 @@ const emptyTextStyle = {
           </template>
 
           <!-- Dataset type name cell -->
-          <template v-else-if="props.type === 'dataSet'">
+          <template v-else-if="props.type === 'dataset'">
             <div v-if="column.dataIndex === 'name'" class="flex items-center">
               <RouterLink
                 class="link flex-1 truncate"
                 :title="record.name"
-                :to="`/data#dataSet?id=${record.id}`">
+                :to="`/data#${DataMenuKey.DATASET}?id=${record.id}`">
                 {{ record.name }}
               </RouterLink>
               <IconCopy :copyText="`{${record.name}}`" class="ml-1.5" />

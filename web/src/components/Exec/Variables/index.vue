@@ -5,6 +5,7 @@ import { AsyncComponent, Tooltip, Icon, Spin, NoData, Input, modal, IconCopy, Ta
 import { debounce } from 'throttle-debounce';
 import { duration, http, utils, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { DataMenuKey } from '@/views/data/menu';
 
 import { VariableItem } from './PropsType';
 import { ProjectInfo } from '@/layout/types';
@@ -527,7 +528,7 @@ defineExpose({
                 class="p-0 h-5 leading-5">
                 <RouterLink
                   class="flex items-center space-x-1"
-                  :to="`/data#variables?id=${record.id}`"
+                  :to="`/data#${DataMenuKey.VARIABLES}?id=${record.id}`"
                   target="_blank">
                   <Icon icon="icon-zhengyan" class="text-3.5" />
                   <span>{{ t('xcan_exec.variable.viewDefinition') }}</span>

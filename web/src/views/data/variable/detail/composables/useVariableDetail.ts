@@ -5,6 +5,7 @@ import { toClipboard, utils } from '@xcan-angus/infra';
 import { variable } from '@/api/tester';
 import { VariableDetail } from '../../types';
 import { BasicProps } from '@/types/types';
+import { DataMenuKey } from '@/views/data/menu';
 
 /**
  * Composable for managing variable detail page logic
@@ -173,7 +174,7 @@ export function useVariableDetail (
    * @param id - Variable ID to copy link for
    */
   const handleCopyLink = (id: string) => {
-    toClipboard(window.location.origin + `/data#variables?id=${id}`).then(() => {
+    toClipboard(window.location.origin + `/data#${DataMenuKey.VARIABLES}?id=${id}`).then(() => {
       notification.success(t('actions.tips.copyLinkSuccess'));
     }).catch(() => {
       notification.error(t('actions.tips.copyLinkFailed'));

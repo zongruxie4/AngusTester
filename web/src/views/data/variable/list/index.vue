@@ -242,7 +242,7 @@ defineExpose({
                 <RouterLink
                   class="link flex-1 truncate"
                   :title="record.name"
-                  :to="`/data#variables?id=${record.id}`">
+                  :to="`/data#${DataMenuKey.VARIABLES}?id=${record.id}`">
                   {{ record.name }}
                 </RouterLink>
                 <IconCopy :copyText="`{${record.name}}`" class="ml-1.5" />

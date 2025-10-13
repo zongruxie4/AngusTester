@@ -5,6 +5,7 @@ import { variable } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { getCurrentPage } from '@/utils/utils';
 import type { VariableDetail } from '../../types';
+import { DataMenuKey } from '@/views/data/menu';
 
 /**
  * Maximum number of items that can be deleted in batch
@@ -44,28 +45,28 @@ export function useActions (
    * Navigate to create static variable page
    */
   const navigateToCreateStaticVariable = () => {
-    router.push('/data#variables?source=VALUE');
+    router.push(`/data#${DataMenuKey.VARIABLES}?source=VALUE`);
   };
 
   /**
    * Navigate to create variable from file extraction
    */
   const navigateToFileExtraction = () => {
-    router.push('/data#variables?source=FILE');
+    router.push(`/data#${DataMenuKey.VARIABLES}?source=FILE`);
   };
 
   /**
    * Navigate to create variable from HTTP extraction
    */
   const navigateToHttpExtraction = () => {
-    router.push('/data#variables?source=http');
+    router.push(`/data#${DataMenuKey.VARIABLES}?source=http`);
   };
 
   /**
    * Navigate to create variable from JDBC extraction
    */
   const navigateToJdbcExtraction = () => {
-    router.push('/data#variables?source=JDBC');
+    router.push(`/data#${DataMenuKey.VARIABLES}?source=JDBC`);
   };
 
   /**
@@ -118,7 +119,7 @@ export function useActions (
    * @param data - Variable item to edit
    */
   const navigateToEdit = (data: VariableDetail) => {
-    router.push(`/data#variables?id=${data.id}`);
+    router.push(`/data#${DataMenuKey.VARIABLES}?id=${data.id}`);
   };
 
   /**

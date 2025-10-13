@@ -1,5 +1,6 @@
 import { useRouter } from 'vue-router';
 import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { DataMenuKey } from '@/views/data/menu';
 
 /**
  * Composable function for managing search panel actions
@@ -31,13 +32,13 @@ export function useSearchActions (
   const handleButtonDropdownClick = ({ key }: { key: 'file' | 'http' | 'jdbc' }) => {
     switch (key) {
       case 'file':
-        router.push('/data#variables?source=FILE');
+        router.push(`/data#${DataMenuKey.VARIABLES}?source=FILE`);
         break;
       case 'http':
-        router.push('/data#variables?source=HTTP');
+        router.push(`/data#${DataMenuKey.VARIABLES}?source=HTTP`);
         break;
       case 'jdbc':
-        router.push('/data#variables?source=JDBC');
+        router.push(`/data#${DataMenuKey.VARIABLES}?source=JDBC`);
         break;
     }
   };
@@ -46,7 +47,7 @@ export function useSearchActions (
    * Navigate to create static variable page
    */
   const navigateToCreateStaticVariable = () => {
-    router.push('/data#variables?source=VALUE');
+    router.push(`/data#${DataMenuKey.VARIABLES}?source=VALUE`);
   };
 
   /**

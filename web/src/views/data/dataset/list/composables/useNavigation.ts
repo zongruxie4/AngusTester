@@ -1,4 +1,5 @@
 import { useRouter } from 'vue-router';
+import { DataMenuKey } from '@/views/data/menu';
 
 /**
  * Navigation composable
@@ -12,7 +13,7 @@ export function useNavigation () {
    * Routes to the static dataset creation form
    */
   const toCreateStaticDataSet = () => {
-    router.push('/data#dataSet?source=VALUE');
+    router.push(`/data#${DataMenuKey.DATASET}?source=VALUE`);
   };
 
   /**
@@ -20,7 +21,7 @@ export function useNavigation () {
    * Routes to the file dataset creation form
    */
   const toCreateFileDataSet = () => {
-    router.push('/data#dataSet?source=FILE');
+    router.push(`/data#${DataMenuKey.DATASET}?source=FILE`);
   };
 
   /**
@@ -28,7 +29,7 @@ export function useNavigation () {
    * Routes to the JDBC dataset creation form
    */
   const toCreateJdbcDataSet = () => {
-    router.push('/data#dataSet?source=JDBC');
+    router.push(`/data#${DataMenuKey.DATASET}?source=JDBC`);
   };
 
   /**
@@ -51,7 +52,7 @@ export function useNavigation () {
    * Routes to the dataset edit form with the specified dataset ID
    */
   const toEditDataset = (id: string) => {
-    router.push(`/data#dataSet?id=${id}`);
+    router.push(`/data#${DataMenuKey.DATASET}?id=${id}`);
   };
 
   return {

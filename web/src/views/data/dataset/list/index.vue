@@ -3,6 +3,7 @@ import { defineAsyncComponent, inject } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, IconCopy, modal, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { DataMenuKey } from '@/views/data/menu';
 
 import { DataSetDetail } from '../types';
 import { BasicProps } from '@/types/types';
@@ -226,7 +227,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
                 <RouterLink
                   class="link flex-1 truncate"
                   :title="record.name"
-                  :to="`/data#dataSet?id=${record.id}`">
+                  :to="`/data#${DataMenuKey.DATASET}?id=${record.id}`">
                   {{ record.name }}
                 </RouterLink>
                 <IconCopy :copyText="`{${record.name}}`" class="ml-1.5" />

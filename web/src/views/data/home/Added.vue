@@ -60,7 +60,7 @@ const dataSetTotal = ref(0);
       </TabPane>
 
       <!-- Datasets tab -->
-      <TabPane key="dataSet" forceRender>
+      <TabPane key="dataset" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('dataHome.myCreationSummary.addedDataSets') }}</span>
@@ -74,7 +74,7 @@ const dataSetTotal = ref(0);
         <Table
           v-model:total="dataSetTotal"
           v-model:deletedNotify="deletedNotify"
-          type="dataSet"
+          type="dataset"
           :notify="props.notify"
           :userId="props.userInfo?.id"
           :projectId="props.projectId" />

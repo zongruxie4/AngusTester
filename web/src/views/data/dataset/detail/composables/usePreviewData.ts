@@ -1,6 +1,6 @@
 import { computed, ref, watch, onMounted } from 'vue';
 import { debounce } from 'throttle-debounce';
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 import { utils, duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { DataSetDetail, PreviewPagination, PreviewColumn } from '../../types';
@@ -70,7 +70,7 @@ export function usePreviewData (props: { dataSource?: DataSetDetail }) {
     };
 
     loading.value = true;
-    const [error, res] = await dataSet.previewDataSetValue(params, { silence: true });
+    const [error, res] = await dataset.previewDataSetValue(params, { silence: true });
     loading.value = false;
     loaded.value = true;
 

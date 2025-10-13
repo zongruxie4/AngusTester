@@ -2,10 +2,10 @@ import { computed, inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import { utils, PageQuery, ProjectPageQuery } from '@xcan-angus/infra';
-import { dataSource, dataSet, variable } from '@/api/tester';
+import { datasource, dataset, variable } from '@/api/tester';
 import { space } from '@/api/storage';
 import { useI18n } from 'vue-i18n';
-
+import { DataMenuKey } from '@/views/data/menu';
 import { AddedItem, DataType } from '@/views/data/home/types';
 
 /**
@@ -20,16 +20,16 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
 
   // API configuration for different data types
   const loadDataApiConfig = {
-    dataSource: dataSource.getDataSourceList,
+    dataSource: datasource.getDataSourceList,
     space: space.getSpaceList,
-    dataSet: dataSet.getDataSetList,
+    dataset: dataset.getDataSetList,
     variable: variable.getVariablesList
   };
 
   const delDataApiConfig = {
-    dataSource: dataSource.deleteDataSource,
+    dataSource: datasource.deleteDataSource,
     space: space.deleteSpace,
-    dataSet: dataSet.deleteDataSet,
+    dataset: dataset.deleteDataSet,
     variable: variable.deleteVariables
   };
 
@@ -116,7 +116,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
       content: t('actions.tips.confirmDelete', { name: data.name }),
       async onOk () {
         let error: Error | null = null;
-        if (type === 'dataSource' || type === 'space') {
+        if (type === 'datasource' || type === 'space') {
           [error] = await delDataApiConfig[type](data.id);
         } else {
           [error] = await delDataApiConfig[type]([data.id]);
@@ -139,8 +139,8 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
    * Navigation functions for creating new items
    */
   const navigateToCreate = {
-    variable: () => router.push('/data#variables'),
-    dataSet: () => router.push('/data#dataSet')
+    variable: () => router.push(`/data#${DataMenuKey.VARIABLES}`),
+    dataset: () => router.push(`/data#${DataMenuKey.DATASET}`)
   };
 
   // Computed properties

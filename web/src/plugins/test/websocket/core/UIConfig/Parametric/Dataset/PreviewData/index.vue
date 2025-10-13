@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { Hints, Table, Icon, NoData, Spin, Input } from '@xcan-angus/vue-ui';
 import { utils, duration, ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -97,7 +97,7 @@ const loadData = async () => {
   };
 
   loading.value = true;
-  const [error, res] = await dataSet.previewDataSetValue(params, { silence: true });
+  const [error, res] = await dataset.previewDataSetValue(params, { silence: true });
   loading.value = false;
   loaded.value = true;
   columns.value = [];

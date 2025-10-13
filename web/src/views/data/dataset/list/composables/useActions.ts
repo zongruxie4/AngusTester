@@ -1,6 +1,6 @@
 import { ref, Ref, computed } from 'vue';
 import { DataSetDetail } from '../../types';
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 import { modal, notification } from '@xcan-angus/vue-ui';
 
 /**
@@ -121,7 +121,7 @@ export function useActions (
         // Set loading state
         loading.value = true;
 
-        const [error] = await dataSet.deleteDataSet(ids);
+        const [error] = await dataset.deleteDataSet(ids);
         // Reset loading state
         loading.value = false;
         if (error) {
