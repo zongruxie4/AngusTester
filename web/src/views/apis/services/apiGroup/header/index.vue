@@ -368,7 +368,7 @@ onBeforeUnmount(() => {
           class="px-0">
           <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
             <Icon icon="icon-fenzu" />
-            <span>{{ t('service.groupHeader.group.title') }}</span>
+            <span>{{ t('actions.group') }}</span>
           </div>
         </Button>
       </DropdownGroup>

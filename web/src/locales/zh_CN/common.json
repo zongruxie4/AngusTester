@@ -490,6 +490,7 @@
     "collapse": "收起",
     "expandAll": "全部展开",
     "collapseAll": "全部收起",
+    "share": "分享",
     "tips": {
       "confirmUpdate": "确定更新「{name}」吗？",
       "confirmDelete": "确定删除「{name}」吗？",
