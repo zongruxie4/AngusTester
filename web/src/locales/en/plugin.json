@@ -73,6 +73,13 @@
         "minutes": "min",
         "hours": "h"
       }
+    },
+    "debugLog": {
+      "schedulingResult": "Scheduling Result",
+      "success": "Success",
+      "fail": "Failed",
+      "processExitCode": "Process Exit Code",
+      "downloadFileName": "scheduling.log"
     }
   },
   "httpPlugin": {
