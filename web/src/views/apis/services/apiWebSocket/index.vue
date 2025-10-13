@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
 import { Drawer, Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { utils, duration } from '@xcan-angus/infra';
+import { utils, duration, enumUtils } from '@xcan-angus/infra';
 import qs from 'qs';
 import elementResizeDetector from 'element-resize-detector';
 import useClipboard from 'vue-clipboard3';
@@ -12,9 +12,8 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import apiUtils from '@/utils/apis/index';
 
 import { apis } from '@/api/tester';
-import { API_AUTH_CODE } from '@/views/apis/PropsType';
+import { ApiPermission } from '@/enums/enums';
 import { formatBytes } from '@/utils/utils';
-import ApiServer from '@/views/apis/services/apiWebSocket/server/index.vue';
 import { getNameValue } from '@/views/apis/services/apiHttp/utils';
 import { FormData, Message } from './PropsType';
 import { debounce } from 'throttle-debounce';
@@ -41,6 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
   responseCount: undefined
 });
 
+const ApiServer = defineAsyncComponent(() => import('@/views/apis/services/apiWebSocket/server/index.vue'));
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const SocketForm = defineAsyncComponent(() => import('./components/socketForm.vue'));
@@ -63,7 +63,7 @@ const queryParamRef = ref();
 const headerParamRef = ref();
 const mainSocketRef = ref();
 
-const auths = ref<string[]>(API_AUTH_CODE);
+const auths = ref<string[]>([]);
 const languageOpt = ['json', 'html', 'text', 'yaml', 'typescript'].map(i => ({ value: i, label: i }));
 const { valueKey } = API_EXTENSION_KEY;
 type lge = 'json'|'html'|'text'|'yaml'|'typescript';
@@ -71,7 +71,7 @@ const language = ref<lge>('text');
 const socketTarget = ref();
 const msgListRef = ref();
 const toolbarRef = ref();
-const isConnected = ref(false); // 链接中
+const isConnected = ref(false);
 const isClosing = ref(false);
 const connecting = ref(false);
 const connectedDate = ref();
@@ -129,7 +129,7 @@ const closeConnect = (changeProxy = false) => {
 };
 
 const disableConnect = computed(() => {
-  return !currentServer.value.url || !auths.value.includes('DEBUG');
+  return !currentServer.value.url || !auths.value.includes(ApiPermission.DEBUG);
 });
 
 const apiInfo = reactive({
@@ -304,15 +304,15 @@ const loadApiAuth = async () => {
     return;
   }
   if (!resp.data.serviceAuth) {
-    auths.value = API_AUTH_CODE;
-    if (apiInfo.status === 'RELEASED') {
-      auths.value = auths.value.filter(i => i !== 'MODIFY');
+    auths.value = enumUtils.getEnumValues(ApiPermission);
+    if (apiInfo.status === ApiPermission.RELEASE) {
+      auths.value = auths.value.filter(i => i !== ApiPermission.MODIFY);
     }
     return;
   }
   auths.value = (resp.data?.permissions || []).map(i => i.value);
-  if (apiInfo.status === 'RELEASED') {
-    auths.value = auths.value.filter(i => i !== 'MODIFY');
+  if (apiInfo.status === ApiPermission.RELEASE) {
+    auths.value = auths.value.filter(i => i !== ApiPermission.MODIFY);
   }
 };
 
@@ -557,7 +557,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
           <Button
             v-else
             class="ml-2"
-            :disabled="!auths.includes('MODIFY')"
+            :disabled="!auths.includes(ApiPermission.MODIFY)"
             @click="save">
             <Icon icon="icon-baocun" class="mr-2" />{{ t('actions.save') }}
           </Button>
@@ -710,7 +710,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
         <ShareListVue
           v-if="activeDrawerKey === 'share'"
           :id="props.id"
-          :disabled="!auths.includes('SHARE')"
+          :disabled="!auths.includes(ApiPermission.SHARE)"
           class="pr-5 pt-2"
           type="API" />
       </template>
