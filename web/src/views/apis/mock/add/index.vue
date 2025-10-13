@@ -5,12 +5,15 @@ import { Icon, Input, notification, PureCard, Select, Tooltip } from '@xcan-angu
 import { Button, Card, Form, FormItem, Popover, Upload } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { TESTER, appContext } from '@xcan-angus/infra';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { formatBytes } from '@/utils/common';
 import { mock } from '@/api/tester';
-import ApiList from './ApiList.vue';
+import { ApiMenuKey } from '@/views/apis/types';
+
 import { useMockUI } from '../composables/useMockUI';
 import { useMockForm, useNodeData, useFileUpload, useTabs } from './composables';
+
+import SelectEnum from '@/components/enum/SelectEnum.vue';
+import ApiList from './ApiList.vue';
 
 const { t } = useI18n();
 
@@ -176,7 +179,7 @@ const handleSubmit = () => {
     }
 
     notification.success(t('actions.tips.addSuccess'));
-    await router.push('/apis#mock');
+    await router.push(`/apis#${ApiMenuKey.MOCK}`);
   }, () => {
     // Validation failed
   });
@@ -383,7 +386,7 @@ onMounted(async () => {
                 <Icon icon="icon-dangqianxuanzhong" class="mr-1" />
                 {{ t('actions.confirm') }}
               </Button>
-              <RouterLink to="/apis#mock">
+              <RouterLink :to="`/apis#${ApiMenuKey.MOCK}`">
                 <Button size="small">
                   <Icon icon="icon-zhongzhi2" class="mr-1" />
                   {{ t('actions.cancel') }}

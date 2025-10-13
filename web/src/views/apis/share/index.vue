@@ -5,6 +5,7 @@ import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { ApiMenuKey } from '@/views/apis/types';
 
 const { t } = useI18n();
 
@@ -125,7 +126,7 @@ const hashChange = async (hash: string) => {
               data: { _id: data?.list?.[0].id, id: data?.list?.[0].id }
             };
           });
-          router.replace('/apis#share');
+          router.replace(`/apis#${ApiMenuKey.SHARE}`);
         }
         return;
       }
@@ -151,7 +152,7 @@ const hashChange = async (hash: string) => {
       });
     }
   }
-  router.replace('/apis#share');
+  router.replace(`/apis#${ApiMenuKey.SHARE}`);
 };
 
 const storageKeyChange = () => {

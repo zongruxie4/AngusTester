@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { IPane } from '@xcan-angus/infra';
+import { ApiMenuKey } from '@/views/apis/types';
 
 type Props = {
   projectId: string;
@@ -109,7 +110,7 @@ const hashChange = async (hash: string) => {
       };
     });
   }
-  router.replace('/apis#design');
+  router.replace(`/apis#${ApiMenuKey.DESIGN}`);
 };
 
 const storageKeyChange = () => {

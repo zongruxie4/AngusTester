@@ -4,6 +4,7 @@ import { ResourceCount } from '../../types';
 import { utils, appContext, ProjectPageQuery, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { ScriptInfo } from '@/views/script/types';
+import { ApiMenuKey } from '@/views/apis/types';
 
 /**
  * Composable for managing script data including list, permissions and resource counts
@@ -118,11 +119,11 @@ export function useScriptData () {
 
       if (sourceId && sourceName) {
         if (source === 'SERVICE_SMOKE') {
-          sourceNameLinkUrl = `/apis#services?id=${sourceId}&name=${sourceName}&value=group`;
+          sourceNameLinkUrl = `/apis#${ApiMenuKey.SERVICES}?id=${sourceId}&name=${sourceName}&value=group`;
         } else if (source === 'SERVICE_SECURITY') {
-          sourceNameLinkUrl = `/apis#services?id=${sourceId}&name=${sourceName}&value=group`;
+          sourceNameLinkUrl = `/apis#${ApiMenuKey.SERVICES}?id=${sourceId}&name=${sourceName}&value=group`;
         } else if (source === 'API') {
-          sourceNameLinkUrl = `/apis#services?id=${sourceId}&name=${sourceName}&value=API`;
+          sourceNameLinkUrl = `/apis#${ApiMenuKey.SERVICES}?id=${sourceId}&name=${sourceName}&value=API`;
         } else if (source === 'SCENARIO') {
           sourceNameLinkUrl = `/scenario#scenario?id=${sourceId}&name=${sourceName}&plugin=${item.plugin}`;
         }

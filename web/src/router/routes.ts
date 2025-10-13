@@ -1,6 +1,7 @@
 import { RouteRecordRaw } from 'vue-router';
 import Layout from '@/layout/Default.vue';
 import { i18n } from '@xcan-angus/infra';
+import { ApiMenuKey } from '@/views/apis/types';
 
 const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string): string => value);
@@ -132,7 +133,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/execution/detail/index.vue')
       },
       {
-        path: '/apis#mock',
+        path: `/apis#${ApiMenuKey.MOCK}`,
         component: () => import('@/views/apis/mock/index.vue')
       },
       {
@@ -142,14 +143,14 @@ const routes: Array<RouteRecordRaw> = [
           breadcrumb: [
             {
               name: t('routes.mock'),
-              path: '/apis#mock'
+              path: `/apis#${ApiMenuKey.MOCK}`
             },
             { name: t('common.add') }
           ]
         }
       },
       {
-        path: '/apis#mock',
+        path: `/apis#${ApiMenuKey.MOCK}`,
         component: () => import('@/views/apis/mock/detail/index.vue'),
         children: [
           {

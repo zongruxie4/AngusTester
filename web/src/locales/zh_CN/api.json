@@ -1830,6 +1830,7 @@
     }
   },
   "mock": {
+    "title": "Mock",
     "starting": "正在启动中",
     "startSuccess": "启动成功",
     "startFail": "启动失败,请尝试重新启动",

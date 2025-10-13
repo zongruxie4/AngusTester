@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { ApiMenuKey } from '@/views/apis/types';
 
 type Props = {
   projectId: string;
@@ -48,7 +49,6 @@ const replaceTabPane = (key: string, data: { key: string }) => {
 };
 
 const initialize = () => {
-
    // Watch for browser tab changes and ensure case list tab exists
    watch(() => browserTabRef.value, () => {
     if (typeof browserTabRef.value?.update === 'function') {
@@ -109,7 +109,7 @@ const hashChange = (hash:string) => {
     });
   }
 
-  router.replace('/apis#server');
+  router.replace(`/apis#${ApiMenuKey.SERVER}`);
 };
 
 const storageKeyChange = () => {

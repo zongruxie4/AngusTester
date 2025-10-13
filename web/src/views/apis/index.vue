@@ -4,6 +4,7 @@ import { utils, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ProjectInfo } from '@/layout/types';
+import { ApiMenuKey, createMenuItems } from '@/views/apis/types';
 
 const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const Homepage = defineAsyncComponent(() => import('@/views/apis/home/index.vue'));
@@ -14,13 +15,13 @@ const Trash = defineAsyncComponent(() => import('@/views/apis/trash/index.vue'))
 const Design = defineAsyncComponent(() => import('@/views/apis/design/index.vue'));
 const Mock = defineAsyncComponent(() => import('@/views/apis/mock/index.vue'));
 
-type MenuKey = 'home' | 'services' | 'trash';
-
-const activeKey = ref<MenuKey>();
-const servicesRef = ref();
 const router = useRouter();
 const { t } = useI18n();
 
+const menuItems = createMenuItems(t);
+const activeKey = ref<ApiMenuKey>();
+
+const servicesRef = ref();
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const appInfo = ref(appContext.getAccessApp());
@@ -39,29 +40,26 @@ let servicesRefreshNotifyFlag = false;
 
 onMounted(() => {
   watch(() => activeKey.value, (newValue) => {
-    if (newValue === 'home') {
+    if (newValue === ApiMenuKey.HOME) {
       if (homepageRefreshNotifyFlag) {
         homepageRefreshNotify.value = utils.uuid();
       }
-
       homepageRefreshNotifyFlag = true;
       return;
     }
 
-    if (newValue === 'trash') {
+    if (newValue === ApiMenuKey.TRASH) {
       if (trashRefreshNotifyFlag) {
         trashRefreshNotify.value = utils.uuid();
       }
-
       trashRefreshNotifyFlag = true;
       return;
     }
 
-    if (newValue === 'services') {
+    if (newValue === ApiMenuKey.SERVICES) {
       if (servicesRefreshNotifyFlag) {
         servicesRefreshNotify.value = utils.uuid();
       }
-
       servicesRefreshNotifyFlag = true;
     }
   }, { immediate: true });
@@ -69,7 +67,7 @@ onMounted(() => {
 
 provide('updateProjectInfo', updateProjectInfo);
 provide('addTabPane', (params) => {
-  router.replace('/apis#services');
+  router.replace(`/apis#${ApiMenuKey.SERVICES}`);
   nextTick(() => {
     servicesRef.value.addTabPane(params);
   });
@@ -79,18 +77,7 @@ provide('deleteTabPane', (params) => servicesRef.value && servicesRef.value.dele
 provide('updateTabPane', (params) => servicesRef.value && servicesRef.value.updateTabPane(params));
 provide('replaceTabPane', (params) => servicesRef.value && servicesRef.value.replaceTabPane(params));
 provide('updateApiGroup', (params) => servicesRef.value && servicesRef.value.updateApiGroup(params));
-
-const menuItems = [
-  { name: t('home.title'), icon: 'icon-zhuye', key: 'home' },
-  { name: t('service.title'), icon: 'icon-fuwuxinxi', key: 'services' },
-  { name: 'Mock', icon: 'icon-fuwuxinxi', key: 'mock' },
-  { name: t('design.title'), icon: 'icon-sheji', key: 'design' },
-  { name: t('apiShare.title'), icon: 'icon-fenxiang', key: 'share' },
-  { name: t('server.title'), icon: 'icon-host', key: 'server' },
-  { name: t('trash.title'), icon: 'icon-qingchu', key: 'trash' }
-];
 </script>
-
 <template>
   <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
     <template #home>

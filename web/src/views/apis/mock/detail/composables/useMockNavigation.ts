@@ -2,6 +2,7 @@ import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { AuthAppFuncTree, WebTagValue } from '@xcan-angus/infra';
+import { ApiMenuKey } from '@/views/apis/types';
 
 /**
  * Menu item interface for navigation
@@ -43,7 +44,7 @@ export function useMockNavigation (id: string) {
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
-        { name: 'Mock', path: '/apis#mock', id: '1001' },
+        { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '1001' },
         { name: t('common.api'), id: '1002' }
       ]
     },
@@ -56,7 +57,7 @@ export function useMockNavigation (id: string) {
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
-        { name: 'Mock', path: '/apis#mock', id: '2001' },
+        { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '2001' },
         { name: t('mock.detail.menu.request'), id: '2002' }
       ]
     },
@@ -69,7 +70,7 @@ export function useMockNavigation (id: string) {
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
-        { name: 'Mock', path: '/apis#mock', id: '2001' },
+        { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '2001' },
         { name: t('mock.detail.menu.log'), id: '6002' }
       ]
     },
@@ -82,7 +83,7 @@ export function useMockNavigation (id: string) {
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
-        { name: 'Mock', path: '/apis#mock', id: '3001' },
+        { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '3001' },
         { name: t('mock.detail.menu.activity'), id: '3002' }
       ]
     },
@@ -95,7 +96,7 @@ export function useMockNavigation (id: string) {
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
-        { name: 'Mock', path: '/apis#mock', id: '4001' },
+        { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '4001' },
         { name: t('mock.detail.menu.monitor'), id: '4002' }
       ]
     },
@@ -108,7 +109,7 @@ export function useMockNavigation (id: string) {
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
-        { name: 'Mock', path: '/apis#mock', id: '5001' },
+        { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '5001' },
         { name: t('mock.detail.menu.setting'), id: '5002' }
       ]
     }

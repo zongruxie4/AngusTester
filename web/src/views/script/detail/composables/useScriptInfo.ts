@@ -1,5 +1,6 @@
 import { computed } from 'vue';
 import { utils } from '@xcan-angus/infra';
+import { ApiMenuKey } from '@/views/apis/types';
 
 /**
  * Script info display management composable
@@ -32,15 +33,14 @@ export function useScriptInfo (props: any) {
     const { source, name, plugin, sourceId } = dataSource.value;
     const sourceValue = source?.value;
     if (sourceValue === 'SERVICE_SMOKE') {
-      return `/apis#services?id=${sourceId}&name=${name}&value=group`;
+      return `/apis#${ApiMenuKey.SERVICES}?id=${sourceId}&name=${name}&value=group`;
     } else if (sourceValue === 'SERVICE_SECURITY') {
-      return `/apis#services?id=${sourceId}&name=${name}&value=group`;
+      return `/apis#${ApiMenuKey.SERVICES}?id=${sourceId}&name=${name}&value=group`;
     } else if (sourceValue === 'API') {
-      return `/apis#services?id=${sourceId}&name=${name}&value=API`;
+      return `/apis#${ApiMenuKey.SERVICES}?id=${sourceId}&name=${name}&value=API`;
     } else if (sourceValue === 'SCENARIO') {
       return `/scenario#scenario?id=${sourceId}&name=${name}&plugin=${plugin}`;
     }
-
     return '';
   });
 
