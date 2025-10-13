@@ -72,7 +72,6 @@ provide('addTabPane', (params) => {
     servicesRef.value.addTabPane(params);
   });
 });
-
 provide('deleteTabPane', (params) => servicesRef.value && servicesRef.value.deleteTabPane(params));
 provide('updateTabPane', (params) => servicesRef.value && servicesRef.value.updateTabPane(params));
 provide('replaceTabPane', (params) => servicesRef.value && servicesRef.value.replaceTabPane(params));

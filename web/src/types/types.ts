@@ -29,6 +29,8 @@ export type BasicProps = {
   onShow?: boolean;
   disabled?: false,
   refreshNotify?: string;
+  deletedNotify?: string;
+  params?: any
   data?: Record<string, string>;
 }
 

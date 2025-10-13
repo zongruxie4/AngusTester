@@ -2,28 +2,23 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { HttpMethodText, Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { utils, ProjectPageQuery, PageQuery } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { BasicProps } from '@/types/types';
 
 import { apis } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
-import { ApiItem } from './PropsType';
 
-type Props = {
-  projectId: string;
-  params: { createdBy?: string; favouriteBy?: boolean; followBy?: boolean; };
-  total: number;
-  notify: string;
-  deletedNotify: string;
-}
+import { ApiInfo } from '@/views/apis/types';
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   params: undefined,
   total: 0,
   notify: undefined,
   deletedNotify: undefined
 });
+
 const { t } = useI18n();
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -33,17 +28,15 @@ const emit = defineEmits<{
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
-
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const deleteTabPane = inject<(data: any) => void>('deleteTabPane', () => { });
-
 const updateRefreshNotify = inject<(value: string) => void>('updateRefreshNotify');
 
-const tableData = ref<ApiItem[]>();
+const tableData = ref<ApiInfo[]>();
 const loading = ref(false);
 const loaded = ref(false);
 const orderBy = ref<string>();
-const orderSort = ref<'ASC' | 'DESC'>();
+const orderSort = ref<PageQuery.OrderSort>();
 const pagination = ref<{
   total: number;
   current: number;
@@ -60,7 +53,10 @@ const pagination = ref<{
       showTotal: (total: number) => {
         if (typeof pagination.value === 'object') {
           const totalPage = Math.ceil(total / pagination.value.pageSize);
-          return `第${pagination.value.current}/${totalPage}页`;
+          return t('pagination.pageInfo', {
+            current: pagination.value.current,
+            totalPage: totalPage
+          });
         }
       }
     });
@@ -73,7 +69,7 @@ const openApi = (api) => {
   addTabPane({ name: api.apisName || api.summary, value: 'API', id: api.apisId || api.id, _id: (api.apisId || api.id) + 'API' });
 };
 
-const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: 'ASC' | 'DESC'; }) => {
+const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }) => {
   orderBy.value = sorter.orderBy;
   orderSort.value = sorter.orderSort;
   pagination.value.current = current;
@@ -84,15 +80,10 @@ const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy
 const loadData = async () => {
   loading.value = true;
   const { current, pageSize } = pagination.value;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
+  const params: ProjectPageQuery & {
     createdBy?: string;
     favouriteBy?: boolean;
     followBy?: boolean;
-    orderBy?: string;
-    orderSort?: string;
   } = {
     projectId: props.projectId,
     pageNo: current,
@@ -131,7 +122,7 @@ const loadData = async () => {
   emit('update:total', total);
 };
 
-const deleteHandler = (data: ApiItem) => {
+const deleteHandler = (data: ApiInfo) => {
   modal.confirm({
     content: t('actions.tips.confirmDelete', { name: data.summary }),
     async onOk () {
@@ -145,7 +136,6 @@ const deleteHandler = (data: ApiItem) => {
       notification.success(t('actions.tips.deleteSuccess'));
       emit('update:deletedNotify', utils.uuid());
 
-      // 删除已经打开的tabpane
       deleteTabPane([id + 'API', id + 'socket', id + 'execute']);
 
       if (typeof updateRefreshNotify === 'function') {
@@ -155,7 +145,7 @@ const deleteHandler = (data: ApiItem) => {
   });
 };
 
-const cancelFavourite = async (data: ApiItem) => {
+const cancelFavourite = async (data: ApiInfo) => {
   loading.value = true;
   const [error] = await apis.cancelFavourite(data.id);
   loading.value = false;
@@ -164,14 +154,14 @@ const cancelFavourite = async (data: ApiItem) => {
   }
 
   notification.success(t('apis.myApis.cancelFavouriteSuccess'));
-  loadData();
+  await loadData();
 
   if (typeof updateRefreshNotify === 'function') {
     updateRefreshNotify(utils.uuid());
   }
 };
 
-const cancelFollow = async (data: ApiItem) => {
+const cancelFollow = async (data: ApiInfo) => {
   loading.value = true;
   const [error] = await apis.cancelFollow(data.id);
   loading.value = false;
@@ -180,7 +170,7 @@ const cancelFollow = async (data: ApiItem) => {
   }
 
   notification.success(t('apis.myApis.cancelFollowSuccess'));
-  loadData();
+  await loadData();
 
   if (typeof updateRefreshNotify === 'function') {
     updateRefreshNotify(utils.uuid());
@@ -200,7 +190,7 @@ onMounted(() => {
     loadData();
   }, { immediate: true });
 
-  watch(() => props.deletedNotify, (newValue) => {
+  watch(() => props.refreshNotify, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }
@@ -282,13 +272,12 @@ const emptyTextStyle = {
   height: 'auto'
 };
 </script>
-
 <template>
   <div>
     <template v-if="loaded">
       <template v-if="!tableData?.length">
         <div class="flex-1 flex flex-col items-center justify-center">
-          <img class="w-27.5" src="../../../../assets/images/nodata.png">
+          <img class="w-27.5" src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
               <span>{{ t('apis.myApis.createdEmptyTip') }}</span>
@@ -387,7 +376,6 @@ const emptyTextStyle = {
     </template>
   </div>
 </template>
-
 <style scoped>
 .link {
   color: #1890ff;
