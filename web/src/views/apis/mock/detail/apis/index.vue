@@ -1533,7 +1533,7 @@ provide('proxyOptObj', proxyOptObj);
               <div class="flex items-center justify-between">
                 <div class="flex items-center mb-0.5">
                   <IconRequired />
-                  <span>{{ t('mock.detail.apis.name') }}</span>
+                  <span>{{ t('common.name') }}</span>
                 </div>
               </div>
               <Input
@@ -1605,7 +1605,7 @@ provide('proxyOptObj', proxyOptObj);
                     <div class="flex items-center flex-1 space-x-2">
                       <div class="flex items-center flex-shrink-0 flex-nowrap whitespace-nowrap mb-0.5">
                         <IconRequired />
-                        <span>{{ t('mock.detail.apis.name') }}</span>
+                        <span>{{ t('common.name') }}</span>
                       </div>
 
                       <Validate
