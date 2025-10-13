@@ -18,6 +18,9 @@ export function useSpaceData () {
   const { t } = useI18n();
   const router = useRouter();
 
+  const tempProjectId = ref<string>();
+  const tempIsAdmin = ref<boolean>();
+
   // Reactive state for pagination
   const pagination = reactive<PaginationType>({
     current: 1,
@@ -54,6 +57,8 @@ export function useSpaceData () {
    * @param isAdmin - Whether current user is admin
    */
   const loadData = async (projectId: string, isAdmin: boolean) => {
+    tempProjectId.value = projectId;
+    tempIsAdmin.value = isAdmin;
     if (tableLoading.value) {
       return;
     }
@@ -134,6 +139,7 @@ export function useSpaceData () {
   const changePage = ({ pageSize, current }: { pageSize: number; current: number }) => {
     pagination.current = current;
     pagination.pageSize = pageSize;
+    loadData(tempProjectId.value as string, tempIsAdmin.value as boolean);
   };
 
   /**
