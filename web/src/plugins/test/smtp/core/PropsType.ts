@@ -13,6 +13,8 @@ export type PipelineConfig = {
     mail: any;
 }
 
+export type SmtpPipelineInfo = PipelineConfig;
+
 export type ScenarioInfo = {
     description: string;
     favourite: boolean;

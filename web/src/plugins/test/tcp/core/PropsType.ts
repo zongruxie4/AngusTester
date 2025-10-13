@@ -31,6 +31,8 @@ export type PipelineConfig = {
     id: string;// 前端自动生成，用于给每条记录添加id
 }
 
+export type TcpPipelineInfo = PipelineConfig;
+
 export type ScenarioInfo = {
     description: string;
     favourite: boolean;

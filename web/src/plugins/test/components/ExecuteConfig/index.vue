@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { IconRequired } from '@xcan-angus/vue-ui';
-import ExecSettingForm from '@/components/ExecSettingForm/index.vue';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { useI18n } from 'vue-i18n';
+import { IconRequired, SelectEnum } from '@xcan-angus/vue-ui';
+import ExecSettingForm from '@/components/ExecSettingForm/index.vue';
+import { ScriptType} from '@xcan-angus/infra';
+// import SelectEnum from '@/components/enum/SelectEnum.vue';
 
-import { ScenarioConfig } from '../PropsType';
+import { ScenarioConfig } from '@/plugins/test/types/index';
+
+const { t } = useI18n();
 
 export interface Props {
   value:ScenarioConfig['script'];
@@ -16,8 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   excludes: undefined
 });
-
-const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -85,7 +86,7 @@ defineExpose({ isValid, getData });
         :error="scriptTypeError"
         :excludes="props.excludes"
         defaultActiveFirstOption
-        enumKey="ScriptType"
+        :enumKey="ScriptType"
         class="w-104"
         @change="scriptTypeChange" />
     </div>

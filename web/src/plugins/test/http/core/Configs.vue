@@ -57,7 +57,7 @@ const ImportScriptSelector = defineAsyncComponent(() => import('@/components/scr
 
 const ScriptConfig = defineAsyncComponent(() => import('./ScriptConfig/index.vue'));
 const UIConfig = defineAsyncComponent(() => import('./UIConfig/index.vue'));
-const ExecuteConfig = defineAsyncComponent(() => import('./ExecuteConfig/index.vue'));
+const ExecuteConfig = defineAsyncComponent(() => import('@/plugins/test/components/ExecuteConfig/index.vue'));
 const DebugResult = defineAsyncComponent(() => import('./DebugResult/index.vue'));
 const DebugLog = defineAsyncComponent(() => import('@/plugins/test/components/DebugLog/index.vue'));
 const ExecLog = defineAsyncComponent(() => import('@/plugins/test/components/ExecLog/index.vue'));

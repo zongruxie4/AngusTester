@@ -20,6 +20,8 @@ export type PipelineConfig = {
     id: string;// 前端自动生成，用于给每条记录添加id
 }
 
+export type JmsPipelineInfo = PipelineConfig;
+
 export type ScenarioInfo = {
     authFlag: boolean;
     description: string;
