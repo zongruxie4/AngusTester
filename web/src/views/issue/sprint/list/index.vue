@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {
-  AsyncComponent, modal, notification, Spin
-} from '@xcan-angus/vue-ui';
+import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { appContext, download, ProjectPageQuery, TESTER, utils } from '@xcan-angus/infra';
-import ProcessPng from './images/process.png';
 import { issue } from '@/api/tester';
 import { TaskSprintPermission, TaskSprintStatus } from '@/enums/enums';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 import { SprintInfo } from '../types';
 import { BasicProps } from '@/types/types';
+
+import ProcessPng from './images/process.png';
 
 // Component props
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -559,7 +559,7 @@ onMounted(() => {
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('sprint.notAddedYet') }}</span>
-            <RouterLink class="router-link flex-1 truncate" :to="`/issue#sprint?type=ADD`">
+            <RouterLink class="router-link flex-1 truncate" :to="`/issue#${IssueMenuKey.SPRINT}?type=ADD`">
               {{ t('sprint.actions.addSprint') }}
             </RouterLink>
           </div>

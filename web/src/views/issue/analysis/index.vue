@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { IPane, utils } from '@xcan-angus/infra';
 import { BasicProps } from '@/types/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 // Component Props & Configuration
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -124,7 +125,7 @@ const initializeComponent = () => {
       }
     }
   }, { immediate: true });
-  
+
 
   processUrlHash(route.hash);
 };
@@ -187,7 +188,7 @@ const processUrlHash = (urlHash: string) => {
   }
 
   // Clean up URL after processing
-  router.replace('/issue#analysis');
+  router.replace(`/issue#${IssueMenuKey.ANALYSIS}`);
 };
 
 /**

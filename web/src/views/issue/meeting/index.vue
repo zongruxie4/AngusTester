@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { IPane, utils } from '@xcan-angus/infra';
 import { BasicProps } from '@/types/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 // COMPONENT PROPS
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -97,7 +98,7 @@ const initializeMeetingModule = () => {
       }
     });
   }
-  
+
   // Watch for browser tab changes and ensure case list tab exists
   watch(() => browserTabRef.value, () => {
     if (typeof browserTabRef.value?.update === 'function') {
@@ -179,7 +180,7 @@ const processRouteHash = (hash: string) => {
   }
 
   // Clean up URL by removing hash parameters
-  router.replace('/issue#meeting');
+  router.replace(`/issue#${IssueMenuKey.MEETING}`);
 };
 
 /**

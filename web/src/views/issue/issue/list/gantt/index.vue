@@ -9,7 +9,7 @@ import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { issue } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { TaskType } from '@/enums/enums';
-
+import { IssueMenuKey } from '@/views/issue/menu';
 import { TaskDetail } from '@/views/issue/types';
 
 /**
@@ -407,7 +407,7 @@ onMounted(() => {
         <div class="flex items-center justify-between mt-4 pl-5 space-x-2.5">
           <div class="flex-1 flex items-center truncate">
             <RouterLink
-              :to="`/issue#sprint?id=${selectedSprintInfo?.id}`"
+              :to="`/issue#${IssueMenuKey.SPRINT}?id=${selectedSprintInfo?.id}`"
               :title="selectedSprintInfo?.name"
               class="truncate"
               style="max-width: 50%;">
@@ -415,7 +415,7 @@ onMounted(() => {
             </RouterLink>
             <div class="mx-1.5">/</div>
             <RouterLink
-              :to="`/issue#issue?id=${selectedTaskInfo?.id}`"
+              :to="`/issue#${IssueMenuKey.ISSUE}?id=${selectedTaskInfo?.id}`"
               class="truncate flex-1"
               :title="selectedTaskInfo?.name">
               {{ selectedTaskInfo?.name }}

@@ -10,6 +10,7 @@ import { issue } from '@/api/tester';
 import { SprintInfo } from '../types';
 import { DATE_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { BasicProps } from '@/types/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 // Props Definition
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -189,7 +190,7 @@ const exportSprintTasks = async () => {
  * Copies sprint link to clipboard
  */
 const copySprintLink = () => {
-  const message = window.location.origin + '/issue#sprint?id=' + sprintId.value;
+  const message = window.location.origin + `/issue#${IssueMenuKey.SPRINT}?id=` + sprintId.value;
   toClipboard(message).then(() => {
     notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
@@ -250,7 +251,7 @@ onMounted(() => {
         class="p-0">
         <RouterLink
           class="flex items-center space-x-1 leading-6.5 px-1.75"
-          :to="`/issue#issue?sprintId=${sprintId}&sprintName=${sprintData?.name}`">
+          :to="`/issue#${IssueMenuKey.ISSUE}?sprintId=${sprintId}&sprintName=${sprintData?.name}`">
           <Icon icon="icon-renwu2" class="text-3.5" />
           <span>{{ t('sprint.actions.viewIssues') }}</span>
         </RouterLink>

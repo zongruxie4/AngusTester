@@ -9,7 +9,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BugLevel, TaskType } from '@/enums/enums';
-
+import { IssueMenuKey } from '@/views/issue/menu';
 import { TaskDetail } from '@/views/issue/types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
@@ -580,7 +580,7 @@ const subTaskTableColumns = [
           <RouterLink
             target="_self"
             :title="record.name"
-            :to="`/issue#issue?projectId=${props.projectId}&taskId=${record.id}&total=1`"
+            :to="`/issue#${IssueMenuKey.ISSUE}?projectId=${props.projectId}&taskId=${record.id}&total=1`"
             style="color:#40a9ff">
             {{ record.name || '--' }}
           </RouterLink>

@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { AsyncComponent } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 import { TaskDetail } from '@/views/issue/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 // ASYNC COMPONENTS
 const TaskDetailPage = defineAsyncComponent(() => import('@/views/issue/issue/list/flat/detail/index.vue'));
@@ -66,7 +67,7 @@ const currentTaskId = computed(() => {
  * Initializes the task details page by setting up URL and tab data
  */
 const initializeTaskDetail = () => {
-  router.replace('/issue#issue');
+  router.replace(`/issue#${IssueMenuKey.ISSUE}`);
 
   const taskId = props.data?.id;
   const tabPaneDataList = getTabPane(taskId);

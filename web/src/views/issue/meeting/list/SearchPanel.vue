@@ -6,6 +6,8 @@ import { Button } from 'ant-design-vue';
 import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { TaskMeetingType } from '@/enums/enums';
 import { LoadingProps } from '@/types/types';
+import { IssueMenuKey } from '@/views/issue/menu';
+
 import {
   QuickSearchOptions,
   createAuditOptions,
@@ -223,7 +225,7 @@ const handleRefresh = () => {
           type="primary"
           size="small"
           class="p-0">
-          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/issue#meeting?type=ADD`">
+          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/issue#${IssueMenuKey.MEETING}?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
             <span>{{ t('meeting.actions.addMeeting') }}</span>
           </RouterLink>

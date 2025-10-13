@@ -5,7 +5,7 @@ import { Icon, IconTask, NoData, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-
+import { IssueMenuKey } from '@/views/issue/menu';
 import { TaskDetail } from '@/views/issue/types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
@@ -38,7 +38,7 @@ const associatedTaskList = computed(() => {
   return props.dataSource?.refTaskInfos?.map(item => {
     return {
       ...item,
-      linkUrl: `/issue#issue?taskId=${item.id}`
+      linkUrl: `/issue#${IssueMenuKey.ISSUE}?taskId=${item.id}`
     };
   }) || [];
 });

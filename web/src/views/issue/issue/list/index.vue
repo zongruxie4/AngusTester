@@ -10,6 +10,7 @@ import { TaskSprintPermission, TaskStatus } from '@/enums/enums';
 import { getCurrentPage } from '@/utils/utils';
 import { TaskDetail } from '../../types';
 import { ActionMenuItem, TaskViewMode } from '../types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Task_Template.xlsx?url';
@@ -164,7 +165,7 @@ const loadTaskListData = async () => {
 
     processedTaskList.push({
       ...taskItem,
-      linkUrl: '/issue#issue?' + http.getURLSearchParams(taskParams, true)
+      linkUrl: `/issue#${IssueMenuKey.ISSUE}?` + http.getURLSearchParams(taskParams, true)
     });
 
     sprintIdSet.add(taskItem.sprintId);
@@ -541,7 +542,7 @@ const currentModuleId = ref<number>();
  * Initializes module tree and sets up watchers
  */
 onMounted(async () => {
-  await router.replace('/issue#issue');
+  await router.replace(`/issue#${IssueMenuKey.ISSUE}`);
 
   watch(() => props.projectId, () => {
     currentModuleId.value = undefined;

@@ -6,6 +6,7 @@ import { Icon, IconTask, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { http, PageQuery, ProjectPageQuery, utils } from '@xcan-angus/infra';
 import { issue } from '@/api/tester';
 import { TaskStatus } from '@/enums/enums';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TaskDetail } from '../types';
@@ -194,7 +195,7 @@ const loadTaskData = async () => {
 
     return {
       ...taskItem,
-      linkUrl: '/issue#issue?' + http.getURLSearchParams(linkParams, true)
+      linkUrl: '/issue#${IssueMenuKey.ISSUE}?' + http.getURLSearchParams(linkParams, true)
     };
   });
 };
@@ -440,7 +441,7 @@ const emptyStateStyle = {
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
               <span>{{ t('issueHome.myIssues.emptyStates.noCreatedIssues') }}</span>
-              <RouterLink to="/issue#issue" class="ml-1 link">
+              <RouterLink :to="`/issue#${IssueMenuKey.ISSUE}`" class="ml-1 link">
                 {{ t('issueHome.myIssues.emptyStates.addIssue') }}
               </RouterLink>
             </template>

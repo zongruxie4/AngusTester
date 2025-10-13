@@ -11,6 +11,7 @@ import {
 import { appContext, enumUtils, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { TaskSprintPermission, TaskStatus, TaskType } from '@/enums/enums';
 import { issue } from '@/api/tester';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import { TaskDetail } from '@/views/issue/types';
@@ -1806,7 +1807,7 @@ onMounted(() => {
           <div class="flex items-center justify-between mt-4 pl-5 space-x-2.5">
             <div class="flex-1 flex items-center truncate">
               <RouterLink
-                :to="`/issue#sprint?id=${checkedSprintInfo?.id}`"
+                :to="`/issue#${IssueMenuKey.SPRINT}?id=${checkedSprintInfo?.id}`"
                 :title="checkedSprintInfo?.name"
                 class="truncate"
                 style="max-width: 50%;">
@@ -1814,7 +1815,7 @@ onMounted(() => {
               </RouterLink>
               <div class="mx-1.5">/</div>
               <RouterLink
-                :to="`/issue#issue?id=${checkedTaskInfo?.id}`"
+                :to="`/issue#${IssueMenuKey.ISSUE}?id=${checkedTaskInfo?.id}`"
                 class="truncate flex-1"
                 :title="checkedTaskInfo?.name">
                 {{ checkedTaskInfo?.name }}
