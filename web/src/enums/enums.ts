@@ -591,6 +591,18 @@ export enum ExampleDataType {
   REPORT = 'REPORT'
 }
 
+// Scenario Type Enums
+export enum ScenarioType {
+  HTTP = 'HTTP',
+  JDBC = 'JDBC',
+  FTP = 'FTP',
+  WEBSOCKET = 'WEBSOCKET',
+  LDAP = 'LDAP',
+  MAIL = 'MAIL',
+  SMTP = 'SMTP',
+  TCP = 'TCP',
+}
+
 // CombinedTargetType Enums
 export enum CombinedTargetType {
   PROJECT = 'PROJECT',
