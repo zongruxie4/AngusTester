@@ -3,11 +3,12 @@ import { inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, Table } from '@xcan-angus/vue-ui';
+import { getCurrentPage } from '@/utils/utils';
+import { ScenarioMenuKey } from '@/views/scenario/menu';
 import type { MyScenariosTableProps, TableChangeParams } from './types';
 import { useData } from './composables/useData';
 import { useTableColumns } from './composables/useTableColumns';
 import { useTableActions } from './composables/useTableActions';
-import { getCurrentPage } from '@/utils/utils';
 
 const { t } = useI18n();
 
@@ -146,7 +147,7 @@ const getActionIcon = (actionKey: string | undefined) => {
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
               <span>{{ t('scenarioHome.myScenarios.table.messages.noAddedScenarios') }}</span>
-              <RouterLink to="/scenario#scenario" class="ml-1 link">
+              <RouterLink :to="`/scenario#${ScenarioMenuKey.SCENARIO}`" class="ml-1 link">
                 {{ t('scenarioHome.myScenarios.actions.addScenario') }}
               </RouterLink>
             </template>
@@ -183,7 +184,7 @@ const getActionIcon = (actionKey: string | undefined) => {
             v-if="column.dataIndex === 'name'"
             class="link truncate"
             :title="record.name"
-            :to="`/scenario#scenario?id=${record.id}&name=${record.name}&plugin=${record.plugin}&type=detail`">
+            :to="`/scenario#${ScenarioMenuKey.SCENARIO}?id=${record.id}&name=${record.name}&plugin=${record.plugin}&type=detail`">
             {{ record.name }}
           </RouterLink>
 

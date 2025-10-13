@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
 import { BasicProps } from '@/types/types';
+import { ScenarioMenuKey } from '@/views/scenario/menu';
 
 const { t } = useI18n();
 
@@ -157,7 +158,7 @@ const processHashChange = (hash: string) => {
   }
 
   // Update router to clean URL
-  router.replace('/scenario#monitor');
+  router.replace(`/scenario#${ScenarioMenuKey.MONITOR}`);
 };
 
 /**

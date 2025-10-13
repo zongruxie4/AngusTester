@@ -5,6 +5,7 @@ import { utils, appContext, ProjectPageQuery, PageQuery, SearchCriteria } from '
 import { isEqual } from 'lodash-es';
 import { ScriptInfo } from '@/views/script/types';
 import { ApiMenuKey } from '@/views/apis/menu';
+import { ScenarioMenuKey } from '@/views/scenario/menu';
 
 /**
  * Composable for managing script data including list, permissions and resource counts
@@ -125,7 +126,7 @@ export function useScriptData () {
         } else if (source === 'API') {
           sourceNameLinkUrl = `/apis#${ApiMenuKey.SERVICES}?id=${sourceId}&name=${sourceName}&value=API`;
         } else if (source === 'SCENARIO') {
-          sourceNameLinkUrl = `/scenario#scenario?id=${sourceId}&name=${sourceName}&plugin=${item.plugin}`;
+          sourceNameLinkUrl = `/${ScenarioMenuKey.SCENARIO}#scenario?id=${sourceId}&name=${sourceName}&plugin=${item.plugin}`;
         }
       }
 

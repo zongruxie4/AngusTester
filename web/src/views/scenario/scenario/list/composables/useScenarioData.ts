@@ -2,6 +2,7 @@ import { onMounted, Ref, ref, watch } from 'vue';
 import { PageQuery, ProjectPageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 import { ScenarioInfo } from '../types';
+import { ScenarioMenuKey } from '@/views/scenario/menu';
 
 /**
  * Sort keys for scenarios
@@ -73,8 +74,8 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
     dataList.value = data.list.map((item) => {
       return {
         ...item,
-        editLinkUrl: `/scenario#scenario?id=${item.id}&name=${item.name}&plugin=${item.plugin}`,
-        detailLinkUrl: `/scenario#scenario?id=${item.id}&name=${item.name}&plugin=${item.plugin}&type=detail`
+        editLinkUrl: `/scenario#${ScenarioMenuKey.SCENARIO}?id=${item.id}&name=${item.name}&plugin=${item.plugin}`,
+        detailLinkUrl: `/scenario#${ScenarioMenuKey.SCENARIO}?id=${item.id}&name=${item.name}&plugin=${item.plugin}&type=detail`
       };
     });
   };

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
+import { ScenarioMenuKey } from '@/views/scenario/menu';
 
 // Types and Props Definition
 const { t } = useI18n();
@@ -198,7 +199,7 @@ const handleHashChange = (hash: string) => {
   }
 
   // Clean up URL by removing hash parameters
-  router.replace('/scenario#scenario');
+  router.replace(`/scenario#${ScenarioMenuKey.SCENARIO}`);
 };
 
 /**

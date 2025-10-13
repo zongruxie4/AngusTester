@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } fr
 import { useI18n } from 'vue-i18n';
 import { appContext, utils } from '@xcan-angus/infra';
 import { ProjectInfo } from '@/layout/types';
+import { ScenarioMenuKey, createMenuItems } from '@/views/scenario/menu';
 
 const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const Homepage = defineAsyncComponent(() => import('@/views/scenario/home/index.vue'));
@@ -16,19 +17,8 @@ const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const appInfo = ref(appContext.getAccessApp());
 
-type MenuKey = 'home' | 'scenario' | 'trash' | 'monitor';
-const activeKey = ref<MenuKey>();
-
-const menuItems: {
-  icon: string;
-  name: string;
-  key: MenuKey;
-}[] = [
-  { icon: 'icon-zhuye', name: t('home.title'), key: 'home' },
-  { icon: 'icon-changjingguanli', name: t('scenario.title'), key: 'scenario' },
-  { icon: 'icon-jiankong2', name: t('scenarioMonitor.title'), key: 'monitor' },
-  { icon: 'icon-qingchu', name: t('trash.title'), key: 'trash' }
-];
+const activeKey = ref<ScenarioMenuKey>();
+const menuItems = createMenuItems(t);
 
 const homeRefreshNotify = ref<string>('');
 const trashRefreshNotify = ref<string>('');
@@ -44,7 +34,7 @@ const projectId = computed(() => {
 
 onMounted(() => {
   watch(() => activeKey.value, (newValue) => {
-    if (newValue === 'home') {
+    if (newValue === ScenarioMenuKey.HOME) {
       if (homeRefreshNotifyFlag) {
         homeRefreshNotify.value = utils.uuid();
       }
@@ -53,7 +43,7 @@ onMounted(() => {
       return;
     }
 
-    if (newValue === 'trash') {
+    if (newValue === ScenarioMenuKey.TRASH) {
       if (trashRefreshNotifyFlag) {
         trashRefreshNotify.value = utils.uuid();
       }
@@ -62,7 +52,7 @@ onMounted(() => {
       return;
     }
 
-    if (newValue === 'scenario') {
+    if (newValue === ScenarioMenuKey.SCENARIO) {
       if (scenarioRefreshNotifyFlag) {
         scenarioRefreshNotify.value = utils.uuid();
       }

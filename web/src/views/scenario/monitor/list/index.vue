@@ -5,6 +5,7 @@ import { Button, Popover } from 'ant-design-vue';
 import { Icon, NoData, Spin } from '@xcan-angus/vue-ui';
 import { ScenarioMonitorStatus } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
+import { ScenarioMenuKey } from '@/views/scenario/menu';
 
 // Import types and composables
 import type { TabPaneInjection } from '../types';
@@ -78,7 +79,7 @@ const {
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('scenarioMonitor.list.noMonitors') }}</span>
-            <RouterLink class="router-link flex-1 truncate" :to="`/scenario#monitor?type=ADD`">
+            <RouterLink class="router-link flex-1 truncate" :to="`/scenario#${ScenarioMenuKey.MONITOR}?type=ADD`">
               {{ t('scenarioMonitor.actions.addMonitor') }}
             </RouterLink>
           </div>
