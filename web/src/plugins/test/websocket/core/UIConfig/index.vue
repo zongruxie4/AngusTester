@@ -800,7 +800,7 @@ defineExpose({
 });
 
 const codeOptions = [
-  { label: t('websocketPlugin.uiConfig.form.none'), value: 'none' },
+  { label: t('websocketPlugin.form.none'), value: 'none' },
   { label: 'base64', value: 'base64' },
   { label: 'gzip_base64', value: 'gzip_base64' }
 ];
@@ -906,7 +906,7 @@ const autoSize = {
                         :title="dataMap[id].description"
                         trim
                         style="flex:1 1 60%;"
-                        :placeholder="t('websocketPlugin.uiConfig.form.descriptionPlaceholder')" />
+                        :placeholder="t('websocketPlugin.form.descriptionPlaceholder')" />
                     </div>
                     <div class="flex items-center flex-shrink-0 space-x-3">
                       <Switch
@@ -933,19 +933,19 @@ const autoSize = {
                   <div class="w-full flex items-start">
                     <div class="w-21.5 transform-gpu translate-y-1 flex-shrink-0 text-theme-title">
                       <IconRequired />
-                      <span>{{ t('websocketPlugin.uiConfig.connectionInfo.title') }}</span>
+                      <span>{{ t('websocketPlugin.connectionInfo.title') }}</span>
                       <Colon />
                     </div>
                     <div class="flex-1">
                       <Validate
                         class="flex-1"
-                        :text="t('websocketPlugin.uiConfig.connectionInfo.urlFormatError')"
+                        :text="t('websocketPlugin.connectionInfo.urlFormatError')"
                         mode="error"
                         :error="urlFormatErrorIdSet.has(id)">
                         <Input
                           v-model:value="dataMap[id].url"
                           trimAll
-                          :placeholder="t('websocketPlugin.uiConfig.connectionInfo.urlPlaceholder')"
+                          :placeholder="t('websocketPlugin.connectionInfo.urlPlaceholder')"
                           :error="urlErrorSet.has(id)"
                           @change="urlChange(id)"
                           @blur="urlBlur(id, $event)" />
@@ -957,7 +957,7 @@ const autoSize = {
                         <TabPane key="query">
                           <template #tab>
                             <Badge size="small" :count="queryErrorNumMap.get(id)">
-                              <div>{{ t('websocketPlugin.uiConfig.parameters.requestParameters') }}</div>
+                              <div>{{ t('websocketPlugin.parameters.requestParameters') }}</div>
                             </Badge>
                           </template>
                           <div class="space-y-2.5">
@@ -974,13 +974,13 @@ const autoSize = {
                                   :error="queryParameterNameErrorSet.has(item.id)"
                                   trimAll
                                   style="flex: 1 1 40%;"
-                                  :placeholder="t('websocketPlugin.uiConfig.parameters.parameterNamePlaceholder')"
+                                  :placeholder="t('websocketPlugin.parameters.parameterNamePlaceholder')"
                                   @change="queryParameterNameChange(id, item.id, index, $event)" />
                                 <ParamInput
                                   :value="item.value"
                                   :maxLength="4096"
                                   class="bg-white"
-                                  :placeholder="t('websocketPlugin.uiConfig.parameters.parameterValuePlaceholder')"
+                                  :placeholder="t('websocketPlugin.parameters.parameterValuePlaceholder')"
                                   style="flex: 1 1 60%"
                                   @blur="queryParameterValueChange(id, item.id, index, $event)" />
                                 <!-- <Input
@@ -1002,7 +1002,7 @@ const autoSize = {
                         <TabPane key="header">
                           <template #tab>
                             <Badge size="small" :count="headerErrorNumMap.get(id)">
-                              <div>{{ t('websocketPlugin.uiConfig.parameters.requestHeaders') }}</div>
+                              <div>{{ t('websocketPlugin.parameters.requestHeaders') }}</div>
                             </Badge>
                           </template>
                           <div class="space-y-2.5">
@@ -1051,13 +1051,13 @@ const autoSize = {
                   <div class="w-full flex items-start">
                     <div class="w-21.5 transform-gpu translate-y-1 flex-shrink-0 text-theme-title">
                       <IconRequired />
-                      <span>{{ t('websocketPlugin.uiConfig.messageMode.title') }}</span>
+                      <span>{{ t('websocketPlugin.messageMode.title') }}</span>
                       <Colon />
                     </div>
                     <SelectEnum
                       v-model:value="dataMap[id].mode"
                       :error="modeErrorIdSet.has(id)"
-                      :placeholder="t('websocketPlugin.uiConfig.messageMode.placeholder')"
+                      :placeholder="t('websocketPlugin.messageMode.placeholder')"
                       class="w-40 flex-shrink-0"
                       enumKey="WebSocketMessageMode"
                       @change="modeChange(id, $event)" />
@@ -1066,20 +1066,20 @@ const autoSize = {
                   <template v-if="['ONLY_SEND', 'SEND_AND_RECEIVE'].includes(dataMap[id].mode)">
                     <div class="w-full flex items-start">
                       <div class="w-21.5 transform-gpu translate-y-1 flex-shrink-0 text-theme-title">
-                        <span>{{ t('websocketPlugin.uiConfig.sendData.encodingTitle') }}</span>
+                        <span>{{ t('websocketPlugin.sendData.encodingTitle') }}</span>
                         <Colon />
                       </div>
                       <Select
                         v-model:value="dataMap[id].messageEncoding"
                         :options="codeOptions"
-                        :placeholder="t('websocketPlugin.uiConfig.sendData.encodingPlaceholder')"
+                        :placeholder="t('websocketPlugin.sendData.encodingPlaceholder')"
                         class="w-40 flex-shrink-0" />
                     </div>
 
                     <div class="w-full flex items-start">
                       <div class="w-21.5 transform-gpu translate-y-1 flex-shrink-0 text-theme-title">
                         <IconRequired />
-                        <span>{{ t('websocketPlugin.uiConfig.sendData.title') }}</span>
+                        <span>{{ t('websocketPlugin.sendData.title') }}</span>
                         <Colon />
                       </div>
                       <Input
@@ -1096,7 +1096,7 @@ const autoSize = {
                   <div class="w-full flex items-start">
                     <div
                       class="w-21.5 flex items-center justify-start space-x-1 flex-shrink-0 text-theme-title">
-                      <span>{{ t('websocketPlugin.uiConfig.parametric.title') }}</span>
+                      <span>{{ t('websocketPlugin.parametric.title') }}</span>
                       <Colon />
                     </div>
                     <div class="flex-1 space-y-2.5">
@@ -1112,10 +1112,10 @@ const autoSize = {
                     <div
                       class="w-21.5 flex items-center justify-start transform-gpu translate-y-1 space-x-1 flex-shrink-0 text-theme-title">
                       <span>
-                        <span>{{ t('websocketPlugin.uiConfig.assertion.title') }}</span>
+                        <span>{{ t('websocketPlugin.assertion.title') }}</span>
                         <Colon />
                       </span>
-                      <Tooltip :title="t('websocketPlugin.uiConfig.assertion.tooltip')">
+                      <Tooltip :title="t('websocketPlugin.assertion.tooltip')">
                         <Icon icon="icon-tishi1" class="tip-icon text-3.5 cursor-pointer" />
                       </Tooltip>
                     </div>
