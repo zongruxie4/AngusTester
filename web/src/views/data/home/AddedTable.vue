@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<AddedTableProps>(), {
   total: 0,
   userId: '',
   notify: undefined,
-  deletedNotify: undefined
+  refreshNotify: undefined
 });
 
 /**
@@ -102,7 +102,7 @@ onMounted(() => {
   }, { immediate: true });
 
   // Watch deleted notify changes for pagination adjustment
-  watch(() => props.deletedNotify, (newValue) => {
+  watch(() => props.refreshNotify, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }

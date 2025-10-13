@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<TableProps>(), {
   params: undefined,
   total: 0,
   notify: undefined,
-  deletedNotify: undefined
+  refreshNotify: undefined
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -395,7 +395,7 @@ onMounted(() => {
     loadTableData();
   }, { immediate: true });
 
-  watch(() => props.deletedNotify, (newValue) => {
+  watch(() => props.refreshNotify, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }

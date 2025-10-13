@@ -17,7 +17,7 @@ const { t } = useI18n();
 // Lazy load the table component for better performance
 const TaskTable = defineAsyncComponent(() => import('./AddedTable.vue'));
 
-// Notification state for deleted tasks
+// Notification state for deleted issues
 const deletedNotify = ref<string>();
 
 // Task count totals for each tab

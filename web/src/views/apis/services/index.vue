@@ -31,7 +31,7 @@ const Auth = defineAsyncComponent(() => import('@/views/apis/services/auth/index
 const DataModel = defineAsyncComponent(() => import('@/views/apis/services/dataModel/index.vue'));
 const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/securityTestResult/index.vue'));
 const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/smokeTestResult/index.vue'));
-const QuickStarted = defineAsyncComponent(() => import('@/views/apis/home/quickStarted.vue'));
+const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/QuickStarted.vue'));
 
 const { t } = useI18n();
 

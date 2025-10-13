@@ -2,32 +2,35 @@
 import { TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { BasicProps } from '@/types/types';
+import { CombinedTargetType } from '@/enums/enums';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined
 });
+
 const { t } = useI18n();
-const types = ['SERVICE', 'API', 'API_CASE'];
+const activityTypes = [
+  CombinedTargetType.SERVICE,
+  CombinedTargetType.API,
+  CombinedTargetType.API_DESIGN,
+  CombinedTargetType.API_CASE
+];
 </script>
 <template>
   <Tabs size="small">
     <TabPane key="all" :tab="t('common.all')">
       <ActivityTimeline
         key="all"
-        :types="types"
+        :types="activityTypes"
         :projectId="props.projectId" />
     </TabPane>
 
     <TabPane key="my" :tab="t('apis.activity.my')">
       <ActivityTimeline
         key="my"
-        :types="types"
+        :types="activityTypes"
         :projectId="props.projectId"
         :userId="props.userInfo?.id"
         :showUserName="false" />

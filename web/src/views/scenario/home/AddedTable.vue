@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<MyScenariosTableProps>(), {
   params: undefined,
   total: 0,
   notify: undefined,
-  deletedNotify: undefined
+  refreshNotify: undefined
 });
 
 // Event emissions
@@ -42,7 +42,7 @@ const {
   pagination,
   loadData,
   handleTableChange
-} = useData(projectId, props.params, props.notify, props.deletedNotify, updateTotal);
+} = useData(projectId, props.params, props.notify, props.refreshNotify, updateTotal);
 
 const { columns, emptyTextStyle } = useTableColumns(props.params);
 
@@ -67,7 +67,7 @@ onMounted(() => {
     loadData();
   }, { immediate: true });
 
-  watch(() => props.deletedNotify, (newValue) => {
+  watch(() => props.refreshNotify, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }

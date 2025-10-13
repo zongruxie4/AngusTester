@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
   params: undefined,
   total: 0,
   notify: undefined,
-  deletedNotify: undefined
+  refreshNotify: undefined
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -62,7 +62,7 @@ const currentOrderSort = ref<PageQuery.OrderSort>();
 /**
  * Pagination configuration for the table.
  */
-const paginationConfig = ref<{
+const pagination = ref<{
   total: number;
   current: number;
   pageSize: number;
@@ -76,10 +76,10 @@ const paginationConfig = ref<{
       showSizeChanger: false,
       size: 'small',
       showTotal: (total: number) => {
-        if (typeof paginationConfig.value === 'object') {
-          const totalPage = Math.ceil(total / paginationConfig.value.pageSize);
+        if (typeof pagination.value === 'object') {
+          const totalPage = Math.ceil(total / pagination.value.pageSize);
           return t('pagination.pageInfo', {
-            current: paginationConfig.value.current,
+            current: pagination.value.current,
             totalPage: totalPage
           });
         }
@@ -96,8 +96,8 @@ const handleTableChange = (
 ) => {
   currentOrderBy.value = sorter.orderBy;
   currentOrderSort.value = sorter.orderSort;
-  paginationConfig.value.current = current;
-  paginationConfig.value.pageSize = pageSize;
+  pagination.value.current = current;
+  pagination.value.pageSize = pageSize;
   loadTaskData();
 };
 
@@ -105,7 +105,7 @@ const handleTableChange = (
  * Builds query parameters for task list API call.
  */
 const buildQueryParams = () => {
-  const { current, pageSize } = paginationConfig.value;
+  const { current, pageSize } = pagination.value;
   const queryParams: ProjectPageQuery & {
     backlog: false;
     createdBy?: string;
@@ -177,7 +177,7 @@ const loadTaskData = async () => {
 
   const responseData = (response?.data || { total: 0, list: [] }) as { total: string; list: TaskDetail[] };
   const totalCount = +responseData.total;
-  paginationConfig.value.total = totalCount;
+  pagination.value.total = totalCount;
   emit('update:total', totalCount);
 
   const pageNo = +queryParams.pageNo;
@@ -195,7 +195,7 @@ const loadTaskData = async () => {
 
     return {
       ...taskItem,
-      linkUrl: '/issue#${IssueMenuKey.ISSUE}?' + http.getURLSearchParams(linkParams, true)
+      linkUrl: `/issue#${IssueMenuKey.ISSUE}?` + http.getURLSearchParams(linkParams, true)
     };
   });
 };
@@ -278,15 +278,15 @@ onMounted(() => {
   }, { immediate: true });
 
   // Watch for deletion notifications and adjust pagination
-  watch(() => props.deletedNotify, (newValue) => {
+  watch(() => props.refreshNotify, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }
 
-    paginationConfig.value.current = getCurrentPage(
-      paginationConfig.value.current,
-      paginationConfig.value.pageSize,
-      paginationConfig.value.total
+    pagination.value.current = getCurrentPage(
+      pagination.value.current,
+      pagination.value.pageSize,
+      pagination.value.total
     );
     loadTaskData();
   }, { immediate: true });
@@ -478,7 +478,7 @@ const emptyStateStyle = {
         v-else
         :dataSource="tableData"
         :columns="tableColumns"
-        :pagination="paginationConfig"
+        :pagination="pagination"
         :loading="isLoading"
         :emptyTextStyle="emptyStateStyle"
         :minSize="5"

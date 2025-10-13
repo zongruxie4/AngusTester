@@ -2,21 +2,14 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { utils, enumUtils } from '@xcan-angus/infra';
+import { utils, AuthObjectType } from '@xcan-angus/infra';
 import * as echarts from 'echarts';
 import elementResizeDetector from 'element-resize-detector';
 
-import { ApiStatus } from '@/enums/enums';
 import { analysis } from '@/api/tester';
+import { BasicProps } from '@/types/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -26,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const erd = elementResizeDetector({ strategy: 'scroll' });
 
-const loading = ref(false);
+const loading = ref<boolean>(false);
 const state = reactive({
   statistic: {
     allService: '0',
@@ -40,9 +33,8 @@ const state = reactive({
     unarchivedApisByLastMonth: '0'
   }
 });
-const apiStatusMap = {};
 
-const statusColorSet = {
+const statusColorSet: Record<number, string> = {
   0: 'rgba(200, 202, 208, 1)',
   1: '#52C41A',
   2: '#FFB925',
@@ -50,7 +42,7 @@ const statusColorSet = {
   4: '#7F91FF'
 };
 
-const methodColorSet = {
+const methodColorSet: Record<string, string> = {
   get: 'rgba(30, 136, 229, 1)',
   head: '#67D7FF',
   post: 'rgba(51, 183, 130, 1)',
@@ -61,24 +53,17 @@ const methodColorSet = {
   trace: '#7F91FF'
 };
 
-const loadApiStatusEnum = () => {
-  // const data = enumUtils.enumToMessages(ApiStatus);
-  // data.forEach((item) => {
-  //   apiStatusMap[item.value] = item.message;
-  // });
-  // const chartData = [apiStatusMap[ApiStatus.UNKNOWN],
-  //   apiStatusMap[ApiStatus.IN_DESIGN],
-  //   apiStatusMap[ApiStatus.IN_DEV],
-  //   apiStatusMap[ApiStatus.DEV_COMPLETED],
-  //   apiStatusMap[ApiStatus.RELEASED]]
-  // serviceOption.yAxis.data = chartData;
-  // apiOption.yAxis.data = chartData;
+const buildStatusSeriesData = (values: Array<number | string>): Array<{ value: number; itemStyle: { color: string } }> => {
+  return values.map((value, idx) => ({
+    value: Number(value),
+    itemStyle: { color: statusColorSet[idx] }
+  }));
 };
 
-const loadMyStatistics = async (): Promise<void> => {
+const loadMyCreationStatistics = async (): Promise<void> => {
   loading.value = true;
   const params = {
-    creatorObjectType: 'USER',
+    creatorObjectType: AuthObjectType.USER,
     creatorObjectId: props.userInfo?.id,
     projectId: props.projectId
   };
@@ -91,8 +76,8 @@ const loadMyStatistics = async (): Promise<void> => {
   state.statistic = res.data;
 };
 
-const allApis = ref();
-const allService = ref();
+const allApis = ref<string | number | undefined>();
+const allService = ref<string | number | undefined>();
 const loadAllStatistics = async (): Promise<void> => {
   loading.value = true;
   const params = {
@@ -108,44 +93,29 @@ const loadAllStatistics = async (): Promise<void> => {
   allService.value = data.allService;
   if (res.data.servicesByStatus) {
     const { UNKNOWN, IN_DESIGN, IN_DEV, DEV_COMPLETED, RELEASED } = res.data.servicesByStatus;
-    serviceOption.series[0].data = [UNKNOWN, IN_DESIGN, IN_DEV, DEV_COMPLETED, RELEASED].map((value, idx) => {
-      return {
-        value,
-        itemStyle: {
-          color: statusColorSet[idx]
-        }
-      };
-    });
+    serviceStatusOption.series[0].data = buildStatusSeriesData([UNKNOWN, IN_DESIGN, IN_DEV, DEV_COMPLETED, RELEASED]);
   }
 
   if (res.data.apisByStatus) {
     const { UNKNOWN, IN_DESIGN, IN_DEV, DEV_COMPLETED, RELEASED } = res.data.apisByStatus;
-
-    apiOption.series[0].data = [UNKNOWN, IN_DESIGN, IN_DEV, DEV_COMPLETED, RELEASED].map((value, idx) => {
-      return {
-        value,
-        itemStyle: {
-          color: statusColorSet[idx]
-        }
-      };
-    });
+    apiStatusOption.series[0].data = buildStatusSeriesData([UNKNOWN, IN_DESIGN, IN_DEV, DEV_COMPLETED, RELEASED]);
   }
 
-  methodOptions.series[0].data = Object.keys(res.data.apisByMethod).map(method => {
-    return {
+  if (res.data.apisByMethod) {
+    methodOptions.series[0].data = Object.keys(res.data.apisByMethod).map((method): MethodPieDatum => ({
       name: method,
-      value: res.data.apisByMethod[method],
-      itemStyle: {
-        color: methodColorSet[method.toLowerCase()]
-      }
-    };
-  });
-  serviceEchart.setOption(serviceOption, true);
-  apiEchart.setOption(apiOption);
-  methodEchart.setOption(methodOptions);
+      value: Number(res.data.apisByMethod[method]),
+      itemStyle: { color: methodColorSet[method.toLowerCase()] }
+    }));
+  } else {
+    methodOptions.series[0].data = [];
+  }
+  serviceEChart?.setOption(serviceStatusOption, true);
+  apiEChart?.setOption(apiStatusOption);
+  methodEChart?.setOption(methodOptions);
 };
 
-const statisticConfig = [
+const creationStatisticConfig = [
   {
     topClass: 'huang-top',
     bottomClass: 'huang-bottom',
@@ -172,15 +142,15 @@ const statisticConfig = [
   }
 ];
 
-const echartsWrapRef = ref();
-const serviceRef = ref();
-const apiRef = ref();
-const methodRef = ref();
+const echartsWrapRef = ref<HTMLElement | null>(null);
+const serviceRef = ref<HTMLElement | null>(null);
+const apiRef = ref<HTMLElement | null>(null);
+const methodRef = ref<HTMLElement | null>(null);
 
-let serviceEchart;
-let apiEchart;
-let methodEchart;
-const serviceOption = {
+let serviceEChart: echarts.ECharts | null = null;
+let apiEChart: echarts.ECharts | null = null;
+let methodEChart: echarts.ECharts | null = null;
+const serviceStatusOption = {
   title: {
     text: '',
     textStyle: {
@@ -252,7 +222,7 @@ const serviceOption = {
   ]
 };
 
-const apiOption = {
+const apiStatusOption = {
   title: {
     text: '',
     textStyle: {
@@ -323,7 +293,8 @@ const apiOption = {
   ]
 };
 
-const methodOptions = {
+type MethodPieDatum = { name: string; value: number; itemStyle: { color: string } };
+const methodOptions: any = {
   title: {
     text: '',
     textStyle: {
@@ -359,16 +330,19 @@ const methodOptions = {
       labelLine: {
         show: true
       },
-      data: []
+      data: [] as MethodPieDatum[]
     }
   ]
 };
 
 const resizeHandler = () => {
+  if (!echartsWrapRef.value || !serviceEChart || !apiEChart || !methodEChart) {
+    return;
+  }
   const warpWith = echartsWrapRef.value.clientWidth;
   if (warpWith < 1100) {
-    if (!methodEchart.legend?.formatter) {
-      methodOptions.legend.formatter = (name) => {
+    if (!(methodOptions.legend as any).formatter) {
+      (methodOptions.legend as any).formatter = (name: string) => {
         const data = methodOptions?.series?.[0].data;
         for (let i = 0; i < data.length; i++) {
           if (data[i].name === name) {
@@ -379,31 +353,36 @@ const resizeHandler = () => {
         return name;
       };
       methodOptions.series[0].label.show = false;
-      methodEchart.setOption(methodOptions);
+      methodEChart.setOption(methodOptions);
     }
   } else {
-    if (methodOptions.legend.formatter) {
-      methodOptions.legend.formatter = undefined;
+    if ((methodOptions.legend as any).formatter) {
+      (methodOptions.legend as any).formatter = undefined;
       methodOptions.series[0].label.show = true;
-      methodEchart.setOption(methodOptions);
+      methodEChart.setOption(methodOptions);
     }
   }
-  serviceEchart.resize();
-  apiEchart.resize();
-  methodEchart.resize();
+  serviceEChart.resize();
+  apiEChart.resize();
+  methodEChart.resize();
 };
 
 onMounted(() => {
-  loadApiStatusEnum();
-  serviceEchart = echarts.init(serviceRef.value);
-  apiEchart = echarts.init(apiRef.value);
-  methodEchart = echarts.init(methodRef.value);
-  serviceEchart.setOption(serviceOption);
-  apiEchart.setOption(apiOption);
-  methodEchart.setOption(methodOptions);
+  if (serviceRef.value) {
+    serviceEChart = echarts.init(serviceRef.value);
+    serviceEChart.setOption(serviceStatusOption);
+  }
+  if (apiRef.value) {
+    apiEChart = echarts.init(apiRef.value);
+    apiEChart.setOption(apiStatusOption);
+  }
+  if (methodRef.value) {
+    methodEChart = echarts.init(methodRef.value);
+    methodEChart.setOption(methodOptions);
+  }
 
   watch(() => props.projectId, () => {
-    loadMyStatistics();
+    loadMyCreationStatistics();
     loadAllStatistics();
   }, { immediate: true });
 
@@ -412,36 +391,48 @@ onMounted(() => {
       return;
     }
 
-    loadMyStatistics();
+    loadMyCreationStatistics();
     loadAllStatistics();
   }, { immediate: true });
-
-  erd.listenTo(echartsWrapRef.value, resizeHandler);
+  if (echartsWrapRef.value) {
+    erd.listenTo(echartsWrapRef.value, resizeHandler);
+  }
 });
 
 onBeforeUnmount(() => {
-  erd.removeListener(echartsWrapRef.value, resizeHandler);
+  if (echartsWrapRef.value) {
+    erd.removeListener(echartsWrapRef.value, resizeHandler);
+  }
 });
 
 </script>
 <template>
   <div class="mb-7.5 text-3 leading-5">
-    <div class="text-3.5 font-semibold mb-3">{{ t('apis.statisticsCreated.title') }}</div>
+    <div class="text-3.5 font-semibold mb-3">
+      {{ t('apis.statisticsCreated.title') }}
+    </div>
+
     <div class="flex space-x-3.75 text-content">
       <div
-        v-for="(item,index) in statisticConfig"
+        v-for="(item,index) in creationStatisticConfig"
         :key="index"
         class="rounded w-1/3 relative">
-        <div class="vertical-layout-top" :class="item.topClass"><div>{{ item.name }}</div><div>{{ state.statistic[item.total] }}</div></div>
+        <div class="vertical-layout-top" :class="item.topClass">
+          <div>{{ item.name }}</div>
+          <div>{{ state.statistic[item.total] }}</div>
+        </div>
+
         <div class="vertical-layout-bottom" :class="item.bottomClass">
           <div>
-            <div>{{ t('quickSearch.last7Days') }}</div><div>{{ state.statistic[item.week] }}</div>
+            <div>{{ t('quickSearch.last7Days') }}</div>
+            <div>{{ state.statistic[item.week] }}</div>
           </div>
           <div>
             <div>{{ t('quickSearch.last30Days') }}</div>
             <div>{{ state.statistic[item.month] }}</div>
           </div>
         </div>
+
         <template v-if="index ===0">
           <img src="./images/icon-service.png" class="w-15 absolute right-0 top-0" />
         </template>
@@ -449,23 +440,32 @@ onBeforeUnmount(() => {
           <img src="./images/icon-api.png" class="w-15 absolute right-0 top-0" />
         </template>
         <template v-if="index ===2">
-          <img src="./images/weiuidangicon.png" class="w-15 absolute right-0 top-0" />
+          <img src="./images/icon-unarchived.png" class="w-15 absolute right-0 top-0" />
         </template>
       </div>
     </div>
   </div>
 
   <div class="text-3 leading-5">
-    <div class="text-3.5 font-semibold mb-3">{{ t('apis.statistics.title') }}</div>
+    <div class="text-3.5 font-semibold mb-3">
+      {{ t('apis.statistics.title') }}
+    </div>
+
     <div ref="echartsWrapRef" class="flex space-x-3.75">
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold flex items-center px-2">{{ t('common.service') }} <span class="text-4 ml-2">{{ allService }}</span></div>
+        <div class="font-semibold flex items-center px-2">
+          {{ t('common.service') }} <span class="text-4 ml-2">{{ allService }}</span>
+        </div>
         <div ref="serviceRef" class="w-full h-65"></div>
       </div>
+
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold flex items-center px-2">{{ t('common.api') }} <span class="text-4 ml-2">{{ allApis }}</span></div>
+        <div class="font-semibold flex items-center px-2">
+          {{ t('common.api') }} <span class="text-4 ml-2">{{ allApis }}</span>
+        </div>
         <div ref="apiRef" class="w-full h-65"></div>
       </div>
+
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
         <div class="font-semibold">{{ t('common.method') }}</div>
         <div ref="methodRef" class="w-full h-65"></div>
