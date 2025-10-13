@@ -4,29 +4,24 @@ import { useI18n } from 'vue-i18n';
 import { DataType } from '@/views/data/home/types';
 
 /**
- * <p>
  * Table columns configuration composable
- * </p>
- * <p>
- * Dynamically generates table columns based on data type with proper internationalization
- * </p>
  */
 export function useAddedTableColumns (type: DataType) {
   const { t } = useI18n();
 
   /**
-   * <p>
    * Generate table columns configuration based on data type
-   * </p>
    */
   const columns = computed(() => {
     const baseColumns = [
       {
+        key: 'id',
         title: t('common.id'),
         dataIndex: 'id',
         width: 200
       },
       {
+        key: 'name',
         title: t('common.name'),
         dataIndex: 'name',
         ellipsis: true,
@@ -35,16 +30,25 @@ export function useAddedTableColumns (type: DataType) {
     ];
 
     // Add type-specific columns
-    const typeSpecificColumns = [];
+    const typeSpecificColumns: Array<{
+      key: string;
+      title: string;
+      dataIndex: string;
+      width?: number | string;
+      ellipsis?: boolean;
+      sorter?: boolean;
+    }> = [];
 
     if (['space', 'datasource'].includes(type)) {
       typeSpecificColumns.push(
         {
+          key: 'createdByName',
           title: t('common.createdBy'),
           dataIndex: 'createdByName',
           width: 200
         },
         {
+          key: 'createdDate',
           title: t('common.createdDate'),
           dataIndex: 'createdDate',
           width: 200
@@ -55,12 +59,14 @@ export function useAddedTableColumns (type: DataType) {
     if (['variable', 'dataset'].includes(type)) {
       typeSpecificColumns.push(
         {
+          key: 'lastModifiedByName',
           title: t('common.lastModifiedBy'),
           dataIndex: 'lastModifiedByName',
           ellipsis: true,
           width: 200
         },
         {
+          key: 'lastModifiedDate',
           title: t('common.lastModifiedDate'),
           dataIndex: 'lastModifiedDate',
           width: 200
@@ -70,6 +76,7 @@ export function useAddedTableColumns (type: DataType) {
 
     // Add action column
     const actionColumn = {
+      key: 'action',
       title: t('common.actions'),
       dataIndex: 'action',
       width: 80

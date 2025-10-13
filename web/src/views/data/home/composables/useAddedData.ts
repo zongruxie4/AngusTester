@@ -1,7 +1,7 @@
 import { computed, inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { modal, notification } from '@xcan-angus/vue-ui';
-import { utils, PageQuery, ProjectPageQuery } from '@xcan-angus/infra';
+import { utils, PageQuery } from '@xcan-angus/infra';
 import { datasource, dataset, variable } from '@/api/tester';
 import { space } from '@/api/storage';
 import { useI18n } from 'vue-i18n';
@@ -20,14 +20,14 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
 
   // API configuration for different data types
   const loadDataApiConfig = {
-    dataSource: datasource.getDataSourceList,
+    datasource: datasource.getDataSourceList,
     space: space.getSpaceList,
     dataset: dataset.getDataSetList,
     variable: variable.getVariablesList
   };
 
   const delDataApiConfig = {
-    dataSource: datasource.deleteDataSource,
+    datasource: datasource.deleteDataSource,
     space: space.deleteSpace,
     dataset: dataset.deleteDataSet,
     variable: variable.deleteVariables
@@ -67,10 +67,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
     loading.value = true;
     const { current, pageSize } = pagination.value;
 
-    const params: ProjectPageQuery & {
-      createdBy?: string;
-      appCode?: string;
-    } = {
+    const params: { [key: string]: any; pageNo: number; pageSize: number } = {
       projectId: projectId.value,
       pageNo: current,
       pageSize,

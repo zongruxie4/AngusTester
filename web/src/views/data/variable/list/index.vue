@@ -11,6 +11,7 @@ import { useActions } from './composables/useActions';
 import { useValuePreview } from './composables/useValuePreview';
 import { useTableColumns } from './composables/useTableColumns';
 import { useDropdownMenus } from './composables/useDropdownMenus';
+import { DataMenuKey } from '@/views/data/menu';
 
 // Import components
 import SearchPanel from './SearchPanel.vue';

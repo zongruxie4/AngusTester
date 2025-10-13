@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, IconCopy, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { getCurrentPage } from '@/utils/utils';
 import { useAddedData, useAddedTableColumns, useAddedEmptyState } from './composables';
-import { AddedItem } from '@/views/data/home/types';
+import { AddedItem, DataType } from '@/views/data/home/types';
 import { DataMenuKey } from '@/views/data/menu';
 import { BasicProps } from '@/types/types';
 
@@ -14,10 +14,10 @@ const { t } = useI18n();
 /**
  * Component props with default values
  */
-const props = withDefaults(defineProps<BasicProps>(), {
+const props = withDefaults(defineProps<BasicProps & { type: DataType }>(), {
   projectId: undefined,
   total: 0,
-  userId: '',
+  userId: undefined,
   notify: undefined,
   refreshNotify: undefined
 });
@@ -46,9 +46,10 @@ const {
   handleTableChange,
   deleteItem,
   navigateToCreate
-} = useAddedData(props.projectId, props.userId, props.type);
+} = useAddedData(String(props.projectId), String(props.userId), props.type);
 
 const { columns } = useAddedTableColumns(props.type);
+const tableColumns = computed(() => columns.value as unknown as any[]);
 const { emptyStateConfig, hasCreateAction } = useAddedEmptyState(props.type);
 
 /**
@@ -90,7 +91,7 @@ const handleDelete = (record: AddedItem) => {
 onMounted(() => {
   // Watch project ID changes
   watch(() => props.projectId, () => {
-    projectId.value = props.projectId;
+    projectId.value = String(props.projectId ?? '');
     loadData();
   }, { immediate: true });
 
@@ -154,11 +155,13 @@ const emptyTextStyle = {
       <Table
         v-else
         :dataSource="tableData"
-        :columns="columns"
+        :columns="tableColumns"
         :pagination="pagination"
         :loading="loading"
         :emptyTextStyle="emptyTextStyle"
         :minSize="5"
+        noDataSize="small"
+        :noDataText="t('common.noData')"
         rowKey="id"
         size="small"
         @change="handleTableChange">

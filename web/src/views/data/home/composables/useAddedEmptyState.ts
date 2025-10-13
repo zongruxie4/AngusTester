@@ -4,12 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { DataType } from '@/views/data/home/types';
 
 /**
- * <p>
  * Empty state management composable
- * </p>
- * <p>
- * Handles empty state display and actions for different data types
- * </p>
  */
 export function useAddedEmptyState (type: DataType) {
   const { t } = useI18n();
@@ -47,9 +42,7 @@ export function useAddedEmptyState (type: DataType) {
   });
 
   /**
-   * <p>
    * Check if the data type supports create action
-   * </p>
    */
   const hasCreateAction = computed(() => {
     return ['variable', 'dataset'].includes(type);

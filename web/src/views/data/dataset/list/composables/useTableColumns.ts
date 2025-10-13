@@ -24,9 +24,9 @@ export function useTableColumns () {
       width: '36%'
     },
     {
-      key: 'datasource',
+      key: 'dataSource',
       title: t('common.source'),
-      dataIndex: 'datasource',
+      dataIndex: 'dataSource',
       ellipsis: true,
       width: '14%',
       customRender: ({ text }: { text: any }) => text?.message
