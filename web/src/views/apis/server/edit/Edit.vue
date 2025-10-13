@@ -2,11 +2,10 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button, Radio } from 'ant-design-vue';
 import { Icon, IconRequired, Input, notification, Select, Tooltip, Validate } from '@xcan-angus/vue-ui';
-import { utils, duration, TESTER } from '@xcan-angus/infra';
+import { duration, TESTER, utils } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-
-import { ServerConfig } from './PropsType';
+import { ServerConfig } from '@/views/apis/server/types';
 
 type Props = {
   projectId: string;
@@ -21,6 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: undefined,
   urlMap: () => ({})
 });
+
 const { t } = useI18n();
 
 const serverId = ref<string>();
@@ -37,8 +37,12 @@ const nameErrorSet = ref<Set<string>>(new Set());
 const nameErrorMsgMap = ref<{ [key: string]: string | undefined }>({});
 const valueErrorSet = ref<Set<string>>(new Set());
 const valueErrorMsgMap = ref<{ [key: string]: string | undefined }>({});
-const insertIndexMap = ref<{ [key: string]: number }>({});// 变量名称为空时，记录当时下标，用于再次输入名称时，找到url对应位置插入变量
+const insertIndexMap = ref<{ [key: string]: number }>({});
 
+/**
+ * Add a variable block and initialize its enum list.
+ * When resetFlag is true, reset to a single empty variable state.
+ */
 const addVariable = (resetFlag = true) => {
   const id = utils.uuid();
   const firstEnumId = utils.uuid();
@@ -73,7 +77,10 @@ const addVariable = (resetFlag = true) => {
   defaultValueMap.value[id] = firstEnumId;
 };
 
-const urlChange = debounce(duration.delay, (event: { target: { value: string; } }) => {
+/**
+ * Handle URL change with debounce and synchronize variables extracted from the URL.
+ */
+const onUrlChange = debounce(duration.delay, (event: { target: { value: string; } }) => {
   urlError.value = false;
   urlErrorMsg.value = undefined;
 
@@ -85,7 +92,7 @@ const urlChange = debounce(duration.delay, (event: { target: { value: string; } 
       prev[cur.name] = cur;
       return prev;
     }, {} as { [key: string]: ServerConfig['variables'][number] });
-    // 过滤重复的变量
+    // Filter duplicate variables extracted from the URL
     uniqueNames = matchItems?.reduce((prev, cur) => {
       if (!prev.includes(cur)) {
         prev.push(cur);
@@ -93,14 +100,14 @@ const urlChange = debounce(duration.delay, (event: { target: { value: string; } 
       return prev;
     }, [] as string[]).map(item => item.replace(/\{(.+)\}/, '$1'));
     for (let i = 0, len = uniqueNames.length; i < len; i++) {
-      // 查找该变量是否存在
+      // Check whether the variable already exists
       const _name = uniqueNames[i];
       if (!_dataMap[_name]) {
         const _vid = variableIds.value[i];
         if (variableDataMap.value[_vid]) {
-          // 该下标的名称已经存在于url中提取到的变量，
+          // The name at this index already exists in variables extracted from the URL
           if (uniqueNames.includes(variableDataMap.value[_vid].name)) {
-            // 添加一个变量
+            // Add a new variable
             const _id = utils.uuid();
             variableIds.value[i] = _id;
             variableDataMap.value[_id] = {
@@ -116,7 +123,7 @@ const urlChange = debounce(duration.delay, (event: { target: { value: string; } 
             variableDataMap.value[_vid].name = _name;
           }
         } else {
-          // 添加一个变量
+          // Add a new variable
           const _id = utils.uuid();
           variableIds.value[i] = _id;
           variableDataMap.value[_id] = {
@@ -135,7 +142,7 @@ const urlChange = debounce(duration.delay, (event: { target: { value: string; } 
     }
   }
 
-  // 删除url中不存在的变量
+  // Remove variables that no longer exist in the URL
   const delIds = Object.values(variableDataMap.value).filter(item => !uniqueNames.includes(item.name)).map(item => item.id);
   variableIds.value = variableIds.value.filter(item => !delIds.includes(item)).reduce((prev, cur) => {
     if (!prev.includes(cur)) {
@@ -146,10 +153,9 @@ const urlChange = debounce(duration.delay, (event: { target: { value: string; } 
   for (let i = 0, len = delIds.length; i < len; i++) {
     const delId = delIds[i];
     const _enumList = variableDataMap.value[delId].enum;
-    _enumList.every(item => {
+    for (const item of _enumList) {
       valueErrorSet.value.delete(item.id);
-      return true;
-    });
+    }
     delete variableDataMap.value[delId];
     delete defaultValueMap.value[delId];
     delete nameErrorMsgMap.value[delId];
@@ -158,23 +164,32 @@ const urlChange = debounce(duration.delay, (event: { target: { value: string; } 
   }
 
   insertIndexMap.value = {};
-  // 删除所有的变量，自动添加一条空变量
+  // If all variables are removed, automatically add an empty one
   if (variableIds.value.length === 0) {
     addVariable();
   }
 });
 
-const urlBlur = (event: { target: { value: string; } }) => {
+/**
+ * Validate URL format and variable duplication when input loses focus.
+ */
+const onUrlBlur = (event: { target: { value: string; } }) => {
   const value = event.target.value;
   isServerUrl(value);
 };
 
-const serviceIdChange = () => {
+/**
+ * Clear service selection error state when selection changes.
+ */
+const onServiceIdChange = () => {
   serviceIdError.value = false;
 };
 
+/**
+ * Validate URL uniqueness and repeated placeholders.
+ */
 const isServerUrl = (_url: string): boolean => {
-  // @TODO 校验正则
+  // @TODO Validate via regex (to be refined)
   if (props.urlMap[_url]) {
     if (!serverId.value || props.urlMap[_url].length > 1 || !props.urlMap[_url].includes(serverId.value)) {
       urlError.value = true;
@@ -201,6 +216,9 @@ const isServerUrl = (_url: string): boolean => {
   return true;
 };
 
+/**
+ * Remove a variable and sync URL placeholders accordingly.
+ */
 const deleteVariable = (id: string, index: number) => {
   variableIds.value.splice(index, 1);
   const delName = variableDataMap.value[id].name;
@@ -216,17 +234,20 @@ const deleteVariable = (id: string, index: number) => {
   nameErrorSet.value.delete(id);
 
   if (delName && url.value) {
-    // 同步修改url
+    // Sync deletion in URL
     const rex = new RegExp('(:?\\/\\/)?\\/?\\{' + delName + '\\}', 'g');
     url.value = url.value.replace(rex, '$1');
   }
 
-  // 删除所有的变量，自动添加一条空变量
+  // If all variables are removed, automatically add an empty one
   if (variableIds.value.length === 0) {
     addVariable();
   }
 };
 
+/**
+ * Handle variable name changes and update URL placeholders.
+ */
 const nameChange = (event: { target: { value: string } }, id: string, index: number) => {
   nameErrorSet.value.delete(id);
   nameErrorMsgMap.value[id] = undefined;
@@ -238,7 +259,7 @@ const nameChange = (event: { target: { value: string } }, id: string, index: num
         url.value = url.value.slice(0, insertIndex) + `{${value}}` + url.value.slice(insertIndex);
         delete insertIndexMap.value[id];
       } else {
-        // 替换名称
+        // Replace variable name in URL
         const _variables = url.value.match(/\{[^{}]+\}/g)?.map(item => item.replace(/\{(.+)\}/, '$1')).reduce((prev, cur) => {
           if (!prev.includes(cur)) {
             prev.push(cur);
@@ -249,7 +270,7 @@ const nameChange = (event: { target: { value: string } }, id: string, index: num
           const rex = new RegExp('\\{' + _variables[index] + '\\}', 'g');
           url.value = url.value.replace(rex, `{${value}}`);
         } else {
-          // 没有找到变量，追加到url后面
+          // Variable not found; append to the end of the URL
           url.value += url.value.endsWith('/') ? `{${value}}` : `/{${value}}`;
         }
         urlError.value = false;
@@ -257,10 +278,9 @@ const nameChange = (event: { target: { value: string } }, id: string, index: num
         isServerUrl(url.value);
       }
     } else {
-      // 记录当前被删除的下标
-      const _urlIndex = url.value.indexOf('{' + variableDataMap.value[id].name + '}');
-      insertIndexMap.value[id] = _urlIndex;
-      // 删除名称
+      // Record the index of the removed variable
+      insertIndexMap.value[id] = url.value.indexOf('{' + variableDataMap.value[id].name + '}');
+      // Remove variable name from URL
       const _variables = url.value.match(/\{[^{}]+\}/g)?.map(item => item.replace(/\{(.+)\}/, '$1')).reduce((prev, cur) => {
         if (!prev.includes(cur)) {
           prev.push(cur);
@@ -281,16 +301,19 @@ const nameChange = (event: { target: { value: string } }, id: string, index: num
 
   variableDataMap.value[id].name = value;
 
-  // 校验名称是否重复
+  // Validate duplicate variable names
   validRepeatName();
 };
 
+/**
+ * Handle variable enum value changes with debounce and validation.
+ */
 const variableValueChange = debounce(duration.delay, (event: { target: { value: string; } }, pid: string, cid: string, index: number) => {
   valueErrorSet.value.delete(cid);
   valueErrorMsgMap.value[cid] = undefined;
   const len = variableDataMap.value[pid].enum.length - 1;
   if (index === len) {
-    // 第一个值输入字符默认选中
+    // When the first enum receives input, select it as default
     if (len === 0 && event.target.value) {
       defaultValueMap.value[pid] = cid;
     }
@@ -298,14 +321,20 @@ const variableValueChange = debounce(duration.delay, (event: { target: { value: 
     variableDataMap.value[pid].enum.push({ id: utils.uuid(), value: '' });
   }
 
-  // 校验值是否重复
+  // Validate duplicate enum values
   validRepeatValue(pid);
 });
 
+/**
+ * Update default enum selection for a variable.
+ */
 const defaultValueChange = (pid: string, cid: string) => {
   defaultValueMap.value[pid] = cid;
 };
 
+/**
+ * Delete an enum value and adjust default selection if needed.
+ */
 const deleteVariableValue = (id: string, index: number) => {
   const defaultEnumId = defaultValueMap.value[id];
   const defaultEnum = variableDataMap.value[id].enum.find(item => item.id === defaultEnumId);
@@ -315,6 +344,9 @@ const deleteVariableValue = (id: string, index: number) => {
   }
 };
 
+/**
+ * Reset all error-related states.
+ */
 const resetError = () => {
   serviceIdError.value = false;
   urlError.value = false;
@@ -325,6 +357,9 @@ const resetError = () => {
   valueErrorMsgMap.value = {};
 };
 
+/**
+ * Validate the form and return whether it is valid.
+ */
 const isValid = (): boolean => {
   resetError();
   let errorNum = 0;
@@ -347,14 +382,13 @@ const isValid = (): boolean => {
   if (variableIds.value.length === 1) {
     const id = ids[0];
     const { enum: enumList, name, description } = dataMap[id];
-    // 名称、值、描述有一个不为空就执行校验
+    // If name/description/any enum value is non-empty, run validation
     const validFlag = name || description || !!enumList.find(item => !!item.value);
     if (validFlag) {
       if (!name) {
         nameErrorSet.value.add(id);
         errorNum++;
       }
-
       errorNum += validVariableValue(enumList);
     }
   } else {
@@ -365,7 +399,6 @@ const isValid = (): boolean => {
       } else {
         prev[name] = [id];
       }
-
       return prev;
     }, {} as { [key: string]: string[] });
     for (let i = 0, len = ids.length; i < len; i++) {
@@ -381,11 +414,9 @@ const isValid = (): boolean => {
           errorNum++;
         }
       }
-
       errorNum += validVariableValue(enumList);
     }
   }
-
   return !errorNum;
 };
 
@@ -411,7 +442,7 @@ const validVariableValue = (enumList: { id: string; value: string }[]): number =
 
     for (let i = 0, len = enumList.length; i < len; i++) {
       const { id: _id, value: _value } = enumList[i];
-      // 最后一条是空值
+      // The last item is an empty placeholder
       if (i < len - 1) {
         if (!_value) {
           valueErrorSet.value.add(_id);
@@ -426,7 +457,6 @@ const validVariableValue = (enumList: { id: string; value: string }[]): number =
       }
     }
   }
-
   return errorNum;
 };
 
@@ -487,6 +517,9 @@ const validRepeatValue = (id: string) => {
   }
 };
 
+/**
+ * Build ServerConfig object from current reactive state.
+ */
 const getData = (): ServerConfig => {
   const variables: ServerConfig['variables'] = [];
   const ids = variableIds.value;
@@ -495,7 +528,7 @@ const getData = (): ServerConfig => {
     const { enum: enumList, name } = variableDataMap.value[id];
     if (name) {
       const _enums: { id: string; value: string }[] = [];
-      // 最后一条是空值
+      // The last item is an empty placeholder
       let defaultEnum = '';
       const checkedId = defaultValueMap.value[id];
       for (let j = 0, _len = enumList.length - 1; j < _len; j++) {
@@ -518,6 +551,9 @@ const getData = (): ServerConfig => {
   };
 };
 
+/**
+ * Reset all form states to initial values.
+ */
 const reset = () => {
   url.value = undefined;
   urlError.value = false;
@@ -573,7 +609,6 @@ defineExpose({
       notification.error(t('server.detail.serverConfigTip'));
       return;
     }
-
     const data = getData();
     return data;
   }
@@ -594,8 +629,8 @@ defineExpose({
           :autoSize="true"
           :error="urlError"
           :maxlength="400"
-          @change="urlChange"
-          @blur="urlBlur" />
+          @change="onUrlChange"
+          @blur="onUrlBlur" />
       </Validate>
     </div>
 
@@ -613,7 +648,7 @@ defineExpose({
           :fieldNames="{label:'name',value:'id'}"
           :error="serviceIdError"
           :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
-          @change="serviceIdChange" />
+          @change="onServiceIdChange" />
       </div>
       <Tooltip :title="t('server.detail.serverServiceTip')">
         <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
@@ -712,7 +747,9 @@ defineExpose({
                   @change="variableValueChange($event, item, _enum.id, _index)">
                   <template #suffix>
                     <div class="flex items-center leading-5">
-                      <div v-if="defaultValueMap[item] === _enum.id" class="mr-1 text-text-sub-content text-3">{{ t('server.detail.variableDefault') }}</div>
+                      <div v-if="defaultValueMap[item] === _enum.id" class="mr-1 text-text-sub-content text-3">
+                        {{ t('server.detail.variableDefault') }}
+                      </div>
                       <Radio
                         size="small"
                         style="transform:translateY(-3px);"

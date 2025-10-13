@@ -5,22 +5,18 @@ import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { ApiMenuKey } from '@/views/apis/menu';
+import { BasicProps } from '@/types/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-}
+const ServerList = defineAsyncComponent(() => import('@/views/apis/server/List.vue'));
+const ServerDetail = defineAsyncComponent(() => import('@/views/apis/server/edit/index.vue'));
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
 });
-const { t } = useI18n();
 
-const ServerList = defineAsyncComponent(() => import('@/views/apis/server/list/index.vue'));
-const ServerDetail = defineAsyncComponent(() => import('@/views/apis/server/edit/index.vue'));
+const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
@@ -49,8 +45,8 @@ const replaceTabPane = (key: string, data: { key: string }) => {
 };
 
 const initialize = () => {
-   // Watch for browser tab changes and ensure case list tab exists
-   watch(() => browserTabRef.value, () => {
+  // Watch for browser tab changes and ensure case list tab exists
+  watch(() => browserTabRef.value, () => {
     if (typeof browserTabRef.value?.update === 'function') {
       const tabData = browserTabRef.value.getData().map(item => item.value);
       if (!tabData.includes('serverList')) {
@@ -112,6 +108,13 @@ const hashChange = (hash:string) => {
   router.replace(`/apis#${ApiMenuKey.SERVER}`);
 };
 
+const storageKey = computed(() => {
+  if (!props.projectId) {
+    return undefined;
+  }
+  return `server${props.projectId}`;
+});
+
 const storageKeyChange = () => {
   initialize();
 };
@@ -121,27 +124,14 @@ onMounted(() => {
     if (!route.hash.startsWith('#server')) {
       return;
     }
-
     hashChange(route.hash);
   });
 });
 
-const storageKey = computed(() => {
-  if (!props.projectId) {
-    return undefined;
-  }
-
-  return `server${props.projectId}`;
-});
-
 provide('addTabPane', addTabPane);
-
 provide('getTabPane', getTabPane);
-
 provide('deleteTabPane', deleteTabPane);
-
 provide('updateTabPane', updateTabPane);
-
 provide('replaceTabPane', replaceTabPane);
 </script>
 <template>

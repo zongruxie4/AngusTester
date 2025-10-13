@@ -6,39 +6,36 @@ import { toClipboard, utils } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { ApiMenuKey } from '@/views/apis/menu';
+import { ServerConfig, ServerVariables } from '@/views/apis/server/types';
+import { BasicProps } from '@/types/types';
 
-import { ServerConfig } from './PropsType';
+const EditForm = defineAsyncComponent(() => import('./edit.vue'));
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-  data:{
-    _id: string;
-    serviceId?: string;
-    serverId?: string;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined,
   data: undefined
 });
-const { t } = useI18n();
 
-const EditForm = defineAsyncComponent(() => import('./edit.vue'));
+const { t } = useI18n();
 
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
-const editformRef = ref();
+const editFormRef = ref();
 const serverDemo = ref<ServerConfig>();
-const serverList = ref<ServerConfig[]>([]);
+const serverList = ref<ServerConfig[]>([]); // filled by parent context; used to build urlMap
 const loading = ref(false);
+
+const serverId = computed(() => {
+  return props.data?.serverId;
+});
+
+const serviceId = computed(() => {
+  return props.data?.serviceId;
+});
 
 const loadData = async () => {
   if (!serviceId.value || !serverId.value) {
@@ -83,8 +80,8 @@ const loadData = async () => {
 
 const toSave = async () => {
   let data;
-  if (typeof editformRef.value?.getData === 'function') {
-    data = editformRef.value.getData();
+  if (typeof editFormRef.value?.getData === 'function') {
+    data = editFormRef.value.getData();
   }
 
   if (!data) {
@@ -103,7 +100,9 @@ const toSave = async () => {
 
   if (!serverId.value) {
     updateTabPane({ _id: 'serverList', notify: utils.uuid() });
-    deleteTabPane([props.data?._id]);
+    if (props.data?._id) {
+      deleteTabPane([props.data._id]);
+    }
   }
 };
 
@@ -114,33 +113,19 @@ const getSaveParams = (data:ServerConfig) => {
       description: cur.description,
       enum: cur.enum?.map(item => item.value) || []
     };
-
     return prev;
-  }, {} as {
-      [key:string]:{
-        default:string;
-        description:string;
-        enum:string[];
-      }
-    });
+  }, {} as ServerVariables);
   const params:{
+    'x-xc-id'?:string;
     description?:string;
     url:string;
-    variables:{
-      [key:string]:{
-        default:string;
-        description:string;
-        enum:string[];
-      }
-    };
-    'x-xc-id'?:string;
+    variables: ServerVariables;
   } = {
     'x-xc-id': data['x-xc-id'],
     description: data.description,
     url: data.url,
     variables
   };
-
   return params;
 };
 
@@ -194,12 +179,17 @@ const toDelete = () => {
       }
 
       updateTabPane({ _id: 'serverList', notify: utils.uuid() });
-      deleteTabPane([props.data?._id]);
+      if (props.data?._id) {
+        deleteTabPane([props.data._id]);
+      }
     }
   });
 };
 
 const toClone = async () => {
+  if (!serverDemo.value) {
+    return;
+  }
   const params:{
     description?:string;
     url:string;
@@ -235,10 +225,6 @@ const toRefresh = () => {
   loadData();
 };
 
-onMounted(() => {
-  loadData();
-});
-
 const urlMap = computed(() => {
   return serverList.value.reduce((prev, cur) => {
     if (prev[cur.url]) {
@@ -251,12 +237,8 @@ const urlMap = computed(() => {
   }, {} as {[key:string]:string[]});
 });
 
-const serverId = computed(() => {
-  return props.data?.serverId;
-});
-
-const serviceId = computed(() => {
-  return props.data?.serviceId;
+onMounted(() => {
+  loadData();
 });
 </script>
 
@@ -328,9 +310,9 @@ const serviceId = computed(() => {
     </div>
 
     <EditForm
-      ref="editformRef"
+      ref="editFormRef"
       class="max-w-200"
-      :projectId="props.projectId"
+      :projectId="String(props.projectId ?? '')"
       :serviceId="serviceId"
       :value="serverDemo"
       :urlMap="urlMap" />

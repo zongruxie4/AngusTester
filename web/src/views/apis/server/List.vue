@@ -3,32 +3,24 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button, Popconfirm, Tag, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Image, NoData, notification, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { ApiMenuKey } from '@/views/apis/menu';
-import { ServerInfo } from '../PropsType';
+import { ServerInfo, ServerVariables } from './types';
 import { cloneDeep } from 'lodash-es';
+import { BasicProps } from '@/types/types';
 
-type FilterItem = { key: string; op: string; value: string; };
+const Introduce = defineAsyncComponent(() => import('@/views/apis/server/Introduce.vue'));
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined
 });
+
 const { t } = useI18n();
-
-const Introduce = defineAsyncComponent(() => import('@/views/apis/server/list/introduce/index.vue'));
-
 const router = useRouter();
 
 const MAX_NUM = 200;
@@ -59,13 +51,7 @@ const toClone = async (data:{serviceId:string;serviceName:string;server:ServerIn
   const params:{
     description?:string;
     url:string;
-    variables:{
-      [key:string]:{
-        default:string;
-        description:string;
-        enum:string[];
-      }
-    };
+    variables: ServerVariables;
   } = {
     description: data.server?.description,
     url: data.server?.url,
@@ -81,7 +67,7 @@ const toClone = async (data:{serviceId:string;serviceName:string;server:ServerIn
 
   notification.success(t('server.home.cloneSuccess'));
   searchedFlag.value = false;
-  loadData();
+  await loadData();
 };
 
 const toDelete = async (data:{serviceId:string;serviceName:string;server:ServerInfo}) => {
@@ -93,10 +79,10 @@ const toDelete = async (data:{serviceId:string;serviceName:string;server:ServerI
   }
 
   searchedFlag.value = false;
-  loadData();
+  await loadData();
 };
 
-const searchChange = (value: FilterItem[]): void => {
+const searchChange = (value: SearchCriteria[]): void => {
   searchedFlag.value = true;
   if (value.length) {
     const description = value.find(item => item.key === 'description');
@@ -111,13 +97,10 @@ const searchChange = (value: FilterItem[]): void => {
       } else if (serviceId) {
         flag = item.serviceId === serviceId.value;
       }
-
       return flag;
     });
-
     return;
   }
-
   showList.value = cloneDeep(dataList.value);
 };
 
@@ -150,7 +133,6 @@ const loadData = async () => {
       editLinkUrl: `/apis#${ApiMenuKey.SERVER}?serviceId=${item.serviceId}&serverId=${item.server?.extensions?.['x-xc-id']}`
     };
   });
-
   showList.value = cloneDeep(dataList.value);
 };
 
@@ -193,7 +175,6 @@ const searchOptions = [
   }
 ];
 </script>
-
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <Introduce class="mb-7" />
@@ -212,7 +193,7 @@ const searchOptions = [
       class="flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
-          <img src="../../../../assets/images/nodata.png">
+          <img src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-7">
             <span>{{ t('server.home.emptyTip') }}</span>
 
