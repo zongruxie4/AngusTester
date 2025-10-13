@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
-import { Colon, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
+import { computed, ref } from 'vue';
+import { Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { LoadingProps } from '@/types/types';
-import { formatDateString } from '@/utils/utils';
+import {
+  QuickSearchOptions, createAuditOptions, createTimeOptions, type QuickSearchConfig
+} from '@/components/quickSearch';
 
 const { t } = useI18n();
 
@@ -23,9 +25,9 @@ const emits = defineEmits<{(e: 'change', value: {
 const userInfo = ref(appContext.getUser());
 
 const searchPanelRef = ref();
-const selectedMenuMap = ref<{[key: string]: boolean}>({});
+const quickSearchOptionsRef = ref();
 
-const searchPanelOptions = [
+const searchPanelOptions: any[] = [
   {
     valueKey: 'name',
     type: 'input',
@@ -47,28 +49,31 @@ const searchPanelOptions = [
   }
 ];
 
-const menuItems = computed(() => [
-  {
-    key: '',
-    name: t('common.all')
-  },
-  {
-    key: 'createdBy',
-    name: t('apiShare.searchPanel.menuItems.myShares')
-  },
-  {
-    key: 'last1Day',
-    name: t('quickSearch.last1Day')
-  },
-  {
-    key: 'last3Days',
-    name: t('quickSearch.last3Days')
-  },
-  {
-    key: 'last7Days',
-    name: t('quickSearch.last7Days')
+const quickSearchConfig = computed<QuickSearchConfig>(() => ({
+  title: t('quickSearch.title'),
+  auditOptions: createAuditOptions([
+    {
+      key: 'createdBy',
+      name: t('apiShare.searchPanel.menuItems.myShares'),
+      fieldKey: 'createdBy'
+    },
+    {
+      key: 'myModified',
+      name: t('quickSearch.modifiedByMe'),
+      fieldKey: 'lastModifiedBy'
+    }
+  ], String(userInfo.value?.id ?? '')),
+  timeOptions: createTimeOptions([
+    { key: 'last1Day', name: t('quickSearch.last1Day'), timeRange: 'last1Day' },
+    { key: 'last3Days', name: t('quickSearch.last3Days'), timeRange: 'last3Days' },
+    { key: 'last7Days', name: t('quickSearch.last7Days'), timeRange: 'last7Days' }
+  ], 'createdDate'),
+  externalClearFunction: () => {
+    if (typeof searchPanelRef.value?.clear === 'function') {
+      searchPanelRef.value.clear();
+    }
   }
-]);
+}));
 
 const orderBy = ref();
 const orderSort = ref();
@@ -76,7 +81,6 @@ const searchFilters = ref<SearchCriteria[]>([]);
 const quickSearchFilters = ref<SearchCriteria[]>([]);
 const assocFilters = ref<SearchCriteria[]>([]);
 const assocKeys = ['createdDate', 'createdBy'];
-const timeKeys = ['last1Day', 'last3Days', 'last7Days'];
 
 const getParams = () => {
   return {
@@ -90,104 +94,65 @@ const getParams = () => {
   };
 };
 
-const searchChange = (data: SearchCriteria[]) => {
-  searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
-  assocFilters.value = data.filter(item => assocKeys.includes(item.key));
-
-  if (!assocFilters.value.length) {
-    assocKeys.forEach(i => {
-      if (i === 'createdDate') {
-        timeKeys.forEach(t => delete selectedMenuMap.value[t]);
-      } else {
-        delete selectedMenuMap.value[i];
-      }
-    });
-  } else {
-    assocKeys.forEach(key => {
-      if (['createdBy'].includes(key)) {
-        const filterItem = assocFilters.value.find(i => i.key === key);
-        if (!filterItem || filterItem.value !== userInfo.value?.id) {
-          delete selectedMenuMap.value[key];
-        }
-      } else if (key === 'createdDate') {
-        const filterItem = assocFilters.value.filter(i => i.key === key);
-        const timeKey = timeKeys.find(t => selectedMenuMap.value[t]);
-        if (timeKey) {
-          const timeValue = formatDateString(timeKey);
-          if (timeValue[0] !== filterItem[0].value || timeValue[1] !== filterItem[1].value) {
-            delete selectedMenuMap.value[timeKey];
-          }
-        }
-      }
-    });
+const handleSearchChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, key?: string) => {
+  if (key === 'createdBy') {
+    quickSearchOptionsRef.value.clearSelectedMap(['createdBy']);
+    quickSearchFilters.value = quickSearchFilters.value.filter(f => f.key !== 'createdBy');
+    if (typeof searchPanelRef.value?.setConfigs === 'function') {
+      searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', type: 'select-user', value: undefined }]);
+    }
+  }
+  if (key === 'createdDate') {
+    quickSearchOptionsRef.value.clearSelectedMap(['createdDate', 'last1Day', 'last3Days', 'last7Days']);
+    quickSearchFilters.value = quickSearchFilters.value.filter(f => f.key !== 'createdDate');
+    if (typeof searchPanelRef.value?.setConfigs === 'function') {
+      searchPanelRef.value.setConfigs([{ valueKey: 'createdDate', type: 'date-range', value: undefined }]);
+    }
   }
 
+  searchFilters.value = data.filter(item => !assocKeys.includes(String(item.key)));
+  assocFilters.value = data.filter(item => assocKeys.includes(String(item.key)));
   emits('change', getParams());
 };
 
-const menuItemClick = (data) => {
-  const key = data.key;
-  let searchChangeFlag = false;
-  if (selectedMenuMap.value[key]) {
-    delete selectedMenuMap.value[key];
-    if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'createdDate', value: undefined }
-      ]);
-      searchChangeFlag = true;
-    } else if (assocKeys.includes(key)) {
-      searchPanelRef.value.setConfigs([
-        { valueKey: key, value: undefined }
-      ]);
-      searchChangeFlag = true;
-    }
-  } else {
-    if (key === '') {
-      selectedMenuMap.value = { '': true };
-      quickSearchFilters.value = [];
-      if (typeof searchPanelRef.value?.clear === 'function') {
-        searchPanelRef.value.clear();
-        searchChangeFlag = true;
+const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string) => {
+  let isAssociated = false;
+  if (key === 'createdBy') {
+    isAssociated = true;
+    if (selectedKeys.includes(key)) {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', type: 'select-user', value: String(userInfo.value?.id ?? '') }]);
       }
     } else {
-      delete selectedMenuMap.value[''];
-    }
-    selectedMenuMap.value[key] = true;
-  }
-  if (timeKeys.includes(key)) {
-    timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
-    selectedMenuMap.value[key] = true;
-  } else {
-    selectedMenuMap.value[key] = true;
-  }
-  const userId = userInfo.value?.id;
-  // let timeFilters: {key: string; op: string; value: string}[] = [];
-  const assocFiltersInQuick:{valueKey: string, value: string|string[]}[] = [];
-  quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
-    if (key === '') {
-      return undefined;
-    } else if (['last1Day', 'last3Days', 'last7Days'].includes(key)) {
-      assocFiltersInQuick.push({
-        valueKey: 'createdDate',
-        value: formatDateString(key)
-      });
-      return undefined;
-    } else if (assocKeys.includes(key)) {
-      if (['createdBy'].includes(key)) {
-        assocFiltersInQuick.push({ valueKey: key, value: userId });
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', type: 'select-user', value: '' }]);
       }
-      return undefined;
     }
-  }).filter(Boolean);
-  if (assocFiltersInQuick.length) {
-    searchPanelRef.value.setConfigs([
-      ...assocFiltersInQuick
-    ]);
-    searchChangeFlag = true;
   }
-  if (!searchChangeFlag) {
-    emits('change', getParams());
+
+  if (key && key.startsWith('last') && (key.endsWith('Day') || key.endsWith('Days'))) {
+    isAssociated = true;
+    if (selectedKeys.includes(key)) {
+      const dateCriteria = searchCriteria.filter(f => f.key === 'createdDate');
+      if (dateCriteria.length > 1) {
+        const value = [dateCriteria[0].value, dateCriteria[1].value];
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{ valueKey: 'createdDate', value, type: 'date-range' }]);
+        }
+      }
+    } else {
+      if (typeof searchPanelRef.value?.setConfigs === 'function') {
+        searchPanelRef.value.setConfigs([{ valueKey: 'createdDate', value: undefined, type: 'date-range' }]);
+      }
+    }
   }
+
+  searchCriteria = searchCriteria.filter(f => !assocKeys.includes(f.key as string));
+  quickSearchFilters.value = searchCriteria;
+  if (isAssociated) {
+    return;
+  }
+  emits('change', getParams());
 };
 
 const refresh = () => {
@@ -201,28 +166,17 @@ const add = () => {
 
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex">
-      <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>{{ t('apiShare.searchPanel.title') }}</span>
-        <Colon />
-      </div>
-      <div class="flex  flex-wrap ml-2">
-        <div
-          v-for="item in menuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="menuItemClick(item)">
-          {{ item.name }}
-        </div>
-      </div>
-    </div>
+    <QuickSearchOptions
+      ref="quickSearchOptionsRef"
+      :config="quickSearchConfig"
+      @change="handleQuickSearchChange" />
+
     <div class="flex items-start justify-between ">
       <SearchPanel
         ref="searchPanelRef"
         :options="searchPanelOptions"
         class="flex-1 mr-3.5"
-        @change="searchChange" />
+        @change="handleSearchChange" />
 
       <div class="flex items-center space-x-3">
         <Button
@@ -249,8 +203,4 @@ const add = () => {
   </div>
 </template>
 <style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
 </style>
