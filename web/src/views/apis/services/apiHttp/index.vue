@@ -1697,7 +1697,7 @@ provide('selectHandle', closeDrawer);
               class="hover:text-status-orange  text-status-orange !bg-board-orange"
               @click="handleShare">
               <Icon icon="icon-fenxiang" class="mr-2" />
-              {{ t('service.apis.actions.share') }}
+              {{ t('actions.share') }}
             </Button>
             <SelectEnum
               v-model:value="apisStatus"

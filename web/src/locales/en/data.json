@@ -486,6 +486,11 @@
         "quota": "Quota",
         "mockFunc": "Mock Function"
       }
+    },
+    "permissionModal": {
+      "title": "Space Settings",
+      "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
+      "offTips": "No permission restrictions, all users in the account can view and operate, default is not enabled."
     }
   },
   "dataCommon": {

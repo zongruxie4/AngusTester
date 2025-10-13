@@ -490,6 +490,7 @@
     "collapse": "Collapse",
     "expandAll": "Expand All",
     "collapseAll": "Collapse All",
+    "share": "Share",
     "tips": {
       "confirmUpdate": "Are you sure you want to update「{name}」?",
       "confirmDelete": "Are you sure you want to delete「{name}」?",
