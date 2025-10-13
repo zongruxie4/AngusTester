@@ -7,21 +7,21 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 
 import { ParamsItem } from '@/views/apis/services/apiHttp/requestParam/interface';
 import { getDefaultParams } from '../interface';
-// import ParamsInput from '@/components/ParamInput/index.vue';
-import { API_EXTENSION_KEY, variableNameReg } from '@/views/apis/utils';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
-import { services, variable as variableApi } from '@/api/tester';
+import { services } from '@/api/tester';
 import { itemTypes } from './interface';
 import { deepDelAttrFromObj, validateType } from '../utils';
-import JsonContent from '../requestBody/json/index.vue';
-import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { toClipboard } from '@xcan-angus/infra';
 
+import JsonContent from '../requestBody/json/index.vue';
+import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
+
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
+
 const { t } = useI18n();
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
-// const exportVariableFlagKey = API_EXTENSION_KEY.exportVariableFlagKey;
 
 interface Props {
   value: ParamsItem[];
@@ -54,10 +54,6 @@ const showContentType = computed(() => {
 // 对参数名称限制
 const nameInputProps = { dataType: 'mixin-en', includes: '-_', maxLength: 100 };
 
-// const getText = (flag: boolean | undefined): string => {
-//   return flag ? '取消变量' : '设为变量';
-// };
-
 const getKey = (index?: number): symbol => {
   return Symbol(index);
 };
@@ -66,7 +62,6 @@ const enterHandle = (e: ChangeEvent): void => {
   if (e.key !== 'Enter') {
     return;
   }
-
   e.target.blur();
 };
 
@@ -88,7 +83,7 @@ const handleValueBlur = (target:HTMLElement, index: number, data: ParamsItem):vo
 };
 
 const getModelData = async (ref) => {
-  const [error, { data }] = await services.getRefInfo(apiBaseInfo.value?.serviceId, ref);
+  const [error, { data }] = await services.getComponentRef(apiBaseInfo.value?.serviceId, ref);
   if (error) {
     return {};
   }
@@ -97,12 +92,6 @@ const getModelData = async (ref) => {
 
 const selectModels = async (_value, option, index) => {
   if (option) {
-    // const model = JSON.parse(option.model);
-    // const temp = { ...model, [enabledKey]: true };
-    // if (option.readonly) {
-    //   temp.$ref = option.ref;
-    // }
-
     const model = await getModelData(option.ref);
     const schema = model.schema ? { ...model.schema, [valueKey]: model[valueKey] || model.schema?.[valueKey] } : {};
     const value = SwaggerUI.extension.sampleFromSchemaGeneric(schema);
@@ -138,27 +127,6 @@ const handleChecked = (e:ChangeEvent, index:number, data: ParamsItem) => {
     jsContentRef.value[index] && jsContentRef.value[index].validate(false);
   }
 };
-//
-// // 设为变量
-// const setVariableLoading = reactive({});
-// const setToVariable = async (data: ParamsItem): void => {
-//   if (setVariableLoading[data.name]) {
-//     return;
-//   }
-//   setVariableLoading[data.name] = true;
-//   if (!variableNameReg.test(data.name as string)) {
-//     notification.warning('名称不符合变量要求,允许数字字母!@$%^&*()_-+=./等');
-//     return;
-//   }
-//   const value = typeof data[valueKey] === 'object' ? JSON.stringify(data[valueKey]) : data[valueKey];
-//   const [error] = await variableApi.addVariables({ name: data.name, targetId: archivedId.value, scope: 'CURRENT', targetType: 'API', enabled: true, value });
-//   // const temp = { ...data, [exportVariableFlagKey]: !data[exportVariableFlagKey] } as ParamsItem;
-//   // changeEmit(index, temp);
-//   setVariableLoading[data.name] = false;
-//   if (!error) {
-//     notification.success('设置变量成功');
-//   }
-// };
 
 const copyValue = async (data: ParamsItem) => {
   let text = data[valueKey];

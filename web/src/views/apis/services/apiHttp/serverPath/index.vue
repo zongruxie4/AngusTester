@@ -5,11 +5,12 @@ import { XCanDexie, utils, enumUtils, HttpMethod } from '@xcan-angus/infra';
 import { Button, Divider, Dropdown } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-import { Method } from '../interface';
-import ServerInput from './serverInput.vue';
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 import { getDefaultParams } from '@/views/apis/services/apiHttp/requestParam/interface';
 import { HttpServer } from './PropsType';
+import { Method } from '../interface';
+
+import ServerInput from './serverInput.vue';
 
 const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/addModal/index.vue'));
 

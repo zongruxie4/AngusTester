@@ -1,4 +1,4 @@
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 import qs from 'qs';
 
 const valueKey = API_EXTENSION_KEY.valueKey;

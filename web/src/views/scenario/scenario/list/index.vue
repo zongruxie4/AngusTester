@@ -119,13 +119,12 @@ const deleteScenarioHandler = (scenaridId: string):void => {
 <template>
   <div class="flex h-full ">
     <div class="h-full overflow-hidden pb-3 bg-gray-1 text-3 w-65 mr-2">
-      
       <ModuleTree
         v-model:moduleId="moduleId"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
-        :notify="props.notify"/>
+        :notify="props.notify" />
     </div>
     <Spin class="flex-1 h-full flex flex-col py-5" :spinning="loading">
       <div class="flex-shrink-0 flex items-start text-3 px-5 mb-3.5 space-x-3">

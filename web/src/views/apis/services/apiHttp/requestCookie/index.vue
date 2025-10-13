@@ -7,21 +7,21 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 
 import { ParamsItem } from '@/views/apis/services/apiHttp/requestParam/interface';
 import { getDefaultParams } from '../interface';
-// import ParamsInput from '@/components/ParamInput/index.vue';
-import { API_EXTENSION_KEY, variableNameReg } from '@/views/apis/utils';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
-import { services, variable as variableApi } from '@/api/tester';
+import { services } from '@/api/tester';
 import { itemTypes } from './interface';
 import { deepDelAttrFromObj, validateType } from '../utils';
-import JsonContent from '../requestBody/json/index.vue';
-import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { toClipboard } from '@xcan-angus/infra';
 
+import JsonContent from '../requestBody/json/index.vue';
+import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
+
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
+
 const { t } = useI18n();
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
-// const exportVariableFlagKey = API_EXTENSION_KEY.exportVariableFlagKey;
 
 interface Props {
   value: ParamsItem[];
@@ -29,7 +29,6 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {});
 const apiBaseInfo = inject('apiBaseInfo', ref());
-const archivedId = inject('archivedId', ref());
 const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
 
 // eslint-disable-next-line func-call-spacing
@@ -75,7 +74,7 @@ const handleValueBlur = (target:HTMLElement, index: number, data: ParamsItem):vo
 };
 
 const getModelData = async (ref) => {
-  const [error, { data }] = await services.getRefInfo(apiBaseInfo.value?.serviceId, ref);
+  const [error, { data }] = await services.getComponentRef(apiBaseInfo.value?.serviceId, ref);
   if (error) {
     return {};
   }

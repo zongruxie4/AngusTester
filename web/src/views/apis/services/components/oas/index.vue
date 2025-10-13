@@ -186,7 +186,7 @@ const handleView = async (compObj:CompObj) => {
 };
 
 const getAuthConfigInfo = async (compObj:CompObj) => {
-  const [error, { data }] = await services.getRefInfo(props.id, compObj.ref);
+  const [error, { data }] = await services.getComponentRef(props.id, compObj.ref);
   if (error) {
     return;
   }

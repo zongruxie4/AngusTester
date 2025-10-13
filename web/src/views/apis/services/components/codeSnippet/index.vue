@@ -46,7 +46,7 @@ const supportedLanguages = getSupportedLanguages();
 const getParameter = inject('getParameter', () => ({} as Record<string, any>));
 const apiInfo = ref<{[key:string]: any}>({});
 const languageStr = ['shell', 'php', 'javascript', 'node', 'java', 'cplusplus', 'csharp', 'c', 'python', 'ruby', 'go'];
-const { valueKey, serverSourceKey, fileNameKey, securityApiKeyPerfix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
+const { valueKey, serverSourceKey, fileNameKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
 const codeOptions = ref<any[]>([]);
 const getCodeOptions = () => {
   Object.keys(supportedLanguages).forEach(l => {

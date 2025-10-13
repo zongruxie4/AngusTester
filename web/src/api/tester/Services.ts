@@ -207,7 +207,7 @@ export default class API {
     return http.del(`${baseUrl}/${id}/comp`, { refs });
   }
 
-  getRefInfo (id:string, ref:string, config?:Record<string, any>): Promise<[Error | null, any]> {
+  getComponentRef (id:string, ref:string, config?:Record<string, any>): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${id}/comp/ref`, { ref }, config);
   }
 

@@ -267,7 +267,7 @@ const getDuration = (mseconds) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, unit] = apiUtils.splitDuration(TEST_PERFORMANCE.value.indicatorPerf.duration);
 
-  return apiUtils.formatMillisecondToShortDuraiton(+mseconds, unit);
+  return apiUtils.formatMillisecondToShortDuration(+mseconds, unit);
 };
 
 const getPerfIcon = (valueKey) => {
@@ -419,7 +419,7 @@ const getStabilityDuration = (mseconds) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, unit] = apiUtils.splitDuration(TEST_STABILITY.value?.indicatorStability?.duration);
 
-  return apiUtils.formatMillisecondToShortDuraiton(+mseconds, unit);
+  return apiUtils.formatMillisecondToShortDuration(+mseconds, unit);
 };
 
 const getStabilityIcon = (valueKey) => {

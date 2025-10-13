@@ -4,11 +4,12 @@ import { computed, inject, onMounted, ref, watch, Ref } from 'vue';
 import { Arrow, Dropdown, HttpMethodTag, Icon, Image } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { API_STATUS_COLOR_CONFIG } from '@/views/apis/utils';
+import { API_STATUS_COLOR_CONFIG } from '@/utils/apis';
 import { bgColor } from '@/utils/common';
-import VirtualList from './baseVirtualList.vue';
 import type { DataSourceType } from '../PropsType';
 import { ButtonGroup, CollapseButtonGroup } from './interface';
+
+import VirtualList from './baseVirtualList.vue';
 
 interface Props{
   dataSource:Array<DataSourceType>;

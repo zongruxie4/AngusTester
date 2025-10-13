@@ -1,10 +1,11 @@
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { i18n } from '@xcan-angus/infra';
+import { API_EXTENSION_KEY } from '@/utils/apis';
+
 const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string):string => value);
 
-// const { valueKey, securityApiKeyPerfix } = API_EXTENSION_KEY;
-const { valueKey, securityApiKeyPerfix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
+// const { valueKey, securityApiKeyPrefix } = API_EXTENSION_KEY;
+const { valueKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
 export interface AuthItem {
   name?: string;
   type: 'http'|'apiKey'|'oauth2'|'extends'|null;
@@ -22,10 +23,6 @@ export const inOpt = [
     value: 'header',
     label: 'header'
   }
-  // {
-  //   value: 'cookie',
-  //   label: 'cookie'
-  // }
 ];
 
 export const getAuthItem = () => {
@@ -57,24 +54,9 @@ export const authTypeOptions = [
     label: t('service.apiAuthorization.types.oauth2'),
     value: 'oauth2'
   },
-  // {
-  //   label: 'openIdConnect',
-  //   value: 'openIdConnect'
-  // },
   {
     label: t('service.apiAuthorization.types.extends'),
     value: 'extends'
-  }
-];
-
-export const authInOpt = [
-  {
-    label: '通过Basic认证头发送',
-    value: 'BASIC_AUTH_HEADER'
-  },
-  {
-    label: '通过请求体发送',
-    value: 'REQUEST_BODY'
   }
 ];
 
@@ -95,22 +77,7 @@ export const flowAuthType = [
     value: 'clientCredentials',
     label: t('service.apiAuthorization.flowTypes.clientCredentials')
   }
-  // {
-  //   value: 'authorizationCodePKCE',
-  //   label: '授权码模式-带PKCE（Authorization Code PKCE）'
-  // }
 ];
-
-// authorizationUrl 授权URL
-// tokenUrl 访问令牌URL
-// refreshUrl 刷新令牌URL
-// scopes 访问范围
-
-// x-xc-oauth2-clientId
-// x-xc-oauth2-clientSecret
-// x-xc-oauth2-callbackUrl
-// x-xc-oauth2-username
-// x-xc-oauth2-password
 
 export const authLabels = [
   {
@@ -173,10 +140,6 @@ export const authLabels = [
     label: t('service.apiAuthorization.oauth2Fields.scope'),
     maxLength: 200
   }
-  // {
-  //   valueKey: 'state',
-  //   label: '状态'
-  // }
 ];
 
 export const encryptionTypeOpt = [
@@ -245,9 +208,6 @@ export const flowAuthKeys = {
 };
 
 export const getApiKeyData = (dataSource) => {
-  // const { extensions } = dataSource;
-  // const first = { name: dataSource.name, in: dataSource.in, [valueKey]: dataSource[valueKey] };
-  // const others = dataSource[securityApiKeyPerfix] || [];
   const queryAuth = {};
   const queryList = dataSource.filter(item => item.in === 'query');
   queryList.forEach(item => {
@@ -264,7 +224,7 @@ export const getApiKeyData = (dataSource) => {
 export const getShowApiKeyData = (dataSource) => {
   // const { extensions } = dataSource;
   const first = { name: dataSource.name, in: dataSource.in, [valueKey]: dataSource[valueKey] };
-  const others = dataSource[securityApiKeyPerfix] || [];
+  const others = dataSource[securityApiKeyPrefix] || [];
   const queryAuth = {};
   const queryList = [first, ...others].filter(item => item.in === 'query');
   queryList.forEach(item => {

@@ -29,7 +29,7 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
   const loadData = async (
     filters?: SearchCriteria[],
     orderBy?: SortKey,
-    orderSort?: PageQuery.OrderSort,
+    orderSort?: PageQuery.OrderSort
   ): Promise<void> => {
     // Skip if no project ID
     if (!projectId.value) {
@@ -40,7 +40,7 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
       projectId: projectId.value,
       pageNo: 1,
       pageSize: 2000,
-      infoScope: PageQuery.InfoScope.DETAIL,
+      infoScope: PageQuery.InfoScope.DETAIL
     };
 
     // Add filters if provided

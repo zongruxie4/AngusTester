@@ -912,7 +912,7 @@ const debug = async () => {
     if (!params?.authentication?.type && !params?.authentication?.$ref) {
       delete params.authentication;
     } else if (params?.authentication?.$ref) {
-      const [_error, resp] = await services.getRefInfo(serviceId.value || props.serviceId, params?.authentication.$ref);
+      const [_error, resp] = await services.getComponentRef(serviceId.value || props.serviceId, params?.authentication.$ref);
       params.authentication = JSON.parse(resp.data.model);
     }
     if (requestBody?.content) {

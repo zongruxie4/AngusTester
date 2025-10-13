@@ -4,24 +4,16 @@ import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, notification, Toggle } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
 import {
-  axiosClient,
-  ContentEncoding,
-  EnumMessage,
-  enumUtils,
-  HttpMethod,
-  HttpStatus,
-  ParameterIn,
-  utils
+  axiosClient, ContentEncoding, EnumMessage, enumUtils, HttpMethod, HttpStatus, ParameterIn, utils
 } from '@xcan-angus/infra';
 
 import apiUtils from '@/utils/apis/index';
 import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
-import UrlForm from '@/views/apis/mock/detail/apis/components/UrlForm.vue';
-
 import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
+
+import UrlForm from '@/views/apis/mock/detail/apis/components/UrlForm.vue';
 
 const Agent = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/Agent.vue'));
 const InputGroup = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/InputGroup.vue'));
@@ -64,8 +56,9 @@ const server = ref();
 const endpoint = ref();
 const contentType = ref<string|undefined>(undefined);
 
+// eslint-disable-next-line new-cap
 const myRequest = new axiosClient({ timeout: 0, intervalMs: 500, maxRedirects: 0, maxRetries: 5 });
-const { valueKey } = API_EXTENSION_KEY;
+const { valueKey } = apiUtils.API_EXTENSION_KEY;
 let apiUuid: string;
 let controller: AbortController;
 let statusOpt: EnumMessage<HttpStatus>[] = [];

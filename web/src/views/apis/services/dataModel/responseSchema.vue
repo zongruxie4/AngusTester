@@ -5,7 +5,7 @@ import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
 import { parseSchemaArrToObj, parseSchemaObjToArr } from './utils';
-import { CONTENT_TYPE } from '@/views/apis/utils';
+import { CONTENT_TYPE } from '@/utils/apis';
 
 import BodyContentTypeTab from './bodyContentTypeTab.vue';
 import AttrItemList from './attrItemList.vue';

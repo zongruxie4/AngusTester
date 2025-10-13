@@ -5,15 +5,15 @@ import { Button, Switch } from 'ant-design-vue';
 import { Composite, Icon, IconRequired, Input, notification, Validate } from '@xcan-angus/vue-ui';
 import { HttpMethod, regexpUtils, utils, axiosClient } from '@xcan-angus/infra';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
-
 import { ContentType, DelayData, ParametersType, PushbackBody, ResponsePushbackConfig } from './types';
+import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
+import { API_EXTENSION_KEY } from '@/utils/apis';
+
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import DelayParameter from './DelayParameter.vue';
 import RequestBody from './RequestBody.vue';
 import InputGroup from './InputGroup.vue';
-import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
 
 /**
  * <p>Props interface for PushBack component</p>
@@ -31,7 +31,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// ==================== Global Variables ====================
 /**
  * <p>API UUID for request tracking</p>
  * <p>Used to identify specific API requests</p>
@@ -42,6 +41,7 @@ let apiUuid: string;
  * <p>Axios client instance for HTTP requests</p>
  * <p>Configured with specific timeout and retry settings</p>
  */
+// eslint-disable-next-line new-cap
 const myRequest = new axiosClient({ timeout: 0, intervalMs: 500, maxRedirects: 0, maxRetries: 5 });
 
 /**

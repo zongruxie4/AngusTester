@@ -29,7 +29,7 @@ export const flowAuthKeys = {
 };
 
 const { analysisParameters, analysisBody, API_EXTENSION_KEY } = angusUtils;
-const { valueKey, securityApiKeyPerfix, oAuth2Key, newTokenKey, basicAuthKey, oAuth2Token } = API_EXTENSION_KEY;
+const { valueKey, securityApiKeyPrefix, oAuth2Key, newTokenKey, basicAuthKey, oAuth2Token } = API_EXTENSION_KEY;
 const getServerUrl = (data: RequestConfig['server']): string => {
   const { url, variables } = data;
   const variableReg = /\{[a-zA-Z0-9_]+\}/g;
@@ -267,7 +267,7 @@ const formApiAuthToScenarioAuth = (authentication) => {
     }
     if (authentication.type === 'apiKey') {
       const first = { name: authentication.name, in: authentication.in || 'header', value: authentication[valueKey] };
-      const others = (authentication[securityApiKeyPerfix] || []).map(i => {
+      const others = (authentication[securityApiKeyPrefix] || []).map(i => {
         return {
           name: i.name,
           in: i.in,

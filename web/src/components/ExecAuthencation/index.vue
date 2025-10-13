@@ -145,7 +145,7 @@ const handleSelectSecurity = (value) => {
 const initApiKeyContentList = (newValue) => {
   // const { name, in } = newValue;
   // const first = { name: newValue.name, in: newValue.in || 'header', [valueKey]: newValue[valueKey] };
-  // const others = newValue[securityApiKeyPerfix] || [];
+  // const others = newValue[securityApiKeyPrefix] || [];
   // apiKeyContentList.value = [first, ...others];
 
   apiKeyContentList.value = newValue.apiKeys?.length ? newValue.apiKeys : [getAuthItem()];

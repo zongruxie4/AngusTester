@@ -38,7 +38,7 @@ const handleImportModel = async () => {
   //   };
   // }, {});
   // const samplingSummary = deconstruct(modelValue, resolvedRefModels.value);
-  const [error, resp] = await services.getRefInfo(apiBaseInfo.value.serviceId, $ref.value);
+  const [error, resp] = await services.getComponentRef(apiBaseInfo.value.serviceId, $ref.value);
   if (error) {
     return;
   }

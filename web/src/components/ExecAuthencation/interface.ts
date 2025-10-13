@@ -260,7 +260,7 @@ export const flowAuthKeys = {
 const getApiKeyData = (dataSource) => {
   // const { extensions } = dataSource;
   // const first = { name: dataSource.name, in: dataSource.in, [valueKey]: dataSource[valueKey] };
-  // const others = dataSource[securityApiKeyPerfix] || [];
+  // const others = dataSource[securityApiKeyPrefix] || [];
   const queryAuth = {};
   const queryList = dataSource.filter(item => item.in === 'query');
   queryList.forEach(item => {

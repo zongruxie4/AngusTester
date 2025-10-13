@@ -7,31 +7,22 @@ import { encode } from '@/utils/secure';
 import { http, utils } from '@xcan-angus/infra';
 import axios from 'axios';
 import { services } from '@/api/tester';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 
 import {
-  AuthItem,
-  authLabels,
-  authTypeOptions as _authTypeOptions,
-  encryptionTypeOpt,
-  flowAuthKeys,
-  flowAuthType,
-  getApiKeyData,
-  getAuthItem,
-  getShowApiKeyData,
-  inOpt
+  AuthItem, authLabels, authTypeOptions as _authTypeOptions,
+  encryptionTypeOpt, flowAuthKeys, flowAuthType, getApiKeyData,
+  getAuthItem, getShowApiKeyData, inOpt
 } from './interface';
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
 
-// const xcAuthMethod = 'x-xc-type';
-// const xcExtendsId = 'x-xc-extendsId';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 interface Props {
   defaultValue:AuthItem,
   auth?: boolean;
   ws?: WebSocket
 }
-const { valueKey, securityApiKeyPerfix, oAuth2Key, oAuth2Token, newTokenKey, basicAuthKey } = API_EXTENSION_KEY;
+const { valueKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey, basicAuthKey } = API_EXTENSION_KEY;
 
 const apiBaseInfo = inject('apiBaseInfo', ref());
 let tokenUuid = '';
@@ -136,7 +127,7 @@ const handleSelectSecurity = (value) => {
 const initApiKeyContentList = (newValue) => {
   // const { name, in } = newValue;
   const first = { name: newValue.name, in: newValue.in || 'header', [valueKey]: newValue[valueKey] };
-  const others = newValue[securityApiKeyPerfix] || [];
+  const others = newValue[securityApiKeyPrefix] || [];
   apiKeyContentList.value = [first, ...others];
 };
 
@@ -155,7 +146,7 @@ const changeApiKey = () => {
     name,
     in: apiKeyContentList.value[0].in,
     [valueKey]: apiKeyContentList.value[0][valueKey],
-    [securityApiKeyPerfix]: lists.length ? lists : undefined
+    [securityApiKeyPrefix]: lists.length ? lists : undefined
     // [xcAuthMethod]: type.value
   };
   emits('change', data);
@@ -508,7 +499,7 @@ const getExtendModel = async (ref) => {
   if (!ref) {
     return [{}];
   }
-  const [error, resp] = await services.getRefInfo(apiBaseInfo.value?.serviceId, ref);
+  const [error, resp] = await services.getComponentRef(apiBaseInfo.value?.serviceId, ref);
   if (error) {
     return [{}];
   }

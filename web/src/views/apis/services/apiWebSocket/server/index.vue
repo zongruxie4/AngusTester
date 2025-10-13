@@ -4,8 +4,8 @@ import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 import { XCanDexie } from '@xcan-angus/infra';
 import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import ServerInput from '@/views/apis/services/apiHttp/serverPath/serverInput.vue';
 
 type HttpServer = {

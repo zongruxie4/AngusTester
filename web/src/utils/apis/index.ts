@@ -11,9 +11,13 @@ import { Extraction } from '@/components/ApiAssert/utils/extract/PropsType';
 import { getExecShowAuthData } from '@/components/ExecAuthencation/interface';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import {services} from "@/api/tester";
 
 dayjs.extend(duration);
 
+/**
+ * Supported content types for API requests
+ */
 const CONTENT_TYPE = [
   'application/x-www-form-urlencoded',
   'multipart/form-data',
@@ -26,12 +30,53 @@ const CONTENT_TYPE = [
   '*/*'
 ];
 
+/**
+ * CSS class names for different API status states
+ */
+const API_STATUS_COLOR_CONFIG = {
+  IN_DESIGN: 'text-gray-text-light',
+  IN_DEV: 'text-execute-yellow',
+  DEV_COMPLETED: 'text-blue-1',
+  RELEASED: 'text-status-success',
+  UNKNOWN: 'text-text-content'
+};
+
+/**
+ * RGB color values for API status badges
+ */
+const API_STATUS_BADGE_COLOR_CONFIG = {
+  IN_DESIGN: 'rgba(140, 140, 140, 1)',
+  IN_DEV: 'rgba(255, 129, 0, 1)',
+  DEV_COMPLETED: 'rgba(0,119,255,1)',
+  RELEASED: 'rgba(82, 196, 26, 1)',
+  UNKNOWN: 'rgba(82,90,101,1)'
+};
+
+/**
+ * API extension keys for custom properties.
+ */
+const API_EXTENSION_KEY = {
+  prefix: 'x-xc-', // Prefix
+  idKey: 'x-xc-id', // Unique identifier
+  valueKey: 'x-xc-value', // Value
+  enabledKey: 'x-xc-enabled', // Enable/disable
+  exportVariableKey: 'x-xc-exportVariable', // Whether to set as variable
+  requestSettingKey: 'x-xc-requestSetting', // Request settings like timeout, object
+  serverNameKey: 'x-xc-serverName', // Server URL name
+  serverSourceKey: 'x-xc-serverSource', // Server source
+  securityApiKeyPrefix: 'x-xc-apiKey', // API key type extension
+  securitySubTypeKey: 'sx-xc-securitySubType', // Security scheme subtype
+  fileNameKey: 'x-xc-fileName', // File name
+  newTokenKey: 'x-xc-oauth2-newToken', // Whether to use generated auth token
+  oAuth2Key: 'x-xc-oauth2-authFlow', // Token generation authorization type
+  oAuth2Token: 'x-xc-oauth2-token', // Existing token
+  formContentTypeKey: 'x-xc-contentType',
+  basicAuthKey: 'x-xc-basicAuth',
+  wsMessageKey: 'x-wsMessage'
+};
+
 // eslint-disable-next-line prefer-regex-literals
 const variableNameReg = new RegExp(/^[a-zA-Z0-9!@$%^&*()_\-+=./]+$/);
-
-// ----------------------------------------------------
-// Type definitions
-// ----------------------------------------------------
 
 /**
  * Parameter item interface for API parameters.
@@ -57,10 +102,6 @@ export interface HostItem {
   default0?: boolean,
   protocol: { value: string }
 }
-
-// ----------------------------------------------------
-// Default parameter utilities
-// ----------------------------------------------------
 
 /**
  * Create default parameter item with standard configuration.
@@ -96,32 +137,6 @@ const getBodyDefaultItem = (config = {}) => {
     type: 'string',
     ...config
   };
-};
-
-// ----------------------------------------------------
-// API extension constants
-// ----------------------------------------------------
-
-/**
- * API extension keys for custom properties.
- */
-const API_EXTENSION_KEY = {
-  perfix: 'x-xc-', // Prefix
-  valueKey: 'x-xc-value', // Value
-  enabledKey: 'x-xc-enabled', // Enable/disable
-  exportVariableKey: 'x-xc-exportVariable', // Whether to set as variable
-  requestSettingKey: 'x-xc-requestSetting', // Request settings like timeout, object
-  serverNameKey: 'x-xc-serverName', // Server URL name
-  serverSourceKey: 'x-xc-serverSource', // Server source
-  securityApiKeyPerfix: 'x-xc-apiKey', // API key type extension
-  securitySubTypeKey: 'sx-xc-securitySubType', // Security scheme subtype
-  fileNameKey: 'x-xc-fileName', // File name
-  newTokenKey: 'x-xc-oauth2-newToken', // Whether to use generated auth token
-  oAuth2Key: 'x-xc-oauth2-authFlow', // Token generation authorization type
-  oAuth2Token: 'x-xc-oauth2-token', // Existing token
-  formContentTypeKey: 'x-xc-contentType',
-  basicAuthKey: 'x-xc-basicAuth',
-  wsMessageKey: 'x-wsMessage'
 };
 
 /**
@@ -1066,7 +1081,7 @@ const getModelDataByRef = async (serviceId: string, ref: string) => {
   if (refModelsObj[serviceId]?.[ref]) {
     return refModelsObj[serviceId]?.[ref];
   } else {
-    const fetcher = http.get(`${TESTER}/services/${serviceId}/comp/ref`, { ref });
+    const fetcher = services.getComponentRef(serviceId, ref);
     refModelsObj[serviceId] = {
       [ref]: fetcher
     };
@@ -1495,6 +1510,7 @@ const transJsonToList = (data: any [] | Record<string, any>, pid: string | numbe
  * @returns True if string contains only ASCII characters
  */
 function containsAllAscii (str: string): boolean {
+  // eslint-disable-next-line no-control-regex
   return /^[\x00-\x7f]*$/.test(str);
 }
 
@@ -1575,7 +1591,7 @@ const maxDuration = (a: string, b: string): string => {
  * @param format - Target format unit
  * @returns Formatted duration string
  */
-const formatMillisecondToShortDuraiton = (value: number, format: 'h' | 'min' | 's' | 'day'): string => {
+const formatMillisecondToShortDuration = (value: number, format: 'h' | 'min' | 's' | 'day'): string => {
   if (!value) {
     return '0';
   }
@@ -1595,6 +1611,10 @@ const formatMillisecondToShortDuraiton = (value: number, format: 'h' | 'min' | '
 };
 
 export {
+  CONTENT_TYPE,
+  API_STATUS_COLOR_CONFIG,
+  API_STATUS_BADGE_COLOR_CONFIG,
+  API_EXTENSION_KEY,
   toUrl,
   getNewItem,
   getUriByParams,
@@ -1611,13 +1631,11 @@ export {
   decode,
   encode,
   variableNameReg,
-  CONTENT_TYPE,
   fileToBuffer,
   getDataTypeFromFormat,
   deepDelAttrFromObj,
   validateType,
   getJsonFromSplitData,
-  API_EXTENSION_KEY,
   getBodyDefaultItem,
   getDefaultParams,
   getServerData,
@@ -1633,11 +1651,15 @@ export {
   gzipFileToBase64,
   fileToBase64,
   maxDuration,
-  formatMillisecondToShortDuraiton,
+  formatMillisecondToShortDuration,
   getExecShowAuthData
 };
 
 export default {
+  CONTENT_TYPE,
+  API_STATUS_COLOR_CONFIG,
+  API_STATUS_BADGE_COLOR_CONFIG,
+  API_EXTENSION_KEY,
   toUrl,
   getNewItem,
   getUriByParams,
@@ -1654,13 +1676,11 @@ export default {
   decode,
   encode,
   variableNameReg,
-  CONTENT_TYPE,
   fileToBuffer,
   getDataTypeFromFormat,
   deepDelAttrFromObj,
   validateType,
   getJsonFromSplitData,
-  API_EXTENSION_KEY,
   getBodyDefaultItem,
   getDefaultParams,
   getServerData,
@@ -1676,6 +1696,6 @@ export default {
   gzipFileToBase64,
   fileToBase64,
   maxDuration,
-  formatMillisecondToShortDuraiton,
+  formatMillisecondToShortDuration,
   getExecShowAuthData
 };

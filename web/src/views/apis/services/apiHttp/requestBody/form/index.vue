@@ -8,7 +8,7 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import ApiUpload from '@/views/apis/services/apiHttp/upload/index.vue';
 import { ParamsItem } from '../../interface';
 import { formDataTypes, itemTypes } from './interface';
-import { API_EXTENSION_KEY, getModelDataByRef, variableNameReg } from '@/views/apis/utils';
+import { API_EXTENSION_KEY, getModelDataByRef, variableNameReg } from '@/utils/apis';
 import JsonContent from '@/views/apis/services/apiHttp/requestBody/json/index.vue';
 import { services, variable as variableApi } from '@/api/tester';
 import { deconstruct } from '@/utils/swagger';
@@ -226,7 +226,7 @@ const setToVariable = async (data:ParamsItem):void => {
 
   const value = typeof data[valueKey] === 'object' ? JSON.stringify(data[valueKey]) : data[valueKey];
   const [error] = await variableApi.addVariables({ name: data.name, targetId: archivedId.value, scope: 'CURRENT', targetType: 'API', enabled: true, value });
-  // const temp = { ...data, [exportVariableFlagKey]: !data[exportVariableFlagKey] } as ParamsItem;
+  // const temp = { ...data, [exportVariableKey]: !data[exportVariableKey] } as ParamsItem;
   // changeEmit(index, temp);
   setVariableLoading[data.name as string] = false;
   if (!error) {

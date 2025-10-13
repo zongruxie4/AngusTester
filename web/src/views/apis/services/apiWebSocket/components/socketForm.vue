@@ -5,18 +5,20 @@ import { Button, Checkbox } from 'ant-design-vue';
 import { Icon, Input, Select, SelectSchema } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 
-import JsonContent from '@/views/apis/services/apiHttp/requestBody/json/index.vue';
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
 import { services } from '@/api/tester';
 import { FormData, getDefaultForm, itemTypes } from '../PropsType';
+
+import JsonContent from '@/views/apis/services/apiHttp/requestBody/json/index.vue';
+
+const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 interface Props {
   data:FormData[];
   in: 'query'|'header'
 }
-const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   data: () => ([]),
@@ -85,7 +87,7 @@ const handleDelete = (index, data) => {
 };
 
 const getModelData = async (ref) => {
-  const [error, { data }] = await services.getRefInfo(apiBaseInfo.value.projectId, ref);
+  const [error, { data }] = await services.getComponentRef(apiBaseInfo.value.projectId, ref);
   if (error) {
     return {};
   }

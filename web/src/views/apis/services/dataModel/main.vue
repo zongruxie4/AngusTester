@@ -4,7 +4,7 @@ import { Dropdown, Icon, Input, notification, Select } from '@xcan-angus/vue-ui'
 import { Button, Divider, TabPane, Tabs } from 'ant-design-vue';
 import { parseSchemaArrToObj, parseSchemaObjToArr } from './utils';
 import { services } from '@/api/tester';
-import { CONTENT_TYPE } from '@/views/apis/utils';
+import { CONTENT_TYPE } from '@/utils/apis';
 import { useI18n } from 'vue-i18n';
 
 import AddAttrModal from './addAttrModal.vue';
@@ -269,7 +269,7 @@ const parameterSchemaRef = ref();
 
 // 获取需要编辑的数据模型
 const loadSchemaContent = async () => {
-  const [error, { data }] = await services.getRefInfo(props.id, props.data?.ref);
+  const [error, { data }] = await services.getComponentRef(props.id, props.data?.ref);
   if (error) {
     return;
   }

@@ -3,7 +3,7 @@ import { computed, inject, ref, Ref } from 'vue';
 import { Button, ListItem, Popover, Tooltip } from 'ant-design-vue';
 import { Dropdown, HttpMethodTag, Icon } from '@xcan-angus/vue-ui';
 import { ButtonGroup, CollapseButtonGroup } from './interface';
-import { API_STATUS_COLOR_CONFIG } from '@/views/apis/utils';
+import { API_STATUS_COLOR_CONFIG } from '@/utils/apis';
 import { useI18n } from 'vue-i18n';
 
 interface Props {

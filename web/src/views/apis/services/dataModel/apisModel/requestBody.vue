@@ -4,7 +4,7 @@ import { Dropdown, Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { CONTENT_TYPE } from '@/views/apis/utils';
+import { CONTENT_TYPE } from '@/utils/apis';
 
 import BodyContentTypeTab from '../bodyContentTypeTab.vue';
 
