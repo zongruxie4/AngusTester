@@ -5,15 +5,16 @@ import { Icon, IconCopy, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { getCurrentPage } from '@/utils/utils';
 import { useAddedData, useAddedTableColumns, useAddedEmptyState } from './composables';
-import { AddedItem, AddedTableProps } from '@/views/data/home/types';
+import { AddedItem } from '@/views/data/home/types';
 import { DataMenuKey } from '@/views/data/menu';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
 /**
  * Component props with default values
  */
-const props = withDefaults(defineProps<AddedTableProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   total: 0,
   userId: '',

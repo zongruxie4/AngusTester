@@ -7,6 +7,7 @@ import { http, PageQuery, ProjectPageQuery, utils } from '@xcan-angus/infra';
 import { issue } from '@/api/tester';
 import { TaskStatus } from '@/enums/enums';
 import { IssueMenuKey } from '@/views/issue/menu';
+import { BasicProps } from '@/types/types';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TaskDetail } from '../types';
@@ -16,26 +17,7 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 
 const { t } = useI18n();
 
-/**
- * Props interface for AddedTable component.
- */
-type Props = {
-  projectId: string;
-  params: {
-    createdBy?: string;
-    favouriteBy?: boolean;
-    followBy?: boolean;
-    confirmerId?: string;
-    assigneeId?: string;
-    commentBy?: string;
-    status?: TaskStatus;
-  };
-  total: number;
-  notify: string;
-  deletedNotify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   params: undefined,
   total: 0,

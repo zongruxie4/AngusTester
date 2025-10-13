@@ -194,13 +194,6 @@ export type MenuItem = {
   name: string;
 }
 
-export type ScriptSearchProps = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
 export type ScriptTableProps = {
   projectId: string;
   appId: string;

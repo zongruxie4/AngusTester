@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
+import { BasicProps } from '@/types/types';
 
-interface ComponentProps {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  refreshNotify: string;
-}
-
-const props = withDefaults(defineProps<ComponentProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

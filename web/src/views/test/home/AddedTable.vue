@@ -5,6 +5,7 @@ import { Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { PageQuery, ProjectPageQuery, utils } from '@xcan-angus/infra';
 import { testCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { BasicProps } from '@/types/types';
 
 import { getCurrentPage } from '@/utils/utils';
 import { CaseInfo } from '@/views/test/types';
@@ -13,24 +14,8 @@ import { TestMenuKey } from '@/views/test/menu';
 import TestResult from '@/components/TestResult/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
-// Type Definitions
-type TableProps = {
-  projectId: string;
-  params: {
-    createdBy?: number;
-    favouriteBy?: number;
-    followBy?: string;
-    testerId?: number;
-    testResult?: string;
-    commentBy?: string;
-  };
-  total: number;
-  notify: string;
-  deletedNotify: string;
-}
-
 // Props and Emits
-const props = withDefaults(defineProps<TableProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   params: undefined,
   total: 0,

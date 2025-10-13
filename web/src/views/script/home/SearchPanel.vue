@@ -5,13 +5,12 @@ import { Button } from 'ant-design-vue';
 import { Icon, IconRefresh, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { QuickSearchOptions } from '@/components/quickSearch';
+import { BasicProps } from '@/types/types';
 import { useScriptSearch } from './composables/useScriptSearch';
-
-import { ScriptSearchProps } from '@/views/script/types';
 
 const { t } = useI18n();
 
-const props = withDefaults(defineProps<ScriptSearchProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

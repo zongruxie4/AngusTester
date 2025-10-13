@@ -2,12 +2,13 @@
 import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
-import type { MyScenariosProps, ScenarioQueryParams } from './types';
+import type { ScenarioQueryParams } from './types';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
 // Component props with proper typing
-const props = withDefaults(defineProps<MyScenariosProps>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   notify: undefined
 });
