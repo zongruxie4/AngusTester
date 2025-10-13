@@ -72,6 +72,13 @@
         "minutes": "分",
         "hours": "小时"
       }
+    },
+    "debugLog": {
+      "schedulingResult": "调度结果",
+      "success": "成功",
+      "fail": "失败",
+      "processExitCode": "进程退出码",
+      "downloadFileName": "scheduling.log"
     }
   },
   "httpPlugin": {

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, NoData, IconDownload } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
-import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   value:{
@@ -15,8 +17,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
-
-const { t } = useI18n();
 
 const showConsole = computed(() => {
   if (!props.value?.console?.length) {
@@ -37,14 +37,14 @@ const downloadLog = () => {
     return;
   }
 
-  const file = new File([content], 'scheduling.log', {
+  const file = new File([content], t('commonPlugin.debugLog.downloadFileName'), {
     type: 'text/plain'
   });
   const url = URL.createObjectURL(file);
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
-  a.download = 'scheduling.log';
+  a.download = t('commonPlugin.debugLog.downloadFileName');
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -57,19 +57,19 @@ const downloadLog = () => {
     <template v-if="!!props.value">
       <div class="flex items-center leading-5 mb-2.5">
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('ftpPlugin.debugLog.schedulingResult') }}</span>
+          <span class="text-theme-sub-content">{{ t('commonPlugin.debugLog.schedulingResult') }}</span>
           <Colon class="mr-2" />
           <template v-if="props.value?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
-            <span>{{ t('ftpPlugin.debugLog.success') }}</span>
+            <span>{{ t('status.success') }}</span>
           </template>
           <template v-else>
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-error"></span>
-            <span>{{ t('ftpPlugin.debugLog.fail') }}</span>
+            <span>{{ t('status.failed') }}</span>
           </template>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('ftpPlugin.debugLog.processExitCode') }}</span>
+          <span class="text-theme-sub-content">{{ t('commonPlugin.debugLog.processExitCode') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.value?.exitCode }}</span>
         </div>
