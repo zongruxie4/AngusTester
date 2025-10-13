@@ -79,7 +79,13 @@
       "fail": "失败",
       "processExitCode": "进程退出码",
       "downloadFileName": "scheduling.log"
-    }
+    },
+    "execLog": {
+      "node": "节点",
+      "schedulingResult": "调度结果",
+      "processExitCode": "进程退出码",
+      "downloadFileName": "runner.log"
+    },
   },
   "httpPlugin": {
     "actions": {

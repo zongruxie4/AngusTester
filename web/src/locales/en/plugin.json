@@ -80,6 +80,12 @@
       "fail": "Failed",
       "processExitCode": "Process Exit Code",
       "downloadFileName": "scheduling.log"
+    },
+    "execLog": {
+      "node": "Node",
+      "schedulingResult": "Scheduling Result",
+      "processExitCode": "Process Exit Code",
+      "downloadFileName": "runner.log"
     }
   },
   "httpPlugin": {

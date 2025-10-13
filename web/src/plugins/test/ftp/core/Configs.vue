@@ -10,7 +10,7 @@ import { useI18n } from 'vue-i18n';
 
 import { ScenarioPermission } from '@/enums/enums';
 import ButtonGroup from '@/plugins/test/components/ButtonGroup/index.vue';
-import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
+import { ButtonGroupMenuItem, ButtonGroupMenuKey } from '@/plugins/test/components/ButtonGroup/PropsType';
 import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from './PropsType';
 import { ExecContent } from './FunctionTestDetail/PropsType';
 
@@ -57,7 +57,7 @@ const ImportScript = defineAsyncComponent(() => import('./ImportScript/index.vue
 const ExecuteConfig = defineAsyncComponent(() => import('./ExecuteConfig/index.vue'));
 const DebugResult = defineAsyncComponent(() => import('./DebugResult/index.vue'));
 const DebugLog = defineAsyncComponent(() => import('@/plugins/test/components/DebugLog/index.vue'));
-const ExecLog = defineAsyncComponent(() => import('./ExecLog/index.vue'));
+const ExecLog = defineAsyncComponent(() => import('@/plugins/test/components/ExecLog/index.vue'));
 
 const codeConfigRef = ref();
 const uiConfigRef = ref();

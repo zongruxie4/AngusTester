@@ -9,8 +9,8 @@ import { isEqual } from 'lodash-es';
 import { exec, scenario } from '@/api/tester';
 
 import { ScenarioPermission } from '@/enums/enums';
-import ButtonGroup from './ButtonGroup/index.vue';
-import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
+import ButtonGroup from '@/plugins/test/components/ButtonGroup/index.vue';
+import { ButtonGroupMenuItem, ButtonGroupMenuKey } from '@/plugins/test/components/ButtonGroup/PropsType';
 import { TOOLBAR_MENUITEMS, TOOLBAR_EXTRA_MENUITEMS, DRAWER_MENUITEMS } from './data';
 import { PipelineConfig } from './UIConfig/PropsType';
 import { HTTPConfig } from './UIConfig/HTTPConfigs/PropsType';
@@ -60,7 +60,7 @@ const UIConfig = defineAsyncComponent(() => import('./UIConfig/index.vue'));
 const ExecuteConfig = defineAsyncComponent(() => import('./ExecuteConfig/index.vue'));
 const DebugResult = defineAsyncComponent(() => import('./DebugResult/index.vue'));
 const DebugLog = defineAsyncComponent(() => import('@/plugins/test/components/DebugLog/index.vue'));
-const ExecLog = defineAsyncComponent(() => import('./ExecLog/index.vue'));
+const ExecLog = defineAsyncComponent(() => import('@/plugins/test/components/ExecLog/index.vue'));
 
 const codeConfigRef = ref();
 const uiConfigRef = ref();
