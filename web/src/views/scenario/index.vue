@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import LeftMenu from '@/components/layout/leftMenu/index.vue';
 import { appContext, utils } from '@xcan-angus/infra';
 import { ProjectInfo } from '@/layout/types';
 
+const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const Homepage = defineAsyncComponent(() => import('@/views/scenario/home/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/scenario/trash/index.vue'));
 const Scenario = defineAsyncComponent(() => import('@/views/scenario/scenario/index.vue'));
