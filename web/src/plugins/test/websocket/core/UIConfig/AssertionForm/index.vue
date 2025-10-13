@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watchEffect } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Checkbox } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
