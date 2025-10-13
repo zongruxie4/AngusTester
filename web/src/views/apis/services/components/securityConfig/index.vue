@@ -4,11 +4,11 @@ import { Arrow, Hints, Icon, IconRequired, Input, notification, Select, Spin, Vu
 import { Button, Radio, RadioGroup, Tooltip } from 'ant-design-vue';
 import { services } from '@/api/tester';
 import { regexpUtils, utils } from '@xcan-angus/infra';
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 import { useI18n } from 'vue-i18n';
+import { ApiKeyExtensionFields, AuthConfigObj, FlowKey, ModelObj } from './PropsType';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { ApiKeyExtensionFields, AuthConfigObj, FlowKey, ModelObj } from './PropsType';
 
 interface Props {
   id: string;
@@ -540,7 +540,7 @@ onMounted(() => {
 });
 
 const getAuthConfigInfo = async (auth:AuthConfigObj) => {
-  const [error, { data }] = await services.getRefInfo(props.id, auth.ref);
+  const [error, { data }] = await services.getComponentRef(props.id, auth.ref);
   if (error) {
     return;
   }

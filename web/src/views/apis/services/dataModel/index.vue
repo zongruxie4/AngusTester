@@ -148,7 +148,7 @@ const onPopoverVisibleChange = () => {
 
 const copyComp = async (comp, key) => {
   compPopVisibleMap.value[`${key}-${comp.key}`] = false;
-  const [error, { data }] = await services.getRefInfo(props.id, comp.ref);
+  const [error, { data }] = await services.getComponentRef(props.id, comp.ref);
   if (error) {
     notification.error(t('service.dataModel.loadCompFail'));
     return;

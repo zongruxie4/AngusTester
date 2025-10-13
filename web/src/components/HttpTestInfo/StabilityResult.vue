@@ -10,7 +10,7 @@ import { Icon } from '@xcan-angus/vue-ui';
 import ApiUtils from 'src/utils/apis';
 
 const { t } = useI18n();
-const { formatMillisecondToShortDuraiton, splitDuration } = ApiUtils;
+const { formatMillisecondToShortDuration, splitDuration } = ApiUtils;
 
 /**
  * Stability indicator configuration interface
@@ -270,7 +270,7 @@ const formatDurationFromMilliseconds = (milliseconds: string) => {
   if (!milliseconds) {
     return '--';
   }
-  return formatMillisecondToShortDuraiton(+milliseconds, unit as 's' | 'h' | 'min' | 'day');
+  return formatMillisecondToShortDuration(+milliseconds, unit as 's' | 'h' | 'min' | 'day');
 };
 
 </script>

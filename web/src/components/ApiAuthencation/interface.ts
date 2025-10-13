@@ -2,14 +2,14 @@
 import { i18n } from '@xcan-angus/infra';
 
 // Local utility imports
-import { API_EXTENSION_KEY, encode } from '@/utils/apis/index';
+import { API_EXTENSION_KEY, encode } from '@/utils/apis';
 
 // Get internationalization function with fallback
 const getTranslationFunction = i18n.getI18n()?.global?.t || ((value: string) => value);
 const t = getTranslationFunction;
 
 // API extension key constants
-export const { valueKey, securityApiKeyPerfix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
+export const { valueKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
 // Authentication type definitions
 export type AuthenticationType = 'http' | 'apiKey' | 'oauth2' | 'extends' | null;
 
@@ -321,7 +321,7 @@ export const processApiKeyData = (dataSource: any[]): [Record<string, string>, R
  */
 export const processApiKeyDataForDisplay = (dataSource: any): [Record<string, string>, Record<string, string>] => {
   const first = { name: dataSource.name, in: dataSource.in, [valueKey]: dataSource[valueKey] };
-  const others = dataSource[securityApiKeyPerfix] || [];
+  const others = dataSource[securityApiKeyPrefix] || [];
 
   const queryAuth: Record<string, string> = {};
   const queryList = [first, ...others].filter(item => item.in === 'query');

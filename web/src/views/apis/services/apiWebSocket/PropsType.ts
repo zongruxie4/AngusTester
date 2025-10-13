@@ -1,4 +1,4 @@
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 export interface FormData {

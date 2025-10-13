@@ -1,7 +1,7 @@
 import { Component, defineAsyncComponent } from 'vue';
 import { AuthItem } from './authorization/interface';
 import { RequestBodyParam } from '@/views/apis/services/apiHttp/requestBody/interface';
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 import { i18n } from '@xcan-angus/infra';
 import ApiAssertion from '@/components/ApiAssert/index.vue';
 import ApiAuthencation from '@/components/Authorize/index.vue';
@@ -28,7 +28,7 @@ export const getDefaultParams = (config = {}): ParamsItem => {
     name: '',
     in: undefined,
     description: '',
-    // [exportVariableFlagKey]: false,
+    // [exportVariableKey]: false,
     [valueKey]: '',
     [enabledKey]: true,
     schema: { type: 'string' },

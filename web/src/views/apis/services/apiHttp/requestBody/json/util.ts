@@ -1,5 +1,5 @@
 import { utils } from '@xcan-angus/infra';
-import { API_EXTENSION_KEY, getDataTypeFromFormat } from '@/views/apis/utils';
+import { API_EXTENSION_KEY, getDataTypeFromFormat } from '@/utils/apis';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
 

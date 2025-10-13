@@ -39,7 +39,7 @@ export interface Props {
 }
 
 // API extension key constants
-const { valueKey, securityApiKeyPerfix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
+const { valueKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
 
 // Injected dependencies
 const apiBaseInfo = inject('apiBaseInfo', ref());
@@ -181,7 +181,7 @@ const handleInheritedSecuritySelection = (securityId: string): void => {
  */
 const initApiKeyContentList = (newValue: any): void => {
   const first = { name: newValue.name, in: newValue.in || 'header', [valueKey]: newValue[valueKey] };
-  const others = newValue[securityApiKeyPerfix] || [];
+  const others = newValue[securityApiKeyPrefix] || [];
   apiKeyConfigurationList.value = [first, ...others];
 };
 
@@ -211,7 +211,7 @@ const updateApiKeyConfiguration = (): void => {
     name,
     in: apiKeyConfigurationList.value[0].in,
     [valueKey]: apiKeyConfigurationList.value[0][valueKey],
-    [securityApiKeyPerfix]: additionalKeys.length ? additionalKeys : undefined
+    [securityApiKeyPrefix]: additionalKeys.length ? additionalKeys : undefined
   };
   emit('change', configurationData);
 };

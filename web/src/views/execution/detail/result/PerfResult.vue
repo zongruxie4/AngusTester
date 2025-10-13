@@ -200,7 +200,7 @@ const getDuration = (mseconds) => {
   if (!mseconds) {
     return '--';
   }
-  return apiUtils.formatMillisecondToShortDuraiton(+mseconds, unit);
+  return apiUtils.formatMillisecondToShortDuration(+mseconds, unit);
 };
 
 </script>

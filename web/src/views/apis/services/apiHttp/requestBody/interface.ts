@@ -1,8 +1,6 @@
 import { ParamsItem } from '../interface';
-import { getModelDataByRef } from '@/views/apis/utils';
+import { getModelDataByRef } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
-// import qs from 'qs';
-// import { dataURLtoBlob, isBase64 } from '@/utils/blob';
 
 export const radioGroups = [null, 'application/x-www-form-urlencoded', 'multipart/form-data', 'application/octet-stream'];
 export const rawTypeOptions = [
@@ -40,16 +38,7 @@ export interface StateItem {
   rawContent: string,
   radioOptions: OptionItem[],
   rawSelectOptions: OptionItem[],
-  // binartContentTypeOpt: OptionItem[]
 }
-
-// 转换 base64 文件
-// const handleBinaryCt = (value) => {
-//   if (isBase64(value)) {
-//     const data = dataURLtoBlob(value);
-//     return data;
-//   }
-// };
 
 export const getRefData = async (ref, serviceId) => {
   const [error, resp] = await getModelDataByRef(serviceId, ref);

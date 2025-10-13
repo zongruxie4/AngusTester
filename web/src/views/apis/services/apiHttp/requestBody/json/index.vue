@@ -4,17 +4,18 @@ import { useI18n } from 'vue-i18n';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { Icon, Input, Select, SelectSchema, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
-import { API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
+import { API_EXTENSION_KEY, getModelDataByRef } from '@/utils/apis';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-
-import { deepDelAttrFromObj } from '@/views/apis/services/apiHttp/utils';
-import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { services } from '@/api/tester';
+import { deepDelAttrFromObj } from '@/views/apis/services/apiHttp/utils';
+
 import { inOptions, itemTypes, transJsonToList, transListToJson, transListToschema } from './util';
 import { ParamsItem } from '@/views/apis/services/apiHttp/requestParam/interface';
+
+import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 const { t } = useI18n();

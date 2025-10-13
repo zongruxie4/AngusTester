@@ -21,7 +21,7 @@ import apiUtils from '@/utils/apis/index';
 import { apis, services } from '@/api/tester';
 import { getStatusText } from '@/views/apis/services/components/request/interface';
 import { getDefaultParams } from '@/views/apis/services/apiHttp/requestParam/interface';
-import { API_STATUS_COLOR_CONFIG, API_STATUS_BADGE_COLOR_CONFIG, API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
+import { API_STATUS_COLOR_CONFIG, API_STATUS_BADGE_COLOR_CONFIG, API_EXTENSION_KEY, getModelDataByRef } from '@/utils/apis';
 
 import { formatBytes } from '@/utils/common';
 import {
@@ -991,7 +991,7 @@ const sendRequest = async () => {
     if (!params?.authentication.type && !params?.authentication.$ref) {
       delete params.authentication;
     } else if (params?.authentication.$ref) {
-      const [_error, resp] = await services.getRefInfo(saveParams.value.serviceId, params?.authentication.$ref);
+      const [_error, resp] = await services.getComponentRef(saveParams.value.serviceId, params?.authentication.$ref);
       params.authentication = JSON.parse(resp.data.model);
     }
     delete params.responses;

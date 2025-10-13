@@ -1,4 +1,4 @@
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 
 const { valueKey } = API_EXTENSION_KEY;
 export const getHeaderData = (dataSource:any[] = []) => {

@@ -3,7 +3,7 @@ import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { getBodyDefaultItem, getDefaultParams, ParamsItem } from './interface';
 import { mock, paramTarget } from '@/api/tester';
-import { API_EXTENSION_KEY } from '@/views/apis/utils';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 import { uniq } from 'lodash-es';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
