@@ -4,8 +4,7 @@ import { utils, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { ProjectInfo } from '@/layout/types';
 
-import LeftMenu from '@/components/layout/leftMenu/index.vue';
-
+const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const Homepage = defineAsyncComponent(() => import('@/views/data/home/index.vue'));
 const Variables = defineAsyncComponent(() => import('@/views/data/variable/index.vue'));
 const DataSet = defineAsyncComponent(() => import('@/views/data/dataset/index.vue'));
