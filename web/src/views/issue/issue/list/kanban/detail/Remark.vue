@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, utils } from '@xcan-angus/infra';
 import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { Remark } from '@/views/issue/issue/types';
@@ -12,11 +12,12 @@ import { BaseProps } from '@/types/types';
  * Props for remark list and submission
  */
 const props = withDefaults(defineProps<BaseProps>(), {
-  id: undefined,
-  notify: undefined
+  id: undefined
 });
 
 const { t } = useI18n();
+
+const notify = ref();
 
 // Async Components
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
@@ -86,6 +87,7 @@ const handleSubmitRemark = async () => {
   if (error) {
     return;
   }
+  notify.value = utils.uuid();
   currentContent.value = '';
 };
 
@@ -148,7 +150,7 @@ const isContentTooLong = () => {
           :hideNoData="true"
           :params="queryParams"
           :lineHeight="56"
-          :notify="props.notify"
+          :notify="notify"
           style="height: calc(100% - 30px);"
           transition
           @change="handleScrollChange">
