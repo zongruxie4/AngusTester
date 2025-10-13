@@ -37,6 +37,8 @@ export type PipelineConfig = {
 
 }
 
+export type MailPipelineInfo = PipelineConfig;
+
 export type ScenarioInfo = {
     description: string;
     favourite: boolean;

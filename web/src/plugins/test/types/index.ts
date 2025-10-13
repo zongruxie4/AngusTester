@@ -1,68 +1,64 @@
-export type ScriptType = 'TEST_FUNCTIONALITY' | 'TEST_PERFORMANCE' | 'TEST_STABILITY';
-export type AssertionType = 'BODY' | 'DURATION' | 'BODY_SIZE'
-export type AssertionCondition = 'CONTAIN' |
-    'EQUAL' |
-    'GREATER_THAN' |
-    'GREATER_THAN_EQUAL' |
-    'IS_EMPTY' |
-    'IS_NULL' |
-    'LESS_THAN' |
-    'LESS_THAN_EQUAL' |
-    'NOT_CONTAIN' |
-    'NOT_EMPTY' |
-    'NOT_EQUAL' |
-    'NOT_NULL' |
-    'REG_MATCH' |
-    'XPATH_MATCH' |
-    'JSON_PATH_MATCH';
+import { JDBCConfig, JDBCConfigInfo } from '@/plugins/test/jdbc/core/UIConfig/JDBCConfigs/PropsType';
+import { HTTPConfig, HTTPInfo } from '@/plugins/test/http/core/UIConfig/HTTPConfigs/PropsType';
+import { FtpPipelineInfo } from '@/plugins/test/ftp/core/PropsType';
+import { JmsPipelineInfo } from '@/plugins/test/jms/core/PropsType';
+import { LdapPipelineInfo } from '@/plugins/test/ldap/core/PropsType';
+import { MailPipelineInfo } from '@/plugins/test/mail/core/PropsType';
+import { SmtpPipelineInfo } from '@/plugins/test/smtp/core/PropsType';
+import { TcpPipelineInfo } from '@/plugins/test/tcp/core/PropsType';
+import { WebSocketPipelineInfo } from '@/plugins/test/websocket/core/PropsType';
 
-export type ParameterConfig = {
-    id:string;
+import { ScriptType } from '@xcan-angus/infra';
+import { ScenarioType } from '@/enums/enums';
+
+export type WaitingTimeConfig = {
+    id: string; // 前端自动生成，用于给每条记录添加id
+    beforeName:string;
+    transactionName:string;
+    target: 'WAITING_TIME';
     name: string;
-    in: 'query' | 'header';
-    value: string;
-    type: 'string';
+    description: string;
     enabled: boolean;
+    maxWaitTimeInMs: string;
+    minWaitTimeInMs?: string;// 固定等待时间不用传
 }
 
-export type PipelineConfig = {
-    id: string;// 前端自动生成，用于给每条记录添加id
-    target: 'WEBSOCKET';
+export type RendezvousConfig = {
+    id: string; // 前端自动生成，用于给每条记录添加id
+    target: 'RENDEZVOUS';
     name: string;
     description: string;
     enabled: boolean;
     beforeName: string;
-    apisId: string;
-    url: string;// 2000个字符
-    parameters: ParameterConfig[];
-    mode: 'ONLY_SEND' | 'ONLY_RECEIVE' | 'SEND_AND_RECEIVE';
-    message: string;// 8192个字符
-    messageEncoding: 'none' | 'base64' | 'gzip_base64';
-    assertions: {
-        name: string;
-        type: AssertionType;
-        description: string;
-        expected: string;
-        assertionCondition: AssertionCondition;
-        enabled: boolean;
-        matchItem: string;
-        expression: string;
-    }[];
-    server: {
-        url: string;
-        variables: {
-            [key: string]: {
-                defaultValue: string;
-                allowableValues: string[];
-                description?: string;
-            }
-        };
-        description?: string;
-    };
-    endpoint: string;
+    transactionName:string;
+    timeoutInMs: string;
+    threads: string;
 }
 
-export type WebSocketPipelineInfo = PipelineConfig;
+
+export type TransStartConfig = {
+    id: string; // 前端自动生成，用于给每条记录添加id
+    target: 'TRANS_START';
+    name: string;
+    description: string;
+    enabled: boolean;
+    beforeName: string;
+    transactionName: string;
+}
+
+export type TransEndConfig = {
+    id: string;
+    target: 'TRANS_END';
+    name: string;
+    description: string;
+    beforeName: string;
+    transactionName: string;
+    enabled: boolean;
+}
+
+export type PipelineConfig = WebSocketPipelineInfo | TcpPipelineInfo | SmtpPipelineInfo | MailPipelineInfo | LdapPipelineInfo | JmsPipelineInfo | FtpPipelineInfo | HTTPConfig | JDBCConfig | WaitingTimeConfig | RendezvousConfig | TransStartConfig | TransEndConfig;
+export type PipelineInfo = WebSocketPipelineInfo | TcpPipelineInfo | SmtpPipelineInfo | MailPipelineInfo | LdapPipelineInfo | JmsPipelineInfo | FtpPipelineInfo | HTTPInfo | JDBCConfigInfo | WaitingTimeConfig | RendezvousConfig | TransStartConfig | TransEndConfig;
+
 
 export type ScenarioInfo = {
     description: string;
@@ -70,14 +66,14 @@ export type ScenarioInfo = {
     follow: boolean;
     id: string;
     name: string;
-    plugin: 'WebSocket';
+    plugin: ScenarioType;
     script: {
-        plugin: 'WebSocket';
+        plugin: ScenarioType;
         task: {
             arguments: { [key: string]: any };
-            pipelines: PipelineConfig[];
+            pipelines: PipelineInfo[];
         };
-        type: { value: ScriptType; message: string; };
+        type: {value:ScriptType;message:string;};
         configuration?: {
             duration: {
                 unit: string;
@@ -149,9 +145,9 @@ export type ScenarioConfig = {
     follow: boolean;
     id: string;
     name: string;
-    plugin: 'WebSocket';
+    plugin: ScenarioType;
     script: {
-        plugin: 'WebSocket';
+        plugin: ScenarioType;
         task: {
             arguments: { [key: string]: any };
             pipelines: PipelineConfig[];
@@ -212,22 +208,4 @@ export type ScenarioConfig = {
     };
     scriptId: string;
     scriptName: string;
-}
-
-export type SaveFormData = {
-    description: string;
-    projectId: string;
-    id: string;
-    name: string;
-    plugin: 'WebSocket';
-    script: {
-        plugin: 'WebSocket';
-        task: {
-            arguments: { [key: string]: any };
-            pipelines: PipelineConfig[];
-        };
-        type: ScriptType;
-        configuration: { [key: string]: any };
-    };
-    scriptId: string;
 }
