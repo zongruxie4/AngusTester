@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
+import { computed, defineAsyncComponent, inject, Ref, ref, onMounted, watch } from 'vue';
 import { appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { ProjectInfo } from '@/layout/types';
+import { ProjectMenuKey, createMenuItems, ProjectMenuVisibility } from '@/views/project/menu';
 
 const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
 const Projects = defineAsyncComponent(() => import('@/views/project/project/index.vue'));
@@ -29,24 +30,34 @@ const iframeSrc = computed(() => {
   return match ? match[1] : '';
 });
 
+const activeKey = ref<ProjectMenuKey>();
+
 const menuItems = computed(() => {
-  return [
-    { icon: 'icon-xiangmu', name: t('project.title'), key: 'project' },
-    aiEnabled.value && { icon: 'icon-AIzhushou', name: t('AI.title'), key: 'AI' },
-    projectId.value && { icon: 'icon-mokuai1', name: t('module.title'), key: 'module' },
-    projectId.value && { icon: 'icon-banben1', name: t('version.title'), key: 'version' },
-    projectId.value && { icon: 'icon-biaoqian3', name: t('tag.title'), key: 'tags' },
-    { icon: 'icon-fabu', name: t('activity.title'), key: 'activity' },
-    { icon: 'icon-qingchu', name: t('trash.title'), key: 'trash' }
-  ].filter(Boolean) as { icon: string; name: string; key: string; }[];
+  const visibility: ProjectMenuVisibility = {
+    aiEnabled: !!aiEnabled.value,
+    hasProjectId: !!projectId.value
+  };
+  return createMenuItems(t, visibility);
 });
 
+const handleMenuSectionChange = (newMenuKey: ProjectMenuKey | undefined) => {
+  // Currently no refresh-token logic required for project menus.
+  // This handler exists for consistency with other sections and future extension.
+  if (!newMenuKey) return;
+};
+
+onMounted(() => {
+  watch(() => activeKey.value, handleMenuSectionChange, { immediate: true });
+});
 </script>
 <template>
-  <LeftMenu v-if="projectId" :menuItems="menuItems">
+  <LeftMenu
+    v-if="projectId"
+    v-model:activeKey="activeKey"
+    :menuItems="menuItems">
     <template #project>
       <Projects
-        :projectId="projectId"
+        :projectId="String(projectId)"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>
@@ -62,7 +73,7 @@ const menuItems = computed(() => {
 
     <template #trash>
       <trash
-        :projectId="projectId"
+        :projectId="String(projectId)"
         :userInfo="userInfo"
         :appInfo="appInfo" />
     </template>

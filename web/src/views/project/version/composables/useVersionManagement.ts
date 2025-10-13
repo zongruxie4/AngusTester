@@ -3,6 +3,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { utils, IPane } from '@xcan-angus/infra';
 import { software } from '@/api/tester';
+import { ProjectMenuKey } from '@/views/project/menu';
 
 interface VersionManagementProps {
   projectId: string;
@@ -156,7 +157,7 @@ export function useVersionManagement (props: VersionManagementProps) {
                 data: { _id: data?.list?.[0].id, id: data?.list?.[0].id }
               };
             });
-            router.replace('/project#version');
+            router.replace(`/project#${ProjectMenuKey.VERSION}`);
           }
           return;
         }
@@ -185,8 +186,7 @@ export function useVersionManagement (props: VersionManagementProps) {
         });
       }
     }
-
-    router.replace('/project#version');
+    router.replace(`/project#${ProjectMenuKey.VERSION}`);
   };
 
   /**
