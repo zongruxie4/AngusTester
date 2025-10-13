@@ -5,6 +5,7 @@ import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
+import { TestMenuKey } from '@/views/test/menu';
 
 const { t } = useI18n();
 
@@ -164,7 +165,7 @@ const handleHashChange = (hash: string) => {
     }
   }
 
-  router.replace('/test#baseline');
+  router.replace(`/test#${TestMenuKey.BASELINE}`);
 };
 
 /**

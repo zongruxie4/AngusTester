@@ -13,6 +13,7 @@ import type { Rule } from 'ant-design-vue/es/form';
 import { testPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT, TIME_FORMAT, UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
+import { TestMenuKey } from '@/views/test/menu';
 
 import { PlanDetail, PlanEditFormState } from '../types';
 import { BasicProps } from '@/types/types';
@@ -502,7 +503,7 @@ const copyPlanLink = () => {
     return;
   }
 
-  toClipboard(window.location.origin + `/test#plans?id=${planId}`).then(() => {
+  toClipboard(window.location.origin + `/test#${TestMenuKey.PLANS}?id=${planId}`).then(() => {
     notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
     notification.error(t('actions.tips.copyLinkFailed'));

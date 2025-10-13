@@ -5,7 +5,7 @@ import { Icon, NoData, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { testCase } from '@/api/tester';
-
+import { TestMenuKey } from '@/views/test/menu';
 import { CaseDetail } from '@/views/test/types';
 import { CaseInfoEditProps } from '@/views/test/case/list/types';
 
@@ -108,7 +108,7 @@ const associatedCaseList = computed(() => {
   return props.dataSource?.refCaseInfos?.map(item => {
     return {
       ...item,
-      linkUrl: `/test#cases?id=${item.id}&projectId=${props.projectId}`
+      linkUrl: `/test#${TestMenuKey.CASES}?id=${item.id}&projectId=${props.projectId}`
     };
   }) || [];
 });

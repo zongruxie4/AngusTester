@@ -5,6 +5,7 @@ import { Icon, Image, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { appContext, download, TESTER, toClipboard, enumUtils } from '@xcan-angus/infra';
 import { testPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { TestMenuKey } from '@/views/test/menu';
 
 import { FuncPlanPermission } from '@/enums/enums';
 import { PlanDetail } from '../types';
@@ -176,7 +177,7 @@ const exportTestCases = async () => {
  * </p>
  */
 const copyPlanUrl = () => {
-  const planUrl = window.location.origin + '/test#plans?id=' + currentPlanId.value;
+  const planUrl = window.location.origin + `/test#${TestMenuKey.PLANS}?id=` + currentPlanId.value;
   toClipboard(planUrl).then(() => {
     notification.success(t('actions.tips.copySuccess'));
   }).catch(() => {
@@ -245,7 +246,7 @@ onMounted(() => {
         class="p-0">
         <RouterLink
           class="flex items-center space-x-1 leading-6.5 px-1.75"
-          :to="`/test#plans?id=${currentPlanId}&type=edit`">
+          :to="`/test#${TestMenuKey.PLANS}?id=${currentPlanId}&type=edit`">
           <Icon icon="icon-shuxie" class="text-3.5" />
           <span>{{ t('actions.edit') }}</span>
         </RouterLink>

@@ -10,6 +10,7 @@ import { debounce } from 'throttle-debounce';
 import { test, testPlan } from '@/api/tester';
 import { FuncPlanPermission, FuncPlanStatus } from '@/enums/enums';
 import { CaseInfo } from '@/views/test/types';
+import { TestMenuKey } from '@/views/test/menu';
 
 // Type imports
 import { BasicProps } from '@/types/types';
@@ -741,7 +742,7 @@ onUnmounted(() => {
                         {{ t('testCaseReview.detail.actions.resetReview') }}
                       </Button>
 
-                      <RouterLink :to="`/test#cases?id=${record.caseId}`">
+                      <RouterLink :to="`/test#${TestMenuKey.CASES}?id=${record.caseId}`">
                         <Button
                           type="text"
                           size="small"

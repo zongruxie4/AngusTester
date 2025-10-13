@@ -4,11 +4,12 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, modal, NoData, notification } from '@xcan-angus/vue-ui';
 import {
-  appContext, download, enumUtils, http, PageQuery, SearchCriteria, TESTER, toClipboard, ReviewStatus, routerUtils
+  appContext, download, enumUtils, http, PageQuery, SearchCriteria, toClipboard, ReviewStatus, routerUtils
 } from '@xcan-angus/infra';
 import { analysis, testCase, testPlan, modules } from '@/api/tester';
 import { travelTreeData } from '@/utils/utils';
 import { ProjectInfo } from '@/layout/types';
+import { TestMenuKey } from '@/views/test/menu';
 
 import { CaseActionAuth, EnabledModuleGroup } from './types';
 import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
@@ -729,7 +730,7 @@ const handleCopy = async (value: CaseDetail) => {
 
   const _params = http.getURLSearchParams(_query, true);
 
-  const message = `${window.location.origin}/test#cases?id=${value.id}&name=${value.name}&projectId=${projectInfo.value.id}&${_params}&total=${total.value}`;
+  const message = `${window.location.origin}/test#${TestMenuKey.CASES}?id=${value.id}&name=${value.name}&projectId=${projectInfo.value.id}&${_params}&total=${total.value}`;
   toClipboard(message).then(() => {
     notification.success(t('actions.tips.copySuccess'));
   }).catch(() => {

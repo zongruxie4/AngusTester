@@ -7,6 +7,7 @@ import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskDetail } from '../../types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
+import { TestMenuKey } from '@/views/test/menu';
 
 const { t } = useI18n();
 
@@ -37,7 +38,7 @@ const associatedCaseList = computed(() => {
   return props.dataSource?.refCaseInfos?.map(item => {
     return {
       ...item,
-      linkUrl: `/test#cases?id=${item.id}&projectId=${props.projectId}`
+      linkUrl: `/test#${TestMenuKey.CASES}?id=${item.id}&projectId=${props.projectId}`
     };
   }) || [];
 });

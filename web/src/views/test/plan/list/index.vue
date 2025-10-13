@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { PlanDetail } from '../types';
+import { TestMenuKey } from '@/views/test/menu';
 
 import ProcessPng from './images/process.png';
 
@@ -391,7 +392,7 @@ onMounted(() => {
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('testPlan.noPlans') }}</span>
-            <RouterLink class="router-link flex-1 truncate" :to="`/test#plans?type=ADD`">
+            <RouterLink class="router-link flex-1 truncate" :to="`/test#${TestMenuKey.PLANS}?type=ADD`">
               {{ t('testPlan.actions.addPlan') }}
             </RouterLink>
           </div>

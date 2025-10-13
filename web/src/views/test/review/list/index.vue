@@ -5,6 +5,7 @@ import { utils, appContext, ProjectPageQuery } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { test } from '@/api/tester';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
+import { TestMenuKey } from '@/views/test/menu';
 
 import { BasicProps } from '@/types/types';
 import { ReviewDetail } from '../types';
@@ -294,7 +295,7 @@ onMounted(() => {
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('testCaseReview.noReviewsAdded') }}</span>
-            <RouterLink class="router-link flex-1 truncate" :to="`/test#reviews?type=ADD`">
+            <RouterLink class="router-link flex-1 truncate" :to="`/test#${TestMenuKey.REVIEWS}?type=ADD`">
               {{ t('testCaseReview.actions.addReview') }}
             </RouterLink>
           </div>

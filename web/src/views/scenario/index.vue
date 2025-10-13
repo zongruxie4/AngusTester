@@ -38,7 +38,6 @@ onMounted(() => {
       if (homeRefreshNotifyFlag) {
         homeRefreshNotify.value = utils.uuid();
       }
-
       homeRefreshNotifyFlag = true;
       return;
     }
@@ -47,7 +46,6 @@ onMounted(() => {
       if (trashRefreshNotifyFlag) {
         trashRefreshNotify.value = utils.uuid();
       }
-
       trashRefreshNotifyFlag = true;
       return;
     }
@@ -56,7 +54,6 @@ onMounted(() => {
       if (scenarioRefreshNotifyFlag) {
         scenarioRefreshNotify.value = utils.uuid();
       }
-
       scenarioRefreshNotifyFlag = true;
     }
   }, { immediate: true });

@@ -7,6 +7,7 @@ import { download } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
 import { PlanDetail } from '../types';
+import { TestMenuKey } from '@/views/test/menu';
 
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
@@ -188,7 +189,6 @@ const dropdownMenuItems = [
   }
 ];
 </script>
-
 <template>
   <div>
     <NoData v-if="props.dataList.length === 0" class="flex-1 mt-20" />
@@ -203,7 +203,7 @@ const dropdownMenuItems = [
             <RouterLink
               class="router-link flex-1 truncate"
               :title="item.name"
-              :to="`/test#plans?id=${item.id}`">
+              :to="`/test#${TestMenuKey.PLANS}?id=${item.id}`">
               {{ item.name }}
             </RouterLink>
           </div>
@@ -433,7 +433,7 @@ const dropdownMenuItems = [
           </div>
 
           <div class="flex items-center justify-between h-4 leading-5">
-            <RouterLink class="flex items-center space-x-1" :to="`/test#plans?id=${item.id}&type=edit`">
+            <RouterLink class="flex items-center space-x-1" :to="`/test#${TestMenuKey.PLANS}?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
               <span>{{ t('actions.edit') }}</span>
             </RouterLink>
