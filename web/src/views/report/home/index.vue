@@ -227,7 +227,7 @@ watch(() => category.value, () => {
         :initStatusUrl="`${TESTER}/report/${selectId}/auth/status`"
         :onTips="t('reportHome.permission.onTips')"
         :offTips="t('reportHome.permission.offTips')"
-        :title="t('actions.permission')"
+        :title="t('reportHome.permission.title')"
         @change="authFlagChange" />
     </AsyncComponent>
 

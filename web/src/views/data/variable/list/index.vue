@@ -48,7 +48,7 @@ const {
   refresh,
   initializeRowSelection,
   cancelBatchDelete
-} = useVariableList(props.projectId, props.notify);
+} = useVariableList(props);
 
 const {
   visibilityIdSet,

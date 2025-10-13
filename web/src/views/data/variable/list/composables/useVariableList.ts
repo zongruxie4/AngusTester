@@ -23,7 +23,7 @@ const DEFAULT_PAGE_SIZE = 10;
  * @param notify - Notification message for triggering refresh
  * @returns Object containing data management functions and state
  */
-export function useVariableList (projectId: string, notify: string) {
+export function useVariableList (props: {projectId?: string, notify?: string}) {
   const { t } = useI18n();
 
   // Reactive state
@@ -55,7 +55,7 @@ export function useVariableList (projectId: string, notify: string) {
    */
   const loadData = async () => {
     const params = {
-      projectId,
+      projectId: props.projectId,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize,
       ...searchPanelParams.value
@@ -193,7 +193,7 @@ export function useVariableList (projectId: string, notify: string) {
   /**
    * Watch for project ID changes and reload data
    */
-  watch(() => projectId, (newValue) => {
+  watch(() => props.projectId, (newValue) => {
     if (!newValue) return;
 
     loaded.value = false;
@@ -204,7 +204,7 @@ export function useVariableList (projectId: string, notify: string) {
   /**
    * Watch for notification changes and refresh data
    */
-  watch(() => notify, (newValue) => {
+  watch(() => props.notify, (newValue) => {
     if (!newValue) return;
     loadData();
   }, { immediate: true });

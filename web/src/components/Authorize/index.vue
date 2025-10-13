@@ -608,7 +608,7 @@ onMounted(() => {
               <template #icon>
                 <Icon icon="icon-jia" class="mr-1" />
               </template>
-              {{ t('common.add') }}
+              {{ t('actions.add') }}
             </Button>
           </div>
           <Table
