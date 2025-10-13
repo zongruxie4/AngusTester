@@ -682,9 +682,9 @@ watch(() => [props.allData, props.groupedBy], () => {
         :updateUrl="`${TESTER}/apis/auth`"
         :enabledUrl="`${TESTER}/apis/${state.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/apis/${state.id}/auth/status`"
-        :onTips="t('service.apiList.template.auth.onTips')"
-        :offTips="t('service.apiList.template.auth.offTips')"
-        :title="t('service.apiList.template.auth.title')"
+        :onTips="t('service.apiList.template.permission.onTips')"
+        :offTips="t('service.apiList.template.permission.offTips')"
+        :title="t('service.apiList.template.permission.title')"
         @change="authFlagChange" />
     </AsyncComponent>
     <AsyncComponent :visible="testVisible">
