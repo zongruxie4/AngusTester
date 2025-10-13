@@ -157,7 +157,10 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <LeftMenu v-model:activeKey="activeKey" :menuItems="menuItems">
+  <LeftMenu
+    v-model:activeKey="activeKey"
+    key="issue"
+    :menuItems="menuItems">
     <template #home>
       <Homepage
         :projectId="projectId"

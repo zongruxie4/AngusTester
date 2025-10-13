@@ -61,7 +61,7 @@ onMounted(() => {
   watch([() => route.hash, () => route.path], ([newValue, newpath], [oldRoute, oldPath]) => {
     const hash = newValue?.split('?')?.[0]?.slice(1);
     const defaultKey = menuList.value[0]?.key;
-    if (!hash) {
+    if (!hash || !menuList.value.find(i => i.key === hash)) {
       // 优先从本地获取
       const localHash = localStore.get(localKey.value);
       if (menuList.value.find(i => i.key === localHash)) {

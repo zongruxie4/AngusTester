@@ -261,7 +261,7 @@ provide('updateTabPane', updateTabPane);
 provide('setCaseListPlanParam', setCaseListPlanParam);
 </script>
 <template>
-  <LeftMenu v-model:activeKey="activeMenuKey" :menuItems="menuItems">
+  <LeftMenu v-model:activeKey="activeMenuKey"  key="test" :menuItems="menuItems">
     <template #home>
       <Homepage
         :projectId="currentProjectId"
