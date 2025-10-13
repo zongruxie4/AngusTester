@@ -9,7 +9,7 @@ import { exec, scenario } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { ScenarioPermission } from '@/enums/enums';
-import ButtonGroup from './ButtonGroup/index.vue';
+import ButtonGroup from '@/plugins/test/components/ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
 import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from './PropsType';
 import { ExecContent } from './FunctionTestDetail/PropsType';
@@ -45,9 +45,9 @@ const { t } = useI18n();
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const SaveForm = defineAsyncComponent(() => import('@/plugins/tset/components/Drawer/SaveForm/index.vue'));
-const ActivityTimeline = defineAsyncComponent(() => import('@/plugins/tset/components/Drawer/ActivityTimeline/index.vue'));
-const SmartComment = defineAsyncComponent(() => import('@/plugins/tset/components/Drawer/SmartComment/index.vue'));
+const SaveForm = defineAsyncComponent(() => import('@/plugins/test/components/Drawer/SaveForm/index.vue'));
+const ActivityTimeline = defineAsyncComponent(() => import('@/plugins/test/components/Drawer/ActivityTimeline/index.vue'));
+const SmartComment = defineAsyncComponent(() => import('@/plugins/test/components/Drawer/SmartComment/index.vue'));
 
 const ScriptConfig = defineAsyncComponent(() => import('./ScriptConfig/index.vue'));
 const UIConfig = defineAsyncComponent(() => import('./UIConfig/index.vue'));
