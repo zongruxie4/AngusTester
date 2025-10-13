@@ -1,6 +1,5 @@
 package cloud.xcan.angus.core.tester.interfaces.apis.facade.vo;
 
-
 import cloud.xcan.angus.api.commonlink.apis.ApiSource;
 import cloud.xcan.angus.extension.angustester.api.ApiImportSource;
 import cloud.xcan.angus.model.AngusConstant;
@@ -30,7 +29,6 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
 
 @Setter
 @Getter
@@ -185,7 +183,6 @@ public class ApisDetailVo {
   public Map<String, Object> getExtensions() {
     return extensions;
   }
-
 }
 
 

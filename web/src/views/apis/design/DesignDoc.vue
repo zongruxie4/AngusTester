@@ -13,6 +13,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   designId: ''
 });
+
 const { t } = useI18n();
 const designInfo = ref<{[key: string]: string}>({});
 const designContent = ref();
@@ -24,7 +25,6 @@ const getDesignContent = async () => {
   if (error) {
     return;
   }
-
   designContent.value = JSON.stringify(resp?.data || {});
 };
 
@@ -52,7 +52,6 @@ const updateContent = async () => {
 };
 
 const releaseDesign = async () => {
-  console.log(updateContent);
   const [error] = await apis.releaseDesign(props.designId);
   if (error) {
     return;
@@ -77,10 +76,17 @@ onMounted(async () => {
         :is="openAPIDesignInstance.compName"
         v-if="openAPIDesignInstance"
         :openApiDoc="designContent">
-        <div slot="docTitle" class="flex justify-center items-center space-x-2 mb-3">
-          <Tag color="green" class="text-3.5 rounded-full">{{ designInfo.openapiSpecVersion }}</Tag>
+        <div
+          slot="docTitle"
+          class="flex justify-center items-center space-x-2 mb-3">
+          <Tag color="green" class="text-3.5 rounded-full">
+            {{ designInfo.openapiSpecVersion }}
+          </Tag>
+
           <div class="text-5 font-medium">{{ designInfo.name }}</div>
+
           <div>{{ designInfo.lastModifiedByName }}{{ t('design.detail.modifyTip', {time: designInfo.lastModifiedDate}) }}</div>
+
           <div class="relative left-20 space-x-2">
             <Button
               type="primary"
@@ -100,5 +106,5 @@ onMounted(async () => {
   </div>
 </template>
 <style scoped>
-@import 'open-api-designer/style.css';
+@import 'open-api-designer.css';
 </style>

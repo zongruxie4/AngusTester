@@ -4,14 +4,16 @@ import { Hints, Input, Modal, Select, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { apis } from '@/api/tester';
+import { ApisDesignSource } from '@/enums/enums';
+import { DEFAULT_OPENAPI_VERSION, SUPPORTED_OPENAPI_VERSION_OPTION } from '@/views/apis/design/types';
 
 interface Props {
   visible: boolean;
   designId?: string;
   projectId: string;
-  servicesId?: string; // 设计固定服务或接口
-  apisIds?: string[]; // 设计固定接口
-  designScope?: string;
+  servicesId?: string;
+  apisIds?: string[];
+  designScope?: ApisDesignSource;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -20,13 +22,21 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: '',
   servicesId: undefined,
   apisIds: () => [],
-  designScope: 'SERVICES'
+  designScope: ApisDesignSource.MANUAL_CREATED
 });
+
 const { t } = useI18n();
-const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
+
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+  (e: 'cancel'):void;
+  (e: 'ok'):void;
+  (e: 'update:visible', value: boolean):void
+}>();
+
 const formState = ref({
   name: undefined,
-  openapiSpecVersion: '3.0.1'
+  openapiSpecVersion: DEFAULT_OPENAPI_VERSION
 });
 
 const loading = ref(false);
@@ -97,7 +107,7 @@ const editOk = async () => {
   if (error) {
     return;
   }
-  notification.success('设计成功');
+  notification.success(t('actions.tips.editSuccess'));
   emits('ok');
   emits('update:visible', false);
 };
@@ -107,11 +117,11 @@ onMounted(async () => {
   watch(() => props.visible, async (newValue) => {
     if (newValue) {
       if (props.designId) {
-        loadData(props.designId);
+        await loadData(props.designId);
       } else {
         formState.value = {
           name: undefined,
-          openapiSpecVersion: '3.0.1'
+          openapiSpecVersion: DEFAULT_OPENAPI_VERSION
         };
         selectApis.value = [];
         selectApiId.value = undefined;
@@ -119,9 +129,6 @@ onMounted(async () => {
     }
   }, { immediate: true });
 });
-
-const versionOpt = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].map(i => ({ value: i, label: i }));
-
 </script>
 <template>
   <Modal
@@ -149,6 +156,7 @@ const versionOpt = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].map(i => ({ val
           :maxlength="100"
           :placeholder="t('common.placeholders.searchKeyword')" />
       </FormItem>
+
       <FormItem
         :label="t('design.editModal.versionLabel')"
         name="openapiSpecVersion"
@@ -157,7 +165,7 @@ const versionOpt = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'].map(i => ({ val
           <Select
             v-model:value="formState.openapiSpecVersion"
             class="flex-1"
-            :options="versionOpt" />
+            :options="SUPPORTED_OPENAPI_VERSION_OPTION" />
           <Hints :text="t('design.editModal.versionPlaceholder')" />
         </div>
       </FormItem>

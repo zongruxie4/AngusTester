@@ -99,11 +99,9 @@ const loadData = async () => {
     if (props.params.createdBy) {
       params.createdBy = props.params.createdBy;
     }
-
     if (props.params.favouriteBy) {
       params.favouriteBy = props.params.favouriteBy;
     }
-
     if (props.params.followBy) {
       params.followBy = props.params.followBy;
     }

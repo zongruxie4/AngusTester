@@ -16,7 +16,13 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
+
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+  (e: 'cancel'):void;
+  (e: 'ok'):void;
+  (e: 'update:visible', value: boolean):void
+}>();
 
 const loading = ref(false);
 const exportTypeOpt = ['json', 'yaml'].map(i => ({ value: i, label: i }));
@@ -35,7 +41,6 @@ const ok = () => {
       cancel();
     });
 };
-
 </script>
 <template>
   <Modal
