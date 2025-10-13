@@ -45,9 +45,9 @@ const { t } = useI18n();
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const SaveForm = defineAsyncComponent(() => import('./Drawer/SaveForm/index.vue'));
-const ActivityTimeline = defineAsyncComponent(() => import('./Drawer/ActivityTimeline/index.vue'));
-const SmartComment = defineAsyncComponent(() => import('./Drawer/SmartComment/index.vue'));
+const SaveForm = defineAsyncComponent(() => import('@/plugins/tset/components/Drawer/SaveForm/index.vue'));
+const ActivityTimeline = defineAsyncComponent(() => import('@/plugins/tset/components/Drawer/ActivityTimeline/index.vue'));
+const SmartComment = defineAsyncComponent(() => import('@/plugins/tset/components/Drawer/SmartComment/index.vue'));
 
 const ScriptConfig = defineAsyncComponent(() => import('./ScriptConfig/index.vue'));
 const UIConfig = defineAsyncComponent(() => import('./UIConfig/index.vue'));
