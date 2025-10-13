@@ -25,16 +25,22 @@ const emits = defineEmits<{
 }>();
 
 const loading = ref(false);
-const exportTypeOpt = ['json', 'yaml'].map(i => ({ value: i, label: i }));
+const exportFormatOptions = ['json', 'yaml'].map(item => ({ value: item, label: item }));
 
 const formState = ref({
   format: 'json'
 });
 
+/**
+ * Close modal without performing export action.
+ */
 const cancel = () => {
   emits('update:visible', false);
 };
 
+/**
+ * Trigger file download for selected format and then close modal.
+ */
 const ok = () => {
   download(`${TESTER}/apis/design/export?id=${props.designId}&format=${formState.value.format}`)
     .then(() => {
@@ -56,7 +62,7 @@ const ok = () => {
       <span>{{ t('design.exportModal.formatLabel') }}：</span>
       <RadioGroup
         v-model:value="formState.format"
-        :options="exportTypeOpt">
+        :options="exportFormatOptions">
       </RadioGroup>
     </div>
   </Modal>

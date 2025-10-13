@@ -17,10 +17,13 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const designInfo = ref<{[key: string]: string}>({});
 const designContent = ref();
-const openAPIDesignInstance = ref();
-const loadingData = ref(false);
+const openApiDesignerRef = ref();
+const isLoading = ref(false);
 
-const getDesignContent = async () => {
+/**
+ * Fetch the openapi content for current design and cache as string.
+ */
+const fetchDesignContent = async () => {
   const [error, resp] = await apis.exportDesign({ format: 'json', id: props.designId });
   if (error) {
     return;
@@ -28,7 +31,10 @@ const getDesignContent = async () => {
   designContent.value = JSON.stringify(resp?.data || {});
 };
 
-const getDesignInfo = async () => {
+/**
+ * Fetch meta information for current design such as name and version.
+ */
+const fetchDesignInfo = async () => {
   const [error, resp] = await apis.getDesignDetail(props.designId);
   if (error) {
     return;
@@ -36,13 +42,16 @@ const getDesignInfo = async () => {
   designInfo.value = resp?.data || {};
 };
 
-const updateContent = async () => {
-  if (typeof openAPIDesignInstance.value?.updateData === 'function') {
-    openAPIDesignInstance.value.updateData();
+/**
+ * Persist the latest openapi content from designer to backend service.
+ */
+const saveContent = async () => {
+  if (typeof openApiDesignerRef.value?.updateData === 'function') {
+    openApiDesignerRef.value.updateData();
   }
 
-  const content = (openAPIDesignInstance.value && typeof openAPIDesignInstance.value.getDocApi === 'function')
-    ? openAPIDesignInstance.value.getDocApi()
+  const content = (openApiDesignerRef.value && typeof openApiDesignerRef.value.getDocApi === 'function')
+    ? openApiDesignerRef.value.getDocApi()
     : designContent.value;
   const [error] = await apis.putDesignContent({ id: props.designId, openapi: JSON.stringify(content) });
   if (error) {
@@ -51,7 +60,10 @@ const updateContent = async () => {
   notification.success(t('actions.tips.saveSuccess'));
 };
 
-const releaseDesign = async () => {
+/**
+ * Publish current design. After success, user will see a publish success message.
+ */
+const publishDesign = async () => {
   const [error] = await apis.releaseDesign(props.designId);
   if (error) {
     return;
@@ -60,21 +72,21 @@ const releaseDesign = async () => {
 };
 
 onMounted(async () => {
-  loadingData.value = true;
-  await getDesignContent();
-  await getDesignInfo();
-  openAPIDesignInstance.value = new OpenApiDesign({
+  isLoading.value = true;
+  await fetchDesignContent();
+  await fetchDesignInfo();
+  openApiDesignerRef.value = new OpenApiDesign({
     defaultFontSize: 12
   });
-  loadingData.value = false;
+  isLoading.value = false;
 });
 </script>
 <template>
   <div class="h-full text-3">
-    <Spin class="h-full" :spinning="loadingData">
+    <Spin class="h-full" :spinning="isLoading">
       <component
-        :is="openAPIDesignInstance.compName"
-        v-if="openAPIDesignInstance"
+        :is="openApiDesignerRef.compName"
+        v-if="openApiDesignerRef"
         :openApiDoc="designContent">
         <div
           slot="docTitle"
@@ -91,12 +103,12 @@ onMounted(async () => {
             <Button
               type="primary"
               size="small"
-              @click="updateContent">
+              @click="saveContent">
               {{ t('design.detail.saveAction') }}
             </Button>
             <Button
               size="small"
-              @click="releaseDesign">
+              @click="publishDesign">
               {{ t('design.detail.publishAction') }}
             </Button>
           </div>

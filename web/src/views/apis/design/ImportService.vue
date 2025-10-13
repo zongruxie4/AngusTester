@@ -31,14 +31,23 @@ const formState = ref({
   serviceId: ''
 });
 
+/**
+ * Update selected service id when user chooses a node from tree.
+ */
 const handleServiceChange = (serviceId) => {
   formState.value.serviceId = serviceId;
 };
 
+/**
+ * Close modal without importing from service.
+ */
 const cancel = () => {
   emits('update:visible', false);
 };
 
+/**
+ * Validate selection and import design by service id.
+ */
 const ok = async () => {
   formRef.value.validate().then(async () => {
     loading.value = true;
@@ -73,7 +82,7 @@ const ok = async () => {
         class="leading-8">
         <TreeSelect
           :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
-          :fieldNames="{label:'name', value: 'id'}"
+          :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
           :placeholder="t('design.importServiceModal.servicePlaceholder')"
           :virtual="false"
           size="small"

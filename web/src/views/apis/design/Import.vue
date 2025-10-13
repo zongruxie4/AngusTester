@@ -26,43 +26,57 @@ const { t } = useI18n();
 
 const loading = ref(false);
 const formRef = ref();
-const fileList = ref<{name: string, status: string}[]>([]);
-const formState = ref({
+const fileList = ref<any[]>([]);
+const formState = ref<{ name: string | undefined; content: string | undefined }>({
   name: undefined,
   content: undefined
 });
 
+/**
+ * Read selected file content and set into form state.
+ */
 const handleFile = async (fileObj) => {
   const file = fileObj.file;
   const reader = new FileReader();
 
-  reader.onload = (e: {target: {result: string}}) => {
-    formState.value.content = e.target.result;
+  reader.onload = (ev: ProgressEvent<FileReader>) => {
+    const result = ev.target?.result as string | null;
+    formState.value.content = result || '';
     fileList.value = [{
       name: file.name,
-      status: 'done'
+      status: 'done',
+      uid: `${Date.now()}`
     }];
     formRef.value.validate(['content']);
   };
   reader.readAsText(file);
 };
 
+/**
+ * Remove current selected file and clear content.
+ */
 const delFile = () => {
   fileList.value = [];
   formState.value.content = undefined;
 };
 
+/**
+ * Close modal without importing.
+ */
 const cancel = () => {
   emits('update:visible', false);
 };
 
+/**
+ * Validate fields then submit import request with file content.
+ */
 const ok = async () => {
   formRef.value.validate().then(async () => {
     loading.value = true;
     const formData = new FormData();
     formData.append('projectId', props.projectId);
-    formData.append('name', formState.value.name);
-    formData.append('content', formState.value.content);
+    formData.append('name', formState.value.name || '');
+    formData.append('content', formState.value.content || '');
     const [error] = await apis.importDesign(formData);
     loading.value = false;
     if (error) {

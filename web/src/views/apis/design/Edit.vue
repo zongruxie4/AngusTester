@@ -42,7 +42,10 @@ const formState = ref({
 const loading = ref(false);
 const formRef = ref();
 
-const loadData = async (id: string) => {
+/**
+ * Load existing design data for editing form.
+ */
+const loadDesignForEdit = async (id: string) => {
   if (loading.value) {
     return;
   }
@@ -67,23 +70,32 @@ const loadData = async (id: string) => {
 const selectApiId = ref();
 const selectApis = ref<any[]>([]);
 
+/**
+ * Reset form and close modal without saving.
+ */
 const cancel = () => {
   formRef.value.resetFields();
   emits('update:visible', false);
   emits('cancel');
 };
 
+/**
+ * Validate form and trigger create or update action by presence of designId.
+ */
 const ok = async () => {
   formRef.value.validate().then(async () => {
     if (!props.designId) {
-      await addOk();
+      await createDesign();
     } else {
-      await editOk();
+      await updateDesign();
     }
   });
 };
 
-const addOk = async () => {
+/**
+ * Create a new design with current form data.
+ */
+const createDesign = async () => {
   loading.value = true;
   const [error] = await apis.addDesign({
     ...formState.value,
@@ -97,7 +109,10 @@ const addOk = async () => {
   emits('update:visible', false);
 };
 
-const editOk = async () => {
+/**
+ * Update an existing design with current form data.
+ */
+const updateDesign = async () => {
   loading.value = true;
   const [error] = await apis.updateDesign({
     ...formState.value,
@@ -117,7 +132,7 @@ onMounted(async () => {
   watch(() => props.visible, async (newValue) => {
     if (newValue) {
       if (props.designId) {
-        await loadData(props.designId);
+        await loadDesignForEdit(props.designId);
       } else {
         formState.value = {
           name: undefined,

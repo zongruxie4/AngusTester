@@ -22,47 +22,77 @@ const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
 
+// Constants
+const DESIGN_LIST_KEY = 'designList';
+const DESIGN_DOC_VALUE = 'designDocContent';
+
+/**
+ * Parse the hash query part into a key-value map.
+ */
+const parseHashQuery = (hash: string): { [key: string]: string } => {
+  const queryString = hash.split('?')[1];
+  if (!queryString) {
+    return {};
+  }
+  return queryString.split('&').reduce((prev, cur) => {
+    const [key, value] = cur.split('=');
+    prev[key] = value;
+    return prev;
+  }, {} as { [key: string]: string });
+};
+
+/**
+ * Add a new tab pane into the browser tab container.
+ * The provided factory returns pane data which will be appended to the tab list.
+ */
 const addTabPane = (data: IPane) => {
   browserTabRef.value.add(() => {
     return data;
   });
 };
 
+/**
+ * Get pane data by a specific key.
+ * Returns a list of panes when key matches multiple targets.
+ */
 const getTabPane = (key: string): IPane[] | undefined => {
   return browserTabRef.value.getData(key);
 };
 
-const deleteTabPane = (keys: string[]) => {
+/**
+ * Remove one or multiple tab panes by keys.
+ * Keys should match the internal pane identifiers.
+ */
+const removeTabPanes = (keys: string[]) => {
   browserTabRef.value.remove(keys);
 };
 
+/**
+ * Update the tab pane meta information such as name or closable.
+ */
 const updateTabPane = (data: IPane) => {
   browserTabRef.value.update(data);
 };
 
+/**
+ * Replace a tab pane key with a new key while keeping the position.
+ */
 const replaceTabPane = (key: string, data: { key: string }) => {
   browserTabRef.value.replace(key, data);
 };
 
-const hashChange = async (hash: string) => {
-  const queryString = hash.split('?')[1];
-  if (!queryString) {
-    return;
-  }
-
-  const queryParameters = queryString.split('&').reduce((prev, cur) => {
-    const [key, value] = cur.split('=');
-    prev[key] = value;
-    return prev;
-  }, {} as { [key: string]: string });
-
-  const { id } = queryParameters;
+/**
+ * Handle hash navigation for deep linking a design detail.
+ * When hash contains id, a new document tab is opened and route hash is reset.
+ */
+const handleHashNavigation = async (hash: string) => {
+  const { id } = parseHashQuery(hash);
   if (id) {
     browserTabRef.value.add(() => {
       return {
         _id: id + '-doc',
         designId: id,
-        value: 'designDocContent',
+        value: DESIGN_DOC_VALUE,
         data: { _id: id, id }
       };
     });
@@ -70,13 +100,42 @@ const hashChange = async (hash: string) => {
   await router.replace(`/apis#${ApiMenuKey.DESIGN}`);
 };
 
+/**
+ * Ensure the design list tab exists; update its title if already present.
+ */
+const ensureDesignListTab = () => {
+  if (typeof browserTabRef.value?.update !== 'function') {
+    return;
+  }
+  const tabData = browserTabRef.value.getData().map(item => item.value);
+  if (!tabData.includes(DESIGN_LIST_KEY)) {
+    addTabPane({
+      _id: DESIGN_LIST_KEY,
+      value: DESIGN_LIST_KEY,
+      name: t('design.home.tabTitle'),
+      closable: false
+    });
+  } else {
+    updateTabPane({
+      _id: DESIGN_LIST_KEY,
+      value: DESIGN_LIST_KEY,
+      name: t('design.home.tabTitle'),
+      closable: false
+    });
+  }
+};
+
+/**
+ * Ensure base tabs exist and synchronize tab title with i18n updates.
+ * Also handles initial hash-based navigation.
+ */
 const initialize = () => {
   if (typeof browserTabRef.value?.add === 'function') {
     browserTabRef.value.add((ids: string[]) => {
-      if (!ids.includes('designList')) {
+      if (!ids.includes(DESIGN_LIST_KEY)) {
         return {
-          _id: 'designList',
-          value: 'designList',
+          _id: DESIGN_LIST_KEY,
+          value: DESIGN_LIST_KEY,
           name: t('design.home.tabTitle'),
           closable: false
         };
@@ -86,30 +145,16 @@ const initialize = () => {
 
   // Watch for browser tab changes and ensure case list tab exists
   watch(() => browserTabRef.value, () => {
-    if (typeof browserTabRef.value?.update === 'function') {
-      const tabData = browserTabRef.value.getData().map(item => item.value);
-      if (!tabData.includes('designList')) {
-        addTabPane({
-          _id: 'designList',
-          value: 'designList',
-          name: t('design.home.tabTitle'),
-          closable: false
-        });
-      } else {
-        updateTabPane({
-          _id: 'designList',
-          value: 'designList',
-          name: t('design.home.tabTitle'),
-          closable: false
-        });
-      }
-    }
+    ensureDesignListTab();
   }, { immediate: true });
 
-  hashChange(route.hash);
+  handleHashNavigation(route.hash);
 };
 
-const storageKeyChange = () => {
+/**
+ * Re-initialize when storage key changes to reload persisted tabs.
+ */
+const handleStorageKeyChange = () => {
   initialize();
 };
 
@@ -126,13 +171,14 @@ onMounted(() => {
       return;
     }
 
-    hashChange(route.hash);
+    handleHashNavigation(route.hash);
   });
 });
 
 provide('addTabPane', addTabPane);
 provide('getTabPane', getTabPane);
-provide('deleteTabPane', deleteTabPane);
+provide('deleteTabPane', removeTabPanes);
+provide('removeTabPanes', removeTabPanes);
 provide('updateTabPane', updateTabPane);
 provide('replaceTabPane', replaceTabPane);
 </script>
@@ -143,11 +189,11 @@ provide('replaceTabPane', replaceTabPane);
     ref="browserTabRef"
     hideAdd
     class="h-full"
-    :userId="props.userInfo?.id"
+    :userId="`${props.userInfo?.id ?? ''}`"
     :storageKey="storageKey"
-    @storageKeyChange="storageKeyChange">
+    @storageKeyChange="handleStorageKeyChange">
     <template #default="record">
-      <template v-if="record.value === 'designList'">
+      <template v-if="record.value === DESIGN_LIST_KEY">
         <List
           v-bind="record"
           :userInfo="props.userInfo"
@@ -155,7 +201,7 @@ provide('replaceTabPane', replaceTabPane);
           :projectId="props.projectId" />
       </template>
 
-      <template v-else-if="record.value === 'designDocContent'">
+      <template v-else-if="record.value === DESIGN_DOC_VALUE">
         <DesignDocContent
           v-bind="record"
           :userInfo="props.userInfo"
