@@ -63,7 +63,7 @@ const validateChar = (_key, value) => {
     return Promise.resolve();
   }
   // eslint-disable-next-line prefer-promise-reject-errors
-  return Promise.reject(t('genDataPlugin.dataSet.validation.singleChar'));
+  return Promise.reject(t('genDataPlugin.dataset.validation.singleChar'));
 };
 
 const onFormatChange = (value) => {
@@ -109,7 +109,7 @@ defineExpose({
     layout="inline"
     class="form-item-wrapper mb-1.5"
     size="small">
-    <FormItem :label="t('genDataPlugin.dataSet.format')">
+    <FormItem :label="t('genDataPlugin.dataset.format')">
       <Select
         :value="formState.format"
         class="!w-30"
@@ -117,19 +117,19 @@ defineExpose({
         @change="onFormatChange" />
     </FormItem>
     <template v-if="['CSV', 'TAB'].includes(formState.format)">
-      <FormItem :label="t('genDataPlugin.dataSet.lineEnding')">
+      <FormItem :label="t('genDataPlugin.dataset.lineEnding')">
         <SelectEnum
           v-model:value="formState.lineEnding"
           class="!w-30"
           enumKey="LineEndingType" />
       </FormItem>
       <FormItem>
-        <Checkbox v-model:checked="formState.includeHeader">{{ t('genDataPlugin.dataSet.includeHeader') }}</Checkbox>
+        <Checkbox v-model:checked="formState.includeHeader">{{ t('genDataPlugin.dataset.includeHeader') }}</Checkbox>
       </FormItem>
     </template>
     <template v-if="formState.format=== 'CUSTOM'">
       <FormItem
-        :label="t('genDataPlugin.dataSet.lineEnding')"
+        :label="t('genDataPlugin.dataset.lineEnding')"
         name="lineEnding">
         <SelectEnum
           v-model:value="formState.lineEnding"
@@ -138,7 +138,7 @@ defineExpose({
       </FormItem>
       <FormItem
         name="escapeChar"
-        :label="t('genDataPlugin.dataSet.escapeChar')"
+        :label="t('genDataPlugin.dataset.escapeChar')"
         :rules="{validator: validateChar}">
         <Input
           v-model:value="formState.escapeChar"
@@ -147,7 +147,7 @@ defineExpose({
       </FormItem>
       <FormItem
         name="quoteChar"
-        :label="t('genDataPlugin.dataSet.quoteChar')"
+        :label="t('genDataPlugin.dataset.quoteChar')"
         :rules="{validator: validateChar}">
         <Input
           v-model:value="formState.quoteChar"
@@ -156,7 +156,7 @@ defineExpose({
       </FormItem>
       <FormItem
         name="separatorChar"
-        :label="t('genDataPlugin.dataSet.separatorChar')"
+        :label="t('genDataPlugin.dataset.separatorChar')"
         :rules="{validator: validateChar}">
         <Input
           v-model:value="formState.separatorChar"
@@ -165,12 +165,12 @@ defineExpose({
       </FormItem>
       <FormItem
         name="includeHeader">
-        <Checkbox v-model:checked="formState.includeHeader">{{ t('genDataPlugin.dataSet.includeHeader') }}</Checkbox>
+        <Checkbox v-model:checked="formState.includeHeader">{{ t('genDataPlugin.dataset.includeHeader') }}</Checkbox>
       </FormItem>
     </template>
     <template v-if="formState.format=== 'JSON'">
       <FormItem
-        :label="t('genDataPlugin.dataSet.lineEnding')"
+        :label="t('genDataPlugin.dataset.lineEnding')"
         name="lineEnding">
         <SelectEnum
           v-model:value="formState.lineEnding"
@@ -178,20 +178,20 @@ defineExpose({
           enumKey="LineEndingType" />
       </FormItem>
       <FormItem name="includeNull">
-        <Checkbox v-model:checked="formState.includeNull">{{ t('genDataPlugin.dataSet.includeNull') }}</Checkbox>
+        <Checkbox v-model:checked="formState.includeNull">{{ t('genDataPlugin.dataset.includeNull') }}</Checkbox>
       </FormItem>
       <FormItem name="rowsToArray">
-        <Checkbox v-model:checked="formState.rowsToArray">{{ t('genDataPlugin.dataSet.rowsToArray') }}</Checkbox>
+        <Checkbox v-model:checked="formState.rowsToArray">{{ t('genDataPlugin.dataset.rowsToArray') }}</Checkbox>
       </FormItem>
     </template>
     <template v-if="formState.format === 'EXCEL'">
       <FormItem name="includeHeader">
-        <Checkbox v-model:checked="formState.includeHeader">{{ t('genDataPlugin.dataSet.includeHeader') }}</Checkbox>
+        <Checkbox v-model:checked="formState.includeHeader">{{ t('genDataPlugin.dataset.includeHeader') }}</Checkbox>
       </FormItem>
     </template>
     <template v-if="formState.format === 'SQL'">
       <FormItem
-        :label="t('genDataPlugin.dataSet.lineEnding')"
+        :label="t('genDataPlugin.dataset.lineEnding')"
         name="lineEnding">
         <SelectEnum
           v-model:value="formState.lineEnding"
@@ -200,17 +200,17 @@ defineExpose({
       </FormItem>
       <FormItem
         name="tableName"
-        :label="t('genDataPlugin.dataSet.tableName')"
-        :rules="{ required: true, message: t('genDataPlugin.dataSet.validation.tableNameRequired') }">
+        :label="t('genDataPlugin.dataset.tableName')"
+        :rules="{ required: true, message: t('genDataPlugin.dataset.validation.tableNameRequired') }">
         <Input v-model:value="formState.tableName" class="!w-30" />
       </FormItem>
       <FormItem name="batchInsert">
-        <Checkbox v-model:checked="formState.batchInsert">{{ t('genDataPlugin.dataSet.batchInsert') }}</Checkbox>
+        <Checkbox v-model:checked="formState.batchInsert">{{ t('genDataPlugin.dataset.batchInsert') }}</Checkbox>
       </FormItem>
     </template>
     <template v-if="formState.format === 'XML'">
       <FormItem
-        :label="t('genDataPlugin.dataSet.lineEnding')"
+        :label="t('genDataPlugin.dataset.lineEnding')"
         name="lineEnding">
         <SelectEnum
           v-model:value="formState.lineEnding"
@@ -218,7 +218,7 @@ defineExpose({
           enumKey="LineEndingType" />
       </FormItem>
       <FormItem
-        :label="t('genDataPlugin.dataSet.rootElement')"
+        :label="t('genDataPlugin.dataset.rootElement')"
         name="rootElement">
         <Input
           v-model:value="formState.rootElement"
@@ -226,7 +226,7 @@ defineExpose({
           :maxlength="200" />
       </FormItem>
       <FormItem
-        :label="t('genDataPlugin.dataSet.recordElement')"
+        :label="t('genDataPlugin.dataset.recordElement')"
         name="recordElement">
         <Input
           v-model:value="formState.recordElement"

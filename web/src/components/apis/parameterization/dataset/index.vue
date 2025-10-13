@@ -1,20 +1,12 @@
 <script setup lang="ts">
-// Vue core imports
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Arrow, AsyncComponent, Colon, Icon, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { Button, Collapse, CollapsePanel, Popconfirm, Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
-
-// Infrastructure imports
 import { EnumMessage, ActionOnEOF, SharingMode, enumUtils, TESTER, http } from '@xcan-angus/infra';
-
-// API imports
 import { paramTarget } from '@/api/tester';
-
-// Local imports
 import { DataSetItem } from './PropsType';
+import { DataMenuKey } from '@/views/data/menu';
 
 const { t } = useI18n();
 
@@ -390,7 +382,7 @@ const hintTextMap = {
                     class="p-0 h-5 leading-5">
                     <RouterLink
                       class="flex items-center space-x-1"
-                      :to="`/data#dataSet?id=${item.id}`"
+                      :to="`/data#${DataMenuKey.DATASET}?id=${item.id}`"
                       target="_blank">
                       <Icon icon="icon-zhengyan" class="text-3.5" />
                       <span>{{ t('commonComp.apis.parameterizationDataset.viewDefinition') }}</span>

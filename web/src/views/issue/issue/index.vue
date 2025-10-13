@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { IPane } from '@xcan-angus/infra';
 import { BasicProps } from '@/types/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
@@ -150,7 +151,7 @@ const processRouteHash = (hash: string) => {
   }
 
   // Clean up URL by removing hash parameters
-  router.replace('/issue#issue');
+  router.replace(`/issue#${IssueMenuKey.ISSUE}`);
 };
 
 /**

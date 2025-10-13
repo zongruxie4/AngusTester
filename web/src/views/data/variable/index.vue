@@ -5,6 +5,10 @@ import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
+import { DataMenuKey } from '@/views/data/menu';
+
+const VariableList = defineAsyncComponent(() => import('@/views/data/variable/list/index.vue'));
+const VariableDetail = defineAsyncComponent(() => import('@/views/data/variable/detail/index.vue'));
 
 const { t } = useI18n();
 
@@ -13,9 +17,6 @@ const props = withDefaults(defineProps<BasicProps>(), {
   userInfo: undefined,
   appInfo: undefined
 });
-
-const VariableList = defineAsyncComponent(() => import('@/views/data/variable/list/index.vue'));
-const VariableDetail = defineAsyncComponent(() => import('@/views/data/variable/detail/index.vue'));
 
 const route = useRoute();
 const router = useRouter();
@@ -104,8 +105,7 @@ const hashChange = (hash:string) => {
       };
     });
   }
-
-  router.replace('/data#variables');
+  router.replace(`/data#${DataMenuKey.VARIABLES}`);
 };
 
 const storageKeyChange = () => {

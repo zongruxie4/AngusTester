@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Icon, Tooltip, Grid } from '@xcan-angus/vue-ui';
 import { ProjectInfo } from '@/layout/types';
 import { TaskType } from '@/enums/enums';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 const { t } = useI18n();
 
@@ -100,7 +101,7 @@ const taskTooltipTableColumns = [
           <span class="min-w-0 truncate flex-1" :title="taskItem.name">
             <a
               target="_blank"
-              :href="`/issue#issue?projectId=${projectInfo.id}&taskId=${taskItem.targetId}&taskName=${taskItem.name}`">
+              :href="`/issue#${IssueMenuKey.ISSUE}?projectId=${projectInfo.id}&taskId=${taskItem.targetId}&taskName=${taskItem.name}`">
               {{ taskItem.name }}
             </a>
           </span>

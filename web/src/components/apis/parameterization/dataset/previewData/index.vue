@@ -12,7 +12,7 @@ import { utils, duration, ExtractionSource, ExtractionMethod, ExtractionFileType
 import { debounce } from 'throttle-debounce';
 
 // API imports
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -120,7 +120,7 @@ const loadPreviewData = async () => {
   };
 
   isLoading.value = true;
-  const [error, response] = await dataSet.previewDataSetValue(requestParams, { silence: true });
+  const [error, response] = await dataset.previewDataSetValue(requestParams, { silence: true });
   isLoading.value = false;
   isDataLoaded.value = true;
   tableColumns.value = [];

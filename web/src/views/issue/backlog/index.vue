@@ -10,8 +10,9 @@ import { Priority } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 import { TaskType, TaskSprintPermission } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
-
+import { IssueMenuKey } from '@/views/issue/menu';
 import { TaskDetail } from '../types';
+
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { SprintInfo } from '@/views/issue/sprint/types';
@@ -317,7 +318,7 @@ onMounted(() => {
                             size="small"
                             type="text"
                             style="height:20px;padding:0;line-height:20px;">
-                            <RouterLink class="flex items-center space-x-1" :to="`/issue#sprint?id=${item.id}`">
+                            <RouterLink class="flex items-center space-x-1" :to="`/issue#${IssueMenuKey.SPRINT}?id=${item.id}`">
                               <Icon icon="icon-shuxie" class="text-3.5" />
                               <span>{{ t('actions.edit') }}</span>
                             </RouterLink>
@@ -325,7 +326,7 @@ onMounted(() => {
 
                           <RouterLink
                             class="flex items-center space-x-1"
-                            :to="`/issue#issue?sprintId=${item.id}&sprintName=${item.name}`">
+                            :to="`/issue#${IssueMenuKey.ISSUE}?sprintId=${item.id}&sprintName=${item.name}`">
                             <Icon icon="icon-renwu2" class="text-3.5" />
                             <span>{{ t('backlog.actions.enterSprint') }}</span>
                           </RouterLink>
@@ -765,7 +766,7 @@ onMounted(() => {
               <div class="flex-1 flex items-center truncate">
                 <RouterLink
                   v-if="currentInfo.currentSprintInfo"
-                  :to="`/issue#sprint?id=${currentInfo.currentSprintInfo?.id}`"
+                  :to="`/issue#${IssueMenuKey.SPRINT}?id=${currentInfo.currentSprintInfo?.id}`"
                   :title="currentInfo.currentSprintInfo?.name"
                   class="truncate"
                   style="max-width: 50%;">
@@ -775,7 +776,7 @@ onMounted(() => {
                 <div v-else class="flex-shrink-0">Backlog</div>
                 <div class="mx-1.5">/</div>
                 <RouterLink
-                  :to="`/issue#issue?id=${currentInfo.currentTaskInfo?.id}`"
+                  :to="`/issue#${IssueMenuKey.ISSUE}?id=${currentInfo.currentTaskInfo?.id}`"
                   class="truncate flex-1"
                   :title="currentInfo.currentTaskInfo?.name">
                   {{ currentInfo.currentTaskInfo?.name }}

@@ -8,6 +8,7 @@ import { testCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskType } from '@/enums/enums';
 import { AssocTaskProps } from '@/views/test/case/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
@@ -100,7 +101,7 @@ const handleRemoveTaskAssociation = (taskRecord) => {
  * @param taskRecord - The task record to open
  */
 const openTaskDetail = (taskRecord) => {
-  router.push(`/issue#issue?taskId=${taskRecord.id}`);
+  router.push(`/issue#${IssueMenuKey.ISSUE}?taskId=${taskRecord.id}`);
 };
 
 const columns = [

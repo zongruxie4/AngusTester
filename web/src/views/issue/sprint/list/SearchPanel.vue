@@ -6,7 +6,10 @@ import { appContext, enumUtils, PageQuery, SearchCriteria } from '@xcan-angus/in
 import { TaskSprintStatus } from '@/enums/enums';
 import { Button } from 'ant-design-vue';
 import { LoadingProps } from '@/types/types';
-import { QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import { IssueMenuKey } from '@/views/issue/menu';
+import {
+  QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig
+} from '@/components/quickSearch';
 
 const { t } = useI18n();
 
@@ -263,7 +266,7 @@ onMounted(() => {
           type="primary"
           size="small"
           class="p-0">
-          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/issue#sprint?type=ADD`">
+          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/issue#${IssueMenuKey.SPRINT}?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
             <span>{{ t('sprint.actions.addSprint') }}</span>
           </RouterLink>

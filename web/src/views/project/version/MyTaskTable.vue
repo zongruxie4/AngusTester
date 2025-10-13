@@ -4,6 +4,7 @@ import { http } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { IconTask, Table } from '@xcan-angus/vue-ui';
 import type { MyTaskTableProps, TaskInfo } from './types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
@@ -29,7 +30,7 @@ const tableList = computed((): TaskInfo[] => {
     };
     return {
       ...item,
-      linkUrl: '/issue#issue?' + http.getURLSearchParams(_params, true)
+      linkUrl: `/issue#${IssueMenuKey.ISSUE}?` + http.getURLSearchParams(_params, true)
     };
   });
 });

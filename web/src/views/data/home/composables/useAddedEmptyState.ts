@@ -26,10 +26,10 @@ export function useAddedEmptyState (type: DataType) {
         actionText: t('dataHome.emptyData.addVariable'),
         actionKey: 'variable'
       },
-      dataSet: {
+      dataset: {
         message: t('dataHome.emptyData.noDataset'),
         actionText: t('dataHome.emptyData.addDataset'),
-        actionKey: 'dataSet'
+        actionKey: 'dataset'
       },
       space: {
         message: t('dataHome.emptyData.noSpace'),
@@ -52,7 +52,7 @@ export function useAddedEmptyState (type: DataType) {
    * </p>
    */
   const hasCreateAction = computed(() => {
-    return ['variable', 'dataSet'].includes(type);
+    return ['variable', 'dataset'].includes(type);
   });
 
   return {

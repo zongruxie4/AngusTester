@@ -37,7 +37,7 @@ export function useAddedTableColumns (type: DataType) {
     // Add type-specific columns
     const typeSpecificColumns = [];
 
-    if (['space', 'dataSource'].includes(type)) {
+    if (['space', 'datasource'].includes(type)) {
       typeSpecificColumns.push(
         {
           title: t('common.createdBy'),
@@ -52,7 +52,7 @@ export function useAddedTableColumns (type: DataType) {
       );
     }
 
-    if (['variable', 'dataSet'].includes(type)) {
+    if (['variable', 'dataset'].includes(type)) {
       typeSpecificColumns.push(
         {
           title: t('common.lastModifiedBy'),

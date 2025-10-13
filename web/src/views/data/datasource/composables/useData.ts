@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue';
-import { dataSource } from '@/api/tester';
+import { datasource } from '@/api/tester';
 import {
   SearchParams,
   DataSourceDetail,
@@ -44,7 +44,7 @@ export function useData (projectId: string) {
     loading.value = true;
 
     try {
-      const [error, { data = { list: [], total: 0 } }] = await dataSource.getDataSourceList({
+      const [error, { data = { list: [], total: 0 } }] = await datasource.getDataSourceList({
         ...params.value,
         projectId
       });
@@ -116,7 +116,7 @@ export function useData (projectId: string) {
     dataMap.value[record.id].testLoading = true;
 
     try {
-      const [error, { data }] = await dataSource.testById(record.id);
+      const [error, { data }] = await datasource.testById(record.id);
       if (error) {
         return;
       }
@@ -142,7 +142,7 @@ export function useData (projectId: string) {
     loading.value = true;
 
     try {
-      const [error] = await dataSource.deleteDataSource(id);
+      const [error] = await datasource.deleteDataSource(id);
       if (error) {
         return;
       }

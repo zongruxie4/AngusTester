@@ -13,7 +13,7 @@ const activeSource = ref('file');
 const SelectFileModal = defineAsyncComponent(() => import('./SelectFileModal.vue'));
 
 const sourceOpt = [
-  { value: 'file', label: t('jmsPlugin.parameterize.options.file') }, { value: 'dataSource', label: t('jmsPlugin.parameterize.options.dataSource') }
+  { value: 'file', label: t('jmsPlugin.parameterize.options.file') }, { value: 'datasource', label: t('jmsPlugin.parameterize.options.dataSource') }
 ];
 
 const selectFileVisible = ref(false);
@@ -52,7 +52,7 @@ const confirmFile = () => {
           </template>
         </Input>
       </div>
-      <div v-if="activeSource === 'dataSource'" class="mt-3">
+      <div v-if="activeSource === 'datasource'" class="mt-3">
         <div>{{ t('jmsPlugin.parameterize.dataSource') }}</div>
         <Select
           :action="`${TESTER}/mock/datasource`"

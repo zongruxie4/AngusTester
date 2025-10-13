@@ -3,9 +3,9 @@ import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard, utils, ExtractionSource } from '@xcan-angus/infra';
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 import { BasicProps } from '@/types/types';
-
+import { DataMenuKey } from '@/views/data/menu';
 import { DataSetDetail } from '../types';
 
 const { t } = useI18n();
@@ -61,7 +61,7 @@ const toDelete = () => {
     content: t('actions.tips.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
-      const [error] = await dataSet.deleteDataSet([id]);
+      const [error] = await dataset.deleteDataSet([id]);
       if (error) {
         return;
       }
@@ -88,7 +88,7 @@ const toClone = async () => {
   }
 
   loading.value = true;
-  const [error] = await dataSet.cloneDataSet([data.id]);
+  const [error] = await dataset.cloneDataSet([data.id]);
   loading.value = false;
   if (error) {
     return;
@@ -101,7 +101,7 @@ const toClone = async () => {
 };
 
 const toCopyLink = (id: string) => {
-  toClipboard(window.location.origin + `/data#dataSet?id=${id}`).then(() => {
+  toClipboard(window.location.origin + `/data#${DataMenuKey.DATASET}?id=${id}`).then(() => {
     notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
     notification.error(t('actions.tips.copyFailed'));
@@ -118,7 +118,7 @@ const loadData = async (id: string) => {
   }
 
   loading.value = true;
-  const [error, res] = await dataSet.getDataSetDetail(id);
+  const [error, res] = await dataset.getDataSetDetail(id);
   loading.value = false;
   loaded.value = true;
   if (error) {

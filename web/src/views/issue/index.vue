@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } fr
 import { appContext, utils, EditionType } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { ProjectInfo } from '@/layout/types';
+import { IssueMenuKey, createMenuItems, IssueMenuVisibility } from '@/views/issue/menu';
 
 // Component Imports
 const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
@@ -30,9 +31,7 @@ const projectTypeVisibilityMap = inject<Ref<{[key: string]: boolean}>>('proTypeS
 }));
 
 // Type Definitions
-type MenuKey = 'home' | 'sprint' | 'task' | 'backlog' | 'trash' | 'meeting' | 'analysis';
-const activeKey = ref<MenuKey>();
-const editionType = ref();
+const editionType = ref<EditionType>();
 
 // Refresh Notification State
 const homepageRefreshToken = ref<string>('');
@@ -54,58 +53,15 @@ const projectId = computed(() => {
   return projectInfo.value?.id;
 });
 
+const activeKey = ref<IssueMenuKey>();
+
 /**
  * <p>Generates the menu items array based on project type visibility settings and edition type.</p>
  * <p>Filters out menu items that should not be displayed based on configuration.</p>
  */
 const menuItems = computed(() => {
-  const allMenuItems = [
-    {
-      name: t('home.title'),
-      icon: 'icon-zhuye',
-      key: 'home'
-    },
-    projectTypeVisibilityMap.value.showBackLog
-      ? {
-          name: t('backlog.title'),
-          icon: 'icon-backlog',
-          key: 'backlog'
-        }
-      : null,
-    projectTypeVisibilityMap.value.showSprint
-      ? {
-          name: t('sprint.title'),
-          icon: 'icon-diedai',
-          key: 'sprint'
-        }
-      : null,
-    {
-      name: t('issue.title'),
-      icon: 'icon-renwu2',
-      key: 'issue'
-    },
-    projectTypeVisibilityMap.value.showMeeting
-      ? {
-          name: t('meeting.title'),
-          icon: 'icon-RT',
-          key: 'meeting'
-        }
-      : null,
-    editionType.value !== EditionType.COMMUNITY
-      ? {
-          name: t('issueAnalysis.title'),
-          icon: 'icon-fenxi',
-          key: 'analysis'
-        }
-      : null,
-    {
-      name: t('trash.title'),
-      icon: 'icon-qingchu',
-      key: 'trash'
-    }
-  ];
-
-  return allMenuItems.filter((item): item is NonNullable<typeof item> => item !== null);
+  const visibility: IssueMenuVisibility = projectTypeVisibilityMap.value as IssueMenuVisibility;
+  return createMenuItems(t, visibility, editionType.value);
 });
 
 /**
@@ -113,10 +69,10 @@ const menuItems = computed(() => {
  * <p>Generates unique refresh tokens to trigger child component updates.</p>
  * <p>Uses flags to ensure refresh only happens after the first visit to each section.</p>
  */
-const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
+const handleMenuSectionChange = (newMenuKey: IssueMenuKey | undefined) => {
   if (!newMenuKey) return;
 
-  if (newMenuKey === 'home') {
+  if (newMenuKey === IssueMenuKey.HOME) {
     if (hasHomepageRefreshTriggered) {
       homepageRefreshToken.value = utils.uuid();
     }
@@ -124,7 +80,7 @@ const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
     return;
   }
 
-  if (newMenuKey === 'trash') {
+  if (newMenuKey === IssueMenuKey.TRASH) {
     if (hasTrashRefreshTriggered) {
       trashRefreshToken.value = utils.uuid();
     }
@@ -132,7 +88,7 @@ const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
     return;
   }
 
-  if (newMenuKey === 'sprint') {
+  if (newMenuKey === IssueMenuKey.SPRINT) {
     if (hasSprintsRefreshTriggered) {
       sprintsRefreshToken.value = utils.uuid();
     }
@@ -140,7 +96,7 @@ const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
     return;
   }
 
-  if (newMenuKey === 'task') {
+  if (newMenuKey === IssueMenuKey.ISSUE) {
     if (hasTasksRefreshTriggered) {
       tasksRefreshToken.value = utils.uuid();
     }
@@ -158,8 +114,8 @@ onMounted(async () => {
 </script>
 <template>
   <LeftMenu
-    v-model:activeKey="activeKey"
     key="issue"
+    v-model:activeKey="activeKey"
     :menuItems="menuItems">
     <template #home>
       <Homepage

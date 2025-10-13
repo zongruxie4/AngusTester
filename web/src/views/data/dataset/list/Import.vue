@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph, UploadDragger, UploadFile } from 'ant-design-vue';
 import { Icon, Modal, Spin } from '@xcan-angus/vue-ui';
 import { ActionWhenDuplicate } from '@/enums/enums';
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
 
@@ -67,7 +67,7 @@ const ok = async () => {
   formData.append('strategyWhenDuplicated', strategyWhenDuplicated.value);
   formData.append('projectId', props.projectId);
   loading.value = true;
-  const [error] = await dataSet.importDataSet(formData, { silence: true });
+  const [error] = await dataset.importDataSet(formData, { silence: true });
   loading.value = false;
   if (error) {
     uploadErrorMsg.value = error.message;

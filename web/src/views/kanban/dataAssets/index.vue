@@ -593,7 +593,7 @@ defineExpose({
                 <div>{{ t('common.variables') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
-                <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
+                <img src="./image/dataset.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="String(dataData.allDataset)" class="text-5 truncate">{{ dataData.allDataset }}</div>
                 <div>{{ t('common.dataset') }}</div>
               </div>
@@ -603,7 +603,7 @@ defineExpose({
                 <div>{{ t('common.file') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
-                <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
+                <img src="image/datasource.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="String(dataData.allDatasource)" class="text-5 truncate">{{ dataData.allDatasource }}</div>
                 <div>{{ t('common.datasource') }}</div>
               </div>
@@ -656,7 +656,7 @@ defineExpose({
                   <div>{{ t('common.variables') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
-                  <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
+                  <img src="./image/dataset.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(dataData.allDataset)" class="text-5 truncate">{{ dataData.allDataset }}</div>
                   <div>{{ t('common.dataset') }}</div>
                 </div>
@@ -668,7 +668,7 @@ defineExpose({
                   <div>{{ t('common.file') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
-                  <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
+                  <img src="image/datasource.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(dataData.allDatasource)" class="text-5 truncate">{{ dataData.allDatasource }}</div>
                   <div>{{ t('common.datasource') }}</div>
                 </div>
@@ -753,7 +753,7 @@ defineExpose({
                   <div>{{ t('common.variables') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
-                  <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
+                  <img src="./image/dataset.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(dataData.allDataset)" class="text-5 truncate">{{ dataData.allDataset }}</div>
                   <div>{{ t('common.dataset') }}</div>
                 </div>
@@ -763,7 +763,7 @@ defineExpose({
                   <div>{{ t('common.file') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
-                  <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
+                  <img src="image/datasource.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(dataData.allDatasource)" class="text-5 truncate">{{ dataData.allDatasource }}</div>
                   <div>{{ t('common.datasource') }}</div>
                 </div>
@@ -813,7 +813,7 @@ defineExpose({
                     <div>{{ t('common.variables') }}</div>
                   </div>
                   <div class="flex-1 text-center h-full bg-board-orange flex flex-col justify-center rounded relative min-w-0">
-                    <img src="./image/dataSet.png" class="w-1/2 absolute top-0 right-0" />
+                    <img src="./image/dataset.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="String(dataData.allDataset)" class="text-5 truncate">{{ dataData.allDataset }}</div>
                     <div>{{ t('common.dataset') }}</div>
                   </div>
@@ -825,7 +825,7 @@ defineExpose({
                     <div>{{ t('common.file') }}</div>
                   </div>
                   <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
-                    <img src="./image/dataSource.png" class="w-1/2 absolute top-0 right-0" />
+                    <img src="image/datasource.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="String(dataData.allDatasource)" class="text-5 truncate">{{ dataData.allDatasource }}</div>
                     <div>{{ t('common.datasource') }}</div>
                   </div>

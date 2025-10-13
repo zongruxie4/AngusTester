@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n';
 import { computed, ref, watch, onMounted } from 'vue';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
 import { FileDataSetFormState, DataSetDetail } from '../../types';
 import { ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
@@ -177,7 +177,7 @@ export function useFileDataset (
   const updateDataset = async () => {
     const params = getDatasetParams();
     confirmLoading.value = true;
-    const [error] = await dataSet.putDataSet(params);
+    const [error] = await dataset.putDataSet(params);
     confirmLoading.value = false;
     if (error) {
       return;
@@ -193,7 +193,7 @@ export function useFileDataset (
   const createDataset = async () => {
     const params = getDatasetParams();
     confirmLoading.value = true;
-    const [error, res] = await dataSet.addDataSet(params);
+    const [error, res] = await dataset.addDataSet(params);
     confirmLoading.value = false;
     if (error) {
       return;

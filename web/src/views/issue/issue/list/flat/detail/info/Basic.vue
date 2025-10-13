@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n';
 import { BugLevel, SoftwareVersionStatus, TaskType } from '@/enums/enums';
 import { TaskDetail } from '@/views/issue/types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -451,7 +452,7 @@ const handleVersionBlur = async () => {
               <RouterLink
                 v-else
                 target="_self"
-                :to="`/issue#issue?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
+                :to="`/issue#${IssueMenuKey.ISSUE}?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
                 class="info-link">
                 {{ props.dataSource?.parentTaskName || '--' }}
               </RouterLink>

@@ -8,6 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { TaskType } from '@/enums/enums';
 import { issue } from '@/api/tester';
 import { AssocTaskProps } from '@/views/issue/issue/list/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
@@ -144,7 +145,7 @@ const handleTaskDisassociation = (taskRecord: any) => {
  * @param taskRecord - The task record to open
  */
 const navigateToTaskDetail = (taskRecord: any) => {
-  router.push(`/issue#issue?taskId=${taskRecord.id}`);
+  router.push(`/issue#${IssueMenuKey.ISSUE}?taskId=${taskRecord.id}`);
 };
 
 /**

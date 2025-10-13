@@ -358,7 +358,7 @@ const tableColumns = [
               class="p-0 h-5 leading-5">
               <RouterLink
                 class="flex items-center space-x-1"
-                :to="`/data#variables?id=${record.id}`"
+                :to="`/data#${DataMenuKey.VARIABLES}?id=${record.id}`"
                 target="_blank">
                 <Icon icon="icon-zhengyan" class="text-3.5" />
               </RouterLink>

@@ -10,6 +10,7 @@ import { isEqual } from 'lodash-es';
 import { issue } from '@/api/tester';
 import { SoftwareVersionStatus } from '@/enums/enums';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -529,7 +530,7 @@ const onePassStatusText = computed(() => {
             <RouterLink
               v-else
               target="_self"
-              :to="`/issue#issue?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
+              :to="`/issue#${IssueMenuKey.ISSUE}?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
               style="color:#40a9ff"
               class="whitespace-pre-wrap break-words break-all">
               {{ props.dataSource?.parentTaskName || '--' }}

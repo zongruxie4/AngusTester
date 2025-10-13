@@ -8,7 +8,7 @@ import { Button } from 'ant-design-vue';
 import { Hints, Icon, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 
 // API imports
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -55,7 +55,7 @@ const handleRefresh = () => {
  */
 const loadTargetUsageData = async () => {
   isLoading.value = true;
-  const [error, response] = await dataSet.getDataSetTarget(props.id);
+  const [error, response] = await dataset.getDataSetTarget(props.id);
   isLoading.value = false;
   isDataLoaded.value = true;
   if (error) {

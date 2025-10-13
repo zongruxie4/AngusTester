@@ -5,10 +5,12 @@ import { Avatar, Button, Pagination } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { Icon, Image, NoData, Popover } from '@xcan-angus/vue-ui';
 import type { MeetingInfo } from '../types';
-import RichTextEditor from '@/components/richEditor/textContent/index.vue';
 import { DATE_FORMAT } from '@/utils/constant';
 import { TaskMeetingType } from '@/enums/enums';
 import dayjs from 'dayjs';
+import { IssueMenuKey } from '@/views/issue/menu';
+
+import RichTextEditor from '@/components/richEditor/textContent/index.vue';
 
 withDefaults(defineProps<{
   meetingList: MeetingInfo[];
@@ -102,7 +104,7 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
           <RouterLink
             class="router-link"
             :title="item.subject"
-            :to="`/issue#meeting?id=${item.id}`">
+            :to="`/issue#${IssueMenuKey.MEETING}?id=${item.id}`">
             {{ item.subject }}
           </RouterLink>
         </div>
@@ -248,7 +250,7 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
         </div>
 
         <div class="flex space-x-3 items-center justify-between h-4 leading-5">
-          <RouterLink class="flex items-center space-x-1" :to="`/issue#meeting?id=${item.id}&type=edit`">
+          <RouterLink class="flex items-center space-x-1" :to="`/issue#${IssueMenuKey.MEETING}?id=${item.id}&type=edit`">
             <Icon icon="icon-shuxie" class="text-3.5" />
             <span>{{ t('actions.edit') }}</span>
           </RouterLink>

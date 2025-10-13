@@ -15,6 +15,7 @@ import { issue } from '@/api/tester';
 import { EditFormState, SprintInfo } from '../types';
 import { DATE_TIME_FORMAT, UPLOAD_TEST_FILE_KEY } from '@/utils/constant';
 import { BasicProps } from '@/types/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 /**
  * Component props interface for SprintEdit component
@@ -381,7 +382,7 @@ const copySprintLink = () => {
     return;
   }
 
-  const sprintUrl = `${window.location.origin}/issue#sprint?id=${sprintId}`;
+  const sprintUrl = `${window.location.origin}/issue#${IssueMenuKey.SPRINT}?id=${sprintId}`;
   toClipboard(sprintUrl).then(() => {
     notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {

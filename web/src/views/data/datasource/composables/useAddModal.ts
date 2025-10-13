@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
-import { dataSource } from '@/api/tester';
+import { datasource } from '@/api/tester';
 import { DataSourceFormState, DataSourceDetail, DatabaseConfig } from '../types';
 
 /**
@@ -149,7 +149,7 @@ export function useAddModal (projectId: string) {
     loading.value = true;
 
     try {
-      const [error] = await dataSource.addDataSource({
+      const [error] = await datasource.addDataSource({
         ...formState.value,
         projectId
       });
@@ -187,7 +187,7 @@ export function useAddModal (projectId: string) {
     loading.value = true;
 
     try {
-      const [error] = await dataSource.putDataSource(params);
+      const [error] = await datasource.putDataSource(params);
       if (error) {
         return false;
       }

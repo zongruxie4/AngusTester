@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { IconTask, NoData } from '@xcan-angus/vue-ui';
+import { IconTask } from '@xcan-angus/vue-ui';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 const { t } = useI18n();
 
@@ -35,7 +36,7 @@ const dataList = computed(() => {
   return (props.dataSource || [])?.map(item => {
     return {
       ...item,
-      linkUrl: `/issue#issue?taskId=${item.id}&projectId=${props.projectId}`
+      linkUrl: `/issue#${IssueMenuKey.ISSUE}?taskId=${item.id}&projectId=${props.projectId}`
     };
   }) || [];
 });

@@ -6,6 +6,8 @@ import { UserOutlined } from '@ant-design/icons-vue';
 import { Dropdown, Icon, Image, NoData, Popover } from '@xcan-angus/vue-ui';
 import { TaskSprintPermission, TaskSprintStatus } from '@/enums/enums';
 import { SprintInfo } from '../types';
+import { IssueMenuKey } from '@/views/issue/menu';
+
 import RichTextEditor from '@/components/richEditor/textContent/index.vue';
 
 const { t } = useI18n();
@@ -84,7 +86,7 @@ const getSprintStatusDotStyle = (statusValue: string) => {
             <RouterLink
               class="router-link"
               :title="item.name"
-              :to="`/issue#sprint?id=${item.id}`">
+              :to="`/issue#${IssueMenuKey.SPRINT}?id=${item.id}`">
               {{ item.name }}
             </RouterLink>
           </div>
@@ -239,14 +241,14 @@ const getSprintStatusDotStyle = (statusValue: string) => {
               :emptyText="t('tcommon.noDescription')" />
           </div>
           <div class="flex items-center justify-between h-4 leading-5">
-            <RouterLink class="flex items-center space-x-1" :to="`/issue#sprint?id=${item.id}&type=edit`">
+            <RouterLink class="flex items-center space-x-1" :to="`/issue#${IssueMenuKey.SPRINT}?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
               <span>{{ t('actions.edit') }}</span>
             </RouterLink>
 
             <RouterLink
               class="flex items-center space-x-1 ml-3"
-              :to="`/issue#issue?sprintId=${item.id}&sprintName=${item.name}`">
+              :to="`/issue#${IssueMenuKey.ISSUE}?sprintId=${item.id}&sprintName=${item.name}`">
               <Icon icon="icon-renwu2" class="text-3.5" />
               <span>{{ t('sprint.actions.viewIssues') }}</span>
             </RouterLink>

@@ -1,20 +1,11 @@
 <script setup lang="ts">
-// Vue core imports
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-// UI component imports
 import { Icon, Input, Modal, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-
-// Infrastructure imports
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-
-// API imports
-import { dataSet } from '@/api/tester';
-
-// Local imports
+import { dataset } from '@/api/tester';
 import { DataSetItem } from './PropsType';
 
 const { t } = useI18n();
@@ -105,7 +96,7 @@ const loadDatasetData = async () => {
   }
 
   isLoading.value = true;
-  const [error, response] = await dataSet.getDataSetList(requestParams);
+  const [error, response] = await dataset.getDataSetList(requestParams);
   isDataLoaded.value = true;
   isLoading.value = false;
 

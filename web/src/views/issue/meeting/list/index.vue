@@ -6,6 +6,7 @@ import { modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { issue } from '@/api/tester';
 import { MeetingInfo } from '../types';
 import { BasicProps } from '@/types/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 // COMPONENT PROPS
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -166,7 +167,7 @@ onMounted(() => {
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('meeting.notAddedYet') }}</span>
-            <RouterLink class="router-link flex-1 truncate" :to="`/issue#meeting?type=ADD`">
+            <RouterLink class="router-link flex-1 truncate" :to="`/issue#${IssueMenuKey.MEETING}?type=ADD`">
               {{ t('meeting.actions.addMeeting') }}
             </RouterLink>
           </div>

@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Hints, Table, Icon, NoData, Spin } from '@xcan-angus/vue-ui';
-import { dataSet } from '@/api/tester';
+import { dataset } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -30,7 +30,7 @@ const refresh = () => {
 
 const loadData = async () => {
   loading.value = true;
-  const [error, res] = await dataSet.getDataSetTarget(props.id);
+  const [error, res] = await dataset.getDataSetTarget(props.id);
   loading.value = false;
   loaded.value = true;
   if (error) {

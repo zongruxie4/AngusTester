@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { IPane, utils } from '@xcan-angus/infra';
 import { BasicProps } from '@/types/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 /**
  * Component props with default values for project information and user context.
@@ -160,7 +161,7 @@ const handleHashChange = (urlHash: string) => {
   }
 
   // Clean up URL by removing query parameters
-  router.replace('/issue#sprint');
+  router.replace(`/issue#${IssueMenuKey.SPRINT}`);
 };
 
 /**

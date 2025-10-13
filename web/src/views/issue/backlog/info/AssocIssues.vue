@@ -7,6 +7,7 @@ import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskDetail } from '../../types';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
+import { IssueMenuKey } from '@/views/issue/menu';
 
 const { t } = useI18n();
 
@@ -37,7 +38,7 @@ const associatedTaskList = computed(() => {
   return props.dataSource?.refTaskInfos?.map(item => {
     return {
       ...item,
-      linkUrl: `/issue#issue?taskId=${item.id}`
+      linkUrl: `/issue#${IssueMenuKey.ISSUE}?taskId=${item.id}`
     };
   }) || [];
 });
