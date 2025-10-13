@@ -1821,6 +1821,7 @@
     }
   },
   "mock": {
+    "title": "Mock",
     "starting": "Starting",
     "startSuccess": "Started Successfully",
     "startFail": "Start Failed, please try to restart",

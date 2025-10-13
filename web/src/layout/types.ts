@@ -1,6 +1,12 @@
 import { EnumMessage } from '@xcan-angus/infra';
 import { ProjectType } from '@/enums/enums';
 
+export interface LeftMenuItem<T> {
+  name: string;
+  icon: string;
+  key: T
+}
+
 /**
  * Project information interface
  */

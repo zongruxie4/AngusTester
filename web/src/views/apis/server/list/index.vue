@@ -6,7 +6,7 @@ import { Colon, Icon, Image, NoData, notification, SearchPanel, Spin } from '@xc
 import { TESTER } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-
+import { ApiMenuKey } from '@/views/apis/menu';
 import { ServerInfo } from '../PropsType';
 import { cloneDeep } from 'lodash-es';
 
@@ -43,7 +43,7 @@ const getVariableLength = (data) => {
 };
 
 const toCreateServer = () => {
-  router.push('/apis#server?source=add');
+  router.push(`/apis#${ApiMenuKey.SERVER}?source=add`);
 };
 
 const toUpdate = async (data) => {
@@ -147,7 +147,7 @@ const loadData = async () => {
   dataList.value = data.map((item) => {
     return {
       ...item,
-      editLinkUrl: `/apis#server?serviceId=${item.serviceId}&serverId=${item.server?.extensions?.['x-xc-id']}`
+      editLinkUrl: `/apis#${ApiMenuKey.SERVER}?serviceId=${item.serviceId}&serverId=${item.server?.extensions?.['x-xc-id']}`
     };
   });
 

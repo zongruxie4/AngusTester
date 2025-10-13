@@ -5,6 +5,7 @@ import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 import { ServerConfig } from './PropsType';
 
@@ -223,7 +224,7 @@ const toClone = async () => {
 };
 
 const toCopyLink = () => {
-  toClipboard(window.location.origin + `/apis#server?serviceId=${serviceId.value}&serverId=${serverId.value}`).then(() => {
+  toClipboard(window.location.origin + `/apis#${ApiMenuKey.SERVER}?serviceId=${serviceId.value}&serverId=${serverId.value}`).then(() => {
     notification.success(t('actions.tips.copyLinkSuccess'));
   }).catch(() => {
     notification.error(t('actions.tips.copyLinkFailed'));

@@ -17,6 +17,7 @@ import { utils, appContext, IPane } from '@xcan-angus/infra';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 import { setting } from '@/api/gm';
 import { ProjectInfo } from '@/layout/types';
@@ -138,12 +139,12 @@ const addHandler = () => {
     tabRef.value.add(() => {
       const key = utils.uuid('api');
       return {
-        _id: key, // pane 的key，唯一标识
+        _id: key,
         pid: key,
-        name: t('service.home.addApiTabName'), // pane 的tab文案
+        name: t('service.home.addApiTabName'),
         value: 'API',
-        closable: true, // 是否允许关闭，true - 允许关闭，false - 禁止关闭
-        forceRender: false, // 被隐藏时是否渲染 DOM 结构
+        closable: true,
+        forceRender: false,
         unarchived: true
       };
     });
@@ -151,7 +152,7 @@ const addHandler = () => {
 };
 
 const addTabPane = (data: IPane) => {
-  router.replace('/apis#services');
+  router.replace(`/apis#${ApiMenuKey.SERVICES}`);
   nextTick(() => {
     if (typeof tabRef.value?.add === 'function' && projectInfo.value.id) {
       tabRef.value.add(() => {

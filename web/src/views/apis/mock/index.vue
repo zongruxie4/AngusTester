@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router';
 import router from '@/router';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { MockServicePermission, MockServiceStatus } from '@/enums/enums';
+import { ApiMenuKey } from '@/views/apis/menu';
 
 // Import composables
 import { useMockData } from './composables/useMockData';
@@ -83,7 +84,7 @@ onMounted(() => {
         nextTick(() => {
           searchPanelRef.value.setConfigs([{ valueKey: 'name', value: route.query.sid }]);
         });
-        router.replace('/apis#mock');
+        router.replace(`/apis#${ApiMenuKey.MOCK}`);
       } else {
         fetchList();
       }
