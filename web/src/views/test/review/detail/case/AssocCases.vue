@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Icon, NoData } from '@xcan-angus/vue-ui';
+import { Icon } from '@xcan-angus/vue-ui';
+import { TestMenuKey } from '@/views/test/menu';
 
 const { t } = useI18n();
 
@@ -31,7 +32,7 @@ const dataList = computed(() => {
   return props.dataSource?.map(item => {
     return {
       ...item,
-      linkUrl: `/test#cases?id=${item.id}&projectId=${props.projectId}`
+      linkUrl: `/test#${TestMenuKey.CASES}?id=${item.id}&projectId=${props.projectId}`
     };
   }) || [];
 });

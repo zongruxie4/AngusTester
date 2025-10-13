@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
 import { BasicProps } from '@/types/types';
+import { TestMenuKey } from '@/views/test/menu';
 
 // Props and Component Definitions
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -85,7 +86,7 @@ const initialize = () => {
       }
     });
   }
-  
+
   // Watch for browser tab changes and ensure case list tab exists
   watch(() => browserTabRef.value, () => {
     if (typeof browserTabRef.value?.update === 'function') {
@@ -140,8 +141,7 @@ const processHashParameters = (hash: string) => {
       openNewEditTab();
     }
   }
-
-  router.replace('/test#reviews');
+  router.replace(`/test#${TestMenuKey.REVIEWS}`);
 };
 
 /**

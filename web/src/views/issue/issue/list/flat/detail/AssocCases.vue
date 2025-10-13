@@ -7,10 +7,12 @@ import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { issue } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import {TestMenuKey} from '@/views/test/menu';
 import { TaskDetailProps } from '@/views/issue/issue/list/types';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TestResult from '@/components/TestResult/index.vue';
+
 const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/SelectByModuleModal.vue'));
 
 /**
@@ -123,7 +125,7 @@ const handleCaseDisassociation = (caseRecord: any) => {
  * @param caseRecord - The test case record to open
  */
 const navigateToCaseDetail = (caseRecord: any) => {
-  router.push(`/test#cases?id=${caseRecord.id}`);
+  router.push(`/test#${TestMenuKey.CASES}?id=${caseRecord.id}`);
 };
 
 /**

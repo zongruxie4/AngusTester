@@ -5,6 +5,7 @@ import { Icon, modal, NoData, notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { test } from '@/api/tester';
 import { BaselineDetail } from '@/views/test/baseline/types';
+import { TestMenuKey } from '@/views/test/menu';
 
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
@@ -108,7 +109,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
             <RouterLink
               class="router-link flex-1 truncate"
               :title="item.name"
-              :to="`/test#baseline?id=${item.id}`">
+              :to="`/test#${TestMenuKey.BASELINE}?id=${item.id}`">
               {{ item.name }}
             </RouterLink>
           </div>
@@ -187,7 +188,7 @@ const handlePaginationChange = (pageNo: number, pageSize: number) => {
             </span>
           </div>
           <div class="flex items-center justify-between h-4 leading-5">
-            <RouterLink class="flex items-center space-x-1" :to="`/test#baseline?id=${item.id}&type=edit`">
+            <RouterLink class="flex items-center space-x-1" :to="`/test#${TestMenuKey.BASELINE}?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
               <span>{{ t('actions.edit') }}</span>
             </RouterLink>

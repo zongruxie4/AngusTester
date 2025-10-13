@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, provide, ref, Ref, watch } from 'vue';
-import { XCanDexie, sessionStore, utils, appContext, EditionType, SearchCriteria } from '@xcan-angus/infra';
+import { XCanDexie, sessionStore, utils, appContext, SearchCriteria } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ProjectInfo } from '@/layout/types';
+import { TestMenuKey, createMenuItems } from '@/views/test/menu';
 
 // Component Imports
 const LeftMenu = defineAsyncComponent(() => import('@/components/layout/leftMenu/index.vue'));
@@ -27,8 +28,7 @@ const applicationInfo = ref(appContext.getAccessApp());
 const changeProjectInfo = inject('changeProjectInfo', () => undefined);
 
 // Type Definitions
-type MenuKey = 'home' | 'plans' | 'cases' | 'modules' | 'tags' | 'trash';
-const activeMenuKey = ref<MenuKey>();
+const activeMenuKey = ref<TestMenuKey>();
 const currentEditionType = ref();
 
 // Component References
@@ -69,7 +69,7 @@ const caseParameterCacheKey = computed(() => {
  * <p>Navigates to the cases section and either adds the tab directly or stores it for later processing.</p>
  */
 const addTabPane = (record) => {
-  router.push('/test#cases');
+  router.push(`/test#${TestMenuKey.CASES}`);
   if (typeof caseComponentRef.value?.updateTabPane === 'function') {
     caseComponentRef.value.addTabPane(record);
   } else {
@@ -82,7 +82,7 @@ const addTabPane = (record) => {
  * <p>Navigates to the cases section and updates the specified tab.</p>
  */
 const updateTabPane = (record) => {
-  router.push('/test#cases');
+  router.push(`/test#${TestMenuKey.CASES}`);
   if (typeof caseComponentRef.value?.updateTabPane === 'function') {
     caseComponentRef.value.updateTabPane(record);
   }
@@ -119,7 +119,7 @@ const setCaseListPlanParam = async (record) => {
       caseComponentRef.value.setCaseListPlanParam();
     });
   }
-  await router.push('/test#cases');
+  await router.push(`/test#${TestMenuKey.CASES}`);
 };
 
 /**
@@ -127,10 +127,10 @@ const setCaseListPlanParam = async (record) => {
  * <p>Generates unique refresh tokens to trigger child component updates.</p>
  * <p>Uses flags to ensure refresh only happens after the first visit to each section.</p>
  */
-const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
+const handleMenuSectionChange = (newMenuKey: TestMenuKey | undefined) => {
   if (!newMenuKey) return;
 
-  if (newMenuKey === 'home') {
+  if (newMenuKey === TestMenuKey.HOME) {
     if (hasHomepageRefreshTriggered) {
       homepageRefreshToken.value = utils.uuid();
     }
@@ -138,7 +138,7 @@ const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
     return;
   }
 
-  if (newMenuKey === 'plans') {
+  if (newMenuKey === TestMenuKey.PLANS) {
     if (hasPlansRefreshTriggered) {
       plansRefreshToken.value = utils.uuid();
     }
@@ -146,7 +146,7 @@ const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
     return;
   }
 
-  if (newMenuKey === 'cases') {
+  if (newMenuKey === TestMenuKey.CASES) {
     if (hasCasesRefreshTriggered) {
       casesRefreshToken.value = utils.uuid();
     }
@@ -154,7 +154,7 @@ const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
     return;
   }
 
-  if (newMenuKey === 'modules') {
+  if (newMenuKey === TestMenuKey.REVIEWS) {
     if (hasModulesRefreshTriggered) {
       modulesRefreshToken.value = utils.uuid();
     }
@@ -162,7 +162,7 @@ const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
     return;
   }
 
-  if (newMenuKey === 'tags') {
+  if (newMenuKey === TestMenuKey.BASELINE) {
     if (hasTagsRefreshTriggered) {
       tagsRefreshToken.value = utils.uuid();
     }
@@ -170,7 +170,7 @@ const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
     return;
   }
 
-  if (newMenuKey === 'trash') {
+  if (newMenuKey === TestMenuKey.TRASH) {
     if (hasTrashRefreshTriggered) {
       trashRefreshToken.value = utils.uuid();
     }
@@ -182,49 +182,7 @@ const handleMenuSectionChange = (newMenuKey: MenuKey | undefined) => {
  * <p>Generates the menu items array based on edition type and feature availability.</p>
  * <p>Filters out menu items that should not be displayed based on configuration.</p>
  */
-const menuItems = computed(() => {
-  const allMenuItems = [
-    {
-      name: t('home.title'),
-      key: 'home',
-      icon: 'icon-zhuye'
-    },
-    {
-      name: t('testPlan.title'),
-      key: 'plans',
-      icon: 'icon-jihua1'
-    },
-    {
-      name: t('testCase.title'),
-      key: 'cases',
-      icon: 'icon-ceshiyongli1'
-    },
-    {
-      name: t('testCaseReview.title'),
-      key: 'reviews',
-      icon: 'icon-pingshen'
-    },
-    {
-      name: t('testCaseBaseline.title'),
-      key: 'baseline',
-      icon: 'icon-jixian'
-    },
-    currentEditionType.value !== EditionType.COMMUNITY
-      ? {
-          name: t('testAnalysis.title'),
-          key: 'analysis',
-          icon: 'icon-fenxi'
-        }
-      : null,
-    {
-      name: t('trash.title'),
-      key: 'trash',
-      icon: 'icon-qingchu'
-    }
-  ];
-
-  return allMenuItems.filter((item): item is NonNullable<typeof item> => item !== null);
-});
+const menuItems = computed(() => createMenuItems(t, currentEditionType.value));
 
 onMounted(async () => {
   // Initialize edition type from application context

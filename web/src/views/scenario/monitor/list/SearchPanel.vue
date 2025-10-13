@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { PageQuery } from '@xcan-angus/infra';
 import { QuickSearchOptions } from '@/components/quickSearch';
+import { ScenarioMenuKey } from '@/views/scenario/menu';
 
 // Import types and composables
 import { useSearchPanelData } from './composables/useSearchPanelData';
@@ -88,7 +89,7 @@ const {
           type="primary"
           size="small"
           class="p-0">
-          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/scenario#monitor?type=ADD`">
+          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/scenario#${ScenarioMenuKey.MONITOR}?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
             <span>{{ $t('scenarioMonitor.actions.addMonitor') }}</span>
           </RouterLink>

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { ProjectPageQuery } from '@xcan-angus/infra';
 import { test } from '@/api/tester';
+import { TestMenuKey } from '@/views/test/menu';
 
 import { BaselineDetail } from '@/views/test/baseline/types';
 import { BasicProps } from '@/types/types';
@@ -179,7 +180,7 @@ onMounted(() => {
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('testCaseBaseline.noBaselinesAdded') }}</span>
-            <RouterLink class="router-link flex-1 truncate" :to="`/test#baseline?type=ADD`">
+            <RouterLink class="router-link flex-1 truncate" :to="`/test#${TestMenuKey.BASELINE}?type=ADD`">
               {{ t('testCaseBaseline.actions.addBaseline') }}
             </RouterLink>
           </div>

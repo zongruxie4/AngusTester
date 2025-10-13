@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router';
 import { useVersionList } from './composables/useVersionList';
 import { useTableColumns } from './composables/useTableColumns';
 import type { VersionListProps } from './types';
-import SearchPanel from '@/views/project/version/SearchPanel.vue';
+import { ProjectMenuKey } from '@/views/project/menu';
 
 // Component props with default values
 const props = withDefaults(defineProps<VersionListProps>(), {
@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<VersionListProps>(), {
 const { t } = useI18n();
 
 // Async components
+const SearchPanel = defineAsyncComponent(() => import('@/views/project/version/SearchPanel.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/project/version/Introduce.vue'));
 const Edit = defineAsyncComponent(() => import('@/views/project/version/Edit.vue'));
 const Merge = defineAsyncComponent(() => import('@/views/project/version/Merge.vue'));
@@ -94,7 +95,7 @@ const { columns } = useTableColumns();
                     v-if="props.showDetail"
                     class="router-link"
                     :title="record.name"
-                    :to="`/project#version?id=${record.id}`">
+                    :to="`/project#${ProjectMenuKey.VERSION}?id=${record.id}`">
                     {{ record.name }}
                   </RouterLink>
                 </template>

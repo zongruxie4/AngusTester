@@ -5,7 +5,10 @@ import { PageQuery, SearchCriteria, enumUtils, appContext } from '@xcan-angus/in
 import { FuncPlanStatus } from '@/enums/enums';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import { TestMenuKey } from '@/views/test/menu';
+import {
+  QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig
+} from '@/components/quickSearch';
 
 // Props and Component Setup
 const props = withDefaults(defineProps<{
@@ -243,7 +246,7 @@ const handleQuickSearchChange = (selectedKeys: string[], searchCriteria: SearchC
       }
     }
   }
-  
+
   searchCriteria = searchCriteria.filter(f => !associatedKeys.includes(f.key as string));
   // Update quick search filters
   quickSearchFilters.value = searchCriteria;
@@ -297,7 +300,7 @@ onMounted(() => {
           type="primary"
           size="small"
           class="p-0">
-          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/test#reviews?type=ADD`">
+          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/test#${TestMenuKey.REVIEWS}?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
             <span>{{ t('testCaseReview.actions.addReview') }}</span>
           </RouterLink>

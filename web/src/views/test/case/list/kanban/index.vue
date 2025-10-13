@@ -13,6 +13,7 @@ import { testCase, testPlan } from '@/api/tester';
 import { CaseTestResult, FuncPlanPermission, TaskType } from '@/enums/enums';
 import { CaseDetail } from '@/views/test/types';
 import { ActionMenuItem } from '@/views/test/case/list/types';
+import { TestMenuKey } from '@/views/test/menu';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 
@@ -1748,7 +1749,7 @@ const checkedCaseId = computed(() => {
         <div class="flex items-center justify-between mt-4 pl-5 space-x-2.5">
           <div class="flex-1 flex items-center truncate">
             <RouterLink
-              :to="`/test#plans?id=${checkedPlanInfo?.id}`"
+              :to="`/test#${TestMenuKey.CASES}?id=${checkedPlanInfo?.id}`"
               :title="checkedPlanInfo?.name"
               class="truncate"
               style="max-width: 50%;">
@@ -1756,7 +1757,7 @@ const checkedCaseId = computed(() => {
             </RouterLink>
             <div class="mx-1.5">/</div>
             <RouterLink
-              :to="`/test#cases?id=${checkedCaseInfo?.id}`"
+              :to="`/test#${TestMenuKey.CASES}?id=${checkedCaseInfo?.id}`"
               class="truncate flex-1"
               :title="checkedCaseInfo?.name">
               {{ checkedCaseInfo?.name }}

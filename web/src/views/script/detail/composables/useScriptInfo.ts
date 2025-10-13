@@ -1,6 +1,7 @@
 import { computed } from 'vue';
 import { utils } from '@xcan-angus/infra';
 import { ApiMenuKey } from '@/views/apis/menu';
+import { ScenarioMenuKey } from '@/views/scenario/menu';
 
 /**
  * Script info display management composable
@@ -39,7 +40,7 @@ export function useScriptInfo (props: any) {
     } else if (sourceValue === 'API') {
       return `/apis#${ApiMenuKey.SERVICES}?id=${sourceId}&name=${name}&value=API`;
     } else if (sourceValue === 'SCENARIO') {
-      return `/scenario#scenario?id=${sourceId}&name=${name}&plugin=${plugin}`;
+      return `/scenario#${ScenarioMenuKey.SCENARIO}?id=${sourceId}&name=${name}&plugin=${plugin}`;
     }
     return '';
   });

@@ -8,6 +8,7 @@ import { useI18n } from 'vue-i18n';
 
 import { getCurrentPage } from '@/utils/utils';
 import { CaseInfo } from '@/views/test/types';
+import { TestMenuKey } from '@/views/test/menu';
 
 import TestResult from '@/components/TestResult/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
@@ -414,7 +415,7 @@ onMounted(() => {
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
               <span>{{ t('testHome.myCases.noAddedCases') }}</span>
-              <RouterLink to="/test#cases" class="ml-1 link">{{ t('testHome.myCases.addCase') }}</RouterLink>
+              <RouterLink :to="`/test#${TestMenuKey.CASES}`" class="ml-1 link">{{ t('testHome.myCases.addCase') }}</RouterLink>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">

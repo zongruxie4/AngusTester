@@ -7,7 +7,10 @@ import dayjs from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { TIME_FORMAT } from '@/utils/constant';
-import { QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig } from '@/components/quickSearch';
+import { TestMenuKey } from '@/views/test/menu';
+import {
+  QuickSearchOptions, createAuditOptions, createTimeOptions, createEnumOptions, type QuickSearchConfig
+} from '@/components/quickSearch';
 
 // composables
 const { t } = useI18n();
@@ -276,7 +279,7 @@ onMounted(() => {
           type="primary"
           size="small"
           class="p-0">
-          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/test#plans?type=ADD`">
+          <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/test#${TestMenuKey.PLANS}?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
             <span>{{ t('testPlan.actions.addPlan') }}</span>
           </RouterLink>

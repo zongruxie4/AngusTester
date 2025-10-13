@@ -2,6 +2,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { modal } from '@xcan-angus/vue-ui';
 import { scenario } from '@/api/tester';
+import { ScenarioMenuKey } from '@/views/scenario/menu';
 import type { MonitorInfo, TabPaneInjection, UseMonitorActionsReturn } from '../../types';
 
 export function useMonitorActions (
@@ -95,7 +96,7 @@ export function useMonitorActions (
     }
 
     const { id, name, plugin } = data;
-    await router.push(`/scenario#scenario?id=${id}&name=${name}&plugin=${plugin}&type=detail`);
+    await router.push(`/scenario#${ScenarioMenuKey.SCENARIO}?id=${id}&name=${name}&plugin=${plugin}&type=detail`);
   };
 
   return {

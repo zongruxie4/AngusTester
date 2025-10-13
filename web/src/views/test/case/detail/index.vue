@@ -8,7 +8,7 @@ import {
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-
+import { TestMenuKey } from '@/views/test/menu';
 import { CaseTestResult, CombinedTargetType, FuncPlanPermission, TaskType } from '@/enums/enums';
 import { testCase, testPlan } from '@/api/tester';
 import { CaseDetail } from '@/views/test/types';
@@ -254,7 +254,7 @@ const copyShareableLink = async () => {
   if (!caseDetail.value) {
     return;
   }
-  const shareableLink = `${window.location.origin}/test#cases?
+  const shareableLink = `${window.location.origin}/test#${TestMenuKey.CASES}?
   id=${caseDetail.value.id}&projectId=${projectId.value}&
   name=${caseDetail.value.name}&currIndex=${props.currIndex}&
   total=${props.queryParams.total}&pageNo=${props.queryParams.pageNo}&

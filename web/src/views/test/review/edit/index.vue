@@ -10,6 +10,7 @@ import {
 } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
+import { TestMenuKey } from '@/views/test/menu';
 
 // API and type imports
 import { test, testPlan, project } from '@/api/tester';
@@ -625,7 +626,7 @@ onMounted(async () => {
           :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.REVIEW)"
           type="default"
           size="small"
-          :href="`/test#reviews?id=${reviewId}`"
+          :href="`/test#${TestMenuKey.REVIEWS}?id=${reviewId}`"
           class="flex items-center space-x-1">
           <Icon icon="icon-pingshen" class="text-3.5" />
           <span>{{ t('testCaseReview.actions.reviewNow') }}</span>

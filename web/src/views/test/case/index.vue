@@ -6,7 +6,7 @@ import { appContext } from '@xcan-angus/infra';
 import { useRoute, useRouter } from 'vue-router';
 import { testCase } from '@/api/tester';
 import { CaseTestResult } from '@/enums/enums';
-
+import { TestMenuKey } from '@/views/test/menu';
 import { useI18n } from 'vue-i18n';
 import { CaseDetail } from '@/views/test/types';
 
@@ -535,7 +535,7 @@ onMounted(() => {
 
   // Watch for route changes and handle case info opening from URL
   watch(() => route.fullPath, () => {
-    if (!route.fullPath.includes('/test#cases')) {
+    if (!route.fullPath.includes(`/test#${TestMenuKey.CASES}`)) {
       return;
     }
     const fullPath = decodeURI(route.fullPath);
@@ -558,7 +558,7 @@ onMounted(() => {
           notify: 0,
           queryParams: restoreFilters(result)
         });
-        router.replace('/test#cases');
+        router.replace(`/test#${TestMenuKey.CASES}`);
       }
     }
   }, {

@@ -5,6 +5,7 @@ import { ScriptType, TESTER } from '@xcan-angus/infra';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline, AsyncComponent, Icon, SmartComment } from '@xcan-angus/vue-ui';
 import { ScenarioPermission } from '@/enums/enums';
+import { ScenarioMenuKey } from '@/views/scenario/menu';
 
 // Import composables
 import { useScenarioData } from './composables/useScenarioData';
@@ -75,7 +76,7 @@ onMounted(() => {
 <template>
   <div class="p-3 h-full" :class="[['activity', 'comment'].includes(activeTab) ? 'flex flex-col' : 'overflow-y-auto']">
     <div v-if="scenarioData" class="flex justify-end">
-      <RouterLink :to="`/scenario#scenario?id=${scenarioData?.id}&name=${scenarioData?.name}&plugin=${scenarioData?.plugin}`">
+      <RouterLink :to="`/scenario#${ScenarioMenuKey.SCENARIO}?id=${scenarioData?.id}&name=${scenarioData?.name}&plugin=${scenarioData?.plugin}`">
         <Button size="small" type="text">
           <Icon icon="icon-xiugai" class="mr-1" />
           {{ t('actions.edit') }}
