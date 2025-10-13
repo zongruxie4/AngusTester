@@ -463,11 +463,11 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
               @loadApis="refresh"
               @openMock="openMock" />
           </TabPane>
-          <TabPane key="testResult" :tab="t('service.sidebar.apiGroup.tabs.testResult')">
+          <TabPane key="testResult" :tab="t('service.apis.tabs.test')">
             <ServiceTestInfo
               :serviceId="state.serviceId" />
           </TabPane>
-          <TabPane key="mock" :tab="t('service.sidebar.apiGroup.tabs.mock')">
+          <TabPane key="mock" :tab="t('service.apis.tabs.mock')">
             <ServiceMockVue
               :id="state.serviceId"
               class="pt-2 pr-5"
