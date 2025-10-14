@@ -5,7 +5,7 @@ import { Alert, Collapse, CollapsePanel, Tabs, TabPane } from 'ant-design-vue';
 import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import StatusTag from '../StatusTag/index.vue';
+import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 import { ExecContent, ExecInfo } from '../../PropsType';
 
 const { t } = useI18n();

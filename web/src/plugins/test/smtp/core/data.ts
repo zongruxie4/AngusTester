@@ -53,26 +53,6 @@ export const DRAWER_MENUITEMS:{
     name: t('actions.save'),
     key: 'save'
   },
-  // {
-  //   icon: 'icon-zhibiao',
-  //   name: '性能指标',
-  //   key: 'indicator'
-  // },
-  // {
-  //   icon: 'icon-zhihangceshi',
-  //   key: 'testInfo',
-  //   name: '测试结果'
-  // },
-  // {
-  //   icon: 'icon-bianliang',
-  //   name: '变量',
-  //   key: 'variable'
-  // },
-  // {
-  //   icon: 'icon-canshuhua',
-  //   name: '参数化',
-  //   key: 'parameterization'
-  // },
   {
     icon: 'icon-lishijilu',
     name: t('commonPlugin.menuData.drawer.activity'),

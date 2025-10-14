@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 
-import StatusTag from '../StatusTag/index.vue';
+import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 
 const { t } = useI18n();
 

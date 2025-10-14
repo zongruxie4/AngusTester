@@ -5,7 +5,7 @@ import { Alert, Button, Collapse, CollapsePanel, Tabs, TabPane } from 'ant-desig
 import { Arrow, Colon, Icon, HttpMethodText } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import StatusTag from '../StatusTag/index.vue';
+import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 import { HTTPInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
 

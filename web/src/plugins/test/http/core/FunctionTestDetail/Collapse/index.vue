@@ -5,7 +5,7 @@ import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Arrow } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import StatusTag from './StatusTag/index.vue';
+import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 import { ExecInfo, ExecContent } from '../PropsType';
 
 const { t } = useI18n();
