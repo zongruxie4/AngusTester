@@ -106,6 +106,7 @@
     "reviewRecord": "Review Records",
     "service": "Service",
     "api": "Api",
+    "unarchivedApi": "Unarchived Api",
     "issue": "Issue",
     "parentIssue": "Parent Issue",
     "subIssues": "Sub Issues",

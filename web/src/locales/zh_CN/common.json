@@ -106,6 +106,7 @@
     "reviewRecord": "评审记录",
     "service": "服务",
     "api": "接口",
+    "unarchivedApi": "未归档接口",
     "issue": "问题",
     "parentIssue": "父问题",
     "subIssues": "子问题",

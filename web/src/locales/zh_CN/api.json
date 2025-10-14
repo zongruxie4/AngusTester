@@ -3,12 +3,26 @@
     "introduce":{
       "title": "关于AngusTester接口",
       "description": "帮助开发人员和测试人员轻松地添加、测试、调试和文档化API，最终帮助企业达成API资产化目的。",
-      "featuresTitle": "在这里您和您的团队可以完成以下工作:",
       "features": [
         "在线编辑、调试、设计及文档化接口；",
         "管理服务、接口以及接口测试用例；",
         "开展接口测试，交付稳定且满足业务要求的系统。"
       ]
+    },
+    "myApis": {
+      "title": "我的接口",
+      "emptyStates": {
+        "noCreatedApis": "您尚未添加任何接口，立即",
+        "addApiAction": "添加接口",
+        "noFollowedApis": "您没有关注的接口",
+        "noFavouriteApis": "您没有收藏的接口"
+      }
+    },
+    "myCreationSummary": {
+      "title": "我添加的"
+    },
+    "resourceStatistics": {
+      "title": "资源统计"
     }
   },
   "service": {
@@ -1687,26 +1701,6 @@
       "activities": "活动",
       "apiSamples": "API样例集合"
     },
-    "statistics": {
-      "today": "今日：",
-      "lastWeek": "近一周：",
-      "title": "资源统计",
-      "service": "总服务",
-      "apis": "总接口",
-      "method": "请求方法"
-    },
-    "apiStatus": {
-      "unknown": "未知",
-      "inDesign": "设计中",
-      "inDevelopment": "开发中",
-      "developmentCompleted": "开发完成",
-      "released": "已发布"
-    },
-    "statisticsCreated": {
-      "title": "我添加的",
-      "apis": "接口",
-      "unfiled": "未归档接口"
-    },
     "actions": {
       "cancelAllFavorites": "取消全部收藏",
       "cancelAllFollows": "取消全部关注",
@@ -1745,22 +1739,6 @@
       "executionId": "执行编号",
       "executionStatus": "执行状态",
       "dueTime": "到期时间"
-    },
-    "myApis": {
-      "title": "我的接口",
-      "createdEmptyTip": "尚未添加任何接口，立即",
-      "addApiAction": "添加接口",
-      "addApiTabName": "添加API",
-      "followEmptyTip": "没有收藏的接口",
-      "favoriteEmptyTip": "没有关注的接口",
-      "deleteTip": "确定删除接口「{name}」吗？",
-      "deleteSuccess": "删除接口成功",
-      "cancelFavouriteSuccess": "接口取消收藏成功",
-      "cancelFollowSuccess": "接口取消关注成功",
-      "columns": {
-        "summary": "名称",
-        "endpoint": "路径"
-      }
     }
   },
   "design": {

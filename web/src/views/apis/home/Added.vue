@@ -37,7 +37,7 @@ const favouriteByParams = {
 <template>
   <div>
     <div class="text-3.5 font-semibold mb-1">
-      {{ t('apis.myApis.title') }}
+      {{ t('apisHome.myApis.title') }}
     </div>
 
     <Tabs size="small">

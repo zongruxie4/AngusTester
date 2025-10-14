@@ -62,14 +62,18 @@ const pagination = ref<{
     });
 
 const toCreateApi = () => {
-  addTabPane({ name: t('apis.myApis.addApiTabName'), value: 'API', _id: utils.uuid() + 'API' });
+  addTabPane({ name: t('apisHome.myApis.emptyStates.addApiAction'), value: 'API', _id: utils.uuid() + 'API' });
 };
 
 const openApi = (api) => {
   addTabPane({ name: api.apisName || api.summary, value: 'API', id: api.apisId || api.id, _id: (api.apisId || api.id) + 'API' });
 };
 
-const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }) => {
+const tableChange = (
+  { current = 1, pageSize = 10 },
+  _filters,
+  sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }
+) => {
   orderBy.value = sorter.orderBy;
   orderSort.value = sorter.orderSort;
   pagination.value.current = current;
@@ -151,7 +155,7 @@ const cancelFavourite = async (data: ApiInfo) => {
     return;
   }
 
-  notification.success(t('apis.myApis.cancelFavouriteSuccess'));
+  notification.success(t('actions.tips.cancelFavouriteSuccess'));
   await loadData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -167,7 +171,7 @@ const cancelFollow = async (data: ApiInfo) => {
     return;
   }
 
-  notification.success(t('apis.myApis.cancelFollowSuccess'));
+  notification.success(t('actions.tips.cancelFollowSuccess'));
   await loadData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -229,7 +233,7 @@ const columns = computed(() => {
     {
       title: t('common.status'),
       dataIndex: 'status',
-      width: 130
+      width: 120
     },
     {
       title: t('common.createdDate'),
@@ -280,22 +284,22 @@ const emptyTextStyle = {
           <img class="w-27.5" src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
-              <span>{{ t('apis.myApis.createdEmptyTip') }}</span>
+              <span>{{ t('apisHome.myApis.emptyStates.noCreatedApis') }}</span>
               <Button
                 type="link"
                 size="small"
                 class="py-0 px-1 h-5 leading-5"
                 @click="toCreateApi">
-                {{ t('apis.myApis.addApiAction') }}
+                {{ t('apisHome.myApis.emptyStates.addApiAction') }}
               </Button>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">
-              <span>{{ t('apis.myApis.favoriteEmptyTip') }}</span>
+              <span>{{ t('apisHome.myApis.emptyStates.noFollowedApis') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.followBy">
-              <span>{{ t('apis.myApis.followEmptyTip') }}</span>
+              <span>{{ t('apisHome.myApis.emptyStates.noFavouriteApis') }}</span>
             </template>
           </div>
         </div>

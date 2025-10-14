@@ -3,12 +3,26 @@
     "introduce": {
       "title": "About AngusTester APIs",
       "description": "Help developers and testers easily add, test, debug, and document APIs, ultimately helping enterprises achieve API assetization goals.",
-      "featuresTitle": "Here you and your team can accomplish the following:",
       "features": [
         "Edit, debug, design, and document interfaces online;",
         "Manage services, interfaces, and interface test cases;",
         "Conduct api testing to ensure delivery of stable systems that meet business requirements."
       ]
+    },
+    "myApis": {
+      "title": "My APIs",
+      "emptyStates": {
+        "noCreatedApis": "You haven't added any APIs yet, ",
+        "addApiAction": "Add API",
+        "noFollowedApis": "You have no followed apis",
+        "noFavouriteApis": "You have no favorite apis"
+      }
+    },
+    "myCreationSummary": {
+      "title": "My Creations"
+    },
+    "resourceStatistics": {
+      "title": "Resource Statistics"
     }
   },
   "service": {
@@ -1681,25 +1695,6 @@
       "activities": "Activities",
       "apiSamples": "API Sample Collection"
     },
-    "statistics": {
-      "today": "Today:",
-      "lastWeek": "Last Week:",
-      "title": "Resource Statistics",
-      "service": "Total Services",
-      "apis": "Total APIs",
-      "method": "Request Method"
-    },
-    "apiStatus": {
-      "unknown": "Unknown",
-      "inDesign": "In Design",
-      "inDevelopment": "In Development",
-      "developmentCompleted": "Completed",
-      "released": "Released"
-    },
-    "statisticsCreated": {
-      "title": "Added by Me",
-      "unfiled": "Unarchived APIs"
-    },
     "actions": {
       "cancelAllFavorites": "Cancel All Favorites",
       "cancelAllFollows": "Cancel All Follows",
@@ -1738,22 +1733,6 @@
       "executionId": "Execution ID",
       "executionStatus": "Execution Status",
       "dueTime": "Due Time"
-    },
-    "myApis": {
-      "title": "My APIs",
-      "createdEmptyTip": "You haven't added any APIs yet, ",
-      "addApiAction": "Add API",
-      "addApiTabName": "Add API",
-      "followEmptyTip": "No followed APIs",
-      "favoriteEmptyTip": "No favourited APIs",
-      "deleteTip": "Are you sure you want to delete API 「{name}」?",
-      "deleteSuccess": "API deleted successfully",
-      "cancelFavouriteSuccess": "API unfavorited successfully",
-      "cancelFollowSuccess": "API unfollowed successfully",
-      "columns": {
-        "summary": "Name",
-        "endpoint": "Path"
-      }
     }
   },
   "design": {
