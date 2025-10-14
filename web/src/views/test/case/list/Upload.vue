@@ -128,7 +128,7 @@ watch(() => props.visible, newValue => {
 </script>
 <template>
   <Modal
-    :title="t('actions.upload')"
+    :title="t('testCase.actions.importCases')"
     :visible="props.visible"
     class="upload-modal"
     :width="600"

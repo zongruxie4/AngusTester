@@ -64,7 +64,7 @@ const ok = async () => {
 </script>
 <template>
   <Modal
-    :title="t('actions.import')"
+    :title="t('apiDesign.actions.importService')"
     :visible="props.visible"
     :width="500"
     :okButtonProps="{
