@@ -1741,74 +1741,6 @@
       "dueTime": "到期时间"
     }
   },
-  "design": {
-    "title": "设计",
-    "home": {
-      "introduceTitle": "关于设计",
-      "introduceContent": "用于 OpenAPI 规范的接口设计，满足接口测试和文档生成的需求。图形化界面适合不熟悉 OpenAPI规范 的用户，而熟悉 OpenAPI 规范的用户则推荐使用 Swagger Editor，能更高效地完成设计。",
-      "tabTitle": "设计",
-      "title": "已添加的设计",
-      "noDataTip": "尚未添加任何设计，立即",
-      "add_action": "添加设计",
-      "design_action": "设计",
-      "generateService_action": "生成服务",
-      "import_service_action": "导入服务",
-      "import_design_action": "导入设计",
-      "refresh_action": "刷新",
-      "designByMe": "我设计的",
-      "importSuccess": "导入成功",
-      "released": "已发布",
-      "unreleased": "草稿",
-      "generated": "已生成服务",
-      "searchPanel": {
-        "name_placeholder": "查询名称、描述",
-        "created_placeholder": "选择添加人",
-        "data_placeholder1": "添加时间从",
-        "data_placeholder2": "添加时间到"
-      },
-      "columns": {
-        "openapiSpecVersion": "规范版本",
-        "designSource": "来源",
-        "designService": "关联服务"
-      },
-      "deleteFirm": {
-        "title": "确定删除设计「{name}」吗？"
-      }
-    },
-    "importServiceModal": {
-      "title": "导入服务",
-      "serviceLabel": "服务",
-      "servicePlaceholder": "请选择所属服务"
-    },
-    "importDesignModal": {
-      "title": "导入设计",
-      "nameLabel": "名称",
-      "namePlaceholder": "输入设计名称, 限制100个字符",
-      "fileLabel": "文件",
-      "fileRule": "请上传文件",
-      "uploadFile": "上传文件",
-      "uploadTip": "点击上传Swagger2.0、OpenAPI3.x文件，文件大小不超过20M"
-    },
-    "exportModal": {
-      "title": "导出",
-      "formatLabel": "格式"
-    },
-    "editModal": {
-      "editTitle": "编辑设计",
-      "addTitle": "添加设计",
-      "nameLabel": "名称",
-      "namePlaceholder": "输入设计名称，最多可输入100字符",
-      "versionLabel": "版本",
-      "versionPlaceholder": "OpenAPI文档规范版本号，默认3.0.1。"
-    },
-    "detail": {
-      "saveSuccess": "保存成功",
-      "publishSuccess": "发布成功",
-      "saveAction": "保存草稿",
-      "publishAction": "发布设计",
-      "modifyTip": "最后修改于{time}"
-    }
-  },
   "mock": {
     "title": "模拟",
     "starting": "正在启动中",
@@ -2281,7 +2213,75 @@
       }
     }
   },
-  "server": {
+  "apiDesign": {
+    "title": "设计",
+    "home": {
+      "introduceTitle": "关于设计",
+      "introduceContent": "用于 OpenAPI 规范的接口设计，满足接口测试和文档生成的需求。图形化界面适合不熟悉 OpenAPI规范 的用户，而熟悉 OpenAPI 规范的用户则推荐使用 Swagger Editor，能更高效地完成设计。",
+      "tabTitle": "设计",
+      "title": "已添加的设计",
+      "noDataTip": "尚未添加任何设计，立即",
+      "add_action": "添加设计",
+      "design_action": "设计",
+      "generateService_action": "生成服务",
+      "import_service_action": "导入服务",
+      "import_design_action": "导入设计",
+      "refresh_action": "刷新",
+      "designByMe": "我设计的",
+      "importSuccess": "导入成功",
+      "released": "已发布",
+      "unreleased": "草稿",
+      "generated": "已生成服务",
+      "searchPanel": {
+        "name_placeholder": "查询名称、描述",
+        "created_placeholder": "选择添加人",
+        "data_placeholder1": "添加时间从",
+        "data_placeholder2": "添加时间到"
+      },
+      "columns": {
+        "openapiSpecVersion": "规范版本",
+        "designSource": "来源",
+        "designService": "关联服务"
+      },
+      "deleteFirm": {
+        "title": "确定删除设计「{name}」吗？"
+      }
+    },
+    "importServiceModal": {
+      "title": "导入服务",
+      "serviceLabel": "服务",
+      "servicePlaceholder": "请选择所属服务"
+    },
+    "importDesignModal": {
+      "title": "导入设计",
+      "nameLabel": "名称",
+      "namePlaceholder": "输入设计名称, 限制100个字符",
+      "fileLabel": "文件",
+      "fileRule": "请上传文件",
+      "uploadFile": "上传文件",
+      "uploadTip": "点击上传Swagger2.0、OpenAPI3.x文件，文件大小不超过20M"
+    },
+    "exportModal": {
+      "title": "导出",
+      "formatLabel": "格式"
+    },
+    "editModal": {
+      "editTitle": "编辑设计",
+      "addTitle": "添加设计",
+      "nameLabel": "名称",
+      "namePlaceholder": "输入设计名称，最多可输入100字符",
+      "versionLabel": "版本",
+      "versionPlaceholder": "OpenAPI文档规范版本号，默认3.0.1。"
+    },
+    "detail": {
+      "saveSuccess": "保存成功",
+      "publishSuccess": "发布成功",
+      "saveAction": "保存草稿",
+      "publishAction": "发布设计",
+      "modifyTip": "最后修改于{time}"
+    }
+  },
+  "apiServer": {
     "title": "服务器",
     "home": {
       "tabTitle": "服务器",

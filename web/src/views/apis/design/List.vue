@@ -7,10 +7,10 @@ import { useI18n } from 'vue-i18n';
 import { ProjectPageQuery } from '@xcan-angus/infra';
 import { ApiMenuKey } from '@/views/apis/menu';
 import { BasicProps } from '@/types/types';
-import { ApiDesignInfo } from '../types';
+import { ApiDesignInfo } from './types';
 
-const SearchPanel = defineAsyncComponent(() => import('@/views/apis/design/list/SearchPanel.vue'));
-const Introduce = defineAsyncComponent(() => import('@/views/apis/design/list/Introduce.vue'));
+const SearchPanel = defineAsyncComponent(() => import('@/views/apis/design/SearchPanel.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/apis/design/Introduce.vue'));
 const EditModal = defineAsyncComponent(() => import('@/views/apis/design/Edit.vue'));
 const ExportModal = defineAsyncComponent(() => import('@/views/apis/design/Export.vue'));
 const ImportModal = defineAsyncComponent(() => import('@/views/apis/design/Import.vue'));
@@ -153,7 +153,7 @@ const releaseDesign = async (record: {id: string; name: string; url?: string}) =
   if (error) {
     return;
   }
-  notification.success(t('design.detail.publishSuccess'));
+  notification.success(t('apiDesign.detail.publishSuccess'));
   await loadData();
 };
 
@@ -162,7 +162,7 @@ const generateService = async (record: {id: string; name: string; url?: string})
   if (error) {
     return;
   }
-  notification.success(t('design.home.generated'));
+  notification.success(t('apiDesign.home.generated'));
   await loadData();
 };
 
@@ -221,7 +221,7 @@ const columns = [
     width: '16%'
   },
   {
-    title: t('design.home.columns.openapiSpecVersion'),
+    title: t('apiDesign.home.columns.openapiSpecVersion'),
     dataIndex: 'openapiSpecVersion',
     width: '8%'
   },
@@ -231,7 +231,7 @@ const columns = [
     width: '8%'
   },
   {
-    title: t('design.home.columns.designSource'),
+    title: t('apiDesign.home.columns.designSource'),
     dataIndex: 'designSource',
     width: '8%',
     customRender: ({ text }) => {
@@ -239,7 +239,7 @@ const columns = [
     }
   },
   {
-    title: t('design.home.columns.designService'),
+    title: t('apiDesign.home.columns.designService'),
     dataIndex: 'designSourceName',
     width: '10%',
     ellipsis: true
@@ -295,7 +295,7 @@ const moreButton = (record) => {
     },
     {
       key: 'generate',
-      name: t('design.home.generateService_action'),
+      name: t('apiDesign.home.generateService_action'),
       icon: 'icon-fuwu',
       disabled: !!record.designSourceId
     },
@@ -312,14 +312,14 @@ const moreButton = (record) => {
     <div class="flex space-x-1">
       <Introduce class="mb-5 flex-1" />
     </div>
-    <div class="text-3.5 font-semibold mb-1">{{ t('design.home.title') }}</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('apiDesign.home.title') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
-          <img src="../../../../assets/images/nodata.png">
+          <img src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>{{ t('design.home.noDataTip') }}</span>
-            <Button type="link" @click="editDesign()">{{ t('design.home.add_action') }}</Button>
+            <span>{{ t('apiDesign.home.noDataTip') }}</span>
+            <Button type="link" @click="editDesign()">{{ t('apiDesign.home.add_action') }}</Button>
           </div>
         </div>
 
@@ -351,8 +351,8 @@ const moreButton = (record) => {
                   </div>
                 </template>
                 <template v-if="column.dataIndex=== 'released'">
-                  <Tag v-if="record.released" color="success">{{ t('design.home.released') }}</Tag>
-                  <Tag v-else color="default">{{ t('design.home.unreleased') }}</Tag>
+                  <Tag v-if="record.released" color="success">{{ t('apiDesign.home.released') }}</Tag>
+                  <Tag v-else color="default">{{ t('apiDesign.home.unreleased') }}</Tag>
                 </template>
                 <template v-if="column.dataIndex === 'designSourceName'">
                   <RouterLink
@@ -378,7 +378,7 @@ const moreButton = (record) => {
                     size="small"
                     @click="handleEnterDesign(record)">
                     <Icon icon="icon-sheji" />
-                    {{ t('design.home.design_action') }}
+                    {{ t('apiDesign.home.design_action') }}
                   </Button>
                   <Dropdown :menuItems="moreButton(record)" @click="handleDesign(record, $event.key)">
                     <Icon icon="icon-gengduo" class="ml-1" />

@@ -26,10 +26,10 @@ onBeforeUnmount(() => {
 <template>
   <div ref="wrapperRef">
     <div class="text-3.5 font-semibold mb-2.5">
-      {{ t('design.home.introduceTitle') }}
+      {{ t('apiDesign.home.introduceTitle') }}
     </div>
     <div class="mb-2">
-      {{ t('design.home.introduceContent') }}
+      {{ t('apiDesign.home.introduceContent') }}
     </div>
   </div>
 </template>

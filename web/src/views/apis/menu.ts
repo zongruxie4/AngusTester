@@ -14,8 +14,8 @@ export const createMenuItems = (t: (key: string) => string): LeftMenuItem<ApiMen
   { name: t('home.title'), icon: 'icon-zhuye', key: ApiMenuKey.HOME },
   { name: t('service.title'), icon: 'icon-fuwuxinxi', key: ApiMenuKey.SERVICES },
   { name: t('mock.title'), icon: 'icon-fuwuxinxi', key: ApiMenuKey.MOCK },
-  { name: t('design.title'), icon: 'icon-sheji', key: ApiMenuKey.DESIGN },
+  { name: t('apiDesign.title'), icon: 'icon-sheji', key: ApiMenuKey.DESIGN },
   { name: t('apiShare.title'), icon: 'icon-fenxiang', key: ApiMenuKey.SHARE },
-  { name: t('server.title'), icon: 'icon-host', key: ApiMenuKey.SERVER },
+  { name: t('apiServer.title'), icon: 'icon-host', key: ApiMenuKey.SERVER },
   { name: t('trash.title'), icon: 'icon-qingchu', key: ApiMenuKey.TRASH }
 ];

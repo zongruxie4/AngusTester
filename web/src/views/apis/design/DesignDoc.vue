@@ -68,7 +68,7 @@ const publishDesign = async () => {
   if (error) {
     return;
   }
-  notification.success(t('design.detail.publishSuccess'));
+  notification.success(t('apiDesign.detail.publishSuccess'));
 };
 
 onMounted(async () => {
@@ -97,19 +97,19 @@ onMounted(async () => {
 
           <div class="text-5 font-medium">{{ designInfo.name }}</div>
 
-          <div>{{ designInfo.lastModifiedByName }}{{ t('design.detail.modifyTip', {time: designInfo.lastModifiedDate}) }}</div>
+          <div>{{ designInfo.lastModifiedByName }}{{ t('apiDesign.detail.modifyTip', {time: designInfo.lastModifiedDate}) }}</div>
 
           <div class="relative left-20 space-x-2">
             <Button
               type="primary"
               size="small"
               @click="saveContent">
-              {{ t('design.detail.saveAction') }}
+              {{ t('apiDesign.detail.saveAction') }}
             </Button>
             <Button
               size="small"
               @click="publishDesign">
-              {{ t('design.detail.publishAction') }}
+              {{ t('apiDesign.detail.publishAction') }}
             </Button>
           </div>
         </div>

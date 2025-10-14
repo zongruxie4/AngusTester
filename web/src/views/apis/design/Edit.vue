@@ -147,7 +147,7 @@ onMounted(async () => {
 </script>
 <template>
   <Modal
-    :title="props.designId ? t('design.editModal.editTitle') : t('design.editModal.addTitle')"
+    :title="props.designId ? t('apiDesign.editModal.editTitle') : t('apiDesign.editModal.addTitle')"
     :visible="props.visible"
     :width="680"
     :okButtonProps="{
@@ -165,7 +165,7 @@ onMounted(async () => {
       <FormItem
         required
         name="name"
-        :label="t('design.editModal.nameLabel')">
+        :label="t('apiDesign.editModal.nameLabel')">
         <Input
           v-model:value="formState.name"
           :maxlength="100"
@@ -173,7 +173,7 @@ onMounted(async () => {
       </FormItem>
 
       <FormItem
-        :label="t('design.editModal.versionLabel')"
+        :label="t('apiDesign.editModal.versionLabel')"
         name="openapiSpecVersion"
         required>
         <div class="flex items-center space-x-2">
@@ -181,7 +181,7 @@ onMounted(async () => {
             v-model:value="formState.openapiSpecVersion"
             class="flex-1"
             :options="SUPPORTED_OPENAPI_VERSION_OPTION" />
-          <Hints :text="t('design.editModal.versionPlaceholder')" />
+          <Hints :text="t('apiDesign.editModal.versionPlaceholder')" />
         </div>
       </FormItem>
     </Form>
