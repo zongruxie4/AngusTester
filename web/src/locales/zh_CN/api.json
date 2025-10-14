@@ -2223,6 +2223,7 @@
     },
     "actions": {
       "add": "添加设计",
+      "edit": "编辑设计",
       "design": "设计",
       "generateService": "生成服务",
       "importService": "导入服务",

@@ -2,7 +2,7 @@ import type { Dayjs } from 'dayjs';
 import { EnumMessage } from '@xcan-angus/infra';
 import { ApisDesignSource } from '@/enums/enums';
 
-export const DEFAULT_OPENAPI_VERSION = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'];
+export const DEFAULT_OPENAPI_VERSION = '3.0.1';
 export const SUPPORTED_OPENAPI_VERSION = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'];
 export const SUPPORTED_OPENAPI_VERSION_OPTION = SUPPORTED_OPENAPI_VERSION.map(i => ({ value: i, label: i }));
 

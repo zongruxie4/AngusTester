@@ -147,43 +147,91 @@ onMounted(async () => {
 </script>
 <template>
   <Modal
-    :title="props.designId ? t('actions.edit') : t('actions.add')"
+    :title="props.designId ? t('apiDesign.actions.edit') : t('apiDesign.actions.add')"
     :visible="props.visible"
+    class="edit-modal"
     :width="680"
     :okButtonProps="{
       loading
     }"
     @cancel="cancel"
     @ok="ok">
-    <Form
-      ref="formRef"
-      :model="formState"
-      size="small"
-      :labelCol="{ style: { width: '90px' } }"
-      class="max-w-242.5"
-      layout="horizontal">
-      <FormItem
-        required
-        name="name"
-        :label="t('common.name')">
-        <Input
-          v-model:value="formState.name"
-          :maxlength="100"
-          :placeholder="t('common.placeholders.searchKeyword')" />
-      </FormItem>
+    <div class="edit-container">
+      <Form
+        ref="formRef"
+        :model="formState"
+        size="small"
+        :labelCol="{ flex: '80px' }"
+        labelAlign="right"
+        class="edit-form max-w-242.5"
+        layout="horizontal">
+        <FormItem
+          required
+          name="name"
+          :label="t('common.name')">
+          <Input
+            v-model:value="formState.name"
+            :maxlength="100"
+            :placeholder="t('apiDesign.messages.namePlaceholder')" />
+        </FormItem>
 
-      <FormItem
-        :label="t('common.version')"
-        name="openapiSpecVersion"
-        required>
-        <div class="flex items-center space-x-2">
-          <Select
-            v-model:value="formState.openapiSpecVersion"
-            class="flex-1"
-            :options="SUPPORTED_OPENAPI_VERSION_OPTION" />
-          <Hints :text="t('apiDesign.messages.versionPlaceholder')" />
-        </div>
-      </FormItem>
-    </Form>
+        <FormItem
+          :label="t('common.version')"
+          name="openapiSpecVersion"
+          required>
+          <div class="flex items-center space-x-2">
+            <Select
+              v-model:value="formState.openapiSpecVersion"
+              class="flex-1"
+              :options="SUPPORTED_OPENAPI_VERSION_OPTION" />
+            <Hints :text="t('apiDesign.messages.versionPlaceholder')" />
+          </div>
+        </FormItem>
+      </Form>
+    </div>
   </Modal>
 </template>
+<style scoped>
+/* Modal Styles */
+.edit-modal :deep(.ant-modal-body) {
+  padding: 0;
+}
+
+.edit-modal :deep(.ant-modal-header) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.edit-modal :deep(.ant-modal-title) {
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.edit-modal :deep(.ant-modal-close) {
+  color: white;
+}
+
+.edit-modal :deep(.ant-modal-close:hover) {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Container */
+.edit-container {
+  padding: 20px;
+  background: #fafbfc;
+}
+
+/* Form Styles */
+.edit-form :deep(.ant-form-item) {
+  margin-bottom: 16px;
+}
+
+.edit-form :deep(.ant-form-item-label) {
+  font-weight: 600;
+  color: #262626;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+</style>

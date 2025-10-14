@@ -2220,6 +2220,7 @@
     },
     "actions": {
       "add": "Add Design",
+      "edit": "Edit Design",
       "design": "Design",
       "generateService": "Generate Service",
       "importService": "Import Service",

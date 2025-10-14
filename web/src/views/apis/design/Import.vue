@@ -115,7 +115,7 @@ const ok = async () => {
           <Input
             v-model:value="formState.name"
             :maxlength="100"
-            :placeholder="t('apiDesign.messages.namePlaceholder')"/>
+            :placeholder="t('apiDesign.messages.namePlaceholder')" />
         </FormItem>
 
         <FormItem
