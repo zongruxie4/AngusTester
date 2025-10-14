@@ -44,13 +44,6 @@
       }
     },
     "menuData": {
-      "toolbar": {
-        "debugResult": "调试结果",
-        "logs": "调度日志",
-        "execLog": "执行日志",
-        "toggle": "展开收起",
-        "screen": "全屏"
-      },
       "drawer": {
         "indicator": "测试指标",
         "testInfo": "测试结果",
@@ -74,16 +67,9 @@
       }
     },
     "debugLog": {
-      "schedulingResult": "调度结果",
-      "success": "成功",
-      "fail": "失败",
-      "processExitCode": "进程退出码",
       "downloadFileName": "scheduling.log"
     },
     "execLog": {
-      "node": "节点",
-      "schedulingResult": "调度结果",
-      "processExitCode": "进程退出码",
       "downloadFileName": "runner.log"
     }
   },
@@ -122,24 +108,13 @@
       "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
     },
     "debugLog": {
-      "schedulingResult": "调度结果",
-      "processExitCode": "进程退出码",
       "downloadFileName": "scheduling.log"
-    },
-    "debugResult": {
-      "debugResult": "调试结果",
-      "exitCode": "退出码",
-      "failureReason": "失败原因",
-      "samplingStatus": "采样状态"
     },
     "drawerItem": {
       "namePlaceholder": "最长200个字符",
       "descriptionPlaceholder": "最长800个字符"
     },
     "execLog": {
-      "node": "节点",
-      "schedulingResult": "调度结果",
-      "processExitCode": "进程退出码",
       "downloadFileName": "runner.log"
     },
     "exportScriptModal": {
@@ -169,7 +144,6 @@
         "responseTime": "响应时间",
         "error": "错误",
         "httpCode": "状态码",
-        "node": "节点资源",
         "analyze": "叠加分析"
       },
       "units": {
@@ -641,8 +615,6 @@
           "variableValue": "变量值",
           "executionConditionResult": "执行条件结果",
           "assertionCondition": "断言条件",
-          "assertionResult": "断言结果",
-          "failureReason": "失败原因",
           "expectedValue": "期望值",
           "extractedValue": "提取值",
           "view": "查看",
@@ -768,8 +740,6 @@
       "assertionResult": {
         "view": "查看",
         "assertionCondition": "断言条件",
-        "assertionResult": "断言结果",
-        "failureReason": "失败原因",
         "extractedValue": "提取值",
         "expectedValue": "期望值",
         "typeMap": {
@@ -823,13 +793,6 @@
       "taskConfig": "任务配置",
       "executeConfig": "执行配置"
     },
-    "toolbar": {
-      "debugResult": "调试结果",
-      "logs": "调度日志",
-      "execLog": "执行日志",
-      "toggle": "展开收起",
-      "screen": "全屏"
-    },
     "drawer": {
       "indicator": "性能指标",
       "testInfo": "测试结果",
@@ -849,23 +812,9 @@
       "test": "创建执行"
     },
     "debugLog": {
-      "schedulingResult": "调度结果",
-      "success": "成功",
-      "fail": "失败",
-      "processExitCode": "进程退出码",
       "downloadFileName": "scheduling.log"
     },
-    "debugResult": {
-      "debugResult": "调试结果",
-      "fail": "失败",
-      "exitCode": "退出码",
-      "failureReason": "失败原因",
-      "samplingStatus": "采样状态"
-    },
     "execLog": {
-      "node": "节点",
-      "schedulingResult": "调度结果",
-      "processExitCode": "进程退出码",
       "downloadFileName": "runner.log"
     },
     "exportScriptModal": {
@@ -911,7 +860,6 @@
         "responseTime": "响应时间",
         "error": "错误",
         "statusCode": "状态码",
-        "node": "节点资源",
         "analyze": "叠加分析"
       },
       "scriptInfo": {
@@ -1022,8 +970,7 @@
         "selectNode": "选择节点",
         "schedulingLog": {
           "title": "调度日志",
-          "lastSchedulingTime": "最后调度时间",
-          "exitCode": "退出码"
+          "lastSchedulingTime": "最后调度时间"
         },
         "execLog": {
           "title": "执行日志",
@@ -1061,14 +1008,12 @@
       "form": {
         "nameDuplicate": "名称重复",
         "namePlaceholder": "名称，最大支持400个字符",
-        "descriptionPlaceholder": "描述，最大支持800字（可选）",
-        "none": "无"
+        "descriptionPlaceholder": "描述，最大支持800字（可选）"
       },
       "serverConfig": {
         "title": "服务器配置",
         "hostnameOrIP": "主机名或IP",
         "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
-        "port": "端口",
         "portPlaceholder": "端口（1~65535）",
         "usernamePlaceholder": "用户名，最大支持400个字符",
         "passwordPlaceholder": "密码，最大支持4096个字符",
@@ -1157,7 +1102,6 @@
       "protocolPlaceholder": "协议",
       "hostnameOrIP": "主机名或IP",
       "hostnameOrIPPlaceholder": "主机名或IP",
-      "port": "端口",
       "portPlaceholder": "端口",
       "usernamePassword": "用户名/密码",
       "inboxFolder": "收件箱文件夹",
@@ -1216,8 +1160,6 @@
       "assertionResult": {
         "view": "查看",
         "assertionCondition": "断言条件",
-        "assertionResult": "断言结果",
-        "failureReason": "失败原因",
         "extractedValue": "提取值",
         "expectedValue": "期望值",
         "noDefineVariable": "没有定义{conditionName}变量，直接执行该条件表达式",
@@ -1297,7 +1239,6 @@
       "serverConfig": "服务器配置",
       "hostnameOrIP": "主机名或IP",
       "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
-      "port": "端口",
       "portPlaceholder": "端口（1~65535）",
       "usernamePlaceholder": "用户名，最大支持400个字符",
       "passwordPlaceholder": "密码，最大支持4096个字符",
@@ -1555,7 +1496,6 @@
         "title": "服务器设置",
         "hostnameOrIP": "主机名或IP",
         "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
-        "port": "端口",
         "portPlaceholder": "端口（1~65535）",
         "security": "安全功能",
         "trustCertificate": "信任证书",
@@ -1620,14 +1560,12 @@
       "form": {
         "nameDuplicate": "名称重复",
         "namePlaceholder": "名称，最大支持400个字符",
-        "descriptionPlaceholder": "描述，最大支持800个字符",
-        "none": "无"
+        "descriptionPlaceholder": "描述，最大支持800个字符"
       },
       "serverConfig": {
         "title": "服务器配置",
         "hostnameOrIP": "主机名或IP",
         "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
-        "port": "端口",
         "portPlaceholder": "端口（1~65535）",
         "connectionTimeout": "连接超时",
         "connectionTimeoutPlaceholder": "连接超时，最大24小时",
@@ -1707,8 +1645,7 @@
     "form": {
       "nameDuplicate": "名称重复",
       "namePlaceholder": "名称，最大支持400个字符",
-      "descriptionPlaceholder": "描述，最大支持800个字符",
-      "none": "无"
+      "descriptionPlaceholder": "描述，最大支持800个字符"
     },
     "connectionInfo": {
       "title": "连接信息",
@@ -1751,7 +1688,6 @@
     "websocketConfigs": {
       "urlFormatError": "url格式错误",
       "form": {
-        "none": "无",
         "nameDuplicate": "名称重复",
         "namePlaceholder": "名称，最大支持400个字符",
         "descriptionPlaceholder": "描述，最大支持800个字符"

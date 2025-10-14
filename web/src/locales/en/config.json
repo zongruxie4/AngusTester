@@ -2,9 +2,6 @@
   "app": {
     "title": "App",
     "config": {
-      "labels": {
-        "domain": "Domain"
-      },
       "tabs": {
         "member": "Members",
         "quota": "Quota",
@@ -363,7 +360,6 @@
           "nodeName": "Node Name",
           "intranetIP": "Intranet IP",
           "publicIP": "Public IP",
-          "domain": "Domain",
           "sshPort": "SSH Port",
           "role": "Role",
           "inputLimit200": "Input limit 200 characters",
@@ -444,7 +440,6 @@
           "home": "Installation Path",
           "uptime": "Uptime",
           "diskSpace": "Disk Space",
-          "port": "Occupied Port",
           "health": "Health Status"
         },
         "health": {

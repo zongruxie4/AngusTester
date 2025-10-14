@@ -159,7 +159,6 @@
       },
       "securityResult": {
         "title": "安全测试",
-        "passed": "通过",
         "testName": "测试人",
         "testerDate": "测试时间"
       },
@@ -323,7 +322,6 @@
         "title": "生成接口用例",
         "editTitle": "编辑接口用例",
         "restore": "恢复",
-        "fullScreen": "全屏",
         "nameLabel": "名称",
         "namePlaceholder": "输入用例名称，最多可输入400个字符",
         "typeLabel": "类型",
@@ -879,11 +877,6 @@
         "testInterfaces": "测试接口",
         "resultIndicators": "结果指标",
         "nonStandard": "非标准"
-      },
-      "testStatus": {
-        "untested": "未测试",
-        "passed": "通过",
-        "notPassed": "不通过"
       },
       "indicators": {
         "tps": "每秒事务数(TPS)",
@@ -1463,11 +1456,8 @@
       "form": {
         "title": "生成Mock服务",
         "namePlaceholder": "服务标识命名信息，最多允许100个字符",
-        "domain": "域名",
         "domainPlaceholder": "为服务设置域名后，您可以通过域名访问Mock接口",
-        "port": "端口",
         "portPlaceholder": "服务所监听的端口，服务添加后不允许修改(1~65535)",
-        "node": "节点",
         "nodePlaceholder": "服务所运行的节点，服务添加后不允许修改",
         "servicePlaceholder": "选择或查询服务",
         "domainSuffix": ".angusmock.cloud",
@@ -1536,10 +1526,6 @@
       "chart": {
         "testApiStats": "测试接口统计",
         "testTypeStats": "接口测试类型统计",
-        "tested": "已测试",
-        "unTested": "未测试",
-        "testPassed": "测试通过",
-        "unPassed": "未通过",
         "totalTestNum": "总测试数",
         "functionalTest": "功能测试",
         "performanceTest": "性能测试",
@@ -1743,6 +1729,15 @@
   },
   "mock": {
     "title": "模拟",
+    "introduce": {
+      "description": "Mock可快速模拟依赖的API，让开发和测试并行进行，提高开发效率，避免生产环境数据污染。",
+      "addMockService": "添加Mock服务",
+      "addMockServiceDesc": "创建Mock服务后需手动添加接口。",
+      "importService": "关联服务接口",
+      "importServiceDesc": "基于现有服务与接口创建Mock，系统自动建立关联。",
+      "importFile": "文件导入",
+      "importFileDesc": "Swagger、OpenAPI3.x、Postman2.0/2.1、Angus格式文件导入。"
+    },
     "starting": "正在启动中",
     "startSuccess": "启动成功",
     "startFail": "启动失败,请尝试重新启动",
@@ -1759,29 +1754,6 @@
     "in_starting": "正在启动中",
     "refreshInstance_tip": "刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。",
     "refreshInstance_success": "刷新实例成功",
-    "console": "控制台",
-    "exitCode": "退出码",
-    "introduce": {
-      "description": "Mock可快速模拟依赖的API，让开发和测试并行进行，提高开发效率，避免生产环境数据污染。",
-      "addMockService": "添加Mock服务",
-      "addMockServiceDesc": "创建Mock服务后需手动添加接口。",
-      "importService": "关联服务接口",
-      "importServiceDesc": "基于现有服务与接口创建Mock，系统自动建立关联。",
-      "importFile": "文件导入",
-      "importFileDesc": "Swagger、OpenAPI3.x、Postman2.0/2.1、Angus格式文件导入。"
-    },
-    "searchPanel": {
-      "namePlaceholder": "查询服务ID、名称",
-      "nodeIpPlaceholder": "查询服务IP",
-      "sourcePlaceholder": "选择来源",
-      "nodeIdPlaceholder": "选择或查询节点",
-      "createdByPlaceholder": "选择添加人",
-      "createdDatePlaceholder1": "添加时间从",
-      "createdDatePlaceholder2": "添加时间到"
-    },
-    "columns": {
-      "node": "所在节点"
-    },
     "actions": {
       "forceDelete": "强制删除",
       "refreshInstance": "刷新实例",
@@ -1801,12 +1773,9 @@
       },
       "form": {
         "namePlaceholder": "服务标识命名信息，最多允许100个字符",
-        "domain": "域名",
         "domainPlaceholder": "为服务设置域名后，可以通过域名访问Mock接口",
         "domainTooltip": "域名解析生效预计需要60秒以内的延迟。",
-        "port": "端口",
         "portPlaceholder": "服务所监听的端口，服务添加后不允许修改(1~65535)",
-        "node": "节点",
         "nodePlaceholder": "服务所运行的节点，服务添加后不允许修改",
         "servicePlaceholder": "选择或查询服务",
         "importSource": "来源",
@@ -1846,11 +1815,8 @@
       "basicInfo": {
         "title": "基本信息",
         "nameTooltip": "服务名称，最多100个字符。",
-        "domain": "域名",
         "domainTooltip": "设置域名后可通过域名访问Mock接口，域名需解析到节点IP。",
-        "port": "端口",
         "portTooltip": "服务监听端口，添加后不可修改。",
-        "node": "节点",
         "nodeTooltip": "服务运行节点，添加后不可修改。",
         "serviceConfig": "服务配置",
         "serviceConfigTooltip": "服务运行参数配置，修改后需重启生效。",
@@ -1992,7 +1958,6 @@
           "requestBody": {
             "title": "请求体",
             "contentType": "Content-Type",
-            "none": "none",
             "formUrlEncode": "application/x-www-form-urlencode",
             "multipartFormData": "multipart/form-data",
             "raw": "raw",
@@ -2100,7 +2065,6 @@
             "methodPlaceholder": "请选择请求方法",
             "methodPath": "方法/路径",
             "requestMethod": "请求方法",
-            "domain": "域名",
             "maxLengthPlaceholder": "最大支持800个字符"
           },
           "textareaEditor": {

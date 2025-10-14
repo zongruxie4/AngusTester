@@ -504,16 +504,6 @@
     "maxRedirects": "最大重定向次数",
     "maxRedirectsDesc": "请求返回3xx状态码时的重定向次数。默认1次，最多允许10次。"
   },
-  "xcan_debugLog": {
-    "schedulingResult": "调度结果",
-    "processExitCode": "进程退出码"
-  },
-  "xcan_debugResult": {
-    "debugResult": "调试结果",
-    "exitCode": "退出码",
-    "failureReason": "失败原因",
-    "samplingStatus": "采样状态"
-  },
   "xcan_exec": {
     "addVariable": "添加变量",
     "scope": "作用范围",
@@ -758,11 +748,6 @@
     "getToken": "获取令牌",
     "position": "位置"
   },
-  "xcan_execLog": {
-    "node": "节点",
-    "schedulingResult": "调度结果",
-    "processExitCode": "进程退出码"
-  },
   "xcan_execSettingForm": {
     "executionConcurrency": "执行并发数",
     "executionTime": "执行时间",
@@ -1004,11 +989,8 @@
     "totalInterfaces": "总接口",
     "searchName": "搜索名称",
     "selectStatus": "选择状态",
-    "testResult": "测试结果",
-    "failureReason": "失败原因",
     "testCount": "测试次数",
     "failureCount": "失败次数",
-    "tested": "已测试",
     "executionId": "执行ID",
     "executionName": "执行名称",
     "lastExecutor": "最后执行人",
@@ -1112,8 +1094,6 @@
     "variable": "变量",
     "executionConditionResult": "执行条件结果",
     "assertionCondition": "断言条件",
-    "assertionResult": "断言结果",
-    "failureReason": "失败原因",
     "view": "查看",
     "assertionData": "断言数据",
     "extractedValue": "提取值",
@@ -1256,8 +1236,6 @@
     "executionConditionResult": "执行条件结果",
     "assertionLabel": "断言标签",
     "assertionCondition": "断言条件",
-    "assertionResult": "断言结果",
-    "failureReason": "失败原因",
     "responseStatusCode": "响应状态码",
     "responseHeader": "响应头",
     "responseBody": "响应体",
@@ -1322,7 +1300,6 @@
     "requestBody": "请求体",
     "response": "响应",
     "timeline": "时间线",
-    "assertionResult": "断言结果",
     "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
     "executeConfig": "执行配置 > 插件配置",
     "closeIgnoreAssertion": "中关闭忽略断言选项。"
@@ -1363,9 +1340,6 @@
     "statusCode": "状态码",
     "nodeResource": "节点资源",
     "superimposeAnalysis": "叠加分析",
-    "exitCode": "退出码",
-    "failureReason": "失败原因",
-    "samplingStatus": "采样状态",
     "duration": "时长",
     "errorCount": "错误数",
     "sampleCount": "采样数",
@@ -1398,7 +1372,6 @@
     "schedulingLog": "调度日志",
     "lastSchedulingTime": "最后调度时间",
     "result": "结果",
-    "exitCode": "退出码",
     "executionLog": "执行日志",
     "file": "文件",
     "noAgentAccessInfo": "无访问代理信息，连接失败地址："

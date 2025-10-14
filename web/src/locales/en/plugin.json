@@ -44,14 +44,6 @@
       }
     },
     "menuData": {
-      "toolbar": {
-        "debugResult": "Debug Result",
-        "logs": "Schedule Logs",
-        "execLog": "Execution Log",
-        "toggle": "Expand/Collapse",
-        "screen": "Full Screen",
-        "duration": "Duration"
-      },
       "drawer": {
         "indicator": "Test Indicators",
         "testInfo": "Test Results",
@@ -75,16 +67,9 @@
       }
     },
     "debugLog": {
-      "schedulingResult": "Scheduling Result",
-      "success": "Success",
-      "fail": "Failed",
-      "processExitCode": "Process Exit Code",
       "downloadFileName": "scheduling.log"
     },
     "execLog": {
-      "node": "Node",
-      "schedulingResult": "Scheduling Result",
-      "processExitCode": "Process Exit Code",
       "downloadFileName": "runner.log"
     }
   },
@@ -123,24 +108,13 @@
       "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario, and viewing users also need to have parent directory permissions for the current scenario."
     },
     "debugLog": {
-      "schedulingResult": "Scheduling Result",
-      "processExitCode": "Process Exit Code",
       "downloadFileName": "scheduling.log"
-    },
-    "debugResult": {
-      "debugResult": "Debug Result",
-      "exitCode": "Exit Code",
-      "failureReason": "Failure Reason",
-      "samplingStatus": "Sampling Status"
     },
     "drawerItem": {
       "namePlaceholder": "Maximum 200 characters",
       "descriptionPlaceholder": "Maximum 800 characters"
     },
     "execLog": {
-      "node": "Node",
-      "schedulingResult": "Scheduling Result",
-      "processExitCode": "Process Exit Code",
       "downloadFileName": "runner.log"
     },
     "exportScriptModal": {
@@ -170,7 +144,6 @@
         "responseTime": "Response Time",
         "error": "Error",
         "httpCode": "Status Code",
-        "node": "Node Resources",
         "analyze": "Superimpose Analysis"
       },
       "units": {
@@ -642,8 +615,6 @@
           "variableValue": "Variable Value",
           "executionConditionResult": "Execution Condition Result",
           "assertionCondition": "Assertion Condition",
-          "assertionResult": "Assertion Result",
-          "failureReason": "Failure Reason",
           "expectedValue": "Expected Value",
           "extractedValue": "Extracted Value",
           "view": "View",
@@ -769,8 +740,6 @@
       "assertionResult": {
         "view": "View",
         "assertionCondition": "Assertion Condition",
-        "assertionResult": "Assertion Result",
-        "failureReason": "Failure Reason",
         "extractedValue": "Extracted Value",
         "expectedValue": "Expected Value",
         "typeMap": {
@@ -824,13 +793,6 @@
       "taskConfig": "Task Configuration",
       "executeConfig": "Execution Configuration"
     },
-    "toolbar": {
-      "debugResult": "Debug Result",
-      "logs": "Scheduling Log",
-      "execLog": "Execution Log",
-      "toggle": "Expand/Collapse",
-      "screen": "Full Screen"
-    },
     "drawer": {
       "indicator": "Performance Indicators",
       "testInfo": "Test Results",
@@ -851,15 +813,7 @@
       "test": "Create Execution"
     },
     "debugLog": {
-      "schedulingResult": "Scheduling Result",
-      "processExitCode": "Process Exit Code",
       "downloadFileName": "scheduling.log"
-    },
-    "debugResult": {
-      "debugResult": "Debug Result",
-      "exitCode": "Exit Code",
-      "failureReason": "Failure Reason",
-      "samplingStatus": "Sampling Status"
     },
     "drawerMenu": {
       "saveForm": {
@@ -868,11 +822,6 @@
       }
     },
     "execLog": {
-      "node": "Node",
-      "schedulingResult": "Scheduling Result",
-      "success": "Success",
-      "fail": "Failed",
-      "processExitCode": "Process Exit Code",
       "downloadFileName": "runner.log"
     },
     "exportScriptModal": {
@@ -919,7 +868,6 @@
         "responseTime": "Response Time",
         "error": "Errors",
         "statusCode": "Status Code",
-        "node": "Node Resources",
         "analyze": "Superimpose Analysis"
       },
       "scriptInfo": {
@@ -1031,10 +979,7 @@
         "schedulingLog": {
           "title": "Scheduling Log",
           "lastSchedulingTime": "Last Scheduling Time",
-          "result": "Result",
-          "success": "Success",
-          "fail": "Failed",
-          "exitCode": "Exit Code"
+          "result": "Result"
         },
         "execLog": {
           "title": "Execution Log",
@@ -1072,14 +1017,12 @@
       "form": {
         "nameDuplicate": "Name Duplicate",
         "namePlaceholder": "Name, maximum 400 characters",
-        "descriptionPlaceholder": "Description, maximum 800 characters (optional)",
-        "none": "None"
+        "descriptionPlaceholder": "Description, maximum 800 characters (optional)"
       },
       "serverConfig": {
         "title": "Server Configuration",
         "hostnameOrIP": "Hostname or IP",
         "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
-        "port": "Port",
         "portPlaceholder": "Port (1~65535)",
         "usernamePlaceholder": "Username, maximum 400 characters",
         "passwordPlaceholder": "Password, maximum 4096 characters",
@@ -1166,7 +1109,6 @@
       "protocolPlaceholder": "Protocol",
       "hostnameOrIP": "Hostname or IP",
       "hostnameOrIPPlaceholder": "Hostname or IP",
-      "port": "Port",
       "portPlaceholder": "Port",
       "usernamePassword": "Username/Password",
       "inboxFolder": "Inbox Folder",
@@ -1225,8 +1167,6 @@
       "assertionResult": {
         "view": "View",
         "assertionCondition": "Assertion Condition",
-        "assertionResult": "Assertion Result",
-        "failureReason": "Failure Reason",
         "extractedValue": "Extracted Value",
         "expectedValue": "Expected Value",
         "noDefineVariable": "No {conditionName} variable defined, execute this condition expression directly",
@@ -1307,7 +1247,6 @@
       "serverConfig": "Server Configuration",
       "hostnameOrIP": "Hostname or IP",
       "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
-      "port": "Port",
       "portPlaceholder": "Port (1~65535)",
       "usernamePlaceholder": "Username, maximum 400 characters",
       "passwordPlaceholder": "Password, maximum 4096 characters",
@@ -1568,7 +1507,6 @@
         "title": "Server Configuration",
         "hostnameOrIP": "Hostname or IP",
         "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
-        "port": "Port",
         "portPlaceholder": "Port (1~65535)",
         "security": "Security",
         "trustCertificate": "Trust Certificate",
@@ -1633,14 +1571,12 @@
       "form": {
         "nameDuplicate": "Name Duplicate",
         "namePlaceholder": "Name, maximum 400 characters",
-        "descriptionPlaceholder": "Description, maximum 800 characters",
-        "none": "None"
+        "descriptionPlaceholder": "Description, maximum 800 characters"
       },
       "serverConfig": {
         "title": "Server Configuration",
         "hostnameOrIP": "Hostname or IP",
         "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
-        "port": "Port",
         "portPlaceholder": "Port (1~65535)",
         "connectionTimeout": "Connection Timeout",
         "connectionTimeoutPlaceholder": "Connection timeout, maximum 24 hours",
@@ -1721,8 +1657,7 @@
     "form": {
       "nameDuplicate": "Name Duplicate",
       "namePlaceholder": "Name, maximum 400 characters",
-      "descriptionPlaceholder": "Description, maximum 800 characters",
-      "none": "None"
+      "descriptionPlaceholder": "Description, maximum 800 characters"
     },
     "connectionInfo": {
       "title": "Connection Information",
@@ -1765,7 +1700,6 @@
     "websocketConfigs": {
       "urlFormatError": "URL format error",
       "form": {
-        "none": "None",
         "nameDuplicate": "Name Duplicate",
         "namePlaceholder": "Name, maximum 400 characters",
         "descriptionPlaceholder": "Description, maximum 800 characters"

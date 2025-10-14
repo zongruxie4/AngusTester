@@ -176,7 +176,6 @@
         "response": "响应时间",
         "error0": "错误",
         "statusCode": "状态码（只有HTTP协议才有）",
-        "node": "节点资源",
         "nodeTips": "有应用节点时展示应用节点资源数据、没有时展示执行节点资源数据，多个节点时只展示第一个节点数据。",
         "superposition": "叠加分析",
         "QPS/TPS": "吞吐量（QPS/TPS）",
@@ -505,7 +504,6 @@
         "title": "场景测试结果详细信息",
         "functionalTest": {
           "title": "功能测试结果",
-          "testCases": "测试用例",
           "testCaseResults": "测试用例结果明细"
         },
         "performanceTest": {
@@ -531,7 +529,6 @@
           "systemLoad": "应用系统平均负载"
         },
         "fields": {
-          "testResult": "测试结果",
           "testFailureReason": "测试失败原因",
           "testCount": "测试次数",
           "failureCount": "失败次数",
@@ -594,24 +591,12 @@
             "update": "更新",
             "notUpdate": "不更新"
           }
-        },
-        "execResult": {
-          "title": "执行结果",
-          "fields": {
-            "testResult": "测试结果",
-            "failureReason": "失败原因",
-            "testCases": "测试用例"
-          }
         }
       },
       "log": {
         "title": "日志信息",
         "schedulingLog": {
-          "title": "执行调度信息",
-          "fields": {
-            "schedulingResult": "调度结果",
-            "processExitCode": "进程退出码"
-          }
+          "title": "执行调度信息"
         },
         "samplingLog": {
           "title": "执行采样信息",
@@ -644,10 +629,6 @@
           },
           "statusTag": {
             "notExecuted": "未执行"
-          },
-          "assertionResult": {
-            "title": "断言结果",
-            "none": "无"
           }
         }
       }
@@ -696,12 +677,6 @@
           "options": {
             "update": "更新",
             "notUpdate": "不更新"
-          }
-        },
-        "execResult": {
-          "title": "执行结果",
-          "fields": {
-            "failureReason": "失败原因"
           }
         },
         "apiPerf": {
@@ -753,11 +728,6 @@
       },
       "sampling": {
         "title": "采样指标",
-        "fields": {
-          "exitCode": "退出码",
-          "samplingStatus": "采样状态",
-          "failureReason": "失败原因"
-        },
         "testDetail": {
           "throughputTitle": "吞吐量",
           "concurrencyTitle": "并发数",
@@ -766,7 +736,6 @@
           "statusCode": "状态码",
           "nodeResourceTitle": "节点资源",
           "overlayAnalysisTitle": "叠加分析",
-          "none": "无",
           "throughput": {
             "queriesPerSecond": "每秒查询数",
             "transactionsPerSecond": "每秒事务数",
@@ -862,11 +831,7 @@
       "log": {
         "title": "日志信息",
         "schedulingLog": {
-          "title": "执行调度信息",
-          "fields": {
-            "schedulingResult": "调度结果",
-            "processExitCode": "进程退出码"
-          }
+          "title": "执行调度信息"
         },
         "samplingLog": {
           "title": "执行采样信息",
@@ -900,7 +865,6 @@
       "summary": {
         "title": "摘要",
         "fields": {
-          "testResult": "测试结果",
           "description": "描述",
           "contact": "联系人",
           "copyright": "版权说明",
@@ -1403,8 +1367,6 @@
           "basicInfo": {
             "title": "测试基本信息",
             "fields": {
-              "testResult": "测试结果",
-              "testFailReason": "测试失败原因",
               "testCount": "测试次数",
               "failCount": "失败次数",
               "testScriptId": "测试脚本ID",
@@ -1426,7 +1388,6 @@
             "title": "测试用例结果明细",
             "fields": {
               "testPassed": "是否测试通过",
-              "testFailReason": "测试失败原因",
               "testCount": "测试次数",
               "testFailCount": "测试失败次数"
             }
@@ -1437,8 +1398,6 @@
           "basicInfo": {
             "title": "测试基本信息",
             "fields": {
-              "testResult": "测试结果",
-              "testFailReason": "测试失败原因",
               "testCount": "测试次数",
               "failCount": "失败次数",
               "testScriptId": "测试脚本ID",
@@ -1465,8 +1424,6 @@
           "basicInfo": {
             "title": "测试基本信息",
             "fields": {
-              "testResult": "测试结果",
-              "testFailReason": "测试失败原因",
               "testCount": "测试次数",
               "failCount": "失败次数",
               "testScriptId": "测试脚本ID",
@@ -1518,7 +1475,6 @@
           }
         },
         "fields": {
-          "testResult": "测试结果",
           "testFailureReason": "测试失败原因",
           "testCount": "测试次数",
           "failureCount": "失败次数",
@@ -1624,9 +1580,6 @@
           "enableStabilityTest": "开启稳定性测试",
           "stabilityTestPassed": "稳定性测试通过",
           "stabilityTestFailReason": "稳定性测试失败原因"
-        },
-        "options": {
-          "notTested": "未测试"
         }
       }
     },
@@ -1786,7 +1739,6 @@
           "testingInfo": "测试信息",
           "testResource": "测试资源",
           "execInfo": "执行信息",
-          "testResult": "测试结果",
           "remark": "备注",
           "activity": "活动",
           "comment": "评论"
@@ -1855,7 +1807,6 @@
             "basicInfo": {
               "title": "基本信息",
               "fields": {
-                "testResult": "测试结果",
                 "oneTimePass": "一次性通过",
                 "testCount": "测试次数",
                 "failCount": "失败次数",

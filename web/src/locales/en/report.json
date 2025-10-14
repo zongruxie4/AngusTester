@@ -173,7 +173,6 @@
         "response": "Response time",
         "error0": "Error",
         "statusCode": "Status code (only HTTP protocol)",
-        "node": "Node resource",
         "nodeTips": "When there is an application node, the application node resource data is displayed, and when there is no application node, the execution node resource data is displayed. When there are multiple nodes, only the data of the first node is displayed.",
         "superposition": "Superposition analysis",
         "QPS/TPS": "Throughput (QPS/TPS)",
@@ -501,7 +500,6 @@
         "title": "Scenario Test Result Details",
         "functionalTest": {
           "title": "Functional Test Results",
-          "testCases": "Test Cases",
           "testCaseResults": "Test Case Result Details"
         },
         "performanceTest": {
@@ -527,7 +525,6 @@
           "systemLoad": "Application System Average Load"
         },
         "fields": {
-          "testResult": "Test Result",
           "testFailureReason": "Test Failure Reason",
           "testCount": "Test Count",
           "failureCount": "Failure Count",
@@ -590,24 +587,12 @@
             "update": "Update",
             "notUpdate": "Not Update"
           }
-        },
-        "execResult": {
-          "title": "Execution Result",
-          "fields": {
-            "testResult": "Test Result",
-            "failureReason": "Failure Reason",
-            "testCases": "Test Cases"
-          }
         }
       },
       "log": {
         "title": "Log Information",
         "schedulingLog": {
-          "title": "Execution Scheduling Information",
-          "fields": {
-            "schedulingResult": "Scheduling Result",
-            "processExitCode": "Process Exit Code"
-          }
+          "title": "Execution Scheduling Information"
         },
         "samplingLog": {
           "title": "Execution Sampling Information",
@@ -644,10 +629,6 @@
           },
           "statusTag": {
             "notExecuted": "Not Executed"
-          },
-          "assertionResult": {
-            "title": "Assertion Results",
-            "none": "None"
           }
         }
       }
@@ -700,12 +681,6 @@
             "notUpdate": "Not Update"
           }
         },
-        "execResult": {
-          "title": "Execution Result",
-          "fields": {
-            "failureReason": "Failure Reason"
-          }
-        },
         "apiPerf": {
           "testIndicator": "Test Indicator",
           "targetValue": "Target Value",
@@ -755,11 +730,6 @@
       },
       "sampling": {
         "title": "Sampling Indicators",
-        "fields": {
-          "exitCode": "Exit Code",
-          "samplingStatus": "Sampling Status",
-          "failureReason": "Failure Reason"
-        },
         "testDetail": {
           "throughputTitle": "Throughput",
           "concurrencyTitle": "Concurrency",
@@ -768,7 +738,6 @@
           "statusCode": "Status Code",
           "nodeResourceTitle": "Node Resource",
           "overlayAnalysisTitle": "Overlay Analysis",
-          "none": "None",
           "throughput": {
             "queriesPerSecond": "Queries Per Second",
             "transactionsPerSecond": "Transactions Per Second",
@@ -867,11 +836,7 @@
       "log": {
         "title": "Log Information",
         "schedulingLog": {
-          "title": "Execution Scheduling Information",
-          "fields": {
-            "schedulingResult": "Scheduling Result",
-            "processExitCode": "Process Exit Code"
-          }
+          "title": "Execution Scheduling Information"
         },
         "samplingLog": {
           "title": "Execution Sampling Information",
@@ -905,7 +870,6 @@
       "summary": {
         "title": "Summary",
         "fields": {
-          "testResult": "Test Result",
           "description": "Description",
           "contact": "Contact",
           "copyright": "Copyright",
@@ -916,8 +880,6 @@
         "basic": {
           "title": "Basic Information",
           "fields": {
-            "testResult": "Test Result",
-            "reviewStatus": "Review Status",
             "workloadEvalMethod": "Workload Evaluation",
             "evalWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
@@ -1384,7 +1346,6 @@
       "testResult": {
         "title": "Scenario Test Summary Results",
         "fields": {
-          "passed": "Passed",
           "enableFuncTest": "Enable Functional Test",
           "funcTestPassed": "Functional Test Passed",
           "funcTestFailReason": "Functional Test Failure Reason",
@@ -1403,8 +1364,6 @@
           "basicInfo": {
             "title": "Test Basic Information",
             "fields": {
-              "testResult": "Test Result",
-              "testFailReason": "Test Failure Reason",
               "testCount": "Test Count",
               "failCount": "Failure Count",
               "testScriptId": "Test Script ID",
@@ -1426,7 +1385,6 @@
             "title": "Test Case Result Details",
             "fields": {
               "testPassed": "Test Passed",
-              "testFailReason": "Test Failure Reason",
               "testCount": "Test Count",
               "testFailCount": "Test Failure Count"
             }
@@ -1437,8 +1395,6 @@
           "basicInfo": {
             "title": "Test Basic Information",
             "fields": {
-              "testResult": "Test Result",
-              "testFailReason": "Test Failure Reason",
               "testCount": "Test Count",
               "failCount": "Failure Count",
               "testScriptId": "Test Script ID",
@@ -1467,8 +1423,6 @@
           "basicInfo": {
             "title": "Test Basic Information",
             "fields": {
-              "testResult": "Test Result",
-              "testFailReason": "Test Failure Reason",
               "testCount": "Test Count",
               "failCount": "Failure Count",
               "testScriptId": "Test Script ID",
@@ -1520,7 +1474,6 @@
           }
         },
         "fields": {
-          "testResult": "Test Result",
           "testFailureReason": "Test Failure Reason",
           "testCount": "Test Count",
           "failureCount": "Failure Count",
@@ -1626,9 +1579,6 @@
           "enableStabilityTest": "Enable Stability Test",
           "stabilityTestPassed": "Stability Test Passed",
           "stabilityTestFailReason": "Stability Test Failure Reason"
-        },
-        "options": {
-          "notTested": "Not Tested"
         }
       }
     },
@@ -1787,7 +1737,6 @@
           "testingInfo": "Testing Information",
           "testResource": "Test Resources",
           "execInfo": "Execution Information",
-          "testResult": "Test Results",
           "remark": "Remarks",
           "activity": "Activities",
           "comment": "Comments"
@@ -1859,7 +1808,6 @@
             "basicInfo": {
               "title": "Basic Information",
               "fields": {
-                "testResult": "Test Result",
                 "oneTimePass": "One-time Pass",
                 "testCount": "Test Count",
                 "failCount": "Failure Count",

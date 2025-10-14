@@ -2,9 +2,6 @@
   "app": {
     "title": "应用",
     "config": {
-      "labels": {
-        "domain": "域名"
-      },
       "tabs": {
         "member": "成员",
         "quota": "配额",
@@ -361,7 +358,6 @@
           "nodeName": "节点名称",
           "intranetIP": "内网IP",
           "publicIP": "公网IP",
-          "domain": "域名",
           "sshPort": "SSH端口",
           "role": "角色",
           "inputLimit200": "输入限制200字符以内",
@@ -442,7 +438,6 @@
           "home": "安装路径",
           "uptime": "运行时长",
           "diskSpace": "磁盘空间",
-          "port": "占用端口",
           "health": "健康状态"
         },
         "health": {

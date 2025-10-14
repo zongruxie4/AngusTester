@@ -95,9 +95,7 @@
       },
       "selectCaseByModule": {
         "title": "Select Cases",
-        "searchPlaceholder": "Search name, code",
-        "reviewStatus": "Review Status",
-        "testResult": "Test Result"
+        "searchPlaceholder": "Search name, code"
       },
       "delScriptModal": {
         "title": "Delete Test Script",
@@ -516,16 +514,6 @@
   "xcan_configProvider": {
     "websiteUpdated": "The website has been updated. Please click refresh to experience the latest content. Before refreshing, we recommend saving your personal data to avoid loss. Thank you for your understanding and support!"
   },
-  "xcan_debugLog": {
-    "schedulingResult": "Scheduling Result",
-    "processExitCode": "Process Exit Code"
-  },
-  "xcan_debugResult": {
-    "debugResult": "Debug Result",
-    "exitCode": "Exit Code",
-    "failureReason": "Failure Reason",
-    "samplingStatus": "Sampling Status"
-  },
   "xcan_exec": {
     "addVariable": "Add Variable",
     "scope": "Scope",
@@ -769,11 +757,6 @@
     "clientAuthentication": "Client Authentication",
     "getToken": "Get Token",
     "position": "Position"
-  },
-  "xcan_execLog": {
-    "node": "Node",
-    "schedulingResult": "Scheduling Result",
-    "processExitCode": "Process Exit Code"
   },
   "xcan_execSettingForm": {
     "executionConcurrency": "Execution Concurrency",
@@ -1047,11 +1030,8 @@
     "totalInterfaces": "Total Interfaces",
     "searchName": "Search Name",
     "selectStatus": "Select Status",
-    "testResult": "Test Result",
-    "failureReason": "Failure Reason",
     "testCount": "Test Count",
     "failureCount": "Failure Count",
-    "tested": "Tested",
     "executionId": "Execution ID",
     "executionName": "Execution Name",
     "lastExecutor": "Last Executor",
@@ -1171,8 +1151,6 @@
     "variable": "Variable",
     "executionConditionResult": "Execution Condition Result",
     "assertionCondition": "Assertion Condition",
-    "assertionResult": "Assertion Result",
-    "failureReason": "Failure Reason",
     "view": "View",
     "assertionData": "Assertion Data",
     "extractedValue": "Extracted Value",
@@ -1335,8 +1313,6 @@
     "responseTime": "Response Time"
   },
   "xcan_statusTag": {
-    "fail": "Failed",
-    "success": "Passed",
     "block": "Not Executed"
   },
   "xcan_rendezvous": {
@@ -1360,8 +1336,6 @@
     "assertionLabel": "Assertion Label",
     "view": "View",
     "assertionCondition": "Assertion Condition",
-    "assertionResult": "Assertion Result",
-    "failureReason": "Failure Reason",
     "responseStatusCode": "Response Status Code",
     "responseHeader": "Response Header",
     "responseBody": "Response Body",
@@ -1425,7 +1399,6 @@
     "requestBody": "Request Body",
     "response": "Response",
     "timeline": "Timeline",
-    "assertionResult": "Assertion Result",
     "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please close the ignore assertion option in ",
     "executeConfig": "Execute Config > Plugin Config",
     "closeIgnoreAssertion": "."
@@ -1446,7 +1419,6 @@
   },
   "xcan_PerfExecDetail": {
     "script": "Script",
-    "testResult": "Test Result",
     "milliseconds": "Milliseconds",
     "seconds": "Seconds",
     "minutes": "Minutes",
@@ -1468,9 +1440,6 @@
     "statusCode": "Status Code",
     "nodeResource": "Node Resource",
     "superimposeAnalysis": "Superimpose Analysis",
-    "exitCode": "Exit Code",
-    "failureReason": "Failure Reason",
-    "samplingStatus": "Sampling Status",
     "duration": "Duration",
     "errorCount": "Error Count",
     "sampleCount": "Sample Count",
@@ -1502,7 +1471,6 @@
     "selectNode": "Select Node",
     "schedulingLog": "Scheduling Log",
     "lastSchedulingTime": "Last Scheduling Time",
-    "exitCode": "Exit Code",
     "executionLog": "Execution Log",
     "file": "File",
     "noAgentAccessInfo": "No agent access information, connection failed address: "

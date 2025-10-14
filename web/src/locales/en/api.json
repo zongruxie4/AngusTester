@@ -158,7 +158,6 @@
       },
       "securityResult": {
         "title": "Security Test",
-        "passed": "Passed",
         "testName": "Test Name",
         "testerDate": "Test Date"
       },
@@ -319,7 +318,6 @@
         "title": "Generate API Case",
         "editTitle": "Edit API Case",
         "restore": "Restore",
-        "fullScreen": "Full Screen",
         "nameLabel": "Name",
         "namePlaceholder": "Enter case name, up to 400 characters",
         "typeLabel": "Type",
@@ -878,11 +876,6 @@
         "testInterfaces": "Test Interfaces",
         "resultIndicators": "Result Indicators",
         "nonStandard": "Non-Standard"
-      },
-      "testStatus": {
-        "untested": "Not Tested",
-        "passed": "Passed",
-        "notPassed": "Not Passed"
       },
       "indicators": {
         "tps": "Transactions Per Second (TPS)",
@@ -1457,11 +1450,8 @@
       "form": {
         "title": "Generate Mock Service",
         "namePlaceholder": "Service identification naming information, maximum 100 characters allowed",
-        "domain": "Domain",
         "domainPlaceholder": "After setting a domain for the service, you can access Mock APIs through the domain",
-        "port": "Port",
         "portPlaceholder": "Port that the service listens on, cannot be modified after service is added (1~65535)",
-        "node": "Node",
         "nodePlaceholder": "Node where the service runs, cannot be modified after service is added",
         "servicePlaceholder": "Select or search service",
         "domainSuffix": ".angusmock.cloud",
@@ -1530,10 +1520,6 @@
       "chart": {
         "testApiStats": "Test API Statistics",
         "testTypeStats": "API Test Type Statistics",
-        "tested": "Tested",
-        "unTested": "Not Tested",
-        "testPassed": "Test Passed",
-        "unPassed": "Failed",
         "totalTestNum": "Total Tests",
         "functionalTest": "Functional Test",
         "performanceTest": "Performance Test",
@@ -1737,6 +1723,15 @@
   },
   "mock": {
     "title": "Mock",
+    "introduce": {
+      "description": "Mock can quickly simulate dependent APIs, enabling parallel development and testing, improving efficiency while avoiding production data pollution.",
+      "addMockService": "Add Mock Service",
+      "addMockServiceDesc": "Manually add apis after creating Mock service.",
+      "importService": "Associate Existing Service",
+      "importServiceDesc": "Create Mock based on existing services and apis, system automatically establishes associations.",
+      "importFile": "Import from File",
+      "importFileDesc": "Support Swagger, OpenAPI3.x, Postman2.0/2.1, Angus format file import."
+    },
     "starting": "Starting",
     "startSuccess": "Started Successfully",
     "startFail": "Start Failed, please try to restart",
@@ -1753,29 +1748,7 @@
     "in_starting": "Starting",
     "refreshInstance_tip": "Refreshing the instance will forcibly synchronize service configuration, interface security, CORS settings and Mock interfaces to the running service instance.",
     "refreshInstance_success": "Instance Refreshed Successfully",
-    "console": "Console",
-    "exitCode": "Exit code",
-    "introduce": {
-      "description": "Mock can quickly simulate dependent APIs, enabling parallel development and testing, improving efficiency while avoiding production data pollution.",
-      "addMockService": "Add Mock Service",
-      "addMockServiceDesc": "Manually add apis after creating Mock service.",
-      "importService": "Associate Existing Service",
-      "importServiceDesc": "Create Mock based on existing services and apis, system automatically establishes associations.",
-      "importFile": "Import from File",
-      "importFileDesc": "Support Swagger, OpenAPI3.x, Postman2.0/2.1, Angus format file import."
-    },
-    "searchPanel": {
-      "namePlaceholder": "Search service ID, name",
-      "nodeIpPlaceholder": "Search service IP",
-      "sourcePlaceholder": "Select source",
-      "nodeIdPlaceholder": "Select or search node",
-      "createdByPlaceholder": "Select creator",
-      "createdDatePlaceholder1": "Created date from",
-      "createdDatePlaceholder2": "Created date to"
-    },
-    "columns": {
-      "node": "Node"
-    },
+
     "actions": {
       "forceDelete": "Force Delete",
       "refreshInstance": "Refresh Instance",
@@ -1800,12 +1773,9 @@
       },
       "form": {
         "namePlaceholder": "Service identifier naming information, up to 100 characters",
-        "domain": "Domain",
         "domainPlaceholder": "After setting the domain name for the service, the mock interface can be accessed through the domain name",
         "domainTooltip": "Domain name resolution is expected to take effect within 60 seconds.",
-        "port": "Port",
         "portPlaceholder": "The port listened by the service, the service cannot be modified after adding (1~65535)",
-        "node": "Node",
         "nodePlaceholder": "The node where the service is running, the service cannot be modified after adding",
         "servicePlaceholder": "Select or search service",
         "importSource": "Source",
@@ -1845,11 +1815,8 @@
       "basicInfo": {
         "title": "Basic Information",
         "nameTooltip": "Service identifier naming information, up to 100 characters.",
-        "domain": "Domain",
         "domainTooltip": "After setting the domain name for the service, the mock interface can be accessed through the domain name, the domain name set needs to be resolved to the IP of the node where it is located.",
-        "port": "Port",
         "portTooltip": "The port listened by the service, the service cannot be modified after adding.",
-        "node": "Node",
         "nodeTooltip": "The node where the service is running, the service cannot be modified after adding.",
         "serviceConfig": "Service Configuration",
         "serviceConfigTooltip": "The main parameters of the service running, more parameter configuration please refer to the official website related documents. The modification needs to be restarted after the service takes effect.",
@@ -1991,7 +1958,6 @@
           "requestBody": {
             "title": "Request Body",
             "contentType": "Content-Type",
-            "none": "none",
             "formUrlEncode": "application/x-www-form-urlencode",
             "multipartFormData": "multipart/form-data",
             "raw": "raw",
@@ -2106,7 +2072,6 @@
             "methodPlaceholder": "Please select request method",
             "methodPath": "Method/Path",
             "requestMethod": "Request Method",
-            "domain": "Domain",
             "maxLengthPlaceholder": "Maximum 800 characters supported"
           },
           "content": {

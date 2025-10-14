@@ -118,17 +118,11 @@
         "sections": {
           "allTests": "全部测试",
           "functionality": "功能",
-          "testCases": "测试用例",
           "performance": "性能",
           "stability": "稳定性",
           "custom": "自定义",
           "nonStandard": "非标准",
           "resultMetrics": "结果指标"
-        },
-        "status": {
-          "notTested": "未测试",
-          "passed": "通过",
-          "notPassed": "不通过"
         },
         "metrics": {
           "tps": "每秒事务数(TPS)",
@@ -194,14 +188,6 @@
         "last24Hours": "近24小时",
         "last7Days": "近7天",
         "last30Days": "近30天"
-      },
-      "executionStatus": {
-        "reason": "原因"
-      },
-      "tabs": {
-        "debugResult": "调试结果",
-        "scheduleLog": "调度日志",
-        "execLog": "执行日志"
       }
     },
     "list": {
