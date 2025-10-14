@@ -52,7 +52,7 @@ const SmartComment = defineAsyncComponent(() => import('@/plugins/test/component
 const ScriptConfig = defineAsyncComponent(() => import('@/plugins/test/components/ScriptConfig/index.vue'));
 const UIConfig = defineAsyncComponent(() => import('./UIConfig/index.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/plugins/test/components/ExportScriptModal/index.vue'));
-const SelectScriptModal = defineAsyncComponent(() => import('./SelectScriptModal/index.vue'));
+const SelectScriptModal = defineAsyncComponent(() => import('@/plugins/test/components/SelectScriptModal/index.vue'));
 const ImportScript = defineAsyncComponent(() => import('@/plugins/test/components/ImportScript/index.vue'));
 const ExecuteConfig = defineAsyncComponent(() => import('@/plugins/test/components/ExecuteConfig/index.vue'));
 const DebugResult = defineAsyncComponent(() => import('./DebugResult/index.vue'));
@@ -1363,7 +1363,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
     </AsyncComponent>
 
     <AsyncComponent :visible="selectModalVisible">
-      <SelectScriptModal v-model:visible="selectModalVisible" @ok="selectScriptOk" />
+      <SelectScriptModal v-model:visible="selectModalVisible" plugin="Jms" @ok="selectScriptOk" />
     </AsyncComponent>
 
     <AsyncComponent :visible="uploadVisible">
