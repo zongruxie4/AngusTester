@@ -2324,73 +2324,35 @@
   },
   "apiShare": {
     "title": "Share",
-    "addShare": "Add Share",
-    "shareList": "Share List",
-    "shareDetails": "Share Details",
-    "shareEdit": "Share Edit",
-    "editShare": "Edit Share",
-    "form": {
+    "addedShares": "Added Shares",
+    "notAddedYet": "No shares added yet, click to add",
+    "introduce": {
+      "title": "About Share",
+      "description": "When you need to integrate interfaces with external partners, customers, or other teams, you can use the \"Share\" feature to pass interface information to them, simplifying the communication process. Sharing includes detailed interface description information, including interface servers, authentication, interface addresses, request formats, and response formats, ensuring everyone has a consistent understanding of the interface."
+    },
+    "actions": {
+      "addShare": "Add Share",
+      "editShare": "Edit Share"
+    },
+    "columns": {
+      "displayOptions": "Display Options",
+      "includeServiceInfo": "Show Service Description",
+      "viewCount": "View Count",
+      "allowDebug": "Allow Debug",
+      "fieldStyle": "Field Style",
+      "shareScope": "Share Scope"
+    },
+    "messages": {
       "namePlaceholder": "Enter share name, maximum 100 characters",
       "remarkPlaceholder": "Please enter share remark, will be displayed in share information, maximum 400 characters",
       "expiredDateHint": "Permanently valid when not specified.",
-      "displayOptions": "Display Options",
-      "includeServiceInfo": "Show Service Description",
-      "allowDebug": "Allow Debug",
-      "fieldStyle": "Field Style",
-      "shareScope": "Share Scope",
-      "selectService": "Select Service",
-      "selectServicePlaceholder": "Select service",
-      "apis": "APIs",
-      "selectApiPlaceholder": "Select API",
-      "selectedApis": "Selected {count} APIs"
+      "selectedApis": "Selected {count} APIs",
+      "copyToClipboardSuccess": "Successfully copied to clipboard",
+      "copyLinkSuccess": "Share \"{name}\", access address: {url}"
     },
     "schemaStyle": {
       "table": "Table",
       "tree": "Tree"
-    },
-    "messages": {
-      "copySuccess": "Share information successfully copied to clipboard",
-      "addSuccess": "Share successful",
-      "editSuccess": "Share successful",
-      "deleteSuccess": "Delete successful",
-      "copyToClipboardSuccess": "Successfully copied to clipboard",
-      "copyLinkSuccess": "Share \"{name}\", access address: {url}"
-    },
-    "list": {
-      "title": "Added Shares",
-      "addShare": "Add Share",
-      "expired": "Expired",
-      "notExpired": "Not Expired",
-      "confirmDelete": "Are you sure to delete share 「{name}」?",
-      "columns": {
-        "sharePerson": "Share Person",
-        "shareScope": "Share Scope",
-        "shareDate": "Share Date",
-        "viewCount": "View Count"
-      }
-    },
-    "searchPanel": {
-      "title": "Quick Search",
-      "addShare": "Add Share",
-      "menuItems": {
-        "all": "All",
-        "myShares": "My Shares",
-        "lastDay": "Last Day",
-        "lastThreeDays": "Last 3 Days",
-        "lastWeek": "Last Week"
-      },
-      "searchOptions": {
-        "namePlaceholder": "Search name, remark",
-        "sharePersonPlaceholder": "Select share person",
-        "dateRangePlaceholder": [
-          "Add time from",
-          "Add time to"
-        ]
-      }
-    },
-    "introduce": {
-      "title": "About Sharing",
-      "description": "When you need to integrate interfaces with external partners, customers, or other teams, you can use the \"Share\" feature to pass interface information to them, simplifying the communication process. Sharing includes detailed interface description information, including interface servers, authentication, interface addresses, request formats, and response formats, ensuring everyone has a consistent understanding of the interface."
     }
   },
   "apiTrash": {

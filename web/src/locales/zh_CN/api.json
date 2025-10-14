@@ -2327,74 +2327,36 @@
   },
   "apiShare": {
     "title": "分享",
-    "addShare": "添加分享",
-    "shareList": "分享列表",
-    "shareDetails": "分享详情",
-    "shareEdit": "分享编辑",
-    "editShare": "编辑分享",
-    "form": {
+    "addedShares": "已添加的分享",
+    "notAddedYet": "未添加任何分享，点击添加",
+    "introduce": {
+      "title": "关于分享",
+      "description": "当需要与外部合作伙伴、客户或其他团队进行接口集成，可以通过\"分享\"功能将接口信息传递给他们，简化沟通流程。分享包含详细接口说明信息，包括接口服务器、认证、接口地址、请求格式和响应格式等，确保所有人对接口有一致的理解。"
+    },
+    "actions": {
+      "addShare": "添加分享",
+      "editShare": "编辑分享"
+    },
+    "columns": {
+      "displayOptions": "展示选项",
+      "includeServiceInfo": "展示服务说明",
+      "shareDate": "分享日期",
+      "viewCount": "查看次数",
+      "allowDebug": "允许调试",
+      "fieldStyle": "字段样式",
+      "shareScope": "分享范围"
+    },
+    "messages": {
       "namePlaceholder": "输入分享名称，最多可输入100字符",
       "remarkPlaceholder": "请输入分享备注，会展示在分享信息中，最多支持400字符",
       "expiredDateHint": "不指定时永久有效。",
-      "displayOptions": "展示选项",
-      "includeServiceInfo": "展示服务说明",
-      "allowDebug": "允许调试",
-      "fieldStyle": "字段样式",
-      "shareScope": "分享范围",
-      "selectService": "选择服务",
-      "selectServicePlaceholder": "选择服务",
-      "apis": "接口",
-      "selectApiPlaceholder": "选择接口",
-      "selectedApis": "已选择{count}个接口"
+      "selectedApis": "已选择{count}个接口",
+      "copyToClipboardSuccess": "成功复制到剪贴板",
+      "copyLinkSuccess": "分享“{name}”，访问地址：{url}"
     },
     "schemaStyle": {
       "table": "表格",
       "tree": "树"
-    },
-    "messages": {
-      "copySuccess": "分享信息成功复制到剪贴板",
-      "addSuccess": "分享成功",
-      "editSuccess": "分享成功",
-      "deleteSuccess": "删除成功",
-      "copyToClipboardSuccess": "成功复制到剪贴板",
-      "copyLinkSuccess": "分享“{name}”，访问地址：{url}"
-    },
-    "list": {
-      "title": "已添加的分享",
-      "noShareData": "尚未添加任何分享，立即",
-      "addShare": "添加分享",
-      "expired": "已过期",
-      "notExpired": "未过期",
-      "confirmDelete": "确定删除分享「{name}」吗？",
-      "columns": {
-        "sharePerson": "分享人",
-        "shareScope": "分享范围",
-        "shareDate": "分享日期",
-        "viewCount": "查看次数"
-      }
-    },
-    "searchPanel": {
-      "title": "快速查询",
-      "addShare": "添加分享",
-      "menuItems": {
-        "all": "全部",
-        "myShares": "我分享的",
-        "lastDay": "近1天",
-        "lastThreeDays": "近3天",
-        "lastWeek": "近7天"
-      },
-      "searchOptions": {
-        "namePlaceholder": "查询名称、备注",
-        "sharePersonPlaceholder": "选择分享人",
-        "dateRangePlaceholder": [
-          "添加时间从",
-          "添加时间到"
-        ]
-      }
-    },
-    "introduce": {
-      "title": "关于分享",
-      "description": "当需要与外部合作伙伴、客户或其他团队进行接口集成，可以通过\"分享\"功能将接口信息传递给他们，简化沟通流程。分享包含详细接口说明信息，包括接口服务器、认证、接口地址、请求格式和响应格式等，确保所有人对接口有一致的理解。"
     }
   },
   "apiTrash": {

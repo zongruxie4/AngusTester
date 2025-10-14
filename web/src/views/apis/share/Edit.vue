@@ -223,7 +223,7 @@ const schemaStyleOpt = [
 </script>
 <template>
   <Modal
-    :title="props.shareId ? t('apiShare.editShare') : t('apiShare.addShare')"
+    :title="props.shareId ? t('apiShare.actions.editShare') : t('apiShare.actions.addShare')"
     :visible="props.visible"
     :width="680"
     :okButtonProps="{
@@ -245,7 +245,7 @@ const schemaStyleOpt = [
         <Input
           v-model:value="formState.name"
           :maxlength="100"
-          :placeholder="t('common.placeholders.searchKeyword')" />
+          :placeholder="t('apiShare.messages.namePlaceholder')" />
       </FormItem>
 
       <FormItem
@@ -255,7 +255,7 @@ const schemaStyleOpt = [
         <Textarea
           v-model:value="formState.remark"
           :maxlength="400"
-          :placeholder="t('apiShare.form.remarkPlaceholder')">
+          :placeholder="t('apiShare.namePlaceholder.remarkPlaceholder')">
         </Textarea>
       </FormItem>
 
@@ -269,26 +269,26 @@ const schemaStyleOpt = [
             showToday
             showTime
             class="flex-1 min-w-0" />
-          <Hints :text="t('apiShare.form.expiredDateHint')" />
+          <Hints :text="t('apiShare.namePlaceholder.expiredDateHint')" />
         </div>
       </FormItem>
 
       <FormItem
-        :label="t('apiShare.form.displayOptions')"
+        :label="t('apiShare.columns.displayOptions')"
         class="!mb-5"
         name="displayOptions">
         <div class="flex items-center">
           <Checkbox
             v-model:checked="formState.displayOptions.includeServiceInfo">
-            {{ t('apiShare.form.includeServiceInfo') }}
+            {{ t('apiShare.columns.includeServiceInfo') }}
           </Checkbox>
           <Checkbox
             v-model:checked="formState.displayOptions.allowDebug">
-            {{ t('apiShare.form.allowDebug') }}
+            {{ t('apiShare.columns.allowDebug') }}
           </Checkbox>
 
           <div class="inline-flex items-center text-3 ml-2">
-            <span>{{ t('apiShare.form.fieldStyle') }}</span>
+            <span>{{ t('apiShare.columns.fieldStyle') }}</span>
             <Colon />
             <Select
               v-model:value="formState.displayOptions.schemaStyle"
@@ -301,7 +301,7 @@ const schemaStyleOpt = [
 
       <template v-if="!props.servicesId">
         <FormItem
-          :label="t('apiShare.form.shareScope')"
+          :label="t('apiShare.columns.shareScope')"
           name="shareScope"
           required>
           <RadioGroup
@@ -312,14 +312,14 @@ const schemaStyleOpt = [
         </FormItem>
 
         <FormItem
-          :label="t('apiShare.form.selectService')"
+          :label="t('common.service')"
           name="servicesId"
           class="flex-1 min-w-0"
           required>
           <Select
             v-model:value="formState.servicesId"
             :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
-            :placeholder="t('apiShare.form.selectServicePlaceholder')"
+            :placeholder="t('common.placeholders.selectService')"
             :fieldNames="{value: 'id', label: 'name'}"
             @change="handleServiceChange" />
         </FormItem>
@@ -334,7 +334,7 @@ const schemaStyleOpt = [
             v-if="formState.shareScope === ApisShareScope.SINGLE_APIS"
             :value="formState.apisIds[0]"
             :disabled="!formState.servicesId"
-            :placeholder="t('apiShare.form.selectApiPlaceholder')"
+            :placeholder="t('common.placeholders.selectApi')"
             :action="`${TESTER}/services/${formState.servicesId}/apis`"
             :fieldNames="{value: 'id', label: 'summary'}"
             @change="handleSigngeApiChange" />
@@ -346,7 +346,7 @@ const schemaStyleOpt = [
               v-model:value="selectApiId"
               :disabled="!formState.servicesId"
               class="flex-1 min-w-0"
-              :placeholder="t('apiShare.form.selectApiPlaceholder')"
+              :placeholder="t('common.placeholders.selectApi')"
               :action="`${TESTER}/services/${formState.servicesId}/apis`"
               :disabledList="formState.apisIds"
               :fieldNames="{value: 'id', label: 'summary'}"

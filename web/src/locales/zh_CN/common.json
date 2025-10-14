@@ -384,6 +384,8 @@
     "notPassed": "未通过",
     "overdue": "已逾期",
     "notOverdue": "未逾期",
+    "expired": "已过期",
+    "notExpired": "未过期",
     "reopened": "重新打开的",
     "new": "新的",
     "deleted": "已删除",

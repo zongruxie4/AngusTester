@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { ApiMenuKey } from '@/views/apis/menu';
 import { BasicProps } from '@/types/types';
 
-const List = defineAsyncComponent(() => import('@/views/apis/share/list/index.vue'));
+const List = defineAsyncComponent(() => import('@/views/apis/share/List.vue'));
 
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
@@ -144,7 +144,7 @@ const hashChange = async (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: t('apiShare.addShare'),
+          name: t('apiShare.actions.addShare'),
           value: 'shareEdit',
           noCache: true,
           data: { _id: id }

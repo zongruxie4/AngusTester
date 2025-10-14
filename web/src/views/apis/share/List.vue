@@ -6,7 +6,7 @@ import { toClipboard, ProjectPageQuery, PageQuery } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { ShareInfo } from '../types';
+import { ShareInfo } from './types';
 import { BasicProps } from '@/types/types';
 
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -16,8 +16,8 @@ const props = withDefaults(defineProps<BasicProps>(), {
   notify: undefined
 });
 
-const SearchPanel = defineAsyncComponent(() => import('@/views/apis/share/list/SearchPanel.vue'));
-const Introduce = defineAsyncComponent(() => import('@/views/apis/share/list/Introduce.vue'));
+const SearchPanel = defineAsyncComponent(() => import('@/views/apis/share/SearchPanel.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/apis/share/Introduce.vue'));
 const EditModal = defineAsyncComponent(() => import('@/views/apis/share/Edit.vue'));
 
 const { t } = useI18n();
@@ -75,7 +75,7 @@ const searchChange = (data) => {
  */
 const toDelete = async (data: ShareInfo) => {
   modal.confirm({
-    content: t('apiShare.list.confirmDelete', { name: data.name }),
+    content: t('actions.tips.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await apis.deleteShare(id);
@@ -203,16 +203,16 @@ const columns = [
     width: '8%'
   },
   {
-    key: 'createdByAvatar',
-    title: t('apiShare.list.columns.sharePerson'),
-    dataIndex: 'createdByAvatar',
+    key: 'createdByName',
+    title: t('common.creator'),
+    dataIndex: 'createdByName',
     width: '8%',
     sorter: true,
     ellipsis: true
   },
   {
     key: 'shareScope',
-    title: t('apiShare.list.columns.shareScope'),
+    title: t('apiShare.columns.shareScope'),
     dataIndex: 'shareScope',
     width: '8%',
     customRender: ({ text }) => text?.message
@@ -228,7 +228,7 @@ const columns = [
   },
   {
     key: 'createdDate',
-    title: t('apiShare.list.columns.shareDate'),
+    title: t('common.createdDate'),
     dataIndex: 'createdDate',
     width: '9%',
     sorter: true,
@@ -237,7 +237,7 @@ const columns = [
   },
   {
     key: 'viewNum',
-    title: t('apiShare.list.columns.viewCount'),
+    title: t('apiShare.columns.viewCount'),
     dataIndex: 'viewNum',
     width: '8%'
   },
@@ -250,7 +250,7 @@ const columns = [
   },
   {
     key: 'lastModifiedByName',
-    title: t('common.lastModifiedBy'),
+    title: t('common.modifier'),
     dataIndex: 'lastModifiedByName',
     groupName: 'lastModifiedByName',
     ellipsis: true,
@@ -278,14 +278,14 @@ const columns = [
     <div class="flex space-x-1">
       <Introduce class="mb-5 flex-1" />
     </div>
-    <div class="text-3.5 font-semibold mb-1">{{ t('apiShare.list.title') }}</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('apiShare.addedShares') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
-          <img src="../../../../assets/images/nodata.png">
+          <img src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>{{ t('common.noData') }}</span>
-            <Button type="link" @click="editVersion">{{ t('apiShare.list.addShare') }}</Button>
+            <span>{{ t('apiShare.notAddedYet') }}</span>
+            <Button type="link" @click="editVersion">{{ t('apiShare.actions.addShare') }}</Button>
           </div>
         </div>
 
@@ -314,16 +314,6 @@ const columns = [
                   </Button>
                 </template>
 
-                <template v-if="column.dataIndex === 'createdByAvatar'">
-                  <div class="inline-flex items-center ">
-                    <Image
-                      type="avatar"
-                      class="w-4 rounded-full mr-1"
-                      :src="record.createdByAvatar" />
-                    <span class="flex-1 truncate" :title="record.createdByName">{{ record.createdByName }}</span>
-                  </div>
-                </template>
-
                 <template v-if="column.dataIndex === 'remark'">
                   <template v-if="record.remark">{{ record.remark }}</template>
                   <span v-else class="text-sub-content">{{ t('common.noRemark') }}</span>
@@ -331,7 +321,7 @@ const columns = [
 
                 <template v-if="column.dataIndex === 'isExpired'">
                   <Tag :color="record.expired ? 'error' : 'success'">
-                    {{ record.expired ? t('apiShare.list.expired') : t('apiShare.list.notExpired') }}
+                    {{ record.expired ? t('status.expired') : t('status.notExpired') }}
                   </Tag>
                 </template>
 

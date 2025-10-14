@@ -39,12 +39,15 @@ const searchPanelOptions: any[] = [
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true,
-    placeholder: t('apiShare.searchPanelOptions.sharePersonPlaceholder')
+    placeholder: t('common.placeholders.selectCreator')
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: t('apiShare.searchPanelOptions.dateRangePlaceholder'),
+    placeholder: [
+      t('common.placeholders.selectCreatedDateRange.0'),
+      t('common.placeholders.selectCreatedDateRange.1')
+    ],
     showTime: true
   }
 ];
@@ -54,7 +57,7 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   auditOptions: createAuditOptions([
     {
       key: 'createdBy',
-      name: t('apiShare.searchPanel.menuItems.myShares'),
+      name: t('quickSearch.createdByMe'),
       fieldKey: 'createdBy'
     },
     {
@@ -184,7 +187,7 @@ const add = () => {
           size="small"
           @click="add">
           <Icon icon="icon-jia" class="text-3.5 mr-1" />
-          <span>{{ t('apiShare.searchPanel.addShare') }}</span>
+          <span>{{ t('apiShare.actions.addShare') }}</span>
         </Button>
 
         <IconRefresh
