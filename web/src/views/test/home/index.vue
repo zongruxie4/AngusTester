@@ -14,7 +14,7 @@ const Added = defineAsyncComponent(() => import('@/views/test/home/Added.vue'));
 const CreationSummary = defineAsyncComponent(() => import('@/views/test/home/CreationSummary.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/test/home/WorkCalendar.vue'));
 const BurnDownCharts = defineAsyncComponent(() => import('@/views/test/home/BurndownChart.vue'));
-const Introduction = defineAsyncComponent(() => import('@/views/test/home/Introduce.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/test/home/Introduce.vue'));
 const ActivityTimeline = defineAsyncComponent(() => import('@/views/test/home/ActivityTimeline.vue'));
 
 // Internal notification state for component communication
@@ -86,7 +86,7 @@ onMounted(() => {
     <!-- Sidebar area -->
     <div class="flex-shrink-0 pt-8 h-full w-right">
       <!-- Introduction Section -->
-      <Introduction class="mb-5" />
+      <Introduce class="mb-5" />
 
       <!-- Activity Timeline Section -->
       <ActivityTimeline
