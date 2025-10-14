@@ -49,7 +49,7 @@ const SaveForm = defineAsyncComponent(() => import('@/plugins/test/components/Dr
 const ActivityTimeline = defineAsyncComponent(() => import('@/plugins/test/components/Drawer/ActivityTimeline/index.vue'));
 const SmartComment = defineAsyncComponent(() => import('@/plugins/test/components/Drawer/SmartComment/index.vue'));
 
-const ScriptConfig = defineAsyncComponent(() => import('./ScriptConfig/index.vue'));
+const ScriptConfig = defineAsyncComponent(() => import('@/plugins/test/components/ScriptConfig/index.vue'));
 const UIConfig = defineAsyncComponent(() => import('./UIConfig/index.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/plugins/test/components/ExportScriptModal/index.vue'));
 const SelectScriptModal = defineAsyncComponent(() => import('./SelectScriptModal/index.vue'));
