@@ -11,6 +11,7 @@ import { WebSocketPipelineInfo } from '@/plugins/test/websocket/core/PropsType';
 import { ScriptType } from '@xcan-angus/infra';
 import { ScenarioType } from '@/enums/enums';
 
+
 export type WaitingTimeConfig = {
     id: string; // 前端自动生成，用于给每条记录添加id
     beforeName:string;

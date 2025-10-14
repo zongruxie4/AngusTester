@@ -117,6 +117,3 @@ onMounted(async () => {
     </Spin>
   </div>
 </template>
-<style scoped>
-@import 'open-api-designer.css';
-</style>

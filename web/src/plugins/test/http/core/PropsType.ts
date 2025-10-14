@@ -1,6 +1,6 @@
 import { PipelineConfig, PipelineInfo } from './UIConfig/PropsType';
 
-export type ScriptType = 'TEST_FUNCTIONALITY'|'TEST_PERFORMANCE'|'TEST_STABILITY'
+export type ScriptType = 'TEST_FUNCTIONALITY'|'TEST_PERFORMANCE'|'TEST_STABILITY';
 
 export type ScenarioInfo = {
     description: string;
