@@ -11,7 +11,7 @@ import { Extraction } from '@/components/ApiAssert/utils/extract/PropsType';
 import { getExecShowAuthData } from '@/components/ExecAuthencation/interface';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import {services} from "@/api/tester";
+import { services } from '@/api/tester';
 
 dayjs.extend(duration);
 

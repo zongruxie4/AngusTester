@@ -10,6 +10,7 @@ import { ApiMenuKey } from '@/views/apis/menu';
 import { ServerInfo, ServerVariables } from './types';
 import { cloneDeep } from 'lodash-es';
 import { BasicProps } from '@/types/types';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 
 const Introduce = defineAsyncComponent(() => import('@/views/apis/server/Introduce.vue'));
 
@@ -60,7 +61,7 @@ const toCreateServer = () => {
 
 // Push current server definition into API definitions of the service
 const toUpdate = async (data: ServerRecord) => {
-  const [error] = await services.updateServiceApisServer(data.serviceId, data.server?.extensions?.['x-xc-id']);
+  const [error] = await services.updateServiceApisServer(data.serviceId, data.server?.extensions?.[API_EXTENSION_KEY.idKey]);
   if (error) {
     return;
   }
@@ -94,7 +95,7 @@ const toClone = async (data: ServerRecord) => {
 // Delete current server by id in extensions.x-xc-id
 const toDelete = async (data: ServerRecord) => {
   loading.value = true;
-  const [error] = await services.delServicesServerUrl(data.serviceId, [data.server?.extensions?.['x-xc-id']]);
+  const [error] = await services.delServicesServerUrl(data.serviceId, [data.server?.extensions?.[API_EXTENSION_KEY.idKey]]);
   loading.value = false;
   if (error) {
     return;
@@ -155,7 +156,7 @@ const loadData = async () => {
   dataList.value = data.map((item) => {
     return {
       ...item,
-      editLinkUrl: `/apis#${ApiMenuKey.SERVER}?serviceId=${item.serviceId}&serverId=${item.server?.extensions?.['x-xc-id']}`
+      editLinkUrl: `/apis#${ApiMenuKey.SERVER}?serviceId=${item.serviceId}&serverId=${item.server?.extensions?.[API_EXTENSION_KEY.idKey]}`
     };
   });
   showList.value = cloneDeep(dataList.value);
@@ -205,7 +206,7 @@ const searchOptions = [
 </script>
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
-    <Introduce class="mb-7" />
+    <Introduce />
 
     <div class="flex items-center text-3.5 font-semibold mb-1">
       <span class="flex-shrink-0 mr-1">{{ t('apiServer.addedServers') }}</span>
@@ -272,14 +273,14 @@ const searchOptions = [
           <div class="flex flex-wrap">
             <div
               v-for="record in showList"
-              :key="record.server?.extensions?.['x-xc-id']"
-              class="h-35.5 w-70 mb-2 mr-3 px-3 py-2.5 border rounded border-theme-text-box">
+              :key="record.server?.extensions?.[API_EXTENSION_KEY.idKey]"
+              class="h-35.5 w-70 mb-2 mr-3 px-3 py-2.5 border rounded-lg border-theme-text-box transition-shadow transition-colors duration-200 hover:shadow-sm hover:bg-gray-50">
               <div class="flex items-center mb-2">
                 <div class="flex-shrink-0 flex items-center mr-1.5 flex-1 min-w-0">
                   <span class="font-semibold">ID</span>
                   <Colon />
-                  <div class="flex-1 truncate min-w-0 " :title="record.server?.extensions?.['x-xc-id']">
-                    {{ record.server?.extensions?.['x-xc-id'] }}
+                  <div class="flex-1 truncate min-w-0 " :title="record.server?.extensions?.[API_EXTENSION_KEY.idKey]">
+                    {{ record.server?.extensions?.[API_EXTENSION_KEY.idKey] }}
                   </div>
                 </div>
                 <Tag
