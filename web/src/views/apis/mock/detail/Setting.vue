@@ -134,7 +134,7 @@ const securityFormRef = ref();
         class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('mock.detail.basicInfo.domain') }}</span>
+            <span>{{ t('mcommon.domain') }}</span>
             <Tooltip
               :title="t('mock.detail.basicInfo.domainTooltip')"
               placement="topLeft"
@@ -170,7 +170,7 @@ const securityFormRef = ref();
       <FormItem class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('mock.detail.basicInfo.port') }}</span>
+            <span>{{ t('common.port') }}</span>
             <Tooltip
               :title="t('mock.detail.basicInfo.portTooltip')"
               placement="topLeft"
@@ -185,7 +185,7 @@ const securityFormRef = ref();
       <FormItem class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('mock.detail.basicInfo.node') }}</span>
+            <span>{{ t('common.node') }}</span>
             <Tooltip
               :title="t('mock.detail.basicInfo.nodeTooltip')"
               placement="topLeft"
@@ -291,7 +291,7 @@ const securityFormRef = ref();
           <Radio value="NONE">
             None
             <Tooltip
-              :title="t('mock.detail.basicInfo.logFileLevel.none')"
+              :title="t('common.none')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '400px'}">

@@ -64,53 +64,53 @@ export function useMockNavigation (id: string) {
     {
       code: 'log',
       icon: 'icon-zidingyizhibiao1',
-      showName: t('mock.detail.menu.log'),
+      showName: t('common.log'),
       url: `/mockservice/${id}/log`,
       enabled: true,
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '2001' },
-        { name: t('mock.detail.menu.log'), id: '6002' }
+        { name: t('common.log'), id: '6002' }
       ]
     },
     {
       code: 'activity',
       icon: 'icon-lishijilu',
-      showName: t('mock.detail.menu.activity'),
+      showName: t('common.activity'),
       url: `/mockservice/${id}/activity`,
       enabled: true,
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '3001' },
-        { name: t('mock.detail.menu.activity'), id: '3002' }
+        { name: t('common.activity'), id: '3002' }
       ]
     },
     {
       code: 'monitor',
       icon: 'icon-jiankong',
-      showName: t('mock.detail.menu.monitor'),
+      showName: t('common.monitor'),
       url: `/mockservice/${id}/monitor`,
       enabled: true,
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '4001' },
-        { name: t('mock.detail.menu.monitor'), id: '4002' }
+        { name: t('common.monitor'), id: '4002' }
       ]
     },
     {
       code: 'setting',
       icon: 'icon-shezhi1',
-      showName: t('mock.detail.menu.setting'),
+      showName: t('common.setting'),
       url: `/mockservice/${id}/setting`,
       enabled: true,
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '5001' },
-        { name: t('mock.detail.menu.setting'), id: '5002' }
+        { name: t('common.setting'), id: '5002' }
       ]
     }
   ];

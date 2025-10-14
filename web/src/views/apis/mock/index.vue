@@ -9,12 +9,10 @@ import { TESTER, appContext } from '@xcan-angus/infra';
 import { MockServicePermission, MockServiceStatus } from '@/enums/enums';
 import { ApiMenuKey } from '@/views/apis/menu';
 
-// Import composables
 import { useMockData } from './composables/useMockData';
 import { useMockActions } from './composables/useMockActions';
 import { useMockUI } from './composables/useMockUI';
 
-// Import types
 import type { MockService } from './types';
 import { mock } from '@/api/tester';
 
@@ -192,12 +190,12 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
                       <span
                         v-if="record.failTips?.exitCode !== null || record.failTips?.exitCode !== ''"
                         class="ml-2">
-                        ({{ t('mock.exitCode') }}<Colon class="mr-1" />{{ record.failTips.exitCode }})
+                        ({{ t('common.exitCode') }}<Colon class="mr-1" />{{ record.failTips.exitCode }})
                       </span>
                     </span>
                   </div>
                   <div v-if="record.failTips?.console?.length">
-                    <div class="mt-2">{{ t('mock.console') }}<Colon /></div>
+                    <div class="mt-2">{{ t('common.console') }}<Colon /></div>
                     <div
                       v-for="(item, index) in record.failTips.console"
                       :key="index"

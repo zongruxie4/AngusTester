@@ -49,7 +49,7 @@ export function useMockUI () {
       valueKey: 'source',
       type: 'select-enum',
       enumKey: MockServiceSource,
-      placeholder: t('mock.searchPanel.sourcePlaceholder'),
+      placeholder: t('common.placeholders.selectSource'),
       allowClear: true
     },
     {
@@ -59,13 +59,13 @@ export function useMockUI () {
       maxlength: 100,
       fieldNames: { label: 'name', value: 'id' },
       showSearch: true,
-      placeholder: t('mock.searchPanel.nodeIdPlaceholder'),
+      placeholder: t('common.placeholders.selectNode'),
       allowClear: true
     },
     {
       valueKey: 'createdBy',
       type: 'select-user',
-      placeholder: t('mock.searchPanel.createdByPlaceholder'),
+      placeholder: t('common.placeholders.selectCreator'),
       maxlength: 100
     }
   ];
@@ -113,19 +113,10 @@ export function useMockUI () {
       }
     },
     {
-      title: t('common.createdBy'),
+      title: t('common.creator'),
       dataIndex: 'createdByName',
       width: '10%',
       groupName: 'createdByName',
-      customRender: ({ text }: { text: string }) => text || '--',
-      ellipsis: true
-    },
-    {
-      title: t('common.lastModifiedBy'),
-      dataIndex: 'lastModifiedByName',
-      width: '10%',
-      groupName: 'createdByName',
-      hide: true,
       customRender: ({ text }: { text: string }) => text || '--',
       ellipsis: true
     },
@@ -134,18 +125,27 @@ export function useMockUI () {
       dataIndex: 'createdDate',
       width: '10%',
       sorter: true,
-      groupName: 'createdDate',
+      groupName: 'createdByName',
+      hide: true,
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }
+    },
+    {
+      title: t('common.modifier'),
+      dataIndex: 'lastModifiedByName',
+      width: '10%',
+      groupName: 'lastModifiedByName',
+      hide: true,
+      customRender: ({ text }: { text: string }) => text || '--',
+      ellipsis: true
     },
     {
       title: t('common.lastModifiedDate'),
       dataIndex: 'lastModifiedDate',
       width: '10%',
       sorter: true,
-      groupName: 'createdDate',
-      hide: true,
+      groupName: 'lastModifiedByName',
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }

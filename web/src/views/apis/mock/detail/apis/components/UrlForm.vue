@@ -157,7 +157,7 @@ defineExpose({
           :options="props.options"
           defaultActiveFirstOption
           class="w-70 flex-shrink-0"
-          :placeholder="t('mock.detail.apis.components.urlForm.domain')"
+          :placeholder="t('common.domain')"
           @change="handleServerChange" />
         <Input
           :value="pathname"

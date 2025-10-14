@@ -85,7 +85,7 @@ const handleImportConfirm = async () => {
     return;
   }
 
-  notification.success(t('mock.detail.apis.components.importApiModal.success'));
+  notification.success(t('status.success'));
   emit('ok');
   handleModalClose();
 };

@@ -218,13 +218,13 @@ onMounted(async () => {
         :rules="rules">
         <div class="flex">
           <div>
-            <FormItem :label="t('mock.addMock.form.name')" required />
+            <FormItem :label="t('common.name')" required />
             <FormItem
-              :label="t('mock.addMock.form.domain')"
+              :label="t('common.domain')"
               :required="!isPrivateEdition"
               :class="isPrivateEdition?'pl-2.25':''" />
-            <FormItem :label="t('mock.addMock.form.port')" required />
-            <FormItem :label="t('mock.addMock.form.node')" required />
+            <FormItem :label="t('common.port')" required />
+            <FormItem :label="t('common.node')" required />
             <template v-if="activeTab===1">
               <FormItem :label="t('common.service')" required />
               <template v-if="formState.serviceId">
