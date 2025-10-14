@@ -27,9 +27,9 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'passed',
-      name: t('reportPreview.scenario.testResult.fields.passed'),
+      name: t('status.passed'),
       customRender: (text) => {
-        return text === true ? t('reportPreview.scenario.testResult.options.passed') : text === false ? t('reportPreview.scenario.testResult.options.failed') : t('reportPreview.scenario.testResult.options.notTested');
+        return text === true ? t('status.passed') : text === false ? t('status.failed') : t('status.notTested');
       }
     },
     {

@@ -146,36 +146,36 @@ const hasErrors = computed(() => {
     <template v-if="!hasNoData">
       <div v-if="hasErrors" class="space-y-2">
         <div class="flex items-start">
-          <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.debugResult') }}<Colon /></div>
+          <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.debugResult') }}<Colon /></div>
           <Badge status="error" :text="t('status.failed')" />
         </div>
         <template v-if="props.httpError">
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.exitCode') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.exitCode') }}<Colon /></div>
             <div>{{ props.httpError.exitCode }}</div>
           </div>
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.failureReason') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.failureReason') }}<Colon /></div>
             <div class="max-w-200 break-all whitespace-pre-wrap">{{ props.httpError.message }}</div>
           </div>
         </template>
         <template v-else-if="schedulingErrorInfo">
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.exitCode') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.exitCode') }}<Colon /></div>
             <div>{{ schedulingErrorInfo.exitCode }}</div>
           </div>
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.failureReason') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.failureReason') }}<Colon /></div>
             <div class="max-w-200 break-all whitespace-pre-wrap">{{ schedulingErrorInfo.message }}</div>
           </div>
         </template>
         <template v-else-if="meterErrorInfo">
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.samplingStatus') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.samplingStatus') }}<Colon /></div>
             <div>{{ meterErrorInfo.exitCode }}</div>
           </div>
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('xcan_debugResult.failureReason') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.failureReason') }}<Colon /></div>
             <div class="max-w-200 break-all whitespace-pre-wrap">{{ meterErrorInfo.message }}</div>
           </div>
         </template>

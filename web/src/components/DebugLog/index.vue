@@ -75,7 +75,7 @@ const handleDownloadLog = () => {
     <template v-if="!!props.value">
       <div class="flex items-center leading-5 mb-2.5">
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('xcan_debugLog.schedulingResult') }}</span>
+          <span class="text-theme-sub-content">{{ t('common.scheduleResult') }}</span>
           <Colon class="mr-2" />
           <template v-if="props.value?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
@@ -87,7 +87,7 @@ const handleDownloadLog = () => {
           </template>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('xcan_debugLog.processExitCode') }}</span>
+          <span class="text-theme-sub-content">{{ t('common.exitCode') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.value?.exitCode }}</span>
         </div>

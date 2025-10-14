@@ -243,7 +243,7 @@ const showBasicInfo = computed(() => {
         <TabPane key="timeline" :tab="t('xcan_httpTestDetail.timeline')">
           <TimeLine :value="httpContent?.content?.response?.timeline" />
         </TabPane>
-        <TabPane key="assertions" :tab="t('xcan_httpTestDetail.assertionResult')">
+        <TabPane key="assertions" :tab="t('common.assertionResult')">
           <Alert
             v-if="props.ignoreAssertions===true"
             closable

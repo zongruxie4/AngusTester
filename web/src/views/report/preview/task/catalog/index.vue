@@ -85,7 +85,7 @@ const showTestInfo = computed(() => {
           <DashedLine />
         </a>
         <a href="#a8.2" class="flex items-center space-x-2.5">
-          <span>8.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.testResult') }}</span>
+          <span>8.2<em class="inline-block w-4.25 font-medium"></em>{{ t('common.testResult') }}</span>
           <DashedLine />
         </a>
         <a href="#a9" class="flex items-center space-x-2.5">

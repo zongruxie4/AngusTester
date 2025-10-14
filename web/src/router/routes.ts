@@ -185,7 +185,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           breadcrumb: [
             {
-              name: t('routes.node'),
+              name: t('common.node'),
               path: '/config#node'
             },
             { name: t('common.detail') }

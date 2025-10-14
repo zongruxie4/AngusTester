@@ -203,7 +203,7 @@ const pageNo = route.query.pageNo;
           :readOnly="true"
           :language="scriptLanguageType as 'text' | 'json' | 'html' | 'typescript' | 'yaml' | undefined" />
       </TabPane>
-      <TabPane key="4" :tab="t('execution.info.log')">
+      <TabPane key="4" :tab="t('common.execLog')">
         <ExecLog
           v-model:loading="loading"
           :execId="detail?.id"
@@ -218,7 +218,7 @@ const pageNo = route.query.pageNo;
           && [ScriptSource.API, ScriptSource.SCENARIO].includes(detail.scriptSource.value)
           && detail.status.value === ExecStatus.COMPLETED"
         key="5"
-        :tab="t('execution.info.testResult')">
+        :tab="t('common.testResult')">
         <TestResult
           :execId="detail?.id"
           :execInfo="detail as any" />

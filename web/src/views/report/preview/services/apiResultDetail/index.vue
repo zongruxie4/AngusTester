@@ -75,7 +75,7 @@ const columns = computed(() => [
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
-          return target.funcTestPassed === true ? t('status.yes') : target.funcTestPassed === false ? t('status.no') : t('reportPreview.services.apiResultDetail.options.notTested');
+          return target.funcTestPassed === true ? t('status.yes') : target.funcTestPassed === false ? t('status.no') : t('status.notTested');
         }
         return '';
       }
@@ -106,7 +106,7 @@ const columns = computed(() => [
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
-          return target.perfTestPassed === true ? t('status.yes') : target.perfTestPassed === false ? t('status.no') : t('reportPreview.services.apiResultDetail.options.notTested');
+          return target.perfTestPassed === true ? t('status.yes') : target.perfTestPassed === false ? t('status.no') : t('status.notTested');
         }
         return '';
       }
@@ -139,7 +139,7 @@ const columns = computed(() => [
       customRender: (text) => {
         const target = apisTestResult.value.find(i => i.id === text);
         if (target) {
-          return target.stabilityTestPassed === true ? t('status.yes') : target.stabilityTestPassed === false ? t('status.no') : t('reportPreview.services.apiResultDetail.options.notTested');
+          return target.stabilityTestPassed === true ? t('status.yes') : target.stabilityTestPassed === false ? t('status.no') : t('status.notTested');
         }
         return '';
       }

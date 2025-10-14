@@ -99,7 +99,7 @@ const schedulingLog = computed(() => {
       </h2>
       <div class="flex items-center mb-2">
         <div class="flex items-center mr-20">
-          <div class="mr-0.5">{{ t('reportPreview.execFunction.log.schedulingLog.fields.schedulingResult') }}：</div>
+          <div class="mr-0.5">{{ t('common.scheduleResult') }}：</div>
           <div v-if="nodeIp" class="flex items-center">
             <div
               class="w-1.5 h-1.5 mr-1 rounded"
@@ -110,7 +110,7 @@ const schedulingLog = computed(() => {
           <div v-else>--</div>
         </div>
         <div class="flex items-center">
-          <div class="mr-0.5">{{ t('reportPreview.execFunction.log.schedulingLog.fields.processExitCode') }}：</div>
+          <div class="mr-0.5">{{ t('common.exitCode') }}：</div>
           <div v-if="nodeIp">{{ schedulingLog?.exitCode }}</div>
           <div v-else>--</div>
         </div>

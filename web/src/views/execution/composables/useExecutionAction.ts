@@ -290,8 +290,8 @@ export function useExecutionAction () {
         errMessage = {
           code: (error as any).code,
           message: error.message,
-          codeName: t('execution.messages.exitCode'),
-          messageName: t('execution.messages.failureReason')
+          codeName: t('common.exitCode'),
+          messageName: t('common.failureReason')
         };
       }
       item.errMessage = errMessage;
@@ -308,8 +308,8 @@ export function useExecutionAction () {
         item.errMessage = {
           code: currItemDataList[0]?.exitCode,
           message: currItemDataList[0]?.message,
-          codeName: t('execution.messages.exitCode'),
-          messageName: t('execution.messages.failureReason')
+          codeName: t('common.exitCode'),
+          messageName: t('common.failureReason')
         };
       }
     }
@@ -342,8 +342,8 @@ export function useExecutionAction () {
         errMessage = {
           code: (error as any).code,
           message: error.message,
-          codeName: t('execution.messages.exitCode'),
-          messageName: t('execution.messages.failureReason')
+          codeName: t('common.exitCode'),
+          messageName: t('common.failureReason')
         };
       }
       item.errMessage = errMessage;
@@ -360,8 +360,8 @@ export function useExecutionAction () {
         item.errMessage = {
           code: currItemDataList[0]?.exitCode,
           message: currItemDataList[0]?.message,
-          codeName: t('execution.messages.exitCode'),
-          messageName: t('execution.messages.failureReason')
+          codeName: t('common.exitCode'),
+          messageName: t('common.failureReason')
         };
       }
     }

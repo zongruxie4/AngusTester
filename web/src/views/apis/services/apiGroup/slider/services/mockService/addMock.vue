@@ -164,11 +164,11 @@ onMounted(() => {
           <div>
             <FormItem :label="t('common.name')" required />
             <FormItem
-              :label="t('service.mockService.form.domain')"
+              :label="t('common.domain')"
               :required="!isPrivate"
               :class="isPrivate?'pl-2.25':''" />
-            <FormItem :label="t('service.mockService.form.port')" required />
-            <FormItem :label="t('service.mockService.form.node')" required />
+            <FormItem :label="t('common.port')" required />
+            <FormItem :label="t('common.node')" required />
             <FormItem :label="t('common.service')" required />
             <template v-if="formState.serviceId && projectDetail?.hasApis">
               <FormItem :label="t('common.api')" />

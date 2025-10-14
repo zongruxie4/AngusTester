@@ -139,13 +139,13 @@ onMounted(() => {
     </template>
     <template v-if="props.testType === 'TEST_PERFORMANCE'">
       <div class="text-3 mt-4 mb-1 font-semibold">
-        {{ t('xcan_httpTestInfo.testResult') }}
+        {{ t('common.testResult') }}
       </div>
       <PerfResult :indicatorPerf="performanceIndicatorData" :result="performanceResultData" />
     </template>
     <template v-if="props.testType === 'TEST_STABILITY'">
       <div class="text-3 mt-4 mb-1 font-semibold">
-        {{ t('xcan_httpTestInfo.testResult') }}
+        {{ t('common.testResult') }}
       </div>
       <StabilityResult :indicatorStability="stabilityIndicatorData" :result="stabilityResultData" />
     </template>
@@ -183,13 +183,13 @@ onMounted(() => {
     </template>
     <template v-if="props.testType === 'TEST_PERFORMANCE'">
       <div class="text-3 mt-4 mb-1 font-semibold">
-        {{ t('xcan_httpTestInfo.testResult') }}
+        {{ t('common.testResult') }}
       </div>
       <PerfResult :indicatorPerf="performanceIndicatorData" :result="performanceResultData" />
     </template>
     <template v-if="props.testType === 'TEST_STABILITY'">
       <div class="text-3 mt-4 mb-1 font-semibold">
-        {{ t('xcan_httpTestInfo.testResult') }}
+        {{ t('common.testResult') }}
       </div>
       <StabilityResult :indicatorStability="stabilityIndicatorData" :result="stabilityResultData" />
     </template>

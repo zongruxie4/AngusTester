@@ -412,7 +412,7 @@ defineExpose({
               :stutasCodeData="props.stutasCodeData" />
           </template>
         </TabPane>
-        <TabPane key="node" :tab="t('httpPlugin.performanceTestDetail.tabs.node')">
+        <TabPane key="node" :tab="t('common.node')">
           <NodeData
             ref="nodeDataRef"
             :activeChart="counTabKey"

@@ -47,14 +47,14 @@ const basicColumns = computed(() => [
   [
     {
       dataIndex: 'passed',
-      name: t('reportPreview.apis.testResultDetail.fields.testResult'),
+      name: t('common.testResult'),
       customRender: (text) => {
-        return text === true ? t('reportPreview.apis.testResult.status.passed') : text === false ? t('status.failed') : t('status.notTested');
+        return text === true ? t('status.status.passed') : text === false ? t('status.failed') : t('status.notTested');
       }
     },
     {
       dataIndex: 'failureMessage',
-      name: t('reportPreview.apis.testResultDetail.fields.testFailureReason')
+      name: t('common.failureReason')
     }
   ],
   [
@@ -148,7 +148,7 @@ const caseColumns = computed(() => [
       }
     },
     {
-      name: t('reportPreview.apis.testResultDetail.fields.testFailureReason'),
+      name: t('common.failureReason'),
       dataIndex: 'failureMessage'
     }
   ],
@@ -590,7 +590,9 @@ const sysItems = [
     </div>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.functionalTest.testCases') }}</span>
+      <span class="text-3 text-theme-title font-medium">
+        <em class="inline-block w-0.25"></em>{{ t('common.testCases') }}
+      </span>
     </li>
 
     <div v-if="TEST_FUNCTIONALITY?.caseSummary" class="mb-5">

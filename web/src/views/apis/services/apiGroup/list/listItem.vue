@@ -156,9 +156,9 @@ const getResultColor = (testFlag, testPassd = undefined) => {
                 {{ !item.testFuncFlag
                   ? t('status.disabled')
                   : item.testFuncPassedFlag
-                    ? t('service.apiList.test.passed')
+                    ? t('status.passed')
                     : item.testFuncPassedFlag === false
-                      ? t('service.apiList.test.unPassed')
+                      ? t('status.notPassed')
                       : t('status.notTested') }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span>
               </div>
             </div>
@@ -168,9 +168,9 @@ const getResultColor = (testFlag, testPassd = undefined) => {
                 {{ !item.testPerfFlag
                   ? t('status.disabled')
                   : item.testPerfPassedFlag
-                    ? t('service.apiList.test.passed')
+                    ? t('status.passed')
                     : item.testPerfPassedFlag === false
-                      ? t('service.apiList.test.unPassed')
+                      ? t('status.notPassed')
                       : t('status.notTested') }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span>
               </div>
             </div>
@@ -180,9 +180,9 @@ const getResultColor = (testFlag, testPassd = undefined) => {
                 {{ !item.testStabilityFlag
                   ? t('status.disabled')
                   : item.testStabilityPassedFlag
-                    ? t('service.apiList.test.passed')
+                    ? t('status.passed')
                     : item.testStabilityPassedFlag === false
-                      ? t('service.apiList.test.unPassed')
+                      ? t('status.notPassed')
                       : t('status.notTested') }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span>
               </div>
             </div>

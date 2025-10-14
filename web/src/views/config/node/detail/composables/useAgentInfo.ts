@@ -65,7 +65,7 @@ export function useAgentInfo (props: AgentInfoProps) {
     [
       {
         dataIndex: 'port',
-        label: t('node.detail.agent.columns.port')
+        label: t('common.port')
       },
       {
         dataIndex: 'health',

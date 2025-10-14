@@ -180,7 +180,7 @@ const resultInfo = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a3">1.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.detail.execResult.title') }}</span>
+        <span id="a3">1.2<em class="inline-block w-3.5"></em>{{ t('common.execResult') }}</span>
       </h2>
       <div class="flex items-start">
         <div class="flex items-center flex-shrink-0 mr-10">
@@ -188,7 +188,7 @@ const resultInfo = computed(() => {
           <div>{{ resultInfo?.value }}</div>
         </div>
         <div v-if="props.execResult?.failureMessage" class="flex items-start">
-          <div class="flex-shrink-0 mr-0.5">{{ t('reportPreview.execPerf.detail.execResult.fields.failureReason') }}：</div>
+          <div class="flex-shrink-0 mr-0.5">{{ t('common.failureReason') }}：</div>
           <div class="break-all whitespace-pre-wrap text-status-error">{{ props.execResult?.failureMessage }}</div>
         </div>
       </div>

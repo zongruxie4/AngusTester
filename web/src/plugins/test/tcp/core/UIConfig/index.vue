@@ -385,7 +385,7 @@ const tcpClientClassOptions = [
 ];
 
 const codeOptions = [
-  { label: t('tcpPlugin.uiConfig.form.none'), value: 'none' },
+  { label: t('common.none'), value: 'none' },
   { label: 'base64', value: 'base64' },
   { label: 'gzip_base64', value: 'gzip_base64' }
 ];
@@ -543,7 +543,7 @@ const selectProps = {
                         <div style="flex: 1 1 25%;" class="flex items-center">
                           <div class="flex-shrink-0 w-11.5 flex items-center">
                             <IconRequired />
-                            <span>{{ t('tcpPlugin.uiConfig.serverConfig.port') }}</span>
+                            <span>{{ t('common.port') }}</span>
                             <Colon />
                           </div>
                           <Input

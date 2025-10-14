@@ -63,7 +63,7 @@ const toggleOpen = (apisId) => {
         <HttpMethodTag :value="api.method" />
         <div class="pl-5 flex-1">{{ api.uri }}</div>
         <div class="w-30 flex justify-between">
-          <Badge :color="api.passed ? 'green' : 'red'" :text="api.passed ? t('execution.testResult.passed') : t('execution.testResult.notPassed')" />
+          <Badge :color="api.passed ? 'green' : 'red'" :text="api.passed ? t('status.passed') : t('status.notPassed')" />
           <Arrow v-model:open="openMap[api.apisId]" />
         </div>
       </div>

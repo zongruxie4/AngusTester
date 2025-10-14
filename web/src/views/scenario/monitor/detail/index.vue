@@ -251,12 +251,12 @@ const statusColorConfig = getStatusColorConfig();
 
         <template v-if="historyExecData?.status?.value === ScenarioMonitorStatus.FAILURE">
           {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('status.failed') }}，
-          {{ t('scenarioMonitor.detail.executionStatus.reason') }}：{{ historyExecData?.failureMessage || '--' }}
+          {{ t('common.reason') }}：{{ historyExecData?.failureMessage || '--' }}
         </template>
       </div>
 
       <Tabs size="small" class="mt-5">
-        <TabPane key="result" :tab="t('scenarioMonitor.detail.tabs.debugResult')">
+        <TabPane key="result" :tab="t('common.debugResult')">
           <template v-if="scenarioPlugin === 'Http'">
             <ScenarioHttpDebugResult
               v-if="historyExecData?.sampleContents"
@@ -353,7 +353,7 @@ const statusColorConfig = getStatusColorConfig();
             class="mt-10" />
         </TabPane>
 
-        <TabPane key="execlog" :tab="t('scenarioMonitor.detail.tabs.execLog')">
+        <TabPane key="execlog" :tab="t('common.execLog')">
           <ExecLog
             v-if="historyExecData?.schedulingResult"
             :execId="historyExecData?.execId"

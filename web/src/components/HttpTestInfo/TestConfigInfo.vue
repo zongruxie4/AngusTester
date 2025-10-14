@@ -33,15 +33,15 @@ const testConfigDataSource = ref<Record<string, any>>({});
 const testConfigTableColumns = computed(() => {
   return [[
     {
-      label: t('xcan_httpTestInfo.testResult'),
+      label: t('common.testResult'),
       dataIndex: 'passed'
     },
     {
-      label: t('xcan_httpTestInfo.failureReason'),
+      label: t('common.failureReason'),
       dataIndex: 'failureMessage'
     },
     {
-      label: t('xcan_httpTestInfo.testCount'),
+      label: t('common.counts.testCount'),
       dataIndex: 'testNum'
     },
     {
@@ -93,7 +93,7 @@ watch(() => props.value, newValue => {
     <template #passed="{text}">
       <div class="flex items-center">
         <template v-if="!testConfigDataSource.id">
-          {{ t('xcan_httpTestInfo.untested') }}
+          {{ t('status.notTested') }}
         </template>
         <template v-else-if="!props.enabled && !testConfigDataSource.id">
           {{ t('status.disabled') }}

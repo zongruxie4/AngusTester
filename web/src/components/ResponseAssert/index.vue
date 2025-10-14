@@ -365,7 +365,7 @@ const editorDataMap = computed(() => {
                 <template v-if="item.result.failure">
                   <BadgeRibbon
                     placement="start"
-                    :text="t('xcan_responseAssert.fail')"
+                    :text="t('status.failed')"
                     style="top: -4px;left: -49px;transform: scale(0.9);font-size: 12px;"
                     color="rgba(245, 34, 45, 1)">
                     <div class="flex justify-between items-center">
@@ -483,14 +483,14 @@ const editorDataMap = computed(() => {
             </DescriptionsItem>
 
             <template v-if="item._condition.ignored">
-              <DescriptionsItem :label="t('xcan_responseAssert.assertionResult')" :span="3">
+              <DescriptionsItem :label="t('common.assertionResult')" :span="3">
                 <Badge status="default" :text="t('status.ignored')" />
               </DescriptionsItem>
             </template>
 
             <template v-else>
               <template v-if="item.result.failure">
-                <DescriptionsItem :label="t('xcan_responseAssert.assertionResult')" :span="!!item.result.message ? 1 : 3">
+                <DescriptionsItem :label="t('common.assertionResult')" :span="!!item.result.message ? 1 : 3">
                   <Badge
                     class="flex-shrink-0"
                     status="error"
@@ -499,14 +499,14 @@ const editorDataMap = computed(() => {
 
                 <DescriptionsItem
                   v-if="!!item.result.message"
-                  :label="t('xcan_responseAssert.failureReason')"
+                  :label="t('common.failureReason')"
                   :span="2">
                   {{ item.result.message }}
                 </DescriptionsItem>
               </template>
 
               <template v-else>
-                <DescriptionsItem :label="t('xcan_responseAssert.assertionResult')" :span="3">
+                <DescriptionsItem :label="t('common.assertionResult')" :span="3">
                   <Badge status="success" :text="t('status.passed')" />
                 </DescriptionsItem>
               </template>

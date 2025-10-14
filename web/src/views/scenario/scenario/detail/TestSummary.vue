@@ -91,9 +91,9 @@ const getTestStatusIcon = (testData: any) => {
           class="status-badge"
           :class="[!functionalityTestData ? '' : functionalityTestData.passed ? 'PASSED': 'NOT_PASSED']">
           <Icon :icon="getTestStatusIcon(functionalityTestData)" class="status-icon" />
-          {{ !functionalityTestData ? t('scenario.detail.testSummary.status.notTested')
-            : functionalityTestData.passed ? t('scenario.detail.testSummary.status.passed')
-              : t('scenario.detail.testSummary.status.notPassed') }}
+          {{ !functionalityTestData ? t('status.notTested')
+            : functionalityTestData.passed ? t('status.passed')
+              : t('status.notPassed') }}
         </div>
         <Popover>
           <template #content>
@@ -132,7 +132,7 @@ const getTestStatusIcon = (testData: any) => {
 
       <div class="card-footer">
         <Icon icon="icon-jiekou" class="footer-icon" />
-        <span class="footer-text">{{ t('scenario.detail.testSummary.sections.testCases') }}</span>
+        <span class="footer-text">{{ t('common.testCases') }}</span>
       </div>
     </div>
 
@@ -148,9 +148,9 @@ const getTestStatusIcon = (testData: any) => {
       <div class="status-display">
         <div class="status-badge" :class="[!performanceTestData ? '' : performanceTestData.passed ? 'PASSED' : 'NOT_PASSED']">
           <Icon :icon="getTestStatusIcon(performanceTestData)" class="status-icon" />
-          {{ !performanceTestData ? t('scenario.detail.testSummary.status.notTested')
-            : performanceTestData.passed ? t('scenario.detail.testSummary.status.passed')
-              : t('scenario.detail.testSummary.status.notPassed') }}
+          {{ !performanceTestData ? t('status.notTested')
+            : performanceTestData.passed ? t('status.passed')
+              : t('status.notPassed') }}
         </div>
         <Popover>
           <template #content>
@@ -233,9 +233,9 @@ const getTestStatusIcon = (testData: any) => {
       <div class="status-display">
         <div class="status-badge" :class="[!stabilityTestData ? '' : stabilityTestData.passed ? 'PASSED': 'NOT_PASSED']">
           <Icon :icon="getTestStatusIcon(stabilityTestData)" class="status-icon" />
-          {{ !stabilityTestData ? t('scenario.detail.testSummary.status.notTested')
-            : stabilityTestData.passed ? t('scenario.detail.testSummary.status.passed')
-              : t('scenario.detail.testSummary.status.notPassed') }}
+          {{ !stabilityTestData ? t('status.notTested')
+            : stabilityTestData.passed ? t('status.passed')
+              : t('status.notPassed') }}
         </div>
         <Popover>
           <template #content>

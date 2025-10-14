@@ -96,12 +96,12 @@ const downloadLog = () => {
     <div v-if="!!props.execNode?.id" class="h-full text-3">
       <div class="flex items-center leading-5 mb-2.5">
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('commonPlugin.execLog.node') }}</span>
+          <span class="text-theme-sub-content">{{ t('common.node') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.execNode.name }}({{ props.execNode.publicIp || props.execNode.ip }})</span>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('commonPlugin.execLog.schedulingResult') }}</span>
+          <span class="text-theme-sub-content">{{ t('common.scheduleResult') }}</span>
           <Colon class="mr-2" />
           <template v-if="props.schedulingResult?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
@@ -113,7 +113,7 @@ const downloadLog = () => {
           </template>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('commonPlugin.execLog.processExitCode') }}</span>
+          <span class="text-theme-sub-content">{{ t('common.exitCode') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.schedulingResult?.exitCode }}</span>
         </div>

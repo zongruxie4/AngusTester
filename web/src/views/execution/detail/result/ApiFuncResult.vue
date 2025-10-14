@@ -45,7 +45,7 @@ onMounted(() => {
 
 </script>
 <template>
-  <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.testCases') }}</div>
+  <div class="font-semibold mt-5 mb-2">{{ t('common.testCases') }}</div>
   <div class="space-y-2 text-3">
     <!-- Display test case statistics -->
     <div

@@ -111,7 +111,7 @@ const {
                   @click.stop="openSchedulingLog">
                   {{ t('execution.infoLog.schedulingLog') }}</span>
                 <Arrow :open="showSchedulingLog === '1'" @click.stop="openSchedulingLog" />
-                <div class="!ml-20">{{ t('execution.infoLog.schedulingResult') }}<Colon /></div>
+                <div class="!ml-20">{{ t('common.scheduleResult') }}<Colon /></div>
                 <template v-if="props.execNodes?.length">
                   <div class="flex items-center">
                     <div class="w-1.5 h-1.5 mr-1 rounded" :class="schedulingLogItem?.success?'bg-status-success':'bg-status-error'"></div>
@@ -121,7 +121,7 @@ const {
                 <template v-else>
                   --
                 </template>
-                <div class="!ml-20">{{ t('execution.infoLog.processExitCode') }}<Colon /></div>
+                <div class="!ml-20">{{ t('common.exitCode') }}<Colon /></div>
                 <template v-if="props.execNodes?.length">
                   <div>{{ schedulingLogItem?.exitCode || '--' }}</div>
                 </template>

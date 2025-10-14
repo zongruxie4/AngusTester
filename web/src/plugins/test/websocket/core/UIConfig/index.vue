@@ -800,7 +800,7 @@ defineExpose({
 });
 
 const codeOptions = [
-  { label: t('websocketPlugin.form.none'), value: 'none' },
+  { label: t('common.none'), value: 'none' },
   { label: 'base64', value: 'base64' },
   { label: 'gzip_base64', value: 'gzip_base64' }
 ];

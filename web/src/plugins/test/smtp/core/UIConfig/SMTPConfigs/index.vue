@@ -122,7 +122,7 @@ const onIgnoreTitleChange = () => {
 
 const securityConfigOpt = [
   {
-    label: t('smtpPlugin.uiConfig.securityConfig.none'),
+    label: t('common.none'),
     value: 'NONE'
   },
   {
@@ -763,7 +763,7 @@ defineExpose({
               <div style="flex: 1 1 25%;" class="flex items-center">
                 <div class="flex-shrink-0 w-10.5 flex items-center">
                   <IconRequired />
-                  <span>{{ t('smtpPlugin.uiConfig.serviceConfig.port') }}</span>
+                  <span>{{ t('common.port') }}</span>
                   <Colon />
                 </div>
                 <Input

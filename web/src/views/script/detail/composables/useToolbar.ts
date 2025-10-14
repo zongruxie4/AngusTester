@@ -20,15 +20,15 @@ export function useToolbar () {
   }[] = [
     {
       key: 'debugResult',
-      name: t('scriptDetail.toolbar.debugResult')
+      name: t('common.debugResult')
     },
     {
       key: 'logs',
-      name: t('scriptDetail.toolbar.logs')
+      name: t('common.scheduleLog')
     },
     {
       key: 'execLog',
-      name: t('scriptDetail.toolbar.execLog')
+      name: t('common.execLog')
     }
   ];
 
@@ -38,11 +38,11 @@ export function useToolbar () {
   }[] = [
     {
       key: 'toggle',
-      name: t('scriptDetail.toolbar.toggle')
+      name: t('actions.toggle')
     },
     {
       key: 'screen',
-      name: t('scriptDetail.toolbar.screen')
+      name: t('actions.fullScreen')
     }
   ];
 

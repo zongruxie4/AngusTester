@@ -246,14 +246,14 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
     </DescriptionsItem>
 
     <template v-if="assertionIgnored">
-      <DescriptionsItem :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.assertionResult')" :span="3">
+      <DescriptionsItem :label="t('common.assertionResult')" :span="3">
         <Badge status="default" :text="t('status.ignored')" />
       </DescriptionsItem>
     </template>
 
     <template v-else>
       <template v-if="resultFailure">
-        <DescriptionsItem :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.assertionResult')" :span="!!resultMessage ? 1 : 3">
+        <DescriptionsItem :label="t('common.assertionResult')" :span="!!resultMessage ? 1 : 3">
           <Badge
             class="flex-shrink-0"
             status="error"
@@ -262,15 +262,15 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 
         <DescriptionsItem
           v-if="!!resultMessage"
-          :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.failureReason')"
+          :label="t('common.failureReason')"
           :span="2">
           <div :title="resultMessage">{{ resultMessage }}</div>
         </DescriptionsItem>
       </template>
 
       <template v-else>
-        <DescriptionsItem :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.assertionResult')" :span="3">
-          <Badge status="success" :text="t('jdbcPlugin.FunctionTestDetailJdbc.assertionStatus.passed')" />
+        <DescriptionsItem :label="t('common.assertionResult')" :span="3">
+          <Badge status="success" :text="t('status.passed')" />
         </DescriptionsItem>
       </template>
     </template>

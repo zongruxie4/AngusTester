@@ -146,7 +146,7 @@ const refreshExecLog = (event) => {
             <div class="flex items-center whitespace-nowrap">
               <template v-if="schedulingLogItem ">
                 <div class="w-1.5 h-1.5 mr-1 rounded -mt-0.5" :class="schedulingLogItem?.success?'bg-status-success':'bg-status-error'"></div>
-                {{ schedulingLogItem?.success ? t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.success') : t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.fail') }}
+                {{ schedulingLogItem?.success ? t('status.success') : t('status.failed') }}
               </template>
               <template v-else>
                 {{ t('common.noData') }}
@@ -154,7 +154,7 @@ const refreshExecLog = (event) => {
             </div>
           </div>
           <div>
-            <span class="mr-2">{{ t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.exitCode') }}<Colon /></span>
+            <span class="mr-2">{{ t('common.exitCode') }}<Colon /></span>
             <span>{{ schedulingLogItem?.exitCode }}</span>
           </div>
         </div>

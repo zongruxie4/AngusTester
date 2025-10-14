@@ -33,7 +33,7 @@ const testProgressChartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('service.serviceTestDetail.chart.tested'), t('service.serviceTestDetail.chart.unTested'), t('service.serviceTestDetail.chart.testPassed'), t('service.serviceTestDetail.chart.unPassed')]
+    data: [t('status.tested'), t('status.notTested'), t('status.passed'), t('status.notPassed')]
   },
   yAxis: {
     type: 'value'

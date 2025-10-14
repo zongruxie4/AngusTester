@@ -30,7 +30,7 @@ const columns = [
     </div>
     <div class="flex items-center space-x-5 mt-2">
       <div class="rounded-full w-14 h-14 border text-5 text-center flex flex-col justify-center">
-        {{ t('service.sidebar.securityResult.passed') }}
+        {{ t('status.passed') }}
       </div>
       <Grid
         class="w-120"

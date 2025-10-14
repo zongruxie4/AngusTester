@@ -48,7 +48,7 @@ const basicColumns = computed(() => [
   [
     {
       dataIndex: 'passed',
-      name: t('reportPreview.scenario.testResultDetail.fields.testResult'),
+      name: t('common.testResult'),
       customRender: (text) => {
         return text === true ? t('status.passed') : text === false ? t('status.failed') : t('status.notTested');
       }
@@ -588,7 +588,9 @@ const sysItems = computed(() => [
     <!-- <NoData v-else size="small" class="my-5"/> -->
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResultDetail.functionalTest.testCases') }}</span>
+      <span class="text-3 text-theme-title font-medium">
+        <em class="inline-block w-0.25"></em>{{ t('common.testCases') }}
+      </span>
     </li>
 
     <div v-if="TEST_FUNCTIONALITY?.caseSummary" class="mb-5">

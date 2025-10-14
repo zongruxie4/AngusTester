@@ -59,7 +59,7 @@ watch(() => appInfo.value, (newValue) => {
           class="w-100 mt-2" />
       </div>
       <div class="mt-5 mb-3">
-        <div class="font-medium text-3.5 leading-3.5 text-theme-title">{{ t('app.config.labels.domain') }}</div>
+        <div class="font-medium text-3.5 leading-3.5 text-theme-title">{{ t('common.domain') }}</div>
         <Input
           v-model:value="appUrl"
           :maxlength="50"

@@ -92,14 +92,14 @@ onMounted(() => {
     const testProgressConfig = JSON.parse(JSON.stringify(pieChartConfigurationTemplate));
     testProgressConfig.series[0].data = [
       {
-        name: t('xcan_httpTestInfo.tested'),
+        name: t('status.tested'),
         value: newValue.testedNum || 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: t('xcan_httpTestInfo.untested'),
+        name: t('status.notTested'),
         value: newValue.unTestedNum || 0,
         itemStyle: {
           color: 'rgba(200, 202, 208, 1)'
@@ -110,14 +110,14 @@ onMounted(() => {
     const testResultConfig = JSON.parse(JSON.stringify(pieChartConfigurationTemplate));
     testResultConfig.series[0].data = [
       {
-        name: t('xcan_httpTestInfo.passed'),
+        name: t('status.passed'),
         value: newValue.testPassedNum || 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: t('xcan_httpTestInfo.failed'),
+        name: t('status.failed'),
         value: newValue.testUnPassedNum || 0,
         itemStyle: {
           color: 'rgba(200, 202, 208, 1)'

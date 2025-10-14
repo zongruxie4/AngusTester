@@ -80,24 +80,24 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/2 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('execution.testResult.testResult') }}</span>
+            <span>{{ t('common.testResult') }}</span>
             <Colon class="w-1" />
           </div>
           <div class="flex items-center">
             <template v-if="passed">
               <Icon icon="icon-duihao" class="mr-1 text-status-success" />
-              <span>{{ t('execution.testResult.passed') }}</span>
+              <span>{{ t('status.passed') }}</span>
             </template>
             <template v-else>
               <Icon icon="icon-chahao" class="mr-1 text-status-error" />
-              <span>{{ t('execution.testResult.notPassed') }}</span>
+              <span>{{ t('status.notPassed') }}</span>
             </template>
           </div>
         </div>
 
         <div class="relative w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('execution.testResult.failureReason') }}</span>
+            <span>{{ t('common.failureReason') }}</span>
             <Colon class="w-1" />
           </div>
           <div class="whitespace-pre-wrap break-words break-all">{{ failureMessage }}</div>
@@ -146,17 +146,17 @@ const onePassText = computed(() => {
 
         <div class="relative w-1/3 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('execution.testResult.testResult') }}</span>
+            <span>{{ t('common.testResult') }}</span>
             <Colon class="w-1" />
           </div>
           <div class="flex items-center">
             <template v-if="passed">
               <Icon icon="icon-duihao" class="mr-1 text-status-success" />
-              <span>{{ t('execution.testResult.passed') }}</span>
+              <span>{{ t('status.passed') }}</span>
             </template>
             <template v-else>
               <Icon icon="icon-chahao" class="mr-1 text-status-error" />
-              <span>{{ t('execution.testResult.notPassed') }}</span>
+              <span>{{ t('status.notPassed') }}</span>
             </template>
           </div>
         </div>
@@ -181,7 +181,7 @@ const onePassText = computed(() => {
 
         <div class="relative w-1/3 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('execution.testResult.failureReason') }}</span>
+            <span>{{ t('common.failureReason') }}</span>
             <Colon class="w-1" />
           </div>
           <div class="whitespace-pre-wrap break-words break-all">{{ failureMessage }}</div>

@@ -448,10 +448,10 @@ defineExpose({
 });
 </script>
 <template>
-  <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
+  <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">{{ t('common.none') }}</div>
   <div v-else class="flex flex-col justify-between">
     <div class="mt-2.5">
-      <div v-if="!times.length && cpuloaded">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
+      <div v-if="!times.length && cpuloaded">{{ t('common.none') }}</div>
       <div
         v-show="times.length || !cpuloaded"
         ref="echartRef"

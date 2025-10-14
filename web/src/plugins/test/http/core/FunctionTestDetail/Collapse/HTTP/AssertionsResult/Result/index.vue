@@ -450,31 +450,31 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
     </DescriptionsItem>
 
     <template v-if="assertionIgnored">
-      <DescriptionsItem :label="t('httpPlugin.functionTestDetail.http.assertions.assertionResult')" :span="3">
+      <DescriptionsItem :label="t('common.assertionResult')" :span="3">
         <Badge status="default" :text="t('status.ignored')" />
       </DescriptionsItem>
     </template>
 
     <template v-else>
       <template v-if="resultFailure">
-        <DescriptionsItem :label="t('httpPlugin.functionTestDetail.http.assertions.assertionResult')" :span="!!resultMessage ? 1 : 3">
+        <DescriptionsItem :label="t('common.assertionResult')" :span="!!resultMessage ? 1 : 3">
           <Badge
             class="flex-shrink-0"
             status="error"
-            :text="t('httpPlugin.functionTestDetail.statusTag.fail')" />
+            :text="t('status.failed')" />
         </DescriptionsItem>
 
         <DescriptionsItem
           v-if="!!resultMessage"
-          :label="t('httpPlugin.functionTestDetail.http.assertions.failureReason')"
+          :label="t('common.failureReason')"
           :span="2">
           <div :title="resultMessage">{{ resultMessage }}</div>
         </DescriptionsItem>
       </template>
 
       <template v-else>
-        <DescriptionsItem :label="t('httpPlugin.functionTestDetail.http.assertions.assertionResult')" :span="3">
-          <Badge status="success" :text="t('httpPlugin.functionTestDetail.statusTag.success')" />
+        <DescriptionsItem :label="t('common.assertionResult')" :span="3">
+          <Badge status="success" :text="t('status.success')" />
         </DescriptionsItem>
       </template>
     </template>

@@ -72,15 +72,15 @@ const testResultTooltipTableColumns = [
 // Test status filter options
 const testStatusFilterOptions = [
   {
-    label: t('xcan_httpTestInfo.passed'),
+    label: t('status.passed'),
     value: 'passed'
   },
   {
-    label: t('xcan_httpTestInfo.failed'),
+    label: t('status.failed'),
     value: 'unpassed'
   },
   {
-    label: t('xcan_httpTestInfo.untested'),
+    label: t('status.notTested'),
     value: 'unTested'
   }
 ];
@@ -223,7 +223,7 @@ onBeforeUnmount(() => {
                         <div class="text-status-error">{{ t('status.failed') }} <span>{{ item.perfTestFailureMessage }}</span></div>
                       </template>
                       <template v-else>
-                        {{ props.enabledTestApiIds.PERFORMANCE.includes(item.id) ? t('status.unTested') : t('status.disabled') }}
+                        {{ props.enabledTestApiIds.PERFORMANCE.includes(item.id) ? t('status.notTested') : t('status.disabled') }}
                       </template>
                     </template>
                     <template #stabilityTestPassed>
@@ -234,7 +234,7 @@ onBeforeUnmount(() => {
                         <div class="text-status-error">{{ t('status.failed') }} <span>{{ item.stabilityTestFailureMessage }}</span></div>
                       </template>
                       <template v-else>
-                        {{ props.enabledTestApiIds.STABILITY.includes(item.id) ? t('status.unTested') : t('status.disabled') }}
+                        {{ props.enabledTestApiIds.STABILITY.includes(item.id) ? t('status.notTested') : t('status.disabled') }}
                       </template>
                     </template>
                   </Grid>
@@ -249,7 +249,7 @@ onBeforeUnmount(() => {
                 </span>
                 <span
                   v-else-if="!item.tested"
-                  class="px-2 rounded">{{ t('xcan_httpTestInfo.untested') }}
+                  class="px-2 rounded">{{ t('status.notTested') }}
                 </span>
                 <span
                   v-else-if="item.passed"

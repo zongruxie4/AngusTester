@@ -66,7 +66,7 @@ const loadingChange = (value:boolean) => {
         :dataMap="apiDimensionObj"
         :timestampList="timestampData"
         :names="apiNames" />
-      <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
+      <div v-else class="content-text-container">{{ t('common.none') }}</div>
     </div>
 
     <div class="mb-7">
@@ -78,7 +78,7 @@ const loadingChange = (value:boolean) => {
         :dataMap="apiDimensionObj"
         :timestampList="timestampData"
         :names="apiNames" />
-      <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
+      <div v-else class="content-text-container">{{ t('common.none') }}</div>
     </div>
 
     <div class="mb-7">
@@ -90,7 +90,7 @@ const loadingChange = (value:boolean) => {
         :dataMap="apiDimensionObj"
         :timestampList="timestampData"
         :names="apiNames" />
-      <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
+      <div v-else class="content-text-container">{{ t('common.none') }}</div>
     </div>
 
     <div class="mb-7">
@@ -103,7 +103,7 @@ const loadingChange = (value:boolean) => {
         :dataMap="apiDimensionObj"
         :timestampList="timestampData"
         :names="apiNames" />
-      <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
+      <div v-else class="content-text-container">{{ t('common.none') }}</div>
     </div>
     <template v-if="props.execInfo?.plugin === 'Http'">
       <div class="mb-7">
@@ -113,7 +113,7 @@ const loadingChange = (value:boolean) => {
         <StatusCode
           v-if="timestampData.length > 0"
           :statusCodeData="props.statusCodeData" />
-        <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
+        <div v-else class="content-text-container">{{ t('common.none') }}</div>
       </div>
 
       <div class="mb-7">
@@ -140,7 +140,7 @@ const loadingChange = (value:boolean) => {
           :dataMap="apiDimensionObj"
           :timestampList="timestampData"
           :names="apiNames" />
-        <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
+        <div v-else class="content-text-container">{{ t('rcommon.none') }}</div>
       </div>
     </template>
 
@@ -179,7 +179,7 @@ const loadingChange = (value:boolean) => {
           :dataMap="apiDimensionObj"
           :timestampList="timestampData"
           :names="apiNames" />
-        <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
+        <div v-else class="content-text-container">{{ t('common.none') }}</div>
       </div>
     </template>
   </div>

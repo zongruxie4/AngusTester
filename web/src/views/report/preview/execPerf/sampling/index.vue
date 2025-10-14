@@ -71,8 +71,8 @@ const setException = () => {
       exception.value = {
         code: foundItem.exitCode,
         message: foundItem.message,
-        codeName: t('reportPreview.execPerf.sampling.fields.exitCode'),
-        messageName: t('reportPreview.execPerf.sampling.fields.failureReason')
+        codeName: t('common.exitCode'),
+        messageName: t('common.failureReason')
       };
       return;
     }
@@ -81,8 +81,8 @@ const setException = () => {
       exception.value = {
         code: detail.value?.meterStatus || '',
         message: meterMessage,
-        codeName: t('reportPreview.execPerf.sampling.fields.samplingStatus'),
-        messageName: t('reportPreview.execPerf.sampling.fields.failureReason')
+        codeName: t('common.samplingStatus'),
+        messageName: t('common.failureReason')
       };
       return;
     }
@@ -92,8 +92,8 @@ const setException = () => {
     exception.value = {
       code: detail.value?.meterStatus || '',
       message: meterMessage,
-      codeName: t('reportPreview.execPerf.sampling.fields.samplingStatus'),
-      messageName: t('reportPreview.execPerf.sampling.fields.failureReason')
+      codeName: t('common.samplingStatus'),
+      messageName: t('common.failureReason')
     };
     return;
   }

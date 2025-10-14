@@ -100,7 +100,7 @@ watch(() => assertions.value, (newValue) => {
               class="flex items-center"
               style="color:#52c41a;">
               <Icon icon="icon-duihao" class="mr-1.5 text-3.5" />
-              <span>{{ t('xcan_assertionsResult.passed') }}</span>
+              <span>{{ t('status.passed') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Ignored'"

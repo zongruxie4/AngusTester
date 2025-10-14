@@ -1186,26 +1186,26 @@ const tabText = computed(() => {
 const toolbarMenuItems = computed(() => [
   {
     key: 'debugResult',
-    name: t('ftpPlugin.toolbar.debugResult')
+    name: t('common.debugResult')
   },
   {
     key: 'logs',
-    name: t('ftpPlugin.toolbar.logs')
+    name: t('common.scheduleLog')
   },
   {
     key: 'execLog',
-    name: t('ftpPlugin.toolbar.execLog')
+    name: t('common.execLog')
   }
 ]);
 
 const toolbarExtraMenuItems = computed(() => [
   {
     key: 'toggle',
-    name: t('ftpPlugin.toolbar.toggle')
+    name: t('actions.toggle')
   },
   {
     key: 'screen',
-    name: t('ftpPlugin.toolbar.screen')
+    name: t(actions.fullScreen')
   }
 ]);
 

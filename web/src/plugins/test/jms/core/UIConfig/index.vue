@@ -403,7 +403,7 @@ const selectOptions = [
                             :min="0"
                             trimALl
                             style="flex: 1 1 20%;min-width: 75px;max-width: 200px;"
-                            :title="t('jmsPlugin.uiConfig.port')"
+                            :title="t('common.port')"
                             dataType="number"
                             :placeholder="t('jmsPlugin.uiConfig.portPlaceholder')" />
                         </div>

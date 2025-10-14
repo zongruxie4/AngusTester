@@ -107,8 +107,8 @@ export function useExecutionList () {
         return {
           code: foundItem.exitCode,
           message: foundItem.message,
-          codeName: t('execution.messages.exitCode'),
-          messageName: t('execution.messages.failureReason')
+          codeName: t('common.exitCode'),
+          messageName: t('common.failureReason')
         };
       }
 
@@ -116,8 +116,8 @@ export function useExecutionList () {
         return {
           code: item.meterStatus,
           message: item.meterMessage,
-          codeName: t('execution.messages.samplingStatus'),
-          messageName: t('execution.messages.failureReason')
+          codeName: t('common.samplingStatus'),
+          messageName: t('common.failureReason')
         };
       }
       return undefined;
@@ -127,8 +127,8 @@ export function useExecutionList () {
       return {
         code: item.meterStatus,
         message: item.meterMessage,
-        codeName: t('execution.messages.samplingStatus'),
-        messageName: t('execution.messages.failureReason')
+        codeName: t('common.samplingStatus'),
+        messageName: t('common.failureReason')
       };
     }
     return undefined;

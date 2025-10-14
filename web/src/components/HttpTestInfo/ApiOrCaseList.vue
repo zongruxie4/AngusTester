@@ -36,7 +36,7 @@ const tooltipTableColumns = [
   [
     { dataIndex: 'testNum', label: t('xcan_httpTestInfo.testCount') },
     { dataIndex: 'testFailureNum', label: t('xcan_httpTestInfo.failureCount') },
-    { dataIndex: 'failureMessage', label: t('xcan_httpTestInfo.failureReason') },
+    { dataIndex: 'failureMessage', label: t('common.failureReason') },
     { dataIndex: 'execId', label: t('xcan_httpTestInfo.lastExecutionTime') },
     { dataIndex: 'execName', label: t('xcan_httpTestInfo.executionName') },
     { dataIndex: 'execByName', label: t('xcan_httpTestInfo.lastExecutor') },
@@ -85,8 +85,8 @@ const caseTypeIconMapping = {
                 class="px-2 rounded">{{ t('status.disabled') }}</span>
               <span
                 v-else-if="item.passed"
-                class="px-2 rounded text-status-success">{{ t('xcan_httpTestInfo.passed') }}</span>
-              <span v-else class="px-2 rounded text-status-error ">{{ t('xcan_httpTestInfo.failed') }}</span>
+                class="px-2 rounded text-status-success">{{ t('status.passed') }}</span>
+              <span v-else class="px-2 rounded text-status-error ">{{ t('status.failed') }}</span>
             </div>
           </Tooltip>
         </div>

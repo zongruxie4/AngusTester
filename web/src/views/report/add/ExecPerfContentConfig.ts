@@ -84,7 +84,7 @@ export const contentTreeData = [
         key: 'statusCode'
       },
       {
-        title: t('reportAdd.execPerfContent.contentTree.node'),
+        title: t('common.node'),
         key: 'node',
         tips: t('reportAdd.execPerfContent.contentTree.nodeTips')
       },

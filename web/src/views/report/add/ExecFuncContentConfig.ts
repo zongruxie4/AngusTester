@@ -22,7 +22,7 @@ export const contentTreeData = [
     key: 'sprint'
   },
   {
-    title: t('reportAdd.execFuncContent.contentTree.log'),
+    title: t('common.log'),
     key: 'log',
     children: [
       {

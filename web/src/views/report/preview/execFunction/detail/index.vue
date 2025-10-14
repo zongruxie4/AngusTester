@@ -181,21 +181,23 @@ const caseSummary = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a3">1.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.execFunction.detail.execResult.title') }}</span>
+        <span id="a3">1.2<em class="inline-block w-3.5"></em>{{ t('common.title') }}</span>
       </h2>
       <div class="flex items-start">
         <div class="flex items-center flex-shrink-0 mr-10">
-          <div class="flex-shrink-0 mr-0.5">{{ t('reportPreview.execFunction.detail.execResult.fields.testResult') }}：</div>
+          <div class="flex-shrink-0 mr-0.5">{{ t('common.testResult') }}：</div>
           <div>{{ props.execResult?.passed ? t('status.passed') : t('status.failed') }}</div>
         </div>
         <div v-if="props.execResult?.failureMessage" class="flex items-start">
-          <div class="flex-shrink-0 mr-0.5">{{ t('reportPreview.execFunction.detail.execResult.fields.failureReason') }}：</div>
-          <div class="break-all whitespace-pre-wrap text-status-error">{{ props.execResult?.failureMessage }}{{ props.execResult?.failureMessage }}{{ props.execResult?.failureMessage }}{{ props.execResult?.failureMessage }}</div>
+          <div class="flex-shrink-0 mr-0.5">{{ t('common.failureReason') }}：</div>
+          <div class="break-all whitespace-pre-wrap text-status-error">
+            {{ props.execResult?.failureMessage }}{{ props.execResult?.failureMessage }}{{ props.execResult?.failureMessage }}{{ props.execResult?.failureMessage }}
+          </div>
         </div>
       </div>
 
       <div v-if="caseSummary" class="mt-2.5">
-        <div class="mb-1">{{ t('reportPreview.execFunction.detail.execResult.fields.testCases') }}：</div>
+        <div class="mb-1">{{ t('common.testCases') }}：</div>
         <div class="flex items-center space-x-3.5">
           <div class="flex items-center leading-6 w-40">
             <div class="flex-1 text-white px-2 rounded bg-blue-1">{{ t('chart.total') }}</div>

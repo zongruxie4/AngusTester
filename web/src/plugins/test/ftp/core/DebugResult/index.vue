@@ -97,36 +97,36 @@ const isError = computed(() => {
     <template v-if="!isEmpty">
       <div v-if="isError" class="space-y-2">
         <div class="flex items-start">
-          <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.debugResult') }}<Colon /></div>
-          <Badge status="error" :text="t('ftpPlugin.debugResult.fail')" />
+          <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.debugResult') }}<Colon /></div>
+          <Badge status="error" :text="t('ftpPlugin.debugResult.failed')" />
         </div>
         <template v-if="props.httpError">
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.exitCode') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.exitCode') }}<Colon /></div>
             <div>{{ props.httpError.exitCode }}</div>
           </div>
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.failureReason') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.failureReason') }}<Colon /></div>
             <div class="max-w-200 break-all whitespace-pre-wrap">{{ props.httpError.message }}</div>
           </div>
         </template>
         <template v-else-if="schedulingErrorResult">
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.exitCode') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.exitCode') }}<Colon /></div>
             <div>{{ schedulingErrorResult.exitCode }}</div>
           </div>
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.failureReason') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.failureReason') }}<Colon /></div>
             <div class="max-w-200 break-all whitespace-pre-wrap">{{ schedulingErrorResult.message }}</div>
           </div>
         </template>
         <template v-else-if="meterErrorResult">
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.samplingStatus') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.samplingStatus') }}<Colon /></div>
             <div>{{ meterErrorResult.exitCode }}</div>
           </div>
           <div class="flex items-start">
-            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.failureReason') }}<Colon /></div>
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('common.failureReason') }}<Colon /></div>
             <div class="max-w-200 break-all whitespace-pre-wrap">{{ meterErrorResult.message }}</div>
           </div>
         </template>

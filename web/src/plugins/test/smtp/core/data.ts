@@ -8,15 +8,15 @@ export const TOOLBAR_MENUITEMS: {
 }[] = [
   {
     key: 'debugResult',
-    name: t('commonPlugin.menuData.toolbar.debugResult')
+    name: t('common.debugResult')
   },
   {
     key: 'logs',
-    name: t('commonPlugin.menuData.toolbar.logs')
+    name: t('common.scheduleLog')
   },
   {
     key: 'execLog',
-    name: t('commonPlugin.menuData.toolbar.execLog')
+    name: t('common.execLog')
   }
 
 ];
@@ -35,11 +35,11 @@ export const TOOLBAR_EXTRA_MENUITEMS: {
   },
   {
     key: 'toggle',
-    name: t('commonPlugin.menuData.toolbar.toggle')
+    name: t('actions.toggle')
   },
   {
     key: 'screen',
-    name: t('commonPlugin.menuData.toolbar.screen')
+    name: t('actions.fullScreen')
   }
 ];
 

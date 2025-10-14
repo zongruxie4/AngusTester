@@ -211,7 +211,7 @@ onMounted(() => {
     <div class="flex-1 border rounded p-1 space-y-3">
       <div class="font-semibold text-text-title">{{ t('service.apiExecDetail.testSummary.functional') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_FUNCTIONALITY ? '' : TEST_FUNCTIONALITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_FUNCTIONALITY ? t('service.apiExecDetail.testStatus.untested') : TEST_FUNCTIONALITY.passed ? t('service.apiExecDetail.testStatus.passed') : t('service.apiExecDetail.testStatus.notPassed') }}</span>
+        <span :class="[!TEST_FUNCTIONALITY ? '' : TEST_FUNCTIONALITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_FUNCTIONALITY ? t('status.notTested') : TEST_FUNCTIONALITY.passed ? t('status.passed') : t('status.notPassed') }}</span>
         <Popover>
           <template #content>
             <div class="max-w-80">
@@ -249,7 +249,7 @@ onMounted(() => {
     <div class="flex-1 border rounded p-1 space-y-2 flex flex-col justify-between">
       <div class="font-semibold text-text-title">{{ t('service.apiExecDetail.testSummary.performance') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_PERFORMANCE ? '' : TEST_PERFORMANCE.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_PERFORMANCE ? t('service.apiExecDetail.testStatus.untested') : TEST_PERFORMANCE.passed ? t('service.apiExecDetail.testStatus.passed') : t('service.apiExecDetail.testStatus.notPassed') }}</span>
+        <span :class="[!TEST_PERFORMANCE ? '' : TEST_PERFORMANCE.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_PERFORMANCE ? t('status.notTested') : TEST_PERFORMANCE.passed ? t('status.passed') : t('status.notPassed') }}</span>
         <Popover>
           <template #content>
             <div class="max-w-80">
@@ -293,7 +293,7 @@ onMounted(() => {
     <div class="flex-1 border rounded p-1 space-y-2 flex flex-col justify-between">
       <div class="font-semibold text-text-title">{{ t('service.apiExecDetail.testSummary.stability') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_STABILITY ? '' : TEST_STABILITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_STABILITY ? t('service.apiExecDetail.testStatus.untested') : TEST_STABILITY.passed ? t('service.apiExecDetail.testStatus.passed') : t('service.apiExecDetail.testStatus.notPassed') }}</span>
+        <span :class="[!TEST_STABILITY ? '' : TEST_STABILITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_STABILITY ? t('status.notTested') : TEST_STABILITY.passed ? t('status.passed') : t('status.notPassed') }}</span>
         <Popover>
           <template #content>
             <div class="max-w-80">

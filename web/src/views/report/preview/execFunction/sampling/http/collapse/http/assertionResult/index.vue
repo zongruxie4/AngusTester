@@ -46,8 +46,8 @@ const statusMap = computed((): { [key: string]: 'Disabled' | 'Ignored' | 'Succes
 </script>
 <template>
   <div class="px-2.5 pt-2">
-    <div class="font-semibold mb-2">{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.title') }}</div>
-    <div v-if="!assertions.length" class="leading-5 mb-3.5">{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.none') }}</div>
+    <div class="font-semibold mb-2">{{ t('common.assertionResult') }}</div>
+    <div v-if="!assertions.length" class="leading-5 mb-3.5">{{ t('common.none') }}</div>
     <template v-else>
       <div
         v-for="item in assertions"
@@ -96,7 +96,7 @@ const statusMap = computed((): { [key: string]: 'Disabled' | 'Ignored' | 'Succes
                   fill="#52c41a"
                   p-id="14129"></path></svg>
             </span>
-            <span>{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.passed') }}</span>
+            <span>{{ t('status.passed') }}</span>
           </div>
           <div v-else-if="statusMap[item.id] === 'Ignored'" class="flex items-center flex-shrink-0">
             <span
