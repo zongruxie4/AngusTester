@@ -2258,8 +2258,8 @@
         "description": "In CI/CD pipelines, server definitions let automated tests switch endpoints by environment, aligning with DevOps practices."
       },
       "env": {
-        "title": "Multi-environment Support",
-        "description": "Use multiple servers or variable values for development, testing, and production, and switch environments without code changes."
+        "title": "Multi-env Support",
+        "description": "Use multiple servers or variable for development, testing, and production, and switch environments without code changes."
       },
       "version": {
         "title": "Version Management",

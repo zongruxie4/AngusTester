@@ -44,72 +44,72 @@ onBeforeUnmount(() => {
     <div class="text-3.5 font-semibold mb-2.5">{{ t('sprint.introduce.title') }}</div>
     <div class="text-3.5 mb-6 font-serif">{{ t('sprint.introduce.description') }}</div>
 
-    <div class="space-y-6 font-serif">
+    <div class="font-serif">
       <div class="flex items-start justify-between">
-        <div class="flex items-start space-x-3 flex-1">
+        <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200 flex items-start space-x-3 flex-1">
           <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('sprint.introduce.benefits.organizeWork') }}</div>
+            <div class="text-3.5 font-semibold text-gray-800 transition-colors group-hover:text-blue-600">{{ t('sprint.introduce.benefits.organizeWork') }}</div>
             <div class="text-3.5">{{ t('sprint.introduce.benefits.organizeWorkDesc') }}</div>
           </div>
         </div>
 
-        <div class="flex items-start space-x-3 flex-1">
+        <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200 flex items-start space-x-3 flex-1">
           <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('sprint.introduce.benefits.enhanceCollaboration') }}</div>
+            <div class="text-3.5 font-semibold text-gray-800 transition-colors group-hover:text-purple-600">{{ t('sprint.introduce.benefits.enhanceCollaboration') }}</div>
             <div class="text-3.5">{{ t('sprint.introduce.benefits.enhanceCollaborationDesc') }}</div>
           </div>
         </div>
 
-        <div v-show="!isTwoColumnLayout" class="flex items-start space-x-3 flex-1">
+        <div v-show="!isTwoColumnLayout" class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200 flex items-start space-x-3 flex-1">
           <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('sprint.introduce.benefits.improveTransparency') }}</div>
+            <div class="text-3.5 font-semibold text-gray-800 transition-colors group-hover:text-indigo-600">{{ t('sprint.introduce.benefits.improveTransparency') }}</div>
             <div class="text-3.5">{{ t('sprint.introduce.benefits.improveTransparencyDesc') }}</div>
           </div>
         </div>
       </div>
 
       <div v-show="isTwoColumnLayout" class="flex items-start justify-between">
-        <div class="flex items-start space-x-3 flex-1">
+        <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200 flex items-start space-x-3 flex-1">
           <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('sprint.introduce.benefits.improveTransparency') }}</div>
+            <div class="text-3.5 font-semibold text-gray-800 transition-colors group-hover:text-indigo-600">{{ t('sprint.introduce.benefits.improveTransparency') }}</div>
             <div class="text-3.5">{{ t('sprint.introduce.benefits.improveTransparencyDesc') }}</div>
           </div>
         </div>
 
-        <div class="flex items-start space-x-3 flex-1">
+        <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200 flex items-start space-x-3 flex-1">
           <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('sprint.introduce.benefits.improveFlexibility') }}</div>
+            <div class="text-3.5 font-semibold text-gray-800 transition-colors group-hover:text-blue-600">{{ t('sprint.introduce.benefits.improveFlexibility') }}</div>
             <div class="text-3.5">{{ t('sprint.introduce.benefits.improveFlexibilityDesc') }}</div>
           </div>
         </div>
       </div>
 
       <div class="flex items-start justify-between">
-        <div v-show="!isTwoColumnLayout" class="flex items-start space-x-3 flex-1">
+        <div v-show="!isTwoColumnLayout" class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200 flex items-start space-x-3 flex-1">
           <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('sprint.introduce.benefits.improveFlexibility') }}</div>
+            <div class="text-3.5 font-semibold text-gray-800 transition-colors group-hover:text-blue-600">{{ t('sprint.introduce.benefits.improveFlexibility') }}</div>
             <div class="text-3.5">{{ t('sprint.introduce.benefits.improveFlexibilityDesc') }}</div>
           </div>
         </div>
 
-        <div class="flex items-start space-x-3 flex-1">
+        <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200 flex items-start space-x-3 flex-1">
           <img src="./images/5.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('sprint.introduce.benefits.improveQuality') }}</div>
+            <div class="text-3.5 font-semibold text-gray-800 transition-colors group-hover:text-blue-600">{{ t('sprint.introduce.benefits.improveQuality') }}</div>
             <div class="text-3.5">{{ t('sprint.introduce.benefits.improveQualityDesc') }}</div>
           </div>
         </div>
 
-        <div class="flex items-start space-x-3 flex-1">
+        <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200 flex items-start space-x-3 flex-1">
           <img src="./images/6.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('sprint.introduce.benefits.enhanceSatisfaction') }}</div>
+            <div class="text-3.5 font-semibold text-gray-800 transition-colors group-hover:text-blue-600">{{ t('sprint.introduce.benefits.enhanceSatisfaction') }}</div>
             <div class="text-3.5">{{ t('sprint.introduce.benefits.enhanceSatisfactionDesc') }}</div>
           </div>
         </div>
