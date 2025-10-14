@@ -53,14 +53,14 @@ const initialize = () => {
         addTabPane({
           _id: 'serverList',
           value: 'serverList',
-          name: t('server.home.tabTitle'),
+          name: t('apiServer.home.tabTitle'),
           closable: false
         });
       } else {
         updateTabPane({
           _id: 'serverList',
           value: 'serverList',
-          name: t('server.home.tabTitle'),
+          name: t('apiServer.home.tabTitle'),
           closable: false
         });
       }
@@ -96,7 +96,7 @@ const hashChange = (hash:string) => {
     browserTabRef.value.add(() => {
       const uid = utils.uuid();
       return {
-        name: t('server.home.newTab'),
+        name: t('apiServer.home.newTab'),
         _id: uid,
         value: 'serverDetails',
         noCache: false,

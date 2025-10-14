@@ -7,7 +7,7 @@ import { IPane } from '@xcan-angus/infra';
 import { ApiMenuKey } from '@/views/apis/menu';
 import { BasicProps } from '@/types/types';
 
-const List = defineAsyncComponent(() => import('@/views/apis/design/list/index.vue'));
+const List = defineAsyncComponent(() => import('@/views/apis/design/List.vue'));
 const DesignDocContent = defineAsyncComponent(() => import('@/views/apis/design/DesignDoc.vue'));
 
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -112,14 +112,14 @@ const ensureDesignListTab = () => {
     addTabPane({
       _id: DESIGN_LIST_KEY,
       value: DESIGN_LIST_KEY,
-      name: t('design.home.tabTitle'),
+      name: t('common.design'),
       closable: false
     });
   } else {
     updateTabPane({
       _id: DESIGN_LIST_KEY,
       value: DESIGN_LIST_KEY,
-      name: t('design.home.tabTitle'),
+      name: t('common.design'),
       closable: false
     });
   }
@@ -136,7 +136,7 @@ const initialize = () => {
         return {
           _id: DESIGN_LIST_KEY,
           value: DESIGN_LIST_KEY,
-          name: t('design.home.tabTitle'),
+          name: t('common.design'),
           closable: false
         };
       }

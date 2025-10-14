@@ -3,8 +3,8 @@ import { defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { BasicProps } from '@/types/types';
 
 const MyApis = defineAsyncComponent(() => import('@/views/apis/home/Added.vue'));
-const Statistics = defineAsyncComponent(() => import('./Statistics.vue'));
-const ActivityTimeline = defineAsyncComponent(() => import('./ActivityTimeline.vue'));
+const Statistics = defineAsyncComponent(() => import('@/views/apis/home/Statistics.vue'));
+const ActivityTimeline = defineAsyncComponent(() => import('@/views/apis/home/ActivityTimeline.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/apis/home/Introduce.vue'));
 
 const props = withDefaults(defineProps<BasicProps>(), {

@@ -2,7 +2,7 @@
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button, Popconfirm, Tag, TypographyParagraph } from 'ant-design-vue';
-import { Colon, Icon, Image, NoData, notification, SearchPanel, Spin } from '@xcan-angus/vue-ui';
+import {Colon, Icon, IconRefresh, Image, NoData, notification, SearchPanel, Spin} from '@xcan-angus/vue-ui';
 import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
@@ -65,7 +65,7 @@ const toClone = async (data:{serviceId:string;serviceName:string;server:ServerIn
     return;
   }
 
-  notification.success(t('server.home.cloneSuccess'));
+  notification.success(t('apiServer.home.cloneSuccess'));
   searchedFlag.value = false;
   await loadData();
 };
@@ -159,7 +159,7 @@ onMounted(() => {
 const searchOptions = [
   {
     type: 'input',
-    placeholder: t('server.home.searchPanel.descriptionPlaceholder'),
+    placeholder: t('apiServer.home.searchPanel.descriptionPlaceholder'),
     valueKey: 'description',
     allowClear: true,
     maxlength: 150,
@@ -167,7 +167,7 @@ const searchOptions = [
   },
   {
     type: 'select',
-    placeholder: t('server.home.searchPanel.servicePlaceholder'),
+    placeholder: t('apiServer.home.searchPanel.servicePlaceholder'),
     valueKey: 'serviceId',
     allowClear: true,
     fieldNames: { label: 'name', value: 'id' },
@@ -180,10 +180,10 @@ const searchOptions = [
     <Introduce class="mb-7" />
 
     <div class="flex items-center text-3.5 font-semibold mb-1">
-      <span class="flex-shrink-0 mr-1">{{ t('server.home.title') }}</span>
+      <span class="flex-shrink-0 mr-1">{{ t('apiServer.home.title') }}</span>
       <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 cursor-pointer mr-1" />
       <div class="flex-shrink-0 break-all whitespace-pre-wrap text-3 font-normal text-theme-sub-content">
-        <span>{{ t('server.home.addTip', {add: dataList.length, max: MAX_NUM }) }}</span>
+        <span>{{ t('apiServer.home.addTip', {add: dataList.length, max: MAX_NUM }) }}</span>
       </div>
     </div>
 
@@ -195,14 +195,14 @@ const searchOptions = [
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-7">
-            <span>{{ t('server.home.emptyTip') }}</span>
+            <span>{{ t('apiServer.home.emptyTip') }}</span>
 
             <Button
               type="link"
               size="small"
               class="text-3.5 py-0 px-0 mx-1"
               @click="toCreateServer">
-              <span>{{ t('server.home.actions.addServer') }}</span>
+              <span>{{ t('apiServer.home.actions.addServer') }}</span>
             </Button>
           </div>
         </div>
@@ -223,18 +223,19 @@ const searchOptions = [
                 @click="toCreateServer">
                 <div class="flex items-center">
                   <Icon icon="icon-jia" class="text-3.5" />
-                  <span class="ml-1">{{ t('server.home.actions.addServer') }}</span>
+                  <span class="ml-1">{{ t('apiServer.home.actions.addServer') }}</span>
                 </div>
               </Button>
 
-              <Button
-                type="default"
-                size="small"
-                class="flex items-center flex-shrink-0"
+              <IconRefresh
                 @click="refresh">
-                <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-                <span>{{ t('actions.refresh') }}</span>
-              </Button>
+                <template #default>
+                  <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
+                    <Icon icon="icon-shuaxin" class="text-3.5" />
+                    <span class="ml-1">{{ t('actions.refresh') }}</span>
+                  </div>
+                </template>
+              </IconRefresh>
             </div>
           </div>
 
@@ -251,9 +252,9 @@ const searchOptions = [
                   <Colon />
                   <div class="flex-1 truncate min-w-0 " :title="record.server?.extensions?.['x-xc-id']">{{ record.server?.extensions?.['x-xc-id'] }}</div>
                 </div>
-                <Tag class="relative -top-1 mr-0 px-0.5 h-5" :color="getVariableLength(record) ? 'processing' : 'default'">{{ getVariableLength(record) ? t('server.home.hasVariable') : t('server.home.hasNoVariable') }}</Tag>
+                <Tag class="relative -top-1 mr-0 px-0.5 h-5" :color="getVariableLength(record) ? 'processing' : 'default'">{{ getVariableLength(record) ? t('apiServer.home.hasVariable') : t('apiServer.home.hasNoVariable') }}</Tag>
               </div>
-              <div v-if="!record.server?.description" class="h-9 leading-4.5 mb-2.5 text-theme-sub-content">{{ t('server.home.noDescTip') }}</div>
+              <div v-if="!record.server?.description" class="h-9 leading-4.5 mb-2.5 text-theme-sub-content">{{ t('apiServer.home.noDescTip') }}</div>
               <TypographyParagraph
                 v-else
                 class="h-9 leading-4.5 mb-2.5 text-theme-sub-content"
@@ -261,7 +262,7 @@ const searchOptions = [
                 :ellipsis="{ tooltip: record.server?.description, rows: 2 }" />
 
               <div class="flex items-center mb-2">
-                <div class="flex-shrink-0 flex items-center mr-1.5"><span class="font-semibold">{{ t('server.home.serviceBelong') }}</span><Colon /></div>
+                <div class="flex-shrink-0 flex items-center mr-1.5"><span class="font-semibold">{{ t('apiServer.home.serviceBelong') }}</span><Colon /></div>
                 <div class="flex-1 truncate" :title="record.serviceName">{{ record.serviceName }}</div>
               </div>
 
@@ -291,7 +292,7 @@ const searchOptions = [
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
-                  :title="t('server.home.actions.updateToApi')">
+                  :title="t('apiServer.home.actions.updateToApi')">
                   <Icon
                     icon="icon-shoudongtuisong"
                     class="text-theme-text-hover cursor-pointer text-3.5"
@@ -309,7 +310,7 @@ const searchOptions = [
 
                 <Popconfirm
                   placement="topRight"
-                  :title="t('server.home.deleteTip')"
+                  :title="t('apiServer.home.deleteTip')"
                   @confirm="toDelete(record)">
                   <Button
                     type="text"
@@ -322,11 +323,6 @@ const searchOptions = [
               </div>
             </div>
           </div>
-
-          <!-- <GridList :itemWidth="282" :dataSource="showList">
-            <template #default="record">
-            </template>
-          </GridList> -->
         </template>
       </template>
     </Spin>

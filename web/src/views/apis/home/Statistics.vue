@@ -2,9 +2,10 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { utils, AuthObjectType } from '@xcan-angus/infra';
+import { utils, AuthObjectType, enumUtils } from '@xcan-angus/infra';
 import * as echarts from 'echarts';
 import elementResizeDetector from 'element-resize-detector';
+import { ApiStatus } from '@/enums/enums';
 
 import { analysis } from '@/api/tester';
 import { BasicProps } from '@/types/types';
@@ -102,6 +103,7 @@ const loadAllStatistics = async (): Promise<void> => {
   }
 
   if (res.data.apisByMethod) {
+    // eslint-disable-next-line no-use-before-define
     methodOptions.series[0].data = Object.keys(res.data.apisByMethod).map((method): MethodPieDatum => ({
       name: method,
       value: Number(res.data.apisByMethod[method]),
@@ -120,7 +122,7 @@ const creationStatisticConfig = [
     topClass: 'huang-top',
     bottomClass: 'huang-bottom',
     total: 'allService',
-    week: 'serviceByLast7Days',
+    week: 'serviceByLastWeek',
     month: 'serviceByLastMonth',
     name: t('common.service')
   },
@@ -128,7 +130,7 @@ const creationStatisticConfig = [
     topClass: 'hong-top',
     bottomClass: 'hong-bottom',
     total: 'allApis',
-    week: 'apisByLast7Days',
+    week: 'apisByLastWeek',
     month: 'apisByLastMonth',
     name: t('common.api')
   },
@@ -136,9 +138,9 @@ const creationStatisticConfig = [
     topClass: 'lan-top',
     bottomClass: 'lan-bottom',
     total: 'allUnarchivedApis',
-    week: 'unarchivedApisByLast7Days',
+    week: 'unarchivedApisByLastWeek',
     month: 'unarchivedApisByLastMonth',
-    name: t('apis.statisticsCreated.unfiled')
+    name: t('common.unarchivedApi')
   }
 ];
 
@@ -180,11 +182,13 @@ const serviceStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: [t('apis.apiStatus.unknown'),
-      t('apis.apiStatus.inDesign'),
-      t('apis.apiStatus.inDevelopment'),
-      t('apis.apiStatus.developmentCompleted'),
-      t('apis.apiStatus.released')]
+    data: [
+      enumUtils.getEnumDescription(ApiStatus, ApiStatus.UNKNOWN),
+      enumUtils.getEnumDescription(ApiStatus, ApiStatus.IN_DESIGN),
+      enumUtils.getEnumDescription(ApiStatus, ApiStatus.IN_DEV),
+      enumUtils.getEnumDescription(ApiStatus, ApiStatus.DEV_COMPLETED),
+      enumUtils.getEnumDescription(ApiStatus, ApiStatus.RELEASED)
+    ]
   },
   series: [
     {
@@ -252,11 +256,13 @@ const apiStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: [t('apis.apiStatus.unknown'),
-      t('apis.apiStatus.inDesign'),
-      t('apis.apiStatus.inDevelopment'),
-      t('apis.apiStatus.developmentCompleted'),
-      t('apis.apiStatus.released')]
+    data: [
+      enumUtils.getEnumDescription(ApiStatus, ApiStatus.UNKNOWN),
+      enumUtils.getEnumDescription(ApiStatus, ApiStatus.IN_DESIGN),
+      enumUtils.getEnumDescription(ApiStatus, ApiStatus.IN_DEV),
+      enumUtils.getEnumDescription(ApiStatus, ApiStatus.DEV_COMPLETED),
+      enumUtils.getEnumDescription(ApiStatus, ApiStatus.RELEASED)
+    ]
   },
   series: [
     {
@@ -404,12 +410,11 @@ onBeforeUnmount(() => {
     erd.removeListener(echartsWrapRef.value, resizeHandler);
   }
 });
-
 </script>
 <template>
   <div class="mb-7.5 text-3 leading-5">
     <div class="text-3.5 font-semibold mb-3">
-      {{ t('apis.statisticsCreated.title') }}
+      {{ t('apisHome.myCreationSummary.title') }}
     </div>
 
     <div class="flex space-x-3.75 text-content">
@@ -418,18 +423,18 @@ onBeforeUnmount(() => {
         :key="index"
         class="rounded w-1/3 relative">
         <div class="vertical-layout-top" :class="item.topClass">
-          <div>{{ item.name }}</div>
-          <div>{{ state.statistic[item.total] }}</div>
+          <div class="text-3.5">{{ item.name }}</div>
+          <div class="text-4.5 font-semibold">{{ state.statistic[item.total] }}</div>
         </div>
 
         <div class="vertical-layout-bottom" :class="item.bottomClass">
           <div>
             <div>{{ t('quickSearch.last7Days') }}</div>
-            <div>{{ state.statistic[item.week] }}</div>
+            <div class="text-3.5 font-semibold">{{ state.statistic[item.week] }}</div>
           </div>
           <div>
             <div>{{ t('quickSearch.last30Days') }}</div>
-            <div>{{ state.statistic[item.month] }}</div>
+            <div class="text-3.5 font-semibold">{{ state.statistic[item.month] }}</div>
           </div>
         </div>
 
@@ -448,7 +453,7 @@ onBeforeUnmount(() => {
 
   <div class="text-3 leading-5">
     <div class="text-3.5 font-semibold mb-3">
-      {{ t('apis.statistics.title') }}
+      {{ t('apisHome.resourceStatistics.title') }}
     </div>
 
     <div ref="echartsWrapRef" class="flex space-x-3.75">

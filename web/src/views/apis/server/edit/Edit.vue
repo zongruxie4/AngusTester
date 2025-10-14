@@ -193,7 +193,7 @@ const isServerUrl = (_url: string): boolean => {
   if (props.urlMap[_url]) {
     if (!serverId.value || props.urlMap[_url].length > 1 || !props.urlMap[_url].includes(serverId.value)) {
       urlError.value = true;
-      urlErrorMsg.value = t('server.detail.serverTip');
+      urlErrorMsg.value = t('apiServer.detail.serverTip');
       return false;
     }
   }
@@ -208,7 +208,7 @@ const isServerUrl = (_url: string): boolean => {
     }, [] as string[]);
     if (names.length > uniqueNames.length) {
       urlError.value = true;
-      urlErrorMsg.value = t('server.detail.serverVariableTip');
+      urlErrorMsg.value = t('apiServer.detail.serverVariableTip');
       return false;
     }
   }
@@ -409,7 +409,7 @@ const isValid = (): boolean => {
         errorNum++;
       } else {
         if (nameMap[name].length > 1) {
-          nameErrorMsgMap.value[id] = t('server.detail.variableNameTip');
+          nameErrorMsgMap.value[id] = t('apiServer.detail.variableNameTip');
           nameErrorSet.value.add(id);
           errorNum++;
         }
@@ -450,7 +450,7 @@ const validVariableValue = (enumList: { id: string; value: string }[]): number =
         } else {
           if (repeatEnumMap[_value] && repeatEnumMap[_value] > 1) {
             valueErrorSet.value.add(_id);
-            valueErrorMsgMap.value[_id] = t('server.detail.variableValueTip');
+            valueErrorMsgMap.value[_id] = t('apiServer.detail.variableValueTip');
             errorNum++;
           }
         }
@@ -479,7 +479,7 @@ const validRepeatName = () => {
     const id = ids[i];
     if (repeatMap[dataMap[id].name] && repeatMap[dataMap[id].name] > 1) {
       nameErrorSet.value.add(id);
-      nameErrorMsgMap.value[id] = t('server.detail.variableNameTip');
+      nameErrorMsgMap.value[id] = t('apiServer.detail.variableNameTip');
     } else {
       if (nameErrorMsgMap.value[id]) {
         nameErrorSet.value.delete(id);
@@ -507,7 +507,7 @@ const validRepeatValue = (id: string) => {
     const { id: _id, value: _value } = enumList[i];
     if (repeatMap[_value] && repeatMap[_value] > 1) {
       valueErrorSet.value.add(_id);
-      valueErrorMsgMap.value[_id] = t('server.detail.variableValueTip');
+      valueErrorMsgMap.value[_id] = t('apiServer.detail.variableValueTip');
     } else {
       if (valueErrorMsgMap.value[_id]) {
         valueErrorSet.value.delete(_id);
@@ -606,7 +606,7 @@ const addServerBtnDisabled = computed(() => {
 defineExpose({
   getData: () => {
     if (!isValid()) {
-      notification.error(t('server.detail.serverConfigTip'));
+      notification.error(t('apiServer.detail.serverConfigTip'));
       return;
     }
     const data = getData();
@@ -624,7 +624,7 @@ defineExpose({
       <Validate class="flex-1" :text="urlErrorMsg">
         <Input
           v-model:value="url"
-          :placeholder="t('server.detail.urlPlaceholder')"
+          :placeholder="t('apiServer.detail.urlPlaceholder')"
           trimAll
           :autoSize="true"
           :error="urlError"
@@ -637,27 +637,27 @@ defineExpose({
     <div class="flex items-center mb-3.5">
       <div class="w-10.5 flex items-center leading-7">
         <IconRequired />
-        <span>{{ t('server.detail.serverLabel') }}</span>
+        <span>{{ t('apiServer.detail.serverLabel') }}</span>
       </div>
 
       <div class="flex mr-1">
         <Select
           v-model:value="serviceIdValue"
-          :placeholder="t('server.detail.serverPlaceholder')"
+          :placeholder="t('apiServer.detail.serverPlaceholder')"
           style="width:300px;"
           :fieldNames="{label:'name',value:'id'}"
           :error="serviceIdError"
           :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
           @change="onServiceIdChange" />
       </div>
-      <Tooltip :title="t('server.detail.serverServiceTip')">
+      <Tooltip :title="t('apiServer.detail.serverServiceTip')">
         <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
       </Tooltip>
     </div>
 
     <div class="flex items-start mb-3.5">
       <div class="w-10.5 flex items-center leading-7">
-        <span>{{ t('server.detail.descLabel') }}</span>
+        <span>{{ t('apiServer.detail.descLabel') }}</span>
       </div>
       <Input
         v-model:value="description"
@@ -666,13 +666,13 @@ defineExpose({
         :autoSize="{ minRows: 3, maxRows: 5 }"
         :maxlength="400"
         trim
-        :placeholder="t('server.detail.descPlaceholder')" />
+        :placeholder="t('apiServer.detail.descPlaceholder')" />
     </div>
 
     <div class="flex items-center justify-between mb-1.5">
       <div class="flex">
-        <div class="font-semibold mr-1">{{ t('server.detail.variableTitle') }}</div>
-        <Tooltip :title="t('server.detail.variableTip')">
+        <div class="font-semibold mr-1">{{ t('apiServer.detail.variableTitle') }}</div>
+        <Tooltip :title="t('apiServer.detail.variableTip')">
           <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
         </Tooltip>
       </div>
@@ -683,7 +683,7 @@ defineExpose({
           type="link"
           size="small"
           @click="addVariable(false)">
-          {{ t('server.detail.addVariable') }}
+          {{ t('apiServer.detail.addVariable') }}
         </Button>
       </div>
     </div>
@@ -697,8 +697,8 @@ defineExpose({
           <div class="flex items-center justify-between mb-0.5">
             <div class="flex items-center">
               <IconRequired />
-              <span class="mr-1">{{ t('server.detail.variableLabel') }}</span>
-              <Tooltip :title="t('server.detail.variableNameTip1')">
+              <span class="mr-1">{{ t('apiServer.detail.variableLabel') }}</span>
+              <Tooltip :title="t('apiServer.detail.variableNameTip1')">
                 <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -707,14 +707,14 @@ defineExpose({
               type="link"
               size="small"
               @click="deleteVariable(item, index)">
-              {{ t('server.detail.deleteVariable') }}
+              {{ t('apiServer.detail.deleteVariable') }}
             </Button>
           </div>
           <Validate :text="nameErrorMsgMap[item]">
             <Input
               :value="variableDataMap[item].name"
               trimAll
-              :placeholder="t('server.detail.variablePlaceholder')"
+              :placeholder="t('apiServer.detail.variablePlaceholder')"
               :maxlength="100"
               :error="nameErrorSet.has(item)"
               dataType="mixin-en"
@@ -726,8 +726,8 @@ defineExpose({
         <div class="mb-3.5">
           <div class="flex items-center mb-0.5">
             <IconRequired />
-            <span class="mr-1">{{ t('server.detail.variableValueLabel') }}</span>
-            <Tooltip :title="t('server.detail.variableValueTip1')">
+            <span class="mr-1">{{ t('apiServer.detail.variableValueLabel') }}</span>
+            <Tooltip :title="t('apiServer.detail.variableValueTip1')">
               <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
             </Tooltip>
           </div>
@@ -740,7 +740,7 @@ defineExpose({
               <Validate :text="valueErrorMsgMap[_enum.id]" class="flex-1">
                 <Input
                   v-model:value="_enum.value"
-                  :placeholder="t('server.detail.variableValuePlaceholder')"
+                  :placeholder="t('apiServer.detail.variableValuePlaceholder')"
                   trim
                   :maxlength="400"
                   :error="valueErrorSet.has(_enum.id)"
@@ -748,7 +748,7 @@ defineExpose({
                   <template #suffix>
                     <div class="flex items-center leading-5">
                       <div v-if="defaultValueMap[item] === _enum.id" class="mr-1 text-text-sub-content text-3">
-                        {{ t('server.detail.variableDefault') }}
+                        {{ t('apiServer.detail.variableDefault') }}
                       </div>
                       <Radio
                         size="small"
@@ -771,7 +771,7 @@ defineExpose({
 
         <div>
           <div class="flex items-center mb-0.5">
-            <span>{{ t('server.detail.descriptionLabel') }}</span>
+            <span>{{ t('apiServer.detail.descriptionLabel') }}</span>
           </div>
           <Input
             v-model:value="variableDataMap[item].description"
@@ -779,7 +779,7 @@ defineExpose({
             :autoSize="{ minRows: 3, maxRows: 5 }"
             :maxlength="400"
             trim
-            :placeholder="t('server.detail.descriptionPlaceholder')" />
+            :placeholder="t('apiServer.detail.descriptionPlaceholder')" />
         </div>
       </div>
     </div>

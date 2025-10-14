@@ -90,7 +90,7 @@ const ok = async () => {
 </script>
 <template>
   <Modal
-    :title="t('design.importDesignModal.title')"
+    :title="t('actions.import')"
     :visible="props.visible"
     :width="500"
     :okButtonProps="{
@@ -103,7 +103,7 @@ const ok = async () => {
       :model="formState">
       <FormItem
         name="name"
-        :label="t('design.importDesignModal.nameLabel')"
+        :label="t('common.name')"
         required>
         <Input
           v-model:value="formState.name"
@@ -113,8 +113,8 @@ const ok = async () => {
 
       <FormItem
         name="content"
-        :label="t('design.importDesignModal.fileLabel')"
-        :rules="[{required: true, message: t('design.importDesignModal.fileRule')}]">
+        :label="t('common.file')"
+        :rules="[{required: true, message: t('apiDesign.importDesignModal.fileRule')}]">
         <Upload
           v-model:fileList="fileList"
           class="w-full"
@@ -125,9 +125,9 @@ const ok = async () => {
             v-show="!formState.content"
             class="border border-dashed rounded p-4 flex flex-col items-center justify-around space-y-2 text-3 border-blue-1">
             <Icon icon="icon-daoru" class="text-blue-hover" />
-            <span class="text-blue-hover">{{ t('design.importDesignModal.uploadFile') }}</span>
+            <span class="text-blue-hover">{{ t('apiDesign.importDesignModal.uploadFile') }}</span>
             <div class="text-text-sub-content">
-              {{ t('design.importDesignModal.uploadTip') }}
+              {{ t('apiDesign.importDesignModal.uploadTip') }}
             </div>
           </div>
         </Upload>
