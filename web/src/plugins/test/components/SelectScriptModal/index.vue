@@ -19,6 +19,7 @@ type DataItem = {
 
 export interface Props {
   visible:boolean;
+  plugin:string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -102,7 +103,7 @@ onMounted(() => {
 });
 
 const scrollParams = computed(() => {
-  const params = { filters: undefined, plugin: 'Ftp', projectId: projectId.value };
+  const params = { filters: undefined, plugin: props.plugin, projectId: projectId.value };
   if (inputValue.value) {
     params.filters = [{
       key: 'name',
