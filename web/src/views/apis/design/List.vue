@@ -217,12 +217,8 @@ const columns = [
     title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true,
-    sorter: true
-  },
-  {
-    title: t('apiDesign.columns.openapiSpecVersion'),
-    dataIndex: 'openapiSpecVersion',
-    width: 120
+    sorter: true,
+    width: '65%'
   },
   {
     title: t('common.status'),
@@ -230,25 +226,15 @@ const columns = [
     width: 120
   },
   {
-    title: t('common.source'),
-    dataIndex: 'designSource',
-    customRender: ({ text }) => {
-      return text?.message || '--';
-    },
+    title: t('apiDesign.columns.openapiSpecVersion'),
+    dataIndex: 'openapiSpecVersion',
     width: 130
-  },
-  {
-    title: t('apiDesign.columns.designService'),
-    dataIndex: 'designSourceName',
-    ellipsis: true,
-    width: 160
   },
   {
     title: t('common.creator'),
     dataIndex: 'createdByName',
     groupName: 'createdByName',
-    sorter: true,
-    width: 130
+    width: 160
   },
   {
     title: t('common.createdDate'),
@@ -256,26 +242,41 @@ const columns = [
     groupName: 'createdByName',
     hide: true,
     sorter: true,
-    width: 130
+    width: 160
+  },
+  {
+    title: t('common.source'),
+    dataIndex: 'designSource',
+    customRender: ({ text }) => {
+      return text?.message || '--';
+    },
+    width: 150
+  },
+  {
+    title: t('apiDesign.columns.designService'),
+    dataIndex: 'designSourceName',
+    ellipsis: true,
+    width: '35%'
   },
   {
     title: t('common.modifier'),
     dataIndex: 'lastModifiedByName',
     groupName: 'lastModifiedByName',
     ellipsis: true,
-    width: 130
+    hide: true,
+    width: 160
   },
   {
     title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     groupName: 'lastModifiedByName',
-    hide: true,
-    width: 130
+    sorter: true,
+    width: 160
   },
   {
     title: t('common.actions'),
     dataIndex: 'actions',
-    width: 100
+    width: 170
   }
 ];
 
@@ -367,14 +368,14 @@ const moreButton = (record) => {
                     type="text"
                     size="small"
                     @click="editDesign(record)">
-                    <Icon icon="icon-bianji" />
+                    <Icon icon="icon-bianji" class="mr-1" />
                     {{ t('actions.edit') }}
                   </Button>
                   <Button
                     type="text"
                     size="small"
                     @click="handleEnterDesign(record)">
-                    <Icon icon="icon-sheji" />
+                    <Icon icon="icon-sheji" class="mr-1" />
                     {{ t('apiDesign.actions.design') }}
                   </Button>
                   <Dropdown :menuItems="moreButton(record)" @click="handleDesign(record, $event.key)">
