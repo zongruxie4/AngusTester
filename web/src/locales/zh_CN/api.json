@@ -2338,9 +2338,8 @@
       "editShare": "编辑分享"
     },
     "columns": {
-      "displayOptions": "展示选项",
+      "displayOptions": "展示",
       "includeServiceInfo": "展示服务说明",
-      "shareDate": "分享日期",
       "viewCount": "查看次数",
       "allowDebug": "允许调试",
       "fieldStyle": "字段样式",

@@ -165,7 +165,7 @@
         "APIS": "By API"
       },
       "ApisShareScope": {
-        "SERVICES": "Services",
+        "SERVICES": "Service",
         "PARTIAL_APIS": "Multiple APIs",
         "SINGLE_APIS": "Single API"
       },

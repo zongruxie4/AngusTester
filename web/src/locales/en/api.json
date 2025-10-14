@@ -2335,7 +2335,7 @@
       "editShare": "Edit Share"
     },
     "columns": {
-      "displayOptions": "Display Options",
+      "displayOptions": "Display",
       "includeServiceInfo": "Show Service Description",
       "viewCount": "View Count",
       "allowDebug": "Allow Debug",

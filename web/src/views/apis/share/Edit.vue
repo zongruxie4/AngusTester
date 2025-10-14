@@ -2,7 +2,7 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { Colon, DatePicker, Hints, HttpMethodText, Icon, Input, Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Checkbox, Form, FormItem, RadioGroup, Textarea } from 'ant-design-vue';
-import { AppOrServiceRoute, DomainManager, EnumMessage, enumUtils, TESTER, toClipboard } from '@xcan-angus/infra';
+import { AppOrServiceRoute, DomainManager, EnumMessage, enumOptionUtils, TESTER, toClipboard } from '@xcan-angus/infra';
 import { ApisShareScope } from '@/enums/enums';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
@@ -48,7 +48,7 @@ const formState = ref<ShareEditForm>({
 const apisShareScope = ref<EnumMessage<ApisShareScope>[]>([]);
 // load options for share scope selector
 const loadApisShareScopeOpt = () => {
-  apisShareScope.value = enumUtils.enumToMessages(ApisShareScope);
+  apisShareScope.value = enumOptionUtils.loadEnumAsOptions(ApisShareScope);
 };
 
 const loading = ref(false);
@@ -225,160 +225,221 @@ const schemaStyleOpt = [
   <Modal
     :title="props.shareId ? t('apiShare.actions.editShare') : t('apiShare.actions.addShare')"
     :visible="props.visible"
-    :width="680"
+    class="share-edit-modal"
+    :width="760"
     :okButtonProps="{
       loading
     }"
     @cancel="cancel"
     @ok="ok">
-    <Form
-      ref="formRef"
-      :model="formState"
-      size="small"
-      :labelCol="{ style: { width: '90px' } }"
-      class="max-w-242.5"
-      layout="horizontal">
-      <FormItem
-        required
-        name="name"
-        :label="t('common.name')">
-        <Input
-          v-model:value="formState.name"
-          :maxlength="100"
-          :placeholder="t('apiShare.messages.namePlaceholder')" />
-      </FormItem>
+    <div class="share-edit-container">
+      <Form
+        ref="formRef"
+        :model="formState"
+        size="small"
+        :labelCol="{ flex: '80px' }"
+        labelAlign="right"
+        class="share-edit-form max-w-242.5"
+        layout="horizontal">
+        <FormItem
+          required
+          name="name"
+          :label="t('common.name')">
+          <Input
+            v-model:value="formState.name"
+            :maxlength="100"
+            :placeholder="t('apiShare.messages.namePlaceholder')" />
+        </FormItem>
 
-      <FormItem
-        :label="t('common.remark')"
-        class="!mb-5"
-        name="remark">
-        <Textarea
-          v-model:value="formState.remark"
-          :maxlength="400"
-          :placeholder="t('apiShare.namePlaceholder.remarkPlaceholder')">
+        <FormItem
+          :label="t('common.remark')"
+          class="!mb-5"
+          name="remark">
+          <Textarea
+            v-model:value="formState.remark"
+            rows="4"
+            :maxlength="400"
+            :placeholder="t('apiShare.messages.remarkPlaceholder')">
         </Textarea>
-      </FormItem>
-
-      <FormItem
-        name="expiredDate"
-        :label="t('common.expiredDate')"
-        class="min-w-0">
-        <div class="flex items-center space-x-1">
-          <DatePicker
-            v-model:value="formState.expiredDate"
-            showToday
-            showTime
-            class="flex-1 min-w-0" />
-          <Hints :text="t('apiShare.namePlaceholder.expiredDateHint')" />
-        </div>
-      </FormItem>
-
-      <FormItem
-        :label="t('apiShare.columns.displayOptions')"
-        class="!mb-5"
-        name="displayOptions">
-        <div class="flex items-center">
-          <Checkbox
-            v-model:checked="formState.displayOptions.includeServiceInfo">
-            {{ t('apiShare.columns.includeServiceInfo') }}
-          </Checkbox>
-          <Checkbox
-            v-model:checked="formState.displayOptions.allowDebug">
-            {{ t('apiShare.columns.allowDebug') }}
-          </Checkbox>
-
-          <div class="inline-flex items-center text-3 ml-2">
-            <span>{{ t('apiShare.columns.fieldStyle') }}</span>
-            <Colon />
-            <Select
-              v-model:value="formState.displayOptions.schemaStyle"
-              class="flex-1 ml-2"
-              :options="schemaStyleOpt">
-            </Select>
-          </div>
-        </div>
-      </FormItem>
-
-      <template v-if="!props.servicesId">
-        <FormItem
-          :label="t('apiShare.columns.shareScope')"
-          name="shareScope"
-          required>
-          <RadioGroup
-            v-model:value="formState.shareScope"
-            :options="apisShareScope"
-            @change="handleScopeChange">
-          </RadioGroup>
         </FormItem>
 
         <FormItem
-          :label="t('common.service')"
-          name="servicesId"
-          class="flex-1 min-w-0"
-          required>
-          <Select
-            v-model:value="formState.servicesId"
-            :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
-            :placeholder="t('common.placeholders.selectService')"
-            :fieldNames="{value: 'id', label: 'name'}"
-            @change="handleServiceChange" />
-        </FormItem>
-
-        <FormItem
-          v-if="[ApisShareScope.PARTIAL_APIS, ApisShareScope.SINGLE_APIS].includes(formState.shareScope)"
-          :label="t('common.api')"
-          name="apisIds"
-          class="flex-1 min-w-0"
-          required>
-          <Select
-            v-if="formState.shareScope === ApisShareScope.SINGLE_APIS"
-            :value="formState.apisIds[0]"
-            :disabled="!formState.servicesId"
-            :placeholder="t('common.placeholders.selectApi')"
-            :action="`${TESTER}/services/${formState.servicesId}/apis`"
-            :fieldNames="{value: 'id', label: 'summary'}"
-            @change="handleSigngeApiChange" />
-
-          <div
-            v-if="formState.shareScope === ApisShareScope.PARTIAL_APIS"
-            class="flex items-center space-x-2 text-3">
-            <Select
-              v-model:value="selectApiId"
-              :disabled="!formState.servicesId"
-              class="flex-1 min-w-0"
-              :placeholder="t('common.placeholders.selectApi')"
-              :action="`${TESTER}/services/${formState.servicesId}/apis`"
-              :disabledList="formState.apisIds"
-              :fieldNames="{value: 'id', label: 'summary'}"
-              @change="addMultipleApis" />
-            <span>{{ t('apiShare.form.selectedApis', { count: formState.apisIds?.length || 0 }) }}</span>
+          name="expiredDate"
+          :label="t('common.expiration')"
+          class="w-120">
+          <div class="flex items-center space-x-1">
+            <DatePicker
+              v-model:value="formState.expiredDate"
+              showToday
+              showTime
+              class="flex-1 w-120" />
+            <Hints :text="t('apiShare.messages.expiredDateHint')" />
           </div>
         </FormItem>
 
         <FormItem
-          v-if="formState.shareScope === ApisShareScope.PARTIAL_APIS"
-          label="">
-          <div class="max-h-50 overflow-y-auto pl-22 ">
-            <div
-              v-for="(item, idx) in selectApis"
-              :key="item.id"
-              class="px-1 flex h-6 items-center ">
-              <HttpMethodText :value="item.method" />
-              <span class="min-w-0 truncate flex-1" :title="item.endpoint">{{ item.endpoint }}</span>
-              <span class="min-w-0 truncate flex-1" :title="item.apisName || item.caseName || item.summary">
-                {{ item.apisName || item.caseName || item.summary }}
-              </span>
-              <Button
-                type="link"
-                size="small"
-                class="ml-2"
-                @click="delApis(item, idx)">
-                <Icon icon="icon-qingchu" />
-              </Button>
+          :label="t('apiShare.columns.displayOptions')"
+          class="!mb-5"
+          name="displayOptions">
+          <div class="flex items-center">
+            <Checkbox
+              v-model:checked="formState.displayOptions.includeServiceInfo">
+              {{ t('apiShare.columns.includeServiceInfo') }}
+            </Checkbox>
+
+            <Checkbox
+              v-model:checked="formState.displayOptions.allowDebug">
+              {{ t('apiShare.columns.allowDebug') }}
+            </Checkbox>
+
+            <div class="inline-flex items-center text-3 ml-4">
+              <span>{{ t('apiShare.columns.fieldStyle') }}</span>
+              <Colon />
+              <Select
+                v-model:value="formState.displayOptions.schemaStyle"
+                class="flex-1 ml-2"
+                :options="schemaStyleOpt">
+              </Select>
             </div>
           </div>
         </FormItem>
-      </template>
-    </Form>
+
+        <template v-if="!props.servicesId">
+          <FormItem
+            :label="t('common.scope')"
+            name="shareScope"
+            required>
+            <RadioGroup
+              v-model:value="formState.shareScope"
+              :options="apisShareScope"
+              @change="handleScopeChange">
+            </RadioGroup>
+          </FormItem>
+
+          <FormItem
+            :label="t('common.service')"
+            name="servicesId"
+            class="flex-1 min-w-0"
+            required>
+            <Select
+              v-model:value="formState.servicesId"
+              :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
+              :placeholder="t('common.placeholders.selectService')"
+              :fieldNames="{value: 'id', label: 'name'}"
+              @change="handleServiceChange" />
+          </FormItem>
+
+          <FormItem
+            v-if="[ApisShareScope.PARTIAL_APIS, ApisShareScope.SINGLE_APIS].includes(formState.shareScope)"
+            :label="t('common.api')"
+            name="apisIds"
+            class="flex-1 min-w-0"
+            required>
+            <Select
+              v-if="formState.shareScope === ApisShareScope.SINGLE_APIS"
+              :value="formState.apisIds[0]"
+              :disabled="!formState.servicesId"
+              :placeholder="t('common.placeholders.selectApi')"
+              :action="`${TESTER}/services/${formState.servicesId}/apis`"
+              :fieldNames="{value: 'id', label: 'summary'}"
+              @change="handleSigngeApiChange" />
+
+            <div
+              v-if="formState.shareScope === ApisShareScope.PARTIAL_APIS"
+              class="flex items-center space-x-2 text-3">
+              <Select
+                v-model:value="selectApiId"
+                :disabled="!formState.servicesId"
+                class="flex-1 min-w-0"
+                :placeholder="t('common.placeholders.selectApi')"
+                :action="`${TESTER}/services/${formState.servicesId}/apis`"
+                :disabledList="formState.apisIds"
+                :fieldNames="{value: 'id', label: 'summary'}"
+                @change="addMultipleApis" />
+              <span>{{ t('apiShare.messages.selectedApis', { count: formState.apisIds?.length || 0 }) }}</span>
+            </div>
+          </FormItem>
+
+          <FormItem
+            v-if="formState.shareScope === ApisShareScope.PARTIAL_APIS"
+            label="">
+            <div class="selected-apis-list max-h-50 overflow-y-auto pl-22 ">
+              <div
+                v-for="(item, idx) in selectApis"
+                :key="item.id"
+                class="px-1 flex h-6 items-center selected-apis-item">
+                <HttpMethodText :value="item.method" />
+                <span class="min-w-0 truncate flex-1" :title="item.endpoint">{{ item.endpoint }}</span>
+                <span class="min-w-0 truncate flex-1" :title="item.apisName || item.caseName || item.summary">
+                  {{ item.apisName || item.caseName || item.summary }}
+                </span>
+                <Button
+                  type="link"
+                  size="small"
+                  class="ml-2"
+                  @click="delApis(item, idx)">
+                  <Icon icon="icon-qingchu" />
+                </Button>
+              </div>
+            </div>
+          </FormItem>
+        </template>
+      </Form>
+    </div>
   </Modal>
 </template>
+<style scoped>
+/* Modal Styles */
+.share-edit-modal :deep(.ant-modal-body) {
+  padding: 0;
+}
+
+.share-edit-modal :deep(.ant-modal-header) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.share-edit-modal :deep(.ant-modal-title) {
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.share-edit-modal :deep(.ant-modal-close) {
+  color: white;
+}
+
+.share-edit-modal :deep(.ant-modal-close:hover) {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Container */
+.share-edit-container {
+  padding: 20px;
+  background: #fafbfc;
+}
+
+/* Form Styles */
+.share-edit-form :deep(.ant-form-item) {
+  margin-bottom: 16px;
+}
+
+.share-edit-form :deep(.ant-form-item-label) {
+  font-weight: 600;
+  color: #262626;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* Selected APIs List */
+.selected-apis-list {
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+}
+
+.selected-apis-item:hover {
+  background: #fafafa;
+}
+</style>
