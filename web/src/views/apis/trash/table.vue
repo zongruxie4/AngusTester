@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, watch, toRef } from 'vue';
-import { Button, Tooltip, Popconfirm } from 'ant-design-vue';
+import { Button, Tooltip } from 'ant-design-vue';
 import { Icon, Image, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { useTrashData } from './composables/useTrashData';
@@ -209,21 +209,16 @@ onMounted(() => {
             </Button>
           </Tooltip>
 
-          <Popconfirm
-            :title="t('apiTrash.confirm.delete')"
-            :okText="t('actions.confirm')"
-            :cancelText="t('actions.cancel')"
-            @confirm="deleteHandler(record)">
-            <Tooltip :title="t('actions.delete')">
-              <Button
-                :disabled="record.disabled"
-                type="text"
-                size="small"
-                class="action-icon-button delete-button">
-                <Icon icon="icon-qingchu" class="text-sm" />
-              </Button>
-            </Tooltip>
-          </Popconfirm>
+          <Tooltip :title="t('actions.delete')">
+            <Button
+              :disabled="record.disabled"
+              type="text"
+              size="small"
+              class="action-icon-button delete-button"
+              @click="deleteHandler(record)">
+              <Icon icon="icon-qingchu" class="text-sm" />
+            </Button>
+          </Tooltip>
         </div>
 
         <!-- Enhanced target name cell -->
@@ -252,11 +247,11 @@ onMounted(() => {
           <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
             <Icon icon="icon-qingchu" class="text-2xl text-gray-400" />
           </div>
-          <h3 class="text-sm font-medium text-gray-900 mb-1">
-            {{ $t('common.description') }}
+          <h3 class="text-3.5 font-medium text-gray-900 mb-1">
+            {{ $t('trash.messages.emptyDescription') }}
           </h3>
-          <p class="text-xs text-gray-500 max-w-sm mx-auto">
-            {{ $t('apiTrash.empty.hint') }}
+          <p class="text-3.5 text-gray-500">
+            {{ $t('trash.messages.emptyHint') }}
           </p>
         </div>
       </template>

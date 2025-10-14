@@ -2357,16 +2357,5 @@
       "table": "表格",
       "tree": "树"
     }
-  },
-  "apiTrash": {
-    "title": "回收站",
-    "searchPlaceholder": "请输入搜索关键词",
-    "tips": {
-      "adminOnly": "仅管理员和删除者可以恢复或永久删除回收站数据。"
-    },
-    "empty": {
-      "description": "回收站为空",
-      "hint": "已删除的数据将在此显示"
-    }
   }
 }

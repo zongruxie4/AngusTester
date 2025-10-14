@@ -197,7 +197,7 @@ const handleRefresh = () => {
                   :allowClear="true"
                   :maxlength="200"
                   trim
-                  :placeholder="t('apiTrash.searchPlaceholder')"
+                  :placeholder="t('common.placeholders.searchKeyword')"
                   class="search-input-enhanced"
                   size="small"
                   @change="inputChange">
