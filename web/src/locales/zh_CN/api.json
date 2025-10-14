@@ -2251,58 +2251,8 @@
   },
   "apiServer": {
     "title": "服务器",
-    "home": {
-      "tabTitle": "服务器",
-      "newTab": "添加服务器",
-      "searchPanel": {
-        "descriptionPlaceholder": "查询描述",
-        "servicePlaceholder": "选择服务"
-      },
-      "title": "已添加的服务器",
-      "addTip": "已添加{add}个，最多允许添加{max}个。",
-      "emptyTip": "尚未添加任何服务器，立即",
-      "actions": {
-        "addServer": "添加服务器",
-        "updateToApi": "更新到已关联接口"
-      },
-      "hasVariable": "有变量",
-      "hasNoVariable": "无变量",
-      "serviceBelong": "所属服务",
-      "cloneSuccess": "克隆成功",
-      "updateSuccess": "更新到已关联接口成功",
-      "noDescTip": "无描述~",
-      "deleteTip": "确认删除该服务器吗？"
-    },
-    "detail": {
-      "deleteTip": "确认删除服务器吗？",
-      "copyLinkSuccess": "复制链接成功",
-      "copyLinkFail": "复制链接失败",
-      "serverExample": "服务器示例",
-      "serverTip": "Server URL已存在，请重新输入",
-      "serverVariableTip": "Server URL中的变量不允许重复",
-      "variableNameTip": "变量名称重复",
-      "variableValueTip": "变量值重复",
-      "serverConfigTip": "服务器配置错误，请检查更正后再保存。",
-      "urlPlaceholder": "指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}",
-      "serverLabel": "服务",
-      "serverPlaceholder": "选择服务",
-      "serverServiceTip": "服务器所属接口服务",
-      "descLabel": "描述",
-      "descPlaceholder": "服务器描述，最大支持400字符",
-      "variableTitle": "变量",
-      "variableLabel": "名称",
-      "variableNameTip1": "变量名称不能重复",
-      "variableTip": "最多可添加50个变量",
-      "variablePlaceholder": "变量名称，最大支持100字符",
-      "addVariable": "添加变量",
-      "deleteVariable": "删除变量",
-      "variableValueLabel": "值",
-      "variableValueTip1": "同一个变量的值不能重复",
-      "variableValuePlaceholder": "变量值，最大支持400字符",
-      "descriptionLabel": "描述",
-      "descriptionPlaceholder": "变量描述，最大支持400字符",
-      "variableDefault": "默认"
-    },
+    "addedServers": "已添加的服务器",
+    "notAddedYet": "未添加任何服务器，点击添加",
     "introduce": {
       "title": "关于服务器",
       "description1": "定义 API 的服务器及服务器相关的动态部分，包括服务器(server)和变量(variables)两部分。其中服务器字段用于指定 API 的服务器列表，每个服务器都有一个 URL 和可选的描述信息，指示 API 的基础路径。",
@@ -2320,9 +2270,35 @@
         "description": "在不同版本的 API 中，可以通过定义不同的服务器或者变量值来管理和维护版本。可以在文档中清晰地区分各个版本的服务器，避免混淆。"
       },
       "url": {
-        "description": "完整 URL、服务器、和端点(endpoint)关系",
-        "title": "完整URL(path)"
+        "title": "完整URL(path)",
+        "description": "完整 URL、服务器、和端点(endpoint)关系"
       }
+    },
+    "actions": {
+      "addServer": "添加服务器",
+      "updateToApi": "更新到已关联接口",
+      "addVariable": "添加变量",
+      "deleteVariable": "删除变量"
+    },
+    "messages": {
+      "addQuotaTip": "已添加{add}个，最多允许添加{max}个。",
+      "deleteConfirmTip": "确认删除该服务器吗？",
+      "serverUrlExistedTip": "Server URL已存在，请重新输入",
+      "serverVariableDuplicatedTip": "Server URL中的变量不允许重复",
+      "variableNameDuplicatedTip": "变量名称重复",
+      "variableValueDuplicatedTip": "变量值重复",
+      "serverConfigErrorTip": "服务器配置错误，请检查更正后再保存。",
+      "urlPlaceholder": "指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}",
+      "serverServiceTip": "服务器所属接口服务",
+      "serverDescriptionPlaceholder": "服务器描述，最大支持400字符",
+      "variableQuotaTip": "最多可添加50个变量",
+      "variableNamePlaceholder": "变量名称，最大支持100字符",
+      "variableValuePlaceholder": "变量值，最大支持400字符",
+      "variableDescriptionPlaceholder": "变量描述，最大支持400字符"
+    },
+    "columns": {
+      "serverExample": "示例",
+      "variableTitle": "变量"
     }
   },
   "apiShare": {
