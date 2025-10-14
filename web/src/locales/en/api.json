@@ -1,4 +1,16 @@
 {
+  "apisHome": {
+    "introduce": {
+      "title": "About AngusTester APIs",
+      "description": "Help developers and testers easily add, test, debug, and document APIs, ultimately helping enterprises achieve API assetization goals.",
+      "featuresTitle": "Here you and your team can accomplish the following:",
+      "features": [
+        "Edit, debug, design, and document interfaces online;",
+        "Manage services, interfaces, and interface test cases;",
+        "Conduct api testing to ensure delivery of stable systems that meet business requirements."
+      ]
+    }
+  },
   "service": {
     "title": "Service",
     "home": {
@@ -1638,15 +1650,6 @@
     }
   },
   "apis": {
-    "welcome": {
-      "title": "Welcome to Angus API!",
-      "description": "Here you and your team can complete the following work:",
-      "features": [
-        "Edit and debug APIs online;",
-        "Manage projects, services, APIs and test tasks;",
-        "Conduct API functional testing, performance testing and stability testing to ensure delivery of stable systems that meet business requirements."
-      ]
-    },
     "quickAccess": {
       "title": "Quick Access",
       "addApiTabName": "Add API",

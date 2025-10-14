@@ -6,8 +6,8 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="bg-white rounded px-5 pt-0 pb-0 text-3.5">
-    <div class="text-3.5 font-semibold mb-2.5">
+  <div class="bg-white rounded px-5 pt-0 pb-0 text-3.5 font-serif">
+    <div class="font-semibold mb-2.5">
       {{ t('testHome.introduce.title') }}
     </div>
     <div class="flex items-center justify-between space-x-2.5">
