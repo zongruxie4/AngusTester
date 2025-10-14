@@ -55,7 +55,7 @@ const SelectScriptModal = defineAsyncComponent(() => import('@/components/script
 const ExportScriptModal = defineAsyncComponent(() => import('@/plugins/test/components/ExportScriptModal/index.vue'));
 const ImportScriptSelector = defineAsyncComponent(() => import('@/components/script/ImportScriptSelector.vue'));
 
-const ScriptConfig = defineAsyncComponent(() => import('./ScriptConfig/index.vue'));
+const ScriptConfig = defineAsyncComponent(() => import('@/plugins/test/components/ScriptConfig/index.vue'));
 const UIConfig = defineAsyncComponent(() => import('./UIConfig/index.vue'));
 const ExecuteConfig = defineAsyncComponent(() => import('@/plugins/test/components/ExecuteConfig/index.vue'));
 const DebugResult = defineAsyncComponent(() => import('./DebugResult/index.vue'));

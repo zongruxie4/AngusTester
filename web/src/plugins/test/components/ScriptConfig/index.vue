@@ -4,7 +4,7 @@ import YAML from 'yaml';
 import { notification, MonacoEditor } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { ScenarioConfig } from '../PropsType';
+import { ScenarioConfig } from '@/plugins/test/types/index';
 
 export interface Props {
   value: ScenarioConfig['script'];
