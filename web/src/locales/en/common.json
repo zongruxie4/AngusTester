@@ -38,6 +38,7 @@
     "type": "Type",
     "status": "Status",
     "source": "Source",
+    "scope": "Scope",
     "value": "Value",
     "defaultValue": "Default Value",
     "category": "Category",

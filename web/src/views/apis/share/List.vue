@@ -192,61 +192,62 @@ const columns = [
     key: 'name',
     title: t('common.name'),
     dataIndex: 'name',
-    width: '15%',
     ellipsis: true,
-    sorter: true
+    sorter: true,
+    width: '65%'
   },
   {
     key: 'isExpired',
     title: t('common.isExpired'),
     dataIndex: 'isExpired',
-    width: '8%'
+    width: 120
   },
   {
     key: 'createdByName',
     title: t('common.creator'),
     dataIndex: 'createdByName',
-    width: '8%',
     sorter: true,
-    ellipsis: true
+    ellipsis: true,
+    width: 120
   },
   {
     key: 'shareScope',
-    title: t('apiShare.columns.shareScope'),
+    title: t('common.scope'),
     dataIndex: 'shareScope',
-    width: '8%',
-    customRender: ({ text }) => text?.message
+    customRender: ({ text }) => text?.message,
+    width: 120
   },
   {
     key: 'expiredDate',
     title: t('common.expiredDate'),
     dataIndex: 'expiredDate',
-    width: '9%',
     sorter: true,
     customRender: ({ text }) => text || '--',
-    groupName: 'date'
+    groupName: 'date',
+    width: 160
   },
   {
     key: 'createdDate',
     title: t('common.createdDate'),
     dataIndex: 'createdDate',
-    width: '9%',
     sorter: true,
     groupName: 'date',
-    hide: true
+    hide: true,
+    width: 160
   },
   {
     key: 'viewNum',
     title: t('apiShare.columns.viewCount'),
     dataIndex: 'viewNum',
-    width: '8%'
+    width: 120
   },
   {
     key: 'remark',
     title: t('common.remark'),
     dataIndex: 'remark',
     ellipsis: true,
-    width: '12%'
+    customRender: ({ text }) => text || '--',
+    width: '35%'
   },
   {
     key: 'lastModifiedByName',
@@ -254,21 +255,21 @@ const columns = [
     dataIndex: 'lastModifiedByName',
     groupName: 'lastModifiedByName',
     ellipsis: true,
-    width: '8%'
+    hide: true,
+    width: 160
   },
   {
     key: 'lastModifiedDate',
     title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     groupName: 'lastModifiedByName',
-    hide: true,
-    width: '8%'
+    width: 160
   },
   {
     key: 'actions',
     title: t('common.actions'),
     dataIndex: 'actions',
-    width: '15%'
+    width: 200
   }
 ];
 </script>
@@ -312,11 +313,6 @@ const columns = [
                     @click="handleEnterShare(record.id)">
                     {{ record.name }}
                   </Button>
-                </template>
-
-                <template v-if="column.dataIndex === 'remark'">
-                  <template v-if="record.remark">{{ record.remark }}</template>
-                  <span v-else class="text-sub-content">{{ t('common.noRemark') }}</span>
                 </template>
 
                 <template v-if="column.dataIndex === 'isExpired'">

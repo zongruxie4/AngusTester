@@ -2229,7 +2229,7 @@
       "publish": "Publish Design"
     },
     "columns": {
-      "openapiSpecVersion": "Specification Version",
+      "openapiSpecVersion": "Specification",
       "designService": "Associated Service"
     },
     "messages": {

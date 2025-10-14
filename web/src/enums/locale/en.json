@@ -262,7 +262,7 @@
         "OTHER": "Other"
       },
       "ApisDesignSource": {
-        "SYNCHRONOUS_SERVICE": "Synchronous Service",
+        "SYNCHRONOUS_SERVICE": "Sync Service",
         "FILE_IMPORT": "File Import",
         "MANUAL_CREATED": "Manually Created"
       },
