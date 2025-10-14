@@ -52,7 +52,7 @@ const ActivityTimeline = defineAsyncComponent(() => import('@/plugins/test/compo
 const SmartComment = defineAsyncComponent(() => import('@/plugins/test/components/Drawer/SmartComment/index.vue'));
 
 const SelectScriptModal = defineAsyncComponent(() => import('@/components/script/SelectScriptModal.vue'));
-const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
+const ExportScriptModal = defineAsyncComponent(() => import('@/plugins/test/components/ExportScriptModal/index.vue'));
 const ImportScriptSelector = defineAsyncComponent(() => import('@/components/script/ImportScriptSelector.vue'));
 
 const ScriptConfig = defineAsyncComponent(() => import('./ScriptConfig/index.vue'));

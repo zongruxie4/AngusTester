@@ -52,7 +52,7 @@ const SmartComment = defineAsyncComponent(() => import('@/plugins/test/component
 
 const ScriptConfig = defineAsyncComponent(() => import('./ScriptConfig/index.vue'));
 const UIConfig = defineAsyncComponent(() => import('./UIConfig/index.vue'));
-const ExportScriptModal = defineAsyncComponent(() => import('./ExportScriptModal/index.vue'));
+const ExportScriptModal = defineAsyncComponent(() => import('@/plugins/test/components/ExportScriptModal/index.vue'));
 const SelectScriptModal = defineAsyncComponent(() => import('./SelectScriptModal/index.vue'));
 const ImportScript = defineAsyncComponent(() => import('./ImportScript/index.vue'));
 const ExecuteConfig = defineAsyncComponent(() => import('@/plugins/test/components/ExecuteConfig/index.vue'));
