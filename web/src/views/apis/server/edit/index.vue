@@ -168,7 +168,7 @@ const getDefaultServer = ():ServerConfig => {
 
 const toDelete = () => {
   modal.confirm({
-    content: t('apiServer.detail.deleteTip'),
+    content: t('apiServer.messages.deleteConfirmTip'),
     async onOk () {
       const id = serverId.value;
       loading.value = true;
@@ -262,7 +262,7 @@ onMounted(() => {
         class="mr-3"
         @click="toAddServerDemo">
         <Icon icon="icon-jia" class="mr-1" />
-        <span class="mr-1">{{ t('apiServer.detail.serverExample') }}</span>
+        <span class="mr-1">{{ t('apiServer.columns.serverExample') }}</span>
       </Button>
 
       <template v-if="!!serverId">

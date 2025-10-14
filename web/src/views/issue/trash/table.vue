@@ -259,10 +259,10 @@ onMounted(() => {
           <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
             <Icon icon="icon-qingchu" class="text-2xl text-gray-400" />
           </div>
-          <h3 class="text-sm font-medium text-gray-900 mb-1">
+          <h3 class="text-3.5 font-medium text-gray-900 mb-1">
             {{ $t('trash.messages.emptyDescription') }}
           </h3>
-          <p class="text-xs text-gray-500 max-w-sm mx-auto">
+          <p class="text-3.5 text-gray-500">
             {{ $t('trash.messages.emptyHint') }}
           </p>
         </div>

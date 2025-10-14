@@ -2251,78 +2251,53 @@
   },
   "apiServer": {
     "title": "服务器",
-    "home": {
-      "tabTitle": "服务器",
-      "newTab": "添加服务器",
-      "searchPanel": {
-        "descriptionPlaceholder": "查询描述",
-        "servicePlaceholder": "选择服务"
-      },
-      "title": "已添加的服务器",
-      "addTip": "已添加{add}个，最多允许添加{max}个。",
-      "emptyTip": "尚未添加任何服务器，立即",
-      "actions": {
-        "addServer": "添加服务器",
-        "updateToApi": "更新到已关联接口"
-      },
-      "hasVariable": "有变量",
-      "hasNoVariable": "无变量",
-      "serviceBelong": "所属服务",
-      "cloneSuccess": "克隆成功",
-      "updateSuccess": "更新到已关联接口成功",
-      "noDescTip": "无描述~",
-      "deleteTip": "确认删除该服务器吗？"
-    },
-    "detail": {
-      "deleteTip": "确认删除服务器吗？",
-      "copyLinkSuccess": "复制链接成功",
-      "copyLinkFail": "复制链接失败",
-      "serverExample": "服务器示例",
-      "serverTip": "Server URL已存在，请重新输入",
-      "serverVariableTip": "Server URL中的变量不允许重复",
-      "variableNameTip": "变量名称重复",
-      "variableValueTip": "变量值重复",
-      "serverConfigTip": "服务器配置错误，请检查更正后再保存。",
-      "urlPlaceholder": "指向目标主机的URL前缀，例如：https://{env}.xcan.cloud:{prot}/{path}",
-      "serverLabel": "服务",
-      "serverPlaceholder": "选择服务",
-      "serverServiceTip": "服务器所属接口服务",
-      "descLabel": "描述",
-      "descPlaceholder": "服务器描述，最大支持400字符",
-      "variableTitle": "变量",
-      "variableLabel": "名称",
-      "variableNameTip1": "变量名称不能重复",
-      "variableTip": "最多可添加50个变量",
-      "variablePlaceholder": "变量名称，最大支持100字符",
-      "addVariable": "添加变量",
-      "deleteVariable": "删除变量",
-      "variableValueLabel": "值",
-      "variableValueTip1": "同一个变量的值不能重复",
-      "variableValuePlaceholder": "变量值，最大支持400字符",
-      "descriptionLabel": "描述",
-      "descriptionPlaceholder": "变量描述，最大支持400字符",
-      "variableDefault": "默认"
-    },
+    "addedServers": "已添加的服务器",
+    "notAddedYet": "未添加任何服务器，点击添加",
     "introduce": {
       "title": "关于服务器",
-      "description1": "定义 API 的服务器及服务器相关的动态部分，包括服务器(server)和变量(variables)两部分。其中服务器字段用于指定 API 的服务器列表，每个服务器都有一个 URL 和可选的描述信息，指示 API 的基础路径。",
-      "description2": "变量用于定义 URL 中的动态部分。它允许在服务器 URL 中使用占位符，这些占位符可以在不同的环境中被替换为实际的值。主要好处如下：",
+      "description": "定义 API 的服务器及其动态部分，包括服务器 server 与变量。服务器用于声明 API 的基础 URL 列表，每项包含 URL 及可选描述，用于指示基础路径。变量用于表示 URL 中的动态占位，可在不同环境替换为具体值。",
       "integration": {
-        "title": "易于与CICD集成",
-        "description": "在持续集成和持续部署的工作流中，定义的服务器可以帮助自动化测试流程，使得不同环境的 API 端点可以灵活配置，符合 DevOps 的要求。"
+        "title": "易于与 CI/CD 集成",
+        "description": "在 CI/CD 流程中，服务器定义便于自动化测试按环境切换端点，符合 DevOps 实践。"
       },
       "env": {
-        "title": "支持多个环境",
-        "description": "通过定义多个服务器或通过不同变量值支持不同的环境（如开发、测试、生产等）。这使得开发者能够轻松切换环境，而不必在代码中手动更改 URL。"
+        "title": "支持多环境",
+        "description": "通过多台服务器或变量值支持开发、测试、生产等环境，无需改动代码即可切换。"
       },
       "version": {
-        "title": "支持版本控制",
-        "description": "在不同版本的 API 中，可以通过定义不同的服务器或者变量值来管理和维护版本。可以在文档中清晰地区分各个版本的服务器，避免混淆。"
+        "title": "支持版本管理",
+        "description": "可为不同 API 版本配置独立服务器或变量值，并在文档中清晰区分，避免混淆。"
       },
       "url": {
-        "description": "完整 URL、服务器、和端点(endpoint)关系",
-        "title": "完整URL(path)"
+        "title": "完整 URL（路径）",
+        "description": "完整 URL、服务器与端点 endpoint 的关系示意"
       }
+    },
+    "actions": {
+      "addServer": "添加服务器",
+      "updateToApi": "更新到已关联接口",
+      "addVariable": "添加变量",
+      "deleteVariable": "删除变量"
+    },
+    "messages": {
+      "addQuotaTip": "已添加{add}个，最多允许添加{max}个。",
+      "deleteConfirmTip": "确认删除该服务器吗？",
+      "serverUrlExistedTip": "Server URL已存在，请重新输入",
+      "serverVariableDuplicatedTip": "Server URL中的变量不允许重复",
+      "variableNameDuplicatedTip": "变量名称重复",
+      "variableValueDuplicatedTip": "变量值重复",
+      "serverConfigErrorTip": "服务器配置错误，请检查更正后再保存。",
+      "urlPlaceholder": "指向目标主机的URL前缀，例如：",
+      "serverServiceTip": "服务器所属接口服务",
+      "serverDescriptionPlaceholder": "服务器描述，最大支持400字符",
+      "variableQuotaTip": "最多可添加50个变量",
+      "variableNamePlaceholder": "变量名称，最大支持100字符",
+      "variableValuePlaceholder": "变量值，最大支持400字符",
+      "variableDescriptionPlaceholder": "变量描述，最大支持400字符"
+    },
+    "columns": {
+      "serverExample": "示例",
+      "variableTitle": "变量"
     }
   },
   "apiShare": {
@@ -2338,9 +2313,8 @@
       "editShare": "编辑分享"
     },
     "columns": {
-      "displayOptions": "展示选项",
+      "displayOptions": "展示",
       "includeServiceInfo": "展示服务说明",
-      "shareDate": "分享日期",
       "viewCount": "查看次数",
       "allowDebug": "允许调试",
       "fieldStyle": "字段样式",
@@ -2357,17 +2331,6 @@
     "schemaStyle": {
       "table": "表格",
       "tree": "树"
-    }
-  },
-  "apiTrash": {
-    "title": "回收站",
-    "searchPlaceholder": "请输入搜索关键词",
-    "tips": {
-      "adminOnly": "仅管理员和删除者可以恢复或永久删除回收站数据。"
-    },
-    "empty": {
-      "description": "回收站为空",
-      "hint": "已删除的数据将在此显示"
     }
   }
 }

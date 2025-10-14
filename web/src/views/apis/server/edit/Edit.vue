@@ -193,7 +193,7 @@ const isServerUrl = (_url: string): boolean => {
   if (props.urlMap[_url]) {
     if (!serverId.value || props.urlMap[_url].length > 1 || !props.urlMap[_url].includes(serverId.value)) {
       urlError.value = true;
-      urlErrorMsg.value = t('apiServer.detail.serverTip');
+      urlErrorMsg.value = t('apiServer.messages.serverUrlExistedTip');
       return false;
     }
   }
@@ -208,7 +208,7 @@ const isServerUrl = (_url: string): boolean => {
     }, [] as string[]);
     if (names.length > uniqueNames.length) {
       urlError.value = true;
-      urlErrorMsg.value = t('apiServer.detail.serverVariableTip');
+      urlErrorMsg.value = t('apiServer.messages.serverVariableDuplicatedTip');
       return false;
     }
   }
@@ -409,7 +409,7 @@ const isValid = (): boolean => {
         errorNum++;
       } else {
         if (nameMap[name].length > 1) {
-          nameErrorMsgMap.value[id] = t('apiServer.detail.variableNameTip');
+          nameErrorMsgMap.value[id] = t('apiServer.messages.variableNameDuplicatedTip');
           nameErrorSet.value.add(id);
           errorNum++;
         }
@@ -450,7 +450,7 @@ const validVariableValue = (enumList: { id: string; value: string }[]): number =
         } else {
           if (repeatEnumMap[_value] && repeatEnumMap[_value] > 1) {
             valueErrorSet.value.add(_id);
-            valueErrorMsgMap.value[_id] = t('apiServer.detail.variableValueTip');
+            valueErrorMsgMap.value[_id] = t('apiServer.messages.variableValueDuplicatedTip');
             errorNum++;
           }
         }
@@ -479,7 +479,7 @@ const validRepeatName = () => {
     const id = ids[i];
     if (repeatMap[dataMap[id].name] && repeatMap[dataMap[id].name] > 1) {
       nameErrorSet.value.add(id);
-      nameErrorMsgMap.value[id] = t('apiServer.detail.variableNameTip');
+      nameErrorMsgMap.value[id] = t('apiServer.messages.variableNameDuplicatedTip');
     } else {
       if (nameErrorMsgMap.value[id]) {
         nameErrorSet.value.delete(id);
@@ -507,7 +507,7 @@ const validRepeatValue = (id: string) => {
     const { id: _id, value: _value } = enumList[i];
     if (repeatMap[_value] && repeatMap[_value] > 1) {
       valueErrorSet.value.add(_id);
-      valueErrorMsgMap.value[_id] = t('apiServer.detail.variableValueTip');
+      valueErrorMsgMap.value[_id] = t('apiServer.messages.variableValueDuplicatedTip');
     } else {
       if (valueErrorMsgMap.value[_id]) {
         valueErrorSet.value.delete(_id);
@@ -606,7 +606,7 @@ const addServerBtnDisabled = computed(() => {
 defineExpose({
   getData: () => {
     if (!isValid()) {
-      notification.error(t('apiServer.detail.serverConfigTip'));
+      notification.error(t('apiServer.messages.serverConfigErrorTip'));
       return;
     }
     const data = getData();
@@ -615,16 +615,16 @@ defineExpose({
 });
 </script>
 <template>
-  <div class="flex-1 flex-col overflow-auto pr-5">
+  <div class="flex-1 flex-col overflow-auto pr-3">
     <div class="flex items-center mb-3.5">
-      <div class="w-10.5 flex items-center leading-7">
+      <div class="flex items-center leading-7 justify-end text-right pr-3" style="width: 100px;">
         <IconRequired />
-        <span>URL</span>
+        <span class="font-semibold">URL</span>
       </div>
       <Validate class="flex-1" :text="urlErrorMsg">
         <Input
           v-model:value="url"
-          :placeholder="t('apiServer.detail.urlPlaceholder')"
+          :placeholder="t('apiServer.messages.urlPlaceholder') + 'https://{env}.xcan.cloud:{prot}/{path}'"
           trimAll
           :autoSize="true"
           :error="urlError"
@@ -635,29 +635,30 @@ defineExpose({
     </div>
 
     <div class="flex items-center mb-3.5">
-      <div class="w-10.5 flex items-center leading-7">
+      <div class="flex items-center leading-7 justify-end text-right pr-3" style="width: 100px;">
         <IconRequired />
-        <span>{{ t('apiServer.detail.serverLabel') }}</span>
+        <span class="font-semibold">{{ t('common.service') }}</span>
       </div>
 
       <div class="flex mr-1">
         <Select
           v-model:value="serviceIdValue"
-          :placeholder="t('apiServer.detail.serverPlaceholder')"
+          :placeholder="t('common.placeholders.selectService')"
           style="width:300px;"
           :fieldNames="{label:'name',value:'id'}"
           :error="serviceIdError"
           :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
           @change="onServiceIdChange" />
       </div>
-      <Tooltip :title="t('apiServer.detail.serverServiceTip')">
-        <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
-      </Tooltip>
+      <div class="text-gray-400">
+        <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer mr-1" />
+        {{ t('apiServer.messages.serverServiceTip') }}
+      </div>
     </div>
 
     <div class="flex items-start mb-3.5">
-      <div class="w-10.5 flex items-center leading-7">
-        <span>{{ t('apiServer.detail.descLabel') }}</span>
+      <div class="flex items-center leading-7 justify-end text-right pr-3" style="width: 100px;">
+        <span class="font-semibold">{{ t('common.description') }}</span>
       </div>
       <Input
         v-model:value="description"
@@ -666,120 +667,116 @@ defineExpose({
         :autoSize="{ minRows: 3, maxRows: 5 }"
         :maxlength="400"
         trim
-        :placeholder="t('apiServer.detail.descPlaceholder')" />
+        :placeholder="t('apiServer.messages.serverDescriptionPlaceholder')" />
     </div>
 
-    <div class="flex items-center justify-between mb-1.5">
-      <div class="flex">
-        <div class="font-semibold mr-1">{{ t('apiServer.detail.variableTitle') }}</div>
-        <Tooltip :title="t('apiServer.detail.variableTip')">
-          <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
-        </Tooltip>
+    <div class="ml-5 mt-5">
+      <div class="flex items-center justify-between mb-1.5">
+        <div class="flex">
+          <div class="font-semibold mr-1">{{ t('apiServer.columns.variableTitle') }}</div>
+          <div class="text-gray-400 ml-4">
+            <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer mr-1" />
+            {{ t('apiServer.messages.variableQuotaTip') }}
+          </div>
+        </div>
+        <div class="flex items-center">
+          <Button
+            :disabled="addServerBtnDisabled"
+            class="px-0 py-0 h-5 mr-1"
+            type="link"
+            size="small"
+            @click="addVariable(false)">
+            {{ t('apiServer.actions.addVariable') }}
+          </Button>
+        </div>
       </div>
-      <div class="flex items-center">
-        <Button
-          :disabled="addServerBtnDisabled"
-          class="px-0 py-0 h-5 mr-1"
-          type="link"
-          size="small"
-          @click="addVariable(false)">
-          {{ t('apiServer.detail.addVariable') }}
-        </Button>
-      </div>
-    </div>
+      <div class="space-y-3.5 ml-20">
+        <div
+          v-for="(item, index) in variableIds"
+          :key="item"
+          class="border border-solid border-theme-text-box rounded p-3.5">
+          <div class="mb-3.5">
+            <div class="flex items-center justify-between mb-0.5">
+              <div class="flex items-center">
+                <IconRequired />
+                <span class="mr-1">{{ t('common.name') }}</span>
+              </div>
+              <Button
+                class="px-0 py-0 h-5"
+                type="link"
+                size="small"
+                @click="deleteVariable(item, index)">
+                {{ t('apiServer.actions.deleteVariable') }}
+              </Button>
+            </div>
+            <Validate :text="nameErrorMsgMap[item]">
+              <Input
+                :value="variableDataMap[item].name"
+                trimAll
+                :placeholder="t('apiServer.messages.variableNamePlaceholder')"
+                :maxlength="100"
+                :error="nameErrorSet.has(item)"
+                dataType="mixin-en"
+                includes="!@$%^&*()_-+="
+                @change="nameChange($event, item, index)" />
+            </Validate>
+          </div>
 
-    <div class="space-y-3.5">
-      <div
-        v-for="(item, index) in variableIds"
-        :key="item"
-        class="border border-solid border-theme-text-box rounded p-3.5">
-        <div class="mb-3.5">
-          <div class="flex items-center justify-between mb-0.5">
-            <div class="flex items-center">
+          <div class="mb-3.5">
+            <div class="flex items-center mb-0.5">
               <IconRequired />
-              <span class="mr-1">{{ t('apiServer.detail.variableLabel') }}</span>
-              <Tooltip :title="t('apiServer.detail.variableNameTip1')">
-                <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
-              </Tooltip>
+              <span class="mr-1">{{ t('common.value') }}</span>
             </div>
-            <Button
-              class="px-0 py-0 h-5"
-              type="link"
-              size="small"
-              @click="deleteVariable(item, index)">
-              {{ t('apiServer.detail.deleteVariable') }}
-            </Button>
-          </div>
-          <Validate :text="nameErrorMsgMap[item]">
-            <Input
-              :value="variableDataMap[item].name"
-              trimAll
-              :placeholder="t('apiServer.detail.variablePlaceholder')"
-              :maxlength="100"
-              :error="nameErrorSet.has(item)"
-              dataType="mixin-en"
-              includes="!@$%^&*()_-+="
-              @change="nameChange($event, item, index)" />
-          </Validate>
-        </div>
 
-        <div class="mb-3.5">
-          <div class="flex items-center mb-0.5">
-            <IconRequired />
-            <span class="mr-1">{{ t('apiServer.detail.variableValueLabel') }}</span>
-            <Tooltip :title="t('apiServer.detail.variableValueTip1')">
-              <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
-            </Tooltip>
-          </div>
-
-          <div class="space-y-2">
-            <div
-              v-for="(_enum, _index) in variableDataMap[item].enum"
-              :key="_enum.id"
-              class="flex items-start">
-              <Validate :text="valueErrorMsgMap[_enum.id]" class="flex-1">
-                <Input
-                  v-model:value="_enum.value"
-                  :placeholder="t('apiServer.detail.variableValuePlaceholder')"
-                  trim
-                  :maxlength="400"
-                  :error="valueErrorSet.has(_enum.id)"
-                  @change="variableValueChange($event, item, _enum.id, _index)">
-                  <template #suffix>
-                    <div class="flex items-center leading-5">
-                      <div v-if="defaultValueMap[item] === _enum.id" class="mr-1 text-text-sub-content text-3">
-                        {{ t('apiServer.detail.variableDefault') }}
+            <div class="space-y-2">
+              <div
+                v-for="(_enum, _index) in variableDataMap[item].enum"
+                :key="_enum.id"
+                class="flex items-start">
+                <Validate :text="valueErrorMsgMap[_enum.id]" class="flex-1">
+                  <Input
+                    v-model:value="_enum.value"
+                    :placeholder="t('apiServer.messages.variableValuePlaceholder')"
+                    trim
+                    :maxlength="400"
+                    :error="valueErrorSet.has(_enum.id)"
+                    @change="variableValueChange($event, item, _enum.id, _index)">
+                    <template #suffix>
+                      <div class="flex items-center leading-5">
+                        <div v-if="defaultValueMap[item] === _enum.id" class="mr-1 text-text-sub-content text-3">
+                          {{ t('common.default') }}
+                        </div>
+                        <Radio
+                          size="small"
+                          style="transform:translateY(-3px);"
+                          :disabled="_index === variableDataMap[item].enum.length - 1"
+                          :checked="defaultValueMap[item] === _enum.id"
+                          @change="defaultValueChange(item, _enum.id)" />
                       </div>
-                      <Radio
-                        size="small"
-                        style="transform:translateY(-3px);"
-                        :disabled="_index === variableDataMap[item].enum.length - 1"
-                        :checked="defaultValueMap[item] === _enum.id"
-                        @change="defaultValueChange(item, _enum.id)" />
-                    </div>
-                  </template>
-                </Input>
-              </Validate>
-              <Icon
-                icon="icon-qingchu"
-                :class="{ invisible: _index === (variableDataMap[item].enum.length - 1) }"
-                class="text-3.5 text-theme-text-hover cursor-pointer flex-shrink-0 ml-2 transform-gpu translate-y-1.75"
-                @click="deleteVariableValue(item, _index)" />
+                    </template>
+                  </Input>
+                </Validate>
+                <Icon
+                  icon="icon-qingchu"
+                  :class="{ invisible: _index === (variableDataMap[item].enum.length - 1) }"
+                  class="text-3.5 text-theme-text-hover cursor-pointer flex-shrink-0 ml-2 transform-gpu translate-y-1.75"
+                  @click="deleteVariableValue(item, _index)" />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div>
-          <div class="flex items-center mb-0.5">
-            <span>{{ t('apiServer.detail.descriptionLabel') }}</span>
+          <div>
+            <div class="flex items-center mb-0.5">
+              <span>{{ t('common.description') }}</span>
+            </div>
+            <Input
+              v-model:value="variableDataMap[item].description"
+              type="textarea"
+              :autoSize="{ minRows: 3, maxRows: 5 }"
+              :maxlength="400"
+              trim
+              :placeholder="t('apiServer.messages.variableDescriptionPlaceholder')" />
           </div>
-          <Input
-            v-model:value="variableDataMap[item].description"
-            type="textarea"
-            :autoSize="{ minRows: 3, maxRows: 5 }"
-            :maxlength="400"
-            trim
-            :placeholder="t('apiServer.detail.descriptionPlaceholder')" />
         </div>
       </div>
     </div>

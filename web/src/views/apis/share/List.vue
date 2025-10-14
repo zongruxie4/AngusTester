@@ -277,7 +277,7 @@ const columns = [
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <div class="flex space-x-1">
-      <Introduce class="mb-5 flex-1" />
+      <Introduce class="mb-2 flex-1" />
     </div>
     <div class="text-3.5 font-semibold mb-1">{{ t('apiShare.addedShares') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
