@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
-import { AsyncComponent, Dropdown, Icon, Image, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Dropdown, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { ProjectPageQuery } from '@xcan-angus/infra';
@@ -153,7 +153,7 @@ const releaseDesign = async (record: {id: string; name: string; url?: string}) =
   if (error) {
     return;
   }
-  notification.success(t('apiDesign.detail.publishSuccess'));
+  notification.success(t('actions.tips.publishSuccess'));
   await loadData();
 };
 
@@ -162,7 +162,7 @@ const generateService = async (record: {id: string; name: string; url?: string})
   if (error) {
     return;
   }
-  notification.success(t('apiDesign.home.generated'));
+  notification.success(t('actions.tips.generateSuccess'));
   await loadData();
 };
 
@@ -217,65 +217,68 @@ const columns = [
     title: t('common.name'),
     dataIndex: 'name',
     ellipsis: true,
-    sorter: true,
-    width: '16%'
+    sorter: true
   },
   {
-    title: t('apiDesign.home.columns.openapiSpecVersion'),
+    title: t('apiDesign.columns.openapiSpecVersion'),
     dataIndex: 'openapiSpecVersion',
-    width: '8%'
+    width: 120
   },
   {
     title: t('common.status'),
     dataIndex: 'released',
-    width: '8%'
+    width: 120
   },
   {
-    title: t('apiDesign.home.columns.designSource'),
+    title: t('common.source'),
     dataIndex: 'designSource',
-    width: '8%',
     customRender: ({ text }) => {
       return text?.message || '--';
-    }
+    },
+    width: 130
   },
   {
-    title: t('apiDesign.home.columns.designService'),
+    title: t('apiDesign.columns.designService'),
     dataIndex: 'designSourceName',
-    width: '10%',
-    ellipsis: true
+    ellipsis: true,
+    width: 160
   },
   {
-    title: t('common.createdBy'),
-    dataIndex: 'createdByAvatar',
-    width: '10%',
-    sorter: true
+    title: t('common.creator'),
+    dataIndex: 'createdByName',
+    groupName: 'createdByName',
+    sorter: true,
+    width: 130
   },
   {
     title: t('common.createdDate'),
     dataIndex: 'createdDate',
-    width: '10%',
-    sorter: true
+    groupName: 'createdByName',
+    hide: true,
+    sorter: true,
+    width: 130
   },
   {
-    title: t('common.lastModifiedBy'),
+    title: t('common.modifier'),
     dataIndex: 'lastModifiedByName',
-    width: '10%',
     groupName: 'lastModifiedByName',
-    ellipsis: true
+    ellipsis: true,
+    width: 130
   },
   {
     title: t('common.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     groupName: 'lastModifiedByName',
     hide: true,
-    width: '10%'
+    width: 130
   },
   {
     title: t('common.actions'),
     dataIndex: 'actions',
-    width: '12%'
+    width: 100
   }
 ];
+
 const moreButton = (record) => {
   return [
     {
@@ -295,7 +298,7 @@ const moreButton = (record) => {
     },
     {
       key: 'generate',
-      name: t('apiDesign.home.generateService_action'),
+      name: t('apiDesign.actions.generateService'),
       icon: 'icon-fuwu',
       disabled: !!record.designSourceId
     },
@@ -310,16 +313,16 @@ const moreButton = (record) => {
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <div class="flex space-x-1">
-      <Introduce class="mb-5 flex-1" />
+      <Introduce class="mb-2 flex-1" />
     </div>
-    <div class="text-3.5 font-semibold mb-1">{{ t('apiDesign.home.title') }}</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('apiDesign.addedDesigns') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>{{ t('apiDesign.home.noDataTip') }}</span>
-            <Button type="link" @click="editDesign()">{{ t('apiDesign.home.add_action') }}</Button>
+            <span>{{ t('apiDesign.notAddedYet') }}</span>
+            <Button type="link" @click="editDesign()">{{ t('apiDesign.actions.add') }}</Button>
           </div>
         </div>
 
@@ -336,23 +339,17 @@ const moreButton = (record) => {
               :columns="columns"
               :dataSource="dataList"
               :pagination="pagination"
+              :minSize="5"
+              rowKey="id"
+              size="small"
               @change="tableChange">
               <template #bodyCell="{column, record}">
                 <template v-if="column.dataIndex === 'name'">
                   <a class="text-blue-1 truncate" @click="handleEnterDesign(record)">{{ record.name }}</a>
                 </template>
-                <template v-if="column.dataIndex === 'createdByAvatar'">
-                  <div class="inline-flex items-center truncate">
-                    <Image
-                      type="avatar"
-                      class="w-6 rounded-full mr-1"
-                      :src="record.createdByAvatar" />
-                    <span class="flex-1 truncate" :tite="record.createdByName">{{ record.createdByName }}</span>
-                  </div>
-                </template>
                 <template v-if="column.dataIndex=== 'released'">
-                  <Tag v-if="record.released" color="success">{{ t('apiDesign.home.released') }}</Tag>
-                  <Tag v-else color="default">{{ t('apiDesign.home.unreleased') }}</Tag>
+                  <Tag v-if="record.released" color="success">{{ t('apiDesign.messages.released') }}</Tag>
+                  <Tag v-else color="default">{{ t('apiDesign.messages.unreleased') }}</Tag>
                 </template>
                 <template v-if="column.dataIndex === 'designSourceName'">
                   <RouterLink
@@ -378,7 +375,7 @@ const moreButton = (record) => {
                     size="small"
                     @click="handleEnterDesign(record)">
                     <Icon icon="icon-sheji" />
-                    {{ t('apiDesign.home.design_action') }}
+                    {{ t('apiDesign.actions.design') }}
                   </Button>
                   <Dropdown :menuItems="moreButton(record)" @click="handleDesign(record, $event.key)">
                     <Icon icon="icon-gengduo" class="ml-1" />

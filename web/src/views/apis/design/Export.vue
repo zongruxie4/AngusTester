@@ -50,7 +50,7 @@ const ok = () => {
 </script>
 <template>
   <Modal
-    :title="t('apiDesign.exportModal.title')"
+    :title="t('actions.export')"
     :visible="props.visible"
     :width="500"
     :okButtonProps="{
@@ -59,7 +59,7 @@ const ok = () => {
     @cancel="cancel"
     @ok="ok">
     <div class="flex space-x-2 items-center">
-      <span>{{ t('apiDesign.exportModal.formatLabel') }}：</span>
+      <span>{{ t('common.format') }}：</span>
       <RadioGroup
         v-model:value="formState.format"
         :options="exportFormatOptions">

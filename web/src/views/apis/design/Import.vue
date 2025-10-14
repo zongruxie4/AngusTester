@@ -90,7 +90,7 @@ const ok = async () => {
 </script>
 <template>
   <Modal
-    :title="t('apiDesign.importDesignModal.title')"
+    :title="t('actions.import')"
     :visible="props.visible"
     :width="500"
     :okButtonProps="{
@@ -103,7 +103,7 @@ const ok = async () => {
       :model="formState">
       <FormItem
         name="name"
-        :label="t('apiDesign.importDesignModal.nameLabel')"
+        :label="t('common.name')"
         required>
         <Input
           v-model:value="formState.name"
@@ -113,7 +113,7 @@ const ok = async () => {
 
       <FormItem
         name="content"
-        :label="t('apiDesign.importDesignModal.fileLabel')"
+        :label="t('common.file')"
         :rules="[{required: true, message: t('apiDesign.importDesignModal.fileRule')}]">
         <Upload
           v-model:fileList="fileList"

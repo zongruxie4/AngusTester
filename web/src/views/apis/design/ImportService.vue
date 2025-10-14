@@ -64,7 +64,7 @@ const ok = async () => {
 </script>
 <template>
   <Modal
-    :title="t('apiDesign.importServiceModal.title')"
+    :title="t('actions.import')"
     :visible="props.visible"
     :width="500"
     :okButtonProps="{
@@ -77,13 +77,13 @@ const ok = async () => {
       :model="formState">
       <FormItem
         name="serviceId"
-        :label="t('apiDesign.importServiceModal.serviceLabel')"
+        :label="t('common.service')"
         required
         class="leading-8">
         <TreeSelect
           :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
-          :placeholder="t('apiDesign.importServiceModal.servicePlaceholder')"
+          :placeholder="t('common.placeholders.selectService')"
           :virtual="false"
           size="small"
           @change="handleServiceChange">

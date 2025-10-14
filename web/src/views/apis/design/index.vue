@@ -112,14 +112,14 @@ const ensureDesignListTab = () => {
     addTabPane({
       _id: DESIGN_LIST_KEY,
       value: DESIGN_LIST_KEY,
-      name: t('apiDesign.home.tabTitle'),
+      name: t('common.design'),
       closable: false
     });
   } else {
     updateTabPane({
       _id: DESIGN_LIST_KEY,
       value: DESIGN_LIST_KEY,
-      name: t('apiDesign.home.tabTitle'),
+      name: t('common.design'),
       closable: false
     });
   }
@@ -136,7 +136,7 @@ const initialize = () => {
         return {
           _id: DESIGN_LIST_KEY,
           value: DESIGN_LIST_KEY,
-          name: t('apiDesign.home.tabTitle'),
+          name: t('common.design'),
           closable: false
         };
       }

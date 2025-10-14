@@ -34,7 +34,7 @@ const searchPanelOptions: any[] = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: t('apiDesign.home.searchPanel.name_placeholder'),
+    placeholder: t('common.placeholders.searchKeyword'),
     allowClear: true,
     maxlength: 100
   },
@@ -42,14 +42,14 @@ const searchPanelOptions: any[] = [
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true,
-    placeholder: t('apiDesign.home.searchPanel.created_placeholder')
+    placeholder: t('common.placeholders.selectCreator')
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
     placeholder: [
-      t('apiDesign.home.searchPanel.data_placeholder1'),
-      t('apiDesign.home.searchPanel.data_placeholder2')
+      t('common.placeholders.selectCreatedDateRange.0'),
+      t('common.placeholders.selectCreatedDateRange.1')
     ],
     showTime: true
   }
@@ -61,7 +61,7 @@ const quickSearchConfig = computed<QuickSearchConfig>(() => ({
   auditOptions: createAuditOptions([
     {
       key: 'createdBy',
-      name: t('apiDesign.home.designByMe'),
+      name: t('apiDesign.messages.designByMe'),
       fieldKey: 'createdBy'
     },
     {
@@ -179,7 +179,6 @@ const importService = () => {
   emits('importService');
 };
 </script>
-
 <template>
   <div class="mt-2.5 mb-3.5">
     <QuickSearchOptions
@@ -199,7 +198,7 @@ const importService = () => {
           size="small"
           @click="add">
           <Icon icon="icon-jia" class="text-3.5 mr-1" />
-          <span>{{ t('apiDesign.home.add_action') }}</span>
+          <span>{{ t('apiDesign.actions.add') }}</span>
         </Button>
 
         <Button
@@ -207,7 +206,7 @@ const importService = () => {
           size="small"
           @click="importService">
           <Icon icon="icon-shangchuan" class="text-3.5 mr-1" />
-          <span>{{ t('apiDesign.home.import_service_action') }}</span>
+          <span>{{ t('apiDesign.actions.importService') }}</span>
         </Button>
 
         <Button
@@ -215,7 +214,7 @@ const importService = () => {
           size="small"
           @click="importDesign">
           <Icon icon="icon-shangchuan" class="text-3.5 mr-1" />
-          <span>{{ t('apiDesign.home.import_design_action') }}</span>
+          <span>{{ t('apiDesign.actions.importDesign') }}</span>
         </Button>
 
         <IconRefresh
@@ -225,7 +224,7 @@ const importService = () => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{ t('apiDesign.home.refresh_action') }}</span>
+              <span class="ml-1">{{ t('actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

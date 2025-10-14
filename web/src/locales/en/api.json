@@ -2212,69 +2212,37 @@
   },
   "apiDesign": {
     "title": "Design",
-    "home": {
-      "introduceTitle": "About Design",
-      "introduceContent": "Interface design for OpenAPI specifications, meeting the needs of interface testing and documentation generation. The graphical interface is suitable for users unfamiliar with OpenAPI specifications, while users familiar with OpenAPI specifications are recommended to use Swagger Editor for more efficient design completion.",
-      "tabTitle": "Design",
-      "title": "Added Designs",
-      "noDataTip": "No designs added yet, ",
-      "add_action": "Add Design",
-      "design_action": "Design",
-      "generateService_action": "Generate Service",
-      "import_service_action": "Import Service",
-      "import_design_action": "Import Design",
-      "refresh_action": "Refresh",
+    "addedDesigns": "Added Designs",
+    "notAddedYet": "No designs added yet, click to add",
+    "introduce": {
+      "title": "About Design",
+      "description": "Interface design for OpenAPI specifications, meeting the needs of interface testing and documentation generation. The graphical interface is suitable for users unfamiliar with OpenAPI specifications, while users familiar with OpenAPI specifications are recommended to use Swagger Editor for more efficient design completion."
+    },
+    "actions": {
+      "add": "Add Design",
+      "design": "Design",
+      "generateService": "Generate Service",
+      "importService": "Import Service",
+      "importDesign": "Import Design",
+      "saveDraft": "Save Draft",
+      "publish": "Publish Design"
+    },
+    "columns": {
+      "openapiSpecVersion": "Specification Version",
+      "designService": "Associated Service"
+    },
+    "messages": {
       "designByMe": "Designed by Me",
-      "importSuccess": "Import Successful",
       "released": "Released",
       "unreleased": "Draft",
-      "generated": "Generated Service",
-      "searchPanel": {
-        "name_placeholder": "Search name, description",
-        "created_placeholder": "Select creator",
-        "data_placeholder1": "Created time from",
-        "data_placeholder2": "Created time to"
-      },
-      "columns": {
-        "openapiSpecVersion": "Specification Version",
-        "designSource": "Source",
-        "designService": "Associated Service"
-      },
-      "deleteFirm": {
-        "title": "Are you sure to delete design「{name}」?"
-      }
-    },
-    "importServiceModal": {
-      "title": "Import Service",
-      "serviceLabel": "Service",
-      "servicePlaceholder": "Please select associated service"
+      "namePlaceholder": "Enter design name, maximum 100 characters",
+      "versionPlaceholder": "OpenAPI document specification version number, default 3.0.1.",
+      "modifyTip": "Last modified at {time}"
     },
     "importDesignModal": {
-      "title": "Import Design",
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter design name, limited to 100 characters",
-      "fileLabel": "File",
       "fileRule": "Please upload file",
       "uploadFile": "Upload File",
       "uploadTip": "Click to upload Swagger2.0, OpenAPI3.x files, file size not exceeding 20M"
-    },
-    "exportModal": {
-      "formatLabel": "Format"
-    },
-    "editModal": {
-      "editTitle": "Edit Design",
-      "addTitle": "Add Design",
-      "nameLabel": "Name",
-      "namePlaceholder": "Enter design name, maximum 100 characters",
-      "versionLabel": "Version",
-      "versionPlaceholder": "OpenAPI document specification version number, default 3.0.1."
-    },
-    "detail": {
-      "saveSuccess": "Saved Successfully",
-      "publishSuccess": "Published Successfully",
-      "saveAction": "Save Draft",
-      "publishAction": "Publish Design",
-      "modifyTip": "Last modified at {time}"
     }
   },
   "apiServer": {

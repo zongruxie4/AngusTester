@@ -2,7 +2,7 @@
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button, Popconfirm, Tag, TypographyParagraph } from 'ant-design-vue';
-import { Colon, Icon, Image, NoData, notification, SearchPanel, Spin } from '@xcan-angus/vue-ui';
+import {Colon, Icon, IconRefresh, Image, NoData, notification, SearchPanel, Spin} from '@xcan-angus/vue-ui';
 import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
@@ -227,14 +227,15 @@ const searchOptions = [
                 </div>
               </Button>
 
-              <Button
-                type="default"
-                size="small"
-                class="flex items-center flex-shrink-0"
+              <IconRefresh
                 @click="refresh">
-                <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-                <span>{{ t('actions.refresh') }}</span>
-              </Button>
+                <template #default>
+                  <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
+                    <Icon icon="icon-shuaxin" class="text-3.5" />
+                    <span class="ml-1">{{ t('actions.refresh') }}</span>
+                  </div>
+                </template>
+              </IconRefresh>
             </div>
           </div>
 
@@ -322,11 +323,6 @@ const searchOptions = [
               </div>
             </div>
           </div>
-
-          <!-- <GridList :itemWidth="282" :dataSource="showList">
-            <template #default="record">
-            </template>
-          </GridList> -->
         </template>
       </template>
     </Spin>
