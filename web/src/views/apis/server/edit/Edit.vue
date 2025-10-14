@@ -615,16 +615,16 @@ defineExpose({
 });
 </script>
 <template>
-  <div class="flex-1 flex-col overflow-auto pr-5">
+  <div class="flex-1 flex-col overflow-auto pr-3">
     <div class="flex items-center mb-3.5">
-      <div class="w-10.5 flex items-center leading-7">
+      <div class="flex items-center leading-7 justify-end text-right pr-3" style="width: 100px;">
         <IconRequired />
-        <span>URL</span>
+        <span class="font-semibold">URL</span>
       </div>
       <Validate class="flex-1" :text="urlErrorMsg">
         <Input
           v-model:value="url"
-          :placeholder="t('apiServer.messages.urlPlaceholder')"
+          :placeholder="t('apiServer.messages.urlPlaceholder') + 'https://{env}.xcan.cloud:{prot}/{path}'"
           trimAll
           :autoSize="true"
           :error="urlError"
@@ -635,9 +635,9 @@ defineExpose({
     </div>
 
     <div class="flex items-center mb-3.5">
-      <div class="w-10.5 flex items-center leading-7">
+      <div class="flex items-center leading-7 justify-end text-right pr-3" style="width: 100px;">
         <IconRequired />
-        <span>{{ t('common.service') }}</span>
+        <span class="font-semibold">{{ t('common.service') }}</span>
       </div>
 
       <div class="flex mr-1">
@@ -650,14 +650,15 @@ defineExpose({
           :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
           @change="onServiceIdChange" />
       </div>
-      <Tooltip :title="t('apiServer.messages.serverServiceTip')">
-        <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
-      </Tooltip>
+      <div class="text-gray-400">
+        <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer mr-1" />
+        {{ t('apiServer.messages.serverServiceTip') }}
+      </div>
     </div>
 
     <div class="flex items-start mb-3.5">
-      <div class="w-10.5 flex items-center leading-7">
-        <span>{{ t('common.description') }}</span>
+      <div class="flex items-center leading-7 justify-end text-right pr-3" style="width: 100px;">
+        <span class="font-semibold">{{ t('common.description') }}</span>
       </div>
       <Input
         v-model:value="description"
@@ -669,117 +670,113 @@ defineExpose({
         :placeholder="t('apiServer.messages.serverDescriptionPlaceholder')" />
     </div>
 
-    <div class="flex items-center justify-between mb-1.5">
-      <div class="flex">
-        <div class="font-semibold mr-1">{{ t('apiServer.columns.variableTitle') }}</div>
-        <Tooltip :title="t('apiServer.messages.variableQuotaTip')">
-          <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
-        </Tooltip>
+    <div class="ml-5 mt-5">
+      <div class="flex items-center justify-between mb-1.5">
+        <div class="flex">
+          <div class="font-semibold mr-1">{{ t('apiServer.columns.variableTitle') }}</div>
+          <div class="text-gray-400 ml-4">
+            <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer mr-1" />
+            {{ t('apiServer.messages.variableQuotaTip') }}
+          </div>
+        </div>
+        <div class="flex items-center">
+          <Button
+            :disabled="addServerBtnDisabled"
+            class="px-0 py-0 h-5 mr-1"
+            type="link"
+            size="small"
+            @click="addVariable(false)">
+            {{ t('apiServer.actions.addVariable') }}
+          </Button>
+        </div>
       </div>
-      <div class="flex items-center">
-        <Button
-          :disabled="addServerBtnDisabled"
-          class="px-0 py-0 h-5 mr-1"
-          type="link"
-          size="small"
-          @click="addVariable(false)">
-          {{ t('apiServer.actions.addVariable') }}
-        </Button>
-      </div>
-    </div>
+      <div class="space-y-3.5 ml-20">
+        <div
+          v-for="(item, index) in variableIds"
+          :key="item"
+          class="border border-solid border-theme-text-box rounded p-3.5">
+          <div class="mb-3.5">
+            <div class="flex items-center justify-between mb-0.5">
+              <div class="flex items-center">
+                <IconRequired />
+                <span class="mr-1">{{ t('common.name') }}</span>
+              </div>
+              <Button
+                class="px-0 py-0 h-5"
+                type="link"
+                size="small"
+                @click="deleteVariable(item, index)">
+                {{ t('apiServer.actions.deleteVariable') }}
+              </Button>
+            </div>
+            <Validate :text="nameErrorMsgMap[item]">
+              <Input
+                :value="variableDataMap[item].name"
+                trimAll
+                :placeholder="t('apiServer.messages.variableNamePlaceholder')"
+                :maxlength="100"
+                :error="nameErrorSet.has(item)"
+                dataType="mixin-en"
+                includes="!@$%^&*()_-+="
+                @change="nameChange($event, item, index)" />
+            </Validate>
+          </div>
 
-    <div class="space-y-3.5">
-      <div
-        v-for="(item, index) in variableIds"
-        :key="item"
-        class="border border-solid border-theme-text-box rounded p-3.5">
-        <div class="mb-3.5">
-          <div class="flex items-center justify-between mb-0.5">
-            <div class="flex items-center">
+          <div class="mb-3.5">
+            <div class="flex items-center mb-0.5">
               <IconRequired />
-              <span class="mr-1">{{ t('common.name') }}</span>
-              <Tooltip :title="t('apiServer.messages.variableNameDuplicatedTip')">
-                <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
-              </Tooltip>
+              <span class="mr-1">{{ t('common.value') }}</span>
             </div>
-            <Button
-              class="px-0 py-0 h-5"
-              type="link"
-              size="small"
-              @click="deleteVariable(item, index)">
-              {{ t('apiServer.actions.deleteVariable') }}
-            </Button>
-          </div>
-          <Validate :text="nameErrorMsgMap[item]">
-            <Input
-              :value="variableDataMap[item].name"
-              trimAll
-              :placeholder="t('apiServer.messages.variableNamePlaceholder')"
-              :maxlength="100"
-              :error="nameErrorSet.has(item)"
-              dataType="mixin-en"
-              includes="!@$%^&*()_-+="
-              @change="nameChange($event, item, index)" />
-          </Validate>
-        </div>
 
-        <div class="mb-3.5">
-          <div class="flex items-center mb-0.5">
-            <IconRequired />
-            <span class="mr-1">{{ t('common.value') }}</span>
-            <Tooltip :title="t('apiServer.messages.variableValueDuplicatedTip')">
-              <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
-            </Tooltip>
-          </div>
-
-          <div class="space-y-2">
-            <div
-              v-for="(_enum, _index) in variableDataMap[item].enum"
-              :key="_enum.id"
-              class="flex items-start">
-              <Validate :text="valueErrorMsgMap[_enum.id]" class="flex-1">
-                <Input
-                  v-model:value="_enum.value"
-                  :placeholder="t('apiServer.messages.variableValuePlaceholder')"
-                  trim
-                  :maxlength="400"
-                  :error="valueErrorSet.has(_enum.id)"
-                  @change="variableValueChange($event, item, _enum.id, _index)">
-                  <template #suffix>
-                    <div class="flex items-center leading-5">
-                      <div v-if="defaultValueMap[item] === _enum.id" class="mr-1 text-text-sub-content text-3">
-                        {{ t('common.default') }}
+            <div class="space-y-2">
+              <div
+                v-for="(_enum, _index) in variableDataMap[item].enum"
+                :key="_enum.id"
+                class="flex items-start">
+                <Validate :text="valueErrorMsgMap[_enum.id]" class="flex-1">
+                  <Input
+                    v-model:value="_enum.value"
+                    :placeholder="t('apiServer.messages.variableValuePlaceholder')"
+                    trim
+                    :maxlength="400"
+                    :error="valueErrorSet.has(_enum.id)"
+                    @change="variableValueChange($event, item, _enum.id, _index)">
+                    <template #suffix>
+                      <div class="flex items-center leading-5">
+                        <div v-if="defaultValueMap[item] === _enum.id" class="mr-1 text-text-sub-content text-3">
+                          {{ t('common.default') }}
+                        </div>
+                        <Radio
+                          size="small"
+                          style="transform:translateY(-3px);"
+                          :disabled="_index === variableDataMap[item].enum.length - 1"
+                          :checked="defaultValueMap[item] === _enum.id"
+                          @change="defaultValueChange(item, _enum.id)" />
                       </div>
-                      <Radio
-                        size="small"
-                        style="transform:translateY(-3px);"
-                        :disabled="_index === variableDataMap[item].enum.length - 1"
-                        :checked="defaultValueMap[item] === _enum.id"
-                        @change="defaultValueChange(item, _enum.id)" />
-                    </div>
-                  </template>
-                </Input>
-              </Validate>
-              <Icon
-                icon="icon-qingchu"
-                :class="{ invisible: _index === (variableDataMap[item].enum.length - 1) }"
-                class="text-3.5 text-theme-text-hover cursor-pointer flex-shrink-0 ml-2 transform-gpu translate-y-1.75"
-                @click="deleteVariableValue(item, _index)" />
+                    </template>
+                  </Input>
+                </Validate>
+                <Icon
+                  icon="icon-qingchu"
+                  :class="{ invisible: _index === (variableDataMap[item].enum.length - 1) }"
+                  class="text-3.5 text-theme-text-hover cursor-pointer flex-shrink-0 ml-2 transform-gpu translate-y-1.75"
+                  @click="deleteVariableValue(item, _index)" />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div>
-          <div class="flex items-center mb-0.5">
-            <span>{{ t('common.description') }}</span>
+          <div>
+            <div class="flex items-center mb-0.5">
+              <span>{{ t('common.description') }}</span>
+            </div>
+            <Input
+              v-model:value="variableDataMap[item].description"
+              type="textarea"
+              :autoSize="{ minRows: 3, maxRows: 5 }"
+              :maxlength="400"
+              trim
+              :placeholder="t('apiServer.messages.variableDescriptionPlaceholder')" />
           </div>
-          <Input
-            v-model:value="variableDataMap[item].description"
-            type="textarea"
-            :autoSize="{ minRows: 3, maxRows: 5 }"
-            :maxlength="400"
-            trim
-            :placeholder="t('apiServer.messages.variableDescriptionPlaceholder')" />
         </div>
       </div>
     </div>

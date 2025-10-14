@@ -7,11 +7,10 @@ const { t } = useI18n();
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('apiServer.introduce.title') }}
     </div>
-    <div class="flex items-center space-x-10">
+    <div class="flex items-center space-x-10 text-3.5 mb-6 font-serif">
       <div>
         <div class="mb-6">
-          <div>{{ t('apiServer.introduce.description1') }}</div>
-          <div>{{ t('apiServer.introduce.description2') }}</div>
+          <div>{{ t('apiServer.introduce.description') }}</div>
         </div>
 
         <div class="flex items-start justify-between">
@@ -65,7 +64,7 @@ const { t } = useI18n();
           <div style="width:125px;" class="horizontal-line line"></div>
           <div style="transform: rotate(-65deg);" class="diagonal-line line"></div>
         </div>
-        <div class="font-semibold text-center">
+        <div class="text-3 font-semibold text-center">
           {{ t('apiServer.introduce.url.title') }}
         </div>
       </div>

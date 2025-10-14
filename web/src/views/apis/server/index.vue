@@ -96,7 +96,7 @@ const hashChange = (hash:string) => {
     browserTabRef.value.add(() => {
       const uid = utils.uuid();
       return {
-        name: t('apiServer.title'),
+        name: t('apiServer.actions.addServer'),
         _id: uid,
         value: 'serverDetails',
         noCache: false,

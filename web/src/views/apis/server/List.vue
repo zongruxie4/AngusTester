@@ -64,7 +64,6 @@ const toUpdate = async (data: ServerRecord) => {
   if (error) {
     return;
   }
-
   notification.success(t('actions.tips.updateSuccess'));
 };
 
@@ -210,10 +209,6 @@ const searchOptions = [
 
     <div class="flex items-center text-3.5 font-semibold mb-1">
       <span class="flex-shrink-0 mr-1">{{ t('apiServer.addedServers') }}</span>
-      <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 cursor-pointer mr-1" />
-      <div class="flex-shrink-0 break-all whitespace-pre-wrap text-3 font-normal text-theme-sub-content">
-        <span>{{ t('apiServer.messages.addQuotaTip', { add: String(dataList.length), max: String(MAX_NUM) }) }}</span>
-      </div>
     </div>
 
     <Spin
@@ -237,10 +232,15 @@ const searchOptions = [
 
         <template v-else>
           <div class="flex items-center justify-between mt-2.5 mb-3.5 space-x-5">
-            <SearchPanel
-              class="flex-1"
-              :options="searchOptions"
-              @change="searchChange" />
+            <div class="flex items-center flex-1 space-x-2">
+              <SearchPanel
+                :options="searchOptions"
+                @change="searchChange" />
+              <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 cursor-pointer" />
+              <div class="flex-shrink-0 break-all whitespace-pre-wrap text-3 font-semibold text-theme-sub-content">
+                <span>{{ t('apiServer.messages.addQuotaTip', { add: String(dataList.length), max: String(MAX_NUM) }) }}</span>
+              </div>
+            </div>
 
             <div class="flex-shrink-0 flex items-center space-x-3">
               <Button

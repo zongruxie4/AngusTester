@@ -2252,23 +2252,22 @@
     "notAddedYet": "No servers added yet, click to add",
     "introduce": {
       "title": "About Server",
-      "description1": "Define the servers and server-related dynamic parts of the API, including two parts: server and variables. The server field is used to specify the server list of the API, each server has a URL and optional description information, indicating the base path of the API.",
-      "description2": "Variables are used to define dynamic parts in URLs. It allows the use of placeholders in server URLs, which can be replaced with actual values in different environments. The main benefits are as follows:",
+      "description": "Define the API servers and their dynamic parts, including server and variables. Servers declare the API's base URL list, each entry includes a URL and optional description to indicate the base path. Variables represent dynamic placeholders in the URL and can be substituted per environment.",
       "integration": {
-        "title": "Easy Integration with CICD",
-        "description": "In continuous integration and continuous deployment workflows, defined servers can help automate testing processes, making API endpoints in different environments flexibly configurable, meeting DevOps requirements."
+        "title": "Easy CI/CD Integration",
+        "description": "In CI/CD pipelines, server definitions let automated tests switch endpoints by environment, aligning with DevOps practices."
       },
       "env": {
-        "title": "Support Multiple Environments",
-        "description": "Support different environments (such as development, testing, production, etc.) by defining multiple servers or through different variable values. This enables developers to easily switch environments without manually changing URLs in code."
+        "title": "Multi-environment Support",
+        "description": "Use multiple servers or variable values for development, testing, and production, and switch environments without code changes."
       },
       "version": {
-        "title": "Support Version Control",
-        "description": "In different versions of APIs, different servers or variable values can be defined to manage and maintain versions. Different versions of servers can be clearly distinguished in documentation to avoid confusion."
+        "title": "Version Management",
+        "description": "Configure dedicated servers or variable values for each API version and clearly distinguish them in documentation to avoid confusion."
       },
       "url": {
-        "title": "Complete URL (path)",
-        "description": "Complete URL, server, and endpoint relationship"
+        "title": "Full URL (Path)",
+        "description": "Relationship among full URL, server, and endpoint"
       }
     },
     "actions": {
@@ -2285,8 +2284,8 @@
       "variableNameDuplicatedTip": "Variable name is duplicated",
       "variableValueDuplicatedTip": "Variable value is duplicated",
       "serverConfigErrorTip": "Server configuration error, please check and correct before saving.",
-      "urlPlaceholder": "URL prefix pointing to target host, e.g.: https://{env}.xcan.cloud:{prot}/{path}",
-      "serverServiceTip": "Server associated interface service",
+      "urlPlaceholder": "URL prefix pointing to target host, e.g.: ",
+      "serverServiceTip": "Server associated api service",
       "serverDescriptionPlaceholder": "Server description, maximum 400 characters",
       "variableQuotaTip": "Maximum 50 variables can be added",
       "variableNamePlaceholder": "Variable name, maximum 100 characters",
