@@ -1,6 +1,6 @@
 {
   "apisHome": {
-    "introduce":{
+    "introduce": {
       "title": "关于AngusTester接口",
       "description": "帮助开发人员和测试人员轻松地添加、测试、调试和文档化API，最终帮助企业达成API资产化目的。",
       "features": [
@@ -1873,16 +1873,11 @@
         "allowExposeHeadersTooltip": "允许客户端访问的响应头字段，默认不限制。"
       },
       "requestRecord": {
+        "hints": "Mock接口调用日志，每秒最多3条，每接口保留最近100条。开启/关闭日志收集请到\"设置\"->\"记录请求日志\"，开启后会影响性能。",
         "apiName": "接口名称",
         "requestId": "请求ID",
         "requestTime": "请求时间",
-        "requestUrl": "请求地址",
-        "formatOptions": {
-          "beautify": "美化格式",
-          "raw": "原生格式",
-          "preview": "预览"
-        },
-        "hints": "Mock接口调用日志，每秒最多3条，每接口保留最近100条。开启/关闭日志收集请到\"设置\"->\"记录请求日志\"，开启后会影响性能。"
+        "requestUrl": "请求地址"
       },
       "log": {
         "lineOptions": {
@@ -1897,9 +1892,6 @@
         "logFile": "日志文件：",
         "browseLog": "浏览日志：",
         "autoRefresh": "自动刷新："
-      },
-      "activity": {
-        "pageInfo": "共{total}条记录，第{current} / {totalPage}页"
       },
       "monitor": {
         "apiName": "接口名称",
@@ -1924,17 +1916,6 @@
         "corsTooltip": "解决浏览器跨域访问限制，配置跨域访问策略。修改后需重启服务生效。",
         "enableNettyLog": "开启Netty日志",
         "enableNettyLogTooltip": "建议仅在调试时开启，默认关闭。"
-      }
-    },
-    "exportModal": {
-      "title": "导出",
-      "format": "格式",
-      "fields": {
-        "endpoint": "路径",
-        "summary": "名称"
-      },
-      "notifications": {
-        "exportSuccess": "导出成功"
       }
     }
   },

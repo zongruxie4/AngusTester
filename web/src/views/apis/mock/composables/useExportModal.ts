@@ -146,7 +146,7 @@ export function useExportModal (projectId: string, mockService: any) {
       }
 
       // Show success notification
-      notification.success(t('mock.exportModal.notifications.exportSuccess'));
+      notification.success(t('actions.tips.exportSuccess'));
     } finally {
       loading.value = false;
     }

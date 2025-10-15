@@ -47,11 +47,11 @@ export function useGridColumns () {
    */
   const formatTabs = [
     {
-      name: t('mock.detail.requestRecord.formatOptions.beautify'),
+      name: t('actions.beautify'),
       value: 'pretty'
     },
     {
-      name: t('mock.detail.requestRecord.formatOptions.raw'),
+      name: t('actions.raw'),
       value: 'raw'
     },
     {

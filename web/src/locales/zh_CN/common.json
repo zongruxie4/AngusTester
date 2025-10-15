@@ -496,6 +496,8 @@
     "copy": "复制",
     "publish": "发布",
     "extract": "提取",
+    "beautify": "美化格式",
+    "raw": "原生格式",
     "preview": "预览",
     "use": "使用",
     "cover": "覆盖",
@@ -573,6 +575,7 @@
       "startFailed": "启动失败",
       "stopSuccess": "停止成功",
       "stopFailed": "停止失败",
+      "exportSuccess": "导出成功",
       "completeSuccess": "完成成功",
       "processSuccess": "处理成功",
       "cancelSuccess": "取消成功",
@@ -627,7 +630,8 @@
   },
   "pagination": {
     "items": "条",
-    "pageInfo": "页数 {current}/{totalPage}"
+    "pageInfo": "页数 {current}/{totalPage}",
+    "totalPageInfo": "共{total}条记录，第{current}/{totalPage}页"
   },
   "stats": {
     "items": "项"

@@ -1866,16 +1866,11 @@
         "allowExposeHeadersTooltip": "Response header fields accessible to clients, no restrictions by default."
       },
       "requestRecord": {
+        "hints": "Mock api call logs, max 3 per second, 100 records per interface. Enable/disable logging in \"Settings\"->\"Send request log\". Enabling may affect performance.",
         "apiName": "Api Name",
         "requestId": "Request ID",
         "requestTime": "Request Time",
-        "requestUrl": "Request URL",
-        "formatOptions": {
-          "beautify": "Beautify",
-          "raw": "Raw",
-          "preview": "Preview"
-        },
-        "hints": "Mock interface call logs, max 3 per second, 100 records per interface. Enable/disable logging in \"Settings\"->\"Send request log\". Enabling may affect performance."
+        "requestUrl": "Request URL"
       },
       "log": {
         "lineOptions": {
@@ -1890,9 +1885,6 @@
         "logFile": "Log File:",
         "browseLog": "Browse Log:",
         "autoRefresh": "Auto Refresh:"
-      },
-      "activity": {
-        "pageInfo": "Total {total} records, page {current} / {totalPage}"
       },
       "monitor": {
         "apiName": "Api Name",
@@ -1917,16 +1909,6 @@
         "corsTooltip": "Resolve browser cross-origin access restrictions and configure cross-origin access policies. Restart service after changes.",
         "enableNettyLog": "Enable Netty log",
         "enableNettyLogTooltip": "Recommended for debug mode only, disabled by default."
-      }
-    },
-    "exportModal": {
-      "format": "Format",
-      "fields": {
-        "endpoint": "Path",
-        "summary": "Name"
-      },
-      "notifications": {
-        "exportSuccess": "Export successfully"
       }
     }
   },

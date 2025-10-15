@@ -62,12 +62,12 @@ watch(() => props.visible, handleExport, {
   <Modal
     :visible="props.visible"
     :width="800"
-    :title="t('mock.exportModal.title')"
+    :title="t('actions.title')"
     @cancel="handleCancel"
     @ok="handleOk">
     <Spin :spinning="loading">
       <div class="flex items-center">
-        <span>{{ t('mock.exportModal.format') }}<Colon class="ml-1 mr-3.5" /></span>
+        <span>{{ t('common.format') }}<Colon class="ml-1 mr-3.5" /></span>
         <RadioGroup
           v-model:value="format"
           :options="formatTypes">
@@ -79,8 +79,8 @@ watch(() => props.visible, handleExport, {
         class="mt-2"
         mode="multiple"
         :fields=" [
-          { key: 'endpoint', name: t('mock.exportModal.fields.endpoint') },
-          { key: 'summary', name: t('mock.exportModal.fields.summary') }
+          { key: 'endpoint', name: t('common.path') },
+          { key: 'summary', name: t('common.name') }
         ]"
         treeLabel=""
         :treeProps="treeProps"

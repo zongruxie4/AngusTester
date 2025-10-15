@@ -496,6 +496,8 @@
     "copy": "Copy",
     "publish": "Publish",
     "extract": "Extract",
+    "beautify": "Beautify",
+    "raw": "Raw",
     "preview": "Preview",
     "use": "Use",
     "cover": "Cover",
@@ -573,6 +575,7 @@
       "startFailed": "Failed to start",
       "stopSuccess": "Stop successful",
       "stopFailed": "Failed to stop",
+      "exportSuccess": "Export successful",
       "completeSuccess": "Successfully completed",
       "processSuccess": "Process successful",
       "cancelSuccess": "Cancel successful",
@@ -627,7 +630,8 @@
   },
   "pagination": {
     "items": "Items",
-    "pageInfo": "Page {current}/{totalPage}"
+    "pageInfo": "Page {current}/{totalPage}",
+    "totalPageInfo": "Total {total} records, page {current}/{totalPage}"
   },
   "stats": {
     "items": "Items"

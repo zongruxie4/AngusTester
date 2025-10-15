@@ -33,7 +33,7 @@ const {
 const showTotal = (totalNum: number) => {
   const pageSize = params.value.pageSize || 20;
   const totalPage = Math.ceil(totalNum / pageSize);
-  return t('mock.detail.activity.pageInfo', { total: totalNum, current: params.value.pageNo, totalPage });
+  return t('pagination.totalPageInfo', { total: totalNum, current: params.value.pageNo, totalPage });
 };
 
 // Transform activities to match ActivityInfo's ActiveObj interface
