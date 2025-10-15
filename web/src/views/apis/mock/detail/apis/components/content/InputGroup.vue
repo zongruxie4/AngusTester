@@ -220,7 +220,7 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="handleAddQuery">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.http.queryParameter') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.queryParameter') }}</span>
         </div>
       </Button>
       <Button
@@ -228,7 +228,7 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="handleAddHeader">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.http.requestHeader') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.requestHeader') }}</span>
         </div>
       </Button>
       <Button
@@ -236,14 +236,14 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="handleAddCookie">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.http.cookie') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.cookie') }}</span>
         </div>
       </Button>
     </div>
 
     <PureFormInput
       ref="queryFormRef"
-      :label="t('protocol.http.queryParameter')"
+      :label="t('protocol.queryParameter')"
       class="mt-4"
       :fielaNames="fielaNames"
       :value="queryParameters.map(item => ({ name: item.name, value: item.value }))"
@@ -251,7 +251,7 @@ const fielaNames = { label: 'name', value: 'value' };
 
     <SelectInputForm
       ref="headerFormRef"
-      :label="t('protocol.http.requestHeader')"
+      :label="t('protocol.requestHeader')"
       class="mt-4"
       enumKey="HttpRequestHeader"
       :fielaNames="fielaNames"
@@ -260,7 +260,7 @@ const fielaNames = { label: 'name', value: 'value' };
 
     <PureFormInput
       ref="cookieFormRef"
-      :label="t('protocol.http.cookie')"
+      :label="t('protocol.cookie')"
       class="mt-4"
       valueRequired
       :fielaNames="fielaNames"

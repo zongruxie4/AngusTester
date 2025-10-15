@@ -342,7 +342,7 @@ const TYPE_MAP = computed(() => ({
   BODY: t('httpPlugin.functionTestDetail.http.typeMap.body'),
   BODY_SIZE: t('httpPlugin.functionTestDetail.http.typeMap.bodySize'),
   SIZE: t('common.size'),
-  DURATION: t('httpPlugin.functionTestDetail.http.typeMap.duration')
+  DURATION: t('common.duration')
 }));
 
 // 断言条件

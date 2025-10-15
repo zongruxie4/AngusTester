@@ -163,11 +163,11 @@ watch(selectedRecord, (newRecord) => {
       </TabPane>
       <TabPane
         :key="1"
-        :tab="t('mock.detail.requestRecord.requestInfo')"
+        :tab="t('protocol.request')"
         class="flex-1 flex flex-col font-semibold"
         forceRender>
         <template v-if="detail">
-          <div class="text-3 text-text-title pl-1.25 mb-1">{{ t('mock.detail.requestRecord.requestHeader') }}</div>
+          <div class="text-3 text-text-title pl-1.25 mb-1">{{ t('protocol.requestHeader') }}</div>
           <Grid
             :columns="requestColumns"
             :dataSource="requestInfo"
@@ -176,7 +176,7 @@ watch(selectedRecord, (newRecord) => {
             labelSpacing="80px"
             marginBottom="0px"
             class="-ml-2 grid-row" />
-          <div class="text-3 text-text-title pl-1.25 mt-5 mb-1">{{ t('protocol.http.requestBody') }}</div>
+          <div class="text-3 text-text-title pl-1.25 mt-5 mb-1">{{ t('protocol.requestBody') }}</div>
           <template v-if="detail?.requestBody">
             <div class="bg-bg-table-head text-3 text-text-content p-2 rounded-sm" style="min-height: 34px;">
               {{ detail.requestBody }}
@@ -194,11 +194,11 @@ watch(selectedRecord, (newRecord) => {
       </TabPane>
       <TabPane
         :key="2"
-        :tab="t('mock.detail.requestRecord.responseInfo')"
+        :tab="t('protocol.response')"
         class="flex-1 flex flex-col font-semibold"
         forceRender>
         <template v-if="detail">
-          <div class="text-3 text-text-title pl-1.25 mb-1">{{ t('mock.detail.requestRecord.responseHeader') }}</div>
+          <div class="text-3 text-text-title pl-1.25 mb-1">{{ t('protocol.responseHeader') }}</div>
           <Grid
             :columns="responseColumns"
             :dataSource="responseInfo"
@@ -207,7 +207,7 @@ watch(selectedRecord, (newRecord) => {
             labelSpacing="80px"
             marginBottom="0px"
             class="-ml-2 grid-row" />
-          <div class="text-3 text-text-title pl-1.25 mt-5 mb-2">{{ t('mock.detail.requestRecord.responseBody') }}</div>
+          <div class="text-3 text-text-title pl-1.25 mt-5 mb-2">{{ t('protocol.responseBody') }}</div>
           <template v-if="detail?.responseBody">
             <div class="flex mb-3 flex-freeze-auto items-center rounded text-3 text-text-sub-content">
               <div

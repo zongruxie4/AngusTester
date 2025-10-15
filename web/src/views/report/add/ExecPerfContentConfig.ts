@@ -72,7 +72,7 @@ export const contentTreeData = [
         key: 'thread0'
       },
       {
-        title: t('reportAdd.execPerfContent.contentTree.response'),
+        title: t('protocol.response'),
         key: 'response'
       },
       {

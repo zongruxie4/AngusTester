@@ -957,7 +957,7 @@ const autoSize = {
                         <TabPane key="query">
                           <template #tab>
                             <Badge size="small" :count="queryErrorNumMap.get(id)">
-                              <div>{{ t('websocketPlugin.parameters.requestParameters') }}</div>
+                              <div>{{ t('protocol.requestParameter') }}</div>
                             </Badge>
                           </template>
                           <div class="space-y-2.5">
@@ -974,21 +974,15 @@ const autoSize = {
                                   :error="queryParameterNameErrorSet.has(item.id)"
                                   trimAll
                                   style="flex: 1 1 40%;"
-                                  :placeholder="t('websocketPlugin.parameters.parameterNamePlaceholder')"
+                                  :placeholder="t('common.placeholders.enterParameterName')"
                                   @change="queryParameterNameChange(id, item.id, index, $event)" />
                                 <ParamInput
                                   :value="item.value"
                                   :maxLength="4096"
                                   class="bg-white"
-                                  :placeholder="t('websocketPlugin.parameters.parameterValuePlaceholder')"
+                                  :placeholder="t('common.placeholders.enterParameterValue')"
                                   style="flex: 1 1 60%"
                                   @blur="queryParameterValueChange(id, item.id, index, $event)" />
-                                <!-- <Input
-                                  v-model:value="item.value"
-                                  :maxlength="4096"
-                                  trim
-                                  placeholder="参数值，最大支持4096个字符"
-                                  style="flex: 1 1 60%" /> -->
                               </div>
                               <div class="w-9 h-7 flex items-center justify-start">
                                 <Icon
@@ -1002,7 +996,7 @@ const autoSize = {
                         <TabPane key="header">
                           <template #tab>
                             <Badge size="small" :count="headerErrorNumMap.get(id)">
-                              <div>{{ t('websocketPlugin.parameters.requestHeaders') }}</div>
+                              <div>{{ t('protocol.requestHeader') }}</div>
                             </Badge>
                           </template>
                           <div class="space-y-2.5">

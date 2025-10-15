@@ -20,12 +20,12 @@ const props = withDefaults(defineProps<Props>(), {
 const panels:{id:string;name:string;key:'headers'|'body'}[] = [
   {
     id: 'headers',
-    name: t('xcan_scenarioMail.responseHeaders'),
+    name: t('protocol.responseHeader'),
     key: 'headers'
   },
   {
     id: 'body',
-    name: t('xcan_scenarioMail.responseBody'),
+    name: t('protocol.responseBody'),
     key: 'body'
   }
 ];

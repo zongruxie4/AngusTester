@@ -1801,7 +1801,7 @@ provide('selectHandle', closeDrawer);
               <TabPane key="request-body" :forceRender="true">
                 <template #tab>
                   <div :class="{ 'has-content': hasBodyContent }"></div>
-                  <span>{{ t('protocol.http.requestBody') }}</span>
+                  <span>{{ t('protocol.requestBody') }}</span>
                 </template>
                 <RequestBody
                   ref="requestBodyRef"
@@ -1966,7 +1966,7 @@ provide('selectHandle', closeDrawer);
                     }}</span>
                   </div>
                   <div class="flex items-center flex-nowrap whitespace-nowrap mr-7.5">
-                    <span class="mr-1">{{ t('service.apis.toolbar.duration') }}:</span>
+                    <span class="mr-1">{{ t('common.duration') }}:</span>
                     <span class>{{ responseState?.performance?.duration &&
                       (responseState?.performance?.duration.toFixed(0)
                         + 'ms') }}</span>

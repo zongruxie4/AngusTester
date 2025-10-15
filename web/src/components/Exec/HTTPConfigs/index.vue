@@ -549,7 +549,7 @@ defineExpose({
       v-model:value="httpMethod"
       class="w-25"
       :enumKey="HttpMethodEnum"
-      :placeholder="t('protocol.http.requestMethod')" />
+      :placeholder="t('protocol.requestMethod')" />
     <Input
       :value="url"
       :error="urlError"
@@ -569,7 +569,7 @@ defineExpose({
           size="small"
           :count="queryPathErrorNum">
           <div class="flex items-center space-x-0.5">
-            <div>{{ t('xcan_exec.requestParameters') }}</div>
+            <div>{{ t('protocol.requestParameter') }}</div>
             <div class="flex items-center space-x-0.5">
               <em>(</em>
               <span>{{ queryPathNum }}</span>
@@ -594,7 +594,7 @@ defineExpose({
           size="small"
           :count="headerErrorNum">
           <div class="flex items-center space-x-0.5">
-            <div>{{ t('xcan_exec.requestHeaders') }}</div>
+            <div>{{ t('protocol.requestHeader') }}</div>
             <div class="flex items-center space-x-0.5">
               <em>(</em>
               <span>{{ headerNum }}</span>
@@ -644,7 +644,7 @@ defineExpose({
     <TabPane key="body">
       <template #tab>
         <Badge v-if="hasRequestBody" color="green" />
-        <Badge size="small" :count="bodyErrorNum">{{ t('protocol.http.requestBody') }}</Badge>
+        <Badge size="small" :count="bodyErrorNum">{{ t('protocol.requestBody') }}</Badge>
       </template>
       <RequestBody
         ref="bodyRef"

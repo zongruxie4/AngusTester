@@ -54,6 +54,7 @@
     "link": "Link",
     "method": "Method",
     "path": "Path",
+    "methodPath": "Method/Path",
     "url": "URL",
     "required": "Required",
     "deprecated": "Deprecated",
@@ -207,6 +208,9 @@
     "enabledStatus": "Enabled",
     "bugLevel": "Bug level",
     "escapedBug": "Escaped bug",
+    "regexExpression": "Regular Expression",
+    "xpathExpression": "XPath Expression",
+    "jsonPathExpression": "JSONPath Expression",
     "counts": {
       "progress": "Progress",
       "totalCount": "Total",
@@ -283,6 +287,8 @@
       "inputReviewOpinion": "Enter review opinion, max 200 characters",
       "inputValue": "Enter value, max 4096 characters",
       "inputMockValue": "Enter value, mock functions supported, max 4096 characters",
+      "inputParameterName": "Enter parameter name, maximum 400 characters",
+      "inputParameterValue": "Enter parameter value, maximum 4096 characters",
       "inputProcessCount": "Processed count",
       "inputProcessFailedCount": "Failed count",
       "inputTestCount": "Test count",
@@ -423,6 +429,10 @@
     "modifiedAt": "modified at",
     "createdAt": "created at",
     "ungrouped": "Ungrouped",
+    "connected": "Connected",
+    "notConnected": "Not Connected",
+    "connectionSuccess": "Connection Success",
+    "connectionFailed": "Connection Failure",
     "used": "Used",
     "idle": "Idle",
     "free": "Free",
@@ -505,6 +515,7 @@
     "debug": "Debug",
     "start": "Start",
     "stop": "Stop",
+    "format": "Format",
     "generateData": "Generate Data",
     "experienceExec": "Experience Execution",
     "modifyExecConfig": "Modify Execution Config",
@@ -572,7 +583,11 @@
       "favouriteSuccess": "Favourite successfully",
       "followSuccess": "Follow successfully",
       "cancelFavouriteSuccess": "Cancel favourite successfully",
-      "cancelFollowSuccess": "Cancel follow successfully"
+      "cancelFollowSuccess": "Cancel follow successfully",
+      "connectionSuccess": "Connection successful",
+      "connectionFailed": "Connection failed",
+      "maxLengthError": "Maximum {max} characters supported, {current} characters entered",
+      "maxLengthSupported": "Maximum {max} characters supported"
     }
   },
   "home": {
@@ -679,16 +694,21 @@
     "port": "Port",
     "request": "Request",
     "response": "Response",
+    "responseDelay": "Response Delay",
     "statusCode": "Status Code",
     "contentType": "Content-Type",
-    "http": {
-      "name": "Http",
-      "method": "Method",
-      "requestMethod": "Request Method",
-      "requestBody": "Request Body",
-      "queryParameter": "Query Parameter",
-      "requestHeader": "Request Header",
-      "cookie": "Cookie"
-    }
+    "http": "Http",
+    "method": "Method",
+    "cookie": "Cookie",
+    "duration": "Duration",
+    "queryParameter": "Query Parameters",
+    "requestParameter": "Request Parameters",
+    "requestMethod": "Request Method",
+    "requestHeader": "Request Headers",
+    "requestBody": "Request Body",
+    "responseHeader": "Response Headers",
+    "responseBody": "Response Body",
+    "responseBodySize": "Response Body Size",
+    "responseSize": "Response Size"
   }
 }

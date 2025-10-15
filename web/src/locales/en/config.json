@@ -297,8 +297,7 @@
         "role": "Role",
         "portRangeTip": "Please enter port number range between 1 ~ 65535",
         "selectRole": "Please select role",
-        "connectionSuccess": "Connection successful",
-        "connectionFailed": "Connection failed, please check and re-fill node information before testing connection again",
+        "connectionFailedAndRetry": "Connection failed, please check and re-fill node information before testing connection again",
         "estimatedTime": "Estimated to take one minute",
         "installSuccess": "Installation successful",
         "updateNodeSuccess": "Update node successful",
@@ -376,12 +375,8 @@
           "applicationNode": "Application Node"
         },
         "nodeStatus": {
-          "agentInstallStatus": "Agent",
-          "connectionStatus": "Connected",
-          "installed": "Installed",
-          "notInstalled": "Not Installed",
-          "connected": "Yes",
-          "notConnected": "No"
+          "agentInstallStatus": "Install Agent",
+          "connectionStatus": "Connect Agent"
         },
         "viewItem": {
           "intranetIP": "Intranet IP: ",
@@ -483,12 +478,6 @@
           "accessPort": "Access Port"
         }
       },
-      "status": {
-        "installed": "Installed",
-        "notInstalled": "Not Installed",
-        "connected": "Connected",
-        "notConnected": "Not Connected"
-      },
       "chartOptions": {
         "timeOptions": {
           "threeMinutes": "Last 3 minutes",
@@ -548,6 +537,7 @@
   },
   "proxy": {
     "title": "Proxy",
+    "proxyConfig": "Proxy Configuration",
     "hints": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data. You can choose a suitable proxy service according to your network environment.",
     "types": {
       "noProxy": "No Proxy",
@@ -559,6 +549,10 @@
       "cloudProxy": "Cloud Proxy",
       "cloudProxyDescription": "Request interfaces through AngusTester cloud server nodes. Note: Cannot access customer intranet service addresses."
     },
+    "message": {
+      "serverProxyNotConfigured": "Server proxy not configured or enabled, please check 'Configuration -> Proxy'",
+      "proxyConnectionFailed": "Proxy connection failed, please check if the proxy service is running."
+    },
     "download": {
       "title": "Download Proxy Program",
       "options": {
@@ -568,7 +562,7 @@
         "manualInstallPackage": "Manual Install Package"
       }
     },
-    "config": {
+    "serverConfig": {
       "title": "Server Request Proxy Configuration",
       "labels": {
         "enable": "Enable Proxy",
@@ -582,12 +576,6 @@
         "inputHost": "Please enter host",
         "inputPort": "Please enter port number, range 1~65535"
       }
-    },
-    "status": {
-      "connected": "Connected",
-      "notConnected": "Not Connected",
-      "connectionSuccess": "Connection successful",
-      "connectionFailed": "Connection failed"
     },
     "messages": {
       "proxyConfigModifiedSuccess": "Proxy configuration modified successfully"

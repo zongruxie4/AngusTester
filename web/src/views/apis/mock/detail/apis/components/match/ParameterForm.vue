@@ -308,9 +308,9 @@ const placeholderMap = computed(() => {
     if (emptyConditions.includes(condition)) {
       map[id] = '';
     } else if (condition === FullMatchCondition.REG_MATCH) {
-      map[id] = t('mock.detail.apis.components.match.regexExpression');
+      map[id] = t('common.regexExpression');
     } else {
-      map[id] = t('mock.detail.apis.components.match.parameterValuePlaceholder');
+      map[id] = t('common.placeholders.enterParameterValue');
     }
   }
 
@@ -358,7 +358,7 @@ defineExpose({
 </script>
 <template>
   <div v-if="!!idList.length" class="leading-5">
-    <div class="flex items-center mb-0.5">{{ t('mock.detail.apis.components.match.queryParams') }}</div>
+    <div class="flex items-center mb-0.5">{{ t('protocol.queryParameter') }}</div>
     <div class="space-y-2">
       <div
         v-for="(item,index) in idList"
@@ -371,7 +371,7 @@ defineExpose({
             :error="nameErrorSet.has(item)"
             style="flex: 0 0 calc((100% - 200px) * 2/5);"
             trim
-            :placeholder="t('mock.detail.apis.components.match.parameterNamePlaceholder')"
+            :placeholder="t('common.placeholders.enterParameterName')"
             @change="handleNameChange($event,item)" />
           <SelectEnum
             :value="dataMap[item].condition"

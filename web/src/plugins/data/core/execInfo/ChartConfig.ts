@@ -5,7 +5,7 @@ const t = I18nInstance?.global?.t || ((value: string): string => value);
 
 export const allCvsKeys = ['duration', 'errors', 'iterations', 'n', 'operations', 'transactions', 'readBytes', 'writeBytes', 'ops', 'tps', 'brps', 'bwps', 'tranMean', 'tranMin', 'tranMax', 'tranP50', 'tranP75', 'tranP90', 'tranP95', 'tranP99', 'tranP999', 'errorRate', 'threadPoolSize', 'threadPoolActiveSize', 'threadMaxPoolSize'];
 export const allCvsNames = {
-  duration: t('xcan_exec_chartConfig.duration'),
+  duration: t('common.duration'),
   errors: t('xcan_exec_chartConfig.errors'),
   iterations: t('xcan_exec_chartConfig.iterations'),
   n: t('xcan_exec_chartConfig.sampleCount'),

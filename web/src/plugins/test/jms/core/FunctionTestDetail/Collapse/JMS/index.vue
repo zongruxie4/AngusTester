@@ -162,7 +162,7 @@ const showBasicInfo = computed(() => {
                 <span class="text-theme-sub-content">{{ httpStatus }}</span>
               </div>
               <div class="mr-5">
-                <span class="mr-0.5">{{ t('jmsPlugin.functionTestDetailJms.duration') }}<Colon /></span>
+                <span class="mr-0.5">{{ t('common.duration') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ runtime }}</span>
               </div>
               <div class="mr-5">
@@ -192,7 +192,7 @@ const showBasicInfo = computed(() => {
         <TabPane key="general" :tab="t('jmsPlugin.functionTestDetailJms.tabs.general')">
           <RequestHeaders :value="httpContent" class="py-3" />
         </TabPane>
-        <TabPane key="requestBody" :tab="t('protocol.http.requestBody')">
+        <TabPane key="requestBody" :tab="t('protocol.requestBody')">
           <RequestBody :value="httpContent" class="py-3" />
         </TabPane>
         <TabPane key="response" :tab="t('protocol.response')">

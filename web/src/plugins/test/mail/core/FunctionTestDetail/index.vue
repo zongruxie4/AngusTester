@@ -173,7 +173,7 @@ const timeTexts = computed(() => [
         <div class="text-text-title text-4 font-semibold" style="color:rgba(129, 154, 218, 100%);">
           {{ duration?.[1] }}<span class="text-3.25 ml-0.5">{{ duration?.[2] }}</span>
         </div>
-        <div class="exec-basic-data-card-title">{{ t('httpPlugin.functionTestDetail.basicInfo.duration') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('common.duration') }}</div>
       </div>
 
       <div
@@ -195,7 +195,7 @@ const timeTexts = computed(() => [
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 206, 92, 100%);"></em>
           <span>{{ planRequestNum }}</span>
         </div>
-        <div class="exec-basic-data-card-title">{{ t('httpPlugin.functionTestDetail.basicInfo.request') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('protocol.request') }}</div>
       </div>
 
       <div

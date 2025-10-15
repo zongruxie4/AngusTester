@@ -177,7 +177,6 @@
     },
     "chartConfig": {
       "names": {
-        "duration": "Duration",
         "errors": "Error Count",
         "iterations": "Iteration Count",
         "n": "Sampling Count",

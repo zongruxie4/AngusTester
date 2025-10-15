@@ -374,15 +374,15 @@ const onEllipsis = () => { };// 删除该方法不会触发省略
 const ellipsis = { rows: 1, expandable: false, onEllipsis };
 
 const TYPE_MAP = {
-  STATUS: t('xcan_assertionsResult.responseStatusCode'),
-  HEADER: t('xcan_assertionsResult.responseHeader'),
-  BODY: t('xcan_assertionsResult.responseBody'),
-  BODY_SIZE: t('xcan_assertionsResult.responseBodySize'),
-  SIZE: t('xcan_assertionsResult.responseSize'),
-  DURATION: t('xcan_assertionsResult.duration')
+  STATUS: t('protocol.statusCode'),
+  HEADER: t('protocol.responseHeader'),
+  BODY: t('protocol.responseBody'),
+  BODY_SIZE: t('protocol.responseBodySize'),
+  SIZE: t('protocol.responseSize'),
+  DURATION: t('common.duration')
 };
 
-// 断言条件
+// 断言条件 TODO 使用枚举代替
 const CONDITION_MAP = {
   CONTAIN: t('xcan_assertionsResult.contain'),
   EQUAL: t('xcan_assertionsResult.equal'),

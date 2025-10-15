@@ -161,14 +161,14 @@ defineExpose({
           :error="nameErrorSet.has(item)"
           trim
           style="flex: 1 1 calc((100% - (8px))*2/5);"
-          :placeholder="t('websocketPlugin.uiConfig.websocketConfigs.paramsInput.parameterNamePlaceholder')"
+          :placeholder="t('common.placeholders.enterParameterName')"
           @blur="nameBlur($event,index)"
           @change="nameChange($event,item,index)" />
         <Input
           v-model:value="dataMap[item].value"
           :maxlength="4096"
           trim
-          :placeholder="t('websocketPlugin.uiConfig.websocketConfigs.paramsInput.parameterValuePlaceholder')"
+          :placeholder="t('common.placeholders.enterParameterValue')"
           style="flex: 1 1 calc((100% - (8px))*3/5);" />
       </div>
       <div class="w-9 h-7 flex items-center justify-start">

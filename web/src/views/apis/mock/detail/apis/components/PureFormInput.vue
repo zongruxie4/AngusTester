@@ -207,7 +207,7 @@ defineExpose({
             :error="nameErrorSet.has(item)"
             style="flex: 1 1 40%;"
             trim
-            :placeholder="t('mock.detail.apis.components.pureFormInput.parameterNamePlaceholder')"
+            :placeholder="t('common.placeholders.inputParameterName')"
             @change="handleNameChange($event, item)" />
           <Input
             :value="dataMap[item].value"
@@ -215,7 +215,7 @@ defineExpose({
             :error="valueErrorSet.has(item)"
             trim
             style="flex: 1 1 60%;"
-            :placeholder="t('mock.detail.apis.components.pureFormInput.parameterValuePlaceholder')"
+            :placeholder="t('common.placeholders.enterParameterValue')"
             @change="handleValueChange($event, item)" />
         </Composite>
         <div class="flex-shrink-0 space-x-1">

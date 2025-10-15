@@ -51,7 +51,7 @@ watch(checkedList, (newValue) => {
       </Input>
       <div class="flex py-0.5 bg-bg-table-head text-text-title text-3 font-normal mb-1 pl-7.5">
         <div class="w-20 mr-2">
-          {{ t('protocol.http.method') }}
+          {{ t('protocol.method') }}
         </div>
         <div class="w-40 mr-2">
           URL

@@ -174,7 +174,7 @@ const failMessage = (httpContent) => {
                   <span class="text-theme-sub-content">{{ httpContent?.content?.response?.status || '--' }}</span>
                 </div>
                 <div class="mr-5">
-                  <span class="mr-0.5">{{ t('xcan_scenarioDebugResult.duration') }}<Colon /></span>
+                  <span class="mr-0.5">{{ t('common.duration') }}<Colon /></span>
                   <span class="text-theme-sub-content"> {{ getRuntime(httpContent) }}</span>
                 </div>
                 <div class="mr-5">
@@ -199,7 +199,7 @@ const failMessage = (httpContent) => {
           <TabPane key="general" :tab="t('xcan_scenarioDebugResult.basic')">
             <RequestHeaders :value="httpContent" class="py-3" />
           </TabPane>
-          <TabPane key="requestBody" :tab="t('protocol.http.requestBody')">
+          <TabPane key="requestBody" :tab="t('protocol.requestBody')">
             <RequestBody :value="httpContent" class="py-3" />
           </TabPane>
           <TabPane key="response" :tab="t('protocol.response')">

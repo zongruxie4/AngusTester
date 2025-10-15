@@ -297,8 +297,7 @@
         "role": "角色",
         "portRangeTip": "请填写端口号范围在1 ~ 65535之间",
         "selectRole": "请选择角色",
-        "connectionSuccess": "连接成功",
-        "connectionFailed": "连接失败，请检查并重新填写节点信息后再次测试连接",
+        "connectionFailedAndRetry": "连接失败，请检查并重新填写节点信息后再次测试连接",
         "estimatedTime": "预计需要一分钟",
         "installSuccess": "安装成功",
         "updateNodeSuccess": "更新节点成功",
@@ -374,12 +373,8 @@
           "applicationNode": "应用节点"
         },
         "nodeStatus": {
-          "agentInstallStatus": "代理状态",
-          "connectionStatus": "连接状态",
-          "installed": "已安装",
-          "notInstalled": "未安装",
-          "connected": "已连接",
-          "notConnected": "未连接"
+          "agentInstallStatus": "安装代理",
+          "connectionStatus": "连接代理"
         },
         "viewItem": {
           "intranetIP": "内网IP: ",
@@ -482,12 +477,6 @@
           "accessPort": "访问端口"
         }
       },
-      "status": {
-        "installed": "已安装",
-        "notInstalled": "未安装",
-        "connected": "已连接",
-        "notConnected": "未连接"
-      },
       "chartOptions": {
         "timeOptions": {
           "threeMinutes": "最近3分钟",
@@ -547,6 +536,7 @@
   },
   "proxy": {
     "title": "代理",
+    "proxyConfig": "代理配置",
     "hints": "通过设置请求代理，可以绕过跨域限制，使得请求能够成功发送到目标服务器。使用代理可以轻松捕获和查看发送和接收的请求和响应。这对于调试 API 调用、检查请求头、请求体和响应数据非常有用。您可根据自身的网络环境选择适合的代理服务。",
     "types": {
       "noProxy": "无代理",
@@ -558,6 +548,10 @@
       "cloudProxy": "云代理",
       "cloudProxyDescription": "通过AngusTester云服务器节点请求接口，注意：无法访问客户内网服务地址。"
     },
+    "message": {
+      "serverProxyNotConfigured": "未配置或启用服务端代理，请检查\"配置->代理\"",
+      "proxyConnectionFailed": "代理连接失败，请检查代理服务是否已运行。"
+    },
     "download": {
       "title": "下载代理程序",
       "options": {
@@ -567,7 +561,7 @@
         "manualInstallPackage": "手动安装包"
       }
     },
-    "config": {
+    "serverConfig": {
       "title": "服务端请求代理配置",
       "labels": {
         "enable": "启用代理",
@@ -581,12 +575,6 @@
         "inputHost": "请输入host",
         "inputPort": "请输入端口号,范围1~65535"
       }
-    },
-    "status": {
-      "connected": "已连接",
-      "notConnected": "未连接",
-      "connectionSuccess": "连接成功",
-      "connectionFailed": "连接失败"
     },
     "messages": {
       "proxyConfigModifiedSuccess": "代理配置修改成功"

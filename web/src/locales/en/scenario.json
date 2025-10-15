@@ -181,7 +181,6 @@
     },
     "detail": {
       "successRate": "Success Rate",
-      "responseDelay": "Response Delay",
       "executionRecords": "Execution Records",
       "executionRecordsHint": "Note: Only shows the last 100 monitoring records.",
       "lastModified": "Last modified at",

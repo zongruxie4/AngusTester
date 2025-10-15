@@ -616,8 +616,8 @@ const inputProps = {
                   :error="inoutValueErrorMap[item]"
                   allowClear
                   trim
-                  :title="argumentsMap[item].value || t('jdbcPlugin.UIConfigJdbc.jdbcConfig.parameterValuePlaceholder')"
-                  :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.parameterValuePlaceholder')"
+                  :title="argumentsMap[item].value || t('common.placeholders.enterParameterValue')"
+                  :placeholder="t('common.placeholders.enterParameterValue')"
                   @change="valueChange(item)" />
               </Validate>
               <div class="flex-shrink-0 flex items-center h-7 space-x-2">

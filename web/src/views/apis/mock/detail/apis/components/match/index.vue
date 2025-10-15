@@ -27,20 +27,17 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// ==================== Constants ====================
 /**
  * <p>Maximum number of parameters allowed for matching</p>
  * <p>Prevents excessive parameter configuration</p>
  */
 const MAX_PARAMETERS_NUM = 20;
 
-// ==================== Template Refs ====================
 const pathFormRef = ref();
 const queryFormRef = ref();
 const headerFormRef = ref();
 const requestBodyRef = ref();
 
-// ==================== Reactive State ====================
 /**
  * <p>List of query parameter IDs for tracking</p>
  * <p>Used to manage query form state</p>
@@ -53,7 +50,6 @@ const queryIds = ref<string[]>([]);
  */
 const headerIds = ref<string[]>([]);
 
-// ==================== Event Handlers ====================
 /**
  * <p>Handles add path button click</p>
  * <p>Adds a new path matching condition</p>
@@ -122,7 +118,6 @@ const handleHeaderFormChange = (ids: string[]) => {
   headerIds.value = ids;
 };
 
-// ==================== Utility Methods ====================
 /**
  * <p>Checks if more parameters can be added</p>
  * <p>Validates against maximum parameter limit</p>
@@ -138,7 +133,6 @@ const canAddParameters = (): boolean => {
   return true;
 };
 
-// ==================== Computed Properties ====================
 /**
  * <p>Total number of parameter IDs across all forms</p>
  * <p>Calculates the sum of query and header parameter counts</p>
@@ -196,7 +190,6 @@ const body = computed(() => {
   return props.value?.body;
 });
 
-// ==================== Public API ====================
 /**
  * <p>Exposes component methods and data to parent components</p>
  * <p>Provides getData and isValid methods for external access</p>
@@ -291,7 +284,6 @@ defineExpose({
         errorNum++;
       }
     }
-
     return !errorNum;
   }
 });
@@ -312,7 +304,7 @@ defineExpose({
         size="small"
         @click="handleAddQuery">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.queryParams') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.queryParameter') }}</span>
         </div>
       </Button>
       <Button
@@ -320,7 +312,7 @@ defineExpose({
         size="small"
         @click="handleAddHeader">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.header') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.requestHeader') }}</span>
         </div>
       </Button>
       <Button
@@ -328,7 +320,7 @@ defineExpose({
         size="small"
         @click="handleAddRequestBody">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.http.requestBody') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.requestBody') }}</span>
         </div>
       </Button>
     </div>

@@ -6,7 +6,6 @@
     },
     "chartConfig": {
       "names": {
-        "duration": "时长",
         "errors": "错误数",
         "iterations": "迭代数",
         "n": "采样数",
@@ -268,9 +267,6 @@
           "pathFormatError": "path格式错误"
         },
         "tabs": {
-          "requestParams": "请求参数",
-          "requestHeaders": "请求头",
-          "cookie": "Cookie",
           "authorization": "Authorization",
           "parameterization": "参数化",
           "assertion": "断言"
@@ -302,7 +298,6 @@
             "duplicateName": "名称重复",
             "namePlaceholder": "参数名称，最长100个字符",
             "locationPlaceholder": "提取位置",
-            "parameterNamePlaceholder": "提取参数名称，最长100个字符",
             "defaultValuePlaceholder": "提取缺省值（可选），最长4096个字符",
             "expressionPlaceholder": "提取表达式，最长1024个字符",
             "matchItemPlaceholder": "匹配项（可选），范围0-2000"
@@ -559,32 +554,14 @@
     },
     "functionTestDetail": {
       "basicInfo": {
-        "duration": "运行时间",
         "iteration": "迭代数",
-        "request": "请求数",
         "responseTime": "响应时间",
         "assertion": "断言"
       },
       "collapse": {
         "iteration": "第{iteration}次迭代"
       },
-      "ftp": {
-        "duration": "耗时",
-        "request": "请求",
-        "response": "响应"
-      },
       "http": {
-        "tabs": {
-          "general": "基本",
-          "response": "响应",
-          "timeline": "时间线",
-          "assertions": "断言结果"
-        },
-        "headers": {
-          "general": "常规",
-          "request": "请求头",
-          "response": "响应头"
-        },
         "timeline": {
           "dnsLookup": "域名解析(DNS lookup)",
           "tcpConnection": "TCP连接",
@@ -623,8 +600,7 @@
           "header": "响应头",
           "body": "响应体",
           "bodySize": "响应体大小",
-          "size": "响应大小",
-          "duration": "耗时"
+          "size": "响应大小"
         },
         "conditionMap": {
           "contain": "包含",
@@ -715,9 +691,6 @@
       }
     },
     "FunctionTestDetailJdbc": {
-      "duration": "耗时",
-      "requestParameters": "请求参数",
-      "assertionResults": "断言结果",
       "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
       "executeConfig": "执行配置 > 插件配置",
       "closeIgnoreAssertion": "中关闭忽略断言选项。",
@@ -813,19 +786,12 @@
     },
     "functionTestDetail": {
       "basicInfo": {
-        "duration": "运行时间",
         "iteration": "迭代数",
-        "request": "请求数",
         "responseTime": "响应时间",
         "assertion": "断言"
       },
       "collapse": {
         "iteration": "第{iteration}次迭代"
-      },
-      "ftp": {
-        "duration": "耗时",
-        "request": "请求",
-        "response": "响应"
       }
     },
     "scriptConfig": {
@@ -1115,21 +1081,9 @@
       "messageCountPlaceholder": "消息数"
     },
     "functionTestDetailJms": {
-      "duration": "耗时",
-      "tabs": {
-        "general": "基本",
-        "response": "响应",
-        "timeline": "时间线",
-        "assertions": "断言结果"
-      },
       "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
       "executeConfig": "执行配置 > 插件配置",
       "closeIgnoreAssertion": "中关闭忽略断言选项。",
-      "requestHeaders": {
-        "general": "常规",
-        "requestHeaders": "请求头",
-        "responseHeaders": "响应头"
-      },
       "responseBody": {
         "beautifyFormat": "美化格式",
         "nativeFormat": "原生格式",
@@ -1299,11 +1253,6 @@
       "protocol": "协议",
       "totalEmails": "总共{count}个邮件",
       "readEmails": "读取{count}个邮件",
-      "duration": "耗时",
-      "request": "请求",
-      "response": "响应",
-      "responseHeaders": "响应头",
-      "responseBody": "响应体",
       "email": "邮件{index}",
       "requestContent": "请求内容"
     }
@@ -1379,10 +1328,6 @@
         "text": "文本",
         "emlFile": "eml文件",
         "attachment": "附件"
-      },
-      "tabs": {
-        "request": "请求",
-        "response": "响应"
       },
       "requestHeaders": {
         "headers": "请求头",
@@ -1624,10 +1569,6 @@
         "basedOnEOL": "基于EOL",
         "basedOnEOM": "基于EOM",
         "basedOnLengthPrefix": "基于长度前缀"
-      },
-      "tabs": {
-        "request": "请求",
-        "response": "响应"
       }
     },
     "form": {
@@ -1639,12 +1580,6 @@
       "title": "连接信息",
       "urlFormatError": "URL格式错误",
       "urlPlaceholder": "URL，最大支持2000个字符。例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive"
-    },
-    "parameters": {
-      "requestParameters": "请求参数",
-      "requestHeaders": "请求头",
-      "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-      "parameterValuePlaceholder": "参数值，最大支持4096个字符"
     },
     "messageMode": {
       "title": "消息模式",
@@ -1685,10 +1620,6 @@
         "urlPlaceholder": "请输入URL，例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive",
         "messageModePlaceholder": "消息模式"
       },
-      "parameters": {
-        "requestParameters": "请求参数",
-        "requestHeaders": "请求头"
-      },
       "sendInfo": {
         "title": "发送信息",
         "encodingPlaceholder": "发送信息编码"
@@ -1696,10 +1627,6 @@
       "assertion": {
         "title": "断言",
         "tooltip": "断言接收消息"
-      },
-      "paramsInput": {
-        "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-        "parameterValuePlaceholder": "参数值，最大支持4096个字符"
       }
     }
   },
@@ -1836,7 +1763,6 @@
     },
     "pushThirdStoreConfig": {
       "batchRows": "批量行数",
-      "requestParams": "请求参数",
       "authentication": "认证",
       "token": "令牌",
       "basicAuth": "Basic Auth",
@@ -1895,7 +1821,6 @@
     }
   },
   "xcan_exec_chartConfig": {
-    "duration": "时长",
     "errors": "错误数",
     "iterations": "迭代数",
     "sampleCount": "采样数",

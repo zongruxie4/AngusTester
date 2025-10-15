@@ -195,7 +195,7 @@ defineExpose({
     </div>
     <div class="flex flex-col ">
       <div class="mt-2 flex items-center">
-        {{ t('genDataPlugin.pushThirdStoreConfig.requestParams') }}
+        {{ t('protocol.requestParameter') }}
         <template v-if="formState.apisSecurity.length <= 9">
           <Icon
             icon="icon-tianjia"
@@ -237,7 +237,7 @@ defineExpose({
       </div>
     </div>
     <div>
-      <div class="mt-2">{{ t('protocol.http.requestBody') }}</div>
+      <div class="mt-2">{{ t('protocol.requestBody') }}</div>
       <div class="flex items-center space-x-2">
         <span>{{ t('protocol.contentType') }}</span>
         <RadioGroup

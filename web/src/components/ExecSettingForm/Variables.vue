@@ -238,15 +238,15 @@ defineExpose({
 const requestLocationOptions = [
   {
     value: '1',
-    message: t('xcan_execSettingForm.requestParameters')
+    message: t('protocol.requestParameter')
   },
   {
     value: '2',
-    message: t('xcan_execSettingForm.requestHeaders')
+    message: t('protocol.requestHeader')
   },
   {
     value: '3',
-    message: t('xcan_execSettingForm.cookie')
+    message: t('protocol.cookie')
   },
   {
     value: '4',
@@ -254,7 +254,7 @@ const requestLocationOptions = [
   },
   {
     value: '5',
-    message: t('protocol.http.requestBody')
+    message: t('protocol.requestBody')
   }
 ];
 </script>
@@ -321,7 +321,7 @@ const requestLocationOptions = [
             <template v-if="variable.type">
               <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('xcan_execSettingForm.extractionMethod') }}</div>
               <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_execSettingForm.parameterName') }}</div>
-              <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ variable.extraction.method.value === 'REGEX' ? t('xcan_execSettingForm.regexExpression') : t('xcan_execSettingForm.extractionExpression') }}</div>
+              <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ variable.extraction.method.value === 'REGEX' ? t('common.regexExpression') : t('xcan_execSettingForm.extractionExpression') }}</div>
               <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('common.defaultValue') }}</div>
             </template>
             <template v-else>

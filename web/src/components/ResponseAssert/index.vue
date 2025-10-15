@@ -42,15 +42,15 @@ const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEdito
 const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 
 const TYPE_MAP = {
-  STATUS: t('xcan_responseAssert.responseStatusCode'),
-  HEADER: t('xcan_responseAssert.responseHeader'),
-  BODY: t('xcan_responseAssert.responseBody'),
-  BODY_SIZE: t('xcan_responseAssert.responseBodySize'),
-  SIZE: t('xcan_responseAssert.responseSize'),
-  DURATION: t('xcan_responseAssert.duration')
+  STATUS: t('protocol.statusCode'),
+  HEADER: t('protocol.responseHeader'),
+  BODY: t('protocol.responseBody'),
+  BODY_SIZE: t('protocol.responseBodySize'),
+  SIZE: t('protocol.responseSize'),
+  DURATION: t('common.duration')
 };
 
-// 断言条件
+// 断言条件 TODO 使用枚举代替
 const CONDITION_MAP = {
   CONTAIN: t('xcan_responseAssert.contain'),
   EQUAL: t('xcan_responseAssert.equal'),

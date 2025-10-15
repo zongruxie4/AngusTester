@@ -373,7 +373,7 @@ const onResponse = async () => {
       });
       msgList.value.push({ type: 'connect', content: content, size: calculateStringSize(content), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
     } else {
-      notification.warning(t('service.apiWebSocket.messages.connectionFailed') + ': ' + (response.rawContent || ''));
+      notification.warning(t('status.connectionFailed') + ': ' + (response.rawContent || ''));
       msgList.value.push({ type: 'connectErr', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
     }
   }
@@ -590,7 +590,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
             </TabPane>
             <TabPane
               key="query"
-              :tab="t('service.apiWebSocket.labels.queryParams')"
+              :tab="t('protocol.queryParameter')"
               :forceRender="true">
               <SocketForm
                 ref="queryParamRef"
@@ -601,7 +601,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
             </TabPane>
             <TabPane
               key="header"
-              :tab="t('service.apiWebSocket.labels.requestHeader')"
+              :tab="t('protocol.requestHeader')"
               :forceRender="true">
               <SocketForm
                 ref="headerParamRef"
@@ -610,7 +610,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
                 in="header"
                 @change="changeHeader" />
             </TabPane>
-            <TabPane key="config" :tab="t('service.apiWebSocket.labels.settings')">
+            <TabPane key="config" :tab="t('common.setting')">
               <Config
                 :id="apiInfo.id"
                 v-model:value="apiInfo[requestSettingKey]"
@@ -629,7 +629,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
           <div v-show="isConnected" class="text-3 text-text-content mr-3 flex items-center">
             <span class="mr-7.5">{{ connectedDate }}</span>
             <Icon icon="icon-duihao" class="text-status-success" />
-            <span class="ml-1 leading-3">{{ t('service.apiWebSocket.status.connected') }}</span>
+            <span class="ml-1 leading-3">{{ t('status.connected') }}</span>
           </div>
         </template>
         <template #content="{activeMenu}">

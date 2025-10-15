@@ -137,7 +137,7 @@ defineExpose({
   <div class="leading-5">
     <div class="mb-0.5">
       <IconRequired />
-      <span>{{ t('mock.detail.apis.components.urlForm.methodPath') }}</span>
+      <span>{{ t('common.methodPath') }}</span>
     </div>
     <div class="flex items-center">
       <Composite>
@@ -146,7 +146,7 @@ defineExpose({
           :disabled="props.readonly"
           class="w-25 flex-shrink-0"
           enumKey="HttpMethod"
-          :placeholder="t('protocol.http.requestMethod')"
+          :placeholder="t('protocol.requestMethod')"
           @change="handleMethodChange">
           <template #option="record">
             <HttpMethodText :value="record.value" />
@@ -166,7 +166,7 @@ defineExpose({
           :disabled="props.readonly"
           trim
           class="flex-1"
-          :placeholder="t('mock.detail.apis.components.urlForm.maxLengthPlaceholder')"
+          :placeholder="t('actions.tips.maxLengthSupported', {max: '800'})"
           @blur="handleEndpointBlur"
           @change="handleEndpointChange" />
       </Composite>

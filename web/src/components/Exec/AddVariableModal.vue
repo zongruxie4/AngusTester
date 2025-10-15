@@ -272,7 +272,7 @@ const typeChange = () => {
           <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 24px;">{{ t('xcan_exec.extractionMethod') }}</div>
           <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_exec.extractionParameterName') }}</div>
           <template v-if="variable.extraction?.method?.value !=='EXACT_VALUE'">
-            <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ variable.extraction?.method?.value === 'REGEX'?t('xcan_exec.regexExpression'):t('xcan_exec.extractionExpression') }}</div>
+            <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ variable.extraction?.method?.value === 'REGEX'?t('common.regexExpression'):t('xcan_exec.extractionExpression') }}</div>
           </template>
           <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('common.defaultValue') }}</div>
           <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('common.service') }}</div>

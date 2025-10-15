@@ -188,7 +188,7 @@ const tableColumns = [
     dataIndex: 'name'
   },
   {
-    title: t('protocol.http.method'),
+    title: t('protocol.method'),
     dataIndex: 'method',
     width: 100,
     customRender: ({ text }) => text?.message

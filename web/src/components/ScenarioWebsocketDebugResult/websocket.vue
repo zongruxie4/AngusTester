@@ -172,7 +172,7 @@ const showBasicInfo = computed(() => {
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="showBasicInfo">
               <div class="mr-5 truncate">
-                <span class="mr-0.5">{{ t('xcan_scenarioDebugResult.duration') }}<Colon /></span>
+                <span class="mr-0.5">{{ t('common.duration') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ runtime }}</span>
               </div>
             </template>
@@ -198,7 +198,7 @@ const showBasicInfo = computed(() => {
         <TabPane key="request">
           <template #tab>
             <div>
-              <span>{{ t('xcan_scenarioDebugResult.request') }}</span>
+              <span>{{ t('protocol.request') }}</span>
               <span class="ml-0.75">({{ requestDataSize }})</span>
             </div>
           </template>
@@ -207,7 +207,7 @@ const showBasicInfo = computed(() => {
         <TabPane key="response">
           <template #tab>
             <div>
-              <span>{{ t('xcan_scenarioDebugResult.response') }}</span>
+              <span>{{ t('protocol.response') }}</span>
               <span class="ml-0.75">({{ responseSize }})</span>
             </div>
           </template>

@@ -575,7 +575,7 @@ defineExpose({
               <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/response.png" class="w-1/2 absolute top-0 right-0" />
                 <div :title="String(mockData.allResponse)" class="text-5 truncate">{{ mockData.allResponse }}</div>
-                <div>{{ t('kanban.dataAssets.categories.response') }}</div>
+                <div>{{ t('protocol.response') }}</div>
               </div>
               <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                 <img src="./image/pushback.png" class="w-1/2 absolute top-0 right-0" />
@@ -636,7 +636,7 @@ defineExpose({
                 <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/response.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(mockData.allResponse)" class="text-5 truncate">{{ mockData.allResponse }}</div>
-                  <div>{{ t('kanban.dataAssets.categories.response') }}</div>
+                  <div>{{ t('protocol.response') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/pushback.png" class="w-1/2 absolute top-0 right-0" />
@@ -735,7 +735,7 @@ defineExpose({
                 <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/response.png" class="w-1/2 absolute top-0 right-0" />
                   <div :title="String(mockData.allResponse)" class="text-5 truncate">{{ mockData.allResponse }}</div>
-                  <div>{{ t('kanban.dataAssets.categories.response') }}</div>
+                  <div>{{ t('protocol.response') }}</div>
                 </div>
                 <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/pushback.png" class="w-1/2 absolute top-0 right-0" />
@@ -793,7 +793,7 @@ defineExpose({
                   <div class="flex-1 text-center h-full bg-board-qing flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/response.png" class="w-1/2 absolute top-0 right-0" />
                     <div :title="String(mockData.allResponse)" class="text-5 truncate">{{ mockData.allResponse }}</div>
-                    <div>{{ t('kanban.dataAssets.categories.response') }}</div>
+                    <div>{{ t('protocol.response') }}</div>
                   </div>
                   <div class="flex-1 text-center h-full bg-board-yellow flex flex-col justify-center rounded relative min-w-0">
                     <img src="./image/pushback.png" class="w-1/2 absolute top-0 right-0" />

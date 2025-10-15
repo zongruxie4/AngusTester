@@ -27,7 +27,7 @@ export const TOOLBAR_EXTRA_MENUITEMS: {
 }[] = [
   {
     key: 'duration',
-    name: t('commonPlugin.menuData.toolbar.duration')
+    name: t('common.duration')
   },
   {
     key: 'size',

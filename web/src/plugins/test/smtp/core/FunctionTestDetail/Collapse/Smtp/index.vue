@@ -101,7 +101,7 @@ const failMessage = computed(() => {
             </template>
             <template v-else>
               <div class="mr-5">
-                <span class="mr-0.5">{{ t('smtpPlugin.functionTestDetailSmtp.metrics.duration') }}<Colon /></span>
+                <span class="mr-0.5">{{ t('common.duration') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ runtime }}</span>
               </div>
               <div class="mr-5">
@@ -123,10 +123,10 @@ const failMessage = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-        <TabPane key="general" :tab="t('smtpPlugin.functionTestDetailSmtp.tabs.request')">
+        <TabPane key="general" :tab="t('protocol.request')">
           <RequestHeaders :value="smtpContent" class="py-3" />
         </TabPane>
-        <TabPane key="response" :tab="t('smtpPlugin.functionTestDetailSmtp.tabs.response')">
+        <TabPane key="response" :tab="t('protocol.response')">
           <NoData
             v-if="!smtpContent?.content?.response?.data"
             size="small"

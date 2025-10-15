@@ -338,7 +338,7 @@ const inputProps = {
           <span>{{ t('protocol.statusCode') }}</span>
         </div>
         <div class="flex items-center h-7">
-          <span>{{ t('mock.detail.apis.components.content.responseDelay') }}</span>
+          <span>{{ t('protocol.responseDelay') }}</span>
         </div>
       </div>
       <div class="space-y-2">
@@ -371,7 +371,7 @@ const inputProps = {
         :disabled="isAddHeaderDisabled"
         @click="handleAddResponseHeader">
         <Icon icon="icon-jia" class="mr-1" />
-        <span>{{ t('mock.detail.apis.components.content.responseHeader') }}</span>
+        <span>{{ t('protocol.responseHeader') }}</span>
       </Button>
       <Tooltip>
         <template #title>{{ t('mock.detail.apis.components.content.maxHeadersTooltip', { max: MAX_HEADER_NUM }) }}</template>
@@ -393,7 +393,7 @@ const inputProps = {
       :readonly="codeEditorReadonly"
       class="mt-4.5"
       @clear="handleCodeEditorClear">
-      <template #leftextra><div>{{ t('mock.detail.apis.components.content.responseBody') }}</div></template>
+      <template #leftextra><div>{{ t('protocol.responseBody') }}</div></template>
       <template #rightextra>
         <FunctionsButton>
           <Button

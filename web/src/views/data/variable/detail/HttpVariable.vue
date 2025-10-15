@@ -399,7 +399,7 @@ const httpConfigsRef = ref();
                   </div>
                   <Input
                     v-model:value="parameterName"
-                    :placeholder="t('dataCommon.common.parameterNamePlaceholder')"
+                    :placeholder="t('common.placeholders.enterParameterName')"
                     class="w-full-20.5"
                     trimAll
                     :maxlength="400" />
