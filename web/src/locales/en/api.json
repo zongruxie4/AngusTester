@@ -306,7 +306,6 @@
     },
     "case": {
       "updateNameSuccess": "Modify name successfully",
-      "searchPlaceholder": "Search name",
       "hints": "Currently added {num} cases, each interface supports a maximum of 100 cases.",
       "addCaseAction": "Add Case",
       "execCaseAction": "Execute Test",
@@ -384,7 +383,6 @@
     "oas": {
       "comp": "Component",
       "hints": "Components can be used to define reusable object collections. The supported component types include: data model, response, parameter, example, request body, request body, header, and security scheme. Note: when a component is not referenced by an API attribute, it has no effect on the API.",
-      "searchPlaceholder": "Search component name, description",
       "designCompAction": "Design component",
       "addModal": {
         "detail": "Detail",
@@ -422,7 +420,6 @@
         "header": "Request Headers",
         "cookie": "Cookie",
         "authentication": "Authorization",
-        "requestBody": "Request Body",
         "parametric": "Parameterization",
         "assert": "Assertion",
         "setting": "Settings"
@@ -844,8 +841,8 @@
         "clientCredentials": "Client Credentials"
       },
       "clientAuthTypes": {
-        "basicAuthHeader": "Send via Basic Auth Header",
-        "requestBody": "Send via Request Body"
+        "viaBasicAuthHeader": "Send via Basic Auth Header",
+        "viaRequestBody": "Send via Request Body"
       },
       "encryptionTypes": {
         "sha256": "SHA-256",
@@ -927,7 +924,6 @@
       }
     },
     "apiRequestBody": {
-      "contentType": "Content-Type",
       "actions": {
         "importComponent": "Import Component",
         "copyComponent": "Copy Component",
@@ -942,7 +938,6 @@
       },
       "modal": {
         "title": "Component",
-        "searchPlaceholder": "Search component name",
         "columns": {
           "componentName": "Component Name",
           "modifiedBy": "Modified By",
@@ -1768,17 +1763,6 @@
       }
     },
     "detail": {
-      "menu": {
-        "apis": "Api",
-        "request": "Request",
-        "log": "Log",
-        "activity": "Activity",
-        "monitor": "Monitor",
-        "setting": "Setting"
-      },
-      "notifications": {
-        "modifySuccess": "Modify successfully"
-      },
       "validation": {
         "enterParamName": "Please enter parameter name",
         "paramNameDuplicate": "Parameter name duplicate",
@@ -1786,7 +1770,6 @@
         "enterDomain": "Please enter domain"
       },
       "basicInfo": {
-        "title": "Basic Information",
         "nameTooltip": "Service identifier naming information, up to 100 characters.",
         "domainTooltip": "After setting the domain name for the service, the mock interface can be accessed through the domain name, the domain name set needs to be resolved to the IP of the node where it is located.",
         "portTooltip": "The port listened by the service, the service cannot be modified after adding.",
@@ -1819,70 +1802,45 @@
         "securityHints": "The modification needs to be restarted after the service takes effect.",
         "securityTooltip": "Used to configure the authorization information required for accessing the interface, after enabling the configuration, the interface must carry the authorization parameter to access the interface. Up to 10 can be added.",
         "in": "Location",
-        "paramsName": "Parameter Name",
-        "paramsValue": "Parameter Value",
         "paramsValueRule": "Please enter value"
       },
       "apis": {
         "hints": "When an interface is not yet implemented or inaccessible, Mock interfaces can be used to simulate the behavior and data return of real interfaces for development and testing work, thereby improving development and testing efficiency. Note: Mock interfaces take effect only after being saved.",
-        "searchPlaceholder": "Search name",
-        "addApi": "Add API",
-        "refreshInstance": "Refresh Instance API",
-        "request": "Request",
-        "namePlaceholder": "Maximum 400 characters",
-        "description": "Description",
-        "descriptionPlaceholder": "Maximum 20000 characters",
-        "response": "Response",
-        "maxResponseTip": "Maximum 50 responses can be configured",
-        "addResponse": "Add Response",
-        "deleteResponse": "Delete Response",
         "match": "Match",
-        "matchTooltip": "Specify the matching request conditions that need to be met to return the current response. Note: When there are multiple responses that meet the matching conditions, the response with the highest priority will be returned. If no matching conditions are configured or the priorities are the same, the first condition or the first configured condition will be returned.",
-        "priorityTooltip": "The higher the value, the higher the priority. Value range: 0~2147483647. Note: The response with the highest priority will only be returned when there are multiple responses that meet the matching conditions.",
         "content": "Content",
         "pushback": "Pushback",
-        "pushbackTooltip": "Pushback can be used to automatically push an Http request to a specified address after receiving a Mock request, such as: payment callback.",
-        "enable": "Enable",
-        "disable": "Disable",
-        "copyApiTitle": "Copy API Add",
-        "linkApiTitle": "Link API Add",
-        "testRequest": "Test Request",
         "proxy": "Proxy",
-        "terminate": "Terminate",
-        "send": "Send",
-        "responseTitle": "Response",
-        "notifications": {
+        "actions": {
+          "addApi": "Add API",
+          "addResponse": "Add Response",
+          "deleteResponse": "Delete Response",
+          "copyApiAdd": "Copy API Add",
+          "linkApiAdd": "Link API Add",
+          "testRequest": "Test Request",
+          "refreshInstance": "Refresh Instance API",
+          "copyApi": "Copy API Add",
+          "linkApi": "Link API Add",
+          "importApi": "Import API"
+        },
+        "messages": {
+          "namePlaceholder": "Maximum 400 characters",
+          "descriptionPlaceholder": "Maximum 20000 characters",
+          "maxResponseTip": "Maximum 50 responses can be configured",
+          "matchTooltip": "Specify the matching request conditions that need to be met to return the current response. Note: When there are multiple responses that meet the matching conditions, the response with the highest priority will be returned. If no matching conditions are configured or the priorities are the same, the first condition or the first configured condition will be returned.",
+          "priorityTooltip": "The higher the value, the higher the priority. Value range: 0~2147483647. Note: The response with the highest priority will only be returned when there are multiple responses that meet the matching conditions.",
+          "pushbackTooltip": "Pushback can be used to automatically push an Http request to a specified address after receiving a Mock request, such as: payment callback.",
           "copyApiSuccess": "Copy API added successfully",
           "linkApiSuccess": "Link API added successfully",
           "importDemoSuccess": "Import demo successfully",
-          "cloneSuccess": "Clone successfully",
-          "deleteSuccess": "Delete successfully",
           "refreshInstanceSuccess": "Refresh instance API successfully",
-          "saveSuccess": "Save successfully",
           "nameDuplicate": "Name duplicate",
           "dataError": "Data error, please check and correct before saving.",
           "proxyNotConnected": "Proxy not connected, please check proxy configuration",
-          "yamlFormatError": "YAML content format error, please check and correct"
-        },
-        "confirmations": {
-          "deleteApi": "Are you sure to delete the API 「{summary}」?",
-          "refreshInstance": "Refreshing the instance API will force synchronization of current Mock API information to the running service instance."
-        },
-        "menuItems": {
-          "copyApi": "Copy API Add",
-          "linkApi": "Link API Add",
-          "import": "Import API"
-        },
-        "sortOptions": {
-          "byCreatedDate": "By Created Date",
-          "byId": "By ID"
+          "yamlFormatError": "YAML content format error, please check and correct",
+          "refreshInstanceTip": "Refreshing the instance API will force synchronization of current Mock API information to the running service instance."
         },
         "components": {
           "delayParameter": {
-            "title": "Delay Parameter",
-            "delayTime": "Delay Time",
-            "delayTimePlaceholder": "Please enter delay time (milliseconds)",
-            "delayTimeTooltip": "Delay time range: 0-300000 milliseconds",
             "to": "to",
             "maxLessThanMin": "Maximum value is less than minimum value",
             "noDelay": "No Delay",
@@ -1891,37 +1849,13 @@
           },
           "importFileModal": {
             "title": "Encode File",
-            "selectFile": "Select File",
-            "fileType": "File Type",
-            "fileTypePlaceholder": "Please select file type",
             "maxFileSize": "Maximum 10M file encoding supported",
             "encoding": "Encoding"
           },
-          "inputGroup": {
-            "title": "Input Group",
-            "addParameter": "Add Parameter",
-            "parameterName": "Parameter Name",
-            "parameterValue": "Parameter Value",
-            "parameterNamePlaceholder": "Please enter parameter name",
-            "parameterValuePlaceholder": "Please enter parameter value",
-            "queryParams": "Query Parameters",
-            "requestHeader": "Request Header",
-            "cookie": "Cookie"
-          },
           "pushBack": {
-            "title": "Push Back",
-            "url": "Push Back URL",
+            "pushUrl": "Push Back URL",
             "urlPlaceholder": "Maximum 800 characters",
             "urlError": "Push back URL format error",
-            "contentType": "Content-Type",
-            "requestBody": "Request Body",
-            "send": "Send",
-            "terminate": "Terminate",
-            "testRequest": "Test Request",
-            "proxy": "Proxy",
-            "response": "Response",
-            "responseTitle": "Response",
-            "sendSuccess": "Send Success",
             "requestError": "Request Error",
             "proxyNotConnected": "Proxy not connected, please check proxy configuration",
             "autoPush": "Auto push after request trigger",
@@ -1929,8 +1863,6 @@
             "delay": "Push Back Delay"
           },
           "requestBody": {
-            "title": "Request Body",
-            "contentType": "Content-Type",
             "formUrlEncode": "application/x-www-form-urlencode",
             "multipartFormData": "multipart/form-data",
             "raw": "raw",
@@ -1952,7 +1884,6 @@
             "title": "Match",
             "queryParams": "Query Parameters",
             "header": "Request Header",
-            "requestBody": "Request Body",
             "maxParametersTip": "Maximum 20 matching parameters allowed",
             "pathTitle": "Path",
             "pathTooltip": "Path starts with slash /, representing root path.\nPath consists of multiple path segments separated by slash /.\nEach path segment can be composed of letters, numbers, hyphens, underscores and other characters, and does not contain special characters (such as ?, #, etc.).\nPath segments cannot be empty strings.",
@@ -2026,7 +1957,6 @@
           },
           "selectApiModal": {
             "title": "Select API",
-            "searchPlaceholder": "Search API",
             "apiName": "API Name",
             "apiDescription": "API Description"
           },
@@ -2084,7 +2014,6 @@
         },
         "requestInfo": "Request",
         "requestHeader": "Request Headers",
-        "requestBody": "Request Body",
         "responseInfo": "Response",
         "responseHeader": "Response Headers",
         "responseBody": "Response Body",
@@ -2105,8 +2034,7 @@
         "autoRefresh": "Auto Refresh:"
       },
       "activity": {
-        "pageInfo": "Total {total} records, page {current} / {totalPage}",
-        "searchPlaceholder": "Search activity details"
+        "pageInfo": "Total {total} records, page {current} / {totalPage}"
       },
       "monitor": {
         "apiName": "Api Name",

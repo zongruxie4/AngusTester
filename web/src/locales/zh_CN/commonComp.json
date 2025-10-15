@@ -45,7 +45,6 @@
         "jdbcHint": "每次执行测试前从数据库中查询结果中提取一个值作为数据集值。",
         "listModal": {
           "title": "引用变量",
-          "searchPlaceholder": "查询名称、描述",
           "valueSource": "值来源",
           "staticValue": "静态值",
           "exactValue": "精确值",
@@ -82,7 +81,6 @@
         "viewDefinition": "查看定义",
         "listModal": {
           "title": "引用变量",
-          "searchPlaceholder": "查询名称、描述",
           "reference": "引用",
           "staticValue": "静态值",
           "exactValue": "精确值",
@@ -93,8 +91,7 @@
         }
       },
       "selectCaseByModule": {
-        "title": "选择用例",
-        "searchPlaceholder": "查询名称、编码"
+        "title": "选择用例"
       },
       "delScriptModal": {
         "title": "删除测试脚本",
@@ -815,7 +812,6 @@
     "requestHeaders": "请求头",
     "cookie": "Cookie",
     "authorization": "Authorization",
-    "requestBody": "请求体",
     "pleaseEnterRampDownInterval": "请输入减压间隔",
     "pleaseEnterRampDownThreads": "请输入减压线程数",
     "rampDownTooltip1": "调整线程逐渐减少的间隔，值大小不能超过执行时长。",
@@ -1296,7 +1292,6 @@
     "hours": "小时",
     "timeConsuming": "耗时",
     "basic": "基本",
-    "requestBody": "请求体",
     "response": "响应",
     "timeline": "时间线",
     "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
@@ -1459,7 +1454,6 @@
     "request": "请求",
     "response": "响应",
     "basic": "基本",
-    "requestBody": "请求体",
     "timeline": "时间线",
     "assertionsResult": "断言结果",
     "ignoreAssertionsMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",

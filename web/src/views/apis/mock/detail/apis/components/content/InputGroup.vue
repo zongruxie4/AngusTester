@@ -220,7 +220,7 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="handleAddQuery">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.inputGroup.queryParams') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.http.queryParameter') }}</span>
         </div>
       </Button>
       <Button
@@ -228,7 +228,7 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="handleAddHeader">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.inputGroup.requestHeader') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.http.requestHeader') }}</span>
         </div>
       </Button>
       <Button
@@ -236,14 +236,14 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="handleAddCookie">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.inputGroup.cookie') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.http.cookie') }}</span>
         </div>
       </Button>
     </div>
 
     <PureFormInput
       ref="queryFormRef"
-      :label="t('mock.detail.apis.components.inputGroup.queryParams')"
+      :label="t('protocol.http.queryParameter')"
       class="mt-4"
       :fielaNames="fielaNames"
       :value="queryParameters.map(item => ({ name: item.name, value: item.value }))"
@@ -251,7 +251,7 @@ const fielaNames = { label: 'name', value: 'value' };
 
     <SelectInputForm
       ref="headerFormRef"
-      :label="t('mock.detail.apis.components.inputGroup.requestHeader')"
+      :label="t('protocol.http.requestHeader')"
       class="mt-4"
       enumKey="HttpRequestHeader"
       :fielaNames="fielaNames"
@@ -260,7 +260,7 @@ const fielaNames = { label: 'name', value: 'value' };
 
     <PureFormInput
       ref="cookieFormRef"
-      :label="t('mock.detail.apis.components.inputGroup.cookie')"
+      :label="t('protocol.http.cookie')"
       class="mt-4"
       valueRequired
       :fielaNames="fielaNames"

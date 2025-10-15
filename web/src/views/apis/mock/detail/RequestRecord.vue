@@ -176,7 +176,7 @@ watch(selectedRecord, (newRecord) => {
             labelSpacing="80px"
             marginBottom="0px"
             class="-ml-2 grid-row" />
-          <div class="text-3 text-text-title pl-1.25 mt-5 mb-1">{{ t('mock.detail.requestRecord.requestBody') }}</div>
+          <div class="text-3 text-text-title pl-1.25 mt-5 mb-1">{{ t('protocol.http.requestBody') }}</div>
           <template v-if="detail?.requestBody">
             <div class="bg-bg-table-head text-3 text-text-content p-2 rounded-sm" style="min-height: 34px;">
               {{ detail.requestBody }}

@@ -221,7 +221,7 @@ watch(() => props.id, newValue => {
         v-model:value="keywords"
         :allowClear="true"
         class="max-w-56"
-        :placeholder="t('service.case.searchPlaceholder')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         @change="onKeywordChange" />
       <div class="flex-shrink-0 break-all whitespace-pre-wrap text-3 font-normal text-theme-sub-content">
         <Icon icon="icon-tishi1" />

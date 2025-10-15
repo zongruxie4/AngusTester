@@ -79,14 +79,14 @@ const handleCancel = (): void => {
     :visible="props.visible"
     :width="500"
     :confirmLoading="isLoading"
-    :title="t('dataset.actions.exportModal.title')"
+    :title="t('dataset.actions.downloadDataset')"
     @cancel="handleCancel"
     @ok="handleConfirm">
     <!-- Export format selection section -->
     <div class="flex items-center">
       <!-- Format label with colon separator -->
       <div class="flex items-center mr-3.5">
-        <span>{{ t('dataset.actions.exportModal.format') }}</span>
+        <span>{{ t('common.format') }}</span>
         <Colon />
       </div>
 

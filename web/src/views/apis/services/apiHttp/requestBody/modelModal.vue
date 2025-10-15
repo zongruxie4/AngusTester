@@ -105,7 +105,7 @@ watch(() => props.visible, newValue => {
     <Input
       v-model:value="keywords"
       class="w-50 mb-2"
-      :placeholder="t('service.apiRequestBody.modal.searchPlaceholder')"
+      :placeholder="t('common.placeholders.searchKeyword')"
       size="small" />
     <div class="leading-8 text-text-content">
       <div style="background-color: #fafafa;" class="flex items-center px-3 rounded">

@@ -328,7 +328,7 @@ defineExpose({
         size="small"
         @click="handleAddRequestBody">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.requestBody') }}</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('protocol.http.requestBody') }}</span>
         </div>
       </Button>
     </div>

@@ -51,14 +51,14 @@ export function useMockNavigation (id: string) {
     {
       code: 'request',
       icon: 'icon-qingqiushu',
-      showName: t('mock.detail.menu.request'),
+      showName: t('protocol.request'),
       url: `/mockservice/${id}/request`,
       enabled: true,
       authCtrl: false,
       tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: `/apis#${ApiMenuKey.MOCK}`, id: '2001' },
-        { name: t('mock.detail.menu.request'), id: '2002' }
+        { name: t('protocol.request'), id: '2002' }
       ]
     },
     {

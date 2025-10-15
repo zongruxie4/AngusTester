@@ -1801,7 +1801,7 @@ provide('selectHandle', closeDrawer);
               <TabPane key="request-body" :forceRender="true">
                 <template #tab>
                   <div :class="{ 'has-content': hasBodyContent }"></div>
-                  <span>{{ t('service.apis.requestTabs.requestBody') }}</span>
+                  <span>{{ t('protocol.http.requestBody') }}</span>
                 </template>
                 <RequestBody
                   ref="requestBodyRef"

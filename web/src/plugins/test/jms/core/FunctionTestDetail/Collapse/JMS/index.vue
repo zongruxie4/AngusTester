@@ -192,10 +192,10 @@ const showBasicInfo = computed(() => {
         <TabPane key="general" :tab="t('jmsPlugin.functionTestDetailJms.tabs.general')">
           <RequestHeaders :value="httpContent" class="py-3" />
         </TabPane>
-        <TabPane key="requestBody" :tab="t('jmsPlugin.functionTestDetailJms.tabs.requestBody')">
+        <TabPane key="requestBody" :tab="t('protocol.http.requestBody')">
           <RequestBody :value="httpContent" class="py-3" />
         </TabPane>
-        <TabPane key="response" :tab="t('jmsPlugin.functionTestDetailJms.tabs.response')">
+        <TabPane key="response" :tab="t('protocol.response')">
           <ResponseBody
             :url="httpContent?.content?.request0?.url"
             :value="httpContent?.content?.response"

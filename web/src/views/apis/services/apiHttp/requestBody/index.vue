@@ -875,7 +875,7 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, updateComp, validate
   <div>
     <div class="flex items-center h-8 flex-nowrap whitespace-nowrap">
       <label class="text-3 leading-3 text-gray-content mr-4 select-none">
-        <span class="mr-0.25">{{ t('service.apiRequestBody.contentType') }}</span>:
+        <span class="mr-0.25">{{ t('protocol.contentType') }}</span>:
       </label>
       <RadioGroup
         v-model:value="_contentType"

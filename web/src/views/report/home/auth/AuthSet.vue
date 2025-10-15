@@ -57,7 +57,7 @@ init();
     <Input
       :value="searchInputValue"
       :allowClear="true"
-      :placeholder="t('reportHome.globalAuth.authSet.searchPlaceholder')"
+      :placeholder="t('common.placeholders.searchKeyword')"
       class="mb-2"
       @change="handleSearchInputChange" />
     <div v-if="props.authObjectId" class="flex items-center h-11 pr-1.75 rounded bg-gray-light text-theme-title">

@@ -2,8 +2,7 @@
   "commonPlugin": {
     "selectScriptModal": {
       "title": "Select Script",
-      "selectScriptTip": "Please select a script",
-      "searchPlaceholder": "Search script name"
+      "selectScriptTip": "Please select a script"
     },
     "chartConfig": {
       "names": {
@@ -169,13 +168,11 @@
       },
       "selectApiModal": {
         "title": "Select API",
-        "searchPlaceholder": "Search API name",
         "reference": "Reference",
         "alreadyReferenced": "The selected interfaces contain already referenced interfaces and cannot be referenced repeatedly."
       },
       "selectUseCaseModal": {
         "title": "Select Use Case",
-        "searchPlaceholder": "Search use case name",
         "reference": "Reference",
         "alreadyReferenced": "The selected use cases contain already referenced use cases and cannot be referenced repeatedly."
       },
@@ -213,7 +210,6 @@
       },
       "httpConfigs": {
         "title": "HTTP Configuration",
-        "requestBody": "Request Body",
         "assertions": "Assertions",
         "parameters": "Parameters",
         "serverEndpoint": "Server Endpoint",
@@ -276,7 +272,6 @@
           "requestHeaders": "Request Headers",
           "cookie": "Cookie",
           "authorization": "Authorization",
-          "requestBody": "Request Body",
           "parameterization": "Parameterization",
           "assertion": "Assertion"
         },
@@ -341,8 +336,7 @@
             "datasetModal": {
               "title": "Reference Variables",
               "description": "Configure basic information and parameters of the dataset",
-              "valueSource": "Value Source",
-              "searchPlaceholder": "Search name or description"
+              "valueSource": "Value Source"
             },
             "extractParametersModal": {
               "title": "Extract Parameters",
@@ -544,7 +538,6 @@
           "title": "Request Body Configuration",
           "bodyType": "Request Body Type",
           "bodyContent": "Request Body Content",
-          "contentType": "Content Type",
           "formData": "Form Data",
           "xWwwFormUrlencoded": "x-www-form-urlencoded",
           "raw": "Raw",
@@ -583,7 +576,6 @@
       "http": {
         "tabs": {
           "general": "General",
-          "requestBody": "Request Body",
           "response": "Response",
           "timeline": "Timeline",
           "assertions": "Assertion Results"
@@ -1133,7 +1125,6 @@
       "duration": "Duration",
       "tabs": {
         "general": "General",
-        "requestBody": "Request Body",
         "response": "Response",
         "timeline": "Timeline",
         "assertions": "Assertion Results"
@@ -1855,9 +1846,7 @@
     "pushThirdStoreConfig": {
       "batchRows": "Batch Rows",
       "requestParams": "Request Parameters",
-      "requestBody": "Request Body",
       "authentication": "Authentication",
-      "contentType": "Content-Type",
       "token": "Token",
       "basicAuth": "Basic Auth",
       "bearerToken": "Bearer Token",

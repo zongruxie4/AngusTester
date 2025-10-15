@@ -78,10 +78,6 @@
         "duplicateStrategy": {
           "title": "遇到重复时的处理策略"
         }
-      },
-      "exportModal": {
-        "title": "下载变量",
-        "format": "格式"
       }
     },
     "list": {
@@ -108,7 +104,6 @@
           "requestHeaders": "请求头",
           "requestCookie": "Cookie",
           "requestAuthorization": "Authorization",
-          "requestBody": "请求体",
           "requestBodyPlaceholder": "请输入请求体内容",
           "responseHeaders": "响应头",
           "responseBody": "响应体",
@@ -157,11 +152,7 @@
         "usernamePlaceholder": "用户名，最长200个字符",
         "passwordPlaceholder": "密码，最长800个字符",
         "selectStatement": "Select语句",
-        "selectStatementPlaceholder": "查询表数据Select语句，最长1024个字符",
-        "selectDatasource": {
-          "title": "选择数据源",
-          "searchPlaceholder": "搜索数据源名称"
-        }
+        "selectStatementPlaceholder": "查询表数据Select语句，最长1024个字符"
       },
       "fileVariable": {
         "hints": "每次执行测试前从文件中提取一个值作为变量值。",
@@ -215,10 +206,6 @@
         "duplicateStrategy": {
           "title": "遇到重复时的处理策略"
         }
-      },
-      "exportModal": {
-        "title": "下载数据集",
-        "format": "格式"
       }
     },
     "list": {

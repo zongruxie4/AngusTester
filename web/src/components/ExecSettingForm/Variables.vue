@@ -254,7 +254,7 @@ const requestLocationOptions = [
   },
   {
     value: '5',
-    message: t('xcan_execSettingForm.requestBody')
+    message: t('protocol.http.requestBody')
   }
 ];
 </script>

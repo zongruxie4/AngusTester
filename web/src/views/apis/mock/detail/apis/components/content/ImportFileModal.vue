@@ -29,7 +29,6 @@ const emit = defineEmits<{
   (e: 'cancel'): void;
 }>();
 
-// ==================== Reactive State ====================
 /**
  * <p>Currently selected file for upload</p>
  * <p>Stores the file object selected by the user</p>
@@ -48,7 +47,6 @@ const contentEncoding = ref<ContentEncoding>(ContentEncoding.gzip_base64);
  */
 const loading = ref(false);
 
-// ==================== Event Handlers ====================
 /**
  * <p>Handles file selection change event</p>
  * <p>Updates the selected file when user chooses a file</p>
@@ -98,7 +96,6 @@ const handleCancel = () => {
   closeModal();
 };
 
-// ==================== Utility Methods ====================
 /**
  * <p>Closes the modal and resets form state</p>
  * <p>Clears all form data and emits visibility update</p>
@@ -110,7 +107,6 @@ const closeModal = () => {
   emit('update:visible', false);
 };
 
-// ==================== Computed Properties ====================
 /**
  * <p>OK button properties configuration</p>
  * <p>Disables button when no file is selected</p>
@@ -121,7 +117,6 @@ const okButtonProps = computed(() => {
   };
 });
 
-// ==================== Configuration ====================
 /**
  * <p>Modal body style configuration</p>
  * <p>Sets consistent line height for modal content</p>

@@ -688,7 +688,7 @@ defineExpose({
       <TabPane key="body">
         <template #tab>
           <Badge v-if="hasRequestBody" color="green" />
-          <Badge size="small" :count="bodyErrorNum">{{ t('variable.detail.httpVariable.httpConfigs.requestBody') }}</Badge>
+          <Badge size="small" :count="bodyErrorNum">{{ t('protocol.http.requestBody') }}</Badge>
         </template>
         <RequestBody
           ref="bodyRef"

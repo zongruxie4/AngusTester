@@ -231,10 +231,10 @@ const showBasicInfo = computed(() => {
         <TabPane key="general" :tab="t('xcan_httpTestDetail.basic')">
           <RequestHeaders :value="httpContent" class="py-3" />
         </TabPane>
-        <TabPane key="requestBody" :tab="t('xcan_httpTestDetail.requestBody')">
+        <TabPane key="requestBody" :tab="t('protocol.http.requestBody')">
           <RequestBody :value="httpContent" class="py-3" />
         </TabPane>
-        <TabPane key="response" :tab="t('xcan_httpTestDetail.response')">
+        <TabPane key="response" :tab="t('protocol.response')">
           <ResponseBody
             :url="httpContent?.content?.request0?.url"
             :value="httpContent?.content?.response"

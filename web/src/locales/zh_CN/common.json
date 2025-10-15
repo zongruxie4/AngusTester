@@ -2,6 +2,8 @@
   "common": {
     "all": "全部",
     "actions": "操作",
+    "setting": "设置",
+    "config": "配置",
     "basicInfo": "基本信息",
     "testInfo": "测试信息",
     "reviewInfo": "评审信息",
@@ -145,6 +147,8 @@
     "design": "设计",
     "doc": "文档",
     "parameters": "参数",
+    "parameterName": "参数名",
+    "parameterValue": "参数值",
     "swimLane": "泳道",
     "authControl": "授权控制",
     "date": "日期",
@@ -448,6 +452,9 @@
     "confirm": "确认",
     "enable": "启用",
     "disable": "禁用",
+    "close": "关闭",
+    "terminate": "终止",
+    "send": "发送",
     "clone": "克隆",
     "split": "拆分",
     "move": "移动",
@@ -530,6 +537,7 @@
       "createSuccess": "创建成功",
       "saveSuccess": "保存成功",
       "deleteSuccess": "删除成功",
+      "sendSuccess": "发送成",
       "cloneSuccess": "克隆成功",
       "addSuccess": "添加成功",
       "updateSuccess": "更新成功",
@@ -670,11 +678,18 @@
     "domain": "域名",
     "host": "主机",
     "port": "端口",
+    "request": "请求",
+    "response": "响应",
     "statusCode": "状态码",
+    "contentType": "Content-Type",
     "http": {
       "name": "Http",
       "method": "方法",
-      "requestMethod": "请求方法"
+      "requestMethod": "请求方法",
+      "requestBody": "请求体",
+      "queryParameter": "查询参数",
+      "requestHeader": "请求头",
+      "cookie": "Cookie"
     }
   }
 }

@@ -186,7 +186,7 @@ watch(() => props.id, newValue => {
       <Input
         v-model:value="keywords"
         :allowClear="true"
-        :placeholder="t('service.case.searchPlaceholder')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         @change="onKeywordChange" />
       <Hints :text="t('service.case.hints', {num: caseData?.length})" class="mt-2" />
       <div class="space-x-2">

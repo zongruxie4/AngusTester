@@ -287,7 +287,7 @@ const columns = [
             allowClear
             trim
             class="w-75 flex-grow-0 flex-shrink"
-            :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.searchPlaceholder')"
+            :placeholder="t('common.placeholders.searchKeyword')"
             @change="searchInputChange" />
           <Button
             type="default"

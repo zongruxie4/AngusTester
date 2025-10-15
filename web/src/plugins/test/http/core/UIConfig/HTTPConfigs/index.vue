@@ -1374,7 +1374,7 @@ const overlayStyle = {
         <TabPane key="body">
           <template #tab>
             <Badge v-if="hasRequestBody" color="green" />
-            <Badge size="small" :count="bodyErrorNum">{{ t('httpPlugin.uiConfig.httpConfigs.tabs.requestBody') }}</Badge>
+            <Badge size="small" :count="bodyErrorNum">{{ t('protocol.http.requestBody') }}</Badge>
           </template>
           <RequestBody
             ref="bodyRef"

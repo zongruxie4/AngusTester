@@ -45,7 +45,6 @@
         "jdbcHint": "Extract a value from the database query results as the dataset value before each test execution.",
         "listModal": {
           "title": "Reference Variables",
-          "searchPlaceholder": "Search name, description",
           "valueSource": "Value Source",
           "staticValue": "Static Value",
           "exactValue": "Exact Value",
@@ -82,7 +81,6 @@
         "viewDefinition": "View Definition",
         "listModal": {
           "title": "Reference Variables",
-          "searchPlaceholder": "Search name, description",
           "reference": "Reference",
           "password": "Password",
           "staticValue": "Static Value",
@@ -94,8 +92,7 @@
         }
       },
       "selectCaseByModule": {
-        "title": "Select Cases",
-        "searchPlaceholder": "Search name, code"
+        "title": "Select Cases"
       },
       "delScriptModal": {
         "title": "Delete Test Script",
@@ -868,7 +865,6 @@
     "requestHeaders": "Request Headers",
     "cookie": "Cookie",
     "authorization": "Authorization",
-    "requestBody": "Request Body",
     "maxThreads": "Max Threads",
     "maxThreadsTooltip": "Maximum thread count, will be evenly distributed across multiple nodes. Note: Mock data tasks support up to 1000 threads; functional tests only allow setting one thread.",
     "iterationsTooltip": "Sampling iteration count, range 1~100000000000. Note: Functional tests default to 1 time, maximum limit 10 times.",
@@ -1213,7 +1209,6 @@
     "title": "Select Interface"
   },
   "xcan_selectApisTable": {
-    "searchPlaceholder": "Search interface name or path",
     "grouping": "Grouping",
     "groupByCreator": "Group by Creator",
     "groupByRequestMethod": "Group by Request Method",
@@ -1392,7 +1387,6 @@
     "hours": "Hours",
     "timeConsuming": "Time Consuming",
     "basic": "Basic",
-    "requestBody": "Request Body",
     "response": "Response",
     "timeline": "Timeline",
     "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please close the ignore assertion option in ",
@@ -1555,7 +1549,6 @@
     "request": "Request",
     "response": "Response",
     "basic": "Basic",
-    "requestBody": "Request Body",
     "timeline": "Timeline",
     "assertionsResult": "Assertions Result",
     "ignoreAssertionsMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please go to ",

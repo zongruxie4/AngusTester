@@ -68,7 +68,7 @@ const securityFormRef = ref();
 <template>
   <Card>
     <template #title>
-      <span class="text-3.5 font-semibold">{{ t('mock.detail.basicInfo.title') }}</span>
+      <span class="text-3.5 font-semibold">{{ t('common.basicInfo') }}</span>
     </template>
     <Form
       ref="infoFormRef"
@@ -291,7 +291,7 @@ const securityFormRef = ref();
           <Radio value="NONE">
             None
             <Tooltip
-              :title="t('common.none')"
+              :title="t('mock.detail.basicInfo.logFileLevel.none')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '400px'}">
@@ -542,7 +542,7 @@ const securityFormRef = ref();
             class="flex-1"
             :name="['apisSecurity', index, 'keyName']"
             :rules="{required: true, validator: keNameValidator}">
-            <Input v-model:value="item.keyName" :placeholder="t('mock.detail.basicInfo.paramsName')" />
+            <Input v-model:value="item.keyName" :placeholder="t('common.parameterName')" />
           </FormItem>
           <FormItem class="w-20">
             <Select
@@ -555,7 +555,7 @@ const securityFormRef = ref();
             class="flex-1"
             :name="['apisSecurity', index, 'value']"
             :rules="{required: true, message: t('mock.detail.basicInfo.paramsValueRule')}">
-            <Input v-model:value="item.value" :placeholder="t('mock.detail.basicInfo.paramsValue')" />
+            <Input v-model:value="item.value" :placeholder="t('common.parameterValue')" />
           </FormItem>
           <div
             class="flex items-center text-4 absolute top-1.5"

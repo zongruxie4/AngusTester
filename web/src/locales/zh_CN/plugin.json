@@ -2,8 +2,7 @@
   "commonPlugin": {
     "selectScriptModal": {
       "title": "选择脚本",
-      "selectScriptTip": "请选择一个脚本",
-      "searchPlaceholder": "查询脚本名称"
+      "selectScriptTip": "请选择一个脚本"
     },
     "chartConfig": {
       "names": {
@@ -169,13 +168,11 @@
       },
       "selectApiModal": {
         "title": "选择API",
-        "searchPlaceholder": "搜索API名称",
         "reference": "引用",
         "alreadyReferenced": "已选中的接口中包含已被引用的接口，不能重复引用。"
       },
       "selectUseCaseModal": {
         "title": "选择用例",
-        "searchPlaceholder": "搜索用例名称",
         "reference": "引用",
         "alreadyReferenced": "已选中的用例中包含已被引用的用例，不能重复引用。"
       },
@@ -213,7 +210,6 @@
       },
       "httpConfigs": {
         "title": "HTTP配置",
-        "requestBody": "请求体",
         "assertions": "断言",
         "parameters": "参数",
         "serverEndpoint": "服务器端点",
@@ -276,7 +272,6 @@
           "requestHeaders": "请求头",
           "cookie": "Cookie",
           "authorization": "Authorization",
-          "requestBody": "请求体",
           "parameterization": "参数化",
           "assertion": "断言"
         },
@@ -342,7 +337,6 @@
               "title": "引用变量",
               "description": "配置数据集的基本信息和参数",
               "valueSource": "值来源",
-              "searchPlaceholder": "搜索名称或描述",
               "descriptionColumn": "描述"
             },
             "extractParametersModal": {
@@ -545,7 +539,6 @@
           "title": "请求体配置",
           "bodyType": "请求体类型",
           "bodyContent": "请求体内容",
-          "contentType": "内容类型",
           "formData": "表单数据",
           "xWwwFormUrlencoded": "x-www-form-urlencoded",
           "raw": "原始数据",
@@ -583,7 +576,6 @@
       "http": {
         "tabs": {
           "general": "基本",
-          "requestBody": "请求体",
           "response": "响应",
           "timeline": "时间线",
           "assertions": "断言结果"
@@ -1126,7 +1118,6 @@
       "duration": "耗时",
       "tabs": {
         "general": "基本",
-        "requestBody": "请求体",
         "response": "响应",
         "timeline": "时间线",
         "assertions": "断言结果"
@@ -1846,9 +1837,7 @@
     "pushThirdStoreConfig": {
       "batchRows": "批量行数",
       "requestParams": "请求参数",
-      "requestBody": "请求体",
       "authentication": "认证",
-      "contentType": "Content-Type",
       "token": "令牌",
       "basicAuth": "Basic Auth",
       "bearerToken": "Bearer Token",

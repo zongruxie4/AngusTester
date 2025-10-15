@@ -20,7 +20,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// ==================== Reactive State ====================
 /**
  * <p>Current delay mode selection</p>
  * <p>Controls which type of delay is being configured</p>
@@ -69,7 +68,6 @@ const minRandomTime = ref<string>();
  */
 const minRandomTimeError = ref(false);
 
-// ==================== Event Handlers ====================
 /**
  * <p>Handles delay mode change event</p>
  * <p>Resets all form fields when delay mode changes</p>
@@ -119,7 +117,6 @@ const handleMinRandomTimeChange = (event: { target: { value: string } }) => {
   validateRandomTimeRange();
 };
 
-// ==================== Validation Methods ====================
 /**
  * <p>Validates random time range</p>
  * <p>Ensures maximum time is greater than or equal to minimum time</p>
@@ -134,7 +131,6 @@ const validateRandomTimeRange = () => {
   }
 };
 
-// ==================== Utility Methods ====================
 /**
  * <p>Resets all form fields to initial state</p>
  * <p>Clears all input values and error states</p>
@@ -158,7 +154,6 @@ const reset = () => {
   resetFormFields();
 };
 
-// ==================== Computed Properties ====================
 /**
  * <p>Determines if fixed time input should be displayed</p>
  * <p>Returns true when delay mode is set to FIXED</p>
@@ -175,7 +170,6 @@ const showRandomTimeInput = computed(() => {
   return delayMode.value === ResponseDelayMode.RANDOM;
 });
 
-// ==================== Configuration ====================
 /**
  * <p>Delay mode options for the select component</p>
  * <p>Provides available delay modes with localized labels</p>
@@ -186,7 +180,6 @@ const delayModeOptions: { label: string; value: ResponseDelayMode }[] = [
   { label: t('mock.detail.apis.components.delayParameter.randomDelay'), value: ResponseDelayMode.RANDOM }
 ];
 
-// ==================== Lifecycle Hooks ====================
 /**
  * <p>Component mounted lifecycle hook</p>
  * <p>Sets up watchers and initializes component state</p>
@@ -226,7 +219,6 @@ onMounted(() => {
   }, { immediate: true });
 });
 
-// ==================== Public API ====================
 /**
  * <p>Exposes component methods and data to parent components</p>
  * <p>Provides getData and isValid methods for external access</p>

@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
     <Input
       :value="searchInputValue"
       :allowClear="true"
-      :placeholder="t('scenario.auth.authSet.searchPlaceholder')"
+      :placeholder="t('common.placeholders.searchKeyword')"
       class="w-75 mb-3.5"
       @change="(event: any) => handleSearchInputChange(event)">
       <template #suffix>

@@ -149,7 +149,7 @@ const handleSendRequest = async () => {
   if (WS.value && WS.value.readyState === 1) {
     await handleWebSocketRequest(queryData, headerData, cookieData, bodyOpenApi);
   } else if (WS.value && WS.value.readyState !== 1) {
-    notification.error(t('mock.detail.apis.notifications.proxyNotConnected'));
+    notification.error(t('mock.detail.apis.messages.proxyNotConnected'));
     debugging.value = false;
   } else {
     await handleHttpRequest(apiHref, headerData, cookieData, bodyContent);
@@ -461,7 +461,7 @@ onMounted(() => {
         class="bg-status-success text-white flex flex-col items-center rounded-l-xl py-2 h-max cursor-pointer"
         @click="handleShowDebugChange(true)">
         <Icon icon="icon-zhihangceshi" class="text-3.5 leading-3.5" />
-        <span style="writing-mode: vertical-lr;" class="mt-1">{{ t('mock.detail.apis.testRequest') }}</span>
+        <span style="writing-mode: vertical-lr;" class="mt-1">{{ t('mock.detail.apis.actions.testRequest') }}</span>
       </div>
       <div
         v-show="!spread || !showDebug"
@@ -475,7 +475,7 @@ onMounted(() => {
       class="bg-white border-status-success rounded transition-all duration-500 box-border overflow-x-hidden overflow-y-auto space-y-5"
       :class="[spread && showDebug ? 'w-200 border p-3' : 'w-0 border-0']"
       style="height: 70vh;">
-      <span class="font-semibold">{{ t('mock.detail.apis.testRequest') }}</span>
+      <span class="font-semibold">{{ t('mock.detail.apis..actions.testRequest') }}</span>
       <UrlForm
         ref="urlRef"
         v-model:method="method"
@@ -490,7 +490,7 @@ onMounted(() => {
             size="small"
             @click="handleStopDebug">
             <LoadingOutlined />
-            {{ t('mock.detail.apis.terminate') }}
+            {{ t('actions.terminate') }}
           </Button>
         </template>
         <template v-else>
@@ -498,13 +498,13 @@ onMounted(() => {
             size="small"
             type="primary"
             @click="handleSendRequest">
-            {{ t('mock.detail.apis.send') }}
+            {{ t('actions.send') }}
           </Button>
         </template>
       </div>
       <div>
         <div class="space-x-2 mb-1.5">
-          <span class="font-semibold">{{ t('mock.detail.apis.responseTitle') }}</span>
+          <span class="font-semibold">{{ t('protocol.response') }}</span>
           <ResponseStatus v-if="responseContent?.status > 0" :status="responseContent?.status" />
         </div>
         <div class="min-h-50 bg-gray-light rounded whitespace-break-spaces space-y-2 p-2">

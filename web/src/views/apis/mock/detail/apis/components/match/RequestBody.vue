@@ -279,7 +279,7 @@ defineExpose({
 </script>
 <template>
   <div v-if="!!idList.length" class="leading-5">
-    <div class="flex items-center mb-0.5">{{ t('mock.detail.apis.components.match.requestBody') }}</div>
+    <div class="flex items-center mb-0.5">{{ t('protocol.http.requestBody') }}</div>
     <div class="flex items-center justify-between space-x-2">
       <SelectEnum
         v-model:value="selectValue"

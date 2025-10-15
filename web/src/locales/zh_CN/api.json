@@ -310,7 +310,6 @@
     },
     "case": {
       "updateNameSuccess": "修改名称成功",
-      "searchPlaceholder": "查询名称",
       "hints": "当前已添加{num}个用例，每个接口最大支持100条用例。",
       "addCaseAction": "添加用例",
       "execCaseAction": "执行测试",
@@ -388,7 +387,6 @@
     "oas": {
       "comp": "组件",
       "hints": "通过组件可以定义用于复用的对象集合。支持的定义组件类型包括：数据模型、响应、参数、示例、请求体、请求体、头和安全方案。注意：组件没有被API属性引用时对API没有任何影响。",
-      "searchPlaceholder": "查询组件名称、描述",
       "designCompAction": "设计组件",
       "addModal": {
         "detail": "详情",
@@ -426,7 +424,6 @@
         "header": "请求头",
         "cookie": "Cookie",
         "authentication": "Authorization",
-        "requestBody": "请求体",
         "parametric": "参数化",
         "assert": "断言",
         "setting": "设置"
@@ -845,8 +842,8 @@
         "clientCredentials": "客户端模式（Client Credentials）"
       },
       "clientAuthTypes": {
-        "basicAuthHeader": "通过Basic认证头发送",
-        "requestBody": "通过请求体发送"
+        "viaBasicAuthHeader": "通过Basic认证头发送",
+        "viaRequestBody": "通过请求体发送"
       },
       "encryptionTypes": {
         "sha256": "SHA-256",
@@ -928,7 +925,6 @@
       }
     },
     "apiRequestBody": {
-      "contentType": "Content-Type",
       "actions": {
         "importComponent": "引入组件",
         "copyComponent": "复制组件",
@@ -943,7 +939,6 @@
       },
       "modal": {
         "title": "组件",
-        "searchPlaceholder": "查询组件名称",
         "columns": {
           "componentName": "组件名称",
           "modifiedBy": "修改人",
@@ -1774,17 +1769,6 @@
       }
     },
     "detail": {
-      "menu": {
-        "apis": "接口",
-        "request": "请求",
-        "log": "日志",
-        "activity": "活动",
-        "monitor": "监控",
-        "setting": "设置"
-      },
-      "notifications": {
-        "modifySuccess": "修改成功"
-      },
       "validation": {
         "enterParamName": "请输入参数名",
         "paramNameDuplicate": "参数名称重复",
@@ -1792,7 +1776,6 @@
         "enterDomain": "请输入域名"
       },
       "basicInfo": {
-        "title": "基本信息",
         "nameTooltip": "服务名称，最多100个字符。",
         "domainTooltip": "设置域名后可通过域名访问Mock接口，域名需解析到节点IP。",
         "portTooltip": "服务监听端口，添加后不可修改。",
@@ -1825,70 +1808,45 @@
         "securityHints": "修改后需重启服务生效。",
         "securityTooltip": "配置接口访问授权，开启后需携带授权参数访问。最多10个。",
         "in": "位置",
-        "paramsName": "参数名",
-        "paramsValue": "参数值",
         "paramsValueRule": "请输入value"
       },
       "apis": {
         "hints": "当某个接口尚未实现或无法访问时，可以通过Mock接口模仿真实接口的行为和数据返回，以便进行开发和测试工作，从而提高开发和测试效率。注意：Mock接口保存后才生效。",
-        "searchPlaceholder": "查询名称",
-        "addApi": "添加接口",
-        "refreshInstance": "刷新实例接口",
-        "request": "请求",
-        "namePlaceholder": "最大支持400个字符",
-        "description": "描述",
-        "descriptionPlaceholder": "最大支持20000个字符",
-        "response": "响应",
-        "maxResponseTip": "最大支持配置50个响应",
-        "addResponse": "添加响应",
-        "deleteResponse": "删除响应",
         "match": "匹配",
-        "matchTooltip": "指定返回当前响应所需满足的匹配请求条件。注意：当存在满足匹配的多个响应时，将返回优先级最高的响应，如果没有配置匹配条件或优先级相同，则返回第一个条件或最先配置的条件。",
-        "priorityTooltip": "值越大优先级越高，值范围：0~2147483647。注意：仅当存在满足匹配的多个响应时，才会返回优先级最高的响应。",
         "content": "内容",
         "pushback": "回推",
-        "pushbackTooltip": "回推可以用于在接收到 Mock 请求后，自动向指定地址推送一个 Http 请求，如：支付回调。",
-        "enable": "启用",
-        "disable": "关闭",
-        "copyApiTitle": "复制接口添加",
-        "linkApiTitle": "关联接口添加",
-        "testRequest": "测试请求",
         "proxy": "代理",
-        "terminate": "终止",
-        "send": "发送",
-        "responseTitle": "响应",
-        "notifications": {
+        "actions": {
+          "addApi": "添加接口",
+          "addResponse": "添加响应",
+          "deleteResponse": "删除响应",
+          "copyApiAdd": "复制接口添加",
+          "linkApiAdd": "关联接口添加",
+          "testRequest": "测试请求",
+          "refreshInstance": "刷新实例接口",
+          "copyApi": "复制接口添加",
+          "linkApi": "关联接口添加",
+          "importApi": "导入接口"
+        },
+        "messages": {
+          "namePlaceholder": "最大支持400个字符",
+          "descriptionPlaceholder": "最大支持20000个字符",
+          "maxResponseTip": "最大支持配置50个响应",
+          "pushbackTooltip": "回推可以用于在接收到 Mock 请求后，自动向指定地址推送一个 Http 请求，如：支付回调。",
+          "matchTooltip": "指定返回当前响应所需满足的匹配请求条件。注意：当存在满足匹配的多个响应时，将返回优先级最高的响应，如果没有配置匹配条件或优先级相同，则返回第一个条件或最先配置的条件。",
+          "priorityTooltip": "值越大优先级越高，值范围：0~2147483647。注意：仅当存在满足匹配的多个响应时，才会返回优先级最高的响应。",
           "copyApiSuccess": "复制接口添加成功",
           "linkApiSuccess": "关联接口添加成功",
           "importDemoSuccess": "导入示例成功",
-          "cloneSuccess": "克隆成功",
-          "deleteSuccess": "删除成功",
           "refreshInstanceSuccess": "刷新实例接口成功",
-          "saveSuccess": "保存成功",
           "nameDuplicate": "名称重复",
           "dataError": "数据有误，请检查并更正后再保存。",
           "proxyNotConnected": "代理未链接， 请检查代理配置",
-          "yamlFormatError": "yaml内容格式错误，请检查并更正"
-        },
-        "confirmations": {
-          "deleteApi": "确认要删除接口「{summary}」吗？",
-          "refreshInstance": "刷新实例接口会强制同步当前Mock接口信息到运行的服务实例。"
-        },
-        "menuItems": {
-          "copyApi": "复制接口添加",
-          "linkApi": "关联接口添加",
-          "import": "导入接口"
-        },
-        "sortOptions": {
-          "byCreatedDate": "按添加时间",
-          "byId": "按ID"
+          "yamlFormatError": "yaml内容格式错误，请检查并更正",
+          "refreshInstanceTip": "刷新实例接口会强制同步当前Mock接口信息到运行的服务实例。"
         },
         "components": {
           "delayParameter": {
-            "title": "延迟参数",
-            "delayTime": "延迟时间",
-            "delayTimePlaceholder": "请输入延迟时间（毫秒）",
-            "delayTimeTooltip": "延迟时间范围：0-300000毫秒",
             "to": "至",
             "maxLessThanMin": "最大值小于最小值",
             "noDelay": "无延迟",
@@ -1897,37 +1855,13 @@
           },
           "importFileModal": {
             "title": "编码文件",
-            "selectFile": "选择文件",
-            "fileType": "文件类型",
-            "fileTypePlaceholder": "请选择文件类型",
             "maxFileSize": "最大支持编码10M文件",
             "encoding": "编码"
           },
-          "inputGroup": {
-            "title": "输入组",
-            "addParameter": "添加参数",
-            "parameterName": "参数名",
-            "parameterValue": "参数值",
-            "parameterNamePlaceholder": "请输入参数名",
-            "parameterValuePlaceholder": "请输入参数值",
-            "queryParams": "查询参数",
-            "requestHeader": "请求头",
-            "cookie": "Cookie"
-          },
           "pushBack": {
-            "title": "回推",
-            "url": "回推地址",
+            "pushUrl": "回推地址",
             "urlPlaceholder": "最大支持800个字符",
             "urlError": "回推地址格式错误",
-            "contentType": "Content-Type",
-            "requestBody": "请求体",
-            "send": "发送",
-            "terminate": "终止",
-            "testRequest": "测试请求",
-            "proxy": "代理",
-            "response": "响应",
-            "responseTitle": "响应",
-            "sendSuccess": "发送成功",
             "requestError": "请求错误",
             "proxyNotConnected": "代理未链接， 请检查代理配置",
             "autoPush": "请求触发后自动推送",
@@ -1935,8 +1869,6 @@
             "delay": "回推延迟"
           },
           "requestBody": {
-            "title": "请求体",
-            "contentType": "Content-Type",
             "formUrlEncode": "application/x-www-form-urlencode",
             "multipartFormData": "multipart/form-data",
             "raw": "raw",
@@ -1958,7 +1890,6 @@
             "title": "匹配",
             "queryParams": "查询参数",
             "header": "请求头",
-            "requestBody": "请求体",
             "maxParametersTip": "匹配参数限制最大 20 个",
             "pathTitle": "路径",
             "pathTooltip": "路径以斜杠 / 开始，表示根路径。\n路径由多个路径段组成，路径段之间使用斜杠 / 分隔。\n每个路径段可以是字母、数字、减号、下划线等字符组成，且不包含特殊字符（如?、#等）。\n路径段不可以为空字符串。",
@@ -2033,7 +1964,6 @@
           },
           "selectApiModal": {
             "title": "选择接口",
-            "searchPlaceholder": "搜索接口",
             "apiName": "接口名称",
             "apiDescription": "接口描述"
           },
@@ -2091,7 +2021,6 @@
         },
         "requestInfo": "请求",
         "requestHeader": "请求头",
-        "requestBody": "请求体",
         "responseInfo": "响应",
         "responseHeader": "响应头",
         "responseBody": "响应体",
@@ -2112,8 +2041,7 @@
         "autoRefresh": "自动刷新："
       },
       "activity": {
-        "pageInfo": "共{total}条记录，第{current} / {totalPage}页",
-        "searchPlaceholder": "查询活动详情"
+        "pageInfo": "共{total}条记录，第{current} / {totalPage}页"
       },
       "monitor": {
         "apiName": "接口名称",

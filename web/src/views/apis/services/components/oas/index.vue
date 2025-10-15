@@ -258,7 +258,7 @@ const refreshList = () => {
     <div class="flex items-center justify-between mt-3.5 space-x-2">
       <Input
         :value="name"
-        :placeholder="t('service.oas.searchPlaceholder')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         :allowClear="true"
         @change="handleSearch" />
       <Button

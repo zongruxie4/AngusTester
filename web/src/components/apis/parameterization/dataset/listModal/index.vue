@@ -323,7 +323,7 @@ const tableColumns = [
             allowClear
             trim
             class="w-75 flex-grow-0 flex-shrink"
-            :placeholder="t('commonComp.apis.parameterizationDataset.listModal.searchPlaceholder')"
+            :placeholder="t('common.placeholders.searchKeyword')"
             @change="handleSearchInputChange" />
           <Button
             type="default"

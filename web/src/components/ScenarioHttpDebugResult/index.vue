@@ -199,10 +199,10 @@ const failMessage = (httpContent) => {
           <TabPane key="general" :tab="t('xcan_scenarioDebugResult.basic')">
             <RequestHeaders :value="httpContent" class="py-3" />
           </TabPane>
-          <TabPane key="requestBody" :tab="t('xcan_scenarioDebugResult.requestBody')">
+          <TabPane key="requestBody" :tab="t('protocol.http.requestBody')">
             <RequestBody :value="httpContent" class="py-3" />
           </TabPane>
-          <TabPane key="response" :tab="t('xcan_scenarioDebugResult.response')">
+          <TabPane key="response" :tab="t('protocol.response')">
             <ResponseBody
               :url="httpContent?.content?.request0?.url"
               :value="httpContent?.content?.response"

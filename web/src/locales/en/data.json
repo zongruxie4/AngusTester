@@ -78,10 +78,6 @@
         "duplicateStrategy": {
           "title": "Processing strategy when encountering duplicates"
         }
-      },
-      "exportModal": {
-        "title": "Download Variable",
-        "format": "Format"
       }
     },
     "list": {
@@ -110,7 +106,6 @@
           "requestHeaders": "Headers",
           "requestCookie": "Cookies",
           "requestAuthorization": "Authorization",
-          "requestBody": "Request Body",
           "requestBodyPlaceholder": "Please enter the request body content",
           "responseHeaders": "Response Headers",
           "responseBody": "Response Body",
@@ -159,11 +154,7 @@
         "usernamePlaceholder": "Username, maximum 200 characters",
         "passwordPlaceholder": "Password, maximum 800 characters",
         "selectStatement": "Select SQL",
-        "selectStatementPlaceholder": "Query Table Data Select Statement, maximum 1024 characters",
-        "selectDatasource": {
-          "title": "Select Datasource",
-          "searchPlaceholder": "Search Datasource Name"
-        }
+        "selectStatementPlaceholder": "Query Table Data Select Statement, maximum 1024 characters"
       },
       "fileVariable": {
         "hints": "Extract a value from the file before each test execution.",
@@ -217,10 +208,6 @@
         "duplicateStrategy": {
           "title": "Processing strategy when encountering duplicates"
         }
-      },
-      "exportModal": {
-        "title": "Download Dataset",
-        "format": "Format"
       }
     },
     "list": {

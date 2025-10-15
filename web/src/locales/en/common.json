@@ -2,6 +2,8 @@
   "common": {
     "all": "All",
     "actions": "Actions",
+    "setting": "Setting",
+    "config": "Configuration",
     "basicInfo": "Basic Information",
     "testInfo": "Test Information",
     "reviewInfo": "Review Information",
@@ -145,6 +147,8 @@
     "design": "Design",
     "doc": "Document",
     "parameters": "Parameters",
+    "parameterName": "Parameter Name",
+    "parameterValue": "Parameter Value",
     "swimLane": "Swimlanes",
     "authControl": "Auth",
     "date": "Date",
@@ -448,6 +452,9 @@
     "confirm": "Confirm",
     "enable": "Enable",
     "disable": "Disable",
+    "close": "Close",
+    "terminate": "Terminate",
+    "send": "Send",
     "clone": "Clone",
     "split": "Split",
     "move": "Move",
@@ -530,6 +537,7 @@
       "createSuccess": "Create successful",
       "saveSuccess": "Save successful",
       "deleteSuccess": "Delete successful",
+      "sendSuccess": "Send successful",
       "cloneSuccess": "Clone successful",
       "addSuccess": "Add successful",
       "updateSuccess": "Update successful",
@@ -669,12 +677,18 @@
     "domain": "Domain",
     "host": "Host",
     "port": "Port",
+    "request": "Request",
+    "response": "Response",
     "statusCode": "Status Code",
+    "contentType": "Content-Type",
     "http": {
       "name": "Http",
       "method": "Method",
-      "requestMethod": "Request Method"
-
+      "requestMethod": "Request Method",
+      "requestBody": "Request Body",
+      "queryParameter": "Query Parameter",
+      "requestHeader": "Request Header",
+      "cookie": "Cookie"
     }
   }
 }

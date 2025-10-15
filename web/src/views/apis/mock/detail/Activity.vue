@@ -62,7 +62,7 @@ const activitiesForUI = computed(() => {
         v-model:value="detailKeyword"
         :allowClear="true"
         class="flex-1 max-w-xs"
-        :placeholder="t('mock.detail.activity.searchPlaceholder')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         size="small"
         @change="onSearchChange($event.target.value)" />
       <IconRefresh

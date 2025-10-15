@@ -584,7 +584,7 @@ provide('isUnarchived', computed(() => props.valueObj.unarchived));
                   :disabled="!isConnected"
                   @click="postMessage">
                   <Icon icon="icon-fasong" class="mr-2" />
-                  {{ t('service.apiWebSocket.actions.send') }}
+                  {{ t('actions.send') }}
                 </Button>
               </div>
             </TabPane>

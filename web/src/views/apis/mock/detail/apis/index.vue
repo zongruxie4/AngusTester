@@ -444,7 +444,7 @@ const copyApiOk = async ({ id }) => {
   apiCopyModalVisible.value = false;
   mockAPIId.value = data.id;
   mockAPIConfig.value = undefined;
-  notification.success(t('mock.detail.apis.notifications.copyApiSuccess'));
+  notification.success(t('mock.detail.apis.messages.copyApiSuccess'));
   handleRefresh();
   nextTick(() => {
     scrollToTop();
@@ -462,7 +462,7 @@ const linkApiOk = async ({ id }) => {
   apiLinkModalVisible.value = false;
   mockAPIId.value = data.id;
   mockAPIConfig.value = undefined;
-  notification.success(t('mock.detail.apis.notifications.linkApiSuccess'));
+  notification.success(t('mock.detail.apis.messages.linkApiSuccess'));
   handleRefresh();
   nextTick(() => {
     scrollToTop();
@@ -488,7 +488,7 @@ const importExamples = async () => {
     return;
   }
 
-  notification.success(t('mock.detail.apis.notifications.importDemoSuccess'));
+  notification.success(t('mock.detail.apis.messages.importDemoSuccess'));
   handleRefresh();
   nextTick(() => {
     scrollToTop();
@@ -528,7 +528,7 @@ const handleDelete = async (id: string) => {
   const { summary: _summary, isTempFlag } = apiDataMap.value[id];
   modal.confirm({
     centered: true,
-    content: t('mock.detail.apis.confirmations.deleteApi', { summary: _summary }),
+    content: t('actions.tips.confirmDelete', { name: _summary }),
     async onOk () {
       const checkedId = mockAPIConfig.value?.id;
       const checkedIndex = apiIds.value.findIndex(item => item === checkedId);
@@ -590,7 +590,7 @@ const refreshInfo = () => {
 
 const refreshInstance = () => {
   modal.confirm({
-    content: t('mock.detail.apis.confirmations.refreshInstance'),
+    content: t('mock.detail.apis.messages.refreshInstanceTip'),
     async onOk () {
       loading.value = true;
       const [error] = await mock.syncApiInstanceConfig(mockAPIId.value!);
@@ -599,7 +599,7 @@ const refreshInstance = () => {
         return;
       }
 
-      notification.success(t('mock.detail.apis.notifications.refreshInstanceSuccess'));
+      notification.success(t('mock.detail.apis.messages.refreshInstanceSuccess'));
     }
   });
 };
@@ -797,7 +797,7 @@ const save = async (): Promise<void> => {
   }
 
   if (errorNum) {
-    notification.error(t('mock.detail.apis.notifications.dataError'));
+    notification.error(t('mock.detail.apis.messages.dataError'));
     return;
   }
 
@@ -926,10 +926,10 @@ const validateRepeatName = (id?: string): boolean => {
     if (repeatNameSet.has(data[key])) {
       if (id) {
         nameErrorSet.value.add(id);
-        nameErrorMessage.value[id] = t('mock.detail.apis.notifications.nameDuplicate');
+        nameErrorMessage.value[id] = t('mock.detail.apis.messages.nameDuplicate');
       } else {
         nameErrorSet.value.add(key);
-        nameErrorMessage.value[key] = t('mock.detail.apis.notifications.nameDuplicate');
+        nameErrorMessage.value[key] = t('mock.detail.apis.messages.nameDuplicate');
       }
 
       errorNum++;
@@ -1304,19 +1304,19 @@ const dropdownMenuItems = ref([
   {
     key: 'copyApi',
     icon: 'icon-fuzhizujian2',
-    name: t('mock.detail.apis.menuItems.copyApi'),
+    name: t('mock.detail.apis.actions.copyApi'),
     noAuth: true
   },
   {
     key: 'linkApi',
     icon: 'icon-yinyong',
-    name: t('mock.detail.apis.menuItems.linkApi'),
+    name: t('mock.detail.apis.actions.linkApi'),
     noAuth: true
   },
   {
     key: 'import',
     icon: 'icon-daoru',
-    name: t('actions.import'),
+    name: t('mock.detail.apis.actions.importApi'),
     noAuth: true
   },
   {
@@ -1328,11 +1328,11 @@ const dropdownMenuItems = ref([
 ]);
 
 const sortMenuItems = [{
-  name: t('mock.detail.apis.sortOptions.byCreatedDate'),
+  name: t('common.createdDate'),
   key: 'createdDate',
   orderSort: 'DESC' as any
 }, {
-  name: t('mock.detail.apis.sortOptions.byId'),
+  name: 'ID',
   key: 'id',
   orderSort: 'ASC' as any
 }];
@@ -1354,7 +1354,7 @@ provide('proxyOptObj', proxyOptObj);
       class="flex flex-col w-80 h-full">
       <div class="flex flex-nowrap space-x-2 mb-2">
         <Input
-          :placeholder="t('mock.detail.apis.searchPlaceholder')"
+          :placeholder="t('common.placeholders.searchKeyword')"
           class="flex-1"
           :allowClear="true"
           :value="inputValue"
@@ -1370,7 +1370,7 @@ provide('proxyOptObj', proxyOptObj);
           size="small"
           style="padding-right: 0;"
           @click="create">
-          <span>{{ t('mock.detail.apis.addApi') }}</span>
+          <span>{{ t('mock.detail.apis.actions.addApi') }}</span>
           <Dropdown :menuItems="dropdownMenuItems" @click="buttonDropdownClick">
             <span class="inline-block w-5 h-5">
               <Icon class="text-white" icon="icon-more" />
@@ -1488,7 +1488,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="refreshInstance">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-peizhifuwutongbu" />
-            <span>{{ t('mock.detail.apis.refreshInstance') }}</span>
+            <span>{{ t('mock.detail.apis.actions.refreshInstance') }}</span>
           </div>
         </Button>
         <Button
@@ -1515,7 +1515,7 @@ provide('proxyOptObj', proxyOptObj);
       <div :id="domId" class="w-full flex-1 overflow-auto space-y-6 scroll-smooth">
         <div class="space-y-2">
           <div class="flex items-center text-3.5 space-x-1 text-text-title">
-            <div>{{ t('mock.detail.apis.request') }}</div>
+            <div>{{ t('protocol.request') }}</div>
             <div v-if="isSavedMockApi" class="flex items-center text-3 text-theme-sub-content">
               <span class="mx-0.5">(</span>
               <div class="flex items-center translate-y-0.25">
@@ -1541,7 +1541,7 @@ provide('proxyOptObj', proxyOptObj);
                 :maxlength="400"
                 :value="summary"
                 :error="summaryError"
-                :placeholder="t('common.placeholders.searchKeyword')"
+                :placeholder="t('mock.detail.apis.messages.namePlaceholder')"
                 trim
                 @change="summaryChange" />
             </div>
@@ -1562,7 +1562,7 @@ provide('proxyOptObj', proxyOptObj);
                 :autoSize="{ minRows: 5, maxRows: 5 }"
                 showCount
                 type="textarea"
-                :placeholder="t('mock.detail.apis.descriptionPlaceholder')"
+                :placeholder="t('mock.detail.apis.messages.descriptionPlaceholder')"
                 trim
                 @change="descriptionChange" />
             </div>
@@ -1571,9 +1571,9 @@ provide('proxyOptObj', proxyOptObj);
         <div class="pr-5.25 space-y-2">
           <div class="flex items-center justify-between leading-5 pr-3.25 text-3.5 text-text-title">
             <div>
-              <span>{{ t('mock.detail.apis.response') }}</span>
+              <span>{{ t('protocol.response') }}</span>
               <Tooltip>
-                <template #title>{{ t('mock.detail.apis.maxResponseTip') }}</template>
+                <template #title>{{ t('mock.detail.apis.messages.maxResponseTip') }}</template>
                 <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
               </Tooltip>
             </div>
@@ -1583,7 +1583,7 @@ provide('proxyOptObj', proxyOptObj);
               @click="addResponse">
               <div class="flex items-center space-x-1">
                 <Icon icon="icon-jia" />
-                <span>{{ t('mock.detail.apis.addResponse') }}</span>
+                <span>{{ t('mock.detail.apis.actions.addResponse') }}</span>
               </div>
             </Button>
           </div>
@@ -1633,7 +1633,7 @@ provide('proxyOptObj', proxyOptObj);
                       @click="deleteResponse(index, item)">
                       <div class="flex items-center space-x-1">
                         <Icon icon="icon-qingchu" />
-                        <span>{{ t('mock.detail.apis.deleteResponse') }}</span>
+                        <span>{{ t('mock.detail.apis.actions.deleteResponse') }}</span>
                       </div>
                     </Button>
                   </template>
@@ -1651,7 +1651,7 @@ provide('proxyOptObj', proxyOptObj);
                         <span>{{ t('mock.detail.apis.match') }}</span>
                         <Tooltip>
                           <template #title>
-                            {{ t('mock.detail.apis.matchTooltip') }}
+                            {{ t('mock.detail.apis.messages.matchTooltip') }}
                           </template>
                           <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
                         </Tooltip>
@@ -1664,7 +1664,7 @@ provide('proxyOptObj', proxyOptObj);
                       <IconRequired />
                       <span>{{ t('common.priority') }}</span>
                       <Tooltip>
-                        <template #title>{{ t('mock.detail.apis.priorityTooltip') }}</template>
+                        <template #title>{{ t('mock.detail.apis.messages.priorityTooltip') }}</template>
                         <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-0.75" />
                       </Tooltip>
                     </div>
@@ -1723,7 +1723,7 @@ provide('proxyOptObj', proxyOptObj);
                       <div class="flex items-center ml-1">
                         <span>{{ t('mock.detail.apis.pushback') }}</span>
                         <Tooltip>
-                          <template #title>{{ t('mock.detail.apis.pushbackTooltip') }}</template>
+                          <template #title>{{ t('mock.detail.apis.messages.pushbackTooltip') }}</template>
                           <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
                         </Tooltip>
                       </div>
@@ -1733,7 +1733,7 @@ provide('proxyOptObj', proxyOptObj);
                         size="small"
                         class="ml-1.5"
                         :checkedChildren="t('actions.enable')"
-                        :unCheckedChildren="t('actions.disable')"
+                        :unCheckedChildren="t('actions.close')"
                         @change="enableChange($event, item)" />
                     </div>
                   </template>
@@ -1755,7 +1755,7 @@ provide('proxyOptObj', proxyOptObj);
     <SelectApiModal
       v-model:visible="apiCopyModalVisible"
       v-model:confirmLoading="apiCopyConfirmLoading"
-      :title="t('mock.detail.apis.copyApiTitle')"
+      :title="t('mock.detail.apis.actions.copyApiAdd')"
       type="copy"
       @ok="copyApiOk" />
   </AsyncComponent>
@@ -1763,7 +1763,7 @@ provide('proxyOptObj', proxyOptObj);
     <SelectApiModal
       v-model:visible="apiLinkModalVisible"
       v-model:confirmLoading="apiLinkConfirmLoading"
-      :title="t('mock.detail.apis.linkApiTitle')"
+      :title="t('mock.detail.apis.actions.linkApiAdd')"
       type="link"
       @ok="linkApiOk" />
   </AsyncComponent>

@@ -74,12 +74,10 @@ let controller: AbortController;
  */
 const { valueKey } = API_EXTENSION_KEY;
 
-// ==================== Template Refs ====================
 const delayRef = ref();
 const inputGroupRef = ref();
 const requestBodyRef = ref();
 
-// ==================== Reactive State ====================
 /**
  * <p>Auto push toggle state</p>
  * <p>Determines if requests should be sent automatically</p>
@@ -116,7 +114,6 @@ const urlErrorMessage = ref<string>();
  */
 const requestBodyContentType = ref<ContentType>();
 
-// ==================== Event Handlers ====================
 /**
  * <p>Handles HTTP method change event</p>
  * <p>Updates the selected HTTP method</p>
@@ -154,7 +151,6 @@ const handleUrlChange = (event: { target: { value: string } }) => {
   urlErrorMessage.value = undefined;
 };
 
-// ==================== Validation Methods ====================
 /**
  * <p>Validates URL format</p>
  * <p>Checks if URL is provided and has valid format</p>
@@ -177,7 +173,6 @@ const validateUrl = (value: string | undefined): boolean => {
   return true;
 };
 
-// ==================== Request Methods ====================
 /**
  * <p>Sends HTTP request with current configuration</p>
  * <p>Handles both WebSocket proxy and direct HTTP requests</p>
@@ -325,7 +320,7 @@ const handleHttpResponse = async (resp: any) => {
   } else if (status < 200 || status >= 400) {
     notification.warning(resp.message);
   } else {
-    notification.success(t('mock.detail.apis.components.pushBack.sendSuccess'));
+    notification.success(t('actions.tips.sendSuccess'));
   }
 };
 
@@ -342,14 +337,13 @@ const handleWsResponse = () => {
     } else if (status < 200 || status >= 400) {
       notification.warning(respJson.response.rawContent);
     } else {
-      notification.success(t('mock.detail.apis.components.pushBack.sendSuccess'));
+      notification.success(t('actions.tips.sendSuccess'));
     }
   } catch (error) {
     // Silently handle JSON parse errors
   }
 };
 
-// ==================== Utility Methods ====================
 /**
  * <p>Resets component to initial state</p>
  * <p>Clears all form data and resets to default values</p>
@@ -363,7 +357,6 @@ const resetComponent = () => {
   requestBodyContentType.value = undefined;
 };
 
-// ==================== Lifecycle Hooks ====================
 /**
  * <p>Component mounted lifecycle hook</p>
  * <p>Sets up watchers and initializes component state</p>
@@ -401,7 +394,6 @@ onMounted(() => {
   }, { immediate: true });
 });
 
-// ==================== Data Methods ====================
 /**
  * <p>Gets current component data</p>
  * <p>Collects data from all child components and returns complete configuration</p>
@@ -434,7 +426,6 @@ const getData = () => {
   };
 };
 
-// ==================== Public API ====================
 /**
  * <p>Exposes component methods and data to parent components</p>
  * <p>Provides getData and isValid methods for external access</p>
@@ -482,7 +473,6 @@ defineExpose({
   }
 });
 
-// ==================== Configuration ====================
 /**
  * <p>Supported content types for request body</p>
  * <p>Defines valid content types for request body configuration</p>
@@ -532,7 +522,7 @@ const optionStyle = {
     </div>
     <div class="mt-2">
       <div class="mb-0.5">
-        <IconRequired /><span>{{ t('common.url') }}</span>
+        <IconRequired /><span>{{ t('mock.detail.apis.components.pushBack.pushUrl') }}</span>
       </div>
       <Composite>
         <SelectEnum

@@ -131,7 +131,7 @@ const action = `${TESTER}/script`;
       <Input
         :value="inputValue"
         :allowClear="true"
-        :placeholder="t('httpPlugin.selectScriptModal.searchPlaceholder')"
+        :placeholder="t('common.placeholders.searchKeyword')"
         trim
         @change="inputChange">
         <template #suffix>

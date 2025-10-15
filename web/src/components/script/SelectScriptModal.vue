@@ -188,7 +188,7 @@ const handleCancel = () => {
         <Input
           :value="searchInputValue"
           :allowClear="true"
-          :placeholder="t('commonPlugin.selectScriptModal.searchPlaceholder')"
+          :placeholder="t('common.placeholders.searchKeyword')"
           trim
           class="search-input"
           @change="handleSearchInputChange">

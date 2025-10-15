@@ -237,9 +237,9 @@ defineExpose({
       </div>
     </div>
     <div>
-      <div class="mt-2">{{ t('genDataPlugin.pushThirdStoreConfig.requestBody') }}</div>
+      <div class="mt-2">{{ t('protocol.http.requestBody') }}</div>
       <div class="flex items-center space-x-2">
-        <span>{{ t('genDataPlugin.pushThirdStoreConfig.contentType') }}</span>
+        <span>{{ t('protocol.contentType') }}</span>
         <RadioGroup
           v-model:value="formState.contentType"
           size="small"
