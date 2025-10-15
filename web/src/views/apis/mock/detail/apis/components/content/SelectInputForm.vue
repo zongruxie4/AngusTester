@@ -99,7 +99,7 @@ const handleNameChange = (value: string, id: string) => {
  * @returns Filtered options
  */
 const handleNameSearch = (value: string, options: Record<string, any>[]) => {
-  return options.filter(item => item._value?.includes(value) || item.message?.includes(value));
+  return options.filter(item => item.value?.includes(value) || item.message?.includes(value));
 };
 
 /**
@@ -336,7 +336,7 @@ defineExpose({
  * <p>Field name mapping for select components</p>
  * <p>Defines how select options map to data properties</p>
  */
-const fieldNames = { label: '_value', value: 'id' };
+// const fieldNames = { label: '_value', value: 'id' };
 
 /**
  * <p>Input properties configuration</p>
@@ -370,8 +370,8 @@ const inputProps = {
             :placeholder="t('common.placeholders.enterParameterName')"
             @change="handleNameChange($event, item)">
             <template #option="record">
-              <div class="truncate" :title="record._value + '-' + record.message">
-                {{ record._value }} - {{ record.message }}
+              <div class="truncate" :title="record.value + '-' + record.message">
+                {{ record.value }} - {{ record.message }}
               </div>
             </template>
           </SelectInput>

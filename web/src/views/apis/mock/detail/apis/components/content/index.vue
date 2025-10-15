@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconRequired, notification, SelectInput, Tooltip, FunctionsButton } from '@xcan-angus/vue-ui';
-import { ResponseDelayMode, ContentEncoding } from '@xcan-angus/infra';
+import { ResponseDelayMode, ContentEncoding, HttpResponseHeader } from '@xcan-angus/infra';
 
 import { DelayData, ResponseContentConfig, ResponseHeader } from './types';
 import DelayParameter from './DelayParameter.vue';
@@ -380,7 +380,7 @@ const inputProps = {
     </div>
     <SelectInputForm
       ref="pureInputRef"
-      enumKey="HttpResponseHeader"
+      :enumKey="HttpResponseHeader"
       :fielaNames="inputFieldNames"
       :value="headerParameters"
       :notify="props.notify"

@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { HttpRequestHeader } from '@xcan-angus/infra';
 
 import { ContentType, ParametersType } from './types';
 import PureFormInput from '@/views/apis/mock/detail/apis/components/PureFormInput.vue';
@@ -253,7 +254,7 @@ const fielaNames = { label: 'name', value: 'value' };
       ref="headerFormRef"
       :label="t('protocol.requestHeader')"
       class="mt-4"
-      enumKey="HttpRequestHeader"
+      :enumKey="HttpRequestHeader"
       :fielaNames="fielaNames"
       :value="headerParameters"
       :notify="props.notify" />
