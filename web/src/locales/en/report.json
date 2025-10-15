@@ -605,9 +605,6 @@
       "sampling": {
         "collapse": {
           "iteration": "Iteration {count}",
-          "http": {
-            "duration": "Duration"
-          },
           "throughput": {
             "requestsPerSecond": "Requests Per Second",
             "waitTimeout": "Wait Timeout"
@@ -795,7 +792,6 @@
           }
         },
         "chartConfig": {
-          "duration": "Duration",
           "errors": "Error Count",
           "iterations": "Iterations",
           "n": "Sample Count",

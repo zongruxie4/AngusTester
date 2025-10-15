@@ -343,7 +343,6 @@
         "headerTab": "Request Header",
         "requestBodyTab": "Request Body",
         "assertTab": "Assertion",
-        "duration": "Duration",
         "respSize": "Size",
         "debugAction": "Debug Case",
         "descriptionPlaceholder": "Enter case description, up to 800 characters"
@@ -419,9 +418,6 @@
         "parametric": "Parameterization",
         "assert": "Assertion",
         "setting": "Settings"
-      },
-      "toolbar": {
-        "duration": "Duration:"
       },
       "errors": {
         "invalidUrl": "Error!",

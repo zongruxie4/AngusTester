@@ -6,7 +6,6 @@
     },
     "chartConfig": {
       "names": {
-        "duration": "时长",
         "errors": "错误数",
         "iterations": "迭代数",
         "n": "采样数",
@@ -555,7 +554,6 @@
     },
     "functionTestDetail": {
       "basicInfo": {
-        "duration": "运行时间",
         "iteration": "迭代数",
         "request": "请求数",
         "responseTime": "响应时间",
@@ -564,23 +562,7 @@
       "collapse": {
         "iteration": "第{iteration}次迭代"
       },
-      "ftp": {
-        "duration": "耗时",
-        "request": "请求",
-        "response": "响应"
-      },
       "http": {
-        "tabs": {
-          "general": "基本",
-          "response": "响应",
-          "timeline": "时间线",
-          "assertions": "断言结果"
-        },
-        "headers": {
-          "general": "常规",
-          "request": "请求头",
-          "response": "响应头"
-        },
         "timeline": {
           "dnsLookup": "域名解析(DNS lookup)",
           "tcpConnection": "TCP连接",
@@ -619,8 +601,7 @@
           "header": "响应头",
           "body": "响应体",
           "bodySize": "响应体大小",
-          "size": "响应大小",
-          "duration": "耗时"
+          "size": "响应大小"
         },
         "conditionMap": {
           "contain": "包含",
@@ -711,9 +692,6 @@
       }
     },
     "FunctionTestDetailJdbc": {
-      "duration": "耗时",
-      "requestParameters": "请求参数",
-      "assertionResults": "断言结果",
       "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
       "executeConfig": "执行配置 > 插件配置",
       "closeIgnoreAssertion": "中关闭忽略断言选项。",
@@ -809,7 +787,6 @@
     },
     "functionTestDetail": {
       "basicInfo": {
-        "duration": "运行时间",
         "iteration": "迭代数",
         "request": "请求数",
         "responseTime": "响应时间",
@@ -817,11 +794,6 @@
       },
       "collapse": {
         "iteration": "第{iteration}次迭代"
-      },
-      "ftp": {
-        "duration": "耗时",
-        "request": "请求",
-        "response": "响应"
       }
     },
     "scriptConfig": {
@@ -1111,13 +1083,6 @@
       "messageCountPlaceholder": "消息数"
     },
     "functionTestDetailJms": {
-      "duration": "耗时",
-      "tabs": {
-        "general": "基本",
-        "response": "响应",
-        "timeline": "时间线",
-        "assertions": "断言结果"
-      },
       "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
       "executeConfig": "执行配置 > 插件配置",
       "closeIgnoreAssertion": "中关闭忽略断言选项。",
@@ -1290,7 +1255,6 @@
       "protocol": "协议",
       "totalEmails": "总共{count}个邮件",
       "readEmails": "读取{count}个邮件",
-      "duration": "耗时",
       "email": "邮件{index}",
       "requestContent": "请求内容"
     }
@@ -1868,7 +1832,6 @@
     }
   },
   "xcan_exec_chartConfig": {
-    "duration": "时长",
     "errors": "错误数",
     "iterations": "迭代数",
     "sampleCount": "采样数",

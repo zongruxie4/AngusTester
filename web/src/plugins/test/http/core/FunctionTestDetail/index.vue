@@ -203,7 +203,7 @@ const timeTexts = computed(() => [
         <div class="text-text-title text-4 font-semibold" style="color:rgba(129, 154, 218, 100%);">
           {{ duration?.[1] }}<span class="text-3.25 ml-0.5">{{ duration?.[2] }}</span>
         </div>
-        <div class="exec-basic-data-card-title">{{ t('httpPlugin.functionTestDetail.basicInfo.duration') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('common.duration') }}</div>
       </div>
 
       <div

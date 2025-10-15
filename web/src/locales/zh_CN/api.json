@@ -347,9 +347,6 @@
         "paramsTab": "请求参数",
         "headerTab": "请求头",
         "requestBodyTab": "请求体",
-        "assertTab": "断言",
-        "duration": "耗时",
-        "respSize": "大小",
         "debugAction": "调试用例",
         "descriptionPlaceholder": "输入用例描述，最多可输入800个字符"
       }
@@ -424,9 +421,6 @@
         "parametric": "参数化",
         "assert": "断言",
         "setting": "设置"
-      },
-      "toolbar": {
-        "duration": "耗时:"
       },
       "errors": {
         "invalidUrl": "出错了！",

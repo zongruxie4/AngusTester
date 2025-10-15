@@ -171,7 +171,6 @@
     },
     "chartConfig": {
       "names": {
-        "duration": "时长",
         "errors": "错误数",
         "iterations": "迭代数",
         "n": "采样数",

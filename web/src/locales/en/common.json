@@ -699,12 +699,15 @@
     "contentType": "Content-Type",
     "http": "Http",
     "method": "Method",
-    "queryParameter": "Query Parameter",
+    "cookie": "Cookie",
+    "duration": "Duration",
+    "queryParameter": "Query Parameters",
     "requestMethod": "Request Method",
-    "requestHeader": "Request Header",
+    "requestHeader": "Request Headers",
     "requestBody": "Request Body",
-    "responseHeader": "Response Header",
+    "responseHeader": "Response Headers",
     "responseBody": "Response Body",
-    "cookie": "Cookie"
+    "responseBodySize": "Response Body Size",
+    "responseSize": "Response Size"
   }
 }

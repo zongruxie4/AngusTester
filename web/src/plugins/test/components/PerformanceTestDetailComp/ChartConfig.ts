@@ -5,7 +5,7 @@ const t = I18nInstance?.global?.t || ((value: string):string => value);
 export const allCvsKeys = ['duration', 'errors', 'iterations', 'n', 'operations', 'transactions', 'readBytes', 'writeBytes', 'ops', 'minOps', 'maxOps', 'meanOps', 'tps', 'minTps', 'maxTps', 'meanTps', 'brps', 'minBrps', 'maxBrps', 'meanBrps', 'bwps', 'minBwps', 'maxBwps', 'meanBwps', 'tranMean', 'tranMin', 'tranMax', 'tranP50', 'tranP75', 'tranP90', 'tranP95', 'tranP99', 'tranP999', 'errorRate', 'threadPoolSize', 'threadPoolActiveSize', 'threadMaxPoolSize'];
 
 export const allCvsNames = {
-  duration: t('commonPlugin.chartConfig.names.duration'),
+  duration: t('common.duration'),
   errors: t('commonPlugin.chartConfig.names.errors'),
   iterations: t('commonPlugin.chartConfig.names.iterations'),
   n: t('commonPlugin.chartConfig.names.n'),
