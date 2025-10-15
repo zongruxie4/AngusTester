@@ -7,7 +7,6 @@
     "chartConfig": {
       "names": {
         "errors": "错误数",
-        "iterations": "迭代数",
         "n": "采样数",
         "operations": "请求数",
         "transactions": "事务数",
@@ -96,10 +95,6 @@
       "cancelFavouriteSuccess": "取消收藏成功",
       "paramError": "参数错误"
     },
-    "tabs": {
-      "taskConfig": "任务配置",
-      "executeConfig": "执行配置"
-    },
     "permission": {
       "title": "场景权限",
       "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
@@ -139,7 +134,6 @@
         "aggregation": "汇总结果",
         "throughput": "吞吐量",
         "vu": "并发数",
-        "responseTime": "响应时间",
         "error": "错误",
         "httpCode": "状态码",
         "analyze": "叠加分析"
@@ -265,10 +259,6 @@
           "serverFormatError": "server格式错误",
           "pathFormatError": "path格式错误"
         },
-        "tabs": {
-          "authorization": "Authorization",
-          "parameterization": "参数化"
-        },
         "popover": {
           "notes": "注意事项",
           "parameterSerialization": "参数序列化",
@@ -283,7 +273,6 @@
           "serverEndpointPlaceholder": "请输入服务器端点"
         },
         "parametric": {
-          "title": "参数化",
           "variables": {
             "title": "变量",
             "addVariable": "添加变量",
@@ -551,9 +540,6 @@
       }
     },
     "functionTestDetail": {
-      "collapse": {
-        "iteration": "第{iteration}次迭代"
-      },
       "http": {
         "timeline": {
           "dnsLookup": "域名解析(DNS lookup)",
@@ -584,8 +570,6 @@
           "operationResultNotEstablished": "运算结果不成立，忽略该条断言",
           "operationResultEstablished": "运算结果成立，执行该条断言",
           "noVariableDefined": "没有定义{variable}变量，直接执行该条件表达式",
-          "executionConfig": "执行配置",
-          "pluginConfig": "插件配置",
           "ignoreAssertionsTip": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在{executionConfig} > {pluginConfig}中关闭忽略断言选项。"
         },
         "typeMap": {
@@ -630,8 +614,6 @@
   },
   "jdbcPlugin": {
     "title": "JDBC插件",
-    "taskConfig": "任务配置",
-    "executeConfig": "执行配置",
     "UIConfigJdbc": {
       "insertJDBC": "插入JDBC",
       "insertTransStart": "插入开始事务",
@@ -744,10 +726,6 @@
     }
   },
   "ftpPlugin": {
-    "tabs": {
-      "taskConfig": "任务配置",
-      "executeConfig": "执行配置"
-    },
     "drawer": {
       "indicator": "性能指标",
       "testInfo": "测试结果",
@@ -775,11 +753,6 @@
     "exportScriptModal": {
       "title": "导出脚本"
     },
-    "functionTestDetail": {
-      "collapse": {
-        "iteration": "第{iteration}次迭代"
-      }
-    },
     "scriptConfig": {
       "messages": {
         "yamlFormatError": "yaml内容格式错误，请检查并更正"
@@ -792,7 +765,6 @@
         "queriesPerSecond": "每秒查询数(当前 / 最大)",
         "transactionsPerSecond": "每秒事务数(当前 / 最大)",
         "errors": "错误(Error)",
-        "iterations": "迭代次数",
         "responseTime": "响应时间(最小 / 平均 / 最大)",
         "percentile": "响应百分位(P50 / P90 / P99)"
       },
@@ -800,7 +772,6 @@
         "aggregation": "汇总结果",
         "throughput": "吞吐量",
         "concurrency": "并发数",
-        "responseTime": "响应时间",
         "error": "错误",
         "analyze": "叠加分析"
       },
@@ -1002,8 +973,6 @@
   },
   "jmsPlugin": {
     "title": "JMS插件",
-    "taskConfig": "任务配置",
-    "executeConfig": "执行配置",
     "notifications": {
       "debugSaveFirst": "调试需要先保存当前数据，请保存后再执行调试",
       "autoSaveSuccess": "自动保存成功，正在执行调试...",
@@ -1040,7 +1009,6 @@
       "namePlaceholder": "名称，最大支持400个字符",
       "descriptionPlaceholder": "描述，最大支持800个字符",
       "mailSettings": "邮件设置",
-      "protocol": "协议",
       "protocolPlaceholder": "协议",
       "hostnameOrIP": "主机名或IP",
       "hostnameOrIPPlaceholder": "主机名或IP",
@@ -1129,8 +1097,6 @@
   },
   "ldapPlugin": {
     "title": "LDAP插件",
-    "taskConfig": "任务配置",
-    "executeConfig": "执行配置",
     "notifications": {
       "debugSaveFirst": "调试需要先保存当前数据，请保存后再执行调试",
       "autoSaveSuccess": "自动保存成功，正在执行调试...",
@@ -1203,8 +1169,6 @@
   },
   "mailPlugin": {
     "title": "Mail插件",
-    "taskConfig": "任务配置",
-    "executeConfig": "执行配置",
     "notifications": {
       "debugSaveFirst": "调试需要先保存当前数据，请保存后再执行调试",
       "autoSaveSuccess": "自动保存成功，正在执行调试...",
@@ -1236,7 +1200,6 @@
       "rampUpThreads": "增压线程数"
     },
     "functionTestDetailMail": {
-      "protocol": "协议",
       "totalEmails": "总共{count}个邮件",
       "readEmails": "读取{count}个邮件",
       "email": "邮件{index}",
@@ -1268,7 +1231,6 @@
       "transactions": "行数",
       "errors": "错误数",
       "errorRate": "错误率",
-      "iterations": "迭代数",
       "tps": "每秒行数",
       "tranMean": "平均",
       "tranMin": "最小",
@@ -1277,8 +1239,6 @@
   },
   "smtpPlugin": {
     "title": "SMTP插件",
-    "taskConfig": "任务配置",
-    "executeConfig": "执行配置",
     "notifications": {
       "debugSaveFirst": "调试需要先保存当前数据，请保存后再执行调试",
       "autoSaveSuccess": "自动保存成功，正在执行调试...",
@@ -1540,10 +1500,6 @@
       "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
       "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
     },
-    "tabs": {
-      "taskConfig": "任务配置",
-      "executeConfig": "执行配置"
-    },
     "uiConfig": {
       "title": "插入WebSocket接口",
       "selectTitle": "选择WebSocket接口",
@@ -1575,9 +1531,6 @@
       "encodingTitle": "发送数据编码",
       "encodingPlaceholder": "发送数据编码",
       "title": "发送数据"
-    },
-    "parametric": {
-      "title": "参数化"
     },
     "assertion": {
       "tooltip": "断言接收消息"
@@ -1795,7 +1748,6 @@
       "rows": "行数",
       "errorCount": "错误数",
       "errorRate": "错误率",
-      "iterations": "迭代数",
       "rowsPerSecond": "每秒行数",
       "concurrency": "并发数",
       "rowsPerSecondTps": "每秒行数 (TPS)",
@@ -1806,7 +1758,6 @@
   },
   "xcan_exec_chartConfig": {
     "errors": "错误数",
-    "iterations": "迭代数",
     "sampleCount": "采样数",
     "requestCount": "请求数",
     "transactionCount": "事务数",

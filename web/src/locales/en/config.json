@@ -119,7 +119,6 @@
       "labels": {
         "concurrentUsers": "Concurrent Users",
         "testDuration": "Test Duration",
-        "responseTime": "Response Time (RT)",
         "tps": "Transactions Per Second (TPS)",
         "errorRate": "Error Rate (ErrorRate)",
         "rampUpThreads": "Ramp-up Threads",
@@ -139,7 +138,6 @@
       "labels": {
         "concurrentUsers": "Concurrent Users",
         "testDuration": "Test Duration",
-        "responseTime": "Response Time (RT)",
         "errorRate": "Error Rate (ErrorRate)",
         "tps": "Transactions Per Second (TPS)",
         "systemLoad": "Application System Average Load",

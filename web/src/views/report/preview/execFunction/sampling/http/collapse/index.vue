@@ -41,7 +41,7 @@ const status = computed(() => {
 <template>
   <div class="mb-7 last:mb-0">
     <div class="flex items-center mb-2">
-      <div class="min-w-20 mr-3 font-semibold">{{ t('reportPreview.execFunction.sampling.collapse.iteration', { count: props.iterations }) }}</div>
+      <div class="min-w-20 mr-3 font-semibold">{{ t('common.iterationCountTemplate', { count: props.iterations }) }}</div>
       <StatusTag :value="status" />
     </div>
 

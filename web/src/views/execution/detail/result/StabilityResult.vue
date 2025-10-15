@@ -101,7 +101,7 @@ const indicatorItem = computed(() => {
       resultIndex: 'duration'
     },
     {
-      label: t('execution.testResult.responseTime'),
+      label: t('protocol.responseTime'),
       dataIndex: 'art',
       resultIndex: percentitleKey,
       compareOprate: '<='

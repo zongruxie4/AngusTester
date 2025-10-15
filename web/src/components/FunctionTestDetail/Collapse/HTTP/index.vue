@@ -257,7 +257,7 @@ const showBasicInfo = computed(() => {
                   class="mx-1 px-0 h-5 leading-5"
                   type="link"
                   @click="setGlobalTabActiveKey('executeConfig')">
-                  {{ t('xcan_httpTestDetail.executeConfig') }}
+                  {{ t('common.execConfig') }}
                 </Button>{{ t('xcan_httpTestDetail.closeIgnoreAssertion') }}
               </div>
             </template>

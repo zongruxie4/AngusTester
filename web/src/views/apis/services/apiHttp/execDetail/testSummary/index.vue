@@ -276,7 +276,7 @@ onMounted(() => {
             <span class="text-4">{{ TEST_PERFORMANCE?.sampleSummary?.tranP90 || '--' }}</span>
             <Icon v-if="TEST_PERFORMANCE" :icon="getTranIconName(TEST_PERFORMANCE)" />
           </div>
-          <div>{{ t('service.apiExecDetail.indicators.responseTime') }}</div>
+          <div>{{ t('protocol.responseTime') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
@@ -320,7 +320,7 @@ onMounted(() => {
             <span class="text-4">{{ TEST_STABILITY?.sampleSummary?.tranP90 || '--' }}</span>
             <Icon v-if="TEST_STABILITY" :icon="getTranIconName(TEST_STABILITY)" />
           </div>
-          <div>{{ t('service.apiExecDetail.indicators.responseTime') }}</div>
+          <div>{{ t('protocol.responseTime') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="flex items-center justify-center space-x-0.5">
@@ -345,7 +345,7 @@ onMounted(() => {
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="text-4">{{ TEST_CUSTOMIZATION?.sampleSummary?.tranP90 || '--' }}</div>
-          <div>{{ t('service.apiExecDetail.indicators.responseTime') }}</div>
+          <div>{{ t('protocol.responseTime') }}</div>
         </div>
         <div class="text-center flex-1 min-w-0">
           <div class="text-4">{{ TEST_CUSTOMIZATION?.sampleSummary?.errorRate || '--' }}%</div>

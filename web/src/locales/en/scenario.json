@@ -128,7 +128,6 @@
         },
         "metrics": {
           "tps": "TPS",
-          "responseTime": "RT (P90)",
           "errorRate": "Error Rate"
         }
       }

@@ -35,7 +35,7 @@ const performanceIndicatorConfig = [
     dataIndex: 'rampUpInterval'
   },
   {
-    label: t('xcan_httpTestInfo.responseTime'),
+    label: t('protocol.responseTime'),
     dataIndex: 'art',
     compareOperator: '<='
   },

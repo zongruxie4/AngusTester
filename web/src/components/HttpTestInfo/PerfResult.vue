@@ -129,7 +129,7 @@ const performanceIndicatorConfig = computed(() => {
       dataIndex: 'rampUpInterval'
     },
     {
-      label: `${t('xcan_httpTestInfo.responseTime')}(${percentile})`,
+      label: `${t('protocol.responseTime')}(${percentile})`,
       dataIndex: percentileKey || '--'
     },
     {

@@ -10,7 +10,6 @@
       "configure": "配置",
       "concurrency": "并发数",
       "executionTime": "执行时长（秒）",
-      "iterations": "迭代次数",
       "errorRate": "错误率"
     },
     "actions": {
@@ -36,7 +35,6 @@
       "avgResponseTime": "平均响应时间(AVG RT)",
       "errorRate": "错误率 (Error)",
       "executedTime": "已执行时间",
-      "iterations": "已迭代次数",
       "percentileP90": "百分位P90"
     },
     "tips": {
@@ -80,7 +78,6 @@
     },
     "info": {
       "executionDetails": "执行详情",
-      "executionConfig": "执行配置",
       "serverConfig": "测试服务器",
       "executionScript": "执行脚本",
       "log": "执行日志",
@@ -120,7 +117,6 @@
       "testDuration": "测试时长",
       "rampUpConcurrencyCount": "增压并发时数",
       "rampUpConcurrencyDuration": "增压并发时长",
-      "responseTime": "响应时间(RT)",
       "transactionsPerSecond": "每秒事务数(TPS)",
       "errorRate": "错误率(ErrorRate)",
       "errorRateSimple": "错误率",
@@ -172,7 +168,6 @@
     "chartConfig": {
       "names": {
         "errors": "错误数",
-        "iterations": "迭代数",
         "n": "采样数",
         "operations": "请求数",
         "transactions": "事务数",

@@ -174,7 +174,7 @@ const pageNo = route.query.pageNo;
           :exception="exception"
           @loaded="getInfo" />
       </TabPane>
-      <TabPane key="2" :tab="t('execution.info.executionConfig')">
+      <TabPane key="2" :tab="t('common.execConfig')">
         <ExecSetting
           v-model:loading="loading"
           :execId="id"

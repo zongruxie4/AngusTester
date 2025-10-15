@@ -62,7 +62,7 @@ const echartsLegendConfig = {
   transactions: t('genDataPlugin.execInfo.rows'),
   errors: t('genDataPlugin.execInfo.errorCount'),
   errorRate: t('genDataPlugin.execInfo.errorRate'),
-  iterations: t('genDataPlugin.execInfo.iterations'),
+  iterations: t('common.iterations'),
   tps: t('genDataPlugin.execInfo.rowsPerSecond'),
   tranMean: t('chart.average'),
   tranMin: t('chart.min'),

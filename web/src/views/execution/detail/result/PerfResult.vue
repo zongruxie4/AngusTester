@@ -112,7 +112,7 @@ const indicatorItem = computed(() => {
       resultIndex: 'rampUpInterval'
     },
     {
-      label: t('execution.testResult.responseTime'),
+      label: t('protocol.responseTime'),
       dataIndex: 'art',
       compareOprate: '<=',
       resultIndex: percentitleKey || '--'

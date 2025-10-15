@@ -374,7 +374,7 @@ const selectOptions = [
                     <div class="space-y-3">
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-21.5">
-                          <span>{{ t('jmsPlugin.uiConfig.protocol') }}</span>
+                          <span>{{ t('protocol.name') }}</span>
                           <Colon />
                         </div>
                         <div class="flex-1 flex items-center space-x-2.5 max-w-175">

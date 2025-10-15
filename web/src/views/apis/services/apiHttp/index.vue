@@ -1813,7 +1813,7 @@ provide('selectHandle', closeDrawer);
               <TabPane
                 v-if="!!props.id"
                 key="parametric"
-                :tab="t('service.apis.requestTabs.parametric')">
+                :tab="t('common.parameterization')">
                 <APICaseParametric
                   :datasetActionOnEOF="datasetActionOnEOF"
                   :datasetSharingMode="datasetSharingMode"

@@ -185,7 +185,7 @@ const getTestStatusIcon = (testData: any) => {
           <div class="metric-card">
             <div class="metric-header">
               <Icon icon="icon-shijian" class="metric-icon" />
-              <span class="metric-title">{{ t('scenario.detail.testSummary.metrics.responseTime') }}</span>
+              <span class="metric-title">{{ t('protocol.responseTimeP90') }}</span>
             </div>
             <div class="metric-value-container">
               <div class="metric-value">
@@ -270,7 +270,7 @@ const getTestStatusIcon = (testData: any) => {
           <div class="metric-card">
             <div class="metric-header">
               <Icon icon="icon-shijian" class="metric-icon" />
-              <span class="metric-title">{{ t('scenario.detail.testSummary.metrics.responseTime') }}</span>
+              <span class="metric-title">{{ t('protocol.responseTimeP90') }}</span>
             </div>
             <div class="metric-value-container">
               <div class="metric-value">
@@ -338,7 +338,7 @@ const getTestStatusIcon = (testData: any) => {
           <div class="metric-card">
             <div class="metric-header">
               <Icon icon="icon-shijian" class="metric-icon" />
-              <span class="metric-title">{{ t('scenario.detail.testSummary.metrics.responseTime') }}</span>
+              <span class="metric-title">{{ t('protocol.responseTimeP90') }}</span>
             </div>
             <div class="metric-value-container">
               <div class="metric-value">

@@ -67,7 +67,7 @@ const status = computed(() => {
       collapsible="disabled">
       <template #header>
         <div class="w-full flex items-center">
-          <div class="min-w-20 mr-3">{{ t('httpPlugin.functionTestDetail.collapse.iteration', { iteration: props.iterations }) }}</div>
+          <div class="min-w-20 mr-3">{{ t('common.iterationCountTemplate', { iteration: props.iterations }) }}</div>
           <StatusTag :value="status" class="mr-3" />
           <Arrow :open="arrowOpen" @change="arrowChange" />
         </div>

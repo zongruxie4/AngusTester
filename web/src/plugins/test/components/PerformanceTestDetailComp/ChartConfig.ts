@@ -7,7 +7,7 @@ export const allCvsKeys = ['duration', 'errors', 'iterations', 'n', 'operations'
 export const allCvsNames = {
   duration: t('common.duration'),
   errors: t('commonPlugin.chartConfig.names.errors'),
-  iterations: t('commonPlugin.chartConfig.names.iterations'),
+  iterations: t('common.iterations'),
   n: t('commonPlugin.chartConfig.names.n'),
   operations: t('commonPlugin.chartConfig.names.operations'),
   transactions: t('commonPlugin.chartConfig.names.transactions'),
@@ -246,7 +246,7 @@ export const allRowsColumns = [
     ellipsis: true
   },
   {
-    title: t('commonPlugin.chartConfig.names.iterations'),
+    title: t('common.iterations'),
     dataIndex: 'iterations',
     width: '25%'
   },

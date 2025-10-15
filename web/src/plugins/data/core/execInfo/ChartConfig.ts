@@ -7,7 +7,7 @@ export const allCvsKeys = ['duration', 'errors', 'iterations', 'n', 'operations'
 export const allCvsNames = {
   duration: t('common.duration'),
   errors: t('xcan_exec_chartConfig.errors'),
-  iterations: t('xcan_exec_chartConfig.iterations'),
+  iterations: t('common.iterations'),
   n: t('xcan_exec_chartConfig.sampleCount'),
   operations: t('xcan_exec_chartConfig.requestCount'),
   transactions: t('xcan_exec_chartConfig.transactionCount'),
@@ -225,7 +225,7 @@ export const allRowsColumns = [
     ellipsis: true
   },
   {
-    title: t('xcan_exec_chartConfig.iterations'),
+    title: t('common.iterations'),
     dataIndex: 'iterations',
     width: '25%'
   },

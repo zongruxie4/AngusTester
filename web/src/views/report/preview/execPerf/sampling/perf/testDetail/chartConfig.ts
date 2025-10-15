@@ -5,7 +5,7 @@ export const allCvsKeys = ['duration', 'errors', 'iterations', 'n', 'operations'
 export const allCvsNames = {
   duration: t('common.duration'),
   errors: t('reportPreview.execPerf.sampling.chartConfig.errors'),
-  iterations: t('reportPreview.execPerf.sampling.chartConfig.iterations'),
+  iterations: t('common.iterations'),
   n: t('reportPreview.execPerf.sampling.chartConfig.n'),
   operations: t('reportPreview.execPerf.sampling.chartConfig.operations'),
   transactions: t('reportPreview.execPerf.sampling.chartConfig.transactions'),
@@ -244,7 +244,7 @@ export const allRowsColumns = [
     ellipsis: true
   },
   {
-    title: t('reportPreview.execPerf.sampling.chartConfig.iterations'),
+    title: t('common.iterations'),
     dataIndex: 'iterations',
     width: '25%'
   },

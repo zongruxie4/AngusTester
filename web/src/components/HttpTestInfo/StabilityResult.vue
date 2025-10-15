@@ -121,7 +121,7 @@ const stabilityIndicatorConfig = computed(() => {
       dataIndex: 'duration'
     },
     {
-      label: `${t('xcan_httpTestInfo.responseTime')}(${percentile})`,
+      label: `${t('protocol.responseTime')}(${percentile})`,
       dataIndex: percentileKey || '--'
     },
     {

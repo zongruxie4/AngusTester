@@ -505,7 +505,6 @@
             "testDuration": "测试时长",
             "pressureConcurrency": "增压并发数",
             "pressureTestDuration": "增压测试时长",
-            "responseTime": "响应时间",
             "tps": "每秒事务数",
             "errorRate": "错误率"
           }
@@ -599,7 +598,6 @@
       },
       "sampling": {
         "collapse": {
-          "iteration": "第{count}次迭代",
           "throughput": {
             "requestsPerSecond": "每秒请求数",
             "waitTimeout": "等待超时"
@@ -633,7 +631,6 @@
           "samplingIndicators": "采样指标",
           "throughput": "吞吐量",
           "concurrency": "并发数",
-          "responseTime": "响应时间",
           "error": "错误",
           "nodeResources": "节点资源",
           "overlayAnalysis": "叠加分析",
@@ -675,7 +672,6 @@
           "testDuration": "测试时长",
           "rampUpThreads": "增压并发时数",
           "rampUpInterval": "增压并发时长",
-          "responseTime": "响应时间(RT)",
           "tps": "每秒事务数(TPS)",
           "errorRate": "错误率",
           "systemLoad": "应用系统平均负载",
@@ -786,7 +782,6 @@
         },
         "chartConfig": {
           "errors": "错误数",
-          "iterations": "迭代数",
           "n": "采样数",
           "operations": "请求数",
           "transactions": "事务数",
@@ -1399,7 +1394,6 @@
               "testDuration": "测试时长",
               "rampUpConcurrency": "增压并发数",
               "rampUpDuration": "增压测试时长",
-              "responseTime": "响应时间",
               "tps": "每秒事务数",
               "errorRate": "错误率"
             }
@@ -1427,7 +1421,6 @@
               "testDuration": "测试时长",
               "rampUpConcurrency": "增压并发时数",
               "rampUpDuration": "增压并发时长",
-              "responseTime": "响应时间",
               "tps": "每秒事务数(TPS)",
               "errorRate": "错误率"
             }
@@ -1455,7 +1448,6 @@
             "testDuration": "测试时长",
             "pressureConcurrency": "增压并发数",
             "pressureTestDuration": "增压测试时长",
-            "responseTime": "响应时间",
             "tps": "每秒事务数",
             "errorRate": "错误率"
           }
@@ -1858,7 +1850,6 @@
               "testDuration": "测试时长",
               "rampUpConcurrency": "增压并发时数",
               "rampUpDuration": "增压并发时长",
-              "responseTime": "响应时间(RT)",
               "tps": "每秒事务数(TPS)",
               "errorRate": "错误率"
             }

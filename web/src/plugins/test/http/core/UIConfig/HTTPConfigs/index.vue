@@ -1367,7 +1367,7 @@ const overlayStyle = {
         <TabPane key="Authorization">
           <template #tab>
             <Badge v-if="!!authentication?.type" color="green" />
-            <span>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.authorization') }}</span>
+            <span>{{ t('protocol.authorization') }}</span>
           </template>
           <ExecAuthencation :defaultValue="defaultAuthentication" @change="chanegAuthentication" />
         </TabPane>
@@ -1391,7 +1391,7 @@ const overlayStyle = {
               size="small"
               :count="parametricErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.parameterization') }}</div>
+                <div>{{ t('common.parameterization') }}</div>
               </div>
             </Badge>
           </template>

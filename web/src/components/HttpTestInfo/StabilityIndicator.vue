@@ -27,7 +27,7 @@ const stabilityIndicatorConfig = [
     dataIndex: 'duration'
   },
   {
-    label: t('xcan_httpTestInfo.responseTime'),
+    label: t('protocol.responseTime'),
     dataIndex: 'art'
   },
   {

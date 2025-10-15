@@ -1090,7 +1090,7 @@ const autoSize = {
                   <div class="w-full flex items-start">
                     <div
                       class="w-21.5 flex items-center justify-start space-x-1 flex-shrink-0 text-theme-title">
-                      <span>{{ t('websocketPlugin.parametric.title') }}</span>
+                      <span>{{ t('common.parameterization') }}</span>
                       <Colon />
                     </div>
                     <div class="flex-1 space-y-2.5">

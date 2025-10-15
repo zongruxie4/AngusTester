@@ -1415,7 +1415,7 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-  return isPageViewMode.value ? { task: t('jdbcPlugin.taskConfig'), execute: t('jdbcPlugin.executeConfig') } : { task: '', execute: '' };
+  return isPageViewMode.value ? { task: t('common.taskConfig'), execute: t('common.execConfig') } : { task: '', execute: '' };
 });
 
 const drawerMenuItems = computed(() => {

@@ -653,7 +653,7 @@ onMounted(() => {
           <span class="w-8 text-center"></span>
         </div>
       </FormItem>
-      <FormItem :label="t('xcan_indicator.responseTime')">
+      <FormItem :label="t('protocol.responseTime')">
         <ResponseTime
           v-model:percentile="perfData.info.percentile"
           v-model:art="perfData.info.art"
@@ -766,7 +766,7 @@ onMounted(() => {
           <span class="w-8"></span>
         </div>
       </FormItem>
-      <FormItem :label="t('xcan_indicator.responseTime')">
+      <FormItem :label="t('protocol.responseTime')">
         <ResponseTime
           v-model:percentile="stability.info.percentile"
           v-model:art="stability.info.art"

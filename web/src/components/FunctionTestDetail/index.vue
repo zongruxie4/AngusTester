@@ -283,7 +283,7 @@ const timeTexts = [t('chart.max')];
           <span>{{ tranMax }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          {{ t('xcan_functionTestDetail.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
+          {{ t('protocol.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
         </div>
       </div>
     </div>

@@ -1333,7 +1333,7 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-  return isPageViewMode.value ? { task: t('websocketPlugin.tabs.taskConfig'), execute: t('websocketPlugin.tabs.executeConfig') } : { task: '', execute: '' };
+  return isPageViewMode.value ? { task: t('common.taskConfig'), execute: t('common.execConfig') } : { task: '', execute: '' };
 });
 
 const drawerMenuItems = computed(() => {

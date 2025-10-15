@@ -1511,7 +1511,7 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-  return isPageViewMode.value ? { task: t('smtpPlugin.taskConfig'), execute: t('smtpPlugin.executeConfig') } : { task: '', execute: '' };
+  return isPageViewMode.value ? { task: t('common.taskConfig'), execute: t('common.execConfig') } : { task: '', execute: '' };
 });
 
 const drawerMenuItems = computed(() => {

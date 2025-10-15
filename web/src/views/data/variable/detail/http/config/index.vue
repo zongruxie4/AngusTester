@@ -678,7 +678,7 @@ defineExpose({
       <TabPane key="Authorization">
         <template #tab>
           <Badge v-if="!!authentication?.type" color="green" />
-          <span>{{ t('variable.detail.httpVariable.httpConfigs.requestAuthorization') }}</span>
+          <span>{{ t('protocol.authorization') }}</span>
         </template>
         <ExecAuthencation
           :defaultValue="defaultAuthentication"

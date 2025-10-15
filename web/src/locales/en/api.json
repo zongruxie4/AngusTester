@@ -401,9 +401,7 @@
       },
       "requestTabs": {
         "parameters": "Request Parameters",
-        "header": "Request Headers",
-        "authentication": "Authorization",
-        "parametric": "Parameterization"
+        "header": "Request Headers"
       },
       "errors": {
         "invalidUrl": "Error!",

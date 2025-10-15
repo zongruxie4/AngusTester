@@ -119,7 +119,6 @@
       "labels": {
         "concurrentUsers": "并发数 (用户)",
         "testDuration": "测试时长",
-        "responseTime": "响应时间 (RT)",
         "tps": "每秒事务数 (TPS)",
         "errorRate": "错误率 (ErrorRate)",
         "rampUpThreads": "增压并发数",
@@ -139,7 +138,6 @@
       "labels": {
         "concurrentUsers": "并发数 (用户)",
         "testDuration": "测试时长",
-        "responseTime": "响应时间 (RT)",
         "errorRate": "错误率 (ErrorRate)",
         "tps": "每秒事务数（TPS）",
         "systemLoad": "应用系统平均负载",

@@ -218,7 +218,7 @@ const showBasicInfo = computed(() => {
                   class="mx-1 px-0 h-5 leading-5"
                   type="link"
                   @click="setGlobalTabActiveKey('executeConfig')">
-                  {{ t('jmsPlugin.functionTestDetailJms.executeConfig') }}
+                  {{ t('common.execConfig') }}
                 </Button>{{ t('jmsPlugin.functionTestDetailJms.closeIgnoreAssertion') }}
               </div>
             </template>

@@ -1178,7 +1178,7 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-  return isPageViewMode.value ? { task: t('ldapPlugin.taskConfig'), execute: t('ldapPlugin.executeConfig') } : { task: '', execute: '' };
+  return isPageViewMode.value ? { task: t('common.taskConfig'), execute: t('common.execConfig') } : { task: '', execute: '' };
 });
 
 const drawerMenuItems = computed(() => {

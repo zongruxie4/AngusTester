@@ -214,15 +214,15 @@ const showBasicInfo = computed(() => {
             <template #message>
               <div class="leading-5 text-3 flex items-center whitespace-pre-line flex-wrap">
                 {{ t('httpPlugin.functionTestDetail.http.assertions.ignoreAssertionsTip', {
-                  executionConfig: t('httpPlugin.functionTestDetail.http.assertions.executionConfig'),
-                  pluginConfig: t('httpPlugin.functionTestDetail.http.assertions.pluginConfig')
+                  executionConfig: t('common.execConfig'),
+                  pluginConfig: t('common.pluginConfig')
                 }) }}
                 <Button
                   size="small"
                   class="mx-1 px-0 h-5 leading-5"
                   type="link"
                   @click="setGlobalTabActiveKey('executeConfig')">
-                  {{ t('httpPlugin.functionTestDetail.http.assertions.executionConfig') }} > {{ t('httpPlugin.functionTestDetail.http.assertions.pluginConfig') }}
+                  {{ t('common.execConfig') }} > {{ t('common.pluginConfig') }}
                 </Button>
               </div>
             </template>

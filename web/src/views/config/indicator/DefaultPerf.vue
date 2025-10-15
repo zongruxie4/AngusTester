@@ -77,7 +77,7 @@ defineExpose({
           <div v-else class="w-25 bg-gray-light rounded h-7 leading-7 px-2">{{ info.duration }}</div>
         </li>
         <li>
-          <div class="quota-label">{{ t('indicator.performance.labels.responseTime') }}</div>
+          <div class="quota-label">{{ t('protocol.responseTime') }}</div>
           <div v-if="editable" class="flex items-center">
             <Select
               v-model:value="editInfo.percentile"

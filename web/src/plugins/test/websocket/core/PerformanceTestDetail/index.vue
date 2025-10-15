@@ -375,7 +375,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="responseTime" :tab="t('httpPlugin.performanceTestDetail.tabs.responseTime')">
+        <TabPane key="responseTime" :tab="t('protocol.responseTime')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <CountTemplate

@@ -161,7 +161,7 @@ const showBasicInfo = (httpContent) => {
             :value="httpContent"
             class="py-3" />
         </TabPane>
-        <TabPane key="assertions" :tab="t('xcan_scenarioDebugResult.assertionsResult')">
+        <TabPane key="assertions" :tab="t('common.assertionResult')">
           <Alert
             v-if="props.ignoreAssertions === true"
             closable
@@ -175,7 +175,7 @@ const showBasicInfo = (httpContent) => {
                   class="mx-1 px-0 h-5 leading-5"
                   type="link"
                   @click="setGlobalTabActiveKey('executeConfig')">
-                  {{ t('xcan_scenarioDebugResult.executeConfig') }} > {{ t('xcan_scenarioDebugResult.pluginConfig') }}
+                  {{ t('common.execConfig') }} > {{ t('common.pluginConfig') }}
                 </Button>{{ t('xcan_scenarioDebugResult.closeIgnoreAssertions') }}
               </div>
             </template>

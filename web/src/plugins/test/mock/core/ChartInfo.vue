@@ -62,7 +62,7 @@ const echartsLegendConfig = {
   transactions: t('mockPlugin.metrics.transactions'),
   errors: t('mockPlugin.metrics.errors'),
   errorRate: t('mockPlugin.metrics.errorRate'),
-  iterations: t('mockPlugin.metrics.iterations'),
+  iterations: t('common.iterations'),
   tps: t('mockPlugin.metrics.tps'),
   tranMean: t('mockPlugin.metrics.tranMean'),
   tranMin: t('mockPlugin.metrics.tranMin'),

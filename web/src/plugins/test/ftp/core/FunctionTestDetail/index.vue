@@ -196,7 +196,7 @@ const timeTexts = computed(() => [
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 185, 208, 100%);"></em>
           <span>{{ planIterationNum }}</span>
         </div>
-        <div class="exec-basic-data-card-title">{{ t('ftpPlugin.functionTestDetail.basicInfo.iteration') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('common.iteration') }}</div>
       </div>
 
       <div
@@ -221,7 +221,7 @@ const timeTexts = computed(() => [
           <span>{{ tranMax }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden exec-basic-data-card-title">
-          {{ t('ftpPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
+          {{ t('protocol.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
         </div>
       </div>
     </div>

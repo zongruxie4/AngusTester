@@ -102,7 +102,6 @@
           "requestMethodPlaceholder": "Method",
           "requestUrl": "Request URL",
           "requestUrlPlaceholder": "Path, starting with \" / \"",
-          "requestAuthorization": "Authorization",
           "requestBodyPlaceholder": "Please enter the request body content",
           "extractConfig": "Extract Configuration",
           "extractMethod": "Extract Method",

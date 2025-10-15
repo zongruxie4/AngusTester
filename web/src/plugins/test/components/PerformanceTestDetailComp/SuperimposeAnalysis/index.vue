@@ -264,7 +264,7 @@ defineExpose({
         </Toggle>
         <Toggle
           v-model:open="responseTimeExpand"
-          :title="t('ftpPlugin.performanceTestDetail.superimposeAnalysis.toggleTitles.responseTime')"
+          :title="t('protocol.responseTime')"
           class="mt-2">
           <div
             v-for="apiName in props.apiNames"

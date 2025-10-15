@@ -7,7 +7,6 @@
     "chartConfig": {
       "names": {
         "errors": "Errors",
-        "iterations": "Iterations",
         "n": "Samples",
         "operations": "Operations",
         "transactions": "Transactions",
@@ -96,10 +95,6 @@
       "cancelFavouriteSuccess": "Cancel favourite successful",
       "paramError": "Parameter error"
     },
-    "tabs": {
-      "taskConfig": "Task Configuration",
-      "executeConfig": "Execute Configuration"
-    },
     "permission": {
       "title": "Scenario Permission",
       "onTips": "After enabling 'Permission Control', you need to manually authorize service permissions to have scenario operation permissions, 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
@@ -139,7 +134,6 @@
         "aggregation": "Summary Results",
         "throughput": "Throughput",
         "vu": "Concurrency",
-        "responseTime": "Response Time",
         "error": "Error",
         "httpCode": "Status Code",
         "analyze": "Superimpose Analysis"
@@ -265,10 +259,6 @@
           "serverFormatError": "server format error",
           "pathFormatError": "path format error"
         },
-        "tabs": {
-          "authorization": "Authorization",
-          "parameterization": "Parameterization"
-        },
         "popover": {
           "notes": "Notes",
           "parameterSerialization": "Parameter Serialization",
@@ -283,7 +273,6 @@
           "serverEndpointPlaceholder": "Please enter server endpoint"
         },
         "parametric": {
-          "title": "Parametric",
           "variables": {
             "title": "Variables",
             "addVariable": "Add Variable",
@@ -550,9 +539,6 @@
       }
     },
     "functionTestDetail": {
-      "collapse": {
-        "iteration": "Iteration {iteration}"
-      },
       "http": {
         "timeline": {
           "dnsLookup": "DNS Lookup",
@@ -583,8 +569,6 @@
           "operationResultNotEstablished": "Operation result not established, ignore this assertion",
           "operationResultEstablished": "Operation result established, execute this assertion",
           "noVariableDefined": "No {variable} variable defined, execute this condition expression directly",
-          "executionConfig": "Execution Configuration",
-          "pluginConfig": "Plugin Configuration",
           "ignoreAssertionsTip": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please turn off the ignore assertions option in {executionConfig} > {pluginConfig}."
         },
         "typeMap": {
@@ -629,8 +613,6 @@
   },
   "jdbcPlugin": {
     "title": "JDBC Plugin",
-    "taskConfig": "Task Configuration",
-    "executeConfig": "Execute Configuration",
     "UIConfigJdbc": {
       "insertJDBC": "Insert JDBC",
       "insertTransStart": "Insert Transaction Start",
@@ -655,8 +637,7 @@
         "parameterTypePlaceholder": "Enter or select parameter type (optional)",
         "inputOutputPlaceholder": "Input/Output",
         "inputOutputTooltip": "Parameter value is required when input/output value is 'IN' or 'INOUT'",
-        "parameterValuePlaceholder": "Parameter value (optional. Note: Parameter value is required when input/output value is 'IN' or 'INOUT')",
-        "parametric": "Parametric"
+        "parameterValuePlaceholder": "Parameter value (optional. Note: Parameter value is required when input/output value is 'IN' or 'INOUT')"
       },
       "assertionForm": {
         "nameDuplicate": "Name Duplicate",
@@ -745,10 +726,6 @@
     }
   },
   "ftpPlugin": {
-    "tabs": {
-      "taskConfig": "Task Configuration",
-      "executeConfig": "Execution Configuration"
-    },
     "drawer": {
       "indicator": "Performance Indicators",
       "testInfo": "Test Results",
@@ -784,15 +761,6 @@
       "title": "Export Script",
       "format": "Format"
     },
-    "functionTestDetail": {
-      "basicInfo": {
-        "iteration": "Iterations",
-        "responseTime": "Response Time"
-      },
-      "collapse": {
-        "iteration": "Iteration {iteration}"
-      }
-    },
     "scriptConfig": {
       "messages": {
         "yamlFormatError": "YAML content format error, please check and correct"
@@ -805,7 +773,6 @@
         "queriesPerSecond": "Queries/Second (Current / Max)",
         "transactionsPerSecond": "Transactions/Second (Current / Max)",
         "errors": "Errors (Error)",
-        "iterations": "Iterations",
         "responseTime": "Response Time (Min /Avg / Max)",
         "percentile": "Response Percentile (P50 / P90 / P99)"
       },
@@ -813,7 +780,6 @@
         "aggregation": "Aggregation Results",
         "throughput": "Throughput",
         "concurrency": "Concurrency",
-        "responseTime": "Response Time",
         "error": "Errors",
         "analyze": "Superimpose Analysis"
       },
@@ -1014,8 +980,6 @@
   },
   "jmsPlugin": {
     "title": "JMS Plugin",
-    "taskConfig": "Task Configuration",
-    "executeConfig": "Execute Configuration",
     "notifications": {
       "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
       "autoSaveSuccess": "Auto save successful, executing debug...",
@@ -1052,7 +1016,6 @@
       "namePlaceholder": "Name, maximum 400 characters",
       "descriptionPlaceholder": "Description, maximum 800 characters",
       "mailSettings": "Mail Settings",
-      "protocol": "Protocol",
       "protocolPlaceholder": "Protocol",
       "hostnameOrIP": "Hostname or IP",
       "hostnameOrIPPlaceholder": "Hostname or IP",
@@ -1142,8 +1105,6 @@
   },
   "ldapPlugin": {
     "title": "LDAP Plugin",
-    "taskConfig": "Task Configuration",
-    "executeConfig": "Execute Configuration",
     "notifications": {
       "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
       "autoSaveSuccess": "Auto save successful, executing debug...",
@@ -1216,8 +1177,6 @@
   },
   "mailPlugin": {
     "title": "Mail Plugin",
-    "taskConfig": "Task Configuration",
-    "executeConfig": "Execute Configuration",
     "notifications": {
       "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
       "autoSaveSuccess": "Auto save successful, executing debug...",
@@ -1280,7 +1239,6 @@
       "transactions": "Rows",
       "errors": "Errors",
       "errorRate": "Error Rate",
-      "iterations": "Iterations",
       "tps": "Rows per Second",
       "tranMean": "Average",
       "tranMin": "Min",
@@ -1289,8 +1247,6 @@
   },
   "smtpPlugin": {
     "title": "SMTP Plugin",
-    "taskConfig": "Task Configuration",
-    "executeConfig": "Execute Configuration",
     "notifications": {
       "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
       "autoSaveSuccess": "Auto save successful, executing debug...",
@@ -1552,10 +1508,6 @@
       "onTips": "After enabling 'Permission Control', manual authorization of service permissions is required to have scenario operation permissions. Permission control is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
       "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing must also have parent directory permissions for the current scenario."
     },
-    "tabs": {
-      "taskConfig": "Task Configuration",
-      "executeConfig": "Execute Configuration"
-    },
     "uiConfig": {
       "title": "Insert WebSocket Interface",
       "selectTitle": "Select WebSocket Interface",
@@ -1587,9 +1539,6 @@
       "encodingTitle": "Send Data Encoding",
       "encodingPlaceholder": "Send Data Encoding",
       "title": "Send Data"
-    },
-    "parametric": {
-      "title": "Parameterization"
     },
     "assertion": {
       "tooltip": "Assert received message"
@@ -1805,7 +1754,6 @@
       "rows": "Rows",
       "errorCount": "Error Count",
       "errorRate": "Error Rate",
-      "iterations": "Iterations",
       "rowsPerSecond": "Rows Per Second",
       "concurrency": "Concurrency",
       "rowsPerSecondTps": "Rows Per Second (TPS)",
@@ -1816,7 +1764,6 @@
   },
   "xcan_exec_chartConfig": {
     "errors": "Errors",
-    "iterations": "Iterations",
     "sampleCount": "Sample Count",
     "requestCount": "Request Count",
     "transactionCount": "Transaction Count",

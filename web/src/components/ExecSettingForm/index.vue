@@ -1932,7 +1932,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               <IconRequired />{{ t('xcan_execSettingForm.concurrencyThreads') }}
             </div>
             <template v-if="!['MOCK_APIS'].includes(props.scriptType)">
-              <div class="h-7 whitespace-nowrap mb-5 pl-1.75 iterations">{{ t('xcan_execSettingForm.iterations') }}</div>
+              <div class="h-7 whitespace-nowrap mb-5 pl-1.75 iterations">{{ t('common.iterations') }}</div>
             </template>
             <template v-if="!['MOCK_DATA', 'TEST_FUNCTIONALITY'].includes(props.scriptType)">
               <div class="h-7 whitespace-nowrap mb-5 pl-1.75 duration">{{ t('xcan_execSettingForm.executionDuration') }}</div>
@@ -1986,7 +1986,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                   :min="1"
                   :max="props.addType === 'expr' ? 100000 : 100000000000"
                   size="small"
-                  :placeholder="t('xcan_execSettingForm.iterations')"
+                  :placeholder="t('common.iterations')"
                   @blur="handleIterationsInputBlur" />
                 <Tooltip
                   :title="t('xcan_execSettingForm.iterationsTooltip')"

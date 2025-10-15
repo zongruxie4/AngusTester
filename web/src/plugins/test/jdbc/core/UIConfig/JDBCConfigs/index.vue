@@ -644,7 +644,7 @@ const inputProps = {
               size="small"
               :count="parametricErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>{{ t('jdbcPlugin.UIConfigJdbc.jdbcConfig.parametric') }}</div>
+                <div>{{ t('common.parameterization') }}</div>
               </div>
             </Badge>
           </template>

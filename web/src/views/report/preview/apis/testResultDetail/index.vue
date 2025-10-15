@@ -182,7 +182,7 @@ const indicatorPerfItem = [
     dataIndex: 'rampUpInterval'
   },
   {
-    label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.responseTime'),
+    label: t('protocol.responseTime'),
     dataIndex: 'art',
     compareOprate: '<='
   },
@@ -245,7 +245,7 @@ const indicatorPerfResultItem = computed(() => {
       dataIndex: 'rampUpInterval'
     },
     {
-      label: `${t('reportPreview.apis.testResultDetail.performanceTest.indicators.responseTime')} (${percentile || '--'})`,
+      label: `${t('protocol.responseTime')} (${percentile || '--'})`,
       dataIndex: percentitleKey || '--'
     },
     {
@@ -391,9 +391,9 @@ const indicatorStabilityItem = computed(() => {
       resultDataIndex: 'duration'
     },
     {
-      label: t('reportPreview.apis.testResultDetail.performanceTest.indicators.responseTime'),
+      label: t('protocol.responseTime'),
       dataIndex: 'art',
-      resultLabel: `${t('reportPreview.apis.testResultDetail.performanceTest.indicators.responseTime')} (${percentile || '--'})`,
+      resultLabel: `${t('protocol.responseTime')} (${percentile || '--'})`,
       resultDataIndex: percentitleKey || '--'
     },
     {

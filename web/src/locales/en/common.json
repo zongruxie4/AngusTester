@@ -35,6 +35,9 @@
     "count": "Count",
     "size": "Size",
     "duration": "Duration",
+    "iteration": "Iteration",
+    "iterations": "Iterations",
+    "iterationCountTemplate": "Iteration {iteration}",
     "expiration": "Expiration",
     "id": "ID",
     "code": "Code",
@@ -186,6 +189,7 @@
     "assertion": "Assertion",
     "assertionResult": "Assertion Result",
     "scheduleResult": "Schedule Result",
+    "parameterization": "Parameterization",
     "log": "Log",
     "scheduleLog": "Scheduling Log",
     "execLog": "Exec Log",
@@ -522,7 +526,10 @@
     "format": "Format",
     "generateData": "Generate Data",
     "experienceExec": "Experience Execution",
+    "execConfig": "Execution Config",
     "modifyExecConfig": "Modify Execution Config",
+    "taskConfig": "Task Config",
+    "pluginConfig": "Plugin Config",
     "copyLink": "Copy Link",
     "selectAll": "Select All",
     "recover": "Recover",
@@ -693,6 +700,7 @@
     "user": "Users"
   },
   "protocol": {
+    "name": "Protocol",
     "domain": "Domain",
     "host": "Host",
     "port": "Port",
@@ -704,6 +712,7 @@
     "http": "Http",
     "method": "Method",
     "cookie": "Cookie",
+    "authorization": "Authorization",
     "duration": "Duration",
     "queryParameter": "Query Parameters",
     "requestParameter": "Request Parameters",
@@ -713,6 +722,8 @@
     "responseHeader": "Response Headers",
     "responseBody": "Response Body",
     "responseBodySize": "Response Body Size",
-    "responseSize": "Response Size"
+    "responseSize": "Response Size",
+    "responseTime": "Response Time (RT)",
+    "responseTimeP90": "RT (P90)"
   }
 }

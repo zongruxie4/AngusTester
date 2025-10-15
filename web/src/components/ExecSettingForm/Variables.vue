@@ -250,7 +250,7 @@ const requestLocationOptions = [
   },
   {
     value: '4',
-    message: t('xcan_execSettingForm.authorization')
+    message: t('protocol.authorization')
   },
   {
     value: '5',

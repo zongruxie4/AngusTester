@@ -10,7 +10,6 @@
       "configure": "Configure",
       "concurrency": "Concurrency",
       "executionTime": "Execution Time (seconds)",
-      "iterations": "Iterations",
       "errorRate": "Error Rate"
     },
     "actions": {
@@ -36,7 +35,6 @@
       "avgResponseTime": "AVG RT",
       "errorRate": "Error",
       "executedTime": "Executed Time",
-      "iterations": "Executed Iterations",
       "percentileP90": "Percentile P90"
     },
     "tips": {
@@ -80,7 +78,6 @@
     },
     "info": {
       "executionDetails": "Detail",
-      "executionConfig": "Configuration",
       "serverConfig": "Test Server",
       "executionScript": "Script",
       "performanceTest": "Performance Test",
@@ -126,7 +123,6 @@
       "testDuration": "Test Duration",
       "rampUpConcurrencyCount": "Ramp-up Concurrency Count",
       "rampUpConcurrencyDuration": "Ramp-up Concurrency Duration",
-      "responseTime": "Response Time (RT)",
       "transactionsPerSecond": "Transactions Per Second (TPS)",
       "errorRate": "Error Rate (ErrorRate)",
       "errorRateSimple": "Error Rate",
@@ -178,7 +174,6 @@
     "chartConfig": {
       "names": {
         "errors": "Error Count",
-        "iterations": "Iteration Count",
         "n": "Sampling Count",
         "operations": "Request Count",
         "transactions": "Transaction Count",

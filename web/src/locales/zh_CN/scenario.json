@@ -126,7 +126,6 @@
         },
         "metrics": {
           "tps": "每秒事务数(TPS)",
-          "responseTime": "响应时间(P90)",
           "errorRate": "错误率"
         }
       }

@@ -35,6 +35,9 @@
     "count": "数量",
     "size": "大小",
     "duration": "耗时",
+    "iteration": "迭代",
+    "iterations": "迭代次数",
+    "iterationCountTemplate": "第{iteration}次迭代",
     "expiration": "过期",
     "id": "ID",
     "code": "编号",
@@ -186,6 +189,7 @@
     "assertion": "断言",
     "assertionResult": "断言结果",
     "scheduleResult": "调度结果",
+    "parameterization": "参数化",
     "log": "日志",
     "scheduleLog": "调度日志",
     "execLog": "执行日志",
@@ -521,8 +525,11 @@
     "stop": "停止",
     "format": "格式化",
     "generateData": "生成数据",
-    "experienceExecution": "体验执行",
-    "modifyExecutionConfig": "修改执行配置",
+    "experienceExec": "体验执行",
+    "execConfig": "执行配置",
+    "modifyExecConfig": "修改执行配置",
+    "taskConfig": "任务配置",
+    "pluginConfig": "插件配置",
     "copyLink": "复制链接",
     "selectAll": "全选",
     "recover": "恢复",
@@ -694,6 +701,7 @@
     "user": "人"
   },
   "protocol": {
+    "name": "名称",
     "domain": "域名",
     "host": "主机",
     "port": "端口",
@@ -705,6 +713,7 @@
     "http": "Http",
     "method": "方法",
     "cookie": "Cookie",
+    "authorization": "认证",
     "duration": "耗时",
     "queryParameter": "查询参数",
     "requestParameter": "请求参数",
@@ -714,6 +723,8 @@
     "responseHeader": "响应头",
     "responseBody": "响应体",
     "responseBodySize": "响应体大小",
-    "responseSize": "响应大小"
+    "responseSize": "响应大小",
+    "responseTime": "响应时间(RT)",
+    "responseTimeP90": "响应时间(P90)"
   }
 }

@@ -501,7 +501,6 @@
             "testDuration": "Test Duration",
             "pressureConcurrency": "Pressure Concurrency",
             "pressureTestDuration": "Pressure Test Duration",
-            "responseTime": "Response Time",
             "tps": "TPS",
             "errorRate": "Error Rate"
           }
@@ -595,7 +594,6 @@
       },
       "sampling": {
         "collapse": {
-          "iteration": "Iteration {count}",
           "throughput": {
             "requestsPerSecond": "Requests Per Second",
             "waitTimeout": "Wait Timeout"
@@ -629,7 +627,6 @@
           "samplingIndicators": "Sampling Indicators",
           "throughput": "Throughput",
           "concurrency": "Concurrency",
-          "responseTime": "Response Time",
           "error": "Error",
           "nodeResources": "Node Resources",
           "overlayAnalysis": "Overlay Analysis",
@@ -673,7 +670,6 @@
           "testDuration": "Test Duration",
           "rampUpThreads": "Ramp Up Threads",
           "rampUpInterval": "Ramp Up Interval",
-          "responseTime": "Response Time (RT)",
           "tps": "Transactions Per Second (TPS)",
           "errorRate": "Error Rate",
           "systemLoad": "Application System Average Load",
@@ -689,7 +685,6 @@
           "resultValue": "Result Value",
           "concurrency": "Concurrency",
           "testDuration": "Test Duration",
-          "responseTime": "Response Time (art)",
           "tps": "Transactions Per Second (TPS)",
           "errorRate": "Error Rate",
           "systemLoad": "Application System Average Load",
@@ -784,7 +779,6 @@
         },
         "chartConfig": {
           "errors": "Error Count",
-          "iterations": "Iterations",
           "n": "Sample Count",
           "operations": "Request Count",
           "transactions": "Transaction Count",
@@ -1394,7 +1388,6 @@
               "testDuration": "Test Duration",
               "rampUpConcurrency": "Ramp-up Concurrency",
               "rampUpDuration": "Ramp-up Duration",
-              "responseTime": "Response Time",
               "tps": "Transactions Per Second",
               "errorRate": "Error Rate"
             }
@@ -1422,7 +1415,6 @@
               "testDuration": "Test Duration",
               "rampUpConcurrency": "Ramp-up Concurrency",
               "rampUpDuration": "Ramp-up Duration",
-              "responseTime": "Response Time",
               "tps": "Transactions Per Second (TPS)",
               "errorRate": "Error Rate"
             }
@@ -1450,7 +1442,6 @@
             "testDuration": "Test Duration",
             "pressureConcurrency": "Pressure Concurrency",
             "pressureTestDuration": "Pressure Test Duration",
-            "responseTime": "Response Time",
             "tps": "TPS",
             "errorRate": "Error Rate"
           }
@@ -1855,7 +1846,6 @@
               "testDuration": "Test Duration",
               "rampUpConcurrency": "Ramp-up Concurrency",
               "rampUpDuration": "Ramp-up Duration",
-              "responseTime": "Response Time (RT)",
               "tps": "Transactions Per Second (TPS)",
               "errorRate": "Error Rate"
             }

@@ -184,7 +184,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 185, 208, 100%);"></em>
           <span>{{ planIterationNum }}</span>
         </div>
-        <div class="exec-basic-data-card-title">{{ t('httpPlugin.functionTestDetail.basicInfo.iteration') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('common.iteration') }}</div>
       </div>
 
       <div
@@ -209,7 +209,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <span>{{ tranMax }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden exec-basic-data-card-title">
-          {{ t('httpPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
+          {{ t('protocol.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
         </div>
       </div>
     </div>

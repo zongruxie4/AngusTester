@@ -122,13 +122,13 @@ const countCard = computed(() => {
     },
     {
       key: 'currentIterations',
-      name: t('ftpPlugin.performanceTestDetail.basicInfo.iterations'),
+      name: t('common.iterations'),
       icon: 'icon-yidiedaicishu',
       color: '3, 185, 208'
     },
     {
       key: 'rt',
-      name: t('ftpPlugin.performanceTestDetail.basicInfo.responseTime'),
+      name: t('protocol.responseTime'),
       icon: 'icon-pingjunxiangyingshijian',
       color: '255, 129, 0'
     },
@@ -374,7 +374,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="responseTime" :tab="t('ftpPlugin.performanceTestDetail.tabs.responseTime')">
+        <TabPane key="responseTime" :tab="t('protocol.responseTime')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <CountTemplate

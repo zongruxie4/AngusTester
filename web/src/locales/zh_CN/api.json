@@ -406,10 +406,7 @@
       },
       "requestTabs": {
         "parameters": "请求参数",
-        "header": "请求头",
-        "authentication": "Authorization",
-        "parametric": "参数化",
-        "setting": "设置"
+        "header": "请求头"
       },
       "errors": {
         "invalidUrl": "出错了！",

@@ -100,7 +100,6 @@
           "requestMethodPlaceholder": "请求方法",
           "requestUrl": "请求地址",
           "requestUrlPlaceholder": "接口路径，以 \" / \" 起始",
-          "requestAuthorization": "Authorization",
           "requestBodyPlaceholder": "请输入请求体内容",
           "extractConfig": "提取配置",
           "extractMethod": "提取方式",

@@ -184,7 +184,7 @@ defineExpose({
         <!-- Iterations (for functional tests) -->
         <template v-if="props.testType === TestType.FUNCTIONAL">
           <FormItem
-            :label="t('commonComp.genTestScriptModal.testForm.iterations')"
+            :label="t('common.iterations')"
             required
             class="form-item">
             <Input

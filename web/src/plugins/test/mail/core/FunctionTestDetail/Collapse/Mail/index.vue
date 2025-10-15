@@ -113,7 +113,7 @@ const failMessage = computed(() => {
               icon="icon-chajianpeizhi" />
           </template>
           <div :title="props.value?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ props.value?.name }}</div>
-          <Tag v-if="httpContent?.content?.protocol?.value" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.protocol') }}：{{ httpContent?.content?.protocol?.value }}</Tag>
+          <Tag v-if="httpContent?.content?.protocol?.value" class="!leading-5">{{ t('protocol.name') }}：{{ httpContent?.content?.protocol?.value }}</Tag>
           <Tag v-if="httpContent?.content?.response?.messageTotal" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.totalEmails', { count: httpContent?.content?.response?.messageTotal }) }}</Tag>
           <Tag v-if="httpContent?.content?.response?.messageRead" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.readEmails', { count: httpContent?.content?.response?.messageRead }) }}</Tag>
           <div class="flex-1 justify-end flex items-center mr-3">
