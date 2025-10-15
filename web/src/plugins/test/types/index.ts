@@ -8,10 +8,11 @@ import { SmtpPipelineInfo } from '@/plugins/test/smtp/core/PropsType';
 import { TcpPipelineInfo } from '@/plugins/test/tcp/core/PropsType';
 import { WebSocketPipelineInfo } from '@/plugins/test/websocket/core/PropsType';
 
-import { ScriptType as ScriptTypeInfra } from '@xcan-angus/infra';
+import { ScriptType as ScriptTypeInfra, AssertionCondition } from '@xcan-angus/infra';
 import { ScenarioType } from '@/enums/enums';
 
 export type ScriptType = keyof typeof ScriptTypeInfra;
+export type AssertCondition = keyof typeof AssertionCondition;
 
 export type PluginType = 'Ftp' | 'Jms' | 'Ldap' | 'Mail' | 'Smtp' | 'Tcp' | 'WebSocket';
 
@@ -230,4 +231,88 @@ export type SaveFormData = {
         configuration: { [key: string]: any };
     };
     scriptId: string;
+}
+
+export type ExecContent = {
+    finish: boolean;
+    nodeId: string;
+    timestamp0: string;
+    name: string;
+    extField: string;
+    iteration: string;
+    key: string;
+    content: {
+        name: string;
+        success: boolean;
+        failMessage: string;
+        request0: {
+            method: string;
+            url: string;
+            headers: {[key:string]:string};
+            forms: string;
+            rawContent: string;
+            size: string;
+            headerArray: string[];
+            queryString:string;
+        };
+        response: {
+            status: string;
+            size: string;
+            bodySize: string;
+            headers: {[key:string]:string};
+            rawContent: string;
+            timeline: {
+                fetchStart: string;
+                domainLookupStart: string;
+                domainLookupEnd: string;
+                connectStart: string;
+                connectEnd: string;
+                secureConnectionStart: string;
+                secureConnectionEnd: string;
+                requestStart: string;
+                responseStart: string;
+                responseEnd: string;
+                total: string;
+            };
+            headerArray: string[];
+        };
+        assertions: {
+            name: string;
+            enabled: boolean;
+            type: {
+                value: 'STATUS' | 'HEADER' | 'BODY' | 'BODY_SIZE' | 'SIZE' | 'DURATION';
+                message: string;
+            };
+            assertionCondition: {
+                value: AssertCondition;
+                message: string;
+            };
+            expected: string;
+            success: boolean;
+            ignore: boolean
+            actualExpected: string;
+            condition?: string;
+            actualCondition?: string;
+            parameterName: string;
+            result?: {
+                failure: boolean;
+                message: string;
+            };
+            extraction?:{
+                name: string;
+                method: {
+                    value: string;
+                    message: string;
+                },
+                expression: string;
+                matchItem: string;
+                defaultValue:string;
+                location: string;
+                parameterName: string;
+                value: string;
+                finalValue: string;
+            }
+        }[];
+    };
+    timestamp: string;
 }

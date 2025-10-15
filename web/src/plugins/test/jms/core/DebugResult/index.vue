@@ -38,12 +38,12 @@ const props = withDefaults(defineProps<Props>(), {
   httpError: undefined
 });
 
-const TransStartTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/TransStart/index.vue'));
-const WaitingTimeTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/WaitingTime/index.vue'));
-const ThroughputTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/Throughput/index.vue'));
-const RendezvousTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/Rendezvous/index.vue'));
+const TransStartTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/functionTestDetailComp/TransStart/index.vue'));
+const WaitingTimeTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/functionTestDetailComp/WaitingTime/index.vue'));
+const ThroughputTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/functionTestDetailComp/Throughput/index.vue'));
+const RendezvousTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/functionTestDetailComp/Rendezvous/index.vue'));
 const HTTPTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/JMS/index.vue'));
-const TransEndTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/TransEnd/index.vue'));
+const TransEndTestDetail = defineAsyncComponent(() => import('@/plugins/test/components/functionTestDetailComp/TransEnd/index.vue'));
 
 const pipelines = computed(() => {
   if (!props?.value?.task?.pipelines?.length) {

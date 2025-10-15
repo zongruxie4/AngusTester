@@ -249,7 +249,6 @@ export type ExecContent = {
                 message: string;
             };
             expected: string;
-            enabled: boolean;
             success: boolean;
             ignore: boolean
             actualExpected: string;
