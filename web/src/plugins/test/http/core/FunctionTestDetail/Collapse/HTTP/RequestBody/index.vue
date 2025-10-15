@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { NoData, FormatHighlight } from '@xcan-angus/vue-ui';
 
-import { ExecContent } from '../../../PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 const { t } = useI18n();
 

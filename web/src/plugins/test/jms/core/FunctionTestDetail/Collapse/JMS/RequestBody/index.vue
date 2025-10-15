@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { NoData, FormatHighlight } from '@xcan-angus/vue-ui';
 
-import { ExecContent } from '../../../PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 export interface Props {
   value: ExecContent

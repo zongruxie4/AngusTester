@@ -5,7 +5,7 @@ import { utils } from '@xcan-angus/infra';
 import { Badge } from 'ant-design-vue';
 
 import { PipelineConfig } from '../UIConfig/PropsType.ts';
-import { ExecContent } from '../FunctionTestDetail/PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 interface Props {
   httpError?:{

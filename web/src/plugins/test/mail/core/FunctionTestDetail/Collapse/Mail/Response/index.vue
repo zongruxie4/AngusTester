@@ -5,7 +5,7 @@ import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Arrow, NoData } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import { ExecContent } from '../../../PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 const { t } = useI18n();
 

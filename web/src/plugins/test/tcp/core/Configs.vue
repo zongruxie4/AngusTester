@@ -13,7 +13,7 @@ import ButtonGroup from '@/plugins/test/components/ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from '@/plugins/test/components/ButtonGroup/PropsType';
 import { TOOLBAR_MENUITEMS, TOOLBAR_EXTRA_MENUITEMS, DRAWER_MENUITEMS } from './data';
 import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from '@/plugins/test/types/index';
-import { ExecContent } from './FunctionTestDetail/PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 const { t } = useI18n();
 

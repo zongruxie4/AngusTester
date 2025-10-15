@@ -6,7 +6,7 @@ import { AsyncComponent, Icon, Tooltip, Modal, Spin, MonacoEditor } from '@xcan-
 import { utils } from '@xcan-angus/infra';
 import beautify from 'js-beautify';
 
-import { ExecContent } from '../../../../PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 const { t } = useI18n();
 

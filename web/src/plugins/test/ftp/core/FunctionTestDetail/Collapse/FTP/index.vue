@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n';
 
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 import { FtpInfo } from './PropsType';
-import { ExecContent } from '../../PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 export interface Props {
   value: FtpInfo;
