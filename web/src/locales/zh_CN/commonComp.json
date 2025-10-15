@@ -507,7 +507,6 @@
     "defineExtract": "精确值",
     "extractionMethod": "提取方式",
     "extractionParameterName": "提取参数名",
-    "regexExpression": "正则表达式",
     "extractionExpression": "提取表达式",
     "interface": "接口",
     "define": "定义",
@@ -808,9 +807,6 @@
     "pleaseEnterRampUpThreads": "请输入增压线程数",
     "rampUpTooltip1": "调整线程启动间隔，值大小不能超过执行时长。",
     "rampUpTooltip2": "调整线程逐渐增加的数量，值大小不能超过最大线程数。",
-    "requestParameters": "请求参数",
-    "requestHeaders": "请求头",
-    "cookie": "Cookie",
     "authorization": "Authorization",
     "pleaseEnterRampDownInterval": "请输入减压间隔",
     "pleaseEnterRampDownThreads": "请输入减压线程数",
@@ -1095,10 +1091,6 @@
     "extractedValue": "提取值",
     "expectedValue": "期望值",
     "responseStatusCode": "响应状态码",
-    "responseHeader": "响应头",
-    "responseBody": "响应体",
-    "responseBodySize": "响应体大小",
-    "responseSize": "响应大小",
     "duration": "耗时",
     "contain": "包含",
     "equal": "等于",
@@ -1158,7 +1150,6 @@
     "add": "添加",
     "extractionMethod": "提取方式",
     "extractionValue": "提取值",
-    "regexExpression": "正则表达式",
     "extractionExpression": "提取表达式",
     "scope": "作用范围",
     "lastModified": "最后修改",
@@ -1232,11 +1223,6 @@
     "executionConditionResult": "执行条件结果",
     "assertionLabel": "断言标签",
     "assertionCondition": "断言条件",
-    "responseStatusCode": "响应状态码",
-    "responseHeader": "响应头",
-    "responseBody": "响应体",
-    "responseBodySize": "响应体大小",
-    "responseSize": "响应大小",
     "duration": "耗时",
     "contain": "包含",
     "equal": "等于",
@@ -1261,11 +1247,6 @@
     "prettyFormat": "美化格式",
     "rawFormat": "原生格式",
     "preview": "预览"
-  },
-  "xcan_debugResRequestHeaders": {
-    "general": "常规",
-    "requestHeaders": "请求头",
-    "responseHeaders": "响应头"
   },
   "xcan_debugResRequestParameter": {
     "parameters": "参数",
@@ -1502,8 +1483,6 @@
   },
   "xcan_scenarioMail": {
     "requestContent": "请求内容",
-    "responseHeaders": "响应头",
-    "responseBody": "响应体",
     "email": "邮件{num}"
   }
 }

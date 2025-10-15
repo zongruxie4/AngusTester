@@ -38,7 +38,7 @@ defineExpose({
         :value="queryData"
         @change="changeQueryData" />
     </TabPane>
-    <TabPane key="header" :tab="t('service.sidebar.batchModifyApi.requestHeader')">
+    <TabPane key="header" :tab="t('protocol.requestHeader')">
       <RequestHeader
         :value="headerData"
         @change="changeHeaderData" />

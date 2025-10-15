@@ -45,7 +45,6 @@ const emit = defineEmits<{
   (e: 'change', value: string[]): void;
 }>();
 
-// ==================== Reactive State ====================
 /**
  * <p>List of parameter IDs for tracking</p>
  * <p>Used to manage form state and order</p>
@@ -76,14 +75,12 @@ const valueErrorSet = ref<Set<string>>(new Set());
  */
 const errorMessageMap = ref<Map<string, string>>(new Map());
 
-// ==================== Constants ====================
 /**
  * <p>Enum values that require expression input</p>
  * <p>These conditions use expression field instead of expected field</p>
  */
 const EXPRESSION_ENUMS = [FullMatchCondition.REG_MATCH, FullMatchCondition.XPATH_MATCH, FullMatchCondition.JSON_PATH_MATCH];
 
-// ==================== Event Handlers ====================
 /**
  * <p>Handles parameter name change event</p>
  * <p>Updates parameter name and clears validation errors</p>
@@ -153,7 +150,6 @@ const handleDelete = (index: number, id: string) => {
   errorMessageMap.value.delete(id);
 };
 
-// ==================== Utility Methods ====================
 /**
  * <p>Resets component to initial state</p>
  * <p>Clears all form data and error states</p>
@@ -197,7 +193,6 @@ const addParameter = () => {
   };
 };
 
-// ==================== Validation Methods ====================
 /**
  * <p>Validates all form fields</p>
  * <p>Checks if all required fields are filled</p>
@@ -231,7 +226,6 @@ const isValid = (): boolean => {
   return !nameErrorSet.value.size && !valueErrorSet.value.size;
 };
 
-// ==================== Data Methods ====================
 /**
  * <p>Gets current form data</p>
  * <p>Returns formatted data from all parameters</p>
@@ -265,7 +259,6 @@ const getData = (): Parameter[] | undefined => {
   });
 };
 
-// ==================== Lifecycle Hooks ====================
 /**
  * <p>Component mounted lifecycle hook</p>
  * <p>Sets up watchers and initializes component state</p>
@@ -303,7 +296,6 @@ onMounted(() => {
   }, { immediate: true, deep: true });
 });
 
-// ==================== Computed Properties ====================
 /**
  * <p>Placeholder text map for parameter values</p>
  * <p>Returns appropriate placeholder based on condition type</p>
@@ -320,9 +312,9 @@ const placeholderMap = computed(() => {
     if (emptyConditions.includes(condition)) {
       map[id] = '';
     } else if (condition === FullMatchCondition.REG_MATCH) {
-      map[id] = t('mock.detail.apis.components.match.regexExpression');
+      map[id] = t('common.regexExpression');
     } else {
-      map[id] = t('mock.detail.apis.components.match.parameterValuePlaceholder');
+      map[id] = t('common.placeholders.enterParameterValue');
     }
   }
 
@@ -350,7 +342,6 @@ const disabledMap = computed(() => {
   return map;
 });
 
-// ==================== Configuration ====================
 /**
  * <p>Excludes function for condition selection</p>
  * <p>Filters out conditions that are not supported</p>
@@ -373,7 +364,6 @@ const inputProps = {
   maxlength: 400
 };
 
-// ==================== Public API ====================
 /**
  * <p>Exposes component methods and data to parent components</p>
  * <p>Provides methods for managing parameters and validation</p>
@@ -386,7 +376,7 @@ defineExpose({
 </script>
 <template>
   <div v-if="!!idList.length" class="leading-5">
-    <div class="flex items-center mb-0.5">{{ t('mock.detail.apis.components.match.header') }}</div>
+    <div class="flex items-center mb-0.5">{{ t('protocol.requestHeader') }}</div>
     <div class="space-y-2">
       <div
         v-for="(item,index) in idList"
@@ -405,7 +395,7 @@ defineExpose({
             mode="combination"
             style="flex: 0 0 calc((100% - 200px) * 2/5);"
             trim
-            :placeholder="t('mock.detail.apis.components.match.parameterNamePlaceholder')"
+            :placeholder="t('common.placeholders.enterParameterName')"
             @change="handleNameChange($event,item)">
             <template #option="record">
               <div class="truncate" :title="record._value+'-'+record.message">{{ record._value }} - {{ record.message }}</div>

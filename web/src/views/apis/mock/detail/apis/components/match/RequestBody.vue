@@ -261,9 +261,9 @@ const placeholderMap = {
   GREATER_THAN_EQUAL: t('common.value'),
   LESS_THAN: t('common.value'),
   LESS_THAN_EQUAL: t('common.value'),
-  REG_MATCH: t('mock.detail.apis.components.match.regexExpression'),
-  XPATH_MATCH: t('mock.detail.apis.components.match.xpathExpression'),
-  JSON_PATH_MATCH: t('mock.detail.apis.components.match.jsonPathExpression')
+  REG_MATCH: t('common.regexExpression'),
+  XPATH_MATCH: t('common.xpathExpression'),
+  JSON_PATH_MATCH: t('common.jsonPathExpression')
 };
 
 // ==================== Public API ====================
@@ -279,7 +279,7 @@ defineExpose({
 </script>
 <template>
   <div v-if="!!idList.length" class="leading-5">
-    <div class="flex items-center mb-0.5">{{ t('protocol.http.requestBody') }}</div>
+    <div class="flex items-center mb-0.5">{{ t('protocol.requestBody') }}</div>
     <div class="flex items-center justify-between space-x-2">
       <SelectEnum
         v-model:value="selectValue"
@@ -300,7 +300,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleFormat">
-            <span>{{ t('mock.detail.apis.components.match.format') }}</span>
+            <span>{{ t('action.format') }}</span>
           </Button>
           <Button
             style="padding: 0;"

@@ -317,15 +317,15 @@ defineExpose({
           </Button>
           <p v-show="showTested && testSuccess" class="text-text-content font-medium">
             <Icon icon="icon-duihao" class="text-status-success mr-1.5 icon-text-3 leading-3" />
-            {{ t('node.list.labels.connectionSuccess') }}
+            {{ t('status.connectionSuccess') }}
           </p>
           <p v-show="showTested && !testSuccess" class="text-text-content font-medium">
             <Icon icon="icon-chahao" class="text-status-error mr-1.5 icon-text-3 leading-3" />
-            {{ t('node.list.labels.connectionFailed') }}, {{ testFailContent }}
+            {{ t('list.labels.connectionFailedAndRetry') }}, {{ testFailContent }}
           </p>
         </div>
       </div>
-      <!-- 视图状态 -->
+
       <div v-else class="text-3">
         <div class="flex items-center min-h-28.5 justify-between">
           <div class="flex-1">

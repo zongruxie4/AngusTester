@@ -32,7 +32,7 @@ export function useGridColumns () {
         dataIndex: 'endpoint'
       },
       {
-        label: t('protocol.http.requestMethod'),
+        label: t('protocol.requestMethod'),
         dataIndex: 'method'
       },
       {

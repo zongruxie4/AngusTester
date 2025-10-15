@@ -23,12 +23,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// ==================== Reactive State ====================
 const content = ref('');
 const error = ref(false);
 const errorMessage = ref('');
 
-// ==================== Computed Properties ====================
 /**
  * Textarea auto size configuration
  */
@@ -41,10 +39,9 @@ const autoSize = {
  * Placeholder text with max length information
  */
 const placeholder = computed(() => {
-  return t('mock.detail.apis.components.textareaEditor.maxLengthPlaceholder', { max: props.maxlength });
+  return t('actions.tips.maxLengthSupported', { max: props.maxlength });
 });
 
-// ==================== Methods ====================
 /**
  * Detect content type and return appropriate language
  * @param value - Content to analyze
@@ -54,15 +51,12 @@ const detectContentType = (value:string) => {
   if (isJSON(value)) {
     return 'json';
   }
-
   if (isXML(value) || isHtml(value)) {
     return 'html';
   }
-
   if (isYAML(value)) {
     return 'yaml';
   }
-
   return 'text';
 };
 
@@ -91,11 +85,10 @@ const isValid = ():boolean => {
   const length = content.value.length;
   error.value = length >= props.maxlength;
   if (error.value) {
-    errorMessage.value = t('mock.detail.apis.components.textareaEditor.maxLengthError', { max: props.maxlength, current: length });
+    errorMessage.value = t('actions.tips.maxLengthError', { max: props.maxlength, current: length });
   } else {
     errorMessage.value = '';
   }
-
   return !error.value;
 };
 
@@ -107,21 +100,18 @@ const getData = ():string => {
   return content.value;
 };
 
-// ==================== Watchers ====================
 onMounted(() => {
   watch(() => props.value, (newValue) => {
     content.value = newValue;
   }, { immediate: true });
 });
 
-// ==================== Expose Methods ====================
 defineExpose({
   format: formatContent,
   isValid,
   getData
 });
 </script>
-
 <template>
   <div>
     <div v-if="props.showAction" class="flex items-center justify-between">
@@ -132,8 +122,7 @@ defineExpose({
           type="link"
           size="small"
           @click="formatContent">
-          <!-- <Icon icon="icon-geshihua" class="mr-0.5 text-3.25" /> -->
-          <span>{{ t('mock.detail.apis.components.textareaEditor.format') }}</span>
+          <span>{{ t('actions.format') }}</span>
         </Button>
         <Button
           style="padding: 0;"

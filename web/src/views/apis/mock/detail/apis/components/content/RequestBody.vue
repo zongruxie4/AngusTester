@@ -285,7 +285,7 @@ const fielaNames = { label: 'name', value: 'value' };
 </script>
 <template>
   <div>
-    <div class="flex items-center mb-0.5">{{ t('protocol.http.requestBody') }}</div>
+    <div class="flex items-center mb-0.5">{{ t('protocol.requestBody') }}</div>
     <div class="flex items-center h-7">
       <div class="mr-3.5">
         <span>{{ t('protocol.contentType') }}</span>

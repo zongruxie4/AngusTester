@@ -24,12 +24,12 @@ const panels:{id:string;name:string;key:'general'|'request'|'response'}[] = [
   },
   {
     id: utils.uuid(),
-    name: t('xcan_debugResRequestHeaders.requestHeaders'),
+    name: t('protocol.requestHeader'),
     key: 'request'
   },
   {
     id: utils.uuid(),
-    name: t('xcan_debugResRequestHeaders.responseHeaders'),
+    name: t('protocol.responseHeader'),
     key: 'response'
   }
 ];

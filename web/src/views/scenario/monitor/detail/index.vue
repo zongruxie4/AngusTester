@@ -176,7 +176,7 @@ const statusColorConfig = getStatusColorConfig();
 
       <div class="flex-1">
         <div class="title-backend relative pl-2 text-text-title font-semibold text-3.5">
-          {{ t('scenarioMonitor.detail.responseDelay') }}
+          {{ t('protocol.responseDelay') }}
         </div>
 
         <div class="flex  py-5 space-x-6 items-center">

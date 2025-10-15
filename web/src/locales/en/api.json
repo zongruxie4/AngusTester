@@ -146,9 +146,6 @@
         "modifyScope_all": "All APIs",
         "modifyScope_select": "Specified APIs",
         "modifyScope_match": "Matched APIs",
-        "requestParams": "Request Parameters",
-        "requestHeader": "Request Header",
-        "cookie": "Cookie",
         "paramsNamePlaceholder": "Please enter parameter name"
       },
       "smokeResult": {
@@ -283,7 +280,6 @@
       }
     },
     "agent": {
-      "connectSuccess": "Connected",
       "unconnect": "Disconnected",
       "urlLabel": "Proxy Address",
       "noProxy": {
@@ -1154,9 +1150,6 @@
       },
       "labels": {
         "sendMessage": "Send Message",
-        "queryParams": "Query Parameters",
-        "requestHeader": "Request Header",
-        "settings": "Settings",
         "responseMessage": "Response Messages"
       },
       "actions": {
@@ -1172,13 +1165,9 @@
       "messages": {
         "updateApiSuccess": "API updated successfully",
         "copyUrlSuccess": "URL copied successfully",
-        "connectionFailed": "Connection failed",
         "sendFailed": "Send failed",
         "closeFailed": "Close failed",
         "invalidUrl": "Please enter a valid URL"
-      },
-      "status": {
-        "connected": "Connected"
       },
       "options": {
         "receiveMessage": "Receive Message",
@@ -1862,124 +1851,22 @@
             "manualSend": "Manual Send",
             "delay": "Push Back Delay"
           },
-          "requestBody": {
-            "formUrlEncode": "application/x-www-form-urlencode",
-            "multipartFormData": "multipart/form-data",
-            "raw": "raw",
-            "applicationJson": "application/json",
-            "textHtml": "text/html",
-            "applicationXml": "application/xml",
-            "applicationJavascript": "application/javascript",
-            "textPlain": "text/plain",
-            "wildcard": "*/*"
-          },
-          "selectInputForm": {
-            "parameterName": "Parameter Name",
-            "parameterValue": "Parameter Value",
-            "parameterNamePlaceholder": "Parameter name, maximum 400 characters",
-            "parameterValuePlaceholder": "Parameter value, maximum 4096 characters",
-            "addParameter": "Add Parameter"
-          },
           "match": {
-            "title": "Match",
-            "queryParams": "Query Parameters",
-            "header": "Request Header",
             "maxParametersTip": "Maximum 20 matching parameters allowed",
-            "pathTitle": "Path",
             "pathTooltip": "Path starts with slash /, representing root path.\nPath consists of multiple path segments separated by slash /.\nEach path segment can be composed of letters, numbers, hyphens, underscores and other characters, and does not contain special characters (such as ?, #, etc.).\nPath segments cannot be empty strings.",
-            "operator": "Operator",
             "operatorPlaceholder": "Operator",
             "pathPlaceholder": "Start with slash /; path segments separated by slash /, no special characters (such as ?, #, etc.)",
             "regexPlaceholder": "Regular Expression",
             "onlyOnePath": "Only one path can be added",
-            "onlyOneRequestBody": "Only one request body can be added",
-            "queryParamsTitle": "Query Parameters",
-            "parameterName": "Parameter Name",
-            "parameterNamePlaceholder": "Parameter name, maximum 400 characters",
-            "parameterValue": "Parameter Value",
-            "parameterValuePlaceholder": "Parameter value, maximum 4096 characters",
-            "regexExpression": "Regular Expression",
-            "xpathExpression": "XPath Expression",
-            "jsonPathExpression": "JSONPath Expression"
-          },
-          "agent": {
-            "title": "AI Agent",
-            "description": "AI Agent can help you quickly generate Mock API response content",
-            "generate": "Generate",
-            "regenerate": "Regenerate",
-            "generating": "Generating...",
-            "generateSuccess": "Generate Success",
-            "generateError": "Generate Error",
-            "copySuccess": "Copy Success",
-            "copyError": "Copy Error",
-            "proxyConfig": "Proxy Configuration",
-            "noProxy": "No Proxy",
-            "clientProxy": "Client Proxy",
-            "serverProxy": "Server Proxy",
-            "notConnected": "Not Connected",
-            "connected": "Connected",
-            "notConfigured": "Server proxy not configured or enabled, please check 'Application Management -> Proxy Configuration'",
-            "connectionFailed": "Proxy connection failed, please check if the proxy service is running.",
-            "tips": {
-              "noProxy": "Request interfaces directly through the browser. For cross-origin access, the server needs to remove CORS restrictions.",
-              "clientProxy": "Need to install 'proxy program' on the computer where the browser is located. After configuration, client proxy will be used to send requests.",
-              "serverProxy": "Need to install 'proxy program' separately on a server host in the shared network. Using server proxy does not require users to install proxy programs on their respective computers. After configuration, server proxy will be used to send requests. Recommended method",
-              "cloudProxy": "Request interfaces through AngusTester cloud server nodes. Note: Cannot access customer intranet service addresses."
-            }
-          },
-          "codeEditor": {
-            "title": "Code Editor",
-            "language": "Language",
-            "content": "Content",
-            "placeholder": "Please enter content",
-            "format": "Format",
-            "maxLengthError": "Maximum {max} characters supported, {current} characters entered"
+            "onlyOneRequestBody": "Only one request body can be added"
           },
           "importApiModal": {
             "title": "Import API",
-            "selectApi": "Select API",
-            "apiName": "API Name",
-            "apiDescription": "API Description",
             "hints": "Supports Swagger2.0, OpenAPI3.x, and Angus format interface file imports.",
             "duplicateStrategy": "Processing strategy when encountering duplicates",
-            "deleteNotExisted": "Whether to delete when current interface does not exist in imported data",
-            "success": "API import successful"
-          },
-          "pureFormInput": {
-            "title": "Form Input",
-            "addItem": "Add Item",
-            "itemName": "Item Name",
-            "itemValue": "Item Value",
-            "itemNamePlaceholder": "Please enter item name",
-            "itemValuePlaceholder": "Please enter item value",
-            "parameterNamePlaceholder": "Parameter name, maximum 400 characters",
-            "parameterValuePlaceholder": "Parameter value, maximum 4096 characters"
-          },
-          "selectApiModal": {
-            "title": "Select API",
-            "apiName": "API Name",
-            "apiDescription": "API Description"
-          },
-          "textareaEditor": {
-            "title": "Text Editor",
-            "placeholder": "Please enter content",
-            "maxLength": "Maximum Length",
-            "format": "Format",
-            "maxLengthPlaceholder": "Maximum {max} characters supported",
-            "maxLengthError": "Maximum {max} characters supported, {current} characters entered"
-          },
-          "urlForm": {
-            "title": "URL Form",
-            "urlPlaceholder": "Please enter URL",
-            "method": "Request Method",
-            "methodPlaceholder": "Please select request method",
-            "methodPath": "Method/Path",
-            "maxLengthPlaceholder": "Maximum 800 characters supported"
+            "deleteNotExisted": "Whether to delete when current interface does not exist in imported data"
           },
           "content": {
-            "responseDelay": "Response Delay",
-            "responseHeader": "Response Header",
-            "responseBody": "Response Body",
             "maxHeadersTip": "Maximum {max} response headers supported",
             "maxHeadersTooltip": "Maximum {max} response headers supported",
             "mockFunctionHelper": "Mock Function Helper",
@@ -2013,10 +1900,7 @@
           "preview": "Preview"
         },
         "requestInfo": "Request",
-        "requestHeader": "Request Headers",
         "responseInfo": "Response",
-        "responseHeader": "Response Headers",
-        "responseBody": "Response Body",
         "hints": "Mock interface call logs, max 3 per second, 100 records per interface. Enable/disable logging in \"Settings\"->\"Send request log\". Enabling may affect performance."
       },
       "log": {

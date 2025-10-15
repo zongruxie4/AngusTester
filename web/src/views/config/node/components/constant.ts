@@ -101,8 +101,8 @@ export const nodeStatus = [
     label: t('node.list.interface.nodeStatus.agentInstallStatus'),
     valueKey: 'installAgent',
     valueName: {
-      true: t('node.list.interface.nodeStatus.installed'),
-      false: t('node.list.interface.nodeStatus.notInstalled')
+      true: t('status.yes'),
+      false: t('status.no')
     },
     status: {
       true: 'success',
@@ -113,8 +113,8 @@ export const nodeStatus = [
     label: t('node.list.interface.nodeStatus.connectionStatus'),
     valueKey: 'online',
     valueName: {
-      true: t('node.list.interface.nodeStatus.connected'),
-      false: t('node.list.interface.nodeStatus.notConnected')
+      true: t('status.yes'),
+      false: t('status.no')
     },
     status: {
       true: 'success',

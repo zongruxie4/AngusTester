@@ -147,9 +147,6 @@
         "modifyScope_all": "全部接口",
         "modifyScope_select": "指定接口",
         "modifyScope_match": "匹配接口",
-        "requestParams": "请求参数",
-        "requestHeader": "请求头",
-        "cookie": "Cookie",
         "paramsNamePlaceholder": "请输入参数名"
       },
       "smokeResult": {
@@ -1157,9 +1154,6 @@
       },
       "labels": {
         "sendMessage": "发送消息",
-        "queryParams": "查询参数",
-        "requestHeader": "请求头",
-        "settings": "设置",
         "responseMessage": "响应消息"
       },
       "actions": {
@@ -1175,13 +1169,9 @@
       "messages": {
         "updateApiSuccess": "更新接口成功",
         "copyUrlSuccess": "复制Url成功",
-        "connectionFailed": "连接失败",
         "sendFailed": "发送失败",
         "closeFailed": "关闭失败",
         "invalidUrl": "请输入正确链接地址"
-      },
-      "status": {
-        "connected": "已连接"
       },
       "options": {
         "receiveMessage": "接收消息",
@@ -1868,125 +1858,22 @@
             "manualSend": "手动发送",
             "delay": "回推延迟"
           },
-          "requestBody": {
-            "formUrlEncode": "application/x-www-form-urlencode",
-            "multipartFormData": "multipart/form-data",
-            "raw": "raw",
-            "applicationJson": "application/json",
-            "textHtml": "text/html",
-            "applicationXml": "application/xml",
-            "applicationJavascript": "application/javascript",
-            "textPlain": "text/plain",
-            "wildcard": "*/*"
-          },
-          "selectInputForm": {
-            "parameterName": "参数名称",
-            "parameterValue": "参数值",
-            "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-            "parameterValuePlaceholder": "参数值，最大支持4096个字符",
-            "addParameter": "添加参数"
-          },
           "match": {
-            "title": "匹配",
-            "queryParams": "查询参数",
-            "header": "请求头",
             "maxParametersTip": "匹配参数限制最大 20 个",
-            "pathTitle": "路径",
             "pathTooltip": "路径以斜杠 / 开始，表示根路径。\n路径由多个路径段组成，路径段之间使用斜杠 / 分隔。\n每个路径段可以是字母、数字、减号、下划线等字符组成，且不包含特殊字符（如?、#等）。\n路径段不可以为空字符串。",
-            "operator": "运算条件",
             "operatorPlaceholder": "运算条件",
             "pathPlaceholder": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）",
             "regexPlaceholder": "正则表达式",
             "onlyOnePath": "只能添加一个路径",
-            "onlyOneRequestBody": "只能添加一个请求体",
-            "queryParamsTitle": "查询参数",
-            "parameterName": "参数名称",
-            "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-            "parameterValue": "参数值",
-            "parameterValuePlaceholder": "参数值，最大支持4096个字符",
-            "regexExpression": "正则表达式",
-            "value": "值",
-            "xpathExpression": "XPath表达式",
-            "jsonPathExpression": "JSONPath表达式",
-            "format": "格式化"
-          },
-          "agent": {
-            "title": "智能助手",
-            "description": "智能助手可以帮助您快速生成Mock接口的响应内容",
-            "regenerate": "重新生成",
-            "generating": "生成中...",
-            "generateSuccess": "生成成功",
-            "generateError": "生成失败",
-            "copySuccess": "复制成功",
-            "copyError": "复制失败",
-            "proxyConfig": "代理配置",
-            "noProxy": "无代理",
-            "clientProxy": "客户端代理",
-            "serverProxy": "服务端代理",
-            "notConnected": "未连接",
-            "connected": "已连接",
-            "notConfigured": "未配置或启用服务端代理，请检查\"应用管理->代理配置\"",
-            "connectionFailed": "代理连接失败，请检查代理服务是否已运行。",
-            "tips": {
-              "noProxy": "通过浏览器直接请求接口，对非同源访问接口服务器端需要取消跨域限制。",
-              "clientProxy": "需要在访问浏览器所在电脑中安装\"<a href='https://www.xcan.cloud/help' target=\"_blank\"  class=\"text-text-link\">代理程序<a>\"，配置后将使用客户端代理发送请求。",
-              "serverProxy": "需要将\"代理程序\"单独安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑中安装代理程序，配置后将使用服务端代理发送请求。推荐方式",
-              "cloudProxy": "通过AngusTester云服务器节点请求接口，注意：不能访问到客户内网服务地址。"
-            }
-          },
-          "codeEditor": {
-            "title": "代码编辑器",
-            "language": "语言",
-            "content": "内容",
-            "placeholder": "请输入内容",
-            "format": "格式化",
-            "maxLengthError": "最大支持{max}字符，已输入{current}字符"
+            "onlyOneRequestBody": "只能添加一个请求体"
           },
           "importApiModal": {
             "title": "导入接口",
-            "selectApi": "选择接口",
-            "apiName": "接口名称",
-            "apiDescription": "接口描述",
             "hints": "支持Swagger2.0、OpenAPI3.x、Angus格式接口文件导入。",
             "duplicateStrategy": "遇到重复时的处理策略",
-            "deleteNotExisted": "当前接口在导入数据中不存在时是否删除",
-            "success": "导入接口成功"
-          },
-          "pureFormInput": {
-            "title": "表单输入",
-            "addItem": "添加项",
-            "itemName": "项名称",
-            "itemValue": "项值",
-            "itemNamePlaceholder": "请输入项名称",
-            "itemValuePlaceholder": "请输入项值",
-            "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-            "parameterValuePlaceholder": "参数值，最大支持4096个字符"
-          },
-          "selectApiModal": {
-            "title": "选择接口",
-            "apiName": "接口名称",
-            "apiDescription": "接口描述"
-          },
-          "urlForm": {
-            "title": "URL表单",
-            "urlPlaceholder": "请输入URL",
-            "method": "请求方法",
-            "methodPlaceholder": "请选择请求方法",
-            "methodPath": "方法/路径",
-            "maxLengthPlaceholder": "最大支持800个字符"
-          },
-          "textareaEditor": {
-            "title": "文本编辑器",
-            "placeholder": "请输入内容",
-            "maxLength": "最大长度",
-            "format": "格式化",
-            "maxLengthPlaceholder": "最大支持{max}个字符",
-            "maxLengthError": "最大支持{max}字符，已输入{current}字符"
+            "deleteNotExisted": "当前接口在导入数据中不存在时是否删除"
           },
           "content": {
-            "responseDelay": "响应延时",
-            "responseHeader": "响应头",
-            "responseBody": "响应体",
             "maxHeadersTip": "最大支持 {max} 个响应头",
             "maxHeadersTooltip": "最大支持{max}个响应头",
             "mockFunctionHelper": "Mock函数助手",
@@ -2020,10 +1907,7 @@
           "preview": "预览"
         },
         "requestInfo": "请求",
-        "requestHeader": "请求头",
         "responseInfo": "响应",
-        "responseHeader": "响应头",
-        "responseBody": "响应体",
         "hints": "Mock接口调用日志，每秒最多3条，每接口保留最近100条。开启/关闭日志收集请到\"设置\"->\"记录请求日志\"，开启后会影响性能。"
       },
       "log": {

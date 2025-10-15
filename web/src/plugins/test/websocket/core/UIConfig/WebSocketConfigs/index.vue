@@ -460,7 +460,7 @@ const autoSize = {
               <TabPane key="header">
                 <template #tab>
                   <Badge size="small" :count="headerErrorNum">
-                    <div>{{ t('websocketPlugin.uiConfig.websocketConfigs.parameters.requestHeaders') }}</div>
+                    <div>{{ t('protocol.requestHeader') }}</div>
                   </Badge>
                 </template>
                 <ParameterInput

@@ -268,9 +268,6 @@
           "pathFormatError": "path format error"
         },
         "tabs": {
-          "requestParams": "Request Parameters",
-          "requestHeaders": "Request Headers",
-          "cookie": "Cookie",
           "authorization": "Authorization",
           "parameterization": "Parameterization",
           "assertion": "Assertion"
@@ -302,7 +299,6 @@
             "duplicateName": "Duplicate Name",
             "namePlaceholder": "Parameter name, max 100 characters",
             "locationPlaceholder": "Extraction Location",
-            "parameterNamePlaceholder": "Extraction parameter name, max 100 characters",
             "defaultValuePlaceholder": "Extraction default value (optional), max 4096 characters",
             "expressionPlaceholder": "Extraction expression, max 1024 characters",
             "matchItemPlaceholder": "Match item (optional), range 0-2000"
@@ -1132,11 +1128,6 @@
       "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please",
       "executeConfig": "Execute Configuration > Plugin Configuration",
       "closeIgnoreAssertion": "to close the ignore assertion option.",
-      "requestHeaders": {
-        "general": "General",
-        "requestHeaders": "Request Headers",
-        "responseHeaders": "Response Headers"
-      },
       "responseBody": {
         "beautifyFormat": "Beautify Format",
         "nativeFormat": "Native Format",
@@ -1308,10 +1299,6 @@
       "totalEmails": "Total {count} emails",
       "readEmails": "Read {count} emails",
       "duration": "Duration",
-      "request": "Request",
-      "response": "Response",
-      "responseHeaders": "Response Headers",
-      "responseBody": "Response Body",
       "email": "Email {index}",
       "requestContent": "Request Content"
     }
@@ -1652,12 +1639,6 @@
       "urlFormatError": "URL format error",
       "urlPlaceholder": "URL, maximum 2000 characters. Example: ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive"
     },
-    "parameters": {
-      "requestParameters": "Request Parameters",
-      "requestHeaders": "Request Headers",
-      "parameterNamePlaceholder": "Parameter name, maximum 400 characters",
-      "parameterValuePlaceholder": "Parameter value, maximum 4096 characters"
-    },
     "messageMode": {
       "title": "Message Mode",
       "placeholder": "Message Mode"
@@ -1697,10 +1678,6 @@
         "urlPlaceholder": "Please enter URL, e.g. ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive",
         "messageModePlaceholder": "Message Mode"
       },
-      "parameters": {
-        "requestParameters": "Request Parameters",
-        "requestHeaders": "Request Headers"
-      },
       "sendInfo": {
         "title": "Send Information",
         "encodingPlaceholder": "Send Information Encoding"
@@ -1708,10 +1685,6 @@
       "assertion": {
         "title": "Assertion",
         "tooltip": "Assert received message"
-      },
-      "paramsInput": {
-        "parameterNamePlaceholder": "Parameter name, maximum 400 characters",
-        "parameterValuePlaceholder": "Parameter value, maximum 4096 characters"
       }
     }
   },

@@ -587,7 +587,7 @@ onMounted(() => {
                 <!-- <div>提取值<Colon /></div> -->
               </template>
               <template v-else-if="variable.extraction.method.value === 'REGEX'">
-                <div>{{ t('xcan_variable.regexExpression') }}<Colon /></div>
+                <div>{{ t('common.regexExpression') }}<Colon /></div>
               </template>
               <template v-else>
                 <div>{{ t('xcan_variable.extractionExpression') }}<Colon /></div>

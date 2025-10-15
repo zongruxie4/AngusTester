@@ -36,14 +36,12 @@ const emit = defineEmits<{
   (e: 'change', value:string): void;
 }>();
 
-// ==================== Reactive State ====================
 const editorRef = ref();
 const editorLanguage = ref<'json' | 'html' | 'typescript' | 'text' | 'yaml'>('text');
 const content = ref('');
 const error = ref(false);
 const errorMessage = ref<string>();
 
-// ==================== Computed Properties ====================
 /**
  * Get the current editor language
  */
@@ -51,7 +49,6 @@ const currentLanguage = computed(() => {
   return props.language || editorLanguage.value;
 });
 
-// ==================== Methods ====================
 /**
  * Handle content change event
  * @param value - New content value
@@ -132,14 +129,12 @@ const isValid = ():boolean => {
 
   if (value.length >= props.maxlength) {
     error.value = true;
-    errorMessage.value = t('mock.detail.apis.components.codeEditor.maxLengthError', { max: props.maxlength, current: value.length });
+    errorMessage.value = t('actions.tips.maxLengthError', { max: props.maxlength, current: value.length });
     return false;
   }
-
   return true;
 };
 
-// ==================== Watchers ====================
 onMounted(() => {
   watch(() => props.notify, () => {
     content.value = '';
@@ -154,7 +149,6 @@ onMounted(() => {
   }, { immediate: true });
 });
 
-// ==================== Expose Methods ====================
 defineExpose({
   format: formatContent,
   getData,
@@ -174,7 +168,7 @@ defineExpose({
           type="link"
           size="small"
           @click="formatContent">
-          <span>{{ t('mock.detail.apis.components.codeEditor.format') }}</span>
+          <span>{{ t('actions.format') }}</span>
         </Button>
         <Button
           style="padding: 0;"

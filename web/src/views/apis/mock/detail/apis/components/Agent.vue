@@ -12,7 +12,6 @@ const currentProxyUrl = inject('currentProxyUrl', ref(''));
 const currentProxy = inject('currentProxy', ref(''));
 const proxyOptObj = inject('proxyOptObj', ref());
 
-// ==================== Reactive State ====================
 const status = ref('fail');
 const agent = ref('NO_PROXY');
 
@@ -20,19 +19,19 @@ const agent = ref('NO_PROXY');
  * Proxy agent options configuration
  */
 const agentOptions = ref([{
-  label: t('mock.detail.apis.components.agent.noProxy'),
+  label: t('proxy.types.noProxy'),
   value: 'NO_PROXY',
   enabled: false,
   key: 'noProxy',
   url: ''
 }, {
-  label: t('mock.detail.apis.components.agent.clientProxy'),
+  label: t('proxy.types.clientProxy'),
   value: 'CLIENT_PROXY',
   enabled: false,
   key: 'clientProxy',
   url: ''
 }, {
-  label: t('mock.detail.apis.components.agent.serverProxy'),
+  label: t('proxy.types.serverProxy'),
   value: 'SERVER_PROXY',
   enabled: false,
   key: 'serverProxy',
@@ -43,15 +42,12 @@ const agentOptions = ref([{
  * Tips mapping for different proxy types
  */
 const tipsMap = {
-  NO_PROXY: t('mock.detail.apis.components.agent.tips.noProxy'),
-  CLIENT_PROXY: t('mock.detail.apis.components.agent.tips.clientProxy'),
-  SERVER_PROXY: t('mock.detail.apis.components.agent.tips.serverProxy'),
-  CLOUD_PROXY: t('mock.detail.apis.components.agent.tips.cloudProxy')
+  NO_PROXY: t('proxy.types.noProxyDescription'),
+  CLIENT_PROXY: t('proxy.types.clientProxyDescription'),
+  SERVER_PROXY: t('proxy.types.serverProxyDescription'),
+  CLOUD_PROXY: t('proxy.types.cloudProxyDescription')
 };
 
-// ==================== Computed Properties ====================
-
-// ==================== Methods ====================
 /**
  * Load proxy configuration from API or injected data
  */
@@ -101,7 +97,6 @@ const handleProxyChange = async (value) => {
   loadProxy();
 };
 
-// ==================== Watchers ====================
 watch(() => readyState, (newValue) => {
   if (newValue.value === 1) {
     status.value = 'success';
@@ -113,7 +108,6 @@ watch(() => readyState, (newValue) => {
   immediate: true
 });
 
-// ==================== Lifecycle Hooks ====================
 onMounted(() => {
   loadProxy();
 });
@@ -122,15 +116,15 @@ onMounted(() => {
 <template>
   <div class="text-3">
     <div class="flex items-center space-x-2">
-      <div class="font-semibold">{{ t('mock.detail.apis.components.agent.proxyConfig') }}</div>
+      <div class="font-semibold">{{ t('proxy.proxyConfig') }}</div>
       <div v-show="currentProxy !== 'NO_PROXY'" class="flex items-center">
         <template v-if="status === 'fail'">
           <Icon icon="icon-zhongzhi1" class="text-execute-yellow" />
-          {{ t('mock.detail.apis.components.agent.notConnected') }}
+          {{ t('status.notConnected') }}
         </template>
         <template v-if="status === 'success'">
           <Icon icon="icon-duihao" class="text-execute-res4" />
-          {{ t('mock.detail.apis.components.agent.connected') }}
+          {{ t('status.connected') }}
         </template>
       </div>
     </div>
@@ -144,8 +138,8 @@ onMounted(() => {
       <div class="whitespace-normal text-gray-text" v-html="tipsMap[currentProxy]"></div>
     </div>
     <template v-if="agent !== 'NO_PROXY'">
-      <div v-show="!currentProxyUrl && status === 'fail'" class="mt-3 text-status-orange">{{ t('mock.detail.apis.components.agent.notConfigured') }}</div>
-      <div v-show="currentProxyUrl && status === 'fail'" class="mt-3 text-status-orange">{{ t('mock.detail.apis.components.agent.connectionFailed') }}</div>
+      <div v-show="!currentProxyUrl && status === 'fail'" class="mt-3 text-status-orange">{{ t('proxy.messages.serverProxyNotConfigured') }}</div>
+      <div v-show="currentProxyUrl && status === 'fail'" class="mt-3 text-status-orange">{{ t('proxy.messages.proxyConnectionFailed') }}</div>
     </template>
   </div>
 </template>

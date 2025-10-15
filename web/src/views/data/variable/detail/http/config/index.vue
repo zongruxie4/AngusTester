@@ -633,7 +633,7 @@ defineExpose({
             size="small"
             :count="headerErrorNum">
             <div class="flex items-center space-x-0.5">
-              <div>{{ t('variable.detail.httpVariable.httpConfigs.requestHeaders') }}</div>
+              <div>{{ t('protocol.requestHeader') }}</div>
               <div class="flex items-center space-x-0.5">
                 <em>(</em>
                 <span>{{ headerNum }}</span>
@@ -688,7 +688,7 @@ defineExpose({
       <TabPane key="body">
         <template #tab>
           <Badge v-if="hasRequestBody" color="green" />
-          <Badge size="small" :count="bodyErrorNum">{{ t('protocol.http.requestBody') }}</Badge>
+          <Badge size="small" :count="bodyErrorNum">{{ t('protocol.requestBody') }}</Badge>
         </template>
         <RequestBody
           ref="bodyRef"

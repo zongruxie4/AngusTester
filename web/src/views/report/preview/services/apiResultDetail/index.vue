@@ -39,7 +39,7 @@ const columns = computed(() => [
     },
     {
       dataIndex: 'method',
-      name: t('protocol.http.requestMethod'),
+      name: t('protocol.requestMethod'),
       customRender: (text) => {
         return text?.message;
       }

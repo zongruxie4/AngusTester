@@ -517,7 +517,6 @@
     "defineExtract": "Define/Extract",
     "extractionMethod": "Extraction Method",
     "extractionParameterName": "Extraction Parameter Name",
-    "regexExpression": "Regex Expression",
     "extractionExpression": "Extraction Expression",
     "interface": "Interface",
     "define": "Define",
@@ -862,8 +861,6 @@
     "retryCountRange": "Retry Count Range: 1~10",
     "publicVariables": "Public Variables",
     "requestParameters": "Request Parameters",
-    "requestHeaders": "Request Headers",
-    "cookie": "Cookie",
     "authorization": "Authorization",
     "maxThreads": "Max Threads",
     "maxThreadsTooltip": "Maximum thread count, will be evenly distributed across multiple nodes. Note: Mock data tasks support up to 1000 threads; functional tests only allow setting one thread.",
@@ -1151,11 +1148,6 @@
     "assertionData": "Assertion Data",
     "extractedValue": "Extracted Value",
     "expectedValue": "Expected Value",
-    "responseStatusCode": "Response Status Code",
-    "responseHeader": "Response Header",
-    "responseBody": "Response Body",
-    "responseBodySize": "Response Body Size",
-    "responseSize": "Response Size",
     "duration": "Duration",
     "contain": "Contain",
     "equal": "Equal",
@@ -1264,7 +1256,6 @@
     "add": "Add",
     "extractionMethod": "Extraction Method",
     "extractionValue": "Extraction Value",
-    "regexExpression": "Regular Expression",
     "extractionExpression": "Extraction Expression",
     "scope": "Scope",
     "define": "Define",
@@ -1328,11 +1319,6 @@
     "assertionLabel": "Assertion Label",
     "view": "View",
     "assertionCondition": "Assertion Condition",
-    "responseStatusCode": "Response Status Code",
-    "responseHeader": "Response Header",
-    "responseBody": "Response Body",
-    "responseBodySize": "Response Body Size",
-    "responseSize": "Response Size",
     "duration": "Duration",
     "contain": "Contain",
     "equal": "Equal",
@@ -1358,9 +1344,7 @@
     "preview": "Preview"
   },
   "xcan_debugResRequestHeaders": {
-    "general": "General",
-    "requestHeaders": "Request Headers",
-    "responseHeaders": "Response Headers"
+    "general": "General"
   },
   "xcan_debugResRequestParameter": {
     "parameters": "Parameters",
@@ -1597,8 +1581,6 @@
   },
   "xcan_scenarioMail": {
     "requestContent": "Request Content",
-    "responseHeaders": "Response Headers",
-    "responseBody": "Response Body",
     "email": "Email {num}"
   }
 }

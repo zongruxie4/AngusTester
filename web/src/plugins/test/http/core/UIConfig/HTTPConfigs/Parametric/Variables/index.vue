@@ -315,7 +315,7 @@ defineExpose({
           :disabled="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(dataMap[item].location)"
           class="flex-shrink-0"
           trim
-          :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.parameterNamePlaceholder')"
+          :placeholder="t('common.placeholders.enterParameterName')"
           style="width:calc((100% - 96px)/10*1.5);"
           @change="parameterNameChange(item)" />
 

@@ -54,6 +54,7 @@
     "link": "链接",
     "method": "方法",
     "path": "路径",
+    "methodPath": "方法/路径",
     "url": "URL",
     "required": "必须",
     "deprecated": "过期",
@@ -207,6 +208,9 @@
     "enabledStatus": "启用状态",
     "bugLevel": "缺陷等级",
     "escapedBug": "漏测缺陷",
+    "regexExpression": "正则表达式",
+    "xpathExpression": "XPath表达式",
+    "jsonPathExpression": "JSONPath表达式",
     "counts": {
       "progress": "进度",
       "totalCount": "总数",
@@ -283,6 +287,8 @@
       "inputReviewOpinion": "输入评审意见，最多可输入200字符",
       "inputValue": "输入值，最大支持4096个字符",
       "inputMockValue": "输入值，支持Mock函数，最大支持4096个字符",
+      "inputParameterName": "输入参数名称，最大支持400个字符",
+      "inputParameterValue": "输入参数值，最大支持4096个字符",
       "inputProcessCount": "输入处理次数",
       "inputProcessFailedCount": "输入不通过次数",
       "inputTestCount": "输入测试次数",
@@ -423,6 +429,10 @@
     "modifiedAt": "修改于",
     "createdAt": "创建于",
     "ungrouped": "未分组",
+    "connected": "已连接",
+    "notConnected": "未连接",
+    "connectionSuccess": "连接成功",
+    "connectionFailed": "连接失败",
     "used": "已使用",
     "idle": "空闲",
     "free": "剩余",
@@ -505,6 +515,7 @@
     "debug": "调试",
     "start": "开始",
     "stop": "停止",
+    "format": "格式化",
     "generateData": "生成数据",
     "experienceExecution": "体验执行",
     "modifyExecutionConfig": "修改执行配置",
@@ -572,7 +583,11 @@
       "favouriteSuccess": "收藏成功",
       "followSuccess": "关注成功",
       "cancelFavouriteSuccess": "取消收藏成功",
-      "cancelFollowSuccess": "取消关注成功"
+      "cancelFollowSuccess": "取消关注成功",
+      "connectionSuccess": "连接成功",
+      "connectionFailed": "连接失败",
+      "maxLengthError": "最大支持{max}字符，已输入{current}字符",
+      "maxLengthSupported": "最大支持{max}个字符"
     }
   },
   "home": {
@@ -680,16 +695,17 @@
     "port": "端口",
     "request": "请求",
     "response": "响应",
+    "responseDelay": "响应延时",
     "statusCode": "状态码",
     "contentType": "Content-Type",
-    "http": {
-      "name": "Http",
-      "method": "方法",
-      "requestMethod": "请求方法",
-      "requestBody": "请求体",
-      "queryParameter": "查询参数",
-      "requestHeader": "请求头",
-      "cookie": "Cookie"
-    }
+    "http": "Http",
+    "method": "方法",
+    "queryParameter": "查询参数",
+    "requestMethod": "请求方法",
+    "requestHeader": "请求头",
+    "requestBody": "请求体",
+    "responseHeader": "响应头",
+    "responseBody": "响应体",
+    "cookie": "Cookie"
   }
 }

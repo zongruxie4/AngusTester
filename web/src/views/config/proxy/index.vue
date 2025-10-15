@@ -119,17 +119,17 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
 
     <!-- Server request proxy configuration -->
     <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mt-10">
-      {{ t('proxy.config.title') }}
+      {{ t('proxy.serverConfig.title') }}
     </div>
 
     <div class="flex space-x-5 text-theme-sub-content text-3 leading-3">
       <!-- Labels column -->
       <div>
         <div class="h-12" style="line-height: 48px;">
-          {{ t('proxy.config.labels.enable') }}
+          {{ t('proxy.serverConfig.labels.enable') }}
         </div>
         <div class="h-12" style="line-height: 48px;">
-          {{ t('proxy.config.labels.proxyAddress') }}
+          {{ t('proxy.serverConfig.labels.proxyAddress') }}
         </div>
       </div>
 
@@ -152,7 +152,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
               v-model:value="proxyConfig.url"
               :disabled="isEditMode"
               class="w-100 h-8"
-              :placeholder="t('proxy.config.placeholders.inputProxyAddress')"
+              :placeholder="t('proxy.serverConfig.placeholders.inputProxyAddress')"
               @change="validateProxyAddress">
               <template #suffix>
                 <template v-if="proxyConfig.enabled">
@@ -173,7 +173,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
             <div
               v-if="addressValidationError"
               class="absolute top-12 text-3 leading-3 text-status-error">
-              {{ t('proxy.config.validation.addressTip') }}
+              {{ t('proxy.serverConfig.validation.addressTip') }}
             </div>
           </div>
 
@@ -184,8 +184,8 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
                 <img :src="ylj" class="w-4 mr-2" />
                 <span>
                   {{ connectionStatus.isNewConnection ?
-                    t('proxy.status.connectionSuccess') :
-                    t('proxy.status.connected') }}
+                    t('status.connectionSuccess') :
+                    t('status.connected') }}
                 </span>
               </div>
             </template>
@@ -194,8 +194,8 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
                 <img :src="wlj" class="w-4 mr-2" />
                 <span>
                   {{ connectionStatus.isNewConnection ?
-                    t('proxy.status.connectionFailed') :
-                    t('proxy.status.notConnected') }}
+                    t('status.connectionFailed') :
+                    t('status.notConnected') }}
                 </span>
               </div>
             </template>

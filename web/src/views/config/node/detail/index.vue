@@ -389,12 +389,12 @@ onMounted(() => {
             </template>
             <template #installAgent="{text}">
               <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
-                {{ text ? t('node.list.interface.nodeStatus.installed') : t('node.list.interface.nodeStatus.notInstalled') }}
+                {{ text ? t('status.yes') : t('status.no') }}
               </span>
             </template>
             <template #online="{text}">
               <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
-                {{ text ? t('node.list.interface.nodeStatus.connected') : t('node.list.interface.nodeStatus.notConnected') }}
+                {{ text ? t('status.yes') : t('status.no') }}
               </span>
             </template>
           </Grid>

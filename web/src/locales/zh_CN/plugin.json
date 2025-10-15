@@ -268,9 +268,6 @@
           "pathFormatError": "path格式错误"
         },
         "tabs": {
-          "requestParams": "请求参数",
-          "requestHeaders": "请求头",
-          "cookie": "Cookie",
           "authorization": "Authorization",
           "parameterization": "参数化",
           "assertion": "断言"
@@ -302,7 +299,6 @@
             "duplicateName": "名称重复",
             "namePlaceholder": "参数名称，最长100个字符",
             "locationPlaceholder": "提取位置",
-            "parameterNamePlaceholder": "提取参数名称，最长100个字符",
             "defaultValuePlaceholder": "提取缺省值（可选），最长4096个字符",
             "expressionPlaceholder": "提取表达式，最长1024个字符",
             "matchItemPlaceholder": "匹配项（可选），范围0-2000"
@@ -1125,11 +1121,6 @@
       "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
       "executeConfig": "执行配置 > 插件配置",
       "closeIgnoreAssertion": "中关闭忽略断言选项。",
-      "requestHeaders": {
-        "general": "常规",
-        "requestHeaders": "请求头",
-        "responseHeaders": "响应头"
-      },
       "responseBody": {
         "beautifyFormat": "美化格式",
         "nativeFormat": "原生格式",
@@ -1300,10 +1291,6 @@
       "totalEmails": "总共{count}个邮件",
       "readEmails": "读取{count}个邮件",
       "duration": "耗时",
-      "request": "请求",
-      "response": "响应",
-      "responseHeaders": "响应头",
-      "responseBody": "响应体",
       "email": "邮件{index}",
       "requestContent": "请求内容"
     }
@@ -1640,12 +1627,6 @@
       "urlFormatError": "URL格式错误",
       "urlPlaceholder": "URL，最大支持2000个字符。例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive"
     },
-    "parameters": {
-      "requestParameters": "请求参数",
-      "requestHeaders": "请求头",
-      "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-      "parameterValuePlaceholder": "参数值，最大支持4096个字符"
-    },
     "messageMode": {
       "title": "消息模式",
       "placeholder": "消息模式"
@@ -1685,10 +1666,6 @@
         "urlPlaceholder": "请输入URL，例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive",
         "messageModePlaceholder": "消息模式"
       },
-      "parameters": {
-        "requestParameters": "请求参数",
-        "requestHeaders": "请求头"
-      },
       "sendInfo": {
         "title": "发送信息",
         "encodingPlaceholder": "发送信息编码"
@@ -1696,10 +1673,6 @@
       "assertion": {
         "title": "断言",
         "tooltip": "断言接收消息"
-      },
-      "paramsInput": {
-        "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-        "parameterValuePlaceholder": "参数值，最大支持4096个字符"
       }
     }
   },

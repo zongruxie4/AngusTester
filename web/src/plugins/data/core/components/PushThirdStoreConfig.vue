@@ -237,7 +237,7 @@ defineExpose({
       </div>
     </div>
     <div>
-      <div class="mt-2">{{ t('protocol.http.requestBody') }}</div>
+      <div class="mt-2">{{ t('protocol.requestBody') }}</div>
       <div class="flex items-center space-x-2">
         <span>{{ t('protocol.contentType') }}</span>
         <RadioGroup

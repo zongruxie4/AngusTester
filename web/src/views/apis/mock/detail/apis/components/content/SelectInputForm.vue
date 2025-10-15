@@ -367,7 +367,7 @@ const inputProps = {
             mode="combination"
             style="flex: 1 1 40%;"
             trim
-            :placeholder="t('mock.detail.apis.components.selectInputForm.parameterNamePlaceholder')"
+            :placeholder="t('common.placeholders.enterParameterName')"
             @change="handleNameChange($event, item)">
             <template #option="record">
               <div class="truncate" :title="record._value + '-' + record.message">
@@ -382,7 +382,7 @@ const inputProps = {
             :disabled="dataMap[item].disabled"
             trim
             style="flex: 1 1 60%;"
-            :placeholder="t('mock.detail.apis.components.selectInputForm.parameterValuePlaceholder')"
+            :placeholder="t('common.placeholders.enterParameterValue')"
             @change="handleValueChange($event, item)" />
         </Composite>
         <div class="flex-shrink-0 space-x-1">

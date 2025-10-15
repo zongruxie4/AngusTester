@@ -472,7 +472,7 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold">{{ t('protocol.http.method') }}</div>
+        <div class="font-semibold">{{ t('protocol.method') }}</div>
         <div ref="methodRef" class="w-full h-65"></div>
       </div>
     </div>
