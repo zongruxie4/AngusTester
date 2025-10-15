@@ -80,7 +80,7 @@ export const contentTreeData = [
         key: 'error0'
       },
       {
-        title: t('reportAdd.execPerfContent.contentTree.statusCode'),
+        title: t('protocol.statusCode'),
         key: 'statusCode'
       },
       {

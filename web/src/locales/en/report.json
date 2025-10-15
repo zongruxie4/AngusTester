@@ -172,7 +172,6 @@
         "thread0": "Concurrency",
         "response": "Response time",
         "error0": "Error",
-        "statusCode": "Status code (only HTTP protocol)",
         "nodeTips": "When there is an application node, the application node resource data is displayed, and when there is no application node, the execution node resource data is displayed. When there are multiple nodes, only the data of the first node is displayed.",
         "superposition": "Superposition analysis",
         "QPS/TPS": "Throughput (QPS/TPS)",
@@ -467,7 +466,6 @@
         "title": "API Information",
         "fields": {
           "apiUrl": "API URL",
-          "requestMethod": "Request Method",
           "operationId": "Operation ID"
         }
       },
@@ -608,7 +606,6 @@
         "collapse": {
           "iteration": "Iteration {count}",
           "http": {
-            "statusCode": "Status Code",
             "duration": "Duration"
           },
           "throughput": {
@@ -646,7 +643,6 @@
           "concurrency": "Concurrency",
           "responseTime": "Response Time",
           "error": "Error",
-          "statusCode": "Status Code",
           "nodeResources": "Node Resources",
           "overlayAnalysis": "Overlay Analysis",
           "logInfo": "Log Information",
@@ -735,7 +731,6 @@
           "concurrencyTitle": "Concurrency",
           "responseTimeTitle": "Response Time",
           "errorTitle": "Error",
-          "statusCode": "Status Code",
           "nodeResourceTitle": "Node Resource",
           "overlayAnalysisTitle": "Overlay Analysis",
           "throughput": {
@@ -1566,7 +1561,6 @@
         "title": "API Test Result Details",
         "fields": {
           "apiUrl": "API URL",
-          "requestMethod": "Request Method",
           "operationId": "Operation ID",
           "owner": "Owner",
           "description": "Description",

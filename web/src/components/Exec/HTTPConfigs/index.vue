@@ -549,7 +549,7 @@ defineExpose({
       v-model:value="httpMethod"
       class="w-25"
       :enumKey="HttpMethodEnum"
-      :placeholder="t('xcan_exec.requestMethod')" />
+      :placeholder="t('protocol.http.requestMethod')" />
     <Input
       :value="url"
       :error="urlError"

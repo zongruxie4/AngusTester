@@ -423,7 +423,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="httpCode" :tab="t('ftpPlugin.performanceTestDetail.tabs.statusCode')">
+        <TabPane key="httpCode" :tab="t('protocol.statusCode')">
           <template v-if="isLoaded">
             <StatusCode
               :isSingleInterface="props.execInfo?.singleTargetPipeline"

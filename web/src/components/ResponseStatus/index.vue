@@ -45,7 +45,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="flex items-center flex-nowrap whitespace-nowrap mr-7.5">
-    <span class="mr-1">{{ t('xcan_responseStatus.statusCode') }}:</span>
+    <span class="mr-1">{{ t('protocol.statusCode') }}:</span>
     <span :class="getStatusColor(props.status)">
       {{ getStatusText(props.status) }}
     </span>

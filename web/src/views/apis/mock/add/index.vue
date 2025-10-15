@@ -220,10 +220,10 @@ onMounted(async () => {
           <div>
             <FormItem :label="t('common.name')" required />
             <FormItem
-              :label="t('common.domain')"
+              :label="t('protocol.domain')"
               :required="!isPrivateEdition"
               :class="isPrivateEdition?'pl-2.25':''" />
-            <FormItem :label="t('common.port')" required />
+            <FormItem :label="t('protocol.port')" required />
             <FormItem :label="t('common.node')" required />
             <template v-if="activeTab===1">
               <FormItem :label="t('common.service')" required />

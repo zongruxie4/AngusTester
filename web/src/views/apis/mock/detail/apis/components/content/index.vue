@@ -335,7 +335,7 @@ const inputProps = {
       <div class="space-y-2">
         <div class="flex items-center h-7">
           <IconRequired />
-          <span>{{ t('mock.detail.apis.components.content.statusCode') }}</span>
+          <span>{{ t('protocol.statusCode') }}</span>
         </div>
         <div class="flex items-center h-7">
           <span>{{ t('mock.detail.apis.components.content.responseDelay') }}</span>

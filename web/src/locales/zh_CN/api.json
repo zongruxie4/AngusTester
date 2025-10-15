@@ -432,7 +432,6 @@
         "setting": "设置"
       },
       "toolbar": {
-        "statusCode": "状态码:",
         "duration": "耗时:"
       },
       "errors": {
@@ -1754,10 +1753,7 @@
         "enterName": "请输入名称",
         "enterPort": "请输入端口（1~65535）",
         "selectNode": "请选择节点",
-        "selectProjectService": "请选择项目服务"
-      },
-      "notifications": {
-        "addSuccess": "添加成功"
+        "selectService": "请选择服务"
       },
       "form": {
         "namePlaceholder": "服务标识命名信息，最多允许100个字符",
@@ -1775,11 +1771,6 @@
         "fileRequired": "请先上传文件",
         "fileSizeExceeded": "上传文件或文本大小超过20M，请重新上传",
         "postmanVersionError": "请检查文件是否是Postman Collection V2/V2.1 版本JSON文件"
-      },
-      "apiList": {
-        "searchApiName": "查询接口名称",
-        "requestMethod": "请求方法",
-        "apiName": "接口名称"
       }
     },
     "detail": {
@@ -2052,7 +2043,6 @@
             "method": "请求方法",
             "methodPlaceholder": "请选择请求方法",
             "methodPath": "方法/路径",
-            "requestMethod": "请求方法",
             "maxLengthPlaceholder": "最大支持800个字符"
           },
           "textareaEditor": {
@@ -2064,7 +2054,6 @@
             "maxLengthError": "最大支持{max}字符，已输入{current}字符"
           },
           "content": {
-            "statusCode": "状态码",
             "responseDelay": "响应延时",
             "responseHeader": "响应头",
             "responseBody": "响应体",
@@ -2095,8 +2084,6 @@
         "requestId": "请求ID",
         "requestTime": "请求时间",
         "requestUrl": "请求地址",
-        "requestMethod": "请求方法",
-        "statusCode": "状态码",
         "formatOptions": {
           "beautify": "美化格式",
           "raw": "原生格式",

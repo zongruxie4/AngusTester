@@ -39,7 +39,7 @@ const columns = computed(() => [
     },
     {
       dataIndex: 'method',
-      name: t('reportPreview.services.apiResultDetail.fields.requestMethod'),
+      name: t('protocol.http.requestMethod'),
       customRender: (text) => {
         return text?.message;
       }

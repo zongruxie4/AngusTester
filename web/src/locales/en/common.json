@@ -129,8 +129,6 @@
     "executionRecord": "Execution Records",
     "analysis": "Analysis",
     "node": "Node",
-    "port": "Port",
-    "domain": "Domain",
     "variables": "Variable",
     "dataset": "Dataset",
     "file": "File",
@@ -668,7 +666,14 @@
     "user": "Users"
   },
   "protocol": {
+    "domain": "Domain",
+    "host": "Host",
+    "port": "Port",
+    "statusCode": "Status Code",
     "http": {
+      "name": "Http",
+      "method": "Method",
+      "requestMethod": "Request Method"
 
     }
   }

@@ -101,7 +101,6 @@
         "interfaceConfig": "接口配置",
         "httpConfigs": {
           "title": "HTTP配置",
-          "requestMethod": "请求方法",
           "requestMethodPlaceholder": "请求方法",
           "requestUrl": "请求地址",
           "requestUrlPlaceholder": "接口路径，以 \" / \" 起始",

@@ -564,7 +564,6 @@
       }
     },
     "functionTestDetail": {
-      "statusCode": "Status Code",
       "duration": "Duration",
       "basicInfo": {
         "duration": "Duration",
@@ -867,7 +866,6 @@
         "concurrency": "Concurrency",
         "responseTime": "Response Time",
         "error": "Errors",
-        "statusCode": "Status Code",
         "analyze": "Superimpose Analysis"
       },
       "scriptInfo": {
@@ -1132,7 +1130,6 @@
       "messageCountPlaceholder": "Message Count"
     },
     "functionTestDetailJms": {
-      "statusCode": "Status Code",
       "duration": "Duration",
       "tabs": {
         "general": "General",

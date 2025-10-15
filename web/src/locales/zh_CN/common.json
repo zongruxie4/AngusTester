@@ -129,8 +129,6 @@
     "executionRecord": "执行记录",
     "analysis": "分析",
     "node": "节点",
-    "port": "端口",
-    "domain": "域名",
     "variables": "变量",
     "dataset": "数据集",
     "file": "文件",
@@ -669,8 +667,14 @@
     "user": "人"
   },
   "protocol": {
+    "domain": "域名",
+    "host": "主机",
+    "port": "端口",
+    "statusCode": "状态码",
     "http": {
-
+      "name": "Http",
+      "method": "方法",
+      "requestMethod": "请求方法"
     }
   }
 }

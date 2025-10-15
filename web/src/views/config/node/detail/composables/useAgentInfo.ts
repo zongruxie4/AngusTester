@@ -65,7 +65,7 @@ export function useAgentInfo (props: AgentInfoProps) {
     [
       {
         dataIndex: 'port',
-        label: t('common.port')
+        label: t('protocol.port')
       },
       {
         dataIndex: 'health',

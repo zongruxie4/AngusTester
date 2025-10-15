@@ -1178,9 +1178,6 @@
     "jsonPathMatch": "JSONPath Match",
     "value": "Value"
   },
-  "xcan_responseStatus": {
-    "statusCode": "Status Code"
-  },
   "xcan_responseTimeAnalysis": {
     "timeConsumingItems": "Time Consuming Items",
     "time": "Time",
@@ -1393,7 +1390,6 @@
     "seconds": "Seconds",
     "minutes": "Minutes",
     "hours": "Hours",
-    "statusCode": "Status Code",
     "timeConsuming": "Time Consuming",
     "basic": "Basic",
     "requestBody": "Request Body",
@@ -1437,7 +1433,6 @@
     "concurrencyNumber": "Concurrency",
     "responseTimeTab": "Response Time",
     "errorTab": "Error",
-    "statusCode": "Status Code",
     "nodeResource": "Node Resource",
     "superimposeAnalysis": "Superimpose Analysis",
     "duration": "Duration",
@@ -1559,7 +1554,6 @@
     "duration": "Duration",
     "request": "Request",
     "response": "Response",
-    "statusCode": "Status Code",
     "basic": "Basic",
     "requestBody": "Request Body",
     "timeline": "Timeline",

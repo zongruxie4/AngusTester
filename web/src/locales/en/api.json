@@ -428,7 +428,6 @@
         "setting": "Settings"
       },
       "toolbar": {
-        "statusCode": "Status Code:",
         "duration": "Duration:"
       },
       "errors": {
@@ -1748,10 +1747,7 @@
         "enterName": "please enter name",
         "enterPort": "please enter port (1~65535)",
         "selectNode": "please select node",
-        "selectProjectService": "please select project service"
-      },
-      "notifications": {
-        "addSuccess": "add successfully"
+        "selectService": "please select project service"
       },
       "form": {
         "namePlaceholder": "Service identifier naming information, up to 100 characters",
@@ -1769,11 +1765,6 @@
         "fileRequired": "Please upload the file first",
         "fileSizeExceeded": "The file or text size exceeds 20M, please re-upload",
         "postmanVersionError": "Please check if the file is a Postman Collection V2/V2.1 version JSON file"
-      },
-      "apiList": {
-        "searchApiName": "Search api name",
-        "requestMethod": "Request method",
-        "apiName": "Api Name"
       }
     },
     "detail": {
@@ -2053,11 +2044,9 @@
             "method": "Request Method",
             "methodPlaceholder": "Please select request method",
             "methodPath": "Method/Path",
-            "requestMethod": "Request Method",
             "maxLengthPlaceholder": "Maximum 800 characters supported"
           },
           "content": {
-            "statusCode": "Status Code",
             "responseDelay": "Response Delay",
             "responseHeader": "Response Header",
             "responseBody": "Response Body",
@@ -2087,9 +2076,7 @@
         "apiName": "Api Name",
         "requestId": "Request ID",
         "requestTime": "Request Time",
-        "requestUrl": "Request Address",
-        "requestMethod": "Request Method",
-        "statusCode": "Status Code",
+        "requestUrl": "Request URL",
         "formatOptions": {
           "beautify": "Beautify",
           "raw": "Raw",

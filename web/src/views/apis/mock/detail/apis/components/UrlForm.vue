@@ -146,7 +146,7 @@ defineExpose({
           :disabled="props.readonly"
           class="w-25 flex-shrink-0"
           enumKey="HttpMethod"
-          :placeholder="t('mock.detail.apis.components.urlForm.requestMethod')"
+          :placeholder="t('protocol.http.requestMethod')"
           @change="handleMethodChange">
           <template #option="record">
             <HttpMethodText :value="record.value" />
@@ -157,7 +157,7 @@ defineExpose({
           :options="props.options"
           defaultActiveFirstOption
           class="w-70 flex-shrink-0"
-          :placeholder="t('common.domain')"
+          :placeholder="t('protocol.domain')"
           @change="handleServerChange" />
         <Input
           :value="pathname"

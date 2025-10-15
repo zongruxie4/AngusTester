@@ -170,7 +170,7 @@ const failMessage = (httpContent) => {
             <div class="flex-1 justify-end flex items-center mr-3">
               <template>
                 <div class="mr-5">
-                  <span class="mr-0.5">{{ t('xcan_scenarioDebugResult.statusCode') }}<Colon /></span>
+                  <span class="mr-0.5">{{ t('protocol.statusCode') }}<Colon /></span>
                   <span class="text-theme-sub-content">{{ httpContent?.content?.response?.status || '--' }}</span>
                 </div>
                 <div class="mr-5">

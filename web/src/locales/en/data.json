@@ -103,7 +103,6 @@
         "interfaceConfig": "Configuration",
         "httpConfigs": {
           "title": "HTTP Configuration",
-          "requestMethod": "Method",
           "requestMethodPlaceholder": "Method",
           "requestUrl": "Request URL",
           "requestUrlPlaceholder": "Path, starting with \" / \"",

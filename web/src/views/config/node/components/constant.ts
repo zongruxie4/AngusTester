@@ -32,7 +32,7 @@ export const formItems = [
     width: '18%'
   },
   {
-    label: t('common.domain'),
+    label: t('protocol.domain'),
     inputType: 'text',
     placeholder: t('node.list.interface.formItems.inputNodeDomain'),
     valueKey: 'domain',

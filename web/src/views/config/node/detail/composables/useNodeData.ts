@@ -25,7 +25,7 @@ export const infoItem = [
     dataIndex: 'sourceName'
   },
   {
-    label: t('common.domain'),
+    label: t('protocol.domain'),
     dataIndex: 'domain'
   }],
   [{

@@ -134,7 +134,7 @@ const securityFormRef = ref();
         class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('mcommon.domain') }}</span>
+            <span>{{ t('protocol.domain') }}</span>
             <Tooltip
               :title="t('mock.detail.basicInfo.domainTooltip')"
               placement="topLeft"
@@ -170,7 +170,7 @@ const securityFormRef = ref();
       <FormItem class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('common.port') }}</span>
+            <span>{{ t('protocol.port') }}</span>
             <Tooltip
               :title="t('mock.detail.basicInfo.portTooltip')"
               placement="topLeft"

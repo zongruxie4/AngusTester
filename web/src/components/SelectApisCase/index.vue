@@ -135,7 +135,7 @@ const cloumns = [
     dataIndex: 'name'
   },
   {
-    title: t('common.method'),
+    title: t('protocol.http.method'),
     dataIndex: 'method',
     width: 100,
     customRender: ({ text }) => text?.message

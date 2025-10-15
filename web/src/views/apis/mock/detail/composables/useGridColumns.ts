@@ -32,11 +32,11 @@ export function useGridColumns () {
         dataIndex: 'endpoint'
       },
       {
-        label: t('mock.detail.requestRecord.requestMethod'),
+        label: t('protocol.http.requestMethod'),
         dataIndex: 'method'
       },
       {
-        label: t('mock.detail.requestRecord.statusCode'),
+        label: t('protocol.statusCode'),
         dataIndex: 'responseStatus'
       }
     ]

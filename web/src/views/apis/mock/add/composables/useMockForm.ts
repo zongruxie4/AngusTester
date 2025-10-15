@@ -94,7 +94,7 @@ export function useMockForm (isPrivate: boolean, activeTab: number) {
     if (activeTab === 1) {
       publicRules = {
         ...publicRules,
-        serviceId: [createRequiredRule('mock.addMockService.validation.selectProjectService')]
+        serviceId: [createRequiredRule('mock.addMockService.validation.selectService')]
       };
     }
 

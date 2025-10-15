@@ -133,7 +133,7 @@ const showBasicInfo = computed(() => {
       <div class="flex-shrink-0 flex-1 justify-end flex items-center">
         <template v-if="showBasicInfo">
           <div class="mr-3.5 flex-shrink-0">
-            <span class="mr-0.5">{{ t('reportPreview.execFunction.sampling.collapse.http.statusCode') }}<Colon /></span>
+            <span class="mr-0.5">{{ t('protocol.statusCode') }}<Colon /></span>
             <span class="text-theme-sub-content">{{ httpStatus }}</span>
           </div>
           <div class="mr-3.5 flex-shrink-0">

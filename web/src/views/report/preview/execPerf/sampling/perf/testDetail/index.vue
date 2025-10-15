@@ -108,7 +108,7 @@ const loadingChange = (value:boolean) => {
     <template v-if="props.execInfo?.plugin === 'Http'">
       <div class="mb-7">
         <h2 class="text-3.5 mb-3.5 text-theme-title">
-          <span id="a10">3.5<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.sampling.testDetail.statusCode') }}</span>
+          <span id="a10">3.5<em class="inline-block w-3.5"></em>{{ t('protocol.statusCode') }}</span>
         </h2>
         <StatusCode
           v-if="timestampData.length > 0"

@@ -543,7 +543,7 @@ const selectProps = {
                         <div style="flex: 1 1 25%;" class="flex items-center">
                           <div class="flex-shrink-0 w-11.5 flex items-center">
                             <IconRequired />
-                            <span>{{ t('common.port') }}</span>
+                            <span>{{ t('protocol.port') }}</span>
                             <Colon />
                           </div>
                           <Input

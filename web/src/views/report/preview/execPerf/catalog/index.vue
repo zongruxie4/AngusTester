@@ -54,7 +54,7 @@ const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
         <DashedLine />
       </a>
       <a href="#a10" class="flex items-center space-x-2.5">
-        <span>3.5<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.execPerf.catalog.sections.statusCode') }}</span>
+        <span>3.5<em class="inline-block w-4.25 font-medium"></em>{{ t('protocol.statusCode') }}</span>
         <DashedLine />
       </a>
       <a href="#a11" class="flex items-center space-x-2.5">

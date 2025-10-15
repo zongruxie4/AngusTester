@@ -1961,7 +1961,7 @@ provide('selectHandle', closeDrawer);
                 <div
                   class="flex items-center flex-nowrap whitespace-nowrap mr-7.5 text-3 leading-3 text-text-sub-content">
                   <div class="flex items-center flex-nowrap whitespace-nowrap mr-7.5">
-                    <span class="mr-1">{{ t('service.apis.toolbar.statusCode') }}:</span>
+                    <span class="mr-1">{{ t('protocol.statusCode') }}:</span>
                     <span :class="getStatusColor(responseState?.status)">{{ getStatusText(responseState?.status)
                     }}</span>
                   </div>
