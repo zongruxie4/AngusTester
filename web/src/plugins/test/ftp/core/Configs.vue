@@ -1205,7 +1205,7 @@ const toolbarExtraMenuItems = computed(() => [
   },
   {
     key: 'screen',
-    name: t(actions.fullScreen')
+    name: t('actions.fullScreen')
   }
 ]);
 

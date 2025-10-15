@@ -1475,7 +1475,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
 <template>
   <Spin :spinning="loading || !rendered" class="h-full overflow-hidden text-3 pt-1.5">
     <Tabs
-      :activeKey="activeKey"
+      v-model:activeKey="activeKey"
       class="pure-tab-wrap h-full leading-5"
       size="small">
       <template #rightExtra>
