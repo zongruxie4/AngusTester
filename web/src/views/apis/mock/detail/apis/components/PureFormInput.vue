@@ -215,7 +215,7 @@ defineExpose({
             :error="valueErrorSet.has(item)"
             trim
             style="flex: 1 1 60%;"
-            :placeholder="t('common.placeholders.enterParameterValue')"
+            :placeholder="t('common.placeholders.inputParameterValue')"
             @change="handleValueChange($event, item)" />
         </Composite>
         <div class="flex-shrink-0 space-x-1">

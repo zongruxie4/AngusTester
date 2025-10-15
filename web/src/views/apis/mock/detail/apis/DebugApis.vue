@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, inject, onMounted, ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, notification, Toggle } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
@@ -286,7 +286,7 @@ const handleHttpRequest = async (apiHref: string, headerData: any[], cookieData:
 
   controller = new AbortController();
   const signal = controller.signal;
-  const axiosConfig = {
+  const axiosConfig: any = {
     responseType: 'blob',
     url: apiHref,
     method: method.value,
@@ -349,7 +349,7 @@ const handleWebSocketResponse = () => {
       const responseBody = respJson.response?.rawContent;
       responseContent.value = { status, responseHeader, responseBody };
     } else {
-      const header = [];
+      const header: Array<{ key: string; value: string }> = [];
       (respJson.response?.headerArray || []).forEach((value: string, idx: number, arr: string[]) => {
         if (idx % 2 === 0) {
           header.push({ key: value, value: arr[idx + 1] });
@@ -431,6 +431,67 @@ const handleDownloadResponseBody = () => {
   window.URL.revokeObjectURL(url);
 };
 
+/**
+ * Helpers: pretty print & copy
+ */
+const prettyResponseBody = computed(() => {
+  const body = responseContent.value?.responseBody;
+  if (body instanceof Blob) {
+    return t('mock.detail.apis.messages.downloaded') || '[Binary Blob]';
+  }
+  if (typeof body === 'object') {
+    try {
+      return JSON.stringify(body, null, 2);
+    } catch (e) {
+      return String(body);
+    }
+  }
+  if (typeof body === 'string') {
+    try {
+      const maybeJson = JSON.parse(body);
+      return JSON.stringify(maybeJson, null, 2);
+    } catch (e) {
+      return body;
+    }
+  }
+  return body != null ? String(body) : '';
+});
+
+const copyText = async (text: string) => {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
+    notification.success(t('actions.copied') || '已复制');
+  } catch (e) {
+    notification.error(t('messages.copyFailed') || '复制失败');
+  }
+};
+
+const handleCopyBody = () => {
+  const text = typeof prettyResponseBody.value === 'string' ? prettyResponseBody.value : String(prettyResponseBody.value ?? '');
+  copyText(text);
+};
+
+const handleCopyAllHeaders = () => {
+  const arr = (responseContent.value?.responseHeader || []).map((h: any) => `${h.key}: ${h.value}`);
+  copyText(arr.join('\n'));
+};
+
+const handleCopyHeader = (key: string, value: string) => {
+  copyText(`${key}: ${value}`);
+};
+
 watch(() => props.mockAPIInfo.id, () => {
   method.value = props.mockAPIInfo.method || HttpMethod.GET;
   endpoint.value = props.mockAPIInfo.endpoint || '';
@@ -473,9 +534,9 @@ onMounted(() => {
     </div>
     <div
       class="bg-white border-status-success rounded transition-all duration-500 box-border overflow-x-hidden overflow-y-auto space-y-5"
-      :class="[spread && showDebug ? 'w-200 border p-3' : 'w-0 border-0']"
+      :class="[spread && showDebug ? 'w-230 border p-3' : 'w-0 border-0']"
       style="height: 70vh;">
-      <span class="font-semibold">{{ t('mock.detail.apis..actions.testRequest') }}</span>
+      <span class="font-semibold">{{ t('mock.detail.apis.actions.testRequest') }}</span>
       <UrlForm
         ref="urlRef"
         v-model:method="method"
@@ -503,40 +564,58 @@ onMounted(() => {
         </template>
       </div>
       <div>
-        <div class="space-x-2 mb-1.5">
+        <div class="space-x-2 mb-1.5 flex items-center">
           <span class="font-semibold">{{ t('protocol.response') }}</span>
           <ResponseStatus v-if="responseContent?.status > 0" :status="responseContent?.status" />
+          <div v-if="responseContent" class="ml-auto space-x-2">
+            <Button size="small" @click="handleCopyAllHeaders">{{ t('actions.copy') }}</Button>
+            <Button
+              size="small"
+              type="default"
+              @click="handleCopyBody">
+              {{ t('actions.copy') }}
+            </Button>
+          </div>
         </div>
-        <div class="min-h-50 bg-gray-light rounded whitespace-break-spaces space-y-2 p-2">
-          <Toggle
-            v-if="responseContent"
-            v-model:open="openHeader"
-            class="text-3"
-            title="Response Header">
-            <div>
-              <div
-                v-for="(header, idx) in responseContent.responseHeader"
-                :key="idx"
-                class="flex span-x-2">
-                <label class="text-text-sub-content">{{ header.key }}: </label>
-                <span class="text-text-content"> {{ header.value }}</span>
+        <div class="min-h-50 bg-gray-light rounded space-y-2 p-2">
+          <template v-if="responseContent">
+            <Toggle
+              v-model:open="openHeader"
+              class="text-3"
+              :title="t('protocol.responseHeader')">
+              <div class="divide-y divide-gray-200">
+                <div
+                  v-for="(header, idx) in responseContent.responseHeader"
+                  :key="idx"
+                  class="flex items-start py-1 gap-2">
+                  <div class="flex-1 overflow-hidden">
+                    <span class="text-text-sub-content">{{ header.key }}</span>
+                    <span class="text-text-sub-content">: </span>
+                    <span class="text-text-content break-all">{{ header.value }}</span>
+                  </div>
+                  <Button size="small" @click="handleCopyHeader(header.key, header.value)">{{ t('actions.copy') }}</Button>
+                </div>
               </div>
+            </Toggle>
+            <Toggle
+              v-model:open="openBody"
+              :title="t('protocol.responseBody')">
+              <div class="rounded bg-white border p-2 max-h-80 overflow-auto">
+                <pre class="whitespace-pre-wrap break-words font-mono text-3">{{ prettyResponseBody }}</pre>
+              </div>
+            </Toggle>
+          </template>
+          <template v-else>
+            <div class="h-40 border border-dashed rounded text-text-sub-content flex items-center justify-center bg-white/60">
+              <span>{{ t('mock.detail.apis.messages.noResponseData') }}</span>
             </div>
-          </Toggle>
-          <Toggle
-            v-if="responseContent"
-            v-model:open="openBody"
-            title="Response Body">
-            <div>
-              {{ responseContent?.responseBody }}
-            </div>
-          </Toggle>
+          </template>
         </div>
       </div>
     </div>
     <div
       class="bg-white border-orange-bg rounded transition-all duration-500 box-border overflow-x-hidden overflow-y-auto space-y-2 flex flex-col"
-      :class="[spread && !showDebug ? 'w-200 border p-3' : 'w-0 border-0']"
+      :class="[spread && !showDebug ? 'w-230 border p-3' : 'w-0 border-0']"
       style="height: 160px;">
       <AsyncComponent :visible="spread && !showDebug">
         <Agent />

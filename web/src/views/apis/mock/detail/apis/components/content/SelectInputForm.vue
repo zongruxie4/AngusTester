@@ -367,7 +367,7 @@ const inputProps = {
             mode="combination"
             style="flex: 1 1 40%;"
             trim
-            :placeholder="t('common.placeholders.enterParameterName')"
+            :placeholder="t('common.placeholders.inputParameterName')"
             @change="handleNameChange($event, item)">
             <template #option="record">
               <div class="truncate" :title="record.value + '-' + record.message">
@@ -382,7 +382,7 @@ const inputProps = {
             :disabled="dataMap[item].disabled"
             trim
             style="flex: 1 1 60%;"
-            :placeholder="t('common.placeholders.enterParameterValue')"
+            :placeholder="t('common.placeholders.inputParameterValue')"
             @change="handleValueChange($event, item)" />
         </Composite>
         <div class="flex-shrink-0 space-x-1">

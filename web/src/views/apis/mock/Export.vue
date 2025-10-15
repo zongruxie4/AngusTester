@@ -62,7 +62,7 @@ watch(() => props.visible, handleExport, {
   <Modal
     :visible="props.visible"
     :width="800"
-    :title="t('actions.title')"
+    :title="t('actions.export')"
     @cancel="handleCancel"
     @ok="handleOk">
     <Spin :spinning="loading">

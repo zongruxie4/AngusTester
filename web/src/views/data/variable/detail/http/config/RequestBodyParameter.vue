@@ -406,7 +406,7 @@ const selectOptions = computed(() => {
         @change="checkboxChange($event, index, item)" />
       <Input
         v-model:value="dataMap[item].name"
-        :placeholder="t('common.placeholders.enterParameterName')"
+        :placeholder="t('common.placeholders.inputParameterName')"
         trim
         class="max-w-100 flex-1"
         :error="nameErrorSet.has(item)"
@@ -453,7 +453,7 @@ const selectOptions = computed(() => {
       <Input
         v-else
         v-model:value="dataMap[item].value"
-        :placeholder="t('common.placeholders.enterParameterValue')"
+        :placeholder="t('common.placeholders.inputParameterValue')"
         trim
         class="flex-1"
         :maxlength="4096"
