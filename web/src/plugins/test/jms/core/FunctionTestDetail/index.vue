@@ -4,7 +4,8 @@ import { utils } from '@xcan-angus/infra';
 import { GroupText } from '@xcan-angus/vue-ui';
 import { Timeline, TimelineItem } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { ExecInfo, ExecContent } from './PropsType';
+import { ExecInfo } from './PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 import Collapse from './Collapse/index.vue';
 const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));

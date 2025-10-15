@@ -5,7 +5,7 @@ import { utils } from '@xcan-angus/infra';
 import { Badge } from 'ant-design-vue';
 
 import { PipelineConfig } from '../PropsType';
-import { ExecContent } from '../FunctionTestDetail/PropsType';
+import { ExecContent } from '@/plugins/test/types';
 import SmtpTestResult from '../FunctionTestDetail/Collapse/Smtp/index.vue';
 
 interface Props {

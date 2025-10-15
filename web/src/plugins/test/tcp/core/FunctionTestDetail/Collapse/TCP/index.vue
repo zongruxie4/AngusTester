@@ -6,7 +6,7 @@ import { utils } from '@xcan-angus/infra';
 
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 import { TcpInfo } from './PropsType';
-import { ExecContent } from '../../PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 export interface Props {
   value: TcpInfo;

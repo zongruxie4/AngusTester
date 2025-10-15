@@ -6,7 +6,8 @@ import { Timeline, TimelineItem } from 'ant-design-vue';
 import { cloneDeep } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 
-import { ExecInfo, ExecContent } from './PropsType';
+import { ExecInfo } from './PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 import Collapse from './Collapse/index.vue';
 

@@ -6,7 +6,7 @@ import { Arrow, Colon, Icon, HttpMethodText } from '@xcan-angus/vue-ui';
 
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
 import { HTTPInfo } from './PropsType';
-import { ExecContent } from '../../PropsType';
+import { ExecContent } from '@/plugins/test/types';
 import { utils } from '@xcan-angus/infra';
 
 const { t } = useI18n();

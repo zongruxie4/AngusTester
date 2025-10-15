@@ -6,7 +6,8 @@ import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
-import { ExecContent, ExecInfo } from '../../PropsType';
+import { ExecContent } from '@/plugins/test/types';
+import { ExecInfo } from '../PropsType';
 
 const { t } = useI18n();
 

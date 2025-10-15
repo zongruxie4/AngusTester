@@ -15,7 +15,7 @@ import { TOOLBAR_MENUITEMS, TOOLBAR_EXTRA_MENUITEMS, DRAWER_MENUITEMS } from './
 import { PipelineConfig } from './UIConfig/PropsType';
 import { JDBCConfig } from './UIConfig/JDBCConfigs/PropsType';
 import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType } from '@/plugins/test/types/index';
-import { ExecContent } from './FunctionTestDetail/PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 const { t } = useI18n();
 

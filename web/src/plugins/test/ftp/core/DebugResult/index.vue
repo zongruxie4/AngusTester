@@ -6,7 +6,7 @@ import { Badge } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
 import { PipelineConfig } from '../PropsType';
-import { ExecContent } from '../FunctionTestDetail/PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 interface Props {
   httpError?:{

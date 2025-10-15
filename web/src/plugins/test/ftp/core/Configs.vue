@@ -12,7 +12,7 @@ import { ScenarioPermission } from '@/enums/enums';
 import ButtonGroup from '@/plugins/test/components/ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from '@/plugins/test/components/ButtonGroup/PropsType';
 import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from '@/plugins/test/types/index';
-import { ExecContent } from './FunctionTestDetail/PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 export interface Props {
   tabKey: string;

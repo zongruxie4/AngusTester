@@ -5,7 +5,8 @@ import { Arrow } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
-import { ExecInfo, ExecContent } from '../PropsType';
+import { ExecInfo } from '../PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 interface Props {
   iterations:string;

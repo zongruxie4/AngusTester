@@ -5,7 +5,7 @@ import { Badge, Descriptions, DescriptionsItem, TypographyParagraph } from 'ant-
 import { AsyncComponent, Modal, Spin, MonacoEditor } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import { ExecContent } from '../../../../PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 const { t } = useI18n();
 
