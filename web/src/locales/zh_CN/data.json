@@ -372,7 +372,6 @@
       }
     },
     "actions": {
-      "generateData": "生成数据",
       "addSpace": "添加空间",
       "compressFile": "压缩文件"
     },

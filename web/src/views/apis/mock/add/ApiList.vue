@@ -41,7 +41,7 @@ watch(checkedList, (newValue) => {
     <FormItemRest>
       <Input
         v-model:value="name"
-        :placeholder="t('mock.addMock.apiList.searchApiName')"
+        :placeholder="t('mock.addMockService.apiList.searchApiName')"
         :disabled="!props.serviceId"
         class="mb-2"
         allowClear>
@@ -51,13 +51,13 @@ watch(checkedList, (newValue) => {
       </Input>
       <div class="flex py-0.5 bg-bg-table-head text-text-title text-3 font-normal mb-1 pl-7.5">
         <div class="w-20 mr-2">
-          {{ t('mock.addMock.apiList.requestMethod') }}
+          {{ t('mock.addMockService.apiList.requestMethod') }}
         </div>
         <div class="w-40 mr-2">
           URL
         </div>
         <div class="flex-1">
-          {{ t('mock.addMock.apiList.apiName') }}
+          {{ t('mock.addMockService.apiList.apiName') }}
         </div>
       </div>
       <CheckboxGroup

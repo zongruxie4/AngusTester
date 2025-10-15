@@ -36,9 +36,9 @@ export function useMockForm (isPrivate: boolean, activeTab: number) {
    */
   const validateServiceDomain = async (_rule: RuleObject, value: string): Promise<void> => {
     if (!value) {
-      return Promise.reject(new Error(t('mock.addMock.validation.enterDomain')));
+      return Promise.reject(new Error(t('mock.addMockService.validation.enterDomain')));
     } else if (!domainRegex.test(value + '.angusmock.cloud')) {
-      return Promise.reject(new Error(t('mock.addMock.validation.enterCorrectDomain')));
+      return Promise.reject(new Error(t('mock.addMockService.validation.enterCorrectDomain')));
     } else {
       return Promise.resolve();
     }
@@ -74,9 +74,9 @@ export function useMockForm (isPrivate: boolean, activeTab: number) {
   const rules = computed(() => {
     // Base rules applicable to all forms
     const baseRules = {
-      name: [createRequiredRule('mock.addMock.validation.enterName')],
-      servicePort: [createRequiredRule('mock.addMock.validation.enterPort')],
-      nodeId: [createRequiredRule('mock.addMock.validation.selectNode')]
+      name: [createRequiredRule('mock.addMockService.validation.enterName')],
+      servicePort: [createRequiredRule('mock.addMockService.validation.enterPort')],
+      nodeId: [createRequiredRule('mock.addMockService.validation.selectNode')]
     };
 
     // Rules for private edition (no domain required)
@@ -94,7 +94,7 @@ export function useMockForm (isPrivate: boolean, activeTab: number) {
     if (activeTab === 1) {
       publicRules = {
         ...publicRules,
-        serviceId: [createRequiredRule('mock.addMock.validation.selectProjectService')]
+        serviceId: [createRequiredRule('mock.addMockService.validation.selectProjectService')]
       };
     }
 

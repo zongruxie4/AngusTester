@@ -371,7 +371,6 @@
       }
     },
     "actions": {
-      "generateData": "Generate Data",
       "addSpace": "Add Space",
       "compressFile": "Compress File"
     },

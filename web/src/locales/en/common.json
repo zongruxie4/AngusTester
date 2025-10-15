@@ -134,9 +134,11 @@
     "variables": "Variable",
     "dataset": "Dataset",
     "file": "File",
+    "fileData": "File Data",
     "space": "Space",
     "directory": "Directory",
     "datasource": "Datasource",
+    "mock": "Mock",
     "mockService": "Mock Service",
     "mockApi": "Mock Api",
     "report": "Report",
@@ -391,6 +393,7 @@
     "enabled": "Enabled",
     "disabled": "Disabled",
     "started": "Started",
+    "starting": "Starting",
     "running": "Running",
     "stopped": "Stopped",
     "reopened": "Reopened",
@@ -497,8 +500,11 @@
     "debug": "Debug",
     "start": "Start",
     "stop": "Stop",
-    "selectAll": "Select All",
+    "generateData": "Generate Data",
+    "experienceExec": "Experience Execution",
+    "modifyExecConfig": "Modify Execution Config",
     "copyLink": "Copy Link",
+    "selectAll": "Select All",
     "recover": "Recover",
     "recoverAll": "Recover All",
     "sort": "Sort",
@@ -535,8 +541,10 @@
       "enableSuccess": "Enable successful",
       "execSuccess": "Execute successful",
       "generateSuccess": "Generate successful",
-      "stopSuccess": "Stop successful",
       "startSuccess": "Successfully started",
+      "startFailed": "Failed to start",
+      "stopSuccess": "Stop successful",
+      "stopFailed": "Failed to stop",
       "completeSuccess": "Successfully completed",
       "processSuccess": "Process successful",
       "cancelSuccess": "Cancel successful",
@@ -659,13 +667,9 @@
     "second": "Second",
     "user": "Users"
   },
-  "routes": {
-    "fileData": "File Data",
-    "generateData": "Generate Data",
-    "experienceExecution": "Experience Execution",
-    "modifyExecutionConfig": "Modify Execution Configuration",
-    "mock": "Mock",
-    "add": "Add",
-    "detail": "Detail"
+  "protocol": {
+    "http": {
+
+    }
   }
 }

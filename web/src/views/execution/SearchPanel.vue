@@ -183,7 +183,7 @@ onMounted(async () => {
             class="flex items-center space-x-1 leading-6.5 px-1.75"
             to="/execution/experience?type=expr">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>{{ t('execution.searchPanel.experienceExecution') }}</span>
+            <span>{{ t('actions.experienceExec') }}</span>
           </RouterLink>
         </Button>
 

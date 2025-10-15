@@ -244,7 +244,7 @@ export function useMockUI () {
 
     modal.confirm({
       centered: true,
-      content: t('mock.refreshInstance_tip'),
+      content: t('mock.messages.refreshInstanceTip'),
       async onOk () {
         loading.value = true;
         const [error] = await mock.syncServiceInstanceConfig(item.id);
@@ -253,7 +253,7 @@ export function useMockUI () {
         if (error) {
           return;
         }
-        notification.success(t('mock.refreshInstance_success'));
+        notification.success(t('mock.messages.refreshInstanceSuccess'));
       }
     });
   };

@@ -67,9 +67,9 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
       updateTableData(newData);
 
       if (newData.status.value === MockServiceStatus.RUNNING) {
-        notification.success(t('mock.startSuccess'));
+        notification.success(t('actions.tips.startSuccess'));
       } else {
-        notification.warning(t('mock.startFail'));
+        notification.warning(t('actions.tips.startFailed'));
       }
       return;
     }
@@ -142,16 +142,16 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
           rouSelection.value.selectedRowKeys = rouSelection.value.selectedRowKeys.filter((f: string) => !_failIds.includes(f));
         }
       } else {
-        notification.success(t('mock.batchStartFail'));
+        notification.success(t('actions.tips.startFailed'));
         return;
       }
     }
 
-    notification.success(t('mock.starting'));
+    notification.success(t('status.starting'));
     for (let i = 0; i < tableData.value.length; i++) {
       const _data = tableData.value[i];
       if (rouSelection.value?.selectedRowKeys?.includes(_data.id)) {
-        _data.status = { value: 'STARTING', message: t('mock.startPending') };
+        _data.status = { value: 'STARTING', message: t('mock.starting') };
         _data.currentAuthsValue = [MockServicePermission.VIEW];
       }
     }
@@ -200,7 +200,7 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
       updateTableData(newData);
 
       if (newData.status.value === MockServiceStatus.RUNNING) {
-        notification.success(t('mock.serviceStartSuccess'));
+        notification.success(t('actions.tips.startSuccess'));
         _ids = _ids.filter((id: string) => id !== newData.id);
         const key = ids.join('');
 
@@ -222,7 +222,7 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
           updateTableData(newData);
         }
 
-        notification.warning(t('mock.startFail'));
+        notification.warning(t('actions.tips.startFailed'));
       } else {
         updateStatusByIds(_ids);
       }
@@ -319,7 +319,7 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
 
     modal.confirm({
       centered: true,
-      content: t('mock.deleteTip'),
+      content: t('actions.tips.confirmDataDelete'),
       async onOk () {
         loading.value = true;
         const [error] = await mock.deleteService(_selectKey);
@@ -329,9 +329,9 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
           return;
         }
 
-        notification.success(t('mock.batchDelSuccess'));
+        notification.success(t('actions.tips.deleteSuccess'));
         getCurrentPageAfterDeletion();
-        fetchList();
+        await fetchList();
 
         if (!rouSelection.value) {
           return;
@@ -374,18 +374,18 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
     if (!data[0].success) {
       item.failTips = data[0];
       item.status?.value === MockServiceStatus.RUNNING
-        ? notification.success(t('mock.stop_fail'))
-        : notification.success(t('mock.start_fail'));
+        ? notification.success(t('actions.tips.stopFailed'))
+        : notification.success(t('actions.tips.startFailed'));
       return;
     }
 
     if (item.status?.value === MockServiceStatus.RUNNING) {
-      notification.success(t('mock.stop_success'));
-      getStopResById(item.id);
+      notification.success(t('actions.tips.stopSuccess'));
+      await getStopResById(item.id);
     } else {
-      notification.warning(t('mock.in_starting'));
+      notification.warning(t('status.starting'));
       if (item.status?.value === MockServiceStatus.NOT_STARTED) {
-        item.status = { value: 'STARTING', message: t('mock.startPending') };
+        item.status = { value: 'STARTING', message: t('status.starting') };
         item.currentAuthsValue = [MockServicePermission.VIEW];
       }
       updateStatusById(item.id);

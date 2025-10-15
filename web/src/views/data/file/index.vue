@@ -135,7 +135,7 @@ onMounted(async () => {
             href="/data/generate"
             class="flex space-x-1">
             <Icon icon="icon-shengchengshuju" />
-            {{ t('file.actions.generateData') }}
+            {{ t('actions.generateData') }}
           </Button>
 
           <!-- Add space button -->

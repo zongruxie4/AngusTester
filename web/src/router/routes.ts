@@ -73,11 +73,11 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           breadcrumb: [
             {
-              name: t('routes.fileData'),
+              name: t('common.fileData'),
               path: '/data',
               query: []
             },
-            { name: t('routes.generateData') }
+            { name: t('actions.generateData') }
           ],
           flexCol: true
         }
@@ -109,7 +109,7 @@ const routes: Array<RouteRecordRaw> = [
               name: 'execute.execute',
               path: '/execution'
             },
-            { name: t('routes.experienceExecution') }
+            { name: t('actions.experienceExec') }
           ],
           className: 'my-tabs'
         }
@@ -123,7 +123,7 @@ const routes: Array<RouteRecordRaw> = [
               name: 'execute.execute',
               path: '/execution'
             },
-            { name: t('routes.modifyExecutionConfig') }
+            { name: t('actions.modifyExecConfig') }
           ],
           className: 'my-tabs'
         }
@@ -142,7 +142,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           breadcrumb: [
             {
-              name: t('routes.mock'),
+              name: t('common.mock'),
               path: `/apis#${ApiMenuKey.MOCK}`
             },
             { name: t('common.add') }

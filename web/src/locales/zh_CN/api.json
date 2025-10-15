@@ -1738,28 +1738,16 @@
       "importFile": "文件导入",
       "importFileDesc": "Swagger、OpenAPI3.x、Postman2.0/2.1、Angus格式文件导入。"
     },
-    "starting": "正在启动中",
-    "startSuccess": "启动成功",
-    "startFail": "启动失败,请尝试重新启动",
-    "batchStartFail": "批量启动失败",
-    "startPending": "启动中",
-    "serviceStartSuccess": "服务启动成功",
-    "deleteTip": "确定删除吗？",
-    "deleteSuccess": "删除成功",
-    "batchDelSuccess": "批量删除成功",
-    "start_fail": "启动失败",
-    "start_success": "启动成功",
-    "stop_fail": "停止失败",
-    "stop_success": "停止成功",
-    "in_starting": "正在启动中",
-    "refreshInstance_tip": "刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。",
-    "refreshInstance_success": "刷新实例成功",
     "actions": {
       "forceDelete": "强制删除",
       "refreshInstance": "刷新实例",
       "addMock": "添加Mock服务"
     },
-    "addMock": {
+    "messages": {
+      "refreshInstanceTip": "刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。",
+      "refreshInstanceSuccess": "刷新实例成功"
+    },
+    "addMockService": {
       "validation": {
         "enterDomain": "请输入域名",
         "enterCorrectDomain": "请输入正确的域名",

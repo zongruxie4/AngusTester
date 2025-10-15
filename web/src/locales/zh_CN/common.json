@@ -134,11 +134,13 @@
     "variables": "变量",
     "dataset": "数据集",
     "file": "文件",
+    "fileData": "文件数据",
     "space": "空间",
     "directory": "目录",
     "datasource": "数据源",
-    "mockService": "Mock服务",
-    "mockApi": "Mock接口",
+    "mock": "模拟",
+    "mockService": "模拟服务",
+    "mockApi": "模拟接口",
     "report": "报告",
     "reportRecord": "报告记录",
     "activity": "活动",
@@ -391,6 +393,7 @@
     "enabled": "已启用",
     "disabled": "未启用",
     "started": "已启动",
+    "starting": "启动中",
     "running": "运行中",
     "stopped": "已停止",
     "blocked": "已阻塞",
@@ -497,6 +500,9 @@
     "debug": "调试",
     "start": "开始",
     "stop": "停止",
+    "generateData": "生成数据",
+    "experienceExecution": "体验执行",
+    "modifyExecutionConfig": "修改执行配置",
     "copyLink": "复制链接",
     "selectAll": "全选",
     "recover": "恢复",
@@ -536,7 +542,9 @@
       "execSuccess": "执行成功",
       "generateSuccess": "生成成功",
       "startSuccess": "启动成功",
+      "startFailed": "启动失败",
       "stopSuccess": "停止成功",
+      "stopFailed": "停止失败",
       "completeSuccess": "完成成功",
       "processSuccess": "处理成功",
       "cancelSuccess": "取消成功",
@@ -660,13 +668,9 @@
     "second": "秒",
     "user": "人"
   },
-  "routes": {
-    "fileData": "文件数据",
-    "generateData": "生成数据",
-    "experienceExecution": "体验执行",
-    "modifyExecutionConfig": "修改执行配置",
-    "mock": "Mock",
-    "add": "添加",
-    "detail": "详情"
+  "protocol": {
+    "http": {
+
+    }
   }
 }

@@ -1732,34 +1732,16 @@
       "importFile": "Import from File",
       "importFileDesc": "Support Swagger, OpenAPI3.x, Postman2.0/2.1, Angus format file import."
     },
-    "starting": "Starting",
-    "startSuccess": "Started Successfully",
-    "startFail": "Start Failed, please try to restart",
-    "batchStartFail": "Batch Start Failed",
-    "startPending": "Starting",
-    "serviceStartSuccess": "Service Started Successfully",
-    "deleteTip": "Confirm deletion?",
-    "deleteSuccess": "Deleted Successfully",
-    "batchDelSuccess": "Batch Deleted Successfully",
-    "start_fail": "Start Failed",
-    "start_success": "Started Successfully",
-    "stop_fail": "Stop Failed",
-    "stop_success": "Stopped Successfully",
-    "in_starting": "Starting",
-    "refreshInstance_tip": "Refreshing the instance will forcibly synchronize service configuration, interface security, CORS settings and Mock interfaces to the running service instance.",
-    "refreshInstance_success": "Instance Refreshed Successfully",
-
     "actions": {
       "forceDelete": "Force Delete",
       "refreshInstance": "Refresh Instance",
       "addMock": "Add Mock Service"
     },
-    "permission": {
-      "title": "Service Permissions",
-      "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
-      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
+    "messages": {
+      "refreshInstanceTip": "Refreshing the instance will forcibly synchronize service configuration, interface security, CORS settings and Mock interfaces to the running service instance.",
+      "refreshInstanceSuccess": "Instance Refreshed Successfully"
     },
-    "addMock": {
+    "addMockService": {
       "validation": {
         "enterDomain": "please enter domain",
         "enterCorrectDomain": "please enter correct domain",

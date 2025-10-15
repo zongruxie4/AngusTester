@@ -232,7 +232,7 @@ onMounted(async () => {
               </template>
             </template>
             <template v-if="activeTab===2">
-              <FormItem :label="t('mock.addMock.form.importSource')" required />
+              <FormItem :label="t('mock.addMockService.form.importSource')" required />
             </template>
           </div>
           <div class="w-150">
@@ -245,7 +245,7 @@ onMounted(async () => {
             <FormItem name="serviceDomain" class="relative">
               <Input
                 v-model:value="formState.serviceDomain"
-                :placeholder="t('mock.addMock.form.domainPlaceholder')">
+                :placeholder="t('mock.addMockService.form.domainPlaceholder')">
                 <template v-if="!isPrivateEdition" #addonAfter>
                   <span>.angusmock.cloud</span>
                 </template>
@@ -253,7 +253,7 @@ onMounted(async () => {
               <template v-if="!isPrivateEdition">
                 <Tooltip
                   placement="right"
-                  :title="t('mock.addMock.form.domainTooltip')">
+                  :title="t('mock.addMockService.form.domainTooltip')">
                   <Icon class="text-tips absolute -right-5 top-1.75 cursor-pointer text-3.5" icon="icon-tishi1" />
                 </Tooltip>
               </template>
@@ -262,7 +262,7 @@ onMounted(async () => {
               <Input
                 v-model:value="formState.servicePort"
                 dataType="number"
-                :placeholder="t('mock.addMock.form.portPlaceholder')"
+                :placeholder="t('mock.addMockService.form.portPlaceholder')"
                 :min="1"
                 :max="65535" />
             </FormItem>
@@ -270,7 +270,7 @@ onMounted(async () => {
               <Select
                 v-model:value="formState.nodeId"
                 :options="nodeState.nodeOptions"
-                :placeholder="t('mock.addMock.form.nodePlaceholder')"
+                :placeholder="t('mock.addMockService.form.nodePlaceholder')"
                 size="small">
               </Select>
             </FormItem>
@@ -283,7 +283,7 @@ onMounted(async () => {
                   :format="formatTreeSelectOptions"
                   showSearch
                   allowClear
-                  :placeholder="t('mock.addMock.form.servicePlaceholder')"
+                  :placeholder="t('mock.addMockService.form.servicePlaceholder')"
                   @change="handleTreeSelectChange">
                   <template #title="item">
                     <div class="text-3 leading-3 flex items-center h-6.5 pr-2 space-x-2" :class="item.mockServiceId?'text-text-disabled':'text-text-content'">
@@ -294,7 +294,7 @@ onMounted(async () => {
                         {{ item.name }}
                       </div>
                       <template v-if="item.mockServiceId">
-                        <div class="flex-none ml">{{ t('mock.addMock.form.associated') }}</div>
+                        <div class="flex-none ml">{{ t('mock.addMockService.form.associated') }}</div>
                       </template>
                     </div>
                   </template>
@@ -330,10 +330,10 @@ onMounted(async () => {
                         class="text-3 leading-3"
                         accept=".zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.yml">
                         <Icon icon="icon-shangchuan" class="text-5 leading-5 text-text-link" />
-                        <div class="text-3 leading-3 mt-2 text-text-link text-center">{{ t('mock.addMock.upload.uploadFile') }}</div>
+                        <div class="text-3 leading-3 mt-2 text-text-link text-center">{{ t('mock.addMockService.upload.uploadFile') }}</div>
                       </Upload>
                     </div>
-                    <p class="text-3 leading-3 text-text-sub-content text-center mt-2">{{ t('mock.addMock.upload.uploadDescription') }}</p>
+                    <p class="text-3 leading-3 text-text-sub-content text-center mt-2">{{ t('mock.addMockService.upload.uploadDescription') }}</p>
                   </template>
                   <template v-if="formState.text">
                     <div
@@ -365,13 +365,13 @@ onMounted(async () => {
                 </div>
                 <div class="text-3 text-rule h-4">
                   <template v-if="fileErr">
-                    {{ t('mock.addMock.upload.fileRequired') }}
+                    {{ t('mock.addMockService.upload.fileRequired') }}
                   </template>
                   <template v-if="sizeErr">
-                    {{ t('mock.addMock.upload.fileSizeExceeded') }}
+                    {{ t('mock.addMockService.upload.fileSizeExceeded') }}
                   </template>
                   <template v-if="versionRuleErr">
-                    {{ t('mock.addMock.upload.postmanVersionError') }}
+                    {{ t('mock.addMockService.upload.postmanVersionError') }}
                   </template>
                 </div>
               </FormItem>
