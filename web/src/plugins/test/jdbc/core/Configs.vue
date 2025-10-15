@@ -14,7 +14,7 @@ import { ButtonGroupMenuItem, ButtonGroupMenuKey } from '@/plugins/test/componen
 import { TOOLBAR_MENUITEMS, TOOLBAR_EXTRA_MENUITEMS, DRAWER_MENUITEMS } from './data';
 import { PipelineConfig } from './UIConfig/PropsType';
 import { JDBCConfig } from './UIConfig/JDBCConfigs/PropsType';
-import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType } from './PropsType';
+import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType } from '@/plugins/test/types/index';
 import { ExecContent } from './FunctionTestDetail/PropsType';
 
 const { t } = useI18n();

@@ -11,7 +11,7 @@ import { useI18n } from 'vue-i18n';
 import { ScenarioPermission } from '@/enums/enums';
 import ButtonGroup from '@/plugins/test/components/ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from '@/plugins/test/components/ButtonGroup/PropsType';
-import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from './PropsType';
+import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from '@/plugins/test/types/index';
 import { ExecContent } from './FunctionTestDetail/PropsType';
 
 export interface Props {

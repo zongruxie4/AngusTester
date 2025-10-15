@@ -8,8 +8,12 @@ import { SmtpPipelineInfo } from '@/plugins/test/smtp/core/PropsType';
 import { TcpPipelineInfo } from '@/plugins/test/tcp/core/PropsType';
 import { WebSocketPipelineInfo } from '@/plugins/test/websocket/core/PropsType';
 
-import { ScriptType } from '@xcan-angus/infra';
+import { ScriptType as ScriptTypeInfra } from '@xcan-angus/infra';
 import { ScenarioType } from '@/enums/enums';
+
+export type ScriptType = keyof typeof ScriptTypeInfra;
+
+export type PluginType = 'Ftp' | 'Jms' | 'Ldap' | 'Mail' | 'Smtp' | 'Tcp' | 'WebSocket';
 
 
 export type WaitingTimeConfig = {
@@ -35,7 +39,6 @@ export type RendezvousConfig = {
     timeoutInMs: string;
     threads: string;
 }
-
 
 export type TransStartConfig = {
     id: string; // 前端自动生成，用于给每条记录添加id
@@ -209,4 +212,22 @@ export type ScenarioConfig = {
     };
     scriptId: string;
     scriptName: string;
+}
+
+export type SaveFormData = {
+    description: string;
+    projectId: string;
+    id: string;
+    name: string;
+    plugin: PluginType;
+    script: {
+        plugin: PluginType;
+        task: {
+            arguments: { [key: string]: any };
+            pipelines: PipelineConfig[];
+        };
+        type: ScriptType;
+        configuration: { [key: string]: any };
+    };
+    scriptId: string;
 }

@@ -12,7 +12,7 @@ import { ScenarioPermission } from '@/enums/enums';
 import ButtonGroup from '@/plugins/test/components/ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from '@/plugins/test/components/ButtonGroup/PropsType';
 import { TOOLBAR_MENUITEMS, TOOLBAR_EXTRA_MENUITEMS, DRAWER_MENUITEMS } from './data';
-import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from './PropsType';
+import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from '@/plugins/test/types/index';
 import { ExecContent } from './FunctionTestDetail/PropsType';
 
 const { t } = useI18n();
