@@ -1,4 +1,4 @@
-import { HttpMethod, AssertionCondition } from '../HTTPConfigs/PropsType';
+import { AssertionCondition, BasicAssertionType, HttpMethod } from '../HTTPConfigs/PropsType';
 
 export type ApiInfo = {
     projectId: string;

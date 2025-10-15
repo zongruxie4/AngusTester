@@ -1,4 +1,11 @@
-export type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE';
+import { HttpMethod as HttpMethodEnum, ParameterIn as ParameterInEnum, ContentEncoding as ContentEncodingEnum, AuthClientIn as AuthClientInEnum, BasicAssertionType as BasicAssertionTypeEnum  } from '@xcan-angus/infra';
+export type HttpMethod = keyof typeof HttpMethodEnum;
+export type ParameterIn = keyof typeof ParameterInEnum;
+export type ContentEncoding = keyof typeof ContentEncodingEnum;
+export type AuthClientIn = keyof typeof AuthClientInEnum;
+export type BasicAssertionType = keyof typeof BasicAssertionTypeEnum;
+
+
 export type AssertionCondition = 'CONTAIN' | 'EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'IS_EMPTY' | 'IS_NULL' | 'JSON_PATH_MATCH' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'NOT_CONTAIN' | 'NOT_EMPTY' | 'NOT_EQUAL' | 'NOT_NULL' | 'REG_MATCH' | 'XPATH_MATCH'
 
 export type HTTPConfig = {
