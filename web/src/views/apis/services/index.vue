@@ -23,14 +23,14 @@ import { setting } from '@/api/gm';
 import { ProjectInfo } from '@/layout/types';
 
 const Sidebar = defineAsyncComponent(() => import('@/views/apis/services/sidebar/index.vue'));
-const ApiGroup = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/index.vue'));
-const ApiItem = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/index.vue'));
-const servicesMock = defineAsyncComponent(() => import('@/views/apis/services/mock/servicesMock.vue'));
-const apisSocket = defineAsyncComponent(() => import('@/views/apis/services/apiWebSocket/index.vue'));
+const ApiGroup = defineAsyncComponent(() => import('@/views/apis/services/grouping/index.vue'));
+const ApiItem = defineAsyncComponent(() => import('@/views/apis/services/apis/http/index.vue'));
+const servicesMock = defineAsyncComponent(() => import('@/views/apis/services/mock/MockService.vue'));
+const apisSocket = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/index.vue'));
 const Auth = defineAsyncComponent(() => import('@/views/apis/services/auth/index.vue'));
-const DataModel = defineAsyncComponent(() => import('@/views/apis/services/dataModel/index.vue'));
-const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/securityTestResult/index.vue'));
-const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/smokeTestResult/index.vue'));
+const DataModel = defineAsyncComponent(() => import('@/views/apis/services/model/index.vue'));
+const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SecurityTestResult.vue'));
+const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SmokeTestResult.vue'));
 const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/QuickStarted.vue'));
 
 const { t } = useI18n();

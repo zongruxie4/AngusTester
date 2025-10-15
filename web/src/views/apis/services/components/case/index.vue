@@ -33,8 +33,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/addModal/index.vue'));
-const ExecCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/exec/index.vue'));
+const AddCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/AddCaseModal.vue'));
+const ExecCaseModal = defineAsyncComponent(() => import('@/views/apis/services/components/case/Exec.vue'));
 
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 

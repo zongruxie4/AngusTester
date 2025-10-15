@@ -19,24 +19,24 @@ const CreateTestTask = defineAsyncComponent(() => import('@/components/task/Crea
 const RestartTestTask = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
 const ReopenTestTask = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
 const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
-const SyncConfig = defineAsyncComponent(() => import('@/views/apis/services/components/syncConfig/modal.vue'));
-const ServerUrl = defineAsyncComponent(() => import('@/views/apis/services/components/serverConfig/modal.vue'));
-const SecurityConfig = defineAsyncComponent(() => import('@/views/apis/services/components/securityConfig/modal.vue'));
-const MovePop = defineAsyncComponent(() => import('@/views/apis/services/components/moveModal/index.vue'));
-const Status = defineAsyncComponent(() => import('@/views/apis/services/components/statusModal/index.vue'));
-const ExportApis = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/exportServices/index.vue'));
+const SyncConfig = defineAsyncComponent(() => import('@/views/apis/services/components/sync/SyncConfigModal.vue'));
+const ServerUrl = defineAsyncComponent(() => import('@/views/apis/services/components/server/ServerConfigModal.vue'));
+const SecurityConfig = defineAsyncComponent(() => import('@/views/apis/services/components/security/SecurityConfigModal.vue'));
+const MovePop = defineAsyncComponent(() => import('@/views/apis/services/components/MoveModal.vue'));
+const Status = defineAsyncComponent(() => import('@/views/apis/services/components/StatusModal.vue'));
+const ExportApis = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/ExportService.vue'));
 const GenTestScript = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
 const DelTestScript = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
 const EnabledApiTest = defineAsyncComponent(() => import('@/components/apis/enabledTestModal/index.vue'));
 const BatchModify = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/index.vue'));
-const TranslateModal = defineAsyncComponent(() => import('@/views/apis/services/components/translateService/index.vue'));
+const TranslateModal = defineAsyncComponent(() => import('@/views/apis/services/components/TranslateService.vue'));
 
-const CreateServices = defineAsyncComponent(() => import('@/views/apis/services/components/createServicesModal/index.vue'));
-const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/localImport/index.vue'));
-const ExportServices = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/exportServices/index.vue'));
+const CreateServices = defineAsyncComponent(() => import('@/views/apis/services/components/CreateServiceModal.vue'));
+const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/LocalImport.vue'));
+const ExportServices = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/ExportService.vue'));
 // const trash = defineAsyncComponent(() => import('./trash/index.vue'));
-const Unarchived = defineAsyncComponent(() => import('@/views/apis/services/sidebar/unarchived/index.vue'));
-const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/sidebar/execTest/index.vue'));
+const Unarchived = defineAsyncComponent(() => import('@/views/apis/services/sidebar/Unarchived.vue'));
+const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/test/ExecTest.vue'));
 
 const { t } = useI18n();
 const userInfo = ref(appContext.getUser());

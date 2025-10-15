@@ -1417,7 +1417,7 @@ const transJsonToList = (data: any [] | Record<string, any>, pid: string | numbe
       }
     });
   };
-  const transObjct = (data: Record<string, any>, pid: string | number = -1, level = 1, schema: any) => {
+  const transObject = (data: Record<string, any>, pid: string | number = -1, level = 1, schema: any) => {
     Object.keys(data).forEach(key => {
       let value = data[key];
       let type = schema[key]?.type || getDataType(value);
@@ -1457,7 +1457,7 @@ const transJsonToList = (data: any [] | Record<string, any>, pid: string | numbe
               console.log(value + 'id not a json');
             }
           }
-          transObjct(value as Record<string, any>, id, level + 1, schema.properties?.[key] || {});
+          transObject(value as Record<string, any>, id, level + 1, schema.properties?.[key] || {});
         }
       }
     });
@@ -1499,7 +1499,7 @@ const transJsonToList = (data: any [] | Record<string, any>, pid: string | numbe
     transArr(data as any[], pid, level, (schema as any).items || {});
   }
   if (type === 'object') {
-    transObjct(data as Record<string, any>, pid, level, schema || {});
+    transObject(data as Record<string, any>, pid, level, schema || {});
   }
   return result;
 };

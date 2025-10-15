@@ -1,1 +1,0 @@
-export type AgentValue = 'CLIENT_PROXY'|'CLOUD_PROXY'|'NO_PROXY'|'SERVER_PROXY';

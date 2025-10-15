@@ -93,7 +93,7 @@ export const transJsonToList = (data: any [] | Record<string, any>, pid = -1, le
       }
     });
   };
-  const transObjct = (data, pid = -1, level = 1, schema) => {
+  const transObject = (data, pid = -1, level = 1, schema) => {
     Object.keys(data).forEach(key => {
       let value = data[key];
       let type = schema[key]?.type || getDataType(value);
@@ -133,7 +133,7 @@ export const transJsonToList = (data: any [] | Record<string, any>, pid = -1, le
               console.log(value + 'id not a json');
             }
           }
-          transObjct(value, id, level + 1, schema.properties?.[key] || {});
+          transObject(value, id, level + 1, schema.properties?.[key] || {});
         }
       }
     });
@@ -159,30 +159,22 @@ export const transJsonToList = (data: any [] | Record<string, any>, pid = -1, le
       checked: true
     });
   };
-  const result:any[] = defaultData;
+  const result: any[] = defaultData;
   const type = schema.type || getDataType(data);
   if (type !== 'object' && type !== 'array') {
     transNormal(data, pid, level, schema || {});
-  }
-  if (typeof data === 'string') {
-    try {
-      data = JSON.parse(data);
-    } catch {
-      console.log(data + 'id not a json');
-    }
   }
   if (type === 'array') {
     transArr(data, pid, level, schema.items || {});
   }
   if (type === 'object') {
-    transObjct(data, pid, level, schema || {});
+    transObject(data, pid, level, schema || {});
   }
   return result;
 };
 
 /**
- *transform list to json<key, value>
- *
+ * transform list to json<key, value>
  */
 export const transListToJson = (list, type, pid = -1) => {
   const child = list.filter(item => item.pid === pid);
@@ -288,14 +280,14 @@ export const transListToschema = (list, type, pid = -1) => {
     }
     result[valueKey] = transListToJson(list, type, pid);
   } else {
-  // type: string;
-  // [valueKey]: string;
-  // id: string;
-  // name?: string;
-  // pid?: string;
-  // level: number;
-  // idLine: string[];
-  // $ref?: string;
+    // type: string;
+    // [valueKey]: string;
+    // id: string;
+    // name?: string;
+    // pid?: string;
+    // level: number;
+    // idLine: string[];
+    // $ref?: string;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { type, id, name, pid, level, idLine, checked, ...other } = child;
     result = {

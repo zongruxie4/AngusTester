@@ -30,7 +30,7 @@ import { debounce } from 'throttle-debounce';
 import { ApiMenuKey } from '@/views/apis/menu';
 
 import { MockServicePermission } from '@/enums/enums';
-import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';
+import { type AgentValue } from '@/views/apis/services/components/PropsTypes';
 import { mock } from 'src/api/tester';
 import { setting } from 'src/api/gm';
 import { MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './types';

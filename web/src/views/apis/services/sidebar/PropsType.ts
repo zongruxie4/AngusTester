@@ -26,13 +26,6 @@ export const actions = [
       }
     ]
   },
-  // {
-  //   name: '添加服务',
-  //   icon: 'icon-chuangjianfuwu',
-  //   key: 'addServive',
-  //   permission: 'ADD',
-  //   disabled: false
-  // },
   {
     name: t('service.sidebar.actions.syncConfig'),
     icon: 'icon-peizhifuwutongbu',
@@ -82,13 +75,6 @@ export const actions = [
     permission: 'RENAME',
     disabled: false
   },
-  // {
-  //   name: '移动',
-  //   icon: 'icon-yidong',
-  //   key: 'move',
-  //   permission: 'MODIFY',
-  //   disabled: false
-  // },
   {
     name: t('actions.delete'),
     icon: 'icon-qingchu',
@@ -109,13 +95,6 @@ export const actions = [
     permission: 'CLONE',
     disabled: false
   },
-  // {
-  //   name: '分享',
-  //   icon: 'icon-fenxiang',
-  //   key: 'share',
-  //   permission: 'SHARE',
-  //   disabled: false
-  // },
   {
     name: t('actions.permission'),
     icon: 'icon-quanxian1',
@@ -219,13 +198,6 @@ export const actions = [
         icon: 'icon-shengchengceshijiaoben',
         tip: t('service.sidebar.actions.generateTestScriptTip')
       },
-      // {
-      //   name: t('service.sidebar.actions.updateTestScript'),
-      //   key: 'updateTestScript',
-      //   permission: 'TEST',
-      //   icon: 'icon-gengxinceshijiaoben',
-      //   tip: t('service.sidebar.actions.updateTestScriptTip')
-      // },
       {
         name: t('service.sidebar.actions.deleteTestScript'),
         key: 'delTestScript',
@@ -242,44 +214,6 @@ export const actions = [
     disabled: false,
     permission: 'MODIFY',
     icon: 'icon-zhibiao'
-    // children: [
-    //   {
-    //     name: '启用功能测试',
-    //     key: 'enabledFunc',
-    //     permission: 'MODIFY',
-    //     icon: 'icon-qiyong'
-    //   },
-    //   {
-    //     name: '禁用功能测试',
-    //     key: 'disabledFunc',
-    //     permission: 'MODIFY',
-    //     icon: 'icon-jinyong'
-    //   },
-    //   {
-    //     name: '启用性能测试',
-    //     key: 'enabledPerf',
-    //     permission: 'MODIFY',
-    //     icon: 'icon-qiyong'
-    //   },
-    //   {
-    //     name: '禁用性能测试',
-    //     key: 'disabledPerf',
-    //     permission: 'MODIFY',
-    //     icon: 'icon-jinyong'
-    //   },
-    //   {
-    //     name: '启用稳定性测试',
-    //     key: 'enabledStability',
-    //     permission: 'MODIFY',
-    //     icon: 'icon-qiyong'
-    //   },
-    //   {
-    //     name: '禁用稳定性测试',
-    //     key: 'disabledStability',
-    //     permission: 'MODIFY',
-    //     icon: 'icon-jinyong'
-    //   }
-    // ]
   },
   {
     name: t('service.sidebar.actions.execServiceTest'),
@@ -392,13 +326,6 @@ export interface ServiceProject {
   }
 }
 
-export interface EditData {
-  show?: boolean,
-  type: SP,
-  name: string,
-  pid?: string
-}
-
 export interface ModalsConfig {
   syncModalVisible: boolean,
   serverUrlModalVisible: boolean,
@@ -416,4 +343,17 @@ export interface ModalsConfig {
   selectedNode?:ServiceProject;
   delTestScriptVisible: boolean;
   enabeldApiTestVisible: boolean;
+}
+
+export type UnarchivedItem = {
+  id: string;
+  protocol: {
+    value: string;
+    message: string;
+  },
+  method: string;
+  endpoint: string;
+  summary: string;
+  createdDate: string;
+  lastModifiedDate: string;
 }

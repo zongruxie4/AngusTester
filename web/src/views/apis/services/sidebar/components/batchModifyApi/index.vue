@@ -50,12 +50,12 @@ const matchMethod = ref();
 const matchEndpointRegex = ref();
 const filterTags = ref([]);
 
-const AddOrModifyParams = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/addOrModifyParams/index.vue'));
-const EnabledOrdDelParams = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/enableOrDelParams/index.vue'));
-const ModifyAuth = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/modifyAuth/index.vue'));
-const ModifyServer = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/modifyServer/index.vue'));
-const RefVariable = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/refVariable/index.vue'));
-const RefDataset = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/refDataset/index.vue'));
+const AddOrModifyParams = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/AddOrModifyParams.vue'));
+const EnabledOrdDelParams = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/EnableOrDelParams.vue'));
+const ModifyAuth = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/ModifyAuth.vue'));
+const ModifyServer = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/ModifyServer.vue'));
+const RefVariable = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/RefVariable.vue'));
+const RefDataset = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/RefDataset.vue'));
 
 const handleChangeSelectApis = (ids: string[]) => {
   selectedApisIds.value = ids || [];
