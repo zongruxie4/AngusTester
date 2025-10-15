@@ -5,7 +5,7 @@ import { Arrow, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
-import { ExecContent } from '../../PropsType';
+import { ExecContent } from '@/plugins/test/types';
 
 interface Props {
   value: {
@@ -16,7 +16,7 @@ interface Props {
     beforeName: string;
     transactionName: string;
     children?: {
-      target: 'JDBC' | 'TRANS_END' | 'RENDEZVOUS' | 'WAITING_TIME';
+      target: 'JDBC' | 'TRANS_END' | 'RENDEZVOUS' | 'WAITING_TIME' | 'THROUGHPUT' | 'HTTP' | 'FTP' | 'LDAP' | 'MAIL' | 'SMTP' | 'TCP' | 'WEBSOCKET' | 'JMS';
       name: string;
       linkName: string;
       description: string;
