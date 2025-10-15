@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, SelectInput, Validate } from '@xcan-angus/vue-ui';
-import { ParameterIn, FullMatchCondition, utils } from '@xcan-angus/infra';
+import { ParameterIn, FullMatchCondition, utils, HttpRequestHeader } from '@xcan-angus/infra';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
@@ -101,8 +101,8 @@ const handleNameChange = (value: string, id: string) => {
  * @param options - Available options
  * @returns Filtered options
  */
-const handleNameSearch = (value: string, options: { _value: string; message: string }[]) => {
-  return options.filter(item => item._value.includes(value) || item.message.includes(value));
+const handleNameSearch = (value: string, options: { value: string; message: string }[]) => {
+  return options.filter(item => item.value.includes(value) || item.message.includes(value));
 };
 
 /**
@@ -354,7 +354,7 @@ const excludes = ({ value }: { value: any }) => {
  * <p>Field name mapping for select components</p>
  * <p>Defines how select options map to data properties</p>
  */
-const fieldNames = { label: '_value', value: 'id' };
+// const fieldNames = { label: '_value', value: 'id' };
 
 /**
  * <p>Input properties configuration</p>
@@ -391,14 +391,14 @@ defineExpose({
             :error="nameErrorSet.has(item)"
             :search="handleNameSearch as any"
             showSearch
-            enumKey="HttpRequestHeader"
+            :enumKey="HttpRequestHeader"
             mode="combination"
             style="flex: 0 0 calc((100% - 200px) * 2/5);"
             trim
             :placeholder="t('common.placeholders.inputParameterName')"
             @change="handleNameChange($event,item)">
             <template #option="record">
-              <div class="truncate" :title="record._value+'-'+record.message">{{ record._value }} - {{ record.message }}</div>
+              <div class="truncate" :title="record.value+'-'+record.message">{{ record.value }} - {{ record.message }}</div>
             </template>
           </SelectInput>
           <SelectEnum
