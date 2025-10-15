@@ -5,7 +5,7 @@ import 'tailwindcss/utilities.css';
 
 import Core from './core/index.vue';
 import DebugResult from './core/DebugResult/index.vue';
-import DebugLog from '@/plugins/test/core/DebugLog/index.vue';
+import DebugLog from '@/plugins/test/components/DebugLog/index.vue';
 
 Core.install = (app:App) => {
   app.component('VVXCHttp', Core);
