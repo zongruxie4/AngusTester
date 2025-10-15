@@ -58,11 +58,11 @@ export const ToolBarMenus = [
     value: 'time'
   },
   {
-    name: t('service.case.addModal.toolbarMenus.cookie'),
+    name: t('protocol.cookie'),
     value: 'cookie'
   },
   {
-    name: t('service.case.addModal.toolbarMenus.assert'),
+    name: t('common.assertionResult'),
     value: 'assert'
   }
 ];

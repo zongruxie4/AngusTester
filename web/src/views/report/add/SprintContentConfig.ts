@@ -8,7 +8,7 @@ export const contentTreeData = [
     key: 'sprintDetail',
     children: [
       {
-        title: t('reportAdd.sprintContent.contentTree.basic'),
+        title: t('common.basicInfo'),
         key: 'basic'
       },
       {

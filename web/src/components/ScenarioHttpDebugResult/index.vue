@@ -196,7 +196,7 @@ const failMessage = (httpContent) => {
           type="card"
           size="small"
           class="mt-3 card-tabs">
-          <TabPane key="general" :tab="t('xcan_scenarioDebugResult.basic')">
+          <TabPane key="general" :tab="t('common.basicInfo')">
             <RequestHeaders :value="httpContent" class="py-3" />
           </TabPane>
           <TabPane key="requestBody" :tab="t('protocol.requestBody')">
@@ -208,7 +208,7 @@ const failMessage = (httpContent) => {
               :value="httpContent?.content?.response"
               class="py-3" />
           </TabPane>
-          <TabPane key="timeline" :tab="t('xcan_scenarioDebugResult.timeline')">
+          <TabPane key="timeline" :tab="t('common.timeline')">
             <TimeLine :value="httpContent?.content?.response?.timeline" />
           </TabPane>
           <TabPane key="assertions" :tab="t('xcan_scenarioDebugResult.assertionsResult')">

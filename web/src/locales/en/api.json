@@ -243,10 +243,6 @@
       "responseTitle": "Response Header",
       "addAttrTip": "Attribute already exists",
       "addAttrTitle": "Add parameter",
-      "generalTab": "General",
-      "paramsTab": "Parameters",
-      "requestTab": "Request Body",
-      "responseTab": "Response",
       "selectBodyCompPlaceholder": "Select to use body model",
       "navItems": {
         "projectInfo": "Service Information",
@@ -318,9 +314,7 @@
         "typeLabel": "Type",
         "typePlaceholder": "Select type",
         "toolbarMenus": {
-          "time": "Duration Analysis",
-          "cookie": "Cookie",
-          "assert": "Assertion Results"
+          "time": "Duration Analysis"
         }
       },
       "debugModal": {
@@ -337,10 +331,8 @@
         "assertRule": "Assertion data verification failed",
         "apisLabel": "Test Interface",
         "caseLabel": "Test Case",
-        "paramsTab": "Request Parameters",
         "headerTab": "Request Header",
         "requestBodyTab": "Request Body",
-        "assertTab": "Assertion",
         "debugAction": "Debug Case",
         "descriptionPlaceholder": "Enter case description, up to 800 characters"
       }
@@ -410,11 +402,8 @@
       "requestTabs": {
         "parameters": "Request Parameters",
         "header": "Request Headers",
-        "cookie": "Cookie",
         "authentication": "Authorization",
-        "parametric": "Parameterization",
-        "assert": "Assertion",
-        "setting": "Settings"
+        "parametric": "Parameterization"
       },
       "errors": {
         "invalidUrl": "Error!",
@@ -442,8 +431,6 @@
       },
       "menus": {
         "time": "Duration Analysis",
-        "cookie": "Cookie",
-        "assert": "Assertion Results",
         "define": "Definition",
         "generateCode": "Code"
       },

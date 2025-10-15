@@ -1289,9 +1289,7 @@
     "pass": "Pass",
     "runTime": "Run Time",
     "iterationCount": "Iteration Count",
-    "requestCount": "Request Count",
-    "assertion": "Assertion",
-    "responseTime": "Response Time"
+    "requestCount": "Request Count"
   },
   "xcan_statusTag": {
     "block": "Not Executed"
@@ -1340,9 +1338,6 @@
     "rawFormat": "Raw Format",
     "preview": "Preview"
   },
-  "xcan_debugResRequestHeaders": {
-    "general": "General"
-  },
   "xcan_debugResRequestParameter": {
     "parameters": "Parameters",
     "result": "Result",
@@ -1367,8 +1362,6 @@
     "minutes": "Minutes",
     "hours": "Hours",
     "timeConsuming": "Time Consuming",
-    "basic": "Basic",
-    "timeline": "Timeline",
     "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please close the ignore assertion option in ",
     "executeConfig": "Execute Config > Plugin Config",
     "closeIgnoreAssertion": "."

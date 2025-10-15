@@ -8,7 +8,7 @@ export const contentTreeData = [
     key: 'exec',
     children: [
       {
-        title: t('reportAdd.execPerfContent.contentTree.basic'),
+        title: t('common.basicInfo'),
         key: 'basic'
       },
       {

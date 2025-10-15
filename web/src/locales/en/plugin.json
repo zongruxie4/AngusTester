@@ -209,7 +209,6 @@
       },
       "httpConfigs": {
         "title": "HTTP Configuration",
-        "assertions": "Assertions",
         "parameters": "Parameters",
         "serverEndpoint": "Server Endpoint",
         "docInfo": {
@@ -268,8 +267,7 @@
         },
         "tabs": {
           "authorization": "Authorization",
-          "parameterization": "Parameterization",
-          "assertion": "Assertion"
+          "parameterization": "Parameterization"
         },
         "popover": {
           "notes": "Notes",
@@ -552,11 +550,6 @@
       }
     },
     "functionTestDetail": {
-      "basicInfo": {
-        "iteration": "Iterations",
-        "responseTime": "Response Time",
-        "assertion": "Assertions"
-      },
       "collapse": {
         "iteration": "Iteration {iteration}"
       },
@@ -663,8 +656,7 @@
         "inputOutputPlaceholder": "Input/Output",
         "inputOutputTooltip": "Parameter value is required when input/output value is 'IN' or 'INOUT'",
         "parameterValuePlaceholder": "Parameter value (optional. Note: Parameter value is required when input/output value is 'IN' or 'INOUT')",
-        "parametric": "Parametric",
-        "assertions": "Assertions"
+        "parametric": "Parametric"
       },
       "assertionForm": {
         "nameDuplicate": "Name Duplicate",
@@ -1600,7 +1592,6 @@
       "title": "Parameterization"
     },
     "assertion": {
-      "title": "Assertion",
       "tooltip": "Assert received message"
     },
     "selectApiModal": {

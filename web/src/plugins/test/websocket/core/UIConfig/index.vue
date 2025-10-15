@@ -1106,7 +1106,7 @@ const autoSize = {
                     <div
                       class="w-21.5 flex items-center justify-start transform-gpu translate-y-1 space-x-1 flex-shrink-0 text-theme-title">
                       <span>
-                        <span>{{ t('websocketPlugin.assertion.title') }}</span>
+                        <span>{{ t('common.assertion') }}</span>
                         <Colon />
                       </span>
                       <Tooltip :title="t('websocketPlugin.assertion.tooltip')">

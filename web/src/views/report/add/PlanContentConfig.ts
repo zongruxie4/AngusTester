@@ -8,7 +8,7 @@ export const contentTreeData = [
     key: 'planDetail',
     children: [
       {
-        title: t('reportAdd.planContent.contentTree.basic'),
+        title: t('common.basicInfo'),
         key: 'basic'
       },
       {
@@ -20,7 +20,7 @@ export const contentTreeData = [
         key: 'objective'
       },
       {
-        title: t('reportAdd.planContent.contentTree.scope'),
+        title: t('common.scope'),
         key: 'scope'
       },
       {

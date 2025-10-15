@@ -662,7 +662,7 @@ const inputProps = {
           <template #tab>
             <Badge size="small" :count="assertErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>{{ t('jdbcPlugin.UIConfigJdbc.jdbcConfig.assertions') }}</div>
+                <div>{{ t('common.assertion') }}</div>
                 <div class="flex items-center space-x-0.5">
                   <em>(</em>
                   <span>{{ assertNum }}</span>

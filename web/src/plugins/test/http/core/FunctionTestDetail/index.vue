@@ -241,7 +241,7 @@ const timeTexts = computed(() => [
           <span>{{ totalAssertionNum }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden exec-basic-data-card-title">
-          {{ t('httpPlugin.functionTestDetail.basicInfo.assertion') }}（<GroupText :texts="texts" class="text-theme-sub-content" />）
+          {{ t('common.assertion') }}（<GroupText :texts="texts" class="text-theme-sub-content" />）
         </div>
       </div>
 

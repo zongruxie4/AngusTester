@@ -4,7 +4,7 @@ const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
 export const contentTreeData = [
   {
-    title: t('reportAdd.taskContent.contentTree.basic'),
+    title: t('common.basicInfo'),
     key: 'basic'
   },
   {

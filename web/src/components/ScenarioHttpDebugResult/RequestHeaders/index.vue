@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 const panels:{id:string;name:string;key:'general'|'request'|'response'}[] = [
   {
     id: utils.uuid(),
-    name: t('xcan_debugResRequestHeaders.general'),
+    name: t('common.general'),
     key: 'general'
   },
   {

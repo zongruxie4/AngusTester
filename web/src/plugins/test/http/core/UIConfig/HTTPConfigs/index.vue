@@ -1347,7 +1347,7 @@ const overlayStyle = {
               size="small"
               :count="cookieErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.cookie') }}</div>
+                <div>{{ t('protocol.cookie') }}</div>
                 <div class="flex items-center space-x-0.5">
                   <em>(</em>
                   <span>{{ cookieNum }}</span>
@@ -1412,7 +1412,7 @@ const overlayStyle = {
               size="small"
               :count="assertionErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.assertion') }}</div>
+                <div>{{ t('common.assertion') }}</div>
                 <div class="flex items-center space-x-0.5">
                   <em>(</em>
                   <span>{{ assertionNum }}</span>

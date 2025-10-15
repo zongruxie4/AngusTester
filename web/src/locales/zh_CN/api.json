@@ -244,10 +244,6 @@
       "responseTitle": "响应头",
       "addAttrTip": "已存在该属性",
       "addAttrTitle": "添加参数",
-      "generalTab": "常规",
-      "paramsTab": "参数",
-      "requestTab": "请求体",
-      "responseTab": "响应",
       "selectBodyCompPlaceholder": "选择使用body模型",
       "navItems": {
         "projectInfo": "服务信息",
@@ -323,9 +319,7 @@
         "typeLabel": "类型",
         "typePlaceholder": "选择类型",
         "toolbarMenus": {
-          "time": "耗时分析",
-          "cookie": "Cookie",
-          "assert": "断言结果"
+          "time": "耗时分析"
         }
       },
       "debugModal": {
@@ -342,7 +336,6 @@
         "assertRule": "断言数据校验不通过",
         "apisLabel": "测试接口",
         "caseLabel": "测试用例",
-        "paramsTab": "请求参数",
         "headerTab": "请求头",
         "requestBodyTab": "请求体",
         "debugAction": "调试用例",
@@ -414,10 +407,8 @@
       "requestTabs": {
         "parameters": "请求参数",
         "header": "请求头",
-        "cookie": "Cookie",
         "authentication": "Authorization",
         "parametric": "参数化",
-        "assert": "断言",
         "setting": "设置"
       },
       "errors": {
@@ -446,8 +437,6 @@
       },
       "menus": {
         "time": "耗时分析",
-        "cookie": "Cookie",
-        "assert": "断言结果",
         "define": "定义",
         "generateCode": "代码"
       },

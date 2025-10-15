@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 const panels:{id:string;name:string;key:'general'|'request'|'response'}[] = [
   {
     id: utils.uuid(),
-    name: t('jmsPlugin.functionTestDetailJms.requestHeaders.general'),
+    name: t('common.general'),
     key: 'general'
   },
   {

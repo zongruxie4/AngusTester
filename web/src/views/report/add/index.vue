@@ -423,7 +423,7 @@ onMounted(() => {
                 :createTimeSetting="createTimeSetting"
                 :showPeriodically="!reportTemplate[0].includes('EXEC')" />
             </TabPane>
-            <TabPane key="basic" :tab="t('reportAdd.tabs.basic')">
+            <TabPane key="basic" :tab="t('common.basicInfo')">
               <Basic ref="basicDateRef" :basicInfoSetting="basicInfoSetting" />
             </TabPane>
             <TabPane

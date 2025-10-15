@@ -42,7 +42,6 @@
     "reportDetail": {
       "title": "View Report",
       "tabs": {
-        "basic": "Basic Info",
         "content": "Content",
         "record": "Report Record",
         "activity": "Activity"
@@ -74,7 +73,6 @@
       "descriptionPlaceholder": "Report description, use description to explain the content and purpose of this report, or add links to other resources, maximum 200 characters"
     },
     "tabs": {
-      "basic": "Basic Info",
       "content": "Content"
     },
     "notifications": {
@@ -157,7 +155,6 @@
       "contentHints": "The following is the report output content directory information.",
       "contentTree": {
         "exec": "Execution information",
-        "basic": "Execution basic information",
         "total": "Summary results",
         "sampling": "Sampling number",
         "qps": "Transaction number",
@@ -195,7 +192,6 @@
       "contentHints": "The following is the report output content directory information.",
       "contentTree": {
         "exec": "Execution information",
-        "basic": "Execution basic information",
         "sprint": "Iteration result",
         "log": "Log information",
         "dispatch": "Execution scheduling log",
@@ -228,7 +224,6 @@
       "content": "Content",
       "contentHints": "The following is the report output content directory information.",
       "contentTree": {
-        "basic": "Basic information",
         "user": "User information",
         "date": "Date information",
         "description": "Description",
@@ -255,7 +250,6 @@
       "contentHints": "The following is the report output content directory information.",
       "contentTree": {
         "sprintDetail": "Sprint information",
-        "basic": "Basic information",
         "taskDetail": "Acceptance criteria",
         "meetings": "Meeting record",
         "others": "Other information",
@@ -340,7 +334,6 @@
       "contentHints": "The following is the report output content directory information.",
       "contentTree": {
         "planDetail": "Plan information",
-        "basic": "Basic information",
         "tester": "Test personnel and responsibilities",
         "objective": "Test objective",
         "scope": "Test scope",
@@ -366,7 +359,6 @@
       "content": "Content",
       "contentHints": "The following is the report output content directory information.",
       "contentTree": {
-        "basic": "Basic Information",
         "user": "User Information",
         "date": "Date Information",
         "condition": "Precondition",

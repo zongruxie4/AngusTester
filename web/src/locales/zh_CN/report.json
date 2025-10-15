@@ -43,7 +43,6 @@
     "reportDetail": {
       "title": "查看报告",
       "tabs": {
-        "basic": "基本信息",
         "content": "内容",
         "record": "报告记录",
         "activity": "活动"
@@ -78,7 +77,6 @@
       "descriptionPlaceholder": "报告描述，使用描述解释此报告的内容和目的，或添加其他资源的链接，最长200个字符"
     },
     "tabs": {
-      "basic": "基本信息",
       "content": "内容"
     },
     "notifications": {
@@ -161,7 +159,6 @@
       "contentHints": "以下是报告输出内容目录信息。",
       "contentTree": {
         "exec": "执行信息",
-        "basic": "执行基本信息",
         "sampling": "采样数",
         "qps": "事务数",
         "minmax": "最小/最大/平均",
@@ -198,7 +195,6 @@
       "contentHints": "以下是报告输出内容目录信息。",
       "contentTree": {
         "exec": "执行信息",
-        "basic": "执行基本信息",
         "sprint": "迭代结果",
         "log": "日志信息",
         "dispatch": "执行调度日志",
@@ -234,7 +230,6 @@
       "content": "内容",
       "contentHints": "以下是报告输出内容目录信息。",
       "contentTree": {
-        "basic": "基本信息",
         "user": "人员信息",
         "date": "日期信息",
         "subTask": "子任务",
@@ -260,7 +255,6 @@
       "contentHints": "以下是报告输出内容目录信息。",
       "contentTree": {
         "sprintDetail": "迭代信息",
-        "basic": "基本信息",
         "taskDetail": "验收标准",
         "meetings": "会议记录",
         "others": "其他说明",
@@ -345,7 +339,6 @@
       "contentHints": "以下是报告输出内容目录信息。",
       "contentTree": {
         "planDetail": "测试计划信息",
-        "basic": "基本信息",
         "tester": "测试人员与职责",
         "objective": "测试目标",
         "scope": "测试范围",
@@ -371,7 +364,6 @@
       "content": "内容",
       "contentHints": "以下是报告输出内容目录信息。",
       "contentTree": {
-        "basic": "基本信息",
         "user": "人员信息",
         "date": "日期信息",
         "condition": "前置条件",

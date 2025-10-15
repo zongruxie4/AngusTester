@@ -268,7 +268,7 @@ const timeTexts = [t('chart.max')];
           <span>{{ totalAssertionNum }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          {{ t('xcan_functionTestDetail.assertion') }}（<GroupText :texts="texts" class="text-theme-sub-content" />）
+          {{ t('common.assertion') }}（<GroupText :texts="texts" class="text-theme-sub-content" />）
         </div>
       </div>
 

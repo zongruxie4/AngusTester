@@ -494,7 +494,7 @@ const autoSize = {
         <div class="w-full flex items-start space-x-2.5">
           <div
             class="w-12 flex items-center justify-start transform-gpu translate-y-1 space-x-1 flex-shrink-0 text-theme-title">
-            <span>{{ t('websocketPlugin.uiConfig.websocketConfigs.assertion.title') }}</span>
+            <span>{{ t('common.assertion') }}</span>
             <Tooltip :title="t('websocketPlugin.uiConfig.websocketConfigs.assertion.tooltip')">
               <Icon icon="icon-tishi1" class="tip-icon text-3.5 cursor-pointer" />
             </Tooltip>

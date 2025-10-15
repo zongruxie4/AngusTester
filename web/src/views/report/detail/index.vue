@@ -133,7 +133,7 @@ const activityType = ['REPORT'];
         <TabPane key="createdDate" :tab="t('common.createdDate')">
           <GenerateTime :createTimeSetting="report.createTimeSetting" />
         </TabPane>
-        <TabPane key="basic" :tab="t('reportHome.reportDetail.tabs.basic')">
+        <TabPane key="basic" :tab="t('common.basicInfo')">
           <Basic
             :basicInfoSetting="report.basicInfoSetting"
             :viewType="true"

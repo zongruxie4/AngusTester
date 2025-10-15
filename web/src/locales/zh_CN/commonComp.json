@@ -1184,9 +1184,7 @@
     "pass": "通过",
     "runTime": "运行时间",
     "iterationCount": "迭代数",
-    "requestCount": "请求数",
-    "assertion": "断言",
-    "responseTime": "响应时间"
+    "requestCount": "请求数"
   },
   "xcan_rendezvous": {
     "userCount": "集合用户数",

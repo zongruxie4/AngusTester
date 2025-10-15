@@ -1776,7 +1776,7 @@ provide('selectHandle', closeDrawer);
               </TabPane>
               <TabPane
                 key="cookie"
-                :tab="`${t('service.apis.requestTabs.cookie')}(${cookieCount || 0})`"
+                :tab="`${t('protocol.cookie')}(${cookieCount || 0})`"
                 :forceRender="true">
                 <div class="flex">
                   <RequestCookie
@@ -1824,7 +1824,7 @@ provide('selectHandle', closeDrawer);
               </TabPane>
               <TabPane
                 key="assert"
-                :tab="`${t('service.apis.requestTabs.assert')}(${assertNum})`"
+                :tab="`${t('common.assertionResult')}(${assertNum})`"
                 :forceRender="true">
                 <AssertForm
                   :id="props.id"
@@ -1833,7 +1833,7 @@ provide('selectHandle', closeDrawer);
                   class="px-5"
                   :value="state.assertions" />
               </TabPane>
-              <TabPane key="setting" :tab="t('service.apis.requestTabs.setting')">
+              <TabPane key="setting" :tab="t('common.setting')">
                 <ApiSetting
                   class="px-5"
                   :value="setting"

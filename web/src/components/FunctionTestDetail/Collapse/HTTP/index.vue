@@ -228,7 +228,7 @@ const showBasicInfo = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-        <TabPane key="general" :tab="t('xcan_httpTestDetail.basic')">
+        <TabPane key="general" :tab="t('common.basicInfo')">
           <RequestHeaders :value="httpContent" class="py-3" />
         </TabPane>
         <TabPane key="requestBody" :tab="t('protocol.requestBody')">
@@ -240,7 +240,7 @@ const showBasicInfo = computed(() => {
             :value="httpContent?.content?.response"
             class="py-3" />
         </TabPane>
-        <TabPane key="timeline" :tab="t('xcan_httpTestDetail.timeline')">
+        <TabPane key="timeline" :tab="t('common.timeline')">
           <TimeLine :value="httpContent?.content?.response?.timeline" />
         </TabPane>
         <TabPane key="assertions" :tab="t('common.assertionResult')">

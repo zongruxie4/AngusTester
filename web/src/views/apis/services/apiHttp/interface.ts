@@ -221,11 +221,11 @@ export const menus: Menu[] = [
     value: 'time'
   },
   {
-    name: t('service.apis.menus.cookie'),
+    name: t('protocol.cookie'),
     value: 'cookie'
   },
   {
-    name: t('service.apis.menus.assert'),
+    name: t('common.assertionResult'),
     value: 'assert'
   },
   {

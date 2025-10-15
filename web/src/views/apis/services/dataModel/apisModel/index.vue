@@ -216,22 +216,22 @@ provide('serviceId', props.id);
       size="small">
       <TabPane
         key="general"
-        :tab="t('service.dataModel.generalTab')">
+        :tab="t('common.general')">
         <Genaral ref="generalRef" :dataSource="props.dataSource" />
       </TabPane>
       <TabPane
         key="parameter"
-        :tab="t('service.dataModel.paramsTab')">
+        :tab="t('common.parameters')">
         <Parameters ref="parametersRef" :dataSource="props.dataSource.parameters" />
       </TabPane>
       <TabPane
         key="request"
-        :tab="t('service.dataModel.requestTab')">
+        :tab="t('protocol.request')">
         <RequestBody ref="requestBodyRef" :dataSource="props.dataSource.requestBody" />
       </TabPane>
       <TabPane
         key="response"
-        :tab="t('service.dataModel.responseTab')">
+        :tab="t('protocol.response')">
         <Responses ref="responsesRef" :dataSource="props.dataSource.responses" />
       </TabPane>
     </Tabs>

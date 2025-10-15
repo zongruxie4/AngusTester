@@ -1351,7 +1351,7 @@ defineExpose({
     <Tabs v-model:activeKey="activeTab" size="small">
       <TabPane
         key="parameters"
-        :tab="`${t('service.case.debugModal.paramsTab')}(${queryPathParameter?.length || 0})`"
+        :tab="`${t('protocol.requestParameter')}(${queryPathParameter?.length || 0})`"
         :forceRender="true">
         <ApiParameter
           ref="queryPathRef"
@@ -1365,7 +1365,7 @@ defineExpose({
       </TabPane>
       <TabPane
         key="header"
-        :tab="`${t('service.case.debugModal.headerTab')}(${headerCount || 0})`"
+        :tab="`${t('protocol.requestHeader')}(${headerCount || 0})`"
         :forceRender="true">
         <ApiHeader
           ref="headerRef"
@@ -1394,7 +1394,7 @@ defineExpose({
       <TabPane key="body" :forceRender="false">
         <template #tab>
           <Badge v-show="hasBodyContent" status="success" />
-          <span>{{ t('service.case.debugModal.requestBodyTab') }}</span>
+          <span>{{ t('protocol.requestBody') }}</span>
         </template>
         <ApiBody
           ref="bodyRef"
@@ -1418,20 +1418,9 @@ defineExpose({
           @change="changeAuthentication"
           @rendered="rendered('apiAuthencation')" />
       </TabPane>
-      <!-- <TabPane
-        v-if="!!caseId"
-        key="parametric"
-        tab="参数化">
-        <parameterization
-          :datasetActionOnEOF="datasetActionOnEOF"
-          :datasetSharingMode="datasetSharingMode"
-          :targetId="caseId"
-          targetType="API_CASE"
-          @targetInfoChange="targetInfoChange" />
-      </TabPane> -->
     </Tabs>
     <div v-show="assertionsParam.length || !props.viewType" class="mt-20">
-      <div class="border-b mb-3 text-3">{{ t('service.case.debugModal.assertTab') }}</div>
+      <div class="border-b mb-3 text-3">{{ t('common.assertion') }}</div>
       <ApiAssert
         :id="caseInfo.apisId"
         ref="assertRef"

@@ -209,7 +209,6 @@
       },
       "httpConfigs": {
         "title": "HTTP配置",
-        "assertions": "断言",
         "parameters": "参数",
         "serverEndpoint": "服务器端点",
         "docInfo": {
@@ -268,8 +267,7 @@
         },
         "tabs": {
           "authorization": "Authorization",
-          "parameterization": "参数化",
-          "assertion": "断言"
+          "parameterization": "参数化"
         },
         "popover": {
           "notes": "注意事项",
@@ -553,11 +551,6 @@
       }
     },
     "functionTestDetail": {
-      "basicInfo": {
-        "iteration": "迭代数",
-        "responseTime": "响应时间",
-        "assertion": "断言"
-      },
       "collapse": {
         "iteration": "第{iteration}次迭代"
       },
@@ -663,9 +656,7 @@
         "parameterTypePlaceholder": "输入或选择参数类型（可选）",
         "inputOutputPlaceholder": "输入输出",
         "inputOutputTooltip": "输入输出值为\"IN\"、\"INOUT\"时，参数值必填",
-        "parameterValuePlaceholder": "参数值（可选。注：输入输出值为\"IN\"、\"INOUT\"时，参数值必填）",
-        "parametric": "参数化",
-        "assertions": "断言"
+        "parameterValuePlaceholder": "参数值（可选。注：输入输出值为\"IN\"、\"INOUT\"时，参数值必填）"
       },
       "assertionForm": {
         "nameDuplicate": "名称重复",
@@ -785,11 +776,6 @@
       "title": "导出脚本"
     },
     "functionTestDetail": {
-      "basicInfo": {
-        "iteration": "迭代数",
-        "responseTime": "响应时间",
-        "assertion": "断言"
-      },
       "collapse": {
         "iteration": "第{iteration}次迭代"
       }
@@ -1594,7 +1580,6 @@
       "title": "参数化"
     },
     "assertion": {
-      "title": "断言",
       "tooltip": "断言接收消息"
     },
     "selectApiModal": {
@@ -1625,7 +1610,6 @@
         "encodingPlaceholder": "发送信息编码"
       },
       "assertion": {
-        "title": "断言",
         "tooltip": "断言接收消息"
       }
     }
