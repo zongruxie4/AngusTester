@@ -90,7 +90,7 @@
       "startSuccess": "Started successfully",
       "stopSuccess": "Stopped successfully",
       "deleteSuccess": "Deleted successfully",
-      "deleteConfirm": "Are you sure to delete 「{name}」?",
+      "deleteConfirm": "Are you sure to delete 「{name}」?"
     },
     "messages": {
       "totalRecords": "Total {total} records, page {current} / {totalPage}",
