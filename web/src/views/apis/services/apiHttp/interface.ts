@@ -209,11 +209,11 @@ export interface Menu {
 
 export const menus: Menu[] = [
   {
-    name: t('service.apis.menus.request'),
+    name: t('protocol.request'),
     value: 'request'
   },
   {
-    name: t('service.apis.menus.response'),
+    name: t('protocol.response'),
     value: 'response'
   },
   {
@@ -228,10 +228,6 @@ export const menus: Menu[] = [
     name: t('service.apis.menus.assert'),
     value: 'assert'
   },
-  // {
-  //   name: 'service.apis.menus.define',
-  //   value: 'define'
-  // },
   {
     name: t('service.apis.menus.generateCode'),
     value: 'generateCode'

@@ -33,7 +33,7 @@ defineExpose({
 </script>
 <template>
   <Tabs size="small">
-    <TabPane key="query" :tab="t('service.sidebar.batchModifyApi.requestParams')">
+    <TabPane key="query" :tab="t('protocol.requestParameter')">
       <RequestParams
         :value="queryData"
         @change="changeQueryData" />

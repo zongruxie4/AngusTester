@@ -1499,7 +1499,7 @@ defineExpose({
               + 'ms') }}</span>
           </div>
           <div class="flex items-center flex-nowrap whitespace-nowrap">
-            <span class="mr-1">{{ t('service.case.debugModal.respSize') }}:</span>
+            <span class="mr-1">{{ t('protocol.responseSize') }}:</span>
             <span class>{{ isNaN(Number(responseState?.size)) ? responseState?.size :
               apiUtils.formatBytes(Number(responseState?.size)) }}</span>
           </div>

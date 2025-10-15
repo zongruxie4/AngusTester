@@ -1269,9 +1269,6 @@
     "minutes": "分钟",
     "hours": "小时",
     "timeConsuming": "耗时",
-    "basic": "基本",
-    "response": "响应",
-    "timeline": "时间线",
     "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
     "executeConfig": "执行配置 > 插件配置",
     "closeIgnoreAssertion": "中关闭忽略断言选项。"
@@ -1428,7 +1425,6 @@
     "emlFile": "eml文件",
     "ignoreAssertionsMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
     "closeIgnoreAssertions": "中关闭忽略断言选项。",
-    "requestParameter": "请求参数",
     "basedOnEOL": "基于EOL",
     "basedOnEOM": "基于EOM",
     "basedOnLengthPrefix": "基于长度前缀",

@@ -173,7 +173,6 @@
         "indicatorChart": "采样指标时序图",
         "tps": "吞吐量",
         "thread0": "并发数",
-        "response": "响应时间",
         "error0": "错误",
         "nodeTips": "有应用节点时展示应用节点资源数据、没有时展示执行节点资源数据，多个节点时只展示第一个节点数据。",
         "superposition": "叠加分析",

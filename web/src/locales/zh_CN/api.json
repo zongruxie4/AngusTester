@@ -323,8 +323,6 @@
         "typeLabel": "类型",
         "typePlaceholder": "选择类型",
         "toolbarMenus": {
-          "request": "基本",
-          "response": "响应",
           "time": "耗时分析",
           "cookie": "Cookie",
           "assert": "断言结果"
@@ -447,8 +445,6 @@
         "serializationDescription_later": "定义的UR模板的子集。支持OAS3 Schema数据类型包括：string、boolean、integer、number、object、array。"
       },
       "menus": {
-        "request": "基本",
-        "response": "响应",
         "time": "耗时分析",
         "cookie": "Cookie",
         "assert": "断言结果",
@@ -1900,8 +1896,6 @@
           "raw": "原生格式",
           "preview": "预览"
         },
-        "requestInfo": "请求",
-        "responseInfo": "响应",
         "hints": "Mock接口调用日志，每秒最多3条，每接口保留最近100条。开启/关闭日志收集请到\"设置\"->\"记录请求日志\"，开启后会影响性能。"
       },
       "log": {

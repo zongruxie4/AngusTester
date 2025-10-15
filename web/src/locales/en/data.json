@@ -102,8 +102,6 @@
           "requestMethodPlaceholder": "Method",
           "requestUrl": "Request URL",
           "requestUrlPlaceholder": "Path, starting with \" / \"",
-          "requestParameters": "Parameters",
-          "requestCookie": "Cookies",
           "requestAuthorization": "Authorization",
           "requestBodyPlaceholder": "Please enter the request body content",
           "extractConfig": "Extract Configuration",

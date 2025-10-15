@@ -554,7 +554,6 @@
     "functionTestDetail": {
       "basicInfo": {
         "iteration": "Iterations",
-        "request": "Requests",
         "responseTime": "Response Time",
         "assertion": "Assertions"
       },
@@ -562,10 +561,6 @@
         "iteration": "Iteration {iteration}"
       },
       "http": {
-        "headers": {
-          "request": "Request Headers",
-          "response": "Response Headers"
-        },
         "timeline": {
           "dnsLookup": "DNS Lookup",
           "tcpConnection": "TCP Connection",
@@ -695,7 +690,6 @@
       }
     },
     "FunctionTestDetailJdbc": {
-      "requestParameters": "Request Parameters",
       "assertionResults": "Assertion Results",
       "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please",
       "executeConfig": "Execute Configuration > Plugin Configuration",
@@ -801,7 +795,6 @@
     "functionTestDetail": {
       "basicInfo": {
         "iteration": "Iterations",
-        "request": "Requests",
         "responseTime": "Response Time"
       },
       "collapse": {
@@ -1773,7 +1766,6 @@
     },
     "pushThirdStoreConfig": {
       "batchRows": "Batch Rows",
-      "requestParams": "Request Parameters",
       "authentication": "Authentication",
       "token": "Token",
       "basicAuth": "Basic Auth",

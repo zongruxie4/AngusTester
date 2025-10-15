@@ -703,6 +703,7 @@
     "cookie": "Cookie",
     "duration": "耗时",
     "queryParameter": "查询参数",
+    "requestParameter": "请求参数",
     "requestMethod": "请求方法",
     "requestHeader": "请求头",
     "requestBody": "请求体",

@@ -238,7 +238,7 @@ defineExpose({
 const requestLocationOptions = [
   {
     value: '1',
-    message: t('xcan_execSettingForm.requestParameters')
+    message: t('protocol.requestParameter')
   },
   {
     value: '2',

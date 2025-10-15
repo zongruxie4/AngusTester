@@ -957,7 +957,7 @@ const autoSize = {
                         <TabPane key="query">
                           <template #tab>
                             <Badge size="small" :count="queryErrorNumMap.get(id)">
-                              <div>{{ t('websocketPlugin.parameters.requestParameters') }}</div>
+                              <div>{{ t('protocol.requestParameter') }}</div>
                             </Badge>
                           </template>
                           <div class="space-y-2.5">

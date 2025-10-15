@@ -123,10 +123,10 @@ const failMessage = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-        <TabPane key="general" :tab="t('smtpPlugin.functionTestDetailSmtp.tabs.request')">
+        <TabPane key="general" :tab="t('protocol.request')">
           <RequestHeaders :value="smtpContent" class="py-3" />
         </TabPane>
-        <TabPane key="response" :tab="t('smtpPlugin.functionTestDetailSmtp.tabs.response')">
+        <TabPane key="response" :tab="t('protocol.response')">
           <NoData
             v-if="!smtpContent?.content?.response?.data"
             size="small"

@@ -207,7 +207,7 @@ const isUploadFile = (httpContent) => {
         <TabPane key="request">
           <template #tab>
             <div>
-              <span>{{ t('xcan_scenarioDebugResult.request') }}</span>
+              <span>{{ t('protocol.request') }}</span>
               <span class="ml-0.75">({{ requestDataSize(httpContent) }})</span>
             </div>
           </template>
@@ -216,7 +216,7 @@ const isUploadFile = (httpContent) => {
         <TabPane key="response">
           <template #tab>
             <div>
-              <span>{{ t('xcan_scenarioDebugResult.response') }}</span>
+              <span>{{ t('protocol.response') }}</span>
               <span class="ml-0.75">({{ responseSize(httpContent) }})</span>
             </div>
           </template>

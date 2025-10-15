@@ -155,7 +155,7 @@ const showBasicInfo = (httpContent) => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-        <TabPane key="general" :tab="t('xcan_scenarioDebugResult.requestParameter')">
+        <TabPane key="general" :tab="t('protocol.requestParameter')">
           <RequestParameter
             :type="queryType(httpContent)"
             :value="httpContent"

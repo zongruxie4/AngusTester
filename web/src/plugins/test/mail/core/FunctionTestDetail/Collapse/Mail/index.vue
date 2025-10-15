@@ -144,10 +144,10 @@ const failMessage = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-        <TabPane key="general" :tab="`${t('mailPlugin.functionTestDetailMail.request')} (${utils.formatBytes(httpContent?.content?.request0?.size)})`">
+        <TabPane key="general" :tab="`${t('protocol.request')} (${utils.formatBytes(httpContent?.content?.request0?.size)})`">
           <RequestHeaders :value="httpContent" class="py-3" />
         </TabPane>
-        <TabPane key="responses" :tab="`${t('mailPlugin.functionTestDetailMail.response')} (${bodySize})`">
+        <TabPane key="responses" :tab="`${t('protocol.response')} (${bodySize})`">
           <Response :value="httpContent" class="py-3" />
         </TabPane>
       </Tabs>

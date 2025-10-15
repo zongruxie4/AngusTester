@@ -318,8 +318,6 @@
         "typeLabel": "Type",
         "typePlaceholder": "Select type",
         "toolbarMenus": {
-          "request": "Basic",
-          "response": "Response",
           "time": "Duration Analysis",
           "cookie": "Cookie",
           "assert": "Assertion Results"
@@ -343,7 +341,6 @@
         "headerTab": "Request Header",
         "requestBodyTab": "Request Body",
         "assertTab": "Assertion",
-        "respSize": "Size",
         "debugAction": "Debug Case",
         "descriptionPlaceholder": "Enter case description, up to 800 characters"
       }
@@ -444,8 +441,6 @@
         "serializationDescription_later": ". Supports OAS3 Schema data types including: string, boolean, integer, number, object, array."
       },
       "menus": {
-        "request": "Basic",
-        "response": "Response",
         "time": "Duration Analysis",
         "cookie": "Cookie",
         "assert": "Assertion Results",
@@ -1895,8 +1890,6 @@
           "raw": "Raw",
           "preview": "Preview"
         },
-        "requestInfo": "Request",
-        "responseInfo": "Response",
         "hints": "Mock interface call logs, max 3 per second, 100 records per interface. Enable/disable logging in \"Settings\"->\"Send request log\". Enabling may affect performance."
       },
       "log": {

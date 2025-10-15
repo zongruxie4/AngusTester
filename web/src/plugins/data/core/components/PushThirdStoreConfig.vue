@@ -195,7 +195,7 @@ defineExpose({
     </div>
     <div class="flex flex-col ">
       <div class="mt-2 flex items-center">
-        {{ t('genDataPlugin.pushThirdStoreConfig.requestParams') }}
+        {{ t('protocol.requestParameter') }}
         <template v-if="formState.apisSecurity.length <= 9">
           <Icon
             icon="icon-tianjia"

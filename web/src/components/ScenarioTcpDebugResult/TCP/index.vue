@@ -200,7 +200,7 @@ const showBasicInfo = computed(() => {
         <TabPane key="request">
           <template #tab>
             <div>
-              <span>{{ t('xcan_scenarioDebugResult.request') }}</span>
+              <span>{{ t('protocol.request') }}</span>
               <span class="ml-0.75">({{ requestDataSize }})</span>
             </div>
           </template>
@@ -209,7 +209,7 @@ const showBasicInfo = computed(() => {
         <TabPane key="response">
           <template #tab>
             <div>
-              <span>{{ t('xcan_scenarioDebugResult.response') }}</span>
+              <span>{{ t('protocol.response') }}</span>
               <span class="ml-0.75">({{ responseSize }})</span>
             </div>
           </template>

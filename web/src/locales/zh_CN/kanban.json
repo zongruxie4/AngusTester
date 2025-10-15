@@ -67,7 +67,6 @@
       "contributionRanking": "贡献排行榜",
       "rankingDescription": "用例、接口、任务、场景、脚本、参数数据、报告和Mock接口汇总排名。",
       "categories": {
-        "response": "响应",
         "pushback": "回推"
       },
       "reportCategories": {

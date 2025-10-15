@@ -555,7 +555,6 @@
     "functionTestDetail": {
       "basicInfo": {
         "iteration": "迭代数",
-        "request": "请求数",
         "responseTime": "响应时间",
         "assertion": "断言"
       },
@@ -788,7 +787,6 @@
     "functionTestDetail": {
       "basicInfo": {
         "iteration": "迭代数",
-        "request": "请求数",
         "responseTime": "响应时间",
         "assertion": "断言"
       },
@@ -1331,10 +1329,6 @@
         "emlFile": "eml文件",
         "attachment": "附件"
       },
-      "tabs": {
-        "request": "请求",
-        "response": "响应"
-      },
       "requestHeaders": {
         "headers": "请求头",
         "content": "请求内容"
@@ -1575,10 +1569,6 @@
         "basedOnEOL": "基于EOL",
         "basedOnEOM": "基于EOM",
         "basedOnLengthPrefix": "基于长度前缀"
-      },
-      "tabs": {
-        "request": "请求",
-        "response": "响应"
       }
     },
     "form": {
@@ -1773,7 +1763,6 @@
     },
     "pushThirdStoreConfig": {
       "batchRows": "批量行数",
-      "requestParams": "请求参数",
       "authentication": "认证",
       "token": "令牌",
       "basicAuth": "Basic Auth",

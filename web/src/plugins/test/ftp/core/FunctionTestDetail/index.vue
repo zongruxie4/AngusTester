@@ -207,7 +207,7 @@ const timeTexts = computed(() => [
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 206, 92, 100%);"></em>
           <span>{{ planRequestNum }}</span>
         </div>
-        <div class="exec-basic-data-card-title">{{ t('ftpPlugin.functionTestDetail.basicInfo.request') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('protocol.request') }}</div>
       </div>
 
       <div

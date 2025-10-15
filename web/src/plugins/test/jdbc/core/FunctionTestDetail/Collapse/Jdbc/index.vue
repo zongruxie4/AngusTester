@@ -118,7 +118,7 @@ const showBasicInfo = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-        <TabPane key="general" :tab="t('jdbcPlugin.FunctionTestDetailJdbc.requestParameters')">
+        <TabPane key="general" :tab="t('protocol.requestParameter')">
           <RequestParameter
             :type="queryType"
             :value="httpContent"

@@ -163,7 +163,7 @@ watch(selectedRecord, (newRecord) => {
       </TabPane>
       <TabPane
         :key="1"
-        :tab="t('mock.detail.requestRecord.requestInfo')"
+        :tab="t('protocol.request')"
         class="flex-1 flex flex-col font-semibold"
         forceRender>
         <template v-if="detail">
@@ -194,7 +194,7 @@ watch(selectedRecord, (newRecord) => {
       </TabPane>
       <TabPane
         :key="2"
-        :tab="t('mock.detail.requestRecord.responseInfo')"
+        :tab="t('protocol.response')"
         class="flex-1 flex flex-col font-semibold"
         forceRender>
         <template v-if="detail">

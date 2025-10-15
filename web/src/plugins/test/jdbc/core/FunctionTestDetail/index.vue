@@ -221,7 +221,7 @@ const timeTexts = computed(() => [
         <div class="flex items-center text-text-title text-4 font-semibold" style="color:rgba(3, 206, 92, 100%);">
           <span>{{ updateCount }}</span>
         </div>
-        <div class="exec-basic-data-card-title">{{ t('httpPlugin.functionTestDetail.basicInfo.request') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('protocol.request') }}</div>
       </div>
 
       <div

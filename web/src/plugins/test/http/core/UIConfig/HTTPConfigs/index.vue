@@ -1295,7 +1295,7 @@ const overlayStyle = {
               size="small"
               :count="queryPathErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.requestParams') }}</div>
+                <div>{{ t('protocol.requestParameter') }}</div>
                 <div class="flex items-center space-x-0.5">
                   <em>(</em>
                   <span>{{ queryPathNum }}</span>

@@ -170,7 +170,6 @@
         "indicatorChart": "Sampling index time series chart",
         "tps": "Throughput",
         "thread0": "Concurrency",
-        "response": "Response time",
         "error0": "Error",
         "nodeTips": "When there is an application node, the application node resource data is displayed, and when there is no application node, the execution node resource data is displayed. When there are multiple nodes, only the data of the first node is displayed.",
         "superposition": "Superposition analysis",

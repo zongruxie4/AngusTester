@@ -607,7 +607,7 @@ defineExpose({
             size="small"
             :count="queryPathErrorNum">
             <div class="flex items-center space-x-0.5">
-              <div>{{ t('variable.detail.httpVariable.httpConfigs.requestParameters') }}</div>
+              <div>{{ t('protocol.requestParameter') }}</div>
               <div class="flex items-center space-x-0.5">
                 <em>(</em>
                 <span>{{ queryPathNum }}</span>
@@ -658,7 +658,7 @@ defineExpose({
             size="small"
             :count="cookieErrorNum">
             <div class="flex items-center space-x-0.5">
-              <div>{{ t('variable.detail.httpVariable.httpConfigs.requestCookie') }}</div>
+              <div>{{ t('protocol.cookie') }}</div>
               <div class="flex items-center space-x-0.5">
                 <em>(</em>
                 <span>{{ cookieNum }}</span>

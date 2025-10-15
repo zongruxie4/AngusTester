@@ -702,6 +702,7 @@
     "cookie": "Cookie",
     "duration": "Duration",
     "queryParameter": "Query Parameters",
+    "requestParameter": "Request Parameters",
     "requestMethod": "Request Method",
     "requestHeader": "Request Headers",
     "requestBody": "Request Body",

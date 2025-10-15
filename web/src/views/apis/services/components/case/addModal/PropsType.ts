@@ -46,11 +46,11 @@ export type FormState = {
 
 export const ToolBarMenus = [
   {
-    name: t('service.case.addModal.toolbarMenus.request'),
+    name: t('protocol.request'),
     value: 'request'
   },
   {
-    name: t('service.case.addModal.toolbarMenus.response'),
+    name: t('protocol.response'),
     value: 'response'
   },
   {
