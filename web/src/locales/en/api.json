@@ -1798,6 +1798,7 @@
           "linkApiSuccess": "Link API added successfully",
           "importDemoSuccess": "Import demo successfully",
           "refreshInstanceSuccess": "Refresh instance API successfully",
+          "noResponseData": "No response data ~",
           "nameDuplicate": "Name duplicate",
           "dataError": "Data error, please check and correct before saving.",
           "proxyNotConnected": "Proxy not connected, please check proxy configuration",

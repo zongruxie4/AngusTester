@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined
 });
 
-const DebugApis = defineAsyncComponent(() => import('./DebugApis.vue'));
+const DebugApis = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/DebugApis.vue'));
 const SelectApiModal = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/SelectApiModal.vue'));
 const MatchForm = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/match/index.vue'));
 const ContentForm = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/index.vue'));
@@ -64,7 +64,6 @@ const proxyOptObj = ref();
 const serviceUrlOptions = ref<{ label: string; value: string; }[]>([]);
 
 // ---- ScrollList start ----
-
 const scrollRef = ref();
 const urlFormRef = ref();
 const matchFormRefs = ref<any[]>([]);

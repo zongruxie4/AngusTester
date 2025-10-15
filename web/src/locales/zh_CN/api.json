@@ -1805,6 +1805,7 @@
           "linkApiSuccess": "关联接口添加成功",
           "importDemoSuccess": "导入示例成功",
           "refreshInstanceSuccess": "刷新实例接口成功",
+          "noResponseData": "无响应数据~",
           "nameDuplicate": "名称重复",
           "dataError": "数据有误，请检查并更正后再保存。",
           "proxyNotConnected": "代理未链接， 请检查代理配置",

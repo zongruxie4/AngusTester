@@ -587,7 +587,7 @@ const securityFormRef = ref();
     <template #title>
       <div class="flex items-start">
         <span class="text-3.5 flex-none font-semibold">{{ t('mock.detail.cors.title') }}</span>
-        <Hints class="mt-2.75 ml-2" :text="t('common.description')" />
+        <Hints class="mt-2.75 ml-2" :text="t('mock.detail.cors.description')" />
       </div>
     </template>
     <Form

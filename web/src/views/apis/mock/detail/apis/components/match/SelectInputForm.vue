@@ -314,7 +314,7 @@ const placeholderMap = computed(() => {
     } else if (condition === FullMatchCondition.REG_MATCH) {
       map[id] = t('common.regexExpression');
     } else {
-      map[id] = t('common.placeholders.enterParameterValue');
+      map[id] = t('common.placeholders.inputParameterValue');
     }
   }
 
@@ -395,7 +395,7 @@ defineExpose({
             mode="combination"
             style="flex: 0 0 calc((100% - 200px) * 2/5);"
             trim
-            :placeholder="t('common.placeholders.enterParameterName')"
+            :placeholder="t('common.placeholders.inputParameterName')"
             @change="handleNameChange($event,item)">
             <template #option="record">
               <div class="truncate" :title="record._value+'-'+record.message">{{ record._value }} - {{ record.message }}</div>
