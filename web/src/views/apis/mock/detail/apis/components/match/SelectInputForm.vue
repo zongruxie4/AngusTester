@@ -354,7 +354,7 @@ const excludes = ({ value }: { value: any }) => {
  * <p>Field name mapping for select components</p>
  * <p>Defines how select options map to data properties</p>
  */
-// const fieldNames = { label: '_value', value: 'id' };
+const fieldNames = { label: 'value', value: 'value' };
 
 /**
  * <p>Input properties configuration</p>
