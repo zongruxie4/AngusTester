@@ -1,17 +1,37 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, onMounted, ref, watch, type Ref } from 'vue';
 import { Input, Modal, notification, Select, SelectApisTable } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import qs from 'qs';
 import { services } from '@/api/tester';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
+// Lazy-load heavy sub components to reduce initial bundle size
+const AddOrModifyParams = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/AddOrModifyParams.vue'));
+const EnabledOrdDelParams = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/EnableOrDelParams.vue'));
+const ModifyAuth = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/ModifyAuth.vue'));
+const ModifyServer = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/ModifyServer.vue'));
+const RefVariable = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/RefVariable.vue'));
+const RefDataset = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/RefDataset.vue'));
+
+// Enum for modification scope
+enum ModifyScope {
+  ALL = 'ALL',
+  SELECTED_APIS = 'SELECTED_APIS',
+  MATCH_APIS = 'MATCH_APIS'
+}
+
+// Component props definition
 interface Props {
   visible: boolean;
   serviceId: string;
-  type: 'batchAddParams' | 'batchModifyParams' | 'batchDelParams'| 'batchEnabledParams'| 'batchDisabledParams'| 'batchModifyAuth' | 'batchModifyServer' | 'batchLinkVariable' | 'batchDelVariable' | 'batchLinkDataSet'| 'batchDelDataSet',
+  type: 'batchAddParams' | 'batchModifyParams' | 'batchDelParams'
+    | 'batchEnabledParams'| 'batchDisabledParams'| 'batchModifyAuth'
+    | 'batchModifyServer' | 'batchLinkVariable' | 'batchDelVariable'
+    | 'batchLinkDataSet'| 'batchDelDataSet',
   title: string;
   projectId: string;
 }
@@ -23,9 +43,13 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: '',
   type: 'batchAddParams'
 });
+
 const { t } = useI18n();
+
+// Emits contract
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok'):void;}>();
 
+// Refs to access child component methods
 const addOrModifyParamsRef = ref();
 const enableOrDelParamsRef = ref();
 const modifyAuthRef = ref();
@@ -33,64 +57,59 @@ const modifyServerRef = ref();
 const refVariableRef = ref();
 const refDatasetRef = ref();
 
-const modifyScopeOpt = ref([{
-  value: 'ALL',
-  label: t('service.sidebar.batchModifyModal.modifyScope_all')
-}, {
-  value: 'SELECTED_APIS',
-  label: t('service.sidebar.batchModifyModal.modifyScope_select')
-}, {
-  value: 'MATCH_APIS',
-  label: t('service.sidebar.batchModifyModal.modifyScope_match')
-}]);
+// Options for modification scope radio group
+const modifyScopeOpt = ref([
+  {
+    value: ModifyScope.ALL,
+    label: t('service.sidebar.batchModifyModal.modifyScope_all')
+  },
+  {
+    value: ModifyScope.SELECTED_APIS,
+    label: t('service.sidebar.batchModifyModal.modifyScope_select')
+  },
+  {
+    value: ModifyScope.MATCH_APIS,
+    label: t('service.sidebar.batchModifyModal.modifyScope_match')
+  }
+]);
 
-const scope = ref('ALL');
-const selectedApisIds = ref([]);
-const matchMethod = ref();
-const matchEndpointRegex = ref();
-const filterTags = ref([]);
+// UI state
+const scope: Ref<ModifyScope> = ref(ModifyScope.ALL);
+const selectedApisIds: Ref<string[]> = ref([]);
+const matchMethod: Ref<string | undefined> = ref();
+const matchEndpointRegex: Ref<string | undefined> = ref();
+const filterTags: Ref<string[]> = ref([]);
 
-const AddOrModifyParams = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/AddOrModifyParams.vue'));
-const EnabledOrdDelParams = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/EnableOrDelParams.vue'));
-const ModifyAuth = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/ModifyAuth.vue'));
-const ModifyServer = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/ModifyServer.vue'));
-const RefVariable = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/RefVariable.vue'));
-const RefDataset = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/RefDataset.vue'));
-
+// Handle selection changes from SelectApisTable
 const handleChangeSelectApis = (ids: string[]) => {
   selectedApisIds.value = ids || [];
 };
 
-onMounted(() => {
-  watch(() => props.visible, (newValue) => {
-    if (newValue) {
-      scope.value = 'ALL';
-      selectedApisIds.value = [];
-      matchMethod.value = undefined;
-      matchEndpointRegex.value = undefined;
-    }
-  }, {
-    immediate: true
-  });
-});
-
+// Close modal
 const cancel = () => {
   emits('update:visible', false);
 };
 
+// Confirm handler for modal footer
 const ok = () => {
-  if (scope.value === 'MATCH_APIS') {
-    if (!matchMethod.value && !matchEndpointRegex.value && !filterTags.value?.length) {
+  // Validate scope-related inputs before submitting
+  if (scope.value === ModifyScope.MATCH_APIS) {
+    const noMatchMethod = !matchMethod.value;
+    const noRegex = !matchEndpointRegex.value;
+    const noTags = !filterTags.value?.length;
+    if (noMatchMethod && noRegex && noTags) {
       notification.error(t('service.sidebar.batchModifyModal.matchMethodTip'));
       return;
     }
   }
-  if (scope.value === 'SELECTED_APIS') {
-    if (!selectedApisIds.value) {
+  if (scope.value === ModifyScope.SELECTED_APIS) {
+    if (!selectedApisIds.value?.length) {
       notification.error(t('service.sidebar.batchModifyModal.selectedApisTip'));
       return;
     }
   }
+
+  // Dispatch to specific action by type
   switch (props.type) {
     case 'batchAddParams':
       addParams();
@@ -128,28 +147,24 @@ const ok = () => {
   }
 };
 
-const getConfig = () => {
-  let queryParametersMap = {};
-  if (scope.value === 'MATCH_APIS') {
-    queryParametersMap = {
+// Build query string config based on current scope and filters
+const getConfig = (): string => {
+  const base: Record<string, unknown> = { scope: scope.value };
+
+  if (scope.value === ModifyScope.MATCH_APIS) {
+    Object.assign(base, {
       matchMethod: matchMethod.value,
       matchEndpointRegex: matchEndpointRegex.value,
-      scope: scope.value,
       filterTags: filterTags.value
-    };
-  } else if (scope.value === 'SELECTED_APIS') {
-    queryParametersMap = {
-      scope: scope.value,
-      selectedApisIds: selectedApisIds.value
-    };
-  } else {
-    queryParametersMap = {
-      scope: scope.value
-    };
+    });
+  } else if (scope.value === ModifyScope.SELECTED_APIS) {
+    Object.assign(base, { selectedApisIds: selectedApisIds.value });
   }
-  return qs.stringify(queryParametersMap, { indices: false });
+
+  return qs.stringify(base, { indices: false });
 };
 
+// Batch add parameters
 const addParams = async () => {
   const config = getConfig();
   const parameters = addOrModifyParamsRef.value.getData();
@@ -165,6 +180,7 @@ const addParams = async () => {
   cancel();
 };
 
+// Batch modify parameters
 const modifyParams = async () => {
   const config = getConfig();
   const parameters = addOrModifyParamsRef.value.getData();
@@ -180,6 +196,7 @@ const modifyParams = async () => {
   cancel();
 };
 
+// Batch delete parameters
 const delParams = async () => {
   const config = getConfig();
   const parameters = enableOrDelParamsRef.value.getData();
@@ -187,9 +204,7 @@ const delParams = async () => {
     cancel();
     return;
   }
-  const [error] = await services.batchDeleteParams(props.serviceId, config, {
-    names: parameters
-  });
+  const [error] = await services.batchDeleteParams(props.serviceId, config, { names: parameters });
   if (error) {
     return;
   }
@@ -197,6 +212,7 @@ const delParams = async () => {
   cancel();
 };
 
+// Batch enable parameters
 const enabledParams = async () => {
   const config = getConfig();
   const parameters = enableOrDelParamsRef.value.getData();
@@ -204,10 +220,7 @@ const enabledParams = async () => {
     cancel();
     return;
   }
-  const [error] = await services.batchToggleEnabledParams(props.serviceId, config, {
-    enabled: true,
-    names: parameters
-  });
+  const [error] = await services.batchToggleEnabledParams(props.serviceId, config, { enabled: true, names: parameters });
   if (error) {
     return;
   }
@@ -215,6 +228,7 @@ const enabledParams = async () => {
   cancel();
 };
 
+// Batch disable parameters
 const disabledParams = async () => {
   const config = getConfig();
   const parameters = enableOrDelParamsRef.value.getData();
@@ -222,10 +236,7 @@ const disabledParams = async () => {
     cancel();
     return;
   }
-  const [error] = await services.batchToggleEnabledParams(props.serviceId, config, {
-    enabled: false,
-    names: parameters
-  });
+  const [error] = await services.batchToggleEnabledParams(props.serviceId, config, { enabled: false, names: parameters });
   if (error) {
     return;
   }
@@ -233,6 +244,7 @@ const disabledParams = async () => {
   cancel();
 };
 
+// Batch update authentication
 const modifyAuth = async () => {
   const config = getConfig();
   const parameters = modifyAuthRef.value.getData();
@@ -244,6 +256,7 @@ const modifyAuth = async () => {
   cancel();
 };
 
+// Batch update server info
 const modifyServer = async () => {
   const config = getConfig();
   const parameters = modifyServerRef.value.getData();
@@ -258,6 +271,7 @@ const modifyServer = async () => {
   cancel();
 };
 
+// Batch reference variables
 const referenceVariable = async () => {
   const config = getConfig();
   const parameters = refVariableRef.value.getData();
@@ -265,9 +279,7 @@ const referenceVariable = async () => {
     notification.error(t('service.sidebar.batchModifyModal.referenceVariableTip'));
     return;
   }
-  const [error] = await services.batchUpdateReferenceVariable(props.serviceId, config, {
-    names: parameters
-  });
+  const [error] = await services.batchUpdateReferenceVariable(props.serviceId, config, { names: parameters });
   if (error) {
     return;
   }
@@ -275,6 +287,7 @@ const referenceVariable = async () => {
   cancel();
 };
 
+// Batch reference datasets
 const referenceDataset = async () => {
   const config = getConfig();
   const parameters = refDatasetRef.value.getData();
@@ -282,9 +295,7 @@ const referenceDataset = async () => {
     notification.error(t('service.sidebar.batchModifyModal.referenceDatasetTip'));
     return;
   }
-  const [error] = await services.batchAddReferenceDataset(props.serviceId, config, {
-    names: parameters
-  });
+  const [error] = await services.batchAddReferenceDataset(props.serviceId, config, { names: parameters });
   if (error) {
     return;
   }
@@ -292,6 +303,7 @@ const referenceDataset = async () => {
   cancel();
 };
 
+// Batch delete variable references
 const delReferenceVariable = async () => {
   const config = getConfig();
   const parameters = refVariableRef.value.getData();
@@ -299,9 +311,7 @@ const delReferenceVariable = async () => {
     notification.error(t('service.sidebar.batchModifyModal.delReferenceVariableTip'));
     return;
   }
-  const [error] = await services.batchDeleteReferenceVariable(props.serviceId, config, {
-    names: parameters
-  });
+  const [error] = await services.batchDeleteReferenceVariable(props.serviceId, config, { names: parameters });
   if (error) {
     return;
   }
@@ -309,6 +319,7 @@ const delReferenceVariable = async () => {
   cancel();
 };
 
+// Batch delete dataset references
 const delReferenceDataset = async () => {
   const config = getConfig();
   const parameters = refDatasetRef.value.getData();
@@ -316,9 +327,7 @@ const delReferenceDataset = async () => {
     notification.error(t('service.sidebar.batchModifyModal.delReferenceDatasetTip'));
     return;
   }
-  const [error] = await services.batchDeleteReferenceDataset(props.serviceId, config, {
-    names: parameters
-  });
+  const [error] = await services.batchDeleteReferenceDataset(props.serviceId, config, { names: parameters });
   if (error) {
     return;
   }
@@ -326,6 +335,18 @@ const delReferenceDataset = async () => {
   cancel();
 };
 
+// Reset state when modal opens
+onMounted(() => {
+  watch(() => props.visible, (newValue) => {
+    if (newValue) {
+      scope.value = ModifyScope.ALL;
+      selectedApisIds.value = [];
+      matchMethod.value = undefined;
+      matchEndpointRegex.value = undefined;
+      filterTags.value = [];
+    }
+  }, { immediate: true });
+});
 </script>
 <template>
   <Modal
@@ -384,7 +405,7 @@ const delReferenceDataset = async () => {
         <div class="flex-1 w-60">
           <Select
             v-model:value="filterTags"
-            :placeholder="('service.sidebar.batchModifyModal.tagsPlaceholder')"
+            :placeholder="t('service.sidebar.batchModifyModal.tagsPlaceholder')"
             :action="`${TESTER}/services/${props.serviceId}/schema/tag`"
             :fieldNames="{
               value: 'name',

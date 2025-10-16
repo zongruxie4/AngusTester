@@ -3,10 +3,11 @@ import { defineAsyncComponent, ref } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
 const RequestParams = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestParameter.vue'));
 const RequestHeader = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestHeader.vue'));
 const RequestCookie = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestCookie.vue'));
+
+const { t } = useI18n();
 
 const queryData = ref([]);
 const headerData = ref([]);
@@ -29,7 +30,6 @@ defineExpose({
     return [...queryData.value, ...headerData.value, ...cookieData.value];
   }
 });
-
 </script>
 <template>
   <Tabs size="small">

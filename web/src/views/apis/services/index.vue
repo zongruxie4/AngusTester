@@ -17,7 +17,7 @@ import { createAngusWebSocketProxy, type WebSocketEventHandlers } from '@/utils/
 const Services = defineAsyncComponent(() => import('@/views/apis/services/services/index.vue'));
 const DefaultQuickStarted = defineAsyncComponent(() => import('@/views/apis/services/apis/home/DefaultQuickStarted.vue'));
 const MockService = defineAsyncComponent(() => import('@/views/apis/services/mock/MockService.vue'));
-const GlobalAuth = defineAsyncComponent(() => import('@/views/apis/services/auth/index.vue'));
+const GlobalAuth = defineAsyncComponent(() => import('@/views/apis/services/services/auth/index.vue'));
 const DataModel = defineAsyncComponent(() => import('@/views/apis/services/model/index.vue'));
 const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SecurityTestResult.vue'));
 const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SmokeTestResult.vue'));

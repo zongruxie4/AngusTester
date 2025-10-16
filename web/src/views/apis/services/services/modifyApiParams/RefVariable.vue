@@ -13,17 +13,16 @@ const props = withDefaults(defineProps<Props>(), {
 
 const names = ref([]);
 
-defineExpose({
-  getData: () => {
-    return names.value;
-  }
-});
-
 const fieldNames = {
   value: 'name',
   label: 'name'
 };
 
+defineExpose({
+  getData: () => {
+    return names.value;
+  }
+});
 </script>
 <template>
   <div>

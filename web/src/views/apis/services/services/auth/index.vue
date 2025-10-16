@@ -6,8 +6,8 @@ import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints } from '@xcan-angus/vue-ui';
 import { ApiPermission, ServicesPermission } from '@/enums/enums';
 
-const GroupSet = defineAsyncComponent(() => import('@/views/apis/services/auth/groupSet/index.vue'));
-const AuthSet = defineAsyncComponent(() => import('@/views/apis/services/auth/authSet/index.vue'));
+const GroupSet = defineAsyncComponent(() => import('@/views/apis/services/services/auth/groupSet/index.vue'));
+const AuthSet = defineAsyncComponent(() => import('@/views/apis/services/services/auth/authSet/index.vue'));
 
 interface Props {
   appId: string;

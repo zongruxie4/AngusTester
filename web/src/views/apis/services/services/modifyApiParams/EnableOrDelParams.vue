@@ -21,7 +21,6 @@ defineExpose({
     return _.uniq([...names.value].filter(Boolean));
   }
 });
-
 </script>
 <template>
   <div class="space-y-2">

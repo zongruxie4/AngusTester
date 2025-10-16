@@ -23,8 +23,11 @@ const props = withDefaults(defineProps<Props>(), {
   id: '',
   disabled: true
 });
+
 const { t } = useI18n();
+
 const addTabPane = inject('addTabPane', (value: {[key: string]: any}) => ({ value }));
+
 // const updateTabPane = inject('updateTabPane', (value: {[key: string]: any}) => ({ value }));
 const loading = ref(false);
 const compList = ref<CompObj[]>([]);
@@ -165,10 +168,6 @@ const handleExpand = (item) => {
   item.isExpand = !item.isExpand;
 };
 
-onMounted(() => {
-  getData();
-});
-
 const getData = async () => {
   await getProjectCompList();
   getCompTypesEnum();
@@ -251,6 +250,10 @@ const refreshList = () => {
     handleSearch({ target: { value: name.value } } as ChangeEvent);
   }
 };
+
+onMounted(() => {
+  getData();
+});
 </script>
 <template>
   <Spin class="h-full flex flex-col" :spinning="loading">

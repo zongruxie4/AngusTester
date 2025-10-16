@@ -15,7 +15,6 @@ defineExpose({
     return authData.value;
   }
 });
-
 </script>
 <template>
   <div>

@@ -9,7 +9,6 @@ defineExpose({
     return serverFormRef.value.getData();
   }
 });
-
 </script>
 <template>
   <div>

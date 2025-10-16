@@ -11,6 +11,11 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
+const fieldNames = {
+  value: 'name',
+  label: 'name'
+};
+
 const names = ref([]);
 
 defineExpose({
@@ -18,12 +23,6 @@ defineExpose({
     return names.value;
   }
 });
-
-const fieldNames = {
-  value: 'name',
-  label: 'name'
-};
-
 </script>
 <template>
   <div>
