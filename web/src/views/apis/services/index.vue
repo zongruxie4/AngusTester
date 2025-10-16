@@ -1,18 +1,8 @@
 <script setup lang="ts">
 import {
-  computed,
-  defineAsyncComponent,
-  inject,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  provide,
-  reactive,
-  ref,
-  watch,
-  type Ref as VueRef
+  computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted,
+  provide, reactive, ref, watch, type Ref as VueRef
 } from 'vue';
-import ReconnectingWebSocket from 'reconnecting-websocket';
 import { utils, appContext, IPane } from '@xcan-angus/infra';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
@@ -21,23 +11,7 @@ import { ApiMenuKey } from '@/views/apis/menu';
 
 import { setting } from '@/api/gm';
 import { ProjectInfo } from '@/layout/types';
-
-// WebSocket connection configuration
-const WS_CONFIG = {
-  maxRetries: 3,
-  maxReconnectionDelay: 30000,
-  minReconnectionDelay: 30000,
-  connectionTimeout: 60000
-} as const;
-
-// WebSocket ready states
-const WS_READY_STATES = {
-  CONNECTING: 0,
-  OPEN: 1,
-  CLOSING: 2,
-  CLOSED: 3,
-  DISCONNECTED: 4
-} as const;
+import { createAngusWebSocketProxy, type WebSocketEventHandlers } from '@/utils/apis/angusProxy';
 
 // Lazy load components for better performance
 const Sidebar = defineAsyncComponent(() => import('@/views/apis/services/sidebar/index.vue'));
@@ -61,13 +35,16 @@ const sidebarRef = ref<InstanceType<typeof Sidebar>>();
 const tabRef = ref<any>(); // BrowserTab component ref
 
 // WebSocket related state
-const ws = ref<ReconnectingWebSocket>();
+const angusProxy = createAngusWebSocketProxy();
 const currentProxyUrl = ref<string>();
 const currentProxy = ref<string>();
-const readyState = ref<number>(WS_READY_STATES.CLOSED);
-const uuid = ref<string>('');
 const responseData = ref<string>('');
-const responseCount = ref<number>(0);
+
+// Computed properties for WebSocket state
+const ws = computed(() => angusProxy.getWebSocket());
+const readyState = computed(() => angusProxy.getReadyState());
+const uuid = computed(() => angusProxy.getCurrentUuid());
+const responseCount = computed(() => angusProxy.getResponseCount());
 
 // User and project context
 const userInfo = ref(appContext.getUser());
@@ -78,36 +55,12 @@ const appInfo = ref(appContext.getAccessApp());
 const projectId = computed(() => projectInfo.value?.id);
 
 /**
- * Creates a new WebSocket connection with reconnection capabilities
+ * WebSocket event handlers
  */
-const createWebSocket = (): void => {
-  if (!currentProxyUrl.value) return;
-
-  ws.value = new ReconnectingWebSocket(currentProxyUrl.value, [], WS_CONFIG);
-
-  ws.value.addEventListener('open', () => {
-    readyState.value = ws.value?.readyState ?? WS_READY_STATES.OPEN;
-  });
-
-  ws.value.addEventListener('message', (event: MessageEvent) => {
-    try {
-      const response = JSON.parse(event.data);
-      // Extract request ID from different possible fields
-      uuid.value = response?.requestId || response?.clientId || '';
-      responseData.value = event.data;
-      responseCount.value += 1;
-    } catch (error) {
-      console.warn('Failed to parse WebSocket message:', error);
-    }
-  });
-
-  ws.value.addEventListener('error', () => {
-    readyState.value = ws.value?.readyState ?? WS_READY_STATES.CLOSED;
-  });
-
-  ws.value.addEventListener('close', () => {
-    readyState.value = ws.value?.readyState ?? WS_READY_STATES.CLOSED;
-  });
+const wsEventHandlers: WebSocketEventHandlers = {
+  onMessage: (data: string) => {
+    responseData.value = data;
+  }
 };
 
 /**
@@ -115,35 +68,13 @@ const createWebSocket = (): void => {
  */
 const updateWs = (): void => {
   const isOnline = navigator.onLine;
-
-  // Close existing connection if online
-  if (isOnline && ws.value?.close) {
-    ws.value.close(1000);
-  }
-
-  if (isOnline) {
-    if (currentProxyUrl.value) {
-      ws.value = undefined;
-      createWebSocket();
-    } else if (currentProxy.value === 'NO_PROXY') {
-      ws.value = undefined;
-    } else {
-      ws.value = { readyState: WS_READY_STATES.DISCONNECTED } as any;
-    }
-  } else {
-    // Offline state
-    if (currentProxyUrl.value) {
-      ws.value = { readyState: WS_READY_STATES.DISCONNECTED } as any;
-    } else {
-      ws.value = undefined;
-    }
-  }
+  angusProxy.updateConnection(isOnline, currentProxyUrl.value, currentProxy.value);
 };
 
 /**
- * Loads and configures proxy URL from user settings
+ * Loads URL and configures proxy connection from user settings
  */
-const loadProxyUrl = async (): Promise<void> => {
+const setupProxyConnection = async (): Promise<void> => {
   const [error, { data }] = await setting.getUserApiProxy();
   if (error) {
     console.error('Failed to load proxy configuration:', error);
@@ -155,6 +86,11 @@ const loadProxyUrl = async (): Promise<void> => {
   if (enabledProxy) {
     currentProxyUrl.value = (enabledProxy as any).url;
     currentProxy.value = (enabledProxy as any).name.value;
+
+    // Connect WebSocket with the new proxy URL
+    if (currentProxyUrl.value) {
+      angusProxy.connect(currentProxyUrl.value, wsEventHandlers);
+    }
   }
 };
 
@@ -313,21 +249,16 @@ watch(() => tabRef.value, () => {
  */
 onMounted(async () => {
   // Load proxy configuration
-  await loadProxyUrl();
+  await setupProxyConnection();
 
   // Watch for proxy changes and update WebSocket connection
   watch([() => currentProxyUrl.value, () => currentProxy.value], ([newValue]) => {
-    if (ws.value?.close) {
-      ws.value.close(1000);
-    }
-
     if (newValue) {
-      ws.value = undefined;
-      createWebSocket();
+      angusProxy.connect(newValue, wsEventHandlers);
     } else if (currentProxy.value === 'NO_PROXY') {
-      ws.value = undefined;
+      angusProxy.disconnect();
     } else {
-      ws.value = { readyState: WS_READY_STATES.DISCONNECTED } as any;
+      angusProxy.updateConnection(navigator.onLine, currentProxyUrl.value, currentProxy.value);
     }
   }, { immediate: true });
 
@@ -345,9 +276,7 @@ onMounted(async () => {
  */
 onBeforeUnmount(() => {
   // Close WebSocket connection
-  if (ws.value?.close) {
-    ws.value.close(1000);
-  }
+  angusProxy.disconnect();
 
   // Remove network connection listener
   if ((navigator as any).connection) {
