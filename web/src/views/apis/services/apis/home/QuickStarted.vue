@@ -7,7 +7,7 @@ import { utils } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { ServicesPermission } from '@/enums/enums';
 
-const LocalImport = defineAsyncComponent(() => import('../../sidebar/components/LocalImport.vue'));
+const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/services/components/LocalImport.vue'));
 
 interface Props {
   serviceInfo:any;

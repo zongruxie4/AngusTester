@@ -57,7 +57,7 @@ const openExportModal = () => {
 };
 
 const CodeView = defineAsyncComponent(() => import('./CodeView.vue'));
-const ExportDoc = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/SimpleExport.vue'));
+const ExportDoc = defineAsyncComponent(() => import('@/views/apis/services/services/components/SimpleExport.vue'));
 
 defineExpose({
   loadData

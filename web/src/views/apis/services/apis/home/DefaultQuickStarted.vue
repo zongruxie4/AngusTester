@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/LocalImport.vue'));
+const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/services/components/LocalImport.vue'));
 
 const { t } = useI18n();
 

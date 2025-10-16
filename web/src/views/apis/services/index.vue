@@ -14,7 +14,7 @@ import { ProjectInfo } from '@/layout/types';
 import { createAngusWebSocketProxy, type WebSocketEventHandlers } from '@/utils/apis/angusProxy';
 
 // Lazy load components for better performance
-const Sidebar = defineAsyncComponent(() => import('@/views/apis/services/sidebar/index.vue'));
+const Sidebar = defineAsyncComponent(() => import('@/views/apis/services/services/index.vue'));
 const Apis = defineAsyncComponent(() => import('@/views/apis/services/apis/index.vue'));
 const HttpApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/index.vue'));
 const WebSocketApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/index.vue'));
