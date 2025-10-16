@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import { Hints, Icon, IconRequired, Input, notification, Select, Spin, Modal } from '@xcan-angus/vue-ui';
+import { Hints, Icon, IconRequired, Input, notification, Select, Modal } from '@xcan-angus/vue-ui';
 import { Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
 import { services } from '@/api/tester';
 import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
+import { SyncConfigInfo, SyncAuthInfo } from './types';
+import { StrategyWhenDuplicated } from '@/enums/enums';
 
-import { SyncObj, AuthObj } from './SyncConfig';
 type CheckedType = typeof Switch.props.checked.type;
 
 interface Props {
-  syncData?: SyncObj;
+  syncData?: SyncConfigInfo;
   visible: boolean;
   serviceId: string;
   allNames: string[]
@@ -27,15 +28,15 @@ const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'update:visible', boolean): void; (e: 'ok'):void}>();
 
-// 空数据
-const newData:SyncObj = {
+// Blank template for creating a new sync configuration
+const newData:SyncConfigInfo = {
   id: utils.uuid('api'),
   syncSource: 'OpenAPI',
   projectId: '',
   name: '',
   apiDocsUrl: '',
   strategyWhenDuplicated: {
-    value: 'COVER',
+    value: StrategyWhenDuplicated.COVER,
     message: ''
   },
   deleteWhenNotExisted: false,
@@ -50,7 +51,7 @@ const newData:SyncObj = {
   testLoading: false,
   delLoading: false,
   syncLoading: false,
-  saveloading: false,
+  saveLoading: false,
   nameErr: false,
   apiDocsUrlErr: {
     emptyUrl: false,
@@ -62,12 +63,12 @@ const inOptions = ref([{ label: 'header', value: 'header' }, { label: 'query', v
 
 const loading = ref(false);
 
-// 同步名称校验
+// Validate sync name non-empty
 const syncNameChange = (value:string):void => {
   sync.value.nameErr = !value;
 };
 
-// 同步url校验
+// Validate apiDocsUrl; debounce user input
 const syncUrlChange = debounce(duration.search, (value:string):void => {
   if (!value) {
     sync.value.apiDocsUrlErr.emptyUrl = true;
@@ -82,8 +83,8 @@ const syncUrlChange = debounce(duration.search, (value:string):void => {
   sync.value.apiDocsUrlErr.errUrl = true;
 });
 
-// 检查提交的数据有没有空项 有空项返回true 否则返回false
-const getCheckDataResult = (_data:SyncObj):boolean => {
+// Validate required fields; return true when any invalid
+const getCheckDataResult = (_data:SyncConfigInfo):boolean => {
   let hasEmpty = false;
   if (!_data.name) {
     _data.nameErr = true;
@@ -94,7 +95,6 @@ const getCheckDataResult = (_data:SyncObj):boolean => {
     hasEmpty = true;
   }
 
-  // 检查认证里有没有空数据
   hasEmpty = getAuthCheckRes(_data.auths);
 
   if (!_data.apiDocsUrl) {
@@ -103,15 +103,16 @@ const getCheckDataResult = (_data:SyncObj):boolean => {
   }
 
   _data.apiDocsUrlErr.emptyUrl = false;
-  if (!regexp.isUrl(_data.apiDocsUrl)) {
+  if (!regexpUtils.isUrl(_data.apiDocsUrl)) {
     _data.apiDocsUrlErr.errUrl = true;
     hasEmpty = true;
   }
 
   return hasEmpty;
 };
-// 判断编辑的数据有无改变
-const chenkUpdate = (newData:SyncObj) => {
+
+// Check whether current data differs from original props
+const chenkUpdate = (newData:SyncConfigInfo) => {
   const _oldData = props.syncData;
   if (!_oldData) {
     return true;
@@ -136,9 +137,8 @@ const chenkUpdate = (newData:SyncObj) => {
   return !utils.deepCompare(oldAuth, newAuth);
 };
 
-// 保存
+// Save current configuration (create/update)
 const handleSave = async () => {
-  // 校验有没有空项
   const checkRes = getCheckDataResult(sync.value);
   if (checkRes) {
     return;
@@ -177,11 +177,12 @@ const handleSave = async () => {
   emits('ok');
 };
 
-// 认证名称校验
-const keyNameChange = (value:string, auth:AuthObj):void => {
+// Validate auth key name non-empty
+const keyNameChange = (value:string, auth:SyncAuthInfo):void => {
   auth.keyNameErr = !value;
 };
-// 开启认证
+
+// Toggle auth section; when on, provide one empty row
 const openAuth = (checked:CheckedType) => {
   if (checked) {
     sync.value.auths = [{
@@ -197,20 +198,20 @@ const openAuth = (checked:CheckedType) => {
   sync.value.auths = [];
 };
 
-// 认证值校验
-const authValueChange = (value:string, auth:AuthObj):void => {
+// Validate auth value non-empty
+const authValueChange = (value:string, auth:SyncAuthInfo):void => {
   auth.valueErr = !value;
 };
 
-// 删除认证
+// Remove one auth row
 const deleteAuth = (authIndex:number) => {
   sync.value.auths.splice(authIndex, 1);
   if (!sync.value.auths.length) {
     sync.value.auth = false;
   }
 };
-// 判断整个认证里有没有空项 返回ture有空项 false没有空项
-const getAuthCheckRes = (auths:AuthObj[]):boolean => {
+// Check all auth rows; return true if any row has empty fields
+const getAuthCheckRes = (auths:SyncAuthInfo[]):boolean => {
   let hasEmpty = false;
   auths.forEach((auth) => {
     if (!auth.keyName) {
@@ -225,7 +226,7 @@ const getAuthCheckRes = (auths:AuthObj[]):boolean => {
   return hasEmpty;
 };
 
-// 添加认证
+// Add a new auth row if last row is complete and unique
 const addAuth = () => {
   const hasEmpty = getAuthCheckRes(sync.value.auths);
   if (hasEmpty) {
@@ -233,7 +234,6 @@ const addAuth = () => {
   }
 
   if (sync.value.auths.length > 1) {
-    // 判断最后添加的keyname是否已经存在
     const len = sync.value.auths.filter(item => item.keyName === sync.value.auths[sync.value.auths.length - 1].keyName)?.length;
     if (len >= 2) {
       notification.warning(t('service.syncConfig.messages.authNameExists'));
@@ -249,12 +249,14 @@ const addAuth = () => {
   });
 };
 
+// Close modal
 const cancel = () => {
   emits('update:visible', false);
 };
 
 const sync = ref({ ...newData });
 
+// Re-initialize form state when modal is opened
 watch(() => props.visible, (newValue) => {
   if (newValue) {
     if (props.syncData) {
@@ -269,7 +271,7 @@ watch(() => props.visible, (newValue) => {
 </script>
 <template>
   <Modal
-    :title="props.syncData ? t('actions.add')"
+    :title="props.syncData ? t('actions.add') : t('actions.edit')"
     :okButtonProps="{
       loading
     }"
@@ -313,8 +315,8 @@ watch(() => props.visible, (newValue) => {
         <RadioGroup
           v-model:value="sync.strategyWhenDuplicated.value"
           class="mt-2 mb-5">
-          <Radio value="COVER">{{ t('actions.cover') }}</Radio>
-          <Radio value="IGNORE">{{ t('actions.ignore') }}</Radio>
+          <Radio :value="StrategyWhenDuplicated.COVER">{{ t('actions.cover') }}</Radio>
+          <Radio :value="StrategyWhenDuplicated.IGNORE">{{ t('actions.ignore') }}</Radio>
         </RadioGroup>
         <span>{{ t('service.syncConfig.form.deleteWhenNotExist') }}</span>
         <RadioGroup

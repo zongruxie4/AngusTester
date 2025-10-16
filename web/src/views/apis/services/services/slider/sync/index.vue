@@ -6,12 +6,12 @@ import { Button, Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
 import { services } from '@/api/tester';
 import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-
-import { AuthObj, SyncObj } from './SyncConfig';
-
-type CheckedType = typeof Switch.props.checked.type;
+import { SyncAuthInfo, SyncConfigInfo } from './types';
+import { StrategyWhenDuplicated } from '@/enums/enums';
 
 const EditModal = defineAsyncComponent(() => import('./SyncEditModal.vue'));
+
+type CheckedType = typeof Switch.props.checked.type;
 
 interface Props {
   id: string;
@@ -33,15 +33,15 @@ const { useState } = VuexHelper;
 
 const emit = defineEmits<{(e: 'deleteSuccess'): void, (e: 'saveSuccess'): void}>();
 
-// 示例数据
-const demoData:SyncObj = {
+// Demo sync configuration (pre-filled for users to try quickly)
+const demoData:SyncConfigInfo = {
   id: utils.uuid('api'),
   syncSource: 'OpenAPI',
   projectId: '',
   name: 'demo',
   apiDocsUrl: 'http://dev-api.xxx.com/v3/api-docs',
   strategyWhenDuplicated: {
-    value: 'COVER',
+    value: StrategyWhenDuplicated.COVER,
     message: ''
   },
   deleteWhenNotExisted: false,
@@ -64,7 +64,7 @@ const demoData:SyncObj = {
   testLoading: false,
   delLoading: false,
   syncLoading: false,
-  saveloading: false,
+  saveLoading: false,
   nameErr: false,
   apiDocsUrlErr: {
     emptyUrl: false,
@@ -72,15 +72,15 @@ const demoData:SyncObj = {
   }
 };
 
-// Empty data
-const newData:SyncObj = {
+// Blank template for new sync configuration
+const newData:SyncConfigInfo = {
   id: utils.uuid('api'),
   syncSource: 'OpenAPI',
   projectId: '',
   name: '',
   apiDocsUrl: '',
   strategyWhenDuplicated: {
-    value: 'COVER',
+    value: StrategyWhenDuplicated.COVER,
     message: ''
   },
   deleteWhenNotExisted: false,
@@ -95,7 +95,7 @@ const newData:SyncObj = {
   testLoading: false,
   delLoading: false,
   syncLoading: false,
-  saveloading: false,
+  saveLoading: false,
   nameErr: false,
   apiDocsUrlErr: {
     emptyUrl: false,
@@ -104,9 +104,9 @@ const newData:SyncObj = {
 };
 
 const loading = ref(false);
-const syncList = ref<SyncObj[]>([]);
-const oldSyncList = ref<SyncObj[]>([]);
-// Initialize synchronization configuration
+const syncList = ref<SyncConfigInfo[]>([]);
+const oldSyncList = ref<SyncConfigInfo[]>([]);
+// Load synchronization configurations for current service
 const getSynchronizationList = async () => {
   loading.value = true;
   const [error, { data }] = await services.getServicesSyncConfig(props.id);
@@ -114,7 +114,7 @@ const getSynchronizationList = async () => {
   if (error) {
     return;
   }
-  // If there is no historical data, an empty data is displayed by default
+  // If no history data exists, show one new blank row by default
   if (!data?.length) {
     syncList.value = [JSON.parse(JSON.stringify(newData))];
     // Record the data being edited
@@ -143,16 +143,16 @@ const getSynchronizationList = async () => {
       errUrl: false
     }
   }));
-  // Record historical data
+  // Snapshot current list for change detection later
   oldSyncList.value = JSON.parse(JSON.stringify(syncList.value));
-  // Enable Add
+  // Enable Add button
   addBtnDisabled.value = false;
 };
 
 // Add button disabled status
 const addBtnDisabled = ref(false);
 
-// Add a new sync configuration
+// Add a new sync configuration row at the top
 const addSyncInfo = () => {
   currEditData.value = undefined;
 
@@ -164,18 +164,18 @@ const addSyncInfo = () => {
     syncList.value[0] = { ...JSON.parse(JSON.stringify(newData)), id: syncList.value[0].id };
     return;
   }
-  // 列表开始位置添加一条新数据
+  // Insert a new row at the list top
   syncList.value.unshift(JSON.parse(JSON.stringify(newData)));
-  // 记录正在编辑的数据(编辑逻辑需要)
+  // Mark the current row as editing (required by edit logic)
   currEditData.value = syncList.value[0];
-  // 追加后禁用添加按钮
+  // Disable add button after insertion
   addBtnDisabled.value = true;
   setEditFalseExceptId(syncList.value, currEditData.value.id);
 };
 
-// 示例按钮禁用启用 目前的逻辑限制只有添加一条数据 可以添加示例，修改旧数据不允许替换示例
+// Demo button enable/disable rule: Only the first add row can be replaced by demo
 const addDemoBtnDisabled = ref(false);
-// 添加示例数据
+// Append demo configuration as first row
 const addSyncInfoDemo = () => {
   if (syncList.value[0].isAdd) {
     syncList.value[0] = { ...JSON.parse(JSON.stringify(demoData)), id: utils.uuid('api') };
@@ -185,26 +185,25 @@ const addSyncInfoDemo = () => {
   if (getChenkUpdateRes()) {
     return;
   }
-  // 列表开始位置添加一条新数据
+  // Insert a demo row at the beginning
   syncList.value.unshift({ ...JSON.parse(JSON.stringify(demoData)), id: utils.uuid('api') });
-  // 记录展开状态
+  // Remember previous expand state
   lastIsExpandState.value = syncList.value[0].isExpand;
-  // 记录正在编辑的数据(编辑逻辑需要)
+  // Mark the current row as editing (required by edit logic)
   currEditData.value = syncList.value[0];
-  // 启用添加示例
+  // Enable demo add button
   addDemoBtnDisabled.value = false;
   setEditFalseExceptId(syncList.value, currEditData.value.id);
 };
 
-// 添加认证
-const addAuth = (sync:SyncObj) => {
+// Add an auth pair (key/value)
+const addAuth = (sync:SyncConfigInfo) => {
   const hasEmpty = getAuthCheckRes(sync.auths);
   if (hasEmpty) {
     return;
   }
 
   if (sync.auths.length > 1) {
-    // 判断最后添加的keyname是否已经存在
     const len = sync.auths.filter(item => item.keyName === sync.auths[sync.auths.length - 1].keyName)?.length;
     if (len >= 2) {
       notification.warning(t('service.syncConfig.messages.authNameExists'));
@@ -219,16 +218,16 @@ const addAuth = (sync:SyncObj) => {
     valueErr: false
   });
 };
-// 删除认证
-const deleteAuth = (sync:SyncObj, authIndex:number) => {
+// Remove an auth pair by index
+const deleteAuth = (sync:SyncConfigInfo, authIndex:number) => {
   sync.auths.splice(authIndex, 1);
   if (!sync.auths.length) {
     sync.auth = false;
   }
 };
 
-// 删除同步配置
-const handleDelSync = async (sync:SyncObj) => {
+// Delete a sync configuration
+const handleDelSync = async (sync:SyncConfigInfo) => {
   if (sync.delLoading || sync.isAdd) {
     return;
   }
@@ -242,14 +241,14 @@ const handleDelSync = async (sync:SyncObj) => {
   emit('deleteSuccess');
   syncList.value = syncList.value.filter(item => item.id !== sync.id);
   oldSyncList.value = oldSyncList.value.filter(item => item.id !== sync.id);
-  // 如果列表没有数据 删除后添加一条添加的数据
+  // If list is empty after deletion, add one blank row
   if (syncList.value.length === 0) {
     syncList.value.unshift({ ...JSON.parse(JSON.stringify(newData)), id: utils.uuid('api') });
   }
 };
 
-// 测试
-const handleTest = async (sync:SyncObj) => {
+// Test the connectivity of apiDocsUrl (and auth headers if provided)
+const handleTest = async (sync:SyncConfigInfo) => {
   if (!sync.apiDocsUrl) {
     sync.apiDocsUrlErr.emptyUrl = true;
     return;
@@ -277,8 +276,8 @@ const handleTest = async (sync:SyncObj) => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 const updateApiGroup = inject('updateApiGroup', (_id) => undefined);
 
-// 同步配置
-const handleSync = async (sync:SyncObj) => {
+// Execute synchronization for a single configuration by name
+const handleSync = async (sync:SyncConfigInfo) => {
   loading.value = true;
   const [error] = await services.postSynchronizationExec(props.id, sync.name);
   loading.value = false;
@@ -292,14 +291,14 @@ const handleSync = async (sync:SyncObj) => {
   getSynchronizationList();
 };
 
-// 保存
-const handleSave = async (sync:SyncObj) => {
-  // 校验有没有空项
+// Save a configuration (create or update)
+const handleSave = async (sync:SyncConfigInfo) => {
+  // Validate empties
   const checkRes = getCheckDataResult(sync);
   if (checkRes) {
     return;
   }
-  // 如果是添加数据 判断名称有没有重复
+  // For new rows, ensure name is unique
   if (sync.isAdd) {
     const len = syncList.value.filter(item => item.name === sync.name)?.length;
     if (len >= 2) {
@@ -308,7 +307,7 @@ const handleSave = async (sync:SyncObj) => {
       return;
     }
   } else {
-    // 如果是旧数据 判断数据有没有修改
+    // For existing rows, skip save if nothing changed
     if (!chenkUpdate(sync)) {
       sync.isEdit = false;
       sync.isExpand = lastIsExpandState.value;
@@ -342,8 +341,8 @@ const handleSave = async (sync:SyncObj) => {
   getSynchronizationList();
 };
 
-// 检查提交的数据有没有空项 有空项返回true 否则返回false
-const getCheckDataResult = (_data:SyncObj):boolean => {
+// Validate required fields; return true if any invalid
+const getCheckDataResult = (_data:SyncConfigInfo):boolean => {
   let hasEmpty = false;
   if (!_data.name) {
     _data.nameErr = true;
@@ -354,7 +353,7 @@ const getCheckDataResult = (_data:SyncObj):boolean => {
     hasEmpty = true;
   }
 
-  // 检查认证里有没有空数据
+  // Check if any auth entries are empty
   hasEmpty = getAuthCheckRes(_data.auths);
 
   if (!_data.apiDocsUrl) {
@@ -371,6 +370,7 @@ const getCheckDataResult = (_data:SyncObj):boolean => {
   return hasEmpty;
 };
 
+// Execute synchronization for all existing configurations
 const handleSyncAll = async () => {
   const hasSyncData = syncList.value.filter(item => !item.isAdd);
   if (!hasSyncData.length) {
@@ -389,15 +389,11 @@ const handleSyncAll = async () => {
   getSynchronizationList();
 };
 
-onMounted(() => {
-  getSynchronizationList();
-});
+// Track the currently editing item (only one at a time allowed)
+const currEditData = ref<SyncConfigInfo>();
 
-// 记录正在编辑的数据 同时只有一个编辑
-const currEditData = ref<SyncObj>();
-
-// 展开收起 开启关闭编辑
-const handleExpand = (event, sync:SyncObj) => {
+// Expand/collapse row and toggle edit
+const handleExpand = (event, sync:SyncConfigInfo) => {
   event.stopPropagation();
   const hasEditData = syncList.value.filter(item => item.isEdit);
   if (hasEditData?.length) {
@@ -422,7 +418,7 @@ const handleExpand = (event, sync:SyncObj) => {
   addBtnDisabled.value = false;
 };
 
-// 提起公共代码 校验数据未保存
+// Guard: warn if there are unsaved changes
 const getChenkUpdateRes = () => {
   if (currEditData.value) {
     const hasUpdate = chenkUpdate(syncList.value.filter(item => item.id === currEditData.value?.id)[0]);
@@ -435,8 +431,8 @@ const getChenkUpdateRes = () => {
 };
 
 const lastIsExpandState = ref(false);
-// 开启关闭编辑 同时修改展开收起
-const handleEdit = (event, sync:SyncObj) => {
+// Enter edit mode and keep last expand state
+const handleEdit = (event, sync:SyncConfigInfo) => {
   // if (!props.vertical) {
   //   openEditModal(sync);
   //   return;
@@ -464,25 +460,25 @@ const handleEdit = (event, sync:SyncObj) => {
   addBtnDisabled.value = false;
 };
 
-// 取消编辑
-const cancelEdit = (event, sync:SyncObj) => {
+// Cancel editing; if new row, remove it, else restore snapshot
+const cancelEdit = (event, sync:SyncConfigInfo) => {
   event.stopPropagation();
-  // 如果取消的是添加的数据
+  // If cancelling a newly added row
   if (sync.isAdd) {
-    // 如果列表仅有一条数据 且是添加的 禁止取消，保持展开并且编辑状态
+    // If this is the only row and is new, do not allow cancel; keep expanded and editing
     if (syncList.value.length === 1) {
       return;
     }
-    // 如果列表有多条数据 取消后删除添加的数据 并启用添加按钮
+    // Otherwise, remove the new row and re-enable add button
     syncList.value = syncList.value.filter(item => item.id !== sync.id);
     addBtnDisabled.value = false;
     currEditData.value = undefined;
     return;
   }
 
-  //  如果取消的是历史数据 判断数据有没有修改，然后收起详情并取消编辑状态
+  // If cancelling an existing row: check changes, then collapse and exit edit
   const hasUpdate = chenkUpdate(sync);
-  //  如果有修改取消编辑先恢复数据
+  // If changed, restore from snapshot
   if (hasUpdate) {
     const oldSync = oldSyncList.value.find(item => item.id === sync.id);
     for (let i = 0; i < syncList.value.length; i++) {
@@ -497,8 +493,8 @@ const cancelEdit = (event, sync:SyncObj) => {
   currEditData.value = undefined;
 };
 
-// 判断编辑的数据有无改变
-const chenkUpdate = (newData:SyncObj) => {
+// Check whether current row data differs from the snapshot
+const chenkUpdate = (newData:SyncConfigInfo) => {
   const _oldDataList = oldSyncList.value.filter(item => item?.id === newData?.id);
   if (!_oldDataList?.length) {
     return true;
@@ -524,8 +520,8 @@ const chenkUpdate = (newData:SyncObj) => {
   return !utils.deepCompare(oldAuth, newAuth);
 };
 
-// 收起当前数据之外的数据并取消编辑
-const setEditFalseExceptId = (arr:SyncObj[], id:string):void => {
+// Collapse and disable edit for all rows except the given id
+const setEditFalseExceptId = (arr:SyncConfigInfo[], id:string):void => {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].id !== id) {
       arr[i].isEdit = false;
@@ -534,20 +530,21 @@ const setEditFalseExceptId = (arr:SyncObj[], id:string):void => {
   }
 };
 
+// Options for where to inject auth (header/query)
 const inOptions = ref([{ label: 'header', value: 'header' }, { label: 'query', value: 'query' }]);
 
-const getShowEmptyingexample = (sync:SyncObj) => {
+const getShowEmptyingexample = (sync:SyncConfigInfo) => {
   return utils.deepCompare(sync, { ...demoData, id: sync.id });
 };
 
-// 清空示例数据
+// Clear demo example and revert to blank template
 const emptyingExample = e => {
   e.stopPropagation();
   syncList.value[0] = { ...JSON.parse(JSON.stringify(newData)), id: syncList.value[0].id };
 };
 
-// 开启认证
-const openAuth = (checked:CheckedType, sync:SyncObj) => {
+// Toggle auth section; when true, provide one empty row
+const openAuth = (checked:CheckedType, sync:SyncConfigInfo) => {
   if (checked) {
     sync.auths = [{
       keyName: '',
@@ -562,12 +559,12 @@ const openAuth = (checked:CheckedType, sync:SyncObj) => {
   sync.auths = [];
 };
 
-// 同步名称校验
-const syncNameChange = (value:string, sync:SyncObj):void => {
+// Validate sync name non-empty
+const syncNameChange = (value:string, sync:SyncConfigInfo):void => {
   sync.nameErr = !value;
 };
-// 同步url校验
-const syncUrlChange = debounce(duration.search, (value:string, sync:SyncObj):void => {
+// Validate apiDocsUrl; debounce user input
+const syncUrlChange = debounce(duration.search, (value:string, sync:SyncConfigInfo):void => {
   if (!value) {
     sync.apiDocsUrlErr.emptyUrl = true;
     return;
@@ -581,18 +578,18 @@ const syncUrlChange = debounce(duration.search, (value:string, sync:SyncObj):voi
   sync.apiDocsUrlErr.errUrl = true;
 });
 
-// 认证名称校验
-const keyNameChange = (value:string, auth:AuthObj):void => {
+// Validate auth key name non-empty
+const keyNameChange = (value:string, auth:SyncAuthInfo):void => {
   auth.keyNameErr = !value;
 };
 
-// 认证值校验
-const authValueChange = (value:string, auth:AuthObj):void => {
+// Validate auth value non-empty
+const authValueChange = (value:string, auth:SyncAuthInfo):void => {
   auth.valueErr = !value;
 };
 
-// 判断整个认证里有没有空项 返回ture有空项 false没有空项
-const getAuthCheckRes = (auths:AuthObj[]):boolean => {
+// Check all auth rows; return true if any row has empty fields
+const getAuthCheckRes = (auths:SyncAuthInfo[]):boolean => {
   let hasEmpty = false;
   auths.forEach((auth) => {
     if (!auth.keyName) {
@@ -608,13 +605,8 @@ const getAuthCheckRes = (auths:AuthObj[]):boolean => {
 };
 
 const { notify } = useState(['notify'], 'apiSyncStore');
-watch(() => notify.value, () => {
-  if (props.source === 'modal') {
-    return;
-  }
-  getSynchronizationList();
-});
 
+// Tooltip container bound to input wrapper
 const getPopupContainer = (el: HTMLElement): HTMLElement => {
   if (el.parentElement) {
     return el.parentElement;
@@ -631,6 +623,7 @@ const allSyncName = computed(() => {
 });
 const editSyncData = ref();
 
+// Open modal editor (currently unused entry preserved for potential non-vertical layout)
 const openEditModal = (sync = undefined) => {
   editVisible.value = true;
   editSyncData.value = sync;
@@ -642,6 +635,16 @@ const handleSaveOk = () => {
   getSynchronizationList();
 };
 
+onMounted(() => {
+  getSynchronizationList();
+});
+
+watch(() => notify.value, () => {
+  if (props.source === 'modal') {
+    return;
+  }
+  getSynchronizationList();
+});
 </script>
 <template>
   <Spin class="h-full flex flex-col" :spinning="loading">
@@ -821,8 +824,8 @@ const handleSaveOk = () => {
               v-model:value="sync.strategyWhenDuplicated.value"
               class="mt-2 mb-5"
               :disabled="!sync.isEdit">
-              <Radio value="COVER">{{ t('actions.cover') }}</Radio>
-              <Radio value="IGNORE">{{ t('actions.ignore') }}</Radio>
+              <Radio :value="StrategyWhenDuplicated.COVER">{{ t('actions.cover') }}</Radio>
+              <Radio :value="StrategyWhenDuplicated.IGNORE">{{ t('actions.ignore') }}</Radio>
             </RadioGroup>
             <span>{{ t('service.syncConfig.form.deleteWhenNotExist') }}</span>
             <RadioGroup
@@ -913,7 +916,7 @@ const handleSaveOk = () => {
                   type="link"
                   size="small"
                   class="px-0"
-                  :loading="sync.saveloading"
+                  :loading="sync.saveLoading"
                   @click="emptyingExample">
                   {{ t('actions.clear') }}
                 </Button>

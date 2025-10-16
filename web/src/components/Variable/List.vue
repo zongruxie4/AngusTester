@@ -915,7 +915,7 @@ onMounted(() => {
                 size="small"
                 class="p-0"
                 type="link"
-                :disabled="variable.saveloading || !variableList.length"
+                :disabled="variable.saveLoading || !variableList.length"
                 @click="handleSave(variable)">
                 {{ t('actions.save') }}
               </Button>
