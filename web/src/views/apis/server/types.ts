@@ -16,17 +16,19 @@ export type ServerInfo = {
   notEmptyContent: true;
 }
 
+export type ServerConfigVariables = {
+  id: string;
+  name: string;
+  description: string;
+  default: string;
+  enum: { id: string; value: string }[];
+}
+
 export type ServerConfig = {
   id: string;
   'x-xc-id'?: string;
   serviceId?: string;
   url: string;
   description?: string;
-  variables: {
-    id: string;
-    description: string;
-    default: string;
-    enum: { id: string; value: string }[];
-    name: string;
-  }[];
+  variables: ServerConfigVariables[];
 }

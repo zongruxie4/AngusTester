@@ -1,13 +1,19 @@
 <script setup lang="ts">
+// Component: ExecTestModal
+// Purpose: Allow users to pick servers and optionally adjust server variables to run tests
+// Notes:
+// - Supports using default server config or overriding variables per selected server
+// - Emits ok/cancel and two-way binds modal visibility
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Modal, Select } from '@xcan-angus/vue-ui';
 import { TESTER, http, utils } from '@xcan-angus/infra';
-import { cloneDeep } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
+import { ServerConfig, ServerVariables, ServerConfigVariables, ServerInfo } from '@/views/apis/server/types';
 
 const { t } = useI18n();
 
+// Props: modal context and behavior
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -39,23 +45,14 @@ const emit = defineEmits<{
   (e: 'ok'): void;
 }>();
 
+// UI state
 const checkedType = ref<'none' | 'checked'>('none');
 const confirmLoading = ref(false);
 const selectedIds = ref<string[]>([]);
-const selectedServers = ref<{
-  url: string;
-  description: string;
-  'x-xc-id': string;
-  variables: {
-    id: string;
-    name: string;
-    description: string;
-    default: string;
-    enum: { id: string; value: string }[];
-  }[];
-}[]>([]);
+const selectedServers = ref<ServerConfig[]>([]);
 
-const radioChange = (event:{target:{value:'none'|'checked'}}) => {
+// Switch between default config and customized variables
+const handleRadioChange = (event: any) => {
   const value = event.target.value;
   if (value === 'none') {
     selectedIds.value = [];
@@ -63,27 +60,11 @@ const radioChange = (event:{target:{value:'none'|'checked'}}) => {
   }
 };
 
-const selectChange = (value: string[], option: {
-  url: string;
-  description: string;
-  variables: {
-    [key: string]: {
-      description: string;
-      default: string;
-      enum: string[];
-    }
-  };
-  'x-xc-id': string;
-}[]) => {
+// Transform selected server options into editable structure (attach enums, ids)
+const handleServerSelectChange = (value: any, option: any) => {
   selectedIds.value = value;
-  selectedServers.value = option.map(item => {
-    const variables: {
-      id: string;
-      name: string;
-      description: string;
-      default: string;
-      enum: { id: string; value: string }[];
-    }[] = [];
+  selectedServers.value = (option as ServerInfo[]).map(item => {
+    const variables: ServerConfigVariables[] = [];
     if (item.variables) {
       const names = Object.keys(item.variables);
       for (let i = 0, len = names.length; i < len; i++) {
@@ -104,86 +85,69 @@ const selectChange = (value: string[], option: {
     }
 
     return {
-      ...item,
+      id: utils.uuid(),
+      'x-xc-id': item['x-xc-id'],
+      url: item.url,
+      description: item.description,
       variables
-    };
+    } as ServerConfig;
   });
 };
 
-const reset = () => {
+// Reset local state
+const resetState = () => {
   checkedType.value = 'none';
   confirmLoading.value = false;
   selectedIds.value = [];
   selectedServers.value = [];
 };
 
-const cancel = () => {
-  reset();
+// Cancel and close modal
+const handleCancel = () => {
+  resetState();
   emit('update:visible', false);
   emit('update:id', undefined);
 };
 
-const getSaveParams = (data) => {
+// Build payload for a single server item
+const buildServerConfigPayload = (data: any) => {
   const variables = data.variables.reduce((prev, cur) => {
     prev[cur.name] = {
       default: cur.default,
       description: cur.description,
       enum: cur.enum?.map(item => item.value) || []
     };
-
     return prev;
-  }, {} as {
-      [key:string]:{
-        default:string;
-        description:string;
-        enum:string[];
-      }
-    });
-  const params:{
-    description?:string;
-    url:string;
-    variables:{
-      [key:string]:{
-        default:string;
-        description:string;
-        enum:string[];
-      }
-    };
-    'x-xc-id'?:string;
-  } = {
+  }, {} as ServerVariables);
+
+  const params: any = {
     'x-xc-id': data['x-xc-id'],
     description: data.description,
     url: data.url,
     variables
   };
-
   return params;
 };
 
-const getParams = () => {
+// Build request payload list
+const buildRequestPayload = () => {
   return selectedServers.value.map(item => {
-    return getSaveParams(item);
+    return buildServerConfigPayload(item);
   });
 };
 
-const ok = async () => {
-  const params = getParams();
+// Confirm: send payload and close on success
+const handleOk = async () => {
+  const params = buildRequestPayload();
   confirmLoading.value = true;
   const [error] = await http.put(props.okAction, params, { dataType: true });
   confirmLoading.value = false;
   if (error) {
     return;
   }
-
-  const ids = cloneDeep(selectedIds.value);
-
-  reset();
+  resetState();
   emit('update:visible', false);
   emit('update:id', undefined);
-
-  for (let i = 0, len = ids.length; i < len; i++) {
-    // await toUpdate(ids[i]);
-  }
 };
 
 const okButtonProps = computed(() => {
@@ -204,8 +168,8 @@ const modalTitle = computed(() => {
     :confirmLoading="confirmLoading"
     :okButtonProps="okButtonProps"
     :title="modalTitle"
-    @cancel="cancel"
-    @ok="ok">
+    @cancel="handleCancel"
+    @ok="handleOk">
     <div class="leading-5">
       <div class="text-theme-sub-content mb-2.5">{{ props.tips }}</div>
 
@@ -217,7 +181,7 @@ const modalTitle = computed(() => {
         <RadioGroup
           v-model:value="checkedType"
           name="radioGroup"
-          @change="radioChange">
+          @change="(e:any)=>handleRadioChange(e)">
           <Radio value="none">{{ t('service.serviceExecTest.serverConfig.options.useDefault') }}</Radio>
           <Radio value="checked">{{ t('service.serviceExecTest.serverConfig.options.modifyVariables') }}</Radio>
         </RadioGroup>
@@ -232,7 +196,7 @@ const modalTitle = computed(() => {
           style="width: 585px;margin-left: 75px;"
           class="mb-3"
           :placeholder="t('service.serviceExecTest.placeholder.selectServer')"
-          @change="selectChange">
+          @change="handleServerSelectChange">
           <template #option="record">
             <div class="flex items-center overflow-hidden">
               <div class="truncate" :title="record.url">{{ record.url }}</div>
@@ -320,7 +284,6 @@ const modalTitle = computed(() => {
                             style="transform: translateY(-4px);"
                             @change="_variable.default=_enum.value" />
                         </div>
-                        <!-- <div :class="{ invisible: _enum.value !== _variable.default }" class="flex-shrink-0">{{ t('common.default') }}</div> -->
                       </div>
                     </div>
                   </div>
