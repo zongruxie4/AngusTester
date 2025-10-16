@@ -8,7 +8,7 @@ import { AsyncComponent } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { services } from '@/api/tester';
 
-const CodeView = defineAsyncComponent(() => import('@/views/apis/services/apis/oas/CodeView.vue'));
+const CodeView = defineAsyncComponent(() => import('@/views/apis/services/apis/doc/CodeView.vue'));
 const ExportDoc = defineAsyncComponent(() => import('@/views/apis/services/services/components/SimpleExport.vue'));
 
 interface Props {

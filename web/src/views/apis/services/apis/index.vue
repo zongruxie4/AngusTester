@@ -17,11 +17,11 @@ const HomePage = defineAsyncComponent(() => import('@/views/apis/services/apis/h
 const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/apis/home/DefaultQuickStarted.vue'));
 
 // Main tab components (displayed when data is available)
-const ApisHeader = defineAsyncComponent(() => import('@/views/apis/services/apis/header/Header.vue'));
+const ApisHeader = defineAsyncComponent(() => import('@/views/apis/services/apis/list/Header.vue'));
 const ApisList = defineAsyncComponent(() => import('@/views/apis/services/apis/list/index.vue'));
-const ServiceTestInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/test/index.vue'));
-const MockService = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/mock/MockService.vue'));
-const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services/apis/oas/Doc.vue'));
+const TestInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/test/index.vue'));
+const MockService = defineAsyncComponent(() => import('@/views/apis/services/apis/mock/index.vue'));
+const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services/apis/doc/index.vue'));
 
 // Service drawer components (displayed when service is selected)
 const ServiceInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/Info.vue'));
@@ -551,7 +551,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId })); // Base API informa
               @openMock="openMock" />
           </TabPane>
           <TabPane key="testResult" :tab="t('service.apis.tabs.test')">
-            <ServiceTestInfo
+            <TestInfo
               :serviceId="mainState.serviceId" />
           </TabPane>
           <TabPane key="mock" :tab="t('service.apis.tabs.mock')">

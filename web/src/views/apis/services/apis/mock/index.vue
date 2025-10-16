@@ -1,65 +1,64 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, Ref, ref } from 'vue';
+import { defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AsyncComponent, Grid, Hints, Icon, IconCopy, notification, Select, Spin } from '@xcan-angus/vue-ui';
-import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
+import { AsyncComponent, Grid, Hints, Icon, IconCopy, notification, Select, Spin, Modal } from '@xcan-angus/vue-ui';
+import { Divider, Radio, RadioGroup } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 
-import { MockServicePermission } from '@/enums/enums';
 import { analysis, mock, services } from '@/api/tester';
 
+import { MockServicePermission } from '@/enums/enums';
+
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const CreateMock = defineAsyncComponent(() => import('./AddMock.vue'));
+const AddMock = defineAsyncComponent(() => import('@/views/apis/services/apis/mock/AddMock.vue'));
 
 interface Props {
   disabled: boolean;
   id: string;
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   id: ''
 });
 
+const { t } = useI18n();
+const router = useRouter();
+
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
-const router = useRouter();
 const appInfo = ref(appContext.getAccessApp()) as Ref<Record<string, any>>;
 const mockServiceInfo = ref();
 const loading = ref();
 
-const columns = [[
-  { label: t('common.name'), dataIndex: 'name' },
-  { label: t('service.mockService.columns.serviceDomainUrl'), dataIndex: 'serviceDomainUrl' },
-  { label: t('service.mockService.columns.servicePort'), dataIndex: 'servicePort' },
-  { label: t('service.mockService.columns.nodeName'), dataIndex: 'nodeName' },
-  { label: t('common.status'), dataIndex: 'status' },
-  { label: t('common.authControl'), dataIndex: 'auth' },
-  { label: t('common.createdBy'), dataIndex: 'createdByName' },
-  { label: t('common.createdDate'), dataIndex: 'createdDate' }
-]];
+const createType = ref();
 
 const selectedMockServiceId = ref();
 const createVisible = ref(false);
-const createMockSeviceById = async () => {
+const createMockServiceById = async () => {
   createVisible.value = true;
 };
 
-const handelRoload = () => {
+const handelReload = () => {
   loadProjectMockService();
 };
+
 const relatedLoading = ref(false);
 const relatedMockService = async () => {
   relatedLoading.value = true;
   const [error] = await mock.assocMockService(selectedMockServiceId.value, props.id);
   relatedLoading.value = false;
+  createType.value = undefined;
   if (error) {
     return;
   }
   notification.success(t('service.mockService.messages.associateSuccess'));
-  loadProjectMockService();
+  await loadProjectMockService();
+};
+
+const handleCloseModal = () => {
+  createType.value = undefined;
 };
 
 const apisCount = ref({
@@ -70,6 +69,92 @@ const apisCount = ref({
   successNum: '0',
   exceptionNum: '0'
 });
+
+const getAnalysisMockService = async (id) => {
+  const [error, { data }] = await analysis.getAnalysisMockService(id);
+  if (error) { return; }
+  apisCount.value = data;
+};
+
+const authVisible = ref(false);
+const openAuth = () => {
+  authVisible.value = true;
+};
+
+const authFlagChange = ({ auth }: { auth: boolean }) => {
+  mockServiceInfo.value.auth = auth;
+};
+
+const cancelProjectMock = async () => {
+  loading.value = true;
+  const [error] = await mock.cancelMockServiceAssoc(mockServiceInfo.value.id);
+  loading.value = false;
+  if (error) { return; }
+  notification.success(t('service.mockService.messages.cancelAssociateSuccess'));
+  mockServiceInfo.value = undefined;
+};
+
+const loadProjectMockService = async () => {
+  loading.value = true;
+  const [error, { data }] = await services.loadServicesMockService(props.id);
+  loading.value = false;
+  if (error) {
+    return;
+  }
+  mockServiceInfo.value = data;
+  if (mockServiceInfo.value?.id) {
+    await getAnalysisMockService(mockServiceInfo.value.id);
+  }
+};
+
+const gotoMock = () => {
+  router.push(`/mockservice?sid=${mockServiceInfo.value.id}`);
+};
+
+const countIconColor = {
+  apisNum: 'text-status-pending',
+  requestNum: 'text-status-process',
+  pushbackNum: 'text-status-orange',
+  simulateErrorNum: 'text-status-error1',
+  successNum: 'text-status-success',
+  exceptionNum: 'text-status-error'
+};
+
+const statusStyleMap = {
+  NOT_STARTED: '#B7BBC2',
+  RUNNING: '#52c41a',
+  STOPPED: '#abd3ff'
+};
+
+onMounted(() => {
+  loadProjectMockService();
+});
+
+watch(() => createType.value, () => {
+  if (createType.value === '1') {
+    createMockServiceById();
+  }
+});
+
+watch(() => createVisible.value, () => {
+  if (!createVisible.value) {
+    createType.value = undefined;
+  }
+});
+
+const columns = [[
+  { label: t('common.name'), dataIndex: 'name' },
+  { label: t('common.nodeName'), dataIndex: 'nodeName' },
+  { label: t('common.authControl'), dataIndex: 'auth' }
+], [
+
+  { label: t('common.status'), dataIndex: 'status' },
+  { label: t('service.mockService.columns.servicePort'), dataIndex: 'servicePort' },
+  { label: t('service.mockService.columns.serviceDomainUrl'), dataIndex: 'serviceDomainUrl' }
+], [
+  { label: t('common.createdBy'), dataIndex: 'createdByName' },
+  { label: t('common.createdDate'), dataIndex: 'createdDate' }
+]];
 
 const mockServiceCount = [
   {
@@ -103,59 +188,6 @@ const mockServiceCount = [
     icon: 'icon-yichangshu1'
   }
 ];
-
-const getAnalysisMockService = async (id) => {
-  const [error, { data }] = await analysis.getAnalysisMockService(id);
-  if (error) { return; }
-  apisCount.value = data;
-};
-
-const authVisible = ref(false);
-const openAuth = () => {
-  authVisible.value = true;
-};
-
-const authFlagChange = ({ auth }: { auth: boolean }) => {
-  mockServiceInfo.value.auth = auth;
-};
-
-const cencelProjcetMock = async () => {
-  loading.value = true;
-  const [error] = await mock.cancelMockServiceAssoc(mockServiceInfo.value.id);
-  loading.value = false;
-  if (error) { return; }
-  notification.success(t('service.mockService.messages.cancelAssociateSuccess'));
-  mockServiceInfo.value = undefined;
-};
-
-const loadProjectMockService = async () => {
-  loading.value = true;
-  const [error, { data }] = await services.loadServicesMockService(props.id);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  mockServiceInfo.value = data;
-  if (mockServiceInfo.value?.id) {
-    getAnalysisMockService(mockServiceInfo.value.id);
-  }
-};
-
-onMounted(() => {
-  loadProjectMockService();
-});
-
-const createType = ref('1');
-
-const gotoMock = () => {
-  router.push(`/mockservice?sid=${mockServiceInfo.value.id}`);
-};
-
-const statusStyleMap = {
-  NOT_STARTED: '#B7BBC2',
-  RUNNING: '#52c41a',
-  STOPPED: '#abd3ff'
-};
 </script>
 <template>
   <div class="h-full">
@@ -172,7 +204,7 @@ const statusStyleMap = {
                 <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">{{ t('service.mockService.actions.cancelAssociate') }}</a>
               </template>
               <template v-else>
-                <a class="whitespace-nowrap text-text-link ml-2" @click="cencelProjcetMock">{{ t('service.mockService.actions.cancelAssociate') }}</a>
+                <a class="whitespace-nowrap text-text-link ml-2" @click="cancelProjectMock">{{ t('service.mockService.actions.cancelAssociate') }}</a>
               </template>
             </div>
           </template>
@@ -219,64 +251,64 @@ const statusStyleMap = {
           </template>
         </Grid>
         <Divider />
-        <div class="text-3 space-y-2 pt-1 leading-5">
+        <div class="text-3 space-x-2 pt-1 leading-5 flex items-center">
           <div
             v-for="(item, index) in mockServiceCount"
             :key="index"
-            class="flex items-center border border-border-divider rounded bg-gray-100 px-3.5 py-1.5">
-            <Icon :icon="item.icon" class="mr-2" />
+            class="inline-flex justify-around flex-1 items-center border border-border-divider rounded bg-blue-bg-light px-3.5 py-1.5">
+            <Icon
+              :icon="item.icon"
+              :class="countIconColor[item.key]"
+              class="mr-2 text-4" />
             <div class="flex flex-1 justify-between items-center">
               <span>{{ item.name }}</span>
-              <span>{{ apisCount?.[item.key] }}</span>
+              <span class="font-semibold">{{ apisCount?.[item.key] }}</span>
             </div>
           </div>
         </div>
       </template>
       <template v-else>
-        <div class="flex flex-col space-y-3.5">
-          <RadioGroup v-model:value="createType">
-            <Radio value="1">{{ t('service.mockService.options.generateMockService') }}</Radio>
-            <Radio value="2">{{ t('service.mockService.options.associateMockService') }}</Radio>
+        <div class="p-2 border border-blue-border rounded bg-blue-bg-light">
+          <Hints :text="t('common.description')" />
+        </div>
+        <div class=" mt-3">
+          <RadioGroup
+            v-model:value="createType"
+            :disabled="props.disabled"
+            class="flex flex-col space-y-3.5">
+            <Radio value="1">
+              <span class="font-semibold">{{ t('service.mockService.options.generateMockService') }}</span>
+              <div>{{ t('service.mockService.description.generateMockService') }}</div>
+            </Radio>
+            <Radio value="2">
+              <span class="font-semibold">{{ t('service.mockService.options.associateMockService') }}</span>
+              <div>{{ t('service.mockService.description.associateMockService') }}</div>
+            </Radio>
           </RadioGroup>
-          <template v-if="createType === '1'">
-            <Hints :text="t('service.mockService.hints.generateMockService')" />
-            <div class="flex justify-end">
-              <Button
-                size="small"
-                type="primary"
-                :disabled="props.disabled"
-                @click="createMockSeviceById">
-                {{ t('actions.generate') }}
-              </Button>
-            </div>
-          </template>
-          <template v-else>
+          <Modal
+            :title="t('service.mockService.modal.associateTitle')"
+            :visible="createType === '2'"
+            :okButtonProps="{text: t('service.mockService.actions.associate'), loading: relatedLoading, disabled: !selectedMockServiceId}"
+            @ok="relatedMockService"
+            @cancel="handleCloseModal">
             <Hints :text="t('service.mockService.hints.associateMockService')" />
             <Select
               v-model:value="selectedMockServiceId"
+              class="w-full mt-2"
               :action="`${TESTER}/mock/service?projectId=${projectId}&fullTextSearch=true`"
               :fieldNames="{ label: 'name', value: 'id' }"
               :maxlength="100"
               :placeholder="t('service.mockService.placeholder.selectMockService')"
               showSearch />
-            <div class="flex justify-end">
-              <Button
-                :disabled="!selectedMockServiceId || props.disabled"
-                size="small"
-                type="primary"
-                @click="relatedMockService">
-                {{ t('service.mockService.actions.associate') }}
-              </Button>
-            </div>
-          </template>
+          </Modal>
         </div>
       </template>
     </Spin>
     <AsyncComponent :visible="createVisible">
-      <CreateMock
+      <AddMock
         v-model:visible="createVisible"
         :serviceId="props.id"
-        @reload="handelRoload" />
+        @reload="handelReload" />
     </AsyncComponent>
     <AsyncComponent :visible="authVisible">
       <AuthorizeModal

@@ -59,9 +59,24 @@ const serviceDomainValidate = async (_rule: Rule, value: string) => {
 
 const rules = computed(() => {
   const baseRule = {
-    name: [{ required: true, message: t('service.mockService.validation.nameRequired'), trigger: 'change' }],
-    servicePort: [{ required: true, message: t('service.mockService.validation.portRequired'), trigger: 'change' }],
-    nodeId: [{ required: true, message: t('service.mockService.validation.nodeRequired'), trigger: 'change' }]
+    name: [
+      {
+        required: true,
+        message: t('service.mockService.validation.nameRequired'),
+        trigger: 'change'
+      }],
+    servicePort: [
+      {
+        required: true,
+        message: t('service.mockService.validation.portRequired'),
+        trigger: 'change'
+      }],
+    nodeId: [
+      {
+        required: true,
+        message: t('service.mockService.validation.nodeRequired'),
+        trigger: 'change'
+      }]
   };
 
   const privateRule = {
@@ -96,10 +111,14 @@ const handleSave = () => {
     }
 
     const updateParams = { id: projectDetail.value?.mockServiceId, apiIds: formState.value.apiIds };
-    const [error, { data }] = projectDetail.value?.mockServiceId ? await mock.patchService(updateParams) : await mock.addServiceByAssoc(addParams);
+    const [error, { data }] = projectDetail.value?.mockServiceId
+      ? await mock.patchService(updateParams)
+      : await mock.addServiceByAssoc(addParams);
     loading.value = false;
     if (error) { return; }
-    notification.success(projectDetail.value?.mockServiceId ? t('actions.tips.updateSuccess') : t('actions.tips.addSuccess'));
+    notification.success(projectDetail.value?.mockServiceId
+      ? t('actions.tips.updateSuccess')
+      : t('actions.tips.addSuccess'));
     emits('update:visible', false);
     emits('reload', data.id);
     reset();
@@ -230,7 +249,9 @@ onMounted(() => {
                 @change="treeSelectChange">
                 <template #title="item">
                   <div class="text-3 leading-3 flex items-center h-6.5">
-                    <label class="w-4 h-4 leading-4 rounded-full text-white text-center mr-1" :class="`bg-blue-badge-s`">{{ t('service.mockService.form.serviceFormat') }}</label>
+                    <label class="w-4 h-4 leading-4 rounded-full text-white text-center mr-1" :class="`bg-blue-badge-s`">
+                      {{ t('service.mockService.form.serviceFormat') }}
+                    </label>
                     <div :title="item.name" class="truncate">{{ item.name }}</div>
                   </div>
                 </template>
@@ -247,7 +268,11 @@ onMounted(() => {
         </div>
       </Form>
       <div class="flex justify-end space-x-5 mt-5">
-        <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
+        <Button
+          size="small"
+          @click="cancel">
+          {{ t('actions.cancel') }}
+        </Button>
         <Button
           size="small"
           type="primary"
