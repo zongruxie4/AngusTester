@@ -268,7 +268,7 @@ const patchClone = async (id:string) => {
 };
 
 // const apiAuths = inject('apiAuths', ref());
-// const projectAuths = inject('projectAuths', ref());
+// const serviceAuths = inject('serviceAuths', ref());
 
 const deleteConfirm = (id: string) => {
   modal.confirm({

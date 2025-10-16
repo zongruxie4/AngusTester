@@ -17,12 +17,11 @@ const InterfaceHeader = defineAsyncComponent(() => import('@/views/apis/services
 const InterfaceList = defineAsyncComponent(() => import('@/views/apis/services/grouping/list/index.vue'));
 const HomePage = defineAsyncComponent(() => import('@/views/apis/services/grouping/home/index.vue'));
 const ApiInfoVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/apis/Info.vue'));
-// const VariableVue = defineAsyncComponent(() => import('@/views/apis/services/components/Variable/index.vue')); // 变量
 const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue')); // 分享记录
-const AgentVue = defineAsyncComponent(() => import('@/views/apis/services/components/Proxy.vue')); // 代理
+const ProxyVue = defineAsyncComponent(() => import('@/views/apis/services/components/Proxy.vue')); // 代理
 const CodeSnippetVue = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue')); // 代码
 const ApiMockVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/apis/MockApi.vue')); //
-const ServiceMockVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/services/mock/MockService.vue')); //
+const ServiceMockVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/services/mock/MockService.vue'));
 const ProjectInfoVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/services/Info.vue')); // 项目信息
 const OpenApiVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/services/OpenAPIInfo.vue'));
 const SyncConfigVue = defineAsyncComponent(() => import('@/views/apis/services/components/sync/SyncConfig.vue'));
@@ -33,7 +32,7 @@ const ComponentVue = defineAsyncComponent(() => import('@/views/apis/services/co
 const SocketConfigVue = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/Config.vue'));
 const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services/grouping/oas/Doc.vue'));
 const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/index.vue'));
-const QuickEntrace = defineAsyncComponent(() => import('@/views/apis/services/QuickStarted.vue'));
+const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/QuickStarted.vue'));
 const ServiceTestInfo = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/services/test/index.vue'));
 
 interface Props {
@@ -45,18 +44,18 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: '',
   info: {}
 });
-const showQuckEbtrace = ref(false); // 当前服务不存在时显示快速入口
+const showQuickStarted = ref(false); // 当前服务不存在时显示快速入口
 const userInfo = ref(appContext.getUser());
 
 const allAuths = ['VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT'];
-// const allProjectAuths = ['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT'];
+// const allserviceAuths = ['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT'];
 
 const loading = ref(false);
 const drawerRef = ref();
 const activeDrawerKey = ref();
 const apiAuths = ref<string[]>(['VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT']);
 const pageType = ref<'default' | 'success' | undefined>('success');
-const projectAuths = ref<string[]>(['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT']);
+const serviceAuths = ref<string[]>(['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT']);
 
 const localGroupBy = localStorage.getItem(`${props.serviceId}_groupBy`);
 const localOrder = localStorage.getItem(`${props.serviceId}_order`);
@@ -97,8 +96,11 @@ const currentApi = ref();
 
 const currentAPITestFlag = computed(() => {
   if (currentApi.value) {
+    // TODO 确认删除Flag？？
     // eslint-disable-next-line no-prototype-builtins
-    if (currentApi.value.hasOwnProperty('testFuncFlag') && currentApi.value.hasOwnProperty('testStabilityFlg') && currentApi.value.hasOwnProperty('testPerfFlag')) {
+    if (currentApi.value.hasOwnProperty('testFuncFlag') &&
+      currentApi.value.hasOwnProperty('testStabilityFlag') &&
+      currentApi.value.hasOwnProperty('testPerfFlag')) {
       const { testFuncFlag, testStabilityFlg, testPerfFlag } = currentApi.value;
       return {
         testFuncFlag,
@@ -206,15 +208,7 @@ watch(() => state.type, () => {
   }
 });
 
-// const setApiDrawerComp = () => {
-//   if (state.type === 'WEBSOCKET') {
-//     state.drawerComp = socketNavs.map(i => ({ ...i, key: i.value }));
-//   } else {
-//     state.drawerComp = navs.map(i => ({ ...i, key: i.value }));
-//   }
-// };
-
-const ploadProjectAuthInfo = async () => {
+const loadProjectAuthInfo = async () => {
   if (isAdmin.value) {
     setProjectDrawerComp();
     return;
@@ -225,7 +219,7 @@ const ploadProjectAuthInfo = async () => {
   }
   state.serviceAuth = resp.data.serviceAuth;
   if (state.serviceAuth) {
-    projectAuths.value = (resp.data?.permissions || []).map(i => i.value);
+    serviceAuths.value = (resp.data?.permissions || []).map(i => i.value);
     setProjectDrawerComp();
   } else {
     setProjectDrawerComp();
@@ -300,12 +294,12 @@ watch(() => state.id, async (newValue, oldValue) => {
 });
 
 const useAuth = computed(() => {
-  return state.id ? apiAuths.value : projectAuths.value;
+  return state.id ? apiAuths.value : serviceAuths.value;
 });
 
 watch(() => userInfo.value, newValue => {
   if (newValue?.id) {
-    ploadProjectAuthInfo();
+    loadProjectAuthInfo();
   }
 }, {
   immediate: true,
@@ -355,7 +349,7 @@ onMounted(async () => {
   if (props.info.shouldCheckId) {
     const [error] = await services.loadInfo(props.info?.id);
     if (error) {
-      showQuckEbtrace.value = true;
+      showQuickStarted.value = true;
       notification.warning(t('service.sidebar.apiGroup.messages.serviceNotExist'));
     }
   }
@@ -376,12 +370,12 @@ provide('id', computed(() => state.id));
 provide('serviceId', computed(() => state.serviceId));
 provide('loadApis', refresh);
 provide('apiAuths', apiAuths);
-provide('projectAuths', projectAuths);
+provide('serviceAuths', serviceAuths);
 provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
 </script>
 <template>
-  <template v-if="showQuckEbtrace">
-    <QuickEntrace />
+  <template v-if="showQuickStarted">
+    <QuickStarted />
   </template>
   <div v-else class="w-full flex justify-end h-full relative">
     <Spin
@@ -437,10 +431,10 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
               v-model:showGroupList="state.showGroupList"
               v-model:loading="loading"
               :serviceName="props.info.name"
-              :projectAuths="projectAuths"
+              :serviceAuths="serviceAuths"
               :groupBy="state.groupedBy"
               projectTargetType="SERVICE"
-              :disabled="!projectAuths.includes('GRANT')"
+              :disabled="!serviceAuths.includes('GRANT')"
               :type="props?.info?.type === 'P' ? 'PROJECT' : 'SERVICE'"
               class="pr-5 mb-3.5"
               @loadInteface="refresh"
@@ -488,7 +482,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
     <template v-if="pageType === 'default'">
       <HomePage
         :info="info"
-        :projectAuths="projectAuths"
+        :serviceAuths="serviceAuths"
         @openDrawer="openDrawer" />
     </template>
     <Drawer
@@ -543,7 +537,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
           :name="props.info.name" />
       </template>
       <template #agent>
-        <AgentVue
+        <ProxyVue
           v-if="activeDrawerKey === 'agent'"
           class="mt-2 pr-5"
           :name="props.info.name" />

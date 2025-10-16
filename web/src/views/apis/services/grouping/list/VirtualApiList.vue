@@ -45,7 +45,7 @@ const edit = (value:DataSourceType):void => {
 };
 
 const apiAuths = inject('apiAuths', ref());
-const projectAuths = inject('projectAuths', ref());
+const serviceAuths = inject('serviceAuths', ref());
 
 // popover 显示的 button
 const myButtonGroup = (item) => {
@@ -84,7 +84,7 @@ const getBtnDisabled = (btn, item) => {
     return item.status?.value === 'RELEASED' || !apiAuths.value.includes(btn.auth);
   }
   if (btn.value === 'patchClone') {
-    return !projectAuths.value.includes(btn.auth);
+    return !serviceAuths.value.includes(btn.auth);
   }
   return !apiAuths.value.includes(btn.auth);
 };
@@ -178,7 +178,7 @@ const handleClick = (event:string, data:DataSourceType, index: number) => {
 };
 
 const mockAuth = computed(() => {
-  if (projectAuths.value.includes('ADD')) {
+  if (serviceAuths.value.includes('ADD')) {
     return ['MOCK'];
   }
   return [];

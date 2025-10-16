@@ -15,7 +15,7 @@ interface Props{
   orderBy?: string;
   orderSort?:string;
   loading: boolean;
-  projectAuths: string[];
+  serviceAuths: string[];
   serviceName: string;
   groupBy: string;
   projectTargetType: {value: string};
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   orderBy: undefined,
   orderSort: undefined,
   groupBy: '-',
-  projectAuths: () => ([])
+  serviceAuths: () => ([])
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -242,7 +242,7 @@ const onDropBtnClick = (btn: {key: string; name: string}) => {
 
 const getBtnPermission = computed(() => {
   const keys: string[] = [];
-  if (props.projectAuths.includes('ADD')) {
+  if (props.serviceAuths.includes('ADD')) {
     keys.push('ADD');
   }
   if (!projectState.id) {
@@ -291,7 +291,7 @@ onBeforeUnmount(() => {
     <div class="flex-1 flex justify-end items-center space-x-3.5">
       <template v-if="!showMoreIcon">
         <Button
-          :disabled="!projectAuths.includes('ADD')"
+          :disabled="!serviceAuths.includes('ADD')"
           size="small"
           class="px-0"
           type="link"
@@ -302,7 +302,7 @@ onBeforeUnmount(() => {
           </div>
         </Button>
         <Button
-          :disabled="!projectAuths.includes('ADD')"
+          :disabled="!serviceAuths.includes('ADD')"
           size="small"
           class="px-0"
           type="link"

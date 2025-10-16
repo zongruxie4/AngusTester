@@ -1616,23 +1616,16 @@
     }
   },
   "apis": {
-    "quickAccess": {
+    "quickStarted": {
       "title": "快速入口",
       "addApiTabName": "添加API",
       "debug": {
         "title": "调试接口",
         "description": "在线快速编辑、调试接口。"
       },
-      "addProject": {
-        "title": "添加项目/服务",
-        "description": "通过项目或服务来组织接口，项目可以包含多个服务(如：微服务)和接口，服务只能包含接口。",
-        "addProject": "添加项目",
-        "addService": "添加服务"
-      },
       "import": {
         "title": "根据文件导入服务",
-        "description": "导入OpenAPI或Postman接口YAML文件或JSON文件。",
-        "template": "根据文件导入{type}"
+        "description": "导入OpenAPI或Postman接口YAML文件或JSON文件。"
       }
     },
     "navigation": {

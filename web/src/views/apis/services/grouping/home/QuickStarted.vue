@@ -10,12 +10,12 @@ const LocalImport = defineAsyncComponent(() => import('../../sidebar/components/
 
 interface Props {
   info:any;
-  projectAuths: string[];
+  serviceAuths: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   info: () => ({}),
-  projectAuths: () => []
+  serviceAuths: () => []
 });
 
 const { t } = useI18n();
@@ -43,7 +43,7 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
   return [
     {
       titleIcon: 'icon-jiekoutiaoshi',
-      title: t('apis.quickAccess.debug.title'),
+      title: t('apis.quickStarted.debug.title'),
       content: t('common.description'),
       icon: 'icon-tiaoshi',
       action: t('common.actions'),
@@ -51,12 +51,12 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
     },
     {
       titleIcon: 'icon-daoruxiangmufuwu',
-      title: t('apis.quickAccess.import.title'),
+      title: t('apis.quickStarted.import.title'),
       content: t('common.description'),
       icon: 'icon-daoru',
       action: t('common.actions'),
       click: openImport,
-      disabled: !props.projectAuths.includes('ADD')
+      disabled: !props.serviceAuths.includes('ADD')
     }
   ].filter(Boolean);
 });
@@ -64,7 +64,7 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
 </script>
 <template>
   <div class="space-y-2">
-    <div class="title-normal">{{ t('apis.quickAccess.title') }}</div>
+    <div class="title-normal">{{ t('apis.quickStarted.title') }}</div>
     <div class="flex flex-nowrap space-x-5 px-4">
       <div
         v-for="(entery,index) in entries"

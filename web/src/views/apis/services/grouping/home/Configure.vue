@@ -7,12 +7,12 @@ import { Button } from 'ant-design-vue';
 
 interface Props {
   info: any;
-  projectAuths: string[];
+  serviceAuths: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   info: {},
-  projectAuths: () => []
+  serviceAuths: () => []
 });
 
 const emits = defineEmits<{(e: 'openDrawer', key: string): void }>();
@@ -29,7 +29,7 @@ const dataSource = computed(() => [[{
   title: t('actions.sync'),
   content: t('apis.configuration.syncDescription', { type: projectType.value }),
   linkText: t('common.actions'),
-  disabled: !props.projectAuths.includes('MODIFY')
+  disabled: !props.serviceAuths.includes('MODIFY')
 },
 {
   id: 'security',
@@ -38,7 +38,7 @@ const dataSource = computed(() => [[{
   title: t('apis.configuration.security'),
   content: t('apis.configuration.securityDescription', { type: projectType.value }),
   linkText: t('common.actions'),
-  disabled: !props.projectAuths.includes('MODIFY')
+  disabled: !props.serviceAuths.includes('MODIFY')
 },
 {
   id: 'serverConfig',
@@ -47,7 +47,7 @@ const dataSource = computed(() => [[{
   title: t('apis.configuration.server'),
   content: t('apis.configuration.serverDescription'),
   linkText: t('common.actions'),
-  disabled: !props.projectAuths.includes('MODIFY')
+  disabled: !props.serviceAuths.includes('MODIFY')
 }
 ]
 ]);

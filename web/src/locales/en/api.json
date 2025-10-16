@@ -1609,18 +1609,12 @@
     }
   },
   "apis": {
-    "quickAccess": {
-      "title": "Quick Access",
+    "quickStarted": {
+      "title": "Quick Started",
       "addApiTabName": "Add API",
       "debug": {
         "title": "Debug API",
         "description": "Edit and debug APIs online quickly."
-      },
-      "addProject": {
-        "title": "Add Project/Service",
-        "description": "Organize APIs through projects or services, projects can contain multiple services (such as microservices) and APIs, services can only contain APIs.",
-        "addProject": "Add Project",
-        "addService": "Add Service"
       },
       "import": {
         "title": "Import Service from File",

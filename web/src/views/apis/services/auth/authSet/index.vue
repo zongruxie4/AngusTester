@@ -339,7 +339,7 @@ const loadApiAuths = async (ids: string[]) => {
   loading.value = false;
 };
 
-const loadProjectAuths = async (ids: string[]) => {
+const loadserviceAuths = async (ids: string[]) => {
   const params: {
     pageSize: 2000, // IN查找有可能超过当前ids的长度，按2000传值
     authObjectId: string;
@@ -473,7 +473,7 @@ const loadProjectTree = async () => {
   }
 
   if (ids.length) {
-    loadProjectAuths(ids);
+    loadserviceAuths(ids);
   } else {
     loading.value = false;
   }
