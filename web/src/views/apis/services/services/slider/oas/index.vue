@@ -12,6 +12,7 @@ import { CompObj, ComponentsType } from './OAS';
 
 const AddModal = defineAsyncComponent(() => import('./AddComponentModal.vue'));
 
+// Props for OAS components explorer panel
 interface Props {
   id: string;
   disabled: boolean;
@@ -26,12 +27,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+// Tab management from parent context
 const addTabPane = inject('addTabPane', (value: {[key: string]: any}) => ({ value }));
 
 // const updateTabPane = inject('updateTabPane', (value: {[key: string]: any}) => ({ value }));
 const loading = ref(false);
 const compList = ref<CompObj[]>([]);
-// 获取项目服务组件列表
+// Fetch components list for current service/project
 const getProjectCompList = async () => {
   if (loading.value) {
     return;
@@ -46,6 +48,7 @@ const getProjectCompList = async () => {
 };
 
 const visible = ref(false);
+// Open designer in a new tab (modeling view)
 const addComponent = () => {
   // currEditData.value = undefined;
   // modalType.value = 'add';
@@ -61,6 +64,7 @@ const addComponent = () => {
   });
 };
 
+// Grouped components by collection type for rendering
 const compListObj = ref<Record<ComponentsType, {
   name:string;
   isExpand:boolean;
@@ -100,6 +104,7 @@ const compListObj = ref<Record<ComponentsType, {
   }
 );
 
+// Cached copy used to restore view after search cleared
 const oldCompListObj = ref<Record<ComponentsType, {
   name:string;
   isExpand:boolean;
@@ -139,6 +144,7 @@ const oldCompListObj = ref<Record<ComponentsType, {
   }
 );
 
+// Build grouped list from raw list using enum metadata
 const getCompTypesEnum = () => {
   const data = enumUtils.enumToMessages(ServicesCompType);
   for (let i = 0; i < data.length; i++) {
@@ -164,10 +170,12 @@ const getCompTypesEnum = () => {
   oldCompListObj.value = JSON.parse(JSON.stringify(compListObj.value));
 };
 
+// Toggle expand/collapse of a group
 const handleExpand = (item) => {
   item.isExpand = !item.isExpand;
 };
 
+// Refresh grouped data
 const getData = async () => {
   await getProjectCompList();
   getCompTypesEnum();
@@ -175,8 +183,10 @@ const getData = async () => {
 
 const modalType = ref<'add' | 'edit' | 'view'>('view');
 
-const currEditData = ref<CompObj>();
-const childrenRef = ref('');
+// Current item under view/edit; use Partial to allow progressive enrichment
+const currEditData = ref<Partial<CompObj>>();
+const childrenRef = ref<string | undefined>('');
+// View component details in modal (read-only by default)
 const handleView = async (compObj:CompObj) => {
   currEditData.value = compObj;
   modalType.value = 'view';
@@ -184,6 +194,7 @@ const handleView = async (compObj:CompObj) => {
   visible.value = true;
 };
 
+// Load referenced model chain for a component
 const getAuthConfigInfo = async (compObj:CompObj) => {
   const [error, { data }] = await services.getComponentRef(props.id, compObj.ref);
   if (error) {
@@ -211,6 +222,7 @@ const getAuthConfigInfo = async (compObj:CompObj) => {
   childrenRef.value = undefined;
 };
 
+// Debounced search across component keys and descriptions
 const handleSearch = debounce(duration.search, (event:ChangeEvent) => {
   const value = event.target.value;
   if (value) {
@@ -237,6 +249,7 @@ function searchCompObj (keyword: string) {
 }
 
 const name = ref('');
+// Refresh list after modal ok
 const handleOk = () => {
   if (modalType.value === 'add' || modalType.value === 'edit') {
     getData();
@@ -244,6 +257,7 @@ const handleOk = () => {
   }
 };
 
+// Reload list and re-apply search filter if needed
 const refreshList = () => {
   getProjectCompList();
   if (name.value) {
@@ -321,7 +335,7 @@ onMounted(() => {
         :modalType="modalType"
         @ok="handleOk" />
     </AsyncComponent>
-  </spin>
+  </Spin>
 </template>
 <style scoped>
 .open-info {

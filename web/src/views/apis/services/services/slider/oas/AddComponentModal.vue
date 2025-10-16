@@ -7,15 +7,17 @@ import { Button, Divider } from 'ant-design-vue';
 import { CompObj, ComponentsType, ExampleObject, HeaderObject } from './OAS';
 import YAML from 'yaml';
 import { useI18n } from 'vue-i18n';
+import { services } from '@/api/tester';
+import { API_EXTENSION_KEY } from '@/utils/apis';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
-import { services } from '@/api/tester';
-
+// Props for Add/Edit/View component modal
 interface Props {
   visible: boolean;
   id: string;
   modalType:'add' | 'edit' | 'view';
-  component?: CompObj
+  component?: Partial<CompObj>
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,16 +26,21 @@ const props = withDefaults(defineProps<Props>(), {
   modalType: 'view',
   component: undefined
 });
+
 const { t } = useI18n();
 
+// Emits: close modal and confirm save
 const emit = defineEmits<{(e: 'update:visible', value:boolean): void, (e: 'ok'): void}>();
 
+// Close modal without saving
 const handleCancel = () => {
   emit('update:visible', false);
 };
 
+// Currently selected component collection type
 const compType = ref<ComponentsType>('schemas');
 
+// Select options for component collections
 const compTypesEnum = ref<{label:string, value:string, disabled:boolean}[]>([]);
 const getCompTypesEnum = () => {
   const data = enumUtils.enumToMessages(ServicesCompType);
@@ -44,23 +51,41 @@ const getCompTypesEnum = () => {
   }));
 };
 
+// Modal title derived from mode
+const title = computed(() => {
+  switch (props.modalType) {
+    case 'view':
+      return t('common.view');
+    case 'edit':
+      return t('actions.edit');
+    case 'add':
+      return t('actions.add');
+    default:
+      return t('actions.detail');
+  }
+});
+
+// Component name input
 const compName = ref('');
 
+// Example object state for "examples" type
 const examples = ref<ExampleObject>({
   value: '',
   summary: '',
   description: ''
 });
 
+// Header object state for "headers" type
 const headers = ref<HeaderObject>({
   schema: {
     type: 'string',
     format: undefined,
-    'x-xc-value': ''
+    [API_EXTENSION_KEY.valueKey]: ''
   },
   description: ''
 });
 
+// Validate and dispatch save based on current component type
 const handleSave = () => {
   if (!compName.value) {
     compNameErr.value = true;
@@ -97,16 +122,13 @@ const handleSave = () => {
       break;
     case 'headers':
       {
-        let params = {
+        const params: any = {
           ...headers.value.schema,
           description: headers.value.description
         };
 
         if (props.component?.isQuote) {
-          params = {
-            ...params,
-            resolvedRefModels: null
-          };
+          (params as any).resolvedRefModels = null;
         }
 
         if (!headers.value.description) {
@@ -119,7 +141,7 @@ const handleSave = () => {
 };
 
 const loading = ref(false);
-// 保存组件数据
+// Save component data by type
 const saveHeaderTypeData = async (params):Promise<void> => {
   if (loading.value) {
     return;
@@ -135,13 +157,7 @@ const saveHeaderTypeData = async (params):Promise<void> => {
   emit('ok');
 };
 
-onMounted(() => {
-  getCompTypesEnum();
-  if (props.component) {
-    setDefaultData();
-  }
-});
-
+// Populate form with defaults from quoted component
 const setDefaultData = () => {
   const model = props.component?.model;
   switch (props.component?.type?.value) {
@@ -153,8 +169,8 @@ const setDefaultData = () => {
       if (model.description) {
         headers.value.description = model?.description;
       }
-      if (model?.schema?.['x-xc-value']) {
-        headers.value.schema['x-xc-value'] = model?.schema['x-xc-value'];
+      if (model?.schema?.[API_EXTENSION_KEY.valueKey]) {
+        headers.value.schema[API_EXTENSION_KEY.valueKey] = model?.schema[API_EXTENSION_KEY.valueKey];
       }
       break;
     }
@@ -171,10 +187,12 @@ const setDefaultData = () => {
   }
 };
 
-const getExcludes = (option:{label:string, value:string}):boolean => {
+// Exclude complex types for header format selection
+const getExcludes = (option:{message:string, value:string}):boolean => {
   return ['object', 'array'].includes(option.value);
 };
 
+// Field validations (UI only)
 const compNameErr = ref(false);
 const compNameChange = (event:ChangeEvent) => {
   const value = event.target.value;
@@ -187,11 +205,13 @@ const exampleValueChange = (event:ChangeEvent) => {
   exampleValueErr.value = !value;
 };
 
+// Mapping for number/integer formats displayed by SelectEnum
 const enumKeyMap = {
   integer: 'IntegerParameterFormat',
   number: 'NumberParameterFormat'
 };
 
+// When editing quoted refs, allow temporary local change and recovery
 const openEdit = ref(false);
 
 const component = ref<CompObj>();
@@ -206,32 +226,27 @@ const recoveryRef = () => {
   setDefaultData();
 };
 
-onMounted(() => {
-  if (props.component) {
-    component.value = JSON.parse(JSON.stringify(props.component));
-    compName.value = props.component.key;
-    compType.value = props.component?.type?.value;
-  }
-});
-
-const title = computed(() => {
-  switch (props.modalType) {
-    case 'view':
-      return t('common.view');
-    case 'edit':
-      return t('actions.edit');
-    case 'add':
-      return t('actions.add');
-    default:
-      return t('actions.detail');
-  }
-});
-
+// Stringified YAML of current component model for read-only view
 const modeContent = computed(() => {
   if (!props.component) {
     return;
   }
   return YAML.stringify(props.component.model, null, 2);
+});
+
+onMounted(() => {
+  getCompTypesEnum();
+  if (props.component) {
+    setDefaultData();
+  }
+});
+
+onMounted(() => {
+  if (props.component) {
+    component.value = JSON.parse(JSON.stringify(props.component));
+    compName.value = props.component.key || '';
+    compType.value = (props.component?.type?.value || 'schemas') as ComponentsType;
+  }
 });
 </script>
 <template>
@@ -312,7 +327,7 @@ const modeContent = computed(() => {
               v-model:value="examples.value"
               :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
               :maxlength="400"
-              :autoSize="{ minRows: 8}"
+              :autoSize="{ minRows: 8, maxRows: 20 }"
               :error="exampleValueErr"
               type="textarea"
               :placeholder="t('service.oas.addModal.examplePlaceholder')"
@@ -357,7 +372,7 @@ const modeContent = computed(() => {
             </template>
             <div class="pl-1.75 mt-2">{{ t('service.oas.addModal.valueLabel') }}</div>
             <Input
-              v-model:value="headers.schema['x-xc-value']"
+              v-model:value="headers.schema[API_EXTENSION_KEY.valueKey]"
               :maxlength="400"
               :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
               :placeholder="t('service.oas.addModal.valuePlaceholder')"
@@ -367,7 +382,7 @@ const modeContent = computed(() => {
               v-model:value="headers.description"
               :maxlength="2000"
               :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
-              :autoSize="{ minRows: 8}"
+              :autoSize="{ minRows: 8, maxRows: 20 }"
               type="textarea"
               :placeholder="t('service.oas.addModal.descriptionPlaceholder')"
               class="w-full" />
@@ -378,7 +393,7 @@ const modeContent = computed(() => {
     <template v-if="props.modalType !=='view'" #footer>
       <Button size="small" @click="handleCancel">{{ t('actions.cancel') }}</Button>
       <Button
-        :disabled="!openEdit && modalType === 'edit' && props.component.isQuote"
+        :disabled="!openEdit && modalType === 'edit' && props.component?.isQuote"
         type="primary"
         size="small"
         :loading="loading"
