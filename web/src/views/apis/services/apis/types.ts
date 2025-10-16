@@ -100,21 +100,6 @@ export type ApisListInfo = {
   mockApisId: number;
 }
 
-export interface StateType {
-  allData: Array<ApisListInfo>,
-  dataSource: Array<ApisListInfo>,
-  id: string,
-  name: string,
-  searchKeyword: string,
-  order: Record<string, string | undefined>,
-  serviceId: string,
-  showGroupList: boolean,
-  drawerComp: Array<NavItem>,
-  groupedBy?: string,
-  type?: 'API' | 'WEBSOCKET';
-  serviceAuth: boolean
-}
-
 /**
  * API list item shape displayed in the virtual list
  */
@@ -143,6 +128,21 @@ export interface APITestResult {
   caseType?: {
     value: string
   }
+}
+
+export interface MainStateType {
+  allData: Array<ApisListInfo>,
+  dataSource: Array<ApisListInfo>,
+  id: string,
+  name: string,
+  searchKeyword: string,
+  order: Record<string, string | undefined>,
+  serviceId: string,
+  showGroupList: boolean,
+  drawerComp: Array<NavItem>,
+  groupedBy?: string,
+  type?: 'API' | 'WEBSOCKET';
+  serviceAuth: boolean
 }
 
 export const apiNavs: NavItem[] = [

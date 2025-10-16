@@ -8,7 +8,7 @@ import { ApiPermission, ServicesPermission } from '@/enums/enums';
 
 import store from '@/store';
 import { apis, services } from '@/api/tester';
-import { apiNavs, serviceNav, socketNavs, StateType, DrawerType } from './types';
+import { apiNavs, serviceNav, socketNavs, MainStateType, DrawerType } from './types';
 
 const { t } = useI18n();
 
@@ -79,7 +79,7 @@ const openapiRef = ref();
 const currentApi = ref(); // Currently selected API
 
 // Main application state
-const mainState = reactive<StateType>({
+const mainState = reactive<MainStateType>({
   drawerComp: [],
   allData: [],
   dataSource: [],
