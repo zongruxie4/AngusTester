@@ -142,16 +142,16 @@ onMounted(() => {
 
 // 测试结果图标颜色
 const getResultIconColor = (item) => {
-  if (item.testFuncFlag && item.testFuncPassedFlag === false) {
+  if (item.testFunc && item.testFuncPassedFlag === false) {
     return 'text-status-error';
   }
-  if (item.testPerfFlag && item.testPerfPassedFlag === false) {
+  if (item.testPerf && item.testPerfPassedFlag === false) {
     return 'text-status-error';
   }
-  if (item.testStabilityFlag && item.testStabilityPassedFlag === false) {
+  if (item.testStability && item.testStabilityPassedFlag === false) {
     return 'text-status-error';
   }
-  if (!item.testFuncFlag && !item.testPerfFlag && !item.testStabilityFlag) {
+  if (!item.testFunc && !item.testPerf && !item.testStability) {
     return '';
   }
   if (item.testFuncPassedFlag === true || item.testPerfPassedFlag === true || item.testStabilityPassedFlag === true) {
@@ -241,9 +241,9 @@ const handleClickSpread = (group, index) => {
                   :class="getResultIconColor(item)" />
               </span>
               <template #content>
-                <div class="flex"><span class="w-20">{{ t('service.apiList.test.functionalTest') }}：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testFuncFlag, item.testFuncPassedFlag)">{{ !item.testFuncFlag ? t('status.disabled') : item.testFuncPassedFlag ? t('status.passed') : item.testFuncPassedFlag === false ? t('status.notPassed') : t('status.notTested') }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span></div></div>
-                <div class="flex"><span class="w-20">{{ t('service.apiList.test.performanceTest') }}：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testPerfFlag, item.testPerfPassedFlag)">{{ !item.testPerfFlag ? t('status.disabled') : item.testPerfPassedFlag ? t('status.passed') : item.testPerfPassedFlag === false ? t('status.notPassed') : t('status.notTested') }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span></div></div>
-                <div class="flex"><span class="w-20">{{ t('service.apiList.test.stabilityTest') }}：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testStabilityFlag, item.testStabilityPassedFlag)">{{ !item.testStabilityFlag ? t('status.disabled') : item.testStabilityPassedFlag ? t('status.passed') : item.testStabilityPassedFlag === false ? t('status.notPassed') : t('status.notTested') }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span></div></div>
+                <div class="flex"><span class="w-20">{{ t('service.apiList.test.functionalTest') }}：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testFunc, item.testFuncPassedFlag)">{{ !item.testFunc ? t('status.disabled') : item.testFuncPassedFlag ? t('status.passed') : item.testFuncPassedFlag === false ? t('status.notPassed') : t('status.notTested') }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span></div></div>
+                <div class="flex"><span class="w-20">{{ t('service.apiList.test.performanceTest') }}：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testPerf, item.testPerfPassedFlag)">{{ !item.testPerf ? t('status.disabled') : item.testPerfPassedFlag ? t('status.passed') : item.testPerfPassedFlag === false ? t('status.notPassed') : t('status.notTested') }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span></div></div>
+                <div class="flex"><span class="w-20">{{ t('service.apiList.test.stabilityTest') }}：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testStability, item.testStabilityPassedFlag)">{{ !item.testStability ? t('status.disabled') : item.testStabilityPassedFlag ? t('status.passed') : item.testStabilityPassedFlag === false ? t('status.notPassed') : t('status.notTested') }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span></div></div>
               </template>
             </Popover>
             <span :class="['w-20', API_STATUS_COLOR_CONFIG[item.status?.value]]">{{ item.status?.message }}</span>

@@ -3,37 +3,45 @@ import { computed, defineAsyncComponent, inject, onMounted, provide, reactive, r
 import { useI18n } from 'vue-i18n';
 import { Button, Spin, TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline, Drawer, Icon, notification } from '@xcan-angus/vue-ui';
-import { cookieUtils, DomainManager, appContext } from '@xcan-angus/infra';
+import { cookieUtils, DomainManager, appContext, enumUtils, PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { ApiPermission, ServicesPermission } from '@/enums/enums';
 
 import store from '@/store';
 import { apis, services } from '@/api/tester';
-import { navs, serviceNav, socketNavs, StateType } from './PropsType';
+import { navs, serviceNav, socketNavs, StateType, DrawerType } from './PropsType';
 
 const { t } = useI18n();
 
-const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
-const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
-const InterfaceHeader = defineAsyncComponent(() => import('@/views/apis/services/apis/header/Header.vue'));
-const InterfaceList = defineAsyncComponent(() => import('@/views/apis/services/apis/list/index.vue'));
+// Home page components (displayed when no data is available)
 const HomePage = defineAsyncComponent(() => import('@/views/apis/services/apis/home/index.vue'));
-const ApiInfoVue = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/apis/Info.vue'));
-const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue')); // 分享记录
-const ProxyVue = defineAsyncComponent(() => import('@/views/apis/services/components/Proxy.vue')); // 代理
-const CodeSnippetVue = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue')); // 代码
-const ApiMockVue = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/apis/MockApi.vue')); //
-const ServiceMockVue = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/mock/MockService.vue'));
-const ProjectInfoVue = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/Info.vue')); // 项目信息
-const OpenApiVue = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/OpenAPIInfo.vue'));
-const SyncConfigVue = defineAsyncComponent(() => import('@/views/apis/services/components/sync/SyncConfig.vue'));
-const SecurityVue = defineAsyncComponent(() => import('@/views/apis/services/components/security/SecurityConfig.vue'));
-const ServerConfigVue = defineAsyncComponent(() => import('@/views/apis/services/components/server/ServerConfig.vue'));
-const TagVue = defineAsyncComponent(() => import('@/views/apis/services/components/Tag.vue'));
-const ComponentVue = defineAsyncComponent(() => import('@/views/apis/services/components/oas/OAS.vue'));
-const SocketConfigVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Config.vue'));
-const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services/apis/oas/Doc.vue'));
-const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/index.vue'));
 const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/apis/home/DefaultQuickStarted.vue'));
+
+// Main tab components (displayed when data is available)
+const ApisHeader = defineAsyncComponent(() => import('@/views/apis/services/apis/header/Header.vue'));
+const ApisList = defineAsyncComponent(() => import('@/views/apis/services/apis/list/index.vue'));
 const ServiceTestInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/test/index.vue'));
+const MockService = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/mock/MockService.vue'));
+const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services/apis/oas/Doc.vue'));
+
+// Service drawer components (displayed when service is selected)
+const ServiceInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/Info.vue'));
+const OASInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/OASInfo.vue'));
+const SyncConfig = defineAsyncComponent(() => import('@/views/apis/services/components/sync/SyncConfig.vue'));
+const SecurityConfig = defineAsyncComponent(() => import('@/views/apis/services/components/security/SecurityConfig.vue'));
+const ServerConfig = defineAsyncComponent(() => import('@/views/apis/services/components/server/ServerConfig.vue'));
+const RequestProxy = defineAsyncComponent(() => import('@/views/apis/services/components/RequestProxy.vue'));
+const OASTag = defineAsyncComponent(() => import('@/views/apis/services/components/OASTag.vue'));
+const OASComponent = defineAsyncComponent(() => import('@/views/apis/services/components/oas/Component.vue'));
+
+// API drawer components (displayed when API is selected)
+const ApiInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/apis/Info.vue'));
+const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
+const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
+const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/index.vue'));
+const CodeSnippet = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue'));
+const MockApi = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/apis/MockApi.vue'));
+const ShareList = defineAsyncComponent(() => import('@/components/share/list.vue'));
+const WebSocketConfig = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Config.vue'));
 
 interface Props {
   serviceId: string;
@@ -44,34 +52,41 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: '',
   info: {}
 });
-const showQuickStarted = ref(false); // 当前服务不存在时显示快速入口
+
+// UI state management
+const showQuickStarted = ref(false); // Show quick start when service doesn't exist
 const userInfo = ref(appContext.getUser());
-
-const allAuths = ['VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT'];
-// const allserviceAuths = ['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT'];
-
+const pageType = ref<'default' | 'success' | undefined>('success');
 const loading = ref(false);
+const viewMode = ref<'code' | 'UI'>('UI');
+
+// Drawer and navigation state
 const drawerRef = ref();
 const activeDrawerKey = ref();
-const apiAuths = ref<string[]>(['VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT']);
-const pageType = ref<'default' | 'success' | undefined>('success');
-const serviceAuths = ref<string[]>(['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT']);
+const tabActiveKey = ref<'doc' | 'api'>('api');
 
+// Permission management
+const apiAuths = ref<ApiPermission[]>([]);
+const serviceAuths = ref<ServicesPermission[]>([]);
+
+// Local storage keys for persistence
 const localGroupBy = localStorage.getItem(`${props.serviceId}_groupBy`);
 const localOrder = localStorage.getItem(`${props.serviceId}_order`);
+
+// Data management
 const scrollListData = ref<any[]>([]);
+const apiListRef = ref();
+const openapiRef = ref();
+const currentApi = ref(); // Currently selected API
+
+// Main application state
 const state = reactive<StateType>({
   drawerComp: [],
   allData: [],
   dataSource: [],
-  id: '', // 接口Id
+  id: '', // API ID
   name: '',
-  order: localOrder
-    ? JSON.parse(localOrder)
-    : {
-        orderBy: undefined,
-        orderSort: undefined
-      },
+  order: localOrder ? JSON.parse(localOrder) : { orderBy: undefined, orderSort: undefined },
   serviceId: '',
   showGroupList: !!(localGroupBy && localGroupBy !== ''),
   groupedBy: localStorage.getItem(`${props.serviceId}_groupBy`) || '',
@@ -79,41 +94,39 @@ const state = reactive<StateType>({
   serviceAuth: false
 });
 
-const updateInterface = inject('updateInterface', {
+// Global state updates from parent components
+const updateApi = inject('updateApi', {
   reloadKey: 0,
   reloadId: ''
 });
 
 const updateHosts = inject('updateHosts', { reloadKey: 0, reloadId: '' });
+
 const isAdmin = computed(() => appContext.isAdmin());
 
-const apiListRef = ref();
-const openapiRef = ref();
-const tabActiveKey = ref<'doc' | 'api'>('api');
+// Current API test configuration flags
+const currentAPITest = computed(() => {
+  if (!currentApi.value) return undefined;
 
-// 当前选中的API
-const currentApi = ref();
+  const { testFunc, testStability, testPerf } = currentApi.value;
 
-const currentAPITestFlag = computed(() => {
-  if (currentApi.value) {
-    // TODO 确认删除Flag？？
-    // eslint-disable-next-line no-prototype-builtins
-    if (currentApi.value.hasOwnProperty('testFuncFlag') &&
-      currentApi.value.hasOwnProperty('testStabilityFlag') &&
-      currentApi.value.hasOwnProperty('testPerfFlag')) {
-      const { testFuncFlag, testStabilityFlg, testPerfFlag } = currentApi.value;
-      return {
-        testFuncFlag,
-        testStabilityFlg,
-        testPerfFlag
-      };
-    }
+  // Check if API has test configuration properties
+  if (testFunc !== undefined && testStability !== undefined && testPerf !== undefined) {
+    return {
+      testFunc,
+      testStability,
+      testPerf
+    };
   }
   return undefined;
 });
 
+// Search parameters for API filtering
 const searchParams = computed(() => {
-  const filters = state.name ? [{ key: 'summary', op: 'MATCH', value: state.name.trim() }] : [];
+  const filters = state.name
+    ? [{ key: 'summary', op: SearchCriteria.OpEnum.Match, value: state.name.trim() }]
+    : [];
+
   return {
     filters,
     ...state.order,
@@ -121,129 +134,89 @@ const searchParams = computed(() => {
   };
 });
 
-// 查询接口列表
+// Current user permissions based on context
+const useAuth = computed(() => {
+  return state.id ? apiAuths.value : serviceAuths.value;
+}) as any;
+
+// Current type for drawer components
+const type = computed(() => {
+  return state.type === 'WEBSOCKET' ? 'API' : (state.type || 'SERVICE');
+});
+
+/**
+ * Load APIs for the current service
+ * Fetches API list with pagination, filtering, and sorting
+ */
 const loadApis = async () => {
   const params: any = {
     pageNo: 1,
     pageSize: store.state.maxPageSize,
     id: props.serviceId,
     filters: [],
-    infoScope: 'DETAIL',
+    infoScope: PageQuery.InfoScope.DETAIL,
     ...state.order
   };
+
+  // Add search filter if name is provided
   if (state.name) {
     const keyword = state.name.trim();
-    params.filters.push({ key: 'summary', op: 'MATCH', value: keyword });
+    params.filters.push({ key: 'summary', op: SearchCriteria.OpEnum.Match, value: keyword });
   }
+
   loading.value = true;
   const [error, { data = {} }] = await services.loadApis(params);
+
   if (error) {
     loading.value = false;
     return;
   }
+
   state.allData = data.list || [];
   setDataSource();
+
+  // Add small delay for better UX
   setTimeout(() => {
     loading.value = false;
   }, 100);
 };
 
+/**
+ * Set data source for display
+ * Currently just copies allData to dataSource
+ */
 const setDataSource = () => {
   state.dataSource = state.allData;
 };
 
-//  分组
-const grouped = (groupKey) => {
-  if (groupKey !== state.groupedBy) {
-    state.groupedBy = groupKey;
-    state.id = '';
-  }
-};
-
-const handleConfig = (value) => {
-  drawerRef.value?.open(value);
-};
-
-const viewMode = ref<'code' | 'UI'>('UI');
-const viewModeChange = () => {
-  if (viewMode.value === 'UI') {
-    viewMode.value = 'code';
-  } else {
-    viewMode.value = 'UI';
-  }
-};
-
-const refreshDoc = () => {
-  if (typeof openapiRef.value?.getData === 'function') {
-    openapiRef.value.loadData();
-  }
-};
-
-watch(() => state.name, () => {
-  state.id = '';
-  refresh();
-});
-
-watch(() => state.order, () => {
-  state.id = '';
-  refresh();
-}, {
-  deep: true
-});
-
-const setProjectDrawerComp = () => {
-  state.drawerComp = serviceNav.map((i: any) => {
-    return {
-      ...i,
-      key: i.value
-    };
+/**
+ * Update state with new configuration
+ * @param config - Configuration object to merge into state
+ */
+const updateState = (config: Record<string, any> = {}) => {
+  Object.keys(config).forEach((key) => {
+    state[key] = config[key];
   });
 };
 
-watch(() => state.type, () => {
-  if (state.type === 'WEBSOCKET') {
-    state.drawerComp = socketNavs.map(i => ({ ...i, key: i.value }));
-  } else if (state.type === 'API') {
-    state.drawerComp = navs.map(i => ({ ...i, key: i.value }));
-  }
-});
-
-const loadProjectAuthInfo = async () => {
-  if (isAdmin.value) {
-    setProjectDrawerComp();
-    return;
-  }
-  const [error, resp] = await services.getCurrentAuth(state.serviceId);
-  if (error) {
-    return;
-  }
-  state.serviceAuth = resp.data.serviceAuth;
-  if (state.serviceAuth) {
-    serviceAuths.value = (resp.data?.permissions || []).map(i => i.value);
-    setProjectDrawerComp();
-  } else {
-    setProjectDrawerComp();
-  }
-};
-
-// 获取 api 操作权限
-const getApiAuth = async () => {
-  const [error, { data = [] }] = await apis.getCurrentAuth(state.id);
-  if (error) {
-    return;
-  }
-  const auths = (data.permissions || []).map(m => m.value);
-  apiAuths.value = auths;
-};
-
-const changeScrollDataList = (data) => {
+/**
+ * Update scroll list data (used by virtual scrolling)
+ * @param data - The new scroll data
+ */
+const changeScrollDataList = (data: any[]) => {
   scrollListData.value = data;
 };
 
-// @TODO state.dataSource 为空，目前先使用scrollListData
+/**
+ * Update API data in the current data source
+ * TODO: state.dataSource is empty, currently using scrollListData as fallback
+ * @param data - Object containing API id and auth status
+ */
 const updateApiData = (data: { id: string; auth: boolean; }) => {
   const dataSource = scrollListData.value;
   const { id: targetId, auth } = data;
+
+  // Find and update the specific API in the data source
   for (let i = 0, len = dataSource.length; i < len; i++) {
     if (dataSource[i].id === targetId) {
       dataSource[i].auth = auth;
@@ -252,76 +225,16 @@ const updateApiData = (data: { id: string; auth: boolean; }) => {
   }
 };
 
-watch(() => updateInterface.reloadKey, () => {
-  if (updateInterface.reloadId === props.serviceId || updateInterface.reloadId === 'all') {
-    refresh();
-    updateHosts.reloadKey++;
-    updateHosts.reloadId = props.serviceId as string;
-  }
-});
-
-watch(() => props.serviceId, (newValue) => {
-  state.serviceId = newValue as string;
-}, {
-  immediate: true
-});
-
-watch(() => state.type, () => {
-  drawerRef.value?.close();
-});
-
-watch(() => state.id, async (newValue, oldValue) => {
-  if (newValue) {
-    if (!oldValue) {
-      drawerRef.value?.close();
-    }
-
-    const selectApi = state.allData.find(api => api.id === state.id) || scrollListData.value.find(api => api.id === state.id);
-    currentApi.value = selectApi;
-
-    if (selectApi?.serviceAuth && selectApi?.auth) {
-      if (!isAdmin.value) {
-        await getApiAuth();
-      }
-    } else {
-      apiAuths.value = allAuths;
-    }
-    // setApiDrawerComp();
-  } else {
-    drawerRef.value?.close();
-    setProjectDrawerComp();
-  }
-});
-
-const useAuth = computed(() => {
-  return state.id ? apiAuths.value : serviceAuths.value;
-});
-
-watch(() => userInfo.value, newValue => {
-  if (newValue?.id) {
-    loadProjectAuthInfo();
-  }
-}, {
-  immediate: true,
-  deep: true
-});
-
-const type = computed(() => {
-  return state.type === 'WEBSOCKET' ? 'API' : (state.type || 'SERVICE');
-});
-
-const openMock = () => {
-  drawerRef.value?.open('apiMock');
-};
-
-const openDrawer = (key) => {
-  drawerRef.value?.open(key);
-};
-
+/**
+ * Refresh data based on current view mode
+ * Uses different refresh strategies for grouped vs ungrouped views
+ */
 const refresh = () => {
   if (state.showGroupList) {
+    // Grouped view: reload all APIs
     loadApis();
   } else {
+    // Ungrouped view: update virtual scroll list
     if (!apiListRef.value) {
       pageType.value = 'success';
       setTimeout(() => {
@@ -333,11 +246,189 @@ const refresh = () => {
   }
 };
 
-watch(() => state.showGroupList, () => {
-  if (state.showGroupList) {
-    if (!state.allData.length) {
-      loadApis();
+/**
+ * Toggle between UI and code view mode
+ */
+const viewModeChange = () => {
+  viewMode.value = viewMode.value === 'UI' ? 'code' : 'UI';
+};
+
+/**
+ * Refresh OpenAPI documentation
+ */
+const refreshDoc = () => {
+  if (typeof openapiRef.value?.getData === 'function') {
+    openapiRef.value.loadData();
+  }
+};
+
+/**
+ * Handle grouping change
+ * @param groupKey - The new grouping key
+ */
+const grouped = (groupKey: string) => {
+  if (groupKey !== state.groupedBy) {
+    state.groupedBy = groupKey;
+    state.id = ''; // Clear selected API when grouping changes
+  }
+};
+
+/**
+ * Load project/service level permissions
+ * Admin users have all permissions, others need to fetch from API
+ */
+const getServiceAuth = async () => {
+  if (isAdmin.value) {
+    setServiceDrawerComp();
+    return;
+  }
+
+  const [error, resp] = await services.getCurrentAuth(state.serviceId);
+  if (error) {
+    return;
+  }
+
+  state.serviceAuth = resp.data.serviceAuth;
+  if (state.serviceAuth) {
+    serviceAuths.value = (resp.data?.permissions || []).map(i => i.value);
+  }
+
+  setServiceDrawerComp();
+};
+
+/**
+ * Load API level permissions for the currently selected API
+ */
+const getApiAuth = async () => {
+  const [error, { data = [] }] = await apis.getCurrentAuth(state.id);
+  if (error) {
+    return;
+  }
+
+  const auths = (data.permissions || []).map(m => m.value);
+  apiAuths.value = auths;
+};
+
+/**
+ * Set project drawer components based on service navigation
+ */
+const setServiceDrawerComp = () => {
+  state.drawerComp = serviceNav.map((i: any) => ({
+    ...i,
+    key: i.value
+  }));
+};
+
+/**
+ * Open configuration drawer
+ * @param value - The drawer key to open
+ */
+const handleConfig = (value: string) => {
+  drawerRef.value?.open(value);
+};
+
+/**
+ * Open mock configuration drawer
+ */
+const openMock = () => {
+  drawerRef.value?.open(DrawerType.API_MOCK);
+};
+
+/**
+ * Open any drawer by key
+ * @param key - The drawer key to open
+ */
+const openDrawer = (key: string) => {
+  drawerRef.value?.open(key);
+};
+
+// Watch for search name changes
+watch(() => state.name, () => {
+  state.id = ''; // Clear selected API when searching
+  refresh();
+});
+
+// Watch for order changes (deep watch for nested object)
+watch(() => state.order, () => {
+  state.id = ''; // Clear selected API when sorting changes
+  refresh();
+}, {
+  deep: true
+});
+
+// Watch for service type changes to update drawer components
+watch(() => state.type, () => {
+  if (state.type === 'WEBSOCKET') {
+    state.drawerComp = socketNavs.map(i => ({ ...i, key: i.value }));
+  } else if (state.type === 'API') {
+    state.drawerComp = navs.map(i => ({ ...i, key: i.value }));
+  }
+});
+
+// Watch for API updates from parent components
+watch(() => updateApi.reloadKey, () => {
+  if (updateApi.reloadId === props.serviceId || updateApi.reloadId === 'all') {
+    refresh();
+    updateHosts.reloadKey++;
+    updateHosts.reloadId = props.serviceId as string;
+  }
+});
+
+// Watch for service ID changes
+watch(() => props.serviceId, (newValue) => {
+  state.serviceId = newValue as string;
+}, {
+  immediate: true
+});
+
+// Watch for type changes to close drawer
+watch(() => state.type, () => {
+  drawerRef.value?.close();
+});
+
+// Watch for API selection changes
+watch(() => state.id, async (newValue, oldValue) => {
+  if (newValue) {
+    // Close drawer if switching from no selection to selection
+    if (!oldValue) {
+      drawerRef.value?.close();
     }
+
+    // Find the selected API from available data sources
+    const selectApi = state.allData.find(api => api.id === state.id) ||
+                     scrollListData.value.find(api => api.id === state.id);
+    currentApi.value = selectApi;
+
+    // Load API permissions if needed
+    if (selectApi?.serviceAuth && selectApi?.auth) {
+      if (!isAdmin.value) {
+        await getApiAuth();
+      }
+    } else {
+      // Admin users or APIs without auth restrictions get all permissions
+      apiAuths.value = enumUtils.getEnumValues(ApiPermission);
+    }
+  } else {
+    // No API selected, close drawer and show service-level components
+    drawerRef.value?.close();
+    setServiceDrawerComp();
+  }
+});
+
+// Watch for user info changes to load permissions
+watch(() => userInfo.value, newValue => {
+  if (newValue?.id) {
+    getServiceAuth();
+  }
+}, {
+  immediate: true,
+  deep: true
+});
+
+// Watch for group list visibility changes
+watch(() => state.showGroupList, () => {
+  if (state.showGroupList && !state.allData.length) {
+    loadApis();
   }
 }, {
   immediate: true
@@ -345,7 +436,13 @@ watch(() => state.showGroupList, () => {
 
 const accessToken = ref();
 const docOrigin = ref();
+
+/**
+ * Component mounted lifecycle
+ * Initialize component state and check service existence
+ */
 onMounted(async () => {
+  // Check if service exists when shouldCheckId is true
   if (props.info.shouldCheckId) {
     const [error] = await services.loadInfo(props.info?.id);
     if (error) {
@@ -353,25 +450,21 @@ onMounted(async () => {
       notification.warning(t('service.sidebar.apiGroup.messages.serviceNotExist'));
     }
   }
+
+  // Initialize access token and document origin
   accessToken.value = cookieUtils.getTokenInfo().access_token;
-  // docOrigin.value = await site.getUrl('apis');
   docOrigin.value = DomainManager.getInstance().getApiDomain('tester');
 });
 
-// 更新state
-const updateState = (config = {}) => {
-  Object.keys(config).forEach((key) => {
-    state[key] = config[key];
-  });
-};
-provide('api', state); // 当前 state,  用于提供给 api list 修改当前选中的 apid id
-provide('changeGroupState', updateState);
-provide('id', computed(() => state.id));
-provide('serviceId', computed(() => state.serviceId));
-provide('loadApis', refresh);
-provide('apiAuths', apiAuths);
-provide('serviceAuths', serviceAuths);
-provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
+// Provide reactive state and methods to child components
+provide('api', state); // Current state for API list to modify selected API ID
+provide('changeGroupState', updateState); // Method to update group state
+provide('id', computed(() => state.id)); // Current selected API ID
+provide('serviceId', computed(() => state.serviceId)); // Current service ID
+provide('loadApis', refresh); // Method to refresh API list
+provide('apiAuths', apiAuths); // API-level permissions
+provide('serviceAuths', serviceAuths); // Service-level permissions
+provide('apiBaseInfo', ref({ serviceId: props.serviceId })); // Base API information
 </script>
 <template>
   <template v-if="showQuickStarted">
@@ -423,7 +516,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
             key="api"
             :tab="t('common.api')"
             class="flex flex-col">
-            <InterfaceHeader
+            <ApisHeader
               v-model:name="state.name"
               v-model:orderBy="state.order.orderBy"
               v-model:orderSort="state.order.orderSort"
@@ -434,13 +527,13 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
               :serviceAuths="serviceAuths"
               :groupBy="state.groupedBy"
               projectTargetType="SERVICE"
-              :disabled="!serviceAuths.includes('GRANT')"
+              :disabled="!serviceAuths.includes(ServicesPermission.GRANT)"
               :type="props?.info?.type === 'P' ? 'PROJECT' : 'SERVICE'"
               class="pr-5 mb-3.5"
               @loadInteface="refresh"
               @grouped="grouped"
               @config="handleConfig" />
-            <InterfaceList
+            <ApisList
               ref="apiListRef"
               v-model:pageType="pageType"
               v-model:spinning="loading"
@@ -462,10 +555,10 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
               :serviceId="state.serviceId" />
           </TabPane>
           <TabPane key="mock" :tab="t('service.apis.tabs.mock')">
-            <ServiceMockVue
+            <MockService
               :id="state.serviceId"
               class="pt-2 pr-5"
-              :disabled="!useAuth.includes('MODIFY')" />
+              :disabled="!useAuth.includes(ServicesPermission.MODIFY)" />
           </TabPane>
           <TabPane
             key="doc"
@@ -490,152 +583,152 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
       v-model:activeKey="activeDrawerKey"
       :menuItems="state.drawerComp">
       <template #apiInfo>
-        <ApiInfoVue
-          v-if="activeDrawerKey === 'apiInfo'"
+        <ApiInfo
+          v-if="activeDrawerKey === DrawerType.API_INFO"
           :id="state.id || state.serviceId"
           class="pr-4"
           :type="type"
-          :disabled="!useAuth.includes('MODIFY')"
+          :disabled="!useAuth.includes(ApiPermission.MODIFY)"
           :name="props.info.name" />
       </template>
       <template #performance>
         <Indicator
-          v-if="activeDrawerKey === 'performance'"
+          v-if="activeDrawerKey === DrawerType.PERFORMANCE"
           :id="state.id"
           class="mt-2 pr-6"
           type="API"
-          :testFlag="currentAPITestFlag"
-          :disabled="!useAuth.includes('MODIFY')"
+          :testFlag="currentAPITest"
+          :disabled="!useAuth.includes(ApiPermission.MODIFY)"
           :name="props.info.name" />
       </template>
       <template #activity>
         <ActivityTimeline
-          v-if="activeDrawerKey === 'activity'"
+          v-if="activeDrawerKey === DrawerType.ACTIVITY"
           :id="state.id || state.serviceId"
           class="pt-2 pr-5"
           :type="type"
           infoKey="description"
-          :disabled="!useAuth.includes('VIEW')"
+          :disabled="!useAuth.includes(ApiPermission.VIEW)"
           :name="props.info.name" />
       </template>
       <template #testInfo>
         <HttpTestInfo
-          v-if="activeDrawerKey === 'testInfo'"
+          v-if="activeDrawerKey === DrawerType.TEST_INFO"
           :id="state.id || state.serviceId"
           class="pr-5 pt-2"
           :type="state.type || 'SERVICE'"
-          :disabled="!useAuth.includes('MODIFY')"
+          :disabled="!useAuth.includes(ApiPermission.MODIFY)"
           :name="props.info.name" />
       </template>
       <template #shareList>
-        <ShareListVue
-          v-if="activeDrawerKey === 'shareList'"
+        <ShareList
+          v-if="activeDrawerKey === DrawerType.SHARE_LIST"
           :id="state.id || state.serviceId"
           :type="type"
           class="pt-2 pr-5"
-          :disabled="!useAuth.includes('SHARE')"
+          :disabled="!useAuth.includes(ApiPermission.SHARE)"
           :name="props.info.name" />
       </template>
       <template #agent>
-        <ProxyVue
-          v-if="activeDrawerKey === 'agent'"
+        <RequestProxy
+          v-if="activeDrawerKey === DrawerType.PROXY"
           class="mt-2 pr-5"
           :name="props.info.name" />
       </template>
       <template #code>
-        <CodeSnippetVue
-          v-if="activeDrawerKey === 'code'"
+        <CodeSnippet
+          v-if="activeDrawerKey === DrawerType.CODE"
           :id="state.id"
           class="pr-5"
           :type="type"
-          :disabled="!useAuth.includes('VIEW')"
+          :disabled="!useAuth.includes(ApiPermission.VIEW)"
           :name="props.info.name"
           from="list" />
       </template>
       <template #apiMock>
-        <ApiMockVue
-          v-if="activeDrawerKey === 'apiMock'"
+        <MockApi
+          v-if="activeDrawerKey === DrawerType.API_MOCK"
           :id="state.id"
           class="pt-2 pr-5"
-          :disabled="!apiAuths.includes('MODIFY')" />
+          :disabled="!apiAuths.includes(ApiPermission.MODIFY)" />
       </template>
       <template #projectInfo>
         <div class="mt-2 pr-5">
-          <ProjectInfoVue
-            v-if="activeDrawerKey === 'projectInfo'"
+          <ServiceInfo
+            v-if="activeDrawerKey === DrawerType.SERVICE_INFO"
             :id="state.serviceId"
             :type="type"
-            :disabled="!useAuth.includes('GRANT')"
+            :disabled="!useAuth.includes(ServicesPermission.GRANT)"
             :name="props.info.name" />
         </div>
       </template>
       <template #openapi>
         <div class="mt-2 pr-5">
-          <OpenApiVue
-            v-if="activeDrawerKey === 'openapi'"
+          <OASInfo
+            v-if="activeDrawerKey === DrawerType.OPENAPI"
             :id="state.id || state.serviceId"
             :type="type"
-            :disabled="!useAuth.includes('GRANT')"
+            :disabled="!useAuth.includes(ServicesPermission.GRANT)"
             :name="props.info.name" />
         </div>
       </template>
       <template #syncConfig>
-        <SyncConfigVue
-          v-if="activeDrawerKey === 'syncConfig'"
+        <SyncConfig
+          v-if="activeDrawerKey === DrawerType.SYNC_CONFIG"
           :id="state.serviceId"
           class="pt-2 pr-5"
-          :disabled="!useAuth.includes('MODIFY')"
+          :disabled="!useAuth.includes(ServicesPermission.MODIFY)"
           :name="props.info.name" />
       </template>
       <template #security>
-        <SecurityVue
-          v-if="activeDrawerKey === 'security'"
+        <SecurityConfig
+          v-if="activeDrawerKey === DrawerType.SECURITY"
           :id="state.serviceId"
           class="pt-2 pr-5"
           :type="type"
-          :disabled="!useAuth.includes('MODIFY')"
+          :disabled="!useAuth.includes(ServicesPermission.MODIFY)"
           :name="props.info.name" />
       </template>
       <template #serverConfig>
-        <ServerConfigVue
-          v-if="activeDrawerKey === 'serverConfig'"
+        <ServerConfig
+          v-if="activeDrawerKey === DrawerType.SERVER_CONFIG"
           :id="state.serviceId"
           class="pt-2 pr-5" />
       </template>
       <template #tag>
-        <TagVue
-          v-if="activeDrawerKey === 'tag'"
+        <OASTag
+          v-if="activeDrawerKey === DrawerType.TAG"
           :id="state.id || state.serviceId"
           class="pt-2 pr-5"
           :type="type"
-          :disabled="!useAuth.includes('MODIFY')"
+          :disabled="!useAuth.includes(ServicesPermission.MODIFY)"
           :name="props.info.name" />
       </template>
       <template #componnet>
-        <ComponentVue
-          v-if="activeDrawerKey === 'componnet'"
+        <OASComponent
+          v-if="activeDrawerKey === DrawerType.COMPONENT"
           :id="state.serviceId"
           class="pt-2 pr-5"
           :type="type"
-          :disabled="!useAuth.includes('MODIFY')"
+          :disabled="!useAuth.includes(ServicesPermission.MODIFY)"
           :name="props.info.name" />
       </template>
       <template #socketConfig>
-        <SocketConfigVue
-          v-if="activeDrawerKey === 'socketConfig'"
+        <WebSocketConfig
+          v-if="activeDrawerKey === DrawerType.SOCKET_CONFIG"
           :id="state.id || state.serviceId"
           class="mt-2 pr-5"
           :type="type"
-          :disabled="!useAuth.includes('MODIFY')"
+          :disabled="!useAuth.includes(ServicesPermission.MODIFY)"
           :name="props.info.name" />
       </template>
       <template #cases>
         <TestCase
-          v-if="activeDrawerKey === 'case'"
+          v-if="activeDrawerKey === DrawerType.CASE"
           :id="state.id || state.serviceId"
           class="mt-2 pr-5"
           :type="type"
-          :disabled="!useAuth.includes('MODIFY')" />
+          :disabled="!useAuth.includes(ServicesPermission.MODIFY)" />
       </template>
     </Drawer>
   </div>

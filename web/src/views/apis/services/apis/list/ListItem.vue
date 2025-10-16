@@ -88,16 +88,16 @@ const getBtnDisabled = (btn, item) => {
 
 // 测试结果图标颜色
 const getResultIconColor = (item) => {
-  if (item.testFuncFlag && item.testFuncPassedFlag === false) {
+  if (item.testFunc && item.testFuncPassedFlag === false) {
     return 'text-status-error';
   }
-  if (item.testPerfFlag && item.testPerfPassedFlag === false) {
+  if (item.testPerf && item.testPerfPassedFlag === false) {
     return 'text-status-error';
   }
-  if (item.testStabilityFlag && item.testStabilityPassedFlag === false) {
+  if (item.testStability && item.testStabilityPassedFlag === false) {
     return 'text-status-error';
   }
-  if (!item.testFuncFlag && !item.testPerfFlag && !item.testStabilityFlag) {
+  if (!item.testFunc && !item.testPerf && !item.testStability) {
     return '';
   }
   if (item.testFuncPassedFlag === true || item.testPerfPassedFlag === true || item.testStabilityPassedFlag === true) {
@@ -152,8 +152,8 @@ const getResultColor = (testFlag, testPassd = undefined) => {
           <template #content>
             <div class="flex">
               <span class="w-20">{{ t('service.apiList.template.testTask.funcTest') }}:</span>
-              <div class="flex-1 min-w-0" :class="getResultColor(item.testFuncFlag, item.testFuncPassedFlag)">
-                {{ !item.testFuncFlag
+              <div class="flex-1 min-w-0" :class="getResultColor(item.testFunc, item.testFuncPassedFlag)">
+                {{ !item.testFunc
                   ? t('status.disabled')
                   : item.testFuncPassedFlag
                     ? t('status.passed')
@@ -164,8 +164,8 @@ const getResultColor = (testFlag, testPassd = undefined) => {
             </div>
             <div class="flex">
               <span class="w-20">{{ t('service.apiList.template.testTask.perfTest') }}:</span>
-              <div class="flex-1 min-w-0" :class="getResultColor(item.testPerfFlag, item.testPerfPassedFlag)">
-                {{ !item.testPerfFlag
+              <div class="flex-1 min-w-0" :class="getResultColor(item.testPerf, item.testPerfPassedFlag)">
+                {{ !item.testPerf
                   ? t('status.disabled')
                   : item.testPerfPassedFlag
                     ? t('status.passed')
@@ -176,8 +176,8 @@ const getResultColor = (testFlag, testPassd = undefined) => {
             </div>
             <div class="flex">
               <span class="w-20">{{ t('service.apiList.template.testTask.stabilityTest') }}:</span>
-              <div class="flex-1 min-w-0" :class="getResultColor(item.testStabilityFlag, item.testStabilityPassedFlag)">
-                {{ !item.testStabilityFlag
+              <div class="flex-1 min-w-0" :class="getResultColor(item.testStability, item.testStabilityPassedFlag)">
+                {{ !item.testStability
                   ? t('status.disabled')
                   : item.testStabilityPassedFlag
                     ? t('status.passed')

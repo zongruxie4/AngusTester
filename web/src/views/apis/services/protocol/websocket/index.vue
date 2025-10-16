@@ -49,7 +49,7 @@ const Toolbar = defineAsyncComponent(() => import('@/components/layout/toolbar/i
 const MessageList = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/MessageList.vue'));
 const Save = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Save.vue'));
 const Config = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Config.vue'));
-const Agent = defineAsyncComponent(() => import('@/views/apis/services/components/Proxy.vue'));
+const Agent = defineAsyncComponent(() => import('@/views/apis/services/components/RequestProxy.vue'));
 const saveUnarchived = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/SaveUnarchived.vue'));
 const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue'));
 

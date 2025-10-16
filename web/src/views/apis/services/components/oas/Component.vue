@@ -10,7 +10,7 @@ import { useI18n } from 'vue-i18n';
 
 import { CompObj, ComponentsType } from './OAS';
 
-const AddModal = defineAsyncComponent(() => import('./OASAddModal.vue'));
+const AddModal = defineAsyncComponent(() => import('./AddComponentModal.vue'));
 
 interface Props {
   id: string;

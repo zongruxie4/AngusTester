@@ -21,10 +21,6 @@ const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const refreshSidebar = inject<() => void>('refreshSidebar', () => { });
 
-// const updateInterface = inject('updateInterface', {
-//   reloadKey: 0,
-//   serviceId: ''
-// });
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 const updateApiGroup = inject('updateApiGroup', (_id) => undefined);
 
