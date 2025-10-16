@@ -28,7 +28,6 @@ const Catalog = defineAsyncComponent(() => import('@/views/report/preview/servic
 const ServiceInfo = defineAsyncComponent(() => import('@/views/report/preview/services/info/index.vue'));
 const ServiceResult = defineAsyncComponent(() => import('@/views/report/preview/services/result/index.vue'));
 const ApisGrouped = defineAsyncComponent(() => import('@/views/report/preview/services/apisGroup/index.vue'));
-// const apiResultDetail = defineAsyncComponent(() => import('./apiResultDetail/index.vue'));
 </script>
 
 <template>

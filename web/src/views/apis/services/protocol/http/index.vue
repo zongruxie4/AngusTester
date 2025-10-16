@@ -70,7 +70,6 @@ const props = withDefaults(defineProps<Props>(), {
 const UnarchivedEditVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/UnarchivedEdit.vue'));
 const InfoEditVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/InfoEdit.vue'));
 
-// const VariableVue = defineAsyncComponent(() => import('@/views/apis/services/components/Variable/index.vue'));
 const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue'));
 const AgentVue = defineAsyncComponent(() => import('@/views/apis/services/components/RequestProxy.vue'));
 const CodeSnippetVue = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue'));

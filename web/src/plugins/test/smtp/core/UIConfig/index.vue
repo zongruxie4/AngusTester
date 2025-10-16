@@ -27,8 +27,6 @@ const emit = defineEmits<{
   (e: 'addGlobalVariables', value): void;
 }>();
 
-// const Draggable = defineAsyncComponent(() => import('./Draggable/index.vue'));
-
 const domId = utils.uuid();
 
 const scrollToBottom = () => {

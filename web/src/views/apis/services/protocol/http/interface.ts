@@ -187,10 +187,8 @@ export const RequestParams: Component = defineAsyncComponent(() => import('@/vie
 export const RequestBody: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/requestBody/index.vue'));
 export const RequestHeader: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestHeader.vue'));
 export const RequestCookie: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestCookie.vue'));
-// export const Authorization: Component = defineAsyncComponent(() => import('./authorization/index.vue'));
 export const Authorization: Component = ApiAuthencation;
 // @TODO 临时调试，需要删除
-// export const AssertForm: Component = defineAsyncComponent(() => import('@/views/apis/services/components/AssertForm/index.vue'));
 export const AssertForm: Component = ApiAssertion;
 
 export const ApiRequest: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Request.vue'));
@@ -198,9 +196,7 @@ export const ApiResponse: Component = defineAsyncComponent(() => import('@/views
 export const ApiTimeline: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Timeline.vue'));
 export const ApiCookie: Component = defineAsyncComponent(() => import('@/views/apis/services/components/Cookie.vue'));
 // @TODO 临时调试，需要删除
-// export const ApiAssert: Component = defineAsyncComponent(() => import('@/views/apis/services/components/ApiAssert/index.vue'));
 export const ApiAssert: Component = ResponseAssert;
-// export const ApiDefine: Component = defineAsyncComponent(() => import('@/views/apis/services/components/apiDefinition/index.vue'));
 
 export interface Menu {
   name: string,

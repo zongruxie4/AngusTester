@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<Props>(), {
   exception: undefined
 });
 const PerformanceInfo = defineAsyncComponent(() => import('./http.vue'));
-// const PerformanceInfo = defineAsyncComponent(() => props.case?.scriptType?.value === 'MOCK_DATA' ? import('./mock/index.vue') : props.case?.plugin === 'Http' ? import('./http.vue') : import('./jdbc.vue'));
 
 const emit = defineEmits<{(e: 'loaded', data: Record<string, any>): void; (e: 'update:loading', value: boolean): void; (e: 'change', value: { [key: string]: any }) }>();
 

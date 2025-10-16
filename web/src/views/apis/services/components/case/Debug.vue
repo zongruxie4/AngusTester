@@ -24,7 +24,6 @@ import {
   travelEmptyObjToString
 } from './Debug';
 import { getRequestBodyData } from './utils';
-// import PIcon from './PIcon/index.vue';
 import { API_EXTENSION_KEY } from './Debug.ts';
 
 export interface Props {
@@ -69,7 +68,6 @@ const ResponseError = defineAsyncComponent(() => import('@/components/ResponseEr
 const ResponseTimeAnalysis = defineAsyncComponent(() => import('@/components/ResponseTimeAnalysis/index.vue'));
 const ResponseAssert = defineAsyncComponent(() => import('@/components/ResponseAssert/index.vue'));
 const ResponseStatus = defineAsyncComponent(() => import('@/components/ResponseStatus/index.vue'));
-// const parameterization = defineAsyncComponent(() => import('@/components/parameterization/index.vue'));
 
 const allFunction = inject('allFunction', ref([]));
 

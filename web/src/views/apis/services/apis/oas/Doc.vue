@@ -8,6 +8,9 @@ import { AsyncComponent } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { services } from '@/api/tester';
 
+const CodeView = defineAsyncComponent(() => import('@/views/apis/services/apis/oas/CodeView.vue'));
+const ExportDoc = defineAsyncComponent(() => import('@/views/apis/services/services/components/SimpleExport.vue'));
+
 interface Props {
   mode: 'UI' | 'code',
   serviceId: string;
@@ -15,6 +18,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   mode: 'UI'
 });
+
 const { t } = useI18n();
 
 const loading = ref(false);
@@ -47,7 +51,7 @@ onMounted(async () => {
   accessToken.value = cookieUtils.getTokenInfo().access_token;
   // docOrigin.value = await site.getUrl('apis');
   docOrigin.value = DomainManager.getInstance().getApiDomain(AppOrServiceRoute.tester);
-  loadData();
+  await loadData();
 });
 
 const exportVisible = ref(false);
@@ -56,13 +60,9 @@ const openExportModal = () => {
   exportVisible.value = true;
 };
 
-const CodeView = defineAsyncComponent(() => import('./CodeView.vue'));
-const ExportDoc = defineAsyncComponent(() => import('@/views/apis/services/services/components/SimpleExport.vue'));
-
 defineExpose({
   loadData
 });
-
 </script>
 <template>
   <div v-if="props.mode === 'UI'">

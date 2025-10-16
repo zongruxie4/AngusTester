@@ -34,7 +34,6 @@ const TranslateModal = defineAsyncComponent(() => import('@/views/apis/services/
 const CreateServices = defineAsyncComponent(() => import('@/views/apis/services/components/CreateServiceModal.vue'));
 const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/services/components/LocalImport.vue'));
 const ExportServices = defineAsyncComponent(() => import('@/views/apis/services/services/components/ExportService.vue'));
-// const trash = defineAsyncComponent(() => import('./trash/index.vue'));
 const Unarchived = defineAsyncComponent(() => import('@/views/apis/services/services/Unarchived.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/test/ExecTest.vue'));
 

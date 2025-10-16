@@ -23,7 +23,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const FunctionTestDetail = defineAsyncComponent(() => import('./FunctionTestDetail/index.vue'));
-// const PerformanceTestDetail = defineAsyncComponent(() => import('./PerformanceTestDetail/index.vue'));
 
 const scriptType = computed(() => {
   return props.execInfo?.scriptType?.value;
