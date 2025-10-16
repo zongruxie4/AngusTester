@@ -535,6 +535,7 @@
   },
   "proxy": {
     "title": "Proxy",
+    "name": "Request Proxy",
     "proxyConfig": "Proxy Configuration",
     "hints": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data. You can choose a suitable proxy service according to your network environment.",
     "types": {

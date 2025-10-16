@@ -27,7 +27,7 @@ import phpIcon from '@/views/apis/services/components/image/php.png';
 import pythonIcon from '@/views/apis/services/components/image/python.png';
 import rubyIcon from '@/views/apis/services/components/image/ruby.png';
 import shellIcon from '@/views/apis/services/components/image/shell.png';
-import { deepDelAttrFromObj } from '@/views/apis/services/apis/http/utils';
+import { deepDelAttrFromObj } from '@/views/apis/services/protocol/http/utils';
 
 const { API_EXTENSION_KEY } = ApiUtils;
 

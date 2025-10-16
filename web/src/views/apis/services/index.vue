@@ -15,15 +15,15 @@ import { createAngusWebSocketProxy, type WebSocketEventHandlers } from '@/utils/
 
 // Lazy load components for better performance
 const Sidebar = defineAsyncComponent(() => import('@/views/apis/services/sidebar/index.vue'));
-const ApiGroup = defineAsyncComponent(() => import('@/views/apis/services/grouping/index.vue'));
-const ApiItem = defineAsyncComponent(() => import('@/views/apis/services/apis/http/index.vue'));
-const servicesMock = defineAsyncComponent(() => import('@/views/apis/services/mock/MockService.vue'));
-const apisSocket = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/index.vue'));
+const ApiGrouping = defineAsyncComponent(() => import('@/views/apis/services/apis/index.vue'));
+const HttpApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/index.vue'));
+const WebSocketApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/index.vue'));
+const MockService = defineAsyncComponent(() => import('@/views/apis/services/mock/MockService.vue'));
 const Auth = defineAsyncComponent(() => import('@/views/apis/services/auth/index.vue'));
 const DataModel = defineAsyncComponent(() => import('@/views/apis/services/model/index.vue'));
 const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SecurityTestResult.vue'));
 const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SmokeTestResult.vue'));
-const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/QuickStarted.vue'));
+const DefaultQuickStarted = defineAsyncComponent(() => import('@/views/apis/services/apis/home/DefaultQuickStarted.vue'));
 
 // Composables
 const { t } = useI18n();
@@ -335,19 +335,19 @@ provide('updateHosts', reactive({
       @add="addHandler">
       <!-- Empty state when no tabs are open -->
       <template #empty>
-        <QuickStarted class="p-5" />
+        <DefaultQuickStarted class="p-5" />
       </template>
 
       <!-- Dynamic tab content based on record type -->
       <template #default="record">
         <!-- API Group Management -->
         <template v-if="record.value === 'group'">
-          <ApiGroup :serviceId="record.id" :info="record" />
+          <ApiGrouping :serviceId="record.id" :info="record" />
         </template>
 
-        <!-- HTTP API Testing -->
+        <!-- HTTP API -->
         <template v-if="record.value === 'API'">
-          <ApiItem
+          <HttpApi
             :id="record.id"
             :valueObj="record"
             :ws="ws as any"
@@ -359,19 +359,9 @@ provide('updateHosts', reactive({
             :projectId="projectId?.toString()" />
         </template>
 
-        <!-- Authentication Management -->
-        <template v-if="record.value === 'auth'">
-          <Auth :appId="appInfo?.id?.toString()" />
-        </template>
-
-        <!-- Mock Service Management -->
-        <template v-if="record.value === 'mock'">
-          <servicesMock :id="record.id" />
-        </template>
-
-        <!-- WebSocket API Testing -->
+        <!-- WebSocket API -->
         <template v-if="record.value === 'socket'">
-          <apisSocket
+          <WebSocketApi
             :id="record.id"
             :pid="record._id"
             :ws="ws as any"
@@ -380,6 +370,16 @@ provide('updateHosts', reactive({
             :name="record.name"
             :responseCount="responseCount"
             :response="responseData" />
+        </template>
+
+        <!-- Authentication Management -->
+        <template v-if="record.value === 'auth'">
+          <Auth :appId="appInfo?.id?.toString()" />
+        </template>
+
+        <!-- Mock Service Management -->
+        <template v-if="record.value === 'mock'">
+          <MockService :id="record.id" />
         </template>
 
         <!-- Data Model Management -->

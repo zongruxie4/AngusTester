@@ -48,15 +48,15 @@ export class AngusWebSocketProxy {
   private ws: ReconnectingWebSocket | undefined;
   private handlers: WebSocketEventHandlers = {};
   private readyState: number = WS_READY_STATES.CLOSED;
-  private responseCount: number = 0;
-  private currentUuid: string = '';
+  private responseCount = 0;
+  private currentUuid = '';
 
   /**
    * Creates a new WebSocket connection
    * @param url WebSocket URL
    * @param handlers Event handlers
    */
-  public connect(url: string, handlers: WebSocketEventHandlers = {}): void {
+  public connect (url: string, handlers: WebSocketEventHandlers = {}): void {
     if (!url) {
       console.warn('WebSocket URL is required');
       return;
@@ -100,7 +100,7 @@ export class AngusWebSocketProxy {
   /**
    * Disconnects the WebSocket connection
    */
-  public disconnect(): void {
+  public disconnect (): void {
     if (this.ws?.close) {
       this.ws.close(1000);
     }
@@ -114,7 +114,7 @@ export class AngusWebSocketProxy {
    * @param proxyUrl Proxy URL (optional)
    * @param proxyName Proxy name (optional)
    */
-  public updateConnection(isOnline: boolean, proxyUrl?: string, proxyName?: string): void {
+  public updateConnection (isOnline: boolean, proxyUrl?: string, proxyName?: string): void {
     // Close existing connection if online
     if (isOnline && this.ws?.close) {
       this.ws.close(1000);
@@ -146,7 +146,7 @@ export class AngusWebSocketProxy {
    * Sends a message through the WebSocket connection
    * @param message Message to send
    */
-  public send(message: string): void {
+  public send (message: string): void {
     if (this.ws && this.readyState === WS_READY_STATES.OPEN) {
       this.ws.send(message);
     } else {
@@ -157,57 +157,57 @@ export class AngusWebSocketProxy {
   /**
    * Gets the current WebSocket instance
    */
-  public getWebSocket(): ReconnectingWebSocket | undefined {
+  public getWebSocket (): ReconnectingWebSocket | undefined {
     return this.ws;
   }
 
   /**
    * Gets the current ready state
    */
-  public getReadyState(): number {
+  public getReadyState (): number {
     return this.readyState;
   }
 
   /**
    * Gets the current request UUID
    */
-  public getCurrentUuid(): string {
+  public getCurrentUuid (): string {
     return this.currentUuid;
   }
 
   /**
    * Gets the response count
    */
-  public getResponseCount(): number {
+  public getResponseCount (): number {
     return this.responseCount;
   }
 
   /**
    * Resets the response count
    */
-  public resetResponseCount(): void {
+  public resetResponseCount (): void {
     this.responseCount = 0;
   }
 
   /**
    * Checks if the WebSocket is connected
    */
-  public isConnected(): boolean {
+  public isConnected (): boolean {
     return this.readyState === WS_READY_STATES.OPEN;
   }
 
   /**
    * Checks if the WebSocket is connecting
    */
-  public isConnecting(): boolean {
+  public isConnecting (): boolean {
     return this.readyState === WS_READY_STATES.CONNECTING;
   }
 
   /**
    * Checks if the WebSocket is disconnected
    */
-  public isDisconnected(): boolean {
-    return this.readyState === WS_READY_STATES.CLOSED || 
+  public isDisconnected (): boolean {
+    return this.readyState === WS_READY_STATES.CLOSED ||
            this.readyState === WS_READY_STATES.DISCONNECTED;
   }
 }

@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 interface Props {
   visible: boolean,
   serviceId?: string,
-  source?:'introduce' | 'global' | 'projectOrService';
+  source?:'introduce' | 'global' | 'services';
 }
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
