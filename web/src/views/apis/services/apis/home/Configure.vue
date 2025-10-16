@@ -7,12 +7,12 @@ import { Button } from 'ant-design-vue';
 import { ServicesPermission } from '@/enums/enums';
 
 interface Props {
-  info: any;
+  serviceInfo: any;
   serviceAuths: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  info: {},
+  serviceInfo: {},
   serviceAuths: () => []
 });
 

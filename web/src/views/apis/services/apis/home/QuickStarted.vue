@@ -7,15 +7,15 @@ import { utils } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { ServicesPermission } from '@/enums/enums';
 
-const LocalImport = defineAsyncComponent(() => import('../../sidebar/components/LocalImport.vue'));
+const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/services/components/LocalImport.vue'));
 
 interface Props {
-  info:any;
+  serviceInfo:any;
   serviceAuths: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  info: () => ({}),
+  serviceInfo: () => ({}),
   serviceAuths: () => []
 });
 
@@ -32,8 +32,8 @@ const debugging = () => {
     unarchived: true,
     name: t('apis.quickStarted.addApiTabName'),
     _id: utils.uuid('api') + 'API',
-    serviceId: props.info.id,
-    serviceName: props.info.name
+    serviceId: props.serviceInfo.id,
+    serviceName: props.serviceInfo.name
   });
 };
 
@@ -95,7 +95,7 @@ const openImport = () => {
   <AsyncComponent :visible="visible">
     <LocalImport
       v-model:visible="visible"
-      :serviceId="info.id"
+      :serviceId="serviceInfo.id"
       source="services" />
   </AsyncComponent>
 </template>

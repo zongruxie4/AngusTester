@@ -94,16 +94,6 @@ export interface ParamsItem {
 }
 
 /**
- * Host item interface for API hosts.
- */
-export interface HostItem {
-  name?: string,
-  host: string,
-  default0?: boolean,
-  protocol: { value: string }
-}
-
-/**
  * Create default parameter item with standard configuration.
  * @param config - Additional configuration to merge
  * @returns Default parameter item
@@ -279,17 +269,6 @@ const getUriByParams = (uri: string, paths: ParamsItem[]): string => {
   }
   pathname = pathname.replace(/\/{2,}/g, '/').replace(/\/$/, '');
   return pathname;
-
-  // Query type parameters replaced with name=value format
-  // const searchParams = querys?.reduce((prevValue, currentValue) => {
-  //   const { name, value } = currentValue;
-  //   if (name) {
-  //     prevValue.append(name, value);
-  //   }
-  //   return prevValue;
-  // }, new URLSearchParams());
-
-  // return (pathname + '?' + searchParams?.toString()).replace(/\?$/, '');
 };
 
 /**
@@ -437,24 +416,10 @@ const replaceFuncValue = async (param: {parameter?: {name: string, [valueKey]: s
     // const [error, resp] = await variable.getVariableValue(uniq(variableNames), apiId);
     const [error, resp] = await http.get(`${TESTER}/target/${apiId}/${targetType}/parameter/data/value`);
     if (!error) {
-      // const response = (resp.data || []).map(i => {
-      //   return {
-      //     ...i,
-      //     targetType: i.targetType?.value,
-      //     scope: i.scope?.value
-      //   };
-      // });
       variableValues = resp.data || {};
       paramLists.forEach(parameters => {
         parameters.forEach((param: any) => {
           if (param.variable) {
-            // param[valueKey] = param[valueKey].replaceAll(variableRegReplace, (target) => {
-            //   const result = response.find(item => item.name === extractVar(target));
-            //   if (result) {
-            //     return result.value;
-            //   }
-            //   return target;
-            // });
             param[valueKey] = param[valueKey].replace(variableRegReplace, (target) => {
               if (variableValues.hasOwnProperty(extractVar(target))) {
                 return variableValues[extractVar(target)];
@@ -468,11 +433,6 @@ const replaceFuncValue = async (param: {parameter?: {name: string, [valueKey]: s
       str = str.map(i => {
         if (i.match(variableRegReplace)) {
           const result = i.replace(variableRegReplace, (target) => {
-            // const result = response.find(item => item.name === extractVar(target));
-            // if (result) {
-            //   return result.value;
-            // }
-            // return target;
             if (variableValues[extractVar(target)]) {
               return variableValues[extractVar(target)];
             }

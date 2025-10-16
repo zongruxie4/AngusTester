@@ -225,6 +225,7 @@ public class ApisAssembler {
     return new ServicesApisInfoListVo().setId(apis.getId())
         .setSource(apis.getSource())
         .setImportSource(apis.getImportSource())
+        .setServiceId(apis.getServiceId())
         .setProtocol(apis.getProtocol())
         .setMethod(nonNull(apis.getMethod()) ? apis.getMethod().getValue() : null)
         .setEndpoint(apis.getEndpoint())

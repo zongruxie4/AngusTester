@@ -2,22 +2,22 @@
 import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, reactive, ref, Ref, watch } from 'vue';
 import { AsyncComponent, modal, notification, Scroll, VuexHelper } from '@xcan-angus/vue-ui';
 import elementResizeDetector from 'element-resize-detector';
-import { TESTER, duration, appContext } from '@xcan-angus/infra';
+import { TESTER, duration, appContext, PageQuery } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import ListItem from './ListItem.vue';
 import { apis } from '@/api/tester';
 import { group } from '@/utils/common';
-import type { DataSourceType } from '../PropsType';
+import { ApisListInfo } from '../types';
 import { ApiPermission } from '@/enums/enums';
 import { ProjectInfo } from '@/layout/types';
 
 import VirtualApiList from './VirtualApiList.vue';
 
 interface Props {
-  dataSource:Array<DataSourceType>;
+  dataSource:Array<ApisListInfo>;
   showGroupList:boolean;
-  allData: Array<DataSourceType>;
+  allData: Array<ApisListInfo>;
   searchParams: {[key:string]:any};
   serviceId: string;
   pageType: 'default'|'success';
@@ -26,7 +26,7 @@ interface Props {
   groupedBy?: string;
   order?: {
     orderBy:string,
-    orderSort: 'DESC'|'ASC'
+    orderSort: PageQuery.OrderSort
   }
 }
 
@@ -39,7 +39,8 @@ const props = withDefaults(defineProps<Props>(), {
   pageType: 'default',
   spinning: false,
   updateData: undefined,
-  groupedBy: 'none'
+  groupedBy: 'none',
+  order: undefined
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -53,35 +54,38 @@ const emits = defineEmits<{
 }>();
 
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const MovePop = defineAsyncComponent(() => import('@/views/apis/services/components/MoveModal.vue'));
-const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));
+const MoveModal = defineAsyncComponent(() => import('@/views/apis/services/components/MoveModal.vue'));
+const ShareModal = defineAsyncComponent(() => import('@/components/share/index.vue'));
 const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));
 const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
 const ReOpenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
 const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
 const StatusModal = defineAsyncComponent(() => import('@/views/apis/services/components/StatusModal.vue'));
-const ExportApiModal = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/ExportService.vue'));
-const GenTestScript = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
-const DelTestScript = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
+const ExportServiceModal = defineAsyncComponent(() => import('@/views/apis/services/services/components/ExportService.vue'));
+const GenTestScriptModal = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
+const DeleteScriptModal = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/apis/list/ExecTestModal.vue'));
 
-const notify = ref(0);
+// Counter to trigger Scroll refresh
+const refreshNotifyCounter = ref(0);
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
-const api = inject('api', reactive<{id: string, type?: string}>({ id: '' })); // 用于提供给外面当前 打开的 api
+// Currently opened api provided by parent (for syncing active state)
+const injectedApi = inject('api', reactive<{id: string, type?: string}>({ id: '' }));
 
-const erd = elementResizeDetector({ strategy: 'scroll' });
+// Resize detector to maintain wrapper height
+const resizeDetector = elementResizeDetector({ strategy: 'scroll' });
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const changeGroupState = inject<(data: any) => void>('changeGroupState', () => { });
 
 const { useMutations } = VuexHelper;
-const { updateCollectNofify, updateFocusNotify } = useMutations(['updateCollectNofify', 'updateFocusNotify'], 'apiStore');
+const { updateCollectNotify, updateFocusNotify } = useMutations(['updateCollectNotify', 'updateFocusNotify'], 'apiStore');
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const deleteTabPane = inject<(data: any) => void>('deleteTabPane', () => { });
 
-// 刷新左侧回收站列表
+// Refresh recycle bin list on the left side (injected by parent)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
 const refreshRecycleBin = inject('refreshRecycleBin', (_key:'api') => {});
 
@@ -92,21 +96,23 @@ const listWrapperRef = ref();
 const wrapperHeight = ref(500);
 const loading = ref(false);
 
-const showGroupList1 = computed(() => props.showGroupList);
+// Whether to render grouped view (virtualized) or flat scroll view
+const isGroupedView = computed(() => props.showGroupList);
 const resizeHandler = debounce(duration.resize, () => {
   wrapperHeight.value = listWrapperRef.value ? listWrapperRef.value.clientHeight - 12 : 500;
 });
 
 const listData = ref<any[]>([]);
 
-const handleChange = (data: any[]) => {
-  if (!data.length && !props.searchParams.filters?.length) {
+// Handle data change callback from Scroll (flat view)
+const handleChange = (newList: any[]) => {
+  if (!newList.length && !props.searchParams.filters?.length) {
     emits('update:pageType', 'default');
   } else {
     emits('update:pageType', 'success');
   }
 
-  listData.value = data;
+  listData.value = newList;
   emits('update:spinning', false);
   emits('scrollChange', listData.value);
 };
@@ -115,13 +121,14 @@ const handleOpenMock = () => {
   emits('openMock');
 };
 
-const state:{
+// Centralized UI state: active API row, modal visibilities, selected ids
+const uiState:{
       shareVisible:boolean,
       apiExportVisible:boolean,
       delVisible:boolean,
       auth:boolean,
       activeApiId:string,
-      id: string,
+      selectedApiId: string,
       initiatingVisible:boolean,
       infoVisible:boolean,
       interfaceAuthVisible:boolean,
@@ -129,31 +136,32 @@ const state:{
       type?: 'API' | 'WEBSOCKET',
       name?:string
     } = reactive({
-      shareVisible: false, // 分享弹框
-      apiExportVisible: false, // 导出
-      delVisible: false, // 删除弹框
+      shareVisible: false, // Share modal visibility
+      apiExportVisible: false, // Export modal visibility
+      delVisible: false, // Delete modal visibility
       auth: false,
-      activeApiId: '', // 当前 选中行 api的id
-      id: '', // 当前按钮操作行 的 id
-      initiatingVisible: false, // 发起请求显影判断
-      infoVisible: false, // 详情展示
-      interfaceAuthVisible: false, // 权限弹框显示
-      showButton: false, // 显示按钮
+      activeApiId: '', // Currently active API id
+      selectedApiId: '', // Currently selected row id for actions
+      initiatingVisible: false, // Triggering request visibility flag
+      infoVisible: false, // Details visibility
+      interfaceAuthVisible: false, // Permission modal visibility
+      showButton: false, // Show action buttons
       type: undefined,
       name: ''
     });
 
-const handleClick = (event:string, data:DataSourceType) => {
+// Handle toolbar/menu actions from list rows
+const handleClick = (event:string, data:ApisListInfo) => {
   const id = data.id;
-  state.id = id;
-  state.name = data.endpoint;
+  uiState.selectedApiId = id;
+  uiState.name = data.endpoint;
   switch (event) {
     case 'edit':
-      edit(data);
+      openApiEditorTab(data);
       break;
     case 'auth':
-      state.interfaceAuthVisible = true;
-      state.auth = data.auth;
+      uiState.interfaceAuthVisible = true;
+      uiState.auth = data.auth;
       break;
     case 'export':
       openExportModal();
@@ -168,16 +176,16 @@ const handleClick = (event:string, data:DataSourceType) => {
       handleOpenMock();
       break;
     case 'share':
-      share();
+      openShareModal();
       break;
     case 'del':
-      deleteConfirm(id);
+      confirmDeleteApi(id);
       break;
     case 'patchClone':
-      patchClone(id);
+      cloneApiById(id);
       break;
     case 'remove':
-      toMove(data);
+      openMoveModal(data);
       break;
     case 'addFollow':
       addFollow(id);
@@ -186,30 +194,30 @@ const handleClick = (event:string, data:DataSourceType) => {
       cancelFollow(id);
       break;
     case 'status':
-      setStatus(data);
+      openStatusModal(data);
       break;
     case 'reTest':
-      restartTestTask(data);
+      openRestartTestTaskModal(data);
       break;
     case 'reopen':
-      reopenTestTask(data);
+      openReopenTestTaskModal(data);
       break;
     case 'deleteTask':
       delTestVisible.value = true;
-      state.id = data.id;
+      uiState.selectedApiId = data.id;
       break;
     case 'setTest':
-      toSetTest(data);
+      openCreateTestTaskModal(data);
       break;
     case 'setTestScript':
-      setTestScript(data, 'create');
+      openGenTestScriptModal(data, 'create');
       break;
     case 'updateTestScript':
-      setTestScript(data, 'update');
+      openGenTestScriptModal(data, 'update');
       break;
     case 'delTestScript':
-      delScriptVisble.value = true;
-      state.id = data.id;
+      delScriptVisible.value = true;
+      uiState.selectedApiId = data.id;
       break;
     case 'funcTestExec':
     case 'perfTestExec':
@@ -219,18 +227,19 @@ const handleClick = (event:string, data:DataSourceType) => {
   }
 };
 
-const share = () => {
-  state.shareVisible = true;
+// Open share modal
+const openShareModal = () => {
+  uiState.shareVisible = true;
 };
 
-// 是否双击编辑
-const isdbClick = ref(false);
-// 编辑api
-const edit = (value:DataSourceType):void => {
+// Flag to detect double click for edit action
+const isDoubleClick = ref(false);
+// Open API editor tab (double click guard)
+const openApiEditorTab = (value:ApisListInfo):void => {
   if (!value) {
     return;
   }
-  isdbClick.value = true;
+  isDoubleClick.value = true;
   const { id, summary } = value;
   if (value.protocol?.value?.indexOf('ws') > -1) {
     addTabPane({ _id: id + 'socket', id, name: summary, value: 'socket' });
@@ -238,12 +247,12 @@ const edit = (value:DataSourceType):void => {
     addTabPane({ _id: id + 'API', id, name: summary, value: 'API' });
   }
   setTimeout(() => {
-    isdbClick.value = false;
+    isDoubleClick.value = false;
   }, 500);
 };
 
-// 克隆
-const patchClone = async (id:string) => {
+// Clone API by id
+const cloneApiById = async (id:string) => {
   const [error] = await apis.cloneApi(id);
   if (error) {
     return;
@@ -252,17 +261,19 @@ const patchClone = async (id:string) => {
   refreshList();
 };
 
-const deleteConfirm = (id: string) => {
+// Ask for confirmation before deleting API
+const confirmDeleteApi = (id: string) => {
   modal.confirm({
     centered: true,
-    content: t('actions.tips.confirmDelete'),
+    content: t('actions.tips.confirmDataDelete'),
     onOk () {
-      deleteInterface(id);
+      performDeleteApi(id);
     }
   });
 };
 
-const deleteInterface = async (id: string): Promise<void> => {
+// Perform API deletion, then refresh panels and lists
+const performDeleteApi = async (id: string): Promise<void> => {
   loading.value = true;
   const [error] = await apis.deleteApi({ ids: [id] });
   loading.value = false;
@@ -270,94 +281,100 @@ const deleteInterface = async (id: string): Promise<void> => {
     return;
   }
 
-  state.activeApiId = '';
-  state.type = undefined;
+  uiState.activeApiId = '';
+  uiState.type = undefined;
   deleteTabPane([id + 'API', id + 'socket', id + 'execute']);
   refreshRecycleBin('api');
   notification.success(t('actions.tips.deleteSuccess'));
   refreshList();
 };
 
-const moveVisible = ref(false); // 移动弹窗
-const movePid = ref<string>();// 当前移动api的目录id
-const moveParentName = ref<string>();// 当前移动api的目录名称
-// @TODO 缺少项目或服务信息
-const toMove = (_api: DataSourceType) => {
-  state.id = _api.id;
-  movePid.value = _api.serviceId;
+const moveVisible = ref(false); // Move modal visibility
+const moveParentId = ref<string>(); // Current API's folder id
+const moveParentName = ref<string>(); // Current API's folder name
+// Open move modal with selected API context
+const openMoveModal = (_api: ApisListInfo) => {
+  uiState.selectedApiId = _api.id;
+  moveParentId.value = _api.serviceId;
   moveParentName.value = _api.serviceName;
   moveVisible.value = true;
 };
 
-const moveHandle = () => {
-  state.activeApiId = '';
-  state.type = undefined;
+// Handle move confirmation
+const handleMoveOk = () => {
+  uiState.activeApiId = '';
+  uiState.type = undefined;
   refreshList();
-  moveCancel();
+  handleMoveCancel();
 };
 
-// 移动弹窗关闭
-const moveCancel = () => {
+// Close move modal
+const handleMoveCancel = () => {
   moveVisible.value = false;
-  movePid.value = undefined;
+  moveParentId.value = undefined;
   moveParentName.value = undefined;
 };
 
 const testVisible = ref(false);
-const toSetTest = (_api: DataSourceType) => {
-  state.id = _api.id;
+// Open create test task modal
+const openCreateTestTaskModal = (_api: ApisListInfo) => {
+  uiState.selectedApiId = _api.id;
   testVisible.value = true;
 };
 
 const restartTestVisible = ref(false);
 const restartContent = ref('');
-const restartTestTask = (item: DataSourceType) => {
-  state.id = item.id;
+// Open restart test task confirmation modal
+const openRestartTestTaskModal = (item: ApisListInfo) => {
+  uiState.selectedApiId = item.id;
   restartTestVisible.value = true;
   restartContent.value = t('service.apiList.confirm.restartTestTask', { summary: item.summary });
 };
 
 const reopenTestVisible = ref(false);
 const reopenContent = ref('');
-const reopenTestTask = (item: DataSourceType) => {
-  state.id = item.id;
+// Open reopen test task confirmation modal
+const openReopenTestTaskModal = (item: ApisListInfo) => {
+  uiState.selectedApiId = item.id;
   reopenTestVisible.value = true;
   reopenContent.value = t('service.apiList.confirm.reopenTestTask', { summary: item.summary });
 };
 
-// 删除测试任务
+// Delete test task
 const delTestVisible = ref(false);
 
-// 修改状态 visible
+// Open status change modal
 const statusVisible = ref(false);
 const statusValue = ref();
-const setStatus = (api: DataSourceType) => {
+const openStatusModal = (api: ApisListInfo) => {
   statusValue.value = api.status?.value || '';
   statusVisible.value = true;
-  state.id = api.id;
+  uiState.selectedApiId = api.id;
 };
 
-// 生成|更新测试脚本
+// Generate or update test scripts
 const testScriptVisible = ref(false);
-const setType = ref();
-const setTestScript = (api: DataSourceType, generate: 'create'|'update') => {
+// 'create' | 'update' for script generation action
+const testScriptActionType = ref();
+const openGenTestScriptModal = (api: ApisListInfo, generate: 'create'|'update') => {
   testScriptVisible.value = true;
-  state.id = api.id;
-  setType.value = generate;
+  uiState.selectedApiId = api.id;
+  testScriptActionType.value = generate;
 };
 
+// Update list data when permission toggled in modal
 const authFlagChange = ({ auth }:{auth:boolean}) => {
   if (typeof props.updateData === 'function') {
-    props.updateData({ id: state.id, auth });
+    props.updateData({ id: uiState.selectedApiId, auth });
   }
 };
 
-// 打开接口导出弹框
+// Open API export modal
 const openExportModal = () => {
-  state.apiExportVisible = true;
+  uiState.apiExportVisible = true;
 };
 
-// 收藏
+// Add to favourites
 const addFavourite = async (id:string) => {
   const params = [id];
   const [error] = await apis.addFavourite(params);
@@ -371,10 +388,10 @@ const addFavourite = async (id:string) => {
   });
   notification.success(t('service.apiList.messages.favouriteSuccess'));
   refreshList();
-  updateCollectNofify();
+  updateCollectNotify();
 };
 
-// 取消收藏
+// Remove from favourites
 const cancelFavourite = async (id:string) => {
   const [error] = await apis.cancelFavourite(id);
   if (error) {
@@ -387,10 +404,10 @@ const cancelFavourite = async (id:string) => {
   });
   notification.success(t('service.apiList.messages.unfavouriteSuccess'));
   refreshList();
-  updateCollectNofify();
+  updateCollectNotify();
 };
 
-// 增加关注
+// Follow
 const addFollow = async (id:string) => {
   const [error] = await apis.addFollow(id);
   if (error) {
@@ -406,7 +423,7 @@ const addFollow = async (id:string) => {
   updateFocusNotify();
 };
 
-// 取消关注
+// Unfollow
 const cancelFollow = async (id:string) => {
   const [error] = await apis.cancelFollow(id);
   if (error) {
@@ -423,7 +440,8 @@ const cancelFollow = async (id:string) => {
 };
 
 const execTestVisible = ref(false);
-const selectedApisId = ref<string>();
+// Target API id for execution actions
+const execTargetApiId = ref<string>();
 const execTips = ref<string>();
 const execModalTitle = ref<string>();
 const okAction = ref<string>();
@@ -452,32 +470,33 @@ const getOkAction = (type:'funcTestExecSmoke'|'funcTestExecSecurity'|'funcTestEx
 };
 
 const handleExecTest = async (type, id: string) => {
-  selectedApisId.value = id;
+  execTargetApiId.value = id;
   execTestVisible.value = true;
   execTips.value = execTestTipConfig[type];
   execModalTitle.value = execModalTitleConfig[type];
   okAction.value = getOkAction(type, id);
 };
 
-const delScriptVisble = ref(false);
+const delScriptVisible = ref(false);
 
-const changeStatus = () => {
+// Refresh list after status updated
+const refreshAfterStatusChange = () => {
   refreshList();
 };
 
-// 点击详情
-const showInfo = (id:string, api: { protocol: { value: string | string[]; }; }) => {
+// Toggle expand/collapse for an API row (single click)
+const toggleApiDetails = (id:string, api: { protocol: { value: string | string[]; }; }) => {
   setTimeout(() => {
-    if (isdbClick.value) {
+    if (isDoubleClick.value) {
       return;
     }
-    isdbClick.value = false;
-    if (id === state.activeApiId) {
-      state.activeApiId = '';
-      state.type = undefined;
+    isDoubleClick.value = false;
+    if (id === uiState.activeApiId) {
+      uiState.activeApiId = '';
+      uiState.type = undefined;
     } else {
-      state.activeApiId = id;
-      state.type = api.protocol?.value?.includes('ws') ? 'WEBSOCKET' : 'API';
+      uiState.activeApiId = id;
+      uiState.type = api.protocol?.value?.includes('ws') ? 'WEBSOCKET' : 'API';
     }
   }, 300);
 };
@@ -486,17 +505,17 @@ const refreshList = () => {
   if (props.groupedBy) {
     emits('loadApis');
   } else {
-    notify.value++;
+    refreshNotifyCounter.value++;
   }
 };
 
-watch(() => state.activeApiId, () => {
-  changeGroupState({ id: state.activeApiId, type: state.type });
+watch(() => uiState.activeApiId, () => {
+  changeGroupState({ id: uiState.activeApiId, type: uiState.type });
 });
 
-watch(() => api.id, () => {
-  if (api.id !== state.activeApiId) {
-    state.activeApiId = api.id;
+watch(() => injectedApi.id, () => {
+  if (injectedApi.id !== uiState.activeApiId) {
+    uiState.activeApiId = injectedApi.id;
   }
 });
 
@@ -504,13 +523,14 @@ watch(() => loading.value, newValue => {
   emits('update:spinning', newValue);
 });
 
-const data = ref<Record<string, any>[]>([]);
+// Grouped data source for virtual list (contains group headers + items)
+const groupedData = ref<any[]>([]);
 watch(() => [props.allData, props.groupedBy], () => {
-  data.value = [];
+  groupedData.value = [];
   if (props.groupedBy !== 'tag') {
     const objData = group(props.dataSource, props.groupedBy);
     Object.keys(objData).forEach(key => {
-      data.value.push({
+      groupedData.value.push({
         type: 'group',
         spread: true,
         createdByName: objData[key][0].createdByName,
@@ -543,7 +563,7 @@ watch(() => [props.allData, props.groupedBy], () => {
     const tagsArr = Object.keys(resultObj);
     if (props.order?.orderBy === 'summary') {
       tagsArr.sort((a, b) => {
-        if (props.order?.orderSort === 'DESC') {
+        if (props.order?.orderSort === PageQuery.OrderSort.Desc) {
           return b.toLowerCase().localeCompare(a.toLowerCase());
         } else {
           return a.toLowerCase().localeCompare(b.toLowerCase());
@@ -552,7 +572,7 @@ watch(() => [props.allData, props.groupedBy], () => {
     }
     tagsArr.forEach(key => {
       const list = resultObj[key];
-      data.value.push({
+      groupedData.value.push({
         type: 'group',
         tag: 'key',
         spread: true,
@@ -568,15 +588,15 @@ watch(() => [props.allData, props.groupedBy], () => {
 
 onMounted(() => {
   wrapperHeight.value = listWrapperRef.value ? listWrapperRef.value.clientHeight - 12 : 500;
-  erd.listenTo(listWrapperRef.value, resizeHandler);
+  resizeDetector.listenTo(listWrapperRef.value, resizeHandler);
 });
 
 onBeforeUnmount(() => {
-  erd.removeListener(listWrapperRef.value, resizeHandler);
+  resizeDetector.removeListener(listWrapperRef.value, resizeHandler);
 });
 
 defineExpose({
-  activeApiId: state.activeApiId,
+  activeApiId: uiState.activeApiId,
   updateScrollList: () => {
     refreshList();
   }
@@ -584,27 +604,27 @@ defineExpose({
 </script>
 <template>
   <div ref="listWrapperRef">
-    <template v-if="showGroupList1">
+    <template v-if="isGroupedView">
       <VirtualApiList
-        :dataSource="data"
+        :dataSource="groupedData"
         :showNum="30"
         :updateData="props.updateData"
         :groupedBy="props.groupedBy"
         :height="wrapperHeight"
-        :activeApiId="state.activeApiId"
+        :activeApiId="uiState.activeApiId"
         @handleClick="handleClick"
-        @edit="edit"
-        @showInfo="showInfo"
+        @edit="openApiEditorTab"
+        @showInfo="toggleApiDetails"
         @loadApis="emits('loadApis')"
         @openMock="handleOpenMock" />
     </template>
-    <template v-if="!showGroupList1">
+    <template v-if="!isGroupedView">
       <Scroll
         v-model:spinning="loading"
         :action="`${TESTER}/services/${props.serviceId}/apis?infoScope=DETAIL&fullTextSearch=true`"
         class="h-full scroll-wrapper"
         :lineHeight="58"
-        :notify="notify"
+        :notify="refreshNotifyCounter"
         :transition="false"
         :params="props.searchParams"
         @change="handleChange">
@@ -613,43 +633,43 @@ defineExpose({
           :key="item.id"
           :item="item"
           :index="index"
-          :activeApiId="state.activeApiId"
+          :activeApiId="uiState.activeApiId"
           @handleClick="handleClick"
-          @edit="edit"
-          @showInfo="showInfo" />
+          @edit="openApiEditorTab"
+          @showInfo="toggleApiDetails" />
       </Scroll>
     </template>
     <AsyncComponent :visible="moveVisible">
-      <MovePop
-        :id="state.id"
+      <MoveModal
+        :id="uiState.selectedApiId"
         type="api"
         :visible="moveVisible"
-        :pid="movePid"
-        :projectId="projectInfo?.id"
+        :pid="moveParentId"
+        :projectId="projectInfo?.id.toString()"
         :parentName="moveParentName"
-        @ok="moveHandle"
-        @cancel="moveCancel" />
+        @ok="handleMoveOk"
+        @cancel="handleMoveCancel" />
     </AsyncComponent>
-    <AsyncComponent :visible="state.shareVisible">
-      <Share
-        v-if="state.shareVisible"
-        :id="state.id"
-        v-model:visible="state.shareVisible"
-        :name="state.name"
+    <AsyncComponent :visible="uiState.shareVisible">
+      <ShareModal
+        v-if="uiState.shareVisible"
+        :id="uiState.selectedApiId"
+        v-model:visible="uiState.shareVisible"
+        :name="uiState.name"
         source="all"
         type="API" />
     </AsyncComponent>
-    <AsyncComponent :visible="state.interfaceAuthVisible">
+    <AsyncComponent :visible="uiState.interfaceAuthVisible">
       <AuthorizeModal
-        v-model:visible="state.interfaceAuthVisible"
+        v-model:visible="uiState.interfaceAuthVisible"
         :enumKey="ApiPermission"
         :appId="appInfo?.id"
-        :listUrl="`${TESTER}/apis/auth?apisId=${state.id}`"
+        :listUrl="`${TESTER}/apis/auth?apisId=${uiState.selectedApiId}`"
         :delUrl="`${TESTER}/apis/auth`"
-        :addUrl="`${TESTER}/apis/${state.id}/auth`"
+        :addUrl="`${TESTER}/apis/${uiState.selectedApiId}/auth`"
         :updateUrl="`${TESTER}/apis/auth`"
-        :enabledUrl="`${TESTER}/apis/${state.id}/auth/enabled`"
-        :initStatusUrl="`${TESTER}/apis/${state.id}/auth/status`"
+        :enabledUrl="`${TESTER}/apis/${uiState.selectedApiId}/auth/enabled`"
+        :initStatusUrl="`${TESTER}/apis/${uiState.selectedApiId}/auth/status`"
         :onTips="t('service.apiList.template.permission.onTips')"
         :offTips="t('service.apiList.template.permission.offTips')"
         :title="t('service.apiList.template.permission.title')"
@@ -657,58 +677,56 @@ defineExpose({
     </AsyncComponent>
     <AsyncComponent :visible="testVisible">
       <CreateTestTaskModal
-        v-model:id="state.id"
+        v-model:id="uiState.selectedApiId"
         v-model:visible="testVisible"
         :infoText="t('service.apiList.template.testTask.infoText')"
         type="API" />
     </AsyncComponent>
-    <!-- 重新开始测试 -->
     <AsyncComponent :visible="restartTestVisible">
       <RestartTestTaskModal
         v-model:visible="restartTestVisible"
-        v-model:id="state.id"
+        v-model:id="uiState.selectedApiId"
         :content="restartContent"
         type="API" />
     </AsyncComponent>
-    <!-- 重新打开测试任务 -->
     <AsyncComponent :visible="reopenTestVisible">
       <ReOpenTestTaskModal
         v-model:visible="reopenTestVisible"
-        v-model:id="state.id"
+        v-model:id="uiState.selectedApiId"
         :content="reopenContent"
         type="API" />
     </AsyncComponent>
     <AsyncComponent :visible="delTestVisible">
       <DelTestTask
-        :id="state.id"
+        :id="uiState.selectedApiId"
         v-model:visible="delTestVisible"
         type="API" />
     </AsyncComponent>
     <AsyncComponent :visible="statusVisible">
       <StatusModal
-        :id="state.id"
+        :id="uiState.selectedApiId"
         v-model:visible="statusVisible"
         :value="statusValue"
-        @confirm="changeStatus" />
+        @confirm="refreshAfterStatusChange" />
     </AsyncComponent>
-    <AsyncComponent :visible="state.apiExportVisible">
-      <ExportApiModal
-        v-if="state.apiExportVisible"
-        :id="state.id"
-        v-model:visible="state.apiExportVisible"
+    <AsyncComponent :visible="uiState.apiExportVisible">
+      <ExportServiceModal
+        v-if="uiState.apiExportVisible"
+        :id="uiState.selectedApiId"
+        v-model:visible="uiState.apiExportVisible"
         type="API" />
     </AsyncComponent>
     <AsyncComponent :visible="testScriptVisible">
-      <GenTestScript
-        :id="state.id"
+      <GenTestScriptModal
+        :id="uiState.selectedApiId"
         v-model:visible="testScriptVisible"
-        :setType="setType"
+        :setType="testScriptActionType"
         type="API" />
     </AsyncComponent>
-    <AsyncComponent :visible="delScriptVisble">
-      <DelTestScript
-        :id="state.id"
-        v-model:visible="delScriptVisble"
+    <AsyncComponent :visible="delScriptVisible">
+      <DeleteScriptModal
+        :id="uiState.selectedApiId"
+        v-model:visible="delScriptVisible"
         type="API" />
     </AsyncComponent>
     <AsyncComponent :visible="execTestVisible">

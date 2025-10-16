@@ -2,8 +2,9 @@
 import { computed, inject, ref, Ref } from 'vue';
 import { Button, ListItem, Popover, Tooltip } from 'ant-design-vue';
 import { Dropdown, HttpMethodTag, Icon } from '@xcan-angus/vue-ui';
-import { ButtonGroup, CollapseButtonGroup } from './interface';
+import { ButtonGroup, CollapseButtonGroup } from './types';
 import { API_STATUS_COLOR_CONFIG } from '@/utils/apis';
+import { ServicesPermission, ApiStatus } from '@/enums/enums';
 import { useI18n } from 'vue-i18n';
 
 interface Props {
@@ -28,22 +29,25 @@ const emits = defineEmits<{
  (e: 'handleClick', value: string, item, index: number): void;
 }>();
 
-const edit = (item) => {
+// Open API editor tab for this row
+const openApiEditorTab = (item) => {
   emits('edit', item);
 };
 
-const showInfo = (item) => {
+// Toggle expand/collapse details for this row
+const toggleApiDetails = (item) => {
   emits('showInfo', item.id, item);
 };
 
-const handleClick = (value, item) => {
+// Emit toolbar/menu action from this row
+const emitRowAction = (value, item) => {
   emits('handleClick', value, item, props.index);
 };
 
 const apiAuths = inject('apiAuths', ref());
 const serviceAuths = inject('serviceAuths', ref());
 const mockAuth = computed(() => {
-  if (serviceAuths.value.includes('ADD')) {
+  if (serviceAuths.value.includes(ServicesPermission.ADD)) {
     return ['MOCK'];
   }
   return [];
@@ -73,13 +77,13 @@ const myButtonGroup = computed(() => {
     return {
       ...btn
     };
-  }).filter(Boolean);
+  }).filter(Boolean) as any[];
 });
 
 const getBtnDisabled = (btn, item) => {
-  const publishBtn = ['del'];
-  if (publishBtn.includes(btn.value)) {
-    return item.status?.value === 'RELEASED' || !apiAuths.value.includes(btn.auth);
+  const releaseBtn = ['del'];
+  if (releaseBtn.includes(btn.value)) {
+    return item.status?.value === ApiStatus.RELEASED || !apiAuths.value.includes(btn.auth);
   }
   if (btn.value === 'patchClone') {
     return !serviceAuths.value.includes(btn.auth);
@@ -87,27 +91,7 @@ const getBtnDisabled = (btn, item) => {
   return !apiAuths.value.includes(btn.auth);
 };
 
-// 测试结果图标颜色
-const getResultIconColor = (item) => {
-  if (item.testFunc && item.testFuncPassedFlag === false) {
-    return 'text-status-error';
-  }
-  if (item.testPerf && item.testPerfPassedFlag === false) {
-    return 'text-status-error';
-  }
-  if (item.testStability && item.testStabilityPassedFlag === false) {
-    return 'text-status-error';
-  }
-  if (!item.testFunc && !item.testPerf && !item.testStability) {
-    return '';
-  }
-  if (item.testFuncPassedFlag === true || item.testPerfPassedFlag === true || item.testStabilityPassedFlag === true) {
-    return 'text-status-success';
-  }
-  return '';
-};
-
-// 测试结果颜色
+// Text color class based on test result
 const getResultColor = (testFlag, testPassd = undefined) => {
   if (!testFlag || testPassd === undefined) {
     return;
@@ -120,14 +104,33 @@ const getResultColor = (testFlag, testPassd = undefined) => {
   }
 };
 
+// Icon color class based on aggregated test results
+const getResultIconColor = (item) => {
+  if (item.testFunc && item.testFuncPassed === false) {
+    return 'text-status-error';
+  }
+  if (item.testPerf && item.testPerfPassed === false) {
+    return 'text-status-error';
+  }
+  if (item.testStability && item.testStabilityPassed === false) {
+    return 'text-status-error';
+  }
+  if (!item.testFunc && !item.testPerf && !item.testStability) {
+    return '';
+  }
+  if (item.testFuncPassed === true || item.testPerfPassed === true || item.testStabilityPassed === true) {
+    return 'text-status-success';
+  }
+  return '';
+};
 </script>
 <template>
   <ListItem
     :key="item.id"
     class="mb-3 w-full p-0 cursor-pointer"
     :class="{'deprecated line-through': item.deprecated}"
-    @dblclick="edit(item)"
-    @click="showInfo(item)">
+    @dblclick="openApiEditorTab(item)"
+    @click="toggleApiDetails(item)">
     <div
       class="flex w-full h-11.5  rounded justify-between px-5 text-3 leading-3.5"
       :class="{'bg-gray-300': props.activeApiId === item.id, 'bg-gray-light': props.activeApiId !== item.id}">
@@ -153,36 +156,36 @@ const getResultColor = (testFlag, testPassd = undefined) => {
           <template #content>
             <div class="flex">
               <span class="w-20">{{ t('service.apiList.template.testTask.funcTest') }}:</span>
-              <div class="flex-1 min-w-0" :class="getResultColor(item.testFunc, item.testFuncPassedFlag)">
+              <div class="flex-1 min-w-0" :class="getResultColor(item.testFunc, item.testFuncPassed)">
                 {{ !item.testFunc
                   ? t('status.disabled')
-                  : item.testFuncPassedFlag
+                  : item.testFuncPassed
                     ? t('status.passed')
-                    : item.testFuncPassedFlag === false
+                    : item.testFuncPassed === false
                       ? t('status.notPassed')
                       : t('status.notTested') }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span>
               </div>
             </div>
             <div class="flex">
               <span class="w-20">{{ t('service.apiList.template.testTask.perfTest') }}:</span>
-              <div class="flex-1 min-w-0" :class="getResultColor(item.testPerf, item.testPerfPassedFlag)">
+              <div class="flex-1 min-w-0" :class="getResultColor(item.testPerf, item.testPerfPassed)">
                 {{ !item.testPerf
                   ? t('status.disabled')
-                  : item.testPerfPassedFlag
+                  : item.testPerfPassed
                     ? t('status.passed')
-                    : item.testPerfPassedFlag === false
+                    : item.testPerfPassed === false
                       ? t('status.notPassed')
                       : t('status.notTested') }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span>
               </div>
             </div>
             <div class="flex">
               <span class="w-20">{{ t('service.apiList.template.testTask.stabilityTest') }}:</span>
-              <div class="flex-1 min-w-0" :class="getResultColor(item.testStability, item.testStabilityPassedFlag)">
+              <div class="flex-1 min-w-0" :class="getResultColor(item.testStability, item.testStabilityPassed)">
                 {{ !item.testStability
                   ? t('status.disabled')
-                  : item.testStabilityPassedFlag
+                  : item.testStabilityPassed
                     ? t('status.passed')
-                    : item.testStabilityPassedFlag === false
+                    : item.testStabilityPassed === false
                       ? t('status.notPassed')
                       : t('status.notTested') }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span>
               </div>
@@ -206,7 +209,7 @@ const getResultColor = (testFlag, testPassd = undefined) => {
               type="text"
               class="!bg-transparent"
               :disabled="getBtnDisabled(record, item)"
-              @click.stop="handleClick(record.value, item)">
+              @click.stop="emitRowAction(record.value, item)">
               <Icon :icon="record.icon" />
               {{ record.label }}
             </Button>
@@ -217,7 +220,7 @@ const getResultColor = (testFlag, testPassd = undefined) => {
             :menuItems="myButtonGroup"
             :permissions="[...apiAuths, ...mockAuth]"
             :destroyPopupOnHide="true"
-            @click="$event =>handleClick($event.key, item)">
+            @click="$event =>emitRowAction($event.key, item)">
             <Icon icon="icon-gengduo" />
           </Dropdown>
         </div>

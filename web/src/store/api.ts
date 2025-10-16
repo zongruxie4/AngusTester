@@ -12,7 +12,7 @@ export default {
     updateFocusNotify (state: { focesNotify: number; }):void {
       state.focesNotify++;
     },
-    updateCollectNofify (state: { collectNofify: number; }):void {
+    updateCollectNotify (state: { collectNofify: number; }):void {
       state.collectNofify++;
     },
     openDrawer (state: { activeDrawer: number; activeDrawerId: string; }, payload:string):void {

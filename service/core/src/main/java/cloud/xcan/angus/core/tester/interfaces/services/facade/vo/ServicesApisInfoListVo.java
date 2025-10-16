@@ -23,6 +23,11 @@ public class ServicesApisInfoListVo {
 
   private ApiImportSource importSource;
 
+  private Long serviceId;
+
+  @NameJoinField(id = "serviceId", repository = "servicesRepo")
+  private String serviceName;
+
   private ApisProtocol protocol;
 
   private String method;
@@ -98,7 +103,6 @@ public class ServicesApisInfoListVo {
   private Boolean testStabilityPassed;
 
   private String testStabilityFailureMessage;
-
 
   private List<String> tags;
 
