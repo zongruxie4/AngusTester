@@ -4,38 +4,40 @@ import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } fr
 import { useI18n } from 'vue-i18n';
 import { debounce, throttle } from 'throttle-debounce';
 import { Dropdown, DropdownGroup, DropdownSort, Icon, Input } from '@xcan-angus/vue-ui';
-import { duration, utils, appContext } from '@xcan-angus/infra';
+import { duration, utils, appContext, HttpMethod } from '@xcan-angus/infra';
+import { ServicesPermission, ApiStatus } from '@/enums/enums';
 import elementResizeDetector from 'element-resize-detector';
 
 interface Props{
-  name:string;
+  searchKeyword:string;
   serviceId:string;
   showGroupList:boolean;
   disabled?: boolean;
   orderBy?: string;
   orderSort?:string;
   loading: boolean;
-  serviceAuths: string[];
   serviceName: string;
   groupBy: string;
-  projectTargetType: {value: string};
+  serviceAuths: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  name: undefined,
+  searchKeyword: undefined,
   serviceId: undefined,
   showGroupList: false,
   disabled: false,
   orderBy: undefined,
   orderSort: undefined,
+  loading: false,
+  serviceName: '',
   groupBy: '-',
   serviceAuths: () => ([])
 });
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
-  (e:'loadInteface'):void;
-  (e:'update:name', value:string|undefined):void;
+  (e:'loadApis'):void;
+  (e:'update:searchKeyword', value:string|undefined):void;
   (e:'update:showGroupList', value:boolean):void;
   (e:'share'):void;
   (e:'update:orderBy', value:string): void;
@@ -52,8 +54,14 @@ const userInfo = ref(appContext.getUser());
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
 
-const enumList = reactive({
-  sortList: [{
+// Local constants to avoid magic numbers/strings
+const RESPONSIVE_MORE_ICON_WIDTH = 800; // px width threshold to switch to dropdown
+const getOrderStorageKey = (): string => `${props.serviceId}_order`;
+const getGroupByStorageKey = (): string => `${props.serviceId}_groupBy`;
+
+// Sort & Group options
+const sortAndGroupOptions = reactive({
+  sort: [{
     key: 'createdDate',
     name: t('service.groupHeader.sort.byCreatedDate'),
     orderSort: 'DESC'
@@ -68,7 +76,7 @@ const enumList = reactive({
     name: t('service.groupHeader.sort.byCreatedBy'),
     orderSort: 'ASC'
   }],
-  groupList: [
+  group: [
     {
       key: '',
       name: t('actions.noGroup')
@@ -92,14 +100,15 @@ const enumList = reactive({
   ]
 });
 
-const projectState = inject('api', reactive<{id: string, type?: string}>({ id: '' }));
+const mainState = inject('mainState', reactive<{id: string, type?: string}>({ id: '' }));
 
 const groupedKey = ref('');
 
+// Local state
 interface StateType{
   hostModalVisible: boolean,
   visible:boolean,
-  name:string,
+  searchKeyword:string,
   host: string | null,
 }
 
@@ -107,16 +116,16 @@ const state:StateType = reactive({
   hostModalVisible: false,
   visible: false,
   host: null,
-  name: ''
+  searchKeyword: ''
 });
 
-// 查询
-const loadInteface = debounce(duration.search, (event:ChangeEvent) => {
+const updateSearchKeyword = debounce(duration.search, (event:ChangeEvent) => {
   const value = event.target.value?.trim();
-  emit('update:name', value);
+  emit('update:searchKeyword', value);
 });
 
-const addApi = (type) => {
+// Create a new API/WebSocket entry and open an editing tab
+const addApi = (type: 'API' | 'websocket') => {
   if (type === 'API') {
     const param = {
       summary: 'api' + new Date().getTime(),
@@ -125,7 +134,8 @@ const addApi = (type) => {
       assertions: [],
       authentication: null,
       host: '',
-      method: 'GET',
+      method: HttpMethod.GET,
+      status: ApiStatus.UNKNOWN,
       parameters: [],
       requestBody: {},
       secured: false,
@@ -144,12 +154,12 @@ const addApi = (type) => {
   } else {
     const params = {
       summary: 'socket' + new Date().getTime(),
-      ownerId: userInfo.value.id,
+      ownerId: userInfo.value?.id,
       serviceId: props.serviceId,
       parameters: [],
       protocol: 'wss',
-      method: 'GET',
-      status: 'UNKNOWN'
+      method: HttpMethod.GET,
+      status: ApiStatus.UNKNOWN
     };
 
     addTabPane({
@@ -163,35 +173,31 @@ const addApi = (type) => {
   }
 };
 
-// 打开配置安全方案
-const configuringAuthHeader = () => {
-  projectState.id = '';
-  projectState.type = undefined;
+// Navigate to Security config view
+const handleAddSecurity = () => {
+  mainState.id = '';
+  mainState.type = undefined;
   setTimeout(() => {
     emit('config', 'security');
   }, 50);
 };
 
-const setSortType = ({ orderBy, orderSort }:{orderBy:string;orderSort:string}):void => {
-  emit('update:orderBy', orderBy);
-  emit('update:orderSort', orderSort);
-  localStorage.setItem(`${props.serviceId}_order`, JSON.stringify({ orderBy, orderSort }));
-};
-
-const handleAddHost = () => {
-  projectState.id = '';
-  projectState.type = undefined;
+// Navigate to Server config view (only when no host selected)
+const handleAddServer = () => {
+  mainState.id = '';
+  mainState.type = undefined;
   setTimeout(() => {
     if (state.host) {
       return;
     }
     emit('config', 'serverConfig');
-  });
+  }, 50);
 };
 
-const grouped = (groupKey: string) => {
+// Apply grouping and persist preference
+const handleGroup = (groupKey: string) => {
   groupedKey.value = groupKey;
-  localStorage.setItem(`${props.serviceId}_groupBy`, groupedKey.value);
+  localStorage.setItem(getGroupByStorageKey(), groupedKey.value);
   emit('grouped', groupKey);
   if (groupKey !== '') {
     emit('update:showGroupList', true);
@@ -200,26 +206,33 @@ const grouped = (groupKey: string) => {
   }
 };
 
-const moreBtnsConfig = computed(() => [
+// Apply sort type and persist preference
+const setSortType = ({ orderBy, orderSort }:{orderBy:string;orderSort:string}):void => {
+  emit('update:orderBy', orderBy);
+  emit('update:orderSort', orderSort);
+  localStorage.setItem(getOrderStorageKey(), JSON.stringify({ orderBy, orderSort }));
+};
+
+const moreBtnConfig = computed(() => [
   {
     key: 'addApi',
     name: t('service.groupHeader.actions.addHttpApi'),
-    permission: 'ADD'
+    permission: ServicesPermission.ADD
   },
   {
     key: 'addSocket',
     name: t('service.groupHeader.actions.addWebSocketApi'),
-    permission: 'ADD'
+    permission: ServicesPermission.ADD
   },
   {
     key: 'serverConfig',
     name: t('service.groupHeader.actions.serverConfig'),
-    permission: 'CONFIG'
+    permission: ServicesPermission.MODIFY
   },
   {
     key: 'authConfig',
     name: t('service.groupHeader.actions.authConfig'),
-    permission: 'CONFIG'
+    permission: ServicesPermission.MODIFY
   }
 ]);
 
@@ -232,38 +245,37 @@ const onDropBtnClick = (btn: {key: string; name: string}) => {
       addApi('websocket');
       break;
     case 'serverConfig':
-      handleAddHost();
+      handleAddServer();
       break;
     case 'authConfig':
-      configuringAuthHeader();
+      handleAddSecurity();
       break;
   }
 };
 
-const getBtnPermission = computed(() => {
+// Compute permissions for dropdown action items based on service-level authz
+const getActionPermission = computed(() => {
   const keys: string[] = [];
-  if (props.serviceAuths.includes('ADD')) {
-    keys.push('ADD');
+  if (props.serviceAuths.includes(ServicesPermission.ADD)) {
+    keys.push(ServicesPermission.ADD);
   }
-  if (!projectState.id) {
-    keys.push('CONFIG');
+  if (!mainState.id && props.serviceAuths.includes(ServicesPermission.MODIFY)) {
+    keys.push(ServicesPermission.MODIFY);
   }
   return keys;
 });
 
+// Resize observer toggles condensed layout when width is below threshold
 const resizeHandler = throttle(duration.resize, () => {
   if (containerRef.value) {
     const containerWidth = containerRef.value.clientWidth;
-    if (containerWidth < 800) {
-      showMoreIcon.value = true;
-    } else {
-      showMoreIcon.value = false;
-    }
+    showMoreIcon.value = containerWidth < RESPONSIVE_MORE_ICON_WIDTH;
   }
 });
 
+// Lifecycle
 onMounted(() => {
-  state.name = props.name;
+  state.searchKeyword = props.searchKeyword;
   erd.listenTo(containerRef.value, resizeHandler);
   watch(() => props.groupBy, newValue => {
     groupedKey.value = newValue;
@@ -280,18 +292,18 @@ onBeforeUnmount(() => {
   <div ref="containerRef" class="w-full flex justify-between items-center">
     <div class="w-75">
       <Input
-        v-model:value="state.name"
-        :placeholder="t('service.groupHeader.placeholder.searchApi')"
+        v-model:value="state.searchKeyword"
+        :placeholder="t('common.placeholders.searchKeyword')"
         class="rounded"
         :maxlength="100"
         :trim="true"
         :allowClear="true"
-        @change="loadInteface" />
+        @change="updateSearchKeyword" />
     </div>
     <div class="flex-1 flex justify-end items-center space-x-3.5">
       <template v-if="!showMoreIcon">
         <Button
-          :disabled="!serviceAuths.includes('ADD')"
+          :disabled="!serviceAuths.includes(ServicesPermission.ADD)"
           size="small"
           class="px-0"
           type="link"
@@ -302,7 +314,7 @@ onBeforeUnmount(() => {
           </div>
         </Button>
         <Button
-          :disabled="!serviceAuths.includes('ADD')"
+          :disabled="!serviceAuths.includes(ServicesPermission.ADD)"
           size="small"
           class="px-0"
           type="link"
@@ -313,22 +325,22 @@ onBeforeUnmount(() => {
           </div>
         </Button>
         <Button
-          :disabled="!!projectState.id"
+          :disabled="!!mainState.id || !serviceAuths.includes(ServicesPermission.MODIFY)"
           size="small"
           class="px-0"
           type="link"
-          @click="handleAddHost">
+          @click="handleAddServer">
           <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
             <Icon icon="icon-host" />
             <span>{{ t('service.groupHeader.actions.serverConfig') }}</span>
           </div>
         </Button>
         <Button
-          :disabled="!!projectState.id"
+          :disabled="!!mainState.id || !serviceAuths.includes(ServicesPermission.MODIFY)"
           size="small"
           class="px-0"
           type="link"
-          @click="configuringAuthHeader">
+          @click="handleAddSecurity">
           <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
             <Icon icon="icon-renzhengtou" />
             <span>{{ t('service.groupHeader.actions.authConfig') }}</span>
@@ -337,8 +349,8 @@ onBeforeUnmount(() => {
       </template>
       <template v-else>
         <Dropdown
-          :menuItems="moreBtnsConfig"
-          :permissions="getBtnPermission"
+          :menuItems="moreBtnConfig"
+          :permissions="getActionPermission"
           @click="onDropBtnClick">
           <Icon icon="icon-gengduo" />
         </Dropdown>
@@ -346,7 +358,7 @@ onBeforeUnmount(() => {
       <DropdownSort
         v-model:orderSort="props.orderSort"
         v-model:orderBy="props.orderBy"
-        :menuItems="enumList.sortList"
+        :menuItems="sortAndGroupOptions.sort"
         @click="setSortType">
         <Button
           type="link"
@@ -360,8 +372,8 @@ onBeforeUnmount(() => {
       </DropdownSort>
       <DropdownGroup
         v-model:activeKey="groupedKey"
-        :menuItems="enumList.groupList"
-        @click="grouped">
+        :menuItems="sortAndGroupOptions.group"
+        @click="handleGroup">
         <Button
           type="link"
           size="small"
@@ -377,7 +389,7 @@ onBeforeUnmount(() => {
         size="small"
         class="px-0"
         :disabled="props.loading"
-        @click="emit('loadInteface')">
+        @click="emit('loadApis')">
         <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
           <Icon icon="icon-shuaxin" />
           <span>{{ t('actions.refresh') }}</span>

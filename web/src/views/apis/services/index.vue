@@ -15,7 +15,7 @@ import { createAngusWebSocketProxy, type WebSocketEventHandlers } from '@/utils/
 
 // Lazy load components for better performance
 const Sidebar = defineAsyncComponent(() => import('@/views/apis/services/sidebar/index.vue'));
-const ApiGrouping = defineAsyncComponent(() => import('@/views/apis/services/apis/index.vue'));
+const Apis = defineAsyncComponent(() => import('@/views/apis/services/apis/index.vue'));
 const HttpApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/index.vue'));
 const WebSocketApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/index.vue'));
 const MockService = defineAsyncComponent(() => import('@/views/apis/services/mock/MockService.vue'));
@@ -342,7 +342,7 @@ provide('updateHosts', reactive({
       <template #default="record">
         <!-- API Group Management -->
         <template v-if="record.value === 'group'">
-          <ApiGrouping :serviceId="record.id" :info="record" />
+          <Apis :serviceId="record.id" :info="record" />
         </template>
 
         <!-- HTTP API -->

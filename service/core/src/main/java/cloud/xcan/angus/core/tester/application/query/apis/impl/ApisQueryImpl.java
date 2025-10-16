@@ -217,14 +217,14 @@ public class ApisQueryImpl implements ApisQuery {
 
         // Verify API exists and retrieve API info
         apisDb = checkAndFind(id);
+
+       // Verify user can access deleted API (only if they deleted it)
+        BizAssert.assertTrue(!apisDb.getDeleted() || apisDb.getDeletedBy().equals(getUserId()),
+            TRASH_NO_VIEW_PERMISSION_CODE, TRASH_NO_VIEW_PERMISSION);
       }
 
       @Override
       protected Apis process() {
-        // Verify user can access deleted API (only if they deleted it)
-        BizAssert.assertTrue(!apisDb.getDeleted() || apisDb.getDeletedBy().equals(getUserId()),
-            TRASH_NO_VIEW_PERMISSION_CODE, TRASH_NO_VIEW_PERMISSION);
-
         List<Apis> list = List.of(apisDb);
         if (isUserAction()) {
           // Set favourite and follow status for current user

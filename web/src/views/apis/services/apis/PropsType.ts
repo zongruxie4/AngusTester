@@ -60,6 +60,7 @@ export interface StateType {
   dataSource: Array<DataSourceType>,
   id: string,
   name: string,
+  searchKeyword: string,
   order: Record<string, string | undefined>,
   serviceId: string,
   showGroupList: boolean,
