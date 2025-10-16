@@ -55,7 +55,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 // UI state management
 const showQuickStarted = ref(false); // Show quick start when service doesn't exist
-const userInfo = ref(appContext.getUser());
 const pageType = ref<'default' | 'success' | undefined>('success');
 const loading = ref(false);
 const viewMode = ref<'code' | 'UI'>('UI');

@@ -21,7 +21,6 @@ interface Props{
   projectTargetType: {value: string};
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   name: undefined,
   serviceId: undefined,
@@ -45,6 +44,7 @@ const emit = defineEmits<{
   (e:'config', value:string):void;
 }>();
 
+const { t } = useI18n();
 const erd = elementResizeDetector({ strategy: 'scroll' });
 const containerRef = ref();
 const showMoreIcon = ref(false);

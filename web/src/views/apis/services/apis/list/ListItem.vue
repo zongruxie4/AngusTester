@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   item: () => ({}),
   activeApiId: ''
 });
+
 const { t } = useI18n();
 
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));

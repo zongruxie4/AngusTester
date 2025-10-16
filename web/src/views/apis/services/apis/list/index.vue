@@ -63,13 +63,13 @@ const StatusModal = defineAsyncComponent(() => import('@/views/apis/services/com
 const ExportApiModal = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/ExportService.vue'));
 const GenTestScript = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
 const DelTestScript = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
-const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/apis/list/ExecTest.vue'));
-const erd = elementResizeDetector({ strategy: 'scroll' });
+const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/apis/list/ExecTestModal.vue'));
 
 const notify = ref(0);
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));
 const api = inject('api', reactive<{id: string, type?: string}>({ id: '' })); // 用于提供给外面当前 打开的 api
 
+const erd = elementResizeDetector({ strategy: 'scroll' });
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const changeGroupState = inject<(data: any) => void>('changeGroupState', () => { });
 
@@ -95,15 +95,6 @@ const loading = ref(false);
 const showGroupList1 = computed(() => props.showGroupList);
 const resizeHandler = debounce(duration.resize, () => {
   wrapperHeight.value = listWrapperRef.value ? listWrapperRef.value.clientHeight - 12 : 500;
-});
-
-onMounted(() => {
-  wrapperHeight.value = listWrapperRef.value ? listWrapperRef.value.clientHeight - 12 : 500;
-  erd.listenTo(listWrapperRef.value, resizeHandler);
-});
-
-onBeforeUnmount(() => {
-  erd.removeListener(listWrapperRef.value, resizeHandler);
 });
 
 const listData = ref<any[]>([]);
@@ -188,12 +179,6 @@ const handleClick = (event:string, data:DataSourceType) => {
     case 'remove':
       toMove(data);
       break;
-    // case 'execute':
-    //   execute(id);
-    //   break;
-    // case 'test':
-    //   test();
-    //   break;
     case 'addFollow':
       addFollow(id);
       break;
@@ -266,9 +251,6 @@ const patchClone = async (id:string) => {
   notification.success(t('actions.tips.cloneSuccess'));
   refreshList();
 };
-
-// const apiAuths = inject('apiAuths', ref());
-// const serviceAuths = inject('serviceAuths', ref());
 
 const deleteConfirm = (id: string) => {
   modal.confirm({
@@ -475,28 +457,6 @@ const handleExecTest = async (type, id: string) => {
   execTips.value = execTestTipConfig[type];
   execModalTitle.value = execModalTitleConfig[type];
   okAction.value = getOkAction(type, id);
-  // modal.confirm({
-  //   content: execTestTipConfig[type],
-  //   async onOk () {
-  //     let testTypes = '';
-  //     switch (type) {
-  //       case 'funcTestExec':
-  //         testTypes = 'FUNCTIONAL';
-  //         break;
-  //       case 'perfTestExec':
-  //         testTypes = 'PERFORMANCE';
-  //         break;
-  //       case 'stabilityTestExec':
-  //         testTypes = 'STABILITY';
-  //         break;
-  //     }
-  //     const [error] = await http.put(`${TESTER}/apis/${id}/exec?testTypes=${testTypes}`);
-  //     if (error) {
-  //       return;
-  //     }
-  //     notification.success('执行成功');
-  //   }
-  // });
 };
 
 const delScriptVisble = ref(false);
@@ -504,6 +464,7 @@ const delScriptVisble = ref(false);
 const changeStatus = () => {
   refreshList();
 };
+
 // 点击详情
 const showInfo = (id:string, api: { protocol: { value: string | string[]; }; }) => {
   setTimeout(() => {
@@ -541,13 +502,6 @@ watch(() => api.id, () => {
 
 watch(() => loading.value, newValue => {
   emits('update:spinning', newValue);
-});
-
-defineExpose({
-  activeApiId: state.activeApiId,
-  updateScrollList: () => {
-    refreshList();
-  }
 });
 
 const data = ref<Record<string, any>[]>([]);
@@ -612,8 +566,22 @@ watch(() => [props.allData, props.groupedBy], () => {
   immediate: true
 });
 
-</script>
+onMounted(() => {
+  wrapperHeight.value = listWrapperRef.value ? listWrapperRef.value.clientHeight - 12 : 500;
+  erd.listenTo(listWrapperRef.value, resizeHandler);
+});
 
+onBeforeUnmount(() => {
+  erd.removeListener(listWrapperRef.value, resizeHandler);
+});
+
+defineExpose({
+  activeApiId: state.activeApiId,
+  updateScrollList: () => {
+    refreshList();
+  }
+});
+</script>
 <template>
   <div ref="listWrapperRef">
     <template v-if="showGroupList1">
@@ -743,7 +711,6 @@ watch(() => [props.allData, props.groupedBy], () => {
         v-model:visible="delScriptVisble"
         type="API" />
     </AsyncComponent>
-
     <AsyncComponent :visible="execTestVisible">
       <ExecTestModal
         v-model:serviceId="props.serviceId"
