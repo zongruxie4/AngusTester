@@ -1,10 +1,11 @@
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, ref } from 'vue';
+import { defineAsyncComponent, inject, ref } from 'vue';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
+import { ServicesPermission } from '@/enums/enums';
 
 const LocalImport = defineAsyncComponent(() => import('../../sidebar/components/LocalImport.vue'));
 
@@ -19,6 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
 
@@ -28,7 +30,7 @@ const debugging = () => {
   addTabPane({
     value: 'API',
     unarchived: true,
-    name: '添加API',
+    name: t('apis.quickStarted.addApiTabName'),
     _id: utils.uuid('api') + 'API',
     serviceId: props.info.id,
     serviceName: props.info.name
@@ -38,56 +40,55 @@ const debugging = () => {
 const openImport = () => {
   visible.value = true;
 };
-
-const entries = computed(():{titleIcon: string; title: string; content: string; icon: string; action: string; click:() => void, disabled?: boolean }[] => {
-  return [
-    {
-      titleIcon: 'icon-jiekoutiaoshi',
-      title: t('apis.quickStarted.debug.title'),
-      content: t('common.description'),
-      icon: 'icon-tiaoshi',
-      action: t('common.actions'),
-      click: debugging
-    },
-    {
-      titleIcon: 'icon-daoruxiangmufuwu',
-      title: t('apis.quickStarted.import.title'),
-      content: t('common.description'),
-      icon: 'icon-daoru',
-      action: t('common.actions'),
-      click: openImport,
-      disabled: !props.serviceAuths.includes('ADD')
-    }
-  ].filter(Boolean);
-});
-
 </script>
 <template>
-  <div class="space-y-2">
-    <div class="title-normal">{{ t('apis.quickStarted.title') }}</div>
-    <div class="flex flex-nowrap space-x-5 px-4">
-      <div
-        v-for="(entery,index) in entries"
-        :key="entery.titleIcon"
-        style="width:calc((100% - 40px)/3);"
-        class="p-5 flex flex-col justify-between min-h-37.5 min-w-50 border border-theme-text-box rounded">
-        <div>
-          <div class="flex items-center space-x-2">
-            <Icon :icon="entery.titleIcon" class="text-white -mt-0.5 text-5" />
-            <span class="title-normal">{{ entery.title }}</span>
+  <div>
+    <div class="text-3.5 font-semibold mb-3">
+      {{ t('apis.quickStarted.title') }}
+    </div>
+
+    <div class="flex space-x-3.75 flex-1 ">
+      <div class="flex flex-col justify-between px-5 pt-4 pb-3.5 border border-theme-text-box rounded w-1/3">
+        <div class="text-theme-content mb-3.5">
+          <div class="flex items-center space-x-2 mb-2">
+            <Icon icon="icon-jiekoutiaoshi" class="text-5" />
+            <span class="title-normal">{{ t('apis.quickStarted.debug.title') }}</span>
           </div>
-          <div class="mt-3 text-content">{{ entery.content }}</div>
+          <div>{{ t('apis.quickStarted.debug.description') }}</div>
         </div>
-        <Button
-          type="link"
-          size="small"
-          class="w-fit h-5 space-x-1 mt-2"
-          :class="{'text-theme-special text-theme-text-hover': !entery.disabled}"
-          :disabled="entery.disabled"
-          @click="entery.click">
-          <Icon :icon="entery.icon" />
-          <span> {{ entery.action }}</span>
-        </Button>
+
+        <div class="flex items-start">
+          <Button
+            type="link"
+            size="small"
+            class="flex space-x-1"
+            @click="debugging">
+            <Icon icon="icon-tiaoshi" />
+            {{ t('common.actions') }}
+          </Button>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-between px-5 pt-4 pb-3.5 border border-theme-text-box rounded w-1/3">
+        <div class="text-theme-content mb-3.5">
+          <div class="flex items-center space-x-2 mb-2">
+            <Icon icon="icon-daoruxiangmufuwu" class="text-5" />
+            <span class="title-normal">{{ t('apis.quickStarted.import.title') }}</span>
+          </div>
+          <div>{{ t('apis.quickStarted.import.description') }}</div>
+        </div>
+
+        <div class="flex items-start">
+          <Button
+            type="link"
+            size="small"
+            class="flex space-x-1"
+            :disabled="!props.serviceAuths.includes(ServicesPermission.ADD)"
+            @click="openImport">
+            <Icon icon="icon-daoru" />
+            {{ t('common.actions') }}
+          </Button>
+        </div>
       </div>
     </div>
   </div>
@@ -95,7 +96,7 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
     <LocalImport
       v-model:visible="visible"
       :serviceId="info.id"
-      source="projectOrService" />
+      source="services" />
   </AsyncComponent>
 </template>
 

@@ -13,7 +13,7 @@ import { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface';
 interface Props {
   serviceId?: string;
   serviceName?: string;
-  source?:'introduce' | 'global' | 'projectOrService';
+  source?:'introduce' | 'global' | 'services';
 }
 
 interface UploadOption extends UploadRequestOption {
@@ -195,7 +195,7 @@ onMounted(() => {
         enumKey="ApiImportSource"
         defaultActiveFirstOption
         @change="importSourceChange" />
-      <div :class="{'mb-5':props.source == 'projectOrService'}">
+      <div :class="{'mb-5':props.source == 'services'}">
         <Spin :spinning="progressing">
           <UploadDragger
             v-show="!file"
@@ -236,7 +236,7 @@ onMounted(() => {
         </Validate>
       </div>
 
-      <template v-if="props.source == 'projectOrService'">
+      <template v-if="props.source == 'services'">
         <div class="space-y-0.5 mb-5 leading-5">
           <div>{{ t('service.importForm.strategyWhenDuplicated') }}</div>
           <RadioGroup v-model:value="strategyWhenDuplicated">
@@ -255,7 +255,7 @@ onMounted(() => {
       </template>
     </Spin>
     <div class="flex mt-5" :class="{'justify-end':props.source !== 'introduce'}">
-      <template v-if="['global','projectOrService'].includes(props.source)">
+      <template v-if="['global','services'].includes(props.source)">
         <Button
           size="small"
           class="mr-5"

@@ -956,7 +956,7 @@ const importSamples = async () => {
     <LocalImport
       v-model:visible="modalsConfig.importModalVisible"
       :serviceId="modalsConfig.activeId"
-      source="projectOrService"
+      source="services"
       @ok="handleExportEnd" />
   </AsyncComponent>
 

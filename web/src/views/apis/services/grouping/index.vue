@@ -32,7 +32,7 @@ const ComponentVue = defineAsyncComponent(() => import('@/views/apis/services/co
 const SocketConfigVue = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/Config.vue'));
 const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services/grouping/oas/Doc.vue'));
 const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/index.vue'));
-const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/QuickStarted.vue'));
+const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/grouping/home/DefaultQuickStarted.vue'));
 const ServiceTestInfo = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/services/test/index.vue'));
 
 interface Props {

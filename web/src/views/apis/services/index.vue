@@ -23,7 +23,7 @@ const Auth = defineAsyncComponent(() => import('@/views/apis/services/auth/index
 const DataModel = defineAsyncComponent(() => import('@/views/apis/services/model/index.vue'));
 const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SecurityTestResult.vue'));
 const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SmokeTestResult.vue'));
-const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/QuickStarted.vue'));
+const DefaultQuickStarted = defineAsyncComponent(() => import('@/views/apis/services/grouping/home/DefaultQuickStarted.vue'));
 
 // Composables
 const { t } = useI18n();
@@ -335,7 +335,7 @@ provide('updateHosts', reactive({
       @add="addHandler">
       <!-- Empty state when no tabs are open -->
       <template #empty>
-        <QuickStarted class="p-5" />
+        <DefaultQuickStarted class="p-5" />
       </template>
 
       <!-- Dynamic tab content based on record type -->
@@ -345,7 +345,7 @@ provide('updateHosts', reactive({
           <ApiGrouping :serviceId="record.id" :info="record" />
         </template>
 
-        <!-- HTTP API Testing -->
+        <!-- HTTP API -->
         <template v-if="record.value === 'API'">
           <HttpApi
             :id="record.id"
@@ -359,17 +359,7 @@ provide('updateHosts', reactive({
             :projectId="projectId?.toString()" />
         </template>
 
-        <!-- Authentication Management -->
-        <template v-if="record.value === 'auth'">
-          <Auth :appId="appInfo?.id?.toString()" />
-        </template>
-
-        <!-- Mock Service Management -->
-        <template v-if="record.value === 'mock'">
-          <MockService :id="record.id" />
-        </template>
-
-        <!-- WebSocket API Testing -->
+        <!-- WebSocket API -->
         <template v-if="record.value === 'socket'">
           <WebSocketApi
             :id="record.id"
@@ -380,6 +370,16 @@ provide('updateHosts', reactive({
             :name="record.name"
             :responseCount="responseCount"
             :response="responseData" />
+        </template>
+
+        <!-- Authentication Management -->
+        <template v-if="record.value === 'auth'">
+          <Auth :appId="appInfo?.id?.toString()" />
+        </template>
+
+        <!-- Mock Service Management -->
+        <template v-if="record.value === 'mock'">
+          <MockService :id="record.id" />
         </template>
 
         <!-- Data Model Management -->

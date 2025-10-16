@@ -167,7 +167,7 @@ const closeCurrentTab = () => {
 const validate = ref(false);
 const submitSchema = async () => {
   validate.value = true;
-  // projectOrServiceId:string, type:string, key:string, component:any
+  // servicesId:string, type:string, key:string, component:any
   const component = parseSchemaArrToObj(JSON.parse(JSON.stringify(objectAttrList.value)), modelType.value);
   let comp;
   if (schemaType.value === 'schemas') {
