@@ -80,7 +80,7 @@ const Toolbar = defineAsyncComponent(() => import('@/components/layout/toolbar/i
 const ResponseError = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/ResponseError.vue'));
 const ApiDoc = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Doc.vue'));
 const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/tableView.vue'));
-const ApiMockVue = defineAsyncComponent(() => import('@/views/apis/services/mock/MockApi.vue')); //
+const ApiMockVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/MockApi.vue')); //
 const ApiShare = defineAsyncComponent(() => import('@/views/apis/share/Edit.vue'));
 
 const shareVisible = ref(false); // 分享弹窗

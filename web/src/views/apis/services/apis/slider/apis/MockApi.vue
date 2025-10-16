@@ -12,11 +12,12 @@ interface Props {
   id: string; // API id
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   id: ''
 });
+
+const { t } = useI18n();
 
 // Inject project id for fetching mock services
 const projectId = inject<Ref<string>>('projectId', ref(''));
