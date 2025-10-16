@@ -26,7 +26,7 @@ export enum DrawerType {
   SECURITY = 'security',
   SERVER_CONFIG = 'serverConfig',
   TAG = 'tag',
-  COMPONENT = 'componnet',
+  COMPONENT = 'component',
   SOCKET_CONFIG = 'socketConfig'
 }
 
@@ -100,23 +100,6 @@ export type ApisListInfo = {
   mockApisId: number;
 }
 
-export interface DataSourceType {
-  endpoint: string,
-  method: Method,
-  summary: string,
-  favourite: boolean,
-  id: string,
-  show: boolean,
-  auth:boolean,
-  protocol: {
-    value: string;
-    message: string;
-  };
-  status?: { value: string };
-  serviceId?: string;
-  serviceName?: string;
-}
-
 export interface StateType {
   allData: Array<ApisListInfo>,
   dataSource: Array<ApisListInfo>,
@@ -132,7 +115,37 @@ export interface StateType {
   serviceAuth: boolean
 }
 
-export const navs: NavItem[] = [
+/**
+ * API list item shape displayed in the virtual list
+ */
+export interface APITestResult {
+  id: string;
+  url: string;
+  method: string;
+  apisName?: string;
+  caseId?: string;
+  caseName?: string;
+  summary?: string;
+  // test enabling & states
+  enabledTest?: boolean;
+  tested?: boolean;
+  passed?: boolean;
+  failed?: boolean;
+  // per-type results
+  funcTestPassed?: boolean;
+  perfTestPassed?: boolean;
+  stabilityTestPassed?: boolean;
+  funcTestFailureMessage?: string;
+  perfTestFailureMessage?: string;
+  stabilityTestFailureMessage?: string;
+  // nested result for Grid fallback
+  result?: Record<string, unknown>;
+  caseType?: {
+    value: string
+  }
+}
+
+export const apiNavs: NavItem[] = [
   {
     icon: 'icon-fuwuxinxi',
     name: t('service.apis.navs.apiInfo'),
@@ -250,7 +263,7 @@ export const serviceNav: NavItem[] = [
   },
   {
     icon: 'icon-zujian',
-    name: t('service.apis.serviceNav.componnet'),
+    name: t('service.apis.serviceNav.component'),
     value: DrawerType.COMPONENT,
     auth: 'MODIFY',
     disabled: true

@@ -1,36 +1,114 @@
 <script lang="ts" setup>
 import { watch, ref, onMounted, onBeforeUnmount, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Icon, Tooltip, Grid, Input, Select, NoData, HttpMethodText } from '@xcan-angus/vue-ui';
-import BaseVirtualList from '@/views/apis/services/apis/list/BaseVirtualList.vue';
+import { Icon, Tooltip, Grid, Input, NoData, HttpMethodText } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
+import { APITestResult } from '@/views/apis/services/apis/types';
 
-const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
+import BaseVirtualList from '@/views/apis/services/apis/list/BaseVirtualList.vue';
 
-interface API {
-  apisName: string;
-  caseId: string;
-  passed: boolean; // 是否通过测试
-  enabled?: boolean;
-  caseName?: string;
-  caseType?: {
-    value: string
-  }
-}
+// Status filter literal type
+type StatusCode = 'passed' | 'unpassed' | 'unTested';
 
+/**
+ * Props: data list and enabled API ids for each test type
+ */
 interface Props {
-  dataSource: API[];
+  dataSource: APITestResult[];
   enabledTestApiIds: {
     FUNCTIONAL: string[];
     PERFORMANCE: string[];
     STABILITY: string[];
   }
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  dataSource: () => ([]),
+  enabledTestApiIds: () => ({
+    FUNCTIONAL: [],
+    PERFORMANCE: [],
+    STABILITY: []
+  })
+});
+
+// Open a new tab in parent container
+const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
+
 const erd = elementResizeDetector({ strategy: 'scroll' });
 
 const { t } = useI18n();
 
+// Reactive states for filtering and list sizing
+const showData = ref<APITestResult[]>([]);
+const keywords = ref<string | undefined>();
+const statusCode = ref<StatusCode | undefined>();
+const listWrapRef = ref<HTMLElement | null>(null);
+const listHeight = ref(100);
+
+// Recalculate virtual list height on container resize
+const resizeHeight = () => {
+  if (listWrapRef.value) listHeight.value = listWrapRef.value.clientHeight;
+};
+
+// Debounced keyword filtering
+const keywordsChange = debounce(500, () => {
+  getShowData();
+});
+
+/**
+ * Apply keyword and status filters to the data source
+ */
+const getShowData = () => {
+  const source = props.dataSource || [];
+  let data = source;
+  if (keywords.value) {
+    const kw = keywords.value.toLowerCase();
+    data = data.filter(i => (i.summary || i.apisName || i.caseName || '').toLowerCase().includes(kw));
+  }
+  if (statusCode.value) {
+    if (statusCode.value === 'passed') {
+      data = data.filter(i => i.passed === true);
+    } else if (statusCode.value === 'unpassed') {
+      data = data.filter(i => i.tested === true && i.failed === true);
+    } else {
+      data = data.filter(i => i.tested === false);
+    }
+  }
+  showData.value = data;
+};
+
+// Toggle status filter
+const changeStatus = (opt: {value: StatusCode; label: string}) => {
+  if (opt.value === statusCode.value) {
+    statusCode.value = undefined;
+  } else {
+    statusCode.value = opt.value;
+  }
+  getShowData();
+};
+
+// Open API detail in a new tab
+const openApiDetail = (api: {id: string; summary: string}) => {
+  const { id, summary } = api;
+  addTabPane({ _id: id + 'API', id, name: summary, value: 'API' });
+};
+
+// Initialize filtering and height listeners
+onMounted(() => {
+  watch(() => props.dataSource, () => {
+    getShowData();
+  }, {
+    immediate: true
+  });
+  if (listWrapRef.value) erd.listenTo(listWrapRef.value, resizeHeight);
+});
+
+onBeforeUnmount(() => {
+  if (listWrapRef.value) erd.removeListener(listWrapRef.value, resizeHeight);
+});
+
+// Grid columns for per-type results inside tooltip
 const columns = [
   [
     { dataIndex: 'funcTestPassed', label: t('service.serviceTestDetail.columns.functionalTest') },
@@ -39,7 +117,8 @@ const columns = [
   ]
 ];
 
-const statusOptions = [
+// Status filter options
+const statusOptions: { label: string; value: StatusCode }[] = [
   {
     label: t('status.passed'),
     value: 'passed'
@@ -53,80 +132,13 @@ const statusOptions = [
     value: 'unTested'
   }
 ];
-const props = withDefaults(defineProps<Props>(), {
-  dataSource: () => ([
-    // { apisName: '12432342354235asdf阿萨德', caseId: '1123', passed: false }
-  ]),
-  enabledTestApiIds: () => ({
-    FUNCTIONAL: [],
-    PERFORMANCE: [],
-    STABILITY: []
-  })
-});
 
+// Case type to icon mapping
 const CaseTypeIconConfig = {
   SMOKE: 'icon-maoyanceshi',
   SECURITY: 'icon-anquanceshi',
   USER_DEFINED: 'icon-zidingyiceshi'
 };
-
-const showData = ref([]);
-const keywords = ref();
-const statusCode = ref();
-const listWrapRef = ref();
-const listHeight = ref(100);
-
-const resizeHeight = () => {
-  listHeight.value = listWrapRef.value.clientHeight;
-};
-
-const keywordsChange = debounce(500, () => {
-  getShowData();
-});
-
-const getShowData = () => {
-  showData.value = props.dataSource;
-  if (keywords.value) {
-    showData.value = showData.value.filter(i => i.summary.includes(keywords.value));
-  }
-  if (statusCode.value) {
-    if (statusCode.value === 'passed') {
-      showData.value = showData.value.filter(i => i.passed === true);
-    } else if (statusCode.value === 'unpassed') {
-      showData.value = showData.value.filter(i => i.tested === true && i.failed === true);
-    } else {
-      showData.value = showData.value.filter(i => i.tested === false);
-    }
-  }
-};
-
-const changeStatus = (opt: {value:string; label: string}) => {
-  if (opt.value === statusCode.value) {
-    statusCode.value = undefined;
-  } else {
-    statusCode.value = opt.value;
-  }
-  getShowData();
-};
-
-const openApiDetail = (api: {id: string; summary: string}) => {
-  const { id, summary } = api;
-  addTabPane({ _id: id + 'API', id, name: summary, value: 'API' });
-};
-
-onMounted(() => {
-  watch(() => props.dataSource, () => {
-    getShowData();
-  }, {
-    immediate: true
-  });
-  erd.listenTo(listWrapRef.value, resizeHeight);
-});
-
-onBeforeUnmount(() => {
-  erd.removeListener(listWrapRef.value, resizeHeight);
-});
-
 </script>
 <template>
   <div class="text-3 space-y-1 min-h-0 flex flex-col">

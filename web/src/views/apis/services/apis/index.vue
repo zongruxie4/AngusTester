@@ -8,7 +8,7 @@ import { ApiPermission, ServicesPermission } from '@/enums/enums';
 
 import store from '@/store';
 import { apis, services } from '@/api/tester';
-import { navs, serviceNav, socketNavs, StateType, DrawerType } from './types';
+import { apiNavs, serviceNav, socketNavs, StateType, DrawerType } from './types';
 
 const { t } = useI18n();
 
@@ -365,7 +365,7 @@ watch(() => mainState.type, () => {
   if (mainState.type === 'WEBSOCKET') {
     mainState.drawerComp = socketNavs.map(i => ({ ...i, key: i.value }));
   } else if (mainState.type === 'API') {
-    mainState.drawerComp = navs.map(i => ({ ...i, key: i.value }));
+    mainState.drawerComp = apiNavs.map(i => ({ ...i, key: i.value }));
   }
 });
 
@@ -704,7 +704,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId })); // Base API informa
           :disabled="!useAuth.includes(ServicesPermission.MODIFY)"
           :name="props.serviceInfo.name" />
       </template>
-      <template #componnet>
+      <template #component>
         <OASComponent
           v-if="activeDrawerKey === DrawerType.COMPONENT"
           :id="mainState.serviceId"

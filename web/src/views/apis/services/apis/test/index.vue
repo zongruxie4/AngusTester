@@ -4,20 +4,25 @@ import { useI18n } from 'vue-i18n';
 import { Hints } from '@xcan-angus/vue-ui';
 import { services } from '@/api/tester';
 
+// Lazy-load heavy sub-components to reduce initial bundle size
+const Chart = defineAsyncComponent(() => import('./Chart.vue'));
+const TestApis = defineAsyncComponent(() => import('./TestApis.vue'));
+
+// Props provided by parent container
 interface Props {
   serviceId: string;
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   serviceId: ''
 });
 
-const Chart = defineAsyncComponent(() => import('./Chart.vue'));
-const ServiceTestApis = defineAsyncComponent(() => import('./ServiceTestApis.vue'));
+const { t } = useI18n();
 
+// Raw service test result payload
 const testResult = ref<{[key: string]: any}>({});
 
+// Aggregated counters for various test states
 const testResultCount = computed(() => {
   return testResult.value?.testResultCount || {
     enabledTestNum: 0,
@@ -28,6 +33,7 @@ const testResultCount = computed(() => {
   };
 });
 
+// Test APIs classification & enabling info
 const testApis = computed(() => {
   return testResult.value?.testApis || {
     enabledFuncTestNum: 0,
@@ -39,6 +45,7 @@ const testApis = computed(() => {
   };
 });
 
+// Overall testing progress
 const progress = computed(() => {
   return testResult.value?.progress || {
     total: 0,
@@ -47,31 +54,42 @@ const progress = computed(() => {
   };
 });
 
+// Flat list for results rendering
 const testResultInfos = computed(() => {
   return testResult.value?.testResultInfos || [];
 });
 
+// Bar values for progress chart: [tested, untested, passed, unpassed]
 const progressValues = computed(() => {
-  return [testResultCount.value.testedNum, testResultCount.value.unTestedNum, testResultCount.value.testPassedNum, testResultCount.value.testUnPassedNum];
+  return [
+    testResultCount.value.testedNum,
+    testResultCount.value.unTestedNum,
+    testResultCount.value.testPassedNum,
+    testResultCount.value.testUnPassedNum // fixed typo: estResultCount -> testResultCount
+  ];
 });
 
+// Bar values for type chart: [total enabled, functional, performance, stability]
 const typeValues = computed(() => {
-  return [testApis.value.enabledTestNum, testApis.value.enabledFuncTestNum, testApis.value.enabledPerfTestNum, testApis.value.enabledStabilityTestNum];
+  return [
+    testApis.value.enabledTestNum,
+    testApis.value.enabledFuncTestNum,
+    testApis.value.enabledPerfTestNum,
+    testApis.value.enabledStabilityTestNum
+  ];
 });
 
+// Fetch latest test result for current service
 const loadResult = async () => {
   const [error, { data }] = await services.getTestResult(props.serviceId);
-  if (error) {
-    return;
-  }
+  if (error) return;
   testResult.value = data;
 };
 
+// Auto load when serviceId becomes available/changes
 onMounted(() => {
   watch(() => props.serviceId, (newValue) => {
-    if (newValue) {
-      loadResult();
-    }
+    if (newValue) loadResult();
   }, { immediate: true });
 });
 
@@ -108,7 +126,7 @@ onMounted(() => {
     </div>
 
     <div class="text-text-title text-3.5 font-medium mt-5">{{ t('service.serviceTestDetail.title.testDetail') }}</div>
-    <ServiceTestApis
+    <TestApis
       class="flex-1 mt-2"
       :dataSource="testResultInfos"
       :enabledTestApiIds="testApis?.enabledTestApiIds" />

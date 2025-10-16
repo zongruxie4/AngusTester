@@ -91,7 +91,7 @@ export const serviceNavItem: NavItem[] = [
   {
     icon: 'icon-zujian',
     name: t('service.dataModel.navItems.component'),
-    value: 'componnet', // componnet 10
+    value: 'component', // component 10
     auth: 'MODIFY',
     disabled: true
   },

@@ -524,7 +524,7 @@
         "activity": "Activity",
         "agent": "Service Agent",
         "tag": "Tag",
-        "componnet": "Component"
+        "component": "Component"
       },
       "socketNavs": {
         "apiInfo": "API Info",

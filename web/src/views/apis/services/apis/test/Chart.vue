@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
 
@@ -8,14 +8,27 @@ interface Props {
   typeValues: number[];
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   progressValues: () => ([0, 0, 0, 0]),
   typeValues: () => ([0, 0, 0, 0])
 });
 
-const testProgressRef = ref();
-let testProgressChart;
+const { t } = useI18n();
+
+/**
+ * DOM refs for ECharts containers
+ */
+const testProgressRef = ref<HTMLElement | null>(null);
+const testTypeRef = ref<HTMLElement | null>(null);
+
+/**
+ * ECharts instances (disposed on unmount)
+ */
+let testProgressChart: echarts.ECharts | null = null;
+let testTypeChart: echarts.ECharts | null = null;
+/**
+ * Bar chart: test progress stats
+ */
 const testProgressChartConfig = {
   title: {
     text: t('service.serviceTestDetail.chart.testApiStats'),
@@ -58,8 +71,9 @@ const testProgressChartConfig = {
   ]
 };
 
-const testTypeRef = ref();
-let testTypeChart;
+/**
+ * Bar chart: test type stats
+ */
 const testTypeChartConfig = {
   title: {
     text: t('service.serviceTestDetail.chart.testTypeStats'),
@@ -102,20 +116,47 @@ const testTypeChartConfig = {
   ]
 };
 
-onMounted(() => {
-  testProgressChart = echarts.init(testProgressRef.value);
-  testTypeChart = echarts.init(testTypeRef.value);
-  testProgressChart.setOption(testProgressChartConfig);
-  testTypeChart.setOption(testTypeChartConfig);
-  watch([() => props.progressValues, () => props.typeValues], () => {
-    testProgressChartConfig.series[0].data = props.progressValues;
-    testTypeChartConfig.series[0].data = props.typeValues;
+/**
+ * Update chart series data and apply options
+ */
+const updateCharts = () => {
+  testProgressChartConfig.series[0].data = props.progressValues;
+  testTypeChartConfig.series[0].data = props.typeValues;
+  if (testProgressChart) testProgressChart.setOption(testProgressChartConfig);
+  if (testTypeChart) testTypeChart.setOption(testTypeChartConfig);
+};
 
+/**
+ * Handle container resizing for responsive charts
+ */
+const handleResize = () => {
+  if (testProgressChart) testProgressChart.resize();
+  if (testTypeChart) testTypeChart.resize();
+};
+
+onMounted(() => {
+  if (testProgressRef.value) {
+    testProgressChart = echarts.init(testProgressRef.value);
     testProgressChart.setOption(testProgressChartConfig);
+  }
+  if (testTypeRef.value) {
+    testTypeChart = echarts.init(testTypeRef.value);
     testTypeChart.setOption(testTypeChartConfig);
-  }, {
-    immediate: true
-  });
+  }
+  watch([() => props.progressValues, () => props.typeValues], updateCharts, { immediate: true });
+  window.addEventListener('resize', handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize);
+  if (testProgressChart) {
+    testProgressChart.dispose();
+    testProgressChart = null;
+  }
+  if (testTypeChart) {
+    testTypeChart.dispose();
+    testTypeChart = null;
+  }
 });
 
 </script>

@@ -248,7 +248,7 @@ const submitSchema = async () => {
   notification.success(t('actions.tips.saveSuccess'));
   emits('ok');
 };
-// const activeDrawerKey = ref('componnet');
+// const activeDrawerKey = ref('component');
 // const drawerCompNav = computed(() => {
 //   return serviceNavItem.map(item => {
 //     return {
