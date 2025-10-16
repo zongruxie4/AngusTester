@@ -100,7 +100,7 @@ const updateApi = inject('updateApi', {
   reloadId: ''
 });
 
-const updateHosts = inject('updateHosts', { reloadKey: 0, reloadId: '' });
+
 
 const isAdmin = computed(() => appContext.isAdmin());
 
@@ -375,8 +375,6 @@ watch(() => mainState.type, () => {
 watch(() => updateApi.reloadKey, () => {
   if (updateApi.reloadId === props.serviceId || updateApi.reloadId === 'all') {
     refresh();
-    updateHosts.reloadKey++;
-    updateHosts.reloadId = props.serviceId as string;
   }
 });
 

@@ -968,6 +968,7 @@ onMounted(() => {
 
         assertionIdList.value.push(assertionId);
         expandedAssertionMap.value[assertionId] = true;
+        
         assertionDataMap.value[assertionId] = {
           assertionCondition,
           condition: assertionData.condition,
@@ -1358,31 +1359,31 @@ const ENUM_FIELD_NAMES_CONFIG = { label: 'message', value: 'value' };
                 </template>
                 <template v-else>
                   <Input
-                    v-model:value="dataMap[item].expected"
+                    v-model:value="assertionDataMap[item].expected"
                     type="textarea"
                     :placeholder="t('xcan_apiAssert.expectedValue')"
                     :title="t('xcan_apiAssert.expectedValue')"
 
                     :readonly="props.viewType"
-                    :autoSize="textAreaAutoSize"
-                    :error="expectedErrorSet.has(item)"
-                    @focus="inputFocus(item)"
-                    @blur="inputBlur(item)"
-                    @change="expectedChange(item)" />
+                    :autoSize="TEXTAREA_AUTO_SIZE_CONFIG"
+                    :error="expectedValueErrorSet.has(item)"
+                    @focus="handleInputFocus(item)"
+                    @blur="handleInputBlur(item)"
+                    @change="handleExpectedValueChange(item)" />
                 </template>
               </div>
             </template>
           </template>
           <Input
-            v-model:value="dataMap[item].description"
+            v-model:value="assertionDataMap[item].description"
             :placeholder="t('common.description')"
             :title="t('common.description')"
 
             type="textarea"
             :readonly="props.viewType"
-            :autoSize="textAreaAutoSize"
-            @focus="inputFocus(item)"
-            @blur="inputBlur(item)" />
+            :autoSize="TEXTAREA_AUTO_SIZE_CONFIG"
+            @focus="handleInputFocus(item)"
+            @blur="handleInputBlur(item)" />
         </div>
       </div>
       <div class="flex items-center h-7 space-x-2">
@@ -1390,8 +1391,8 @@ const ENUM_FIELD_NAMES_CONFIG = { label: 'message', value: 'value' };
           v-show="!props.viewType"
           class="cursor-pointer text-theme-sub-content hover:text-text-link-hover"
           icon="icon-shanchuguanbi"
-          @click="deleteHandler(index, item)" />
-        <Arrow v-model:open="openMap[item]" class="hover:text-text-link-hover" />
+          @click="handleAssertionDelete(index, item)" />
+        <Arrow v-model:open="expandedAssertionMap[item]" class="hover:text-text-link-hover" />
       </div>
     </div>
   </div>

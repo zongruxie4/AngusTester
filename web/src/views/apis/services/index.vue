@@ -314,11 +314,6 @@ defineExpose({
   refreshUnarchived
 });
 
-// TODO: Refactor all usage locations
-provide('updateHosts', reactive({
-  reloadId: '',
-  reloadKey: 0
-}));
 </script>
 <template>
   <div class="flex-1 flex h-full border-l min-w-0">
