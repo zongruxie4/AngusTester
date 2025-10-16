@@ -100,8 +100,6 @@ const updateApi = inject('updateApi', {
   reloadId: ''
 });
 
-
-
 const isAdmin = computed(() => appContext.isAdmin());
 
 // Current API test configuration flags

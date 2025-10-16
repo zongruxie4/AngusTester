@@ -8,8 +8,8 @@ import { TESTER } from '@xcan-angus/infra';
 import { apis, mock } from '@/api/tester';
 
 interface Props {
-  disabled:boolean;
-  id: string; // api id
+  disabled: boolean;
+  id: string; // API id
 }
 
 const { t } = useI18n();
@@ -18,36 +18,35 @@ const props = withDefaults(defineProps<Props>(), {
   id: ''
 });
 
-// Inject project information
+// Inject project id for fetching mock services
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
+// UI and data states
 const createType = ref('1');
-const mockApisId = ref();
-const mockServiceId = ref();
-const mockApiInfo = ref();
+const mockApisId = ref<string | undefined>();
+const mockServiceId = ref<string>('');
+const mockApiInfo = ref<Record<string, any> | undefined>();
 const loading = ref(true);
-const loadMockApiInfo = async (id:string) => {
+// Load associated mock API info by API id
+const loadMockApiInfo = async (id: string) => {
   const [error, { data }] = await apis.getMockApiByApiId(id);
   loading.value = false;
   if (error) { return; }
   mockApiInfo.value = JSON.parse(JSON.stringify(data));
 };
 
-const columns = [[
-  { label: t('common.id'), dataIndex: 'id' },
-  { label: t('common.name'), dataIndex: 'name' },
-  { label: t('service.ApiMock.columns.mockServiceId'), dataIndex: 'mockServiceId' },
-  { label: t('service.ApiMock.columns.mockServiceName'), dataIndex: 'mockServiceName' },
-  { label: t('service.ApiMock.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' },
-  { label: t('common.createdBy'), dataIndex: 'createdBy' },
-  { label: t('common.createdDate'), dataIndex: 'createdDate' }
-]];
-
 const summary = ref('');
 const createApiLoading = ref(false);
+// Create a new mock API under selected mock service and associate it
 const createMockApiById = async () => {
   createApiLoading.value = true;
-  const params = summary.value ? { mockServiceId: mockServiceId.value, summary: summary.value } : { mockServiceId: mockServiceId.value };
+  if (!mockServiceId.value) {
+    createApiLoading.value = false;
+    return;
+  }
+  const params: { mockServiceId: string; summary?: string } = summary.value
+    ? { mockServiceId: mockServiceId.value, summary: summary.value }
+    : { mockServiceId: mockServiceId.value };
   const [error, { data }] = await apis.addMockApiByApiId(props.id, params);
   createApiLoading.value = false;
   if (error) { return; }
@@ -59,6 +58,7 @@ const createMockApiById = async () => {
 const selectedMockApiId = ref();
 
 const relatedLoading = ref(false);
+// Associate selected mock API with current API
 const relatedMockServiceApi = async () => {
   relatedLoading.value = true;
   const [error] = await mock.assocMockApi(selectedMockApiId.value, props.id);
@@ -68,8 +68,63 @@ const relatedMockServiceApi = async () => {
   }
   mockApisId.value = selectedMockApiId.value;
   notification.success(t('service.ApiMock.messages.associateSuccess'));
-  loadMockApiInfo(props.id);
+  await loadMockApiInfo(props.id);
 };
+
+// Cancel association with current mock API
+const cancelServiceMock = async () => {
+  loading.value = true;
+  const id = mockApiInfo.value?.id;
+  if (!id) {
+    loading.value = false;
+    return;
+  }
+  const [error] = await mock.cancelMockApiAssoc([id]);
+  loading.value = false;
+  if (error) { return; }
+  notification.success(t('service.ApiMock.messages.cancelAssociateSuccess'));
+  mockApiInfo.value = undefined;
+  mockServiceId.value = '';
+};
+
+// Load API basic info to prefill mockServiceId and name
+const loadApiInfo = async (_id: string) => {
+  const [error, { data }] = await apis.getApiDetail(_id);
+  if (error) {
+    return;
+  }
+  mockServiceId.value = data?.mockServiceId || '';
+  summary.value = data?.summary || '';
+};
+
+// Params for fetching mock API list under a mock service
+const mockApiParams = computed(() => {
+  return { mockServiceId: mockServiceId.value };
+});
+
+// Disable options already associated to other APIs
+const format = (data: Record<string, any>) => ({ ...data, disabled: !!data.assocApisId });
+
+// When API id changes, reload mock info and base API info
+watch(() => props.id, async (newValue) => {
+  mockApiInfo.value = undefined;
+  if (newValue) {
+    await loadMockApiInfo(newValue);
+    loadApiInfo(newValue);
+  }
+}, {
+  immediate: true
+});
+
+const columns = [[
+  { label: t('common.id'), dataIndex: 'id' },
+  { label: t('common.name'), dataIndex: 'name' },
+  { label: t('service.ApiMock.columns.mockServiceId'), dataIndex: 'mockServiceId' },
+  { label: t('service.ApiMock.columns.mockServiceName'), dataIndex: 'mockServiceName' },
+  { label: t('service.ApiMock.columns.mockServiceHostUrl'), dataIndex: 'mockServiceHostUrl' },
+  { label: t('common.createdBy'), dataIndex: 'createdBy' },
+  { label: t('common.createdDate'), dataIndex: 'createdDate' }
+]];
 
 const mockServiceCount = [
   {
@@ -98,43 +153,6 @@ const mockServiceCount = [
     icon: 'icon-yichangshu1'
   }
 ];
-
-const cencelProjcetMock = async () => {
-  loading.value = true;
-  const [error] = await mock.cancelMockApiAssoc([mockApiInfo.value.id]);
-  loading.value = false;
-  if (error) { return; }
-  notification.success(t('service.ApiMock.messages.cancelAssociateSuccess'));
-  mockApiInfo.value = undefined;
-  mockServiceId.value = undefined;
-};
-
-const loadApiInfo = async (_id) => {
-  const [error, { data }] = await apis.getApiDetail(_id);
-  if (error) {
-    return;
-  }
-  mockServiceId.value = data?.mockServiceId || undefined;
-  summary.value = data?.summary || '';
-};
-
-watch(() => props.id, async (newValue) => {
-  mockApiInfo.value = undefined;
-  if (newValue) {
-    await loadMockApiInfo(newValue);
-    loadApiInfo(newValue);
-  }
-}, {
-  immediate: true
-});
-
-const mockApiParams = computed(() => {
-  return { mockServiceId: mockServiceId.value };
-});
-
-const format = (data) => {
-  return { ...data, disabled: !!data.assocApisId };
-};
 </script>
 <template>
   <div class="h-full w-full">
@@ -151,10 +169,14 @@ const format = (data) => {
             <div class="flex items-start text-3 leading-5">
               <span>{{ text }}</span>
               <template v-if="props.disabled">
-                <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">{{ t('service.ApiMock.actions.cancelAssociate') }}</a>
+                <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">
+                  {{ t('service.ApiMock.actions.cancelAssociate') }}
+                </a>
               </template>
               <template v-else>
-                <a class="whitespace-nowrap text-text-link ml-2" @click="cencelProjcetMock">{{ t('service.ApiMock.actions.cancelAssociate') }}</a>
+                <a class="whitespace-nowrap text-text-link ml-2" @click="cancelServiceMock">
+                  {{ t('service.ApiMock.actions.cancelAssociate') }}
+                </a>
               </template>
             </div>
           </template>
@@ -166,7 +188,9 @@ const format = (data) => {
               <div>
                 <div v-if="mockApiInfo?.mockServiceDomainUrl">
                   <span>{{ mockApiInfo.mockServiceDomainUrl }}</span>
-                  <span :title="t('actions.copy')"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="mockApiInfo.mockServiceDomainUrl" /></span>
+                  <span :title="t('actions.copy')">
+                    <IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="mockApiInfo.mockServiceDomainUrl" />
+                  </span>
                 </div>
                 <div v-if="text" class="flex items-start">
                   <span>{{ text }}</span>

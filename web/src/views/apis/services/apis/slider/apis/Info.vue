@@ -1,23 +1,15 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, provide, reactive, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {
-  AsyncComponent,
-  Grid,
-  Icon,
-  Input,
-  notification,
-  Select,
-  SelectUser
-} from '@xcan-angus/vue-ui';
+import { AsyncComponent, Grid, Icon, Input, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
 import { Button, Tag, TypographyParagraph } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
+import { ApiStatus } from '@/enums/enums';
+import { apis } from '@/api/tester';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
-import { ApiPermission } from '@/enums/enums';
-import { apis } from '@/api/tester';
-import DescriptionModal from '@/views/apis/services/components/MarkdownDescModal.vue';
-
+const DescriptionModal = defineAsyncComponent(() => import('@/views/apis/services/components/MarkdownDescModal.vue'));
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Security = defineAsyncComponent(() => import('@/views/apis/services/components/security/Security.vue'));
 const ExternalDocs = defineAsyncComponent(() => import('@/views/apis/services/components/ExternalDoc.vue'));
@@ -29,11 +21,12 @@ interface Props {
   serviceId: string;
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   id: ''
 });
+
+const { t } = useI18n();
 
 const updateApiGroup = inject('updateApiGroup', () => undefined);
 
@@ -75,37 +68,7 @@ const state = reactive({
 const showSecurity = ref(true);
 const securityRef = ref();
 
-const columns = computed(() => {
-  return [
-    [
-      { label: t('common.id'), dataIndex: 'id' },
-      { label: t('service.groupApiDetail.columns.summary'), dataIndex: 'summary' },
-      { label: t('service.groupApiDetail.columns.operationId'), dataIndex: 'operationId' },
-      { label: t('common.source'), dataIndex: 'source', type: '1' },
-      { label: t('common.status'), dataIndex: 'status' },
-      { label: t('service.groupApiDetail.columns.auth'), dataIndex: 'auth' },
-      { label: t('service.groupApiDetail.columns.deprecated'), dataIndex: 'deprecated' },
-      // !state.info.protocol?.value?.includes('ws') && { label: '用例数量', dataIndex: 'apiCaseNum' },
-      { label: t('common.createdBy'), dataIndex: 'createdByName' },
-      { label: t('service.groupApiDetail.columns.ownerName'), dataIndex: 'ownerName' },
-      { label: t('common.tag'), dataIndex: 'tags' },
-      { label: t('common.createdDate'), dataIndex: 'createdDate' },
-      { label: t('common.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
-      { label: t('common.description'), dataIndex: 'description' },
-      { label: t('service.groupApiDetail.columns.securityTitle'), dataIndex: 'securityTitle' },
-      { dataIndex: 'security', fullWidthContent: true },
-      { label: t('service.groupApiDetail.columns.externalDocsTitle'), dataIndex: 'externalDocsTitle' },
-      { dataIndex: 'externalDocs', fullWidthContent: true }
-    ].filter(Boolean)
-  ];
-});
-
-watch(() => props.id, () => {
-  if (props.id && props.type === 'API') {
-    loadInfo();
-  }
-});
-
+// Load API basic info and normalize optional fields
 const loadInfo = async () => {
   if (!props.id) {
     notification.error(t('service.groupApiDetail.messages.selectApiFirst'));
@@ -116,20 +79,19 @@ const loadInfo = async () => {
   if (error) {
     return;
   }
-  state.info = res.data;
+  // Keep reactivity: assign into existing state.info object
+  Object.assign(state.info, res.data);
   state.info.security = state.info.security || [];
   state.info.externalDocs = res.data.externalDocs || { url: '' };
 };
 
-provide('loadInfo', loadInfo);
-
-// 编辑接口状态
+// Edit API status
 const editStatus = ref(false);
 const toggleEditStatus = () => {
   editStatus.value = !editStatus.value;
 };
 
-// 编辑接口名称
+// Edit API name
 const editName = ref(false);
 const nameInputRef = ref();
 const toggleEditName = () => {
@@ -141,62 +103,70 @@ const toggleEditName = () => {
   }
 };
 
-// summray 失焦
-const handleNameBlur = async (event) => {
-  if (!event.target.value || !event.target.value.trim() || event.target.value === state.info.summary) {
+// On summary input blur, persist when changed
+const handleNameBlur = async (event: any) => {
+  const target = event?.target as HTMLInputElement | null;
+  const value = target?.value ?? '';
+  if (!value || !value.trim() || value === state.info.summary) {
     toggleEditName();
     return;
   }
-  const [error] = await apis.updateApi([{ id: props.id, summary: event.target.value }]);
+  const [error] = await apis.updateApi([{ id: props.id, summary: value }]);
   if (error) {
     return;
   }
-  state.info.summary = event.target.value;
+  state.info.summary = value;
   toggleEditName();
-  updateApiGroup(state.info.serviceId);
+  updateApiGroup();
 };
 
-// 编辑编码
-const editOperatId = ref(false);
+// Edit operationId
+const editOperationId = ref(false);
 const operationIdInputRef = ref();
-const toggleOperateId = () => {
-  editOperatId.value = !editOperatId.value;
-  if (editOperatId.value) {
+const toggleEditOperationId = () => {
+  editOperationId.value = !editOperationId.value;
+  if (editOperationId.value) {
     nextTick(() => {
       operationIdInputRef.value.focus();
     });
   }
 };
-// 接口编码失焦
-const handleOperationIdBlur = async (event) => {
-  if (event.target.value === state.info.operationId) {
-    toggleOperateId();
+
+// On operationId input blur, persist when changed
+const handleOperationIdBlur = async (event: any) => {
+  const target = event?.target as HTMLInputElement | null;
+  const value = target?.value ?? '';
+  if (value === state.info.operationId) {
+    toggleEditOperationId();
     return;
   }
 
-  const [error] = await apis.updateApi([{ id: props.id, operationId: event.target.value }]);
+  const [error] = await apis.updateApi([{ id: props.id, operationId: value }]);
   if (error) {
     return;
   }
 
-  state.info.operationId = event.target.value;
-  toggleOperateId();
+  state.info.operationId = value;
+  toggleEditOperationId();
 };
-// 编辑负责人
+
+// Edit owner info
 const editOwnerName = ref(false);
-const ownerNameIdInputRef = ref();
-const toggleownerName = () => {
+const ownerSelectRef = ref();
+const toggleOwnerName = () => {
   editOwnerName.value = !editOwnerName.value;
   if (editOwnerName.value) {
     setTimeout(() => {
-      ownerNameIdInputRef.value.focus();
+      ownerSelectRef.value.focus();
     });
   }
 };
+
 const ownerNameBlur = () => {
-  toggleownerName();
+  toggleOwnerName();
 };
-const handleOwnerIdChange = async (value, option) => {
+
+const handleOwnerIdChange = async (value: string, option: { fullName: string }) => {
   const [error] = await apis.updateApi([{ id: props.id, ownerId: value }]);
   if (error) {
     return;
@@ -205,21 +175,24 @@ const handleOwnerIdChange = async (value, option) => {
   state.info.ownerName = option.fullName;
 };
 
-// 编辑 描述
+// Description modal visibility and editing state
 const descriptionModalVisible = ref(false);
-const editdescription = ref(false); // 是否编辑
-// 编辑描述
+const editDescription = ref(false); // whether editing
+
+// Open description editor
 const handleEditDescription = () => {
   descriptionModalVisible.value = true;
-  editdescription.value = true;
+  editDescription.value = true;
 };
-// 预览描述
+
+// Preview description
 const previewDescription = () => {
   descriptionModalVisible.value = true;
-  editdescription.value = false;
+  editDescription.value = false;
 };
-// 保存描述
-const handleSaveDesc = async (value) => {
+
+// Save description if changed
+const handleSaveDesc = async (value: string) => {
   if (value === state.info.description) {
     descriptionModalVisible.value = false;
     return;
@@ -231,18 +204,20 @@ const handleSaveDesc = async (value) => {
   state.info.description = value;
 };
 
-// 是否弃用
-const deprecatedOpt = [{ value: true, label: t('status.yes') }, { value: false, label: t('status.no') }];
+// Deprecated flag
+const deprecatedOpt: any[] = [{ value: true, label: t('status.yes') }, { value: false, label: t('status.no') }];
 const editDeprecated = ref(false);
 const deprecatedInputRef = ref();
-let defaultDeprecated;
-const handleDeprecatedChange = async (value) => {
-  const [error] = await apis.updateApi([{ id: props.id, deprecated: value }]);
+let defaultDeprecated: boolean | undefined;
+const handleDeprecatedChange = async (value: any) => {
+  const boolVal = value === true || value === 'true';
+  const [error] = await apis.updateApi([{ id: props.id, deprecated: boolVal }]);
   if (error) {
     return;
   }
-  state.info.deprecated = value;
+  state.info.deprecated = boolVal;
 };
+
 const toggleEditDeprecated = () => {
   editDeprecated.value = !editDeprecated.value;
   if (editDeprecated.value) {
@@ -252,43 +227,74 @@ const toggleEditDeprecated = () => {
     });
   } else {
     if (state.info.deprecated !== defaultDeprecated) {
-      updateApiGroup(state.info.serviceId);
+      updateApiGroup();
     }
   }
 };
 
-const authFlagChange = ({ auth }:{auth:boolean}) => {
+// Update auth flag from permission modal
+const authFlagChange = ({ auth }: { auth: boolean }) => {
   state.info.auth = auth;
 };
 
-const selectStatus = async (value, options) => {
+// Persist API status and update local state
+const selectStatus = async (value: string, option?: { label: string; value: string }) => {
   const [error] = await apis.patchApiStatus({ id: props.id, status: value });
   if (error) {
     return;
   }
-  state.info.status = options;
+  state.info.status = { value, message: option?.label || state.info.status?.message } as any;
 };
 
-// 添加安全
+// Add security scheme row
 const addSecurity = () => {
   showSecurity.value = true;
   nextTick(() => {
     securityRef.value.addSecurity();
   });
-  // security.value.push({ key: '', value: [], edit: true });
+};
+
+// Open permission dialog
+const openInterfaceAuthDialog = () => {
+  state.interfaceAuthVisible = true;
 };
 
 onMounted(() => {
   loadInfo();
 });
 
-// 打开权限组件弹框
-const openInterfaceAuthDialog = () => {
-  state.interfaceAuthVisible = true;
-};
+watch(() => props.id, () => {
+  if (props.id && props.type === 'API') {
+    loadInfo();
+  }
+});
 
+provide('loadInfo', loadInfo);
+
+const columns = computed(() => {
+  return [
+    [
+      { label: t('common.id'), dataIndex: 'id' },
+      { label: t('service.groupApiDetail.columns.summary'), dataIndex: 'summary' },
+      { label: t('service.groupApiDetail.columns.operationId'), dataIndex: 'operationId' },
+      { label: t('common.source'), dataIndex: 'source', type: '1' },
+      { label: t('common.status'), dataIndex: 'status' },
+      { label: t('service.groupApiDetail.columns.auth'), dataIndex: 'auth' },
+      { label: t('service.groupApiDetail.columns.deprecated'), dataIndex: 'deprecated' },
+      { label: t('common.createdBy'), dataIndex: 'createdByName' },
+      { label: t('service.groupApiDetail.columns.ownerName'), dataIndex: 'ownerName' },
+      { label: t('common.tag'), dataIndex: 'tags' },
+      { label: t('common.createdDate'), dataIndex: 'createdDate' },
+      { label: t('common.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
+      { label: t('common.description'), dataIndex: 'description' },
+      { label: t('service.groupApiDetail.columns.securityTitle'), dataIndex: 'securityTitle' },
+      { label: 'security', dataIndex: 'security', fullWidthContent: true } as any,
+      { label: t('service.groupApiDetail.columns.externalDocsTitle'), dataIndex: 'externalDocsTitle' },
+      { label: 'externalDocs', dataIndex: 'externalDocs', fullWidthContent: true } as any
+    ].filter(Boolean)
+  ];
+});
 </script>
-
 <template>
   <div class="mt-2">
     <Grid
@@ -307,14 +313,14 @@ const openInterfaceAuthDialog = () => {
         <template v-else>
           {{ text }}
           <Icon
-            v-if="!props.disabled && state.info.status?.value !== 'RELEASED'"
+            v-if="!props.disabled && state.info.status?.value !== ApiStatus.RELEASED"
             icon="icon-shuxie"
             class="ml-2 text-text-link"
             @click="toggleEditName" />
         </template>
       </template>
       <template #operationId="{text}">
-        <template v-if="editOperatId">
+        <template v-if="editOperationId">
           <Input
             ref="operationIdInputRef"
             :value="text"
@@ -329,10 +335,10 @@ const openInterfaceAuthDialog = () => {
         <template v-else>
           {{ text || t('common.noData') }}
           <Icon
-            v-if="!props.disabled && state.info.status?.value !== 'RELEASED'"
+            v-if="!props.disabled && state.info.status?.value !== ApiStatus.RELEASED"
             icon="icon-shuxie"
             class="ml-2 text-text-link"
-            @click="toggleOperateId" />
+            @click="toggleEditOperationId" />
         </template>
       </template>
       <template #auth="{text}">
@@ -347,7 +353,7 @@ const openInterfaceAuthDialog = () => {
       <template #ownerName="{text}">
         <template v-if="editOwnerName">
           <SelectUser
-            ref="ownerNameIdInputRef"
+            ref="ownerSelectRef"
             class="w-50"
             size="small"
             :value="state.info.ownerId"
@@ -356,11 +362,11 @@ const openInterfaceAuthDialog = () => {
         </template>
         <template v-else>
           {{ text }}
-          <span v-show="(!disabled && state.info.status?.value !== 'RELEASED')">
+          <span v-show="(!disabled && state.info.status?.value !== ApiStatus.RELEASED)">
             <Icon
               icon="icon-shuxie"
               class="ml-2 text-text-link"
-              @click="toggleownerName" />
+              @click="toggleOwnerName" />
           </span>
         </template>
       </template>
@@ -377,7 +383,7 @@ const openInterfaceAuthDialog = () => {
         <template v-else>
           {{ text ? t('status.yes') : t('status.no') }}
           <Icon
-            v-show="(!disabled && state.info.status?.value !== 'RELEASED')"
+            v-show="(!disabled && state.info.status?.value !== ApiStatus.RELEASED)"
             icon="icon-shuxie"
             class="ml-2 text-text-link"
             @click="toggleEditDeprecated" />
@@ -409,7 +415,6 @@ const openInterfaceAuthDialog = () => {
             class="ml-2 text-text-link"
             @click="toggleEditStatus" />
         </template>
-        <!-- {{ text.message }} -->
       </template>
       <template #tags="{text}">
         <template v-if="text?.length">
@@ -435,7 +440,6 @@ const openInterfaceAuthDialog = () => {
             icon="icon-jia"
             class="align-baseline cursor-pointer text-3" />
         </Button>
-        <!-- <span class="align-middle">声明可用于当前接口的安全方案</span> -->
       </template>
       <template #security>
         <Security
@@ -456,7 +460,7 @@ const openInterfaceAuthDialog = () => {
             class="flex-shrink-0 mr-1 cursor-pointer text-text-link"
             @click="previewDescription" />
           <Icon
-            v-if="!props.disabled && state.info.status?.value !== 'RELEASED'"
+            v-if="!props.disabled && state.info.status?.value !== ApiStatus.RELEASED"
             icon="icon-shuxie"
             class="text-text-link ml-1"
             @click="handleEditDescription" />
@@ -472,7 +476,7 @@ const openInterfaceAuthDialog = () => {
     <AsyncComponent :visible="state.interfaceAuthVisible">
       <AuthorizeModal
         v-model:visible="state.interfaceAuthVisible"
-        :enumKey="ApiPermission"
+        :enumKey="'ApiPermission'"
         :appId="appInfo?.id"
         :listUrl="`${TESTER}/apis/auth?apisId=${props.id}`"
         :delUrl="`${TESTER}/apis/auth`"
@@ -488,7 +492,7 @@ const openInterfaceAuthDialog = () => {
     <AsyncComponent :visible="descriptionModalVisible">
       <DescriptionModal
         v-model:visible="descriptionModalVisible"
-        :isEdit="editdescription"
+        :isEdit="editDescription"
         :value="state.info.description"
         @ok="handleSaveDesc" />
     </AsyncComponent>
