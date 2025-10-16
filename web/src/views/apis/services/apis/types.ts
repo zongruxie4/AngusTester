@@ -1,5 +1,5 @@
-import { Method } from '@/views/apis/services/apiHttp/interface';
-import { i18n } from '@xcan-angus/infra';
+import { i18n, HttpMethod, EnumMessage } from '@xcan-angus/infra';
+import { ApiSource, ApiStatus, ApiImportSource } from '@/enums/enums';
 
 const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
@@ -38,6 +38,68 @@ export type NavItem = {
   disabled?: boolean,
 }
 
+export enum ApisProtocol {
+  http='http',
+  https='https',
+  ws = 'ws',
+  wss = 'wss'
+}
+
+export type ApisListInfo = {
+  id: string;
+  source: EnumMessage<ApiSource>;
+  importSource: EnumMessage<ApiImportSource>;
+  serviceId: string;
+  serviceName: string;
+  protocol: EnumMessage<ApisProtocol>;
+  method: HttpMethod;
+  endpoint: string;
+  summary: string;
+  operationId: string;
+  // servers: Server[];
+  deprecated: boolean;
+  status: EnumMessage<ApiStatus>;
+  favourite: boolean;
+  follow: boolean;
+  tenantId: string;
+  createdBy: string;
+  createdByName: string;
+  ownerId: string;
+  ownerName: string;
+  avatar: string;
+  createdDate: string;
+  lastModifiedDate: string;
+  auth: boolean;
+  serviceAuth: boolean;
+  /**
+   * Whether to enable functional testing, default enabled.
+   * <p>
+   * After enabled, the test results will be included in the efficiency analysis
+   */
+  testFunc: boolean;
+  testFuncPassed: boolean;
+  testFuncFailureMessage: string;
+  /**
+   * Whether to enable performance testing, default enabled.
+   * <p>
+   * After enabled, the test results will be included in the efficiency analysis.
+   */
+  testPerf: boolean;
+  testPerfPassed: boolean;
+  testPerfFailureMessage: string;
+  /**
+   * Whether to enable stability testing, default enabled.
+   * <p>
+   * After enabled, the test results will be included in the efficiency analysis
+   */
+  testStability: boolean;
+  testStabilityPassed: boolean;
+  testStabilityFailureMessage: string;
+  tags: string[];
+  mockServiceId: number;
+  mockApisId: number;
+}
+
 export interface DataSourceType {
   endpoint: string,
   method: Method,
@@ -56,8 +118,8 @@ export interface DataSourceType {
 }
 
 export interface StateType {
-  allData: Array<DataSourceType>,
-  dataSource: Array<DataSourceType>,
+  allData: Array<ApisListInfo>,
+  dataSource: Array<ApisListInfo>,
   id: string,
   name: string,
   searchKeyword: string,

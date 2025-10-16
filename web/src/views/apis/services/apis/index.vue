@@ -8,7 +8,7 @@ import { ApiPermission, ServicesPermission } from '@/enums/enums';
 
 import store from '@/store';
 import { apis, services } from '@/api/tester';
-import { navs, serviceNav, socketNavs, StateType, DrawerType } from './PropsType';
+import { navs, serviceNav, socketNavs, StateType, DrawerType } from './types';
 
 const { t } = useI18n();
 

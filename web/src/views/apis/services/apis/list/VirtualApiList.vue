@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { Button, ListItem, Popover, Tooltip } from 'ant-design-vue';
 import { computed, inject, onMounted, ref, watch, Ref } from 'vue';
-import { Arrow, Dropdown, HttpMethodTag, Icon, Image } from '@xcan-angus/vue-ui';
+import { Dropdown, HttpMethodTag, Icon, Image } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
 import { API_STATUS_COLOR_CONFIG } from '@/utils/apis';
 import { bgColor } from '@/utils/common';
-import type { DataSourceType } from '../PropsType';
+import { ApisListInfo } from '../types';
 import { ButtonGroup, CollapseButtonGroup } from './interface';
 
 import VirtualList from './BaseVirtualList.vue';
 
 interface Props {
-  dataSource: Array<DataSourceType>;
+  dataSource: Array<ApisListInfo>;
   updateData: (value: { id: string; auth: boolean; }) => void;
   height: number;
   showNum?: number;
@@ -46,7 +46,7 @@ const emits = defineEmits<{
   (e: 'handleClick', value: string, item, index: number): void;
 }>();
 // 编辑api
-const edit = (value: DataSourceType): void => {
+const edit = (value: ApisListInfo): void => {
   emits('edit', value);
 };
 
@@ -99,7 +99,7 @@ const showInfo = (id: string, api) => {
   emits('showInfo', id, api);
 };
 
-const showData = ref<DataSourceType[]>([]);
+const showData = ref<ApisListInfo[]>([]);
 const groupSpreadMap = ref<{ [key: string]: boolean }>({});
 // let size = 0;
 // 监听 当前 open api 的变化, 更改 ap
@@ -179,7 +179,7 @@ const getResultColor = (testFlag, testPassd = undefined) => {
   }
 };
 
-const handleClick = (event: string, data: DataSourceType, index: number) => {
+const handleClick = (event: string, data: ApisListInfo, index: number) => {
   emits('handleClick', event, data, index);
 };
 
