@@ -55,12 +55,13 @@ const userInfo = ref(appContext.getUser());
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
 
 // Local constants to avoid magic numbers/strings
-const RESPONSIVE_MORE_ICON_WIDTH = 800; // px width threshold to switch to dropdown
+// Responsive threshold to switch actions into a compact dropdown
+const RESPONSIVE_WIDTH_DROPDOWN = 800; // px
 const getOrderStorageKey = (): string => `${props.serviceId}_order`;
 const getGroupByStorageKey = (): string => `${props.serviceId}_groupBy`;
 
-// Sort & Group options
-const sortAndGroupOptions = reactive({
+// Sort & Group options (typed as any to align with DropdownSort/MenuItemProps expectations)
+const sortAndGroupOptions: any = reactive({
   sort: [{
     key: 'createdDate',
     name: t('service.groupHeader.sort.byCreatedDate'),
@@ -103,6 +104,17 @@ const sortAndGroupOptions = reactive({
 const mainState = inject('mainState', reactive<{id: string, type?: string}>({ id: '' }));
 
 const groupedKey = ref('');
+
+// Typed two-way models to satisfy DropdownSort expectations
+const orderByModel = computed<any>({
+  get: () => props.orderBy,
+  set: (val) => emit('update:orderBy', (val || ''))
+});
+
+const orderSortModel = computed<any>({
+  get: () => props.orderSort,
+  set: (val) => emit('update:orderSort', (val || ''))
+});
 
 // Local state
 interface StateType{
@@ -269,7 +281,7 @@ const getActionPermission = computed(() => {
 const resizeHandler = throttle(duration.resize, () => {
   if (containerRef.value) {
     const containerWidth = containerRef.value.clientWidth;
-    showMoreIcon.value = containerWidth < RESPONSIVE_MORE_ICON_WIDTH;
+    showMoreIcon.value = containerWidth < RESPONSIVE_WIDTH_DROPDOWN;
   }
 });
 
@@ -356,8 +368,8 @@ onBeforeUnmount(() => {
         </Dropdown>
       </template>
       <DropdownSort
-        v-model:orderSort="props.orderSort"
-        v-model:orderBy="props.orderBy"
+        v-model:orderSort="orderSortModel"
+        v-model:orderBy="orderByModel"
         :menuItems="sortAndGroupOptions.sort"
         @click="setSortType">
         <Button
