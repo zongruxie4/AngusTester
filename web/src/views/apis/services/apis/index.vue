@@ -279,6 +279,7 @@ const grouped = (groupKey: string) => {
  */
 const getServiceAuth = async () => {
   if (isAdmin.value) {
+    serviceAuths.value = enumUtils.getEnumValues(ServicesPermission);
     setServiceDrawerComp();
     return;
   }
@@ -300,6 +301,11 @@ const getServiceAuth = async () => {
  * Load API level permissions for the currently selected API
  */
 const getApiAuth = async () => {
+  if (isAdmin.value) {
+    apiAuths.value = enumUtils.getEnumValues(ApiPermission);
+    return;
+  }
+
   const [error, { data = [] }] = await apis.getCurrentAuth(state.id);
   if (error) {
     return;
@@ -416,8 +422,8 @@ watch(() => state.id, async (newValue, oldValue) => {
 });
 
 // Watch for user info changes to load permissions
-watch(() => userInfo.value, newValue => {
-  if (newValue?.id) {
+watch(() => props.serviceId, newValue => {
+  if (newValue) {
     getServiceAuth();
   }
 }, {

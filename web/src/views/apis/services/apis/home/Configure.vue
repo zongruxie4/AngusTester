@@ -4,6 +4,7 @@ import { computed } from '@vue/reactivity';
 import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
+import { ServicesPermission } from '@/enums/enums';
 
 interface Props {
   info: any;
@@ -17,39 +18,38 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'openDrawer', key: string): void }>();
 
-const projectType = computed(() => {
-  return t('apis.configuration.type_service');
-});
-
 const { t } = useI18n();
-const dataSource = computed(() => [[{
-  id: 'syncConfig',
-  key: 'syncConfig',
-  icon: 'icon-peizhifuwutongbu',
-  title: t('actions.sync'),
-  content: t('apis.configuration.syncDescription', { type: projectType.value }),
-  linkText: t('common.actions'),
-  disabled: !props.serviceAuths.includes('MODIFY')
-},
-{
-  id: 'security',
-  key: 'security',
-  icon: 'icon-renzhengtou',
-  title: t('apis.configuration.security'),
-  content: t('apis.configuration.securityDescription', { type: projectType.value }),
-  linkText: t('common.actions'),
-  disabled: !props.serviceAuths.includes('MODIFY')
-},
-{
-  id: 'serverConfig',
-  key: 'serverConfig',
-  icon: 'icon-host',
-  title: t('apis.configuration.server'),
-  content: t('apis.configuration.serverDescription'),
-  linkText: t('common.actions'),
-  disabled: !props.serviceAuths.includes('MODIFY')
-}
-]
+
+const dataSource = computed(() => [
+  [
+    {
+      id: 'syncConfig',
+      key: 'syncConfig',
+      icon: 'icon-peizhifuwutongbu',
+      title: t('actions.sync'),
+      content: t('apis.configuration.syncDescription'),
+      linkText: t('common.actions'),
+      disabled: !props.serviceAuths.includes(ServicesPermission.MODIFY)
+    },
+    {
+      id: 'security',
+      key: 'security',
+      icon: 'icon-renzhengtou',
+      title: t('apis.configuration.security'),
+      content: t('apis.configuration.securityDescription'),
+      linkText: t('common.actions'),
+      disabled: !props.serviceAuths.includes(ServicesPermission.MODIFY)
+    },
+    {
+      id: 'serverConfig',
+      key: 'serverConfig',
+      icon: 'icon-host',
+      title: t('apis.configuration.server'),
+      content: t('apis.configuration.serverDescription'),
+      linkText: t('common.actions'),
+      disabled: !props.serviceAuths.includes(ServicesPermission.MODIFY)
+    }
+  ]
 ]);
 
 const openDrawer = (key: string) => {
@@ -59,7 +59,9 @@ const openDrawer = (key: string) => {
 </script>
 <template>
   <div class="space-y-2">
-    <div class="title-normal">{{ t('apis.actions.projectConfig') }}</div>
+    <div class="text-3.5 font-semibold">
+      {{ t('apis.messages.serviceConfig') }}
+    </div>
     <div class="space-y-5 px-4">
       <div
         v-for="(element, index) in dataSource"

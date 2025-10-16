@@ -1622,6 +1622,16 @@
         "template": "Import {type} from file"
       }
     },
+    "messages": {
+      "serviceConfig": "Service Configuration",
+      "cancelAllFavoritesSuccess": "Cancel all favorites successful",
+      "cancelAllFollowsSuccess": "Cancel all follows successful",
+      "noFavorites": "No favorites",
+      "noFollows": "No follows",
+      "cancelSuccess": "Cancel successful",
+      "importProject": "Import project",
+      "importSuccess": "Import successful"
+    },
     "navigation": {
       "myApis": "My APIs",
       "projects": "Projects",
@@ -1636,8 +1646,7 @@
     },
     "actions": {
       "cancelAllFavorites": "Cancel All Favorites",
-      "cancelAllFollows": "Cancel All Follows",
-      "projectConfig": "Project Configuration"
+      "cancelAllFollows": "Cancel All Follows"
     },
     "configuration": {
       "type_service": "Service",
@@ -1647,25 +1656,16 @@
       "performance": "Service Performance Metrics",
       "share": "Add Share",
       "variables": "Define Variables",
-      "syncDescription": "Automatically import external OpenAPI to current {type}",
-      "securityDescription": "Define security schemes (Authorization) that can be used by all APIs under current {type}",
+      "syncDescription": "Automatically import external OpenAPI to current service",
+      "securityDescription": "Define security schemes (Authorization) that can be used by all APIs under current service",
       "serverDescription": "Define servers (Server URL) that can be used by all APIs under current project/service",
-      "performanceDescription": "Set default performance metrics for APIs under {type}, performance metrics will affect performance test pass rate; if you want to set performance metrics for a specific API separately, you can set it in API performance configuration",
+      "performanceDescription": "Set default performance metrics for APIs under service, performance metrics will affect performance test pass rate; if you want to set performance metrics for a specific API separately, you can set it in API performance configuration",
       "shareDescription": "Through sharing, you can authorize others to view API documentation and debug APIs within a specified time",
       "variablesDescription": "Through defining variables, you can reuse a parameter value or control condition execution"
     },
     "search": {
       "taskName": "Search task name",
       "scenario": "Search scenario"
-    },
-    "messages": {
-      "cancelAllFavoritesSuccess": "Cancel all favorites successful",
-      "cancelAllFollowsSuccess": "Cancel all follows successful",
-      "noFavorites": "No favorites",
-      "noFollows": "No follows",
-      "cancelSuccess": "Cancel successful",
-      "importProject": "Import project",
-      "importSuccess": "Import successful"
     },
     "columns": {
       "createdTime": "Created Time",
