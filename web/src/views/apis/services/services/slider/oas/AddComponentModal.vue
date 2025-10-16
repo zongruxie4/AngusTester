@@ -4,7 +4,7 @@ import { IconRequired, Input, Modal, Select, SelectInput } from '@xcan-angus/vue
 import { enumUtils } from '@xcan-angus/infra';
 import { ServicesCompType } from '@/enums/enums';
 import { Button, Divider } from 'ant-design-vue';
-import { CompObj, ComponentsType, ExampleObject, HeaderObject } from './OAS';
+import { CompObj, ComponentsType, ExampleObject, HeaderObject } from './types';
 import YAML from 'yaml';
 import { useI18n } from 'vue-i18n';
 import { services } from '@/api/tester';

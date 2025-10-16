@@ -8,7 +8,7 @@ import { ServicesCompType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 
-import { CompObj, ComponentsType } from './OAS';
+import { CompObj, ComponentsType } from './types';
 
 const AddModal = defineAsyncComponent(() => import('./AddComponentModal.vue'));
 
