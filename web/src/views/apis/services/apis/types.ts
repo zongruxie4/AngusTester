@@ -76,24 +76,24 @@ export type ApisListInfo = {
    * <p>
    * After enabled, the test results will be included in the efficiency analysis
    */
-  testFunc: boolean;
-  testFuncPassed: boolean;
+  testFunc?: boolean;
+  testFuncPassed?: boolean;
   testFuncFailureMessage: string;
   /**
    * Whether to enable performance testing, default enabled.
    * <p>
    * After enabled, the test results will be included in the efficiency analysis.
    */
-  testPerf: boolean;
-  testPerfPassed: boolean;
+  testPerf?: boolean;
+  testPerfPassed?: boolean;
   testPerfFailureMessage: string;
   /**
    * Whether to enable stability testing, default enabled.
    * <p>
    * After enabled, the test results will be included in the efficiency analysis
    */
-  testStability: boolean;
-  testStabilityPassed: boolean;
+  testStability?: boolean;
+  testStabilityPassed?: boolean;
   testStabilityFailureMessage: string;
   tags: string[];
   mockServiceId: number;

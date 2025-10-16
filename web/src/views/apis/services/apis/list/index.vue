@@ -1,10 +1,4 @@
 <script setup lang="ts">
-// Component: ApiList (Grouped and Flat Views)
-// Purpose: Render API list with optional grouping; provide actions (auth/share/export/test)
-// Notes:
-// - Virtualized list is used in grouped view for performance
-// - Emits updates to parent when data or states change
-// - Prefer explicit naming for readability
 import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, reactive, ref, Ref, watch } from 'vue';
 import { AsyncComponent, modal, notification, Scroll, VuexHelper } from '@xcan-angus/vue-ui';
 import elementResizeDetector from 'element-resize-detector';
@@ -127,8 +121,8 @@ const handleOpenMock = () => {
   emits('openMock');
 };
 
-// Central UI state for the active API and all modals
-const state:{
+// Centralized UI state: active API row, modal visibilities, selected ids
+const uiState:{
       shareVisible:boolean,
       apiExportVisible:boolean,
       delVisible:boolean,
@@ -156,17 +150,18 @@ const state:{
       name: ''
     });
 
+// Handle toolbar/menu actions from list rows
 const handleClick = (event:string, data:ApisListInfo) => {
   const id = data.id;
-  state.selectedApiId = id;
-  state.name = data.endpoint;
+  uiState.selectedApiId = id;
+  uiState.name = data.endpoint;
   switch (event) {
     case 'edit':
-      edit(data);
+      openApiEditorTab(data);
       break;
     case 'auth':
-      state.interfaceAuthVisible = true;
-      state.auth = data.auth;
+      uiState.interfaceAuthVisible = true;
+      uiState.auth = data.auth;
       break;
     case 'export':
       openExportModal();
@@ -181,16 +176,16 @@ const handleClick = (event:string, data:ApisListInfo) => {
       handleOpenMock();
       break;
     case 'share':
-      share();
+      openShareModal();
       break;
     case 'del':
-      deleteConfirm(id);
+      confirmDeleteApi(id);
       break;
     case 'patchClone':
-      patchClone(id);
+      cloneApiById(id);
       break;
     case 'remove':
-      toMove(data);
+      openMoveModal(data);
       break;
     case 'addFollow':
       addFollow(id);
@@ -199,30 +194,30 @@ const handleClick = (event:string, data:ApisListInfo) => {
       cancelFollow(id);
       break;
     case 'status':
-      setStatus(data);
+      openStatusModal(data);
       break;
     case 'reTest':
-      restartTestTask(data);
+      openRestartTestTaskModal(data);
       break;
     case 'reopen':
-      reopenTestTask(data);
+      openReopenTestTaskModal(data);
       break;
     case 'deleteTask':
       delTestVisible.value = true;
-      state.selectedApiId = data.id;
+      uiState.selectedApiId = data.id;
       break;
     case 'setTest':
-      toSetTest(data);
+      openCreateTestTaskModal(data);
       break;
     case 'setTestScript':
-      setTestScript(data, 'create');
+      openGenTestScriptModal(data, 'create');
       break;
     case 'updateTestScript':
-      setTestScript(data, 'update');
+      openGenTestScriptModal(data, 'update');
       break;
     case 'delTestScript':
-      delScriptVisble.value = true;
-      state.selectedApiId = data.id;
+      delScriptVisible.value = true;
+      uiState.selectedApiId = data.id;
       break;
     case 'funcTestExec':
     case 'perfTestExec':
@@ -232,14 +227,15 @@ const handleClick = (event:string, data:ApisListInfo) => {
   }
 };
 
-const share = () => {
-  state.shareVisible = true;
+// Open share modal
+const openShareModal = () => {
+  uiState.shareVisible = true;
 };
 
 // Flag to detect double click for edit action
 const isDoubleClick = ref(false);
-// Edit API
-const edit = (value:ApisListInfo):void => {
+// Open API editor tab (double click guard)
+const openApiEditorTab = (value:ApisListInfo):void => {
   if (!value) {
     return;
   }
@@ -255,8 +251,8 @@ const edit = (value:ApisListInfo):void => {
   }, 500);
 };
 
-// Clone API
-const patchClone = async (id:string) => {
+// Clone API by id
+const cloneApiById = async (id:string) => {
   const [error] = await apis.cloneApi(id);
   if (error) {
     return;
@@ -265,17 +261,19 @@ const patchClone = async (id:string) => {
   refreshList();
 };
 
-const deleteConfirm = (id: string) => {
+// Ask for confirmation before deleting API
+const confirmDeleteApi = (id: string) => {
   modal.confirm({
     centered: true,
     content: t('actions.tips.confirmDataDelete'),
     onOk () {
-      deleteApi(id);
+      performDeleteApi(id);
     }
   });
 };
 
-const deleteApi = async (id: string): Promise<void> => {
+// Perform API deletion, then refresh panels and lists
+const performDeleteApi = async (id: string): Promise<void> => {
   loading.value = true;
   const [error] = await apis.deleteApi({ ids: [id] });
   loading.value = false;
@@ -283,8 +281,8 @@ const deleteApi = async (id: string): Promise<void> => {
     return;
   }
 
-  state.activeApiId = '';
-  state.type = undefined;
+  uiState.activeApiId = '';
+  uiState.type = undefined;
   deleteTabPane([id + 'API', id + 'socket', id + 'execute']);
   refreshRecycleBin('api');
   notification.success(t('actions.tips.deleteSuccess'));
@@ -294,46 +292,50 @@ const deleteApi = async (id: string): Promise<void> => {
 const moveVisible = ref(false); // Move modal visibility
 const moveParentId = ref<string>(); // Current API's folder id
 const moveParentName = ref<string>(); // Current API's folder name
-// @TODO Missing project or service info
-const toMove = (_api: ApisListInfo) => {
-  state.selectedApiId = _api.id;
+// Open move modal with selected API context
+const openMoveModal = (_api: ApisListInfo) => {
+  uiState.selectedApiId = _api.id;
   moveParentId.value = _api.serviceId;
   moveParentName.value = _api.serviceName;
   moveVisible.value = true;
 };
 
-const moveHandle = () => {
-  state.activeApiId = '';
-  state.type = undefined;
+// Handle move confirmation
+const handleMoveOk = () => {
+  uiState.activeApiId = '';
+  uiState.type = undefined;
   refreshList();
-  moveCancel();
+  handleMoveCancel();
 };
 
 // Close move modal
-const moveCancel = () => {
+const handleMoveCancel = () => {
   moveVisible.value = false;
   moveParentId.value = undefined;
   moveParentName.value = undefined;
 };
 
 const testVisible = ref(false);
-const toSetTest = (_api: ApisListInfo) => {
-  state.selectedApiId = _api.id;
+// Open create test task modal
+const openCreateTestTaskModal = (_api: ApisListInfo) => {
+  uiState.selectedApiId = _api.id;
   testVisible.value = true;
 };
 
 const restartTestVisible = ref(false);
 const restartContent = ref('');
-const restartTestTask = (item: ApisListInfo) => {
-  state.selectedApiId = item.id;
+// Open restart test task confirmation modal
+const openRestartTestTaskModal = (item: ApisListInfo) => {
+  uiState.selectedApiId = item.id;
   restartTestVisible.value = true;
   restartContent.value = t('service.apiList.confirm.restartTestTask', { summary: item.summary });
 };
 
 const reopenTestVisible = ref(false);
 const reopenContent = ref('');
-const reopenTestTask = (item: ApisListInfo) => {
-  state.selectedApiId = item.id;
+// Open reopen test task confirmation modal
+const openReopenTestTaskModal = (item: ApisListInfo) => {
+  uiState.selectedApiId = item.id;
   reopenTestVisible.value = true;
   reopenContent.value = t('service.apiList.confirm.reopenTestTask', { summary: item.summary });
 };
@@ -341,34 +343,35 @@ const reopenTestTask = (item: ApisListInfo) => {
 // Delete test task
 const delTestVisible = ref(false);
 
-// Change status modal visibility
+// Open status change modal
 const statusVisible = ref(false);
 const statusValue = ref();
-const setStatus = (api: ApisListInfo) => {
+const openStatusModal = (api: ApisListInfo) => {
   statusValue.value = api.status?.value || '';
   statusVisible.value = true;
-  state.selectedApiId = api.id;
+  uiState.selectedApiId = api.id;
 };
 
 // Generate or update test scripts
 const testScriptVisible = ref(false);
 // 'create' | 'update' for script generation action
 const testScriptActionType = ref();
-const setTestScript = (api: ApisListInfo, generate: 'create'|'update') => {
+const openGenTestScriptModal = (api: ApisListInfo, generate: 'create'|'update') => {
   testScriptVisible.value = true;
-  state.selectedApiId = api.id;
+  uiState.selectedApiId = api.id;
   testScriptActionType.value = generate;
 };
 
+// Update list data when permission toggled in modal
 const authFlagChange = ({ auth }:{auth:boolean}) => {
   if (typeof props.updateData === 'function') {
-    props.updateData({ id: state.selectedApiId, auth });
+    props.updateData({ id: uiState.selectedApiId, auth });
   }
 };
 
 // Open API export modal
 const openExportModal = () => {
-  state.apiExportVisible = true;
+  uiState.apiExportVisible = true;
 };
 
 // Add to favourites
@@ -474,25 +477,26 @@ const handleExecTest = async (type, id: string) => {
   okAction.value = getOkAction(type, id);
 };
 
-const delScriptVisble = ref(false);
+const delScriptVisible = ref(false);
 
-const changeStatus = () => {
+// Refresh list after status updated
+const refreshAfterStatusChange = () => {
   refreshList();
 };
 
-// Toggle details for an API row (single click)
-const showInfo = (id:string, api: { protocol: { value: string | string[]; }; }) => {
+// Toggle expand/collapse for an API row (single click)
+const toggleApiDetails = (id:string, api: { protocol: { value: string | string[]; }; }) => {
   setTimeout(() => {
     if (isDoubleClick.value) {
       return;
     }
     isDoubleClick.value = false;
-    if (id === state.activeApiId) {
-      state.activeApiId = '';
-      state.type = undefined;
+    if (id === uiState.activeApiId) {
+      uiState.activeApiId = '';
+      uiState.type = undefined;
     } else {
-      state.activeApiId = id;
-      state.type = api.protocol?.value?.includes('ws') ? 'WEBSOCKET' : 'API';
+      uiState.activeApiId = id;
+      uiState.type = api.protocol?.value?.includes('ws') ? 'WEBSOCKET' : 'API';
     }
   }, 300);
 };
@@ -505,13 +509,13 @@ const refreshList = () => {
   }
 };
 
-watch(() => state.activeApiId, () => {
-  changeGroupState({ id: state.activeApiId, type: state.type });
+watch(() => uiState.activeApiId, () => {
+  changeGroupState({ id: uiState.activeApiId, type: uiState.type });
 });
 
 watch(() => injectedApi.id, () => {
-  if (injectedApi.id !== state.activeApiId) {
-    state.activeApiId = injectedApi.id;
+  if (injectedApi.id !== uiState.activeApiId) {
+    uiState.activeApiId = injectedApi.id;
   }
 });
 
@@ -519,8 +523,8 @@ watch(() => loading.value, newValue => {
   emits('update:spinning', newValue);
 });
 
-// Grouped data source for virtual list
-const groupedData = ref<Record<string, any>[]>([]);
+// Grouped data source for virtual list (contains group headers + items)
+const groupedData = ref<any[]>([]);
 watch(() => [props.allData, props.groupedBy], () => {
   groupedData.value = [];
   if (props.groupedBy !== 'tag') {
@@ -592,7 +596,7 @@ onBeforeUnmount(() => {
 });
 
 defineExpose({
-  activeApiId: state.activeApiId,
+  activeApiId: uiState.activeApiId,
   updateScrollList: () => {
     refreshList();
   }
@@ -607,10 +611,10 @@ defineExpose({
         :updateData="props.updateData"
         :groupedBy="props.groupedBy"
         :height="wrapperHeight"
-        :activeApiId="state.activeApiId"
+        :activeApiId="uiState.activeApiId"
         @handleClick="handleClick"
-        @edit="edit"
-        @showInfo="showInfo"
+        @edit="openApiEditorTab"
+        @showInfo="toggleApiDetails"
         @loadApis="emits('loadApis')"
         @openMock="handleOpenMock" />
     </template>
@@ -629,43 +633,43 @@ defineExpose({
           :key="item.id"
           :item="item"
           :index="index"
-          :activeApiId="state.activeApiId"
+          :activeApiId="uiState.activeApiId"
           @handleClick="handleClick"
-          @edit="edit"
-          @showInfo="showInfo" />
+          @edit="openApiEditorTab"
+          @showInfo="toggleApiDetails" />
       </Scroll>
     </template>
     <AsyncComponent :visible="moveVisible">
       <MoveModal
-        :id="state.selectedApiId"
+        :id="uiState.selectedApiId"
         type="api"
         :visible="moveVisible"
         :pid="moveParentId"
         :projectId="projectInfo?.id.toString()"
         :parentName="moveParentName"
-        @ok="moveHandle"
-        @cancel="moveCancel" />
+        @ok="handleMoveOk"
+        @cancel="handleMoveCancel" />
     </AsyncComponent>
-    <AsyncComponent :visible="state.shareVisible">
+    <AsyncComponent :visible="uiState.shareVisible">
       <ShareModal
-        v-if="state.shareVisible"
-        :id="state.selectedApiId"
-        v-model:visible="state.shareVisible"
-        :name="state.name"
+        v-if="uiState.shareVisible"
+        :id="uiState.selectedApiId"
+        v-model:visible="uiState.shareVisible"
+        :name="uiState.name"
         source="all"
         type="API" />
     </AsyncComponent>
-    <AsyncComponent :visible="state.interfaceAuthVisible">
+    <AsyncComponent :visible="uiState.interfaceAuthVisible">
       <AuthorizeModal
-        v-model:visible="state.interfaceAuthVisible"
+        v-model:visible="uiState.interfaceAuthVisible"
         :enumKey="ApiPermission"
         :appId="appInfo?.id"
-        :listUrl="`${TESTER}/apis/auth?apisId=${state.selectedApiId}`"
+        :listUrl="`${TESTER}/apis/auth?apisId=${uiState.selectedApiId}`"
         :delUrl="`${TESTER}/apis/auth`"
-        :addUrl="`${TESTER}/apis/${state.selectedApiId}/auth`"
+        :addUrl="`${TESTER}/apis/${uiState.selectedApiId}/auth`"
         :updateUrl="`${TESTER}/apis/auth`"
-        :enabledUrl="`${TESTER}/apis/${state.selectedApiId}/auth/enabled`"
-        :initStatusUrl="`${TESTER}/apis/${state.selectedApiId}/auth/status`"
+        :enabledUrl="`${TESTER}/apis/${uiState.selectedApiId}/auth/enabled`"
+        :initStatusUrl="`${TESTER}/apis/${uiState.selectedApiId}/auth/status`"
         :onTips="t('service.apiList.template.permission.onTips')"
         :offTips="t('service.apiList.template.permission.offTips')"
         :title="t('service.apiList.template.permission.title')"
@@ -673,7 +677,7 @@ defineExpose({
     </AsyncComponent>
     <AsyncComponent :visible="testVisible">
       <CreateTestTaskModal
-        v-model:id="state.selectedApiId"
+        v-model:id="uiState.selectedApiId"
         v-model:visible="testVisible"
         :infoText="t('service.apiList.template.testTask.infoText')"
         type="API" />
@@ -681,48 +685,48 @@ defineExpose({
     <AsyncComponent :visible="restartTestVisible">
       <RestartTestTaskModal
         v-model:visible="restartTestVisible"
-        v-model:id="state.selectedApiId"
+        v-model:id="uiState.selectedApiId"
         :content="restartContent"
         type="API" />
     </AsyncComponent>
     <AsyncComponent :visible="reopenTestVisible">
       <ReOpenTestTaskModal
         v-model:visible="reopenTestVisible"
-        v-model:id="state.selectedApiId"
+        v-model:id="uiState.selectedApiId"
         :content="reopenContent"
         type="API" />
     </AsyncComponent>
     <AsyncComponent :visible="delTestVisible">
       <DelTestTask
-        :id="state.selectedApiId"
+        :id="uiState.selectedApiId"
         v-model:visible="delTestVisible"
         type="API" />
     </AsyncComponent>
     <AsyncComponent :visible="statusVisible">
       <StatusModal
-        :id="state.selectedApiId"
+        :id="uiState.selectedApiId"
         v-model:visible="statusVisible"
         :value="statusValue"
-        @confirm="changeStatus" />
+        @confirm="refreshAfterStatusChange" />
     </AsyncComponent>
-    <AsyncComponent :visible="state.apiExportVisible">
+    <AsyncComponent :visible="uiState.apiExportVisible">
       <ExportServiceModal
-        v-if="state.apiExportVisible"
-        :id="state.selectedApiId"
-        v-model:visible="state.apiExportVisible"
+        v-if="uiState.apiExportVisible"
+        :id="uiState.selectedApiId"
+        v-model:visible="uiState.apiExportVisible"
         type="API" />
     </AsyncComponent>
     <AsyncComponent :visible="testScriptVisible">
       <GenTestScriptModal
-        :id="state.selectedApiId"
+        :id="uiState.selectedApiId"
         v-model:visible="testScriptVisible"
         :setType="testScriptActionType"
         type="API" />
     </AsyncComponent>
-    <AsyncComponent :visible="delScriptVisble">
+    <AsyncComponent :visible="delScriptVisible">
       <DeleteScriptModal
-        :id="state.selectedApiId"
-        v-model:visible="delScriptVisble"
+        :id="uiState.selectedApiId"
+        v-model:visible="delScriptVisible"
         type="API" />
     </AsyncComponent>
     <AsyncComponent :visible="execTestVisible">

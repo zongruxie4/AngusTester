@@ -3,16 +3,17 @@ import { Button, ListItem, Popover, Tooltip } from 'ant-design-vue';
 import { computed, inject, onMounted, ref, watch, Ref } from 'vue';
 import { Dropdown, HttpMethodTag, Icon, Image } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { ServicesPermission, ApiStatus } from '@/enums/enums';
 
 import { API_STATUS_COLOR_CONFIG } from '@/utils/apis';
 import { bgColor } from '@/utils/common';
 import { ApisListInfo } from '../types';
-import { ButtonGroup, CollapseButtonGroup } from './interface';
+import { ButtonGroup, CollapseButtonGroup } from './types';
 
 import VirtualList from './BaseVirtualList.vue';
 
 interface Props {
-  dataSource: Array<ApisListInfo>;
+  dataSource: Array<any>; // Mixed array of ApisListInfo and group headers
   updateData: (value: { id: string; auth: boolean; }) => void;
   height: number;
   showNum?: number;
@@ -30,6 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   groupedBy: 'none'
 });
 
+// Project type visibility configuration (injected from parent)
 const proTypeShowMap = inject<Ref<{ [key: string]: boolean }>>('proTypeShowMap', ref({
   showTask: true,
   showBackLog: true,
@@ -45,16 +47,18 @@ const emits = defineEmits<{
   (e: 'showInfo', id: string, value): void;
   (e: 'handleClick', value: string, item, index: number): void;
 }>();
-// 编辑api
-const edit = (value: ApisListInfo): void => {
+
+// Open API editor tab for this row
+const openApiEditorTab = (value: ApisListInfo): void => {
   emits('edit', value);
 };
 
+// Permission arrays injected from parent
 const apiAuths = inject('apiAuths', ref());
 const serviceAuths = inject('serviceAuths', ref());
 
-// popover 显示的 button
-const myButtonGroup = (item) => {
+// Build dropdown menu items based on item state and permissions
+const buildDropdownMenuItems = (item) => {
   return ButtonGroup.map(btn => {
     if (item.protocol?.value?.includes('ws') && ['mock'].includes(btn.key)) {
       return null;
@@ -77,97 +81,38 @@ const myButtonGroup = (item) => {
     return {
       ...btn
     };
-  }).filter(Boolean);
+  }).filter(Boolean) as any[];
 };
 
-const myCollapseButtonGroup = computed(() => {
+// Collapsible button group for inline actions
+const collapsibleButtonGroup = computed(() => {
   return CollapseButtonGroup;
 });
 
-const getBtnDisabled = (btn, item) => {
-  const publishBtn = ['del'];
-  if (publishBtn.includes(btn.value)) {
-    return item.status?.value === 'RELEASED' || !apiAuths.value.includes(btn.auth);
+// Check if button should be disabled based on permissions and item state
+const isButtonDisabled = (btn, item) => {
+  const releaseBtn = ['del'];
+  if (releaseBtn.includes(btn.value)) {
+    return item.status?.value === ApiStatus.RELEASED || !apiAuths.value.includes(btn.auth);
   }
   if (btn.value === 'patchClone') {
     return !serviceAuths.value.includes(btn.auth);
   }
   return !apiAuths.value.includes(btn.auth);
 };
-// 点击详情
-const showInfo = (id: string, api) => {
+
+// Toggle expand/collapse details for this row
+const toggleApiDetails = (id: string, api) => {
   emits('showInfo', id, api);
 };
 
-const showData = ref<ApisListInfo[]>([]);
-const groupSpreadMap = ref<{ [key: string]: boolean }>({});
-// let size = 0;
-// 监听 当前 open api 的变化, 更改 ap
+// Currently visible data (filtered by group expand/collapse state)
+const visibleData = ref<any[]>([]);
+// Track which groups are expanded
+const groupExpandState = ref<{ [key: string]: boolean }>({});
 
-onMounted(() => {
-  watch(() => props.groupedBy, () => {
-    groupSpreadMap.value = {};
-  }, {
-    immediate: true
-  });
-  watch(() => props.dataSource, (newValue, oldValue) => {
-    showData.value = JSON.parse(JSON.stringify(newValue));
-    if (newValue.length && !oldValue?.length) {
-      const groups = props.dataSource.filter(item => item.type === 'group');
-      groups.forEach(group => {
-        groupSpreadMap.value[group.key] = false;
-      });
-      if (groups?.[0]) {
-        groupSpreadMap.value[groups[0].key] = true;
-      }
-      if (groups?.[1]) {
-        const secondGroupIdx = props.dataSource.findIndex(item => item.key === groups[1].key);
-        showData.value = props.dataSource.filter((item, idx) => {
-          if (item.key) {
-            return true;
-          }
-          if (idx < secondGroupIdx) {
-            return true;
-          }
-          return false;
-        });
-      }
-    } else {
-      const groups = newValue.filter(item => item.type === 'group');
-      groups.forEach(group => {
-        if (!groupSpreadMap.value[group.key]) {
-          const idx = showData.value.findIndex(item => item.type === 'group' && item.key === group.key);
-          handleSpread(group, idx);
-        }
-      });
-    }
-  }, {
-    immediate: true
-  });
-});
-
-// 测试结果图标颜色
-const getResultIconColor = (item) => {
-  if (item.testFunc && item.testFuncPassedFlag === false) {
-    return 'text-status-error';
-  }
-  if (item.testPerf && item.testPerfPassedFlag === false) {
-    return 'text-status-error';
-  }
-  if (item.testStability && item.testStabilityPassedFlag === false) {
-    return 'text-status-error';
-  }
-  if (!item.testFunc && !item.testPerf && !item.testStability) {
-    return '';
-  }
-  if (item.testFuncPassedFlag === true || item.testPerfPassedFlag === true || item.testStabilityPassedFlag === true) {
-    return 'text-status-success';
-  }
-  return '';
-};
-
-// 测试结果颜色
-const getResultColor = (testFlag, testPassd = undefined) => {
+// Text color class based on test result
+const getTestResultTextColor = (testFlag, testPassd = undefined) => {
   if (!testFlag || testPassd === undefined) {
     return;
   }
@@ -179,38 +124,109 @@ const getResultColor = (testFlag, testPassd = undefined) => {
   }
 };
 
-const handleClick = (event: string, data: ApisListInfo, index: number) => {
+// Icon color class based on aggregated test results
+const getTestResultIconColor = (item) => {
+  if (item.testFunc && item.testFuncPassed === false) {
+    return 'text-status-error';
+  }
+  if (item.testPerf && item.testPerfPassed === false) {
+    return 'text-status-error';
+  }
+  if (item.testStability && item.testStabilityPassed === false) {
+    return 'text-status-error';
+  }
+  if (!item.testFunc && !item.testPerf && !item.testStability) {
+    return '';
+  }
+  if (item.testFuncPassed === true || item.testPerfPassed === true || item.testStabilityPassed === true) {
+    return 'text-status-success';
+  }
+  return '';
+};
+
+// Emit toolbar/menu action from this row
+const emitRowAction = (event: string, data: ApisListInfo, index: number) => {
   emits('handleClick', event, data, index);
 };
 
-const mockAuth = computed(() => {
-  if (serviceAuths.value.includes('ADD')) {
+// Mock permission based on service permissions
+const mockPermissions = computed(() => {
+  if (serviceAuths.value.includes(ServicesPermission.ADD)) {
     return ['MOCK'];
   }
   return [];
 });
 
-const handleSpread = (group, index) => {
-  // groupSpreadMap.value[group.key] = !groupSpreadMap.value[group.key];
-  if (groupSpreadMap.value[group.key]) {
+// Expand or collapse group items in visible data
+const toggleGroupItems = (group, index) => {
+  if (groupExpandState.value[group.key]) {
     const idx = props.dataSource.findIndex(i => i.key === group.key);
     const arr = props.dataSource.slice(idx + 1, idx + 1 + group.childrenNum);
-    showData.value.splice(index + 1, 0, ...arr);
+    visibleData.value.splice(index + 1, 0, ...arr);
   } else {
-    showData.value.splice(index + 1, group.childrenNum);
+    visibleData.value.splice(index + 1, group.childrenNum);
   }
 };
 
-const handleClickSpread = (group, index) => {
-  groupSpreadMap.value[group.key] = !groupSpreadMap.value[group.key];
-  handleSpread(group, index);
+// Handle group header click to toggle expand/collapse
+const handleGroupHeaderClick = (group, index) => {
+  groupExpandState.value[group.key] = !groupExpandState.value[group.key];
+  toggleGroupItems(group, index);
 };
+
+onMounted(() => {
+  // Reset group expand state when grouping changes
+  watch(() => props.groupedBy, () => {
+    groupExpandState.value = {};
+  }, {
+    immediate: true
+  });
+
+  // Handle data source changes and manage group expand/collapse
+  watch(() => props.dataSource, (newValue, oldValue) => {
+    visibleData.value = JSON.parse(JSON.stringify(newValue));
+    if (newValue.length && !oldValue?.length) {
+      const groups = props.dataSource.filter(item => item.type === 'group');
+      groups.forEach(group => {
+        groupExpandState.value[group.key] = false;
+      });
+      // Expand first group by default
+      if (groups?.[0]) {
+        groupExpandState.value[groups[0].key] = true;
+      }
+      // Show only first group items initially
+      if (groups?.[1]) {
+        const secondGroupIdx = props.dataSource.findIndex(item => item.key === groups[1].key);
+        visibleData.value = props.dataSource.filter((item, idx) => {
+          if (item.key) {
+            return true;
+          }
+          if (idx < secondGroupIdx) {
+            return true;
+          }
+          return false;
+        });
+      }
+    } else {
+      // Handle existing groups based on current expand state
+      const groups = newValue.filter(item => item.type === 'group');
+      groups.forEach(group => {
+        if (!groupExpandState.value[group.key]) {
+          const idx = visibleData.value.findIndex(item => item.type === 'group' && item.key === group.key);
+          toggleGroupItems(group, idx);
+        }
+      });
+    }
+  }, {
+    immediate: true
+  });
+});
 </script>
 
 <template>
   <VirtualList
     class="pr-4"
-    :data="showData"
+    :data="visibleData"
     :height="props.height"
     :showNum="props.showNum"
     :cache="20">
@@ -222,10 +238,10 @@ const handleClickSpread = (group, index) => {
         :class="{
           'deprecated line-through': item.deprecated,
           'has-border relative': props.groupedBy !== 'none',
-          '!border-b last-data': showData[index + 1]?.type === 'group' || (props.groupedBy !== 'none' && !showData[index + 1])
+          '!border-b last-data': visibleData[index + 1]?.type === 'group' || (props.groupedBy !== 'none' && !visibleData[index + 1])
         }"
-        @dblclick="edit(item)"
-        @click="showInfo(item.id, item)">
+        @dblclick="openApiEditorTab(item)"
+        @click="toggleApiDetails(item.id, item)">
         <div
           class="flex w-full h-11.5  rounded justify-between px-5 text-3 leading-3.5"
           :class="{
@@ -250,33 +266,33 @@ const handleClickSpread = (group, index) => {
                 <Icon
                   icon="icon-zhihangceshi"
                   class="text-4"
-                  :class="getResultIconColor(item)" />
+                  :class="getTestResultIconColor(item)" />
               </span>
               <template #content>
                 <div class="flex">
                   <span class="w-20">{{ t('service.apiList.test.functionalTest') }}：</span>
-                  <div class="flex-1 min-w-0" :class="getResultColor(item.testFunc, item.testFuncPassedFlag)">
+                  <div class="flex-1 min-w-0" :class="getTestResultTextColor(item.testFunc, item.testFuncPassed)">
                     {{
-                      !item.testFunc ? t('status.disabled') : item.testFuncPassedFlag
-                        ? t('status.passed') : item.testFuncPassedFlag === false ? t('status.notPassed') : t('status.notTested')
+                      !item.testFunc ? t('status.disabled') : item.testFuncPassed
+                        ? t('status.passed') : item.testFuncPassed === false ? t('status.notPassed') : t('status.notTested')
                     }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span>
                   </div>
                 </div>
                 <div class="flex">
                   <span class="w-20">{{ t('service.apiList.test.performanceTest') }}：</span>
-                  <div class="flex-1 min-w-0" :class="getResultColor(item.testPerf, item.testPerfPassedFlag)">
+                  <div class="flex-1 min-w-0" :class="getTestResultTextColor(item.testPerf, item.testPerfPassed)">
                     {{
-                      !item.testPerf ? t('status.disabled') : item.testPerfPassedFlag
-                        ? t('status.passed') : item.testPerfPassedFlag === false ? t('status.notPassed') : t('status.notTested')
+                      !item.testPerf ? t('status.disabled') : item.testPerfPassed
+                        ? t('status.passed') : item.testPerfPassed === false ? t('status.notPassed') : t('status.notTested')
                     }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span>
                   </div>
                 </div>
                 <div class="flex">
                   <span class="w-20">{{ t('service.apiList.test.stabilityTest') }}：</span>
-                  <div class="flex-1 min-w-0" :class="getResultColor(item.testStability, item.testStabilityPassedFlag)">
+                  <div class="flex-1 min-w-0" :class="getTestResultTextColor(item.testStability, item.testStabilityPassed)">
                     {{
-                      !item.testStability ? t('status.disabled') : item.testStabilityPassedFlag
-                        ? t('status.passed') : item.testStabilityPassedFlag === false ? t('status.notPassed') : t('status.notTested')
+                      !item.testStability ? t('status.disabled') : item.testStabilityPassed
+                        ? t('status.passed') : item.testStabilityPassed === false ? t('status.notPassed') : t('status.notTested')
                     }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span>
                   </div>
                 </div>
@@ -296,12 +312,12 @@ const handleClickSpread = (group, index) => {
             class="justify-end flex items-center btns-wrapper"
             :class="[props.activeApiId === item.id ? 'visible' : 'invisible']">
             <div class="whitespace-nowrap edit-btn-wrapper">
-              <template v-for="record in myCollapseButtonGroup" :key="record.value">
+              <template v-for="record in collapsibleButtonGroup" :key="record.value">
                 <Button
                   type="text"
                   class="!bg-transparent"
-                  :disabled="getBtnDisabled(record, item)"
-                  @click.stop="handleClick(record.value, item, index)">
+                  :disabled="isButtonDisabled(record, item)"
+                  @click.stop="emitRowAction(record.value, item, index)">
                   <Icon :icon="record.icon" />
                   {{ record.label }}
                 </Button>
@@ -309,10 +325,10 @@ const handleClickSpread = (group, index) => {
             </div>
             <div>
               <Dropdown
-                :menuItems="myButtonGroup(item)"
-                :permissions="[...apiAuths, ...mockAuth]"
+                :menuItems="buildDropdownMenuItems(item)"
+                :permissions="[...apiAuths, ...mockPermissions]"
                 :destroyPopupOnHide="true"
-                @click="$event =>handleClick($event.key, item, index)">
+                @click="$event =>emitRowAction($event.key, item, index)">
                 <Icon icon="icon-gengduo" />
               </Dropdown>
             </div>
@@ -322,7 +338,7 @@ const handleClickSpread = (group, index) => {
       <template v-else>
         <div
           class="h-11.5 border mb-3 w-full flex items-center"
-          @click="handleClickSpread(item, index)">
+          @click="handleGroupHeaderClick(item, index)">
           <div v-if="groupedBy === 'createdBy'" class="flex items-center flex-1 px-2">
             <Image
               type="avatar"
@@ -349,7 +365,7 @@ const handleClickSpread = (group, index) => {
           <Icon
             icon="icon-xiangshang-copy"
             class="mr-3 transition-all"
-            :class="{'rotate-90': groupSpreadMap[item.key]}" />
+            :class="{'rotate-90': groupExpandState[item.key]}" />
         </div>
       </template>
     </template>
