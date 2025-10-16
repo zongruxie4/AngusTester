@@ -5,7 +5,6 @@ import enEnumLocale from '@/enums/locale/en.json';
 // Locale files - English
 import enCommon from '@/locales/en/common.json';
 import enApi from '@/locales/en/api.json';
-import enApiShare from '@/locales/en/apiShare.json';
 import enData from '@/locales/en/data.json';
 import enExecution from '@/locales/en/execution.json';
 import enKanban from '@/locales/en/kanban.json';
@@ -22,7 +21,6 @@ import enCommonComp from '@/locales/en/commonComp.json';
 // Locale files - Chinese
 import zhCommon from '@/locales/zh_CN/common.json';
 import zhApi from '@/locales/zh_CN/api.json';
-import zhApiShare from '@/locales/zh_CN/apiShare.json';
 import zhData from '@/locales/zh_CN/data.json';
 import zhExecution from '@/locales/zh_CN/execution.json';
 import zhKanban from '@/locales/zh_CN/kanban.json';
@@ -42,7 +40,6 @@ export const localeBundles = {
     ...enEnumLocale,
     ...enCommon,
     ...enApi,
-    ...enApiShare,
     ...enData,
     ...enExecution,
     ...enKanban,
@@ -60,7 +57,6 @@ export const localeBundles = {
     ...zhEnumLocale,
     ...zhCommon,
     ...zhApi,
-    ...zhApiShare,
     ...zhData,
     ...zhExecution,
     ...zhKanban,
