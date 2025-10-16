@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { Modal, VuexHelper } from '@xcan-angus/vue-ui';
-import SecurityConfig from './ServerConfig.vue';
+import SecurityConfig from '@/views/apis/services/services/slider/server/index.vue';
 
 interface Props {
   visible: boolean;

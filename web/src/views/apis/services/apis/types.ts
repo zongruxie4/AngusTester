@@ -131,6 +131,7 @@ export interface StateType {
   type?: 'API' | 'WEBSOCKET';
   serviceAuth: boolean
 }
+
 export const navs: NavItem[] = [
   {
     icon: 'icon-fuwuxinxi',

@@ -9,21 +9,20 @@ import { ApiStatus, ServicesPermission } from '@/enums/enums';
 import { services } from '@/api/tester';
 import { IInfomation, Status } from './PropsType';
 
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const Security = defineAsyncComponent(() => import('@/views/apis/services/components/Security.vue'));
+
 interface Props {
   id: string;
-  type: 'SERVICE';
   disabled: boolean;
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
-  type: 'SERVICE',
   disabled: false
 });
 
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const Security = defineAsyncComponent(() => import('@/views/apis/services/components/security/Security.vue'));
+const { t } = useI18n();
 
 const appInfo = ref(appContext.getAccessApp()) as Ref<Record<string, any>>;
 
@@ -31,23 +30,6 @@ const appInfo = ref(appContext.getAccessApp()) as Ref<Record<string, any>>;
 const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 
 const showSecurity = ref(true);
-const columns = computed(() => [
-  [
-    { label: t('common.id'), dataIndex: 'id' },
-    { label: t('common.name'), dataIndex: 'name' },
-    { label: t('common.parentName'), dataIndex: 'parentName' },
-    { label: t('common.source'), dataIndex: 'source' },
-    { label: t('common.status'), dataIndex: 'status' },
-    { label: t('common.authControl'), dataIndex: 'auth' },
-    { label: t('service.serviceDetail.columns.apisNum'), dataIndex: 'apisNum' },
-    { label: t('service.serviceDetail.columns.apisCaseNum'), dataIndex: 'apisCaseNum' }, // @todo
-    { label: t('common.createdBy'), dataIndex: 'createdByName' },
-    { label: t('common.createdDate'), dataIndex: 'createdDate' },
-    { label: t('common.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
-    { label: t('common.securityTitle'), dataIndex: 'securityTitle' },
-    { dataIndex: 'security', fullWidthContent: true }
-  ].filter(Boolean)
-]);
 
 const name = ref<string>();
 const nameError = ref(false);
@@ -65,14 +47,16 @@ const confirmEditName = async () => {
     return;
   }
   editNameFlag.value = false;
-  infomation.value!.name = name.value;
+  serviceInfo.value!.name = name.value;
   updateTabPane({ _id: props.id + 'group', pid: props.id + 'group', name: name.value });
 };
+
 const cancelEditName = () => {
   editNameFlag.value = false;
   nameError.value = false;
-  name.value = infomation.value?.name;
+  name.value = serviceInfo.value?.name;
 };
+
 const nameChange = () => {
   nameError.value = false;
 };
@@ -81,9 +65,11 @@ const status = ref<Status>();
 const statusName = ref<string>();
 const editStatusFlag = ref(false);
 const auth = ref(false);
+
 const editStatus = () => {
   editStatusFlag.value = true;
 };
+
 const confirmEditStatus = async () => {
   const [error] = await services.patchStatus({ id: props.id, status: status.value });
   if (error) {
@@ -93,9 +79,11 @@ const confirmEditStatus = async () => {
   editStatusFlag.value = false;
   updateTabPane({ _id: props.id + 'group', pid: props.id + 'group', status: { value: status.value, message: statusName.value } });
 };
+
 const cancelEditStatus = () => {
   editStatusFlag.value = false;
 };
+
 const statusChange = (_value:string, option:{value:Status;message:string}) => {
   statusName.value = option.message;
 };
@@ -105,14 +93,14 @@ const editAuth = () => {
   visible.value = true;
 };
 
-const infomation = ref<IInfomation>();
+const serviceInfo = ref<IInfomation>();
 const loadInfo = async () => {
   const [error, res] = await services.loadInfo(props.id);
   if (error) {
     return;
   }
   const data = res.data as IInfomation;
-  infomation.value = data;
+  serviceInfo.value = data;
   status.value = data.status?.value;
   statusName.value = data.status?.message;
   name.value = data.name;
@@ -136,17 +124,26 @@ const addSecurity = () => {
 };
 
 const authFlagChange = ({ auth }:{auth:boolean}) => {
-  infomation.value!.auth = auth;
+  serviceInfo.value!.auth = auth;
 };
 
+const apiStatusOpt = ref<{value: string; label: string}[]>([]);
+const loadApiStatusOpt = () => {
+  apiStatusOpt.value = enumUtils.enumToMessages(ApiStatus).map(i => ({ value: i.value, label: i.message }));
+};
+
+onMounted(() => {
+  loadApiStatusOpt();
+});
+
 watch(() => props.id, (newValue) => {
-  if (newValue && ['PROJECT', 'SERVICE'].includes(props.type)) {
+  if (newValue) {
     loadInfo();
     loadSecurity();
   }
 }, { immediate: true });
 
-const modelTtileMap = {
+const modelTitleMap = {
   PROJECT: t('service.serviceDetail.modal.projectPermission'),
   SERVICE: t('service.serviceDetail.modal.servicePermission')
 };
@@ -162,25 +159,33 @@ const tipMap = {
   }
 };
 
-const apiStatusOpt = ref<{value: string; label: string}[]>([]);
-const loadApiStatusOpt = () => {
-  apiStatusOpt.value = enumUtils.enumToMessages(ApiStatus).map(i => ({ value: i.value, label: i.message }));
-};
-
-onMounted(() => {
-  loadApiStatusOpt();
-});
-
+const columns = computed(() => [
+  [
+    { label: t('common.id'), dataIndex: 'id' },
+    { label: t('common.name'), dataIndex: 'name' },
+    { label: t('common.parentName'), dataIndex: 'parentName' },
+    { label: t('common.source'), dataIndex: 'source' },
+    { label: t('common.status'), dataIndex: 'status' },
+    { label: t('common.authControl'), dataIndex: 'auth' },
+    { label: t('service.serviceDetail.columns.apisNum'), dataIndex: 'apisNum' },
+    { label: t('service.serviceDetail.columns.apisCaseNum'), dataIndex: 'apisCaseNum' }, // @todo
+    { label: t('common.createdBy'), dataIndex: 'createdByName' },
+    { label: t('common.createdDate'), dataIndex: 'createdDate' },
+    { label: t('common.lastModifiedDate'), dataIndex: 'lastModifiedDate' },
+    { label: t('common.securityTitle'), dataIndex: 'securityTitle' },
+    { dataIndex: 'security', fullWidthContent: true }
+  ].filter(Boolean)
+]);
 </script>
 <template>
   <Grid
     :columns="columns"
-    :dataSource="infomation"
+    :dataSource="serviceInfo"
     marginBottom="18px">
     <template #id>{{ props.id }}</template>
     <template #source="{ text }">
       <span>{{ text?.message }}</span>
-      <span v-if="infomation?.importSource" class="ml-1">({{ infomation.importSource.message }})</span>
+      <span v-if="serviceInfo?.importSource" class="ml-1">({{ serviceInfo.importSource.message }})</span>
     </template>
     <template #name>
       <template v-if="!editNameFlag">
@@ -279,7 +284,7 @@ onMounted(() => {
         :id="props.id"
         ref="securityRef"
         v-model:showSecurity="showSecurity"
-        type="PROJECT"
+        type="SERVICE"
         :data="security || {}" />
     </template>
   </Grid>
@@ -296,7 +301,7 @@ onMounted(() => {
       :initStatusUrl="`${TESTER}/services/${props.id}/auth/status`"
       :onTips="tipMap[props.type].on"
       :offTips="tipMap[props.type].off"
-      :title="modelTtileMap[props.type]"
+      :title="modelTitleMap[props.type]"
       @change="authFlagChange" />
   </AsyncComponent>
 </template>

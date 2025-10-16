@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Modal, VuexHelper } from '@xcan-angus/vue-ui';
-import SecurityConfig from './SecurityConfig.vue';
 import { useI18n } from 'vue-i18n';
+import { Modal, VuexHelper } from '@xcan-angus/vue-ui';
+
+import SyncConfig from './slider/sync/index.vue';
 
 interface Props {
   visible: boolean;
@@ -12,6 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   id: ''
 });
+
 const { t } = useI18n();
 
 const emit = defineEmits<{(e: 'update:visible', value:boolean): void}>();
@@ -21,7 +23,7 @@ const cancelModal = () => {
 };
 
 const { useMutations } = VuexHelper;
-const { updateList } = useMutations(['updateList'], 'apiSecurityStore');
+const { updateList } = useMutations(['updateList'], 'apiSyncStore');
 
 const deleteSuccess = () => {
   updateList();
@@ -33,13 +35,13 @@ const saveSuccess = () => {
 </script>
 <template>
   <Modal
-    :title="t('service.securityModal.title')"
+    :title="t('service.syncConfig.title')"
     :visible="visible"
     :reverse="true"
     :footer="null"
     @cancel="cancelModal">
     <template v-if="props.visible">
-      <SecurityConfig
+      <SyncConfig
         :id="props.id"
         :disabled="false"
         source="modal"

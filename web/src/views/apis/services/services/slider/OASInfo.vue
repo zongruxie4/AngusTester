@@ -3,37 +3,23 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TypographyParagraph } from 'ant-design-vue';
 import { AsyncComponent, Grid, Icon, Input } from '@xcan-angus/vue-ui';
-
 import { services } from '@/api/tester';
 
-import { ISchema } from '@/views/apis/services/apis/slider/services/PropsType';
-
-interface Props {
-  id: string;
-  type: 'PROJECT' | 'SERVICE';
-  disabled: boolean;
-}
-
-const { t } = useI18n();
-const props = withDefaults(defineProps<Props>(), {
-  id: undefined,
-  type: 'PROJECT',
-  disabled: false
-});
+import { OASInfoSchema } from '@/views/apis/services/services/slider/PropsType';
 
 const DescriptionModal = defineAsyncComponent(() => import('@/views/apis/services/components/MarkdownDescModal.vue'));
 
-const columns = [[
-  { label: t('service.serviceOpenApi.columns.title'), dataIndex: 'title' },
-  { label: t('service.serviceOpenApi.columns.summary'), dataIndex: 'summary' },
-  { label: t('service.serviceOpenApi.columns.openapi'), dataIndex: 'openapi' },
-  { label: t('service.serviceOpenApi.columns.termsOfService'), dataIndex: 'termsOfService' },
-  { label: t('service.serviceOpenApi.columns.contact'), dataIndex: 'contact' },
-  { label: t('service.serviceOpenApi.columns.license'), dataIndex: 'license' },
-  { label: t('common.version'), dataIndex: 'version' },
-  { label: t('service.serviceOpenApi.columns.externalDocs'), dataIndex: 'externalDocs' },
-  { label: t('common.description'), dataIndex: 'description' }
-]];
+interface Props {
+  id: string;
+  disabled: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  id: undefined,
+  disabled: false
+});
+
+const { t } = useI18n();
 
 const title = ref<string>();
 const titleError = ref(false);
@@ -217,14 +203,14 @@ const toSave = async () => {
   return await services.putSchemaInfo(props.id, params);
 };
 
-const schemaInfo = ref<ISchema>();
+const schemaInfo = ref<OASInfoSchema>();
 const loadInfo = async () => {
   const [error, res] = await services.loadSchema(props.id);
   if (error) {
     return;
   }
 
-  const data: ISchema = res.data;
+  const data: OASInfoSchema = res.data;
   schemaInfo.value = JSON.parse(JSON.stringify(data));
   title.value = data.info.title;
   summary.value = data.info.summary;
@@ -239,11 +225,23 @@ const loadInfo = async () => {
 
 onMounted(() => {
   watch(() => props.id, (newValue) => {
-    if (newValue && ['PROJECT', 'SERVICE'].includes(props.type)) {
+    if (newValue) {
       loadInfo();
     }
   }, { immediate: true });
 });
+
+const columns = [[
+  { label: t('service.serviceOpenApi.columns.title'), dataIndex: 'title' },
+  { label: t('service.serviceOpenApi.columns.summary'), dataIndex: 'summary' },
+  { label: t('service.serviceOpenApi.columns.openapi'), dataIndex: 'openapi' },
+  { label: t('service.serviceOpenApi.columns.termsOfService'), dataIndex: 'termsOfService' },
+  { label: t('service.serviceOpenApi.columns.contact'), dataIndex: 'contact' },
+  { label: t('service.serviceOpenApi.columns.license'), dataIndex: 'license' },
+  { label: t('common.version'), dataIndex: 'version' },
+  { label: t('service.serviceOpenApi.columns.externalDocs'), dataIndex: 'externalDocs' },
+  { label: t('common.description'), dataIndex: 'description' }
+]];
 </script>
 <template>
   <Grid

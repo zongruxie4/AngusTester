@@ -61,7 +61,7 @@ const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/tas
 const ReOpenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
 const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
 const StatusModal = defineAsyncComponent(() => import('@/views/apis/services/components/StatusModal.vue'));
-const ExportServiceModal = defineAsyncComponent(() => import('@/views/apis/services/services/components/ExportService.vue'));
+const ExportServiceModal = defineAsyncComponent(() => import('@/views/apis/services/services/ExportService.vue'));
 const GenTestScriptModal = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
 const DeleteScriptModal = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/apis/list/ExecTestModal.vue'));

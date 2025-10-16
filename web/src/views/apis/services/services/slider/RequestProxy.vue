@@ -5,7 +5,7 @@ import { setting } from '@/api/gm';
 import { Icon, Input } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { type AgentValue } from './PropsTypes';
+import { type AgentValue } from '../../components/PropsTypes';
 
 interface Props {
   disabledEdit: boolean;

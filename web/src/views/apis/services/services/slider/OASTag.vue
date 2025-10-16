@@ -7,7 +7,7 @@ import { services } from '@/api/tester';
 import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
-import { SaveParams, TagObj } from './Tag';
+import { SaveParams, TagObj } from '../../components/Tag';
 
 interface Props {
   visible: boolean;

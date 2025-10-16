@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { apis } from '@/api/tester';
 
 
-import {UnarchivedItem} from "@/views/apis/services/services/PropsType";
+import {UnarchivedItem} from "@/views/apis/services/services/types";
 
 interface Props {
   keywords: string | undefined;

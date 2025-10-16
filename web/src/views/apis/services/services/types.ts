@@ -2,6 +2,58 @@ import { i18n } from '@xcan-angus/infra';
 
 const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
 
+export type SP = 'S' | 'P';
+
+export type TargetTypeValue = 'SERVICE'|'PROJECT'
+
+export interface ServiceProject {
+  name: string,
+  id: string,
+  children: ServiceProject[],
+  editable: boolean,
+  auth:boolean;
+  spread?: boolean,
+  active?: boolean,
+  pid?: string;
+  level?: number;
+  targetType: {
+    value: TargetTypeValue;
+    message?: string;
+  }
+}
+
+export interface ModalsConfig {
+  syncModalVisible: boolean,
+  serverUrlModalVisible: boolean,
+  importModalVisible: boolean,
+  authenticatModalVisible: boolean,
+  exportInterfaceModalVisible: boolean,
+  testScriptVisible: boolean;
+  shareModalVisible: boolean,
+  authModalVisible: boolean,
+  activeId: string,
+  activeName: string,
+  statusVisible: boolean;
+  auth: boolean;
+  type?: 'SERVICE';
+  selectedNode?:ServiceProject;
+  delTestScriptVisible: boolean;
+  enabeldApiTestVisible: boolean;
+}
+
+export type UnarchivedItem = {
+  id: string;
+  protocol: {
+    value: string;
+    message: string;
+  },
+  method: string;
+  endpoint: string;
+  summary: string;
+  createdDate: string;
+  lastModifiedDate: string;
+}
+
 export const actions = [
   {
     name: t('service.sidebar.actions.addApi'),
@@ -305,55 +357,3 @@ export const actions = [
     ]
   }
 ];
-
-export type SP = 'S' | 'P';
-
-export type TargetTypeValue = 'SERVICE'|'PROJECT'
-
-export interface ServiceProject {
-  name: string,
-  id: string,
-  children: ServiceProject[],
-  editable: boolean,
-  auth:boolean;
-  spread?: boolean,
-  active?: boolean,
-  pid?: string;
-  level?: number;
-  targetType: {
-    value: TargetTypeValue;
-    message?: string;
-  }
-}
-
-export interface ModalsConfig {
-  syncModalVisible: boolean,
-  serverUrlModalVisible: boolean,
-  importModalVisible: boolean,
-  authenticatModalVisible: boolean,
-  exportInterfaceModalVisible: boolean,
-  testScriptVisible: boolean;
-  shareModalVisible: boolean,
-  authModalVisible: boolean,
-  activeId: string,
-  activeName: string,
-  statusVisible: boolean;
-  auth: boolean;
-  type?: 'SERVICE';
-  selectedNode?:ServiceProject;
-  delTestScriptVisible: boolean;
-  enabeldApiTestVisible: boolean;
-}
-
-export type UnarchivedItem = {
-  id: string;
-  protocol: {
-    value: string;
-    message: string;
-  },
-  method: string;
-  endpoint: string;
-  summary: string;
-  createdDate: string;
-  lastModifiedDate: string;
-}

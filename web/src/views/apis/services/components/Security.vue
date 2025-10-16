@@ -8,13 +8,10 @@ import { apis, services } from '@/api/tester';
 interface Props {
   data: Record<string, any>[];
   id: string;
-  type: 'PROJECT'|'API';
+  type: 'SERVICE'|'API';
   disabled: boolean;
 }
-const { t } = useI18n();
 
-const serviceId = inject('serviceId', ref());
-const emits = defineEmits<{(e: 'update:showSecurity', value: boolean):void}>();
 const props = withDefaults(defineProps<Props>(), {
   data: () => ([]),
   id: '',
@@ -22,14 +19,13 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
+const { t } = useI18n();
+
+const serviceId = inject('serviceId', ref());
+const emits = defineEmits<{(e: 'update:showSecurity', value: boolean):void}>();
+
 const security = ref<{key: string; value: string[]; defaultKey?: string; defaultValue?: string[]; edit?: boolean; symbolKey?: number}[][]>([]);
 const defaultSecurity = ref<{key: string; value: string[]}[]>([]);
-
-// const handleBlur = (idx) => {
-//   if (securityOpt.value.length) {
-//     showOptions.value[idx] = true;
-//   }
-// };
 
 const handleSelectSecurity = (item, idx, subIdx) => {
   security.value[idx][subIdx].key = item.key;
@@ -37,7 +33,6 @@ const handleSelectSecurity = (item, idx, subIdx) => {
   security.value[idx][subIdx].value = security.value[idx][subIdx].value || [];
 };
 
-// 添加安全
 const addSecurity = () => {
   security.value.push([{ key: '', value: [], edit: true }]);
   emits('update:showSecurity', true);
@@ -63,13 +58,11 @@ const blurKeys = () => {
 
 const isValid = ref(false);
 const repeatedKeys = ref<string[][]>([]);
+
 const validate = () => {
   isValid.value = true;
   getRepeatedKeys();
-  if (repeatedKeys.value.flat().length) {
-    return false;
-  }
-  return true;
+  return !repeatedKeys.value.flat().length;
 };
 
 const getRepeatedKeys = () => {

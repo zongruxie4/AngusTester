@@ -50,12 +50,12 @@ const matchMethod = ref();
 const matchEndpointRegex = ref();
 const filterTags = ref([]);
 
-const AddOrModifyParams = defineAsyncComponent(() => import('@/views/apis/services/services/components/batchModifyApi/AddOrModifyParams.vue'));
-const EnabledOrdDelParams = defineAsyncComponent(() => import('@/views/apis/services/services/components/batchModifyApi/EnableOrDelParams.vue'));
-const ModifyAuth = defineAsyncComponent(() => import('@/views/apis/services/services/components/batchModifyApi/ModifyAuth.vue'));
-const ModifyServer = defineAsyncComponent(() => import('@/views/apis/services/services/components/batchModifyApi/ModifyServer.vue'));
-const RefVariable = defineAsyncComponent(() => import('@/views/apis/services/services/components/batchModifyApi/RefVariable.vue'));
-const RefDataset = defineAsyncComponent(() => import('@/views/apis/services/services/components/batchModifyApi/RefDataset.vue'));
+const AddOrModifyParams = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/AddOrModifyParams.vue'));
+const EnabledOrdDelParams = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/EnableOrDelParams.vue'));
+const ModifyAuth = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/ModifyAuth.vue'));
+const ModifyServer = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/ModifyServer.vue'));
+const RefVariable = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/RefVariable.vue'));
+const RefDataset = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/RefDataset.vue'));
 
 const handleChangeSelectApis = (ids: string[]) => {
   selectedApisIds.value = ids || [];

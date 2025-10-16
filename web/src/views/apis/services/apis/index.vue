@@ -24,22 +24,22 @@ const MockService = defineAsyncComponent(() => import('@/views/apis/services/api
 const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services/apis/doc/index.vue'));
 
 // Service drawer components (displayed when service is selected)
-const ServiceInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/Info.vue'));
-const OASInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/OASInfo.vue'));
-const SyncConfig = defineAsyncComponent(() => import('@/views/apis/services/components/sync/SyncConfig.vue'));
-const SecurityConfig = defineAsyncComponent(() => import('@/views/apis/services/components/security/SecurityConfig.vue'));
-const ServerConfig = defineAsyncComponent(() => import('@/views/apis/services/components/server/ServerConfig.vue'));
-const RequestProxy = defineAsyncComponent(() => import('@/views/apis/services/components/RequestProxy.vue'));
-const OASTag = defineAsyncComponent(() => import('@/views/apis/services/components/OASTag.vue'));
-const OASComponent = defineAsyncComponent(() => import('@/views/apis/services/components/oas/Component.vue'));
+const ServiceInfo = defineAsyncComponent(() => import('@/views/apis/services/services/slider/Info.vue'));
+const OASInfo = defineAsyncComponent(() => import('@/views/apis/services/services/slider/OASInfo.vue'));
+const SyncConfig = defineAsyncComponent(() => import('@/views/apis/services/services/slider/sync/index.vue'));
+const SecurityConfig = defineAsyncComponent(() => import('@/views/apis/services/services/slider/SecurityConfig.vue'));
+const ServerConfig = defineAsyncComponent(() => import('@/views/apis/services/services/slider/server/index.vue'));
+const RequestProxy = defineAsyncComponent(() => import('@/views/apis/services/services/slider/RequestProxy.vue'));
+const OASTag = defineAsyncComponent(() => import('@/views/apis/services/services/slider/OASTag.vue'));
+const OASComponent = defineAsyncComponent(() => import('@/views/apis/services/services/slider/oas/index.vue'));
 
 // API drawer components (displayed when API is selected)
-const ApiInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/apis/Info.vue'));
+const ApiInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/Info.vue'));
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/index.vue'));
 const CodeSnippet = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue'));
-const MockApi = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/apis/MockApi.vue'));
+const MockApi = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/MockApi.vue'));
 const ShareList = defineAsyncComponent(() => import('@/components/share/list.vue'));
 const WebSocketConfig = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Config.vue'));
 

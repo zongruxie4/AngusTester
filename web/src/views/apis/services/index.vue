@@ -14,16 +14,17 @@ import { ProjectInfo } from '@/layout/types';
 import { createAngusWebSocketProxy, type WebSocketEventHandlers } from '@/utils/apis/angusProxy';
 
 // Lazy load components for better performance
-const Sidebar = defineAsyncComponent(() => import('@/views/apis/services/services/index.vue'));
-const Apis = defineAsyncComponent(() => import('@/views/apis/services/apis/index.vue'));
-const HttpApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/index.vue'));
-const WebSocketApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/index.vue'));
+const Services = defineAsyncComponent(() => import('@/views/apis/services/services/index.vue'));
+const DefaultQuickStarted = defineAsyncComponent(() => import('@/views/apis/services/apis/home/DefaultQuickStarted.vue'));
 const MockService = defineAsyncComponent(() => import('@/views/apis/services/mock/MockService.vue'));
-const Auth = defineAsyncComponent(() => import('@/views/apis/services/auth/index.vue'));
+const GlobalAuth = defineAsyncComponent(() => import('@/views/apis/services/auth/index.vue'));
 const DataModel = defineAsyncComponent(() => import('@/views/apis/services/model/index.vue'));
 const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SecurityTestResult.vue'));
 const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SmokeTestResult.vue'));
-const DefaultQuickStarted = defineAsyncComponent(() => import('@/views/apis/services/apis/home/DefaultQuickStarted.vue'));
+
+const Apis = defineAsyncComponent(() => import('@/views/apis/services/apis/index.vue'));
+const HttpApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/index.vue'));
+const WebSocketApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/index.vue'));
 
 // Composables
 const { t } = useI18n();
@@ -31,7 +32,7 @@ const route = useRoute();
 const router = useRouter();
 
 // Template refs
-const sidebarRef = ref<InstanceType<typeof Sidebar>>();
+const sidebarRef = ref<InstanceType<typeof Services>>();
 const tabRef = ref<any>(); // BrowserTab component ref
 
 // WebSocket related state
@@ -318,7 +319,7 @@ defineExpose({
 <template>
   <div class="flex-1 flex h-full border-l min-w-0">
     <!-- Sidebar for project/service navigation -->
-    <Sidebar ref="sidebarRef" />
+    <Services ref="sidebarRef" />
 
     <!-- Main content area with tabbed interface -->
     <BrowserTab
@@ -369,7 +370,7 @@ defineExpose({
 
         <!-- Authentication Management -->
         <template v-if="record.value === 'auth'">
-          <Auth :appId="appInfo?.id?.toString()" />
+          <GlobalAuth :appId="appInfo?.id?.toString()" />
         </template>
 
         <!-- Mock Service Management -->
