@@ -11,8 +11,8 @@ import { ParamsItem, paramsTypeOpt } from './RequestParameter';
 import { getDefaultParams } from './interface';
 import { deepDelAttrFromObj, getParamsByUri, getUriByParams, validateType } from './utils';
 import { API_EXTENSION_KEY, getModelDataByRef } from '@/utils/apis';
-import JsonContent from '@/views/apis/services/apis/http/requestBody/Json.vue';
-import { itemTypes } from '@/views/apis/services/apis/http/requestBody/util';
+import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
+import { itemTypes } from '@/views/apis/services/protocol/http/requestBody/util';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { toClipboard } from '@xcan-angus/infra';
 

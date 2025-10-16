@@ -63,7 +63,7 @@ const StatusModal = defineAsyncComponent(() => import('@/views/apis/services/com
 const ExportApiModal = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/ExportService.vue'));
 const GenTestScript = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
 const DelTestScript = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
-const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/grouping/list/ExecTest.vue'));
+const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/apis/list/ExecTest.vue'));
 const erd = elementResizeDetector({ strategy: 'scroll' });
 
 const notify = ref(0);

@@ -13,27 +13,27 @@ const { t } = useI18n();
 
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
-const InterfaceHeader = defineAsyncComponent(() => import('@/views/apis/services/grouping/header/Header.vue'));
-const InterfaceList = defineAsyncComponent(() => import('@/views/apis/services/grouping/list/index.vue'));
-const HomePage = defineAsyncComponent(() => import('@/views/apis/services/grouping/home/index.vue'));
-const ApiInfoVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/apis/Info.vue'));
+const InterfaceHeader = defineAsyncComponent(() => import('@/views/apis/services/apis/header/Header.vue'));
+const InterfaceList = defineAsyncComponent(() => import('@/views/apis/services/apis/list/index.vue'));
+const HomePage = defineAsyncComponent(() => import('@/views/apis/services/apis/home/index.vue'));
+const ApiInfoVue = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/apis/Info.vue'));
 const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue')); // 分享记录
 const ProxyVue = defineAsyncComponent(() => import('@/views/apis/services/components/Proxy.vue')); // 代理
 const CodeSnippetVue = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue')); // 代码
-const ApiMockVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/apis/MockApi.vue')); //
-const ServiceMockVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/services/mock/MockService.vue'));
-const ProjectInfoVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/services/Info.vue')); // 项目信息
-const OpenApiVue = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/services/OpenAPIInfo.vue'));
+const ApiMockVue = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/apis/MockApi.vue')); //
+const ServiceMockVue = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/mock/MockService.vue'));
+const ProjectInfoVue = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/Info.vue')); // 项目信息
+const OpenApiVue = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/OpenAPIInfo.vue'));
 const SyncConfigVue = defineAsyncComponent(() => import('@/views/apis/services/components/sync/SyncConfig.vue'));
 const SecurityVue = defineAsyncComponent(() => import('@/views/apis/services/components/security/SecurityConfig.vue'));
 const ServerConfigVue = defineAsyncComponent(() => import('@/views/apis/services/components/server/ServerConfig.vue'));
 const TagVue = defineAsyncComponent(() => import('@/views/apis/services/components/Tag.vue'));
 const ComponentVue = defineAsyncComponent(() => import('@/views/apis/services/components/oas/OAS.vue'));
-const SocketConfigVue = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/Config.vue'));
-const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services/grouping/oas/Doc.vue'));
+const SocketConfigVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Config.vue'));
+const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services/apis/oas/Doc.vue'));
 const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/index.vue'));
-const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/grouping/home/DefaultQuickStarted.vue'));
-const ServiceTestInfo = defineAsyncComponent(() => import('@/views/apis/services/grouping/slider/services/test/index.vue'));
+const QuickStarted = defineAsyncComponent(() => import('@/views/apis/services/apis/home/DefaultQuickStarted.vue'));
+const ServiceTestInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/services/test/index.vue'));
 
 interface Props {
   serviceId: string;

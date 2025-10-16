@@ -14,7 +14,7 @@ import apiUtils from '@/utils/apis';
 import { apis } from '@/api/tester';
 import { ApiPermission } from '@/enums/enums';
 import { formatBytes } from '@/utils/utils';
-import { getNameValue } from '@/views/apis/services/apis/http/utils';
+import { getNameValue } from '@/views/apis/services/protocol/http/utils';
 import { FormData, Message } from './PropsType';
 import { debounce } from 'throttle-debounce';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
@@ -40,17 +40,17 @@ const props = withDefaults(defineProps<Props>(), {
   responseCount: undefined
 });
 
-const ApiServer = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/Server.vue'));
+const ApiServer = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Server.vue'));
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
-const SocketForm = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/SocketForm.vue'));
+const SocketForm = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/SocketForm.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEditor/index.vue'));
 const Toolbar = defineAsyncComponent(() => import('@/components/layout/toolbar/index.vue'));
-const MessageList = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/MessageList.vue'));
-const Save = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/Save.vue'));
-const Config = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/Config.vue'));
+const MessageList = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/MessageList.vue'));
+const Save = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Save.vue'));
+const Config = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/Config.vue'));
 const Agent = defineAsyncComponent(() => import('@/views/apis/services/components/Proxy.vue'));
-const saveUnarchived = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/SaveUnarchived.vue'));
+const saveUnarchived = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/SaveUnarchived.vue'));
 const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue'));
 
 const { API_EXTENSION_KEY } = apiUtils;

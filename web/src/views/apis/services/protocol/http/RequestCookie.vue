@@ -5,7 +5,7 @@ import { Button, Checkbox, Tooltip } from 'ant-design-vue';
 import { Icon, Input, notification, Select, SelectSchema } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 
-import { ParamsItem } from '@/views/apis/services/apis/http/RequestParameter';
+import { ParamsItem } from '@/views/apis/services/protocol/http/RequestParameter';
 import { getDefaultParams } from './interface';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 import { deconstruct } from '@/utils/swagger';
@@ -14,7 +14,7 @@ import { itemTypes } from './RequestCookie';
 import { deepDelAttrFromObj, validateType } from './utils';
 import { toClipboard } from '@xcan-angus/infra';
 
-import JsonContent from '@/views/apis/services/apis/http/requestBody/Json.vue';
+import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));

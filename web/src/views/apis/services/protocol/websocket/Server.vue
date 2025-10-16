@@ -6,7 +6,7 @@ import { XCanDexie } from '@xcan-angus/infra';
 import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 
-import ServerInput from '@/views/apis/services/apis/http/path/ServerInput.vue';
+import ServerInput from '@/views/apis/services/protocol/http/path/ServerInput.vue';
 
 type HttpServer = {
   url: string;

@@ -2,7 +2,7 @@
 import { watch, ref, onMounted, onBeforeUnmount, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Tooltip, Grid, Input, Select, NoData, HttpMethodText } from '@xcan-angus/vue-ui';
-import BaseVirtualList from '@/views/apis/services/grouping/list/BaseVirtualList.vue';
+import BaseVirtualList from '@/views/apis/services/apis/list/BaseVirtualList.vue';
 import { debounce } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
 

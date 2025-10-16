@@ -10,7 +10,7 @@ import { deconstruct } from '@/utils/swagger';
 import { services } from '@/api/tester';
 import { FormData, getDefaultForm, itemTypes } from './PropsType';
 
-import JsonContent from '@/views/apis/services/apis/http/requestBody/Json.vue';
+import JsonContent from '@/views/apis/services/protocol/http/requestBody/Json.vue';
 
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 

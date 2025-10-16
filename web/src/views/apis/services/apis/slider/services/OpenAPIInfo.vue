@@ -6,7 +6,7 @@ import { AsyncComponent, Grid, Icon, Input } from '@xcan-angus/vue-ui';
 
 import { services } from '@/api/tester';
 
-import {ISchema} from "@/views/apis/services/grouping/slider/services/PropsType";
+import {ISchema} from "@/views/apis/services/apis/slider/services/PropsType";
 
 interface Props {
   id: string;

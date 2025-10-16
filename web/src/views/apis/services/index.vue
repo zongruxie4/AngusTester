@@ -15,15 +15,15 @@ import { createAngusWebSocketProxy, type WebSocketEventHandlers } from '@/utils/
 
 // Lazy load components for better performance
 const Sidebar = defineAsyncComponent(() => import('@/views/apis/services/sidebar/index.vue'));
-const ApiGrouping = defineAsyncComponent(() => import('@/views/apis/services/grouping/index.vue'));
-const HttpApi = defineAsyncComponent(() => import('@/views/apis/services/apis/http/index.vue'));
-const WebSocketApi = defineAsyncComponent(() => import('@/views/apis/services/apis/websocket/index.vue'));
+const ApiGrouping = defineAsyncComponent(() => import('@/views/apis/services/apis/index.vue'));
+const HttpApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/index.vue'));
+const WebSocketApi = defineAsyncComponent(() => import('@/views/apis/services/protocol/websocket/index.vue'));
 const MockService = defineAsyncComponent(() => import('@/views/apis/services/mock/MockService.vue'));
 const Auth = defineAsyncComponent(() => import('@/views/apis/services/auth/index.vue'));
 const DataModel = defineAsyncComponent(() => import('@/views/apis/services/model/index.vue'));
 const SecurityTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SecurityTestResult.vue'));
 const SmokeTestResult = defineAsyncComponent(() => import('@/views/apis/services/test/SmokeTestResult.vue'));
-const DefaultQuickStarted = defineAsyncComponent(() => import('@/views/apis/services/grouping/home/DefaultQuickStarted.vue'));
+const DefaultQuickStarted = defineAsyncComponent(() => import('@/views/apis/services/apis/home/DefaultQuickStarted.vue'));
 
 // Composables
 const { t } = useI18n();

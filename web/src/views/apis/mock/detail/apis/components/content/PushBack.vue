@@ -5,7 +5,7 @@ import { Button, Switch } from 'ant-design-vue';
 import { Composite, Icon, IconRequired, Input, notification, Validate } from '@xcan-angus/vue-ui';
 import { HttpMethod, regexpUtils, utils, axiosClient } from '@xcan-angus/infra';
 
-import { convertBlob } from '@/views/apis/services/apis/http/utils';
+import { convertBlob } from '@/views/apis/services/protocol/http/utils';
 import { ContentType, DelayData, ParametersType, PushbackBody, ResponsePushbackConfig } from './types';
 import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
 import { API_EXTENSION_KEY } from '@/utils/apis';

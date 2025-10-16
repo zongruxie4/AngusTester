@@ -20,7 +20,7 @@ import apiUtils from '@/utils/apis';
 
 import { apis, services } from '@/api/tester';
 import { getStatusText } from '@/views/apis/services/components/Request';
-import { getDefaultParams } from '@/views/apis/services/apis/http/RequestParameter';
+import { getDefaultParams } from '@/views/apis/services/protocol/http/RequestParameter';
 import { API_STATUS_COLOR_CONFIG, API_STATUS_BADGE_COLOR_CONFIG, API_EXTENSION_KEY, getModelDataByRef } from '@/utils/apis';
 
 import { formatBytes } from '@/utils/common';
@@ -32,9 +32,9 @@ import {
 import {
   convertBlob, travelEmptyObjToString, travelXcValueToString, validateBodyForm, validateQueryParameter
 } from './utils';
-import { HttpServer } from '@/views/apis/services/apis/http/path/PropsType';
-import { getServerData } from '@/views/apis/services/apis/http/path/utils';
-import { rawTypeOptions, RequestBodyParam } from '@/views/apis/services/apis/http/requestBody/interface';
+import { HttpServer } from '@/views/apis/services/protocol/http/path/PropsType';
+import { getServerData } from '@/views/apis/services/protocol/http/path/utils';
+import { rawTypeOptions, RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/interface';
 import { AssertResult, ConditionResult, Parameter } from './PropsType';
 import { encode } from '@/utils/secure';
 import { getShowAuthData } from '@/components/ApiAuthencation/interface';
@@ -43,7 +43,7 @@ const Indicator = defineAsyncComponent(() => import('@/components/Indicator/inde
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const FunctionsButton = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.FunctionsButton));
 const APICaseParametric = defineAsyncComponent(() => import('@/components/apis/parameterization/index.vue'));
-const ExecDetail = defineAsyncComponent(() => import('@/views/apis/services/apis/http/exec/index.vue'));
+const ExecDetail = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/exec/index.vue'));
 
 interface Props {
   pid: string,
@@ -67,19 +67,19 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
-const UnarchivedEditVue = defineAsyncComponent(() => import('@/views/apis/services/apis/http/slider/UnarchivedEdit.vue'));
-const InfoEditVue = defineAsyncComponent(() => import('@/views/apis/services/apis/http/slider/InfoEdit.vue'));
+const UnarchivedEditVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/UnarchivedEdit.vue'));
+const InfoEditVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/InfoEdit.vue'));
 
 // const VariableVue = defineAsyncComponent(() => import('@/views/apis/services/components/Variable/index.vue'));
 const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue'));
 const AgentVue = defineAsyncComponent(() => import('@/views/apis/services/components/Proxy.vue'));
 const CodeSnippetVue = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue'));
 
-const ApiSetting = defineAsyncComponent(() => import('@/views/apis/services/apis/http/Setting.vue'));
-const ServerPath = defineAsyncComponent(() => import('@/views/apis/services/apis/http/path/index.vue'));
+const ApiSetting = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Setting.vue'));
+const ServerPath = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/path/index.vue'));
 const Toolbar = defineAsyncComponent(() => import('@/components/layout/toolbar/index.vue'));
-const ResponseError = defineAsyncComponent(() => import('@/views/apis/services/apis/http/ResponseError.vue'));
-const ApiDoc = defineAsyncComponent(() => import('@/views/apis/services/apis/http/Doc.vue'));
+const ResponseError = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/ResponseError.vue'));
+const ApiDoc = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Doc.vue'));
 const TestCase = defineAsyncComponent(() => import('@/views/apis/services/components/case/tableView.vue'));
 const ApiMockVue = defineAsyncComponent(() => import('@/views/apis/services/mock/MockApi.vue')); //
 const ApiShare = defineAsyncComponent(() => import('@/views/apis/share/Edit.vue'));

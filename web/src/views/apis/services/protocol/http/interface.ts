@@ -1,6 +1,6 @@
 import { Component, defineAsyncComponent } from 'vue';
 import { AuthItem } from './Authorization';
-import { RequestBodyParam } from '@/views/apis/services/apis/http/requestBody/interface';
+import { RequestBodyParam } from '@/views/apis/services/protocol/http/requestBody/interface';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 import { i18n } from '@xcan-angus/infra';
 import ApiAssertion from '@/components/ApiAssert/index.vue';
@@ -183,10 +183,10 @@ export interface ResponseState {
   contentEncoding?: string;
 }
 
-export const RequestParams: Component = defineAsyncComponent(() => import('@/views/apis/services/apis/http/RequestParameter.vue'));
-export const RequestBody: Component = defineAsyncComponent(() => import('@/views/apis/services/apis/http/requestBody/index.vue'));
-export const RequestHeader: Component = defineAsyncComponent(() => import('@/views/apis/services/apis/http/RequestHeader.vue'));
-export const RequestCookie: Component = defineAsyncComponent(() => import('@/views/apis/services/apis/http/RequestCookie.vue'));
+export const RequestParams: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestParameter.vue'));
+export const RequestBody: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/requestBody/index.vue'));
+export const RequestHeader: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestHeader.vue'));
+export const RequestCookie: Component = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/RequestCookie.vue'));
 // export const Authorization: Component = defineAsyncComponent(() => import('./authorization/index.vue'));
 export const Authorization: Component = ApiAuthencation;
 // @TODO 临时调试，需要删除

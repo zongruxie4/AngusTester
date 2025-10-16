@@ -18,7 +18,7 @@ import { getNewItem } from '../utils';
 import { API_EXTENSION_KEY, CONTENT_TYPE, getDataTypeFromFormat, getModelDataByRef } from '@/utils/apis';
 import { services } from '@/api/tester';
 
-const ApiForm = defineAsyncComponent(() => import('@/views/apis/services/apis/http/requestBody/Form.vue'));
+const ApiForm = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/requestBody/Form.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/MonacoEditor/index.vue'));
 const ModelModal = defineAsyncComponent(() => import('./ModelModal.vue'));
 

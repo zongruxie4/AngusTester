@@ -10,10 +10,10 @@ import { deconstruct } from '@/utils/swagger';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { services } from '@/api/tester';
-import { deepDelAttrFromObj } from '@/views/apis/services/apis/http/utils';
+import { deepDelAttrFromObj } from '@/views/apis/services/protocol/http/utils';
 
 import { inOptions, itemTypes, transJsonToList, transListToJson, transListToSchema } from './util';
-import { ParamsItem } from '@/views/apis/services/apis/http/RequestParameter';
+import { ParamsItem } from '@/views/apis/services/protocol/http/RequestParameter';
 
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 

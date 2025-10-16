@@ -6,7 +6,7 @@ import { Button, Divider, Dropdown } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
 import { API_EXTENSION_KEY } from '@/utils/apis';
-import { getDefaultParams } from '@/views/apis/services/apis/http/RequestParameter';
+import { getDefaultParams } from '@/views/apis/services/protocol/http/RequestParameter';
 import { HttpServer } from './PropsType';
 import { Method } from '../interface';
 
