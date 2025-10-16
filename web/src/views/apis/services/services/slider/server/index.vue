@@ -6,10 +6,12 @@ import { Arrow, Colon, Icon, notification, Spin, Tooltip } from '@xcan-angus/vue
 import { utils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { services } from '@/api/tester';
+import { ServerInfo, ServerConfig, ServerVariables } from '@/views/apis/server/types';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 
-import { ServerConfig, ServerInfo } from './ServerConfig';
 import EditForm from './ServerEditForm.vue';
 
+// Props: current service id
 type Props = {
   id: string;
 }
@@ -20,6 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+// UI state
 const loading = ref(false);
 const adding = ref(false);
 const serverDemo = ref<ServerConfig>();
@@ -27,15 +30,39 @@ const activeKey = ref<string[]>([]);
 const serverList = ref<ServerConfig[]>([]);
 const editSet = ref<Set<string>>(new Set());
 
+// Button states
+const addServerDisabled = computed(() => {
+  return adding.value || serverList.value.length >= 50;
+});
+
+const addServerDemoDisabled = computed(() => {
+  return serverList.value.length >= 50;
+});
+
+// URL to server id mapping for duplication check
+const urlMap = computed(() => {
+  return serverList.value.reduce((prev, cur) => {
+    if (prev[cur.url]) {
+      prev[cur.url].push(cur.id);
+    } else {
+      prev[cur.url] = [cur.id];
+    }
+
+    return prev;
+  }, {} as {[key:string]:string[]});
+});
+
+// Start add-server flow by injecting a demo template
 const addServerDemo = () => {
   serverDemo.value = getDefaultServer();
   adding.value = true;
 };
 
+// Generate a default server config template
 const getDefaultServer = ():ServerConfig => {
   return {
     id: utils.uuid(),
-    'x-xc-id': undefined,
+    [API_EXTENSION_KEY.idKey]: undefined,
     description: '',
     url: 'http://{env}-api.xxx.com/{version}',
     variables: [
@@ -64,15 +91,18 @@ const getDefaultServer = ():ServerConfig => {
   };
 };
 
+// Open a blank add form
 const addServer = () => {
   adding.value = true;
 };
 
+// Cancel add form
 const cancelAddServer = () => {
   adding.value = false;
   serverDemo.value = undefined;
 };
 
+// Persist newly added server
 const saveAddServer = async (data:ServerConfig) => {
   const params = getSaveParams(data);
   loading.value = true;
@@ -87,6 +117,7 @@ const saveAddServer = async (data:ServerConfig) => {
   loadData();
 };
 
+// Accordion arrow state change handler
 const arrowChange = (open: boolean, data: ServerConfig) => {
   if (open) {
     activeKey.value.push(data.id);
@@ -97,8 +128,12 @@ const arrowChange = (open: boolean, data: ServerConfig) => {
   activeKey.value.splice(index, 1);
 };
 
+// Push this server config as the effective server for all APIs
 const toUpdate = async (data: ServerConfig) => {
-  const [error] = await services.updateServiceApisServer(props.id, data['x-xc-id']);
+  if (!data[API_EXTENSION_KEY.idKey]) {
+    return;
+  }
+  const [error] = await services.updateServiceApisServer(props.id, data[API_EXTENSION_KEY.idKey]);
   if (error) {
     return;
   }
@@ -106,13 +141,15 @@ const toUpdate = async (data: ServerConfig) => {
   notification.success(t('service.serverConfig.messages.updateToApisSuccess'));
 };
 
+// Enter edit mode for a specific server item
 const toEdit = (data: ServerConfig) => {
   editSet.value.add(data.id);
 };
 
+// Delete a server config
 const toDelete = async (data:ServerConfig, index: number) => {
   loading.value = true;
-  const [error] = await services.delServicesServerUrl(props.id, [data['x-xc-id'] as string]);
+  const [error] = await services.delServicesServerUrl(props.id, [data[API_EXTENSION_KEY.idKey] as string]);
   loading.value = false;
   if (error) {
     return;
@@ -121,6 +158,7 @@ const toDelete = async (data:ServerConfig, index: number) => {
   serverList.value.splice(index, 1);
 };
 
+// Transform UI form data into API payload
 const getSaveParams = (data:ServerConfig) => {
   const variables = data.variables.reduce((prev, cur) => {
     prev[cur.name] = {
@@ -128,40 +166,24 @@ const getSaveParams = (data:ServerConfig) => {
       description: cur.description,
       enum: cur.enum?.map(item => item.value) || []
     };
-
     return prev;
-  }, {} as {
-      [key:string]:{
-        default:string;
-        description:string;
-        enum:string[];
-      }
-    });
-  const params:{
-    description?:string;
-    url:string;
-    variables:{
-      [key:string]:{
-        default:string;
-        description:string;
-        enum:string[];
-      }
-    };
-    'x-xc-id'?:string;
-  } = {
+  }, {} as ServerVariables);
+
+  const params: ServerInfo = {
     'x-xc-id': data['x-xc-id'],
     description: data.description,
     url: data.url,
     variables
   };
-
   return params;
 };
 
+// Exit edit mode
 const cancelEdit = (id:string) => {
   editSet.value.delete(id);
 };
 
+// Save edited server config
 const save = async (data:ServerConfig, id:string, index:number) => {
   const prevData = serverList.value[index];
   if (isEqual(data, prevData)) {
@@ -182,6 +204,7 @@ const save = async (data:ServerConfig, id:string, index:number) => {
   editSet.value.delete(id);
 };
 
+// Load server list from backend and normalize to UI structure
 const loadData = async () => {
   loading.value = true;
   const [error, { data }] = await services.getServicesServerUrlInfo(props.id);
@@ -193,11 +216,11 @@ const loadData = async () => {
   serverList.value = ((data || []) as ServerInfo[]).map(item => {
     const variables: ServerConfig['variables'] = [];
     if (item.variables) {
-      // 变量排序，与server url变量顺序保持一致
+      // Keep the same order as placeholders in server url
       const matchItems = item.url?.match(/\{[^{}]+\}/g);
       let uniqueNames:string[] = [];
       if (matchItems) {
-        // 过滤重复的变量
+        // Filter duplicated variable names while keeping order
         uniqueNames = matchItems?.reduce((prev, cur) => {
           if (!prev.includes(cur)) {
             prev.push(cur);
@@ -239,26 +262,6 @@ onMounted(() => {
   if (props.id) {
     loadData();
   }
-});
-
-const addServerDisabled = computed(() => {
-  return adding.value || serverList.value.length >= 50;
-});
-
-const addServerDemoDisabled = computed(() => {
-  return serverList.value.length >= 50;
-});
-
-const urlMap = computed(() => {
-  return serverList.value.reduce((prev, cur) => {
-    if (prev[cur.url]) {
-      prev[cur.url].push(cur.id);
-    } else {
-      prev[cur.url] = [cur.id];
-    }
-
-    return prev;
-  }, {} as {[key:string]:string[]});
 });
 </script>
 <template>

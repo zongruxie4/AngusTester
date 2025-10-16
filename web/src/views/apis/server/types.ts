@@ -10,10 +10,10 @@ export type ServerInfo = {
   'x-xc-id': string;
   description: string;
   url: string;
-  variables: ServerVariables;
+  variables?: ServerVariables;
   extensions?: Record<string, any>;
-  emptyContent: true;
-  notEmptyContent: true;
+  emptyContent?: true;
+  notEmptyContent?: true;
 }
 
 export type ServerConfigVariables = {
