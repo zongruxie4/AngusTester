@@ -186,16 +186,6 @@ const ok = async () => {
   }
 };
 
-// const toUpdate = async (id:string) => {
-//   await http.put(`${TESTER}/services/${props.serviceId}/schema/server/${id}/apis/sync`);
-//   // const [error] = await http.put(`${TESTER}/services/${props.serviceId}/schema/server/${id}/apis/sync`);
-//   // if (error) {
-//   //   return;
-//   // }
-//
-//   // notification.success('更新到已关联接口成功');
-// };
-
 const okButtonProps = computed(() => {
   return {
     disabled: false

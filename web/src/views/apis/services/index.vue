@@ -297,7 +297,7 @@ provide('readyState', readyState);
 provide('currentProxyUrl', currentProxyUrl);
 provide('currentProxy', currentProxy);
 provide('updateProjectInfo', updateProjectInfo);
-provide('updateInterface', apiGroupReloadConfig);
+provide('updateApi', apiGroupReloadConfig);
 
 provide('WS', ws);
 provide('requestId', uuid);

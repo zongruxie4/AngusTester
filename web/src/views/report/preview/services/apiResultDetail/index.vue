@@ -61,7 +61,7 @@ const columns = computed(() => [
       name: t('common.description')
     },
     {
-      dataIndex: 'testFuncFlag',
+      dataIndex: 'testFunc',
       name: t('reportPreview.services.apiResultDetail.fields.enableFuncTest'),
       customRender: (text) => {
         return text ? t('status.yes') : t('status.no');
@@ -94,7 +94,7 @@ const columns = computed(() => [
   ],
   [
     {
-      dataIndex: 'testPerfFlag',
+      dataIndex: 'testPerf',
       name: t('reportPreview.services.apiResultDetail.fields.enablePerfTest'),
       customRender: (text) => {
         return text ? t('status.yes') : t('status.no');
@@ -125,7 +125,7 @@ const columns = computed(() => [
       }
     },
     {
-      dataIndex: 'testStabilityFlag',
+      dataIndex: 'testStability',
       name: t('reportPreview.services.apiResultDetail.fields.enableStabilityTest'),
       customRender: (text) => {
         return text ? t('status.yes') : t('status.no');

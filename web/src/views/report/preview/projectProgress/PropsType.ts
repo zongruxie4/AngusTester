@@ -73,9 +73,9 @@ export type ReportContent = {
                 summary: string;
                 tested: boolean;
                 url: string;
-                testFuncFlag: boolean;
-                testPerfFlag: boolean;
-                testStabilityFlag: boolean;
+                testFunc: boolean;
+                testPerf: boolean;
+                testStability: boolean;
             }[];
         };
         cases: {
@@ -345,9 +345,9 @@ export type ReportContent = {
                 summary: string;
                 tested: boolean;
                 url: string;
-                testFuncFlag: boolean;
-                testPerfFlag: boolean;
-                testStabilityFlag: boolean;
+                testFunc: boolean;
+                testPerf: boolean;
+                testStability: boolean;
             }[];
             testScenarios: {
                 allScenarios: {

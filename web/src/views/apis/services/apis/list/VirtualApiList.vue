@@ -11,9 +11,9 @@ import { ButtonGroup, CollapseButtonGroup } from './interface';
 
 import VirtualList from './BaseVirtualList.vue';
 
-interface Props{
-  dataSource:Array<DataSourceType>;
-  updateData:(value:{id:string;auth:boolean;})=>void;
+interface Props {
+  dataSource: Array<DataSourceType>;
+  updateData: (value: { id: string; auth: boolean; }) => void;
   height: number;
   showNum?: number;
   groupedBy?: string;
@@ -30,17 +30,23 @@ const props = withDefaults(defineProps<Props>(), {
   groupedBy: 'none'
 });
 
-const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
+const proTypeShowMap = inject<Ref<{ [key: string]: boolean }>>('proTypeShowMap', ref({
+  showTask: true,
+  showBackLog: true,
+  showMeeting: true,
+  showSprint: true,
+  showTasStatistics: true
+}));
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
-    (e:'loadApis'):void,
-    (e:'openMock'),
-    (e: 'edit', value):void;
-    (e: 'showInfo', id: string, value):void;
-    (e: 'handleClick', value: string, item, index: number): void;
-  }>();
+  (e: 'loadApis'): void,
+  (e: 'openMock'),
+  (e: 'edit', value): void;
+  (e: 'showInfo', id: string, value): void;
+  (e: 'handleClick', value: string, item, index: number): void;
+}>();
 // 编辑api
-const edit = (value:DataSourceType):void => {
+const edit = (value: DataSourceType): void => {
   emits('edit', value);
 };
 
@@ -89,12 +95,12 @@ const getBtnDisabled = (btn, item) => {
   return !apiAuths.value.includes(btn.auth);
 };
 // 点击详情
-const showInfo = (id:string, api) => {
+const showInfo = (id: string, api) => {
   emits('showInfo', id, api);
 };
 
 const showData = ref<DataSourceType[]>([]);
-const groupSpreadMap = ref<{[key: string]: boolean}>({});
+const groupSpreadMap = ref<{ [key: string]: boolean }>({});
 // let size = 0;
 // 监听 当前 open api 的变化, 更改 ap
 
@@ -142,16 +148,16 @@ onMounted(() => {
 
 // 测试结果图标颜色
 const getResultIconColor = (item) => {
-  if (item.testFuncFlag && item.testFuncPassedFlag === false) {
+  if (item.testFunc && item.testFuncPassedFlag === false) {
     return 'text-status-error';
   }
-  if (item.testPerfFlag && item.testPerfPassedFlag === false) {
+  if (item.testPerf && item.testPerfPassedFlag === false) {
     return 'text-status-error';
   }
-  if (item.testStabilityFlag && item.testStabilityPassedFlag === false) {
+  if (item.testStability && item.testStabilityPassedFlag === false) {
     return 'text-status-error';
   }
-  if (!item.testFuncFlag && !item.testPerfFlag && !item.testStabilityFlag) {
+  if (!item.testFunc && !item.testPerf && !item.testStability) {
     return '';
   }
   if (item.testFuncPassedFlag === true || item.testPerfPassedFlag === true || item.testStabilityPassedFlag === true) {
@@ -173,7 +179,7 @@ const getResultColor = (testFlag, testPassd = undefined) => {
   }
 };
 
-const handleClick = (event:string, data:DataSourceType, index: number) => {
+const handleClick = (event: string, data: DataSourceType, index: number) => {
   emits('handleClick', event, data, index);
 };
 
@@ -199,7 +205,6 @@ const handleClickSpread = (group, index) => {
   groupSpreadMap.value[group.key] = !groupSpreadMap.value[group.key];
   handleSpread(group, index);
 };
-
 </script>
 
 <template>
@@ -214,12 +219,19 @@ const handleClickSpread = (group, index) => {
         v-if="item.id"
         :key="item.id"
         class="mb-3 w-full p-0 cursor-pointer"
-        :class="{'deprecated line-through': item.deprecated, 'has-border relative': props.groupedBy !== 'none', '!border-b last-data': showData[index + 1]?.type === 'group' || (props.groupedBy !== 'none' && !showData[index + 1]) }"
+        :class="{
+          'deprecated line-through': item.deprecated,
+          'has-border relative': props.groupedBy !== 'none',
+          '!border-b last-data': showData[index + 1]?.type === 'group' || (props.groupedBy !== 'none' && !showData[index + 1])
+        }"
         @dblclick="edit(item)"
         @click="showInfo(item.id, item)">
         <div
           class="flex w-full h-11.5  rounded justify-between px-5 text-3 leading-3.5"
-          :class="{'bg-gray-300': props.activeApiId === item.id, 'bg-gray-light': props.activeApiId !== item.id, 'mx-4': props.groupedBy !== 'none'}">
+          :class="{
+            'bg-gray-300': props.activeApiId === item.id,
+            'bg-gray-light': props.activeApiId !== item.id, 'mx-4': props.groupedBy !== 'none'
+          }">
           <div class="flex items-center flex-1">
             <HttpMethodTag :value="item.method" />
             <Tooltip placement="topLeft" :title="item.endpoint">
@@ -241,9 +253,33 @@ const handleClickSpread = (group, index) => {
                   :class="getResultIconColor(item)" />
               </span>
               <template #content>
-                <div class="flex"><span class="w-20">{{ t('service.apiList.test.functionalTest') }}：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testFuncFlag, item.testFuncPassedFlag)">{{ !item.testFuncFlag ? t('status.disabled') : item.testFuncPassedFlag ? t('status.passed') : item.testFuncPassedFlag === false ? t('status.notPassed') : t('status.notTested') }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span></div></div>
-                <div class="flex"><span class="w-20">{{ t('service.apiList.test.performanceTest') }}：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testPerfFlag, item.testPerfPassedFlag)">{{ !item.testPerfFlag ? t('status.disabled') : item.testPerfPassedFlag ? t('status.passed') : item.testPerfPassedFlag === false ? t('status.notPassed') : t('status.notTested') }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span></div></div>
-                <div class="flex"><span class="w-20">{{ t('service.apiList.test.stabilityTest') }}：</span> <div class="flex-1 min-w-0" :class="getResultColor(item.testStabilityFlag, item.testStabilityPassedFlag)">{{ !item.testStabilityFlag ? t('status.disabled') : item.testStabilityPassedFlag ? t('status.passed') : item.testStabilityPassedFlag === false ? t('status.notPassed') : t('status.notTested') }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span></div></div>
+                <div class="flex">
+                  <span class="w-20">{{ t('service.apiList.test.functionalTest') }}：</span>
+                  <div class="flex-1 min-w-0" :class="getResultColor(item.testFunc, item.testFuncPassedFlag)">
+                    {{
+                      !item.testFunc ? t('status.disabled') : item.testFuncPassedFlag
+                        ? t('status.passed') : item.testFuncPassedFlag === false ? t('status.notPassed') : t('status.notTested')
+                    }} <span class="text-status-error">{{ item.testFuncFailureMessage }}</span>
+                  </div>
+                </div>
+                <div class="flex">
+                  <span class="w-20">{{ t('service.apiList.test.performanceTest') }}：</span>
+                  <div class="flex-1 min-w-0" :class="getResultColor(item.testPerf, item.testPerfPassedFlag)">
+                    {{
+                      !item.testPerf ? t('status.disabled') : item.testPerfPassedFlag
+                        ? t('status.passed') : item.testPerfPassedFlag === false ? t('status.notPassed') : t('status.notTested')
+                    }} <span class="text-status-error">{{ item.testPerfFailureMessage }}</span>
+                  </div>
+                </div>
+                <div class="flex">
+                  <span class="w-20">{{ t('service.apiList.test.stabilityTest') }}：</span>
+                  <div class="flex-1 min-w-0" :class="getResultColor(item.testStability, item.testStabilityPassedFlag)">
+                    {{
+                      !item.testStability ? t('status.disabled') : item.testStabilityPassedFlag
+                        ? t('status.passed') : item.testStabilityPassedFlag === false ? t('status.notPassed') : t('status.notTested')
+                    }} <span class="text-status-error">{{ item.testStabilityFailureMessage }}</span>
+                  </div>
+                </div>
               </template>
             </Popover>
             <span :class="['w-20', API_STATUS_COLOR_CONFIG[item.status?.value]]">{{ item.status?.message }}</span>
@@ -256,7 +292,9 @@ const handleClickSpread = (group, index) => {
               </div>
             </Tooltip>
           </div>
-          <div class="justify-end flex items-center btns-wrapper" :class="[props.activeApiId === item.id ? 'visible' : 'invisible']">
+          <div
+            class="justify-end flex items-center btns-wrapper"
+            :class="[props.activeApiId === item.id ? 'visible' : 'invisible']">
             <div class="whitespace-nowrap edit-btn-wrapper">
               <template v-for="record in myCollapseButtonGroup" :key="record.value">
                 <Button
@@ -291,7 +329,6 @@ const handleClickSpread = (group, index) => {
               :src="item.avatar"
               class="w-7.5 h-7.5 rounded-full" />
             <span class="flex-1 ml-7.5">{{ item.createdByName }}</span>
-            <!-- <p><span class="rounded-full bg-gray-light px-2">{{ item.childrenNum }}</span></p> -->
           </div>
           <div v-else-if="groupedBy === 'ownerId'" class="flex items-center flex-1 px-2">
             <Image
@@ -299,14 +336,14 @@ const handleClickSpread = (group, index) => {
               :src="item.avatar"
               class="w-7.5 h-7.5 rounded-full" />
             <span class="flex-1 ml-7.5">{{ item.ownerName }}</span>
-            <!-- <p><span class="rounded-full bg-gray-light px-2">{{ item.childrenNum }}</span></p> -->
           </div>
           <div v-else-if="groupedBy === 'tag'" class="flex items-center flex-1 px-2">
             <span class="flex-1 ml-7.5">{{ item.name }}</span>
-            <!-- <p><span class="rounded-full bg-gray-light px-2">{{ item.childrenNum }}</span></p> -->
           </div>
           <div v-else class="flex flex-1 px-2">
-            <span class="w-20 block h-7 text-center rounded text-white leading-7" :class="bgColor[item.method]">{{ item.method }}</span>
+            <span
+              class="w-20 block h-7 text-center rounded text-white leading-7"
+              :class="bgColor[item.method]">{{ item.method }}</span>
           </div>
           <p class="px-2"><span class="rounded-full bg-gray-light px-2">{{ item.childrenNum }}</span></p>
           <Icon
@@ -319,79 +356,79 @@ const handleClickSpread = (group, index) => {
   </VirtualList>
 </template>
 
-  <style scoped>
-  :deep(.deprecated) {
-    filter: grayscale(1);
-  }
+<style scoped>
+:deep(.deprecated) {
+  filter: grayscale(1);
+}
 
-  :deep(.ant-btn-text) {
-    @apply text-text-sub-content;
-  }
+:deep(.ant-btn-text) {
+  @apply text-text-sub-content;
+}
 
-  :deep(.ant-btn) {
-    /* stylelint-disable-next-line CssSyntaxError */
-    @apply text-3 leading-3 px-2.25;
-  }
+:deep(.ant-btn) {
+  /* stylelint-disable-next-line CssSyntaxError */
+  @apply text-3 leading-3 px-2.25;
+}
 
-  :deep(.ant-list-item) {
-    @apply p-0 border-b-0;
-  }
+:deep(.ant-list-item) {
+  @apply p-0 border-b-0;
+}
 
-  .edit-btn-wrapper button[disabled] {
-    color: rgba(0, 0, 0, 25%);
-  }
+.edit-btn-wrapper button[disabled] {
+  color: rgba(0, 0, 0, 25%);
+}
 
+.show {
+  @apply block;
+}
+
+.show1 {
+  @apply hidden;
+}
+
+.publish-wrapper {
+  max-width: calc(100% - 1rem);
+}
+
+@media (max-width: 1300px) {
   .show {
-    @apply block;
-  }
-
-  .show1 {
     @apply hidden;
   }
 
-  .publish-wrapper {
-    max-width: calc(100% - 1rem);
+  .show1 {
+    @apply block;
   }
+}
 
-  @media(max-width: 1300px) {
-    .show {
-      @apply hidden;
-    }
+.has-border::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 58px;
+  border-left: 1px solid rgb(229, 231, 235);
+}
 
-    .show1 {
-      @apply block;
-    }
-  }
+.has-border::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 0;
+  height: 58px;
+  border-right: 1px solid rgb(229, 231, 235);
+}
 
-  .has-border::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 58px;
-    border-left: 1px solid rgb(229, 231, 235);
-  }
+.last-data > div {
+  @apply mb-3;
+}
 
-  .has-border::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 0;
-    height: 58px;
-    border-right: 1px solid rgb(229, 231, 235);
-  }
+.last-data::before {
+  height: 70px;
+}
 
-  .last-data > div {
-    @apply mb-3;
-  }
-
-  .last-data::before {
-    height: 70px;
-  }
-
-  .last-data::after {
-    height: 70px;
-  }
-  </style>
+.last-data::after {
+  height: 70px;
+}
+</style>
