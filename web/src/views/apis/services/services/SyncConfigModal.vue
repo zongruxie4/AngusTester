@@ -36,7 +36,7 @@ const saveSuccess = () => {
 <template>
   <Modal
     :title="t('service.syncConfig.title')"
-    :visible="visible"
+    :visible="props.visible"
     :reverse="true"
     :footer="null"
     @cancel="cancelModal">

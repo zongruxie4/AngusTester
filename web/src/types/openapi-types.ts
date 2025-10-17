@@ -20,6 +20,12 @@ export const API_EXTENSION_KEYS = {
   newTokenKey: 'x-xc-oauth2-newToken', // Whether to use generated auth token
   oAuth2Key: 'x-xc-oauth2-authFlow', // Token generation authorization type
   oAuth2Token: 'x-xc-oauth2-token', // Existing token
+  oAuth2CallbackUrlKey: 'x-xc-oauth2-callbackUrl', // OAuth2 callback URL
+  oAuth2ClientIdKey: 'x-xc-oauth2-clientId', // OAuth2 client id
+  oAuth2ClientSecretKey: 'x-xc-oauth2-clientSecret', // OAuth2 client secret
+  oAuth2UsernameKey: 'x-xc-oauth2-username', // OAuth2 resource owner username
+  oAuth2PasswordKey: 'x-xc-oauth2-password', // OAuth2 resource owner password
+  oAuth2ClientAuthTypeKey: 'x-xc-oauth2-clientAuthType', // OAuth2 client auth type
   formContentTypeKey: 'x-xc-contentType',
   basicAuthKey: 'x-xc-basicAuth',
   wsMessageKey: 'x-wsMessage'
@@ -441,6 +447,9 @@ export namespace OpenAPIV3 {
 
   export interface BaseSchemaObject {
     // JSON schema allowed properties, adjusted for OpenAPI
+    _default?: any;
+    name?: string;
+
     title?: string;
     description?: string;
     format?: string;
@@ -460,6 +469,7 @@ export namespace OpenAPIV3 {
     maxProperties?: number;
     minProperties?: number;
     required?: string[];
+    type?: any;
     enum?: any[];
     properties?: {
       [name: string]: ReferenceObject | SchemaObject;
@@ -479,6 +489,9 @@ export namespace OpenAPIV3 {
     example?: any;
     deprecated?: boolean;
     extensions?: Record<string, any>;
+
+    // vendor extension stored under dynamic key
+    [API_EXTENSION_KEYS.valueKey]: any;
   }
 
   export interface DiscriminatorObject {
@@ -574,11 +587,13 @@ export namespace OpenAPIV3 {
     callbacks?: { [key: string]: ReferenceObject | CallbackObject };
   }
 
+
   export type SecuritySchemeObject =
     | HttpSecurityScheme
     | ApiKeySecurityScheme
     | OAuth2SecurityScheme
     | OpenIdSecurityScheme;
+
 
   export interface HttpSecurityScheme {
     type: 'http';
@@ -586,7 +601,7 @@ export namespace OpenAPIV3 {
     scheme: string;
     bearerFormat?: string;
     extensions?: Record<string, any>;
-    'x-xc-value'?: string;
+    [API_EXTENSION_KEYS.valueKey]?: string;
   }
 
   export interface ApiKeySecurityScheme {
@@ -595,8 +610,8 @@ export namespace OpenAPIV3 {
     name: string;
     in: ApiKeyIn;
     extensions?: Record<string, any>;
-    'x-xc-value'?: string;
-    'x-xc-apiKey'?: ApiKeyExtensionField;
+    [API_EXTENSION_KEYS.valueKey]?: string;
+    [API_EXTENSION_KEYS.securityApiKeyPrefix]?: ApiKeyExtensionField;
   }
 
   export interface ApiKeyExtensionField {
@@ -620,19 +635,19 @@ export namespace OpenAPIV3 {
         refreshUrl?: string;
         scopes: { [scope: string]: string };
         extensions?: Record<string, any>;
-        'x-xc-oauth2-clientAuthType'?: string,
-        'x-xc-oauth2-clientId'?: string,
-        'x-xc-oauth2-clientSecret'?: string,
-        'x-xc-oauth2-username'?: string,
-        'x-xc-oauth2-password'?: string,
+        [API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey]?: string,
+        [API_EXTENSION_KEYS.oAuth2ClientIdKey]?: string,
+        [API_EXTENSION_KEYS.oAuth2ClientSecretKey]?: string,
+        [API_EXTENSION_KEYS.oAuth2UsernameKey]?: string,
+        [API_EXTENSION_KEYS.oAuth2PasswordKey]?: string,
       };
       clientCredentials?: {
         tokenUrl: string;
         refreshUrl?: string;
         scopes: { [scope: string]: string };
         extensions?: Record<string, any>;
-        'x-xc-oauth2-clientId'?: string,
-        'x-xc-oauth2-clientSecret'?: string,
+        [API_EXTENSION_KEYS.oAuth2ClientIdKey]?: string,
+        [API_EXTENSION_KEYS.oAuth2ClientSecretKey]?: string,
       };
       authorizationCode?: {
         authorizationUrl: string;
@@ -643,9 +658,9 @@ export namespace OpenAPIV3 {
       };
     };
     extensions?: Record<string, any>;
-    'x-xc-oauth2-authFlow'?: string;
-    'x-xc-oauth2-newToken'?: boolean;
-    'x-xc-oauth2-token'?: string;
+    [API_EXTENSION_KEYS.oAuth2Key]?: string;
+    [API_EXTENSION_KEYS.newTokenKey]?: boolean;
+    [API_EXTENSION_KEYS.oAuth2Token]?: string;
   }
 
   export interface OpenIdSecurityScheme {
