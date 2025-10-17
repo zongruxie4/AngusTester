@@ -32,7 +32,7 @@ const emit = defineEmits<{
 
 const variablesRef = ref();
 
-const Dataset = defineAsyncComponent(() => import('./Dataset/index.vue'));
+const Dataset = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/ParametricDataset/index.vue'));
 const Variables = defineAsyncComponent(() => import('./Variables/index.vue'));
 
 const userInfo = ref(appContext.getUser());
