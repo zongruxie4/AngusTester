@@ -57,15 +57,15 @@ const AuthorizeModal = defineAsyncComponent(() => import('@/components/Authorize
 const GenTestScriptModal = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
 const DeleteScriptModal = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
 const ShareModal = defineAsyncComponent(() => import('@/components/share/index.vue'));
-const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));
-const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
-const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
-const ReOpenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
+const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestTaskModal.vue'));
+const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestTaskModal.vue'));
+const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestTaskModal.vue'));
+const ReOpenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestTaskModal.vue'));
 
 const MoveModal = defineAsyncComponent(() => import('@/views/apis/services/components/MoveModal.vue'));
-const StatusModal = defineAsyncComponent(() => import('@/views/apis/services/components/StatusModal.vue'));
+const StatusModal = defineAsyncComponent(() => import('@/views/apis/services/components/ModifyStatusModal.vue'));
 const OptionalExportModal = defineAsyncComponent(() => import('@/views/apis/services/components/ExportOptionalModal.vue'));
-const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/apis/list/ExecTestModal.vue'));
+const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/test/ExecApiTestModal.vue'));
 
 // Counter to trigger Scroll refresh
 const refreshNotifyCounter = ref(0);

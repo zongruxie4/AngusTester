@@ -19,14 +19,13 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+
 const tipConfig = {
-  // PROJECT: '修改项目时会同步修改项目下所有服务和接口状态。',
   SERVICE: t('service.statusModal.tips.serviceStatusChange'),
   API: ''
 };
 
 const publishTipConfig = {
-  // PROJECT: '发布项目会发布项目下所有服务和接口，发布后的项目、服务、接口不允许修改保存。',
   SERVICE: t('service.statusModal.tips.servicePublish'),
   API: t('service.statusModal.tips.apiPublish')
 };
@@ -35,17 +34,18 @@ const setStatusApiConfig = {
   SERVICE: services.patchStatus,
   API: apis.patchApiStatus
 };
+
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'confirm', value: {value: string, message: string}):void}>();
 
 const statusValue = ref<string>('');
-const statuName = ref<string>('');
+const statusName = ref<string>('');
 
 const close = () => {
   emits('update:visible', false);
 };
 
 const handleStatusChange = (_value, option) => {
-  statuName.value = option.label;
+  statusName.value = option.label;
 };
 const submit = async () => {
   if (statusValue.value === props.value) {
@@ -57,7 +57,7 @@ const submit = async () => {
     return;
   }
   notification.success(t('service.statusModal.messages.updateStatusSuccess'));
-  emits('confirm', { value: statusValue.value, message: statuName.value });
+  emits('confirm', { value: statusValue.value, message: statusName.value });
   close();
 };
 
@@ -68,8 +68,6 @@ watch(() => props.visible, newValue => {
 }, {
   immediate: true
 });
-
-// const apiStatusOpt = ref<{value: string, message}[]>([]);
 </script>
 <template>
   <Modal

@@ -26,7 +26,7 @@ export interface ModalsConfig {
   syncModalVisible: boolean,
   serverUrlModalVisible: boolean,
   importModalVisible: boolean,
-  authenticatModalVisible: boolean,
+  authenticateModalVisible: boolean,
   exportInterfaceModalVisible: boolean,
   testScriptVisible: boolean;
   shareModalVisible: boolean,
@@ -38,7 +38,7 @@ export interface ModalsConfig {
   type?: 'SERVICE';
   selectedNode?:ServiceProject;
   delTestScriptVisible: boolean;
-  enabeldApiTestVisible: boolean;
+  enabledApiTestVisible: boolean;
 }
 
 export type UnarchivedItem = {
