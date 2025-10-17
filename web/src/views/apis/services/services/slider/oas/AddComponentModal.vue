@@ -54,7 +54,7 @@ const getCompTypesEnum = () => {
       ServicesCompType.callbacks,
       ServicesCompType.extensions,
       ServicesCompType.pathItems
-    ].includes(item.value)
+    ].includes(item.value as unknown as ServicesCompType)
   }));
 };
 
@@ -89,6 +89,44 @@ const headers = ref<OpenAPIV3_1.HeaderObject>({
     type: 'string',
     format: undefined,
     [API_EXTENSION_KEY.valueKey]: ''
+  }
+});
+
+// Safe access helpers for Header.schema (avoid $ref/boolean cases)
+const isSchemaObject = (s: OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.SchemaObject | undefined): s is OpenAPIV3_1.SchemaObject => {
+  return !!s && typeof s === 'object' && !('$ref' in (s as any));
+};
+
+const schemaType = computed<string | undefined>({
+  get () {
+    return isSchemaObject(headers.value.schema) ? (headers.value.schema as any).type : undefined;
+  },
+  set (v) {
+    if (isSchemaObject(headers.value.schema)) {
+      (headers.value.schema as any).type = v as any;
+    }
+  }
+});
+
+const schemaFormat = computed<string | undefined>({
+  get () {
+    return isSchemaObject(headers.value.schema) ? (headers.value.schema as any).format : undefined;
+  },
+  set (v) {
+    if (isSchemaObject(headers.value.schema)) {
+      (headers.value.schema as any).format = v as any;
+    }
+  }
+});
+
+const schemaExtValue = computed<string | undefined>({
+  get () {
+    return isSchemaObject(headers.value.schema) ? (headers.value.schema as any)[API_EXTENSION_KEY.valueKey] : undefined;
+  },
+  set (v) {
+    if (isSchemaObject(headers.value.schema)) {
+      (headers.value.schema as any)[API_EXTENSION_KEY.valueKey] = v;
+    }
   }
 });
 
@@ -167,15 +205,15 @@ const setDefaultData = () => {
   const model = props.component?.model;
   switch (props.component?.type?.value) {
     case ServicesCompType.headers: {
-      headers.value.schema.type = model?.schema?.type;
-      if (!['object', 'array'].includes(model.schema?.type)) {
-        headers.value.schema.format = model?.schema?.format;
+      schemaType.value = (model?.schema as any)?.type;
+      if (!['object', 'array'].includes((model?.schema as any)?.type)) {
+        schemaFormat.value = (model?.schema as any)?.format;
       }
       if (model.description) {
         headers.value.description = model?.description;
       }
       if (model?.schema?.[API_EXTENSION_KEY.valueKey]) {
-        headers.value.schema[API_EXTENSION_KEY.valueKey] = model?.schema[API_EXTENSION_KEY.valueKey];
+        schemaExtValue.value = (model.schema as any)[API_EXTENSION_KEY.valueKey];
       }
       break;
     }
@@ -342,7 +380,7 @@ onMounted(() => {
           <template v-if="compType === ServicesCompType.headers">
             <div class="mt-2"><IconRequired />{{ t('service.oas.addModal.schemaTypeLabel') }}</div>
             <SelectEnum
-              v-model:value="headers.schema.type"
+              v-model:value="schemaType"
               :excludes="getExcludes"
               :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
               size="small"
@@ -350,18 +388,18 @@ onMounted(() => {
               :placeholder="t('service.oas.addModal.schemaTypePlaceholder')"
               class="w-full" />
             <div class="mt-2 pl-1.75">{{ t('service.oas.addModal.formatLabel') }}</div>
-            <template v-if="['integer','number'].includes(headers.schema.type)">
+            <template v-if="['integer','number'].includes(schemaType as any)">
               <SelectEnum
-                v-model:value="headers.schema.format"
-                :enumKey="enumKeyMap[headers.schema.type]"
+                v-model:value="schemaFormat"
+                :enumKey="enumKeyMap[schemaType as any]"
                 :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
                 size="small"
                 :placeholder="t('service.oas.addModal.formatPlaceholder')"
                 class="w-full" />
             </template>
-            <template v-else-if="headers.schema.type === 'string'">
+            <template v-else-if="schemaType === 'string'">
               <SelectInput
-                v-model:value="headers.schema.format"
+                v-model:value="schemaFormat"
                 enumKey="StringParameterFormat"
                 :fieldNames="{label:'message',value:'value'}"
                 :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
@@ -370,14 +408,14 @@ onMounted(() => {
             </template>
             <template v-else>
               <Input
-                :value="headers.schema.type"
+                :value="schemaType"
                 disabled
                 class="w-full"
-                @change="()=>{headers.schema.format = headers.schema.type}" />
+                @change="()=>{schemaFormat = schemaType as any}" />
             </template>
             <div class="pl-1.75 mt-2">{{ t('service.oas.addModal.valueLabel') }}</div>
             <Input
-              v-model:value="headers.schema[API_EXTENSION_KEY.valueKey]"
+              v-model:value="schemaExtValue"
               :maxlength="400"
               :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
               :placeholder="t('service.oas.addModal.valuePlaceholder')"

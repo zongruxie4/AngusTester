@@ -43,16 +43,16 @@ const isEditingTermsOfService = ref(false);
 const contact = ref<OpenAPIV3_1.ContactObject>({ });
 const isEditingContact = ref(false);
 
-// License related state
-const license = ref<OpenAPIV3_1.LicenseObject>({ });
+// License related state (name is required by spec)
+const license = ref<OpenAPIV3_1.LicenseObject>({ name: '' });
 const isEditingLicense = ref(false);
 
 // Version related state
 const version = ref<string>();
 const isEditingVersion = ref(false);
 
-// External docs related state
-const externalDocs = ref<OpenAPIV3_1.ExternalDocumentationObject>({ });
+// External docs related state (url is required by spec)
+const externalDocs = ref<OpenAPIV3_1.ExternalDocumentationObject>({ url: '' });
 const isEditingExternalDocs = ref(false);
 
 // Description modal related state
@@ -145,7 +145,10 @@ const confirmSummaryEdit = async () => {
   if (error) {
     return;
   }
-  schemaInfo.value?.info.summary = summary.value;
+  if (!schemaInfo.value) {
+    return;
+  }
+  schemaInfo.value.info.summary = summary.value;
   isEditingSummary.value = false;
 };
 
@@ -167,7 +170,10 @@ const confirmTermsOfServiceEdit = async () => {
   if (error) {
     return;
   }
-  schemaInfo.value?.info.termsOfService = termsOfService.value;
+  if (!schemaInfo.value) {
+    return;
+  }
+  schemaInfo.value.info.termsOfService = termsOfService.value;
   isEditingTermsOfService.value = false;
 };
 
@@ -189,7 +195,10 @@ const confirmContactEdit = async () => {
   if (error) {
     return;
   }
-  schemaInfo.value?.info.contact = contact.value;
+  if (!schemaInfo.value) {
+    return;
+  }
+  schemaInfo.value.info.contact = contact.value;
   isEditingContact.value = false;
 };
 
@@ -211,7 +220,10 @@ const confirmLicenseEdit = async () => {
   if (error) {
     return;
   }
-  schemaInfo.value?.info.license = license.value;
+  if (!schemaInfo.value) {
+    return;
+  }
+  schemaInfo.value.info.license = license.value;
   isEditingLicense.value = false;
 };
 
@@ -233,7 +245,10 @@ const confirmVersionEdit = async () => {
   if (error) {
     return;
   }
-  schemaInfo.value?.info.version = version.value;
+  if (!schemaInfo.value) {
+    return;
+  }
+  schemaInfo.value.info.version = version.value || '';
   isEditingVersion.value = false;
 };
 
@@ -255,13 +270,18 @@ const confirmExternalDocsEdit = async () => {
   if (error) {
     return;
   }
+  if (!schemaInfo.value) {
+    return;
+  }
   schemaInfo.value.externalDocs = externalDocs.value;
   isEditingExternalDocs.value = false;
 };
 
 const cancelExternalDocsEdit = () => {
   isEditingExternalDocs.value = false;
-  externalDocs.value = schemaInfo.value.externalDocs || { description: '', url: '' };
+  if (schemaInfo.value) {
+    externalDocs.value = schemaInfo.value.externalDocs || { description: '', url: '' };
+  }
 };
 
 // Description Management
@@ -294,7 +314,10 @@ const saveDescription = async (value) => {
   if (error) {
     return;
   }
-  schemaInfo.value?.info.description = description.value;
+  if (!schemaInfo.value) {
+    return;
+  }
+  schemaInfo.value.info.description = description.value;
   isModalVisible.value = false;
   isEditingDescription.value = false;
 };

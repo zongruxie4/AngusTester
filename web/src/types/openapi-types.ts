@@ -441,6 +441,9 @@ export namespace OpenAPIV3 {
 
   export interface BaseSchemaObject {
     // JSON schema allowed properties, adjusted for OpenAPI
+    _default?: any;
+    name?: string;
+
     title?: string;
     description?: string;
     format?: string;
@@ -460,6 +463,7 @@ export namespace OpenAPIV3 {
     maxProperties?: number;
     minProperties?: number;
     required?: string[];
+    type?: any;
     enum?: any[];
     properties?: {
       [name: string]: ReferenceObject | SchemaObject;
@@ -479,6 +483,9 @@ export namespace OpenAPIV3 {
     example?: any;
     deprecated?: boolean;
     extensions?: Record<string, any>;
+
+    // vendor extension stored under dynamic key
+    [API_EXTENSION_KEYS.valueKey]: any;
   }
 
   export interface DiscriminatorObject {

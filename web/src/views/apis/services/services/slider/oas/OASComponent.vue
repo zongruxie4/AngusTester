@@ -65,11 +65,11 @@ const addComponent = () => {
 };
 
 // Grouped components by collection type for rendering
-const compListObj = ref<Record<ServicesCompType, {
+const compListObj = ref<Partial<Record<ServicesCompType, {
   name:string;
   isExpand:boolean;
   list:ServicesCompDetail[]
-}>>(
+}>>>(
   {
     schemas: {
       name: '',
@@ -105,11 +105,11 @@ const compListObj = ref<Record<ServicesCompType, {
 );
 
 // Cached copy used to restore view after search cleared
-const oldCompListObj = ref<Record<ServicesCompType, {
+const oldCompListObj = ref<Partial<Record<ServicesCompType, {
   name:string;
   isExpand:boolean;
   list:ServicesCompDetail[]
-}>>(
+}>>>(
   {
     schemas: {
       name: '',
@@ -148,11 +148,18 @@ const oldCompListObj = ref<Record<ServicesCompType, {
 const getCompTypesEnum = () => {
   const data = enumUtils.enumToMessages(ServicesCompType);
   for (let i = 0; i < data.length; i++) {
-    if (data[i].value === ServicesCompType.securitySchemes) {
+    if ([
+      ServicesCompType.securitySchemes,
+      ServicesCompType.links,
+      ServicesCompType.callbacks,
+      ServicesCompType.extensions,
+      ServicesCompType.pathItems
+    ].includes(data[i].value as ServicesCompType)) {
       continue;
     }
-    compListObj.value[data[i].value] = {
+    compListObj.value[data[i].value as ServicesCompType] = {
       name: data[i]?.message,
+      isExpand: false,
       list: compList.value?.filter(item => item.type.value === data[i].value).map(item => {
         return {
           ...item,
@@ -299,16 +306,16 @@ onMounted(() => {
         class="mt-2">
         <div
           class="h-7 leading-7 flex items-center justify-between bg-bg-table-head px-2 rounded-sm cursor-pointer"
-          @click="handleExpand(value)">
-          <span>{{ value.name }}&nbsp;({{ value.list.length }})</span>
+          @click="value && handleExpand(value)">
+          <span>{{ value?.name }}&nbsp;({{ value?.list?.length || 0 }})</span>
           <Arrow
-            :open="value.isExpand"
-            @click="handleExpand(value)" />
+            :open="!!value?.isExpand"
+            @click="value && handleExpand(value)" />
         </div>
-        <div class="space-y-2 transition-height duration-500 overflow-hidden" :class="value.isExpand ? 'open-info' : 'stop-info'">
-          <AsyncComponent :visible="value.isExpand">
+        <div class="space-y-2 transition-height duration-500 overflow-hidden" :class="value?.isExpand ? 'open-info' : 'stop-info'">
+          <AsyncComponent :visible="!!value?.isExpand">
             <div
-              v-for="(item,index) in value.list"
+              v-for="(item,index) in (value?.list || [])"
               :key="item.id"
               class="border border-border-divider p-2 rounded relative"
               :class="index === 0 ?'mt-2':''">
