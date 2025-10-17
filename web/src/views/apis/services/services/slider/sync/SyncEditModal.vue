@@ -17,6 +17,7 @@ interface Props {
   serviceId: string;
   allNames: string[]
 }
+
 const props = withDefaults(defineProps<Props>(), {
   syncData: undefined,
   visible: false,
@@ -112,7 +113,7 @@ const getCheckDataResult = (_data:SyncConfigInfo):boolean => {
 };
 
 // Check whether current data differs from original props
-const chenkUpdate = (newData:SyncConfigInfo) => {
+const checkUpdate = (newData:SyncConfigInfo) => {
   const _oldData = props.syncData;
   if (!_oldData) {
     return true;
@@ -120,11 +121,9 @@ const chenkUpdate = (newData:SyncConfigInfo) => {
   if (_oldData.name !== newData.name) {
     return true;
   }
-
   if (_oldData.apiDocsUrl !== newData.apiDocsUrl) {
     return true;
   }
-
   if (_oldData.deleteWhenNotExisted !== newData.deleteWhenNotExisted) {
     return true;
   }
@@ -148,7 +147,7 @@ const handleSave = async () => {
     sync.value.nameErr = true;
     return;
   }
-  if (!chenkUpdate(sync.value)) {
+  if (!checkUpdate(sync.value)) {
     cancel();
     return;
   }
@@ -308,7 +307,10 @@ watch(() => props.visible, (newValue) => {
             :error="sync?.apiDocsUrlErr.emptyUrl || sync?.apiDocsUrlErr.errUrl"
             @change="syncUrlChange($event.target.value)" />
           <div class="absolute text-rule text-3">
-            <template v-if="sync?.apiDocsUrlErr.errUrl">{{ t('service.syncConfig.messages.inputContent') }}</template>
+            <template
+              v-if="sync?.apiDocsUrlErr.errUrl">
+              {{ t('service.syncConfig.messages.inputContent') }}
+            </template>
           </div>
         </div>
         <span>{{ t('service.syncConfig.form.duplicateStrategy') }}</span>

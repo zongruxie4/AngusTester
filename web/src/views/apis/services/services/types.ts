@@ -1,6 +1,6 @@
-import { i18n, EnumMessage } from '@xcan-angus/infra';
+import { EnumMessage, i18n } from '@xcan-angus/infra';
 import { ref } from 'vue';
-import { ApiSource, ApiStatus, ApiImportSource, ServicesCompType } from '@/enums/enums';
+import { ApiImportSource, ApiSource, ApiStatus, ServicesCompType } from '@/enums/enums';
 import { OpenAPIV3_1 } from '@/types/openapi-types';
 
 const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
@@ -59,8 +59,8 @@ export type ServicesCompDetail = {
   type: EnumMessage<ServicesCompType>;
   key: string;
   ref: string;
-  model: string;
-  description: string;
+  model: any;
+  description?: string;
   resolvedRefModels: Record<string, string>;
   lastModifiedBy: string;
   lastModifiedByName: string;
@@ -74,6 +74,11 @@ export type ServicesCompDetail = {
   copyLoading: boolean; // UI: copy action loading
   delLoading: boolean; // UI: delete action loading
   quoteName?: string; // last referenced name chain
+  isAdd: boolean;
+  isExpand: boolean;
+  saveLoading: boolean;
+  keyErr: boolean;
+  hasModel:boolean;
 }
 
 export interface ExternalDocInfo extends OpenAPIV3_1.ExternalDocumentationObject{
@@ -101,6 +106,41 @@ export interface TagInfo extends OpenAPIV3_1.TagObject{
   nameErr: boolean;
   ellipsis: boolean;
   showEllipsis:boolean;
+}
+
+export interface ApiKeyExtensionInfo extends OpenAPIV3_1.ApiKeyExtensionField {
+  // Temp feilds in web
+  nameErr: boolean;
+  valueErr: boolean;
+}
+
+export interface SecuritySchemeInfo extends OpenAPIV3_1.SecuritySchemeObject {
+  // Temp feilds in web
+  username: string;
+  password: string;
+  token: string;
+  apiKeyList: ApiKeyExtensionInfo[];
+  usernameErr?: boolean;
+  passwordErr?: boolean;
+  tokenErr?: boolean;
+  oauth2TokenErr?: boolean;
+  refreshUrlErr: {
+    isEmpty: boolean,
+    isError: boolean
+  };
+  callbackUrlErr: {
+    isEmpty: boolean,
+    isError: boolean
+  };
+  tokenUrlErr: {
+    isEmpty: boolean,
+    isError: boolean
+  };
+  authorizationUrlErr: {
+    isEmpty: boolean,
+    isError: boolean
+  };
+  scopesErr?: boolean;
 }
 
 export interface ModalsConfig {

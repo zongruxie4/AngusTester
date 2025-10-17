@@ -1,3 +1,7 @@
+export type AuthType = 'basic' | 'bearer' | 'apiKey' | 'oauth2';
+export type ApiKeyIn = 'header' | 'query';
+export type AuthFlowKey = 'authorizationCode' | 'password' | 'implicit' | 'clientCredentials';
+
 /**
  * API extension keys for XCan custom properties.
  */
@@ -278,6 +282,8 @@ export namespace OpenAPIV3_1 {
   export type HttpSecurityScheme = OpenAPIV3.HttpSecurityScheme;
 
   export type ApiKeySecurityScheme = OpenAPIV3.ApiKeySecurityScheme;
+
+  export type ApiKeyExtensionField = OpenAPIV3.ApiKeyExtensionField;
 
   export type OAuth2SecurityScheme = OpenAPIV3.OAuth2SecurityScheme;
 
@@ -580,14 +586,23 @@ export namespace OpenAPIV3 {
     scheme: string;
     bearerFormat?: string;
     extensions?: Record<string, any>;
+    'x-xc-value'?: string;
   }
 
   export interface ApiKeySecurityScheme {
     type: 'apiKey';
     description?: string;
     name: string;
-    in: string;
+    in: ApiKeyIn;
     extensions?: Record<string, any>;
+    'x-xc-value'?: string;
+    'x-xc-apiKey'?: ApiKeyExtensionField;
+  }
+
+  export interface ApiKeyExtensionField {
+    name: string;
+    value: string;
+    in: ApiKeyIn;
   }
 
   export interface OAuth2SecurityScheme {
@@ -605,12 +620,19 @@ export namespace OpenAPIV3 {
         refreshUrl?: string;
         scopes: { [scope: string]: string };
         extensions?: Record<string, any>;
+        'x-xc-oauth2-clientAuthType'?: string,
+        'x-xc-oauth2-clientId'?: string,
+        'x-xc-oauth2-clientSecret'?: string,
+        'x-xc-oauth2-username'?: string,
+        'x-xc-oauth2-password'?: string,
       };
       clientCredentials?: {
         tokenUrl: string;
         refreshUrl?: string;
         scopes: { [scope: string]: string };
         extensions?: Record<string, any>;
+        'x-xc-oauth2-clientId'?: string,
+        'x-xc-oauth2-clientSecret'?: string,
       };
       authorizationCode?: {
         authorizationUrl: string;
@@ -621,6 +643,9 @@ export namespace OpenAPIV3 {
       };
     };
     extensions?: Record<string, any>;
+    'x-xc-oauth2-authFlow'?: string;
+    'x-xc-oauth2-newToken'?: boolean;
+    'x-xc-oauth2-token'?: string;
   }
 
   export interface OpenIdSecurityScheme {
