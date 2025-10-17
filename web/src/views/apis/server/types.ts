@@ -1,34 +1,11 @@
-export type ServerVariables = {
-  [key: string]: {
-    default: string;
-    description: string;
-    enum: string[]
-  };
-}
+import { OpenAPIV3_1 } from '@/types/openapi-types';
 
 export type ServerInfo = {
-  'x-xc-id': string;
-  description: string;
-  url: string;
-  variables?: ServerVariables;
-  extensions?: Record<string, any>;
-  emptyContent?: true;
-  notEmptyContent?: true;
-}
-
-export type ServerConfigVariables = {
-  id: string;
-  name: string;
-  description: string;
-  default: string;
-  enum: { id: string; value: string }[];
-}
-
-export type ServerConfig = {
+  serviceId?: string;
   id: string;
   'x-xc-id'?: string;
-  serviceId?: string;
   url: string;
   description?: string;
-  variables: ServerConfigVariables[];
+  variables: OpenAPIV3_1.ServerVariableObject[];
+  extensions?: Record<string, any>;
 }

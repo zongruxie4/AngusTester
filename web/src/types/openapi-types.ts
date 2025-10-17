@@ -332,6 +332,7 @@ export namespace OpenAPIV3 {
     description?: string;
     variables?: { [variable: string]: ServerVariableObject };
     extensions?: Record<string, any>;
+    [API_EXTENSION_KEYS.idKey]: string; // vendor extension stored under dynamic key
   }
 
   export interface ServerVariableObject {

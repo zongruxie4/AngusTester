@@ -4,7 +4,9 @@ import { Radio, RadioGroup, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Modal, Select } from '@xcan-angus/vue-ui';
 import { TESTER, http, utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { ServerConfig, ServerVariables, ServerConfigVariables, ServerInfo } from '@/views/apis/server/types';
+import { ServerInfo } from '@/views/apis/server/types';
+import { OpenAPIV3_1 } from '@/types/openapi-types';
+import { API_EXTENSION_KEY } from '@/utils/apis';
 
 const { t } = useI18n();
 
@@ -33,7 +35,6 @@ const props = withDefaults(defineProps<Props>(), {
   title: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'update:id', value: string | undefined): void;
@@ -44,7 +45,7 @@ const emit = defineEmits<{
 const checkedType = ref<'none' | 'checked'>('none');
 const confirmLoading = ref(false);
 const selectedIds = ref<string[]>([]);
-const selectedServers = ref<ServerConfig[]>([]);
+const selectedServers = ref<ServerInfo[]>([]);
 
 // Switch between default config and customized variables
 const handleRadioChange = (event: any) => {
@@ -59,7 +60,7 @@ const handleRadioChange = (event: any) => {
 const handleServerSelectChange = (value: any, option: any) => {
   selectedIds.value = value;
   selectedServers.value = (option as ServerInfo[]).map(item => {
-    const variables: ServerConfigVariables[] = [];
+    const variables: OpenAPIV3_1.ServerVariableObject[] = [];
     if (item.variables) {
       const names = Object.keys(item.variables);
       for (let i = 0, len = names.length; i < len; i++) {
@@ -81,11 +82,11 @@ const handleServerSelectChange = (value: any, option: any) => {
 
     return {
       id: utils.uuid(),
-      'x-xc-id': item['x-xc-id'],
+      [API_EXTENSION_KEY.idKey]: item[API_EXTENSION_KEY.idKey],
       url: item.url,
       description: item.description,
       variables
-    } as ServerConfig;
+    } as ServerInfo;
   });
 };
 
@@ -113,10 +114,10 @@ const buildServerConfigPayload = (data: any) => {
       enum: cur.enum?.map(item => item.value) || []
     };
     return prev;
-  }, {} as ServerVariables);
+  }, {} as OpenAPIV3_1.ServerVariableObject);
 
-  const params: any = {
-    'x-xc-id': data['x-xc-id'],
+  const params: OpenAPIV3_1.ServerObject = {
+    [API_EXTENSION_KEY.idKey]: data[API_EXTENSION_KEY.idKey],
     description: data.description,
     url: data.url,
     variables

@@ -7,10 +7,10 @@ import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { ApiMenuKey } from '@/views/apis/menu';
-import { ServerInfo, ServerVariables } from './types';
 import { cloneDeep } from 'lodash-es';
 import { BasicProps } from '@/types/types';
 import { API_EXTENSION_KEY } from '@/utils/apis';
+import { OpenAPIV3_1 } from '@/types/openapi-types';
 
 const Introduce = defineAsyncComponent(() => import('@/views/apis/server/Introduce.vue'));
 
@@ -37,7 +37,7 @@ const searchedFlag = ref(false);
 type ServerRecord = {
   serviceId: string;
   serviceName: string;
-  server: ServerInfo;
+  server: OpenAPIV3_1.ServerObject;
   // optional presentational fields from backend or derived locally
   avatar?: string;
   createdByName?: string;
@@ -73,7 +73,7 @@ const toClone = async (data: ServerRecord) => {
   const params:{
     description?:string;
     url:string;
-    variables: ServerVariables;
+    variables: OpenAPIV3_1.ServerVariableObject;
   } = {
     description: data.server?.description,
     url: data.server?.url,
