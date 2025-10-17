@@ -35,7 +35,7 @@ const saveSuccess = () => {
 <template>
   <Modal
     :title="t('service.securityModal.title')"
-    :visible="visible"
+    :visible="props.visible"
     :reverse="true"
     :footer="null"
     @cancel="cancelModal">

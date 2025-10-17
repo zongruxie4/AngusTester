@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { Modal, VuexHelper } from '@xcan-angus/vue-ui';
-import SecurityConfig from '@/views/apis/services/services/slider/server/index.vue';
+import ServerConfig from '@/views/apis/services/services/slider/server/index.vue';
 
 interface Props {
   visible: boolean;
@@ -36,12 +36,12 @@ const saveSuccess = () => {
   <Modal
     :title="t('service.serverConfig.title')"
     style="width:650px;"
-    :visible="visible"
+    :visible="props.visible"
     :reverse="true"
     :footer="null"
     @cancel="cancelModal">
     <template v-if="props.visible">
-      <SecurityConfig
+      <ServerConfig
         :id="props.id"
         :disabled="false"
         source="modal"

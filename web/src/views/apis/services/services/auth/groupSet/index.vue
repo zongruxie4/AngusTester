@@ -24,7 +24,6 @@ const props = withDefaults(defineProps<Props>(), {
   appId: undefined
 });
 
-
 const emit = defineEmits<{
   (e: 'update:checkedId', id: string | undefined): void;
   (e: 'update:loaded', value:boolean): void;

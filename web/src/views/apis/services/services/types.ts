@@ -1,6 +1,6 @@
 import { EnumMessage, i18n } from '@xcan-angus/infra';
 import { ref } from 'vue';
-import {  ApiSource, ApiStatus, ServicesCompType } from '@/enums/enums';
+import { ApiSource, ApiStatus, ServicesCompType } from '@/enums/enums';
 import { OpenAPIV3_1 } from '@/types/openapi-types';
 
 const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
