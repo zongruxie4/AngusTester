@@ -1,6 +1,6 @@
 import { EnumMessage, i18n } from '@xcan-angus/infra';
 import { ref } from 'vue';
-import { ApiImportSource, ApiSource, ApiStatus, ServicesCompType } from '@/enums/enums';
+import {  ApiSource, ApiStatus, ServicesCompType } from '@/enums/enums';
 import { OpenAPIV3_1 } from '@/types/openapi-types';
 
 const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
@@ -36,7 +36,7 @@ export type ServicesDetail = {
   id: string;
   projectId: string;
   source: EnumMessage<ApiSource>;
-  importSource: EnumMessage<ApiImportSource>;
+  importSource: EnumMessage<string>;
   name: string;
   auth: boolean;
   status: EnumMessage<ApiStatus>;
@@ -59,9 +59,9 @@ export type ServicesCompDetail = {
   type: EnumMessage<ServicesCompType>;
   key: string;
   ref: string;
-  model: any;
+  model?: any;
   description?: string;
-  resolvedRefModels: Record<string, string>;
+  resolvedRefModels?: Record<string, string>;
   lastModifiedBy: string;
   lastModifiedByName: string;
   lastModifiedDate: string;
@@ -94,7 +94,7 @@ export interface ExternalDocInfo extends OpenAPIV3_1.ExternalDocumentationObject
 export interface TagInfo extends OpenAPIV3_1.TagObject{
   name: string;
   description?: string;
-  externalDocs:ExternalDocsObj;
+  externalDocs: ExternalDocInfo;
 
   // Temp fields in web
   id: string;
@@ -114,8 +114,9 @@ export interface ApiKeyExtensionInfo extends OpenAPIV3_1.ApiKeyExtensionField {
   valueErr: boolean;
 }
 
-export interface SecuritySchemeInfo extends OpenAPIV3_1.SecuritySchemeObject {
+export type SecuritySchemeInfo = OpenAPIV3_1.SecuritySchemeObject & {
   // Temp feilds in web
+  value: string;
   username: string;
   password: string;
   token: string;

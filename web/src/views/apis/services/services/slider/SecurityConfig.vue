@@ -27,25 +27,38 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const { basicAuthKey } = API_EXTENSION_KEY;
+const {
+  basicAuthKey,
+  valueKey,
+  securityApiKeyPrefix,
+  newTokenKey,
+  oAuth2Key,
+  oAuth2Token,
+  oAuth2CallbackUrlKey,
+  oAuth2ClientIdKey,
+  oAuth2ClientSecretKey,
+  oAuth2UsernameKey,
+  oAuth2PasswordKey,
+  oAuth2ClientAuthTypeKey
+} = API_EXTENSION_KEY;
 
 const { useState } = VuexHelper;
 
 const emit = defineEmits<{(e: 'deleteSuccess'): void, (e: 'saveSuccess'): void}>();
 
-// 默认数据
-const modelData:SecuritySchemeInfo = {
+// Default model for security scheme form
+const defaultModel:SecuritySchemeInfo = {
   // OpenAPI feilds
-  type: 'basic',
+  type: 'http',
   name: '',
-  value: '',
   in: 'header',
   authorizationUrl: '',
   tokenUrl: '',
   refreshUrl: '',
   scopes: [],
 
-  // Temp feilds in web
+  // Temporary fields used only in web UI
+  value: '',
   username: '',
   password: '',
   token: '',
@@ -81,8 +94,8 @@ const modelData:SecuritySchemeInfo = {
   scopesErr: false
 };
 
-// 默认数据
-const newData:ServicesCompDetail = {
+// Default wrapper for a security component item
+const defaultCompDetail:ServicesCompDetail = {
   id: utils.uuid('api'),
   serviceId: '',
   type: {
@@ -91,13 +104,13 @@ const newData:ServicesCompDetail = {
   },
   key: '',
   ref: '',
-  model: modelData,
+  model: defaultModel,
   description: '',
   lastModifiedBy: '',
   lastModifiedByName: '',
   lastModifiedDate: '',
 
-  // Temp feilds in web
+  // Temporary fields used only in web UI
   isEdit: true,
   isAdd: true,
   isExpand: true,
@@ -110,7 +123,7 @@ const newData:ServicesCompDetail = {
 const loading = ref(false);
 const securityConfigList = ref<ServicesCompDetail[]>([]);
 const oldSecurityConfigList = ref<ServicesCompDetail[]>([]);
-// 初始化服务器URL配置
+// Initialize list of security schemes from service
 const loadSecuritySchemes = async () => {
   loading.value = true;
   const [error, { data }] = await services.getCompData(props.id, ['securitySchemes'], undefined, { silence: false });
@@ -118,10 +131,10 @@ const loadSecuritySchemes = async () => {
   if (error) {
     return;
   }
-  // // 如果没有历史数据 默认展示一条空数据
+  // If no historical data exists, create one empty item by default
   if (!data?.length) {
-    securityConfigList.value = [JSON.parse(JSON.stringify(newData))];
-    // 记录正在编辑的数据 编辑逻辑需要
+    securityConfigList.value = [JSON.parse(JSON.stringify(defaultCompDetail))];
+    // Record the item being edited for subsequent edit operations
     currEditData.value = securityConfigList.value[0];
     addBtnDisabled.value = true;
     return;
@@ -137,51 +150,58 @@ const loadSecuritySchemes = async () => {
     saveLoading: false,
     keyErr: false,
     hasModel: false,
-    model: modelData
+    model: defaultModel
   }));
-  // 记录历史数据
+  // Take a snapshot of the current list for change detection
   oldSecurityConfigList.value = JSON.parse(JSON.stringify(securityConfigList.value));
-  // 启用添加
+  // Enable add button
   addBtnDisabled.value = false;
 };
 
-// 添加按钮禁用状态
+// State for disabling the add button when editing
 const addBtnDisabled = ref(false);
 
-// 添加新配置
-const addSecurityConfig = () => {
+// Add new configuration
+/**
+ * Add a new empty security scheme entry to the list and enter edit mode.
+ * Ensures only one editing entry at a time and validates pending edits.
+ */
+const addNewSecurityConfig = () => {
   const hasEditData = securityConfigList.value.filter(item => item.isEdit);
   if (hasEditData?.length) {
-    const checkRes = getCheckDataResult(hasEditData[0]);
+    const checkRes = hasValidationErrors(hasEditData[0]);
     if (checkRes) {
       return;
     }
-    if (getCheckUpdateRes()) {
+    if (hasUnsavedChangesAndWarn()) {
       return;
     }
   }
 
   if (securityConfigList.value[0]?.isAdd) {
-    securityConfigList.value[0] = { ...JSON.parse(JSON.stringify(newData)), id: utils.uuid('api') };
+    securityConfigList.value[0] = { ...JSON.parse(JSON.stringify(defaultCompDetail)), id: utils.uuid('api') };
     return;
   }
-  // 列表开始位置添加一条新数据
-  securityConfigList.value.unshift({ ...JSON.parse(JSON.stringify(newData)), id: utils.uuid('api') });
-  // 记录正在编辑的数据(编辑逻辑需要)
+  // Insert a new item at the beginning of the list
+  securityConfigList.value.unshift({ ...JSON.parse(JSON.stringify(defaultCompDetail)), id: utils.uuid('api') });
+  // Record the current editing item
   currEditData.value = securityConfigList.value[0];
-  // 追加后禁用添加按钮
+  // Disable add button after appending
   addBtnDisabled.value = true;
-  setEditFalseExceptId(securityConfigList.value, currEditData.value.id);
+  collapseAndDisableEditExcept(securityConfigList.value, currEditData.value.id);
 };
 
-// 删除配置
-const handelDelete = async (auth:ServicesCompDetail) => {
+/**
+ * Delete a security scheme. If it is a new unsaved item, remove locally.
+ * Otherwise, delete via API and update local lists accordingly.
+ */
+const handleDelete = async (auth:ServicesCompDetail) => {
   if (auth.delLoading) {
     return;
   }
-  // 如果是添加数据 直接删除
+  // If it is a new item, delete locally
   if (auth.isAdd) {
-    // 判断列表是否剩余一条数据 剩余一条数据禁止删除
+    // If only one item remains, prevent deletion
     if (securityConfigList.value.length === 1) {
       return;
     }
@@ -197,20 +217,23 @@ const handelDelete = async (auth:ServicesCompDetail) => {
   }
   notification.success(t('actions.tips.deleteSuccess'));
   emit('deleteSuccess');
-  // 如果删除成功
+  // After successful deletion, remove from local lists
   securityConfigList.value = securityConfigList.value.filter(item => item.id !== auth.id);
   oldSecurityConfigList.value = oldSecurityConfigList.value.filter(item => item.id !== auth.id);
 
-  // 如果列表没有数据 删除后添加一条添加的数据
+  // If list is empty, add one default editable item
   if (securityConfigList.value.length === 0) {
-    securityConfigList.value.unshift({ ...JSON.parse(JSON.stringify(newData)), id: utils.uuid('api') });
+    securityConfigList.value.unshift({ ...JSON.parse(JSON.stringify(defaultCompDetail)), id: utils.uuid('api') });
   }
 };
 
-// 保存
+/**
+ * Validate and persist the security scheme to backend. For existing entries
+ * without changes, simply exit edit mode. Builds the payload based on type.
+ */
 const handleSave = async (auth:ServicesCompDetail) => {
-  // 校验有没有空项
-  const checkRes = getCheckDataResult(auth);
+  // Validate required fields
+  const checkRes = hasValidationErrors(auth);
   if (checkRes) {
     return;
   }
@@ -219,16 +242,16 @@ const handleSave = async (auth:ServicesCompDetail) => {
     return;
   }
 
-  // 如果是旧数据 判断数据有没有修改
+  // For existing item, check whether data has changed
   if (!auth.isAdd) {
-    if (!checkUpdate(auth)) {
+    if (!isDataChanged(auth)) {
       auth.isEdit = false;
       auth.isExpand = lastIsExpandState.value;
       return;
     }
   }
 
-  let params:any = getQuery(auth);
+  let params:any = buildSecuritySchemePayload(auth);
   if (!params) {
     return;
   }
@@ -248,14 +271,17 @@ const handleSave = async (auth:ServicesCompDetail) => {
   await loadSecuritySchemes();
 };
 
-// 检查提交的数据有没有空项 有空项返回true 否则返回false
-const getCheckDataResult = (_data:ServicesCompDetail):boolean => {
+/**
+ * Validate required fields of a security scheme model by type.
+ * Returns true if any field is missing or invalid, otherwise false.
+ */
+const hasValidationErrors = (_data:ServicesCompDetail):boolean => {
   let hasEmpty = false;
   if (!_data.key) {
     _data.keyErr = true;
     hasEmpty = true;
   }
-  // 检查变量里有没有空数据
+  // Check whether there are empty fields in variables
   switch (_data.model.type) {
     case 'basic': {
       if (!_data.model.username) {
@@ -276,15 +302,15 @@ const getCheckDataResult = (_data:ServicesCompDetail):boolean => {
       break;
     }
     case 'apiKey': {
-      const variablesHasEmpty = getVariablesHasEmpty(_data);
+      const variablesHasEmpty = hasEmptyApiKeyEntries(_data);
       if (variablesHasEmpty) {
         hasEmpty = variablesHasEmpty;
       }
       break;
     }
     case 'oauth2': {
-      if (_data.model['x-xc-oauth2-newToken']) {
-        switch (_data.model['x-xc-oauth2-authFlow']) {
+      if (_data.model[newTokenKey]) {
+        switch (_data.model[oAuth2Key]) {
           case 'authorizationCode':
             if (!_data.model.authorizationUrl) {
               _data.model.authorizationUrlErr.isEmpty = true;
@@ -296,11 +322,11 @@ const getCheckDataResult = (_data:ServicesCompDetail):boolean => {
             }
             break;
           case 'password':
-            if (!_data.model['x-xc-oauth2-username']) {
+            if (!_data.model[oAuth2UsernameKey]) {
               _data.model.usernameErr = true;
               hasEmpty = true;
             }
-            if (!_data.model['x-xc-oauth2-password']) {
+            if (!_data.model[oAuth2PasswordKey]) {
               _data.model.passwordErr = true;
               hasEmpty = true;
             }
@@ -333,7 +359,11 @@ const getCheckDataResult = (_data:ServicesCompDetail):boolean => {
   return hasEmpty;
 };
 
-const getQuery = (auth:ServicesCompDetail) => {
+/**
+ * Build the OpenAPI security scheme payload based on the current model type.
+ * Returns false if validation fails so the caller can stop submission.
+ */
+const buildSecuritySchemePayload = (auth:ServicesCompDetail) => {
   let b = false;
   if (!auth.key) {
     auth.keyErr = true;
@@ -370,10 +400,10 @@ const getQuery = (auth:ServicesCompDetail) => {
       return {
         type: 'http',
         scheme: 'bearer',
-        'x-xc-value': 'Bearer ' + auth.model.token
+        [valueKey]: 'Bearer ' + auth.model.token
       };
     case 'apiKey': {
-      const hasEmpty = getVariablesHasEmpty(auth);
+      const hasEmpty = hasEmptyApiKeyEntries(auth);
       if (hasEmpty) {
         return false;
       }
@@ -381,49 +411,49 @@ const getQuery = (auth:ServicesCompDetail) => {
         type: 'apiKey',
         in: auth.model.apiKeyList[0].in,
         name: auth.model.apiKeyList[0].name,
-        'x-xc-value': auth.model.apiKeyList[0].value
+        [valueKey]: auth.model.apiKeyList[0].value
       };
       if (auth.model.apiKeyList.length > 1) {
-        params['x-xc-apiKey'] = auth.model.apiKeyList.slice(1).map(item => ({ name: item.name, in: item.in, 'x-xc-value': item.value }));
+        params[securityApiKeyPrefix] = auth.model.apiKeyList.slice(1).map(item => ({ name: item.name, in: item.in, [valueKey]: item.value }));
       }
       return params;
     }
     case 'oauth2' : {
-      if (auth.model['x-xc-oauth2-newToken']) {
+      if (auth.model[newTokenKey]) {
         let flowsParams:{
           scopes: Record<string, any>;
           authorizationUrl?: string;
-          'x-xc-oauth2-username'?:string;
-          'x-xc-oauth2-password'?:string;
+          [oAuth2UsernameKey]?:string;
+          [oAuth2PasswordKey]?:string;
           tokenUrl?: string;
           refreshUrl?: string;
-          'x-xc-oauth2-clientAuthType'?: string;
-          'x-xc-oauth2-callbackUrl'?: string;
-          'x-xc-oauth2-clientId'?: string;
-          'x-xc-oauth2-clientSecret'?: string;
+          [oAuth2ClientAuthTypeKey]?: string;
+          [oAuth2CallbackUrlKey]?: string;
+          [oAuth2ClientIdKey]?: string;
+          [oAuth2ClientSecretKey]?: string;
         } = {
           scopes: auth.model.scopes.reduce((acc, cur) => {
             acc[cur] = '';
             return acc;
           }, {})
         };
-        switch (auth.model['x-xc-oauth2-authFlow']) {
+        switch (auth.model[oAuth2Key]) {
           case 'authorizationCode':
             flowsParams = {
               ...flowsParams,
               authorizationUrl: auth.model.authorizationUrl,
               tokenUrl: auth.model.tokenUrl
             };
-            if (auth.model['x-xc-oauth2-callbackUrl']) {
-              flowsParams['x-xc-oauth2-callbackUrl'] = auth.model['x-xc-oauth2-callbackUrl'];
+            if (auth.model[oAuth2CallbackUrlKey]) {
+              flowsParams[oAuth2CallbackUrlKey] = auth.model[oAuth2CallbackUrlKey];
             }
             break;
           case 'password':
             flowsParams = {
               ...flowsParams,
               tokenUrl: auth.model.tokenUrl,
-              'x-xc-oauth2-username': auth.model['x-xc-oauth2-username'],
-              'x-xc-oauth2-password': auth.model['x-xc-oauth2-password']
+              [oAuth2UsernameKey]: auth.model[oAuth2UsernameKey],
+              [oAuth2PasswordKey]: auth.model[oAuth2PasswordKey]
             };
             break;
           case 'implicit':
@@ -431,8 +461,8 @@ const getQuery = (auth:ServicesCompDetail) => {
               ...flowsParams,
               authorizationUrl: auth.model.authorizationUrl
             };
-            if (auth.model['x-xc-oauth2-callbackUrl']) {
-              flowsParams['x-xc-oauth2-callbackUrl'] = auth.model['x-xc-oauth2-callbackUrl'];
+            if (auth.model[oAuth2CallbackUrlKey]) {
+              flowsParams[oAuth2CallbackUrlKey] = auth.model[oAuth2CallbackUrlKey];
             }
             break;
           case 'clientCredentials':
@@ -445,35 +475,38 @@ const getQuery = (auth:ServicesCompDetail) => {
         if (auth.model.refreshUrl) {
           flowsParams.refreshUrl = auth.model.refreshUrl;
         }
-        if (auth.model['x-xc-oauth2-clientId']) {
-          flowsParams['x-xc-oauth2-clientId'] = auth.model['x-xc-oauth2-clientId'];
+        if (auth.model[oAuth2ClientIdKey]) {
+          flowsParams[oAuth2ClientIdKey] = auth.model[oAuth2ClientIdKey];
         }
-        if (auth.model['x-xc-oauth2-clientSecret']) {
-          flowsParams['x-xc-oauth2-clientSecret'] = auth.model['x-xc-oauth2-clientSecret'];
+        if (auth.model[oAuth2ClientSecretKey]) {
+          flowsParams[oAuth2ClientSecretKey] = auth.model[oAuth2ClientSecretKey];
         }
-        if (auth.model['x-xc-oauth2-clientAuthType']) {
-          flowsParams['x-xc-oauth2-clientAuthType'] = auth.model['x-xc-oauth2-clientAuthType'];
+        if (auth.model[oAuth2ClientAuthTypeKey]) {
+          flowsParams[oAuth2ClientAuthTypeKey] = auth.model[oAuth2ClientAuthTypeKey];
         }
         const params = {
           type: 'oauth2',
           flows: {
-            [auth.model['x-xc-oauth2-authFlow']]: flowsParams
+            [auth.model[oAuth2Key]]: flowsParams
           },
-          'x-xc-oauth2-authFlow': auth.model['x-xc-oauth2-authFlow'],
-          'x-xc-oauth2-newToken': auth.model['x-xc-oauth2-newToken']
+          [oAuth2Key]: auth.model[oAuth2Key],
+          [newTokenKey]: auth.model[newTokenKey]
         };
         return params;
       }
       return {
         type: 'oauth2',
-        'x-xc-oauth2-token': auth.model['x-xc-oauth2-token'],
-        'x-xc-oauth2-newToken': auth.model['x-xc-oauth2-newToken']
+        [oAuth2Token]: auth.model[oAuth2Token],
+        [newTokenKey]: auth.model[newTokenKey]
       };
     }
   }
 };
 
-const authKeyChange = (value:string, auth:ServicesCompDetail) => {
+/**
+ * Validate scheme key uniqueness and non-empty state on change.
+ */
+const handleAuthKeyChange = (value:string, auth:ServicesCompDetail) => {
   auth.keyErr = !value;
   if (value) {
     const oldKeys = oldSecurityConfigList.value.map(item => item.key);
@@ -483,22 +516,25 @@ const authKeyChange = (value:string, auth:ServicesCompDetail) => {
     }
   }
 };
-const usernameChange = (value:string, auth:ServicesCompDetail) => {
+const handleUsernameChange = (value:string, auth:ServicesCompDetail) => {
   auth.model.usernameErr = !value;
 };
-const passwordChange = (value:string, auth:ServicesCompDetail) => {
+const handlePasswordChange = (value:string, auth:ServicesCompDetail) => {
   auth.model.passwordErr = !value;
 };
-const tokenChange = (value:string, auth:ServicesCompDetail) => {
+const handleTokenChange = (value:string, auth:ServicesCompDetail) => {
   auth.model.tokenErr = !value;
 };
-const apiKeyNameChange = (value:string, apiKey:ApiKeyExtensionInfo) => {
+const handleApiKeyNameChange = (value:string, apiKey:ApiKeyExtensionInfo) => {
   apiKey.nameErr = !value;
 };
-const apiKeyValueChange = (value:string, apiKey:ApiKeyExtensionInfo) => {
+const handleApiKeyValueChange = (value:string, apiKey:ApiKeyExtensionInfo) => {
   apiKey.valueErr = !value;
 };
-const tokenUrlChange = (value:string, auth:ServicesCompDetail, key:'tokenUrlErr' | 'authorizationUrlErr') => {
+/**
+ * Validate required URL fields (must be non-empty and a valid URL format).
+ */
+const validateRequiredUrlField = (value:string, auth:ServicesCompDetail, key:'tokenUrlErr' | 'authorizationUrlErr') => {
   if (!value) {
     auth.model[key].isEmpty = true;
     return;
@@ -511,7 +547,10 @@ const tokenUrlChange = (value:string, auth:ServicesCompDetail, key:'tokenUrlErr'
   }
   auth.model[key].isError = true;
 };
-const callbackUrlChange = (value:string, auth:ServicesCompDetail, key:'callbackUrlErr' | 'refreshUrlErr') => {
+/**
+ * Validate optional URL fields (when present, must be a valid URL format).
+ */
+const validateOptionalUrlField = (value:string, auth:ServicesCompDetail, key:'callbackUrlErr' | 'refreshUrlErr') => {
   if (!value) {
     auth.model[key].isError = false;
     return;
@@ -524,11 +563,11 @@ const callbackUrlChange = (value:string, auth:ServicesCompDetail, key:'callbackU
   auth.model[key].isError = true;
 };
 
-const oauth2TokenChange = (value:string, auth:ServicesCompDetail) => {
+const handleOauth2TokenChange = (value:string, auth:ServicesCompDetail) => {
   auth.model.tokenErr = !value;
 };
 
-const scopesChange = (value:string[], auth:ServicesCompDetail) => {
+const handleScopesChange = (value:string[], auth:ServicesCompDetail) => {
   auth.model.scopesErr = !value.length;
   if (value.length > 199) {
     value.pop();
@@ -536,11 +575,11 @@ const scopesChange = (value:string[], auth:ServicesCompDetail) => {
   auth.model.scopes = value;
 };
 
-onMounted(() => {
-  loadSecuritySchemes();
-});
-
-const getAuthConfigInfo = async (auth:ServicesCompDetail) => {
+/**
+ * Load the full model of a security scheme from backend by reference,
+ * then populate the editable model fields according to scheme type.
+ */
+const loadSecuritySchemeDetail = async (auth:ServicesCompDetail) => {
   const [error, { data }] = await services.getComponentRef(props.id, auth.ref);
   if (error) {
     return;
@@ -561,23 +600,23 @@ const getAuthConfigInfo = async (auth:ServicesCompDetail) => {
       break;
     }
     case 'bearer': {
-      auth.model.token = model['x-xc-value'].replace('Bearer ', '');
+      auth.model.token = model[valueKey].replace('Bearer ', '');
       break;
     }
     case 'apiKey': {
-      auth.model.apiKeyList = [{ name: model.name, value: model['x-xc-value'], in: model.in, nameErr: false, valueErr: false }];
-      if (model['x-xc-apiKey']?.length) {
-        auth.model.apiKeyList = [...auth.model.apiKeyList, ...model['x-xc-apiKey'].map(item => ({
-          name: item.name, value: item['x-xc-value'], in: item.in, nameErr: false, valueErr: false
+      auth.model.apiKeyList = [{ name: model.name, value: model[valueKey], in: model.in, nameErr: false, valueErr: false }];
+      if (model[securityApiKeyPrefix]?.length) {
+        auth.model.apiKeyList = [...auth.model.apiKeyList, ...model[securityApiKeyPrefix].map(item => ({
+          name: item.name, value: item[valueKey], in: item.in, nameErr: false, valueErr: false
         }))];
       }
       break;
     }
     case 'oauth2': {
-      auth.model['x-xc-oauth2-newToken'] = model['x-xc-oauth2-newToken'] || false;
-      if (model['x-xc-oauth2-newToken']) {
+      auth.model[newTokenKey] = model[newTokenKey] || false;
+      if (model[newTokenKey]) {
         const key = Object.keys(model.flows)[0] as AuthFlowKey;
-        auth.model['x-xc-oauth2-authFlow'] = key;
+        auth.model[oAuth2Key] = key;
         if (model.flows[key]?.authorizationUrl) {
           auth.model.authorizationUrl = model.flows[key].authorizationUrl;
         }
@@ -587,30 +626,30 @@ const getAuthConfigInfo = async (auth:ServicesCompDetail) => {
         if (model.flows[key]?.tokenUrl) {
           auth.model.tokenUrl = model.flows[key].tokenUrl;
         }
-        if (model.flows[key]?.['x-xc-oauth2-callbackUrl']) {
-          auth.model['x-xc-oauth2-callbackUrl'] = model.flows[key]['x-xc-oauth2-callbackUrl'];
+        if (model.flows[key]?.[oAuth2CallbackUrlKey]) {
+          auth.model[oAuth2CallbackUrlKey] = model.flows[key][oAuth2CallbackUrlKey];
         }
-        if (model.flows[key]?.['x-xc-oauth2-clientId']) {
-          auth.model['x-xc-oauth2-clientId'] = model.flows[key]['x-xc-oauth2-clientId'];
+        if (model.flows[key]?.[oAuth2ClientIdKey]) {
+          auth.model[oAuth2ClientIdKey] = model.flows[key][oAuth2ClientIdKey];
         }
-        if (model.flows[key]?.['x-xc-oauth2-clientAuthType']) {
-          auth.model['x-xc-oauth2-clientAuthType'] = model.flows[key]['x-xc-oauth2-clientAuthType'];
+        if (model.flows[key]?.[oAuth2ClientAuthTypeKey]) {
+          auth.model[oAuth2ClientAuthTypeKey] = model.flows[key][oAuth2ClientAuthTypeKey];
         }
-        if (model.flows[key]?.['x-xc-oauth2-clientSecret']) {
-          auth.model['x-xc-oauth2-clientSecret'] = model.flows[key]['x-xc-oauth2-clientSecret'];
+        if (model.flows[key]?.[oAuth2ClientSecretKey]) {
+          auth.model[oAuth2ClientSecretKey] = model.flows[key][oAuth2ClientSecretKey];
         }
-        if (model.flows[key]?.['x-xc-oauth2-username']) {
-          auth.model['x-xc-oauth2-username'] = model.flows[key]['x-xc-oauth2-username'];
+        if (model.flows[key]?.[oAuth2UsernameKey]) {
+          auth.model[oAuth2UsernameKey] = model.flows[key][oAuth2UsernameKey];
         }
-        if (model.flows[key]?.['x-xc-oauth2-password']) {
-          auth.model['x-xc-oauth2-password'] = model.flows[key]['x-xc-oauth2-password'];
+        if (model.flows[key]?.[oAuth2PasswordKey]) {
+          auth.model[oAuth2PasswordKey] = model.flows[key][oAuth2PasswordKey];
         }
         if (model.flows[key]?.scopes && Object.keys(model.flows[key].scopes)?.length) {
           auth.model.scopes = Object.keys(model.flows[key].scopes);
         }
         break;
       }
-      auth.model['x-xc-oauth2-token'] = model['x-xc-oauth2-token'];
+      auth.model[oAuth2Token] = model[oAuth2Token];
       break;
     }
   }
@@ -623,14 +662,17 @@ const getAuthConfigInfo = async (auth:ServicesCompDetail) => {
   }
 };
 
-// 记录正在编辑的数据 同时只有一个编辑
+// Track the currently edited item; only one can be edited simultaneously
 const currEditData = ref<ServicesCompDetail>();
 
-// 展开收起 开启关闭编辑
+/**
+ * Toggle expand/collapse of a scheme entry. Ensures pending edits are validated
+ * and warns if there are unsaved changes before switching context.
+ */
 const handleExpand = async (event, auth:ServicesCompDetail) => {
   event.stopPropagation();
   if (!auth.hasModel) {
-    await getAuthConfigInfo(auth);
+    await loadSecuritySchemeDetail(auth);
     oldSecurityConfigList.value = JSON.parse(JSON.stringify(securityConfigList.value));
   }
 
@@ -639,11 +681,11 @@ const handleExpand = async (event, auth:ServicesCompDetail) => {
     if (hasEditData[0].isAdd) {
       securityConfigList.value = securityConfigList.value.filter(item => item.id !== hasEditData[0].id);
     } else {
-      const checkRes = getCheckDataResult(hasEditData[0]);
+      const checkRes = hasValidationErrors(hasEditData[0]);
       if (checkRes) {
         return;
       }
-      if (getCheckUpdateRes()) {
+      if (hasUnsavedChangesAndWarn()) {
         return;
       }
     }
@@ -652,13 +694,16 @@ const handleExpand = async (event, auth:ServicesCompDetail) => {
   if (!auth.isExpand) {
     auth.isEdit = false;
   }
-  setEditFalseExceptId(securityConfigList.value, auth.id);
+  collapseAndDisableEditExcept(securityConfigList.value, auth.id);
 };
 
-// 提起公共代码 校验数据未保存
-const getCheckUpdateRes = () => {
+/**
+ * Check if current editing entry has unsaved changes. If yes, show a warning.
+ * Returns true when there are unsaved changes to block navigation.
+ */
+const hasUnsavedChangesAndWarn = () => {
   if (currEditData.value) {
-    const hasUpdate = checkUpdate(securityConfigList.value.filter(item => item.id === currEditData.value?.id)[0]);
+    const hasUpdate = isDataChanged(securityConfigList.value.filter(item => item.id === currEditData.value?.id)[0]);
     if (hasUpdate) {
       notification.warning(t('service.securityModal.rule'));
       return true;
@@ -667,8 +712,10 @@ const getCheckUpdateRes = () => {
   return false;
 };
 
-// 判断编辑的数据有无改变
-const checkUpdate = (newData:ServicesCompDetail) => {
+/**
+ * Compare a scheme entry with its snapshot to determine if data changed.
+ */
+const isDataChanged = (newData:ServicesCompDetail) => {
   const _oldDataList = oldSecurityConfigList.value.filter(item => item?.id === newData?.id);
   if (!_oldDataList?.length) {
     return true;
@@ -682,11 +729,14 @@ const checkUpdate = (newData:ServicesCompDetail) => {
 };
 
 const lastIsExpandState = ref(false);
-// 开启关闭编辑 同时修改展开收起
+/**
+ * Enter edit mode for a scheme entry. Ensures model is loaded and handles
+ * validation states. Only one entry can be edited at a time.
+ */
 const handleEdit = async (event, auth:ServicesCompDetail) => {
   event.stopPropagation();
   if (!auth.hasModel) {
-    await getAuthConfigInfo(auth);
+    await loadSecuritySchemeDetail(auth);
     oldSecurityConfigList.value = JSON.parse(JSON.stringify(securityConfigList.value));
   }
 
@@ -695,11 +745,11 @@ const handleEdit = async (event, auth:ServicesCompDetail) => {
     if (hasEditData[0].isAdd) {
       securityConfigList.value = securityConfigList.value.filter(item => item.id !== hasEditData[0].id);
     } else {
-      const checkRes = getCheckDataResult(hasEditData[0]);
+      const checkRes = hasValidationErrors(hasEditData[0]);
       if (checkRes) {
         return;
       }
-      if (getCheckUpdateRes()) {
+      if (hasUnsavedChangesAndWarn()) {
         return;
       }
     }
@@ -709,35 +759,42 @@ const handleEdit = async (event, auth:ServicesCompDetail) => {
   auth.isEdit = true;
   auth.isExpand = true;
   currEditData.value = auth;
-  setEditFalseExceptId(securityConfigList.value, auth.id);
+  collapseAndDisableEditExcept(securityConfigList.value, auth.id);
 };
 
-// 取消编辑
+/**
+ * Cancel editing. For new entries, remove when multiple entries exist.
+ * For existing entries, revert changes to the last snapshot if modified.
+ */
 const handleCancel = (auth:ServicesCompDetail) => {
-  // 如果取消的是添加的数据
+  // If canceling a newly added item
   if (auth.isAdd) {
-    // 如果列表仅有一条数据 且是添加的 禁止取消，保持展开并且编辑状态
+    // If list has only one item and it is newly added, prevent cancel
     if (securityConfigList.value.length === 1) {
       return;
     }
-    // 如果列表有多条数据 取消后删除添加的数据 并启用添加按钮
+    // If list has multiple items, remove the new item and enable add button
     securityConfigList.value = securityConfigList.value.filter(item => item.id !== auth.id);
     addBtnDisabled.value = false;
     currEditData.value = undefined;
     return;
   }
 
-  //  如果取消的是历史数据 判断数据有没有修改，然后收起详情并取消编辑状态
-  const hasUpdate = checkUpdate(auth);
-  //  如果有修改,取消编辑先恢复数据
+  // If canceling an existing item, check changes then collapse and exit edit
+  const hasUpdate = isDataChanged(auth);
+  // If modified, restore data from snapshot before exiting
   if (hasUpdate) {
     const oldSync = oldSecurityConfigList.value.find(item => item.id === auth.id);
-    Object.keys(oldSync).every((key) => {
-      if (!['hasModel', 'isAdd', 'isEdit', 'isExpand'].includes(key)) {
-        auth[key] = oldSync[key];
-      }
-      return true;
-    });
+    if (!oldSync) {
+      // Nothing to restore if snapshot is missing
+    } else {
+      Object.keys(oldSync).every((key) => {
+        if (!['hasModel', 'isAdd', 'isEdit', 'isExpand'].includes(key)) {
+          auth[key] = oldSync[key];
+        }
+        return true;
+      });
+    }
   }
   auth.isEdit = false;
   auth.isExpand = lastIsExpandState.value;
@@ -745,8 +802,10 @@ const handleCancel = (auth:ServicesCompDetail) => {
   addBtnDisabled.value = false;
 };
 
-// 收起当前数据之外的数据并取消编辑
-const setEditFalseExceptId = (arr:ServicesCompDetail[], id:string):void => {
+/**
+ * Collapse all entries and disable edit mode except the specified one.
+ */
+const collapseAndDisableEditExcept = (arr:ServicesCompDetail[], id:string):void => {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].id !== id) {
       arr[i].isEdit = false;
@@ -755,9 +814,11 @@ const setEditFalseExceptId = (arr:ServicesCompDetail[], id:string):void => {
   }
 };
 
-// 添加ApiKey
-const addApiKey = (auth:ServicesCompDetail) => {
-  const hasEmpty = getVariablesHasEmpty(auth);
+/**
+ * Append a new ApiKey entry after validating existing entries are complete.
+ */
+const addApiKeyEntry = (auth:ServicesCompDetail) => {
+  const hasEmpty = hasEmptyApiKeyEntries(auth);
   if (hasEmpty) {
     return;
   }
@@ -770,8 +831,10 @@ const addApiKey = (auth:ServicesCompDetail) => {
   });
 };
 
-// 获取整组ApiKey里有没有空值 有空值触发校验 返回true 否则返回false
-const getVariablesHasEmpty = (auth:ServicesCompDetail):boolean => {
+/**
+ * Determine whether ApiKey entries contain any empty required fields.
+ */
+const hasEmptyApiKeyEntries = (auth:ServicesCompDetail):boolean => {
   let hasEmpty = false;
   if (!auth.model.apiKeyList?.length) {
     return hasEmpty;
@@ -791,12 +854,17 @@ const getVariablesHasEmpty = (auth:ServicesCompDetail):boolean => {
   return hasEmpty;
 };
 
-// 删除变量
-const delApikey = (auth:ServicesCompDetail, index:number) => {
+/**
+ * Remove an ApiKey entry by index.
+ */
+const removeApiKeyEntry = (auth:ServicesCompDetail, index:number) => {
   auth.model.apiKeyList?.splice(index, 1);
 };
 
-const modelTypeChange = (auth:ServicesCompDetail) => {
+/**
+ * Reset validation flags when switching the security scheme type.
+ */
+const resetValidationForModelType = (auth:ServicesCompDetail) => {
   auth.model.tokenErr = false;
   auth.model.oauth2TokenErr = false;
   auth.model.refreshUrlErr = {
@@ -821,6 +889,10 @@ const modelTypeChange = (auth:ServicesCompDetail) => {
 };
 
 const { notify } = useState(['notify'], 'apiSecurityStore');
+
+onMounted(() => {
+  loadSecuritySchemes();
+});
 
 watch(() => notify.value, () => {
   if (props.source === 'modal') {
@@ -887,7 +959,7 @@ const OAuth2AuthorizationTypeOptions = [
         type="primary"
         class="flex items-center"
         :disabled="props.disabled || securityConfigList?.length > 49 || addBtnDisabled"
-        @click="addSecurityConfig">
+        @click="addNewSecurityConfig">
         <Icon icon="icon-jia" class="mr-1" />
         {{ t('actions.add') }}
       </Button>
@@ -909,7 +981,7 @@ const OAuth2AuthorizationTypeOptions = [
           </div>
         </div>
         <div v-if="!auth.isAdd && !auth.isEdit" class="text-3 flex justify-end ml-2 mt-2">
-          <Tooltip title="编辑" placement="top">
+          <Tooltip title="Edit" placement="top">
             <template v-if="props.disabled">
               <Icon
                 icon="icon-shuxie"
@@ -934,7 +1006,7 @@ const OAuth2AuthorizationTypeOptions = [
                 icon="icon-qingchu"
                 class="text-3.5"
                 :class="auth.isAdd?'text-text-placeholder cursor-not-allowed':'hover:text-text-link-hover cursor-pointer'"
-                @click="handelDelete(auth)" />
+                @click="handleDelete(auth)" />
             </template>
           </Tooltip>
         </div>
@@ -962,14 +1034,14 @@ const OAuth2AuthorizationTypeOptions = [
                 dataType="mixin-en"
                 includes="_.-"
                 :placeholder="t('common.placeholders.searchKeyword')"
-                @change="(event)=>authKeyChange(event.target.value,auth)" />
+                @change="(event)=>handleAuthKeyChange(event.target.value,auth)" />
               <div><IconRequired />{{ t('service.securityModal.typeLabel') }}</div>
               <RadioGroup
                 v-model:value="auth.model.type"
                 class="flex flex-wrap mt-2 mb-5"
                 :options="authTypeOptions"
                 :disabled="!auth.isEdit"
-                @change="modelTypeChange(auth)">
+                @change="resetValidationForModelType(auth)">
               </RadioGroup>
               <template v-if="auth.model.type === 'basic'">
                 <div><IconRequired />{{ t('service.securityModal.usernameLabel') }}</div>
@@ -983,7 +1055,7 @@ const OAuth2AuthorizationTypeOptions = [
                   :allowClear="false"
                   :disabled="!auth.isEdit"
                   :placeholder="t('service.securityModal.usernamePlaceholder')"
-                  @change="(event)=>usernameChange(event.target.value,auth)" />
+                  @change="(event)=>handleUsernameChange(event.target.value,auth)" />
                 <div><IconRequired />{{ t('service.securityModal.passwordLabel') }}</div>
                 <Input
                   v-model:value="auth.model.password"
@@ -994,7 +1066,7 @@ const OAuth2AuthorizationTypeOptions = [
                   type="password"
                   size="small"
                   :placeholder="t('service.securityModal.passwordPlaceholder')"
-                  @change="(event)=>passwordChange(event.target.value,auth)" />
+                  @change="(event)=>handlePasswordChange(event.target.value,auth)" />
               </template>
               <template v-if="auth.model.type === 'bearer'">
                 <div><IconRequired />{{ t('service.securityModal.tokenLabel') }} </div>
@@ -1007,7 +1079,7 @@ const OAuth2AuthorizationTypeOptions = [
                     :placeholder="t('service.securityModal.tokenPlaceholder')"
                     :error="auth.model.tokenErr"
                     :disabled="!auth.isEdit"
-                    @change="(event)=>tokenChange(event.target.value,auth)" />
+                    @change="(event)=>handleTokenChange(event.target.value,auth)" />
                 </template>
                 <template v-else>
                   <div class="p-2 bg-bg-disabled break-all whitespace-break-spaces leading-4 mt-2 mb-5 rounded" style="min-height: 26px;">
@@ -1029,13 +1101,13 @@ const OAuth2AuthorizationTypeOptions = [
                           <Icon
                             icon="icon-tianjia"
                             class="cursor-pointer hover:text-text-link-hover"
-                            @click="addApiKey(auth)" />
+                            @click="addApiKeyEntry(auth)" />
                         </template>
                         <template v-if="auth.model.apiKeyList.length !== 1">
                           <Icon
                             icon="icon-jianshao"
                             class="ml-2"
-                            @click="delApikey(auth,apikeyIndex)" />
+                            @click="removeApiKeyEntry(auth,apikeyIndex)" />
                         </template>
                       </span>
                     </div>
@@ -1047,8 +1119,8 @@ const OAuth2AuthorizationTypeOptions = [
                       :allowClear="false"
                       :disabled="!auth.isEdit"
                       :placeholder="t('service.securityModal.apiKeyNamePlaceholder')"
-                      @change="(event)=>apiKeyNameChange(event.target.value,item)" />
-                    <div><IconRequired />值</div>
+                      @change="(event)=>handleApiKeyNameChange(event.target.value,item)" />
+                    <div><IconRequired />Value</div>
                     <Input
                       v-model:value="item.value"
                       size="small"
@@ -1057,8 +1129,8 @@ const OAuth2AuthorizationTypeOptions = [
                       :disabled="!auth.isEdit"
                       :allowClear="false"
                       :placeholder="t('service.securityModal.apiKeyValuePlaceholder')"
-                      @change="(event)=>apiKeyValueChange(event.target.value,item)" />
-                    <div> <IconRequired />位置</div>
+                      @change="(event)=>handleApiKeyValueChange(event.target.value,item)" />
+                    <div> <IconRequired />Position</div>
                     <Select
                       v-model:value="item.in"
                       class="flex-1 mt-2 mb-5"
@@ -1074,39 +1146,39 @@ const OAuth2AuthorizationTypeOptions = [
               <template v-if="auth.model.type === 'oauth2'">
                 <div class="pl-1.75">{{ t('service.securityModal.configToken') }} </div>
                 <RadioGroup
-                  v-model:value="auth.model['x-xc-oauth2-newToken']"
+                  v-model:value="auth.model[newTokenKey]"
                   class="mt-2 mb-5"
                   :disabled="!auth.isEdit">
                   <Radio :value="false">{{ t('service.securityModal.token_had') }}</Radio>
                   <Radio :value="true">{{ t('service.securityModal.token_generate') }}</Radio>
                 </RadioGroup>
-                <template v-if="!auth.model['x-xc-oauth2-newToken']">
+                <template v-if="!auth.model[newTokenKey]">
                   <div>{{ t('service.securityModal.tokenLabel') }}</div>
                   <template v-if="auth.isEdit">
                     <Input
-                      v-model:value="auth.model['x-xc-oauth2-token']"
+                      v-model:value="auth.model[oAuth2Token]"
                       size="small"
                       :placeholder="t('service.securityModal.authKeyPlaceholder')"
                       class="mt-2 mb-5"
                       :maxlength="400"
                       :error="auth.model.tokenErr"
-                      @change="(event)=>oauth2TokenChange(event.target.value,auth)" />
+                      @change="(event)=>handleOauth2TokenChange(event.target.value,auth)" />
                   </template>
                   <template v-else>
                     <div class="p-2 bg-bg-disabled break-all whitespace-break-spaces leading-4 mt-2 mb-5 rounded" style="min-height: 26px;">
-                      <span>{{ auth.model['x-xc-oauth2-token'] }}</span>
+                      <span>{{ auth.model[oAuth2Token] }}</span>
                     </div>
                   </template>
                 </template>
                 <template v-else>
                   <div class="pl-1.75">{{ t('service.securityModal.authFlowLabel') }}</div>
                   <Select
-                    v-model:value="auth.model['x-xc-oauth2-authFlow']"
+                    v-model:value="auth.model[oAuth2Key]"
                     size="small"
                     class="w-full mt-2 mb-5"
                     :disabled="!auth.isEdit"
                     :options="OAuth2AuthorizationTypeOptions" />
-                  <template v-if="['authorizationCode','implicit'].includes(auth.model['x-xc-oauth2-authFlow'])">
+                  <template v-if="['authorizationCode','implicit'].includes(auth.model[oAuth2Key])">
                     <div><IconRequired />{{ t('service.securityModal.authorizationUrlLabel') }}</div>
                     <Input
                       v-model:value="auth.model.authorizationUrl"
@@ -1116,7 +1188,7 @@ const OAuth2AuthorizationTypeOptions = [
                       :disabled="!auth.isEdit"
                       :maxlength="400"
                       :error="auth.model.authorizationUrlErr.isEmpty || auth.model.authorizationUrlErr.isError"
-                      @change="(event)=>tokenUrlChange(event.target.value,auth,'authorizationUrlErr')" />
+                      @change="(event)=>validateRequiredUrlField(event.target.value,auth,'authorizationUrlErr')" />
                     <div class="h-5 text-rule">
                       <template v-if="auth.model.authorizationUrlErr.isError">
                         {{ t('service.securityModal.authorizationUrlRule') }}
@@ -1126,20 +1198,20 @@ const OAuth2AuthorizationTypeOptions = [
                       {{ t('service.securityModal.callbackUrlLabel') }}
                     </div>
                     <Input
-                      v-model:value="auth.model['x-xc-oauth2-callbackUrl']"
+                      v-model:value="auth.model[oAuth2CallbackUrlKey]"
                       size="small"
                       class="mt-2"
                       :placeholder="t('service.securityModal.callbackUrlPlaceholder')"
                       :disabled="!auth.isEdit"
                       :error="auth.model.callbackUrlErr.isError"
-                      @change="(event)=>callbackUrlChange(event.target.value,auth,'callbackUrlErr')" />
+                      @change="(event)=>validateOptionalUrlField(event.target.value,auth,'callbackUrlErr')" />
                     <div class="h-5 text-rule">
                       <template v-if="auth.model.callbackUrlErr.isError">
                         {{ t('service.securityModal.callbackUrlRule') }}
                       </template>
                     </div>
                   </template>
-                  <template v-if="!['implicit'].includes(auth.model['x-xc-oauth2-authFlow'])">
+                  <template v-if="!['implicit'].includes(auth.model[oAuth2Key])">
                     <div><IconRequired />{{ t('service.securityModal.tokenUrlLabel') }}</div>
                     <Input
                       v-model:value="auth.model.tokenUrl"
@@ -1149,7 +1221,7 @@ const OAuth2AuthorizationTypeOptions = [
                       :disabled="!auth.isEdit"
                       :maxlength="400"
                       :error="auth.model.tokenUrlErr.isEmpty || auth.model.tokenUrlErr.isError"
-                      @change="(event)=>tokenUrlChange(event.target.value,auth,'tokenUrlErr')" />
+                      @change="(event)=>validateRequiredUrlField(event.target.value,auth,'tokenUrlErr')" />
                     <div class="h-5 text-rule">
                       <template v-if="auth.model.tokenUrlErr.isError">
                         {{ t('service.securityModal.tokenUrlRule') }}
@@ -1165,7 +1237,7 @@ const OAuth2AuthorizationTypeOptions = [
                     :maxlength="400"
                     :disabled="!auth.isEdit"
                     :error="auth.model.refreshUrlErr.isError"
-                    @change="(event)=>callbackUrlChange(event.target.value,auth,'refreshUrlErr')" />
+                    @change="(event)=>validateOptionalUrlField(event.target.value,auth,'refreshUrlErr')" />
                   <div class="h-5 text-rule">
                     <template v-if="auth.model.refreshUrlErr.isError">
                       {{ t('service.securityModal.refreshUrlRule') }}
@@ -1173,7 +1245,7 @@ const OAuth2AuthorizationTypeOptions = [
                   </div>
                   <div class="pl-1.75">{{ t('service.securityModal.clientIdLabel') }}</div>
                   <Input
-                    v-model:value="auth.model['x-xc-oauth2-clientId']"
+                    v-model:value="auth.model[oAuth2ClientIdKey]"
                     size="small"
                     :placeholder="t('service.securityModal.clientIdPlaceholder')"
                     class="mt-2 mb-5"
@@ -1182,16 +1254,16 @@ const OAuth2AuthorizationTypeOptions = [
                   <div class="pl-1.75">{{ t('service.securityModal.clientSecretLabel') }}</div>
                   <Input
                     v-model:value="
-                      auth.model['x-xc-oauth2-clientSecret']"
+                      auth.model[oAuth2ClientSecretKey]"
                     size="small"
                     class="mt-2 mb-5"
                     :placeholder="t('service.securityModal.clientSecretPlaceholder')"
                     :maxlength="400"
                     :disabled="!auth.isEdit" />
-                  <template v-if="auth.model['x-xc-oauth2-authFlow'] === 'password'">
+                  <template v-if="auth.model[oAuth2Key] === 'password'">
                     <div><IconRequired />{{ t('service.securityModal.usernameLabel') }}</div>
                     <Input
-                      v-model:value="auth.model['x-xc-oauth2-username']"
+                      v-model:value="auth.model[oAuth2UsernameKey]"
                       type="input"
                       class="mt-2 mb-5"
                       size="small"
@@ -1200,13 +1272,13 @@ const OAuth2AuthorizationTypeOptions = [
                       :allowClear="false"
                       :disabled="!auth.isEdit"
                       :placeholder="t('service.securityModal.usernamePlaceholder')"
-                      @change="(event)=>usernameChange(event.target.value,auth)" />
+                      @change="(event)=>handleUsernameChange(event.target.value,auth)" />
                     <div>
                       <IconRequired />
                       {{ t('service.securityModal.passwordLabel') }}
                     </div>
                     <Input
-                      v-model:value="auth.model['x-xc-oauth2-password']"
+                      v-model:value="auth.model[oAuth2PasswordKey]"
                       :error="auth.model.passwordErr"
                       :maxlength="1024"
                       :disabled="!auth.isEdit"
@@ -1214,7 +1286,7 @@ const OAuth2AuthorizationTypeOptions = [
                       type="password"
                       size="small"
                       :placeholder="t('service.securityModal.passwordPlaceholder')"
-                      @change="(event)=>passwordChange(event.target.value,auth)" />
+                      @change="(event)=>handlePasswordChange(event.target.value,auth)" />
                   </template>
                   <div><IconRequired />Scopes</div>
                   <Select
@@ -1226,10 +1298,10 @@ const OAuth2AuthorizationTypeOptions = [
                     :open="false"
                     :tokenSeparators="[',']"
                     :placeholder="t('service.securityModal.scopesPlaceholder')"
-                    @change="(value)=>scopesChange(value,auth)" />
+                    @change="(value)=>handleScopesChange(value,auth)" />
                   <div class="pl-1.75">{{ t('service.securityModal.clientAuthTypeLabel') }}</div>
                   <SelectEnum
-                    v-model:value="auth.model['x-xc-oauth2-clientAuthType']"
+                    v-model:value="auth.model[oAuth2ClientAuthTypeKey]"
                     :disabled="!auth.isEdit"
                     class="w-full mt-2 mb-5"
                     enumKey="AuthClientIn"

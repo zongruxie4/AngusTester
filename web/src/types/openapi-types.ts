@@ -20,6 +20,12 @@ export const API_EXTENSION_KEYS = {
   newTokenKey: 'x-xc-oauth2-newToken', // Whether to use generated auth token
   oAuth2Key: 'x-xc-oauth2-authFlow', // Token generation authorization type
   oAuth2Token: 'x-xc-oauth2-token', // Existing token
+  oAuth2CallbackUrlKey: 'x-xc-oauth2-callbackUrl', // OAuth2 callback URL
+  oAuth2ClientIdKey: 'x-xc-oauth2-clientId', // OAuth2 client id
+  oAuth2ClientSecretKey: 'x-xc-oauth2-clientSecret', // OAuth2 client secret
+  oAuth2UsernameKey: 'x-xc-oauth2-username', // OAuth2 resource owner username
+  oAuth2PasswordKey: 'x-xc-oauth2-password', // OAuth2 resource owner password
+  oAuth2ClientAuthTypeKey: 'x-xc-oauth2-clientAuthType', // OAuth2 client auth type
   formContentTypeKey: 'x-xc-contentType',
   basicAuthKey: 'x-xc-basicAuth',
   wsMessageKey: 'x-wsMessage'
@@ -581,11 +587,13 @@ export namespace OpenAPIV3 {
     callbacks?: { [key: string]: ReferenceObject | CallbackObject };
   }
 
+
   export type SecuritySchemeObject =
     | HttpSecurityScheme
     | ApiKeySecurityScheme
     | OAuth2SecurityScheme
     | OpenIdSecurityScheme;
+
 
   export interface HttpSecurityScheme {
     type: 'http';
