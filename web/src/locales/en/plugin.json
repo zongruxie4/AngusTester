@@ -1546,8 +1546,8 @@
     "selectApiModal": {
       "title": "Select Interface",
       "treeSelect": {
-        "label": "Project/Service",
-        "placeholder": "Please select project/service"
+        "label": "Service",
+        "placeholder": "Please select service"
       },
       "input": {
         "placeholder": "Search interface name"

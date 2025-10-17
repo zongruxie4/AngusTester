@@ -5,6 +5,7 @@ import { Button, Checkbox, Upload } from 'ant-design-vue';
 import { Icon, Input, Select, notification } from '@xcan-angus/vue-ui';
 import { utils, duration, codeUtils } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+import { useI18n } from 'vue-i18n';
 
 import { RequestBodyFormItem } from '../PropsType';
 const { ungzip, gzip } = codeUtils;
@@ -20,6 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   hasFileType: false
 });
 
+const { t } = useI18n();
 
 const emit = defineEmits<{
   (e: 'change', index: number, data: RequestBodyFormItem): void;

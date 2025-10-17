@@ -199,7 +199,7 @@ const hintTextMap = {
     </div>
 
     <div v-if="tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
-      <img style="width:100px;" src="images/nodata.png">
+      <img style="width:100px;" src="./images/nodata.png">
       <div class="flex items-center text-theme-sub-content text-3">
         <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.noDatasetsDefined') }}</span>
       </div>

@@ -34,7 +34,7 @@ const emit = defineEmits<{
 
 const ParameterInput = defineAsyncComponent(() => import('./ParameterInput.vue'));
 const AssertionForm = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/AssertionForm/index.vue'));
-const ServerUri = defineAsyncComponent(() => import('./ServerUri/index.vue'));
+const ServerEndpoint = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/ServerEndpoint/index.vue'));
 
 const queryRef = ref();
 const headerRef = ref();
@@ -421,10 +421,10 @@ const autoSize = {
           <div class="flex-1">
             <div class="flex items-start space-x-2 flex-1">
               <Validate class="flex-1" :text="urlErrorMessage">
-                <ServerUri
+                <ServerEndpoint
                   v-if="apisId"
                   :server="server"
-                  :uri="endpoint"
+                  :endpoint="endpoint"
                   @change="serverChange" />
                 <Input
                   v-else

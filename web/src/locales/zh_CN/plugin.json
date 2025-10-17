@@ -1538,8 +1538,8 @@
     "selectApiModal": {
       "title": "选择接口",
       "treeSelect": {
-        "label": "项目/服务",
-        "placeholder": "请选择项目/服务"
+        "label": "服务",
+        "placeholder": "请选择服务"
       },
       "input": {
         "placeholder": "查询接口名称"

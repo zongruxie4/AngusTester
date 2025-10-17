@@ -40,7 +40,8 @@ const props = withDefaults(defineProps<Props>(), {
   updateRefreshNotify: undefined,
   updateTabPane: undefined,
   getTabPane: undefined,
-  replaceTabPane: undefined
+  replaceTabPane: undefined,
+  projectId: ''
 });
 
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
@@ -1406,6 +1407,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
               ref="uiConfigRef"
               :loaded="loaded"
               :value="scenarioConfigData?.script?.task?.pipelines"
+              :projectId="props.projectId"
               @errorNumChange="taskErrorNumChange"
               @renderChange="renderChange" />
           </AsyncComponent>

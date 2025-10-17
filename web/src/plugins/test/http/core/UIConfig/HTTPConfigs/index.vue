@@ -64,7 +64,7 @@ const emit = defineEmits<{
 }>();
 
 const ExecAuthencation = defineAsyncComponent(() => import('@/components/ExecAuthencation/index.vue'));
-const ServerEndpoint = defineAsyncComponent(() => import('./ServerEndpoint/index.vue'));
+const ServerEndpoint = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/ServerEndpoint/index.vue'));
 const ActionsGroup = defineAsyncComponent(() => import('../ActionsGroup/index.vue'));
 const AssertionForm = defineAsyncComponent(() => import('./AssertionForm/index.vue'));
 const RequestBody = defineAsyncComponent(() => import('./RequestBody/index.vue'));
