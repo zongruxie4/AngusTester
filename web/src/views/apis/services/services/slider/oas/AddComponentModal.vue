@@ -7,7 +7,7 @@ import YAML from 'yaml';
 import { useI18n } from 'vue-i18n';
 import { services } from '@/api/tester';
 import { API_EXTENSION_KEY } from '@/utils/apis';
-import { OpenAPIV3 } from '@/types/openapi-types';
+import { OpenAPIV3_1 } from '@/types/openapi-types';
 import { ServicesCompType } from '@/enums/enums';
 import { ServicesCompDetail } from '@/views/apis/services/services/types';
 
@@ -76,14 +76,14 @@ const title = computed(() => {
 const compName = ref('');
 
 // Example object state for "examples" type
-const examples = ref<OpenAPIV3.ExampleObject>({
+const examples = ref<OpenAPIV3_1.ExampleObject>({
   value: '',
   summary: '',
   description: ''
 });
 
 // Header object state for "headers" type
-const headers = ref<OpenAPIV3.HeaderObject>({
+const headers = ref<OpenAPIV3_1.HeaderObject>({
   description: '',
   schema: {
     type: 'string',

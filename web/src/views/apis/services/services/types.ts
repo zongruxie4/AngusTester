@@ -1,7 +1,7 @@
 import { i18n, EnumMessage } from '@xcan-angus/infra';
 import { ref } from 'vue';
 import { ApiSource, ApiStatus, ApiImportSource, ServicesCompType } from '@/enums/enums';
-import { OpenAPIV3 } from '@/types/openapi-types';
+import { OpenAPIV3_1 } from '@/types/openapi-types';
 
 const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
 
@@ -21,11 +21,11 @@ export type ServicesInfo = {
 export type ServiceSchemaDetail = {
   serviceId: number;
   openapi: string;
-  info: OpenAPIV3.InfoObject;
-  externalDocs: OpenAPIV3.ExternalDocumentationObject;
-  servers: OpenAPIV3.ServerObject[];
-  security: OpenAPIV3.SecurityRequirementObject[];
-  tags: OpenAPIV3.TagObject[];
+  info: OpenAPIV3_1.InfoObject;
+  externalDocs: OpenAPIV3_1.ExternalDocumentationObject;
+  servers: OpenAPIV3_1.ServerObject[];
+  security: OpenAPIV3_1.SecurityRequirementObject[];
+  tags: OpenAPIV3_1.TagObject[];
   extensions: Record<string, any>;
   specVersion: string;
   lastModifiedBy: number;
@@ -74,6 +74,33 @@ export type ServicesCompDetail = {
   copyLoading: boolean; // UI: copy action loading
   delLoading: boolean; // UI: delete action loading
   quoteName?: string; // last referenced name chain
+}
+
+export interface ExternalDocInfo extends OpenAPIV3_1.ExternalDocumentationObject{
+  // Temp fields in web
+  urlErr: {
+    emptyUrl: boolean;
+    errUrl: boolean;
+  };
+  ellipsis?: boolean;
+  showEllipsis?:boolean;
+}
+
+export interface TagInfo extends OpenAPIV3_1.TagObject{
+  name: string;
+  description?: string;
+  externalDocs:ExternalDocsObj;
+
+  // Temp fields in web
+  id: string;
+  isEdit: boolean;
+  isExpand: boolean;
+  isAdd: boolean;
+  delLoading: boolean;
+  saveLoading: boolean;
+  nameErr: boolean;
+  ellipsis: boolean;
+  showEllipsis:boolean;
 }
 
 export interface ModalsConfig {

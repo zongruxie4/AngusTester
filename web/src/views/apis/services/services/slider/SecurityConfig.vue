@@ -100,7 +100,7 @@ const newData:AuthConfigObj = {
   isAdd: true,
   isExpand: true,
   delLoading: false,
-  saveloading: false,
+  saveLoading: false,
   keyErr: false,
   hasModel: false
 };
@@ -132,7 +132,7 @@ const loadAuthConfig = async () => {
     isAdd: false,
     isExpand: false,
     delLoading: false,
-    saveloading: false,
+    saveLoading: false,
     keyErr: false,
     hasModel: false,
     model: modelData

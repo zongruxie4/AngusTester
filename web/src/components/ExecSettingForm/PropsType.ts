@@ -117,7 +117,7 @@ export type VariableObj = {
   isExpand: boolean;
   isAdd: boolean;
   delLoading: boolean;
-  saveloading: boolean;
+  saveLoading: boolean;
   nameErr: boolean;
   valueErr: boolean;
   type: boolean;

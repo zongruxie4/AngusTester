@@ -6,8 +6,8 @@ import { Button, Textarea, Tooltip, TypographyParagraph } from 'ant-design-vue';
 import { services } from '@/api/tester';
 import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-
-import { SaveParams, TagObj } from '../../../components/Tag';
+import { OpenAPIV3_1 } from '@/types/openapi-types';
+import { TagInfo } from '@/views/apis/services/services/types';
 
 interface Props {
   visible: boolean;
@@ -25,8 +25,17 @@ const { t } = useI18n();
 
 const emit = defineEmits<{(e: 'update:visible', value:boolean): void}>();
 
-// 空数据
-const newData:TagObj = {
+// Data State
+const tagList = ref<TagInfo[]>([]);
+const originalTagList = ref<TagInfo[]>([]);
+const isLoading = ref(false);
+const isAddButtonDisabled = ref(false);
+const currentEditingTag = ref<TagInfo>();
+const lastExpandState = ref(false);
+const tagListRef = ref<HTMLElement | null>();
+
+// Template for new tag data
+const newTagTemplate: TagInfo = {
   id: utils.uuid('api'),
   name: '',
   description: '',
@@ -49,25 +58,25 @@ const newData:TagObj = {
   showEllipsis: false
 };
 
-const tagList = ref<TagObj[]>([]);
-const oldtagList = ref<TagObj[]>([]);
-const loading = ref(false);
-// 初始化配置
-const getProjectSchematagList = async () => {
-  loading.value = true;
+/**
+ * Load tag list from API
+ */
+const loadTagList = async () => {
+  isLoading.value = true;
   const [error, { data }] = await services.getServicesSchemaTag(props.id);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
-  // // 如果没有历史数据 默认展示一条空数据
+
+  // If no data, show empty template
   if (!data?.length) {
-    tagList.value = [JSON.parse(JSON.stringify(newData))];
-    // 记录正在编辑的数据 编辑逻辑需要
-    currEditData.value = tagList.value[0];
+    tagList.value = [JSON.parse(JSON.stringify(newTagTemplate))];
+    currentEditingTag.value = tagList.value[0];
     return;
   }
 
+  // Map API data to component format
   tagList.value = data.map(item => ({
     ...item,
     id: utils.uuid('api'),
@@ -75,7 +84,7 @@ const getProjectSchematagList = async () => {
     isAdd: false,
     isExpand: false,
     delLoading: false,
-    saveloading: false,
+    saveLoading: false,
     nameErr: false,
     ellipsis: false,
     showEllipsis: false,
@@ -89,49 +98,50 @@ const getProjectSchematagList = async () => {
       }
     }
   }));
-  // 记录历史数据
-  oldtagList.value = JSON.parse(JSON.stringify(tagList.value));
-  // 启用添加
-  addBtnDisabled.value = false;
+
+  // Store original data for comparison
+  originalTagList.value = JSON.parse(JSON.stringify(tagList.value));
+  isAddButtonDisabled.value = false;
 };
 
-// 添加按钮禁用状态
-const addBtnDisabled = ref(false);
-
-// 添加新配置
-const addSyncInfo = () => {
-  const hasEditData = tagList.value.filter(item => item.isEdit);
-  if (hasEditData?.length) {
-    const checkRes = getCheckDataResult(hasEditData[0]);
-    if (checkRes) {
+/**
+ * Add new tag to the list
+ */
+const addNewTag = () => {
+  const editingTags = tagList.value.filter(item => item.isEdit);
+  if (editingTags?.length) {
+    const validationResult = validateTagData(editingTags[0]);
+    if (validationResult) {
       return;
     }
-    if (getChenkUpdateRes()) {
+    if (checkUnsavedChanges()) {
       return;
     }
   }
 
+  // If first item is already being added, reset it
   if (tagList.value[0]?.isAdd) {
-    tagList.value[0] = { ...JSON.parse(JSON.stringify(newData)), id: tagList.value[0].id };
+    tagList.value[0] = { ...JSON.parse(JSON.stringify(newTagTemplate)), id: tagList.value[0].id };
     return;
   }
-  // 列表开始位置添加一条新数据
-  tagList.value.unshift(JSON.parse(JSON.stringify(newData)));
-  // 记录正在编辑的数据(编辑逻辑需要)
-  currEditData.value = tagList.value[0];
-  // 追加后禁用添加按钮
-  addBtnDisabled.value = true;
-  setEditFalseExceptId(tagList.value, currEditData.value.id);
+
+  // Add new tag at the beginning
+  tagList.value.unshift(JSON.parse(JSON.stringify(newTagTemplate)));
+  currentEditingTag.value = tagList.value[0];
+  isAddButtonDisabled.value = true;
+  setOtherTagsToNonEdit(tagList.value, currentEditingTag.value.id);
 };
 
-// 删除配置
-const hanldeDelete = async (tag:TagObj) => {
+/**
+ * Delete tag from list
+ */
+const deleteTag = async (tag: TagInfo) => {
   if (tag.delLoading) {
     return;
   }
-  // 如果是添加数据 直接删除
+
+  // If it's a new tag, just remove from list
   if (tag.isAdd) {
-    // 判断列表是否剩余一条数据 剩余一条数据禁止删除
     if (tagList.value.length === 1) {
       return;
     }
@@ -139,69 +149,75 @@ const hanldeDelete = async (tag:TagObj) => {
     return;
   }
 
-  loading.value = true;
+  // Delete from API
+  isLoading.value = true;
   const [error] = await services.delServicesSchemaTag(props.id, [tag.name]);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
-  notification.success(t('actions.tips.deleteSuccess'));
-  // 如果删除成功
-  tagList.value = tagList.value.filter(item => item.id !== tag.id);
-  oldtagList.value = oldtagList.value.filter(item => item.id !== tag.id);
 
-  // 如果列表没有数据 删除后添加一条添加的数据
+  notification.success(t('actions.tips.deleteSuccess'));
+  tagList.value = tagList.value.filter(item => item.id !== tag.id);
+  originalTagList.value = originalTagList.value.filter(item => item.id !== tag.id);
+
+  // If no tags left, add empty template
   if (tagList.value.length === 0) {
-    tagList.value.unshift(JSON.parse(JSON.stringify(newData)));
+    tagList.value.unshift(JSON.parse(JSON.stringify(newTagTemplate)));
   }
 };
 
-// 保存
-const handleSave = (tag:TagObj) => {
-  // 校验有没有空项
-  const checkRes = getCheckDataResult(tag);
-  if (checkRes) {
+/**
+ * Save tag changes
+ */
+const saveTag = (tag: TagInfo) => {
+  const validationResult = validateTagData(tag);
+  if (validationResult) {
     return;
   }
 
-  // 如果是添加数据 判断url有没有重复
+  // Check for duplicate names in new tags
   if (tag.isAdd) {
-    const len = tagList.value.filter(item => item.name === tag.name)?.length;
-    if (len >= 2) {
+    const duplicateCount = tagList.value.filter(item => item.name === tag.name)?.length;
+    if (duplicateCount >= 2) {
       notification.warning(t('service.tag.messages.nameExists'));
       tag.nameErr = true;
       return;
     }
   } else {
-    // 如果是旧数据 判断数据有没有修改
-    if (!chenkUpdate(tag)) {
+    // Check if data has changed for existing tags
+    if (!hasDataChanged(tag)) {
       tag.isEdit = false;
-      tag.isExpand = lastIsExpandState.value;
+      tag.isExpand = lastExpandState.value;
       return;
     }
   }
-  saveNewData(tag);
+  saveTagToAPI(tag);
 };
 
-const saveNewData = async (tag:TagObj) => {
-  // 如果是添加数据 判断url有没有重复
+/**
+ * Save tag data to API
+ */
+const saveTagToAPI = async (tag: TagInfo) => {
+  // Check for duplicate names in new tags
   if (tag.isAdd) {
-    const len = tagList.value.filter(item => item.name === tag.name)?.length;
-    if (len >= 2) {
+    const duplicateCount = tagList.value.filter(item => item.name === tag.name)?.length;
+    if (duplicateCount >= 2) {
       notification.warning(t('service.tag.messages.nameExists'));
       tag.nameErr = true;
       return;
     }
   } else {
-    // 如果是旧数据 判断数据有没有修改
-    if (!chenkUpdate(tag)) {
+    // Check if data has changed for existing tags
+    if (!hasDataChanged(tag)) {
       tag.isEdit = false;
-      tag.isExpand = lastIsExpandState.value;
+      tag.isExpand = lastExpandState.value;
       return;
     }
   }
 
-  let params:SaveParams = {
+  // Build API parameters
+  let params: OpenAPIV3_1.TagObject = {
     name: tag.name
   };
   if (tag.description) {
@@ -225,59 +241,100 @@ const saveNewData = async (tag:TagObj) => {
     }
   }
 
-  loading.value = true;
+  isLoading.value = true;
   const [error] = await services.addServicesSchemaTag(props.id, params);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return false;
   }
-  oldtagList.value = JSON.parse(JSON.stringify(tagList.value));
+
+  originalTagList.value = JSON.parse(JSON.stringify(tagList.value));
   tag.isEdit = false;
-  tag.isExpand = lastIsExpandState.value;
-  addBtnDisabled.value = false;
-  currEditData.value = undefined;
+  tag.isExpand = lastExpandState.value;
+  isAddButtonDisabled.value = false;
+  currentEditingTag.value = undefined;
   notification.success(t('actions.tips.saveSuccess'));
   if (tag.isAdd) {
     tag.isAdd = false;
   }
 };
 
-// 检查提交的数据有没有空项 有空项返回true 否则返回false
-const getCheckDataResult = (_data:TagObj):boolean => {
+/**
+ * Validate tag data for required fields
+ */
+const validateTagData = (tag: TagInfo): boolean => {
   let hasEmpty = false;
-  if (!_data.name) {
-    _data.nameErr = true;
+  if (!tag.name) {
+    tag.nameErr = true;
     hasEmpty = true;
   }
 
-  if (_data.externalDocs.description) {
-    if (!_data.externalDocs.url) {
-      _data.externalDocs.urlErr.emptyUrl = true;
+  if (tag.externalDocs.description) {
+    if (!tag.externalDocs.url) {
+      tag.externalDocs.urlErr.emptyUrl = true;
       hasEmpty = true;
     }
   }
   return hasEmpty;
 };
 
-onMounted(() => {
-  getProjectSchematagList();
-});
+/**
+ * Check if there are unsaved changes in current editing tag
+ */
+const checkUnsavedChanges = () => {
+  if (currentEditingTag.value) {
+    const hasUpdate = hasDataChanged(tagList.value.filter(item => item.id === currentEditingTag.value?.id)[0]);
+    if (hasUpdate) {
+      notification.warning(t('service.tag.messages.dataNotSaved'));
+      return true;
+    }
+  }
+  return false;
+};
 
-// 记录正在编辑的数据 同时只有一个编辑
-const currEditData = ref<TagObj>();
+/**
+ * Check if tag data has changed from original
+ */
+const hasDataChanged = (newData: TagInfo) => {
+  const originalDataList = originalTagList.value.filter(item => item?.id === newData?.id);
+  if (!originalDataList.length) {
+    return false;
+  }
+  const originalData = {
+    name: originalDataList[0].name,
+    description: originalDataList[0]?.description || '',
+    externalDocs: {
+      description: originalDataList[0].externalDocs?.description || '',
+      url: originalDataList[0]?.externalDocs?.url || ''
+    },
+    id: originalDataList[0].id
+  };
+  const currentData = {
+    name: newData.name,
+    description: newData?.description || '',
+    externalDocs: {
+      description: newData.externalDocs?.description || '',
+      url: newData?.externalDocs?.url || ''
+    },
+    id: newData.id
+  };
+  return !utils.deepCompare(originalData, currentData);
+};
 
-// 展开收起 开启关闭编辑
-const handleExpand = (tag:TagObj) => {
-  const hasEditData = tagList.value.filter(item => item.isEdit);
-  if (hasEditData?.length) {
-    if (hasEditData[0].isAdd) {
-      tagList.value = tagList.value.filter(item => item.id !== hasEditData[0].id);
+/**
+ * Toggle tag expand/collapse state
+ */
+const toggleTagExpand = (tag: TagInfo) => {
+  const editingTags = tagList.value.filter(item => item.isEdit);
+  if (editingTags?.length) {
+    if (editingTags[0].isAdd) {
+      tagList.value = tagList.value.filter(item => item.id !== editingTags[0].id);
     } else {
-      const checkRes = getCheckDataResult(hasEditData[0]);
-      if (checkRes) {
+      const validationResult = validateTagData(editingTags[0]);
+      if (validationResult) {
         return;
       }
-      if (getChenkUpdateRes()) {
+      if (checkUnsavedChanges()) {
         return;
       }
     }
@@ -287,119 +344,82 @@ const handleExpand = (tag:TagObj) => {
   if (!tag.isExpand) {
     tag.isEdit = false;
   }
-  setEditFalseExceptId(tagList.value, tag.id);
-  addBtnDisabled.value = false;
+  setOtherTagsToNonEdit(tagList.value, tag.id);
+  isAddButtonDisabled.value = false;
 };
 
-// 提起公共代码 校验数据未保存
-const getChenkUpdateRes = () => {
-  if (currEditData.value) {
-    const hasUpdate = chenkUpdate(tagList.value.filter(item => item.id === currEditData.value?.id)[0]);
-    if (hasUpdate) {
-      notification.warning(t('service.tag.messages.dataNotSaved'));
-      return true;
-    }
-  }
-  return false;
-};
-
-const lastIsExpandState = ref(false);
-// 开启关闭编辑 同时修改展开收起
-const handleEdit = (tag:TagObj) => {
-  const hasEditData = tagList.value.filter(item => item.isEdit);
-  if (hasEditData?.length) {
-    if (hasEditData[0].isAdd) {
-      tagList.value = tagList.value.filter(item => item.id !== hasEditData[0].id);
-      addBtnDisabled.value = false;
+/**
+ * Start editing a tag
+ */
+const startEditingTag = (tag: TagInfo) => {
+  const editingTags = tagList.value.filter(item => item.isEdit);
+  if (editingTags?.length) {
+    if (editingTags[0].isAdd) {
+      tagList.value = tagList.value.filter(item => item.id !== editingTags[0].id);
+      isAddButtonDisabled.value = false;
     } else {
-      const checkRes = getCheckDataResult(hasEditData[0]);
-      if (checkRes) {
+      const validationResult = validateTagData(editingTags[0]);
+      if (validationResult) {
         return;
       }
-      if (getChenkUpdateRes()) {
+      if (checkUnsavedChanges()) {
         return;
       }
     }
   }
 
-  lastIsExpandState.value = tag.isExpand;
+  lastExpandState.value = tag.isExpand;
   tag.isEdit = true;
   tag.isExpand = true;
   tag.showEllipsis = false;
   tag.ellipsis = false;
   tag.externalDocs.showEllipsis = false;
   tag.externalDocs.ellipsis = false;
-  currEditData.value = tag;
-  setEditFalseExceptId(tagList.value, tag.id);
-  addBtnDisabled.value = false;
+  currentEditingTag.value = tag;
+  setOtherTagsToNonEdit(tagList.value, tag.id);
+  isAddButtonDisabled.value = false;
 };
 
-// 取消编辑
-const cancelEdit = (tag:TagObj) => {
-  // 如果取消的是添加的数据
+/**
+ * Cancel editing a tag
+ */
+const cancelEditingTag = (tag: TagInfo) => {
+  // If canceling a new tag
   if (tag.isAdd) {
-    // 如果列表仅有一条数据 且是添加的 禁止取消，保持展开并且编辑状态
     if (tagList.value.length === 1) {
       emit('update:visible', false);
       return;
     }
-    // 如果列表有多条数据 取消后删除添加的数据 并启用添加按钮
     tagList.value = tagList.value.filter(item => item.id !== tag.id);
-    addBtnDisabled.value = false;
-    currEditData.value = undefined;
+    isAddButtonDisabled.value = false;
+    currentEditingTag.value = undefined;
     return;
   }
 
-  //  如果取消的是历史数据 判断数据有没有修改，然后收起详情并取消编辑状态
-  const hasUpdate = chenkUpdate(tag);
-  //  如果有修改,取消编辑先恢复数据
+  // If canceling an existing tag, restore original data if changed
+  const hasUpdate = hasDataChanged(tag);
   if (hasUpdate) {
-    const oldSync = oldtagList.value.find(item => item.id === tag.id);
+    const originalTag = originalTagList.value.find(item => item.id === tag.id);
     for (let i = 0; i < tagList.value.length; i++) {
       if (tag.id === tagList.value[i].id) {
-        tagList.value[i] = oldSync ? JSON.parse(JSON.stringify(oldSync)) : tag;
+        tagList.value[i] = originalTag ? JSON.parse(JSON.stringify(originalTag)) : tag;
         tagList.value[i].isEdit = false;
-        tagList.value[i].isExpand = lastIsExpandState.value;
+        tagList.value[i].isExpand = lastExpandState.value;
         break;
       }
     }
   }
 
   tag.isEdit = false;
-  tag.isExpand = lastIsExpandState.value;
-  currEditData.value = undefined;
-  addBtnDisabled.value = false;
+  tag.isExpand = lastExpandState.value;
+  currentEditingTag.value = undefined;
+  isAddButtonDisabled.value = false;
 };
 
-// 判断编辑的数据有无改变
-const chenkUpdate = (newData:TagObj) => {
-  const _oldDataList = oldtagList.value.filter(item => item?.id === newData?.id);
-  if (!_oldDataList.length) {
-    return false;
-  }
-  const _oldData = {
-    name: _oldDataList[0].name,
-    description: _oldDataList[0]?.description || '',
-    externalDocs: {
-      description: _oldDataList[0].externalDocs?.description || '',
-      url: _oldDataList[0]?.externalDocs?.url || ''
-    },
-    id: _oldDataList[0].id
-  };
-  const _newData = {
-    name: newData.name,
-    description: newData?.description || '',
-    externalDocs: {
-      description: newData.externalDocs?.description || '',
-      url: newData?.externalDocs?.url || ''
-    },
-    id: newData.id
-  };
-  return !utils.deepCompare(_oldData, _newData);
-};
-
-// 收起当前数据之外的数据并取消编辑
-const setEditFalseExceptId = (arr:TagObj[], id:string):void => {
+/**
+ * Set all other tags to non-edit state except the specified one
+ */
+const setOtherTagsToNonEdit = (arr: TagInfo[], id: string): void => {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].id !== id) {
       arr[i].isEdit = false;
@@ -408,13 +428,12 @@ const setEditFalseExceptId = (arr:TagObj[], id:string):void => {
   }
 };
 
-const tagListRef = ref<HTMLElement | null>();
-
-const tagNameChange = debounce(duration.search, (value:string, tag:TagObj) => {
+// Event Handlers
+const handleTagNameChange = debounce(duration.search, (value: string, tag: TagInfo) => {
   tag.nameErr = !value;
 });
 
-const externalDocsUrlChange = debounce(duration.search, (value:string, tag:TagObj) => {
+const handleExternalDocsUrlChange = debounce(duration.search, (value: string, tag: TagInfo) => {
   if (!value) {
     tag.externalDocs.urlErr.emptyUrl = true;
     return;
@@ -428,12 +447,12 @@ const externalDocsUrlChange = debounce(duration.search, (value:string, tag:TagOb
   tag.externalDocs.urlErr.errUrl = true;
 });
 
-const handleDesExpand = (event, tag:TagObj) => {
+const handleDescriptionExpand = (event, tag: TagInfo) => {
   event.stopPropagation();
   tag.ellipsis = !tag.ellipsis;
 };
 
-const tagDesEllipsis = (tag:TagObj) => {
+const getDescriptionEllipsisConfig = (tag: TagInfo) => {
   return {
     rows: 3,
     onEllipsis: (ellipsis) => {
@@ -442,12 +461,12 @@ const tagDesEllipsis = (tag:TagObj) => {
   };
 };
 
-const handleExternalDocsDesExpand = (event, tag:TagObj) => {
+const handleExternalDocsDescriptionExpand = (event, tag: TagInfo) => {
   event.stopPropagation();
   tag.externalDocs.ellipsis = !tag.externalDocs.ellipsis;
 };
 
-const tagExternalDocsDesEllipsis = (tag:TagObj) => {
+const getExternalDocsDescriptionEllipsisConfig = (tag: TagInfo) => {
   return {
     rows: 3,
     onEllipsis: (ellipsis) => {
@@ -455,9 +474,14 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
     }
   };
 };
+
+// Lifecycle
+onMounted(() => {
+  loadTagList();
+});
 </script>
 <template>
-  <Spin class="h-full flex flex-col" :spinning="loading">
+  <Spin class="h-full flex flex-col" :spinning="isLoading">
     <Hints :text="t('service.tag.hints.main')" />
     <Hints :text="t('service.tag.hints.sub')" class="mt-2 hints-text" />
     <div class="mt-2">
@@ -465,8 +489,8 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
         size="small"
         type="primary"
         class="flex items-center"
-        :disabled="props.disabled || tagList.length > 1999 || addBtnDisabled"
-        @click="addSyncInfo">
+        :disabled="props.disabled || tagList.length > 1999 || isAddButtonDisabled"
+        @click="addNewTag">
         <Icon icon="icon-jia" class="mr-1" />
         {{ t('actions.add') }}
       </Button>
@@ -481,7 +505,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
         class="border border-border-divider p-2 rounded mt-2">
         <div v-if="!tag.isAdd && !tag.isEdit">
           <div class="flex items-start justify-between -mt-1 leading-5">
-            <div class="mr-2 mt-1.5 truncate cursor-pointer flex items-center" @click="handleExpand(tag)">
+            <div class="mr-2 mt-1.5 truncate cursor-pointer flex items-center" @click="toggleTagExpand(tag)">
               <Icon icon="icon-biaoqian" class="mr-1 flex-none" />
               <div class="truncate flex-1">
                 <Tooltip
@@ -504,7 +528,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                     icon="icon-shuxie"
                     class="mr-1"
                     :class="tag.isAdd?'text-text-placeholder cursor-not-allowed':'hover:text-text-link-hover cursor-pointer'"
-                    @click="handleEdit(tag)" />
+                    @click="startEditingTag(tag)" />
                 </template>
               </Tooltip>
               <Tooltip :title="t('actions.delete')" placement="top">
@@ -518,12 +542,12 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                     icon="icon-qingchu"
                     class="mr-1 text-3.5"
                     :class="tag.isAdd?'text-text-placeholder cursor-not-allowed':'hover:text-text-link-hover cursor-pointer'"
-                    @click="hanldeDelete(tag)" />
+                    @click="deleteTag(tag)" />
                 </template>
               </Tooltip>
               <Arrow
                 :open="tag.isExpand"
-                @click="handleExpand(tag)" />
+                @click="toggleTagExpand(tag)" />
             </div>
           </div>
         </div>
@@ -541,7 +565,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                 :maxlength="200"
                 :error="tag.nameErr"
                 :disabled="!tag.isAdd"
-                @change="(event)=>tagNameChange(event.target.value,tag)" />
+                @change="(event)=>handleTagNameChange(event.target.value,tag)" />
             </div>
             <template v-if="tag.isEdit">
               <div class="pl-1.75">{{ t('common.description') }}</div>
@@ -558,11 +582,11 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
               <template v-if="tag.description">
                 <TypographyParagraph
                   class="break-all whitespace-break-spaces leading-5 mt-1"
-                  :ellipsis="tag.ellipsis ? false : tagDesEllipsis(tag)"
+                  :ellipsis="tag.ellipsis ? false : getDescriptionEllipsisConfig(tag)"
                   :content="tag.description"
                   :copyable="tag.showEllipsis?{ tooltip: false }:false">
                   <template v-if="tag.showEllipsis" #copyableIcon>
-                    <a @click="(e)=>handleDesExpand(e,tag)">{{ tag.ellipsis ? t('actions.collapse') : t('actions.expand') }}</a>
+                    <a @click="(e)=>handleDescriptionExpand(e,tag)">{{ tag.ellipsis ? t('actions.collapse') : t('actions.expand') }}</a>
                   </template>
                 </TypographyParagraph>
               </template>
@@ -577,7 +601,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                 class="mt-2"
                 :maxlength="400"
                 :error="tag.externalDocs.urlErr.emptyUrl || tag.externalDocs.urlErr.errUrl"
-                @change="(event)=>externalDocsUrlChange(event.target.value,tag)" />
+                @change="(event)=>handleExternalDocsUrlChange(event.target.value,tag)" />
               <div v-if="tag.isEdit" class="text-rule text-3 h-5">
                 <template v-if="tag.externalDocs.urlErr.emptyUrl">{{ t('service.tag.validation.enterUrl') }}</template>
                 <template v-if="!tag.externalDocs.urlErr.emptyUrl && tag.externalDocs.urlErr.errUrl">
@@ -611,11 +635,11 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
               <template v-if="tag.externalDocs?.description">
                 <TypographyParagraph
                   class="break-all whitespace-break-spaces leading-5 mt-1"
-                  :ellipsis="tagExternalDocsDesEllipsis(tag)"
+                  :ellipsis="getExternalDocsDescriptionEllipsisConfig(tag)"
                   :content="tag.externalDocs.description"
                   :copyable="tag.externalDocs.showEllipsis ? { tooltip: false }:false">
                   <template v-if="tag.externalDocs.showEllipsis" #copyableIcon>
-                    <a @click="(e)=>handleExternalDocsDesExpand(e,tag)">
+                    <a @click="(e)=>handleExternalDocsDescriptionExpand(e,tag)">
                       {{ tag.externalDocs.ellipsis ? t('actions.collapse') : t('actions.expand') }}
                     </a>
                   </template>
@@ -629,7 +653,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                   size="small"
                   class="mr-2 px-0"
                   :disabled="tagList.length === 1 && tag.isAdd"
-                  @click="cancelEdit(tag)">
+                  @click="cancelEditingTag(tag)">
                   {{ t('actions.cancel') }}
                 </Button>
                 <Button
@@ -637,7 +661,7 @@ const tagExternalDocsDesEllipsis = (tag:TagObj) => {
                   type="link"
                   class="px-0"
                   :disabled="props.disabled || tag.saveLoading || !tagList.length"
-                  @click="handleSave(tag)">
+                  @click="saveTag(tag)">
                   {{ t('actions.save') }}
                 </Button>
               </template>

@@ -77,7 +77,7 @@ export type AuthConfigObj = {
   isAdd: boolean;
   isExpand: boolean;
   delLoading: boolean;
-  saveloading: boolean;
+  saveLoading: boolean;
   keyErr: boolean;
   description?:string;
 }

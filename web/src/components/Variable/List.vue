@@ -60,7 +60,7 @@ const newData:VariableObj = {
   isExpand: true,
   isAdd: true,
   delLoading: false,
-  saveloading: false,
+  saveLoading: false,
   nameErr: false,
   valueErr: false,
   type: false,
@@ -93,7 +93,7 @@ const getList = async (data) => {
     isAdd: false,
     isExpand: false,
     delLoading: false,
-    saveloading: false,
+    saveLoading: false,
     nameErr: false,
     valueErr: false,
     enableLoading: false,
@@ -189,9 +189,9 @@ const handleSave = (variable:VariableObj) => {
 const saveData = async (variable:VariableObj) => {
   const params = getParams(variable);
 
-  variable.saveloading = true;
+  variable.saveLoading = true;
   const [error, { data }] = variable.isAdd ? await variableApi.addVariables(params) : await variableApi.putVariables(params);
-  variable.saveloading = false;
+  variable.saveLoading = false;
   if (error) {
     return false;
   }

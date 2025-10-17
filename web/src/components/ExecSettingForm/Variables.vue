@@ -64,7 +64,7 @@ watch(() => props.variables, (newVariableList) => {
       isAdd: false,
       isExpand: false,
       delLoading: false,
-      saveloading: false,
+      saveLoading: false,
       nameErr: false,
       valueErr: false,
       enableLoading: false,
@@ -211,7 +211,7 @@ const handleAddNewVariables = (newVariableData: VariableObj[]) => {
       isAdd: true,
       isExpand: false,
       delLoading: false,
-      saveloading: false,
+      saveLoading: false,
       nameErr: false,
       valueErr: false,
       enableLoading: false
