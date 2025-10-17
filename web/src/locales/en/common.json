@@ -219,6 +219,7 @@
     "regexExpression": "Regular Expression",
     "xpathExpression": "XPath Expression",
     "jsonPathExpression": "JSONPath Expression",
+    "execConfig": "Execution Config",
     "counts": {
       "progress": "Progress",
       "totalCount": "Total",

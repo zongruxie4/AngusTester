@@ -1,4 +1,5 @@
-import { AssertionCondition } from '../../PropsType';
+
+import { BasicAssertionType, EnumMessage, HttpMethod, AssertionCondition } from '@xcan-angus/infra';
 
 export type ApiInfo = {
   projectId: string;
@@ -8,10 +9,7 @@ export type ApiInfo = {
   server?: { [key: string]: any };
   description: string;
   summary: string;
-  method: {
-    value: 'GET';
-    message: string;
-  };
+  method: EnumMessage<HttpMethod>;
   parameters: {
     name: string;
     in: string;
@@ -40,9 +38,9 @@ export type ApiInfo = {
   assertions: {
     name: string;
     enabled: boolean;
-    type: { value: BasicAssertionType; message: string; };
+    type: EnumMessage<BasicAssertionType>;
     expected: string;
-    assertionCondition: { value: AssertionCondition; message: string; };
+    assertionCondition: EnumMessage<AssertionCondition>;
     expression: string;
     description: string;
     parameterName: string;

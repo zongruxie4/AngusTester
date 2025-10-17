@@ -34,7 +34,7 @@ const emit = defineEmits<{
 
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 const SelectApiModal = defineAsyncComponent(() => import('./SelectApiModal/index.vue'));
-const AssertionForm = defineAsyncComponent(() => import('./AssertionForm/index.vue'));
+const AssertionForm = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/AssertionForm/index.vue'));
 const Parametric = defineAsyncComponent(() => import('./Parametric/index.vue'));
 
 const assertRefsMap = ref<{[key:string]:any}>({});
@@ -1114,7 +1114,9 @@ const autoSize = {
                       </Tooltip>
                     </div>
                     <div class="flex-1 space-y-2.5">
-                      <AssertionForm :ref="el => assertRefsMap[id] = el" :value="dataMap[id].assertions" />
+                      <AssertionForm
+                        :ref="el => assertRefsMap[id] = el"
+                        :value="dataMap[id].assertions" />
                     </div>
                   </div>
                 </div>

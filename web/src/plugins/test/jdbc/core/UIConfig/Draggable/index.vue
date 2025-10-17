@@ -32,10 +32,10 @@ const emit = defineEmits<{
 }>();
 
 const JDBCConfigs = defineAsyncComponent(() => import('../JDBCConfigs/index.vue'));
-const WaitingTime = defineAsyncComponent(() => import('../WaitingTime/index.vue'));
-const Rendezvous = defineAsyncComponent(() => import('../Rendezvous/index.vue'));
-const TransStart = defineAsyncComponent(() => import('../TransStart/index.vue'));
-const TransEnd = defineAsyncComponent(() => import('../TransEnd/index.vue'));
+const WaitingTime = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/WaitingTime/index.vue'));
+const Rendezvous = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/Rendezvous/index.vue'));
+const TransStart = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/TransStart/index.vue'));
+const TransEnd = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/TransEnd/index.vue'));
 
 const rendered = ref(false);
 

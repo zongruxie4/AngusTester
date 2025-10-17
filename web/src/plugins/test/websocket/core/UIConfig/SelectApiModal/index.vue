@@ -6,7 +6,7 @@ import { AssociateSelect, Modal, IconText } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 
-import { ApiInfo } from './PropsType';
+import { ApiInfo } from '';
 
 const { t } = useI18n();
 
