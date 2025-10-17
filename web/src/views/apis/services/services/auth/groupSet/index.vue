@@ -2,27 +2,28 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
-import { GM, duration } from '@xcan-angus/infra';
+import { GM, duration, AuthObjectType, SearchCriteria } from '@xcan-angus/infra';
 import { Icon, Image, Input, Scroll } from '@xcan-angus/vue-ui';
+
+interface Props {
+  type: AuthObjectType,
+  loaded: boolean;
+  checkedId?: string,
+  appId?: string,
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  type: AuthObjectType.USER,
+  checkedId: undefined,
+  appId: undefined
+});
 
 interface ListInfo {
   [key: string]: string;
   avatar: string;
 }
 
-interface Props {
-  type: 'user' | 'dept' | 'group', // 策略id
-  loaded: boolean;
-  checkedId?: string, // 选中的id
-  appId?: string,
-}
-
 const { t } = useI18n();
-const props = withDefaults(defineProps<Props>(), {
-  type: 'user',
-  checkedId: undefined,
-  appId: undefined
-});
 
 const emit = defineEmits<{
   (e: 'update:checkedId', id: string | undefined): void;
@@ -30,18 +31,32 @@ const emit = defineEmits<{
 }>();
 
 const inputValue = ref<string>();
-const params = computed<{ filters?: [{ key: 'fullName' | 'name'; op: 'MATCH'; value: string }] }>(() => {
+
+const dataSource = ref<ListInfo[]>([]);
+
+const params = computed<{ filters?: [SearchCriteria] }>(() => {
   const value = inputValue.value?.trim();
   if (value) {
     return {
-      filters: [{ key: props.type === 'user' ? 'fullName' : 'name', op: 'MATCH', value }]
+      filters: [{ key: props.type === AuthObjectType.USER ? 'fullName' : 'name', op: SearchCriteria.OpEnum.Match, value }]
     };
   }
-
   return {};
 });
 
-const dataSource = ref<ListInfo[]>([]);
+const nameKey = ref<'deptName' | 'groupName' | 'fullName' | 'name'>('name');
+const idKey = ref<'deptId' | 'groupId' | 'userId' | 'id'>('id');
+const placeholder = ref<string>();
+const apiPath = ref<string>();
+
+const changeHandler = debounce(duration.search, (event: {target:{value:string}}) => {
+  inputValue.value = event.target.value?.trim();
+});
+
+const activeId = ref<string>();
+const checkedHandler = (id: string) => {
+  activeId.value = id;
+};
 
 const handleData = (val) => {
   dataSource.value = val;
@@ -54,44 +69,31 @@ const handleData = (val) => {
   }
 };
 
-const nameKey = ref<'deptName' | 'groupName' | 'fullName' | 'name'>('name');
-const idKey = ref<'deptId' | 'groupId' | 'userId' | 'id'>('id');
-const placeholder = ref<string>();
-const apiPath = ref<string>();
 watch([() => props.appId, () => props.type], ([_appId, _type]) => {
   if (!_appId) {
     return;
   }
 
   switch (_type) {
-    case 'dept':
+    case AuthObjectType.DEPT:
       nameKey.value = 'name';
       idKey.value = 'id';
       placeholder.value = t('service.authSetting.placeholder.searchDept');
       apiPath.value = `${GM}/app/${_appId}/auth/dept`;
       break;
-    case 'group':
+    case AuthObjectType.GROUP:
       nameKey.value = 'name';
       idKey.value = 'id';
       placeholder.value = t('service.authSetting.placeholder.searchGroup');
       apiPath.value = `${GM}/app/${_appId}/auth/group`;
       break;
-    case 'user':
+    case AuthObjectType.USER:
       nameKey.value = 'fullName';
       idKey.value = 'id';
       placeholder.value = t('service.authSetting.placeholder.searchUser');
       apiPath.value = `${GM}/app/${_appId}/auth/user`;
   }
 }, { immediate: true });
-
-const changeHandler = debounce(duration.search, (event: {target:{value:string}}) => {
-  inputValue.value = event.target.value?.trim();
-});
-
-const activeId = ref<string>();
-const checkedHandler = (id: string) => {
-  activeId.value = id;
-};
 
 watch(() => activeId.value, (newValue) => {
   emit('update:checkedId', newValue);
@@ -120,11 +122,11 @@ watch(() => activeId.value, (newValue) => {
         @click.stop="checkedHandler(item[idKey])">
         <div class="flex items-center flex-nowrap">
           <Icon
-            v-if="type === 'group'"
+            v-if="type === AuthObjectType.GROUP"
             class="mr-3 text-7"
             icon="icon-zu" />
           <Icon
-            v-else-if="type === 'dept'"
+            v-else-if="type === AuthObjectType.DEPT"
             class="mr-3 text-7"
             icon="icon-bumen" />
           <Image

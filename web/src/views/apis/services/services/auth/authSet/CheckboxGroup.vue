@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Checkbox } from 'ant-design-vue';
+import { ServicesPermission } from '@/enums/enums';
 
 interface Props {
     options: { label: string; value: string }[];
@@ -21,18 +22,19 @@ const change = (event: { target: { checked: boolean; } }, value: string) => {
   // 取消勾选修改，需要同步取消发布
   if (!checked) {
     const excludes = [value];
-    if (value === 'MODIFY') {
-      excludes.push('RELEASE');
+    if (value === ServicesPermission.MODIFY) {
+      excludes.push(ServicesPermission.RELEASE);
     }
-    const temp = value !== 'VIEW' ? props.value.filter(item => !excludes.includes(item)) : [];
+    const temp = value !== ServicesPermission.VIEW ? props.value.filter(item => !excludes.includes(item)) : [];
     emit('change', temp);
-
     return;
   }
 
-  const newValues = value !== 'VIEW' && !props.value.includes('VIEW') ? [value, 'VIEW'] : [value];
-  if (value === 'RELEASE') {
-    newValues.push('MODIFY');
+  const newValues = value !== ServicesPermission.VIEW && !props.value.includes(ServicesPermission.VIEW)
+    ? [value, ServicesPermission.VIEW]
+    : [value];
+  if (value === ServicesPermission.RELEASE) {
+    newValues.push(ServicesPermission.MODIFY);
   }
 
   const temp = new Set(props.value.concat(...newValues));

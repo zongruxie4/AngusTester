@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { enumUtils } from '@xcan-angus/infra';
+import { enumUtils, AuthObjectType, EnumMessage } from '@xcan-angus/infra';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints } from '@xcan-angus/vue-ui';
 import { ApiPermission, ServicesPermission } from '@/enums/enums';
@@ -17,19 +17,19 @@ const props = withDefaults(defineProps<Props>(), {
   appId: undefined
 });
 
-const activeKey = ref<'user' | 'dept' | 'group'>('user');
+const activeKey = ref<AuthObjectType>(AuthObjectType.USER);
 const checkedUserId = ref<string>();
 const checkedGroupId = ref<string>();
 const checkedDeptId = ref<string>();
 
 const { t } = useI18n();
-const apisPermissions = ref<{ value: string, message: string }[]>([]);
-const servicesPermissions = ref<{ value: string, message: string }[]>([]);
+const apiPermissions = ref<EnumMessage<ApiPermission>[]>([]);
+const servicePermissions = ref<EnumMessage<ServicesPermission>[]>([]);
 const loaded = ref(false);
 
 const loadEnums = () => {
-  apisPermissions.value = enumUtils.enumToMessages(ApiPermission);
-  servicesPermissions.value = enumUtils.enumToMessages(ServicesPermission);
+  apiPermissions.value = enumUtils.enumToMessages(ApiPermission);
+  servicePermissions.value = enumUtils.enumToMessages(ServicesPermission);
 };
 
 onMounted(() => {
@@ -46,53 +46,53 @@ onMounted(() => {
       style="height: calc(100% - 18px);">
       <TabPane key="user" :tab="t('organization.user')">
         <GroupSet
-          key="user"
+          :key="AuthObjectType.USER"
           v-model:checkedId="checkedUserId"
           v-model:loaded="loaded"
           :appId="props.appId"
-          type="user"
+          :type="AuthObjectType.USER"
           class="flex-shrink-0 flex-grow-0 w-75 mr-4" />
         <AuthSet
           v-if="loaded"
-          key="user"
+          :key="AuthObjectType.USER"
           :authObjectId="checkedUserId"
-          :apiPermissions="apisPermissions"
-          :projectPermissions="servicesPermissions"
-          type="USER"
+          :apiPermissions="apiPermissions"
+          :projectPermissions="servicePermissions"
+          :type="AuthObjectType.USER"
           class="flex-1" />
       </TabPane>
       <TabPane key="dept" :tab="t('organization.dept')">
         <GroupSet
-          key="dept"
+          :key="AuthObjectType.DEPT"
           v-model:checkedId="checkedDeptId"
           v-model:loaded="loaded"
           :appId="props.appId"
-          type="dept"
+          :type="AuthObjectType.DEPT"
           class="flex-shrink-0 flex-grow-0 w-75 mr-4" />
         <AuthSet
           v-if="loaded"
-          key="dept"
+          :key="AuthObjectType.DEPT"
           :authObjectId="checkedDeptId"
-          type="DEPT"
-          :apiPermissions="apisPermissions"
-          :projectPermissions="servicesPermissions"
+          :type="AuthObjectType.DEPT"
+          :apiPermissions="apiPermissions"
+          :servicePermissions="servicePermissions"
           class="flex-1" />
       </TabPane>
       <TabPane key="group" :tab="t('organization.group')">
         <GroupSet
-          key="group"
+          :key="AuthObjectType.GROUP"
           v-model:checkedId="checkedGroupId"
           v-model:loaded="loaded"
           :appId="props.appId"
-          type="group"
+          :type="AuthObjectType.GROUP"
           class="flex-shrink-0 flex-grow-0 w-75 mr-4" />
         <AuthSet
           v-if="loaded"
-          key="group"
+          :key="AuthObjectType.GROUP"
           :authObjectId="checkedGroupId"
-          type="GROUP"
-          :apiPermissions="apisPermissions"
-          :projectPermissions="servicesPermissions"
+          :type="AuthObjectType.GROUP"
+          :apiPermissions="apiPermissions"
+          :projectPermissions="servicePermissions"
           class="flex-1" />
       </TabPane>
     </Tabs>

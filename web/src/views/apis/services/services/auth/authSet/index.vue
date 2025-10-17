@@ -1,31 +1,32 @@
 <script setup lang="ts">
-import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, watch, Ref } from 'vue';
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Checkbox, Switch } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
-import { duration } from '@xcan-angus/infra';
+import { AuthObjectType, duration, EnumMessage, ProjectPageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { Arrow, IconText, Input, NoData, Spin } from '@xcan-angus/vue-ui';
 import { apis, services } from '@/api/tester';
+import { ApiPermission, ServicesPermission } from '@/enums/enums';
+import { ArrayItem, TreeElement } from '../types';
 
-import CheckboxGroup from './checkboxGroup.vue';
-
-import { ArrayItem, TreeElement } from './PropsType';
+import CheckboxGroup from './CheckboxGroup.vue';
 
 interface Props {
   authObjectId: string | undefined;
-  type: 'USER' | 'DEPT' | 'GROUP';
-  apiPermissions: { value: string; message: string }[];
-  projectPermissions: { value: string; message: string }[];
+  type: AuthObjectType;
+  apiPermissions: EnumMessage<ApiPermission>[];
+  servicePermissions:EnumMessage<ServicesPermission>[];
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   authObjectId: undefined,
-  type: 'USER',
+  type: AuthObjectType.USER,
   apiPermissions: () => [],
-  projectPermissions: () => []
+  servicePermissions: () => []
 });
+
+const { t } = useI18n();
 
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
@@ -45,8 +46,8 @@ const LINE_HEIGHT = 44;
 
 const erd = elementResizeDetector({ strategy: 'scroll' });
 const containerRef = ref();
-let projectController: AbortController;// 用于终止请求的实例
-let projectAuthController: AbortController;// 用于终止请求的实例
+let serviceController: AbortController;// 用于终止请求的实例
+let serviceAuthController: AbortController;// 用于终止请求的实例
 let apiController: AbortController;// 用于终止请求的实例
 let apiAuthController: AbortController;// 用于终止请求的实例
 
@@ -55,7 +56,7 @@ const openSet = ref<Set<string>>(new Set<string>());
 const visibleSet = ref<Set<string>>(new Set<string>());
 const apiLoadedSet = ref<Set<string>>(new Set<string>());
 
-const projectStyle = ref<{ [key: string]: { [key: string]: string } }>({});
+const serviceStyle = ref<{ [key: string]: { [key: string]: string } }>({});
 const apiStyle = ref<{ [key: string]: { [key: string]: string } }>({});
 
 const loading = ref(true);
@@ -70,6 +71,19 @@ const enabledLoadingMap = ref<{ [key: string]: boolean }>({});
 let updatingMap: { [key: string]: boolean; } = {};// 修改权限时，等待修改接口返回
 
 let currentProjectId: string | undefined;
+
+const showIdList = computed(() => {
+  const set = visibleSet.value;
+  return idList.value.filter(item => set.has(item));
+});
+
+const apiCheckboxOptions = computed(() => {
+  return props.apiPermissions?.map(item => ({ label: item.message, value: item.value }));
+});
+
+const serviceCheckboxOptions = computed(() => {
+  return props.servicePermissions?.map(item => ({ label: item.message, value: item.value }));
+});
 
 const searchInputValue = ref<string>();
 let isSearch = false;// 是否是搜索
@@ -109,7 +123,6 @@ const arrowChange = (open: boolean, id: string) => {
       paginationMap[id] = { pageNo: 1, total: 0 };
       loadApiList(id);
     }
-
     return;
   }
 
@@ -119,16 +132,16 @@ const arrowChange = (open: boolean, id: string) => {
 
 const searchInputChange = debounce(duration.search, (event: { target: { value: string } }) => {
   reset();
-  const value = event.target.value.trim();
-  searchInputValue.value = value;
-
+  searchInputValue.value = event.target.value.trim();
   loadProjectTree();
 });
 
 const switchChange = async (checked: boolean, id: string) => {
   const isApi = dataMap.value[id].isApi;
   enabledLoadingMap.value[id] = true;
-  const [error] = await (isApi ? apis.enabledAuth({ id, enabled: checked }) : services.updateAuthEnabled({ id, enabled: checked }));
+  const [error] = await (isApi
+    ? apis.enabledAuth({ id, enabled: checked })
+    : services.updateAuthEnabled({ id, enabled: checked }));
   enabledLoadingMap.value[id] = false;
   if (error) {
     return;
@@ -138,7 +151,6 @@ const switchChange = async (checked: boolean, id: string) => {
     dataMap.value[id].auth = true;
     return;
   }
-
   dataMap.value[id].auth = false;
 };
 
@@ -153,10 +165,9 @@ const checkAllChange = async (event: { target: { checked: boolean } }, id: strin
   if (isApi) {
     permissions = checked ? apiCheckboxOptions.value.map(item => item.value) : [];
   } else {
-    permissions = checked ? projectCheckboxOptions.value.map(item => item.value) : [];
+    permissions = checked ? serviceCheckboxOptions.value.map(item => item.value) : [];
   }
-
-  checkChange(permissions, id);
+  await checkChange(permissions, id);
 };
 
 const checkChange = async (permissions: string[], id: string) => {
@@ -174,7 +185,6 @@ const checkChange = async (permissions: string[], id: string) => {
     if (error) {
       return;
     }
-
     permissionsMap.value[id] = undefined;
     return;
   }
@@ -186,8 +196,7 @@ const checkChange = async (permissions: string[], id: string) => {
     if (error) {
       return;
     }
-
-    permissionsMap.value[id]!.permissions = permissions;
+    permissionsMap.value[id]?.permissions = permissions;
     return;
   }
 
@@ -214,12 +223,11 @@ const getApiParams = (id: string) => {
     hasPermission: string;
     admin: boolean;
   } = {
-    hasPermission: 'GRANT',
+    hasPermission: ApiPermission.GRANT,
     admin: true,
     pageNo: paginationMap[id].pageNo,
     pageSize: pageSize.value
   };
-
   return params;
 };
 
@@ -278,7 +286,7 @@ const loadApiList = async (id: string) => {
   idList.value.splice((index + cidsLen + 1), 0, ...ids);
 
   if (ids.length) {
-    loadApiAuths(ids);
+    await loadApiAuths(ids);
   } else {
     loading.value = false;
   }
@@ -288,13 +296,13 @@ const loadApiAuths = async (ids: string[]) => {
   const params: {
     pageSize: 2000; // IN查找有可能超过当前ids的长度，按2000传值
     authObjectId: string;
-    authObjectType: 'USER' | 'DEPT' | 'GROUP';
-    filters?: [{ key: 'apisId'; op: 'IN'; value: string[]; }]
+    authObjectType: AuthObjectType;
+    filters?: ServicesPermission[]
   } = {
     pageSize: 2000,
     authObjectId: props.authObjectId!,
     authObjectType: props.type,
-    filters: [{ key: 'apisId', op: 'IN', value: ids }]
+    filters: [{ key: 'apisId', op: SearchCriteria.OpEnum.In, value: ids }]
   };
 
   apiAuthController = new AbortController();
@@ -322,9 +330,7 @@ const loadApiAuths = async (ids: string[]) => {
         }
 
         const set = new Set(prevPermissions);
-        const newPermissions = Array.from(set);
-
-        currentMap.permissions = newPermissions;
+        currentMap.permissions = Array.from(set);
         currentMap.creatorFlag = creatorFlag || currentMap.permissions;
       } else {
         permissionsMap.value[apisId] = {
@@ -339,22 +345,22 @@ const loadApiAuths = async (ids: string[]) => {
   loading.value = false;
 };
 
-const loadserviceAuths = async (ids: string[]) => {
+const loadServiceAuths = async (ids: string[]) => {
   const params: {
     pageSize: 2000, // IN查找有可能超过当前ids的长度，按2000传值
     authObjectId: string;
-    authObjectType: 'USER' | 'DEPT' | 'GROUP';
-    filters?: [{ key: 'serviceId'; op: 'IN'; value: string[]; }]
+    authObjectType: AuthObjectType;
+    filters?: SearchCriteria[]
   } = {
     pageSize: 2000,
     authObjectId: props.authObjectId!,
     authObjectType: props.type,
-    filters: [{ key: 'serviceId', op: 'IN', value: ids }]
+    filters: [{ key: 'serviceId', op: SearchCriteria.OpEnum.In, value: ids }]
   };
 
-  projectAuthController = new AbortController();
+  serviceAuthController = new AbortController();
   const axiosConfig = {
-    signal: projectAuthController.signal
+    signal: serviceAuthController.signal
   };
 
   loading.value = true;
@@ -377,9 +383,7 @@ const loadserviceAuths = async (ids: string[]) => {
         }
 
         const set = new Set(prevPermissions);
-        const newPermissions = Array.from(set);
-
-        currentMap.permissions = newPermissions;
+        currentMap.permissions = Array.from(set);
         currentMap.creatorFlag = creatorFlag || currentMap.permissions;
       } else {
         permissionsMap.value[serviceId] = {
@@ -390,32 +394,26 @@ const loadserviceAuths = async (ids: string[]) => {
       }
     }
   }
-
   loading.value = false;
 };
 
-const getProjectTreeParams = () => {
-  const params: {
-    pageNo: number;
-    pageSize: number;
-    queryHasApisFlag: boolean;
+const getServiceListParams = () => {
+  const params: ProjectPageQuery & {
+    queryHasApis: boolean;
     hasPermission: string;
     admin: boolean;
-    projectId: string;
-    filters?: [{ key: 'name'; op: 'MATCH'; value: string; }];
   } = {
-    hasPermission: 'GRANT',
+    hasPermission: ServicesPermission.VIEW,
     admin: true,
-    queryHasApisFlag: true,
+    queryHasApis: true,
     pageNo: pageNo.value,
     pageSize: pageSize.value,
     projectId: projectId.value
   };
 
   if (searchInputValue.value) {
-    params.filters = [{ key: 'name', op: 'MATCH', value: searchInputValue.value }];
+    params.filters = [{ key: 'name', op: SearchCriteria.OpEnum.Match, value: searchInputValue.value }];
   }
-
   return params;
 };
 
@@ -425,11 +423,12 @@ const loadProjectTree = async () => {
     return;
   }
 
-  projectController = new AbortController();
+  serviceController = new AbortController();
   const axiosConfig = {
-    signal: projectController.signal
+    signal: serviceController.signal
   };
-  const params = getProjectTreeParams();
+
+  const params = getServiceListParams();
   loading.value = true;
   const [error, { data }] = await services.getList(params, axiosConfig);
   if (error || !data) {
@@ -465,7 +464,7 @@ const loadProjectTree = async () => {
       visibleSet.value.add(id);
     }
 
-    projectStyle.value[id] = {
+    serviceStyle.value[id] = {
       paddingLeft: (level - 1) * 28 + 'px'
     };
 
@@ -473,7 +472,7 @@ const loadProjectTree = async () => {
   }
 
   if (ids.length) {
-    loadserviceAuths(ids);
+    await loadServiceAuths(ids);
   } else {
     loading.value = false;
   }
@@ -564,7 +563,6 @@ const handleScroll = throttle(duration.scroll, (event: Event) => {
       paginationMap[currentProjectId].pageNo = _pageNo + 1;
       loadApiList(currentProjectId);
     }
-
     return;
   }
 
@@ -603,8 +601,8 @@ const resizeHandler = debounce(duration.resize, () => {
 });
 
 const reset = () => {
-  projectController && projectController.abort();
-  projectAuthController && projectAuthController.abort();
+  serviceController && serviceController.abort();
+  serviceAuthController && serviceAuthController.abort();
   apiController && apiController.abort();
   apiAuthController && apiAuthController.abort();
 
@@ -613,7 +611,7 @@ const reset = () => {
   visibleSet.value.clear();
   apiLoadedSet.value.clear();
 
-  projectStyle.value = {};
+  serviceStyle.value = {};
   apiStyle.value = {};
 
   loading.value = false;
@@ -666,19 +664,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   erd.removeListener(containerRef.value, resizeHandler);
 });
-
-const showIdList = computed(() => {
-  const set = visibleSet.value;
-  return idList.value.filter(item => set.has(item));
-});
-
-const apiCheckboxOptions = computed(() => {
-  return props.apiPermissions?.map(item => ({ label: item.message, value: item.value }));
-});
-
-const projectCheckboxOptions = computed(() => {
-  return props.projectPermissions?.map(item => ({ label: item.message, value: item.value }));
-});
 </script>
 <template>
   <div style="width: calc(100% - 316px);" class="text-3 leading-4.5 h-full">
@@ -725,7 +710,7 @@ const projectCheckboxOptions = computed(() => {
             <div style="width:52%" class="flex items-start">
               <Checkbox
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
-                :checked="!!(permissionsMap[item]?.permissions.length === apiCheckboxOptions.length)"
+                :checked="(permissionsMap[item]?.permissions.length === apiCheckboxOptions.length)"
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < apiCheckboxOptions.length)"
                 class="whitespace-nowrap"
                 @change="checkAllChange($event, item)">
@@ -741,7 +726,7 @@ const projectCheckboxOptions = computed(() => {
 
           <div
             v-else
-            :style="projectStyle[item]"
+            :style="serviceStyle[item]"
             class="flex items-center min-h-11 py-1 border-b border-solid cursor-pointer hover:bg-gray-hover border-theme-text-box">
             <div class="flex items-center flex-1 overflow-hidden">
               <div class="flex items-center ml-1.5">
@@ -752,11 +737,6 @@ const projectCheckboxOptions = computed(() => {
                     @change="arrowChange($event, item)" />
                 </div>
                 <IconText
-                  v-if="dataMap[item].targetType==='PROJECT'"
-                  class="ml-1"
-                  text="P" />
-                <IconText
-                  v-else
                   class="ml-1"
                   style="background-color: #a2dddc;"
                   text="S" />
@@ -775,8 +755,8 @@ const projectCheckboxOptions = computed(() => {
             <div style="width:52%" class="flex items-start">
               <Checkbox
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
-                :checked="!!(permissionsMap[item]?.permissions.length === projectCheckboxOptions.length)"
-                :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < projectCheckboxOptions.length)"
+                :checked="(permissionsMap[item]?.permissions.length === serviceCheckboxOptions.length)"
+                :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < serviceCheckboxOptions.length)"
                 class="whitespace-nowrap"
                 @change="checkAllChange($event, item)">
                 {{ t('actions.selectAll') }}
@@ -784,7 +764,7 @@ const projectCheckboxOptions = computed(() => {
               <CheckboxGroup
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
                 :value="permissionsMap[item]?.permissions"
-                :options="projectCheckboxOptions"
+                :options="serviceCheckboxOptions"
                 @change="checkChange($event, item)" />
             </div>
           </div>
