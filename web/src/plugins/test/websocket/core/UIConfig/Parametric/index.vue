@@ -23,7 +23,7 @@ const emit = defineEmits<{
   (e: 'update:sharingMode', value: 'ALL_THREAD' | 'CURRENT_THREAD'): void;
 }>();
 
-const Dataset = defineAsyncComponent(() => import('./Dataset/index.vue'));
+const Dataset = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/ParametricDataset/index.vue'));
 
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({} as ProjectInfo));

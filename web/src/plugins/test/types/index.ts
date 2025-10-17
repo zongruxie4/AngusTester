@@ -8,13 +8,13 @@ import { SmtpPipelineInfo } from '@/plugins/test/smtp/core/PropsType';
 import { TcpPipelineInfo } from '@/plugins/test/tcp/core/PropsType';
 import { WebSocketPipelineInfo } from '@/plugins/test/websocket/core/PropsType';
 
-import { ScriptType as ScriptTypeInfra, AssertionCondition,  BasicAssertionType, HttpMethod, EnumMessage } from '@xcan-angus/infra';
+import { ScriptType as ScriptTypeInfra, AssertionCondition,  BasicAssertionType, HttpMethod, EnumMessage, ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
 import { ScenarioType } from '@/enums/enums';
 
 export type ScriptType = keyof typeof ScriptTypeInfra;
 export type AssertCondition = keyof typeof AssertionCondition;
 
-export type PluginType = 'Ftp' | 'Jms' | 'Ldap' | 'Mail' | 'Smtp' | 'Tcp' | 'WebSocket';
+export type PluginType = 'Ftp' | 'Jms' | 'Ldap' | 'Mail' | 'Smtp' | 'Tcp' | 'WebSocket' | 'Jdbc' | 'Http';
 
 
 export type WaitingTimeConfig = {
@@ -387,3 +387,50 @@ export type ApiInfo = {
         };
     }[];
 }
+
+export type DatasetItem = {
+    createdBy: string;
+    createdByName: string;
+    createdDate: string;
+    description: string;
+    extracted: boolean;
+    extraction: {
+        defaultValue: string;
+        expression: string;
+        failureMessage: string;
+        finalValue: string;
+        matchItem: string;
+        method: EnumMessage<ExtractionMethod>;
+        name: string;
+        source: ExtractionSource;
+        value: string;
+        fileType: EnumMessage<ExtractionFileType>;
+        path: string;
+        encoding: Encoding;
+        quoteChar: string;
+        escapeChar: string;
+        separatorChar: string;
+        rowIndex: string;
+        columnIndex: string;
+        select: string;
+        parameterName: string;
+        datasource: {
+            type: { value: string; message: string; };
+            username: string;
+            password: string;
+            jdbcUrl: string;
+        };
+    };
+    id: string;
+    lastModifiedBy: string;
+    lastModifiedByName: string;
+    lastModifiedDate: string;
+    name: string;
+    parameters: {
+        name: string;
+        value: string;
+    }[];
+    projectId: string;
+    source?: string;// 前端自动添加
+    previewFlag?: boolean;// 前端自动添加
+};

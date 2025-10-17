@@ -6,13 +6,13 @@ import { Arrow, Colon, Icon, HttpMethodText } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import StatusTag from '@/plugins/test/components/StatusTag/index.vue';
-import { HTTPInfo } from './PropsType';
+import { JMSInfo } from './PropsType';
 import { ExecContent } from '@/plugins/test/types';
 
 const { t } = useI18n();
 
 export interface Props {
-  value: HTTPInfo;
+  value: JMSInfo;
   content: ExecContent[];
   ignoreAssertions: boolean;
 }

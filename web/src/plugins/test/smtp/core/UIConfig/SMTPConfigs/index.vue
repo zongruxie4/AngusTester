@@ -41,7 +41,7 @@ const emit = defineEmits<{
   (e: 'renderChange'): void;
 }>();
 
-const ActionsGroup = defineAsyncComponent(() => import('../ActionsGroup/index.vue'));
+const ActionsGroup = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/ActionsGroup/index.vue'));
 
 const connectTimeoutInputProps = {
   maxlength: 8,

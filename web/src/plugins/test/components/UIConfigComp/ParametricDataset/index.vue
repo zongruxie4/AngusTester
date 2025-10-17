@@ -5,14 +5,14 @@ import { AsyncComponent, Icon, Colon, Tooltip, Arrow } from '@xcan-angus/vue-ui'
 import { Button, RadioGroup, Radio, Collapse, CollapsePanel, TabPane, Tabs, Popconfirm } from 'ant-design-vue';
 import { EnumMessage, ActionOnEOF, SharingMode, enumUtils } from '@xcan-angus/infra';
 import { DataMenuKey } from '@/views/data/menu';
-import { DatasetItem } from './PropsType';
-import { HTTPConfig } from '../../PropsType';
+
+import { DatasetItem } from '@/plugins/test/types';
 
 const { t } = useI18n();
 
 type Props = {
   projectId: string;
-  datasets: HTTPConfig['datasets'];
+  datasets: DatasetItem[];
   actionOnEOF: ActionOnEOF;
   sharingMode: SharingMode;
 }
@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 
 const emit = defineEmits<{
-  (e: 'change', value: HTTPConfig['datasets']): void;
+  (e: 'change', value: DatasetItem[]): void;
   (e: 'targetInfoChange', value: { actionOnEOF?: ActionOnEOF; sharingMode?: SharingMode; }): void;
 }>();
 
