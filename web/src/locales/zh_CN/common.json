@@ -220,6 +220,7 @@
     "xpathExpression": "XPath表达式",
     "jsonPathExpression": "JSONPath表达式",
     "execConfig": "执行配置",
+    "taskConfig": "任务配置",
     "counts": {
       "progress": "进度",
       "totalCount": "总数",
@@ -345,6 +346,8 @@
       "selectScenario": "选择场景",
       "selectTag": "选择标签",
       "searchTag": "搜索标签",
+      "enterParameterValue": "请输入参数值",
+      "enterParameterName": "请输入参数名称",
       "selectDate": [
         "时间从",
         "时间到"
