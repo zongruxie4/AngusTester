@@ -6,6 +6,7 @@ import { Button, Form, FormItem } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { mock, services } from '@/api/tester';
 import type { Rule } from 'ant-design-vue/es/form';
+import { ServicesDetail } from '@/views/apis/services/services/types';
 
 import ApiList from '@/views/apis/mock/add/ApiList.vue';
 
@@ -14,19 +15,21 @@ interface Props {
   serviceId: string;
 }
 
-const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   serviceId: undefined
 });
 
-const emits = defineEmits<{(e:'update:visible', value:boolean):void;
- (e:'reload', value:string):void;
+const { t } = useI18n();
+
+const emits = defineEmits<{
+  (e:'update:visible', value:boolean):void;
+  (e:'reload', value:string):void;
 }>();
 
 const isPrivate = ref(false);
 const formRef = ref();
-const projectDetail = ref();
+const serviceDetail = ref<ServicesDetail>();
 
 const formState = ref<{
   name: string;
@@ -88,7 +91,7 @@ const rules = computed(() => {
     serviceDomainUrl: [{ required: true, validator: serviceDomainValidate, trigger: 'change' }]
   };
 
-  return projectDetail.value?.mockServiceId ? {} : isPrivate.value ? privateRule : publicRule;
+  return serviceDetail.value?.mockServiceId ? {} : isPrivate.value ? privateRule : publicRule;
 });
 
 const treeSelectChange = (id: string) => {
@@ -110,13 +113,13 @@ const handleSave = () => {
       addParams = { ...addParams, apiIds: formState.value.apiIds };
     }
 
-    const updateParams = { id: projectDetail.value?.mockServiceId, apiIds: formState.value.apiIds };
-    const [error, { data }] = projectDetail.value?.mockServiceId
+    const updateParams = { id: serviceDetail.value?.mockServiceId, apiIds: formState.value.apiIds };
+    const [error, { data }] = serviceDetail.value?.mockServiceId
       ? await mock.patchService(updateParams)
       : await mock.addServiceByAssoc(addParams);
     loading.value = false;
     if (error) { return; }
-    notification.success(projectDetail.value?.mockServiceId
+    notification.success(serviceDetail.value?.mockServiceId
       ? t('actions.tips.updateSuccess')
       : t('actions.tips.addSuccess'));
     emits('update:visible', false);
@@ -137,24 +140,24 @@ const reset = () => {
     serviceDomainUrl: '',
     servicePort: '',
     nodeId: undefined,
-    serviceId: projectDetail.value?.id,
+    serviceId: serviceDetail.value?.id,
     apiIds: []
   };
 };
 
-const loadProjectInfo = async () => {
+const loadServiceInfo = async () => {
   loading.value = true;
-  const [error, { data }] = await services.loadInfo(props.serviceId);
+  const [error, { data }] = await services.loadDetail(props.serviceId);
   loading.value = false;
   if (error) {
     return;
   }
-  projectDetail.value = data;
+  serviceDetail.value = data;
 };
 
 watch(() => props.visible, (newValue) => {
-  if (newValue && props.serviceId !== projectDetail.value?.id) {
-    loadProjectInfo();
+  if (newValue && props.serviceId !== serviceDetail.value?.id) {
+    loadServiceInfo();
   }
 }, {
   deep: true,
@@ -189,7 +192,7 @@ onMounted(() => {
             <FormItem :label="t('protocol.port')" required />
             <FormItem :label="t('common.node')" required />
             <FormItem :label="t('common.service')" required />
-            <template v-if="formState.serviceId && projectDetail?.hasApis">
+            <template v-if="formState.serviceId && serviceDetail?.hasApis">
               <FormItem :label="t('common.api')" />
             </template>
           </div>
@@ -198,15 +201,15 @@ onMounted(() => {
               <Input
                 v-model:value="formState.name"
                 :placeholder="t('common.placeholders.searchKeyword')"
-                :disabled="projectDetail?.mockServiceId"
+                :disabled="serviceDetail?.mockServiceId"
                 :maxlength="100" />
             </FormItem>
             <FormItem name="serviceDomainUrl">
               <Input
                 v-model:value="formState.serviceDomainUrl"
-                :disabled="projectDetail?.mockServiceId"
+                :disabled="serviceDetail?.mockServiceId"
                 :placeholder="t('service.mockService.form.domainPlaceholder')">
-                <template v-if="!isPrivate && !projectDetail?.mockServiceId" #addonAfter>
+                <template v-if="!isPrivate && !serviceDetail?.mockServiceId" #addonAfter>
                   <span>{{ t('service.mockService.form.domainSuffix') }}</span>
                 </template>
               </Input>
@@ -216,14 +219,14 @@ onMounted(() => {
                 v-model:value="formState.servicePort"
                 dataType="number"
                 :placeholder="t('service.mockService.form.portPlaceholder')"
-                :disabled="projectDetail?.mockServiceId"
+                :disabled="serviceDetail?.mockServiceId"
                 :min="1"
                 :max="65535" />
             </FormItem>
             <FormItem name="nodeId">
               <Select
                 v-model:value="formState.nodeId"
-                :disabled="projectDetail?.mockServiceId"
+                :disabled="serviceDetail?.mockServiceId"
                 :action="`${TESTER}/node?fullTextSearch=true`"
                 :fieldNames="{label:'name',value:'id'}"
                 :maxlength="100"
@@ -239,7 +242,7 @@ onMounted(() => {
               <TreeSelect
                 :action="`${TESTER}/services?fullTextSearch=true`"
                 :fieldNames="{label:'name',value:'id'}"
-                :defaultValue="projectDetail"
+                :defaultValue="serviceDetail"
                 :virtual="false"
                 size="small"
                 disabled
@@ -257,7 +260,7 @@ onMounted(() => {
                 </template>
               </TreeSelect>
             </FormItem>
-            <template v-if="formState.serviceId && projectDetail?.hasApis">
+            <template v-if="formState.serviceId && serviceDetail?.hasApis">
               <FormItem name="apiIds">
                 <ApiList
                   v-model:apiIds="formState.apiIds"

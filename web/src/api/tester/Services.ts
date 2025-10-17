@@ -10,7 +10,7 @@ export default class API {
     return http.get(`${baseUrl}`, { ...params, fullTextSearch: true }, axiosConfig);
   }
 
-  loadInfo (params: string): Promise<[Error | null, any]> {
+  loadDetail (params: string): Promise<[Error | null, any]> {
     return http.get(`${baseUrl}/${params}`, {});
   }
 

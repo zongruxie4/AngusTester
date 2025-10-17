@@ -446,7 +446,7 @@ const docOrigin = ref();
 onMounted(async () => {
   // Check if service exists when shouldCheckId is true
   if (props.serviceInfo.shouldCheckId) {
-    const [error] = await services.loadInfo(props.serviceInfo?.id);
+    const [error] = await services.loadDetail(props.serviceInfo?.id);
     if (error) {
       showQuickStarted.value = true;
       notification.warning(t('service.sidebar.apiGroup.messages.serviceNotExist'));

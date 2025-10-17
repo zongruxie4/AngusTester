@@ -154,7 +154,7 @@ const loadServiceAndApisName = async (apisId) => {
  * @param serviceId - ID of the service
  */
 const loadServiceName = async (serviceId) => {
-  const [error, { data }] = await services.loadInfo(serviceId);
+  const [error, { data }] = await services.loadDetail(serviceId);
   if (error) {
     return;
   }

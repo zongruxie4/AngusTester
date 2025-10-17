@@ -6,7 +6,7 @@ import { Button } from 'ant-design-vue';
 import { TESTER, appContext, enumOptionUtils } from '@xcan-angus/infra';
 import { ApiStatus, ServicesPermission } from '@/enums/enums';
 import { services } from '@/api/tester';
-import { ServicesInfo } from '@/views/apis/services/services/types';
+import { ServicesDetail } from '@/views/apis/services/services/types';
 
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Security = defineAsyncComponent(() => import('@/views/apis/services/components/Security.vue'));
@@ -92,13 +92,13 @@ const editAuth = () => {
   visible.value = true;
 };
 
-const serviceInfo = ref<ServicesInfo>();
+const serviceInfo = ref<ServicesDetail>();
 const loadInfo = async () => {
-  const [error, res] = await services.loadInfo(props.id);
+  const [error, res] = await services.loadDetail(props.id);
   if (error) {
     return;
   }
-  const data = res.data as ServicesInfo;
+  const data = res.data as ServicesDetail;
   serviceInfo.value = data;
   status.value = data.status?.value;
   statusName.value = data.status?.message;
