@@ -1,10 +1,5 @@
 /* tslint:disable:no-namespace no-empty-interface */
 export namespace OpenAPI {
-  // OpenAPI extensions can be declared using generics
-  // e.g.:
-  // OpenAPI.Document<{
-  //   'x-amazon-apigateway-integration': AWSAPITGatewayDefinition
-  // }>
   export type Document<T extends {} = {}> =
     | OpenAPIV2.Document<T>
     | OpenAPIV3.Document<T>
@@ -278,6 +273,7 @@ export namespace OpenAPIV3 {
     security?: SecurityRequirementObject[];
     tags?: TagObject[];
     externalDocs?: ExternalDocumentationObject;
+    extensions: Record<string, any>;
     'x-express-openapi-additional-middleware'?: (
       | ((request: any, response: any, next: any) => Promise<void>)
       | ((request: any, response: any, next: any) => void)
@@ -292,29 +288,34 @@ export namespace OpenAPIV3 {
     contact?: ContactObject;
     license?: LicenseObject;
     version: string;
+    extensions: Record<string, any>;
   }
 
   export interface ContactObject {
     name?: string;
     url?: string;
     email?: string;
+    extensions: Record<string, any>;
   }
 
   export interface LicenseObject {
     name: string;
     url?: string;
+    extensions: Record<string, any>;
   }
 
   export interface ServerObject {
     url: string;
     description?: string;
     variables?: { [variable: string]: ServerVariableObject };
+    extensions: Record<string, any>;
   }
 
   export interface ServerVariableObject {
     enum?: string[] | number[];
     default: string | number;
     description?: string;
+    extensions: Record<string, any>;
   }
 
   export interface PathsObject<T extends {} = {}, P extends {} = {}> {
@@ -359,11 +360,13 @@ export namespace OpenAPIV3 {
     deprecated?: boolean;
     security?: SecurityRequirementObject[];
     servers?: ServerObject[];
+    extensions: Record<string, any>;
   } & T;
 
   export interface ExternalDocumentationObject {
     description?: string;
     url: string;
+    extensions: Record<string, any>;
   }
 
   export interface ParameterObject extends ParameterBaseObject {
@@ -385,6 +388,7 @@ export namespace OpenAPIV3 {
     example?: any;
     examples?: { [media: string]: ReferenceObject | ExampleObject };
     content?: { [media: string]: MediaTypeObject };
+    extensions: Record<string, any>;
   }
   export type NonArraySchemaObjectType =
     | 'boolean'
@@ -443,11 +447,13 @@ export namespace OpenAPIV3 {
     externalDocs?: ExternalDocumentationObject;
     example?: any;
     deprecated?: boolean;
+    extensions: Record<string, any>;
   }
 
   export interface DiscriminatorObject {
     propertyName: string;
     mapping?: { [value: string]: string };
+    extensions: Record<string, any>;
   }
 
   export interface XMLObject {
@@ -456,6 +462,7 @@ export namespace OpenAPIV3 {
     prefix?: string;
     attribute?: boolean;
     wrapped?: boolean;
+    extensions: Record<string, any>;
   }
 
   export interface ReferenceObject {
@@ -467,6 +474,7 @@ export namespace OpenAPIV3 {
     description?: string;
     value?: any;
     externalValue?: string;
+    extensions: Record<string, any>;
   }
 
   export interface MediaTypeObject {
@@ -474,6 +482,7 @@ export namespace OpenAPIV3 {
     example?: any;
     examples?: { [media: string]: ReferenceObject | ExampleObject };
     encoding?: { [media: string]: EncodingObject };
+    extensions: Record<string, any>;
   }
 
   export interface EncodingObject {
@@ -482,12 +491,14 @@ export namespace OpenAPIV3 {
     style?: string;
     explode?: boolean;
     allowReserved?: boolean;
+    extensions: Record<string, any>;
   }
 
   export interface RequestBodyObject {
     description?: string;
     content: { [media: string]: MediaTypeObject };
     required?: boolean;
+    extensions: Record<string, any>;
   }
 
   export interface ResponsesObject {
@@ -499,6 +510,7 @@ export namespace OpenAPIV3 {
     headers?: { [header: string]: ReferenceObject | HeaderObject };
     content?: { [media: string]: MediaTypeObject };
     links?: { [link: string]: ReferenceObject | LinkObject };
+    extensions: Record<string, any>;
   }
 
   export interface LinkObject {
@@ -508,6 +520,7 @@ export namespace OpenAPIV3 {
     requestBody?: any;
     description?: string;
     server?: ServerObject;
+    extensions: Record<string, any>;
   }
 
   export interface CallbackObject {
@@ -541,6 +554,7 @@ export namespace OpenAPIV3 {
     description?: string;
     scheme: string;
     bearerFormat?: string;
+    extensions: Record<string, any>;
   }
 
   export interface ApiKeySecurityScheme {
@@ -548,6 +562,7 @@ export namespace OpenAPIV3 {
     description?: string;
     name: string;
     in: string;
+    extensions: Record<string, any>;
   }
 
   export interface OAuth2SecurityScheme {
@@ -558,36 +573,43 @@ export namespace OpenAPIV3 {
         authorizationUrl: string;
         refreshUrl?: string;
         scopes: { [scope: string]: string };
+        extensions: Record<string, any>;
       };
       password?: {
         tokenUrl: string;
         refreshUrl?: string;
         scopes: { [scope: string]: string };
+        extensions: Record<string, any>;
       };
       clientCredentials?: {
         tokenUrl: string;
         refreshUrl?: string;
         scopes: { [scope: string]: string };
+        extensions: Record<string, any>;
       };
       authorizationCode?: {
         authorizationUrl: string;
         tokenUrl: string;
         refreshUrl?: string;
         scopes: { [scope: string]: string };
+        extensions: Record<string, any>;
       };
     };
+    extensions: Record<string, any>;
   }
 
   export interface OpenIdSecurityScheme {
     type: 'openIdConnect';
     description?: string;
     openIdConnectUrl: string;
+    extensions: Record<string, any>;
   }
 
   export interface TagObject {
     name: string;
     description?: string;
     externalDocs?: ExternalDocumentationObject;
+    extensions: Record<string, any>;
   }
 }
 
@@ -608,6 +630,7 @@ export namespace OpenAPIV2 {
     securityDefinitions?: SecurityDefinitionsObject;
     swagger: string;
     tags?: TagObject[];
+    extensions: Record<string, any>;
     'x-express-openapi-additional-middleware'?: (
       | ((request: any, response: any, next: any) => Promise<void>)
       | ((request: any, response: any, next: any) => void)
@@ -619,11 +642,13 @@ export namespace OpenAPIV2 {
     name: string;
     description?: string;
     externalDocs?: ExternalDocumentationObject;
+    extensions: Record<string, any>;
   }
 
   export interface SecuritySchemeObjectBase {
     type: 'basic' | 'apiKey' | 'oauth2';
     description?: string;
+    extensions: Record<string, any>;
   }
 
   export interface SecuritySchemeBasic extends SecuritySchemeObjectBase {
@@ -707,6 +732,7 @@ export namespace OpenAPIV2 {
     schema?: Schema;
     headers?: HeadersObject;
     examples?: ExampleObject;
+    extensions: Record<string, any>;
   }
 
   export interface HeadersObject {
@@ -821,6 +847,7 @@ export namespace OpenAPIV2 {
     [index: string]: any;
     description?: string;
     url: string;
+    extensions: Record<string, any>;
   }
 
   export interface ItemsObject {
@@ -842,6 +869,7 @@ export namespace OpenAPIV2 {
     enum?: any[];
     multipleOf?: number;
     $ref?: string;
+    extensions: Record<string, any>;
   }
 
   export interface XMLObject {
@@ -851,6 +879,7 @@ export namespace OpenAPIV2 {
     prefix?: string;
     attribute?: boolean;
     wrapped?: boolean;
+    extensions: Record<string, any>;
   }
 
   export interface InfoObject {
@@ -860,17 +889,20 @@ export namespace OpenAPIV2 {
     contact?: ContactObject;
     license?: LicenseObject;
     version: string;
+    extensions: Record<string, any>;
   }
 
   export interface ContactObject {
     name?: string;
     url?: string;
     email?: string;
+    extensions: Record<string, any>;
   }
 
   export interface LicenseObject {
     name: string;
     url?: string;
+    extensions: Record<string, any>;
   }
 }
 
@@ -915,4 +947,5 @@ export interface IJsonSchema {
   oneOf?: IJsonSchema[];
   not?: IJsonSchema;
   $ref?: string;
+  extensions: Record<string, any>;
 }
