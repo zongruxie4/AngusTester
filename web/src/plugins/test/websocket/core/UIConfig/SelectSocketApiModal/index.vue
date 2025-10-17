@@ -6,18 +6,20 @@ import { AssociateSelect, Modal, IconText } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 
-import { ApiInfo } from '';
+import { ApiInfo } from '@/plugins/test/types';
 
 const { t } = useI18n();
 
 export interface Props {
   visible:boolean;
   linkIds:Set<string>;
+  projectId: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
-  linkIds: () => new Set()
+  linkIds: () => new Set(),
+  projectId: ''
 });
 
 
@@ -60,21 +62,21 @@ const cancel = () => {
 };
 
 const treeSelectProps = {
-  action: `${TESTER}/project/tree`,
+  action: `${TESTER}/services?projectId=${props.projectId}`,
   fieldNames: { label: 'name', value: 'id', children: 'children' },
-  label: t('websocketPlugin.uiConfig.selectApiModal.treeSelect.label'),
-  placeholder: t('websocketPlugin.uiConfig.selectApiModal.treeSelect.placeholder')
+  label: t('websocketPlugin.selectApiModal.treeSelect.label'),
+  placeholder: t('websocketPlugin.selectApiModal.treeSelect.placeholder')
 };
 
 const inputProps = {
   filterKey: 'summary',
   allowClear: true,
-  placeholder: t('websocketPlugin.uiConfig.selectApiModal.input.placeholder')
+  placeholder: t('websocketPlugin.selectApiModal.input.placeholder')
 };
 
 const scrollProps = {
   action: (id: string) => {
-    return `${TESTER}/project/${id}/apis`;
+    return `${TESTER}/services/${id}/apis`;
   },
   params: {
     filters: [{ key: 'protocol', op: 'IN', value: ['ws', 'wss'] }]
@@ -94,7 +96,7 @@ const fields = [
   },
   {
     key: 'summary',
-    name: t('websocketPlugin.uiConfig.selectApiModal.fields.name'),
+    name: t('common.name'),
     style: {
       flex: '1 1 55%',
       overflow: 'hidden',
@@ -110,7 +112,7 @@ const change = ({ ids }) => {
 </script>
 <template>
   <Modal
-    :title="t('websocketPlugin.uiConfig.selectApiModal.title')"
+    :title="t('websocketPlugin.selectApiModal.title')"
     :visible="props.visible"
     :centered="true"
     :width="700"

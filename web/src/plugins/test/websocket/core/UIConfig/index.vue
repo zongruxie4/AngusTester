@@ -12,18 +12,20 @@ import { variable } from '@/api/tester';
 
 import angusUtils from 'src/utils/apis';
 import { ParameterConfig, PipelineConfig } from '../PropsType';
-import { ApiInfo } from './SelectApiModal/PropsType';
+import { ApiInfo } from './SelectSocketApiModal/PropsType';
 
 const { t } = useI18n();
 
 export interface Props {
   value: PipelineConfig[];
   loaded: boolean;
+  projectId: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
-  loaded: false
+  loaded: false,
+  projectId: ''
 });
 
 
@@ -33,7 +35,7 @@ const emit = defineEmits<{
 }>();
 
 const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
-const SelectApiModal = defineAsyncComponent(() => import('./SelectApiModal/index.vue'));
+const SelectSocketApiModal = defineAsyncComponent(() => import('./SelectSocketApiModal/index.vue'));
 const AssertionForm = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/AssertionForm/index.vue'));
 const Parametric = defineAsyncComponent(() => import('./Parametric/index.vue'));
 
@@ -1127,8 +1129,9 @@ const autoSize = {
       </Draggable>
     </template>
     <AsyncComponent :visible="apiModalVisible">
-      <SelectApiModal
+      <SelectSocketApiModal
         v-model:visible="apiModalVisible"
+        :projectId="props.projectId"
         :linkIds="linkApiIds"
         @ok="selectApiOk" />
     </AsyncComponent>
