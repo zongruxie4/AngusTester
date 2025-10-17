@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, reactive, ref, Ref, watch } from 'vue';
 import { AsyncComponent, LeftDrawer, notification, IconText, VuexHelper } from '@xcan-angus/vue-ui';
-import { TESTER, localStore, utils, duration, appContext } from '@xcan-angus/infra';
+import { TESTER, localStore, utils, duration, appContext, enumUtils, PageQuery, HttpMethod } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { ServicesPermission } from '@/enums/enums';
+import { ServicesPermission, ApiStatus, ApisProtocol } from '@/enums/enums';
 import { services, apis } from '@/api/tester';
 
-import { FoldActionKey, foldGlobalActions, globalActions, menuActions, ModalsConfig, ServicesInfo } from './types';
+import { FoldActionKey, foldGlobalActions, globalActions, menuActions, ModalConfig, ServicesInfo } from './types';
 
 // Service left sliders
 const UnarchivedApiList = defineAsyncComponent(() => import('@/views/apis/services/services/UnarchivedApiList.vue'));
@@ -44,7 +44,7 @@ const isAdmin = computed(() => appContext.isAdmin());
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const appInfo = inject('appInfo') as Ref<Record<string, any>>;
 
-// TODO proTypeShowMap 这个逻辑看着不对
+// TODO proTypeShowMap logic seems incorrect
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
@@ -65,7 +65,7 @@ const showDropActions = computed(() => {
   return menuActions.filter(item => proTypeShowMap.value.showTask || item.key !== 'testTask');
 });
 
-const modalsConfig = reactive<ModalsConfig>({
+const modalsConfig = reactive<ModalConfig>({
   syncModalVisible: false,
   serverUrlModalVisible: false,
   importModalVisible: false,
@@ -79,7 +79,7 @@ const modalsConfig = reactive<ModalsConfig>({
   activeId: '',
   auth: false,
   activeName: '',
-  type: undefined,
+  type: '',
   statusVisible: false,
   selectedNode: undefined
 });
@@ -90,9 +90,9 @@ const trashRef = ref();
 
 const leftDrawerFoldFlag = ref(true);
 const leftDrawerCollapseActiveKey = ref<'trash'|'unarchived'>();
-const refreshLeftDrawerRecord = ref(false);// 记录是否要刷新LeftDrawer的目录列表
-const refreshUnarchivedRecord = ref(false);// 记录是否要刷新未归档的目录列表
-const refreshRecycleBinRecord = ref<{project:boolean;api:boolean}>({ // 记录是否要刷新回收站的列表
+const refreshLeftDrawerRecord = ref(false); // Track whether to refresh LeftDrawer directory list
+const refreshUnarchivedRecord = ref(false); // Track whether to refresh unarchived directory list
+const refreshRecycleBinRecord = ref<{project:boolean;api:boolean}>({ // Track whether to refresh recycle bin lists
   project: false,
   api: false
 });
@@ -105,15 +105,18 @@ const delTestVisible = ref(false);
 
 const authTabId = 'api-auth-1001';
 const inputValue = ref<string>();
-const exportVisible = ref(false);// 导出弹窗
-const importVisible = ref(false);// 导入
-const createVisible = ref(false);// 添加项目、服务
+const exportVisible = ref(false);
+const importVisible = ref(false);
+const createVisible = ref(false);
 
 const unarchivedKeywords = ref();
 const trashKeywords = ref();
 
-const foldChange = (foldFlag:boolean) => {
-  // 折叠状态不刷新
+/**
+ * Handle fold state changes of the left drawer and trigger deferred refreshes.
+ */
+const onFoldChange = (foldFlag:boolean) => {
+  // Don't refresh when collapsed
   if (!foldFlag) {
     return;
   }
@@ -130,10 +133,13 @@ const foldChange = (foldFlag:boolean) => {
     // loadRecycleBinCount();
   }
 
-  collapseChange(leftDrawerCollapseActiveKey.value);
+  onCollapseChange(leftDrawerCollapseActiveKey.value);
 };
 
-const collapseChange = (key:'trash'|'unarchived'|undefined) => {
+/**
+ * React to collapse panel changes and conditionally refresh related lists.
+ */
+const onCollapseChange = (key:'trash'|'unarchived'|undefined) => {
   if (key === 'unarchived') {
     if (refreshUnarchivedRecord.value) {
       if (typeof unarchivedRef.value?.refresh === 'function') {
@@ -150,10 +156,10 @@ const collapseChange = (key:'trash'|'unarchived'|undefined) => {
     const data = refreshRecycleBinRecord.value;
     for (const _key in data) {
       if (data[_key] && trashActiveKey.value === _key) {
-      // 刷新回收站对应列表
+      // Refresh corresponding recycle bin list
         if (typeof trashRef.value?.refresh === 'function') {
           trashRef.value.refresh(_key);
-          // 重置已刷新状态
+          // Reset refresh status
           data[_key] = false;
         }
       }
@@ -161,7 +167,10 @@ const collapseChange = (key:'trash'|'unarchived'|undefined) => {
   }
 };
 
-const foldActionClick = (key: FoldActionKey) => {
+/**
+ * Handle quick action clicks from the fold area toolbar.
+ */
+const onFoldActionClick = (key: FoldActionKey) => {
   switch (key) {
     case 'creatService':
       createVisible.value = true;
@@ -178,10 +187,13 @@ const foldActionClick = (key: FoldActionKey) => {
   }
 };
 
-const buttonDropdownClick = (item: {key: FoldActionKey}) => {
+/**
+ * Handle dropdown button clicks from the global actions menu.
+ */
+const onToolbarDropdownClick = (item: {key: FoldActionKey}) => {
   switch (item.key) {
     case 'creatService':
-      createServiceOrProject('SERVICE', '-1');
+      createServiceOrProject('SERVICE');
       break;
     case 'import':
       importVisible.value = true;
@@ -195,15 +207,20 @@ const buttonDropdownClick = (item: {key: FoldActionKey}) => {
   }
 };
 
-// 刷新
-const refreshHandler = () => {
+/**
+ * Refresh the left drawer list immediately if available.
+ */
+const refreshLeftList = () => {
   if (typeof leftDrawerRef.value?.refresh === 'function') {
     leftDrawerRef.value.refresh();
   }
 };
 
-const importOk = () => {
-  refreshHandler();
+/**
+ * Callback after a global import completes to refresh lists and groups.
+ */
+const onImportOk = () => {
+  refreshLeftList();
   updateApiGroup('all');
 };
 
@@ -214,11 +231,12 @@ const params = computed(() => {
   };
 });
 
-const allAuths = ['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT', 'RENAME', 'CLONE'];
-const auths = ref<string[]>(['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT']);
-const parentAuths = ref<string[]>([]);
+const auths = ref<string[]>([]);
 
-const contextmenuClick = (action: { key: string; }, item: ServicesInfo) => {
+/**
+ * Handle context menu actions on a service item.
+ */
+const onContextMenuClick = (action: { key: string; }, item: ServicesInfo) => {
   switch (action.key) {
     case 'sync-config':
       modalsConfig.syncModalVisible = true;
@@ -261,34 +279,34 @@ const contextmenuClick = (action: { key: string; }, item: ServicesInfo) => {
       });
       break;
     case 'translate':
-      setTranslate(item);
+      openTranslateService(item);
       break;
-    case 'rename':
+    case 'MODIFY':
       leftDrawerRef.value.edit(item, `${TESTER}/services/${item.id}/name`, {});
       break;
     case 'clone':
-      cloneProject(item);
+      cloneService(item);
       break;
     case 'setStatus':
-      setStatus(item);
+      openModifyStatus(item);
       break;
     case 'addApi':
-      addApiByProject(item);
+      addHttpApiForService(item);
       break;
     case 'addSocket':
-      addSocketByProject(item);
+      addSocketApiForService(item);
       break;
     case 'mock':
       addTabPane({ ...item, _id: item.id + 'mock', name: t('service.home.mockTabName'), value: 'mock' });
       break;
     case 'setTest':
-      toSetTest(item);
+      openCreateTestTask(item);
       break;
     case 'reTest':
-      restartTestTask(item);
+      openRestartTestTask(item);
       break;
     case 'reopen':
-      reopenTestTask(item);
+      openReopenTestTask(item);
       break;
     case 'deleteTask':
       delTestVisible.value = true;
@@ -339,7 +357,10 @@ const contextmenuClick = (action: { key: string; }, item: ServicesInfo) => {
 };
 
 const guideProjectId = ref('');
-const getGuideProjectId = (id:string) => {
+/**
+ * Set the project id for the guide and manage guide visibility cache.
+ */
+const setGuideProjectId = (id:string) => {
   if (!id) {
     const cacheGuideKey = `${userInfo.value?.id}_API_GUIDE`;
     localStore.set(cacheGuideKey, true);
@@ -348,7 +369,10 @@ const getGuideProjectId = (id:string) => {
   guideProjectId.value = id;
 };
 
-const projectGuideStep = (key:string) => {
+/**
+ * Update the guide step visibility and cache when user interacts with guide.
+ */
+const updateProjectGuideStep = (key:string) => {
   if (key === 'hideDrawer') {
     updateGuideStep({ visible: false, key: '' });
     updateGuideType('');
@@ -361,11 +385,17 @@ const projectGuideStep = (key:string) => {
 
 const showImportSamples = ref(false);
 const importBtnLoading = ref(false);
-const handleListChange = ({ ext = { allowImportSamples: false } }) => {
+/**
+ * Respond to list meta changes from LeftDrawer to show sample import entry.
+ */
+const onListChange = ({ ext = { allowImportSamples: false } }) => {
   showImportSamples.value = !!ext?.allowImportSamples;
 };
 
-const importSamples = async () => {
+/**
+ * Import service samples and refresh view after completion.
+ */
+const importServiceSamples = async () => {
   importBtnLoading.value = true;
   const [error] = await services.importServicesSamples();
   importBtnLoading.value = false;
@@ -376,23 +406,31 @@ const importSamples = async () => {
 };
 
 const infoText = ref<string>();
-const toSetTest = (_project) => {
+/**
+ * Open create test task modal for a service.
+ */
+const openCreateTestTask = (_project) => {
   modalsConfig.activeId = _project.id;
   testVisible.value = true;
-  // infoText.value = '当前服务接口测试任务不存在时生成对应任务，如果任务已存在则覆盖当前测试信息。';
 };
 
 const restartContent = ref('');
-const restartTestTask = (item) => {
+/**
+ * Open restart test task modal with contextual content.
+ */
+const openRestartTestTask = (item) => {
   modalsConfig.activeId = item.id;
   restartTestVisible.value = true;
   restartContent.value = t('service.sidebar.restartServiceTip', { name: item.name });
 };
 
-// 重新打开测试任务
+// Reopen test task
 const reopenTestVisible = ref(false);
 const reopenContent = ref('');
-const reopenTestTask = (item) => {
+/**
+ * Open reopen test task modal with contextual content.
+ */
+const openReopenTestTask = (item) => {
   modalsConfig.activeId = item.id;
   reopenTestVisible.value = true;
   reopenContent.value = t('service.sidebar.reopenServiceTip', { name: item.name });
@@ -435,7 +473,7 @@ const getOkAction = (type:'funcTestExecSmoke'|'funcTestExecSecurity'|'funcTestEx
   }
 };
 
-// 执行测试
+// Execute test
 const handleExecTest = async (type:'funcTestExecSmoke'|'funcTestExecSecurity'|'funcTestExec'|'perfTestExec'|'stabilityTestExec', id: string) => {
   selectedId.value = id;
   execTestVisible.value = true;
@@ -456,9 +494,9 @@ const handleBatch = (action, id: string) => {
   batchVisible.value = true;
 };
 
-// 添加一条空白项目/服务
-const createServiceOrProject = (type = 'SERVICE', pid = '-1') => {
-  leftDrawerRef.value.create(pid, `${TESTER}/services`, {
+// Add a blank project/service
+const createServiceOrProject = (type = 'SERVICE') => {
+  leftDrawerRef.value.create('-1', `${TESTER}/services`, {
     targetType: type
   });
 };
@@ -469,25 +507,34 @@ const select = (item) => {
 };
 
 const selectedService = ref();
-const setTranslate = (item) => {
+/**
+ * Open translate modal for selected service.
+ */
+const openTranslateService = (item) => {
   translateVisible.value = true;
   selectedService.value = { id: item.id, name: item.name };
 };
 
-// 克隆
-const cloneProject = async (item: any) => {
+// Clone
+/**
+ * Clone a service and refresh the left drawer on success.
+ */
+const cloneService = async (item: any) => {
   const [error] = await services.cloneServices(item);
   if (error) {
     return;
   }
-  refreshHandler();
+  refreshLeftList();
   notification.success(t('actions.tips.cloneSuccess'));
 };
 
 const projectStatus = ref();
 const statusItem = ref();
-// 打开修改状态弹窗
-const setStatus = async (item: any) => {
+
+/**
+ * Open modify status modal and initialize modal context.
+ */
+const openModifyStatus = async (item: any) => {
   statusItem.value = item;
   modalsConfig.statusVisible = true;
   modalsConfig.activeId = item.id;
@@ -495,34 +542,41 @@ const setStatus = async (item: any) => {
   projectStatus.value = item.status?.value || '';
 };
 
-// 修改状态值
-const changeStatusValue = (status) => {
+/**
+ * Apply selected status value to the cached item.
+ */
+const applyStatusChange = (status) => {
   statusItem.value.status = status;
 };
 
-// 权限表示变化
-const authFlagChange = ({ auth }:{auth:boolean}) => {
+/**
+ * Reflect authentication flag changes to the left drawer list item.
+ */
+const onAuthFlagChange = ({ auth }:{auth:boolean}) => {
   if (typeof leftDrawerRef.value?.update === 'function') {
     leftDrawerRef.value.update({ id: modalsConfig.activeId, auth });
   }
 };
 
-// 添加http接口
-const addApiByProject = async (item) => {
+/**
+ * Add a temporary HTTP API tab under a service for quick creation.
+ */
+const addHttpApiForService = async (item) => {
   const _id = utils.uuid('api');
   const param = {
     summary: 'api' + new Date().getTime(),
     ownerId: userInfo.value?.id,
-    projectId: item.id,
+    projectId: item.id, // TODO Is this project ID or service ID?
     assertions: [],
     authentication: null,
     host: '',
-    method: 'GET',
+    protocol: ApisProtocol.http,
+    method: HttpMethod.GET,
+    status: ApiStatus.UNKNOWN,
     parameters: [],
     requestBody: {},
     secured: false,
-    endpoint: '',
-    protocol: 'http'
+    endpoint: ''
   };
 
   addTabPane({
@@ -531,23 +585,26 @@ const addApiByProject = async (item) => {
     _id: _id + 'API',
     pid: _id + 'API',
     unarchived: true,
-    projectId: item.id,
+    projectId: item.id, // TODO Is this project ID or service ID?
     projectName: item.name,
     projectType: item.targetType
   });
 };
 
-// 添加soket接口
-const addSocketByProject = async (item) => {
+// Add socket interface
+/**
+ * Add a temporary Socket API tab under a service for quick creation.
+ */
+const addSocketApiForService = async (item) => {
   const _id = utils.uuid('socket');
   const params = {
     summary: 'socket' + new Date().getTime(),
     ownerId: userInfo.value?.id,
-    projectId: item.id,
+    projectId: item.id, // TODO Is this project ID or service ID?
     parameters: [],
-    protocol: 'wss',
-    method: 'GET',
-    status: 'UNKNOWN'
+    protocol: ApisProtocol.wss,
+    method: HttpMethod.GET,
+    status: ApiStatus.UNKNOWN
   };
 
   addTabPane({
@@ -556,23 +613,31 @@ const addSocketByProject = async (item) => {
     _id: _id + 'socket',
     pid: _id + 'socket',
     unarchived: true,
-    projectId: item.id,
+    projectId: item.id, // TODO Is this project ID or service ID?
     projectName: item.name,
     projectType: item.targetType
   });
 };
 
-// 删除 callback
-const deleteProject = async (id: string) => {
+/**
+ * Handle delete service callback to clean related tabs and notify.
+ */
+const onDeleteService = async (id: string) => {
   deleteTabPane([id + 'group', id + 'mock']);
   notification.success(t('service.sidebar.deleteServiceSuccess'));
 };
 
-const editProject = (item) => {
+/**
+ * Update the tab title when a service is renamed inline.
+ */
+const onEditService = (item) => {
   updateTabPane({ pid: item.id + 'group', _id: item.id + 'group', name: item.name });
 };
 
-const create = (item) => {
+/**
+ * Open the service group tab after a new service is created.
+ */
+const onCreateService = (item) => {
   addTabPane({
     ...item,
     name: item.name,
@@ -581,25 +646,34 @@ const create = (item) => {
   });
 };
 
-const createProjectOk = () => {
+/**
+ * Close create modal and refresh the left drawer after creation.
+ */
+const onCreateServiceOk = () => {
   createVisible.value = false;
   refresh();
 };
 
-const handleExportEnd = () => {
+/**
+ * Callback after import into a service finishes to update api group.
+ */
+const onImportToServiceOk = () => {
   updateApiGroup(modalsConfig.activeId);
 };
 
-// loadActionAuth
-const visibleChange = async (visible, item, pItem) => {
+/**
+ * Load current permissions for the dropdown when the list becomes visible.
+ */
+const onLeftListVisibleChange = async (visible, item) => {
   if (!visible) {
     return;
   }
-  // parentItem = pItem || undefined;
-  listProps.value.dropdownProps.menuItems = showDropActions.value.filter(i => i.key !== 'addServive');
+
+  listProps.value.dropdownProps.menuItems = showDropActions.value.filter(i => i.key !== 'addService');
   if (isAdmin.value) {
     return;
   }
+
   if (item.auth) {
     const [error, res] = await services.getCurrentAuth(item.id);
     if (error) {
@@ -607,33 +681,20 @@ const visibleChange = async (visible, item, pItem) => {
     }
     auths.value = (res.data?.permissions || [])?.map(i => i.value);
   } else {
-    auths.value = allAuths;
+    auths.value = enumUtils.getEnumValues(ServicesPermission);
   }
-  if (item?.status?.value !== 'RELEASED') {
-    if (auths.value.includes('MODIFY')) {
-      auths.value.push('RENAME');
-    }
-  } else {
-    auths.value = auths.value.filter(permission => !['RENAME', 'DELETE'].includes(permission));
+
+  if (item?.status?.value === ApiStatus.RELEASED) {
+    auths.value = auths.value.filter(permission => ![ServicesPermission.MODIFY, ServicesPermission.DELETE].includes(permission));
   }
-  auths.value.push('CLONE');
-  if (item.pid > 0) {
-    if (pItem?.auth) {
-      const [perror, pResp] = await services.getCurrentAuth(pItem.id);
-      if (!perror) {
-        parentAuths.value = (pResp.data?.permissions || []).map(i => i.value);
-      }
-    } else {
-      parentAuths.value = allAuths;
-    }
-    if (!parentAuths.value.includes('ADD')) {
-      auths.value = auths.value.filter(permission => !['CLONE'].includes(permission));
-    }
-  }
+
   listProps.value.dropdownProps.permissions = auths.value;
 };
 
-const searchChange = debounce(duration.search, (key: 'trash'|'unarchived', value: string) => {
+/**
+ * Debounced search handler for different left drawer sections.
+ */
+const onSearchChange = debounce(duration.search, (key: 'trash'|'unarchived', value: string) => {
   if (key === 'trash') {
     trashKeywords.value = value;
     return;
@@ -644,6 +705,9 @@ const searchChange = debounce(duration.search, (key: 'trash'|'unarchived', value
   }
 });
 
+/**
+ * Load unarchived api count for the current project and update badge.
+ */
 const loadUnarchivedCount = async () => {
   const [error, res] = await apis.getUnarchivedApiCount({ projectId: projectId.value });
   if (error) {
@@ -653,6 +717,9 @@ const loadUnarchivedCount = async () => {
   collapseOptions.value[0].total = +res.data;
 };
 
+/**
+ * Refresh the left drawer or mark a deferred refresh when folded.
+ */
 const refresh = () => {
   if (!leftDrawerFoldFlag.value) {
     refreshLeftDrawerRecord.value = true;
@@ -664,6 +731,9 @@ const refresh = () => {
   }
 };
 
+/**
+ * Refresh the unarchived list or defer until the panel is active.
+ */
 const refreshUnarchived = () => {
   if (!leftDrawerFoldFlag.value) {
     refreshUnarchivedRecord.value = true;
@@ -677,16 +747,16 @@ const refreshUnarchived = () => {
     return;
   }
 
-  // 刷新未归档列表
+  // Refresh unarchived list
   if (typeof unarchivedRef.value?.refresh === 'function') {
     unarchivedRef.value.refresh();
   }
 };
 
-// 添加服务
+// Add service
 const editInputProps = computed(() => ({
-  createAction: `${TESTER}/services`, // 添加目录url
-  createParams: { projectId: projectId.value }, // 添加目录需要传递的参数
+  createAction: `${TESTER}/services`, // Add directory URL
+  createParams: { projectId: projectId.value }, // Parameters needed for adding directory
   allowClear: true,
   placeholder: t('service.sidebar.serviceNamePlaceholder'),
   maxlength: 100
@@ -730,29 +800,33 @@ const tipMap = {
   }
 };
 
+const searchInputProps = {
+  placeholder: t('service.sidebar.searchServicePlaceholder'),
+  allowClear: true
+};
+
 const listProps = ref({
   maxlevel: 2,
   dropdownProps: {
     menuItems: showDropActions.value,
-    permissions: ['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT'],
+    permissions: enumUtils.getEnumValues(ServicesPermission),
     trigger: 'contextmenu'
   }
 });
 
-// 排序 选项
 const sortProps = {
   menuItems: [{
-    name: t('service.sidebar.sortMenu.sortByTime'),
+    name: t('common.createdDate'),
     key: 'createdDate',
-    orderSort: 'DESC'
+    orderSort: PageQuery.OrderSort.Desc
   }, {
-    name: t('service.sidebar.sortMenu.sortByName'),
+    name: t('common.name'),
     key: 'name',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   }, {
-    name: t('service.sidebar.sortMenu.sortByAdd'),
+    name: t('common.creator'),
     key: 'createdBy',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   }]
 };
 
@@ -764,13 +838,6 @@ const collapseOptions = ref<{ name: string; key: string; icon: string; total: nu
     total: 0
   }
 ]);
-
-// 搜索 props
-const searchInputProps = {
-  placeholder: t('service.sidebar.searchServicePlaceholder'),
-  allowClear: true
-};
-
 </script>
 <template>
   <LeftDrawer
@@ -792,20 +859,20 @@ const searchInputProps = {
     :stepKey="stepKey"
     :stepContent="stepContent"
     storageKey="left-project"
-    @collapseChange="collapseChange"
-    @foldChange="foldChange"
-    @click="foldActionClick"
-    @edit="editProject"
-    @del="deleteProject"
-    @create="create"
+    @collapseChange="onCollapseChange"
+    @foldChange="onFoldChange"
+    @click="onFoldActionClick"
+    @edit="onEditService"
+    @del="onDeleteService"
+    @create="onCreateService"
     @select="select"
-    @searchChange="searchChange"
-    @buttonDropdownClick="buttonDropdownClick"
-    @contextmenuClick="contextmenuClick"
-    @visibleChange="visibleChange"
-    @listChange="handleListChange"
-    @updateGuideStep="projectGuideStep"
-    @guideProjectId="getGuideProjectId">
+    @searchChange="onSearchChange"
+    @buttonDropdownClick="onToolbarDropdownClick"
+    @contextmenuClick="onContextMenuClick"
+    @visibleChange="onLeftListVisibleChange"
+    @listChange="onListChange"
+    @updateGuideStep="updateProjectGuideStep"
+    @guideProjectId="setGuideProjectId">
     <template #iconText>
       <IconText text="S" class="bg-blue-badge-s" />
     </template>
@@ -830,35 +897,35 @@ const searchInputProps = {
         type="link"
         class="text-3"
         :loading="importBtnLoading"
-        @click="importSamples">
-        导入示例
+        @click="importServiceSamples">
+        Import samples
       </Button>
     </template>
   </LeftDrawer>
 
-  <!-- 导出 -->
+  <!-- Export -->
   <AsyncComponent :visible="exportVisible">
     <ExportService
       v-model:visible="exportVisible"
       :selectedNode="undefined" />
   </AsyncComponent>
 
-  <!-- 导入 -->
+  <!-- Import -->
   <AsyncComponent :visible="importVisible">
     <LocalImport
       v-model:visible="importVisible"
       source="global"
-      @ok="importOk" />
+      @ok="onImportOk" />
   </AsyncComponent>
 
-  <!-- 添加项目、服务 -->
+  <!-- Add project/service -->
   <AsyncComponent :visible="createVisible">
     <CreateServices
       v-model:visible="createVisible"
-      @ok="createProjectOk" />
+      @ok="onCreateServiceOk" />
   </AsyncComponent>
 
-  <!-- 同步 -->
+  <!-- Sync -->
   <AsyncComponent :visible="modalsConfig.syncModalVisible">
     <SyncConfig
       v-if="modalsConfig.syncModalVisible"
@@ -866,7 +933,7 @@ const searchInputProps = {
       v-model:visible="modalsConfig.syncModalVisible" />
   </AsyncComponent>
 
-  <!-- 配置服务 -->
+  <!-- Configure service -->
   <AsyncComponent :visible="modalsConfig.serverUrlModalVisible">
     <ServerConfig
       v-if="modalsConfig.serverUrlModalVisible"
@@ -874,21 +941,21 @@ const searchInputProps = {
       v-model:visible="modalsConfig.serverUrlModalVisible" />
   </AsyncComponent>
 
-  <!-- 导入 -->
+  <!-- Import -->
   <AsyncComponent :visible="modalsConfig.importModalVisible">
     <LocalImport
       v-model:visible="modalsConfig.importModalVisible"
       :serviceId="modalsConfig.activeId"
       source="services"
-      @ok="handleExportEnd" />
+      @ok="onImportToServiceOk" />
   </AsyncComponent>
 
-  <!-- 认证配置 -->
+  <!-- Authentication config -->
   <AsyncComponent :visible="modalsConfig.authenticateModalVisible">
     <SecurityConfig :id="modalsConfig.activeId" v-model:visible="modalsConfig.authenticateModalVisible" />
   </AsyncComponent>
 
-  <!-- 导出 -->
+  <!-- Export -->
   <AsyncComponent :visible="modalsConfig.exportInterfaceModalVisible">
     <ExportApis
       v-model:visible="modalsConfig.exportInterfaceModalVisible"
@@ -896,7 +963,7 @@ const searchInputProps = {
       type="APIS" />
   </AsyncComponent>
 
-  <!-- 分享 -->
+  <!-- Share -->
   <AsyncComponent :visible="modalsConfig.shareModalVisible">
     <ShareService
       v-if="modalsConfig.shareModalVisible"
@@ -907,7 +974,7 @@ const searchInputProps = {
       :type="modalsConfig.type" />
   </AsyncComponent>
 
-  <!-- 权限 -->
+  <!-- Authorization -->
   <AsyncComponent :visible="modalsConfig.authModalVisible">
     <Authorize
       v-model:visible="modalsConfig.authModalVisible"
@@ -922,10 +989,10 @@ const searchInputProps = {
       :onTips="tipMap[modalsConfig.type!].on"
       :offTips="tipMap[modalsConfig.type!].off"
       :title="modelTitleMap[modalsConfig.type!]"
-      @change="authFlagChange" />
+      @change="onAuthFlagChange" />
   </AsyncComponent>
 
-  <!-- 测试 -->
+  <!-- Test -->
   <AsyncComponent :visible="testVisible">
     <CreateTestTask
       v-model:id="modalsConfig.activeId"
@@ -934,7 +1001,7 @@ const searchInputProps = {
       type="SERVICE" />
   </AsyncComponent>
 
-  <!-- 重新开始测试 -->
+  <!-- Restart test -->
   <AsyncComponent :visible="restartTestVisible">
     <RestartTestTask
       v-model:id="modalsConfig.activeId"
@@ -943,7 +1010,7 @@ const searchInputProps = {
       type="SERVICE" />
   </AsyncComponent>
 
-  <!-- 重新打开测试任务 -->
+  <!-- Reopen test task -->
   <AsyncComponent :visible="reopenTestVisible">
     <ReopenTestTask
       v-model:visible="reopenTestVisible"
@@ -952,7 +1019,7 @@ const searchInputProps = {
       type="SERVICE" />
   </AsyncComponent>
 
-  <!-- 删除测试任务 -->
+  <!-- Delete test task -->
   <AsyncComponent :visible="delTestVisible">
     <DelTestTask
       :id="modalsConfig.activeId"
@@ -960,18 +1027,18 @@ const searchInputProps = {
       type="SERVICE" />
   </AsyncComponent>
 
-  <!-- 设置状态 -->
+  <!-- Set status -->
   <AsyncComponent :visible="modalsConfig.statusVisible">
     <ModifyStatus
       :id="modalsConfig.activeId"
       v-model:visible="modalsConfig.statusVisible"
       :value="projectStatus"
       :type="modalsConfig.type"
-      @confirm="changeStatusValue" />
+      @confirm="applyStatusChange" />
   </AsyncComponent>
 
   <AsyncComponent :visible="modalsConfig.testScriptVisible">
-    <!-- 设置脚本 -->
+    <!-- Set script -->
     <GenTestScript
       :id="modalsConfig.activeId"
       v-model:visible="modalsConfig.testScriptVisible"
@@ -980,7 +1047,7 @@ const searchInputProps = {
   </AsyncComponent>
 
   <AsyncComponent :visible="modalsConfig.delTestScriptVisible">
-    <!-- 删除测试脚本 -->
+    <!-- Delete test script -->
     <DelTestScript
       :id="modalsConfig.activeId"
       v-model:visible="modalsConfig.delTestScriptVisible"
@@ -988,7 +1055,7 @@ const searchInputProps = {
   </AsyncComponent>
 
   <AsyncComponent :visible="modalsConfig.enabledApiTestVisible">
-    <!-- 启用、禁用接口测试 -->
+    <!-- Enable/disable API test -->
     <EnabledApiTest
       :id="modalsConfig.activeId"
       v-model:visible="modalsConfig.enabledApiTestVisible" />

@@ -52,6 +52,13 @@ export enum TaskMeetingType {
   OTHER = 'OTHER'
 }
 
+export enum ApisProtocol {
+  http = 'http',
+  https = 'https',
+  ws = 'ws',
+  wss = 'wss'
+}
+
 // API Related Enums
 export enum ApisTargetType {
   SERVICE = 'SERVICE',

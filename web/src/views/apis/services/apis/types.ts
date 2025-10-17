@@ -1,6 +1,6 @@
-import { i18n, HttpMethod, EnumMessage } from '@xcan-angus/infra';
-import { ApiSource, ApiStatus, ApiImportSource } from '@/enums/enums';
-import { OpenAPIV3 } from '@/types/openapi-types';
+import {EnumMessage, HttpMethod, i18n} from '@xcan-angus/infra';
+import {ApiImportSource, ApiSource, ApisProtocol, ApiStatus} from '@/enums/enums';
+import {OpenAPIV3} from '@/types/openapi-types';
 
 const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
@@ -37,13 +37,6 @@ export type NavItem = {
   value: string,
   auth?: 'MODIFY' | 'GRANT' | 'VIEW ' | 'SHARE',
   disabled?: boolean,
-}
-
-export enum ApisProtocol {
-  http='http',
-  https='https',
-  ws = 'ws',
-  wss = 'wss'
 }
 
 export type ApisListInfo = {
