@@ -6,7 +6,7 @@ import { Icon, Input, SelectEnum, Tooltip, Validate, Select, Arrow } from '@xcan
 import { utils } from '@xcan-angus/infra';
 
 import { ParameterConfig, WebsocketConfig, WebSocketMode } from './PropsType';
-import { AssertionConfig } from './AssertionForm/PropsType';
+import { AssertionConfig } from '@/plugins/test/components/UIConfigComp/AssertionForm/PropsType';
 
 const { t } = useI18n();
 
@@ -33,7 +33,7 @@ const emit = defineEmits<{
 }>();
 
 const ParameterInput = defineAsyncComponent(() => import('./ParameterInput.vue'));
-const AssertionForm = defineAsyncComponent(() => import('./AssertionForm/index.vue'));
+const AssertionForm = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/AssertionForm/index.vue'));
 const ServerUri = defineAsyncComponent(() => import('./ServerUri/index.vue'));
 
 const queryRef = ref();

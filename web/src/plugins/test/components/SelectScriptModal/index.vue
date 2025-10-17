@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Checkbox } from 'ant-design-vue';
 import { Modal, Scroll, Input, Icon, notification } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration, TESTER } from '@xcan-angus/infra';
+import { duration, TESTER, SearchCriteria } from '@xcan-angus/infra';
 import YAML from 'yaml';
 import { script } from '@/api/tester';
 
@@ -103,11 +103,11 @@ onMounted(() => {
 });
 
 const scrollParams = computed(() => {
-  const params = { filters: undefined, plugin: props.plugin, projectId: projectId.value };
+  const params = { filters: [] as SearchCriteria[], plugin: props.plugin, projectId: projectId.value };
   if (inputValue.value) {
     params.filters = [{
       key: 'name',
-      op: 'MATCH',
+      op: SearchCriteria.OpEnum.Match,
       value: inputValue.value
     }];
   }
@@ -119,7 +119,7 @@ const action = `${TESTER}/script`;
 </script>
 <template>
   <Modal
-    :title="t('httpPlugin.selectScriptModal.title')"
+    :title="t('commonPlugin.selectScriptModal.title')"
     :visible="props.visible"
     :centered="true"
     :width="700"
@@ -142,7 +142,7 @@ const action = `${TESTER}/script`;
       <div style="height: calc(100% - 38px);">
         <div class="bg-table-header flex items-center pl-2 h-8 leading-5 rounded">
           <div class="w-4 h-5 flex items-center justify-center flex-shrink-0"></div>
-          <div class="flex-1 px-2">{{ t('httpPlugin.selectScriptModal.tableHeaders.name') }}</div>
+          <div class="flex-1 px-2">{{ t('common.name') }}</div>
           <div class="flex-shrink-0 px-2 w-25">{{ t('common.plugin') }}</div>
           <div class="flex-shrink-0 px-2 w-28">{{ t('common.type') }}</div>
         </div>

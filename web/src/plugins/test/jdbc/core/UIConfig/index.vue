@@ -7,10 +7,10 @@ import { utils } from '@xcan-angus/infra';
 
 import { PipelineConfig, TargetKey } from './PropsType';
 import { JDBCConfig } from './JDBCConfigs/PropsType';
-import { WaitingTimeConfig } from './WaitingTime/PropsType';
-import { RendezvousConfig } from './Rendezvous/PropsType';
-import { TransEndConfig } from './TransEnd/PropsType';
-import { TransStartConfig } from './TransStart/PropsType';
+import { WaitingTimeConfig } from '@/plugins/test/components/UIConfigComp/WaitingTime/PropsType';
+import { RendezvousConfig } from '@/plugins/test/components/UIConfigComp/Rendezvous/PropsType';
+import { TransEndConfig } from '@/plugins/test/components/UIConfigComp/TransEnd/PropsType';
+import { TransStartConfig } from '@/plugins/test/components/UIConfigComp/TransStart/PropsType';
 
 const { t } = useI18n();
 

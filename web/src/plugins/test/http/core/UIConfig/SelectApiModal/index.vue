@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Modal, Tooltip, notification, SelectApisByService } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { apis, paramTarget } from '@/api/tester';
 
-import { ApiInfo } from './PropsType';
+import { ApiInfo } from '@/plugins/test/types';
 
 const { t } = useI18n();
 

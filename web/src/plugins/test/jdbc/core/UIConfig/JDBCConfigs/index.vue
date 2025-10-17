@@ -7,8 +7,8 @@ import { utils } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 
 import { JDBCConfig, JDBCConfigInfo, QueryType, QueryArguments } from './PropsType';
-import { AssertionConfig } from './AssertionForm/PropsType';
-import ActionsGroup from '../ActionsGroup/index.vue';
+import { AssertionConfig } from '@/plugins/test/components/UIConfigComp/AssertionForm/PropsType';
+import ActionsGroup from '@/plugins/test/components/UIConfigComp/ActionsGroup/index.vue';
 
 const { t } = useI18n();
 
@@ -33,7 +33,7 @@ const emit = defineEmits<{
   (e: 'renderChange'): void;
 }>();
 
-const AssertionForm = defineAsyncComponent(() => import('./AssertionForm/index.vue'));
+const AssertionForm = defineAsyncComponent(() => import('@/plugins/test/components/UIConfigComp/AssertionForm/index.vue'));
 const Parametric = defineAsyncComponent(() => import('./Parametric/index.vue'));
 
 const assertRef = ref();

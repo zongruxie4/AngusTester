@@ -1,4 +1,4 @@
-import { AssertionConfig, AssertionInfo } from './AssertionForm/PropsType';
+import { AssertionConfig, AssertionInfo } from '@/plugins/test/components/UIConfigComp/AssertionForm/PropsType';
 
 export type TargetKey = 'WEBSOCKET';
 export type WebSocketMode = 'ONLY_SEND' | 'ONLY_RECEIVE' | 'SEND_AND_RECEIVE' | 'SEND_TO_RECEIVE' | 'RECEIVE_TO_SEND';

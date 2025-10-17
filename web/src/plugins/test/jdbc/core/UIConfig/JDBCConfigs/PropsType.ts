@@ -1,4 +1,4 @@
-import { AssertionConfig, AssertionInfo } from './AssertionForm/PropsType';
+import { AssertionConfig, AssertionInfo } from '@/plugins/test/components/UIConfigComp/AssertionForm/PropsType';
 
 export type QueryType = 'SELECT' | 'UPDATE' | 'CALLABLE' | 'PREPARED_SELECT' | 'PREPARED_UPDATE'
 export type InputOutputType = 'IN'| 'OUT'| 'INOUT';

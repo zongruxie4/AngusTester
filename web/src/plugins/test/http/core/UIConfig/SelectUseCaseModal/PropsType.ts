@@ -1,4 +1,5 @@
-import { HTTPInfo, HttpMethod } from '../HTTPConfigs/PropsType';
+import { HTTPInfo } from '../HTTPConfigs/PropsType';
+import { HttpMethod, EnumMessage } from '@xcan-angus/infra';
 
 export type UseCaseInfo = {
     id: string;
@@ -10,10 +11,7 @@ export type UseCaseInfo = {
     apisId: string;
     name: string;
     apisSummary: string;
-    method: {
-        value: HttpMethod;
-        message: string;
-    };
+    method: EnumMessage<HttpMethod>;
     uri: string;
     currentServer: {
         url: string;

@@ -10,12 +10,12 @@ import { useI18n } from 'vue-i18n';
 import angusUtils from 'src/utils/apis';
 import { PipelineConfig, TargetKey } from './PropsType';
 import { HTTPConfig } from './HTTPConfigs/PropsType';
-import { WaitingTimeConfig } from './WaitingTime/PropsType';
-import { RendezvousConfig } from './Rendezvous/PropsType';
+import { WaitingTimeConfig } from '@/plugins/test/components/UIConfigComp/WaitingTime/PropsType';
+import { RendezvousConfig } from '@/plugins/test/components/UIConfigComp/Rendezvous/PropsType';
 import { ThroughputConfig } from './Throughput/PropsType';
-import { TransEndConfig } from './TransEnd/PropsType';
-import { TransStartConfig } from './TransStart/PropsType';
-import { ApiInfo } from './SelectApiModal/PropsType';
+import { TransEndConfig } from '@/plugins/test/components/UIConfigComp/TransEnd/PropsType';
+import { TransStartConfig } from '@/plugins/test/components/UIConfigComp/TransStart/PropsType';
+import { ApiInfo } from '@/plugins/test/types';
 
 export interface Props {
   value: PipelineConfig[];

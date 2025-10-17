@@ -8,7 +8,7 @@ import { SmtpPipelineInfo } from '@/plugins/test/smtp/core/PropsType';
 import { TcpPipelineInfo } from '@/plugins/test/tcp/core/PropsType';
 import { WebSocketPipelineInfo } from '@/plugins/test/websocket/core/PropsType';
 
-import { ScriptType as ScriptTypeInfra, AssertionCondition } from '@xcan-angus/infra';
+import { ScriptType as ScriptTypeInfra, AssertionCondition,  BasicAssertionType, HttpMethod, EnumMessage } from '@xcan-angus/infra';
 import { ScenarioType } from '@/enums/enums';
 
 export type ScriptType = keyof typeof ScriptTypeInfra;
@@ -78,7 +78,7 @@ export type ScenarioInfo = {
             arguments: { [key: string]: any };
             pipelines: PipelineInfo[];
         };
-        type: {value:ScriptType;message:string;};
+        type: EnumMessage<ScriptTypeInfra>;
         configuration?: {
             duration: {
                 unit: string;
@@ -315,4 +315,75 @@ export type ExecContent = {
         }[];
     };
     timestamp: string;
+}
+
+
+export type ApiInfo = {
+    projectId: string;
+    caseId: string;
+    apisId: string;
+    id: string;
+    endpoint: string;
+    server?: { [key: string]: any };
+    description: string;
+    summary: string;
+    name: string;
+    method: EnumMessage<HttpMethod>;
+    parameters: {
+        name: string;
+        in: string;
+        description: string;
+        enabled:boolean;
+    }[];
+    requestBody: {
+        $ref:string;
+        description: string;
+        content: {
+            [key:string]: {
+                schema: {[key:string]:any};
+                exampleSetFlag: boolean;
+                'x-xc-value': string;
+            }
+        };
+        required: boolean;
+    };
+    authentication:{
+        type: string;
+        enabled: boolean;
+        'x-xc-value': string;
+        'x-scheme': string;
+        $ref?:string;
+    };
+    variables:{[key:string]:any}[];
+    assertions: {
+        name: string;
+        enabled: boolean;
+        type: EnumMessage<BasicAssertionType>;
+        expected: string;
+        assertionCondition: EnumMessage<AssertionCondition>;
+        expression: string;
+        description: string;
+        parameterName: string;
+        condition: string;
+        extraction: {
+            method: { value: string; message: string; };
+            expression: string;
+            matchItem: string;
+            defaultValue: string;
+            location: string;
+            parameterName: string;
+        };
+    }[];
+    resolvedRefModels: { [key: string]: string };
+    availableServers: {
+        url: string;
+        description?: string;
+        variables?: {
+            [key: string]: {
+                default: string;
+                description: string;
+                enum: string[];
+            }
+        };
+    }[];
 }
