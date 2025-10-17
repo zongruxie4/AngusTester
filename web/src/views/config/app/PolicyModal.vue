@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   groupId: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'change', addIds: string[], addPolicies: { id: string; name: string }[]): void;

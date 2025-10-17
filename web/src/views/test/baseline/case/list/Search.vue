@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Emits Definition
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'change', value: { pageNo: number; pageSize: number, filters: SearchCriteria[] }),
   (e: 'handleAddCase')

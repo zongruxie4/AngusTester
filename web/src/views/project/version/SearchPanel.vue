@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<LoadingProps>(), {
 const { t } = useI18n();
 
 // Component emits
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'change', value: PageQuery): void;
   (e: 'refresh'): void;

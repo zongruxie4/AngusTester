@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 });
 
 const { t } = useI18n();
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:total', value: number): void;
   (e: 'update:deletedNotify', value: string): void;

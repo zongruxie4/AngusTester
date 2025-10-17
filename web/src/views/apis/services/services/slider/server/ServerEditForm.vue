@@ -22,7 +22,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// eslint-disable-next-line func-call-spacing
 // Emits: cancel or save with valid data
 const emit = defineEmits<{
   (e:'cancel'):void;

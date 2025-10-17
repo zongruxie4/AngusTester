@@ -55,7 +55,7 @@ const input = ref(true);
 
 const dropVisible = ref(false); // 下拉显示隐藏
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'blur', value:HTMLElement);
   (e: 'keypress', value: Event);

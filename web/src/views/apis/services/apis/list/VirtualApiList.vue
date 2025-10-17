@@ -39,7 +39,7 @@ const proTypeShowMap = inject<Ref<{ [key: string]: boolean }>>('proTypeShowMap',
   showSprint: true,
   showTasStatistics: true
 }));
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'loadApis'): void,
   (e: 'openMock'),

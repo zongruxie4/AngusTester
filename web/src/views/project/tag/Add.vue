@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<AddTagProps>(), {
 });
 
 // Emit events for parent component communication
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   /** Updates modal visibility state */
   (e: 'update:visible', value: boolean): void;

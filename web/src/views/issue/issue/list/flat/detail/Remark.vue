@@ -25,7 +25,7 @@ const { t } = useI18n();
  * Emits events to notify parent components about data changes
  * and refresh triggers
  */
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'update:notify', value: string): void;
 }>();

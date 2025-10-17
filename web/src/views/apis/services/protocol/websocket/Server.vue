@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: false
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'sendRequest'):void;
   (e: 'save'): void;

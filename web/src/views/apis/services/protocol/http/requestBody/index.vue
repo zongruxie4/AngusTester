@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const apiBaseInfo = inject('apiBaseInfo', ref());
 
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'change', value: RequestBodyParam): void;
   (e: 'update:binaryFile', value: any):void;

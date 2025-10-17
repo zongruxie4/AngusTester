@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   variables: () => []
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'change', value: FormState[]): void;
   (e: 'errorChange', value: number): void;

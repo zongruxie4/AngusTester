@@ -59,7 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Component emits
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'update:count', value: CaseCount): void;
   (e: 'openInfo', infoTabParams: any): void;

@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   arrowVisible: true
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:enabled', value: boolean): void;
   (e: 'update:open', value: boolean): void;

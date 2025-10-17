@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 let totalSize = 0;
 
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'change', value?: File|File[]): void
 }>();

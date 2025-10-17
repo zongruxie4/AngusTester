@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'save', value: { name: string; description: string; }): void;
   (e: 'canecel'): void;

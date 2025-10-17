@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   enabledDisabled: false
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'actionClick', value: 'delete' | 'clone'): void;
   (e: 'change', value: Omit<PipelineConfig, 'id'>): void;

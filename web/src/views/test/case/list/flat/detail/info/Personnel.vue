@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   actionAuth: () => ([])
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'change', value: Partial<CaseDetail>): void;
   (event: 'loadingChange', value: boolean): void;

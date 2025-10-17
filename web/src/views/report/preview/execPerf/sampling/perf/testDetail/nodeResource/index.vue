@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   delayInSeconds: 3000
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'loadingChange', value: boolean): void;
 }>();

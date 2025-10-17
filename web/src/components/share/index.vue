@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
   share: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void,
   (e: 'ok', value: { url: string, password: string, type: 'add' | 'edit' }): void

@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   users: () => []
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:value', value: FormData): void
 }>();

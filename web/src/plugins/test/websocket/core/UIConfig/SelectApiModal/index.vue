@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   linkIds: () => new Set()
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e:'update:visible', value:boolean):void;
   (e:'ok', value:ApiInfo):void;

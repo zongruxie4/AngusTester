@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<BasicProps & { type: DataType }>(), {
 /**
  * Component emits for parent communication
  */
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:total', value: number): void;
   (e: 'update:deletedNotify', value: string): void;

@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<LoadingProps & { selectedNum?: number }>(
   selectedNum: 0
 });
 // Component emits
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'change', value: {
     orderBy?: string;

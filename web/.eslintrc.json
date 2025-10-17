@@ -33,6 +33,7 @@
   ],
   "rules": {
     "camelcase": "off",
+    "func-call-spacing": "off",
     "no-console": 1,
     "no-debugger": 1,
     "@typescript-eslint/no-var-requires": 0,

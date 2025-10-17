@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   menus: () => ([])
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'update:height', value: number | string): void;
   (e: 'update:tab', value: string): void;

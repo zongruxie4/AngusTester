@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   orderSort: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'add'): void;
   (e: 'change', value: SearchCriteria[]): void;

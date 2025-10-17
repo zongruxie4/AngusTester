@@ -65,7 +65,7 @@ const props = withDefaults(defineProps<Props>(), {
  * Defines all events that can be emitted by this component
  * </p>
  */
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'dropdownVisibleChange', value: boolean): void;
   (e: 'update:value', value: string): void;

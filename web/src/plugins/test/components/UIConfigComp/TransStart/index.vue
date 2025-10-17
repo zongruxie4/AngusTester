@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   repeatNames: () => []
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'change', value: Omit<TransStartConfig, 'id'>): void;
   (e: 'nameChange', value: string): void;

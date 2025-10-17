@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<AssocTaskProps>(), {
   tip: ''
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'editSuccess'): void;

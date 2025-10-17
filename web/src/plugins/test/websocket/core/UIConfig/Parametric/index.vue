@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   sharingMode: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:datasets', value: {[key:string]:any}[]): void;
   (e: 'update:actionOnEOF', value:'RECYCLE' | 'STOP_THREAD'): void;

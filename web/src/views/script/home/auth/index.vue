@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<IndexProps>(), {
  * Component emits definition for visibility control.
  * </p>
  */
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
 }>();

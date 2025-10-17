@@ -31,7 +31,7 @@ const { t } = useI18n();
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'update:visible', value: boolean): void,
   (e: 'ok', value: {id: string, key: string}): void,

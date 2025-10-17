@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e:'click', value:ButtonGroupMenuItem):void;
 }>();

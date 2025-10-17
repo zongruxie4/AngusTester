@@ -22,7 +22,6 @@ const { t } = useI18n();
 
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
-// eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
  (e: 'edit', value):void;
  (e: 'showInfo', id: string, value):void;

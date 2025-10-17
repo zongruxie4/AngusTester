@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<Props>(), {});
 const apiBaseInfo = inject('apiBaseInfo', ref());
 const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'change', data: ParamsItem[]): void,
   (e: 'del', index: number): void,

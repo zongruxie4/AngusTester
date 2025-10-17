@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 });
 
 // Define component emits
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'sort', value: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort; }): void;
   (e: 'change', value: SearchCriteria[]): void;

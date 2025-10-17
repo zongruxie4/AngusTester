@@ -26,7 +26,7 @@ const refreshSidebar = inject<() => void>('refreshSidebar', () => { });
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 const updateApiGroup = inject('updateApiGroup', (_id) => undefined);
 
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'update:visible', value: boolean): void,
   (e: 'ok'): void

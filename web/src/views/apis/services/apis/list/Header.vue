@@ -34,7 +34,6 @@ const props = withDefaults(defineProps<Props>(), {
   serviceAuths: () => ([])
 });
 
-// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e:'loadApis'):void;
   (e:'update:searchKeyword', value:string|undefined):void;

@@ -24,7 +24,7 @@ const { t } = useI18n();
 type OrderByKey = string;
 
 // Event Emitters
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'change', value: { orderBy?: string; orderSort?: PageQuery.OrderSort; filters: SearchCriteria[]; }):void,
   (e: 'refresh'):void

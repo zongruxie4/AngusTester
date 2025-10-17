@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   emptyText: ''
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:value', value: string);
   (e: 'change', value: string);

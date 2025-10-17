@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   appId: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:checkedId', id: string | undefined): void;
   (e: 'update:loaded', value:boolean): void;

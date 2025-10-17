@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 
 // Event Emitters
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]): void
