@@ -5,10 +5,10 @@ import { TESTER, localStore, utils, duration, appContext } from '@xcan-angus/inf
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-
 import { ServicesPermission } from '@/enums/enums';
 import { services, apis } from '@/api/tester';
-import { actions, ModalsConfig, ServiceProject } from './types';
+
+import { FoldActionKey, foldGlobalActions, globalActions, menuActions, ModalsConfig, ServiceProject } from './types';
 
 // Service left sliders
 const UnarchivedApiList = defineAsyncComponent(() => import('@/views/apis/services/services/UnarchivedApiList.vue'));
@@ -37,9 +37,6 @@ const RestartTestTask = defineAsyncComponent(() => import('@/components/task/Res
 const ReopenTestTask = defineAsyncComponent(() => import('@/components/task/ReopenTestTaskModal.vue'));
 const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestTaskModal.vue'));
 
-type FoldActionKey = 'creatProject' | 'creatService' | 'import' | 'export'|'authorization';
-type SuffixActionKey = 'creatService' | 'export' | 'import' | 'authorization';
-
 const { t } = useI18n();
 const userInfo = ref(appContext.getUser());
 const isAdmin = computed(() => appContext.isAdmin());
@@ -64,7 +61,7 @@ const { guideType, stepVisible, stepKey, stepContent } = useState(['guideType', 
 const { updateGuideType, updateGuideStep } = useMutations(['updateGuideType', 'updateGuideStep'], 'guideStore');
 
 const showDropActions = computed(() => {
-  return actions.filter(item => proTypeShowMap.value.showTask || item.key !== 'testTask');
+  return menuActions.filter(item => proTypeShowMap.value.showTask || item.key !== 'testTask');
 });
 
 const modalsConfig = reactive<ModalsConfig>({
@@ -110,9 +107,6 @@ const inputValue = ref<string>();
 const exportVisible = ref(false);// 导出弹窗
 const importVisible = ref(false);// 导入
 const createVisible = ref(false);// 添加项目、服务
-
-// let parentItem;
-const createTargetType = ref<'PROJECT'|'SERVICE'>('PROJECT');
 
 const unarchivedKeywords = ref();
 const trashKeywords = ref();
@@ -169,7 +163,6 @@ const collapseChange = (key:'trash'|'unarchived'|undefined) => {
 const foldActionClick = (key: FoldActionKey) => {
   switch (key) {
     case 'creatService':
-      createTargetType.value = 'SERVICE';
       createVisible.value = true;
       break;
     case 'import':
@@ -184,7 +177,7 @@ const foldActionClick = (key: FoldActionKey) => {
   }
 };
 
-const buttonDropdownClick = (item: {key: SuffixActionKey}) => {
+const buttonDropdownClick = (item: {key: FoldActionKey}) => {
   switch (item.key) {
     case 'creatService':
       createServiceOrProject('SERVICE', '-1');
@@ -720,7 +713,6 @@ watch(() => projectId.value, newValue => {
   immediate: true
 });
 
-
 defineExpose({
   refresh,
   refreshUnarchived
@@ -778,49 +770,6 @@ const searchInputProps = {
   allowClear: true
 };
 
-const foldActions = ref<{ name: string; key: FoldActionKey; icon: string; }[]>([
-  {
-    name: t('service.sidebar.foldAction.addService'),
-    key: 'creatService',
-    icon: 'icon-chuangjianfuwu'
-  },
-  {
-    name: t('service.sidebar.foldAction.localImport'),
-    key: 'import',
-    icon: 'icon-shangchuan'
-  },
-  {
-    name: t('actions.export'),
-    key: 'export',
-    icon: 'icon-daochu1'
-  },
-  {
-    name: t('actions.permission'),
-    key: 'authorization',
-    icon: 'icon-quanxian1'
-  }
-]);
-
-const buttonProps = {
-  name: t('service.sidebar.topAction.addService'),
-  menuItems: [
-    {
-      name: t('actions.import'),
-      key: 'import',
-      icon: 'icon-shangchuan'
-    },
-    {
-      name: t('actions.export'),
-      key: 'export',
-      icon: 'icon-daochu1'
-    },
-    {
-      name: t('actions.permission'),
-      key: 'authorization',
-      icon: 'icon-quanxian1'
-    }
-  ]
-};
 </script>
 <template>
   <LeftDrawer
@@ -829,10 +778,10 @@ const buttonProps = {
     :key="`api_left_drawer_${projectId}`"
     v-model:fold="leftDrawerFoldFlag"
     v-model:collapseActiveKey="leftDrawerCollapseActiveKey"
-    :foldActions="foldActions"
+    :foldActions="foldGlobalActions"
     :collapseOptions="collapseOptions"
     :searchInputProps="searchInputProps"
-    :buttonProps="buttonProps"
+    :buttonProps="globalActions"
     :editInputProps="editInputProps"
     :sortProps="sortProps"
     :scrollProps="scrollProps"
