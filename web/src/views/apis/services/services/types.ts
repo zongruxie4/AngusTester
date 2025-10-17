@@ -1,4 +1,5 @@
 import { i18n } from '@xcan-angus/infra';
+import {ref} from "vue";
 
 const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
 
@@ -26,7 +27,7 @@ export interface ModalsConfig {
   syncModalVisible: boolean,
   serverUrlModalVisible: boolean,
   importModalVisible: boolean,
-  authenticatModalVisible: boolean,
+  authenticateModalVisible: boolean,
   exportInterfaceModalVisible: boolean,
   testScriptVisible: boolean;
   shareModalVisible: boolean,
@@ -38,7 +39,7 @@ export interface ModalsConfig {
   type?: 'SERVICE';
   selectedNode?:ServiceProject;
   delTestScriptVisible: boolean;
-  enabeldApiTestVisible: boolean;
+  enabledApiTestVisible: boolean;
 }
 
 export type UnarchivedItem = {
@@ -54,7 +55,53 @@ export type UnarchivedItem = {
   lastModifiedDate: string;
 }
 
-export const actions = [
+export type FoldActionKey = 'creatService' | 'import' | 'export'|'authorization';
+
+export const globalActions = {
+  name: t('service.sidebar.topAction.addService'),
+  menuItems: [
+    {
+      name: t('actions.import'),
+      key: 'import',
+      icon: 'icon-shangchuan'
+    },
+    {
+      name: t('actions.export'),
+      key: 'export',
+      icon: 'icon-daochu1'
+    },
+    {
+      name: t('actions.permission'),
+      key: 'authorization',
+      icon: 'icon-quanxian1'
+    }
+  ]
+};
+
+export const foldGlobalActions = ref<{ name: string; key: FoldActionKey; icon: string; }[]>([
+  {
+    name: t('service.sidebar.foldAction.addService'),
+    key: 'creatService',
+    icon: 'icon-chuangjianfuwu'
+  },
+  {
+    name: t('service.sidebar.foldAction.localImport'),
+    key: 'import',
+    icon: 'icon-shangchuan'
+  },
+  {
+    name: t('actions.export'),
+    key: 'export',
+    icon: 'icon-daochu1'
+  },
+  {
+    name: t('actions.permission'),
+    key: 'authorization',
+    icon: 'icon-quanxian1'
+  }
+]);
+
+export const menuActions = [
   {
     name: t('service.sidebar.actions.addApi'),
     icon: 'icon-tianjiajiekou',
@@ -64,14 +111,12 @@ export const actions = [
     children: [
       {
         name: t('service.sidebar.actions.httpApi'),
-        // icon: 'icon-tianjiajiekou',
         key: 'addApi',
         permission: 'ADD',
         disabled: false
       },
       {
         name: t('service.sidebar.actions.webSocketApi'),
-        // icon: 'icon-tianjiajiekou',
         key: 'addSocket',
         permission: 'ADD',
         disabled: false

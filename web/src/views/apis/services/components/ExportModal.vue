@@ -3,14 +3,7 @@ import { onMounted, ref } from 'vue';
 import { Colon, Modal, Spin } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
 import {
-  ApiType,
-  ApiUrlBuilder,
-  cookieUtils,
-  DomainManager,
-  download,
-  http,
-  routerUtils,
-  TESTER
+  ApiType, ApiUrlBuilder, cookieUtils, DomainManager, download, http, routerUtils, TESTER
 } from '@xcan-angus/infra';
 import { createPdf } from '@xcan-angus/rapipdf';
 import { useI18n } from 'vue-i18n';

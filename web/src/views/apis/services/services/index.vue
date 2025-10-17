@@ -5,37 +5,37 @@ import { TESTER, localStore, utils, duration, appContext } from '@xcan-angus/inf
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-
 import { ServicesPermission } from '@/enums/enums';
 import { services, apis } from '@/api/tester';
-import { actions, ModalsConfig, ServiceProject } from './types';
 
-type FoldActionKey = 'creatProejct' | 'creatService' | 'import' | 'export'|'authorization';
-type SuffixActionKey = 'creatService' | 'export' | 'import' | 'authorization';
+import { FoldActionKey, foldGlobalActions, globalActions, menuActions, ModalsConfig, ServiceProject } from './types';
 
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));
-const CreateTestTask = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));
-const RestartTestTask = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
-const ReopenTestTask = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
-const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
+// Service left sliders
+const UnarchivedApiList = defineAsyncComponent(() => import('@/views/apis/services/services/UnarchivedApiList.vue'));
+
+// // Service global action modals
+const CreateServices = defineAsyncComponent(() => import('@/views/apis/services/components/CreateServiceModal.vue'));
+const ExportService = defineAsyncComponent(() => import('@/views/apis/services/components/ExportOptionalModal.vue'));
+const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/services/LocalImportModal.vue'));
+
+// Service menu action modals
 const SyncConfig = defineAsyncComponent(() => import('@/views/apis/services/services/SyncConfigModal.vue'));
-const ServerConfig = defineAsyncComponent(() => import('@/views/apis/services/services/ServerConfigModal.vue'));
 const SecurityConfig = defineAsyncComponent(() => import('@/views/apis/services/services/SecurityConfigModal.vue'));
-const MovePop = defineAsyncComponent(() => import('@/views/apis/services/components/MoveModal.vue'));
-const Status = defineAsyncComponent(() => import('@/views/apis/services/components/StatusModal.vue'));
-const ExportApis = defineAsyncComponent(() => import('@/views/apis/services/services/ExportService.vue'));
+const ServerConfig = defineAsyncComponent(() => import('@/views/apis/services/services/ServerConfigModal.vue'));
+const ExportApis = defineAsyncComponent(() => import('@/views/apis/services/components/ExportOptionalModal.vue'));
+const ShareService = defineAsyncComponent(() => import('@/components/share/index.vue'));
+const TranslateService = defineAsyncComponent(() => import('@/views/apis/services/components/TranslateService.vue'));
+const ModifyStatus = defineAsyncComponent(() => import('@/views/apis/services/components/ModifyStatus.vue'));
+const Authorize = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const BatchModifyApiParams = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/index.vue'));
 const GenTestScript = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
 const DelTestScript = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
 const EnabledApiTest = defineAsyncComponent(() => import('@/components/apis/enabledTestModal/index.vue'));
-const BatchModify = defineAsyncComponent(() => import('@/views/apis/services/services/modifyApiParams/index.vue'));
-const TranslateModal = defineAsyncComponent(() => import('@/views/apis/services/components/TranslateService.vue'));
-
-const CreateServices = defineAsyncComponent(() => import('@/views/apis/services/components/CreateServiceModal.vue'));
-const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/services/LocalImport.vue'));
-const ExportServices = defineAsyncComponent(() => import('@/views/apis/services/services/ExportService.vue'));
-const Unarchived = defineAsyncComponent(() => import('@/views/apis/services/services/Unarchived.vue'));
-const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/test/ExecTest.vue'));
+const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/test/ExecServiceTestModal.vue'));
+const CreateTestTask = defineAsyncComponent(() => import('@/components/task/CreateTestTaskModal.vue'));
+const RestartTestTask = defineAsyncComponent(() => import('@/components/task/RestartTestTaskModal.vue'));
+const ReopenTestTask = defineAsyncComponent(() => import('@/components/task/ReopenTestTaskModal.vue'));
+const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestTaskModal.vue'));
 
 const { t } = useI18n();
 const userInfo = ref(appContext.getUser());
@@ -61,20 +61,20 @@ const { guideType, stepVisible, stepKey, stepContent } = useState(['guideType', 
 const { updateGuideType, updateGuideStep } = useMutations(['updateGuideType', 'updateGuideStep'], 'guideStore');
 
 const showDropActions = computed(() => {
-  return actions.filter(item => proTypeShowMap.value.showTask || item.key !== 'testTask');
+  return menuActions.filter(item => proTypeShowMap.value.showTask || item.key !== 'testTask');
 });
 
 const modalsConfig = reactive<ModalsConfig>({
   syncModalVisible: false,
   serverUrlModalVisible: false,
   importModalVisible: false,
-  authenticatModalVisible: false,
+  authenticateModalVisible: false,
   exportInterfaceModalVisible: false,
   shareModalVisible: false,
   authModalVisible: false,
   testScriptVisible: false,
   delTestScriptVisible: false,
-  enabeldApiTestVisible: false,
+  enabledApiTestVisible: false,
   activeId: '',
   auth: false,
   activeName: '',
@@ -107,9 +107,6 @@ const inputValue = ref<string>();
 const exportVisible = ref(false);// 导出弹窗
 const importVisible = ref(false);// 导入
 const createVisible = ref(false);// 添加项目、服务
-
-// let parentItem;
-const createTargetType = ref<'PROJECT'|'SERVICE'>('PROJECT');
 
 const unarchivedKeywords = ref();
 const trashKeywords = ref();
@@ -166,7 +163,6 @@ const collapseChange = (key:'trash'|'unarchived'|undefined) => {
 const foldActionClick = (key: FoldActionKey) => {
   switch (key) {
     case 'creatService':
-      createTargetType.value = 'SERVICE';
       createVisible.value = true;
       break;
     case 'import':
@@ -181,7 +177,7 @@ const foldActionClick = (key: FoldActionKey) => {
   }
 };
 
-const buttonDropdownClick = (item: {key: SuffixActionKey}) => {
+const buttonDropdownClick = (item: {key: FoldActionKey}) => {
   switch (item.key) {
     case 'creatService':
       createServiceOrProject('SERVICE', '-1');
@@ -236,7 +232,7 @@ const contextmenuClick = (action: { key: string; }, item: ServiceProject) => {
       modalsConfig.activeId = item.id;
       break;
     case 'authentication-config':
-      modalsConfig.authenticatModalVisible = true;
+      modalsConfig.authenticateModalVisible = true;
       modalsConfig.activeId = item.id;
       modalsConfig.type = 'SERVICE';
       break;
@@ -315,7 +311,7 @@ const contextmenuClick = (action: { key: string; }, item: ServiceProject) => {
       modalsConfig.activeId = item.id;
       break;
     case 'enabledTest':
-      modalsConfig.enabeldApiTestVisible = true;
+      modalsConfig.enabledApiTestVisible = true;
       modalsConfig.activeId = item.id;
       break;
     case 'funcTestExec':
@@ -339,6 +335,43 @@ const contextmenuClick = (action: { key: string; }, item: ServiceProject) => {
       handleBatch(action, item.id);
       break;
   }
+};
+
+const guideProjectId = ref('');
+const getGuideProjectId = (id:string) => {
+  if (!id) {
+    const cacheGuideKey = `${userInfo.value?.id}_API_GUIDE`;
+    localStore.set(cacheGuideKey, true);
+    updateGuideStep({ visible: false, key: '' });
+  }
+  guideProjectId.value = id;
+};
+
+const projectGuideStep = (key:string) => {
+  if (key === 'hideDrawer') {
+    updateGuideStep({ visible: false, key: '' });
+    updateGuideType('');
+    const cacheGuideKey = `${userInfo.value?.id}_API_GUIDE`;
+    localStore.set(cacheGuideKey, true);
+    return;
+  }
+  updateGuideStep({ visible: true, key });
+};
+
+const showImportSamples = ref(false);
+const importBtnLoading = ref(false);
+const handleListChange = ({ ext = { allowImportSamples: false } }) => {
+  showImportSamples.value = !!ext?.allowImportSamples;
+};
+
+const importSamples = async () => {
+  importBtnLoading.value = true;
+  const [error] = await services.importServicesSamples();
+  importBtnLoading.value = false;
+  if (error) {
+    return;
+  }
+  refresh();
 };
 
 const infoText = ref<string>();
@@ -549,33 +582,7 @@ const create = (item) => {
 
 const createProjectOk = () => {
   createVisible.value = false;
-
   refresh();
-};
-
-const moveVisible = ref(false); // 移动弹窗
-const movePid = ref<string>();// 当前移动目录id
-const moveParentName = ref<string>();// 当前移动目录名称
-// // @TODO 缺少项目或服务信息
-// const toMove = (_project: ServiceProject) => {
-//   modalsConfig.activeId = _project.id;
-//   movePid.value = _project.pid;
-//   if (movePid.value === '-1') {
-//     moveParentName.value = '根目录';
-//   } else {
-//     moveParentName.value = parentItem.name;
-//   }
-//   moveVisible.value = true;
-// };
-const moveHandle = () => {
-  refreshHandler();
-  moveCancel();
-};
-// 移动弹窗关闭
-const moveCancel = () => {
-  moveVisible.value = false;
-  movePid.value = undefined;
-  moveParentName.value = undefined;
 };
 
 const handleExportEnd = () => {
@@ -625,12 +632,6 @@ const visibleChange = async (visible, item, pItem) => {
   listProps.value.dropdownProps.permissions = auths.value;
 };
 
-watch(() => updateProjectInfo, (newValue) => {
-  if (typeof leftDrawerRef.value?.update === 'function') {
-    leftDrawerRef.value.update(newValue);
-  }
-}, { deep: true });
-
 const searchChange = debounce(duration.search, (key: 'trash'|'unarchived', value: string) => {
   if (key === 'trash') {
     trashKeywords.value = value;
@@ -650,14 +651,6 @@ const loadUnarchivedCount = async () => {
 
   collapseOptions.value[0].total = +res.data;
 };
-
-watch(() => projectId.value, newValue => {
-  if (newValue) {
-    loadUnarchivedCount();
-  }
-}, {
-  immediate: true
-});
 
 const refresh = () => {
   if (!leftDrawerFoldFlag.value) {
@@ -689,11 +682,39 @@ const refreshUnarchived = () => {
   }
 };
 
-defineExpose({
-  // 刷新左侧目录列表
-  refresh,
+// 添加服务
+const editInputProps = computed(() => ({
+  createAction: `${TESTER}/services`, // 添加目录url
+  createParams: { projectId: projectId.value }, // 添加目录需要传递的参数
+  allowClear: true,
+  placeholder: t('service.sidebar.serviceNamePlaceholder'),
+  maxlength: 100
+}));
 
-  // 刷新左侧未归档列表
+const scrollProps = computed(() => {
+  return {
+    lineHeight: 36,
+    action: `${TESTER}/services`,
+    params: params.value
+  };
+});
+
+watch(() => updateProjectInfo, (newValue) => {
+  if (typeof leftDrawerRef.value?.update === 'function') {
+    leftDrawerRef.value.update(newValue);
+  }
+}, { deep: true });
+
+watch(() => projectId.value, newValue => {
+  if (newValue) {
+    loadUnarchivedCount();
+  }
+}, {
+  immediate: true
+});
+
+defineExpose({
+  refresh,
   refreshUnarchived
 });
 
@@ -707,14 +728,6 @@ const tipMap = {
     off: t('service.sidebar.authModel.offTip')
   }
 };
-
-const scrollProps = computed(() => {
-  return {
-    lineHeight: 36,
-    action: `${TESTER}/services`,
-    params: params.value
-  };
-});
 
 const listProps = ref({
   maxlevel: 2,
@@ -742,15 +755,6 @@ const sortProps = {
   }]
 };
 
-// 添加项目
-const editInputProps = computed(() => ({
-  createAction: `${TESTER}/services`, // 添加目录url
-  createParams: { projectId: projectId.value }, // 添加目录需要传递的参数
-  allowClear: true,
-  placeholder: t('service.sidebar.serviceNamePlaceholder'),
-  maxlength: 100
-}));
-
 const collapseOptions = ref<{ name: string; key: string; icon: string; total: number; }[]>([
   {
     name: t('service.sidebar.unarchivedTitle'),
@@ -760,94 +764,10 @@ const collapseOptions = ref<{ name: string; key: string; icon: string; total: nu
   }
 ]);
 
-const foldActions = ref<{ name: string; key: FoldActionKey; icon: string; }[]>([
-  {
-    name: t('service.sidebar.foldAction.addService'),
-    key: 'creatService',
-    icon: 'icon-chuangjianfuwu'
-  },
-  {
-    name: t('service.sidebar.foldAction.localImport'),
-    key: 'import',
-    icon: 'icon-shangchuan'
-  },
-  {
-    name: t('actions.export'),
-    key: 'export',
-    icon: 'icon-daochu1'
-  },
-  {
-    name: t('actions.permission'),
-    key: 'authorization',
-    icon: 'icon-quanxian1'
-  }
-]);
-
 // 搜索 props
 const searchInputProps = {
   placeholder: t('service.sidebar.searchServicePlaceholder'),
   allowClear: true
-};
-const buttonProps = {
-  name: t('service.sidebar.topAction.addService'),
-  menuItems: [
-    {
-      name: t('actions.import'),
-      key: 'import',
-      icon: 'icon-shangchuan'
-    },
-    {
-      name: t('actions.export'),
-      key: 'export',
-      icon: 'icon-daochu1'
-    },
-    {
-      name: t('actions.permission'),
-      key: 'authorization',
-      icon: 'icon-quanxian1'
-    }
-  ]
-};
-
-const guideProjectId = ref('');
-const getGuideProjectId = (id:string) => {
-  if (!id) {
-    const cacheGuideKey = `${userInfo.value?.id}_API_GUIDE`;
-    localStore.set(cacheGuideKey, true);
-    updateGuideStep({ visible: false, key: '' });
-  }
-  guideProjectId.value = id;
-};
-
-const proejctGuideStep = (key:string) => {
-  if (key === 'hideDrawer') {
-    updateGuideStep({ visible: false, key: '' });
-    updateGuideType('');
-    const cacheGuideKey = `${userInfo.value?.id}_API_GUIDE`;
-    localStore.set(cacheGuideKey, true);
-    return;
-  }
-  updateGuideStep({ visible: true, key });
-};
-
-const showImportSamples = ref(false);
-const importBtnLoading = ref(false);
-const handleListChange = ({ ext = { allowImportSamples: false } }) => {
-  if (ext?.allowImportSamples) {
-    showImportSamples.value = true;
-  } else {
-    showImportSamples.value = false;
-  }
-};
-
-const importSamples = async () => {
-  importBtnLoading.value = true;
-  const [error] = await services.importServicesSamples();
-  importBtnLoading.value = false;
-  if (error) {
-    return;
-  }
-  refresh();
 };
 
 </script>
@@ -858,10 +778,10 @@ const importSamples = async () => {
     :key="`api_left_drawer_${projectId}`"
     v-model:fold="leftDrawerFoldFlag"
     v-model:collapseActiveKey="leftDrawerCollapseActiveKey"
-    :foldActions="foldActions"
+    :foldActions="foldGlobalActions"
     :collapseOptions="collapseOptions"
     :searchInputProps="searchInputProps"
-    :buttonProps="buttonProps"
+    :buttonProps="globalActions"
     :editInputProps="editInputProps"
     :sortProps="sortProps"
     :scrollProps="scrollProps"
@@ -883,7 +803,7 @@ const importSamples = async () => {
     @contextmenuClick="contextmenuClick"
     @visibleChange="visibleChange"
     @listChange="handleListChange"
-    @updateGuideStep="proejctGuideStep"
+    @updateGuideStep="projectGuideStep"
     @guideProjectId="getGuideProjectId">
     <template #iconText>
       <IconText text="S" class="bg-blue-badge-s" />
@@ -895,7 +815,7 @@ const importSamples = async () => {
       </div>
     </template>
     <template #unarchived>
-      <Unarchived
+      <UnarchivedApiList
         ref="unarchivedRef"
         :total="collapseOptions[0].total"
         :keywords="unarchivedKeywords"
@@ -914,9 +834,12 @@ const importSamples = async () => {
       </Button>
     </template>
   </LeftDrawer>
+
   <!-- 导出 -->
   <AsyncComponent :visible="exportVisible">
-    <ExportServices v-model:visible="exportVisible" :selectedNode="undefined" />
+    <ExportService
+      v-model:visible="exportVisible"
+      :selectedNode="undefined" />
   </AsyncComponent>
 
   <!-- 导入 -->
@@ -960,8 +883,8 @@ const importSamples = async () => {
   </AsyncComponent>
 
   <!-- 认证配置 -->
-  <AsyncComponent :visible="modalsConfig.authenticatModalVisible">
-    <SecurityConfig :id="modalsConfig.activeId" v-model:visible="modalsConfig.authenticatModalVisible" />
+  <AsyncComponent :visible="modalsConfig.authenticateModalVisible">
+    <SecurityConfig :id="modalsConfig.activeId" v-model:visible="modalsConfig.authenticateModalVisible" />
   </AsyncComponent>
 
   <!-- 导出 -->
@@ -972,22 +895,9 @@ const importSamples = async () => {
       type="APIS" />
   </AsyncComponent>
 
-  <!-- 移动服务 -->
-  <AsyncComponent :visible="moveVisible">
-    <MovePop
-      :id="modalsConfig.activeId"
-      :visible="moveVisible"
-      :pid="movePid"
-      :parentName="moveParentName"
-      :projectId="projectId"
-      type="service"
-      @ok="moveHandle"
-      @cancel="moveCancel" />
-  </AsyncComponent>
-
   <!-- 分享 -->
   <AsyncComponent :visible="modalsConfig.shareModalVisible">
-    <Share
+    <ShareService
       v-if="modalsConfig.shareModalVisible"
       :id="modalsConfig.activeId"
       v-model:visible="modalsConfig.shareModalVisible"
@@ -998,7 +908,7 @@ const importSamples = async () => {
 
   <!-- 权限 -->
   <AsyncComponent :visible="modalsConfig.authModalVisible">
-    <AuthorizeModal
+    <Authorize
       v-model:visible="modalsConfig.authModalVisible"
       :enumKey="ServicesPermission"
       :appId="appInfo?.id"
@@ -1051,7 +961,7 @@ const importSamples = async () => {
 
   <!-- 设置状态 -->
   <AsyncComponent :visible="modalsConfig.statusVisible">
-    <Status
+    <ModifyStatus
       :id="modalsConfig.activeId"
       v-model:visible="modalsConfig.statusVisible"
       :value="projectStatus"
@@ -1076,15 +986,15 @@ const importSamples = async () => {
       :type="modalsConfig.type" />
   </AsyncComponent>
 
-  <AsyncComponent :visible="modalsConfig.enabeldApiTestVisible">
+  <AsyncComponent :visible="modalsConfig.enabledApiTestVisible">
     <!-- 启用、禁用接口测试 -->
     <EnabledApiTest
       :id="modalsConfig.activeId"
-      v-model:visible="modalsConfig.enabeldApiTestVisible" />
+      v-model:visible="modalsConfig.enabledApiTestVisible" />
   </AsyncComponent>
 
   <AsyncComponent :visible="batchVisible">
-    <BatchModify
+    <BatchModifyApiParams
       v-model:visible="batchVisible"
       v-bind="activeAction"
       :serviceId="modalsConfig.activeId"
@@ -1101,7 +1011,7 @@ const importSamples = async () => {
   </AsyncComponent>
 
   <AsyncComponent :visible="translateVisible">
-    <TranslateModal
+    <TranslateService
       v-model:visible="translateVisible"
       :service="selectedService"
       :projectId="projectId" />

@@ -9,7 +9,7 @@ import { useI18n } from 'vue-i18n';
 import { services } from '@/api/tester';
 
 const CodeView = defineAsyncComponent(() => import('@/views/apis/services/apis/doc/CodeView.vue'));
-const ExportDoc = defineAsyncComponent(() => import('@/views/apis/services/services/SimpleExport.vue'));
+const ExportDoc = defineAsyncComponent(() => import('@/views/apis/services/components/ExportModal.vue'));
 
 interface Props {
   mode: 'UI' | 'code',

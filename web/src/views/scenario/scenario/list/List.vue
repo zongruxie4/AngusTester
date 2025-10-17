@@ -30,10 +30,10 @@ const emit = defineEmits<{
 
 // Async components
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));
-const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
-const ReopenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
-const DeleteTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
+const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestTaskModal.vue'));
+const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestTaskModal.vue'));
+const ReopenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestTaskModal.vue'));
+const DeleteTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestTaskModal.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/scenario/scenario/list/ExecTest.vue'));
 
