@@ -601,7 +601,7 @@ export namespace OpenAPIV3 {
     scheme: string;
     bearerFormat?: string;
     extensions?: Record<string, any>;
-    'x-xc-value'?: string;
+    [API_EXTENSION_KEYS.valueKey]?: string;
   }
 
   export interface ApiKeySecurityScheme {
@@ -610,8 +610,8 @@ export namespace OpenAPIV3 {
     name: string;
     in: ApiKeyIn;
     extensions?: Record<string, any>;
-    'x-xc-value'?: string;
-    'x-xc-apiKey'?: ApiKeyExtensionField;
+    [API_EXTENSION_KEYS.valueKey]?: string;
+    [API_EXTENSION_KEYS.securityApiKeyPrefix]?: ApiKeyExtensionField;
   }
 
   export interface ApiKeyExtensionField {
@@ -635,19 +635,19 @@ export namespace OpenAPIV3 {
         refreshUrl?: string;
         scopes: { [scope: string]: string };
         extensions?: Record<string, any>;
-        'x-xc-oauth2-clientAuthType'?: string,
-        'x-xc-oauth2-clientId'?: string,
-        'x-xc-oauth2-clientSecret'?: string,
-        'x-xc-oauth2-username'?: string,
-        'x-xc-oauth2-password'?: string,
+        [API_EXTENSION_KEYS.oAuth2ClientAuthTypeKey]?: string,
+        [API_EXTENSION_KEYS.oAuth2ClientIdKey]?: string,
+        [API_EXTENSION_KEYS.oAuth2ClientSecretKey]?: string,
+        [API_EXTENSION_KEYS.oAuth2UsernameKey]?: string,
+        [API_EXTENSION_KEYS.oAuth2PasswordKey]?: string,
       };
       clientCredentials?: {
         tokenUrl: string;
         refreshUrl?: string;
         scopes: { [scope: string]: string };
         extensions?: Record<string, any>;
-        'x-xc-oauth2-clientId'?: string,
-        'x-xc-oauth2-clientSecret'?: string,
+        [API_EXTENSION_KEYS.oAuth2ClientIdKey]?: string,
+        [API_EXTENSION_KEYS.oAuth2ClientSecretKey]?: string,
       };
       authorizationCode?: {
         authorizationUrl: string;
@@ -658,9 +658,9 @@ export namespace OpenAPIV3 {
       };
     };
     extensions?: Record<string, any>;
-    'x-xc-oauth2-authFlow'?: string;
-    'x-xc-oauth2-newToken'?: boolean;
-    'x-xc-oauth2-token'?: string;
+    [API_EXTENSION_KEYS.oAuth2Key]?: string;
+    [API_EXTENSION_KEYS.newTokenKey]?: boolean;
+    [API_EXTENSION_KEYS.oAuth2Token]?: string;
   }
 
   export interface OpenIdSecurityScheme {
