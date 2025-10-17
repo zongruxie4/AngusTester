@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const emit = defineEmits<{(e: 'update:data', value: any):void}>();
 
-const ExportApi = defineAsyncComponent(() => import('@/views/apis/services/services/ExportService.vue'));
+const ExportApi = defineAsyncComponent(() => import('@/views/apis/services/components/ExportOptionalModal.vue'));
 
 // visible: boolean;
 //   type?: 'SERVICE' | 'APIS' | 'API';

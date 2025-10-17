@@ -7,7 +7,7 @@ import { utils } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { ServicesPermission } from '@/enums/enums';
 
-const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/services/LocalImport.vue'));
+const LocalImportModal = defineAsyncComponent(() => import('@/views/apis/services/services/LocalImportModal.vue'));
 
 interface Props {
   serviceInfo:any;
@@ -93,7 +93,7 @@ const openImport = () => {
     </div>
   </div>
   <AsyncComponent :visible="visible">
-    <LocalImport
+    <LocalImportModal
       v-model:visible="visible"
       :serviceId="serviceInfo.id"
       source="services" />

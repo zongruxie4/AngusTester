@@ -3,6 +3,8 @@ import { defineAsyncComponent, inject, ref } from 'vue';
 import { Modal } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
+const ImportFile = defineAsyncComponent(() => import('@/views/apis/services/components/Import.vue'));
+
 interface Props {
   visible: boolean,
   serviceId?: string,
@@ -13,8 +15,8 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: undefined,
   source: 'introduce'
 });
+
 const { t } = useI18n();
-const ImportFile = defineAsyncComponent(() => import('@/views/apis/services/components/Import.vue'));
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
@@ -42,7 +44,6 @@ const handleOk = ({ id, key }) => {
 };
 
 const isLoading = ref(false);
-
 </script>
 <template>
   <Modal

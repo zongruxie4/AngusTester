@@ -1,9 +1,4 @@
 <script setup lang="ts">
-// Component: ExecTestModal
-// Purpose: Allow users to pick servers and optionally adjust server variables to run tests
-// Notes:
-// - Supports using default server config or overriding variables per selected server
-// - Emits ok/cancel and two-way binds modal visibility
 import { computed, ref } from 'vue';
 import { Radio, RadioGroup, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Modal, Select } from '@xcan-angus/vue-ui';

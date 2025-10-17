@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-const LocalImport = defineAsyncComponent(() => import('@/views/apis/services/services/LocalImport.vue'));
+const LocalImportModal = defineAsyncComponent(() => import('@/views/apis/services/services/LocalImportModal.vue'));
 
 const { t } = useI18n();
 
@@ -73,7 +73,7 @@ const toImport = () => {
     </div>
 
     <AsyncComponent :visible="importModalVisible">
-      <LocalImport v-model:visible="importModalVisible" source="global" />
+      <LocalImportModal v-model:visible="importModalVisible" source="global" />
     </AsyncComponent>
   </div>
 </template>
