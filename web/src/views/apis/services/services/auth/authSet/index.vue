@@ -16,7 +16,18 @@ interface Props {
   authObjectId: string | undefined;
   type: AuthObjectType;
   apiPermissions: EnumMessage<ApiPermission>[];
-  servicePermissions:EnumMessage<ServicesPermission>[];
+  servicePermissions: EnumMessage<ServicesPermission>[];
+}
+
+interface PermissionMapItem {
+  id: string;
+  creatorFlag: boolean;
+  permissions: string[];
+}
+
+interface PaginationData {
+  pageNo: number;
+  total: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,7 +42,7 @@ const { t } = useI18n();
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
-const TEXT_COLOR = {
+const HTTP_METHOD_COLORS = {
   GET: 'color:rgba(30, 136, 229, 1);',
   POST: 'color:rgba(51, 183, 130, 1);',
   DELETE: 'color:rgba(255, 82, 82, 1);',
@@ -42,39 +53,45 @@ const TEXT_COLOR = {
   TRACE: 'color:rgba(255, 82, 82, 1);'
 };
 
-const LINE_HEIGHT = 44;
+const ITEM_LINE_HEIGHT = 44;
 
 const erd = elementResizeDetector({ strategy: 'scroll' });
 const containerRef = ref();
-let serviceController: AbortController;// 用于终止请求的实例
-let serviceAuthController: AbortController;// 用于终止请求的实例
-let apiController: AbortController;// 用于终止请求的实例
-let apiAuthController: AbortController;// 用于终止请求的实例
 
-const arrowSet = ref<Set<string>>(new Set<string>());
-const openSet = ref<Set<string>>(new Set<string>());
-const visibleSet = ref<Set<string>>(new Set<string>());
-const apiLoadedSet = ref<Set<string>>(new Set<string>());
+// Request controllers for aborting requests
+let serviceRequestController: AbortController;
+let serviceAuthRequestController: AbortController;
+let apiRequestController: AbortController;
+let apiAuthRequestController: AbortController;
 
-const serviceStyle = ref<{ [key: string]: { [key: string]: string } }>({});
-const apiStyle = ref<{ [key: string]: { [key: string]: string } }>({});
+// UI state management
+const expandedItems = ref<Set<string>>(new Set<string>());
+const openItems = ref<Set<string>>(new Set<string>());
+const visibleItems = ref<Set<string>>(new Set<string>());
+const loadedApiItems = ref<Set<string>>(new Set<string>());
 
-const loading = ref(true);
-const pageNo = ref(1);
+// Style objects for dynamic styling
+const serviceItemStyles = ref<{ [key: string]: { [key: string]: string } }>({});
+const apiItemStyles = ref<{ [key: string]: { [key: string]: string } }>({});
+
+// Loading and pagination state
+const isLoading = ref(true);
+const currentPage = ref(1);
 const pageSize = ref(1);
-const total = ref(0);
-const idList = ref<string[]>([]);
-const dataMap = ref<{ [key: string]: ArrayItem }>({});
-const permissionsMap = ref<{ [key: string]: { id: string; creatorFlag: boolean; permissions: string[] } | undefined }>({});
+const totalCount = ref(0);
+const itemIdList = ref<string[]>([]);
+const itemDataMap = ref<{ [key: string]: ArrayItem }>({});
+const permissionsMap = ref<{ [key: string]: PermissionMapItem | undefined }>({});
 
-const enabledLoadingMap = ref<{ [key: string]: boolean }>({});
-let updatingMap: { [key: string]: boolean; } = {};// 修改权限时，等待修改接口返回
+// Loading states for individual items
+const itemLoadingStates = ref<{ [key: string]: boolean }>({});
+let permissionUpdateStates: { [key: string]: boolean } = {}; // Track permission update operations
 
 let currentProjectId: string | undefined;
 
-const showIdList = computed(() => {
-  const set = visibleSet.value;
-  return idList.value.filter(item => set.has(item));
+const visibleItemList = computed(() => {
+  const visibleSet = visibleItems.value;
+  return itemIdList.value.filter(item => visibleSet.has(item));
 });
 
 const apiCheckboxOptions = computed(() => {
@@ -86,137 +103,166 @@ const serviceCheckboxOptions = computed(() => {
 });
 
 const searchInputValue = ref<string>();
-let isSearch = false;// 是否是搜索
+let isSearchMode = false; // Track if currently in search mode
 
-// 每个项目、服务下的接口列表的分页器数据
-let paginationMap: {
-  [key: string]: {
-    pageNo: number;
-    total: number;
-  }
-} = {};
+// Pagination data for each project/service's API list
+let paginationDataMap: { [key: string]: PaginationData } = {};
 
-const totalPage = computed(() => {
-  return Math.ceil(total.value / pageSize.value);
+const totalPageCount = computed(() => {
+  return Math.ceil(totalCount.value / pageSize.value);
 });
 
-const arrowChange = (open: boolean, id: string) => {
-  const cids = JSON.parse(JSON.stringify(dataMap.value[id].children));
-  for (let i = 0; i < cids.length; i++) {
-    const _id = cids[i];
-    if (open) {
-      visibleSet.value.add(_id);
+/**
+ * Handle arrow expand/collapse for tree items
+ * Manages visibility of child items and loads API data when expanding
+ */
+const handleArrowToggle = (isOpen: boolean, itemId: string) => {
+  const childIds = JSON.parse(JSON.stringify(itemDataMap.value[itemId].children));
+
+  for (let i = 0; i < childIds.length; i++) {
+    const childId = childIds[i];
+    if (isOpen) {
+      visibleItems.value.add(childId);
     } else {
-      visibleSet.value.delete(_id);
-      if (dataMap.value[_id].children?.length) {
-        openSet.value.delete(_id);
-        cids.push(...dataMap.value[_id].children);
+      visibleItems.value.delete(childId);
+      if (itemDataMap.value[childId].children?.length) {
+        openItems.value.delete(childId);
+        childIds.push(...itemDataMap.value[childId].children);
       }
     }
   }
 
-  if (open) {
-    openSet.value.add(id);
-    currentProjectId = id;
+  if (isOpen) {
+    openItems.value.add(itemId);
+    currentProjectId = itemId;
 
-    if (!isSearch && !apiLoadedSet.value.has(id)) {
-      paginationMap[id] = { pageNo: 1, total: 0 };
-      loadApiList(id);
+    // Load API list if not in search mode and not already loaded
+    if (!isSearchMode && !loadedApiItems.value.has(itemId)) {
+      paginationDataMap[itemId] = { pageNo: 1, total: 0 };
+      loadApiListForProject(itemId);
     }
     return;
   }
 
-  openSet.value.delete(id);
+  openItems.value.delete(itemId);
   currentProjectId = undefined;
 };
 
-const searchInputChange = debounce(duration.search, (event: { target: { value: string } }) => {
-  reset();
+/**
+ * Handle search input change with debounce
+ * Resets state and reloads project tree with search criteria
+ */
+const handleSearchInputChange = debounce(duration.search, (event: { target: { value: string } }) => {
+  resetAllState();
   searchInputValue.value = event.target.value.trim();
   loadProjectTree();
 });
 
-const switchChange = async (checked: boolean, id: string) => {
-  const isApi = dataMap.value[id].isApi;
-  enabledLoadingMap.value[id] = true;
-  const [error] = await (isApi
-    ? apis.enabledAuth({ id, enabled: checked })
-    : services.updateAuthEnabled({ id, enabled: checked }));
-  enabledLoadingMap.value[id] = false;
+/**
+ * Handle auth enable/disable switch toggle
+ * Updates the auth status for the specific item (API or service)
+ */
+const handleAuthSwitchToggle = async (isEnabled: boolean, itemId: string) => {
+  const isApiItem = itemDataMap.value[itemId].isApi;
+  itemLoadingStates.value[itemId] = true;
+
+  const [error] = await (isApiItem
+    ? apis.enabledAuth({ id: itemId, enabled: isEnabled })
+    : services.updateAuthEnabled({ id: itemId, enabled: isEnabled }));
+
+  itemLoadingStates.value[itemId] = false;
+
   if (error) {
     return;
   }
 
-  if (checked) {
-    dataMap.value[id].auth = true;
-    return;
-  }
-  dataMap.value[id].auth = false;
+  itemDataMap.value[itemId].auth = isEnabled;
 };
 
-const checkAllChange = async (event: { target: { checked: boolean } }, id: string) => {
-  if (updatingMap[id]) {
+/**
+ * Handle select all checkbox change
+ * Selects or deselects all available permissions for the item
+ */
+const handleSelectAllChange = async (event: { target: { checked: boolean } }, itemId: string) => {
+  if (permissionUpdateStates[itemId]) {
     return;
   }
 
-  const checked = event.target.checked;
-  const isApi = dataMap.value[id].isApi;
-  let permissions: string[] = [];
-  if (isApi) {
-    permissions = checked ? apiCheckboxOptions.value.map(item => item.value) : [];
+  const isChecked = event.target.checked;
+  const isApiItem = itemDataMap.value[itemId].isApi;
+  let selectedPermissions: string[] = [];
+
+  if (isApiItem) {
+    selectedPermissions = isChecked ? apiCheckboxOptions.value.map(item => item.value) : [];
   } else {
-    permissions = checked ? serviceCheckboxOptions.value.map(item => item.value) : [];
+    selectedPermissions = isChecked ? serviceCheckboxOptions.value.map(item => item.value) : [];
   }
-  await checkChange(permissions, id);
+
+  await updateItemPermissions(selectedPermissions, itemId);
 };
 
-const checkChange = async (permissions: string[], id: string) => {
-  if (updatingMap[id]) {
+/**
+ * Update permissions for a specific item
+ * Handles adding, updating, or deleting permissions based on current state
+ */
+const updateItemPermissions = async (permissions: string[], itemId: string) => {
+  if (permissionUpdateStates[itemId]) {
     return;
   }
 
-  const isApi = dataMap.value[id].isApi;
-  // 如果permissionMap.value[id].id为undefined，说明是未授权，反之已经授权
-  const authId = permissionsMap.value[id]?.id;
+  const isApiItem = itemDataMap.value[itemId].isApi;
+  const existingAuthId = permissionsMap.value[itemId]?.id;
+
+  // Handle permission deletion
   if (!permissions.length) {
-    updatingMap[id] = true;
-    const [error] = await (isApi ? apis.deleteAuth(authId as string) : services.delAuth(authId as string));
-    updatingMap[id] = false;
+    permissionUpdateStates[itemId] = true;
+    const [error] = await (isApiItem ? apis.deleteAuth(existingAuthId as string) : services.delAuth(existingAuthId as string));
+    permissionUpdateStates[itemId] = false;
+
     if (error) {
       return;
     }
-    permissionsMap.value[id] = undefined;
+
+    permissionsMap.value[itemId] = undefined;
     return;
   }
 
-  if (authId) {
-    updatingMap[id] = true;
-    const [error] = await (isApi ? apis.updateAuth(authId, { permissions }) : services.updateAuth(authId, { permissions }));
-    updatingMap[id] = false;
+  // Handle permission update
+  if (existingAuthId) {
+    permissionUpdateStates[itemId] = true;
+    const [error] = await (isApiItem ? apis.updateAuth(existingAuthId, { permissions }) : services.updateAuth(existingAuthId, { permissions }));
+    permissionUpdateStates[itemId] = false;
+
     if (error) {
       return;
     }
-    permissionsMap.value[id]?.permissions = permissions;
+
+    permissionsMap.value[itemId]?.permissions = permissions;
     return;
   }
 
-  // 没有进行过授权
-  updatingMap[id] = true;
-  const params = { permissions, authObjectId: props.authObjectId, authObjectType: props.type };
-  const [error, { data = { id: '' } }] = await (isApi ? apis.addAuth(id, params) : services.addAuth(id, params));
-  updatingMap[id] = false;
+  // Handle new permission creation
+  permissionUpdateStates[itemId] = true;
+  const authParams = { permissions, authObjectId: props.authObjectId, authObjectType: props.type };
+  const [error, { data = { id: '' } }] = await (isApiItem ? apis.addAuth(itemId, authParams) : services.addAuth(itemId, authParams));
+  permissionUpdateStates[itemId] = false;
+
   if (error) {
     return;
   }
 
-  permissionsMap.value[id] = {
+  permissionsMap.value[itemId] = {
     id: data.id,
     creatorFlag: false,
     permissions: permissions
   };
 };
 
-const getApiParams = (id: string) => {
+/**
+ * Get API list parameters for a specific project
+ * Returns pagination and permission parameters for API loading
+ */
+const getApiListParams = (projectId: string) => {
   const params: {
     pageNo: number;
     pageSize: number;
@@ -225,113 +271,127 @@ const getApiParams = (id: string) => {
   } = {
     hasPermission: ApiPermission.GRANT,
     admin: true,
-    pageNo: paginationMap[id].pageNo,
+    pageNo: paginationDataMap[projectId].pageNo,
     pageSize: pageSize.value
   };
   return params;
 };
 
-const loadApiList = async (id: string) => {
-  if (loading.value) {
+/**
+ * Load API list for a specific project
+ * Handles pagination and adds API items to the tree structure
+ */
+const loadApiListForProject = async (projectId: string) => {
+  if (isLoading.value) {
     return;
   }
 
-  apiController = new AbortController();
+  apiRequestController = new AbortController();
   const axiosConfig = {
-    signal: apiController.signal
+    signal: apiRequestController.signal
   };
-  const params = getApiParams(id);
-  loading.value = true;
-  const [error, { data }] = await services.loadApis({ ...params, id }, axiosConfig);
+
+  const params = getApiListParams(projectId);
+  isLoading.value = true;
+  const [error, { data }] = await services.loadApis({ ...params, id: projectId }, axiosConfig);
+
   if (error || !data) {
-    loading.value = false;
+    isLoading.value = false;
     return;
   }
 
-  apiLoadedSet.value.add(id);
-  paginationMap[id].total = +data.total;
+  loadedApiItems.value.add(projectId);
+  paginationDataMap[projectId].total = +data.total;
 
-  const list = data.list;
-  if (!list?.length) {
-    loading.value = false;
+  const apiList = data.list;
+  if (!apiList?.length) {
+    isLoading.value = false;
     return;
   }
 
-  const level = dataMap.value[id].level;
-  const ids: string[] = [];
-  for (let i = 0, len = list.length; i < len; i++) {
-    const id = list[i].id;
-    ids.push(id);
-    dataMap.value[id] = { ...list[i], isApi: true };
-    visibleSet.value.add(id);
-    apiStyle.value[id] = {
-      paddingLeft: level > 1 ? ((level - 1) * 28 + 54 + 'px') : '54px'
+  const projectLevel = itemDataMap.value[projectId].level;
+  const apiIds: string[] = [];
+
+  for (let i = 0, len = apiList.length; i < len; i++) {
+    const apiId = apiList[i].id;
+    apiIds.push(apiId);
+    itemDataMap.value[apiId] = { ...apiList[i], isApi: true };
+    visibleItems.value.add(apiId);
+    apiItemStyles.value[apiId] = {
+      paddingLeft: projectLevel > 1 ? ((projectLevel - 1) * 28 + 54 + 'px') : '54px'
     };
   }
 
-  const index = idList.value.findIndex(item => item === id);
-  const cidsLen = dataMap.value[id].children.reduce((prev, cur) => {
+  const projectIndex = itemIdList.value.findIndex(item => item === projectId);
+  const childCount = itemDataMap.value[projectId].children.reduce((prev, cur) => {
     prev += 1;
-    if (dataMap.value[cur]?.children?.length) {
-      prev += dataMap.value[cur].children.reduce((_p) => {
+    if (itemDataMap.value[cur]?.children?.length) {
+      prev += itemDataMap.value[cur].children.reduce((_p) => {
         _p += 1;
         return _p;
       }, 0);
     }
-
     return prev;
   }, 0);
 
-  dataMap.value[id].children.push(...ids);
-  idList.value.splice((index + cidsLen + 1), 0, ...ids);
+  itemDataMap.value[projectId].children.push(...apiIds);
+  itemIdList.value.splice((projectIndex + childCount + 1), 0, ...apiIds);
 
-  if (ids.length) {
-    await loadApiAuths(ids);
+  if (apiIds.length) {
+    await loadApiPermissions(apiIds);
   } else {
-    loading.value = false;
+    isLoading.value = false;
   }
 };
 
-const loadApiAuths = async (ids: string[]) => {
+/**
+ * Load API permissions for multiple API items
+ * Fetches and processes permission data for the specified API IDs
+ */
+const loadApiPermissions = async (apiIds: string[]) => {
   const params: {
-    pageSize: 2000; // IN查找有可能超过当前ids的长度，按2000传值
+    pageSize: number;
     authObjectId: string;
     authObjectType: AuthObjectType;
-    filters?: ServicesPermission[]
+    filters?: SearchCriteria[]
   } = {
-    pageSize: 2000,
+    pageSize: 2000, // Large page size for IN lookup
     authObjectId: props.authObjectId!,
     authObjectType: props.type,
-    filters: [{ key: 'apisId', op: SearchCriteria.OpEnum.In, value: ids }]
+    filters: [{ key: 'apisId', op: SearchCriteria.OpEnum.In, value: apiIds }]
   };
 
-  apiAuthController = new AbortController();
+  apiAuthRequestController = new AbortController();
   const axiosConfig = {
-    signal: apiAuthController.signal
+    signal: apiAuthRequestController.signal
   };
 
-  loading.value = true;
+  isLoading.value = true;
   const [error, { data = { list: [] } }] = await apis.getAuthList(params, axiosConfig);
+
   if (error || !data) {
-    loading.value = false;
+    isLoading.value = false;
     return;
   }
 
-  const list = data.list || [];
-  if (list.length) {
-    for (let i = 0, len = list.length; i < len; i++) {
-      const { id, apisId, permissions, creatorFlag } = list[i];
-      const currentMap = permissionsMap.value[apisId];
-      if (currentMap) {
-        const prevPermissions = currentMap.permissions;
-        const curPermissions = permissions.map(item => item.value);
-        if (curPermissions.length) {
-          prevPermissions.push(...curPermissions);
+  const permissionList = data.list || [];
+  if (permissionList.length) {
+    for (let i = 0, len = permissionList.length; i < len; i++) {
+      const { id, apisId, permissions, creatorFlag } = permissionList[i];
+      const existingPermissionMap = permissionsMap.value[apisId];
+
+      if (existingPermissionMap) {
+        const previousPermissions = existingPermissionMap.permissions;
+        const currentPermissions = permissions.map(item => item.value);
+
+        if (currentPermissions.length) {
+          previousPermissions.push(...currentPermissions);
         }
 
-        const set = new Set(prevPermissions);
-        currentMap.permissions = Array.from(set);
-        currentMap.creatorFlag = creatorFlag || currentMap.permissions;
+        // Remove duplicates and update permissions
+        const uniquePermissions = new Set(previousPermissions);
+        existingPermissionMap.permissions = Array.from(uniquePermissions);
+        existingPermissionMap.creatorFlag = creatorFlag || existingPermissionMap.creatorFlag;
       } else {
         permissionsMap.value[apisId] = {
           id,
@@ -342,49 +402,57 @@ const loadApiAuths = async (ids: string[]) => {
     }
   }
 
-  loading.value = false;
+  isLoading.value = false;
 };
 
-const loadServiceAuths = async (ids: string[]) => {
+/**
+ * Load service permissions for multiple service items
+ * Fetches and processes permission data for the specified service IDs
+ */
+const loadServicePermissions = async (serviceIds: string[]) => {
   const params: {
-    pageSize: 2000, // IN查找有可能超过当前ids的长度，按2000传值
+    pageSize: number;
     authObjectId: string;
     authObjectType: AuthObjectType;
     filters?: SearchCriteria[]
   } = {
-    pageSize: 2000,
+    pageSize: 2000, // Large page size for IN lookup
     authObjectId: props.authObjectId!,
     authObjectType: props.type,
-    filters: [{ key: 'serviceId', op: SearchCriteria.OpEnum.In, value: ids }]
+    filters: [{ key: 'serviceId', op: SearchCriteria.OpEnum.In, value: serviceIds }]
   };
 
-  serviceAuthController = new AbortController();
+  serviceAuthRequestController = new AbortController();
   const axiosConfig = {
-    signal: serviceAuthController.signal
+    signal: serviceAuthRequestController.signal
   };
 
-  loading.value = true;
+  isLoading.value = true;
   const [error, { data = { list: [] } }] = await services.loadAuthority(params, axiosConfig);
+
   if (error || !data) {
-    loading.value = false;
+    isLoading.value = false;
     return;
   }
 
-  const list = data.list || [];
-  if (list.length) {
-    for (let i = 0, len = list.length; i < len; i++) {
-      const { id, serviceId, permissions, creatorFlag } = list[i];
-      const currentMap = permissionsMap.value[serviceId];
-      if (currentMap) {
-        const prevPermissions = currentMap.permissions;
-        const curPermissions = permissions.map(item => item.value);
-        if (curPermissions.length) {
-          prevPermissions.push(...curPermissions);
+  const permissionList = data.list || [];
+  if (permissionList.length) {
+    for (let i = 0, len = permissionList.length; i < len; i++) {
+      const { id, serviceId, permissions, creatorFlag } = permissionList[i];
+      const existingPermissionMap = permissionsMap.value[serviceId];
+
+      if (existingPermissionMap) {
+        const previousPermissions = existingPermissionMap.permissions;
+        const currentPermissions = permissions.map(item => item.value);
+
+        if (currentPermissions.length) {
+          previousPermissions.push(...currentPermissions);
         }
 
-        const set = new Set(prevPermissions);
-        currentMap.permissions = Array.from(set);
-        currentMap.creatorFlag = creatorFlag || currentMap.permissions;
+        // Remove duplicates and update permissions
+        const uniquePermissions = new Set(previousPermissions);
+        existingPermissionMap.permissions = Array.from(uniquePermissions);
+        existingPermissionMap.creatorFlag = creatorFlag || existingPermissionMap.creatorFlag;
       } else {
         permissionsMap.value[serviceId] = {
           id,
@@ -394,9 +462,14 @@ const loadServiceAuths = async (ids: string[]) => {
       }
     }
   }
-  loading.value = false;
+
+  isLoading.value = false;
 };
 
+/**
+ * Get service list parameters for project tree loading
+ * Returns pagination and search parameters for service loading
+ */
 const getServiceListParams = () => {
   const params: ProjectPageQuery & {
     queryHasApis: boolean;
@@ -406,7 +479,7 @@ const getServiceListParams = () => {
     hasPermission: ServicesPermission.VIEW,
     admin: true,
     queryHasApis: true,
-    pageNo: pageNo.value,
+    pageNo: currentPage.value,
     pageSize: pageSize.value,
     projectId: projectId.value
   };
@@ -417,138 +490,157 @@ const getServiceListParams = () => {
   return params;
 };
 
+/**
+ * Load project tree structure
+ * Fetches service hierarchy and processes tree data for display
+ */
 const loadProjectTree = async () => {
   if (!props.authObjectId) {
-    loading.value = false;
+    isLoading.value = false;
     return;
   }
 
-  serviceController = new AbortController();
+  serviceRequestController = new AbortController();
   const axiosConfig = {
-    signal: serviceController.signal
+    signal: serviceRequestController.signal
   };
 
   const params = getServiceListParams();
-  loading.value = true;
+  isLoading.value = true;
   const [error, { data }] = await services.getList(params, axiosConfig);
+
   if (error || !data) {
-    loading.value = false;
+    isLoading.value = false;
     return;
   }
 
-  isSearch = !!params.filters?.length;
-  total.value = +data.total;
+  isSearchMode = !!params.filters?.length;
+  totalCount.value = +data.total;
 
-  const temp = traverseTree(data.list);
-  const ids: string[] = [];
-  const visibleChildren:string[] = [];
-  for (let i = 0, len = temp.length; i < len; i++) {
-    const { id, level, children, hasApis } = temp[i];
+  const processedTreeData = processTreeStructure(data.list);
+  const serviceIds: string[] = [];
+  const visibleChildren: string[] = [];
 
-    ids.push(id);
-    dataMap.value[id] = temp[i];
+  for (let i = 0, len = processedTreeData.length; i < len; i++) {
+    const { id, level, children, hasApis } = processedTreeData[i];
 
-    if (children.length || (!isSearch && hasApis)) {
-      arrowSet.value.add(id);
+    serviceIds.push(id);
+    itemDataMap.value[id] = processedTreeData[i];
 
-      if (isSearch) {
-        openSet.value.add(id);
+    // Add arrow for items with children or APIs
+    if (children.length || (!isSearchMode && hasApis)) {
+      expandedItems.value.add(id);
+
+      if (isSearchMode) {
+        openItems.value.add(id);
       }
     }
 
-    if (openSet.value.has(id) && children.length) {
+    // Handle visibility for search mode
+    if (openItems.value.has(id) && children.length) {
       visibleChildren.push(...children);
     }
 
     if (level === 1 || visibleChildren.includes(id)) {
-      visibleSet.value.add(id);
+      visibleItems.value.add(id);
     }
 
-    serviceStyle.value[id] = {
+    serviceItemStyles.value[id] = {
       paddingLeft: (level - 1) * 28 + 'px'
     };
 
-    idList.value.push(id);
+    itemIdList.value.push(id);
   }
 
-  if (ids.length) {
-    await loadServiceAuths(ids);
+  if (serviceIds.length) {
+    await loadServicePermissions(serviceIds);
   } else {
-    loading.value = false;
+    isLoading.value = false;
   }
 };
 
-const traverseTree = (treeData: TreeElement[]): ArrayItem[] => {
+/**
+ * Process tree structure data into flat array format
+ * Converts hierarchical tree data to flat array with level and parent information
+ */
+const processTreeStructure = (treeData: TreeElement[]): ArrayItem[] => {
   if (!treeData?.length) {
     return [];
   }
 
-  const temp: ArrayItem[] = [];
-  function handler (data: TreeElement[], target: ArrayItem[], pid = '-1', level = 1) {
-    data.reduce((prev, cur) => {
-      const temp: ArrayItem = {
-        ...cur,
-        pid,
+  const processedItems: ArrayItem[] = [];
+
+  function processTreeItems (treeItems: TreeElement[], resultArray: ArrayItem[], parentId = '-1', level = 1) {
+    treeItems.reduce((accumulator, currentItem) => {
+      const processedItem: ArrayItem = {
+        ...currentItem,
+        pid: parentId,
         level,
         children: [],
         targetType: 'SERVICE'
       };
 
-      prev.push(temp);
+      accumulator.push(processedItem);
 
-      if (cur.children?.length) {
-        temp.children = cur.children.map(item => item.id);
-        handler(cur.children, prev, cur.id, temp.level + 1);
+      if (currentItem.children?.length) {
+        processedItem.children = currentItem.children.map(child => child.id);
+        processTreeItems(currentItem.children, accumulator, currentItem.id, processedItem.level + 1);
       }
 
-      return prev;
-    }, target);
+      return accumulator;
+    }, resultArray);
   }
 
-  handler(treeData, temp);
-  return temp;
+  processTreeItems(treeData, processedItems);
+  return processedItems;
 };
 
+/**
+ * Handle scroll event for infinite loading
+ * Manages pagination for both project tree and API lists
+ */
 const handleScroll = throttle(duration.scroll, (event: Event) => {
-  if (loading.value) {
+  if (isLoading.value) {
     return;
   }
 
-  const target = event.target as HTMLElement;
+  const scrollTarget = event.target as HTMLElement;
 
-  // 当前滚动的是api列表
-  if (currentProjectId && !isSearch) {
-    let _total = paginationMap[currentProjectId].total;
-    let _pageNo = paginationMap[currentProjectId].pageNo;
-    let _totalPage = Math.ceil(_total / pageSize.value);
-    if (_pageNo >= _totalPage) {
-      // 如果有父级，滚动加载其父级数据
-      const pid = dataMap.value[currentProjectId].pid;
-      if (pid === '-1') {
+  // Handle API list pagination
+  if (currentProjectId && !isSearchMode) {
+    let totalCount = paginationDataMap[currentProjectId].total;
+    let currentPageNo = paginationDataMap[currentProjectId].pageNo;
+    let totalPages = Math.ceil(totalCount / pageSize.value);
+
+    if (currentPageNo >= totalPages) {
+      // If current project is fully loaded, try parent project
+      const parentId = itemDataMap.value[currentProjectId].pid;
+      if (parentId === '-1') {
         currentProjectId = undefined;
         return;
       }
 
-      _total = paginationMap[pid].total;
-      _pageNo = paginationMap[pid].pageNo;
-      _totalPage = Math.ceil(_total / pageSize.value);
-      if (_pageNo >= _totalPage) {
+      totalCount = paginationDataMap[parentId].total;
+      currentPageNo = paginationDataMap[parentId].pageNo;
+      totalPages = Math.ceil(totalCount / pageSize.value);
+
+      if (currentPageNo >= totalPages) {
         currentProjectId = undefined;
         return;
       }
 
-      currentProjectId = pid;
+      currentProjectId = parentId;
     }
 
-    const index = showIdList.value.findIndex(item => item === currentProjectId);
-    const cidsLen = dataMap.value[currentProjectId].children.reduce((prev, cur) => {
-      if (visibleSet.value.has(cur)) {
+    const projectIndex = visibleItemList.value.findIndex(item => item === currentProjectId);
+    const childCount = itemDataMap.value[currentProjectId].children.reduce((prev, cur) => {
+      if (visibleItems.value.has(cur)) {
         prev += 1;
       }
 
-      if (dataMap.value[cur]?.children?.length) {
-        prev += dataMap.value[cur].children.reduce((_p, _c) => {
-          if (visibleSet.value.has(_c)) {
+      if (itemDataMap.value[cur]?.children?.length) {
+        prev += itemDataMap.value[cur].children.reduce((_p, _c) => {
+          if (visibleItems.value.has(_c)) {
             _p += 1;
           }
           return _p;
@@ -558,102 +650,118 @@ const handleScroll = throttle(duration.scroll, (event: Event) => {
       return prev;
     }, 0);
 
-    const projectClientTop = index * LINE_HEIGHT + (cidsLen) * LINE_HEIGHT;
-    if (projectClientTop <= target.scrollTop + target.clientHeight) {
-      paginationMap[currentProjectId].pageNo = _pageNo + 1;
-      loadApiList(currentProjectId);
+    const projectScrollTop = projectIndex * ITEM_LINE_HEIGHT + (childCount) * ITEM_LINE_HEIGHT;
+    if (projectScrollTop <= scrollTarget.scrollTop + scrollTarget.clientHeight) {
+      paginationDataMap[currentProjectId].pageNo = currentPageNo + 1;
+      loadApiListForProject(currentProjectId);
     }
     return;
   }
 
-  // 当前滚动的是项目服务树列表
-  if (pageNo.value >= totalPage.value) {
+  // Handle project tree pagination
+  if (currentPage.value >= totalPageCount.value) {
     return;
   }
 
-  if ((target.scrollTop + target.clientHeight + LINE_HEIGHT) >= target.scrollHeight) {
-    pageNo.value += 1;
+  if ((scrollTarget.scrollTop + scrollTarget.clientHeight + ITEM_LINE_HEIGHT) >= scrollTarget.scrollHeight) {
+    currentPage.value += 1;
     loadProjectTree();
   }
 });
 
-const resizeHandler = debounce(duration.resize, () => {
+/**
+ * Handle container resize for dynamic page size calculation
+ * Adjusts page size based on container height for optimal loading
+ */
+const handleContainerResize = debounce(duration.resize, () => {
   if (!containerRef.value) {
     return;
   }
 
-  const height = containerRef.value.offsetHeight;
-  let _pageSize = 1;
-  if (height > LINE_HEIGHT) {
-    const quotient = height / (LINE_HEIGHT);
+  const containerHeight = containerRef.value.offsetHeight;
+  let calculatedPageSize = 1;
+
+  if (containerHeight > ITEM_LINE_HEIGHT) {
+    const quotient = containerHeight / ITEM_LINE_HEIGHT;
     if (Number.isInteger(quotient)) {
-      _pageSize = quotient + 1;
+      calculatedPageSize = quotient + 1;
     } else {
-      _pageSize = Math.ceil(quotient);
+      calculatedPageSize = Math.ceil(quotient);
     }
   }
 
-  if (pageSize.value < _pageSize && showIdList.value.length < _pageSize && total.value > showIdList.value.length) {
-    pageSize.value = _pageSize;
-    reset();
+  if (pageSize.value < calculatedPageSize && visibleItemList.value.length < calculatedPageSize && totalCount.value > visibleItemList.value.length) {
+    pageSize.value = calculatedPageSize;
+    resetAllState();
     loadProjectTree();
   }
 });
 
-const reset = () => {
-  serviceController && serviceController.abort();
-  serviceAuthController && serviceAuthController.abort();
-  apiController && apiController.abort();
-  apiAuthController && apiAuthController.abort();
+/**
+ * Reset all component state to initial values
+ * Clears all data, aborts requests, and resets UI state
+ */
+const resetAllState = () => {
+  // Abort all ongoing requests
+  serviceRequestController && serviceRequestController.abort();
+  serviceAuthRequestController && serviceAuthRequestController.abort();
+  apiRequestController && apiRequestController.abort();
+  apiAuthRequestController && apiAuthRequestController.abort();
 
-  arrowSet.value.clear();
-  openSet.value.clear();
-  visibleSet.value.clear();
-  apiLoadedSet.value.clear();
+  // Clear all sets
+  expandedItems.value.clear();
+  openItems.value.clear();
+  visibleItems.value.clear();
+  loadedApiItems.value.clear();
 
-  serviceStyle.value = {};
-  apiStyle.value = {};
+  // Reset style objects
+  serviceItemStyles.value = {};
+  apiItemStyles.value = {};
 
-  loading.value = false;
-  pageNo.value = 1;
-  total.value = 0;
+  // Reset loading and pagination state
+  isLoading.value = false;
+  currentPage.value = 1;
+  totalCount.value = 0;
   searchInputValue.value = undefined;
-  idList.value = [];
-  dataMap.value = {};
+  itemIdList.value = [];
+  itemDataMap.value = {};
   permissionsMap.value = {};
-  enabledLoadingMap.value = {};
-  updatingMap = {};
+  itemLoadingStates.value = {};
+  permissionUpdateStates = {};
 
   currentProjectId = undefined;
 
-  // 每个项目、服务下的接口列表的分页器数据
-  paginationMap = {};
+  // Reset pagination data
+  paginationDataMap = {};
 
-  isSearch = false;
+  isSearchMode = false;
 };
 
+// Lifecycle Hooks
 onMounted(() => {
   nextTick(() => {
-    const height = containerRef.value.offsetHeight;
-    let _pageSize = 1;
-    if (height > LINE_HEIGHT) {
-      const quotient = height / (LINE_HEIGHT);
+    const containerHeight = containerRef.value.offsetHeight;
+    let initialPageSize = 1;
+
+    if (containerHeight > ITEM_LINE_HEIGHT) {
+      const quotient = containerHeight / ITEM_LINE_HEIGHT;
       if (Number.isInteger(quotient)) {
-        _pageSize = quotient + 1;
+        initialPageSize = quotient + 1;
       } else {
-        _pageSize = Math.ceil(quotient);
+        initialPageSize = Math.ceil(quotient);
       }
     }
 
-    pageSize.value = _pageSize;
+    pageSize.value = initialPageSize;
     loadProjectTree();
 
-    erd.listenTo(containerRef.value, resizeHandler);
+    erd.listenTo(containerRef.value, handleContainerResize);
   });
 
-  watch(() => props.authObjectId, (newValue) => {
-    reset();
-    if (!newValue) {
+  // Watch for auth object ID changes
+  watch(() => props.authObjectId, (newAuthObjectId) => {
+    resetAllState();
+    if (!newAuthObjectId) {
       return;
     }
 
@@ -662,7 +770,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  erd.removeListener(containerRef.value, resizeHandler);
+  erd.removeListener(containerRef.value, handleContainerResize);
 });
 </script>
 <template>
@@ -672,19 +780,19 @@ onBeforeUnmount(() => {
       :allowClear="true"
       placeholder="查询名称"
       class="mb-2"
-      @change="searchInputChange" />
+      @change="handleSearchInputChange" />
     <div v-if="props.authObjectId" class="flex items-center h-11 pr-1.75 rounded bg-gray-light text-theme-title">
       <div class="flex-1 px-2 truncate">名称</div>
       <div style="width:70px;" class="flex-shrink-0 px-2">权限控制</div>
       <div style="width:52%">权限</div>
     </div>
     <NoData
-      v-show="!loading && !showIdList?.length"
+      v-show="!isLoading && !visibleItemList?.length"
       style="height: calc(100% - 36px);"
       size="small" />
     <Spin
-      v-show="loading||!!showIdList?.length"
-      :spinning="loading"
+      v-show="isLoading||!!visibleItemList?.length"
+      :spinning="isLoading"
       :mask="false"
       :tip="t('service.authSetting.loading.tip')"
       style="height: calc(100% - 76px);">
@@ -692,80 +800,80 @@ onBeforeUnmount(() => {
         ref="containerRef"
         class="h-full overflow-y-auto"
         @scroll="handleScroll">
-        <template v-for="item in showIdList" :key="item.id">
+        <template v-for="item in visibleItemList" :key="item.id">
           <div
-            v-if="dataMap[item].isApi"
+            v-if="itemDataMap[item].isApi"
             class="flex items-center min-h-11 py-1 border-b border-solid cursor-pointer hover:bg-gray-hover border-theme-text-box">
-            <div :style="apiStyle[item]" class="flex flex-1 overflow-hidden">
-              <div :style="TEXT_COLOR[dataMap[item].method!]" class="inline-block w-11.25 mr-2">{{ dataMap[item].method }}</div>
-              <div class="truncate" :title="dataMap[item].endpoint"><span :data-id="item">{{ dataMap[item].endpoint }}</span></div>
+            <div :style="apiItemStyles[item]" class="flex flex-1 overflow-hidden">
+              <div :style="HTTP_METHOD_COLORS[itemDataMap[item].method!]" class="inline-block w-11.25 mr-2">{{ itemDataMap[item].method }}</div>
+              <div class="truncate" :title="itemDataMap[item].endpoint"><span :data-id="item">{{ itemDataMap[item].endpoint }}</span></div>
             </div>
             <div style="width:70px" class="px-2">
               <Switch
-                :loading="enabledLoadingMap[item]"
-                :checked="dataMap[item].auth"
+                :loading="itemLoadingStates[item]"
+                :checked="itemDataMap[item].auth"
                 size="small"
-                @change="switchChange($event, item)" />
+                @change="handleAuthSwitchToggle($event, item)" />
             </div>
             <div style="width:52%" class="flex items-start">
               <Checkbox
-                :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
+                :disabled="permissionsMap[item]?.creatorFlag || itemDataMap[item]?.auth === false"
                 :checked="(permissionsMap[item]?.permissions.length === apiCheckboxOptions.length)"
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < apiCheckboxOptions.length)"
                 class="whitespace-nowrap"
-                @change="checkAllChange($event, item)">
+                @change="handleSelectAllChange($event, item)">
                 {{ t('actions.selectAll') }}
               </Checkbox>
               <CheckboxGroup
-                :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
+                :disabled="permissionsMap[item]?.creatorFlag || itemDataMap[item]?.auth === false"
                 :value="permissionsMap[item]?.permissions"
                 :options="apiCheckboxOptions"
-                @change="checkChange($event, item)" />
+                @change="updateItemPermissions($event, item)" />
             </div>
           </div>
 
           <div
             v-else
-            :style="serviceStyle[item]"
+            :style="serviceItemStyles[item]"
             class="flex items-center min-h-11 py-1 border-b border-solid cursor-pointer hover:bg-gray-hover border-theme-text-box">
             <div class="flex items-center flex-1 overflow-hidden">
               <div class="flex items-center ml-1.5">
                 <div class="flex items-center w-4 h-4">
                   <Arrow
-                    v-if="arrowSet.has(item)"
-                    :open="openSet.has(item)"
-                    @change="arrowChange($event, item)" />
+                    v-if="expandedItems.has(item)"
+                    :open="openItems.has(item)"
+                    @change="handleArrowToggle($event, item)" />
                 </div>
                 <IconText
                   class="ml-1"
                   style="background-color: #a2dddc;"
                   text="S" />
               </div>
-              <div class="flex-1 px-2 pt-0.5 truncate" :title="dataMap[item].name">
-                <span :data-id="item">{{ dataMap[item].name }}</span>
+              <div class="flex-1 px-2 pt-0.5 truncate" :title="itemDataMap[item].name">
+                <span :data-id="item">{{ itemDataMap[item].name }}</span>
               </div>
             </div>
             <div style="width:70px" class="px-2">
               <Switch
-                :loading="enabledLoadingMap[item]"
-                :checked="dataMap[item].auth"
+                :loading="itemLoadingStates[item]"
+                :checked="itemDataMap[item].auth"
                 size="small"
-                @change="switchChange($event, item)" />
+                @change="handleAuthSwitchToggle($event, item)" />
             </div>
             <div style="width:52%" class="flex items-start">
               <Checkbox
-                :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
+                :disabled="permissionsMap[item]?.creatorFlag || itemDataMap[item]?.auth === false"
                 :checked="(permissionsMap[item]?.permissions.length === serviceCheckboxOptions.length)"
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < serviceCheckboxOptions.length)"
                 class="whitespace-nowrap"
-                @change="checkAllChange($event, item)">
+                @change="handleSelectAllChange($event, item)">
                 {{ t('actions.selectAll') }}
               </Checkbox>
               <CheckboxGroup
-                :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"
+                :disabled="permissionsMap[item]?.creatorFlag || itemDataMap[item]?.auth === false"
                 :value="permissionsMap[item]?.permissions"
                 :options="serviceCheckboxOptions"
-                @change="checkChange($event, item)" />
+                @change="updateItemPermissions($event, item)" />
             </div>
           </div>
         </template>

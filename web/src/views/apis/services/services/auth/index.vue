@@ -17,23 +17,28 @@ const props = withDefaults(defineProps<Props>(), {
   appId: undefined
 });
 
-const activeKey = ref<AuthObjectType>(AuthObjectType.USER);
-const checkedUserId = ref<string>();
-const checkedGroupId = ref<string>();
-const checkedDeptId = ref<string>();
+const activeTabKey = ref<AuthObjectType>(AuthObjectType.USER);
+const selectedUserId = ref<string>();
+const selectedGroupId = ref<string>();
+const selectedDeptId = ref<string>();
 
 const { t } = useI18n();
+
 const apiPermissions = ref<EnumMessage<ApiPermission>[]>([]);
 const servicePermissions = ref<EnumMessage<ServicesPermission>[]>([]);
-const loaded = ref(false);
+const isDataLoaded = ref(false);
 
-const loadEnums = () => {
+/**
+ * Load permission enums and convert to message format
+ * Initializes permission data for API and service permissions
+ */
+const loadPermissionEnums = () => {
   apiPermissions.value = enumUtils.enumToMessages(ApiPermission);
   servicePermissions.value = enumUtils.enumToMessages(ServicesPermission);
 };
 
 onMounted(() => {
-  loadEnums();
+  loadPermissionEnums();
 });
 </script>
 
@@ -41,38 +46,38 @@ onMounted(() => {
   <div class="h-full py-3.5">
     <Hints class="mx-3" :text="t('service.authSetting.hints.authDescription')" />
     <Tabs
-      v-model:activeKey="activeKey"
+      v-model:activeKey="activeTabKey"
       size="small"
       style="height: calc(100% - 18px);">
       <TabPane key="user" :tab="t('organization.user')">
         <GroupSet
           :key="AuthObjectType.USER"
-          v-model:checkedId="checkedUserId"
-          v-model:loaded="loaded"
+          v-model:checkedId="selectedUserId"
+          v-model:loaded="isDataLoaded"
           :appId="props.appId"
           :type="AuthObjectType.USER"
           class="flex-shrink-0 flex-grow-0 w-75 mr-4" />
         <AuthSet
-          v-if="loaded"
+          v-if="isDataLoaded"
           :key="AuthObjectType.USER"
-          :authObjectId="checkedUserId"
+          :authObjectId="selectedUserId"
           :apiPermissions="apiPermissions"
-          :projectPermissions="servicePermissions"
+          :servicePermissions="servicePermissions"
           :type="AuthObjectType.USER"
           class="flex-1" />
       </TabPane>
       <TabPane key="dept" :tab="t('organization.dept')">
         <GroupSet
           :key="AuthObjectType.DEPT"
-          v-model:checkedId="checkedDeptId"
-          v-model:loaded="loaded"
+          v-model:checkedId="selectedDeptId"
+          v-model:loaded="isDataLoaded"
           :appId="props.appId"
           :type="AuthObjectType.DEPT"
           class="flex-shrink-0 flex-grow-0 w-75 mr-4" />
         <AuthSet
-          v-if="loaded"
+          v-if="isDataLoaded"
           :key="AuthObjectType.DEPT"
-          :authObjectId="checkedDeptId"
+          :authObjectId="selectedDeptId"
           :type="AuthObjectType.DEPT"
           :apiPermissions="apiPermissions"
           :servicePermissions="servicePermissions"
@@ -81,18 +86,18 @@ onMounted(() => {
       <TabPane key="group" :tab="t('organization.group')">
         <GroupSet
           :key="AuthObjectType.GROUP"
-          v-model:checkedId="checkedGroupId"
-          v-model:loaded="loaded"
+          v-model:checkedId="selectedGroupId"
+          v-model:loaded="isDataLoaded"
           :appId="props.appId"
           :type="AuthObjectType.GROUP"
           class="flex-shrink-0 flex-grow-0 w-75 mr-4" />
         <AuthSet
-          v-if="loaded"
+          v-if="isDataLoaded"
           :key="AuthObjectType.GROUP"
-          :authObjectId="checkedGroupId"
+          :authObjectId="selectedGroupId"
           :type="AuthObjectType.GROUP"
           :apiPermissions="apiPermissions"
-          :projectPermissions="servicePermissions"
+          :servicePermissions="servicePermissions"
           class="flex-1" />
       </TabPane>
     </Tabs>

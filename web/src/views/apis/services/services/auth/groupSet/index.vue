@@ -12,56 +12,72 @@ interface Props {
   appId?: string,
 }
 
+interface ListItemInfo {
+  [key: string]: string;
+  avatar: string;
+}
+
 const props = withDefaults(defineProps<Props>(), {
   type: AuthObjectType.USER,
   checkedId: undefined,
   appId: undefined
 });
 
-interface ListInfo {
-  [key: string]: string;
-  avatar: string;
-}
+const emit = defineEmits<{
+  (e: 'update:checkedId', id: string | undefined): void;
+  (e: 'update:loaded', value: boolean): void;
+}>();
 
 const { t } = useI18n();
 
-const emit = defineEmits<{
-  (e: 'update:checkedId', id: string | undefined): void;
-  (e: 'update:loaded', value:boolean): void;
-}>();
+const searchInputValue = ref<string>();
+const listDataSource = ref<ListItemInfo[]>([]);
+const selectedItemId = ref<string>();
 
-const inputValue = ref<string>();
-
-const dataSource = ref<ListInfo[]>([]);
-
-const params = computed<{ filters?: [SearchCriteria] }>(() => {
-  const value = inputValue.value?.trim();
-  if (value) {
+const searchParams = computed<{ filters?: [SearchCriteria] }>(() => {
+  const searchValue = searchInputValue.value?.trim();
+  if (searchValue) {
     return {
-      filters: [{ key: props.type === AuthObjectType.USER ? 'fullName' : 'name', op: SearchCriteria.OpEnum.Match, value }]
+      filters: [{
+        key: props.type === AuthObjectType.USER ? 'fullName' : 'name',
+        op: SearchCriteria.OpEnum.Match,
+        value: searchValue
+      }]
     };
   }
   return {};
 });
 
-const nameKey = ref<'deptName' | 'groupName' | 'fullName' | 'name'>('name');
-const idKey = ref<'deptId' | 'groupId' | 'userId' | 'id'>('id');
-const placeholder = ref<string>();
-const apiPath = ref<string>();
+const displayNameKey = ref<'deptName' | 'groupName' | 'fullName' | 'name'>('name');
+const itemIdKey = ref<'deptId' | 'groupId' | 'userId' | 'id'>('id');
+const searchPlaceholder = ref<string>();
+const apiEndpoint = ref<string>();
 
-const changeHandler = debounce(duration.search, (event: {target:{value:string}}) => {
-  inputValue.value = event.target.value?.trim();
+/**
+ * Handle search input change with debounce
+ * Updates search value and triggers data reload
+ */
+const handleSearchInputChange = debounce(duration.search, (event: any) => {
+  searchInputValue.value = event.target.value?.trim();
 });
 
-const activeId = ref<string>();
-const checkedHandler = (id: string) => {
-  activeId.value = id;
+/**
+ * Handle item selection
+ * Updates the selected item ID and emits change event
+ */
+const handleItemSelection = (itemId: string) => {
+  selectedItemId.value = itemId;
 };
 
-const handleData = (val) => {
-  dataSource.value = val;
-  if (!activeId.value) {
-    activeId.value = val[0]?.id;
+/**
+ * Handle data loading completion
+ * Sets initial selection and notifies parent component
+ */
+const handleDataLoaded = (loadedData: ListItemInfo[]) => {
+  listDataSource.value = loadedData;
+
+  if (!selectedItemId.value && loadedData.length > 0) {
+    selectedItemId.value = loadedData[0]?.id;
   }
 
   if (!props.loaded) {
@@ -69,57 +85,65 @@ const handleData = (val) => {
   }
 };
 
-watch([() => props.appId, () => props.type], ([_appId, _type]) => {
-  if (!_appId) {
+/**
+ * Watch for app ID and type changes to configure API endpoints
+ * Sets up appropriate field mappings and API paths based on object type
+ */
+watch([() => props.appId, () => props.type], ([appId, objectType]) => {
+  if (!appId) {
     return;
   }
 
-  switch (_type) {
+  switch (objectType) {
     case AuthObjectType.DEPT:
-      nameKey.value = 'name';
-      idKey.value = 'id';
-      placeholder.value = t('service.authSetting.placeholder.searchDept');
-      apiPath.value = `${GM}/app/${_appId}/auth/dept`;
+      displayNameKey.value = 'name';
+      itemIdKey.value = 'id';
+      searchPlaceholder.value = t('service.authSetting.placeholder.searchDept');
+      apiEndpoint.value = `${GM}/app/${appId}/auth/dept`;
       break;
     case AuthObjectType.GROUP:
-      nameKey.value = 'name';
-      idKey.value = 'id';
-      placeholder.value = t('service.authSetting.placeholder.searchGroup');
-      apiPath.value = `${GM}/app/${_appId}/auth/group`;
+      displayNameKey.value = 'name';
+      itemIdKey.value = 'id';
+      searchPlaceholder.value = t('service.authSetting.placeholder.searchGroup');
+      apiEndpoint.value = `${GM}/app/${appId}/auth/group`;
       break;
     case AuthObjectType.USER:
-      nameKey.value = 'fullName';
-      idKey.value = 'id';
-      placeholder.value = t('service.authSetting.placeholder.searchUser');
-      apiPath.value = `${GM}/app/${_appId}/auth/user`;
+      displayNameKey.value = 'fullName';
+      itemIdKey.value = 'id';
+      searchPlaceholder.value = t('service.authSetting.placeholder.searchUser');
+      apiEndpoint.value = `${GM}/app/${appId}/auth/user`;
   }
 }, { immediate: true });
 
-watch(() => activeId.value, (newValue) => {
-  emit('update:checkedId', newValue);
+/**
+ * Watch for selected item changes and emit to parent
+ * Notifies parent component when selection changes
+ */
+watch(() => selectedItemId.value, (newSelectedId) => {
+  emit('update:checkedId', newSelectedId);
 });
 </script>
 <template>
   <div class="h-full text-3 text-theme-title">
     <Input
-      :value="inputValue"
+      :value="searchInputValue"
       :allowClear="true"
-      :placeholder="placeholder"
+      :placeholder="searchPlaceholder"
       size="small"
       class="mb-2"
-      @change="changeHandler" />
+      @change="handleSearchInputChange" />
     <Scroll
       :lineHeight="44"
-      :params="params"
-      :action="apiPath"
+      :params="searchParams"
+      :action="apiEndpoint"
       style="height: calc(100% - 36px);"
-      @change="handleData">
+      @change="handleDataLoaded">
       <div
-        v-for="item in dataSource"
-        :key="item[idKey]"
-        :class="{ 'active-item': activeId === item[idKey] }"
+        v-for="item in listDataSource"
+        :key="item[itemIdKey]"
+        :class="{ 'active-item': selectedItemId === item[itemIdKey] }"
         class="flex items-center justify-between h-11 py-1.5 px-3 rounded cursor-pointer hover:bg-gray-hover"
-        @click.stop="checkedHandler(item[idKey])">
+        @click.stop="handleItemSelection(item[itemIdKey])">
         <div class="flex items-center flex-nowrap">
           <Icon
             v-if="type === AuthObjectType.GROUP"
@@ -134,7 +158,7 @@ watch(() => activeId.value, (newValue) => {
             class="w-7 h-7 rounded-2xl mr-3"
             type="avatar"
             :src="item.avatar" />
-          <span :title="item[nameKey]" class="leading-5 truncate">{{ item[nameKey] }}</span>
+          <span :title="item[displayNameKey]" class="leading-5 truncate">{{ item[displayNameKey] }}</span>
         </div>
       </div>
     </Scroll>

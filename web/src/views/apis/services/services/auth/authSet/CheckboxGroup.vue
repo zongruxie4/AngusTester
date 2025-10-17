@@ -2,10 +2,15 @@
 import { Checkbox } from 'ant-design-vue';
 import { ServicesPermission } from '@/enums/enums';
 
+interface CheckboxOption {
+  label: string;
+  value: string;
+}
+
 interface Props {
-    options: { label: string; value: string }[];
-    disabled: boolean;
-    value: string[];
+  options: CheckboxOption[];
+  disabled: boolean;
+  value: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -16,29 +21,45 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{(e: 'change', value: string[]) }>();
 
-const change = (event: { target: { checked: boolean; } }, value: string) => {
-  const checked = event.target.checked;
+/**
+ * Handle checkbox change event with permission dependency logic
+ * When unchecking modify permission, also uncheck release permission
+ * When checking release permission, also check modify permission
+ * When checking any permission except view, also check view permission
+ */
+const handleCheckboxChange = (event: { target: { checked: boolean; } }, selectedValue: string) => {
+  const isChecked = event.target.checked;
 
-  // 取消勾选修改，需要同步取消发布
-  if (!checked) {
-    const excludes = [value];
-    if (value === ServicesPermission.MODIFY) {
-      excludes.push(ServicesPermission.RELEASE);
+  // Handle unchecking logic
+  if (!isChecked) {
+    const permissionsToExclude = [selectedValue];
+
+    // If unchecking modify permission, also uncheck release permission
+    if (selectedValue === ServicesPermission.MODIFY) {
+      permissionsToExclude.push(ServicesPermission.RELEASE);
     }
-    const temp = value !== ServicesPermission.VIEW ? props.value.filter(item => !excludes.includes(item)) : [];
-    emit('change', temp);
+
+    const updatedPermissions = selectedValue !== ServicesPermission.VIEW
+      ? props.value.filter(permission => !permissionsToExclude.includes(permission))
+      : [];
+
+    emit('change', updatedPermissions);
     return;
   }
 
-  const newValues = value !== ServicesPermission.VIEW && !props.value.includes(ServicesPermission.VIEW)
-    ? [value, ServicesPermission.VIEW]
-    : [value];
-  if (value === ServicesPermission.RELEASE) {
-    newValues.push(ServicesPermission.MODIFY);
+  // Handle checking logic
+  const newPermissions = selectedValue !== ServicesPermission.VIEW && !props.value.includes(ServicesPermission.VIEW)
+    ? [selectedValue, ServicesPermission.VIEW]
+    : [selectedValue];
+
+  // If checking release permission, also check modify permission
+  if (selectedValue === ServicesPermission.RELEASE) {
+    newPermissions.push(ServicesPermission.MODIFY);
   }
 
-  const temp = new Set(props.value.concat(...newValues));
-  emit('change', Array.from(temp));
+  // Merge with existing permissions and remove duplicates
+  const allPermissions = new Set(props.value.concat(...newPermissions));
+  emit('change', Array.from(allPermissions));
 };
 </script>
 <template>
@@ -48,7 +69,7 @@ const change = (event: { target: { checked: boolean; } }, value: string) => {
       :key="item.value"
       :disabled="props.disabled"
       :checked="props.value.includes(item.value)"
-      @change="change($event, item.value)">
+      @change="handleCheckboxChange($event, item.value)">
       {{ item.label }}
     </Checkbox>
   </div>
