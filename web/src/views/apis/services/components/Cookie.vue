@@ -4,9 +4,6 @@ import { Table } from '@xcan-angus/vue-ui';
 import { XCanDexie } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 
-
-import {CookieColumns} from "@/views/apis/services/components/PropsTypes";
-
 interface Props {
   dataSource:any,
   host: string
@@ -14,16 +11,32 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {});
 
+// Initialize Dexie database for cookie storage
 const dexie = new XCanDexie<{id:string;data: any}>('cookies');
-const definedKey = ['Domain', 'domain', 'Path', 'path', 'Expires', 'expires', 'HttpOnly', 'httpOnly', 'Secure', 'secure', 'Max-Age', 'max-age'];
-const data = ref<Array<Record<string, string>>>([]);
-const cookies = ref<Array<Record<string, string>>>([]);
 
-const getCookies = async () => {
+// Define known cookie attribute keys for parsing
+const definedCookieKeys = ['Domain', 'domain', 'Path', 'path', 'Expires', 'expires', 'HttpOnly', 'httpOnly', 'Secure', 'secure', 'Max-Age', 'max-age'];
+
+// Ref for raw cookie data before processing
+const rawCookieData = ref<Array<Record<string, string>>>([]);
+
+// Ref for processed cookies to display in the table
+const processedCookies = ref<Array<Record<string, string>>>([]);
+
+/**
+ * Process and store cookies in the database
+ * Calculates expiration time and stores cookies with proper keys
+ */
+const processAndStoreCookies = async () => {
+  // Extract host from the provided URL or use a default
   const host = props.host ? new URL(props.host).host : '_';
-  for (const item of data.value) {
+
+  // Process each cookie item
+  for (const item of rawCookieData.value) {
     const expires = item.expires;
     let expiresIn = 0;
+
+    // Calculate expiration time in seconds
     if (expires) {
       const endTime = dayjs(expires).unix();
       const startTime = dayjs().unix();
@@ -31,47 +44,115 @@ const getCookies = async () => {
     } else if (item['Max-Age'] || item['max-age']) {
       expiresIn = Number(item['Max-Age'] || item['max-age']);
     }
+
+    // Store cookie in the database with calculated expiration
     await dexie.add({ id: `${host}-${item.name}`, data: { ...item } }, expiresIn);
   }
-  const instanced = dexie.instance();
-  const result = await instanced.table('cookies').where('id').startsWithIgnoreCase(host);
-  cookies.value = [];
+
+  // Retrieve cookies from database for the current host
+  const dbInstance = dexie.instance();
+  const result = await dbInstance.table('cookies').where('id').startsWithIgnoreCase(host);
+
+  // Populate processed cookies array
+  processedCookies.value = [];
   result.each(item => {
-    cookies.value.push(item.data);
+    processedCookies.value.push(item.data);
   });
 };
 
+/**
+ * Watch for changes in dataSource and process cookies
+ */
 watch(() => props.dataSource, () => {
-  const result:Array<Record<string, string>> = [];
+  // Array to hold parsed cookie objects
+  const parsedCookies:Array<Record<string, string>> = [];
+
+  // Process each cookie string in the dataSource
   (props.dataSource || []).forEach(cookie => {
-    const cookies = decodeURIComponent(cookie).split(';');
-    const row:Record<string, string | boolean> = {
+    // Decode and split cookie string into individual attributes
+    const cookieAttributes = decodeURIComponent(cookie).split(';');
+
+    // Initialize cookie object with default values
+    const cookieObject:Record<string, string> = {
       httpOnly: 'false',
       secure: 'false',
       path: '/',
       domain: props.host || '',
       expires: ''
-    };
-    cookies.forEach(str => {
-      const keyValue = str.trim().split('=');
+    } as Record<string, string>;
+
+    // Parse each attribute of the cookie
+    cookieAttributes.forEach(attribute => {
+      const keyValue = attribute.trim().split('=');
+
+      // Handle boolean attributes (e.g., HttpOnly, Secure)
       if (keyValue.length === 1) {
-        row[keyValue[0]] = keyValue[0];
+        cookieObject[keyValue[0]] = keyValue[0];
       }
-      if (keyValue.length > 1 && definedKey.includes(keyValue[0])) {
-        row[keyValue[0]] = keyValue[1];
+
+      // Handle known cookie attributes
+      if (keyValue.length > 1 && definedCookieKeys.includes(keyValue[0])) {
+        cookieObject[keyValue[0]] = keyValue[1];
       } else if (keyValue.length > 1) {
-        row.name = keyValue[0];
-        row.value = keyValue[1];
+        // Handle name-value pair
+        cookieObject.name = keyValue[0];
+        cookieObject.value = keyValue[1];
       }
     });
-    result.push(row);
+
+    // Add parsed cookie to the result array
+    parsedCookies.push(cookieObject);
   });
-  data.value = result;
-  getCookies();
+
+  // Update raw cookie data and process cookies
+  rawCookieData.value = parsedCookies;
+  processAndStoreCookies();
 }, {
   immediate: true
 });
 
+/**
+ * Column definitions for the cookie table
+ */
+export const CookieColumns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: 'Value',
+    dataIndex: 'value',
+    key: 'value'
+  },
+  {
+    title: 'Domain',
+    dataIndex: 'domain',
+    key: 'domain'
+  },
+  {
+    title: 'Path',
+    dataIndex: 'path',
+    key: 'path'
+  },
+  {
+    title: 'Expires / Max-Age',
+    dataIndex: 'expires',
+    key: 'expires'
+  },
+  {
+    title: 'HttpOnly',
+    dataIndex: 'httpOnly',
+    key: 'httpOnly'
+  },
+  {
+    title: 'Secure',
+    dataIndex: 'secure',
+    key: 'secure'
+  }
+];
+
+// Style configuration for empty table state
 const emptyTextStyle = {
   margin: '0 auto',
   height: '186px',
@@ -81,10 +162,12 @@ const emptyTextStyle = {
 <template>
   <Table
     rowKey="id"
-    :dataSource="cookies"
+    :dataSource="processedCookies"
     :columns="CookieColumns"
     :emptyTextStyle="emptyTextStyle"
-    size="small">
+    size="small"
+    :noDataSize="'small'"
+    noDataText="No cookies found">
     <template #bodyCell="{column, record}">
       <template v-if="column.key === 'expires'">
         {{ record.expires || record['Max-Age'] || record['max-age'] || '-' }}
