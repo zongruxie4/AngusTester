@@ -7,6 +7,7 @@ import { TESTER, appContext } from '@xcan-angus/infra';
 import { mock, services } from '@/api/tester';
 import type { Rule } from 'ant-design-vue/es/form';
 import { ServicesDetail } from '@/views/apis/services/services/types';
+import { ANGUS_MOCK_DOMAIN, ANGUS_MOCK_DOMAIN_REGEX, MockServiceEditForm } from '@/views/apis/mock/types';
 
 import ApiList from '@/views/apis/mock/add/ApiList.vue';
 
@@ -31,14 +32,7 @@ const isPrivate = ref(false);
 const formRef = ref();
 const serviceDetail = ref<ServicesDetail>();
 
-const formState = ref<{
-  name: string;
-  serviceDomainUrl:string;
-  servicePort:string;
-  nodeId: string | undefined;
-  serviceId: string;
-  apiIds: string[];
-}>({
+const formState = ref<MockServiceEditForm>({
   name: '',
   serviceDomainUrl: '',
   servicePort: '',
@@ -49,11 +43,10 @@ const formState = ref<{
 
 const loading = ref(false);
 
-const domainRegex = /^(?=.{1,253}$)([a-z0-9]|[a-z0-9][a-z0-9\\-]{0,61}[a-z0-9])\.angusmock\.cloud$/;
 const serviceDomainValidate = async (_rule: Rule, value: string) => {
   if (!value) {
     return Promise.reject(new Error(t('service.mockService.validation.domainRequired')));
-  } else if (!domainRegex.test(value + '.angusmock.cloud')) {
+  } else if (!ANGUS_MOCK_DOMAIN_REGEX.test(value + ANGUS_MOCK_DOMAIN)) {
     return Promise.reject(new Error(t('service.mockService.validation.domainInvalid')));
   } else {
     return Promise.resolve();
@@ -101,9 +94,9 @@ const treeSelectChange = (id: string) => {
 const handleSave = () => {
   formRef.value.validate().then(async () => {
     loading.value = true;
-    let addParams:any = {
+    let addParams: MockServiceEditForm = {
       name: formState.value.name,
-      serviceDomainUrl: !isPrivate.value ? formState.value.serviceDomainUrl + '.angusmock.cloud' : formState.value.serviceDomainUrl,
+      serviceDomainUrl: !isPrivate.value ? formState.value.serviceDomainUrl + ANGUS_MOCK_DOMAIN : formState.value.serviceDomainUrl,
       servicePort: formState.value.servicePort,
       nodeId: formState.value.nodeId,
       serviceId: formState.value.serviceId

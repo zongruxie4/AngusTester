@@ -8,6 +8,7 @@ import { TESTER, appContext } from '@xcan-angus/infra';
 import { formatBytes } from '@/utils/common';
 import { mock } from '@/api/tester';
 import { ApiMenuKey } from '@/views/apis/menu';
+import { ANGUS_MOCK_DOMAIN, MockServiceEditForm } from '@/views/apis/mock/types';
 
 import { useMockUI } from '../composables/useMockUI';
 import { useMockForm, useNodeData, useFileUpload, useTabs } from './composables';
@@ -123,9 +124,9 @@ const isSubmitting = ref(false);
 const handleSubmit = () => {
   formRef.value?.validate().then(async () => {
     // Prepare base parameters
-    let params: any = {
+    let params: MockServiceEditForm = {
       name: formState.value.name,
-      serviceDomain: !isPrivateEdition.value ? formState.value.serviceDomain + '.angusmock.cloud' : formState.value.serviceDomain,
+      serviceDomain: !isPrivateEdition.value ? formState.value.serviceDomain + ANGUS_MOCK_DOMAIN : formState.value.serviceDomain,
       servicePort: formState.value.servicePort,
       nodeId: formState.value.nodeId,
       projectId: projectId.value
@@ -247,7 +248,7 @@ onMounted(async () => {
                 v-model:value="formState.serviceDomain"
                 :placeholder="t('mock.addMockService.form.domainPlaceholder')">
                 <template v-if="!isPrivateEdition" #addonAfter>
-                  <span>.angusmock.cloud</span>
+                  <span>{{ ANGUS_MOCK_DOMAIN }}</span>
                 </template>
               </Input>
               <template v-if="!isPrivateEdition">

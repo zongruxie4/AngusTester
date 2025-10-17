@@ -1,7 +1,8 @@
 import { reactive } from 'vue';
 import { node } from '@/api/tester';
 import store from '@/store';
-import { NodeOption } from '../types';
+
+import {NodeOption} from "@/views/apis/mock/types";
 
 /**
  * Composable for managing node data and loading logic

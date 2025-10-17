@@ -1,5 +1,8 @@
-import { EnumMessage, SearchCriteria } from '@xcan-angus/infra';
-import { MockServiceSource, MockServicePermission } from '@/enums/enums';
+import { EnumMessage, HttpMethod, SearchCriteria } from '@xcan-angus/infra';
+import { MockServicePermission, MockServiceSource } from '@/enums/enums';
+
+export const ANGUS_MOCK_DOMAIN = '.angusmock.cloud';
+export const ANGUS_MOCK_DOMAIN_REGEX = new RegExp(`^(?=.{1,253}$)([a-z0-9]|[a-z0-9][a-z0-9\\-]{0,61}[a-z0-9])\\${ANGUS_MOCK_DOMAIN}$`);
 
 /**
  * Mock service object representing a mock service entity
@@ -97,6 +100,72 @@ export interface MockService {
 
   /** Current authorization values */
   currentAuthsValue: MockServicePermission[];
+}
+
+export interface MockServiceEditForm {
+  name: string;
+  serviceDomainUrl: string;
+  servicePort: string;
+  nodeId: string | undefined;
+  projectId?: string;
+  serviceId?: string;
+  apiIds?: string[];
+}
+
+/**
+ * Interface for mock service form data
+ * Represents the structure of data collected in the mock service creation form
+ */
+export interface MockServiceForm {
+  /** Service name - unique identifier for the mock service */
+  name: string;
+  /** Domain for the mock service */
+  serviceDomain: string;
+  /** Port number for the mock service */
+  servicePort: string;
+  /** Node ID where the service will be deployed */
+  nodeId: string | undefined;
+  projectId?: string;
+  /** Associated service ID (when linking to existing service) */
+  serviceId: string;
+  /** List of API IDs to import (when linking to existing service) */
+  apiIds: string[];
+  /** Import type for file-based creation */
+  importType: 'OpenAPI' | 'POSTMAN';
+  /** Uploaded file for import */
+  file: File | undefined;
+  /** Text content for direct input */
+  text: string;
+}
+
+/**
+ * Interface for node options in the service deployment selection
+ * Represents available nodes for mock service deployment
+ */
+export interface NodeOption {
+  /** Unique node identifier */
+  id: string;
+  /** Human-readable node name */
+  name: string;
+  /** Node IP address */
+  ip: string;
+}
+
+/**
+ * Interface for API items in the API selection list
+ * Represents individual APIs that can be imported
+ */
+export interface ApiInfo {
+  /** Unique API identifier */
+  id: string;
+  /** API name/summary */
+  name: string;
+  /** HTTP method */
+  method: HttpMethod;
+  /** API endpoint path */
+  endpoint: string;
+  /** API summary/description */
+  summary: string;
 }
 
 /**

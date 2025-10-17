@@ -1,6 +1,7 @@
 import { computed, ref, watch } from 'vue';
 import { apis } from '@/api/tester';
-import { ApiItem } from '../types';
+
+import {ApiInfo} from "@/views/apis/mock/types";
 
 /**
  * Composable for managing API list functionality
@@ -12,7 +13,7 @@ import { ApiItem } from '../types';
 export function useApiList (projectId: string, serviceId: string, checkedIds: string[]) {
   // Reactive state
   const name = ref('');
-  const dataList = ref<ApiItem[]>([]); // All APIs
+  const dataList = ref<ApiInfo[]>([]); // All APIs
   const checkedList = ref<string[]>([...checkedIds]); // Currently selected APIs
 
   // Search parameters

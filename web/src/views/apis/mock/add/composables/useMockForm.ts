@@ -1,7 +1,8 @@
 import { computed, ref } from 'vue';
 import type { RuleObject } from 'ant-design-vue/es/form';
 import { useI18n } from 'vue-i18n';
-import { MockServiceForm } from '../types';
+
+import { MockServiceForm, ANGUS_MOCK_DOMAIN, ANGUS_MOCK_DOMAIN_REGEX } from '@/views/apis/mock/types';
 
 /**
  * Composable for managing mock service form state and validation
@@ -25,9 +26,6 @@ export function useMockForm (isPrivate: boolean, activeTab: number) {
     text: ''
   });
 
-  // Domain validation regex
-  const domainRegex = /^(?=.{1,253}$)([a-z0-9]|[a-z0-9][a-z0-9-]{0,61}[a-z0-9])\.angusmock\.cloud$/;
-
   /**
    * Validate service domain
    * @param _rule - Validation rule
@@ -37,7 +35,7 @@ export function useMockForm (isPrivate: boolean, activeTab: number) {
   const validateServiceDomain = async (_rule: RuleObject, value: string): Promise<void> => {
     if (!value) {
       return Promise.reject(new Error(t('mock.addMockService.validation.enterDomain')));
-    } else if (!domainRegex.test(value + '.angusmock.cloud')) {
+    } else if (!ANGUS_MOCK_DOMAIN_REGEX.test(value + ANGUS_MOCK_DOMAIN)) {
       return Promise.reject(new Error(t('mock.addMockService.validation.enterCorrectDomain')));
     } else {
       return Promise.resolve();
