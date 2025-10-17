@@ -7,10 +7,10 @@ import { ServicesPermission, ApiStatus } from '@/enums/enums';
 
 import { API_STATUS_COLOR_CONFIG } from '@/utils/apis';
 import { bgColor } from '@/utils/common';
-import { ApisListInfo } from '../types';
 import { ButtonGroup, CollapseButtonGroup } from './types';
 
 import VirtualList from './BaseVirtualList.vue';
+import {ApisListInfo} from "@/views/apis/services/protocol/types";
 
 interface Props {
   dataSource: Array<any>; // Mixed array of ApisListInfo and group headers

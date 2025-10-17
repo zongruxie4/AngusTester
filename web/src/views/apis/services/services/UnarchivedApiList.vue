@@ -6,7 +6,8 @@ import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { apis } from '@/api/tester';
 import { CombinedTargetType } from '@/enums/enums';
-import { ApisUnarchivedListInfo } from '@/views/apis/services/apis/types';
+
+import {ApisUnarchivedListInfo} from "@/views/apis/services/protocol/types";
 
 // props and emits
 interface Props {
