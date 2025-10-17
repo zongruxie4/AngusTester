@@ -25,13 +25,13 @@ const OpenApiDocument = defineAsyncComponent(() => import('@/views/apis/services
 
 // Service drawer components (displayed when service is selected)
 const ServiceInfo = defineAsyncComponent(() => import('@/views/apis/services/services/slider/Info.vue'));
-const OASInfo = defineAsyncComponent(() => import('@/views/apis/services/services/slider/OASInfo.vue'));
+const OASInfo = defineAsyncComponent(() => import('@/views/apis/services/services/slider/oas/OASInfo.vue'));
 const SyncConfig = defineAsyncComponent(() => import('@/views/apis/services/services/slider/sync/index.vue'));
 const SecurityConfig = defineAsyncComponent(() => import('@/views/apis/services/services/slider/SecurityConfig.vue'));
 const ServerConfig = defineAsyncComponent(() => import('@/views/apis/services/services/slider/server/index.vue'));
 const RequestProxy = defineAsyncComponent(() => import('@/views/apis/services/components/RequestProxy.vue'));
-const OASTag = defineAsyncComponent(() => import('@/views/apis/services/services/slider/OASTag.vue'));
-const OASComponent = defineAsyncComponent(() => import('@/views/apis/services/services/slider/oas/index.vue'));
+const OASTag = defineAsyncComponent(() => import('@/views/apis/services/services/slider/oas/OASTag.vue'));
+const OASComponent = defineAsyncComponent(() => import('@/views/apis/services/services/slider/oas/OASComponent.vue'));
 
 // API drawer components (displayed when API is selected)
 const ApiInfo = defineAsyncComponent(() => import('@/views/apis/services/apis/slider/Info.vue'));

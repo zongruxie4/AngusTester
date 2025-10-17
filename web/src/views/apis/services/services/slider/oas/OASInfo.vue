@@ -5,7 +5,7 @@ import { TypographyParagraph } from 'ant-design-vue';
 import { AsyncComponent, Grid, Icon, Input } from '@xcan-angus/vue-ui';
 import { services } from '@/api/tester';
 
-import { OASInfoSchema } from '@/views/apis/services/services/slider/PropsType';
+import { ServiceSchemaDetail } from '@/views/apis/services/services/types';
 
 const DescriptionModal = defineAsyncComponent(() => import('@/views/apis/services/components/MarkdownDescModal.vue'));
 
@@ -175,6 +175,7 @@ const cancelEditDescription = () => {
   editDescriptionFlag.value = false;
   description.value = schemaInfo.value?.info.description;
 };
+
 const saveDescription = async (value) => {
   if (!editDescriptionFlag.value) {
     return;
@@ -203,14 +204,14 @@ const toSave = async () => {
   return await services.putSchemaInfo(props.id, params);
 };
 
-const schemaInfo = ref<OASInfoSchema>();
+const schemaInfo = ref<ServiceSchemaDetail>();
 const loadInfo = async () => {
   const [error, res] = await services.loadSchema(props.id);
   if (error) {
     return;
   }
 
-  const data: OASInfoSchema = res.data;
+  const data: ServiceSchemaDetail = res.data;
   schemaInfo.value = JSON.parse(JSON.stringify(data));
   title.value = data.info.title;
   summary.value = data.info.summary;

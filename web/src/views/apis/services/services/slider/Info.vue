@@ -3,11 +3,10 @@ import { computed, defineAsyncComponent, inject, nextTick, ref, Ref, watch, onMo
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Grid, Hints, Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, appContext, enumUtils } from '@xcan-angus/infra';
+import { TESTER, appContext, enumOptionUtils } from '@xcan-angus/infra';
 import { ApiStatus, ServicesPermission } from '@/enums/enums';
-
 import { services } from '@/api/tester';
-import { IInfomation, Status } from './PropsType';
+import { ServicesInfo } from '@/views/apis/services/services/types';
 
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Security = defineAsyncComponent(() => import('@/views/apis/services/components/Security.vue'));
@@ -61,7 +60,7 @@ const nameChange = () => {
   nameError.value = false;
 };
 
-const status = ref<Status>();
+const status = ref<ApiStatus>();
 const statusName = ref<string>();
 const editStatusFlag = ref(false);
 const auth = ref(false);
@@ -84,7 +83,7 @@ const cancelEditStatus = () => {
   editStatusFlag.value = false;
 };
 
-const statusChange = (_value:string, option:{value:Status;message:string}) => {
+const statusChange = (_value:string, option:{value:ApiStatus;message:string}) => {
   statusName.value = option.message;
 };
 
@@ -93,13 +92,13 @@ const editAuth = () => {
   visible.value = true;
 };
 
-const serviceInfo = ref<IInfomation>();
+const serviceInfo = ref<ServicesInfo>();
 const loadInfo = async () => {
   const [error, res] = await services.loadInfo(props.id);
   if (error) {
     return;
   }
-  const data = res.data as IInfomation;
+  const data = res.data as ServicesInfo;
   serviceInfo.value = data;
   status.value = data.status?.value;
   statusName.value = data.status?.message;
@@ -129,7 +128,7 @@ const authFlagChange = ({ auth }:{auth:boolean}) => {
 
 const apiStatusOpt = ref<{value: string; label: string}[]>([]);
 const loadApiStatusOpt = () => {
-  apiStatusOpt.value = enumUtils.enumToMessages(ApiStatus).map(i => ({ value: i.value, label: i.message }));
+  apiStatusOpt.value = enumOptionUtils.loadEnumAsOptions(ApiStatus);
 };
 
 onMounted(() => {

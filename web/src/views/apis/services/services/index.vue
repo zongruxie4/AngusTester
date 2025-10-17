@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { ServicesPermission } from '@/enums/enums';
 import { services, apis } from '@/api/tester';
 
-import { FoldActionKey, foldGlobalActions, globalActions, menuActions, ModalsConfig, ServiceProject } from './types';
+import { FoldActionKey, foldGlobalActions, globalActions, menuActions, ModalsConfig, ServicesInfo } from './types';
 
 // Service left sliders
 const UnarchivedApiList = defineAsyncComponent(() => import('@/views/apis/services/services/UnarchivedApiList.vue'));
@@ -43,8 +43,9 @@ const isAdmin = computed(() => appContext.isAdmin());
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const appInfo = inject('appInfo') as Ref<Record<string, any>>;
-const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
+// TODO proTypeShowMap 这个逻辑看着不对
+const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -217,7 +218,7 @@ const allAuths = ['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', '
 const auths = ref<string[]>(['ADD', 'VIEW', 'MODIFY', 'DELETE', 'DEBUG', 'TEST', 'GRANT', 'SHARE', 'RELEASE', 'EXPORT']);
 const parentAuths = ref<string[]>([]);
 
-const contextmenuClick = (action: { key: string; }, item: ServiceProject) => {
+const contextmenuClick = (action: { key: string; }, item: ServicesInfo) => {
   switch (action.key) {
     case 'sync-config':
       modalsConfig.syncModalVisible = true;

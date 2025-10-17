@@ -2,13 +2,14 @@
 import { computed, onMounted, ref } from 'vue';
 import { IconRequired, Input, Modal, Select, SelectInput } from '@xcan-angus/vue-ui';
 import { enumUtils } from '@xcan-angus/infra';
-import { ServicesCompType } from '@/enums/enums';
 import { Button, Divider } from 'ant-design-vue';
-import { CompObj, ComponentsType, ExampleObject, HeaderObject } from './types';
 import YAML from 'yaml';
 import { useI18n } from 'vue-i18n';
 import { services } from '@/api/tester';
 import { API_EXTENSION_KEY } from '@/utils/apis';
+import { OpenAPIV3 } from '@/types/openapi-types';
+import { ServicesCompType } from '@/enums/enums';
+import { ServicesCompDetail } from '@/views/apis/services/services/types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
@@ -17,7 +18,7 @@ interface Props {
   visible: boolean;
   id: string;
   modalType:'add' | 'edit' | 'view';
-  component?: Partial<CompObj>
+  component?: Partial<ServicesCompDetail>
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -38,7 +39,7 @@ const handleCancel = () => {
 };
 
 // Currently selected component collection type
-const compType = ref<ComponentsType>('schemas');
+const compType = ref<ServicesCompType>(ServicesCompType.schemas);
 
 // Select options for component collections
 const compTypesEnum = ref<{label:string, value:string, disabled:boolean}[]>([]);
@@ -47,7 +48,13 @@ const getCompTypesEnum = () => {
   compTypesEnum.value = data.map(item => ({
     label: item.message,
     value: item.value,
-    disabled: ['securitySchemes', 'links', 'callbacks', 'extensions', 'pathItems'].includes(item.value)
+    disabled: [
+      ServicesCompType.securitySchemes,
+      ServicesCompType.links,
+      ServicesCompType.callbacks,
+      ServicesCompType.extensions,
+      ServicesCompType.pathItems
+    ].includes(item.value)
   }));
 };
 
@@ -69,20 +76,20 @@ const title = computed(() => {
 const compName = ref('');
 
 // Example object state for "examples" type
-const examples = ref<ExampleObject>({
+const examples = ref<OpenAPIV3.ExampleObject>({
   value: '',
   summary: '',
   description: ''
 });
 
 // Header object state for "headers" type
-const headers = ref<HeaderObject>({
+const headers = ref<OpenAPIV3.HeaderObject>({
+  description: '',
   schema: {
     type: 'string',
     format: undefined,
     [API_EXTENSION_KEY.valueKey]: ''
-  },
-  description: ''
+  }
 });
 
 // Validate and dispatch save based on current component type
@@ -92,7 +99,7 @@ const handleSave = () => {
     return;
   }
   switch (compType.value) {
-    case 'examples':
+    case ServicesCompType.examples:
       {
         if (!examples.value.value) {
           exampleValueErr.value = true;
@@ -116,11 +123,10 @@ const handleSave = () => {
         if (!examples.value.summary) {
           delete params.summary;
         }
-
         saveHeaderTypeData(params);
       }
       break;
-    case 'headers':
+    case ServicesCompType.headers:
       {
         const params: any = {
           ...headers.value.schema,
@@ -146,7 +152,6 @@ const saveHeaderTypeData = async (params):Promise<void> => {
   if (loading.value) {
     return;
   }
-
   loading.value = true;
   const [error] = await services.addComponent(props.id, compType.value, compName.value, params);
   loading.value = false;
@@ -161,7 +166,7 @@ const saveHeaderTypeData = async (params):Promise<void> => {
 const setDefaultData = () => {
   const model = props.component?.model;
   switch (props.component?.type?.value) {
-    case 'headers': {
+    case ServicesCompType.headers: {
       headers.value.schema.type = model?.schema?.type;
       if (!['object', 'array'].includes(model.schema?.type)) {
         headers.value.schema.format = model?.schema?.format;
@@ -174,7 +179,7 @@ const setDefaultData = () => {
       }
       break;
     }
-    case 'examples': {
+    case ServicesCompType.examples: {
       examples.value.value = model?.value;
       if (model.description) {
         examples.value.description = model?.description;
@@ -214,7 +219,7 @@ const enumKeyMap = {
 // When editing quoted refs, allow temporary local change and recovery
 const openEdit = ref(false);
 
-const component = ref<CompObj>();
+const component = ref<ServicesCompDetail>();
 const cancelRef = () => {
   component.value && (component.value.quoteName = '');
   openEdit.value = true;
@@ -245,7 +250,7 @@ onMounted(() => {
   if (props.component) {
     component.value = JSON.parse(JSON.stringify(props.component));
     compName.value = props.component.key || '';
-    compType.value = (props.component?.type?.value || 'schemas') as ComponentsType;
+    compType.value = (props.component?.type?.value || ServicesCompType.schemas) as ServicesCompType;
   }
 });
 </script>
@@ -294,7 +299,7 @@ onMounted(() => {
             </template>
           </Input>
         </template>
-        <template v-if="props.modalType === 'view' && !['headers','examples'].includes(compType)">
+        <template v-if="props.modalType === 'view' && ![ServicesCompType.headers,ServicesCompType.examples].includes(compType)">
           <div
             class="whitespace-pre border border-border-divider p-2 rounded mt-5 overflow-y-auto text-text-content"
             style="max-height: 500px;scrollbar-gutter: stable;">
@@ -302,7 +307,7 @@ onMounted(() => {
           </div>
         </template>
         <template v-else>
-          <template v-if="compType === 'examples'">
+          <template v-if="compType === ServicesCompType.examples">
             <div class="mt-2 pl-1.75">{{ t('service.oas.addModal.summaryLabel') }}</div>
             <Input
               v-model:value="examples.summary"
@@ -334,7 +339,7 @@ onMounted(() => {
               class="w-full"
               @change="exampleValueChange" />
           </template>
-          <template v-if="compType === 'headers'">
+          <template v-if="compType === ServicesCompType.headers">
             <div class="mt-2"><IconRequired />{{ t('service.oas.addModal.schemaTypeLabel') }}</div>
             <SelectEnum
               v-model:value="headers.schema.type"

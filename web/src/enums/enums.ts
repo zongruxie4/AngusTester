@@ -405,17 +405,17 @@ export enum BurnDownResourceType {
 
 // Service Components Enums
 export enum ServicesCompType {
-  SCHEMAS = 'SCHEMAS',
-  RESPONSES = 'RESPONSES',
-  PARAMETERS = 'PARAMETERS',
-  EXAMPLES = 'EXAMPLES',
-  REQUEST_BODIES = 'REQUEST_BODIES',
-  HEADERS = 'HEADERS',
-  SECURITY_SCHEMES = 'SECURITY_SCHEMES',
-  LINKS = 'LINKS',
-  CALLBACKS = 'CALLBACKS',
-  EXTENSIONS = 'EXTENSIONS',
-  PATH_ITEMS = 'PATH_ITEMS'
+  schemas = 'schemas',
+  responses = 'responses',
+  parameters = 'parameters',
+  examples = 'examples',
+  requestBodies = 'requestBodies',
+  headers = 'headers',
+  securitySchemes = 'securitySchemes',
+  links = 'links',
+  callbacks = 'callbacks',
+  extensions = 'extensions',
+  pathItems = 'pathItems'
 }
 
 // Binary Content Enums

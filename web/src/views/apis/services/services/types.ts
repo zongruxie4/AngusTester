@@ -1,26 +1,79 @@
-import { i18n } from '@xcan-angus/infra';
-import {ref} from "vue";
+import { i18n, EnumMessage } from '@xcan-angus/infra';
+import { ref } from 'vue';
+import { ApiSource, ApiStatus, ApiImportSource, ServicesCompType } from '@/enums/enums';
+import { OpenAPIV3 } from '@/types/openapi-types';
 
 const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
 
-export type SP = 'S' | 'P';
+export type ServicesInfo = {
+  id: string;
+  projectId: string;
+  name: string;
+  auth: boolean;
+  status: EnumMessage<ApiStatus>;
+  hasApis: boolean;
+  mockServiceId: string;
+  apisNum: number;
+  createdBy: string;
+  createdDate: string;
+}
 
-export type TargetTypeValue = 'SERVICE'|'PROJECT'
+export type ServiceSchemaDetail = {
+  serviceId: number;
+  openapi: string;
+  info: OpenAPIV3.InfoObject;
+  externalDocs: OpenAPIV3.ExternalDocumentationObject;
+  servers: OpenAPIV3.ServerObject[];
+  security: OpenAPIV3.SecurityRequirementObject[];
+  tags: OpenAPIV3.TagObject[];
+  extensions: Record<string, any>;
+  specVersion: string;
+  lastModifiedBy: number;
+  lastModifiedDate: string;
+}
 
-export interface ServiceProject {
-  name: string,
-  id: string,
-  children: ServiceProject[],
-  editable: boolean,
-  auth:boolean;
-  spread?: boolean,
-  active?: boolean,
-  pid?: string;
-  level?: number;
-  targetType: {
-    value: TargetTypeValue;
-    message?: string;
-  }
+export type ServicesDetail = {
+  id: string;
+  projectId: string;
+  source: EnumMessage<ApiSource>;
+  importSource: EnumMessage<ApiImportSource>;
+  name: string;
+  auth: boolean;
+  status: EnumMessage<ApiStatus>;
+  hasApis: boolean;
+  mockServiceId: string;
+  apisNum: number;
+  apisCaseNum: number;
+  schema: ServiceSchemaDetail;
+  createdBy: string;
+  createdByName: string;
+  createdDate: string;
+  lastModifiedBy: string;
+  lastModifiedByName: string;
+  lastModifiedDate: string;
+}
+
+export type ServicesCompDetail = {
+  id: string;
+  serviceId: string;
+  type: EnumMessage<ServicesCompType>;
+  key: string;
+  ref: string;
+  model: string;
+  description: string;
+  resolvedRefModels: Record<string, string>;
+  lastModifiedBy: string;
+  lastModifiedByName: string;
+  lastModifiedDate: string;
+
+  // Temp fields in web
+  isQuote: boolean; // whether the component is a reference to another
+  ellipsis: boolean; // UI hint flags
+  showEllipsis: boolean; // UI hint flags
+  isEdit: boolean; // whether current item is in edit state (UI)
+  copyLoading: boolean; // UI: copy action loading
+  delLoading: boolean; // UI: delete action loading
+  quoteName?: string; // last referenced name chain
 }
 
 export interface ModalsConfig {
@@ -36,8 +89,7 @@ export interface ModalsConfig {
   activeName: string,
   statusVisible: boolean;
   auth: boolean;
-  type?: 'SERVICE';
-  selectedNode?:ServiceProject;
+  selectedNode?:ServicesInfo;
   delTestScriptVisible: boolean;
   enabledApiTestVisible: boolean;
 }

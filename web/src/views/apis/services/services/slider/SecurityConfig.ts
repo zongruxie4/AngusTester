@@ -23,6 +23,8 @@ export type ModelObj = {
   value: string;
   in: ApiKeyIN;
   apiKeyList: ApiKeyExtensionFields[];
+  'x-xc-oauth2-clientId': string;
+  'x-xc-oauth2-clientSecret': string;
   'x-xc-oauth2-newToken': boolean;
   'x-xc-oauth2-authFlow': FlowKey;
   'x-xc-oauth2-token':string;
@@ -33,8 +35,6 @@ export type ModelObj = {
   tokenUrl: string;
   refreshUrl: string;
   authorizationUrl: string;
-  'x-xc-oauth2-clientId': string;
-  'x-xc-oauth2-clientSecret': string;
   scopes: string[];
   usernameErr?: boolean;
   passwordErr?: boolean;

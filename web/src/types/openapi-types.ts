@@ -1,3 +1,26 @@
+/**
+ * API extension keys for XCan custom properties.
+ */
+export const API_EXTENSION_KEYS = {
+  prefix: 'x-xc-', // Prefix
+  idKey: 'x-xc-id', // Unique identifier
+  valueKey: 'x-xc-value', // Value
+  enabledKey: 'x-xc-enabled', // Enable/disable
+  exportVariableKey: 'x-xc-exportVariable', // Whether to set as variable
+  requestSettingKey: 'x-xc-requestSetting', // Request settings like timeout, object
+  serverNameKey: 'x-xc-serverName', // Server URL name
+  serverSourceKey: 'x-xc-serverSource', // Server source
+  securityApiKeyPrefix: 'x-xc-apiKey', // API key type extension
+  securitySubTypeKey: 'sx-xc-securitySubType', // Security scheme subtype
+  fileNameKey: 'x-xc-fileName', // File name
+  newTokenKey: 'x-xc-oauth2-newToken', // Whether to use generated auth token
+  oAuth2Key: 'x-xc-oauth2-authFlow', // Token generation authorization type
+  oAuth2Token: 'x-xc-oauth2-token', // Existing token
+  formContentTypeKey: 'x-xc-contentType',
+  basicAuthKey: 'x-xc-basicAuth',
+  wsMessageKey: 'x-wsMessage'
+};
+
 /* tslint:disable:no-namespace no-empty-interface */
 export namespace OpenAPI {
   export type Document<T extends {} = {}> =
@@ -389,6 +412,7 @@ export namespace OpenAPIV3 {
     examples?: { [media: string]: ReferenceObject | ExampleObject };
     content?: { [media: string]: MediaTypeObject };
     extensions: Record<string, any>;
+    [API_EXTENSION_KEYS.valueKey]: any; // vendor extension stored under dynamic key
   }
   export type NonArraySchemaObjectType =
     | 'boolean'

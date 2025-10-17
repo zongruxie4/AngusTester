@@ -4,11 +4,10 @@ import { Arrow, AsyncComponent, Hints, Icon, IconRefresh, Input, Spin } from '@x
 import { Button } from 'ant-design-vue';
 import { services } from '@/api/tester';
 import { enumUtils, duration } from '@xcan-angus/infra';
-import { ServicesCompType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-
-import { CompObj, ComponentsType } from './types';
+import { ServicesCompType } from '@/enums/enums';
+import { ServicesCompDetail } from '@/views/apis/services/services/types';
 
 const AddModal = defineAsyncComponent(() => import('./AddComponentModal.vue'));
 
@@ -32,7 +31,8 @@ const addTabPane = inject('addTabPane', (value: {[key: string]: any}) => ({ valu
 
 // const updateTabPane = inject('updateTabPane', (value: {[key: string]: any}) => ({ value }));
 const loading = ref(false);
-const compList = ref<CompObj[]>([]);
+const compList = ref<ServicesCompDetail[]>([]);
+
 // Fetch components list for current service/project
 const getProjectCompList = async () => {
   if (loading.value) {
@@ -65,10 +65,10 @@ const addComponent = () => {
 };
 
 // Grouped components by collection type for rendering
-const compListObj = ref<Record<ComponentsType, {
+const compListObj = ref<Record<ServicesCompType, {
   name:string;
   isExpand:boolean;
-  list:CompObj[]
+  list:ServicesCompDetail[]
 }>>(
   {
     schemas: {
@@ -105,10 +105,10 @@ const compListObj = ref<Record<ComponentsType, {
 );
 
 // Cached copy used to restore view after search cleared
-const oldCompListObj = ref<Record<ComponentsType, {
+const oldCompListObj = ref<Record<ServicesCompType, {
   name:string;
   isExpand:boolean;
-  list:CompObj[]
+  list:ServicesCompDetail[]
 }>>(
   {
     schemas: {
@@ -148,7 +148,7 @@ const oldCompListObj = ref<Record<ComponentsType, {
 const getCompTypesEnum = () => {
   const data = enumUtils.enumToMessages(ServicesCompType);
   for (let i = 0; i < data.length; i++) {
-    if (data[i].value === 'securitySchemes') {
+    if (data[i].value === ServicesCompType.securitySchemes) {
       continue;
     }
     compListObj.value[data[i].value] = {
@@ -184,19 +184,19 @@ const getData = async () => {
 const modalType = ref<'add' | 'edit' | 'view'>('view');
 
 // Current item under view/edit; use Partial to allow progressive enrichment
-const currEditData = ref<Partial<CompObj>>();
+const currEditData = ref<Partial<ServicesCompDetail>>();
 const childrenRef = ref<string | undefined>('');
 // View component details in modal (read-only by default)
-const handleView = async (compObj:CompObj) => {
-  currEditData.value = compObj;
+const handleView = async (ServicesCompDetail:ServicesCompDetail) => {
+  currEditData.value = ServicesCompDetail;
   modalType.value = 'view';
-  await getAuthConfigInfo(compObj);
+  await getAuthConfigInfo(ServicesCompDetail);
   visible.value = true;
 };
 
 // Load referenced model chain for a component
-const getAuthConfigInfo = async (compObj:CompObj) => {
-  const [error, { data }] = await services.getComponentRef(props.id, compObj.ref);
+const getAuthConfigInfo = async (ServicesCompDetail:ServicesCompDetail) => {
+  const [error, { data }] = await services.getComponentRef(props.id, ServicesCompDetail.ref);
   if (error) {
     return;
   }
@@ -226,17 +226,17 @@ const getAuthConfigInfo = async (compObj:CompObj) => {
 const handleSearch = debounce(duration.search, (event:ChangeEvent) => {
   const value = event.target.value;
   if (value) {
-    searchCompObj(value);
+    searchServicesCompDetail(value);
     return;
   }
 
   compListObj.value = JSON.parse(JSON.stringify(oldCompListObj.value));
 });
 
-function searchCompObj (keyword: string) {
+function searchServicesCompDetail (keyword: string) {
   for (const comp in compListObj.value) {
     if (compListObj.value[comp].list?.length) {
-      const result:CompObj[] = [];
+      const result:ServicesCompDetail[] = [];
       const list = compListObj.value[comp].list;
       for (let i = 0; i < list.length; i++) {
         if (list[i].key.includes(keyword) || (list[i]?.description && list[i].description.includes(keyword))) {
@@ -297,7 +297,9 @@ onMounted(() => {
         v-for="(value,key) in compListObj"
         :key="key"
         class="mt-2">
-        <div class="h-7 leading-7 flex items-center justify-between bg-bg-table-head px-2 rounded-sm cursor-pointer" @click="handleExpand(value)">
+        <div
+          class="h-7 leading-7 flex items-center justify-between bg-bg-table-head px-2 rounded-sm cursor-pointer"
+          @click="handleExpand(value)">
           <span>{{ value.name }}&nbsp;({{ value.list.length }})</span>
           <Arrow
             :open="value.isExpand"
