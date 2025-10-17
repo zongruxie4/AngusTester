@@ -1,4 +1,5 @@
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import { ProxyType } from '@/views/config/proxy/types';
 
 /**
  * WebSocket connection configuration
@@ -124,7 +125,7 @@ export class AngusWebSocketProxy {
       if (proxyUrl) {
         this.ws = undefined;
         this.connect(proxyUrl, this.handlers);
-      } else if (proxyName === 'NO_PROXY') {
+      } else if (proxyName === ProxyType.NO_PROXY) {
         this.ws = undefined;
       } else {
         this.ws = { readyState: WS_READY_STATES.DISCONNECTED } as any;
