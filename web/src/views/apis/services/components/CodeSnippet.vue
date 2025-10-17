@@ -1,11 +1,11 @@
 <script setup lang="ts">
+// External dependencies
 import Oas from 'oas';
 import qs from 'qs';
 import { inject, ref, watch } from 'vue';
 import { notification, FormatHighlight } from '@xcan-angus/vue-ui';
 import XML from 'xml';
 import { Button, RadioGroup } from 'ant-design-vue';
-// import { supportedLanguages, oasToSnippet } from '@readme/oas-to-snippet';
 import oasToSnippet from '@readme/oas-to-snippet';
 import { getSupportedLanguages } from '@readme/oas-to-snippet/languages';
 import { toClipboard } from '@xcan-angus/infra';
@@ -13,9 +13,13 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import JSONToSchema from 'json-to-schema';
 import { useI18n } from 'vue-i18n';
 
+// Internal dependencies
 import ApiUtils from '@/utils/apis';
-
 import { apis } from '@/api/tester';
+import { CONTENT_TYPE, RADIO_TYPE, HTTP_HEADERS } from '@/utils/constant';
+import { deepDelAttrFromObj } from '@/views/apis/services/protocol/http/utils';
+
+// Language icons
 import cIcon from '@/views/apis/services/components/image/c.png';
 import cSharpIcon from '@/views/apis/services/components/image/csharp.png';
 import cPlus from '@/views/apis/services/components/image/c++.png';
@@ -27,10 +31,13 @@ import phpIcon from '@/views/apis/services/components/image/php.png';
 import pythonIcon from '@/views/apis/services/components/image/python.png';
 import rubyIcon from '@/views/apis/services/components/image/ruby.png';
 import shellIcon from '@/views/apis/services/components/image/shell.png';
-import { deepDelAttrFromObj } from '@/views/apis/services/protocol/http/utils';
 
+// Constants and configuration
 const { API_EXTENSION_KEY } = ApiUtils;
+const supportedLanguages = getSupportedLanguages();
+const supportedLanguageList = ['shell', 'php', 'javascript', 'node', 'java', 'cplusplus', 'csharp', 'c', 'python', 'ruby', 'go'];
 
+// Props and reactive data
 interface Props {
   id: string;
   from?: 'list'|undefined
@@ -39,190 +46,215 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   id: ''
 });
+
 const { t } = useI18n();
-
-const supportedLanguages = getSupportedLanguages();
-
 const getParameter = inject('getParameter', () => ({} as Record<string, any>));
+
+// Reactive state
 const apiInfo = ref<{[key:string]: any}>({});
-const languageStr = ['shell', 'php', 'javascript', 'node', 'java', 'cplusplus', 'csharp', 'c', 'python', 'ruby', 'go'];
-const { valueKey, serverSourceKey, fileNameKey, securityApiKeyPrefix, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
+const selectedLanguage = ref<string[]>([]);
+const languageFunctions = ref<{value: string, label: string}[]>([]);
+const codeContent = ref<string>('');
 const codeOptions = ref<any[]>([]);
-const getCodeOptions = () => {
-  Object.keys(supportedLanguages).forEach(l => {
-    Object.keys(supportedLanguages[l].httpsnippet.targets).forEach(target => {
+
+// API extension keys
+const { valueKey, serverSourceKey, fileNameKey, oAuth2Key, oAuth2Token, newTokenKey } = API_EXTENSION_KEY;
+
+/**
+ * Initialize code options for all supported languages
+ */
+const initializeCodeOptions = () => {
+  Object.keys(supportedLanguages).forEach(languageKey => {
+    Object.keys(supportedLanguages[languageKey].httpsnippet.targets).forEach(target => {
       codeOptions.value.push({
-        l: l,
-        label: `${l}_${target}`,
+        l: languageKey,
+        label: `${languageKey}_${target}`,
         target: target,
-        highlight: supportedLanguages[l].highlight,
-        ...supportedLanguages[l].httpsnippet.targets[target]
+        highlight: supportedLanguages[languageKey].highlight,
+        ...supportedLanguages[languageKey].httpsnippet.targets[target]
       });
     });
   });
 };
 
-const getLanguageLabel = (key) => {
-  if (key === 'cplusplus') {
-    return 'c++';
-  }
-  if (key === 'csharp') {
-    return 'c#';
-  }
-  return key;
+/**
+ * Get display label for programming language
+ */
+const getLanguageDisplayLabel = (languageKey: string): string => {
+  const languageMap: Record<string, string> = {
+    cplusplus: 'c++',
+    csharp: 'c#'
+  };
+  return languageMap[languageKey] || languageKey;
 };
 
-const getIconSrc = (key) => {
-  if (key === 'c') {
-    return cIcon;
-  }
-  if (key === 'cplusplus') {
-    return cPlus;
-  }
-
-  if (key === 'csharp') {
-    return cSharpIcon;
-  }
-  if (key === 'go') {
-    return goIcon;
-  }
-  if (key === 'java') {
-    return javaIcon;
-  }
-  if (key === 'javascript') {
-    return jsIcon;
-  }
-  if (key === 'node') {
-    return nodeIcon;
-  }
-  if (key === 'php') {
-    return phpIcon;
-  }
-  if (key === 'python') {
-    return pythonIcon;
-  }
-  if (key === 'ruby') {
-    return rubyIcon;
-  }
-  if (key === 'shell') {
-    return shellIcon;
-  }
+/**
+ * Get icon source for programming language
+ */
+const getLanguageIcon = (languageKey: string): string => {
+  const iconMap: Record<string, string> = {
+    c: cIcon,
+    cplusplus: cPlus,
+    csharp: cSharpIcon,
+    go: goIcon,
+    java: javaIcon,
+    javascript: jsIcon,
+    node: nodeIcon,
+    php: phpIcon,
+    python: pythonIcon,
+    ruby: rubyIcon,
+    shell: shellIcon
+  };
+  return iconMap[languageKey] || '';
 };
 
-const language = ref<string[]>([]);
-const langFuncs = ref<{value: string, label: string}[]>([]);
-
-const codeContent = ref();
-
-const getCodeContent = async () => {
-  const parameter = await (apiInfo.value.id ? getSelectApiParameter() : getParameter());
+/**
+ * Process request body content based on content type
+ */
+const processRequestBody = (parameter: any, contentType: string) => {
   if (!parameter?.requestBody?.content) {
     delete parameter.requestBody;
+    return;
   }
+
   if (parameter?.requestBody?.$ref) {
     delete parameter.requestBody;
+    return;
   }
-  const contentTypeParameter = (parameter.parameters || []).find(i => i.in === 'header' && i.name === 'Content-Type');
-  if (contentTypeParameter) {
-    const contentType = contentTypeParameter[valueKey];
-    parameter.contentType = contentType;
-    if (!contentType) {
-      delete parameter.requestBody;
-    } else {
-      Object.keys(parameter.requestBody?.content || {}).forEach(key => {
-        if (key !== contentType) {
-          delete parameter.requestBody.content[key];
-        }
-      });
-    }
+
+  // Filter content by content type
+  if (contentType) {
+    Object.keys(parameter.requestBody?.content || {}).forEach(key => {
+      if (key !== contentType) {
+        delete parameter.requestBody.content[key];
+      }
+    });
   } else {
     delete parameter.requestBody;
   }
+
   if (parameter.requestBody) {
     parameter.requestBody = deepDelAttrFromObj(parameter.requestBody, ['$ref']);
   }
+};
 
-  const query = {};
-  const path = {};
-  const header = {};
-  (parameter?.parameters || []).forEach(i => {
-    if (i.in === 'query') {
-      if (!i.name && !i[valueKey]) {
-        return;
-      }
-      query[i.name] = i[valueKey];
-    }
-    if (i.in === 'path') {
-      path[i.name] = i[valueKey];
-    }
-    if (i.in === 'header') {
-      header[i.name] = i[valueKey];
+/**
+ * Extract parameters by type (query, path, header)
+ */
+const extractParameters = (parameters: any[]) => {
+  const queryParams = {};
+  const pathParams = {};
+  const headerParams = {};
+
+  (parameters || []).forEach(param => {
+    if (param.in === 'query' && (param.name || param[valueKey])) {
+      queryParams[param.name] = param[valueKey];
+    } else if (param.in === 'path') {
+      pathParams[param.name] = param[valueKey];
+    } else if (param.in === 'header') {
+      headerParams[param.name] = param[valueKey];
     }
   });
-  const server = parameter.currentServer;
-  const contentType = (parameter.parameters || []).find(i => i.in === 'header' && i.name === 'Content-Type')?.[valueKey];
-  const formParam = {};
-  if (contentType === 'application/x-www-form-urlencoded') {
-    Object.entries(parameter.requestBody?.content['application/x-www-form-urlencoded']?.schema?.properties || {}).forEach(arr => {
-      formParam[arr[0]] = arr[1]?.[valueKey];
+
+  return { queryParams, pathParams, headerParams };
+};
+
+/**
+ * Process form data for URL encoded content
+ */
+const processFormData = (parameter: any, contentType: string) => {
+  const formParams = {};
+
+  if (contentType === CONTENT_TYPE.FORM_URLENCODED) {
+    Object.entries(parameter.requestBody?.content[CONTENT_TYPE.FORM_URLENCODED]?.schema?.properties || {}).forEach(([key, value]) => {
+      formParams[key] = value?.[valueKey];
     });
   }
-  let body;
-  if (contentType === 'multipart/form-data') {
-    // body = new FormData();
-    body = {};
-    const formContent = parameter.requestBody.content['multipart/form-data']?.schema?.properties || {};
 
-    Object.keys(formContent).forEach((key) => {
-      if (formContent[key].format === 'binary') {
-        if (formContent[key].type === 'string') {
-          try {
-            let fileValueObj = formContent[key][valueKey];
-            if (typeof formContent[key][valueKey] === 'string') {
-              fileValueObj = JSON.parse(formContent[key][valueKey]);
-            }
-            body[key] = fileValueObj[fileNameKey];
-            // body.append(key, fileValueObj.file, formContent[key][fileNameKey] || '');
-          } catch {}
-        } else {
-          let fileValueArr = formContent[key][valueKey];
-          try {
-            if (typeof fileValueArr === 'string') {
-              fileValueArr = JSON.parse(fileValueArr);
-            }
-            (fileValueArr || []).forEach(file => {
-              body[key] = file[fileNameKey];
-              // body.append(key, file.file, file[fileNameKey]);
-            });
-          } catch {}
+  return formParams;
+};
+
+/**
+ * Process multipart form data with file handling
+ */
+const processMultipartFormData = (parameter: any) => {
+  const body = {};
+  const formContent = parameter.requestBody.content[CONTENT_TYPE.MULTIPART_FORM_DATA]?.schema?.properties || {};
+
+  Object.keys(formContent).forEach((key) => {
+    if (formContent[key].format === 'binary') {
+      if (formContent[key].type === 'string') {
+        try {
+          let fileValueObj = formContent[key][valueKey];
+          if (typeof formContent[key][valueKey] === 'string') {
+            fileValueObj = JSON.parse(formContent[key][valueKey]);
+          }
+          body[key] = fileValueObj[fileNameKey];
+        } catch (error) {
+          console.warn('Failed to parse file value:', error);
         }
       } else {
-        // body.append(key, formContent[key]);
-        body[key] = formContent[key];
+        let fileValueArr = formContent[key][valueKey];
+        try {
+          if (typeof fileValueArr === 'string') {
+            fileValueArr = JSON.parse(fileValueArr);
+          }
+          (fileValueArr || []).forEach(file => {
+            body[key] = file[fileNameKey];
+          });
+        } catch (error) {
+          console.warn('Failed to parse file array:', error);
+        }
       }
-    });
-    parameter.requestBody.content['multipart/form-data'].schema = JSONToSchema(body);
-  } else if (contentType === 'application/octet-stream' || parameter.requestBody?.content?.[contentType]?.schema?.format === 'binary') {
+    } else {
+      body[key] = formContent[key];
+    }
+  });
+
+  parameter.requestBody.content[CONTENT_TYPE.MULTIPART_FORM_DATA].schema = JSONToSchema(body);
+  return body;
+};
+
+/**
+ * Process request body based on content type
+ */
+const processRequestBodyContent = (parameter: any, contentType: string) => {
+  let body;
+
+  if (contentType === CONTENT_TYPE.MULTIPART_FORM_DATA) {
+    body = processMultipartFormData(parameter);
+  } else if (contentType === RADIO_TYPE.OCTET_STREAM || parameter.requestBody?.content?.[contentType]?.schema?.format === 'binary') {
     body = parameter.requestBody?.content[contentType]?.schema?.[valueKey];
   } else {
     if (valueKey in (parameter.requestBody?.content?.[contentType] || {})) {
       body = parameter.requestBody?.content?.[contentType]?.[valueKey] || undefined;
     } else if (parameter.requestBody?.content?.[contentType]) {
-      let isxml = false;
-      if (contentType === 'application/xml') {
-        isxml = true;
-      }
-      parameter.requestBody.content[contentType][valueKey] = SwaggerUI.extension.sampleFromSchemaGeneric(parameter.requestBody.content[contentType].schema || {}, { useValue: true }, undefined, isxml);
+      const isXml = contentType === CONTENT_TYPE.XML;
+
+      parameter.requestBody.content[contentType][valueKey] = SwaggerUI.extension.sampleFromSchemaGeneric(
+        parameter.requestBody.content[contentType].schema || {},
+        { useValue: true },
+        undefined,
+        isXml
+      );
+
       body = parameter.requestBody?.content?.[contentType]?.[valueKey] || undefined;
-      if (isxml && typeof body === 'object' && (!body || typeof body.notagname !== 'string')) {
+
+      if (isXml && typeof body === 'object' && (!body || typeof body.notagname !== 'string')) {
         body = XML(body);
       }
     } else {
       body = undefined;
     }
+
+    // Try to parse JSON body
     try {
       body = JSON.parse(body);
-    } catch {}
+    } catch (error) {
+      // Body is not JSON, keep as is
+    }
+
+    // Update schema based on body type
     if (body && typeof body === 'object') {
       parameter.requestBody.content[contentType].schema = JSONToSchema(body);
     } else if (body && typeof body === 'string') {
@@ -231,76 +263,145 @@ const getCodeContent = async () => {
       };
     }
   }
-  const apiDefinition = new Oas({ ...parameter, servers: [parameter.currentServer] });
 
-  const formData = {
-    query,
-    path,
-    header,
-    body,
-    formData: formParam,
-    server: {
-      selected: 0,
-      ...server
-    }
+  return body;
+};
+
+/**
+ * Process authentication configuration
+ */
+const processAuthentication = (parameter: any) => {
+  const auth: Record<string, any> = {};
+
+  if (!parameter.authentication?.type) {
+    return auth;
+  }
+
+  parameter.authentication = {
+    ...parameter.authentication,
+    ...(parameter.authentication?.extensions || {})
   };
 
-  const auth: Record<string, number | string | {
-    pass?: string;
-    user?: string;
-  }> = {};
-  if (parameter.authentication?.type) {
-    parameter.authentication = {
-      ...parameter.authentication,
-      ...(parameter.authentication?.extensions || {})
-    };
-    if (parameter.authentication?.type === 'http') {
-      if (parameter.authentication.scheme === 'bearer') {
-        auth.Authorization = parameter.authentication[valueKey];
-      } else {
-        auth.Authorization = {
-          user: parameter.authentication.name,
-          pass: parameter.authentication[valueKey]
-        };
+  if (parameter.authentication.type === 'http') {
+    if (parameter.authentication.scheme === 'bearer') {
+      auth.Authorization = parameter.authentication[valueKey];
+    } else {
+      auth.Authorization = {
+        user: parameter.authentication.name,
+        pass: parameter.authentication[valueKey]
+      };
+    }
+  } else if (parameter.authentication.type === 'oauth2') {
+    if (parameter.authentication[newTokenKey]) {
+      if (parameter.authentication[oAuth2Key] === 'password') {
+        auth.access_token = parameter.authentication.flows?.password?.[oAuth2Token] || '';
       }
-    } else if (parameter.authentication?.type === 'oauth2') {
-      if (parameter.authentication[newTokenKey]) {
-        if (parameter.authentication[oAuth2Key] === 'password') {
-          auth.access_token = parameter.authentication.flows?.password?.[oAuth2Token] || '';
-        }
-        if (parameter.authentication[oAuth2Key] === 'clientCredentials') {
-          auth.access_token = parameter.authentication.flows?.clientCredentials?.[oAuth2Token] || '';
-        }
-      } else {
-        auth.access_token = parameter.authentication[oAuth2Token] || '';
+      if (parameter.authentication[oAuth2Key] === 'clientCredentials') {
+        auth.access_token = parameter.authentication.flows?.clientCredentials?.[oAuth2Token] || '';
       }
+    } else {
+      auth.access_token = parameter.authentication[oAuth2Token] || '';
     }
   }
 
-  const queryString = qs.stringify(query);
-  parameter.path = (parameter.endpoint || '') + (queryString ? '?' + queryString : '');
-  parameter.url = server;
-
-  const { code } = await oasToSnippet(apiDefinition, parameter, formData, auth, language.value);
-  codeContent.value = code;
+  return auth;
 };
 
-const selectLanguage = (funcs, l) => {
-  language.value = [l, funcs.httpsnippet.default];
-  langFuncs.value = Object.keys(funcs.httpsnippet.targets).map(i => ({ value: i, label: i }));
+/**
+ * Generate code snippet for the selected language
+ */
+const generateCodeSnippet = async () => {
+  const parameter = await (apiInfo.value.id ? getSelectedApiParameter() : getParameter());
+
+  // Process content type parameter
+  const contentTypeParameter = (parameter.parameters || []).find(i => i.in === 'header' && i.name === HTTP_HEADERS.CONTENT_TYPE);
+  const contentType = contentTypeParameter?.[valueKey];
+
+  // Process request body
+  processRequestBody(parameter, contentType);
+
+  // Extract parameters
+  const { queryParams, pathParams, headerParams } = extractParameters(parameter.parameters);
+
+  // Process form data
+  const formParams = processFormData(parameter, contentType);
+
+  // Process request body content
+  const body = processRequestBodyContent(parameter, contentType);
+
+  // Create API definition
+  const apiDefinition = new Oas(parameter as any);
+
+  // Prepare form data for code generation
+  const formData = {
+    query: queryParams,
+    path: pathParams,
+    header: headerParams,
+    body,
+    formData: formParams,
+    server: {
+      selected: 0,
+      ...parameter.currentServer
+    }
+  };
+
+  // Process authentication
+  const auth = processAuthentication(parameter);
+
+  // Build query string and update parameter
+  const queryString = qs.stringify(queryParams);
+  (parameter as any).path = (parameter.endpoint || '') + (queryString ? '?' + queryString : '');
+  (parameter as any).url = parameter.currentServer;
+
+  // Generate code snippet
+  const { code } = await oasToSnippet(apiDefinition, parameter, formData, auth, selectedLanguage.value);
+  codeContent.value = code as string;
 };
 
-const copyCode = () => {
+/**
+ * Select programming language and update available functions
+ */
+const selectProgrammingLanguage = (languageFunctions: any, languageKey: string) => {
+  selectedLanguage.value = [languageKey, languageFunctions.httpsnippet.default];
+  languageFunctions.value = Object.keys(languageFunctions.httpsnippet.targets).map(func => ({
+    value: func,
+    label: func
+  }));
+};
+
+/**
+ * Copy generated code to clipboard
+ */
+const copyCodeToClipboard = () => {
   toClipboard(codeContent.value)
     .then(() => {
       notification.success(t('actions.tips.copySuccess'));
     });
 };
 
-// 组装使用的数据
-const getSelectApiParameter = async () => {
-  let { parameters, requestBody, endpoint, currentServer, method, authentication, protocol, availableServers = [], summary, ownerId, ownerName } = apiInfo.value;
-  currentServer = currentServer || availableServers.find(i => i[serverSourceKey] === 'CURRENT_REQUEST') || availableServers[0] || { url: '' };
+/**
+ * Get API parameter data for selected API
+ */
+const getSelectedApiParameter = async () => {
+  let {
+    parameters,
+    requestBody,
+    endpoint,
+    currentServer,
+    method,
+    authentication,
+    protocol,
+    availableServers = [],
+    summary,
+    ownerId,
+    ownerName
+  } = apiInfo.value;
+
+  currentServer = currentServer ||
+    availableServers.find(i => i[serverSourceKey] === 'CURRENT_REQUEST') ||
+    availableServers[0] ||
+    { url: '' };
+
   return {
     parameters,
     currentServer,
@@ -316,114 +417,125 @@ const getSelectApiParameter = async () => {
   };
 };
 
-const replaceSchemaRef = (api = {}) => {
-  const { resolvedRefModels = {} } = api;
-  function replaceObj (obj = {}) {
+/**
+ * Replace schema references with actual schema content
+ */
+const replaceSchemaReferences = (apiData: any = {}) => {
+  const { resolvedRefModels = {} } = apiData;
+
+  const replaceObjectReferences = (obj: any = {}) => {
     Object.keys(obj).forEach(key => {
       if (key === '$ref') {
         const schema = resolvedRefModels[obj[key]];
         if (schema) {
-          obj = {
-            ...obj,
-            ...JSON.parse(schema)
-          };
+          Object.assign(obj, JSON.parse(schema));
         }
         delete obj.$ref;
       } else if (Object.prototype.toString.call(obj[key]) === '[object Object]') {
-        obj[key] = replaceObj(obj[key]);
+        obj[key] = replaceObjectReferences(obj[key]);
       }
     });
     return obj;
-  }
-  return replaceObj(api);
+  };
+
+  return replaceObjectReferences(apiData);
 };
 
-const loadApiParams = async () => {
-  const [error, resp] = await apis.getApiDetail(props.id, true);
+/**
+ * Load API parameters from server
+ */
+const loadApiParameters = async () => {
+  const [error, response] = await apis.getApiDetail(props.id, true);
   if (error) {
     return;
   }
-  apiInfo.value = replaceSchemaRef(resp.data || {});
+  apiInfo.value = replaceSchemaReferences(response.data || {});
 };
 
-const refresh = () => {
-  getCodeContent();
+/**
+ * Refresh code snippet
+ */
+const refreshCodeSnippet = () => {
+  generateCodeSnippet();
 };
 
-watch(() => language.value, newValue => {
+// Watchers
+watch(() => selectedLanguage.value, (newValue) => {
   if (newValue.length) {
-    getCodeContent();
+    generateCodeSnippet();
   }
 }, {
   deep: true
 });
 
 watch(() => props.id, async () => {
-  getCodeOptions();
+  initializeCodeOptions();
   if (props.from === 'list') {
-    await loadApiParams();
+    await loadApiParameters();
   } else {
     apiInfo.value = {};
   }
-  selectLanguage(supportedLanguages[languageStr[0]], languageStr[0]);
+  selectProgrammingLanguage(supportedLanguages[supportedLanguageList[0]], supportedLanguageList[0]);
 }, {
   immediate: true
 });
-
-// class="inline-block  min-w-20 min-h-15 text-center cursor-pointer text-3.5 pt-1 bg-gray-light border align-top rounded"
 </script>
+
 <template>
   <div class="flex flex-col mt-2">
+    <!-- Language selection tabs -->
     <div class="overflow-auto py-2 space-x-2 whitespace-nowrap">
       <div
-        v-for="value in languageStr"
-        :key="value"
-        class="inline-block  min-w-15 min-h-10 text-center cursor-pointer text-3 pt-1 bg-gray-light border align-top rounded"
-        :class="{'border-blue-1': language[0] === value}"
-        @click="selectLanguage(supportedLanguages[value], value)">
-        <img class="w-7 inline-block" :src="getIconSrc(value)" />
-        <div class="bg-gray-bg-active mt-1">{{ getLanguageLabel(value) }}</div>
+        v-for="languageKey in supportedLanguageList"
+        :key="languageKey"
+        class="inline-block min-w-15 min-h-10 text-center cursor-pointer text-3 pt-1 bg-gray-light border align-top rounded"
+        :class="{'border-blue-1': selectedLanguage[0] === languageKey}"
+        @click="selectProgrammingLanguage(supportedLanguages[languageKey], languageKey)">
+        <img class="w-7 inline-block" :src="getLanguageIcon(languageKey)" />
+        <div class="bg-gray-bg-active mt-1">{{ getLanguageDisplayLabel(languageKey) }}</div>
       </div>
     </div>
 
+    <!-- Language function selection and action buttons -->
     <div class="flex space-x-5 items-center">
       <RadioGroup
-        v-model:value="language[1]"
+        v-model:value="selectedLanguage[1]"
         class="inline-block"
-        :options="langFuncs" />
+        :options="languageFunctions" />
       <div>
         <Button
           type="link"
           size="small"
           class="text-left inline-block"
-          @click="copyCode">
+          @click="copyCodeToClipboard">
           {{ t('actions.copy') }}
         </Button>
         <Button
           type="link"
           size="small"
-          class="text-left  inline-block"
-          @click="refresh">
+          class="text-left inline-block"
+          @click="refreshCodeSnippet">
           {{ t('actions.refresh') }}
         </Button>
       </div>
     </div>
+
+    <!-- Code display area -->
     <div class="py-2 whitespace-pre-wrap break-all flex-1 overflow-auto">
-      <!-- <div>{{ codeContent }}</div> -->
       <div v-show="codeContent" class="code-wrapper">
         <FormatHighlight
           format="preview"
           :dataSource="codeContent"
-          :dataType="language[0]">
+          :dataType="selectedLanguage[0]">
         </FormatHighlight>
       </div>
     </div>
   </div>
 </template>
+
 <style scoped>
 .code-wrapper {
   @apply p-2 whitespace-pre-wrap;
-
   background-color: #f6f6f6;
 }
 
