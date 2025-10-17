@@ -6,7 +6,10 @@ import { services } from '@/api/tester';
 import { regexpUtils, utils } from '@xcan-angus/infra';
 import { API_EXTENSION_KEY } from '@/utils/apis';
 import { useI18n } from 'vue-i18n';
-import { ApiKeyExtensionFields, AuthConfigObj, FlowKey, ModelObj } from './SecurityConfig';
+import { ApiKeyExtensionInfo, SecuritySchemeInfo, ServicesCompDetail } from '@/views/apis/services/services/types';
+import { ServicesCompType } from '@/enums/enums';
+
+import { AuthFlowKey } from '@/types/openapi-types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
@@ -15,10 +18,6 @@ interface Props {
   disabled: boolean;
   source:'modal' | 'home' | 'right'
 }
-const { t } = useI18n();
-const { basicAuthKey } = API_EXTENSION_KEY;
-
-const { useState } = VuexHelper;
 
 const props = withDefaults(defineProps<Props>(), {
   id: '',
@@ -26,14 +25,29 @@ const props = withDefaults(defineProps<Props>(), {
   source: 'right'
 });
 
+const { t } = useI18n();
+
+const { basicAuthKey } = API_EXTENSION_KEY;
+
+const { useState } = VuexHelper;
+
 const emit = defineEmits<{(e: 'deleteSuccess'): void, (e: 'saveSuccess'): void}>();
 
-const modelData:ModelObj = {
+// 默认数据
+const modelData:SecuritySchemeInfo = {
+  // OpenAPI feilds
+  type: 'basic',
+  name: '',
+  value: '',
+  in: 'header',
+  authorizationUrl: '',
+  tokenUrl: '',
+  refreshUrl: '',
+  scopes: [],
+
+  // Temp feilds in web
   username: '',
   password: '',
-  usernameErr: false,
-  passwordErr: false,
-  type: 'basic',
   token: '',
   apiKeyList: [
     {
@@ -44,22 +58,8 @@ const modelData:ModelObj = {
       valueErr: false
     }
   ],
-  name: '',
-  value: '',
-  in: 'header',
-  'x-xc-oauth2-newToken': false,
-  'x-xc-oauth2-clientAuthType': 'BASIC_AUTH_HEADER',
-  'x-xc-oauth2-callbackUrl': '',
-  authorizationUrl: '',
-  tokenUrl: '',
-  refreshUrl: '',
-  'x-xc-oauth2-clientId': '',
-  'x-xc-oauth2-clientSecret': '',
-  'x-xc-oauth2-authFlow': 'authorizationCode',
-  'x-xc-oauth2-token': '',
-  'x-xc-oauth2-username': '',
-  'x-xc-oauth2-password': '',
-  scopes: [],
+  usernameErr: false,
+  passwordErr: false,
   tokenErr: false,
   oauth2TokenErr: false,
   refreshUrlErr: {
@@ -81,12 +81,12 @@ const modelData:ModelObj = {
   scopesErr: false
 };
 
-// 空数据
-const newData:AuthConfigObj = {
+// 默认数据
+const newData:ServicesCompDetail = {
   id: utils.uuid('api'),
-  projectId: '',
+  serviceId: '',
   type: {
-    value: 'basic',
+    value: ServicesCompType.schemas,
     message: ''
   },
   key: '',
@@ -96,6 +96,8 @@ const newData:AuthConfigObj = {
   lastModifiedBy: '',
   lastModifiedByName: '',
   lastModifiedDate: '',
+
+  // Temp feilds in web
   isEdit: true,
   isAdd: true,
   isExpand: true,
@@ -106,10 +108,10 @@ const newData:AuthConfigObj = {
 };
 
 const loading = ref(false);
-const authConfigList = ref<AuthConfigObj[]>([]);
-const oldAuthConfigList = ref<AuthConfigObj[]>([]);
+const securityConfigList = ref<ServicesCompDetail[]>([]);
+const oldSecurityConfigList = ref<ServicesCompDetail[]>([]);
 // 初始化服务器URL配置
-const loadAuthConfig = async () => {
+const loadSecuritySchemes = async () => {
   loading.value = true;
   const [error, { data }] = await services.getCompData(props.id, ['securitySchemes'], undefined, { silence: false });
   loading.value = false;
@@ -118,14 +120,14 @@ const loadAuthConfig = async () => {
   }
   // // 如果没有历史数据 默认展示一条空数据
   if (!data?.length) {
-    authConfigList.value = [JSON.parse(JSON.stringify(newData))];
+    securityConfigList.value = [JSON.parse(JSON.stringify(newData))];
     // 记录正在编辑的数据 编辑逻辑需要
-    currEditData.value = authConfigList.value[0];
+    currEditData.value = securityConfigList.value[0];
     addBtnDisabled.value = true;
     return;
   }
 
-  authConfigList.value = data.map(item => ({
+  securityConfigList.value = data.map(item => ({
     ...item,
     description: item.description || '',
     isEdit: false,
@@ -138,7 +140,7 @@ const loadAuthConfig = async () => {
     model: modelData
   }));
   // 记录历史数据
-  oldAuthConfigList.value = JSON.parse(JSON.stringify(authConfigList.value));
+  oldSecurityConfigList.value = JSON.parse(JSON.stringify(securityConfigList.value));
   // 启用添加
   addBtnDisabled.value = false;
 };
@@ -147,43 +149,43 @@ const loadAuthConfig = async () => {
 const addBtnDisabled = ref(false);
 
 // 添加新配置
-const addAuthConfig = () => {
-  const hasEditData = authConfigList.value.filter(item => item.isEdit);
+const addSecurityConfig = () => {
+  const hasEditData = securityConfigList.value.filter(item => item.isEdit);
   if (hasEditData?.length) {
     const checkRes = getCheckDataResult(hasEditData[0]);
     if (checkRes) {
       return;
     }
-    if (getChenkUpdateRes()) {
+    if (getCheckUpdateRes()) {
       return;
     }
   }
 
-  if (authConfigList.value[0]?.isAdd) {
-    authConfigList.value[0] = { ...JSON.parse(JSON.stringify(newData)), id: utils.uuid('api') };
+  if (securityConfigList.value[0]?.isAdd) {
+    securityConfigList.value[0] = { ...JSON.parse(JSON.stringify(newData)), id: utils.uuid('api') };
     return;
   }
   // 列表开始位置添加一条新数据
-  authConfigList.value.unshift({ ...JSON.parse(JSON.stringify(newData)), id: utils.uuid('api') });
+  securityConfigList.value.unshift({ ...JSON.parse(JSON.stringify(newData)), id: utils.uuid('api') });
   // 记录正在编辑的数据(编辑逻辑需要)
-  currEditData.value = authConfigList.value[0];
+  currEditData.value = securityConfigList.value[0];
   // 追加后禁用添加按钮
   addBtnDisabled.value = true;
-  setEditFalseExceptId(authConfigList.value, currEditData.value.id);
+  setEditFalseExceptId(securityConfigList.value, currEditData.value.id);
 };
 
 // 删除配置
-const hanldeDelete = async (auth:AuthConfigObj) => {
+const handelDelete = async (auth:ServicesCompDetail) => {
   if (auth.delLoading) {
     return;
   }
   // 如果是添加数据 直接删除
   if (auth.isAdd) {
     // 判断列表是否剩余一条数据 剩余一条数据禁止删除
-    if (authConfigList.value.length === 1) {
+    if (securityConfigList.value.length === 1) {
       return;
     }
-    authConfigList.value = authConfigList.value.filter(item => item.id !== auth.id);
+    securityConfigList.value = securityConfigList.value.filter(item => item.id !== auth.id);
     return;
   }
 
@@ -196,17 +198,17 @@ const hanldeDelete = async (auth:AuthConfigObj) => {
   notification.success(t('actions.tips.deleteSuccess'));
   emit('deleteSuccess');
   // 如果删除成功
-  authConfigList.value = authConfigList.value.filter(item => item.id !== auth.id);
-  oldAuthConfigList.value = oldAuthConfigList.value.filter(item => item.id !== auth.id);
+  securityConfigList.value = securityConfigList.value.filter(item => item.id !== auth.id);
+  oldSecurityConfigList.value = oldSecurityConfigList.value.filter(item => item.id !== auth.id);
 
   // 如果列表没有数据 删除后添加一条添加的数据
-  if (authConfigList.value.length === 0) {
-    authConfigList.value.unshift({ ...JSON.parse(JSON.stringify(newData)), id: utils.uuid('api') });
+  if (securityConfigList.value.length === 0) {
+    securityConfigList.value.unshift({ ...JSON.parse(JSON.stringify(newData)), id: utils.uuid('api') });
   }
 };
 
 // 保存
-const handleSave = async (auth:AuthConfigObj) => {
+const handleSave = async (auth:ServicesCompDetail) => {
   // 校验有没有空项
   const checkRes = getCheckDataResult(auth);
   if (checkRes) {
@@ -219,7 +221,7 @@ const handleSave = async (auth:AuthConfigObj) => {
 
   // 如果是旧数据 判断数据有没有修改
   if (!auth.isAdd) {
-    if (!chenkUpdate(auth)) {
+    if (!checkUpdate(auth)) {
       auth.isEdit = false;
       auth.isExpand = lastIsExpandState.value;
       return;
@@ -243,11 +245,11 @@ const handleSave = async (auth:AuthConfigObj) => {
 
   notification.success(t('actions.tips.saveSuccess'));
   emit('saveSuccess');
-  loadAuthConfig();
+  await loadSecuritySchemes();
 };
 
 // 检查提交的数据有没有空项 有空项返回true 否则返回false
-const getCheckDataResult = (_data:AuthConfigObj):boolean => {
+const getCheckDataResult = (_data:ServicesCompDetail):boolean => {
   let hasEmpty = false;
   if (!_data.key) {
     _data.keyErr = true;
@@ -331,7 +333,7 @@ const getCheckDataResult = (_data:AuthConfigObj):boolean => {
   return hasEmpty;
 };
 
-const getQuery = (auth:AuthConfigObj) => {
+const getQuery = (auth:ServicesCompDetail) => {
   let b = false;
   if (!auth.key) {
     auth.keyErr = true;
@@ -356,7 +358,6 @@ const getQuery = (auth:AuthConfigObj) => {
         type: 'http',
         scheme: 'basic',
         [basicAuthKey]: { username: auth.model.username, password: auth.model.password }
-        // 'x-xc-value': 'basic ' + encode(auth.model.username, auth.model.password)
       };
     case 'bearer':
       if (!auth.model.token) {
@@ -472,32 +473,32 @@ const getQuery = (auth:AuthConfigObj) => {
   }
 };
 
-const authKeyChange = (value:string, auth:AuthConfigObj) => {
+const authKeyChange = (value:string, auth:ServicesCompDetail) => {
   auth.keyErr = !value;
   if (value) {
-    const oldKeys = oldAuthConfigList.value.map(item => item.key);
+    const oldKeys = oldSecurityConfigList.value.map(item => item.key);
     if (oldKeys.includes(value)) {
       auth.keyErr = true;
-      notification.warning('方案名称已存在');
+      notification.warning('The security scheme name already exists');
     }
   }
 };
-const usernameChange = (value:string, auth:AuthConfigObj) => {
+const usernameChange = (value:string, auth:ServicesCompDetail) => {
   auth.model.usernameErr = !value;
 };
-const passwordChange = (value:string, auth:AuthConfigObj) => {
+const passwordChange = (value:string, auth:ServicesCompDetail) => {
   auth.model.passwordErr = !value;
 };
-const tokenChange = (value:string, auth:AuthConfigObj) => {
+const tokenChange = (value:string, auth:ServicesCompDetail) => {
   auth.model.tokenErr = !value;
 };
-const apiKeyNameChange = (value:string, apiKey:ApiKeyExtensionFields) => {
+const apiKeyNameChange = (value:string, apiKey:ApiKeyExtensionInfo) => {
   apiKey.nameErr = !value;
 };
-const apiKeyValueChange = (value:string, apiKey:ApiKeyExtensionFields) => {
+const apiKeyValueChange = (value:string, apiKey:ApiKeyExtensionInfo) => {
   apiKey.valueErr = !value;
 };
-const tokenUrlChange = (value:string, auth:AuthConfigObj, key:'tokenUrlErr' | 'authorizationUrlErr') => {
+const tokenUrlChange = (value:string, auth:ServicesCompDetail, key:'tokenUrlErr' | 'authorizationUrlErr') => {
   if (!value) {
     auth.model[key].isEmpty = true;
     return;
@@ -510,7 +511,7 @@ const tokenUrlChange = (value:string, auth:AuthConfigObj, key:'tokenUrlErr' | 'a
   }
   auth.model[key].isError = true;
 };
-const callbackUrlChange = (value:string, auth:AuthConfigObj, key:'callbackUrlErr' | 'refreshUrlErr') => {
+const callbackUrlChange = (value:string, auth:ServicesCompDetail, key:'callbackUrlErr' | 'refreshUrlErr') => {
   if (!value) {
     auth.model[key].isError = false;
     return;
@@ -523,11 +524,11 @@ const callbackUrlChange = (value:string, auth:AuthConfigObj, key:'callbackUrlErr
   auth.model[key].isError = true;
 };
 
-const oauth2TokenChange = (value:string, auth:AuthConfigObj) => {
+const oauth2TokenChange = (value:string, auth:ServicesCompDetail) => {
   auth.model.tokenErr = !value;
 };
 
-const scopesChange = (value:string[], auth:AuthConfigObj) => {
+const scopesChange = (value:string[], auth:ServicesCompDetail) => {
   auth.model.scopesErr = !value.length;
   if (value.length > 199) {
     value.pop();
@@ -536,10 +537,10 @@ const scopesChange = (value:string[], auth:AuthConfigObj) => {
 };
 
 onMounted(() => {
-  loadAuthConfig();
+  loadSecuritySchemes();
 });
 
-const getAuthConfigInfo = async (auth:AuthConfigObj) => {
+const getAuthConfigInfo = async (auth:ServicesCompDetail) => {
   const [error, { data }] = await services.getComponentRef(props.id, auth.ref);
   if (error) {
     return;
@@ -554,9 +555,6 @@ const getAuthConfigInfo = async (auth:AuthConfigObj) => {
   }
   switch (_type) {
     case 'basic': {
-      // const base64Str = model['x-xc-value'].replace('basic ', '');
-      // auth.model.username = decode(base64Str).name;
-      // auth.model.password = decode(base64Str).value;
       const basic = model[basicAuthKey] || {};
       auth.model.username = basic.username;
       auth.model.password = basic.password;
@@ -578,7 +576,7 @@ const getAuthConfigInfo = async (auth:AuthConfigObj) => {
     case 'oauth2': {
       auth.model['x-xc-oauth2-newToken'] = model['x-xc-oauth2-newToken'] || false;
       if (model['x-xc-oauth2-newToken']) {
-        const key = Object.keys(model.flows)[0] as FlowKey;
+        const key = Object.keys(model.flows)[0] as AuthFlowKey;
         auth.model['x-xc-oauth2-authFlow'] = key;
         if (model.flows[key]?.authorizationUrl) {
           auth.model.authorizationUrl = model.flows[key].authorizationUrl;
@@ -617,35 +615,35 @@ const getAuthConfigInfo = async (auth:AuthConfigObj) => {
     }
   }
 
-  for (let i = 0; i < oldAuthConfigList.value.length; i++) {
-    if (oldAuthConfigList[i]?.id === auth?.id) {
-      oldAuthConfigList[i] = auth;
+  for (let i = 0; i < oldSecurityConfigList.value.length; i++) {
+    if (oldSecurityConfigList[i]?.id === auth?.id) {
+      oldSecurityConfigList[i] = auth;
       break;
     }
   }
 };
 
 // 记录正在编辑的数据 同时只有一个编辑
-const currEditData = ref<AuthConfigObj>();
+const currEditData = ref<ServicesCompDetail>();
 
 // 展开收起 开启关闭编辑
-const handleExpand = async (event, auth:AuthConfigObj) => {
+const handleExpand = async (event, auth:ServicesCompDetail) => {
   event.stopPropagation();
   if (!auth.hasModel) {
     await getAuthConfigInfo(auth);
-    oldAuthConfigList.value = JSON.parse(JSON.stringify(authConfigList.value));
+    oldSecurityConfigList.value = JSON.parse(JSON.stringify(securityConfigList.value));
   }
 
-  const hasEditData = authConfigList.value.filter(item => item.isEdit);
+  const hasEditData = securityConfigList.value.filter(item => item.isEdit);
   if (hasEditData?.length) {
     if (hasEditData[0].isAdd) {
-      authConfigList.value = authConfigList.value.filter(item => item.id !== hasEditData[0].id);
+      securityConfigList.value = securityConfigList.value.filter(item => item.id !== hasEditData[0].id);
     } else {
       const checkRes = getCheckDataResult(hasEditData[0]);
       if (checkRes) {
         return;
       }
-      if (getChenkUpdateRes()) {
+      if (getCheckUpdateRes()) {
         return;
       }
     }
@@ -654,13 +652,13 @@ const handleExpand = async (event, auth:AuthConfigObj) => {
   if (!auth.isExpand) {
     auth.isEdit = false;
   }
-  setEditFalseExceptId(authConfigList.value, auth.id);
+  setEditFalseExceptId(securityConfigList.value, auth.id);
 };
 
 // 提起公共代码 校验数据未保存
-const getChenkUpdateRes = () => {
+const getCheckUpdateRes = () => {
   if (currEditData.value) {
-    const hasUpdate = chenkUpdate(authConfigList.value.filter(item => item.id === currEditData.value?.id)[0]);
+    const hasUpdate = checkUpdate(securityConfigList.value.filter(item => item.id === currEditData.value?.id)[0]);
     if (hasUpdate) {
       notification.warning(t('service.securityModal.rule'));
       return true;
@@ -670,8 +668,8 @@ const getChenkUpdateRes = () => {
 };
 
 // 判断编辑的数据有无改变
-const chenkUpdate = (newData:AuthConfigObj) => {
-  const _oldDataList = oldAuthConfigList.value.filter(item => item?.id === newData?.id);
+const checkUpdate = (newData:ServicesCompDetail) => {
+  const _oldDataList = oldSecurityConfigList.value.filter(item => item?.id === newData?.id);
   if (!_oldDataList?.length) {
     return true;
   }
@@ -685,23 +683,23 @@ const chenkUpdate = (newData:AuthConfigObj) => {
 
 const lastIsExpandState = ref(false);
 // 开启关闭编辑 同时修改展开收起
-const handleEdit = async (event, auth:AuthConfigObj) => {
+const handleEdit = async (event, auth:ServicesCompDetail) => {
   event.stopPropagation();
   if (!auth.hasModel) {
     await getAuthConfigInfo(auth);
-    oldAuthConfigList.value = JSON.parse(JSON.stringify(authConfigList.value));
+    oldSecurityConfigList.value = JSON.parse(JSON.stringify(securityConfigList.value));
   }
 
-  const hasEditData = authConfigList.value.filter(item => item.isEdit);
+  const hasEditData = securityConfigList.value.filter(item => item.isEdit);
   if (hasEditData?.length) {
     if (hasEditData[0].isAdd) {
-      authConfigList.value = authConfigList.value.filter(item => item.id !== hasEditData[0].id);
+      securityConfigList.value = securityConfigList.value.filter(item => item.id !== hasEditData[0].id);
     } else {
       const checkRes = getCheckDataResult(hasEditData[0]);
       if (checkRes) {
         return;
       }
-      if (getChenkUpdateRes()) {
+      if (getCheckUpdateRes()) {
         return;
       }
     }
@@ -711,29 +709,29 @@ const handleEdit = async (event, auth:AuthConfigObj) => {
   auth.isEdit = true;
   auth.isExpand = true;
   currEditData.value = auth;
-  setEditFalseExceptId(authConfigList.value, auth.id);
+  setEditFalseExceptId(securityConfigList.value, auth.id);
 };
 
 // 取消编辑
-const handleCancel = (auth:AuthConfigObj) => {
+const handleCancel = (auth:ServicesCompDetail) => {
   // 如果取消的是添加的数据
   if (auth.isAdd) {
     // 如果列表仅有一条数据 且是添加的 禁止取消，保持展开并且编辑状态
-    if (authConfigList.value.length === 1) {
+    if (securityConfigList.value.length === 1) {
       return;
     }
     // 如果列表有多条数据 取消后删除添加的数据 并启用添加按钮
-    authConfigList.value = authConfigList.value.filter(item => item.id !== auth.id);
+    securityConfigList.value = securityConfigList.value.filter(item => item.id !== auth.id);
     addBtnDisabled.value = false;
     currEditData.value = undefined;
     return;
   }
 
   //  如果取消的是历史数据 判断数据有没有修改，然后收起详情并取消编辑状态
-  const hasUpdate = chenkUpdate(auth);
+  const hasUpdate = checkUpdate(auth);
   //  如果有修改,取消编辑先恢复数据
   if (hasUpdate) {
-    const oldSync = oldAuthConfigList.value.find(item => item.id === auth.id);
+    const oldSync = oldSecurityConfigList.value.find(item => item.id === auth.id);
     Object.keys(oldSync).every((key) => {
       if (!['hasModel', 'isAdd', 'isEdit', 'isExpand'].includes(key)) {
         auth[key] = oldSync[key];
@@ -748,7 +746,7 @@ const handleCancel = (auth:AuthConfigObj) => {
 };
 
 // 收起当前数据之外的数据并取消编辑
-const setEditFalseExceptId = (arr:AuthConfigObj[], id:string):void => {
+const setEditFalseExceptId = (arr:ServicesCompDetail[], id:string):void => {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].id !== id) {
       arr[i].isEdit = false;
@@ -758,7 +756,7 @@ const setEditFalseExceptId = (arr:AuthConfigObj[], id:string):void => {
 };
 
 // 添加ApiKey
-const addApiKey = (auth:AuthConfigObj) => {
+const addApiKey = (auth:ServicesCompDetail) => {
   const hasEmpty = getVariablesHasEmpty(auth);
   if (hasEmpty) {
     return;
@@ -773,7 +771,7 @@ const addApiKey = (auth:AuthConfigObj) => {
 };
 
 // 获取整组ApiKey里有没有空值 有空值触发校验 返回true 否则返回false
-const getVariablesHasEmpty = (auth:AuthConfigObj):boolean => {
+const getVariablesHasEmpty = (auth:ServicesCompDetail):boolean => {
   let hasEmpty = false;
   if (!auth.model.apiKeyList?.length) {
     return hasEmpty;
@@ -794,11 +792,11 @@ const getVariablesHasEmpty = (auth:AuthConfigObj):boolean => {
 };
 
 // 删除变量
-const delApikey = (auth:AuthConfigObj, index:number) => {
+const delApikey = (auth:ServicesCompDetail, index:number) => {
   auth.model.apiKeyList?.splice(index, 1);
 };
 
-const modelTypeChange = (auth:AuthConfigObj) => {
+const modelTypeChange = (auth:ServicesCompDetail) => {
   auth.model.tokenErr = false;
   auth.model.oauth2TokenErr = false;
   auth.model.refreshUrlErr = {
@@ -823,11 +821,12 @@ const modelTypeChange = (auth:AuthConfigObj) => {
 };
 
 const { notify } = useState(['notify'], 'apiSecurityStore');
+
 watch(() => notify.value, () => {
   if (props.source === 'modal') {
     return;
   }
-  loadAuthConfig();
+  loadSecuritySchemes();
 });
 
 const authTypeOptions = [
@@ -887,8 +886,8 @@ const OAuth2AuthorizationTypeOptions = [
         size="small"
         type="primary"
         class="flex items-center"
-        :disabled="props.disabled || authConfigList?.length > 49 || addBtnDisabled"
-        @click="addAuthConfig">
+        :disabled="props.disabled || securityConfigList?.length > 49 || addBtnDisabled"
+        @click="addSecurityConfig">
         <Icon icon="icon-jia" class="mr-1" />
         {{ t('actions.add') }}
       </Button>
@@ -897,7 +896,7 @@ const OAuth2AuthorizationTypeOptions = [
       style="scrollbar-gutter: stable;"
       class="overflow-y-auto flex flex-col space-y-2 pr-1.5 -mr-3.5 text-3 text-text-content mt-2 flex-1">
       <div
-        v-for="auth in authConfigList"
+        v-for="auth in securityConfigList"
         :key="auth.id"
         class="border border-border-divider p-2 rounded">
         <div v-if="!auth.isAdd && !auth.isEdit">
@@ -935,7 +934,7 @@ const OAuth2AuthorizationTypeOptions = [
                 icon="icon-qingchu"
                 class="text-3.5"
                 :class="auth.isAdd?'text-text-placeholder cursor-not-allowed':'hover:text-text-link-hover cursor-pointer'"
-                @click="hanldeDelete(auth)" />
+                @click="handelDelete(auth)" />
             </template>
           </Tooltip>
         </div>
@@ -1266,7 +1265,7 @@ const OAuth2AuthorizationTypeOptions = [
                   size="small"
                   class="mr-2 px-0"
                   type="link"
-                  :disabled="authConfigList.length === 1 && auth.isAdd"
+                  :disabled="securityConfigList.length === 1 && auth.isAdd"
                   @click="handleCancel(auth)">
                   {{ t('actions.cancel') }}
                 </Button>
