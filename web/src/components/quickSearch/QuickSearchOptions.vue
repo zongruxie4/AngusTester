@@ -52,7 +52,7 @@ const props = withDefaults(defineProps<QuickSearchOptionsProps>(), {
   descriptionSlot: ''
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'change', selectedKeys: string[], searchCriteria: SearchCriteria[], key?: string): void;
 }>();

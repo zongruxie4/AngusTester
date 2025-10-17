@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'ok'): void;

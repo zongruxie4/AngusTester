@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   selectedRowKeys: () => []
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'update:selectedRowKeys', value: number[]): void;
   (e: 'onClick', type:CaseActionAuth, value:CaseDetail):void;

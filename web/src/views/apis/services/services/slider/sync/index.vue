@@ -136,7 +136,7 @@ const getSynchronizationList = async () => {
     testLoading: false,
     delLoading: false,
     syncLoading: false,
-    saveloading: false,
+    saveLoading: false,
     nameErr: false,
     apiDocsUrlErr: {
       emptyUrl: false,

@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   defaultIn: ParameterIn.query
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'change', value: Parameter[]): void;
   (e: 'changePath', value: Parameter[]): void;

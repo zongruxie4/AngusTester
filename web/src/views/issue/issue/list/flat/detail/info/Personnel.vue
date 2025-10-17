@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<TaskDetailProps>(), {
 
 const { t } = useI18n();
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'change', value: Partial<TaskDetail>): void;

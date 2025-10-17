@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<AssocCaseProps>(), {
 
 const { t } = useI18n();
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'editSuccess'): void;

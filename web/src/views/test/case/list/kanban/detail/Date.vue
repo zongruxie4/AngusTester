@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<CaseInfoEditProps>(), {
   canEdit: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'change', value: CaseDetail): void;

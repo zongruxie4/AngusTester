@@ -12,6 +12,7 @@ import { getExecShowAuthData } from '@/components/ExecAuthencation/interface';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { services } from '@/api/tester';
+import { API_EXTENSION_KEYS } from '@/types/openapi-types';
 
 dayjs.extend(duration);
 
@@ -55,25 +56,7 @@ const API_STATUS_BADGE_COLOR_CONFIG = {
 /**
  * API extension keys for custom properties.
  */
-const API_EXTENSION_KEY = {
-  prefix: 'x-xc-', // Prefix
-  idKey: 'x-xc-id', // Unique identifier
-  valueKey: 'x-xc-value', // Value
-  enabledKey: 'x-xc-enabled', // Enable/disable
-  exportVariableKey: 'x-xc-exportVariable', // Whether to set as variable
-  requestSettingKey: 'x-xc-requestSetting', // Request settings like timeout, object
-  serverNameKey: 'x-xc-serverName', // Server URL name
-  serverSourceKey: 'x-xc-serverSource', // Server source
-  securityApiKeyPrefix: 'x-xc-apiKey', // API key type extension
-  securitySubTypeKey: 'sx-xc-securitySubType', // Security scheme subtype
-  fileNameKey: 'x-xc-fileName', // File name
-  newTokenKey: 'x-xc-oauth2-newToken', // Whether to use generated auth token
-  oAuth2Key: 'x-xc-oauth2-authFlow', // Token generation authorization type
-  oAuth2Token: 'x-xc-oauth2-token', // Existing token
-  formContentTypeKey: 'x-xc-contentType',
-  basicAuthKey: 'x-xc-basicAuth',
-  wsMessageKey: 'x-wsMessage'
-};
+const API_EXTENSION_KEY = API_EXTENSION_KEYS;
 
 // eslint-disable-next-line prefer-regex-literals
 const variableNameReg = new RegExp(/^[a-zA-Z0-9!@$%^&*()_\-+=./]+$/);

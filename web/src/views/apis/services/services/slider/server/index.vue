@@ -6,8 +6,8 @@ import { Arrow, Colon, Icon, notification, Spin, Tooltip } from '@xcan-angus/vue
 import { utils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { services } from '@/api/tester';
-import { ServerInfo, ServerConfig, ServerVariables } from '@/views/apis/server/types';
-import { API_EXTENSION_KEY } from '@/utils/apis';
+import { ServerInfo } from '@/views/apis/server/types';
+import { OpenAPIV3_1, API_EXTENSION_KEYS } from '@/types/openapi-types';
 
 import EditForm from './ServerEditForm.vue';
 
@@ -25,9 +25,9 @@ const { t } = useI18n();
 // UI state
 const loading = ref(false);
 const adding = ref(false);
-const serverDemo = ref<ServerConfig>();
+const serverDemo = ref<ServerInfo>();
 const activeKey = ref<string[]>([]);
-const serverList = ref<ServerConfig[]>([]);
+const serverList = ref<ServerInfo[]>([]);
 const editSet = ref<Set<string>>(new Set());
 
 // Button states
@@ -59,10 +59,10 @@ const addServerDemo = () => {
 };
 
 // Generate a default server config template
-const getDefaultServer = ():ServerConfig => {
+const getDefaultServer = ():ServerInfo => {
   return {
     id: utils.uuid(),
-    [API_EXTENSION_KEY.idKey]: undefined,
+    [API_EXTENSION_KEYS.idKey]: undefined,
     description: '',
     url: 'http://{env}-api.xxx.com/{version}',
     variables: [
@@ -103,7 +103,7 @@ const cancelAddServer = () => {
 };
 
 // Persist newly added server
-const saveAddServer = async (data:ServerConfig) => {
+const saveAddServer = async (data:ServerInfo) => {
   const params = getSaveParams(data);
   loading.value = true;
   const [error] = await services.putServicesServerUrl(props.id, params);
@@ -118,7 +118,7 @@ const saveAddServer = async (data:ServerConfig) => {
 };
 
 // Accordion arrow state change handler
-const arrowChange = (open: boolean, data: ServerConfig) => {
+const arrowChange = (open: boolean, data: ServerInfo) => {
   if (open) {
     activeKey.value.push(data.id);
     return;
@@ -129,11 +129,11 @@ const arrowChange = (open: boolean, data: ServerConfig) => {
 };
 
 // Push this server config as the effective server for all APIs
-const toUpdate = async (data: ServerConfig) => {
-  if (!data[API_EXTENSION_KEY.idKey]) {
+const toUpdate = async (data: ServerInfo) => {
+  if (!data[API_EXTENSION_KEYS.idKey]) {
     return;
   }
-  const [error] = await services.updateServiceApisServer(props.id, data[API_EXTENSION_KEY.idKey]);
+  const [error] = await services.updateServiceApisServer(props.id, data[API_EXTENSION_KEYS.idKey]);
   if (error) {
     return;
   }
@@ -142,14 +142,14 @@ const toUpdate = async (data: ServerConfig) => {
 };
 
 // Enter edit mode for a specific server item
-const toEdit = (data: ServerConfig) => {
+const toEdit = (data: ServerInfo) => {
   editSet.value.add(data.id);
 };
 
 // Delete a server config
-const toDelete = async (data:ServerConfig, index: number) => {
+const toDelete = async (data:ServerInfo, index: number) => {
   loading.value = true;
-  const [error] = await services.delServicesServerUrl(props.id, [data[API_EXTENSION_KEY.idKey] as string]);
+  const [error] = await services.delServicesServerUrl(props.id, [data[API_EXTENSION_KEYS.idKey] as string]);
   loading.value = false;
   if (error) {
     return;
@@ -159,7 +159,7 @@ const toDelete = async (data:ServerConfig, index: number) => {
 };
 
 // Transform UI form data into API payload
-const getSaveParams = (data:ServerConfig) => {
+const getSaveParams = (data:ServerInfo) => {
   const variables = data.variables.reduce((prev, cur) => {
     prev[cur.name] = {
       default: cur.default,
@@ -167,10 +167,10 @@ const getSaveParams = (data:ServerConfig) => {
       enum: cur.enum?.map(item => item.value) || []
     };
     return prev;
-  }, {} as ServerVariables);
+  }, {} as OpenAPIV3_1.ServerVariableObject);
 
-  const params: ServerInfo = {
-    'x-xc-id': data['x-xc-id'],
+  const params: OpenAPIV3_1.ServerObject = {
+    [API_EXTENSION_KEYS.idKey]: data[API_EXTENSION_KEYS.idKey],
     description: data.description,
     url: data.url,
     variables
@@ -184,7 +184,7 @@ const cancelEdit = (id:string) => {
 };
 
 // Save edited server config
-const save = async (data:ServerConfig, id:string, index:number) => {
+const save = async (data:ServerInfo, id:string, index:number) => {
   const prevData = serverList.value[index];
   if (isEqual(data, prevData)) {
     editSet.value.delete(id);
@@ -214,7 +214,7 @@ const loadData = async () => {
   }
 
   serverList.value = ((data || []) as ServerInfo[]).map(item => {
-    const variables: ServerConfig['variables'] = [];
+    const variables: ServerInfo['variables'] = [];
     if (item.variables) {
       // Keep the same order as placeholders in server url
       const matchItems = item.url?.match(/\{[^{}]+\}/g);

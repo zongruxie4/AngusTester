@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<ScriptTableProps>(), {
   resetSelectedIdsNotify: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
   (event: 'refresh'): void;

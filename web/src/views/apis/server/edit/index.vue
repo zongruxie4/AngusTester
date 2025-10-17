@@ -6,8 +6,9 @@ import { toClipboard, utils } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { ApiMenuKey } from '@/views/apis/menu';
-import { ServerConfig, ServerVariables } from '@/views/apis/server/types';
+import { ServerInfo } from '@/views/apis/server/types';
 import { BasicProps } from '@/types/types';
+import { API_EXTENSION_KEYS, OpenAPIV3_1 } from '@/types/openapi-types';
 
 const EditForm = defineAsyncComponent(() => import('./edit.vue'));
 
@@ -25,8 +26,8 @@ const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabP
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
 const editFormRef = ref();
-const serverDemo = ref<ServerConfig>();
-const serverList = ref<ServerConfig[]>([]); // filled by parent context; used to build urlMap
+const serverDemo = ref<ServerInfo>();
+const serverList = ref<ServerInfo[]>([]); // filled by parent context; used to build urlMap
 const loading = ref(false);
 
 const serverId = computed(() => {
@@ -106,7 +107,7 @@ const toSave = async () => {
   }
 };
 
-const getSaveParams = (data:ServerConfig) => {
+const getSaveParams = (data:ServerInfo) => {
   const variables = data.variables.reduce((prev, cur) => {
     prev[cur.name] = {
       default: cur.default,
@@ -114,14 +115,14 @@ const getSaveParams = (data:ServerConfig) => {
       enum: cur.enum?.map(item => item.value) || []
     };
     return prev;
-  }, {} as ServerVariables);
+  }, {} as OpenAPIV3_1.ServerVariableObject);
   const params:{
-    'x-xc-id'?:string;
+    [API_EXTENSION_KEYS.idKey]?:string;
     description?:string;
     url:string;
-    variables: ServerVariables;
+    variables: OpenAPIV3_1.ServerVariableObject;
   } = {
-    'x-xc-id': data['x-xc-id'],
+    [API_EXTENSION_KEYS.idKey]: data[API_EXTENSION_KEYS.idKey],
     description: data.description,
     url: data.url,
     variables
@@ -133,7 +134,7 @@ const toAddServerDemo = () => {
   serverDemo.value = getDefaultServer();
 };
 
-const getDefaultServer = ():ServerConfig => {
+const getDefaultServer = ():ServerInfo => {
   return {
     id: utils.uuid(),
     'x-xc-id': undefined,

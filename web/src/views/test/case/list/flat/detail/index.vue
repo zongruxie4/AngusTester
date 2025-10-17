@@ -40,7 +40,7 @@ withDefaults(defineProps<Props>(), {
   actionAuth: () => ([])
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'editSuccess'):void;
   (e: 'loadingChange', value:boolean):void;

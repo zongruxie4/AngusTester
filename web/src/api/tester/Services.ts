@@ -136,26 +136,7 @@ export default class API {
     return http.get(`${baseUrl}/${id}/schema`);
   }
 
-  putSchemaInfo (id: string, params: {
-    contact?: {
-      email: string;
-      extensions?: Record<string, string>,
-      name: string;
-      url: string;
-    },
-    description?: string;
-    extensions?: Record<string, string>;
-    license?: {
-      extensions?: Record<string, string>;
-      identifier?: string;
-      name: string;
-      url: string;
-    },
-    summary?: string;
-    termsOfService?: string;
-    title?: string;
-    version?: string;
-  }): Promise<[Error | null, any]> {
+  putSchemaInfo (id: string, params: any): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/${id}/schema/info`, params);
   }
 

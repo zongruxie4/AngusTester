@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<BasicDataSourceProps<DataSetDetail>>(), {
   dataSource: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'ok', data: DataSetDetail, isEdit: boolean): void;
   (e: 'delete', value: string): void;

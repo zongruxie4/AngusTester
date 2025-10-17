@@ -5,11 +5,11 @@ import { Icon, IconRequired, Input, notification, Select, Tooltip, Validate } fr
 import { duration, TESTER, utils } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-import { ServerConfig } from '@/views/apis/server/types';
+import { ServerInfo } from '@/views/apis/server/types';
 
 type Props = {
   projectId: string;
-  value: ServerConfig;
+  value: ServerInfo;
   serviceId?: string;
   urlMap?: { [key: string]: string[] };
 }
@@ -31,7 +31,7 @@ const serviceIdValue = ref<string>();
 const serviceIdError = ref(false);
 const description = ref<string>();
 const variableIds = ref<string[]>([]);
-const variableDataMap = ref<{ [key: string]: ServerConfig['variables'][number] }>({});
+const variableDataMap = ref<{ [key: string]: ServerInfo['variables'][number] }>({});
 const defaultValueMap = ref<{ [key: string]: string | undefined }>({});
 const nameErrorSet = ref<Set<string>>(new Set());
 const nameErrorMsgMap = ref<{ [key: string]: string | undefined }>({});
@@ -91,7 +91,7 @@ const onUrlChange = debounce(duration.delay, (event: { target: { value: string; 
     const _dataMap = Object.values(variableDataMap.value).reduce((prev, cur) => {
       prev[cur.name] = cur;
       return prev;
-    }, {} as { [key: string]: ServerConfig['variables'][number] });
+    }, {} as { [key: string]: ServerInfo['variables'][number] });
     // Filter duplicate variables extracted from the URL
     uniqueNames = matchItems?.reduce((prev, cur) => {
       if (!prev.includes(cur)) {
@@ -520,8 +520,8 @@ const validRepeatValue = (id: string) => {
 /**
  * Build ServerConfig object from current reactive state.
  */
-const getData = (): ServerConfig => {
-  const variables: ServerConfig['variables'] = [];
+const getData = (): ServerInfo => {
+  const variables: ServerInfo['variables'] = [];
   const ids = variableIds.value;
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];

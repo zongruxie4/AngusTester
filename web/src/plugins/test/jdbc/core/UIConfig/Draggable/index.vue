@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   loaded: false
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'delete', value: DragDataConfig[]): void;
   (e:'renderChange', value:boolean):void;

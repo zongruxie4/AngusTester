@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   value: () => ({ enableParamValidation: false, connectTimeout: 6000, readTimeout: 60000, retryNum: 0, maxRedirects: 1 })
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'change', value: Props['value']): void;
 }>();

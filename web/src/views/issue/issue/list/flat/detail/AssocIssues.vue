@@ -36,7 +36,7 @@ const { t } = useI18n();
  * Emits events to notify parent components about loading state changes
  * and successful edit operations
  */
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'editSuccess'): void;

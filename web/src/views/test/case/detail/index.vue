@@ -53,7 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   notify: 0
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'onClick', type: CaseActionAuth, value: CaseDetail): void;
   (e: 'editSuccess', id:number): void;

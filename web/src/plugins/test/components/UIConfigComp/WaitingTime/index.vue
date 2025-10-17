@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   enabled: true
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'change', value: Omit<WaitingTimeConfig, 'id'>): void;
   (e: 'nameChange', value: string): void;

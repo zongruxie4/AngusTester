@@ -5,11 +5,11 @@ import { Button, Radio } from 'ant-design-vue';
 import { Icon, IconRequired, Input, notification, Tooltip, Validate } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import { ServerConfig } from '@/views/apis/server/types';
+import { ServerInfo } from '@/views/apis/server/types';
 
 // Props: server item value, url duplication map, and whether to hide action buttons
 type Props = {
-  value: ServerConfig;
+  value: ServerInfo;
   urlMap:{[key:string]:string[]};
   hideButton: boolean;
 }
@@ -22,11 +22,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// eslint-disable-next-line func-call-spacing
 // Emits: cancel or save with valid data
 const emit = defineEmits<{
   (e:'cancel'):void;
-  (e:'save', value:ServerConfig):void;
+  (e:'save', value:ServerInfo):void;
 }>();
 
 // Form state
@@ -36,7 +35,7 @@ const urlError = ref(false);
 const urlErrorMsg = ref<string>();
 const description = ref<string>();
 const variableIds = ref<string[]>([]);
-const variableDataMap = ref<{[key:string]:ServerConfig['variables'][number]}>({});
+const variableDataMap = ref<{[key:string]:ServerInfo['variables'][number]}>({});
 const defaultValueMap = ref<{[key:string]:string|undefined}>({});
 const nameErrorSet = ref <Set<string>>(new Set());
 const nameErrorMsgMap = ref <{[key:string]:string|undefined}>({});
@@ -92,7 +91,7 @@ const urlChange = debounce(duration.delay, (event: any) => {
     const _dataMap = Object.values(variableDataMap.value).reduce((prev, cur) => {
       prev[cur.name] = cur;
       return prev;
-    }, {} as {[key:string]:ServerConfig['variables'][number]});
+    }, {} as {[key:string]:ServerInfo['variables'][number]});
     // Filter duplicate variable names
     uniqueNames = matchItems?.reduce((prev, cur) => {
       if (!prev.includes(cur)) {
@@ -512,8 +511,8 @@ const validRepeatValue = (id:string) => {
 };
 
 // Normalize output payload for Save
-const getData = ():ServerConfig => {
-  const variables:ServerConfig['variables'] = [];
+const getData = ():ServerInfo => {
+  const variables:ServerInfo['variables'] = [];
   const ids = variableIds.value;
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];

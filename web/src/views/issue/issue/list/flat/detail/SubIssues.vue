@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<TaskDetailProps>(), {
 const { t } = useI18n();
 
 // Event emitter for component communication
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'refreshChange'): void;
   (e: 'update:loading', value: boolean): void;

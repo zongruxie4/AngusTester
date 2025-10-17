@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   hasFileType: false
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'change', index:number, data:ParamsItem): void,
   (e: 'del', index:number): void,

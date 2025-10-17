@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<LoadingProps>(), {
 type OrderByKey = string;
 
 // Emits Definition
-// eslint-disable-next-line func-call-spacing
+
 const emits = defineEmits<{
   (e: 'change', value: { orderBy?: string; orderSort?: PageQuery.OrderSort; filters: SearchCriteria[]; }):void,
   (e: 'refresh'):void

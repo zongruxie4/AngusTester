@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Component event emitters
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
   (event: 'change', value: Partial<TaskDetail>): void;

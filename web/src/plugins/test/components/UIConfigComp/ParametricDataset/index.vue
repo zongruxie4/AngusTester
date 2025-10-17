@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   sharingMode: SharingMode.ALL_THREAD
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'change', value: DatasetItem[]): void;
   (e: 'targetInfoChange', value: { actionOnEOF?: ActionOnEOF; sharingMode?: SharingMode; }): void;

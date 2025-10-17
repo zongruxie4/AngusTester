@@ -58,7 +58,7 @@ const props = withDefaults(defineProps<Props>(), {
   orderSort: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'refreshChange'): void;

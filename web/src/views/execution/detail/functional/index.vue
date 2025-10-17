@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<FunctionalTestProps>(), {
 });
 
 // Define emitted events
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   // Emitted after execution metadata is loaded
   (e: 'loaded', data: { [key: string]: any }): void;

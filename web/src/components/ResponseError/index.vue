@@ -8,7 +8,7 @@ interface Props {
 
 withDefaults(defineProps<Props>(), {});
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'rendered', value: true);
 }>();

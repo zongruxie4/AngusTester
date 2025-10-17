@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<BasicDataSourceProps<ScenarioInfo[]>>(), 
   notify: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'delete', value: string): void;
   (e: 'clone', value: ScenarioInfo): void;

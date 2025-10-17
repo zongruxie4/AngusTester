@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   status: ''
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'rendered', value: true);
 }>();

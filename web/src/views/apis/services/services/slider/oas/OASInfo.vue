@@ -4,11 +4,12 @@ import { useI18n } from 'vue-i18n';
 import { TypographyParagraph } from 'ant-design-vue';
 import { AsyncComponent, Grid, Icon, Input } from '@xcan-angus/vue-ui';
 import { services } from '@/api/tester';
-
-import { OASInfoSchema } from '@/views/apis/services/services/slider/PropsType';
+import { OpenAPIV3_1 } from '@/types/openapi-types';
+import { ServiceSchemaDetail } from '@/views/apis/services/services/types';
 
 const DescriptionModal = defineAsyncComponent(() => import('@/views/apis/services/components/MarkdownDescModal.vue'));
 
+// Props and Setup
 interface Props {
   id: string;
   disabled: boolean;
@@ -21,176 +22,72 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const title = ref<string>();
-const titleError = ref(false);
-const editTitleFlag = ref(false);
-const editTitle = () => {
-  editTitleFlag.value = true;
-};
-const confirmEditTitle = async () => {
-  if (!title.value) {
-    titleError.value = true;
-    return;
-  }
-
-  const [error] = await toSave();
-  if (error) {
-    return;
-  }
-  schemaInfo.value!.info.title = title.value;
-  editTitleFlag.value = false;
-};
-const cancelEditTitle = () => {
-  editTitleFlag.value = false;
-  titleError.value = false;
-  title.value = schemaInfo.value?.info.title;
-};
-const titleChange = () => {
-  titleError.value = false;
-};
-
-const summary = ref<string>();
-const editSummaryFlag = ref(false);
-const editSummary = () => {
-  editSummaryFlag.value = true;
-};
-const confirmEditSummary = async () => {
-  const [error] = await toSave();
-  if (error) {
-    return;
-  }
-  schemaInfo.value!.info.summary = summary.value;
-  editSummaryFlag.value = false;
-};
-const cancelEditSummary = () => {
-  editSummaryFlag.value = false;
-  summary.value = schemaInfo.value?.info.summary;
-};
-
+// Data State
+const schemaInfo = ref<ServiceSchemaDetail>();
 const openapi = ref<string>();
 
+// Title related state
+const title = ref<string>();
+const titleError = ref(false);
+const isEditingTitle = ref(false);
+
+// Summary related state
+const summary = ref<string>();
+const isEditingSummary = ref(false);
+
+// Terms of service related state
 const termsOfService = ref<string>();
-const editTermsOfServiceFlag = ref(false);
-const editTermsOfService = () => {
-  editTermsOfServiceFlag.value = true;
-};
-const confirmEditTermsOfService = async () => {
-  const [error] = await toSave();
-  if (error) {
-    return;
-  }
-  schemaInfo.value!.info.termsOfService = termsOfService.value;
-  editTermsOfServiceFlag.value = false;
-};
-const cancelEditTermsOfService = () => {
-  editTermsOfServiceFlag.value = false;
-  termsOfService.value = schemaInfo.value?.info.termsOfService;
-};
+const isEditingTermsOfService = ref(false);
 
-const contact = ref<{ name: string; email: string; url: string; }>({ name: '', email: '', url: '' });
-const editContactFlag = ref(false);
-const editContact = () => {
-  editContactFlag.value = true;
-};
-const confirmEditContact = async () => {
-  const [error] = await toSave();
-  if (error) {
-    return;
-  }
-  schemaInfo.value!.info.contact = contact.value;
-  editContactFlag.value = false;
-};
-const cancelEditContact = () => {
-  editContactFlag.value = false;
-  contact.value = schemaInfo.value?.info.contact || { name: '', email: '', url: '' };
-};
+// Contact related state
+const contact = ref<OpenAPIV3_1.ContactObject>({ });
+const isEditingContact = ref(false);
 
-const license = ref<{ name: string; url: string; }>({ name: '', url: '' });
-const editLicenseFlag = ref(false);
-const editLicense = () => {
-  editLicenseFlag.value = true;
-};
-const confirmEditLicense = async () => {
-  const [error] = await toSave();
-  if (error) {
-    return;
-  }
-  schemaInfo.value!.info.license = license.value;
-  editLicenseFlag.value = false;
-};
-const cancelEditLicense = () => {
-  editLicenseFlag.value = false;
-  license.value = schemaInfo.value?.info.license || { name: '', url: '' };
-};
+// License related state
+const license = ref<OpenAPIV3_1.LicenseObject>({ });
+const isEditingLicense = ref(false);
 
+// Version related state
 const version = ref<string>();
-const editVersionFlag = ref(false);
-const editVersion = () => {
-  editVersionFlag.value = true;
-};
-const confirmEditVersion = async () => {
-  const [error] = await toSave();
-  if (error) {
-    return;
-  }
-  schemaInfo.value!.info.version = version.value;
-  editVersionFlag.value = false;
-};
-const cancelEditVersion = () => {
-  editVersionFlag.value = false;
-  version.value = schemaInfo.value?.info.version;
-};
+const isEditingVersion = ref(false);
 
-const externalDocs = ref<{ description: string; url: string }>({ description: '', url: '' });
-const editExternalDocsFlag = ref(false);
-const editExternalDocs = () => {
-  editExternalDocsFlag.value = true;
-};
-const confirmEditExternalDocs = async () => {
-  const [error] = await toSave();
+// External docs related state
+const externalDocs = ref<OpenAPIV3_1.ExternalDocumentationObject>({ });
+const isEditingExternalDocs = ref(false);
+
+// Description modal related state
+const isModalVisible = ref(false);
+const description = ref<string>();
+const isEditingDescription = ref(false);
+
+/**
+ * Load schema information from API
+ */
+const loadSchemaInfo = async () => {
+  const [error, res] = await services.loadSchema(props.id);
   if (error) {
     return;
   }
-  schemaInfo.value!.externalDocs = externalDocs.value;
-  editExternalDocsFlag.value = false;
-};
-const cancelEditExternalDocs = () => {
-  editExternalDocsFlag.value = false;
+
+  const data: ServiceSchemaDetail = res.data;
+  schemaInfo.value = JSON.parse(JSON.stringify(data));
+
+  // Initialize form data
+  title.value = data.info.title;
+  summary.value = data.info.summary;
+  termsOfService.value = data.info.termsOfService;
+  contact.value = data.info.contact || { name: '', email: '', url: '' };
+  license.value = data.info.license || { name: '', url: '' };
+  version.value = data.info.version;
+  openapi.value = data.openapi;
+  description.value = data.info.description;
   externalDocs.value = schemaInfo.value?.externalDocs || { description: '', url: '' };
 };
 
-const modalVisible = ref(false);
-const description = ref<string>();
-const editDescriptionFlag = ref(false);
-const editDescription = () => {
-  modalVisible.value = true;
-  editDescriptionFlag.value = true;
-};
-const previewDescription = () => {
-  modalVisible.value = true;
-  editDescriptionFlag.value = false;
-};
-const cancelEditDescription = () => {
-  modalVisible.value = false;
-  editDescriptionFlag.value = false;
-  description.value = schemaInfo.value?.info.description;
-};
-const saveDescription = async (value) => {
-  if (!editDescriptionFlag.value) {
-    return;
-  }
-  description.value = value;
-
-  const [error] = await toSave();
-  if (error) {
-    return;
-  }
-  schemaInfo.value!.info.description = description.value;
-  modalVisible.value = false;
-  editDescriptionFlag.value = false;
-};
-
-const toSave = async () => {
+/**
+ * Save schema information to API
+ */
+const saveSchemaInfo = async () => {
   const params = {
     contact: contact.value,
     description: description.value,
@@ -203,34 +100,215 @@ const toSave = async () => {
   return await services.putSchemaInfo(props.id, params);
 };
 
-const schemaInfo = ref<OASInfoSchema>();
-const loadInfo = async () => {
-  const [error, res] = await services.loadSchema(props.id);
-  if (error) {
+// Title Management
+const startEditingTitle = () => {
+  isEditingTitle.value = true;
+};
+
+/**
+ * Confirm title edit and save to API
+ */
+const confirmTitleEdit = async () => {
+  if (!title.value) {
+    titleError.value = true;
     return;
   }
 
-  const data: OASInfoSchema = res.data;
-  schemaInfo.value = JSON.parse(JSON.stringify(data));
-  title.value = data.info.title;
-  summary.value = data.info.summary;
-  termsOfService.value = data.info.termsOfService;
-  contact.value = data.info.contact || { name: '', email: '', url: '' };
-  license.value = data.info.license || { name: '', url: '' };
-  version.value = data.info.version;
-  openapi.value = data.openapi;
-  description.value = data.info.description;
-  externalDocs.value = schemaInfo.value?.externalDocs || { description: '', url: '' };
+  const [error] = await saveSchemaInfo();
+  if (error) {
+    return;
+  }
+  schemaInfo.value!.info.title = title.value;
+  isEditingTitle.value = false;
 };
 
+const cancelTitleEdit = () => {
+  isEditingTitle.value = false;
+  titleError.value = false;
+  title.value = schemaInfo.value?.info.title;
+};
+
+const handleTitleChange = () => {
+  titleError.value = false;
+};
+
+// Summary Management
+const startEditingSummary = () => {
+  isEditingSummary.value = true;
+};
+
+/**
+ * Confirm summary edit and save to API
+ */
+const confirmSummaryEdit = async () => {
+  const [error] = await saveSchemaInfo();
+  if (error) {
+    return;
+  }
+  schemaInfo.value?.info.summary = summary.value;
+  isEditingSummary.value = false;
+};
+
+const cancelSummaryEdit = () => {
+  isEditingSummary.value = false;
+  summary.value = schemaInfo.value?.info.summary;
+};
+
+// Terms of Service Management
+const startEditingTermsOfService = () => {
+  isEditingTermsOfService.value = true;
+};
+
+/**
+ * Confirm terms of service edit and save to API
+ */
+const confirmTermsOfServiceEdit = async () => {
+  const [error] = await saveSchemaInfo();
+  if (error) {
+    return;
+  }
+  schemaInfo.value?.info.termsOfService = termsOfService.value;
+  isEditingTermsOfService.value = false;
+};
+
+const cancelTermsOfServiceEdit = () => {
+  isEditingTermsOfService.value = false;
+  termsOfService.value = schemaInfo.value?.info.termsOfService;
+};
+
+// Contact Management
+const startEditingContact = () => {
+  isEditingContact.value = true;
+};
+
+/**
+ * Confirm contact edit and save to API
+ */
+const confirmContactEdit = async () => {
+  const [error] = await saveSchemaInfo();
+  if (error) {
+    return;
+  }
+  schemaInfo.value?.info.contact = contact.value;
+  isEditingContact.value = false;
+};
+
+const cancelContactEdit = () => {
+  isEditingContact.value = false;
+  contact.value = schemaInfo.value?.info.contact || { name: '', email: '', url: '' };
+};
+
+// License Management
+const startEditingLicense = () => {
+  isEditingLicense.value = true;
+};
+
+/**
+ * Confirm license edit and save to API
+ */
+const confirmLicenseEdit = async () => {
+  const [error] = await saveSchemaInfo();
+  if (error) {
+    return;
+  }
+  schemaInfo.value?.info.license = license.value;
+  isEditingLicense.value = false;
+};
+
+const cancelLicenseEdit = () => {
+  isEditingLicense.value = false;
+  license.value = schemaInfo.value?.info.license || { name: '', url: '' };
+};
+
+// Version Management
+const startEditingVersion = () => {
+  isEditingVersion.value = true;
+};
+
+/**
+ * Confirm version edit and save to API
+ */
+const confirmVersionEdit = async () => {
+  const [error] = await saveSchemaInfo();
+  if (error) {
+    return;
+  }
+  schemaInfo.value?.info.version = version.value;
+  isEditingVersion.value = false;
+};
+
+const cancelVersionEdit = () => {
+  isEditingVersion.value = false;
+  version.value = schemaInfo.value?.info.version;
+};
+
+// External Docs Management
+const startEditingExternalDocs = () => {
+  isEditingExternalDocs.value = true;
+};
+
+/**
+ * Confirm external docs edit and save to API
+ */
+const confirmExternalDocsEdit = async () => {
+  const [error] = await saveSchemaInfo();
+  if (error) {
+    return;
+  }
+  schemaInfo.value.externalDocs = externalDocs.value;
+  isEditingExternalDocs.value = false;
+};
+
+const cancelExternalDocsEdit = () => {
+  isEditingExternalDocs.value = false;
+  externalDocs.value = schemaInfo.value.externalDocs || { description: '', url: '' };
+};
+
+// Description Management
+const startEditingDescription = () => {
+  isModalVisible.value = true;
+  isEditingDescription.value = true;
+};
+
+const previewDescription = () => {
+  isModalVisible.value = true;
+  isEditingDescription.value = false;
+};
+
+const cancelDescriptionEdit = () => {
+  isModalVisible.value = false;
+  isEditingDescription.value = false;
+  description.value = schemaInfo.value?.info.description;
+};
+
+/**
+ * Save description changes to API
+ */
+const saveDescription = async (value) => {
+  if (!isEditingDescription.value) {
+    return;
+  }
+  description.value = value;
+
+  const [error] = await saveSchemaInfo();
+  if (error) {
+    return;
+  }
+  schemaInfo.value?.info.description = description.value;
+  isModalVisible.value = false;
+  isEditingDescription.value = false;
+};
+
+// Lifecycle
 onMounted(() => {
   watch(() => props.id, (newValue) => {
     if (newValue) {
-      loadInfo();
+      loadSchemaInfo();
     }
   }, { immediate: true });
 });
 
+// Table Configuration
 const columns = [[
   { label: t('service.serviceOpenApi.columns.title'), dataIndex: 'title' },
   { label: t('service.serviceOpenApi.columns.summary'), dataIndex: 'summary' },
@@ -248,7 +326,7 @@ const columns = [[
     :columns="columns"
     marginBottom="18px">
     <template #title>
-      <template v-if="!editTitleFlag">
+      <template v-if="!isEditingTitle">
         <div class="flex items-start">
           <TypographyParagraph
             class="flex-1"
@@ -258,7 +336,7 @@ const columns = [[
             v-if="!props.disabled"
             icon="icon-shuxie"
             class="flex-shrink-0 ml-2 mt-0.5 cursor-pointer text-text-link"
-            @click="editTitle" />
+            @click="startEditingTitle" />
         </div>
       </template>
       <template v-else>
@@ -273,21 +351,21 @@ const columns = [[
             showCount
             class="w-full"
             :placeholder="t('service.serviceOpenApi.placeholder.title')"
-            @pressEnter="confirmEditTitle"
-            @change="titleChange" />
+            @pressEnter="confirmTitleEdit"
+            @change="handleTitleChange" />
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-gouxuanzhong"
-            @click="confirmEditTitle" />
+            @click="confirmTitleEdit" />
           <Icon
             class="ml-2 text-3 mt-2 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-shanchuguanbi"
-            @click="cancelEditTitle" />
+            @click="cancelTitleEdit" />
         </div>
       </template>
     </template>
     <template #summary>
-      <template v-if="!editSummaryFlag">
+      <template v-if="!isEditingSummary">
         <div class="flex items-start">
           <TypographyParagraph
             class="flex-1"
@@ -297,7 +375,7 @@ const columns = [[
             v-if="!props.disabled"
             icon="icon-shuxie"
             class="flex-shrink-0 ml-2 mt-0.5 cursor-pointer text-text-link"
-            @click="editSummary" />
+            @click="startEditingSummary" />
         </div>
       </template>
       <template v-else>
@@ -311,21 +389,21 @@ const columns = [[
             showCount
             class="w-full"
             :placeholder="t('service.serviceOpenApi.placeholder.summary')"
-            @pressEnter="confirmEditSummary" />
+            @pressEnter="confirmSummaryEdit" />
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-gouxuanzhong"
-            @click="confirmEditSummary" />
+            @click="confirmSummaryEdit" />
           <Icon
             class="ml-2 text-3 mt-2 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-shanchuguanbi"
-            @click="cancelEditSummary" />
+            @click="cancelSummaryEdit" />
         </div>
       </template>
     </template>
     <template #openapi>{{ openapi }}</template>
     <template #termsOfService>
-      <template v-if="!editTermsOfServiceFlag">
+      <template v-if="!isEditingTermsOfService">
         <div class="flex items-start">
           <a
             :href="termsOfService"
@@ -338,7 +416,7 @@ const columns = [[
             v-if="!props.disabled"
             icon="icon-shuxie"
             class="flex-shrink-0 ml-2 mt-0.5 cursor-pointer text-text-link"
-            @click="editTermsOfService" />
+            @click="startEditingTermsOfService" />
         </div>
       </template>
       <template v-else>
@@ -352,20 +430,20 @@ const columns = [[
             showCount
             class="w-full"
             :placeholder="t('service.serviceOpenApi.placeholder.termsOfService')"
-            @pressEnter="confirmEditTermsOfService" />
+            @pressEnter="confirmTermsOfServiceEdit" />
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-gouxuanzhong"
-            @click="confirmEditTermsOfService" />
+            @click="confirmTermsOfServiceEdit" />
           <Icon
             class="ml-2 text-3 mt-2 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-shanchuguanbi"
-            @click="cancelEditTermsOfService" />
+            @click="cancelTermsOfServiceEdit" />
         </div>
       </template>
     </template>
     <template #contact>
-      <template v-if="!editContactFlag">
+      <template v-if="!isEditingContact">
         <div class="flex items-start">
           <div class="flex-1 space-y-2">
             <TypographyParagraph
@@ -389,7 +467,7 @@ const columns = [[
             v-if="!props.disabled"
             icon="icon-shuxie"
             class="flex-shrink-0 ml-2 mt-0.5 cursor-pointer text-text-link"
-            @click="editContact" />
+            @click="startEditingContact" />
         </div>
       </template>
       <template v-else>
@@ -400,33 +478,33 @@ const columns = [[
               :maxlength="100"
               :placeholder="t('service.serviceOpenApi.placeholder.contactName')"
               class="w-full"
-              @pressEnter="confirmEditContact" />
+              @pressEnter="confirmContactEdit" />
             <Input
               v-model:value="contact.email"
               :maxlength="400"
               :placeholder="t('service.serviceOpenApi.placeholder.contactEmail')"
               class="w-full"
-              @pressEnter="confirmEditContact" />
+              @pressEnter="confirmContactEdit" />
             <Input
               v-model:value="contact.url"
               :maxlength="800"
               :placeholder="t('service.serviceOpenApi.placeholder.contactUrl')"
               class="w-full"
-              @pressEnter="confirmEditContact" />
+              @pressEnter="confirmContactEdit" />
           </div>
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-gouxuanzhong"
-            @click="confirmEditContact" />
+            @click="confirmContactEdit" />
           <Icon
             class="ml-2 text-3 mt-2 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-shanchuguanbi"
-            @click="cancelEditContact" />
+            @click="cancelContactEdit" />
         </div>
       </template>
     </template>
     <template #license>
-      <template v-if="!editLicenseFlag">
+      <template v-if="!isEditingLicense">
         <div class="flex items-start">
           <div class="flex-1 space-y-2">
             <TypographyParagraph
@@ -446,7 +524,7 @@ const columns = [[
             v-if="!props.disabled"
             icon="icon-shuxie"
             class="flex-shrink-0 ml-2 mt-0.5 cursor-pointer text-text-link"
-            @click="editLicense" />
+            @click="startEditingLicense" />
         </div>
       </template>
       <template v-else>
@@ -457,34 +535,34 @@ const columns = [[
               :maxlength="100"
               :placeholder="t('service.serviceOpenApi.placeholder.licenseName')"
               class="w-full"
-              @pressEnter="confirmEditLicense" />
+              @pressEnter="confirmLicenseEdit" />
             <Input
               v-model:value="license.url"
               :maxlength="800"
               :placeholder="t('service.serviceOpenApi.placeholder.licenseUrl')"
               class="w-full"
-              @pressEnter="confirmEditLicense" />
+              @pressEnter="confirmLicenseEdit" />
           </div>
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-gouxuanzhong"
-            @click="confirmEditLicense" />
+            @click="confirmLicenseEdit" />
           <Icon
             class="ml-2 text-3 mt-2 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-shanchuguanbi"
-            @click="cancelEditLicense" />
+            @click="cancelLicenseEdit" />
         </div>
       </template>
     </template>
     <template #version>
-      <template v-if="!editVersionFlag">
+      <template v-if="!isEditingVersion">
         <div class="flex items-start">
           <div class="flex-1">{{ version }}</div>
           <Icon
             v-if="!props.disabled"
             icon="icon-shuxie"
             class="flex-shrink-0 ml-2 mt-0.5 cursor-pointer text-text-link"
-            @click="editVersion" />
+            @click="startEditingVersion" />
         </div>
       </template>
       <template v-else>
@@ -494,20 +572,20 @@ const columns = [[
             :maxlength="100"
             class="w-full"
             :placeholder="t('common.version')"
-            @pressEnter="confirmEditVersion" />
+            @pressEnter="confirmVersionEdit" />
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-gouxuanzhong"
-            @click="confirmEditVersion" />
+            @click="confirmVersionEdit" />
           <Icon
             class="ml-2 text-3 mt-2 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-shanchuguanbi"
-            @click="cancelEditVersion" />
+            @click="cancelVersionEdit" />
         </div>
       </template>
     </template>
     <template #externalDocs>
-      <template v-if="!editExternalDocsFlag">
+      <template v-if="!isEditingExternalDocs">
         <div class="flex items-start">
           <div class="flex-1 space-y-2">
             <a
@@ -527,7 +605,7 @@ const columns = [[
             v-if="!props.disabled"
             icon="icon-shuxie"
             class="flex-shrink-0 ml-2 mt-0.5 cursor-pointer text-text-link"
-            @click="editExternalDocs" />
+            @click="startEditingExternalDocs" />
         </div>
       </template>
       <template v-else>
@@ -538,7 +616,7 @@ const columns = [[
               :maxlength="100"
               :placeholder="t('service.serviceOpenApi.placeholder.externalDocsUrl')"
               class="w-full"
-              @pressEnter="confirmEditExternalDocs" />
+              @pressEnter="confirmExternalDocsEdit" />
             <Input
               v-model:value="externalDocs.description"
               :maxlength="800"
@@ -548,16 +626,16 @@ const columns = [[
               showCount
               class="w-full"
               :placeholder="t('service.serviceOpenApi.placeholder.externalDocsDescription')"
-              @pressEnter="confirmEditExternalDocs" />
+              @pressEnter="confirmExternalDocsEdit" />
           </div>
           <Icon
             class="ml-2 text-4 mt-1.5 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-gouxuanzhong"
-            @click="confirmEditExternalDocs" />
+            @click="confirmExternalDocsEdit" />
           <Icon
             class="ml-2 text-3 mt-2 flex-shrink-0 cursor-pointer text-text-sub-content hover:text-text-link"
             icon="icon-shanchuguanbi"
-            @click="cancelEditExternalDocs" />
+            @click="cancelExternalDocsEdit" />
         </div>
       </template>
     </template>
@@ -574,16 +652,16 @@ const columns = [[
           v-if="!props.disabled"
           icon="icon-shuxie"
           class="flex-shrink-0 ml-2 mt-0.5 cursor-pointer text-text-link"
-          @click="editDescription" />
+          @click="startEditingDescription" />
       </div>
     </template>
   </Grid>
-  <AsyncComponent :visible="modalVisible">
+  <AsyncComponent :visible="isModalVisible">
     <DescriptionModal
-      v-model:visible="modalVisible"
+      v-model:visible="isModalVisible"
       :value="description"
-      :isEdit="editDescriptionFlag"
+      :isEdit="isEditingDescription"
       @ok="saveDescription"
-      @cancel="cancelEditDescription" />
+      @cancel="cancelDescriptionEdit" />
   </AsyncComponent>
 </template>

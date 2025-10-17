@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   selectedNames: () => []
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
     (e: 'update:visible', value: boolean): void;
     (e: 'ok', value: VariableItem[]): void;

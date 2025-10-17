@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
  * <p>Component event emissions for parent-child communication</p>
  * <p>Handles all user interactions and data changes that need to be communicated to parent components</p>
  */
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
   (event: 'update:selectedIds', value: number[]): void;

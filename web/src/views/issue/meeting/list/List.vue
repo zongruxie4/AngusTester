@@ -26,7 +26,7 @@ withDefaults(defineProps<{
   pageSizeOptions: () => ['4', '10', '15', '20', '30']
 });
 
-// eslint-disable-next-line func-call-spacing
+
 const emit = defineEmits<{
   (e: 'delete', meeting: MeetingInfo): void;
   (e: 'pageChange', page: number, pageSize: number): void;
