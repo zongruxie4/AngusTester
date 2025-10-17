@@ -9,9 +9,9 @@ interface Props {
   visible: boolean;
   projectId: string;
   id: string | undefined;
-  parentName: string;//  上级目录名称
-  pid: string, // 上级目录id
-  admin?: boolean; // 修复警告Missing required prop: "admin"->adminFlag改为非必传
+  parentName: string;
+  pid: string,
+  admin?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {

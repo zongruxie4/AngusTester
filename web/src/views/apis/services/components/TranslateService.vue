@@ -68,7 +68,6 @@ onMounted(() => {
     :footer="false"
     :width="800"
     @cancel="cancel">
-    <!-- 上方：OpenAPI翻译说明 -->
     <div>
       <div class="text-3.5 font-medium -mt-2">
         {{ t('common.description') }}

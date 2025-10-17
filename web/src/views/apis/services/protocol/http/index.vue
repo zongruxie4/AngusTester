@@ -67,12 +67,12 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: ''
 });
 
-const UnarchivedEditVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/UnarchivedEdit.vue'));
+const UnarchivedEdit = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/UnarchivedEdit.vue'));
 const InfoEditVue = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/slider/InfoEdit.vue'));
 
-const ShareListVue = defineAsyncComponent(() => import('@/components/share/list.vue'));
-const AgentVue = defineAsyncComponent(() => import('@/views/apis/services/components/RequestProxy.vue'));
-const CodeSnippetVue = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue'));
+const ShareList = defineAsyncComponent(() => import('@/components/share/list.vue'));
+const RequestProxy = defineAsyncComponent(() => import('@/views/config/proxy/EditableRequestProxy.vue'));
+const CodeSnippet = defineAsyncComponent(() => import('@/views/apis/services/components/CodeSnippet.vue'));
 
 const ApiSetting = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/Setting.vue'));
 const ServerPath = defineAsyncComponent(() => import('@/views/apis/services/protocol/http/path/index.vue'));
@@ -1945,7 +1945,7 @@ provide('selectHandle', closeDrawer);
                 </template> -->
 
                 <template v-if="activeMenu === 'generateCode'">
-                  <CodeSnippetVue class="px-5 h-full overflow-auto" />
+                  <CodeSnippet class="px-5 h-full overflow-auto" />
                 </template>
                 <Spin
                   :spinning="loading"
@@ -2033,7 +2033,7 @@ provide('selectHandle', closeDrawer);
         v-model:activeKey="activeDrawerKey"
         :menuItems="myNavs">
         <template #saveUnarchived>
-          <UnarchivedEditVue
+          <UnarchivedEdit
             v-if="activeDrawerKey === 'saveUnarchived'"
             :id="props.id"
             class="pr-4"
@@ -2085,7 +2085,7 @@ provide('selectHandle', closeDrawer);
             :disabled="!auths.includes('MODIFY')" /> -->
         </template>
         <template #share>
-          <ShareListVue
+          <ShareList
             v-if="activeDrawerKey === 'share'"
             :id="props.id"
             class="mt-2 pr-5"
@@ -2093,7 +2093,7 @@ provide('selectHandle', closeDrawer);
             type="API" />
         </template>
         <template #agent>
-          <AgentVue v-if="activeDrawerKey === 'agent'" class="pr-5 mt-2" />
+          <RequestProxy v-if="activeDrawerKey === 'agent'" class="pr-5 mt-2" />
         </template>
         <template #cases>
           <!-- <TestCase

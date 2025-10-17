@@ -54,6 +54,7 @@ export const RADIO_TYPE = {
   NONE: 'none',
   FORM_URLENCODED: 'application/x-www-form-urlencode',
   MULTIPART_FORM_DATA: 'multipart/form-data',
+  OCTET_STREAM: 'application/octet-stream',
   RAW: 'raw'
 } as const;
 

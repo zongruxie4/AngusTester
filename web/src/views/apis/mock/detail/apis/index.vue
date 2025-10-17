@@ -2,35 +2,19 @@
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
-  Arrow,
-  AsyncComponent,
-  Colon,
-  Dropdown,
-  DropdownSort,
-  Hints,
-  HttpMethodText,
-  Icon,
-  IconCopy,
-  IconRefresh,
-  IconRequired,
-  Input,
-  modal,
-  notification,
-  PureCard,
-  Scroll,
-  Spin,
-  Tooltip,
-  Validate
+  Arrow, AsyncComponent, Colon, Dropdown, DropdownSort, Hints, HttpMethodText, Icon, IconCopy,
+  IconRefresh, IconRequired, Input, modal, notification, PureCard, Scroll, Spin, Tooltip, Validate
 } from '@xcan-angus/vue-ui';
 import { useRouter } from 'vue-router';
-import { SearchCriteria, PageQuery, HttpMethod, ResponseDelayMode, utils, TESTER, duration, download } from '@xcan-angus/infra';
+import {
+  SearchCriteria, PageQuery, HttpMethod, ResponseDelayMode, utils, TESTER, duration, download
+} from '@xcan-angus/infra';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Button, Collapse, CollapsePanel, Switch } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { ApiMenuKey } from '@/views/apis/menu';
-
+import { ProxyType } from '@/views/config/proxy/types';
 import { MockServicePermission } from '@/enums/enums';
-import { type AgentValue } from '@/views/apis/services/components/PropsTypes';
 import { mock } from 'src/api/tester';
 import { setting } from 'src/api/gm';
 import { MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './types';
@@ -57,7 +41,7 @@ const { t } = useI18n();
 const WS = ref();
 const uuid = ref();
 const wsResponse = ref();
-const currentProxy = ref<AgentValue>(); // CLIENT_PROXY|NO_PROXY|SERVER_PROXY|CLOUD_PROXY
+const currentProxy = ref<ProxyType>(); // CLIENT_PROXY|NO_PROXY|SERVER_PROXY|CLOUD_PROXY
 const currentProxyUrl = ref();
 const proxyOptObj = ref();
 
@@ -1210,7 +1194,7 @@ const updateWs = () => {
     WS.value = undefined;
     if (currentProxyUrl.value) {
       createWS();
-    } else if (currentProxy.value === 'NO_PROXY') {
+    } else if (currentProxy.value === ProxyType.NO_PROXY) {
       readyState.value = -1;
     }
   } else {
@@ -1259,7 +1243,7 @@ onMounted(() => {
   watch([() => currentProxyUrl.value, () => currentProxy.value], () => {
     WS.value && WS.value.close(1000);
     WS.value = undefined;
-    if (currentProxy.value === 'NO_PROXY') {
+    if (currentProxy.value === ProxyType.NO_PROXY) {
       readyState.value = -1;
     } else if (currentProxyUrl.value) {
       createWS();

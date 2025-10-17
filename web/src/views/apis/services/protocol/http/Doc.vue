@@ -12,6 +12,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   id: undefined
 });
+
 const emit = defineEmits<{(e: 'update:data', value: any):void}>();
 
 const ExportApi = defineAsyncComponent(() => import('@/views/apis/services/components/ExportOptionalModal.vue'));

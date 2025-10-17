@@ -5,6 +5,15 @@ import { OpenAPIV3_1 } from '@/types/openapi-types';
 
 const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
 
+/**
+ * Enum for export types
+ */
+export enum ExportType {
+  SERVICE = 'SERVICE',
+  APIS = 'APIS',
+  API = 'API'
+}
+
 export type ServicesInfo = {
   id: string;
   projectId: string;

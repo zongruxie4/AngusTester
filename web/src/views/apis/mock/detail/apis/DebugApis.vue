@@ -15,7 +15,7 @@ import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
 
 import UrlForm from '@/views/apis/mock/detail/apis/components/UrlForm.vue';
 
-const Agent = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/Agent.vue'));
+const Agent = defineAsyncComponent(() => import('@/views/config/proxy/RequestProxy.vue'));
 const InputGroup = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/InputGroup.vue'));
 const RequestBody = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/RequestBody.vue'));
 const ResponseStatus = defineAsyncComponent(() => import('@/components/ResponseStatus/index.vue'));

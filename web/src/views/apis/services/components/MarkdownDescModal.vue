@@ -30,16 +30,16 @@ const saveDescription = () => {
 const easyMdRef = ref();
 const description = ref();
 
+const footer = computed(() => {
+  return !!props.isEdit;
+});
+
 onMounted(() => {
   watch(() => props.visible, () => {
     description.value = props.value;
   }, {
     immediate: true
   });
-});
-
-const footer = computed(() => {
-  return !!props.isEdit;
 });
 
 const bodyStyle = {

@@ -3,12 +3,13 @@ import { inject, onMounted, ref, Ref } from 'vue';
 import { Button, Popover, Radio, RadioGroup, UploadDragger } from 'ant-design-vue';
 import { Icon, Input, notification, Spin, Validate } from '@xcan-angus/vue-ui';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { useI18n } from 'vue-i18n';
-
 import { services } from '@/api/tester';
 import { formatBytes } from '@/utils/common';
+import { StrategyWhenDuplicated, ApiImportSource } from '@/enums/enums';
 import { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface';
+
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 interface Props {
   serviceId?: string;
@@ -31,7 +32,6 @@ const { t } = useI18n();
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 
-
 const emits = defineEmits<{
   (e: 'update:visible', value: boolean): void,
   (e: 'ok', value: {id: string, key: string}): void,
@@ -39,18 +39,18 @@ const emits = defineEmits<{
 }>();
 
 const isLoading = ref(false);
-const strategyWhenDuplicated = ref<'COVER' | 'IGNORE'>('COVER');
+const strategyWhenDuplicated = ref<StrategyWhenDuplicated>(StrategyWhenDuplicated.COVER);
 const deleteWhenNotExisted = ref(false);
 const projectServiceName = ref<string>();
 const nameErrorMsg = ref<string>();
-const importSource = ref<'POSTMAN' | 'OPENAPI'>('OPENAPI');
+const importSource = ref<ApiImportSource>(ApiImportSource.OPENAPI);
 const uploadErrorMsg = ref<string>();
 const progressing = ref(false);
 const file = ref<File>();
 const originFile = ref<File>();
 
-const importSourceChange = (value:'POSTMAN'|'OPENAPI') => {
-  if (value === 'POSTMAN' && originFile.value && originFile.value.name === file.value?.name) {
+const importSourceChange = (value:ApiImportSource.POSTMAN|ApiImportSource.OPENAPI) => {
+  if (value === ApiImportSource.POSTMAN && originFile.value && originFile.value.name === file.value?.name) {
     toOpenapi(originFile.value);
   } else {
     file.value = originFile.value;
@@ -105,7 +105,7 @@ const saveModalData = async () => {
 const customRequest = (info: UploadOption) => {
   uploadErrorMsg.value = undefined;
   const _file = info.file;
-  if (info.file.type === 'application/json' && importSource.value === 'POSTMAN') {
+  if (info.file.type === 'application/json' && importSource.value === ApiImportSource.POSTMAN) {
     toOpenapi(_file);
     return;
   }
@@ -144,14 +144,14 @@ const deleteFile = () => {
 };
 
 const resetModalData = () => {
-  strategyWhenDuplicated.value = 'COVER';
+  strategyWhenDuplicated.value = StrategyWhenDuplicated.COVER;
   deleteWhenNotExisted.value = false;
   projectServiceName.value = undefined;
   nameErrorMsg.value = undefined;
   file.value = undefined;
   originFile.value = undefined;
   uploadErrorMsg.value = undefined;
-  importSource.value = 'OPENAPI';
+  importSource.value = ApiImportSource.OPENAPI;
 };
 
 const closeModal = () => {
@@ -164,7 +164,7 @@ const serviceNameChange = () => {
 };
 
 const sourceExcludes = ({ value }) => {
-  return ['ANGUS'].includes(value);
+  return [ApiImportSource.ANGUS].includes(value);
 };
 
 onMounted(() => {

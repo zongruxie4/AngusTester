@@ -11,7 +11,7 @@ import { ApiMenuKey } from '@/views/apis/menu';
 
 import { setting } from '@/api/gm';
 import { ProjectInfo } from '@/layout/types';
-import { createAngusWebSocketProxy, type WebSocketEventHandlers } from '@/utils/apis/angusProxy';
+import { createAngusWebSocketProxy, type WebSocketEventHandlers } from '@/views/config/proxy/composables/angusProxy';
 
 // Lazy load components for better performance
 const Services = defineAsyncComponent(() => import('@/views/apis/services/services/index.vue'));

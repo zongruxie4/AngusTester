@@ -8,7 +8,7 @@ import '@xcan-angus/rapidoc';
 import { useI18n } from 'vue-i18n';
 import { shareApis } from '@/api/tester';
 
-const Agent = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/Agent.vue'));
+const RequestProxy = defineAsyncComponent(() => import('@/views/config/proxy/RequestProxy.vue'));
 
 const { t } = useI18n();
 const route = useRoute();
@@ -94,6 +94,12 @@ const loadData = async () => {
 
 const accessToken = ref();
 const docOrigin = ref();
+
+const spread = ref(false);
+const toggleSpread = () => {
+  spread.value = !spread.value;
+};
+
 onMounted(async () => {
   id.value = route.query.id;
   pat.value = route.query.pat;
@@ -115,21 +121,15 @@ onMounted(async () => {
   });
 });
 
-const spread = ref(false);
-const toggleSpread = () => {
-  spread.value = !spread.value;
-};
-
 provide('proxyOptObj', apiProxy);
 provide('currentProxy', currentProxy);
 provide('currentProxyUrl', currentProxyUrl);
 provide('readyState', readyState);
-
 </script>
 <template>
   <Spin :spinning="loading" class="h-full">
     <div v-if="(viewData && viewData.expired) || responseErr" class="text-center text-5 font-semibold h-40 leading-40">
-      {{ responseErr || '分享已过期' }}
+      {{ responseErr || 'Share has expired' }}
     </div>
     <template v-else-if="openapi">
       <rapi-doc
@@ -165,7 +165,7 @@ provide('readyState', readyState);
           class="bg-white border-orange-bg rounded transition-all duration-500 box-border overflow-x-hidden overflow-y-auto space-y-2 flex flex-col"
           :class="[spread ? 'w-200 border p-3' : 'w-0 border-0']"
           style="height: 160px;">
-          <Agent />
+          <RequestProxy />
         </div>
       </div>
     </template>

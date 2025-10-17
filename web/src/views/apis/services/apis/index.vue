@@ -29,7 +29,7 @@ const OASInfo = defineAsyncComponent(() => import('@/views/apis/services/service
 const SyncConfig = defineAsyncComponent(() => import('@/views/apis/services/services/slider/sync/index.vue'));
 const SecurityConfig = defineAsyncComponent(() => import('@/views/apis/services/services/slider/SecurityConfig.vue'));
 const ServerConfig = defineAsyncComponent(() => import('@/views/apis/services/services/slider/server/index.vue'));
-const RequestProxy = defineAsyncComponent(() => import('@/views/apis/services/components/RequestProxy.vue'));
+const RequestProxy = defineAsyncComponent(() => import('@/views/config/proxy/EditableRequestProxy.vue'));
 const OASTag = defineAsyncComponent(() => import('@/views/apis/services/services/slider/oas/OASTag.vue'));
 const OASComponent = defineAsyncComponent(() => import('@/views/apis/services/services/slider/oas/OASComponent.vue'));
 

@@ -144,14 +144,6 @@ const loadSecurityNameOptions = async (serviceId) => {
   });
 };
 
-watch(() => serviceId.value, newValue => {
-  if (newValue) {
-    loadSecurityNameOptions(newValue);
-  }
-}, {
-  immediate: true
-});
-
 const initData = () => {
   security.value = [];
   edit.value = false;
@@ -167,6 +159,14 @@ const initData = () => {
   defaultSecurity.value = JSON.parse(JSON.stringify(security.value));
 };
 
+watch(() => serviceId.value, newValue => {
+  if (newValue) {
+    loadSecurityNameOptions(newValue);
+  }
+}, {
+  immediate: true
+});
+
 watch(() => props.data, () => {
   initData();
   emits('update:showSecurity', security.value.length > 0);
@@ -175,7 +175,6 @@ watch(() => props.data, () => {
 });
 
 defineExpose({ addSecurity: addSecurity });
-
 </script>
 <template>
   <div class="pl-2 -mt-2">

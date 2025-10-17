@@ -1,6 +1,7 @@
 export type AuthType = 'basic' | 'bearer' | 'apiKey' | 'oauth2';
 export type ApiKeyIn = 'header' | 'query';
 export type AuthFlowKey = 'authorizationCode' | 'password' | 'implicit' | 'clientCredentials';
+export type SchemaType = 'boolean' | 'object' | 'number' | 'string' | 'integer' | 'array';
 
 /**
  * API extension keys for XCan custom properties.

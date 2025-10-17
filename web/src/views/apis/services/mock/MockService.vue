@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-// ===== IMPORTS =====
 import { computed, inject, onMounted, ref } from 'vue';
 import { Input, notification, Select, TreeSelect } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup } from 'ant-design-vue';
