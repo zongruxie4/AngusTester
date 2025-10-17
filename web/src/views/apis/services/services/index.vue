@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, reactive, ref, Ref, watch } from 'vue';
 import { AsyncComponent, LeftDrawer, notification, IconText, VuexHelper } from '@xcan-angus/vue-ui';
-import { TESTER, localStore, utils, duration, appContext, enumUtils, PageQuery, HttpMethod } from '@xcan-angus/infra';
+import {
+  TESTER, localStore, utils, duration, appContext, enumUtils, PageQuery, HttpMethod, SearchCriteria
+} from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
@@ -226,7 +228,7 @@ const onImportOk = () => {
 
 const params = computed(() => {
   return {
-    filters: inputValue.value ? [{ key: 'name', op: 'MATCH', value: inputValue.value }] : [],
+    filters: inputValue.value ? [{ key: 'name', op: SearchCriteria.OpEnum.Match, value: inputValue.value }] : [],
     projectId: projectId.value
   };
 });
@@ -515,7 +517,6 @@ const openTranslateService = (item) => {
   selectedService.value = { id: item.id, name: item.name };
 };
 
-// Clone
 /**
  * Clone a service and refresh the left drawer on success.
  */
@@ -591,7 +592,6 @@ const addHttpApiForService = async (item) => {
   });
 };
 
-// Add socket interface
 /**
  * Add a temporary Socket API tab under a service for quick creation.
  */
